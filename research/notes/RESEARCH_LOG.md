@@ -191,3 +191,31 @@ not PHP refutations or a mechanical verification of global elimination.
 are preserved in `research/provenance/session-records/mp_composition_20260911_01/`.
 Policy and initial availability reads preceded instrumentation. No historical
 suite was rerun and no package was installed.
+
+### 2026-09-11 / implication_boundary_20260911_01 — one-block consequence and boundary transfer
+
+**Status.** Working PC transformations with explicit freshness and degree
+hypotheses. The complete proofs, parameter accounting, controls, and unresolved
+global composition are in [the notebook](../../notebook.html), entry
+`entry-2026-09-11-implication-boundary`. Stable subanchors:
+`boundary-old-consequence`, `boundary-weighted-replay`,
+`boundary-mp-elimination`, and `boundary-controls`.
+
+**Evidence.** The [result record](../results/implication_boundary_20260911_01/README.md)
+documents the new compiled checker and the complete
+[trace output](../results/implication_boundary_20260911_01/checks-01.jsonl).
+Forty transformations over p = 2, 3, 5, 7 and h = 1, 2 passed, including
+24 old-consequence cases and 16 MP cases. The output preserves 96 proofs and
+14,657 inference lines; all transformed traces reject a corrupted final line.
+Eight additional controls exercise the annihilator and freshness hypotheses.
+These are synthetic cases, not PHP computations or formal verification.
+The [summary](../results/implication_boundary_20260911_01/summary.json)
+preserves the full degree ledger and source/output hashes.
+
+**Timing.** The generated
+[table](../results/implication_boundary_20260911_01/timing.html) is embedded in
+the notebook, with evidence archived under
+`research/provenance/session-records/implication_boundary_20260911_01/`.
+Goal creation preceded instrumentation. Initial source review included early
+argument development; the suite ran once, after a warning-clean compilation.
+No historical suite was rerun and no package was installed.
