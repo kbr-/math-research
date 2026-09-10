@@ -68,6 +68,39 @@ its rendered mathematics automatically. MathJax 4.0.0 loads from a CDN, so the
 browser needs internet access. `index.html` contains layout and rendering logic.
 Use `python3 server.py --port 8001` if the default port is occupied.
 
+## Public notebook on GitHub Pages
+
+The deployment workflow publishes the rendered notebook at
+**https://kbr-.github.io/math-research/** once Pages is enabled.
+
+One-time activation:
+
+1. Open the repository's **Settings → Pages**.
+2. Under **Build and deployment**, choose **GitHub Actions** as the source.
+3. Push the workflow and notebook changes with `git push origin main`.
+   If already pushed, run **Publish research notebook** manually from the
+   repository's Actions tab, selecting `main`.
+
+Subsequent pushes changing the notebook HTML, its template, or the site builder
+automatically rebuild and deploy the site. An open published tab checks for a
+new revision every 30 seconds; deployment and CDN propagation can add delay.
+The published page does not require the Python server or your laptop to stay on.
+
+The workflow builds only `index.html`, `revision.json`, and `.nojekyll` in `_site/`;
+it does not upload the repository, private caches, PDFs, or Git history. It runs
+only for `main`, including manual deployment. The page retains attribution and
+the interface's MIT notice. Supporting source/data links should point to the
+public repository unless explicitly added to the site artifact.
+
+Build locally, without installing additional packages:
+
+```bash
+./compute.sh --threads 1 python3 tools/build_pages.py --out _site
+```
+
+`_site/` is generated and ignored. GitHub's hosted workflow uses Python's standard
+library and built-in JavaScript tests; it does not run numerical research jobs.
+
 Run and time a research turn:
 
 ```bash

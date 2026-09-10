@@ -11,9 +11,9 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parent
 
 
-def snapshot():
-    template = (ROOT / "index.html").read_text(encoding="utf-8")
-    notebook = (ROOT / "notebook.html").read_text(encoding="utf-8")
+def snapshot(root=ROOT):
+    template = (root / "index.html").read_text(encoding="utf-8")
+    notebook = (root / "notebook.html").read_text(encoding="utf-8")
     revision = hashlib.sha256(json.dumps([template, notebook]).encode()).hexdigest()
     return template, notebook, revision
 

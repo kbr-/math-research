@@ -40,6 +40,9 @@
     @media print { body { background: white; } .toolbar, details, footer { display: none; } main { border: 0; box-shadow: none; margin: 0; padding: 0; max-width: none; } .math { overflow: visible; } }
   </style>
   <script>
+    // BEGIN NOTEBOOK SETTINGS
+    window.notebookSettings = {mode: 'live', revisionUrl: '/revision', pollMs: 1000};
+    // END NOTEBOOK SETTINGS
     window.MathJax = {
       tex: {
         inlineMath: [['\\(', '\\)'], ['$', '$']],
@@ -52,7 +55,8 @@
         pageReady() {
           return MathJax.startup.defaultPageReady().then(() => {
             window.mathReady = true;
-            document.getElementById('status').textContent = 'Live · watching for changes';
+            document.getElementById('status').textContent = window.notebookSettings.mode === 'published'
+              ? 'Published notebook' : 'Live · watching for changes';
             try {
               const scroll = sessionStorage.getItem('math-scroll');
               if (scroll !== null) {
@@ -74,33 +78,39 @@
   </header>
   <main>
     <!-- NOTEBOOK -->
-    <footer>Changes appear automatically. Right-click an equation for MathJax options.</footer>
+    <footer id="notebook-footer">Changes appear automatically. Right-click an equation for MathJax options.</footer>
   </main>
   <script>
     const status = document.getElementById('status');
+    const settings = window.notebookSettings;
     document.getElementById('mathjax').addEventListener('error', () => {
       status.textContent = 'Math could not load. Check your internet connection and refresh.';
       status.dataset.error = '';
     });
     async function watch() {
       try {
-        const response = await fetch('/revision', { cache: 'no-store', signal: AbortSignal.timeout(4000) });
+        const endpoint = new URL(settings.revisionUrl, window.location.href);
+        if (settings.mode === 'published') endpoint.searchParams.set('_', String(Date.now()));
+        const response = await fetch(endpoint, { cache: 'no-store', signal: AbortSignal.timeout(4000) });
         if (!response.ok) throw new Error('Server unavailable');
         const { revision } = await response.json();
+        if (typeof revision !== 'string') throw new Error('Invalid revision');
         if (revision !== '__REVISION__') {
           try { sessionStorage.setItem('math-scroll', String(window.scrollY)); } catch (_) {}
           location.reload();
           return;
         }
         if (window.mathReady) {
-          status.textContent = 'Live · watching for changes';
+          status.textContent = settings.mode === 'published' ? 'Published notebook' : 'Live · watching for changes';
           delete status.dataset.error;
         }
       } catch (_) {
-        status.textContent = 'Server disconnected · reconnecting…';
-        status.dataset.error = '';
+        if (settings.mode === 'live') {
+          status.textContent = 'Server disconnected · reconnecting…';
+          status.dataset.error = '';
+        }
       }
-      setTimeout(watch, 1000);
+      setTimeout(watch, settings.pollMs);
     }
     watch();
   </script>

@@ -44,6 +44,9 @@ checking the exact proof when extending a theorem.
 
 The user reads the repository-root `notebook.html` through `python3 server.py` at
 http://localhost:8000. The browser automatically refreshes when the file changes.
+GitHub Pages publication is configured in `.github/workflows/pages.yml`, with
+one-time Source=GitHub Actions activation described in README.md. It deploys only
+the rendered notebook artifact from `main`; the local server remains independent.
 After each research turn, update its **Where we stand**, **The remaining route**
 (highest risk first), and **Proposed next step** sections to reflect the current
 state. Keep these summaries brief; do not invent progress.

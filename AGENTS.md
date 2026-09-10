@@ -104,6 +104,10 @@ Use targeted source excerpts rather than repeatedly importing the full manuscrip
 - `notebook.html` at the workspace root is the user-facing mathematical record,
   served by `python3 server.py` at http://localhost:8000. Edit its content directly;
   the browser refreshes automatically. `index.html` supplies the page layout.
+- `.github/workflows/pages.yml` builds the published notebook from pushes to
+  `main` that change the HTML or site tooling. `tools/build_pages.py --out _site`
+  creates the minimal Pages artifact; never upload the whole checkout or private
+  sources. Preserve local live mode and published project-relative revision URLs.
 - After every research turn, review and refresh the three living sections:
   **Where we stand**, **The remaining route** (highest risk first), and
   **Proposed next step**. Keep them concise and accurate; do not invent progress
