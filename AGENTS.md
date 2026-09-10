@@ -1,10 +1,11 @@
-# Computation rules
+# Research workspace instructions
 
 These are explicit user constraints for this workspace and future sessions.
 
 Read [COMPUTATION_RULES.md](COMPUTATION_RULES.md) before running computations.
-It is the authoritative computation policy; the rules below summarize it.
-When updating the policy, keep this summary consistent with that document.
+It owns resource limits, execution, numerical checks, timing-tool operation,
+and result retention. This file owns research workflow, notebook editing, and
+Git/publication rules; reference the relevant policy rather than duplicating it.
 
 For mathematical research, start with `research/notes/RESUME.md`, the reading
 guide to the authoritative initial sections of `notebook.html`. Keep
@@ -51,57 +52,19 @@ actionable rule over another checklist or a record of one-off setup history.
   IDs, generated binaries, virtual environments, and scratch renders stay untracked.
 - Keep every commit-message line, including the subject and body, at most
   100 characters wide. Wrap prose manually and separate paragraphs with blank lines.
-- Computation scripts should provide `--out PATH` (or an equivalent explicit
-  output destination) for substantial results. Save complete tables, enumerations,
-  certificates, and other research data under `research/results/` or another
-  tracked directory. Large output is acceptable; never discard or truncate
-  important results just to keep logs or commits small.
-- Reference each result file from the research log and, where relevant, the
-  notebook entry. Record how it was produced: command, parameters, seed if used,
-  encoding/schema, and relevant verification. Commit the output with the result.
-  Stream/chunk large computations and file I/O within the shared memory limit;
-  bounded terminal previews do not replace complete persisted output.
+- Preserve complete computation outputs and reproduction metadata under
+  [the output policy](COMPUTATION_RULES.md#persist-computation-outputs).
+  Reference the files from the research log and relevant notebook entry, and
+  commit them with the result.
 
-- Maximum CPU use: 14 of this machine's 16 logical CPUs, shared across jobs.
-- Maximum memory budget: 10 GB TOTAL across all simultaneous computation
-  processes and their children, never per process. Swap is allowed by the user;
-  do not disable system-wide swap. Count RAM plus swap toward the budget.
-- Run local computations, numerical checks, builds, and other potentially
-  substantial workloads through `./compute.sh COMMAND ...`. All such jobs
-  share `mathcompute.slice`. Never bypass a failed resource-limit check.
-- The user explicitly requires an arbitrary RAM/swap split. Do NOT set separate
-  fixed shares such as 9 GB RAM plus 0.5 GB swap. Cgroup v2 has no native combined
-  cap: the installed C watchdog polls workload RAM + swap + watchdog RAM + swap
-  every 2 ms and writes cgroup.kill when the total exceeds 10,000,000,000 bytes.
-  Separate 10 GB RAM and 10 GB swap caps are only backstops; the watchdog is
-  required to enforce the combined budget. Brief overshoot is acceptable to the
-  user (they explicitly mentioned 10.5 GB); monitoring has no strict latency or
-  overshoot guarantee. Plan allocations below the limit, including temporaries.
-- Each job's CPU affinity is restricted to CPUs 0-13 and verified before execution.
-  This host delegates memory/pids only; slice CPUQuota/AllowedCPUs are NOT enforced
-  here. The control shell/Codex/browser are outside the computation group.
-- `./compute.sh --status` verifies the active limits. If initialization is
-  needed, run `python3 resource-controls/setup.py` (or the setup.sh shim) with the
-  necessary system access. This self-contained, idempotent script recreates all
-  units, compiles the embedded watchdog using the existing C compiler, starts it,
-  and verifies readiness. Rerun after reboot/login; it refuses to reconfigure
-  while computation jobs are running. Respect tool escalation requirements:
-  the user systemd manager is inaccessible inside the Codex sandbox.
-- Jobs require the watchdog service. On watchdog failure/stop, systemd stops its
-  dependent jobs and ExecStopPost kills the whole computation group. Never bypass
-  these dependencies. Do not run numerical work if the watchdog is unavailable.
-- Use compiled numerical implementations (NumPy, SciPy, BLAS, etc.) for heavy
-  computation. No Python inner loops or heavy numerical logic in pure Python.
-  Vectorize where appropriate, but chunk operations when full vectorization
-  would create large temporaries. Python orchestration is fine.
-- Avoid process/thread oversubscription. For 14 worker processes, use
-  `./compute.sh --threads 1 ...`; otherwise budget worker count times BLAS
-  threads within 14. All concurrent launcher invocations share the same cap.
-  Do not change CPU affinity or escape the cgroup from within a workload.
-- Install no libraries or dependencies without the user's explicit approval.
-  Inform the user when something needed is missing. No virtual environment or
-  package installation has yet been authorized/created.
-- Publish substantial new mathematics in the live notebook, following the rules below.
+## Computation policy
+
+- Before computations, read and follow [COMPUTATION_RULES.md](COMPUTATION_RULES.md).
+  All substantial local jobs use `./compute.sh` and share at most 14 logical CPUs
+  and 10 GB combined RAM plus swap. Never bypass a failed resource-limit check.
+- Use compiled numerical implementations for heavy work; install no dependencies
+  or virtual environments without explicit user approval. See the computation
+  policy for setup, enforcement, numerical accuracy, timing, and result retention.
 
 ## Live research notebook
 
@@ -190,15 +153,8 @@ actionable rule over another checklist or a record of one-off setup history.
 - Measure every research turn, including reading/review, preparation, writing,
   tools, computations, failed attempts, and retries. Start as early as practical
   with `./compute.sh start TURN`; disclose work preceding instrumentation.
-- Mark phases using `./compute.sh phase TURN reading` or the appropriate category.
-  Bracket external browsing/tool windows with phase changes.
-- Run commands with `./compute.sh run TURN --threads N -- COMMAND ...` to enforce
-  limits and log execution together. There is no unprotected timed-run mode.
-  `./compute.sh COMMAND ...` also records timing in a standalone session.
-- End with `./compute.sh report TURN --stop`; report measured elapsed time,
-  relevant categories, and failures. Count overlapping worker intervals once.
-  Reading includes interpretation; tool windows include orchestration. Never
-  claim pure reasoning time, pure network latency, or unmeasured end-to-end time.
+- Follow [the execution and timing policy](COMPUTATION_RULES.md#unified-execution-and-timing)
+  for phase marking, protected commands, reports, and honest measurement scope.
 - Keep full output on disk and display bounded excerpts. After compaction, read
   the restart note and load exact source passages only as needed.
 - Distinguish working proofs, imported statements, conditional claims, finite

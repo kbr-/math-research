@@ -1,7 +1,9 @@
 # Computation rules
 
-These rules apply to computations in this workspace and continue to apply after
-rebooting the laptop or resuming the session.
+This is the authoritative policy for resource limits, protected execution,
+numerical checks, timing tools, and computation outputs. It applies after reboot
+and session resume. Research workflow, notebook editing, source audits, and
+Git/publication rules belong in [AGENTS.md](AGENTS.md).
 
 ## CPU and memory budget
 
@@ -20,6 +22,9 @@ rebooting the laptop or resuming the session.
   results, BLAS workspaces, and all parallel workers.
 
 ## Enforced execution
+
+The launcher requires Linux, cgroup v2, and a working user systemd manager;
+setup also needs the existing C compiler. Unsupported controls must fail closed.
 
 Run computations, numerical checks, builds, and other potentially substantial
 local workloads through the protected launcher:
@@ -74,8 +79,8 @@ manually run outside the launcher are not inside the workload group.
 - **Install no libraries or dependencies without explicit user approval.**
 - If a required library is missing, inform the user so they can install it or
   explicitly authorize installation.
-- A project virtual environment may be used once approved. It has not yet been
-  created. Use its interpreter through the same protected launcher:
+- Create a project virtual environment only with approval. Use its interpreter
+  through the same protected launcher:
 
 ```bash
 ./compute.sh .venv/bin/python calculation.py
@@ -100,27 +105,15 @@ persist; the services are not enabled at boot. Rerun setup after reboot/login,
 and check status when resuming. Codex needs the appropriate tool escalation to
 access user systemd outside its sandbox.
 
-## Verification already performed
-
-- An allocator attempting to write **11 GB** was killed when the watchdog
-  observed **10,000,871,424 bytes** combined RAM and swap. Both RAM and swap were
-  in use, and no test processes remained afterward.
-- **15 busy CPU workers** ran exclusively on CPUs **0–13**, averaging **13.97
-  occupied CPUs** over approximately four seconds.
-- A smaller test confirmed aggregate enforcement: one 40 MiB worker fit under
-  a temporary 64 MiB budget; adding a second caused the entire test group to be
-  killed.
-- Repeated setup and a small compiled BLAS calculation were verified. Success
-  means the resource boundary is enforced, not a particular wrapper exit code.
-
-Implementation details and test commands are in
-[resource-controls/README.md](resource-controls/README.md).
+Resource-limit validation evidence and implementation details are recorded in
+[resource-controls/README.md](resource-controls/README.md). Do not rerun the
+resource stress tests merely to resume work; verify active controls with
+`./compute.sh --status`.
 
 ## Unified execution and timing
 
 `compute.sh` is one executable Python program with a shebang, containing both
 resource enforcement and timing. Run it directly, not with `bash`.
-It replaces compute.py and research/tools/timing.py.
 
 From the repository root:
 
@@ -145,10 +138,11 @@ systemd runtime limit as a backstop. Full output and timing records are saved in
 `research/logs/`. Only the last 8,000 output bytes are displayed by default;
 `--tail-bytes N` changes that without losing the saved log.
 
-Measure every research turn, including failures/retries, from as early as practical.
-Mark reading/review, preparation, reasoning/writing, and external-tool phases.
-For browsing, mark `network_tool` before the call and restore the phase afterward.
-Command runs log their own category, status, and elapsed interval automatically.
+In an instrumented session, mark reading/review, preparation, reasoning/writing,
+and external-tool phases. For browsing, mark `network_tool` before the call and
+restore the phase afterward. Command runs log their own category, status, and
+elapsed interval automatically, including failures and retries. AGENTS.md defines
+which research turns require instrumentation.
 
 Reports use exclusive wall-clock intervals; do not add overlapping worker times.
 Reading includes interpretation and tool windows include service/orchestration
@@ -157,64 +151,16 @@ Disclose mixed time, work before instrumentation, and final generation after the
 snapshot. Start a fresh timing session after reboot. A session cannot be stopped
 while command records remain unfinished.
 
-## Evidence and reproducibility
+## Numerical verification
 
-- Keep `php_codex_handoff/` unchanged. New artifacts normally belong in `research/`;
-  read `research/notes/RESUME.md` after compaction rather than reimporting everything.
-- Match source versions, hypotheses, encodings, fields, and degree conventions.
-  Keep dependencies and unresolved assumptions explicit.
-- Separate working proofs, conditional claims, source statements, and finite tests.
-  Do not treat finite checks as universal theorems, archived results as new runs,
-  or failed retrievals as imported sources.
 - Use exact modular arithmetic for finite-field calculations, never floating-point
   rank; guard integer overflow in vectorized/compiled kernels.
-- Choose targeted tests capable of falsifying the claim, with nonvacuous cases and
-  negative controls. State whether the test is actual PHP, a different unsatisfiable
-  system, or a satisfiable finite domain. Do not rerun archives just to import context.
-- Record the statement, proof attempt or obstruction, parameter/degree accounting,
-  checks, timing, effect on the goal, and remaining gap in the notebook. Supporting
-  notes and result files preserve detailed evidence and provenance.
-
-## Persistent research checkpoints
-
-Every research turn must produce a notebook Research-record entry and a Git
-commit, including turns with no useful result, an obstruction, or a failed proof
-attempt. Preserve the question, attempted approach, actual outcome, and remaining
-gap without inventing progress. Update the notebook living overview and Working
-mathematical context, and include the relevant tools, source provenance, and result
-data. The notebook alone maintains current mathematical status. RESUME.md is a
-stable reading guide, updated only for navigation or workflow changes; supporting
-audit notes and historical checkpoints do not require synchronized summaries.
-
-Working mathematical context is an orientation map: exact setup and degree
-conventions, active tools with linked proofs, and current unresolved dependencies.
-Consolidate it by topic instead of adding a subsection for each turn. Its soft
-target is roughly 1,000 prose words; the agent reviews it after each research turn
-without asking the user to handle routine editorial decisions. Preserve essential
-mathematics even above that target and retain durable links to condensed material.
-The complete append-only Research record has no length limit; every research turn
-still receives an entry with full arguments or obstructions, checks, and timing.
-
-Operational `research/logs/` and generated/scratch directories are ignored.
-After `./compute.sh report TURN --stop`, run `./tools/archive-session.py TURN`
-to preserve the journal, summary, and command outputs in
-`research/provenance/session-records/`. Inspect the evidence before committing;
-keep credentials and unrelated/private runtime state out of Git. Promote any
-other substantial results to `research/results/` or `research/provenance/`.
-The math record must not depend on an ignored file or on chat history alone.
-
-Git commits are local checkpoints. Use descriptive messages and report failures
-instead of claiming success. Preserve unrelated user edits and the historical
-handoff. All current tools resolve paths from the checkout; no particular home
-directory is required. The resource-control implementation requires Linux with
-cgroup v2 and a working user systemd manager, and must fail closed if unavailable.
-
-**The user handles all public publication.** After research turns, commit locally
-on the user's chosen branch, but do not `git push`, publish tags/releases, trigger
-public deployments, or upload research publicly. Do not switch or merge into main
-to cause publication. The user may keep work on a separate branch and decide when
-to share it. GitHub Pages updates only after the user pushes to its configured
-publication branch (currently main). Preserve the private pre-publish backup.
+- Match the intended field, encoding, parameters, and degree conventions. Use
+  targeted checks capable of falsifying the claim, with nonvacuous cases and
+  negative controls. Identify whether an instance is PHP, another unsatisfiable
+  system, or a satisfiable finite domain.
+- Report the scope of finite checks without treating them as universal proofs.
+  Distinguish new runs from archived results; rerun only when the task requires it.
 
 ## Persist computation outputs
 
@@ -228,10 +174,11 @@ destination) and write the complete result to a tracked location, normally
 ./compute.sh run turn001 --threads 1 -- python3 research/tools/calculation.py --out research/results/turn001/table.json
 ```
 
-Large result files are acceptable when needed and should be included in the
-research-result commit. Do not impose an arbitrary output-size cutoff, silently
-truncate results, or leave their only copy in ignored logs/tmp/runtime folders.
-The CLI's bounded output preview limits context usage only; saved output is full.
+Large result files are acceptable when needed. Do not impose an arbitrary
+output-size cutoff, silently truncate results, or leave their only copy in
+ignored logs/tmp/runtime folders. The CLI's bounded output preview limits
+context usage only; saved output is full. Include essential data with its
+checkpoint under the Git rules in AGENTS.md.
 
 Reference output paths in the research log and relevant notebook entry. Preserve
 the generating command, parameters, random seed if applicable, data encoding or
@@ -241,30 +188,24 @@ to the data, and stream/chunk generation, saving, copying, and hashing so a larg
 file does not require a correspondingly large RAM allocation. These operations
 still obey the combined memory and CPU budget.
 
-## Timing table in every research-turn entry
+## Timing export and evidence archival
 
-Every research turn, successful or not, ends with a dated notebook entry and a
-**Measured category / Elapsed** table. Put the bold total instrumented interval
-first, followed by the actual measured reading/review, web/download, other tool,
-computation/local-processing, and drafting/preparation/unseparated categories
-that occurred. Do not invent a breakdown merely to match an example table.
-Count overlapping execution once and distinguish failed commands from failed
-mathematical attempts. Keep the repeated footnote short, for example:
-"Through final snapshot; overlapping time counted once." Add exceptional
-failure/limitation details only when needed. Do not repeat the long methodology
-disclaimer after every entry; its details are documented here. The first notebook
-timing entry retains its original longer explanation as a reference.
-
-Draft the entry and refresh the overview first. At the final snapshot:
+Export a completed session as an HTML timing table:
 
 ```bash
 ./compute.sh report turn001 --stop --html-out research/results/turn001/timing.html
+./tools/archive-session.py turn001
 ```
 
-Embed that generated HTML fragment at the end of the notebook entry, archive the
-session, and commit both the entry and its timing/evidence artifacts. Final entry
-publication, archiving, Git operations, and response delivery after the snapshot
-are excluded from the table and must not be presented as measured within it.
-The export requires a completed session and checks that exclusive categories
-sum to the measured total. Zero-duration categories are omitted; full raw timing
-remains in the archived journal and summary. No retrospective timing is fabricated.
+The export gives a **Measured category / Elapsed** table with the total
+instrumented interval first. It verifies that exclusive categories sum to the
+total and omits zero-duration categories. A stopped session must have no
+unfinished commands. Do not invent categories or backfill unmeasured time.
+Operations after the final snapshot are outside its measured interval.
+
+Operational `research/logs/` are ignored. Archiving preserves the journal,
+summary, and complete command outputs in `research/provenance/session-records/`.
+Inspect the evidence for credentials and unrelated/private runtime state before
+committing it. Promote any other essential scratch results to `research/results/`
+or `research/provenance/`, using streaming I/O within the shared memory budget.
+The notebook's entry, table-placement, and footnote rules are in AGENTS.md.
