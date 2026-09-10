@@ -122,14 +122,29 @@ Use targeted source excerpts rather than repeatedly importing the full manuscrip
 - After every research turn, review and refresh the three living sections:
   **Where we stand**, **The remaining route** (highest risk first), and
   **Proposed next step**. Also maintain **Working mathematical context** for
-  current definitions, reusable bounds, controls, source matches, and obligations.
+  the exact setup and degree conventions, active tools with linked hypotheses
+  and proofs, and unresolved dependencies affecting the next step.
   Keep the overview concise and accurate; do not invent progress when the
   mathematical status has not changed.
+- Revise and consolidate Working mathematical context by topic; do not append
+  a subsection there automatically for every turn. Keep full arguments, failed
+  approaches, test details, and reading history in the Research record or linked
+  supporting evidence. A result need not stay in working context to be preserved
+  or available for future work; retain a precise source link when condensing it.
+- Use roughly 1,000 prose words as a soft target for Working mathematical context
+  only. Review it yourself after each research turn, especially when it grows
+  beyond that target: remove duplication, consolidate related results, and link
+  to full records. Do not ask the user to perform or approve routine editorial
+  review. Exceed the target when essential definitions, hypotheses, degree bounds,
+  or unresolved assumptions need the space; never truncate necessary mathematics
+  or discard its durable record to meet a word count.
 - Append an entry for **every research turn** to the notebook's final **Research
   record**, even if it produces no useful result, only an obstruction, or a failed
   proof attempt. Describe the question/approach, actual outcome, and remaining gap
   honestly; do not manufacture a lemma to justify an entry. Publish all substantial
   new mathematics there in full. Supporting notes or chat alone are insufficient.
+  This full Research record has no word limit and is never consolidated away to
+  satisfy the separate working-context target.
 - Entries are chronological and append-only. Give each a date, descriptive title,
   stable HTML anchor, and explicit status (working proof, conditional result,
   conjecture, finite check, or refutation). State assumptions and the precise

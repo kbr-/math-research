@@ -186,6 +186,15 @@ data. The notebook alone maintains current mathematical status. RESUME.md is a
 stable reading guide, updated only for navigation or workflow changes; supporting
 audit notes and historical checkpoints do not require synchronized summaries.
 
+Working mathematical context is an orientation map: exact setup and degree
+conventions, active tools with linked proofs, and current unresolved dependencies.
+Consolidate it by topic instead of adding a subsection for each turn. Its soft
+target is roughly 1,000 prose words; the agent reviews it after each research turn
+without asking the user to handle routine editorial decisions. Preserve essential
+mathematics even above that target and retain durable links to condensed material.
+The complete append-only Research record has no length limit; every research turn
+still receives an entry with full arguments or obstructions, checks, and timing.
+
 Operational `research/logs/` and generated/scratch directories are ignored.
 After `./compute.sh report TURN --stop`, run `./tools/archive-session.py TURN`
 to preserve the journal, summary, and command outputs in

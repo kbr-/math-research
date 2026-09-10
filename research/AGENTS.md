@@ -25,8 +25,12 @@
 - Record all substantial new mathematics in `../notebook.html`. Keep its three
   overview sections and Working mathematical context current after each research
   turn, and append dated, anchored results/proofs/corrections to its final Research
-  record. Follow the root
-  AGENTS.md notebook rules; internal notes are supporting records, not a substitute.
+  record. Consolidate working context by topic instead of adding a subsection
+  for every turn; keep exact setup, active tools, and current dependencies there.
+  Review it yourself against the root rules' soft target of roughly 1,000 prose
+  words, retaining essential mathematical detail even if the target is exceeded.
+  The full Research record has no length limit and still gets every research
+  turn. Internal notes are supporting records, not a substitute for the notebook.
 - Every research turn, including failed attempts and turns with no useful result,
   gets a dated Research-record entry and a measured timing table. Generate the
   table with `../compute.sh report TURN --stop --html-out PATH`; never invent

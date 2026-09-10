@@ -26,9 +26,10 @@ historical mathematical sources only when the current research task needs them.
    evidence, and timing tables. Do not backfill a separate restoration turn's time.
 2. Read the notebook from its beginning up to the **Research record**:
    **Where we stand**, **The remaining route**, **Proposed next step**, and
-   **Working mathematical context**. The last section contains the exact objects,
-   working degree bounds, controls, source matches, and unresolved obligations
-   formerly stored here. From the repository root:
+   **Working mathematical context**. The last section is an orientation map of
+   the exact setup and degree conventions, active tools with linked hypotheses
+   and proofs, and unresolved dependencies. It is organized by topic, not as a
+   catalogue of every past turn. From the repository root:
 
    ```bash
    sed -n '1,/<section id="research-record">/p' notebook.html
@@ -58,8 +59,14 @@ historical mathematical sources only when the current research task needs them.
    **All pushes and public publication belong to the user.** Routine setup/admin
    turns do not require a mathematical entry. Do not maintain a duplicate current
    mathematical summary in this file or the supporting notes.
-   Keep **Working mathematical context** a compact map of definitions, bounds,
-   and precise proof locations; full new arguments belong in the Research record.
+   Revise and consolidate **Working mathematical context** rather than adding a
+   subsection there for every turn. Review it yourself against a soft target of
+   roughly 1,000 prose words, with no user review or approval needed for routine
+   consolidation. Link to full records for arguments, failed approaches, testing,
+   and reading history. Preserve necessary definitions, hypotheses, degree bounds,
+   and gaps even if they need more space. Every research turn still gets its full
+   append-only Research-record entry, with no word limit. Condensing working
+   context must never erase the underlying result or evidence.
 
 ## Source and evidence map
 
