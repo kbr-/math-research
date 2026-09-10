@@ -1,9 +1,16 @@
 # PHP research notebook
 
 A portable workspace for research on superpolynomial ordinary-PHP lower bounds
-in fixed-depth AC⁰[p]-Frege. The goal remains open. Start with
-[research/notes/RESUME.md](research/notes/RESUME.md) for a reading guide to the
-authoritative checkpoint in the initial sections of [notebook.html](notebook.html).
+in fixed-depth AC⁰[p]-Frege.
+
+**[Read the rendered research notebook](https://kbr-.github.io/math-research/).**
+Its initial sections describe the current state, remaining obstacles, and proposed
+next step. The research record preserves results, proofs, unsuccessful attempts,
+and measured timing. The lower-bound goal remains open.
+
+The research began in Claude, continued in ChatGPT, and moved to Codex. The
+[pre-handoff research compendium](php_codex_handoff/php_extension_research_compendium.pdf)
+and historical manuscript preserve the earlier development.
 
 ## License and credit
 
@@ -15,94 +22,79 @@ research relies on. See [LICENSE](LICENSE), [ATTRIBUTION.md](ATTRIBUTION.md), an
 copyright property; scholarly attribution remains an ethical expectation.
 
 Third-party materials retain their own rights. See
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before redistributing sources.
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for source licensing and
+redistribution details.
 
-## Clone and continue
+## Browse locally
 
 ```bash
-git clone <repository-url> math
-cd math
+git clone https://github.com/kbr-/math-research.git
+cd math-research
+python3 server.py
+```
+
+Open **http://localhost:8000**. Editing [notebook.html](notebook.html) refreshes
+its rendered mathematics automatically. MathJax loads from a CDN, so the browser
+needs internet access. `index.html` supplies the layout and rendering logic.
+Use `python3 server.py --port 8001` if the default port is occupied.
+
+The [published notebook](https://kbr-.github.io/math-research/) is built by
+GitHub Actions when relevant notebook or site-tooling changes are pushed to
+`main`. It is a standalone site and requires no local server.
+
+## Continue the research
+
+[research/notes/RESUME.md](research/notes/RESUME.md) is the reading guide for
+restoring research context. It points to the notebook's authoritative initial
+sections and selected supporting sources. The original handoff import is complete;
+resuming work does not require repeating it.
+
+With Codex CLI installed and authenticated, run:
+
+```bash
 ./start-codex.sh
 ```
 
-On a fresh clone, the launcher starts a new Codex session and asks it to load
-RESUME.md, inspect the notebook overview, and record its session ID. On this
-machine it resumes the exact ID in `.codex-session-id`, so another unrelated
-conversation does not change which session is resumed. Use `--new` to establish
-and bind a fresh session, or `--resume` to require an existing local binding.
-If the recorded session has been removed from Codex, use `--new`.
-
-The session-ID file is deliberately ignored: Codex chat history, authentication,
-and user-global settings do not travel with a Git clone. Research continuity
-comes from the committed files. You can also tell a fresh session explicitly:
-
-> Read research/notes/RESUME.md fully and follow its restart checklist. Load
-> other sources only as needed; do not repeat the full manuscript import.
+On a fresh clone, the launcher starts a session that restores context from the
+committed files. Subsequent launches resume the session recorded locally in
+`.codex-session-id`. Use `--new` to start and bind a fresh session, or `--resume`
+to require an existing binding. Session IDs, chat history, and authentication
+are not included in the repository.
 
 The launcher selects Vim for Ctrl+G and automatic approval review. Context and
 auto-compaction budgets are editable constants at the top of `start-codex.sh`.
-Install and sign in to a Codex CLI version supporting these options before using it.
+A Codex CLI version supporting these options is required.
 
-## Local services and computations
+[AGENTS.md](AGENTS.md) describes the research workflow: maintain the notebook's
+living sections, append each research attempt with its timing and evidence,
+and commit complete checkpoints locally. Public publication is handled by the
+repository maintainer.
 
-From the checkout root, after reboot/login:
+## Computation tools
+
+Python 3.10+ is required for the complete toolset. The notebook server,
+resource controller, and timing tools use the Python standard library.
+[requirements-research.txt](requirements-research.txt) records numerical-library
+versions used in the research environment; historical suite A01 also requires
+Numba. Dependency installation by an agent requires explicit approval under
+[COMPUTATION_RULES.md](COMPUTATION_RULES.md).
+
+The protected computation launcher requires **Linux, cgroup v2, a user systemd
+manager, and a C compiler**. Its resource profile uses CPUs 0–13 and a shared
+10 GB combined RAM-plus-swap budget, with no fixed RAM/swap split. See
+[resource-controls/README.md](resource-controls/README.md) for compatibility and
+enforcement details. Unsupported controls fail closed.
+
+Initialize the controls from the checkout root after reboot or login:
 
 ```bash
 python3 resource-controls/setup.py
 ./compute.sh --status
 ```
 
-Setup rebuilds all runtime resource controls from source; it installs no packages.
-It requires **Linux, cgroup v2, a user systemd manager, and a C compiler**.
-The profile allows at most 14 logical CPUs and 10 GB combined RAM plus swap,
-with no fixed RAM/swap split. Unsupported controls must fail closed; do not
-bypass them on a different platform. See [COMPUTATION_RULES.md](COMPUTATION_RULES.md).
-
-In another terminal, run the live notebook:
-
-```bash
-python3 server.py
-```
-
-Open **http://localhost:8000**. Editing [notebook.html](notebook.html) refreshes
-its rendered mathematics automatically. MathJax 4.0.0 loads from a CDN, so the
-browser needs internet access. `index.html` contains layout and rendering logic.
-Use `python3 server.py --port 8001` if the default port is occupied.
-
-## Public notebook on GitHub Pages
-
-The deployment workflow publishes the rendered notebook at
-**https://kbr-.github.io/math-research/** once Pages is enabled.
-
-One-time activation:
-
-1. Open the repository's **Settings → Pages**.
-2. Under **Build and deployment**, choose **GitHub Actions** as the source.
-3. Push the workflow and notebook changes with `git push origin main`.
-   If already pushed, run **Publish research notebook** manually from the
-   repository's Actions tab, selecting `main`.
-
-Subsequent pushes changing the notebook HTML, its template, or the site builder
-automatically rebuild and deploy the site. An open published tab checks for a
-new revision every 30 seconds; deployment and CDN propagation can add delay.
-The published page does not require the Python server or your laptop to stay on.
-
-The workflow builds only `index.html`, `revision.json`, and `.nojekyll` in `_site/`;
-it does not upload the repository, private caches, PDFs, or Git history. It runs
-only for `main`, including manual deployment. The page retains attribution and
-the interface's MIT notice. Supporting source/data links should point to the
-public repository unless explicitly added to the site artifact.
-
-Build locally, without installing additional packages:
-
-```bash
-./compute.sh --threads 1 python3 tools/build_pages.py --out _site
-```
-
-`_site/` is generated and ignored. GitHub's hosted workflow uses Python's standard
-library and built-in JavaScript tests; it does not run numerical research jobs.
-
-Run and time a research turn:
+Setup rebuilds runtime controls from source and installs no packages. Run
+computations through `./compute.sh`; it combines resource enforcement, timing,
+and full output logging. For example, with a research script `calculation.py`:
 
 ```bash
 ./compute.sh start turn001
@@ -112,55 +104,41 @@ Run and time a research turn:
 ./tools/archive-session.py turn001
 ```
 
-`compute.sh` has a Python shebang: execute it directly, not with `bash`.
-Python 3.10+ is required for the complete toolset. The notebook server, resource
-controller, and timing tools use the standard library. NumPy/SciPy/SymPy versions
-from the working environment are listed in [requirements-research.txt](requirements-research.txt).
-A virtual environment can be created and these packages installed **only with
-explicit user approval**. Numba is additionally needed by historical suite A01;
-it is not currently installed and no full archive rerun is required for setup.
+Substantial result files belong in `research/results/`, with their generating
+commands and verification evidence. Completed timing sessions are archived in
+`research/provenance/`; operational logs and scratch files are ignored.
 
-## What is preserved
+Build a local static notebook artifact with:
 
-- `notebook.html`: authoritative current state, working mathematical context, and
-  append-only mathematical Research record.
+```bash
+./compute.sh --threads 1 python3 tools/build_pages.py --out _site
+```
+
+The generated `_site/` directory contains only the rendered page and revision
+metadata. It is ignored by Git.
+
+## Repository contents
+
+- `notebook.html`: authoritative current state, working mathematical context,
+  and append-only research record.
 - `research/notes/`: restart navigation, proofs, source audits, historical import
   snapshots, and supporting research log.
-- `research/references/`: bibliography and audit metadata for all four papers,
-  plus the CC BY 4.0 Krajíček PDF and its extracted text. The other three papers
-  and their full-text copies are local-only and excluded from public Git history.
+- `research/results/`: complete computation outputs and timing tables.
+- `research/references/`: bibliography and audit metadata for four papers,
+  plus the CC BY 4.0 Krajíček PDF and its extracted text. Other papers and their
+  full-text copies are not distributed; consult the
+  [reference guide](research/references/README.md) to obtain authorized sources.
 - `research/provenance/`: durable timing, execution evidence, and resource tests.
 - `resource-controls/`, `tools/`, `compute.sh`: reproducible execution and setup code.
-- `php_codex_handoff/`: the **complete, unchanged historical package**, including
-  the manuscript, original TeX, eleven historical check archives, and reports.
-  The directory also contains the separately supplied
-  [pre-handoff research compendium](php_codex_handoff/php_extension_research_compendium.pdf),
-  generated by ChatGPT before the handoff package.
-  The redundant outer `php_codex_handoff.zip` is intentionally not tracked.
+- `php_codex_handoff/`: the unchanged historical package, including the manuscript,
+  original TeX, eleven check archives, and reports, plus the ChatGPT-generated
+  [pre-handoff compendium](php_codex_handoff/php_extension_research_compendium.pdf).
+
+Verify historical-file integrity, the licensed source PDF, and essential tools:
+
+```bash
+./compute.sh --threads 1 python3 tools/verify-checkout.py
+```
 
 Runtime binaries, virtual environments, temporary renders, operational logs,
-credentials, and local session state are ignored. Before committing a new result,
-archive its completed timing session and move any essential scratch output into
-`research/results/` or `research/provenance/`. Never leave substantial research
-only in an ignored directory or in chat history.
-
-Locally held source PDFs without established redistribution permission remain
-at ignored reference-cache paths. They do not travel with a public clone. Obtain
-authorized copies or transfer your private research copies separately as allowed;
-do not publish `private/` or the private pre-publication Git bundle. The public
-repository preserves our research, source locators, versions, and hashes.
-The local `pre-publish` branch is a private backup containing excluded sources.
-Publish **only `main`**; do not push `pre-publish`, `--all`, or `--mirror`.
-
-After every research turn, including failed proof attempts and no-progress turns,
-append a Research-record entry with the generated timing table, update the
-overview and working context, and commit the complete checkpoint. RESUME.md is
-a stable reading guide; change it only for navigation or workflow updates. Timing
-rows must reflect actual measurements; the final publication/commit steps follow
-the timing snapshot. See [AGENTS.md](AGENTS.md).
-
-Verify a checkout's historical files, licensed public source PDF, and essential tracked
-tools with `python3 tools/verify-checkout.py`. On a configured machine, run it
-through `./compute.sh`. This does not need the redundant outer handoff ZIP.
-Use `--public-history main` to also check that excluded source paths and
-source-containing diagnostics are absent from the public branch's reachable history.
+credentials, and local session state are excluded from version control.
