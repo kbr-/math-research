@@ -14,10 +14,16 @@ historical mathematical sources only when the current research task needs them.
 ## Restart checklist
 
 1. Read the current user request and the root and `research/AGENTS.md` rules.
+   If the request is only to restore context, complete the reading below, report
+   readiness, and stop. Do not begin a research attempt, create a timing session
+   or notebook entry, or rerun verification merely for context restoration.
+   If research is requested or already underway, restore context and continue it;
+   compaction alone is not a reason to stop an authorized task.
    Before computations, read [COMPUTATION_RULES.md](../../COMPUTATION_RULES.md),
    verify `./compute.sh --status`, and initialize the controls after reboot if
-   needed. Start research timing as early as practical, including context reading;
-   follow the policy for phases, protected jobs, evidence, and timing tables.
+   needed. For research turns, start timing as early as practical, including
+   necessary context reading; follow the policy for phases, protected jobs,
+   evidence, and timing tables. Do not backfill a separate restoration turn's time.
 2. Read the notebook from its beginning up to the **Research record**:
    **Where we stand**, **The remaining route**, **Proposed next step**, and
    **Working mathematical context**. The last section contains the exact objects,
@@ -28,8 +34,10 @@ historical mathematical sources only when the current research task needs them.
    sed -n '1,/<section id="research-record">/p' notebook.html
    ```
 
-3. Scan record titles and stable anchors, then read only the latest or relevant
-   entries. Do not load the entire growing record:
+3. Scan record titles and stable anchors, then read mathematical entries relevant
+   to the current task or needed to understand the latest mathematical status.
+   Skip administrative/workflow entries unless the task needs them; recency alone
+   does not make an entry necessary. Do not load the entire growing record:
 
    ```bash
    rg -n '<article|<h3>|class="entry-meta"' notebook.html | tail -n 30
@@ -37,15 +45,21 @@ historical mathematical sources only when the current research task needs them.
 
    Select line ranges with `sed -n 'START,ENDp' notebook.html`. Follow explicit
    correction/retraction links before relying on an earlier result.
-4. Load exact definitions, hypotheses, proofs, or source passages only as needed.
-   Use the source map below; do not repeat the full manuscript/reference import
-   or rerun historical suites merely to establish context.
+4. Distinguish orientation from proof readiness. The notebook restores enough
+   context to identify the next action; its summaries do not replace exact proofs.
+   Before extending or composing a theorem, read its precise hypotheses and the
+   relevant argument, including degree conventions and dependencies. Load only
+   the passages needed for that task using the source map below. Do not repeat
+   the full manuscript/reference import or rerun historical suites merely to
+   establish context. Restoring an audit summary is not a new source verification.
 5. After each research turn, update the notebook's living sections and append
    the complete result or failed attempt, with its measured timing table. Archive
    evidence and commit the related checkpoint locally under the root rules.
    **All pushes and public publication belong to the user.** Routine setup/admin
    turns do not require a mathematical entry. Do not maintain a duplicate current
    mathematical summary in this file or the supporting notes.
+   Keep **Working mathematical context** a compact map of definitions, bounds,
+   and precise proof locations; full new arguments belong in the Research record.
 
 ## Source and evidence map
 
