@@ -2,7 +2,8 @@
 
 A portable workspace for research on superpolynomial ordinary-PHP lower bounds
 in fixed-depth AC⁰[p]-Frege. The goal remains open. Start with
-[research/notes/RESUME.md](research/notes/RESUME.md) for the current checkpoint.
+[research/notes/RESUME.md](research/notes/RESUME.md) for a reading guide to the
+authoritative checkpoint in the initial sections of [notebook.html](notebook.html).
 
 ## License and credit
 
@@ -121,8 +122,10 @@ it is not currently installed and no full archive rerun is required for setup.
 
 ## What is preserved
 
-- `notebook.html`: the living overview and append-only mathematical Research record.
-- `research/notes/`: restart context, proofs, source audit, status, and research log.
+- `notebook.html`: authoritative current state, working mathematical context, and
+  append-only mathematical Research record.
+- `research/notes/`: restart navigation, proofs, source audits, historical import
+  snapshots, and supporting research log.
 - `research/references/`: bibliography and audit metadata for all four papers,
   plus the CC BY 4.0 Krajíček PDF and its extracted text. The other three papers
   and their full-text copies are local-only and excluded from public Git history.
@@ -151,9 +154,10 @@ Publish **only `main`**; do not push `pre-publish`, `--all`, or `--mirror`.
 
 After every research turn, including failed proof attempts and no-progress turns,
 append a Research-record entry with the generated timing table, update the
-overview and restart notes, and commit the complete checkpoint. Timing rows must
-reflect actual measurements; the final publication/commit steps follow the timing
-snapshot. See [AGENTS.md](AGENTS.md).
+overview and working context, and commit the complete checkpoint. RESUME.md is
+a stable reading guide; change it only for navigation or workflow updates. Timing
+rows must reflect actual measurements; the final publication/commit steps follow
+the timing snapshot. See [AGENTS.md](AGENTS.md).
 
 Verify a checkout's historical files, licensed public source PDF, and essential tracked
 tools with `python3 tools/verify-checkout.py`. On a configured machine, run it

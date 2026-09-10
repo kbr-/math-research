@@ -1,8 +1,13 @@
 # Status and proof-audit ledger
 
+**Historical import summary and dated audit evidence, not a live status page.**
+The initial sections of [notebook.html](../../notebook.html) hold authoritative
+current status and later corrections. Preserve the dated findings below; append
+new supporting audit evidence only when needed, without synchronizing summaries.
+
 **Snapshot:** 10 September 2026. **No payoff theorem is established.** This ledger summarizes the status recorded by the manuscript; it does not add a new mathematical correction.
 
-## Current working theorem stack
+## Imported working theorem stack (snapshot)
 
 | Stack | Stable source labels | Status and limits |
 |---|---|---|

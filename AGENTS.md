@@ -6,7 +6,8 @@ Read [COMPUTATION_RULES.md](COMPUTATION_RULES.md) before running computations.
 It is the authoritative computation policy; the rules below summarize it.
 When updating the policy, keep this summary consistent with that document.
 
-For mathematical research, start with `research/notes/RESUME.md`. Keep
+For mathematical research, start with `research/notes/RESUME.md`, the reading
+guide to the authoritative initial sections of `notebook.html`. Keep
 `php_codex_handoff/` unchanged as the historical package. New research artifacts
 belong in `research/` (or another appropriate directory outside the handoff).
 Use targeted source excerpts rather than repeatedly importing the full manuscript.
@@ -29,8 +30,9 @@ Use targeted source excerpts rather than repeatedly importing the full manuscrip
   A clone restores research from files, not from another machine's chat history.
 - At the end of every research turn, including an unsuccessful attempt or a turn
   with no useful mathematical result, append a Research-record entry and create
-  a Git commit. Include the notebook overview,
-  relevant notes/RESUME updates, source provenance, code, and reproducibility data.
+  a Git commit. Include the notebook living sections, supporting evidence,
+  source provenance, code, and reproducibility data. RESUME changes only when
+  navigation or workflow changes.
 - Before committing, finish the timing report and run
   `./tools/archive-session.py TURN` to preserve its evidence outside ignored logs.
   Promote other essential results from scratch/runtime directories into
@@ -109,7 +111,8 @@ Use targeted source excerpts rather than repeatedly importing the full manuscrip
   publication, check it with `tools/verify-checkout.py --public-history BRANCH`.
   The user chooses what to publish; the current Pages workflow targets main only.
 
-- `notebook.html` at the workspace root is the user-facing mathematical record,
+- `notebook.html` at the workspace root is the authoritative current mathematical
+  state and user-facing research record,
   served by `python3 server.py` at http://localhost:8000. Edit its content directly;
   the browser refreshes automatically. `index.html` supplies the page layout.
 - `.github/workflows/pages.yml` builds the published notebook from pushes to
@@ -118,8 +121,10 @@ Use targeted source excerpts rather than repeatedly importing the full manuscrip
   sources. Preserve local live mode and published project-relative revision URLs.
 - After every research turn, review and refresh the three living sections:
   **Where we stand**, **The remaining route** (highest risk first), and
-  **Proposed next step**. Keep them concise and accurate; do not invent progress
-  when the mathematical status has not changed.
+  **Proposed next step**. Also maintain **Working mathematical context** for
+  current definitions, reusable bounds, controls, source matches, and obligations.
+  Keep the overview concise and accurate; do not invent progress when the
+  mathematical status has not changed.
 - Append an entry for **every research turn** to the notebook's final **Research
   record**, even if it produces no useful result, only an obstruction, or a failed
   proof attempt. Describe the question/approach, actual outcome, and remaining gap
@@ -144,10 +149,13 @@ Use targeted source excerpts rather than repeatedly importing the full manuscrip
 - Preserve earlier entries. Correct or retract mathematics in a new dated entry
   referencing the earlier anchor, and update the living overview accordingly.
   Do not silently rewrite prior claims or proofs to agree with a later result.
-- Keep `research/notes/RESUME.md` and the current research/audit notes consistent
-  with notebook developments. After compaction, read the notebook's living
-  overview and only the relevant record entries; do not load the entire growing
-  notebook into context. Routine setup/admin turns need no mathematical entry.
+- Keep current mathematical status in the notebook only. `research/notes/RESUME.md`
+  is a stable reading guide; update it only when navigation or workflow changes.
+  Supporting notes preserve proofs, provenance, and dated audit evidence, not
+  duplicate live summaries. Historical checkpoints remain labeled snapshots.
+  After compaction, read all notebook sections before **Research record**, then
+  only the latest or relevant entries; do not load the entire growing record.
+  Routine setup/admin turns need no mathematical entry.
 
 ## Timing and research discipline
 

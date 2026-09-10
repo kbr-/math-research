@@ -172,15 +172,19 @@ while command records remain unfinished.
   negative controls. State whether the test is actual PHP, a different unsatisfiable
   system, or a satisfiable finite domain. Do not rerun archives just to import context.
 - Record the statement, proof attempt or obstruction, parameter/degree accounting,
-  checks, timing, effect on the goal, and remaining gap in the research notes.
+  checks, timing, effect on the goal, and remaining gap in the notebook. Supporting
+  notes and result files preserve detailed evidence and provenance.
 
 ## Persistent research checkpoints
 
 Every research turn must produce a notebook Research-record entry and a Git
 commit, including turns with no useful result, an obstruction, or a failed proof
 attempt. Preserve the question, attempted approach, actual outcome, and remaining
-gap without inventing progress. Update the living overview and restart
-notes, and include the relevant tools, source provenance, and result data.
+gap without inventing progress. Update the notebook living overview and Working
+mathematical context, and include the relevant tools, source provenance, and result
+data. The notebook alone maintains current mathematical status. RESUME.md is a
+stable reading guide, updated only for navigation or workflow changes; supporting
+audit notes and historical checkpoints do not require synchronized summaries.
 
 Operational `research/logs/` and generated/scratch directories are ignored.
 After `./compute.sh report TURN --stop`, run `./tools/archive-session.py TURN`

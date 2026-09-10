@@ -1,5 +1,9 @@
 # Mathematical checkpoint — local import, 10 September 2026
 
+**Historical import snapshot, not a live checkpoint.** The initial sections of
+[notebook.html](../../notebook.html) hold authoritative current status and later
+corrections. Preserve this dated record; consult it only for import context.
+
 **Goal.** For every fixed prime p, depth ell, and polynomial exponent K, prove
 that ordinary PHP has no depth-ell AC^0[p]-Frege proofs of size n^K for all
 sufficiently large n. **This has not been proved.**

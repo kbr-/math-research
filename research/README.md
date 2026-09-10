@@ -1,9 +1,12 @@
 # Current PHP research
 
-Start with [notes/RESUME.md](notes/RESUME.md) after compaction or session resume.
-This directory holds all work performed after importing the handoff:
+Start with [notes/RESUME.md](notes/RESUME.md) after compaction or session resume;
+it guides you to the initial sections of [notebook.html](../notebook.html), the
+single source of truth for the current mathematical state. This directory holds
+supporting work performed after importing the handoff:
 
-- `notes/`: restart context, mathematical checkpoint, source audit, and research log.
+- `notes/`: restart navigation, historical import snapshots, source audits, and
+  supporting research log; these do not duplicate the notebook's live status.
 - `references/cache/`: the licensed public PDF and local-only source caches; see references/README.md.
 - `references/user_supplied/`: preserved copies of the two PDFs supplied by the user.
 - `tools/`: local acquisition and timing tools.
