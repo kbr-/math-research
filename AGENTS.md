@@ -135,6 +135,13 @@ Use targeted source excerpts rather than repeatedly importing the full manuscrip
   conjecture, finite check, or refutation). State assumptions and the precise
   claim, provide the mathematical argument, and include relevant dependencies,
   degree/parameter accounting, checks, and the remaining gap.
+- Link historical claim references (such as `lem:prefixcertificate`) directly
+  to the relevant manuscript Markdown statement/proof anchor, using the mapping
+  in `php_codex_handoff/manuscript/CLAIM_INDEX.md`. In the notebook, use public
+  GitHub file URLs so links work both locally and on Pages. Verify the file and
+  anchor locally; agents should still read local source excerpts when available.
+  Adding or repairing links in earlier entries is allowed if their statements
+  and proofs remain unchanged; mathematical corrections require a new dated entry.
 - End every research-turn entry with a two-column **Measured category / Elapsed**
   timing table, headed by the bold total instrumented interval. Generate it from
   actual timing data with `./compute.sh report TURN --stop --html-out PATH` and
