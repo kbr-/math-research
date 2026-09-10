@@ -9,6 +9,11 @@ checking the exact proof when extending a theorem.
 
 ## Restart checklist
 
+**Publication boundary:** commit research work locally on the user's chosen
+branch, but leave all pushes, public deployments, releases, and uploads to the
+user. Do not switch/merge into main to publish. Pages currently deploys only
+when the user pushes main; a separate research branch may remain unpublished.
+
 1. Read this file and the current user request. Obey the workspace and research/AGENTS.md files.
 2. Before computations, read `COMPUTATION_RULES.md` and verify
    `./compute.sh --status`. After reboot, run

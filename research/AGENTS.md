@@ -1,5 +1,8 @@
 # Current research workspace
 
+- Commit research checkpoints locally on the user's chosen branch. All pushes
+  and public publication belong to the user; do not push, deploy, release, or
+  switch/merge branches for publication.
 - Start with `notes/RESUME.md`; it is the compact restart map. Do not reimport
   the entire manuscript or dump large reference/search outputs into context.
 - `../php_codex_handoff/` is the immutable historical package. Read selected

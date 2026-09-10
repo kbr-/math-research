@@ -196,6 +196,13 @@ handoff. All current tools resolve paths from the checkout; no particular home
 directory is required. The resource-control implementation requires Linux with
 cgroup v2 and a working user systemd manager, and must fail closed if unavailable.
 
+**The user handles all public publication.** After research turns, commit locally
+on the user's chosen branch, but do not `git push`, publish tags/releases, trigger
+public deployments, or upload research publicly. Do not switch or merge into main
+to cause publication. The user may keep work on a separate branch and decide when
+to share it. GitHub Pages updates only after the user pushes to its configured
+publication branch (currently main). Preserve the private pre-publish backup.
+
 ## Persist computation outputs
 
 Important computation output is research, not disposable logging. Scripts that

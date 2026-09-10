@@ -13,6 +13,13 @@ Use targeted source excerpts rather than repeatedly importing the full manuscrip
 
 ## Portable sessions and Git checkpoints
 
+- Commit research checkpoints locally, but **leave every Git push and public
+  publication to the user**. Do not push branches/tags, trigger public deployments,
+  publish releases, or upload research publicly. A request to research, edit, or
+  commit is not permission to publish.
+- Respect the user's chosen research branch. Do not switch or merge into main
+  merely to publish work. The Pages workflow deploys when the user pushes main;
+  local commits on any branch are only checkpoints.
 - Work from the repository root; do not assume a particular absolute path, user,
   or machine. `./start-codex.sh` resumes the exact machine-local ID stored in
   `.codex-session-id`, or starts a fresh context-restoration session if absent.
@@ -97,9 +104,10 @@ Use targeted source excerpts rather than repeatedly importing the full manuscrip
   research/references/redistribution.json. Keep uncleared PDFs, full-text copies,
   and source-containing diagnostics out of public commits and reachable history.
   Preserve needed personal copies locally; do not publish private/ backups.
-- Preserve the user's private `pre-publish` backup branch. Publication targets
-  `main` only; never push the backup, `--all`, or `--mirror`. Check the public
-  branch with `tools/verify-checkout.py --public-history main` before publication.
+- Preserve the user's private `pre-publish` backup branch. Never publish that
+  backup or use `--all`/`--mirror`. When preparing a branch for the user's
+  publication, check it with `tools/verify-checkout.py --public-history BRANCH`.
+  The user chooses what to publish; the current Pages workflow targets main only.
 
 - `notebook.html` at the workspace root is the user-facing mathematical record,
   served by `python3 server.py` at http://localhost:8000. Edit its content directly;
