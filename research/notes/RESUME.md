@@ -5,6 +5,12 @@
 for the current mathematical state. This file is a stable reading map, not a
 second research summary. Change it only when navigation or workflow changes.
 
+**The handoff import is complete.** The notebook's **Before this notebook**
+section is historical context only, not a reading assignment. Do not open or
+follow `php_codex_handoff/HANDOFF.md` during resume, including on a fresh clone,
+and do not repeat its one-off bootstrap/import instructions. Read selected
+historical mathematical sources only when the current research task needs them.
+
 ## Restart checklist
 
 1. Read the current user request and the root and `research/AGENTS.md` rules.
