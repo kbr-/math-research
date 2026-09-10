@@ -1,4 +1,4 @@
-<div class="eyebrow">Research checkpoint · 10 September 2026</div>
+<div class="eyebrow">Research checkpoint · 11 September 2026</div>
 <h1>Pigeonhole principle lower bounds</h1>
 <p class="intro">Our goal: superpolynomial proof-size lower bounds for ordinary PHP in \(\mathrm{AC}^{0}[p]\)-Frege, for every fixed prime \(p\) and fixed depth.</p>
 
@@ -13,6 +13,7 @@
   <h2>Where we stand</h2>
   <p><strong>The goal is still open.</strong> We have working proofs for eliminating extension blocks and batching blocks with nested spans or suitable nested cores. These produce genuine polynomial-calculus (PC) refutations with explicit degree bounds.</p>
   <p>We have also optimized our static affine batching criterion completely. Some admissible families still exceed the available degree budget: a better ordering cannot fix that method. Those families are extension data, not refutations, so they leave room for an approach that uses the actual certificate.</p>
+  <p>The <a href="#entry-2026-09-11-mp-composition">local modus-ponens certificate is now explicit</a>, including the Booleanity correction for conclusions without an outer disjunction. PC reuse removes the proof-height cost while extensions remain available. Eliminating them still requires compatible handling of the premise subderivations and their shared variables.</p>
   <p>All four references were imported during the source audit, and the base/residual PC lower-bound match and simulation parameters have been checked. A focused audit found no gap in the central elimination arguments; this is not a formal verification of the entire manuscript. Unused certificate blocks can be pruned for free, but we do not yet know how to handle all the essential blocks affordably.</p>
   <div class="result">
     <p><strong>The missing bridge:</strong> turn each relevant translated degree-\(D\) Nullstellensatz refutation into a base PC refutation with</p>
@@ -25,8 +26,8 @@
   <h2>The remaining route</h2>
   <div class="eyebrow">Highest risk first</div>
   <ol>
-    <li><strong>Prove affordable elimination or joint-design existence.</strong> Exploit the actual refutation and PHP structure to stay below the linear base-degree threshold. This is the main missing theorem.</li>
-    <li><strong>Cover the actual Frege simulation outputs.</strong> Handle nonlinear inputs, all companions and cofactors, earlier-level dependencies, and field equations. The balanced proof tree alone does not establish a cheap elimination bound.</li>
+    <li><strong>Prove affordable elimination or joint-design existence.</strong> Exploit the actual refutation and PHP structure to stay below the linear base-degree threshold. Local MP reuse is understood; affordable removal of its extension-dependent premises and corrections is the main missing theorem.</li>
+    <li><strong>Cover the actual Frege simulation outputs.</strong> Extend the explicit MP identities to an elimination argument covering complete premise subderivations, nonlinear inputs, all companions and cofactors, earlier-level dependencies, field equations, and leaf translations. The balanced proof tree alone does not establish a cheap elimination bound.</li>
     <li><strong>Complete the proof-level audit.</strong> Check the remaining quotient variants and any new composition rule, preserving original axiom degrees, freshness, bounded field reductions, and reuse of derived PC polynomials.</li>
     <li><strong>Formalize the ordinary-PHP transfer.</strong> Convert a hypothetical short ordinary-PHP refutation to our exact Boolean linear-row base with bounded-depth and polynomial-size overhead. Do not silently add same-row exclusions.</li>
     <li><strong>Close the parameters.</strong> For every fixed \(p,\ell,K\), show that a size-\(n^K\), depth-\(\ell\) proof would yield the forbidden base refutation for all sufficiently large \(n\), retaining every accuracy and depth factor.</li>
@@ -35,13 +36,13 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Write the exact certificate-composition rule for <strong>one modus-ponens inference in the balanced BIKPRS translation</strong>, retaining its cofactor products. After pruning unused blocks, attempt a degree bound that composes through the proof tree using PC reuse.</p>
-  <p>Check the proposed bound against the prefix-pebbling chain and irrelevant spread blocks before drawing a global conclusion. The task is to justify the composition bound, not assume that logarithmic tree height makes it affordable.</p>
+  <p>Track <strong>one implication block through its full premise subderivation</strong>, listing the boundary polynomials and every shared extension variable. Determine when a legal elimination can preserve that boundary; the implication approximation itself contains the block's fresh variables and cannot simply be treated as an old premise.</p>
+  <p>Begin with a one-level affine case. Seek a precise invariant with an explicit degree bound, and test it against the prefix-pebbling chain and irrelevant spread blocks before extending it to nonlinear, multilevel simulation outputs.</p>
 </section>
 
 <section id="working-context">
   <h2>Working mathematical context</h2>
-  <p>This living section preserves the definitions, reusable bounds, and source matches needed to continue the research. Together with the overview above, it is the authoritative current checkpoint. The material below was consolidated from the restart notes on 10 September 2026; this is not a new mathematical result or a new source verification. Exact proofs remain in the historical manuscript and supporting audit records.</p>
+  <p>This living section preserves the definitions, reusable bounds, and source matches needed to continue the research. Together with the overview above, it is the authoritative current checkpoint. Imported material was consolidated from the restart notes on 10 September 2026. Later working results are summarized here with links to their full research-record arguments; exact imported proofs remain in the historical manuscript and supporting audit records.</p>
 
   <h3 id="context-definitions">Goal and exact objects</h3>
   <p>The target is, for every fixed prime \(p\),</p>
@@ -114,6 +115,10 @@
     <a href="https://github.com/kbr-/math-research/blob/main/research/references/README.md">reference availability guide</a>
     before source access. Do not repeat a full import or claim to recheck absent sources.</p>
 
+  <h3 id="context-mp-composition">Local MP composition: current working result</h3>
+  <p>The <a href="#entry-2026-09-11-mp-composition">11 September entry</a> gives exact identities of the form \(b=c+qa+R\) for antecedent approximation \(a\), implication approximation \(c\), and conclusion approximation \(b\). The multiplier \(q=bU_0\) is explicit, and \(R\) includes all local companion and necessary Booleanity/domain contributions. With accuracy \(h\), all relevant approximation degrees at most \(L\ge1\), and \(w=L+1\), \(\deg q\le hw\); the flattened local NS certificate costs at most \(3hw\), while local PC reuse costs at most \(2hw\).</p>
+  <p>The exact coefficient rule is \(B_F=C_F+qA_F+W_F\). NS degrees can accumulate along antecedent branches; augmented PC composition gives \(d_b\le\max\{d_a,d_c,2hw\}\). A single degree-\(T\) substitution together with supplied base-PC derivations through \(C\) of all transformed leaves and local corrections would give a base refutation through \(\max\{C,2Thw\}\). That interface is conditional: no affordable substitution or required base derivations are known. Treating the fresh-variable-dependent implication premise as old violates the existing one-block theorem's hypothesis.</p>
+
   <h3 id="context-closure">Degree target and unresolved transfer</h3>
   <p>The affordable elimination theorem must cover every relevant translated NS certificate and yield base PC degree at most \(b_n=\lfloor n/2\rfloor\). A polynomial bound in \(D,h,\log M\), with \(M\) the number of companions, would suffice in the intended fixed-depth, fixed-prime parameter regime, but is unproved. A joint-design construction is an alternative.</p>
   <p>The next argument must exploit actual balanced simulation certificates, local derivations and cofactors, and richer PHP consequences. Read the exact relevant Chapter 7–8 proofs and BIKPRS pp. 28–31 when needed. The ordinary-PHP transfer to our exact polynomial base remains to be formalized: Krajíček Lemma 5.1 includes functionality and does not automatically supply that transfer. Final closure must cover every fixed \(p,\ell,K\).</p>
@@ -140,6 +145,141 @@
     </tbody></table>
     <p class="timing-note">Timed commands: 1; failed or timed out: 0; unfinished: 0. Rows are exclusive wall-clock intervals and are rounded independently. Reading includes interpretation; tool windows include orchestration. Work before instrumentation and after the final snapshot (including entry publication, Git finalization, and response delivery) is excluded. Pure reasoning time and pure network latency are not measured.</p>
     </div>
+  </article>
+  <article class="research-entry" id="entry-2026-09-11-mp-composition">
+    <h3>One modus-ponens step: exact cofactors and the remaining elimination gap</h3>
+    <p class="entry-meta">11 September 2026 · Working proof: local identities and conditional composition · Global elimination remains open</p>
+    <p><strong>Question.</strong> What is the exact certificate for one modus-ponens inference in the balanced BIKPRS simulation, and does PC reuse make it affordable after removing the extensions? The local identity and its degree accounting are established below. Reuse removes the height cost while extensions remain available; this does not supply their elimination.</p>
+    <p><strong>Source and scope.</strong> This is an explicit reconstruction from BIKPRS, <em>Proof complexity in algebraic systems and bounded depth Frege systems with modular counting</em>, DOI <a href="https://doi.org/10.1007/BF01294258">10.1007/BF01294258</a>, using the locally supplied author-layout copy: Definition 6.1 and Lemma 6.2, Definition 6.8 (PDF p. 28), Lemmas 6.9–6.12 and the concluding proof of Theorem 6.7(1) (pp. 29–31). The source finishes the modus-ponens case by referring to its local lemmas; the cofactor formulas below make that step explicit. This is not a novelty claim or a re-audit of every simulation leaf. The proof also uses the historical <code>lem:reuse</code> and <code>lem:fieldreduction</code>.</p>
+
+    <h4 id="mp-telescoping">1. A telescoping coefficient for each input</h4>
+    <p>Work in the ordinary polynomial ring over \(\mathbb F_p\), with Boolean original variables and field-valued extension variables. Fix accuracy \(h\ge1\). For a block with input tuple \(f=(f_i)\), put</p>
+    <div class="math">\[
+      P_f=\prod_{v=1}^h\left(1-\sum_i r_{v,i}f_i\right),\qquad
+      U_i(f;r)=\sum_{v=1}^h r_{v,i}
+      \prod_{w&lt;v}\left(1-\sum_j r_{w,j}f_j\right).
+    \]</div>
+    <p>Product telescoping gives the exact identity</p>
+    <div class="math">\[
+      1-P_f=\sum_i U_i(f;r)f_i.
+    \]</div>
+    <p>If the nonzero inputs have degree at most \(\delta\), then
+      \(\deg U_i\le1+(h-1)(\delta+1)\), and each original companion
+      \(E_i=f_iP_f\) has degree \(\deg f_i+h(\delta+1)\).
+      All products and degrees below precede Boolean or field reduction. Zero terms can be omitted. Repeated inputs can be retained as separate coordinates; merging equal coordinates merely redistributes their telescoping coefficients.</p>
+
+    <h4 id="mp-two-cases">2. The two conclusion cases</h4>
+    <p>Write the inference as \(\varphi,\;\neg\varphi\vee\psi\;\vdash\;\psi\), with consistent approximations
+      \(a=\varphi^{\mathrm{ap}}\), \(b=\psi^{\mathrm{ap}}\), and
+      \(c=(\neg\varphi\vee\psi)^{\mathrm{ap}}\). TRUE is encoded by zero. The negated antecedent does not begin with a disjunction, so its complement contributes the input \(a\) directly to the implication block; no artificial singleton block is introduced.</p>
+    <p><strong>Case A: \(\psi\) begins with a disjunction.</strong> Flatten that outer disjunction into its maximal children \(\xi_i\), and let \(g_i=1-\xi_i^{\mathrm{ap}}\). Its block \(B\) has
+      \(b=P_g\), companions \(E_{B,i}=g_i b\), and coefficients \(V_i\) satisfying \(1-b=\sum_iV_i g_i\).
+      The implication block \(U\) has inputs \((a,g_1,\ldots,g_m)\), product \(c\), companions \(E_{U,0}=ac\), \(E_{U,i}=g_i c\), and coefficients \(U_0,U_i\) satisfying \(1-c=U_0a+\sum_iU_i g_i\). Then</p>
+    <div class="math">\[
+      \boxed{b=c+(bU_0)a+
+      \sum_i U_i E_{B,i}-\sum_i V_i E_{U,i}.}
+      \tag{MP-A}
+    \]</div>
+    <p><strong>Proof.</strong> The correction after \(c\) equals
+      \(b(1-c)-c(1-b)=b-c\). Thus (MP-A) is an ordinary polynomial identity, even for arbitrary nonlinear inputs. No domain-equation summand is needed locally. All companions remain in the system, including \(E_{U,0}\), whose coefficient in this local correction happens to be zero.</p>
+    <p><strong>Case B: \(\psi\) does not begin with a disjunction.</strong> Now the implication block has inputs \((a,1-b)\). Let
+      \(1-c=U_0a+U_1(1-b)\), \(E_{U,1}=(1-b)c\), and \(H_b=b^2-b\). Then</p>
+    <div class="math">\[
+      \boxed{b=c+(bU_0)a-U_1H_b-E_{U,1}.}
+      \tag{MP-B}
+    \]</div>
+    <p><strong>Proof.</strong> Substitute the telescoping identity in \(b(1-c)\) and use \(b(1-b)=-H_b\). The same identity \(b-c=b(1-c)-c(1-b)\) proves the formula. For an actual approximation, \(H_b\) has the following explicit bounded-degree certificate. It must be included, not silently discarded by treating \(b\) as Boolean in the ordinary ring.</p>
+
+    <h4 id="mp-booleanity">3. Booleanity of an approximation</h4>
+    <p>Choose \(L\ge1\) bounding the ordinary degrees of the approximations of all relevant formulas and subformulas, and set \(w=L+1\). The domain and extension axioms give an NS certificate for \(H_b\) through degree \(2hw\):</p>
+    <ul>
+      <li>For TRUE the polynomial is zero; for an atom it is the original Boolean axiom \(x^2-x\).</li>
+      <li>Negation preserves the polynomial: \((1-t)^2-(1-t)=t^2-t\). Reuse the inner certificate unchanged.</li>
+      <li>For a modular gate, \(b=t^{p-1}\) and \(b^2-b=t^{p-2}(t^p-t)\). It vanishes on the full allowed variable domain. Degree-nonincreasing univariate domain reduction therefore supplies an exact domain-axiom representation through degree \(2\deg b\le2L\), including field equations for earlier extension variables when needed. This also covers \(p=2\).</li>
+      <li>For a disjunction with product \(t=P_g\), the exact identity is
+        \(t^2-t=-\sum_i V_i E_{B,i}\). Each summand has degree at most \(2h(\delta_B+1)\le2hw\). It requires no assumption that the input polynomials themselves are Boolean.</li>
+    </ul>
+    <p>These cases cover all formula approximations by structural induction. If
+      \(H_b=\sum_F h_F F\), the \(F\)'s include whichever domain and extension axioms this construction actually uses. Substituting this representation into (MP-B) retains every contribution with coefficient \(-U_1h_F\).</p>
+
+    <h4 id="mp-certificates">4. Certificate composition and degree ledger</h4>
+    <p>Let \(\mathcal A\) contain the original axioms, all required companions, and all domain equations. Express the two premise certificates and the local correction as</p>
+    <div class="math">\[
+      a=\sum_{F\in\mathcal A}A_FF,\qquad
+      c=\sum_{F\in\mathcal A}C_FF,\qquad
+      R=\sum_{F\in\mathcal A}W_FF,
+      \qquad q=bU_0.
+    \]</div>
+    <p>Here \(R=\sum_iU_iE_{B,i}-\sum_iV_iE_{U,i}\) in Case A and
+      \(R=-U_1H_b-E_{U,1}\) in Case B. Equations (MP-A/B) say \(b=c+qa+R\), so the exact new coefficient for each original axiom is</p>
+    <div class="math">\[
+      \boxed{B_F=C_F+qA_F+W_F.}\tag{MP-cofactor}
+    \]</div>
+    <p>Coefficients for identical axioms are collected only after this identity is formed. The occurrence of \(b\) in the known polynomial multiplier \(q\) is not a circular inference: PC multiplies the already derived line \(a\) by that explicit polynomial, without assuming \(b=0\).</p>
+    <table>
+      <thead><tr><th>Quantity</th><th>Ordinary degree or derivation ceiling</th></tr></thead>
+      <tbody>
+        <tr><td>Original nonzero companion in a block with input ceiling \(\delta\)</td><td>\(\deg f_i+h(\delta+1)\); never replaced by its specialized degree</td></tr>
+        <tr><td>Telescoping coefficient \(U_i\) or \(V_i\)</td><td>\(u=1+(h-1)w\)</td></tr>
+        <tr><td>Antecedent multiplier \(q=bU_0\)</td><td>\(\mu=hw\)</td></tr>
+        <tr><td>Final-line product \(qa\)</td><td>\(\mu+L\le2hw\)</td></tr>
+        <tr><td>Booleanity certificate \(H_b\)</td><td>\(2hw\)</td></tr>
+        <tr><td>Flattened local correction, Case A</td><td>\(2hw\)</td></tr>
+        <tr><td>Flattened local correction, Case B</td><td>\(u+2hw\le3hw\)</td></tr>
+        <tr><td>Local PC derivation, either case</td><td>\(2hw\), using the final line \(H_b\) rather than flattening it</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Accounting.</strong> For Case A, a companion has degree at most \(L+hw\), so a multiplied companion costs at most
+      \(u+L+hw=2hw\). In Case B, flattening multiplies the entire Booleanity certificate by \(U_1\); PC instead derives \(H_b\) first and multiplies its final polynomial, of degree at most \(2L\). This costs at most
+      \(\max\{2hw,u+2L\}=2hw\). The remaining companion has degree at most \(L+hw\le2hw\). These estimates hold for \(h=1\), zero terms, and constants as well.</p>
+    <p>If \(d_a,d_c\) are the premise NS certificate degrees, (MP-cofactor) yields</p>
+    <div class="math">\[
+      d_b^{\mathrm{NS}}\le\max\{d_c,d_a+\mu,3hw\}.
+    \]</div>
+    <p>Unrolling along a tree multiplies a contribution by \(q\) whenever its path follows an antecedent premise; implication-premise edges have multiplier one. With uniform \(L,h\), height \(t\), and leaf certificate ceiling \(d_{\rm leaf}\), this gives
+      \(\max\{d_{\rm leaf},3hw\}+t\mu\). The number of summands need not be small, and this observation alone does not bound essential block support.</p>
+    <p>In contrast, if \(d_a,d_c\) are supplied PC derivation ceilings over the <em>augmented</em> axiom system, final-line reuse gives</p>
+    <div class="math">\[
+      \boxed{d_b^{\mathrm{PC}}\le\max\{d_a,d_c,2hw\}.}
+    \]</div>
+    <p>Thus MP composition contributes no further height factor in augmented PC once its leaf derivations are supplied. BIKPRS Lemma 6.10 provides a uniform polynomial-in-\(h\) choice of \(L\) for fixed formula depth and prime; formula depth and proof-tree height remain different parameters. Leaf translations and axiom instances retain their own derivation costs.</p>
+
+    <h4 id="mp-elimination-gap">5. What would make this an extension-free argument?</h4>
+    <p><strong>Conditional composition criterion.</strong> Fix one polynomial substitution \(\sigma\) mapping all extension variables to base-variable polynomials of degree at most \(T\ge1\), and fixing the original variables. Suppose every transformed leaf polynomial and every transformed local correction \(\sigma(R_v)\) has a supplied base-PC derivation through degree \(C\). Then the transformed proof has a base-PC derivation through degree</p>
+    <div class="math">\[
+      \boxed{\max\{C,2Thw\}.}
+    \]</div>
+    <p><strong>Proof.</strong> Apply \(\sigma\) to each exact identity
+      \(b_v=c_v+q_va_v+R_v\). Inductively keep the derived premise polynomials, derive \(\sigma(R_v)\) within \(C\), and multiply only the final line \(\sigma(a_v)\) by \(\sigma(q_v)\). This product has degree at most
+      \(T(\deg q_v+\deg a_v)\le2Thw\). Add the three lines. The final polynomial of a refutation is one and is fixed by \(\sigma\). The same argument works for a DAG; proof length is not bounded here.</p>
+    <p>This is a sufficient interface, not an existence theorem for \(\sigma\) or the required base derivations, and it does not assert that every successful elimination must use one global substitution. If its costs were below \(\lfloor n/2\rfloor\) for all relevant PHP simulation outputs, it would supply the missing bridge. No such bound has been proved.</p>
+    <p><strong>The failed shortcut is now explicit.</strong> The implication premise \(c=P_{(a,g)}\) generally contains the fresh variables of block \(U\). Hence one cannot treat \(c\) as an old axiom and apply <code>thm:one-elimination</code> independently at each MP node: its freshness hypothesis fails. Its refutation hypothesis also cannot be replaced without proof by an arbitrary local consequence. Different specializations of the two premise subderivations need not agree on their shared boundary polynomials. Eliminating the extensions still requires an argument that handles those dependencies.</p>
+    <p><strong>Countermodel to blanket zero specialization.</strong> Take the synthetic local inference \(x,\neg x\vee x\vdash x\), accuracy one, with \(a=b=x\) and
+      \(c=1-r_0x-r_1(1-x)\). Its correction is
+      \(R=-r_1(x^2-x)-(1-x)c\). Setting \(r_0=r_1=0\) gives \(\sigma(R)=x-1\), which is not a consequence of the Boolean-domain axiom alone: \(x=0\) satisfies that axiom and makes the residual \(-1\ne0\). Even adding the premise \(x=0\) does not help. The implication polynomial specializes to one and cannot be supplied as a base consequence either. This rules out that blanket procedure, not all substitutions: for example \(r_0=r_1=1\) makes this particular implication product zero. This is a local Boolean control, not a PHP refutation or a lower-bound counterexample.</p>
+    <p><strong>Historical controls.</strong> The prefix-pebbling family (<code>lem:prefixcertificate</code>) still distinguishes NS flattening from PC reuse: its ordinary NS degree can be high although its base PC degree is at most three, and its nested input spans admit the existing chain elimination bound. The present argument does not infer a universal design-lifting theorem from that example. Appended blocks with zero collected companion cofactors can still be removed by the established zero-cofactor pruning lemma; that does not bound essential surviving blocks. No archived suite was rerun.</p>
+
+    <h4 id="mp-checks">6. Checks, outcome, and next obligation</h4>
+    <p>The compiled <a href="https://github.com/kbr-/math-research/blob/main/research/tools/check_mp_composition.cpp">exact polynomial checker</a> passed 36 coefficient-identity and degree cases over \(p\in\{2,3,5\}\), with \(h\in\{1,2\}\) for all five case families and \(h=3\) for the two disjunction families. Cases include affine and nonlinear inputs, an atomic conclusion, a negated disjunction using an earlier block, and a modular gate using Boolean and field domain equations. Each case also detected omission of a nonzero correction term; three additional checks verified the zero-specialization countermodel. These are ordinary-ring coefficient checks and degree audits, not numerical rank tests, a mechanized verification of the general proof, or computations on PHP.</p>
+    <p>Complete outputs, schema, source locators, and reproduction commands are in
+      <a href="https://github.com/kbr-/math-research/blob/main/research/results/mp_composition_20260911_01/README.md">the result record</a> and
+      <a href="https://github.com/kbr-/math-research/blob/main/research/results/mp_composition_20260911_01/checks.jsonl">checks.jsonl</a>.
+      The checker was rerun after strengthening the specialization control; all runs succeeded. Numerical work used the shared 14-CPU, 10-GB combined-memory controls.</p>
+    <p><strong>Outcome.</strong> We now have the local identities, every cofactor contribution, an explicit height-dependent NS recurrence, and a height-independent augmented-PC recurrence. The extension-free composition criterion remains conditional. The next bounded task is to track one implication block through its full premise subderivation, explicitly listing boundary polynomials and shared variables, and identify when a legal elimination can preserve that boundary. Begin with a one-level affine case and test the proposed invariant against the two historical controls before generalizing to nonlinear, multilevel outputs. The global lower bound and ordinary-PHP transfer remain open.</p>
+    <p><strong>Timing scope.</strong> Initial policy and reference-availability reads preceded instrumentation; the recorded interval starts before the exact source excerpts and ends at the final snapshot.</p>
+<div class="timing-report" data-session="mp_composition_20260911_01">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>13 min 46.35 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 49.82 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.16 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.03 s</td></tr>
+<tr><td>Drafting, coding, preparation, and unseparated overhead</td><td class="elapsed">9 min 52.34 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
   </article>
   <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

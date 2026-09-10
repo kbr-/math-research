@@ -168,3 +168,26 @@ proof attempts and turns with no useful result. The report exporter provides
 integration checks passed. This turn did not attempt a new mathematical claim.
 The live example is `notebook.html#entry-2026-09-10-reporting-workflow`; its raw
 timing/evidence is archived under session `notebook_timing_tables_20260910_01`.
+
+### 2026-09-11 / mp_composition_20260911_01 — exact local MP composition
+
+**Status.** Working local identities and degree bounds; conditional base-PC
+composition interface. The full statement, proof, degree ledger, controls, and
+remaining obligation are in [the notebook](../../notebook.html), entry
+`entry-2026-09-11-mp-composition`. Stable subanchors: `mp-two-cases`,
+`mp-booleanity`, `mp-certificates`, and `mp-elimination-gap`.
+
+**Evidence.** The [result record](../results/mp_composition_20260911_01/README.md)
+contains reproduction commands, exact source locators, output schema, and scope.
+The compiled checker `research/tools/check_mp_composition.cpp` writes complete
+[checks.jsonl](../results/mp_composition_20260911_01/checks.jsonl): 36 exact
+ordinary-ring identity/degree cases, 36 omitted-correction controls, and three
+zero-specialization countermodels. Both checker runs passed; the second
+strengthened the specialization control. These are synthetic local checks,
+not PHP refutations or a mechanical verification of global elimination.
+
+**Timing.** The notebook embeds the generated
+[timing table](../results/mp_composition_20260911_01/timing.html); completed logs
+are preserved in `research/provenance/session-records/mp_composition_20260911_01/`.
+Policy and initial availability reads preceded instrumentation. No historical
+suite was rerun and no package was installed.
