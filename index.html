@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Math notebook</title>
+  <style>
+    :root { color-scheme: light; --paper: #fffefb; --ink: #232e32; --muted: #65716d; --accent: #247462; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f1f3ee; color: var(--ink); font: 18px/1.75 Georgia, 'Times New Roman', serif; }
+    .toolbar { max-width: 1000px; margin: auto; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; gap: 16px; font: 13px/1.5 system-ui, sans-serif; color: var(--muted); }
+    .brand { color: var(--accent); font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
+    #status::before { content: '●'; margin-right: 8px; color: var(--accent); }
+    #status[data-error]::before { color: #b77324; }
+    main { max-width: 940px; margin: 0 auto 64px; padding: 56px 70px; background: var(--paper); border: 1px solid #dde2d9; border-radius: 8px; box-shadow: 0 12px 40px #23372806; }
+    h1, h2, h3 { line-height: 1.25; font-weight: 500; }
+    h1 { font-size: clamp(32px, 5vw, 46px); margin: 0 0 20px; letter-spacing: -.035em; }
+    h2 { font-size: 27px; margin: 0 0 18px; }
+    p { margin: 16px 0; }
+    .intro { color: var(--muted); font-size: 20px; max-width: 650px; }
+    .eyebrow { color: var(--accent); font: 12px/1.5 system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
+    section { border-top: 1px solid #e2e5dd; margin-top: 42px; padding-top: 32px; }
+    .result { border-left: 3px solid var(--accent); background: #eef5ef; padding: 12px 22px; margin: 24px 0; }
+    .math { overflow-x: auto; padding: 4px 0; }
+    a { color: var(--accent); text-underline-offset: 3px; }
+    details { font-size: 15px; color: var(--muted); margin-top: 26px; }
+    summary { cursor: pointer; font-family: system-ui, sans-serif; }
+    pre { overflow-x: auto; padding: 16px; background: #f1f3ee; border-radius: 4px; line-height: 1.6; }
+    code { font: .85em/1.5 ui-monospace, monospace; }
+    .research-entry + .research-entry { margin-top: 36px; padding-top: 28px; border-top: 1px solid #e2e5dd; }
+    .research-entry h3 { font-size: 24px; margin-bottom: 12px; }
+    .entry-meta, .timing-note { color: var(--muted); font: 12px/1.6 system-ui, sans-serif; }
+    .timing-table { width: 100%; border-collapse: collapse; margin-top: 24px; font: 14px/1.5 system-ui, sans-serif; }
+    .timing-table caption { text-align: left; font-weight: 600; padding-bottom: 10px; }
+    .timing-table th, .timing-table td { padding: 10px 12px; border-bottom: 1px solid #dde2d9; text-align: left; vertical-align: top; }
+    .timing-table th:last-child, .timing-table .elapsed { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .timing-table tbody tr:first-child { background: #eef5ef; }
+    footer { margin-top: 40px; color: var(--muted); font: 13px/1.6 system-ui, sans-serif; }
+    @media (max-width: 640px) { body { font-size: 16px; } .toolbar { padding: 18px; flex-wrap: wrap; } main { margin: 0 10px 24px; padding: 30px 22px; } h2 { font-size: 24px; } .intro { font-size: 18px; } }
+    @media print { body { background: white; } .toolbar, details, footer { display: none; } main { border: 0; box-shadow: none; margin: 0; padding: 0; max-width: none; } .math { overflow: visible; } }
+  </style>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        displayMath: [['\\[', '\\]'], ['$$', '$$']],
+        tags: 'ams',
+        macros: { RR: '\\mathbb{R}', EE: '\\mathbb{E}' }
+      },
+      svg: { fontCache: 'global' },
+      startup: {
+        pageReady() {
+          return MathJax.startup.defaultPageReady().then(() => {
+            window.mathReady = true;
+            document.getElementById('status').textContent = 'Live · watching for changes';
+            try {
+              const scroll = sessionStorage.getItem('math-scroll');
+              if (scroll !== null) {
+                window.scrollTo(0, Number(scroll));
+                sessionStorage.removeItem('math-scroll');
+              }
+            } catch (_) {}
+          });
+        }
+      }
+    };
+  </script>
+  <script id="mathjax" defer src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-svg.js"></script>
+</head>
+<body>
+  <header class="toolbar">
+    <span class="brand">Math notebook</span>
+    <span id="status" role="status">Loading math…</span>
+  </header>
+  <main>
+    <!-- NOTEBOOK -->
+    <footer>Changes appear automatically. Right-click an equation for MathJax options.</footer>
+  </main>
+  <script>
+    const status = document.getElementById('status');
+    document.getElementById('mathjax').addEventListener('error', () => {
+      status.textContent = 'Math could not load. Check your internet connection and refresh.';
+      status.dataset.error = '';
+    });
+    async function watch() {
+      try {
+        const response = await fetch('/revision', { cache: 'no-store', signal: AbortSignal.timeout(4000) });
+        if (!response.ok) throw new Error('Server unavailable');
+        const { revision } = await response.json();
+        if (revision !== '__REVISION__') {
+          try { sessionStorage.setItem('math-scroll', String(window.scrollY)); } catch (_) {}
+          location.reload();
+          return;
+        }
+        if (window.mathReady) {
+          status.textContent = 'Live · watching for changes';
+          delete status.dataset.error;
+        }
+      } catch (_) {
+        status.textContent = 'Server disconnected · reconnecting…';
+        status.dataset.error = '';
+      }
+      setTimeout(watch, 1000);
+    }
+    watch();
+  </script>
+</body>
+</html>

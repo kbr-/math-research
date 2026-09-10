@@ -1,0 +1,58 @@
+<div class="eyebrow">Research checkpoint · 10 September 2026</div>
+<h1>Pigeonhole principle lower bounds</h1>
+<p class="intro">Our goal: superpolynomial proof-size lower bounds for ordinary PHP in \(\mathrm{AC}^{0}[p]\)-Frege, for every fixed prime \(p\) and fixed depth.</p>
+
+<section id="where-we-stand">
+  <h2>Where we stand</h2>
+  <p><strong>The goal is still open.</strong> We have working proofs for eliminating extension blocks and batching blocks with nested spans or suitable nested cores. These produce genuine polynomial-calculus (PC) refutations with explicit degree bounds.</p>
+  <p>We have also optimized our static affine batching criterion completely. Some admissible families still exceed the available degree budget: a better ordering cannot fix that method. Those families are extension data, not refutations, so they leave room for an approach that uses the actual certificate.</p>
+  <p>The four references are imported, and the base/residual PC lower-bound match and simulation parameters have been checked. A focused audit found no gap in the central elimination arguments; this is not a formal verification of the entire manuscript. Unused certificate blocks can be pruned for free, but we do not yet know how to handle all the essential blocks affordably.</p>
+  <div class="result">
+    <p><strong>The missing bridge:</strong> turn each relevant translated degree-\(D\) Nullstellensatz refutation into a base PC refutation with</p>
+    <div class="math">\[ B\le \left\lfloor\frac n2\right\rfloor, \]</div>
+    <p>contradicting the base lower bound \(\deg_{\mathrm{PC}}(\mathcal F_n)\ge n/2+1\). Constructing a suitable joint degree-\(D\) design would be an alternative.</p>
+  </div>
+</section>
+
+<section id="remaining-route">
+  <h2>The remaining route</h2>
+  <div class="eyebrow">Highest risk first</div>
+  <ol>
+    <li><strong>Prove affordable elimination or joint-design existence.</strong> Exploit the actual refutation and PHP structure to stay below the linear base-degree threshold. This is the main missing theorem.</li>
+    <li><strong>Cover the actual Frege simulation outputs.</strong> Handle nonlinear inputs, all companions and cofactors, earlier-level dependencies, and field equations. The balanced proof tree alone does not establish a cheap elimination bound.</li>
+    <li><strong>Complete the proof-level audit.</strong> Check the remaining quotient variants and any new composition rule, preserving original axiom degrees, freshness, bounded field reductions, and reuse of derived PC polynomials.</li>
+    <li><strong>Formalize the ordinary-PHP transfer.</strong> Convert a hypothetical short ordinary-PHP refutation to our exact Boolean linear-row base with bounded-depth and polynomial-size overhead. Do not silently add same-row exclusions.</li>
+    <li><strong>Close the parameters.</strong> For every fixed \(p,\ell,K\), show that a size-\(n^K\), depth-\(\ell\) proof would yield the forbidden base refutation for all sufficiently large \(n\), retaining every accuracy and depth factor.</li>
+  </ol>
+</section>
+
+<section id="proposed-next-step">
+  <h2>Proposed next step</h2>
+  <p>Write the exact certificate-composition rule for <strong>one modus-ponens inference in the balanced BIKPRS translation</strong>, retaining its cofactor products. After pruning unused blocks, attempt a degree bound that composes through the proof tree using PC reuse.</p>
+  <p>Check the proposed bound against the prefix-pebbling chain and irrelevant spread blocks before drawing a global conclusion. The task is to justify the composition bound, not assume that logarithmic tree height makes it affordable.</p>
+</section>
+
+<section id="research-record">
+  <h2>Research record</h2>
+  <p>Dated entries below preserve each research attempt, including results, corrections, obstructions, and unsuccessful proof attempts, with measured timing.</p>
+  <article class="research-entry" id="entry-2026-09-10-reporting-workflow">
+    <h3>Research-turn reporting workflow</h3>
+    <p class="entry-meta">10 September 2026 · Workflow update</p>
+    <p>Every research attempt will receive an entry, even when it produces no useful result. Entries will record the attempted approach, actual outcome, remaining gap, and a measured timing table. Complete computation outputs will be preserved and referenced when relevant.</p>
+    <p>The timing table is generated from the recorded exclusive intervals, with failures and measurement limitations reported explicitly.</p>
+    <p><strong>Verification:</strong> eight bounded integration checks passed, including timing-table formatting, overlap accounting, and rejecting export of an unfinished session.</p>
+    <div class="timing-report" data-session="notebook_timing_tables_20260910_01">
+    <table class="timing-table">
+    <caption>Measured timing</caption>
+    <thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+    <tbody>
+    <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 36.91 s</strong></td></tr>
+    <tr><td>Marked reading and review windows</td><td class="elapsed">4 min 2.66 s</td></tr>
+    <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">4.05 s</td></tr>
+    <tr><td>Drafting, coding, preparation, and unseparated overhead</td><td class="elapsed">5 min 30.20 s</td></tr>
+    </tbody></table>
+    <p class="timing-note">Timed commands: 1; failed or timed out: 0; unfinished: 0. Rows are exclusive wall-clock intervals and are rounded independently. Reading includes interpretation; tool windows include orchestration. Work before instrumentation and after the final snapshot (including entry publication, Git finalization, and response delivery) is excluded. Pure reasoning time and pure network latency are not measured.</p>
+    </div>
+  </article>
+  <!-- Append new dated mathematical entries here, preserving earlier entries. -->
+</section>

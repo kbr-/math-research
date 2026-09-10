@@ -1,0 +1,703 @@
+                                                     Extended Nullstellensatz proof systems
+arXiv:2301.10617v3 [math.LO] 27 Sep 2023
+
+
+
+
+                                                                               Jan Krajı́ček
+
+                                                                Faculty of Mathematics and Physics
+                                                                         Charles University∗
+
+
+                                                                                   Abstract
+                                                      For a finite set F of polynomials from Fp [x] (p is a fixed prime) con-
+                                                  taining all polynomials x2 − x, a Nullstellensatz proof of the unsolvability
+                                                  of the system
+                                                                               f = 0 , all f ∈ F
+                                                                                       P
+                                                  in Fp is an Fp [x]-linear combination f ∈F hf ·f that equals to 1 in Fp [x].
+                                                  The measure of complexity of such a proof is its degree: maxf deg(hf f ).
+                                                      We study the problem to establish degree lower bounds for some ex-
+                                                  tended NS proof systems: these systems prove the unsolvability of F (in
+                                                  Fp ) by proving the unsolvability of a bigger set F ∪ E , where the set
+                                                  E ⊆ Fp [x, r] contains all polynomials r p − r and satisfies the following
+                                                  soundness condition:
+                                                     • Any 0, 1-assignment a to variables x can be appended by an Fp -
+                                                       assignment b to variables r such that for all g ∈ E it holds that
+                                                       g(a, b) = 0.
+                                                  We define a notion of pseudo-solutions of F and prove that the existence
+                                                  of pseudo-solutions with suitable parameters implies lower bounds for two
+                                                  extended NS proof systems ENS and UENS defined in [6]. Further we give
+                                                  a combinatorial example of F and candidate pseudo-solutions based on
+                                                  the pigeonhole principle.
+
+
+                                           1      Introduction
+                                           Let Fp be the p-element field where p is a fixed prime, and let Fp [x] be the ring
+                                           of polynomials with variables x = x1 , . . . , xN , for some N ≥ 1. Given a finite
+                                           set F ⊆ Fp [x] containing all polynomials x2i − xi , 1 ≤ i ≤ N , we consider the
+                                           question whether the system of polynomial equations
+
+                                                                              f = 0 , all f ∈ F                                    (1)
+
+                                           has a solution (we shall simply speak about the solvability of F rather than of
+                                           (1)). Due to the presence of polynomials x2i −xi such a solution must be Boolean,
+                                               ∗ Sokolovská 83, Prague, 186 75, The Czech Republic, krajicek@karlin.mff.cuni.cz
+
+
+
+
+                                                                                       1
+i.e. from {0, 1}. The restriction to Boolean values is due to our primary interest
+in proof complexity.
+     In computational and proof complexity we need to represent polynomials
+as input to algorithms. We shall use dense representation: a list of coefficients
+from Fp for all monomials up to the degree of the respective polynomial. Hence
+a degree d polynomial over N variables is represented by a string of O(N d )
+bits. Multiplying or adding polynomials or checking whether two polynomials
+are identical can be then done by a polynomial time (shortly p-time) algorithm.
+Note that the bit size of F is O(N d |F |) if d bounds the degree of all polynomials
+in F .
+     The problem of solvability of F in Fp belongs to the computational complex-
+ity class NP. This class can be conveniently defined using the notion of a proof
+system. A language (a set of binary strings) is in NP iff there is a p-bounded
+proof system: a p-time decidable relation P (x, y) (provability relation) and a
+constant c ≥ 1 such that for any binary string u:
+   • u ∈ L iff ∃w(|w| ≤ |u|c ) P (u, w).
+The existence of such a p-bounded system for the solvability problem is easy to
+see: w is an assignment to variables and the provability relation P simply says
+that all polynomials in F vanish under the assignment. In fact, it is well-known
+that the problem is equally hard as the Boolean satisfiability problem and hence
+it is NP-complete.
+
+    Our research in this paper is motivated by the fundamental problem of proof
+complexity whether NP is closed under complementation (the NP vs. coNP
+problem). By the NP-completeness mentioned above, this problem is thus equiv-
+alent to the question whether one can also find a p-bounded proof system for the
+unsolvability of (1). More precisely, is there a p-time decidable relation P (x, y)
+and a constant c ≥ 1 such that for any F :
+   • F is unsolvable iff ∃w(|w| ≤ len(F )c ) P (F , w)
+where len(F ) denotes the bit size of the representation of F .
+    An example of a proof system (but not p-bounded) for the unsolvability
+is based on Hilbert’s Nullstellensatz and was introduced into proof complexity
+in [3]. An NS-refutation of (the solvability of) a set of polynomials F with
+variables V ar(F ) and containing all polynomials x2 − x for all x ∈ V ar(F ) is a
+tuple of polynomials hf ∈ Fp [V ar(F )], for f ∈ F , such that
+                                 X
+                                      hf · f = 1
+                                 f ∈F
+
+holds in Fp [V ar(F )]. The degree of the refutation is
+                                 max deg(hf f ) .
+                                  f ∈F
+
+It turns out that in natural situations the degree is the main measure we should
+care for. Namely, in order to show some asymptotic lower bound it often suffices
+
+                                           2
+to consider finite sets of polynomials Fn over Fp containing the polynomials
+x2 − x for x ∈ V ar(Fn ) such that for some constant c ≥ 1 and all n ≥ 1:
+
+    |Fn | ≤ nc , N := |V ar(Fn )| ≤ nc and max{deg(f ) | f ∈ Fn } ≤ c .                (2)
+
+A degree d NS-refutation of Fn has thus bit size O(|Fn |N d ) = O(n2c+d ) which
+is polynomial in the bit size len(Fn ) = O(n3c ) of Fn iff d is bounded by a
+constant. In other words, to show that the NS proof system is not p-bounded
+one needs a non-constant lower bound for d as n grows1. Such lower bounds are
+actually known, cf. [3, 6] and references therein.
+
+   In this paper we study extended NS proof systems which are stronger than
+the NS proof system. The general idea of these proof systems is the following.
+Before looking for an NS refutation of F ⊆ Fp [x] extend it by a finite set
+E ⊆ Fp [x, r] of polynomials (to be called extension polynomials) in possibly
+more variables (to be called extension variables) than those of F , containing
+polynomials rp − r for all new variables r, and having the following soundness
+property:
+
+    • Any 0, 1 assignment a to variables x can be appended by an Fp -assignment
+      b to variables r such that for all g ∈ E it holds that g(a, b) = 0.
+Then find an NS-refutation of F ∪ E. Such proof may allow for a smaller degree
+than a mere NS refutation of F . However, a subtle point is that to make it
+a proof system one has to be able to check the soundness property of E in p-
+time. This is a non-trivial requirement and for the two extended NS systems
+we consider in Section 2 this is enforced by syntactic requirements on sets E.
+    In Section 3 we define a notion of pseudo-solutions of F and prove that the
+existence of pseudo-solutions with suitable parameters implies lower bounds for
+two extended NS proof systems ENS and UENS defined in [6]. In Section 4
+we give a combinatorial example of F and candidate pseudo-solutions based on
+the pigeonhole principle. In Section 5 we discuss a motivation for extended NS
+proof systems coming originally from logic (proof complexity). The reader can
+find more proof complexity background in [11, 6].
+A convention: all logarithms are base 2.
+
+
+2     Proof systems ENS and UENS
+Both examples of extended NS proof systems in this section, to be denoted ENS
+and UENS, are from [6].
+
+Definition 2.1 ([6])
+   1 For some other questions in proof complexity stronger lower bounds are needed, e.g. of
+
+the form (log n)ω(1) or even nΩ(1) .
+
+
+
+
+                                            3
+  1. Let g = g1 , . . . , gm be polynomials in any variables over Fp and let h ≥ 1
+     be a parameter. For i ≤ m define polynomials:
+                                                     X
+                              Ei,g := gi · Πu≤h (1 −    ruj gj )               (3)
+                                                     j≤m
+
+      where ruj are new extension variables common to all i ≤ m. The
+      polynomials Ei,g are called the extension polynomials of accuracy h
+      corresponding to g.
+
+  2. A set E of extension polynomials can be stratified into ℓ levels iff E can
+     be partitioned as E1 ∪ . . . ∪ Eℓ where:
+
+         • If Ei,g ∈ Et , some t and i, then also all companion polynomials Ej,g
+           are in Et , all j ≤ m.
+         • Variables in the polynomials gj in Ei,g in E1 are among V ar(Fn ) and
+           no extension variable from Ei,g occurs among V ar(Fn ) or in other
+           extension polynomials in E1 except in the companion polynomials.
+         • Variables in the polynomials gj in the axioms Ei,gSin Et+1 , 1 ≤ t < ℓ,
+           are among the variables occurring in V ar(Fn ∪ s≤t Es ) (including
+           the extension variables from these levels) and no extension variable
+           from Ei,g does occur among them or in other extension polynomials
+           in Et+1 except in the companion polynomials.
+
+  3. For a set E of extension polynomials put
+
+         • R(E) to be the set of polynomials rp − r, for all extension variables
+           r occurring in E.
+
+An ENS-refutation of F consists of a triple (h, E, L), where h ≥ 1 is its
+accuracy, E is a set satisfying Definition 2.1 and L is an NS-refutation of F ∪
+E ∪ R(E). Its degree is the degree of L.
+
+Lemma 2.2 If F has an ENS-refutation of any level ℓ ≥ 1 and any accuracy
+h ≥ 1 then it is unsolvable.
+
+Proof :
+    Let a be an assignment to variables P x. Take any extension polynomial Ei,g
+in the first of E and its factor (1 − j≤m r1j gj ). If all gj vanish under a put
+r1j := 0. If some gj does not vanish, put r1j ′ := 0 for j ′ 6= j and r1j := gj (a)−1 .
+Further put rij := 0 for all i > 1 and any j.
+    This evaluation will also kill all companion polynomials Ei,g , all i. After you
+treat analogously other first level extension polynomials, move to the second
+level, etc. Finally note that polynomials in R(E) vanish for any b.
+
+                                                                                q.e.d.
+
+
+
+                                          4
+    Extension polynomials were introduced in [6] so that the proof system can
+simulate in a sense Boolean combinations of equations. Namely, assuming that
+the equations Ei,g = 0 hold for all i ≤ m, we can express the truth value of the
+disjunction                        _
+                                       (gi 6= 0)
+                                      i≤m
+
+by a polynomial                                        X
+                       disjg := 1 − Πu≤h (1 −                ruj gj )
+                                                       j≤m
+
+of degreeP h(1 + maxi (deg(gi )) which may be much smaller, if h is small, than
+(p − 1) j deg(gi ) required by the obvious definition 1 − Πi (1 − gip−1 ). Clearly
+if all gj = 0 also disjg = 0 and if gi 6= 0 for some i then, by Ei,g = 0, disjg = 1.
+We shall discuss the motivation for introducing ENS in more detail in Section
+5.
+  Extension polynomials can be also introduced in an unstructured form. A
+motivation for this construction in [6] came from Boolean complexity.
+
+Definition 2.3 ([6]) An unstructured extension polynomial of accuracy h ≥ 1
+is any polynomial from Fp [x, r] of the form
+
+                              (g1 − r1 ) · . . . · (gh − rh )
+
+where no ri occurs in any gj (but may occur in other such unstructured extension
+polynomials in E).
+
+Lemma 2.4 Let h ≥ 1 and let E be a set of unstructured extension polynomials
+of accuracy h such that |E| < eh/p . Assume that F ∪ E ∪ R(E) has an NS-
+refutation. Then F is unsolvable.
+
+Proof :
+    For a given assignment a to variables x choose an assignment b to r uni-
+formly at random from all Fp -assignments. The probability that one exten-
+sion polynomial (g1 − r1 ) · . . . · (gh − rh ) does not vanish under a, b is at most
+(1 − 1/p)h < e−h/p . Using the hypothesis that |E| < eh/p it follows by averaging
+that there is some b such that all polynomials in E vanish under a, b. Finally
+note that polynomials in R(E) vanish for any b.
+
+                                                                                q.e.d.
+
+    We can use this lemma to define a sound proof system: a UENS-refutation
+of F ⊆ Fp [x] is a triple (h, E, L), where h ≥ 1 is its accuracy, E is a set satisfying
+satisfying Definition 2.3 and also the size condition |E| < eh/p , and L is an NS-
+refutation of F ∪ E ∪ R(E). Its degree is the degree of L.
+    UENS is at least as strong as ENS in the sense of the following statement.
+
+
+
+                                            5
+Lemma 2.5 ([6, Thm.6.14(1)]) For every extension polynomial Ei,g of accu-
+racy h ≥ 1 from Definition 2.1 there exists an unstructured extension polynomial
+  ′
+Ei,g of the same accuracy, such that Ei,g can be expressed in Fp [x, r] as a linear
+combination of polynomials from the set Ei,g′
+                                              , x2 − x for all x and rp − r for all
+r. of degree at most (ph + 1) · maxj deg(gj ) + h.
+
+  Noting that the maximum degree of Ei,g for j ≤ m is h(1 + maxj deg(gj )) +
+maxj deg(gj ) we get the following.
+
+Corollary 2.6 Assume that there is an ENS-refutation h, E, L of F of degree
+d. Then there is an UENS-refutation h, E ′ , L′ of F of degree O(pd).
+
+
+3      Pseudo-solutions
+For d ≥ 0 let Fp ≤d [x] be the Fp -vector space of polynomials from Fp [x] of degree
+at most d. We consider finite sets of polynomials Fn over Fp in variables forming
+the set V ar(Fn ), containing for each x ∈ V ar(Fn ) the polynomial x2 − x, and
+such that for some constant c ≥ 1 conditions (2) are satisfied for n ≥ 1. We
+shall denote variables in V ar(Fn ) simply x.
+   A degree d Fn -design is any map
+
+                                   ω : Fp ≤d [x] → Fp
+
+satisfying the following three conditions:
+    1. For all a ∈ Fp : ω(a) = a.
+
+    2. For all g, h ∈ Fp ≤d [x]:
+
+                                   ω(g) + ω(h) = ω(g + h) .
+
+    3. For any two polynomials f ∈ Fn and g ∈ Fp ≤d [x], if deg(f g) ≤ d then:
+
+                                         ω(f g) = 0 .
+
+This notion was defined by P. Pudlák in an informal electronic Prague-San Diego
+seminar that run in early 1990s and it was used first in [3] to establish the non-
+existence of constant degree NS-proofs of one modular counting principle from
+another, cf. also [11, Sec.16.1] for an exposition of this and subsequent results.
+    An Fp ≤d [x]-tree T is a finite p-ary tree whose each inner node (i.e. a non-
+leaf) is labeled by a query g = ? for some polynomial g ∈ Fp ≤d [x] and the p
+outgoing edges are labeled by g = a, for all a ∈ Fp . The leaves are labeled
+by elements of some set I 6= ∅. The height of T is the maximum number of
+edges on a path from the root to a leaf. An Fp ≤d [x]-tree of height ≤ e will be
+abbreviated as (d, e)-tree.
+    Let T be an Fp ≤d [x]-tree whose leaves are labeled by elements of a non-
+empty set I. The tree T and any map ω : Fp ≤d [x] → Fp define a path in T as
+
+                                           6
+follows: start at the root and answer the queries by ω. The label of a leaf the
+path so defined reaches will be denoted T (ω). In particular, T defines a map
+from the set of all degree d Fn -designs to I.
+    We shall consider systems Fn that have no solution in Fp . This means that
+no degree d Fn -design ω can be a homomorphism and there must be conflict
+pairs of polynomials g, g ′ ∈ Fp ≤d [x], such that deg(gg ′ ) ≤ d and
+
+                               ω(g) · ω(g ′ ) 6= ω(gg ′ ) .
+
+The following notion was inspired by the model-theoretic construction in [9,
+Cht.22] (it corresponds to the notion of sample space there).
+
+Definition 3.1 (pseudo-solutions)
+    For any d, e ≥ 0 and 1 ≥ γ ≥ 0, a (d, e, γ)-solution of Fn is a non-empty
+finite set Ω of degree d Fn -designs ω such that for any (d, e)-tree T :
+
+                Probω∈Ω [T (ω) is not a conflict pair for ω ] ≥ γ .
+
+A pseudo-solution is a collective name for (d, e, γ)-solutions.
+
+Theorem 3.2 Let (h, E, L) be an ENS- or UENS-refutation of F of degree d.
+Let S := |E| and assume eh/p ≥ 2S 2 . Then there is no (d, h + log S, S −1 )
+pseudo-solution of F .
+    In particular, if h is minimal such that eh/p ≥ S 2 holds then there is no
+(d, (2p + 1) log S, S −1 ) pseudo-solution of F .
+
+The proof is summarized at the end of the section after establishing some lem-
+mas.
+     Utilizing Corollary 2.6 we could prove the theorem only for UENS. However,
+because of the importance of ENS for the logic problem discussed in Section 5
+we shall formulate the proof directly for ENS and avoid the detour via UENS;
+the argument can be easily modified for UENS. The idea is to transform in a
+sense the averaging argument for Lemma 2.4 to the setting where we have Fp -
+linear maps ω : Fp ≤d [x] → Fp instead of evaluation of variables by elements of
+Fp .
+     For Ei,g as in (3), any of the h + 1 polynomials
+                                      X
+                         gi and 1 −       ruj gj , for u ≤ h                 (4)
+                                      j≤m
+
+will be called a factor polynomial of Ei,g .
+
+Lemma 3.3
+    Assume that Ω is a finite non-empty set of Fp -linear maps from Fp ≤d [x] to
+Fp . Let g = g1 , . . . , gm be polynomials in variables x and let Ei,g , i ≤ m, be the
+companion extension polynomials of accuracy h ≥ 1 using extension variables
+ruj as in (3). Assume that all Ei,g have degree ≤ d.
+
+
+                                            7
+   Then for any ω ∈ Ω and any i ≤ m, the probability over uniform random
+choices b that
+                            ω(g ′ (x, b)) 6= 0
+holds for all factor polynomials g ′ (x, r) of Ei,g is at most e−h/p .
+Proof :
+   Let ω and i ≤ m be fixed and fix at random all buj with u ≤ h and j 6= i.
+Assume ω(gi ) 6= 0.
+   Think of the remaining h values bui , u ≤ h, as being chosen from Fp uni-
+formly and independently at random. Using the Fp -linearity of ω we see that
+the probability to satisfy the inequality
+                             X
+                        ω(         buj gj ) + bui ω(gi ) 6= 1 .
+                           j≤m,j6=i
+
+for one u ≤ h is p−1
+                  p . Hence we fail to violate it for all u ≤ h with the probability
+              1 h
+at most (1 − p ) ≤ e−h/p .
+                                                                             q.e.d.
+
+    Having Lemma 3.3 we may now proceed as level by level, bottom up, to find
+a suitable assignment of values from Fp to all extension variables in E. In par-
+ticular, take one block of m companion extension polynomials in E1 and choose
+(by an averaging argument) a suitable assignment to its extensions variables
+such that some of them fails to contain a factor polynomial that vanishes for
+at most a fraction of m · e−h/p of all ω, and substitute it in the whole of E.
+Then do the same consecutively for all blocks of companion polynomials in the
+first level. We lose altogether at most |E1 | · e−h/p elements ω. After we have
+substituted values from Fp for all extension variables occurring in the first level,
+all polynomials gi in the second level E2 have only variables x left. Hence we
+can repeat the process. This yields the following statement.
+Lemma 3.4
+    Assume that Ω is a finite non-empty set of Fp -linear maps from Fp ≤d [x] to
+Fp . Let E be a leveled set of extension polynomials of accuracy h of the form as
+in Def.2.1, all of degree at most d.
+    Then there is an evaluation r := b of the extension variables in E by values
+from Fp such that for all ω ∈ Ω but a fraction of |E|e−h/p it holds that
+   • each extension polynomial in E has a factor polynomial g ′ (x, r) such that
+                                      ω(g ′ (x, b)) = 0 .
+
+
+Now we are ready for Proof of Theorem 3.2. Assume that Fn has an ENS-
+refutation (h, E, L) of degree d and that 2S 2 ≤ eh/p holds where S := |E|.
+Hence:
+                               |E|e−h/p ≤ 1/(2S)                        (5)
+
+                                           8
+Note that, in particular, if h was minimal to satisfy (5) then
+
+                                   h = O(log S) .                                (6)
+
+Let L:                   X               X                   X
+                  1 =           hf f +         pE E +            qg · g
+                        f ∈Fn            E∈E            g∈R(E)
+
+be some NS-refutation of Fn ∪ E ∪ R(E) of degree d.
+    Assume that Ω is a (d, h + log S, S −1 )-solution of Fn . Substitute for all
+extension variables in E an evaluation b by elements of Fp with the property
+stated in Lemma 3.4. In particular, after the substitution let Ω0 be the part
+of Ω consisting of ω satisfying the property in that lemma. Note that by the
+choice of h
+                           |Ω0 | ≥ (1 − 1/(2S)) · |Ω| .                      (7)
+   All polynomials g ∈ R(E)
+                         P vanish after the substitution and because maps
+ω ∈ Ω are designs also ω( f ∈Fn hf (b)f ) = 0 holds. Hence we have that
+                                         X
+                             1 = ω(            pE (b)E(b))                       (8)
+                                         E∈E
+
+where the polynomials pE (b), E(b) have variables left only from V ar(Fn ).
+
+   We shall construct in two steps a particular (d, e)-tree T ∗ :
+
+  1. Use binary search to the sum in the right-hand side of (8) to get a (d, log S)-
+     tree T1 that finds, for any ω ∈ Ω a term pE E in the sum which is of the
+     form E = Ei,g and ω(pE E) 6= 0.
+  2. To get T ∗ extend T1 as follows. At leaves labeled  P by pE E with E = Ei,g ,
+     ask for values of all factor polynomials 1 − j≤m ruj gj for u ≤ h. By
+     the choice of Ω0 , if ω ∈ Ω0 , at least one gets by ω value 0. Hence we can
+     write pE E as a product g ′ g ′′ with ω(g ′ g ′′ ) 6= 0 ∧ ω(g ′ ) = 0. Label the
+     corresponding leaf by (g ′ , g ′′ ).
+
+Note that the height e of T ∗ is h + log S and that for all ω ∈ Ω0 it holds that
+T ∗ (ω) is a conflict pair for ω.
+   By the definition of pseudo-solutions we have that T ∗ (ω) can be a conflict
+pair for at most (1 − 1/S)-part of Ω but Ω0 is bigger. This is a contradiction
+and Theorem 3.2 is proved.
+
+                                                                              q.e.d.
+
+   The relevance of the following problem is described in Section 5.
+
+Problem 3.5 Construct families Fn (containing all polynomials x2 − x and
+obeying (2) for some constant c ≥ 1) and for any constant r ≥ 1 and n >> 1
+an ((log n)r , r log n, n−r ) pseudo-solution of Fn .
+
+                                           9
+4     A combinatorial example
+The propositional formula PHPn :
+            _^             _                               ^
+                  ¬pij ∨       (pi1 j ∧ pi2 j ) ∨                    (pij1 ∧ pij2 )
+                i   j          i1 6=i2 ,j                i,j1 6=j2
+
+with i, i1 , i2 ranging over [n + 1] = {1, . . . , n + 1} and j, j1 , j2 over [n] is the
+most famous tautology in proof complexity, introduced by Cook and Reckhow
+[7]. If it would be falsified by some evaluation pij := aij ∈ {0, 1} then the set
+of all pairs (i, j) such that aij = 1 would be the graph of an injective function
+from [n + 1] into [n]. Hence the fact that PHPn is logically valid is equivalent
+to the pigeonhole principle.
+    The formula PHPn requires long proofs in a number of proof systems and
+its advanced variants may be hard for all proof systems (cf. [9, Chpts.29-30] or
+[11, Chpt.19]). It has a polynomial size (measured in its size O(n3 )) proof in
+the ordinary propositional calculus using the DeMorgan language and based on
+a finite number of axiom schemes and schematic inference rules, a Frege system
+in the established terminology of [7]; this was proved by Buss [4]. In fact, it has
+a simple polynomial size proof in a TC0 -Frege system, a proof system operating
+with bounded depth formulas using also the threshold connectives, and Buss’s
+argument shows that Frege systems do p-simulate these systems when such
+a connective is defined by a suitable DeMorgan formula. One of the crucial
+results in proof complexity is Ajtai’s theorem [1] that proofs of PHPn in AC0 -
+Frege systems, subsystems of Frege systems operating with DeMorgan formulas
+of a bounded depth, require super-polynomial number of steps (this was later
+improved to an exponential lower bound in [12, 13]).
+    The negation of PHPn can be reformulated (following [3]) as the following
+unsolvable system ¬PHP n of polynomial equations over Fp in variables xij ,
+i ∈ [n + 1], j ∈ [n]:
+    • xi1 j · xi2 j = 0, for each i1 6= i2 ∈ [n + 1] and j ∈ [n].
+    • xij1 · xij2 = 0, for each i ∈ [n + 1] and j1 6= j2 ∈ [n].
+    • 1 − j∈[n] xij = 0, for each i ∈ [n + 1].
+           P
+
+    • x2ij − xij , for all i ∈ [n + 1], j ∈ [n].
+The left-hand sides of the equations in the first three items will be denoted
+Qi1 ,i2 ;j , Qi;j1 ,j2 and Qi , respectively. We included the polynomials x2ij − xij in
+¬PHP n to conform with the requirement put on systems Fn but it is easy to
+see that they are simple linear combinations of the other polynomials:
+                                            X
+                           x2ij − xij =           Qi;j,k − xij Qi .
+                                            k∈[n],k6=j
+
+   NS-refutations of ¬PHP n need degree n/2 and that implies the following
+well-known fact.
+
+                                                 10
+Lemma 4.1 ([14, 5, 2]) For n ≥ 2 there are degree n/2 ¬PHP n -designs (over
+any Fp ).
+
+   For a partial injective map ρ :⊆ [n + 1] → [n] define the restriction of a
+polynomial g over V ar(¬PHP n ) to be the polynomial to be denoted g ρ resulting
+from g by the following partial substitution of 0/1 values for some variables:
+                          
+                          
+                           1    if i ∈ dom(ρ) ∧ ρ(i) = j
+                            0    if i ∈ dom(ρ) ∧ ρ(i) 6= j
+                          
+                   xρij =
+                          
+                           0    if j ∈ rng(ρ) ∧ ρ(−1) (j) 6= i
+                            xij otherwise
+                          
+
+Further define Dρ := [n+1]\dom(ρ), Rρ := [n]\rng(ρ) and nρ := |Rρ |(= n−|ρ|).
+Note that xρij = xij iff (i, j) ∈ Dρ × Rρ .
+   If we apply a restriction ρ to all polynomials in ¬PHP n we get a set
+(¬PHP n )ρ of polynomials that expresses ¬PHP over Dρ and Rρ (plus the zero
+polynomial) and that is isomorphic to ¬PHP nρ . In particular, by Lemma 4.1
+there are degree nρ /2 designs for (¬PHP n )ρ .
+
+Definition 4.2 For n ≥ 1 and ǫ > 0 such that nǫ ≥ 1 let Ωn,ǫ be the set of all
+¬PHP n -designs ω that are defined as follows:
+   1. Pick
+       (a) a restriction ρ :⊆ [n + 1] → [n] with nρ = nǫ ,
+       (b) a degree nρ /2-design L for (¬PHP n )ρ .
+
+   2. For g ∈ Fp ≤d [V ar(¬PHP n )] put:
+
+                                     ω(g) := L(g ρ ) .
+
+We shall write ω = (ρω , Lω ) with ρω and Lω denoting the respective ρ and L
+defining ω.
+
+   The next lemma interprets the task to find conflict pairs over Ωn,ǫ more
+combinatorially.
+
+Lemma 4.3 Let T be a (d, e)-tree over Fp ≤d [V ar(¬PHP n )]. Then there is
+(d, e′ )-tree T ′ with e′ ≤ e + O(d log n) such that for any ω = (ρω , Lω ) ∈ Ωn,ǫ if
+T (ω) is a conflict pair for ω then T ′ (ω) is a pair (i, j) ∈ Dρ × Rρ .
+
+Proof :
+    Assume T found a conflict pair g, g ′ for ω. Write g as an Fp -linear combina-
+tion of monomials (≤ nO(d) of them) and use binary search to find one monomial
+u such that
+                           ω(u · g ′ ) 6= ω(u) · ω(g ′ ) .
+If u is a product of variables xi1 j1 · . . . · xit jt then by at most 2t ≤ 2d questions
+about values of
+                          xis js and xi1 j1 · . . . · xis js · g ′
+
+                                          11
+for s = 1, . . . , t we find one variable xis js such that
+
+         ω(xis js ) · ω(xi1 j1 · . . . · xis−1 js−1 · g ′ ) 6= ω(xi1 j1 · . . . · xis js · g ′ ) .
+
+By the definition of restrictions this means that xρis js = xis js . That is
+
+                                       (is , js ) ∈ Dρ × Rρ .
+
+                                                                                                     q.e.d.
+
+Problem 4.4 Do families ¬PHP n and sets Ωn,ǫ for some fixed ǫ > 0 solve
+Problem 3.5?
+                                           Ω(1)
+   Are Ωn,ǫ , in fact, (nΩ(1) , nΩ(1) , 2−n ) pseudo-solutions of ¬PHP n , ?
+
+
+5     Proof complexity motivation for ENS
+The problem to extend the lower bound for PHPn , or for any other formula
+for that matter, from AC0 -Frege systems to AC0 [p]-Frege systems operating
+with formulas of a bounded depth in the DeMorgan language augmented by
+connectives counting modulo p, p a prime, received a considerable attention
+over the last three decades. Proof-theoretically the most elegant definition of
+AC0 proof systems is using the formalism of sequent calculus LK (cf. [8, 11])
+but we shall stick to Frege systems: we will refer to a result from [6] and that
+used Frege systems. It is well known that the two formalisms yield equivalent
+subsystems, except possibly for a change in the depth by an additive constant
+(cf. [11, Chpt.3]).
+    Let F be any Frege system in the DeMorgan language 0, 1, ¬, ∨, ∧. We shall
+denote by F (MODp ) the proof system whose language extends the DeMorgan
+one by unbounded arity connectives MODP          p,i for p a prime and i = 0, . . . , p − 1.
+The formula MODp,i (y1 , . . . , yk ) is true iff j yj ≡ i (mod p). The proof system
+has all Frege rules of F accepted for all formulas of the extended language and,
+in addition, the following set of MODp -axioms (cf. [8, Sec.12.6]):
+    • MODp,0 (∅)
+    • ¬MODp,i (∅) , for i = 1, . . . , p − 1
+    • MODp,i (Γ, φ) ≡ [(MODp,i (Γ) ∧ ¬φ) ∨ (MODp,i−1 (Γ) ∧ φ)]
+      for i = 0, . . . , p − 1, where 0 − 1 means p − 1 and where Γ stands for any
+      sequence (possibly empty) of formulas.
+The depth of a constant or of an atom is 0, the use of the negation or of any of
+MODp,i increases the depth by 1, and a formula formed from formulas Ai none
+of which starts with ∨ (resp. with ∧) by a repeated use of ∨ (resp. of ∧) has
+the depth 1 plus the maximum depth of formulas Ai . In particular, the depth of
+PHPn is 3. The subsystem of F (MODp ) allowed to use only formulas of depth
+at most ℓ will be denoted by Fℓ (MODp ).
+
+
+                                                   12
+   Any polynomial equation f = 0 over Fp is, in particular, also a depth 2
+formula in the language of F (MODp ): monomials in f can be defined by con-
+junctions and f = 0 is expressed using MODp,0 applied to them. Therefore we
+can talk about F (MODp )-refutations of Fn . The following lemma is straight-
+forward (cf. also [3]).
+
+Lemma 5.1 The two formulations ¬PHPn and ¬PHP n can be derived form
+each other in F4 (MODp ) by proofs of size nO(1) .
+
+Having an Fℓ (MODp )-proof we can translate it Vinto a proof using only   W low
+degree polynomials; first define big conjunctions    via big disjunctions   and
+¬, and then translate bottom up all
+                                       W
+                                         by disj as described after Lemma 2.2,
+while systematically introducing all needed extension polynomials. This yields
+the following result.
+
+Theorem 5.2 ([6, Thm.6.7(1)])
+    Let ℓ ≥ 2 be a constant. Let Fn be a set of polynomials obeying (2) and
+containing all polynomials x2 − x for all x ∈ V ar(Fn ), and assume it has an
+Fℓ (MODp )-refutation with k steps. Let h ≥ 1 be any parameter.
+    Then for any h ≥ 1 there exists a set E of S := k O(1) extension polynomials
+of accuracy h stratified into ℓ + O(1) levels such that Fn ∪ E ∪ R(E) has an
+N S-refutation of degree at most
+
+                               (O(1) + log k)(h + 1)O(1) .                                (9)
+
+(The constant O(1) in term k O(1) and the additive constant O(1) depend on the
+underlying Frege system F only but the O(1) in the exponent in (9) depends
+also on ℓ: the construction underlying the proof in [6] yields the bound O(ℓ).)
+
+    Should there be refutations of Fn in any Fℓ (MODp ), fixed ℓ ≥ 2, with
+k = nO(1) steps, we can choose minimal h ≥ 1 such that eh/p ≥ 2S 2 , S provided
+by Theorem 5.2. Such h is O(log n) and hence we would get ENS-refutations
+(h, E, L) of degree
+
+                       d ≤ (O(1) + log k)(h + 1)O(1) ≤ (log n)c
+
+where c depends on ℓ. This connection2 to ENS, and Theorem 3.2 , is the reason
+why we are interested in Problem 2.2.
+    Note that should it be answered by ¬PHP n (Problem 4.4) it would imply
+also a lower bound for UENS-refutations of ¬PHP n . This would disprove a
+causal remark3 at the end of [6] that size S Extended Frege (EF) refutations
+can be transformed into (log S)O(1) degree UENS-refutations as it is well-known
+that EF admits p-size proofs of PHP, cf. [7].
+   2 An earlier reduction in [10] reduced the lengths-of-proofs problem for AC0 [p]-Frege sys-
+
+tems to a different and seemingly harder problem about algebraic search trees.
+   3 The construction in [6] seems to yield a non-trivial degree upper bound on ENS proof
+
+when transforming Frege proofs of logical depth o(log n) only.
+
+
+
+                                             13
+   Note that it is also unknown if EF simulates UENS.
+
+Acknowledgments. I am indebted to the anonymous referee for a number
+of suggestions.
+
+
+References
+ [1] M. Ajtai, The complexity of the pigeonhole principle, in: Proc. IEEE 29th
+     Annual Symp. on Foundation of Computer Science, (1988), pp. 346-355.
+ [2] P. Beame, S. A. Cook, J. Edmonds, R. Impagliazzo and T. Pitassi, The Rel-
+     ative Complexity of NP Search Problems, J. Computer Systems Sciences,
+     57, (1998), pp.3-19.
+ [3] P. Beame, R. Impagliazzo, J. Krajı́ček, T. Pitassi, and P. Pudlák: Lower
+     bounds on Hilbert’s Nullstellensatz and propositional proofs, Proceedings
+     of the London Mathematical Society, (3) 73, (1996), pp.1-26.
+ [4] S. R. Buss, Polynomial size proofs of the propositional pigeonhole principle,
+     J. Symbolic Logic, 52, (1987), pp.916-927.
+ [5] S. R. Buss, Lower bounds on Nullstellensatz proofs via designs, in: Proof
+     Complexity and Feasible Arithmetics, eds. S. Buss and P. Beame, American
+     Mathematical Society, Providence RI, (1998), pp. 59-71.
+
+ [6] S. R. Buss, R. Impagliazzo, J. Krajı́ček, P. Pudlák, A. A. Razborov,
+     and J. Sgall: Proof complexity in algebraic systems and bounded depth
+     Frege systems with modular counting, Computational Complexity, 6(3),
+     (1996/1997), pp.256-298.
+ [7] S. A. Cook and R. A. Reckhow, The relative efficiency of propositional
+     proof systems, J. Symbolic Logic, 44(1), (1979), pp.36-50.
+ [8] J. Krajı́ček, Bounded arithmetic, propositional logic, and complexity theory,
+     Encyclopedia of Mathematics and Its Applications, Vol. 60, Cambridge
+     University Press, (1995).
+ [9] J. Krajı́ček, Forcing with random variables and proof complexity, London
+     Mathematical Society Lecture Note Series, No. 382, Cambridge University
+     Press, (2011).
+[10] J. Krajı́ček, A reduction of proof complexity to computational complex-
+     ity for AC0 [p] Frege systems, Proceedings of the AMS, 143(11), (2015),
+     pp.4951-4965.
+[11] J. Krajı́ček, Proof complexity, Encyclopedia of Mathematics and Its Appli-
+     cations, Vol. 170, Cambridge University Press, (2019).
+
+
+
+
+                                        14
+[12] J. Krajı́ček, P. Pudlák, and A. Woods, An Exponential Lower Bound to the
+     Size of Bounded Depth Frege Proofs of the Pigeonhole principle”, Random
+     Structures and Algorithms, 7(1), (1995), pp.15-39.
+[13] T. Pitassi, P. Beame, and R. Impagliazzo, Exponential lower bounds for
+     the pigeonhole principle, Computational Complexity, 3, (1993), pp.97-308.
+[14] A. A. Razborov, Lower Bounds for the Polynomial Calculus, Computational
+     Complexity, 7(4), (1998), pp.291-324.
+
+
+
+
+                                      15
+

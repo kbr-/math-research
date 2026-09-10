@@ -1,0 +1,155 @@
+\documentclass[11pt,oneside]{report}
+\usepackage[a4paper,inner=26mm,outer=25mm,top=25mm,bottom=25mm,headheight=15pt,headsep=8mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype,booktabs,longtable,array,enumitem,multicol}
+\usepackage{xcolor,titlesec,fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{183443}
+\definecolor{teal}{HTML}{136E71}
+\definecolor{pale}{HTML}{EDF5F4}
+\definecolor{graytext}{HTML}{53616B}
+\hypersetup{hypertexnames=false,colorlinks=true,linkcolor=teal,citecolor=teal,urlcolor=teal,pdftitle={Pigeonhole Designs and Extension Elimination: A Research Compendium},pdfauthor={Research developed in conversation with ChatGPT},pdfsubject={Self-contained working lemmas, proofs, obstructions, and the route to AC0[p]-Frege lower bounds}}
+\titleformat{\chapter}[display]{\normalfont\huge\bfseries\color{ink}}{\small\sffamily\bfseries CHAPTER \thechapter}{7pt}{}
+\titlespacing*{\chapter}{0pt}{0pt}{22pt}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.65em}{}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+\setlist{nosep,leftmargin=1.6em,topsep=4pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{graytext}\nouppercase{\leftmark}}
+\fancyfoot[L]{\footnotesize\sffamily\color{graytext}PHP / EXTENSION ELIMINATION}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[L]{\footnotesize\sffamily\color{graytext}PHP / EXTENSION ELIMINATION}\fancyfoot[R]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter\quad #1}{}}
+\newtheoremstyle{research}{9pt}{5pt}{\itshape}{}{\bfseries}{.}{0.55em}{}
+\theoremstyle{research}
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{theorem}[lemma]{Theorem}
+\newtheorem{proposition}[lemma]{Proposition}
+\newtheorem{corollary}[lemma]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[lemma]{Definition}
+\newtheorem{example}[lemma]{Example}
+\newtheorem{problem}[lemma]{Open target}
+\newtheorem{imported}[lemma]{Imported input}
+\theoremstyle{remark}
+\newtheorem*{remark}{Scope}
+\newtheorem*{editorial}{Editorial clarification}
+\newtcolorbox{statusbox}{enhanced,breakable,colback=pale,colframe=teal,boxrule=0.5pt,arc=0pt,left=9pt,right=9pt,top=7pt,bottom=7pt}
+\newcommand{\F}{\mathbb F}
+\newcommand{\calF}{\mathcal F}
+\newcommand{\calG}{\mathcal G}
+\newcommand{\calB}{\mathcal B}
+\newcommand{\calE}{\mathcal E}
+\newcommand{\calR}{\mathcal R}
+\newcommand{\BB}{\overline B}
+\newcommand{\Ic}[1]{\mathcal I_{#1}}
+\newcommand{\Cc}[1]{\mathcal C_{#1}}
+\newcommand{\Jfld}{J_{\mathrm{fld}}}
+\newcommand{\Fphp}{\mathcal F_n}
+\newcommand{\PC}{\mathrm{PC}}
+\newcommand{\NS}{\mathrm{NS}}
+\newcommand{\AC}{AC^{0}[p]}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\Hilb}{Hilb}
+\DeclareMathOperator{\NF}{NF}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\ledeg}[1]{_{\le #1}}
+\newcommand{\pos}[1]{\left(#1\right)_{+}}
+\newcommand{\chapterintro}[1]{\begin{statusbox}#1\end{statusbox}}
+\begin{document}
+\begin{titlepage}
+\color{ink}
+\vspace*{14mm}
+{\small\sffamily\bfseries RESEARCH COMPENDIUM\par}
+\vspace{11mm}
+{\fontsize{31}{36}\selectfont\bfseries Pigeonhole Designs\par and Extension\par Elimination\par}
+\vspace{8mm}
+{\Large Working lemmas, proofs, and obstructions\par}
+\vspace{5mm}
+{\large Toward superpolynomial $\AC$-Frege lower bounds\par}
+\vspace{15mm}
+\begin{statusbox}
+\textbf{What this document contains.} A consolidated mathematical record of the independent work developed in this conversation: the corrected low-degree algebra, generic annihilators, nonlinear liftings, polynomial-calculus elimination, nested and core/residual batching, exact decomposition optimization, and the remaining proof obligations.\par
+\textbf{Current endpoint.} The static decomposition criterion is optimized, and an explicit admissible family defeats its affordable-budget target. The next missing theorem is refutation-sensitive elimination for PHP. No superpolynomial Frege lower bound is claimed here.
+\end{statusbox}
+\vfill
+{\large Compiled 10 September 2026\par}
+\vspace{4mm}
+{\small\color{graytext}Source: the research conversation and its eleven computational supplements.\par Published inputs are attributed separately. Working proofs are not represented as independently refereed results.}
+\end{titlepage}
+\pagenumbering{roman}
+\chapter*{How to read this record}
+\addcontentsline{toc}{chapter}{How to read this record}
+This is a mathematical consolidation, not a transcript and not a claim that the payoff has been achieved. It begins with the independent work undertaken after the initial uploaded research report. The report's older assertions are not silently imported as theorems; the corrections and changes of direction relevant to this conversation are recorded in Appendix~\ref{app:ledger}.
+
+Each lemma supplies its assumptions and a proof of the claim made here. Repeated arguments have been factored into reusable preliminary lemmas; references between chapters are internal to this document. Results inherited from the literature are explicitly marked \emph{Imported input}. Their original proofs are not reproduced or claimed as our work. Statements involving the published PHP lower bound are conditional on the encoding match spelled out in Chapter~\ref{ch:route}.
+
+\textbf{Status convention.} Unless marked imported or open, the results below are the \emph{working derivations obtained in the conversation}. Typesetting them as lemmas records their mathematical content; it does not certify novelty, independent verification, or a machine-checked general proof. A complete audit of the proof transformations remains an explicit obligation. The computational supplements establish only the finite checks described in their scope notes.
+
+\textbf{Three separations matter throughout.} The non-Boolean graded ring $\BB$ is not the Boolean PHP ring. A design annihilating bounded-degree original-axiom multiples need not annihilate all bounded-degree polynomial-calculus consequences. Finally, generic linear restrictions are not the full leveled extension systems produced by a Frege simulation. None of these distinctions is erased by the notation.
+
+\textbf{Degree convention.} An extension axiom retains its original degree in old and new variables. Specialization or Boolean reduction may lower the degree of its image, but does not retroactively enlarge the set of allowed multipliers in the original degree-$D$ design. Zero polynomials are omitted wherever a degree is used.
+
+\textbf{Editorial changes.} Definitions, finite-dimensional duality, and degree-nonincreasing reductions are made explicit so the proofs can be followed without earlier messages. Conservative versus sharper degree bounds are identified. No missing global compatibility or simulation-transfer theorem has been supplied by assumption without being labeled.
+
+\clearpage
+\section*{The argument at a glance}
+\begin{longtable}{@{}L{0.26\textwidth}L{0.67\textwidth}@{}}
+\toprule
+Branch & Endpoint and limitation\\\midrule
+Graded algebra & Koszul vanishing and the initial Hilbert function hold in the proved range $2d-1\le n$. The originally proposed range $d<n$ is false.\\
+Generic restrictions & A determinant functional survives $t$ generic restrictions when $t+2d-1\le n$. This concerns the non-Boolean ring only.\\
+Exact liftings & Reweighting, factor packing, shared conditioning, base-aware substitutions, and supported moment corrections give explicit constructions with stated budgets.\\
+PC elimination & Blocks can be eliminated at additive degree cost. Equal spans, nested spans, and nested cores with low-rank residuals can be batched more cheaply.\\
+Decomposition & For affine data the current cost criterion is exactly optimizable. There are polynomial-size admissible families whose optimum still exceeds $n/2$.\\
+Remaining theorem & Use the actual translated Nullstellensatz refutation and PHP structure to obtain a base PC refutation below the available linear-degree threshold.\\\bottomrule
+\end{longtable}
+\section*{Notation quick reference}
+\begin{tabular}{@{}L{0.22\textwidth}L{0.71\textwidth}@{}}
+$\BB$ & Non-Boolean column-exclusive ring with equal row sums.\\[4pt]
+$\mathcal F_n$ & Boolean linear-row PHP axioms, without row exclusion.\\[4pt]
+$\mathcal I_D$ & Span of original-axiom multiples of total degree at most $D$.\\[4pt]
+$\mathcal C_D$ & Polynomial-calculus consequences derivable within degree $D$.\\[4pt]
+$h,\ \delta,\ D$ & Extension accuracy, maximum input degree, and target proof degree.\\[4pt]
+$B,\ T$ & Required base degree and polynomial-substitution degree inflation.\\
+\end{tabular}
+
+\textbf{Reading paths.} Chapters 1--2 contain the graded-algebra branch. Chapters 3--6 develop explicit functionals and their limitations. Chapters 7--9 give the current proof-elimination route and its decomposition obstruction. Chapter 10 states the remaining goal and risk-ordered proof obligations; Appendix C provides a compact budget reference.
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{01_foundations.tex}
+\input{02_graded.tex}
+\input{03_reweighting.tex}
+\input{04_packing.tex}
+\input{05_baseaware.tex}
+\input{06_moments.tex}
+\input{07_elimination.tex}
+\input{08_batching.tex}
+\input{09_decomposition.tex}
+\input{10_route.tex}
+\appendix
+\titleformat{\chapter}[display]{\normalfont\huge\bfseries\color{ink}}{\small\sffamily\bfseries APPENDIX \thechapter}{7pt}{}
+\input{11_appendices.tex}
+\begin{thebibliography}{9}
+\addcontentsline{toc}{chapter}{References}
+\bibitem{BIKPRS} S. R. Buss, R. Impagliazzo, J. Kraj\'i\v{c}ek, P. Pudl\'ak, A. A. Razborov, and J. Sgall. \emph{Proof complexity in algebraic systems and bounded depth Frege systems with modular counting}. Computational Complexity 6(3), 256--298, 1996/1997. The simulation used here is cited through Kraj\'i\v{c}ek's Theorem 5.2 below.
+\bibitem{Krajicek} J. Kraj\'i\v{c}ek. \emph{Extended Nullstellensatz proof systems}. arXiv:2301.10617v3, 2023. Definition 2.1, Lemma 4.1, and Theorem 5.2. \href{https://arxiv.org/abs/2301.10617}{arXiv record}.
+\bibitem{Razborov} A. A. Razborov. \emph{Lower bounds for the polynomial calculus}. Computational Complexity 7, 291--324, 1998. DOI: 10.1007/s000370050013. \href{https://doi.org/10.1007/s000370050013}{Publisher record}.
+\bibitem{Pebbling} S. F. de Rezende, O. Meir, J. Nordstr\"om, and R. Robere. \emph{Nullstellensatz Size-Degree Trade-offs from Reversible Pebbling}. arXiv:2001.02481; preliminary version, CCC 2019. Theorem 3.1 and the Carlson--Savage graph discussion. \href{https://arxiv.org/abs/2001.02481}{arXiv record}.
+\end{thebibliography}
+\end{document}

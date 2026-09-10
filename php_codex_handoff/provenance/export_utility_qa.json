@@ -1,0 +1,148 @@
+{
+  "scope": "Export utilities and format preservation only. No original research suite run.",
+  "elapsed_s": 5.169814699999961,
+  "results": [
+    {
+      "test": "syntax",
+      "file": "import_references.py",
+      "passed": true
+    },
+    {
+      "test": "syntax",
+      "file": "rebuild_markdown.py",
+      "passed": true
+    },
+    {
+      "test": "syntax",
+      "file": "run_check.py",
+      "passed": true
+    },
+    {
+      "test": "syntax",
+      "file": "timing.py",
+      "passed": true
+    },
+    {
+      "test": "syntax",
+      "file": "verify_bundle.py",
+      "passed": true
+    },
+    {
+      "test": "command",
+      "argv": [
+        "tools/import_references.py",
+        "--list"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.6158185720000802,
+      "stdout": "BIKPRS: Proof complexity in algebraic systems and bounded depth Frege systems with modular counting\n  https://doi.org/10.1007/BF01294258\n  Read: Original size-to-degree simulation, traced through Krajicek Theorem 5.2\nKrajicek: Extended Nullstellensatz proof systems\n  https://arxiv.org/abs/2301.10617v3\n  Read: Definition 2.1; Lemma 4.1; Theorem 5.2\nRazborov: Lower bounds for the polynomial calculus\n  https://doi.org/10.1007/s000370050013\n  Read: Algebraic PHP polynomial-calculus degree lower bound; Exact axioms and residual instances\nPebbling: Nullstellensatz Size-Degree Trade-offs from Reversible Pebbling\n  https://arxiv.org/abs/2001.02481\n  Read: Theorem 3.1; Carlson\u2013Savage graph discussion and single-sink family\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "test": "command",
+      "argv": [
+        "tools/run_check.py",
+        "--list"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.5872030080000741,
+      "stdout": "A01 annihilating_functional_checks -> check_generic_functional.py\nA02 ens_lifting_checks -> ens_lifting_checks/verify_lifting.py\nA03 factor_packing_lift_checks -> factor_packing_lift_checks/checks.py\nA04 shared_conditioning_packing_checks -> shared_conditioning_packing/check_packing.py\nA05 base_aware_lifting_checks -> base_aware_lifting_checks/check.py\nA06 joint_moment_lifting_checks -> joint_moment_lifting/checks.py\nA07 two_block_lifting_checks -> checks.py\nA08 batch_lifting_attack_checks -> batch_lifting_attack/check_prefix_certificate.py\nA09 nested_batch_elimination_checks -> check_chain.py\nA10 core_residual_batch_elimination_checks -> check_residual_batch.py\nA11 decomposition_optimization_checks -> decomposition_attack/check_decomposition.py\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "test": "command",
+      "argv": [
+        "tools/run_check.py",
+        "--suite",
+        "A11",
+        "--prepare-only",
+        "--workers",
+        "1"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.6247041330000229,
+      "stdout": "{\n  \"suite\": \"A11\",\n  \"entry\": \"decomposition_attack/check_decomposition.py\",\n  \"work_directory\": \".runs/20260910T180410-826152-A11\",\n  \"command\": [\n    \"/opt/pyvenv/bin/python\",\n    \"/mnt/data/php_codex_handoff/.runs/20260910T180410-826152-A11/decomposition_attack/check_decomposition.py\"\n  ],\n  \"workers\": 1,\n  \"adaptations\": [\n    {\n      \"file\": \"decomposition_attack/check_decomposition.py\",\n      \"original_sha256\": \"9dde18b4fbbba1b5124205e4bf5f8f4188801b035ef9015321ecc1f7d0835048\",\n      \"copy_sha256\": \"290912eda4cfdf8e4e3b67fbb60922cf68d1a31164ce0325cf129508480b4e25\",\n      \"absolute_path_remapped\": false,\n      \"worker_pools_capped\": 1\n    }\n  ],\n  \"status\": \"prepared\",\n  \"note\": \"A new run; original archived results unchanged. This run is not a proof of general theorem validity.\",\n  \"elapsed_s\": 0.0\n}\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "test": "command",
+      "argv": [
+        "tools/timing.py",
+        "start",
+        "export-utility-smoke"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.6227798130000792,
+      "stdout": "logs/export-utility-smoke.jsonl\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "test": "command",
+      "argv": [
+        "tools/timing.py",
+        "phase",
+        "export-utility-smoke",
+        "reading",
+        "--note",
+        "Synthetic logger test, not research reading"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.6542166130000169,
+      "stdout": "",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "test": "command",
+      "argv": [
+        "tools/timing.py",
+        "run",
+        "export-utility-smoke",
+        "--category",
+        "local_processing",
+        "--",
+        "/opt/pyvenv/bin/python",
+        "-c",
+        "print(\"timing utility smoke: success\")"
+      ],
+      "returncode": 0,
+      "elapsed_s": 1.441021051000007,
+      "stdout": "timing utility smoke: success\n\nExit 0; log: logs/export-utility-smoke-7499c3a72e.output.txt\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "test": "command",
+      "argv": [
+        "tools/timing.py",
+        "report",
+        "export-utility-smoke",
+        "--stop"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.6161661170000343,
+      "stdout": "{\n  \"total_instrumented_s\": 2.701840168999979,\n  \"exclusive_categories_s\": {\n    \"preparation\": 0.6837518890000638,\n    \"reading\": 1.1982754919998797,\n    \"local_processing\": 0.8198127880000357\n  },\n  \"command_runs\": 1,\n  \"failed_or_timed_out_commands\": 0,\n  \"unfinished_commands\": 0,\n  \"scope\": \"Reading phases include interpretation; reasoning_writing is a designated phase, not an internal cognition timer. Network/tool windows include server and orchestration latency. Final-answer generation after the snapshot is excluded.\"\n}\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "test": "source-byte-equality",
+      "files": 12,
+      "passed": true
+    },
+    {
+      "test": "machine-readable-proof-count",
+      "proofs": 68,
+      "records": 74,
+      "passed": true
+    },
+    {
+      "test": "all-archive-filenames-retained-in-markdown",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+<!-- Generated from ../latex/02_graded.tex. Do not silently edit this reading copy. -->
+
+<a id="ch-graded"></a>
+
+# 2. The graded branch: corrected vanishing and generic survival
+
+> This branch is a result about $\overline B$, before Boolean equations are imposed. It supplies the corrected form of item (a), a weak restriction count, and an explicit generic annihilator. It does not by itself solve the extension-system problem.
+
+## The original range fails
+
+For linear forms $\rho_1,\ldots,\rho_m$ in $S_{m,n}$, grade the Koszul complex by $$K_i(\rho;S)_j=S_{j-i}\otimes_k\bigwedge^i k^m.$$ Give $x_{ab}$ and the $a$th exterior generator row degree $\varepsilon_a$. Its differential preserves this finer grading.
+
+<a id="lem-koszul-counter"></a>
+
+### Lemma 2.1: A characteristic-free counterexample
+
+For $n=4,m=5$, the row multidegree $\alpha=(1,1,1,0,0)$ satisfies $$H_1(\rho_1,\ldots,\rho_5;S_{5,4})_\alpha\ne0.$$ Thus the statement $H_i(\rho;S)_j=0$ for every $i\ge1$ and $j<n$ is false over every field.
+
+**Proof.** The strand has dimensions $$0\longrightarrow k\xrightarrow{\partial_3}k^{12}
+ \xrightarrow{\partial_2}k^{36}
+ \xrightarrow{\partial_1}k^{24}\longrightarrow0.$$ The counts are respectively $1$, $3\cdot4$, $3\cdot4\cdot3$, and $4\cdot3\cdot2$: active rows remaining in the coefficient monomial must use distinct columns. The image of the unique top exterior basis element is $\rho_1e_2\wedge e_3-\rho_2e_1\wedge e_3+\rho_3e_1\wedge e_2$, which is nonzero. Hence $\mathop{\mathrm{rank}}\partial_3=1$ and $\mathop{\mathrm{rank}}\partial_2\le11$. But $\dim\ker\partial_1\ge36-24=12$, giving $\dim H_1\ge1$. The internal degree is $3<4$. *End of proof.*
+
+## A multigraded vanishing lemma
+
+<a id="lem-multigraded"></a>
+
+### Lemma 2.2: Vanishing with active-row control
+
+Let $S_{r,N}$ have $r$ rows and $N$ columns, let $\sigma_a$ be its row sums, and suppose $\alpha_a>0$ for all $a$. Put $q=\sum_a\alpha_a$. For $i\ge1$, $$\boxed{N\ge q+r-i\quad\Longrightarrow\quad
+ H_i(\sigma;S_{r,N})_\alpha=0.}$$
+
+**Proof.** Write $T=S_{r,N-1}$ and $C_r=k[y_1,\ldots,y_r]/(y_ay_b:a\ne b)$ for the final column. There is an exact sequence <a id="eq-axis-exact"></a>
+
+$$\label{eq:axis-exact}
+ 0\longrightarrow C_r\longrightarrow\bigoplus_{a=1}^r k[y_a]
+ \longrightarrow k^{r-1}\longrightarrow0.$$ The first map restricts to the coordinate axes; its image consists of tuples with equal constant terms. The last map takes differences of those constants.
+
+Tensor with $T$. Let $\sigma'_b$ be a row sum on the first $N-1$ columns. On the middle summand $T[y_a]$, the full row sum acts as $\sigma'_b+\delta_{ab}y_a$; on the final $T^{r-1}$ it acts as $\sigma'_b$. Thus [Equation eq:axis-exact](02_graded.md#eq-axis-exact) induces an exact sequence of Koszul complexes.
+
+On $T[y_a]$, the element $\sigma'_a+y_a$ is monic in $y_a$ and is a nonzerodivisor. Its two-term Koszul complex resolves the quotient $T[y_a]/(\sigma'_a+y_a)\cong T$. Tensoring the other, free Koszul factors and taking homology identifies this middle summand with the Koszul complex on $\sigma'_b$, $b\ne a$, over $T$.
+
+Abbreviate $H_i^{r,N}(\alpha)=H_i(\sigma;S_{r,N})_\alpha$. The resulting long exact sequence contains <a id="eq-rowinduction"></a>
+
+$$\label{eq:rowinduction}
+ (H_{i+1}^{r,N-1}(\alpha))^{r-1}
+ \longrightarrow H_i^{r,N}(\alpha)
+ \longrightarrow\bigoplus_a H_i(\sigma'_b:b\ne a;T)_\alpha.$$ Fix a row $a$ in the right-hand term. Its row sum has been omitted, so the differential does not change the row-$a$ part $\mu$ of a coefficient monomial. This monomial has degree $\alpha_a$ and occupies $s(\mu)\le\alpha_a$ columns. All other rows must avoid those columns. Consequently $$H_i(\sigma'_b:b\ne a;T)_\alpha
+ \cong\bigoplus_{\deg\mu=\alpha_a}
+ H_i^{r-1,N-1-s(\mu)}(\alpha_{\widehat a}).$$ Repeated powers and repeated use of a row are allowed in this decomposition.
+
+Induct on $r$, and, at fixed $r$, downwards on $i$. For one row the ring is a polynomial ring and its nonzero row sum is a nonzerodivisor; homology above index one is automatically zero. Zero-row strands also have no positive homology. If $N\ge q+r-i$, the left term of [Equation eq:rowinduction](02_graded.md#eq-rowinduction) vanishes by downward induction since $N-1\ge q+r-(i+1)$. Each right summand vanishes because $$N-1-s(\mu)\ge(q-\alpha_a)+(r-1)-i.$$ Exactness forces the middle term to vanish. *End of proof.*
+
+<a id="cor-koszul"></a>
+
+### Corollary 2.3: Corrected item (a): Koszul range
+
+For any number of rows and $n$ columns, $$H_i(\rho;S_{m,n})_j=0
+ \quad\text{if }i\ge1\text{ and }2j-1\le n.$$
+
+**Proof.** A row multidegree of total degree $j$ has at most $r\le j$ positive coordinates. Rows with zero coordinate cannot occur in a coefficient monomial or an exterior generator, so the strand is the $r$-row strand of [Lemma 2.2](02_graded.md#lem-multigraded). Since $j+r-i\le2j-1$, that lemma applies. Sum over all row multidegrees. *End of proof.*
+
+<a id="lem-hilbert"></a>
+
+### Lemma 2.4: Initial Hilbert function and $z$-injectivity
+
+For $m=n+1$ and $0\le d\le\lfloor(n+1)/2\rfloor$, $$\boxed{\dim_k\overline B_d=\binom nd n^d.}$$ For $1\le d\le\lfloor(n+1)/2\rfloor$, multiplication by $z$ maps $\overline B_{d-1}$ injectively into $\overline B_d$. In particular, $z^d\ne0$ in this range. No characteristic restriction is needed.
+
+**Proof.** Put $\ell_i=\rho_i-\rho_1$ for $i\ge2$. An invertible change of generators identifies $K(\rho;S)$ with $K(\ell,z;S)$. Appending $z$ is the mapping cone of multiplication by $z$ on $K(\ell;S)$. Its long exact sequence contains $$H_i(\ell;S)_{d-1}\xrightarrow{z}H_i(\ell;S)_d
+ \longrightarrow H_i(\rho;S)_d
+ \longrightarrow H_{i-1}(\ell;S)_{d-1}.$$ Starting at internal degree zero, [Corollary 2.3](02_graded.md#cor-koszul) and induction on $d$ give $H_i(\ell;S)_d=0$ for every $i\ge1$ in the stated range.
+
+One column has Hilbert series $1+mt/(1-t)=(1+(m-1)t)/(1-t)$. Independent columns tensor, hence $$\mathop{\mathrm{Hilb}}_S(t)=\frac{(1+nt)^n}{(1-t)^n}.$$ The Euler series for the Koszul complex on the $n$ row differences is $(1-t)^n\mathop{\mathrm{Hilb}}_S(t)=(1+nt)^n$. Positive homology vanishes in the range under consideration, so its coefficients there equal those of $H_0=\overline B$. This gives the Hilbert function. Finally the long exact sequence has $H_1(\rho;S)_d\to\overline B_{d-1}\xrightarrow{z}\overline B_d$; its first term is zero. Since $\overline B_0=k$, repeated injectivity proves $z^d\ne0$. *End of proof.*
+
+<a id="lem-weakcount"></a>
+
+### Lemma 2.5: The weak restriction count is automatic
+
+Let $L_1,\ldots,L_t$ be arbitrary linear forms in $\overline B$. In the range of [Lemma 2.4](02_graded.md#lem-hilbert), $$\dim(\overline B/(L_1,\ldots,L_t))_d
+ \ge \binom n{d-1}n^{d-1}
+ \left(\frac{n(n-d+1)}d-t\right).$$ In particular this dimension is positive for $t<n$ and $1\le d\le\lfloor(n+1)/2\rfloor$.
+
+**Proof.** The generated degree-$d$ subspace is the image of $\overline B_{d-1}^{\oplus t}\to\overline B_d$, $(h_s)\mapsto\sum_sL_sh_s$. Its rank is at most $t\dim\overline B_{d-1}$. Subtract and use the ratio $\dim\overline B_d/\dim\overline B_{d-1}=n(n-d+1)/d\ge n$. *End of proof.*
+
+<a id="lem-affinefeasibility"></a>
+
+### Lemma 2.6: Affine feasibility and its quadratic form
+
+For linear forms $L_1,\ldots,L_t$, the following are equivalent: $$z^d\notin(L_1,\ldots,L_t)\overline B,\qquad
+ \exists\lambda:\overline B_d\to k:\ 
+ \lambda(z^d)=1,\quad \lambda(L_s\overline B_{d-1})=0.$$ At $d=2$, this is equivalent to a symmetric bilinear form $B$ on $\overline B_1$ such that $$B(x_{ij},x_{i'j})=0\ (i\ne i'),\qquad
+ L_s\in\mathop{\mathrm{rad}}B,\qquad B(z,z)=1.$$
+
+**Proof.** The first equivalence is finite-dimensional separation of the degree-$d$ relation image from $z^d$. At degree two, a functional on the symmetric square of $\overline B_1$ is the same as a symmetric bilinear form via $B(v,w)=\lambda(vw)$, including in characteristic two. It descends to $\overline B_2$ exactly when it kills the column-exclusion quadratics. Killing the $L_s$ multiples is exactly the radical condition, and normalization is $B(z,z)=1$. *End of proof.*
+
+## The generic annihilating functional
+
+<a id="lem-special-columns"></a>
+
+### Lemma 2.7: A special maximal-rank restriction family
+
+Suppose $t+2d-1\le n$. Let $\sigma_s=\sum_i x_{is}$ be the sums of the first $t$ columns. Then $$H_i(\ell_2,\ldots,\ell_{n+1},\sigma_1,\ldots,\sigma_t;S)_j=0
+ \quad(i\ge1,\ j\le d),$$ and $z^d$ survives the quotient by these linear forms.
+
+**Proof.** In one column $C_m$, multiplication by $\sigma=\sum_i y_i$ is injective: write an element uniquely as a constant plus $\sum_i f_i(y_i)$ with $f_i(0)=0$ and compare the separate-axis monomials in its product with $\sigma$. Moreover $$C_m/(\sigma)\cong k\oplus V,\qquad \dim V=m-1,\qquad V^2=0,$$ because $\sigma y_i=0$ forces $y_i^2=0$. The different $\sigma_s$ are in separate tensor factors and form a regular sequence. The quotient is $$T=S_{m,n-t}\otimes Q,\qquad Q=(k\oplus V)^{\otimes t}.$$ In $T$, a full row sum is $\rho'_i+u_i$ with $\rho'_i$ on the remaining columns and $u_i\in Q_1$. Filter its Koszul complex by $Q$-degree. The part preserving that degree is the row-sum complex on $S_{m,n-t}$, tensored with a graded piece of $Q$. By [Corollary 2.3](02_graded.md#cor-koszul) it has zero positive homology through degree $d$.
+
+For completeness, a positive-index cycle can be killed by taking its lowest $Q$-degree part, writing that part as a boundary in the associated graded complex, subtracting the corresponding full boundary, and repeating. At fixed total degree the filtration is finite. This proves positive homology vanishing for the full row sums in $T$, equivalently for $(\rho,\sigma)$ in $S$.
+
+Replace $\rho$ by $(\ell,z)$ and use the mapping-cone argument from [Lemma 2.4](02_graded.md#lem-hilbert). It proves both vanishing for $(\ell,\sigma)$ and injectivity of $z$ in its quotient through degree $d$. The degree-zero quotient is $k$, so $z^d$ survives. *End of proof.*
+
+<a id="thm-generic"></a>
+
+### Theorem 2.8: Generic survival with an explicit determinant
+
+For $t+2d-1\le n$, there is a nonzero polynomial $\Delta$ in the coefficients of $t$ linear forms $L_s$ such that, whenever $\Delta\ne0$, a functional $\lambda:\overline B_d\to k$ satisfies $$\lambda(z^d)=1,\qquad
+ \lambda(L_su)=0\quad(s\le t,\ u\in\overline B_{d-1}).$$ The nonvanishing locus contains a specified $k$-rational point: the first $t$ column sums.
+
+**Proof.** In the monomial basis of $S_d$, let $A(C)$ have columns $\ell_i\mu$ and $L_s(C)\mu$, for every degree-$(d-1)$ basis monomial $\mu$. Let $v$ be the coordinate vector of $\rho_1^d$. At the column-sum array $C_0$, put $r=\mathop{\mathrm{rank}}A(C_0)$. By [Lemma 2.7](02_graded.md#lem-special-columns), $v\notin\mathop{\mathrm{im}}A(C_0)$.
+
+Let $B(C)$ be the preceding Koszul differential into the domain of $A(C)$. The chain identity gives $A(C)B(C)=0$. At $C_0$, exactness at this domain gives $$\mathop{\mathrm{rank}}A(C_0)+\mathop{\mathrm{rank}}B(C_0)=\dim K_{1,d}.$$ Over $k(C)$ both ranks are at least their specialized values, because a minor nonzero at $C_0$ is a nonzero polynomial. Their sum can never exceed $\dim K_{1,d}$. Neither can increase, so the generic rank of $A$ is $r$, and every specialization has rank at most $r$.
+
+Choose $r$ columns $J$ of $A(C_0)$ that are independent, then $r+1$ row positions $R$ such that $$\Delta(C)=\det[\,A(C)_{R,J}\mid v_R\,]$$ is nonzero at $C_0$. For a degree-$d$ polynomial $f$ define <a id="eq-detfunctional"></a>
+
+$$\label{eq:detfunctional}
+ \lambda_C([f])=
+ \frac{\det[\,A(C)_{R,J}\mid [f]_R\,]}{\Delta(C)}.$$ It is linear in $f$ and takes value one on $v$. When $\Delta(C)\ne0$, the selected $r$ columns span the entire relation image, since its rank is at most $r$. Substituting any relation into the last column makes the numerator zero. Thus the functional descends through all the required relations. *End of proof.*
+
+<a id="cor-affinegeneric"></a>
+
+### Corollary 2.9: Affine design from the homogeneous witness
+
+For $f=\sum_{e=0}^df_e$ with homogeneous $f_e$, the formula $$\Lambda_C(f)=\lambda_C\left(\sum_{e=0}^dz^{d-e}f_e\right)$$ is normalized and annihilates all degree-at-most-$d$ multiples of column exclusion, $\rho_i-1$, and the chosen $L_s=0$ equations.
+
+**Proof.** Homogenize to degree $d$. A row-normalization multiple contains $\rho_i-z$, zero in $\overline B$; a restriction multiple lies in the relation image of [Theorem 2.8](02_graded.md#thm-generic); column products are already zero. The constant one homogenizes to $z^d$. *End of proof.*
+
+<a id="lem-linearobstructions"></a>
+
+### Lemma 2.10: Why genericity and dimension are insufficient
+
+One unrestricted form can kill the target: $L_1=z$ implies $z^d=0$ in the quotient. Even excluding $z$ from the linear span of the restrictions does not suffice. For $n\ge2$, take $$L_1=z-x_{11},\qquad L_2=z-x_{21}.$$ Their span does not contain $z$, but $z^2\in(L_1,L_2)\overline B$.
+
+**Proof.** The first assertion is $z^d=L_1z^{d-1}$. For the second, $$zL_1+x_{11}L_2=z^2-x_{11}x_{21}=z^2.$$ To check the linear-span claim, compare coefficients modulo the row-difference subspace: within each row a combination of row sums has equal coefficients in every column. A combination $a(z-x_{11})+b(z-x_{21})=z$ would force the column-1 coefficient deviations in the first two rows to be zero, hence $a=b=0$, after which $z=0$ would be required in degree one. But [Lemma 2.4](02_graded.md#lem-hilbert) gives $z\ne0$. *End of proof.*
+
+<a id="scope"></a>
+
+##### Scope
+
+A nonzero $\Delta$ over $\mathbb F_p$ need not be nonzero on every constrained family of $\mathbb F_p$-points. The known good point $C_0$ need not lie in the coefficient family arising from an extension construction. The surviving quotient can be large while its distinguished element has already died. These facts are why the later chapters change the object being constructed.
