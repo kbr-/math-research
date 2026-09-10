@@ -57,6 +57,8 @@ def main():
     forbidden = ['.codex-session-id', 'php_codex_handoff.zip']
     failures += ['Machine-local or redundant file tracked: ' + name for name in forbidden if name in tracked]
     for name in tracked:
+        if name == '.codex/config.toml':
+            continue  # Shared project defaults; all other Codex state stays local.
         if name.startswith(('.resource-runtime/', '.codex/', '.agents/', 'research/tmp/', 'research/logs/', 'private/')) or '__pycache__/' in name:
             failures.append('Runtime or scratch file tracked: ' + name)
     modes = subprocess.check_output(['git', 'ls-files', '--stage', '-z'], cwd=ROOT, text=True).split('\0')
