@@ -12,6 +12,12 @@ guide to the authoritative initial sections of `notebook.html`. Keep
 belong in `research/` (or another appropriate directory outside the handoff).
 Use targeted source excerpts rather than repeatedly importing the full manuscript.
 
+Keep the research framework itself small and usable. Before adding guidance,
+revise or consolidate existing rules; keep each rule in one authoritative place
+and link to it elsewhere. Remove obsolete or repetitive instructions as the
+framework evolves, while preserving explicit user constraints. Prefer a short,
+actionable rule over another checklist or a record of one-off setup history.
+
 ## Portable sessions and Git checkpoints
 
 - Commit research checkpoints locally, but **leave every Git push and public
