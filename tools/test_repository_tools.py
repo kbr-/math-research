@@ -110,5 +110,40 @@ class RepositoryTools(unittest.TestCase):
             module.archive(journal)
 
 
+class ProvenanceTools(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix='math-provenance-')
+        self.root = Path(self.temp.name) / 'repo'
+        self.root.mkdir()
+        spec = importlib.util.spec_from_file_location('record_provenance', ROOT / 'tools/record-provenance.py')
+        self.module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.module)
+        self.module.ROOT = self.root
+        (self.root / 'sample.bin').write_bytes(b'abc')
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def test_known_hash_and_portable_manifest(self):
+        result = self.module.record([Path('sample.bin')], Path('result.json'), 'sample')
+        self.assertEqual(result, {
+            'schema': 1, 'session': 'sample',
+            'files': [{'path': 'sample.bin', 'bytes': 3,
+                       'sha256': 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'}]})
+        self.assertEqual(json.loads((self.root / 'result.json').read_text()), result)
+
+    def test_existing_evidence_and_outside_paths_are_protected(self):
+        self.module.record([Path('sample.bin')], Path('result.json'))
+        before = (self.root / 'result.json').read_bytes()
+        with self.assertRaises(FileExistsError):
+            self.module.record([Path('sample.bin')], Path('result.json'))
+        self.assertEqual((self.root / 'result.json').read_bytes(), before)
+        with self.assertRaises(ValueError):
+            self.module.record([Path('../outside.bin')], Path('other.json'))
+        with self.assertRaises(ValueError):
+            self.module.record([Path('sample.bin')], Path('../outside.json'))
+        self.assertFalse((Path(self.temp.name) / 'outside.json').exists())
+
+
 if __name__ == '__main__':
     unittest.main()

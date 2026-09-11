@@ -187,6 +187,9 @@ run paths to preserve accepted earlier results. Prefer structured formats suited
 to the data, and stream/chunk generation, saving, copying, and hashing so a large
 file does not require a correspondingly large RAM allocation. These operations
 still obey the combined memory and CPU budget.
+Use `tools/record-provenance.py --out MANIFEST FILE...` for shared path/size/hash
+metadata; `--session TURN` records its timing-session label. It streams files,
+rejects changing inputs, and refuses to replace an existing manifest.
 
 ## Timing export and evidence archival
 
