@@ -12,7 +12,8 @@
 <section id="where-we-stand">
   <h2>Where we stand</h2>
   <p><strong>The goal is still open.</strong> We have working proofs for eliminating extension blocks and batching blocks with nested spans or suitable nested cores. These produce genuine polynomial-calculus (PC) refutations with explicit degree bounds.</p>
-  <p>The static affine batching criterion is fully optimized and cannot afford the spread geometry. A <a href="#overlap-removable-spread">PHP restriction handles one embedding</a> without increasing degree, but <a href="#resistant-existence">other embeddings resist constant normalization under every small matching</a>. We have an explicit seven-hole resistant example with 392 checked witnesses. Input ranks and intersections alone do not establish coverage.</p>
+  <p>We now have a <a href="#polynorm-transfer">polynomial coefficient substitution theorem</a> and a <a href="#polynorm-collision-pairs">collision-pair family whose entire extension layer disappears without increasing PC or NS degree</a>. Every partial matching leaves some block outside the constant-normalization criterion. Thus polynomial substitutions genuinely enlarge the usable methods.</p>
+  <p>The static affine criterion cannot afford the spread geometry. <a href="#resistant-existence">Some embeddings resist every small matching</a>, and the saved seven-hole example also <a href="#polynorm-spread-checks">excludes affine normalizers with degree-two base certificates</a>. Higher-degree certificates and direct annihilation of companion products remain available; input ranks and intersections alone do not establish coverage.</p>
   <p>The <a href="#entry-2026-09-11-mp-composition">local MP certificates</a> and <a href="#entry-2026-09-11-implication-boundary">one-block boundary transfers</a> are explicit. We now also have <a href="#overlap-target-batch">batching modulo boundary annihilators</a> and an <a href="#overlap-matching-rigidity">exact low-degree affine annihilator theorem for PHP matching weights</a>. Affordable global coverage, shared boundaries, and accumulated elimination cost remain the main gap.</p>
   <p>All four references were imported during the source audit, and the base/residual PC lower-bound match and simulation parameters have been checked. A focused audit found no gap in the central elimination arguments; this is not a formal verification of the entire manuscript. Unused certificate blocks can be pruned for free, but we do not yet know how to handle all the essential blocks affordably.</p>
   <div class="result">
@@ -26,7 +27,7 @@
   <h2>The remaining route</h2>
   <div class="eyebrow">Highest risk first</div>
   <ol>
-    <li><strong>Prove affordable global restriction/elimination or joint-design existence.</strong> Exploit the actual refutation and PHP structure to stay below the base or residual threshold. Small-matching constant normalization fails for some admissible data; a successful route needs additional structure, larger restrictions, or richer substitutions.</li>
+    <li><strong>Prove affordable global restriction/elimination or joint-design existence.</strong> Exploit the actual refutation and PHP structure to stay below the base or residual threshold. Small-matching normalization and the cheapest polynomial normalization fail on some admissible data. Supplied normalization certificates suffice, but their affordable existence is unproved.</li>
     <li><strong>Cover the actual Frege simulation outputs.</strong> Identify compatible proof regions and substitutions covering nonlinear inputs, later dependent blocks, all companions, shared boundaries, and leaf translations. A favorable affine spread embedding or balanced proof height alone does not establish these hypotheses.</li>
     <li><strong>Complete the proof-level audit.</strong> Check the remaining quotient variants and any new composition rule, preserving original axiom degrees, freshness, bounded field reductions, and reuse of derived PC polynomials.</li>
     <li><strong>Formalize the ordinary-PHP transfer.</strong> Convert a hypothetical short ordinary-PHP refutation to our exact Boolean linear-row base with bounded-depth and polynomial-size overhead. Do not silently add same-row exclusions.</li>
@@ -36,8 +37,8 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Examine <strong>polynomial coefficient normalization</strong>: use explicit bounded-degree witnesses that a block's inputs cannot all vanish, allowing its coefficient variables to become old polynomials.</p>
-  <p>Test a structured family indexed by collision pairs. Determine whether literal matching restrictions fail for that family while a cheap algebraic substitution succeeds, retaining original companion degrees and the distinction between PC reuse and NS coefficients.</p>
+  <p>Test <strong>direct companion annihilation</strong>. A substitution only has to make each \(g_iP\) a cheap base consequence; forcing an entire factor of \(P\) to be a base consequence was a stronger requirement.</p>
+  <p>Start with affine inputs, one factor, and affine coefficient substitutions over \(\mathbb F_2\). Set up the exact linear conditions \(g_i(1-\sum_j\beta_jg_j)\in\mathcal C_3(\mathcal F_n)\), keeping PC closure distinct from the original-axiom span. Determine whether this handles the saved spread or yields a sharper obstruction.</p>
 </section>
 
 <section id="working-context">
@@ -110,6 +111,8 @@
     The original proof is replayed at every stage; no length-dependent degree charge is introduced. Other retained axioms must remain fresh.</p>
   <p><strong><a href="#overlap-matching-rigidity">Matching annihilators:</a></strong> for a \(q\)-edge partial-matching monomial \(M\), let \(K_M\) fix its selected columns to their matching values and \(H_M=H_0+K_M\), with \(H_0\) the row span. When \(q+1\le c\le\lfloor(n-q-p)/2\rfloor\), the affine polynomials \(f\) with \(Mf\in\mathcal C_c(\mathcal F_n)\) are exactly \(H_M\), and \(\dim(H_M/H_0)=q(n+1)\). The proof uses legal rows with \(p+1\) ones; same-row exclusions remain absent.</p>
   <p><strong><a href="#overlap-normalization">Global matching restriction:</a></strong> constant normalization uses \(J_\tau=\tau^{-1}(H_0')\), with \(\dim(J_\tau/H_0)=q(2n-q)\), and preserves proof degree. A <a href="#overlap-removable-spread">chosen spread embedding</a> works at \(q=1\); <a href="#resistant-existence">other embeddings fail after every matching of size at most \(\eta n\)</a>, for any fixed \(\eta&lt;1-1/\sqrt2\) and sufficiently large \(n\). The counting argument uses an affine cut of dimension \(q(2n-q)-1\). This rules out universal sublinear matching coverage by that criterion, not larger restrictions or polynomial substitutions.</p>
+  <p><strong><a href="#polynorm-transfer">Polynomial normalization:</a></strong> for same-level blocks with old inputs, supply \(\deg\beta_{a,i}\le T\), \(T\ge1\), and old PC proofs of \(H_a=1-\sum_i\beta_{a,i}g_{a,i}\) through \(c\). Setting the first coefficient vector to \(\beta_a\) and the others to zero transfers any old target through \(\max\{TD,c\}\). NS transfer additionally needs explicit original-axiom certificates; <a href="#polynorm-ns">the precise cofactor condition</a> retains original companion degrees.</p>
+  <p>The <a href="#polynorm-collision-pairs">collision-pair inputs</a> \(x_{aj}-x_{bj}\) admit \(T=1,c=2\), so the full layer preserves the base degree lower bound, although every \(q&lt;n\) matching leaves an unnormalized pair. The saved \(n=7,p=2\) spread has <a href="#polynorm-spread-checks">seven exact dual witnesses excluding \(T=1,c=2\)</a>. This does not exclude larger \(c\), several factors, or cheap products \(g_iH\) without a cheap proof of \(H\).</p>
 
   <h3 id="context-closure">Degree target and unresolved transfer</h3>
   <p>The needed theorem must cover every relevant translated NS certificate and give base PC degree at most \(\lfloor n/2\rfloor\), or residual PC degree at most \(\lfloor(n-q)/2\rfloor\). A polynomial bound in \(D,h,\log M_{\rm comp}\), with sufficiently many holes remaining and \(M_{\rm comp}\) companions, would suffice in the intended parameter regime, but is unproved. A joint-design construction is an alternative.</p>
@@ -585,6 +588,132 @@
 <tr><td>Drafting, coding, preparation, and unseparated overhead</td><td class="elapsed">21 min 36.95 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+  </article>
+  <article class="research-entry" id="entry-2026-09-11-polynomial-normalization">
+    <h3>Polynomial coefficient normalization and exact tests of its scope</h3>
+    <p class="entry-meta">11 September 2026 · Working substitution and collision-pair proofs · Exact finite obstruction for the saved spread · Global coverage remains open</p>
+    <p><strong>Question.</strong> Can old polynomials replace the coefficient variables of an extension block more effectively than constants obtained from a partial matching? Yes, when explicit low-degree normalization witnesses are supplied. We prove a simultaneous transfer theorem, apply it to a whole collision-pair family, and check how far the cheapest version reaches on the previously constructed resistant spread.</p>
+
+    <h4 id="polynorm-transfer">1. Supplied polynomial normalizers transfer an entire layer</h4>
+    <p><strong>Working theorem.</strong> Let \(G\subseteq\mathbb F_p[Y]\) include the specified old-variable domain equations. Consider any finite family of same-level ENS blocks, with pairwise disjoint fresh variables, inputs \(g_{a,i}\in\mathbb F_p[Y]\), and accuracies \(h_a\ge1\). For every block, supply polynomials \(\beta_{a,i}\in\mathbb F_p[Y]\), of degree at most \(T\ge1\), and a PC derivation from \(G\) of</p>
+    <div class="math">\[
+      H_a=1-\sum_i\beta_{a,i}g_{a,i}
+      \quad\text{through degree }c_a.
+    \]</div>
+    <p>Put \(c=\max_a c_a\). Every degree-\(D\) augmented PC derivation of an old polynomial \(t(Y)\) transfers to a derivation from \(G\) through</p>
+    <div class="math">\[
+      \boxed{\max\{TD,c\}.}
+      \tag{PN}
+    \]</div>
+    <p>The bound has no factor depending on the number of blocks. All companions are retained. Later blocks depending on the removed variables are outside these hypotheses.</p>
+    <p><strong>Proof.</strong> In every block set \(r_{a,1,i}=\beta_{a,i}(Y)\) and set all remaining coefficient variables to zero. This single global polynomial substitution fixes \(Y\) and maps the companion \(E_{a,i}\) to \(g_{a,i}H_a\). For a nonzero input of degree \(k_i\), with \(\delta_a=\max_j\deg g_{a,j}\), its original companion degree is</p>
+    <div class="math">\[
+      e_{a,i}=k_i+h_a(\delta_a+1).
+    \]</div>
+    <p>If this axiom was used, \(e_{a,i}\le D\). Derive \(H_a\) first, then multiply its final polynomial by \(g_{a,i}\), using <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/01_foundations.md#lem-reuse">PC reuse</a>. Since</p>
+    <div class="math">\[
+      \deg(g_{a,i}H_a)\le k_i+T+\delta_a
+      \le T\bigl(k_i+h_a(\delta_a+1)\bigr)\le TD,
+    \]</div>
+    <p>the substituted companion has a derivation through \(\max\{c_a,TD\}\). A zero companion needs no derivation.</p>
+    <p>A used fresh field equation becomes \(\beta^p-\beta\), or zero. It has an old-domain certificate of degree at most \(pT\), by <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/01_foundations.md#lem-fieldreduction">bounded field reduction</a>. Its use in the source proof requires \(p\le D\), so \(pT\le TD\). Old axioms are unchanged. Finally apply the <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/01_foundations.md#lem-substitution">PC polynomial-substitution lemma</a> to every inference, replacing substituted axiom lines by the derivations just supplied. The old conclusion remains exactly \(t\), proving (PN).</p>
+    <p>The premise is an explicit normalization witness and its bounded-degree old derivation. A cheap PC refutation of \(G\cup\{g_{a,i}\}_i\) does not by itself provide bounded-degree coefficients \(\beta_{a,i}\): flattening a PC proof into an original-axiom identity requires separate accounting.</p>
+
+    <h4 id="polynorm-ns">2. The additional condition for NS degree preservation</h4>
+    <p><strong>Working corollary.</strong> Suppose instead that each \(H_a\) has an explicitly supplied original-\(G\)-axiom certificate through degree \(u_a\), and that, for every companion used in a degree-\(D\) NS certificate,</p>
+    <div class="math">\[
+      k_i+u_a\le T e_{a,i}.
+      \tag{PN-NS}
+    \]</div>
+    <p>The same substitution turns the certificate into a base NS certificate through degree \(TD\), with its old conclusion unchanged.</p>
+    <p><strong>Proof.</strong> A source companion cofactor has degree at most \(D-e_{a,i}\), using the original joint-variable degree. Its image has degree at most \(T(D-e_{a,i})\). Multiply that image by \(g_{a,i}\) and the supplied identity for \(H_a\); each resulting base-axiom summand has degree at most</p>
+    <div class="math">\[
+      T(D-e_{a,i})+k_i+u_a\le TD.
+    \]</div>
+    <p>An old axiom of degree \(s\) contributes at most \(T(D-s)+s\le TD\). A fresh field axiom contributes at most \(T(D-p)+pT=TD\), using its explicit old-domain identity. Summing these substituted identities proves the claim. Merely knowing \(H_a\in\mathcal C_{u_a}(G)\) would not justify this NS argument.</p>
+
+    <h4 id="polynorm-collision-pairs">3. Every collision-pair block disappears without increasing degree</h4>
+    <p>Take the ordinary base \(\mathcal F_n\), with \(m=n+1\) pigeons, and one block for each unordered pair \(a&lt;b\). Its inputs are</p>
+    <div class="math">\[
+      d_{ab,j}=x_{aj}-x_{bj},\qquad 1\le j\le n.
+    \]</div>
+    <p>Allow any accuracies \(h_{ab}\ge1\), and retain all \(n\binom{n+1}{2}\) companions and all fresh field equations. Each input tuple has literal rank \(n\), and rank \(n-1\) modulo the row-equation span \(H_0\): a combination \(\sum_j\lambda_jd_{ab,j}\) is in \(H_0\) precisely when all \(\lambda_j\) are equal. This follows by comparing its coefficients in rows \(a,b\); its constant coefficient then cancels.</p>
+    <p><strong>Working theorem.</strong> A degree-\(D\) PC or NS refutation of this augmented system gives a base refutation in the same proof system through degree \(D\). In particular, every such refutation satisfies the same base lower bound</p>
+    <div class="math">\[
+      \boxed{D\ge n/2+1.}
+      \tag{CP}
+    \]</div>
+    <p><strong>Proof.</strong> For the pair \(a,b\), take \(\beta_{ab,j}=x_{aj}\). The normalization error has the following ordinary polynomial identity, without any same-row exclusions:</p>
+    <div class="math">\[
+      \begin{aligned}
+      H_{ab}
+      &=1-\sum_jx_{aj}(x_{aj}-x_{bj})\\
+      &=-(\rho_a-1)
+        -\sum_j(x_{aj}^2-x_{aj})
+        +\sum_jx_{aj}x_{bj}.
+      \end{aligned}
+      \tag{CP-H}
+    \]</div>
+    <p>Thus \(H_{ab}\) has an explicit degree-two base certificate. Set the first coefficient vector of every pair block to the corresponding \(a\)-row variables, and all other coefficient vectors to zero. Every companion becomes \(d_{ab,i}H_{ab}\), with an explicit original-axiom certificate through degree three. This is at most its original degree \(2h_{ab}+1\).</p>
+    <p>The fresh field equation mapped to \(x_{aj}^p-x_{aj}\) has the Boolean identity</p>
+    <div class="math">\[
+      x^p-x=(x^2-x)(1+x+\cdots+x^{p-2}).
+    \]</div>
+    <p>Its degree is \(p\), the same as the source field axiom. Here \(T=1\), \(c=u=2\), and \(k_i+u=3\le e_{ab,i}\). The two preceding results therefore give degree \(D\) transfer whenever a companion is used. If \(D&lt;3\), no companion can be used, so no normalization prelude is needed; direct substitution of the remaining proof or certificate still preserves degree. Apply the audited Razborov lower bound to the resulting base PC refutation; an NS certificate also gives a PC refutation at its certificate degree.</p>
+    <p>The substitution handles all pair blocks simultaneously. No step derives same-row functionality, and no elimination cost is charged once per pair.</p>
+
+    <h4 id="polynorm-matching-obstruction">4. Every proper matching leaves an unnormalized block</h4>
+    <p><strong>Working proposition.</strong> For this family, every partial-matching restriction of size \(q&lt;n\) leaves at least one block failing the constant-normalization condition of <a href="#overlap-normalization">(NR)</a>. Among unmatched pairs, it leaves a copy of the same family on the residual board.</p>
+    <p><strong>Proof.</strong> Put \(N=n-q\). There are \(N+1\ge2\) unmatched pigeons and \(N\ge1\) free holes. Choose two unmatched pigeons \(a,b\); assign both to the same free hole, and biject the other \(N-1\) unmatched pigeons with the other free holes. Extend the fixed matching by these assignments. Every row contains exactly one one, so every residual row equation vanishes over every prime field. All inputs \(x_{aj}-x_{bj}\) of the selected pair also vanish. Evaluation at this assignment therefore rules out</p>
+    <div class="math">\[
+      1\in\operatorname{span}\{\tau(d_{ab,j})\}_j+H_0'.
+    \]</div>
+    <p>This is a near-matching assignment with one collision, not a model of PHP: the column-exclusion equation for \(a,b\) at their common hole fails. That equation is exactly among the old consequences used in (CP-H). For every unmatched pair, inputs in occupied columns restrict to zero and inputs in free columns remain the corresponding row differences. This proves the residual-family statement.</p>
+
+    <h4 id="polynorm-extra-inputs">5. Extra companions need not spoil the substitution</h4>
+    <p><strong>Working corollary.</strong> Arbitrary additional old-polynomial inputs may be appended to each collision-pair tuple without spoiling degree-preserving PC and NS transfer. Give their first-factor coefficients value zero. The error \(H_{ab}\) remains unchanged, and a new input of degree \(k\) has image \(gH_{ab}\) with certificate degree at most \(k+2\). Its original degree is \(k+h(\delta+1)\ge k+2\), since the tuple still contains nonconstant row differences.</p>
+    <p>For an explicit enriched family that also retains the matching obstruction, append the affine inputs</p>
+    <div class="math">\[
+      c_{ab,j}=\sigma_j-x_{bj}-1,\qquad
+      \sigma_j=\sum_{i=1}^{n+1}x_{ij}.
+    \]</div>
+    <p>At the near-matching assignment above, deleting pigeon \(b\) leaves a permutation of the holes, so every \(c_{ab,j}\) vanishes too. Thus the same evaluation excludes constant normalization. All added companions \(c_{ab,j}H_{ab}\) retain their explicit degree-three certificates.</p>
+
+    <h4 id="polynorm-spread-checks">6. Exact scope check on the saved resistant spread</h4>
+    <p>We tested all seven rank-24 spaces of the saved \(p=2,n=7\) example for normalizers with affine coefficients and degree-two old certificates. This is a finite question with no floating-point rank computation.</p>
+    <p>Reduce degree-two monomials using only Boolean and column-exclusion equations. The resulting space has 1,401 coordinates: one constant, 56 linear monomials, and 1,344 products of distinct variables in distinct columns. Same-row products remain. The span of the row equations and their variable multiples has rank 420 and affine part of dimension eight. Its affine part is exactly the row span, whose multiples were already included. It is therefore closed under all degree-two PC multiplication steps, proving that this computed base space is \(\mathcal C_2(\mathcal F_7)=\mathcal I_2(\mathcal F_7)\) in this normal form.</p>
+    <p>For each input space \(V\), form</p>
+    <div class="math">\[
+      S_V=\mathcal I_2(\mathcal F_7)+
+        \operatorname{span}\{g_i,\ x_vg_i:\text{all }i,v\}.
+    \]</div>
+    <p>All seven spaces \(S_V\) have rank 1,296. For each, the output stores an exact binary functional with</p>
+    <div class="math">\[
+      \lambda(1)=1,\qquad
+      \lambda(\mathcal I_2(\mathcal F_7))=0,\qquad
+      \lambda(g_i)=\lambda(x_vg_i)=0.
+    \]</div>
+    <p>Every equality was checked by binary dot products against all 1,824 original generators, separately from the echelon operations constructing the functional. Altering a nonconstant coordinate was rejected by a stored failing generator in each case. Thus \(1\notin S_V\), excluding every witness \(1-\sum_i\beta_i g_i\in\mathcal C_2(\mathcal F_7)\) with affine \(\beta_i\). The duals are degree-two designs for the auxiliary base-plus-input system; they are not designs for the full ENS system.</p>
+    <p>The same matrix routine accepts all 28 row-difference pair spaces as positive controls. Additional ordinary coefficient checks cover \(p=2,3,5,7\), \(n=1,2,4,7\): 16 instances of (CP-H), 112 companion images including the extra column forms, 16 field identities, and 32 nonzero omission controls. The matching checker saves a witness for each of the 381 partial matchings with \(q&lt;4\) on the five-by-four board, with counts \(1,20,120,240\) by size. Those Boolean assignments work over every prime, while the universal claims above have separate proofs.</p>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/tools/check_polynomial_normalization.cpp">compiled checker</a>, complete <a href="https://github.com/kbr-/math-research/blob/main/research/results/polynomial_normalization_20260911_04/checks-01.jsonl">coefficients, matching witnesses, base basis, and separating functionals</a>, and <a href="https://github.com/kbr-/math-research/blob/main/research/results/polynomial_normalization_20260911_04/README.md">reproduction record</a> are preserved. The first compilation stopped on indentation warnings; after those were fixed, compilation and the full focused run passed.</p>
+
+    <h4 id="polynorm-next-gap">7. Outcome and the next obligation</h4>
+    <p>Polynomial coefficient normalization strictly enlarges what the constant-matching criterion handles. Its cheap certificates eliminate a whole structured layer, including arbitrary extra old inputs. The saved spread shows that affine coefficients with degree-two base certificates still do not cover all admissible affine data. This finite obstruction does not exclude larger certificate degree, more substitution factors, or other block elimination methods.</p>
+    <p>The next test should impose the actual companion condition, rather than require an entire factor to vanish modulo cheap base consequences. For one factor and affine inputs over \(\mathbb F_2\), affine substitutions require supplied degree-three derivations of \(g_i(1-\sum_j\beta_jg_j)\) for every \(i\). These conditions are linear in the unknown coefficients of the \(\beta_j\). Establishing the relevant PC consequence space, solving this system, and retaining either derivation witnesses or precise dual obstructions is the proposed next step. Affordable coverage of actual Frege certificates remains open.</p>
+    <p><strong>Timing scope.</strong> The initial candidate arose in the preceding cycle; this interval includes its development, the requested publication-policy update, and context restoration after compaction.</p>
+    <div class="timing-report" data-session="polynomial_normalization_20260911_04">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>27 min 45.85 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">34.98 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.18 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.90 s</td></tr>
+<tr><td>Drafting, coding, preparation, and unseparated overhead</td><td class="elapsed">27 min 6.80 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
   </article>
   <!-- Append new dated mathematical entries here, preserving earlier entries. -->
