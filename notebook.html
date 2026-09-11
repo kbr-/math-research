@@ -12,7 +12,7 @@
 <section id="where-we-stand">
   <h2>Where we stand</h2>
   <p><strong>The goal is still open.</strong> We have working proofs for eliminating extension blocks and batching blocks with nested spans or suitable nested cores. These produce genuine polynomial-calculus (PC) refutations with explicit degree bounds.</p>
-  <p>The static affine batching criterion is fully optimized and cannot afford the spread geometry. A new <a href="#overlap-removable-spread">PHP restriction handles one embedding of that same geometry</a>: fixing one pigeon–hole pair removes every block without increasing degree. This is an explicit favorable family, not coverage of arbitrary embeddings or Frege simulations.</p>
+  <p>The static affine batching criterion is fully optimized and cannot afford the spread geometry. A <a href="#overlap-removable-spread">PHP restriction handles one embedding</a> without increasing degree, but <a href="#resistant-existence">other embeddings resist constant normalization under every small matching</a>. We have an explicit seven-hole resistant example with 392 checked witnesses. Input ranks and intersections alone do not establish coverage.</p>
   <p>The <a href="#entry-2026-09-11-mp-composition">local MP certificates</a> and <a href="#entry-2026-09-11-implication-boundary">one-block boundary transfers</a> are explicit. We now also have <a href="#overlap-target-batch">batching modulo boundary annihilators</a> and an <a href="#overlap-matching-rigidity">exact low-degree affine annihilator theorem for PHP matching weights</a>. Affordable global coverage, shared boundaries, and accumulated elimination cost remain the main gap.</p>
   <p>All four references were imported during the source audit, and the base/residual PC lower-bound match and simulation parameters have been checked. A focused audit found no gap in the central elimination arguments; this is not a formal verification of the entire manuscript. Unused certificate blocks can be pruned for free, but we do not yet know how to handle all the essential blocks affordably.</p>
   <div class="result">
@@ -26,7 +26,7 @@
   <h2>The remaining route</h2>
   <div class="eyebrow">Highest risk first</div>
   <ol>
-    <li><strong>Prove affordable global restriction/elimination or joint-design existence.</strong> Exploit the actual refutation and PHP structure to stay below the base or residual linear threshold. The new restriction criterion works when every block gains a constant modulo residual row equations; universal coverage is unproved.</li>
+    <li><strong>Prove affordable global restriction/elimination or joint-design existence.</strong> Exploit the actual refutation and PHP structure to stay below the base or residual threshold. Small-matching constant normalization fails for some admissible data; a successful route needs additional structure, larger restrictions, or richer substitutions.</li>
     <li><strong>Cover the actual Frege simulation outputs.</strong> Identify compatible proof regions and substitutions covering nonlinear inputs, later dependent blocks, all companions, shared boundaries, and leaf translations. A favorable affine spread embedding or balanced proof height alone does not establish these hypotheses.</li>
     <li><strong>Complete the proof-level audit.</strong> Check the remaining quotient variants and any new composition rule, preserving original axiom degrees, freshness, bounded field reductions, and reuse of derived PC polynomials.</li>
     <li><strong>Formalize the ordinary-PHP transfer.</strong> Convert a hypothetical short ordinary-PHP refutation to our exact Boolean linear-row base with bounded-depth and polynomial-size overhead. Do not silently add same-row exclusions.</li>
@@ -36,8 +36,8 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Test the limitation of the new restriction criterion: can a spread embedding <strong>avoid gaining a constant under every small partial matching</strong>?</p>
-  <p>Use the exact dimension of the restriction quotient to examine a random-embedding argument. This will separate the favorable construction from a possible universal coverage theorem and identify what additional certificate structure a successful route must exploit.</p>
+  <p>Examine <strong>polynomial coefficient normalization</strong>: use explicit bounded-degree witnesses that a block's inputs cannot all vanish, allowing its coefficient variables to become old polynomials.</p>
+  <p>Test a structured family indexed by collision pairs. Determine whether literal matching restrictions fail for that family while a cheap algebraic substitution succeeds, retaining original companion degrees and the distinction between PC reuse and NS coefficients.</p>
 </section>
 
 <section id="working-context">
@@ -109,10 +109,10 @@
     \(\max\{c,D+k+(p-1)\delta,(p+1)\delta+k,(p-1)\delta+pk\}\).
     The original proof is replayed at every stage; no length-dependent degree charge is introduced. Other retained axioms must remain fresh.</p>
   <p><strong><a href="#overlap-matching-rigidity">Matching annihilators:</a></strong> for a \(q\)-edge partial-matching monomial \(M\), let \(K_M\) fix its selected columns to their matching values and \(H_M=H_0+K_M\), with \(H_0\) the row span. When \(q+1\le c\le\lfloor(n-q-p)/2\rfloor\), the affine polynomials \(f\) with \(Mf\in\mathcal C_c(\mathcal F_n)\) are exactly \(H_M\), and \(\dim(H_M/H_0)=q(n+1)\). The proof uses legal rows with \(p+1\) ones; same-row exclusions remain absent.</p>
-  <p><strong><a href="#overlap-normalization">Global matching restriction:</a></strong> if each restricted input span contains one modulo residual row equations, scalar coefficient assignments remove all blocks with no degree increase. This uses \(J_\tau=\tau^{-1}(H_0')\), with \(\dim(J_\tau/H_0)=q(2n-q)\), a larger space than the bounded-PC annihilator. A <a href="#overlap-removable-spread">chosen full-rank spread embedding</a> satisfies the criterion with \(q=1\). Large residual ranks alone do not preclude a common constant. Arbitrary-embedding and simulation coverage are open.</p>
+  <p><strong><a href="#overlap-normalization">Global matching restriction:</a></strong> constant normalization uses \(J_\tau=\tau^{-1}(H_0')\), with \(\dim(J_\tau/H_0)=q(2n-q)\), and preserves proof degree. A <a href="#overlap-removable-spread">chosen spread embedding</a> works at \(q=1\); <a href="#resistant-existence">other embeddings fail after every matching of size at most \(\eta n\)</a>, for any fixed \(\eta&lt;1-1/\sqrt2\) and sufficiently large \(n\). The counting argument uses an affine cut of dimension \(q(2n-q)-1\). This rules out universal sublinear matching coverage by that criterion, not larger restrictions or polynomial substitutions.</p>
 
   <h3 id="context-closure">Degree target and unresolved transfer</h3>
-  <p>The needed theorem must cover every relevant translated NS certificate and give base PC degree at most \(\lfloor n/2\rfloor\), or residual PC degree at most \(\lfloor(n-q)/2\rfloor\). A polynomial bound in \(D,h,\log M_{\rm comp}\), with few holes removed and \(M_{\rm comp}\) companions, would suffice in the intended parameter regime, but is unproved. A joint-design construction is an alternative.</p>
+  <p>The needed theorem must cover every relevant translated NS certificate and give base PC degree at most \(\lfloor n/2\rfloor\), or residual PC degree at most \(\lfloor(n-q)/2\rfloor\). A polynomial bound in \(D,h,\log M_{\rm comp}\), with sufficiently many holes remaining and \(M_{\rm comp}\) companions, would suffice in the intended parameter regime, but is unproved. A joint-design construction is an alternative.</p>
   <p>A complete argument must exploit actual balanced simulation certificates, local derivations and cofactors, and richer PHP consequences. Read the exact relevant Chapter 7–8 proofs and BIKPRS pp. 28–31 when needed. The ordinary-PHP transfer to our exact polynomial base remains to be formalized: Krajíček Lemma 5.1 includes functionality and does not automatically supply that transfer. Final closure must cover every fixed \(p,\ell,K\).</p>
 </section>
 
@@ -496,6 +496,95 @@
 <tr><td>Drafting, coding, preparation, and unseparated overhead</td><td class="elapsed">46 min 9.43 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+  </article>
+  <article class="research-entry" id="entry-2026-09-11-resistant-spread">
+    <h3>Spread embeddings that avoid constant normalization under small matchings</h3>
+    <p class="entry-meta">11 September 2026 · Working existence proof and explicit finite certificate · Obstruction to a specified restriction criterion, not to all elimination</p>
+    <p><strong>Question.</strong> The previous entry constructed a spread embedding removable after fixing one pigeon–hole pair. Must an arbitrary spread admit a similarly small matching that normalizes all its blocks? No. We prove that some embeddings do not normalize even one block under any sufficiently small matching, and give a fully checked example for \(p=2,n=7\). “Normalize” here means that the restricted input span contains one modulo residual row equations, exactly the hypothesis of <a href="#overlap-normalization">the preceding restriction criterion</a>.</p>
+
+    <h4 id="resistant-counting">1. The affine set a random input space must avoid</h4>
+    <p>Work in the affine quotient
+      \(\mathcal Q=\mathbb F_p[x]_{\le1}/H_0\), where \(H_0\) is the ordinary PHP row-equation span. It has dimension \(n^2\). The historical coordinate space
+      \(W=\operatorname{span}\{x_{ij}:j<n\}\) embeds with dimension \(N_W=n^2-1\), and</p>
+    <div class="math">\[
+      \mathcal Q=W\oplus\mathbb F_p\,1.
+    \]</div>
+    <p>Fix a partial-matching restriction \(\tau\) of size \(1\le q<n\). Write
+      \(\overline J_\tau=J_\tau/H_0\), where \(J_\tau=\tau^{-1}(H_0')\), so
+      \(\dim\overline J_\tau=z_q=q(2n-q)\). A subspace \(V\subseteq W\) satisfies the normalization condition exactly when it meets</p>
+    <div class="math">\[
+      A_\tau=(1+\overline J_\tau)\cap W.
+    \]</div>
+    <p><strong>Working lemma.</strong> \(A_\tau\) is an affine subspace of dimension \(z_q-1\) containing no zero vector.</p>
+    <p><strong>Proof.</strong> The constant one is not in \(\overline J_\tau\), since its restricted image is not a combination of residual row equations. The projection of \(\overline J_\tau\) onto the constant coordinate is nonzero. If a selected column is not the omitted last column, its selected cell minus one supplies such a vector. If the only selected column is the last one, take another row: its last-column variable is zero under the restriction and equals \(1-\sum_{j<n}x_{ij}\) modulo \(H_0\), again with nonzero constant coordinate. Thus the affine condition that \(1+j\) have constant coordinate zero cuts \(\overline J_\tau\) by one dimension and has a solution. Zero cannot be a solution because that would put one in \(\overline J_\tau\).</p>
+    <p>For a uniformly random invertible linear map \(T:W\to W\), a fixed nonzero vector lies in \(T(V)\), \(\dim V=r\), with probability \((p^r-1)/(p^{N_W}-1)\). This follows by symmetry of \(T^{-1}v\) among nonzero vectors. A union bound over \(A_\tau\) gives</p>
+    <div class="math">\[
+      \Pr\!\left[1\in T(V)+\overline J_\tau\right]
+      \le p^{q(2n-q)-1}\frac{p^r-1}{p^{N_W}-1}.
+      \tag{RA}
+    \]</div>
+
+    <h4 id="resistant-existence">2. One embedding avoids every small matching</h4>
+    <p>Start with the historical \(n\) graph spaces in \(W\), of common rank
+      \(r=d\lfloor N_W/(2d)\rfloor\), \(d=\lceil\log_p n\rceil\).
+      Apply the same random \(T\) to all of them. Their pairwise-zero intersections, independence modulo \(H_0\), and admissible ENS form are preserved. There are
+      \(L_q=\binom{n+1}{q}\binom nq q!\) partial matchings of size \(q\).</p>
+    <p><strong>Working theorem.</strong> If \(1\le s<n\) and</p>
+    <div class="math">\[
+      \boxed{\mathcal U_s=
+      n\,\frac{p^r-1}{p^{N_W}-1}
+      \sum_{q=1}^{s}
+      \binom{n+1}{q}\binom nq q!\,
+      p^{q(2n-q)-1}
+      &lt;1,}
+      \tag{RU}
+    \]</div>
+    <p>there is one embedding in which no block satisfies the constant-normalization condition after any matching of size at most \(s\). Each block still has rank \(r\), with all its companions retained. The zero-size restriction also fails, since \(1\notin W\) modulo \(H_0\).</p>
+    <p><strong>Proof.</strong> Apply (RA) to each of the \(n\) spaces and every matching of every size \(1,\ldots,s\). Independence between these events is unnecessary; their total probability is at most \(\mathcal U_s\). A map outside their union supplies the embedding. The map is invertible, so it preserves the spread geometry. Dense linear coordinate changes increase only the polynomial encoding size: there remain \(O(n^3)\) inputs, each a linear form in \(O(n^2)\) coordinates, with coefficients in the fixed field.</p>
+    <p><strong>Asymptotic consequence.</strong> For every fixed prime and every fixed
+      \(0&lt;\eta&lt;1-1/\sqrt2\), such embeddings exist for all sufficiently large \(n\), with \(s=\lfloor\eta n\rfloor\). In particular, a universal sublinear-size matching-normalization theorem is false for admissible extension data.</p>
+    <p><strong>Parameter proof.</strong> Use \(r\le N_W/2\), \(L_q\le[n(n+1)]^q\), and monotonicity of \(q(2n-q)\) for \(q<n\). Then</p>
+    <div class="math">\[
+      \mathcal U_s
+      \le 2ns[n(n+1)]^s
+      p^{\,r+s(2n-s)-N_W-1}.
+    \]</div>
+    <p>The logarithm of the prefactor is \(O(n\log n)\), whereas the exponent of \(p\) is at most
+      \(-(\tfrac12-2\eta+\eta^2)n^2+O(1)\).
+      Its quadratic coefficient is negative precisely in the stated range, so the bound tends to zero. For example, \(\eta=1/4\) leaves a negative quadratic term of size \(n^2/16\). The endpoint \(1-1/\sqrt2\) is a sufficient threshold from this counting argument; optimality is not claimed.</p>
+
+    <h4 id="resistant-finite-certificate">3. A complete seven-hole example</h4>
+    <p>For \(p=2,n=7\), the full historical parameters give \(N_W=48\), \(d=3\), \(r=24\). For \(s=1\), there are 56 matchings and seven spaces, and (RU) simplifies exactly to</p>
+    <div class="math">\[
+      \mathcal U_1=
+      \frac{7\cdot56\cdot2^{12}}{2^{24}+1}
+      =\frac{1\,605\,632}{16\,777\,217}&lt;1.
+    \]</div>
+    <p>The compiled <a href="https://github.com/kbr-/math-research/blob/main/research/tools/find_restriction_resistant_spread.cpp">search and certificate checker</a> found a qualifying invertible \(48\times48\) matrix on its first draw, using the fixed seed 20260911. It retained seven rank-24 graph spaces over \(\mathbb F_8=\mathbb F_2[X]/(X^3+X+1)\), verified all 21 pairwise intersections to be zero, and tested all \(7\cdot56=392\) space–matching pairs.</p>
+    <p>After each matching, affine polynomials modulo the residual row equations have dimension 36. For each restricted input matrix the output contains an explicit vector \(\lambda\) with</p>
+    <div class="math">\[
+      \lambda(1)=1,\qquad
+      \lambda(\tau(g_i))=0\quad\text{for every input of that block}.
+    \]</div>
+    <p>Every equality was checked by exact binary dot products against the stored restricted inputs, independently of the echelon operations used to construct \(\lambda\). Altering the constant coordinate was rejected in all 392 checks. These are affine separation certificates for this normalization test; they are not models of PHP or joint designs for the full proof system.</p>
+    <p>The complete matrix, all original input bases, all restricted inputs, and all 392 witnesses are saved in <a href="https://github.com/kbr-/math-research/blob/main/research/results/restriction_resistant_spread_20260911_03/certificate-01.jsonl">certificate-01.jsonl</a>. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/restriction_resistant_spread_20260911_03/README.md">result record</a> specifies the coordinates, seed, and reproduction command. The pseudorandom search supplies a concrete checked example; the uniform-random-map argument above is a separate mathematical existence proof.</p>
+
+    <h4 id="resistant-scope">4. What this rules out, and what remains</h4>
+    <p>The favorable embedding from the previous entry and the resistant embeddings here have the same spread ranks and pairwise intersections before restriction. Their different behavior therefore cannot be inferred from that static geometry alone. The new family rules out universal small-matching coverage by criterion (NR), even if one hoped to normalize just one block first.</p>
+    <p>It does not rule out larger matchings that still leave enough holes for a residual lower bound, polynomial coefficient substitutions, field-ideal reductions using several factors, or transformations exploiting actual certificate coefficients. These are still admissible extension data, not low-degree refutations or verified Frege-simulation outputs.</p>
+    <p><strong>Next step.</strong> Examine polynomial coefficient normalization using explicit bounded-degree witnesses that a block's inputs cannot all vanish. A structured family indexed by collision pairs is a useful candidate for testing whether literal matching restrictions can fail while a cheap algebraic substitution succeeds. The global lower-bound problem remains open.</p>
+<div class="timing-report" data-session="restriction_resistant_spread_20260911_03">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>21 min 38.23 s</strong></td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.13 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.16 s</td></tr>
+<tr><td>Drafting, coding, preparation, and unseparated overhead</td><td class="elapsed">21 min 36.95 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
   </article>
   <!-- Append new dated mathematical entries here, preserving earlier entries. -->

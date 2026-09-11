@@ -245,3 +245,26 @@ is embedded in the notebook, with the completed session archived under
 `research/provenance/session-records/boundary_overlap_20260911_02/`.
 The preparation phase includes the requested claim-index work. Mathematical
 checks were retained; routine site builds and broad notebook audits were omitted.
+
+### 2026-09-11 / restriction_resistant_spread_20260911_03 — small-matching avoidance
+
+**Status.** Working counting proof and explicit finite certificate for an
+obstruction to constant normalization. Full statements, parameters, and limits
+are in [the notebook](../../notebook.html), entry
+`entry-2026-09-11-resistant-spread`, and indexed in
+[the claim index](../CLAIM_INDEX.md).
+
+**Evidence.** The [result record](../results/restriction_resistant_spread_20260911_03/README.md)
+describes the exact seeded construction. The
+[certificate](../results/restriction_resistant_spread_20260911_03/certificate-01.jsonl)
+preserves the invertible matrix, seven rank-24 spaces, their restricted inputs,
+and 392 dual witnesses covering all 56 single-cell matchings. Compilation and
+execution passed on the first attempt. The example is extension data, not a
+PHP refutation, and does not exclude richer elimination methods.
+
+**Timing.** The
+[table](../results/restriction_resistant_spread_20260911_03/timing.html)
+is embedded in the notebook; the completed session is archived under
+`research/provenance/session-records/restriction_resistant_spread_20260911_03/`.
+The next framework improvement is a small provenance helper to replace repeated
+hashing and bookkeeping code.
