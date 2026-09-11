@@ -11,8 +11,8 @@
 
 <section id="where-we-stand">
   <h2>Where we stand</h2>
-  <p><strong>The goal is still open.</strong> The <a href="#php-transfer-theorem">ordinary-PHP simulation bridge is now explicit for our exact base</a>, without functionality: a short depth-\(\ell\) proof yields a genuine ENS/NS refutation of degree \((1+\log(S+n))(h+1)^{O(\ell+1)}\), with polynomially many companions and \(\ell+O(1)\) levels.</p>
-  <p>The <a href="#php-clause-pruning">ordinary clause blocks</a> admit degree-preserving removal. <a href="#mod-boolean-packing">Every source block with at most \(h\) inputs</a> can also be removed by constants; this handles the six <a href="#mod-schema-blocks">MOD-recursion schema blocks</a> in the explicit unsimplified expansion. Combining these with the <a href="#axiom-global-source">listed propositional templates</a> still costs at most \(LD\) for \(h\ge4\), preserving the simulation's polylogarithmic scale.</p>
+  <p><strong>The goal is still open.</strong> The <a href="#direct-php-transfer">direct ordinary-PHP simulation</a> now avoids the MOD-row prelude: a short depth-\(\ell\) proof yields an ENS/NS refutation over our exact weak base of degree \(D_0\le(1+\log S)(h+1)^{O(\ell+1)}\), with polynomially many companions and \(\ell+O(1)\) levels. The final PHP block and all ordinary clause blocks are already removed without increasing degree.</p>
+  <p><a href="#mod-boolean-packing">Every source block with at most \(h\) inputs</a> can also be removed by constants, including the six <a href="#mod-schema-blocks">MOD-recursion schema blocks</a> in the explicit unsimplified expansion. Combining this with the <a href="#axiom-global-source">listed propositional templates</a> and the new final-boundary removal still costs at most \(LD_0\) for \(h\ge4\), preserving the polylogarithmic scale. A <a href="#direct-relative-implication">relative implication identity</a> supplies local image certificates, but their global dependency and degree costs remain unresolved.</p>
   <p>The static affine criterion cannot afford the spread geometry. <a href="#resistant-existence">Some embeddings resist every small matching</a>. In the saved seven-hole example, <a href="#annihilation-three-inputs">three inputs already have no quadratic common annihilator modulo degree-three PC consequences</a>. This also excludes the corresponding affine, single-factor companion substitutions. Larger degree budgets, several factors, and proof-dependent transformations remain open.</p>
   <p>The <a href="#entry-2026-09-11-mp-composition">local MP certificates</a> and <a href="#entry-2026-09-11-implication-boundary">one-block boundary transfers</a> are explicit. We now also have <a href="#overlap-target-batch">batching modulo boundary annihilators</a> and an <a href="#overlap-matching-rigidity">exact low-degree affine annihilator theorem for PHP matching weights</a>. Affordable global coverage, shared boundaries, and accumulated elimination cost remain the main gap.</p>
   <div class="result">
@@ -27,7 +27,7 @@
   <div class="eyebrow">Highest risk first</div>
   <ol>
     <li><strong>Prove affordable global restriction/elimination or joint-design existence.</strong> Exploit the actual refutation and PHP structure to stay below the base or residual threshold. Small-matching normalization and the tested degree-three affine substitution method fail on some admissible data. Affordable certificates or compatible substitutions for all relevant simulation blocks remain unproved.</li>
-    <li><strong>Cover the remaining Frege simulation outputs.</strong> Ordinary clauses, the listed propositional outer templates, and the explicitly expanded MOD schema blocks are handled. Wide intermediate implication blocks and argument blocks still occur, as do blocks attached to derived proof lines and shared boundaries. The rest of any chosen Frege basis must also be checked.</li>
+    <li><strong>Cover the remaining Frege simulation outputs.</strong> The direct construction removes the final PHP block and ordinary clauses, and avoids the MOD-row prelude. The listed propositional outer templates and explicitly expanded MOD schema blocks are handled. Wide implication and argument blocks, derived proof-line blocks, and shared cores remain. The rest of any chosen Frege basis must also be checked.</li>
     <li><strong>Complete the proof-level audit.</strong> Check the remaining quotient variants and any new composition rule, preserving original axiom degrees, freshness, bounded field reductions, and reuse of derived PC polynomials.</li>
     <li><strong>Close the parameters.</strong> For every fixed \(p,\ell,K\), show that a size-\(n^K\), depth-\(\ell\) proof would yield the forbidden base refutation for all sufficiently large \(n\), retaining every accuracy and depth factor.</li>
   </ol>
@@ -35,8 +35,8 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>First construct <strong>the direct simulation of the PHP theorem's approximation</strong>, using the already explicit clause certificates. This should avoid the extra wide prefix disjunctions introduced by the MOD-row proof prelude.</p>
-  <p>Then investigate relative elimination of the remaining wide blocks \((a,G_B)\) and \((a,b,G_C)\). Preserve argument blocks and track same-level dependencies; simple multiplication of their approximations can increase degree.</p>
+  <p>Determine when the <a href="#direct-relative-implication">relative implication substitution</a> \(P_{(a,G_B)}\mapsto b(1-a)\) can remove many wide blocks together. Track retained versus removed cores, same-level dependencies, and the degree of every composed coefficient and image certificate.</p>
+  <p>First prove a precise transfer theorem under an explicit dependency condition; then test whether the balanced Frege simulation satisfies that condition. A bound on proof-tree height must not be silently used as a bound on a different dependency graph.</p>
 </section>
 
 <section id="working-context">
@@ -102,23 +102,19 @@
   </ul>
   <p>Exact source locations, versions, reading coverage, and qualifications remain in the <a href="https://github.com/kbr-/math-research/blob/main/research/notes/SOURCE_AUDIT.md">source audit</a> and <a href="https://github.com/kbr-/math-research/blob/main/research/notes/IMPORT_LOG.md">import log</a>. These are recorded matches, not new verification. Only the Krajíček paper is bundled in public Git; check <a href="https://github.com/kbr-/math-research/blob/main/research/references/README.md">reference availability</a> before accessing the others.</p>
 
-  <h3 id="context-mp-composition">Boundary transfer and PHP restrictions</h3>
-  <p>The <a href="#mp-certificates">exact MP identity</a> \(b=c+qa+R\) includes every companion and Booleanity contribution; augmented PC reuse costs at most \(2h(L+1)\). <a href="#boundary-mp-elimination">One-block transfer</a> handles both full premise proofs while preserving \(b\), provided every retained axiom is fresh for that block. A derived implication is never silently declared an old axiom.</p>
-  <p><strong><a href="#overlap-target-batch">Boundary-weighted batching:</a></strong> if input spans are nested modulo \(H\) and products \(tH\) have supplied old PC proofs through \(c\), a degree-\(D\) derivation of old \(t\), \(\deg t=k\), transfers through
-    \(\max\{c,D+k+(p-1)\delta,(p+1)\delta+k,(p-1)\delta+pk\}\).
-    The original proof is replayed at every stage; no length-dependent degree charge is introduced. Other retained axioms must remain fresh.</p>
-  <p><strong><a href="#overlap-matching-rigidity">Matching annihilators:</a></strong> for a \(q\)-edge partial-matching monomial \(M\), let \(K_M\) fix its selected columns to their matching values and \(H_M=H_0+K_M\), with \(H_0\) the row span. When \(q+1\le c\le\lfloor(n-q-p)/2\rfloor\), the affine polynomials \(f\) with \(Mf\in\mathcal C_c(\mathcal F_n)\) are exactly \(H_M\), and \(\dim(H_M/H_0)=q(n+1)\). The proof uses legal rows with \(p+1\) ones; same-row exclusions remain absent.</p>
-  <p><strong><a href="#overlap-normalization">Global matching restriction:</a></strong> constant normalization uses \(J_\tau=\tau^{-1}(H_0')\), with \(\dim(J_\tau/H_0)=q(2n-q)\), and preserves proof degree. A <a href="#overlap-removable-spread">chosen spread embedding</a> works at \(q=1\); <a href="#resistant-existence">other embeddings fail after every matching of size at most \(\eta n\)</a>, for any fixed \(\eta&lt;1-1/\sqrt2\) and sufficiently large \(n\). The counting argument uses an affine cut of dimension \(q(2n-q)-1\). This rules out universal sublinear matching coverage by that criterion, not larger restrictions or polynomial substitutions.</p>
-  <p><strong><a href="#polynorm-transfer">Polynomial normalization:</a></strong> for same-level blocks with old inputs, supply \(\deg\beta_{a,i}\le T\), \(T\ge1\), and old PC proofs of \(H_a=1-\sum_i\beta_{a,i}g_{a,i}\) through \(c\). Setting the first coefficient vector to \(\beta_a\) and the others to zero transfers any old target through \(\max\{TD,c\}\). NS transfer additionally needs explicit original-axiom certificates; <a href="#polynorm-ns">the precise cofactor condition</a> retains original companion degrees.</p>
-  <p>The <a href="#polynorm-collision-pairs">collision-pair inputs</a> \(x_{aj}-x_{bj}\) admit \(T=1,c=2\), preserving the base degree lower bound although every proper matching leaves an unnormalized pair. <a href="#annihilation-transfer">Direct companion substitution</a> only requires \(g_iH\in\mathcal C_3\) for affine inputs and coefficients. Its exact <a href="#annihilation-feasibility">linear feasibility criterion</a> uses the common annihilator in \(\mathbb F_2[Y]_{\le2}/(\mathcal C_3\cap\mathbb F_2[Y]_{\le2})\).</p>
-  <p>For the saved \(n=7,p=2\) spread, the <a href="#annihilation-pc-space">certified PC closure</a> has \(\mathcal C_3\cap\mathbb F_2[x]_{\le2}=\mathcal C_2\). In each block its first three inputs give an <a href="#annihilation-three-inputs">injective multiplication map on the 981-dimensional quadratic quotient</a>. Thus quadratic companion annihilation reduces to the already excluded normalization condition. This is a finite obstruction at the stated degree, not a barrier to larger budgets, several factors, or actual Frege-certificate transformations.</p>
+  <h3 id="context-mp-composition">Boundary transfer and earlier obstruction tests</h3>
+  <p>The <a href="#mp-certificates">MP identity</a> \(b=c+qa+R\) retains every companion and Booleanity term. Its NS recurrence is \(d_b\le\max\{d_c,d_a+h(L+1),3h(L+1)\}\); augmented PC uses final-line reuse instead of a height charge. <a href="#boundary-mp-elimination">One-block boundary transfer</a> preserves the conclusion only under its freshness and full-premise hypotheses. A derived implication is never silently declared an old axiom.</p>
+  <p><a href="#overlap-target-batch">Boundary-weighted batching</a> requires nested input spans modulo supplied annihilators and old PC proofs of the target-weighted errors. Its exact degree bound and freshness conditions remain in the linked proof. The <a href="#overlap-matching-rigidity">matching-annihilator theorem</a> characterizes affine weighted consequences in its stated residual-board degree range; it relies on legal rows with \(p+1\) ones.</p>
+  <p><a href="#overlap-removable-spread">One spread embedding</a> is removable after a one-edge matching, while <a href="#resistant-existence">other embeddings resist every matching of size at most \(\eta n\)</a> for fixed \(\eta&lt;1-1/\sqrt2\) and large \(n\). This is an obstruction to that constant-normalization criterion, not to general proof-dependent elimination.</p>
+  <p><a href="#polynorm-transfer">Same-level polynomial normalization</a> uses old coefficients of degree at most \(T\), and old PC proofs of \(1-\sum_i\beta_i g_i\) through \(c\), to transfer an old target through \(\max\{TD,c\}\). NS transfer needs the <a href="#polynorm-ns">additional original-cofactor condition</a>. <a href="#polynorm-collision-pairs">Collision-pair blocks</a> admit degree-preserving removal. In contrast, the saved binary seven-hole spread has <a href="#annihilation-pc-space">certified degree-three PC closure</a> and <a href="#annihilation-three-inputs">three-input common-annihilator obstructions</a>, excluding the tested affine single-factor substitutions. Larger degree budgets and several factors remain open.</p>
 
   <h3 id="context-closure">Degree target and unresolved transfer</h3>
   <p>The needed theorem must cover every relevant translated NS certificate and give base PC degree at most \(\lfloor n/2\rfloor\), or residual PC degree at most \(\lfloor(n-q)/2\rfloor\). A polynomial bound in \(D,h,\log M_{\rm comp}\), with sufficiently many holes remaining and \(M_{\rm comp}\) companions, would suffice in the intended parameter regime, but is unproved. A joint-design construction is an alternative.</p>
-  <p><strong><a href="#php-transfer-theorem">Exact ordinary-PHP input:</a></strong> replace row-disjunction assumptions by \(\mathrm{MOD}_{p,1}\) rows, which imply them by polynomial-size, constant-depth proofs. Under the source's TRUE-by-zero convention use the affine change \(q_{ij}=1-x_{ij}\). Initial polynomials become \((\rho_i-1)^{p-1}\) and column collisions; replacing row powers by row axioms preserves NS degree. Thus a size-\(S\), depth-\(\ell\) ordinary-PHP proof gives degree \((1+\log(S+n))(h+1)^{O(\ell+1)}\), polynomial companion count, and \(\ell+O(1)\) levels. Taking \(h=\lceil\log n\rceil\) gives polylogarithmic degree for every fixed polynomial size bound.</p>
-  <p><strong><a href="#php-clause-pruning">Clause-block specialization:</a></strong> a row clause product becomes \(1-\rho_i\) by setting its first coefficient vector to all ones and the rest to zero. For collision inputs \((1-x,1-y)\), first coefficients \((1,x)\) and the rest zero make the product \(xy\). Their companions have base certificates of degrees two and three. Apply the same substitution to every retained input and cofactor; the remaining system is valid ENS with no increase in degree, levels, or companion count.</p>
+  <p><strong><a href="#direct-php-transfer">Direct ordinary-PHP input:</a></strong> use TRUE-by-zero approximations and \(q_{ij}=1-x_{ij}\). The balanced theorem proof derives its approximation \(Z\) from domains and companions through \(D_0\le(1+\log S)(h+1)^{O(\ell+1)}\), with polynomial companion count and \(\ell+O(1)\) levels. No clause assumptions or MOD-row prelude are needed; the <a href="#php-transfer-theorem">earlier bridge</a> remains valid as an alternative. Taking \(h=\lceil\log n\rceil\) gives polylogarithmic degree for polynomial-size proofs.</p>
+  <p><strong><a href="#direct-php-boundary">Final boundary and clauses:</a></strong> \(Z=P_{(P_C)}\) has clause-product inputs of degree \(2h\) and companions of original degree \(2h^2+3h\). Set every coefficient of this final block to zero, giving \(Z\mapsto1\). A row clause product becomes \(1-\rho_i\) with first coefficients all one; a collision product becomes \(xy\) with first coefficients \((1,x)\) on inputs \((1-x,1-y)\). Set all other clause coefficients to zero. Every removed axiom image has an original-degree base certificate. Applying the same affine substitution to every retained input and cofactor gives a valid ENS refutation through \(D_0\).</p>
   <p><strong><a href="#axiom-hierarchical">Hierarchical NS normalization:</a></strong> a selected block may use coefficients from strictly earlier levels and a supplied earlier-axiom NS identity for \(H=1-\sum_i\beta_i g_i\). If that identity has degree at most the original factor degree \(h(\delta+1)\), a recursively composed coefficient substitution of degree \(B\) transfers the full certificate through \(BD\). For <a href="#axiom-global-source">the covered-disjunction and implication-distribution outer blocks</a>, together with ordinary clauses, \(h\ge4\) permits \(B\le L\). Retained approximations keep their original structural degree bounds. The remaining wide blocks require further work.</p>
   <p><strong><a href="#mod-boolean-packing">Boolean packing:</a></strong> source inputs \(g_i\) have earlier-level NS certificates for \(g_i^2-g_i\) through \(2\deg g_i\). With at most \(h\) inputs, choose one scalar factor \(1-g_i\) per input. Every image \(g_i\prod_j(1-g_j)\) has an earlier certificate within its original companion degree, so all such blocks disappear simultaneously without degree increase. The <a href="#mod-schema-blocks">six MOD-recursion schema blocks</a> have arities \(2,2,2,3,2,2\) under the stated unsimplified Boolean expansion; argument blocks are separate. This mode combines with template normalization at the same \(LD\) bound. A preliminary double-negation simplification can expose a wide argument and invalidate that arity count.</p>
+  <p><strong><a href="#direct-relative-implication">Relative implication candidate:</a></strong> retain a core \(b=P_{G_B}\) with \(1=b+\sum_iV_i g_i\). Assign the first coefficients of \(U=(a,G_B)\) to \((b,V_i)\), and all others to zero. Then \(P_U\mapsto b(1-a)\), \(aP_U\mapsto-b(a^2-a)\), and \(g_iP_U\mapsto(1-a)E_{B,i}\). Supplied Booleanity of \(a\) gives local certificates, but their degree can exceed the original companion budget by \(\deg a\), coefficient substitution must be charged, and core dependencies can be at the same ENS level. No global bound follows yet.</p>
   <p>A complete argument must exploit the remaining balanced simulation certificates, local derivations and cofactors, and richer PHP consequences. Read the exact relevant Chapter 7–8 proofs and BIKPRS pp. 28–31 when needed. Final elimination and parameter closure must cover every fixed \(p,\ell,K\).</p>
 </section>
 
@@ -1280,6 +1276,123 @@
 <tr><td>Individually measured computation</td><td class="elapsed">0.13 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.47 s</td></tr>
 <tr><td>Drafting, coding, preparation, and unseparated overhead</td><td class="elapsed">73 min 43.19 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+  </article>
+  <article class="research-entry" id="entry-2026-09-11-direct-php-simulation">
+    <h3>Simulate the PHP theorem directly and remove its final boundary</h3>
+    <p class="entry-meta">11 September 2026 · Working direct simulation and affine boundary-removal proofs · Relative implication identity with unresolved global cost</p>
+    <p><strong>Question and outcome.</strong> The earlier <a href="#php-transfer-theorem">ordinary-PHP bridge</a> is valid, but its MOD-row prelude introduces extra wide prefix formulas. We can avoid that prelude: simulate the approximation of the PHP theorem itself, then map its final extension product to one. The ordinary clause identities justify that substitution at the original companion degrees. Removing the final block and all ordinary clause blocks is one affine substitution and does not increase the NS degree.</p>
+    <p>This is a reconstruction of the theorem-derivation induction in the proof of <a href="https://doi.org/10.1007/BF01294258">BIKPRS Theorem 6.7(1)</a>, not a new simulation theorem attributed to that source. The new notebook argument supplies the explicit PHP boundary substitution and its degree accounting. The lower-bound goal remains open.</p>
+
+    <h4 id="direct-theorem-approximation">1. Simulate a theorem, without introducing clause assumptions</h4>
+    <p>Fix \(p\), the Frege basis, and accuracy \(h\ge1\). Let a theorem \(\tau\) have a depth-\(\ell\), symbol-length-\(S\) proof, with \(S\ge2\). Use the source's balancing transformation to obtain a tree proof \(\pi\) of polynomial size, height \(H=O(\log S)\), and formula depth \(\ell'=\ell+O(1)\). Let \(E\) contain all companions for the accuracy-\(h\) approximations in \(\pi\), with their coefficient field equations. Original variables retain their Boolean equations. Write</p>
+    <div class="math">\[
+      L=(\ell'+1)\max\{p-1,h\}^{\ell'},\qquad
+      w=L+1,\qquad \mu=hw.
+    \]</div>
+    <p><strong>Working theorem-derivation lemma.</strong> These domain and extension equations have an NS derivation of \(\tau^{\mathrm{ap}}\) through</p>
+    <div class="math">\[
+      D_0\le \max\{A,3hw\}+Hhw
+      \le (1+\log S)(h+1)^{O(\ell+1)},
+      \qquad A=(h+1)^{c_F}L,
+      \tag{DIRECT-AP}
+    \]</div>
+    <p>where \(c_F\) and the hidden constants depend only on the fixed prime and formalization. The family has polynomially many companions and at most \(\ell+O(1)\) levels.</p>
+    <p><strong>Proof.</strong> BIKPRS Lemmas 6.10 and 6.12 give the approximation bound \(L\) and an NS certificate through \(A\) for each instantiated logical axiom. There are no assumption leaves. At a modus-ponens node, use the <a href="#mp-certificates">exact coefficient identity</a></p>
+    <div class="math">\[
+      b=c+qa+R,\qquad
+      \deg q\le hw,\qquad
+      R=\sum_F W_FF,\quad \deg(W_FF)\le3hw.
+    \]</div>
+    <p>If the two premise certificates have degrees \(d_a,d_c\), the conclusion has degree at most \(\max\{d_c,d_a+hw,3hw\}\). Induction up the balanced tree proves (DIRECT-AP). All Booleanity and extension contributions in \(R\) remain in the common axiom system. At the root the target is the theorem's approximation; the induction does not require that it be the constant FALSE polynomial. This is also explicit in the source's induction on the subderivation ending at an arbitrary formula.</p>
+    <p>The distinction from applying the refutation theorem to ordinary row assumptions is essential: no exact degree-\(n\) row polynomial is being used as an input assumption. The clause approximations occur as subformulas of the final theorem, with their usual small approximation degrees. Polynomial proof size bounds the number of companions; it does not bound the number of monomials in the resulting NS cofactors, and no such bound is needed here.</p>
+
+    <h4 id="direct-target-transfer">2. Image certificates can change the target as well</h4>
+    <p><strong>Working transfer lemma.</strong> Suppose \(t=\sum_F Q_FF\) is an NS derivation through degree \(D\), retaining each used axiom's original degree \(e_F\). Let \(\Phi\) be a polynomial substitution of degree at most \(B\ge1\). If every \(\Phi(F)\) has a certificate from a new axiom set through degree \(Be_F\), then \(\Phi(t)\) has a certificate from that set through degree \(BD\).</p>
+    <p><strong>Proof.</strong> The image cofactor has degree at most \(B(D-e_F)\). Multiply it by the supplied degree-\(Be_F\) representation of \(\Phi(F)\), and sum. Every original-axiom summand has degree at most \(BD\). The right-hand side is \(\Phi(t)\); it need not equal \(t\). Zero cofactors are omitted. This is the final-cofactor argument in <a href="#axiom-hierarchical">hierarchical normalization</a>, with the target kept explicit rather than assumed to be one.</p>
+
+    <h4 id="direct-php-boundary">3. The final PHP product can be made one</h4>
+    <p>Use the <a href="#php-truth-convention">same ordinary clausal PHP formula</a> as before, for \(n\ge2\). List its row and collision clauses as \(C_1,\ldots,C_M\), and expand the outer conjunction as</p>
+    <div class="math">\[
+      \mathrm{PHP}_n=\neg\left(\bigwedge_{\nu=1}^M C_\nu\right)
+       =\neg\neg\left(\bigvee_{\nu=1}^M\neg C_\nu\right).
+    \]</div>
+    <p>With the source's TRUE-by-zero convention and \(q_{ij}=1-x_{ij}\), let \(P_\nu=C_\nu^{\mathrm{ap}}\). Each \(P_\nu\) is a row or collision clause product of ordinary degree \(2h\). The PHP approximation is the final block product</p>
+    <div class="math">\[
+      Z=\prod_{u=1}^h\left(1-\sum_{\nu=1}^M z_{u,\nu}P_\nu\right).
+      \qquad
+      \deg Z=h(2h+1).
+    \]</div>
+    <p>Its companions are \(P_\nu Z\), all of original degree</p>
+    <div class="math">\[
+      e_\nu=2h+h(2h+1)=2h^2+3h.
+      \tag{PHP-boundary-degree}
+    \]</div>
+    <p><strong>Boundary-only removal.</strong> Set every \(z_{u,\nu}\) to zero. Then \(Z\mapsto1\), \(P_\nu Z\mapsto P_\nu\), and all removed field equations vanish. Each \(P_\nu\) has a strictly earlier certificate from \(\mathcal F_n\) and its clause companions: degree \(2h+1\) for a row and \(2h+2\) for a collision clause, by <a href="#php-clause-identities">the two exact clause identities</a>. For every \(h\ge1\),</p>
+    <div class="math">\[
+      2h+2\le2h^2+3h=e_\nu.
+    \]</div>
+    <p>Thus the transfer lemma with \(B=1\) converts the degree-\(D_0\) derivation of \(Z\) into a degree-\(D_0\) refutation over \(\mathcal F_n\) and the remaining ENS blocks. Adding \(\mathcal F_n\) as available axioms introduces no premise into the source Frege proof; these equations are used only to certify the substituted boundary companions.</p>
+    <p><strong>Simultaneous clause removal.</strong> Also apply the affine <a href="#php-clause-pruning">ordinary clause substitution</a>: the first coefficient vector of each row block is all ones, the first collision vector is \((1,x)\) for ordered inputs \((1-x,1-y)\), and all its other coefficients are zero. Then</p>
+    <div class="math">\[
+      P_i^{\mathrm{row}}\mapsto1-\rho_i,\qquad
+      P_{aa',j}^{\mathrm{col}}\mapsto x_{aj}x_{a'j}.
+    \]</div>
+    <p>The images of the final boundary companions are consequently just a negative row generator or a collision generator. The lower clause companions have base certificates of degrees two or three, within their original degree \(2h+1\). Every removed coefficient field equation maps either to zero or to</p>
+    <div class="math">\[
+      x^p-x=(x^2-x)(1+x+\cdots+x^{p-2}),
+    \]</div>
+    <p>a degree-\(p\) Boolean certificate, matching its original field degree. This is one global affine substitution. It changes every retained input and every cofactor, keeps \(Z\mapsto1\), and certifies every removed axiom within its original degree. The resulting NS refutation still has degree at most \(D_0\).</p>
+    <p>Any retained block has companions formed from its specialized inputs and its own unchanged fresh variables. The substitution introduces only original incidence variables into the deleted clause coordinates and constants into the final block, so the surviving family remains valid leveled ENS. This includes blocks later than \(Z\) if the PHP formula also occurred earlier in the source proof. No later axiom is silently treated as unchanged.</p>
+
+    <h4 id="direct-php-transfer">4. The direct ordinary-PHP bridge and combined preprocessing</h4>
+    <p><strong>Working theorem.</strong> A depth-\(\ell\), size-\(S\) proof of the ordinary clausal \(\mathrm{PHP}_n\) yields, for every \(h\ge1\), an NS refutation of the exact weak base \(\mathcal F_n\) plus a valid ENS family through</p>
+    <div class="math">\[
+      D_0\le(1+\log S)(h+1)^{O(\ell+1)}.
+      \tag{DIRECT-PHP}
+    \]</div>
+    <p>The final PHP block and the ordinary clause blocks have been removed. There are polynomially many surviving companions and at most \(\ell+O(1)\) levels. No MOD-row or clause-conjunction derivation prelude is added. Formula approximations and blocks introduced by the source's proof balancing still count as part of the translated proof.</p>
+    <p><strong>Proof.</strong> Apply (DIRECT-AP) to the PHP theorem, make the affine truth-convention change, and then apply the simultaneous boundary and clause substitution just proved. All cofactor budgets are the original source degrees. This proves (DIRECT-PHP) without functionality or same-row exclusions.</p>
+    <p><strong>Combined version.</strong> At \(h\ge4\), remove in addition any eligible covered-disjunction, implication-distribution, and small-arity source blocks from <a href="#mod-combined-preprocessing">the preceding preprocessing theorem</a>. Choose one admissible rule per block, giving priority to the final zero-coefficient rule for \(Z\). The same recursive substitution satisfies \(B\le L\), and the full refutation has degree at most \(LD_0\).</p>
+    <p>Indeed, the original earlier-axiom certificates for \(P_\nu\) fit the final companions' original degrees, so the final block is a valid case of the hierarchical image theorem. Its product image is one and its prefix coefficients are zero. This preserves the product/prefix structural induction used for \(B\le L\), together with the previously proved rules. The target becomes one throughout this combined substitution. There is no additional degree factor for removing the final boundary.</p>
+    <p>For \(S\le n^K\) and \(h=\lceil\log n\rceil\), both degree bounds remain polylogarithmic in \(n\), for fixed \(p,\ell,K\). At fixed \(h\ge4\), they are \(O_{p,\ell,h}(\log S)\). These are augmented-system refutations; eliminating all surviving blocks below the original or residual PC threshold remains unproved.</p>
+
+    <h4 id="direct-relative-implication">5. A local rule for the next relative-elimination attempt</h4>
+    <p>The direct construction removes avoidable prelude blocks. For the remaining implication blocks, the following identity gives a concrete next interface. Let \(B\) be a core block on inputs \(g_i\), with product \(b\), companions \(E_{B,i}=g_i b\), and telescoping coefficients \(V_i\) satisfying \(1=b+\sum_iV_i g_i\). Let \(U\) be a distinct block on \((a,g_1,\ldots,g_s)\), and suppose \(a^2-a\) has a certificate through \(2\alpha\), where \(\alpha=\deg a\), using equations that do not involve \(U\)'s coefficients.</p>
+    <p><strong>Working local identity.</strong> Assign the first coefficient of \(a\) in \(U\) to \(b\), its first coefficients on \(g_i\) to \(V_i\), and every other coefficient to zero. Then</p>
+    <div class="math">\[
+      P_U\longmapsto1-ba-\sum_iV_i g_i=b(1-a),
+      \qquad
+      aP_U\longmapsto-b(a^2-a),
+      \qquad
+      g_iP_U\longmapsto(1-a)E_{B,i}.
+      \tag{REL-IMP}
+    \]</div>
+    <p>The first equality is the telescoping identity; the other two are direct multiplication. Thus the companion images have certificates through \(\deg b+2\alpha\) and \(\deg b+\alpha+\deg g_i\), respectively, using the core companions and the supplied Booleanity certificate.</p>
+    <p>For equal accuracy \(h\), let \(\delta=\max\{\alpha,\max_i\deg g_i\}\). Since \(\deg b\le h(1+\delta)\), each image certificate exceeds its corresponding original \(U\)-companion budget by at most \(\alpha\). This is not the degree-preserving image condition. The coefficient polynomials may have degree as large as \(\deg b\); their substitution into source cofactors and field equations also needs to be charged.</p>
+    <p>For source formulas, \(U\) corresponds to \(\neg A\vee B\) with the outer disjunction of \(B\) flattened. Its core block can lie at the same ENS level. Choosing core blocks that are themselves removed can create long chains of composed substitutions. The identity supplies local certificates, not a globally compatible assignment or an affordable bound on their accumulated cost. The next task is to identify the precise dependency condition under which many uses of (REL-IMP) can be combined.</p>
+
+    <h4 id="direct-php-checks">6. Exact checks, process assessment, and remaining gap</h4>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/tools/check_direct_php_boundary.cpp">compiled checker</a> verified 16 cases over \(p=2,3,5,7\), accuracies one and two, and row widths two and three. It retained 32 boundary-only certificates, 104 combined companion-image certificates, and 156 coefficient-field certificates. Every certificate was reconstructed as an ordinary polynomial identity and checked against its original axiom degree. All 32 omissions of the essential base summand were nonzero.</p>
+    <p>Eight cases also included a later generic ENS block depending on the final boundary product. Rebuilding it from specialized inputs agreed with direct substitution for all 16 companions; leaving those inputs unchanged failed every control. The final target changed to one in all cases. These are local clause/boundary checks, not complete small PHP refutations or a formal verification of the source balancing and simulation proofs. The relative identity (REL-IMP) is justified by its displayed algebra, with no new finite test claimed for it.</p>
+    <p>Complete expanded polynomials, all coefficient maps, NS cofactors, degree budgets, and later-block data are in <a href="https://github.com/kbr-/math-research/blob/main/research/results/direct_php_simulation_20260911_09/checks-01.jsonl">checks-01.jsonl</a>. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/direct_php_simulation_20260911_09/README.md">result record</a> gives coordinates, commands, source provenance, and measurement scope.</p>
+    <p><strong>Remaining gap.</strong> The direct simulation improves the family we must analyze, but it does not show that every remaining block has an affordable normalization or that shared implication cores can be eliminated simultaneously. A successful next transfer must charge both image certificates and composed cofactor substitutions, and must justify its dependency bound from the actual proof.</p>
+    <p><strong>Process assessment.</strong> The finalization helper removes repeated bookkeeping, and the trial separates mathematics from computation design and coding; retain that split while disclosing intervals that were already mixed before it began.</p>
+    <p><strong>Timing scope.</strong> This interval begins with the preceding checkpoint's finalization and includes the timing helper, a user-requested context-accounting report, and the timing-category trial; the earlier preparation intervals remain as measured rather than being retrospectively split.</p>
+    <div class="timing-report" data-session="direct_php_simulation_20260911_09">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>23 min 42.23 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">25.59 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">8 min 24.38 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 11.03 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">11 min 37.80 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.63 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.80 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
