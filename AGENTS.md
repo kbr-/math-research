@@ -141,7 +141,9 @@ actionable rule over another checklist or a record of one-off setup history.
   and proofs remain unchanged; mathematical corrections require a new dated entry.
 - Maintain [research/CLAIM_INDEX.md](research/CLAIM_INDEX.md) as concise navigation
   to new claims and obstructions: stable labels, status, and full-record links.
-  Link corrections or retractions to their new dated entries.
+  Before developing or naming a result, search it for the same object or template
+  and read the relevant claims. Label rediscoveries and refinements and link the
+  original record; link corrections or retractions to their new dated entries.
 - End every research-turn entry with a two-column **Measured category / Elapsed**
   timing table, headed by the bold total instrumented interval. Generate it from
   actual timing data with `./compute.sh report TURN --stop --html-out PATH` and
