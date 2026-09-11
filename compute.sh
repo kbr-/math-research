@@ -30,7 +30,8 @@ SLICE = 'mathcompute.slice'
 WATCHDOG = 'mathcompute-watchdog.service'
 MAX_MEMORY = MAX_SWAP = 10_000_000_000
 MAX_CPUS = set(range(14))
-PHASES = ('reading', 'reasoning_writing', 'preparation', 'external_tool', 'network_tool', 'other')
+PHASES = ('reading', 'mathematics', 'coding', 'preparation', 'overhead',
+          'reasoning_writing', 'external_tool', 'network_tool', 'other')
 RUNS = ('computation', 'network_tool', 'external_tool', 'local_processing')
 
 
@@ -139,7 +140,7 @@ def summary(events:list[dict],end:float)->dict:
         totals[cat]=totals.get(cat,0.0)+(b-a)
     return {'total_instrumented_s':end-begin,'exclusive_categories_s':totals,'command_runs':len(runs),'failed_or_timed_out_commands':len(failures),
       'unfinished_commands':len(set(runs)-finished),
-      'scope':'Reading phases include interpretation; reasoning_writing is a designated phase, not an internal cognition timer. Network/tool windows include server and orchestration latency. Final-answer generation after the snapshot is excluded.'}
+      'scope':'Phases label observed work windows, not internal cognition or pure latency. Unexpected interruptions may remain mixed with the active phase. Tool windows include service overhead; overlapping intervals count once. Work after the final snapshot is excluded.'}
 
 
 def timing_html(data, session):
@@ -158,11 +159,16 @@ def timing_html(data, session):
 
     labels = [
         ('reading', 'Marked reading and review windows'),
+        ('mathematics', 'Mathematical reasoning and proof writing'),
+        ('coding', 'Computation design and coding'),
+        ('preparation', 'Preparation and checkpoint work'),
+        ('overhead', 'Marked overhead and interruptions'),
         ('network_tool', 'Dedicated web and download-attempt windows'),
         ('external_tool', 'Other external-tool windows'),
         ('computation', 'Individually measured computation'),
         ('local_processing', 'Individually measured conversion, checks, and local processing'),
         ('overlapping_tool_categories', 'Overlapping tool categories, counted once'),
+        ('reasoning_writing', 'Mixed reasoning and writing (legacy phase)'),
     ]
     rows = []
     used = set()
@@ -172,7 +178,7 @@ def timing_html(data, session):
             rows.append((label, categories[key]))
     residual = sum(value for key, value in categories.items() if key not in used)
     if residual > 0:
-        rows.append(('Drafting, coding, preparation, and unseparated overhead', residual))
+        rows.append(('Unseparated overhead and other unclassified time', residual))
     result = [f'<div class="timing-report" data-session="{html.escape(session, quote=True)}">',
               '<table class="timing-table">', '<caption>Measured timing</caption>',
               '<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>',

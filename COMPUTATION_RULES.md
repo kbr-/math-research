@@ -120,7 +120,8 @@ From the repository root:
 ```bash
 ./compute.sh start turn001
 ./compute.sh phase turn001 reading --note "Read the relevant proof"
-./compute.sh phase turn001 reasoning_writing
+./compute.sh phase turn001 mathematics
+./compute.sh phase turn001 coding --note "Design and implement a computation"
 ./compute.sh run turn001 --threads 1 -- python3 calculation.py
 ./compute.sh report turn001 --stop
 ```
@@ -138,15 +139,20 @@ systemd runtime limit as a backstop. Full output and timing records are saved in
 `research/logs/`. Only the last 8,000 output bytes are displayed by default;
 `--tail-bytes N` changes that without losing the saved log.
 
-In an instrumented session, mark reading/review, preparation, reasoning/writing,
-and external-tool phases. For browsing, mark `network_tool` before the call and
-restore the phase afterward. Command runs log their own category, status, and
-elapsed interval automatically, including failures and retries. AGENTS.md defines
-which research turns require instrumentation.
+Mark `mathematics` for mathematical reasoning and proof writing, `coding` for
+computation design and implementation, `preparation` for setup and checkpoint
+work, and `overhead` for identifiable interruptions or overhead-only windows.
+Use `reading` for source review and `network_tool` before browsing, restoring the
+work phase afterward. The table keeps these categories separate and omits empty
+ones. The older mixed `reasoning_writing` phase remains readable for past sessions.
+Command runs record their own category, status, and elapsed interval, including
+failures and retries. AGENTS.md defines which turns require instrumentation.
 
 Reports use exclusive wall-clock intervals; do not add overlapping worker times.
 Reading includes interpretation and tool windows include service/orchestration
 latency. Pure internal reasoning and pure network latency are not measurable.
+Unexpected interruptions may remain mixed with the active phase; disclose material
+mixing rather than retrospectively inventing a split or an overhead estimate.
 Disclose mixed time, work before instrumentation, and final generation after the
 snapshot. Start a fresh timing session after reboot. A session cannot be stopped
 while command records remain unfinished.
