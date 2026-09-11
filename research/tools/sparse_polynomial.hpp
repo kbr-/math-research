@@ -11,9 +11,10 @@ namespace sparse_polynomial {
 using Monomial=std::vector<int>;
 using Polynomial=std::map<Monomial,int>;
 struct Ring {
-    int p;
-    explicit Ring(int prime):p(prime){
+    int p,degree_limit;
+    explicit Ring(int prime,int maximum_degree=32):p(prime),degree_limit(maximum_degree){
         if(p!=2 && p!=3 && p!=5 && p!=7)throw std::runtime_error("tested prime guard");
+        if(degree_limit<1 || degree_limit>128)throw std::runtime_error("symbolic degree limit guard");
     }
     int residue(int value) const{value%=p;return value<0?value+p:value;}
     Polynomial constant(int value) const{
@@ -33,7 +34,7 @@ struct Ring {
         for(const auto& [u,c]:a)for(const auto& [v,d]:b){
             Monomial monomial;
             std::merge(u.begin(),u.end(),v.begin(),v.end(),std::back_inserter(monomial));
-            if(monomial.size()>32)throw std::runtime_error("symbolic degree guard");
+            if(monomial.size()>size_t(degree_limit))throw std::runtime_error("symbolic degree guard");
             int value=residue(result[monomial]+c*d);
             if(value)result[monomial]=value;else result.erase(monomial);
         }
