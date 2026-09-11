@@ -21,12 +21,19 @@ actionable rule over another checklist or a record of one-off setup history.
 
 ## Portable sessions and Git checkpoints
 
-- By default, commit research checkpoints locally and **leave Git pushes and
-  public publication to the user, unless explicitly overridden by a user prompt**.
-  Honor an explicit authorization for its stated task, scope, and duration.
-  A request to research, edit, or commit alone is not permission to publish.
+- **While the user-authorized Spin task is active, push reviewed research and
+  framework checkpoints to `origin/main` at `github.com/kbr-/math-research`.**
+  The user explicitly authorizes these pushes and their normal GitHub Pages
+  updates for the entire active Spin task, not just one checkpoint. Do not ask
+  again for routine pushes in this scope. This standing permission supersedes
+  earlier project instructions reserving every push/publication for the user;
+  it ends when the user stops Spin or revokes it. The source/history checks and
+  private-backup exclusions below still apply.
+- Outside Spin, commit locally and leave publication to the user unless a prompt
+  explicitly authorizes it. A request to research, edit, or commit alone is not
+  permission to publish.
 - Respect the user's chosen research branch. Do not switch or merge into main
-  merely to publish work. The Pages workflow deploys when the user pushes main;
+  merely to publish work. The Pages workflow deploys when main is pushed;
   local commits on any branch are only checkpoints.
 - Work from the repository root; do not assume a particular absolute path, user,
   or machine. `./start-codex.sh` resumes the exact machine-local ID stored in
@@ -82,9 +89,9 @@ actionable rule over another checklist or a record of one-off setup history.
   and source-containing diagnostics out of public commits and reachable history.
   Preserve needed personal copies locally; do not publish private/ backups.
 - Preserve the user's private `pre-publish` backup branch. Never publish that
-  backup or use `--all`/`--mirror`. When preparing a branch for the user's
-  publication, check it with `tools/verify-checkout.py --public-history BRANCH`.
-  The user chooses what to publish; the current Pages workflow targets main only.
+  backup or use `--all`/`--mirror`. Before an authorized publication, check the
+  branch with `tools/verify-checkout.py --public-history BRANCH`.
+  The current Pages workflow targets main only.
 
 - `notebook.html` at the workspace root is the authoritative current mathematical
   state and user-facing research record,
