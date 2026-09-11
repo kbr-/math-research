@@ -139,9 +139,12 @@ systemd runtime limit as a backstop. Full output and timing records are saved in
 `research/logs/`. Only the last 8,000 output bytes are displayed by default;
 `--tail-bytes N` changes that without losing the saved log.
 
-Mark `mathematics` for mathematical reasoning and proof writing, `coding` for
+Mark `mathematics` for mathematical reasoning, proof review, and proof writing;
+keep it active while drafting or correcting notebook mathematics. Use `coding` for
 computation design and implementation, `preparation` for setup and checkpoint
 work, and `overhead` for identifiable interruptions or overhead-only windows.
+Do not start preparation merely because the proof is being finalized; switch
+back to mathematics if checkpoint work uncovers a substantive proof question.
 Use `reading` for source review and `network_tool` before browsing, restoring the
 work phase afterward. The table keeps these categories separate and omits empty
 ones. The older mixed `reasoning_writing` phase remains readable for past sessions.

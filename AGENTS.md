@@ -48,7 +48,10 @@ actionable rule over another checklist or a record of one-off setup history.
   Promote other essential results from scratch/runtime directories into
   `research/results/` or `research/provenance/`. Research must never exist only
   in ignored files or the chat transcript.
-- Review and stage the relevant changes, then use a meaningful commit message
+- Once the turn's question, argument, and evidence are stable, make one focused
+  correctness review and checkpoint; move optional extensions to the next cycle.
+  Reopen the argument only for a concrete unresolved concern. Review and stage
+  the relevant changes, then use a meaningful commit message
   describing the mathematical result or correction. Do not silently include
   unrelated user edits. If committing fails, report the blocker; do not claim
   that the result is checkpointed. Operational logs, credentials, local session
