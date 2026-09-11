@@ -254,5 +254,6 @@ int main(int argc,char** argv) {
         out<<"{\"record\":\"summary\",\"cases\":16,\"all_passed\":true}\n";
         out.close();need(bool(out),"output write failed");
         std::cout<<"Sixteen expanded-cut schedules and future-private-root controls passed.\n";
+        return 0;
     } catch(const std::exception& e) {std::cerr<<e.what()<<'\n';return 1;}
 }
