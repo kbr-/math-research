@@ -13,7 +13,7 @@
   <h2>Where we stand</h2>
   <p><strong>The goal is still open.</strong> We have working proofs for eliminating extension blocks and batching blocks with nested spans or suitable nested cores. These produce genuine polynomial-calculus (PC) refutations with explicit degree bounds.</p>
   <p>We now have a <a href="#polynorm-transfer">polynomial coefficient substitution theorem</a> and a <a href="#polynorm-collision-pairs">collision-pair family whose entire extension layer disappears without increasing PC or NS degree</a>. Every partial matching leaves some block outside the constant-normalization criterion. Thus polynomial substitutions genuinely enlarge the usable methods.</p>
-  <p>The static affine criterion cannot afford the spread geometry. <a href="#resistant-existence">Some embeddings resist every small matching</a>, and the saved seven-hole example also <a href="#polynorm-spread-checks">excludes affine normalizers with degree-two base certificates</a>. Higher-degree certificates and direct annihilation of companion products remain available; input ranks and intersections alone do not establish coverage.</p>
+  <p>The static affine criterion cannot afford the spread geometry. <a href="#resistant-existence">Some embeddings resist every small matching</a>. In the saved seven-hole example, <a href="#annihilation-three-inputs">three inputs already have no quadratic common annihilator modulo degree-three PC consequences</a>. This also excludes the corresponding affine, single-factor companion substitutions. Larger degree budgets, several factors, and proof-dependent transformations remain open.</p>
   <p>The <a href="#entry-2026-09-11-mp-composition">local MP certificates</a> and <a href="#entry-2026-09-11-implication-boundary">one-block boundary transfers</a> are explicit. We now also have <a href="#overlap-target-batch">batching modulo boundary annihilators</a> and an <a href="#overlap-matching-rigidity">exact low-degree affine annihilator theorem for PHP matching weights</a>. Affordable global coverage, shared boundaries, and accumulated elimination cost remain the main gap.</p>
   <p>All four references were imported during the source audit, and the base/residual PC lower-bound match and simulation parameters have been checked. A focused audit found no gap in the central elimination arguments; this is not a formal verification of the entire manuscript. Unused certificate blocks can be pruned for free, but we do not yet know how to handle all the essential blocks affordably.</p>
   <div class="result">
@@ -27,7 +27,7 @@
   <h2>The remaining route</h2>
   <div class="eyebrow">Highest risk first</div>
   <ol>
-    <li><strong>Prove affordable global restriction/elimination or joint-design existence.</strong> Exploit the actual refutation and PHP structure to stay below the base or residual threshold. Small-matching normalization and the cheapest polynomial normalization fail on some admissible data. Supplied normalization certificates suffice, but their affordable existence is unproved.</li>
+    <li><strong>Prove affordable global restriction/elimination or joint-design existence.</strong> Exploit the actual refutation and PHP structure to stay below the base or residual threshold. Small-matching normalization and the tested degree-three affine substitution method fail on some admissible data. Affordable certificates or compatible substitutions for all relevant simulation blocks remain unproved.</li>
     <li><strong>Cover the actual Frege simulation outputs.</strong> Identify compatible proof regions and substitutions covering nonlinear inputs, later dependent blocks, all companions, shared boundaries, and leaf translations. A favorable affine spread embedding or balanced proof height alone does not establish these hypotheses.</li>
     <li><strong>Complete the proof-level audit.</strong> Check the remaining quotient variants and any new composition rule, preserving original axiom degrees, freshness, bounded field reductions, and reuse of derived PC polynomials.</li>
     <li><strong>Formalize the ordinary-PHP transfer.</strong> Convert a hypothetical short ordinary-PHP refutation to our exact Boolean linear-row base with bounded-depth and polynomial-size overhead. Do not silently add same-row exclusions.</li>
@@ -37,8 +37,8 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Test <strong>direct companion annihilation</strong>. A substitution only has to make each \(g_iP\) a cheap base consequence; forcing an entire factor of \(P\) to be a base consequence was a stronger requirement.</p>
-  <p>Start with affine inputs, one factor, and affine coefficient substitutions over \(\mathbb F_2\). Set up the exact linear conditions \(g_i(1-\sum_j\beta_jg_j)\in\mathcal C_3(\mathcal F_n)\), keeping PC closure distinct from the original-axiom span. Determine whether this handles the saved spread or yields a sharper obstruction.</p>
+  <p>Work directly with <strong>the translated ordinary-PHP axioms</strong>. Audit the simulation's truth convention and construct explicit row and collision leaf certificates over our Boolean linear-row base.</p>
+  <p>Record the actual extension inputs, all companion terms, and degree costs. This should settle the leaf-level encoding obligation and identify which algebraic relations and later-variable dependencies the global elimination step must handle.</p>
 </section>
 
 <section id="working-context">
@@ -112,7 +112,8 @@
   <p><strong><a href="#overlap-matching-rigidity">Matching annihilators:</a></strong> for a \(q\)-edge partial-matching monomial \(M\), let \(K_M\) fix its selected columns to their matching values and \(H_M=H_0+K_M\), with \(H_0\) the row span. When \(q+1\le c\le\lfloor(n-q-p)/2\rfloor\), the affine polynomials \(f\) with \(Mf\in\mathcal C_c(\mathcal F_n)\) are exactly \(H_M\), and \(\dim(H_M/H_0)=q(n+1)\). The proof uses legal rows with \(p+1\) ones; same-row exclusions remain absent.</p>
   <p><strong><a href="#overlap-normalization">Global matching restriction:</a></strong> constant normalization uses \(J_\tau=\tau^{-1}(H_0')\), with \(\dim(J_\tau/H_0)=q(2n-q)\), and preserves proof degree. A <a href="#overlap-removable-spread">chosen spread embedding</a> works at \(q=1\); <a href="#resistant-existence">other embeddings fail after every matching of size at most \(\eta n\)</a>, for any fixed \(\eta&lt;1-1/\sqrt2\) and sufficiently large \(n\). The counting argument uses an affine cut of dimension \(q(2n-q)-1\). This rules out universal sublinear matching coverage by that criterion, not larger restrictions or polynomial substitutions.</p>
   <p><strong><a href="#polynorm-transfer">Polynomial normalization:</a></strong> for same-level blocks with old inputs, supply \(\deg\beta_{a,i}\le T\), \(T\ge1\), and old PC proofs of \(H_a=1-\sum_i\beta_{a,i}g_{a,i}\) through \(c\). Setting the first coefficient vector to \(\beta_a\) and the others to zero transfers any old target through \(\max\{TD,c\}\). NS transfer additionally needs explicit original-axiom certificates; <a href="#polynorm-ns">the precise cofactor condition</a> retains original companion degrees.</p>
-  <p>The <a href="#polynorm-collision-pairs">collision-pair inputs</a> \(x_{aj}-x_{bj}\) admit \(T=1,c=2\), so the full layer preserves the base degree lower bound, although every \(q&lt;n\) matching leaves an unnormalized pair. The saved \(n=7,p=2\) spread has <a href="#polynorm-spread-checks">seven exact dual witnesses excluding \(T=1,c=2\)</a>. This does not exclude larger \(c\), several factors, or cheap products \(g_iH\) without a cheap proof of \(H\).</p>
+  <p>The <a href="#polynorm-collision-pairs">collision-pair inputs</a> \(x_{aj}-x_{bj}\) admit \(T=1,c=2\), preserving the base degree lower bound although every proper matching leaves an unnormalized pair. <a href="#annihilation-transfer">Direct companion substitution</a> only requires \(g_iH\in\mathcal C_3\) for affine inputs and coefficients. Its exact <a href="#annihilation-feasibility">linear feasibility criterion</a> uses the common annihilator in \(\mathbb F_2[Y]_{\le2}/(\mathcal C_3\cap\mathbb F_2[Y]_{\le2})\).</p>
+  <p>For the saved \(n=7,p=2\) spread, the <a href="#annihilation-pc-space">certified PC closure</a> has \(\mathcal C_3\cap\mathbb F_2[x]_{\le2}=\mathcal C_2\). In each block its first three inputs give an <a href="#annihilation-three-inputs">injective multiplication map on the 981-dimensional quadratic quotient</a>. Thus quadratic companion annihilation reduces to the already excluded normalization condition. This is a finite obstruction at the stated degree, not a barrier to larger budgets, several factors, or actual Frege-certificate transformations.</p>
 
   <h3 id="context-closure">Degree target and unresolved transfer</h3>
   <p>The needed theorem must cover every relevant translated NS certificate and give base PC degree at most \(\lfloor n/2\rfloor\), or residual PC degree at most \(\lfloor(n-q)/2\rfloor\). A polynomial bound in \(D,h,\log M_{\rm comp}\), with sufficiently many holes remaining and \(M_{\rm comp}\) companions, would suffice in the intended parameter regime, but is unproved. A joint-design construction is an alternative.</p>
@@ -714,6 +715,144 @@
 <tr><td>Drafting, coding, preparation, and unseparated overhead</td><td class="elapsed">27 min 6.80 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+  </article>
+  <article class="research-entry" id="entry-2026-09-11-companion-annihilation">
+    <h3>Direct companion annihilation and a certified three-input obstruction</h3>
+    <p class="entry-meta">11 September 2026 · Working linear criterion · Certified finite PC space, kernels, minors, and dual obstructions · Global transfer remains open</p>
+    <p><strong>Question.</strong> The preceding normalization theorem required a cheap proof of an entire factor \(H=1-\sum_j\beta_jg_j\). Actual extension elimination only needs cheap proofs of the companions \(g_iH\). We formulate this weaker condition exactly and test it with affine coefficients over \(\mathbb F_2\). The saved seven-hole spread still resists at degree three: in each block, its first three inputs already force every quadratic common annihilator to be an old degree-two consequence.</p>
+
+    <h4 id="annihilation-transfer">1. The direct companion substitution criterion</h4>
+    <p><strong>Working proposition.</strong> Let \(G\subseteq\mathbb F_2[Y]\) include the old Boolean domain equations, and let a family of ENS blocks have affine old inputs, disjoint fresh variables, and accuracies at least one. For each block supply affine polynomials \(\beta_j(Y)\) such that, with \(H=1-\sum_j\beta_jg_j\),</p>
+    <div class="math">\[
+      g_iH\in\mathcal C_3(G)\qquad\text{for every companion }i.
+      \tag{CA}
+    \]</div>
+    <p>Then every augmented degree-\(D\) PC proof of an old target transfers through degree \(D\). For NS proofs the same conclusion follows if the products in (CA) have supplied original-axiom certificates through degree three.</p>
+    <p><strong>Proof.</strong> First handle constant inputs: zero inputs have zero companions, while a block containing the constant one vanishes identically when that input's first coefficient is one and all its other coefficients are zero. All-zero blocks also disappear. Every remaining nonzero input has degree one. Set each remaining block's first coefficient vector to the supplied affine vector and set its other coefficient vectors to zero. Every companion becomes \(g_iH\), and every coefficient variable maps to a polynomial of degree at most one. Its field axiom maps to \(\beta^2-\beta\), a degree-two Boolean-domain consequence. Replay the proof using the supplied companion derivations; variable substitution preserves inference degrees. A used nonzero companion in these remaining blocks has original degree at least three, so its degree-three replacement fits the source ceiling. If \(D&lt;3\), no such companion is used and no replacement prelude is needed. For NS, a used companion cofactor of degree at most \(D-e_i\) multiplies a degree-three identity with \(3\le e_i\); every resulting original-axiom summand still has degree at most \(D\). This uses original companion degrees, not their reduced images.</p>
+    <p>In particular, (CA) does not assume that \(H\) itself belongs to a cheap base consequence space. All blocks are handled by one substitution, with no per-block degree charge. The finite tests below use one factor; for more factors the same first-factor substitution is sufficient if (CA) holds, but its failure at degree three does not exclude derivations allowed a larger original companion degree.</p>
+
+    <h4 id="annihilation-feasibility">2. Common annihilators give the exact linear condition</h4>
+    <p>Write \(\mathcal P_d=\mathbb F_2[Y]_{\le d}\), and put</p>
+    <div class="math">\[
+      L=\mathcal C_3(G)\cap\mathcal P_2,\qquad
+      Q_2=\mathcal P_2/L,\qquad
+      Q_3=\mathcal P_3/\mathcal C_3(G).
+    \]</div>
+    <p>Choose a set \(I\) of companions to be tested. Multiplication by their affine inputs defines</p>
+    <div class="math">\[
+      \mu_I:Q_2\longrightarrow Q_3^I,\qquad
+      \overline H\longmapsto(\overline{g_iH})_{i\in I}.
+    \]</div>
+    <p>This map is well-defined: if \(H\in L\), its old degree-three derivation can be reused and multiplied by \(g_i\), with degree still at most three. Let</p>
+    <div class="math">\[
+      W=\operatorname{span}\{\overline{g_j},\overline{y_vg_j}:
+        \text{every input }j\text{ and old variable }v\}\subseteq Q_2.
+    \]</div>
+    <p><strong>Working lemma.</strong> Affine coefficients satisfying the chosen companion conditions exist exactly when</p>
+    <div class="math">\[
+      \boxed{\overline1\in W+\ker\mu_I,}
+      \qquad\text{equivalently}\qquad
+      \mu_I(\overline1)\in\mu_I(W).
+      \tag{CAF}
+    \]</div>
+    <p><strong>Proof.</strong> The possible polynomials \(\sum_j\beta_jg_j\), modulo \(L\), are precisely \(W\). Thus \(H=1-\sum_j\beta_jg_j\) has the required zero products precisely when its class belongs to \(\ker\mu_I\). Rearranging gives both formulations. If \(\mu_I\) is injective, this is just \(\overline1\in W\). When additionally \(L=\mathcal C_2(G)\), the weaker companion criterion therefore reduces to the degree-two normalization condition.</p>
+    <p><strong>Dual certificate.</strong> If (CAF) fails, finite-dimensional separation gives functionals \(\lambda_i\) on \(\mathcal P_3\), one for each \(i\in I\), satisfying</p>
+    <div class="math">\[
+      \begin{gathered}
+      \lambda_i(\mathcal C_3(G))=0,\qquad
+      \sum_{i\in I}\lambda_i(g_i)=1,\\
+      \sum_{i\in I}\lambda_i(g_i g_j)=0,\qquad
+      \sum_{i\in I}\lambda_i(y_v g_i g_j)=0
+      \quad\text{for every }j,v.
+      \end{gathered}
+      \tag{CAD}
+    \]</div>
+    <p>Indeed, separate \(\mu_I(\overline1)\) from \(\mu_I(W)\) in the direct-sum target space and split the resulting functional into its coordinates. Conversely, apply (CAD) to any proposed affine-coefficient identities and sum them: the left side has value one and the coefficient terms have value zero, a contradiction. An obstruction for a subset \(I\) excludes a solution for the whole block. A solution for a subset alone does not establish full-block feasibility.</p>
+
+    <h4 id="annihilation-two-input-control">3. A control where products are easier than the factor</h4>
+    <p>For any two affine inputs \(f,g\) over \(\mathbb F_2\), take</p>
+    <div class="math">\[
+      \beta_f=1+g,\qquad\beta_g=1,\qquad
+      H=(1+f)(1+g).
+    \]</div>
+    <p>Then</p>
+    <div class="math">\[
+      fH=(f+f^2)(1+g),\qquad
+      gH=(g+g^2)(1+f).
+    \]</div>
+    <p>An affine polynomial \(f=a_0+\sum_v a_vy_v\) over \(\mathbb F_2\) satisfies
+      \(f^2-f=\sum_v a_v(y_v^2-y_v)\). The displayed companion products therefore have original-domain certificates of degree at most three. This is an explicit rank-two instance of the earlier substitution method and a positive control for the new solver.</p>
+    <p>We use the first two inputs of saved spread space zero. Their factor \(H\) is not in the base degree-two consequence space: otherwise these coefficients, extended by zeros to the full input tuple, would contradict its preceding <a href="#polynorm-spread-checks">normalization obstruction</a>. Thus this control actually distinguishes cheap companion products from a cheap factor.</p>
+
+    <h4 id="annihilation-pc-space">4. A certified degree-three PC space for the seven-hole base</h4>
+    <p><strong>Finite result.</strong> For \(G=\mathcal F_7\) over \(\mathbb F_2\), exact closure computation and replayable derivation data establish</p>
+    <div class="math">\[
+      \mathcal C_3(G)=\mathcal I_3(G),\qquad
+      \mathcal C_3(G)\cap\mathcal P_2=\mathcal C_2(G).
+      \tag{C3-7}
+    \]</div>
+    <p>Here is the degree-preserving normal-form model used to certify these equalities. Boolean squares reduce to single variables, and a monomial containing different pigeons in one column reduces to zero. No same-row exclusions are introduced. Surviving squarefree monomials use distinct columns and arbitrary rows. Through degree three their counts are</p>
+    <div class="math">\[
+      1,\quad 56,\quad \binom72\,8^2=1344,\quad
+      \binom73\,8^3=17920,
+    \]</div>
+    <p>for 19,321 coordinates in total; the first 1,401 have degree at most two. Every normal-form reduction has an original-domain or column-axiom identity at the degree of the polynomial being reduced.</p>
+    <p>The initial span is generated by the eight row equations multiplied by every one of the 1,401 normal monomials of degree at most two. Together with the zeroed Boolean and column multiples, this is precisely the degree-three original-axiom space. Its computed rank is 9,276. Its part of degree at most two has rank 420, and its affine part has rank eight.</p>
+    <p>To test PC closure, multiply every basis row of that lower-degree part by every old variable, normalize through degree three, and reduce against the current span. Add any new consequence and process any new lower-degree row in turn. All \(420\cdot56=23,520\) products were already in the initial span. Since an ordinary degree-three multiplication inference can only multiply a polynomial of degree at most two, this proves closure under PC. The lower-degree part contains the earlier degree-two space and has the same rank, 420, proving the second equality in (C3-7). The normal-form kernel itself lies in the original-axiom space at the stated degree, so these statements also hold in the ordinary polynomial ring.</p>
+    <p>The saved <a href="https://github.com/kbr-/math-research/blob/main/research/results/companion_annihilation_20260911_05/base-pc3-01.txt">basis proof</a> contains the full monomial map and 9,276 basis derivations, with original-generator references and elimination operations. A separate reader replayed those derivations, verified all 11,208 original generators were covered, and independently tested all 23,520 closure products. A saved normalized functional also certifies that the base space does not contain one.</p>
+    <p>Consequently \(\dim Q_2=1401-420=981\) and \(\dim Q_3=19321-9276=10045\). Equality (C3-7) concerns this finite instance; no general PC/NS equality is being inferred.</p>
+
+    <h4 id="annihilation-three-inputs">5. Three inputs force every quadratic annihilator into the base</h4>
+    <p><strong>Finite result with rank certificates.</strong> In each of the seven saved spread spaces, take its first three stored inputs \(g_1,g_2,g_3\). The map \(\mu_{\{1,2,3\}}\) on \(Q_2\) has rank 981 and zero kernel. Equivalently, for this input triple,</p>
+    <div class="math">\[
+      \left.
+      \begin{array}{c}
+      \deg H\le2,\\
+      g_1H,\ g_2H,\ g_3H\in\mathcal C_3(\mathcal F_7)
+      \end{array}
+      \right\}
+      \quad\Longrightarrow\quad
+      H\in\mathcal C_2(\mathcal F_7).
+      \tag{QA-7}
+    \]</div>
+    <p>For comparison, the first-input and first-two-input maps in saved space zero have the following exact dimensions:</p>
+    <table>
+      <thead><tr><th>Inputs tested</th><th>Domain dimension</th><th>Image rank</th><th>Kernel dimension</th></tr></thead>
+      <tbody>
+        <tr><td>First input of space zero</td><td>981</td><td>933</td><td>48</td></tr>
+        <tr><td>First two inputs of space zero</td><td>981</td><td>980</td><td>1</td></tr>
+        <tr><td>First three inputs of each of the seven spaces</td><td>981</td><td>981</td><td>0</td></tr>
+      </tbody>
+    </table>
+    <p>The one-dimensional two-input kernel is generated by the class of \((1+g_1)(1+g_2)\): its products vanish by the control identity, and its class is nonzero by the preceding normalization obstruction. All kernel vectors are saved. For each image rank, the output also saves a nonsingular square minor of that order, including its selected input monomials, selected output coordinates, and complete entries. The minors were checked by exact binary elimination; the kernel vectors were checked directly against the multiplication map and independently for linear independence. The rank lower bounds and matching kernel dimensions certify the exact ranks.</p>
+    <p>The maps use arbitrary quadratic \(H\), modulo base consequences. They do not restrict \(H\) to the normalization form until applying (CAF). Thus (QA-7) explains why relaxing the factor condition does not help these triples at this degree.</p>
+
+    <h4 id="annihilation-spread-obstruction">6. The affine companion equations are inconsistent in all seven blocks</h4>
+    <p>For each full 24-input tuple, allow every coefficient \(\beta_j\) to be an arbitrary affine polynomial in all 56 old variables. There are \(24\cdot57=1368\) scalar parameters. Impose the companion conditions for the first three inputs only; all 24 inputs remain available in the coefficient sum.</p>
+    <p>By (QA-7) and (C3-7), a solution would give \(H\in\mathcal C_2(\mathcal F_7)\), contradicting the saved degree-two normalizer obstruction. The independent linear-system computation confirms this: all seven systems have coefficient rank 876, and their right-hand sides are outside the image.</p>
+    <p><strong>Why rank 876 is informative.</strong> Modulo the eight row equations and Boolean domains, the 48 non-last-column variables are independent Boolean coordinates: the omitted variable in each row is one plus the other six, whose Booleanity follows in characteristic two. An invertible binary linear change of these coordinates preserves Booleanity and the degree filtration, so the rank-24 input span may be taken to be the first 24 coordinates. Its products with affine polynomials then span exactly the nonconstant squarefree monomials of degree at most two containing at least one of those coordinates. Their number is</p>
+    <div class="math">\[
+      24+\binom{48}{2}-\binom{24}{2}=876.
+    \]</div>
+    <p>The observed coefficient image still has this full dimension after quotienting by column consequences and applying the three-input multiplication map. Thus neither operation introduces an additional relation in this coefficient-product space. The original 1,368-parameter representation has a 492-dimensional kernel, while the target vector remains outside its image.</p>
+    <p>For each system, the output contains three full degree-three functionals satisfying (CAD). They were checked against the certified base space and, after lifting from quotient coordinates, directly against all 1,368 parameter equations in normal polynomial coordinates. Their weighted normalization is one. A controlled perturbation preserving annihilation of the base space was rejected by a specified parameter equation in each case. These checks verify the obstruction without relying on a solver status alone.</p>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/companion_annihilation_20260911_05/checks-02.jsonl">complete query output</a> retains the positive-control coefficients, all 49 kernel vectors, nine rank minors, and seven obstruction tuples. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/companion_annihilation_20260911_05/README.md">result record</a> gives the source files, input certificate, exact coordinate formats, commands, and provenance. An initial single-space pilot is also preserved; the accepted expanded run covers all seven spaces.</p>
+
+    <h4 id="annihilation-scope">7. Scope and the next research task</h4>
+    <p>We now have a precise linear condition for affine companion substitutions and an example where its apparent extra freedom collapses: three inputs force a quadratic factor back into the base consequence space. The rank-two control shows that the formulation itself is weaker than factor normalization. The seven-hole obstruction is specific to the stated input tuples, affine coefficients, and degree-three companion proofs. It does not rule out higher-degree proofs, several nontrivial factors, broader substitutions, or transformations using actual refutation cofactors.</p>
+    <p>The next bounded task is to construct the ordinary-PHP leaf translations over our exact Boolean linear-row base. We will audit the simulation's truth convention, write the row and collision leaf certificates, and record their actual extension inputs, companion terms, and degree accounting. These are concrete pieces of the proof structure needed for a global theorem; affordable coverage of that structure remains open.</p>
+    <div class="timing-report" data-session="companion_annihilation_20260911_05">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>24 min 10.42 s</strong></td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2.25 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.69 s</td></tr>
+<tr><td>Drafting, coding, preparation, and unseparated overhead</td><td class="elapsed">24 min 2.49 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
   </article>
   <!-- Append new dated mathematical entries here, preserving earlier entries. -->
