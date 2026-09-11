@@ -100,9 +100,14 @@ and full output logging. For example, with a research script `calculation.py`:
 ./compute.sh start turn001
 ./compute.sh phase turn001 reading
 ./compute.sh run turn001 --threads 1 -- python3 calculation.py
-./compute.sh report turn001 --stop --html-out research/results/turn001/timing.html
-./tools/archive-session.py turn001
+# After drafting the notebook entry with <!-- TIMING turn001 -->:
+./tools/finish-turn.py turn001
 ```
+
+The finalizer exports timing, archives evidence under the resource limits, and
+fills the unique notebook placeholder. `--next turn002` also starts the next
+cycle's clock immediately after the snapshot. Review and commit the checkpoint
+afterward. The lower-level timing commands remain in COMPUTATION_RULES.md.
 
 Substantial result files belong in `research/results/`, with their generating
 commands and verification evidence. Completed timing sessions are archived in

@@ -40,8 +40,11 @@ actionable rule over another checklist or a record of one-off setup history.
   a Git commit. Include the notebook living sections, supporting evidence,
   source provenance, code, and reproducibility data. RESUME changes only when
   navigation or workflow changes.
-- Before committing, finish the timing report and run
-  `./tools/archive-session.py TURN` to preserve its evidence outside ignored logs.
+- Before committing, run `./tools/finish-turn.py TURN`: it stops and exports timing,
+  archives evidence, and fills the entry's unique `<!-- TIMING TURN -->` placeholder.
+  During continuous research, add `--next NEXT` to start the next clock immediately
+  after the snapshot; final checkpoint work is then measured as preparation.
+  Run this small controller directly, not as a job in the session it will stop.
   Promote other essential results from scratch/runtime directories into
   `research/results/` or `research/provenance/`. Research must never exist only
   in ignored files or the chat transcript.
