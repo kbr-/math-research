@@ -126,6 +126,9 @@ actionable rule over another checklist or a record of one-off setup history.
   anchor locally; agents should still read local source excerpts when available.
   Adding or repairing links in earlier entries is allowed if their statements
   and proofs remain unchanged; mathematical corrections require a new dated entry.
+- Maintain [research/CLAIM_INDEX.md](research/CLAIM_INDEX.md) as concise navigation
+  to new claims and obstructions: stable labels, status, and full-record links.
+  Link corrections or retractions to their new dated entries.
 - End every research-turn entry with a two-column **Measured category / Elapsed**
   timing table, headed by the bold total instrumented interval. Generate it from
   actual timing data with `./compute.sh report TURN --stop --html-out PATH` and
@@ -157,6 +160,9 @@ actionable rule over another checklist or a record of one-off setup history.
   for phase marking, protected commands, reports, and honest measurement scope.
 - Keep full output on disk and display bounded excerpts. After compaction, read
   the restart note and load exact source passages only as needed.
+- Focus routine verification on the mathematics and touched links. Run site or
+  rendering checks for layout/tooling changes or a concrete rendering concern;
+  ordinary research entries need no repeated builds or full-notebook audits.
 - Distinguish working proofs, imported statements, conditional claims, finite
   checks, and open obligations. Match source hypotheses, encodings, and versions.
 - Record exact research statements, arguments or obstructions, dependencies,

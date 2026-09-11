@@ -70,6 +70,9 @@ historical mathematical sources only when the current research task needs them.
 
 ## Source and evidence map
 
+- New claims: [continued-research index](../CLAIM_INDEX.md) locates full notebook
+  statements, proofs, and obstructions by stable label. Use it for targeted lookup.
+
 - Historical proofs: [claim index](../../php_codex_handoff/manuscript/CLAIM_INDEX.md)
   and selected records of `php_codex_handoff/manuscript/claims.json` locate the
   original chapters and TeX. Preserve the handoff unchanged; new work belongs

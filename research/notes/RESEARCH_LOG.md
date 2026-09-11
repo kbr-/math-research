@@ -24,6 +24,8 @@ This file is for new local work. The preceding investigation is preserved in the
 
 **Timing:** total instrumented elapsed, reading windows, computation, external tools, failures, and limitations.
 
+<a id="local-zero-cofactor-pruning"></a>
+
 ### 2026-09-10 / import_20260910_01 — focused audit and zero-cofactor pruning
 
 **Question.** After importing the manuscript, what refutation-dependent reduction
