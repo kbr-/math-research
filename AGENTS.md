@@ -21,10 +21,10 @@ actionable rule over another checklist or a record of one-off setup history.
 
 ## Portable sessions and Git checkpoints
 
-- Commit research checkpoints locally, but **leave every Git push and public
-  publication to the user**. Do not push branches/tags, trigger public deployments,
-  publish releases, or upload research publicly. A request to research, edit, or
-  commit is not permission to publish.
+- By default, commit research checkpoints locally and **leave Git pushes and
+  public publication to the user, unless explicitly overridden by a user prompt**.
+  Honor an explicit authorization for its stated task, scope, and duration.
+  A request to research, edit, or commit alone is not permission to publish.
 - Respect the user's chosen research branch. Do not switch or merge into main
   merely to publish work. The Pages workflow deploys when the user pushes main;
   local commits on any branch are only checkpoints.

@@ -1,8 +1,7 @@
 # Current research workspace
 
-- Commit research checkpoints locally on the user's chosen branch. All pushes
-  and public publication belong to the user; do not push, deploy, release, or
-  switch/merge branches for publication.
+- Follow the root AGENTS.md Git/publication policy on the user's chosen branch,
+  including any explicit publication override for the active task.
 - Start with `notes/RESUME.md`, then read the initial sections of
   `../notebook.html`, including Working mathematical context. The notebook is the
   single source of truth for current mathematical status; RESUME is navigation

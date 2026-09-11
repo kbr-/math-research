@@ -56,7 +56,7 @@ historical mathematical sources only when the current research task needs them.
 5. After each research turn, update the notebook's living sections and append
    the complete result or failed attempt, with its measured timing table. Archive
    evidence and commit the related checkpoint locally under the root rules.
-   **All pushes and public publication belong to the user.** Routine setup/admin
+   Follow the root publication policy, including explicit user overrides. Routine setup/admin
    turns do not require a mathematical entry. Do not maintain a duplicate current
    mathematical summary in this file or the supporting notes.
    Revise and consolidate **Working mathematical context** rather than adding a
