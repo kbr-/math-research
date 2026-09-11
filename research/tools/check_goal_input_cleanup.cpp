@@ -234,6 +234,7 @@ CleanupStats cleanup_case(std::ostream& out,int p,int length,int width,bool gap)
        <<",\"nonmaximal_control\":"<<(max_control?"true":"false")<<"},\"all_passed\":true}\n";
     return stats;
 }
+#ifndef GOAL_CLEANUP_NO_MAIN
 int main(int argc,char** argv) {
     try {
         need(argc==3 && std::string(argv[1])=="--out","--out NEW_PATH required");
@@ -255,3 +256,4 @@ int main(int argc,char** argv) {
                  <<total.ordinary_repairs<<" ordinary and "<<total.input_repairs<<" cleanup copy witnesses.\n";
     } catch(const std::exception& e) {std::cerr<<e.what()<<'\n';return 1;}
 }
+#endif
