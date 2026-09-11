@@ -76,3 +76,12 @@ prepared; it is not a retrospective measurement of pure implementation time.
 The final proof and notebook drafting were marked mathematics, and preparation
 was used only after the statement and evidence were stable. Full command evidence
 is under `research/provenance/session-records/axiom_leaf_normalizers_20260911_13/`.
+
+## Syntax clarification — 11 September 2026, following cycle
+
+The upper two-input fixture uses the substituted projection argument `not not A0`.
+Its approximation is still a0, but the wrapper prevents flattening the conclusion
+into the outer disjunction. A bare OR argument A0 requires the wider input tuple
+handled in [the following entry](https://kbr-.github.io/math-research/#ports-syntax-clarification).
+The saved polynomial certificates and degree bounds are unchanged; the preceding
+description had left the wrapper unspecified.
