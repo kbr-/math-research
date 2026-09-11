@@ -12,13 +12,13 @@
 <section id="where-we-stand">
   <h2>Where we stand</h2>
   <p><strong>The goal is still open.</strong> We have working proofs for eliminating extension blocks and batching blocks with nested spans or suitable nested cores. These produce genuine polynomial-calculus (PC) refutations with explicit degree bounds.</p>
-  <p>We have also optimized our static affine batching criterion completely. Some admissible families still exceed the available degree budget: a better ordering cannot fix that method. Those families are extension data, not refutations, so they leave room for an approach that uses the actual certificate.</p>
-  <p>The <a href="#entry-2026-09-11-mp-composition">local modus-ponens certificates</a> are explicit, and <a href="#entry-2026-09-11-implication-boundary">one isolated implication block can now be eliminated through both full premise derivations</a>, preserving the conclusion polynomial exactly. The degree charge is explicit and independent of fan-in. Composing these local transformations across all essential blocks, while controlling shared boundaries and accumulated cost, remains open.</p>
+  <p>The static affine batching criterion is fully optimized and cannot afford the spread geometry. A new <a href="#overlap-removable-spread">PHP restriction handles one embedding of that same geometry</a>: fixing one pigeon–hole pair removes every block without increasing degree. This is an explicit favorable family, not coverage of arbitrary embeddings or Frege simulations.</p>
+  <p>The <a href="#entry-2026-09-11-mp-composition">local MP certificates</a> and <a href="#entry-2026-09-11-implication-boundary">one-block boundary transfers</a> are explicit. We now also have <a href="#overlap-target-batch">batching modulo boundary annihilators</a> and an <a href="#overlap-matching-rigidity">exact low-degree affine annihilator theorem for PHP matching weights</a>. Affordable global coverage, shared boundaries, and accumulated elimination cost remain the main gap.</p>
   <p>All four references were imported during the source audit, and the base/residual PC lower-bound match and simulation parameters have been checked. A focused audit found no gap in the central elimination arguments; this is not a formal verification of the entire manuscript. Unused certificate blocks can be pruned for free, but we do not yet know how to handle all the essential blocks affordably.</p>
   <div class="result">
-    <p><strong>The missing bridge:</strong> turn each relevant translated degree-\(D\) Nullstellensatz refutation into a base PC refutation with</p>
-    <div class="math">\[ B\le \left\lfloor\frac n2\right\rfloor, \]</div>
-    <p>contradicting the base lower bound \(\deg_{\mathrm{PC}}(\mathcal F_n)\ge n/2+1\). Constructing a suitable joint degree-\(D\) design would be an alternative.</p>
+    <p><strong>The missing bridge:</strong> turn each relevant translated degree-\(D\) NS refutation into a PC refutation of the original base, or a residual base with \(n-q\) holes, through</p>
+    <div class="math">\[ B\le \left\lfloor\frac{n-q}{2}\right\rfloor. \]</div>
+    <p>The original-board target is \(q=0\). Either contradicts the corresponding PC lower bound. No affordable restriction/elimination theorem covers all relevant simulations; a suitable joint degree-\(D\) design remains an alternative.</p>
   </div>
 </section>
 
@@ -26,8 +26,8 @@
   <h2>The remaining route</h2>
   <div class="eyebrow">Highest risk first</div>
   <ol>
-    <li><strong>Prove affordable elimination or joint-design existence.</strong> Exploit the actual refutation and PHP structure to stay below the linear base-degree threshold. One-block boundary transfer is available; a global bound avoiding a charge for every essential block is the main missing theorem.</li>
-    <li><strong>Cover the actual Frege simulation outputs.</strong> Identify compatible proof regions where the new transfer preserves every shared boundary and the removed variables are absent from other retained axioms. Account for later dependent blocks, nonlinear inputs, original degrees, and leaf translations. Balanced proof height alone does not establish these hypotheses.</li>
+    <li><strong>Prove affordable global restriction/elimination or joint-design existence.</strong> Exploit the actual refutation and PHP structure to stay below the base or residual linear threshold. The new restriction criterion works when every block gains a constant modulo residual row equations; universal coverage is unproved.</li>
+    <li><strong>Cover the actual Frege simulation outputs.</strong> Identify compatible proof regions and substitutions covering nonlinear inputs, later dependent blocks, all companions, shared boundaries, and leaf translations. A favorable affine spread embedding or balanced proof height alone does not establish these hypotheses.</li>
     <li><strong>Complete the proof-level audit.</strong> Check the remaining quotient variants and any new composition rule, preserving original axiom degrees, freshness, bounded field reductions, and reuse of derived PC polynomials.</li>
     <li><strong>Formalize the ordinary-PHP transfer.</strong> Convert a hypothetical short ordinary-PHP refutation to our exact Boolean linear-row base with bounded-depth and polynomial-size overhead. Do not silently add same-row exclusions.</li>
     <li><strong>Close the parameters.</strong> For every fixed \(p,\ell,K\), show that a size-\(n^K\), depth-\(\ell\) proof would yield the forbidden base refutation for all sufficiently large \(n\), retaining every accuracy and depth factor.</li>
@@ -36,8 +36,8 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Determine when <strong>several implication-block transfers can share learned consequences</strong>, so that their degree charges follow a bounded sequence of proof boundaries rather than the number of blocks.</p>
-  <p>Start with same-level affine blocks and an explicit two-region overlap. Track which conclusions remain unchanged, which learned input products are reusable, and which retained axioms lose freshness. Compare the resulting invariant with the existing nested-span theorem and the prefix/spread controls before claiming a global composition rule.</p>
+  <p>Test the limitation of the new restriction criterion: can a spread embedding <strong>avoid gaining a constant under every small partial matching</strong>?</p>
+  <p>Use the exact dimension of the restriction quotient to examine a random-embedding argument. This will separate the favorable construction from a possible universal coverage theorem and identify what additional certificate structure a successful route must exploit.</p>
 </section>
 
 <section id="working-context">
@@ -103,15 +103,17 @@
   </ul>
   <p>Exact source locations, versions, reading coverage, and qualifications remain in the <a href="https://github.com/kbr-/math-research/blob/main/research/notes/SOURCE_AUDIT.md">source audit</a> and <a href="https://github.com/kbr-/math-research/blob/main/research/notes/IMPORT_LOG.md">import log</a>. These are recorded matches, not new verification. Only the Krajíček paper is bundled in public Git; check <a href="https://github.com/kbr-/math-research/blob/main/research/references/README.md">reference availability</a> before accessing the others.</p>
 
-  <h3 id="context-mp-composition">MP composition and its elimination gap</h3>
-  <p>The <a href="#entry-2026-09-11-mp-composition">11 September entry</a> gives exact identities of the form \(b=c+qa+R\) for antecedent approximation \(a\), implication approximation \(c\), and conclusion approximation \(b\). The multiplier \(q=bU_0\) is explicit, and \(R\) includes all local companion and necessary Booleanity/domain contributions. With accuracy \(h\), all relevant approximation degrees at most \(L\ge1\), and \(w=L+1\), \(\deg q\le hw\); the flattened local NS certificate costs at most \(3hw\), while local PC reuse costs at most \(2hw\).</p>
-  <p>The exact coefficient rule is \(B_F=C_F+qA_F+W_F\). NS degrees can accumulate along antecedent branches; augmented PC composition gives \(d_b\le\max\{d_a,d_c,2hw\}\). A <a href="#mp-elimination-gap">global-substitution interface</a> remains conditional. Treating the implication premise as an old axiom is still invalid; the following transfer instead replays its full derivation.</p>
-  <p><strong><a href="#boundary-old-consequence">Old-consequence transfer:</a></strong> for one block fresh for every retained axiom, a degree-\(d\) PC derivation of an old polynomial \(t\), \(\deg t=k\), transfers through \(\max\{d+(p-1)\delta,d+k,pk\}\). This reduces to \(d+(p-1)\delta\) when \(k\le\delta\). The proof learns \(f_i t\), then derives \(t^2\) and uses domain equations; it preserves \(t\) exactly, with no NS-flattening claim.</p>
-  <p><strong><a href="#boundary-mp-elimination">One implication block:</a></strong> with all other axioms independent of its variables, full premise derivations of degrees \(d_a,d_c\) yield the unchanged conclusion \(b\) through \(\max\{d_a+(p-1)\delta,d_c+\deg b,H\}\). Here \(H=0\) for an outer disjunction with its companions retained; otherwise \(H\) is a supplied old derivation ceiling for \(b^2-b\). Both premise proofs may use the removed block. <a href="#boundary-weighted-replay">Weighted zero replay</a> handles the implication proof. Other blocks remain available; later dependent axioms and repeated elimination costs require separate control.</p>
+  <h3 id="context-mp-composition">Boundary transfer and PHP restrictions</h3>
+  <p>The <a href="#mp-certificates">exact MP identity</a> \(b=c+qa+R\) includes every companion and Booleanity contribution; augmented PC reuse costs at most \(2h(L+1)\). <a href="#boundary-mp-elimination">One-block transfer</a> handles both full premise proofs while preserving \(b\), provided every retained axiom is fresh for that block. A derived implication is never silently declared an old axiom.</p>
+  <p><strong><a href="#overlap-target-batch">Boundary-weighted batching:</a></strong> if input spans are nested modulo \(H\) and products \(tH\) have supplied old PC proofs through \(c\), a degree-\(D\) derivation of old \(t\), \(\deg t=k\), transfers through
+    \(\max\{c,D+k+(p-1)\delta,(p+1)\delta+k,(p-1)\delta+pk\}\).
+    The original proof is replayed at every stage; no length-dependent degree charge is introduced. Other retained axioms must remain fresh.</p>
+  <p><strong><a href="#overlap-matching-rigidity">Matching annihilators:</a></strong> for a \(q\)-edge partial-matching monomial \(M\), let \(K_M\) fix its selected columns to their matching values and \(H_M=H_0+K_M\), with \(H_0\) the row span. When \(q+1\le c\le\lfloor(n-q-p)/2\rfloor\), the affine polynomials \(f\) with \(Mf\in\mathcal C_c(\mathcal F_n)\) are exactly \(H_M\), and \(\dim(H_M/H_0)=q(n+1)\). The proof uses legal rows with \(p+1\) ones; same-row exclusions remain absent.</p>
+  <p><strong><a href="#overlap-normalization">Global matching restriction:</a></strong> if each restricted input span contains one modulo residual row equations, scalar coefficient assignments remove all blocks with no degree increase. This uses \(J_\tau=\tau^{-1}(H_0')\), with \(\dim(J_\tau/H_0)=q(2n-q)\), a larger space than the bounded-PC annihilator. A <a href="#overlap-removable-spread">chosen full-rank spread embedding</a> satisfies the criterion with \(q=1\). Large residual ranks alone do not preclude a common constant. Arbitrary-embedding and simulation coverage are open.</p>
 
   <h3 id="context-closure">Degree target and unresolved transfer</h3>
-  <p>The affordable elimination theorem must cover every relevant translated NS certificate and yield base PC degree at most \(b_n=\lfloor n/2\rfloor\). A polynomial bound in \(D,h,\log M\), with \(M\) the number of companions, would suffice in the intended fixed-depth, fixed-prime parameter regime, but is unproved. A joint-design construction is an alternative.</p>
-  <p>The next argument must exploit actual balanced simulation certificates, local derivations and cofactors, and richer PHP consequences. Read the exact relevant Chapter 7–8 proofs and BIKPRS pp. 28–31 when needed. The ordinary-PHP transfer to our exact polynomial base remains to be formalized: Krajíček Lemma 5.1 includes functionality and does not automatically supply that transfer. Final closure must cover every fixed \(p,\ell,K\).</p>
+  <p>The needed theorem must cover every relevant translated NS certificate and give base PC degree at most \(\lfloor n/2\rfloor\), or residual PC degree at most \(\lfloor(n-q)/2\rfloor\). A polynomial bound in \(D,h,\log M_{\rm comp}\), with few holes removed and \(M_{\rm comp}\) companions, would suffice in the intended parameter regime, but is unproved. A joint-design construction is an alternative.</p>
+  <p>A complete argument must exploit actual balanced simulation certificates, local derivations and cofactors, and richer PHP consequences. Read the exact relevant Chapter 7–8 proofs and BIKPRS pp. 28–31 when needed. The ordinary-PHP transfer to our exact polynomial base remains to be formalized: Krajíček Lemma 5.1 includes functionality and does not automatically supply that transfer. Final closure must cover every fixed \(p,\ell,K\).</p>
 </section>
 
 <section id="research-record">
@@ -355,6 +357,145 @@
 <tr><td>Drafting, coding, preparation, and unseparated overhead</td><td class="elapsed">22 min 56.18 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+  </article>
+  <article class="research-entry" id="entry-2026-09-11-target-annihilators">
+    <h3>Boundary-weighted batching, affine rigidity, and a removable spread family</h3>
+    <p class="entry-meta">11 September 2026 · Working transfer and rigidity proofs · Explicit restriction handles one spread embedding; general coverage remains open</p>
+    <p><strong>Question.</strong> Can overlapping blocks share learned consequences after multiplication by a preserved boundary polynomial? Yes: nested spans are needed only modulo supplied annihilator products. For PHP matching weights, we can characterize the available affine annihilators exactly in a low-degree range. Their dimension obstructs nesting of large spread spaces, but that does not obstruct every elimination: a carefully chosen spread embedding admits a single pigeon–hole restriction that normalizes every block. The distinction between an annihilator and a literal restriction is essential.</p>
+
+    <h4 id="overlap-target-batch">1. Batch modulo target annihilators</h4>
+    <p>Let \(\mathcal G\subseteq\mathbb F_p[Y]\) contain all old domain equations, and let a same-level collection of ENS blocks be fresh for every axiom in \(\mathcal G\). Inputs have degree at most \(\delta\), and each accuracy is at least one. Suppose an original degree-\(D\) PC derivation \(\pi\) ends with a nonzero old polynomial \(t\) of degree \(k\). Let \(H\subseteq\mathbb F_p[Y]_{\le\delta}\) be a vector space with supplied derivations</p>
+    <div class="math">\[
+      tH\subseteq\mathcal C_c(\mathcal G),\qquad
+      (V_1+H)/H\subseteq\cdots\subseteq(V_s+H)/H.
+    \]</div>
+    <p>Here \(V_a\) is block \(a\)'s polynomial input span. Only the products \(tu\), \(u\in H\), are assumed derivable; \(u\) itself need not be a consequence. This is a vector-space condition with supplied bounded-degree proofs, not a quotient by the full ideal.</p>
+    <p><strong>Working theorem.</strong> The same target \(t\) has a derivation from \(\mathcal G\) through</p>
+    <div class="math">\[
+      \boxed{B=\max\{c,\ D+k+(p-1)\delta,\ (p+1)\delta+k,\ (p-1)\delta+pk\}.}
+      \tag{TAB}
+    \]</div>
+    <p>The ceiling is independent of the number of blocks and their fan-ins. For \(H=0\), the \((p+1)\delta+k\) term is unnecessary. If \(D\ge2\delta\), it is already absorbed by \(D+k+(p-1)\delta\).</p>
+    <p><strong>Proof.</strong> Keep the original \(\pi\) throughout. Process blocks in order, maintaining old derivations of \(tg_{b,i}\) for earlier inputs within \(B\). For a current input \(f\) and each later block \(b\), choose
+      \(f=\sum_i\lambda_{b,i}g_{b,i}+u_b\), \(u_b\in H\). For \(\alpha\ne0\), zero earlier blocks, set the first-factor coefficients of every current/later block to \(\alpha^{-1}\lambda_{b,i}\), and zero their other coefficients. Weight the entire specialized proof by \(t\chi_\alpha(f)\).</p>
+    <p>An earlier companion becomes \(\chi_\alpha(f)(tg_{b,i})\), handled by reuse. A current/later companion becomes</p>
+    <div class="math">\[
+      t\chi_\alpha(f)E_{b,i}(Y,\beta)
+      =\alpha^{-1}t g_{b,i}(f^p-f)
+       +\alpha^{-1}\chi_\alpha(f)g_{b,i}(tu_b).
+    \]</div>
+    <p>The first term is a domain consequence, and the second uses a supplied final line \(tu_b\). Each separate term has degree at most \(k+(p+1)\delta\); keeping this ceiling accounts for possible cancellation between the selected representative and \(u_b\). Old axioms and weighted inferences cost at most \(D+k+(p-1)\delta\). The conclusion is \(\chi_\alpha(f)t^2\). Multiply its final line by \(t^{p-2}\), then subtract a domain derivation of \(\chi_\alpha(f)(t^p-t)\); this derives \(\chi_\alpha(f)t\) through the additional ceiling \((p-1)\delta+pk\). Summing with coefficients \(\alpha\) derives \(ft\) within \(B\). This establishes the induction without multiplying earlier derivations.</p>
+    <p>After all inputs have been learned, zero all block variables in the original \(\pi\) and weight by \(t\). Reuse the learned input products to derive \(t^2\) through \(\max\{B,D+k\}\), then recover \(t\) using \(t^p-t\) through \(pk\), both already covered by \(B\). When \(H=0\), the unsplit weighted companion is a domain consequence within the weighted original-line ceiling, so the extra splitting ceiling can be dropped. For \(t=1\), this recovers the historical <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/08_batching.md#lem-nestedquotient">nested quotient bound</a>.</p>
+    <p><strong>A genuine weaker hypothesis.</strong> Take \(t=x\), \(H=\operatorname{span}\{y\}\), and old axioms including \(xy\) and the domains. Then \(tH\) has degree-two proofs, although \(y\) is not an old consequence: \(x=0,y=1\) is a model. The incomparable spans \(\operatorname{span}\{x,z\}\) and \(\operatorname{span}\{x+y,z\}\) become equal modulo \(H\). This is an illustration of the input condition, not an augmented derivation of \(x\). Dropping the supplied product is invalid: for \(f=t=x\), later inputs \((x+y,z)\), \(u=-y\), and \(x=\alpha,y=z=1\), the omitted error term above equals \(-1\).</p>
+
+    <h4 id="overlap-matching-annihilators">2. Explicit PHP annihilators of a partial matching</h4>
+    <p>Return to our ordinary Boolean linear-row PHP base \(\mathcal F_n\), with \(m=n+1\), and retain its lack of same-row exclusions. Let \(J\) be \(q\) selected columns, \(\mu:J\to[m]\) injective, and</p>
+    <div class="math">\[
+      M=\prod_{j\in J}x_{\mu(j),j},\qquad
+      K_M=\operatorname{span}\{x_{ij}-\mathbf1_{i=\mu(j)}:j\in J,\ i\in[m]\},
+      \qquad H_M=H_0+K_M,
+      \quad H_0=\operatorname{span}\{\rho_i-1\}.
+    \]</div>
+    <p><strong>Working lemma.</strong> For \(0\le q\le n-1\),</p>
+    <div class="math">\[
+      MH_M\subseteq\mathcal I_{q+1}(\mathcal F_n)
+      \subseteq\mathcal C_{q+1}(\mathcal F_n),\qquad
+      \dim(H_M/H_0)=q(n+1).
+    \]</div>
+    <p><strong>Proof.</strong> A row equation is multiplied directly by \(M\). For a selected edge \(e=(\mu(j),j)\), \(M(x_e-1)=(M/x_e)(x_e^2-x_e)\). For another row in that column, \(Mx_{ij}=(M/x_e)(x_e x_{ij})\). Every displayed original-axiom multiple has degree at most \(q+1\). The \(qm\) column-fixing affine forms are independent. Their span meets \(H_0\) trivially: compare coefficients in any unselected column, which exists because \(q<n\), to force every row-equation coefficient to zero. This gives the dimension formula.</p>
+    <p>These relations fix the selected columns after multiplication by \(M\). They do not insert same-row exclusions or individually erase all other entries of a matched row.</p>
+
+    <h4 id="overlap-matching-rigidity">3. Exact low-degree affine annihilator rigidity</h4>
+    <p>Define the actual bounded-PC annihilator space</p>
+    <div class="math">\[
+      \mathcal H_{M,c}=\{f\in\mathbb F_p[x]_{\le1}:Mf\in\mathcal C_c(\mathcal F_n)\}.
+    \]</div>
+    <p><strong>Working theorem.</strong> Whenever</p>
+    <div class="math">\[
+      q+1\le c\le\left\lfloor\frac{n-q-p}{2}\right\rfloor,
+      \qquad
+      \boxed{\mathcal H_{M,c}=H_M.}
+      \tag{MAR}
+    \]</div>
+    <p>The input is the historical <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/09_decomposition.md#thm-rigidity">affine-consequence rigidity theorem</a> and the audited Razborov lower bound for <em>every</em> rectangular board with more pigeons than holes. The latter quantifier was checked directly in Theorem 3.1, printed p. 297, of the local source; the <a href="https://github.com/kbr-/math-research/blob/main/research/notes/SOURCE_AUDIT.md">source audit</a> records the ordinary-ring and axiom-deletion bridge.</p>
+    <p><strong>Proof.</strong> Write \(N=n-q\). First apply the usual partial-matching restriction \(\tau_0\): selected edges become one, all other entries in their rows or columns become zero, and the remaining board stays free. It sends \(M\) to one and our base to \(\mathcal F_N\) or zero. Hence \(f|_{\tau_0}\) is an affine PC consequence through degree \(c\). Since \(p\ge2\), our range implies \(c\le\lfloor(N-2)/2\rfloor\); affine rigidity puts this image in the residual row-equation span.</p>
+    <p>Subtract lifts of those row equations and the selected-column forms in \(K_M\). We may therefore assume</p>
+    <div class="math">\[
+      f=\sum_{i\in\mu(J)}\sum_{j\notin J}a_{ij}x_{ij}.
+    \]</div>
+    <p>This subtraction preserves \(Mf\in\mathcal C_c\), because the removed products have degree-\((q+1)\) proofs. To constrain one matched row \(i\), choose any \(p\)-element subset \(S\) of the \(N\) unselected columns. Make that row contain its original selected one and also ones in \(S\); set its other cells to zero. Keep the other selected rows at their original single ones, and clear every occupied column in all remaining rows. This is a valid restriction of the weaker encoding: the exceptional row sum is \(1+p=1\) in \(\mathbb F_p\). It would violate an added same-row-exclusion axiom, which is exactly why none may be assumed here.</p>
+    <p>The remaining board has \(N+1\) pigeons and \(N-p\) holes. The restricted conclusion \(Mf\) is the constant \(\sum_{j\in S}a_{ij}\). A nonzero constant would give a degree-\(c\) residual refutation, contradicting the lower bound \((N-p)/2+1\). Thus every \(p\)-subset sum is zero. The nonempty degree range guarantees \(N\ge p+2\); comparing two subsets differing in one coordinate shows that all \(a_{ij}\) in this row are equal. Their common value is allowed because \(p=0\) in the field. Therefore the row's contribution is a multiple of \(\sum_{j\notin J}x_{ij}\), which belongs to \(H_M\) by its row equation and selected-column forms. Repeat for every matched row. This proves the reverse inclusion; the forward inclusion was established above.</p>
+    <p>For \(q=0\), the earlier affine-rigidity theorem has the stronger range \(c\le\lfloor(n-2)/2\rfloor\); (MAR) uses a uniform, sufficient range. The statement concerns products derived from the PHP base itself, not products whose purported proofs still use unremoved extensions.</p>
+
+    <h4 id="overlap-spread-residual">4. A dimension obstruction to nesting, and its precise limit</h4>
+    <p><strong>Linear-algebra lemma.</strong> If \(A,B\) are disjoint \(r\)-dimensional subspaces and \(H\) has dimension \(z\), their images in the quotient satisfy</p>
+    <div class="math">\[
+      \dim\!\left(\overline A/(\overline A\cap\overline B)\right)\ge r-z.
+    \]</div>
+    <p><strong>Proof.</strong> The kernel of \(A\to(A+B+H)/(B+H)\) is \(A\cap(B+H)\). Because \(A\cap B=0\), this kernel injects into \((B+H)/B\), whose dimension is at most \(z\). Its quotient is the displayed image residual. In particular, neither image contains the other when \(z<r\).</p>
+    <p>Apply this in the affine quotient by \(H_0\) to the historical spread, whose spaces have rank
+      \(r=d\lfloor(n^2-1)/(2d)\rfloor=\Theta(n^2)\), \(d=\lceil\log_p n\rceil\). Under (MAR), every base-derived affine annihilator of the matching weight is already in \(H_M\), with added dimension \(z=q(n+1)\). Thus for \(q=o(n)\), the images still have large pairwise residuals and cannot form a nested chain.</p>
+    <p><strong>Rejected inference.</strong> It would be wrong to conclude that this defeats every matching-based elimination. Incomparable spaces can all contain a common constant after restriction. The next construction demonstrates this explicitly. The spread is still extension data, not an assumed refutation.</p>
+
+    <h4 id="overlap-normalization">5. A degree-preserving global restriction criterion</h4>
+    <p><strong>Working proposition.</strong> Fix a partial matching of \(q<n\) pigeons and holes, and let \(\tau\) clear its rows and columns as above. Suppose all extension blocks have inputs in the original PHP variables and, for each block \(a\),</p>
+    <div class="math">\[
+      1\in\operatorname{span}_{\mathbb F_p}\{\tau(g_{a,i})\}_i+H_0',
+    \]</div>
+    <p>where \(H_0'\) is the residual row-equation span. Then a degree-\(D\) augmented PC refutation gives a degree-at-most-\(D\) PC refutation of the residual PHP base. Consequently</p>
+    <div class="math">\[
+      \boxed{D\ge (n-q)/2+1.}
+      \tag{NR}
+    \]</div>
+    <p><strong>Proof.</strong> Choose scalar coefficients with
+      \(1-\sum_i\lambda_{a,i}\tau(g_{a,i})=u_a\in H_0'\).
+      In each block set its first-factor coefficients to \(\lambda_{a,i}\), and all others to zero. Its companion becomes \(\tau(g_{a,i})u_a\), a combination of residual row-axiom multiples. For every companion used in the proof, these multiples have degree at most \(\deg g_{a,i}+1\), bounded by the original companion degree because accuracy is at least one. Fresh field equations vanish, old axioms restrict to residual axioms or zero, and constant substitution preserves PC inference degrees. Replace each used companion by its residual derivation and replay the full original refutation. The residual lower bound proves (NR). Nonlinear input polynomials are allowed if the stated scalar-span identity holds; later inputs depending on removed extension variables are not covered.</p>
+    <p><strong>Two different spaces.</strong> The test here uses \(J_\tau=\tau^{-1}(H_0')\) on affine polynomials, rather than \(\mathcal H_{M,c}\). It permits a literal restriction of all matched-row cells; it does not infer those assignments from \(M=1\). The number of fixed variables is \(q(2n+1-q)\), the residual row span has dimension \(m-q\), and \(\tau(H_0)=H_0'\). Hence</p>
+    <div class="math">\[
+      \dim(J_\tau/H_0)=q(2n-q),
+      \qquad H_M\subseteq J_\tau.
+    \]</div>
+    <p>This dimension follows from the kernel of affine evaluation plus the residual row span. It will be useful when checking whether a small matching can normalize a family at all.</p>
+
+    <h4 id="overlap-removable-spread">6. An embedding of the full spread removable by one cell</h4>
+    <p><strong>Working theorem.</strong> For every fixed prime and all sufficiently large \(n\), the historical \(n\)-block spread construction can be embedded in the original variables so that a single pigeon–hole restriction normalizes every block. It still has rank \(r=\Theta(n^2)\), pairwise-zero intersections even modulo \(H_0\), \(O(n^3)\) companions, and original companion degree \(2h+1\).</p>
+    <p><strong>Construction and proof.</strong> Let \(K=\mathbb F_{p^d}\), \(d=\lceil\log_p n\rceil\), \(r=dQ\), with \(Q=\lfloor(n^2-1)/(2d)\rfloor\). In \(K^Q\oplus K^Q\), take the same graphs
+      \(V_\alpha=\{(u,\alpha u):u\in K^Q\}\) for \(n\) distinct \(\alpha\)'s. Choose \(u_0=(1,0,\ldots,0)\). Embed this \(2r\)-dimensional space into the historical coordinate space \(W=\operatorname{span}\{x_{ij}:j<n\}\), arranging that \((u_0,0)\) maps to \(x_{1,1}\), and that the \(d\)-dimensional subspace \(\{(0,\alpha u_0):\alpha\in K\}\) maps to \(d\) other-row variables in column one. Complete these independent prescribed images to an embedding; \(d\le n\) and \(2r\le n^2-1\) provide the required space.</p>
+    <p>Choose each graph's input basis to include \((u_0,\alpha u_0)\). Its corresponding input is
+      \(x_{1,1}+\sum_{s=1}^d a_s(\alpha)x_{i_s,1}\), with \(i_s\ne1\).
+      Fix pigeon one to hole one and clear that row and column. This designated input becomes identically one in every block. Set its first coefficient to one and all other block coefficients to zero. The first factor vanishes, so every companion vanishes identically. The single global substitution leaves a residual PHP refutation with \(n-1\) holes and the same degree ceiling.</p>
+    <p>The graphs remain pairwise disjoint because multiplication by \(\alpha-\beta\) is invertible in \(K\). Their embedding in \(W\) preserves this even modulo row equations: comparison in the unused last column forces all row coefficients to vanish. Thus the old optimized static score still has the spread geometry, while (NR) gives the actual augmented lower bound \(D\ge(n-1)/2+1\). At the earlier illustrative parameters \(p=2,n=256,h=8,D=25\), the static score was 281; this embedding instead rules out degree 25 directly through the residual lower bound, which requires integer degree at least 129.</p>
+    <p>This is an explicit favorable embedding, not a claim about every embedding or every Frege simulation. It shows why the static obstruction must not be promoted to a barrier to PHP restrictions.</p>
+
+    <h4 id="overlap-checks">7. Checks and the next question</h4>
+    <p>The compiled <a href="https://github.com/kbr-/math-research/blob/main/research/tools/check_target_annihilators.cpp">exact checker</a> computed the ordinary-PHP degree-two consequence spaces for the following endpoint cases of (MAR), with \(M=x_{1,1}\), \(q=1\), and \(c=2\):</p>
+    <table>
+      <thead><tr><th>\(p\)</th><th>\(n\)</th><th>Normalized \(\mathcal C_2\) rank</th><th>Affine annihilator dimension</th></tr></thead>
+      <tbody>
+        <tr><td>2</td><td>7</td><td>420</td><td>16</td></tr>
+        <tr><td>3</td><td>8</td><td>621</td><td>18</td></tr>
+        <tr><td>5</td><td>10</td><td>1166</td><td>22</td></tr>
+        <tr><td>7</td><td>12</td><td>1963</td><td>26</td></tr>
+      </tbody>
+    </table>
+    <p>Each annihilator dimension equals \(2(n+1)\), with the explicit \(H_M\) basis verified to lie in the kernel. Boolean and column equations were reduced in degree two; same-row products were retained and a selected same-row collision was confirmed outside \(\mathcal C_2\). The row equations and their variable multiples generate the normalized space. Its computed affine part has dimension \(n+1\), so it contains no new affine generators needing further multiplication: this certifies PC closure at degree two, rather than merely computing an NS space and calling it PC.</p>
+    <p>Further checks verified the \(p\)-subset incidence rank \(N-1\) for \(N=p+2\), 13 ordinary coefficient identities for the weighted overlap correction with nonzero omission controls, and four finite spread embeddings. The spread checks retain two copies of \(K\), verify all 160 pairwise disjointness tests, and confirm that every designated input becomes one after the same single-cell restriction. The general construction and lower bounds are proved above; finite checks are not formal verification of those proofs.</p>
+    <p>Complete sparse bases, monomial maps, overlap coefficients, field moduli, spread bases, and pair ranks are preserved in <a href="https://github.com/kbr-/math-research/blob/main/research/results/boundary_overlap_20260911_02/checks-03.jsonl">checks-03.jsonl</a>, with commands and provenance in <a href="https://github.com/kbr-/math-research/blob/main/research/results/boundary_overlap_20260911_02/README.md">the result record</a>. The first compilation failed on indentation warnings; the first matrix run then exposed an affine-coefficient indexing bug. Both were corrected. The corrected matrix suite passed, and the expanded suite with spread checks also passed. Earlier outputs are retained separately.</p>
+    <p><strong>Outcome.</strong> Matching-weight annihilators are now exactly controlled in the stated range, and a degree-preserving restriction handles one deliberately chosen spread embedding. The earlier attempt to infer a general obstruction from nonnesting was too strong. The next bounded question is whether other spread embeddings can avoid normalization under <em>every</em> small partial matching. The dimension of \(J_\tau/H_0\) suggests testing a random-embedding argument. Any resulting limitation will still concern this restriction criterion on extension data; affordable elimination for actual Frege certificates remains the main open task.</p>
+    <p><strong>Timing scope.</strong> This interval also includes the user-requested claim index and streamlined verification guidance, recorded in the preparation phase. Routine notebook builds and broad rendering audits were omitted under the updated policy.</p>
+<div class="timing-report" data-session="boundary_overlap_20260911_02">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>47 min 31.98 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 17.00 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.48 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.07 s</td></tr>
+<tr><td>Drafting, coding, preparation, and unseparated overhead</td><td class="elapsed">46 min 9.43 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
 </div>
   </article>
   <!-- Append new dated mathematical entries here, preserving earlier entries. -->

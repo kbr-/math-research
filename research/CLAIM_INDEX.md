@@ -24,3 +24,9 @@ Labels remain stable; later corrections should link to a new dated record.
 | `ex:missing-annihilator` | The implication proof alone does not supply its weighted inputs | Counterexample | [Witness and scope](https://kbr-.github.io/math-research/#boundary-missing-annihilator) |
 | `ex:later-block-dependency` | A later companion depending on the removed block changes under replay | Dependency obstruction | [Example and scope](https://kbr-.github.io/math-research/#boundary-later-dependency) |
 | `ex:prime-dependent-loss` | A field-domain consequence can require degree p after block removal | Working proof / degree-loss example | [Statement and proof](https://kbr-.github.io/math-research/#boundary-prime-loss) |
+| `thm:target-annihilator-batch` | Batch input spans modulo supplied products with an old target | Working proof | [Statement and proof](https://kbr-.github.io/math-research/#overlap-target-batch) |
+| `lem:matching-annihilators` | Explicit degree-bounded annihilators of a PHP matching monomial | Working proof | [Statement and proof](https://kbr-.github.io/math-research/#overlap-matching-annihilators) |
+| `thm:matching-affine-annihilators` | Exact low-degree affine annihilator space for a matching weight | Working proof | [Statement and proof](https://kbr-.github.io/math-research/#overlap-matching-rigidity) |
+| `lem:spread-quotient-residual` | A small quotient cannot make large disjoint spaces nested | Working proof / limited obstruction | [Statement and proof](https://kbr-.github.io/math-research/#overlap-spread-residual) |
+| `prop:matching-normalization` | A global matching restriction normalizes all blocks without degree increase | Working proof | [Statement and proof](https://kbr-.github.io/math-research/#overlap-normalization) |
+| `thm:one-cell-spread` | A full spread embedding is removable after one pigeon–hole restriction | Working proof | [Construction and proof](https://kbr-.github.io/math-research/#overlap-removable-spread) |

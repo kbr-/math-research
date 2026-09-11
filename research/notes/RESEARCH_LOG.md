@@ -221,3 +221,27 @@ the notebook, with evidence archived under
 Goal creation preceded instrumentation. Initial source review included early
 argument development; the suite ran once, after a warning-clean compilation.
 No historical suite was rerun and no package was installed.
+
+### 2026-09-11 / boundary_overlap_20260911_02 — target annihilators and matching restrictions
+
+**Status.** Working transfer, affine-rigidity, and restriction arguments.
+The complete claims, proofs, rejected nonnesting inference, and scope are in
+[the notebook](../../notebook.html), entry
+`entry-2026-09-11-target-annihilators`. Stable labels and proof anchors are in
+[the claim index](../CLAIM_INDEX.md).
+
+**Evidence.** The [result record](../results/boundary_overlap_20260911_02/README.md)
+documents four exact ordinary-PHP C2 calculations, four subset-incidence ranks,
+13 weighted coefficient identities and omission controls, and four finite spread
+families with all 160 pair checks. The
+[full output](../results/boundary_overlap_20260911_02/checks-03.jsonl)
+preserves sparse bases, monomial maps, field moduli, graph inputs, and every
+normalization result. Earlier outputs preserve an indexing failure and the
+successful corrected matrix suite; these are implementation history, not
+counterexamples to the mathematical statement.
+
+**Timing.** The [table](../results/boundary_overlap_20260911_02/timing.html)
+is embedded in the notebook, with the completed session archived under
+`research/provenance/session-records/boundary_overlap_20260911_02/`.
+The preparation phase includes the requested claim-index work. Mathematical
+checks were retained; routine site builds and broad notebook audits were omitted.
