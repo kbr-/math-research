@@ -75,5 +75,24 @@ Pebbling v1: equations (2.5)-(2.6), Theorem 3.1, Definition 4.7, and Lemma 4.9
 match the pebbling encoding, any-field NS-degree correspondence, and the
 Gamma(1,r) single-sink family needed by the generic-design obstruction.
 
-**Remaining obligations:** affordable refutation-sensitive elimination/joint
+**Obligations at the historical import checkpoint:** affordable refutation-sensitive elimination/joint
 design, exact ordinary-PHP proof transfer, and final quantified parameter closure.
+
+## Follow-up source reading: ordinary-PHP transfer, 11 September 2026
+
+For the notebook entry
+[The ordinary-PHP simulation bridge](https://kbr-.github.io/math-research/#entry-2026-09-11-ordinary-php-transfer),
+read additional BIKPRS extracted lines 166–218 and 254–269: the fixed Frege
+basis, MOD recursion axioms, flattened-disjunction depth convention, and the
+TRUE-by-zero translation, including its input convention.
+Revisited lines 1120–1264, 1320–1397, and 1484–1548 for the NS/domain convention,
+effective assumption degree, full-companion leveled extensions, Theorem 6.7(1),
+and the approximation construction. The source PDF is the same locally supplied
+copy identified by its hash above.
+
+The relevant distinction is that an ordinary row disjunction has source
+effective degree n, while a MOD-one row has effective degree p-1.
+The notebook supplies the explicit modular-row-to-clause derivation and
+the ordinary-ring substitution argument; this addendum records source coverage.
+Krajicek v3's paragraphs around Lemma 5.1 and Theorem 5.2 were also reread to
+separate that source's functionality-containing equivalence from this argument.
