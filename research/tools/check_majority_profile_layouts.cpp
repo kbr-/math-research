@@ -19,7 +19,7 @@ std::pair<int,int> minimum_degrees(const Matrix& a,int k) {
     return {row_min,*std::min_element(columns.begin(),columns.end())};
 }
 std::vector<int> short_matching(const Matrix& a,int k,int& rewires) {
-    // Caller verifies both minimum degrees exceed k/2.
+    // Caller verifies minimum_left_degree + minimum_right_degree >= k.
     std::vector<int> match(k,-1),owner(k,-1);
     for(int i=0;i<k;i++) {
         for(int j=0;j<k;j++)if(owner[j]<0 && a[i*k+j]) {
@@ -161,6 +161,7 @@ void profile_case(std::ostream& out,MajorityCounts& count,int p,int k) {
          "\"minimum_sampled_degree\":"<<minimum<<",\"short_rewirings\":"<<case_rewires<<",\"verified\":true}\n";
     count.rewires+=case_rewires;count.profiles++;
 }
+#ifndef MAJORITY_PROFILE_LAYOUTS_NO_MAIN
 int main(int argc,char** argv) {
     try {
         need(argc==3 && std::string(argv[1])=="--out","usage: check_majority_profile_layouts --out NEW-PATH.jsonl");
@@ -178,3 +179,4 @@ int main(int argc,char** argv) {
                  <<count.matched_edges<<" edges), "<<count.small_graphs<<" exhaustive small graphs, and exact union bounds.\n";
     }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}
 }
+#endif

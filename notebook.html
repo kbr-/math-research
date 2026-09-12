@@ -11,7 +11,7 @@
 
 <section id="where-we-stand">
   <h2>Where we stand</h2>
-  <p><strong>The goal is still open.</strong> <a href="#filtered-profile-elimination">Dense chosen column classes</a> can now be filtered into a majority profile without requiring a common pigeon in all of them. Uniform pigeon-membership and class-size densities above \(2/3\) suffice for large \(n\), preserving NS/PC degree and leaving \(N=\Omega_{\alpha,p}(n/\log n)\). The exact finite criterion uses the actual degree counts. Actual source families have not been proved to satisfy these profile conditions.</p>
+  <p><strong>The goal is still open.</strong> <a href="#bounded-exception-elimination">Bounded profile exceptions</a> now give deterministic degree-preserving elimination with \(O(a+b+p)\) board copies, where \(a\) bounds missing class memberships per pigeon and \(b\) bounds excluded pigeons per column. This removes the logarithmic sampling loss in that regime. For denser exceptions, <a href="#filtered-profile-elimination">raw densities above \(2/3\)</a> still give \(N=\Omega_{\alpha,p}(n/\log n)\) after filtering. These are conditional profile theorems; actual source coverage remains open.</p>
   <p>The underlying <a href="#column-dependent-package-elimination">column-dependent construction</a> also works whenever its exact local matching criterion can be met by another method. Its local partitions may have a singleton global common refinement, while a supplied constant-copy layout retains a linear-size residual. Thus a coarse common pigeon partition is not required for this route.</p>
   <p><a href="#partition-statistic-elimination">Common-partition packages</a> remain a simpler special case: their largest class of size \(s\) leaves \(\lfloor(s-1)/(p-1)\rfloor-1\) holes. The <a href="#partition-freezing-size-limit">upper bound \(N\le2(s-p)\)</a> limits affine freezing of all statistics of that same partition across every column. It does not impose the same bound on the new column-dependent construction.</p>
   <p>Two other coverage mechanisms remain available. <a href="#dense-column-combined">Dense base-only column witnesses</a> eliminate polynomial families at the same degree with \(N=\Omega(n/\log n)\) for fixed positive densities; occupied witnesses alone need only \(O(\log M)\) matched cells. <a href="#Hall-profile-normalizer">Small Hall deficiencies</a> remove blocks on the original board when the required row count fits their accuracy. Both allow arbitrary extra inputs under their stated hypotheses.</p>
@@ -40,8 +40,8 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Exploit a bounded number \(b\) of exceptions per pigeon and per column. After filtering columns missing a chosen pigeon, test whether every grouping with \(K&gt;2b\) already has compatible local matchings.</p>
-  <p>Stop at a deterministic \(O(b+p)\) copy bound and its exact residual/degree ledger, with a focused finite layout check if useful. This may remove the logarithmic loss for sparse exception patterns.</p>
+  <p>Replace maximum exception-degree assumptions by a total exception budget. Match away pigeons and columns with high exception degree, then apply either deterministic bounded-exception layouts or the majority theorem to the remaining board.</p>
+  <p>Stop at explicit trimming and residual-size bounds in terms of the total number of exceptions. Check when an aggregate density condition gives a large residual, without assuming the exceptions are evenly distributed.</p>
 </section>
 
 <section id="working-context">
@@ -99,7 +99,7 @@
   <p>The <a href="#virtual-axiom-level-construction">new value construction</a> uses complete current <a href="#virtual-OR-interface">unit/annihilator interfaces</a> and the <a href="#virtual-strict-leaf-theorem">strict level-support criterion</a>. Selected recognized positive/negative axiom boundaries become virtual zero/one; other objects remain genuine products on rebuilt inputs. Shared objects receive one coherent choice. The recorded Boolean/MOD presentation and protected final PHP clause evaluations are part of the hypotheses.</p>
   <p>At maximum ENS level \(d\), the <a href="#virtual-php-transfer">global affine PHP endpoint</a> gives a completed refutation through \((c+2d)L\), where \(c=\max\{M,10,p-1\}\) and \(M\) bounds the fixed Boolean axiom frames' leaf occurrences. It has at most \(d\) levels and polynomial family count. Its initial input Booleanity is sharply NS and strictly earlier, supplying the \(2L\) PC ceiling for the current normal-form pass. The exact interface recurrences and compiler proofs remain in the linked records; no NS unit certificate is inferred from PC compilation.</p>
   <p><strong><a href="#row-projection-transfer">Row coordinates and input reduction:</a></strong> row projection preserves proof degree and has pivot-independent quotient degrees. Separately, <a href="#input-reduction-transfer">reduce each ENS input modulo the stable domain/column ideal \(J\)</a>, fixing the base and coefficient variables. The new companions derive the old ones within their old degrees, preserving completed NS/PC proofs. Exclude row equations from this proper normal-form ideal. Binary inputs remain sharply Boolean; odd-field reduced inputs need actual witnesses. The <a href="#PHP-reduced-Booleanity-theorem">single-block PHP control</a> has NS cost \(e+h\) and PC cost \(\max\{e,2(h+t)\}\), where \(e=(h+1)t+h\); the sufficient board condition is \(n-t\ge2(e+h)-3\). Extra families are not covered.</p>
-  <p><strong><a href="#column-copy-map">Column-dependent freezing:</a></strong> compatible copy permutations preserve original base-image degrees and collapse local-statistic packages. For chosen classes \(C_j\), let \(u\) be the minimum pigeon membership count, \(v\) the minimum class size, \(d\) the maximum pigeon membership count, \(t=\min(u,v-1)\), and \(q=n-d\). The <a href="#filtered-profile-elimination">filtering criterion</a> \(2t+d&gt;2n\) permits matching away the \(q\) columns missing a maximum-degree pigeon. The remaining \(d\)-by-\(d\) profile has margin \(\varepsilon=(t-q)/d-1/2&gt;0\). Choose \(K\equiv-1\pmod p\), \(K\le\varepsilon d/2\), and \(2d^2(1-\varepsilon^2)^{\lfloor K/2\rfloor}&lt;1\); <a href="#majority-profile-elimination">random grouping</a> leaves \(N=\lfloor d/K\rfloor-1\). Uniform raw densities \(\alpha&gt;2/3\) give a fixed margin for large \(n\). Source compatibility remains unproved. <a href="#partition-statistic-elimination">Common-partition freezing</a> and its capacity bound \(N\le2(s-p)\) are separate tools; that bound does not cover arbitrary local partitions.</p>
+  <p><strong><a href="#column-copy-map">Column-dependent freezing:</a></strong> compatible copy permutations preserve original base-image degrees and collapse local-statistic packages. If chosen classes omit each pigeon in at most \(a\) columns and exclude at most \(b\) pigeons in any column, <a href="#bounded-exception-elimination">deterministic grouping</a> works with \(K=p\lceil(a+b+1)/p\rceil-1\le a+b+p-1\). Match the \(q\le a\) columns missing a selected pigeon, then use the usual residue prefix; the residual is \(\lfloor(n-q)/K\rfloor-1\). For larger exceptions, the <a href="#filtered-profile-elimination">integer filtering criterion</a> uses \(u,v,d\), \(t=\min(u,v-1)\), \(q=n-d\), and \(2t+d&gt;2n\); it leaves margin \(\varepsilon=(t-q)/d-1/2\). The <a href="#majority-profile-elimination">majority theorem</a> then uses \(K\le\varepsilon d/2\) and \(2d^2(1-\varepsilon^2)^{\lfloor K/2\rfloor}&lt;1\), with \(K\equiv-1\pmod p\). Source profiles remain unclassified. Common-partition freezing and its separate capacity bound \(N\le2(s-p)\) do not constrain all column-dependent layouts.</p>
   <p><strong><a href="#stable-ideal-normalizer">Column and row covers:</a></strong> \(\operatorname{NF}_J(g_iH)=0\) gives actual-degree NS images; any single-column tuple has an affine state normalizer. A <a href="#Hall-profile-normalizer">Hall witness</a> \(A,U\), \(r=|A|&gt;|U|\), \(r\le h\), gives \(H\in\mathcal I_W(\mathcal F_n)\), \(W\le r(\delta+1)\), when every selected row/column pair outside \(U\) has a nonzero designated column-input value. Companions fit \(d_i+W\le e_i\), fields fit \(p\), and the board stays unchanged. For all-but-one-column occupancies, <a href="#occupancy-probe-exact-degrees">augmented PC degree is two; NS degree is two for \(p\nmid n\), three for \(p\mid n\)</a>, \(n\ge3\). The <a href="#occupancy-affine-accuracy-frontier">general affine normalizer</a> needs exactly two rows when \(p\mid n\) and \(n\ge18\) for \(p=2\), or \(n\ge6(p-1)\) for odd \(p\); one row suffices when \(p\nmid n\). This excludes PC degree-three companion images at accuracy one, not broader projections.</p>
   <p><strong><a href="#categorical-heterogeneous-frontier">Independent scalar profiles:</a></strong> for \(N\) column probes with nonzero alphabet sizes \(k_j\), coefficient degree \(T\), and \(h\) rows, all-companion normalization over the proper state ideal exists exactly when the \(\max(0,N-hT)\) smallest \(k_j\)'s sum to at most \(h\). The construction uses affine old state indicators. Bare scalar coordinates instead require \(\sum_jk_j\le h(T+1)\). Added equations, correlated columns, and vector-valued profiles are outside these exact lower bounds.</p>
 </section>
@@ -6698,6 +6698,84 @@
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">17 min 14.51 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 49.00 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.25 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+  </article>
+  <article class="research-entry" id="entry-2026-09-12-bounded-exception-layouts">
+    <h3>Bounded profile exceptions give deterministic layouts without a logarithmic copy loss</h3>
+    <p class="entry-meta">12 September 2026 · Working deterministic NS/PC elimination theorem · Degree-sum matching at equality · 7,471 finite matching checks and 13,595 base images · Actual source coverage remains open</p>
+    <p><strong>Question and outcome.</strong> Random grouping is unnecessary when each pigeon and column has only a bounded number of exceptions to the chosen classes. Every local allowance graph then has a degree-sum guarantee. The same short augmenting-path algorithm works at equality, yielding a copy count bounded by the sum of the two exception bounds plus the characteristic adjustment.</p>
+
+    <h4 id="bounded-exception-elimination">1. Exact deterministic copy and residual bounds</h4>
+    <p>For each column \(j\), choose a class \(C_j\) of its local pigeon partition. Suppose every pigeon is outside at most \(a\) of these classes, and each column excludes at most \(b\) pigeons:</p>
+    <div class="math">\[
+      |\{j:i\notin C_j\}|\le a,\qquad
+      (n+1)-|C_j|\le b.
+    \]</div>
+    <p>Here \(a,b\) are nonnegative integers. Choose any distinguished pigeon \(*\), let \(q=|\{j:*\notin C_j\}|\le a\), and match those \(q\) columns to distinct other pigeons. Put \(d=n-q\).</p>
+    <p><strong>Working theorem.</strong> For any integer \(K\ge1\), \(K\ge a+b\), \(K\equiv-1\pmod p\), with \(N=\lfloor d/K\rfloor-1\ge1\), a compatible copy layout exists for <em>every</em> grouping after the usual matching prefix of size \(d\bmod K\). A qualifying finite local-statistic ENS package is eliminated at unchanged NS/PC degree and witness ceilings, with this exact residual size \(N\).</p>
+    <p>One explicit choice is</p>
+    <div class="math">\[
+      \boxed{K=p\left\lceil\frac{a+b+1}{p}\right\rceil-1,\qquad
+             a+b\le K\le a+b+p-1.}
+    \]</div>
+    <p>This also covers \(a=b=0\), giving \(K=p-1\). \(K\) counts board copies; ENS accuracies are unchanged. The package assumptions and level-ordered constant assignments are those of the <a href="#column-dependent-package-elimination">column-dependent elimination theorem</a>.</p>
+
+    <h4 id="degree-sum-short-matching">2. The matching condition extends to equality</h4>
+    <p>Let a balanced \(K\)-by-\(K\) bipartite graph have minimum left and right degrees \(\delta_L,\delta_R\), with</p>
+    <div class="math">\[
+      \delta_L+\delta_R\ge K.
+    \]</div>
+    <p>The <a href="#majority-profile-matchings">previous short-path algorithm</a> still gives a perfect matching. Process a new left vertex \(x\). If it has a free neighbor, use it. Otherwise all its neighbors are matched, to a set \(S\) of at least \(\delta_L\) left vertices.</p>
+    <p>Choose any free right vertex \(y\). The current \(x\) is outside \(S\) and is not adjacent to \(y\). If \(y\) had no neighbor in \(S\), its neighborhood would therefore have size at most</p>
+    <div class="math">\[
+      K-|S|-1\le K-\delta_L-1\le\delta_R-1,
+    \]</div>
+    <p>a contradiction. Thus a neighbor of \(y\) in \(S\) provides the same three-edge augmenting path. The argument retains \(O(K^2)\) adjacency work. This is the standard degree-sum sufficient condition, with the equality case accounted for explicitly; no strict majority on each side is needed.</p>
+
+    <h4 id="bounded-exception-proof">3. Exceptions survive restriction as absolute bounds</h4>
+    <p>After matching the columns missing \(*\), every remaining chosen class contains \(*\). Deleting pigeons and columns cannot increase either count of exceptions. This remains true after removing the additional matching prefix of size \(d\bmod K\).</p>
+    <p>Partition the remaining ordinary pigeons and columns into groups of size \(K\), designate one column group empty, and form the local allowance graphs from the <a href="#column-copy-compatibility">fixed-layout criterion</a>. A left vertex has at most \(a\) forbidden columns in any group, and a right vertex has at most \(b\) forbidden pigeons in any row group. Hence</p>
+    <div class="math">\[
+      \delta_L\ge K-a,\qquad
+      \delta_R\ge K-b,\qquad
+      \delta_L+\delta_R\ge2K-a-b\ge K.
+    \]</div>
+    <p>The preceding matching argument gives all required permutations, independently for every row-type/column-bundle pair. The row/column grouping may be arbitrary; no sampling event or probability estimate remains.</p>
+    <p>The resulting affine map freezes every local class statistic. Matched-column statistics are constants regardless of which class contains the matched pigeon; every copied column's active rows lie in its distinguished class. Selected coefficients are assigned by level, so all selected companions and field images vanish. Base-image proofs fit the original degrees, and the entire completed NS or PC proof replays through its old ceiling.</p>
+    <p>The total matching deletion is \(q+(d\bmod K)\), with final residual \(\lfloor d/K\rfloor-1\). No multiplication of losses across ENS levels occurs.</p>
+
+    <h4 id="bounded-exception-parameters">4. The parameter gain and its limits</h4>
+    <p>For the displayed \(K\),</p>
+    <div class="math">\[
+      N\ge\left\lfloor\frac{n-a}{K}\right\rfloor-1,
+      \qquad K\le a+b+p-1.
+    \]</div>
+    <p>If \((a+b+p)D=o(n)\), where \(D\ge1\) is a proposed source degree, then \(q\le a=o(n)\) and \(N/D\) tends to infinity. A full qualifying package would therefore give the forbidden residual refutation for sufficiently large \(n\). In particular, polylogarithmic exception bounds preserve a residual of size \(n/\operatorname{polylog}n\) without the additional logarithmic factor from sampling.</p>
+    <p>The majority theorem remains useful when the exception bounds are linear in \(n\): deterministic \(K\ge a+b\) then gives only a small residual. Nor is \(K\ge a+b\) a lower bound on every specially chosen layout. It is a uniform sufficient condition for arbitrary groupings based on these two local exception bounds.</p>
+
+    <h4 id="bounded-exception-checks">5. Equality tests and complete sparse-layout certificates</h4>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/tools/check_bounded_exception_layouts.cpp">compiled checker</a> tests all 7,471 \(4\)-by-\(4\) graphs satisfying the degree-sum condition, including 6,566 equality cases. Every returned matching is a verified allowed-edge bijection. A graph with degree sum \(K-1\) has a recorded Hall-deficient subset, showing that the sufficient degree-sum condition cannot simply be weakened by one for arbitrary graphs.</p>
+    <p>The projection fixtures use the <a href="#filtered-profile-no-common-pigeon">consecutive-pair exception family</a>, with \(a=b=2\), over \((p,K,n)=(2,5,21),(3,5,21),(5,4,17)\). Each has \(q=1\), no further residue prefix, and residual \(N=3\). The first matching removes the column missing an endpoint pigeon. Saved row and column label permutations identify the path-profile labels with the certificate engine's canonical coordinates.</p>
+    <p>The actual copy shifts are two when residual row type \(i\) equals \(j+1\), and zero otherwise. All 36 local allowance graphs meet the degree-sum condition, and all recorded copy permutations use allowed edges. Three graphs in the characteristic-five fixture sit exactly at equality, demonstrating the \(K=4\) boundary.</p>
+    <p>Every one of the 13,595 original base images is verified through its original degree, with 689 nonzero NS certificates and explicit zero-image records. All 118 local class statistics become their stated zero/one constants. Three accuracy-one blocks contain the full respective class-statistic inventories; all 118 companion and 118 coefficient-field images vanish, with original degrees \(1,3,p\) retained in the source definitions.</p>
+    <p>The path profiles have empty chosen-class intersection, and their exception counts are checked directly. The existing nonconstant-cell and invalid-copy-count controls also run on these new maps. The latter uses a row-subsystem point, not a full PHP model. The residual \(N=3\) lower bound makes the degree-two image certificates nonvacuous.</p>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/bounded_exception_layouts_20260912_64/checks-01.jsonl">complete output</a> and <a href="https://github.com/kbr-/math-research/blob/main/research/results/bounded_exception_layouts_20260912_64/README.md">reproduction record</a> preserve every graph test, source label map, base certificate, class input, and coefficient assignment. Compilation and all checks passed. The shared matcher algorithm itself was unchanged; its broader valid domain was proved and tested.</p>
+    <p><strong>Remaining gap and next step.</strong> Actual source exception counts remain unbounded. Replace maximum-degree assumptions by a total exception budget: match away high-exception pigeons and columns, then quantify the residual obtained by either the deterministic or majority route.</p>
+    <p><strong>Process assessment.</strong> Reusing both verified engines made the equality extension and complete small-board checks focused; no new matching algorithm, dependency, or general framework rule was needed.</p>
+    <div class="timing-report" data-session="bounded_exception_layouts_20260912_64">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>40 min 58.17 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">17 min 18.43 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">8 min 55.85 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">14 min 24.70 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">15.23 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.12 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.84 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
