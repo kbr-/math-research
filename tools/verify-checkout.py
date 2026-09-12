@@ -32,11 +32,18 @@ def main():
     references = json.loads((ROOT / 'research/references/import_status.json').read_text())['references']
     policy = json.loads((ROOT / 'research/references/redistribution.json').read_text())
     local_sources = 0
-    for key in ('BIKPRS', 'Razborov', 'Krajicek', 'Pebbling'):
+    for key in sorted(set(policy['public'] + policy['local_only'])):
         name = 'research/references/cache/' + key + '.pdf'
         text = 'research/references/extracted/' + key + '.txt'
+        expected = references.get(key, {}).get('sha256')
+        if expected is None and key + '_provenance' in policy:
+            audit = json.loads((ROOT / policy[key + '_provenance']).read_text())
+            expected = next((item['sha256'] for item in audit['files']
+                             if item['path'] == name), None)
+        if expected is None and (key in policy['public'] or (ROOT / name).is_file()):
+            failures.append('Missing audited reference hash: ' + key)
         if key in policy['public']:
-            if name not in tracked or not (ROOT / name).is_file() or digest(ROOT / name) != references[key]['sha256']:
+            if name not in tracked or not (ROOT / name).is_file() or digest(ROOT / name) != expected:
                 failures.append('Missing, untracked, or changed public reference: ' + key)
             if text not in tracked or not (ROOT / text).is_file():
                 failures.append('Missing public extracted reference: ' + key)
@@ -45,7 +52,7 @@ def main():
                 failures.append('Reference without redistribution clearance is tracked: ' + key)
             if (ROOT / name).is_file():
                 local_sources += 1
-                if digest(ROOT / name) != references[key]['sha256']:
+                if expected is not None and digest(ROOT / name) != expected:
                     failures.append('Local reference differs from the audited version: ' + key)
     required = ['notebook.html', 'index.html', 'server.py', 'AGENTS.md', 'COMPUTATION_RULES.md',
                 'README.md', 'research/notes/RESUME.md', 'research/notes/SOURCE_AUDIT.md',
