@@ -28,6 +28,9 @@ from public Git history unless adequate permission is subsequently established:
   https://doi.org/10.1007/BF01294258
 - **Alexander A. Razborov**, *Lower bounds for the polynomial calculus* (1998).
   https://doi.org/10.1007/s000370050013
+- **Impagliazzo, Mouli, Pitassi**, *The Surprising Power of Constant Depth
+  Algebraic Proofs*, ECCC TR19-024, revision 2.
+  https://eccc.weizmann.ac.il/report/2019/024/revision/2/
 - **de Rezende, Meir, Nordström, Robere**, *Nullstellensatz Size-Degree Trade-offs
   from Reversible Pebbling*, arXiv:2001.02481v1.
   https://arxiv.org/abs/2001.02481

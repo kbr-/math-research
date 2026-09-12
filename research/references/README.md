@@ -1,6 +1,6 @@
 # Reference availability and redistribution
 
-All four papers were imported and inspected during the local research setup.
+The original four papers were imported and inspected during the local research setup.
 Source statements, exact versions/hashes, and reading coverage remain recorded
 in the manifest, import status, and research source-audit notes.
 
@@ -19,3 +19,8 @@ See ../../THIRD_PARTY_NOTICES.md and redistribution.json. Our summaries and
 mathematical research remain public, with appropriate citations. Missing local
 PDFs do not invalidate the recorded source audit, but do not claim to have
 rechecked an unavailable source in a new session.
+
+IMP2019-rev2 was acquired from ECCC on 12 September 2026 for a targeted audit of
+algebraic extension systems. Its PDF and extraction are also local-only; reading
+coverage and source hashes belong to the dated research result, not the original
+setup audit.
