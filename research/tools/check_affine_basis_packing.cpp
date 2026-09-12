@@ -283,6 +283,7 @@ void nonboolean_control(std::ostream& out,PackingCounts& count,int p) {
     out<<",\"companion_image\":";jsonpoly(out,image);
     out<<",\"companion_value\":"<<evaluate(image,point)<<"}\n";count.nonboolean++;
 }
+#ifndef AFFINE_BASIS_PACKING_NO_MAIN
 int main(int argc,char** argv) {
     try {
         need(argc==3 && std::string(argv[1])=="--out","usage: check_affine_basis_packing --out PATH");
@@ -325,3 +326,4 @@ int main(int argc,char** argv) {
         return 0;
     } catch(const std::exception& error) {std::cerr<<"FAIL: "<<error.what()<<'\n';return 1;}
 }
+#endif
