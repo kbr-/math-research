@@ -34,7 +34,7 @@ historical mathematical sources only when the current research task needs them.
    catalogue of every past turn. From the repository root:
 
    ```bash
-   sed -n '1,/<section id="research-record">/p' notebook.html
+   ./tools/notebook-excerpt.py --current
    ```
 
 3. Scan record titles and stable anchors, then read mathematical entries relevant
@@ -46,7 +46,11 @@ historical mathematical sources only when the current research task needs them.
    rg -n '<article|<h3>|class="entry-meta"' notebook.html | tail -n 30
    ```
 
-   Select line ranges with `sed -n 'START,ENDp' notebook.html`. Follow explicit
+   Read an exact heading or entry with `./tools/notebook-excerpt.py ANCHOR`.
+   A heading stops before its next peer or enclosing section boundary; an entry
+   includes its full article. Optional `--until END_ANCHOR` validates both ends
+   before output, and `--out PATH` saves a new file. Missing or ambiguous anchors
+   fail instead of spilling the rest of the record into context. Follow explicit
    correction/retraction links before relying on an earlier result.
 4. Distinguish orientation from proof readiness. The notebook restores enough
    context to identify the next action; its summaries do not replace exact proofs.
