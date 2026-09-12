@@ -19,6 +19,8 @@ historical mathematical sources only when the current research task needs them.
    or notebook entry, or rerun verification merely for context restoration.
    If research is requested or already underway, restore context and continue it;
    compaction alone is not a reason to stop an authorized task.
+   For active Spin, also restore the standing publication authorization recorded
+   in the root AGENTS.md Git policy, subject to any later user changes.
    Before computations, read [COMPUTATION_RULES.md](../../COMPUTATION_RULES.md),
    verify `./compute.sh --status`, and initialize the controls after reboot if
    needed. For research turns, start timing as early as practical, including
