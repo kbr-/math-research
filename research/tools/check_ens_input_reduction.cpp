@@ -189,6 +189,7 @@ void replacement_case(std::ostream& out,ReductionCounts& count,int p,int h) {
         }
     count.replacements++;
 }
+#ifndef ENS_INPUT_REDUCTION_NO_MAIN
 int main(int argc,char** argv) {
     try {
         need(argc==3 && std::string(argv[1])=="--out","usage: check_ens_input_reduction --out PATH");
@@ -208,3 +209,4 @@ int main(int argc,char** argv) {
                  <<count.lower_checks<<" lower-bound checks; output "<<path<<"\n";return 0;
     }catch(const std::exception& e){std::cerr<<"ERROR: "<<e.what()<<"\n";return 1;}
 }
+#endif

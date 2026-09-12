@@ -12,6 +12,7 @@
 <section id="where-we-stand">
   <h2>Where we stand</h2>
   <p><strong>The goal is still open.</strong> A <a href="#nonsharp-packing-source-endpoint">common PC Booleanity ceiling</a> now carries the new PHP endpoint through stable input reduction, rank/affine-bin packing, and equal-span sharing over every prime, with the same degree \((c+2d)L\), levels, and family count. Sharp NS Booleanity is unnecessary for this PC pass: the uniform witness ceiling \(2L\) suffices. The surviving wide input spaces still need an affordable elimination theorem.</p>
+  <p>The <a href="#stable-ideal-affine-system">stable-ideal affine test</a> now gives exact linear equations and dual obstructions for using one coefficient row. It supplies a <a href="#stable-ideal-high-rank-cover">high-rank cover without a common polynomial factor</a>, at the same NS degree. Its scope is limited: <a href="#stable-ideal-row-difference-control">row differences</a> require many factors over the proper domain/column ideal, although the full PHP row equations normalize them at accuracy one.</p>
   <p>The <a href="#PHP-reduced-Booleanity-theorem">full-PHP reduced-product gap</a> remains an exact warning for NS transfers. The <a href="#nonsharp-packing-NS-ledger">new witness-cost ledger</a> states when nonsharp NS witnesses still fit a companion's original degree. In the rank-one reduced-product example, equal lower and upper accuracies already provide enough NS slack.</p>
   <p><a href="#affine-Booleanity-classification">Sharp affine Booleanity</a> in odd characteristic is restricted to partial-column indicators and complements modulo rows, under its degree-two hypotheses. Over \(\mathbb F_2\), <a href="#affine-Booleanity-binary-packing">the full affine intersection</a> can enter the same-degree packing pass. Neither result bounds the essential remaining family.</p>
   <p><a href="#column-state-normalizer">Affine column-state normalizers</a> remove every block whose inputs are polynomials in one column, at any accuracy \(h\ge1\), without increasing NS or PC degree or assuming input rank or Booleanity. Contradictory column subsets and the stated groups of at most \(h\) columns also work. General wide input spaces remain uncontrolled.</p>
@@ -44,8 +45,8 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Extend the common-ceiling PC argument from literal-span bases to degree-controlled ideal covers, which can remove some genuinely high-rank tuples.</p>
-  <p>Stop at the precise witness and product-degree conditions, then test whether they improve coverage beyond the already recorded common-factor examples. A general high-rank family bound must remain an explicit obligation.</p>
+  <p>Determine whether three ternary row-difference inputs can share two affine coefficient rows over the proper column ideal in odd characteristic.</p>
+  <p>Stop at an explicit normalizer with original-degree certificates, or a finite obstruction. Such a construction would meet the new necessary bound \(2n\le3h\) at \(n=3,h=2\); the full-PHP row-equation normalizer is a different, already solved case.</p>
 </section>
 
 <section id="working-context">
@@ -108,6 +109,7 @@
   <p>The <a href="#virtual-php-transfer">new PHP endpoint</a> protects the final clause evaluations, then applies the global affine clause/root map to the completed value proof. Every retained input is specialized. The resulting \(\mathcal F_n\)-plus-ENS refutation has degree at most \((c+2d)L\), at most \(d\) levels, and polynomial family count. Its current sharp Booleanity portfolio supports the stronger merge-first normal form above at the same degree. Neither this family nor the older signed family has an affordable general elimination bound yet.</p>
   <p><strong><a href="#row-projection-transfer">Row coordinates and input reduction:</a></strong> row projection preserves proof degree and has pivot-independent quotient degrees. Separately, <a href="#input-reduction-transfer">reduce each ENS input modulo the stable domain/column ideal \(J\)</a>, fixing the base and coefficient variables. The new companions derive the old ones within their old degrees, preserving completed NS/PC proofs. Exclude row equations from this proper normal-form ideal. Binary inputs remain sharply Boolean; odd-field reduced inputs need actual witnesses. The <a href="#PHP-reduced-Booleanity-theorem">single-block PHP control</a> has NS cost \(e+h\) and PC cost \(\max\{e,2(h+t)\}\), where \(e=(h+1)t+h\); the sufficient board condition is \(n-t\ge2(e+h)-3\). Extra families are not covered.</p>
   <p><strong><a href="#column-state-normalizer">Column-state removal:</a></strong> arbitrary old-polynomial inputs in one column admit affine coefficient images using the indicators \(1-\sum_i x_{ij},x_{1j},\ldots,x_{n+1,j}\). Their companion and field images have NS certificates within their original degrees, and the resulting selector has sharp Booleanity. One column group uses one factor; an inconsistent column subset handles arbitrary additional inputs. The rule survives row coordinates, but does not cover arbitrary dependence on multiple columns or earlier coefficients.</p>
+  <p><strong><a href="#stable-ideal-normalizer">Stable-ideal covers:</a></strong> for an affine block image \(H\), testing \(\operatorname{NF}_J(g_iH)=0\) supplies NS image proofs through their actual degrees and sharp Booleanity for \(H\). With only the first coefficient row used, the test is linear in its affine coefficients. It captures some high-rank tuples beyond common factors, but \(J\) excludes the row equations and may miss cheap full-PHP normalizers. Do not replace a truncated PHP consequence space by its unit ideal.</p>
 </section>
 
 <section id="research-record">
@@ -5399,6 +5401,127 @@
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">15 min 57.11 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 1.59 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.37 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+  </article>
+  <article class="research-entry" id="entry-2026-09-12-stable-ideal-normalizers">
+    <h3>Exact stable-ideal normalizers, a wider cover, and the role of row equations</h3>
+    <p class="entry-meta">12 September 2026 · Working ideal-cover and affine-feasibility refinements · Fifteen exact linear systems · 153 NS certificates · Domain-only factor lower bounds with a full-PHP escape</p>
+    <p><strong>Question and outcome.</strong> The common PC ceiling extends to supplied degree-controlled ideal decompositions. A more concrete additional class comes from the stable ideal's degree-complete normal form: certify the companion images directly, avoiding an unnecessary multiplication of an already sufficient identity. This yields an exact one-row affine test, a high-rank cover with no common factor, and a scope control showing why the row equations still matter.</p>
+
+    <h4 id="uniform-PC-ideal-cover">1. The common-ceiling ideal-cover ledger</h4>
+    <p>Use the preceding block notation \(a_i=\deg g_i\), \(e_i=a_i+h(\delta+1)\). Suppose generators \(b_j\) are literal constant-linear combinations of the inputs, can be placed in the existing affine bins, and have current earlier PC Booleanity proofs through \(C\). Write \(d_j=\deg b_j\), \(Q=\prod_j(1-b_j)\), \(W=\sum_jd_j\le h(\delta+1)\).</p>
+    <p>Supply current earlier PC proofs through \(A_i\) of</p>
+    <div class="math">\[
+      R_i=g_i-\sum_jq_{ij}b_j.
+    \]</div>
+    <p>Multiplying the completed \(R_i\) proof by \(Q\), and using the existing companion identities for the generator terms, gives \(g_iQ\) through</p>
+    <div class="math">\[
+      \max\left\{A_i,\ \deg R_i+W,\
+          \max_j\{C,\deg q_{ij}+d_j+W\}\right\}.
+    \]</div>
+    <p>In particular, if \(A_i\le C\), \(\deg R_i\le a_i\), and every \(\deg(q_{ij}b_j)\le a_i\), this is at most \(\max\{C,e_i\}\). These supplied covers can join the common-ceiling PC pass. Their current polynomial degree conditions must still be checked after input reduction; a proof ceiling alone does not provide the decompositions. This is the direct PC refinement of the earlier <a href="#wide-Boolean-ideal-cover">ideal-cover certificate</a>.</p>
+
+    <h4 id="stable-ideal-normalizer">2. A normal-form test supplies the actual-degree NS budget</h4>
+    <p>Let \(J\) be the proper stable ideal of the <a href="#input-reduction-stable-ideal">input-reduction theorem</a>: specified old-variable domains and genuine column exclusions, with no PHP row equations or ENS companions. Inputs and coefficient images use already retained earlier variables. For any proposed affine coefficient assignment in an accuracy-\(h\) block, put</p>
+    <div class="math">\[
+      H=\prod_{u=1}^{h}\left(1-\sum_j\beta_{uj}g_j\right).
+    \]</div>
+    <p>If</p>
+    <div class="math">\[
+      \operatorname{NF}_J(g_iH)=0\quad\text{for every }i,
+    \]</div>
+    <p>degree-complete division supplies an NS proof of each image through</p>
+    <div class="math">\[
+      \deg(g_iH)\le a_i+h(\delta+1)=e_i.
+    \]</div>
+    <p>Every affine field image has its degree-\(p\) domain proof. Thus this test gives degree-preserving NS and PC substitution, at any number of eligible blocks, with the actual inputs updated level by level. It needs no input rank bound or input Booleanity premise.</p>
+    <p><strong>The selector is forced.</strong> On the finite state space of \(J\), all inputs zero imply \(H=1\). If some input is nonzero, its companion equation implies \(H=0\). Hence</p>
+    <div class="math">\[
+      \operatorname{NF}_J(H)=\chi_G
+        :=\operatorname{NF}_J\left(\prod_i(1-g_i^{p-1})\right).
+    \]</div>
+    <p>Conversely this equality implies every companion remainder is zero. It also implies \(\operatorname{NF}_J(H^2-H)=0\), supplying sharp NS Booleanity through \(2\deg H\). These are assertions in the proper finite-state algebra, not in the unit ideal of the full PHP system.</p>
+
+    <h4 id="stable-ideal-affine-system">3. Using one affine coefficient row is exactly a linear problem</h4>
+    <p>Set all but the first coefficient row to zero. List all permitted earlier variables as \(z_1,\ldots,z_N\), and put \(z_0=1\). Write \(\beta_j=\sum_{v=0}^{N}b_{jv}z_v\). The companion test is precisely</p>
+    <div class="math">\[
+      \operatorname{NF}_J(g_i)=
+        \sum_{j,v}b_{jv}\operatorname{NF}_J(g_i z_v g_j)
+        \qquad\text{for every }i.
+    \]</div>
+    <p>This is a finite linear system over \(\mathbb F_p\), with one shared set of coefficient unknowns for all companions. A solution gives the explicit affine normalizer and the preceding original-degree certificates. If it is infeasible, finite-dimensional separation gives functionals \(\lambda_i\) on the displayed remainder spaces with</p>
+    <div class="math">\[
+      \sum_i\lambda_i(\operatorname{NF}_J(g_i))=1,\qquad
+      \sum_i\lambda_i(\operatorname{NF}_J(g_i z_v g_j))=0
+          \quad\text{for every }j,v.
+    \]</div>
+    <p>This is a stable-ideal specialization of the earlier <a href="#annihilation-feasibility">companion linear-feasibility criterion</a>, extended here to arbitrary input degree and every prime, with degree-complete NS image certificates. A negative result excludes using just that one affine row over \(J\). It does not exclude multiple nontrivial coefficient rows, additional PHP equations, or other retained companions. The linear system itself may be large; no general polynomial-size algorithm in a compressed input encoding is claimed.</p>
+
+    <h4 id="stable-ideal-high-rank-cover">4. A cover without a common polynomial factor</h4>
+    <p>Over independent Boolean variables, let \(m\ge1\), \(b=x+y-xy\), and</p>
+    <div class="math">\[
+      G=\bigl(b,\ xz_1,\ldots,xz_m,\ yw_1,\ldots,yw_m\bigr).
+    \]</div>
+    <p>Its literal rank is \(2m+1\): the linear \(x\)-term isolates \(b\), and every other coordinate has its own distinct monomial. All inputs have degree two and are already stable normal forms; their span has no nonzero affine polynomial. Their common polynomial gcd is one, since \(xz_1\) and \(yw_1\) have disjoint variable supports.</p>
+    <p>At accuracy one, set the coefficient of \(b\) to one and all other coefficients to zero. Then \(H=1-b=(1-x)(1-y)\), and</p>
+    <div class="math">\[
+      bH=-(b^2-b),\qquad
+      xz_iH=-z_i(1-y)(x^2-x),\qquad
+      yw_iH=-w_i(1-x)(y^2-y).
+    \]</div>
+    <p>All images have NS proofs through degree four, below the original companion degree five. The product has sharp Booleanity through degree four. This removes arbitrarily large rank using a domain-only certificate. The variables can be placed in distinct PHP columns; the same Boolean-domain identities remain valid when the full PHP base is added. No occurrence of this family in an arbitrary source proof is asserted.</p>
+    <p><strong>Why the older coarse ideal ledger can miss this example.</strong> For the single generator \(b\), an identity \(xz_i=qb+R\), \(R\in J\), cannot use affine \(q\). On the Boolean subcube \(x=1,y=0\), it would require \(q=z_i\); on \(x=0,y=1\), it would require \(q=0\). An affine polynomial cannot have both coefficients for the freely varying \(z_i\). Thus \(\deg(qb)\ge4\). The older sufficient bound \(C_i+W\) is then at least six, exceeding the original five, although the direct companion proof above uses four.</p>
+    <p>This comparison is over the stated Boolean-domain base and for that supplied generator. It demonstrates a genuine saving in the certificate construction, without claiming a lower bound against every formulation of an ideal cover.</p>
+
+    <h4 id="stable-ideal-row-difference-control">5. Selector degree bounds and a full-PHP escape</h4>
+    <p>For coefficient images of polynomial degree at most \(T\), any successful stable-ideal normalizer has</p>
+    <div class="math">\[
+      \deg\chi_G\le\deg H\le h(T+\delta).
+    \]</div>
+    <p>The first inequality follows from degree-nonincreasing normal form and the forced selector. It is a necessary condition, not a complete feasibility test.</p>
+    <p>Take the earlier row-difference tuple \(g_j=x_{aj}-x_{bj}\), \(1\le j\le n\), in two distinct rows. Under the proper Boolean/column ideal, all differences vanish precisely when neither designated row occupies any column. Therefore</p>
+    <div class="math">\[
+      \chi_G=\prod_{j=1}^{n}(1-x_{aj}-x_{bj}),\qquad \deg\chi_G=n.
+    \]</div>
+    <p>The degree-\(n\) monomial \(\prod_jx_{aj}\) survives: its variables are in different columns, and no same-row exclusions are imposed. Affine normalizers over this ideal consequently require \(n\le2h\). In characteristic two this bound is sharp: the \(g_j\)'s are Boolean, and the existing affine pair rule realizes \(\prod_j(1-g_j)\) using \(\lceil n/2\rceil\) rows.</p>
+    <p><strong>A stronger odd-characteristic bound.</strong> Parameterize each designated column by \(s_j\in\{0,1,-1\}\), with</p>
+    <div class="math">\[
+      x_{aj}=(s_j^2+s_j)/2,\qquad
+      x_{bj}=(s_j^2-s_j)/2,\qquad g_j=s_j.
+    \]</div>
+    <p>Set any other old variables to permissible constants. An affine coefficient becomes a polynomial of degree at most two in the \(s\)'s, so each factor has degree at most three. In the proper algebra with relations \(s_j^3-s_j=0\), the required selector is \(\prod_j(1-s_j^2)\), of degree \(2n\). Reduction never increases degree. Thus</p>
+    <div class="math">\[
+      \boxed{2n\le3h\quad\text{for affine coefficient rows in odd characteristic}.}
+    \]</div>
+    <p>More generally the same argument gives \(2n\le h(2T+1)\). For constant coefficients this is sharp: \(2n\) rows realizing the factors \(1-g_j\) and \(1+g_j\) suffice. For affine coefficients, one row per column with coefficient \(g_j\) also suffices, giving the current interval \(\lceil2n/3\rceil\le h_{\min}\le n\). The first unresolved triple case is \(n=3,h=2\).</p>
+    <p><strong>The row equations change the answer completely.</strong> In the full weak PHP base, the already recorded <a href="#polynorm-collision-pairs">row-difference normalizer</a> uses \(\beta_j=x_{aj}\), giving</p>
+    <div class="math">\[
+      1-\sum_jx_{aj}(x_{aj}-x_{bj})
+       =-(\rho_a-1)-\sum_j(x_{aj}^2-x_{aj})
+                    +\sum_jx_{aj}x_{bj}.
+    \]</div>
+    <p>This has an NS proof through two, so every companion image has a degree-three proof at accuracy one, for every \(n\). Thus the domain-only factor lower bounds do not imply full-PHP normalization lower bounds. The proper ideal deliberately omits the equation supplying the escape.</p>
+
+    <h4 id="stable-ideal-normalizer-checks">6. Exact systems, images, and controls</h4>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/tools/check_stable_ideal_normalizers.cpp">compiled checker</a> solves fifteen finite affine systems over \(p=2,3,5\): the two-row difference tuples on one through four columns, plus one field-valued input. Six have explicit solutions; nine have duals checked against every matrix column and the nonzero right-hand side.</p>
+    <p>The field-input controls distinguish \(a\in\mathbb F_3\), where \(\beta=a\) works, from \(a\in\mathbb F_5\), where no one-row affine choice works. The binary four-column case fails the one-row system but succeeds with two rows, meeting its degree bound. Six further cases verify the high-rank family at \(m=2,3\). The row-equation identity and all its companion multiples are checked in every row-difference case.</p>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/uniform_pc_ideal_covers_20260912_51/checks-01.jsonl">complete evidence</a> contains thirteen normalizations, 153 NS certificates, including 42 row-restoration certificates, and 1,411 domain states, of which 1,064 have saved source coefficient lifts. Every direct stable-ideal companion certificate is checked against its image's own ordinary degree as well as its original budget. All equations, matrices, solutions, duals, polynomials, cofactors, and models are retained. Compilation and every check succeeded.</p>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/uniform_pc_ideal_covers_20260912_51/README.md">result record</a> separates proper-ideal claims from the explicitly added row-equation certificates. No full-PHP common model or unrestricted ideal-based degree claim is made.</p>
+    <p><strong>Process assessment.</strong> One normal-form kernel produced both successful maps and checked infeasibility duals, so failed finite candidates became durable evidence without separate search machinery; no new workflow rule is needed.</p>
+    <p><strong>Next step.</strong> Test whether three ternary row differences admit two affine rows over the proper ideal, and extract an explicit certificate or obstruction before pursuing a general factor-count theorem.</p>
+    <div class="timing-report" data-session="uniform_pc_ideal_covers_20260912_51">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>34 min 35.34 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">23 min 37.00 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">7 min 51.13 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 1.29 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.12 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.80 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
