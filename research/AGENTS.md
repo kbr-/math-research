@@ -12,8 +12,11 @@
 - Obey `../COMPUTATION_RULES.md`; substantial workloads use `../compute.sh`.
   Use exact finite-field arithmetic and compiled numerical kernels. No package
   installation without explicit user approval.
-- Preserve ordinary designs versus PC consequences, original joint-variable
-  degree, and the weaker Boolean linear-row PHP encoding without row exclusions.
+- Distinguish ordinary designs from PC consequences and retain original
+  joint-variable degrees. The default source encoding is weak Boolean linear-row
+  PHP without row exclusions. Explicit auxiliary systems are allowed with a
+  proved transfer and the required lower-bound hypotheses; the notebook records
+  those bridges. Do not silently change an encoding or infer its extra axioms.
 - Read the notebook for the status of the goal and elimination route. Separate
   working proofs, checked source statements, finite tests, and conjectures.
 - Use `../compute.sh` for each research turn, including failed commands.
