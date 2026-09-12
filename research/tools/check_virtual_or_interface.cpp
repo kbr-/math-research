@@ -172,6 +172,7 @@ void missing_unit(std::ostream& out,int p,InterfaceCounts& count) {
     model_record(out,"missing_virtual_unit_witness",p,point,next,A.product,B.product,zero);
     count.controls++;
 }
+#ifndef VIRTUAL_OR_INTERFACE_NO_MAIN
 int main(int argc,char** argv) {
     try {
         need(argc==3 && std::string(argv[1])=="--out","usage: check_virtual_or_interface --out PATH");
@@ -195,3 +196,4 @@ int main(int argc,char** argv) {
         return 0;
     } catch(const std::exception& error) {std::cerr<<"FAIL: "<<error.what()<<'\n';return 1;}
 }
+#endif
