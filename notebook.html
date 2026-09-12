@@ -13,7 +13,7 @@
   <h2>Where we stand</h2>
   <p><strong>Full source coverage remains open.</strong> A <a href="#literal-family-global-restriction">new restriction argument</a> now handles every polynomial-size collection of literal-input ENS blocks at one level, retaining a board of size \(\Theta(\sqrt n)\) at logarithmic accuracy. It explicitly adds same-row exclusions to an auxiliary base whose PC lower bound is covered by Razborov's theorem. General MOD inputs and propagation through the remaining levels are still outside that argument.</p>
   <p>The <a href="#virtual-php-transfer">working endpoint</a> turns a hypothetical small, fixed-depth ordinary-PHP proof into a PC refutation of the weak PHP base plus polynomially many ENS blocks, at degree \(D_0=(c+2d)L=\operatorname{polylog}n\) for a suitable logarithmic accuracy. The bare residual base has audited PC degree at least \(N/2+1\).</p>
-  <p>Generic reverse-level elimination costs \(D_0+(p-1)\sum_a\delta_a\), which is not controlled well enough by polynomial family count. The <a href="#batching-attempt-verdict">balanced replay attempt</a> did not remove that dependence: its input-learning derivations still use the other blocks. Existing normalizers, nested spans/cores, and projection methods improve the cost under explicit hypotheses, without proving global source coverage.</p>
+  <p>Generic reverse-level elimination costs \(D_0+(p-1)\sum_a\delta_a\), which is not controlled well enough by polynomial family count. The <a href="#batching-attempt-verdict">balanced replay attempt</a> did not remove that dependence. The <a href="#affine-residual-criterion-obstruction">affine restriction test</a> now shows that even square-root residuals need not expose constants or make the existing rank/core criterion affordable. These are limitations of those mechanisms, not of every possible source-proof transformation.</p>
   <p>The <a href="#source-selector-only-dependency">selector-only source audit</a> removes an unnecessary coefficient-profile charge at the stated construction stage. However, <a href="#literal-selector-arbitrary-partitions">logarithmically many literal OR selectors</a> can already realize arbitrary joint column partitions. The profile-driven strategy remains stalled; the new literal restriction theorem uses matching counts and explicit row/column normalizers, with its own auxiliary-system justification.</p>
   <p>The <a href="#affine-extension-audit">stronger-system audit</a> distinguishes sparse proof size from ordinary degree; it found no conflicting small-degree ENS proof. The <a href="https://github.com/kbr-/math-research/blob/main/research/CLAIM_INDEX.md">claim index</a> preserves the full toolkit and the precise scopes of its controls. Recent toolkit growth should not be read as a demonstrated route through the central gap.</p>
   <div class="result">
@@ -30,7 +30,7 @@
   <h2>The remaining route</h2>
   <div class="eyebrow">Highest risk first</div>
   <ol>
-    <li><strong>Extend actual family coverage beyond literal inputs.</strong> The <a href="#literal-family-global-restriction">restriction theorem</a> converts polynomial literal-family count into an affordable logarithmic accuracy on a square-root residual. General bottom MOD inputs need a different counting or normalization argument; subsequent levels also need a proved invariant. This is the current concrete form of the <a href="#route-audit-missing-bridge">missing bridge</a>.</li>
+    <li><strong>Extend actual family coverage beyond literal inputs.</strong> The <a href="#literal-family-global-restriction">restriction theorem</a> converts polynomial literal-family count into affordable logarithmic accuracy on a square-root residual. <a href="#affine-residual-criterion-obstruction">Affine MOD data can resist the rank/core follow-up on every such residual</a>. Seek a further algebraic or proof-use mechanism; this is the current concrete form of the <a href="#route-audit-missing-bridge">missing bridge</a>.</li>
     <li><strong>Prove a useful invariant through the remaining levels.</strong> The literal pass rewrites all later inputs, including their uses of earlier selectors. Establish that the resulting tuples are covered by an affordable next pass; removing one bottom level does not establish this automatically. Charge every degree increase and every reduction in board size.</li>
     <li><strong>Choose and preserve the useful degree/level tradeoff.</strong> The new PC endpoint has degree \((c+2d)L\) and at most \(d\) levels; the older signed route can omit the highest level with its larger stated degree ceiling. These are different families and constructions. Further sharing, affine packing, or goal-relative cuts must retain their actual image proofs; the strongest bounds cannot simply be combined.</li>
     <li><strong>Close the parameters.</strong> For every fixed \(p,\ell,K\), show that a size-\(n^K\), depth-\(\ell\) proof would yield the forbidden base refutation for all sufficiently large \(n\), retaining every accuracy and depth factor.</li>
@@ -39,8 +39,8 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Test whether the restriction mechanism extends to actual bottom MOD inputs, beginning with affine \(\mathbb F_2\) input spaces. A matched cell does not make an entire parity input constant, so the literal hitting proof cannot simply be reused.</p>
-  <p>Seek a quantitative statement that handles the surviving affine tuple after a random partial matching, or a concrete family showing why the proposed extension fails. Stop at that statement or obstruction, and retain the distinction between a failure of one mechanism and a hard augmented PHP family. Do not claim iteration through all levels until the transformed inputs have a proved invariant.</p>
+  <p>Make a targeted primary-literature check for a restriction or proof-use invariant that handles modular inputs beyond the failed affine rank/core criterion. Compare any candidate's actual hypotheses with the ENS source construction and the new residual-resistant family.</p>
+  <p>Stop at a source-backed candidate mechanism with an explicit application gap, or a report that the targeted search found none. Preserve the literal-family theorem as a restricted success; do not infer source-proof essentiality from admissible counterfamilies or a multilevel invariant from one bottom pass.</p>
 </section>
 
 <section id="working-context">
@@ -81,7 +81,7 @@
   <h3 id="context-working-bounds">Base lower bound and elimination tools</h3>
   <p><strong>Route status:</strong> the <a href="#route-audit-verdict">profile-strategy audit</a> remains applicable, but the <a href="#literal-family-global-restriction">new restriction theorem</a> supplies global coverage for polynomially many literal blocks. The sufficient target is a completed weak or explicitly justified functional base refutation through \(B\le\lfloor N/2\rfloor\). In particular \(B=\operatorname{polylog}n\) and \(N\ge n^\varepsilon\) suffice. Actual MOD-input coverage and a multilevel invariant remain open.</p>
   <p>The audited Razborov bound is PC degree at least \(N/2+1\), over every field, for the weak PHP base with \(N+1\) pigeons and \(N\) holes. The target is a base refutation through \(\lfloor N/2\rfloor\), with \(N=n\) for original-board elimination or the actual retained size after a restriction/projection. No construction covers every relevant source family.</p>
-  <p>Historical <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/07_elimination.md#thm-one-elimination">one-block elimination</a> costs \((p-1)\delta\); reverse-level elimination gives \(D+(p-1)\sum_a\delta_a\). <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/08_batching.md#thm-nested">Nested spans</a> and <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/08_batching.md#thm-cores">nested cores</a> improve this under their exact hypotheses. <a href="#batching-attempt-dependency">Conditional input derivations cannot be reused as base derivations</a>; the first balanced replay attempt leaves the total charge unresolved. Input arity, linear rank, and essential family count are different quantities.</p>
+  <p>Historical <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/07_elimination.md#thm-one-elimination">one-block elimination</a> costs \((p-1)\delta\); reverse-level elimination gives \(D+(p-1)\sum_a\delta_a\). <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/08_batching.md#thm-nested">Nested spans</a> and <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/08_batching.md#thm-cores">cores</a> improve this under their exact hypotheses. <a href="#batching-attempt-dependency">Conditional derivations cannot be reused as base derivations</a>. The <a href="#functional-affine-consequence-rigidity">functional auxiliary base has no extra affine PC consequences</a> beyond row span through \(b\le\lfloor(N-2)/2\rfloor\). A <a href="#affine-residual-robust-family">refinement of the resistant-family construction</a> gives \(n\) affine MOD2 spaces, each of rank \(r=\Theta(n)\), pairwise disjoint modulo that span on every \(N=\lfloor\sqrt n/4\rfloor\) residual. The existing rank/core criterion then costs \(\Omega(n)\), exceeding the residual budget. It supplies no augmented refutation or proof-essentiality statement. Input arity, linear rank, and essential family count remain different quantities.</p>
   <p>Supplied <a href="#polynorm-transfer">same-level polynomial normalizers</a> of coefficient degree \(T\) and PC witness cost \(C\) transfer through \(\max\{TD,C\}\). <a href="#leaf-triangular-pc">Strictly earlier triangular maps</a> across \(d\) levels give \(\max\{T^dD,T^{d-1}C\}\). Preserve actual later inputs and their original degree ledgers. NS transfer needs its additional cofactor conditions.</p>
 
   <h3 id="context-source-audit">Source presentation and proof-system scope</h3>
@@ -7688,6 +7688,110 @@
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">17.03 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.27 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.22 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+  </article>
+  <article class="research-entry" id="entry-2026-09-12-affine-residual-rank-obstruction">
+    <h3>The affine rank/core follow-up can fail on every square-root residual</h3>
+    <p class="entry-meta">12 September 2026 · Refined application of the earlier resistant-family template · Functional affine-consequence rigidity · Working uniform residual-rank control · Complete finite matrix witness · No general MOD elimination lower bound</p>
+    <p><strong>Question and stopping point.</strong> Can the literal restriction pass extend to affine MOD2 inputs by exposing a constant contradiction or reducing their ranks enough for the existing core–residual criterion? The <a href="#resistant-existence">earlier resistant embedding</a> already limited small matchings; its stated parameters did not cover restrictions leaving only a square-root board. This cycle reuses that probabilistic template with smaller input spaces and a bound indexed by residual vertex sets. It stops at a counterfamily for the proposed criterion, without claiming those blocks are essential to a small source refutation.</p>
+
+    <h4 id="functional-affine-consequence-rigidity">1. The affine-consequence quotient is unchanged by the auxiliary strengthening</h4>
+    <p>Let \(H_N=\operatorname{span}\{\rho_i-1:i\in[N+1]\}\). The historical <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/09_decomposition.md#thm-rigidity">affine-consequence rigidity proof</a> applies to the explicitly functional base as well:</p>
+    <div class="math">\[
+      \mathcal C_b(\mathcal F_N^{\rm fun})
+           \cap\mathbb F_p[Y]_{\le1}
+      =H_N,\qquad
+      1\le b\le\left\lfloor\frac{N-2}{2}\right\rfloor.
+      \tag{FUN-affine}
+    \]</div>
+    <p><strong>Proof of the extension.</strong> The functional system is invariant under row/column permutations, and partial matchings preserve its form. Its base and residual degree lower bounds were <a href="#functional-auxiliary-PC-bridge">checked in the preceding entry</a>. These are the properties used by the historical proof.</p>
+    <p>Explicitly, suppose \(f=c+\sum a_{ij}Y_{ij}\) has a degree-\(b\) derivation. Restrict to the two matchings \(i\mapsto j,i'\mapsto k\) and \(i\mapsto k,i'\mapsto j\). Their labeled residual systems coincide, while the two images of \(f\) differ by \(a_{ij}+a_{i'k}-a_{ik}-a_{i'j}\). A nonzero difference would refute the \(N-2\) residual within \(b\), contrary to its degree lower bound. Every coefficient rectangle therefore vanishes, so \(a_{ij}=u_i+v_j\).</p>
+    <p>Subtracting row equations leaves \(c'+\sum_jv_j\sigma_j\). If two \(v_j\)'s differ, permuting those columns and subtracting derives \(\sigma_j-\sigma_k\). Match one pigeon to \(j\), obtaining \(1-\sigma'_k\); permute the remaining columns to obtain this for every residual hole. Summing those \(N-1\) equations and the \(N\) residual row equations gives \(-1\), another forbidden low-degree refutation. Thus all \(v_j\)'s agree. Row equations reduce the remaining polynomial to a constant, which must be zero. This proves containment in \(H_N\); the reverse containment consists of the row axioms and their linear combinations.</p>
+
+    <h4 id="affine-residual-robust-family">2. A uniform rank condition depends only on the surviving rows and columns</h4>
+    <p>Fix \(M\ge2\), \(1\le N&lt;n\), and \(r\ge1\). Put</p>
+    <div class="math">\[
+      K=N(N+1),\qquad L=K-(N+1)=N^2-1,\qquad
+      B_{n,N}=\binom{n+1}{N+1}\binom nN.
+    \]</div>
+    <p><strong>Working refinement.</strong> If</p>
+    <div class="math">\[
+      \binom M2\,B_{n,N}\,(2^{2r}-1)\,2^{-L}&lt;1,
+      \tag{AFF-residual-union}
+    \]</div>
+    <p>there are \(M\) homogeneous affine input spaces \(V_a\) over \(\mathbb F_2\), each given by \(r\) linear forms in the original PHP cells, with the following property after <em>every</em> \((n-N)\)-matching restriction \(\mu\). Their images modulo residual row equations have dimension \(r\), distinct images intersect only at zero, and</p>
+    <div class="math">\[
+      1\notin \mu(V_a)+\mu(V_b)+H_N
+      \qquad(a\ne b).
+    \]</div>
+    <p>In particular no individual block exposes a constant-one span modulo \(H_N\). By (FUN-affine), adjoining all affine base-PC consequences through the displayed \(b\)-range makes no difference.</p>
+    <p><strong>Proof.</strong> Choose each block's \(r\) coefficient rows independently and uniformly from \(\mathbb F_2^{n(n+1)}\). Fix a retained \((N+1)\times N\) subboard \(U\), and let \(R_U\) be the \((N+1)\)-dimensional span of its row-sum coefficient vectors in \(\mathbb F_2^K\). For a fixed pair \(a,b\) and a fixed nonzero combination of their \(2r\) random rows, its restriction to \(U\) is a uniform vector in \(\mathbb F_2^K\). It lies in \(R_U\) with probability \(2^{-L}\). Hence</p>
+    <div class="math">\[
+      \Pr\!\left[
+       \operatorname{rank}(A_{a,U},A_{b,U},R_U)
+                    &lt;2r+N+1\right]
+      \le (2^{2r}-1)2^{-L}.
+    \]</div>
+    <p>The row-sum vectors themselves are independent, so every failed full-rank condition has a nonzero combination involving the random rows. Union-bound over all pairs and all \(B_{n,N}\) residual subboards. The stated inequality leaves a choice where every required linear-part rank is full.</p>
+    <p>Now choose any matching with retained subboard \(U\). It changes the constant terms of the input forms, but their linear parts are exactly the restrictions already checked. A linear combination of the two blocks and the residual row equations can be constant only if all coefficients vanish, by that full-rank condition. Thus it can never equal one; likewise each block retains rank \(r\), and an equality between the two block spans modulo \(H_N\) must be trivial.</p>
+    <p>This is why the count uses residual subboards rather than all matching bijections. One linear-part certificate handles every constant shift induced by a matching with those surviving vertices. It is a refinement of the earlier resistance method, not a rediscovery presented as an unrelated construction.</p>
+
+    <h4 id="affine-residual-criterion-obstruction">3. The square-root regime still defeats the existing rank/core bound</h4>
+    <p>For sufficiently large \(n\), choose</p>
+    <div class="math">\[
+      M=n,\qquad
+      N=\left\lfloor\frac{\sqrt n}{4}\right\rfloor,\qquad
+      r=\left\lfloor\frac{N^2-1}{4}\right\rfloor.
+    \]</div>
+    <p>Then \(2r\le L/2\), while
+      \(\log_2 B_{n,N}\le(2N+1)\log_2(n+1)\).
+      The logarithm of the left side of (AFF-residual-union) is at most
+      \(-L/2+O(N\log n)\), which tends to minus infinity. The required families therefore exist. They have polynomial descriptions: \(M r=O(n^2)\) input forms, each described by \(O(n^2)\) binary coefficients.</p>
+    <p>Give each tuple an ENS block of common accuracy \(h=\Theta(\log n)\). These are one-level, degree-one inputs with original companion degree \(2h+1\), and sharp NS Booleanity follows from</p>
+    <div class="math">\[
+      g^2-g=\sum_{i,j}a_{ij}(x_{ij}^2-x_{ij})
+      \qquad(a_{ij}\in\mathbb F_2).
+    \]</div>
+    <p>Each input is expressible by a polynomial-size MOD2 formula. This verifies the coarse syntax and Booleanity conditions; it supplies neither a PHP proof nor essential use of these blocks in such a proof.</p>
+    <p>On every square-root residual the quotient spaces still have rank \(r=\Theta(n)\), pairwise-zero intersections, and no constant-one span. The exact decomposition argument of historical <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/09_decomposition.md#thm-spreadcost">Theorem 9.6</a> uses precisely this geometry. For the existing affine core–residual criterion, put</p>
+    <div class="math">\[
+      T(r)=\max\{1,\lceil r/h\rceil-1\}.
+    \]</div>
+    <p>Its optimized certified ceiling on a degree-\(D\) refutation is</p>
+    <div class="math">\[
+      B_{\rm criterion}^{\rm opt}
+        =\min\{D+M,\ T(r)D\}.
+      \tag{AFF-criterion}
+    \]</div>
+    <p>Indeed, in a batch with at least two spaces the first nested core must be zero, so a residual rank \(r\) already incurs \(T(r)\). All singleton full-core steps give \(D+M\); any multiplicative step costs at least \(T(r)D\), and one all-zero-core batch attains that alternative. No improved ordering changes the minimum.</p>
+    <p>For \(D\ge2h+1\) and large \(n\), \(r\ge2h\), whence \(T(r)\ge r/(2h)\) and \(T(r)D\ge r\). Since \(M=n\), the optimized ceiling is at least \(r=\Theta(n)\), which exceeds the desired \(O(N)=O(\sqrt n)\) residual budget. Allowing affine base consequences through any affordable \(b\le\lfloor(N-2)/2\rfloor\) does not change this conclusion.</p>
+    <p><strong>What failed.</strong> An arbitrary affine MOD tuple need not become constant-normalizable or low-rank enough for this criterion after the much larger matching restriction. The literal global theorem survives; this proposed affine follow-up does not. Nonlinear base consequences, other polynomial substitutions, peer-family reasoning, and transformations exploiting the actual source refutation remain outside the obstruction. The optimized ceiling above is not a lower bound on the actual augmented PC refutation degree.</p>
+
+    <h4 id="affine-residual-finite-witness">4. A complete finite coefficient witness</h4>
+    <p>The compiled checker constructed eight rank-three input spaces on the \(9\times8\) source board, with residual size \(N=5\). The union bound is already nonvacuous:</p>
+    <div class="math">\[
+      \binom82\binom96\binom85
+         (2^6-1)2^{-24}
+       =\frac{8{,}297{,}856}{16{,}777{,}216}&lt;1.
+    \]</div>
+    <p>With seed \(20260912\), the first matrix draw passed. The checker verified all \(4{,}704\) retained subboards, all \(37{,}632\) individual block ranks, and all \(131{,}712\) pair ranks modulo row-sum coefficient vectors. The linear-part argument then covers all \(28{,}224\) size-three partial matchings, without enumerating their constant shifts separately. A duplicated-block negative control was rejected.</p>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/affine_MOD_restrictions_20260912_75/rank-witness.jsonl">complete 2,206,666-byte witness</a> contains every source coefficient matrix, every restricted linear input, and every individual and pair rank. The <a href="https://github.com/kbr-/math-research/blob/main/research/tools/check_affine_residual_rank_family.cpp">checker</a> and <a href="https://github.com/kbr-/math-research/blob/main/research/results/affine_MOD_restrictions_20260912_75/README.md">reproduction record</a> preserve the exact binary conventions. This finite board tests the rank and quotient claims, not the large-\(n\) parameter asymptotics, and is not an augmented refutation.</p>
+    <p><strong>Contribution and next step.</strong> The attempt falsifies a proposed extension of the new literal coverage theorem; general MOD coverage remains open. A targeted primary-literature check will now look for a further restriction or proof-use invariant and compare its exact hypotheses with these controls.</p>
+    <p><strong>Process assessment.</strong> The claim-index check identified the existing resistance template, so the new work was limited to the previously uncovered residual regime and its exact application; no additional workflow rule is warranted.</p>
+    <div class="timing-report" data-session="affine_MOD_restrictions_20260912_75">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>21 min 33.04 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 44.66 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">13 min 27.06 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 7.99 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 12.03 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.12 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.18 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
