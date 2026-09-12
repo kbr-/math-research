@@ -107,18 +107,31 @@ void statistic_ens(std::ostream& out,FreezeCounts& count,const std::string& name
         out<<",\"all_companion_and_field_images_zero\":true}\n";count.blocks++;
     }
 }
-void freeze_case(std::ostream& out,FreezeCounts& count,int p,int copies,int matched) {
+using FreezeFamilyCheck=void(*)(std::ostream&,FreezeCounts&,const std::string&,int,int,
+                               const std::vector<std::vector<CellImage>>&);
+void freeze_case(std::ostream& out,FreezeCounts& count,int p,int copies,int matched,
+                 const std::vector<std::vector<int>>& copy_shifts={},
+                 FreezeFamilyCheck family_check=nullptr) {
     const int N=3;
     need(copies>0 && (copies+1)%p==0 && matched>=0 && matched<copies,"copy parameters");
     int n=copies*(N+1)+matched,source_rows=n+1;
     need(n%copies==matched && n/copies-1==N,"residual-size formula");
     auto base=residual_base(p,N);Poly one(p,1),zero(p);
     std::string name="F"+std::to_string(p)+"_K"+std::to_string(copies)+"_n"+std::to_string(n);
+    if(!copy_shifts.empty()) {
+        need(int(copy_shifts.size())==base.rows,"copy-shift row count");
+        for(const auto& row:copy_shifts) {
+            need(int(row.size())==N,"copy-shift column count");
+            for(int shift:row)need(shift>=0 && shift<copies,"copy-shift range");
+        }
+        name+="_column_permutations";
+    }
     std::vector<std::vector<CellImage>> cells(
         source_rows,std::vector<CellImage>(n,CellImage{zero,'0',-1}));
     for(int i=0;i<matched;i++)cells[i][i]={one,'1',-1};
     for(int c=0;c<copies;c++)for(int i=0;i<base.rows;i++)for(int j=0;j<N;j++) {
-        int row=matched+c*base.rows+i,column=matched+copies+c*N+j,v=i*N+j;
+        int shifted=copy_shifts.empty()?c:(c+copy_shifts[i][j])%copies;
+        int row=matched+c*base.rows+i,column=matched+copies+shifted*N+j,v=i*N+j;
         cells[row][column]={variable(p,v),'x',v};
     }
     int dummy=source_rows-1;
@@ -189,8 +202,10 @@ void freeze_case(std::ostream& out,FreezeCounts& count,int p,int copies,int matc
         out<<"{\"record\":\"column_statistic\",\"case\":\""<<name<<"\",\"column\":"<<j
            <<",\"literal_value\":"<<expected<<"}\n";count.columns++;
     }
-    statistic_ens(out,count,name,p,matched,matched+copies);
-    Poly individual=cells[matched][matched+copies].value;
+    if(family_check)family_check(out,count,name,p,copies,cells);
+    else statistic_ens(out,count,name,p,matched,matched+copies);
+    int first_copy=copy_shifts.empty()?0:copy_shifts[0][0];
+    Poly individual=cells[matched][matched+copies+first_copy*N].value;
     need(individual==variable(p,0) && individual.deg()==1,"individual-cell scope control");
     std::array<int,NV> row_point{};
     for(int i=0;i<base.rows;i++)row_point[i*N]=1;
@@ -205,6 +220,7 @@ void freeze_case(std::ostream& out,FreezeCounts& count,int p,int copies,int matc
     point_json(out,row_point,base.variables);out<<"}\n";count.scope_controls++;
     count.cases++;
 }
+#ifndef COLUMN_STATISTIC_FREEZING_NO_MAIN
 int main(int argc,char** argv) {
     try {
         need(argc==3 && std::string(argv[1])=="--out","usage: check_column_statistic_freezing --out PATH");
@@ -230,3 +246,4 @@ int main(int argc,char** argv) {
                  <<" multilevel statistic blocks; output "<<path<<"\n";return 0;
     }catch(const std::exception& e){std::cerr<<"ERROR: "<<e.what()<<"\n";return 1;}
 }
+#endif
