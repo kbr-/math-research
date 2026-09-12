@@ -67,7 +67,24 @@ Poly operator*(const Poly& a,const Poly& b) {
     return q;
 }
 bool operator==(const Poly& a,const Poly& b) {return a.p==b.p && a.terms==b.terms;}
-Poly powp(Poly a,int e) {Poly q(a.p,1);while(e--)q=q*a;return q;}
+Poly powp(Poly a,int e) {
+    need(e>=0,"negative exponent");
+    if(e==a.p) {
+        // Prime-field Frobenius in the ordinary polynomial ring, without domains.
+        Poly q(a.p);
+        for(const auto& term:a.terms) {
+            Mon m{};
+            for(int i=0;i<NV;i++) {
+                int exponent=int(term.first[i])*a.p;
+                need(exponent<=255,"exponent guard");
+                m[i]=static_cast<unsigned char>(exponent);
+            }
+            q.add(m,term.second);
+        }
+        return q;
+    }
+    Poly q(a.p,1);while(e--)q=q*a;return q;
+}
 int modpow(int a,int e,int p) {int q=1;while(e--)q=q*a%p;return q;}
 Poly specialize(const Poly& a,int first,const std::array<int,NV>& beta) {
     Poly q(a.p);
