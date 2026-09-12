@@ -11,7 +11,7 @@
 
 <section id="where-we-stand">
   <h2>Where we stand</h2>
-  <p><strong>The goal is still open.</strong> <a href="#bounded-exception-elimination">Bounded profile exceptions</a> now give deterministic degree-preserving elimination with \(O(a+b+p)\) board copies, where \(a\) bounds missing class memberships per pigeon and \(b\) bounds excluded pigeons per column. This removes the logarithmic sampling loss in that regime. For denser exceptions, <a href="#filtered-profile-elimination">raw densities above \(2/3\)</a> still give \(N=\Omega_{\alpha,p}(n/\log n)\) after filtering. These are conditional profile theorems; actual source coverage remains open.</p>
+  <p><strong>The goal is still open.</strong> A <a href="#total-exception-trimming">total profile-exception budget</a> now suffices even when exceptions are concentrated: match away high-exception pigeons and columns, then apply the existing copy layouts. The deterministic route retains \(N/D\to\infty\) if \(ED=o(n^2)\) and \(pD=o(n)\). For fixed \(\eta&gt;0\), <a href="#total-exception-density">\(E\le(1/12-\eta)n^2\)</a> instead gives \(N=\Omega_{\eta,p}(n/\log n)\). These remain conditional profile theorems; no such bound has been proved for every actual source family.</p>
   <p>The underlying <a href="#column-dependent-package-elimination">column-dependent construction</a> also works whenever its exact local matching criterion can be met by another method. Its local partitions may have a singleton global common refinement, while a supplied constant-copy layout retains a linear-size residual. Thus a coarse common pigeon partition is not required for this route.</p>
   <p><a href="#partition-statistic-elimination">Common-partition packages</a> remain a simpler special case: their largest class of size \(s\) leaves \(\lfloor(s-1)/(p-1)\rfloor-1\) holes. The <a href="#partition-freezing-size-limit">upper bound \(N\le2(s-p)\)</a> limits affine freezing of all statistics of that same partition across every column. It does not impose the same bound on the new column-dependent construction.</p>
   <p>Two other coverage mechanisms remain available. <a href="#dense-column-combined">Dense base-only column witnesses</a> eliminate polynomial families at the same degree with \(N=\Omega(n/\log n)\) for fixed positive densities; occupied witnesses alone need only \(O(\log M)\) matched cells. <a href="#Hall-profile-normalizer">Small Hall deficiencies</a> remove blocks on the original board when the required row count fits their accuracy. Both allow arbitrary extra inputs under their stated hypotheses.</p>
@@ -31,7 +31,7 @@
   <h2>The remaining route</h2>
   <div class="eyebrow">Highest risk first</div>
   <ol>
-    <li><strong>Control the remaining label-sensitive family.</strong> Find compatible copy layouts or another affordable coverage/joint-design criterion for the actual source profiles. Column-dependent statistic packages, dense witnesses, and small Hall deficiencies now give separate sufficient routes. Polynomial family count and sharp Booleanity alone do not establish their hypotheses.</li>
+    <li><strong>Control the remaining label-sensitive family.</strong> Quantify the local partitions and exception budget required by the actual source inventory, then find compatible copy layouts or another affordable coverage/joint-design criterion. Column-dependent statistic packages, dense witnesses, and small Hall deficiencies give separate sufficient routes. Polynomial family count and sharp Booleanity alone do not establish their hypotheses.</li>
     <li><strong>Find affordable generators or cores for the actual wide requests.</strong> The common-ceiling PC pass now handles input reduction followed by the existing span criteria in every characteristic. Extend it to degree-controlled ideal covers that can address genuinely high-rank requests, and determine whether the actual source family supplies those witnesses. For NS transfers, retain the separate original-companion witness budgets.</li>
     <li><strong>Choose and preserve the useful degree/level tradeoff.</strong> The new PC endpoint has degree \((c+2d)L\) and at most \(d\) levels; the older signed route can omit the highest level with its larger stated degree ceiling. These are different families and constructions. Further sharing, affine packing, or goal-relative cuts must retain their actual image proofs; the strongest bounds cannot simply be combined.</li>
     <li><strong>Close the parameters.</strong> For every fixed \(p,\ell,K\), show that a size-\(n^K\), depth-\(\ell\) proof would yield the forbidden base refutation for all sufficiently large \(n\), retaining every accuracy and depth factor.</li>
@@ -40,8 +40,8 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Replace maximum exception-degree assumptions by a total exception budget. Match away pigeons and columns with high exception degree, then apply either deterministic bounded-exception layouts or the majority theorem to the remaining board.</p>
-  <p>Stop at explicit trimming and residual-size bounds in terms of the total number of exceptions. Check when an aggregate density condition gives a large residual, without assuming the exceptions are evenly distributed.</p>
+  <p>Determine the smallest local partitions and total exception budget required by a supplied affine input inventory. Test whether polynomial family count and sharp input Booleanity alone can make that budget small.</p>
+  <p>Stop at an exact recognition criterion and a scope control if those hypotheses are insufficient. Relate the control to existing normalizers before treating failure of profile freezing as a general elimination obstruction.</p>
 </section>
 
 <section id="working-context">
@@ -99,7 +99,7 @@
   <p>The <a href="#virtual-axiom-level-construction">new value construction</a> uses complete current <a href="#virtual-OR-interface">unit/annihilator interfaces</a> and the <a href="#virtual-strict-leaf-theorem">strict level-support criterion</a>. Selected recognized positive/negative axiom boundaries become virtual zero/one; other objects remain genuine products on rebuilt inputs. Shared objects receive one coherent choice. The recorded Boolean/MOD presentation and protected final PHP clause evaluations are part of the hypotheses.</p>
   <p>At maximum ENS level \(d\), the <a href="#virtual-php-transfer">global affine PHP endpoint</a> gives a completed refutation through \((c+2d)L\), where \(c=\max\{M,10,p-1\}\) and \(M\) bounds the fixed Boolean axiom frames' leaf occurrences. It has at most \(d\) levels and polynomial family count. Its initial input Booleanity is sharply NS and strictly earlier, supplying the \(2L\) PC ceiling for the current normal-form pass. The exact interface recurrences and compiler proofs remain in the linked records; no NS unit certificate is inferred from PC compilation.</p>
   <p><strong><a href="#row-projection-transfer">Row coordinates and input reduction:</a></strong> row projection preserves proof degree and has pivot-independent quotient degrees. Separately, <a href="#input-reduction-transfer">reduce each ENS input modulo the stable domain/column ideal \(J\)</a>, fixing the base and coefficient variables. The new companions derive the old ones within their old degrees, preserving completed NS/PC proofs. Exclude row equations from this proper normal-form ideal. Binary inputs remain sharply Boolean; odd-field reduced inputs need actual witnesses. The <a href="#PHP-reduced-Booleanity-theorem">single-block PHP control</a> has NS cost \(e+h\) and PC cost \(\max\{e,2(h+t)\}\), where \(e=(h+1)t+h\); the sufficient board condition is \(n-t\ge2(e+h)-3\). Extra families are not covered.</p>
-  <p><strong><a href="#column-copy-map">Column-dependent freezing:</a></strong> compatible copy permutations preserve original base-image degrees and collapse local-statistic packages. If chosen classes omit each pigeon in at most \(a\) columns and exclude at most \(b\) pigeons in any column, <a href="#bounded-exception-elimination">deterministic grouping</a> works with \(K=p\lceil(a+b+1)/p\rceil-1\le a+b+p-1\). Match the \(q\le a\) columns missing a selected pigeon, then use the usual residue prefix; the residual is \(\lfloor(n-q)/K\rfloor-1\). For larger exceptions, the <a href="#filtered-profile-elimination">integer filtering criterion</a> uses \(u,v,d\), \(t=\min(u,v-1)\), \(q=n-d\), and \(2t+d&gt;2n\); it leaves margin \(\varepsilon=(t-q)/d-1/2\). The <a href="#majority-profile-elimination">majority theorem</a> then uses \(K\le\varepsilon d/2\) and \(2d^2(1-\varepsilon^2)^{\lfloor K/2\rfloor}&lt;1\), with \(K\equiv-1\pmod p\). Source profiles remain unclassified. Common-partition freezing and its separate capacity bound \(N\le2(s-p)\) do not constrain all column-dependent layouts.</p>
+  <p><strong><a href="#column-copy-map">Column-dependent freezing:</a></strong> compatible permutations preserve original base-image degrees and collapse local-statistic packages. Bounds \(a,b\) on exceptions per pigeon and column permit <a href="#bounded-exception-elimination">deterministic \(K\le a+b+p-1\)</a>. From a <a href="#total-exception-trimming">total count \(E\)</a>, a threshold \(B\) permits one matching of size \(q\le\lfloor E/(B+1)\rfloor\) covering both high-exception sets. The surviving bounds are at most \(B\); another \(q_*\le B\) matches make the chosen classes contain a distinguished pigeon. With \(d=n-q-q_*\), the residual is \(\lfloor d/K\rfloor-1\). Deterministic \(K=p\lceil(2B+1)/p\rceil-1\) gives \(N/D\to\infty\) when \(ED=o(n^2)\), \(pD=o(n)\). If \(n-q&gt;3B\), a positive majority margin is available; retain the <a href="#total-exception-majority">exact size and probability conditions</a>. In particular, \(E\le(1/12-\eta)n^2\) gives \(N=\Omega_{\eta,p}(n/\log n)\) at fixed \(\eta,p\). Source profiles remain unclassified. The separate common-partition bound \(N\le2(s-p)\) does not constrain every column-dependent layout.</p>
   <p><strong><a href="#stable-ideal-normalizer">Column and row covers:</a></strong> \(\operatorname{NF}_J(g_iH)=0\) gives actual-degree NS images; any single-column tuple has an affine state normalizer. A <a href="#Hall-profile-normalizer">Hall witness</a> \(A,U\), \(r=|A|&gt;|U|\), \(r\le h\), gives \(H\in\mathcal I_W(\mathcal F_n)\), \(W\le r(\delta+1)\), when every selected row/column pair outside \(U\) has a nonzero designated column-input value. Companions fit \(d_i+W\le e_i\), fields fit \(p\), and the board stays unchanged. For all-but-one-column occupancies, <a href="#occupancy-probe-exact-degrees">augmented PC degree is two; NS degree is two for \(p\nmid n\), three for \(p\mid n\)</a>, \(n\ge3\). The <a href="#occupancy-affine-accuracy-frontier">general affine normalizer</a> needs exactly two rows when \(p\mid n\) and \(n\ge18\) for \(p=2\), or \(n\ge6(p-1)\) for odd \(p\); one row suffices when \(p\nmid n\). This excludes PC degree-three companion images at accuracy one, not broader projections.</p>
   <p><strong><a href="#categorical-heterogeneous-frontier">Independent scalar profiles:</a></strong> for \(N\) column probes with nonzero alphabet sizes \(k_j\), coefficient degree \(T\), and \(h\) rows, all-companion normalization over the proper state ideal exists exactly when the \(\max(0,N-hT)\) smallest \(k_j\)'s sum to at most \(h\). The construction uses affine old state indicators. Bare scalar coordinates instead require \(\sum_jk_j\le h(T+1)\). Added equations, correlated columns, and vector-valued profiles are outside these exact lower bounds.</p>
 </section>
@@ -6776,6 +6776,117 @@
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">15.23 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.12 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.84 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+  </article>
+  <article class="research-entry" id="entry-2026-09-12-total-exception-budget">
+    <h3>From a total profile-exception budget to a hard residual board</h3>
+    <p class="entry-meta">12 September 2026 · Working trimming and degree-preserving elimination bounds · Concentrated exceptions allowed · Analytic composition of existing proofs · Actual source coverage remains open</p>
+    <p><strong>Question and outcome.</strong> Maximum exception degrees can be large even when the total number of exceptions is small. A matching restriction removes all high-exception pigeons and columns, at a cost equal to the larger marked set. The surviving absolute bounds support either deterministic grouping or the majority construction, with explicit residual sizes.</p>
+
+    <h4 id="total-exception-trimming">1. One matching covers both exceptional sets</h4>
+    <p>Prescribe a local pigeon partition in every column, and choose one of its classes \(C_j\). Let the exception graph have an edge \((i,j)\) exactly when \(i\notin C_j\), and write</p>
+    <div class="math">\[
+      E=\sum_{j=1}^{n}\bigl((n+1)-|C_j|\bigr).
+    \]</div>
+    <p>For an integer \(B\ge0\), mark every pigeon and every column whose exception degree is greater than \(B\). Let the two marked-set sizes be \(r_B,c_B\), and put</p>
+    <div class="math">\[
+      q=\max(r_B,c_B),\qquad
+      Q=\left\lfloor\frac{E}{B+1}\right\rfloor.
+    \]</div>
+    <p><strong>Working trimming lemma.</strong> Both marked sets have size at most \(Q\). If \(q\le n\), a genuine PHP matching of exactly \(q\) edges covers both sets. After restricting that matching, the board has \(n_0=n-q\) holes and \(n_0+1\) pigeons, and both remaining exception degrees are at most \(B\).</p>
+    <p><strong>Proof.</strong> Each marked vertex accounts for at least \(B+1\) edges. Sum degrees separately on each side to obtain \(r_B,c_B\le Q\). Choose \(q\) pigeons containing all marked pigeons and \(q\) columns containing all marked columns; their sizes are possible because \(q\le n\). Any bijection between those sets is a matching of the complete original PHP board. It need not follow edges or nonedges of the exception graph. No matching can cover the prescribed sets with fewer than \(\max(r_B,c_B)\) edges.</p>
+    <p>Every surviving vertex was unmarked, so its original exception degree was at most \(B\), and deletion only reduces it. Each removed column's class statistics become constants. Unremoved column partitions restrict to the remaining pigeons; empty classes may be dropped. In the applications below \(n_0&gt;B\), so each chosen class remains nonempty. The usual matching restriction sends every original base axiom to a residual axiom or zero through its old degree.</p>
+
+    <h4 id="total-exception-deterministic">2. A deterministic residual from the total budget</h4>
+    <p>Apply the lemma, choose a surviving distinguished pigeon \(*\), and let \(q_*\le B\) count its remaining exceptions. Match the \(q_*\) columns missing that pigeon to distinct other surviving pigeons. Put \(d=n-q-q_*\), and choose</p>
+    <div class="math">\[
+      K=p\left\lceil\frac{2B+1}{p}\right\rceil-1,\qquad
+      2B\le K\le2B+p-1.
+    \]</div>
+    <p>If the following guaranteed bound is at least one, then all required matchings exist and the <a href="#bounded-exception-elimination">bounded-exception theorem</a> supplies a deterministic compatible layout:</p>
+    <div class="math">\[
+      \boxed{\quad
+      N=\left\lfloor\frac{n-q-q_*}{K}\right\rfloor-1
+       \ \ge\
+       \left\lfloor\frac{n-Q-B}{K}\right\rfloor-1
+       \ \ge1.\quad}
+    \]</div>
+    <p>Indeed this hypothesis gives \(n-Q-B\ge2K\), hence \(q\le Q&lt;n\), \(n_0&gt;B\), and enough surviving ordinary pigeons for the second matching. Both induced exception bounds are at most \(B\). The final residue matching has size \(d\bmod K\). Thus the complete matching deletion is \(q+q_*+(d\bmod K)\); the copy compression is accounted for by the displayed \(N\).</p>
+    <p>The package and degree hypotheses are exactly those of <a href="#column-dependent-package-elimination">local-statistic package elimination</a>: actual inputs are polynomials in the prescribed statistics and earlier coefficients of the selected finite package. The composite map is affine, original base images fit degrees one or two, and all selected companion and field images vanish after level-ordered constant assignments. Completed NS/PC degree and existing witness ceilings are unchanged; original companion activity is never recomputed from specialized inputs.</p>
+    <p>For a simple asymptotic choice, take</p>
+    <div class="math">\[
+      B=\left\lceil\frac{2E}{n}\right\rceil,\qquad
+      Q&lt;\frac n2,\qquad
+      K\le\frac{4E}{n}+p+1.
+    \]</div>
+    <p>The strict inequality for \(Q\) follows from \(B+1&gt;2E/n\) when \(E&gt;0\); for \(E=0\), \(Q=0\). If \(D\ge1\) and</p>
+    <div class="math">\[
+      ED=o(n^2),\qquad pD=o(n),
+    \]</div>
+    <p>then \(B=o(n)\), \(d&gt;n/2-B\ge n/3\) eventually, and \(KD=o(n)\). Consequently</p>
+    <div class="math">\[
+      \frac ND\ge\frac{n}{3KD}-\frac2D\longrightarrow\infty.
+    \]</div>
+    <p>All finite size hypotheses therefore hold for sufficiently large \(n\). For example, at fixed \(p\) and polylogarithmic \(D\), this covers \(E=O(n\,\operatorname{polylog}n)\). More generally, when \(E=o(n^2)\) and \(p=o(n)\), the guaranteed residual has order at least \(n^2/(E+pn)\), up to absolute constants for sufficiently large \(n\).</p>
+
+    <h4 id="total-exception-majority">3. A majority residual when the total budget is a fixed fraction</h4>
+    <p>The same trimming lemma also feeds the majority theorem. Suppose an integer \(B\ge0\) satisfies</p>
+    <div class="math">\[
+      E&lt;(B+1)(n-3B).
+    \]</div>
+    <p>Then \(Q&lt;n-3B\), so \(n_0=n-q&gt;3B\). After the second matching, \(d=n_0-q_*\ge n_0-B&gt;2B\). Its distinguished-pigeon profile graph has both minimum degrees at least \(d-B\). A valid margin is</p>
+    <div class="math">\[
+      \varepsilon=\frac12-\frac Bd
+      \ \ge\
+      \varepsilon_0
+      :=\frac{n-Q-3B}{2(n-Q-B)}&gt;0.
+    \]</div>
+    <p>Choose a positive integer \(K\equiv-1\pmod p\) satisfying</p>
+    <div class="math">\[
+      K\le\varepsilon_0d/2,\qquad
+      2d^2(1-\varepsilon_0^2)^{\lfloor K/2\rfloor}&lt;1.
+    \]</div>
+    <p>The <a href="#majority-profile-elimination">majority construction</a> gives \(N=\lfloor d/K\rfloor-1\ge3\) and the same NS/PC and package transfer as above. These finite conditions remain necessary for this application of that theorem; positive margin by itself does not guarantee an appreciable small-board residual.</p>
+
+    <h4 id="total-exception-density">4. An explicit sufficient density: fewer than \(n^2/12\) exceptions</h4>
+    <p>Fix \(0&lt;\eta&lt;1/12\), and assume</p>
+    <div class="math">\[
+      E\le(1/12-\eta)n^2.
+    \]</div>
+    <p>Choose \(B=\lfloor n/6\rfloor\). Since \(B+1&gt;n/6\),</p>
+    <div class="math">\[
+      Q&lt;(1/2-6\eta)n,\qquad
+      n-Q-3B&gt;6\eta n,\qquad
+      d\ge n-Q-B&gt;(1/3+6\eta)n.
+    \]</div>
+    <p>In particular the preceding total-budget condition holds. As \(n-Q-B\le n\), the guaranteed margin obeys \(\varepsilon_0&gt;3\eta\). Use the smaller fixed margin \(\bar\varepsilon=3\eta\), and choose the least positive congruent \(K\) above</p>
+    <div class="math">\[
+      1+\frac{2}{\bar\varepsilon^2}\bigl(\ln(2d^2)+1\bigr).
+    \]</div>
+    <p>The <a href="#majority-profile-parameters">recorded parameter argument</a> gives union bound at most \(e^{-1}\). At fixed \(p,\eta\), \(K=O_{\eta,p}(\log n)\), and \(K\le\bar\varepsilon d/2\) holds for sufficiently large \(n\). Therefore</p>
+    <div class="math">\[
+      \boxed{N=\Omega_{\eta,p}(n/\log n).}
+    \]</div>
+    <p>No distribution assumption on the exceptions was used. The constant \(1/12\) comes from maximizing the leading expression \(B(n-3B)\) in this particular trimming estimate. It is a sufficient threshold, not an optimal density theorem or a lower bound on other layouts. A full qualifying package with polylogarithmic source degree would contradict the residual PHP degree lower bound for sufficiently large \(n\); actual source qualification remains unproved.</p>
+
+    <h4 id="total-exception-checks">5. Analytic controls, dependencies, and scope</h4>
+    <p>At \(E=0\), take \(B=0\). Both matching deletions vanish, \(K=p-1\), and the deterministic formula recovers the original occupancy-freezing residual \(\lfloor n/(p-1)\rfloor-1\).</p>
+    <p>For a concentrated example, exclude one fixed pigeon from every chosen class. Then \(E=n\), although that pigeon's exception degree is \(n\). For \(n\ge2\), threshold \(B=1\) marks just that pigeon, so one matching edge removes all surviving exceptions. Applying the now-zero exception bounds yields \(K=p-1\) and residual \(\lfloor(n-1)/(p-1)\rfloor-1\), whenever this is positive. This is a sanity check on trimming; the example is also covered by the earlier common-partition method and is not a separation from all previous tools.</p>
+    <p>The strict finite density boundary is deliberate: at \(E=(B+1)(n-3B)\), the displayed worst-case value \(Q=n-3B\) makes \(\varepsilon_0=0\). The argument no longer guarantees a positive margin, though a particular graph may still admit a useful layout.</p>
+    <p>This cycle is analytic. It composes the proved matching restriction, deterministic degree-sum layouts, and majority sampling theorem; no historical numerical suite was rerun. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/aggregate_exception_budget_20260912_65/README.md">evidence and scope record</a> identifies the exact dependencies and retained finite evidence.</p>
+    <p><strong>Remaining gap and next step.</strong> A small exception budget has not been established for the actual shared source inventory. Determine the minimal local partitions needed by affine inputs and the resulting best possible \(E\); test the information supplied by polynomial inventory size and sharp Booleanity. A counterexample to this sufficient criterion must be compared with existing normalizers before drawing any broader conclusion.</p>
+    <p><strong>Process assessment.</strong> Reusing the existing projection and matching proofs kept this cycle analytic; the concrete workflow fix was to retain the renewed publication grant in the existing Git rule and point to it during resume, rather than add another approval checklist.</p>
+    <div class="timing-report" data-session="aggregate_exception_budget_20260912_65">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 28.52 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 25.42 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 2.73 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.37 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
