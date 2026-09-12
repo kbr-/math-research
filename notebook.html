@@ -12,7 +12,8 @@
 <section id="where-we-stand">
   <h2>Where we stand</h2>
   <p><strong>The goal is still open.</strong> A <a href="#nonsharp-packing-source-endpoint">common PC Booleanity ceiling</a> now carries the new PHP endpoint through stable input reduction, rank/affine-bin packing, and equal-span sharing over every prime, with the same degree \((c+2d)L\), levels, and family count. Sharp NS Booleanity is unnecessary for this PC pass: the uniform witness ceiling \(2L\) suffices. The surviving wide input spaces still need an affordable elimination theorem.</p>
-  <p>The <a href="#stable-ideal-affine-system">stable-ideal affine test</a> now gives exact linear equations and dual obstructions for using one coefficient row. It supplies a <a href="#stable-ideal-high-rank-cover">high-rank cover without a common polynomial factor</a>, at the same NS degree. Its scope is limited: <a href="#stable-ideal-row-difference-control">row differences</a> require many factors over the proper domain/column ideal, although the full PHP row equations normalize them at accuracy one.</p>
+  <p>The <a href="#ternary-triple-map">ternary triple normalizer</a> now uses two affine rows for three column differences. It closes the proper-ideal factor count: in odd characteristic, coefficient degree \(T\) needs exactly \(\lceil2n/(2T+1)\rceil\) rows; in characteristic two, exactly \(\lceil n/(T+1)\rceil\). These <a href="#ternary-degree-accuracy-frontier">exact tradeoffs</a> remain domain/column results. Full PHP row equations can still make the same fixed-row difference family much cheaper.</p>
+  <p>The <a href="#stable-ideal-affine-system">one-row stable-ideal affine test</a> supplies exact linear systems and duals. The <a href="#stable-ideal-high-rank-cover">high-rank cover without a common factor</a> remains a separate same-degree example. Neither controls the essential general source family.</p>
   <p>The <a href="#PHP-reduced-Booleanity-theorem">full-PHP reduced-product gap</a> remains an exact warning for NS transfers. The <a href="#nonsharp-packing-NS-ledger">new witness-cost ledger</a> states when nonsharp NS witnesses still fit a companion's original degree. In the rank-one reduced-product example, equal lower and upper accuracies already provide enough NS slack.</p>
   <p><a href="#affine-Booleanity-classification">Sharp affine Booleanity</a> in odd characteristic is restricted to partial-column indicators and complements modulo rows, under its degree-two hypotheses. Over \(\mathbb F_2\), <a href="#affine-Booleanity-binary-packing">the full affine intersection</a> can enter the same-degree packing pass. Neither result bounds the essential remaining family.</p>
   <p><a href="#column-state-normalizer">Affine column-state normalizers</a> remove every block whose inputs are polynomials in one column, at any accuracy \(h\ge1\), without increasing NS or PC degree or assuming input rank or Booleanity. Contradictory column subsets and the stated groups of at most \(h\) columns also work. General wide input spaces remain uncontrolled.</p>
@@ -45,8 +46,8 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Determine whether three ternary row-difference inputs can share two affine coefficient rows over the proper column ideal in odd characteristic.</p>
-  <p>Stop at an explicit normalizer with original-degree certificates, or a finite obstruction. Such a construction would meet the new necessary bound \(2n\le3h\) at \(n=3,h=2\); the full-PHP row-equation normalizer is a different, already solved case.</p>
+  <p>Generalize the state-splitting construction to column probes with several prescribed nonzero values, where the state indicators are available as affine old polynomials.</p>
+  <p>Stop at a matching degree/accuracy bound and a constructive coefficient map. Keep this encoding distinct from a bare field-valued variable, whose indicator polynomials can have higher ordinary degree.</p>
 </section>
 
 <section id="working-context">
@@ -110,6 +111,7 @@
   <p><strong><a href="#row-projection-transfer">Row coordinates and input reduction:</a></strong> row projection preserves proof degree and has pivot-independent quotient degrees. Separately, <a href="#input-reduction-transfer">reduce each ENS input modulo the stable domain/column ideal \(J\)</a>, fixing the base and coefficient variables. The new companions derive the old ones within their old degrees, preserving completed NS/PC proofs. Exclude row equations from this proper normal-form ideal. Binary inputs remain sharply Boolean; odd-field reduced inputs need actual witnesses. The <a href="#PHP-reduced-Booleanity-theorem">single-block PHP control</a> has NS cost \(e+h\) and PC cost \(\max\{e,2(h+t)\}\), where \(e=(h+1)t+h\); the sufficient board condition is \(n-t\ge2(e+h)-3\). Extra families are not covered.</p>
   <p><strong><a href="#column-state-normalizer">Column-state removal:</a></strong> arbitrary old-polynomial inputs in one column admit affine coefficient images using the indicators \(1-\sum_i x_{ij},x_{1j},\ldots,x_{n+1,j}\). Their companion and field images have NS certificates within their original degrees, and the resulting selector has sharp Booleanity. One column group uses one factor; an inconsistent column subset handles arbitrary additional inputs. The rule survives row coordinates, but does not cover arbitrary dependence on multiple columns or earlier coefficients.</p>
   <p><strong><a href="#stable-ideal-normalizer">Stable-ideal covers:</a></strong> for an affine block image \(H\), testing \(\operatorname{NF}_J(g_iH)=0\) supplies NS image proofs through their actual degrees and sharp Booleanity for \(H\). With only the first coefficient row used, the test is linear in its affine coefficients. It captures some high-rank tuples beyond common factors, but \(J\) excludes the row equations and may miss cheap full-PHP normalizers. Do not replace a truncated PHP consequence space by its unit ideal.</p>
+  <p><strong><a href="#ternary-degree-accuracy-frontier">Ternary column probes:</a></strong> for \(n\) independent differences \(g_j=a_j-b_j\) with Boolean, mutually exclusive \(a_j,b_j\), the proper-ideal coefficient-degree/accuracy frontier is \(h(2T+1)\ge2n\) in odd characteristic, and \(h(T+1)\ge n\) in characteristic two. A two-row sign split supplies the odd upper bound. Affine maps preserve NS/PC degree; higher \(T\) has its explicit substitution cost. These lower bounds exclude added row equations and arbitrary other companions.</p>
 </section>
 
 <section id="research-record">
@@ -5522,6 +5524,127 @@
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 1.29 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.12 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.80 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+  </article>
+  <article class="research-entry" id="entry-2026-09-12-ternary-affine-triples">
+    <h3>Two affine rows cover a ternary triple, yielding an exact degree/accuracy frontier</h3>
+    <p class="entry-meta">12 September 2026 · Working universal integer construction and exact proper-ideal frontier · Rational cover search · 30 exact NS certificates · 81 modular common models</p>
+    <p><strong>Question and outcome.</strong> The preceding odd-characteristic lower bound permits three ternary column differences in two affine rows. A small exact cover search found an integer formula that achieves this. Its structure also gives the full coefficient-degree/accuracy tradeoff, by splitting one central nonzero state test across two factors and attaching other columns through their affine empty-state indicators.</p>
+
+    <h4 id="ternary-triple-map">1. An integer two-row coefficient map</h4>
+    <p>For three independent column pairs, put</p>
+    <div class="math">\[
+      J=\langle a_i^2-a_i,\ b_i^2-b_i,\ a_ib_i:1\le i\le3\rangle,
+      \qquad g_i=a_i-b_i,\quad q_i=1-a_i-b_i,\quad \eta_i=2a_i-1.
+    \]</div>
+    <p>The permitted states of each pair are empty, \(a_i=1\), or \(b_i=1\). Use the affine coefficient rows</p>
+    <div class="math">\[
+      (\beta_{11},\beta_{12},\beta_{13})=(q_2,\eta_2,0),
+      \qquad
+      (\beta_{21},\beta_{22},\beta_{23})=(-q_3,0,\eta_3).
+    \]</div>
+    <p>Then the two factors and their product are</p>
+    <div class="math">\[
+      F=1-q_2g_1-\eta_2g_2,\qquad
+      G=1+q_3g_1-\eta_3g_3,\qquad H=FG.
+    \]</div>
+    <p>On a legal column, \(\eta_i g_i=a_i+b_i\). Consequently</p>
+    <div class="math">\[
+      F\equiv q_2(1-g_1),\qquad
+      G\equiv q_3(1+g_1),\qquad
+      H\equiv q_1q_2q_3\pmod J.
+    \]</div>
+    <p>The first factor vanishes if column two is occupied or the first input is \(+1\). The second vanishes if column three is occupied or the first input is \(-1\). Their product is therefore one only at the common zero input state. All formulas have integer coefficients and are valid in every characteristic; odd characteristic is needed for the optimality statement below.</p>
+
+    <h4 id="ternary-triple-degree-certificates">2. Original-degree certificates, without a semantic shortcut</h4>
+    <p>Write \(A_i=(a_i^2-a_i)-a_ib_i\) and \(B_i=(a_i^2-a_i)+(b_i^2-b_i)-2a_ib_i\). Then</p>
+    <div class="math">\[
+      \eta_i g_i-(a_i+b_i)=2A_i,\qquad
+      g_i^2-(a_i+b_i)=B_i.
+    \]</div>
+    <p>For \(\chi=q_1q_2q_3\), multiplication gives the explicit degree-four identity</p>
+    <div class="math">\[
+      H-\chi
+       =-q_2q_3B_1-2A_2q_3(1+g_1)
+           -2A_3q_2(1-g_1)+4A_2A_3.
+    \]</div>
+    <p>Every term is a sum of original \(J\)-generator multiples through degree four. Also</p>
+    <div class="math">\[
+      g_iq_i=-(a_i^2-a_i)+(b_i^2-b_i).
+    \]</div>
+    <p>Thus \(g_iH=g_i(H-\chi)+g_i\chi\) has an NS certificate through five. The source accuracy-two block has affine inputs and all three original companions have degree \(1+2(1+1)=5\), so every image fits exactly within its original budget. Affine coefficient field images have the usual NS proofs through \(p\).</p>
+    <p>Each \(q_i\) has degree-two Booleanity, since \(q_i^2-q_i=(a_i^2-a_i)+(b_i^2-b_i)+2a_ib_i\). Product Booleanity gives \(\chi^2-\chi\) through six, and</p>
+    <div class="math">\[
+      H^2-H=(H-\chi)(H+\chi-1)+(\chi^2-\chi)
+    \]</div>
+    <p>gives sharp NS Booleanity through eight, with \(\deg H=4\). The stable-ideal normal-form theorem gives the same budgets directly. This is a degree-preserving affine normalizer for the full block, with every companion and field image included.</p>
+
+    <h4 id="ternary-degree-accuracy-frontier">3. Exact polynomial coefficient degree versus number of rows</h4>
+    <p>Now take \(n\) independent such column pairs and \(g_i=a_i-b_i\). Let \(T\ge0\) be an integer bound on each coefficient polynomial's ordinary degree in the cell variables. Coefficients may also use independent old domain variables; fixing those to legal constants gives the same lower bounds. Normalization is required over the proper domain/column ideal, with no added PHP row equations or other companions.</p>
+    <p><strong>Working exact frontier.</strong> The minimum number of coefficient rows is</p>
+    <div class="math">\[
+      \boxed{
+      h_{\min}(n,T)=
+      \begin{cases}
+        \left\lceil n/(T+1)\right\rceil,&p=2,\\[2mm]
+        \left\lceil 2n/(2T+1)\right\rceil,&p\text{ odd}.
+      \end{cases}}
+    \]</div>
+    <p><strong>Lower bounds.</strong> Every successful product has forced normal form \(\prod_iq_i\). In characteristic two this has ordinary degree \(n\), while a factor has degree at most \(T+1\), giving \(n\le h(T+1)\). In odd characteristic use the preceding parameterization \(a_i=(s_i^2+s_i)/2\), \(b_i=(s_i^2-s_i)/2\), \(g_i=s_i\), with \(s_i^3-s_i=0\). A degree-\(T\) coefficient becomes degree at most \(2T\), so the product has degree at most \(h(2T+1)\). Its forced selector \(\prod_i(1-s_i^2)\) has degree \(2n\). This gives the odd lower bound without assuming a particular coefficient assignment.</p>
+    <p><strong>Binary upper bound.</strong> Partition the inputs into groups of at most \(T+1\). Within a group, telescope the product of \(1-g_i\); the coefficient on its \(\ell\)-th input is the product of the previous \(\ell-1\) factors and has degree at most \(T\). One row per group realizes the selector.</p>
+    <p><strong>Odd upper bound: one row covers up to \(T\) side columns.</strong> For an ordered set \(S=(j_1,\ldots,j_k)\), \(k\le T\), put</p>
+    <div class="math">\[
+      Q_S=\prod_{j\in S}q_j,\qquad
+      u_{S,j_\ell}=\eta_{j_\ell}\prod_{r&lt;\ell}q_{j_r}.
+    \]</div>
+    <p>Every coefficient has degree at most \(k\le T\). Since \(\eta_jg_j\equiv1-q_j\), the row \(1-\sum_{j\in S}u_{S,j}g_j\) is congruent to \(Q_S\). The empty set gives the constant-one row.</p>
+    <p><strong>Two rows cover up to \(2T+1\) columns.</strong> Choose one central column \(c\) and disjoint side sets \(A,B\), each of size at most \(T\). Use</p>
+    <div class="math">\[
+      F_A=1-Q_Ag_c-\sum_{j\in A}u_{A,j}g_j,\qquad
+      F_B=1+Q_Bg_c-\sum_{j\in B}u_{B,j}g_j.
+    \]</div>
+    <p>All coefficients have degree at most \(T\), and</p>
+    <div class="math">\[
+      F_AF_B\equiv Q_AQ_B(1-g_c^2)
+                     \equiv\prod_{j\in A\cup B\cup\{c\}}q_j\pmod J.
+    \]</div>
+    <p>A pair can cover any nonempty number of columns up to \(2T+1\), by dividing the remaining columns between its two sides. Empty pairs are padded by ones. With \(h\) rows, pair them and allow one leftover single row. Their total capacity is</p>
+    <div class="math">\[
+      hT+\lfloor h/2\rfloor
+       =\left\lfloor\frac{h(2T+1)}2\right\rfloor.
+    \]</div>
+    <p>This is exactly the necessary integer capacity. Partitioning the columns into these slots proves every feasible upper bound, including \(T=0\), when two constant rows handle one column. This proves the frontier.</p>
+    <p>In particular, affine coefficients have optimum \(\lceil2n/3\rceil\) in odd characteristic, and constant coefficients have optimum \(2n\). The triple formula is the \(T=1\) central-column construction with one side column on each row.</p>
+
+    <h4 id="ternary-frontier-proof-transfer">4. What the frontier says about proof degree</h4>
+    <p>Every constructed selector product has ordinary degree at most \(h(T+1)\). Degree-complete division therefore proves each companion image through at most \(1+h(T+1)\), and each coefficient field image through at most \(pT\) when \(T\ge1\). The original companion degree is \(2h+1\), and</p>
+    <div class="math">\[
+      1+h(T+1)\le T(2h+1)\qquad(T\ge1).
+    \]</div>
+    <p>Thus these explicit maps have the standard NS/PC substitution cost at most \(TD\); affine and constant maps preserve degree. For the literal column probes considered here, all coefficient formulas use only original cells, so any collection of such maps can be assigned simultaneously without a hidden cascade through earlier coefficients. General polynomial normalizations depending on already modified earlier variables retain their separate composition conditions.</p>
+    <p>This is an exact frontier for the proper state algebra. For differences between the same two PHP rows, the earlier row-equation certificate still gives accuracy-one affine normalization over the full base, independently of \(n\). The frontier does not exclude that certificate or prove an elimination lower bound for the full source family.</p>
+
+    <h4 id="ternary-triple-search-evidence">5. Exact search, symbolic extraction, and checks</h4>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/tools/check_ternary_affine_triples.cpp">compiled search</a> partitions the 26 nonzero column states into two sets of thirteen. Each factor is chosen by exact rational linear equations requiring it to vanish on its assigned states. With seed 20260912, all 2,000 attempted partitions and their results are preserved. There were 1,876 feasible covers and 1,707 with power-of-two denominators. The selected compact cover, at attempt 21, has only ten nonzero scalar coefficient terms and no denominators.</p>
+    <p>All 27 rational state products were checked exactly. The integer formula was then recognized as the two displayed rows, giving the symbolic proof above. Separate checks over \(\mathbb F_3,\mathbb F_5,\mathbb F_7\) produced thirty complete NS certificates and 81 common source models. Each companion image fits degree five, the product has ordinary degree four and sharp Booleanity through eight, and every coefficient field image is certified. The proof establishes validity in every characteristic; only those three prime fields were run numerically.</p>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/ternary_affine_triples_20260912_52/search-01.jsonl">complete output</a> includes every search attempt, the chosen coefficient vectors and rational factor values, all modular certificates, and all model points. The general \(T\) frontier is proved by the symbolic construction and the preceding lower bounds; it was not claimed as an exhaustive numerical search. Reproduction and evidence details are in the <a href="https://github.com/kbr-/math-research/blob/main/research/results/ternary_affine_triples_20260912_52/README.md">result record</a>.</p>
+    <p><strong>Process assessment.</strong> Solving linear constraints for a two-set cover avoided a search over all coefficient assignments, and extracting the short integer identity turned the finite discovery into a universal proof; no extra workflow rule is needed.</p>
+    <p><strong>Operational timing note.</strong> Automatic publication review rejected two push requests before execution; these were separate from the successful mathematical checks.</p>
+    <p><strong>Next step.</strong> Extend the construction to column probes with several prescribed nonzero values, retaining the degree cost of their actual state indicators.</p>
+    <div class="timing-report" data-session="ternary_affine_triples_20260912_52">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>31 min 49.57 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">17 min 54.83 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">8 min 41.10 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 16.07 s</td></tr>
+<tr><td>Marked overhead and interruptions</td><td class="elapsed">53.69 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.52 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.36 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>

@@ -262,6 +262,7 @@ void high_rank_cover(std::ostream& out,StableCounts& count,int p,int m) {
         state(out,count,name,rules,input,old_count,point,norm.H,&norm);
     }
 }
+#ifndef STABLE_IDEAL_NORMALIZERS_NO_MAIN
 int main(int argc,char** argv) {
     try {
         need(argc==3 && std::string(argv[1])=="--out","usage: check_stable_ideal_normalizers --out PATH");
@@ -285,3 +286,4 @@ int main(int argc,char** argv) {
                  <<count.states<<" domain states; output "<<path<<"\n";return 0;
     }catch(const std::exception& e){std::cerr<<"ERROR: "<<e.what()<<"\n";return 1;}
 }
+#endif
