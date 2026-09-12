@@ -98,6 +98,10 @@ actionable rule over another checklist or a record of one-off setup history.
   research/references/redistribution.json. Keep uncleared PDFs, full-text copies,
   and source-containing diagnostics out of public commits and reachable history.
   Preserve needed personal copies locally; do not publish private/ backups.
+  If a needed paper remains unavailable after an honest retrieval attempt, add
+  its citation, attempted links, and purpose to Git-ignored `user_requests` at
+  the repository root. Create the file only when needed; continue independent
+  work while the user obtains the paper and reports back.
 - Preserve the user's private `pre-publish` backup branch. Never publish that
   backup or use `--all`/`--mirror`. Before an authorized publication, check the
   branch with `tools/verify-checkout.py --public-history BRANCH`.
