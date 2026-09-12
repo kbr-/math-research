@@ -11,7 +11,8 @@
 
 <section id="where-we-stand">
   <h2>Where we stand</h2>
-  <p><strong>The goal is still open.</strong> The <a href="#row-projection-transfer">global row projection</a> now makes row-equation relations literal before the residual span/packing pass, preserving the new endpoint's PC degree \((c+2d)L\), level bound, and family count. <a href="#row-projection-pivots">Ranks and reduced degrees are independent of the row pivots</a>; balanced pivots minimize a stated base-expansion cost. The remaining row-quotient input spaces still need an affordable elimination theorem.</p>
+  <p><strong>The goal is still open.</strong> <a href="#column-state-normalizer">Affine column-state normalizers</a> now remove every block whose inputs are polynomials in one column, at any accuracy \(h\ge1\), without increasing NS or PC degree. No input rank or input Booleanity assumption is needed. The construction also handles a contradictory column-supported subset, and tuples grouped into at most \(h\) columns. General wide input spaces remain uncontrolled.</p>
+  <p>The <a href="#row-projection-transfer">global row projection</a> makes row equations literal while preserving the new endpoint's degree \((c+2d)L\), levels, and family count. The <a href="#column-state-row-coordinates">column normalizers survive these coordinates</a>; ranks and reduced degrees remain pivot-independent. These operations and the span pass do not yet give an affordable general elimination theorem.</p>
   <p>The <a href="#goal-portfolio-Booleanity">Boolean-preserving portfolio</a> and <a href="#goal-portfolio-normal-form">level-ordered packing and quotient pass</a> leave distinct high-rank input spaces at the same PC degree. <a href="#small-probe-extraction">Small sufficient probes</a> give additional normalizers through \(\max\{D,C_0+W\}\), but the <a href="#small-probe-antichain">antichain control</a> forces linearly many probe factors for some PC-three input refutations. Essential wide support is still uncontrolled.</p>
   <p>The <a href="#goal-cleanup-checks">earlier constant-depth coverage gap</a> applies to the maximal-root criterion; the <a href="#private-modified-checks">new structural fixtures</a> exercise genuinely nonmaximal cuts. Neither result bounds the essential remaining family or rules out further normalizations. The <a href="#source-highest-or-layer">one-time highest-layer omission</a> is preserved under the specified source hypotheses.</p>
   <p><a href="#wide-Boolean-ideal-cover">Certified Boolean generators</a> can remove a block at the same degree even when its arity and linear rank are large. <a href="#wide-ideal-retained-core">Ideal-generated residuals</a> can also be absorbed into a retained wide core without extra factors. These extend the mixed Booleanity modes, but their witness and degree-budget conditions have not been proved for every needed tuple. Strict axiom-root preprocessing remains available at the earlier polylogarithmic bound.</p>
@@ -32,7 +33,7 @@
   <div class="eyebrow">Highest risk first</div>
   <ol>
     <li><strong>Eliminate the distinct wide residual input spaces.</strong> Rank packing, equal-span sharing, and small probes give explicit criteria, while virtual OR values now have a local PC interface. Prove that useful witnesses survive in a common retained source system, then control the essential remaining family. A local value identity or a cheap input refutation alone does not supply that global construction.</li>
-    <li><strong>Find affordable generators or cores for the actual wide requests.</strong> Merge-first affine-bin packing leaves \(r>2h\) or more than \(h\) nonaffine basis members. Certified ideal covers and retained cores can go further, but their witnesses are not automatic. Use base relations or additional certified generators without assuming that an arbitrary linear combination is Boolean or that a failed listed-basis criterion proves nonnormalizability.</li>
+    <li><strong>Find affordable generators or cores for the actual wide requests.</strong> Merge-first affine-bin packing leaves \(r>2h\) or more than \(h\) nonaffine basis members. Column-state normalization now removes arbitrary-rank single-column tuples and the stated multi-column groups. Extend coverage to the remaining mixed-column or extension-dependent inputs, without assuming that arbitrary linear combinations are Boolean. Certified ideal covers and retained cores still require explicit witnesses.</li>
     <li><strong>Choose and preserve the useful degree/level tradeoff.</strong> The new PC endpoint has degree \((c+2d)L\) and at most \(d\) levels; the older signed route can omit the highest level with its larger stated degree ceiling. These are different families and constructions. Further sharing, affine packing, or goal-relative cuts must retain their actual image proofs; the strongest bounds cannot simply be combined.</li>
     <li><strong>Close the parameters.</strong> For every fixed \(p,\ell,K\), show that a size-\(n^K\), depth-\(\ell\) proof would yield the forbidden base refutation for all sufficiently large \(n\), retaining every accuracy and depth factor.</li>
   </ol>
@@ -40,8 +41,8 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Use the genuine column constraints to build affine coefficient normalizers for input tuples supported in one column. Its permitted states are an empty column or one occupied cell, which have affine indicator polynomials.</p>
-  <p>Stop at the coefficient and NS image budgets, including arbitrary polynomial inputs in that column and compatibility with the row coordinates. Keep column exclusions distinct from the absent same-row exclusions.</p>
+  <p>Characterize which affine combinations have degree-two Booleanity certificates in the weak PHP base. This should identify when additional affine directions in an input span can safely enter the packing basis.</p>
+  <p>Stop at a precise odd-characteristic classification and a separate characteristic-two statement, with explicit hypotheses on any retained extensions. Do not infer same-row functionality from row equations.</p>
 </section>
 
 <section id="working-context">
@@ -103,6 +104,7 @@
   <p>With \(c=\max\{M,10,p-1\}\), the annihilator and unit ceilings through level \(s\ge1\) are at most \((c+2s-2)L\), giving source value proofs through \((c+2d)L\) at maximum level \(d\). The original structural degree majorant is preserved, with no extra ENS family or level. Current constants/genuine products and literal negation/MOD retain sharp NS Booleanity through twice each current degree, separately from their PC unit witnesses.</p>
   <p>The <a href="#virtual-php-transfer">new PHP endpoint</a> protects the final clause evaluations, then applies the global affine clause/root map to the completed value proof. Every retained input is specialized. The resulting \(\mathcal F_n\)-plus-ENS refutation has degree at most \((c+2d)L\), at most \(d\) levels, and polynomial family count. Its current sharp Booleanity portfolio supports the stronger merge-first normal form above at the same degree. Neither this family nor the older signed family has an affordable general elimination bound yet.</p>
   <p><strong><a href="#row-projection-transfer">Row projection before the span pass:</a></strong> set one cell per row to \(1-\sum\) of that row's other cells, fixing all ENS coefficients. Every base image has an NS proof in \(\mathcal F_n\) through its original degree; retained inputs are specialized. The map is the ordinary row-ideal quotient, with pivot-independent ranks and minimum representative degrees. The current portfolio retains sharp Booleanity. For \(n\ge2\), the reduced base has the same bare PC/NS degree as \(\mathcal F_n\), but projected ENS companions can become newly active; do not identify the old and new truncated spaces. Historical spread examples already in row coordinates are unchanged in this respect.</p>
+  <p><strong><a href="#column-state-normalizer">Column-state removal:</a></strong> arbitrary old-polynomial inputs in one column admit affine coefficient images using the indicators \(1-\sum_i x_{ij},x_{1j},\ldots,x_{n+1,j}\). Their companion and field images have NS certificates within their original degrees, and the resulting selector has sharp Booleanity. One column group uses one factor; an inconsistent column subset handles arbitrary additional inputs. The rule survives row coordinates, but does not cover arbitrary dependence on multiple columns or earlier coefficients.</p>
 </section>
 
 <section id="research-record">
@@ -4885,6 +4887,94 @@
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 12.67 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.12 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.36 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+  </article>
+  <article class="research-entry" id="entry-2026-09-12-column-state-normalizers">
+    <h3>Remove arbitrary polynomial column tuples with affine state selectors</h3>
+    <p class="entry-meta">12 September 2026 · Working normalization and row-coordinate proofs · 210 exact NS certificates · 150 common models · General mixed-support elimination remains open</p>
+    <p><strong>Question and outcome.</strong> Can the genuine column exclusions remove wide requests without a rank bound? Yes: the permitted states of one column have affine indicator polynomials. Interpolating the coefficient choices on those states removes every block supported in that column. This is a new explicit construction within the earlier <a href="#annihilation-transfer">direct-companion substitution principle</a>; unlike a normalization error proved zero, its selector can remain nonzero.</p>
+
+    <h4 id="column-state-reduction">1. The column ideal has certificates at the target's ordinary degree</h4>
+    <p>Write \(Y_i=x_{ij}\), \(1\le i\le m=n+1\), for one column and let</p>
+    <div class="math">\[
+      J_{\rm col}=\langle Y_i^2-Y_i,\ Y_iY_k\ (i\ne k)\rangle,
+      \qquad S=\{0,e_1,\ldots,e_m\}.
+    \]</div>
+    <p>These generators are actual members of the weak PHP base. No row equation is needed for this local statement. The affine polynomials</p>
+    <div class="math">\[
+      \delta_0=1-\sum_iY_i,\qquad \delta_i=Y_i
+    \]</div>
+    <p>are the point indicators on \(S\), over every \(\mathbb F_p\).</p>
+    <p><strong>Degree-complete reduction.</strong> A polynomial \(q(Y)\) vanishing on \(S\) has an NS certificate from the displayed generators through ordinary degree \(\deg q\). Delete any monomial containing two different \(Y\)'s using their collision generator. Reduce every surviving \(Y_i^k\) to \(Y_i\) using \(Y_i^2-Y_i\). Each axiom multiple has degree at most the monomial being reduced, and reduction never increases degree. The remainder is \(a+\sum_i b_iY_i\); evaluation at \(0,e_1,\ldots,e_m\) forces all coefficients to zero.</p>
+    <p>The same division works with other variables as coefficient parameters when every state evaluation vanishes as a polynomial in those parameters. This is a statement about the satisfiable column ideal, not unrestricted ideal membership in the unsatisfiable full PHP system.</p>
+
+    <h4 id="column-state-normalizer">2. Every single-column tuple has an affine coefficient normalizer</h4>
+    <p>Take any finite tuple \(g_1,\ldots,g_k\in\mathbb F_p[Y]\), at accuracy \(h\ge1\). The inputs may be nonlinear, non-Boolean, and linearly independent. For each state \(s\in S\) at which some input is nonzero, choose one index \(i(s)\) with \(g_{i(s)}(s)\ne0\). Set</p>
+    <div class="math">\[
+      w_i(s)=
+      \begin{cases}g_i(s)^{-1},&i=i(s),\\0,&\text{otherwise},\end{cases}
+      \qquad
+      \beta_i(Y)=\sum_{s\in S}w_i(s)\delta_s(Y),
+      \qquad H=1-\sum_i\beta_i g_i.
+    \]</div>
+    <p>At a common zero state set all \(w_i(s)=0\). Each \(\beta_i\) is affine. On \(S\), \(H\) is one precisely at common zeros of the tuple and zero elsewhere. Thus every \(g_iH\) and \(H^2-H\) vanishes on \(S\).</p>
+    <p>Set the first ENS coefficient row to \((\beta_i)_i\), and every other row to zero. The block product becomes exactly the ordinary polynomial \(H\). With \(\delta=\max_i\deg g_i\), its degree is at most \(\delta+1\); for every nonzero input of degree \(d_i\), the column reduction gives</p>
+    <div class="math">\[
+      g_iH\in\mathcal I_{d_i+\deg H}(J_{\rm col}),
+      \qquad d_i+\deg H\le d_i+\delta+1
+          \le d_i+h(\delta+1)=e_i.
+    \]</div>
+    <p>Zero images need no certificate. All-zero tuples are immediate with \(\beta=0,H=1\); a nonzero constant input can instead make \(H=0\) identically. The selector itself has sharp NS Booleanity through \(2\deg H\), directly by column reduction.</p>
+    <p>Do not omit coefficient field images. For \(\beta=a_0+\sum_i a_iY_i\), Frobenius gives</p>
+    <div class="math">\[
+      \beta^p-\beta
+       =\sum_i a_i(Y_i^p-Y_i)
+       =\sum_i a_i(Y_i^2-Y_i)\sum_{t=0}^{p-2}Y_i^t.
+    \]</div>
+    <p>This is an NS certificate through \(p\), matching the original field axiom degree. It is generally a nonzero ordinary polynomial.</p>
+    <p><strong>Whole-proof transfer.</strong> Apply these affine coefficient assignments, keep every unremoved coefficient variable, and specialize every retained input. The removed companions have the NS image bounds above; retained companions are the corresponding genuine blocks on the actual images of their inputs. All base axioms are fixed. Replaying an NS or PC proof preserves its degree \(D\): a source NS companion cofactor has degree at most \(D-e_i\), and its image multiplies a certificate through at most \(e_i\). The affine PC inference rule gives the same ceiling. A companion inactive at \(D\) requires no prelude.</p>
+    <p>The construction works for any number of eligible blocks simultaneously and level by level. At each step eligibility concerns the current polynomial inputs. Every chosen coefficient depends only on original incidence variables, so the composite map remains affine. There is no cost per block, no new family, and no new level. This supplies a further sharply Boolean value mode for the current constructor-based portfolio; it does not make arbitrary substituted Booleanity witnesses sharp.</p>
+
+    <h4 id="column-state-groups">3. Contradictory subsets and several column groups</h4>
+    <p><strong>Inconsistent subset.</strong> Suppose some column-supported subset of a block's inputs has no common zero in \(S\). Build its \(\beta\)'s as above and give every other input coefficient zero. Now \(H\) itself vanishes on \(S\), so it has an NS certificate through \(\deg H\). Every additional input \(g\), even one using other columns or earlier ENS variables, satisfies the required companion-image bound by multiplying this certificate by \(g\). The original maximum input degree still bounds the subset's degree. This extends the mechanism of the earlier <a href="#polynorm-extra-inputs">extra-input result</a> to these column witnesses.</p>
+    <p>For example, the subset \((1-Y_1,1-Y_2)\) has no common zero in a legal column. Choosing \(\beta_1=1-Y_1,\beta_2=Y_1\) gives</p>
+    <div class="math">\[
+      H=Y_1-Y_1^2+Y_1Y_2.
+    \]</div>
+    <p>Its degree-two base certificate uses the genuine collision \(Y_1Y_2=0\). It can therefore handle arbitrary additional companions at accuracy one.</p>
+    <p><strong>Grouped tuples.</strong> More generally, assign every input to one of \(s\) column groups, with each input an old polynomial in that group's column alone. If \(s\le h\), put each group's affine coefficient vector in a separate ENS factor, with zero coefficients outside that group. Let the resulting factors be \(H_1,\ldots,H_s\). Then</p>
+    <div class="math">\[
+      H=\prod_{a=1}^{s}H_a,\qquad
+      W=\sum_a\deg H_a\le s(\delta+1)\le h(\delta+1).
+    \]</div>
+    <p>For an input in group \(a\), its column certificate for \(g_iH_a\), multiplied by the other factors, has degree at most \(d_i+W\le e_i\). The same field-image argument applies. The usual product identity for Booleanity gives \(H^2-H\) through \(2W=2\deg H\) when no factor is zero; a zero factor makes the target zero. Factors identically one can be omitted. An inconsistent group permits the preceding subset rule instead. This is a sufficient grouping condition, not an optimal number-of-columns theorem.</p>
+
+    <h4 id="column-state-row-coordinates">4. Compatibility with the row projection</h4>
+    <p>After <a href="#row-projection-map">row projection</a>, replace \(Y_i\) by \(\Theta_\pi x_{ij}\). For \(n\ge2\), this embeds the abstract column polynomial ring into the row-coordinate ring and preserves degree. To see this, choose another column \(k\ne j\) and give the row-coordinate ring an affine map to \(\mathbb F_p[Y]\) by assigning, in each row, column \(j\) the value \(Y_i\), column \(k\) the value \(1-Y_i\), and all other columns zero. The row equations hold literally, and the composite on the abstract \(Y_i\)'s is the identity. Both maps are affine, so degrees agree.</p>
+    <p>This section of the row quotient is an algebra map, not a model of all PHP constraints. The projected column Boolean and collision generators have NS certificates in \(\mathcal F_n\) through degree two, as proved in the preceding row-projection entry. Substitute the column certificates and then these base-image certificates; their original-degree bounds are unchanged. The coefficient images remain affine, and the single-column selector's sharp Booleanity degree is preserved.</p>
+    <p>Column membership can be checked in coordinates with pivots outside the candidate column: the current input must literally use only that column's incidence variables, with no earlier coefficients. The inverse affine coordinate changes then return the normalizer to the chosen pivots. This uses the row-ideal quotient only; it does not identify distinct ordinary polynomials modulo all Boolean and collision equations.</p>
+
+    <h4 id="column-state-checks">5. Exact certificates, consistent models, and scope</h4>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/tools/check_column_state_normalizers.cpp">compiled checker</a> tests column sizes \(m=3,5\) over \(\mathbb F_2,\mathbb F_3,\mathbb F_5\), at accuracy one. Its four tuple types are: affine inputs including a non-Boolean value in odd characteristic; nonlinear inputs of degree up to three; an inconsistent column subset with an additional outside variable; and nonzero polynomial inputs that vanish on every legal column state.</p>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/column_state_normalizers_20260912_46/checks-01.jsonl">complete output</a> contains 210 exact NS identities: 66 companion images, 66 field images, 24 sharp selector-Booleanity certificates, six inconsistent-subset certificates, and 48 original/mapped nonzero consequences. Thirty-six field images are nonzero as ordinary polynomials. All coefficient choices, polynomial targets, original axioms, and cofactors are retained.</p>
+    <p>All 150 models of the tested column domains, including both values of the outside Boolean variable where present, lift to source models by the computed coefficients. Six omitted-collision controls satisfy all remaining local domain/collision equations but violate an additional companion image. Thus the checks are nonvacuous and exercise the needed base relation. They do not enumerate full PHP models or numerically test the universal row-coordinate and grouping proofs. Compilation and every check succeeded; reproduction details are in the <a href="https://github.com/kbr-/math-research/blob/main/research/results/column_state_normalizers_20260912_46/README.md">result record</a>.</p>
+    <p><strong>Remaining gap.</strong> We have no bound on how many actual residual requests admit these column groups, inconsistent subsets, or other cheap witnesses. Inputs depending on many columns or earlier coefficients remain outside the general single-column rule. No extension-free refutation or final Frege lower bound follows yet.</p>
+    <p><strong>Process assessment.</strong> Reusing the sparse certificate kernel and stopping after one focused check avoided another infrastructure pass; no new framework rule is needed.</p>
+    <p><strong>Next step.</strong> Determine which affine directions admit sharp degree-two Booleanity in the weak PHP base, so the span pass can safely use more than the listed affine inputs.</p>
+    <div class="timing-report" data-session="column_state_normalizers_20260912_46">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>15 min 48.51 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">6.76 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 53.72 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 24.10 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">8 min 20.74 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.07 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.11 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
