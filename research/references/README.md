@@ -24,3 +24,7 @@ IMP2019-rev2 was acquired from ECCC on 12 September 2026 for a targeted audit of
 algebraic extension systems. Its PDF and extraction are also local-only; reading
 coverage and source hashes belong to the dated research result, not the original
 setup audit.
+
+BLVZ1994, the author-hosted *Chessboard Complexes and Matching Complexes*, was
+acquired for the design-marginal argument. Its PDF and extraction are local-only;
+the redistribution policy links its dated provenance and exact reading scope.

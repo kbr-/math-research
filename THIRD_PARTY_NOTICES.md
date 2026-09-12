@@ -31,6 +31,10 @@ from public Git history unless adequate permission is subsequently established:
 - **Impagliazzo, Mouli, Pitassi**, *The Surprising Power of Constant Depth
   Algebraic Proofs*, ECCC TR19-024, revision 2.
   https://eccc.weizmann.ac.il/report/2019/024/revision/2/
+- **Björner, Lovász, Vrećica, Živaljević**, *Chessboard Complexes and Matching
+  Complexes*, Journal of the London Mathematical Society 49 (1994), 25–39.
+  https://doi.org/10.1112/jlms/49.1.25
+  Author-hosted research copy: https://lovasz.web.elte.hu/morepapers/chess.pdf
 - **de Rezende, Meir, Nordström, Robere**, *Nullstellensatz Size-Degree Trade-offs
   from Reversible Pebbling*, arXiv:2001.02481v1.
   https://arxiv.org/abs/2001.02481
