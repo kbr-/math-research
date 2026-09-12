@@ -1,6 +1,6 @@
 <div class="eyebrow">Research checkpoint · 12 September 2026</div>
 <h1>Pigeonhole principle lower bounds</h1>
-<p class="intro">Our goal: superpolynomial proof-size lower bounds for ordinary PHP in \(\mathrm{AC}^{0}[p]\)-Frege, for every fixed prime \(p\) and fixed depth.</p>
+<p class="intro">Our main target: superpolynomial proof-size lower bounds for ordinary PHP in \(\mathrm{AC}^{0}[p]\)-Frege, for every fixed prime \(p\) and fixed depth. A polynomial-size upper bound is also a valuable research outcome to pursue if concrete evidence supports it.</p>
 
 <section id="before-this-notebook">
   <h2>Before this notebook</h2>
@@ -12,17 +12,18 @@
 <section id="where-we-stand">
   <h2>Where we stand</h2>
   <p><strong>Full source coverage remains open.</strong> A <a href="#literal-family-global-restriction">new restriction argument</a> now handles every polynomial-size collection of literal-input ENS blocks at one level, retaining a board of size \(\Theta(\sqrt n)\) at logarithmic accuracy. It explicitly adds same-row exclusions to an auxiliary base whose PC lower bound is covered by Razborov's theorem. General MOD inputs and propagation through the remaining levels are still outside that argument.</p>
-  <p>The <a href="#virtual-php-transfer">working PC endpoint</a> has degree \(D_0=(c+2d)L=\operatorname{polylog}n\), and the separate <a href="#direct-php-transfer">direct NS endpoint</a> also has polylogarithmic degree and polynomially many companions. A new <a href="#pseudo-ENS-rate-bridge">source audit</a> identifies a precise alternative for the NS endpoint: an adaptive-query conflict-avoidance probability exceeding \(S(1-1/p)^h\), where \(S\) counts companions. No design distribution meeting that budget has been constructed.</p>
+  <p>The <a href="#virtual-php-transfer">working PC endpoint</a> has degree \(D_0=(c+2d)L=\operatorname{polylog}n\), and the separate <a href="#direct-php-transfer">direct NS endpoint</a> also has polylogarithmic degree and polynomially many companions. The <a href="#universal-ENS-pseudosolution-rate-obstruction">new moment-rank argument rules out the unrestricted pseudo-solution rate</a> for every design distribution when \(D\ge2h\), \(S\ge2\), over every prime field. Choosing a better distribution cannot repair that particular route.</p>
   <p>Generic reverse-level elimination costs \(D_0+(p-1)\sum_a\delta_a\), which is not controlled well enough by polynomial family count. The <a href="#batching-attempt-verdict">balanced replay attempt</a> did not remove that dependence. The <a href="#affine-residual-criterion-obstruction">affine restriction test</a> now shows that even square-root residuals need not expose constants or make the existing rank/core criterion affordable. These are limitations of those mechanisms, not of every possible source-proof transformation.</p>
   <p>The <a href="#source-selector-only-dependency">selector-only source audit</a> removes an unnecessary coefficient-profile charge at the stated construction stage. However, <a href="#literal-selector-arbitrary-partitions">logarithmically many literal OR selectors</a> can already realize arbitrary joint column partitions. The profile-driven strategy remains stalled; the new literal restriction theorem uses matching counts and explicit row/column normalizers, with its own auxiliary-system justification.</p>
-  <p>The <a href="#chessboard-quadratic-extension">connectivity theorem settles quadratic extension</a> through \(R=\lfloor N/2\rfloor\). Combined with the covariance and measure bounds, this <a href="#uniform-high-degree-candidate-obstruction">rules out the natural uniform residual-design candidate over \(\mathbb F_2\)</a> for the needed ENS rate. A concrete <a href="#rank-two-functional-design">nonuniform rank-two prototype</a> also fails: <a href="#one-collision-linear-query-attack">linear queries locate its unique collision in \(O(\log n)\) steps</a>, for every higher-degree extension. Other nonuniform distributions and the weaker printed diagonal question remain open.</p>
+  <p>The earlier <a href="#uniform-high-degree-candidate-obstruction">uniform-candidate</a> and <a href="#low-covariance-prototype-verdict">rank-two prototype</a> tests are now superseded for the needed rate by a distribution-independent obstruction. Covariance on all degree-\(\lfloor D/2\rfloor\) polynomials must have growing rank; the definition permits these dense queries. A useful query approach would require a genuinely narrower class justified by the actual source proof. None is established.</p>
+  <p><strong>Direction remains evidence-driven.</strong> A polynomial-size PHP proof in \(\mathrm{AC}^{0}[p]\)-Frege is an explicitly authorized alternative outcome. Current failures of lower-bound mechanisms do not themselves provide a construction or evidence of such an upper bound; any change of direction should identify a concrete proof mechanism and its size/depth budget.</p>
   <div class="result">
     <p><strong>The missing bridge:</strong> use the actual source proof to obtain</p>
     <div class="math">\[
       \mathcal F_N\vdash_{\rm PC}^{B}1,
       \qquad B\le\left\lfloor\frac N2\right\rfloor,
     \]</div>
-    <p>or rule out the appropriate augmented endpoint by a suitable functional or pseudo-solution argument. The <a href="#pseudo-ENS-rate-bridge">new rate condition</a> uses the direct NS endpoint; ordinary designs alone do not rule out the PC endpoint. An explicitly justified stronger base, such as <a href="#functional-auxiliary-PC-bridge">\(\mathcal F_N^{\rm fun}\)</a>, is allowed. None of the current routes handles the full source family.</p>
+    <p>or rule out the appropriate augmented endpoint by another justified argument. The <a href="#universal-ENS-pseudosolution-rate-obstruction">unrestricted pseudo-solution sufficient condition is unavailable</a> in the current degree/accuracy regime; ordinary designs alone also do not rule out the PC endpoint. An explicitly justified stronger base, such as <a href="#functional-auxiliary-PC-bridge">\(\mathcal F_N^{\rm fun}\)</a>, is allowed. No current mechanism handles the full source family.</p>
   </div>
 </section>
 
@@ -30,17 +31,17 @@
   <h2>The remaining route</h2>
   <div class="eyebrow">Highest risk first</div>
   <ol>
-    <li><strong>Find a design distribution with the required query guarantee.</strong> Both the <a href="#uniform-high-degree-candidate-obstruction">uniform candidate</a> and the <a href="#low-covariance-prototype-verdict">rank-two one-collision prototype</a> fail. A useful nonuniform choice must survive arbitrary allowed query trees, including attacks on its first moments. Small covariance rank alone does not supply that guarantee.</li>
+    <li><strong>Find a source-specific replacement for the closed query route.</strong> The <a href="#universal-ENS-pseudosolution-rate-obstruction">required unrestricted guarantee is impossible</a> when \(D\ge2h\), \(S\ge2\). Determine whether actual source certificates yield a strictly smaller query class with a usable implication. Degree and height alone cannot supply that distinction.</li>
     <li><strong>For direct elimination, cover MOD inputs and the remaining levels.</strong> The <a href="#literal-family-global-restriction">literal theorem</a> is a global subclass result; <a href="#affine-residual-criterion-obstruction">the affine rank/core extension can fail on every square-root residual</a>. Another normalization or proof-use invariant is needed, including all transformed higher inputs.</li>
-    <li><strong>Preserve the chosen source interface.</strong> Keep NS and PC endpoints, their companion counts, original degrees, and any auxiliary strengthening explicit. The pseudo-solution criterion currently applies to a completed NS certificate. Do not combine bounds from different source constructions without a transfer.</li>
+    <li><strong>Preserve the chosen source interface and evaluate both directions.</strong> Keep NS and PC endpoints, companion counts, original degrees, and auxiliary strengthening explicit. A restricted-query alternative needs a completed NS certificate with the claimed query restrictions. If a concrete polynomial-size Frege construction emerges, audit its actual depth, gate basis, and size rather than interpreting method obstructions as an upper bound.</li>
     <li><strong>Close the parameters.</strong> For every fixed \(p,\ell,K\), show that a size-\(n^K\), depth-\(\ell\) proof would yield the forbidden base refutation for all sufficiently large \(n\), retaining every accuracy and depth factor.</li>
   </ol>
 </section>
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Determine which first-moment patterns are forced by covariance rank two in functional PHP, and whether they all admit logarithmic-height conflict trees. The preceding attack uses the one-collision pattern, not the sparsity of the covariance.</p>
-  <p>Stop at a general rank-two obstruction, a surviving explicit family with a precisely identified query gap, or a concrete failure of the proposed classification. This tests whether the low-rank direction has room left; it does not presume a pseudo-solution bound.</p>
+  <p>Audit the conflict trees produced from the actual NS source certificate: determine which query forms and description-size bounds are proved, and whether they exclude the new full-space covariance probe. A restricted query guarantee would need its own source implication; simply changing the distribution cannot help.</p>
+  <p>Stop at a proved source restriction or an exact uncontrolled quantity. Keep a concrete upper-bound construction in scope if the audit reveals one, while distinguishing it from the present obstruction to a lower-bound method.</p>
 </section>
 
 <section id="working-context">
@@ -88,13 +89,13 @@
   <p>The <a href="#affine-extension-audit">stronger-system audit</a> distinguishes ordinary degree from sparse proof size. Pure affine defining extensions preserve NS/PC degree. Full ENS conjunction-to-product equality has an NS certificate through \(m+2h\), with proof degree at least \(\max(m,2h+1)\). The <a href="#extension-field-integer-encoding">extension-field integer encoding</a> uses \(\alpha^{\sum_i a_i x_i}=\prod_i(1+(\alpha^{a_i}-1)x_i)\). On independent Boolean inputs its exact old-variable degree is the number of active weights, also as the maximum degree of prime-field coordinates. These checks constrain direct substitution and explicit definitions, not every auxiliary-variable interface or proof over the full unsatisfiable PHP base.</p>
   <p>The recorded BIKPRS presentation uses a fixed finite Boolean Frege basis, the stated MOD recursion/empty schemas, MP, and TRUE-by-zero approximations. OR inputs are complements of maximal non-OR children after flattening contiguous OR brackets. Negation preserves the structural ENS level; MOD takes the maximum child level; an OR cluster adds one. Proper OR subgroups can share their parent's level.</p>
   <p>With \(\ell'=\ell+O(1)\), the original structural majorant is \(L=(\ell'+1)\max\{p-1,h\}^{\ell'}\), and a polynomial-size source inventory supplies polynomially many families. Preserve the source syntax and MOD argument multiplicities. For polynomial proof size and \(h=\lceil\log n\rceil\), the relevant degree bounds are polylogarithmic, but this alone does not remove the extensions.</p>
-  <p>The <a href="#direct-php-transfer">direct NS simulation</a> gives degree \((1+\log S_{\rm proof})(h+1)^{O(\ell+1)}\) and polynomial companion count. The <a href="#pseudo-ENS-rate-bridge">weighted pseudo-solution rate</a> needs \(\gamma&gt;S_{\rm ENS}(1-1/p)^h\) at height \(h+\lceil\log_2S_{\rm ENS}\rceil\), for degree-\(D\) ordinary designs. The <a href="#binary-covariance-conflict-probe">binary probe</a> bounds survival by \(k_\nu+(1-k_\nu)2^{-(e-1)}\). The <a href="#chessboard-quadratic-extension">verified chessboard theorem</a> gives full quadratic marginals through \(R\) when \(N\ge2R-1\). Together with the <a href="#uniform-quadratic-covariance-bound">uniform covariance bound</a> and <a href="#uniform-lift-measure-comparison">distinct-map comparison</a>, this <a href="#uniform-high-degree-candidate-obstruction">rules out the natural uniform candidate</a> at the required rate over \(\mathbb F_2\), including \(R=\lfloor N/2\rfloor\). The <a href="#low-covariance-prototype-verdict">rank-two prototype</a> also fails: its one-collision first moments admit a deterministic linear-query attack of height \(\lceil\log_2 n\rceil+2\lceil\log_2(n+1)\rceil-1\), independent of higher moments. Other nonuniform distributions and the weaker diagonal problem remain open. Krajíček's <a href="#pseudo-live-cell-interface">live-cell reduction</a> costs \(O(D\log n)\) extra queries; a free column alone is easy. Ordinary designs still do not imply PC closure. Exact older source versions remain in <a href="https://github.com/kbr-/math-research/blob/main/research/notes/SOURCE_AUDIT.md">SOURCE_AUDIT.md</a>.</p>
+  <p>The <a href="#direct-php-transfer">direct NS simulation</a> gives degree \((1+\log S_{\rm proof})(h+1)^{O(\ell+1)}\) and polynomial companion count. The <a href="#pseudo-ENS-rate-bridge">unrestricted pseudo-solution criterion</a> would require \(\gamma&gt;S(1-1/p)^h\) at height \(h+\lceil\log_2S\rceil\), but the <a href="#universal-ENS-pseudosolution-rate-obstruction">new obstruction</a> proves this impossible for \(S\ge2,D\ge2h\), or \(D\ge h+1\) over \(\mathbb F_2\). For any unsatisfiable Boolean quadratic base, <a href="#boolean-quadratic-no-flat-moments">non-flatness</a> gives covariance rank at least \(t\), or \(2t\) in the binary case, on all degree-\(t\) polynomials. The <a href="#full-space-covariance-query-probe">full-space probe</a> is legal under the source's unrestricted query syntax. A narrower class needs a separate source proof; no such restriction is established.</p>
+  <p>The <a href="#chessboard-quadratic-extension">quadratic extension theorem</a>, <a href="#uniform-high-degree-candidate-obstruction">uniform-measure analysis</a>, <a href="#low-covariance-prototype-verdict">rank-two prototype</a>, and <a href="#pseudo-live-cell-interface">live-cell reduction</a> retain their full proofs and separate scope in the record. Ordinary designs do not imply PC closure. Exact older source versions remain in <a href="https://github.com/kbr-/math-research/blob/main/research/notes/SOURCE_AUDIT.md">SOURCE_AUDIT.md</a>.</p>
 
   <h3 id="context-mp-composition">Earlier route and reusable controls</h3>
-  <p>The <a href="#scalar-signed-invariant">older signed source route</a> and its <a href="#source-highest-or-layer">highest-layer omission</a> have a separate degree ledger and strict source-leaf hypotheses. Their private-ancestor, protected-representative, and clause constructions remain in the linked record. Do not combine their strongest bounds with the different current value interpretation without an actual transfer.</p>
+  <p>The <a href="#scalar-signed-invariant">older signed source route</a> and its <a href="#source-highest-or-layer">highest-layer omission</a> have separate degree ledgers and source-leaf hypotheses; their bounds cannot be combined with the current interpretation without a transfer.</p>
   <p><a href="#nonsharp-packing-uniform-PC">The common-ceiling PC pass</a> maintains strictly earlier input Booleanity through \(C=2L\), without requiring \(2\deg\) sharpness. At each level, reduce inputs modulo the current stable domain/column ideal, remove spans containing one, and pack degree-adapted actual-input bases satisfying \(r\le2h_a,\ r-r_{\rm aff}\le h_a\). Share equal surviving spaces. The PC ceiling is \(\max\{D,C\}\); the new endpoint already has \(D=(c+2d)L\ge C\). Binary bases may use <a href="#affine-Booleanity-binary-packing">the full affine intersection</a>. Extra odd-field affine combinations need their own Booleanity witnesses; the degree-two column classification applies only when that sharper ceiling is requested.</p>
-  <p><a href="#small-probe-extraction">Small sufficient probes</a> give a selector-product normalizer through \(C_0+W\) and, with the stated constant/affine realization, transfer through \(\max\{D,C_0+W\}\). <a href="#small-probe-antichain">Pebbling antichains</a> can require linearly many probe factors despite PC-three input refutations. The separate <a href="#requests-normalizer-lower-bound">NS control</a> gives \(h(T+\delta)\ge\Delta\) over its pure domain base. These constrain specific normalizations, not all proof-dependent elimination.</p>
-  <p>The <a href="#assignment-tree-php">assignment-tree family</a> gives one-level ordinary-PHP refutations through \(4h+1\) with exponentially many blocks. It rules out family-count-independent elimination, leaving polynomial families and dependence on \(\log M\) open. It also shows that <a href="#virtual-strict-peer-control">fresh-root extraction cannot discard same-level peers</a> at the same degree. Earlier matching, affine-annihilator, and original-support obstructions keep their method-specific scope in the claim index.</p>
+  <p><a href="#small-probe-extraction">Small-probe normalizers</a>, their <a href="#small-probe-antichain">pebbling obstruction</a>, and the <a href="#requests-normalizer-lower-bound">pure-domain NS control</a> keep their exact realization hypotheses in the record. The <a href="#assignment-tree-php">assignment-tree family</a> has degree \(4h+1\) with exponentially many blocks, ruling out family-count-independent elimination while leaving polynomial families open. It also prevents <a href="#virtual-strict-peer-control">discarding same-level peers</a> at unchanged degree. These are method-specific controls.</p>
 
   <h3 id="context-closure">Current value interpretation and the next bridge</h3>
   <p>The <a href="#virtual-axiom-level-construction">new value construction</a> uses complete current <a href="#virtual-OR-interface">unit/annihilator interfaces</a> and the <a href="#virtual-strict-leaf-theorem">strict level-support criterion</a>. Selected recognized positive/negative axiom boundaries become virtual zero/one; other objects remain genuine products on rebuilt inputs. Shared objects receive one coherent choice. The recorded Boolean/MOD presentation and protected final PHP clause evaluations are part of the hypotheses.</p>
@@ -8172,6 +8173,114 @@
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 54.90 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.12 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.28 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+  </article>
+  <article class="research-entry" id="entry-2026-09-12-moment-rank-query-obstruction">
+    <h3>Moment-rank growth rules out the unrestricted pseudo-solution rate</h3>
+    <p class="entry-meta">12 September 2026 · Working flatness and moment-rank argument · Universal query-rate obstruction over every prime field · Exact degree-four example and controls · No ENS upper bound or final Frege lower bound</p>
+    <p><strong>Obligation.</strong> Test whether nonuniform, low-covariance designs can supply the required adaptive-query guarantee. Rank two does allow means outside the preceding one-collision promise, but this does not rescue the method: the permitted queries use all bounded-degree polynomials. Their covariance rank must grow with degree for every design of an unsatisfiable Boolean quadratic system. Applying the existing probe on this larger space rules out the sufficient ENS rate throughout the stated parameter regime.</p>
+
+    <h4 id="boolean-quadratic-no-flat-moments">1. Flat moments would give a Boolean solution</h4>
+    <p>Let \(F\subseteq\mathbb F_p[X]\) be an unsatisfiable system whose generators have degree at most two and include every \(X_i^2-X_i\). Let \(\omega\) be a normalized ordinary degree-\(D\) design. For \(0\le t\le\lfloor D/2\rfloor\), put \(V_t=\mathcal P_{\le t}\) and define the moment form</p>
+    <div class="math">\[
+      H_t(f,g)=\omega(fg)\qquad(f,g\in V_t),
+      \qquad r_t=\operatorname{rank}H_t.
+    \]</div>
+    <p><strong>Working flatness obstruction.</strong> For every \(1\le t\le\lfloor D/2\rfloor\),</p>
+    <div class="math">\[
+      r_t&gt;r_{t-1},\qquad\text{and hence}\qquad r_t\ge t+1.
+      \tag{RANK-growth}
+    \]</div>
+    <p><strong>Proof.</strong> Suppose \(r_t=r_{t-1}=r\). Choose a complement \(W\subseteq V_{t-1}\) to the radical of \(H_{t-1}\), so \(\dim W=r\) and its restricted form is nondegenerate. Orthogonal projection \(P:V_t\to W\) is defined using this restricted form. Since the full form also has rank \(r\), its orthogonal complement to \(W\) is its radical: \(V_t=W\oplus\operatorname{rad}H_t\). In particular \(f-Pf\) is orthogonal to all of \(V_t\), not merely to \(W\).</p>
+    <p>Define multiplication operators on \(W\) by \(T_i f=P(X_i f)\). They are self-adjoint. For \(f,g\in W\), all the following products have degree at most \(2t\), and projection changes neither factor's pairing with an element of \(V_t\). Therefore</p>
+    <div class="math">\[
+      \langle T_iT_jf,g\rangle
+      =\langle T_jf,T_ig\rangle
+      =\omega((X_jf)(X_ig))
+      =\langle T_jT_if,g\rangle.
+    \]</div>
+    <p>Nondegeneracy gives \(T_iT_j=T_jT_i\). The same calculation, including the linear and constant terms, shows for every polynomial \(a\) of degree at most two that</p>
+    <div class="math">\[
+      \langle a(T)f,g\rangle=\omega(a(X)fg).
+    \]</div>
+    <p>For \(a\in F\), the right-hand side is zero by the design condition, since \(\deg(a f g)\le2t\le D\). Thus every generator vanishes on these commuting operators. In particular \(T_i^2=T_i\).</p>
+    <p>Commuting idempotents over \(\mathbb F_p\) have a common nonzero eigenvector with all eigenvalues in \(\{0,1\}\): split into the zero and one eigenspaces of each operator in turn; commutativity preserves the previously chosen eigenspaces, and a nonzero choice always exists. The resulting eigenvalues satisfy every equation in \(F\), contradicting unsatisfiability. The space \(W\) is nonzero because \(r\ge r_0=\omega(1)=1\). This proves strict growth and, by induction from \(r_0=1\), the bound.</p>
+    <p>The flat-extension technique is established mathematics; see Laurent and Mourrain's <a href="https://arxiv.org/abs/0812.2563">arXiv:0812.2563v1</a>, Theorem 1.4, later published as <a href="https://doi.org/10.1007/s00013-009-0007-6"><em>A generalized flat extension theorem for moment matrices</em></a>. The general-field convention and theorem statement were checked. The argument above supplies the particular finite-field, quadratic-generator consequence directly; it uses neither a positivity assumption nor an unproved flat-extension step.</p>
+
+    <h4 id="all-polynomial-covariance-rank">2. Covariance on the full query space has growing rank</h4>
+    <p>On \(V_t\), define</p>
+    <div class="math">\[
+      B_t(f,g)=\omega(fg)-\omega(f)\omega(g).
+    \]</div>
+    <p>Centering a basis containing \(1\) gives an orthogonal block \(H_t\cong[1]\oplus B_t|_{\ker\omega}\). Consequently</p>
+    <div class="math">\[
+      \operatorname{rank}B_t=r_t-1\ge t.
+      \tag{RANK-covariance}
+    \]</div>
+    <p>Over \(\mathbb F_2\), Boolean reduction gives \(\omega(f^2)=\omega(f)\) for every \(f\in V_t\): \(f^2-f\) has a Boolean-axiom certificate through degree \(2t\). Thus \(B_t\) is alternating and its rank is even. Every \(r_t\) is odd, so strict growth increases it by at least two:</p>
+    <div class="math">\[
+      p=2:\qquad r_t\ge2t+1,\qquad
+      \operatorname{rank}B_t\ge2t.
+      \tag{RANK-binary}
+    \]</div>
+    <p>This is not a lower bound on the covariance of the original variables alone. A design may have variable covariance rank two while its quadratic-polynomial covariance rank is much larger. No distributional uniformity or extension-fiber hypothesis is used.</p>
+
+    <h4 id="full-space-covariance-query-probe">3. The probe works on arbitrary bounded-degree polynomials</h4>
+    <p>Let \(\nu\) be any finite probability distribution on the degree-\(D\) designs above. Fix \(t\le\lfloor D/2\rfloor\) and \(q\ge1\), and write</p>
+    <div class="math">\[
+      \kappa_t=\mathbb E_{\omega\sim\nu}
+        p^{-\operatorname{rank}B_t(\omega)}.
+    \]</div>
+    <p>There is a deterministic degree-\(D\) query tree of height at most \(q+1\) with non-conflict probability at most</p>
+    <div class="math">\[
+      \kappa_t+(1-\kappa_t)p^{-q}.
+      \tag{RANK-probe}
+    \]</div>
+    <p><strong>Proof.</strong> This is the <a href="#binary-covariance-conflict-probe">earlier covariance probe</a> on \(V_t\), over \(\mathbb F_p\). Choose independent uniform polynomials \(f,g_1,\ldots,g_q\in V_t\). First query \(f\), obtaining \(a=\omega(f)\); then query \((f-a)g_s\) for each \(s\). A nonzero answer gives the conflict pair \((f-a,g_s)\), because \(\omega(f-a)=0\). No query of \(g_s\) is necessary. If all answers vanish, output \((0,0)\).</p>
+    <p>For a fixed design, the first polynomial lies in the radical of \(B_t\) with probability \(p^{-\operatorname{rank}B_t}\). Otherwise its pairing with each independent \(g_s\) is uniform in \(\mathbb F_p\), and all \(q\) pairings vanish with probability \(p^{-q}\). Average over designs and the initial coefficient choices to obtain one fixed tree with (RANK-probe). Its products have degree at most \(2t\le D\); its first query has degree at most \(t\).</p>
+    <p>The <a href="https://arxiv.org/abs/2301.10617v3">source definition</a>, pages 6–7, bounds query degree and tree height. It does not bound a query's monomial count or arithmetic-circuit size. Random dense elements of \(V_t\) are therefore legal here. The averaging statement establishes existence of a finite deterministic tree; it does not promise efficient construction or a small polynomial representation.</p>
+
+    <h4 id="universal-ENS-pseudosolution-rate-obstruction">4. The unrestricted sufficient ENS rate is impossible in the source regime</h4>
+    <p><strong>Working universal obstruction.</strong> For the Boolean quadratic system \(F\) above, let \(h\ge1\), \(S\ge2\) be integers, and put \(s=\lceil\log_2S\rceil\). If \(D\ge2h\), then no distribution of ordinary degree-\(D\) designs can give the guarantee</p>
+    <div class="math">\[
+      \gamma&gt;S(1-1/p)^h
+      \quad\text{against every tree of height }h+s.
+      \tag{RANK-ENS-obstruction}
+    \]</div>
+    <p>Over \(\mathbb F_2\), the weaker degree condition \(D\ge h+1\) already suffices.</p>
+    <p><strong>Proof.</strong> Take \(t=\lfloor D/2\rfloor\) and \(q=h+s-1\ge h\). For general \(p\), (RANK-covariance) gives \(\kappa_t\le p^{-t}\le p^{-h}\). For \(p=2,D\ge h+1\), (RANK-binary) gives the same bound \(\kappa_t\le2^{-2t}\le2^{-h}\). In either case the tree in (RANK-probe) has the allowed height and non-conflict probability at most</p>
+    <div class="math">\[
+      p^{-h}+(1-p^{-h})p^{-h}
+      =2p^{-h}-p^{-2h}
+      &lt; S(1-1/p)^h,
+    \]</div>
+    <p>because \(S\ge2\) and \(p^{-h}\le(1-1/p)^h\). This is strictly below even the threshold on the right of (RANK-ENS-obstruction), proving the claim. If no degree-\(D\) designs exist, no nonempty candidate distribution exists in the first place.</p>
+    <p><strong>PHP and source accounting.</strong> Both \(\mathcal F_n\) and \(\mathcal F_n^{\rm fun}\) have only Boolean, linear, and quadratic generators and are unsatisfiable over every \(\mathbb F_p\). Indeed, a Boolean row summing to one modulo \(p\) contains at least one one; column exclusions allow at most \(n\) ones in total, fewer than the \(n+1\) nonempty rows. Thus the obstruction applies directly to the weak source base, without adding row exclusions or using a residual-design measure.</p>
+    <p>The current logarithmic-accuracy, polylogarithmic-degree route is in this range. In particular, any used nonzero companion from a block of original input degree \(\delta\ge1\) has original joint degree \(\deg g_i+h(\delta+1)\ge2h\). All degree hypotheses remain explicit; this argument makes no assertion about a different regime \(D&lt;2h\), except for the stated binary improvement, or about a different source interface.</p>
+    <p><strong>Consequences and limits.</strong> The <a href="#pseudo-ENS-rate-bridge">unrestricted pseudo-solution sufficient condition</a> cannot be supplied in this regime by choosing a better distribution. This supersedes the earlier uniform-candidate and rank-two tests for that purpose. The implication from such a guarantee to an ENS lower bound remains logically valid; the guarantee itself is unavailable here. We have not proved an ENS refutation, an upper bound for Frege, or the desired lower bound. The bound alone also does not settle the weaker binary diagonal rate discussed in the <a href="#pseudo-diagonal-rate-gap">earlier source audit</a>.</p>
+
+    <h4 id="moment-rank-finite-evidence">5. A quartic extension and two controls</h4>
+    <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/tools/check_design_moment_rank.cpp">exact C++ checker</a> extends the preceding seven-hole rank-two prototype to degree four by row-set boundary filling. It preserves all 71793 matching moments and checks all 103944 row-generator multiples in matching normal form. Its moment ranks at \(t=0,1,2\) are \(1,3,505\); the centered ranks are \(0,2,504\). These values illustrate the distinction between variable covariance and the full query space, rather than proving the universal rank bound.</p>
+    <p>A five-hole, six-pigeon quadratic control has mean destinations \((0,0,1,1,3,4)\). In coordinates \(X_{ij}\), let \(u\) be supported on \((0,0),(0,2),(2,1),(2,2)\), and \(v\) on \((1,0),(1,3),(3,1),(3,3),(4,3),(4,4),(5,3),(5,4)\). Set \(A=\mu\mu^{\mathsf T}+uv^{\mathsf T}+vu^{\mathsf T}\), with the usual first and constant moments.</p>
+    <p>Every row has two equal nonzero covariance labels or none, so its covariance sum is zero. Columns zero and one have exactly the two opposite labels at their two mean-one cells, cancelling those excluded products; all other same-column labels are parallel. Same-row labels are parallel as well. These facts verify the quadratic moment conditions and rank two. The checker independently verifies 331 matching moments and 186 row multiples. Column defects are \((1,1,1,0,0)\), so the earlier search first queries columns \(\{0,1\}\), gets zero, then queries \(\{2\}\), gets one, and selects an empty column. Its row-label XOR is zero. Thus rank two does not imply the earlier one-collision promise.</p>
+    <p>Finally, a point evaluation of the satisfiable three-pigeon, three-hole injection has moment ranks \(1,1,1\) and centered ranks zero through degree four. Its 34 matching moments and 102 row multiples pass. This checks the necessity of unsatisfiability in the flatness argument. Complete moments, filling summaries, XOR elimination traces, commands, source locators, and hashes are retained in the <a href="https://github.com/kbr-/math-research/blob/main/research/results/rank_two_query_classification_20260912_80/README.md">evidence record</a>. Compilation and execution succeeded under the shared resource controls.</p>
+    <p><strong>Next step.</strong> Audit the actual NS source certificate's conflict trees to determine whether a narrower query class is justified and excludes this obstruction. Stop at a proved source restriction or an exact uncontrolled quantity; merely renaming unrestricted pseudo-solutions does not change the theorem.</p>
+    <p><strong>Process assessment.</strong> Testing the full permitted query space closed the distribution-search route before further rank-two classifications; the existing obligation-first task rule covers this lesson, so no additional framework rule was added.</p>
+    <div class="timing-report" data-session="rank_two_query_classification_20260912_80">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>25 min 58.79 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">17.07 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">19 min 16.87 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 57.29 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 17.45 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">7.98 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.22 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.90 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
