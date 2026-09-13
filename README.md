@@ -104,6 +104,9 @@ To run the agent, clone the repository as above, install and authenticate Codex
 CLI, and initialize the [computation controls](#computation-tools) before running
 experiments. Browsing the notebook alone does not require those controls.
 
+Research using this framework has only been tested with **GPT-6 Astra** at the
+**Max** thinking setting.
+
 [research/notes/RESUME.md](research/notes/RESUME.md) is the reading guide for
 restoring research context. It points to the notebook's authoritative initial
 sections and selected supporting sources. The original handoff import is complete;
@@ -217,31 +220,6 @@ Build a local static notebook artifact with:
 
 The generated `_site/` directory contains only the rendered page and revision
 metadata. It is ignored by Git.
-
-## Adapt the framework to another problem
-
-Adaptation currently requires manual setup. Start in a separate fork or worktree
-so the existing investigation can continue independently:
-
-1. **Establish the new research state.** Preserve the original notebook and its
-   evidence as labelled historical material, then initialize `notebook.html`
-   with the new objective, definitions, known results, remaining obstacles, and
-   first proposed step. Give the new investigation its own Research record and
-   `research/CLAIM_INDEX.md`; cite any earlier results it uses.
-2. **Adapt the instructions and source map.** Update the problem-specific parts
-   of `AGENTS.md`, `research/AGENTS.md`, and `PROMPTS.md`, and revise
-   `research/notes/RESUME.md` to point to the new context and sources. Keep the
-   general evidence and review discipline, and preserve the historical handoff
-   unchanged. Set branch and publication instructions for your own repository.
-3. **Check the inherited assumptions.** Choose suitable research dependencies
-   and numerical checks, review the hardware profile in `COMPUTATION_RULES.md`
-   and the resource controller, and adapt reference metadata and
-   `tools/verify-checkout.py` to the material you retain. Restore context in a
-   fresh session and review its proposed first step before starting Spin.
-
-The serving, excerpt, and finalization tools currently expect one root
-`notebook.html` and the existing `research/` layout. Retain those paths for the
-new active problem unless you also adapt the tools that use them.
 
 ## Repository contents
 
