@@ -12,8 +12,9 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include "binary_php.hpp"
 
-constexpr int NV = 32;
+constexpr int NV = 64;
 using Mon = std::array<unsigned char, NV>;
 struct Poly {
     int p;
@@ -287,15 +288,177 @@ void mixed_affine(std::ostream& out,int h,bool offset) {
              <<" antecedent-omission controls; local "<<4*h<<", flattened premise "<<4*h+1
              <<", third companion "<<6*h<<".\n";
 }
+void domain_booleanity(std::ostream& out,const std::string& tag,const Poly& value_poly) {
+    Poly target=value_poly*value_poly-value_poly,pending=target;
+    std::vector<Poly> coefficients(NV,Poly(2));int steps=0;
+    while(!pending.t.empty()) {
+        auto it=std::prev(pending.t.end());Mon mon=it->first;int coefficient=it->second;
+        pending.t.erase(it);int variable=-1;
+        for(int j=0;j<NV;j++)if(mon[j]>=2){variable=j;break;}
+        require(variable>=0,"nonzero Boolean normal-form remainder");
+        Mon quotient=mon;quotient[variable]-=2;coefficients[variable].addterm(quotient,coefficient);
+        --mon[variable];pending.addterm(mon,coefficient);++steps;
+    }
+    Poly check(2);int ceiling=0,used=0;
+    for(int j=0;j<NV;j++)if(!coefficients[j].t.empty()) {
+        Poly x=var(2,j),term=coefficients[j]*(x*x-x);check=check+term;
+        ceiling=std::max(ceiling,term.degree());++used;
+        polynomial(out,tag+"/domain_cofactor_"+std::to_string(j),coefficients[j]);
+    }
+    require((check-target).t.empty() && ceiling<=2*value_poly.degree(),"field-only Booleanity certificate");
+    polynomial(out,tag+"/Booleanity_target",target);
+    out<<"{\"type\":\"domain_certificate\",\"name\":\""<<tag<<"\",\"degree\":"<<ceiling
+       <<",\"used_domain_axioms\":"<<used<<",\"reduction_steps\":"<<steps<<"}\n";
+}
+int at_point(const Poly& a,const std::array<bool,NV>& point) {
+    int value=0;
+    for(const auto& [m,c]:a.t) {
+        bool nonzero=true;for(int j=0;j<NV;j++)if(m[j] && !point[j]){nonzero=false;break;}
+        if(nonzero)value=(value+c)%a.p;
+    }
+    return value;
+}
+void proper_or_union(std::ostream& out,int h) {
+    const int r=2*h+1,old=2*r;int next=old;
+    std::vector<Poly> g,k,all;
+    for(int i=0;i<r;i++){g.push_back(var(2,i));k.push_back(var(2,r+i));}
+    all=g;all.insert(all.end(),k.begin(),k.end());
+    int start1=next;Block B1=block(g,h,next);int start2=next;Block B2=block(k,h,next);
+    int start0=next;Block B0=block(all,h,next);
+    std::string tag="proper_union_h"+std::to_string(h);
+    out<<"{\"type\":\"proper_union_case\",\"name\":\""<<tag<<"\",\"h\":"<<h
+       <<",\"child_rank\":"<<r<<",\"union_rank\":"<<2*r<<",\"packing_threshold\":"<<2*h
+       <<",\"old_variables\":"<<old<<",\"B1_start\":"<<start1<<",\"B2_start\":"<<start2
+       <<",\"B0_start\":"<<start0<<",\"variables\":"<<next<<"}\n";
+    polynomial(out,tag+"/P0",B0.A);polynomial(out,tag+"/P1",B1.A);polynomial(out,tag+"/P2",B2.A);
+    std::vector<Poly> c0,c1,c2;
+    for(int i=0;i<r;i++)c0.push_back(B1.U[i]);
+    for(int i=0;i<r;i++)c0.push_back(B1.A*B2.U[i]);
+    for(int i=0;i<r;i++){c1.push_back(Poly(2)-B2.A*B0.U[i]);c2.push_back(Poly(2)-B1.A*B0.U[r+i]);}
+    Poly certificate(2);int ceiling=0;
+    auto add=[&](const std::string& label,const Poly& cofactor,const Poly& axiom) {
+        Poly term=cofactor*axiom;certificate=certificate+term;ceiling=std::max(ceiling,term.degree());
+        polynomial(out,tag+"/"+label+"/cofactor",cofactor);polynomial(out,tag+"/"+label+"/axiom",axiom);
+    };
+    for(int i=0;i<2*r;i++)add("E0_"+std::to_string(i),c0[i],B0.E[i]);
+    for(int i=0;i<r;i++){add("E1_"+std::to_string(i),c1[i],B1.E[i]);add("E2_"+std::to_string(i),c2[i],B2.E[i]);}
+    Poly target=B0.A-B1.A*B2.A;
+    require((certificate-target).t.empty() && ceiling==6*h,"proper OR union certificate");
+    polynomial(out,tag+"/union_target",target);
+    int checks=0;
+    for(int i=0;i<r;i++) {
+        Poly term=c1[i]*B1.E[i];require(c1[i].degree()==4*h-1,"two-foreign-block cofactor degree");
+        for(int j=0;j<r;j++) {
+            std::vector<int> foreign,three;
+            for(int v=0;v<h;v++){foreign.push_back(start0+2*r*v+i);foreign.push_back(start2+r*v+j);}
+            Poly coefficient=diagonal(c1[i],old,foreign);
+            require((coefficient-power(g[i],h-1)*power(k[j],h)).t.empty() && !coefficient.t.empty(),
+                    "proper union collected cofactor extraction");
+            three=foreign;for(int v=0;v<h;v++)three.push_back(start1+r*v+i);
+            Poly mixed=diagonal(term,old,three);
+            require((mixed-power(g[i],2*h)*power(k[j],h)).t.empty() && !old_boolean(mixed).t.empty(),
+                    "proper union three-block term extraction");
+            polynomial(out,tag+"/i"+std::to_string(i)+"_j"+std::to_string(j)+"/foreign_cofactor",coefficient);
+            polynomial(out,tag+"/i"+std::to_string(i)+"_j"+std::to_string(j)+"/triple_term",mixed);checks+=2;
+        }
+    }
+    domain_booleanity(out,tag+"/P0",B0.A);domain_booleanity(out,tag+"/P1",B1.A);domain_booleanity(out,tag+"/P2",B2.A);
+    std::array<bool,NV> point{};point[0]=true;point[start1]=true;
+    require(at_point(target,point)==1,"field-only comparison countermodel");
+    out<<"{\"type\":\"field_only_countermodel\",\"name\":\""<<tag<<"\",\"one_variables\":[0,"<<start1
+       <<"],\"P0\":"<<at_point(B0.A,point)<<",\"P1\":"<<at_point(B1.A,point)
+       <<",\"P2\":"<<at_point(B2.A,point)<<",\"union_difference\":1}\n";
+    out<<"{\"type\":\"proper_union_result\",\"name\":\""<<tag<<"\",\"certificate_degree\":"<<ceiling
+       <<",\"cofactor_degree\":"<<4*h-1<<",\"extraction_checks\":"<<checks
+       <<",\"Booleanity_certificates\":3,\"all_child_ranks_above_packing\":true}\n";
+    std::cout<<tag<<": ranks "<<r<<','<<r<<','<<2*r<<" exceed packing "<<2*h
+             <<"; NS certificate "<<ceiling<<", "<<checks<<" support checks and three field-only Booleanity certificates.\n";
+}
+void proper_or_degree(std::ostream& out) {
+    using binary_php::Word;using binary_php::Bits;using binary_php::Space;
+    const int h=1,r=3,old=6,D=5;int next=old;
+    std::vector<Poly> g,k,all;
+    for(int i=0;i<r;i++){g.push_back(var(2,i));k.push_back(var(2,r+i));}
+    all=g;all.insert(all.end(),k.begin(),k.end());
+    Block B1=block(g,h,next),B2=block(k,h,next),B0=block(all,h,next);
+    require(next==18,"degree-test variable budget");
+    std::vector<Word> monomials{0};Word limit=Word(1)<<next;
+    for(int d=1;d<=D;d++)for(Word mask=(Word(1)<<d)-1;mask<limit;) {
+        monomials.push_back(mask);Word low=mask&(-mask),raised=mask+low;
+        mask=raised+(((raised^mask)/low)>>2);
+    }
+    const int width=int(monomials.size());std::unordered_map<Word,int> position;
+    for(int i=0;i<width;i++)position.emplace(monomials[i],i);
+    out<<"{\"type\":\"degree_board\",\"variables\":"<<next<<",\"degree\":"<<D
+       <<",\"original_companion_degree\":3,\"monomial_masks\":[";
+    for(int i=0;i<width;i++){if(i)out<<',';out<<monomials[i];}out<<"]}\n";
+    auto vector=[&](const Poly& p,Word q) {
+        Bits value=binary_php::blank(width);
+        for(const auto& [m,c]:p.t) {
+            Word mask=q;for(int j=0;j<NV;j++)if(m[j]){require(j<next,"unexpected degree-test variable");mask|=Word(1)<<j;}
+            require(c==1 && position.count(mask),"Boolean vector range");binary_php::flip(value,position.at(mask));
+        }
+        return value;
+    };
+    std::vector<Poly> axioms=B0.E;axioms.insert(axioms.end(),B1.E.begin(),B1.E.end());
+    axioms.insert(axioms.end(),B2.E.begin(),B2.E.end());Space span(width);int generators=0;
+    for(int f=0;f<int(axioms.size());f++) {
+        require(axioms[f].degree()==3,"original companion degree changed");
+        polynomial(out,"degree/E"+std::to_string(f),axioms[f]);
+        for(Word q:monomials) {
+            if(__builtin_popcountll(q)>D-3)break;
+            std::vector<int> trace;int pivot=span.add(vector(axioms[f],q),&trace);++generators;
+            out<<"{\"type\":\"degree_step\",\"axiom\":"<<f<<",\"cofactor_mask\":"<<q<<",\"trace\":[";
+            for(size_t j=0;j<trace.size();j++){if(j)out<<',';out<<trace[j];}
+            out<<"],\"pivot\":"<<pivot;
+            if(pivot>=0){out<<",\"basis\":";binary_php::sparse_json(out,span.rows[pivot]);}
+            out<<"}\n";
+        }
+    }
+    Poly target_poly=B0.A-B1.A*B2.A;Bits target=vector(target_poly,0);
+    std::vector<int> trace;Bits remainder=span.reduce(target,&trace);bool member=binary_php::zero(remainder);
+    polynomial(out,"degree/target",target_poly);
+    out<<"{\"type\":\"degree_target\",\"vector\":";binary_php::sparse_json(out,target);
+    out<<",\"trace\":[";for(size_t j=0;j<trace.size();j++){if(j)out<<',';out<<trace[j];}
+    out<<"],\"remainder\":";binary_php::sparse_json(out,remainder);
+    if(!member) {
+        Bits dual=span.separating_dual(target);
+        require(!binary_php::bit(target,0),"zero-point target value");
+        if(!binary_php::bit(dual,0))binary_php::flip(dual,0);
+        for(const Bits& row:span.rows)if(!row.empty())require(!binary_php::dot(row,dual),"normalized dual lost annihilation");
+        require(binary_php::dot(target,dual)==1,"dual target value");
+        out<<",\"normalized_separating_dual\":";binary_php::sparse_json(out,dual);
+    }
+    out<<"}\n{\"type\":\"degree_result\",\"degree\":5,\"variables\":"<<next<<",\"columns\":"<<width
+       <<",\"generator_multiples\":"<<generators<<",\"rank\":"<<span.rank
+       <<",\"target_member\":"<<(member?"true":"false")<<",\"explicit_upper_degree\":6}\n";
+    std::cout<<"Proper OR union: "<<generators<<" NS generator multiples, rank "<<span.rank<<'/'<<width
+             <<"; degree-five target membership "<<(member?"true":"false")<<".\n";
+}
 int main(int argc,char** argv) {
     try {
         if(argc==2 && std::string(argv[1])=="--help") {
             std::cout<<"Exact fixed-case suite; usage: check_mp_composition --out PATH\n"; return 0;
         }
         bool mixed=argc==4 && std::string(argv[3])=="--mixed-affine";
-        if((argc!=3 && !mixed) || std::string(argv[1])!="--out") throw std::runtime_error("--out PATH [--mixed-affine] required");
-        if(mixed){std::ifstream existing(argv[2]);require(!existing.good(),"output exists");}
+        bool proper=argc==4 && std::string(argv[3])=="--proper-or-union";
+        bool degree=argc==4 && std::string(argv[3])=="--proper-or-degree";
+        if((argc!=3 && !mixed && !proper && !degree) || std::string(argv[1])!="--out")
+            throw std::runtime_error("--out PATH [--mixed-affine|--proper-or-union|--proper-or-degree] required");
+        if(mixed || proper || degree){std::ifstream existing(argv[2]);require(!existing.good(),"output exists");}
         std::ofstream out(argv[2]); require(bool(out),"cannot open output");
+        if(degree) {
+            out<<"{\"schema\":1,\"suite\":\"proper_OR_degree_five\",\"p\":2,"
+                 "\"scope\":\"Exact NS axiom-multiple span after degree-complete Boolean reduction; no PC closure\"}\n";
+            proper_or_degree(out);out.close();require(bool(out),"output write failed");return 0;
+        }
+        if(proper) {
+            out<<"{\"schema\":1,\"suite\":\"proper_OR_union\",\"p\":2,\"seed\":null,"
+                 "\"encoding\":\"terms are [coefficient,[[variable,ordinary exponent],...]]; field axiom j is x_j^2-x_j\","
+                 "\"scope\":\"Actual source local comparison schema above packing rank, not a full PHP proof or minimum-degree result\"}\n";
+            for(int h:{1,2})proper_or_union(out,h);
+            out.close();require(bool(out),"output write failed");return 0;
+        }
         if(mixed) {
             out<<"{\"schema\":1,\"suite\":\"MP_A_mixed_affine\",\"p\":2,\"seed\":null,"
                  "\"encoding\":\"terms are [coefficient,[[variable,ordinary exponent],...]]; zero has degree -1\","
