@@ -3,21 +3,25 @@
 An open framework for autonomous mathematical research—with persistent memory,
 reproducible evidence, and a workflow that improves through use.
 
-- **Research that survives session boundaries.** Resume from durable findings,
-  proofs, and context stored in the repository, including from a fresh session
-  on another machine.
+- **Research that survives session boundaries.** Resume from findings, proofs,
+  and context stored in the repository, even on another machine.
 - **Autonomous investigation.** Pursue a goal through repeated cycles of
-  reasoning, experimentation, and review, with explicit remaining obstacles
-  and a concrete next step.
-- **A workflow that improves through use.** After each autonomous research
-  cycle, assess what helped, what wasted effort, and what made the mathematics
-  difficult to check; make bounded improvements to tools and procedures.
+  reasoning, experimentation, and review.
+- **A workflow that improves through use.** Identify friction after each cycle
+  and make bounded improvements to tools and procedures.
 - **Inspectable results.** Preserve arguments, assumptions, computational
-  evidence, and failed approaches. Distinguish working proofs, conditional
-  results, conjectures, and finite checks.
+  evidence, and failed approaches with explicit claim statuses.
 - **A live, versioned notebook.** Follow progress locally or online, with
-  rendered mathematics and Git checkpoints preserving the research record,
-  code, outputs, and provenance together.
+  complete research checkpoints in Git.
+
+**[Read the research online](https://kbr.is-a.dev/math-research/)** ·
+**[Run the agent](#continue-the-research)** ·
+[Browse locally](#browse-locally)
+
+[![Selected notebook excerpts showing the research agenda, a working proof, exact finite checks, and measured timing.](docs/assets/notebook-preview.png)](https://kbr.is-a.dev/math-research/)
+
+*Selected excerpts from the 13 September 2026 notebook checkpoint, arranged
+side by side.*
 
 The framework combines an explicit research protocol for AI agents with tools
 for context recovery, protected computation, evidence archival, and publication.
@@ -40,45 +44,44 @@ The research began in Claude, continued in ChatGPT, and moved to Codex. The
 [pre-handoff research compendium](php_codex_handoff/php_extension_research_compendium.pdf)
 and historical manuscript preserve the earlier development.
 
-## Research workflow and evidence
+## How a research cycle works
 
-The [research protocol](AGENTS.md) and supporting tools provide:
+**Restore context → Choose an obstacle → Investigate → Check → Record →
+Assess the process → Commit → Repeat**
 
-- **Focused context recovery.** A [restart guide](research/notes/RESUME.md)
-  leads from concise living summaries to the exact sources needed for a task.
-  The [excerpt tool](tools/notebook-excerpt.py) retrieves validated sections by
-  stable anchor without loading the whole research history.
-- **An indexed body of results.** The [claim index](research/CLAIM_INDEX.md)
-  connects stable labels and explicit statuses to full statements and proofs.
-  The protocol requires checking earlier work and recording dependencies,
-  refinements, and rediscoveries.
-- **A durable record of corrections and failed attempts.** Research entries
-  are chronological and append-only. Corrections and retractions receive new
-  dated entries, preserving the argument's history and the reasons a route failed.
-- **Reproducible computational evidence.** Complete outputs accompany their
-  generating commands and relevant parameters. [Provenance manifests](tools/record-provenance.py)
-  record file hashes; [archival](tools/archive-session.py) preserves completed
-  execution records and refuses to replace different evidence.
-- **Measured research effort.** [Timing tools](COMPUTATION_RULES.md#unified-execution-and-timing)
-  record work phases and command outcomes, count overlapping intervals once,
-  and export per-turn timing tables. Measurements include unsuccessful commands
-  and retries, with explicit limits on what the recorded intervals establish.
-- **Resource-bounded execution.** The [computation launcher](compute.sh)
-  applies shared CPU and memory controls, command timeouts, and full output
-  logging. It refuses work when required protections are unavailable.
-- **Complete checkpoints and controlled publication.** The
-  [turn finalizer](tools/finish-turn.py) exports timing, archives evidence, and
-  embeds the timing table before review and commit. Source licensing and
-  [public-history checks](tools/verify-checkout.py) help keep known private
-  materials out of publication; the static builder packages only the intended
-  public site files.
+Each cycle starts with a named unresolved obligation and a concrete stopping
+point. The agent develops an argument or experiment, reviews the result, and
+records what actually changed—even when the outcome is an obstruction or failed
+attempt. It then assesses the process, completes the research checkpoint, and
+commits any justified framework improvement separately before continuing.
 
-The [Spin prompt](PROMPTS.md#spin) specifies the autonomous research and process-improvement
-loop. The agent follows that protocol, while the tools enforce specific execution
-and evidence checks. The current launcher integrates with Codex CLI; the research
-record itself lives in ordinary HTML, Markdown, code, and data files.
+The [Spin prompt](PROMPTS.md#spin) runs this loop under the
+[research protocol](AGENTS.md). Corrections receive new dated entries; earlier
+arguments remain available. See [Automatic research](#automatic-research) to
+start the loop with a Codex goal.
 
-## Browse locally
+## Tools behind the workflow
+
+The agent follows the research protocol; the tools enforce specific execution
+and evidence checks. The launcher integrates with Codex CLI, while the research
+record uses ordinary HTML, Markdown, code, and data files.
+
+| Task | Tools and records |
+| --- | --- |
+| Recover the right context | [Restart guide](research/notes/RESUME.md) and [validated section excerpts](tools/notebook-excerpt.py) avoid repeatedly loading the full history. |
+| Find and reuse results | The [claim index](research/CLAIM_INDEX.md) links stable labels and claim statuses to complete statements and proofs. |
+| Run and measure experiments | [compute.sh](compute.sh) combines resource controls, timeouts, complete output logs, and timing reports that count overlap once. |
+| Preserve reproducible evidence | [Provenance manifests](tools/record-provenance.py) record file hashes; [session archival](tools/archive-session.py) preserves outputs and refuses conflicting replacements. |
+| Finish a research checkpoint | [finish-turn.py](tools/finish-turn.py) exports timing, archives evidence, and inserts the notebook timing table before review and commit. |
+| Publish the intended material | [Checkout/history checks](tools/verify-checkout.py) check known private-source exclusions; the [static builder](tools/build_pages.py) packages only public site files. |
+
+## Read the research
+
+The **[published notebook](https://kbr.is-a.dev/math-research/)** needs no setup
+or agent account. Start with its living overview for the research agenda, then
+follow claim links into the full record and supporting evidence.
+
+### Browse locally
 
 ```bash
 git clone https://github.com/kbr-/math-research.git
@@ -96,6 +99,10 @@ GitHub Actions when relevant notebook or site-tooling changes are pushed to
 `main`. It is a standalone site and requires no local server.
 
 ## Continue the research
+
+To run the agent, clone the repository as above, install and authenticate Codex
+CLI, and initialize the [computation controls](#computation-tools) before running
+experiments. Browsing the notebook alone does not require those controls.
 
 [research/notes/RESUME.md](research/notes/RESUME.md) is the reading guide for
 restoring research context. It points to the notebook's authoritative initial
@@ -210,6 +217,31 @@ Build a local static notebook artifact with:
 
 The generated `_site/` directory contains only the rendered page and revision
 metadata. It is ignored by Git.
+
+## Adapt the framework to another problem
+
+Adaptation currently requires manual setup. Start in a separate fork or worktree
+so the existing investigation can continue independently:
+
+1. **Establish the new research state.** Preserve the original notebook and its
+   evidence as labelled historical material, then initialize `notebook.html`
+   with the new objective, definitions, known results, remaining obstacles, and
+   first proposed step. Give the new investigation its own Research record and
+   `research/CLAIM_INDEX.md`; cite any earlier results it uses.
+2. **Adapt the instructions and source map.** Update the problem-specific parts
+   of `AGENTS.md`, `research/AGENTS.md`, and `PROMPTS.md`, and revise
+   `research/notes/RESUME.md` to point to the new context and sources. Keep the
+   general evidence and review discipline, and preserve the historical handoff
+   unchanged. Set branch and publication instructions for your own repository.
+3. **Check the inherited assumptions.** Choose suitable research dependencies
+   and numerical checks, review the hardware profile in `COMPUTATION_RULES.md`
+   and the resource controller, and adapt reference metadata and
+   `tools/verify-checkout.py` to the material you retain. Restore context in a
+   fresh session and review its proposed first step before starting Spin.
+
+The serving, excerpt, and finalization tools currently expect one root
+`notebook.html` and the existing `research/` layout. Retain those paths for the
+new active problem unless you also adapt the tools that use them.
 
 ## Repository contents
 
