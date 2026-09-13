@@ -73,7 +73,7 @@ The [research protocol](AGENTS.md) and supporting tools provide:
   materials out of publication; the static builder packages only the intended
   public site files.
 
-The [Spin prompt](notes) specifies the autonomous research and process-improvement
+The [Spin prompt](PROMPTS.md#spin) specifies the autonomous research and process-improvement
 loop. The agent follows that protocol, while the tools enforce specific execution
 and evidence checks. The current launcher integrates with Codex CLI; the research
 record itself lives in ordinary HTML, Markdown, code, and data files.
@@ -126,8 +126,8 @@ the repository's Git policy; research work alone does not authorize a push.
 ### Automatic research
 
 Use a Codex **goal** to keep the agent working across successive turns without
-prompting it after every checkpoint. The goal points to the **Spin:** prompt in
-[`notes`](notes), which defines the research, process-improvement, and checkpoint
+prompting it after every checkpoint. The goal points to the **Spin** prompt in
+[`PROMPTS.md`](PROMPTS.md#spin), which defines the research, process-improvement, and checkpoint
 loop, including how to resume after context compaction.
 
 After restoring context in the session for your chosen checkout:
@@ -136,11 +136,12 @@ After restoring context in the session for your chosen checkout:
 - **ChatGPT app:** open the remotely connected Codex session for that checkout,
   enter `/goal`, and supply the same objective in the goal interface.
 
-The ongoing research session on `main` uses the following goal. Enter it with
+The ongoing research session on `main` uses the following goal, with the prompt
+filename updated here to `PROMPTS.md`. Enter it with
 `/goal` in the CLI, or paste the objective after `/goal` into the app's goal field:
 
 ```text
-/goal Execute the "Spin" prompt in ./notes: autonomously advance the ordinary-PHP AC0[p]Frege lower-bound research through bounded, fully recorded research cycles and clear, small framework improvements. Follow the saved prompt and repository rules, maintain the notebook and measured evidence, commit checkpoints and push main as explicitly authorized, restore context and reread the prompt after compaction, and continue until the user explicitly interrupts.
+/goal Execute the "Spin" prompt in ./PROMPTS.md: autonomously advance the ordinary-PHP AC0[p]Frege lower-bound research through bounded, fully recorded research cycles and clear, small framework improvements. Follow the saved prompt and repository rules, maintain the notebook and measured evidence, commit checkpoints and push main as explicitly authorized, restore context and reread the prompt after compaction, and continue until the user explicitly interrupts.
 ```
 
 This example includes the maintainer's explicit authorization to push `main`.
@@ -212,6 +213,7 @@ metadata. It is ignored by Git.
 
 ## Repository contents
 
+- `PROMPTS.md`: reusable Dump, Resume, and Spin prompts.
 - `notebook.html`: authoritative current state, working mathematical context,
   and append-only research record.
 - `research/notes/`: restart navigation, proofs, source audits, historical import
