@@ -104,6 +104,16 @@
       let positions = [];
       let targets = {};
       let pending = false;
+      let destination = null;
+      let destinationTop = null;
+
+      function destinationPosition() {
+        const end = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        if (destination === 'end') return end;
+        if (destination === 'top') return 0;
+        return Math.min(end, Math.max(0,
+          destination.getBoundingClientRect().top + window.scrollY - 16));
+      }
 
       function update() {
         pending = false;
@@ -114,9 +124,9 @@
         positions.forEach((position, index) => { if (position <= y + 2) current = index; });
         targets = {
           top: y > 2 ? 0 : null,
-          previous: current > 0 ? positions[current - 1] : null,
+          previous: current > 0 ? headings[current - 1] : null,
           next: current + 1 < positions.length && y < end - 2
-            ? Math.min(positions[current + 1], end) : null,
+            ? headings[current + 1] : null,
           end: y < end - 2 ? end : null
         };
         for (const [name, button] of Object.entries(buttons)) {
@@ -127,21 +137,43 @@
       function measure() {
         positions = headings.map(heading => Math.max(0,
           heading.getBoundingClientRect().top + window.scrollY - 16));
+        // Keep the chosen heading or page edge aligned as lazy math changes height.
+        // Only correct a moved destination, so ordinary smooth scrolling can finish.
+        if (destination !== null) {
+          const top = destinationPosition();
+          if (Math.abs(top - destinationTop) > 1) {
+            destinationTop = top;
+            window.scrollTo({ top, behavior: 'instant' });
+          }
+        }
         update();
       }
 
       for (const [name, button] of Object.entries(buttons)) {
         button.addEventListener('click', () => {
-          update();
-          if (targets[name] !== null) window.scrollTo({
-            top: targets[name], behavior: reducedMotion.matches ? 'instant' : 'smooth'
-          });
+          measure();
+          if (targets[name] !== null) {
+            destination = name === 'top' || name === 'end' ? name : targets[name];
+            destinationTop = destinationPosition();
+            window.scrollTo({
+              top: destinationTop, behavior: reducedMotion.matches ? 'instant' : 'smooth'
+            });
+          }
         });
       }
       window.addEventListener('scroll', () => {
         if (!pending) { pending = true; requestAnimationFrame(update); }
       }, { passive: true });
       window.addEventListener('resize', measure);
+      const releaseDestination = () => { destination = null; };
+      for (const event of ['wheel', 'touchstart', 'pointerdown', 'hashchange']) {
+        window.addEventListener(event, releaseDestination, { passive: true });
+      }
+      window.addEventListener('keydown', event => {
+        if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Tab'].includes(event.key)) {
+          releaseDestination();
+        }
+      });
       // MathJax and font loading can move headings after the initial render.
       new ResizeObserver(measure).observe(document.querySelector('main'));
       measure();

@@ -18,6 +18,7 @@ async function check(changed) {
     },
   }));
   const main = {};
+  const headingTops = [100, 500, 900];
   let resizeCallback;
   let reloads = 0;
   const context = {
@@ -26,8 +27,8 @@ async function check(changed) {
     document: {
       getElementById: id => id === 'status' ? status : { addEventListener() {} },
       querySelectorAll(selector) {
-        if (selector === 'main h2, main h3') return [100, 500, 900].map(top => ({
-          getBoundingClientRect: () => ({ top: top - context.scrollY }),
+        if (selector === 'main h2, main h3') return headingTops.map((_, index) => ({
+          getBoundingClientRect: () => ({ top: headingTops[index] - context.scrollY }),
         }));
         if (selector === '[data-scroll]') return buttons;
         throw new Error(`Unexpected selector: ${selector}`);
@@ -86,10 +87,30 @@ async function check(changed) {
   assert.deepEqual(visible(), ['top', 'previous']);
   context.document.documentElement.scrollHeight = 1700;
   resizeCallback();
+  assert.equal(context.scrollY, 1300, 'Follow the bottom after lazy rendering expands the page');
+  assert.deepEqual(visible(), ['top', 'previous']);
+  events.wheel();
+  context.document.documentElement.scrollHeight = 1800;
+  resizeCallback();
+  assert.equal(context.scrollY, 1300, 'Manual scrolling releases the destination');
   assert.deepEqual(visible(), ['top', 'previous', 'end']);
   buttonClicks.top();
   assert.equal(context.scrollY, 0);
   assert.deepEqual(visible(), ['next', 'end']);
+  buttonClicks.next();
+  buttonClicks.next();
+  headingTops[1] += 120;
+  resizeCallback();
+  assert.equal(context.scrollY, 604, 'Follow the chosen heading when preceding math expands');
+  events.touchstart();
+  headingTops[1] += 80;
+  resizeCallback();
+  assert.equal(context.scrollY, 604, 'Touch scrolling releases the heading');
+  buttonClicks.end();
+  events.keydown({ key: 'PageUp' });
+  context.document.documentElement.scrollHeight += 100;
+  resizeCallback();
+  assert.equal(context.scrollY, 1400, 'Keyboard scrolling releases the destination');
 }
 
 Promise.resolve().then(() => check(false)).then(() => check(true)).then(() => {
