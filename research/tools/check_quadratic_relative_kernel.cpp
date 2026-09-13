@@ -1,6 +1,8 @@
 // Copyright (c) 2026 Kamil Braun. MIT License; see ../../LICENSE.
 // Exact NS spaces only: generated-axiom multiples, with no PC closure.
 #include "binary_php.hpp"
+#include <filesystem>
+#include <map>
 #include <memory>
 #include <random>
 using namespace binary_php;
@@ -18,7 +20,7 @@ struct QuadraticBoard {
     std::vector<std::vector<int>> product;
     QuadraticBoard(int holes,bool keep_columns):n(holes),m(n+1),v(n*m),
         columns(keep_columns),product(v,std::vector<int>(v,-1)) {
-        need(n>=3 && n<=13,"planned board-size range");
+        need(n>=3 && n<=16,"planned board-size range");
         monomials.push_back({-1,-1});
         for(int a=0;a<v;++a)monomials.push_back({a,-1});
         for(int a=0;a<v;++a)for(int b=a;b<v;++b) {
@@ -328,21 +330,127 @@ void square_pairs(const QuadraticBoard& b,const Space& base,const Family& family
              <<" square pairs separated; max intersection "<<max_intersection
              <<"; h="<<h<<" D="<<D<<".\n";
 }
+void bit_quadratic_kernel(int holes,bool columns,std::ostream& out) {
+    int ell=0;for(int n=holes;n>1;n>>=1)++ell;
+    need((1<<ell)==holes && ell>=2 && ell<=4,"bit-label board range");
+    QuadraticBoard b(holes,columns);
+    std::string name="bit_n"+std::to_string(holes)+(columns?"_columns":"_without_columns");
+    Space base=base_space(b,name,out);
+    const int variables=b.m*ell;
+    std::vector<Bits> inputs;inputs.reserve(variables);
+    for(int row=0;row<b.m;++row)for(int t=0;t<ell;++t) {
+        Bits value=blank(b.width);
+        for(int j=0;j<holes;++j)if((j>>t)&1)flip(value,1+row*holes+j);
+        inputs.push_back(value);
+        out<<"{\"type\":\"bit_input\",\"case\":\""<<name<<"\",\"id\":"<<inputs.size()-1
+           <<",\"row\":"<<row<<",\"bit\":"<<t<<",\"old_polynomial\":";
+        sparse_json(out,value);out<<"}\n";
+    }
+    std::vector<std::pair<int,int>> labels{{-1,-1}};
+    for(int a=0;a<variables;++a)labels.push_back({a,-1});
+    std::vector<std::vector<int>> products(variables,std::vector<int>(variables,-1));
+    for(int a=0;a<variables;++a)for(int c=a+1;c<variables;++c) {
+        products[a][c]=products[c][a]=int(labels.size());labels.push_back({a,c});
+    }
+    const int source_width=int(labels.size());
+    Space image(b.width),kernel(source_width);std::vector<Bits> tags(b.width);
+    out<<"{\"type\":\"bit_quadratic_case\",\"name\":\""<<name<<"\",\"ell\":"<<ell
+       <<",\"bit_variables\":"<<variables<<",\"bit_boolean_nf_dimension\":"<<source_width
+       <<",\"source_monomials\":[";
+    for(int j=0;j<source_width;++j){if(j)out<<',';out<<'['<<labels[j].first<<','<<labels[j].second<<']';}
+    out<<"]}\n";
+    auto product=[&](int a,int c) {
+        Bits value=blank(b.width);
+        for(int x:support(inputs[a]))for(int y:support(inputs[c])) {
+            need(x>0 && y>0,"decoder constant term");
+            int slot=b.product[x-1][y-1];if(slot>=0)flip(value,slot);
+        }
+        return value;
+    };
+    for(int column=0;column<source_width;++column) {
+        auto [a,c]=labels[column];
+        Bits value=a<0?b.unit():(c<0?inputs[a]:product(a,c));
+        std::vector<int> base_trace,image_trace,kernel_trace;
+        Bits quotient=base.reduce(value,&base_trace),reduced=image.reduce(quotient,&image_trace);
+        Bits tag=blank(source_width);flip(tag,column);
+        for(int pivot:image_trace)xorin(tag,tags[pivot]);
+        int pivot=highest(reduced),kernel_pivot=-1;
+        if(pivot>=0){image.insert_reduced(reduced,pivot);tags[pivot]=tag;}
+        else {kernel_pivot=kernel.add(tag,&kernel_trace);need(kernel_pivot>=0,"dependent source-kernel discovery");}
+        out<<"{\"type\":\"bit_image_step\",\"case\":\""<<name<<"\",\"column\":"<<column
+           <<",\"base_trace\":";ints(out,base_trace);out<<",\"image_trace\":";ints(out,image_trace);
+        out<<",\"image_pivot\":"<<pivot<<",\"source_combination\":";sparse_json(out,tag);
+        if(pivot>=0){out<<",\"image_basis_row\":";sparse_json(out,reduced);}
+        else{
+            out<<",\"kernel_trace\":";ints(out,kernel_trace);out<<",\"kernel_pivot\":"<<kernel_pivot
+               <<",\"kernel_basis_row\":";sparse_json(out,kernel.rows[kernel_pivot]);
+        }
+        out<<"}\n";
+    }
+    Space expected(source_width);int equality_relations=0;
+    if(columns && ell==2)for(int i=0;i<b.m;++i)for(int j=i+1;j<b.m;++j) {
+        Bits relation=blank(source_width);
+        for(int a:{-1,2*i,2*j})for(int c:{-1,2*i+1,2*j+1}) {
+            int slot=(a<0 && c<0)?0:(a<0?1+c:(c<0?1+a:products[a][c]));
+            need(slot>=0,"equality source monomial");flip(relation,slot);
+        }
+        std::vector<int> trace;need(zero(kernel.reduce(relation,&trace)),"missing equality kernel relation");
+        need(expected.add(relation)>=0,"dependent canonical equality relation");++equality_relations;
+        out<<"{\"type\":\"bit_equality_kernel\",\"case\":\""<<name<<"\",\"rows\":["<<i<<','<<j
+           <<"],\"source_coefficients\":";sparse_json(out,relation);
+        out<<",\"kernel_trace\":";ints(out,trace);out<<"}\n";
+    }
+    need(kernel.rank==expected.rank && image.rank+kernel.rank==source_width,"transported quadratic kernel dimension");
+    for(const Bits& row:kernel.rows)if(!row.empty())need(zero(expected.reduce(row)),"unexpected transported relation");
+    if(ell>=3)for(int s=0;s<ell;++s)for(int t=0;t<ell;++t) {
+        int a=1<<s,c=1<<t,k=0;
+        while(k==0 || k==a || k==c || k==(a^c))++k;
+        need(k<holes && k!=(k^c),"rectangle witness range");
+        std::vector<int> labels4{0,a,k,k^c};
+        auto unique=labels4;std::sort(unique.begin(),unique.end());
+        need(std::adjacent_find(unique.begin(),unique.end())==unique.end(),"rectangle holes not distinct");
+        need((labels4[0]^labels4[1])==a && (labels4[2]^labels4[3])==c,"rectangle bit directions");
+        out<<"{\"type\":\"bit_rectangle_witness\",\"case\":\""<<name<<"\",\"bit_directions\":["<<s<<','<<t
+           <<"],\"hole_labels\":";ints(out,labels4);out<<"}\n";
+    }
+    out<<"{\"type\":\"bit_quadratic_result\",\"case\":\""<<name<<"\",\"old_normal_dimension\":"<<b.width
+       <<",\"old_NS_rank\":"<<base.rank<<",\"old_quotient_dimension\":"<<b.width-base.rank
+       <<",\"source_dimension\":"<<source_width<<",\"transport_rank\":"<<image.rank
+       <<",\"extra_kernel_dimension\":"<<kernel.rank<<",\"canonical_equality_relations\":"<<equality_relations
+       <<",\"columns_enforced\":"<<(columns?"true":"false")<<",\"all_passed\":true}\n";
+    std::cout<<name<<": old NS rank "<<base.rank<<'/'<<b.width<<", bit transport rank "
+             <<image.rank<<'/'<<source_width<<", extra kernel "<<kernel.rank<<".\n";
+}
 int main(int argc,char** argv) {
     try {
         need(argc>=3 && std::string(argv[1])=="--out",
-             "usage: check_quadratic_relative_kernel --out NEW.jsonl [--square-pairs] [--holes N]");
-        bool square_mode=false;int holes=11;
+             "usage: check_quadratic_relative_kernel --out NEW.jsonl [--square-pairs|--bit-quadratic] [--holes N] [--no-columns]");
+        bool square_mode=false,bit_mode=false,columns=true,holes_set=false;int holes=11;
         for(int a=3;a<argc;++a) {
             std::string option=argv[a];
             if(option=="--square-pairs")square_mode=true;
-            else if(option=="--holes" && a+1<argc)holes=std::stoi(argv[++a]);
+            else if(option=="--bit-quadratic")bit_mode=true;
+            else if(option=="--no-columns")columns=false;
+            else if(option=="--holes" && a+1<argc){holes=std::stoi(argv[++a]);holes_set=true;}
             else throw std::runtime_error("unknown or incomplete option");
         }
-        need(square_mode?(holes>=7 && holes<=13 && holes%2==1):(holes==11),
+        if(bit_mode && !holes_set)holes=8;
+        need(!bit_mode || !square_mode,"choose one mode");
+        need(columns || bit_mode,"missing-column control is only supported in bit mode");
+        need(bit_mode?(holes==4 || holes==8 || holes==16):
+             (square_mode?(holes>=7 && holes<=13 && holes%2==1):(holes==11)),
              "unsupported mode/board combination");
         std::ifstream existing(argv[2]);need(!existing.good(),"output exists");
+        auto parent=std::filesystem::path(argv[2]).parent_path();
+        if(!parent.empty())std::filesystem::create_directories(parent);
         std::ofstream out(argv[2]);need(bool(out),"cannot open output");
+        if(bit_mode){
+            out<<"{\"type\":\"schema\",\"version\":1,\"suite\":\"transported_bit_quadratics\",\"field\":2,"
+                 "\"space\":\"complete degree-two NS quotient, no PC closure\","
+                 "\"encoding\":\"sorted nonzero monomial coordinates and full elimination traces\"}\n";
+            bit_quadratic_kernel(holes,columns,out);
+            out.close();need(bool(out),"output write failed");return 0;
+        }
         if(square_mode)out<<"{\"type\":\"schema\",\"version\":1,\"field\":2,\"degree\":2,"
              "\"space\":\"Within-block product subspaces in the old NS quotient\","
              "\"basis_encoding\":\"Product labels plus complete reduction traces\","
