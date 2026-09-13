@@ -18,6 +18,9 @@ async function check(changed) {
     },
   }));
   const main = {};
+  const navigation = { dataset: {} };
+  const timers = new Map();
+  let timerId = 0;
   const headingTops = [100, 500, 900];
   let resizeCallback;
   let reloads = 0;
@@ -33,7 +36,10 @@ async function check(changed) {
         if (selector === '[data-scroll]') return buttons;
         throw new Error(`Unexpected selector: ${selector}`);
       },
-      querySelector(selector) { assert.equal(selector, 'main'); return main; },
+      querySelector(selector) {
+        if (selector === '.scroll-nav') return navigation;
+        assert.equal(selector, 'main'); return main;
+      },
       documentElement: { scrollHeight: 1500 },
     },
     location: { href: live ? 'http://localhost:8000/' : 'https://example.github.io/math-research/', reload() { reloads++; } },
@@ -48,7 +54,12 @@ async function check(changed) {
       constructor(callback) { resizeCallback = callback; }
       observe(element) { assert.equal(element, main); }
     },
-    setTimeout: (_, delay) => delays.push(delay),
+    setTimeout(callback, delay) {
+      delays.push(delay);
+      timers.set(++timerId, { callback, delay });
+      return timerId;
+    },
+    clearTimeout(id) { timers.delete(id); },
     fetch: async url => {
       requests.push(String(url));
       return { ok: true, json: async () => ({ revision: changed ? 'new-revision' : revision }) };
@@ -66,6 +77,16 @@ async function check(changed) {
   assert.equal(status.textContent, live ? 'Live · watching for changes' : 'Published notebook');
   assert.equal(reloads, changed ? 1 : 0);
   if (!changed) assert.deepEqual(delays, [live ? 1000 : 30000]);
+  assert.equal(navigation.dataset.active, undefined, 'Overlay starts hidden');
+  events.scroll();
+  assert.equal(navigation.dataset.active, '', 'Scrolling reveals the overlay');
+  events.scroll();
+  const hideTimers = [...timers.values()].filter(timer => timer.delay === 3500);
+  assert.equal(hideTimers.length, 1, 'Further scrolling resets the idle timer');
+  hideTimers[0].callback();
+  assert.equal(navigation.dataset.active, undefined, 'Overlay hides after 3.5 seconds idle');
+  events.scroll();
+  assert.equal(navigation.dataset.active, '', 'Scrolling reveals the overlay again');
 
   // Check navigation against a small layout, including the distinct section/end boundaries.
   const visible = () => buttons.filter(button => !button.hidden).map(button => button.dataset.scroll);

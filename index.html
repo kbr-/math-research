@@ -45,7 +45,12 @@
     .scroll-nav button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
     .scroll-nav svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     @media (max-width: 640px) { body { font-size: 16px; } .toolbar { padding: 18px; flex-wrap: wrap; } main { margin: 0 10px 24px; padding: 30px 22px; } h2 { font-size: 24px; } .intro { font-size: 18px; } }
-    @media (max-width: 640px) { main { padding-right: 64px; } }
+    /* Below this width there is not enough room for the stack beside the paper. */
+    @media (max-width: 1083px) {
+      .scroll-nav { opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+      .scroll-nav[data-active], .scroll-nav:has(:focus-visible) { opacity: .75; pointer-events: auto; }
+    }
+    @media (prefers-reduced-motion: reduce) { .scroll-nav { transition: none; } }
     @media print { body { background: white; } .toolbar, details, footer, .scroll-nav { display: none; } main { border: 0; box-shadow: none; margin: 0; padding: 0; max-width: none; } .math { overflow: visible; } }
   </style>
   <script>
@@ -99,6 +104,7 @@
   </nav>
   <script>
     (() => {
+      const navigation = document.querySelector('.scroll-nav');
       const headings = [...document.querySelectorAll('main h2, main h3')];
       const buttons = Object.fromEntries([...document.querySelectorAll('[data-scroll]')]
         .map(button => [button.dataset.scroll, button]));
@@ -108,6 +114,13 @@
       let pending = false;
       let destination = null;
       let destinationTop = null;
+      let hideTimer;
+
+      function showNavigation() {
+        navigation.dataset.active = '';
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => { delete navigation.dataset.active; }, 3500);
+      }
 
       function destinationPosition() {
         const end = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
@@ -153,6 +166,7 @@
 
       for (const [name, button] of Object.entries(buttons)) {
         button.addEventListener('click', () => {
+          showNavigation();
           measure();
           if (targets[name] !== null) {
             destination = name === 'top' || name === 'end' ? name : targets[name];
@@ -164,6 +178,7 @@
         });
       }
       window.addEventListener('scroll', () => {
+        showNavigation();
         if (!pending) { pending = true; requestAnimationFrame(update); }
       }, { passive: true });
       window.addEventListener('resize', measure);
