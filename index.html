@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Math notebook</title>
   <style>
-    :root { color-scheme: light; --paper: #fffefb; --ink: #232e32; --muted: #65716d; --accent: #247462; }
+    :root { color-scheme: light; --paper: #fffefb; --ink: #232e32; --muted: #65716d; --accent: #247462; --notebook-width: 940px; }
     * { box-sizing: border-box; }
     body { margin: 0; background: #f1f3ee; color: var(--ink); font: 18px/1.75 Georgia, 'Times New Roman', serif; }
     .toolbar { max-width: 1000px; margin: auto; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; gap: 16px; font: 13px/1.5 system-ui, sans-serif; color: var(--muted); }
     .brand { color: var(--accent); font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
     #status::before { content: '●'; margin-right: 8px; color: var(--accent); }
     #status[data-error]::before { color: #b77324; }
-    main { max-width: 940px; margin: 0 auto 64px; padding: 56px 70px; background: var(--paper); border: 1px solid #dde2d9; border-radius: 8px; box-shadow: 0 12px 40px #23372806; }
+    main { max-width: var(--notebook-width); margin: 0 auto 64px; padding: 56px 70px; background: var(--paper); border: 1px solid #dde2d9; border-radius: 8px; box-shadow: 0 12px 40px #23372806; }
     h1, h2, h3 { line-height: 1.25; font-weight: 500; }
     h1 { font-size: clamp(32px, 5vw, 46px); margin: 0 0 20px; letter-spacing: -.035em; }
     h2 { font-size: 27px; margin: 0 0 18px; }
@@ -36,7 +36,7 @@
     .timing-table th:last-child, .timing-table .elapsed { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
     .timing-table tbody tr:first-child { background: #eef5ef; }
     footer { margin-top: 40px; color: var(--muted); font: 13px/1.6 system-ui, sans-serif; }
-    .scroll-nav { position: fixed; z-index: 10; right: max(12px, env(safe-area-inset-right)); top: 50%; transform: translateY(-50%); display: grid; gap: 8px; }
+    .scroll-nav { position: fixed; z-index: 10; right: max(12px, env(safe-area-inset-right), calc((100% - var(--notebook-width)) / 2 - 60px)); top: 50%; transform: translateY(-50%); display: grid; gap: 8px; }
     .scroll-nav button { width: 44px; height: 44px; padding: 10px; border: 1px solid #c8d8ce; border-radius: 50%; background: var(--paper); color: var(--accent); box-shadow: 0 2px 8px #23372826; cursor: pointer; touch-action: manipulation; }
     .scroll-nav button[hidden] { display: block; visibility: hidden; }
     .scroll-nav button:hover { background: #eef5ef; }
