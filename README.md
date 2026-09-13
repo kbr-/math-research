@@ -136,16 +136,18 @@ After restoring context in the session for your chosen checkout:
 - **ChatGPT app:** open the remotely connected Codex session for that checkout,
   enter `/goal`, and supply the same objective in the goal interface.
 
-For example, use this goal in the CLI, or paste the text after `/goal` into the
-app's goal field:
+The ongoing research session on `main` uses the following goal. Enter it with
+`/goal` in the CLI, or paste the objective after `/goal` into the app's goal field:
 
 ```text
-/goal Pursue the notebook's research objective and improve the research framework by following the "Spin:" prompt in ./notes. Continue the loop until I stop you. Follow AGENTS.md and COMPUTATION_RULES.md. Override Spin's publication instructions for this run: stay on the current branch, commit checkpoints locally, and do not push.
+/goal Execute the "Spin" prompt in ./notes: autonomously advance the ordinary-PHP AC0[p]Frege lower-bound research through bounded, fully recorded research cycles and clear, small framework improvements. Follow the saved prompt and repository rules, maintain the notebook and measured evidence, commit checkpoints and push main as explicitly authorized, restore context and reread the prompt after compaction, and continue until the user explicitly interrupts.
 ```
 
-This example keeps checkpoints local and preserves the selected branch. If you
-want automatic publication too, replace that override with your explicit branch
-and push authorization under [the Git policy](AGENTS.md#portable-sessions-and-git-checkpoints).
+This example includes the maintainer's explicit authorization to push `main`.
+For another checkout or branch, adapt the objective and publication scope under
+[the Git policy](AGENTS.md#portable-sessions-and-git-checkpoints). For local-only
+work, replace the push clause with: "Override Spin's branch and publication
+instructions: stay on the current branch, commit locally, and do not push."
 The Spin prompt remains the authoritative loop; there is no need to paste its
 full instructions into each goal.
 
