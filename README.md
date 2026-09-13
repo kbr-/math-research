@@ -123,6 +123,39 @@ living sections, append each research attempt with its timing and evidence,
 and commit complete checkpoints locally. Publishing requires authorization under
 the repository's Git policy; research work alone does not authorize a push.
 
+### Automatic research
+
+Use a Codex **goal** to keep the agent working across successive turns without
+prompting it after every checkpoint. The goal points to the **Spin:** prompt in
+[`notes`](notes), which defines the research, process-improvement, and checkpoint
+loop, including how to resume after context compaction.
+
+After restoring context in the session for your chosen checkout:
+
+- **Codex CLI:** enter `/goal <objective>` in the interactive session.
+- **ChatGPT app:** open the remotely connected Codex session for that checkout,
+  enter `/goal`, and supply the same objective in the goal interface.
+
+For example, use this goal in the CLI, or paste the text after `/goal` into the
+app's goal field:
+
+```text
+/goal Pursue the notebook's research objective and improve the research framework by following the "Spin:" prompt in ./notes. Continue the loop until I stop you. Follow AGENTS.md and COMPUTATION_RULES.md. Override Spin's publication instructions for this run: stay on the current branch, commit checkpoints locally, and do not push.
+```
+
+This example keeps checkpoints local and preserves the selected branch. If you
+want automatic publication too, replace that override with your explicit branch
+and push authorization under [the Git policy](AGENTS.md#portable-sessions-and-git-checkpoints).
+The Spin prompt remains the authoritative loop; there is no need to paste its
+full instructions into each goal.
+
+In the CLI, `/goal` displays the current objective, `/goal edit` changes it,
+`/goal pause` pauses it, `/goal resume` continues it, and `/goal clear` removes it.
+The app also provides goal controls in its progress row. Keep the machine hosting
+the remote session awake and connected while it works. See the official OpenAI
+guides to [long-running work](https://learn.chatgpt.com/docs/long-running-work)
+and [goal commands](https://learn.chatgpt.com/docs/developer-commands?surface=cli#set-or-view-a-task-goal-with-goal).
+
 ## Computation tools
 
 Python 3.10+ is required for the complete toolset. The notebook server,
