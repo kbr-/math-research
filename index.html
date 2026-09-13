@@ -36,8 +36,15 @@
     .timing-table th:last-child, .timing-table .elapsed { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
     .timing-table tbody tr:first-child { background: #eef5ef; }
     footer { margin-top: 40px; color: var(--muted); font: 13px/1.6 system-ui, sans-serif; }
+    .scroll-nav { position: fixed; z-index: 10; right: max(12px, env(safe-area-inset-right)); bottom: max(20px, env(safe-area-inset-bottom)); display: grid; gap: 8px; }
+    .scroll-nav button { width: 44px; height: 44px; padding: 10px; border: 1px solid #c8d8ce; border-radius: 50%; background: var(--paper); color: var(--accent); box-shadow: 0 2px 8px #23372826; cursor: pointer; touch-action: manipulation; }
+    .scroll-nav button[hidden] { display: block; visibility: hidden; }
+    .scroll-nav button:hover { background: #eef5ef; }
+    .scroll-nav button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .scroll-nav svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     @media (max-width: 640px) { body { font-size: 16px; } .toolbar { padding: 18px; flex-wrap: wrap; } main { margin: 0 10px 24px; padding: 30px 22px; } h2 { font-size: 24px; } .intro { font-size: 18px; } }
-    @media print { body { background: white; } .toolbar, details, footer { display: none; } main { border: 0; box-shadow: none; margin: 0; padding: 0; max-width: none; } .math { overflow: visible; } }
+    @media (max-width: 640px) { main { padding-right: 64px; } }
+    @media print { body { background: white; } .toolbar, details, footer, .scroll-nav { display: none; } main { border: 0; box-shadow: none; margin: 0; padding: 0; max-width: none; } .math { overflow: visible; } }
   </style>
   <script>
     // BEGIN NOTEBOOK SETTINGS
@@ -80,6 +87,64 @@
     <!-- NOTEBOOK -->
     <footer id="notebook-footer">Changes appear automatically. Right-click an equation for MathJax options.</footer>
   </main>
+  <nav class="scroll-nav" aria-label="Notebook navigation">
+    <button type="button" data-scroll="top" aria-label="Scroll to top" title="Scroll to top" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 11 6-6 6 6M6 19l6-6 6 6"/></svg></button>
+    <button type="button" data-scroll="previous" aria-label="Previous section" title="Previous section" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg></button>
+    <button type="button" data-scroll="next" aria-label="Next section" title="Next section" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+    <button type="button" data-scroll="end" aria-label="Scroll to end" title="Scroll to end" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 5 6 6 6-6M6 13l6 6 6-6"/></svg></button>
+  </nav>
+  <script>
+    (() => {
+      const headings = [...document.querySelectorAll('main h2, main h3')];
+      const buttons = Object.fromEntries([...document.querySelectorAll('[data-scroll]')]
+        .map(button => [button.dataset.scroll, button]));
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let positions = [];
+      let targets = {};
+      let pending = false;
+
+      function update() {
+        pending = false;
+        const y = window.scrollY;
+        const end = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        // Treat the heading just above the viewport as the current section.
+        let current = -1;
+        positions.forEach((position, index) => { if (position <= y + 2) current = index; });
+        targets = {
+          top: y > 2 ? 0 : null,
+          previous: current > 0 ? positions[current - 1] : null,
+          next: current + 1 < positions.length && y < end - 2
+            ? Math.min(positions[current + 1], end) : null,
+          end: y < end - 2 ? end : null
+        };
+        for (const [name, button] of Object.entries(buttons)) {
+          button.hidden = targets[name] === null;
+        }
+      }
+
+      function measure() {
+        positions = headings.map(heading => Math.max(0,
+          heading.getBoundingClientRect().top + window.scrollY - 16));
+        update();
+      }
+
+      for (const [name, button] of Object.entries(buttons)) {
+        button.addEventListener('click', () => {
+          update();
+          if (targets[name] !== null) window.scrollTo({
+            top: targets[name], behavior: reducedMotion.matches ? 'instant' : 'smooth'
+          });
+        });
+      }
+      window.addEventListener('scroll', () => {
+        if (!pending) { pending = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      window.addEventListener('resize', measure);
+      // MathJax and font loading can move headings after the initial render.
+      new ResizeObserver(measure).observe(document.querySelector('main'));
+      measure();
+    })();
+  </script>
   <script>
     const status = document.getElementById('status');
     const settings = window.notebookSettings;
