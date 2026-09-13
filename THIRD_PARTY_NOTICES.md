@@ -5,7 +5,7 @@ They do not transfer ownership of, or grant permission to redistribute, cited
 papers or dependencies. Bibliographic metadata and our original summaries remain
 part of the public research record.
 
-## Redistributable reference
+## Redistributable references
 
 **Jan Krajíček, Extended Nullstellensatz proof systems**,
 arXiv:2301.10617v3 (27 September 2023).
@@ -17,6 +17,19 @@ arXiv:2301.10617v3 (27 September 2023).
 - `research/references/extracted/Krajicek.txt` is a pdftotext conversion; layout
   and formatting differ. It is a search aid, not a replacement for the original.
 - The source record's license link was checked on 10 September 2026.
+
+**Tuomas Hakoniemi, Nutan Limaye, Iddo Tzameret,
+Hard CNF Instances for Ideal Proof Systems**,
+arXiv:2605.04544v1 (6 May 2026).
+
+- Source: https://arxiv.org/abs/2605.04544v1
+- License: https://creativecommons.org/licenses/by/4.0/
+- Attribution remains with the three authors.
+- The PDF at research/references/cache/HLT2026-v1.pdf is unchanged.
+- research/references/extracted/HLT2026-v1.txt is a pdftotext conversion;
+  formatting differs from the PDF.
+- The versioned record's license link was checked on 14 September 2026.
+  Reading scope and hashes are preserved in the dated source-cofactor audit.
 
 ## References without established public-redistribution permission
 

@@ -229,10 +229,9 @@ metadata. It is ignored by Git.
 - `research/notes/`: restart navigation, proofs, source audits, historical import
   snapshots, and supporting research log.
 - `research/results/`: complete computation outputs and timing tables.
-- `research/references/`: bibliography and audit metadata for four papers,
-  plus the CC BY 4.0 Krajíček PDF and its extracted text. Other papers and their
-  full-text copies are not distributed; consult the
-  [reference guide](research/references/README.md) to obtain authorized sources.
+- `research/references/`: bibliography, source audits, and papers cleared for
+  redistribution. The [reference guide](research/references/README.md) lists
+  availability and licensing.
 - `research/provenance/`: durable timing, execution evidence, and resource tests.
 - `resource-controls/`, `tools/`, `compute.sh`: reproducible execution and setup code.
 - `php_codex_handoff/`: the unchanged historical package, including the manuscript,

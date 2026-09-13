@@ -4,9 +4,10 @@ The original four papers were imported and inspected during the local research s
 Source statements, exact versions/hashes, and reading coverage remain recorded
 in the manifest, import status, and research source-audit notes.
 
-Only **Krajíček, arXiv:2301.10617v3**, is currently bundled in public Git: its
-source record specifies CC BY 4.0. Credit Jan Krajíček and retain that license.
-Its PDF is unchanged; the text file is a pdftotext conversion.
+Public reference files are the versions cleared in
+[redistribution.json](redistribution.json). Their licenses and author credits
+are recorded in [THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md).
+Bundled PDFs are unchanged; extracted text files are identified conversions.
 
 The BIKPRS, Razborov, and Pebbling PDFs, their full-text extractions, and duplicate
 supplied copies are excluded from public Git history. Existing local copies
@@ -33,3 +34,10 @@ GOR2024-v2 and BI2025-v1 were acquired from versioned arXiv records for a target
 affine-clause, encoding, and source-attribution audit. Their PDFs are local-only.
 The [dated audit](../results/affine_clause_source_audit_20260913_99/README.md)
 preserves acquisition commands, exact reading scope, and source hashes.
+
+HLT2026-v1, *Hard CNF Instances for Ideal Proof Systems*, was acquired from its
+versioned arXiv record for the 14 September 2026 source-cofactor audit. Its
+CC BY 4.0 license permits the public PDF and text conversion with attribution.
+The [dated audit](../results/source_cofactor_constraint_audit_20260913_114/source-audit.json)
+records the targeted reading, visual check of Proposition 21, and field-scope
+limitation. The paper's main lower-bound proof was not imported.
