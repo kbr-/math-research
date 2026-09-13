@@ -70,8 +70,10 @@ actionable rule over another checklist or a record of one-off setup history.
   evidence are stable, make one focused correctness
   review; move optional extensions to the next cycle. Reopen the argument only
   for a concrete unresolved concern. Prepare the descriptive commit message and
-  exact staging paths during review, then batch timing export, archival, staging,
-  and commit in sequence. Finish the checkpoint before developing the next result.
+  exact staging paths during review, then run provenance, timing export, archival,
+  staging, commit, and any already authorized push in one sequential tool batch.
+  Stop the batch if a step fails; inspect the failure before continuing. Finish
+  the local checkpoint before developing the next result.
   Review only the relevant changes; do not silently include
   unrelated user edits. If committing fails, report the blocker; do not claim
   that the result is checkpointed. Operational logs, credentials, local session
