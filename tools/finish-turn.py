@@ -17,11 +17,22 @@ def session_name(value):
     return value
 
 
+def validate_marker(body, marker):
+    if body.count(marker) != 1:
+        raise ValueError(f'Notebook must contain exactly one {marker}')
+    position = body.index(marker)
+    record = body.find('<section id="research-record">')
+    end = body.find('</section>', record) if record >= 0 else -1
+    article = body.rfind('<article', record, position) if record >= 0 else -1
+    close = body.find('</article>', article) if article >= 0 else -1
+    if not (0 <= record < article < position < close < end):
+        raise ValueError('Timing marker must be inside a Research-record article')
+
+
 def finish(root, turn, next_turn=None):
     notebook = root / 'notebook.html'
     marker = f'<!-- TIMING {turn} -->'
-    if notebook.read_text().count(marker) != 1:
-        raise ValueError(f'Notebook must contain exactly one {marker}; nothing was stopped')
+    validate_marker(notebook.read_text(), marker)
     if next_turn and (root / 'research/logs' / f'{next_turn}.jsonl').exists():
         raise ValueError('Next session already exists; omit --next when retrying finalization')
 
@@ -47,8 +58,10 @@ def finish(root, turn, next_turn=None):
 
     # Re-read after commands so unrelated edits made meanwhile are retained.
     current = notebook.read_text()
-    if current.count(marker) != 1:
-        raise ValueError('Timing and archive are saved, but the notebook marker changed')
+    try:
+        validate_marker(current, marker)
+    except ValueError as error:
+        raise ValueError(f'Timing and archive are saved, but {error}') from error
     updated = current.replace(marker, fragment.read_text().strip())
     temporary = None
     try:

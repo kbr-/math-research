@@ -31,10 +31,14 @@ class FinalizationTest(unittest.TestCase):
 
     def test_complete_and_start_next(self):
         notebook = self.root / 'notebook.html'
-        notebook.write_text('earlier record\n<!-- TIMING test_turn -->\nappend here\n')
+        content = ('<section id="research-record">\nearlier record\n'
+                   '<article id="new-entry">\n<!-- TIMING test_turn -->\n'
+                   '</article>\nappend here\n</section>\n')
+        notebook.write_text(content)
         self.command('tools/finish-turn.py', 'test_turn', '--next', 'next_turn')
         table = (self.root / 'research/results/test_turn/timing.html').read_text().strip()
-        self.assertEqual(notebook.read_text(), f'earlier record\n{table}\nappend here\n')
+        expected = content.replace('<!-- TIMING test_turn -->', table)
+        self.assertEqual(notebook.read_text(), expected)
         archive = self.root / 'research/provenance/session-records/test_turn'
         self.assertEqual((archive / 'session.jsonl').read_bytes(),
                          (self.root / 'research/logs/test_turn.jsonl').read_bytes())
@@ -45,7 +49,24 @@ class FinalizationTest(unittest.TestCase):
         self.assertFalse(any(e['event'] == 'stop' for e in following))
         repeated = self.command('tools/finish-turn.py', 'test_turn', check=False)
         self.assertNotEqual(repeated.returncode, 0)
-        self.assertEqual(notebook.read_text(), f'earlier record\n{table}\nappend here\n')
+        self.assertEqual(notebook.read_text(), expected)
+
+    def test_misplaced_marker_does_not_stop_session(self):
+        notebook = self.root / 'notebook.html'
+        marker = '<!-- TIMING test_turn -->'
+        cases = [
+            '<section id="overview"><article>' + marker + '</article></section>'
+            '<section id="research-record"></section>',
+            '<section id="research-record">' + marker + '</section>',
+            '<section id="research-record"><article></article></section>' + marker,
+        ]
+        for content in cases:
+            with self.subTest(content=content):
+                notebook.write_text(content)
+                result = self.command('tools/finish-turn.py', 'test_turn', check=False)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertEqual(notebook.read_text(), content)
+                self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
 
     def test_duplicate_marker_does_not_stop_session(self):
         notebook = self.root / 'notebook.html'
