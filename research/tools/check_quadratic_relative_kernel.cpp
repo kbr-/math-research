@@ -256,22 +256,112 @@ void satisfiable_control(const QuadraticBoard& full,const Family& family,std::os
     std::cout<<"Without column exclusions: explicit model verifies "<<base_checks
              <<" base and "<<input_checks<<" input multiples; unit stays nonzero.\n";
 }
+Bits quadratic_product(const QuadraticBoard& b,const Bits& f,const Bits& g) {
+    need(highest(f)<=b.v && highest(g)<=b.v,"affine product inputs");
+    Bits product=blank(b.width);
+    if(bit(f,0) && bit(g,0))flip(product,0);
+    for(int a=0;a<b.v;++a) {
+        bool value=(bit(f,a+1)&&bit(g,0)) ^ (bit(f,0)&&bit(g,a+1)) ^
+                   (bit(f,a+1)&&bit(g,a+1));
+        if(value)flip(product,a+1);
+    }
+    for(int j=b.v+1;j<b.width;++j) {
+        const auto [a,c]=b.monomials[j];
+        bool value=(bit(f,a+1)&&bit(g,c+1)) ^ (bit(f,c+1)&&bit(g,a+1));
+        if(value)flip(product,j);
+    }
+    return product;
+}
+void square_pairs(const QuadraticBoard& b,const Space& base,const Family& family,
+                  const std::string& name,bool unit_control,std::ostream& out) {
+    check_joint_rank(b,family);
+    std::vector<Space> squares;squares.reserve(family.size());
+    Bits unit=base.reduce(b.unit());
+    for(int a=0;a<int(family.size());++a) {
+        Space w(b.width);
+        for(int i=0;i<int(family[a].size());++i)
+            for(int j=i;j<int(family[a].size());++j) {
+                std::vector<int> base_trace,space_trace;
+                Bits product=quadratic_product(b,family[a][i],family[a][j]);
+                if(i==j)need(product==family[a][i],"affine square reduction");
+                Bits value=base.reduce(std::move(product),&base_trace);
+                int p=w.add(std::move(value),&space_trace);
+                out<<"{\"type\":\"square_product_step\",\"family\":\""<<name
+                   <<"\",\"group\":"<<a<<",\"inputs\":["<<i<<','<<j
+                   <<"],\"base_trace\":";ints(out,base_trace);
+                out<<",\"space_trace\":";ints(out,space_trace);
+                out<<",\"pivot\":"<<p<<"}\n";
+            }
+        bool contains_unit=zero(w.reduce(unit));
+        if(unit_control)need(contains_unit,"square-space positive unit control");
+        out<<"{\"type\":\"square_space_summary\",\"family\":\""<<name
+           <<"\",\"group\":"<<a<<",\"rank\":"<<w.rank<<",\"contains_unit\":"
+           <<(contains_unit?"true":"false")<<"}\n";
+        squares.push_back(std::move(w));
+    }
+    int count=0,max_intersection=0,separated=0;
+    for(int a=0;a<int(squares.size());++a)for(int c=a+1;c<int(squares.size());++c) {
+        Space joint=squares[a];
+        for(int p=0;p<b.width;++p)if(!squares[c].rows[p].empty()) {
+            std::vector<int> trace;int q=joint.add(squares[c].rows[p],&trace);
+            out<<"{\"type\":\"square_pair_step\",\"family\":\""<<name
+               <<"\",\"groups\":["<<a<<','<<c<<"],\"right_pivot\":"<<p
+               <<",\"joint_trace\":";ints(out,trace);out<<",\"pivot\":"<<q<<"}\n";
+        }
+        int common=squares[a].rank+squares[c].rank-joint.rank;
+        need(common>=0,"negative square intersection dimension");
+        if(unit_control)need(common>=1,"unit disappeared from pair intersection");
+        max_intersection=std::max(max_intersection,common);++count;
+        separated+=common==0;
+        out<<"{\"type\":\"square_pair_summary\",\"family\":\""<<name
+           <<"\",\"groups\":["<<a<<','<<c<<"],\"left_rank\":"<<squares[a].rank
+           <<",\"right_rank\":"<<squares[c].rank<<",\"joint_rank\":"<<joint.rank
+           <<",\"intersection_rank\":"<<common<<"}\n";
+    }
+    const int h=(b.n-1)/6,D=3*h+1;
+    need(h>=1 && b.n>=2*D-1,"first-boundary application parameters");
+    out<<"{\"type\":\"square_family_result\",\"family\":\""<<name<<"\",\"N\":"<<b.n
+       <<",\"h\":"<<h<<",\"D\":"<<D<<",\"pairs\":"<<count
+       <<",\"separated_pairs\":"<<separated<<",\"max_intersection\":"<<max_intersection
+       <<",\"all_pairs_separated\":"<<(separated==count?"true":"false")<<"}\n";
+    std::cout<<"N="<<b.n<<' '<<name<<": "<<separated<<'/'<<count
+             <<" square pairs separated; max intersection "<<max_intersection
+             <<"; h="<<h<<" D="<<D<<".\n";
+}
 int main(int argc,char** argv) {
     try {
-        need(argc==3 && std::string(argv[1])=="--out",
-             "usage: check_quadratic_relative_kernel --out NEW.jsonl");
+        need(argc>=3 && std::string(argv[1])=="--out",
+             "usage: check_quadratic_relative_kernel --out NEW.jsonl [--square-pairs] [--holes N]");
+        bool square_mode=false;int holes=11;
+        for(int a=3;a<argc;++a) {
+            std::string option=argv[a];
+            if(option=="--square-pairs")square_mode=true;
+            else if(option=="--holes" && a+1<argc)holes=std::stoi(argv[++a]);
+            else throw std::runtime_error("unknown or incomplete option");
+        }
+        need(square_mode?(holes>=7 && holes<=13 && holes%2==1):(holes==11),
+             "unsupported mode/board combination");
         std::ifstream existing(argv[2]);need(!existing.good(),"output exists");
         std::ofstream out(argv[2]);need(bool(out),"cannot open output");
-        out<<"{\"type\":\"schema\",\"version\":1,\"field\":2,\"degree\":2,"
+        if(square_mode)out<<"{\"type\":\"schema\",\"version\":1,\"field\":2,\"degree\":2,"
+             "\"space\":\"Within-block product subspaces in the old NS quotient\","
+             "\"basis_encoding\":\"Product labels plus complete reduction traces\","
+             "\"indices\":\"zero based; multiplier -1 means constant one\"}\n";
+        else out<<"{\"type\":\"schema\",\"version\":1,\"field\":2,\"degree\":2,"
              "\"space\":\"NS generator multiples, no PC closure\","
              "\"indices\":\"zero based; multiplier -1 means constant one\","
              "\"row_representation\":\"sorted nonzero monomial indices\"}\n";
-        QuadraticBoard b(11,true);Space base=base_space(b,"functional",out);
-        Family random=make_family(b,6,6,false,2026091387ULL,out);
-        test_family(b,base,random,"random",false,out);
-        Family positive=make_family(b,6,6,true,2026091388ULL,out);
-        test_family(b,base,positive,"collision_spans",true,out);
-        satisfiable_control(b,positive,out);
+        QuadraticBoard b(holes,true);Space base=base_space(b,"functional",out);
+        int r=square_mode?holes/2+1:6;
+        Family random=make_family(b,r,r,false,2026091387ULL,out);
+        if(square_mode)square_pairs(b,base,random,"random",false,out);
+        else test_family(b,base,random,"random",false,out);
+        Family positive=make_family(b,r,r,true,2026091388ULL,out);
+        if(square_mode)square_pairs(b,base,positive,"collision_spans",true,out);
+        else {
+            test_family(b,base,positive,"collision_spans",true,out);
+            satisfiable_control(b,positive,out);
+        }
         out.close();need(bool(out),"output write failed");return 0;
     } catch(const std::exception& e) {
         std::cerr<<e.what()<<'\n';return 1;
