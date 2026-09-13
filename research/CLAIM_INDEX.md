@@ -18,7 +18,7 @@ Labels remain stable; later corrections should link to a new dated record.
 | `lem:mp-composition` | Cofactor rule, NS recurrence, and augmented-PC reuse bound | Working proof | [Statement and proof](https://kbr-.github.io/math-research/#mp-certificates) |
 | `prop:mp-substitution-interface` | Compose supplied transformed leaves and local corrections | Conditional working proof | [Statement and proof](https://kbr-.github.io/math-research/#mp-elimination-gap) |
 | `ex:mp-zero-specialization` | Blanket zero specialization need not give base corrections | Counterexample | [Witness and scope](https://kbr-.github.io/math-research/#mp-zero-specialization) |
-| `lem:old-consequence-transfer` | Remove one fresh block while preserving an old PC consequence | Working proof | [Statement and proof](https://kbr-.github.io/math-research/#boundary-old-consequence) |
+| `lem:old-consequence-transfer` | One-block additive elimination preserves arbitrary old-only PC consequences with the target-degree charge | Working proof | [Statement and proof](https://kbr-.github.io/math-research/#boundary-old-consequence) |
 | `lem:weighted-replay` | Replay a full premise using supplied input–weight products | Working proof | [Statement and proof](https://kbr-.github.io/math-research/#boundary-weighted-replay) |
 | `thm:mp-boundary` | Eliminate one implication block through both full premise proofs | Working proof | [Statement and proof](https://kbr-.github.io/math-research/#boundary-mp-elimination) |
 | `ex:missing-annihilator` | The implication proof alone does not supply its weighted inputs | Counterexample | [Witness and scope](https://kbr-.github.io/math-research/#boundary-missing-annihilator) |
