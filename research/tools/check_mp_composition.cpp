@@ -288,7 +288,7 @@ void mixed_affine(std::ostream& out,int h,bool offset) {
              <<" antecedent-omission controls; local "<<4*h<<", flattened premise "<<4*h+1
              <<", third companion "<<6*h<<".\n";
 }
-void domain_booleanity(std::ostream& out,const std::string& tag,const Poly& value_poly) {
+std::vector<Poly> domain_booleanity(std::ostream& out,const std::string& tag,const Poly& value_poly) {
     Poly target=value_poly*value_poly-value_poly,pending=target;
     std::vector<Poly> coefficients(NV,Poly(2));int steps=0;
     while(!pending.t.empty()) {
@@ -309,6 +309,7 @@ void domain_booleanity(std::ostream& out,const std::string& tag,const Poly& valu
     polynomial(out,tag+"/Booleanity_target",target);
     out<<"{\"type\":\"domain_certificate\",\"name\":\""<<tag<<"\",\"degree\":"<<ceiling
        <<",\"used_domain_axioms\":"<<used<<",\"reduction_steps\":"<<steps<<"}\n";
+    return coefficients;
 }
 int at_point(const Poly& a,const std::array<bool,NV>& point) {
     int value=0;
@@ -435,6 +436,151 @@ void proper_or_degree(std::ostream& out) {
     std::cout<<"Proper OR union: "<<generators<<" NS generator multiples, rank "<<span.rank<<'/'<<width
              <<"; degree-five target membership "<<(member?"true":"false")<<".\n";
 }
+int shadow_degree(const Poly& f,int old,const std::array<int,4>& weights) {
+    int result=-1;
+    for(const auto& [mon,c]:f.t) {
+        int d=0;
+        for(int j=0;j<NV;j++)if(mon[j]) {
+            if(j<old)d+=mon[j];
+            else{require(j>=60 && weights[j-60]>=0,"bare coefficient or undefined shadow variable");d+=int(mon[j])*weights[j-60];}
+        }
+        result=std::max(result,d);
+    }
+    return result;
+}
+Poly shadow_image(const Poly& f,int old,const std::map<int,Poly>& images) {
+    Poly result(f.p);
+    for(const auto& [mon,c]:f.t) {
+        Poly term(f.p,c);
+        for(int j=0;j<NV;j++)if(mon[j]) {
+            require(j<old || images.count(j),"missing shadow-variable image");
+            term=term*power(j<old?var(f.p,j):images.at(j),mon[j]);
+        }
+        result=result+term;
+    }
+    return result;
+}
+Poly mixed_domain_reduction(const Poly& f,int old,int actual_variables,bool only_old=false) {
+    Poly result(f.p);
+    for(const auto& [mon,c]:f.t) {
+        Mon reduced=mon;
+        for(int j=0;j<NV;j++)if(reduced[j]) {
+            require(j<actual_variables,"unexpected variable in domain reduction");
+            if(j<old)reduced[j]=1;
+            else if(!only_old)reduced[j]=static_cast<unsigned char>(1+(reduced[j]-1)%(f.p-1));
+        }
+        result.addterm(reduced,c);
+    }
+    return result;
+}
+void weighted_selectors(std::ostream& out,int p,int hA) {
+    const int old=3;int next=old;Poly one(p,1),x=var(p,0),y=var(p,1),z=var(p,2);
+    Poly ZA=var(p,60),ZB=var(p,61),ZC=var(p,62),ZD=var(p,63);
+    const int firstA=next;Block A=block({x,y},hA,next),B=block({x*y+one,z},1,next);
+    std::map<int,Poly> images{{60,A.A},{61,B.A}};
+    std::array<int,4> weights{A.A.degree(),B.A.degree(),-1,-1};
+    std::vector<Poly> formal_inputs{ZA+x,y*ZB},actual_inputs;
+    int delta=-1,weighted_delta=-1;
+    for(const Poly& f:formal_inputs) {
+        actual_inputs.push_back(shadow_image(f,old,images));
+        delta=std::max(delta,actual_inputs.back().degree());
+        weighted_delta=std::max(weighted_delta,shadow_degree(f,old,weights));
+    }
+    require(delta==weighted_delta,"recursive input degree reflection");
+    Block C=block(actual_inputs,1,next);images.emplace(62,C.A);weights[2]=delta+1;
+    require(C.A.degree()==weights[2],"selector degree weight");
+    std::string tag="weighted_p"+std::to_string(p)+"_hA"+std::to_string(hA);
+    out<<"{\"type\":\"weighted_case\",\"name\":\""<<tag<<"\",\"p\":"<<p<<",\"hA\":"<<hA
+       <<",\"old_variables\":"<<old<<",\"actual_variables\":"<<next<<",\"selector_slots\":[60,61,62],\"weights\":["
+       <<weights[0]<<','<<weights[1]<<','<<weights[2]<<"],\"third_input_degree\":"<<delta<<"}\n";
+    polynomial(out,tag+"/P_A",A.A);polynomial(out,tag+"/P_B",B.A);polynomial(out,tag+"/P_C",C.A);
+    for(int i=0;i<2;i++) {
+        polynomial(out,tag+"/formal_input_C"+std::to_string(i),formal_inputs[i]);
+        polynomial(out,tag+"/actual_input_C"+std::to_string(i),actual_inputs[i]);
+    }
+    std::vector<Poly> tests{
+        ZA-one,
+        ZB*ZC+power(x,weights[2])*ZA,
+        power(ZA-one,2)+power(x,weights[0])*ZA,
+        formal_inputs[0]*ZC-formal_inputs[1]*ZB,
+        ZC*ZC-ZC+power(y,weights[2])*ZC,
+        power(ZC,p)-ZC,
+        (one-x)*(one-y)*(ZA-one)
+    };
+    for(int i=0;i<int(tests.size());i++) {
+        Poly image=shadow_image(tests[i],old,images);int d=shadow_degree(tests[i],old,weights);
+        require(d>=0 && image.degree()==d,"weighted-degree reflection failed");
+        polynomial(out,tag+"/formal_test"+std::to_string(i),tests[i]);
+        polynomial(out,tag+"/image_test"+std::to_string(i),image);
+        out<<"{\"type\":\"weighted_test\",\"name\":\""<<tag<<"\",\"test\":"<<i<<",\"weighted_degree\":"<<d
+           <<",\"ordinary_image_degree\":"<<image.degree()<<"}\n";
+        if(i==5)require(mixed_domain_reduction(image,old,next).t.empty(),"field-image reduction control");
+        if(i==6) {
+            require(mixed_domain_reduction(image,old,next,true).t.empty(),"zero-fiber domain control");
+            std::array<bool,NV> point{};
+            require(at_point(tests[i],point)==p-1,"formal zero-fiber relation is not separated");
+        }
+    }
+    images.emplace(63,A.A);weights[3]=weights[0];
+    Poly shared=ZD-ZA;require(shadow_degree(shared,old,weights)>0 && shadow_image(shared,old,images).t.empty(),
+                             "shared-coefficient failure control");
+    Block dead=block({Poly(p)},1,next);images.at(63)=dead.A;weights[3]=0;
+    Poly constant=ZD-one;require(!constant.t.empty() && shadow_image(constant,old,images).t.empty(),
+                                "constant-selector failure control");
+    polynomial(out,tag+"/shared_formal_relation",shared);
+    polynomial(out,tag+"/constant_formal_relation",constant);
+    polynomial(out,tag+"/bare_coefficient",var(p,firstA));
+    out<<"{\"type\":\"weighted_controls\",\"name\":\""<<tag
+       <<"\",\"field_image_reduces_to_zero\":true,\"zero_fiber_image_reduces_to_zero\":true"
+         ",\"zero_fiber_formal_point_value\":"<<p-1
+       <<",\"shared_image_zero\":true,\"constant_image_zero\":true,\"bare_coefficient_degree\":1"
+         ",\"minimum_valid_selector_weight\":"<<std::min({weights[0],weights[1],weights[2]})<<"}\n";
+    std::cout<<tag<<": seven degree equalities, field/fiber controls, shared/constant failures, and a bare-coefficient control.\n";
+}
+void selector_gate(std::ostream& out,int h) {
+    const int r=2*h+1,old=2*r;int next=old;Poly one(2,1);
+    std::vector<Poly> g,k;
+    for(int i=0;i<r;i++){g.push_back(var(2,i));k.push_back(var(2,r+i));}
+    Block A=block(g,h,next),B=block(k,h,next);std::vector<Poly> inputs{A.A};
+    inputs.insert(inputs.end(),k.begin(),k.end());Block C=block(inputs,h,next);
+    require(next<60,"shadow/actual variable separation");
+    Poly a=A.A,b=B.A,c=C.A,relation=c-(one-a)*b;
+    std::string tag="selector_gate_h"+std::to_string(h);
+    std::map<int,Poly> images{{60,a},{61,b},{62,c}};
+    std::array<int,4> weights{a.degree(),b.degree(),c.degree(),-1};
+    Poly ZA=var(2,60),ZB=var(2,61),ZC=var(2,62),formal=ZC-(one-ZA)*ZB;
+    require((shadow_image(formal,old,images)-relation).t.empty() &&
+            shadow_degree(formal,old,weights)==relation.degree(),"source gate shadow degree");
+    auto domain=domain_booleanity(out,tag+"/antecedent_value",a);
+    std::vector<Term> proof{{one,C.E[0]}};
+    for(int i=0;i<r;i++) {
+        proof.push_back({(one-a)*B.U[i],C.E[i+1]});
+        proof.push_back({Poly(2)-(one-a)*C.U[i+1],B.E[i]});
+    }
+    Poly prefix_multiplier=b*C.U[0];
+    for(int i=0;i<NV;i++)if(!domain[i].t.empty()) {
+        Poly variable=var(2,i);proof.push_back({prefix_multiplier*domain[i],variable*variable-variable});
+    }
+    require((value(proof,2)-relation).t.empty(),"selector-valued gate NS witness");
+    int ceiling=cost(proof),expected=c.degree()+a.degree()+b.degree(),L=std::max({a.degree(),b.degree(),c.degree()});
+    require(ceiling==expected && ceiling<=3*L,"gate witness cost bound");
+    require(prefix_multiplier.degree()==c.degree(),"old prefix multiplier degree");
+    require((ZB-ZC-ZA*ZB+formal).t.empty(),"formal selector-valued MP identity");
+    polynomial(out,tag+"/a",a);polynomial(out,tag+"/b",b);polynomial(out,tag+"/c",c);
+    polynomial(out,tag+"/formal_relation",formal);polynomial(out,tag+"/actual_relation",relation);
+    polynomial(out,tag+"/old_MP_multiplier",prefix_multiplier);
+    for(int i=0;i<int(proof.size());i++) {
+        polynomial(out,tag+"/term"+std::to_string(i)+"/cofactor",proof[i].cofactor);
+        polynomial(out,tag+"/term"+std::to_string(i)+"/axiom",proof[i].axiom);
+    }
+    out<<"{\"type\":\"selector_gate_result\",\"name\":\""<<tag<<"\",\"h\":"<<h<<",\"child_rank\":"<<r
+       <<",\"actual_variables\":"<<next<<",\"weights\":["<<weights[0]<<','<<weights[1]<<','<<weights[2]
+       <<"],\"formal_relation_degree\":"<<shadow_degree(formal,old,weights)<<",\"actual_relation_degree\":"<<relation.degree()
+       <<",\"NS_witness_degree\":"<<ceiling<<",\"uniform_gate_bound\":"<<3*L
+       <<",\"new_MP_multiplier_degree\":"<<b.degree()<<",\"old_MP_multiplier_degree\":"<<prefix_multiplier.degree()<<"}\n";
+    std::cout<<tag<<": weights "<<weights[0]<<','<<weights[1]<<','<<weights[2]<<"; gate degree "<<relation.degree()
+             <<", NS witness "<<ceiling<<", new/old outer multiplier "<<b.degree()<<'/'<<prefix_multiplier.degree()<<".\n";
+}
 int main(int argc,char** argv) {
     try {
         if(argc==2 && std::string(argv[1])=="--help") {
@@ -443,10 +589,19 @@ int main(int argc,char** argv) {
         bool mixed=argc==4 && std::string(argv[3])=="--mixed-affine";
         bool proper=argc==4 && std::string(argv[3])=="--proper-or-union";
         bool degree=argc==4 && std::string(argv[3])=="--proper-or-degree";
-        if((argc!=3 && !mixed && !proper && !degree) || std::string(argv[1])!="--out")
-            throw std::runtime_error("--out PATH [--mixed-affine|--proper-or-union|--proper-or-degree] required");
-        if(mixed || proper || degree){std::ifstream existing(argv[2]);require(!existing.good(),"output exists");}
+        bool weighted=argc==4 && std::string(argv[3])=="--weighted-selectors";
+        bool gates=argc==4 && std::string(argv[3])=="--selector-gates";
+        if((argc!=3 && !mixed && !proper && !degree && !weighted && !gates) || std::string(argv[1])!="--out")
+            throw std::runtime_error("--out PATH with an optional documented source-check mode required");
+        if(mixed || proper || degree || weighted || gates){std::ifstream existing(argv[2]);require(!existing.good(),"output exists");}
         std::ofstream out(argv[2]); require(bool(out),"cannot open output");
+        if(weighted || gates) {
+            out<<"{\"schema\":1,\"suite\":\""<<(weighted?"weighted_selector_embedding":"selector_gate_NS")
+               <<"\",\"seed\":null,\"encoding\":\"ordinary polynomial terms [coefficient,[[variable,exponent],...]]; shadow selector slots 60..63\"}\n";
+            if(weighted){weighted_selectors(out,2,1);weighted_selectors(out,2,2);weighted_selectors(out,3,1);weighted_selectors(out,5,1);}
+            else for(int h:{1,2})selector_gate(out,h);
+            out.close();require(bool(out),"output write failed");return 0;
+        }
         if(degree) {
             out<<"{\"schema\":1,\"suite\":\"proper_OR_degree_five\",\"p\":2,"
                  "\"scope\":\"Exact NS axiom-multiple span after degree-complete Boolean reduction; no PC closure\"}\n";
