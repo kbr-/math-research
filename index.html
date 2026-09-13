@@ -109,7 +109,6 @@
       const buttons = Object.fromEntries([...document.querySelectorAll('[data-scroll]')]
         .map(button => [button.dataset.scroll, button]));
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      let positions = [];
       let targets = {};
       let pending = false;
       let destination = null;
@@ -134,6 +133,10 @@
         pending = false;
         const y = window.scrollY;
         const end = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        // Lazy rendering can move headings even when the total page height stays the same.
+        // Read their current positions on each scroll frame, rather than caching offsets.
+        const positions = headings.map(heading => Math.max(0,
+          heading.getBoundingClientRect().top + y - 16));
         // Treat the heading just above the viewport as the current section.
         let current = -1;
         positions.forEach((position, index) => { if (position <= y + 2) current = index; });
@@ -150,8 +153,6 @@
       }
 
       function measure() {
-        positions = headings.map(heading => Math.max(0,
-          heading.getBoundingClientRect().top + window.scrollY - 16));
         // Keep the chosen heading or page edge aligned as lazy math changes height.
         // Only correct a moved destination, so ordinary smooth scrolling can finish.
         if (destination !== null) {

@@ -132,6 +132,17 @@ async function check(changed) {
   context.document.documentElement.scrollHeight += 100;
   resizeCallback();
   assert.equal(context.scrollY, 1400, 'Keyboard scrolling releases the destination');
+  buttonClicks.end();
+  events.wheel();
+  // Lazy rendering can move a heading without changing the main element's total height.
+  // In that case ResizeObserver does not refresh the old section offsets.
+  headingTops[2] = 1500;
+  context.scrollY = 1000;
+  events.scroll();
+  assert.equal(buttons.find(button => button.dataset.scroll === 'next').hidden, false,
+    'Manual scrolling into an earlier section restores the next-section arrow');
+  buttonClicks.next();
+  assert.equal(context.scrollY, 1484, 'Next navigation uses the heading’s current position');
 }
 
 Promise.resolve().then(() => check(false)).then(() => check(true)).then(() => {
