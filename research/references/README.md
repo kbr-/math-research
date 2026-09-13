@@ -28,3 +28,8 @@ setup audit.
 BLVZ1994, the author-hosted *Chessboard Complexes and Matching Complexes*, was
 acquired for the design-marginal argument. Its PDF and extraction are local-only;
 the redistribution policy links its dated provenance and exact reading scope.
+
+GOR2024-v2 and BI2025-v1 were acquired from versioned arXiv records for a targeted
+affine-clause, encoding, and source-attribution audit. Their PDFs are local-only.
+The [dated audit](../results/affine_clause_source_audit_20260913_99/README.md)
+preserves acquisition commands, exact reading scope, and source hashes.
