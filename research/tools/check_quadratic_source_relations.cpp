@@ -147,11 +147,75 @@ void rectangles(const std::string& name,const Inputs& a,int expected_nullity,std
     out<<"],\"kernel_dimension\":"<<nullity<<"}\n";
     std::cout<<name<<": rectangle rank "<<equations.rank<<'/'<<q<<", kernel "<<nullity<<".\n";
 }
+Inputs restrict_matching_edge(const Inputs& a,int row,int column) {
+    Inputs b{a.n-1,a.r,a.constants^a.at(row,column),{}};
+    for(int i=0;i<=a.n;++i)if(i!=row)for(int j=0;j<a.n;++j)if(j!=column)
+        b.cells.push_back(a.at(i,j));
+    need(b.cells.size()==size_t(b.n*(b.n+1)),"restricted board shape");return b;
+}
+int restricted_cell(int n,int cell,int row,int column) {
+    int i=cell/n,j=cell%n;
+    if(i==row && j==column)return -2; // one
+    if(i==row || j==column)return -1; // zero
+    return (i-(i>row))*(n-1)+j-(j>column);
+}
+void column_family(const Inputs& ambient,std::ostream& out) {
+    Inputs core=ambient;core.r=5;core.constants&=31;
+    for(Word& w:core.cells)w&=31;
+    describe("column_family_core",core,out);
+    const int row=core.n,pairs=(core.n+1)/2,translations=32;
+    out<<"{\"type\":\"column_family\",\"N\":"<<core.n<<",\"h\":1,\"D\":4,\"groups\":"
+       <<pairs*translations<<",\"input_count\":7,\"local_column\":0,\"matching_row\":"<<row
+       <<",\"input_rule\":\"U_0+c_0,...,U_4+c_4,x_(2k,0),x_(2k+1,0)\"}\n";
+    for(int k=0;k<pairs;++k) {
+        int a=2*k*core.n,b=(2*k+1)*core.n;
+        Inputs tuple=core;tuple.r=7;tuple.cells[a]|=32;tuple.cells[b]|=64;
+        std::string name="original_pair_"+std::to_string(k);describe(name,tuple,out);
+        need(deletion(name,tuple,{}, {},nullptr,out)==7,"original tuple affine independence");
+        out<<"{\"type\":\"original_relation\",\"pair\":"<<k<<",\"cells\":["<<a<<','<<b
+           <<"],\"old_generator\":\"column exclusion\",\"raw_boolean_witness_ones\":["<<a<<','<<b<<"]}\n";
+    }
+    for(int column:{0,1}) {
+        Inputs reduced=restrict_matching_edge(core,row,column);
+        std::string name=column==0?"covered_column_core":"wrong_column_core";
+        describe(name,reduced,out);need(deletion(name,reduced,{}, {},nullptr,out)==5,"restricted core rank");
+        rectangles(name,reduced,0,out);
+        int killed=0,remaining_collisions=0,core_only=0;
+        for(int k=0;k<pairs;++k) {
+            int a=2*k*core.n,b=(2*k+1)*core.n;
+            int ra=restricted_cell(core.n,a,row,column),rb=restricted_cell(core.n,b,row,column);
+            bool unit=ra==-2 || rb==-2,collision=ra>=0 && rb>=0;
+            if(collision)need(ra%reduced.n==rb%reduced.n && ra/reduced.n!=rb/reduced.n,
+                              "residual collision geometry");
+            Inputs original=core;original.r=7;original.cells[a]|=32;original.cells[b]|=64;
+            Inputs tuple=restrict_matching_edge(original,row,column);
+            std::string tuple_name=name+"_pair_"+std::to_string(k);describe(tuple_name,tuple,out);
+            int expected_rank=5+int(ra>=0)+int(rb>=0);
+            need(deletion(tuple_name,tuple,{}, {},nullptr,out)==expected_rank,"restricted tuple affine rank");
+            for(int c=0;c<translations;++c) {
+                out<<"{\"type\":\"restricted_block\",\"selected_column\":"<<column<<",\"pair\":"<<k
+                   <<",\"translation\":"<<c<<",\"core_constant_word\":"<<(reduced.constants^Word(c))
+                   <<",\"local_images\":["<<ra<<','<<rb<<"],\"unit_input\":"<<(unit?"true":"false")
+                   <<",\"nontrivial_old_collision\":"<<(collision?"true":"false")<<"}\n";
+                killed+=unit;remaining_collisions+=collision;core_only+=!unit && ra==-1 && rb==-1;
+            }
+        }
+        need(column==0?(killed==32 && core_only==160 && remaining_collisions==0):
+                       (killed==0 && core_only==0 && remaining_collisions==160),"family restriction prediction");
+        out<<"{\"type\":\"column_restriction_summary\",\"selected_column\":"<<column
+           <<",\"residual_holes\":"<<reduced.n<<",\"groups\":"<<pairs*translations
+           <<",\"unit_blocks\":"<<killed<<",\"core_only_blocks\":"<<core_only
+           <<",\"blocks_with_old_collision\":"<<remaining_collisions<<"}\n";
+        std::cout<<name<<": "<<killed<<" unit blocks, "<<core_only<<" core-only blocks, "
+                 <<remaining_collisions<<" retained collision relations.\n";
+    }
+}
 int main(int argc,char** argv) {
     try {
-        need((argc==5 || (argc==6 && std::string(argv[5])=="--rectangles")) &&
+        need((argc==5 || (argc==6 && (std::string(argv[5])=="--rectangles" ||
+                                    std::string(argv[5])=="--column-family"))) &&
              std::string(argv[1])=="--ambient" && std::string(argv[3])=="--out",
-             "usage: check_quadratic_source_relations --ambient INPUT.txt --out NEW.jsonl [--rectangles]");
+             "usage: check_quadratic_source_relations --ambient INPUT.txt --out NEW.jsonl [--rectangles|--column-family]");
         Inputs ambient=read_inputs(argv[2]);std::ifstream existing(argv[4]);need(!existing.good(),"output exists");
         std::ofstream out(argv[4]);need(bool(out),"cannot open output");
         out<<"{\"type\":\"schema\",\"version\":1,\"field\":2,"
@@ -160,7 +224,9 @@ int main(int argc,char** argv) {
         Inputs conclusion=ambient;conclusion.r=5;conclusion.constants&=31;
         for(Word& w:conclusion.cells)w&=31;
         Inputs extension=conclusion;extension.r=6;extension.cells[0]|=32;
-        if(argc==6) {
+        if(argc==6 && std::string(argv[5])=="--column-family") {
+            column_family(ambient,out);
+        } else if(argc==6) {
             rectangles("archived_ambient",ambient,0,out);
             rectangles("MP_conclusion",conclusion,0,out);
             rectangles("MP_with_cell_antecedent",extension,0,out);
