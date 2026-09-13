@@ -184,13 +184,126 @@ void check_case(std::ostream& out, int p, int h, const std::string& kind) {
         <<",\"pc_bound\":"<<pc<<",\"identity_residual_terms\":"<<residual.t.size()
         <<",\"omitted_correction_residual_terms\":"<<omitted.t.size()<<"}\n";
 }
+Poly diagonal(const Poly& a,int first,const std::vector<int>& selected) {
+    std::array<bool,NV> keep{};for(int i:selected)keep[i]=true;Poly result(a.p);
+    for(const auto& [m,c]:a.t) {
+        bool valid=true;
+        for(int i=first;i<NV;i++)if((keep[i] && !m[i]) || (!keep[i] && m[i])){valid=false;break;}
+        if(valid){Mon old=m;for(int i=first;i<NV;i++)old[i]=0;result.addterm(old,c);}
+    }
+    return result;
+}
+Poly old_boolean(const Poly& a) {
+    Poly result(a.p);
+    for(const auto& [m,c]:a.t){Mon reduced=m;for(auto& e:reduced)e=e?1:0;result.addterm(reduced,c);}
+    return result;
+}
+void polynomial(std::ostream& out,const std::string& name,const Poly& a) {
+    out<<"{\"type\":\"polynomial\",\"name\":\""<<name<<"\",\"degree\":"<<a.degree()<<",\"terms\":[";
+    bool first=true;
+    for(const auto& [m,c]:a.t) {
+        if(!first)out<<',';
+        first=false;out<<'['<<c<<",[";bool coordinate=true;
+        for(int j=0;j<NV;j++)if(m[j]){if(!coordinate)out<<',';coordinate=false;out<<'['<<j<<','<<int(m[j])<<']';}
+        out<<"]]";
+    }
+    out<<"]}\n";
+}
+void mixed_affine(std::ostream& out,int h,bool offset) {
+    const int p=2,old=5;Poly one(p,1),a=var(p,0),z=var(p,3),w=var(p,4);
+    std::vector<Poly> g{var(p,1),var(p,2)};
+    if(offset){a=a+z;g={one+var(p,1)+z,var(p,2)+w};}
+    int next=old,bstart=next;Block B=block(g,h,next);int ustart=next;
+    std::vector<Poly> f{a};f.insert(f.end(),g.begin(),g.end());Block U=block(f,h,next);
+    Poly q=B.A*U.U[0],correction(p);
+    for(int i=0;i<2;i++)correction=correction+U.U[i+1]*B.E[i]-B.U[i]*U.E[i+1];
+    require((B.A-U.A-q*a-correction).t.empty(),"mixed MP-A ordinary identity");
+    require(q.degree()==4*h-1 && correction.degree()==4*h,"sharp local affine degrees");
+    std::string tag=std::string(offset?"offset":"coordinate")+"_h"+std::to_string(h);
+    out<<"{\"type\":\"mixed_case\",\"name\":\""<<tag<<"\",\"h\":"<<h<<",\"old_variables\":"<<old
+       <<",\"B_start\":"<<bstart<<",\"U_start\":"<<ustart<<",\"B_arity\":2,\"U_arity\":3}\n";
+    polynomial(out,tag+"/a",a);
+    for(int i=0;i<2;i++)polynomial(out,tag+"/g"+std::to_string(i),g[i]);
+    polynomial(out,tag+"/b",B.A);polynomial(out,tag+"/c",U.A);polynomial(out,tag+"/q",q);
+    polynomial(out,tag+"/local_correction",correction);
+    for(int i=0;i<2;i++) {
+        polynomial(out,tag+"/V"+std::to_string(i),B.U[i]);
+        polynomial(out,tag+"/E_B"+std::to_string(i),B.E[i]);
+    }
+    for(int i=0;i<3;i++) {
+        polynomial(out,tag+"/U"+std::to_string(i),U.U[i]);
+        polynomial(out,tag+"/E_U"+std::to_string(i),U.E[i]);
+    }
+    int checks=0,nonzero_omissions=0;
+    for(int j=0;j<3;j++)for(int k=0;k<2;k++) {
+        std::vector<int> us,bs;
+        for(int v=0;v<h;v++){us.push_back(ustart+3*v+j);bs.push_back(bstart+2*v+k);}
+        for(int i=0;i<3;i++) {
+            Poly extracted=diagonal(U.U[i],old,us),expected=i==j?power(f[j],h-1):Poly(p);
+            require((extracted-expected).t.empty(),"prefix U diagonal");++checks;
+        }
+        for(int i=0;i<2;i++) {
+            Poly extracted=diagonal(B.U[i],old,bs),expected=i==k?power(g[k],h-1):Poly(p);
+            require((extracted-expected).t.empty(),"prefix V diagonal");++checks;
+        }
+        std::vector<int> both=us;both.insert(both.end(),bs.begin(),bs.end());
+        Poly local=diagonal(correction,old,both),antecedent=diagonal(q*a,old,both);
+        Poly expected=j==0?power(a,h)*power(g[k],h):Poly(p);
+        require((local-expected).t.empty() && (antecedent-expected).t.empty(),"mixed antecedent contribution");
+        require(diagonal(B.A-U.A,old,both).t.empty(),"single-block target mixed coefficient");checks+=3;
+        if(j==0){require(!local.t.empty(),"omitted-antecedent control vacuous");++nonzero_omissions;}
+        Poly left(p);
+        for(int i=0;i<2;i++)left=left+diagonal(U.U[i+1],old,us)*g[i];
+        Poly right(p);
+        for(int i=0;i<2;i++)right=right+diagonal(B.U[i],old,bs)*f[i+1];
+        require((old_boolean(left)-(j?g[j-1]:Poly(p))).t.empty(),"left affine array reduction");
+        require((old_boolean(right)-g[k]).t.empty(),"right affine array reduction");checks+=2;
+        std::string suffix="/j"+std::to_string(j)+"_k"+std::to_string(k);
+        polynomial(out,tag+suffix+"/mixed_local",local);
+        polynomial(out,tag+suffix+"/mixed_antecedent",antecedent);
+        polynomial(out,tag+suffix+"/array_left",left);
+        polynomial(out,tag+suffix+"/array_right",right);
+    }
+    Poly F1=a+z*w,F2=z*w;
+    require((F1+F2-a).t.empty(),"old antecedent certificate");
+    require((q*F1+q*F2-q*a).t.empty(),"flattened antecedent identity");
+    require((q*F1).degree()==4*h+1 && (q*F2).degree()==4*h+1,"flattened antecedent cost");
+    polynomial(out,tag+"/old_F1",F1);polynomial(out,tag+"/old_F2",F2);
+    polynomial(out,tag+"/q_F1",q*F1);polynomial(out,tag+"/q_F2",q*F2);
+    int cstart=next;Block C=block({z},h,next);Poly triple=q*C.E[0];
+    require(triple.degree()==6*h,"third-block term degree");
+    std::vector<int> selected;
+    for(int v=0;v<h;v++){selected.push_back(bstart+2*v);selected.push_back(ustart+3*v);selected.push_back(cstart+v);}
+    Poly extracted=diagonal(triple,old,selected);
+    require((extracted-power(g[0],h)*power(a,h-1)*power(z,h+1)).t.empty() && !extracted.t.empty(),
+            "third-block complete-support control");
+    polynomial(out,tag+"/third_companion",C.E[0]);polynomial(out,tag+"/q_third_companion",triple);
+    polynomial(out,tag+"/triple_diagonal",extracted);
+    out<<"{\"type\":\"mixed_result\",\"name\":\""<<tag<<"\",\"diagonal_checks\":"<<checks
+       <<",\"nonzero_omission_controls\":"<<nonzero_omissions<<",\"q_degree\":"<<q.degree()
+       <<",\"local_correction_degree\":"<<correction.degree()<<",\"flattened_degree_two_premise\":"<<4*h+1
+       <<",\"third_companion_term_degree\":"<<triple.degree()<<",\"variables\":"<<next<<"}\n";
+    std::cout<<tag<<": "<<checks<<" diagonal checks, "<<nonzero_omissions
+             <<" antecedent-omission controls; local "<<4*h<<", flattened premise "<<4*h+1
+             <<", third companion "<<6*h<<".\n";
+}
 int main(int argc,char** argv) {
     try {
         if(argc==2 && std::string(argv[1])=="--help") {
             std::cout<<"Exact fixed-case suite; usage: check_mp_composition --out PATH\n"; return 0;
         }
-        if(argc!=3 || std::string(argv[1])!="--out") throw std::runtime_error("--out PATH required");
+        bool mixed=argc==4 && std::string(argv[3])=="--mixed-affine";
+        if((argc!=3 && !mixed) || std::string(argv[1])!="--out") throw std::runtime_error("--out PATH [--mixed-affine] required");
+        if(mixed){std::ifstream existing(argv[2]);require(!existing.good(),"output exists");}
         std::ofstream out(argv[2]); require(bool(out),"cannot open output");
+        if(mixed) {
+            out<<"{\"schema\":1,\"suite\":\"MP_A_mixed_affine\",\"p\":2,\"seed\":null,"
+                 "\"encoding\":\"terms are [coefficient,[[variable,ordinary exponent],...]]; zero has degree -1\","
+                 "\"scope\":\"Local identities and supplied-term ledgers, not full source certificates or minimum NS degrees\"}\n";
+            for(int h:{1,2,3})mixed_affine(out,h,false);
+            for(int h:{1,2})mixed_affine(out,h,true);
+            out.close();require(bool(out),"output write failed");return 0;
+        }
         out<<"{\"schema\":1,\"suite\":\"mp_composition\",\"arithmetic\":\"exact sparse ordinary polynomials over F_p\",\"seed\":null,\"scope\":\"synthetic local identities, not PHP refutations or a global elimination check\"}\n";
         int count=0;
         for(int p:{2,3,5}) for(int h:{1,2,3})
