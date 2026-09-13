@@ -1,29 +1,82 @@
-# PHP research notebook
+# A Self-Improving Framework for Autonomous Mathematical Research
 
-A portable workspace for research on superpolynomial ordinary-PHP lower bounds
-in fixed-depth AC⁰[p]-Frege.
+An open framework for autonomous mathematical research—with persistent memory,
+reproducible evidence, and a workflow that improves through use.
 
-**[Read the rendered research notebook](https://kbr-.github.io/math-research/).**
+- **Research that survives session boundaries.** Resume from durable findings,
+  proofs, and context stored in the repository, including from a fresh session
+  on another machine.
+- **Autonomous investigation.** Pursue a goal through repeated cycles of
+  reasoning, experimentation, and review, with explicit remaining obstacles
+  and a concrete next step.
+- **A workflow that improves through use.** After each autonomous research
+  cycle, assess what helped, what wasted effort, and what made the mathematics
+  difficult to check; make bounded improvements to tools and procedures.
+- **Inspectable results.** Preserve arguments, assumptions, computational
+  evidence, and failed approaches. Distinguish working proofs, conditional
+  results, conjectures, and finite checks.
+- **A live, versioned notebook.** Follow progress locally or online, with
+  rendered mathematics and Git checkpoints preserving the research record,
+  code, outputs, and provenance together.
+
+The framework combines an explicit research protocol for AI agents with tools
+for context recovery, protected computation, evidence archival, and publication.
+Self-improvement means refining the research workflow and its tools; mathematical
+arguments remain open to review, and recorded proofs are not automatically
+formally verified.
+
+## First ongoing case study: proof-complexity lower bounds
+
+The first application investigates superpolynomial proof-size lower bounds for
+the ordinary pigeonhole principle in fixed-depth AC⁰[p]-Frege systems: bounded-depth
+propositional proof systems with modular counting gates. **The goal remains open.**
+
+**[Read the live research notebook](https://kbr.is-a.dev/math-research/).**
 Its initial sections describe the current state, remaining obstacles, and proposed
 next step. The research record preserves results, proofs, unsuccessful attempts,
-and measured timing. The lower-bound goal remains open.
+and measured timing, making the ongoing investigation available for inspection.
 
 The research began in Claude, continued in ChatGPT, and moved to Codex. The
 [pre-handoff research compendium](php_codex_handoff/php_extension_research_compendium.pdf)
 and historical manuscript preserve the earlier development.
 
-## License and credit
+## Research workflow and evidence
 
-Original software is MIT-licensed; original research writing and other covered
-non-software material use CC BY 4.0. Forks and further research are welcome.
-Preserve the applicable attribution notices and cite the results or tools your
-research relies on. See [LICENSE](LICENSE), [ATTRIBUTION.md](ATTRIBUTION.md), and
-[CITATION.cff](CITATION.cff). Mathematical facts and ideas are not claimed as
-copyright property; scholarly attribution remains an ethical expectation.
+The [research protocol](AGENTS.md) and supporting tools provide:
 
-Third-party materials retain their own rights. See
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for source licensing and
-redistribution details.
+- **Focused context recovery.** A [restart guide](research/notes/RESUME.md)
+  leads from concise living summaries to the exact sources needed for a task.
+  The [excerpt tool](tools/notebook-excerpt.py) retrieves validated sections by
+  stable anchor without loading the whole research history.
+- **An indexed body of results.** The [claim index](research/CLAIM_INDEX.md)
+  connects stable labels and explicit statuses to full statements and proofs.
+  The protocol requires checking earlier work and recording dependencies,
+  refinements, and rediscoveries.
+- **A durable record of corrections and failed attempts.** Research entries
+  are chronological and append-only. Corrections and retractions receive new
+  dated entries, preserving the argument's history and the reasons a route failed.
+- **Reproducible computational evidence.** Complete outputs accompany their
+  generating commands and relevant parameters. [Provenance manifests](tools/record-provenance.py)
+  record file hashes; [archival](tools/archive-session.py) preserves completed
+  execution records and refuses to replace different evidence.
+- **Measured research effort.** [Timing tools](COMPUTATION_RULES.md#unified-execution-and-timing)
+  record work phases and command outcomes, count overlapping intervals once,
+  and export per-turn timing tables. Measurements include unsuccessful commands
+  and retries, with explicit limits on what the recorded intervals establish.
+- **Resource-bounded execution.** The [computation launcher](compute.sh)
+  applies shared CPU and memory controls, command timeouts, and full output
+  logging. It refuses work when required protections are unavailable.
+- **Complete checkpoints and controlled publication.** The
+  [turn finalizer](tools/finish-turn.py) exports timing, archives evidence, and
+  embeds the timing table before review and commit. Source licensing and
+  [public-history checks](tools/verify-checkout.py) help keep known private
+  materials out of publication; the static builder packages only the intended
+  public site files.
+
+The [Spin prompt](notes) specifies the autonomous research and process-improvement
+loop. The agent follows that protocol, while the tools enforce specific execution
+and evidence checks. The current launcher integrates with Codex CLI; the research
+record itself lives in ordinary HTML, Markdown, code, and data files.
 
 ## Browse locally
 
@@ -38,7 +91,7 @@ its rendered mathematics automatically. MathJax loads from a CDN, so the browser
 needs internet access. `index.html` supplies the layout and rendering logic.
 Use `python3 server.py --port 8001` if the default port is occupied.
 
-The [published notebook](https://kbr-.github.io/math-research/) is built by
+The [published notebook](https://kbr.is-a.dev/math-research/) is built by
 GitHub Actions when relevant notebook or site-tooling changes are pushed to
 `main`. It is a standalone site and requires no local server.
 
@@ -67,8 +120,8 @@ A Codex CLI version supporting these options is required.
 
 [AGENTS.md](AGENTS.md) describes the research workflow: maintain the notebook's
 living sections, append each research attempt with its timing and evidence,
-and commit complete checkpoints locally. Public publication is handled by the
-repository maintainer.
+and commit complete checkpoints locally. Publishing requires authorization under
+the repository's Git policy; research work alone does not authorize a push.
 
 ## Computation tools
 
@@ -147,3 +200,16 @@ Verify historical-file integrity, the licensed source PDF, and essential tools:
 
 Runtime binaries, virtual environments, temporary renders, operational logs,
 credentials, and local session state are excluded from version control.
+
+## License and credit
+
+Original software is MIT-licensed; original research writing and other covered
+non-software material use CC BY 4.0. Forks and further research are welcome.
+Preserve the applicable attribution notices and cite the results or tools your
+research relies on. See [LICENSE](LICENSE), [ATTRIBUTION.md](ATTRIBUTION.md), and
+[CITATION.cff](CITATION.cff). Mathematical facts and ideas are not claimed as
+copyright property; scholarly attribution remains an ethical expectation.
+
+Third-party materials retain their own rights. See
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for source licensing and
+redistribution details.
