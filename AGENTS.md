@@ -65,8 +65,9 @@ actionable rule over another checklist or a record of one-off setup history.
 - When opening a research cycle, name the remaining-route obligation, explain
   how the task could discharge or test it, and state a concrete stopping point.
   Distinguish what suffices for the goal from stronger conveniences of a method.
-  Prioritize an unproved application to the actual source family over sharpening
-  estimates conditional on that application. Once the question, argument, and
+  Prioritize an unproved application to the actual retained source family: check
+  that the chosen objects survive the preprocessing of the selected NS or PC
+  endpoint before sharpening conditional estimates. Once the question, argument, and
   evidence are stable, make one focused correctness
   review; move optional extensions to the next cycle. Reopen the argument only
   for a concrete unresolved concern. Prepare the descriptive commit message and
