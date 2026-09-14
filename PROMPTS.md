@@ -30,7 +30,8 @@ a different target.
 
 Carry the assigned formalization through statement review, proof verification,
 evidence retention, a notebook research-record entry, and a claim-index link under
-those rules. Report the exact verified scope and any remaining gap honestly;
+those rules. Refresh **Gaps identified by formalization** under the formalization
+maintenance policy. Report the exact verified scope and any remaining gap honestly;
 do not silently weaken the requested claim. Commit the checkpoint locally on the
 current branch and stop; this prompt does not authorize a push or a Spin loop.
 After compaction, restore the original claim argument and continue this assignment.

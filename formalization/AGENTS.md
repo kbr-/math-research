@@ -30,6 +30,14 @@ the active research session; developing a new mathematical argument remains
   Audit the nearest downstream uses within a stated scope, distinguishing
   affected inferences from uses protected by stronger hypotheses. Do not infer
   either global failure or global safety from a bounded audit.
+- Maintain the notebook's **Gaps identified by formalization** section in place
+  after each formalization cycle. Keep a concise list of links to the entries
+  establishing mathematical discrepancies, with brief current correction or
+  audit status and relevant follow-up links. Update or retire resolved items
+  while preserving their full history in the Research record. Do not duplicate
+  proofs there or list a claim merely because it is unformalized; Lean setup
+  errors are not mathematical gaps. This section is read by both research and
+  formalization agents during resume.
 - Formalize the claim, not necessarily the original proof strategy. Prefer
   explicit constructions when they simplify both the identity and its bounds;
   the first interpolation proof used a recursive quotient instead of division.

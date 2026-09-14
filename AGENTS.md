@@ -170,6 +170,11 @@ actionable rule over another checklist or a record of one-off setup history.
   Before developing or naming a result, search it for the same object or template
   and read the relevant claims. Label rediscoveries and refinements and link the
   original record; link corrections or retractions to their new dated entries.
+- Read **Gaps identified by formalization** during context restoration, including
+  ordinary research sessions. This concise section precedes Research record and
+  links to discrepancies and their audit status. The formalization agent maintains
+  it in place under [formalization/AGENTS.md](formalization/AGENTS.md); full arguments
+  and mathematical corrections remain in dated research entries.
 - Lean formalizations live in [formalization/](formalization/README.md). Begin
   formalization only under an explicit user assignment, including an explicitly
   assigned parallel formalization agent; ordinary research and Spin do not

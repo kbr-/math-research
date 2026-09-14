@@ -27,8 +27,11 @@ historical mathematical sources only when the current research task needs them.
    necessary context reading; follow the policy for phases, protected jobs,
    evidence, and timing tables. Do not backfill a separate restoration turn's time.
 2. Read the notebook from its beginning up to the **Research record**:
-   **Where we stand**, **The remaining route**, **Proposed next step**, and
-   **Working mathematical context**. The last section is an orientation map of
+   **Where we stand**, **The remaining route**, **Proposed next step**,
+   **Working mathematical context**, and **Gaps identified by formalization**.
+   Both research and formalization agents must read the gaps section; follow
+   its linked entries when a discrepancy affects the assigned work.
+   Working mathematical context is an orientation map of
    the exact setup and degree conventions, active tools with linked hypotheses
    and proofs, and unresolved dependencies. It is organized by topic, not as a
    catalogue of every past turn. From the repository root:
