@@ -7,9 +7,15 @@ Use its `formalization` phase and `formal_verification` command category within
 the active research session; developing a new mathematical argument remains
 `mathematics` under that policy.
 
-Use `third-party-claims/` for prior-literature results, preserving source
-attribution and linking them from the shared claim index. The two claim
-directories may import each other without cycles. An unproved target must be
+Choose a claim directory by the provenance of its individual statement, not
+the ancestry of the final theorem: `third-party-claims/` for attributable
+literature results, including faithful reformulations and specializations;
+`claims/` for project-formulated supporting interfaces or independently
+developed generalizations. Preserve source attribution and index every new
+mathematical claim. A more general statement alone does not establish novelty,
+and a new proof does not transfer authorship of the theorem. Describe adaptations
+as such without unsupported novelty claims. The two directories may import each
+other without cycles. An unproved target must be
 an explicitly marked statement-only proposition definition, never an axiom or
 `sorry`; follow README.md's metadata convention and do not mark it formalized.
 

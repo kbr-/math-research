@@ -28,6 +28,11 @@ source, but not separately indexed in the required scope. Give it a claim label
 and full research record when it is extracted/formalized. Proving such a helper
 does **not** formalize the larger source claim.
 
+The same applies to `Hxx`: these are planning identifiers, not provenance or
+directory assignments. Follow the individual-statement
+[provenance policy](AGENTS.md) when choosing between `claims/` and
+`third-party-claims/` and retain the appropriate attribution.
+
 Existing indexed dependencies receive their own formalization records under
 the formalization protocol. New extracted dependencies may share their parent's
 record. Mathlib may supply elementary algebra, linear algebra, combinatorics,
