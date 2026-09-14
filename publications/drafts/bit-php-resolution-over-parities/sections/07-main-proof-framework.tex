@@ -147,21 +147,87 @@ The durable record uses ordinary source, HTML, Markdown, and data files.
 These mechanisms make work recoverable and reviewable; they do not
 make a recorded proof automatically correct or formally verified.
 
-\subsection{Model assistance}\label{sec:model-assistance}
-Models used: Claude Sonnet 5, Claude Opus 5, Claude Fable 5.1,
-GPT-6 Astra (main contributor).
+\subsection{Contributions and development history}\label{sec:model-assistance}
+The principal models used were Claude Sonnet 5, Claude Fable 5.1,
+Claude Opus 5, and GPT-6 Astra. GPT-6 Astra was the main contributor
+to the mathematical development and drafting of this result.
+The following account describes the author's experience; assessments
+of model performance are his impressions from this investigation.
 
-\subsection{Credits and review status}
-Kamil Braun directed and maintains the research project.
-Claude Sonnet, Claude Opus, Claude Fable, and GPT-6 Astra assisted
-its development; GPT-6 Astra was the main contributor to the
-mathematical development and drafting of this result.
-The investigation began in conversations with Claude and ChatGPT,
-then continued using Codex, an AI coding-agent environment, to work
-directly with the project's files and tools.
+The author, Kamil Braun, began in a Claude conversation on the
+\$20 Pro plan, initially attempting to attack \(P\ne NP\).
+He used Sonnet 5; Fable models were unavailable to him on that plan.
+As the conversation progressed, the objective narrowed to the less
+ambitious, though still ambitious, problem of superpolynomial lower
+bounds for ordinary PHP in fixed-depth \(\mathrm{AC}^0[p]\)-Frege.
+Repeatedly reaching the five-hour usage limit, and dissatisfied with
+Sonnet 5's capabilities for this task, he upgraded to the Max 20x plan.
 
-This document is a draft for the author's review. Its claims retain
-working-proof status pending external scrutiny.
+He then attempted research with Fable 5.1. Hypotheses and proposed
+lemma proofs accumulated, but no clear route to the goal emerged.
+During the conversation, Claude began classifying his requests as
+unsafe cybersecurity research; the author reports that the interface
+repeatedly switched him to Opus 4.8. He also attempted to continue
+with Opus 5, but remained dissatisfied with its performance.
+Increasingly frustrated, he purchased OpenAI's ChatGPT Pro x20 plan
+to try GPT-6 Astra.
+
+In the browser-based ChatGPT interface, GPT-6 Astra appeared much more
+confident and optimistic than Opus 5 and produced dozens of proposed
+lemmas and theorems. Two obstacles became apparent. First, it was
+unclear whether this growing body of mathematics advanced the main
+goal or merely supplied additional results without a sufficient
+application. Second, context compaction caused important information,
+including previously derived results, to be lost from the model's
+working context. The author therefore sought an explicit context
+management strategy outside the chat interface. He asked ChatGPT to
+prepare a handoff package for Codex, an AI coding-agent environment,
+collecting the results and arguments developed in the conversation
+so that work could continue from files.
+
+The author created a Git repository and specified requirements for
+the research framework described above. Using Codex CLI with
+GPT-6 Astra at Max thinking effort, he refined the framework through
+several rounds of interaction. Its first version was preserved in
+the initial commit of the public \texttt{math-research} repository,
+\href{https://github.com/kbr-/math-research/commit/2f9568f}
+{\texttt{2f9568f}}.
+
+Initially, the author manually requested individual research turns,
+each followed by a request to identify friction in the framework and
+implement improvements. After several such turns, the need to automate
+this cycle became clear, particularly when he needed to step away
+from the laptop. The resulting \emph{Spin} prompt, introduced in commit
+\href{https://github.com/kbr-/math-research/commit/5570c3e}
+{\texttt{5570c3e}}, instructs the agent to repeat research, record its
+results, assess the process, and improve the framework when warranted.
+The author assigned this continuing task through Codex's \texttt{/goal}
+feature. At the time this manuscript version was prepared, the agent
+was continuing these cycles autonomously under that assignment.
+
+The author's main contribution is the design, direction, and iterative
+refinement of the framework, rather than the mathematical derivations
+themselves. Explicit resume protocols restore context, durable records
+preserve results and failed attempts, and computation tools support
+mathematical reasoning with software. The author continues to provide
+strategic questions and steering prompts when he notices weaknesses
+in the process. For example, he questioned whether successive lemmas
+were approaching the main goal or merely orbiting it. This concern is
+recorded in the notebook entry
+\href{https://kbr.is-a.dev/math-research/\#entry-2026-09-12-column-literal-selector-profiles}
+{``Classify column-literal selectors and realize arbitrary joint profiles
+within literal OR syntax.''}
+The resulting reassessment and route audit appear in commits
+\href{https://github.com/kbr-/math-research/commit/432269f}{\texttt{432269f}}
+and \href{https://github.com/kbr-/math-research/commit/603a99d}{\texttt{603a99d}}.
+Commit \href{https://github.com/kbr-/math-research/commit/e25983e}
+{\texttt{e25983e}} revised the workflow to require each research cycle
+to address a named missing implication, explain how its task could
+test or discharge that obligation, and state a concrete stopping point.
+The Git history and notebook research record preserve these framework
+changes and the strategic questions that motivated them.
+
+The mathematical claims retain working-proof status pending external scrutiny.
 The classical topological input is attributed to \cite{BLVZ94};
 the product-extension methodology is attributed to \cite{BIKPRS}.
 Original manuscript material is distributed under the
