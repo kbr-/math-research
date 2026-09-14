@@ -8,10 +8,11 @@ policy. Setup and verification commands live in [README.md](README.md);
   Draft the Lean statement and compare its variables, domains, quantifiers,
   hypotheses, conclusions, and degree conventions with the notebook. In
   particular, distinguish joint total degree from degree in one variable.
-  Distinguish actual degree from a degree budget: an upper bound suffices for
-  product estimates, but subtracting a generator degree from a proof ceiling
-  to bound its cofactor requires actual degree or a separately justified
-  weighted convention. Before the general proof, inspect relevant boundary
+  Distinguish exact values and identities from bounds, approximations, and
+  bookkeeping conventions. At each use, check that the available relation
+  implies the required conclusion in the correct direction; a valid upper
+  bound cannot automatically replace an exact value.
+  Before the general proof, inspect relevant boundary
   cases such as constant or zero inputs, empty index sets, and loose parameter
   bounds; these can expose missing hypotheses without substantial computation.
   Record the intended coverage and any differences in the claim-file header.
