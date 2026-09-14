@@ -1,82 +1,19 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Kamil Braun
 // Exact nonfactorable-input reductions and complete bounded-sum source maps.
-#include "domain_polynomial.hpp"
+#include "graded_reduction.hpp"
 #include "ns_witness.hpp"
 #include <boost/multiprecision/cpp_int.hpp>
 #include <array>
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
-#include <functional>
 #include <iostream>
 #include <string>
 using namespace domain_polynomial;
+using namespace graded_reduction;
 using boost::multiprecision::cpp_int;
 void need(bool ok,const std::string& why){if(!ok)throw std::runtime_error(why);}
-struct Normal {Polynomial remainder;std::map<int,Polynomial> coefficients;};
-bool monomial_less(const Monomial& a,const Monomial& b){
-    return a.size()!=b.size()?a.size()<b.size():b<a;
-}
-Monomial leading(const Polynomial& p){
-    need(!p.empty(),"nonzero divisor");auto it=p.begin(),best=it++;
-    for(;it!=p.end();++it)if(monomial_less(best->first,it->first))best=it;
-    need(best->second==1,"monic binary divisor");return best->first;
-}
-bool quotient(const Monomial& m,const Monomial& divisor,Monomial& q){
-    q=m;
-    for(int id:divisor){
-        auto it=std::lower_bound(q.begin(),q.end(),id);
-        if(it==q.end() || *it!=id)return false;
-        q.erase(it);
-    }
-    return true;
-}
-struct ReductionMap {
-    const Ring& r;
-    std::vector<Polynomial> divisors;
-    std::vector<Monomial> heads;
-    std::map<Monomial,Normal> memo;
-    ReductionMap(const Ring& ring,std::vector<Polynomial> ds):r(ring),divisors(std::move(ds)){
-        for(const auto& g:divisors)heads.push_back(leading(g));
-    }
-    const Normal& monomial(const Monomial& m){
-        auto cached=memo.find(m);if(cached!=memo.end())return cached->second;
-        Normal result;int divisor=-1;Monomial q;
-        for(unsigned i=0;i<heads.size();++i)if(quotient(m,heads[i],q)){divisor=i;break;}
-        if(divisor<0)result.remainder=Polynomial{{m,1}};
-        else{
-            Polynomial factor{{q,1}};
-            auto tail=r.subtract(Polynomial{{m,1}},r.multiply(factor,divisors[divisor]));
-            result.coefficients[divisor]=factor;
-            for(const auto& [term,coefficient]:tail){
-                need(monomial_less(term,m),"graded reduction order must decrease");
-                const auto& child=monomial(term);
-                r.accumulate(result.remainder,child.remainder,coefficient);
-                for(const auto& [id,f]:child.coefficients)r.accumulate(result.coefficients[id],f,coefficient);
-            }
-        }
-        return memo.emplace(m,std::move(result)).first->second;
-    }
-    Normal polynomial(const Polynomial& p){
-        Normal result;
-        for(const auto& [m,coefficient]:p){
-            const auto& child=monomial(m);
-            r.accumulate(result.remainder,child.remainder,coefficient);
-            for(const auto& [id,f]:child.coefficients)r.accumulate(result.coefficients[id],f,coefficient);
-        }
-        return result;
-    }
-};
-std::vector<Monomial> monomials(int variables,int maximum){
-    std::vector<Monomial> result;Monomial m;
-    std::function<void(int,int)> add=[&](int first,int left){
-        if(!left){result.push_back(m);return;}
-        for(int i=first;i<variables;++i){m.push_back(i);add(i,left-1);m.pop_back();}
-    };
-    for(int d=0;d<=maximum;++d)add(0,d);
-    return result;
-}
 void write_certificate(std::ostream& out,const Ring& r,const std::vector<Polynomial>& axioms,
                        const std::string& system,const std::string& name,const Polynomial& target,
                        const std::map<int,Polynomial>& cof,int budget,const Polynomial* source=nullptr){
