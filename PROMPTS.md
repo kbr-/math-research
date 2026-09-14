@@ -99,6 +99,67 @@ without redoing completed claims. When all targets are verified, report the
 completed claims and checkpoints, with any separately indexed corollaries left
 outside the assignment clearly distinguished.
 
+# Spin-formalize-parallel
+
+Invocation: `Execute the Spin-formalize-parallel prompt against theorem <reference>`.
+The reference identifies the complete target, not just a convenient component.
+This explicitly authorizes parallel formalization. Follow Resume, then
+[formalization/AGENTS.md](formalization/AGENTS.md) and Spin-formalize above;
+the following adds coordination, not a separate proof or research-record policy.
+
+Act as coordinator until the final assembly. Work autonomously through these steps:
+
+1. Read the exact target and proof, recursively trace its required dependencies,
+   and save a route in `formalization/<TARGET>_FORMALIZATION_ROUTE.md`. Reuse and
+   revise an existing route when appropriate. Give a topological list with exact
+   sources, hypotheses, direct prerequisites, existing verified coverage, and
+   remaining obligations. Include third-party boundaries and extracted helpers;
+   distinguish necessary results from stronger conveniences and alternative proofs.
+   Mark uncertain steps as provisional. Planning IDs are not claim-index labels
+   or evidence of verification. Record substantive route analysis under the usual
+   research protocol.
+2. Partition the route into shared foundations, independent branches, and final
+   assembly. Save the assignments and required interfaces in the route, including
+   intermediate checkpoints that unblock another branch. Choose the decomposition
+   yourself; do not require the user to enumerate a theorem's components. Revise
+   it when the actual proof dependencies change.
+3. Use the current branch as the integration branch. Create or reuse one isolated
+   worktree and branch per worker under a common directory agreed with the user
+   or chosen alongside the checkout. Assign explicit paths and exclusive write
+   ownership. A foundation worker may use this worktree while the coordinator
+   refrains from editing it. Leave unrelated worktrees and research agents alone.
+4. Spawn workers when their prerequisites are available, within available
+   concurrency. Each must perform Resume and execute Spin-formalize restricted
+   to its assigned subset, with its own records and local checkpoints. Coordinate
+   additional dependencies through the parent instead of silently expanding into
+   another worker's scope. All workers share the resource limits in
+   [COMPUTATION_RULES.md](COMPUTATION_RULES.md); use distinct timing/evidence IDs
+   and private writable build caches. Existing dependency-installation rules apply.
+5. Have workers agree on shared definitions and exact interfaces early and message
+   one another about dependencies. Release verified intermediate checkpoints;
+   do not make branches wait for each other's entire assignment. Coordinate clean
+   pauses for sequential rebases onto the integration branch, fast-forwarding it
+   after each completed rebase. Preserve both sides' research records and evidence
+   when resolving conflicts. Do not rebase a worktree while its worker is editing.
+6. Once the workers finish, integrate all remaining checkpoints. Audit individual
+   statement provenance and directory placement under formalization/AGENTS.md;
+   defer cross-branch moves until this point, updating imports and links together.
+   Check that every newly introduced mathematical claim is indexed with its full
+   human-readable proof, Lean file, and exact verified scope. Keep small helpers
+   local unless extraction has a concrete benefit. Verify the combined project.
+7. Personally perform the final assembly on the integration branch under
+   Spin-formalize, with its research records and verification. If assembly exposes
+   a missing prerequisite, revise the route and coordinate its completion; do not
+   substitute an assumption or silently weaken the target. Finish only when the
+   complete target and all required dependencies are verified, or report a genuine
+   impasse under Spin-formalize's blocking policy.
+
+Commit locally. This prompt authorizes neither merging into `main` nor pushing;
+honor separate explicit user instructions for those actions. After compaction,
+restore the target, route, branch assignments, worker status, released interfaces,
+and integrated checkpoints before continuing. Do not duplicate active workers or
+restart completed proofs. Report the final verified scope and remaining gaps.
+
 # Spin
 
 I am now going to sleep. I won't be available to you for the next ~8 hours.
