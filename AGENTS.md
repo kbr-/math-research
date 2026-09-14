@@ -168,6 +168,17 @@ actionable rule over another checklist or a record of one-off setup history.
   Before developing or naming a result, search it for the same object or template
   and read the relevant claims. Label rediscoveries and refinements and link the
   original record; link corrections or retractions to their new dated entries.
+- Lean formalizations live in [formalization/](formalization/README.md). Begin
+  formalization only under an explicit user assignment, including an explicitly
+  assigned parallel formalization agent; ordinary research and Spin do not
+  require formalizing results. Consult that project's instructions when assigned,
+  not as mandatory reading for every research cycle. For each formalized claim,
+  update its entry in research/CLAIM_INDEX.md with a link to the per-claim Lean
+  file and the exact verified scope, identifying partial coverage or stronger
+  hypotheses. Keep formalization status distinct from mathematical status:
+  absence of a formalization does not make a result incomplete, and a verified
+  special case does not verify the full informal claim. Record formalization
+  work and its verification evidence under the usual research-turn protocol.
 - End every research-turn entry with a two-column **Measured category / Elapsed**
   timing table, headed by the bold total instrumented interval. Generate it from
   actual timing data with `./compute.sh report TURN --stop --html-out PATH` and
