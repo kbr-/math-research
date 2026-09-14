@@ -1,0 +1,51 @@
+✖ [1300/1300] Building «third-party-claims».ChessboardStarNerve (2.2s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/chessboard/formalization/third-party-claims/ChessboardStarNerve.lean -o /home/kbr/dev/math-worktrees/chessboard/formalization/.lake/build/lib/lean/third-party-claims/ChessboardStarNerve.olean -i /home/kbr/dev/math-worktrees/chessboard/formalization/.lake/build/lib/lean/third-party-claims/ChessboardStarNerve.ilean -c /home/kbr/dev/math-worktrees/chessboard/formalization/.lake/build/ir/third-party-claims/ChessboardStarNerve.c --setup /home/kbr/dev/math-worktrees/chessboard/formalization/.lake/build/ir/third-party-claims/ChessboardStarNerve.setup.json --json
+error: third-party-claims/ChessboardStarNerve.lean:28:4: Tactic `constructor` failed: target is not an inductive datatype
+
+case hr
+a b : ℕ
+ha : 1 ≤ a
+J : Finset (Fin b)
+hJ : J ≠ Finset.univ
+j : Fin b
+hj : j ∉ J
+r : Fin a := ⋯
+v : Fin (a + 1) × Fin b := ⋯
+i : Fin b
+hi : i ∈ J
+⊢ ∀ x ∈ {v}, x.1 ≠ 0
+error: third-party-claims/ChessboardStarNerve.lean:32:4: Type mismatch
+  Fin.succ_ne_zero ?m.100
+has type
+  Fin.succ ?m.100 ≠ 0
+but is expected to have type
+  v.2 ≠ i
+error: third-party-claims/ChessboardStarNerve.lean:33:10: Tactic `introN` failed: There are no additional binders or `let` bindings in the goal to introduce
+
+a b : ℕ
+ha : 1 ≤ a
+J : Finset (Fin b)
+hJ : J ≠ Finset.univ
+j : Fin b
+hj : j ∉ J
+r : Fin a := ⟨0, ha⟩
+v : Fin (a + 1) × Fin b := (r.succ, j)
+i : Fin b
+hi : i ∈ J
+⊢ {v} ∈ (chessboardComplex (a + 1) b).faces
+error: third-party-claims/ChessboardStarNerve.lean:69:54: unsolved goals
+case mk.mk
+a b : ℕ
+ha : 1 ≤ a
+hb : 2 ≤ b
+hf : (nerve (firstRowStar a b)).faces = (simplexBoundary Finset.univ ⋯).faces
+faces✝¹ : Set (Finset (Fin b))
+empty_mem✝¹ : ∅ ∈ faces✝¹
+downward✝¹ : ∀ {s t : Finset (Fin b)}, s ⊆ t → t ∈ faces✝¹ → s ∈ faces✝¹
+faces✝ : Set (Finset (Fin b))
+empty_mem✝ : ∅ ∈ faces✝
+downward✝ : ∀ {s t : Finset (Fin b)}, s ⊆ t → t ∈ faces✝ → s ∈ faces✝
+⊢ faces✝¹ = faces✝
+Some required targets logged failures:
+- «third-party-claims».ChessboardStarNerve
+error: build failed
