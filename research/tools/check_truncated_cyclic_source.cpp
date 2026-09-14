@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Kamil Braun
 // Arbitrary cyclic lengths: local Taylor maps, weighted reduction, complete sources.
-#include "binary_extension_polynomial.hpp"
+#include "cyclic_coordinates.hpp"
 #include "graded_reduction.hpp"
 #include "ns_witness.hpp"
 #include <boost/multiprecision/cpp_int.hpp>
@@ -15,96 +15,25 @@ using namespace graded_reduction;
 using namespace binary_extension;
 using boost::multiprecision::cpp_int;
 void need(bool ok,const std::string& why){if(!ok)throw std::runtime_error(why);}
-bool binomial_odd(unsigned n,unsigned k){return (n&k)==k;}
-int odd_part(int t){while(t%2==0)t/=2;return t;}
-int field_modulus(int t){
-    int u=odd_part(t),d=1;
-    if(u>1){int residue=2%u;while(residue!=1){residue=2*residue%u;++d;need(d<=u,"finite order bound");}}
-    const int moduli[5]={0,3,7,11,19};need(d<=4,"small exact local-field fixture");return moduli[d];
-}
+using cyclic_coordinates::Coordinates;
+using cyclic_coordinates::binomial_odd;
 struct OldWitness {EP remainder;std::vector<EP> cofs;};
-struct CyclicCase {
-    Arithmetic a;int t,u,e,v;bool affine;static constexpr int Y=1024;
-    std::vector<int> roots,frobenius,weights,selected_rows;
-    Matrix left,right,left_inverse,right_inverse;
-    std::vector<Polynomial> probes_a,probes_b,inputs,old_generators,local_products,divisors;
-    std::map<int,EP> to_old,to_y;
+struct CyclicCase : Coordinates {
+    std::vector<int> selected_rows;
+    std::vector<Polynomial> old_generators,divisors;
     std::vector<std::map<int,int>> divisor_map;
     std::unique_ptr<ReductionMap> reduction;
     int extension_certificates=0,coordinate_certificates=0,binary_kernel_certificates=0,source_certificates=0,models=0;
-    CyclicCase(int length,bool shifted):a(field_modulus(length)),t(length),u(odd_part(t)),e(t/u),v(2*t+1),affine(shifted){
-        need(t>=2 && t<=12,"bounded cyclic fixture");
-        for(int x=1;x<a.f.q;++x)if(a.f.power(x,u)==1)roots.push_back(x);
-        need(int(roots.size())==u,"all distinct cyclic roots");
-        for(int root:roots){auto it=std::find(roots.begin(),roots.end(),a.f.mul(root,root));need(it!=roots.end(),"Frobenius root permutation");frobenius.push_back(it-roots.begin());}
-        for(int i=0;i<t;++i){
-            auto A=a.r.variable(i),B=a.r.variable(t+i);
-            if(affine && i==0){a.r.accumulate(A,a.r.variable(1));a.r.accumulate(B,a.r.variable(t+1));}
-            if(affine && i<(u==1?2:3)){a.r.accumulate(A,a.r.constant(1));a.r.accumulate(B,a.r.constant(1));}
-            probes_a.push_back(A);probes_b.push_back(B);
-        }
-        left.resize(t,std::vector<int>(t));right=left;
-        for(int j=0;j<u;++j)for(int r=0;r<e;++r)for(int i=0;i<t;++i){
-            int exponent=(t-i)%t;
-            if(exponent>=r && binomial_odd(exponent,r))left[j*e+r][i]=a.f.power(roots[j],exponent-r);
-            if(i>=r && binomial_odd(i,r))right[j*e+r][i]=a.f.power(roots[j],i-r);
-        }
-        left_inverse=invert(a.f,left);right_inverse=invert(a.f,right);
-        std::vector<EP> A_inverse(t,a.zero()),B_inverse(t,a.zero());
-        for(int row=0;row<t;++row){
-            auto A=a.zero(),B=a.zero();
-            for(int i=0;i<t;++i){
-                a.add(A,a.binary(probes_a[i]),left[row][i]);a.add(B,a.binary(probes_b[i]),right[row][i]);
-                a.add(A_inverse[row],a.variable(Y+i),left_inverse[row][i]);
-                a.add(B_inverse[row],a.variable(Y+t+i),right_inverse[row][i]);
-            }
-            to_old[Y+row]=A;to_old[Y+t+row]=B;
-        }
-        for(int i=0;i<t;++i){
-            auto A=A_inverse[i],B=B_inverse[i];
-            if(affine && i==0){a.add(A,A_inverse[1]);a.add(B,B_inverse[1]);}
-            if(affine && i>0 && i<(u==1?2:3)){a.add(A,a.constant(1));a.add(B,a.constant(1));}
-            to_y[i]=A;to_y[t+i]=B;
-        }
-        to_old[Y+v-1]=a.variable(v-1);to_y[v-1]=a.variable(Y+v-1);
-        for(int i=0;i<v;++i){
-            need(a.substitute(to_y[i],to_old)==a.variable(i),"old affine-coordinate round trip");
-            need(a.substitute(to_old[Y+i],to_y)==a.variable(Y+i),"local affine-coordinate round trip");
-            auto x=a.r.variable(i);old_generators.push_back(a.r.subtract(a.r.power(x,2),x));
-        }
-        for(int i=0;i<t;++i){
-            Polynomial g;for(int j=0;j<t;++j)a.r.accumulate(g,a.r.multiply(probes_a[j],probes_b[(j+i)%t]));
-            inputs.push_back(g);
-        }
-        old_generators.insert(old_generators.end(),inputs.begin(),inputs.end());weights.resize(v);
-        for(int i=0;i<v;++i){
-            int next=i;
-            if(i<2*t){int local=i%t,side=i<t?0:t;next=side+frobenius[local/e]*e+local%e;weights[i]=-(local%e)*(local%e);}
-            auto x=a.r.variable(Y+i);divisors.push_back(a.r.subtract(a.r.power(x,2),a.r.variable(Y+next)));
+    CyclicCase(int length,bool shifted):Coordinates(length,shifted){
+        old_generators=boolean;old_generators.insert(old_generators.end(),inputs.begin(),inputs.end());
+        divisors=domain_divisors;divisor_map=domain_pullback;
+        for(int j=0;j<u;++j)for(int k=0;k<e;k+=2){
+            selected_rows.push_back(j*e+k);divisors.push_back(local_products[j*e+k]);
             std::map<int,int> image;
-            for(int r=0;r<v;++r){
-                int scalar=0;
-                for(int component=0;component<a.f.d;++component)if(to_old[Y+next][component].count(Monomial{r}))scalar|=1<<component;
-                if(scalar)image[r]=scalar;
-            }
+            for(int i=0;i<t;++i)if(right[j*e+k][i])image[v+i]=right[j*e+k][i];
             divisor_map.push_back(image);
         }
-        for(int j=0;j<u;++j)for(int k=0;k<e;++k){
-            Polynomial C;
-            for(int r=0;r<=k;++r)a.r.accumulate(C,a.r.multiply(a.r.variable(Y+j*e+r),a.r.variable(Y+t+j*e+k-r)));
-            local_products.push_back(C);
-            if(k%2==0){
-                selected_rows.push_back(j*e+k);divisors.push_back(C);std::map<int,int> image;
-                for(int i=0;i<t;++i)if(right[j*e+k][i])image[v+i]=right[j*e+k][i];
-                divisor_map.push_back(image);
-            }
-        }
-        auto order=[w=weights](const Monomial& m,const Monomial& n){
-            if(m.size()!=n.size())return m.size()<n.size();
-            int wm=0,wn=0;for(int id:m)wm+=w.at(id-Y);for(int id:n)wn+=w.at(id-Y);
-            return wm!=wn?wm<wn:monomial_less(m,n);
-        };
-        reduction=std::make_unique<ReductionMap>(a.r,divisors,order);
+        reduction=std::make_unique<ReductionMap>(a.r,divisors,order());
         std::set<int> used;
         for(unsigned j=0;j<selected_rows.size();++j){
             int row=selected_rows[j],local=(row/e)*e+(row%e)/2;

@@ -66,8 +66,10 @@ actionable rule over another checklist or a record of one-off setup history.
   how the task could discharge or test it, and state a concrete stopping point.
   Distinguish what suffices for the goal from stronger conveniences of a method.
   Select a sufficient endpoint before adding proof-conversion steps.
-  Prioritize an unproved application to the actual retained source family: check
-  that its objects and hypotheses survive the required compilation and
+  Prioritize the unproved step for the full compiled source, with bounds for
+  every fixed target depth. Use special families to test that step; if they
+  do not resolve a named hypothesis or obstruction, audit the general step
+  before extending them. Check source hypotheses through compilation and
   preprocessing before sharpening conditional estimates. Once the question, argument, and
   evidence are stable, make one focused correctness
   review; move optional extensions to the next cycle. Reopen the argument only
