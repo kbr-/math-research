@@ -177,10 +177,8 @@ instructions: stay on the current branch, commit locally, and do not push."
 The Spin prompt remains the authoritative loop; there is no need to paste its
 full instructions into each goal.
 
-In the CLI, `/goal` displays the current objective, `/goal edit` changes it,
-`/goal pause` pauses it, `/goal resume` continues it, and `/goal clear` removes it.
-The app also provides goal controls in its progress row. Keep the machine hosting
-the remote session awake and connected while it works. See the official OpenAI
+Keep the machine hosting the remote session awake and connected while it works.
+See the official OpenAI
 guides to [long-running work](https://learn.chatgpt.com/docs/long-running-work)
 and [goal commands](https://learn.chatgpt.com/docs/developer-commands?surface=cli#set-or-view-a-task-goal-with-goal).
 
