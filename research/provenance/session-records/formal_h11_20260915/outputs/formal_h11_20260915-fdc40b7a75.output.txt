@@ -1,0 +1,237 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Claim file: claims/AffineClauseCompression.lean
+Claim: lem:affine-clause-basis-compression
+Source: https://kbr.is-a.dev/math-research/#lean-affine-clause-basis-compression
+Scope: Every finite binary affine clause has a semantically equivalent subclause with at most dim(V)+1 literals; no satisfiability hypothesis is needed.
+Declarations: MathResearch.affine_clause_basis_compression MathResearch.affine_clause_registry_compression
+Claim file: claims/BinaryAffineZeroCover.lean
+Claim: lem:binary-affine-zero-cover
+Source: https://kbr.is-a.dev/math-research/#lean-binary-affine-zero-cover
+Scope: Separator already in the first clause for a nontrivial binary semantic cover; both restricted zero sets are exactly its 0 and 1 fibers, with witnesses for both values. No finite-dimensional hypothesis is needed.
+Declarations: MathResearch.binary_affine_zero_cover MathResearch.binary_affine_halves_translate
+Claim file: claims/BinarySemanticAffineCover.lean
+Claim: lem:binary-semantic-affine-cover
+Source: https://kbr.is-a.dev/math-research/#binary-semantic-affine-cover
+Scope: Binary semantic inference reduces to one weakening or two weakenings and one resolution; the basic derivation is sound and introduces at most two auxiliary clauses. Affine restriction preserves semantic inference. Compressed premises and conclusion each have at most dim(V)+1 literals. Separator, translation, and registry-description bounds are in dependency files. The concrete PC-degree simulation is not formalized here.
+Declarations: MathResearch.binary_semantic_affine_cover MathResearch.binary_semantic_three_steps MathResearch.parity_derivation_sound MathResearch.binary_auxiliary_count MathResearch.binary_semantic_restriction MathResearch.binary_semantic_compressed
+Claim file: claims/ModInterpolation.lean
+Claim: lem:mod-interpolation
+Source: https://kbr.is-a.dev/math-research/#mod-pruned-polynomial
+Scope: Full interpolation identity, zero case p = 2, and joint total-degree bound p - 3 for p ≥ 3; generalized to every nontrivial commutative coefficient ring and every natural number p ≥ 3. Does not formalize the surrounding MOD axiom certificate or source substitution.
+Declarations: MathResearch.mod_interpolation MathResearch.mod_interpolation_two
+Claim file: claims/MpTelescoping.lean
+Claim: lem:mp-telescoping
+Source: https://kbr.is-a.dev/math-research/#mp-telescoping
+Scope: Explicit telescoping identity and joint total-degree bounds for coefficients and companions, for finite indexed inputs over any commutative ring. Coefficients may be any polynomials of degree at most one. The source's exact companion-degree equality is replaced by the valid upper bound and refuted when δ is merely an upper bound.
+Declarations: MathResearch.mp_telescoping MathResearch.mp_coefficient_degree MathResearch.mp_companion_degree MathResearch.mp_companion_equality_counterexample
+Claim file: third-party-claims/ChessboardFilling.lean
+Claim: third-party:BLVZ-chessboard-filling
+Source: https://kbr.is-a.dev/math-research/#third-party-chessboard-filling-interface
+Scope: Exact finite F₂ reduced-cycle filling interface H for s≥2 and N≥2s-1. Statement only; no proof or axiom of H is introduced.
+Status: statement-only
+Declarations: MathResearch.ThirdParty.ChessboardFilling
+Claim file: third-party-claims/ChessboardParameterArithmetic.lean
+Claim: third-party:chessboard-parameter-arithmetic
+Source: https://kbr.is-a.dev/math-research/#chessboard-parameter-arithmetic
+Scope: Complete H11 parameter arithmetic for the classical chessboard star-cover proof, including integer degree and empty/one-side boundaries. No homology theorem is asserted.
+Declarations: MathResearch.ThirdParty.chessboardNu_symm MathResearch.ThirdParty.chessboardNu_bounds MathResearch.ThirdParty.chessboardNu_pos MathResearch.ThirdParty.chessboardNu_zero MathResearch.ThirdParty.chessboardNu_one MathResearch.ThirdParty.chessboardNu_ordered_bound MathResearch.ThirdParty.chessboardNu_intersection MathResearch.ThirdParty.chessboardNu_intersection_degree MathResearch.ThirdParty.chessboard_induction_decrease MathResearch.ThirdParty.chessboardNu_stable_range MathResearch.ThirdParty.chessboard_cell_degree_iff MathResearch.ThirdParty.chessboard_degree_vacuous MathResearch.ThirdParty.chessboardNu_base_degree
+$ lake --wfail build
+✔ [1716/1724] Built «third-party-claims».ChessboardParameterArithmetic (888ms)
+✔ [1717/1724] Built «third-party-claims».ChessboardFilling (4.1s)
+✔ [1719/1724] Built claims.BinaryAffineZeroCover (4.5s)
+✔ [1720/1724] Built claims.MpTelescoping (4.3s)
+✔ [1721/1724] Built claims.ModInterpolation (4.6s)
+✔ [1722/1724] Built claims.AffineClauseCompression (2.5s)
+✔ [1723/1724] Built claims.BinarySemanticAffineCover (1.5s)
+Build completed successfully (1724 jobs).
+$ lake env lean -DwarningAsError=true claims/AffineClauseCompression.lean
+$ lake env lean -DwarningAsError=true claims/BinaryAffineZeroCover.lean
+$ lake env lean -DwarningAsError=true claims/BinarySemanticAffineCover.lean
+$ lake env lean -DwarningAsError=true claims/ModInterpolation.lean
+$ lake env lean -DwarningAsError=true claims/MpTelescoping.lean
+$ lake env lean -DwarningAsError=true third-party-claims/ChessboardFilling.lean
+$ lake env lean -DwarningAsError=true third-party-claims/ChessboardParameterArithmetic.lean
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/arithmetic/formalization/.lake/tmpjum9iisv.lean
+@MathResearch.affine_clause_basis_compression : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] [FiniteDimensional MathResearch.BinaryField V]
+  (C : MathResearch.ParityClause V),
+  ∃ S ⊆ C,
+    Finset.card S ≤ Module.finrank MathResearch.BinaryField V + 1 ∧
+      ∀ (x : V), MathResearch.clauseHolds S x ↔ MathResearch.clauseHolds C x
+'MathResearch.affine_clause_basis_compression' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affine_clause_registry_compression : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] [FiniteDimensional MathResearch.BinaryField V] (N : ℕ)
+  (C : Fin N → MathResearch.ParityClause V),
+  ∃ S,
+    (∀ (i : Fin N),
+        S i ⊆ C i ∧
+          Finset.card (S i) ≤ Module.finrank MathResearch.BinaryField V + 1 ∧
+            ∀ (x : V), MathResearch.clauseHolds (S i) x ↔ MathResearch.clauseHolds (C i) x) ∧
+      ∑ i, Finset.card (S i) * (Module.finrank MathResearch.BinaryField V + 1) ≤
+        N * (Module.finrank MathResearch.BinaryField V + 1) ^ 2
+'MathResearch.affine_clause_registry_compression' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_affine_zero_cover : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] (A B D : MathResearch.ParityClause V),
+  (∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x) →
+    ¬MathResearch.clauseEntails A D →
+      ¬MathResearch.clauseEntails B D →
+        ∃ u ∈ A,
+          ∃ a b,
+            MathResearch.clauseZero D a ∧
+              MathResearch.clauseZero D b ∧
+                u a = 1 ∧
+                  u b = 0 ∧
+                    ∀ (x : V),
+                      MathResearch.clauseZero D x →
+                        (MathResearch.clauseZero A x ↔ u x = 0) ∧ (MathResearch.clauseZero B x ↔ u x = 1)
+'MathResearch.binary_affine_zero_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_affine_halves_translate : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] (A B D : MathResearch.ParityClause V),
+  (∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x) →
+    ¬MathResearch.clauseEntails A D →
+      ¬MathResearch.clauseEntails B D →
+        ∃ a b e, ∀ (x : { x // MathResearch.clauseZero D x ∧ MathResearch.clauseZero A x }), ↑(e x) = a - b + ↑x
+'MathResearch.binary_affine_halves_translate' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_semantic_affine_cover : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] (A B D : MathResearch.ParityClause V),
+  (∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x) →
+    MathResearch.clauseEntails A D ∨
+      MathResearch.clauseEntails B D ∨
+        ∃ u ∈ A,
+          MathResearch.clauseEntails A (insert u D) ∧
+            MathResearch.clauseEntails B (insert (MathResearch.oppositeParity u) D)
+'MathResearch.binary_semantic_affine_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_semantic_three_steps : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] (A B D : MathResearch.ParityClause V),
+  (∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x) →
+    ∃ n ≤ 3, MathResearch.ParityDerivation A B D n
+'MathResearch.binary_semantic_three_steps' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.parity_derivation_sound : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] {A B D : MathResearch.ParityClause V} {n : ℕ},
+  MathResearch.ParityDerivation A B D n →
+    ∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x
+'MathResearch.parity_derivation_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_auxiliary_count : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] (D : MathResearch.ParityClause V)
+  (u : V →ᵃ[MathResearch.BinaryField] MathResearch.BinaryField),
+  (MathResearch.binaryAuxiliaryClauses D u).card ≤ 2 ∧
+    ∀ C ∈ MathResearch.binaryAuxiliaryClauses D u, Finset.card C ≤ Finset.card D + 1
+'MathResearch.binary_auxiliary_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_semantic_restriction : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] {U : Type u_2} [inst_2 : AddCommGroup U]
+  [inst_3 : Module MathResearch.BinaryField U] (A B D : MathResearch.ParityClause V),
+  (∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x) →
+    ∀ (f : U →ᵃ[MathResearch.BinaryField] V) (x : U),
+      MathResearch.clauseHolds (MathResearch.restrictParityClause A f) x →
+        MathResearch.clauseHolds (MathResearch.restrictParityClause B f) x →
+          MathResearch.clauseHolds (MathResearch.restrictParityClause D f) x
+'MathResearch.binary_semantic_restriction' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_semantic_compressed : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] [FiniteDimensional MathResearch.BinaryField V]
+  (A B D : MathResearch.ParityClause V),
+  (∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x) →
+    ∃ A' B' D',
+      Finset.card A' ≤ Module.finrank MathResearch.BinaryField V + 1 ∧
+        Finset.card B' ≤ Module.finrank MathResearch.BinaryField V + 1 ∧
+          Finset.card D' ≤ Module.finrank MathResearch.BinaryField V + 1 ∧
+            (∀ (x : V), MathResearch.clauseHolds A' x ↔ MathResearch.clauseHolds A x) ∧
+              (∀ (x : V), MathResearch.clauseHolds B' x ↔ MathResearch.clauseHolds B x) ∧
+                (∀ (x : V), MathResearch.clauseHolds D' x ↔ MathResearch.clauseHolds D x) ∧
+                  ∃ n ≤ 3, MathResearch.ParityDerivation A' B' D' n
+'MathResearch.binary_semantic_compressed' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mod_interpolation : ∀ {R : Type u_1} [inst : CommRing R] [Nontrivial R] (p : ℕ),
+  3 ≤ p →
+    ∃ q,
+      (MathResearch.modT + MathResearch.modA - 1) ^ (p - 1) - MathResearch.modA * MathResearch.modT ^ (p - 1) -
+            (1 - MathResearch.modA) * (MathResearch.modT - 1) ^ (p - 1) =
+          (MathResearch.modA ^ 2 - MathResearch.modA) * q ∧
+        q.totalDegree ≤ p - 3
+'MathResearch.mod_interpolation' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mod_interpolation_two : ∀ {R : Type u_1} [inst : CommRing R],
+  (MathResearch.modT + MathResearch.modA - 1) ^ (2 - 1) - MathResearch.modA * MathResearch.modT ^ (2 - 1) -
+      (1 - MathResearch.modA) * (MathResearch.modT - 1) ^ (2 - 1) =
+    0
+'MathResearch.mod_interpolation_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mp_telescoping : ∀ {R : Type u_1} {ι : Type u_2} [inst : CommRing R] [inst_1 : Fintype ι] (f : ι → R)
+  (r : ℕ → ι → R) (h : ℕ), 1 - MathResearch.ensProduct f r h = ∑ i, MathResearch.ensCoefficient f r h i * f i
+'MathResearch.mp_telescoping' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mp_coefficient_degree : ∀ {R : Type u_1} {ι : Type u_2} {σ : Type u_3} [inst : CommRing R]
+  [inst_1 : Fintype ι] (f : ι → MvPolynomial σ R) (r : ℕ → ι → MvPolynomial σ R) (δ h : ℕ) (i : ι),
+  (∀ (j : ι), (f j).totalDegree ≤ δ) →
+    (∀ v < h, ∀ (j : ι), (r v j).totalDegree ≤ 1) →
+      (MathResearch.ensCoefficient f r h i).totalDegree ≤ 1 + (h - 1) * (δ + 1)
+'MathResearch.mp_coefficient_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mp_companion_degree : ∀ {R : Type u_1} {ι : Type u_2} {σ : Type u_3} [inst : CommRing R]
+  [inst_1 : Fintype ι] (f : ι → MvPolynomial σ R) (r : ℕ → ι → MvPolynomial σ R) (δ h : ℕ) (i : ι),
+  (∀ (j : ι), (f j).totalDegree ≤ δ) →
+    (∀ v < h, ∀ (j : ι), (r v j).totalDegree ≤ 1) →
+      (f i * MathResearch.ensProduct f r h).totalDegree ≤ (f i).totalDegree + h * (δ + 1)
+'MathResearch.mp_companion_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mp_companion_equality_counterexample : ∀ {R : Type u_1} [inst : CommRing R] [Nontrivial R],
+  have f := fun x => 1;
+  have r := fun x x_1 => MvPolynomial.X 0;
+  (∀ (i : Fin 1), (f i).totalDegree ≤ 1) ∧
+    (∀ v < 1, ∀ (i : Fin 1), (r v i).totalDegree ≤ 1) ∧
+      (f 0 * MathResearch.ensProduct f r 1).totalDegree ≠ (f 0).totalDegree + 1 * (1 + 1)
+'MathResearch.mp_companion_equality_counterexample' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ThirdParty.ChessboardFilling : Prop
+'MathResearch.ThirdParty.ChessboardFilling' depends on axioms: [propext, Classical.choice, Quot.sound]
+def MathResearch.ThirdParty.ChessboardFilling : Prop :=
+∀ (s N : ℕ),
+  2 ≤ s →
+    2 * s - 1 ≤ N →
+      ∀ (c : MathResearch.ThirdParty.ChessboardChain s N (s - 1)),
+        MathResearch.ThirdParty.chessboardBoundary c = 0 → ∃ b, MathResearch.ThirdParty.chessboardBoundary b = c
+MathResearch.ThirdParty.chessboardNu_symm : ∀ (a b : ℕ),
+  MathResearch.ThirdParty.chessboardNu a b = MathResearch.ThirdParty.chessboardNu b a
+'MathResearch.ThirdParty.chessboardNu_symm' depends on axioms: [propext, Quot.sound]
+MathResearch.ThirdParty.chessboardNu_bounds : ∀ (a b : ℕ),
+  MathResearch.ThirdParty.chessboardNu a b ≤ a ∧
+    MathResearch.ThirdParty.chessboardNu a b ≤ b ∧ 3 * MathResearch.ThirdParty.chessboardNu a b ≤ a + b + 1
+'MathResearch.ThirdParty.chessboardNu_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.chessboardNu_pos : ∀ {a b : ℕ}, 1 ≤ a → 1 ≤ b → 1 ≤ MathResearch.ThirdParty.chessboardNu a b
+'MathResearch.ThirdParty.chessboardNu_pos' depends on axioms: [propext, Quot.sound]
+MathResearch.ThirdParty.chessboardNu_zero : ∀ (b : ℕ),
+  MathResearch.ThirdParty.chessboardNu 0 b = 0 ∧ MathResearch.ThirdParty.chessboardNu b 0 = 0
+'MathResearch.ThirdParty.chessboardNu_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.chessboardNu_one : ∀ {b : ℕ}, 1 ≤ b → MathResearch.ThirdParty.chessboardNu 1 b = 1
+'MathResearch.ThirdParty.chessboardNu_one' depends on axioms: [propext, Quot.sound]
+@MathResearch.ThirdParty.chessboardNu_ordered_bound : ∀ {a b : ℕ},
+  2 ≤ a → a ≤ b → MathResearch.ThirdParty.chessboardNu a b ≤ b - 1
+'MathResearch.ThirdParty.chessboardNu_ordered_bound' depends on axioms: [propext, Quot.sound]
+@MathResearch.ThirdParty.chessboardNu_intersection : ∀ {a b t : ℕ},
+  2 ≤ a →
+    a ≤ b →
+      2 ≤ t →
+        t < b → MathResearch.ThirdParty.chessboardNu a b + 1 ≤ MathResearch.ThirdParty.chessboardNu (a - 1) (b - t) + t
+'MathResearch.ThirdParty.chessboardNu_intersection' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.chessboardNu_intersection_degree : ∀ {a b t : ℕ},
+  2 ≤ a →
+    a ≤ b →
+      2 ≤ t →
+        t < b →
+          ↑(MathResearch.ThirdParty.chessboardNu a b) - 2 - ↑t + 1 ≤
+            ↑(MathResearch.ThirdParty.chessboardNu (a - 1) (b - t)) - 2
+'MathResearch.ThirdParty.chessboardNu_intersection_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.chessboard_induction_decrease : ∀ {a b t : ℕ},
+  1 ≤ a → a ≤ b → min (a - 1) (b - t) < min a b ∧ min (b - t) (a - 1) < min a b
+'MathResearch.ThirdParty.chessboard_induction_decrease' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.chessboardNu_stable_range : ∀ {s N : ℕ},
+  2 * s - 1 ≤ N → MathResearch.ThirdParty.chessboardNu s N = s
+'MathResearch.ThirdParty.chessboardNu_stable_range' depends on axioms: [propext, Quot.sound]
+MathResearch.ThirdParty.chessboard_cell_degree_iff : ∀ (k n : ℕ), -1 ≤ ↑k - 1 ∧ ↑k - 1 ≤ ↑n - 2 ↔ k < n
+'MathResearch.ThirdParty.chessboard_cell_degree_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.chessboard_degree_vacuous : ∀ {q : ℤ}, q < -1 → ∀ (k : ℕ), ¬↑k - 1 ≤ q
+'MathResearch.ThirdParty.chessboard_degree_vacuous' depends on axioms: [propext, Quot.sound]
+MathResearch.ThirdParty.chessboardNu_base_degree : ∀ (k : ℕ), (↑k - 1 ≤ 1 - 2 ↔ k = 0) ∧ ¬↑k - 1 ≤ 0 - 2
+'MathResearch.ThirdParty.chessboardNu_base_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 6 proof files; 1 statement-only files (no proof claimed); 30 audited declarations.
