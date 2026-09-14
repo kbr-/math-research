@@ -200,6 +200,8 @@ actionable rule over another checklist or a record of one-off setup history.
 - Focus routine verification on the mathematics and touched links. Run site or
   rendering checks for layout/tooling changes or a concrete rendering concern;
   ordinary research entries need no repeated builds or full-notebook audits.
+- Keep PNG previews and contact sheets local; do not display or attach them in
+  the conversation unless the user asks.
 - Distinguish working proofs, imported statements, conditional claims, finite
   checks, and open obligations. Match source hypotheses, encodings, and versions.
 - Record exact research statements, arguments or obstructions, dependencies,
