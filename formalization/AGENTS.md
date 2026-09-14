@@ -31,6 +31,10 @@ policy. Setup and verification commands live in [README.md](README.md);
   link or a description of the proof strategy alone is insufficient.
   Generalize only when it simplifies the proof or removes unnecessary
   dependencies without delaying the assigned claim. Defer optional extensions.
+  When a reusable dependency makes a claim's formalization clearer, give it a
+  separate Lean file and claim-index entry, with its full human-readable proof
+  in the introducing research record. Keep small local helpers in the target
+  file unless separating them has a concrete benefit.
 - Search the pinned local Mathlib sources for definitions and theorem names
   before guessing APIs or fetching additional modules. Keep imports targeted.
   Separate library setup, elaboration, and syntax failures from mathematical
