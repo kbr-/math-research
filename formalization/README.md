@@ -2,7 +2,10 @@
 
 This Lake project provides the environment for formalizing selected notebook
 claims. Each result will have its own file under `claims/`, for example
-`claims/ModInterpolation.lean`. No research result has been formalized yet.
+`claims/ModInterpolation.lean`. The first completed formalization is
+[`lem:mod-interpolation`](claims/ModInterpolation.lean): its identity, zero case,
+and joint total-degree bound, with the precise scope recorded in its header and
+the [claim index](../research/CLAIM_INDEX.md).
 
 Files can depend on other claim files using imports such as
 `import claims.ModInterpolation`. Lake discovers all Lean modules under
@@ -28,13 +31,13 @@ Build the project:
 ```
 
 To check an individual file, replace `lake build` with
-`lake env lean claims/ModInterpolation.lean` once that file exists.
+`lake env lean claims/ModInterpolation.lean`.
 Build imported local modules first with `lake build`. An editor extension is optional.
 
 ## Claim records and verification
 
-Start each claim file with a header like this (the names below are examples,
-not an existing formalization):
+Start each claim file with a header like this, filling in its exact scope and
+all result declarations:
 
 ```lean
 /-

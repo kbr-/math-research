@@ -15,6 +15,7 @@
   <p><strong>The latest source theorem covers binary cyclic multiplication at arbitrary lengths.</strong> The working <a href="#arbitrary-cyclic-complete-source-exclusion">cyclic-source theorem</a> handles repeated factors and independent affine operand probes, reaching old degree \(\sqrt n\,\operatorname{polylog}n=o(n)\). Local truncated-product coordinates, a weighted monomial order, and binary descent preserve complete source equations and original degrees. Other covered families include <a href="#large-binary-field-product-source-exclusion">large binary field products</a>, <a href="#all-prime-leading-pair-source-exclusion">all-prime leading-pair inputs</a>, and binary <a href="#bounded-affine-probe-source-exclusion">bounded-probe inputs</a>.</p>
   <p><strong>The central gap is coverage of the actual general Frege source.</strong> The <a href="#disjoint-sums-quadratic-vanishing-ideal">latest audit</a> proves that pair consequences can fail even for covered source families. The sufficient <a href="#quadratic-kernel-compression-obligation">common-kernel compression condition</a> allows several constructions, but it is not established for the full source. General quadratic input spaces, growing bottom rank, and later nonlinear levels remain open; the all-prime source application does not supply general odd-prime source compilation. Existing <a href="#dependent-rank-source-collapse">selector-rank criteria</a> and the <a href="#compact-source-polynomial-rank-obstruction">necessary-rank obstruction</a> constrain a possible short proof, but do not yet exclude the entire family. Source transformations must preserve a sufficient hypothesis and charge every original degree.</p>
   <p>The <a href="#unit-accuracy-affine-family-exclusion">one-level affine endpoint works over every fixed prime at accuracy one</a>, including quasipolynomial inventory at polylogarithmic degree. Further tools include <a href="#affine-level-full-old-low-degree-separation">preservation of old moments</a>, <a href="#joint-high-selector-zero-preservation">specified joint selector zeroes</a>, <a href="#shared-core-projected-source-criterion">old-bit profiles for eligible shared-bit parents</a>, and <a href="#mixed-star-union-affine-core-profile">profiles for covered mixed unions</a>. Their exact hypotheses and degree budgets are in Working mathematical context and the linked proofs.</p>
+  <p><strong>Formal verification.</strong> The <a href="#entry-2026-09-14-lean-mod-interpolation">first Lean formalization</a> verifies the local MOD interpolation identity and its joint total-degree bound. This audits one algebraic component; the main source-coverage gap is unchanged.</p>
   <div class="result">
     <p><strong>What would finish the route:</strong> for every fixed prime, depth, and size exponent, turn any hypothetical short ordinary-PHP Frege proof into an old-base refutation below its \(N/2+1\) PC degree bound, or directly exclude its complete augmented endpoint. No current mechanism covers that full family. A concrete polynomial-size Frege construction would also be valuable; none is established.</p>
   </div>
@@ -15532,6 +15533,52 @@
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">15.25 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+
+<article class="research-entry" id="entry-2026-09-14-lean-mod-interpolation">
+  <h3>14 September 2026 — First Lean formalization: MOD interpolation and its joint degree bound</h3>
+  <p class="entry-meta"><strong>Status:</strong> Lean-verified algebraic identity and degree bound; explicit generalization of <code>lem:mod-interpolation</code>. The surrounding MOD certificate and the main Frege lower-bound goal remain unformalized.</p>
+  <p><strong>Obligation and stopping point.</strong> Under the user's explicit formalization assignment, verify the isolated interpolation identity from <a href="#mod-pruned-polynomial">the earlier MOD calculation</a>, including its ordinary joint degree bound. This audits a local algebraic component, not the remaining-route obligation of covering the general retained Frege source. Stop when the exact statement compiles, its axioms are audited, and its source and verification evidence are linked from the claim index.</p>
+  <h4 id="lean-mod-interpolation-statement">Exact verified statement</h4>
+  <p>Let \(R\) be any nontrivial commutative ring, and let \(t,a\) be independent indeterminates in \(R[t,a]\). For every natural number \(p\ge3\), there exists \(Q\in R[t,a]\) such that</p>
+  <div class="math">\[
+    (t+a-1)^{p-1}-a t^{p-1}-(1-a)(t-1)^{p-1}
+       =(a^2-a)Q,\qquad \deg_{t,a}Q\le p-3.
+  \]</div>
+  <p>For \(p=2\), the left side is identically zero over every commutative ring, without a nontriviality assumption. Primality and characteristic \(p\) are unnecessary. In particular, taking \(R=\mathbb F_p\) gives the complete earlier interpolation claim. The degree is total degree in both variables; neither Boolean reduction in \(a\) nor field reduction in \(t\) is used.</p>
+  <h4 id="lean-mod-interpolation-proof">Explicit quotient and proof</h4>
+  <p>Instead of formalizing monic division, construct two polynomial sequences:</p>
+  <div class="math">\[
+  \begin{aligned}
+    D_0&=1,& D_{n+1}&=tD_n+(t-1)^{n+1},\\
+    Q_0&=1,& Q_{n+1}&=(t+a-1)Q_n+D_{n+1}.
+  \end{aligned}
+  \]</div>
+  <p>Induction using the power recurrence gives \(D_n=t^{n+1}-(t-1)^{n+1}\). Independently, \(\deg D_n\le n\): the initial degree is zero, and each term in the recurrence for \(D_{n+1}\) has degree at most \(n+1\). Likewise \(\deg Q_n\le n\), since the affine multiplier adds at most one degree and \(\deg D_{n+1}\le n+1\). Mathlib's multivariate total-degree inequalities apply over arbitrary commutative coefficient rings, including rings with zero divisors.</p>
+  <p>Write \(F_m=(t+a-1)^m-a t^m-(1-a)(t-1)^m\). Direct expansion proves \(F_2=a^2-a\) and, for \(m\ge1\),</p>
+  <div class="math">\[
+    F_{m+1}=(t+a-1)F_m+(a^2-a)\bigl(t^m-(t-1)^m\bigr).
+  \]</div>
+  <p>Consequently \(F_{n+2}=(a^2-a)Q_n\) by induction. For \(p\ge3\), substitute \(n=p-3\); then \(n+2=p-1\) and the required quotient has total degree at most \(p-3\). Finally, \(F_1=0\) by direct ring normalization. This proves both verified conclusions without importing any other notebook result.</p>
+  <h4 id="lean-mod-interpolation-verification">Formal source, assumptions, and evidence</h4>
+  <p>The <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/ModInterpolation.lean">per-claim Lean file</a> represents the polynomial ring as <code>MvPolynomial (Fin 2) R</code>, with <code>X 0</code> for \(t\) and <code>X 1</code> for \(a\). Its final declarations are <code>MathResearch.mod_interpolation</code> and <code>MathResearch.mod_interpolation_two</code>. A focused statement review matched the exponent \(p-1\), the factor \(a^2-a\), the two independent variables, and the joint total-degree bound to the indexed claim. The general ring and natural-parameter hypotheses weaken the original finite-field/primality requirements.</p>
+  <p>The protected verifier built the project, re-elaborated the file with warnings treated as errors, and ran <code>#print axioms</code> on both final declarations. Both reports contain exactly <code>propext</code>, <code>Classical.choice</code>, and <code>Quot.sound</code>, with no unfinished-proof or custom axiom. These are standard Lean foundations, not additional mathematical hypotheses. The abstract polynomial definitions are marked <code>noncomputable</code>; this affects executable code generation, not proof checking.</p>
+  <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/lean_mod_interpolation_20260914_01/lean-verification-final.txt">complete successful verification output</a> and <a href="https://github.com/kbr-/math-research/blob/main/research/results/lean_mod_interpolation_20260914_01/README.md">reproduction record</a> pin Lean <code>v4.34.0-rc2</code> and Mathlib <code>67248ba34806c60bf24b5e99f0f09946ffc465c9</code>. Initial checks required noncomputability annotations, removal of an unused hypothesis, and a section terminator; their complete diagnostics are retained. No mathematical counterexample was found or numerical experiment performed.</p>
+  <p><strong>Scope and route assessment.</strong> This completes the formalization of the indexed interpolation lemma, including its degree bound. It does not verify the adjacent degree-\(6p-2\) MOD-axiom NS certificate, its source-substitution accounting, or any complete PHP lower bound. The living overview, remaining route, and proposed next research step were reviewed; the source-coverage gap and next mathematical task are unchanged.</p>
+  <p><strong>Process assessment.</strong> An explicit recursive quotient made the joint-degree accounting short and checkable; the existing per-claim layout and axiom verifier sufficed, so no additional framework machinery was needed.</p>
+  <div class="timing-report" data-session="lean_mod_interpolation_20260914_01">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 4.91 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">0.49 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 10.93 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">19.87 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">33.61 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
 </div>
 </article>
 

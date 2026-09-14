@@ -85,7 +85,7 @@ record uses ordinary HTML, Markdown, code, and data files.
 | --- | --- |
 | Recover the right context | [Restart guide](research/notes/RESUME.md) and [validated section excerpts](tools/notebook-excerpt.py) avoid repeatedly loading the full history. |
 | Find and reuse results | The [claim index](research/CLAIM_INDEX.md) links stable labels and claim statuses to complete statements and proofs. |
-| Prepare formal verification | The [Lean project](formalization/README.md) pins Lean and Mathlib for terminal-based proof checking; research formalizations have not yet begun. |
+| Check selected claims formally | The [Lean project](formalization/README.md) pins Lean and Mathlib for terminal-based proof checking; the claim index links completed formalizations and their exact scope. |
 | Run and measure experiments | [compute.sh](compute.sh) combines resource controls, timeouts, complete output logs, and timing reports that count overlap once. |
 | Preserve reproducible evidence | [Provenance manifests](tools/record-provenance.py) record file hashes; [session archival](tools/archive-session.py) preserves outputs and refuses conflicting replacements. |
 | Finish a research checkpoint | [finish-turn.py](tools/finish-turn.py) exports timing, archives evidence, and inserts the notebook timing table before review and commit. |
