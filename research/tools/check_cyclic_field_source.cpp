@@ -2,6 +2,7 @@
 // Copyright (c) 2026 Kamil Braun
 // Binary finite-field pair certificates, CRT maps, and complete cyclic sources.
 #include "domain_polynomial.hpp"
+#include "binary_field.hpp"
 #include "ns_witness.hpp"
 #include <boost/multiprecision/cpp_int.hpp>
 #include <filesystem>
@@ -10,21 +11,7 @@
 using namespace domain_polynomial;
 using boost::multiprecision::cpp_int;
 void need(bool ok,const std::string& why){if(!ok)throw std::runtime_error(why);}
-struct Field {
-    int d,q,modulus;
-    explicit Field(int m):d(31-__builtin_clz(unsigned(m))),q(1<<d),modulus(m){
-        need(d>=1 && d<=4,"small exact field guard");
-        for(int a=1;a<q;++a)need(power(a,q-1)==1,"every nonzero residue is a unit");
-    }
-    int mul(int a,int b) const{
-        int result=0;
-        while(b){if(b&1)result^=a;b>>=1;a<<=1;if(a&q)a^=modulus;}
-        return result;
-    }
-    int power(int a,int e) const{
-        int result=1;while(e){if(e&1)result=mul(result,a);a=mul(a,a);e>>=1;}return result;
-    }
-};
+using Field=binary_field::SmallField;
 using Vector=std::vector<Polynomial>;
 Vector product(const Ring& r,const Field& f,const Vector& a,const Vector& b){
     Vector result(f.d);
