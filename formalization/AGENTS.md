@@ -8,7 +8,19 @@ policy. Setup and verification commands live in [README.md](README.md);
   Draft the Lean statement and compare its variables, domains, quantifiers,
   hypotheses, conclusions, and degree conventions with the notebook. In
   particular, distinguish joint total degree from degree in one variable.
+  Distinguish actual degree from a degree budget: an upper bound suffices for
+  product estimates, but subtracting a generator degree from a proof ceiling
+  to bound its cofactor requires actual degree or a separately justified
+  weighted convention. Before the general proof, inspect relevant boundary
+  cases such as constant or zero inputs, empty index sets, and loose parameter
+  bounds; these can expose missing hypotheses without substantial computation.
   Record the intended coverage and any differences in the claim-file header.
+- If the source statement fails, formalize the valid portion and state the
+  correction explicitly, with a counterexample to the false portion when
+  possible. Preserve the earlier record under the root correction policy.
+  Audit the nearest downstream uses within a stated scope, distinguishing
+  affected inferences from uses protected by stronger hypotheses. Do not infer
+  either global failure or global safety from a bounded audit.
 - Formalize the claim, not necessarily the original proof strategy. Prefer
   explicit constructions when they simplify both the identity and its bounds;
   the first interpolation proof used a recursive quotient instead of division.
