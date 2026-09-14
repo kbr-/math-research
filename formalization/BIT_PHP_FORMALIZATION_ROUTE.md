@@ -15,9 +15,9 @@ large instances require more than `n^K` proof nodes.
 This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
-The current priority is the third-party interface **H**: work through H01–H13
-below first, then return to the project-side R01–R25 order. H has a checked
-formal statement, not a proof; no downstream completion is inferred from it.
+The third-party boundary **H** is now proved in Lean: H01–H13 are complete.
+The next project-side foundations are R01/R02, followed by the R01–R25 order
+below. Proving H does not formalize its downstream consumers or the full paper.
 
 ## How to use the list
 
@@ -96,13 +96,14 @@ used by R10. Keep the `s=2` augmentation case and coefficient field explicit.
 An [existing-Lean coverage search](../research/results/lean_chessboard_coverage_20260915/README.md)
 on 15 September 2026 located useful topology infrastructure but no matching
 checked theorem; it was not an exhaustive global code audit.
-The target is indexed as `third-party:BLVZ-chessboard-filling` and stated in
-[third-party-claims/ChessboardFilling.lean](third-party-claims/ChessboardFilling.lean)
-as `MathResearch.ThirdParty.ChessboardFilling : Prop`. This is a proposition
-definition, not a theorem or an axiom. It introduces no `sorry`.
-Until H is supplied by a checked theorem, R10 and downstream claims are not
-unconditionally fully formalized. A temporary interface is not permission to
-mark them complete.
+The target is indexed as `third-party:BLVZ-chessboard-filling` and proved by
+`MathResearch.ThirdParty.chessboard_filling : ChessboardFilling` in
+[ChessboardFillingProof.lean](third-party-claims/ChessboardFillingProof.lean).
+The unchanged [original interface](third-party-claims/ChessboardFilling.lean)
+defines the proposition, avoiding an import cycle with its proof. Its file-level
+statement-only metadata describes that definition module; H itself is now proved
+with all required dependencies, no custom axiom, and no `sorry`. R10 and the
+remaining publication claims still require their own formalizations.
 
 ### Exact interface
 
@@ -126,9 +127,8 @@ The target definition is:
 ```
 
 This is a direct finite-chain formulation of the required homology vanishing.
-Proving boundary-squared-zero and relating this representation to any chosen
-homology API are still proof tasks; a formal statement alone does not supply
-those facts. The s=2 case requires the reduced augmentation, not the claim that
+H02 and H03 now prove boundary-squared-zero and the exact representation bridge;
+H12 and H13 prove the full homological bound and this filling consequence. The s=2 case requires the reduced augmentation, not the claim that
 every unaugmented vertex chain bounds. R10 will build its matching-moment
 cycles in this representation and consume the supplied filling.
 
@@ -155,7 +155,7 @@ results when their exact hypotheses and conventions match.
 | H10 | The first-row star-cover nerve is the boundary of a (b−1)-simplex. | H08, H09 | Verified in [ChessboardStarNerve.lean](third-party-claims/ChessboardStarNerve.lean), including nerve equality and acyclicity via H05. Every proper subfamily has a common vertex; the full family does not. |
 | H11 | [Verified arithmetic](claims/ChessboardParameterArithmetic.lean) and induction bounds for ν(a,b)=min(a,b,⌊(a+b+1)/3⌋). | — | For 2≤a≤b, ν≤b−1. For a nonempty t-fold intersection, t≥2, show ν(a−1,b−t)≥ν(a,b)−t+1. Treat negative required acyclicity degrees as vacuous, and use min(a,b) as a decreasing induction parameter after transposition. |
 | H12 | Binary homological chessboard bound: Δ(a,b) is (ν(a,b)−2)-acyclic for a,b≥1. | H03, H04, H05, H07, H08, H09, H10, H11 | Verified in [ChessboardHomology.lean](third-party-claims/ChessboardHomology.lean): strong induction on the smaller dimension, explicit one-row augmentation, transpose, and cover assembly. Full binary homological bound; no homotopical connectivity claim. |
-| H13 | Specialize the homological bound and discharge **H**. | H01, H02, H12 | N≥2s−1 gives ν(s,N)=s. Translate degree s−2 to (s−1)-cell cycles filled by s-cell chains, using precisely the interface in ChessboardFilling.lean. |
+| H13 | Specialize the homological bound and discharge **H**. | H01, H02, H12 | Verified in [ChessboardFillingProof.lean](third-party-claims/ChessboardFillingProof.lean): ν(s,N)=s, H12 cycle filling, and H03 boundary-compatible conversion prove exactly the original H interface. |
 
 ### Parallelizable branches
 

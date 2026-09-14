@@ -14,7 +14,7 @@
   <p><strong>Our main goal remains open: superpolynomial proof-size lower bounds for ordinary PHP in \(\mathrm{AC}^0[p]\)-Frege, for every fixed prime and fixed depth.</strong> The route compiles a hypothetical short proof into an algebraic source and seeks a contradiction below the old degree barrier. The <a href="#unary-to-bit-Frege-encoding-clarification">ordinary-to-bit Frege substitution</a> has polynomial size overhead and a constant depth increase, so full bit-PHP bounds at every fixed depth would suffice.</p>
   <p><strong>A universal Boolean-domain normalization step is ruled out.</strong> A polynomial-size <a href="#polynomial-size-three-level-majority-source">three-level approximate-majority source</a> forces any complete old-only map with Booleanity-only image certificates to have <a href="#universal-Boolean-source-map-obstruction">linear degree in the number of old bits</a>. The same example rules out universally small <a href="#affine-domain-realization-and-profile-barrier">Boolean-domain-valid profiles over one affine family</a>, even with quasipolynomial inventory. This is a working obstruction to the method, not a PHP upper bound or a claim that every short PHP proof contains that source.</p>
   <p><strong>The general step must use more of the PHP problem or its proof source.</strong> The new <a href="#affine-level-full-relative-old-preservation">one-affine-level theorem</a> preserves the full old matching-moment window at polylogarithmic degree. This supplies a broader relative interface, but <a href="#full-relative-moment-extension-and-clamps">mixed selector compatibility</a> across levels is unproved. The <a href="#source-profile-rank-inflation">general rank-profile construction</a> remains too costly without a rank bound. Existing restricted affine, probe, and quadratic-source results remain available; none covers the full Frege source.</p>
-  <p><strong>Formal verification.</strong> Lean verifies <a href="#entry-2026-09-14-lean-mod-interpolation">MOD interpolation</a>, <a href="#entry-2026-09-14-lean-mp-telescoping">ENS telescoping and its corrected companion bound</a>, and <a href="#entry-2026-09-14-lean-binary-affine-cover">binary semantic rule reduction with its separator and clause-compression dependencies</a>. The separately indexed concrete PC-degree corollaries remain unformalized. The bit-PHP side project now has <a href="#entry-2026-09-15-integrated-H-prerequisites">verified and integrated H01–H11 prerequisites</a>: augmented chains, the homological cover argument, star-cover combinatorics, and parameter arithmetic. The <a href="#lean-chessboard-homological-bound">full binary chessboard homological bound (H12)</a> is also verified; H still requires its final specialization and exact-interface conversion. These local verifications do not close the main Frege source gap.</p>
+  <p><strong>Formal verification.</strong> Lean verifies <a href="#entry-2026-09-14-lean-mod-interpolation">MOD interpolation</a>, <a href="#entry-2026-09-14-lean-mp-telescoping">ENS telescoping and its corrected companion bound</a>, and <a href="#entry-2026-09-14-lean-binary-affine-cover">binary semantic rule reduction with its separator and clause-compression dependencies</a>. The separately indexed concrete PC-degree corollaries remain unformalized. The bit-PHP side project now has <a href="#entry-2026-09-15-integrated-H-prerequisites">verified and integrated H01–H11 prerequisites</a>: augmented chains, the homological cover argument, star-cover combinatorics, and parameter arithmetic. The <a href="#lean-chessboard-homological-bound">full binary chessboard homological bound</a> and the <a href="#lean-chessboard-filling">exact filling theorem H</a> are now verified, including augmentation. The rest of the bit-PHP publication route remains unformalized. These local verifications do not close the main Frege source gap.</p>
   <div class="result">
     <p><strong>What would finish the route:</strong> for every fixed prime, depth, and size exponent, turn any hypothetical short ordinary-PHP proof into a forbidden old-base endpoint, or directly exclude its complete augmented source. A polynomial-size Frege construction would also be valuable; none is established.</p>
   </div>
@@ -16962,6 +16962,51 @@
 <tr><td>Formal proof design and coding</td><td class="elapsed">2 min 18.16 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4.53 s</td></tr>
 <tr><td>Individually measured formal verification</td><td class="elapsed">47.76 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+
+<article class="research-entry" id="entry-2026-09-15-lean-chessboard-filling">
+  <h3>15 September 2026 — The required chessboard filling theorem is verified</h3>
+  <p class="entry-meta"><strong>Status:</strong> complete Lean proof of H, the exact binary BLVZ filling consequence, with all formal proof dependencies checked.</p>
+  <p><strong>Assignment and stopping point.</strong> Specialize <a href="#lean-chessboard-homological-bound">H12</a> and use the <a href="#lean-augmented-chain-naturality">original-boundary bridge</a> to prove the proposition stated at the beginning of this development. This completes H01–H13, not the publication's remaining R01–R25 route or the main Frege goal.</p>
+  <h4 id="lean-chessboard-filling">Exact claim</h4>
+  <p>For natural \(s\ge2\) and \(N\ge2s-1\), every augmented \((s-1)\)-cell chain \(c\) of the \(s\times N\) chessboard over \(\mathbb F_2\) with \(\partial c=0\) has an \(s\)-cell filling:</p>
+  <div class="math">\[
+    \forall c\in C_{s-1}(\Delta_{s,N};\mathbb F_2),\quad
+    \partial c=0\ \Longrightarrow\
+    \exists b\in C_s(\Delta_{s,N};\mathbb F_2):\ \partial b=c.
+  \]</div>
+  <p>Here the subscripts count cells, as in the original <a href="#third-party-chessboard-filling-interface">H interface</a>, so this is reduced homological degree \(s-2\). In particular \(s=2\) uses the vertex augmentation: only vertex chains whose total coefficient is zero are asserted to bound. The verified declaration is exactly <code>MathResearch.ThirdParty.chessboard_filling : ChessboardFilling</code>, with no extra hypothesis.</p>
+  <p><strong>Full proof.</strong> The size assumptions give \(s,N\ge1\), and <a href="#chessboard-parameter-arithmetic">H11</a> gives \(\nu(s,N)=s\). Let \(\Phi_k\) be H03's linear equivalence from the original exact-face coefficient space to the supported ambient chain space at cell count \(k\). It commutes with the augmented boundary at every degree. Thus an original cycle \(c\) gives a supported cycle \(\Phi_{s-1}(c)\). Since \(s-1&lt;\nu(s,N)=s\), H12 supplies a supported filler \(D\) with</p>
+  <div class="math">\[
+    D\in C_s(\Delta_{s,N};\mathbb F_2),\qquad
+    \partial D=\Phi_{s-1}(c).
+  \]</div>
+  <p>The cell count of the filler is exactly \(s\), using \(s-1+1=s\). Define the original-coordinate chain \(b=\Phi_s^{-1}(D)\). Boundary compatibility yields</p>
+  <div class="math">\[
+    \Phi_{s-1}(\partial b)
+      =\partial\Phi_s(b)
+      =\partial D
+      =\Phi_{s-1}(c).
+  \]</div>
+  <p>Injectivity of \(\Phi_{s-1}\) now gives \(\partial b=c\), proving the entire claim. The argument uses the actual boundary bridge, not only a chain-space dimension equality.</p>
+  <p><strong>Source and verification.</strong> This is the required homological consequence of <a href="https://doi.org/10.1112/jlms/49.1.25">BLVZ, Theorem 1.1</a>. The checked proof is in <a href="https://github.com/kbr-/math-research/blob/main/formalization/third-party-claims/ChessboardFillingProof.lean">ChessboardFillingProof.lean</a>; the original definitions remain in ChessboardFilling.lean to avoid an import cycle. That definition module still reports <code>Status: statement-only</code> for its own proposition declaration; the separate proof module now proves that proposition. H is no longer an open formal dependency. No <code>sorry</code>, custom axiom, or assumed filling result is used.</p>
+  <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/h13_chessboard_filling_20260915/lean-verification-final.txt">incremental verification report</a> passed for twenty proof modules and 107 audited declarations, and preserves the original proposition definition, exact theorem type, dependency pins, and axiom report. Lake reuses unchanged compiled proof modules; the type/axiom inspection reads cached declarations rather than re-elaborating every source. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/h13_chessboard_filling_20260915/scope.md">scope map</a> records this target and its dependencies. The initial retry concerned support-subtype elaboration and an already-closed Lean goal, not a mathematical correction.</p>
+  <p><strong>Outcome and process assessment.</strong> The selected external boundary is completely discharged in Lean over \(\mathbb F_2\), including its augmentation case. The next project-side foundations are R01/R02; matching-moment construction and the remainder of the publication theorem are not yet formalized. The main Frege route and mathematical gap list are unchanged. Explicit source fidelity and boundary-commuting interfaces made the final conversion short; incremental verification now avoids redundant proof checking, and mathematical record notation uses MathJax under the updated guidance.</p>
+  <div class="timing-report" data-session="h13_chessboard_filling_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 48.84 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">0.19 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 15.01 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">27.15 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">49.97 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.18 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">16.34 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
