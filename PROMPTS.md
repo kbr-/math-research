@@ -20,8 +20,9 @@ and the root research protocol, restoring context through
 and read its exact statement and relevant proof. Identify its mathematical
 components, hypotheses, dependencies, and downstream applications. Choose the
 formalization order and supporting lemmas yourself; do not require the user to
-specify a "core" or enumerate conclusions. Aim to formalize the complete indexed
-claim. If only part can be completed, record the exact verified portion and
+specify a "core" or enumerate conclusions. Formalize the complete indexed claim
+under the completion and dependency requirements in formalization/AGENTS.md.
+If only part can be completed, record the exact verified portion and
 remaining obligations explicitly, without presenting partial verification as
 completion of the whole claim.
 If the reference is ambiguous, ask which claim is intended rather than selecting

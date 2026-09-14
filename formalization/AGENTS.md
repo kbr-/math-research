@@ -47,6 +47,15 @@ policy. Setup and verification commands live in [README.md](README.md);
   claimed. The verifier checks the listed declarations and their axioms; it
   cannot certify statement fidelity or declaration-list completeness.
 - Preserve exact verified scope in the notebook and claim index under the root
-  policy. Treat setup success, a verified special case, and a full formalization
-  as different outcomes. Let concrete friction from subsequent claims justify
+  policy. Mark an indexed claim formalized only when its entire statement and
+  all dependencies needed by its formal proof are covered by checked Lean
+  proofs, including dependencies of dependencies. Existing Mathlib proofs may
+  supply these dependencies; otherwise formalize them. Do not replace an
+  unproved dependency with an axiom or an extra hypothesis and call the original
+  claim formalized. A different proof may remove an original dependency, but
+  must still prove the full statement and satisfy the alternative-proof record
+  rule above. Separately indexed downstream corollaries are separate targets,
+  not unfinished dependencies of the claim they use. Treat setup success,
+  partial or conditional verification, and full formalization as different
+  outcomes. Let concrete friction from subsequent claims justify
   further infrastructure; do not add machinery merely to anticipate it.
