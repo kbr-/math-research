@@ -1,12 +1,16 @@
 # A Self-Improving Framework for Autonomous Mathematical Research
 
-An open framework for autonomous mathematical research—with persistent memory,
-reproducible evidence, and a workflow that improves through use.
+An open framework for autonomous mathematical research and on-demand formal
+verification—with persistent memory, reproducible evidence, and workflows that
+improve through use.
 
 - **Research that survives session boundaries.** Resume from findings, proofs,
   and context stored in the repository, even on another machine.
 - **Autonomous investigation.** Pursue a goal through repeated cycles of
   reasoning, experimentation, and review.
+- **Formal verification on demand.** Turn selected results into Lean proofs
+  with checked dependencies, explicit scope, and reproducible verification.
+  Feed discrepancies back into the research agenda.
 - **A workflow that improves through use.** Identify friction after each cycle
   and make bounded improvements to tools and procedures.
 - **Inspectable results.** Preserve arguments, assumptions, computational
@@ -16,6 +20,7 @@ reproducible evidence, and a workflow that improves through use.
 
 **[Read the research online](https://kbr.is-a.dev/math-research/)** ·
 **[Run the agent](#continue-the-research)** ·
+[Formalize claims](#formalize) ·
 [Browse locally](#browse-locally)
 
 [![Selected notebook excerpts showing the research agenda, a working proof, exact finite checks, and measured timing.](docs/assets/notebook-preview.png)](https://kbr.is-a.dev/math-research/)
@@ -23,11 +28,12 @@ reproducible evidence, and a workflow that improves through use.
 *Selected excerpts from the 13 September 2026 notebook checkpoint, arranged
 side by side.*
 
-The framework combines an explicit research protocol for AI agents with tools
-for context recovery, protected computation, evidence archival, and publication.
-Self-improvement means refining the research workflow and its tools; mathematical
-arguments remain open to review, and recorded proofs are not automatically
-formally verified.
+The framework supports two complementary workflows: investigating mathematical
+questions and formally verifying selected claims. Both use persistent context,
+protected execution, measured evidence, and a shared research record.
+Self-improvement means refining these workflows and their tools. Formalization
+is explicitly requested; recording a mathematical argument does not automatically
+make it formally verified.
 
 ## First ongoing case study: proof-complexity lower bounds
 
@@ -74,6 +80,28 @@ The [Spin prompt](PROMPTS.md#spin) runs this loop under the
 [research protocol](AGENTS.md). Corrections receive new dated entries; earlier
 arguments remain available. See [Automatic research](#automatic-research) to
 start the loop with a Codex goal.
+
+## How a formalization cycle works
+
+**Select a claim → Map its dependencies → Formalize dependencies and claim →
+Verify → Record findings → Assess the process → Commit → Repeat**
+
+On request, the agent translates an indexed claim into Lean, checks its complete
+statement and proof dependencies, and records the verified scope alongside the
+human-readable argument. Existing indexed dependencies receive their own research
+entries before the claims that use them. Formal proof design and verification
+have separate measured timing categories.
+
+Formalization also informs further research: it can expose missing hypotheses,
+incorrect statements, or gaps in an argument. The notebook's
+[Gaps identified by formalization](https://kbr.is-a.dev/math-research/#formalization-gaps)
+section makes these findings visible to both research and formalization agents,
+with links to the full evidence and corrections.
+
+Use [Formalize](#formalize) for one claim or
+[Automatic formalization](#automatic-formalization) for a supplied set. Both follow
+the [formalization protocol](formalization/AGENTS.md); ordinary research cycles
+do not require formalization.
 
 ## Tools behind the workflow
 
