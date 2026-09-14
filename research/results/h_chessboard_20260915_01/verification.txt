@@ -1,0 +1,724 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Claim file: claims/AffineClauseCompression.lean
+Claim: lem:affine-clause-basis-compression
+Source: https://kbr.is-a.dev/math-research/#lean-affine-clause-basis-compression
+Scope: Every finite binary affine clause has a semantically equivalent subclause with at most dim(V)+1 literals; no satisfiability hypothesis is needed.
+Declarations: MathResearch.affine_clause_basis_compression MathResearch.affine_clause_registry_compression
+Claim file: claims/BinaryAffineZeroCover.lean
+Claim: lem:binary-affine-zero-cover
+Source: https://kbr.is-a.dev/math-research/#lean-binary-affine-zero-cover
+Scope: Separator already in the first clause for a nontrivial binary semantic cover; both restricted zero sets are exactly its 0 and 1 fibers, with witnesses for both values. No finite-dimensional hypothesis is needed.
+Declarations: MathResearch.binary_affine_zero_cover MathResearch.binary_affine_halves_translate
+Claim file: claims/BinarySemanticAffineCover.lean
+Claim: lem:binary-semantic-affine-cover
+Source: https://kbr.is-a.dev/math-research/#binary-semantic-affine-cover
+Scope: Binary semantic inference reduces to one weakening or two weakenings and one resolution; the basic derivation is sound and introduces at most two auxiliary clauses. Affine restriction preserves semantic inference. Compressed premises and conclusion each have at most dim(V)+1 literals. Separator, translation, and registry-description bounds are in dependency files. The concrete PC-degree simulation is not formalized here.
+Declarations: MathResearch.binary_semantic_affine_cover MathResearch.binary_semantic_three_steps MathResearch.parity_derivation_sound MathResearch.binary_auxiliary_count MathResearch.binary_semantic_restriction MathResearch.binary_semantic_compressed
+Claim file: claims/FiniteComplexCover.lean
+Claim: def:finite-complex-cover
+Source: https://kbr.is-a.dev/math-research/#lean-chessboard-star-cover
+Scope: Finite augmented intersections, covers, and vertex-nonempty nerves; empty faces retained.
+Declarations: MathResearch.ThirdParty.Augmented.intersection MathResearch.ThirdParty.Augmented.nerve MathResearch.ThirdParty.Augmented.Covers
+Claim file: claims/ModInterpolation.lean
+Claim: lem:mod-interpolation
+Source: https://kbr.is-a.dev/math-research/#mod-pruned-polynomial
+Scope: Full interpolation identity, zero case p = 2, and joint total-degree bound p - 3 for p ≥ 3; generalized to every nontrivial commutative coefficient ring and every natural number p ≥ 3. Does not formalize the surrounding MOD axiom certificate or source substitution.
+Declarations: MathResearch.mod_interpolation MathResearch.mod_interpolation_two
+Claim file: claims/MpTelescoping.lean
+Claim: lem:mp-telescoping
+Source: https://kbr.is-a.dev/math-research/#mp-telescoping
+Scope: Explicit telescoping identity and joint total-degree bounds for coefficients and companions, for finite indexed inputs over any commutative ring. Coefficients may be any polynomials of degree at most one. The source's exact companion-degree equality is replaced by the valid upper bound and refuted when δ is merely an upper bound.
+Declarations: MathResearch.mp_telescoping MathResearch.mp_coefficient_degree MathResearch.mp_companion_degree MathResearch.mp_companion_equality_counterexample
+Claim file: third-party-claims/AugmentedBoundarySquared.lean
+Claim: third-party:augmented-boundary-squared-zero
+Source: https://kbr.is-a.dev/math-research/#lean-augmented-boundary-squared-zero
+Scope: The ambient finite F₂ insertion boundary squares to zero; hence so does the supported graded differential, including edges to augmentation and the outgoing zero boundary.
+Declarations: MathResearch.ThirdParty.Augmented.boundary_boundary MathResearch.ThirdParty.Augmented.differential_squared
+Claim file: third-party-claims/AugmentedChainMaps.lean
+Claim: third-party:augmented-chain-naturality
+Source: https://kbr.is-a.dev/math-research/#lean-augmented-chain-naturality
+Scope: Injective vertex relabeling and subcomplex inclusion commute with the finite augmented F₂ boundary; includes chessboard transpose and compatibility with the original incidence boundary.
+Declarations: MathResearch.ThirdParty.Augmented.boundary_extend MathResearch.ThirdParty.Augmented.boundary_push MathResearch.ThirdParty.Augmented.push_supported MathResearch.ThirdParty.Augmented.chainMap MathResearch.ThirdParty.Augmented.differential_chainMap MathResearch.ThirdParty.Augmented.inclusion MathResearch.ThirdParty.Augmented.differential_inclusion MathResearch.ThirdParty.Augmented.chessboard_boundary_coordinate MathResearch.ThirdParty.Augmented.chessboard_differential MathResearch.ThirdParty.Augmented.chessboard_boundary MathResearch.ThirdParty.Augmented.chessboard_cycle_iff MathResearch.ThirdParty.Augmented.push_apply_map MathResearch.ThirdParty.Augmented.push_injective MathResearch.ThirdParty.Augmented.push_equiv MathResearch.ThirdParty.Augmented.push_equiv_inverse MathResearch.ThirdParty.Augmented.transpose_faces MathResearch.ThirdParty.Augmented.transposeChain MathResearch.ThirdParty.Augmented.differential_transpose MathResearch.ThirdParty.Augmented.transposeChain_inverse
+Claim file: third-party-claims/AugmentedChains.lean
+Claim: third-party:finite-augmented-chain-api
+Source: https://kbr.is-a.dev/math-research/#lean-finite-augmented-chain-api
+Scope: Finite F₂ augmented chains on downward-closed face families, graded support, boundary linearity and augmentation, including the empty face.
+Declarations: MathResearch.ThirdParty.Augmented.boundary_add MathResearch.ThirdParty.Augmented.boundary_smul MathResearch.ThirdParty.Augmented.boundary_supported MathResearch.ThirdParty.Augmented.boundary_empty MathResearch.ThirdParty.Augmented.faceChainEquiv MathResearch.ThirdParty.Augmented.chessboardComplex MathResearch.ThirdParty.Augmented.chessboardChainEquiv MathResearch.ThirdParty.Augmented.differential
+Claim file: third-party-claims/ChessboardFilling.lean
+Claim: third-party:BLVZ-chessboard-filling
+Source: https://kbr.is-a.dev/math-research/#third-party-chessboard-filling-interface
+Scope: Exact finite F₂ reduced-cycle filling interface H for s≥2 and N≥2s-1. Statement only; no proof or axiom of H is introduced.
+Status: statement-only
+Declarations: MathResearch.ThirdParty.ChessboardFilling
+Claim file: third-party-claims/ChessboardStarCover.lean
+Claim: third-party:chessboard-star-cover
+Source: https://kbr.is-a.dev/math-research/#lean-chessboard-star-cover
+Scope: Closed first-row stars are subcomplexes, have the cone closure property, and cover rectangular boards with at least as many columns as rows.
+Declarations: MathResearch.ThirdParty.Augmented.closedStar MathResearch.ThirdParty.Augmented.closedStar_subcomplex MathResearch.ThirdParty.Augmented.closedStar_cone MathResearch.ThirdParty.Augmented.firstRowStars_cover
+$ lake --wfail build
+✔ [1323/1361] Built Mathlib.Algebra.Order.GroupWithZero.OrderIso (1.6s)
+✔ [1324/1361] Built Mathlib.Order.Bounds.OrderIso (1.6s)
+✔ [1325/1361] Built Mathlib.Algebra.Order.Interval.Set.Monoid (1.6s)
+✔ [1326/1362] Built Mathlib.Data.Finsupp.Fintype (2.1s)
+✔ [1327/1362] Built Mathlib.Data.Finset.Fin (2.1s)
+✔ [1328/1367] Built Mathlib.Algebra.Order.Group.MinMax (2.4s)
+✔ [1329/1367] Built Mathlib.Logic.Equiv.Fin.Rotate (2.3s)
+✔ [1330/1367] Built Mathlib.Algebra.Field.ZMod (2.4s)
+✔ [1331/1369] Built Mathlib.Algebra.Torsor.Defs (2.7s)
+✔ [1332/1370] Built Mathlib.LinearAlgebra.Finsupp.SumProd (3.6s)
+✔ [1333/1370] Built Mathlib.Tactic.Algebra.Lemmas (3.5s)
+✔ [1334/1374] Built Mathlib.Data.Ineq (1.4s)
+✔ [1335/1374] Built Mathlib.Tactic.FieldSimp.Attr (1.0s)
+✔ [1336/1374] Built Mathlib.Tactic.NormNum.Eq (4.4s)
+✔ [1337/1374] Built Mathlib.Algebra.GroupWithZero.Idempotent (2.3s)
+✔ [1338/1374] Built Mathlib.LinearAlgebra.AffineSpace.Defs (2.1s)
+✔ [1339/1374] Built Mathlib.Util.DischargerAsTactic (1.7s)
+✔ [1340/1374] Built Mathlib.Order.Interval.Set.Fin (5.4s)
+✔ [1341/1384] Built Mathlib.Util.SynthesizeUsing (2.2s)
+✔ [1374/1412] Built Mathlib.LinearAlgebra.GeneralLinearGroup.Basic (5.2s)
+✔ [1375/1412] Built Mathlib.LinearAlgebra.Quotient.Defs (6.0s)
+✔ [1376/1414] Built Mathlib.Algebra.Ring.Idempotent (4.2s)
+✔ [1377/1420] Built Mathlib.LinearAlgebra.Dual.Defs (9.5s)
+✔ [1378/1421] Built Mathlib.Order.Sublattice (8.6s)
+✔ [1379/1421] Built Mathlib.Tactic.FieldSimp.Lemmas (6.6s)
+✔ [1380/1421] Built Mathlib.Algebra.Field.IsField (3.6s)
+✔ [1381/1423] Built Mathlib.Tactic.NormNum.Ineq (6.0s)
+✔ [1382/1423] Built Mathlib.Tactic.FieldSimp.Discharger (6.6s)
+✔ [1383/1425] Built Mathlib.Data.Fintype.Pigeonhole (2.6s)
+✔ [1384/1429] Built Mathlib.Algebra.Torsor.Basic (8.7s)
+✔ [1385/1429] Built Mathlib.GroupTheory.QuotientGroup.Finite (5.3s)
+✔ [1386/1433] Built Mathlib.LinearAlgebra.LinearIndependent.Defs (12s)
+✔ [1387/1433] Built Mathlib.Algebra.Order.Field.Basic (11s)
+✔ [1388/1433] Built Mathlib.Order.Interval.Finset.Fin (7.9s)
+✔ [1389/1435] Built Mathlib.Data.Fintype.Order (4.5s)
+✔ [1390/1435] Built Mathlib.Algebra.Order.Interval.Finset.Basic (2.8s)
+✔ [1391/1437] Built Mathlib.Algebra.BigOperators.NatAntidiagonal (2.9s)
+✔ [1392/1438] Built Mathlib.Lean.Meta.Tactic.Rewrite (1.7s)
+✔ [1393/1439] Built Mathlib.Tactic.Linarith.Lemmas (2.5s)
+✔ [1394/1439] Built Mathlib.Tactic.Linarith.Oracle.SimplexAlgorithm.Datatypes (1.9s)
+✔ [1395/1439] Built Mathlib.Tactic.Algebra.Basic (10s)
+✔ [1396/1439] Built Mathlib.Data.Tree.Basic (2.0s)
+✔ [1397/1443] Built Mathlib.Util.ElabWithoutMVars (987ms)
+✔ [1398/1447] Built Mathlib.Algebra.Module.Submodule.Invariant (4.1s)
+✔ [1399/1447] Built Mathlib.Tactic.Zify (1.9s)
+✔ [1400/1448] Built Mathlib.Tactic.Linarith.Oracle.SimplexAlgorithm.Gauss (1.4s)
+✔ [1401/1448] Built Mathlib.Algebra.Order.Field.Canonical (2.2s)
+✔ [1402/1448] Built Mathlib.Tactic.Linarith.Oracle.SimplexAlgorithm.SimplexAlgorithm (1.7s)
+✔ [1403/1455] Built Mathlib.Data.Fintype.Fin (2.0s)
+✔ [1404/1455] Built Mathlib.Algebra.Order.Nonneg.Lattice (2.4s)
+✔ [1405/1461] Built Mathlib.Order.SuccPred.LinearLocallyFinite (4.5s)
+✔ [1406/1463] Built Mathlib.Order.PartialSups (3.6s)
+✔ [1407/1463] Built Mathlib.Algebra.Order.Monoid.Basic (2.2s)
+✔ [1408/1464] Built Mathlib.Algebra.Order.Ring.Rat (2.3s)
+✔ [1409/1466] Built Mathlib.Tactic.Linarith.Datatypes (3.5s)
+✔ [1410/1466] Built Mathlib.Tactic.Linarith.Oracle.SimplexAlgorithm.PositiveVector (1.4s)
+✔ [1411/1466] Built Mathlib.LinearAlgebra.Quotient.Basic (10s)
+✔ [1412/1466] Built Mathlib.Algebra.Notation (1.6s)
+✔ [1413/1466] Built Mathlib.Tactic.NormNum.Abs (2.9s)
+✔ [1414/1466] Built Mathlib.RingTheory.Ideal.Defs (2.6s)
+✔ [1415/1466] Built Mathlib.Algebra.Order.Ring.InjSurj (2.1s)
+✔ [1416/1466] Built Mathlib.Tactic.NormNum.DivMod (3.4s)
+✔ [1417/1467] Built Mathlib.Tactic.CancelDenoms.Core (4.8s)
+✔ [1418/1467] Built Mathlib.Algebra.Module.Submodule.IterateMapComap (2.8s)
+✔ [1419/1470] Built Mathlib.Order.Disjointed (3.6s)
+✔ [1420/1470] Built Mathlib.Tactic.Linarith.Parsing (3.2s)
+✔ [1421/1473] Built Mathlib.Algebra.Order.SuccPred.PartialSups (3.0s)
+✔ [1425/1476] Built Mathlib.RingTheory.Ideal.Lattice (2.7s)
+✔ [1426/1476] Built Mathlib.Tactic.Linarith.Oracle.SimplexAlgorithm (4.4s)
+✔ [1427/1476] Built Mathlib.Algebra.Order.Nonneg.Ring (3.4s)
+✔ [1428/1476] Built Mathlib.LinearAlgebra.Finsupp.Pi (5.7s)
+✔ [1429/1477] Built Mathlib.RingTheory.Ideal.Quotient.Defs (4.5s)
+✔ [1430/1477] Built Mathlib.Order.Filter.AtTopBot.Defs (3.2s)
+✔ [1432/1478] Built Mathlib.Algebra.Order.Group.PosPart (5.4s)
+✔ [1433/1478] Built Mathlib.Tactic.Linarith.Preprocessing (5.3s)
+✔ [1434/1480] Built Mathlib.Algebra.Order.BigOperators.Group.LocallyFinite (5.4s)
+✔ [1435/1484] Built Mathlib.LinearAlgebra.LinearPMap (24s)
+✔ [1436/1484] Built Mathlib.Tactic.Linarith.Verification (5.6s)
+✔ [1437/1484] Built Mathlib.Tactic.Module (27s)
+✔ [1438/1485] Built Mathlib.RingTheory.Ideal.Prime (3.9s)
+✔ [1439/1485] Built Mathlib.Order.Interval.Set.Disjoint (5.4s)
+✔ [1440/1485] Built Mathlib.Algebra.Order.Nonneg.Module (3.8s)
+✔ [1441/1485] Built Mathlib.RingTheory.Ideal.Span (4.9s)
+✔ [1442/1487] Built Mathlib.Data.Set.Finite.Lemmas (2.0s)
+✔ [1443/1488] Built Mathlib.Order.Filter.Bases.Basic (6.1s)
+✔ [1444/1488] Built Mathlib.Algebra.Order.Nonneg.Field (4.0s)
+✔ [1445/1490] Built Mathlib.Order.Filter.AtTopBot.Disjoint (2.0s)
+✔ [1446/1494] Built Mathlib.Order.Cofinal (2.6s)
+✔ [1447/1494] Built Mathlib.Tactic.ModuleNF (3.9s)
+✔ [1448/1496] Built Mathlib.Algebra.Order.Field.Rat (2.7s)
+✔ [1449/1497] Built Mathlib.Order.SuccPred.InitialSeg (3.2s)
+✔ [1450/1504] Built Mathlib.Tactic.Algebraize (4.6s)
+✔ [1451/1514] Built Mathlib.Algebra.Order.Group.Pointwise.Interval (18s)
+✔ [1452/1514] Built Mathlib.RingTheory.Ideal.Maximal (4.2s)
+✔ [1454/1519] Built Mathlib.Algebra.Module.Congruence.Defs (5.0s)
+✔ [1456/1521] Built Mathlib.Order.Filter.AtTopBot.Tendsto (2.8s)
+✔ [1458/1521] Built Mathlib.Tactic.Linarith.Frontend (6.6s)
+✔ [1459/1522] Built Mathlib.Algebra.BigOperators.Intervals (7.4s)
+✔ [1460/1526] Built Mathlib.Logic.Small.List (2.1s)
+✔ [1461/1526] Built Mathlib.Data.DFinsupp.Ext (1.9s)
+✔ [1463/1527] Built Mathlib.Order.Shrink (2.8s)
+✔ [1464/1528] Built Mathlib.Order.DirSupClosed (4.1s)
+✔ [1465/1529] Built Mathlib.Data.List.Pi (2.7s)
+✔ [1466/1529] Built Mathlib.LinearAlgebra.Quotient.Card (2.5s)
+✔ [1468/1534] Built Mathlib.Tactic.FieldSimp (23s)
+✔ [1469/1534] Built Mathlib.SetTheory.Cardinal.Cofinality.Basic (4.3s)
+✔ [1475/1542] Built Mathlib.LinearAlgebra.Projection (17s)
+✔ [1477/1542] Built Mathlib.Algebra.BigOperators.Fin (19s)
+✔ [1478/1542] Built Mathlib.Algebra.Ring.Action.Rat (1.8s)
+✔ [1479/1542] Built Mathlib.GroupTheory.Abelianization.Defs (3.6s)
+✔ [1480/1544] Built Mathlib.Order.Filter.AtTopBot.Basic (5.6s)
+✔ [1481/1544] Built Mathlib.Data.Fintype.Quotient (3.3s)
+✔ [1482/1546] Built Mathlib.Tactic.Field (3.2s)
+✔ [1483/1546] Built Mathlib.Algebra.Algebra.Pi (5.2s)
+✔ [1484/1549] Built Mathlib.Data.Rat.Cast.Order (7.4s)
+✔ [1485/1550] Built Mathlib.Data.Multiset.Sort (3.3s)
+✔ [1486/1550] Built Mathlib.Order.IsNormal (4.7s)
+✔ [1487/1552] Built Mathlib.Tactic.Positivity.Basic (15s)
+✔ [1488/1552] Built Mathlib.GroupTheory.FreeGroup.Basic (14s)
+✔ [1489/1552] Built Mathlib.LinearAlgebra.Isomorphisms (5.6s)
+✔ [1490/1552] Built Mathlib.Algebra.Order.SuccPred.WithBot (2.2s)
+✔ [1491/1552] Built Mathlib.LinearAlgebra.Finsupp.Span (5.3s)
+✔ [1492/1554] Built Mathlib.Algebra.Group.AddChar (7.7s)
+✔ [1493/1567] Built Mathlib.Data.DFinsupp.Sigma (3.8s)
+✔ [1494/1568] Built Mathlib.Data.Fintype.Lattice (2.5s)
+✔ [1495/1574] Built Mathlib.Data.Fin.Tuple.Reflection (5.2s)
+✔ [1496/1577] Built Mathlib.Data.ENat.Lattice (4.0s)
+✔ [1497/1580] Built Mathlib.Tactic.NormNum.OfScientific (4.5s)
+✔ [1498/1580] Built Mathlib.Algebra.GroupWithZero.Submonoid.Primal (2.7s)
+✔ [1499/1585] Built Mathlib.Data.DFinsupp.BigOperators (11s)
+✔ [1500/1585] Built Mathlib.Algebra.EuclideanDomain.Defs (3.7s)
+✔ [1501/1586] Built Mathlib.Algebra.BigOperators.RingEquiv (2.7s)
+✔ [1502/1586] Built Mathlib.RingTheory.Ideal.Nonunits (4.0s)
+✔ [1503/1586] Built Mathlib.RingTheory.Coprime.Basic (5.9s)
+✔ [1504/1586] Built Mathlib.Tactic.NormNum (1.9s)
+✔ [1505/1586] Built Mathlib.Basic.Rel (8.2s)
+✔ [1506/1587] Built Mathlib.Data.Finset.Sort (8.3s)
+✔ [1507/1587] Built Mathlib.GroupTheory.DedekindFinite (1.0s)
+✔ [1508/1603] Built Mathlib.Tactic.Order.CollectFacts (6.4s)
+✔ [1509/1603] Built Mathlib.Algebra.EuclideanDomain.Field (2.1s)
+✔ [1510/1603] Built Mathlib.RingTheory.UniqueFactorizationDomain.Defs (3.2s)
+✔ [1514/1604] Built Mathlib.LinearAlgebra.LinearIndependent.Basic (11s)
+✔ [1515/1604] Built Mathlib.Data.DFinsupp.Submonoid (2.7s)
+✔ [1516/1609] Built Mathlib.Tactic.Linarith (2.2s)
+✔ [1517/1609] Built Mathlib.GroupTheory.FreeAbelianGroup (10s)
+✔ [1518/1609] Built Mathlib.Tactic.Order.Graph.Basic (2.2s)
+✔ [1519/1609] Built Mathlib.Algebra.EuclideanDomain.Basic (4.3s)
+✔ [1520/1609] Built Mathlib.LinearAlgebra.Matrix.Defs (5.8s)
+✔ [1521/1609] Built Mathlib.Algebra.BigOperators.Group.Finset.Indicator (3.1s)
+✔ [1522/1609] Built Mathlib.Tactic.Order.Preprocessing (3.3s)
+✔ [1523/1609] Built Mathlib.RingTheory.Coprime.Lemmas (5.0s)
+✔ [1524/1609] Built Mathlib.Tactic.Order.ToInt (3.8s)
+✔ [1525/1609] Built Mathlib.GroupTheory.Finiteness (11s)
+✔ [1526/1609] Built Mathlib.Algebra.NoZeroSMulDivisors.Basic (2.9s)
+✔ [1527/1617] Built Mathlib.Tactic.Order.Graph.Tarjan (2.9s)
+✔ [1528/1620] Built Mathlib.Algebra.FreeAbelianGroup.Finsupp (4.7s)
+✔ [1529/1624] Built Mathlib.Data.Nat.Choose.Sum (5.8s)
+✔ [1531/1624] Built Mathlib.LinearAlgebra.Basis.Basic (6.1s)
+✔ [1532/1624] Built Mathlib.SetTheory.Ordinal.Basic (16s)
+✔ [1533/1624] Built Mathlib.Algebra.Exact.Basic (18s)
+✔ [1534/1624] Built Mathlib.LinearAlgebra.AffineSpace.AffineMap (25s)
+✔ [1535/1624] Built Mathlib.Data.Matrix.Diagonal (5.2s)
+✔ [1536/1624] Built Mathlib.RingTheory.Finiteness.Defs (4.6s)
+✔ [1537/1624] Built Mathlib.Algebra.FreeMonoid.UniqueProds (2.8s)
+✔ [1538/1625] Built Mathlib.SetTheory.Ordinal.Univ (3.2s)
+✔ [1539/1626] Built Mathlib.Tactic.Order (5.7s)
+✔ [1540/1626] Built Mathlib.Order.RelSeries (13s)
+✔ [1541/1626] Built Mathlib.Tactic.ProxyType (6.3s)
+✔ [1542/1626] Built Mathlib.Algebra.Polynomial.Basic (14s)
+✔ [1543/1626] Built Mathlib.RingTheory.Ideal.Basic (5.9s)
+✔ [1546/1626] Built Mathlib.Algebra.DirectSum.Basic (12s)
+✔ [1547/1626] Built Mathlib.LinearAlgebra.Basis.SMul (6.2s)
+✔ [1548/1626] Built Mathlib.LinearAlgebra.Basis.Submodule (6.1s)
+✔ [1549/1635] Built Mathlib.RingTheory.AlgebraTower (7.4s)
+✔ [1554/1635] Built Mathlib.LinearAlgebra.Dimension.Basic (7.8s)
+✔ [1556/1635] Built Mathlib.LinearAlgebra.FreeModule.Basic (6.0s)
+✔ [1557/1636] Built Mathlib.LinearAlgebra.LinearIndependent.Lemmas (18s)
+✔ [1558/1636] Built Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Defs (16s)
+✔ [1561/1636] Built Mathlib.Tactic.DeriveFintype (5.4s)
+✔ [1562/1636] Built Mathlib.LinearAlgebra.Dimension.Subsingleton (3.4s)
+✔ [1563/1636] Built Mathlib.RingTheory.Finiteness.Basic (8.0s)
+✔ [1564/1636] Built Mathlib.LinearAlgebra.Dimension.Finrank (4.1s)
+✔ [1565/1636] Built Mathlib.SetTheory.Ordinal.Arithmetic (13s)
+✔ [1566/1638] Built Mathlib.Algebra.FreeAlgebra (8.4s)
+✔ [1567/1642] Built Mathlib.LinearAlgebra.Basis.Prod (3.1s)
+✔ [1568/1642] Built Mathlib.RingTheory.Ideal.Quotient.Basic (6.9s)
+✔ [1571/1651] Built Mathlib.LinearAlgebra.TensorProduct.Associator (24s)
+✔ [1572/1652] Built Mathlib.Data.Nat.Cast.WithTop (2.3s)
+✔ [1573/1652] Built Mathlib.Algebra.Polynomial.Eval.Defs (9.7s)
+✔ [1574/1652] Built Mathlib.Basic.Sign.Defs (5.8s)
+✔ [1575/1653] Built Mathlib.Algebra.Polynomial.Monomial (3.9s)
+✔ [1576/1655] Built Mathlib.RingTheory.Noetherian.Defs (4.4s)
+✔ [1577/1655] Built Mathlib.Algebra.Polynomial.Coeff (6.5s)
+✔ [1578/1655] Built Mathlib.Algebra.EuclideanDomain.Int (2.2s)
+✔ [1579/1655] Built Mathlib.RingTheory.Finiteness.Finsupp (6.2s)
+✔ [1580/1657] Built Mathlib.LinearAlgebra.Basis.VectorSpace (8.2s)
+✔ [1581/1671] Built claims.BinaryAffineZeroCover (15s)
+✔ [1584/1679] Built Mathlib.Order.KrullDimension (13s)
+✔ [1585/1679] Built Mathlib.Data.Nat.WithBot (2.1s)
+✔ [1586/1680] Built Mathlib.Data.Matrix.Mul (16s)
+✔ [1587/1681] Built Mathlib.SetTheory.Ordinal.Family (6.4s)
+✔ [1588/1681] Built Mathlib.Algebra.Polynomial.Eval.Algebra (2.7s)
+✔ [1589/1681] Built Mathlib.Algebra.Algebra.Subalgebra.Prod (3.3s)
+✔ [1590/1682] Built Mathlib.Data.Finsupp.Fin (2.5s)
+✔ [1591/1682] Built Mathlib.Algebra.Ring.Fin (2.5s)
+✔ [1592/1687] Built Mathlib.Algebra.Ring.Action.Submonoid (2.9s)
+✔ [1593/1689] Built Mathlib.Algebra.Polynomial.Eval.Coeff (4.3s)
+✔ [1594/1689] Built Mathlib.Basic.Sign.Basic (5.1s)
+✔ [1595/1692] Built Mathlib.Algebra.Algebra.Subalgebra.Tower (4.7s)
+✔ [1596/1692] Built Mathlib.Algebra.Ring.GeomSum (4.3s)
+✔ [1597/1697] Built Mathlib.Algebra.Polynomial.Degree.Defs (6.2s)
+✔ [1598/1697] Built Mathlib.Basic.Finite.Sum (2.3s)
+✔ [1599/1697] Built Mathlib.Algebra.BigOperators.Finsupp.Fin (3.3s)
+✔ [1600/1704] Built Mathlib.Tactic.ContinuousFunctionalCalculus (2.0s)
+✔ [1601/1705] Built Mathlib.SetTheory.Ordinal.Enum (4.1s)
+✔ [1602/1709] Built Mathlib.SetTheory.Cardinal.Cofinality.Enum (5.5s)
+✔ [1603/1709] Built Mathlib.SetTheory.Ordinal.Exponential (5.2s)
+✔ [1605/1728] Built Mathlib.RingTheory.Ideal.Operations (20s)
+✔ [1606/1728] Built Mathlib.Algebra.Field.Opposite (3.8s)
+✔ [1620/1728] Built Mathlib.Algebra.Polynomial.Degree.Monomial (2.5s)
+✔ [1623/1728] Built Mathlib.LinearAlgebra.DFinsupp (15s)
+✔ [1624/1728] Built Mathlib.RingTheory.Adjoin.Basic (3.9s)
+✔ [1625/1728] Built Mathlib.Algebra.Module.Rat (3.7s)
+✔ [1626/1728] Built Mathlib.RingTheory.Finiteness.Lattice (2.6s)
+✔ [1627/1728] Built Mathlib.Algebra.Star.Basic (5.4s)
+✔ [1628/1728] Built Mathlib.LinearAlgebra.AffineSpace.AffineEquiv (25s)
+✔ [1629/1728] Built Mathlib.RingTheory.Finiteness.Prod (3.3s)
+✔ [1630/1728] Built Mathlib.RingTheory.UniqueFactorizationDomain.Ideal (3.1s)
+✔ [1631/1728] Built Mathlib.SetTheory.Ordinal.FixedPoint (4.0s)
+✔ [1632/1728] Built Mathlib.LinearAlgebra.Basis.Fin (5.1s)
+✔ [1633/1728] Built Mathlib.Algebra.Star.Rat (2.1s)
+✔ [1634/1728] Built Mathlib.Algebra.Polynomial.Degree.Operations (6.0s)
+✔ [1635/1728] Built Mathlib.Tactic.IntervalCases (5.7s)
+✔ [1636/1728] Built Mathlib.Algebra.Module.LinearMap.Star (2.7s)
+✔ [1637/1728] Built claims.MpTelescoping (5.0s)
+✔ [1638/1728] Built Mathlib.LinearAlgebra.Finsupp.VectorSpace (4.3s)
+✔ [1639/1728] Built Mathlib.RingTheory.Noetherian.UniqueFactorizationDomain (2.3s)
+✔ [1640/1728] Built claims.ModInterpolation (4.8s)
+✔ [1641/1728] Built Mathlib.Algebra.Star.StarRingHom (4.6s)
+✔ [1642/1728] Built Mathlib.Algebra.Polynomial.Degree.Domain (2.7s)
+✔ [1643/1728] Built Mathlib.Algebra.Polynomial.Degree.Support (2.0s)
+✔ [1644/1728] Built Mathlib.Algebra.Polynomial.Degree.SmallDegree (3.9s)
+✔ [1645/1728] Built Mathlib.SetTheory.Ordinal.Principal (5.5s)
+✔ [1646/1728] Built Mathlib.LinearAlgebra.StdBasis (3.0s)
+✔ [1647/1728] Built Mathlib.Algebra.Polynomial.Degree.Units (2.6s)
+✔ [1648/1728] Built Mathlib.Algebra.Polynomial.Degree.TrailingDegree (3.5s)
+✔ [1649/1728] Built Mathlib.Algebra.DirectSum.Module (10s)
+✔ [1650/1728] Built Mathlib.Algebra.Star.SelfAdjoint (7.9s)
+✔ [1651/1728] Built Mathlib.Data.Matrix.Basic (18s)
+✔ [1652/1728] Built Mathlib.RingTheory.Ideal.Maps (13s)
+✔ [1653/1728] Built Mathlib.Algebra.Polynomial.Eval.Degree (2.8s)
+✔ [1654/1728] Built Mathlib.Algebra.DirectSum.Finsupp (2.2s)
+✔ [1655/1728] Built Mathlib.Algebra.Star.BigOperators (1.8s)
+✔ [1656/1728] Built Mathlib.SetTheory.Cardinal.Aleph (5.2s)
+✔ [1657/1728] Built Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic (11s)
+✔ [1658/1728] Built Mathlib.Algebra.Algebra.Subalgebra.Operations (3.1s)
+✔ [1659/1728] Built Mathlib.RingTheory.Ideal.Prod (4.3s)
+✔ [1660/1728] Built Mathlib.Algebra.Star.Module (6.1s)
+✔ [1661/1728] Built Mathlib.LinearAlgebra.AffineSpace.Restrict (3.7s)
+✔ [1662/1728] Built Mathlib.Data.Matrix.Basis (6.1s)
+✔ [1663/1728] Built Mathlib.Algebra.Polynomial.Degree.Lemmas (5.2s)
+✔ [1664/1728] Built Mathlib.LinearAlgebra.AffineSpace.Pointwise (4.3s)
+✔ [1665/1728] Built Mathlib.SetTheory.Cardinal.Arithmetic (5.0s)
+✔ [1666/1728] Built Mathlib.LinearAlgebra.Matrix.StdBasis (2.2s)
+✔ [1667/1728] Built Mathlib.Algebra.Star.StarAlgHom (14s)
+✔ [1668/1728] Built Mathlib.RingTheory.PrincipalIdealDomain (4.4s)
+✔ [1669/1728] Built Mathlib.Data.Matrix.Composition (3.5s)
+✔ [1670/1728] Built Mathlib.SetTheory.Cardinal.Finsupp (2.7s)
+✔ [1671/1728] Built Mathlib.SetTheory.Cardinal.Ordinal (2.9s)
+✔ [1672/1728] Built Mathlib.Algebra.Polynomial.AlgebraMap (9.9s)
+✔ [1673/1728] Built Mathlib.LinearAlgebra.AffineSpace.Combination (9.4s)
+✔ [1674/1728] Built Mathlib.Algebra.Polynomial.EraseLead (5.2s)
+✔ [1675/1728] Built Mathlib.SetTheory.Cardinal.Cofinality.Ordinal (4.9s)
+✔ [1676/1728] Built Mathlib.LinearAlgebra.Matrix.ConjTranspose (4.0s)
+✔ [1677/1728] Built Mathlib.RingTheory.Adjoin.Polynomial.Basic (2.5s)
+✔ [1678/1728] Built Mathlib.LinearAlgebra.AffineSpace.Centroid (2.7s)
+✔ [1679/1728] Built Mathlib.Algebra.Polynomial.Reverse (2.8s)
+✔ [1680/1728] Built Mathlib.SetTheory.Ordinal.FundamentalSequence (2.5s)
+✔ [1681/1728] Built Mathlib.LinearAlgebra.Matrix.RowCol (3.5s)
+✔ [1682/1728] Built Mathlib.LinearAlgebra.TensorProduct.Tower (39s)
+✔ [1683/1728] Built Mathlib.Data.Matrix.Block (5.3s)
+✔ [1684/1728] Built Mathlib.Algebra.Polynomial.Monic (3.8s)
+✔ [1685/1728] Built Mathlib.SetTheory.Cardinal.Regular (3.1s)
+✔ [1686/1728] Built Mathlib.Algebra.MvPolynomial.Equiv (7.6s)
+✔ [1687/1728] Built Mathlib.LinearAlgebra.AffineSpace.Independent (7.5s)
+✔ [1688/1728] Built Mathlib.SetTheory.Cardinal.Pigeonhole (1.6s)
+✔ [1689/1728] Built Mathlib.Algebra.Polynomial.BigOperators (2.2s)
+✔ [1690/1728] Built Mathlib.LinearAlgebra.Matrix.Notation (4.3s)
+✔ [1691/1728] Built Mathlib.LinearAlgebra.DirectSum.TensorProduct (4.5s)
+✔ [1692/1728] Built Mathlib.RingTheory.Ideal.Quotient.Operations (17s)
+✔ [1693/1728] Built Mathlib.LinearAlgebra.Basis.Cardinality (1.8s)
+✔ [1694/1728] Built Mathlib.LinearAlgebra.AffineSpace.Basis (3.3s)
+✔ [1695/1728] Built Mathlib.RingTheory.Finiteness.Cardinality (1.3s)
+✔ [1696/1728] Built Mathlib.LinearAlgebra.AffineSpace.Simplex.Basic (4.1s)
+✔ [1697/1728] Built Mathlib.LinearAlgebra.DirectSum.Finsupp (2.9s)
+✔ [1698/1728] Built Mathlib.LinearAlgebra.FreeModule.Finite.Basic (1.2s)
+✔ [1699/1728] Built Mathlib.RingTheory.OrzechProperty (1.3s)
+✔ [1700/1728] Built Mathlib.RingTheory.Noetherian.Basic (2.5s)
+✔ [1701/1728] Built Mathlib.LinearAlgebra.TensorProduct.Basis (2.2s)
+✔ [1702/1728] Built Mathlib.RingTheory.Noetherian.Orzech (1.3s)
+✔ [1703/1728] Built Mathlib.LinearAlgebra.AffineSpace.Simplex.Centroid (3.9s)
+✔ [1704/1728] Built Mathlib.Algebra.Module.Projective (2.1s)
+✔ [1705/1728] Built Mathlib.LinearAlgebra.InvariantBasisNumber (2.1s)
+✔ [1706/1728] Built Mathlib.RingTheory.Polynomial.Basic (3.4s)
+✔ [1707/1728] Built Mathlib.RingTheory.Adjoin.FG (1.5s)
+✔ [1708/1728] Built Mathlib.LinearAlgebra.Dimension.StrongRankCondition (2.0s)
+✔ [1709/1728] Built Mathlib.RingTheory.Adjoin.Tower (1.7s)
+✔ [1710/1728] Built Mathlib.LinearAlgebra.Dimension.Free (2.6s)
+✔ [1711/1728] Built Mathlib.LinearAlgebra.FiniteDimensional.Defs (1.9s)
+✔ [1712/1728] Built Mathlib.RingTheory.FiniteType (3.7s)
+✔ [1713/1728] Built Mathlib.LinearAlgebra.Dimension.Constructions (3.2s)
+✔ [1714/1728] Built Mathlib.LinearAlgebra.FreeModule.StrongRankCondition (1.0s)
+✔ [1715/1728] Built Mathlib.LinearAlgebra.Matrix.ToLin (8.7s)
+✔ [1716/1728] Built Mathlib.LinearAlgebra.Dimension.FreeAndStrongRankCondition (1.8s)
+✔ [1717/1728] Built Mathlib.LinearAlgebra.Dimension.Finite (1.9s)
+✔ [1718/1728] Built Mathlib.FieldTheory.Finiteness (1.3s)
+✔ [1719/1728] Built Mathlib.LinearAlgebra.FreeModule.Finite.Matrix (1.9s)
+✔ [1720/1728] Built Mathlib.LinearAlgebra.Dimension.RankNullity (2.2s)
+✔ [1721/1728] Built Mathlib.LinearAlgebra.FiniteDimensional.Basic (3.3s)
+✔ [1722/1728] Built Mathlib.LinearAlgebra.Dimension.OrzechProperty (3.8s)
+✔ [1723/1728] Built Mathlib.LinearAlgebra.Dimension.DivisionRing (1.9s)
+✔ [1724/1728] Built Mathlib.LinearAlgebra.FiniteDimensional.Lemmas (1.0s)
+✔ [1725/1728] Built Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional (3.0s)
+✔ [1726/1728] Built claims.AffineClauseCompression (1.9s)
+✔ [1727/1728] Built claims.BinarySemanticAffineCover (1.6s)
+Build completed successfully (1728 jobs).
+$ lake env lean -DwarningAsError=true claims/AffineClauseCompression.lean
+$ lake env lean -DwarningAsError=true claims/BinaryAffineZeroCover.lean
+$ lake env lean -DwarningAsError=true claims/BinarySemanticAffineCover.lean
+$ lake env lean -DwarningAsError=true claims/FiniteComplexCover.lean
+$ lake env lean -DwarningAsError=true claims/ModInterpolation.lean
+$ lake env lean -DwarningAsError=true claims/MpTelescoping.lean
+$ lake env lean -DwarningAsError=true third-party-claims/AugmentedBoundarySquared.lean
+$ lake env lean -DwarningAsError=true third-party-claims/AugmentedChainMaps.lean
+$ lake env lean -DwarningAsError=true third-party-claims/AugmentedChains.lean
+$ lake env lean -DwarningAsError=true third-party-claims/ChessboardFilling.lean
+$ lake env lean -DwarningAsError=true third-party-claims/ChessboardStarCover.lean
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/chessboard/formalization/.lake/tmputvp9ln0.lean
+@MathResearch.affine_clause_basis_compression : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] [FiniteDimensional MathResearch.BinaryField V]
+  (C : MathResearch.ParityClause V),
+  ∃ S ⊆ C,
+    Finset.card S ≤ Module.finrank MathResearch.BinaryField V + 1 ∧
+      ∀ (x : V), MathResearch.clauseHolds S x ↔ MathResearch.clauseHolds C x
+'MathResearch.affine_clause_basis_compression' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affine_clause_registry_compression : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] [FiniteDimensional MathResearch.BinaryField V] (N : ℕ)
+  (C : Fin N → MathResearch.ParityClause V),
+  ∃ S,
+    (∀ (i : Fin N),
+        S i ⊆ C i ∧
+          Finset.card (S i) ≤ Module.finrank MathResearch.BinaryField V + 1 ∧
+            ∀ (x : V), MathResearch.clauseHolds (S i) x ↔ MathResearch.clauseHolds (C i) x) ∧
+      ∑ i, Finset.card (S i) * (Module.finrank MathResearch.BinaryField V + 1) ≤
+        N * (Module.finrank MathResearch.BinaryField V + 1) ^ 2
+'MathResearch.affine_clause_registry_compression' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_affine_zero_cover : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] (A B D : MathResearch.ParityClause V),
+  (∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x) →
+    ¬MathResearch.clauseEntails A D →
+      ¬MathResearch.clauseEntails B D →
+        ∃ u ∈ A,
+          ∃ a b,
+            MathResearch.clauseZero D a ∧
+              MathResearch.clauseZero D b ∧
+                u a = 1 ∧
+                  u b = 0 ∧
+                    ∀ (x : V),
+                      MathResearch.clauseZero D x →
+                        (MathResearch.clauseZero A x ↔ u x = 0) ∧ (MathResearch.clauseZero B x ↔ u x = 1)
+'MathResearch.binary_affine_zero_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_affine_halves_translate : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] (A B D : MathResearch.ParityClause V),
+  (∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x) →
+    ¬MathResearch.clauseEntails A D →
+      ¬MathResearch.clauseEntails B D →
+        ∃ a b e, ∀ (x : { x // MathResearch.clauseZero D x ∧ MathResearch.clauseZero A x }), ↑(e x) = a - b + ↑x
+'MathResearch.binary_affine_halves_translate' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_semantic_affine_cover : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] (A B D : MathResearch.ParityClause V),
+  (∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x) →
+    MathResearch.clauseEntails A D ∨
+      MathResearch.clauseEntails B D ∨
+        ∃ u ∈ A,
+          MathResearch.clauseEntails A (insert u D) ∧
+            MathResearch.clauseEntails B (insert (MathResearch.oppositeParity u) D)
+'MathResearch.binary_semantic_affine_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_semantic_three_steps : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] (A B D : MathResearch.ParityClause V),
+  (∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x) →
+    ∃ n ≤ 3, MathResearch.ParityDerivation A B D n
+'MathResearch.binary_semantic_three_steps' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.parity_derivation_sound : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] {A B D : MathResearch.ParityClause V} {n : ℕ},
+  MathResearch.ParityDerivation A B D n →
+    ∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x
+'MathResearch.parity_derivation_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_auxiliary_count : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] (D : MathResearch.ParityClause V)
+  (u : V →ᵃ[MathResearch.BinaryField] MathResearch.BinaryField),
+  (MathResearch.binaryAuxiliaryClauses D u).card ≤ 2 ∧
+    ∀ C ∈ MathResearch.binaryAuxiliaryClauses D u, Finset.card C ≤ Finset.card D + 1
+'MathResearch.binary_auxiliary_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_semantic_restriction : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] {U : Type u_2} [inst_2 : AddCommGroup U]
+  [inst_3 : Module MathResearch.BinaryField U] (A B D : MathResearch.ParityClause V),
+  (∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x) →
+    ∀ (f : U →ᵃ[MathResearch.BinaryField] V) (x : U),
+      MathResearch.clauseHolds (MathResearch.restrictParityClause A f) x →
+        MathResearch.clauseHolds (MathResearch.restrictParityClause B f) x →
+          MathResearch.clauseHolds (MathResearch.restrictParityClause D f) x
+'MathResearch.binary_semantic_restriction' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.binary_semantic_compressed : ∀ {V : Type u_1} [inst : AddCommGroup V]
+  [inst_1 : Module MathResearch.BinaryField V] [FiniteDimensional MathResearch.BinaryField V]
+  (A B D : MathResearch.ParityClause V),
+  (∀ (x : V), MathResearch.clauseHolds A x → MathResearch.clauseHolds B x → MathResearch.clauseHolds D x) →
+    ∃ A' B' D',
+      Finset.card A' ≤ Module.finrank MathResearch.BinaryField V + 1 ∧
+        Finset.card B' ≤ Module.finrank MathResearch.BinaryField V + 1 ∧
+          Finset.card D' ≤ Module.finrank MathResearch.BinaryField V + 1 ∧
+            (∀ (x : V), MathResearch.clauseHolds A' x ↔ MathResearch.clauseHolds A x) ∧
+              (∀ (x : V), MathResearch.clauseHolds B' x ↔ MathResearch.clauseHolds B x) ∧
+                (∀ (x : V), MathResearch.clauseHolds D' x ↔ MathResearch.clauseHolds D x) ∧
+                  ∃ n ≤ 3, MathResearch.ParityDerivation A' B' D' n
+'MathResearch.binary_semantic_compressed' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.intersection : {V : Type u_1} →
+  {I : Type u_2} →
+    (I → MathResearch.ThirdParty.Augmented.Complex V) → Finset I → MathResearch.ThirdParty.Augmented.Complex V
+'MathResearch.ThirdParty.Augmented.intersection' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.nerve : {V : Type u_1} →
+  {I : Type u_2} → (I → MathResearch.ThirdParty.Augmented.Complex V) → MathResearch.ThirdParty.Augmented.Complex I
+'MathResearch.ThirdParty.Augmented.nerve' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.Covers : {V : Type u_1} →
+  {I : Type u_2} →
+    MathResearch.ThirdParty.Augmented.Complex V → (I → MathResearch.ThirdParty.Augmented.Complex V) → Prop
+'MathResearch.ThirdParty.Augmented.Covers' depends on axioms: [propext, Quot.sound]
+@MathResearch.mod_interpolation : ∀ {R : Type u_1} [inst : CommRing R] [Nontrivial R] (p : ℕ),
+  3 ≤ p →
+    ∃ q,
+      (MathResearch.modT + MathResearch.modA - 1) ^ (p - 1) - MathResearch.modA * MathResearch.modT ^ (p - 1) -
+            (1 - MathResearch.modA) * (MathResearch.modT - 1) ^ (p - 1) =
+          (MathResearch.modA ^ 2 - MathResearch.modA) * q ∧
+        q.totalDegree ≤ p - 3
+'MathResearch.mod_interpolation' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mod_interpolation_two : ∀ {R : Type u_1} [inst : CommRing R],
+  (MathResearch.modT + MathResearch.modA - 1) ^ (2 - 1) - MathResearch.modA * MathResearch.modT ^ (2 - 1) -
+      (1 - MathResearch.modA) * (MathResearch.modT - 1) ^ (2 - 1) =
+    0
+'MathResearch.mod_interpolation_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mp_telescoping : ∀ {R : Type u_1} {ι : Type u_2} [inst : CommRing R] [inst_1 : Fintype ι] (f : ι → R)
+  (r : ℕ → ι → R) (h : ℕ), 1 - MathResearch.ensProduct f r h = ∑ i, MathResearch.ensCoefficient f r h i * f i
+'MathResearch.mp_telescoping' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mp_coefficient_degree : ∀ {R : Type u_1} {ι : Type u_2} {σ : Type u_3} [inst : CommRing R]
+  [inst_1 : Fintype ι] (f : ι → MvPolynomial σ R) (r : ℕ → ι → MvPolynomial σ R) (δ h : ℕ) (i : ι),
+  (∀ (j : ι), (f j).totalDegree ≤ δ) →
+    (∀ v < h, ∀ (j : ι), (r v j).totalDegree ≤ 1) →
+      (MathResearch.ensCoefficient f r h i).totalDegree ≤ 1 + (h - 1) * (δ + 1)
+'MathResearch.mp_coefficient_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mp_companion_degree : ∀ {R : Type u_1} {ι : Type u_2} {σ : Type u_3} [inst : CommRing R]
+  [inst_1 : Fintype ι] (f : ι → MvPolynomial σ R) (r : ℕ → ι → MvPolynomial σ R) (δ h : ℕ) (i : ι),
+  (∀ (j : ι), (f j).totalDegree ≤ δ) →
+    (∀ v < h, ∀ (j : ι), (r v j).totalDegree ≤ 1) →
+      (f i * MathResearch.ensProduct f r h).totalDegree ≤ (f i).totalDegree + h * (δ + 1)
+'MathResearch.mp_companion_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mp_companion_equality_counterexample : ∀ {R : Type u_1} [inst : CommRing R] [Nontrivial R],
+  have f := fun x => 1;
+  have r := fun x x_1 => MvPolynomial.X 0;
+  (∀ (i : Fin 1), (f i).totalDegree ≤ 1) ∧
+    (∀ v < 1, ∀ (i : Fin 1), (r v i).totalDegree ≤ 1) ∧
+      (f 0 * MathResearch.ensProduct f r 1).totalDegree ≠ (f 0).totalDegree + 1 * (1 + 1)
+'MathResearch.mp_companion_equality_counterexample' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.boundary_boundary : ∀ {V : Type u_1} [inst : Fintype V] [inst_1 : DecidableEq V]
+  (c : MathResearch.ThirdParty.Augmented.Coeff V),
+  MathResearch.ThirdParty.Augmented.boundary (MathResearch.ThirdParty.Augmented.boundary c) = 0
+'MathResearch.ThirdParty.Augmented.boundary_boundary' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.differential_squared : ∀ {V : Type u_1} [inst : Fintype V] [inst_1 : DecidableEq V]
+  (K : MathResearch.ThirdParty.Augmented.Complex V) (k : ℕ)
+  (c : ↥(MathResearch.ThirdParty.Augmented.chains K (k + 1 + 1))),
+  (MathResearch.ThirdParty.Augmented.differential K k) ((MathResearch.ThirdParty.Augmented.differential K (k + 1)) c) =
+    0
+'MathResearch.ThirdParty.Augmented.differential_squared' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.boundary_extend : ∀ {V : Type u_1} [inst : Fintype V] [inst_1 : DecidableEq V]
+  (K : MathResearch.ThirdParty.Augmented.Complex V) (k : ℕ)
+  (c : MathResearch.ThirdParty.Augmented.Face K (k + 1) → ZMod 2) (T : MathResearch.ThirdParty.Augmented.Face K k),
+  MathResearch.ThirdParty.Augmented.boundary ↑(MathResearch.ThirdParty.Augmented.extend K (k + 1) c) ↑T =
+    ∑ S, if ↑T ⊆ ↑S then c S else 0
+'MathResearch.ThirdParty.Augmented.boundary_extend' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.boundary_push : ∀ {V : Type u_1} {W : Type u_2} [inst : Fintype V]
+  [inst_1 : DecidableEq V] [inst_2 : Fintype W] [inst_3 : DecidableEq W] (e : V ↪ W)
+  (c : MathResearch.ThirdParty.Augmented.Coeff V),
+  MathResearch.ThirdParty.Augmented.boundary (MathResearch.ThirdParty.Augmented.push e c) =
+    MathResearch.ThirdParty.Augmented.push e (MathResearch.ThirdParty.Augmented.boundary c)
+'MathResearch.ThirdParty.Augmented.boundary_push' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.push_supported : ∀ {V : Type u_1} {W : Type u_2} (e : V ↪ W)
+  (K : MathResearch.ThirdParty.Augmented.Complex V) (L : MathResearch.ThirdParty.Augmented.Complex W),
+  (∀ S ∈ K.faces, Finset.map e S ∈ L.faces) →
+    ∀ (k : ℕ) (c : MathResearch.ThirdParty.Augmented.Coeff V),
+      MathResearch.ThirdParty.Augmented.Supported K k c →
+        MathResearch.ThirdParty.Augmented.Supported L k (MathResearch.ThirdParty.Augmented.push e c)
+'MathResearch.ThirdParty.Augmented.push_supported' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.chainMap : {V : Type u_1} →
+  {W : Type u_2} →
+    (e : V ↪ W) →
+      (K : MathResearch.ThirdParty.Augmented.Complex V) →
+        (L : MathResearch.ThirdParty.Augmented.Complex W) →
+          (∀ S ∈ K.faces, Finset.map e S ∈ L.faces) →
+            (k : ℕ) →
+              ↥(MathResearch.ThirdParty.Augmented.chains K k) →ₗ[ZMod 2] ↥(MathResearch.ThirdParty.Augmented.chains L k)
+'MathResearch.ThirdParty.Augmented.chainMap' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.differential_chainMap : ∀ {V : Type u_1} {W : Type u_2} [inst : Fintype V]
+  [inst_1 : DecidableEq V] [inst_2 : Fintype W] [inst_3 : DecidableEq W] (e : V ↪ W)
+  (K : MathResearch.ThirdParty.Augmented.Complex V) (L : MathResearch.ThirdParty.Augmented.Complex W)
+  (he : ∀ S ∈ K.faces, Finset.map e S ∈ L.faces) (k : ℕ) (c : ↥(MathResearch.ThirdParty.Augmented.chains K (k + 1))),
+  (MathResearch.ThirdParty.Augmented.differential L k)
+      ((MathResearch.ThirdParty.Augmented.chainMap e K L he (k + 1)) c) =
+    (MathResearch.ThirdParty.Augmented.chainMap e K L he k) ((MathResearch.ThirdParty.Augmented.differential K k) c)
+'MathResearch.ThirdParty.Augmented.differential_chainMap' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.inclusion : {V : Type u_1} →
+  (K L : MathResearch.ThirdParty.Augmented.Complex V) →
+    K.faces ⊆ L.faces →
+      (k : ℕ) →
+        ↥(MathResearch.ThirdParty.Augmented.chains K k) →ₗ[ZMod 2] ↥(MathResearch.ThirdParty.Augmented.chains L k)
+'MathResearch.ThirdParty.Augmented.inclusion' depends on axioms: [propext, Quot.sound]
+@MathResearch.ThirdParty.Augmented.differential_inclusion : ∀ {V : Type u_1} [inst : Fintype V] [inst_1 : DecidableEq V]
+  (K L : MathResearch.ThirdParty.Augmented.Complex V) (h : K.faces ⊆ L.faces) (k : ℕ)
+  (c : ↥(MathResearch.ThirdParty.Augmented.chains K (k + 1))),
+  (MathResearch.ThirdParty.Augmented.differential L k) ((MathResearch.ThirdParty.Augmented.inclusion K L h (k + 1)) c) =
+    (MathResearch.ThirdParty.Augmented.inclusion K L h k) ((MathResearch.ThirdParty.Augmented.differential K k) c)
+'MathResearch.ThirdParty.Augmented.differential_inclusion' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ThirdParty.Augmented.chessboard_boundary_coordinate : ∀ (s N k : ℕ)
+  (c : MathResearch.ThirdParty.ChessboardChain s N (k + 1)) (T : MathResearch.ThirdParty.ChessboardFace s N k),
+  MathResearch.ThirdParty.Augmented.boundary ↑((MathResearch.ThirdParty.Augmented.chessboardChainEquiv s N (k + 1)) c)
+      ↑T =
+    MathResearch.ThirdParty.chessboardBoundary c T
+'MathResearch.ThirdParty.Augmented.chessboard_boundary_coordinate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.ThirdParty.Augmented.chessboard_differential : ∀ (s N k : ℕ)
+  (c : MathResearch.ThirdParty.ChessboardChain s N (k + 1)),
+  (MathResearch.ThirdParty.Augmented.differential (MathResearch.ThirdParty.Augmented.chessboardComplex s N) k)
+      ((MathResearch.ThirdParty.Augmented.chessboardChainEquiv s N (k + 1)) c) =
+    (MathResearch.ThirdParty.Augmented.chessboardChainEquiv s N k) (MathResearch.ThirdParty.chessboardBoundary c)
+'MathResearch.ThirdParty.Augmented.chessboard_differential' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ThirdParty.Augmented.chessboard_boundary : ∀ (s N k : ℕ)
+  (c : MathResearch.ThirdParty.ChessboardChain s N k),
+  MathResearch.ThirdParty.Augmented.boundary ↑((MathResearch.ThirdParty.Augmented.chessboardChainEquiv s N k) c) =
+    ↑((MathResearch.ThirdParty.Augmented.chessboardChainEquiv s N (k - 1))
+        (MathResearch.ThirdParty.chessboardBoundary c))
+'MathResearch.ThirdParty.Augmented.chessboard_boundary' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ThirdParty.Augmented.chessboard_cycle_iff : ∀ (s N k : ℕ)
+  (c : MathResearch.ThirdParty.ChessboardChain s N k),
+  MathResearch.ThirdParty.chessboardBoundary c = 0 ↔
+    MathResearch.ThirdParty.Augmented.boundary ↑((MathResearch.ThirdParty.Augmented.chessboardChainEquiv s N k) c) = 0
+'MathResearch.ThirdParty.Augmented.chessboard_cycle_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.push_apply_map : ∀ {V : Type u_1} {W : Type u_2} (e : V ↪ W)
+  (c : MathResearch.ThirdParty.Augmented.Coeff V) (S : Finset V),
+  MathResearch.ThirdParty.Augmented.push e c (Finset.map e S) = c S
+'MathResearch.ThirdParty.Augmented.push_apply_map' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.push_injective : ∀ {V : Type u_1} {W : Type u_2} (e : V ↪ W),
+  Function.Injective (MathResearch.ThirdParty.Augmented.push e)
+'MathResearch.ThirdParty.Augmented.push_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.push_equiv : ∀ {V : Type u_1} {W : Type u_2} (e : V ≃ W)
+  (c : MathResearch.ThirdParty.Augmented.Coeff V) (T : Finset W),
+  MathResearch.ThirdParty.Augmented.push e.toEmbedding c T = c (Finset.map e.symm.toEmbedding T)
+'MathResearch.ThirdParty.Augmented.push_equiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.push_equiv_inverse : ∀ {V : Type u_1} {W : Type u_2} (e : V ≃ W)
+  (c : MathResearch.ThirdParty.Augmented.Coeff V),
+  MathResearch.ThirdParty.Augmented.push e.symm.toEmbedding (MathResearch.ThirdParty.Augmented.push e.toEmbedding c) = c
+'MathResearch.ThirdParty.Augmented.push_equiv_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ThirdParty.Augmented.transpose_faces : ∀ (s N : ℕ),
+  ∀ S ∈ (MathResearch.ThirdParty.Augmented.chessboardComplex s N).faces,
+    Finset.map (Equiv.prodComm (Fin s) (Fin N)).toEmbedding S ∈
+      (MathResearch.ThirdParty.Augmented.chessboardComplex N s).faces
+'MathResearch.ThirdParty.Augmented.transpose_faces' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ThirdParty.Augmented.transposeChain : (s N k : ℕ) →
+  ↥(MathResearch.ThirdParty.Augmented.chains (MathResearch.ThirdParty.Augmented.chessboardComplex s N) k) →ₗ[ZMod 2]
+    ↥(MathResearch.ThirdParty.Augmented.chains (MathResearch.ThirdParty.Augmented.chessboardComplex N s) k)
+'MathResearch.ThirdParty.Augmented.transposeChain' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ThirdParty.Augmented.differential_transpose : ∀ (s N k : ℕ)
+  (c : ↥(MathResearch.ThirdParty.Augmented.chains (MathResearch.ThirdParty.Augmented.chessboardComplex s N) (k + 1))),
+  (MathResearch.ThirdParty.Augmented.differential (MathResearch.ThirdParty.Augmented.chessboardComplex N s) k)
+      ((MathResearch.ThirdParty.Augmented.transposeChain s N (k + 1)) c) =
+    (MathResearch.ThirdParty.Augmented.transposeChain s N k)
+      ((MathResearch.ThirdParty.Augmented.differential (MathResearch.ThirdParty.Augmented.chessboardComplex s N) k) c)
+'MathResearch.ThirdParty.Augmented.differential_transpose' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ThirdParty.Augmented.transposeChain_inverse : ∀ (s N k : ℕ)
+  (c : ↥(MathResearch.ThirdParty.Augmented.chains (MathResearch.ThirdParty.Augmented.chessboardComplex s N) k)),
+  (MathResearch.ThirdParty.Augmented.transposeChain N s k)
+      ((MathResearch.ThirdParty.Augmented.transposeChain s N k) c) =
+    c
+'MathResearch.ThirdParty.Augmented.transposeChain_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.boundary_add : ∀ {V : Type u_1} [inst : Fintype V] [inst_1 : DecidableEq V]
+  (c d : MathResearch.ThirdParty.Augmented.Coeff V),
+  MathResearch.ThirdParty.Augmented.boundary (c + d) =
+    MathResearch.ThirdParty.Augmented.boundary c + MathResearch.ThirdParty.Augmented.boundary d
+'MathResearch.ThirdParty.Augmented.boundary_add' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.boundary_smul : ∀ {V : Type u_1} [inst : Fintype V] [inst_1 : DecidableEq V]
+  (a : ZMod 2) (c : MathResearch.ThirdParty.Augmented.Coeff V),
+  MathResearch.ThirdParty.Augmented.boundary (a • c) = a • MathResearch.ThirdParty.Augmented.boundary c
+'MathResearch.ThirdParty.Augmented.boundary_smul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.boundary_supported : ∀ {V : Type u_1} [inst : Fintype V] [inst_1 : DecidableEq V]
+  (K : MathResearch.ThirdParty.Augmented.Complex V) (k : ℕ) (c : MathResearch.ThirdParty.Augmented.Coeff V),
+  MathResearch.ThirdParty.Augmented.Supported K (k + 1) c →
+    MathResearch.ThirdParty.Augmented.Supported K k (MathResearch.ThirdParty.Augmented.boundary c)
+'MathResearch.ThirdParty.Augmented.boundary_supported' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.boundary_empty : ∀ {V : Type u_1} [inst : Fintype V] [inst_1 : DecidableEq V]
+  (K : MathResearch.ThirdParty.Augmented.Complex V) (c : MathResearch.ThirdParty.Augmented.Coeff V),
+  MathResearch.ThirdParty.Augmented.Supported K 0 c → MathResearch.ThirdParty.Augmented.boundary c = 0
+'MathResearch.ThirdParty.Augmented.boundary_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.faceChainEquiv : {V : Type u_1} →
+  (K : MathResearch.ThirdParty.Augmented.Complex V) →
+    (k : ℕ) →
+      (MathResearch.ThirdParty.Augmented.Face K k → ZMod 2) ≃ₗ[ZMod 2] ↥(MathResearch.ThirdParty.Augmented.chains K k)
+'MathResearch.ThirdParty.Augmented.faceChainEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ThirdParty.Augmented.chessboardComplex : (s N : ℕ) →
+  MathResearch.ThirdParty.Augmented.Complex (Fin s × Fin N)
+'MathResearch.ThirdParty.Augmented.chessboardComplex' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ThirdParty.Augmented.chessboardChainEquiv : (s N k : ℕ) →
+  MathResearch.ThirdParty.ChessboardChain s N k ≃ₗ[ZMod 2]
+    ↥(MathResearch.ThirdParty.Augmented.chains (MathResearch.ThirdParty.Augmented.chessboardComplex s N) k)
+'MathResearch.ThirdParty.Augmented.chessboardChainEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.differential : {V : Type u_1} →
+  [Fintype V] →
+    [DecidableEq V] →
+      (K : MathResearch.ThirdParty.Augmented.Complex V) →
+        (k : ℕ) →
+          ↥(MathResearch.ThirdParty.Augmented.chains K (k + 1)) →ₗ[ZMod 2]
+            ↥(MathResearch.ThirdParty.Augmented.chains K k)
+'MathResearch.ThirdParty.Augmented.differential' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ThirdParty.ChessboardFilling : Prop
+'MathResearch.ThirdParty.ChessboardFilling' depends on axioms: [propext, Classical.choice, Quot.sound]
+def MathResearch.ThirdParty.ChessboardFilling : Prop :=
+∀ (s N : ℕ),
+  2 ≤ s →
+    2 * s - 1 ≤ N →
+      ∀ (c : MathResearch.ThirdParty.ChessboardChain s N (s - 1)),
+        MathResearch.ThirdParty.chessboardBoundary c = 0 → ∃ b, MathResearch.ThirdParty.chessboardBoundary b = c
+@MathResearch.ThirdParty.Augmented.closedStar : {V : Type u_1} →
+  [DecidableEq V] →
+    (K : MathResearch.ThirdParty.Augmented.Complex V) →
+      (v : V) → {v} ∈ K.faces → MathResearch.ThirdParty.Augmented.Complex V
+'MathResearch.ThirdParty.Augmented.closedStar' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.closedStar_subcomplex : ∀ {V : Type u_1} [inst : DecidableEq V]
+  (K : MathResearch.ThirdParty.Augmented.Complex V) (v : V) (hv : {v} ∈ K.faces),
+  (MathResearch.ThirdParty.Augmented.closedStar K v hv).faces ⊆ K.faces
+'MathResearch.ThirdParty.Augmented.closedStar_subcomplex' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.Augmented.closedStar_cone : ∀ {V : Type u_1} [inst : DecidableEq V]
+  (K : MathResearch.ThirdParty.Augmented.Complex V) (v : V) (hv : {v} ∈ K.faces),
+  ∀ s ∈ (MathResearch.ThirdParty.Augmented.closedStar K v hv).faces,
+    insert v s ∈ (MathResearch.ThirdParty.Augmented.closedStar K v hv).faces
+'MathResearch.ThirdParty.Augmented.closedStar_cone' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ThirdParty.Augmented.firstRowStars_cover : ∀ (a b : ℕ),
+  a + 1 ≤ b →
+    MathResearch.ThirdParty.Augmented.Covers (MathResearch.ThirdParty.Augmented.chessboardComplex (a + 1) b)
+      (MathResearch.ThirdParty.Augmented.firstRowStar a b)
+'MathResearch.ThirdParty.Augmented.firstRowStars_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 10 proof files; 1 statement-only files (no proof claimed); 53 audited declarations.
