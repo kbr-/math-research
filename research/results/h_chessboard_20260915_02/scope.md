@@ -1,0 +1,3 @@
+# H09 scope
+
+Identify intersections of t≥2 distinct first-row closed stars on (a+1)-by-b boards with the matching complex on a-by-(b-t). Prove both directions of face characterization (row0 and selected columns absent), not merely an embedding. Supply an all-degree chain equivalence commuting with the augmented differential, using H03 injection naturality and an extracted support-exhaustive relabeling helper. Empty remaining column set gives only the empty face and is retained. Existing H08 proves stars; H04/H05 are now integrated but not assumed for this purely combinatorial equivalence. H10 nerve statement and H12/H13 assembly are separate.

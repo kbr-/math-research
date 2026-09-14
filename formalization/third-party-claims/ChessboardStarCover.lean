@@ -2,7 +2,7 @@
 Claim: third-party:chessboard-star-cover
 Source: https://kbr.is-a.dev/math-research/#lean-chessboard-star-cover
 Scope: Closed first-row stars are subcomplexes, have the cone closure property, and cover rectangular boards with at least as many columns as rows.
-Declarations: MathResearch.ThirdParty.Augmented.closedStar MathResearch.ThirdParty.Augmented.closedStar_subcomplex MathResearch.ThirdParty.Augmented.closedStar_cone MathResearch.ThirdParty.Augmented.firstRowStars_cover
+Declarations: MathResearch.ThirdParty.Augmented.closedStar MathResearch.ThirdParty.Augmented.closedStar_subcomplex MathResearch.ThirdParty.Augmented.closedStar_cone MathResearch.ThirdParty.Augmented.firstRowStars_cover MathResearch.ThirdParty.Augmented.extend_matching
 -/
 import claims.FiniteComplexCover
 namespace MathResearch.ThirdParty.Augmented
@@ -25,7 +25,7 @@ def firstRowStar (a b : ℕ) (j : Fin b) : Complex (Fin (a+1) × Fin b) :=
     constructor <;> intro x hx y hy _ <;>
       exact (Finset.mem_singleton.mp hx).trans (Finset.mem_singleton.mp hy).symm)
 
-private theorem extend_matching {a b : ℕ} (M : Finset (Fin (a+1) × Fin b))
+theorem extend_matching {a b : ℕ} (M : Finset (Fin (a+1) × Fin b))
     (hM : M ∈ (chessboardComplex (a+1) b).faces) (j : Fin b)
     (hr : ∀ x ∈ M, x.1 ≠ 0) (hc : ∀ x ∈ M, x.2 ≠ j) :
     insert (0,j) M ∈ (chessboardComplex (a+1) b).faces := by

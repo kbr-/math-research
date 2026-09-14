@@ -1,0 +1,43 @@
+⚠ [1296/1297] Built claims.AugmentedSubcomplexRelabeling (2.0s)
+warning: claims/AugmentedSubcomplexRelabeling.lean:24:0: automatically included section variable(s) unused in theorem `MathResearch.ThirdParty.Augmented.push_pullChain`:
+  [Fintype V]
+  [DecidableEq V]
+  [Fintype W]
+  [DecidableEq W]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] [Fintype W] [DecidableEq W] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+✖ [1297/1297] Building «third-party-claims».ChessboardStarIntersections (1.2s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/chessboard/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/chessboard/formalization/third-party-claims/ChessboardStarIntersections.lean -o /home/kbr/dev/math-worktrees/chessboard/formalization/.lake/build/lib/lean/third-party-claims/ChessboardStarIntersections.olean -i /home/kbr/dev/math-worktrees/chessboard/formalization/.lake/build/lib/lean/third-party-claims/ChessboardStarIntersections.ilean -c /home/kbr/dev/math-worktrees/chessboard/formalization/.lake/build/ir/third-party-claims/ChessboardStarIntersections.c --setup /home/kbr/dev/math-worktrees/chessboard/formalization/.lake/build/ir/third-party-claims/ChessboardStarIntersections.setup.json --json
+error: third-party-claims/ChessboardStarIntersections.lean:47:31: Application type mismatch: The argument
+  congrArg Prod.fst h
+has type
+  ((fun x => (x.1.succ, ↑((remainingColumns b J).symm x.2))) x).1 =
+    ((fun x => (x.1.succ, ↑((remainingColumns b J).symm x.2))) y).1
+of sort `Prop` but is expected to have type
+  ℕ
+of sort `Type` in the application
+  Fin.succ_injective (congrArg Prod.fst h)
+error: third-party-claims/ChessboardStarIntersections.lean:64:45: Application type mismatch: The argument
+  h
+has type
+  ((smallerBoardEmbedding a b J) u).1 = ((smallerBoardEmbedding a b J) v).1
+of sort `Prop` but is expected to have type
+  ℕ
+of sort `Type` in the application
+  Fin.succ_injective h
+error: third-party-claims/ChessboardStarIntersections.lean:91:26: don't know how to synthesize placeholder for argument `h`
+context:
+a b : ℕ
+J : Finset (Fin b)
+hJ : 2 ≤ J.card
+T : Finset (Fin (a + 1) × Fin b)
+hT : T ∈ (intersection (firstRowStar a b) J).faces
+x : Fin (a + 1) × Fin b
+hx : x ∈ T
+hh : x.1 ≠ 0 ∧ x.2 ∉ J
+⊢ x.1 ≠ 0
+Some required targets logged failures:
+- «third-party-claims».ChessboardStarIntersections
+error: build failed
