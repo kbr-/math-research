@@ -14,7 +14,7 @@
   <p><strong>A working lower bound reaches a concrete subsystem.</strong> The <a href="#working-Res-parity-bit-PHP-size-lower-bound">superpolynomial size bound for DAG-like Res(\(\oplus\)) on bit PHP</a> now has a <a href="#Res-parity-lower-bound-chain-audit">second internal derivation and correctness audit</a>, with no gap found in this pass. It includes the usual CNF and both audited rule conventions, with no proof-DAG-depth restriction. It remains a working proof, not an externally reviewed theorem.</p>
   <p>The <a href="#bit-PHP-affine-clause-PC-transfer">direct clause simulation</a> gives one affine-bit ENS level at PC degree \(\max(2h+\ell,4h+1)\). The audit rederives <a href="#matching-moment-completeness-audit">all old moment constraints</a>, <a href="#matching-extension-arbitrary-row-count">old PC closure</a>, and <a href="#cube-residual-dual-separation">row-linear separation by a different dual functional</a>. An <a href="#ordinary-restriction-affine-family-audit">ordinary-polynomial restriction argument</a> independently recovers the sufficient one-level bound at \(h=3\ell\). Complete sparse finite witnesses accompany the proofs.</p>
   <p>The <a href="#prime-disequality-bit-PHP-size-bound">all-prime endpoint now excludes polynomial-size proofs in an explicitly defined affine-disequality clause calculus</a>. Its \(p\)-way rules are sound on the full field and its Boolean-domain clauses are explicit. At odd primes this is a restricted language: <a href="#full-field-equation-clause-encoding-cost">full-field conversion of general equation clauses can be exponential</a>, and no general domain-aware proof conversion is established.</p>
-  <p><strong>The full \(\mathrm{AC}^0[p]\)-Frege goal is open.</strong> The <a href="#unbalanced-sparse-compact-source-exclusion">sparse compact-source exclusion</a> applies before balancing, but general proofs allow dense nonlinear inputs. <a href="#label-substitution-selector-count-failure">Label substitution does not preserve its sparsity hypothesis</a>. No ordinary-unary or full-Frege conclusion follows from the bit-PHP subsystem result.</p>
+  <p><strong>The full \(\mathrm{AC}^0[p]\)-Frege goal is open.</strong> <a href="#dependent-rank-source-collapse">Adapted source profiles now use nonlinear selector rank instead of the number of dependent positions</a>. An <a href="#compact-source-polynomial-rank-obstruction">accuracy tradeoff forces a polynomial rank requirement</a> in a hypothetical short compact proof of fixed source depth. Dense blocks above that rank remain unhandled. <a href="#label-substitution-selector-count-failure">Label substitution can introduce many selector directions</a>; no pre-conversion rank invariance or ordinary-unary size conclusion is inferred.</p>
   <p>Other retained tools include <a href="#conditioned-bottom-level-removal">conditioned bottom-level deletion</a>, <a href="#row-local-canonical-source-transfer">degree-preserving row-local normalization</a>, and <a href="#costed-virtual-or-source-transfer">costed modular union folding</a>. Their gaps concern later nonlinear inputs and actual source coverage. The <a href="#all-prime-affine-family-exclusion">affine-bit exclusion now holds for every fixed prime</a>. A <a href="#power-affine-complete-system-transfer">complete coefficient map</a> also handles one-level inputs \(L_i^{p-1}\) at degree \(2D\). The <a href="#positive-MOD-shared-probe-exclusion">shared-probe positive-MOD class</a> now also transfers at degree \(pD\), using at most \(p\) affine blocks per original block. General complementary MOD predicates remain open. <a href="#retained-or-witness-scope">Hard representations of supplied witnesses</a> do not establish hardness of every alternative proof.</p>
   <div class="result">
     <p><strong>What would finish the route:</strong> from every hypothetical polynomial-size proof in the original system, obtain an old-base refutation below its \(N/2+1\) PC degree bound, or directly exclude the complete augmented endpoint. No current mechanism covers that full family. A concrete polynomial-size Frege construction would also be valuable; none is established.</p>
@@ -25,8 +25,8 @@
   <h2>The remaining route</h2>
   <div class="eyebrow">Highest risk first</div>
   <ol>
-    <li><strong>Handle the full dense nonlinear Frege source.</strong> Sparse-source exclusion leaves blocks with at least \(h\) dependent positions. Label packing makes nonlinear old inputs; the row-local presentation retains general unary affine queries. General membership and composition bounds remain missing.</li>
-    <li><strong>Extend the new branching transfer to later source inputs.</strong> Positive MOD tuples with one shared old affine probe and per-input literals are handled. Test whether a small span of nonlinear selector contributions permits the same reduction in bounded depth. Arbitrary positive-MOD tuples and standard odd-prime equation clauses remain outside current coverage.</li>
+    <li><strong>Handle the high-rank nonlinear compact source.</strong> The new source profiles collapse rank below accuracy; at fixed source depth a hypothetical short compact proof must have polynomially large dependent-selector rank. General membership and composition bounds for the remaining blocks are still missing, and unary label conversion retains its separate obstruction.</li>
+    <li><strong>Obtain useful target information beyond one-level refutation exclusion.</strong> Continuation needs control of which old or selector-dependent polynomials can be learned from the first affine level. Test old row-linear targets first. General positive-MOD tuples and standard odd-prime equation clauses remain outside current coverage.</li>
     <li><strong>Keep the concrete subsystem theorem auditable.</strong> The <a href="#Res-parity-lower-bound-chain-audit">second internal audit</a> found no gap; retain exact matching constraints, degree conventions, source-rule scope, and independent checks when building on it. No external verification is claimed.</li>
     <li><strong>Close the original parameters and keep both directions available.</strong> For every fixed prime, formula depth, and size exponent, derive a forbidden endpoint for ordinary PHP, or audit a concrete polynomial-size construction. Restricted subsystem bounds and method obstructions do not settle that question.</li>
   </ol>
@@ -34,7 +34,7 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Test the branching construction on a bounded-depth binary source with a small span of nonlinear selector contributions in each block. Track complete companion and coefficient-field images and polynomial inventory, using a case with many dependent input positions to demonstrate coverage beyond the earlier sparse-position condition. Stop at a valid degree/inventory bound or a concrete obstruction.</p>
+  <p>Test whether the actual first affine ENS level preserves a useful space of old row-linear targets at the degree budgets needed for continuation. Check a nonzero target rather than only a refutation, and identify the limitation when targets depend on selector values. Stop at a precise target-separation theorem or a counterexample.</p>
 </section>
 
 <section id="working-context">
@@ -59,14 +59,13 @@
   <h3 id="context-affine-endpoint">One affine level and concrete system coverage</h3>
   <p>The <a href="#all-prime-affine-family-exclusion">all-prime theorem</a> excludes polynomially many one-level affine-bit ENS blocks at polylogarithmic PC degree \(D\), with \(h=3(p-1)\ell\). Put \(k=\lceil\sqrt{(n+1)\log(4M)}\rceil\). Low ranks satisfy \((p-1)r\le h(k+1)\); factor packing gives exact zero indicators with coefficient degree at most \(k\). Higher ordinary restriction dimensions are at most \(\binom{v-r+k}{k}\), \(v=(n+1)\ell\), and their sum is smaller than \(\dim\mathcal L_k\). A common nonzero \(f\) has literal \(f=\sum a_i g_i\) on every high tuple.</p>
   <p>For high blocks use the \(p-1\) rows \(\alpha a_i\), making product \(1-f^{p-1}\). Weight the simultaneous substituted proof by \(f\), not its \((p-1)\)-st power. Companion images cost \(pk+1\) at high rank and \((p-1)r+1+k\) at low rank; weighted coefficient domains cost \((p+1)k\). Primitive PC replay derives \(f\) through \(B=k(D+1)&lt;n/2\), contradicting separation. Original axiom degrees stay in force. The <a href="#polynomial-affine-bit-family-exclusion">earlier binary proof</a> gives the slightly sharper \(h\ge2\ell\) range.</p>
-  <p>For one-level inputs \(g_i=L_i^{p-1}\), the <a href="#power-affine-complete-system-transfer">complete raw map</a> \(r_{ui}\mapsto R_{ui}L_i\) reduces to affine blocks at degree \(2D\), including all coefficient fields and arbitrary source-coefficient use. Product differences cost \(h(p+1)\), companion images at most \(h(p+1)+p-1\), field images \(2p\). These fit twice the original \(hp\), \(hp+p-1\), and \(p\). Thus the affine exclusion handles this nonlinear family too.</p>
-  <p>These powers are the actual OR inputs of negative first-layer MOD children. Their <a href="#negative-MOD-affine-core-profile">local profiles</a> cost \(2h+p-1\le hp\) for odd \(p,h\ge2\). Positive children instead give \(1-L_i^{p-1}\); a <a href="#positive-MOD-rank-control">MOD3 example of rank \(m\)</a> has more than half the Boolean cube as common zeroes. That common-bit example nevertheless has a <a href="#positive-MOD-common-bit-transfer">degree-preserving complete transfer</a>, with value \(1-x+xP_A\) and cost \(2h+1\). It limits a rank argument, not every proof method.</p>
-  <p>The new <a href="#shared-probe-original-degree-images">complete positive-MOD transfer</a> handles \(g_i=1-(a_i t+q_i+c_i)^{p-1}\), with one old affine \(t\) and old literal \(q_i\). For every residue \(\alpha\), create an affine block on the literal interpolation \(G_{i,\alpha}\). Map \(r_{ui}\) to \(\sum_\alpha[1-(t-\alpha)^{p-1}]R_{\alpha,u,i}\). This has degree \(p\); product differences use old Booleanity through \(h(2p-1)\), companions cost \(h(2p-1)+p-1\), and fields \(p^2\). Thus \(D\mapsto pD\) with at most \(p\) times the inventory. Dependencies between \(t\) and its literals are allowed. The one-level exclusion applies, but a corresponding multilevel construction is still to be proved.</p>
+  <p>Additional one-level coverage is supplied by the <a href="#power-affine-complete-system-transfer">complete power-input map</a>, taking \(L_i^{p-1}\) inputs to affine blocks at degree \(2D\), and the <a href="#shared-probe-original-degree-images">positive-MOD shared-probe map</a>, taking \(1-(a_it+q_i+c_i)^{p-1}\) to at most \(p\) affine blocks at degree \(pD\). The latter allows arbitrary dependence between the old affine probe and its old literals. The <a href="#positive-MOD-common-bit-transfer">common-bit MOD3 example</a> retains a sharper degree-preserving map. General complemented MOD tuples remain open; the new multilevel binary rank result below uses source profiles rather than a general raw-coefficient branching theorem.</p>
   <p>The <a href="#prime-affine-disequality-calculus">defined calculus \(\mathcal R_p^{\ne}\)</a> uses clauses \(\bigvee(g_i\ne0)\), full-field weakening, and \(p\)-way affine splits. Boolean domains \(b-a\ne0\), \(a\notin\{0,1\}\), are explicit initial clauses. At most \(p\) full-field semantic premises reduce to a <a href="#prime-affine-cover-rule">parallel hyperplane cover</a>. Its <a href="#prime-disequality-clause-PC-rules">PC rule costs</a> are \(4h+p-1\) for splitting and \(4h\) for weakening; domain clauses cost \(2h+2\), compact initial values \(2h+(p-1)\ell\). Thus any size-\(S\) refutation gives polynomial affine inventory and \(D=\max(2h+(p-1)\ell,4h+p-1)\), without a DAG-height restriction. The <a href="#prime-disequality-bit-PHP-size-bound">working size bound</a> covers compact and usual CNF bit PHP. At \(p=2\) this is the audited Res(\(\oplus\)) result; at odd primes no general equation-clause or Boolean-semantic simulation is inferred.</p>
   <h3 id="context-source-audit">Other source tools and the remaining gap</h3>
   <p>The <a href="#ordinary-PHP-to-compact-bit-source">binary compact bridge</a> preserves polynomial inventory and original weights. Its <a href="#compact-virtual-zero-clause-source">virtual boundary</a> sends formal clause names to zero with residual \(E_{ii'}\) at cost \(\ell\); it does not send the old polynomial to zero by a homomorphism. With \(L=(d+1)h^d\), the <a href="#costed-profile-unbalanced-PC-compiler">direct PC compiler</a> has ceiling \(\max(M_{\rm fr},10)L\) before balancing. Linked proofs retain the exact frame/depth conventions.</p>
   <p>A <a href="#costed-ns-value-profile">costed NS profile</a> has \(\deg v\le s\), residual \(1-v-\sum U_i g_i\in\mathcal I_s\), \(\deg U_i+\mu_i\le s\), companions through \(s+\mu_i\), and Booleanity through \(2s\). Profiles multiply at summed cost. An <a href="#costed-virtual-or-source-transfer">acyclic union fold</a> fitting original weight preserves the modular source degree by rebuilding witnesses; it is not arbitrary raw NS/PC substitution.</p>
-  <p>For inputs \(L_i(b)+\sum_c\alpha_{ic}Z_c\), the <a href="#sparse-selector-source-collapse">affine-core plus exact-tail construction</a> costs \(2h+(h-1)\delta_a\le w_a\) when each block has at most \(h-1\) dependent positions. Its <a href="#unbalanced-sparse-compact-source-exclusion">exclusion applies before balancing</a>. Literal label substitution can create many such positions; packed labels instead leave degree-\(\ell\) nonlinear old inputs. This remains a binary compiled-source result.</p>
+  <p>For \(\widehat g_{a,i}=L_{a,i}(b)+\sum_c\alpha_{a,i;c}Z_c\), define \(r_a=\operatorname{rank}(\alpha_{a,i;c})\). The <a href="#source-dependent-selector-rank">full old-affine intersection</a>, followed by a degree-adapted extension chosen from original inputs, leaves exactly \(r_a\) nonlinear basis vectors. A fresh affine core \(A\) and their exact tail give \(v=A\prod_j(1-G_j)\), with cost \(s\le2h+r_a\delta_a\). The <a href="#rank-adapted-original-source-prefixes">prefix pullback</a> preserves original input bounds: affine prefix terms cost at most \(2h-1+d_i\le w_a\), and selected terms retain their own input degree. Thus \(r_a\le h-1\) supplies complete profiles within \(w_a\) at every block. The <a href="#dependent-rank-source-collapse">source collapse</a> preserves the modular NS degree or compiles the original logical DAG through \(c(d+1)h^d\), without inventory growth. It is source-specific, not an arbitrary raw NS/PC map.</p>
+  <p>The <a href="#accuracy-dependent-affine-exclusion">binary accuracy-dependent endpoint</a> uses \(h\ge2(\ell+1)\), \(k=\lceil\sqrt{2(n+1)\ell\log(4M)/h}\rceil\), \(B=k(D+1)\). Conditions \(k\le n+1\), \(4(k-1)&lt;n\), and \(n\ge2B-1\) exclude the affine refutation. For a fixed compact source registry, the formal rank matrices are accuracy-independent. Choosing \(h=\max(2(\ell+1),R+1)\), \(R=\max r_a\), shows that a hypothetical polynomial-size compact proof of fixed source depth \(d\ge2\) eventually needs \(R&gt;n^{1/(2d-1)}/(\log n)^2\). This is a <a href="#compact-source-polynomial-rank-obstruction">structural rank condition</a>; it leaves higher ranks and the ordinary label-conversion gap open.</p>
   <p><a href="#conditioned-bottom-level-removal">Compact-first deletion</a> pays \(kD\) over \(\mathcal Q_n+\{1-f\}\), leaving barrier \(n/2-\deg f+1\) and <a href="#conditioned-row-linear-quotient-dimension">separated multiplier spaces</a>. A second square-root loss is too costly. <a href="#row-local-canonical-source-transfer">Row-local-first normalization</a> preserves \(D\) but retains general unary affine queries. The <a href="#row-supported-multilevel-normalization">all-prime row-profile theorem</a> costs \(TD\) for coefficient profiles through \(T\). These presentations do not automatically combine.</p>
   <p>Full dense-source coverage, general complementary MOD profiles, and original parameter closure remain open. <a href="#retained-or-witness-scope">Hard supplied witness representations</a> do not exclude cheaper alternative witnesses. The <a href="#compact-bit-pruned-assignment-tree">factorial-inventory control</a> and <a href="#shallow-ENS-query-obstruction">shallow-query obstruction</a> remain limits on unrestricted generalizations.</p>
 </section>
@@ -13217,6 +13216,155 @@
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">3.00 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">18.05 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.24 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-14-selector-span-source-profiles">
+  <h3>14 September 2026 — Adapted source bases replace a position count by nonlinear rank</h3>
+  <p class="entry-meta"><strong>Status:</strong> working source-profile refinement and accuracy-dependent rank obstruction; exact original-input certificates and controls. The result concerns the coherent compact binary source with its stated compiler hypotheses. General Frege size lower bounds remain open.</p>
+  <p><strong>Question and change of route.</strong> We considered branching on the few nonlinear values in a source block. Reading the existing affine-intersection machinery exposed a sufficient source-specific route: choose an adapted basis, keep its old affine part in one fresh block, and handle only the remaining independent inputs exactly. The missing step was pulling its prefixes back to the original input list without losing individual degree bounds. That step is proved below. A general multilevel raw-coefficient branching theorem is not claimed in this cycle.</p>
+
+  <h4 id="source-dependent-selector-rank">1. The relevant rank is visible in the formal source</h4>
+  <p>Work over \(\mathbb F_2\) with the coherent compact source after the <a href="#compact-virtual-zero-clause-source">virtual clause boundary</a>, before unrelated packing or conditioning. Its retained inputs have the exact form</p>
+  <div class="math">\[
+    \widehat g_{a,i}(b,Z_{&lt;a})
+      =L_{a,i}(b)+\sum_{c&lt;a}\alpha_{a,i;c}Z_c,
+      \qquad
+    r_a=\operatorname{rank}_{\mathbb F_2}
+                (\alpha_{a,i;c})_{i,c}.
+    \tag{RANK-source}
+  \]</div>
+  <p>Here \(L_{a,i}\) is old-affine, \(Z_c\) names an earlier genuine selector product, and \(r_a\) counts the dimension of the nonlinear contributions, not their number of positions. Keep a single fixed coherent registry, including the subgroups required by the compiler. Uniform accuracy \(h\ge2\) gives input degrees \(d_{a,i}\), \(\delta_a=\max_i d_{a,i}\), and product weight \(w_a=h(\delta_a+1)\). Scalar/constant cases are cleaned up as before.</p>
+  <p>The <a href="#selector-weighted-degree-reflection">ordinary weighted reflection theorem</a> identifies these formal weighted degrees with actual polynomial degrees. In particular a nonzero selector contribution has degree at least \(h\). Let \(V_a\) be the constant-coefficient span of the input forms and let \(K_a\) be its intersection with the old affine forms. Projection onto the formal selector coordinates gives</p>
+  <div class="math">\[
+       \dim V_a-\dim K_a=r_a.
+  \]</div>
+  <p>Choose a basis \(A_1,\ldots,A_q\) of \(K_a\). Extend it by processing the original input list in nondecreasing weighted degree; the additional vectors \(G_1,\ldots,G_{r_a}\) can be chosen from the original inputs themselves. Every original input of degree \(d_i\) then has a constant-coefficient representation using only basis elements of degree at most \(d_i\). This applies the <a href="#affine-Booleanity-binary-packing">earlier full affine-intersection construction</a>; the new use retains an affine core of arbitrary rank instead of requiring that the entire basis fit a packing bound.</p>
+
+  <h4 id="rank-adapted-original-source-prefixes">2. The profile and the original-prefix pullback</h4>
+  <p>Proceed in source dependency order. Interpret each earlier selector by its already constructed value of degree at most its original weight. Every current original input then still has degree at most \(d_i\). The \(A_j\)'s remain old-affine, because their selector coordinates cancel formally. Put \(\Delta_j=\deg_wG_j\); since each \(G_j\) was selected from the original list, it retains that input's individual degree bound.</p>
+  <p>If \(K_a\ne0\), introduce one fresh accuracy-\(h\) affine block on its basis, with product \(A\), exact prefixes \(U_j\), companions \(A_jA\), and cost \(s_A=2h\). If \(K_a=0\), use \(A=1,s_A=0\). Set</p>
+  <div class="math">\[
+     v=A\prod_{j=1}^{r_a}(1-G_j),\qquad
+     s=s_A+\sum_{j=1}^{r_a}\Delta_j.
+     \tag{RANK-value}
+  \]</div>
+  <p>All selected \(G_j\)'s are binary source inputs on earlier values. Boolean-domain division supplies \(G_j^2-G_j\) through \(2\Delta_j\), avoiding the new core's own coefficients. The existing <a href="#costed-profile-product-closure">product-profile argument</a> therefore gives, for the basis inputs, companions through \(s+\deg_w(\text{basis input})\), Booleanity through \(2s\), and the exact prefix identity</p>
+  <div class="math">\[
+    1-v=\sum_{\nu=1}^q U_\nu A_\nu
+       +\sum_{j=1}^{r_a}
+          A\prod_{t&lt;j}(1-G_t)\,G_j.
+    \tag{RANK-prefix}
+  \]</div>
+  <p>For example, an affine companion is multiplied by the exact tail. A selected companion uses \(G_j(1-G_j)=-(G_j^2-G_j)\), multiplied by the other factors. These witnesses hold over one common final system consisting of the old base and the fresh old-affine blocks.</p>
+  <p><strong>The important pullback.</strong> Write \(A_\nu=\sum_i\beta_{\nu i}g_i\) in the original inputs, and write \(G_j=g_{i_j}\), using its selected original position. The original-input prefix is</p>
+  <div class="math">\[
+    W_i=\sum_\nu\beta_{\nu i}U_\nu
+         +\sum_{j:i_j=i}A\prod_{t&lt;j}(1-G_t).
+    \tag{RANK-original-prefix}
+  \]</div>
+  <p>It gives the exact identity \(1-v=\sum_iW_i g_i\). An affine prefix has degree at most \(2h-1\), even if its affine basis vector was formed using original inputs of large degree. Consequently</p>
+  <div class="math">\[
+       2h-1+d_i\le h(\delta_a+1)=w_a,
+  \]</div>
+  <p>because \(d_i\le\delta_a\) and the difference is at least \((h-1)(\delta_a-1)\). A selected-input prefix contributes only to its own original position, and its input-weighted degree is at most \(s\). Hence \(\deg W_i+d_i\le w_a\) whenever \(s\le w_a\). Using an arbitrary basis without this pullback would not supply the required original-input profile.</p>
+  <p>For original companions, use the adapted inverse representations. An input \(g_i\) uses only basis degrees at most \(d_i\), so \(g_iv\) has an NS certificate through \(s+d_i\le w_a+d_i\). The value has degree at most \(s\), and its Booleanity certificate fits \(2s\le2w_a\). Thus it is a complete costed profile of cost \(w_a\) for the original tuple, including its individual input bounds. A unit span uses value zero with its constant linear prefix witness; the zero tuple uses value one.</p>
+
+  <h4 id="dependent-rank-source-collapse">3. Rank below accuracy suffices throughout the source</h4>
+  <p><strong>Working source theorem.</strong> Suppose every retained block in the coherent compact binary registry satisfies \(r_a\le h-1\). Then all values have the preceding profiles within their original weights over one one-level affine-bit ENS family, with no increase in block or input inventory.</p>
+  <p>If \(r_a=0\), the block is already old-affine, and its profile costs at most \(w_a\). If \(r_a&gt;0\), weighted reflection gives \(\delta_a\ge h\), so</p>
+  <div class="math">\[
+    s\le2h+r_a\delta_a
+       \le2h+(h-1)\delta_a
+       \le h(\delta_a+1)=w_a.
+    \tag{RANK-budget}
+  \]</div>
+  <p>Induction in the strict source order now closes: preceding values stay within their original weights, the next adapted basis retains the degree bounds used above, and the next value has its profile in the same final system. There is at most one new affine core per original block, and its basis has no more members than the original input list. The full nonlinear input rank may be small even when every original input position depends on selectors.</p>
+  <p>The <a href="#costed-virtual-or-source-transfer">costed modular NS reconstruction</a> preserves a supplied source NS degree \(D\). Alternatively, with source depth parameter \(d\) and \(L=(d+1)h^d\), the <a href="#costed-profile-unbalanced-PC-compiler">existing direct PC compiler</a> gives degree</p>
+  <div class="math">\[
+       D\le cL,\qquad c=\max(M_{\rm fr},10),
+       \tag{RANK-PC-endpoint}
+  \]</div>
+  <p>on the original proof DAG. Literal negation, aligned MOD2 scalars, coherent copies, and the original compact-clause residuals are retained. No proof-height factor is added. This refines the <a href="#sparse-selector-source-collapse">earlier dependent-position condition</a> using its profiles and the older basis machinery.</p>
+  <p>The scope remains source-specific: no degree-preserving map of arbitrary raw source coefficients has been proved here. The modular witnesses are reconstructed, or the original logical proof is compiled using the new profiles. This distinction is why the prefix pullback to the original tuple matters.</p>
+
+  <h4 id="accuracy-dependent-affine-exclusion">4. Larger accuracy lowers the common-vanishing degree</h4>
+  <p>The affine lower-bound engine can also be used beyond logarithmic accuracy. Let \(n=2^\ell,\ell\ge2\), \(m=n+1\), \(v=m\ell\), \(M\ge1\), and</p>
+  <div class="math">\[
+       h\ge2(\ell+1),\qquad
+       k=\left\lceil
+              \sqrt{\frac{2m\ell\log(4M)}h}
+          \right\rceil,\qquad
+       B=k(D+1).
+       \tag{RANK-accuracy}
+  \]</div>
+  <p>Assume \(k\le m\), \(4(k-1)&lt;n\), and \(n\ge2B-1\). Then a complete one-level affine-bit ENS family of at most \(M\) blocks and accuracy \(h\), over \(\mathcal Q_n\), has no degree-\(D\) PC refutation.</p>
+  <p><strong>Proof.</strong> The <a href="#ordinary-restriction-affine-family-audit">ordinary-restriction argument</a> uses low rank \(r\le h(k+1)\) and high threshold \(r_*=h(k+1)+1\). If \(r_*&gt;v\), there are no high blocks. Otherwise</p>
+  <div class="math">\[
+    \frac{\binom{v-r_*+k}{k}}{\binom mk\ell^k}
+       =\prod_{j=0}^{k-1}
+          \left(1-
+             \frac{h(k+1)-(\ell+1)j}{v-\ell j}\right)
+       \le
+          \exp\left(-\frac{hk^2}{2m\ell}\right).
+    \tag{RANK-dimension}
+  \]</div>
+  <p>Indeed \(h\ge2(\ell+1)\) makes each subtracted numerator at least \(hk/2\), and each denominator is at most \(m\ell\). The definition of \(k\) makes the sum of high restriction dimensions at most one quarter of \(\binom mk\ell^k\), strictly below \(\dim\mathcal L_k\). A nonzero row-linear old \(f\) therefore vanishes ordinarily on every high flat.</p>
+  <p>The simultaneous packed/high-rank map and the weighted PC replay are unchanged: low coefficient degree is at most \(k\), high products become \(1-f\), and every weighted axiom image fits \(k\) times its original degree plus \(k\). The old consequence \(f\) would be derived through \(B\), contradicting row-linear separation and old stability under the displayed conditions. This refines the earlier sufficient parameter choice; it does not assume logarithmic \(h\) or polylogarithmic \(D\) in the finite statement.</p>
+
+  <h4 id="compact-source-polynomial-rank-obstruction">5. A polynomial rank requirement for a hypothetical short compact proof</h4>
+  <p>Fix a coherent compact binary proof, its source depth bound \(d\ge2\), and its formal registry after the virtual boundary. The coefficient matrices in (RANK-source) come from literal/MOD2 syntax and do not change merely because the approximation accuracy \(h\) changes. Bases may be recomputed for the new weights. This accuracy invariance is asserted for this fixed source construction, not for arbitrary optional preprocessing or for rank before Boolean label substitution.</p>
+  <p>Let \(R=\max_a r_a\). We may choose</p>
+  <div class="math">\[
+      h=\max\{2(\ell+1),R+1\}.
+  \]</div>
+  <p>Section 3 then supplies the one-level PC endpoint of degree \(D=O(h^d)\). The registry is built from formula occurrences and coherent groups; increasing \(h\) adds coefficient rows and changes product polynomials, rather than creating one block for each expanded monomial. Thus polynomial proof size and polynomially bounded \(h\) keep the affine inventory polynomial, so \(\log(4M)=O(\log n)\). Equation (RANK-accuracy) gives</p>
+  <div class="math">\[
+       B=O\left(\sqrt n\,(\log n)h^{d-1/2}+h^d\right).
+  \]</div>
+  <p>Suppose, for contradiction, that a sequence of polynomial-size compact proofs of fixed source depth has</p>
+  <div class="math">\[
+      R\le\frac{n^{1/(2d-1)}}{(\log n)^2}.
+      \tag{RANK-small}
+  \]</div>
+  <p>For sufficiently large \(n\), the chosen accuracy is at most a constant times the right side. Consequently</p>
+  <div class="math">\[
+      B=
+        O\left(
+          \frac{n}{(\log n)^{2d-2}}
+           +\frac{n^{d/(2d-1)}}{(\log n)^{2d}}
+          \right)=o(n).
+  \]</div>
+  <p>Also \(k=o(n)\), so all conditions of Section 4 hold eventually. This is a contradiction. Therefore, for fixed proof-size exponent and fixed \(d\ge2\), every sufficiently large hypothetical compact proof satisfying the source hypotheses must have a retained block with dependent-selector rank greater than the bound in (RANK-small). Depth one is already the affine case.</p>
+  <p>This is a necessary structural condition on the compiled compact source. It does not exclude blocks with high nonlinear rank, prove those blocks essential by a separate certificate-support argument, or give a superpolynomial size bound for general Frege. In particular the <a href="#label-substitution-selector-count-failure">ordinary-to-compact label conversion</a> can introduce many selector directions; no invariance of the pre-conversion rank is claimed.</p>
+
+  <h4 id="selector-span-profile-exact-checks">6. Exact source-profile and parameter evidence</h4>
+  <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/tools/check_selector_span_profiles.cpp">compiled checker</a> uses two genuine old-affine bottom blocks \(B_0,B_1\) at \(h=2\), each on two old bits. Put \(F=P_{B_0}+P_{B_1}\), of original degree four, and take the parent tuple</p>
+  <div class="math">\[
+       g_0=b_0,\qquad g_i=b_i+F\quad(1\le i\le4).
+  \]</div>
+  <p>Four positions depend on selectors, but their coefficient matrix has rank one. Its full old-affine intersection has basis \(g_0,g_2+g_1,g_3+g_1,g_4+g_1\); the selected nonlinear basis input is \(g_1\). The complete rank, forward, and inverse matrices are saved. The parent weight is ten; the constructed value \(A(1-g_1)\) has cost eight. Every original prefix is checked against the individual degree list \((1,4,4,4,4)\).</p>
+  <p>Nine complete NS certificates verify earlier-input Booleanity, the exact original prefix residual, all five original companions, affine-core Booleanity, and value Booleanity. The earlier-input certificate avoids the new core's coefficients. All 512 old Boolean assignments have explicit satisfying extensions to the retained affine family; both value zero and value one occur. Omitting the affine-to-original prefix correction fails on a saved satisfying model, as does dropping the nonlinear tail.</p>
+  <p>An ungraded basis can express the degree-one input as a sum of degree-four vectors, violating the adapted-degree hypothesis; the saved control is a failure of that degree ledger, not a minimum NS-degree claim. Thus mere equality of input spans is not used as a substitute for individual source accounting.</p>
+  <p>Four exact integer dimension controls use \(n=64,\ell=6,M=1\). The triples \((h,k)=(14,9),(28,7),(56,5)\) satisfy \(4\binom{v-r_*+k}{k}&lt;\binom{65}{k}6^k\). At \((h,k)=(4,17)\), the accuracy hypothesis is absent and this quarter bound fails. Counts are computed in guarded 128-bit arithmetic and stored as decimal strings. These check the dimension comparison only; no final small-board PHP degree contradiction is claimed.</p>
+  <p>The complete <a href="https://github.com/kbr-/math-research/blob/main/research/results/binary_selector_span_branching_20260914_125/NS-basis-profiles.jsonl">polynomials, matrices, NS cofactors, all models, and dimension counts</a> accompany <a href="https://github.com/kbr-/math-research/blob/main/research/results/binary_selector_span_branching_20260914_125/README.md">reproduction commands</a>, hashes, and measured evidence. Compilation and all checks passed. The earlier shared-kernel optimization was completed and committed separately before this mathematical cycle.</p>
+  <p><strong>Route assessment.</strong> The source collapse now measures independent nonlinear directions, with correct original-input prefixes, and adjustable accuracy turns it into a polynomial rank requirement at fixed depth. The full dense nonlinear family can still exceed that rank; the original Frege goal remains open.</p>
+  <p><strong>Next bounded question.</strong> Test whether the actual first affine ENS level preserves a useful space of old row-linear targets at the degree budgets needed for continuation. Check a nonzero target rather than only a refutation, and identify the limitation when targets depend on selector values. Stop at a precise target-separation theorem or a counterexample.</p>
+  <p><strong>Process assessment.</strong> The source-basis audit exposed an application of existing machinery before a new multilevel branching implementation was built; the rank result is linked to those earlier basis and profile proofs, with no additional framework rule needed.</p>
+  <div class="timing-report" data-session="binary_selector_span_branching_20260914_125">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>69 min 14.92 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2.88 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">60 min 11.42 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">7 min 47.29 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">58.92 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">4.10 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4.64 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.68 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
