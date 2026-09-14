@@ -1,7 +1,8 @@
 # Lean formalization
 
 This Lake project provides the environment for formalizing selected notebook
-claims. Each result has its own file under `claims/`. The
+claims. Project results have per-claim files under `claims/`; results from prior
+literature belong under `third-party-claims/`, with attribution. The
 [claim index](../research/CLAIM_INDEX.md) links formalizations and records their
 exact verified scope; this guide covers setup, structure, and verification.
 
@@ -9,8 +10,12 @@ For an assigned formalization, follow [AGENTS.md](AGENTS.md): establish the exac
 statement first, prove it, then review the verified type against the notebook.
 
 Files can depend on other claim files using imports such as
-`import claims.ModInterpolation`. Lake discovers all Lean modules under
-`claims/` and builds them in dependency order; no aggregate file is required.
+`import claims.ModInterpolation` or
+`import «third-party-claims».ChessboardFilling`. Either directory can import
+from the other, provided the dependency graph has no cycle. The quotation marks
+are Lean identifier syntax for the hyphenated directory name. Lake discovers
+all Lean modules in both directories and builds them in dependency order;
+no aggregate file is required.
 Each file should identify its claim-index label and notebook source, and import
 only the dependencies it needs. Shared definitions can be factored into a
 separate module when needed.
@@ -55,6 +60,13 @@ or other limitations in `Scope`; a verified special case is not the full claim.
 Shared helper modules under `claims/` use the same header, identifying their
 supporting role and listing the helper declarations to audit.
 
+An unproved external target can be recorded as a `def ... : Prop`, with
+`Status: statement-only` in its header and its proposition name in `Declarations`.
+The verifier prints the definition and explicitly reports that no proof is
+claimed for that file. This introduces neither an axiom nor a `sorry`.
+See [AGENTS.md](AGENTS.md) for the completion policy; compiling a statement is
+not proving it.
+
 From the repository root, run the complete verification command:
 
 ```bash
@@ -98,7 +110,7 @@ improvement, not a requirement to add another mode now.
 
 - `lean-toolchain` selects the Lean version required by the pinned Mathlib revision.
   Elan installs it alongside other versions without changing the global default.
-- `lakefile.toml` pins Mathlib to an exact Git commit.
+- `lakefile.lean` pins Mathlib to an exact Git commit and builds both claim directories.
 - `lake-manifest.json` locks its transitive dependencies. Commit this file.
 - `.lake/` contains downloaded dependencies and build artifacts and is ignored.
 

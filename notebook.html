@@ -16216,5 +16216,44 @@
 </div>
 </article>
 
+<article class="research-entry" id="entry-2026-09-15-third-party-H-interface">
+  <h3>15 September 2026 — Third-party chessboard filling interface and a route to its proof</h3>
+  <p class="entry-meta"><strong>Status:</strong> checked Lean statement and tentative proof plan; H is not proved or assumed as an axiom.</p>
+  <p><strong>Assignment.</strong> The user prioritized the third-party boundary of the bit-PHP publication route, requested a separate third-party claim directory with cross-imports, and asked for an exact formal interface and an initial dependency order. This turn states that interface and plans its proof; it does not assert a new homology theorem or change the main Frege research objective.</p>
+  <h4 id="third-party-chessboard-filling-interface">H: the precise prior-literature claim</h4>
+  <p>The new indexed target <code>third-party:BLVZ-chessboard-filling</code> is the needed consequence of <a href="https://doi.org/10.1112/jlms/49.1.25">Björner–Lovász–Vrećica–Živaljević, Theorem 1.1</a>. Let \(\mathcal M_k(s,N)\) be the set of \(k\)-cell matchings on an \(s\times N\) board: finite cell sets with injective row and column projections. Put \(C_k=\mathbb F_2^{\mathcal M_k(s,N)}\). These are chains of reduced simplicial degree \(k-1\); in particular \(C_0\) is the empty-face augmentation coordinate.</p>
+  <p>For \(k\ge1\), define the boundary by</p>
+  <div class="math">\[
+    (\partial_k c)(T)=\sum_{\substack{S\in\mathcal M_k(s,N)\\T\subset S}}c(S)
+      \qquad(T\in\mathcal M_{k-1}(s,N)).
+  \]</div>
+  <p>All incidence signs are one over \(\mathbb F_2\). The boundary from \(C_1\) sums the vertex coefficients; the outgoing map at \(C_0\) is zero. The target is</p>
+  <div class="math">\[
+    s\ge2,\ N\ge2s-1,\ c\in C_{s-1},\ \partial_{s-1}c=0
+      \quad\Longrightarrow\quad
+      \exists b\in C_s:\ \partial_s b=c.
+  \]</div>
+  <p><code>MathResearch.ThirdParty.ChessboardFilling</code> in <a href="https://github.com/kbr-/math-research/blob/main/formalization/third-party-claims/ChessboardFilling.lean">ChessboardFilling.lean</a> defines exactly this proposition. Faces use <code>Fin s × Fin N</code>, chains are functions on the finite face type, and the boundary tests codimension-one inclusion. The zero-cell-count branch of the boundary definition handles the augmentation endpoint; H itself restricts to \(s\ge2\). A transparent face-type abbreviation permits Lean to infer finiteness. There is no declaration asserting H, no custom axiom, and no <code>sorry</code>. The general boundary-squared-zero proof remains a planned task.</p>
+  <h4 id="third-party-chessboard-route">Proposed dependency route</h4>
+  <p>The <a href="https://github.com/kbr-/math-research/blob/main/formalization/BIT_PHP_FORMALIZATION_ROUTE.md#third-party-boundary">Third-party boundary section</a> now prioritizes thirteen steps: augmented chain infrastructure; boundary-squared-zero; relabeling and inclusion maps; cone contractions; simplex-boundary vanishing; finite cover double-complex exactness; the homological cover lemma; first-row star coverage; intersection descriptions; the nerve identification; induction arithmetic; the homological chessboard bound; and specialization to H.</p>
+  <p>The plan follows the paper appendix and is a guide, not a correctness audit of every proposed intermediate lemma. It deliberately includes the stronger intermediate range \(\nu(a,b)=\min(a,b,\lfloor(a+b+1)/3\rfloor)\), with reduced acyclicity through \(\nu-2\): star intersections have the form \(\Delta_{a-1,b-t}\) and do not all remain in H's narrow column range. A direct finite-chain proof may later shorten or replace the cover machinery. No stronger homotopical connectivity theorem is required. Matching-moment construction remains the consumer-side obligation after H is proved.</p>
+  <p><strong>Integration and evidence.</strong> Lake now builds <code>claims/</code> and <code>third-party-claims/</code> using its Lean configuration, which supports the quoted hyphenated module name. Imports in both directions were checked with temporary fixtures. Separate sanity checks confirmed the empty-face zero map and vertex augmentation; those checks are not a proof of H. The verifier recognizes <code>Status: statement-only</code>, prints the proposition definition, and reports it separately from proof files. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/third_party_H_route_20260915/interface-verification.txt">complete report</a> and <a href="https://github.com/kbr-/math-research/blob/main/research/results/third_party_H_route_20260915/README.md">reproduction record</a> preserve this distinction and the setup diagnostics. Existing proof dependencies were unchanged.</p>
+  <p><strong>Route and process assessment.</strong> The external target now has a precise finite-chain interface and an actionable, revisable proof route. It remains unproved; the main research route and mathematical gaps were reviewed and are unchanged. Explicit cell-count indexing exposed the reduced-augmentation convention early, while statement-only reporting prevents setup success from being mistaken for theorem verification.</p>
+  <div class="timing-report" data-session="third_party_H_route_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 31.55 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">0.22 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 21.13 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">3 min 36.72 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">0.18 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">33.29 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

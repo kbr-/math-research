@@ -15,8 +15,9 @@ large instances require more than `n^K` proof nodes.
 This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
-Third-party proof development is deferred as requested; the necessary external
-interface is marked **H** below, not assumed to be formally verified.
+The current priority is the third-party interface **H**: work through H01–H13
+below first, then return to the project-side R01–R25 order. H has a checked
+formal statement, not a proof; no downstream completion is inferred from it.
 
 ## How to use the list
 
@@ -78,11 +79,11 @@ R18 → R22, R23 ───┴→ R24 ────────────┘
 The table, not this simplified sketch, specifies all prerequisites. R06 and
 R19–R21 are already covered by existing Lean files; the rest are remaining
 implementation/proof tasks, except for whatever exact interfaces Mathlib supplies.
-The next foundational target is R01/R02, because ordinary-PC derivations and
+After H, the next project-side foundational target is R01/R02, because ordinary-PC derivations and
 completed-line multiplication are required by both branches and are not supplied
 by our current semantic `ParityDerivation` type.
 
-## Deferred third-party boundary
+## Third-party boundary
 
 **H:** for `s≥2` and `N≥2s-1`, every reduced `(s-2)` cycle in the chessboard
 complex `Δ_{s,N}` over `𝔽₂` has a filling. This is the precise BLVZ consequence
@@ -90,10 +91,77 @@ used by R10. Keep the `s=2` augmentation case and coefficient field explicit.
 An [existing-Lean coverage search](../research/results/lean_chessboard_coverage_20260915/README.md)
 on 15 September 2026 located useful topology infrastructure but no matching
 checked theorem; it was not an exhaustive global code audit.
-Do not expand its third-party proof or plan those dependencies in this turn.
+The target is indexed as `third-party:BLVZ-chessboard-filling` and stated in
+[third-party-claims/ChessboardFilling.lean](third-party-claims/ChessboardFilling.lean)
+as `MathResearch.ThirdParty.ChessboardFilling : Prop`. This is a proposition
+definition, not a theorem or an axiom. It introduces no `sorry`.
 Until H is supplied by a checked theorem, R10 and downstream claims are not
 unconditionally fully formalized. A temporary interface is not permission to
 mark them complete.
+
+### Exact interface
+
+`ChessboardFace s N k` is a k-element finite set of cells in `Fin s × Fin N`
+whose row and column projections are injective. `ChessboardChain s N k` is
+the vector space of F₂ coefficient functions on those faces. Finite support is
+automatic because the board is finite. Index k counts cells, so the associated
+reduced simplicial degree is k−1; k=0 is the empty-face augmentation coordinate.
+
+For k>0, the coefficient of a (k−1)-cell face τ in `chessboardBoundary c` is
+the sum of `c σ` over k-cell faces σ containing τ. Incidence signs are all one
+over F₂. The outgoing boundary at k=0 is defined to be zero. In particular,
+the boundary of a vertex chain is its total coefficient on the empty face.
+
+The target definition is:
+
+```lean
+∀ (s N : ℕ), 2 ≤ s → 2 * s - 1 ≤ N →
+  ∀ c : ChessboardChain s N (s - 1), chessboardBoundary c = 0 →
+    ∃ b : ChessboardChain s N s, chessboardBoundary b = c
+```
+
+This is a direct finite-chain formulation of the required homology vanishing.
+Proving boundary-squared-zero and relating this representation to any chosen
+homology API are still proof tasks; a formal statement alone does not supply
+those facts. The s=2 case requires the reduced augmentation, not the claim that
+every unaugmented vertex chain bounds. R10 will build its matching-moment
+cycles in this representation and consume the supplied filling.
+
+### Ordered route to H
+
+This is a starting guide based on the paper's
+[topology appendix](../publications/drafts/bit-php-resolution-over-parities/sections/08-topology.tex),
+not an audited proof of every intermediate statement. Hxx are planning IDs;
+extract/index individual dependency claims as their statements settle. Generic
+finite-chain helpers may be shared with project claims. Reuse checked Mathlib
+results when their exact hypotheses and conventions match.
+
+| Order | Building block to establish | Direct prerequisites | Scope / boundary cases |
+| --- | --- | --- | --- |
+| H01 | Finite augmented chain API for downward-closed families of finite faces, specialized to chessboard matchings. | — | Match the checked interface above. Include the empty face, finite coefficient spaces, face restriction, and linearity of the boundary. Interface definitions exist; the general API is not yet built. |
+| H02 | Boundary squared is zero. | H01 | Each face obtained by deleting two vertices occurs twice over F₂. Include edges-to-augmentation and the explicit zero map below the empty face. |
+| H03 | Relabeling, transpose, and subcomplex inclusion preserve chains and boundaries. | H01, H02 | Needed to identify star intersections with smaller boards and to transpose before induction. Column complements must be relabeled without losing incidence data. |
+| H04 | Augmented cone/simplex contraction and exactness. | H01, H02 | An actual cone vertex supplies a contraction in every relevant degree, including augmentation. Do not treat a complex containing only the empty face as a nonempty cone. |
+| H05 | Boundary of a simplex is reduced-acyclic below its top dimension. | H02, H04 | For b vertices, use vanishing through b−3; the top degree b−2 is not covered. Keep b=1,2 and negative degree conventions explicit. |
+| H06 | Finite cover double-complex construction and horizontal augmented-row exactness. | H01, H02, H03, H04 | Decompose by each simplex of K; the nonempty set of cover indices containing that simplex is a simplex with an exact augmented chain complex. Prove the commuting differentials and finite totalization facts. |
+| H07 | Homological cover lemma through degree q. | H02, H06 | If every nonempty t-fold intersection is (q−t+1)-acyclic and the nerve is q-acyclic, then K is q-acyclic. Prove the finite filtration/spectral-sequence comparison or an equivalent direct chain chase. In top relevant cover degree, surjectivity of H₀→F₂ suffices; full connectivity is not available there. This is likely the largest general dependency. |
+| H08 | First-row closed stars cover Δ(a,b), after arranging 2≤a≤b. | H01, H03, H04 | A matching avoiding the row occupies at most a−1<b columns, so it extends into that row. Each star is a cone. Cases with ν=1 can be handled directly by nonemptiness. |
+| H09 | Intersections of t≥2 distinct first-row stars identify with Δ(a−1,b−t). | H03, H08 | They exclude row one and the selected columns. t=b gives only the empty face, not a vertex; singleton intersections remain cones and use a different description. |
+| H10 | The first-row star-cover nerve is the boundary of a (b−1)-simplex. | H08, H09 | Every proper nonempty subfamily intersects in a complex with a vertex; the full family does not. Apply H05 at the required degree only. |
+| H11 | Arithmetic and induction bounds for ν(a,b)=min(a,b,⌊(a+b+1)/3⌋). | — | For 2≤a≤b, ν≤b−1. For a nonempty t-fold intersection, t≥2, show ν(a−1,b−t)≥ν(a,b)−t+1. Treat negative required acyclicity degrees as vacuous, and use min(a,b) as a decreasing induction parameter after transposition. |
+| H12 | Binary homological chessboard bound: Δ(a,b) is (ν(a,b)−2)-acyclic for a,b≥1. | H03, H04, H05, H07, H08, H09, H10, H11 | Strong induction on the smaller board dimension; ν=1 is nonemptiness. This is the homological form of BLVZ needed by the appendix, not the stronger homotopical connectivity theorem. |
+| H13 | Specialize the homological bound and discharge **H**. | H01, H02, H12 | N≥2s−1 gives ν(s,N)=s. Translate degree s−2 to (s−1)-cell cycles filled by s-cell chains, using precisely the interface in ChessboardFilling.lean. |
+
+H12 is broader than H on purpose: intersections in the star cover can have
+fewer columns than the narrow N≥2s−1 range allows. Merely applying H inductively
+to each intersection would leave missing cases. A different constructive proof
+may avoid H06/H07 or weaken H12; revise this route if that becomes advantageous.
+The list is not a requirement to formalize a general homotopy theory.
+
+For explicit reduced acyclicity conventions, use exactness on k-cell chains for
+0≤k≤ν−1 to express vanishing in degrees −1 through ν−2. Do not encode negative
+dimension bounds using truncated natural subtraction without handling ν=0/1
+and the empty-face-only complex separately.
 
 The local construction from matching marginals to cycles and from fillings back
 to globally consistent moments remains our R10 obligation. Standard library

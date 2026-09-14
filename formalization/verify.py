@@ -40,13 +40,16 @@ def main():
         return "".join(lines)
 
     try:
-        pins = [ROOT / name for name in ("lean-toolchain", "lakefile.toml", "lake-manifest.json")]
+        pins = [ROOT / name for name in ("lean-toolchain", "lakefile.lean", "lake-manifest.json")]
         before = {path: path.read_bytes() for path in pins}
         emit("Lean toolchain: " + pins[0].read_text().strip())
         for package in json.loads(pins[2].read_text())["packages"]:
             emit(f"Dependency: {package['name']} {package['rev']}")
-        files = sorted((ROOT / "claims").rglob("*.lean"))
+        files = sorted(path for directory in ("claims", "third-party-claims")
+                       for path in (ROOT / directory).rglob("*.lean"))
         declarations = []
+        statement_names = set()
+        statement_files = 0
         for path in files:
             source = path.read_text()
             header = re.match(r"\s*/-\s*\n(.*?)\n-/", source, re.S)
@@ -61,17 +64,32 @@ def main():
             if not names or any(not re.fullmatch(NAME, name) for name in names):
                 raise ValueError("Declarations must list fully qualified Lean names separated by spaces")
             declarations.extend(names)
+            status = re.search(r"^Status: (.+)$", header[1], re.M)
+            if status:
+                if status[1] != "statement-only":
+                    raise ValueError("Optional Status field must be statement-only")
+                statement_files += 1
+                statement_names.update(names)
             emit(f"Claim file: {path.relative_to(ROOT)}\n{header[1]}")
         run(["lake", "--wfail", "build"])
         for path in files:
             # Re-elaborate even if cached, so unfinished proofs cannot hide in build output.
             run(["lake", "env", "lean", "-DwarningAsError=true", str(path.relative_to(ROOT))])
         if files:
-            imports = ["import " + ".".join(path.relative_to(ROOT).with_suffix("").parts) for path in files]
+            def module_component(part):
+                if re.fullmatch(r"[A-Za-z_][A-Za-z_0-9']*", part):
+                    return part
+                if not re.fullmatch(r"[A-Za-z_][A-Za-z_0-9'-]*", part):
+                    raise ValueError(f"Unsupported module path component: {part}")
+                return "«" + part + "»"
+            imports = ["import " + ".".join(module_component(part) for part in
+                       path.relative_to(ROOT).with_suffix("").parts) for path in files]
             commands = []
             for name in declarations:
                 commands.extend(["#check @" + name,
                                  "#print axioms " + name])
+                if name in statement_names:
+                    commands.append("#print " + name)
             audit = "\n".join(imports + commands) + "\n"
             with tempfile.NamedTemporaryFile(mode="w", suffix=".lean", dir=ROOT / ".lake") as temp:
                 temp.write(audit)
@@ -87,7 +105,8 @@ def main():
                     raise ValueError(f"Missing axiom report for {name}")
         if any(path.read_bytes() != content for path, content in before.items()):
             raise ValueError("Dependency configuration changed during verification")
-        emit(f"PASS: {len(files)} claim files, {len(declarations)} audited declarations."
+        emit(f"PASS: {len(files) - statement_files} proof files; {statement_files} statement-only files "
+             f"(no proof claimed); {len(declarations)} audited declarations."
              if files else "SETUP ONLY: build passed; no claim files exist and no research claim is verified.")
     except (ValueError, OSError) as error:
         emit("FAIL: " + str(error))

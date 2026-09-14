@@ -7,6 +7,12 @@ Use its `formalization` phase and `formal_verification` command category within
 the active research session; developing a new mathematical argument remains
 `mathematics` under that policy.
 
+Use `third-party-claims/` for prior-literature results, preserving source
+attribution and linking them from the shared claim index. The two claim
+directories may import each other without cycles. An unproved target must be
+an explicitly marked statement-only proposition definition, never an axiom or
+`sorry`; follow README.md's metadata convention and do not mark it formalized.
+
 - Before proving anything, read the exact indexed claim and relevant proof.
   Draft the Lean statement and compare its variables, domains, quantifiers,
   hypotheses, conclusions, and degree conventions with the notebook. In
