@@ -6,15 +6,16 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         --session)
             if [[ $# -lt 2 || -z "$2" || "$2" == --* || ${#compute_args[@]} -ne 0 ]]; then
-                echo 'Usage: verify.sh [--session TURN] [--out PATH]' >&2
+                echo 'Usage: verify.sh [--session TURN] [--out PATH] [--recheck-sources]' >&2
                 exit 2
             fi
             compute_args=(--session "$2")
             shift 2
             ;;
         --help|-h)
-            echo 'Usage: verify.sh [--session TURN] [--out PATH]'
+            echo 'Usage: verify.sh [--session TURN] [--out PATH] [--recheck-sources]'
             echo 'Use an existing research timing session; save complete output to a new file.'
+            echo 'Reuses Lake caches by default; --recheck-sources explicitly re-elaborates all files.'
             exit 0
             ;;
         *) verify_args+=("$1"); shift ;;

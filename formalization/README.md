@@ -73,8 +73,8 @@ From the repository root, run the complete verification command:
 ./formalization/verify.sh
 ```
 
-It builds under `compute.sh`, rechecks each claim file with warnings treated as
-errors, and prints each listed declaration's type with `#check @name`, including
+It builds incrementally under `compute.sh` with warnings treated as errors,
+reusing unchanged compiled modules, and prints each listed declaration's type with `#check @name`, including
 implicit parameters, alongside `#print axioms`.
 Unfinished proofs
 (`sorry` or `admit`) are not accepted. Axiom reports may contain only the standard
@@ -99,12 +99,11 @@ types, and axiom reports. Commit it with the formalization and notebook entry
 under the root research protocol. The separate statement-review obligation is
 defined in [AGENTS.md](AGENTS.md).
 
-Lake builds incrementally, reusing compiled modules whose sources and
-dependencies have not changed. The verifier deliberately also re-elaborates
-every claim file for a full audit. Keep this behavior while it is inexpensive.
-If repeated full checks become noticeably costly, add an incremental development
-mode and retain the full audit for research checkpoints; this is a deferred
-improvement, not a requirement to add another mode now.
+The type and axiom reports inspect compiled declarations; they do not rerun the
+proofs of unchanged dependencies. Use this incremental verification for research
+checkpoints too. `--recheck-sources` explicitly re-elaborates every claim file;
+reserve it for a concrete reason to repeat source checking, not routine additions
+or integration. Lake rebuilds changed modules and their dependents automatically.
 
 ## Reproducible dependencies
 

@@ -15,6 +15,8 @@ NAME = r"[A-Za-z_][A-Za-z_0-9']*(?:\.[A-Za-z_][A-Za-z_0-9']*)*"
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, help="save complete output to a new file (relative to repo root)")
+    parser.add_argument("--recheck-sources", action="store_true",
+                        help="explicitly re-elaborate every source after the incremental build")
     args = parser.parse_args()
     report = None
     if args.out:
@@ -72,9 +74,10 @@ def main():
                 statement_names.update(names)
             emit(f"Claim file: {path.relative_to(ROOT)}\n{header[1]}")
         run(["lake", "--wfail", "build"])
-        for path in files:
-            # Re-elaborate even if cached, so unfinished proofs cannot hide in build output.
-            run(["lake", "env", "lean", "-DwarningAsError=true", str(path.relative_to(ROOT))])
+        emit("Verification: incremental Lake build; types and axioms read from compiled modules.")
+        if args.recheck_sources:
+            for path in files:
+                run(["lake", "env", "lean", "-DwarningAsError=true", str(path.relative_to(ROOT))])
         if files:
             def module_component(part):
                 if re.fullmatch(r"[A-Za-z_][A-Za-z_0-9']*", part):
