@@ -8,18 +8,6 @@
 #include <string>
 using namespace domain_polynomial;
 void need(bool ok,const std::string& why){if(!ok)throw std::runtime_error(why);}
-Polynomial prime_power(const Ring& ring,const Polynomial& input){
-    // Ordinary prime-field Frobenius avoids large intermediate binomial powers.
-    Polynomial result;
-    for(const auto& [mon,c]:input){
-        need(mon.size()*std::size_t(ring.p)<=std::size_t(ring.degree_limit),"Frobenius degree guard");
-        Monomial image;
-        for(int variable:mon)for(int j=0;j<ring.p;++j)image.push_back(variable);
-        result.emplace(std::move(image),c);
-    }
-    need(result.size()<=500000,"Frobenius term guard");
-    return result;
-}
 struct Cert {Polynomial target;std::map<int,Polynomial> cof;};
 struct Context {
     Ring r;
@@ -205,7 +193,7 @@ void run_case(std::ostream& out,int prime,int h,bool varied){
     }
     for(const auto& [id,beta]:images)
         c.write(out,"source_field/"+std::to_string(id),
-                c.domain(r.subtract(prime_power(r,beta),beta),false),prime*prime,prime);
+                c.domain(r.subtract(r.power(beta,prime),beta),false),prime*prime,prime);
     auto wrong_product=r.substitute(source.product,wrong);
     auto missing_product=r.substitute(source.product,missing);
     bool wrong_found=false,missing_found=false,nonBoolean_found=false;

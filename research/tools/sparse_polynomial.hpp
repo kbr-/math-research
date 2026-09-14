@@ -6,6 +6,7 @@
 #include <map>
 #include <ostream>
 #include <stdexcept>
+#include <utility>
 #include <vector>
 namespace sparse_polynomial {
 using Monomial=std::vector<int>;
@@ -43,6 +44,21 @@ struct Ring {
     }
     Polynomial power(Polynomial base,int exponent) const{
         if(exponent<0)throw std::runtime_error("negative polynomial exponent");
+        // Prime-field Frobenius, with ordinary powers and no domain reduction.
+        if(exponent==p){
+            Polynomial result;
+            for(const auto& [monomial,c]:base){
+                if(monomial.size()*size_t(p)>size_t(degree_limit))
+                    throw std::runtime_error("symbolic degree guard");
+                int coefficient=residue(c);
+                if(!coefficient)continue;
+                Monomial image;image.reserve(monomial.size()*size_t(p));
+                for(int variable:monomial)image.insert(image.end(),p,variable);
+                result.emplace(std::move(image),coefficient);
+            }
+            if(result.size()>500000)throw std::runtime_error("symbolic term guard");
+            return result;
+        }
         Polynomial result=constant(1);
         while(exponent){
             if(exponent&1)result=multiply(result,base);
