@@ -1,0 +1,28 @@
+third-party-claims/AugmentedChainMaps.lean:102:0: warning: automatically included section variable(s) unused in theorem `MathResearch.ThirdParty.Augmented.map_preimage`:
+  [Fintype V]
+  [DecidableEq V]
+  [Fintype W]
+  [DecidableEq W]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] [Fintype W] [DecidableEq W] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+third-party-claims/AugmentedChainMaps.lean:174:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  boundary ↑(extend (chessboardComplex s N) (k + 1) ?m.60) ↑((chessboardFaceEquiv s N k) T)
+in the target expression
+  boundary ↑(extend (chessboardComplex s N) (k + 1) fun S => c ((chessboardFaceEquiv s N (k + 1)).symm S)) ↑T =
+    chessboardBoundary c T
+
+s N k : ℕ
+c : ChessboardChain s N (k + 1)
+T : ChessboardFace s N k
+⊢ boundary ↑(extend (chessboardComplex s N) (k + 1) fun S => c ((chessboardFaceEquiv s N (k + 1)).symm S)) ↑T =
+    chessboardBoundary c T
+third-party-claims/AugmentedChainMaps.lean:186:2: error: Type mismatch
+  chessboard_boundary_coordinate s N k c T
+has type
+  boundary ↑((chessboardChainEquiv s N (k + 1)) c) ↑T = chessboardBoundary c T
+but is expected to have type
+  (chessboardChainEquiv s N k).symm ((differential (chessboardComplex s N) k) ((chessboardChainEquiv s N (k + 1)) c))
+      T =
+    (chessboardChainEquiv s N k).symm ((chessboardChainEquiv s N k) (chessboardBoundary c)) T

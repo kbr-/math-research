@@ -1,0 +1,43 @@
+third-party-claims/AugmentedChainMaps.lean:194:0: warning: automatically included section variable(s) unused in theorem `MathResearch.ThirdParty.Augmented.push_apply_map`:
+  [Fintype V]
+  [DecidableEq V]
+  [Fintype W]
+  [DecidableEq W]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] [Fintype W] [DecidableEq W] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+third-party-claims/AugmentedChainMaps.lean:209:61: error: unsolved goals
+V : Type u_1
+W : Type u_2
+inst✝³ : Fintype V
+inst✝² : DecidableEq V
+inst✝¹ : Fintype W
+inst✝ : DecidableEq W
+e : V ≃ W
+c : Coeff V
+T : Finset W
+hr : InRange e.toEmbedding T
+hpre : T.preimage ⇑e.toEmbedding ⋯ = Finset.map e.symm.toEmbedding T
+⊢ c (T.preimage ⇑e ⋯) = c (Finset.map e.symm.toEmbedding T)
+third-party-claims/AugmentedChainMaps.lean:214:31: warning: This simp argument is unused:
+  Finset.mem_map
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Finset.mem_preimage, Equiv.symm_apply_eq]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+third-party-claims/AugmentedChainMaps.lean:214:47: warning: This simp argument is unused:
+  Equiv.symm_apply_eq
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Finset.mem_preimage, Finset.mem_map]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+third-party-claims/AugmentedChainMaps.lean:215:18: warning: This simp argument is unused:
+  hpre
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [push, hr]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

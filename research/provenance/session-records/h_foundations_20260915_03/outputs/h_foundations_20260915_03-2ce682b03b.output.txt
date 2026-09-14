@@ -1,0 +1,37 @@
+third-party-claims/AugmentedChainMaps.lean:17:8: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  Fintype (Face K (k + 1))
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+third-party-claims/AugmentedChainMaps.lean:32:33: error: invalid `▸` notation, expected result type of cast is 
+  v ∈ insert w ↑T
+however, the equality 
+  hval
+of type 
+  ↑⟨insert v ↑T, ⋯⟩ = ↑⟨insert w ↑T, ⋯⟩
+does not contain the expected result type on either the left or the right hand side
+third-party-claims/AugmentedChainMaps.lean:42:28: error: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+inst✝ : DecidableEq V
+K : Complex V
+k : ℕ
+c : Face K (k + 1) → ZMod 2
+T : Face K k
+f : V → ZMod 2 := fun v => if v ∈ ↑T then 0 else ↑(extend K (k + 1) c) (insert v ↑T)
+good : ∀ (v : V), f v ≠ 0 → insert v ↑T ∈ K.faces ∧ (insert v ↑T).card = k + 1
+S : Face K (k + 1)
+a✝ : S ∈ sorry
+hS : (if ↑T ⊆ ↑S then c S else 0) ≠ 0
+hsub : ↑T ⊆ ↑S
+v : V
+hv : v ∉ ↑T
+he : insert v ↑T = ↑S
+hgood : insert v ↑T ∈ K.faces ∧ (insert v ↑T).card = k + 1
+⊢ (↑S ∈ K.faces → ¬(↑S).card = k + 1) → 0 = c S
+third-party-claims/AugmentedChainMaps.lean:42:52: warning: This simp argument is unused:
+  hgood
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [f, hv, extend, he]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
