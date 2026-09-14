@@ -87,6 +87,9 @@ by our current semantic `ParityDerivation` type.
 **H:** for `s≥2` and `N≥2s-1`, every reduced `(s-2)` cycle in the chessboard
 complex `Δ_{s,N}` over `𝔽₂` has a filling. This is the precise BLVZ consequence
 used by R10. Keep the `s=2` augmentation case and coefficient field explicit.
+An [existing-Lean coverage search](../research/results/lean_chessboard_coverage_20260915/README.md)
+on 15 September 2026 located useful topology infrastructure but no matching
+checked theorem; it was not an exhaustive global code audit.
 Do not expand its third-party proof or plan those dependencies in this turn.
 Until H is supplied by a checked theorem, R10 and downstream claims are not
 unconditionally fully formalized. A temporary interface is not permission to
