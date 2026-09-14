@@ -4,7 +4,7 @@ Source: https://kbr.is-a.dev/math-research/#lean-augmented-cone-contraction
 Scope: Finite F₂ augmented cone contraction, exactness in every cell count, and explicit acyclicity convention.
 Declarations: MathResearch.ThirdParty.Augmented.cone_identity MathResearch.ThirdParty.Augmented.cone_supported MathResearch.ThirdParty.Augmented.cone_exact
 -/
-import «third-party-claims».AugmentedChainMaps
+import claims.AugmentedChainMaps
 
 namespace MathResearch.ThirdParty.Augmented
 noncomputable section

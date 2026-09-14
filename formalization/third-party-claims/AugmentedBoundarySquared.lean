@@ -4,7 +4,7 @@ Source: https://kbr.is-a.dev/math-research/#lean-augmented-boundary-squared-zero
 Scope: The ambient finite F₂ insertion boundary squares to zero; hence so does the supported graded differential, including edges to augmentation and the outgoing zero boundary.
 Declarations: MathResearch.ThirdParty.Augmented.boundary_boundary MathResearch.ThirdParty.Augmented.differential_squared
 -/
-import «third-party-claims».AugmentedChains
+import claims.AugmentedChains
 
 namespace MathResearch.ThirdParty.Augmented
 noncomputable section

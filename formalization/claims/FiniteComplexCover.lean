@@ -4,7 +4,7 @@ Source: https://kbr.is-a.dev/math-research/#lean-chessboard-star-cover
 Scope: Finite augmented intersections, covers, and vertex-nonempty nerves; empty faces retained.
 Declarations: MathResearch.ThirdParty.Augmented.intersection MathResearch.ThirdParty.Augmented.nerve MathResearch.ThirdParty.Augmented.Covers
 -/
-import «third-party-claims».AugmentedChainMaps
+import claims.AugmentedChainMaps
 namespace MathResearch.ThirdParty.Augmented
 noncomputable section
 variable {V I : Type*} [DecidableEq V] [DecidableEq I]
