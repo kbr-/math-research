@@ -129,7 +129,9 @@ actionable rule over another checklist or a record of one-off setup history.
   the exact setup and degree conventions, active tools with linked hypotheses
   and proofs, and unresolved dependencies affecting the next step.
   Keep the overview concise and accurate; do not invent progress when the
-  mathematical status has not changed.
+  mathematical status has not changed. Lead with the main research goal and
+  keep the route and next step on that path; mention side results and their
+  publication briefly in the overview.
 - Revise and consolidate Working mathematical context by topic; do not append
   a subsection there automatically for every turn. Keep full arguments, failed
   approaches, test details, and reading history in the Research record or linked
