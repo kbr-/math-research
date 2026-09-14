@@ -152,6 +152,30 @@ results when their exact hypotheses and conventions match.
 | H12 | Binary homological chessboard bound: Δ(a,b) is (ν(a,b)−2)-acyclic for a,b≥1. | H03, H04, H05, H07, H08, H09, H10, H11 | Strong induction on the smaller board dimension; ν=1 is nonemptiness. This is the homological form of BLVZ needed by the appendix, not the stronger homotopical connectivity theorem. |
 | H13 | Specialize the homological bound and discharge **H**. | H01, H02, H12 | N≥2s−1 gives ν(s,N)=s. Translate degree s−2 to (s−1)-cell cycles filled by s-cell chains, using precisely the interface in ChessboardFilling.lean. |
 
+### Parallelizable branches
+
+The route splits into three branches of one proof, not three alternative proofs
+of H. H01–H03 provide shared finite-chain infrastructure; the arithmetic branch
+can begin immediately without it.
+
+| Branch | Steps | Shared prerequisites and work |
+| --- | --- | --- |
+| General homological tools | H04 → H05; H04 → H06 → H07 | Build cone contractions, simplex-boundary vanishing, and the homological cover lemma on H01–H03. H07 is likely the largest task. |
+| Chessboard combinatorics | H08 → H09 → H10 | Use H01/H03 and the cone facts from H04 to prove star coverage, identify intersections, and identify the nerve. H05 supplies the nerve's vanishing when the branches are assembled. |
+| Parameter arithmetic | H11 | Prove the ν inequalities and the decrease needed for induction; independent of the chain infrastructure. |
+
+```text
+H01–H03 → H04 → H05 ────────────────┐
+             ├→ H06 → H07 ─────────┤
+             └→ H08 → H09 → H10 ───┼→ H12 → H13 (= H)
+                    H11 ───────────┘
+```
+
+The diagram shows the branch structure; the ordered table above retains the
+complete direct prerequisites. Separate work can proceed once those shared
+interfaces are fixed, with all three branches joining at H12 before H13
+specializes the result to the required filling statement.
+
 H12 is broader than H on purpose: intersections in the star cover can have
 fewer columns than the narrow N≥2s−1 range allows. Merely applying H inductively
 to each intersection would leave missing cases. A different constructive proof
