@@ -13,7 +13,7 @@
   <h2>Where we stand</h2>
   <p><strong>Our main goal remains open: superpolynomial proof-size lower bounds for ordinary PHP in \(\mathrm{AC}^0[p]\)-Frege, for every fixed prime and fixed depth.</strong> The route compiles a hypothetical short proof into an algebraic source and seeks a contradiction below the old degree barrier. The <a href="#unary-to-bit-Frege-encoding-clarification">ordinary-to-bit Frege substitution</a> has polynomial size overhead and a constant depth increase, so full bit-PHP bounds at every fixed depth would suffice.</p>
   <p><strong>A universal Boolean-domain normalization step is ruled out.</strong> A polynomial-size <a href="#polynomial-size-three-level-majority-source">three-level approximate-majority source</a> forces any complete old-only map with Booleanity-only image certificates to have <a href="#universal-Boolean-source-map-obstruction">linear degree in the number of old bits</a>. The same example rules out universally small <a href="#affine-domain-realization-and-profile-barrier">Boolean-domain-valid profiles over one affine family</a>, even with quasipolynomial inventory. This is a working obstruction to the method, not a PHP upper bound or a claim that every short PHP proof contains that source.</p>
-  <p><strong>The general step must use more of the PHP problem or its proof source.</strong> Seek profiles with explicit old PHP residuals, a justified restriction on sources arising from short PHP proofs, or another endpoint that escapes the new obstruction. The <a href="#source-profile-rank-inflation">arbitrary-rank profile construction</a> remains valid but its cost is not uniformly small enough. Existing <a href="#unit-accuracy-affine-family-exclusion">all-prime affine endpoints</a>, <a href="#bounded-affine-probe-source-exclusion">bounded-probe bounds</a>, <a href="#all-prime-leading-pair-source-exclusion">leading-pair bounds</a>, and <a href="#projected-cyclic-complete-source-exclusion">projected cyclic bounds</a> remain correct in their restricted scopes. No current bound covers the full Frege source.</p>
+  <p><strong>The general step must use more of the PHP problem or its proof source.</strong> The new <a href="#affine-level-full-relative-old-preservation">one-affine-level theorem</a> preserves the full old matching-moment window at polylogarithmic degree. This supplies a broader relative interface, but <a href="#full-relative-moment-extension-and-clamps">mixed selector compatibility</a> across levels is unproved. The <a href="#source-profile-rank-inflation">general rank-profile construction</a> remains too costly without a rank bound. Existing restricted affine, probe, and quadratic-source results remain available; none covers the full Frege source.</p>
   <p><strong>Formal verification.</strong> Lean verifies <a href="#entry-2026-09-14-lean-mod-interpolation">MOD interpolation</a>, <a href="#entry-2026-09-14-lean-mp-telescoping">ENS telescoping and its corrected companion bound</a>, and <a href="#entry-2026-09-14-lean-binary-affine-cover">binary semantic rule reduction with its separator and clause-compression dependencies</a>. The last result's concrete PC-degree corollary remains unformalized. These are local components; the general source gap is unchanged.</p>
   <div class="result">
     <p><strong>What would finish the route:</strong> for every fixed prime, depth, and size exponent, turn any hypothetical short ordinary-PHP proof into a forbidden old-base endpoint, or directly exclude its complete augmented source. A polynomial-size Frege construction would also be valuable; none is established.</p>
@@ -25,7 +25,7 @@
   <h2>The remaining route</h2>
   <div class="eyebrow">Highest risk first</div>
   <ol>
-    <li><strong>Find a PHP-relative or proof-specific general step.</strong> Universal Booleanity-only normalization is ruled out by the approximate-majority source. Construct complete profiles or weighted images using explicit old PHP residuals, or prove that a sufficient source restriction follows from a short PHP proof. Include every compiler subgroup and preserve the original degree costs.</li>
+    <li><strong>Find a PHP-relative or proof-specific general step.</strong> Universal Booleanity-only normalization is ruled out by the approximate-majority source. Construct coupled profiles or moments using old PHP residuals and genuine ENS relations, or prove a sufficient restriction on sources of short PHP proofs. Full old-moment preservation for one affine level is now available; compatibility across levels remains open. Include every compiler subgroup and preserve original degree costs.</li>
     <li><strong>Close the recurrence for every fixed depth and prime.</strong> Prove that source hypotheses, original degrees, inventory, and target separation survive the proposed step. A depth-dependent positive degree saving suffices. The exact compact source/profile compiler used in the latest audit is binary; the odd-prime application needs a justified counterpart.</li>
     <li><strong>Finish the ordinary-PHP parameter argument.</strong> For every fixed prime, depth, and size exponent, derive a forbidden endpoint using the available encoding reduction and old barrier. Keep a concrete polynomial-size construction available as an alternative research outcome; restricted bounds and method obstructions alone settle neither direction.</li>
   </ol>
@@ -33,7 +33,7 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Test a coupled PHP-relative profile for the full affine-in-earlier-selector OR tuple, using both old collision equations and genuine earlier ENS relations. Seek a cost saving over the rank-product construction while retaining every original-input witness and the compiler's auxiliary groups. Old-base rewriting of independent formal selectors cannot provide that saving. Stop at a new source-valid construction or an explicit obstruction to the stated general step.</p>
+  <p>Test whether the full old matching-moment interface can be coupled to one further complete source level whose inputs are affine in earlier genuine selectors. State the mixed moments and comparison constraints that an induction must preserve, and test the candidate against the approximate-majority source and the failed rank-cutoff assignment before refining special cases. Stop at a source-valid extension with a sufficient accumulated degree budget or an explicit obstruction to that extension.</p>
 </section>
 
 <section id="working-context">
@@ -59,10 +59,10 @@
   <h3 id="context-working-bounds">Compact old base and separated targets</h3>
   <p>For \(n=2^\ell\), \(m=n+1\), \(v=m\ell\), use \(\mathcal Q_{n,p}=\{E^{(p)}_{ii'}=\prod_t[1-(b_{it}-b_{i't})^{p-1}]\}\cup{\rm BOOL}_b\), with collision degree \(\gamma=(p-1)\ell\). The <a href="#all-prime-compact-bit-decoder">affine decoder</a> \(\tau(b_{it})=\sum_{z:z_t=1}X_{iz}\) certifies Boolean images through two and collision images through \(\gamma\).</p>
   <p>Complete matching marginals are \(\sum_{j\notin{\rm col}(T)}z_{T+(i,j)}=z_T\) for an unused row and \(|T|&lt;B\). When \(m\ge B\) and \(N\ge2B-1\), <a href="#all-field-matching-filtration">BLVZ row-set fillings</a> extend lower-degree designs over every field, giving old-system \(\mathcal I_B\cap\mathcal P_{\le k}=\mathcal I_k\) and \(\mathcal C_B=\mathcal I_B\). No augmented ENS stability follows automatically.</p>
-  <p>Binary <a href="#signed-cube-row-linear-separation">row-linear targets</a> of degree at most \(k\) separate under \(4(k-1)&lt;n\), \(k\le B\), \(n\ge2B-1\). The more flexible <a href="#cube-volume-multiplier-space">\(\mathcal S_k\)</a> spans homogeneous squarefree degree-\(k\) monomials with \(\sum_i(4^{d_i}-1)\le n/16\). It has dimension \((1-o(1))\binom vk\) for \(k=o(n)\), and every nonzero member separates when \(k\le n/16\) and \(k\le B\le n/4\). Signed residual cubes isolate a top coefficient after deleting their labels.</p>
+  <p>The new <a href="#signed-row-trade-spanning">row-trade lemma</a> spans all zero-marginal arrays on \(r\) rows when \(N\ge2r\). It gives every <a href="#matching-class-row-trade-detector">nonzero old matching class</a> a representative with a nonzero constant signed difference in at most its degree many rows. The <a href="#multi-axis-cube-residual-detector">signed residual construction</a> extends such differences to old PC separators after deleting their labels. The separate <a href="#cube-volume-multiplier-space">cube-volume multiplier space</a> remains available for nonlinear source tests.</p>
 
   <h3 id="context-affine-endpoint">Available endpoint and complete profiles</h3>
-  <p>The <a href="#unit-accuracy-affine-family-exclusion">all-prime one-affine-level theorem</a> excludes polylogarithmic-degree PC refutations at polynomial or quasipolynomial inventory, even with individual accuracies one. Its proof retains the genuine coefficient field equations and uses \(f^{p-1}\), with the linked finite row-cap and degree conditions. Refutation exclusion does not imply arbitrary old-target preservation or free selector choices.</p>
+  <p>The <a href="#unit-accuracy-affine-family-exclusion">all-prime one-affine-level theorem</a> excludes polylogarithmic-degree PC refutations at polynomial or quasipolynomial inventory, even with individual accuracies one. For \(h\ge3(p-1)\ell\), the new <a href="#affine-level-full-relative-old-preservation">relative old-target theorem</a> gives \(\mathcal C_D(\Gamma)\cap\mathcal P_{\le t}^{\rm old}\subseteq J_t\), where \(J_t=\{q:\tau q\in\mathcal I_t(\mathcal F_n^{\rm fun})\}\). It uses \(k\ge\max(1,2t,\lceil\sqrt{m\ln(4M)}\rceil)\), \(k\le m-t\), \(B=k(D+1)\), \(4(k+t-1)&lt;n\), and \(n\ge2B-1\). These permit \(t=D=\operatorname{polylog}n\) and extend all \(J_t\)-compatible old moments. Eligible rank-\(\ge3\ell(k+1)+1\) products may be jointly clamped to zero. This does not identify \(J_t\) with the compact NS space or prescribe mixed moments of earlier selectors.</p>
   <p>For the active binary profile route, keep \(h=3\ell\). On a final complete affine family with \(M_*\) blocks, the <a href="#accuracy-dependent-affine-exclusion">sharper accuracy-dependent endpoint</a> uses</p>
   <div class="math">\[
     k_*=\left\lceil\sqrt{\tfrac23(n+1)\ln(4M_*)}\right\rceil,\qquad
@@ -92,7 +92,7 @@
   <p><a href="#conditioned-bottom-level-removal">Conditioned deletion</a> pays \(kD\) and leaves \(\mathcal Q_n+\{1-f\}\), with barrier \(n/2-\deg f+1\). Later inputs are <a href="#second-level-affine-flat-indicator-inputs">sums of affine-flat indicators</a>, not automatically affine; polynomial rank does not imply affine-flat dimension. <a href="#conditioned-row-linear-quotient-dimension">Conditioned target spaces</a> do not supply those missing input witnesses. A second independent square-root loss fails the degree budget, and nonzero factors can have zero Boolean product.</p>
 
   <h3 id="context-special-families">Restricted tools retained for targeted use</h3>
-  <p>Complete maps cover <a href="#power-affine-complete-system-transfer">power-affine inputs</a>, <a href="#shared-probe-original-degree-images">positive-MOD shared probes</a>, <a href="#unit-accuracy-shared-bit-complete-transfer">dense shared-bit sources</a>, and <a href="#quadratic-branch-complete-transfer">affine-branch sources</a>, with their linked original-degree costs. <a href="#shared-core-projected-source-criterion">Eligible shared-core projections</a> and <a href="#mixed-union-source-compiler-application">covered mixed unions</a> fit the source-specific profile framework. The separate <a href="#affine-level-full-old-low-degree-separation">old-target</a> and <a href="#joint-high-selector-zero-preservation">joint-zero</a> theorems require their stronger accuracy/rank hypotheses.</p>
+  <p>Complete maps cover <a href="#power-affine-complete-system-transfer">power-affine inputs</a>, <a href="#shared-probe-original-degree-images">positive-MOD shared probes</a>, <a href="#unit-accuracy-shared-bit-complete-transfer">dense shared-bit sources</a>, and <a href="#quadratic-branch-complete-transfer">affine-branch sources</a>, with their linked original-degree costs. <a href="#shared-core-projected-source-criterion">Eligible shared-core projections</a> and <a href="#mixed-union-source-compiler-application">covered mixed unions</a> fit the source-specific profile framework. The earlier <a href="#affine-level-full-old-low-degree-separation">Boolean old-target theorem</a> and <a href="#joint-high-selector-zero-preservation">joint-zero theorem</a> retain their stated narrower conclusions.</p>
   <p><a href="#bounded-affine-probe-source-exclusion">Fixed probe dimension \(r\) and input degree \(s\)</a> give a simultaneous binary endpoint \(n^{S/(S+1)}\operatorname{polylog}n\), \(S=\sum_{j\le r}\min(s,j)\), including <a href="#bounded-indicator-sum-source-transfer">bounded sums of bounded-rank bottom indicators</a>. <a href="#all-prime-leading-pair-source-exclusion">Specified quadratic leading pairs</a>, <a href="#large-binary-field-product-source-exclusion">full binary field products</a>, and <a href="#arbitrary-cyclic-complete-source-exclusion">full cyclic products at arbitrary linear lengths</a> give square-root bounds. <a href="#projected-cyclic-complete-source-exclusion">Cyclic output projections with affine offsets</a> give \(n^{2/3}\operatorname{polylog}n\), using independent affine operands and all original equations. None proves the general source hypothesis. The <a href="#quadratic-kernel-compression-obligation">kernel-codimension criterion</a> is sufficient; <a href="#disjoint-sums-quadratic-vanishing-ideal">pair consequences are not universal</a>.</p>
   <p>The exact compact full-source audit is binary; general odd-prime source application remains separate from the all-prime endpoint. <a href="#retained-or-witness-scope">Hard supplied witnesses</a> do not exclude cheaper alternatives. The <a href="#shallow-ENS-query-obstruction">shallow-query rate obstruction</a> rules out the earlier generic probability estimate, not a source-specific Frege bound.</p>
 </section>
@@ -16255,5 +16255,142 @@
 </div>
 </article>
 
+<article class="research-entry" id="entry-2026-09-15-signed-row-trades-relative-moments">
+  <h3>15 September 2026 — Signed row trades and full old matching moments</h3>
+  <p class="entry-meta">Status: working all-field trade-spanning lemma and all-prime relative moment-preservation theorem for one complete affine ENS level; exact finite controls. Cycle 151.</p>
+  <p><strong>Question and stopping point.</strong> The first remaining-route obligation asks for a PHP-relative construction that respects genuine ENS relations. Can the old-moment interface retain the full relevant old degree window, instead of only row-linear targets or the earlier small Boolean window? This cycle proves such an interface for one affine level. It does not construct the mixed selector moments needed to join several levels, and it does not claim a new unrestricted Frege bound.</p>
+
+  <h4 id="rank-cutoff-selector-moment-failure">1. A rank cutoff does not define compatible selector moments</h4>
+  <p>A tempting assignment gives low-rank affine-flat selectors their old semantic moments and sets high-rank selector moments to zero. The comparison of a flat with its codimension-one subflat already defeats that prescription. Over the Boolean field, let \(G=(x_1,\ldots,x_R)\), let \(x=x_{R+1}\), and take the old point functional at zero. At a rank cutoff \(R\), the prescription gives</p>
+  <div class="math">\[
+    \Lambda(P_G)=1,\qquad \Lambda(xP_G)=0,\qquad
+    \Lambda(P_{G\cup\{x\}})=0.
+  \]</div>
+  <p>It therefore assigns value \(-1\) to \(P_{G\cup\{x\}}-(1-x)P_G\), although the genuine ENS comparison has a certificate through \(4h+1\). This is a failure of the proposed Boolean-domain moment assignment, not a PHP-design counterexample. Selector moments must satisfy their relations jointly. The theorem below obtains an extension by duality without prescribing those mixed moments.</p>
+  <p>For the stated degree, write \(P=P_G\), \(Q=P_{G\cup\{x\}}\), \(1-P=\sum_iU_i g_i\), and \(1-Q=\sum_iV_i g_i+V_xx\), with prefix cofactors of degree at most \(2h-1\). The literal identity</p>
+  <div class="math">\[
+    Q-(1-x)P=\sum_iU_i(g_iQ)
+       -\sum_i(1-x)V_i(g_iP)
+       -V_xP\,x(1-x)+P(xQ)
+  \]</div>
+  <p>uses the two blocks' actual companions and old Booleanity through \(4h+1\). Thus the incompatibility is present in the genuine source module at that ceiling, not merely in its high-degree semantic closure.</p>
+
+  <h4 id="signed-row-trade-spanning">2. Disjoint two-label trades span all zero-marginal arrays</h4>
+  <p>Fix \(r\ge1\) labelled rows and \(N\) columns over a field \(\mathbb K\). Let \(V_{r,N}\) be the space of arrays on injections \([r]\hookrightarrow[N]\). Let \(Z_{r,N}\) consist of arrays whose sum over each missing row is zero, for every fixed injection on the other \(r-1\) rows. A <em>row trade</em> chooses two labels \(a_i,b_i\) in each row, all \(2r\) labels distinct, and has coefficient array</p>
+  <div class="math">\[
+      T=\bigotimes_{i=1}^r(\mathbf e_{a_i}-\mathbf e_{b_i}).
+  \]</div>
+  <p><strong>Lemma.</strong> If \(N\ge2r\), these trades span \(Z_{r,N}\) over every field.</p>
+  <p><strong>Proof.</strong> Each trade has zero marginals. For spanning, induct on \(r\), and for each fixed \(r\) induct on \(N\ge2r\). At \(r=1\), zero-sum vectors are spanned by the differences \(\mathbf e_a-\mathbf e_b\).</p>
+  <p>Given \(z\in Z_{r,N}\), slice it at row \(i\) taking label \(N\). This slice is a zero-marginal array on \(r-1\) rows and \(N-1\) columns. By row induction, write it as a sum of trades, each using \(2r-2\) columns. For each such trade choose a spare label \(a\ne N\) outside its support and lift it by the row-\(i\) factor \(\mathbf e_N-\mathbf e_a\). There is a spare label because \(N-1\ge2r-1\). Subtracting these lifts cancels the slice at \((i,N)\) without introducing label \(N\) in any other row. Repeat for all \(i\). The remainder \(z'\) avoids column \(N\).</p>
+  <p>If \(N&gt;2r\), column induction finishes. At the boundary \(N=2r\), slice \(z'\) by the label \(j\ne N\) of row 1. Its slice \(z'_j\) is a zero-marginal array on the other \(r-1\) rows and the \(2r-2\) columns avoiding \(j,N\). Row induction again spans it by trades. Extend all slices by zero to a common array space. The row-1 marginal equation says \(\sum_jz'_j=0\), so</p>
+  <div class="math">\[
+      z'=\sum_{j\ne N}(\mathbf e_j-\mathbf e_N)\otimes z'_j.
+  \]</div>
+  <p>Every summand is a sum of full disjoint-label trades. This proves the lemma without division or characteristic assumptions.</p>
+  <p>The width hypothesis matters. At \(N=2r-1\), \(r\ge2\), there are no disjoint-label trades but there are nonzero zero-marginal arrays: take the six-cycle</p>
+  <div class="math">\[
+     (1,2)-(1,3)+(2,3)-(2,1)+(3,1)-(3,2)
+  \]</div>
+  <p>on two rows and three labels, and tensor it with \(r-2\) disjoint row differences on the remaining \(2r-4\) labels. This also works in characteristic two. The lemma is an elementary spanning argument here; bibliographic novelty is not asserted.</p>
+
+  <h4 id="matching-class-row-trade-detector">3. Every nonzero old matching class has a constant row difference</h4>
+  <p>Let \(\mathcal F^{\rm fun}_{m,N}\) be the functional unary system: Booleanity, same-row and same-column exclusions, and \(\rho_i-1\). Use its ordinary NS spaces \(\mathcal I_t\). Assume \(m\ge t\), \(N\ge\max(1,2t)\), and let \(q\) have degree at most \(t\), with \(q\notin\mathcal I_t\).</p>
+  <p><strong>Lemma.</strong> There are a matching-normal-form polynomial \(R\), a degree \(\kappa\le t\), and \(\kappa\) rows \(U\), such that \(q-R\in\mathcal I_t\), \(\deg R=\kappa\), and either \(R\) is a nonzero constant, or a disjoint two-label trade in the rows \(U\) gives a nonzero constant signed difference of \(R\), independent of all remaining rows.</p>
+  <p><strong>Proof.</strong> First reduce powers and row/column collisions through degree \(t\), using the <a href="#matching-moment-completeness-audit">ordinary matching normal form</a>. At a positive top degree \(\kappa\), group coefficients by the exact \(\kappa\)-row set \(U\). For such a row set, let \(A_U\) be the marginal matrix on its injections into the \(N\) columns. Its kernel is \(Z_{\kappa,N}\).</p>
+  <p>If the top coefficient vector annihilates \(\ker A_U\), finite-dimensional linear algebra puts it in \({\rm im}(A_U^{\mathsf T})\). Those vectors are exactly the top matching parts of</p>
+  <div class="math">\[
+       X_T(\rho_i-1),\qquad
+       {\rm row}(T)=U\setminus\{i\},\quad |T|=\kappa-1,
+  \]</div>
+  <p>after removing their column collisions through degree \(\kappa\). If this happens for every \(U\), subtract the corresponding ordinary NS multiples and lower the degree. Continue. The process cannot end at zero, since that would put \(q\) in \(\mathcal I_t\).</p>
+  <p>Otherwise a top vector pairs nontrivially with \(Z_{\kappa,N}\). By the spanning lemma, it pairs nontrivially with a disjoint-label trade. Apply the associated signed row difference to \(R\). Terms missing any row of \(U\) vanish. A matching monomial of degree at most \(\kappa\) that contains every row of \(U\) has no other row, so the result is a scalar, and its value is the nonzero pairing. All changes from \(q\) to \(R\) carried ordinary certificates through the original ceiling \(t\).</p>
+  <p>This detector concerns nonzero classes modulo the matching ideal. It does not assert that every Boolean-nonzero old polynomial survives: collision polynomials already belong to that ideal.</p>
+
+  <h4 id="affine-level-full-relative-old-preservation">4. One complete affine level preserves the full transported old window</h4>
+  <p>Fix a prime \(p\), \(n=2^\ell\), \(\ell\ge2\), \(m=n+1\), and \(v=m\ell\). Let \(\Gamma\) be the correct compact base \(\mathcal Q_{n,p}\) together with at most \(M\ge1\) complete one-level old-affine ENS blocks. Each block has common accuracy \(h\ge h_0=3(p-1)\ell\) and its own genuine coefficient equations \(r^p-r\). Write</p>
+  <div class="math">\[
+      \tau(b_{it})=\sum_{z:z_t=1}X_{iz},\qquad
+      J_t=\{q\in\mathcal P_{\le t}^{\rm old}:
+           \tau q\in\mathcal I_t(\mathcal F_n^{\rm fun})\}.
+  \]</div>
+  <p>Choose integers \(0\le t\le D\) and \(k\) such that</p>
+  <div class="math">\[
+    k\ge\max\!\left\{1,2t,
+          \left\lceil\sqrt{m\ln(4M)}\right\rceil\right\},
+    \qquad k\le m-t,\qquad B=k(D+1),
+  \]</div>
+  <div class="math">\[
+       4(k+t-1)&lt;n,\qquad n\ge2B-1.
+       \tag{REL-range}
+  \]</div>
+  <p><strong>Working theorem.</strong> Under these conditions,</p>
+  <div class="math">\[
+       \mathcal C_D(\Gamma)\cap\mathcal P_{\le t}^{\rm old}
+          \ \subseteq\ J_t.
+       \tag{REL-old}
+  \]</div>
+  <p>The same inclusion holds for ordinary NS consequences. The conclusion uses the transported matching ideal \(J_t\); equality with the compact base's own degree-\(t\) NS space is not asserted.</p>
+  <p><strong>Proof: target and common multiplier.</strong> Suppose a degree-\(D\) PC proof ends at \(q\notin J_t\). Apply the preceding lemma to \(\tau q\). It gives \(R\), a row set \(U\) of size \(\kappa\le t\), and a constant nonzero signed difference \(c_q\), with \(\tau q-R\in\mathcal I_t\). In the constant case take \(U=\varnothing\). The range supplies the lemma's width hypotheses.</p>
+  <p>Use the space of homogeneous degree-\(k\) row-linear bit polynomials involving no row of \(U\). Its dimension is \(\binom{m-\kappa}{k}\ell^k\). Clean up zero and unit affine spans as in the <a href="#all-prime-affine-family-exclusion">all-prime affine proof</a>. Set \(r_*=3\ell(k+1)+1\). Proper blocks of rank at least \(r_*\) are high; all others satisfy \((p-1)r\le h_0(k+1)\). If \(r_*&gt;v\), there are no high blocks. Otherwise ordinary restriction to any high zero flat has image dimension at most \(\binom{v-r_*+k}{k}\), and</p>
+  <div class="math">\[
+    \frac{\binom{v-r_*+k}{k}}{\binom{m-t}{k}\ell^k}
+     =\prod_{j=0}^{k-1}
+       \left(1-\frac{r_*-1-\ell t-(\ell+1)j}
+                        {(m-t)\ell-\ell j}\right)
+     \le e^{-k^2/m}.
+  \]</div>
+  <p>Indeed the subtracted numerator is at least \((2\ell-1)k-\ell t+4\ell+1\ge\ell k\), and its denominator is at most \(m\ell\). The sum of high restriction dimensions is at most one quarter of the multiplier dimension. Thus a nonzero homogeneous row-linear \(f\), independent of \(U\), vanishes as an ordinary polynomial on every high flat. This is the earlier <a href="#affine-level-old-row-linear-target-separation">row-excluded restriction estimate</a>, now used with the row support of a matching-class detector.</p>
+  <p><strong>Proof: complete source images and degree.</strong> If \(h&gt;h_0\), first set surplus coefficient rows to zero; this does not increase proof degree. Apply the existing simultaneous affine substitution. A high block has \(f=\sum_i a_i g_i\), \(\deg a_i\le k-1\), and uses the \(p-1\) coefficient rows \((\alpha a_i)_i\), \(\alpha\ne0\), to make its product \(1-f^{p-1}\). Low blocks pack all \((p-1)r\) basis factors into \(h_0\) bins of size at most \(k+1\), so all coefficient images have degree at most \(k\).</p>
+  <p>Weight every substituted line by \(f\) itself. The old Boolean NS ceilings are \(pk+1\) for high companions, at most \(h_0(k+1)+1+k\) for low companions, and \((p+1)k\) for coefficient fields. Each fits \(k(e+1)\) for that axiom's original joint degree \(e\). Old axioms cost \(e+k\le k(e+1)\). Proper nonconstant affine blocks have actual companion degree \(2h_0+1\); zero/unit cleanup is retained, so no loose input-degree ceiling is treated as an equality. Primitive PC replay stays within \(B=k(D+1)\) and ends at \(fq\).</p>
+  <p>The <a href="#all-prime-compact-bit-decoder">affine decoder</a> gives an old functional-PHP proof through \(B\). Since \(\tau f(\tau q-R)\in\mathcal I_{k+t}\subseteq\mathcal I_B\), it would prove \(\tau f\,R\) through \(B\).</p>
+  <p><strong>Proof: a separated weighted target.</strong> Choose a nonzero monomial of \(f\), using one specified bit in each of \(k\) rows \(T\) disjoint from \(U\). Reserve the \(2\kappa\) labels of the \(R\)-trade. For each row of \(T\), choose a coordinate edge in its specified bit direction, avoiding all reserved labels and earlier edges. Each direction has \(n/2\) disjoint edges, and fewer than \(2\kappa+2(k-1)&lt;n/2\) labels are forbidden. Thus these choices exist.</p>
+  <p>The combined trades use \(u=\kappa+k\) marked rows and \(2u\) distinct labels. On the residual board take a normalized matching design through \(B-u\), using the <a href="#all-field-matching-filtration">all-field matching-extension theorem</a>. Here \(m\ge B\), \(B\ge u\), and</p>
+  <div class="math">\[
+       n-2u\ge2(B-u)-1.
+  \]</div>
+  <p>The packing inequality also leaves residual labels. Define moments exactly as in the <a href="#multi-axis-cube-residual-detector">signed residual construction</a>: zero unless every marked row is present on its own two-label support and all other rows avoid the reserved labels; otherwise use the product of its row signs times the residual moment. Every marked row has total sign zero, so all missing-row marginals hold. This argument needs two-label supports, not coordinate edges in the rows \(U\). Boolean and collision reductions give a functional annihilating \(\mathcal I_B=\mathcal C_B\) of the old system.</p>
+  <p>Apply the \(U\)-differences first. Since \(f\) avoids \(U\), the result is \(c_q\tau f\). The coordinate differences in \(T\) then give the chosen nonzero coefficient \(c_f\) of \(f\): a degree-\(k\) row-linear monomial must contain all \(k\) selected bits to survive. The target functional therefore has value \(c_qc_f\ne0\) on \(\tau f\,R\), contradicting its old PC derivation. This proves (REL-old).</p>
+
+  <h4 id="full-relative-moment-extension-and-clamps">5. Full old moments, eligible zero clamps, and the remaining gap</h4>
+  <p><strong>Moment corollary.</strong> Every linear functional on \(\mathcal P_{\le t}^{\rm old}\) annihilating \(J_t\) extends to a functional on the full joint-variable space \(\mathcal P_{\le D}\) annihilating \(\mathcal C_D(\Gamma)\). Define it first on the sum of the old subspace and \(\mathcal C_D(\Gamma)\), giving the latter value zero; (REL-old) makes this well-defined. Extend linearly. A normalized old functional remains normalized.</p>
+  <p>For every fixed \(p\), polynomial or quasipolynomial inventory \(\ln M=\operatorname{polylog}n\), and \(D=\operatorname{polylog}n\), one can take <strong>\(t=D\)</strong>: \(k=\sqrt n\,\operatorname{polylog}n\) and \(B=\sqrt n\,\operatorname{polylog}n\) satisfy the finite conditions eventually. These are arbitrary matching-compatible old moments throughout that window. The earlier <a href="#affine-level-full-old-low-degree-separation">Boolean-ideal conclusion</a> applied only to a smaller window; the relative theorem makes no claim that every Boolean-consistent functional is matching-compatible.</p>
+  <p><strong>Eligible joint clamps.</strong> The same statement permits adjoining \(P_a=0\) for any selected proper affine blocks with rank at least \(r_*\). The weighted image of each such axiom is \(f-f^p\), with a Boolean NS certificate through \(pk\), fitting its original degree \(2h_0\) under the same replay budget. One common \(f\) already handles all these blocks. No low-rank selector is assigned an arbitrary value.</p>
+  <p>For a concrete enlargement of scope, let \(\chi_{i,\lambda}=\prod_t b_{it}^{\lambda_t}(1-b_{it})^{1-\lambda_t}\). This degree-\(\ell\) full-label indicator is outside the earlier row-linear class and the old \(t\le\ell-2\) window. Row-state reduction gives \(\tau\chi_{i,\lambda}-X_{i,\lambda}\in\mathcal I_\ell\). Pin row \(i\) to \(\lambda\), delete that label, and take a normalized residual design through \(t\); since \(n-1\ge2t-1\) here, it gives value one to \(X_{i,\lambda}\) while annihilating \(\mathcal I_t\). Thus \(\chi_{i,\lambda}\notin J_t\) whenever \(t\ge\ell\) in the stated range. Conversely, old collision equations remain allowed consequences in \(J_t\).</p>
+  <p><strong>What changed.</strong> The one-affine-level endpoint now retains the complete old matching-moment window needed at a chosen polylogarithmic proof degree. The unresolved next step is a compatible extension when the new inputs use earlier genuine selectors. Preserving old moments alone does not prescribe mixed selector moments, make later inputs affine, or yield an induction on source depth. The <a href="#rank-cutoff-selector-moment-failure">failed cutoff prescription</a> is a concrete warning against that inference. The universal Boolean-domain obstruction remains in force.</p>
+
+  <h4 id="signed-row-trade-exact-checks">6. Exact controls and process assessment</h4>
+  <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/tools/check_signed_row_trades.cpp">compiled checker</a> retained every injection, marginal matrix, signed trade, and rank factorization in <a href="https://github.com/kbr-/math-research/blob/main/research/results/source_module_coupling_20260915_151/signed-row-trades.jsonl">the full JSONL output</a>. There are seven geometries, nineteen field cases, thirty-eight matrix factorizations, and twelve exact large-parameter cases. For \(r\le3\) the fields are \(\mathbb F_2,\mathbb F_3,\mathbb F_5\); the \(4\times8\) board was checked over \(\mathbb F_2\) only.</p>
+  <table>
+    <thead><tr><th>Rows</th><th>Columns</th><th>Zero-marginal dimension</th><th>Trade rank</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>3</td><td>2</td><td>2</td></tr>
+      <tr><td>2</td><td>3</td><td>1</td><td>0</td></tr>
+      <tr><td>2</td><td>4</td><td>5</td><td>5</td></tr>
+      <tr><td>3</td><td>5</td><td>14</td><td>0</td></tr>
+      <tr><td>3</td><td>6</td><td>47</td><td>47</td></tr>
+      <tr><td>3</td><td>7</td><td>104</td><td>104</td></tr>
+      <tr><td>4</td><td>8</td><td>641</td><td>641</td></tr>
+    </tbody>
+  </table>
+  <p>All tested fields give the displayed ranks. The thin boards are negative controls. Each factorization records \(A=CB\), distinct leading pivots of \(B\), and an invertible triangular submatrix of \(C\), verifying both span and independence. Trade marginals are also checked over the integers. For \(p=2,3,5\), \(M=n^2\), \(D=t=\ell^3\), and \(\ell=16,32,48,64\), exact integer budget checks pass the old-room condition at 48 and 64 and fail it at 16 and 32. No enormous board is instantiated for these symbolic parameter checks.</p>
+  <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/source_module_coupling_20260915_151/README.md">evidence note</a> records reproduction commands, encoding, and scope. These finite controls support the general proof; they do not replace it. The initial compilation succeeded with formatting warnings, which were removed by a clean recompile. The mathematical run passed. Context restoration remained partly in the marked mathematics interval.</p>
+  <p><strong>Process assessment.</strong> Testing the proposed joint assignment exposed its incompatibility before more family-specific constructions; the replacement is a general old-moment interface with an explicit multilevel gap, so no additional framework rule is needed.</p>
+  <div class="timing-report" data-session="source_module_coupling_20260915_151">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>57 min 56.61 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">21 min 47.07 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">27 min 12.71 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">6 min 51.25 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 57.78 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.21 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">7.59 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
