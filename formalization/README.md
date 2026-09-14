@@ -1,8 +1,15 @@
 # Lean formalization
 
 This Lake project provides the environment for formalizing selected notebook
-claims. No research result has been formalized yet; `MathResearch.lean` only
-imports Mathlib polynomial algebra and the ring tactic to check the installation.
+claims. Each result will have its own file under `claims/`, for example
+`claims/ModInterpolation.lean`. No research result has been formalized yet.
+
+Files can depend on other claim files using imports such as
+`import claims.ModInterpolation`. Lake discovers all Lean modules under
+`claims/` and builds them in dependency order; no aggregate file is required.
+Each file should identify its claim-index label and notebook source, and import
+only the dependencies it needs. Shared definitions can be factored into a
+separate module when needed.
 
 ## Terminal workflow
 
@@ -11,7 +18,7 @@ root, follow the resource-control setup in [COMPUTATION_RULES.md](../COMPUTATION
 then restore dependencies and their compiled cache:
 
 ```bash
-./compute.sh --threads 2 --timeout 1800 bash -c 'source "$HOME/.elan/env"; cd formalization; MATHLIB_NO_CACHE_ON_UPDATE=1 lake exe cache get MathResearch.lean'
+./compute.sh --threads 2 --timeout 1800 bash -c 'source "$HOME/.elan/env"; cd formalization; MATHLIB_NO_CACHE_ON_UPDATE=1 lake exe cache get Mathlib.Algebra.Polynomial.Div Mathlib.Tactic.Ring'
 ```
 
 Build the project:
@@ -21,7 +28,8 @@ Build the project:
 ```
 
 To check an individual file, replace `lake build` with
-`lake env lean MathResearch.lean`. An editor extension is optional.
+`lake env lean claims/ModInterpolation.lean` once that file exists.
+Build imported local modules first with `lake build`. An editor extension is optional.
 
 ## Reproducible dependencies
 
@@ -31,8 +39,9 @@ To check an individual file, replace `lake build` with
 - `lake-manifest.json` locks its transitive dependencies. Commit this file.
 - `.lake/` contains downloaded dependencies and build artifacts and is ignored.
 
-The cache command fetches only the modules imported by the project and their
-dependencies to conserve disk space. Rerun it after adding imports. The
+The cache command fetches the initial polynomial algebra and ring tactic modules
+and their dependencies. Once a claim file exists, pass its path to `cache get`
+instead to fetch exactly its imported dependencies. The
 environment variable prevents initial dependency setup on a fresh checkout
 from also requesting the full Mathlib cache.
 
