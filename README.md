@@ -250,6 +250,15 @@ claims are recorded honestly while independent targets continue; partial
 verification is not counted as completion. This loop does not enable
 formalization in ordinary research sessions or authorize publication.
 
+For a larger theorem, use [Spin-formalize-parallel](PROMPTS.md#spin-formalize-parallel):
+the coordinator maps its dependencies, assigns independent branches to subagents
+in separate worktrees, integrates their checkpoints, audits the combined work,
+and performs the final assembly.
+
+```text
+/goal Execute the Spin-formalize-parallel prompt in ./PROMPTS.md against theorem <reference>.
+```
+
 ## Computation tools
 
 Python 3.10+ is required for the complete toolset. The notebook server,
