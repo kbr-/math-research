@@ -11,9 +11,10 @@ struct Normal {Polynomial remainder;std::map<int,Polynomial> coefficients;};
 inline bool monomial_less(const Monomial& a,const Monomial& b){
     return a.size()!=b.size()?a.size()<b.size():b<a;
 }
-inline Monomial leading(const Polynomial& p){
+using MonomialOrder=std::function<bool(const Monomial&,const Monomial&)>;
+inline Monomial leading(const Polynomial& p,const MonomialOrder& less=monomial_less){
     require(!p.empty(),"nonzero divisor");auto it=p.begin(),best=it++;
-    for(;it!=p.end();++it)if(monomial_less(best->first,it->first))best=it;
+    for(;it!=p.end();++it)if(less(best->first,it->first))best=it;
     require(best->second==1,"monic divisor");return best->first;
 }
 inline bool quotient(const Monomial& m,const Monomial& divisor,Monomial& q){
@@ -27,11 +28,13 @@ inline bool quotient(const Monomial& m,const Monomial& divisor,Monomial& q){
 }
 struct ReductionMap {
     const Ring& r;
+    MonomialOrder less;
     std::vector<Polynomial> divisors;
     std::vector<Monomial> heads;
     std::map<Monomial,Normal> memo;
-    ReductionMap(const Ring& ring,std::vector<Polynomial> ds):r(ring),divisors(std::move(ds)){
-        for(const auto& g:divisors)heads.push_back(leading(g));
+    ReductionMap(const Ring& ring,std::vector<Polynomial> ds,MonomialOrder order=monomial_less)
+        :r(ring),less(std::move(order)),divisors(std::move(ds)){
+        for(const auto& g:divisors)heads.push_back(leading(g,less));
     }
     const Normal& monomial(const Monomial& m){
         auto cached=memo.find(m);if(cached!=memo.end())return cached->second;
@@ -43,7 +46,7 @@ struct ReductionMap {
             auto tail=r.subtract(Polynomial{{m,1}},r.multiply(factor,divisors[divisor]));
             result.coefficients[divisor]=factor;
             for(const auto& [term,coefficient]:tail){
-                require(monomial_less(term,m),"graded reduction order must decrease");
+                require(less(term,m),"graded reduction order must decrease");
                 const auto& child=monomial(term);
                 r.accumulate(result.remainder,child.remainder,coefficient);
                 for(const auto& [id,f]:child.coefficients)r.accumulate(result.coefficients[id],f,coefficient);
