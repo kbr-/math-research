@@ -99,28 +99,31 @@ void point_json(std::ostream& out,const std::map<int,int>& point,int variables){
 }
 int certificate(std::ostream& out,const Ring& ring,const std::vector<Polynomial>& axioms,
                 const Polynomial& target,int budget,int original_degree,
-                const std::string& label){
+                const std::string& label,int coefficient_degree,int weight_degree){
     const std::vector<int> powers(10,2);
     auto reduced=domain_reduce(ring,target,powers);
     verify_reduction(ring,target,powers,reduced);
     need(reduced.remainder.empty(),"nonzero Boolean remainder: "+label);
-    need(budget<=2*(original_degree+1),"weighted original-degree ledger");
+    need(budget<=coefficient_degree*original_degree+weight_degree,"weighted original-degree ledger");
     std::map<int,Polynomial> cof;
     for(int i=0;i<10;++i)if(!reduced.coefficients[i].empty())cof[i]=reduced.coefficients[i];
     out<<"{\"record\":\"NS_certificate\",\"field\":"<<ring.p<<",\"name\":\""<<label
        <<"\",\"original_axiom_degree\":"<<original_degree
-       <<",\"weighted_original_ceiling\":"<<2*(original_degree+1)
+       <<",\"weighted_original_ceiling\":"<<coefficient_degree*original_degree+weight_degree
        <<",\"certificate_ceiling\":"<<budget<<",\"target\":";
     write_json(out,target);
     ns_witness::write_terms(out,ring,axioms,target,cof,budget,label);
     out<<"}\n";return 1;
 }
-int field_case(std::ostream& out,int p){
+int field_case(std::ostream& out,int p,bool unit=false){
     Ring ring(p,100);auto x=[&](int i){return ring.variable(i);};
     auto one=ring.constant(1);
-    const int h=2*(p-1),k=2,old=10;
+    const int h=unit?1:2*(p-1),k=2,old=10;
+    const int coefficient_degree=unit?6*(p-1)-1:k;
+    const int weight_degree=unit?(p-1)*k:k;
     auto d0=ring.subtract(x(0),x(3)),d1=ring.subtract(x(1),x(2));
     auto f=ring.multiply(d0,d1);
+    auto weight=unit?ring.power(f,p-1):f;
     need(degree(f)==k && f.at(Monomial{0,1})==1,"within-row quadratic target term");
     for(const auto& [mon,c]:f){
         (void)c;std::map<int,int> row_degrees;
@@ -135,28 +138,37 @@ int field_case(std::ostream& out,int p){
     need(affine_rank(ring,blocks[0].inputs,old)==7,"first high rank");
     need(affine_rank(ring,blocks[1].inputs,old)==7,"second high rank");
     need(affine_rank(ring,blocks[2].inputs,old)==6,"low rank");
-    need(7==2*k+3 && (p-1)*6==h*(k+1),"rank partition boundary");
+    need(7==2*k+3 && (p-1)*6==h*(coefficient_degree+1),"rank partition boundary");
     std::vector<Polynomial> axioms,fields;
     for(int i=0;i<old;++i)axioms.push_back(ring.subtract(ring.power(x(i),2),x(i)));
     for(int i=old;i<fresh;++i)fields.push_back(ring.subtract(ring.power(x(i),p),x(i)));
     out<<"{\"record\":\"system\",\"field\":"<<p<<",\"old_variables\":10,\"accuracy\":"<<h
-       <<",\"multiplier_degree\":2,\"ranks\":[7,7,6],\"old_Boolean_axioms\":";
-    write_polynomials(out,axioms);out<<",\"multiplier\":";write_json(out,f);
+       <<",\"multiplier_degree\":"<<weight_degree<<",\"ranks\":[7,7,6],\"old_Boolean_axioms\":";
+    write_polynomials(out,axioms);out<<",\"multiplier\":";write_json(out,weight);
+    if(unit){
+        out<<",\"kernel_polynomial\":";write_json(out,f);
+        out<<",\"coefficient_degree_bound\":"<<coefficient_degree;
+    }
     out<<",\"source_blocks\":[";
     for(int b=0;b<3;++b){if(b)out<<',';write_block(out,blocks[b]);}
     out<<"],\"source_coefficient_field_axioms\":";write_polynomials(out,fields);
     out<<",\"scope\":\"complete local affine-family maps over Booleanity; no PHP or old-board hypothesis in this fixture\"}\n";
 
     std::map<int,Polynomial> images;
-    for(int b=0;b<2;++b)for(int u=0;u<h;++u)for(int j=0;j<7;++j)
-        images[blocks[b].variables[u][j]]
-          =(u<p-1 && j==0)?ring.multiply(ring.constant(u+1),b?d0:d1):Polynomial{};
+    for(int b=0;b<2;++b)for(int u=0;u<h;++u)for(int j=0;j<7;++j){
+        Polynomial beta;
+        if(unit && j==0)beta=ring.multiply(b?d0:d1,ring.power(f,p-2));
+        else if(!unit && u<p-1 && j==0)beta=ring.multiply(ring.constant(u+1),b?d0:d1);
+        images[blocks[b].variables[u][j]]=beta;
+    }
     std::vector<std::pair<int,int>> factors;
     for(int j=0;j<6;++j)for(int alpha=1;alpha<p;++alpha)factors.emplace_back(j,alpha);
-    need(int(factors.size())==3*h,"fully occupied packing bins");
+    const int bin_size=int(factors.size())/h;
+    need(bin_size==coefficient_degree+1 && int(factors.size())==bin_size*h,
+         "fully occupied packing bins");
     for(int u=0;u<h;++u){
         std::vector<Polynomial> beta(6);auto prefix=one;
-        for(int t=3*u;t<3*u+3;++t){
+        for(int t=bin_size*u;t<bin_size*(u+1);++t){
             auto [j,alpha]=factors[t];
             ring.accumulate(beta[j],ring.multiply(ring.constant(alpha),prefix));
             prefix=ring.multiply(prefix,ring.subtract(one,ring.multiply(ring.constant(alpha),blocks[2].inputs[j])));
@@ -167,7 +179,7 @@ int field_case(std::ostream& out,int p){
     out<<"{\"record\":\"simultaneous_map\",\"field\":"<<p<<",\"images\":[";
     bool comma=false;
     for(const auto& [id,beta]:images){
-        need(degree(beta)<=k,"coefficient degree");
+        need(degree(beta)<=coefficient_degree,"coefficient degree");
         if(comma)out<<',';
         comma=true;out<<'['<<id<<',';write_json(out,beta);out<<']';
     }
@@ -189,19 +201,53 @@ int field_case(std::ostream& out,int p){
             need(degree(axiom)==2*h+1,"original companion degree");
             auto mapped=ring.substitute(axiom,images);
             need(mapped==ring.multiply(blocks[b].inputs[j],products[b]),"complete companion image");
-            count+=certificate(out,ring,axioms,ring.multiply(f,mapped),
-                               b<2?p*k+1:(p-1)*6+1+k,2*h+1,
-                               "companion_"+std::to_string(b)+"_"+std::to_string(j));
+            count+=certificate(out,ring,axioms,ring.multiply(weight,mapped),
+                               b<2?(unit?2*weight_degree+1:p*k+1):(p-1)*6+1+weight_degree,
+                               2*h+1,"companion_"+std::to_string(b)+"_"+std::to_string(j),
+                               coefficient_degree,weight_degree);
         }
     }
     for(int id=old;id<fresh;++id){
         auto mapped=ring.substitute(fields[id-old],images);
-        count+=certificate(out,ring,axioms,ring.multiply(f,mapped),(p+1)*k,p,
-                           "coefficient_field_"+std::to_string(id));
+        count+=certificate(out,ring,axioms,ring.multiply(weight,mapped),
+                           p*coefficient_degree+weight_degree,p,
+                           "coefficient_field_"+std::to_string(id),coefficient_degree,weight_degree);
     }
     for(int i=0;i<old;++i)
-        count+=certificate(out,ring,axioms,ring.multiply(f,axioms[i]),k+2,2,
-                           "old_Boolean_"+std::to_string(i));
+        count+=certificate(out,ring,axioms,ring.multiply(weight,axioms[i]),weight_degree+2,2,
+                           "old_Boolean_"+std::to_string(i),coefficient_degree,weight_degree);
+
+    if(unit){
+        auto reduction_certificate=[&](const std::string& name,const Polynomial& original,int cap){
+            auto reduced=domain_reduce(ring,original,std::vector<int>(old,2));
+            verify_reduction(ring,original,std::vector<int>(old,2),reduced);
+            need(!reduced.remainder.empty(),"nonzero Booleanized multiplier");
+            std::map<int,Polynomial> cof;
+            for(int i=0;i<old;++i)if(!reduced.coefficients[i].empty())cof[i]=reduced.coefficients[i];
+            out<<"{\"record\":\"Boolean_reduction_certificate\",\"field\":"<<p<<",\"name\":\""<<name
+               <<"\",\"original\":";write_json(out,original);
+            out<<",\"remainder\":";write_json(out,reduced.remainder);
+            auto target=ring.subtract(original,reduced.remainder);
+            out<<",\"target\":";write_json(out,target);
+            ns_witness::write_terms(out,ring,axioms,target,cof,cap,name);
+            out<<"}\n";++count;return reduced.remainder;
+        };
+        auto normalized=reduction_certificate("unit_weight_Booleanization",weight,weight_degree);
+        for(const auto& [mon,c]:normalized){
+            (void)c;std::map<int,int> degrees;
+            for(int id:mon)need(++degrees[id/2]<=2*(p-1),"Booleanized row cap");
+        }
+        if(p==3){
+            auto kernel=ring.add(ring.multiply(x(0),x(1)),ring.multiply(x(2),x(3)));
+            auto power=ring.power(kernel,2);
+            auto normalized_growth=reduction_certificate("four_bit_row_power_control",power,4);
+            need(normalized_growth.at(Monomial{0,1,2,3})==2,"row-degree growth coefficient");
+            out<<"{\"record\":\"row_degree_growth_control\",\"field\":3,\"selected_row\":[0,1,2,3],"
+                 "\"kernel\":";write_json(out,kernel);
+            out<<",\"Booleanized_square\":";write_json(out,normalized_growth);
+            out<<",\"row_degree\":4,\"scope\":\"separate four-bit row, not the main two-bit-row grouping\"}\n";
+        }
+    }
 
     int models=0;std::vector<int> values(p);
     for(int bits=0;bits<(1<<old);++bits){
@@ -215,8 +261,10 @@ int field_case(std::ostream& out,int p){
             for(const auto& g:block.inputs)
                 need(ring.evaluate(g,point)*product%p==0,"complete source companion model");
         }
-        out<<"{\"record\":\"conditional_model\",\"field\":"<<p<<",\"multiplier_value\":"<<value
-           <<",\"assignment\":";point_json(out,point,fresh);out<<"}\n";
+        out<<"{\"record\":\"conditional_model\",\"field\":"<<p
+           <<",\"multiplier_value\":"<<ring.evaluate(weight,point);
+        if(unit)out<<",\"kernel_value\":"<<value;
+        out<<",\"assignment\":";point_json(out,point,fresh);out<<"}\n";
         ++models;++values[value];
     }
     need(models==256,"all nonzero-multiplier Boolean models");
@@ -229,8 +277,8 @@ int field_case(std::ostream& out,int p){
     out<<"{\"record\":\"unweighted_high_counter\",\"field\":"<<p<<",\"old_assignment\":";
     point_json(out,point,old);out<<",\"multiplier_value\":0,\"unweighted_companion_values\":[1,1]}\n";
     if(p==3){
-        for(int i=0;i<old;++i)point[i]=int(i==0 || i==1);
-        const int id=blocks[0].variables[1][0];
+        for(int i=0;i<old;++i)point[i]=int(i==1 || (unit?i==3:i==0));
+        const int id=blocks[0].variables[unit?0:1][0];
         int value=ring.evaluate(images.at(id),point);
         need(value==2 && (value*value-value)%p!=0,"non-Boolean coefficient control");
         out<<"{\"record\":\"field_domain_control\",\"field\":3,\"coefficient_id\":"<<id
@@ -244,16 +292,19 @@ int field_case(std::ostream& out,int p){
 }
 int main(int argc,char** argv){
     try{
-        need(argc==3 && std::string(argv[1])=="--out","usage: --out NEW_PATH");
-        std::filesystem::path path=argv[2];
+        const bool unit=argc==4 && std::string(argv[1])=="--unit-accuracy";
+        const int argument=unit?2:1;
+        need(argc==argument+2 && std::string(argv[argument])=="--out",
+             "usage: [--unit-accuracy] --out NEW_PATH");
+        std::filesystem::path path=argv[argument+1];
         need(!std::filesystem::exists(path),"output path already exists");
         if(path.has_parent_path())std::filesystem::create_directories(path.parent_path());
         std::ofstream out(path);need(bool(out),"open output");
         out<<"{\"record\":\"schema\",\"version\":1,\"polynomials\":\"[coefficient,[variable IDs with repetitions]]\","
              "\"dimension_counts\":\"exact decimal strings\",\"scope\":\"local complete image and dimension controls\"}\n";
         dimensions(out);
-        int count=field_case(out,2)+field_case(out,3);
-        need(count==180,"complete certificate count");
+        int count=field_case(out,2,unit);count+=field_case(out,3,unit);
+        need(count==(unit?103:180),"complete certificate count");
         out<<"{\"record\":\"summary\",\"NS_certificates\":"<<count
            <<",\"conditional_models\":512,\"dimension_fixtures\":5,\"passed\":true}\n";
         need(bool(out),"write output");

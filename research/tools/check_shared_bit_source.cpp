@@ -47,10 +47,10 @@ void assign(const Ring& r,const Block& A,std::map<int,int>& point){
     for(std::size_t i=0;i<A.inputs.size();++i)
         if(r.evaluate(A.inputs[i],point)){point[A.variables[0][i]]=1;break;}
 }
-int run(std::ostream& out,int p){
+int run(std::ostream& out,int p,bool unit=false){
     Context c(p);auto& r=c.r;auto one=r.constant(1);
     auto x=[&](int id){return r.variable(id);};
-    auto probe=x(0),chi=r.subtract(one,probe);int old=4,h=2;
+    auto probe=x(0),chi=r.subtract(one,probe);int old=4,h=unit?1:2;
     std::vector<std::vector<int>> lists={{0,1,2},{1,2}};
     int target_end=old+h*(3+2),bottom_next=target_end;
     std::vector<Block> bottom;
@@ -70,10 +70,10 @@ int run(std::ostream& out,int p){
     }
     std::map<int,Polynomial> phi;
     for(const auto& B:bottom)for(int u=0;u<h;++u)for(int i=0;i<2;++i)
-        phi[B.variables[u][i]]=r.constant(int(u==i));
+        phi[B.variables[u][i]]=unit?(i==0?one:chi):r.constant(int(u==i));
     for(int i=0;i<3;++i)
         need(r.substitute(bottom[i].product,phi)==r.multiply(chi,r.subtract(one,x(i+1))),"bottom image");
-    out<<"{\"record\":\"case\",\"field\":"<<p<<",\"accuracy\":2,\"old_variables\":4"
+    out<<"{\"record\":\"case\",\"field\":"<<p<<",\"accuracy\":"<<h<<",\"old_variables\":4"
          ",\"retained_variables\":"<<target_end<<",\"source_variables\":"<<bottom_next
        <<",\"retained_axioms\":";write_polynomials(out,c.axioms);
     out<<",\"bottom_blocks\":[";
@@ -111,6 +111,7 @@ int run(std::ostream& out,int p){
         const auto& A=core[a];const auto& P=parent[a];
         auto mapped=r.substitute(P.product,phi);
         auto value=r.add(probe,r.multiply(chi,A.product));
+        if(unit)need(mapped==value,"literal unit-accuracy parent value");
         mapped_products.push_back(mapped);values.push_back(value);
         auto delta=c.Boolean(r.subtract(mapped,value));
         c.write(out,"parent_product_difference_"+std::to_string(a),delta,3*h);
@@ -146,7 +147,7 @@ int run(std::ostream& out,int p){
             source_cert("parent_field_"+std::to_string(id),source,c.ax(id));
         }
     }
-    need(source_images.size()==37,"complete source axiom inventory");
+    need(source_images.size()==std::size_t(15+11*h),"complete source axiom inventory");
     auto model=[&](const std::string& name,const std::map<int,int>& point,int omit,bool source_ok){
         out<<"{\"record\":\"model\",\"field\":"<<p<<",\"name\":\""<<name<<"\",\"assignment\":[";
         for(int i=0;i<target_end;++i){if(i)out<<',';out<<point.at(i);}
@@ -179,6 +180,13 @@ int run(std::ostream& out,int p){
             out<<"{\"record\":\"wrong_branch_control\",\"field\":"<<p
                <<",\"old_point\":1,\"mapped_parent_values\":[1,1],\"incorrect_ungated_values\":[0,0]}\n";
         }
+        if(unit && bits==3){
+            auto incorrect=r.subtract(r.subtract(one,probe),x(1));
+            need(r.evaluate(incorrect,point)==p-1,"incorrect scalar bottom map control");
+            out<<"{\"record\":\"incorrect_unit_scalar_map\",\"field\":"<<p
+               <<",\"old_point\":3,\"incorrect_product\":";write_json(out,incorrect);
+            out<<",\"incorrect_companion_value\":"<<p-1<<",\"correct_product_value\":0}\n";
+        }
     }
     if(p==3){
         std::map<int,int> point;for(int i=0;i<target_end;++i)point[i]=0;
@@ -190,19 +198,23 @@ int run(std::ostream& out,int p){
     missing[2]=missing[3]=1;
     model("missing_affine_companion",missing,companions[0][0],false);
     need(r.evaluate(r.substitute(parent[0].companions[0],phi),missing)==1,"missing companion control");
-    out<<"{\"record\":\"case_summary\",\"field\":"<<p<<",\"source_axiom_images\":37,\"NS_certificates\":"
+    out<<"{\"record\":\"case_summary\",\"field\":"<<p<<",\"source_axiom_images\":"<<source_images.size()
+       <<",\"NS_certificates\":"
        <<c.count<<",\"old_Boolean_models\":16,\"missing_companion_models\":1,\"passed\":true}\n";
     return c.count;
 }
 int main(int argc,char** argv){
     try{
-        need(argc==3 && std::string(argv[1])=="--out","usage: --out NEW_PATH");
-        std::filesystem::path path=argv[2];need(!std::filesystem::exists(path),"output exists");
+        const bool unit=argc==4 && std::string(argv[1])=="--unit-accuracy";
+        const int argument=unit?2:1;
+        need(argc==argument+2 && std::string(argv[argument])=="--out",
+             "usage: [--unit-accuracy] --out NEW_PATH");
+        std::filesystem::path path=argv[argument+1];need(!std::filesystem::exists(path),"output exists");
         if(path.has_parent_path())std::filesystem::create_directories(path.parent_path());
         std::ofstream out(path);need(bool(out),"output open");
         out<<"{\"record\":\"schema\",\"version\":1,\"polynomials\":\"[coefficient,[variable IDs with repetitions]]\","
              "\"scope\":\"complete original-degree images of two overlapping shared-bit parents\"}\n";
-        int certificates=run(out,2);certificates+=run(out,3);
+        int certificates=run(out,2,unit);certificates+=run(out,3,unit);
         out<<"{\"record\":\"summary\",\"NS_certificates\":"<<certificates<<",\"passed\":true}\n";
         need(bool(out),"output write");
         std::cout<<certificates<<" exact NS certificates passed, covering every source axiom image and shared-parent controls.\n";
