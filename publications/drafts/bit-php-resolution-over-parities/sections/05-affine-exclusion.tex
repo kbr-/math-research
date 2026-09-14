@@ -1,0 +1,232 @@
+\section{Excluding one complete affine extension level}\label{sec:affine}
+
+The product construction below belongs to the extension-Nullstellensatz
+approach developed by Buss, Impagliazzo, Kraj\'i\v{c}ek, Pudl\'ak,
+Razborov, and Sgall \cite{BIKPRS}. We use a complete one-level family
+and give the needed algebraic arguments explicitly.
+
+An accuracy-\(h\) affine block has a finite tuple of old affine polynomials
+\(g_1,\ldots,g_s\), fresh coefficient variables \(r_{ui}\), and product
+\begin{equation}\label{eq:block}
+ P=\prod_{u=1}^h\left(1-\sum_{i=1}^s r_{ui}g_i\right).
+\end{equation}
+Its \emph{complete} axiom set contains every \(g_iP\) and every
+\(r_{ui}^2-r_{ui}\). Products \(P=0\) are not added as axioms.
+Different blocks have disjoint coefficient variables, and every input
+is affine in the old bits alone.
+
+\subsection{Cleanup and ordinary affine restriction}
+A block is \emph{proper} if its affine input span is nonzero and does
+not contain the constant one. Its rank is the dimension of that span.
+
+\begin{lemma}[Scalar cleanup]\label{lem:cleanup}
+Zero-span and unit-span blocks can be removed by substituting constants
+for their coefficients, without increasing PC degree or changing the
+other blocks.
+After zero inputs are discarded, every companion in a proper block
+has ordinary degree \(2h+1\).
+\end{lemma}
+\begin{proof}
+For zero span all inputs are zero; set its coefficients to zero.
+For unit span choose constants \(c_i\) with \(\sum_i c_i g_i=1\).
+Set the first coefficient row to \(c_i\) and all other rows to zero,
+making \(P=0\).
+Every axiom of an eliminated block maps to zero, and coefficient domains
+map to valid constants. Other blocks use only old bits and are unchanged.
+A constant substitution preserves a PC derivation and its degree.
+
+In a proper span each nonzero input has nonzero linear part; otherwise
+the span contains one. Each factor of \eqref{eq:block} then has nonzero
+degree-two part, because its own coefficient variables are distinct.
+Their product has degree \(2h\) in the ordinary polynomial ring.
+Multiplying by a nonzero affine input gives degree \(2h+1\).
+Coefficients for an identically zero input may independently be set to
+zero, so those inputs cause no exceptional axiom degree.
+\end{proof}
+
+For a proper block, an affine basis \(F_1,\ldots,F_r\) of its input span
+has independent linear parts. Indeed, a nontrivial relation among those
+parts would give either a dependence among the \(F_j\) or a nonzero
+constant in their span. Thus its zero set is a nonempty affine flat of
+codimension \(r\).
+
+\begin{lemma}[A common ordinary restriction kernel]\label{lem:kernel}
+Let \(h=3\ell\), \(m=n+1\), \(v=m\ell\), and let \(M\ge1\) bound the
+number of proper blocks. Put
+\[
+ k=\left\lceil\sqrt{m\ln(4M)}\right\rceil
+\]
+and suppose \(k\le m\).
+For all blocks of rank greater than \(h(k+1)\), there is a common nonzero
+\(f\in\mathcal L_k\) whose restriction to each zero flat is the zero
+\emph{ordinary polynomial} in affine free coordinates.
+For each such block it has a literal representation
+\begin{equation}\label{eq:literal-ideal}
+ f=\sum_i a_i g_i,\qquad \deg a_i\le k-1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Restriction to a codimension-\(r\) affine flat maps \(\mathcal L_k\)
+into ordinary polynomials of degree at most \(k\) on \(v-r\) free
+coordinates. Its image dimension is at most
+\(\binom{v-r+k}{k}\).
+Every high-rank block has \(r\ge r_*=3\ell(k+1)+1\).
+If \(r_*>v\), there are no such blocks and any nonzero \(f\) suffices.
+Otherwise
+\begin{align}
+ \frac{\binom{v-r_*+k}{k}}{\binom mk\ell^k}
+  &=\prod_{j=0}^{k-1}
+      \left(1-\frac{r_*-1-(\ell+1)j}{v-\ell j}\right)
+       \label{eq:kernel-ratio}\\
+  &\le \left(1-\frac{k}{m}\right)^k
+   \le e^{-k^2/m}. \nonumber
+\end{align}
+For the equality, order the numerator factors increasingly, as
+\(v-r_*+1+j\), and the denominator factors as \(v-\ell j\).
+The numerator of each subtracted fraction is at least \(\ell k\);
+its denominator is at most \(m\ell\).
+The presence of a high block implies \(k<m\), so all factors used here
+are nonnegative.
+
+The sum of all high restriction-image dimensions is consequently at
+most
+\[
+ M e^{-k^2/m}\binom mk\ell^k
+   \le\frac14\binom mk\ell^k
+   <\dim\mathcal L_k.
+\]
+The joint restriction map has a nonzero kernel.
+
+For a fixed high block, complete \(F_1,\ldots,F_r\) to affine coordinates.
+The ordinary polynomial for \(f\) has zero specialization when the first
+\(r\) coordinates are zero. Every monomial therefore has one of these
+coordinates as a factor. Assign each such monomial to one of its factors,
+obtaining \(f=\sum_j F_j A_j\) with \(\deg A_j\le k-1\).
+Pull back the affine coordinate change and express each \(F_j\) as a
+constant linear combination of the original \(g_i\).
+This gives \eqref{eq:literal-ideal} at the same degree.
+\end{proof}
+
+\subsection{One simultaneous weighted substitution}
+\begin{lemma}[Weighted removal of the affine family]\label{lem:hybrid}
+Let an old system \(\mathcal F\) contain all old Boolean equations,
+and adjoin a complete proper one-level affine family of accuracy \(h\).
+Suppose it has an ordinary-PC refutation of degree \(D\ge2h+1\).
+Let \(k\ge1\), and let \(f\) be a multilinear polynomial of degree at most
+\(k\) having representations \eqref{eq:literal-ideal} for every block
+of rank greater than \(h(k+1)\).
+Then
+\[
+ f\in\Cons_{k(D+1)}(\mathcal F).
+\]
+\end{lemma}
+\begin{proof}
+We give one substitution \(\sigma\) fixing the old variables and sending
+every coefficient variable to an old polynomial of degree at most \(k\).
+
+\paragraph{Low rank.}
+For a block of rank \(r\le h(k+1)\), choose an affine basis
+\(F_1,\ldots,F_r\) and partition it into \(h\) ordered groups of size at
+most \(k+1\), allowing empty groups. In a group \(J\), telescoping gives
+\[
+ 1-\prod_{j\in J}(1-F_j)
+   =\sum_{j\in J}F_j\prod_{\substack{t\in J\\t<j}}(1-F_t).
+\]
+Express the \(F_j\) in the original \(g_i\). The coefficient of each
+\(g_i\) on the right has degree at most \(k\); assign it to the
+corresponding row of \eqref{eq:block}.
+The block product becomes
+\[
+ Z=\prod_{j=1}^r(1-F_j).
+\]
+At every Boolean point, \(Z\) is the indicator that all inputs vanish.
+Thus \(g_iZ\) is a zero Boolean function of ordinary degree at most
+\(r+1\). Lemma~\ref{lem:boolean} gives its certificate through \(r+1\).
+After multiplication by \(f\), each companion image is certified through
+\begin{equation}\label{eq:low-cost}
+ r+1+k\le h(k+1)+1+k\le k(2h+2).
+\end{equation}
+The last inequality is equivalent to \((k-1)(h+1)\ge0\).
+
+\paragraph{High rank.}
+Use \eqref{eq:literal-ideal} as the first coefficient row and set the
+other rows to zero. The product becomes \(1-f\). The weighted companion
+image is
+\[
+ f g_i(1-f)=-g_i(f^2-f).
+\]
+By Lemma~\ref{lem:boolean}, it has an old Boolean certificate through
+\(2k+1\le k(2h+2)\).
+
+\paragraph{All remaining axioms.}
+If a coefficient variable maps to \(\beta\), its weighted field equation
+is \(f(\beta^2-\beta)\), certified through \(3k\).
+An old degree-\(e\) axiom \(F\) has weighted image \(fF\), with certificate
+through \(e+k\le k(e+1)\).
+Together with \eqref{eq:low-cost}, this yields the complete ledger
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Original axiom & Original degree \(e\) & Weighted image ceiling\\
+\midrule
+High companion & \(2h+1\) & \(2k+1\)\\
+Low companion & \(2h+1\) & \(r+1+k\)\\
+Coefficient Booleanity & \(2\) & \(3k\)\\
+Old axiom & \(e\) & \(e+k\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every entry fits \(k(e+1)\). Proper-block companion degrees are the
+ordinary degrees justified in Lemma~\ref{lem:cleanup}.
+All assignments use only old variables, so they define a single
+substitution even when input tuples overlap.
+
+\paragraph{Primitive PC replay.}
+Let \(B=k(D+1)\). Replace each source line \(q\) by \(f\sigma(q)\).
+The preceding certificates initialize every source axiom used by the
+degree-\(D\) refutation through at most \(B\).
+Linear combinations commute with the weighted map.
+For a nonzero source multiplication \(q\mapsto yq\), write \(d=\deg q\).
+Then \(d+1\le D\), while
+\[
+ \deg(f\sigma(q))\le k(d+1),\qquad \deg\sigma(y)\le k.
+\]
+Multiplying the completed weighted line by \(\sigma(y)\), using
+Lemma~\ref{lem:pc-product}, therefore stays within
+\(k(d+2)\le B\). Zero source lines cause no difficulty.
+The final weighted image of one is \(f\), proving the assertion.
+\end{proof}
+
+\begin{theorem}[Finite-parameter affine exclusion]\label{thm:affine}
+Let \(n=2^\ell\), \(\ell\ge2\), \(m=n+1\), and \(h=3\ell\).
+Adjoin any finite complete one-level old-affine family to \(\mathcal Q_n\).
+Let \(M\ge1\) bound its number of proper blocks after scalar cleanup,
+and put
+\[
+ k=\left\lceil\sqrt{m\ln(4M)}\right\rceil,\qquad B=k(D+1).
+\]
+If
+\begin{equation}\label{eq:affine-room}
+ D\ge2h+1,\qquad k\le m,\qquad n\ge2B-1,\qquad4(k-1)<n,
+\end{equation}
+then the augmented system has no ordinary-PC refutation through degree \(D\).
+In particular this excludes polynomially many blocks at every
+polylogarithmic degree for sufficiently large \(n\).
+\end{theorem}
+\begin{proof}
+Apply scalar cleanup, which preserves a hypothetical refutation and
+its degree. Lemma~\ref{lem:kernel} supplies a nonzero
+\(f\in\mathcal L_k\) with the representations required by
+Lemma~\ref{lem:hybrid}. The latter gives
+\(f\in\Cons_B(\mathcal Q_n)\).
+Since \(k\le B\), equation~\eqref{eq:affine-room} contradicts
+Theorem~\ref{thm:row-separation}. If no proper blocks remain, the same
+argument may use \(f=1\), or directly use the normalized old functional.
+
+For polynomial \(M\), \(k=O(\sqrt{n\log n})\).
+For any fixed polylogarithmic bound on \(D\),
+\(B=\sqrt n\,\operatorname{polylog}n=o(n)\), so the remaining conditions
+hold eventually. If the proposed degree bound is smaller than \(2h+1\),
+enlarge it to \(2h+1\); this remains polylogarithmic and still excludes
+the original refutation.
+\end{proof}

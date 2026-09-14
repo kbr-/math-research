@@ -1,0 +1,77 @@
+\section{Ordinary degree and polynomial calculus}\label{sec:algebra}
+
+All polynomial rings in the main argument are over \(\F\).
+Degree bounds and accuracy parameters are integers.
+Polynomials are ordinary commutative polynomials. In particular, powers are
+not silently reduced using Booleanity. The Boolean equations are
+\[
+ \Bool_x=\{x_j^2-x_j:j\}.
+\]
+Every displayed generator is an equation with right side zero.
+
+For a finite polynomial system \(\mathcal F\), write
+\begin{equation}\label{eq:ns-space}
+ \Ideal_B(\mathcal F)
+  =\Span_{\F}\{qF:F\in\mathcal F,\ \deg(qF)\le B\}
+   \subseteq\Pol_{\le B}.
+\end{equation}
+The degree constraint is imposed on each generator multiple. Cancellation
+between larger-degree multiples does not make them legal in
+\(\Ideal_B\).
+
+Ordinary PC derives axioms of \(\mathcal F\), linear combinations of
+previous lines, and \(x_jg\) from a previous line \(g\).
+A degree-\(B\) derivation has no line of degree exceeding \(B\).
+Let \(\Cons_B(\mathcal F)\) be the space of polynomials derivable in this
+way. Refutation means deriving one. The space \(\Cons_B\) is closed under
+linear combinations, but equality with \(\Ideal_B\) requires a proof.
+
+\begin{lemma}[Multiplying a completed line]\label{lem:pc-product}
+If \(g\) has a degree-\(B\) PC derivation and \(q\) is any polynomial,
+then \(qg\) has a PC derivation through
+\(\max\{B,\deg q+\deg g\}\).
+Moreover \(\Ideal_B(\mathcal F)\subseteq\Cons_B(\mathcal F)\).
+\end{lemma}
+\begin{proof}
+Expand \(q\) into monomials. Starting from the already derived line \(g\),
+multiply by the variables of each monomial one at a time, and then take
+the indicated linear combination. Each new line has degree at most
+\(\deg g+\deg q\). The zero case is immediate.
+Applying this construction to each legal axiom multiple in
+\eqref{eq:ns-space}, then summing, proves the second assertion.
+There is no need to multiply the earlier derivation of \(g\).
+\end{proof}
+
+\begin{lemma}[Degree-controlled Boolean reduction]\label{lem:boolean}
+For every polynomial \(R\) of degree at most \(d\), its squarefree
+remainder \(\overline R\) satisfies
+\[
+ R-\overline R\in\Ideal_d(\Bool_x).
+\]
+If \(R\) vanishes at every Boolean point, then
+\(R\in\Ideal_d(\Bool_x)\). In particular, if \(\deg q\le k\), then
+\[
+ q^2-q\in\Ideal_{2k}(\Bool_x).
+\]
+\end{lemma}
+\begin{proof}
+For \(a\ge2\),
+\[
+ x^a-x=(x^2-x)(1+x+\cdots+x^{a-2}).
+\]
+Apply this identity to the powers in each monomial of \(R\), one variable
+at a time. Every generator multiple has degree at most the original
+monomial degree, so the first assertion follows.
+
+A squarefree polynomial that vanishes on \(\{0,1\}^v\) is zero.
+For example, write it as \(A+x_vB\) with \(A,B\) independent of \(x_v\).
+Evaluations at \(x_v=0,1\), followed by induction on \(v\), give \(A=B=0\).
+This proves the second assertion. Finally, every value of \(q\) at a
+Boolean point belongs to \(\F\), where its square equals itself; apply the
+second assertion at degree \(2k\).
+\end{proof}
+
+We use this reduction lemma only when the required degree is explicitly
+available. The high-rank step below instead needs literal membership in
+an affine ideal; pointwise vanishing on a finite field does not by itself
+supply that stronger conclusion.

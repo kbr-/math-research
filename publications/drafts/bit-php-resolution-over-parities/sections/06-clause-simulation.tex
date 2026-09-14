@@ -1,0 +1,197 @@
+\section{A direct PC simulation of the proof DAG}\label{sec:clause-simulation}
+
+Represent a linear clause by its affine true-indicators:
+\[
+ C=\bigvee_i(g_{C,i}=1),\qquad
+ Z(C)=\{b:g_{C,i}(b)=0\text{ for all }i\}.
+\]
+An equation \(a(b)=\alpha\) has true-indicator \(1+a(b)+\alpha\).
+The set \(Z(C)\) is an affine subspace or empty.
+
+Assign to each nonempty clause a fresh complete accuracy-\(h\) block,
+and write its product as \(P_C\). Set \(P_\varnothing=1\), using no
+block for the empty clause. Fix the whole block family before following
+the proof DAG. Clause values \(P_C=0\) will be derived; they are not
+included among its axioms.
+
+\begin{lemma}[Prefix identity]\label{lem:prefix}
+For every clause block there are polynomials \(U_{C,i}\) satisfying
+\begin{equation}\label{eq:prefix}
+ 1-P_C=\sum_iU_{C,i}g_{C,i},\qquad
+ \deg P_C\le2h,\qquad\deg U_{C,i}\le2h-1.
+\end{equation}
+Its companions have degree at most \(2h+1\).
+\end{lemma}
+\begin{proof}
+Put \(L_u=1-\sum_i r_{ui}g_{C,i}\).
+Telescoping the product gives
+\[
+ 1-\prod_{u=1}^hL_u
+  =\sum_{u=1}^h(1-L_u)\prod_{w<u}L_w.
+\]
+Thus one may take
+\[
+ U_{C,i}=\sum_{u=1}^h r_{ui}\prod_{w<u}L_w.
+\]
+Each \(L_w\) has degree at most two, giving all the stated bounds.
+\end{proof}
+
+\begin{lemma}[Complementary-parity resolution]\label{lem:clause-resolution}
+Suppose \(A=(\bigvee_i(a_i=1))\vee(u=1)\) and
+\(B=(\bigvee_j(b_j=1))\vee(1-u=1)\), with \(u\) affine.
+Let \(T\) have the union of the context inputs \(a_i,b_j\).
+If \(P_A,P_B\) have PC derivations through degree \(K\), then \(P_T\)
+has a derivation in the same fixed block system through
+\(\max\{K,4h+1\}\).
+\end{lemma}
+\begin{proof}
+The context companions \(a_iP_T,b_jP_T\) are axioms of the conclusion
+block; a repeated input may use the same axiom.
+The prefix identities yield
+\begin{align}
+ R_A&=P_T-U_{A,u}uP_T
+       =P_AP_T+\sum_iU_{A,i}(a_iP_T),\label{eq:resolution-A}\\
+ R_B&=P_T-U_{B,1-u}(1-u)P_T
+       =P_BP_T+\sum_jU_{B,j}(b_jP_T).\label{eq:resolution-B}
+\end{align}
+Lemma~\ref{lem:pc-product} derives these through \(\max\{K,4h\}\).
+In particular it multiplies the completed lines \(P_A,P_B\), not their
+entire earlier derivations.
+
+For an affine \(u=c+\sum_t c_tb_t\), the identity
+\[
+ u^2-u=\sum_t c_t(b_t^2-b_t)
+\]
+has a degree-two proof. Therefore
+\begin{equation}\label{eq:pivot-correction}
+ (1-u)R_A-U_{A,u}P_T(u^2-u)=(1-u)P_T
+\end{equation}
+is derivable through \(\max\{K,4h+1\}\).
+The right side is a completed line of degree at most \(2h+1\).
+Multiply it by \(U_{B,1-u}\), costing at most \(4h\), and add
+\eqref{eq:resolution-B}. The result is \(P_T\).
+All multiplications expand into primitive PC steps by
+Lemma~\ref{lem:pc-product}.
+\end{proof}
+
+\begin{lemma}[Semantic weakening and tautologies]\label{lem:clause-weakening}
+If \(C\models D\) and \(P_C\) has a degree-\(K\) derivation, then
+\(P_D\) is derivable through \(\max\{K,4h\}\).
+A tautological \(D\) has a direct value derivation through \(2h+1\).
+\end{lemma}
+\begin{proof}
+If \(Z(D)\) is nonempty, then \(Z(D)\subseteq Z(C)\).
+Each \(g_{C,i}\) vanishes on \(Z(D)\), so affine linear algebra gives
+constants \(\lambda_{ij}\) with
+\[
+ g_{C,i}=\sum_j\lambda_{ij}g_{D,j}.
+\]
+To see this directly, choose affine coordinates beginning with a basis
+of the equations defining \(Z(D)\). An affine polynomial vanishing when
+these coordinates are zero has only those coordinate terms.
+Consequently \(g_{C,i}P_D\) is a constant linear combination of
+conclusion companions. Now use
+\[
+ P_D=P_CP_D+\sum_iU_{C,i}(g_{C,i}P_D)
+\]
+and Lemma~\ref{lem:pc-product}, with ceiling \(\max\{K,4h\}\).
+
+If \(Z(D)\) is empty, its affine equations are inconsistent, and their
+span contains one. The same constant combination of their companions
+gives \(P_D\), through \(2h+1\).
+If the conclusion is empty, its value is one; the preceding formulas
+still apply with no conclusion block. In the nonempty-zero-set case,
+an implication to the empty clause forces all premise indicators to
+be identically zero, so the already derived premise value is one.
+\end{proof}
+
+\begin{lemma}[Two-premise semantic inference]\label{lem:affine-cover}
+Every sound inference \(A\wedge B\models D\) between linear clauses
+over \(\F\) reduces to a tautology case, one semantic weakening, or
+two semantic weakenings followed by one complementary-parity
+resolution. The last case introduces at most two auxiliary clauses.
+\end{lemma}
+\begin{proof}
+Put \(W=Z(D)\). Soundness says
+\(W\subseteq Z(A)\cup Z(B)\).
+An empty \(W\) gives a tautology, and containment in either one of the
+two sets gives a one-premise weakening.
+
+Otherwise \(W\cap Z(A)\) and \(W\cap Z(B)\) are proper affine
+subspaces covering \(W\). Each has at most half its points.
+Both must therefore have exactly half, and they must be disjoint.
+They are parallel affine hyperplanes of \(W\): two hyperplanes with
+different directions would intersect.
+Choose an affine \(u\) that is zero on the first and one on the second,
+and extend it from \(W\) to the ambient affine space.
+Then
+\[
+ A\models D\vee(u=1),\qquad
+ B\models D\vee(u=0).
+\]
+The two weakenings and a resolution give \(D\).
+This argument uses that the full Boolean assignment space is
+\(\F^v\).
+\end{proof}
+
+For size accounting, replace every clause's falsifying affine system
+by a basis, using at most \(v+1\) equations, or by the single
+inconsistent equation in the tautology case. Semantic equivalence
+preserves the soundness of all inferences. Apply
+Lemma~\ref{lem:affine-cover} afterward.
+Thus \(S\) proof nodes can be normalized with at most \(3S\) nodes and
+polynomial clause descriptions in \(v\).
+Unrelated propositional variables may first be fixed to zero; semantic
+implication survives restriction, and a constant pivot gives a
+weakening. These normalizations justify using line count as the size
+measure in Theorem~\ref{thm:main}.
+
+\begin{theorem}[Complete clause-to-PC transfer]\label{thm:clause-transfer}
+A refutation of \(\BPHP_n^{n+1}\) with \(S\) nodes yields, for every
+integer \(h\ge1\), a complete one-level old-affine family over
+\(\mathcal Q_n\) with at most \(3S+\binom m2\) blocks and an ordinary-PC
+refutation through
+\begin{equation}\label{eq:simulation-degree}
+ D=\max\{2h+\ell,4h+1\}.
+\end{equation}
+After normalization, the total input and coefficient inventory is
+polynomial in \(S,n,h\). There is no proof-height restriction.
+\end{theorem}
+\begin{proof}
+Introduce the compact initial linear clauses
+\[
+ C_{ii'}=\bigvee_{t=1}^\ell(b_{it}+b_{i't}=1).
+\]
+Each \(C_{ii'}\) semantically implies each label-specific initial clause
+for the same pair in \eqref{eq:bit-php}: both rows encoding the same
+label falsifies \(C_{ii'}\).
+Prepend at most \(\binom m2\) compact clauses and obtain each needed
+CNF clause by one weakening, using its existing initial node.
+Normalize the remaining proof as above. The total node count is at
+most \(3S+\binom m2\).
+
+Assign fresh blocks to its nonempty clauses.
+For a compact initial clause set \(g_t=b_{it}+b_{i't}\) and
+\(T_t=\prod_{s<t}(1-g_s)\).
+Its value has the ordinary identity
+\begin{equation}\label{eq:initial-value}
+ P_{C_{ii'}}=E_{ii'}P_{C_{ii'}}
+                 +\sum_{t=1}^{\ell}T_t(g_tP_{C_{ii'}}).
+\end{equation}
+The first term uses the old degree-\(\ell\) collision axiom;
+the other terms use the block's companions.
+Every multiple has degree at most \(2h+\ell\).
+This is an NS, hence PC, derivation at that degree.
+
+Follow the normalized source proof in its acyclic order.
+Initial values are obtained from \eqref{eq:initial-value} and
+Lemma~\ref{lem:clause-weakening}. Each remaining inference is simulated
+by Lemmas~\ref{lem:clause-resolution} and \ref{lem:clause-weakening}.
+Their premise values are actual earlier derived lines, so the same
+global ceiling \eqref{eq:simulation-degree} persists along the DAG.
+The final empty clause has value one.
+All blocks have inputs affine in the old \(v\) bits and disjoint fresh
+coefficients. Their full companion and coefficient-domain families
+are present. No balancing or multiplication of an entire preceding
+derivation is used.
+\end{proof}

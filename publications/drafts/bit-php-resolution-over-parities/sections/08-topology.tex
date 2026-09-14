@@ -1,0 +1,110 @@
+\section{The required chessboard homology}\label{sec:topology}
+
+We include the homological input used in
+Theorem~\ref{thm:moments}. All homology in this appendix has coefficients
+in \(\F\). A finite simplicial complex is called \(q\)-acyclic if its
+reduced homology vanishes in every degree from \(-1\) through \(q\).
+Thus \((-1)\)-acyclic means nonempty. Below degree \(-1\) the condition
+is vacuous. Nonempty here means having at least one vertex.
+
+\begin{lemma}[Homological cover lemma]\label{lem:nerve}
+Let a finite simplicial complex \(K\) be covered by subcomplexes
+\(L_1,\ldots,L_t\), and let \(\mathcal N\) be the nerve of this cover.
+Fix \(q\ge0\).
+If every nonempty intersection of \(s\) members is
+\((q-s+1)\)-acyclic and \(\mathcal N\) is \(q\)-acyclic, then \(K\)
+is \(q\)-acyclic.
+\end{lemma}
+\begin{proof}
+Here is the chain-complex comparison behind the assertion.
+Form the finite double complex
+\[
+ D_{a,b}=
+  \bigoplus_{\substack{J\subseteq[t]\\|J|=a+1,\ L_J\ne\varnothing}}
+       C_b(L_J;\F),
+ \qquad L_J=\bigcap_{j\in J}L_j,
+ \qquad a,b\ge0.
+\]
+The vertical differential is the simplicial boundary and the horizontal
+differential omits one cover index and includes the chain in the larger
+intersection. In characteristic two their sum is a differential.
+Augment the horizontal rows to \(C_b(K;\F)\).
+For each individual simplex of \(K\), the set of cover members containing
+it is a nonempty simplex of indices. Its augmented chain complex is
+exact. Taking the direct sum over simplices proves that every augmented
+horizontal row is exact. Thus computing the total complex first in the
+horizontal direction gives the homology of \(K\).
+
+Compute instead first vertically.
+The first page consists of
+\(\bigoplus_{|J|=a+1}H_b(L_J;\F)\).
+For \(b>0\) and \(a+b\le q\), these groups vanish by the assumed
+\((q-a)\)-acyclicity.
+For \(b=0\) and \(a\le q\), each nonempty \(L_J\) is connected,
+so the horizontal chain groups are precisely those of the nerve.
+In degree \(a=q+1\), the augmentation
+\(H_0(L_J)\longrightarrow\F\) is still onto for every nonempty
+intersection. Hence the incoming boundaries contain all the nerve
+boundaries needed in degree \(q\).
+It follows that the second page has zero reduced groups in total
+degrees at most \(q\), since the nerve is \(q\)-acyclic.
+No later page can create a group where the preceding one is zero.
+The double complex is finite, so its filtration converges and the
+same vanishing holds for \(K\). Augmenting degree zero throughout
+gives the assertion for reduced homology as well.
+\end{proof}
+
+\begin{theorem}[Homological chessboard bound {\cite[Theorem 1.1]{BLVZ94}}]
+\label{thm:chessboard}
+For \(a,b\ge1\), let
+\[
+ \nu(a,b)=\min\left\{a,b,\left\lfloor\frac{a+b+1}{3}\right\rfloor\right\}.
+\]
+Then the chessboard complex \(\Delta_{a,b}\) is
+\((\nu(a,b)-2)\)-acyclic.
+In particular,
+\[
+ b\ge2a-1
+ \quad\Longrightarrow\quad
+ \widetilde H_{a-2}(\Delta_{a,b};\F)=0.
+\]
+\end{theorem}
+\begin{proof}
+The stated homological bound follows from the stronger connectivity
+theorem in \cite{BLVZ94}. For completeness, the standard star-cover
+argument gives its homological form directly as follows.
+Transpose the board so that \(a\le b\), and induct on \(a\).
+If \(\nu(a,b)=1\), nonemptiness suffices; this includes \(a=1\).
+Otherwise put \(q=\nu(a,b)-2\ge0\), so \(a\ge2\).
+
+For each column \(j\), let \(L_j\) be the closed star of the vertex
+\((1,j)\). It consists of matchings containing that cell or extendable
+by it, and is a cone. These stars cover the complex: a matching
+avoiding row one occupies at most \(a-1<b\) columns and can therefore
+be extended in that row.
+An intersection of \(s\ge2\) stars excludes row one and their \(s\)
+columns, so it is \(\Delta_{a-1,b-s}\). Every proper subfamily of the
+\(b\) stars has nonempty intersection, while the intersection of all
+stars has no vertex. The nerve is therefore the boundary of a
+\((b-1)\)-simplex, a sphere of dimension \(b-2\).
+
+Write \(\nu=\nu(a,b)\). For \(a\ge2\) and \(a\le b\), one has
+\(\nu\le b-1\); hence the nerve is \((\nu-2)\)-acyclic.
+For a nonempty \(s\)-fold intersection with \(s\ge2\), put
+\(\mu=\nu(a-1,b-s)\). Each entry of its defining minimum is at least
+\(\nu-s+1\):
+\[
+ a-1\ge\nu-s+1,\qquad b-s\ge\nu-s+1,
+\]
+and
+\[
+ a+b-s\ge3\nu-s-1\ge3(\nu-s+1).
+\]
+The last inequality uses \(s\ge2\).
+Thus \(\mu\ge\nu-s+1\), and induction shows that the intersection is
+\((\nu-s-1)=(q-s+1)\)-acyclic. If necessary transpose this smaller
+board before applying induction; its smaller side is at most \(a-1\).
+The cover lemma proves the claim.
+Finally \(b\ge2a-1\) makes \(\nu(a,b)=a\), giving the required special
+case.
+\end{proof}

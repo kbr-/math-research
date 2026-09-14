@@ -1,0 +1,148 @@
+\section{Closing the proof-size parameters}\label{sec:main-proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Fix \(K>0\) and suppose that an arbitrarily large \(n=2^\ell\) has a
+refutation with \(S\le n^K\) nodes.
+Choose \(h=3\ell\).
+Theorem~\ref{thm:clause-transfer} gives a complete one-level affine
+family with a PC refutation through
+\[
+ D=\max\{7\ell,12\ell+1\}=12\ell+1.
+\]
+After scalar cleanup let \(M\ge1\) bound its number of proper blocks.
+We may choose
+\[
+ M\le3S+\binom{n+1}{2}+1\le3n^K+n^2+1.
+\]
+Put
+\[
+ k=\left\lceil\sqrt{(n+1)\ln(4M)}\right\rceil,\qquad
+ B=k(D+1)=k(12\ell+2).
+\]
+Since \(K\) is fixed,
+\begin{equation}\label{eq:main-asymptotics}
+ k=O_K(\sqrt{n\log n}),\qquad
+ B=O_K\bigl(\sqrt n(\log n)^{3/2}\bigr)=o(n).
+\end{equation}
+For all sufficiently large \(n\), uniformly over the alleged source
+proofs, this implies
+\[
+ D\ge2h+1,\quad
+ 1\le k\le B\le n/2,\quad
+ k\le n+1,\quad n\ge2B-1,\quad 4(k-1)<n.
+\]
+Theorem~\ref{thm:affine} excludes exactly the PC refutation supplied by
+Theorem~\ref{thm:clause-transfer}, a contradiction.
+The threshold can depend on \(K\) but not on the chosen proof.
+As \(K\) was arbitrary, the asserted superpolynomial lower bound follows.
+\end{proof}
+
+\subsection{What the conclusion uses}
+The source clauses may have any affine rank. The argument partitions
+the actual complete block family by rank, uses one common multiplier
+on the high side, and packs every block on the low side.
+The final contradiction is the impossibility of an old consequence
+\(f\ne0\) in a separated row-linear space. It is not an application
+of a degree lower bound for one alone.
+
+Only the old functional system uses PC/NS equality, established by
+prescribed-moment extension. The augmented system is handled by a
+primitive PC replay. Similarly, only the number of source blocks and
+their compact input descriptions need be polynomial. Expanded PC
+polynomials and their derivations need not have polynomial monomial
+count: the contradiction uses degree.
+
+The value \(B\) in \eqref{eq:main-asymptotics} is sufficient for the
+claimed qualitative theorem. This draft does not assert a sharper
+explicit exponential size bound.
+
+\subsection{Relationship to the broader PHP project}
+The repository's main research objective is a superpolynomial lower
+bound for ordinary PHP in every fixed-depth
+\(\mathrm{AC}^0[p]\)-Frege system. That objective remains open.
+Theorem~\ref{thm:main} concerns a specific subsystem over \(\F\).
+
+The standard substitution from unary PHP into bit PHP replaces a unary
+variable by the conjunction describing one bit label; see, for example,
+\cite{BB21}. For bounded-depth Frege it has polynomial size overhead
+and a constant formula-depth increase. But an affine expression in
+unary variables becomes a polynomial in bit conjunctions, which is
+generally nonlinear. This direct substitution therefore does not
+transfer the present theorem to unary \(\Res\), and a subsystem lower
+bound does not by itself establish a Frege lower bound.
+
+\section{Evidence and the research framework}\label{sec:framework}
+
+\subsection{Mathematical provenance and component checks}
+This manuscript expands the
+\href{https://kbr.is-a.dev/math-research/\#publication-Res-parity-bit-PHP-theorem}
+{notebook theorem and linked proof} recorded on 14 September 2026,
+at repository checkpoint \texttt{08dcee3}.
+Its accompanying
+\href{https://kbr.is-a.dev/math-research/\#bit-PHP-publication-audit-verdict}
+{publication audit} and later literature supplement distinguish the
+claimed unrestricted result from the regular and depth-restricted
+literature.
+
+The repository retains exact primitive-PC traces for the rule
+simulation, including missing-premise controls.
+A separate matching-moment checker stores sparse separating
+functionals and every potentially nonzero marginal equation for
+finite instances, together with falsifying perturbations.
+These are component checks; they do not constitute a computer
+verification of the asymptotic theorem.
+The present derivation is analytic and does not depend on rerunning
+those finite experiments.
+
+\subsection{An inspectable workflow for autonomous research}
+The work was developed in an open research framework maintained at
+\begin{center}
+ \url{https://github.com/kbr-/math-research}
+\end{center}
+with the live mathematical notebook at
+\begin{center}
+ \url{https://kbr.is-a.dev/math-research/}
+\end{center}
+Its purpose is to let an autonomous assistant continue a mathematical
+investigation across finite context windows and session boundaries
+while retaining inspectable evidence \cite{Repo}.
+The features emphasized in the repository's README are:
+\begin{itemize}
+ \item \textbf{Persistent context.}
+ A stable restart guide, a concise living overview, and a claim index
+ recover the relevant definitions and proofs without reloading the
+ full conversation or depending on a particular machine.
+ \item \textbf{Recorded successes and failures.}
+ Dated, append-only entries retain arguments, assumptions,
+ obstructions, and unsuccessful attempts with explicit claim status.
+ Corrections receive new entries instead of silently replacing history.
+ \item \textbf{Reproducible experiments.}
+ Protected execution, complete outputs, provenance hashes, and
+ timing records preserve what was actually computed under bounded
+ resources.
+ \item \textbf{Repeated investigation and process review.}
+ Each cycle targets a named obligation, checks its outcome, and
+ assesses wasted work or missing tools. Bounded framework
+ improvements are recorded separately from mathematical results.
+ \item \textbf{A live, versioned notebook.}
+ Git checkpoints and an automatically rendered public notebook let
+ readers inspect the development locally or online.
+\end{itemize}
+The durable record uses ordinary source, HTML, Markdown, and data files.
+These mechanisms make work recoverable and reviewable; they do not
+make a recorded proof automatically correct or formally verified.
+
+\subsection{Credits and review status}
+Kamil Braun directed and maintains the research project.
+Claude Sonnet, Claude Opus, Claude Fable, and GPT-6 Astra assisted
+its development; GPT-6 Astra was the main contributor to the
+mathematical development and drafting of this result.
+The project began in Claude, continued in ChatGPT, and was transferred
+to the repository-based Codex workflow.
+
+This document is a draft for the author's review. Its claims retain
+working-proof status pending external scrutiny.
+The classical topological input is attributed to \cite{BLVZ94};
+the product-extension methodology is attributed to \cite{BIKPRS}.
+Original manuscript material is distributed under CC BY 4.0, in
+accordance with the repository license.

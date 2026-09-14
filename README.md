@@ -223,6 +223,8 @@ metadata. It is ignored by Git.
 
 ## Repository contents
 
+- `publications/drafts/`: review manuscripts with editable TeX and rendered PDFs,
+  including the [bit-PHP resolution-over-parities draft](publications/drafts/bit-php-resolution-over-parities/).
 - `PROMPTS.md`: reusable Dump, Resume, and Spin prompts.
 - `notebook.html`: authoritative current state, working mathematical context,
   and append-only research record.

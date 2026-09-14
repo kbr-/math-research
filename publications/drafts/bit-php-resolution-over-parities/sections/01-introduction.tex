@@ -1,0 +1,100 @@
+\section{The claim and its setting}\label{sec:introduction}
+
+Resolution over parities augments ordinary resolution with affine equations
+over \(\F\). The system was introduced by Itsykson and Sokolov
+\cite{IS14,IS20}. Its unrestricted proof-size lower-bound problem remains an
+explicit open benchmark in the literature reviewed for this draft
+\cite{IPS26}. The contribution claimed here is a superpolynomial lower
+bound for the standard bit pigeonhole principle in unrestricted DAG-like
+\(\Res\).
+
+\subsection{The bit pigeonhole principle}
+Fix \(\ell\ge2\), put \(n=2^\ell\) and \(m=n+1\), and introduce
+\[
+  b_{it}\qquad (i\in[m],\ t\in[\ell]).
+\]
+The row \(b_i\) encodes one of the \(n\) labels in \(\{0,1\}^{\ell}\).
+For a label \(z\), let \([b_{it}\ne z_t]\) denote \(b_{it}\) when \(z_t=0\)
+and \(\neg b_{it}\) when \(z_t=1\). The usual CNF encoding is
+\begin{equation}\label{eq:bit-php}
+ \BPHP_n^{n+1}
+  =\bigwedge_{\substack{i<i'\in[m]\\z\in\{0,1\}^{\ell}}}
+    \left(\bigvee_{t\in[\ell]}[b_{it}\ne z_t]
+       \ \vee\ \bigvee_{t\in[\ell]}[b_{i't}\ne z_t]\right).
+\end{equation}
+It has \(v=m\ell\) variables and \(n\binom m2\) clauses of width \(2\ell\).
+No separate range or pigeon axiom is required: every Boolean row encodes
+exactly one available label.
+
+\subsection{The proof system}
+A \emph{linear clause} is a disjunction of affine equations over \(\F\).
+The basic rules are complementary-parity resolution and semantic weakening:
+\begin{equation}\label{eq:res-rules}
+ \frac{A\vee(u=0)\qquad B\vee(u=1)}{A\vee B},
+ \qquad
+ \frac{C}{D}\quad\text{if } C\models D.
+\end{equation}
+The pivot \(u\) may be any affine form. A refutation is a finite acyclic
+derivation from initial clauses to the empty clause. Its size is the number
+of nodes, including initial nodes, in its proof DAG. Earlier nodes may be
+used repeatedly, and no restriction is placed on proof depth or on repeated
+use of related pivots.
+
+We also consider the convention permitting every sound inference from at
+most two linear-clause premises. Lemma~\ref{lem:affine-cover} reduces this
+convention to \eqref{eq:res-rules} with constant node overhead.
+Fresh unconstrained propositional variables, if used, may be set to
+constants throughout a proof. Extension axioms defining new predicates
+are not part of the system considered here.
+
+\begin{theorem}[Main theorem, proposed proof]\label{thm:main}
+For every fixed real \(K>0\), there is \(\ell_0(K)\) such that for every
+\(\ell\ge\ell_0(K)\), every DAG-like \(\Res\) refutation of
+\(\BPHP_{2^\ell}^{2^\ell+1}\) has more than \(2^{K\ell}\) nodes.
+The conclusion holds for both rule conventions above.
+\end{theorem}
+
+Thus the minimum line count is \(n^{\omega(1)}\) along powers of two.
+This also implies a superpolynomial lower bound on total proof-description
+size. The input length in \eqref{eq:bit-php} is polynomial in \(n\), so
+using input length instead of \(n\) gives the same qualitative conclusion.
+
+\subsection{Prior results and the scope of the claim}
+Efremenko, Garl\'ik, and Itsykson \cite{EGI25} prove a
+\(2^{\Omega(n^{1/3}/\log n)}\) size bound for regular \(\Res\) refutations
+of bit PHP. Their unrestricted DAG-like result is an affine-width bound.
+Bhattacharya, Chattopadhyay, and Dvo\v{r}\'ak \cite{BCD24} exhibit formulas
+that are exponentially hard for bottom-regular \(\Res\), although they
+have short proofs in general ordinary resolution. This separation
+demonstrates the importance of removing regularity.
+
+Bhattacharya and Chattopadhyay \cite{BC25}, Byramji and Impagliazzo
+\cite{BI25}, and the merged STOC 2026 paper \cite{BCBI26} obtain
+exponential bounds in regimes allowing nearly quadratic proof depth.
+Their bounds retain a proof-depth restriction. Itsykson, Podolskii,
+and Shekhovtsov \cite{IPS26} explicitly distinguish this progress from
+the general superpolynomial size problem; their unrestricted size
+consequence is quadratic.
+
+The statement proposed here removes both regularity and proof-depth
+restrictions. The literature review found no preceding theorem with that
+scope, but it is not an exhaustive certification of novelty.
+The full \(\mathrm{AC}^0[p]\)-Frege lower-bound problem remains outside
+the conclusion of Theorem~\ref{thm:main}.
+
+\subsection{Proof organization}
+The proof has three interfaces.
+First, matching moments give a stable ordinary-degree filtration for
+functional unary PHP, and a separate signed-direction construction detects
+every nonzero row-linear bit polynomial.
+Second, a restriction-dimension argument supplies a common polynomial for
+all high-rank affine blocks, while low-rank blocks admit exact coefficient
+packing. A single weighted substitution removes the whole affine family.
+Third, each source proof clause is assigned a complete extension block;
+local PC derivations simulate the rules without a proof-height cost.
+
+Sections~\ref{sec:algebra}--\ref{sec:clause-simulation} prove these interfaces
+in full. Section~\ref{sec:main-proof} closes the parameters.
+Appendix~\ref{sec:topology} includes the precise homological input behind
+the matching extension. The notebook is a provenance and navigation aid;
+none of its lemmas is required as an unexpanded black box in this draft.

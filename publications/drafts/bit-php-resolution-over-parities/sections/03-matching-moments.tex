@@ -1,0 +1,137 @@
+\section{Matching moments and a stable old filtration}\label{sec:moments}
+
+For \(m,N\ge1\), the functional unary system
+\(\mathcal F^{\mathrm{fun}}_{m,N}\) has variables \(X_{ij}\) and generators
+\begin{align*}
+ &X_{ij}^2-X_{ij},\\
+ &X_{ij}X_{ij'} &&(j\ne j'),\\
+ &X_{ij}X_{i'j} &&(i\ne i'),\\
+ &\rho_i-1,\qquad \rho_i=\sum_{j=1}^N X_{ij}.&
+\end{align*}
+The row exclusions in the second line are part of this auxiliary system.
+They are not inferred from a weaker unary encoding.
+
+A matching \(T\) is a set of cells with distinct rows and distinct columns;
+write \(X_T=\prod_{(i,j)\in T}X_{ij}\).
+The empty matching corresponds to the constant one.
+
+\begin{lemma}[Complete moment equations]\label{lem:marginals}
+A linear functional on \(\Pol_{\le B}\) annihilating
+\(\Ideal_B(\mathcal F^{\mathrm{fun}}_{m,N})\) is exactly a choice of
+matching moments \(z_T\), \(|T|\le B\), satisfying
+\begin{equation}\label{eq:marginals}
+ \sum_{j\notin\cols(T)}z_{T\cup\{(i,j)\}}=z_T
+ \quad\text{for }|T|<B,\ i\notin\rows(T).
+\end{equation}
+Its value on an ordinary monomial is the moment of its squarefree support
+if that support is a matching, and is zero otherwise. Normalization is the
+additional condition \(z_\varnothing=1\).
+\end{lemma}
+\begin{proof}
+Boolean equations reduce powers within the original degree.
+A squarefree monomial whose support has a repeated row or column contains
+one of the exclusion generators as a factor. Thus every polynomial reduces,
+within its degree, to a linear combination of matching monomials.
+Conversely, the stated rule for evaluating ordinary monomials annihilates
+every legal Boolean or exclusion multiple.
+
+It remains to check row equations. In a row-equation multiple
+\(q(\rho_i-1)\) of degree at most \(B\), we may first put \(q\) into the
+matching normal form: any error is a Boolean or exclusion consequence
+through \(B-1\), and multiplication by \(\rho_i-1\) keeps its certificate
+within \(B\). For a matching multiplier \(X_T\), if row \(i\) is already
+occupied, the product reduces to zero. Otherwise its reduction is
+\[
+ \sum_{j\notin\cols(T)}X_{T\cup\{(i,j)\}}-X_T.
+ \]
+These are precisely \eqref{eq:marginals}, and they exhaust the constraints.
+No positivity or multiplicativity is imposed on the functional.
+\end{proof}
+
+Let \(\Delta_{s,N}\) be the chessboard complex whose faces are matchings on
+an \(s\)-row, \(N\)-column board. The following consequence of the
+chessboard connectivity theorem of Bj\"orner, Lov\'asz, Vre\'cica,
+and \v{Z}ivaljevi\'c \cite{BLVZ94} is proved, with its homological
+prerequisite, in Appendix~\ref{sec:topology}:
+\begin{equation}\label{eq:chess-vanish}
+ N\ge2s-1
+ \quad\Longrightarrow\quad
+ \widetilde H_{s-2}(\Delta_{s,N};\F)=0.
+\end{equation}
+
+\begin{theorem}[Extension of prescribed matching moments]\label{thm:moments}
+Suppose \(m\ge B\), \(N\ge2B-1\), and \(0\le k\le B\).
+Every functional annihilating
+\(\Ideal_k(\mathcal F^{\mathrm{fun}}_{m,N})\) extends to one annihilating
+\(\Ideal_B(\mathcal F^{\mathrm{fun}}_{m,N})\).
+The constant moment is preserved. In particular normalized functionals
+exist through degree \(B\).
+\end{theorem}
+\begin{proof}
+Use Lemma~\ref{lem:marginals}. Starting from the prescribed moments, fill
+degrees \(s=k+1,\ldots,B\).
+At degree one choose moments in each row whose sum is the prescribed
+constant moment; a column exists because \(N\ge1\).
+
+For \(s\ge2\), fix a set \(S\) of \(s\) rows. Form the reduced
+\((s-2)\)-chain
+\[
+ z_S=\sum_{\substack{T\text{ a matching on }S\times[N]\\|T|=s-1}}
+             z_T[T]
+\]
+in \(\Delta_{s,N}\).
+This is a cycle. At \(s=2\), its augmentation is the sum of two equal
+row totals, which is zero in \(\F\).
+For \(s>2\), a face \(U\) of size \(s-2\) misses two rows of \(S\).
+Its boundary coefficient is the sum of the prescribed marginal sums for
+those two rows, hence \(z_U+z_U=0\).
+
+Since \(N\ge2s-1\), equation~\eqref{eq:chess-vanish} gives an
+\((s-1)\)-chain \(y_S\) with boundary \(z_S\).
+Assign the coefficients of \(y_S\) as the new moments on full
+\(s\)-matchings of \(S\times[N]\).
+For a fixed \((s-1)\)-matching, its boundary equation is exactly the
+missing-row equation in \eqref{eq:marginals}.
+
+Different \(s\)-row sets have disjoint new unknowns: a size-\(s\) matching
+has a unique occupied row set. Their shared lower faces retain their
+already assigned values. Thus these fillings are globally consistent and
+complete the induction.
+The argument works for either value of the constant moment.
+Starting with \(z_\varnothing=1\) at degree zero supplies a normalized
+functional.
+\end{proof}
+
+\begin{corollary}[Old filtration stability and PC closure]\label{cor:stability}
+Under \(m\ge B\) and \(N\ge2B-1\),
+\begin{equation}\label{eq:old-stability}
+ \Ideal_B(\mathcal F^{\mathrm{fun}}_{m,N})\cap\Pol_{\le k}
+       =\Ideal_k(\mathcal F^{\mathrm{fun}}_{m,N})
+       \quad(0\le k\le B),
+ \qquad
+ \Cons_B(\mathcal F^{\mathrm{fun}}_{m,N})
+       =\Ideal_B(\mathcal F^{\mathrm{fun}}_{m,N}).
+\end{equation}
+In particular \(1\notin\Cons_B(\mathcal F^{\mathrm{fun}}_{m,N})\).
+\end{corollary}
+\begin{proof}
+If a polynomial of degree at most \(k\) is outside \(\Ideal_k\),
+finite-dimensional linear duality gives a functional vanishing on
+\(\Ideal_k\) but not on that polynomial. Extend it by
+Theorem~\ref{thm:moments}. The polynomial is then outside \(\Ideal_B\)
+as well. The reverse inclusion in the first equality is immediate.
+
+To prove PC closure, induct over a degree-\(B\) derivation.
+Axioms and linear combinations lie in \(\Ideal_B\).
+At a nonzero multiplication step \(g\mapsto X_{ij}g\), the predecessor
+has ordinary degree at most \(B-1\). If \(g\in\Ideal_B\), the first
+equality puts it in \(\Ideal_{B-1}\). Multiplication of its legal
+generator multiples by \(X_{ij}\) stays in \(\Ideal_B\).
+Hence \(\Cons_B\subseteq\Ideal_B\); the other direction is
+Lemma~\ref{lem:pc-product}.
+A normalized annihilator excludes one.
+\end{proof}
+
+The equalities in \eqref{eq:old-stability} concern the old functional
+system. We will not use an analogous assertion for a system augmented
+with extension blocks.

@@ -1,0 +1,81 @@
+% SPDX-License-Identifier: CC-BY-4.0
+% Copyright (c) 2026 Kamil Braun
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage[colorlinks=true,allcolors=blue,bookmarksnumbered=true]{hyperref}
+\hypersetup{
+  pdftitle={A superpolynomial lower bound for the bit pigeonhole principle in resolution over parities},
+  pdfauthor={Kamil Braun},
+  pdfsubject={Working research draft for review},
+  pdfkeywords={proof complexity, bit pigeonhole principle, resolution over parities, polynomial calculus}
+}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\Res}{\mathrm{Res}(\oplus)}
+\newcommand{\PC}{\mathrm{PC}}
+\newcommand{\NS}{\mathrm{NS}}
+\newcommand{\BPHP}{\mathrm{BPHP}}
+\newcommand{\Bool}{\operatorname{BOOL}}
+\newcommand{\Ideal}{\mathcal I}
+\newcommand{\Cons}{\mathcal C}
+\newcommand{\Pol}{\mathcal P}
+\newcommand{\rows}{\operatorname{row}}
+\newcommand{\cols}{\operatorname{col}}
+\newcommand{\Span}{\operatorname{span}}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Ann}{Ann}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.15em}
+\title{A superpolynomial lower bound for the bit pigeonhole principle\\
+in resolution over parities}
+\author{Kamil Braun\thanks{With assistance from Claude Sonnet, Claude Opus,
+Claude Fable, and GPT-6 Astra. GPT-6 Astra was the main contributor to the
+mathematical development and drafting of this result.}}
+\date{Draft for review\\14 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We present a proposed proof that the usual bit pigeonhole principle with
+\(n+1\) pigeons and \(n=2^\ell\) holes requires superpolynomial-size DAG-like
+resolution-over-parities refutations, with no regularity or proof-depth
+restriction. The argument converts an arbitrary short refutation into
+polynomially many complete affine extension blocks admitting an
+ordinary polynomial-calculus refutation of degree \(O(\log n)\).
+A simultaneous coefficient substitution, weighted by a nonzero row-linear
+bit polynomial, would then produce an old-base consequence of degree
+\(O(\sqrt n(\log n)^{3/2})\).
+Matching-moment extension and a cube-supported separating functional exclude
+that consequence. All algebraic dependencies are proved in this draft; an
+appendix supplies the required chessboard homology argument. We also describe
+the open, versioned research framework in which the proof was developed.
+This is a working manuscript prepared for review, not an independently
+verified or formally certified result.
+\end{abstract}
+\clearpage
+\tableofcontents
+\newpage
+\input{sections/01-introduction}
+\input{sections/02-algebra}
+\input{sections/03-matching-moments}
+\input{sections/04-decoder-separation}
+\input{sections/05-affine-exclusion}
+\input{sections/06-clause-simulation}
+\input{sections/07-main-proof-framework}
+\appendix
+\input{sections/08-topology}
+\input{references}
+\end{document}
