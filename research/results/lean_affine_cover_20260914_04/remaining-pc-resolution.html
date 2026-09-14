@@ -1,0 +1,19 @@
+<h4 id="affine-clause-resolution-PC-degree">2. Complementary-parity resolution costs at most \(4h+1\)</h4>
+  <p>Suppose the premises have input lists \((a_i)_i,u\) and \((b_j)_j,1-u\), with \(u\) affine. The conclusion \(T\) has the union of the context lists \((a_i),(b_j)\). Assume the premise values \(P_A,P_B\) have already been derived through degree \(K\). Every context companion \(a_iP_T,b_jP_T\) is available among the conclusion block's axioms; repeated literals may share that axiom.</p>
+  <p>The exact prefix identities give PC derivations through \(\max(K,4h)\) of</p>
+  <div class="math">\[
+    R_A=P_T-U_{A,u}uP_T
+       =P_AP_T+\sum_iU_{A,i}(a_iP_T),
+  \]</div>
+  <div class="math">\[
+    R_B=P_T-U_{B,1-u}(1-u)P_T
+       =P_BP_T+\sum_jU_{B,j}(b_jP_T).
+    \tag{RPC-resolution}
+  \]</div>
+  <p>For example, an existing line \(P_A\) is multiplied by the known polynomial \(P_T\), giving degree at most \(4h\); a context companion of degree \(2h+1\) is multiplied by a prefix of degree at most \(2h-1\). These use completed PC lines, not multiplication of entire preceding derivations.</p>
+  <p>Since \(u\) is affine over \(\mathbb F_2\), \(u^2-u\) is a linear combination of old Booleanity axioms and has a degree-two proof. Consequently</p>
+  <div class="math">\[
+    (1-u)R_A-U_{A,u}P_T(u^2-u)=(1-u)P_T
+  \]</div>
+  <p>is derivable through \(\max(K,4h+1)\). Multiply this completed line by \(U_{B,1-u}\) and add \(R_B\). The resulting polynomial is \(P_T\), and the final multiplication has degree at most \((2h+1)+(2h-1)=4h\). Thus resolution preserves the global ceiling \(\max(K,4h+1)\), irrespective of proof height or reuse.</p>
+  <p>Every polynomial multiplication here expands into monomial-by-monomial variable multiplications and linear combinations at the stated degree. No implicit Boolean reduction or additional inference rule is used.</p>

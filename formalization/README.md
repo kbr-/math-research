@@ -9,6 +9,11 @@ the [claim index](../research/CLAIM_INDEX.md).
 [`lem:mp-telescoping`](claims/MpTelescoping.lean) additionally verifies the
 telescoping identity and coefficient-degree bound, with a corrected companion
 upper bound and a counterexample to the original loose-bound equality.
+[`lem:binary-semantic-affine-cover`](claims/BinarySemanticAffineCover.lean)
+verifies the logical rule reduction and finite-width bounds, using separately
+indexed [separator](claims/BinaryAffineZeroCover.lean) and
+[clause-compression](claims/AffineClauseCompression.lean) dependencies. The
+original paragraph's concrete PC-degree corollary remains unformalized.
 
 For an assigned formalization, follow [AGENTS.md](AGENTS.md): establish the exact
 statement first, prove it, then review the verified type against the notebook.
