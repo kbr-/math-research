@@ -31,6 +31,47 @@ To check an individual file, replace `lake build` with
 `lake env lean claims/ModInterpolation.lean` once that file exists.
 Build imported local modules first with `lake build`. An editor extension is optional.
 
+## Claim records and verification
+
+Start each claim file with a header like this (the names below are examples,
+not an existing formalization):
+
+```lean
+/-
+Claim: lem:mod-interpolation
+Source: https://kbr.is-a.dev/math-research/#mod-pruned-polynomial
+Scope: State the exact coverage and any differences from the informal claim.
+Declarations: MathResearch.mod_interpolation
+-/
+```
+
+List every declaration offered as a verified result, using fully qualified names
+separated by spaces. Explain strengthened hypotheses, missing degree bounds,
+or other limitations in `Scope`; a verified special case is not the full claim.
+Shared helper modules under `claims/` use the same header, identifying their
+supporting role and listing the helper declarations to audit.
+
+From the repository root, run the complete verification command:
+
+```bash
+./formalization/verify.sh
+```
+
+It builds under `compute.sh`, rechecks each claim file with warnings treated as
+errors, and runs `#print axioms` for every listed declaration. Unfinished proofs
+(`sorry` or `admit`) are not accepted. Axiom reports may contain only the standard
+Lean foundations `propext`, `Classical.choice`, and `Quot.sound`; `sorryAx`, custom
+axioms, and other additions fail verification. In particular, do not replace an
+unproved step with a custom axiom. The command reports an empty project as setup
+only, never as a verified research result.
+
+For a research checkpoint, use `--out research/results/TURN/lean-verification.txt`
+to preserve the full output in a new file, including dependency revisions and
+axiom reports. Commit it with the formalization and notebook research entry
+under the root research protocol. Verification does not establish that the
+formal statement faithfully expresses the notebook claim: review that match
+and the completeness of the declaration list explicitly.
+
 ## Reproducible dependencies
 
 - `lean-toolchain` selects the Lean version required by the pinned Mathlib revision.
