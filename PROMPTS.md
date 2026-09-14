@@ -140,7 +140,10 @@ Act as coordinator until the final assembly. Work autonomously through these ste
    do not make branches wait for each other's entire assignment. Coordinate clean
    pauses for sequential rebases onto the integration branch, fast-forwarding it
    after each completed rebase. Preserve both sides' research records and evidence
-   when resolving conflicts. Do not rebase a worktree while its worker is editing.
+   when resolving conflicts. For append-only notebook/index conflicts, use
+   `python3 tools/merge-formalization-appends.py --help`; it requires manual review
+   for other changes and never stages files or continues a rebase. Do not rebase
+   a worktree while its worker is editing.
 6. Once the workers finish, integrate all remaining checkpoints. Audit individual
    statement provenance and directory placement under formalization/AGENTS.md;
    defer cross-branch moves until this point, updating imports and links together.
