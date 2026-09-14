@@ -12,8 +12,8 @@
 <section id="where-we-stand">
   <h2>Where we stand</h2>
   <p><strong>Our main goal remains open: superpolynomial proof-size lower bounds for ordinary PHP in \(\mathrm{AC}^0[p]\)-Frege, for every fixed prime and fixed depth.</strong> The route compiles a hypothetical short proof into an algebraic source and seeks an old-base consequence below its degree barrier. The <a href="#unary-to-bit-Frege-encoding-clarification">standard unary-to-bit Frege substitution</a> has polynomial size overhead and only a constant depth increase, so full bit-PHP lower bounds at every fixed Frege depth would suffice for ordinary PHP.</p>
-  <p><strong>The latest progress treats sums directly.</strong> The working <a href="#bounded-affine-probe-source-exclusion">bounded-affine-probe theorem</a> handles complete binary one-level families whose inputs have fixed probe dimension and polynomial degree. Its <a href="#bounded-indicator-sum-source-transfer">actual-source corollary</a> covers fixed-rank affine bottoms and a fixed number of bottom-product summands per parent input, with arbitrary parent arity, overlaps, and coefficient uses. Sums of two rank-two indicators give old degree \(n^{7/8}\operatorname{polylog}n=o(n)\). Earlier individual-indicator cases retain their sharper <a href="#combined-rank-two-source-exclusion">rank-two</a> and <a href="#rank-three-complete-source-exclusion">rank-three</a> bounds.</p>
-  <p><strong>The central gap is coverage of the actual general Frege source.</strong> Its <a href="#second-level-affine-flat-indicator-inputs">residual sums</a> can have growing probe dimension, even at quadratic degree. The new fixed-probe hypothesis is not established for the full source. Growing bottom rank, later nonlinear levels, and odd-prime families also remain unhandled. Existing <a href="#dependent-rank-source-collapse">selector-rank criteria</a> and the <a href="#compact-source-polynomial-rank-obstruction">necessary-rank obstruction</a> constrain a possible short proof, but do not yet exclude the entire family. Source transformations must preserve a sufficient hypothesis and charge every original degree.</p>
+  <p><strong>The latest progress covers an explicit family of unbounded sums over every fixed prime.</strong> The working <a href="#all-prime-leading-pair-source-exclusion">leading-pair theorem</a> permits shared quadratic tails when each parent has sufficiently many disjoint leading pairs. Its <a href="#shared-tail-unbounded-sum-source">actual two-level source application</a> has linear arity and a growing number of summands and probes, yet reaches old degree \(\sqrt n\,\operatorname{polylog}n=o(n)\). The earlier binary <a href="#bounded-affine-probe-source-exclusion">fixed-probe theorem</a> covers bounded sums of fixed-rank bottoms without requiring those private pairs.</p>
+  <p><strong>The central gap is coverage of the actual general Frege source.</strong> Neither disjoint leading pairs nor bounded probe dimension is established for that full source. General quadratic input spaces, growing bottom rank, and later nonlinear levels remain open; the all-prime source application does not supply general odd-prime source compilation. Existing <a href="#dependent-rank-source-collapse">selector-rank criteria</a> and the <a href="#compact-source-polynomial-rank-obstruction">necessary-rank obstruction</a> constrain a possible short proof, but do not yet exclude the entire family. Source transformations must preserve a sufficient hypothesis and charge every original degree.</p>
   <p>The <a href="#unit-accuracy-affine-family-exclusion">one-level affine endpoint works over every fixed prime at accuracy one</a>, including quasipolynomial inventory at polylogarithmic degree. Further tools include <a href="#affine-level-full-old-low-degree-separation">preservation of old moments</a>, <a href="#joint-high-selector-zero-preservation">specified joint selector zeroes</a>, <a href="#shared-core-projected-source-criterion">old-bit profiles for eligible shared-bit parents</a>, and <a href="#mixed-star-union-affine-core-profile">profiles for covered mixed unions</a>. Their exact hypotheses and degree budgets are in Working mathematical context and the linked proofs.</p>
   <div class="result">
     <p><strong>What would finish the route:</strong> for every fixed prime, depth, and size exponent, turn any hypothetical short ordinary-PHP Frege proof into an old-base refutation below its \(N/2+1\) PC degree bound, or directly exclude its complete augmented endpoint. No current mechanism covers that full family. A concrete polynomial-size Frege construction would also be valuable; none is established.</p>
@@ -25,15 +25,15 @@
   <h2>The remaining route</h2>
   <div class="eyebrow">Highest risk first</div>
   <ol>
-    <li><strong>Handle the general dense retained source.</strong> Fixed-probe inputs and bounded sums of bounded-rank indicators are covered in the binary two-level setting. Growing probe dimension, later nonlinear levels, and odd-prime families still need valid profiles, complete maps, or direct exclusions. The Frege encoding reduction is available; preserving a sufficient source class through it remains open.</li>
-    <li><strong>Test genuinely unbounded sums.</strong> The <a href="#bounded-indicator-sum-source-transfer">new sum theorem</a> keeps the number of summands fixed. A bilinear input \(\sum_{j\le t}a_jb_{ij}\), with growing \(t\) and private \(b_{ij}\), lies outside that probe bound. Test whether disjoint leading monomials of the actual sums provide the required kernel and complete coefficient map.</li>
+    <li><strong>Handle the general dense retained source.</strong> Binary bounded-probe families and all-prime quadratic families with enough disjoint leading pairs are covered. Arbitrary dense inputs, growing bottom rank, and later nonlinear levels still need valid profiles, complete maps, or direct exclusions. The Frege encoding reduction is available; preserving a sufficient source class through it remains open.</li>
+    <li><strong>Test dense quadratic sums without private leading pairs.</strong> The <a href="#shared-tail-unbounded-sum-source">new application</a> depends on private products. Remove them from the cyclic-tail family and determine whether permissible input-basis and variable-order changes recover sufficiently many leading pairs, or expose a concrete obstruction requiring another method.</li>
     <li><strong>Close the original parameters and keep both directions available.</strong> For every fixed prime, formula depth, and size exponent, derive a forbidden endpoint for ordinary PHP, or audit a concrete polynomial-size construction. Restricted subsystem bounds and method obstructions do not settle that question.</li>
   </ol>
 </section>
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Audit the actual sum inputs \(g_i=\sum_{j=1}^t a_jb_{ij}\), where the \(b_{ij}\) are distinct private old bits and \(t\) grows. Test whether disjoint leading monomials can replace independent probe groups in the <a href="#independent-probe-monomial-reduction">reduction map</a>, then check the complete source and degree budget. Stop at a valid unbounded-sum source theorem or a concrete failure of that interface.</p>
+  <p>Study the actual cyclic sums \(g_i=\sum_{j=0}^{t-1}a_jb_{j+i\bmod t}\), with \(t=\Theta(v)\), first over \(\mathbb F_2\). Their shared tails now have no private heads. Test the <a href="#quadratic-leading-pair-kernel-map">leading-pair interface</a> under justified changes of input basis and Boolean coordinates. Stop at a complete source application with a sublinear old-degree budget, or a proved obstruction identifying what must replace that interface.</p>
 </section>
 
 <section id="working-context">
@@ -63,7 +63,8 @@
   <p>Other complete maps cover <a href="#power-affine-complete-system-transfer">power-affine inputs at \(2D\)</a>, <a href="#shared-probe-original-degree-images">positive-MOD shared-probe tuples at \(pD\)</a>, and the <a href="#dense-shared-bit-complete-transfer">shared-bit family at \(D\)</a>, including its <a href="#unit-accuracy-shared-bit-complete-transfer">accuracy-one extension</a>. The last keeps parent value \(x+(1-x)A\); at odd primes its probes are actual old bits. The <a href="#quadratic-branch-complete-transfer">binary affine-branch map</a> costs \((t+1)D\) with \(2^t\) cores per parent when used separately.</p>
   <p>The <a href="#bounded-affine-probe-source-exclusion">current binary criterion</a> assumes each old input has degree at most \(s\) and depends on at most \(r\) independent affine probes, with fixed \(r,s\). A <a href="#independent-probe-monomial-reduction">graded monomial reduction</a> supplies kernel witnesses for nonfactorable input functions; low independent-probe counts branch to smaller probe dimension. One common \(f\) handles all stages. Coefficients have degree \(T=k-1+\sum_jj(R_j-1)\), and the complete weighted replay derives \(f\) through \(B=TD+k\). The input functions are preserved; their equations are used to construct kernel witnesses and are not added to the old PHP base.</p>
   <p>The <a href="#cube-volume-multiplier-space">space for \(f\)</a> consists of homogeneous squarefree degree-\(k\) monomials with \(\sum_i(4^{d_i}-1)\le n/16\). It retains \((1-o(1))\binom vk\) dimensions for \(k=o(n)\), and separates targets through \(k\le B\le n/4\) when \(k\le n/16\). With \(S=\sum_{j=1}^r\min(s,j)\), the fixed-probe theorem has \(k=O(n^{S/(S+1)}\log n)\) and \(T=O(k)\). Its finite statement gives the stage thresholds and all image-count conditions. The reduction map gives a sufficient kernel, not an exact quotient description.</p>
-  <p>For the <a href="#bounded-indicator-sum-source-transfer">actual two-level application</a>, fixed bottom rank \(b\) and at most \(c\) bottom-product summands per parent input give \(r=bc,s=b\), with normalization factor at most \(\max(1,b-1)\). An old-affine offset adds at most one probe. The case \(b=c=2\) has \(S=7\), covering sums whose <a href="#quadratic-sum-flat-span-obstruction">input span contains no flat indicators</a>. Earlier <a href="#combined-rank-two-source-exclusion">rank-two</a> and <a href="#rank-three-complete-source-exclusion">rank-three</a> individual-indicator results remain available. Arbitrarily many summands, growing probe dimension, later levels, and odd-prime affine probes remain open.</p>
+  <p>For the <a href="#bounded-indicator-sum-source-transfer">actual two-level application</a>, fixed bottom rank \(b\) and at most \(c\) bottom-product summands per parent input give \(r=bc,s=b\), with normalization factor at most \(\max(1,b-1)\). An old-affine offset adds at most one probe. The case \(b=c=2\) has \(S=7\), covering sums whose <a href="#quadratic-sum-flat-span-obstruction">input span contains no flat indicators</a>. Earlier <a href="#combined-rank-two-source-exclusion">rank-two</a> and <a href="#rank-three-complete-source-exclusion">rank-three</a> individual-indicator results remain available. That criterion keeps both rank and summand count fixed.</p>
+  <p>The <a href="#all-prime-leading-pair-source-exclusion">all-prime quadratic criterion</a> instead requires \(R\) disjoint quadratic leading monomials of constant linear combinations of each input tuple, in the original Boolean coordinates under a supplied degree-compatible order. Put \(L=\ln(8M(v+1))\), \(k\ge\max(3,\lceil v\sqrt{L/R}\rceil)\), \(T=2(p-1)(k+1)-1\), \(\delta=(p-1)k\), and \(B=TD+\delta\). A row-cap-two kernel and weight \(f^{p-1}\) give complete replay; the linked theorem states its domain and cube bounds. For \(R=\Theta(v)\), polynomial inventory and polylogarithmic \(D\) give \(B=\sqrt n\,\operatorname{polylog}n\). It covers actual <a href="#shared-tail-unbounded-sum-source">unbounded shared-tail sums with private heads</a> through degree-preserving old-bit bottom maps. General quadratic spaces, growing bottom rank, later levels, and unrestricted odd-prime source compilation remain open.</p>
   <p>The <a href="#prime-affine-disequality-calculus">explicit all-prime disequality calculus</a> has a <a href="#prime-disequality-bit-PHP-size-bound">working bit-PHP size bound</a> at \(D=\max(2h+(p-1)\ell,4h+p-1)\). Its full-field rules and Boolean-domain axioms matter: at odd primes it is not a general equation-clause or Boolean-semantic proof system. The binary publication theorem uses the standard Res(\(\oplus\)) rules.</p>
   <h3 id="context-source-audit">Other source tools and the remaining gap</h3>
   <p>The <a href="#ordinary-PHP-to-compact-bit-source">binary compact bridge</a> preserves polynomial inventory and original weights. Its <a href="#compact-virtual-zero-clause-source">virtual boundary</a> sends formal clause names to zero with residual \(E_{ii'}\) at cost \(\ell\); it does not send the old polynomial to zero by a homomorphism. With \(L=(d+1)h^d\), the <a href="#costed-profile-unbalanced-PC-compiler">direct PC compiler</a> has ceiling \(\max(M_{\rm fr},10)L\) before balancing. Linked proofs retain the exact frame/depth conventions.</p>
@@ -15051,6 +15052,108 @@
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">50.35 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.07 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">4.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+
+<article class="research-entry" id="entry-2026-09-14-leading-pair-unbounded-sums">
+  <h3>14 September 2026 — Disjoint leading pairs and shared quadratic tails over every prime</h3>
+  <p class="entry-meta">Status: working all-prime source theorem with exact multi-field controls. Cycle 142.</p>
+  <p><strong>Obligation and stopping point.</strong> Test an actual unbounded-sum source outside the fixed-probe theorem. The initial private bilinear example also has an arity argument in its balanced regime, so it is retained as a control. The main application below has linear arity and shared dense quadratic tails, where the displayed arity bound no longer closes. Disjoint leading monomials replace independent full probe groups.</p>
+
+  <h4 id="balanced-bilinear-arity-control">1. Why the first example is not the decisive test</h4>
+  <p>For \(I\) old inputs of degree at most two over \(\mathbb F_p\), write \(a=p-1\). The telescoping coefficients</p>
+  <div class="math">\[
+      \beta_i=g_i^{p-2}\prod_{j&lt;i}(1-g_j^{p-1})
+  \]</div>
+  <p>give the exact product \(\prod_i(1-g_i^{p-1})\). Each companion vanishes on the old Boolean cube and has an ordinary Boolean certificate through \(2aI+2\). Coefficient degree is at most \(2aI-2\), with \(T_0=\max(1,2aI-2)\); companion and field images fit \(T_0\) times their original accuracy-one degrees. Thus the usual complete old-only replay gives degree \(T_0D\).</p>
+  <p>In the balanced private-matrix example \(g_i=\sum_{j\le t}a_jb_{ij}\), \(I=t=O(\sqrt v)\), this is already \(\sqrt n\,\operatorname{polylog}n\) for fixed \(p\) and polylogarithmic \(D\). This is a reuse of telescoping and the old Boolean image ledger, not new asymptotic coverage. It motivates a test with both larger arity and growing probe dimension.</p>
+
+  <h4 id="quadratic-leading-pair-kernel-map">2. Leading pairs suffice without disjoint probe groups</h4>
+  <p>Work over any prime field, in the original \(v\) old Boolean coordinates. Let a quadratic input tuple \((g_i)_i\) have \(R\) constant linear combinations \(q_j=\sum_i\lambda_{ji}g_i\) whose multilinear Boolean representatives have pairwise disjoint squarefree quadratic leading monomials under a supplied degree-compatible monomial order. Rescale them to be monic. Require \(2R\le v\).</p>
+  <p><strong>Working reduction lemma.</strong> There is a linear reduction map on degree-at-most-\(k\) polynomials with image dimension at most</p>
+  <div class="math">\[
+      J(v,R,k)=\sum_{d=0}^k[z^d](1+2z)^R(1+z)^{v-2R}.
+  \]</div>
+  <p>For \(1\le k\le v/2\),</p>
+  <div class="math">\[
+      J(v,R,k)\le\binom vk\,(v+1)e^{-Rk^2/v^2}.
+      \tag{LP-image}
+  \]</div>
+  <p>A degree-\(k\) kernel polynomial has</p>
+  <div class="math">\[
+      f=\sum_i c_i g_i+E,\qquad
+      \deg c_i\le k-2,\qquad
+      E\in\mathcal I_k({\rm BOOL}_{\rm old}).
+      \tag{LP-membership}
+  \]</div>
+  <p><strong>Proof.</strong> Apply the <a href="#independent-probe-monomial-reduction">fixed monomial-reduction construction</a> to old Booleanity and the monic representatives of the \(q_j\)'s. It uses only a decreasing degree-compatible order and the disjoint leading supports. Lower terms may involve any old variables and may overlap arbitrarily. The normal monomials are squarefree and avoid the \(R\) leading pairs, giving the displayed generating function. The <a href="#independent-quadratic-filtered-quotient">binomial-mode estimate</a> gives (LP-image).</p>
+  <p>All divisors have degree two, so every source-generator cofactor has degree at most \(k-2\). Replacing a representative by its \(q_j\), and then its given linear combination of the actual inputs, preserves ordinary degree through \(k\); the representative difference has an old Boolean certificate through two. This gives (LP-membership). No exact quotient-dimension or Gröbner-basis assertion is needed. \(\square\)</p>
+  <p>The order here is on the original Boolean variables. Arbitrary affine changes over an odd prime field are not included in this hypothesis: such changes need not preserve the Boolean-coordinate domain. The private leading pairs in the application below require only a variable order.</p>
+
+  <h4 id="all-prime-leading-pair-source-exclusion">3. Complete exclusion with the existing all-prime row-cube bounds</h4>
+  <p>Let \(n=2^\ell\), \(m=n+1\), \(v=m\ell\), and use the compact base \(\mathcal Q_{n,p}\). Consider complete accuracy-one blocks, each either old-affine or old-quadratic with the leading-pair property of Section 2. Include every coefficient equation \(r^p-r\). Let \(M\ge1\) bound the total block count and \(R\) be a common lower bound on the available disjoint leading pairs in each quadratic block. Put</p>
+  <div class="math">\[
+    a=p-1,\quad L=\ln(8M(v+1)),\quad
+    k\ge\max\left\{3,\left\lceil v\sqrt{L/R}\right\rceil\right\},
+    \quad \delta=ak,\quad A=2a,\quad T=2a(k+1)-1,\quad B=TD+\delta.
+  \]</div>
+  <p><strong>Working finite theorem.</strong> There is no ordinary-PC refutation through degree \(D\) if \(D\ge\max\{a\ell,p,5\}\), \(1\le R\le v/2\), \(k\le v/2\), and</p>
+  <div class="math">\[
+    \varepsilon=m\binom{\ell}{3}
+            \frac{\binom{v-3}{k-3}}{\binom vk}\le\tfrac12,\qquad
+    4^A(\delta-1)&lt;n,\qquad
+    n\ge2B+(2^A-2)\delta-1.
+    \tag{LP-finite}
+  \]</div>
+  <p>As before take \(\varepsilon=0\) if \(\ell&lt;3\). These are the <a href="#unit-accuracy-affine-family-exclusion">existing row-cap-two/power-multiplier conditions</a>, with a new class of high-kernel constraints.</p>
+  <p><strong>Common kernel.</strong> The homogeneous row-cap-two space \(\mathcal A_{2,k}\) has dimension at least \((1-\varepsilon)\binom vk\). The quadratic reduction maps have total image dimension at most \(\binom vk/8\), by the choice of \(k\). Among affine blocks, scalar-clean zero and unit spans, then use ordinary restrictions for proper ranks at least \(2k+3\). Their total image dimension is at most \(M e^{-k^2/v}\binom vk\le\binom vk/8\): since \(R\le v/2\), \(k^2/v\ge2L\). Thus one nonzero homogeneous \(f\in\mathcal A_{2,k}\) lies in all high kernels.</p>
+  <p><strong>Coefficient maps.</strong> For a quadratic block use the coefficients \(c_i f^{p-2}\) from (LP-membership). Their degree is at most \(ak-2\), and the product is \(1-f^{p-1}+Ef^{p-2}\). A high-affine block uses its literal kernel coefficients times \(f^{p-2}\), of degree at most \(ak-1\). On a proper low-affine block, pack the \((p-1)r\) factors of its flat indicator into one bin; since \(r\le2k+2\), coefficient degree is at most \(T\). All images use only old variables.</p>
+  <p>Weight every substituted line by \(F=f^{p-1}\), of degree \(\delta\). On every old Boolean point \(F\) is zero or one. Where it is one, each high product is zero and each low-affine companion vanishes. Hence every weighted companion is Boolean-zero. If its original input has degree \(d_i\) and its tuple has maximum degree \(\Delta\), its image has ordinary degree at most \(\delta+d_i+T+\Delta\le\delta+T(d_i+\Delta+1)\), fitting its original degree. Weighted coefficient fields have old Boolean certificates through \(pT+\delta\), and old axioms cost \(e+\delta\).</p>
+  <p>The complete weighted PC replay therefore derives \(F\) over \(\mathcal Q_{n,p}\) through \(B=TD+\delta\). Its Boolean remainder \(H\) is also an old consequence through \(B\), since \(F-H\) has a Boolean certificate through \(\delta\). It is nonzero: nonzero multilinear \(f\) is nonzero at some Boolean point over every field. Each monomial of \(H\) has total degree at most \(\delta\) and row degree at most \(A=2(p-1)\). The separation step of the <a href="#unit-accuracy-affine-family-exclusion">accuracy-one theorem</a> applies under (LP-finite), giving the contradiction. \(\square\)</p>
+  <p><strong>Dense leading-pair regime.</strong> For each fixed prime, polynomial \(M\), polylogarithmic \(D\), and \(R=\Theta(v)\), we have \(k=O(\sqrt n\log n)\), \(\varepsilon=o(1)\), and \(B=\sqrt n\,\operatorname{polylog}n=o(n)\). All finite conditions hold eventually. Larger individual accuracies reduce to one by constant restriction. NS refutations are excluded by PC replay. No general fixed-probe hypothesis is required.</p>
+
+  <h4 id="shared-tail-unbounded-sum-source">4. A source family with large arity and shared dense tails</h4>
+  <p>Within each parent, choose old bits \(u_i,v_i\), \(i=1,\ldots,t\), all distinct and disjoint from a shared set of tail variables \(w\). Consider the actual quadratic inputs</p>
+  <div class="math">\[
+       g_i=u_iv_i+Q_i(w),\qquad \deg Q_i\le2.
+       \tag{LP-shared-tail}
+  \]</div>
+  <p>Place all \(u_i\)'s ahead of all other variables in graded lexicographic order. The leading monomial of \(g_i\) is \(u_iv_i\), so the tuple has \(t\) disjoint leading pairs, even though all tail variables may be shared. Different parents may reuse old variables; their coefficient scopes remain disjoint, and their reduction maps may use different orders.</p>
+  <p>An explicit unbounded-sum family takes \(t=\lfloor v/4\rfloor\), uses \(4t\) distinct old bits \(u_i,v_i,a_j,b_j\), and sets</p>
+  <div class="math">\[
+       Q_i=\sum_{j=0}^{t-1}a_jb_{j+i\bmod t},
+       \qquad 0\le i&lt;t.
+       \tag{LP-cyclic-tail}
+  \]</div>
+  <p>There are \(t\) inputs and \(t+1\) quadratic summands per input. In the binary case each \(g_i\) has polar rank \(2t+2\), so it requires that many independent affine probes. Its full probe groups overlap on the \(2t\) tail variables. Thus the fixed-probe theorem does not apply. The straightforward arity bound also charges \(\Theta(tD)\), above the old degree barrier in this regime; this is a statement about that displayed bound, not an impossibility for every alternative normalizer.</p>
+  <p><strong>Working actual-source corollary.</strong> For every fixed prime, polynomially many complete two-level sources of type (LP-shared-tail), with \(\Theta(v)\) private leading pairs per parent, have no polylogarithmic-degree refutation over \(\mathcal Q_{n,p}\). Use a common accuracy \(h\ge1\). Express each multilinear \(Q_i\) as an old-affine part plus scalar-weighted products of two distinct old bits. Represent these products by actual rank-two bottom blocks, retain the old-affine part directly in the parent input, and allow additional old-affine blocks. The number of summands can grow polynomially with \(n\).</p>
+  <p><strong>Source transfer.</strong> For a bottom tuple \((1-x,1-y)\) on old bits, use coefficients \((1,x)\) at accuracy one, giving the literal product \(xy\). At larger accuracy use the two scalar rows selecting the inputs separately and set later rows to zero. The companion images have old Boolean certificates through three; coefficient fields have certificates through their original prime-field degree. These are complete degree-preserving maps over every prime, and each reused bottom is assigned once.</p>
+  <p>Parent inputs become their actual sums of the corresponding products. Their companion degree after normalization is at most \(3h+2\), within the original \(2h^2+3h\), and all parent coefficient fields are retained. Thus the full NS/PC degree is preserved. Restrict parent accuracies to one and apply Section 3 with \(R=\Theta(v)\). In the cyclic-tail example, only \(O(v^2)\) distinct bottom products per parent are needed, so the source inventory is polynomial. \(\square\)</p>
+  <p><strong>Scope.</strong> This handles an explicit source with unbounded sums and growing probe dimension over every fixed prime. It does not show that arbitrary quadratic input spaces possess disjoint leading pairs, that the required private products occur in every compiled Frege source, or that general later nonlinear levels can be removed. Adding private old variables to an arbitrary source would require its own justified source and PHP transfer.</p>
+
+  <h4 id="leading-pair-source-exact-checks">5. Focused evidence</h4>
+  <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/bilinear_unbounded_sum_source_20260914_142/README.md">evidence and reproduction note</a> links the complete <a href="https://github.com/kbr-/math-research/blob/main/research/results/bilinear_unbounded_sum_source_20260914_142/leading-pair-source-checks.jsonl">exact output</a>. One twelve-bit cyclic-tail fixture, with three private heads and three shared tail pairs, was checked over \(\mathbb F_2,\mathbb F_3,\mathbb F_5\).</p>
+  <p>For each field, all 455 ordinary monomials through degree three were reduced with ordinary NS witnesses. The normal space has 266 monomials; this is not asserted to be the functional quotient dimension. The kernel \(f=u_1g_0\) has degree three and row cap two, and its extracted reduction coefficients supply the actual parent map \(c_i f^{p-2}\).</p>
+  <p>The complete source has twelve reused rank-two bottoms and one three-input parent, on 39 variables. There are 66 weighted original-axiom certificates per field: twelve old Boolean equations, 27 companions, and 27 genuine coefficient field equations. Including basis reductions, kernel membership, and Booleanization of \(F=f^{p-1}\), the output retains 1,569 exact NS certificates. Every identity was reconstructed and every ordinary generator multiple charged.</p>
+  <p>All nonzero-weight old points give complete source models: 960 over \(\mathbb F_2\), 1,304 over \(\mathbb F_3\), and 1,400 over \(\mathbb F_5\). An unweighted companion fails at old point 9 in all three fields. At old point 587, the first parent coefficient is two over \(\mathbb F_3\) and three over \(\mathbb F_5\): its genuine field equation holds, while its Boolean equation fails. The Booleanized powers have maximum row degrees two, three, and five respectively, directly checking the need for the enlarged odd-prime row cap.</p>
+  <p>For \(M=n^2,D=\ell^3,R=\lfloor v/4\rfloor\), exact integer parameters use \(H=3\ell+\lceil\log_2\ell\rceil+4\ge\ln(8M(v+1))\) and \(k=\lceil\sqrt{\lceil v^2H/R\rceil}\rceil\). All sufficient conditions hold at \(\ell=64,128\) for each tested prime. At \(\ell=40\), the range, image, and domain bounds hold, but the old-degree bound fails in all fields; the cube-packing bound also fails for \(p=5\). Full integers and flags are retained. These large parameter cases and the local algebra fixture check different interfaces; they are not one instantiated PHP refutation.</p>
+  <p>Compilation and the exact run passed. The coding interval includes a compaction/restoration interruption.</p>
+  <p><strong>Route assessment.</strong> The working criterion supplies an explicit unbounded-sum source application beyond the fixed-probe theorem, and covers every fixed prime. General source coverage still requires the leading-pair hypothesis or a replacement for it.</p>
+  <p><strong>Process assessment.</strong> Recognizing the balanced example as an arity reuse led to the shared-tail test; reusing the existing power detector and extracting a small shared reduction core avoided a new multiplier theory and a duplicate verifier.</p>
+  <div class="timing-report" data-session="bilinear_unbounded_sum_source_20260914_142">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>50 min 29.20 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2.56 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">37 min 59.09 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">11 min 39.91 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">42.27 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.78 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">4.59 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
