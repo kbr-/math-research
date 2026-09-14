@@ -16,6 +16,11 @@ policy. Setup and verification commands live in [README.md](README.md);
   cases such as constant or zero inputs, empty index sets, and loose parameter
   bounds; these can expose missing hypotheses without substantial computation.
   Record the intended coverage and any differences in the claim-file header.
+  Before proof-writing, record a short dependency-and-scope map: the target's
+  conclusions, required supporting claims, existing Lean/Mathlib coverage, and
+  separately indexed downstream results outside the assignment. Keep it with
+  the turn's supporting evidence and reflect the final scope in the research
+  record; do not create another live status tracker.
 - If the source statement fails, formalize the valid portion and state the
   correction explicitly, with a counterexample to the false portion when
   possible. Preserve the earlier record under the root correction policy.
