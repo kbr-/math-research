@@ -185,6 +185,46 @@ the remote session awake and connected while it works. See the official OpenAI
 guides to [long-running work](https://learn.chatgpt.com/docs/long-running-work)
 and [goal commands](https://learn.chatgpt.com/docs/developer-commands?surface=cli#set-or-view-a-task-goal-with-goal).
 
+### Formalize
+
+Formalization is opt-in: ordinary research and the Spin prompt do not require
+Lean proofs. Set up the pinned Lean and Mathlib dependencies using the
+[formalization guide](formalization/README.md), then ask the agent to execute
+the [Formalize prompt](PROMPTS.md#formalize) against a claim-index reference:
+
+```text
+Execute the Formalize prompt in ./PROMPTS.md against claim lem:mp-telescoping.
+```
+
+The agent identifies the statement and its dependencies, writes per-claim Lean
+files, and verifies the proofs. It records the human-readable argument, exact
+verified scope, evidence, and timing in the notebook, links the formalization
+from the claim index, and updates **Gaps identified by formalization** when
+needed. A claim is marked formalized only when its full statement and required
+proof dependencies are verified, under the [formalization rules](formalization/AGENTS.md).
+The example claim above is already formalized; choose an unformalized claim for
+new work. Checkpoints stay on the current branch and are committed locally.
+
+### Automatic formalization
+
+Use the [Spin-formalize prompt](PROMPTS.md#spin-formalize) with a set of claims
+to repeat formalization and process review without prompting after each claim.
+In a Codex goal, using the same interface described in
+[Automatic research](#automatic-research), supply an objective such as:
+
+```text
+/goal Execute the Spin-formalize prompt in ./PROMPTS.md against claims {lem:affine-clause-resolution-PC-degree, lem:semantic-weakening-PC-degree}.
+```
+
+The agent chooses a dependency-first order. Each existing indexed claim gets
+its own research-record entry and checkpoint before claims that depend on it;
+a newly introduced dependency may share its parent's entry while receiving its
+own Lean file and claim-index entry. Each cycle includes a process assessment,
+with useful framework improvements committed separately. False or blocked
+claims are recorded honestly while independent targets continue; partial
+verification is not counted as completion. This loop does not enable
+formalization in ordinary research sessions or authorize publication.
+
 ## Computation tools
 
 Python 3.10+ is required for the complete toolset. The notebook server,
