@@ -7,6 +7,9 @@ claims. Each result will have its own file under `claims/`, for example
 and joint total-degree bound, with the precise scope recorded in its header and
 the [claim index](../research/CLAIM_INDEX.md).
 
+For an assigned formalization, follow [AGENTS.md](AGENTS.md): establish the exact
+statement first, prove it, then review the verified type against the notebook.
+
 Files can depend on other claim files using imports such as
 `import claims.ModInterpolation`. Lake discovers all Lean modules under
 `claims/` and builds them in dependency order; no aggregate file is required.
@@ -61,19 +64,28 @@ From the repository root, run the complete verification command:
 ```
 
 It builds under `compute.sh`, rechecks each claim file with warnings treated as
-errors, and runs `#print axioms` for every listed declaration. Unfinished proofs
+errors, and prints each listed declaration's type with `#check @name`, including
+implicit parameters, alongside `#print axioms`.
+Unfinished proofs
 (`sorry` or `admit`) are not accepted. Axiom reports may contain only the standard
 Lean foundations `propext`, `Classical.choice`, and `Quot.sound`; `sorryAx`, custom
 axioms, and other additions fail verification. In particular, do not replace an
 unproved step with a custom axiom. The command reports an empty project as setup
 only, never as a verified research result.
 
-For a research checkpoint, use `--out research/results/TURN/lean-verification.txt`
-to preserve the full output in a new file, including dependency revisions and
-axiom reports. Commit it with the formalization and notebook research entry
-under the root research protocol. Verification does not establish that the
-formal statement faithfully expresses the notebook claim: review that match
-and the completeness of the declaration list explicitly.
+During a research turn, attach verification to its existing timing session and
+preserve the complete output in a new evidence file:
+
+```bash
+./formalization/verify.sh --session TURN --out research/results/TURN/lean-verification.txt
+```
+
+The wrapper records the command in that session without starting or stopping
+the overall research clock. Without `--session`, the launcher creates an
+automatic command session. Output includes dependency revisions, declaration
+types, and axiom reports. Commit it with the formalization and notebook entry
+under the root research protocol. The separate statement-review obligation is
+defined in [AGENTS.md](AGENTS.md).
 
 ## Reproducible dependencies
 

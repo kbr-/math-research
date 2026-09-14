@@ -82,7 +82,8 @@ historical mathematical sources only when the current research task needs them.
 - Formal proofs: [Lean project](../../formalization/README.md) contains per-claim
   formalizations and verification instructions; the claim index links each
   formalized result and its verified scope. Consult it when formalization is
-  explicitly assigned, under the root AGENTS.md policy, not during routine resume.
+  explicitly assigned, then read [formalization rules](../../formalization/AGENTS.md)
+  under the root AGENTS.md policy. Neither is required during routine resume.
 
 - Historical proofs: [claim index](../../php_codex_handoff/manuscript/CLAIM_INDEX.md)
   and selected records of `php_codex_handoff/manuscript/claims.json` locate the

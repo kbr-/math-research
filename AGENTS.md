@@ -171,8 +171,8 @@ actionable rule over another checklist or a record of one-off setup history.
 - Lean formalizations live in [formalization/](formalization/README.md). Begin
   formalization only under an explicit user assignment, including an explicitly
   assigned parallel formalization agent; ordinary research and Spin do not
-  require formalizing results. Consult that project's instructions when assigned,
-  not as mandatory reading for every research cycle. For each formalized claim,
+  require formalizing results. Read [formalization/AGENTS.md](formalization/AGENTS.md)
+  when assigned, not as mandatory reading for every research cycle. For each formalized claim,
   update its entry in research/CLAIM_INDEX.md with a link to the per-claim Lean
   file and the exact verified scope, identifying partial coverage or stronger
   hypotheses. Keep formalization status distinct from mathematical status:

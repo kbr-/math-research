@@ -68,7 +68,11 @@ def main():
             run(["lake", "env", "lean", "-DwarningAsError=true", str(path.relative_to(ROOT))])
         if files:
             imports = ["import " + ".".join(path.relative_to(ROOT).with_suffix("").parts) for path in files]
-            audit = "\n".join(imports + ["#print axioms " + name for name in declarations]) + "\n"
+            commands = []
+            for name in declarations:
+                commands.extend(["#check @" + name,
+                                 "#print axioms " + name])
+            audit = "\n".join(imports + commands) + "\n"
             with tempfile.NamedTemporaryFile(mode="w", suffix=".lean", dir=ROOT / ".lake") as temp:
                 temp.write(audit)
                 temp.flush()
