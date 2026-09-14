@@ -2,6 +2,7 @@
 // Copyright (c) 2026 Kamil Braun
 // Complete degree-preserving images of a two-level shared-bit ENS family.
 #include "domain_polynomial.hpp"
+#include "ns_witness.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -33,20 +34,12 @@ struct Context {
     }
     void write(std::ostream& out,const std::string& name,const Cert& cert,int budget,
                const Polynomial* source=nullptr){
-        Polynomial sum;int used=0;bool comma=false;
         out<<"{\"record\":\"NS_certificate\",\"field\":"<<r.p<<",\"name\":\""<<name
            <<"\",\"target\":";write_json(out,cert.target);out<<",\"budget\":"<<budget;
         if(source){out<<",\"source_axiom\":";write_json(out,*source);out<<",\"original_degree\":"<<degree(*source);}
-        out<<",\"terms\":[";
-        for(const auto& [id,q]:cert.cof)if(!q.empty()){
-            r.accumulate(sum,r.multiply(q,axioms.at(id)));
-            used=std::max(used,degree(q)+degree(axioms[id]));
-            if(comma)out<<',';
-            comma=true;out<<"{\"axiom_id\":"<<id<<",\"cofactor\":";write_json(out,q);out<<'}';
-        }
-        need(sum==cert.target && used<=budget,"NS identity or degree: "+name);
+        int used=ns_witness::write_terms(out,r,axioms,cert.target,cert.cof,budget,name);
         if(source)need(used<=degree(*source),"original degree exceeded");
-        out<<"],\"witness_degree\":"<<used<<"}\n";++count;
+        out<<"}\n";++count;
     }
 };
 void assign(const Ring& r,const Block& A,std::map<int,int>& point){

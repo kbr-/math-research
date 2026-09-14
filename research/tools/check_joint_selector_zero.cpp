@@ -2,6 +2,7 @@
 // Copyright (c) 2026 Kamil Braun
 // Exact weighted zero-selector images and source profiles over retained clamps.
 #include "domain_polynomial.hpp"
+#include "ns_witness.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -21,17 +22,10 @@ struct Context {
     }
     void certificate(std::ostream& out,const std::string& label,const Polynomial& target,
                      const std::map<int,Polynomial>& cof,int budget){
-        Polynomial sum;int used=0;bool comma=false;
         out<<"{\"record\":\"NS_certificate\",\"case\":\""<<name<<"\",\"name\":\""<<label
-           <<"\",\"target\":";write_json(out,target);out<<",\"budget\":"<<budget<<",\"terms\":[";
-        for(const auto& [id,q]:cof)if(!q.empty()){
-            r.accumulate(sum,r.multiply(q,axioms.at(id)));
-            used=std::max(used,degree(q)+degree(axioms[id]));
-            if(comma)out<<',';
-            comma=true;out<<"{\"axiom_id\":"<<id<<",\"cofactor\":";write_json(out,q);out<<'}';
-        }
-        need(sum==target && used<=budget,"NS identity or budget: "+label);
-        out<<"],\"witness_degree\":"<<used<<"}\n";++certificates;
+           <<"\",\"target\":";write_json(out,target);out<<",\"budget\":"<<budget;
+        ns_witness::write_terms(out,r,axioms,target,cof,budget,label);
+        out<<"}\n";++certificates;
     }
     void Boolean(std::ostream& out,const std::string& label,const Polynomial& target,int old,int budget){
         std::vector<int> powers(old,2);auto red=domain_reduce(r,target,powers);
