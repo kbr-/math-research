@@ -66,11 +66,13 @@ actionable rule over another checklist or a record of one-off setup history.
   how the task could discharge or test it, and state a concrete stopping point.
   Distinguish what suffices for the goal from stronger conveniences of a method.
   Select a sufficient endpoint before adding proof-conversion steps.
-  Prioritize the unproved step for the full compiled source, with bounds for
-  every fixed target depth. Use special families to test that step; if they
-  do not resolve a named hypothesis or obstruction, audit the general step
-  before extending them. Check source hypotheses through compilation and
-  preprocessing before sharpening conditional estimates. Once the question, argument, and
+  Prioritize an unproved obligation required for the main goal. Use restricted
+  cases to test a named hypothesis, obstruction, or candidate general mechanism.
+  A growing list of cases does not establish generalization. Before extending
+  that list, state the missing general step and check its hypotheses and
+  accumulated costs under composition against the budget needed for the goal.
+  If those checks fail, address the failure or reconsider the mechanism before
+  sharpening more conditional estimates. Once the question, argument, and
   evidence are stable, make one focused correctness
   review; move optional extensions to the next cycle. Reopen the argument only
   for a concrete unresolved concern. Prepare the commit message, staging paths,
