@@ -1,0 +1,121 @@
+05-affine-exclusion.tex, lines 1-45
+\section{Excluding one complete affine extension level}\label{sec:affine}
+
+The product construction below belongs to the extension-Nullstellensatz
+approach developed by Buss, Impagliazzo, Kraj\'i\v{c}ek, Pudl\'ak,
+Razborov, and Sgall \cite{BIKPRS}. We use a complete one-level family
+and give the needed algebraic arguments explicitly.
+
+An accuracy-\(h\) affine block has a finite tuple of old affine polynomials
+\(g_1,\ldots,g_s\), fresh coefficient variables \(r_{ui}\), and product
+\begin{equation}\label{eq:block}
+ P=\prod_{u=1}^h\left(1-\sum_{i=1}^s r_{ui}g_i\right).
+\end{equation}
+Its \emph{complete} axiom set contains every \(g_iP\) and every
+\(r_{ui}^2-r_{ui}\). Products \(P=0\) are not added as axioms.
+Different blocks have disjoint coefficient variables, and every input
+is affine in the old bits alone.
+
+\subsection{Cleanup and ordinary affine restriction}
+A block is \emph{proper} if its affine input span is nonzero and does
+not contain the constant one. Its rank is the dimension of that span.
+
+\begin{lemma}[Scalar cleanup]\label{lem:cleanup}
+Zero-span and unit-span blocks can be removed by substituting constants
+for their coefficients, without increasing PC degree or changing the
+other blocks.
+After zero inputs are discarded, every companion in a proper block
+has ordinary degree \(2h+1\).
+\end{lemma}
+\begin{proof}
+For zero span all inputs are zero; set its coefficients to zero.
+For unit span choose constants \(c_i\) with \(\sum_i c_i g_i=1\).
+Set the first coefficient row to \(c_i\) and all other rows to zero,
+making \(P=0\).
+Every axiom of an eliminated block maps to zero, and coefficient domains
+map to valid constants. Other blocks use only old bits and are unchanged.
+A constant substitution preserves a PC derivation and its degree.
+
+In a proper span each nonzero input has nonzero linear part; otherwise
+the span contains one. Each factor of \eqref{eq:block} then has nonzero
+degree-two part, because its own coefficient variables are distinct.
+Their product has degree \(2h\) in the ordinary polynomial ring.
+Multiplying by a nonzero affine input gives degree \(2h+1\).
+Coefficients for an identically zero input may independently be set to
+zero, so those inputs cause no exceptional axiom degree.
+\end{proof}
+
+05-affine-exclusion.tex, lines 166-200
+Together with \eqref{eq:low-cost}, this yields the complete ledger
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Original axiom & Original degree \(e\) & Weighted image ceiling\\
+\midrule
+High companion & \(2h+1\) & \(2k+1\)\\
+Low companion & \(2h+1\) & \(r+1+k\)\\
+Coefficient Booleanity & \(2\) & \(3k\)\\
+Old axiom & \(e\) & \(e+k\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every entry fits \(k(e+1)\). Proper-block companion degrees are the
+ordinary degrees justified in Lemma~\ref{lem:cleanup}.
+All assignments use only old variables, so they define a single
+substitution even when input tuples overlap.
+
+\paragraph{Primitive PC replay.}
+Let \(B=k(D+1)\). Replace each source line \(q\) by \(f\sigma(q)\).
+The preceding certificates initialize every source axiom used by the
+degree-\(D\) refutation through at most \(B\).
+Linear combinations commute with the weighted map.
+For a nonzero source multiplication \(q\mapsto yq\), write \(d=\deg q\).
+Then \(d+1\le D\), while
+\[
+ \deg(f\sigma(q))\le k(d+1),\qquad \deg\sigma(y)\le k.
+\]
+Multiplying the completed weighted line by \(\sigma(y)\), using
+Lemma~\ref{lem:pc-product}, therefore stays within
+\(k(d+2)\le B\). Zero source lines cause no difficulty.
+The final weighted image of one is \(f\), proving the assertion.
+\end{proof}
+
+\begin{theorem}[Finite-parameter affine exclusion]\label{thm:affine}
+
+06-clause-simulation.tex, lines 1-36
+\section{A direct PC simulation of the proof DAG}\label{sec:clause-simulation}
+
+Represent a linear clause by its affine true-indicators:
+\[
+ C=\bigvee_i(g_{C,i}=1),\qquad
+ Z(C)=\{b:g_{C,i}(b)=0\text{ for all }i\}.
+\]
+An equation \(a(b)=\alpha\) has true-indicator \(1+a(b)+\alpha\).
+The set \(Z(C)\) is an affine subspace or empty.
+
+Assign to each nonempty clause a fresh complete accuracy-\(h\) block,
+and write its product as \(P_C\). Set \(P_\varnothing=1\), using no
+block for the empty clause. Fix the whole block family before following
+the proof DAG. Clause values \(P_C=0\) will be derived; they are not
+included among its axioms.
+
+\begin{lemma}[Prefix identity]\label{lem:prefix}
+For every clause block there are polynomials \(U_{C,i}\) satisfying
+\begin{equation}\label{eq:prefix}
+ 1-P_C=\sum_iU_{C,i}g_{C,i},\qquad
+ \deg P_C\le2h,\qquad\deg U_{C,i}\le2h-1.
+\end{equation}
+Its companions have degree at most \(2h+1\).
+\end{lemma}
+\begin{proof}
+Put \(L_u=1-\sum_i r_{ui}g_{C,i}\).
+Telescoping the product gives
+\[
+ 1-\prod_{u=1}^hL_u
+  =\sum_{u=1}^h(1-L_u)\prod_{w<u}L_w.
+\]
+Thus one may take
+\[
+ U_{C,i}=\sum_{u=1}^h r_{ui}\prod_{w<u}L_w.
+\]
+Each \(L_w\) has degree at most two, giving all the stated bounds.

@@ -15632,5 +15632,29 @@
 </div>
 </article>
 
+<article class="research-entry" id="entry-2026-09-14-bounded-companion-degree-audit">
+  <h3>14 September 2026 — Bounded downstream audit of the companion-degree correction</h3>
+  <p class="entry-meta"><strong>Status:</strong> targeted dependency audit under a user-requested three-minute limit; no invalid downstream inference found in the inspected paths, not an exhaustive audit.</p>
+  <p><strong>Question and stopping point.</strong> Determine whether the <a href="#lean-mp-companion-degree-correction">loose-bound companion-degree correction</a> affects nearby MP composition, polynomial-normalizer transfer, or the publication draft's affine endpoint. Inspect their actual degree uses, record the distinction between upper bounds and exact degrees, and stop within the bounded audit rather than attempting the full dependency graph.</p>
+  <p><strong>MP composition.</strong> The table in <a href="#mp-certificates">the original certificate ledger</a> repeats the ambiguous exact-degree expression with an input ceiling. However, its following accounting explicitly uses companions of degree <em>at most</em> \(L+h(L+1)\). Its Case A and Case B estimates and the displayed NS/PC recurrences require upper bounds only. The corrected inequality supplies those bounds; no equality-dependent inference was found in that passage.</p>
+  <p><strong>An equality-sensitive path with stronger hypotheses.</strong> The <a href="#polynorm-ns">polynomial-normalizer NS transfer</a> does subtract original companion degree, bounding its cofactor by \(D-e_{a,i}\). An arbitrary inflated upper bound cannot replace \(e_{a,i}\) in that subtraction. Its <a href="#polynorm-transfer">parent theorem</a>, however, explicitly sets \(\delta_a=\max_j\deg g_{a,j}\), uses fresh coefficient variables disjoint from all inputs, and works over a field. Those hypotheses justify the equality for nonzero companions.</p>
+  <p><strong>Justification under those hypotheses.</strong> Choose a nonzero input attaining degree \(\delta_a\). In each factor \(1-\sum_jr_{u,j}g_j\), its highest-degree term has degree \(\delta_a+1\); terms with different \(j\) cannot cancel it because their fresh coefficient variables differ. Thus every factor has exact degree \(\delta_a+1\). The ordinary polynomial ring over a field is an integral domain, so degrees add across the product and after multiplication by any nonzero \(g_i\). Consequently \(\deg(g_iP)=\deg g_i+h(\delta_a+1)\). If all inputs vanish there is no nonzero companion to charge. This argument also explains why the earlier counterexample, which deliberately chooses a loose ceiling, does not invalidate this transfer.</p>
+  <p><strong>Publication draft.</strong> Section 5's scalar-cleanup lemma explicitly removes zero-span and unit-span blocks. Each remaining nonzero affine input has a nonzero linear part, and the proof uses distinct fresh coefficients and the polynomial ring's integral-domain property to establish exact companion degree \(2h+1\). Its later weighted-image table expressly refers back to this justification. Section 6's local clause-simulation estimates use companion degree at most \(2h+1\). No instance of the loose-ceiling error was found in these inspected uses.</p>
+  <p><strong>Scope and evidence.</strong> Searches sampled companion-degree and cofactor-subtraction expressions in the notebook and draft. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/audit_mp_degree_20260914_03/README.md">audit record</a> preserves exact notebook excerpts and the draft passages. Later source compilers, every historical claim, and the complete lower-bound argument were not audited. The conclusion is limited to the three inspected paths; this is not a new Lean verification or proof of the publication theorem.</p>
+  <p><strong>Route and process assessment.</strong> The main source-coverage gap and proposed next mathematical task remain unchanged; the living sections were reviewed. Separating upper-bound uses from cofactor subtraction quickly isolated the relevant risk, and the exact-maximum/freshness hypotheses resolved the sampled equality-sensitive case without changing its proof.</p>
+  <div class="timing-report" data-session="audit_mp_degree_20260914_03">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 48.23 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1.06 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 46.87 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">0.29 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

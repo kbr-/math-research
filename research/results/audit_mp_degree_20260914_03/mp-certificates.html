@@ -1,0 +1,41 @@
+<h4 id="mp-certificates">4. Certificate composition and degree ledger</h4>
+    <p>Let \(\mathcal A\) contain the original axioms, all required companions, and all domain equations. Express the two premise certificates and the local correction as</p>
+    <div class="math">\[
+      a=\sum_{F\in\mathcal A}A_FF,\qquad
+      c=\sum_{F\in\mathcal A}C_FF,\qquad
+      R=\sum_{F\in\mathcal A}W_FF,
+      \qquad q=bU_0.
+    \]</div>
+    <p>Here \(R=\sum_iU_iE_{B,i}-\sum_iV_iE_{U,i}\) in Case A and
+      \(R=-U_1H_b-E_{U,1}\) in Case B. Equations (MP-A/B) say \(b=c+qa+R\), so the exact new coefficient for each original axiom is</p>
+    <div class="math">\[
+      \boxed{B_F=C_F+qA_F+W_F.}\tag{MP-cofactor}
+    \]</div>
+    <p>Coefficients for identical axioms are collected only after this identity is formed. The occurrence of \(b\) in the known polynomial multiplier \(q\) is not a circular inference: PC multiplies the already derived line \(a\) by that explicit polynomial, without assuming \(b=0\).</p>
+    <table>
+      <thead><tr><th>Quantity</th><th>Ordinary degree or derivation ceiling</th></tr></thead>
+      <tbody>
+        <tr><td>Original nonzero companion in a block with input ceiling \(\delta\)</td><td>\(\deg f_i+h(\delta+1)\); never replaced by its specialized degree</td></tr>
+        <tr><td>Telescoping coefficient \(U_i\) or \(V_i\)</td><td>\(u=1+(h-1)w\)</td></tr>
+        <tr><td>Antecedent multiplier \(q=bU_0\)</td><td>\(\mu=hw\)</td></tr>
+        <tr><td>Final-line product \(qa\)</td><td>\(\mu+L\le2hw\)</td></tr>
+        <tr><td>Booleanity certificate \(H_b\)</td><td>\(2hw\)</td></tr>
+        <tr><td>Flattened local correction, Case A</td><td>\(2hw\)</td></tr>
+        <tr><td>Flattened local correction, Case B</td><td>\(u+2hw\le3hw\)</td></tr>
+        <tr><td>Local PC derivation, either case</td><td>\(2hw\), using the final line \(H_b\) rather than flattening it</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Accounting.</strong> For Case A, a companion has degree at most \(L+hw\), so a multiplied companion costs at most
+      \(u+L+hw=2hw\). In Case B, flattening multiplies the entire Booleanity certificate by \(U_1\); PC instead derives \(H_b\) first and multiplies its final polynomial, of degree at most \(2L\). This costs at most
+      \(\max\{2hw,u+2L\}=2hw\). The remaining companion has degree at most \(L+hw\le2hw\). These estimates hold for \(h=1\), zero terms, and constants as well.</p>
+    <p>If \(d_a,d_c\) are the premise NS certificate degrees, (MP-cofactor) yields</p>
+    <div class="math">\[
+      d_b^{\mathrm{NS}}\le\max\{d_c,d_a+\mu,3hw\}.
+    \]</div>
+    <p>Unrolling along a tree multiplies a contribution by \(q\) whenever its path follows an antecedent premise; implication-premise edges have multiplier one. With uniform \(L,h\), height \(t\), and leaf certificate ceiling \(d_{\rm leaf}\), this gives
+      \(\max\{d_{\rm leaf},3hw\}+t\mu\). The number of summands need not be small, and this observation alone does not bound essential block support.</p>
+    <p>In contrast, if \(d_a,d_c\) are supplied PC derivation ceilings over the <em>augmented</em> axiom system, final-line reuse gives</p>
+    <div class="math">\[
+      \boxed{d_b^{\mathrm{PC}}\le\max\{d_a,d_c,2hw\}.}
+    \]</div>
+    <p>Thus MP composition contributes no further height factor in augmented PC once its leaf derivations are supplied. BIKPRS Lemma 6.10 provides a uniform polynomial-in-\(h\) choice of \(L\) for fixed formula depth and prime; formula depth and proof-tree height remain different parameters. Leaf translations and axiom instances retain their own derivation costs.</p>

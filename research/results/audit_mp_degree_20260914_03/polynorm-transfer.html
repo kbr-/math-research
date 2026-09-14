@@ -1,0 +1,24 @@
+<h4 id="polynorm-transfer">1. Supplied polynomial normalizers transfer an entire layer</h4>
+    <p><strong>Working theorem.</strong> Let \(G\subseteq\mathbb F_p[Y]\) include the specified old-variable domain equations. Consider any finite family of same-level ENS blocks, with pairwise disjoint fresh variables, inputs \(g_{a,i}\in\mathbb F_p[Y]\), and accuracies \(h_a\ge1\). For every block, supply polynomials \(\beta_{a,i}\in\mathbb F_p[Y]\), of degree at most \(T\ge1\), and a PC derivation from \(G\) of</p>
+    <div class="math">\[
+      H_a=1-\sum_i\beta_{a,i}g_{a,i}
+      \quad\text{through degree }c_a.
+    \]</div>
+    <p>Put \(c=\max_a c_a\). Every degree-\(D\) augmented PC derivation of an old polynomial \(t(Y)\) transfers to a derivation from \(G\) through</p>
+    <div class="math">\[
+      \boxed{\max\{TD,c\}.}
+      \tag{PN}
+    \]</div>
+    <p>The bound has no factor depending on the number of blocks. All companions are retained. Later blocks depending on the removed variables are outside these hypotheses.</p>
+    <p><strong>Proof.</strong> In every block set \(r_{a,1,i}=\beta_{a,i}(Y)\) and set all remaining coefficient variables to zero. This single global polynomial substitution fixes \(Y\) and maps the companion \(E_{a,i}\) to \(g_{a,i}H_a\). For a nonzero input of degree \(k_i\), with \(\delta_a=\max_j\deg g_{a,j}\), its original companion degree is</p>
+    <div class="math">\[
+      e_{a,i}=k_i+h_a(\delta_a+1).
+    \]</div>
+    <p>If this axiom was used, \(e_{a,i}\le D\). Derive \(H_a\) first, then multiply its final polynomial by \(g_{a,i}\), using <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/01_foundations.md#lem-reuse">PC reuse</a>. Since</p>
+    <div class="math">\[
+      \deg(g_{a,i}H_a)\le k_i+T+\delta_a
+      \le T\bigl(k_i+h_a(\delta_a+1)\bigr)\le TD,
+    \]</div>
+    <p>the substituted companion has a derivation through \(\max\{c_a,TD\}\). A zero companion needs no derivation.</p>
+    <p>A used fresh field equation becomes \(\beta^p-\beta\), or zero. It has an old-domain certificate of degree at most \(pT\), by <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/01_foundations.md#lem-fieldreduction">bounded field reduction</a>. Its use in the source proof requires \(p\le D\), so \(pT\le TD\). Old axioms are unchanged. Finally apply the <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/01_foundations.md#lem-substitution">PC polynomial-substitution lemma</a> to every inference, replacing substituted axiom lines by the derivations just supplied. The old conclusion remains exactly \(t\), proving (PN).</p>
+    <p>The premise is an explicit normalization witness and its bounded-degree old derivation. A cheap PC refutation of \(G\cup\{g_{a,i}\}_i\) does not by itself provide bounded-degree coefficients \(\beta_{a,i}\): flattening a PC proof into an original-axiom identity requires separate accounting.</p>
