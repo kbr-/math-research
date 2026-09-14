@@ -8,6 +8,26 @@ with their proofs, plus remaining route to our goal, into a pdf.
 Read research/notes/RESUME.md fully and follow its restart checklist. Load other
 sources only as needed.
 
+# Formalize
+
+Invocation: `Execute the Formalize prompt against claim <reference-to-the-claim>`.
+The reference supplied in the invocation is this prompt's argument: it may be
+a claim-index label, a notebook anchor or link, or another unambiguous claim reference.
+
+Formalize that claim in Lean. Follow [formalization/AGENTS.md](formalization/AGENTS.md)
+and the root research protocol, restoring context through
+[research/notes/RESUME.md](research/notes/RESUME.md) as needed. Resolve the reference
+and read its exact statement and relevant proof before fixing the formal scope.
+If the reference is ambiguous, ask which claim is intended rather than selecting
+a different target.
+
+Carry the assigned formalization through statement review, proof verification,
+evidence retention, a notebook research-record entry, and a claim-index link under
+those rules. Report the exact verified scope and any remaining gap honestly;
+do not silently weaken the requested claim. Commit the checkpoint locally on the
+current branch and stop; this prompt does not authorize a push or a Spin loop.
+After compaction, restore the original claim argument and continue this assignment.
+
 # Spin
 
 I am now going to sleep. I won't be available to you for the next ~8 hours.
