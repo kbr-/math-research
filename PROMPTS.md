@@ -17,7 +17,13 @@ a claim-index label, a notebook anchor or link, or another unambiguous claim ref
 Formalize that claim in Lean. Follow [formalization/AGENTS.md](formalization/AGENTS.md)
 and the root research protocol, restoring context through
 [research/notes/RESUME.md](research/notes/RESUME.md) as needed. Resolve the reference
-and read its exact statement and relevant proof before fixing the formal scope.
+and read its exact statement and relevant proof. Identify its mathematical
+components, hypotheses, dependencies, and downstream applications. Choose the
+formalization order and supporting lemmas yourself; do not require the user to
+specify a "core" or enumerate conclusions. Aim to formalize the complete indexed
+claim. If only part can be completed, record the exact verified portion and
+remaining obligations explicitly, without presenting partial verification as
+completion of the whole claim.
 If the reference is ambiguous, ask which claim is intended rather than selecting
 a different target.
 
