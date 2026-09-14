@@ -1,0 +1,49 @@
+<h4 id="publication-Res-parity-bit-PHP-proof">3. End-to-end proof using the recorded dependencies</h4>
+  <p><strong>Fix the alleged polynomial bound.</strong> Fix \(K&gt;0\), and suppose that for an arbitrarily large \(n=2^\ell\) there is a refutation \(\pi\) of (PUB-BPHP) with \(S\le n^K\). All choices below are made after fixing this proof; no uniform construction of a separating functional is required.</p>
+  <p><strong>Step 1: put the actual CNF proof into the audited clause presentation.</strong> Apply the <a href="#binary-semantic-affine-cover">rule and clause-description normalization</a>, including restriction of any unrelated variables. Prepend the compact pair-difference clauses</p>
+  <div class="math">\[
+    C_{ii'}=\bigvee_{t=1}^{\ell}(b_{it}+b_{i't}=1)
+  \]</div>
+  <p>and use the <a href="#bit-PHP-affine-clause-PC-transfer">recorded semantic-weakening bridge</a> to obtain each initial CNF clause that \(\pi\) uses. The resulting basic-rule proof can be chosen with at most \(3S+\binom m2\) nodes: the semantic-rule conversion adds at most two auxiliary clauses per original node, and there are at most \(\binom m2\) compact initial nodes. Its clause descriptions have polynomial length in \(v\). Thus the number of clause blocks and input positions needed below is polynomial in \(n\), even if the original size convention counted only lines.</p>
+  <p><strong>Step 2: obtain the complete one-level algebraic endpoint.</strong> Set \(h=3\ell\). Apply the <a href="#bit-PHP-affine-clause-PC-transfer">direct ordinary-PC transfer</a> to this proof. In the notation of the <a href="#affine-clause-PC-system">fixed clause system</a>, it gives a family \(\Gamma\) over the old compact base</p>
+  <div class="math">\[
+    \mathcal Q_n
+      =\left\{
+          E_{ii'}=\prod_{t=1}^{\ell}(1-b_{it}-b_{i't})
+        \right\}_{i&lt;i'}
+        \cup\{b_{it}^2-b_{it}\}_{i,t}.
+  \]</div>
+  <p>Each added block has old-affine inputs, fresh own coefficients, all its companions \(g_{a,j}P_a\), and all its coefficient Booleanity equations. Every block is at the same extension level. The transfer derives one in ordinary PC through</p>
+  <div class="math">\[
+    D=\max\{2h+\ell,4h+1\}=12\ell+1.
+    \tag{PUB-D}
+  \]</div>
+  <p>The source proof's initial clause values and subsequent line values are derived within this fixed system. They are not inserted as additional axioms. The PC degree is the ordinary joint-variable degree; no Boolean quotient degree or bound on expanded PC monomial count is substituted for it. The transfer has no proof-DAG-height factor.</p>
+  <p><strong>Step 3: close the quantitative hypotheses.</strong> Let \(M\) be at least one and at least the number of proper affine blocks after the scalar cleanup included in the <a href="#ordinary-restriction-affine-family-audit">one-level argument</a>. We may take</p>
+  <div class="math">\[
+    M\le 3S+\binom m2+1\le 3n^K+n^2+1,
+    \qquad
+    k=\left\lceil\sqrt{m\ln(4M)}\right\rceil,
+    \qquad B=k(D+1).
+    \tag{PUB-parameters}
+  \]</div>
+  <p>Here \(\ln\) is the natural logarithm. Since \(K\) is fixed,</p>
+  <div class="math">\[
+    k=O_K\!\left(\sqrt{n\log n}\right),\qquad
+    B=O_K\!\left(\sqrt n\,(\log n)^{3/2}\right)=o(n).
+  \]</div>
+  <p>Consequently, after increasing \(\ell_0(K)\) if necessary, all required board and degree inequalities hold simultaneously:</p>
+  <div class="math">\[
+    D\ge2h+1,\qquad 1\le k\le B\le n/2,\qquad
+    m\ge B,\qquad n\ge2B-1,\qquad 4(k-1)&lt;n.
+    \tag{PUB-room}
+  \]</div>
+  <p>This choice also lies in the polynomial-inventory regime of the ordinary restriction-dimension estimate. No restriction on the ranks of the actual proof clauses is being assumed: the linked one-level argument handles both sides of its rank partition.</p>
+  <p><strong>Step 4: remove the affine extensions at a controlled old degree.</strong> Apply the <a href="#ordinary-restriction-affine-family-audit">ordinary restriction-kernel and weighted-PC argument</a> with exactly these \(h,M,k,D\). Its construction and original-degree ledger yield a nonzero polynomial \(f\) in \(\mathcal L_k\), the space spanned by products of at most \(k\) bits on distinct rows, and an ordinary-PC derivation</p>
+  <div class="math">\[
+      f\in\mathcal C_B(\mathcal Q_n),\qquad f\ne0.
+    \tag{PUB-old-consequence}
+  \]</div>
+  <p>The hypotheses for this application were verified in Step 3. We use the simultaneous map from that dependency; we do not eliminate blocks one at a time, assume augmented PC equals NS, or replace formal ideal membership by pointwise vanishing.</p>
+  <p><strong>Step 5: contradict the old separating functional.</strong> Apply the <a href="#compact-bit-transported-filtration">decoder transfer</a> to (PUB-old-consequence), with the same degree \(B\). It puts \(\tau f\) in the ordinary degree-\(B\) PC consequence space of the functional unary PHP system on \(m=n+1\) rows and \(n\) columns. But the <a href="#cube-residual-dual-separation">cube-residual separation lemma</a>, whose hypotheses are precisely included in (PUB-room), excludes that membership for this nonzero \(f\in\mathcal L_k\). Its old-PC premise is justified by the <a href="#matching-moment-completeness-audit">complete matching constraints</a> and <a href="#matching-extension-arbitrary-row-count">old row-set extension and closure proof</a>. This is the contradiction.</p>
+  <p>The argument applies to every sufficiently large \(n=2^\ell\) for the chosen \(K\). Hence no refutation of at most \(n^K\) nodes exists there. Since \(K\) was arbitrary, the theorem follows. \(\square\)</p>
