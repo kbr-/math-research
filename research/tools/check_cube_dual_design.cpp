@@ -32,7 +32,8 @@ U64 row_mask(const Matching& M,int n){
     U64 mask=0;for(int cell:M)mask|=U64(1)<<(cell/n);return mask;
 }
 struct Constraint {std::vector<int> left;int right=-1;};
-void run_case(std::ostream& out,int n,int k){
+void run_case(std::ostream& out,int n,int k,int prime){
+    auto mod=[prime](int value){value%=prime;return value<0?value+prime:value;};
     int ell=0;while((1<<ell)<n)++ell;
     int m=n+1,B=k+2;
     need((1<<ell)==n && n>=4 && 4*(k-1)<n && n>=2*B-1 && m<64,"fixture range");
@@ -54,14 +55,25 @@ void run_case(std::ostream& out,int n,int k){
     int q=available[0],a=available[1],b=available[2];
     std::vector<std::pair<int,int>> path={{q,a},{b,a},{b,q}};
     std::vector<Matching> moments;
+    std::map<Matching,int> weights;
+    auto put=[&](Matching mon,int value){
+        need(weights.emplace(mon,mod(value)).second,"duplicate weighted moment");
+        moments.push_back(std::move(mon));
+    };
     for(U64 bits=0;bits<(U64(1)<<k);++bits){
-        Matching base;for(int i=0;i<k;++i)base.push_back(i*n+lines[i][(bits>>i)&1]);
-        moments.push_back(base);
+        Matching base;int sign=1;
+        for(int i=0;i<k;++i){
+            int endpoint=int((bits>>i)&1);
+            base.push_back(i*n+lines[i][endpoint]);
+            if(!endpoint)sign=-sign;
+        }
+        put(base,sign);
         for(int r=k;r<m;++r){
-            auto mon=base;mon.push_back(r*n+q);moments.push_back(std::move(mon));
+            auto mon=base;mon.push_back(r*n+q);put(std::move(mon),sign);
         }
         for(int r=k;r<m;++r)for(int s=r+1;s<m;++s)for(const auto& [c,d]:path){
-            auto mon=base;mon.push_back(r*n+c);mon.push_back(s*n+d);moments.push_back(std::move(mon));
+            auto mon=base;mon.push_back(r*n+c);mon.push_back(s*n+d);
+            put(std::move(mon),c==b && d==a?-sign:sign);
         }
     }
     std::sort(moments.begin(),moments.end(),[](const auto& x,const auto& y){
@@ -107,7 +119,7 @@ void run_case(std::ostream& out,int n,int k){
     }
     U64 basis=0;for(int s=0;s<=k;++s)basis+=multiply(choose(m,s),power(ell,s));
     std::string name="n"+std::to_string(n)+"_k"+std::to_string(k)+"_B"+std::to_string(B);
-    out<<"{\"record\":\"fixture\",\"name\":\""<<name<<"\",\"field\":2,\"holes\":"<<n
+    out<<"{\"record\":\"fixture\",\"name\":\""<<name<<"\",\"field\":"<<prime<<",\"holes\":"<<n
        <<",\"pigeons\":"<<m<<",\"bit_length\":"<<ell<<",\"selected_rows\":"<<k
        <<",\"degree\":"<<B<<",\"normalization\":0,\"directions\":";array(out,directions);
     out<<",\"lines\":[";
@@ -119,20 +131,22 @@ void run_case(std::ostream& out,int n,int k){
        <<",\"stored_marginal_rows\":"<<constraints.size()<<",\"row_linear_basis_dimension\":"<<basis<<"}\n";
     for(std::size_t id=0;id<moments.size();++id){
         out<<"{\"record\":\"moment\",\"id\":"<<id<<",\"cells\":";
-        array(out,moments[id]);out<<",\"value\":1}\n";
+        array(out,moments[id]);out<<",\"value\":"<<weights.at(moments[id])<<"}\n";
     }
-    int corrupted_failures=0;U64 seen_faces=0,seen_rhs=0;
+    int corrupted_failures=0;U64 seen_faces=0,seen_rhs=0,unsigned_failures=0;
     for(const auto& [key,c]:constraints){
         const auto& [row,face]=key;
-        int lhs=int(c.left.size()%2),rhs=c.right>=0?1:0;
+        int lhs=0;for(int id:c.left)lhs=mod(lhs+weights.at(moments[id]));
+        int rhs=c.right>=0?weights.at(moments[c.right]):0;
         need(lhs==rhs,"row marginal failed");
-        seen_faces+=c.left.size();seen_rhs+=rhs;
+        seen_faces+=c.left.size();seen_rhs+=int(c.right>=0);
+        if(int(c.left.size()%prime)!=int(c.right>=0))++unsigned_failures;
         out<<"{\"record\":\"row_marginal\",\"row\":"<<row<<",\"cells\":";
         array(out,face);out<<",\"nonzero_extensions\":";array(out,c.left);
         out<<",\"right_moment\":"<<c.right<<",\"value\":"<<rhs<<"}\n";
         int corrupted=lhs;
-        for(int id:c.left)if(id==corrupt)corrupted^=1;
-        if(c.right==corrupt)rhs^=1;
+        for(int id:c.left)if(id==corrupt)corrupted=mod(corrupted-weights.at(moments[id]));
+        if(c.right==corrupt)rhs=0;
         if(corrupted!=rhs){
             ++corrupted_failures;
             out<<"{\"record\":\"corruption_failure\",\"removed_top_moment\":"<<corrupt
@@ -154,13 +168,19 @@ void run_case(std::ostream& out,int n,int k){
                 need(mon[i]/n==i,"low-degree moment has wrong row support");
                 coefficient&=(mon[i]%n>>axes[i])&1;
             }
-            value^=coefficient;
+            value=mod(value+coefficient*weights.at(mon));
         }
         need(value==int(chosen),"decoded row-linear coordinate");nonzero+=value;
         out<<"{\"record\":\"selected_row_basis_value\",\"axes\":";array(out,axes);
         out<<",\"value\":"<<value<<"}\n";
     }
     need(nonzero==1,"dual coordinate count");
+    if(prime!=2){
+        need(unsigned_failures>0,"missing unsigned-moment control");
+        out<<"{\"record\":\"unsigned_moment_control\",\"field\":"<<prime
+           <<",\"replace_every_nonzero_moment_by\":1,\"failed_marginals\":"
+           <<unsigned_failures<<"}\n";
+    }
     out<<"{\"record\":\"case_summary\",\"name\":\""<<name<<"\",\"passed\":true,"
          "\"all_unlisted_moments\":0,\"unlisted_marginals\":\"all terms and right side zero\","
          "\"other_row_linear_basis_values\":0,\"selected_axes_checked\":"<<combinations
@@ -171,16 +191,22 @@ void run_case(std::ostream& out,int n,int k){
 }
 int main(int argc,char** argv){
     try{
-        need(argc==3 && std::string(argv[1])=="--out","usage: --out NEW_PATH");
+        need((argc==3 || argc==5) && std::string(argv[1])=="--out",
+             "usage: --out NEW_PATH [--prime 2|3|5|7]");
+        int prime=2;
+        if(argc==5){
+            need(std::string(argv[3])=="--prime","prime flag");
+            prime=std::stoi(argv[4]);need(prime==2 || prime==3 || prime==5 || prime==7,"prime guard");
+        }
         std::filesystem::path path=argv[2];need(!std::filesystem::exists(path),"output exists");
         if(path.has_parent_path())std::filesystem::create_directories(path.parent_path());
         std::ofstream out(path);need(bool(out),"output open");
-        out<<"{\"record\":\"schema\",\"version\":1,\"field\":2,"
+        out<<"{\"record\":\"schema\",\"version\":1,\"field\":"<<prime<<","
               "\"cell_encoding\":\"row*holes+column\","
               "\"ordinary_polynomials\":\"reduce repeated variables using Booleanity; row/column collisions have value zero\","
               "\"sparse_completeness\":\"every nonzero moment contributes all its faces; every nonzero lower moment contributes every missing-row right side\","
               "\"decoder\":\"b_i,t maps to sum over column labels with bit t equal to one of X_i,column\"}\n";
-        run_case(out,8,2);run_case(out,32,6);
+        run_case(out,8,2,prime);run_case(out,32,6,prime);
         out<<"{\"record\":\"summary\",\"fixtures\":2,\"passed\":true}\n";
         need(bool(out),"output write");
     }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}
