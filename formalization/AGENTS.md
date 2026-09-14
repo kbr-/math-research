@@ -57,6 +57,8 @@ an explicitly marked statement-only proposition definition, never an axiom or
   human-readable alternative argument, with hypotheses and degree accounting,
   in the research-record entry introducing the formalization. A Lean source
   link or a description of the proof strategy alone is insufficient.
+  Use the notebook's MathJax notation for mathematical prose and displayed
+  equations; reserve code formatting for Lean identifiers and source references.
   Generalize only when it simplifies the proof or removes unnecessary
   dependencies without delaying the assigned claim. Defer optional extensions.
   When a reusable dependency makes a claim's formalization clearer, give it a
