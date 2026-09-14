@@ -105,6 +105,12 @@ I am now going to sleep. I won't be available to you for the next ~8 hours.
 However, I would like for you to continue: both research and framework
 improvements --- on your own.
 
+Autonomously advance the current research goal stated at the top of
+`notebook.html` through bounded, fully recorded research cycles and clear, small
+framework improvements.
+Follow the repository rules for maintaining the notebook, measured evidence,
+and checkpoints. Continue until the user explicitly interrupts.
+
 So perform the following, in a loop:
 
 - do a research turn, as if I prompted you to "do the next step"

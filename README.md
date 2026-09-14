@@ -162,18 +162,17 @@ After restoring context in the session for your chosen checkout:
 - **ChatGPT app:** open the remotely connected Codex session for that checkout,
   enter `/goal`, and supply the same objective in the goal interface.
 
-The ongoing research session on `main` uses the following goal, with the prompt
-filename updated here to `PROMPTS.md`. Enter it with
-`/goal` in the CLI, or paste the objective after `/goal` into the app's goal field:
+Enter this goal in the CLI, or paste the objective after `/goal` into the app's
+goal field:
 
 ```text
-/goal Execute the "Spin" prompt in ./PROMPTS.md: autonomously advance the ordinary-PHP AC0[p]Frege lower-bound research through bounded, fully recorded research cycles and clear, small framework improvements. Follow the saved prompt and repository rules, maintain the notebook and measured evidence, commit checkpoints and push main as explicitly authorized, restore context and reread the prompt after compaction, and continue until the user explicitly interrupts.
+/goal Execute the Spin prompt in ./PROMPTS.md.
 ```
 
-This example includes the maintainer's explicit authorization to push `main`.
-For another checkout or branch, adapt the objective and publication scope under
-[the Git policy](AGENTS.md#portable-sessions-and-git-checkpoints). For local-only
-work, replace the push clause with: "Override Spin's branch and publication
+The Spin prompt uses the maintainer's standing authorization to push `main`
+under [the Git policy](AGENTS.md#portable-sessions-and-git-checkpoints).
+For another checkout or branch, specify any needed overrides in the goal.
+For local-only work, append: "Override Spin's branch and publication
 instructions: stay on the current branch, commit locally, and do not push."
 The Spin prompt remains the authoritative loop; there is no need to paste its
 full instructions into each goal.
