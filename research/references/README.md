@@ -41,3 +41,10 @@ CC BY 4.0 license permits the public PDF and text conversion with attribution.
 The [dated audit](../results/source_cofactor_constraint_audit_20260913_114/source-audit.json)
 records the targeted reading, visual check of Proposition 21, and field-scope
 limitation. The paper's main lower-bound proof was not imported.
+
+Kopparty-Srinivasan-2018 was acquired from the journal for the certifying-polynomial
+obstruction to universal Boolean-domain source normalization. The unchanged PDF
+and identified text conversion are public under the verified CC BY 3.0 license.
+The [source audit](../results/general_local_profile_test_20260914_149/source-audit.json)
+records the exact definitions and approximate-majority lemma used; the paper's
+full circuit-size lower-bound proof was not imported.

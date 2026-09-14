@@ -31,6 +31,20 @@ arXiv:2605.04544v1 (6 May 2026).
 - The versioned record's license link was checked on 14 September 2026.
   Reading scope and hashes are preserved in the dated source-cofactor audit.
 
+**Swastik Kopparty, Srikanth Srinivasan,
+Certifying Polynomials for AC0[Parity] Circuits, with Applications to Lower Bounds
+and Circuit Compression**, Theory of Computing 14(12), 2018.
+
+- Source: https://theoryofcomputing.org/articles/v014a012/
+- DOI: https://doi.org/10.4086/toc.2018.v014a012
+- License: https://creativecommons.org/licenses/by/3.0/
+- Copyright and attribution remain with Swastik Kopparty and Srikanth Srinivasan.
+- `research/references/cache/Kopparty-Srinivasan-2018.pdf` is unchanged.
+- `research/references/extracted/Kopparty-Srinivasan-2018.txt` is a pdftotext
+  conversion; its formatting differs from the PDF.
+- The journal's license link was checked on 14 September 2026. Reading scope
+  and source hashes are recorded with the Boolean-domain profile obstruction.
+
 ## References without established public-redistribution permission
 
 The following locally held PDFs and their full-text extractions must be excluded

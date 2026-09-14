@@ -1,0 +1,1193 @@
+                          T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24
+                                       www.theoryofcomputing.org
+
+
+
+
+  Certifying Polynomials for AC0[⊕] Circuits,
+   with Applications to Lower Bounds and
+             Circuit Compression
+                          Swastik Kopparty∗                         Srikanth Srinivasan†
+                  Received April 18, 2016; Revised March 20, 2017; Published August 25, 2018
+
+
+
+
+       Abstract: In this paper, we study the method of certifying polynomials for proving AC0 [⊕]
+       circuit lower bounds. We use this method to show that Approximate Majority on n bits
+       cannot be computed by AC0 [⊕] circuits of size n1+o(1) . This implies a separation between
+       the power of AC0 [⊕] circuits of near-linear size and uniform AC0 [⊕] (and even AC0 ) circuits
+       of polynomial size. This also implies a separation between randomized AC0 [⊕] circuits of
+       linear size and deterministic AC0 [⊕] circuits of near-linear size.
+           Our proof using certifying polynomials extends the deterministic restrictions technique
+       of Chaudhuri and Radhakrishnan (STOC 1996), who showed that Approximate Majority
+       cannot be computed by AC0 circuits of size n1+o(1) . At the technical level, we show that for
+       every AC0 [⊕] circuit C of near-linear size, there is a low-degree polynomial P over F2 such
+       that the restriction of C to the support of P is constant.
+    Preliminary versions of this paper appeared in FSTTCS 2012 [19] and on ECCC [29].
+   ∗ Supported in part by a Sloan Fellowship and NSF grant CCF-1253886.
+  † Supported by DST Inspire grant IFA12-ENG14. Work partially done when the author was a postdoc at IAS, Princeton and
+
+DIMACS, Rutgers University.
+
+
+ACM Classification: F.1.3
+AMS Classification: 68Q17,68Q15
+Key words and phrases: complexity theory, circuit complexity, Boolean complexity, polynomial
+approximation, lower bounds, majority
+
+
+© 2018 Swastik Kopparty and Srikanth Srinivasan
+c b Licensed under a Creative Commons Attribution License (CC-BY)                         DOI: 10.4086/toc.2018.v014a012
+                                  S WASTIK KOPPARTY AND S RIKANTH S RINIVASAN
+
+            We also prove other results exploring various aspects of the power of certifying polyno-
+        mials. In the process, we show an essentially optimal lower bound of logΘ(d) s · log(1/ε) on
+        the degree of ε-error approximating polynomials for AC0 [⊕] circuits of size s and depth d.
+            Finally, we use these ideas to give a compression algorithm for AC0 [⊕] circuits, answering
+        an open question of Chen, Kabanets, Kolokolova, Shaltiel, and Zuckerman (Computational
+        Complexity 2015).
+
+
+1     Introduction
+In this paper, we study the method of certifying polynomials for proving circuit lower bounds. We begin
+by describing the motivation for the main new circuit lower bound that we show, after which we will
+elaborate on the the method itself, and finally we describe some other results exploring the power and
+limitations of this method.
+
+1.1     The size-hierarchy problem for AC0 [⊕]
+Our main result fits in the general theme of studying the relative power of constant-depth circuit classes.
+We show a near-tight circuit lower bound for computing Approximate Majority with AND, OR, PARITY
+and NOT gates. This is a first step in the direction of a uniform size-hierarchy theorem for such circuits,
+which is a basic open question about this well-studied class of circuits.
+     We first fix some notation and conventions regarding circuits for the rest of this paper. AC0 denotes
+the class of constant-depth circuits with unbounded fan-in AND, OR and NOT gates. AC0 [⊕] denotes the
+class of constant-depth circuits with unbounded fan-in AND, OR, PARITY and NOT gates. We measure
+the size of a circuit by the number of gates.1 We use n to denote the number of input bits to a circuit.
+     There is a well-developed theory giving superpolynomial and even exponential (exp(nΩ(1) )) lower
+bounds for AC0 and AC0 [⊕] circuits [14, 1, 34, 18, 24, 27]. Our focus in this paper is on complexity
+theory within these classes.
+     An influential paper of Ragde and Wigderson [23] asked if uniform AC0 circuits of linear size are
+strictly weaker than uniform AC0 circuits of polynomial size. This was answered by Chaudhuri and
+Radhakrishnan [11], who showed that Approximate Majority functions do not have AC0 circuits of depth
+d and near-linear size O(n1+εd ) (where εd > 0). An Approximate Majority function is any function which
+maps strings of Hamming weight < n/4 to 0 and strings of Hamming weight > 3n/4 to 1. Such functions
+were first considered by Ajtai and Ben-Or [2] in the context of AC0 for the purpose of error-reduction
+for AC0 circuits. In [2], it was shown that Approximate Majority can be computed by polynomial-size
+AC0 circuits, and later results of Ajtai [1] and Viola [31] showed that this can even be done by uniform
+polynomial-size AC0 circuits of depth 3. (In fact these circuits can be made to have depth d and size
+O(n1+εd ), where εd → 0 as d → ∞ [11].) This combined with the lower-bound of [11] showed the
+conjectured separation of Ragde and Wigderson.
+     The proof method of [11] is especially interesting to us, and we will discuss their method and our
+extension of it in the next subsection.
+    1 It is also standard to use “size” to denote the number of wires in the circuit. Our lower bound results also hold for this
+
+measure, since the number of gates lower bounds the number of wires up to a constant factor.
+
+
+                            T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                                             2
+                  C ERTIFYING P OLYNOMIALS FOR AC0 [⊕] C IRCUITS , WITH A PPLICATIONS
+
+    A beautiful recent result of Rossman [26] shows a size-hierarchy for AC0 : for every integer k > 0,
+uniform depth-2 AC0 circuits of size O(nk ) are more powerful than non-uniform AC0 circuits of size
+O(nk/4 ) and any constant depth. A striking follow-up result of Amano [4] in fact shows that depth-2 size
+O(nk ) uniform AC0 circuits can be more powerful than size O(nk−ε ) AC0 circuits for arbitrary ε > 0 and
+any constant depth.
+    In this paper we study the analogous questions for uniform AC0 [⊕]. Our main result is that Ap-
+proximate Majority cannot be computed by AC0 [⊕] circuits of near-linear size. In particular this means
+that polynomial-size uniform AC0 [⊕] circuits (and even polynomial-size uniform AC0 circuits) can be
+more powerful than near-linear size AC0 [⊕] circuits. Thus we make a first step towards a size-hierarchy
+theorem for AC0 [⊕] circuits, analogous to the result of Chaudhuri and Radhakrishnan for AC0 . Our
+result also shows that randomized AC0 [⊕] circuits of linear size can be more powerful than deterministic
+AC0 [⊕] circuits of near-linear size.
+    Showing the full size-hierarchy for uniform AC0 [⊕] is still open and would be very interesting. Even
+the question of whether there exists a function that has uniform AC0 [⊕] circuits of size nlog n but no
+polynomial-size AC0 [⊕] circuits (of possibly larger, but constant, depth) remains unanswered.
+
+1.2   Towards a size-hierarchy using certifying polynomials for AC0 [⊕]
+The main component of the [11] lower bound for Approximate Majority is a structure theorem for AC0
+circuits of near-linear size. It states that for every AC0 circuit C of near-linear size, there is a collection of
+o(n) variables and and a setting of these variables (a {0, 1}-assignment to them) that simplifies the circuit
+C to a constant. Equivalently, there is a large axis-parallel subcube of {0, 1}n on which C restricts to a
+constant. This structure theorem immediately implies the lower bound on Approximate Majority.
+    The proof of this structure theorem is by “deterministic restrictions.” Going through the circuit in
+a bottom-up fashion, one first finds a setting of a small number of variables that simplifies the circuit
+to one where all the gates have small fan-in. The basic observation is that if one considers the gates at
+height 1 that have large fan-in, then we can set a large number of them to constants by setting a few input
+variables; continuing in this way, we eventually remove all large fan-in gates of height 1 (there can’t be
+too many of them, since C is of near-linear size), setting only a few variables in doing so. We then move
+on to higher levels and repeat the process, which now becomes feasible since setting gates of small fan-in
+to a constant reduces to setting only a few variables to constants. Once all the gates have small fan-in, the
+entire circuit is a function of only a few variables and hence, on setting these variables, say, to zero, the
+circuit becomes a constant.
+    The main component of our lower bound is an analogous structure theorem for AC0 [⊕]. Clearly, the
+structure theorem for AC0 is false for even a single parity gate and hence for AC0 [⊕]. However, here we
+can show that for any AC0 [⊕] circuit C of near-linear size, there is a polynomial of degree o(n) such that
+C restricts to a constant on the support (i. e., non-zero set) of that polynomial. We call such a polynomial
+a certifying polynomial for the circuit C; similar notions have appeared in the complexity theory literature
+in works of Aspnes, Beigel, Furst and Rudich [7], Green [15], and Alekhnovich and Razborov [3] and
+also in the context of cryptography in the work of Carlet, Dalai, Gupta, and Maitra [9].
+    The proof of this structure theorem again proceeds in a bottom-up fashion, but now, instead of
+setting individual variables to constants, we set low-degree polynomials to constants, thus obtaining a
+system of polynomial constraints. The polynomials are chosen carefully to ensure that on inputs from the
+
+                        T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                                   3
+                            S WASTIK KOPPARTY AND S RIKANTH S RINIVASAN
+
+(non-empty) solution set of these constraints, the circuit is equivalent to another circuit all of whose AND
+and OR gates have small fan-in. Again, once all the AND and OR gates have small fan-in, it is easy to
+see that the circuit just computes a low-degree polynomial, and thus setting this low-degree polynomial
+to a constant simplifies the circuit to a constant.
+    Given this structure theorem, it remains to see that no Approximate Majority function has this
+structure. This turns out to be a consequence of the general fact that a nonzero polynomial of degree d
+cannot vanish at every point of a Hamming ball of radius d. (This follows from the fact that Hamming
+balls are interpolating sets for polynomials.) We therefore conclude that an Approximate Majority
+function cannot be constant on the zero set of a nonzero polynomial of degree < n/4. Combined with the
+structure theorem, this completes the proof of the lower bound for the AC0 [⊕] complexity of Approximate
+Majority.
+
+
+1.3   More applications of certifying polynomials
+Having proved the lower bound, we then take a step back to re-examine the technique of proving lower
+bounds via certifying polynomials.
+
+
+Connection with the Razborov-Smolensky technique. On the face of it, it seems like this method
+is somewhat distinct from the Razborov-Smolensky method [24, 28] used to prove lower bounds for
+general AC0 [⊕] circuits, which uses polynomial approximations to circuits. The Razborov-Smolensky
+method gives global, approximate structure: it shows that for any AC0 [⊕] circuit C of size M, there
+is a polynomial of degree poly(log(M)) which agrees with C on most points of {0, 1}n . Our structure
+theorem, which only applies to circuits of near-linear size, gives local, exact structure: we get a perfect
+description of the values taken by an AC0 [⊕] circuit on a small but structured subset of {0, 1}n .
+     As it turns out, however, the framework of certifying polynomials is quite robust. We demonstrate a
+connection between polynomial approximations and certifying polynomials for circuits. We then use this
+connection along with Razborov’s approximating polynomials to construct certifying polynomials for
+general AC0 [⊕] circuits. These polynomials have degree much larger than that obtained in our structure
+theorem, but nevertheless, their degree is small enough to to permit to recover the exponential lower
+bound obtained by Razborov [24] for AC0 [⊕] circuits computing the Majority function. We stress that
+most of the ideas of this lower-bound proof are already present in [24, 28], and the main aim of this
+exercise is to show that the use of certifying polynomials is a unified framework that “explains” both our
+approach and the standard Razborov approach to proving lower bounds for AC0 [⊕].
+     In the course of this proof, we also construct improved approximations to AC0 [⊕] circuits in the
+small-error regime; to the best of our knowledge, such approximations were not known before. Further,
+since the publication of a preliminary version of this paper [19], this result has been used in other work
+(see below).
+
+
+Lower bounds for polynomial approximations. We also exploit the connection between certifying
+polynomials and polynomial approximations in the reverse direction to prove limits on the power of
+polynomial approximations. We show that the low-error approximations we construct for AC0 [⊕] are
+
+                       T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                              4
+                    C ERTIFYING P OLYNOMIALS FOR AC0 [⊕] C IRCUITS , WITH A PPLICATIONS
+
+close to the best possible for all depths d ≥ 3. Once again, this demonstrates the usefulness of the
+certifying polynomials framework.
+
+Compression algorithms for AC0 [⊕]. A recent paper of Chen et al. [12] introduced the Compression
+problem for a class C of circuits, which is roughly defined to be the following algorithmic question. Given
+the truth table of a function f that has a (small) circuit from the class C, the output of the algorithm should
+be a non-trivially small Boolean circuit (not necessarily from C) computing the function f . The result of
+Chen et al. [12] shows that this meta-algorithmic question has connections to proving lower bounds for
+the class C of circuits. Such algorithms were also shown to exist for AC0 and some other circuit classes,
+but the question of whether such an algorithm exists for AC0 [⊕] was left open.
+     Intuitively, a low-degree certifying polynomial for a function f should be useful for this purpose since
+it computes the function correctly on a certain subset of its inputs, and moreover, it can be computed
+efficiently by solving a system of linear equations. If we could find “few” certifying polynomials that
+together “cover” all the inputs of f , then we could use these to give a small circuit for f .
+     Indeed, we are able to do this by using a recent result due to Nie and Wang [21] regarding the Zariski
+closure of polynomials over finite fields, thus resolving the question of Chen et al.
+
+1.4     The use of our results in subsequent work
+After a preliminary version of our results appeared in [19], our results, specifically the polynomial approx-
+imations to AC0 [⊕] in the low-error regime, have been used in the following other results. Williams [33]
+uses it to design faster algorithms to solve 0-1 integer linear programs. Oliveira and Santhanam [22]
+use a variant over the field F p to prove lower bounds for AC0 [p] compression protocols2 for the Major-
+ity function. Recently, Harsha and the second author [17] used a variant over the reals to prove that
+(log s)O(d) · log(1/ε)-wise independence ε-fools AC0 circuits of size s and depth d, improving upon
+results of Braverman [8] and Tal [30].
+
+
+2     Preliminaries
+We begin by formally defining certifying polynomials. Throughout the paper, we identify {0, 1} with F2 .
+Given a function f : {0, 1}n → {0, 1}, we use Supp( f ) to denote the set f −1 (1).
+Definition 2.1 (Certifying polynomial). A non-zero multilinear polynomial
+
+                                            P(X1 , . . . , Xn ) ∈ F2 [X1 , . . . , Xn ]
+
+is a certifying polynomial for a function f : {0, 1}n → {0, 1} if f is constant on the non-empty set
+Supp(P) ⊆ Fn2 .
+    This definition is very similar to the notions of weak-2 degree and algebraic immunity, that already
+appear in the literature [15, 3, 9]. It is also similar in spirit to the notion of weak sign degree that appears
+in the paper of Aspnes, Beigel, Furst, and Rudich [7].
+    2 This is not the same as the algorithmic compression problem we consider in this paper. We refer the reader to [22] for
+
+details regarding these protocols.
+
+
+                            T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                                         5
+                                  S WASTIK KOPPARTY AND S RIKANTH S RINIVASAN
+
+    We observe the following upper bound on the certifying polynomial degree of any Boolean function.
+Lemma 2.2. Any f : {0, 1}n → {0, 1} has a certifying polynomial P of degree at most dn/2e.
+                   dn/2e 
+Proof. Let N = ∑i=0 ni . Since N > 2n−1 , we see that one among the sets f −1 (0) and f −1 (1) must
+have size less than N. Without loss of generality, we assume that | f −1 (0)| ≤ 2n−1 . Consider the problem
+of finding a non-zero polynomial P of degree at most dn/2e that vanishes over f −1 (0). Finding the
+coefficients of P amounts to finding a non-zero solution to a homogeneous system of linear equations
+with N variables and | f −1 (0)| < N constraints. By standard linear algebra, we know that there is a P as
+required.
+
+   Lemma 2.2 is tight, for example, for the Majority function on n variables when n is odd (see
+Section 4.2).
+   We now define Approximate Majority.
+Definition 2.3 (Approximate Majority). An (a, n − a)-Approximate Majority is a Boolean function
+f : {0, 1}n → {0, 1} such that the following holds.
+    • f (x) = 0 for every x of Hamming weight at most a.
+
+    • f (x) = 1 for every x of Hamming weight at least n − a.
+If we omit the (a, n − a), we assume a = n/4.
+    We assume standard notions about circuit classes AC0 , AC0 [⊕], AC0 [p] for prime p etc. (see, e. g., [6]).
+The size of a circuit will always mean the number of gates in the circuit.3
+    Ajtai and Ben-Or [2] showed that for a ≤ n/2 − n/(log n)O(1) , there exists an (a, n − a)-Approximate
+Majority computable in AC0 . We will use a uniform and more general version of this result, due to
+Ajtai [1].
+Theorem 2.4 (Ajtai [1]). For any n ∈ N, δ ∈ (0, 1/2) and depth d ≥ 3, there exist ((1/2 − δ )n, (1/2 +
+                                                                               O(1/d)
+δ )n)-Approximate Majorities computable by uniform AC0 circuits of size 2(1/δ )       · nO(1) and depth d.
+    We also use the well-studied notion of approximating polynomials, introduced by Razborov [24].
+Definition 2.5 (ε-error approximating polynomial). An ε-error approximating polynomial for a function
+f is a polynomial P such that Prx∈{0,1}n [ f (x) = P(x)] ≥ 1 − ε.
+     We recall the notion of the Compression problem for a circuit class C from the result of Chen et
+al. [12]. The input to the problem is the truth table of a Boolean function f : {0, 1}n → {0, 1} which is
+promised to have a “small” circuit from the class C. The desired output is a general Boolean circuit C (not
+necessarily from the class C) of small size that computes the function f ; the size of C should be smaller
+than the trivial 2n /n that is achievable for any Boolean function. Moreover, we require the algorithm that
+constructs C to run in time polynomial in the size of its input, which is in time poly(2n ).
+    3 There are two standard notions of size for a circuit, corresponding to the number of gates and to the number of wires in the
+
+circuit. While these quantities are polynomially related, it matters which one we are dealing with in the near-linear regime, as in
+the present paper. The lower bound on the number of gates we prove here implies a similar lower bound for the number of wires.
+
+
+                            T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                                                6
+                 C ERTIFYING P OLYNOMIALS FOR AC0 [⊕] C IRCUITS , WITH A PPLICATIONS
+
+     The aforementioned paper of Chen et al. [12] that introduced this problem showed that there is a
+polynomial-time compression algorithm for AC0 in the following sense: given as input the truth table of
+f : {0, 1}n → {0, 1} which has an AC0 circuit of size s and depth d = O(1), the algorithm outputs a circuit
+                                           d−1
+computing f of size at most 2n−n/(O(log s)) . Similar compression algorithms were also obtained for
+functions that have de Morgan formulas of size at most n2.5−Ω(1) , Boolean formulas (over the complete
+basis) of size n2−Ω(1) and read-once branching programs of size 2n(1/2−Ω(1)) . We refer the reader to [12]
+for the compression obtained in these cases.
+
+
+3    Results
+Our main lower bound result is the following.
+
+Theorem 3.1. For every constant d ∈ N, there is an εd > 0 such that any depth-d AC0 [⊕] circuit that
+computes an Approximate Majority must have size Ω(n1+εd ).
+
+    By Theorem 2.4, this implies that uniform AC0 circuits of polynomial size can be more powerful than
+linear-sized non-uniform AC0 [⊕] circuits.
+    The proof of Theorem 3.1 yields εd = 1/2d+1 . This is marginally better than the lower bound of
+          d
+Ω(n1+1/4 ) obtained by Chaudhuri and Radhakrishnan [11] for the case of AC0 . (The improvement is due
+to a slightly different deterministic restriction method: whereas [11] try to remove both high fan-in and
+high fan-out gates from the circuit, we handle only the high fan-in gates.) Also, as already showed by [11],
+this lower bound cannot be substantially improved since Approximate Majorities can be computed by
+AC0 circuits of depth d and size n1+1/2 .
+                                         Ω(d)
+
+
+    The proof of Theorem 3.1 follows from the two lemmas below. The first one states that every function
+with a near-linear AC0 [⊕] circuit has a certifying polynomial of low degree. The next one states that an
+Approximate Majority cannot have this property. The proofs of these lemmas appear in Section 4.
+
+Lemma 3.2 (Near-linear-size AC0 [⊕] circuits have low-degree certifying polynomials). For every con-
+stant d ∈ N, there is an εd > 0 such that for every depth-d AC0 [⊕] circuit C of size s ≤ n1+εd , C has a
+certifying polynomial of degree o(n).
+
+Lemma 3.3 (Approximate Majority does not have any low-degree certifying polynomials). For every
+(a, n − a)-Approximate Majority f , there do not exist any certifying polynomials for f of degree ≤ a.
+
+    Next we state our results on certifying polynomials for general AC0 [⊕] circuits. This result should
+be contrasted with the fact that every function has a certifying polynomial of degree at most dn/2e
+(Lemma 2.2).
+
+Theorem 3.4. For every s > 0 and constant d > 0, every AC0 [⊕] circuit C of size s and depth d has a
+certifying polynomial of degree at most n/2 − n/(log s)Θ(d) .
+
+    We also show that this is essentially tight.
+
+Lemma 3.5. For every s > nΩ(1) , there exist AC0 [⊕] circuits C on n input bits with size s, such that every
+certifying polynomial for C has degree at least n/2 − n/(log s)Θ(d) .
+
+                       T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                              7
+                             S WASTIK KOPPARTY AND S RIKANTH S RINIVASAN
+
+    These results are proved in Section 5. The main ingredient in the proof of Theorem 3.4 is the following
+strengthening of Razborov’s original theorem on approximating polynomials.
+Lemma 3.6. There is an absolute constant c > 0 such that the following holds. For any ε ∈ (0, 1/2),
+any AC0 [⊕] circuit C of size s and depth d has an ε-error approximating polynomial of degree at most
+(c log s)d−1 · (log(1/ε)).
+    We also show in Section 5 how Theorem 3.4 gives an alternate proof of Razborov’s fundamental
+result that Majority does not have subexponential-size AC0 [⊕] circuits.
+    We also prove lower bounds for the degree of approximating polynomials for AC0 [⊕] circuits, showing
+the near-tightness of Lemma 3.6. The proof appears in Section 6.
+Theorem 3.7. For every s, ε > 0, and every constant d ≥ 3, there exist AC0 [⊕] circuits C of size s and
+depth d such that for every polynomial P which is an ε-error approximating polynomial for C, we have
+                                                          Θ(d)
+                                                          1             1
+                             deg(P) ≥ log s − O log log            · log .
+                                                          ε             ε
+      Finally, we use certifying polynomials to give compression algorithms for AC0 [⊕].
+Theorem 3.8. There is a polynomial-time algorithm which, when given as input the truth table of a
+function f : {0, 1}n → {0, 1} and parameters s and d = O(1) such that f has an AC0 [⊕] circuit of size s
+                                                        2(d−1)
+and depth d, outputs a circuit C of size 2n−n/(O(log s))       computing f .
+
+
+4      Superlinear AC0 [⊕] lower bounds for computing Approximate Major-
+       ity
+In this section, we prove Lemma 3.2 and Lemma 3.3, thus completing the proof of Theorem 3.1.
+
+4.1     Near-linear-size AC0 [⊕] circuits have low-degree certifying polynomials
+We now prove Lemma 3.2, restated below.
+Lemma 3.2. (Restated from Section 3.) For every constant d ∈ N, there is an εd > 0 such that for every
+depth-d AC0 [⊕] circuit C of size s ≤ n1+εd , C has a certifying polynomial of degree o(n).
+     We will actually construct a polynomial P such that P−1 (0) is non-empty and C is constant on P−1 (0).
+The polynomial P0 = 1 − P is then a certifying polynomial for C. (Recall that we are working over the
+field F2 .)
+     It will also be more convenient to work with a system of polynomials as opposed to a single
+polynomial. Given a feasible system of polynomial equations in n variables, X1 , X2 , . . . , Xn , say
+                                               p1 (X) = 0 ,
+                                                p2 (X) = 0 ,
+                                               ..
+                                                .
+                                               pt (X) = 0 ,
+
+
+                        T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                            8
+                 C ERTIFYING P OLYNOMIALS FOR AC0 [⊕] C IRCUITS , WITH A PPLICATIONS
+
+we define the degree of the system to be ∑ti=1 deg(pi ). The set of solutions to this system is exactly the
+set of roots of 1 − ∏ti=1 (1 − pi ), which is a polynomial of degree at most ∑ti=1 deg(pi ).
+    Given a feasible system P of polynomial equations, we denote by Sol(P) the non-empty set of
+solutions of P. When P consists of a single polynomial p, we use Sol(p) instead of Sol(P). By a
+restriction, we will mean simply a feasible system of polynomial equations.
+    Given a restriction P and a Boolean circuit C, we will denote by C|P the circuit C restricted to inputs
+from Sol(P). We say a gate g of the circuit C is live under the restriction given by P if g takes values 0 as
+well as 1 under inputs from Sol(P). Note that if a gate g is not live under a restriction, we can simplify
+the circuit C to a smaller circuit C0 which computes the same function on the restricted inputs.
+    We say that a circuit C is live under the restriction P if every gate of C is live under P. The above
+implies that, given any circuit C and restriction P, there exists a live circuit C0 of size at most the size of
+C that computes the same function as C on inputs from Sol(P).
+
+Proof of Lemma 3.2. The proof will proceed as follows. After restricting the given circuit C to the roots
+of a well-chosen low-degree polynomial restriction P, we will obtain an equivalent circuit C0 that has the
+property that each of the AND and OR gates of C0 have very small fan-in (say nε for ε  1/d). At this
+point, the entire circuit C0 computes a low-degree polynomial p and by setting p to a feasible value, we
+finish the proof of the lemma.
+     Say we have an increasing sequence of numbers 1 < D1 < · · · < Dd . (We will fix the exact values of
+Di (i ≥ 1) later.) We wish to obtain a restriction P under which C is equivalent to a circuit C0 which has
+the property that every AND and OR gate at height i has fan-in at most Di . In particular, the circuit C0 is a
+function of at most D1 D2 · · · Dd variables and hence is a polynomial of degree at most D1 D2 · · · Dd .
+     We proceed to construct a suitable restriction P in d steps. After the i-th step, we obtain a restriction
+Pi under which there is a circuit Ci of size at most s for which the above fan-in bound holds for all heights
+ j ≤ i. Assuming that the (i − 1)-st step has been completed, we describe how Step i is performed for
+i ≥ 1. (Note that nothing needs to be done for height 0.)
+     We assume that Ci is live. Otherwise, we can obtain and work with an equivalent circuit that is of
+at most the size of Ci and satisfies the same fan-in restrictions as Ci . Let Bi denote the “bad” gates at
+height i, that is, the AND and OR gates at height i that have fan-in at least Di . We use a basic subroutine
+Fix(i,Ci ) that simplifies the circuit Ci by augmenting the restriction Pi as follows.
+The subroutine Fix(i,Ci ). Since there are at least |Bi |Di wires between gates in Bi and lower levels (which
+contain at most s gates), there is some gate g at height less than i that is adjacent to |Bi |Di /s gates. By the
+fan-in restrictions on Ci , this gate computes a polynomial pg of degree at most D1 · · · Di−1 . (The empty
+product in the case i = 1 is assumed to be 1.) Moreover, since the circuit Ci is live, this gate can be set to
+both 0 and 1. We wish to add the restriction pg = 0 or pg − 1 = 0 to Pi corresponding to setting the gate
+to 0 or 1 respectively. Setting the gate g to 1 sets all the OR gates that g feeds into to 1 and setting g to 0
+sets all the AND gates that g feeds into to 0. Hence, there is some setting that sets at least |Bi |Di /2s many
+gates in Bi to constant. We set the gate g to this Boolean value.
+    Note that Fix(i,Ci ) reduces the number of live bad gates to at most |Bi |(1 − Di /2s). We are now
+ready to describe Step i. Until the set of bad gates Bi is empty, we repeatedly call the subroutine Fix(i,Ci0 )
+where Ci0 represents the circuit we currently have. After an application of the subroutine Fix(i,Ci0 ) adds
+another equation to our current restriction P0i , we fix the non-live gates and simplify the circuit until it
+
+                        T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                                  9
+                             S WASTIK KOPPARTY AND S RIKANTH S RINIVASAN
+
+becomes live again. (This process, of course, does not increase the fan-in of any gate.) Note that since
+we are only setting live gates, the system of polynomial equations P0i we maintain is feasible. Moreover,
+since the size of Bi is falling by a factor β ≤ (1 − Di /2s) ∈ (0, 1) after each application of Fix(i,Ci0 ) and
+|Bi | ≤ s ≤ nO(1) , we need to apply Fix(i,Ci0 ) at most
+
+                                          2s log |Bi |
+                                                       = O(s log n/Di )
+                                              Di
+times to reduce Bi to the empty set.
+    Let us analyze the total degree of the equations added to the restriction during the i-th step. Each
+equation added is a polynomial of degree at most D1 D2 · · · Di−1 . Hence, the total degree of the added
+equations is O(s log n D1 D2 · · · Di−1 /Di ).
+    At the end of Step d, we have a circuit Cd computing a polynomial of degree at most D0 = D1 D2 · · · Dd
+that agrees with the original circuit C on a restriction of degree at most
+                                                                                     
+                        00                   1   D1 D1 D2            D1 D2 · · · Dd−1
+                      D = O(s log n)           +    +        +···+                      .
+                                            D1 D2       D3                 Dd
+
+    We would like to set D1 , . . . , Dd such that both D0 and D00 to be o(n). We will choose K and the
+                                                                               i−1
+Di such that D1 D2 · · · Di−1 /Di = K −1 for each i. This implies that Di = K 2 . Furthermore, we have
+         d
+D0 ≤ K 2 and D00 ≤ O(s log n/K).
+                       d
+    Setting K = n1/(2 +1) and εd = 1/2d+1 , we get D0 as well as D00 are o(n) as long as s ≤ n1+εd . Thus,
+by setting the polynomial p computed by the circuit Cd to some feasible value, we obtain a restriction of
+degree D0 + D00 = o(n) under which the circuit C becomes constant.
+    As mentioned above, this implies that there is a certifying polynomial for C of degree o(n).
+
+4.2   Approximate Majority does not have any low-degree certifying polynomials
+Lemma 3.3. (Restated from Section 3.) For every (a, n − a)-Approximate Majority f , there do not exist
+any certifying polynomials for f of degree ≤ a.
+
+Proof. Let p ∈ F2 [X1 , . . . , Xn ] be any non-zero multilinear polynomial of degree d ≤ a. We will show
+that it cannot be that f is constant on Supp(p).
+     Our intermediate claim is that Supp(p) intersects every Hamming ball of radius a. By translating p if
+necessary, we may assume that the Hamming ball is centered at the origin, and thus we seek to prove that
+there is a point of Hamming weight at most a where p does not vanish.
+     Given the intermediate claim, it follows that there exist x0 , x1 ∈ Fn2 with p(x0 ) and p(x1 ) both non-zero
+such that the Hamming weight of x0 is at most a, and the Hamming weight of x1 is at least n − a. Thus f
+cannot be constant on Supp(p).
+     Now we prove the claim. Notice that since Supp(p) is nonempty, it is a non-zero polynomial. Assume
+that
+                                         p(X1 , . . . , Xn ) = ∑ αS ∏ Xi
+                                                       S⊆[n]:|S|≤d   i∈S
+
+where αS ∈ F2 for each S.
+
+                       T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                                  10
+                 C ERTIFYING P OLYNOMIALS FOR AC0 [⊕] C IRCUITS , WITH A PPLICATIONS
+
+    Fix R ⊆ [n] such that αR 6= 0 but αS = 0 for all S ( R. Let x ∈ Fn2 be the input with 1s at exactly
+the indices in R. By our choice of R, for every monomial ∏i∈S Xi of degree at most d, either S = R and
+hence ∏i∈S xi = 1; or αS = 0; or S * R and hence ∏i∈S xi = 0. Thus, we get that p(x) = αR 6= 0. Hence
+x ∈ Supp(p).
+    Moreover, the Hamming weight of x is equal to the size of S which is at most deg(p) ≤ a. Hence, we
+see that Supp(p) does intersect the Hamming ball of radius a. This completes the proof of the claim, and
+hence the proof of Lemma 3.3.
+
+Remark 4.1. In particular, Lemma 3.3 implies that for odd n, any certifying polynomial for the Majority
+function on n variables must have degree at least dn/2e, matching the bound given for arbitrary functions
+in Lemma 2.2.
+
+
+5    Certifying polynomials for general AC0 [⊕] circuits
+Given the results of the previous section, it makes sense to ask what are the lowest degree certifying
+polynomials we can obtain for general (i. e., significantly larger than linear-sized) AC0 [⊕] circuits. By
+Lemma 2.2, we know that every function, irrespective of its complexity, has a certifying polynomial of
+degree at most n/2 and as pointed out in Remark 4.1, this bound is tight for general functions. In this
+section, we use Razborov’s approximations for AC0 [⊕] circuits by probabilistic polynomials to derive
+somewhat better certifying polynomials for functions with small AC0 [⊕] circuits. In particular, we show
+that polynomial-sized AC0 [⊕] circuits have certifying polynomials of degree n/2 − n/(log n)O(1) .
+    Though this improvement over the trivial n/2 bound might seem small, the existence of such certifying
+polynomials is quite powerful. We demonstrate this by showing how this fact, along with Lemma 3.3,
+can be used to give a (slightly) conceptually different proof of Razborov’s result that Majority does not
+have subexponential-size AC0 [⊕] circuits. We note that the proof is essentially unchanged at a technical
+level from the proofs of [24, 28], but the higher-order concepts involved seem curiously different. More
+specifically, this proof is more reminiscent of the result of Aspnes et al. [7] in the context of AC0
+augmented with a single threshold gate on top.
+    The main theorem of this section is the following.
+Theorem 3.4. (Restated from Section 3.) For every s > 0 and constant d > 0, every AC0 [⊕] circuit C of
+size s and depth d has a certifying polynomial of degree at most n/2 − n/(log s)Θ(d) .
+    Theorem 3.4 shows that functions computed by small subexponential-size AC0 [⊕] circuits have
+certifying polynomials of non-trivially small degree.
+    We will need to use probabilistic polynomials in the proof.
+Definition 5.1 (Probabilistic polynomials). An ε-error probabilistic polynomial of degree D for a function
+f : {0, 1}n → {0, 1} is a random polynomial P of degree at most D (chosen according to some distribution
+over polynomials of degree at most D) such that for any x ∈ {0, 1}n , we have PrP [ f (x) = P(x)] ≥ 1 − ε.
+    Clearly, if a function f has an ε-error probabilistic polynomial P of degree D, then by the probabilistic
+method, it has an ε-error approximating polynomial P of degree D as well.
+    We need the following well-known theorem, due to Razborov, on the existence of ε-error probabilistic
+polynomials for AC0 [⊕]. A gate of a circuit C is said to be internal if it is not a leaf.
+
+                       T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                              11
+                                    S WASTIK KOPPARTY AND S RIKANTH S RINIVASAN
+
+Theorem 5.2 (Razborov [24]). For any ε ∈ (0, 1/2), any AC0 [⊕] circuit C with at most s internal gates
+and depth d ≥ 1 has an ε-error probabilistic polynomial of degree at most (log(s/ε))d . In particular, C
+has an ε-error approximating polynomial of degree at most (log(s/ε))d .
+
+    Using Theorem 5.2 directly in our arguments would only give us a version of Theorem 3.4 with
+weaker parameters. To obtain the parameters of Theorem 3.4, we need a strengthening of Theorem 5.2
+that does better for small ε. The proof follows quite simply from Razborov’s cited result, although to the
+best of our knowledge, this has not been observed in the literature.
+
+Lemma 3.6. (Restated from Section 3 in a stronger form.) The following holds for the some absolute
+constant c > 0. For any ε ∈ (0, 1/2), any AC0 [⊕] circuit C of size s and depth d has an ε-error
+probabilistic polynomial of degree at most (c log s)d−1 · (log(1/ε)) for some absolute constant c > 0. In
+particular, C has an ε-error approximating polynomial of degree at most (c log s)d−1 · (log(1/ε)).
+
+Proof. Let C be an AC0 [⊕] circuit of size s and depth d. Let g be the output gate of the circuit and
+let C1 , . . . ,Ck (k ≤ s) be the depth-(d − 1) subcircuits of C feeding into g. By Theorem 5.2, we know
+that each Ci (i ∈ [k]) has a (1/10s)-error approximating polynomial Pi of degree at most (O(log s))d−1 .
+Also by Theorem 5.2, we know that the function computed by g has an AC0 [⊕] circuit with just one
+internal gate and hence has a (1/10)-error approximating polynomial P of degree O(1). The probabilistic
+polynomial P0 := P(P1 , . . . , Pk ) is a 1/5-error probabilistic polynomial for C, since for any x ∈ {0, 1}n ,
+
+  Pr0 [C(x) 6= P0 (x)] ≤      Pr [∃i ∈ [k] : Ci (x) 6= Pi (x)] + Pr[g(C1 (x), . . . ,Ck (x)) 6= P(C1 (x), . . . ,Ck (x))]
+   P                       P1 ,...,Pk                               P
+
+                     ≤ ∑ Pr[Ci (x) 6= Pi (x)] + Pr[g(C1 (x), . . . ,Ck (x)) 6= P(C1 (x), . . . ,Ck (x))]
+                                   Pi                   P
+                           i∈[k]
+
+                     ≤ k/10s + 1/10 ≤ 1/10 + 1/10 = 1/5 .
+
+    Note that P0 has degree at most (O(log s))d−1 . Let ` = c0 log(1/ε) for a constant c0 that we will
+choose later in the proof. Let P01 , . . . , P0` be ` independent copies of the probabilistic polynomial P0 . Let Q
+denote the probabilistic polynomial Maj(P01 , . . . , P0` ), where Maj is just the polynomial of degree at most
+` that computes the majority of ` bits. Note that Q is of degree at most
+
+                  deg(Maj) · max deg(P0i ) = (O(log s))d−1 · ` = (O(log s))d−1 · log(1/ε) .
+                                        i
+
+We claim that Q is an ε-error probabilistic polynomial for C, which will finish the proof of the corollary.
+    For any input x ∈ {0, 1}n , each P0j (x) predicts the value of C(x) correctly with probability 4/5. Now,
+for Q(x) to predict C(x) incorrectly, a majority of the P0j ( j ∈ [`]) must predict the value of C(x) incorrectly
+and by a Chernoff bound, the probability of this is bounded by exp(−Ω(`)), which is at most ε for a
+large enough constant c0 > 0.
+
+   The next lemma shows that functions with low-degree ε-error approximating polynomials also have
+low-degree certifying polynomials.
+
+
+                           T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                                            12
+                 C ERTIFYING P OLYNOMIALS FOR AC0 [⊕] C IRCUITS , WITH A PPLICATIONS
+
+Lemma 5.3. Suppose f : {0, 1}n → {0, 1} has a degree D ε-error approximating polynomial. Then f
+has a certifying polynomial of degree at most
+                                               r
+                                         n           1
+                                           − c1 n log + D ,
+                                         2           ε
+where c1 is an absolute constant.
+
+Proof. Let P be the given ε-error approximating polynomial. Let S be the set of points where P differs
+from f . We have |S| ≤ ε · 2n .
+   Let D0 be the smallest integer such that
+                                                  
+                                    n       n          n
+                                        +     +···+         > |S| .
+                                    0       1         D0
+By linear algebra, there is a non-zero polynomial Q of degree at most D0 that vanishes on S. Note that
+one of Q · P and Q · (1 − P) is a non-zero polynomial. Moreover, for any input x ∈ Supp(Q), we have
+P(x) = f (x).
+    Thus, it follows that one of Q · P or Q · (1 − P) is a certifying polynomial for f with degree at most
+D0 + D (provided D0 + D < n; if not then the result is vacuously true). To finish the proof, we note that
+by standard binomial estimates,                         r
+                                                 n               1
+                                          D0 ≤ − c1 n log .
+                                                 2               ε
+(See, e. g., [22, Section B, Lemma 2.4].)
+
+Proof of Theorem 3.4. Combining Lemma 3.6 and Lemma 5.3, we conclude that for every ε > 0. C has
+a certifying polynomial of degree at most
+                                     r
+                              n             1
+                                − c1 n · log + (c2 log s)d−1 · log(1/ε) ,
+                              2             ε
+
+where c1 , c2 > 0 are absolute constants. In particular, setting ε = exp(−n/(log s)Θ(d) ), we get that C has
+a certifying polynomial of degree at most n/2 − n/(log s)Θ(d) .
+
+    Combining Theorem 3.4 with Lemma 3.3 (and using the fact that Majority is an (n/2 − 1, n/2 + 1)-
+Approximate Majority), we get an alternate proof of the fact that Majority cannot be computed by AC0 [⊕]
+circuits of size smaller than exp(nΩ(1/d) ).
+    Finally, we show that the bound of Theorem 3.4 is essentially tight.
+
+Lemma 5.4. (Restated from Section 3.) For every s > nΩ(1) , there exist AC0 [⊕] circuits C on n input bits
+with size s, such that every certifying polynomial for C has degree at least n/2 − n/(log s)Θ(d) .
+
+Proof. Let δ be a parameter to be specified later. Let C be the AC0 [⊕] circuit for ((1/2−δ )n, (1/2+δ )n)-
+Approximate Majority given by Theorem 2.4. Then we have
+                                                     O(1/d)
+                                         |C| = 2(1/δ )        · nO(1) .
+
+                      T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                              13
+                            S WASTIK KOPPARTY AND S RIKANTH S RINIVASAN
+
+We choose δ so that |C| = s; this gives δ = 1/(log s − c log n)Ω(d) .
+   By Lemma 3.3, any certifying polynomial for C has degree at least
+                                             
+                                          1         n         n
+                                     n·     −δ = −                    .
+                                          2         2 (log s)Θ(d)
+
+6    Lower bounds for approximating polynomials
+We now use the tools of the previous two sections to show near-optimal lower bounds on the degree
+of approximating polynomials for AC0 [⊕] circuits. It is a folklore fact that ε-error approximations for
+AC0 [⊕] circuits of size s and depth d are required to have degree at least max{(log s)Ω(d) , log(1/ε)}. In
+this section, we show a stronger lower bound of Θ((log s)Ω(d) · log(1/ε)), which essentially matches the
+upper bound obtained in Lemma 3.6. Our lower bound example is just a suitable Approximate Majority
+and thus holds even for AC0 circuits.
+    We prove the lower bound by exploiting Lemma 5.3 in the contrapositive. Since there are Approximate
+Majorities that are efficiently computable in AC0 , by Lemma 3.3, we know that AC0 circuits can compute
+functions that do not have efficient certifying polynomials. We can then use Lemma 5.3 to infer a lower
+bound on the degree of ε-error approximations to AC0 circuits.
+Theorem 3.7. (Restated from Section 3.) For every s, ε > 0, and every constant d ≥ 3, there exist AC0 [⊕]
+circuits C of size s and depth d such that for every polynomial P which is an ε-error approximating
+polynomial for C, we have
+                                                          Θ(d)
+                                                          1              1
+                            deg(P) ≥ log s − O log log              · log .
+                                                          ε              ε
+Proof. Let δ and m be parameters (to be specified later). Let C be an AC0 [⊕] circuit on m inputs which
+computes a ((1/2 − δ )m, (1/2 + δ )m)-Approximate Majority. By Theorem 2.4, such an AC0 circuit can
+                                                 O(1/d)
+be taken to have depth d and size at most 2(1/δ )       · mO(1) . We will choose m and δ so that this size
+equals s.
+    Suppose P is an ε-error approximating polynomial for C with degree D. By Lemma 5.3, there is a
+degree                                          r
+                                         m                 1
+                                           − c1 m log + D
+                                         2                 ε
+polynomial Q which is a certifying polynomial for C.
+    But since C is a ((1/2 − δ )m, (1/2 + δ )m)-Approximate Majority, Lemma 3.3 tells us that that
+deg(Q) ≥ (1/2 − δ ) · m.
+    Putting this together, we get that
+                                             r
+                                                         1
+                                       D ≥ c1 m log − δ · m .
+                                                         ε
+    We now choose m, δ suitably so that we get the claimed lower bound on D in terms of s and ε. We
+set m, δ so that                           r
+                                                    1
+                                        c1 m log = 2δ · m ,                                          (6.1)
+                                                    ε
+
+                      T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                             14
+                 C ERTIFYING P OLYNOMIALS FOR AC0 [⊕] C IRCUITS , WITH A PPLICATIONS
+
+and so that s is the size of the circuit C. That is,
+                                                           O( 1 )
+                                             s = 2| (1/δ{z) d} · m O(1)
+                                                                 | {z } .                                (6.2)
+                                                       A              B
+
+Note that from (6.1), we get                                          !
+                                                             log ε1
+                                               m=Θ                        .                              (6.3)
+                                                              δ2
+We claim that
+                                                          1 Θ(d)
+                                                           
+                                                                      1
+                                   m ≥ log s − c2 log log        · log .                                 (6.4)
+                                                          ε           ε
+for a suitably large absolute constant c2 > 0 defined later. Observe that this bound is trivial if log s ≤
+c2 log log 1/ε and thus we may assume that c2 log log 1/ε < log s.
+     To prove (6.4), note that if s ≤ A2 , then we have 1/δ = (log s)Ω(d) and in this case (6.4) follows from
+(6.3).
+                                                                                       √
+     Otherwise, we see that s ≤ B2 ≤ mO(1) . In this case, note that if log(1/ε) ≤ m, then by (6.3), we
+                                                 Ω(1/d)
+have 1/δ = mΩ(1) and hence by (6.2), s ≥ 2m             which contradicts our upper bound of s ≤ mO(1) . Hence,
+                            √
+we must have log(1/ε) > m.
+                                        √
+     Since s ≤ mO(1) and log(1/ε) > m, we must have log(1/ε) > sΩ(1) , which contradicts the assump-
+tion that c2 log log 1/ε < log s for a large enough constant c2 .
+     We have thus proved (6.4). From the lower bound on D obtained above, we get
+                                                q
+                                                         1
+                                             c 1 m log ε
+                      r                                                          Θ(d)
+                              1                                                  1              1
+              D ≥ c1 m log − δ · m ≥                       ≥ log s − O log log             · log ,
+                              ε                   2                              ε              ε
+
+as desired.
+
+
+7    Compression algorithms for AC0 [⊕] circuits
+In this section, we use certifying polynomials to obtain compression algorithms for AC0 [⊕]. We devise
+a deterministic polynomial-time algorithm which, when given as input the truth table of a function
+ f : {0, 1}n → {0, 1} that has an AC0 [⊕] circuit of size s outputs a circuit of size 2n−n/polylog(s) computing
+ f.
+      Our starting point is the proof of Theorem 3.4 which shows that the input function f has a certifying
+polynomial of degree at most D = (n/2) − O(n/(log s)2(d−1) ). Let ε = exp(−n/(c log s)2(d−1) ) for a
+constant c > 0 yet to be chosen. To construct such a certifying polynomial, we start with a polynomial P
+of degree at most d = (c2 log s)d−1 · log(1/ε) that computes f on all but an ε fraction of inputs. Let EP
+be the set of inputs where pP does not compute f correctly. We then construct a non-zero polynomial Q of
+degree D0 = (n/2) − c1 n log(1/ε) that vanishes on EP : in the proof of Theorem 3.4, D0 is chosen so
+that the number of monomials of degree at most D0 is greater than ε · 2n ≥ |EP |, which implies that there
+is a non-zero Q vanishing on EP ; the polynomial Q · P or the polynomial Q · (1 − P) is then a certifying
+
+                        T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                               15
+                             S WASTIK KOPPARTY AND S RIKANTH S RINIVASAN
+
+polynomial for f of degree at most D0 + d. Let us further assume that Q · P is non-zero, and is hence a
+1-certifying polynomial for f (i. e., f (x) = 1 for all x in the support of the certifying polynomial).
+     Note that this idea also gives us an efficient algorithm for constructing such a certifying polynomial.
+Formally, given the truth table of f , we can efficiently find a certifying polynomial for f of degree at
+most D0 + d, since the problem of finding a 1-certifying polynomial for f is equivalent to finding a
+non-zero solution to a system of homogeneous linear equations over F2 where the variables correspond to
+coefficients of monomials of degree at most D0 + d.
+     The foregoing discussion gives us a hint of how to go about compressing the function f . We can
+try to find a 1-certifying polynomial for f of degree at most D0 + d. Note that (for a suitable choice
+                                                                          O(d)
+of c) the number of monomials in such a polynomial is 2n−n/(log s) , and hence this polynomial can
+be represented as a depth-2 AC0 [⊕] circuit of this size (alternately, since the Parity function on m bits
+has a an circuit over the de Morgan basis of size O(m) [32, Theorem 4.1], we can also represent this
+                                                                       O(d)
+polynomial as a circuit over the de Morgan basis of size 2n−n/(log s) ). Hence, the certifying polynomial
+gives us a “small” circuit that computes f correctly on a certain subset of inputs (and in particular is never
+wrong on inputs of f −1 (0)).
+     However, we are looking for a small circuit that computes f everywhere. To obtain such a circuit, we
+try to look for many 1-certifying polynomials R1 , . . . , Rm and try to cover all the 1-inputs of f . If we are
+able to do this with a small m, then m
+                                      W
+                                        i=1 Ri computes the function f . There are two things that could go
+wrong with such an approach.
+
+    • Each 1-certifying polynomial R is forced to vanish at all inputs x ∈ f −1 (0). However, this could
+      also force R to vanish at some inputs y ∈ f −1 (1). Such forced inputs y cannot be covered by any
+      1-certifying polynomial R.
+
+    • Each 1-certifying polynomial R that we find might cover very few y ∈ f −1 (1) and hence we might
+      require many 1-certifying polynomials to cover all of f −1 (1).
+
+    Handling the second of these issues is not too difficult, since we can use a simple linear algebraic
+argument to show that for each y that is not forced in the above sense, a significant fraction of 1-certifying
+polynomials cover y. Coupled with a covering argument from [12], we can show that there are a few
+certifying polynomials that cover all such y.
+    To get around the first issue, we use a recent result of Nie and Wang [21], which implies that the
+number of forced y is vanishingly small if the parameters are chosen carefully. We are therefore able to
+hardcode these y into our circuit without a significant blowup in size. This finishes the proof.
+    We now state the result of Nie and Wang that we will use. Given a subset E ⊆ {0, 1}n and a parameter
+D ≤ n, we define the degree D closure of E, denoted clD (EP ), which is the set of all points y ∈ {0, 1}n
+such that any polynomial Q of degree at most D1 that vanishes on EP vanishes on y.
+
+Theorem 7.1 (Theorem 5.6 in [21]). Let ND denote the number of multilinear monomials of degree at
+most D. Then, we have
+                                        |clD (E)| |E|
+                                                 ≤     .
+                                           2n       ND
+
+                       T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                                 16
+                 C ERTIFYING P OLYNOMIALS FOR AC0 [⊕] C IRCUITS , WITH A PPLICATIONS
+
+    This is actually a slight restatement of the result of Nie and Wang [21], who consider the closure of
+subsets of Fn (instead of {0, 1}n ) where F is an arbitrary finite field. Over the field F2 , this is the same as
+the result of [21], but it also holds over any field in the form stated above. The proof is a straightforward
+modification of the proof in [21] and is explicitly observed in [21] in the remarks following the proof of
+Theorem 5.6. For completeness, we give a proof sketch of the theorem (over any field F) in Appendix A.
+    We now prove Theorem 3.8.
+Theorem 3.8. (Restated from Section 3.) There is a polynomial-time algorithm which, when given as
+input the truth table of a function f : {0, 1}n → {0, 1} and parameters s and d = O(1) such that f has an
+                                                                                  2(d−1)
+AC0 [⊕] circuit of size s and depth d, outputs a circuit C of size 2n−n/(O(log s))       computing f .
+Proof. We assume that d and ε are as above. The constant c > 0 in the definition of ε > 0 will be chosen
+below. We will assume that for the c we choose, the quantity (c log s)2(d−1) < n/100: otherwise, the
+                                                                   n
+compression algorithm can  pjust output a trivial circuit of size 2 /n for f .
+    Let D1 = (n/2) − c3 n log(1/ε) for √     a constant c3 > 0 that is chosen to so that the number of
+monomials of degree at most D1 is ND1 ≥ ε2n . (See, e. g., [22, Section B, Lemma 2.4].) We choose c
+so that D0 = D1 + d = n/2 − n/(O(log s))(d−1) .
+    We call y ∈ f −1 (1) forced if any polynomial R that vanishes on f −1 (0) also vanishes on y. Let
+F ⊆ f −1 (1) be the set of all forced y. We will prove the following two claims.
+                                 2(d−1)
+Claim 7.2. |F| ≤ 2n−n/(O(log s))          .
+Claim 7.3. There is a polynomial-time algorithm A1 which when given f , outputs the descriptions of at
+most m = O(n) 1-certifying polynomials R1 , . . . , Rm such that for each y ∈ f −1 (1) \ F, there is an i ∈ [m]
+such that y ∈ Supp(Ri ).
+   Given Claims 7.2 and 7.3, the description of the compression algorithm A is as follows. First run A1
+and obtain a collection of 1-certifying polynomials R1 , . . . , Rm such that
+
+                                                  Supp(Ri ) = f −1 (y) \ F .
+                                              [
+
+                                              i
+                                                           2(d−1)
+In particular, if Ci is a circuit of size 2n−n/(O(log s))  that accepts exactly the inputs in Supp(Ri ), then
+C0 = i Ci is a circuit of the required size that accepts exactly the set f −1 (y) \ F. The algorithm now
+      W
+
+constructs a DNF CF of size O(n · |F|) that accepts exactly the inputs in F. (The set F is easily inferred
+from the circuit C0 .) The circuit C output by the algorithm is C0 ∨CF , which computes f by definition and
+also has the required size.
+    It remains to prove Claims 7.2 and 7.3, which we do below.
+
+Proof of Claim 7.2. Let P and EP be as above. Note that if y 6∈ clD1 (EP ), then there is a polynomial Q
+of degree at most D1 that vanishes at all points in EP but not at y. Hence, the polynomial Q · P is a
+1-certifying polynomial for f of degree at most D0 that is non-zero at y and thus, y is not forced. Stated in
+the contrapositive, this argument tells us that F ⊆ clD1 (EP ) and therefore, |F| ≤ |clD1 (EP )|.
+    By Theorem 5.6 of Nie and Wang [21], we have
+                                                   |clD1 (EP )| |EP |
+                                                               ≤      .
+                                                       2n        ND1
+
+                       T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                                  17
+                              S WASTIK KOPPARTY AND S RIKANTH S RINIVASAN
+
+                               √
+  √Since |EP | ≤ ε2n and ND1 ≥ ε2n , we see that the right hand size of the above inequality is bounded
+by ε, which implies the claim.
+
+
+Proof of Claim 7.3. Let V denote the vector space of polynomials Q of degree at most D0 such that
+Q vanishes on f −1 (0). Note that F 0 := f −1 (1) \ F satisfies F 0 = Q∈V Supp(Q). Let Q1 , . . . , QN be a
+                                                                            S
+
+generating set of V . Note that N ≤ 2n . A generic element of V is given by ∑Ni=1 αi Qi for some choice of
+α1 , . . . , αN ∈ F2 ; we denote this element by Qα , where α denotes the vector (α1 , . . . , αN ).
+      For any y ∈ F 0 , we have Qα (y) = ∑i αi Qi (y), which is a linear function of α. Since y ∈ F 0 , it is not
+forced to 0 and hence not all the Qi (y) are 0. Thus, for a random choice of the αi , the probability that
+Qα (y) 6= 0 is 1/2. We can derandomize this argument using binary error-correcting codes.
+      Say we have vectors U = {u1 , . . . , uN } ⊆ FM2 (where M = 2
+                                                                          O(n) ) that generate an error-correcting
+
+code of distance δ M for some constant δ > 0. There are many standard constructions of such sets U
+in time poly(2n ). (See, e. g., [16, Chapter 9].) Let M be an M × N matrix with columns u1 , . . . , uN . Let
+α 1 , . . . , α M denote the rows of M. For any non-zero β1 , . . . , βN we know that u = ∑i βi ui has at least δ M
+many non-zero entries. In other words, for any non-zero vector β = (β1 , . . . , βN ) ∈ FN2 and a random
+ j ∈ [M], the probability that the inner product of β and α j is non-zero is at least δ .
+      We are now ready to describe the algorithm A1 . The algorithm needs to finds m = O(n) elements
+R1 , . . . , Rm from V such that F 0 ⊆ i Supp(Ri ). The algorithm goes through m iterations, the i-th iteration
+                                       S
+
+producing a polynomial Ri ∈ V . After each iteration, we ensure that the number of elements in F 0 left
+uncovered thus far drops by the constant factor (1 − δ ); thus, at the end of m = 2n/δ iterations, all the
+elements of F 0 will be covered.
+      Let Fi0 = F 0 \ p<i Supp(R p ) be the set of elements of F 0 left uncovered after i − 1 iterations. In the
+                       S
+
+i-th iteration, the algorithm looks at each of the rows of M and picks the j such that
+                                                                         !
+                                        s j = Supp      ∑      α ij Qi       ∩ Fi0
+                                                       i∈[N]
+
+
+is maximized. We know that vy := (Q1 (y), . . . , QN (y)) is a non-zero vector for any choice of y ∈ Fi0 .
+Hence, for a random j ∈ [M], the probability that the inner product of α j and v is non-zero is at least δ .
+By averaging, there must be a j ∈ [M] such that the inner product of α j and vy is non-zero for at least a
+δ -fraction of the y ∈ Fi0 . Thus, |Fi+1
+                                      0 | ≤ (1 − δ )|F 0 |.
+                                                      i
+
+
+
+
+Remark 7.4. After a manuscript version of this compression algorithm appeared in [29], a beautiful result
+of Carmosino, Impagliazzo, Kabanets, and Kolokolova [10] gave a different randomized compression
+algorithm for the class of AC0 [⊕]. The algorithm from [10] is very different from our own and uses in
+principle only the fact that the lower bounds we have for AC0 [⊕] are based on natural strategies in the
+sense of Razborov and Rudich [25]. Our algorithm, though specific to the case of AC0 [⊕] (and AC0 [p],
+see below), is quantitatively stronger and is in addition deterministic.
+
+                        T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                                   18
+                 C ERTIFYING P OLYNOMIALS FOR AC0 [⊕] C IRCUITS , WITH A PPLICATIONS
+
+8    Extension to the MOD p case
+All the results we have proved extend fairly straightforwardly to the setting of AC0 [p] circuits where p is
+a prime. (Some such extensions have already appeared in the literature: Oliveira and Santhanam [22]
+note that the proof of Lemma 3.6 regarding approximating polynomials extends to the MOD p setting.)
+The right definition of certifying polynomials is obtained by simply replacing F2 by F p in Definition 2.1
+(where Supp(P) is the set of points x s. t. P(x) 6= 0). Finally, for the Compression algorithm, we need a
+modification of Theorem 7.1 for the case of F p . This does not follow immediately from the results in the
+paper of Nie and Wang [21], since they prove such a result only for the degree D closure over the entire
+field F p and not {0, 1}n ⊆ Fnp . However, as observed by Nie and Wang and also stated in Section 7, a
+straightforward modification of their argument gives the result for closure over {0, 1}n ⊆ Fn , where F can
+be any field (possibly even infinite). A proof of this is given in Appendix A.
+
+
+9    Discussion and open questions
+We have seen that certifying polynomials are a natural and useful notion in the context of lower bounds
+for AC0 [⊕] circuits. We also saw that they have a rather interesting interaction with the well-studied
+notion of approximating polynomials for AC0 [⊕] circuits.
+    The fundamental question we would like to answer is whether we can prove a size-hierarchy theorem
+for AC0 [⊕] analogous to the results of Rossman [26] and Amano [4] for AC0 . It would even be interesting
+to obtain the weaker separation of uniform AC0 [⊕] circuits of size nlog n from polynomial-sized AC0 [⊕]
+circuits. Good candidates for proving these separations seem to be the parity of the number of k-cliques
+in a graph for the former, and the elementary symmetric polynomial of degree log n for the latter. We
+have taken the first step in this direction by demonstrating a function that has polynomial-sized uniform
+AC0 circuits but not near-linear sized AC0 [⊕] circuits.
+    It would also be interesting to see whether certifying objects (analogous to the certifying polynomials
+studied here) exist for other, more powerful, circuit classes, and if they can be used to prove new circuit
+lower bounds and give new compression algorithms.
+
+
+10    Acknowledgements
+We would like to thank Albert Atserias for asking us about the tradeoff between degree and error for
+approximating polynomials for AC0 [⊕] circuits. We would also like to thank the reviewers of FSTTCS
+2012 and Theory of Computing for pointing out some errors and improving the quality of the exposition.
+The second author would like to thank Abhishek Bhrushundi, Prahladh Harsha, Valentine Kabanets and
+Antonina Kolokolova for useful discussions.
+
+
+A    Appendix: A version of Theorem 7.1 over other fields
+In this section, let F be an arbitrary field and n any positive integer. Consider the vector space Vn of
+functions { f : {0, 1}n → F}. It is a standard fact that any f ∈ Vn can be represented uniquely as a
+
+                      T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                              19
+                             S WASTIK KOPPARTY AND S RIKANTH S RINIVASAN
+
+multilinear polynomial P ∈ F[X1 , . . . , Xn ].
+    Given S ⊆ {0, 1}n and a degree parameter D ∈ N, we define clD (S) be the set of all y ∈ {0, 1}n such
+that any multilinear polynomial P ∈ F[X1 , . . . , Xn ] of degree at most D that vanishes at all the points in S
+also vanishes at y.
+    Our aim is to give a sketch of the following theorem. The theorem closely follows the proof of Nie
+and Wang [21, Theorem 5.6]. This was already observed for a more general setting in [21] but we give
+the proof here for the reader’s convenience.
+
+Theorem A.1. Let ND denote the number of multilinear monomials of degree at most D. Then, we have
+
+                                               |clD (S)|   |S|
+                                                    n
+                                                         ≤     .
+                                                  2        ND
+
+     To prove Theorem A.1, we will need some preliminary definitions and facts. Fix any S ⊆ {0, 1}n and
+any multilinear polynomial P ∈ F[X1 , . . . , Xn ]. We define PS : S → F to be the evaluation vector of P at
+all the points in S. Let VD (S) be the vector space {PS | P of degree at most D}. Define HD (S) to be the
+dimension of VD (S). Let V (S) be the vector space of all functions { f : S → F}.
+     Treating multilinear monomials as sets of variables, we can order them in the graded-lexicographic
+order. (See, e. g., [13].) That is, ∏i∈A Xi ≤ ∏ j∈B X j if either |A| < |B| or if |A| = |B| and the smallest
+i ∈ A 4 B lies in A.
+     We recall some standard facts. The proofs can be found, e. g., in [28, 13].
+
+Fact A.2.
+
+   1. As vector spaces, V (S) ∼
+                              = F[X1 , . . . , Xn ]/I(S) where I(S) is the ideal of all polynomials that vanish
+      at all the points in S.
+
+   2. dim(V (S)) = |S|.
+
+   3. For a set P ⊆ F[X1 , . . . , Xn ], let PD be the subset of all polynomials in P of degree at most D. Then,
+      as vector spaces VD (S) ∼    = F[X1 , . . . , Xn ]D /I(S)D .
+
+   4. (Macaulay’s theorem [20]. Also see [28, Theorem 1].) For a multilinear polynomial P, let in(P)
+      denote its leading term with respect to the graded-lexicographic order. Let in(I(S)) denote the
+      set of all multilinear monomials that are leading terms of some polynomial in I(S) and out(I(S))
+      denote the space of all multilinear monomials that are not members of in(I(S)). Then, any f ∈ V (S)
+      can be represented uniquely as a linear combination of monomials in out(I(S)) and similarly any
+      P ∈ VD (S) can be represented uniquely as a linear combination of monomials in out(I(S))D . In
+      particular, |S| = dim(V (S)) = |out(S)| and HD (S) = dim(V (S)D ) = |out(S)D |.
+
+   5. in(I(S)) is an up-set (i. e., ∏i∈A Xi ∈ in(I(S)) and A ⊆ B ⊆ [n] implies that ∏i∈B Xi ∈ in(I(S))).
+      Consequently, out(I(S)) is a down-set.
+
+   Finally, we use the following combinatorial lemma that is a simple restatement of Kleitman’s
+lemma [5, Theorem 6.1.3].
+
+                       T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                                 20
+                C ERTIFYING P OLYNOMIALS FOR AC0 [⊕] C IRCUITS , WITH A PPLICATIONS
+
+Lemma A.3 (Theorem 6.1.3 in [5]). Let A, B ⊆ 2[n] be any down-sets. Then
+
+                                             |A| |A ∩ B|
+                                                 ≤       .
+                                              2n   |B|
+
+    Lemma A.3 has a nice algebraic corollary.
+
+Corollary A.4. Fix any T ⊆ {0, 1}n . Then
+
+                                              |T | HD (T )
+                                                  ≤        .
+                                               2n   ND
+Proof. We apply Lemma A.3 with A = out(I(T )) (which is a down-set by Fact A.2) and B = {A ⊆
+                                                                                                        n
+[n] | |A| ≤ D}. Since |out(I(T ))| = |T | and |out(I(T ))D | = HD (T ) by Fact A.2, and also |B| = ∑D
+                                                                                                    i=0 i =
+ND , Lemma A.3 immediately implies the statement of the corollary.
+
+    We now prove the main theorem of this section.
+
+Proof of Theorem A.1. Say T = clD (S). Note that T ⊇ S.
+    We know that any polynomial of degree at most D that vanishes on S must also vanish on T .
+Equivalently, the linear map ρ : VD (T ) → VD (S) obtained by restricting each polynomial PT to points in S
+has trivial kernel and is hence injective.
+    Thus, HD (T ) = dim(VD (T )) ≤ dim(VD (S)) ≤ dim(V (S)) = |S|. Applying Corollary A.4, we get
+
+                                                |T |   |S|
+                                                   n
+                                                     ≤     ,
+                                                 2     ND
+which is the statement of the theorem.
+
+
+
+References
+ [1] M IKLÓS A JTAI: Approximate counting with uniform constant-depth circuits. In J IN -Y I C AI, editor,
+     Advances in Computational Complexity Theory, volume 13 of DIMACS Ser. in Discr. Math. and
+     Theoret. Comput. Sci., pp. 1–20. Amer. Math. Soc., 1993. 2, 6
+
+ [2] M IKLÓS A JTAI AND M ICHAEL B EN -O R: A theorem on probabilistic constant depth computations.
+     In Proc. 16th STOC, pp. 471–474. ACM Press, 1984. [doi:10.1145/800057.808715] 2, 6
+
+ [3] M ICHAEL A LEKHNOVICH AND A LEXANDER A. R AZBOROV: Lower bounds for polynomial
+     calculus: Non-binomial case. In Proc. 42nd FOCS, pp. 190–199. IEEE Comp. Soc. Press, 2001.
+     [doi:10.1109/SFCS.2001.959893] 3, 5
+
+ [4] K AZUYUKI A MANO: k-subgraph isomorphism on AC0 circuits. Comput. Complexity, 19(2):183–
+     210, 2010. Preliminary version in CCC’09. [doi:10.1007/s00037-010-0288-y] 3, 19
+
+ [5] I AN A NDERSON: Combinatorics of Finite Sets. Dover, 2011. 20, 21
+
+                      T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                             21
+                          S WASTIK KOPPARTY AND S RIKANTH S RINIVASAN
+
+ [6] S ANJEEV A RORA AND B OAZ BARAK: Computational Complexity: A Modern Approach. Cam-
+     bridge University Press, 2009. ACM DL. 6
+
+ [7] JAMES A SPNES , R ICHARD B EIGEL , M ERRICK L. F URST, AND S TEVEN RUDICH: The expressive
+     power of voting polynomials. Combinatorica, 14(2):135–148, 1994. Preliminary version in
+     STOC’91. [doi:10.1007/BF01215346] 3, 5, 11
+
+ [8] M ARK B RAVERMAN: Polylogarithmic independence fools AC0 circuits. J. ACM, 57(5):28:1–28:10,
+     2010. Preliminary version in CCC’09. [doi:10.1145/1754399.1754401] 5
+
+ [9] C LAUDE C ARLET, D EEPAK K UMAR DALAI , K ISHAN C HAND G UPTA , AND S UBHAMOY
+     M AITRA: Algebraic immunity for cryptographically significant Boolean functions: Analysis and
+     construction. IEEE Trans. Inform. Theory, 52(7):3105–3121, 2006. [doi:10.1109/TIT.2006.876253]
+     3, 5
+
+[10] M ARCO L. C ARMOSINO , RUSSELL I MPAGLIAZZO , VALENTINE K ABANETS , AND A NTONINA
+     KOLOKOLOVA: Learning algorithms from natural proofs. In Proc. 31st Computational Complex-
+     ity Conf. (CCC’16), pp. 10:1–10:24. Schloss Dagstuhl–Leibniz-Zentrum fuer Informatik, 2016.
+     [doi:10.4230/LIPIcs.CCC.2016.10] 18
+
+[11] S HIVA C HAUDHURI AND JAIKUMAR R ADHAKRISHNAN: Deterministic restrictions in circuit
+     complexity. In Proc. 28th STOC, pp. 30–36. ACM Press, 1996. [doi:10.1145/237814.237824] 2, 3,
+     7
+
+[12] RUIWEN C HEN , VALENTINE K ABANETS , A NTONINA KOLOKOLOVA , RONEN S HALTIEL , AND
+     DAVID Z UCKERMAN: Mining circuit lower bound proofs for meta-algorithms. Comput. Complexity,
+     24(2):333–392, 2015. Preliminary version in CCC’14. [doi:10.1007/s00037-015-0100-0] 5, 6, 7, 16
+
+[13] DAVID A. C OX , J OHN L ITTLE , AND D ONAL O’S HEA: Ideals, Varieties and Algorithms: An
+     Introduction to Computational Algebraic Geometry and Commutative Algebra. Springer, 1992.
+     [doi:10.1007/978-3-319-16721-3] 20
+
+[14] M ERRICK L. F URST, JAMES B. S AXE , AND M ICHAEL S IPSER: Parity, circuits, and the polynomial-
+     time hierarchy. Mathematical Systems Theory, 17(1):13–27, 1984. Preliminary version in FOCS’81.
+     [doi:10.1007/BF01744431] 2
+
+[15] F REDERIC G REEN: A complex-number Fourier technique for lower bounds on the Mod-m degree.
+     Comput. Complexity, 9(1):16–38, 2000. [doi:10.1007/PL00001599] 3, 5
+
+[16] V ENKATESAN G URUSWAMI , ATRI RUDRA , AND M ADHU S UDAN: Essential Coding Theory.
+     2013-17. Available at author’s webpage. 18
+
+[17] P RAHLADH H ARSHA AND S RIKANTH S RINIVASAN: On polynomial approximations to AC 0 .
+     In Proc. 19th Internat. Workshop on Approximation Algorithms for Combinatorial Optimization
+     Problems (APPROX’16), pp. 32:1–32:14. Schloss Dagstuhl–Leibniz-Zentrum fuer Informatik, 2016.
+     [doi:10.4230/LIPIcs.APPROX-RANDOM.2016.32, arXiv:1604.08121] 5
+
+                     T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                        22
+                C ERTIFYING P OLYNOMIALS FOR AC0 [⊕] C IRCUITS , WITH A PPLICATIONS
+
+[18] J OHAN H ÅSTAD: Computational Limitations of Small-depth Circuits. MIT Press, 1987. 2
+
+[19] S WASTIK KOPPARTY AND S RIKANTH S RINIVASAN: Certifying polynomials for AC 0 (parity)
+     circuits, with applications. In Proc. 32nd IARCS Ann. Conf. on Foundations of Software Technology
+     and Theoret. Computer Sci. (FSTTCS’12), pp. 36–47. Schloss Dagstuhl–Leibniz-Zentrum fuer
+     Informatik, 2012. [doi:10.4230/LIPIcs.FSTTCS.2012.36] 1, 4, 5
+
+[20] F RANCIS S. M ACAULAY: Some properties of enumeration in the theory of modular systems. Proc.
+     London Math. Soc., 26(1):531–555, 1927. [doi:10.1112/plms/s2-26.1.531] 20
+
+[21] Z IPEI N IE AND A NTHONY Y. WANG: Hilbert functions and the finite degree Zariski clo-
+     sure in finite field combinatorial geometry. J. Combin. Theory Ser. A, 134:196 – 220, 2015.
+     [doi:10.1016/j.jcta.2015.03.011, arXiv:1402.3018] 5, 16, 17, 19, 20
+
+[22] I GOR C ARBONI O LIVEIRA AND R AHUL S ANTHANAM: Majority is incompressible by AC 0 [p]
+     circuits. In Proc. 30th Computational Complexity Conf. (CCC’15), pp. 124–157. Schloss Dagstuhl–
+     Leibniz-Zentrum fuer Informatik, 2015. [doi:10.4230/LIPIcs.CCC.2015.124] 5, 13, 17, 19
+
+[23] P RABHAKAR R AGDE AND AVI W IGDERSON: Linear-size constant-depth polylog-threshold circuits.
+     Inform. Process. Lett., 39(3):143–146, 1991. [doi:10.1016/0020-0190(91)90110-4] 2
+
+[24] A LEXANDER A. R AZBOROV: Lower bounds on the size of constant-depth networks over a complete
+     basis with logical addition. Mathematicheskie Zametki, 41(4):598–607, 1987. 2, 4, 6, 11, 12
+
+[25] A LEXANDER A. R AZBOROV AND S TEVEN RUDICH: Natural proofs. J. Comput. System Sci.,
+     55(1):24–35, 1997. Preliminary version in STOC’94. [doi:10.1006/jcss.1997.1494] 18
+
+[26] B ENJAMIN ROSSMAN: On the constant-depth complexity of k-clique. In Proc. 40th STOC, pp.
+     721–730. ACM Press, 2008. [doi:10.1145/1374376.1374480] 3, 19
+
+[27] ROMAN S MOLENSKY: Algebraic methods in the theory of lower bounds for Boolean circuit
+     complexity. In Proc. 19th STOC, pp. 77–82. ACM Press, 1987. [doi:10.1145/28395.28404] 2
+
+[28] ROMAN S MOLENSKY: On representations by low-degree polynomials. In Proc. 34th FOCS, pp.
+     130–138. IEEE Comp. Soc. Press, 1993. [doi:10.1109/SFCS.1993.366874] 4, 11, 20
+
+[29] S RIKANTH S RINIVASAN: A compression algorithm for AC0 [⊕] circuits using certifying polynomi-
+     als. Electron. Colloq. on Comput. Complexity (ECCC), 22:142, 2015. LINK. 1, 18
+
+[30] AVISHAY TAL: Tight bounds on the Fourier spectrum of AC0 . In Proc. 32nd Computational
+     Complexity Conf. (CCC’17), pp. 15:1–15:31. Schloss Dagstuhl–Leibniz-Zentrum fuer Informatik,
+     2017. [doi:10.4230/LIPIcs.CCC.2017.15] 5
+
+[31] E MANUELE V IOLA: On approximate majority and probabilistic time. Comput. Complexity,
+     18(3):337–375, 2009. Preliminary version in CCC’07. [doi:10.1007/s00037-009-0267-3] 2
+
+[32] I NGO W EGENER: The Complexity of Boolean Functions. John Wiley & Sons, Inc., 1987. 16
+
+                     T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                         23
+                           S WASTIK KOPPARTY AND S RIKANTH S RINIVASAN
+
+[33] RYAN W ILLIAMS: New algorithms and lower bounds for circuits with linear threshold gates. In Proc.
+     46th STOC, pp. 194–202. ACM Press, 2014. [doi:10.1145/2591796.2591858, arXiv:1401.2444] 5
+
+[34] A NDREW C HI -C HIH YAO: Separating the polynomial-time hierarchy by oracles. In Proc. 26th
+     FOCS, pp. 1–10. IEEE Comp. Soc. Press, 1985. [doi:10.1109/SFCS.1985.49] 2
+
+
+AUTHORS
+
+      Swastik Kopparty
+      Associate professor
+      Department of Mathematics
+      & Department of Computer Science
+      Rutgers University
+      Piscataway, NJ, USA
+      swastik.kopparty gmail com
+      http://www.math.rutgers.edu/~sk1233
+
+
+      Srikanth Srinivasan
+      Assistant professor
+      Department of Mathematics
+      IIT Bombay, Mumbai, India
+      srikanth math iitb ac in
+      http://www.math.iitb.ac.in/~srikanth
+
+
+ABOUT THE AUTHORS
+
+      S WASTIK KOPPARTY got his Ph. D. in Computer Science from MIT in 2010, and was advised
+         by Madhu Sudan. During 2010-2011, he was a postdoc at the Institute for Advanced
+         Study and he has been at Rutgers University since then. Long before any of this, he got
+         hooked on mathematics early in life because of his mathematician father (and eventual
+         coauthor), K. P. S. Bhaskara Rao. Swastik’s research interests are in complexity theory,
+         error-correcting codes, finite fields, randomness and pseudorandomness.
+
+
+      S RIKANTH S RINIVASAN got his undergraduate degree from the Indian Institute of Technol-
+          ogy Madras, where his interest in the theory side of CS was piqued under the tutelage
+          of N. S. Narayanswamy. Subsequently, he obtained his Ph. D. from The Institute of
+          Mathematical Sciences in 2011; his advisor was V. Arvind. His research interests span
+          all of TCS (in theory), but in practice are limited to circuit complexity, derandomization,
+          and related areas of mathematics. He enjoys running and pretending to play badminton.
+
+
+
+
+                      T HEORY OF C OMPUTING, Volume 14 (12), 2018, pp. 1–24                             24
+
