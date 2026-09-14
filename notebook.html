@@ -1,4 +1,4 @@
-<div class="eyebrow">Research checkpoint · 14 September 2026</div>
+<div class="eyebrow">Research checkpoint · 15 September 2026</div>
 <h1>Pigeonhole principle lower bounds</h1>
 <p class="intro">Our main target: superpolynomial proof-size lower bounds for ordinary PHP in \(\mathrm{AC}^{0}[p]\)-Frege, for every fixed prime \(p\) and fixed depth. A polynomial-size upper bound is also a valuable research outcome to pursue if concrete evidence supports it.</p>
 
@@ -12,7 +12,7 @@
 <section id="where-we-stand">
   <h2>Where we stand</h2>
   <p><strong>Our main goal remains open: superpolynomial proof-size lower bounds for ordinary PHP in \(\mathrm{AC}^0[p]\)-Frege, for every fixed prime and fixed depth.</strong> The route compiles a hypothetical short proof into an algebraic source and seeks a contradiction below the old degree barrier. The <a href="#unary-to-bit-Frege-encoding-clarification">ordinary-to-bit Frege substitution</a> has polynomial size overhead and a constant depth increase, so full bit-PHP bounds at every fixed depth would suffice.</p>
-  <p><strong>The latest result rules out the universal Boolean-domain normalization step.</strong> A polynomial-size <a href="#polynomial-size-three-level-majority-source">three-level approximate-majority source</a> forces any complete old-only map with Booleanity-only image certificates to have <a href="#universal-Boolean-source-map-obstruction">linear degree in the number of old bits</a>. The same example rules out universally small <a href="#affine-domain-realization-and-profile-barrier">Boolean-domain-valid profiles over one affine family</a>, even with quasipolynomial inventory. This is a working obstruction to the method, not a PHP upper bound or a claim that every short PHP proof contains that source.</p>
+  <p><strong>A universal Boolean-domain normalization step is ruled out.</strong> A polynomial-size <a href="#polynomial-size-three-level-majority-source">three-level approximate-majority source</a> forces any complete old-only map with Booleanity-only image certificates to have <a href="#universal-Boolean-source-map-obstruction">linear degree in the number of old bits</a>. The same example rules out universally small <a href="#affine-domain-realization-and-profile-barrier">Boolean-domain-valid profiles over one affine family</a>, even with quasipolynomial inventory. This is a working obstruction to the method, not a PHP upper bound or a claim that every short PHP proof contains that source.</p>
   <p><strong>The general step must use more of the PHP problem or its proof source.</strong> Seek profiles with explicit old PHP residuals, a justified restriction on sources arising from short PHP proofs, or another endpoint that escapes the new obstruction. The <a href="#source-profile-rank-inflation">arbitrary-rank profile construction</a> remains valid but its cost is not uniformly small enough. Existing <a href="#unit-accuracy-affine-family-exclusion">all-prime affine endpoints</a>, <a href="#bounded-affine-probe-source-exclusion">bounded-probe bounds</a>, <a href="#all-prime-leading-pair-source-exclusion">leading-pair bounds</a>, and <a href="#projected-cyclic-complete-source-exclusion">projected cyclic bounds</a> remain correct in their restricted scopes. No current bound covers the full Frege source.</p>
   <p><strong>Formal verification.</strong> Lean verifies <a href="#entry-2026-09-14-lean-mod-interpolation">MOD interpolation</a>, <a href="#entry-2026-09-14-lean-mp-telescoping">ENS telescoping and its corrected companion bound</a>, and <a href="#entry-2026-09-14-lean-binary-affine-cover">binary semantic rule reduction with its separator and clause-compression dependencies</a>. The last result's concrete PC-degree corollary remains unformalized. These are local components; the general source gap is unchanged.</p>
   <div class="result">
@@ -33,7 +33,7 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Develop a PHP-relative local profile or weighted transfer: allow explicit old collision residuals in the prefix and companion identities, retain their original NS degrees, and test how the current compiler uses them without reinstating Boolean-domain validity. Stop at a source-specific construction that changes the general degree obligation, or identify the precise missing witness. The approximate-majority obstruction must remain visible when evaluating any proposed universal normalization.</p>
+  <p>Test a coupled PHP-relative profile for the full affine-in-earlier-selector OR tuple, using both old collision equations and genuine earlier ENS relations. Seek a cost saving over the rank-product construction while retaining every original-input witness and the compiler's auxiliary groups. Old-base rewriting of independent formal selectors cannot provide that saving. Stop at a new source-valid construction or an explicit obstruction to the stated general step.</p>
 </section>
 
 <section id="working-context">
@@ -88,6 +88,7 @@
   <p>When every \(r_a\le h-1\), this recovers the <a href="#dependent-rank-source-collapse">earlier induction</a> with \(\Lambda=1\). Fixed source depth bounds dependency-path length, not the ranks along it. The <a href="#depth-uniform-degree-budget-audit">uniform audit</a> leaves a bound such as \(\Lambda\le n^{1/2-\varepsilon_d}\operatorname{polylog}n\) unproved for the general source. Choosing \(h\) above all ranks instead costs \(h^d\); the <a href="#compact-source-polynomial-rank-obstruction">necessary original-rank theorem</a> records the resulting threshold \(R&gt;n^{1/(2d-1)}/(\log n)^2\). It is not an upper bound on source rank.</p>
   <p>The <a href="#universal-Boolean-source-map-obstruction">latest obstruction</a> shows that a universal old-only map with Booleanity-only source images cannot have the needed sublinear degree: a polynomial-size three-level approximate-majority source requires \(\deg W+\deg\sigma(Z)&gt;\lfloor v/3\rfloor\). The <a href="#affine-domain-realization-and-profile-barrier">affine-profile version</a> similarly requires \(\delta+Ts&gt;\lfloor v/3\rfloor\), with \(k=\lceil\sqrt{v\ln(4M)}\rceil\), \(\delta=(p-1)k\), \(T=2(p-1)(k+1)-1\). These are working method obstructions for valid evaluation sources; essential occurrence in a short PHP proof is not asserted.</p>
   <p>The remaining profile target must use old PHP residuals or a proved restriction on proof sources. Profiles over \(\Gamma_{\rm dom}+\mathcal Q_{n,p}\) need not be correct on models of \(\Gamma_{\rm dom}\) alone. Keep that distinction explicit. The source uses <a href="#selector-value-domain-and-flat-expansion">whole-selector values</a>; the <a href="#bare-profile-free-parameter-obstruction">bare profile equations</a> also admit raw coefficient values and are insufficient by themselves. A PHP-relative simultaneous map with a separated target and controlled old degree remains another sufficient endpoint.</p>
+  <p>The <a href="#PHP-relative-interface-already-available">relative interfaces already exist</a>; they do not supply the needed witnesses. Below the old degree barrier, <a href="#formal-old-base-input-rigidity">old-certified formal input rewrites</a> preserve the constant selector coefficients. A useful construction must use genuine earlier ENS relations or change their interpretation, rather than treat the selectors as free parameters.</p>
   <p><a href="#conditioned-bottom-level-removal">Conditioned deletion</a> pays \(kD\) and leaves \(\mathcal Q_n+\{1-f\}\), with barrier \(n/2-\deg f+1\). Later inputs are <a href="#second-level-affine-flat-indicator-inputs">sums of affine-flat indicators</a>, not automatically affine; polynomial rank does not imply affine-flat dimension. <a href="#conditioned-row-linear-quotient-dimension">Conditioned target spaces</a> do not supply those missing input witnesses. A second independent square-root loss fails the degree budget, and nonzero factors can have zero Boolean product.</p>
 
   <h3 id="context-special-families">Restricted tools retained for targeted use</h3>
@@ -16084,6 +16085,87 @@
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">23.74 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.07 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.06 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+
+<article class="research-entry" id="entry-2026-09-15-PHP-relative-source-audit">
+  <h3>15 September 2026 — What the PHP-relative escape still requires</h3>
+  <p class="entry-meta">Status: interface audit, a working formal-input limitation, and reuse of existing relative normalizers; no new general source compression. Cycle 150.</p>
+  <p><strong>Obligation and stopping point.</strong> After the <a href="#universal-Boolean-source-map-obstruction">Boolean-domain obstruction</a>, test whether using old PHP residuals supplies a new affordable source step. Check the existing tools first, and distinguish a new construction from merely replacing the name of the base ideal.</p>
+
+  <h4 id="PHP-relative-interface-already-available">1. The compiler already permits the needed kind of residual</h4>
+  <p>The <a href="#costed-ns-value-profile">costed profile definition</a> is relative to a fixed system \(\Gamma\). It permits \(\Gamma=\mathcal Q_n+\mathcal E_{\rm aff}+{\rm BOOL}\); it never required all witnesses to use Booleanity alone. Prefix residuals, companions, and Booleanity must still have supplied ordinary NS certificates at their declared costs. The <a href="#costed-profile-product-closure">product and OR identities</a> retain those residuals, and the <a href="#costed-profile-unbalanced-PC-compiler">logical PC compiler</a> uses their costs. No new compiler theorem is needed merely to allow an old collision term.</p>
+  <p>The earlier <a href="#full-base-relative-learning">relative-learning theorem</a> also already allows \(f-H_a\in\mathcal I_c(\mathcal F)\), rather than Boolean vanishing. Its remaining condition is the existence of a shared old class outside the affordable old ideal, with a sufficient replay budget. The <a href="#quadratic-PHP-relative-interface">relative quotient criterion</a> and its finite controls explicitly left that existence condition open.</p>
+  <p><strong>Reused input-replacement argument.</strong> If \(g_i-g_i'\) has an explicit old-base NS certificate through the original input degree \(d_i\), and \(\deg g_i'\le d_i\), the <a href="#input-reduction-transfer">existing telescoping proof</a> gives</p>
+  <div class="math">\[
+     P-P'\in\mathcal I_{w_a},\qquad
+     g_iP=g_i'P'+(g_i-g_i')P'+g_i(P-P'),
+     \qquad w_a=h_a(\delta_a+1).
+  \]</div>
+  <p>The old companion is thus derivable from the new one through its original degree \(d_i+w_a\); own fields are unchanged. This works with certified PHP residuals. It does not supply an arbitrary degree-preserving normal form modulo the full PHP ideal. Higher current polynomials also need not retain the original affine-in-selector syntax after such replacements.</p>
+
+  <h4 id="formal-old-base-input-rigidity">2. Old-base rewriting alone cannot change the formal selector coefficients</h4>
+  <p>Work over \(\mathbb F_2\). Let \(\mathcal F\subseteq\mathbb F_2[b]\) contain old Booleanity and satisfy \(1\notin\mathcal I_B(\mathcal F)\). Give independent formal variables \(Z_j\) fixed positive integer weights. Let \(\mathcal I_B^w\) charge each ordinary generator multiple at its weighted degree, including any formal equations \(Z_j^2-Z_j\).</p>
+  <p><strong>Working rigidity observation.</strong> Suppose</p>
+  <div class="math">\[
+      G=L(b)+\sum_j\alpha_jZ_j,\qquad
+      G'=L'(b)+\sum_j\alpha_j'Z_j,\qquad
+      G-G'\in\mathcal I_B^w(\mathcal F+{\rm BOOL}_Z),
+      \tag{RI-formal}
+  \]</div>
+  <p>where \(L,L'\) are old-affine and the selector coefficients are constants. Then \(\alpha_j=\alpha_j'\) for every \(j\), and \(L-L'\in\mathcal I_B(\mathcal F)\).</p>
+  <p><strong>Proof.</strong> Set all formal selectors to zero in the supplied certificate. This gives \(L-L'\in\mathcal I_B(\mathcal F)\). Set only \(Z_j=1\), and all others zero, and subtract the two certificates. This gives the constant \(\alpha_j-\alpha_j'\) in the same old space. A nonzero such constant would give a degree-\(B\) old refutation. Every substitution preserves old degrees and sends formal Boolean equations to zero, so no NS multiplication closure was assumed. \(\square\)</p>
+  <p>For the compact binary PHP base, the <a href="#signed-cube-row-linear-separation">old row-linear separation</a> also excludes nonzero old-affine members in this range when \(B\ge1\) and \(n\ge2B-1\). Thus \(L=L'\) there. Entrywise old-certified changes of this formal form do not reduce the selector rank.</p>
+  <p><strong>A related one-way old-target projection.</strong> Let \(G_i=L_i(b)+\sum_j\alpha_{ij}Z_j\), and let \(A\) be the full old-affine intersection of their constant-coefficient span. If an old polynomial \(f\) belongs to \(\mathcal I_B^w(\mathcal F+G+{\rm BOOL}_Z)\), then</p>
+  <div class="math">\[
+      f\in\mathcal I_B(\mathcal F+A).
+      \tag{RI-old-target}
+  \]</div>
+  <p>If \(1\in A\), the conclusion is immediate. Otherwise choose an affine basis for \(A\) and extend it by input combinations \(H_1,\ldots,H_r\) whose selector coefficient rows are independent. A constant right inverse lets us assign the formal \(Z_j\)'s old-affine polynomials making every \(H_j\) zero. Each original input then becomes a constant combination of \(A\). Old variables are fixed. This substitution does not increase weighted degree, and an image \(\ell(b)^2-\ell(b)\) of a formal Boolean equation has an old Boolean certificate through two, within its original weight \(2w_j\). Applying the substitution to the supplied NS witness proves (RI-old-target). If \(A=0\), there is no nontrivial old class beyond \(\mathcal I_B(\mathcal F)\).</p>
+  <p>This is a forward filtered implication, not an equality of ideals at the same degree. Pulling an affine basis back to higher-degree original generators can cost more, as the <a href="#affine-intersection-original-degree-gap">earlier exact NS/PC degree control</a> illustrates.</p>
+  <p><strong>Scope that matters.</strong> These statements concern independent formal selectors. An actual identity whose cofactors and named generators all lie in the genuine selector subring can be lifted using <a href="#selector-weighted-degree-reflection">ordinary degree reflection</a>, under its nonzero-tuple and disjoint-coefficient hypotheses. Arbitrary raw coefficient-domain witnesses cannot be lifted this way. Nor may actual ENS products be assigned arbitrary affine values just because the formal \(Z_j\)'s can. The <a href="#selector-degree-reflection-scope">existing quotient warning</a> remains essential.</p>
+  <p>Accordingly this rules out one shortcut: reduce the formal linear inputs using only old-base identities and expect their nonlinear coefficient matrix to shrink. It does not rule out reinterpreting earlier products, using their genuine ENS relations, or constructing PHP-relative profiles with raw internal witnesses.</p>
+
+  <h4 id="relative-column-control-is-reuse">3. The natural collision-relative control is an existing mechanism</h4>
+  <p>The <a href="#column-state-normalizer">column-state normalizer</a> already gives degree-preserving coefficient maps for arbitrary polynomial inputs in a single unary PHP column, using its collision equations. That was the first natural positive candidate in this cycle, so it is treated as reused work.</p>
+  <p>Its compact binary version is transparent. For a fixed label \(\lambda\), let \(\chi_i\) be the degree-\(\ell\) Boolean indicator that pigeon \(i\) has label \(\lambda\). Then</p>
+  <div class="math">\[
+     \chi_i\chi_j-\chi_i E_{ij}\in\mathcal I_{2\ell}({\rm BOOL}),
+     \qquad
+     \chi_i\chi_j\in\mathcal I_{2\ell}(\mathcal Q_n).
+  \]</div>
+  <p>The first polynomial vanishes on the Boolean cube and has degree at most \(2\ell\), so ordinary Boolean division supplies its certificate. For \(v_\lambda=1-\sum_i\chi_i\),</p>
+  <div class="math">\[
+     1-v_\lambda=\sum_i\chi_i,\qquad
+     \chi_i v_\lambda
+       =-(\chi_i^2-\chi_i)-\sum_{j\ne i}\chi_i\chi_j
+          \in\mathcal I_{2\ell}(\mathcal Q_n).
+  \]</div>
+  <p>Binary Booleanity of \(v_\lambda\) fits \(2\ell\). Thus the literal old-input tuple has a cost-\(\ell\) PHP-relative profile. If it comes from label-selector bottoms of original weight \(2h\), \(2h\ge\ell\), retain input bounds \(2h\) and profile cost \(2h\), rather than silently resetting those source bounds.</p>
+  <p>This is not a Boolean-domain-valid profile: at an assignment where exactly two pigeons have label \(\lambda\), \(v_\lambda=1\) and the corresponding companion is nonzero. The collision equation supplies the missing certificate. This shows that the escape from cycle 149 is real, but it does not enlarge the general source coverage beyond the existing column mechanism.</p>
+
+  <h4 id="relative-source-audit-rejected-shortcuts">4. Checks that did not supply the general step</h4>
+  <p>A sparse-support refinement would not address the complete source boundary. If all collision residuals in a profile package involve only \(q\le n\) pigeon rows, fix those rows to distinct labels. Those residuals vanish, the remaining affine helpers stay affine, and the package becomes Boolean-domain-valid on \(v'=v-q\ell\) free bits. The restricted approximate-majority circuit still has the two Hamming balls of radius at least \(\lfloor v/3\rfloor-q\ell\). For \(q=o(n)\), the previous obstruction remains linear in \(v'\). However the actual compact-clause boundary uses all pigeon pairs, so its residual support is already global. Developing this sparse condition would not discharge the current obligation.</p>
+  <p>A targeted primary-source check also prevented a misleading literature inference. <a href="https://arxiv.org/abs/2509.16824v1">Lu, Santhanam, and Tzameret (2025)</a> study a DNF family expressing hardness of algebraic proof lower bounds. Their abstract states that small \(\mathrm{AC}^0[p]\)-Frege proofs fail infinitely often, while whether that DNF family consists of tautologies remains open. This is not an unconditional lower bound for a known PHP tautology family. Only the versioned abstract and scope were checked; no theorem from its diagonalization proof is imported.</p>
+
+  <h4 id="PHP-relative-source-audit-verdict">5. What changed and what remains</h4>
+  <p>No new general compression was obtained. PHP-relative residuals were already allowed by the formal interfaces, and the positive column construction was already available. The new formal-input observation excludes a tempting old-ideal rewriting shortcut. The missing step is still a cheap interpretation or coupled witness construction that uses both the PHP base and the genuine earlier ENS relations, with enough control to apply to the full compiled source.</p>
+  <p>The next cycle should test such coupling at the complete source-module level, using the earlier moment and joint-selector interfaces where their hypotheses hold. A formal free-selector calculation or another isolated column family is not a substitute for that application. The degree budget and the approximate-majority obstruction remain the stopping tests.</p>
+  <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/php_relative_profile_interface_20260914_150/README.md">audit note</a> records the exact reused sources, proof scope, and abstract-only literature check. No new numerical suite was needed for the linear-algebra and certificate arguments above.</p>
+  <p><strong>Process assessment.</strong> Claim-index lookup stopped a column-normalizer rediscovery; the user-requested generic rule now explicitly requires trying to falsify the intended general claim, saved separately in commit <code>83d079f</code>.</p>
+  <div class="timing-report" data-session="php_relative_profile_interface_20260914_150">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>30 min 6.42 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">5 min 44.06 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">20 min 46.53 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 32.92 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">1.87 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.03 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
