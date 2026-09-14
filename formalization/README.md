@@ -6,6 +6,9 @@ claims. Each result will have its own file under `claims/`, for example
 [`lem:mod-interpolation`](claims/ModInterpolation.lean): its identity, zero case,
 and joint total-degree bound, with the precise scope recorded in its header and
 the [claim index](../research/CLAIM_INDEX.md).
+[`lem:mp-telescoping`](claims/MpTelescoping.lean) additionally verifies the
+telescoping identity and coefficient-degree bound, with a corrected companion
+upper bound and a counterexample to the original loose-bound equality.
 
 For an assigned formalization, follow [AGENTS.md](AGENTS.md): establish the exact
 statement first, prove it, then review the verified type against the notebook.

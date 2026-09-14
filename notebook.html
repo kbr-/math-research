@@ -15,7 +15,7 @@
   <p><strong>The latest source theorem covers binary cyclic multiplication at arbitrary lengths.</strong> The working <a href="#arbitrary-cyclic-complete-source-exclusion">cyclic-source theorem</a> handles repeated factors and independent affine operand probes, reaching old degree \(\sqrt n\,\operatorname{polylog}n=o(n)\). Local truncated-product coordinates, a weighted monomial order, and binary descent preserve complete source equations and original degrees. Other covered families include <a href="#large-binary-field-product-source-exclusion">large binary field products</a>, <a href="#all-prime-leading-pair-source-exclusion">all-prime leading-pair inputs</a>, and binary <a href="#bounded-affine-probe-source-exclusion">bounded-probe inputs</a>.</p>
   <p><strong>The central gap is coverage of the actual general Frege source.</strong> The <a href="#disjoint-sums-quadratic-vanishing-ideal">latest audit</a> proves that pair consequences can fail even for covered source families. The sufficient <a href="#quadratic-kernel-compression-obligation">common-kernel compression condition</a> allows several constructions, but it is not established for the full source. General quadratic input spaces, growing bottom rank, and later nonlinear levels remain open; the all-prime source application does not supply general odd-prime source compilation. Existing <a href="#dependent-rank-source-collapse">selector-rank criteria</a> and the <a href="#compact-source-polynomial-rank-obstruction">necessary-rank obstruction</a> constrain a possible short proof, but do not yet exclude the entire family. Source transformations must preserve a sufficient hypothesis and charge every original degree.</p>
   <p>The <a href="#unit-accuracy-affine-family-exclusion">one-level affine endpoint works over every fixed prime at accuracy one</a>, including quasipolynomial inventory at polylogarithmic degree. Further tools include <a href="#affine-level-full-old-low-degree-separation">preservation of old moments</a>, <a href="#joint-high-selector-zero-preservation">specified joint selector zeroes</a>, <a href="#shared-core-projected-source-criterion">old-bit profiles for eligible shared-bit parents</a>, and <a href="#mixed-star-union-affine-core-profile">profiles for covered mixed unions</a>. Their exact hypotheses and degree budgets are in Working mathematical context and the linked proofs.</p>
-  <p><strong>Formal verification.</strong> The <a href="#entry-2026-09-14-lean-mod-interpolation">first Lean formalization</a> verifies the local MOD interpolation identity and its joint total-degree bound. This audits one algebraic component; the main source-coverage gap is unchanged.</p>
+  <p><strong>Formal verification.</strong> Lean verifies the <a href="#entry-2026-09-14-lean-mod-interpolation">local MOD interpolation identity and its joint degree bound</a> and the <a href="#entry-2026-09-14-lean-mp-telescoping">ENS telescoping identity and coefficient bound</a>. The latter audit corrects a companion-degree equality to an upper bound when the input-degree bound is loose. These are local components; the main source-coverage gap is unchanged.</p>
   <div class="result">
     <p><strong>What would finish the route:</strong> for every fixed prime, depth, and size exponent, turn any hypothetical short ordinary-PHP Frege proof into an old-base refutation below its \(N/2+1\) PC degree bound, or directly exclude its complete augmented endpoint. No current mechanism covers that full family. A concrete polynomial-size Frege construction would also be valuable; none is established.</p>
   </div>
@@ -15579,6 +15579,56 @@
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">33.61 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+
+<article class="research-entry" id="entry-2026-09-14-lean-mp-telescoping">
+  <h3>14 September 2026 — Lean telescoping coefficients and a companion-degree correction</h3>
+  <p class="entry-meta"><strong>Status:</strong> Lean-verified identity and joint degree bounds; formal counterexample to the exact companion-degree equality under the earlier stated loose-bound hypothesis.</p>
+  <p><strong>Obligation and stopping point.</strong> Execute the user's Formalize assignment against <code>lem:mp-telescoping</code>. Check the exact <a href="#mp-telescoping">source statement</a> first, then verify its finite-product identity and ordinary coefficient-degree bound, resolving any discrepancy explicitly. This is a formal audit of a local tool, not progress on the main remaining-route obligation of covering the general retained Frege source. Stop at verified statements, a reviewed type/axiom report, and a linked, reproducible checkpoint.</p>
+  <h4 id="lean-mp-telescoping-statement">Verified statement and indexing</h4>
+  <p>For any commutative ring \(A\), finite index set \(I\), inputs \(f_i\in A\), and coefficients \(r_{v,i}\in A\), use zero-based rows and define</p>
+  <div class="math">\[
+    P_h=\prod_{v=0}^{h-1}\left(1-\sum_{i\in I}r_{v,i}f_i\right),\qquad
+    U_{h,i}=\sum_{v=0}^{h-1}r_{v,i}P_v.
+  \]</div>
+  <p>Then \(1-P_h=\sum_i U_{h,i}f_i\) for every natural \(h\), including zero. Reindexing rows by \(v\mapsto v+1\) gives exactly the source's displayed coefficients. The proof allows empty input sets and repeated inputs without identifying their indices.</p>
+  <p>For the degree statements let \(A=R[\mathbf x]\), an ordinary multivariate polynomial ring over any commutative ring \(R\). Suppose \(\deg f_i\le\delta\) and \(\deg r_{v,i}\le1\) for \(v&lt;h\). The formalized bounds are</p>
+  <div class="math">\[
+    \deg P_h\le h(\delta+1),\qquad
+    \deg U_{h,i}\le1+(h-1)(\delta+1),\qquad
+    \deg(f_iP_h)\le\deg f_i+h(\delta+1).
+  \]</div>
+  <p>For \(h\ge1\), these use ordinary integer arithmetic as displayed. Lean also permits \(h=0\), with natural subtraction truncated at zero and \(U_{0,i}=0\). Mathlib assigns total degree zero to the zero polynomial, which causes no issue for these nonnegative upper bounds. The source's nonzero-input degree assumption therefore implies the formal hypothesis for all inputs. Fresh coefficient indeterminates have degree one and are a special case. No Boolean or field reduction, freshness, or nonvanishing assumption is needed for these upper bounds.</p>
+  <h4 id="lean-mp-telescoping-proof">Human-readable proof</h4>
+  <p>The empty product and sum give \(P_0=1\), \(U_{0,i}=0\). Put \(s_h=\sum_i r_{h,i}f_i\). The defining recurrences are \(P_{h+1}=P_h(1-s_h)\) and \(U_{h+1,i}=U_{h,i}+r_{h,i}P_h\). Assuming the identity at \(h\), distributivity and commutativity give</p>
+  <div class="math">\[
+    1-P_{h+1}=1-P_h+P_hs_h
+      =\sum_i U_{h,i}f_i+\sum_i r_{h,i}P_hf_i
+      =\sum_i U_{h+1,i}f_i.
+  \]</div>
+  <p>This proves the identity by induction, implementing the original telescoping argument explicitly. For degree accounting, each summand \(r_{v,i}f_i\) has joint total degree at most \(\delta+1\), hence so does \(1-s_v\). The product inequality gives \(\deg P_v\le v(\delta+1)\). Each summand of \(U_{h,i}\) then has degree at most \(1+v(\delta+1)\le1+(h-1)(\delta+1)\), and taking a finite sum preserves this upper bound. Finally the degree-of-product inequality gives the companion bound. These arguments remain valid over rings with zero divisors because they use inequalities, not equality of product degrees.</p>
+  <h4 id="lean-mp-companion-degree-correction">Correction: a degree budget is not automatically an exact degree</h4>
+  <p>The <a href="#mp-telescoping">earlier paragraph</a> assumes only that nonzero inputs have degree <em>at most</em> \(\delta\), but states the companion degree as exactly \(\deg f_i+h(\delta+1)\). That equality is false under the stated hypothesis. Take any field, one input \(f_1=1\), one fresh coefficient indeterminate \(r\), \(h=1\), and the valid upper bound \(\delta=1\). Then \(P_1=1-r\), so \(f_1P_1\) has actual degree one, whereas the claimed expression is \(0+1(1+1)=2\).</p>
+  <p>The Lean counterexample verifies the degree assumptions and inequality of those two quantities over every nontrivial commutative coefficient ring. The valid replacement is the companion upper bound proved above. This correction does not license lowering the original source weights carried through later transformations: those are degree budgets whose accounting must still be retained. Exact-degree assertions with additional tightness or noncancellation hypotheses require their own justification. No downstream theorem is declared refuted by this local discrepancy, and no downstream dependence audit is claimed here.</p>
+  <h4 id="lean-mp-telescoping-evidence">Formal review and evidence</h4>
+  <p>The <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/MpTelescoping.lean">Lean file</a> imports Mathlib directly, with no dependency on the first formalization or any other notebook result. The four audited declarations are <code>MathResearch.mp_telescoping</code>, <code>MathResearch.mp_coefficient_degree</code>, <code>MathResearch.mp_companion_degree</code>, and <code>MathResearch.mp_companion_equality_counterexample</code>. The product-degree bound is proved as a supporting lemma used by the final bounds.</p>
+  <p>Printed-type review checked the finite input quantifier, the zero-based prefix product, joint <code>MvPolynomial.totalDegree</code>, the coefficient-degree hypothesis, and the companion inequality rather than an unsupported equality. The counterexample's nontriviality hypothesis includes every finite field. Both verification passes succeeded; the second generalized the counterexample from integer coefficients to arbitrary nontrivial rings. All four declarations report only <code>propext</code>, <code>Classical.choice</code>, and <code>Quot.sound</code>, with no unfinished-proof or custom axiom.</p>
+  <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/lean_mp_telescoping_20260914_02/verification-final.txt">complete final output</a> includes theorem types, axiom reports, and pinned dependencies. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/lean_mp_telescoping_20260914_02/README.md">reproduction record</a>, provenance hashes, and archived timing session preserve both successful passes. The project-wide verifier also rechecked the interpolation file as a regression check; this is not a new result about that lemma. No numerical experiments were needed.</p>
+  <p><strong>Route assessment.</strong> The telescoping identity and coefficient-degree bound are now formalized, and an adjacent degree overstatement is corrected in this dated entry. The living overview, remaining route, working context, and proposed next mathematical task were reviewed: original source budgets remain in force, and the main source-coverage gap and next research task are unchanged.</p>
+  <p><strong>Process assessment.</strong> Statement-first review caught the loose-bound equality before formal proof construction; local API lookup and the session-aware type/axiom report then supported two successful checks without new framework machinery.</p>
+  <div class="timing-report" data-session="lean_mp_telescoping_20260914_02">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 58.52 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">0.15 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 42.40 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">0.48 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">15.49 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 

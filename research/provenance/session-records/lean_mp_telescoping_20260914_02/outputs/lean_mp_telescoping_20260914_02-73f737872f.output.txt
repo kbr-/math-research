@@ -1,0 +1,62 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Claim file: claims/ModInterpolation.lean
+Claim: lem:mod-interpolation
+Source: https://kbr.is-a.dev/math-research/#mod-pruned-polynomial
+Scope: Full interpolation identity, zero case p = 2, and joint total-degree bound p - 3 for p ≥ 3; generalized to every nontrivial commutative coefficient ring and every natural number p ≥ 3. Does not formalize the surrounding MOD axiom certificate or source substitution.
+Declarations: MathResearch.mod_interpolation MathResearch.mod_interpolation_two
+Claim file: claims/MpTelescoping.lean
+Claim: lem:mp-telescoping
+Source: https://kbr.is-a.dev/math-research/#mp-telescoping
+Scope: Explicit telescoping identity and joint total-degree bounds for coefficients and companions, for finite indexed inputs over any commutative ring. Coefficients may be any polynomials of degree at most one. The source's exact companion-degree equality is replaced by the valid upper bound and refuted when δ is merely an upper bound.
+Declarations: MathResearch.mp_telescoping MathResearch.mp_coefficient_degree MathResearch.mp_companion_degree MathResearch.mp_companion_equality_counterexample
+$ lake --wfail build
+✔ [1300/1301] Built claims.MpTelescoping (1.2s)
+Build completed successfully (1301 jobs).
+$ lake env lean -DwarningAsError=true claims/ModInterpolation.lean
+$ lake env lean -DwarningAsError=true claims/MpTelescoping.lean
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-auxiliary/formalization/.lake/tmp1st_co6s.lean
+@MathResearch.mod_interpolation : ∀ {R : Type u_1} [inst : CommRing R] [Nontrivial R] (p : ℕ),
+  3 ≤ p →
+    ∃ q,
+      (MathResearch.modT + MathResearch.modA - 1) ^ (p - 1) - MathResearch.modA * MathResearch.modT ^ (p - 1) -
+            (1 - MathResearch.modA) * (MathResearch.modT - 1) ^ (p - 1) =
+          (MathResearch.modA ^ 2 - MathResearch.modA) * q ∧
+        q.totalDegree ≤ p - 3
+'MathResearch.mod_interpolation' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mod_interpolation_two : ∀ {R : Type u_1} [inst : CommRing R],
+  (MathResearch.modT + MathResearch.modA - 1) ^ (2 - 1) - MathResearch.modA * MathResearch.modT ^ (2 - 1) -
+      (1 - MathResearch.modA) * (MathResearch.modT - 1) ^ (2 - 1) =
+    0
+'MathResearch.mod_interpolation_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mp_telescoping : ∀ {R : Type u_1} {ι : Type u_2} [inst : CommRing R] [inst_1 : Fintype ι] (f : ι → R)
+  (r : ℕ → ι → R) (h : ℕ), 1 - MathResearch.ensProduct f r h = ∑ i, MathResearch.ensCoefficient f r h i * f i
+'MathResearch.mp_telescoping' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mp_coefficient_degree : ∀ {R : Type u_1} {ι : Type u_2} {σ : Type u_3} [inst : CommRing R]
+  [inst_1 : Fintype ι] (f : ι → MvPolynomial σ R) (r : ℕ → ι → MvPolynomial σ R) (δ h : ℕ) (i : ι),
+  (∀ (j : ι), (f j).totalDegree ≤ δ) →
+    (∀ v < h, ∀ (j : ι), (r v j).totalDegree ≤ 1) →
+      (MathResearch.ensCoefficient f r h i).totalDegree ≤ 1 + (h - 1) * (δ + 1)
+'MathResearch.mp_coefficient_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mp_companion_degree : ∀ {R : Type u_1} {ι : Type u_2} {σ : Type u_3} [inst : CommRing R]
+  [inst_1 : Fintype ι] (f : ι → MvPolynomial σ R) (r : ℕ → ι → MvPolynomial σ R) (δ h : ℕ) (i : ι),
+  (∀ (j : ι), (f j).totalDegree ≤ δ) →
+    (∀ v < h, ∀ (j : ι), (r v j).totalDegree ≤ 1) →
+      (f i * MathResearch.ensProduct f r h).totalDegree ≤ (f i).totalDegree + h * (δ + 1)
+'MathResearch.mp_companion_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.mp_companion_equality_counterexample : ∀ {R : Type u_1} [inst : CommRing R] [Nontrivial R],
+  have f := fun x => 1;
+  have r := fun x x_1 => MvPolynomial.X 0;
+  (∀ (i : Fin 1), (f i).totalDegree ≤ 1) ∧
+    (∀ v < 1, ∀ (i : Fin 1), (r v i).totalDegree ≤ 1) ∧
+      (f 0 * MathResearch.ensProduct f r 1).totalDegree ≠ (f 0).totalDegree + 1 * (1 + 1)
+'MathResearch.mp_companion_equality_counterexample' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 2 claim files, 6 audited declarations.

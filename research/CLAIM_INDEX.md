@@ -12,7 +12,7 @@ Labels remain stable; later corrections should link to a new dated record.
 | Label | Claim | Status | Full record |
 |---|---|---|---|
 | `local:zero-cofactor-pruning` | Remove a block with zero collected companion cofactors | Working proof | [10 September](notes/RESEARCH_LOG.md#local-zero-cofactor-pruning) |
-| `lem:mp-telescoping` | Explicit telescoping coefficients for an ENS product | Working proof | [Statement and proof](https://kbr-.github.io/math-research/#mp-telescoping) |
+| `lem:mp-telescoping` | Explicit telescoping coefficients for an ENS product | Lean-verified identity and joint coefficient-degree bound; companion upper bound verified, exact companion equality refuted for a loose input-degree bound | [Original statement](https://kbr.is-a.dev/math-research/#mp-telescoping), [Lean source](../formalization/claims/MpTelescoping.lean), [formalization and correction](https://kbr.is-a.dev/math-research/#entry-2026-09-14-lean-mp-telescoping) |
 | `lem:mp-identities` | Exact MP identities for disjunction and other conclusions | Working proof | [Statement and proof](https://kbr-.github.io/math-research/#mp-two-cases) |
 | `lem:mp-booleanity` | Bounded-degree certificates for approximation Booleanity | Working proof | [Statement and proof](https://kbr-.github.io/math-research/#mp-booleanity) |
 | `lem:mp-composition` | Cofactor rule, NS recurrence, and augmented-PC reuse bound | Working proof | [Statement and proof](https://kbr-.github.io/math-research/#mp-certificates) |
