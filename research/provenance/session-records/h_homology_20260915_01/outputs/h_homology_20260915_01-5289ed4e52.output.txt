@@ -1,0 +1,48 @@
+info: Cli: cloning https://github.com/leanprover/lean4-cli
+info: Cli: checking out revision 'ab3a82db9fea14cf0fd7f5a2de650f4b534640af'
+✔ [189/1294] Built Batteries.Tactic.SeqFocus (1.1s)
+✔ [190/1294] Built Batteries.Tactic.Unreachable (3.1s)
+✔ [192/1294] Built Batteries.Tactic.OpenPrivate (3.1s)
+✔ [193/1294] Built Batteries.Tactic.Init (3.0s)
+✔ [194/1294] Built Batteries.Tactic.PermuteGoals (2.0s)
+✔ [213/1294] Built Batteries.Tactic.Lint.Basic (12s)
+✔ [216/1294] Built Batteries.Tactic.Trans (12s)
+✔ [217/1294] Built Batteries.Tactic.GeneralizeProofs (12s)
+✔ [218/1294] Built Batteries.Tactic.Alias (12s)
+✔ [219/1294] Built Batteries.Tactic.HelpCmd (12s)
+✔ [220/1294] Built Batteries.Tactic.Case (12s)
+✖ [1294/1294] Building claims.AugmentedCone (54s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/homology/formalization/claims/AugmentedCone.lean -o /home/kbr/dev/math-worktrees/homology/formalization/.lake/build/lib/lean/claims/AugmentedCone.olean -i /home/kbr/dev/math-worktrees/homology/formalization/.lake/build/lib/lean/claims/AugmentedCone.ilean -c /home/kbr/dev/math-worktrees/homology/formalization/.lake/build/ir/claims/AugmentedCone.c --setup /home/kbr/dev/math-worktrees/homology/formalization/.lake/build/ir/claims/AugmentedCone.setup.json --json
+error: claims/AugmentedCone.lean:53:5: unknown tactic
+error: claims/AugmentedCone.lean:31:2: unsolved goals
+case pos
+V : Type u_1
+inst✝¹ : Fintype V
+inst✝ : DecidableEq V
+v : V
+c : Coeff V
+s : Finset V
+hv : v ∈ s
+hi : ∀ (w : V), w ≠ v → (insert w s).erase v = insert w (s.erase v)
+hsum : boundary c (s.erase v) = c s + boundary (cone v c) s
+hx : boundary (cone v c) s + boundary (cone v c) s = 0
+⊢ boundary (cone v c) s + (c s + boundary (cone v c) s) = c s
+error: claims/AugmentedCone.lean:28:53: unsolved goals
+case neg
+V : Type u_1
+inst✝¹ : Fintype V
+inst✝ : DecidableEq V
+v : V
+c : Coeff V
+s : Finset V
+hv : v ∉ s
+⊢ (boundary (cone v c) + cone v (boundary c)) s = c s
+warning: claims/AugmentedCone.lean:62:0: automatically included section variable(s) unused in theorem `MathResearch.ThirdParty.Augmented.cone_supported`:
+  [Fintype V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Some required targets logged failures:
+- claims.AugmentedCone
+error: build failed
