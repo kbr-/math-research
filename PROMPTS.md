@@ -35,6 +35,69 @@ do not silently weaken the requested claim. Commit the checkpoint locally on the
 current branch and stop; this prompt does not authorize a push or a Spin loop.
 After compaction, restore the original claim argument and continue this assignment.
 
+# Spin-formalize
+
+Invocation: `Execute the Spin-formalize prompt against claims <set-of-claim-references>`.
+The supplied set is this assignment's target set. Resolve each reference as in
+the Formalize prompt; ask only about genuinely ambiguous references. This is an
+explicit formalization assignment, not a change to ordinary research or Spin.
+
+Follow [formalization/AGENTS.md](formalization/AGENTS.md), the root research
+protocol, and [COMPUTATION_RULES.md](COMPUTATION_RULES.md). Carry out the Formalize
+workflow repeatedly, continuing after each checkpoint instead of stopping after
+one claim. Work autonomously until every supplied claim and its required proof
+dependencies meet the formalization completion rule, or the user interrupts.
+
+Before proof-writing, preserve the supplied target set and a dependency-and-scope
+map in the assignment's supporting evidence. Choose the order yourself:
+
+- If an existing indexed claim A requires another indexed claim B, formalize B
+  first, complete its own research-record entry and checkpoint, then formalize A
+  in a separate entry. Apply this dependency-first ordering recursively to any
+  chain of existing indexed claims, including necessary claims outside the
+  originally supplied set. Do not bundle several existing claims into one entry.
+- Reuse already verified dependencies without presenting them as new results.
+  Check their exact statements and coverage. Identify circular dependencies and
+  resolve them with a valid proof order or an alternative argument, not assumptions.
+- A newly formulated dependency claim may share the research-record entry of
+  the claim that introduced it. Give the new dependency its own Lean file and
+  claim-index entry, with its complete human-readable statement and proof under
+  the formalization rules. Keep small local helpers local when appropriate.
+- Separately indexed downstream corollaries are not additional targets unless
+  supplied by the user or required as proof dependencies.
+
+For each claim, perform bounded, recorded research cycles. Verify the complete
+statement and its dependencies, update its claim-index formalization links and
+scope, and preserve the proof, theorem types, axiom reports, and measured evidence.
+Each existing indexed claim gets its own research record; an unfinished or failed
+cycle also gets an honest entry under the root rules. Retain alternative proofs
+in full human-readable form. Use the formalization and verification timing
+categories, switching to mathematics when developing the underlying argument.
+
+After every cycle, assess what changed in the assigned claim's remaining proof
+obligations and identify process friction, wasted effort, or difficulty checking
+the formal statement. Include a one-sentence process assessment in its entry.
+Implement clear, bounded framework improvements when warranted, revising existing
+guidance rather than accumulating repetitive rules; otherwise explain briefly
+why none is needed. Commit the research checkpoint before beginning the next
+claim, and commit framework improvements separately.
+
+Keep the current branch and commit locally. This prompt does not inherit Spin's
+authorization to push or switch to main; publication requires separate explicit
+authorization. Do not return merely because one claim or checkpoint is finished.
+If a claim is false or blocked, record the counterexample or exact unresolved
+obligation and continue independent targets. Never count a correction, weakened
+statement, or conditional proof as completion of the original claim. If no valid
+progress remains possible without user input, report the blocker and unfinished
+targets rather than inventing completion or repeating stalled cycles.
+
+After compaction, follow the Resume prompt, reread this prompt and the
+formalization instructions, and restore the original target set, dependency map,
+and completed/remaining work from the saved records. Continue the same assignment
+without redoing completed claims. When all targets are verified, report the
+completed claims and checkpoints, with any separately indexed corollaries left
+outside the assignment clearly distinguished.
+
 # Spin
 
 I am now going to sleep. I won't be available to you for the next ~8 hours.
