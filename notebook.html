@@ -16810,5 +16810,30 @@
 </div>
 </article>
 
+<article class="research-entry" id="entry-2026-09-15-lean-cover-double-complex">
+  <h3>15 September 2026 — Finite cover double chains and explicit horizontal fillings</h3>
+  <p class="entry-meta"><strong>Status:</strong> H06 finite F₂ double-boundary algebra and positive-vertex-degree horizontal exactness; the homological cover conclusion remains H07.</p>
+  <h4 id="lean-finite-cover-double-complex">Statements and full human-readable proof</h4>
+  <p>Let K and Lᵢ be finite augmented complexes on a finite vertex type V, with finite cover-index type I. Use the <a href="#lean-chessboard-star-cover">shared intersection, nerve, and cover definitions</a>. A double coefficient d(J,S) has bidegree (a,b) when it is zero unless |J|=a, |S|=b, S∈K, S∈Lᵢ for all i∈J, and J belongs to the nerve. Nerve membership means J is empty or its intersection has a vertex. Thus the a=0 edge consists of K chains, while the b=0 edge consists of nerve chains. These augmented coordinates retain precisely the nonempty-intersection convention needed later; an empty-face-only intersection contributes no nonempty nerve face.</p>
+  <p>Define H by the insertion boundary in J and V by the insertion boundary in S. Both are linear; H lowers a by one and V lowers b by one, with zero outgoing maps when their count is zero. Each squares to zero by <a href="#lean-augmented-boundary-squared-zero">H02</a>. They commute: at (J,S), both HVd and VHd sum d(J∪{i},S∪{v}) over i∉J and v∉S; interchange the two finite sums. Hence (H+V)²=H²+HV+VH+V²=0 over F₂. This is a finite coefficient model of the total differential; the later direct chain chase needs no spectral-sequence convergence theorem.</p>
+  <p><strong>Support proof.</strong> Removing a cover index preserves common-face membership and nerve membership by downward closure of the nerve. Removing a vertex preserves membership in K and every Lᵢ, while J's nerve membership remains unchanged. Each insertion term therefore can be nonzero only in the claimed lower bidegree. At count zero an insertion would have positive count, so every term vanishes. Support is closed under addition coordinatewise. These facts justify the differential identities on supported spaces, rather than merely on ambient functions.</p>
+  <p><strong>Horizontal exactness.</strong> Suppose the Lᵢ cover K, b&gt;0, d has bidegree (a,b), and Hd=0. For every b-cell face S of K choose i(S) with S∈Lᵢ₍ₛ₎. Define u(J,S) by coning the index coefficient J↦d(J,S) at i(S), using <a href="#lean-augmented-cone-contraction">H04's ambient cone operator</a>; define it as zero for other S. Pointwise in S the contraction identity and Hd=0 give Hu=d. If u(J,S) is nonzero, i(S)∈J and d(J∖{i(S)},S) is nonzero. Hence |J|=a+1, |S|=b, S∈K, and S lies in every Lᵢ for i∈J: the newly added index is covered by its choice. Since b&gt;0, choose v∈S; downward closure places {v} in every such Lᵢ. Thus J really belongs to the vertex-nonempty nerve. Consequently u has bidegree (a+1,b), proving exactness of each positive-vertex-degree augmented horizontal row.</p>
+  <p><strong>Scope and evidence.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/CoverDoubleComplex.lean">CoverDoubleComplex.lean</a> contains the explicit supported interfaces and all identities; the <a href="https://github.com/kbr-/math-research/blob/main/research/results/h_homology_20260915_03/lean-verification-final.txt">full verification report</a> preserves types and axiom reports. The b=0 row has not been declared exact automatically: it is precisely the nerve and requires H07's nerve hypothesis. No acyclicity of K or intersection is assumed in H06. These are project-formulated interfaces adapting standard finite double-complex algebra, with no novelty assertion. The main Frege overview and formalization-gap list were reviewed without mathematical change.</p>
+  <p><strong>Process assessment.</strong> Keeping the augmented nerve edge explicit prevents accidentally treating empty-face-only intersections as nonempty; remaining retries were Lean universe instantiation and declaration syntax, not mathematical corrections. Preliminary chain-chase planning during integration preceded this cycle's instrumentation.</p>
+  <div class="timing-report" data-session="h_homology_20260915_03">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 1.39 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 40.36 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">4 min 29.03 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2.87 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">49.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 6.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

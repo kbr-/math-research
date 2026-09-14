@@ -1,0 +1,95 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Claim file: claims/AffineClauseCompression.lean
+Claim: lem:affine-clause-basis-compression
+Source: https://kbr.is-a.dev/math-research/#lean-affine-clause-basis-compression
+Scope: Every finite binary affine clause has a semantically equivalent subclause with at most dim(V)+1 literals; no satisfiability hypothesis is needed.
+Declarations: MathResearch.affine_clause_basis_compression MathResearch.affine_clause_registry_compression
+Claim file: claims/AugmentedCone.lean
+Claim: lem:augmented-cone-contraction
+Source: https://kbr.is-a.dev/math-research/#lean-augmented-cone-contraction
+Scope: Finite F₂ augmented cone contraction, exactness in every cell count, and explicit acyclicity convention.
+Declarations: MathResearch.ThirdParty.Augmented.cone_identity MathResearch.ThirdParty.Augmented.cone_supported MathResearch.ThirdParty.Augmented.cone_exact
+Claim file: claims/BinaryAffineZeroCover.lean
+Claim: lem:binary-affine-zero-cover
+Source: https://kbr.is-a.dev/math-research/#lean-binary-affine-zero-cover
+Scope: Separator already in the first clause for a nontrivial binary semantic cover; both restricted zero sets are exactly its 0 and 1 fibers, with witnesses for both values. No finite-dimensional hypothesis is needed.
+Declarations: MathResearch.binary_affine_zero_cover MathResearch.binary_affine_halves_translate
+Claim file: claims/BinarySemanticAffineCover.lean
+Claim: lem:binary-semantic-affine-cover
+Source: https://kbr.is-a.dev/math-research/#binary-semantic-affine-cover
+Scope: Binary semantic inference reduces to one weakening or two weakenings and one resolution; the basic derivation is sound and introduces at most two auxiliary clauses. Affine restriction preserves semantic inference. Compressed premises and conclusion each have at most dim(V)+1 literals. Separator, translation, and registry-description bounds are in dependency files. The concrete PC-degree simulation is not formalized here.
+Declarations: MathResearch.binary_semantic_affine_cover MathResearch.binary_semantic_three_steps MathResearch.parity_derivation_sound MathResearch.binary_auxiliary_count MathResearch.binary_semantic_restriction MathResearch.binary_semantic_compressed
+Claim file: claims/CoverDoubleComplex.lean
+Claim: lem:finite-cover-double-complex
+Source: https://kbr.is-a.dev/math-research/#lean-finite-cover-double-complex
+Scope: Finite F₂ cover double coefficients, commuting square-zero insertion differentials, and positive-vertex-degree horizontal augmented-row exactness.
+Declarations: MathResearch.ThirdParty.Augmented.bi_nonzero MathResearch.ThirdParty.Augmented.bi_add MathResearch.ThirdParty.Augmented.horizontal_add MathResearch.ThirdParty.Augmented.vertical_add MathResearch.ThirdParty.Augmented.horizontal_zero MathResearch.ThirdParty.Augmented.vertical_zero MathResearch.ThirdParty.Augmented.horizontal_squared MathResearch.ThirdParty.Augmented.vertical_squared MathResearch.ThirdParty.Augmented.horizontal_vertical MathResearch.ThirdParty.Augmented.admissible_hdown MathResearch.ThirdParty.Augmented.admissible_vdown MathResearch.ThirdParty.Augmented.horizontal_supported MathResearch.ThirdParty.Augmented.vertical_supported MathResearch.ThirdParty.Augmented.horizontal_exact MathResearch.ThirdParty.Augmented.horizontal_at_zero MathResearch.ThirdParty.Augmented.vertical_at_zero MathResearch.ThirdParty.Augmented.totalBoundary_squared
+Claim file: claims/FiniteComplexCover.lean
+Claim: def:finite-complex-cover
+Source: https://kbr.is-a.dev/math-research/#lean-chessboard-star-cover
+Scope: Finite augmented intersections, covers, and vertex-nonempty nerves; empty faces retained.
+Declarations: MathResearch.ThirdParty.Augmented.intersection MathResearch.ThirdParty.Augmented.nerve MathResearch.ThirdParty.Augmented.Covers
+Claim file: claims/ModInterpolation.lean
+Claim: lem:mod-interpolation
+Source: https://kbr.is-a.dev/math-research/#mod-pruned-polynomial
+Scope: Full interpolation identity, zero case p = 2, and joint total-degree bound p - 3 for p ≥ 3; generalized to every nontrivial commutative coefficient ring and every natural number p ≥ 3. Does not formalize the surrounding MOD axiom certificate or source substitution.
+Declarations: MathResearch.mod_interpolation MathResearch.mod_interpolation_two
+Claim file: claims/MpTelescoping.lean
+Claim: lem:mp-telescoping
+Source: https://kbr.is-a.dev/math-research/#mp-telescoping
+Scope: Explicit telescoping identity and joint total-degree bounds for coefficients and companions, for finite indexed inputs over any commutative ring. Coefficients may be any polynomials of degree at most one. The source's exact companion-degree equality is replaced by the valid upper bound and refuted when δ is merely an upper bound.
+Declarations: MathResearch.mp_telescoping MathResearch.mp_coefficient_degree MathResearch.mp_companion_degree MathResearch.mp_companion_equality_counterexample
+Claim file: third-party-claims/AugmentedBoundarySquared.lean
+Claim: third-party:augmented-boundary-squared-zero
+Source: https://kbr.is-a.dev/math-research/#lean-augmented-boundary-squared-zero
+Scope: The ambient finite F₂ insertion boundary squares to zero; hence so does the supported graded differential, including edges to augmentation and the outgoing zero boundary.
+Declarations: MathResearch.ThirdParty.Augmented.boundary_boundary MathResearch.ThirdParty.Augmented.differential_squared
+Claim file: third-party-claims/AugmentedChainMaps.lean
+Claim: third-party:augmented-chain-naturality
+Source: https://kbr.is-a.dev/math-research/#lean-augmented-chain-naturality
+Scope: Injective vertex relabeling and subcomplex inclusion commute with the finite augmented F₂ boundary; includes chessboard transpose and compatibility with the original incidence boundary.
+Declarations: MathResearch.ThirdParty.Augmented.boundary_extend MathResearch.ThirdParty.Augmented.boundary_push MathResearch.ThirdParty.Augmented.push_supported MathResearch.ThirdParty.Augmented.chainMap MathResearch.ThirdParty.Augmented.differential_chainMap MathResearch.ThirdParty.Augmented.inclusion MathResearch.ThirdParty.Augmented.differential_inclusion MathResearch.ThirdParty.Augmented.chessboard_boundary_coordinate MathResearch.ThirdParty.Augmented.chessboard_differential MathResearch.ThirdParty.Augmented.chessboard_boundary MathResearch.ThirdParty.Augmented.chessboard_cycle_iff MathResearch.ThirdParty.Augmented.push_apply_map MathResearch.ThirdParty.Augmented.push_injective MathResearch.ThirdParty.Augmented.push_equiv MathResearch.ThirdParty.Augmented.push_equiv_inverse MathResearch.ThirdParty.Augmented.transpose_faces MathResearch.ThirdParty.Augmented.transposeChain MathResearch.ThirdParty.Augmented.differential_transpose MathResearch.ThirdParty.Augmented.transposeChain_inverse
+Claim file: third-party-claims/AugmentedChains.lean
+Claim: third-party:finite-augmented-chain-api
+Source: https://kbr.is-a.dev/math-research/#lean-finite-augmented-chain-api
+Scope: Finite F₂ augmented chains on downward-closed face families, graded support, boundary linearity and augmentation, including the empty face.
+Declarations: MathResearch.ThirdParty.Augmented.boundary_add MathResearch.ThirdParty.Augmented.boundary_smul MathResearch.ThirdParty.Augmented.boundary_supported MathResearch.ThirdParty.Augmented.boundary_empty MathResearch.ThirdParty.Augmented.faceChainEquiv MathResearch.ThirdParty.Augmented.chessboardComplex MathResearch.ThirdParty.Augmented.chessboardChainEquiv MathResearch.ThirdParty.Augmented.differential
+Claim file: third-party-claims/ChessboardFilling.lean
+Claim: third-party:BLVZ-chessboard-filling
+Source: https://kbr.is-a.dev/math-research/#third-party-chessboard-filling-interface
+Scope: Exact finite F₂ reduced-cycle filling interface H for s≥2 and N≥2s-1. Statement only; no proof or axiom of H is introduced.
+Status: statement-only
+Declarations: MathResearch.ThirdParty.ChessboardFilling
+Claim file: third-party-claims/ChessboardParameterArithmetic.lean
+Claim: third-party:chessboard-parameter-arithmetic
+Source: https://kbr.is-a.dev/math-research/#chessboard-parameter-arithmetic
+Scope: Complete H11 parameter arithmetic for the classical chessboard star-cover proof, including integer degree and empty/one-side boundaries. No homology theorem is asserted.
+Declarations: MathResearch.ThirdParty.chessboardNu_symm MathResearch.ThirdParty.chessboardNu_bounds MathResearch.ThirdParty.chessboardNu_pos MathResearch.ThirdParty.chessboardNu_zero MathResearch.ThirdParty.chessboardNu_one MathResearch.ThirdParty.chessboardNu_ordered_bound MathResearch.ThirdParty.chessboardNu_intersection MathResearch.ThirdParty.chessboardNu_intersection_degree MathResearch.ThirdParty.chessboard_induction_decrease MathResearch.ThirdParty.chessboardNu_stable_range MathResearch.ThirdParty.chessboard_cell_degree_iff MathResearch.ThirdParty.chessboard_degree_vacuous MathResearch.ThirdParty.chessboardNu_base_degree
+Claim file: third-party-claims/ChessboardStarCover.lean
+Claim: third-party:chessboard-star-cover
+Source: https://kbr.is-a.dev/math-research/#lean-chessboard-star-cover
+Scope: Closed first-row stars are subcomplexes, have the cone closure property, and cover rectangular boards with at least as many columns as rows.
+Declarations: MathResearch.ThirdParty.Augmented.closedStar MathResearch.ThirdParty.Augmented.closedStar_subcomplex MathResearch.ThirdParty.Augmented.closedStar_cone MathResearch.ThirdParty.Augmented.firstRowStars_cover
+Claim file: third-party-claims/SimplexBoundary.lean
+Claim: third-party:simplex-boundary-acyclicity
+Source: https://kbr.is-a.dev/math-research/#lean-simplex-boundary-acyclicity
+Scope: The boundary of a nonempty finite simplex is augmented F₂-exact in cell count k whenever k+1 is strictly less than the number of vertices, excluding its top reduced homology.
+Declarations: MathResearch.ThirdParty.Augmented.simplex_cone MathResearch.ThirdParty.Augmented.simplexBoundary_exact MathResearch.ThirdParty.Augmented.simplexBoundary_acyclic
+$ lake --wfail build
+✔ [1729/1732] Built «third-party-claims».ChessboardStarCover (1.3s)
+✖ [1731/1732] Building claims.CoverDoubleComplex (1.4s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/homology/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/homology/formalization/claims/CoverDoubleComplex.lean -o /home/kbr/dev/math-worktrees/homology/formalization/.lake/build/lib/lean/claims/CoverDoubleComplex.olean -i /home/kbr/dev/math-worktrees/homology/formalization/.lake/build/lib/lean/claims/CoverDoubleComplex.ilean -c /home/kbr/dev/math-worktrees/homology/formalization/.lake/build/ir/claims/CoverDoubleComplex.c --setup /home/kbr/dev/math-worktrees/homology/formalization/.lake/build/ir/claims/CoverDoubleComplex.setup.json --json
+error: claims/CoverDoubleComplex.lean:135:86: unexpected token 'omit'; expected 'lemma'
+Some required targets logged failures:
+- claims.CoverDoubleComplex
+error: build failed
+FAIL: Command failed
