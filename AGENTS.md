@@ -69,12 +69,13 @@ actionable rule over another checklist or a record of one-off setup history.
   Prioritize an unproved obligation required for the main goal. Use restricted
   cases to test a named hypothesis, obstruction, or candidate general mechanism.
   A growing list of cases does not establish generalization. Before extending
-  that list, state the missing general step and check its hypotheses and
-  accumulated costs under composition against the budget needed for the goal.
-  If those checks fail, address the failure or reconsider the mechanism before
-  sharpening more conditional estimates. Once the question, argument, and
-  evidence are stable, make one focused correctness
-  review; move optional extensions to the next cycle. Reopen the argument only
+  that list, state the intended general claim and try to falsify it using known
+  obstructions or hard instances. Check the hypotheses preserved by each step
+  and the accumulated costs under composition against the budget needed for
+  the goal. If those checks fail, address the failure or reconsider the
+  mechanism before sharpening more conditional estimates. Once the question,
+  argument, and evidence are stable, make one focused correctness review;
+  move optional extensions to the next cycle. Reopen the argument only
   for a concrete unresolved concern. Prepare the commit message, staging paths,
   and focused metadata check during review. Start preparation with a ready
   sequential checkpoint batch: phase marker, check, provenance, timing export,
