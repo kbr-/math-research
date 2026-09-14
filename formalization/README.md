@@ -38,7 +38,7 @@ then restore dependencies and their compiled cache:
 Build the project:
 
 ```bash
-./compute.sh --threads 2 --timeout 600 bash -c 'source "$HOME/.elan/env"; cd formalization; lake build'
+./compute.sh --threads 2 --timeout 600 --category formal_verification bash -c 'source "$HOME/.elan/env"; cd formalization; lake build'
 ```
 
 To check an individual file, replace `lake build` with
@@ -88,7 +88,9 @@ preserve the complete output in a new evidence file:
 ./formalization/verify.sh --session TURN --out research/results/TURN/lean-verification.txt
 ```
 
-The wrapper records the command in that session without starting or stopping
+Use `./compute.sh phase TURN formalization` while designing and coding the Lean
+proof, following the phase distinctions in [COMPUTATION_RULES.md](../COMPUTATION_RULES.md).
+The wrapper records the command as `formal_verification` in that session without starting or stopping
 the overall research clock. Without `--session`, the launcher creates an
 automatic command session. Output includes dependency revisions, declaration
 types, and axiom reports. Commit it with the formalization and notebook entry

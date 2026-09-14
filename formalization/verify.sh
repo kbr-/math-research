@@ -25,5 +25,5 @@ if [[ -f "$HOME/.elan/env" ]]; then
     source "$HOME/.elan/env"
 fi
 cd "$repo_root"
-exec ./compute.sh --threads 2 --timeout 600 --category local_processing \
+exec ./compute.sh --threads 2 --timeout 600 --category formal_verification \
     "${compute_args[@]}" python3 formalization/verify.py "${verify_args[@]}"

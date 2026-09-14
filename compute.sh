@@ -30,9 +30,9 @@ SLICE = 'mathcompute.slice'
 WATCHDOG = 'mathcompute-watchdog.service'
 MAX_MEMORY = MAX_SWAP = 10_000_000_000
 MAX_CPUS = set(range(14))
-PHASES = ('reading', 'mathematics', 'coding', 'preparation', 'overhead',
+PHASES = ('reading', 'mathematics', 'formalization', 'coding', 'preparation', 'overhead',
           'reasoning_writing', 'external_tool', 'network_tool', 'other')
-RUNS = ('computation', 'network_tool', 'external_tool', 'local_processing')
+RUNS = ('computation', 'network_tool', 'external_tool', 'local_processing', 'formal_verification')
 
 
 def boot_id():
@@ -113,7 +113,9 @@ def check_limits():
 def summary(events:list[dict],end:float)->dict:
     begin=next(e['monotonic_s'] for e in events if e['event']=='start')
     phases=[(begin,'preparation')]+[(e['monotonic_s'],e['category']) for e in events if e['event']=='phase']
-    phases=sorted((max(begin,min(end,t)),c) for t,c in phases)
+    # Preserve event order at equal timestamps; an explicit phase overrides
+    # the initial preparation phase rather than sorting by category name.
+    phases=sorted(((max(begin,min(end,t)),c) for t,c in phases), key=lambda phase: phase[0])
     segments=[]
     for i,(a,c) in enumerate(phases):
         b=phases[i+1][0] if i+1<len(phases) else end
@@ -160,6 +162,7 @@ def timing_html(data, session):
     labels = [
         ('reading', 'Marked reading and review windows'),
         ('mathematics', 'Mathematical reasoning and proof writing'),
+        ('formalization', 'Formal proof design and coding'),
         ('coding', 'Computation design and coding'),
         ('preparation', 'Preparation and checkpoint work'),
         ('overhead', 'Marked overhead and interruptions'),
@@ -167,6 +170,7 @@ def timing_html(data, session):
         ('external_tool', 'Other external-tool windows'),
         ('computation', 'Individually measured computation'),
         ('local_processing', 'Individually measured conversion, checks, and local processing'),
+        ('formal_verification', 'Individually measured formal verification'),
         ('overlapping_tool_categories', 'Overlapping tool categories, counted once'),
         ('reasoning_writing', 'Mixed reasoning and writing (legacy phase)'),
     ]

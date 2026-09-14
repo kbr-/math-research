@@ -3,6 +3,9 @@
 Follow the root AGENTS.md opt-in assignment, claim-index, and research-record
 policy. Setup and verification commands live in [README.md](README.md);
 [COMPUTATION_RULES.md](../COMPUTATION_RULES.md) owns execution and timing.
+Use its `formalization` phase and `formal_verification` command category within
+the active research session; developing a new mathematical argument remains
+`mathematics` under that policy.
 
 - Before proving anything, read the exact indexed claim and relevant proof.
   Draft the Lean statement and compare its variables, domains, quantifiers,

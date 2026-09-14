@@ -129,7 +129,8 @@ From the repository root:
 Alternatively, use `./compute.sh --session turn001 --threads 1 python3 calculation.py`.
 Without a session argument, execution gets an automatically named timing session.
 Every executed workload uses the shared protected group, regardless of timing
-category (`computation`, `local_processing`, `network_tool`, or `external_tool`).
+category (`computation`, `local_processing`, `formal_verification`,
+`network_tool`, or `external_tool`).
 Metadata commands (`start`, `phase`, `report`, `--status`) are small control
 operations outside computation services.
 
@@ -138,6 +139,16 @@ work. Timeouts and interrupts stop the actual service and its children, with a
 systemd runtime limit as a backstop. Full output and timing records are saved in
 `research/logs/`. Only the last 8,000 output bytes are displayed by default;
 `--tail-bytes N` changes that without losing the saved log.
+
+Mark `formalization` for translating statements into Lean, designing formal
+proofs, writing tactics, and debugging formalization code. Use `mathematics`
+when developing or revising the underlying mathematical argument, including an
+alternative proof needed for formalization; switch phases as the work changes.
+Run Lean builds and proof checks with `--category formal_verification`;
+`formalization/verify.sh` selects this category automatically and accepts
+`--session TURN` to include it in the same research cycle. Dependency downloads
+remain `network_tool` or `local_processing` as appropriate. These categories
+share the existing exclusive timing rules and do not require a separate cycle.
 
 Mark `mathematics` for mathematical reasoning, proof review, and proof writing;
 keep it active while drafting or correcting notebook mathematics. Use `coding` for

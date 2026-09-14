@@ -150,6 +150,31 @@ class RunnerChecks(unittest.TestCase):
         with self.assertRaises(ValueError):
             compute.timing_html(dict(data, total_instrumented_s=900), self.name)
 
+    def test_formalization_phase_and_verification_command(self):
+        phase = call('phase', self.name, 'formalization')
+        self.assertEqual(phase.returncode, 0, phase.stderr)
+        result = call('run', self.name, '--threads', '1', '--category',
+                      'formal_verification', '--', sys.executable, '-c', 'print("checked")')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = call('report', self.name, '--stop')
+        self.assertEqual(report.returncode, 0, report.stderr)
+        data = json.loads(report.stdout)
+        self.assertIn('formalization', data['exclusive_categories_s'])
+        self.assertIn('formal_verification', data['exclusive_categories_s'])
+        fragment = compute.timing_html(data, self.name)
+        self.assertIn('Formal proof design and coding', fragment)
+        self.assertIn('Individually measured formal verification', fragment)
+
+    def test_formalization_overlapping_check_is_exclusive(self):
+        events = [dict(event='start', monotonic_s=0),
+                  dict(event='phase', monotonic_s=0, category='mathematics'),
+                  dict(event='phase', monotonic_s=2, category='formalization'),
+                  dict(event='run_start', monotonic_s=3, id='lean', category='formal_verification'),
+                  dict(event='run_end', monotonic_s=7, id='lean', returncode=0)]
+        data = compute.summary(events, 10)
+        self.assertEqual(data['exclusive_categories_s'],
+                         {'mathematics': 2, 'formalization': 4, 'formal_verification': 4})
+
     def test_html_export_requires_a_finalized_session(self):
         with tempfile.TemporaryDirectory(prefix='timing-html-') as directory:
             output = Path(directory) / 'timing.html'
