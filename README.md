@@ -44,6 +44,21 @@ The research began in Claude, continued in ChatGPT, and moved to Codex. The
 [pre-handoff research compendium](php_codex_handoff/php_extension_research_compendium.pdf)
 and historical manuscript preserve the earlier development.
 
+### Publication in preparation: resolution over parities
+
+A [whitepaper draft (PDF)](publications/drafts/bit-php-resolution-over-parities/whitepaper.pdf)
+proposes a superpolynomial proof-size lower bound for the usual bit pigeonhole
+principle in unrestricted DAG-like resolution over parities, Res(⊕).
+The proposed result imposes no regularity or proof-depth restriction.
+**It remains a working proof awaiting independent review.**
+
+The [TeX sources](publications/drafts/bit-php-resolution-over-parities/)
+expand the argument and its dependencies. The
+[notebook theorem](https://kbr.is-a.dev/math-research/#publication-Res-parity-bit-PHP-theorem)
+provides a linked proof, and the
+[publication prerequisites](PUBLICATION_PREREQUISITES.md) describe the intended
+validation before an arXiv v1.
+
 ## How a research cycle works
 
 **Restore context → Choose an obstacle → Investigate → Check → Record →
