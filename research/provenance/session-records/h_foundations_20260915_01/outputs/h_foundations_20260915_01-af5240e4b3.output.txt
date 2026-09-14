@@ -1,0 +1,73 @@
+third-party-claims/AugmentedChains.lean:102:2: error: Tactic `split_ifs` failed: no if-then-else conditions to split
+
+V : Type u_1
+inst✝¹ : Fintype V
+inst✝ : DecidableEq V
+K : Complex V
+k : ℕ
+c : Face K k → ZMod 2
+s : Finset V
+hs : s ∉ K.faces ∨ s.card ≠ k
+⊢ (fun s => if h : s ∈ K.faces ∧ s.card = k then c ⟨s, h⟩ else 0) s = 0
+third-party-claims/AugmentedChains.lean:123:14: error: unsolved goals
+case pos
+V : Type u_1
+inst✝¹ : Fintype V
+inst✝ : DecidableEq V
+K : Complex V
+k : ℕ
+c d : Face K k → ZMod 2
+s : Finset V
+h✝ : s ∈ K.faces ∧ s.card = k
+⊢ c ⟨s, ⋯⟩ + d ⟨s, ⋯⟩ =
+    (if h : s ∈ K.faces ∧ s.card = k then c ⟨s, h⟩ else 0) + if h : s ∈ K.faces ∧ s.card = k then d ⟨s, h⟩ else 0
+
+case neg
+V : Type u_1
+inst✝¹ : Fintype V
+inst✝ : DecidableEq V
+K : Complex V
+k : ℕ
+c d : Face K k → ZMod 2
+s : Finset V
+h✝ : ¬(s ∈ K.faces ∧ s.card = k)
+⊢ 0 = (if h : s ∈ K.faces ∧ s.card = k then c ⟨s, h⟩ else 0) + if h : s ∈ K.faces ∧ s.card = k then d ⟨s, h⟩ else 0
+third-party-claims/AugmentedChains.lean:130:15: error: unsolved goals
+case pos
+V : Type u_1
+inst✝¹ : Fintype V
+inst✝ : DecidableEq V
+K : Complex V
+k : ℕ
+a : ZMod 2
+c : Face K k → ZMod 2
+s : Finset V
+h✝ : s ∈ K.faces ∧ s.card = k
+⊢ (s ∈ K.faces → ¬s.card = k) → a * c ⟨s, ⋯⟩ = 0
+
+case neg
+V : Type u_1
+inst✝¹ : Fintype V
+inst✝ : DecidableEq V
+K : Complex V
+k : ℕ
+a : ZMod 2
+c : Face K k → ZMod 2
+s : Finset V
+h✝ : ¬(s ∈ K.faces ∧ s.card = k)
+⊢ ∀ (hp : s ∈ K.faces) (hq : s.card = k), 0 = a * c ⟨s, ⋯⟩
+third-party-claims/AugmentedChains.lean:128:15: warning: declaration uses `sorry`
+third-party-claims/AugmentedChains.lean:141:15: error: unsolved goals
+V : Type u_1
+inst✝¹ : Fintype V
+inst✝ : DecidableEq V
+s N : ℕ
+⊢ Set.InjOn Prod.fst (?m.18 ∅) ∧ Set.InjOn Prod.snd (?m.21 ∅)
+third-party-claims/AugmentedChains.lean:144:34: error: Application type mismatch: The argument
+  h
+has type
+  A ⊆ B
+but is expected to have type
+  ?m.15 ⊆ ?m.15
+in the application
+  Set.InjOn.mono h
