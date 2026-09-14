@@ -90,6 +90,13 @@ types, and axiom reports. Commit it with the formalization and notebook entry
 under the root research protocol. The separate statement-review obligation is
 defined in [AGENTS.md](AGENTS.md).
 
+Lake builds incrementally, reusing compiled modules whose sources and
+dependencies have not changed. The verifier deliberately also re-elaborates
+every claim file for a full audit. Keep this behavior while it is inexpensive.
+If repeated full checks become noticeably costly, add an incremental development
+mode and retain the full audit for research checkpoints; this is a deferred
+improvement, not a requirement to add another mode now.
+
 ## Reproducible dependencies
 
 - `lean-toolchain` selects the Lean version required by the pinned Mathlib revision.
