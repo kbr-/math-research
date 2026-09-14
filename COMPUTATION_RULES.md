@@ -145,10 +145,11 @@ computation design and implementation, `preparation` for setup and checkpoint
 work, and `overhead` for identifiable interruptions or overhead-only windows.
 Mark the work phase before planning or drafting. Do not put a marker and a new
 code/patch argument in the same tool call: that argument is drafted before the
-marker executes. For a planned transition after the awaited final source read,
-check, or checkpoint, issue the next marker in the same sequential tool call
-before returning its output for interpretation. Keep proof finalization in mathematics; switch back
-if checkpoint work uncovers a substantive proof question.
+marker executes. After each awaited source or web batch, explicitly set the
+phase for interpreting its output in the same sequential tool call; mark any
+source follow-up separately. Do the same after the final check or checkpoint.
+Keep proof finalization in mathematics; switch back if checkpoint work uncovers
+a substantive proof question.
 Use `reading` for source review and `network_tool` before browsing, restoring the
 work phase afterward. The table keeps these categories separate and omits empty
 ones. The older mixed `reasoning_writing` phase remains readable for past sessions.
