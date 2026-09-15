@@ -17484,5 +17484,47 @@ q\mathcal I_B(\mathcal F)\subseteq\mathcal I_{B+\deg q}(\mathcal F),
 <p class="small">Source reading and brief initial proof planning preceded this cycle; verification retries are included and final checkpoint work follows the snapshot.</p>
 </article>
 
+<article class="research-entry" id="entry-2026-09-15-lean-row-linear-restriction-dimension">
+  <h3>15 September 2026 — Formal row-linear dimensions and ordinary affine restrictions (R13)</h3>
+  <p class="entry-meta"><strong>Status:</strong> complete Lean formalization of two extracted supporting claims; quotient injection, PC separation, and the common-kernel theorem are separate obligations.</p>
+  <p><strong>Assignment and endpoint.</strong> The parallel formalization assignment selects R13 and R15 of the bit-PHP route. This cycle releases R13: the ordinary row-linear space, its exact dimension and top coefficient, and the ordinary affine restriction image bound required by the later common-kernel comparison. R15 still requires affine-coordinate and duality prerequisites. The statements are extracted from the paper's row-linear dimension equation and <a href="#ordinary-restriction-affine-family-audit">ordinary-restriction audit</a>, with the broader <a href="#row-linear-bit-quotient-injection">quotient-injection claim</a> left distinct. These are supporting interfaces adapted from the recorded arguments, with no novelty claim.</p>
+  <h4 id="lean-row-linear-polynomial-space">Row-linear polynomial space and exact dimension</h4>
+  <p><strong>Claim <code>lem:row-linear-polynomial-space</code>.</strong> Let \(K\) be any field and \(m,\ell,k\) any natural numbers. In the ordinary polynomial ring \(K[b_{ia}:i\in[m],a\in[\ell]]\), let \(\mathcal L_k\) be the span of monomials of degree at most \(k\) containing at most one variable from each row. Then</p>
+  <div class="math">\[
+    \dim_K\mathcal L_k=\sum_{j=0}^{k}\binom mj\ell^j,
+    \qquad \deg p\le k\quad(p\in\mathcal L_k).
+  \]</div>
+  <p>Every nonzero \(p\in\mathcal L_k\) has a nonzero coefficient on a monomial using exactly \(\deg p\) rows. The formal definition uses natural total degree, with \(\deg0=0\), and counts ordinary coefficients; it is not a Boolean quotient.</p>
+  <p><strong>Full proof.</strong> Index a monomial by \(0\le j\le k\), a \(j\)-element subset \(S\) of the rows, and a function \(a:S\to[\ell]\). Its variable set is the graph \(\{(i,a(i)):i\in S\}\), and its exponent vector assigns one to each graph element and zero elsewhere. This indexing is injective: projecting the graph to rows recovers \(S\), the unique variable in each selected row recovers \(a\), and its cardinality recovers \(j\). Conversely every allowed monomial has exactly this description. Ordinary monomials form a coefficient basis, so the allowed exponent subset gives a basis of \(\mathcal L_k\).</p>
+  <p>There are \(\binom mj\) row subsets and \(\ell^j\) coordinate functions on each, proving the dimension formula. An indexed exponent has total sum \(j\le k\), so every supported exponent of \(p\) has sum at most \(k\); their maximum is \(\deg p\). If \(p\ne0\), its finite support is nonempty, so choose an exponent attaining that maximum. Its coefficient is nonzero by support membership, and its index uses exactly \(\deg p\) rows. This includes constants through the empty row set. It also covers \(k&gt;m\), since \(\binom mj=0\) for \(j&gt;m\), and \(m=0\) or \(\ell=0\), when only the constant monomial remains. \(\square\)</p>
+  <h4 id="lean-ordinary-restriction-dimension">Ordinary affine restriction image dimension</h4>
+  <p><strong>Claim <code>lem:ordinary-restriction-dimension</code>.</strong> For any field \(K\) and natural \(d,k\), the subspace \(K[z_1,\ldots,z_d]_{\le k}\) has dimension at most \(\binom{d+k}{k}\). Let \(U\) be any subspace of ordinary source polynomials, all of degree at most \(k\), and substitute each source variable by an ordinary polynomial of degree at most one in these \(d\) variables. Then degree does not increase and</p>
+  <div class="math">\[
+    \dim_K\operatorname{res}(U)\le\binom{d+k}{k}.
+  \]</div>
+  <p>In particular this applies to \(U=\mathcal L_k\) and to affine free coordinates on a codimension-\(r\) flat, taking \(d=v-r\). The formal theorem allows an arbitrary source variable type and requires only the stated degree bounds.</p>
+  <p><strong>Full proof.</strong> The coefficient basis of the target degree space is indexed by nonnegative exponent vectors \(e\) with \(\sum_i e_i\le k\). Add a dummy symbol with multiplicity \(k-\sum_i e_i\), keeping the original \(d\) multiplicities. The result is a multiset of exactly \(k\) symbols from \(d+1\) choices. The encoding is injective because ignoring the dummy recovers every original exponent. Stars and bars counts these multisets as \(\binom{(d+1)+k-1}{k}=\binom{d+k}{k}\), giving the bound. The encoding is in fact bijective, but injectivity suffices here; equality of the full target dimension is not needed.</p>
+  <p>If a variable \(x_i\) is replaced by \(g_i\) with \(\deg g_i\le1\), a monomial with exponent \(e\) becomes its scalar coefficient times \(\prod_i g_i^{e_i}\), of degree at most \(\sum_i e_i\). Addition cannot increase the largest term degree, so substitution cannot increase the source polynomial's degree. Thus its image on \(U\) is a subspace of the target degree space, and dimension monotonicity proves the result. This works over finite fields without identifying pointwise vanishing with the zero ordinary polynomial. For \(d=0\) or \(k=0\) the target consists of constants and the binomial bound is one. \(\square\)</p>
+  <p><strong>Formalization and evidence.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/RowLinearPolynomialSpace.lean">RowLinearPolynomialSpace.lean</a> provides the explicit monomial index, its cardinality, the polynomial subspace and finite-dimensional instance, the exact dimension theorem, degree bound, and maximal coefficient theorem. <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/OrdinaryRestrictionDimension.lean">OrdinaryRestrictionDimension.lean</a> provides the independent reusable target-dimension and affine-restriction interface. Their separate <a href="https://github.com/kbr-/math-research/blob/main/research/results/r13_restriction_20260916/row-linear-verification.txt">row-linear</a> and <a href="https://github.com/kbr-/math-research/blob/main/research/results/r13_restriction_20260916/restriction-verification.txt">restriction</a> reports retain exact theorem types and transitive axiom audits. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r13_restriction_20260916/README.md">reproduction record</a> links the pre-proof scope map, pinned dependencies, and complete measured command evidence.</p>
+  <p><strong>Review and remaining route.</strong> These seven theorem declarations discharge R13, including constants and empty dimension cases. They do not establish literal affine-ideal membership or the strict common-kernel inequality of R15, and do not formalize the larger quotient-injection or PC-separation claims. The main Frege status and existing mathematical-gap list were reviewed and are unchanged; the coordinator owns their living-section updates. No new mathematical discrepancy was found.</p>
+  <p><strong>Process assessment.</strong> Separating ordinary restriction dimension from row-specific counting produced a reusable dependency; the small indexing and cardinality helpers remain local. Initial source restoration preceded instrumentation, and the explicit cache-readiness wait is recorded as overhead; failed checks were import, elaboration, or linter issues rather than failed mathematical claims.</p>
+  <div class="timing-report" data-session="r13_restriction_20260916">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>17 min 29.62 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">26.44 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 29.88 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">6 min 11.70 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">9.73 s</td></tr>
+<tr><td>Marked overhead and interruptions</td><td class="elapsed">2 min 5.35 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">6.71 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">1 min 59.80 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
