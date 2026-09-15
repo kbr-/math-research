@@ -17735,5 +17735,49 @@ q\mathcal I_B(\mathcal F)\subseteq\mathcal I_{B+\deg q}(\mathcal F),
 </div>
 </article>
 
+<article id="entry-2026-09-15-lean-two-row-interpolation">
+<h3>15 September 2026 — Exact degree-controlled interpolation on two functional rows</h3>
+<p class="entry-meta">Status: full Lean formalization of the indexed two-row interpolation lemma; R11.</p>
+<h4 id="lean-two-functional-row-interpolation">Two-row interpolation with ordinary NS certificates</h4>
+<p><strong>Question and scope.</strong> Formalize <a href="#two-functional-row-interpolation">the indexed two-functional-row interpolation statement</a>, needed for the compact decoder. Relabel its two distinct rows by \(0,1\), retaining the same \(n\) columns in each, and work over \(\mathbb F_2\). The polynomial depends only on these two rows, exactly as in the indexed statement; no outside coefficient variables or unequal state domains are asserted. Let \(U\) contain their Booleanity equations, same-row exclusions, and \(\rho_r-1\), with \(\rho_r=\sum_jX_{rj}\). It contains no cross-row collision equations. For every ordinary polynomial \(P\),</p>
+<div class="math">\[
+P-\mathcal T(P)\in\mathcal I_{\max\{\deg P,2\}}(U),\qquad
+\mathcal T(P)=\sum_{j,k}P(e_j,e_k)X_{0j}X_{1k}.
+\]</div>
+<p>The Lean theorem also includes \(n=0\): the sums are empty and the row equations then contain \(-1\). Constants, zero polynomials, and degree-one targets retain the same maximum-with-two bound. The stopping point is this complete local identity; its global decoder application is R12.</p>
+<p><strong>Squarefree reduction.</strong> By the <a href="#lean-binary-degree-controlled-Boolean-reduction">checked Boolean reduction</a>, \(P-\overline P\) has a Boolean NS certificate through \(\deg P\), and \(\overline P\) has the same values at every Boolean point. Hence \(\mathcal T(\overline P)=\mathcal T(P)\). Write \(\overline P\) as the sum of its original monomial coefficients times squarefree support monomials \(M_S=\prod_{x\in S}X_x\). For each original support, \(|S|\le\deg P\).</p>
+<p><strong>Forbidden supports.</strong> If \(S\) contains distinct cells \((r,a),(r,b)\) in one row, factor out \(X_{ra}X_{rb}\). The independently checked <a href="#lean-squarefree-forbidden-pair-certificate">forbidden-pair certificate</a> puts \(M_S\) in \(\mathcal I_{|S|}(U)\). Its evaluation at every pair of one-hot row states is zero, since two distinct cells of one row cannot both be one. Therefore \(\mathcal T(M_S)=0\), with no cross-row equation used.</p>
+<p><strong>Remaining supports.</strong> Otherwise the row projection is injective on \(S\), so \(|S|\le2\). An empty support is the constant one; a singleton is one variable; a two-element support has one variable in each row. Direct evaluation gives</p>
+<div class="math">\[
+\mathcal T(1)=\rho_0\rho_1,\qquad
+\mathcal T(X_{0j})=X_{0j}\rho_1,\qquad
+\mathcal T(X_{1k})=\rho_0X_{1k},\qquad
+\mathcal T(X_{0j}X_{1k})=X_{0j}X_{1k}.
+\]</div>
+<p>The required constant and linear errors have explicit degree-two row-generator certificates:</p>
+<div class="math">\[
+1-\rho_0\rho_1=-(\rho_0-1)-\rho_0(\rho_1-1),\qquad
+X_{0j}-X_{0j}\rho_1=-X_{0j}(\rho_1-1),\qquad
+X_{1k}-\rho_0X_{1k}=-X_{1k}(\rho_0-1).
+\]</div>
+<p>The bilinear error is zero. Thus every squarefree support error has a certificate through \(\max\{|S|,2\}\). Taking the original coefficient-weighted sum costs at most \(\max\{\deg P,2\}\). Adding the Boolean-reduction certificate proves the displayed identity. This follows the source argument; the generic forbidden-pair dependency was extracted collaboratively rather than duplicating matching-specific machinery.</p>
+<p><strong>Verification and process.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/TwoRowInterpolation.lean">TwoRowInterpolation.lean</a> states the full theorem, and the <a href="https://github.com/kbr-/math-research/blob/main/research/results/r11_two_row_interpolation_20260915/lean-verification-passed.txt">verification report</a> records its type and transitive axioms. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r11_two_row_interpolation_20260915/scope.md">scope map</a> separates the local statement from the global decoder. Initial checks rebuilt missing pinned dependency artifacts and exposed sum-order, finite-index normalization, and deprecated-tactic issues; these changed no mathematics. No formalization gap was found. Process assessment: releasing a generic pair certificate let matching and interpolation share the required reduction without waiting for the larger matching theorem; no further guidance is needed.</p>
+<div class="timing-report" data-session="r11_two_row_interpolation_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 36.63 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">31.41 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 19.02 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">5 min 17.23 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">18.02 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">2 min 10.97 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3.</p>
+</div>
+<p class="small">Initial source reading preceded instrumentation; dependency integration, build work, and retries are included, while final checkpoint work follows the snapshot.</p>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
