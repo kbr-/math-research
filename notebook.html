@@ -18356,5 +18356,41 @@ f\,g_{b,i}(1-f)=-g_{b,i}(f^2-f).
 <p class="small">Preliminary source reading and coordination preceded this clock; final checkpoint work follows the timing snapshot.</p>
 </article>
 
+<article id="entry-2026-09-15-lean-affine-DAG-registry">
+<h3>15 September 2026 — A compressed fixed registry for a finite affine proof DAG</h3>
+<p class="entry-meta">Status: verified reusable DAG controller for R24; actual bit-PHP instantiation remains separate.</p>
+<h4 id="lean-finite-affine-DAG-registry">Three registry slots per source node, with no degree-height factor</h4>
+<p><strong>Question and scope.</strong> Turn the checked local clause simulations into one finite fixed-registry construction. Represent a DAG by a topological list \((C_i)_{i&lt;S}\), allowing any earlier node to be referenced repeatedly. The explicit source-step constructors are an initial clause, one-premise semantic weakening, complementary-parity resolution, and arbitrary two-premise semantic consequence. Thus both recorded proof-rule conventions are included. Let \(I\) be the source initial-clause set and let \((A_j)_{j\in J}\) be a finite covering family: every \(D\in I\) is semantically implied by some \(A_j\). Assume \(|A_j|\le w\), and write \(v=|\sigma|\) for the number of old variables.</p>
+<p>The theorem constructs a registry \(R\), initial indices, and primary source-node indices with exactly \(N=3S+|J|\) slots. Each initial slot contains its \(A_j\). Each primary slot contains a semantically equivalent subclause of the original \(C_i\). Every registry clause has width at most \(\max\{w,v+2\}\). For any accuracy \(h\ge1\), old system, and global ceiling \(D\ge4h+1\), actual degree-\(D\) proofs of the initial-slot values imply degree-\(D\) proofs of every primary-node value.</p>
+<p><strong>Compression and local plans.</strong> Apply the already verified <a href="#lean-affine-clause-basis-compression">affine clause compression</a> to each \(C_i\), obtaining \(Q_i\subseteq C_i\), \(|Q_i|\le v+1\), and identical truth sets. Semantic weakening transfers between these equivalent clauses. A complementary resolution step is a sound binary semantic step: either a context already holds, or both complementary pivot literals cannot simultaneously be true. For a general binary step, transfer its soundness to \(Q_a,Q_b,Q_i\) and apply the checked <a href="#binary-semantic-affine-cover">binary semantic affine cover</a>. It yields either one weakening from one premise, or a pivot \(u\) such that</p>
+<div class="math">\[
+Q_a\models Q_i\lor(u=1),\qquad
+Q_b\models Q_i\lor(1-u=1).
+\]</div>
+<p>The latter case uses two weakenings and one complementary resolution. Source initial clauses instead use their covering \(A_j\), followed by equivalence to \(Q_i\). These choices define a finite plan for each original node and retain its earlier predecessor references.</p>
+<p><strong>One registry and its count.</strong> Use the tagged finite index type \(J\sqcup(\mathrm{Fin}(S)\times\mathrm{Fin}(3))\), reindexed as \(\mathrm{Fin}(N)\). The three slots for node \(i\) contain \(Q_i\) and the two auxiliary clauses in its plan. When the plan uses no auxiliary inference, the two spare slots may repeat \(Q_i\); they are unused in replay and still fit the same upper bound. The count is exactly \(|J|+3S\). An auxiliary clause adds at most one literal to \(Q_i\), so its width is at most \(v+2\), not \(v+1\). The indexed publication transfer requires polynomial inventory, so this actual bound suffices without another compression round.</p>
+<p>The registry's coefficient variables are indexed by an accuracy row and one literal occurrence per slot. Consequently the exact total variable count is</p>
+<div class="math">\[
+|\mathrm{Vars}(R,h)|=v+h\sum_{c&lt;N}|R_c|.
+\]</div>
+<p>The width bound therefore gives at most \(hN\max\{w,v+2\}\) fresh coefficient slots. This counts the ENS registry, not the monomial-expanded primitive PC derivation.</p>
+<p><strong>Replay in the original DAG order.</strong> Induct strongly on the original node index. An initial plan applies the concrete <a href="#lean-semantic-weakening-PC-degree">registry weakening theorem</a> to its actual supplied initial-value proof. A one-premise plan applies the same theorem to its already derived earlier node. In the two-auxiliary case, derive both auxiliary values from the two earlier primary values, then apply <a href="#lean-affine-clause-resolution-PC-degree">concrete registry resolution</a> with shared context \(Q_i\). All weakenings stay within \(D\), since \(4h\le D\), and resolution stays within \(D\), since \(4h+1\le D\). No clause value is added as an axiom, and no derivation is multiplied by a proof-height factor. Registry numbering need not be proof order: each node's auxiliaries are proved before its primary conclusion. Every derived value uses the same fixed family of old inputs, companions, and Boolean domains.</p>
+<p><strong>Completion boundary and verification.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/AffineDAGRegistry.lean">AffineDAGRegistry.lean</a> proves this full conditional controller and the exact variable count. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r24_semantic_dag_20260915/lean-verification-final.txt">verification report</a> and <a href="https://github.com/kbr-/math-research/blob/main/research/results/r24_semantic_dag_20260915/scope.md">scope map</a> expose the initial-cover and initial-PC hypotheses. These have not been silently discharged: full R24 still must instantiate the actual bit-PHP initial family, prove its \(\binom m2\) count, supply the checked \(2h+\ell\) initial certificates, and use an empty final clause's value one. The first staged build needed only unused-section-instance cleanup; the complete theorem then verified. Process assessment: a finite typed plan keeps source-rule normalization, registry size, and primitive replay connected, while recording the actual \(v+2\) auxiliary width avoids overstating the compression bound.</p>
+<div class="timing-report" data-session="r24_semantic_dag_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 34.05 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 41.69 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">7 min 58.93 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">15.38 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">38.04 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+<p class="small">Preliminary reading and planning preceded this clock; the linter retry is included and final checkpoint work follows the snapshot.</p>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

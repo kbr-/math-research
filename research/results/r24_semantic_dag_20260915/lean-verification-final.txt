@@ -1,0 +1,58 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.AffineDAGRegistry
+Claim file: claims/AffineDAGRegistry.lean
+Claim: lem:finite-affine-DAG-registry
+Source: https://kbr.is-a.dev/math-research/#lean-finite-affine-DAG-registry
+Scope: A finite topologically indexed DAG with semantic weakening, complementary resolution, or binary semantic rules admits one compressed fixed registry with at most three slots per source node plus supplied initial clauses, bounded literal inventory, and height-independent primitive PC replay from actual initial-value proofs.
+Declarations: MathResearch.PolynomialCalculus.registry_inventory_bound MathResearch.PolynomialCalculus.affine_dag_registry MathResearch.PolynomialCalculus.registry_variable_count
+$ lake --wfail build claims.AffineDAGRegistry
+✔ [2029/2029] Built claims.AffineDAGRegistry (9.5s)
+Build completed successfully (2029 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/tmpqe_p4x7o.lean
+@MathResearch.PolynomialCalculus.registry_inventory_bound : ∀ {σ : Type} [inst : Fintype σ] {N : ℕ}
+  (R : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause σ) (h W : ℕ),
+  (∀ (c : Fin N), Finset.card (R c) ≤ W) →
+    ∑ c, Finset.card (R c) ≤ N * W ∧
+      Fintype.card (MathResearch.PolynomialCalculus.ClauseRegistryVars R h) ≤ Fintype.card σ + h * N * W
+'MathResearch.PolynomialCalculus.registry_inventory_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.affine_dag_registry : ∀ {σ J : Type} [inst : Fintype σ] [inst_1 : Fintype J] {S : ℕ}
+  (I : Set (MathResearch.PolynomialCalculus.FiniteParityClause σ))
+  (C : Fin S → MathResearch.PolynomialCalculus.FiniteParityClause σ)
+  (dag : MathResearch.PolynomialCalculus.AffineDAG I C) (A : J → MathResearch.PolynomialCalculus.FiniteParityClause σ)
+  (w : ℕ),
+  (∀ (j : J), Finset.card (A j) ≤ w) →
+    (∀ D ∈ I, ∃ j, MathResearch.clauseEntails (A j) D) →
+      ∃ N R initial node,
+        N = 3 * S + Fintype.card J ∧
+          (∀ (j : J), R (initial j) = A j) ∧
+            (∀ (i : Fin S),
+                R (node i) ⊆ C i ∧
+                  ∀ (x : σ → ZMod 2), MathResearch.clauseHolds (R (node i)) x ↔ MathResearch.clauseHolds (C i) x) ∧
+              (∀ (c : Fin N), Finset.card (R c) ≤ max w (Fintype.card σ + 2)) ∧
+                ∀ (h : ℕ) (old : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) σ)) (D : ℕ),
+                  1 ≤ h →
+                    4 * h + 1 ≤ D →
+                      (∀ (j : J),
+                          MathResearch.PolynomialCalculus.Derives
+                            (MathResearch.PolynomialCalculus.registrySystem R h old) D
+                            (MathResearch.PolynomialCalculus.registryValue R h (initial j))) →
+                        ∀ (i : Fin S),
+                          MathResearch.PolynomialCalculus.Derives
+                            (MathResearch.PolynomialCalculus.registrySystem R h old) D
+                            (MathResearch.PolynomialCalculus.registryValue R h (node i))
+'MathResearch.PolynomialCalculus.affine_dag_registry' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_variable_count : ∀ {σ : Type} [inst : Fintype σ] {N : ℕ}
+  (R : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause σ) (h : ℕ),
+  Fintype.card (MathResearch.PolynomialCalculus.ClauseRegistryVars R h) = Fintype.card σ + h * ∑ c, Finset.card (R c)
+'MathResearch.PolynomialCalculus.registry_variable_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 3 audited declarations.
