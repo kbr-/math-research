@@ -1,0 +1,38 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.SquarefreePairDivisibility
+Claim file: claims/SquarefreePairDivisibility.lean
+Claim: lem:squarefree-forbidden-pair-certificate
+Source: https://kbr.is-a.dev/math-research/#lean-squarefree-forbidden-pair-certificate
+Scope: Any squarefree monomial containing an explicitly supplied distinct forbidden pair has an ordinary NS certificate through its cardinality, over F₂.
+Declarations: MathResearch.PolynomialCalculus.supportMonomial_pair_factor MathResearch.PolynomialCalculus.supportMonomial_pair_ns
+$ lake --wfail build claims.SquarefreePairDivisibility
+✔ [1991/1991] Built claims.SquarefreePairDivisibility (8.5s)
+Build completed successfully (1991 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/tmpsf96uqb_.lean
+@MathResearch.PolynomialCalculus.supportMonomial_pair_factor : ∀ {V : Type} [inst : DecidableEq V] (S : Finset V)
+  (x y : V),
+  x ∈ S →
+    y ∈ S →
+      x ≠ y →
+        MathResearch.PolynomialCalculus.supportMonomial S =
+          MathResearch.PolynomialCalculus.supportMonomial ((S.erase x).erase y) * (MvPolynomial.X x * MvPolynomial.X y)
+'MathResearch.PolynomialCalculus.supportMonomial_pair_factor' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.supportMonomial_pair_ns : ∀ {V : Type} [DecidableEq V]
+  (F : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) V)) (S : Finset V) (x y : V),
+  x ∈ S →
+    y ∈ S →
+      x ≠ y →
+        MvPolynomial.X x * MvPolynomial.X y ∈ F →
+          MathResearch.PolynomialCalculus.supportMonomial S ∈ MathResearch.PolynomialCalculus.nsSpace F S.card
+'MathResearch.PolynomialCalculus.supportMonomial_pair_ns' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 2 audited declarations.

@@ -17653,5 +17653,35 @@ q\mathcal I_B(\mathcal F)\subseteq\mathcal I_{B+\deg q}(\mathcal F),
 <p class="small">Brief preliminary API reading preceded this clock; elaboration retries are included and final checkpoint work follows the snapshot.</p>
 </article>
 
+<article id="entry-2026-09-15-lean-squarefree-forbidden-pair">
+<h3>15 September 2026 — A shared forbidden-pair certificate for matching and interpolation</h3>
+<p class="entry-meta">Verified supporting lemma for R09 and R11 · R09 completeness remains unfinished</p>
+<h4 id="lean-squarefree-forbidden-pair-certificate">Statement and complete proof</h4>
+<p>Let \(S\) be a finite variable set, let \(x,y\in S\) be distinct, and suppose the polynomial system \(\mathcal F\) explicitly contains \(X_xX_y\). Over \(\mathbb F_2\), write \(M_S=\prod_{i\in S}X_i\). Then</p>
+<div class="math">\[
+ M_S=M_{S\setminus\{x,y\}}(X_xX_y)
+ \quad\text{and}\quad
+ M_S\in\mathcal I_{|S|}(\mathcal F).
+\]</div>
+<p>For the identity, remove the factor \(X_x\) from the finite product. Because \(x\ne y\), the remaining product still contains \(X_y\); remove that factor as well and commute the factors. The displayed product is one legal NS generator multiple: its polynomial is exactly \(M_S\), whose ordinary total degree is at most \(|S|\). Thus the supplied forbidden-pair equation alone gives the stated certificate. No Boolean quotient calculation or inferred exclusion equation is used. The membership hypotheses exclude the empty and singleton sets automatically.</p>
+<p><strong>Purpose and scope.</strong> The matching-normal-form proof for R09 needs to kill squarefree monomials with a repeated row or column. The independently assigned two-row interpolation proof R11 needs the same argument for a repeated row. Extracting <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/SquarefreePairDivisibility.lean">SquarefreePairDivisibility.lean</a> exposes the exact common interface for any explicitly supplied pair equation. This is a project formulation of elementary product factorization, without a novelty claim. The distinctness and generator-membership hypotheses remain visible in the Lean statement.</p>
+<p><strong>Verification and remaining obligation.</strong> The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r_boolean_matching_20260915_02/verification.txt">targeted type and transitive-axiom audit</a> checks both factorization and the original-degree certificate using verified R01/R05 interfaces. <a href="https://github.com/kbr-/math-research/blob/main/research/results/r_boolean_matching_20260915_02">Scope and provenance</a> preserve the evidence. This early shared checkpoint does not complete R09: its matching normal form, complete row-marginal equations, and equivalence with bounded ordinary-NS annihilators are still required. The existing R09 index status is unchanged.</p>
+<p><strong>Process assessment.</strong> A small independently reusable certificate unblocks two parallel proofs without making either wait for the other's entire claim; the existing dependency-extraction guidance suffices. Living notebook sections and the formalization-gap list were reviewed with no new discrepancy and remain under coordinator ownership.</p>
+<div class="timing-report" data-session="r_boolean_matching_20260915_02">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 38.53 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 44.15 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">34.81 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">1 min 45.61 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">21.42 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">12.54 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
