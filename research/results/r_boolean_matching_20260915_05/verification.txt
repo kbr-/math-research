@@ -1,0 +1,57 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.DisjointCoordinatePairs
+Claim file: claims/DisjointCoordinatePairs.lean
+Claim: lem:disjoint-binary-coordinate-pairs
+Source: https://kbr.is-a.dev/math-research/#lean-disjoint-binary-coordinate-pairs
+Scope: Pairwise disjoint binary coordinate edges for any finite family of directions under 4(t−1)<2^ℓ; exact used-label cardinality, bit differences, and sufficient positive residual-board parameters for the R14 range.
+Declarations: MathResearch.PolynomialCalculus.flipColumn_label MathResearch.PolynomialCalculus.flipColumn_involutive MathResearch.PolynomialCalculus.flipColumn_ne MathResearch.PolynomialCalculus.coordinatePair_card MathResearch.PolynomialCalculus.coordinate_pair_avoiding MathResearch.PolynomialCalculus.coordinatePairs_card MathResearch.PolynomialCalculus.exists_disjoint_coordinate_pairs MathResearch.PolynomialCalculus.coordinatePair_bit_sum MathResearch.PolynomialCalculus.cube_residual_parameters
+$ lake --wfail build claims.DisjointCoordinatePairs
+✔ [1657/1657] Built claims.DisjointCoordinatePairs (6.2s)
+Build completed successfully (1657 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/tmpghl2m1ig.lean
+MathResearch.PolynomialCalculus.flipColumn_label : ∀ (ℓ : ℕ) (t : Fin ℓ) (c : Fin (2 ^ ℓ)) (u : Fin ℓ),
+  (MathResearch.PolynomialCalculus.bitLabelEquiv ℓ) (MathResearch.PolynomialCalculus.flipColumn ℓ t c) u =
+    (MathResearch.PolynomialCalculus.bitLabelEquiv ℓ) c u + if u = t then 1 else 0
+'MathResearch.PolynomialCalculus.flipColumn_label' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.flipColumn_involutive : ∀ (ℓ : ℕ) (t : Fin ℓ),
+  Function.Involutive (MathResearch.PolynomialCalculus.flipColumn ℓ t)
+'MathResearch.PolynomialCalculus.flipColumn_involutive' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.flipColumn_ne : ∀ (ℓ : ℕ) (t : Fin ℓ) (c : Fin (2 ^ ℓ)),
+  MathResearch.PolynomialCalculus.flipColumn ℓ t c ≠ c
+'MathResearch.PolynomialCalculus.flipColumn_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.coordinatePair_card : ∀ (ℓ : ℕ) (t : Fin ℓ) (c : Fin (2 ^ ℓ)),
+  (MathResearch.PolynomialCalculus.coordinatePair ℓ t c).card = 2
+'MathResearch.PolynomialCalculus.coordinatePair_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.coordinate_pair_avoiding : ∀ (ℓ : ℕ) (t : Fin ℓ) (F : Finset (Fin (2 ^ ℓ))),
+  2 * F.card < 2 ^ ℓ → ∃ c ∉ F, MathResearch.PolynomialCalculus.flipColumn ℓ t c ∉ F
+'MathResearch.PolynomialCalculus.coordinate_pair_avoiding' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.coordinatePairs_card : ∀ {I : Type} (ℓ : ℕ) (S : Finset I) (d : I → Fin ℓ)
+  (c : I → Fin (2 ^ ℓ)),
+  MathResearch.PolynomialCalculus.CoordinatePairsDisjoint ℓ S d c →
+    (MathResearch.PolynomialCalculus.coordinatePairs ℓ S d c).card = 2 * S.card
+'MathResearch.PolynomialCalculus.coordinatePairs_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.exists_disjoint_coordinate_pairs : ∀ {I : Type} [DecidableEq I] (ℓ : ℕ) (S : Finset I)
+  (d : I → Fin ℓ), 4 * (S.card - 1) < 2 ^ ℓ → ∃ c, MathResearch.PolynomialCalculus.CoordinatePairsDisjoint ℓ S d c
+'MathResearch.PolynomialCalculus.exists_disjoint_coordinate_pairs' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.coordinatePair_bit_sum : ∀ (ℓ : ℕ) (t : Fin ℓ) (c : Fin (2 ^ ℓ)) (u : Fin ℓ),
+  ∑ j ∈ MathResearch.PolynomialCalculus.coordinatePair ℓ t c, (MathResearch.PolynomialCalculus.bitLabelEquiv ℓ) j u =
+    if u = t then 1 else 0
+'MathResearch.PolynomialCalculus.coordinatePair_bit_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.cube_residual_parameters : ∀ (ℓ k B t : ℕ),
+  2 ≤ ℓ →
+    1 ≤ k →
+      t ≤ k → k ≤ B → 4 * (k - 1) < 2 ^ ℓ → 2 * B - 1 ≤ 2 ^ ℓ → 1 ≤ 2 ^ ℓ - 2 * t ∧ 2 * (B - t) - 1 ≤ 2 ^ ℓ - 2 * t
+'MathResearch.PolynomialCalculus.cube_residual_parameters' depends on axioms: [propext, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 9 audited declarations.
