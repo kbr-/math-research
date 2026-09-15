@@ -15,8 +15,8 @@ This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
 The third-party boundary **H** is now proved in Lean: H01–H13 are complete.
-R01–R13, R16, and R18–R24 are verified and integrated, reusing the earlier
-R06/R19–R21 proofs. Four obligations remain: R14, R15, R17, and R25. Proving H does not formalize its downstream consumers or the full paper.
+R01–R13, R15–R16, and R18–R24 are verified and integrated, reusing the earlier
+R06/R19–R21 proofs. Three obligations remain: R14, R17, and R25. Proving H does not formalize its downstream consumers or the full paper.
 
 ## How to use the list
 
@@ -300,12 +300,11 @@ Released R13: the two extracted row-linear and
 ordinary-restriction dimension claims. Released R03: ordinary substitution and fixed-weight PC replay. Both are integrated
 into `formal`; append conflicts preserved all existing articles and index rows.
 
-Current worker allocation: `/root/r_foundations` handles the independent R14
-coefficient-isolation helper in pc-foundations; `/root/h_chessboard` handles the
-concrete board restriction and final R14 assembly in boolean-matching;
-`/root/h_arithmetic` handles final R15 in restriction. Clause-simulation, decoder,
-and affine-removal are idle with their completed work integrated. The coordinator
-retains R17/R25 and the final generalization sweep after prerequisite integration.
+Current worker allocation: `/root/h_chessboard` is assembling final R14 in
+boolean-matching. R15 and the independent coefficient-isolation assignment are
+complete; their workers are idle. All R14 prerequisites are integrated. The
+coordinator retains R17/R25 and the brief final generalization sweep, with cached
+verification and minimal source rereading under the user's quota constraint.
 
 Released R05: degree-controlled binary Boolean
 reduction and its explicit NS witnesses. Its implemented proof also uses R02;
@@ -432,6 +431,17 @@ estimate for R25 rather than marking only the finite inequality interface as
 completion of the whole audit. The square-condition kernel interface permits
 uniform parameter choices from inventory bounds. Unit-span blocks are handled
 by the verified removal alternative, so no properness assumption is hidden.
+
+Released full R15: actual proper-high restriction maps, the nonzero joint kernel,
+original-tuple literal coefficients, square-condition and original-ceiling
+parameters, and proper/total inventory wrappers. The result supplies exactly the
+unit-span-or-literal condition consumed by the generalized R16.
+
+R14 prerequisites are integrated: disjoint coordinate pairs and residual bounds,
+the generic cube degree/NS operator, concrete board restrictions and all axiom
+images, and exact row-cube coefficient isolation. The latter uses the exposed,
+unchanged R13 monomial facts. Only final R14 separation assembly remains before
+the coordinator takes R17/R25.
 
 ### Final generalization sweep (explicit user assignment)
 
