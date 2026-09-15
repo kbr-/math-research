@@ -55,6 +55,19 @@ class MergeAppendsTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 tool.merge_index(base, left, modified)
 
+    def test_index_blank_lines_allowed_but_content_and_order_preserved(self):
+        base = 'Header\n\n| `old` | old claim |\n'
+        left = 'Header\n| `old` | old claim |\n\n| `a` | claim A |\n'
+        right = base + '| `b` | claim B |\n'
+        result = tool.merge_index(base, left, right)
+        self.assertIn('| `a` | claim A |', result)
+        self.assertIn('| `b` | claim B |', result)
+        for bad in (left.replace('Header', 'Changed header'),
+                    left.replace('old claim', 'changed claim'),
+                    '| `a` | claim A |\n' + base):
+            with self.assertRaises(ValueError):
+                tool.merge_index(base, bad, right)
+
     def test_real_rebase_keeps_staging_and_continuation_manual(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

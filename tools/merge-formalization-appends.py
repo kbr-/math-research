@@ -75,13 +75,16 @@ def merge_notebook(base, ours, theirs, reviewed_overview=None):
 
 
 def merge_index(base, ours, theirs):
-    # Only exact appended rows (plus blank lines) are eligible. Row edits,
+    # Ignore blank-line placement, but require exact nonblank content. Row edits,
     # insertions elsewhere, removals, or changed prose fail closed.
     original = base.rstrip()
+    original_lines = [line for line in original.splitlines() if line.strip()]
     extra = []
     for branch in (ours, theirs):
-        require(branch.startswith(original), 'Existing index content changed.')
-        rows = [line for line in branch[len(original):].splitlines() if line.strip()]
+        lines = [line for line in branch.splitlines() if line.strip()]
+        require(lines[:len(original_lines)] == original_lines,
+                'Existing index content changed.')
+        rows = lines[len(original_lines):]
         require(all(line.startswith('| `') and line.endswith('|') for line in rows),
                 'Index changes are not solely appended claim rows.')
         extra.extend(rows)
