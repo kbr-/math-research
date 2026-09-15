@@ -73,6 +73,9 @@ metadata convention; file role does not establish claim completion.
   file unless separating them has a concrete benefit.
 - Search the pinned local Mathlib sources for definitions and theorem names
   before guessing APIs or fetching additional modules. Keep imports targeted.
+  Give module-level helpers and instances unique qualified names so independently
+  checked modules import together; `local instance` restricts visibility, not
+  the declaration's global name.
   Separate library setup, elaboration, and syntax failures from mathematical
   gaps in the record. `noncomputable` can be appropriate for abstract Mathlib
   objects; it changes executable code generation, not the proof obligation.
