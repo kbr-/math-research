@@ -5,7 +5,7 @@
 ([Lean](https://github.com/kbr-/math-research/blob/54f09378e97465522b7f1caf115f90ad1faa7a57/formalization/claims/BitPHPSuperpolynomial.lean))
 and its dependencies, using the generalized statements and human-readable proofs
 recorded during formalization on 15 September 2026. Each statement links to its Lean source at published
-revision `54f09378e97465522b7f1caf115f90ad1faa7a57`. The appendix includes all
+revision `54f0937`. The appendix includes all
 H01–H13 homological prerequisites and their proofs. External review of the
 manuscript remains separate from formal verification.
 
