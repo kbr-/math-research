@@ -337,18 +337,6 @@ completion and injective free-coordinate parametrization with exact zero-set
 range. R07 now still needs fresh-companion degree and scalar PC cleanup; the
 coordinate prerequisite is verified, not assumed.
 
-### Final generalization sweep (explicit user assignment)
-
-After every Rxx obligation is complete, review the Lean project’s statements
-for clean generalizations that do not make their proofs more
-complex and may simplify them. Follow formalization/AGENTS.md: retain full
-coverage of the original claims, prove and record broader scope honestly, and
-keep complete human-readable proofs for changed arguments. Apply worthwhile
-generalizations; do not manufacture extensions merely to change every file.
-Use incremental verification for changed modules and their dependents. Complete
-this sweep before reporting the entire assignment finished and converting the
-execution section into its historical form.
-
 Released R12: decoder injectivity/exact degree
 for all bit lengths and arbitrary-PC transfer for `ℓ≥2` at every ceiling B.
 The decoder assignment is complete; `/root/r_foundations` now handles
@@ -375,10 +363,6 @@ over arbitrary finite old-variable types, including its finite-affine polynomial
 bridge, empty-clause value, original degree bounds, and canonical block embedding.
 The clause worker proceeds to R22/R23/R24. Ten R steps remain.
 
-Generalization-sweep candidate: consolidate the Fin n affine bridge with the new
-finite-variable bridge if the existing interface can become a clean specialization
-without complicating proofs or disrupting consumers.
-
 Released R08: no-retained-core low-rank packing, including explicit coefficient
 degree bounds, the exact zero-indicator product, and Boolean NS companion
 certificates. Empty/rank-zero cases are covered by the generalized statement.
@@ -388,3 +372,19 @@ Released R22: complementary-parity resolution, both as a reusable certificate
 engine and in the actual fixed registry, through `max(K,4h+1)`. Overlapping
 contexts and empty conclusions are included. The clause worker continues R23
 and R24. Eight R steps remain: R10, R14–R17, and R23–R25.
+
+### Final generalization sweep (explicit user assignment)
+
+After every Rxx obligation is complete, review the Lean project’s statements
+for clean generalizations that do not make their proofs more
+complex and may simplify them. Follow formalization/AGENTS.md: retain full
+coverage of the original claims, prove and record broader scope honestly, and
+keep complete human-readable proofs for changed arguments. Apply worthwhile
+generalizations; do not manufacture extensions merely to change every file.
+Use incremental verification for changed modules and their dependents. Complete
+this sweep before reporting the entire assignment finished and converting the
+execution section into its historical form.
+
+Generalization-sweep candidate: consolidate the Fin n affine bridge with the new
+finite-variable bridge if the existing interface can become a clean specialization
+without complicating proofs or disrupting consumers.
