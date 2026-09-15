@@ -1,0 +1,47 @@
+claims/FreshENSBlock.lean:44:4: error: Tactic `rfl` failed: The left-hand side
+  (aeval X) p
+is not definitionally equal to the right-hand side
+  p
+
+K : Type u_1
+inst✝ : Field K
+α : Type u_4
+β : Type u_5
+e : α ↪ β
+p : MvPolynomial α K
+he : renamePullback e ∘ ⇑e = X
+⊢ (aeval X) p = p
+claims/FreshENSBlock.lean:68:2: error: Tactic `rfl` failed: The left-hand side
+  (aeval (selectENSCoefficient u j ∘ Sum.inl)) p
+is not definitionally equal to the right-hand side
+  (rename Sum.inl) p
+
+K : Type u_1
+σ : Type u_2
+ι : Type u_3
+inst✝¹ : Field K
+inst✝ : Fintype ι
+h : ℕ
+u : Fin h
+j : ι
+p : MvPolynomial σ K
+⊢ (aeval (selectENSCoefficient u j ∘ Sum.inl)) p = (rename Sum.inl) p
+claims/FreshENSBlock.lean:104:56: error: `simp` made no progress
+claims/FreshENSBlock.lean:140:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ((rename ⇑{ toFun := Sum.inl, inj' := ⋯ }) ?p).totalDegree
+in the target expression
+  ((rename Sum.inl) (g j)).totalDegree + (freshENSProduct g h).totalDegree = 2 * h + 1
+
+K : Type u_1
+σ : Type u_2
+ι : Type u_3
+inst✝¹ : Field K
+inst✝ : Fintype ι
+g : ι → MvPolynomial σ K
+hg : ∀ (i : ι), (g i).totalDegree ≤ 1
+j : ι
+hj : (g j).totalDegree = 1
+h : ℕ
+hn : g j ≠ 0
+hp : freshENSProduct g h ≠ 0
+⊢ ((rename Sum.inl) (g j)).totalDegree + (freshENSProduct g h).totalDegree = 2 * h + 1

@@ -17927,5 +17927,42 @@ R-\sum_zX_{0z}X_{1z}\in\mathcal I_\ell(U).
 </div>
 </article>
 
+<article class="research-entry" id="entry-2026-09-15-lean-fresh-ENS-degrees">
+  <h3>15 September 2026 — Canonical fresh ENS blocks and exact companion degrees</h3>
+  <p class="entry-meta"><strong>Status:</strong> complete Lean formalization of an extracted R07 degree claim; scalar PC cleanup remains separate.</p>
+  <p><strong>Obligation and endpoint.</strong> Prove the exact original degrees asserted in the paper's scalar-cleanup discussion and the <a href="#affine-common-vanishing-learning">proper affine setup</a>. The endpoint must use disjoint fresh variables and actual input degree, respecting the <a href="#lean-mp-companion-degree-correction">earlier equality-versus-ceiling correction</a>. The canonical block representation also supports the fixed global coefficient registry needed by clause simulation.</p>
+  <h4 id="lean-fresh-ENS-block-degree">Claim: fresh ENS block degrees and renaming</h4>
+  <p>Let \(K\) be any field, let \((g_i)_{i\in I}\subseteq K[X_\sigma]\) be a finite input family with \(\deg g_i\le1\), and let \(h\ge0\). Adjoin distinct new variables \(r_{ui}\), disjoint from all old variables, and define</p>
+  <div class="math">\[
+    F_u=1-\sum_i r_{ui}g_i,\qquad
+    P=\prod_{u=1}^h F_u,\qquad C_i=g_iP.
+  \]</div>
+  <p>Always \(\deg F_u\le2\), \(\deg P\le2h\), and \(\deg C_i\le2h+1\). If some selected input \(g_j\) has actual degree one, then</p>
+  <div class="math">\[
+    \deg F_u=2,\qquad \deg P=2h,\qquad \deg C_j=2h+1.
+  \]</div>
+  <p>The ordinary degree of any polynomial is preserved by injectively renaming its variables. Renaming the whole block through any variable map \(\rho\) gives exactly the product with coefficient variables \(X_{\rho(r_{ui})}\) and old inputs renamed through the composite old-variable injection. Thus an injective embedding into a global registry preserves these exact degrees. No identification of polynomial functions is used.</p>
+  <p><strong>Full proof.</strong> For an injective variable map \(e:\alpha\hookrightarrow\beta\), the renamed polynomial has degree at most the original degree. Define a polynomial substitution back from target variables: a variable in the image of \(e\) maps to its unique original variable, and every other variable maps to zero. Every substitution image has degree at most one, and the substitution composed with renaming is the identity on every original variable, hence on every polynomial. The checked substitution degree bound therefore gives the reverse inequality. This argument also works when the original variable type is empty.</p>
+  <p>Each summand \(r_{ui}g_i\) has degree at most two, giving the factor upper bound; products add these upper bounds and multiplication by \(g_i\) adds at most one. Now assume \(\deg g_j=1\). In one factor, set all coefficient variables other than \(r_{uj}\) to zero and keep all old variables unchanged. The factor becomes \(1-r_{uj}g_j\). Injective old-variable renaming preserves \(\deg g_j=1\), so the product \(r_{uj}g_j\) has degree two in the integral domain \(K[X,r]\). Subtracting it from the degree-zero constant one cannot cancel its top degree. Thus the specialized factor has degree two. The specialization uses variable images of degree at most one and cannot increase degree, proving that the original factor has degree at least two; the upper bound makes this an equality.</p>
+  <p>Every such factor is nonzero. In a polynomial ring over a field, degrees add under multiplication of nonzero polynomials, so induction over the finite factor set gives \(\deg P=2h\), and its product is nonzero. Multiplication by the nonzero degree-one input \(g_j\) gives \(\deg C_j=2h+1\). When \(h=0\), the product is one and the formulas become \(\deg P=0\) and \(\deg C_j=1\). When all inputs vanish, or the family is empty, only the upper-bound statements apply. Finally, renaming is an algebra homomorphism: it distributes through the displayed sums, products and subtraction, proving the registry identity. \(\square\)</p>
+  <p><strong>Connection to proper affine blocks.</strong> The <a href="#lean-affine-system-linear-algebra">preceding verified claim</a> proves exact degree one for every nonzero input in a proper affine span. Applying the present companion theorem separately to each retained nonzero input therefore gives the paper's exact \(2h+1\) original degree. A loose degree-one ceiling alone is deliberately insufficient for the equality theorem.</p>
+  <p><strong>Interface and evidence.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/FreshENSBlock.lean">FreshENSBlock.lean</a> uses variables <code>σ ⊕ (Fin h × ι)</code>, old renaming through <code>Sum.inl</code>, and individual fresh variables through <code>Sum.inr</code>. Its product-renaming identity directly embeds into a registry whose coefficient index is a dependent sum over blocks. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r07_fresh_ens_20260915_03/lean-verification.txt">incremental report</a> audits eight declarations with transitive axioms, and the <a href="https://github.com/kbr-/math-research/blob/main/research/results/r07_fresh_ens_20260915_03/README.md">reproduction record</a> preserves the scope, original degree conventions, and complete checks.</p>
+  <p><strong>Remaining route and process assessment.</strong> Scalar elimination of zero/unit blocks, including coefficient Boolean equations and degree-preserving PC replay, still remains in R07; R08/R16 remain assigned. Explicit coefficient specialization gave a short degree lower bound without expanding the full product. The distinction between actual degree and an upper ceiling was preserved, and no new mathematical gap or guidance change was needed. The coordinator owns living-section updates.</p>
+  <div class="timing-report" data-session="r07_fresh_ens_20260915_03">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 42.11 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3.06 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">40.47 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">7 min 2.31 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3.44 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">52.83 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 4.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

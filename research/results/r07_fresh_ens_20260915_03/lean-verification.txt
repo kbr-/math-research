@@ -1,0 +1,57 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.FreshENSBlock
+Claim file: claims/FreshENSBlock.lean
+Claim: lem:fresh-ENS-block-degree
+Source: https://kbr.is-a.dev/math-research/#lean-fresh-ENS-block-degree
+Scope: Canonical disjoint fresh-variable ENS factors, products and companions with exact ordinary total degrees and injective-registry renaming compatibility.
+Declarations: MathResearch.totalDegree_rename_injective MathResearch.freshENSFactor_degree MathResearch.freshENSProduct_degree MathResearch.freshENSCompanion_degree MathResearch.freshENSProduct_rename MathResearch.freshENSFactor_degree_le MathResearch.freshENSProduct_degree_le MathResearch.freshENSCompanion_degree_le
+$ lake --wfail build claims.FreshENSBlock
+✔ [1656/1656] Built claims.FreshENSBlock (4.2s)
+Build completed successfully (1656 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/affine-removal/formalization/.lake/tmp0mu9fkf2.lean
+@MathResearch.totalDegree_rename_injective : ∀ {K : Type u_1} [inst : Field K] {α : Type u_2} {β : Type u_3} (e : α ↪ β)
+  (p : MvPolynomial α K), ((MvPolynomial.rename ⇑e) p).totalDegree = p.totalDegree
+'MathResearch.totalDegree_rename_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.freshENSFactor_degree : ∀ {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [inst : Field K]
+  [inst_1 : Fintype ι] {h : ℕ} (g : ι → MvPolynomial σ K),
+  (∀ (i : ι), (g i).totalDegree ≤ 1) →
+    ∀ (j : ι), (g j).totalDegree = 1 → ∀ (u : Fin h), (MathResearch.freshENSFactor g u).totalDegree = 2
+'MathResearch.freshENSFactor_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.freshENSProduct_degree : ∀ {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [inst : Field K]
+  [inst_1 : Fintype ι] (g : ι → MvPolynomial σ K),
+  (∀ (i : ι), (g i).totalDegree ≤ 1) →
+    ∀ (j : ι), (g j).totalDegree = 1 → ∀ (h : ℕ), (MathResearch.freshENSProduct g h).totalDegree = 2 * h
+'MathResearch.freshENSProduct_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.freshENSCompanion_degree : ∀ {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [inst : Field K]
+  [inst_1 : Fintype ι] (g : ι → MvPolynomial σ K),
+  (∀ (i : ι), (g i).totalDegree ≤ 1) →
+    ∀ (j : ι), (g j).totalDegree = 1 → ∀ (h : ℕ), (MathResearch.freshENSCompanion g h j).totalDegree = 2 * h + 1
+'MathResearch.freshENSCompanion_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.freshENSProduct_rename : ∀ {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [inst : Field K]
+  [inst_1 : Fintype ι] {τ : Type u_4} (g : ι → MvPolynomial σ K) (h : ℕ) (ρ : MathResearch.FreshENSVars σ ι h → τ),
+  (MvPolynomial.rename ρ) (MathResearch.freshENSProduct g h) =
+    ∏ u, (1 - ∑ i, MvPolynomial.X (ρ (Sum.inr (u, i))) * (MvPolynomial.rename (ρ ∘ Sum.inl)) (g i))
+'MathResearch.freshENSProduct_rename' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.freshENSFactor_degree_le : ∀ {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [inst : Field K]
+  [inst_1 : Fintype ι] {h : ℕ} (g : ι → MvPolynomial σ K),
+  (∀ (i : ι), (g i).totalDegree ≤ 1) → ∀ (u : Fin h), (MathResearch.freshENSFactor g u).totalDegree ≤ 2
+'MathResearch.freshENSFactor_degree_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.freshENSProduct_degree_le : ∀ {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [inst : Field K]
+  [inst_1 : Fintype ι] (g : ι → MvPolynomial σ K),
+  (∀ (i : ι), (g i).totalDegree ≤ 1) → ∀ (h : ℕ), (MathResearch.freshENSProduct g h).totalDegree ≤ 2 * h
+'MathResearch.freshENSProduct_degree_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.freshENSCompanion_degree_le : ∀ {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [inst : Field K]
+  [inst_1 : Fintype ι] (g : ι → MvPolynomial σ K),
+  (∀ (i : ι), (g i).totalDegree ≤ 1) → ∀ (h : ℕ) (i : ι), (MathResearch.freshENSCompanion g h i).totalDegree ≤ 2 * h + 1
+'MathResearch.freshENSCompanion_degree_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 8 audited declarations.
