@@ -300,11 +300,11 @@ Released R13: the two extracted row-linear and
 ordinary-restriction dimension claims. Released R03: ordinary substitution and fixed-weight PC replay. Both are integrated
 into `formal`; append conflicts preserved all existing articles and index rows.
 
-Current worker allocation: `/root/r_foundations` finishes R04 in pc-foundations;
-`/root/h_chessboard` handles R05/R09/R10/R14 in boolean-matching;
-`/root/h_arithmetic` has moved from completed R13 to R07/R08/R16 in affine-removal.
-R15 remains pending R04/R07 in restriction. Decoder and clause-simulation are
-ready worktrees awaiting a worker slot and their prerequisites.
+Current worker allocation: `/root/r_foundations` handles R24 in clause-simulation;
+`/root/h_chessboard` handles R14 in boolean-matching; `/root/h_arithmetic` handles
+R15 in restriction. The other three worktrees are idle, with their completed
+work integrated. The coordinator retains R17/R25 and the final generalization
+sweep after prerequisite integration.
 
 Released R05: degree-controlled binary Boolean
 reduction and its explicit NS witnesses. Its implemented proof also uses R02;
@@ -402,6 +402,10 @@ theorem remains a verified compatibility wrapper. R15 can supply witnesses for
 proper high-rank blocks without an implicit properness assumption on the full
 registry or a separate global pruning transformation. The complete three-case
 proof and both theorem scopes are recorded and indexed.
+
+R14 has a verified disjoint-coordinate-pair and residual-size prerequisite on
+its worker branch. It remains to be integrated with the cube-operator/separation
+work; this is not completion of R14.
 
 ### Final generalization sweep (explicit user assignment)
 
