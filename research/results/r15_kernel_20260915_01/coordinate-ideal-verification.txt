@@ -1,0 +1,27 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.CoordinateRestrictionIdeal
+Claim file: claims/CoordinateRestrictionIdeal.lean
+Claim: lem:coordinate-restriction-ideal
+Source: https://kbr.is-a.dev/math-research/#lean-coordinate-restriction-ideal
+Scope: Zero ordinary coordinate restriction gives literal selected-variable coefficients with degree at most k-1, including k=0 and empty selected families.
+Declarations: MathResearch.coordinate_restriction_coefficients
+$ lake --wfail build claims.CoordinateRestrictionIdeal
+Build completed successfully (1496 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/restriction/formalization/.lake/tmpjkl88gn5.lean
+@MathResearch.coordinate_restriction_coefficients : ∀ {K σ ι : Type} [inst : Field K] [inst_1 : Fintype ι] (e : ι ↪ σ)
+  (p : MvPolynomial σ K) (k : ℕ),
+  p.totalDegree ≤ k →
+    (MathResearch.coordinateRestriction e) p = 0 →
+      ∃ a, (∀ (i : ι), (a i).totalDegree ≤ k - 1) ∧ p = ∑ i, a i * MvPolynomial.X (e i)
+'MathResearch.coordinate_restriction_coefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 1 audited declarations.

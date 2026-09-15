@@ -1,0 +1,64 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.AffineRestrictionIdeal
+Claim file: claims/AffineRestrictionIdeal.lean
+Claim: lem:ordinary-affine-restriction-ideal
+Source: https://kbr.is-a.dev/math-research/#lean-ordinary-affine-restriction-ideal
+Scope: Binary ordinary affine coordinate pullbacks and inverse identities; zero ordinary free-coordinate restriction gives literal degree-(k-1) affine-generator coefficients.
+Declarations: MathResearch.polynomialPullback_degree MathResearch.polynomialPullback_eval MathResearch.polynomialPullback_comp MathResearch.polynomialPullback_id MathResearch.polynomialPullback_inverse MathResearch.affine_restriction_coefficients MathResearch.coordinateRestriction_degree MathResearch.affineRestriction_degree MathResearch.coordinateFreeIndex_card MathResearch.affineRestriction_image_finrank_le
+$ lake --wfail build claims.AffineRestrictionIdeal
+✔ [1995/1995] Built claims.AffineRestrictionIdeal (8.5s)
+Build completed successfully (1995 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/restriction/formalization/.lake/tmpa9nq0ajx.lean
+@MathResearch.polynomialPullback_degree : ∀ {σ τ : Type} [inst : Fintype τ] (A : (τ → ZMod 2) →ᵃ[ZMod 2] σ → ZMod 2)
+  (p : MvPolynomial σ (ZMod 2)), ((MathResearch.polynomialPullback A) p).totalDegree ≤ p.totalDegree
+'MathResearch.polynomialPullback_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.polynomialPullback_eval : ∀ {σ τ : Type} [inst : Fintype τ] (A : (τ → ZMod 2) →ᵃ[ZMod 2] σ → ZMod 2)
+  (p : MvPolynomial σ (ZMod 2)) (x : τ → ZMod 2),
+  (MvPolynomial.eval x) ((MathResearch.polynomialPullback A) p) = (MvPolynomial.eval (A x)) p
+'MathResearch.polynomialPullback_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.polynomialPullback_comp : ∀ {σ τ υ : Type} [inst : Fintype τ] [inst_1 : Fintype υ]
+  (A : (τ → ZMod 2) →ᵃ[ZMod 2] σ → ZMod 2) (B : (υ → ZMod 2) →ᵃ[ZMod 2] τ → ZMod 2),
+  (MathResearch.polynomialPullback B).comp (MathResearch.polynomialPullback A) =
+    MathResearch.polynomialPullback (A.comp B)
+'MathResearch.polynomialPullback_comp' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.polynomialPullback_id : ∀ {σ : Type} [inst : Fintype σ],
+  MathResearch.polynomialPullback (AffineMap.id (ZMod 2) (σ → ZMod 2)) = AlgHom.id (ZMod 2) (MvPolynomial σ (ZMod 2))
+'MathResearch.polynomialPullback_id' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.polynomialPullback_inverse : ∀ {σ : Type} [inst : Fintype σ] (E : (σ → ZMod 2) ≃ᵃ[ZMod 2] σ → ZMod 2)
+  (p : MvPolynomial σ (ZMod 2)), (MathResearch.polynomialPullback ↑E) ((MathResearch.polynomialPullback ↑E.symm) p) = p
+'MathResearch.polynomialPullback_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affine_restriction_coefficients : ∀ {σ ι : Type} [inst : Fintype σ] [inst_1 : Fintype ι]
+  (g : ι → (σ → ZMod 2) →ᵃ[ZMod 2] ZMod 2) (e : ι ↪ σ) (E : (σ → ZMod 2) ≃ᵃ[ZMod 2] σ → ZMod 2),
+  (∀ (i : ι) (x : σ → ZMod 2), E x (e i) = (g i) x) →
+    ∀ (p : MvPolynomial σ (ZMod 2)) (k : ℕ),
+      p.totalDegree ≤ k →
+        (MathResearch.affineRestriction e E) p = 0 →
+          ∃ a, (∀ (i : ι), (a i).totalDegree ≤ k - 1) ∧ p = ∑ i, a i * MathResearch.finiteAffinePolynomial (g i)
+'MathResearch.affine_restriction_coefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.coordinateRestriction_degree : ∀ {σ ι : Type} (e : ι ↪ σ) (p : MvPolynomial σ (ZMod 2)),
+  ((MathResearch.coordinateRestriction e) p).totalDegree ≤ p.totalDegree
+'MathResearch.coordinateRestriction_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affineRestriction_degree : ∀ {σ ι : Type} [inst : Fintype σ] (e : ι ↪ σ)
+  (E : (σ → ZMod 2) ≃ᵃ[ZMod 2] σ → ZMod 2) (p : MvPolynomial σ (ZMod 2)),
+  ((MathResearch.affineRestriction e E) p).totalDegree ≤ p.totalDegree
+'MathResearch.affineRestriction_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.coordinateFreeIndex_card : ∀ {σ ι : Type} [inst : Fintype σ] [inst_1 : Fintype ι] (e : ι ↪ σ),
+  Nat.card (MathResearch.CoordinateFreeIndex e) = Fintype.card σ - Fintype.card ι
+'MathResearch.coordinateFreeIndex_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affineRestriction_image_finrank_le : ∀ {σ ι : Type} [inst : Fintype σ] [inst_1 : Fintype ι] (e : ι ↪ σ)
+  (E : (σ → ZMod 2) ≃ᵃ[ZMod 2] σ → ZMod 2) (U : Submodule (ZMod 2) (MvPolynomial σ (ZMod 2))) (k : ℕ),
+  (∀ p ∈ U, p.totalDegree ≤ k) →
+    Module.finrank (ZMod 2) ↥(Submodule.map (MathResearch.affineRestriction e E).toLinearMap U) ≤
+      (Fintype.card σ - Fintype.card ι + k).choose k
+'MathResearch.affineRestriction_image_finrank_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 10 audited declarations.

@@ -1,0 +1,61 @@
+✔ [1668/1696] Built Mathlib.RingTheory.LocalRing.Defs (1000ms)
+✔ [1669/1696] Built Mathlib.Algebra.Group.Units.Opposite (1.5s)
+✔ [1670/1696] Built Mathlib.Algebra.Module.LinearMap.DivisionRing (2.3s)
+✔ [1671/1696] Built Mathlib.Logic.Equiv.Multiset (2.2s)
+✔ [1674/1696] Built Mathlib.Logic.Equiv.Fintype (2.7s)
+✔ [1675/1696] Built Mathlib.Algebra.Algebra.RestrictScalars (2.7s)
+✔ [1676/1696] Built Mathlib.RingTheory.Finiteness.Projective (2.8s)
+✔ [1677/1696] Built Mathlib.Data.Fintype.Perm (2.9s)
+✔ [1679/1696] Built Mathlib.Algebra.Field.Subfield.Defs (3.3s)
+✔ [1680/1696] Built Mathlib.LinearAlgebra.Dual.Basis (3.3s)
+✔ [1681/1696] Built Mathlib.RingTheory.LocalRing.Basic (1.7s)
+✔ [1682/1696] Built Mathlib.Data.W.Basic (1.3s)
+✔ [1684/1696] Built Mathlib.GroupTheory.Perm.Option (998ms)
+✔ [1685/1696] Built Mathlib.Algebra.Field.Subfield.Basic (3.1s)
+✔ [1686/1696] Built claims.AffineForm (6.5s)
+✔ [1687/1696] Built Mathlib.LinearAlgebra.Matrix.SemiringInverse (2.6s)
+✔ [1688/1696] Built Mathlib.SetTheory.Cardinal.Subfield (1.3s)
+✔ [1689/1696] Built Mathlib.LinearAlgebra.Matrix.InvariantBasisNumber (1.8s)
+✔ [1690/1696] Built claims.FiniteAffinePolynomial (2.5s)
+✔ [1691/1696] Built Mathlib.LinearAlgebra.Dimension.ErdosKaplansky (1.0s)
+✔ [1692/1696] Built Mathlib.RingTheory.TensorProduct.Maps (12s)
+✔ [1693/1696] Built Mathlib.LinearAlgebra.Dual.Lemmas (5.5s)
+✔ [1694/1696] Built claims.AffineSystemLinearAlgebra (1.0s)
+✔ [1695/1696] Built claims.FiniteAffineSpan (1.6s)
+✖ [1696/1696] Building claims.FiniteAffineCoordinates (1.5s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/restriction/formalization/claims/FiniteAffineCoordinates.lean -o /home/kbr/dev/math-worktrees/restriction/formalization/.lake/build/lib/lean/claims/FiniteAffineCoordinates.olean -i /home/kbr/dev/math-worktrees/restriction/formalization/.lake/build/lib/lean/claims/FiniteAffineCoordinates.ilean -c /home/kbr/dev/math-worktrees/restriction/formalization/.lake/build/ir/claims/FiniteAffineCoordinates.c --setup /home/kbr/dev/math-worktrees/restriction/formalization/.lake/build/ir/claims/FiniteAffineCoordinates.setup.json --json
+warning: claims/FiniteAffineCoordinates.lean:22:8: automatically included section variable(s) unused in theorem `_private.claims.FiniteAffineCoordinates.0.MathResearch.affineLinearProjection_injOn`:
+  [Fintype σ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype σ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+error: claims/FiniteAffineCoordinates.lean:46:25: failed to synthesize instance of type class
+  DecidableEq σ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: claims/FiniteAffineCoordinates.lean:74:70: failed to synthesize instance of type class
+  DecidableEq σ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: claims/FiniteAffineCoordinates.lean:58:75: unsolved goals
+K σ ι : Type
+inst✝² : Field K
+inst✝¹ : Fintype σ
+inst✝ : Fintype ι
+g : ι → (σ → K) →ᵃ[K] K
+hg : LinearIndependent K g
+hproper : AffineMap.const K (σ → K) 1 ∉ Submodule.span K (Set.range g)
+S : Submodule K ((σ → K) →ᵃ[K] K) := Submodule.span K (Set.range g)
+x0 : σ → K
+hx0 : ∀ (i : ι), (g i) x0 = 0
+ev : ((σ → K) →ᵃ[K] K) →ₗ[K] K := { toFun := fun f => f x0, map_add' := ⋯, map_smul' := ⋯ }
+hS : S ≤ ev.ker
+hL : LinearIndependent K (⇑affineLinearProjection ∘ g)
+B : Basis σ K (Dual K (σ → K))
+e : ι ↪ σ
+he : ∀ (i : ι), B (e i) = (g i).linear
+⊢ ∃ e E, ∀ (i : ι) (x : σ → K), E x (e i) = (g i) x
+Some required targets logged failures:
+- claims.FiniteAffineCoordinates
+error: build failed

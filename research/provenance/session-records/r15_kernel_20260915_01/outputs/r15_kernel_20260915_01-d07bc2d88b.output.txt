@@ -1,0 +1,52 @@
+claims/CoordinateRestrictionIdeal.lean:37:78: error: Application type mismatch: The argument
+  Subtype.val
+has type
+  { x // x ∉ Set.range ⇑e } → σ
+of sort `Type` but is expected to have type
+  Function.Injective ⇑d
+of sort `Prop` in the application
+  Finsupp.mapDomain_comapDomain (⇑d) Subtype.val
+claims/CoordinateRestrictionIdeal.lean:24:24: error: unsolved goals
+K σ ι : Type
+inst✝² : Field K
+inst✝¹ : Fintype σ
+inst✝ : Fintype ι
+e : ι ↪ σ
+p : MvPolynomial σ K
+hp : (coordinateRestriction e) p = 0
+d : σ →₀ ℕ
+hd : d ∈ p.support
+hn : ∀ (i : ι), d (e i) < 1
+hs : ↑d.support ⊆ Set.range Subtype.val
+hc :
+  p.coeff (Finsupp.mapDomain Subtype.val (Finsupp.comapDomain Subtype.val d ⋯)) =
+    (AddMonoidAlgebra.coeff 0) (Finsupp.comapDomain Subtype.val d ⋯)
+⊢ False
+claims/CoordinateRestrictionIdeal.lean:54:2: error: `dsimp` made no progress
+claims/CoordinateRestrictionIdeal.lean:81:6: error: Type mismatch
+  removedMonomial_identity (↑d) (e (s d)) (p.coeff ↑d) (hs d)
+has type
+  removedMonomial (↑d) (e (s d)) (p.coeff ↑d) * X (e (s d)) = (monomial ↑d) (p.coeff ↑d)
+but is expected to have type
+  (if s d ∈ Finset.univ then q d * X (e (s d)) else 0) = (monomial ↑d) (p.coeff ↑d)
+claims/CoordinateRestrictionIdeal.lean:83:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i, ?f ↑i
+in the target expression
+  p = ∑ d, (monomial ↑d) (p.coeff ↑d)
+
+case refine_2
+K σ ι : Type
+inst✝² : Field K
+inst✝¹ : Fintype σ
+inst✝ : Fintype ι
+e : ι ↪ σ
+p : MvPolynomial σ K
+k : ℕ
+hdeg : p.totalDegree ≤ k
+hp : (coordinateRestriction e) p = 0
+s : ↥p.support → ι
+hs : ∀ (d : ↥p.support), 1 ≤ ↑d (e (s d))
+q : ↥p.support → MvPolynomial σ K := fun d => removedMonomial (↑d) (e (s d)) (p.coeff ↑d)
+a : ι → MvPolynomial σ K := fun i => ∑ d, if s d = i then q d else 0
+hsum : ∑ i, a i * X (e i) = ∑ d, (monomial ↑d) (p.coeff ↑d)
+⊢ p = ∑ d, (monomial ↑d) (p.coeff ↑d)

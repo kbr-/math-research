@@ -1,0 +1,61 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.RestrictionKernelBounds
+Claim file: claims/RestrictionKernelBounds.lean
+Claim: lem:ordinary-restriction-kernel-bound
+Source: https://kbr.is-a.dev/math-research/#lean-ordinary-restriction-kernel-bound
+Scope: Concrete binomial/exponential and ceil-square-root-log bounds for the ordinary restriction dimension comparison.
+Declarations: MathResearch.restriction_choose_exp_bound MathResearch.kernel_ceil_exp_bound MathResearch.restriction_high_rank_bound MathResearch.kernelDegree_pos MathResearch.kernel_dimension_bound MathResearch.kernel_square_exp_bound MathResearch.kernel_ceil_square MathResearch.kernel_dimension_bound_of_square
+$ lake --wfail build claims.RestrictionKernelBounds
+✔ [1961/1961] Built claims.RestrictionKernelBounds (5.1s)
+Build completed successfully (1961 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/restriction/formalization/.lake/tmp_j9u52hq.lean
+MathResearch.restriction_choose_exp_bound : ∀ (m ℓ k d : ℕ),
+  0 < m → k ≤ m → ↑d + ↑k ≤ ↑ℓ * (↑m - 2 * ↑k) → ↑((d + k).choose k) ≤ ↑(m.choose k) * ↑ℓ ^ k * Real.exp (-↑k ^ 2 / ↑m)
+'MathResearch.restriction_choose_exp_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.kernel_ceil_exp_bound : ∀ (m M : ℕ),
+  0 < m → 1 ≤ M → ↑M * Real.exp (-↑(MathResearch.kernelDegree m M) ^ 2 / ↑m) ≤ 1 / 4
+'MathResearch.kernel_ceil_exp_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.restriction_high_rank_bound : ∀ (m ℓ k : ℕ),
+  0 < m →
+    1 ≤ ℓ →
+      k ≤ m →
+        3 * ℓ * (k + 1) + 1 ≤ m * ℓ →
+          ↑((m * ℓ - (3 * ℓ * (k + 1) + 1) + k).choose k) ≤ ↑(m.choose k) * ↑ℓ ^ k * Real.exp (-↑k ^ 2 / ↑m)
+'MathResearch.restriction_high_rank_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.kernelDegree_pos : ∀ (m M : ℕ), 0 < m → 1 ≤ M → 1 ≤ MathResearch.kernelDegree m M
+'MathResearch.kernelDegree_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.kernel_dimension_bound : ∀ (m ℓ M k : ℕ),
+  0 < m →
+    1 ≤ ℓ →
+      1 ≤ M →
+        k = MathResearch.kernelDegree m M →
+          k ≤ m →
+            3 * ℓ * (k + 1) + 1 ≤ m * ℓ →
+              ↑M * ↑((m * ℓ - (3 * ℓ * (k + 1) + 1) + k).choose k) ≤ ↑(m.choose k) * ↑ℓ ^ k / 4
+'MathResearch.kernel_dimension_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.kernel_square_exp_bound : ∀ (m M k : ℕ),
+  0 < m → 1 ≤ M → ↑m * Real.log (4 * ↑M) ≤ ↑k ^ 2 → ↑M * Real.exp (-↑k ^ 2 / ↑m) ≤ 1 / 4
+'MathResearch.kernel_square_exp_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.kernel_ceil_square : ∀ (m M : ℕ),
+  0 < m → 1 ≤ M → ↑m * Real.log (4 * ↑M) ≤ ↑(MathResearch.kernelDegree m M) ^ 2
+'MathResearch.kernel_ceil_square' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.kernel_dimension_bound_of_square : ∀ (m ℓ M k : ℕ),
+  0 < m →
+    1 ≤ ℓ →
+      1 ≤ M →
+        ↑m * Real.log (4 * ↑M) ≤ ↑k ^ 2 →
+          k ≤ m →
+            3 * ℓ * (k + 1) + 1 ≤ m * ℓ →
+              ↑M * ↑((m * ℓ - (3 * ℓ * (k + 1) + 1) + k).choose k) ≤ ↑(m.choose k) * ↑ℓ ^ k / 4
+'MathResearch.kernel_dimension_bound_of_square' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 8 audited declarations.

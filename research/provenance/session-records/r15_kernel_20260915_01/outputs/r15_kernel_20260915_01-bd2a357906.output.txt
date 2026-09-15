@@ -1,0 +1,27 @@
+claims/CoordinateRestrictionIdeal.lean:22:8: error: automatically included section variable(s) unused in theorem `_private.claims.CoordinateRestrictionIdeal.0.MathResearch.selected_of_support`:
+  [Fintype σ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype σ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/CoordinateRestrictionIdeal.lean:56:2: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  f ≥ 0
+  e ≥ 0
+  e - f ≥ 1
+  b ≥ 0
+  b - f ≤ 0
+  a ≥ 1
+where
+ a := ↑(d i)
+ b := ↑((d - Finsupp.single i 1).sum fun x n => n)
+ e := ↑((d - Finsupp.single i 1).sum fun x => id)
+ f := ↑(k - 1)
+claims/CoordinateRestrictionIdeal.lean:82:28: error: Application type mismatch: The argument
+  fun d => (monomial d) (p.coeff d)
+has type
+  (σ →₀ ℕ) → MvPolynomial σ K
+but is expected to have type
+  Finset ?m.262
+in the application
+  @Finset.sum_coe_sort ?m.262 ?m.263 fun d => (monomial d) (p.coeff d)

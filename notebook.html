@@ -18392,5 +18392,62 @@ Q_b\models Q_i\lor(1-u=1).
 <p class="small">Preliminary reading and planning preceded this clock; the linter retry is included and final checkpoint work follows the snapshot.</p>
 </article>
 
+<article class="research-entry" id="entry-2026-09-15-lean-restriction-kernel-dependencies">
+  <h3>15 September 2026 — Ordinary restriction witnesses and concrete kernel bounds</h3>
+  <p class="entry-meta"><strong>Status:</strong> four complete supporting formalizations for R15; the actual family joint-kernel assembly remains unfinished.</p>
+  <p><strong>Obligation and endpoint.</strong> The full R15 assignment requires a nonzero row-linear polynomial with literal degree-controlled coefficients at the paper's concrete high-rank threshold and square-root/logarithmic parameter. This cycle checks the reusable coordinate, ideal and numerical components. It does not replace the final theorem by an abstract dimension assumption.</p>
+  <h4 id="lean-finite-affine-coordinate-completion">Finite-coordinate affine completion</h4>
+  <p><strong>Claim <code>lem:finite-affine-coordinate-completion</code>.</strong> For any field \(K\), finite coordinate type \(V\), and independent finite affine-map family \((g_i)\) on \(K^V\) whose span excludes the constant one, there exist an injection \(e:I\hookrightarrow V\) and an affine equivalence \(E:K^V\simeq K^V\) with \(E(x)_{e(i)}=g_i(x)\). This generalizes the <a href="#lean-affine-coordinate-completion">previous coefficient-form completion</a> to the actual bit-variable type.</p>
+  <p><strong>Proof.</strong> If no common zero existed, the checked finite affine-span theorem would express the constant one as a combination of the inputs, a contradiction. Choose a common zero \(x_0\). On the input span, equality of linear parts implies equality of affine maps: evaluation at \(x_0\) also forces equality of the constants. Thus the independent affine family has independent linear functionals. Extend those functionals to a dual basis and reindex it by \(V\), placing the original functionals at distinct indices \(e(i)\). Evaluation of the dual basis is a linear equivalence by finite-dimensional double duality. Compose it with \(x\mapsto x-x_0\). Its selected coordinates are the original affine maps because those maps vanish at \(x_0\). \(\square\)</p>
+  <h4 id="lean-coordinate-restriction-ideal">Literal coefficients from zero ordinary coordinate restriction</h4>
+  <p><strong>Claim <code>lem:coordinate-restriction-ideal</code>.</strong> Let \(K\) be a field and \(e:I\hookrightarrow V\) select finitely many variables. Set those variables to zero and retain every other variable as an ordinary indeterminate. If this ordinary restriction of \(p\) is zero and \(\deg p\le k\), then</p>
+  <div class="math">\[
+    p=\sum_{i\in I}a_iX_{e(i)},\qquad \deg a_i\le k-1.
+  \]</div>
+  <p>The formal statement permits arbitrary ambient variable types; only \(I\) is finite. Natural subtraction at \(k=0\) is harmless because the hypotheses force \(p=0\).</p>
+  <p><strong>Proof.</strong> The coefficient of a monomial supported entirely on retained variables is unchanged by restriction. Therefore no such monomial can have a nonzero coefficient in \(p\). For each monomial in the finite support of \(p\), choose one selected variable occurring with positive exponent. Remove one copy of that variable. The remaining monomial has exponent sum one less, hence degree at most \(k-1\); multiplying it back by the chosen variable recovers the original monomial exactly. Group these remaining monomials, with their original coefficients, according to the selected variable chosen. Finite summation gives the displayed identity and preserves the coefficient-degree bound. Empty support yields all zero coefficients, covering the zero and degree-zero cases. \(\square\)</p>
+  <h4 id="lean-ordinary-affine-restriction-ideal">Ordinary affine pullbacks, literal ideal witnesses and image dimensions</h4>
+  <p><strong>Claim <code>lem:ordinary-affine-restriction-ideal</code>.</strong> Over \(\mathbb F_2\), an affine map \(A\) between finite coordinate spaces induces an ordinary polynomial pullback \(A^*\), substituting its degree-at-most-one coordinate polynomials. Pullbacks preserve evaluation, do not increase total degree, compose contravariantly and send identity maps to identity homomorphisms. An affine equivalence and its inverse therefore give inverse ordinary polynomial maps.</p>
+  <p>Suppose \(E(x)_{e(i)}=g_i(x)\). Define the ordinary free-coordinate restriction of \(p\) by first applying \((E^{-1})^*\), then setting selected coordinates to zero. If it vanishes and \(\deg p\le k\), then \(p=\sum_i a_i,\operatorname{poly}(g_i)\) literally, with \(\deg a_i\le k-1\). On any source subspace of degree at most \(k\), the image dimension of this restriction is at most</p>
+  <div class="math">\[
+    \binom{|V|-|I|+k}{k}.
+  \]</div>
+  <p><strong>Proof.</strong> Evaluation of the substituted coordinate polynomials gives evaluation at \(A(x)\), and affine substitution cannot increase degree. To prove composition and identity as ordinary polynomial homomorphisms, it suffices to check their images of individual variables. Those images have total degree at most one and agree at every binary point. In this degree range they have individual degrees strictly below two, so the checked finite-field interpolation theorem identifies them as polynomials. This argument does not identify general polynomial functions with ordinary polynomials.</p>
+  <p>Apply the coordinate-ideal claim to \(q=(E^{-1})^*p\). Pulling its literal factorization back by \(E^*\) recovers \(p\), sends the selected variables to \(\operatorname{poly}(g_i)\), and preserves the coefficient-degree ceiling. There are exactly \(|V|-|I|\) retained coordinates. Both pullback and coordinate deletion preserve degree, so the image lies in their ordinary degree-at-most-\(k\) polynomial space. Reindex that finite variable type by a finite interval and apply the <a href="#lean-ordinary-restriction-dimension">verified ordinary polynomial dimension bound</a>. \(\square\)</p>
+  <h4 id="lean-ordinary-restriction-kernel-bound">Concrete binomial, exponential and ceiling estimates</h4>
+  <p><strong>Claim <code>lem:ordinary-restriction-kernel-bound</code>.</strong> Let \(m\ge1\), \(\ell\ge1\), \(M\ge1\), \(0\le k\le m\), \(r_*=3\ell(k+1)+1\), and suppose \(r_*\le m\ell\). If \(k^2\ge m\log(4M)\), then</p>
+  <div class="math">\[
+    M\binom{m\ell-r_*+k}{k}
+       \le\frac14\binom mk\ell^k.
+  \]</div>
+  <p>The original choice \(k=\lceil\sqrt{m\log(4M)}\rceil\) satisfies the square condition and is at least one. The square-condition form allows a uniform inventory upper bound; the original ceiling specialization is also checked.</p>
+  <p><strong>Full alternative estimate.</strong> More generally, write \(A=d+k\), \(B=m+1-k\), and \(t=1-k/m\ge0\). If \(A\le\ell(m-2k)\), then \(A\le\ell Bt\): after multiplication by \(m&gt;0\), the difference between the latter right-hand side and \(\ell m(m-2k)\) is \(\ell(k^2+m-k)\ge0\). The standard descending-factorial bounds give</p>
+  <div class="math">\[
+    k!\binom{d+k}{k}\le A^k,
+    \qquad B^k\le k!\binom mk.
+  \]</div>
+  <p>Raise the base inequality to the \(k\)-th power, combine these bounds and cancel the positive \(k!\). This yields \(\binom{d+k}{k}\le\binom mk\ell^k t^k\). The inequality \(1-x\le e^{-x}\), with \(x=k/m\), implies \(t^k\le e^{-k^2/m}\). Thus</p>
+  <div class="math">\[
+    \binom{d+k}{k}\le\binom mk\ell^k e^{-k^2/m}.
+  \]</div>
+  <p>For \(d=m\ell-r_*\), the assumptions \(r_*\le m\ell\) and \(\ell\ge1\) imply \(d+k+2\ell k\le m\ell\), exactly the required numerator inequality. Finally \(k^2\ge m\log(4M)\) gives \(e^{-k^2/m}\le e^{-\log(4M)}=1/(4M)\). Multiplying by \(M\) proves the claimed quarter bound. For the ceiling choice, nonnegativity and the defining ceiling inequality give \(k\ge\sqrt{m\log(4M)}\), so squaring proves the premise; positivity of \(\log(4M)\) also gives \(k\ge1\). This replaces the source's exact product-ratio calculation by a sufficient factorial comparison with the same final estimate. If \(r_*&gt;m\ell\), the estimate is not invoked: the final family assembly must handle the absence of proper high-rank blocks separately. \(\square\)</p>
+  <p><strong>Evidence and remaining work.</strong> The four per-claim Lean files and their exact type/axiom reports are linked from the <a href="https://github.com/kbr-/math-research/blob/main/research/results/r15_kernel_20260915_01/README.md">reproduction record</a>. They supply actual ordinary maps and the concrete numerical budget, but R15 still needs a restriction chosen for each proper input span, the finite joint-kernel argument on the row-linear space, and assembly of the original-tuple literal witnesses. No new mathematical discrepancy was found. One broad tactic import triggered unrelated builds; that job was stopped and the import replaced with targeted modules. The existing guidance already covers this issue. The coordinator owns living-section updates.</p>
+  <div class="timing-report" data-session="r15_kernel_20260915_01">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>30 min 45.50 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">12.65 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 36.49 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">20 min 22.65 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3.36 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">7.56 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">5 min 22.79 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 14.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
