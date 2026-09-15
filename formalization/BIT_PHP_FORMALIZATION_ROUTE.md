@@ -16,8 +16,8 @@ This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
 The third-party boundary **H** is now proved in Lean: H01–H13 are complete.
-R01–R03, R05, and R13 are verified and integrated, alongside the previously
-checked R06/R19–R21. R04 and the remaining obligations are in progress below. Proving H does not formalize its downstream consumers or the full paper.
+R01–R05 and R13 are verified and integrated, alongside the previously
+checked R06/R19–R21. The remaining obligations are in progress below. Proving H does not formalize its downstream consumers or the full paper.
 
 ## How to use the list
 
@@ -313,3 +313,8 @@ reduction and its explicit NS witnesses. Its implemented proof also uses R02;
 the table records this dependency. The append-merge helper now tolerates only
 blank-line differences in existing index content while preserving every
 nonblank line; seven focused tests passed (`3c8ab1d`).
+
+Released R04: `3fbca9c` (worker `bd77fabb`), bounded-degree duality and a
+separately indexed compatible-annihilator extension. The foundation assignment
+is complete. `/root/r_foundations` now works on R11/R12 in decoder at this pin;
+Boolean/matching and affine-removal remain active.
