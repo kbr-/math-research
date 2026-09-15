@@ -425,6 +425,14 @@ bound `mℓ+hNW` with `W=max(ℓ,mℓ+2)`, PC degree `max(2h+ℓ,4h+1)`, and the
 registry/family-system identity. Its worker has moved to the independent R14
 coefficient lemma. Four R steps remain: R14, R15, R17, and R25.
 
+Final R17 scope review: the paper's finite-parameter theorem explicitly assumes
+`D≥2h+1`; the indexed audit also states the polynomial-inventory/polylogarithmic-
+degree consequence. Final assembly must cover both, reusing a shared parameter
+estimate for R25 rather than marking only the finite inequality interface as
+completion of the whole audit. The square-condition kernel interface permits
+uniform parameter choices from inventory bounds. Unit-span blocks are handled
+by the verified removal alternative, so no properness assumption is hidden.
+
 ### Final generalization sweep (explicit user assignment)
 
 After every Rxx obligation is complete, review the Lean project’s statements
