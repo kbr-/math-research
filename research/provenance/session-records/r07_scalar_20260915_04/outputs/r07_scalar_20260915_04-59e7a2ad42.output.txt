@@ -1,0 +1,62 @@
+claims/FreshENSScalarCleanup.lean:28:0: error: automatically included section variable(s) unused in theorem `MathResearch.freshENSScalar_old`:
+  [Fintype ι]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype ι] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/FreshENSScalarCleanup.lean:34:8: error: automatically included section variable(s) unused in theorem `_private.claims.FreshENSScalarCleanup.0.MathResearch.scalar_degree`:
+  [Fintype ι]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype ι] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/FreshENSScalarCleanup.lean:61:65: error: unsolved goals
+K : Type u_1
+σ : Type u_2
+ι : Type u_3
+inst✝¹ : Field K
+inst✝ : Fintype ι
+g : ι → MvPolynomial σ K
+h : ℕ
+F : Set (MvPolynomial σ K)
+c : Fin h × ι → K
+hc : ∀ (v : Fin h × ι), c v ^ 2 = c v
+hcomp : ∀ (i : ι), (freshENSScalar c) (freshENSCompanion g h i) = 0
+D : ℕ
+p : MvPolynomial (FreshENSVars σ ι h) K
+hp : Derives (⇑(rename Sum.inl) '' F ∪ freshENSBlockAxioms g h) D p
+hvars : ∀ (v : FreshENSVars σ ι h), (freshENSScalarVars c v).totalDegree ≤ 1
+u : Fin h
+i : ι
+hd : (X (Sum.inr (u, i)) ^ 2 - X (Sum.inr (u, i))).totalDegree ≤ D
+⊢ (aeval (freshENSScalarVars c)) (X (Sum.inr (u, i)) ^ 2) - C (c (u, i)) = 0
+claims/FreshENSScalarCleanup.lean:62:52: error: This simp argument is unused:
+  ← map_pow
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [freshENSScalar, freshENSScalarVars, hc]
+
+Note: Simp arguments with `←` have the additional effect of removing the other direction from the simp set, even if the simp argument itself is unused. If the hint above does not work, try replacing `←` with `-` to only get that effect and silence this warning.
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/FreshENSScalarCleanup.lean:62:63: error: This simp argument is unused:
+  hc
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [freshENSScalar, freshENSScalarVars, ← map_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/FreshENSScalarCleanup.lean:86:2: error: 'change' tactic failed, pattern
+  1 -
+      ∑ i,
+        DFunLike.coe.{max (u_2 + 1) (u_1 + 1), u_1 + 1, max (u_2 + 1) (u_1 + 1)} C
+            (freshENSUnitScalars c (⟨0, hh⟩, i)) *
+          g i =
+    0
+is not definitionally equal to target
+  1 -
+      ∑ x,
+        DFunLike.coe.{(max (max u_1 u_2) u_3) + 1, (max (max u_1 u_2) u_3) + 1, (max u_1 u_2) + 1}
+            (freshENSScalar (freshENSUnitScalars c)) (X (Sum.inr (⟨0, hh⟩, x))) *
+          g x =
+    0

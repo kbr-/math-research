@@ -17964,5 +17964,36 @@ R-\sum_zX_{0z}X_{1z}\in\mathcal I_\ell(U).
 </div>
 </article>
 
+<article class="research-entry" id="entry-2026-09-15-lean-fresh-ENS-scalar-cleanup">
+  <h3>15 September 2026 — Degree-preserving scalar cleanup of complete ENS blocks</h3>
+  <p class="entry-meta"><strong>Status:</strong> complete Lean formalization of the remaining R07 scalar-cleanup dependency; together with the preceding releases, this covers the planned R07 obligations.</p>
+  <p><strong>Obligation and endpoint.</strong> Formalize the paper's deletion of zero/unit-span blocks, including all coefficient Boolean equations and actual ordinary PC replay. Reuse the <a href="#lean-fresh-ENS-block-degree">canonical fresh block</a>; the retained variable type may include other blocks' coefficient variables, so preserving arbitrary retained polynomials explicitly ensures that their axioms are unchanged.</p>
+  <h4 id="lean-fresh-ENS-scalar-cleanup">Claim: complete-block scalar cleanup</h4>
+  <p>Let \(K\) be a field, \(F\subseteq K[X_\sigma]\) any retained axiom set, and \((g_i)\) any finite old-polynomial family. The block has fresh variables \(r_{ui}\), product \(P=\prod_u(1-\sum_i r_{ui}g_i)\), and complete axiom set</p>
+  <div class="math">\[
+    \mathcal B=\{g_iP:i\in I\}\cup\{r_{ui}^2-r_{ui}:u\in[h],i\in I\}.
+  \]</div>
+  <p>The product equation \(P=0\) is not an axiom. Let \(s_c\) fix every retained variable and replace the fresh coefficients by constants \(c_{ui}\). Suppose \(c_{ui}^2=c_{ui}\) for every slot and \(s_c(g_iP)=0\) for every companion. Then every ordinary degree-\(D\) PC derivation of \(p\) from the retained axioms and \(\mathcal B\) yields a degree-\(D\) derivation of \(s_c(p)\) from \(F\) alone. In particular retained conclusions and refutations are preserved at the same ceiling.</p>
+  <p>If all \(g_i=0\), take all \(c_{ui}=0\); this works over every field and for every \(h\ge0\). If \(K=\mathbb F_2\), \(h\ge1\), and \(1\) belongs to the linear span of the inputs, choose a unit combination \(\sum_i c_i g_i=1\), put \(c_i\) in the first coefficient row and zero in every other row. This also removes the whole block. The scalar cleanup itself needs no affine-degree assumption on the old inputs.</p>
+  <p><strong>Full proof.</strong> Substitution fixes every old polynomial because it fixes each old variable and acts identically on constants. Its variable images have degree at most one. Every retained axiom therefore maps to itself; if active at source ceiling \(D\), its degree remains at most \(D\). Every companion maps to zero by hypothesis. Each coefficient-domain equation maps to the constant polynomial \(C(c_{ui}^2-c_{ui})=0\). Thus every substituted source axiom has a degree-\(D\) PC proof from the retained set: it is either a retained axiom or the zero line.</p>
+  <p>Apply the <a href="#lean-pc-degree-substitution">checked substitution/replay theorem</a> with substitution degree bound one and constant weight one. Addition and scalar multiplication replay directly. At a nonzero variable-multiplication step, the source predecessor has degree at most \(D-1\), and its substituted multiplying variable has degree at most one; hence all primitive replay lines remain within \(D\). Zero predecessors remain zero. The final line is \(s_c(p)\), proving the general assertion. If \(p\) uses only retained variables, \(s_c(p)=p\); in particular \(s_c(1)=1\).</p>
+  <p>For a zero input family, every companion is already zero, and zero constants satisfy their Boolean equations. For a unit combination and \(h\ge1\), the first product factor specializes to \(1-\sum_i c_i g_i=0\); hence the product and all companions specialize to zero. Over \(\mathbb F_2\), every scalar satisfies \(c^2=c\), so the general cleanup theorem applies. Membership of one in the finite input span supplies the required constant combination. The unit case deliberately excludes \(h=0\), where there is no first coefficient row. Over a general field, idempotence of chosen constants remains an explicit hypothesis; characteristic two alone would not justify it. \(\square\)</p>
+  <p><strong>Formalization and checks.</strong> The extracted claim <code>lem:fresh-ENS-scalar-cleanup</code> lives in <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/FreshENSScalarCleanup.lean">FreshENSScalarCleanup.lean</a>. Its complete block axiom set, scalar map and first-row unit assignment are explicit definitions. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r07_scalar_20260915_04/lean-verification.txt">incremental audit</a> verifies five declarations: old-polynomial preservation, general cleanup with explicit idempotence, zero cleanup, binary unit-combination cleanup, and its unit-span corollary. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r07_scalar_20260915_04/README.md">reproduction record</a> retains exact hypotheses, scope and full measured outputs.</p>
+  <p><strong>R07 completion and process assessment.</strong> The affine representation and span witnesses, complete coordinate parametrization, exact fresh-companion degree, and present scalar replay now cover R07. R08 and R16 remain assigned; this does not formalize the larger affine exclusion theorem. Retaining explicit scalar-domain hypotheses permitted a useful any-field cleanup interface while preserving the binary source application. No new mathematical gap or framework guidance was needed; living-section and route updates remain with the coordinator.</p>
+  <div class="timing-report" data-session="r07_scalar_20260915_04">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 45.44 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 29.21 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">1 min 23.27 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2.95 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">1 min 50.02 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

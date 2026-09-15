@@ -1,0 +1,64 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.FreshENSScalarCleanup
+Claim file: claims/FreshENSScalarCleanup.lean
+Claim: lem:fresh-ENS-scalar-cleanup
+Source: https://kbr.is-a.dev/math-research/#lean-fresh-ENS-scalar-cleanup
+Scope: Degree-preserving ordinary PC deletion of zero and binary unit-span fresh blocks, with all companion and coefficient Boolean axioms; retained polynomials unchanged.
+Declarations: MathResearch.freshENSScalar_old MathResearch.freshENS_scalar_cleanup MathResearch.freshENS_zero_cleanup MathResearch.freshENS_unit_cleanup MathResearch.freshENS_unitSpan_cleanup
+$ lake --wfail build claims.FreshENSScalarCleanup
+✔ [1987/1987] Built claims.FreshENSScalarCleanup (3.8s)
+Build completed successfully (1987 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/affine-removal/formalization/.lake/tmpag2p7yqy.lean
+@MathResearch.freshENSScalar_old : ∀ {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [inst : Field K] {h : ℕ}
+  (c : Fin h × ι → K) (p : MvPolynomial σ K), (MathResearch.freshENSScalar c) ((MvPolynomial.rename Sum.inl) p) = p
+'MathResearch.freshENSScalar_old' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.freshENS_scalar_cleanup : ∀ {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [inst : Field K]
+  [inst_1 : Fintype ι] (g : ι → MvPolynomial σ K) (h : ℕ) (F : Set (MvPolynomial σ K)) (c : Fin h × ι → K),
+  (∀ (v : Fin h × ι), c v ^ 2 = c v) →
+    (∀ (i : ι), (MathResearch.freshENSScalar c) (MathResearch.freshENSCompanion g h i) = 0) →
+      ∀ {D : ℕ} {p : MvPolynomial (MathResearch.FreshENSVars σ ι h) K},
+        MathResearch.PolynomialCalculus.Derives
+            (⇑(MvPolynomial.rename Sum.inl) '' F ∪ MathResearch.freshENSBlockAxioms g h) D p →
+          MathResearch.PolynomialCalculus.Derives F D ((MathResearch.freshENSScalar c) p)
+'MathResearch.freshENS_scalar_cleanup' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.freshENS_zero_cleanup : ∀ {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [inst : Field K]
+  [inst_1 : Fintype ι] (g : ι → MvPolynomial σ K) (h : ℕ),
+  (∀ (i : ι), g i = 0) →
+    ∀ (F : Set (MvPolynomial σ K)) {D : ℕ} {p : MvPolynomial (MathResearch.FreshENSVars σ ι h) K},
+      MathResearch.PolynomialCalculus.Derives
+          (⇑(MvPolynomial.rename Sum.inl) '' F ∪ MathResearch.freshENSBlockAxioms g h) D p →
+        MathResearch.PolynomialCalculus.Derives F D ((MathResearch.freshENSScalar fun x => 0) p)
+'MathResearch.freshENS_zero_cleanup' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.freshENS_unit_cleanup : ∀ {σ : Type u_1} {ι : Type u_2} [inst : Fintype ι]
+  (g : ι → MvPolynomial σ (ZMod 2)) (h : ℕ),
+  0 < h →
+    ∀ (c : ι → ZMod 2),
+      ∑ i, c i • g i = 1 →
+        ∀ (F : Set (MvPolynomial σ (ZMod 2))) {D : ℕ} {p : MvPolynomial (MathResearch.FreshENSVars σ ι h) (ZMod 2)},
+          MathResearch.PolynomialCalculus.Derives
+              (⇑(MvPolynomial.rename Sum.inl) '' F ∪ MathResearch.freshENSBlockAxioms g h) D p →
+            MathResearch.PolynomialCalculus.Derives F D
+              ((MathResearch.freshENSScalar (MathResearch.freshENSUnitScalars c)) p)
+'MathResearch.freshENS_unit_cleanup' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.freshENS_unitSpan_cleanup : ∀ {σ : Type u_1} {ι : Type u_2} [inst : Fintype ι]
+  (g : ι → MvPolynomial σ (ZMod 2)) (h : ℕ),
+  0 < h →
+    1 ∈ Submodule.span (ZMod 2) (Set.range g) →
+      ∀ (F : Set (MvPolynomial σ (ZMod 2))) {D : ℕ} {p : MvPolynomial (MathResearch.FreshENSVars σ ι h) (ZMod 2)},
+        MathResearch.PolynomialCalculus.Derives
+            (⇑(MvPolynomial.rename Sum.inl) '' F ∪ MathResearch.freshENSBlockAxioms g h) D p →
+          ∃ c,
+            MathResearch.PolynomialCalculus.Derives F D
+              ((MathResearch.freshENSScalar (MathResearch.freshENSUnitScalars c)) p)
+'MathResearch.freshENS_unitSpan_cleanup' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 5 audited declarations.
