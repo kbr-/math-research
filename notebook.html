@@ -33,7 +33,7 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Construct a simultaneous solution of the active source-moment equations for the full binary compiler, or identify a source-dependent obstruction to a proposed construction. Work in the queried windows: higher row-trade directions that leave them unchanged cannot repair a defect. Keep the original legal cofactor costs and seek a bound that controls inventory and depth. Once an active solution exists, the remaining old moments can be filled without an additional degree loss.</p>
+  <p>Seek a quantitative invariant of the actual source that can establish active-moment feasibility. The existing reductions identify the required joint equations but do not supply a sufficient invariant. Test any candidate against the full compiler, its original witness costs, and the recorded method obstructions before developing special families. Further equivalent formulations or endpoint refinements alone would leave the main implication open.</p>
 </section>
 
 <section id="working-context">
@@ -17079,6 +17079,58 @@
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7 min 34.96 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 43.82 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.85 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+
+<article class="research-entry" id="entry-2026-09-15-adaptive-query-attempt">
+  <h3>15 September 2026 — An adaptive query attempt returns to the existing quantifier gap</h3>
+  <p class="entry-meta">Status: unsuccessful attempt to supply active source feasibility; elementary old-query budget recorded, no new Frege or source-extension bound. Cycle 156.</p>
+  <p><strong>Question.</strong> Could an adaptive old-design strategy choose compatible answers as source queries arrive, avoiding the need to construct the whole joint functional first? The old query argument works within its degree budget. The application fails to produce the fixed distribution required by the existing ENS averaging bridge. This returns to an already recorded gap, rather than advancing its solution.</p>
+
+  <h4 id="old-query-case-split-budget">1. An elementary degree budget for old polynomial queries</h4>
+  <p>Let \(F\) be a system over \(\mathbb F_p\) containing the Boolean equations in its old variables, and let \(q\) be an old polynomial of degree \(s\ge1\). If every branch \(F\cup\{q-a\}\), \(a\in\mathbb F_p\), has an ordinary NS refutation through \(B\ge s\), then \(F\) has one through \(B+(p-1)s\).</p>
+  <p><strong>Proof.</strong> Write \(1=U_a+(q-a)V_a\), where \(U_a\in\mathcal I_B(F)\) and \(\deg V_a\le B-s\). Put \(\delta_a(q)=1-(q-a)^{p-1}\). The degree-\((p-1)\) Lagrange polynomials satisfy \(\sum_a\delta_a(q)=1\) identically, and \((q-a)\delta_a(q)=q-q^p\). Therefore</p>
+  <div class="math">\[
+       1=\sum_a\delta_a(q)U_a+(q-q^p)\sum_aV_a.
+  \]</div>
+  <p>The first terms have ordinary NS cost at most \(B+(p-1)s\). The <a href="#all-prime-affine-family-exclusion">recorded Boolean Frobenius certificate</a> puts \(q^p-q\) in \(\mathcal I_{ps}({\rm BOOL})\); multiplying by \(V_a\) gives the same ceiling. This proves the claim. Constant queries need no branching.</p>
+  <p>The contrapositive allows an answer \(a\) that leaves a nonrefutable branch, spending at most \((p-1)s\) degree. By finite-dimensional duality, that branch has a normalized design at the remaining degree. Successive designs may change, but the previous answer equations remain among the axioms.</p>
+  <p>In particular, consider any adaptive old-polynomial query tree of height at most \(H\), with query degrees at most \(D\), whose leaf outputs \(f,g\) with \(\deg(fg)\le D\). If</p>
+  <div class="math">\[
+       1\notin\mathcal I_K(F),\qquad
+       K=\bigl((p-1)H+p\bigr)D,
+  \]</div>
+  <p>there is a normalized old degree-\(D\) design that follows one path of the tree and has no conflict at its leaf. Answer the \(H\) queries by the preceding rule, reserving degree \(pD\). At the selected leaf, also condition on \(f=a\) and \(g=b\); their total degree is at most \(D\), so degree \(D\) remains. The identity</p>
+  <div class="math">\[
+       fg-ab=g(f-a)+a(g-b)
+  \]</div>
+  <p>fits that degree and forces \(\omega(fg)=\omega(f)\omega(g)\). If a leaf factor is zero, non-conflict is automatic. The final design retains all path answers. This is only a favorable-design existence statement for each fixed tree; no literature novelty is claimed.</p>
+
+  <h4 id="adaptive-query-fixed-distribution-gap">2. Why this does not supply the source implication</h4>
+  <p>Scalar specialization of all ENS coefficients already makes the <a href="#source-conflict-query-inventory">source's queries and leaf factors</a> old polynomials within the original degree \(D\). For polylogarithmic \(H,D\), the old PHP barrier supplies the much larger degree \(K\) above. Thus one can find a favorable design after each specialized tree is given.</p>
+  <p>The <a href="#pseudo-ENS-rate-bridge">actual averaging bridge</a> requires a different order of choices. One probability distribution \(\nu\) on old designs must satisfy</p>
+  <div class="math">\[
+       \Pr_{\omega\sim\nu}
+          [T\text{ has no conflict on }\omega]
+           >S(1-1/p)^h
+  \]</div>
+  <p>for every permitted tree of height \(h+\lceil\log_2S\rceil\). The scalar assignment, and hence the resulting tree, may be chosen after \(\nu\). The construction in Section 1 gives \(\forall T\,\exists\omega_T\); it does not give the required single \(\nu\) and quantitative lower bound. The earlier bridge entry explicitly warned against choosing a favorable design after seeing the tree, and the <a href="#shallow-ENS-query-obstruction">shallow-query obstruction</a> rules out the proposed guarantee for the coarse query class.</p>
+  <p>Trying instead to commit values of whole input spaces before the fresh coefficient choices does not yet repair this. Querying a basis of rank \(r\) with degrees at most \(s\) costs up to \((p-1)rs\) under the case-split argument. No sufficient bound on the accumulated cost is available for the full source. This reproduces a rank-control obligation, not a new source invariant.</p>
+  <p><strong>Outcome.</strong> No active source solution, new admissible distribution, or sufficient full-source cost bound was obtained. The <a href="#full-binary-source-active-window-application">active-window reduction</a> remains a valid description of the construction problem; this attempt does not establish its feasibility. The next work must test an actual source-dependent invariant rather than add another equivalent endpoint.</p>
+  <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/active_source_feasibility_20260915_156/README.md">attempt note</a> records the exact reused sources and degree review. No new numerical suite was needed.</p>
+  <p><strong>Process assessment.</strong> The attempted causal reformulation returned to a quantifier distinction already recorded; the existing task-selection guidance will be tightened to keep equivalent reformulations distinct from progress on their missing implication.</p>
+  <div class="timing-report" data-session="active_source_feasibility_20260915_156">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>14 min 42.79 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1.63 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">13 min 4.05 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 36.22 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.90 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
