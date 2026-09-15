@@ -318,3 +318,13 @@ Released R04: `3fbca9c` (worker `bd77fabb`), bounded-degree duality and a
 separately indexed compatible-annihilator extension. The foundation assignment
 is complete. `/root/r_foundations` now works on R11/R12 in decoder at this pin;
 Boolean/matching and affine-removal remain active.
+
+Early shared release: `3b2d31d` (worker `7405683`),
+`lem:squarefree-forbidden-pair-certificate`, unblocks R11 without requiring
+all of R09. R09 remains incomplete.
+
+Partial R07 release: `e738178` (worker `8b6e017a`), the fully indexed affine-form
+representation and affine-system linear-algebra claims (15 audited declarations).
+R07 still requires coordinate completion/parametrization, exact fresh-companion
+degree, and scalar PC cleanup. The affine worker continues these obligations;
+this release does not count as full R07 completion.
