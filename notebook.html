@@ -18092,5 +18092,43 @@ U_{c,g}=\sum_{u&lt;h}r_{c,u,g}
 </div>
 </article>
 
+<article id="entry-2026-09-15-lean-affine-clause-resolution">
+<h3>15 September 2026 — Primitive PC simulation of complementary-parity resolution</h3>
+<p class="entry-meta">Status: full formalization of the indexed resolution degree lemma; R22.</p>
+<h4 id="lean-affine-clause-resolution-PC-degree">Resolution preserves a fixed global degree ceiling</h4>
+<p><strong>Question and scope.</strong> Formalize <a href="#affine-clause-resolution-PC-degree">the complementary-parity resolution simulation</a> in the <a href="#lean-affine-clause-PC-system">actual fixed registry</a>. The premises are \(A\lor(u=1)\) and \(B\lor(1-u=1)\), with old affine pivot \(u\), and the conclusion is \(A\lor B\). Contexts may overlap, and the conclusion may be empty. Accuracy satisfies \(h\ge1\). If both premise values already have primitive PC derivations through \(K\), the conclusion value has one through \(\max\{K,4h+1\}\).</p>
+<p><strong>Residual derivations.</strong> Write \(P\) for the conclusion value and \(P_A,P_B\) for the premise values. The checked prefixes yield \(1-P_A=\sum_iU_{A,i}g_{A,i}\), with distinguished pivot input \(u\); similarly the second pivot is \(1-u\). Every other premise input appears among the conclusion inputs, so its product with \(P\) is an actual conclusion companion. Multiplying the prefix identity by \(P\) and separating its pivot term gives</p>
+<div class="math">\[
+R_A=P-U_{A,u}uP=P_AP+\sum_{i\ne u}U_{A,i}(g_{A,i}P),\qquad
+R_B=P-U_{B,1-u}(1-u)P=P_BP+\sum_{j\ne1-u}U_{B,j}(g_{B,j}P).
+\]</div>
+<p>Each completed premise value has actual degree at most \(2h\), and \(\deg P\le2h\); their product costs at most \(4h\). A context companion has degree at most \(2h+1\), and its cofactor has degree at most \(2h-1\); multiplying those completed lines also costs at most \(4h\). Therefore \(R_A,R_B\) are derived through \(\max\{K,4h\}\). Independently of \(K\), their displayed ordinary expressions have degree at most \(4h\).</p>
+<p><strong>Eliminating the pivot.</strong> Since \(\deg u\le1\), the checked binary Boolean reduction supplies a degree-two primitive proof of \(u^2-u\) from the registry's Boolean equations. Ordinary algebra gives</p>
+<div class="math">\[
+(1-u)R_A-U_{A,u}P(u^2-u)=(1-u)P.
+\]</div>
+<p>The first product has degree at most \(4h+1\). The coefficient \(U_{A,u}P\) has degree at most \(4h-1\), so multiplying the completed quadratic Boolean line costs at most \(4h+1\) too. The resulting line \((1-u)P\) has actual degree at most \(2h+1\), although its derivation may have used the larger global ceiling. Multiply this completed line by \(U_{B,1-u}\), whose degree is at most \(2h-1\), and add \(R_B\):</p>
+<div class="math">\[
+U_{B,1-u}(1-u)P+R_B=P.
+\]</div>
+<p>The final product costs at most \(4h\). Consequently the entire rule preserves \(\max\{K,4h+1\}\). Every polynomial multiplication is implemented through the checked completed-line reuse theorem; earlier derivation lines are not multiplied, and no proof-height term is introduced.</p>
+<p><strong>Concrete registry instantiation.</strong> The general <code>PCClause.resolve</code> engine receives actual prefix identities and companion proofs from <code>registryClauseData</code>. The separate <code>registry_resolution</code> theorem instantiates it for registry clauses \(C_a=A\cup\{u\}\), \(C_b=B\cup\{1-u\}\), and \(C_t=A\cup B\). A nonpivot literal in either premise belongs to the corresponding context and therefore the conclusion. Its lifted old polynomial is identical across registry scopes, while the coefficient variables remain disjoint. The affine-to-polynomial bridge sends the opposite literal to \(1-u\). All Boolean and companion lines are members of the one fixed system. Thus the engine's data are supplied by checked definitions, rather than replacing the source system by assumptions. An empty conclusion uses its already defined value one and introduces no empty-clause block.</p>
+<p><strong>Verification and remaining route.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/AffineClauseResolution.lean">AffineClauseResolution.lean</a>, its <a href="https://github.com/kbr-/math-research/blob/main/research/results/r22_affine_clause_resolution_20260915/lean-verification.txt">verification report</a>, and the <a href="https://github.com/kbr-/math-research/blob/main/research/results/r22_affine_clause_resolution_20260915/scope.md">scope map</a> preserve both theorem types and dependencies. The first check needed the already assumed positive accuracy propagated to a local helper and a finite-clause equality instance; the corrected verification passed. This follows the source proof and produces no new mathematical discrepancy. Process assessment: the concrete wrapper makes the fixed-system instantiation explicit, while separately tracking each completed polynomial's degree prevents a spurious multiplication of the global derivation ceiling. Weakening and source-DAG assembly remain R23 and R24.</p>
+<div class="timing-report" data-session="r22_affine_clause_resolution_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 51.68 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">59.54 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">1 min 57.21 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3.51 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">1 min 51.42 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+<p class="small">Initial source reading and proof planning preceded this clock; build and elaboration retries are included, and final checkpoint work follows the snapshot.</p>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

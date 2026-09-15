@@ -1,0 +1,51 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.AffineClauseResolution
+Claim file: claims/AffineClauseResolution.lean
+Claim: lem:affine-clause-resolution-PC-degree
+Source: https://kbr.is-a.dev/math-research/#lean-affine-clause-resolution-PC-degree
+Scope: Complementary-parity resolution preserves max(K,4h+1), using completed premise derivations in one fixed complete registry; contexts may overlap and the conclusion may be empty. A general concrete-certificate engine is instantiated by the registry definitions.
+Declarations: MathResearch.PolynomialCalculus.PCClause.resolve MathResearch.PolynomialCalculus.registry_resolution
+$ lake --wfail build claims.AffineClauseResolution
+✔ [2025/2025] Built claims.AffineClauseResolution (3.5s)
+Build completed successfully (2025 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/tmppadxuuwx.lean
+@MathResearch.PolynomialCalculus.PCClause.resolve : ∀ {σ ι κ τ : Type} [inst : Fintype ι] [inst_1 : Fintype κ]
+  [inst_2 : Fintype τ] {F : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) σ)} {h K : ℕ} [Fintype σ]
+  (A : MathResearch.PolynomialCalculus.PCClause F h ι) (B : MathResearch.PolynomialCalculus.PCClause F h κ)
+  (T : MathResearch.PolynomialCalculus.PCClause F h τ) (ia : ι) (ib : κ),
+  1 ≤ h →
+    B.input ib = 1 - A.input ia →
+      (∀ (i : ι), i ≠ ia → ∃ j, T.input j = A.input i) →
+        (∀ (i : κ), i ≠ ib → ∃ j, T.input j = B.input i) →
+          MathResearch.PolynomialCalculus.booleanBase ⊆ F →
+            MathResearch.PolynomialCalculus.Derives F K A.value →
+              MathResearch.PolynomialCalculus.Derives F K B.value →
+                MathResearch.PolynomialCalculus.Derives F (max K (4 * h + 1)) T.value
+'MathResearch.PolynomialCalculus.PCClause.resolve' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_resolution : ∀ {ν : Type} [inst : Fintype ν] {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause ν) (h : ℕ)
+  (old : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) ν)),
+  1 ≤ h →
+    ∀ (a b t : Fin N) (A B : MathResearch.PolynomialCalculus.FiniteParityClause ν) (u : (ν → ZMod 2) →ᵃ[ZMod 2] ZMod 2),
+      C a = insert u A →
+        C b = insert (MathResearch.oppositeParity u) B →
+          C t = A ∪ B →
+            ∀ {K : ℕ},
+              MathResearch.PolynomialCalculus.Derives (MathResearch.PolynomialCalculus.registrySystem C h old) K
+                  (MathResearch.PolynomialCalculus.registryValue C h a) →
+                MathResearch.PolynomialCalculus.Derives (MathResearch.PolynomialCalculus.registrySystem C h old) K
+                    (MathResearch.PolynomialCalculus.registryValue C h b) →
+                  MathResearch.PolynomialCalculus.Derives (MathResearch.PolynomialCalculus.registrySystem C h old)
+                    (max K (4 * h + 1)) (MathResearch.PolynomialCalculus.registryValue C h t)
+'MathResearch.PolynomialCalculus.registry_resolution' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 2 audited declarations.
