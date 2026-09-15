@@ -17618,5 +17618,40 @@ q\mathcal I_B(\mathcal F)\subseteq\mathcal I_{B+\deg q}(\mathcal F),
 </div>
 </article>
 
+<article id="entry-2026-09-15-lean-pc-duality">
+<h3>15 September 2026 — Bounded-degree duality and compatible annihilator extension</h3>
+<p class="entry-meta">Status: full Lean formalization of historical separation and a reusable standard linear-algebra dependency; R04.</p>
+<h4 id="lean-linear-annihilator-extension">Separation and annihilator extension</h4>
+<p><strong>Question and stopping point.</strong> Complete <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/01_foundations.md#lem-duality">historical Lemma 1.2</a> and provide the compatible-extension interface needed by matching moments. The general linear-algebra result below is standard, with basis extension supplied by pinned Mathlib; neither its statement nor a different implementation is claimed as project novelty. Stop before proving any matching-filtration or source-specific compatibility hypothesis.</p>
+<p>Let \(M\) be a vector space over a field \(K\), and \(S\le M\). For \(v\in M\), there exists a linear functional \(L\) with \(L(v)=1\) and \(L(S)=0\) if and only if \(v\notin S\). Necessity follows immediately by applying \(L\). For sufficiency, extend a basis of \(S\) by \(v\), prescribe zero on \(S\) and one on \(v\), and extend linearly to an ambient basis. Mathlib's <code>LinearMap.exists_extend_of_notMem</code> supplies this construction. Finite dimension is unnecessary for existence.</p>
+<p>More generally, let \(U,S\le M\) and \(\lambda:U\to K\) be linear, with \(\lambda(x)=0\) whenever \(x\in U\cap S\). Then \(\lambda\) extends to an ambient linear \(L:M\to K\) annihilating \(S\).</p>
+<p><strong>Complete extension argument.</strong> Define \(h(u+s)=\lambda(u)\) on \(U+S\). If \(u+s=u'+s'\), then \(u-u'=s'-s\in U\cap S\), so \(\lambda(u)=\lambda(u')\); hence the definition is independent of the decomposition. Addition and scalar multiplication show that \(h\) is linear. It agrees with \(\lambda\) on \(U\) and vanishes on \(S\). Extend \(h\) to an ambient basis of \(M\), assigning arbitrary values on a complement. The resulting \(L\) has both required properties. The Lean proof uses <code>LinearPMap.sup</code> to glue the compatible partial maps and <code>LinearMap.exists_extend</code> for the final extension.</p>
+<h4 id="lean-pc-finite-separation">Application to actual bounded-degree polynomial functionals</h4>
+<p>Let \(P_B=K[V]_{\le B}\) be the ordinary polynomial subspace, with \(\deg0=0\). The formal definition <code>HasNormalizedFunctional(S,B)</code> asks for \(\lambda:P_B\to K\), normalized by \(\lambda(1)=1\), which annihilates every member of \(S\) lying in \(P_B\). Apply separation inside \(P_B\) to the inverse image of \(S\) under its subtype inclusion. The constant polynomial one belongs to \(P_B\), including when \(B=0\); its membership in that inverse image is exactly \(1\in S\). Therefore</p>
+<div class="math">\[
+\exists\text{ degree-}B\text{ NS design for }\mathcal F
+\iff 1\notin\mathcal I_B(\mathcal F),
+\qquad
+\exists\text{ normalized annihilator of }\mathcal C_B(\mathcal F)
+\iff \mathcal F\not\vdash_B1.
+\]</div>
+<p>Both NS and PC spaces lie in \(P_B\) by the <a href="#ordinary-polynomial-proof-foundations">foundation lemmas</a>. Their functionals are linear only: no positivity, multiplicativity, or point-evaluation representation is assumed. The remaining assertion of historical Lemma 1.2, \(\mathcal I_B\subseteq\mathcal C_B\), is precisely the already checked <a href="#lean-pc-completed-line-reuse">R02 inclusion</a> and is reused rather than re-proved.</p>
+<p><strong>Verification and scope.</strong> The independent standard interface is in <a href="https://github.com/kbr-/math-research/blob/main/formalization/third-party-claims/LinearSeparation.lean">LinearSeparation.lean</a>, while <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/PolynomialCalculusDuality.lean">PolynomialCalculusDuality.lean</a> gives the full indexed polynomial-calculus lemma. Their <a href="https://github.com/kbr-/math-research/blob/main/research/results/r04_pc_duality_20260915/linear-verification-final.txt">linear-algebra</a> and <a href="https://github.com/kbr-/math-research/blob/main/research/results/r04_pc_duality_20260915/lean-verification.txt">duality reports</a> preserve theorem types and axiom audits; the <a href="https://github.com/kbr-/math-research/blob/main/research/results/r04_pc_duality_20260915/scope.md">scope map</a> states the boundary. An initial elaboration retry added explicit submodule-order type annotations; the mathematics was unchanged. No mathematical discrepancy was identified. Process assessment: Mathlib already provides the basis-extension machinery, so a short compatibility wrapper serves downstream claims without adding a parallel theory of dual spaces.</p>
+<div class="timing-report" data-session="r04_pc_duality_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 17.39 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 47.07 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">1 min 44.82 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">25.12 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">20.39 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+<p class="small">Brief preliminary API reading preceded this clock; elaboration retries are included and final checkpoint work follows the snapshot.</p>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

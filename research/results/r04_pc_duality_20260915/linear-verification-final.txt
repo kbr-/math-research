@@ -1,0 +1,28 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: «third-party-claims».LinearSeparation
+Claim file: third-party-claims/LinearSeparation.lean
+Claim: third-party:linear-annihilator-extension
+Source: https://kbr.is-a.dev/math-research/#lean-linear-annihilator-extension
+Scope: Standard algebraic linear separation and extension of a functional on U annihilating U∩S to an ambient functional annihilating S, over any field. Uses Mathlib's algebraic basis-extension results; no finite-dimensional assumption is needed.
+Declarations: MathResearch.LinearSeparation.normalized_annihilator_iff MathResearch.LinearSeparation.annihilator_extension
+$ lake --wfail build «third-party-claims».LinearSeparation
+Build completed successfully (1270 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/tmpizxvwtv2.lean
+@MathResearch.LinearSeparation.normalized_annihilator_iff : ∀ {K : Type u_1} {M : Type u_2} [inst : Field K]
+  [inst_1 : AddCommGroup M] [inst_2 : Module K M] (S : Submodule K M) (v : M), (∃ l, l v = 1 ∧ ∀ x ∈ S, l x = 0) ↔ v ∉ S
+'MathResearch.LinearSeparation.normalized_annihilator_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.LinearSeparation.annihilator_extension : ∀ {K : Type u_1} {M : Type u_2} [inst : Field K]
+  [inst_1 : AddCommGroup M] [inst_2 : Module K M] (U S : Submodule K M) (l : ↥U →ₗ[K] K),
+  (∀ (x : ↥U), ↑x ∈ S → l x = 0) → ∃ L, (∀ (x : ↥U), L ↑x = l x) ∧ ∀ x ∈ S, L x = 0
+'MathResearch.LinearSeparation.annihilator_extension' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 2 audited declarations.
