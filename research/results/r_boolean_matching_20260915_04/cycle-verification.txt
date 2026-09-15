@@ -1,0 +1,81 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.MatchingMomentCycles
+Claim file: claims/MatchingMomentCycles.lean
+Claim: lem:matching-marginal-cycle
+Source: https://kbr.is-a.dev/math-research/#lean-matching-marginal-cycle
+Scope: For s≥1, compatible lower matching moments form an augmented F₂ cycle in cell count s−1; checked chessboard homology supplies fillings when N≥2s−1, including s=1 and s=2.
+Declarations: MathResearch.PolynomialCalculus.momentLayer_supported MathResearch.PolynomialCalculus.rowBoundary_unused MathResearch.PolynomialCalculus.rowBoundary_occupied MathResearch.PolynomialCalculus.rowUnused_iff_not_mem_image MathResearch.PolynomialCalculus.unused_rows_card MathResearch.PolynomialCalculus.momentLayer_boundary_marginals MathResearch.PolynomialCalculus.matching_moment_cycle MathResearch.PolynomialCalculus.matching_moment_filling MathResearch.PolynomialCalculus.MatchingMarginals.mono
+$ lake --wfail build claims.MatchingMomentCycles
+Build completed successfully (2012 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/tmp8fe9sjzc.lean
+MathResearch.PolynomialCalculus.momentLayer_supported : ∀ (m N k : ℕ)
+  (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2),
+  MathResearch.ThirdParty.Augmented.Supported (MathResearch.ThirdParty.Augmented.chessboardComplex m N) k
+    (MathResearch.PolynomialCalculus.momentLayer m N k z)
+'MathResearch.PolynomialCalculus.momentLayer_supported' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.rowBoundary_unused : ∀ (m N k : ℕ)
+  (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2)
+  (U : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+  MathResearch.PolynomialCalculus.IsMatching U →
+    U.card = k →
+      ∀ (i : Fin m),
+        MathResearch.PolynomialCalculus.RowUnused i U →
+          MathResearch.PolynomialCalculus.rowBoundary m N k z U i =
+            ∑ j, if MathResearch.PolynomialCalculus.ColUnused j U then z (insert (i, j) U) else 0
+'MathResearch.PolynomialCalculus.rowBoundary_unused' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.rowBoundary_occupied : ∀ (m N k : ℕ)
+  (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2)
+  (U : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+  MathResearch.PolynomialCalculus.IsMatching U →
+    ∀ (i : Fin m),
+      ¬MathResearch.PolynomialCalculus.RowUnused i U → MathResearch.PolynomialCalculus.rowBoundary m N k z U i = 0
+'MathResearch.PolynomialCalculus.rowBoundary_occupied' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.rowUnused_iff_not_mem_image : ∀ {m N : ℕ}
+  (U : Finset (MathResearch.PolynomialCalculus.Cell m N)) (i : Fin m),
+  MathResearch.PolynomialCalculus.RowUnused i U ↔ i ∉ Finset.image Prod.fst U
+'MathResearch.PolynomialCalculus.rowUnused_iff_not_mem_image' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.unused_rows_card : ∀ {m N : ℕ} (U : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+  MathResearch.PolynomialCalculus.IsMatching U → {i | MathResearch.PolynomialCalculus.RowUnused i U}.card = m - U.card
+'MathResearch.PolynomialCalculus.unused_rows_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.momentLayer_boundary_marginals : ∀ (m N k : ℕ)
+  (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2),
+  MathResearch.PolynomialCalculus.MatchingMarginals m N (k + 1) z →
+    ∀ (U : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+      MathResearch.PolynomialCalculus.IsMatching U →
+        U.card = k →
+          MathResearch.ThirdParty.Augmented.boundary (MathResearch.PolynomialCalculus.momentLayer m N (k + 1) z) U =
+            ∑ i, if MathResearch.PolynomialCalculus.RowUnused i U then z U else 0
+'MathResearch.PolynomialCalculus.momentLayer_boundary_marginals' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.matching_moment_cycle : ∀ (s N : ℕ),
+  1 ≤ s →
+    ∀ (z : Finset (MathResearch.PolynomialCalculus.Cell s N) → ZMod 2),
+      MathResearch.PolynomialCalculus.MatchingMarginals s N (s - 1) z →
+        MathResearch.ThirdParty.Augmented.boundary (MathResearch.PolynomialCalculus.momentLayer s N (s - 1) z) = 0
+'MathResearch.PolynomialCalculus.matching_moment_cycle' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.matching_moment_filling : ∀ (s N : ℕ),
+  1 ≤ s →
+    2 * s - 1 ≤ N →
+      ∀ (z : Finset (MathResearch.PolynomialCalculus.Cell s N) → ZMod 2),
+        MathResearch.PolynomialCalculus.MatchingMarginals s N (s - 1) z →
+          ∃ y,
+            MathResearch.ThirdParty.Augmented.Supported (MathResearch.ThirdParty.Augmented.chessboardComplex s N) s y ∧
+              MathResearch.ThirdParty.Augmented.boundary y = MathResearch.PolynomialCalculus.momentLayer s N (s - 1) z
+'MathResearch.PolynomialCalculus.matching_moment_filling' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.MatchingMarginals.mono : ∀ {m N B C : ℕ}
+  {z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2},
+  MathResearch.PolynomialCalculus.MatchingMarginals m N B z →
+    C ≤ B → MathResearch.PolynomialCalculus.MatchingMarginals m N C z
+'MathResearch.PolynomialCalculus.MatchingMarginals.mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 9 audited declarations.

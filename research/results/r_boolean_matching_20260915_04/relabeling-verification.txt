@@ -1,0 +1,56 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.MatchingMomentRelabeling
+Claim file: claims/MatchingMomentRelabeling.lean
+Claim: lem:matching-moment-row-relabeling
+Source: https://kbr.is-a.dev/math-research/#lean-matching-moment-row-relabeling
+Scope: Injective row relabeling preserves matching faces, unused columns and row marginals; row-set embeddings exhaust precisely their retained rows.
+Declarations: MathResearch.PolynomialCalculus.rowEmbedding_matching MathResearch.PolynomialCalculus.rowEmbedding_rowUnused MathResearch.PolynomialCalculus.rowEmbedding_colUnused MathResearch.PolynomialCalculus.matching_marginals_row_pullback MathResearch.PolynomialCalculus.rowSetEmbedding_mem MathResearch.PolynomialCalculus.rowSetEmbedding_range MathResearch.PolynomialCalculus.rowSetEmbedding_inRange
+$ lake --wfail build claims.MatchingMomentRelabeling
+Build completed successfully (2013 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/tmp0gp069gg.lean
+@MathResearch.PolynomialCalculus.rowEmbedding_matching : ∀ {r m N : ℕ} (f : Fin r ↪ Fin m)
+  (S : Finset (MathResearch.PolynomialCalculus.Cell r N)),
+  MathResearch.PolynomialCalculus.IsMatching (Finset.map (MathResearch.PolynomialCalculus.rowEmbedding N f) S) ↔
+    MathResearch.PolynomialCalculus.IsMatching S
+'MathResearch.PolynomialCalculus.rowEmbedding_matching' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.rowEmbedding_rowUnused : ∀ {r m N : ℕ} (f : Fin r ↪ Fin m)
+  (S : Finset (MathResearch.PolynomialCalculus.Cell r N)) (i : Fin r),
+  MathResearch.PolynomialCalculus.RowUnused (f i) (Finset.map (MathResearch.PolynomialCalculus.rowEmbedding N f) S) ↔
+    MathResearch.PolynomialCalculus.RowUnused i S
+'MathResearch.PolynomialCalculus.rowEmbedding_rowUnused' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.rowEmbedding_colUnused : ∀ {r m N : ℕ} (f : Fin r ↪ Fin m)
+  (S : Finset (MathResearch.PolynomialCalculus.Cell r N)) (j : Fin N),
+  MathResearch.PolynomialCalculus.ColUnused j (Finset.map (MathResearch.PolynomialCalculus.rowEmbedding N f) S) ↔
+    MathResearch.PolynomialCalculus.ColUnused j S
+'MathResearch.PolynomialCalculus.rowEmbedding_colUnused' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.matching_marginals_row_pullback : ∀ {r m N B : ℕ} (f : Fin r ↪ Fin m)
+  (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2),
+  MathResearch.PolynomialCalculus.MatchingMarginals m N B z →
+    MathResearch.PolynomialCalculus.MatchingMarginals r N B fun S =>
+      z (Finset.map (MathResearch.PolynomialCalculus.rowEmbedding N f) S)
+'MathResearch.PolynomialCalculus.matching_marginals_row_pullback' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.PolynomialCalculus.rowSetEmbedding_mem : ∀ {m : ℕ} (S : Finset (Fin m)) (i : Fin S.card),
+  (MathResearch.PolynomialCalculus.rowSetEmbedding S) i ∈ S
+'MathResearch.PolynomialCalculus.rowSetEmbedding_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.rowSetEmbedding_range : ∀ {m : ℕ} (S : Finset (Fin m)) (i : Fin m),
+  (∃ j, (MathResearch.PolynomialCalculus.rowSetEmbedding S) j = i) ↔ i ∈ S
+'MathResearch.PolynomialCalculus.rowSetEmbedding_range' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.rowSetEmbedding_inRange : ∀ {m N : ℕ} (S : Finset (Fin m))
+  (T : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+  MathResearch.ThirdParty.Augmented.InRange
+      (MathResearch.PolynomialCalculus.rowEmbedding N (MathResearch.PolynomialCalculus.rowSetEmbedding S)) T ↔
+    MathResearch.PolynomialCalculus.RowsWithin S T
+'MathResearch.PolynomialCalculus.rowSetEmbedding_inRange' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 7 audited declarations.

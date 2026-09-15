@@ -1,0 +1,106 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.MatchingFiltration
+Claim file: claims/MatchingFiltration.lean
+Claim: audit:matching-extension-arbitrary-row-count
+Source: https://kbr.is-a.dev/math-research/#lean-matching-extension-stable-filtration
+Scope: Full prescribed bounded-functional extension, ordinary NS filtration stability, PC=NS and normalized nonrefutation for N≥1,N≥2B−1 and arbitrary row count m; the source's m≥B hypothesis is unnecessary.
+Declarations: MathResearch.PolynomialCalculus.bounded_matching_annihilator_extension MathResearch.PolynomialCalculus.matching_normalized_annihilator MathResearch.PolynomialCalculus.functionalUnary_ns_stable MathResearch.PolynomialCalculus.functionalUnary_ns_filtration MathResearch.PolynomialCalculus.Derives.functionalUnary_ns MathResearch.PolynomialCalculus.functionalUnary_pc_eq_ns MathResearch.PolynomialCalculus.functionalUnary_no_ns_refutation MathResearch.PolynomialCalculus.functionalUnary_no_pc_refutation MathResearch.PolynomialCalculus.functionalUnary_normalized_design MathResearch.PolynomialCalculus.functionalUnary_normalized_span
+$ lake --wfail build claims.MatchingFiltration
+✔ [2012/2015] Built claims.MatchingMomentCycles (1.8s)
+✔ [2013/2015] Built claims.MatchingMomentRelabeling (1.5s)
+✔ [2014/2015] Built claims.MatchingMomentExtension (1.8s)
+Build completed successfully (2015 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/tmp04zwdv68.lean
+MathResearch.PolynomialCalculus.bounded_matching_annihilator_extension : ∀ (m N B : ℕ),
+  1 ≤ N →
+    2 * B - 1 ≤ N →
+      ∀ (k : ℕ) (hk : k ≤ B) (L : ↥(MathResearch.PolynomialCalculus.degreeSpace k) →ₗ[ZMod 2] ZMod 2),
+        MathResearch.PolynomialCalculus.BoundedAnnihilator m N k L →
+          ∃ E,
+            MathResearch.PolynomialCalculus.BoundedAnnihilator m N B E ∧
+              ∀ (P : ↥(MathResearch.PolynomialCalculus.degreeSpace k)), E ⟨↑P, ⋯⟩ = L P
+'MathResearch.PolynomialCalculus.bounded_matching_annihilator_extension' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.matching_normalized_annihilator : ∀ (m N B : ℕ),
+  1 ≤ N →
+    2 * B - 1 ≤ N →
+      ∃ L,
+        MathResearch.PolynomialCalculus.AnnihilatesNS (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B L ∧
+          L 1 = 1
+'MathResearch.PolynomialCalculus.matching_normalized_annihilator' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.functionalUnary_ns_stable : ∀ (m N B : ℕ),
+  1 ≤ N →
+    2 * B - 1 ≤ N →
+      ∀ k ≤ B,
+        ∀ (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N)),
+          MvPolynomial.totalDegree P ≤ k →
+            (P ∈ MathResearch.PolynomialCalculus.nsSpace (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B ↔
+              P ∈ MathResearch.PolynomialCalculus.nsSpace (MathResearch.PolynomialCalculus.functionalUnaryBase m N) k)
+'MathResearch.PolynomialCalculus.functionalUnary_ns_stable' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.functionalUnary_ns_filtration : ∀ (m N B : ℕ),
+  1 ≤ N →
+    2 * B - 1 ≤ N →
+      ∀ k ≤ B,
+        MathResearch.PolynomialCalculus.nsSpace (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B ⊓
+            MathResearch.PolynomialCalculus.degreeSpace k =
+          MathResearch.PolynomialCalculus.nsSpace (MathResearch.PolynomialCalculus.functionalUnaryBase m N) k
+'MathResearch.PolynomialCalculus.functionalUnary_ns_filtration' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.PolynomialCalculus.Derives.functionalUnary_ns : ∀ {m N B : ℕ},
+  1 ≤ N →
+    2 * B - 1 ≤ N →
+      ∀ {P : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N)},
+        MathResearch.PolynomialCalculus.Derives (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B P →
+          P ∈ MathResearch.PolynomialCalculus.nsSpace (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B
+'MathResearch.PolynomialCalculus.Derives.functionalUnary_ns' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.functionalUnary_pc_eq_ns : ∀ (m N B : ℕ),
+  1 ≤ N →
+    2 * B - 1 ≤ N →
+      MathResearch.PolynomialCalculus.pcSpace (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B =
+        MathResearch.PolynomialCalculus.nsSpace (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B
+'MathResearch.PolynomialCalculus.functionalUnary_pc_eq_ns' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.functionalUnary_no_ns_refutation : ∀ (m N B : ℕ),
+  1 ≤ N →
+    2 * B - 1 ≤ N →
+      1 ∉ MathResearch.PolynomialCalculus.nsSpace (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B
+'MathResearch.PolynomialCalculus.functionalUnary_no_ns_refutation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.functionalUnary_no_pc_refutation : ∀ (m N B : ℕ),
+  1 ≤ N →
+    2 * B - 1 ≤ N →
+      ¬MathResearch.PolynomialCalculus.Derives (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B 1
+'MathResearch.PolynomialCalculus.functionalUnary_no_pc_refutation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.functionalUnary_normalized_design : ∀ (m N B : ℕ),
+  1 ≤ N →
+    2 * B - 1 ≤ N →
+      MathResearch.PolynomialCalculus.HasNormalizedFunctional
+        (MathResearch.PolynomialCalculus.nsSpace (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B) B
+'MathResearch.PolynomialCalculus.functionalUnary_normalized_design' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.functionalUnary_normalized_span : ∀ (m N B : ℕ),
+  1 ≤ N →
+    2 * B - 1 ≤ N →
+      MathResearch.PolynomialCalculus.boundedAnnihilatorSpace m N B =
+        Submodule.span (ZMod 2) {L | L ∈ MathResearch.PolynomialCalculus.boundedAnnihilatorSpace m N B ∧ L ⟨1, ⋯⟩ = 1}
+'MathResearch.PolynomialCalculus.functionalUnary_normalized_span' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 10 audited declarations.

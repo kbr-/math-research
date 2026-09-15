@@ -1,0 +1,47 @@
+✔ [2005/2012] Built «third-party-claims».ChessboardStarCover (15s)
+✔ [2006/2012] Built claims.CoverDoubleComplex (15s)
+✔ [2007/2012] Built «third-party-claims».ChessboardStarIntersections (2.6s)
+✔ [2008/2012] Built «third-party-claims».HomologicalCover (2.6s)
+✔ [2009/2012] Built «third-party-claims».ChessboardStarNerve (1.7s)
+✔ [2010/2012] Built «third-party-claims».ChessboardHomology (1.6s)
+✔ [2011/2012] Built «third-party-claims».ChessboardFillingProof (1.3s)
+✖ [2012/2012] Building claims.MatchingMomentCycles (4.2s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/boolean-matching/formalization/claims/MatchingMomentCycles.lean -o /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/MatchingMomentCycles.olean -i /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/MatchingMomentCycles.ilean -c /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/MatchingMomentCycles.c --setup /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/MatchingMomentCycles.setup.json --json
+error: claims/MatchingMomentCycles.lean:39:2: No goals to be solved
+error: claims/MatchingMomentCycles.lean:60:44: unsolved goals
+m N : ℕ
+U : Finset (Cell m N)
+i : Fin m
+⊢ (∀ (a : Fin m) (b : Fin N), (a, b) ∈ U → ¬a = i) ↔ ∀ (x : Fin N), (i, x) ∉ U
+error: claims/MatchingMomentCycles.lean:91:2: unsolved goals
+case pos
+s N : ℕ
+hs : 2 ≤ s
+z : Finset (Cell s N) → ZMod 2
+hz : MatchingMarginals s N (s - 1) z
+U : Finset (Cell s N)
+h : IsMatching U ∧ U.card = s - 2
+he : s - 2 + 1 = s - 1
+hb : boundary (momentLayer s N (s - 1) z) U = ∑ i, if RowUnused i U then z U else 0
+hc : {i | RowUnused i U}.card = 2
+⊢ 2 = 0 ∨ z U = 0
+error: claims/MatchingMomentCycles.lean:101:43: No goals to be solved
+error: claims/MatchingMomentCycles.lean:101:7: unsolved goals
+s N : ℕ
+hs : 2 ≤ s
+z : Finset (Cell s N) → ZMod 2
+hz : MatchingMarginals s N (s - 1) z
+U : Finset (Cell s N)
+h : ¬(IsMatching U ∧ U.card = s - 2)
+he : s - 2 + 1 = s - 1
+⊢ Supported (chessboardComplex s N) (s - 2 + 1) (momentLayer s N (s - 1) z)
+warning: claims/MatchingMomentCycles.lean:99:13: This simp argument is unused:
+  ZModModule.add_self
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Some required targets logged failures:
+- claims.MatchingMomentCycles
+error: build failed

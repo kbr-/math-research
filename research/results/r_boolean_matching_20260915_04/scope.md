@@ -1,0 +1,7 @@
+# R10 matching extension and stable filtration
+
+Target audit:matching-extension-arbitrary-row-count. Source matching-extension-arbitrary-row-count and paper sections/03-matching-moments.tex extension/stability theorems. Required: prescribed moments throughk≤B extend throughB, arbitrary constant preserved, N≥1,N≥2B−1,m≥B (may eliminate m≥B if proof does not use it), normalized existence, old NS filtration intersection equality, and ordinary PC=NS. R09 complete f119d3d; R01/R02/R04/H and decoder R12 now integrated. No abstract filling assumption may replace proved H.
+
+Actual construction plan: local matching moments on each s-row board form a supported (s−1)-cell cycle because an (s−2)-matching misses exactly two rows. Use checked chessboard homological bound/H to fill. Assign new size-s global moments by their unique occupied row set, preserving all older moments and proving all marginal equations. Degree1 chooses a column, degree0 is untouched. Then use R09 canonical moment functionals and R04 separation for filtration stability; prove primitive PC closure by actual-degree predecessor≤B−1 and NS multiplication, not quotient multiplication.
+
+New reusable cycle/row-relabeling helpers may receive indexed files and records as needed, but none is completion of R10. R14 remains later. Some R10 construction design during the clean integration wait preceded this timing interval; no time is backfilled. Parent alone owns living sections/route and requested broader-generalization sweep is deferred until all Rxx complete.

@@ -18211,5 +18211,74 @@ P_D=\sum_j\lambda_j(g_{D,j}P_D).
 </div>
 </article>
 
+<article id="entry-2026-09-15-lean-matching-extension-filtration">
+<h3>15 September 2026 — Prescribed matching moments extend, and old PC equals NS</h3>
+<p class="entry-meta">R10 complete formalization · actual chessboard fillings · arbitrary row count</p>
+<h4 id="lean-matching-extension-stable-filtration">Full statement and useful generalization</h4>
+<p>Work over \(\mathbb F_2\) with the ordinary functional-unary polynomial system \(\mathcal F^{\mathrm{fun}}_{m,N}\). Assume \(N\ge1\), \(N\ge2B-1\), and \(0\le k\le B\). Every linear functional on \(\mathcal P_{\le k}\) annihilating \(\mathcal I_k\) extends to one on \(\mathcal P_{\le B}\) annihilating \(\mathcal I_B\), preserving every old value and hence the constant moment. Furthermore,</p>
+<div class="math">\[
+ \mathcal I_B(\mathcal F^{\mathrm{fun}}_{m,N})\cap\mathcal P_{\le k}
+   =\mathcal I_k(\mathcal F^{\mathrm{fun}}_{m,N}),
+ \qquad
+ \mathcal C_B(\mathcal F^{\mathrm{fun}}_{m,N})
+   =\mathcal I_B(\mathcal F^{\mathrm{fun}}_{m,N}).
+\]</div>
+<p>Normalized annihilators exist, span the full bounded annihilator space, and exclude a degree-\(B\) NS or ordinary-PC refutation. The formalization proves these statements for <strong>every natural row count \(m\)</strong>, including zero. The <a href="#matching-extension-arbitrary-row-count">original audit</a>'s additional hypothesis \(m\ge B\) is unnecessary: each top matching has its own row set, and levels above the available row count contain no new matching unknowns. This is a generalization, not a correction of the original result. It does not concern systems augmented with ENS equations.</p>
+<h4 id="lean-matching-marginal-cycle">Actual moment cycles and their checked fillings</h4>
+<p>For moment data \(z\) on an \(s\)-row board, define a coefficient function supported in cell count \(r\) by</p>
+<div class="math">\[
+ C_r(z)(T)=
+ \begin{cases}z_T,&T\text{ is a matching and }|T|=r,\\0,&\text{otherwise}.
+ \end{cases}
+\]</div>
+<p>Suppose the matching marginals hold through degree \(s-1\). For \(s\ge2\), this makes \(C_{s-1}(z)\) a cycle for the exact augmented boundary from H01–H03. On a matching \(U\) of size \(s-2\), partition its boundary coefficient by the inserted cell's row. An occupied row contributes zero: its existing cell is excluded by the insertion boundary, while every other cell in that row would create a nonmatching support. An unused row contributes its full missing-row marginal, equal to \(z_U\). Injectivity of the row projection gives exactly \(s-|U|=2\) unused rows, so the coefficient is \(z_U+z_U=0\). On nonmatching faces or other sizes, the supported-boundary theorem gives zero. At \(s=2\), \(U\) is the empty face, and the same computation is the augmentation equation; it is not omitted.</p>
+<p>For \(s=1\), the layer is supported on the empty face and has zero outgoing boundary by H01. The checked chessboard homological bound, specialized using \(N\ge2s-1\), fills \(C_{s-1}(z)\) with a chain in cell count \(s\) for every \(s\ge1\). At \(s=1\) this is the nonemptiness base: put the prescribed constant coefficient on one available vertex. At \(s\ge2\) it is the already proved chessboard filling theorem's range. The Lean implementation uses the proved H12 homological bound directly, with its exact boundary and degree conventions; no unproved filling predicate replaces this step.</p>
+<h4 id="lean-matching-moment-row-relabeling">Retained row sets and genuine chain transport</h4>
+<p>An injective row map \(f:[r]\hookrightarrow[m]\) induces the cell map \((i,j)\mapsto(f(i),j)\). It preserves matching faces in both directions, cardinalities, and the condition that a column is unused. Row \(i\) is unused before mapping exactly when \(f(i)\) is unused afterwards. Therefore pulling back moments by this map preserves every matching marginal: the summation still ranges over the same columns and each inserted face maps to the corresponding inserted face.</p>
+<p>For a retained row set \(S\), enumerate it by \([|S|]\). The induced cell injection has image exactly the cells whose row lies in \(S\). Pull back the global lower moments to this board, obtain the checked local filling, and push its coefficients forward by the H03 chain map. The pushed filling is supported on matchings of size \(|S|\) using only rows in \(S\). For every matching \(T\) of size \(|S|-1\) using rows in \(S\), its boundary coefficient equals the prescribed \(z_T\): take the unique inverse-image face, use preservation of cardinality and matchings, and apply the checked boundary/push identity. This is an actual coefficient and boundary transport, not merely an isomorphism of face counts.</p>
+<h4 id="lean-prescribed-matching-moment-extension">Global extension with cross-row-set consistency</h4>
+<p>Assume moments are known through degree \(s-1\), where \(1\le s\le B\). Choose the preceding pushed filling \(y_S\) for each row set \(S\) of size \(s\). Define new moments only on size-\(s\) matchings by</p>
+<div class="math">\[
+ z'_T=y_{\operatorname{row}(T)}(T)\qquad(|T|=s),
+ \qquad z'_T=z_T\qquad(|T|&lt;s).
+\]</div>
+<p>A size-\(s\) matching has exactly \(s\) distinct occupied rows, hence has one and only one selector \(\operatorname{row}(T)\). Thus no new unknown is assigned by two fillings. In the implementation all other finite-set coordinates are also left unchanged.</p>
+<p>To check a marginal for a matching \(T\), if \(|T|&lt;s-1\), both \(T\) and all its one-cell extensions still have their old values, so its old equation remains valid. If \(|T|=s-1\) and row \(i\) is unused, every legal extension \(T\cup\{(i,j)\}\) has the same row set \(S=\operatorname{row}(T)\cup\{i\}\). Their new values therefore come from the same filling \(y_S\). In the boundary coefficient of \(y_S\) at \(T\), each occupied row contributes zero, and every other row outside \(S\) contributes zero by support. The remaining row is precisely \(i\), and used columns give nonmatching supports. Hence</p>
+<div class="math">\[
+ \sum_{j\notin\operatorname{col}(T)}z'_{T\cup\{(i,j)\}}
+   = (\partial y_S)(T)=z_T=z'_T.
+\]</div>
+<p>This proves all new equations with the globally shared lower values. Iterating from \(k+1\) through \(B\) works because \(N\ge2B-1\) implies every needed \(N\ge2s-1\). It preserves every prescribed moment of size at most \(k\), including \(z_\varnothing\). If \(s&gt;m\), there are no size-\(s\) row sets or matchings; the construction is a function on an empty indexing type and adds no unknowns. A top marginal demanding an additional unused row would itself create such a row set, so it cannot introduce an unhandled case. No hypothesis \(m\ge B\) is used.</p>
+<p>R09 turns the resulting moments into actual ordinary-NS annihilators. If two moment arrays agree on all matching supports of size at most \(k\), their canonical moment functionals agree on every polynomial of ordinary degree at most \(k\): expand into monomials, whose supports have no larger cardinality than their degree, and apply the exact R09 monomial rule. For a functional initially defined only on \(\mathcal P_{\le k}\), R04 first extends it to an ambient functional annihilating \(\mathcal I_k\); the construction then extends its low moments, and restriction to \(\mathcal P_{\le B}\) gives the desired bounded-domain extension. Thus the original bounded functional and all its values are recovered, not just its normalization.</p>
+<h4>Stable filtration, ordinary PC closure and normalization</h4>
+<p>If a degree-at-most-\(k\) polynomial \(P\) is outside \(\mathcal I_k\), R04 separates it by a functional that annihilates \(\mathcal I_k\) and takes value one on \(P\). The extension just proved preserves that value while annihilating \(\mathcal I_B\), so \(P\) is outside \(\mathcal I_B\). The reverse filtration inclusion follows by monotonicity of legal certificates. This proves the displayed subspace intersection identity.</p>
+<p>Induct on an ordinary degree-\(B\) PC derivation. Zero, legal axioms and linear combinations lie in \(\mathcal I_B\). At a variable multiplication \(f\mapsto X_xf\), a zero predecessor is immediate. For a nonzero predecessor, the ordinary polynomial ring is an integral domain and</p>
+<div class="math">\[
+ \deg(X_xf)=1+\deg f\le B.
+\]</div>
+<p>The induction hypothesis puts \(f\) in \(\mathcal I_B\), and stability moves it to \(\mathcal I_{B-1}\). Multiplying each of its legal generator multiples by \(X_x\) stays within \(B\), by the checked R02 NS multiplication rule. This proves \(\mathcal C_B\subseteq\mathcal I_B\); R02 supplies the other inclusion. There is no implicit multilinear multiplication rule or unsupported equality for augmented systems.</p>
+<p>Starting at degree zero with constant moment one gives a normalized annihilator through \(B\), so neither NS nor PC can derive one. Finally fix a normalized bounded annihilator \(E\). For any bounded annihilator \(L\), set</p>
+<div class="math">\[
+ D=L+(1-L(1))E.
+\]</div>
+<p>Then \(D(1)=1\), \(D\) still annihilates the same NS space, and \(L=D-(1-L(1))E\). Thus normalized annihilators span the entire bounded annihilator space, covering that assertion of the original audit as well. These statements retain \(N\ge1\), including when \(B=0\); at zero columns the ordinary row generator would be \(-1\), which is outside the source hypotheses.</p>
+<p><strong>Files, verified scope and provenance.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/MatchingMomentCycles.lean">MatchingMomentCycles.lean</a>, <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/MatchingMomentRelabeling.lean">MatchingMomentRelabeling.lean</a>, and <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/MatchingMomentExtension.lean">MatchingMomentExtension.lean</a> are separately indexed dependencies; <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/MatchingFiltration.lean">MatchingFiltration.lean</a> supplies the full R10 endpoint. Their <a href="https://github.com/kbr-/math-research/blob/main/research/results/r_boolean_matching_20260915_04">type/axiom audits, source hashes and complete measured evidence</a> verify all dependencies without a custom axiom or unfinished proof. These are project formalizations of the recorded moment argument, using the attributed checked chessboard theorem; no novelty claim is made for the background topology.</p>
+<p><strong>Remaining work and process assessment.</strong> R10 is complete, with the redundant row-count hypothesis removed. R14 still needs the cube/residual separator and its parameter checks; no publication theorem completion follows from this checkpoint alone. No mathematical discrepancy was found, and proposed overview updates were sent to the coordinator. Separating the actual cycle, row transport, global assignment and degree closure made the interfaces reviewable and allowed the \(s=1\) base and arbitrary row count without special-case duplication; no framework rule was added. Some initial R10 design during the clean integration wait preceded instrumentation.</p>
+<div class="timing-report" data-session="r_boolean_matching_20260915_04">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>26 min 51.99 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 22.25 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 53.20 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">16 min 42.47 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 26.99 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">2 min 27.08 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 11.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

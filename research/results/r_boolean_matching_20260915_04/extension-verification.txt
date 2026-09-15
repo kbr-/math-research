@@ -1,0 +1,136 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.MatchingMomentExtension
+Claim file: claims/MatchingMomentExtension.lean
+Claim: lem:prescribed-matching-moment-extension
+Source: https://kbr.is-a.dev/math-research/#lean-prescribed-matching-moment-extension
+Scope: Extension of arbitrary prescribed binary matching moments across degrees by checked row-set fillings; constant moment preserved.
+Declarations: MathResearch.PolynomialCalculus.rowset_moment_filling MathResearch.PolynomialCalculus.supported_occupied_row_zero MathResearch.PolynomialCalculus.supported_row_boundary MathResearch.PolynomialCalculus.updateMoments_old MathResearch.PolynomialCalculus.updateMoments_top MathResearch.PolynomialCalculus.matching_moments_step MathResearch.PolynomialCalculus.matching_moments_extend MathResearch.PolynomialCalculus.matching_moments_normalized MathResearch.PolynomialCalculus.momentFunctional_congr MathResearch.PolynomialCalculus.matching_annihilator_extension MathResearch.PolynomialCalculus.bounded_matching_annihilator_extension MathResearch.PolynomialCalculus.matching_normalized_annihilator
+$ lake --wfail build claims.MatchingMomentExtension
+Build completed successfully (2014 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/tmp8b8m5od2.lean
+MathResearch.PolynomialCalculus.rowset_moment_filling : ∀ (m N : ℕ) (S : Finset (Fin m)),
+  1 ≤ S.card →
+    2 * S.card - 1 ≤ N →
+      ∀ (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2),
+        MathResearch.PolynomialCalculus.MatchingMarginals m N (S.card - 1) z →
+          ∃ y,
+            MathResearch.PolynomialCalculus.RowSupported S S.card y ∧
+              ∀ (T : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+                MathResearch.PolynomialCalculus.IsMatching T →
+                  T.card = S.card - 1 →
+                    MathResearch.PolynomialCalculus.RowsWithin S T →
+                      MathResearch.ThirdParty.Augmented.boundary y T = z T
+'MathResearch.PolynomialCalculus.rowset_moment_filling' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.supported_occupied_row_zero : ∀ (m N k : ℕ)
+  (c : MathResearch.ThirdParty.Augmented.Coeff (MathResearch.PolynomialCalculus.Cell m N)),
+  MathResearch.ThirdParty.Augmented.Supported (MathResearch.ThirdParty.Augmented.chessboardComplex m N) k c →
+    ∀ (T : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+      MathResearch.PolynomialCalculus.IsMatching T →
+        ∀ (i : Fin m),
+          ¬MathResearch.PolynomialCalculus.RowUnused i T → (∑ j, if (i, j) ∈ T then 0 else c (insert (i, j) T)) = 0
+'MathResearch.PolynomialCalculus.supported_occupied_row_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.supported_row_boundary : ∀ (m N k : ℕ)
+  (T : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+  MathResearch.PolynomialCalculus.IsMatching T →
+    ∀ (i : Fin m),
+      MathResearch.PolynomialCalculus.RowUnused i T →
+        ∀ (c : MathResearch.ThirdParty.Augmented.Coeff (MathResearch.PolynomialCalculus.Cell m N)),
+          MathResearch.PolynomialCalculus.RowSupported (insert i (Finset.image Prod.fst T)) k c →
+            MathResearch.ThirdParty.Augmented.boundary c T =
+              ∑ j, if MathResearch.PolynomialCalculus.ColUnused j T then c (insert (i, j) T) else 0
+'MathResearch.PolynomialCalculus.supported_row_boundary' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.updateMoments_old : ∀ (m N s : ℕ)
+  (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2)
+  (fill :
+    MathResearch.PolynomialCalculus.RowSet m s →
+      MathResearch.ThirdParty.Augmented.Coeff (MathResearch.PolynomialCalculus.Cell m N))
+  (T : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+  T.card < s → MathResearch.PolynomialCalculus.updateMoments m N s z fill T = z T
+'MathResearch.PolynomialCalculus.updateMoments_old' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.updateMoments_top : ∀ (m N s : ℕ)
+  (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2)
+  (fill :
+    MathResearch.PolynomialCalculus.RowSet m s →
+      MathResearch.ThirdParty.Augmented.Coeff (MathResearch.PolynomialCalculus.Cell m N))
+  (T : Finset (MathResearch.PolynomialCalculus.Cell m N))
+  (hT : MathResearch.PolynomialCalculus.IsMatching T ∧ T.card = s),
+  MathResearch.PolynomialCalculus.updateMoments m N s z fill T =
+    fill (MathResearch.PolynomialCalculus.matchingRowSet T hT) T
+'MathResearch.PolynomialCalculus.updateMoments_top' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.matching_moments_step : ∀ (m N s : ℕ),
+  1 ≤ s →
+    2 * s - 1 ≤ N →
+      ∀ (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2),
+        MathResearch.PolynomialCalculus.MatchingMarginals m N (s - 1) z →
+          ∃ w,
+            MathResearch.PolynomialCalculus.MatchingMarginals m N s w ∧
+              ∀ (T : Finset (MathResearch.PolynomialCalculus.Cell m N)), T.card < s → w T = z T
+'MathResearch.PolynomialCalculus.matching_moments_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.matching_moments_extend : ∀ (m N B : ℕ),
+  2 * B - 1 ≤ N →
+    ∀ k ≤ B,
+      ∀ (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2),
+        MathResearch.PolynomialCalculus.MatchingMarginals m N k z →
+          ∃ w,
+            MathResearch.PolynomialCalculus.MatchingMarginals m N B w ∧
+              ∀ (T : Finset (MathResearch.PolynomialCalculus.Cell m N)), T.card ≤ k → w T = z T
+'MathResearch.PolynomialCalculus.matching_moments_extend' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.matching_moments_normalized : ∀ (m N B : ℕ),
+  2 * B - 1 ≤ N → ∃ z, MathResearch.PolynomialCalculus.MatchingMarginals m N B z ∧ z ∅ = 1
+'MathResearch.PolynomialCalculus.matching_moments_normalized' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.momentFunctional_congr : ∀ (m N k : ℕ)
+  (z w : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2),
+  (∀ (T : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+      MathResearch.PolynomialCalculus.IsMatching T → T.card ≤ k → z T = w T) →
+    ∀ (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N)),
+      MvPolynomial.totalDegree P ≤ k →
+        (MathResearch.PolynomialCalculus.momentFunctional m N z) P =
+          (MathResearch.PolynomialCalculus.momentFunctional m N w) P
+'MathResearch.PolynomialCalculus.momentFunctional_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.matching_annihilator_extension : ∀ (m N B : ℕ),
+  1 ≤ N →
+    2 * B - 1 ≤ N →
+      ∀ k ≤ B,
+        ∀
+          (L :
+            MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N) →ₗ[ZMod 2] ZMod 2),
+          MathResearch.PolynomialCalculus.AnnihilatesNS (MathResearch.PolynomialCalculus.functionalUnaryBase m N) k L →
+            ∃ E,
+              MathResearch.PolynomialCalculus.AnnihilatesNS (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B
+                  E ∧
+                ∀ (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N)),
+                  MvPolynomial.totalDegree P ≤ k → E P = L P
+'MathResearch.PolynomialCalculus.matching_annihilator_extension' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.bounded_matching_annihilator_extension : ∀ (m N B : ℕ),
+  1 ≤ N →
+    2 * B - 1 ≤ N →
+      ∀ (k : ℕ) (hk : k ≤ B) (L : ↥(MathResearch.PolynomialCalculus.degreeSpace k) →ₗ[ZMod 2] ZMod 2),
+        MathResearch.PolynomialCalculus.BoundedAnnihilator m N k L →
+          ∃ E,
+            MathResearch.PolynomialCalculus.BoundedAnnihilator m N B E ∧
+              ∀ (P : ↥(MathResearch.PolynomialCalculus.degreeSpace k)), E ⟨↑P, ⋯⟩ = L P
+'MathResearch.PolynomialCalculus.bounded_matching_annihilator_extension' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.matching_normalized_annihilator : ∀ (m N B : ℕ),
+  1 ≤ N →
+    2 * B - 1 ≤ N →
+      ∃ L,
+        MathResearch.PolynomialCalculus.AnnihilatesNS (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B L ∧
+          L 1 = 1
+'MathResearch.PolynomialCalculus.matching_normalized_annihilator' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 12 audited declarations.
