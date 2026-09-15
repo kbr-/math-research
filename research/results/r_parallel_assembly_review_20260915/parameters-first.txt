@@ -1,0 +1,128 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.AffineParameterBounds
+Claim file: claims/AffineParameterBounds.lean
+Claim: lem:affine-exclusion-parameter-bounds
+Source: https://kbr.is-a.dev/math-research/#lean-affine-exclusion-parameter-bounds
+Scope: Uniform square-condition and degree/board room for polynomial inventories and arbitrary fixed polynomial bounds in the bit length.
+Declarations: MathResearch.eventually_affine_parameters
+$ lake --wfail build claims.AffineParameterBounds
+✖ [1962/1962] Building claims.AffineParameterBounds (14s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-auxiliary/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-auxiliary/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-auxiliary/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-auxiliary/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-auxiliary/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-auxiliary/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-auxiliary/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-auxiliary/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-auxiliary/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-auxiliary/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-auxiliary/formalization/claims/AffineParameterBounds.lean -o /home/kbr/dev/math-auxiliary/formalization/.lake/build/lib/lean/claims/AffineParameterBounds.olean -i /home/kbr/dev/math-auxiliary/formalization/.lake/build/lib/lean/claims/AffineParameterBounds.ilean -c /home/kbr/dev/math-auxiliary/formalization/.lake/build/ir/claims/AffineParameterBounds.c --setup /home/kbr/dev/math-auxiliary/formalization/.lake/build/ir/claims/AffineParameterBounds.setup.json --json
+error: claims/AffineParameterBounds.lean:36:17: Application type mismatch: The argument
+  Mathlib.Meta.NormNum.isNat_lt_true (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_zero)
+    (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_one) (Eq.refl false)
+has type
+  0 < 1
+but is expected to have type
+  C * 0 < ?m.49
+in the application
+  gt_mem_nhds
+    (Mathlib.Meta.NormNum.isNat_lt_true (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_zero)
+      (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_one) (Eq.refl false))
+error: claims/AffineParameterBounds.lean:62:65: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Real.log (?x ^ ?n)
+in the target expression
+  Real.log 4 + Real.log ↑(A * 2 ^ (a * ℓ) + 1) ≤ Real.log (4 * (↑A + 1) * 2 ^ (a * ℓ))
+
+a A ℓ : ℕ
+hp : 1 ≤ 2 ^ (a * ℓ)
+hcast : ↑(A * 2 ^ (a * ℓ) + 1) ≤ (↑A + 1) * 2 ^ (a * ℓ)
+h : Real.log 4 + Real.log ↑(A * 2 ^ (a * ℓ) + 1) ≤ Real.log (4 * (↑A + 1) * 2 ^ (a * ℓ))
+⊢ Real.log (4 * ↑(A * 2 ^ (a * ℓ) + 1)) ≤ Real.log (4 * (↑A + 1)) + ↑a * ↑ℓ
+error: claims/AffineParameterBounds.lean:83:34: not a positivity goal
+error: claims/AffineParameterBounds.lean:96:4: linarith failed to find a contradiction
+a A d : ℕ
+ha✝ : ∀ᶠ (ℓ : ℕ) in atTop, 2 * ↑a ≤ ↑ℓ
+hc✝ : ∀ᶠ (ℓ : ℕ) in atTop, Real.log (4 * (↑A + 1)) ≤ ↑ℓ
+hg✝ : ∀ᶠ (ℓ : ℕ) in atTop, 8 * (↑A + 1) * (↑ℓ + 1) ^ (d + 1) < √2 ^ ℓ
+ℓ : ℕ
+ha : 2 * ↑a ≤ ↑ℓ
+hc : Real.log (4 * (↑A + 1)) ≤ ↑ℓ
+hg : 8 * (↑A + 1) * (↑ℓ + 1) ^ (d + 1) < √2 ^ ℓ
+hℓ : 2 ≤ ℓ
+hk : 1 ≤ uniformKernel ℓ ∧ (↑ℓ + 1) * √2 ^ ℓ ≤ ↑(uniformKernel ℓ) ∧ ↑(uniformKernel ℓ) ≤ 2 * (↑ℓ + 1) * √2 ^ ℓ
+hq : 0 < √2 ^ ℓ
+hn : 1 ≤ 2 ^ ℓ
+ht : 1 ≤ ↑ℓ + 1
+htp : 1 ≤ (↑ℓ + 1) ^ d
+hlog : Real.log (4 * ↑(A * 2 ^ (a * ℓ) + 1)) ≤ Real.log (4 * (↑A + 1)) + ↑a * ↑ℓ
+hsquare : 2 * Real.log (4 * ↑(A * 2 ^ (a * ℓ) + 1)) ≤ (↑ℓ + 1) ^ 2
+hu : 0 ≤ ↑(uniformKernel ℓ)
+hs : (√2 ^ ℓ) ^ 2 = 2 ^ ℓ
+hl0 : 0 ≤ Real.log (4 * ↑(A * 2 ^ (a * ℓ) + 1))
+hm : 2 * Real.log (4 * ↑(A * 2 ^ (a * ℓ) + 1)) * 2 ^ ℓ ≤ (↑ℓ + 1) ^ 2 * 2 ^ ℓ
+hu2 : (↑ℓ + 1) * √2 ^ ℓ * ((↑ℓ + 1) * √2 ^ ℓ) ≤ ↑(uniformKernel ℓ) * ↑(uniformKernel ℓ)
+a✝ : ↑(uniformKernel ℓ) ^ 2 < (2 ^ ℓ + 1) * Real.log (4 * (↑A * 2 ^ (a * ℓ) + 1))
+⊢ False
+failed
+error: claims/AffineParameterBounds.lean:104:36: linarith failed to find a contradiction
+case refine_1
+a A d : ℕ
+ha✝ : ∀ᶠ (ℓ : ℕ) in atTop, 2 * ↑a ≤ ↑ℓ
+hc✝ : ∀ᶠ (ℓ : ℕ) in atTop, Real.log (4 * (↑A + 1)) ≤ ↑ℓ
+hg✝ : ∀ᶠ (ℓ : ℕ) in atTop, 8 * (↑A + 1) * (↑ℓ + 1) ^ (d + 1) < √2 ^ ℓ
+ℓ : ℕ
+ha : 2 * ↑a ≤ ↑ℓ
+hc : Real.log (4 * (↑A + 1)) ≤ ↑ℓ
+hg : 8 * (↑A + 1) * (↑ℓ + 1) ^ (d + 1) < √2 ^ ℓ
+hℓ : 2 ≤ ℓ
+hk : 1 ≤ uniformKernel ℓ ∧ (↑ℓ + 1) * √2 ^ ℓ ≤ ↑(uniformKernel ℓ) ∧ ↑(uniformKernel ℓ) ≤ 2 * (↑ℓ + 1) * √2 ^ ℓ
+hq : 0 < √2 ^ ℓ
+hn : 1 ≤ 2 ^ ℓ
+ht : 1 ≤ ↑ℓ + 1
+htp : 1 ≤ (↑ℓ + 1) ^ d
+hlog : Real.log (4 * ↑(A * 2 ^ (a * ℓ) + 1)) ≤ Real.log (4 * (↑A + 1)) + ↑a * ↑ℓ
+hsquare : 2 * Real.log (4 * ↑(A * 2 ^ (a * ℓ) + 1)) ≤ (↑ℓ + 1) ^ 2
+hu : 0 ≤ ↑(uniformKernel ℓ)
+hs : (√2 ^ ℓ) ^ 2 = 2 ^ ℓ
+hsq : ↑(2 ^ ℓ + 1) * Real.log (4 * ↑(A * 2 ^ (a * ℓ) + 1)) ≤ ↑(uniformKernel ℓ) ^ 2
+hdeg : ↑A * (↑ℓ + 1) ^ d + 1 ≤ (↑A + 1) * (↑ℓ + 1) ^ d
+hprod : ↑(uniformKernel ℓ) * (↑A * (↑ℓ + 1) ^ d + 1) ≤ 2 * (↑ℓ + 1) * √2 ^ ℓ * ((↑A + 1) * (↑ℓ + 1) ^ d)
+hgeom : 8 * (↑A + 1) * ((↑ℓ + 1) ^ d * (↑ℓ + 1)) * √2 ^ ℓ < √2 ^ ℓ * √2 ^ ℓ
+hroomR : 4 * ↑(uniformKernel ℓ) * (↑A * (↑ℓ + 1) ^ d + 1) < 2 ^ ℓ
+hroom : 4 * uniformKernel ℓ * (A * (ℓ + 1) ^ d + 1) < 2 ^ ℓ
+a✝ : 2 ^ ℓ + 1 < uniformKernel ℓ
+⊢ False
+failed
+error: claims/AffineParameterBounds.lean:104:36: linarith failed to find a contradiction
+case refine_2
+a A d : ℕ
+ha✝ : ∀ᶠ (ℓ : ℕ) in atTop, 2 * ↑a ≤ ↑ℓ
+hc✝ : ∀ᶠ (ℓ : ℕ) in atTop, Real.log (4 * (↑A + 1)) ≤ ↑ℓ
+hg✝ : ∀ᶠ (ℓ : ℕ) in atTop, 8 * (↑A + 1) * (↑ℓ + 1) ^ (d + 1) < √2 ^ ℓ
+ℓ : ℕ
+ha : 2 * ↑a ≤ ↑ℓ
+hc : Real.log (4 * (↑A + 1)) ≤ ↑ℓ
+hg : 8 * (↑A + 1) * (↑ℓ + 1) ^ (d + 1) < √2 ^ ℓ
+hℓ : 2 ≤ ℓ
+hk : 1 ≤ uniformKernel ℓ ∧ (↑ℓ + 1) * √2 ^ ℓ ≤ ↑(uniformKernel ℓ) ∧ ↑(uniformKernel ℓ) ≤ 2 * (↑ℓ + 1) * √2 ^ ℓ
+hq : 0 < √2 ^ ℓ
+hn : 1 ≤ 2 ^ ℓ
+ht : 1 ≤ ↑ℓ + 1
+htp : 1 ≤ (↑ℓ + 1) ^ d
+hlog : Real.log (4 * ↑(A * 2 ^ (a * ℓ) + 1)) ≤ Real.log (4 * (↑A + 1)) + ↑a * ↑ℓ
+hsquare : 2 * Real.log (4 * ↑(A * 2 ^ (a * ℓ) + 1)) ≤ (↑ℓ + 1) ^ 2
+hu : 0 ≤ ↑(uniformKernel ℓ)
+hs : (√2 ^ ℓ) ^ 2 = 2 ^ ℓ
+hsq : ↑(2 ^ ℓ + 1) * Real.log (4 * ↑(A * 2 ^ (a * ℓ) + 1)) ≤ ↑(uniformKernel ℓ) ^ 2
+hdeg : ↑A * (↑ℓ + 1) ^ d + 1 ≤ (↑A + 1) * (↑ℓ + 1) ^ d
+hprod : ↑(uniformKernel ℓ) * (↑A * (↑ℓ + 1) ^ d + 1) ≤ 2 * (↑ℓ + 1) * √2 ^ ℓ * ((↑A + 1) * (↑ℓ + 1) ^ d)
+hgeom : 8 * (↑A + 1) * ((↑ℓ + 1) ^ d * (↑ℓ + 1)) * √2 ^ ℓ < √2 ^ ℓ * √2 ^ ℓ
+hroomR : 4 * ↑(uniformKernel ℓ) * (↑A * (↑ℓ + 1) ^ d + 1) < 2 ^ ℓ
+hroom : 4 * uniformKernel ℓ * (A * (ℓ + 1) ^ d + 1) < 2 ^ ℓ
+a✝ : 2 ^ ℓ ≤ 4 * (uniformKernel ℓ - 1)
+⊢ False
+failed
+Some required targets logged failures:
+- claims.AffineParameterBounds
+error: build failed
+FAIL: Command failed

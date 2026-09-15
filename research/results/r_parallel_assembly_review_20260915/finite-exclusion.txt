@@ -1,0 +1,57 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.AffineFamilyExclusion
+Claim file: claims/AffineFamilyExclusion.lean
+Claim: audit:ordinary-restriction-affine-family
+Source: https://kbr.is-a.dev/math-research/#lean-affine-family-exclusion
+Scope: Finite-parameter binary affine-family exclusion from the actual kernel, weighted removal, and cube separator. The asymptotic consequence is supplied by AffineFamilyAsymptotics.
+Declarations: MathResearch.affine_family_exclusion_of_square MathResearch.affine_family_exclusion
+$ lake --wfail build claims.AffineFamilyExclusion
+✔ [2420/2421] Built claims.CommonAffineRestrictionKernel (13s)
+✔ [2421/2421] Built claims.AffineFamilyExclusion (3.3s)
+Build completed successfully (2421 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-auxiliary/formalization/.lake/tmpeg8e6z96.lean
+@MathResearch.affine_family_exclusion_of_square : ∀ {κ : Type} [Fintype κ] {ι : κ → Type}
+  [inst : (b : κ) → Fintype (ι b)] (m ℓ M k D : ℕ),
+  0 < m →
+    2 ≤ ℓ →
+      1 ≤ M →
+        1 ≤ k →
+          k ≤ m →
+            ↑m * Real.log (4 * ↑M) ≤ ↑k ^ 2 →
+              2 * (3 * ℓ) + 1 ≤ D →
+                4 * (k - 1) < 2 ^ ℓ →
+                  2 * (k * (D + 1)) - 1 ≤ 2 ^ ℓ →
+                    ∀ (g : (b : κ) → ι b → MathResearch.AffineInputMap (Fin m × Fin ℓ)),
+                      Nat.card (MathResearch.ProperHighIndex g k) ≤ M →
+                        ¬MathResearch.PolynomialCalculus.Derives
+                            (MathResearch.ensFamilySystem (fun b i => MathResearch.finiteAffinePolynomial (g b i))
+                              (3 * ℓ) (MathResearch.PolynomialCalculus.compactBitBase m ℓ))
+                            D 1
+'MathResearch.affine_family_exclusion_of_square' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affine_family_exclusion : ∀ {κ : Type} [Fintype κ] {ι : κ → Type} [inst : (b : κ) → Fintype (ι b)]
+  (m ℓ M D : ℕ),
+  0 < m →
+    2 ≤ ℓ →
+      1 ≤ M →
+        MathResearch.kernelDegree m M ≤ m →
+          2 * (3 * ℓ) + 1 ≤ D →
+            4 * (MathResearch.kernelDegree m M - 1) < 2 ^ ℓ →
+              2 * (MathResearch.kernelDegree m M * (D + 1)) - 1 ≤ 2 ^ ℓ →
+                ∀ (g : (b : κ) → ι b → MathResearch.AffineInputMap (Fin m × Fin ℓ)),
+                  Nat.card (MathResearch.ProperBlockIndex g) ≤ M →
+                    ¬MathResearch.PolynomialCalculus.Derives
+                        (MathResearch.ensFamilySystem (fun b i => MathResearch.finiteAffinePolynomial (g b i)) (3 * ℓ)
+                          (MathResearch.PolynomialCalculus.compactBitBase m ℓ))
+                        D 1
+'MathResearch.affine_family_exclusion' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 2 audited declarations.

@@ -15,8 +15,8 @@ This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
 The third-party boundary **H** is now proved in Lean: H01–H13 are complete.
-R01–R13, R15–R16, and R18–R24 are verified and integrated, reusing the earlier
-R06/R19–R21 proofs. Three obligations remain: R14, R17, and R25. Proving H does not formalize its downstream consumers or the full paper.
+R01–R24 are verified and integrated, reusing the earlier R06/R19–R21 proofs.
+Only R25, the final publication-size conclusion, remains. Proving H does not formalize its downstream consumers or the full paper.
 
 ## How to use the list
 
@@ -300,11 +300,9 @@ Released R13: the two extracted row-linear and
 ordinary-restriction dimension claims. Released R03: ordinary substitution and fixed-weight PC replay. Both are integrated
 into `formal`; append conflicts preserved all existing articles and index rows.
 
-Current worker allocation: `/root/h_chessboard` is assembling final R14 in
-boolean-matching. R15 and the independent coefficient-isolation assignment are
-complete; their workers are idle. All R14 prerequisites are integrated. The
-coordinator retains R17/R25 with cached
-verification and minimal source rereading under the user's quota constraint.
+All worker assignments are complete. The coordinator is finishing R25.
+Verification uses cached prerequisites, and the generalization sweep is deferred
+under the user’s publication-quota constraint.
 
 Released R05: degree-controlled binary Boolean
 reduction and its explicit NS witnesses. Its implemented proof also uses R02;
@@ -442,6 +440,11 @@ the generic cube degree/NS operator, concrete board restrictions and all axiom
 images, and exact row-cube coefficient isolation. The latter uses the exposed,
 unchanged R13 monomial facts. Only final R14 separation assembly remains before
 the coordinator takes R17/R25.
+
+Released R14 and R17: full cube separation and full finite/asymptotic affine-family
+exclusion are verified. The latter includes the proper-inventory statement and a
+shared uniform parameter lemma. All R01–R24 obligations are complete; only the
+final actual-proof-size composition R25 remains.
 
 ### Deferred generalization sweep
 
