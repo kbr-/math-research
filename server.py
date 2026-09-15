@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Serve the math notebook on localhost using only the Python standard library."""
+"""Serve the Noemesis notebook on localhost using only the Python standard library."""
 
 import argparse
 import hashlib
@@ -58,7 +58,7 @@ def main():
         server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     except OSError as error:
         parser.exit(1, f"Could not start server: {error}\nTry another port: --port 8001\n")
-    print(f"Math notebook: http://localhost:{args.port}", flush=True)
+    print(f"Noemesis notebook: http://localhost:{args.port}", flush=True)
     print("Edit notebook.html; the browser refreshes automatically. Ctrl+C to stop.", flush=True)
     try:
         server.serve_forever()

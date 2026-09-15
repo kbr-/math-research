@@ -1,7 +1,7 @@
 # Attribution and citation
 
 Forks, adaptations, and independent continuations of this research are welcome.
-Credit **Kamil Braun, PHP research notebook**, and identify the source repository
+Credit **Kamil Braun, Noemesis**, and identify the source repository
 and version or dated result used. Preserve the notices required by the applicable
 license; see [LICENSE](LICENSE).
 
@@ -29,11 +29,11 @@ uses their results. A GitHub fork relationship alone is not a citation in a pape
 
 Suggested citation:
 
-> Kamil Braun. *PHP research notebook*. Relevant dated entry or tool, repository
-> URL, and commit/version consulted.
+> Kamil Braun. *Noemesis: A Framework for Autonomous Mathematical Research*.
+> Relevant dated entry or tool, repository URL, and commit/version consulted.
 
-`CITATION.cff` supplies machine-readable author/title information. Add the public
-repository URL once it has been chosen; no URL or publication DOI is fabricated.
+`CITATION.cff` supplies machine-readable author/title information and the public
+repository URL.
 Correctness and novelty must be checked before citing a working argument as an
 established theorem.
 
