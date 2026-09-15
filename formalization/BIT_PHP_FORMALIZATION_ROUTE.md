@@ -16,8 +16,8 @@ This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
 The third-party boundary **H** is now proved in Lean: H01–H13 are complete.
-The next project-side foundations are R01/R02, followed by the R01–R25 order
-below. Proving H does not formalize its downstream consumers or the full paper.
+R01 is now verified and integrated. The next project-side foundation is R02,
+followed by the remaining R01–R25 obligations below. Proving H does not formalize its downstream consumers or the full paper.
 
 ## How to use the list
 
@@ -85,9 +85,9 @@ R18 → R22, R23 ───┴→ R24 ────────────┘
 The table, not this simplified sketch, specifies all prerequisites. R06 and
 R19–R21 are already covered by existing Lean files; the rest are remaining
 implementation/proof tasks, except for whatever exact interfaces Mathlib supplies.
-After H, the next project-side foundational target is R01/R02, because ordinary-PC derivations and
-completed-line multiplication are required by both branches and are not supplied
-by our current semantic `ParityDerivation` type.
+R01 now supplies ordinary-PC derivations; R02 completed-line multiplication is
+the next shared foundation. These are required by both final arguments and are
+not supplied by the semantic `ParityDerivation` type.
 
 ## Third-party boundary
 
@@ -289,3 +289,7 @@ integration checkpoints. Do not rename it complete while obligations remain.
 Released R01: `76cc94b` (worker checkpoint `a1e1d72`, rebased onto `bae63b0`),
 verified ordinary PC/NS definitions and base interfaces. R02–R04 remain with
 the foundation worker; no publication conclusion follows from R01 alone.
+
+All six private pinned `.lake` caches were copied successfully before foundation
+work finished. The clean completed H worktrees were removed; their historical
+branch refs were retained.
