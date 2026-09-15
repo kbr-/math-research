@@ -297,3 +297,14 @@ branch refs were retained.
 Released R02: `866df1e` (worker `aa5ba8f1`, rebased onto `1ef7607`),
 completed-line polynomial multiplication, degree-controlled NS multiplication,
 and NS-to-PC inclusion. R03/R04 remain with the foundation worker.
+
+Released R13: `9fbb4ba` (worker `feab2cb3`), the two extracted row-linear and
+ordinary-restriction dimension claims. Released R03: `3b9669d` (worker
+`cbfa2718`), ordinary substitution and fixed-weight PC replay. Both are integrated
+into `formal`; append conflicts preserved all existing articles and index rows.
+
+Current worker allocation: `/root/r_foundations` finishes R04 in pc-foundations;
+`/root/h_chessboard` handles R05/R09/R10/R14 in boolean-matching;
+`/root/h_arithmetic` has moved from completed R13 to R07/R08/R16 in affine-removal.
+R15 remains pending R04/R07 in restriction. Decoder and clause-simulation are
+ready worktrees awaiting a worker slot and their prerequisites.
