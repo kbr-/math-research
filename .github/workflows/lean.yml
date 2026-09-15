@@ -30,7 +30,6 @@ jobs:
     env:
       MATHLIB_NO_CACHE_ON_UPDATE: '1'
       LEAN_NUM_THREADS: '2'
-      EVIDENCE: ${{ runner.temp }}/lean-evidence
     steps:
       - uses: actions/checkout@v6
         with:
@@ -39,6 +38,8 @@ jobs:
 
       - name: Record revision and reserve disk space
         run: |
+          export EVIDENCE="$RUNNER_TEMP/lean-evidence"
+          echo "EVIDENCE=$EVIDENCE" >> "$GITHUB_ENV"
           mkdir -p "$EVIDENCE"
           {
             git rev-parse HEAD
@@ -92,6 +93,7 @@ jobs:
       - name: Record final disk usage
         if: always()
         run: |
+          EVIDENCE="$RUNNER_TEMP/lean-evidence"
           mkdir -p "$EVIDENCE"
           df -h . | tee "$EVIDENCE/disk-final.txt"
           du -sh .lake/build .lake/packages "$HOME/.elan/toolchains" 2>/dev/null | tee "$EVIDENCE/disk-components.txt" || true
