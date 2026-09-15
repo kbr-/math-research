@@ -303,7 +303,7 @@ into `formal`; append conflicts preserved all existing articles and index rows.
 Current worker allocation: `/root/h_chessboard` is assembling final R14 in
 boolean-matching. R15 and the independent coefficient-isolation assignment are
 complete; their workers are idle. All R14 prerequisites are integrated. The
-coordinator retains R17/R25 and the brief final generalization sweep, with cached
+coordinator retains R17/R25 with cached
 verification and minimal source rereading under the user's quota constraint.
 
 Released R05: degree-controlled binary Boolean
@@ -443,18 +443,10 @@ images, and exact row-cube coefficient isolation. The latter uses the exposed,
 unchanged R13 monomial facts. Only final R14 separation assembly remains before
 the coordinator takes R17/R25.
 
-### Final generalization sweep (explicit user assignment)
+### Deferred generalization sweep
 
-After every Rxx obligation is complete, review the Lean project’s statements
-for clean generalizations that do not make their proofs more
-complex and may simplify them. Follow formalization/AGENTS.md: retain full
-coverage of the original claims, prove and record broader scope honestly, and
-keep complete human-readable proofs for changed arguments. Apply worthwhile
-generalizations; do not manufacture extensions merely to change every file.
-Use incremental verification for changed modules and their dependents. Complete
-this sweep before reporting the entire assignment finished and converting the
-execution section into its historical form.
-
-Generalization-sweep candidate: consolidate the Fin n affine bridge with the new
-finite-variable bridge if the existing interface can become a clean specialization
-without complicating proofs or disrupting consumers.
+The user deferred the generalization sweep to preserve quota for publication
+preparation. It is not part of the current completion requirement. Finish R17,
+R25, and their required records/checks; revisit generalization only when requested
+again, potentially after the publication is ready. The standing guidance still
+permits useful generalization when it directly simplifies an assigned proof.
