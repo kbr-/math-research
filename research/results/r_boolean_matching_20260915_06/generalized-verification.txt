@@ -1,0 +1,120 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.BinaryCubeDegreeDrop
+Claim file: claims/BinaryCubeDegreeDrop.lean
+Claim: lem:binary-cube-degree-drop
+Source: https://kbr.is-a.dev/math-research/#lean-binary-cube-degree-drop
+Scope: Explicit binary cube sums of constant substitutions in selected variable groups lower ordinary total degree by the number of groups and transport bounded ordinary NS certificates when generator images are fixed across the cube.
+Declarations: MathResearch.PolynomialCalculus.flipChoice_involutive MathResearch.PolynomialCalculus.flipChoice_ne MathResearch.PolynomialCalculus.cube_sum_cancel MathResearch.PolynomialCalculus.cubeDifference_apply MathResearch.PolynomialCalculus.cubeDifference_monomial_missing MathResearch.PolynomialCalculus.cube_degree_partition MathResearch.PolynomialCalculus.cube_inside_degree_bound MathResearch.PolynomialCalculus.cubeInput_monomial_degree MathResearch.PolynomialCalculus.cubeDifference_monomial_degree MathResearch.PolynomialCalculus.cubeDifference_degree MathResearch.PolynomialCalculus.cubeDifference_fixed_factor MathResearch.PolynomialCalculus.cubeDifference_ns MathResearch.PolynomialCalculus.cubeDifference_annihilates MathResearch.PolynomialCalculus.cubeDifference_low_degree
+$ lake --wfail build claims.BinaryCubeDegreeDrop
+✔ [1656/1656] Built claims.BinaryCubeDegreeDrop (7.4s)
+Build completed successfully (1656 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/tmpdq040921.lean
+@MathResearch.PolynomialCalculus.flipChoice_involutive : ∀ {I : Type} (i : I),
+  Function.Involutive (MathResearch.PolynomialCalculus.flipChoice i)
+'MathResearch.PolynomialCalculus.flipChoice_involutive' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.flipChoice_ne : ∀ {I : Type} (i : I) (e : I → ZMod 2),
+  MathResearch.PolynomialCalculus.flipChoice i e ≠ e
+'MathResearch.PolynomialCalculus.flipChoice_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.cube_sum_cancel : ∀ {I : Type} [inst : Fintype I] {A : Type} [inst_1 : AddCommGroup A]
+  [Module (ZMod 2) A] (i : I) (f : (I → ZMod 2) → A),
+  (∀ (e : I → ZMod 2), f (MathResearch.PolynomialCalculus.flipChoice i e) = f e) → ∑ e, f e = 0
+'MathResearch.PolynomialCalculus.cube_sum_cancel' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.cubeDifference_apply : ∀ {I V W : Type} [inst : Fintype I] (tag : V → Option I)
+  (g : V → MathResearch.PolynomialCalculus.Poly (ZMod 2) W) (a : V → ZMod 2 → ZMod 2)
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) V),
+  (MathResearch.PolynomialCalculus.cubeDifference tag g a) P =
+    ∑ e, (MvPolynomial.aeval (MathResearch.PolynomialCalculus.cubeInput tag g a e)) P
+'MathResearch.PolynomialCalculus.cubeDifference_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.cubeDifference_monomial_missing : ∀ {I V W : Type} [inst : Fintype I]
+  (tag : V → Option I) (g : V → MathResearch.PolynomialCalculus.Poly (ZMod 2) W) (a : V → ZMod 2 → ZMod 2) (d : V →₀ ℕ)
+  (c : ZMod 2) (i : I),
+  (∀ v ∈ d.support, tag v ≠ some i) →
+    (MathResearch.PolynomialCalculus.cubeDifference tag g a) ((MvPolynomial.monomial d) c) = 0
+'MathResearch.PolynomialCalculus.cubeDifference_monomial_missing' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.PolynomialCalculus.cube_degree_partition : ∀ {I V : Type} [inst : Fintype I] (tag : V → Option I)
+  (d : V →₀ ℕ),
+  MathResearch.PolynomialCalculus.outsideDegree tag d + MathResearch.PolynomialCalculus.insideDegree tag d =
+    d.sum fun x n => n
+'MathResearch.PolynomialCalculus.cube_degree_partition' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.cube_inside_degree_bound : ∀ {I V : Type} [inst : Fintype I] (tag : V → Option I)
+  (d : V →₀ ℕ),
+  (∀ (i : I), ∃ v ∈ d.support, tag v = some i) → Fintype.card I ≤ MathResearch.PolynomialCalculus.insideDegree tag d
+'MathResearch.PolynomialCalculus.cube_inside_degree_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.cubeInput_monomial_degree : ∀ {I V W : Type} (tag : V → Option I)
+  (g : V → MathResearch.PolynomialCalculus.Poly (ZMod 2) W),
+  (∀ (v : V), tag v = none → MvPolynomial.totalDegree (g v) ≤ 1) →
+    ∀ (a : V → ZMod 2 → ZMod 2) (e : I → ZMod 2) (d : V →₀ ℕ) (c : ZMod 2),
+      MvPolynomial.totalDegree
+          ((MvPolynomial.aeval (MathResearch.PolynomialCalculus.cubeInput tag g a e)) ((MvPolynomial.monomial d) c)) ≤
+        MathResearch.PolynomialCalculus.outsideDegree tag d
+'MathResearch.PolynomialCalculus.cubeInput_monomial_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.cubeDifference_monomial_degree : ∀ {I V W : Type} [inst : Fintype I]
+  (tag : V → Option I) (g : V → MathResearch.PolynomialCalculus.Poly (ZMod 2) W),
+  (∀ (v : V), tag v = none → MvPolynomial.totalDegree (g v) ≤ 1) →
+    ∀ (a : V → ZMod 2 → ZMod 2) (d : V →₀ ℕ) (c : ZMod 2),
+      MvPolynomial.totalDegree
+          ((MathResearch.PolynomialCalculus.cubeDifference tag g a) ((MvPolynomial.monomial d) c)) ≤
+        (d.sum fun x n => n) - Fintype.card I
+'MathResearch.PolynomialCalculus.cubeDifference_monomial_degree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.PolynomialCalculus.cubeDifference_degree : ∀ {I V W : Type} [inst : Fintype I] (tag : V → Option I)
+  (g : V → MathResearch.PolynomialCalculus.Poly (ZMod 2) W),
+  (∀ (v : V), tag v = none → MvPolynomial.totalDegree (g v) ≤ 1) →
+    ∀ (a : V → ZMod 2 → ZMod 2) (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) V),
+      MvPolynomial.totalDegree ((MathResearch.PolynomialCalculus.cubeDifference tag g a) P) ≤
+        MvPolynomial.totalDegree P - Fintype.card I
+'MathResearch.PolynomialCalculus.cubeDifference_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.cubeDifference_fixed_factor : ∀ {I V W : Type} [inst : Fintype I] (tag : V → Option I)
+  (g : V → MathResearch.PolynomialCalculus.Poly (ZMod 2) W) (a : V → ZMod 2 → ZMod 2)
+  (q f : MathResearch.PolynomialCalculus.Poly (ZMod 2) V) (r : MathResearch.PolynomialCalculus.Poly (ZMod 2) W),
+  (∀ (e : I → ZMod 2), (MvPolynomial.aeval (MathResearch.PolynomialCalculus.cubeInput tag g a e)) f = r) →
+    (MathResearch.PolynomialCalculus.cubeDifference tag g a) (q * f) =
+      (MathResearch.PolynomialCalculus.cubeDifference tag g a) q * r
+'MathResearch.PolynomialCalculus.cubeDifference_fixed_factor' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.cubeDifference_ns : ∀ {I V W : Type} [inst : Fintype I] (tag : V → Option I)
+  (g : V → MathResearch.PolynomialCalculus.Poly (ZMod 2) W),
+  (∀ (v : V), tag v = none → MvPolynomial.totalDegree (g v) ≤ 1) →
+    ∀ (a : V → ZMod 2 → ZMod 2) (F : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) V))
+      (G : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) W)),
+      (∀ f ∈ F,
+          ∃ r,
+            (r = 0 ∨ r ∈ G) ∧
+              ∀ (e : I → ZMod 2), (MvPolynomial.aeval (MathResearch.PolynomialCalculus.cubeInput tag g a e)) f = r) →
+        ∀ (B : ℕ),
+          ∀ P ∈ MathResearch.PolynomialCalculus.nsSpace F B,
+            (MathResearch.PolynomialCalculus.cubeDifference tag g a) P ∈
+              MathResearch.PolynomialCalculus.nsSpace G (B - Fintype.card I)
+'MathResearch.PolynomialCalculus.cubeDifference_ns' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.cubeDifference_annihilates : ∀ {I V W : Type} [inst : Fintype I] (tag : V → Option I)
+  (g : V → MathResearch.PolynomialCalculus.Poly (ZMod 2) W),
+  (∀ (v : V), tag v = none → MvPolynomial.totalDegree (g v) ≤ 1) →
+    ∀ (a : V → ZMod 2 → ZMod 2) (F : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) V))
+      (G : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) W)),
+      (∀ f ∈ F,
+          ∃ r,
+            (r = 0 ∨ r ∈ G) ∧
+              ∀ (e : I → ZMod 2), (MvPolynomial.aeval (MathResearch.PolynomialCalculus.cubeInput tag g a e)) f = r) →
+        ∀ (B : ℕ) (L : MathResearch.PolynomialCalculus.Poly (ZMod 2) W →ₗ[ZMod 2] ZMod 2),
+          (∀ q ∈ MathResearch.PolynomialCalculus.nsSpace G (B - Fintype.card I), L q = 0) →
+            ∀ P ∈ MathResearch.PolynomialCalculus.nsSpace F B,
+              L ((MathResearch.PolynomialCalculus.cubeDifference tag g a) P) = 0
+'MathResearch.PolynomialCalculus.cubeDifference_annihilates' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.cubeDifference_low_degree : ∀ {I V W : Type} [inst : Fintype I] (tag : V → Option I)
+  (g : V → MathResearch.PolynomialCalculus.Poly (ZMod 2) W) (a : V → ZMod 2 → ZMod 2)
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) V),
+  MvPolynomial.totalDegree P < Fintype.card I → (MathResearch.PolynomialCalculus.cubeDifference tag g a) P = 0
+'MathResearch.PolynomialCalculus.cubeDifference_low_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 14 audited declarations.

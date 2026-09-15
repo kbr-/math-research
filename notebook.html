@@ -18496,5 +18496,61 @@ Q_b\models Q_i\lor(1-u=1).
 </div>
 </article>
 
+<article id="entry-2026-09-15-lean-binary-cube-degree-drop">
+<h3>15 September 2026 — Binary cube differences lower ordinary degree and transport NS witnesses</h3>
+<p class="entry-meta">Verified reusable R14 prerequisite · explicit restriction-sum operator · board-specific application remains</p>
+<h4 id="lean-binary-cube-degree-drop">Statement and exact hypotheses</h4>
+<p>Let \(I\) be a finite set of selected groups, \(r=|I|\), and work over \(\mathbb F_2\). Each input variable \(X_v\) is either untagged or tagged by one \(i\in I\). For a cube choice \(\varepsilon\in\mathbb F_2^I\), define the ordinary polynomial substitution</p>
+<div class="math">\[
+ \sigma_\varepsilon(X_v)=
+ \begin{cases}
+ g_v,&v\text{ untagged},\\
+ a_v(\varepsilon_i),&v\text{ tagged by }i,
+ \end{cases}
+ \qquad \Delta(P)=\sum_{\varepsilon\in\mathbb F_2^I}\sigma_\varepsilon(P).
+\]</div>
+<p>Each untagged \(g_v\) is one fixed polynomial of total degree at most one. Each \(a_v\) is an arbitrary scalar-valued function on \(\mathbb F_2\); it depends only on its own group's choice. No bound is imposed on the ignored \(g_v\) of a tagged variable. The input and output variable sets need not themselves be finite; every ordinary polynomial has finite support. The verified bounds are</p>
+<div class="math">\[
+ \deg\Delta(P)\le\max\{0,\deg P-r\},
+ \qquad \deg P&lt;r\Longrightarrow\Delta(P)=0.
+\]</div>
+<p>The second conclusion is proved directly, not inferred from a degree-at-most-zero bound. The empty selected family is included; its cube has one choice and its degree loss is zero.</p>
+<h4>Complete cancellation and degree proof</h4>
+<p>Flip one cube coordinate by \(\varepsilon_i\mapsto\varepsilon_i+1\). This map is a fixed-point-free involution. If a summand is unchanged by that flip, its whole cube sum is zero: partition the finite cube into the involution's two-point orbits and add each identical value twice in characteristic two. This argument applies to any \(\mathbb F_2\)-module, including the output polynomial space.</p>
+<p>Consider one ordinary monomial \(cX^d\). If its support contains no variable tagged by some \(i\), changing \(\varepsilon_i\) leaves every substituted factor unchanged, so its cube sum is zero. Otherwise every selected group appears. Split its exponent sum into the untagged contribution \(D_{\rm out}\) and the tagged contribution \(D_{\rm in}\). For each selected group at least one supported exponent is positive, and distinct tags count disjoint contributions, so</p>
+<div class="math">\[
+ D_{\rm out}+D_{\rm in}=\sum_vd_v,
+ \qquad D_{\rm in}\ge r.
+\]</div>
+<p>All tagged variables become constants. The image of every untagged factor \(X_v^{d_v}\) has degree at most \(d_v\), so every corner image of the monomial has degree at most \(D_{\rm out}\le\sum_vd_v-r\). Taking their finite sum cannot increase this bound. Expanding \(P\) into its supported monomials, each of degree at most its actual total degree, proves the displayed degree inequality. If \(\deg P&lt;r\), no supported monomial can contain every selected group; each therefore cancels exactly, proving the stronger zero conclusion. In particular a nonempty selected family kills the constant one.</p>
+<h4>Ordinary NS transport with every generator multiple charged</h4>
+<p>Let \(\mathcal F\) and \(\mathcal G\) be source and residual polynomial systems. Assume that for every \(f\in\mathcal F\) there is one fixed \(g_f\), either zero or an actual generator of \(\mathcal G\), such that \(\sigma_\varepsilon(f)=g_f\) for every cube choice. Then</p>
+<div class="math">\[
+ \Delta(qf)=\left(\sum_\varepsilon\sigma_\varepsilon(q)\right)g_f
+           =\Delta(q)g_f.
+\]</div>
+<p>For one legal ordinary NS generator multiple \(qf\) of actual degree at most \(B\), its image is zero if \(g_f=0\). Otherwise it is the displayed multiple of the supplied residual generator, and its actual ordinary degree is at most \(\max(0,B-r)\), by applying the proved degree-drop theorem to \(qf\) itself. Thus it is a legal residual NS multiple through that ceiling. Linearity and induction over the original NS span prove</p>
+<div class="math">\[
+ \Delta\bigl(\mathcal I_B(\mathcal F)\bigr)
+   \subseteq\mathcal I_{\max(0,B-r)}(\mathcal G).
+\]</div>
+<p>This accounts for every original generator multiple before summation; it does not allow cancellation between illegal higher-degree source multiples or subtract an inflated generator-degree budget. Consequently any residual functional annihilating the latter NS space gives a source annihilator by composition with \(\Delta\).</p>
+<p><strong>Verification and scope.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/BinaryCubeDegreeDrop.lean">BinaryCubeDegreeDrop.lean</a> defines the actual cube homomorphisms and their linear sum, proves cancellation and ordinary-degree loss, proves fixed-factor extraction, and transports NS certificates and annihilators. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r_boolean_matching_20260915_06/generalized-verification.txt">final fourteen-declaration audit</a> checks the version bounding only untagged images; the preliminary all-image-bound audit is retained separately. <a href="https://github.com/kbr-/math-research/blob/main/research/results/r_boolean_matching_20260915_06">Scope and source provenance</a> record the evidence. This is a project-formulated finite-difference interface for the cube proof, without a novelty claim.</p>
+<p><strong>Remaining work and process assessment.</strong> R14 still requires its concrete board substitutions, proof that every unary generator has the stipulated cube-independent residual image, and isolation of the chosen coefficient in the actual R13 row-linear space through the R12 decoder. These hypotheses have not been assumed to declare R14 complete. The explicit operator separates the ordinary-degree argument from the board combinatorics, and removing the bound on ignored tagged-variable images gives its natural general scope. No framework rule or optional post-route sweep was added; no mathematical discrepancy was found.</p>
+<div class="timing-report" data-session="r_boolean_matching_20260915_06">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 17.26 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 0.30 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">7 min 25.63 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">9.20 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">42.12 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
