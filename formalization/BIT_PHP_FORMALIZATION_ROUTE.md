@@ -333,3 +333,8 @@ Released R11: `40baceb` (worker `c89c861b`), full two-row interpolation with
 ordinary NS cost `max(deg P,2)`, including the empty-column case. Its proof
 reuses the separately released squarefree-pair helper; full R09 is not required.
 The decoder worker continues R12.
+
+R07 coordinate release: `6a21b17` (worker `cfbb6273`), affine coordinate
+completion and injective free-coordinate parametrization with exact zero-set
+range. R07 now still needs fresh-companion degree and scalar PC cleanup; the
+coordinate prerequisite is verified, not assumed.
