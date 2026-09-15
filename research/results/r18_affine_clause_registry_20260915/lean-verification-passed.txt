@@ -1,0 +1,71 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.AffineClauseRegistry
+Claim file: claims/AffineClauseRegistry.lean
+Claim: def:affine-clause-PC-system
+Source: https://kbr.is-a.dev/math-research/#lean-affine-clause-PC-system
+Scope: One fixed finite registry of old-affine binary clauses, disjoint fresh accuracy-h coefficient blocks, complete companion and Boolean domains, empty-clause value one without coefficient variables, and full prefix/value/companion upper bounds for h≥1. Clause values are not added as axioms.
+Declarations: MathResearch.PolynomialCalculus.registry_fresh_value MathResearch.PolynomialCalculus.registry_coefficient_scope MathResearch.PolynomialCalculus.registry_input_degree MathResearch.PolynomialCalculus.registry_prefix_identity MathResearch.PolynomialCalculus.registry_value_degree MathResearch.PolynomialCalculus.registry_prefix_degree MathResearch.PolynomialCalculus.registry_companion_degree MathResearch.PolynomialCalculus.registry_empty_value MathResearch.PolynomialCalculus.registry_clause_data
+$ lake --wfail build claims.AffineClauseRegistry
+✔ [1788/1788] Built claims.AffineClauseRegistry (30s)
+Build completed successfully (1788 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/tmpkj7mj1hd.lean
+@MathResearch.PolynomialCalculus.registry_fresh_value : ∀ {σ : Type} [inst : Fintype σ] {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause σ) (h : ℕ) (c : Fin N),
+  MathResearch.PolynomialCalculus.registryValue C h c =
+    (MvPolynomial.rename ⇑(MathResearch.PolynomialCalculus.registryFreshEmbedding C h c))
+      (MathResearch.freshENSProduct (fun g => MathResearch.finiteAffinePolynomial ↑g) h)
+'MathResearch.PolynomialCalculus.registry_fresh_value' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_coefficient_scope : ∀ {σ : Type} {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause σ) (h : ℕ) {c d : Fin N},
+  c ≠ d → ∀ (u : Fin h) (g : ↥(C c)) (w : Fin h) (k : ↥(C d)), Sum.inr ⟨c, (u, g)⟩ ≠ Sum.inr ⟨d, (w, k)⟩
+'MathResearch.PolynomialCalculus.registry_coefficient_scope' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_input_degree : ∀ {σ : Type} [inst : Fintype σ] {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause σ) (h : ℕ) (c : Fin N) (g : ↥(C c)),
+  MvPolynomial.totalDegree (MathResearch.PolynomialCalculus.registryInput C h c g) ≤ 1
+'MathResearch.PolynomialCalculus.registry_input_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_prefix_identity : ∀ {σ : Type} [inst : Fintype σ] {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause σ) (h : ℕ) (c : Fin N),
+  1 - MathResearch.PolynomialCalculus.registryValue C h c =
+    ∑ g, MathResearch.PolynomialCalculus.registryPrefix C h c g * MathResearch.PolynomialCalculus.registryInput C h c g
+'MathResearch.PolynomialCalculus.registry_prefix_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_value_degree : ∀ {σ : Type} [inst : Fintype σ] {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause σ) (h : ℕ) (c : Fin N),
+  MvPolynomial.totalDegree (MathResearch.PolynomialCalculus.registryValue C h c) ≤ 2 * h
+'MathResearch.PolynomialCalculus.registry_value_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_prefix_degree : ∀ {σ : Type} [inst : Fintype σ] {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause σ) (h : ℕ),
+  1 ≤ h →
+    ∀ (c : Fin N) (g : ↥(C c)),
+      MvPolynomial.totalDegree (MathResearch.PolynomialCalculus.registryPrefix C h c g) ≤ 2 * h - 1
+'MathResearch.PolynomialCalculus.registry_prefix_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_companion_degree : ∀ {σ : Type} [inst : Fintype σ] {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause σ) (h : ℕ) (c : Fin N) (g : ↥(C c)),
+  MvPolynomial.totalDegree
+      (MathResearch.PolynomialCalculus.registryInput C h c g * MathResearch.PolynomialCalculus.registryValue C h c) ≤
+    2 * h + 1
+'MathResearch.PolynomialCalculus.registry_companion_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_empty_value : ∀ {σ : Type} [inst : Fintype σ] {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause σ) (h : ℕ) (c : Fin N),
+  C c = ∅ → MathResearch.PolynomialCalculus.registryValue C h c = 1
+'MathResearch.PolynomialCalculus.registry_empty_value' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_clause_data : ∀ {σ : Type} [inst : Fintype σ] {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause σ) (h : ℕ)
+  (old : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) σ)) (hh : 1 ≤ h) (c : Fin N),
+  (MathResearch.PolynomialCalculus.registryClauseData C h old hh c).value =
+      MathResearch.PolynomialCalculus.registryValue C h c ∧
+    (MathResearch.PolynomialCalculus.registryClauseData C h old hh c).input =
+        MathResearch.PolynomialCalculus.registryInput C h c ∧
+      (MathResearch.PolynomialCalculus.registryClauseData C h old hh c).cofactor =
+        MathResearch.PolynomialCalculus.registryPrefix C h c
+'MathResearch.PolynomialCalculus.registry_clause_data' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 9 audited declarations.

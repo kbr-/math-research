@@ -17995,5 +17995,54 @@ R-\sum_zX_{0z}X_{1z}\in\mathcal I_\ell(U).
 </div>
 </article>
 
+<article id="entry-2026-09-15-lean-affine-clause-registry">
+<h3>15 September 2026 — A fixed complete affine-clause ENS registry</h3>
+<p class="entry-meta">Status: full formalization of the indexed clause-system definition and its degree interfaces; R18.</p>
+<h4 id="lean-finite-affine-map-polynomial-bridge">Affine maps over arbitrary finite coordinate types</h4>
+<p><strong>Question and scope.</strong> Formalize the <a href="#affine-clause-PC-system">fixed affine-clause PC system</a> in a form shared by semantic clause rules and the actual bit-variable system. The existing affine-form interface uses coordinates \(\mathrm{Fin}(v)\). Here we generalize only the coordinate index to an arbitrary finite type \(\sigma\), so product types such as pigeon–bit pairs need no artificial flattening. This is the same elementary coefficient representation, not a novelty claim.</p>
+<p>For an affine map \(f:K^\sigma\to K\), over any field, define its ordinary polynomial</p>
+<div class="math">\[
+\widehat f(X)=f(0)+\sum_{i\in\sigma}f_{\mathrm{lin}}(e_i)X_i.
+\]</div>
+<p>It has total degree at most one. The coordinate expansion \(x=\sum_i x_i e_i\) and the affine identity \(f(x)=f_{\mathrm{lin}}(x)+f(0)\) show that \(\widehat f(x)=f(x)\) at every point. Addition and scalar multiplication of affine maps act coefficientwise, giving a linear conversion. If two converted polynomials agree, their evaluations show that the original maps agree, hence the conversion is injective. On \(\sigma=\mathrm{Fin}(v)\), the formula agrees exactly with the existing <code>affinePolynomial (affineFormOfMap f)</code>; this compatibility is also checked. The separate <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/FiniteAffinePolynomial.lean">FiniteAffinePolynomial.lean</a> file records this reusable bridge.</p>
+<h4 id="lean-affine-clause-PC-system">One finite registry, with all companions and Boolean domains</h4>
+<p>Fix a finite list of binary affine clauses \((C_c)_{c&lt;N}\) on \(\mathbb F_2^\sigma\), an old polynomial system \(\mathcal F\), and accuracy \(h\ge1\). Each clause is a finite set of true-indicator affine maps. Use the ordinary polynomial ring with variable type</p>
+<div class="math">\[
+\sigma\;\sqcup\;\coprod_{c&lt;N}\bigl([h]\times C_c\bigr).
+\]</div>
+<p>The left summand holds old variables. A right-summand variable \((c,u,g)\) is the fresh coefficient \(r_{c,u,g}\). Different clause identifiers have disjoint coefficient scopes by their tags, even when their literal sets overlap. A clause with no literals contributes no coefficient variables. Convert each literal by \(g\mapsto\widehat g\) and include its polynomial through the old-variable injection. Thus every input is old-only and affine; the family has one extension level.</p>
+<div class="math">\[
+P_c=\prod_{u&lt;h}\left(1-\sum_{g\in C_c}r_{c,u,g}\widehat g\right),\qquad
+E_{c,g}=\widehat gP_c,\qquad
+U_{c,g}=\sum_{u&lt;h}r_{c,u,g}
+ \prod_{w&lt;u}\left(1-\sum_{f\in C_c}r_{c,w,f}\widehat f\right).
+\]</div>
+<p>The fixed system is exactly the lifted old system, Booleanity for every old and coefficient variable, and all \(E_{c,g}\). Clause values \(P_c\) are not introduced as an additional family of axioms; their derivations belong to subsequent rule simulations. If \(C_c=\varnothing\), every factor is one and \(P_c=1\), with no companion or coefficient in that scope. Each nonempty value also equals the injective renaming of the <a href="#lean-fresh-ENS-block-degree">canonical fresh ENS block</a>; the equality is proved by changing the product index from \(\mathrm{Fin}(h)\) to \(0,\ldots,h-1\) and checking each factor. It is valid for empty clauses too.</p>
+<p><strong>Prefix identity and ordinary bounds.</strong> Apply the checked <a href="#mp-telescoping">ENS telescoping identity</a> to obtain</p>
+<div class="math">\[
+1-P_c=\sum_{g\in C_c}U_{c,g}\widehat g,\qquad
+\deg P_c\le2h,\quad \deg U_{c,g}\le2h-1,\quad
+\deg E_{c,g}\le2h+1.
+\]</div>
+<p>Indeed each old input and each coefficient variable has degree at most one, so each factor has degree at most two. The \(u\)-th prefix summand has degree at most \(1+2u\le2h-1\); multiplying \(P_c\) by an input costs at most one more. These are upper bounds, including zero and constant literals; no false exact-degree equality is introduced for degenerate clauses.</p>
+<p>The <code>PCClause</code> interface packages the actual input polynomials, value, cofactors, identity, degree bounds, and primitive PC proofs of all companions. <code>registryClauseData</code> constructs it from this fixed system, and its value, input, and cofactor fields are checked equal to the registry definitions. This is a concrete reusable certificate interface, not an assumption that arbitrary abstract clause values have the required proofs. Later rule engines can operate on it while the registry supplies its hypotheses.</p>
+<p><strong>Verification and remaining obligations.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/AffineClauseRegistry.lean">AffineClauseRegistry.lean</a> contains the construction. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r18_affine_clause_registry_20260915/lean-verification-passed.txt">registry report</a>, <a href="https://github.com/kbr-/math-research/blob/main/research/results/r18_affine_clause_registry_20260915/affine-bridge-verification.txt">affine bridge report</a>, and <a href="https://github.com/kbr-/math-research/blob/main/research/results/r18_affine_clause_registry_20260915/scope.md">scope map</a> preserve exact statements and transitive axiom audits. Initial retries corrected a reserved field name, equality-instance normalization, and dependent-type elaboration; no mathematical discrepancy was found. Process assessment: the arbitrary finite-coordinate bridge removes a concrete mismatch with bit-pair variables while retaining the previous affine API unchanged. R22/R23 rule derivations and the complete R24 source-DAG transfer remain separate claims.</p>
+<div class="timing-report" data-session="r18_affine_clause_registry_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>13 min 19.36 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">26.16 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 27.69 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">8 min 46.90 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">16.39 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">2 min 22.21 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 5.</p>
+</div>
+<p class="small">Initial instruction/source reading preceded instrumentation; dependency integration and elaboration retries are included, and final checkpoint work follows the snapshot.</p>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

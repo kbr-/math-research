@@ -1,0 +1,55 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.AffineClauseRegistry
+Claim file: claims/AffineClauseRegistry.lean
+Claim: def:affine-clause-PC-system
+Source: https://kbr.is-a.dev/math-research/#lean-affine-clause-PC-system
+Scope: One fixed finite registry of old-affine binary clauses, disjoint fresh accuracy-h coefficient blocks, complete companion and Boolean domains, empty-clause value one without coefficient variables, and full prefix/value/companion upper bounds for h≥1. Clause values are not added as axioms.
+Declarations: MathResearch.PolynomialCalculus.registry_fresh_value MathResearch.PolynomialCalculus.registry_coefficient_scope MathResearch.PolynomialCalculus.registry_input_degree MathResearch.PolynomialCalculus.registry_prefix_identity MathResearch.PolynomialCalculus.registry_value_degree MathResearch.PolynomialCalculus.registry_prefix_degree MathResearch.PolynomialCalculus.registry_companion_degree MathResearch.PolynomialCalculus.registry_empty_value MathResearch.PolynomialCalculus.registry_clause_data
+$ lake --wfail build claims.AffineClauseRegistry
+✔ [1787/1788] Built claims.FiniteAffinePolynomial (3.0s)
+✖ [1788/1788] Building claims.AffineClauseRegistry (28s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/clause-simulation/formalization/claims/AffineClauseRegistry.lean -o /home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/build/lib/lean/claims/AffineClauseRegistry.olean -i /home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/build/lib/lean/claims/AffineClauseRegistry.ilean -c /home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/build/ir/claims/AffineClauseRegistry.c --setup /home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/build/ir/claims/AffineClauseRegistry.setup.json --json
+error: claims/AffineClauseRegistry.lean:126:101: unsolved goals
+case e_a
+σ : Type
+inst✝ : Fintype σ
+N : ℕ
+C : Fin N → FiniteParityClause σ
+h : ℕ
+c : Fin N
+u : Fin h
+a✝¹ : u ∈ Finset.univ
+g : ↥(C c)
+a✝ : g ∈ Finset.univ
+⊢ X (Sum.inr ⟨c, (u, g)⟩) * (aeval fun i => X (Sum.inl i)) (finiteAffinePolynomial ↑g) =
+    X
+        ({
+            toFun := fun z =>
+              match z with
+              | Sum.inl x => Sum.inl x
+              | Sum.inr r => Sum.inr ⟨c, r⟩,
+            inj' := ⋯ }
+          (Sum.inr (u, g))) *
+      (aeval fun x =>
+          X
+            ({
+                toFun := fun z =>
+                  match z with
+                  | Sum.inl x => Sum.inl x
+                  | Sum.inr r => Sum.inr ⟨c, r⟩,
+                inj' := ⋯ }
+              (Sum.inl x)))
+        (finiteAffinePolynomial ↑g)
+Some required targets logged failures:
+- claims.AffineClauseRegistry
+error: build failed
+FAIL: Command failed
