@@ -82,5 +82,6 @@ bound** on the remaining relevant blocks.
 
 The central missing theorem is still refutation-sensitive elimination below
 \(b_n=\lfloor n/2\rfloor\), or a suitable joint design, for every relevant
-translated certificate. See IMPORT_LOG.md, RESEARCH_LOG.md, and
+translated certificate. See IMPORT_LOG.md, the
+[preserved early research record](https://kbr.is-a.dev/math-research/#local-zero-cofactor-pruning), and
 STATUS_AND_AUDIT.md for coverage and qualifications.

@@ -53,7 +53,7 @@ verification of all 68 working proofs. Source checks are recorded in IMPORT_LOG.
 | 2026-09-10 | Krajicek p. 10 identity | Printed Boolean-redundancy identity has a plus/minus typo over odd primes; correct formula is -x_ij Q_i - sum_{k!=j} Q_{i;j,k}. | Direct expansion and original PDF page. | Harmless here: Boolean axioms are explicitly included. No historical manuscript rewritten. |
 | 2026-09-10 | `imp:simulation` | Theorem 5.2 explicitly cites BIKPRS 6.7(1) and retains (h+1)^{O(ell)} degree dependence. | Krajicek v3 p. 13. | Recorded simulation statement matched; original construction/cofactors awaiting BIKPRS PDF. |
 | 2026-09-10 | `imp:pebbling`, `cor:genericbatchfalse` | Encoding and all-field degree correspondence match; c=1 gives the required single-sink polynomial-size family. | Pebbling v1 equations (2.5)-(2.6), Theorem 3.1, Definition 4.7, Lemma 4.9. | Imported input supporting the generic-design obstruction checked at the cited source-statement level. |
-| 2026-09-10 | New: `local:zero-cofactor-pruning` | Constant-specialize fresh variables of unused blocks throughout the complete certificate. | RESEARCH_LOG.md, first local entry. | Irrelevant blocks carry no charge. No uniform smallness theorem for surviving support. |
+| 2026-09-10 | New: `local:zero-cofactor-pruning` | Constant-specialize fresh variables of unused blocks throughout the complete certificate. | [Preserved original record](https://kbr.is-a.dev/math-research/#local-zero-cofactor-pruning). | Irrelevant blocks carry no charge. No uniform smallness theorem for surviving support. |
 
 
 ### Follow-up after user-supplied PDFs

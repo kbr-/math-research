@@ -205,7 +205,7 @@ ignored logs/tmp/runtime folders. The CLI's bounded output preview limits
 context usage only; saved output is full. Include essential data with its
 checkpoint under the Git rules in AGENTS.md.
 
-Reference output paths in the research log and relevant notebook entry. Preserve
+Reference output paths in the relevant notebook Research-record entry. Preserve
 the generating command, parameters, random seed if applicable, data encoding or
 schema, and verification/provenance (including hashes when useful). Use distinct
 run paths to preserve accepted earlier results. Prefer structured formats suited

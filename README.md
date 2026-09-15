@@ -318,8 +318,8 @@ metadata. It is ignored by Git.
 - `PROMPTS.md`: reusable Dump, Resume, and Spin prompts.
 - `notebook.html`: authoritative current state, working mathematical context,
   and append-only research record.
-- `research/notes/`: restart navigation, proofs, source audits, historical import
-  snapshots, and supporting research log.
+- `research/notes/`: restart navigation, proofs, source audits, and historical
+  import snapshots. The notebook is the sole research log.
 - `research/results/`: complete computation outputs and timing tables.
 - `research/references/`: bibliography, source audits, and papers cleared for
   redistribution. The [reference guide](research/references/README.md) lists

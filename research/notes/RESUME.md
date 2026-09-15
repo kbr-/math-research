@@ -99,8 +99,8 @@ historical mathematical sources only when the current research task needs them.
   [IMPORT_LOG.md](IMPORT_LOG.md) preserve exact locators, coverage, and limitations.
   Check [reference availability](../references/README.md) and redistribution
   metadata before access: some PDFs/full text do not travel with a public clone.
-- Supporting evidence: [RESEARCH_LOG.md](RESEARCH_LOG.md),
-  `research/results/`, and `research/provenance/`. Historical import snapshots
+- Supporting evidence: `research/results/` and `research/provenance/`.
+  The notebook's Research record is the sole research log. Historical import snapshots
   [MATHEMATICAL_CHECKPOINT.md](MATHEMATICAL_CHECKPOINT.md) and
   [STATUS_AND_AUDIT.md](STATUS_AND_AUDIT.md) are not live status summaries.
   Consult their dated audit details as needed; the notebook carries current status

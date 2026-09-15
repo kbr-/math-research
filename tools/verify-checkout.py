@@ -56,7 +56,7 @@ def main():
                     failures.append('Local reference differs from the audited version: ' + key)
     required = ['notebook.html', 'index.html', 'server.py', 'AGENTS.md', 'COMPUTATION_RULES.md',
                 'README.md', 'research/notes/RESUME.md', 'research/notes/SOURCE_AUDIT.md',
-                'research/notes/RESEARCH_LOG.md', 'compute.sh', 'start-codex.sh',
+                'compute.sh', 'start-codex.sh',
                 'resource-controls/setup.py', 'tools/remember-codex-session.py',
                 'tools/archive-session.py', 'requirements-research.txt', 'LICENSE',
                 'ATTRIBUTION.md', 'CITATION.cff', 'THIRD_PARTY_NOTICES.md']

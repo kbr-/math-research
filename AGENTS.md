@@ -96,7 +96,7 @@ actionable rule over another checklist or a record of one-off setup history.
   100 characters wide. Wrap prose manually and separate paragraphs with blank lines.
 - Preserve complete computation outputs and reproduction metadata under
   [the output policy](COMPUTATION_RULES.md#persist-computation-outputs).
-  Reference the files from the research log and relevant notebook entry, and
+  Reference the files from the relevant notebook Research-record entry, and
   commit them with the result.
 
 ## Computation policy
