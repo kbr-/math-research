@@ -341,8 +341,8 @@ coordinate prerequisite is verified, not assumed.
 
 ### Final generalization sweep (explicit user assignment)
 
-After every Rxx obligation is complete, review the Lean statements developed
-for this route for clean generalizations that do not make their proofs more
+After every Rxx obligation is complete, review the Lean project’s statements
+for clean generalizations that do not make their proofs more
 complex and may simplify them. Follow formalization/AGENTS.md: retain full
 coverage of the original claims, prove and record broader scope honestly, and
 keep complete human-readable proofs for changed arguments. Apply worthwhile
