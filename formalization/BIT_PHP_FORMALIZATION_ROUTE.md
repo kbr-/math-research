@@ -16,7 +16,7 @@ This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
 The third-party boundary **H** is now proved in Lean: H01–H13 are complete.
-R01–R05, R07, R09, and R11–R13 are verified and integrated, alongside the previously
+R01–R05, R07, R09, R11–R13, and R18 are verified and integrated, alongside the previously
 checked R06/R19–R21. The remaining obligations are in progress below. Proving H does not formalize its downstream consumers or the full paper.
 
 ## How to use the list
@@ -371,3 +371,12 @@ claims with degree-preserving scalar cleanup of complete blocks. Generic cleanup
 requires explicit idempotent constants; binary unit-span cleanup supplies them
 and requires h>0. The affine worker proceeds to R08 and R16, then will return to
 R15 in restriction. Eleven R steps remain after this release.
+
+Released R18: `37a1e00` (worker `e6c59d10`), complete affine-clause registry
+over arbitrary finite old-variable types, including its finite-affine polynomial
+bridge, empty-clause value, original degree bounds, and canonical block embedding.
+The clause worker proceeds to R22/R23/R24. Ten R steps remain.
+
+Generalization-sweep candidate: consolidate the Fin n affine bridge with the new
+finite-variable bridge if the existing interface can become a clean specialization
+without complicating proofs or disrupting consumers.
