@@ -15,8 +15,8 @@ This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
 The third-party boundary **H** is now proved in Lean: H01–H13 are complete.
-R01–R05, R07, R09, R11–R13, and R18 are verified and integrated, alongside the previously
-checked R06/R19–R21. The remaining obligations are in progress below. Proving H does not formalize its downstream consumers or the full paper.
+R01–R09, R11–R13, and R18–R22 are verified and integrated, reusing the earlier
+R06/R19–R21 proofs. The eight remaining obligations are in progress below. Proving H does not formalize its downstream consumers or the full paper.
 
 ## How to use the list
 
@@ -378,3 +378,13 @@ The clause worker proceeds to R22/R23/R24. Ten R steps remain.
 Generalization-sweep candidate: consolidate the Fin n affine bridge with the new
 finite-variable bridge if the existing interface can become a clean specialization
 without complicating proofs or disrupting consumers.
+
+Released R08: no-retained-core low-rank packing, including explicit coefficient
+degree bounds, the exact zero-indicator product, and Boolean NS companion
+certificates. Empty/rank-zero cases are covered by the generalized statement.
+The affine worker continues R16, then R15.
+
+Released R22: complementary-parity resolution, both as a reusable certificate
+engine and in the actual fixed registry, through `max(K,4h+1)`. Overlapping
+contexts and empty conclusions are included. The clause worker continues R23
+and R24. Eight R steps remain: R10, R14–R17, and R23–R25.
