@@ -1,9 +1,12 @@
 \section{Ordinary degree and polynomial calculus}\label{sec:algebra}
 
-All polynomial rings in the main argument are over \(\F\).
+The PC and linear-algebra statements in this section hold over any field \(K\),
+with arbitrary sets of variables. The Boolean reduction statement and the
+subsequent main argument use \(K=\F\).
 Degree bounds and accuracy parameters are integers.
 Polynomials are ordinary commutative polynomials. In particular, powers are
-not silently reduced using Booleanity. The Boolean equations are
+not silently reduced using Booleanity. We use the nonnegative total-degree
+convention \(\deg0=0\). The Boolean equations are
 \[
  \Bool_x=\{x_j^2-x_j:j\}.
 \]
@@ -12,7 +15,7 @@ Every displayed generator is an equation with right side zero.
 For a finite polynomial system \(\mathcal F\), write
 \begin{equation}\label{eq:ns-space}
  \Ideal_B(\mathcal F)
-  =\Span_{\F}\{qF:F\in\mathcal F,\ \deg(qF)\le B\}
+  =\Span_K\{qF:F\in\mathcal F,\ \deg(qF)\le B\}
    \subseteq\Pol_{\le B}.
 \end{equation}
 The degree constraint is imposed on each generator multiple. Cancellation
@@ -26,11 +29,12 @@ Let \(\Cons_B(\mathcal F)\) be the space of polynomials derivable in this
 way. Refutation means deriving one. The space \(\Cons_B\) is closed under
 linear combinations, but equality with \(\Ideal_B\) requires a proof.
 
-\begin{lemma}[Multiplying a completed line]\label{lem:pc-product}
+\begin{lemma}[Multiplying a completed line]\label{lem:pc-product}\lean{claims/PolynomialCalculusReuse.lean}
 If \(g\) has a degree-\(B\) PC derivation and \(q\) is any polynomial,
 then \(qg\) has a PC derivation through
 \(\max\{B,\deg q+\deg g\}\).
-Moreover \(\Ideal_B(\mathcal F)\subseteq\Cons_B(\mathcal F)\).
+Moreover \(\Ideal_B(\mathcal F)\subseteq\Cons_B(\mathcal F)\), and
+\(q\Ideal_B(\mathcal F)\subseteq\Ideal_{B+\deg q}(\mathcal F)\).
 \end{lemma}
 \begin{proof}
 Expand \(q\) into monomials. Starting from the already derived line \(g\),
@@ -39,10 +43,11 @@ the indicated linear combination. Each new line has degree at most
 \(\deg g+\deg q\). The zero case is immediate.
 Applying this construction to each legal axiom multiple in
 \eqref{eq:ns-space}, then summing, proves the second assertion.
+Multiplying each legal generator multiple by \(q\) proves the last assertion.
 There is no need to multiply the earlier derivation of \(g\).
 \end{proof}
 
-\begin{lemma}[Degree-controlled Boolean reduction]\label{lem:boolean}
+\begin{lemma}[Degree-controlled Boolean reduction]\label{lem:boolean}\lean{claims/BooleanReduction.lean}
 For every polynomial \(R\) of degree at most \(d\), its squarefree
 remainder \(\overline R\) satisfies
 \[
@@ -75,3 +80,49 @@ We use this reduction lemma only when the required degree is explicitly
 available. The high-rank step below instead needs literal membership in
 an affine ideal; pointwise vanishing on a finite field does not by itself
 supply that stronger conclusion.
+
+
+\begin{lemma}[Substitution and fixed-weight replay]\label{lem:substitution}
+\lean{claims/PolynomialCalculusSubstitution.lean}
+Let \(K\) be any field. Let \(\phi\) substitute polynomials of degree at most
+\(T\ge0\) for source variables. Then \(\deg\phi(p)\le T\deg p\), and
+\(\phi\) carries degree-\(D\) PC derivations to degree-\(TD\) derivations
+from the substituted axioms. More generally, fix a target polynomial \(w\)
+and a target system \(\mathcal G\). If each source axiom \(F\) of degree
+at most \(D\) has its weighted image \(w\phi(F)\) derivable from
+\(\mathcal G\) through \(TD+\deg w\), then so does the weighted image
+of every line of a degree-\(D\) source derivation.
+\end{lemma}
+\begin{proof}
+Expand into monomials to obtain the degree inequality. Induct on primitive
+PC steps. Zero, addition and scalar multiplication commute with the weighted
+map. At a nonzero multiplication \(p\mapsto xp\), ordinary degree gives
+\(\deg p+1\le D\). The completed weighted line has degree at most
+\(\deg w+T\deg p\); multiplying it by \(\phi(x)\) costs at most
+\(\deg w+T(\deg p+1)\le TD+\deg w\), by
+Lemma~\ref{lem:pc-product}. A zero predecessor stays zero. Taking \(w=1\)
+and the substituted axioms as target system gives ordinary substitution.
+\end{proof}
+
+\begin{lemma}[Separation and compatible extension]\label{lem:duality}
+\lean{third-party-claims/LinearSeparation.lean}
+\lean{claims/PolynomialCalculusDuality.lean}
+Let \(U,S\) be subspaces of a vector space \(V\) over any field \(K\).
+A linear functional on \(U\) extends to one on \(V\) vanishing on \(S\)
+if and only if it vanishes on \(U\cap S\).
+In particular, if \(p\notin S\), there is a linear functional
+\(\lambda\) with \(\lambda(S)=0\) and \(\lambda(p)=1\).
+Consequently, for either \(S=\Ideal_B(\mathcal F)\) or
+\(S=\Cons_B(\mathcal F)\), a normalized annihilator on
+\(\Pol_{\le B}\) exists exactly when \(1\notin S\).
+No finite-dimensional hypothesis is needed for the extension assertion.
+\end{lemma}
+\begin{proof}
+Define the extension on \(U+S\) by \(\lambda(u+s)=\lambda(u)\).
+The intersection condition makes this well-defined. Extend a basis of
+\(U+S\) to a basis of \(V\), and assign zero on the added basis vectors.
+For separation, start on \(Kp\) with \(\lambda(cp)=c\); its intersection
+with \(S\) is zero. Necessity follows by restricting a vanishing functional.
+The polynomial consequences follow by applying this construction inside
+\(\Pol_{\le B}\).
+\end{proof}

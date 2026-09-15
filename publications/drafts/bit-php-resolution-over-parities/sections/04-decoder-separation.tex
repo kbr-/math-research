@@ -1,9 +1,10 @@
 \section{The bit decoder and a separating functional}\label{sec:decoder}
 
-Continue with \(n=2^\ell\), \(\ell\ge2\), and \(m=n+1\).
+Here \(m\ge0\) is arbitrary and \(n=2^\ell\). We impose \(\ell\ge2\)
+only for the old-base transfer and separation theorem.
 The old compact bit system is
 \begin{equation}\label{eq:compact-base}
- \mathcal Q_n
+ \mathcal Q_{m,\ell}
   =\{E_{ii'}:i<i'\in[m]\}\cup\Bool_b,
  \qquad
  E_{ii'}=\prod_{t=1}^{\ell}(1-b_{it}-b_{i't}).
@@ -17,8 +18,8 @@ ordinary ring map
  \tau(b_{it})=\sum_{z:z_t=1}X_{iz}.
 \end{equation}
 
-\begin{lemma}[Two-row interpolation]\label{lem:interpolation}
-Let \(\mathcal U_{i,i'}\) consist of Booleanity, same-row exclusions,
+\begin{lemma}[Two-row interpolation]\label{lem:interpolation}\lean{claims/TwoRowInterpolation.lean}
+For any common row width \(N\ge0\), let \(\mathcal U_{i,i'}\) consist of Booleanity, same-row exclusions,
 and the two row-sum equations for distinct rows \(i,i'\).
 For a polynomial \(R\) supported on these rows and of degree at most \(d\),
 \[
@@ -42,120 +43,171 @@ The result is bilinear, and its coefficient at \(X_{iz}X_{i'w}\)
 is its value at \((e_z,e_w)\), namely \(R(e_z,e_w)\).
 \end{proof}
 
-\begin{lemma}[Degree-preserving old-base transfer]\label{lem:decoder}
-If \(q\in\Cons_B(\mathcal Q_n)\), then
-\[
- \tau q\in\Cons_B(\mathcal F^{\mathrm{fun}}_{m,n}).
-\]
-The map \(\tau\) is injective and preserves ordinary degree.
+
+\begin{lemma}[A polynomial left inverse for the decoder]\label{lem:decoder-injective}
+\lean{claims/CompactBitDecoder.lean}
+For every \(m,\ell\ge0\), the decoder \(\tau\) is injective and preserves
+ordinary total degree.
 \end{lemma}
 \begin{proof}
-The bit Booleanity images have explicit degree-two certificates:
-\[
- \tau(b_{it}^2-b_{it})
-    =\sum_{z:z_t=1}(X_{iz}^2-X_{iz}).
-\]
-For a collision image, use Lemma~\ref{lem:interpolation} with
-\(R=\tau(E_{ii'})\). At \((e_z,e_w)\) its value is one exactly when
-\(z=w\). Since \(\ell\ge2\), the lemma gives
-\[
- \tau(E_{ii'})-\sum_z X_{iz}X_{i'z}
-     \in\Ideal_\ell(\mathcal U_{i,i'}).
-\]
-The remaining sum consists of degree-two column exclusions.
-Thus every old bit axiom image has an NS, hence PC, certificate through
-its original degree.
-
-For each row, the coefficient vectors of the \(\ell\) forms
-\(\tau(b_{it})\) are linearly independent: the column labeled by the
-\(t\)-th unit bit vector isolates the \(t\)-th coefficient.
-Complete these forms to a linear coordinate system in the unary
-variables. This proves injectivity and degree preservation.
-Finally, replay a PC derivation under \(\tau\). A variable multiplier
-becomes a linear polynomial, which is implemented by variable
-multiplications and a linear combination at the same degree.
-The certified axiom images initialize this replay.
+Define a linear substitution \(\lambda\) on unary variables by sending
+\(X_{i,e_t}\) to \(b_{it}\), where \(e_t\) is the unit bit label, and
+all other unary variables to zero. The unit labels are distinct and
+\(\lambda\tau(b_{it})=b_{it}\), so \(\lambda\tau\) is the identity
+on polynomials. Both substitutions have degree at most one; applying the
+degree inequality in both directions proves equality, as well as injectivity.
 \end{proof}
 
+\begin{lemma}[Degree-preserving old-base transfer]\label{lem:decoder}
+\lean{claims/CompactBitDecoderTransfer.lean}
+For \(m\ge0\), \(\ell\ge2\), and every \(B\ge0\),
+\[
+ q\in\Cons_B(\mathcal Q_{m,\ell})
+ \quad\Longrightarrow\quad
+ \tau q\in\Cons_B(\mathcal F^{\mathrm{fun}}_{m,n}).
+\]
+\end{lemma}
+\begin{proof}
+Bit Booleanity has a degree-two image certificate:
+\[
+ \tau(b_{it}^2-b_{it})=\sum_{z:z_t=1}(X_{iz}^2-X_{iz}).
+\]
+At a two-row one-hot assignment \((e_z,e_w)\), \(\tau(E_{ii'})\)
+is one exactly when \(z=w\). Lemma~\ref{lem:interpolation} therefore gives
+\[
+ \tau(E_{ii'})-\sum_zX_{iz}X_{i'z}
+       \in\Ideal_\ell(\mathcal U_{i,i'}).
+\]
+The remaining terms are column exclusions of degree two. Thus every axiom
+image has a certificate through its original degree. Replay the source
+proof using Lemma~\ref{lem:substitution} with \(T=1\), \(w=1\).
+Only axioms actually admitted by the source degree ceiling must be replayed;
+there is no additional assumption \(B\ge\ell\).
+\end{proof}
+
+
 Let \(\mathcal L_k\) be the space spanned by monomials of degree at most
-\(k\) containing at most one bit variable from each row. Its dimension is
+\(k\) containing at most one bit variable from each row.
+
+\begin{lemma}[Row-linear dimension]\label{lem:row-dimension}
+\lean{claims/RowLinearPolynomialSpace.lean}
+Over any field, for all \(m,\ell,k\ge0\),
 \begin{equation}\label{eq:row-linear-dimension}
- \dim\mathcal L_k=\sum_{j=0}^k\binom mj\ell^j
- \quad\text{when }k\le m.
+ \dim\mathcal L_k=\sum_{j=0}^k\binom mj\ell^j.
 \end{equation}
+Every nonzero polynomial in this space has a nonzero monomial coefficient
+of degree equal to its total degree.
+\end{lemma}
+\begin{proof}
+Ordinary monomials form a basis. To choose a row-linear monomial of degree
+\(j\), choose its \(j\) rows and one of \(\ell\) coordinates in each.
+Terms with \(j>m\) contribute zero. The last assertion follows by choosing
+a maximal-degree element of the finite nonempty support.
+\end{proof}
+
+\begin{lemma}[Binary cube degree drop]\label{lem:cube-drop}
+\lean{claims/BinaryCubeDegreeDrop.lean}
+Partition some source variables into \(t\) indexed groups. For each
+\(\epsilon\in\F^t\), substitute scalars depending only on \(\epsilon_i\)
+for variables in group \(i\), and fixed affine target polynomials for
+all remaining variables. Write \(\phi_\epsilon\) for this substitution
+and \(\Delta p=\sum_\epsilon\phi_\epsilon(p)\). Then
+\[
+ \deg\Delta p\le\max\{\deg p-t,0\},\qquad
+ \deg p<t\Longrightarrow\Delta p=0.
+\]
+If every source generator \(F\) has a cube-independent image \(r_F\)
+which is zero or a target generator, then
+\[
+ \Delta\Ideal_B(\mathcal F)\subseteq
+       \Ideal_{\max\{B-t,0\}}(\mathcal G).
+\]
+The variable sets may be arbitrary; only the cube index set must be finite.
+\end{lemma}
+\begin{proof}
+A monomial missing one group has equal evaluations in pairs obtained by
+flipping that cube coordinate, so its sum is zero. A surviving monomial
+uses at least \(t\) selected variables, which become scalars; the remaining
+factors have total degree at most its original degree minus \(t\).
+For a legal multiple \(qF\), cube independence gives
+\(\Delta(qF)=(\Delta q)r_F\). If \(r_F=0\) it vanishes; otherwise it is
+one target generator multiple, whose degree is at most \(B-t\) when
+\(B\ge t\). When \(B<t\), it is zero. Extend by linearity.
+\end{proof}
+
+\begin{lemma}[Row-cube restriction and coefficient isolation]\label{lem:row-cube}
+\lean{claims/DisjointCoordinatePairs.lean}
+\lean{claims/RowCubeRestriction.lean}
+\lean{claims/RowCubeCoefficientIsolation.lean}
+Choose \(t\) distinct rows and, for each, two labels differing only in
+one prescribed bit. If these pairs are disjoint, the one-hot substitutions
+on the selected rows, together with deletion of their \(2t\) columns on
+other rows, give
+\[
+ \Delta\Ideal_B(\mathcal F^{\mathrm{fun}}_{m,n})
+ \subseteq\Ideal_{\max\{B-t,0\}}
+       (\mathcal F^{\mathrm{fun}}_{m-t,n-2t}).
+\]
+For a row-linear \(f\) of degree at most \(t\), this cube applied to
+\(\tau f\) is the constant coefficient of the monomial selecting those
+rows and prescribed bits. Such disjoint pairs can be chosen whenever
+\(t\ge1\) and \(4(t-1)<2^\ell\).
+More generally, the coefficient-isolation identity holds for arbitrary
+cube-independent polynomial images of the unselected bits, provided each
+selected bit has its prescribed base value plus its selected cube coordinate,
+and the other bits in that row stay constant.
+\end{lemma}
+\begin{proof}
+On a selected row, each substitution is a one-hot assignment; on every
+other row, deleted columns become zero and surviving variables are relabeled.
+Booleanity, row exclusions and column exclusions consequently map to zero
+or the corresponding residual generator. Disjointness prevents a collision
+between selected rows or between selected and residual rows. A selected
+row-sum equation maps to zero, and every other row-sum equation maps to
+its residual counterpart. Lemma~\ref{lem:cube-drop} applies.
+
+A row-linear monomial missing a selected row cancels by a cube flip. If it
+uses all \(t\) selected rows, the degree bound forces it to use exactly
+one variable in each and none outside. The two-value sum in each row is
+one for the prescribed bit and zero for every other bit. This isolates
+exactly the claimed coefficient, independently of the images outside the
+selected rows. Finally, after selecting \(j\) pairs, their \(2j\) vertices
+forbid at most \(2j\) of the \(2^{\ell-1}\) pairs in any specified direction.
+The strict packing bound permits the next choice.
+\end{proof}
 
 \begin{theorem}[Row-linear separation through a larger PC degree]
-\label{thm:row-separation}
-Suppose \(1\le k\le B\), \(4(k-1)<n\), and \(n\ge2B-1\).
-For every nonzero \(f\in\mathcal L_k\),
+\label{thm:row-separation}\lean{claims/CubeResidualDualSeparation.lean}
+Let \(m\ge0\), \(\ell\ge2\), \(n=2^\ell\), and suppose
+\(1\le k\le B\), \(4(k-1)<n\), and \(2B-1\le n\).
+For every nonzero \(f\in\mathcal L_k\), there is a linear functional
+\(\mu\) on unary polynomials through degree \(B\) such that
 \[
- \tau f\notin\Cons_B(\mathcal F^{\mathrm{fun}}_{m,n}),
- \qquad
- f\notin\Cons_B(\mathcal Q_n).
+ \mu(\Cons_B(\mathcal F^{\mathrm{fun}}_{m,n}))=0,
+ \qquad \mu(\tau f)=1.
+\]
+It can be chosen with \(\mu(1)=0\) if \(\deg f>0\), and
+\(\mu(1)=1\) if \(\deg f=0\). Consequently
+\[
+ \tau f\notin\Cons_B(\mathcal F^{\mathrm{fun}}_{m,n}),\qquad
+ f\notin\Cons_B(\mathcal Q_{m,\ell}).
 \]
 \end{theorem}
 \begin{proof}
-If \(f\) is constant, it is one, and a normalized functional from
-Theorem~\ref{thm:moments} separates it.
-Otherwise choose a degree-\(t\) monomial with nonzero coefficient, where
-\(t=\deg f\le k\). Let \(S\) be its row set and let \(a_i\) be its bit
-coordinate in row \(i\in S\).
-
-Choose disjoint two-point coordinate lines
+A nonzero constant over \(\F\) is one, so that case follows from a
+normalized matching functional. Otherwise put \(t=\deg f\) and choose a
+nonzero degree-\(t\) coefficient. Lemma~\ref{lem:row-cube} supplies its
+coordinate pairs and residual operator \(\Delta\), with \(\Delta\tau f=1\).
+Because \(n\) is divisible by four, \(4(k-1)<n\) implies \(k\le n/4\).
+Thus \(n-2t\ge1\), and
 \[
- C_i=\{c_i,c_i+e_{a_i}\}\subseteq\{0,1\}^{\ell},\qquad i\in S.
+ n-2t\ge2(B-t)-1.
 \]
-For any required direction there are \(n/2\) possible lines.
-The points in previously chosen lines forbid at most \(2(t-1)\) of them.
-The inequality \(4(k-1)<n\) therefore permits greedy selection.
-Let \(F=\bigcup_{i\in S}C_i\), so \(|F|=2t\).
-
-On the \(m-t\) remaining rows and the \(n-2t\) labels outside \(F\),
-choose a normalized matching functional \(\lambda\) through degree
-\(B-t\). Theorem~\ref{thm:moments} applies because
-\[
- m-t\ge B-t,\qquad n-2t\ge2(B-t)-1.
-\]
-There are residual labels: since \(n\) is divisible by four, the strict
-packing inequality implies \(k\le n/4\).
-At degree zero, \(\lambda\) is simply the normalized functional on
-constants.
-
-Define moments \(\mu(X_T)\) for all matchings of size at most \(B\).
-Give a matching value zero unless it occupies every row \(i\in S\)
-at a label in \(C_i\), and every other occupied row uses a label outside
-all of \(F\). In the remaining case set
-\begin{equation}\label{eq:cube-moment}
- \mu(X_T)=\lambda(X_{T|_{[m]\setminus S}}).
-\end{equation}
-Extend this to ordinary monomials by Boolean power reduction and value
-zero on row or column collisions.
-
-We verify all equations of Lemma~\ref{lem:marginals}.
-An already incorrect selected-row label or an outside row using a label
-in \(F\) cannot be repaired by adding a cell.
-If a matching misses at least two selected rows, one extension leaves
-its value zero. If it misses exactly one selected row and the marginal
-adds that row, its two allowed endpoints give equal residual values
-whose sum is zero in \(\F\). A marginal adding a different row still
-has value zero. Finally, if every selected row is present, a marginal
-in another row is a marginal of \(\lambda\), since all added labels in
-\(F\) have value zero. These cases exhaust the equations.
-Consequently \(\mu\) annihilates \(\Ideal_B\), and hence \(\Cons_B\) by
-Corollary~\ref{cor:stability}.
-
-Only monomials of \(f\) with row set \(S\) can contribute to
-\(\mu(\tau f)\). They have degree \(t\) and use one bit in each such row.
-Equation~\eqref{eq:cube-moment} evaluates them by summing over
-\(\prod_{i\in S}C_i\), with residual value \(\lambda(1)=1\).
-In a selected row the sum of bit \(a_i\) over its two endpoints is one,
-whereas the sum of every other bit is zero. The product of these
-one-bit differences isolates exactly the chosen monomial's coefficient.
-Thus \(\mu(\tau f)=1\), proving the first exclusion.
-The second follows from Lemma~\ref{lem:decoder}.
+Theorem~\ref{thm:moments} supplies a normalized residual annihilator
+\(\lambda\) through \(B-t\), even if there are fewer than \(B-t\)
+remaining rows. Set \(\mu=\lambda\circ\Delta\).
+The residual NS transport and Corollary~\ref{cor:stability} show that
+\(\mu\) annihilates the old unary PC space. Coefficient isolation gives
+\(\mu(\tau f)=1\), whereas \(\Delta1=0\) gives \(\mu(1)=0\).
+Finally apply Lemma~\ref{lem:decoder} for the bit consequence.
 \end{proof}
-
-The functional \(\mu\) in the nonconstant case has value zero on one.
-It is a separating direction in a finite-dimensional dual space,
-not a probability distribution. Its role is to exclude the particular
-nonzero \(f\), rather than merely to exclude a refutation of the old base.

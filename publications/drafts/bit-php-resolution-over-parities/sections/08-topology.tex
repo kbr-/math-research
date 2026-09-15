@@ -1,110 +1,330 @@
 \section{The required chessboard homology}\label{sec:topology}
 
-We include the homological input used in
-Theorem~\ref{thm:moments}. All homology in this appendix has coefficients
-in \(\F\). A finite simplicial complex is called \(q\)-acyclic if its
-reduced homology vanishes in every degree from \(-1\) through \(q\).
-Thus \((-1)\)-acyclic means nonempty. Below degree \(-1\) the condition
-is vacuous. Nonempty here means having at least one vertex.
+This appendix proves the full homological input, including its chain-level
+prerequisites. All coefficients are in \(\F\). The identifiers H01--H13
+match the dependency route of the formalization; they are included only to
+make correspondence with the linked sources easy. The chessboard bound is
+the homological consequence of the stronger connectivity theorem of
+Bj\"orner, Lov\'asz, Vre\'cica, and \v{Z}ivaljevi\'c
+\cite[Theorem 1.1]{BLVZ94}. We follow its star-cover strategy, with an
+explicit finite chain proof of the cover lemma. We do not assume that
+theorem or a spectral-sequence convergence result as a black box.
 
-\begin{lemma}[Homological cover lemma]\label{lem:nerve}
-Let a finite simplicial complex \(K\) be covered by subcomplexes
-\(L_1,\ldots,L_t\), and let \(\mathcal N\) be the nerve of this cover.
-Fix \(q\ge0\).
-If every nonempty intersection of \(s\) members is
-\((q-s+1)\)-acyclic and \(\mathcal N\) is \(q\)-acyclic, then \(K\)
-is \(q\)-acyclic.
-\end{lemma}
-\begin{proof}
-Here is the chain-complex comparison behind the assertion.
-Form the finite double complex
+\subsection{Augmented chains and their elementary operations}
+
+A finite augmented simplicial complex \(K\) is a downward-closed family
+of subsets of a finite vertex set \(V\), containing the empty face.
+It need not have a vertex. Write \(C_k(K)\) for coefficient functions
+on its faces with exactly \(k\) vertices, extended by zero to all subsets
+of \(V\). Thus the cell count \(k\) is reduced homological degree
+\(k-1\): \(C_0(K)=\F\) is the augmentation group.
+Write \(\operatorname{Exact}(K,k)\) when every \(k\)-cell cycle has a
+\((k+1)\)-cell filler, and \(\operatorname{Acyclic}(K,n)\) when this
+holds for every \(0\le k<n\). For \(n\ge1\), this says reduced homology
+vanishes from degree \(-1\) through \(n-2\); for \(n=0\) it is vacuous.
+In particular, \(\operatorname{Exact}(K,0)\) means that \(K\) has a vertex.
+
+\begin{proposition}[H01: supported augmented boundary]\label{prop:h01}
+\lean{claims/AugmentedChains.lean}
+For \(k\ge1\), the formula
 \[
- D_{a,b}=
-  \bigoplus_{\substack{J\subseteq[t]\\|J|=a+1,\ L_J\ne\varnothing}}
-       C_b(L_J;\F),
- \qquad L_J=\bigcap_{j\in J}L_j,
- \qquad a,b\ge0.
+ (\partial c)(T)=\sum_{v\notin T}c(T\cup\{v\})
 \]
-The vertical differential is the simplicial boundary and the horizontal
-differential omits one cover index and includes the chain in the larger
-intersection. In characteristic two their sum is a differential.
-Augment the horizontal rows to \(C_b(K;\F)\).
-For each individual simplex of \(K\), the set of cover members containing
-it is a nonempty simplex of indices. Its augmented chain complex is
-exact. Taking the direct sum over simplices proves that every augmented
-horizontal row is exact. Thus computing the total complex first in the
-horizontal direction gives the homology of \(K\).
-
-Compute instead first vertically.
-The first page consists of
-\(\bigoplus_{|J|=a+1}H_b(L_J;\F)\).
-For \(b>0\) and \(a+b\le q\), these groups vanish by the assumed
-\((q-a)\)-acyclicity.
-For \(b=0\) and \(a\le q\), each nonempty \(L_J\) is connected,
-so the horizontal chain groups are precisely those of the nerve.
-In degree \(a=q+1\), the augmentation
-\(H_0(L_J)\longrightarrow\F\) is still onto for every nonempty
-intersection. Hence the incoming boundaries contain all the nerve
-boundaries needed in degree \(q\).
-It follows that the second page has zero reduced groups in total
-degrees at most \(q\), since the nerve is \(q\)-acyclic.
-No later page can create a group where the preceding one is zero.
-The double complex is finite, so its filtration converges and the
-same vanishing holds for \(K\). Augmenting degree zero throughout
-gives the assertion for reduced homology as well.
+defines a linear map \(C_k(K)\to C_{k-1}(K)\). Its restriction from
+\(C_1(K)\) to \(C_0(K)\) is the sum of vertex coefficients.
+The outgoing boundary of \(C_0(K)\) is zero.
+The supported-coefficient model is linearly equivalent to functions on
+exact-size faces, including for chessboard complexes.
+\end{proposition}
+\begin{proof}
+A nonzero summand requires \(T\cup\{v\}\in K\) and cardinality \(k\).
+Downward closure gives \(T\in K\), and \(v\notin T\) gives
+\(|T|=k-1\). Finite sums are linear. At count zero every inserted face
+is nonempty, so its coefficient vanishes. Restrict a supported function
+to exact-size faces and invert by extension by zero. These maps are
+linear and mutually inverse.
 \end{proof}
 
-\begin{theorem}[Homological chessboard bound {\cite[Theorem 1.1]{BLVZ94}}]
-\label{thm:chessboard}
-For \(a,b\ge1\), let
+\begin{lemma}[H02: the boundary squares to zero]\label{lem:h02}
+\lean{third-party-claims/AugmentedBoundarySquared.lean}
+The augmented boundary satisfies \(\partial^2=0\) at every cell count.
+\end{lemma}
+\begin{proof}
+At a face \(T\), the double sum inserts two distinct vertices outside
+\(T\). Pair the ordered insertion \((u,v)\) with \((v,u)\).
+They contribute the same coefficient, twice, hence zero in \(\F\).
+The outgoing augmentation boundary is already zero, so this includes
+all low-count cases.
+\end{proof}
+
+\begin{lemma}[H03: injective chain maps and relabeling]\label{lem:h03}
+\lean{claims/AugmentedChainMaps.lean}
+\lean{claims/AugmentedSubcomplexRelabeling.lean}
+An injective vertex map carrying faces of \(K\) to faces of \(L\)
+induces a degree-preserving linear pushforward commuting with boundary.
+If it gives a bijection on the faces of the two complexes, this is a
+chain isomorphism and transports cycle fillings in both directions.
+In particular this applies to subcomplex inclusions, chessboard transpose,
+and relabeling a residual board. It also identifies the supported boundary
+with the boundary on exact-size chessboard faces.
+\end{lemma}
+\begin{proof}
+On an image face \(f(S)\), give the pushforward coefficient \(c(S)\),
+and assign zero off the range. Injectivity preserves cardinality and
+makes the definition unambiguous. On a face outside the range all boundary
+terms vanish. On an image face, insertions in the image correspond
+bijectively to insertions in the source, and all other terms vanish.
+Thus pushforward commutes with boundary. A face bijection supplies the
+inverse coefficient map. Swapping row and column coordinates preserves
+precisely the matching condition; residual relabeling has the same property.
+Restriction to exact-size faces and extension by zero identify the two
+boundary formulas term by term, including augmentation.
+\end{proof}
+
+\begin{lemma}[H04: explicit cone contraction]\label{lem:h04}
+\lean{claims/AugmentedCone.lean}
+Suppose \(v\) is a cone vertex of \(K\), meaning that
+\(S\in K\) implies \(S\cup\{v\}\in K\). Define
+\[
+ (s_vc)(U)=\begin{cases}c(U\setminus\{v\})&v\in U,\\0&v\notin U.\end{cases}
+\]
+Then \(s_v:C_k(K)\to C_{k+1}(K)\) and
+\(\partial s_v+s_v\partial=\mathrm{id}\). Consequently
+\(\operatorname{Exact}(K,k)\) holds for every \(k\ge0\).
+\end{lemma}
+\begin{proof}
+The support assertion follows by adjoining the cone vertex.
+If \(v\notin T\), the only nonzero term in \((\partial s_vc)(T)\)
+is insertion of \(v\), giving \(c(T)\), and \((s_v\partial c)(T)=0\).
+If \(v\in T\), all insertions outside \(T\) occur once in each of
+\(\partial s_vc\) and \(s_v\partial c\) and cancel; the remaining
+insertion of \(v\) into \(T\setminus\{v\}\) gives \(c(T)\).
+For a cycle, the identity gives \(\partial(s_vc)=c\).
+\end{proof}
+
+\begin{lemma}[H05: the boundary of a simplex]\label{lem:h05}
+\lean{third-party-claims/SimplexBoundary.lean}
+The simplex on a nonempty finite vertex set is exact at every cell count.
+If that set has size \(b\ge1\), its boundary complex, consisting of all
+proper subsets, is exact at every \(k\) with \(k+1<b\).
+Equivalently it is \(\operatorname{Acyclic}(\partial\Delta,n)\) whenever
+\(n<b\). No top-dimensional vanishing is asserted.
+\end{lemma}
+\begin{proof}
+The full simplex is a cone at any vertex. Contract a \(k\)-cycle in its
+boundary inside the full simplex using Lemma~\ref{lem:h04}. Its filler
+has \(k+1<b\) vertices on every supported face, so all those faces are
+proper subsets and the filler already lies in the boundary complex.
+\end{proof}
+
+\subsection{The finite homological cover argument}
+
+Let \((L_i)_{i\in I}\) be finitely many subcomplexes of \(K\). Put
+\(L_J=\bigcap_{i\in J}L_i\), with \(L_\varnothing=K\).
+Its vertex-nonempty nerve is the complex
+\[
+ \mathcal N=\{\varnothing\}\cup
+   \{J\subseteq I:L_J\text{ has at least one vertex}\}.
+\]
+An empty-face-only intersection does not give a nonempty nerve face.
+The family covers \(K\) if every face belongs to some \(L_i\).
+
+\begin{lemma}[H06: cover double chains and horizontal exactness]\label{lem:h06}
+\lean{claims/FiniteComplexCover.lean}\lean{claims/CoverDoubleComplex.lean}
+Let \(D_{a,b}\) consist of double coefficients \(d(J,S)\) supported where
+\(|J|=a\), \(|S|=b\), \(S\in L_J\), and \(J\in\mathcal N\).
+Insertion boundaries \(H\) in \(J\) and \(V\) in \(S\) lower the
+respective cell counts, with zero outgoing maps at count zero, and satisfy
+\[
+ H^2=V^2=0,\qquad HV=VH,\qquad(H+V)^2=0.
+\]
+If the \(L_i\) cover \(K\), then for \(b>0\) every horizontally closed
+\(d\in D_{a,b}\) has a horizontal filler in \(D_{a+1,b}\).
+\end{lemma}
+\begin{proof}
+Removing an index preserves intersection membership and nerve membership.
+Removing a vertex preserves membership in every complex, while the nerve
+condition on \(J\) remains unchanged. These facts prove the support claims.
+The square-zero identities are Lemma~\ref{lem:h02}; both \(HV\) and
+\(VH\) sum the same coefficients \(d(J\cup\{i\},S\cup\{v\})\), so
+interchanging finite sums proves commutation. Characteristic two gives
+the total square-zero identity.
+
+For each nonempty supported face \(S\), choose an index \(i(S)\) whose
+member contains \(S\), and contract the index coefficient
+\(J\mapsto d(J,S)\) at \(i(S)\), using the ambient formula of
+Lemma~\ref{lem:h04}. Call the result \(u(J,S)\), and use zero on other
+\(S\). Its nonzero coefficients have \(S\) in every indicated cover
+member, including the newly chosen one. Because \(S\) contains a vertex,
+the enlarged index set really belongs to the nerve. Thus
+\(u\in D_{a+1,b}\), and the contraction identity gives \(Hu=d\).
+The condition \(b>0\) is essential: the \(b=0\) edge is the nerve
+chain complex and is not automatically exact.
+\end{proof}
+
+\begin{lemma}[H07: homological cover lemma]\label{lem:nerve}
+\lean{third-party-claims/HomologicalCover.lean}
+Suppose \((L_i)\) covers \(K\). Let \(n\ge0\), and assume
+\(\operatorname{Acyclic}(\mathcal N,n)\). Suppose also that for every
+nonempty \(J\in\mathcal N\) and every \(r\ge0\) with \(|J|+r\le n\),
+\(\operatorname{Exact}(L_J,r)\) holds. Then
+\(\operatorname{Acyclic}(K,n)\).
+In reduced degrees, putting \(n=q+2\), this is the usual assertion that
+a \(q\)-acyclic nerve and \((q-|J|+1)\)-acyclic intersections give a
+\(q\)-acyclic union, including the augmentation case \(q=-1\).
+\end{lemma}
+\begin{proof}
+We use the finite double coefficients of Lemma~\ref{lem:h06}.
+First note two filling facts. On the \(b=0\) edge, \(d(J,\varnothing)\)
+is a nerve chain; nerve exactness fills horizontally at counts \(a<n\),
+and the filler is vertically closed. For \(a>0\), a vertically closed
+\(d\in D_{a,b}\) with \(a+b\le n\) fills vertically in \(D_{a,b+1}\):
+for each \(J\) of size \(a\) use the assumed filling in \(L_J\), and
+use zero for the other index sets. Nonempty \(J\) ensures that all filler
+faces lie in \(K\) as well as the required intersection.
+
+We claim that whenever \(a+b<n\) and \(Hd=Vd=0\), there is
+\(u\in D_{a+1,b}\) with \(Hu=d\) and \(Vu=0\).
+Induct on \(b\). The case \(b=0\) is the nerve-edge fact.
+For \(b>0\), horizontal exactness first gives \(x\in D_{a+1,b}\)
+with \(Hx=d\). Then \(Vx\in D_{a+1,b-1}\) is closed in both directions.
+Induction gives \(y\in D_{a+2,b-1}\) with \(Hy=Vx\), \(Vy=0\).
+The vertical filling fact gives \(z\in D_{a+2,b}\) with \(Vz=y\),
+since \((a+2)+(b-1)=a+b+1\le n\). Set \(u=x+Hz\). Then
+\[
+ Hu=Hx+H^2z=d,\qquad Vu=Vx+HVz=Vx+Hy=0.
+\]
+This proves the claim by finite induction.
+
+Finally embed a \(k\)-cell cycle \(c\) of \(K\), \(k<n\), as
+\(d(\varnothing,S)=c(S)\) in \(D_{0,k}\), with other coefficients zero.
+It is closed in both directions. The claim gives \(u\in D_{1,k}\)
+with \(Hu=d\), \(Vu=0\). The singleton-intersection filling gives
+\(z\in D_{1,k+1}\) with \(Vz=u\), because \(1+k\le n\).
+The chain \(f(S)=(Hz)(\varnothing,S)\) belongs to \(C_{k+1}(K)\), and
+\(\partial f=(VHz)(\varnothing,\cdot)=(HVz)(\varnothing,\cdot)=c\).
+Thus every required cycle fills, including \(k=0\).
+\end{proof}
+
+\subsection{Chessboard stars, arithmetic, and assembly}
+
+The chessboard complex \(\Delta_{a,b}\) has vertex set \([a]\times[b]\)
+and faces the matchings, namely sets with no repeated row or column.
+The closed star of a vertex \(v\) consists of faces \(S\) such that
+\(S\cup\{v\}\) is a face. It is a subcomplex and a cone at \(v\).
+
+\begin{lemma}[H08: first-row star cover]\label{lem:h08}
+\lean{third-party-claims/ChessboardStarCover.lean}
+If \(a+1\le b\), the stars of \((1,j)\), \(j\in[b]\), cover
+\(\Delta_{a+1,b}\).
+\end{lemma}
+\begin{proof}
+A matching using row one belongs to the star of its cell in that row.
+Otherwise it uses at most \(a<b\) columns, leaving some column \(j\)
+free. It can then be extended by \((1,j)\).
+\end{proof}
+
+\begin{lemma}[H09: intersections and residual-board chain maps]\label{lem:h09}
+\lean{third-party-claims/ChessboardStarIntersections.lean}
+The intersection of \(t\ge2\) distinct first-row stars in
+\(\Delta_{a+1,b}\) consists exactly of matchings avoiding row one and
+those \(t\) columns. It is chain-isomorphic to \(\Delta_{a,b-t}\),
+including when \(t=b\) and the latter has only its empty face.
+\end{lemma}
+\begin{proof}
+A matching in two different stars cannot use row one, since its row-one
+cell would have to be both designated cells. It cannot use a designated
+column in another row either, since extension by that star's cell would
+fail. Conversely, avoiding all those rows and columns permits every
+required extension. Relabel the remaining rows and columns and use
+Lemma~\ref{lem:h03} to obtain the chain isomorphism.
+\end{proof}
+
+\begin{lemma}[H10: the star nerve and singleton fillings]\label{lem:h10}
+\lean{third-party-claims/ChessboardStarNerve.lean}
+For \(a\ge1\), \(b\ge2\), the nerve of the first-row stars of
+\(\Delta_{a+1,b}\) is the boundary of the simplex on its \(b\) columns.
+It is \(\operatorname{Acyclic}(\mathcal N,n)\) for every \(n<b\).
+Every individual star is exact at every cell count.
+\end{lemma}
+\begin{proof}
+A proper set of columns leaves an unused column and another row; their
+cell belongs to every indicated star. The full set of stars has no
+common vertex, by Lemma~\ref{lem:h09}. Thus the nerve is exactly the
+proper-subset complex. Apply Lemma~\ref{lem:h05}; each singleton star
+is a cone, so Lemma~\ref{lem:h04} fills its cycles.
+\end{proof}
+
+\begin{lemma}[H11: induction parameters]\label{lem:h11}
+\lean{claims/ChessboardParameterArithmetic.lean}
+For natural \(a,b\), put
 \[
  \nu(a,b)=\min\left\{a,b,\left\lfloor\frac{a+b+1}{3}\right\rfloor\right\}.
 \]
-Then the chessboard complex \(\Delta_{a,b}\) is
-\((\nu(a,b)-2)\)-acyclic.
-In particular,
+It is symmetric, bounded by each side, zero if a side is zero, and at least
+one when both sides are positive. For \(b\ge1\), \(\nu(1,b)=1\).
+If \(2\le a\le b\), then \(\nu(a,b)\le b-1\), and for \(2\le t<b\),
 \[
- b\ge2a-1
- \quad\Longrightarrow\quad
- \widetilde H_{a-2}(\Delta_{a,b};\F)=0.
+ \nu(a,b)+1\le\nu(a-1,b-t)+t,
+ \qquad \min\{a-1,b-t\}<\min\{a,b\}.
 \]
+For \(s\ge1\), \(N\ge2s-1\) gives \(\nu(s,N)=s\).
+Cell counts \(0\le k<n\) correspond exactly to reduced degrees
+\(-1\le k-1\le n-2\), with subtraction interpreted in the integers.
+\end{lemma}
+\begin{proof}
+Symmetry and the basic bounds follow directly from the minimum.
+If \(a<b\), \(\nu\le a\le b-1\); if \(a=b\ge2\), then
+\(\lfloor(2b+1)/3\rfloor\le b-1\).
+For the recursive bound write \(\nu=\nu(a,b)\). Each smaller-board
+entry is at least \(\nu-t+1\):
+\[
+ a-1\ge\nu-t+1,\qquad b-t\ge\nu-t+1,
+ \qquad a+b-t\ge3\nu-1-t\ge3(\nu-t+1).
+\]
+The last inequality uses \(t\ge2\). Taking the smaller minimum proves
+the bound; if the right side is negative the comparison is automatic.
+The induction measure decreases because \(a-1<a=\min\{a,b\}\).
+Finally \(N\ge2s-1\) implies \(N\ge s\) and
+\(\lfloor(s+N+1)/3\rfloor\ge s\), proving the narrow-board identity.
+The degree translation is the integer inequality obtained by subtracting one.
+\end{proof}
+
+\begin{theorem}[H12: homological chessboard bound {\cite{BLVZ94}}]
+\label{thm:chessboard}\lean{third-party-claims/ChessboardHomology.lean}
+For \(a,b\ge1\), every \(k\)-cell cycle of \(\Delta_{a,b}\) has a
+\((k+1)\)-cell filler whenever \(0\le k<\nu(a,b)\). Equivalently,
+\(\widetilde H_j(\Delta_{a,b};\F)=0\) for
+\(-1\le j\le\nu(a,b)-2\).
 \end{theorem}
 \begin{proof}
-The stated homological bound follows from the stronger connectivity
-theorem in \cite{BLVZ94}. For completeness, the standard star-cover
-argument gives its homological form directly as follows.
-Transpose the board so that \(a\le b\), and induct on \(a\).
-If \(\nu(a,b)=1\), nonemptiness suffices; this includes \(a=1\).
-Otherwise put \(q=\nu(a,b)-2\ge0\), so \(a\ge2\).
+Induct strongly on \(\min\{a,b\}\), transposing by Lemma~\ref{lem:h03}
+so that \(a\le b\). For \(a=1\), \(\nu=1\), and a vertex fills the
+augmentation generator. For \(a\ge2\), cover by the first-row stars.
+Their nerve is acyclic through count \(\nu\), since \(\nu\le b-1\).
+Consider a nonempty nerve face \(J\) of size \(t\) and a count \(r\)
+with \(t+r\le\nu\). For \(t=1\) the star is a cone. Otherwise
+\(2\le t<b\), and its intersection is \(\Delta_{a-1,b-t}\), with both
+sides positive. Write \(\mu=\nu(a-1,b-t)\).
+Lemma~\ref{lem:h11} gives \(\nu+1\le\mu+t\), hence \(r<\mu\).
+The smaller induction measure and the chain isomorphism of
+Lemma~\ref{lem:h09} supply the required intersection filling.
+Lemma~\ref{lem:nerve} now fills every \(k<\nu\) cycle of the original board.
+\end{proof}
 
-For each column \(j\), let \(L_j\) be the closed star of the vertex
-\((1,j)\). It consists of matchings containing that cell or extendable
-by it, and is a cone. These stars cover the complex: a matching
-avoiding row one occupies at most \(a-1<b\) columns and can therefore
-be extended in that row.
-An intersection of \(s\ge2\) stars excludes row one and their \(s\)
-columns, so it is \(\Delta_{a-1,b-s}\). Every proper subfamily of the
-\(b\) stars has nonempty intersection, while the intersection of all
-stars has no vertex. The nerve is therefore the boundary of a
-\((b-1)\)-simplex, a sphere of dimension \(b-2\).
-
-Write \(\nu=\nu(a,b)\). For \(a\ge2\) and \(a\le b\), one has
-\(\nu\le b-1\); hence the nerve is \((\nu-2)\)-acyclic.
-For a nonempty \(s\)-fold intersection with \(s\ge2\), put
-\(\mu=\nu(a-1,b-s)\). Each entry of its defining minimum is at least
-\(\nu-s+1\):
+\begin{corollary}[H13: the matching-moment filling interface]
+\label{cor:chessboard-filling}\lean{third-party-claims/ChessboardFillingProof.lean}
+Let \(s\ge2\), \(N\ge2s-1\). Every cycle on exact-size
+\((s-1)\)-faces of \(\Delta_{s,N}\) is the boundary of a chain on
+exact-size \(s\)-faces. In reduced homology,
 \[
- a-1\ge\nu-s+1,\qquad b-s\ge\nu-s+1,
+ \widetilde H_{s-2}(\Delta_{s,N};\F)=0.
 \]
-and
-\[
- a+b-s\ge3\nu-s-1\ge3(\nu-s+1).
-\]
-The last inequality uses \(s\ge2\).
-Thus \(\mu\ge\nu-s+1\), and induction shows that the intersection is
-\((\nu-s-1)=(q-s+1)\)-acyclic. If necessary transpose this smaller
-board before applying induction; its smaller side is at most \(a-1\).
-The cover lemma proves the claim.
-Finally \(b\ge2a-1\) makes \(\nu(a,b)=a\), giving the required special
-case.
+For \(s=2\), the cycle hypothesis includes zero augmentation.
+\end{corollary}
+\begin{proof}
+Lemma~\ref{lem:h11} gives \(\nu(s,N)=s\).
+Apply Theorem~\ref{thm:chessboard} at cell count \(s-1<s\), then use the
+exact-face boundary equivalence of Lemma~\ref{lem:h03}. This is precisely
+the boundary equation used in Theorem~\ref{thm:moments}.
 \end{proof}

@@ -1,9 +1,12 @@
 # Bit PHP in unrestricted resolution over parities
 
-**Draft for review.** This whitepaper expands the working
+**Draft for review; theorem and dependencies verified in Lean.** This whitepaper expands the
 [publication theorem](https://kbr.is-a.dev/math-research/#publication-Res-parity-bit-PHP-theorem)
-and its dependencies from notebook checkpoint 08dcee3.
-It is not an independently verified or formally certified result.
+and its dependencies, using the generalized statements and human-readable proofs
+recorded during formalization. Each statement links to its Lean source at published
+revision `54f09378e97465522b7f1caf115f90ad1faa7a57`. The appendix includes all
+H01–H13 homological prerequisites and their proofs. External review of the
+manuscript remains separate from formal verification.
 
 - [Rendered PDF](whitepaper.pdf)
 - [Main TeX source](whitepaper.tex), with the complete argument in [sections](sections)

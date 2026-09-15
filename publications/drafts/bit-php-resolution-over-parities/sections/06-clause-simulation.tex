@@ -1,6 +1,7 @@
 \section{A direct PC simulation of the proof DAG}\label{sec:clause-simulation}
 
-Represent a linear clause by its affine true-indicators:
+Unless stated otherwise, \(h\ge1\) and there are finitely many old
+variables, say \(v\). Represent a linear clause by its affine true-indicators:
 \[
  C=\bigvee_i(g_{C,i}=1),\qquad
  Z(C)=\{b:g_{C,i}(b)=0\text{ for all }i\}.
@@ -10,33 +11,57 @@ The set \(Z(C)\) is an affine subspace or empty.
 
 Assign to each nonempty clause a fresh complete accuracy-\(h\) block,
 and write its product as \(P_C\). Set \(P_\varnothing=1\), using no
-block for the empty clause. Fix the whole block family before following
+block for the empty clause. \lean{claims/AffineClauseRegistry.lean} Fix the whole block family before following
 the proof DAG. Clause values \(P_C=0\) will be derived; they are not
 included among its axioms.
 
-\begin{lemma}[Prefix identity]\label{lem:prefix}
-For every clause block there are polynomials \(U_{C,i}\) satisfying
+\begin{lemma}[General product telescoping]\label{lem:telescoping}
+\lean{claims/MpTelescoping.lean}
+In any commutative ring, for a finite input index set and \(h\ge0\), put
+\[
+ P_v=\prod_{u=0}^{v-1}\left(1-\sum_i r_{ui}g_i\right),\qquad
+ U_{h,i}=\sum_{v=0}^{h-1}r_{vi}P_v.
+\]
+Then \(1-P_h=\sum_i U_{h,i}g_i\).
+For ordinary polynomials over any commutative coefficient ring, if
+\(\deg g_i\le\delta\), \(\deg r_{vi}\le1\), and \(h\ge1\), then
+\[
+ \deg P_h\le h(\delta+1),\qquad
+ \deg U_{h,i}\le1+(h-1)(\delta+1),\qquad
+ \deg(g_iP_h)\le\deg g_i+h(\delta+1).
+\]
+No freshness or nonvanishing assumption is needed for these upper bounds.
+\end{lemma}
+\begin{proof}
+The identity holds at \(h=0\). Writing \(s_h=\sum_i r_{hi}g_i\), the
+recurrences \(P_{h+1}=P_h(1-s_h)\) and
+\(U_{h+1,i}=U_{h,i}+r_{hi}P_h\) give
+\[
+ 1-P_{h+1}=1-P_h+P_hs_h=\sum_i U_{h+1,i}g_i.
+\]
+Each factor has degree at most \(\delta+1\), and each summand of
+\(U_{h,i}\) has degree at most \(1+(h-1)(\delta+1)\).
+The sum and product degree inequalities prove the three bounds, including
+over rings with zero divisors. At \(h=0\), \(P_0=1\) and \(U_{0,i}=0\).
+\end{proof}
+
+\begin{corollary}[Affine-clause prefix identity]\label{lem:prefix}
+\lean{claims/MpTelescoping.lean}
+Every accuracy-\(h\) clause block, \(h\ge1\), has coefficients satisfying
 \begin{equation}\label{eq:prefix}
  1-P_C=\sum_iU_{C,i}g_{C,i},\qquad
  \deg P_C\le2h,\qquad\deg U_{C,i}\le2h-1.
 \end{equation}
 Its companions have degree at most \(2h+1\).
-\end{lemma}
+\end{corollary}
 \begin{proof}
-Put \(L_u=1-\sum_i r_{ui}g_{C,i}\).
-Telescoping the product gives
-\[
- 1-\prod_{u=1}^hL_u
-  =\sum_{u=1}^h(1-L_u)\prod_{w<u}L_w.
-\]
-Thus one may take
-\[
- U_{C,i}=\sum_{u=1}^h r_{ui}\prod_{w<u}L_w.
-\]
-Each \(L_w\) has degree at most two, giving all the stated bounds.
+Apply Lemma~\ref{lem:telescoping} with \(\delta=1\), reindexing coefficient
+rows from zero-based to one-based. Exact companion degrees require the
+additional hypotheses in Lemma~\ref{lem:cleanup}; a loose input-degree
+bound alone would not justify equality.
 \end{proof}
 
-\begin{lemma}[Complementary-parity resolution]\label{lem:clause-resolution}
+\begin{lemma}[Complementary-parity resolution]\label{lem:clause-resolution}\lean{claims/AffineClauseResolution.lean}
 Suppose \(A=(\bigvee_i(a_i=1))\vee(u=1)\) and
 \(B=(\bigvee_j(b_j=1))\vee(1-u=1)\), with \(u\) affine.
 Let \(T\) have the union of the context inputs \(a_i,b_j\).
@@ -74,7 +99,7 @@ All multiplications expand into primitive PC steps by
 Lemma~\ref{lem:pc-product}.
 \end{proof}
 
-\begin{lemma}[Semantic weakening and tautologies]\label{lem:clause-weakening}
+\begin{lemma}[Semantic weakening and tautologies]\label{lem:clause-weakening}\lean{claims/AffineClauseWeakening.lean}
 If \(C\models D\) and \(P_C\) has a degree-\(K\) derivation, then
 \(P_D\) is derivable through \(\max\{K,4h\}\).
 A tautological \(D\) has a direct value derivation through \(2h+1\).
@@ -105,72 +130,127 @@ an implication to the empty clause forces all premise indicators to
 be identically zero, so the already derived premise value is one.
 \end{proof}
 
-\begin{lemma}[Two-premise semantic inference]\label{lem:affine-cover}
-Every sound inference \(A\wedge B\models D\) between linear clauses
-over \(\F\) reduces to a tautology case, one semantic weakening, or
-two semantic weakenings followed by one complementary-parity
-resolution. The last case introduces at most two auxiliary clauses.
+
+\begin{lemma}[Binary affine separator]\label{lem:binary-separator}
+\lean{claims/BinaryAffineZeroCover.lean}
+Let \(V\) be any vector space over \(\F\), and \(A,B,D\) finite clauses
+of affine true-indicators. Suppose \(A\wedge B\models D\), but neither
+\(A\models D\) nor \(B\models D\). There is an indicator \(u\) already
+in \(A\), taking both values on \(W=Z(D)\), such that
+\[
+ W\cap Z(A)=\{x\in W:u(x)=0\},\qquad
+ W\cap Z(B)=\{x\in W:u(x)=1\}.
+\]
+No finite-dimensional assumption is required.
 \end{lemma}
 \begin{proof}
-Put \(W=Z(D)\). Soundness says
-\(W\subseteq Z(A)\cup Z(B)\).
-An empty \(W\) gives a tautology, and containment in either one of the
-two sets gives a one-premise weakening.
-
-Otherwise \(W\cap Z(A)\) and \(W\cap Z(B)\) are proper affine
-subspaces covering \(W\). Each has at most half its points.
-Both must therefore have exactly half, and they must be disjoint.
-They are parallel affine hyperplanes of \(W\): two hyperplanes with
-different directions would intersect.
-Choose an affine \(u\) that is zero on the first and one on the second,
-and extend it from \(W\) to the ambient affine space.
-Then
-\[
- A\models D\vee(u=1),\qquad
- B\models D\vee(u=0).
-\]
-The two weakenings and a resolution give \(D\).
-This argument uses that the full Boolean assignment space is
-\(\F^v\).
+Choose \(a\in W\) satisfying \(A\) and \(b\in W\) satisfying \(B\).
+Soundness forces \(a\in Z(B)\) and \(b\in Z(A)\). Choose indicators
+\(u\in A\), \(v\in B\) with \(u(a)=v(b)=1\); then
+\(u(b)=v(a)=0\). Soundness also gives \(W\subseteq Z(A)\cup Z(B)\).
+If \(x\in W\cap Z(B)\) had \(u(x)=0\), the point \(a-b+x\) would
+belong to \(W\) and satisfy both \(u=v=1\), a contradiction. Here we
+used only the affine identity \(g(a-b+x)=g(a)-g(b)+g(x)\).
+Thus \(u=1\) on \(W\cap Z(B)\), while \(u=0\) on \(W\cap Z(A)\).
+The covering inclusion gives the two reverse implications and hence the
+fiber equalities. The witnesses \(a,b\) give both values.
 \end{proof}
 
-For size accounting, replace every clause's falsifying affine system
-by a basis, using at most \(v+1\) equations, or by the single
-inconsistent equation in the tautology case. Semantic equivalence
-preserves the soundness of all inferences. Apply
-Lemma~\ref{lem:affine-cover} afterward.
-Thus \(S\) proof nodes can be normalized with at most \(3S\) nodes and
-polynomial clause descriptions in \(v\).
-Unrelated propositional variables may first be fixed to zero; semantic
-implication survives restriction, and a constant pivot gives a
-weakening. These normalizations justify using line count as the size
-measure in Theorem~\ref{thm:main}.
+\begin{lemma}[Two-premise semantic inference]\label{lem:affine-cover}
+\lean{claims/BinarySemanticAffineCover.lean}
+Over any \(\F\)-vector space, every sound inference \(A\wedge B\models D\)
+between finite affine clauses admits a derivation using at most three
+semantic weakening or complementary-parity resolution steps, introducing
+at most two auxiliary clauses. It is either a one-premise weakening or
+has the form
+\[
+ A\models D\vee(u=1),\qquad B\models D\vee(u=0),
+ \qquad\frac{D\vee(u=1)\quad D\vee(u=0)}D,
+\]
+where \(u\) can be chosen from \(A\). Semantic implication is preserved
+under any affine restriction of the underlying space.
+\end{lemma}
+\begin{proof}
+If either premise implies \(D\), use weakening. Otherwise apply
+Lemma~\ref{lem:binary-separator}: on \(Z(D)\), satisfaction of \(A\)
+forces \(u=1\), and satisfaction of \(B\) forces \(u=0\).
+This proves the two weakenings; resolution concludes. Restriction simply
+precomposes the clauses with an affine map and preserves every implication.
+\end{proof}
 
-\begin{theorem}[Complete clause-to-PC transfer]\label{thm:clause-transfer}
-A refutation of \(\BPHP_n^{n+1}\) with \(S\) nodes yields, for every
+\begin{lemma}[Clause compression]\label{lem:compression}
+\lean{claims/AffineClauseCompression.lean}
+On a finite-dimensional \(\F\)-vector space of dimension \(v\), every
+finite affine clause has a semantically equivalent subclause of width at
+most \(v+1\).
+\end{lemma}
+\begin{proof}
+The space of affine forms has dimension \(v+1\). Extract a basis of the
+span from the clause's own indicators. Simultaneous vanishing of the basis
+is equivalent to vanishing of the entire span, hence gives the same
+falsifying set. This works for tautologies as well as consistent systems
+and introduces no new indicators.
+\end{proof}
+
+\begin{theorem}[A fixed registry for a finite proof DAG]\label{thm:dag-registry}
+\lean{claims/AffineDAGRegistry.lean}
+Consider an \(S\)-node affine-clause DAG on \(v\) old bits, using semantic
+weakening, complementary resolution, or sound binary inference. Suppose
+there is a finite supplied family \((A_j)_{j\in J}\), of widths at most
+\(w\), such that each permitted initial clause is implied by some \(A_j\).
+There is one complete accuracy-\(h\) registry with
+\[
+ N=3S+|J|\text{ slots},\qquad W=\max\{w,v+2\},
+\]
+at most \(NW\) inputs and at most \(v+hNW\) variables. If the supplied
+initial values have PC derivations in this registry through
+\(D\ge4h+1\), then every compressed source value has a derivation through
+that same \(D\). An empty final clause yields a refutation.
+\end{theorem}
+\begin{proof}
+Compress each source clause to width at most \(v+1\), preserving its
+semantics, and choose the plans from Lemma~\ref{lem:affine-cover}.
+Reserve one primary and two auxiliary slots per source node, plus one
+slot per supplied initial. An auxiliary clause adds one pivot indicator
+to a primary clause, so has width at most \(v+2\). Unused slots can
+contain the empty clause and contribute no inputs or coefficients.
+Each input has \(h\) distinct coefficient variables, giving the inventory.
+Fix these slots and all their complete axioms first. In a topological
+order, simulate each planned weakening or resolution with
+Lemmas~\ref{lem:clause-resolution} and \ref{lem:clause-weakening}.
+Initial coverage is another weakening. Reuse completed premise values;
+the degree ceiling never acquires a factor depending on proof height.
+\end{proof}
+
+Fresh unconstrained propositional variables may be fixed to zero before
+this construction. Semantic implication survives restriction; a restricted
+constant pivot is a semantic weakening. This does not authorize extension
+axioms defining additional predicates.
+
+\begin{theorem}[Complete clause-to-PC transfer]\label{thm:clause-transfer}\lean{claims/BitPHPClauseTransfer.lean}
+For arbitrary \(m,\ell\ge0\), a refutation of the usual bit-PHP CNF
+on \(m\) rows and \(n=2^\ell\) labels with \(S\) nodes yields, for every
 integer \(h\ge1\), a complete one-level old-affine family over
-\(\mathcal Q_n\) with at most \(3S+\binom m2\) blocks and an ordinary-PC
+\(\mathcal Q_{m,\ell}\) with at most \(3S+\binom m2\) blocks and an ordinary-PC
 refutation through
 \begin{equation}\label{eq:simulation-degree}
  D=\max\{2h+\ell,4h+1\}.
 \end{equation}
-After normalization, the total input and coefficient inventory is
-polynomial in \(S,n,h\). There is no proof-height restriction.
+With \(v=m\ell\), \(N=3S+\binom m2\), and
+\(W=\max\{\ell,v+2\}\), the total input count is at most \(NW\),
+and the total variable count is at most \(v+hNW\). There is no proof-height restriction.
 \end{theorem}
 \begin{proof}
-Introduce the compact initial linear clauses
+\lean{claims/BitPHPInitialBridge.lean} Introduce the compact initial linear clauses
 \[
  C_{ii'}=\bigvee_{t=1}^\ell(b_{it}+b_{i't}=1).
 \]
 Each \(C_{ii'}\) semantically implies each label-specific initial clause
 for the same pair in \eqref{eq:bit-php}: both rows encoding the same
 label falsifies \(C_{ii'}\).
-Prepend at most \(\binom m2\) compact clauses and obtain each needed
-CNF clause by one weakening, using its existing initial node.
-Normalize the remaining proof as above. The total node count is at
-most \(3S+\binom m2\).
+Use these \(\binom m2\) clauses as the supplied family in
+Theorem~\ref{thm:dag-registry}; their widths are at most \(\ell\).
 
-Assign fresh blocks to its nonempty clauses.
 For a compact initial clause set \(g_t=b_{it}+b_{i't}\) and
 \(T_t=\prod_{s<t}(1-g_s)\).
 Its value has the ordinary identity
@@ -183,7 +263,7 @@ the other terms use the block's companions.
 Every multiple has degree at most \(2h+\ell\).
 This is an NS, hence PC, derivation at that degree.
 
-Follow the normalized source proof in its acyclic order.
+Apply Theorem~\ref{thm:dag-registry} in the source proof's acyclic order.
 Initial values are obtained from \eqref{eq:initial-value} and
 Lemma~\ref{lem:clause-weakening}. Each remaining inference is simulated
 by Lemmas~\ref{lem:clause-resolution} and \ref{lem:clause-weakening}.

@@ -1,40 +1,37 @@
 \section{Closing the proof-size parameters}\label{sec:main-proof}
 
 \begin{proof}[Proof of Theorem~\ref{thm:main}]
-Fix \(K>0\) and suppose that an arbitrarily large \(n=2^\ell\) has a
-refutation with \(S\le n^K\) nodes.
-Choose \(h=3\ell\).
-Theorem~\ref{thm:clause-transfer} gives a complete one-level affine
-family with a PC refutation through
+Fix \(K>0\) and let \(a=\max\{\lceil K\rceil,2\}\).
+Use Corollary~\ref{cor:polylog-exclusion} with parameters \(a,13,1\),
+and take \(\ell\) above its uniform threshold and at least two.
+Put \(n=2^\ell\). Suppose a refutation has \(S\le n^K\) nodes.
+Since \(n\ge1\) and \(a\ge K\), \(S\le n^a\).
+Theorem~\ref{thm:clause-transfer}, with \(h=3\ell\), constructs an actual
+complete affine registry with
 \[
- D=\max\{7\ell,12\ell+1\}=12\ell+1.
+ N\le3S+\binom{n+1}{2},\qquad D=12\ell+1.
 \]
-After scalar cleanup let \(M\ge1\) bound its number of proper blocks.
-We may choose
+Its initial clauses are those of the usual bit CNF, and its empty final
+clause gives a PC derivation of one from exactly the complete family over
+\(\mathcal Q_{n+1,\ell}\). No additional initial-value hypothesis remains.
+Now
 \[
- M\le3S+\binom{n+1}{2}+1\le3n^K+n^2+1.
+ \binom{n+1}{2}\le(n+1)^2\le4n^2\le4n^a,
+ \qquad N\le7n^a\le13\,2^{a\ell}+1,
+ \qquad D\le13(\ell+1).
 \]
-Put
-\[
- k=\left\lceil\sqrt{(n+1)\ln(4M)}\right\rceil,\qquad
- B=k(D+1)=k(12\ell+2).
-\]
-Since \(K\) is fixed,
+The number of proper blocks is at most \(N\), so these are precisely the
+inventory and degree bounds excluded by the corollary, a contradiction.
+The threshold is independent of the alleged proof. Therefore \(S>n^K\).
+
+For comparison with the degree mechanism, the verified uniform parameter
+uses \(k=\lceil(\ell+1)(\sqrt2)^\ell\rceil\), giving
 \begin{equation}\label{eq:main-asymptotics}
- k=O_K(\sqrt{n\log n}),\qquad
- B=O_K\bigl(\sqrt n(\log n)^{3/2}\bigr)=o(n).
+ k=O(\sqrt n\log n),\qquad
+ k(D+1)=O\bigl(\sqrt n(\log n)^2\bigr)=o(n).
 \end{equation}
-For all sufficiently large \(n\), uniformly over the alleged source
-proofs, this implies
-\[
- D\ge2h+1,\quad
- 1\le k\le B\le n/2,\quad
- k\le n+1,\quad n\ge2B-1,\quad 4(k-1)<n.
-\]
-Theorem~\ref{thm:affine} excludes exactly the PC refutation supplied by
-Theorem~\ref{thm:clause-transfer}, a contradiction.
-The threshold can depend on \(K\) but not on the chosen proof.
-As \(K\) was arbitrary, the asserted superpolynomial lower bound follows.
+The ceiling-square-root-log choice in Corollary~\ref{cor:kernel-parameter}
+is also available, but is not needed by this final assembly.
 \end{proof}
 
 \subsection{What the conclusion uses}
@@ -109,10 +106,20 @@ simulation, including missing-premise controls.
 A separate matching-moment checker stores sparse separating
 functionals and every potentially nonzero marginal equation for
 finite instances, together with falsifying perturbations.
-These are component checks; they do not constitute a computer
-verification of the asymptotic theorem.
-The present derivation is analytic and does not depend on rerunning
-those finite experiments.
+These finite experiments were development checks, not a proof of the asymptotic
+statement. The subsequent Lean formalization now verifies that statement
+and its entire dependency route, including the chessboard filling theorem,
+actual CNF-to-PC translation, and uniform parameter closure. The permanent
+[Lean] links in this revision refer to published commit
+\href{https://github.com/kbr-/math-research/tree/54f09378e97465522b7f1caf115f90ad1faa7a57}
+{\texttt{54f09378e97465522b7f1caf115f90ad1faa7a57}}.
+Its project pins Lean \texttt{4.34.0-rc2} and the Mathlib dependency revision.
+The final transitive axiom report contains only Lean's standard foundations;
+there is no \texttt{sorry}, custom axiom, or unproved chessboard interface.
+The human-readable proofs here follow the formalization entries, including
+alternative arguments adopted during formalization. Formal verification of
+the stated objects is distinct from external assessment of the manuscript's
+exposition, interpretation of the proof system, and novelty.
 
 \subsection{An inspectable workflow for autonomous research}
 The project also develops an open framework for autonomous mathematical
@@ -139,6 +146,11 @@ Its main mechanisms are:
  Each cycle targets a named obligation, checks its outcome, and
  assesses wasted work or missing tools. Bounded framework
  improvements are recorded separately from mathematical results.
+ \item \textbf{Explicit formal verification.}
+ Assigned formalization cycles build dependency-indexed Lean proofs, record
+ their exact scope and human-readable arguments, and link them from the
+ claim index. Independent branches can run in isolated worktrees before
+ integration; cached dependencies avoid redundant verification.
  \item \textbf{A live, versioned notebook.}
  Saved versions in Git, a version-control system, and the public notebook let
  readers inspect the development locally or online.
@@ -227,7 +239,8 @@ test or discharge that obligation, and state a concrete stopping point.
 The Git history and notebook research record preserve these framework
 changes and the strategic questions that motivated them.
 
-The mathematical claims retain working-proof status pending external scrutiny.
+The statements on this publication route are formally verified; this revised
+manuscript remains open to external scrutiny.
 The classical topological input is attributed to \cite{BLVZ94};
 the product-extension methodology is attributed to \cite{BIKPRS}.
 Original manuscript material is distributed under the
