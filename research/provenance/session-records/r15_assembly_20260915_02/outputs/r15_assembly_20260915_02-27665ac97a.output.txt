@@ -1,0 +1,46 @@
+✖ [1996/1996] Building claims.AffineBlockRestriction (7.8s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/restriction/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/restriction/formalization/claims/AffineBlockRestriction.lean -o /home/kbr/dev/math-worktrees/restriction/formalization/.lake/build/lib/lean/claims/AffineBlockRestriction.olean -i /home/kbr/dev/math-worktrees/restriction/formalization/.lake/build/lib/lean/claims/AffineBlockRestriction.ilean -c /home/kbr/dev/math-worktrees/restriction/formalization/.lake/build/ir/claims/AffineBlockRestriction.c --setup /home/kbr/dev/math-worktrees/restriction/formalization/.lake/build/ir/claims/AffineBlockRestriction.setup.json --json
+error: claims/AffineBlockRestriction.lean:54:28: Unknown constant `Set.image_range`
+error: claims/AffineBlockRestriction.lean:104:33: `simp` made no progress
+error: claims/AffineBlockRestriction.lean:105:33: `simp` made no progress
+error: claims/AffineBlockRestriction.lean:115:42: Type mismatch
+  affineRestriction e E
+has type
+  MvPolynomial σ (ZMod 2) →ₐ[ZMod 2] MvPolynomial (CoordinateFreeIndex e) (ZMod 2)
+but is expected to have type
+  MvPolynomial σ (ZMod 2) →ₐ[ZMod 2] MvPolynomial (CoordinateFreeIndex e') (ZMod 2)
+error: claims/AffineBlockRestriction.lean:116:8: Tactic `rfl` failed: The left-hand side
+  true
+is not definitionally equal to the right-hand side
+  Function.const Lean.Name ()
+    `claims.AffineBlockRestriction.115.17.115.63.17.63._sorry._@.claims.AffineBlockRestriction.3210913597._hygCtx._hyg.793
+
+σ ι : Type
+inst✝¹ : Fintype σ
+inst✝ : Fintype ι
+g : ι → AffineInputMap σ
+hproper : 1 ∉ Submodule.span (ZMod 2) (Set.range fun i => finiteAffinePolynomial (g i))
+S : Submodule (ZMod 2) (AffineInputMap σ) := Submodule.span (ZMod 2) (Set.range g)
+x✝ : FiniteDimensional (ZMod 2) ↥S := FiniteDimensional.span_of_finite (ZMod 2) (Set.finite_range g)
+B : Basis (Fin (finrank (ZMod 2) ↥S)) (ZMod 2) ↥S := finBasis (ZMod 2) ↥S
+G : Fin (finrank (ZMod 2) ↥S) → AffineInputMap σ := fun j => ↑(B j)
+hG : LinearIndependent (ZMod 2) G
+c : Fin (finrank (ZMod 2) ↥S) → ι → ZMod 2
+hc : ∀ (j : Fin (finrank (ZMod 2) ↥S)), ∑ i, c j i • g i = G j
+d : ι → Fin (finrank (ZMod 2) ↥S) → ZMod 2
+hd : ∀ (i : ι), ∑ j, d i j • G j = g i
+hGS : Submodule.span (ZMod 2) (Set.range G) ≤ S
+hGP : AffineMap.const (ZMod 2) (σ → ZMod 2) 1 ∉ Submodule.span (ZMod 2) (Set.range G)
+e : Fin (finrank (ZMod 2) ↥S) ↪ σ
+E : (σ → ZMod 2) ≃ᵃ[ZMod 2] σ → ZMod 2
+he : ∀ (i : Fin (finrank (ZMod 2) ↥S)) (x : σ → ZMod 2), E x (e i) = (G i) x
+hr : affineInputRank g = finrank (ZMod 2) ↥S
+e' : Fin (affineInputRank g) ↪ σ := (finCongr hr).toEmbedding.trans e
+p : MvPolynomial σ (ZMod 2)
+k : ℕ
+hp : p.totalDegree ≤ k
+hz : (affineRestriction e' E) p = 0
+⊢ sorry
+Some required targets logged failures:
+- claims.AffineBlockRestriction
+error: build failed

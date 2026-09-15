@@ -1,0 +1,81 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.CommonAffineRestrictionKernel
+Claim file: claims/CommonAffineRestrictionKernel.lean
+Claim: lem:common-affine-restriction-kernel
+Source: https://kbr.is-a.dev/math-research/#lean-common-affine-restriction-kernel
+Scope: Concrete bit-variable common ordinary kernel and literal degree-(k-1) witnesses at rank>3ell(k+1), with square-condition and original ceil-sqrt-log parameters; unit-span blocks handled separately.
+Declarations: MathResearch.common_affine_kernel_of_square MathResearch.common_affine_restriction_kernel MathResearch.common_affine_kernel_inventory MathResearch.proper_high_count_le_proper_count
+$ lake --wfail build claims.CommonAffineRestrictionKernel
+✔ [2372/2372] Built claims.CommonAffineRestrictionKernel (3.2s)
+Build completed successfully (2372 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/restriction/formalization/.lake/tmpqcfzvrg9.lean
+@MathResearch.common_affine_kernel_of_square : ∀ {κ : Type} [Fintype κ] {ι : κ → Type} [inst : (b : κ) → Fintype (ι b)]
+  (m ℓ M k : ℕ),
+  0 < m →
+    1 ≤ ℓ →
+      1 ≤ M →
+        1 ≤ k →
+          k ≤ m →
+            ↑m * Real.log (4 * ↑M) ≤ ↑k ^ 2 →
+              ∀ (g : (b : κ) → ι b → MathResearch.AffineInputMap (Fin m × Fin ℓ)),
+                Nat.card (MathResearch.ProperHighIndex g k) ≤ M →
+                  ∃ f ∈ MathResearch.rowLinearSpace (ZMod 2) m ℓ k,
+                    f ≠ 0 ∧
+                      ∀ (b : κ),
+                        3 * ℓ * (k + 1) < MathResearch.affineInputRank (g b) →
+                          1 ∈ Submodule.span (ZMod 2) (Set.range fun i => MathResearch.finiteAffinePolynomial (g b i)) ∨
+                            ∃ a,
+                              (∀ (i : ι b), (a i).totalDegree ≤ k - 1) ∧
+                                f = ∑ i, a i * MathResearch.finiteAffinePolynomial (g b i)
+'MathResearch.common_affine_kernel_of_square' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.common_affine_restriction_kernel : ∀ {κ : Type} [Fintype κ] {ι : κ → Type}
+  [inst : (b : κ) → Fintype (ι b)] (m ℓ M : ℕ),
+  0 < m →
+    1 ≤ ℓ →
+      1 ≤ M →
+        MathResearch.kernelDegree m M ≤ m →
+          ∀ (g : (b : κ) → ι b → MathResearch.AffineInputMap (Fin m × Fin ℓ)),
+            Nat.card (MathResearch.ProperHighIndex g (MathResearch.kernelDegree m M)) ≤ M →
+              ∃ f ∈ MathResearch.rowLinearSpace (ZMod 2) m ℓ (MathResearch.kernelDegree m M),
+                f ≠ 0 ∧
+                  ∀ (b : κ),
+                    3 * ℓ * (MathResearch.kernelDegree m M + 1) < MathResearch.affineInputRank (g b) →
+                      1 ∈ Submodule.span (ZMod 2) (Set.range fun i => MathResearch.finiteAffinePolynomial (g b i)) ∨
+                        ∃ a,
+                          (∀ (i : ι b), (a i).totalDegree ≤ MathResearch.kernelDegree m M - 1) ∧
+                            f = ∑ i, a i * MathResearch.finiteAffinePolynomial (g b i)
+'MathResearch.common_affine_restriction_kernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.common_affine_kernel_inventory : ∀ {κ : Type} [inst : Fintype κ] {ι : κ → Type}
+  [inst_1 : (b : κ) → Fintype (ι b)] (m ℓ M k : ℕ),
+  0 < m →
+    1 ≤ ℓ →
+      1 ≤ M →
+        1 ≤ k →
+          k ≤ m →
+            ↑m * Real.log (4 * ↑M) ≤ ↑k ^ 2 →
+              ∀ (g : (b : κ) → ι b → MathResearch.AffineInputMap (Fin m × Fin ℓ)),
+                Fintype.card κ ≤ M →
+                  ∃ f ∈ MathResearch.rowLinearSpace (ZMod 2) m ℓ k,
+                    f ≠ 0 ∧
+                      ∀ (b : κ),
+                        3 * ℓ * (k + 1) < MathResearch.affineInputRank (g b) →
+                          1 ∈ Submodule.span (ZMod 2) (Set.range fun i => MathResearch.finiteAffinePolynomial (g b i)) ∨
+                            ∃ a,
+                              (∀ (i : ι b), (a i).totalDegree ≤ k - 1) ∧
+                                f = ∑ i, a i * MathResearch.finiteAffinePolynomial (g b i)
+'MathResearch.common_affine_kernel_inventory' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.proper_high_count_le_proper_count : ∀ {κ : Type} [Fintype κ] {ι : κ → Type}
+  [inst : (b : κ) → Fintype (ι b)] {m ℓ : ℕ} (g : (b : κ) → ι b → MathResearch.AffineInputMap (Fin m × Fin ℓ)) (k : ℕ),
+  Nat.card (MathResearch.ProperHighIndex g k) ≤ Nat.card (MathResearch.ProperBlockIndex g)
+'MathResearch.proper_high_count_le_proper_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 4 audited declarations.

@@ -1,0 +1,39 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.AffineBlockRestriction
+Claim file: claims/AffineBlockRestriction.lean
+Claim: lem:proper-affine-block-restriction
+Source: https://kbr.is-a.dev/math-research/#lean-proper-affine-block-restriction
+Scope: Polynomial/affine span rank and unit equivalence, and actual rank-sized affine restriction data with literal original-input coefficients.
+Declarations: MathResearch.affineInputRank_eq MathResearch.affinePolynomial_unit_span_iff MathResearch.blockRestrictionData_exists MathResearch.affineInputRank_le
+$ lake --wfail build claims.AffineBlockRestriction
+Build completed successfully (1996 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/restriction/formalization/.lake/tmpojaclo0a.lean
+@MathResearch.affineInputRank_eq : ∀ {σ ι : Type} [inst : Fintype σ] (g : ι → MathResearch.AffineInputMap σ),
+  MathResearch.affineInputRank g = Module.finrank (ZMod 2) ↥(Submodule.span (ZMod 2) (Set.range g))
+'MathResearch.affineInputRank_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affinePolynomial_unit_span_iff : ∀ {σ ι : Type} [inst : Fintype σ] [Fintype ι]
+  (g : ι → MathResearch.AffineInputMap σ),
+  1 ∈ Submodule.span (ZMod 2) (Set.range fun i => MathResearch.finiteAffinePolynomial (g i)) ↔
+    AffineMap.const (ZMod 2) (σ → ZMod 2) 1 ∈ Submodule.span (ZMod 2) (Set.range g)
+'MathResearch.affinePolynomial_unit_span_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.blockRestrictionData_exists : ∀ {σ ι : Type} [inst : Fintype σ] [inst_1 : Fintype ι]
+  (g : ι → MathResearch.AffineInputMap σ),
+  1 ∉ Submodule.span (ZMod 2) (Set.range fun i => MathResearch.finiteAffinePolynomial (g i)) →
+    Nonempty (MathResearch.BlockRestrictionData g)
+'MathResearch.blockRestrictionData_exists' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affineInputRank_le : ∀ {σ ι : Type} [inst : Fintype σ] [Fintype ι]
+  (g : ι → MathResearch.AffineInputMap σ),
+  1 ∉ Submodule.span (ZMod 2) (Set.range fun i => MathResearch.finiteAffinePolynomial (g i)) →
+    MathResearch.affineInputRank g ≤ Fintype.card σ
+'MathResearch.affineInputRank_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 4 audited declarations.
