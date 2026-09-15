@@ -33,7 +33,7 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Audit proof-specific pruning at the source interface. Test whether an auxiliary circuit used only through Booleanity or copy interfaces can be abstracted while rebuilding every affected input and witness and preserving the fixed-depth degree budget. Distinguish companions actually needed by the supplied proof from the full evaluation grammar. Stop at a checked pruning mechanism or a specific exposed source relation that blocks it; no sufficient general source invariant is yet identified.</p>
+  <p>Revisit the open proof-specific support bound at the level of whole certificates. A proposed measure must account for alternative witnesses and global cancellations; fixed local support alone is insufficient. Seek a quantitative link to proof size or depth that fits the old degree budget, or a counterexample to that candidate. The existing pruning theorems do not establish such a bound, and no sufficient general invariant is currently identified.</p>
 </section>
 
 <section id="working-context">
@@ -86,7 +86,7 @@
   \]</div>
   <p>Include every compiler subgroup. A basis of the full old-affine intersection, extended by degree-ordered original inputs, retains individual degrees under pullback. The <a href="#source-profile-rank-inflation">general cost bound</a> sets \(b_a=\max(1,\lceil r_a/(h-1)\rceil)\), \(\Lambda_a=b_a\max(1,\max_{c\to a}\Lambda_c)\). It gives complete profiles of cost \(\Lambda_a w_a\) over at most one new affine core per original block, hence PC degree \(D_*=c_{\rm fr}\Lambda L_0\), \(\Lambda=\max_a\Lambda_a\). The profile proof preserves prefix, companion, and Booleanity witnesses; no polynomial-size certificate representation is required for the degree-only endpoint.</p>
   <p>When every \(r_a\le h-1\), this recovers the <a href="#dependent-rank-source-collapse">earlier induction</a> with \(\Lambda=1\). Fixed source depth bounds dependency-path length, not the ranks along it. The <a href="#depth-uniform-degree-budget-audit">uniform audit</a> leaves a bound such as \(\Lambda\le n^{1/2-\varepsilon_d}\operatorname{polylog}n\) unproved for the general source. Choosing \(h\) above all ranks instead costs \(h^d\); the <a href="#compact-source-polynomial-rank-obstruction">necessary original-rank theorem</a> records the resulting threshold \(R&gt;n^{1/(2d-1)}/(\log n)^2\). It is not an upper bound on source rank.</p>
-  <p>A polynomial-size three-level approximate-majority source blocks universal Boolean-domain realization. An <a href="#universal-Boolean-source-map-obstruction">old-only map with a Boolean-nonzero weight</a> requires \(\deg W+\deg\sigma(Z)\ge\lfloor v/3\rfloor+1\); <a href="#affine-domain-realization-and-profile-barrier">uniformly cheap affine-domain profiles</a> are also excluded. A <a href="#finite-polynomial-graph-cover-barrier">complete finite polynomial cover</a> has \(\sum_j b_j\ge\lfloor v/3\rfloor+1\), and standard branch-product elimination costs \(\sum_jD_j\). None of these statements proves essential occurrence of the evaluation source in a short PHP proof.</p>
+  <p>A polynomial-size three-level approximate-majority source blocks universal Boolean-domain realization. <a href="#universal-Boolean-source-map-obstruction">Old-only scalar maps</a> and <a href="#matrix-approximate-majority-normalization-barrier">matrix-coefficient interpretations with scalar weights</a> require \(\deg W+\deg Z\ge\lfloor v/3\rfloor+1\); <a href="#affine-domain-realization-and-profile-barrier">uniformly cheap affine-domain profiles</a> are also excluded. A <a href="#finite-polynomial-graph-cover-barrier">complete finite polynomial cover</a> has \(\sum_j b_j\ge\lfloor v/3\rfloor+1\), and standard branch-product elimination costs \(\sum_jD_j\). None of these statements proves essential occurrence of the evaluation source in a short PHP proof.</p>
   <p>The remaining profile target must use old PHP residuals or a proved restriction on proof sources. Profiles over \(\Gamma_{\rm dom}+\mathcal Q_{n,p}\) need not be correct on models of \(\Gamma_{\rm dom}\) alone. Keep that distinction explicit. The source uses <a href="#selector-value-domain-and-flat-expansion">whole-selector values</a>; the <a href="#bare-profile-free-parameter-obstruction">bare profile equations</a> also admit raw coefficient values and are insufficient by themselves. A PHP-relative simultaneous map with a separated target and controlled old degree remains another sufficient endpoint.</p>
   <p>The <a href="#full-costed-source-coupled-marginals">coupled moment equations</a> are the current construction target. For the full binary modular compiler, take \(D=(\max(M_{\rm fr}+2,12)+H_\pi)L\), OR witness costs \(3L\), and target weights at most \(2L\). The <a href="#full-binary-source-active-window-application">active cutoff is \(E=D-L\)</a>, retaining all original degree-\(D\) legal module equations. Once those moments agree, each old component extends independently through \(D-w(U)\). Active feasibility is unproved; the concrete witness costs remain \(3L\).</p>
   <p>The <a href="#PHP-relative-interface-already-available">relative interfaces</a> allow PHP residuals, but <a href="#formal-old-base-input-rigidity">old-certified formal rewrites</a> preserve selector coefficients below the old barrier. <a href="#no-conditioning-natural-moment-sections">Universal conditioning-compatible sections</a> are impossible, while <a href="#source-module-functional-inverse-barrier">small formal matrix programs</a> leave joint residual costs uncontrolled. These limitations do not rule out a source-dependent active solution.</p>
@@ -17271,5 +17271,60 @@ B_{\rm support}(\pi)=D+(p-1)\sum_{a\in A(\pi&#x27;)}\delta&#x27;_a.
 </div>
 </article>
 
+<article class="research-entry" id="entry-2026-09-15-pruning-reuse-and-matrix-control">
+  <h3>15 September 2026 — Existing pruning and a matrix normalization control</h3>
+  <p class="entry-meta">Status: reuse audit with no new pruning coverage; working necessary degree bounds for complete Boolean-domain matrix normalization. Cycle 158.</p>
+  <p><strong>Question.</strong> Can proof-specific abstraction remove the auxiliary evaluation circuits that obstruct universal normalization? The first proposed cases were already covered by the record. A separate test of matrix-valued coefficients shows that matrix dimension alone does not bypass the Boolean-domain degree obstruction. Neither observation constructs the missing PHP-relative active functional.</p>
+
+  <h4 id="proof-specific-pruning-reuse-audit">1. The proposed pruning was already available</h4>
+  <p>The <a href="#local-zero-cofactor-pruning">original zero-cofactor lemma</a> already removes a block when all its collected companion cofactors vanish, even if its variables occur in other cofactors or later inputs. Its coefficient variables are set to zero throughout the identity; retained inputs are rebuilt and the zero-coordinate cleanup preserves the introduction convention. This is reuse, not a new pruning theorem.</p>
+  <p>The <a href="#ports-removal">Booleanity-port theorem</a> handles isolated proof uses under its stated constant substitution and information-flow conditions. In the binary source, <a href="#binary-source-companion-support-cleanup">domain-only Booleanity witnesses</a> already remove companion contributions that arose solely from Booleanity. A copied value requires its actual copy interface; it is not automatically an isolated Booleanity use.</p>
+  <p>The <a href="#proper-OR-union-complete-support">proper OR-union comparison</a> retains nonzero collected companion cofactors for independent nonconstant affine inputs. Its domain-only countermodel shows that the comparison cannot simply be discarded with the Booleanity subproofs. This is evidence about the supplied local witness, not a claim that its term survives every global certificate rewrite.</p>
+  <p>Thus the complete approximate-majority evaluation gadget is harmless to a given certificate when the existing pruning hypotheses hold, but those hypotheses have not been established for every complex circuit occurring in a short PHP proof. No new coverage or sufficient support bound was found in this audit.</p>
+
+  <h4 id="matrix-flat-normalizer-degree-control">2. Matrix dimension does not remove the flat degree</h4>
+  <p>Over any field, take independent old Boolean variables \(x_1,\ldots,x_r\), interpreted as scalar matrices \(x_iI_s\), \(s\ge1\). Let \(R_{u,i}(x)\) be arbitrary \(s\times s\) polynomial matrices, each entry of degree at most \(T\), and define the ordered product</p>
+  <div class="math">\[
+       P(x)=\prod_{u=1}^h
+            \left(I_s-\sum_{i=1}^rR_{u,i}(x)x_i\right).
+  \]</div>
+  <p>If every complete companion \(x_iP(x)\) is zero entrywise on the old Boolean cube, then</p>
+  <div class="math">\[
+       h(T+1)\ge r.
+       \tag{MX-flat}
+  \]</div>
+  <p><strong>Proof.</strong> At the all-zero point, every factor is \(I_s\), so \(P=I_s\). At any other Boolean point, some \(x_i=1\), and its companion forces \(P=0\). Thus every diagonal entry has the Boolean function</p>
+  <div class="math">\[
+        \prod_{i=1}^r(1-x_i).
+  \]</div>
+  <p>Its unique multilinear representative has degree \(r\). Each entry of the ordered matrix product has ordinary degree at most \(h(T+1)\), proving (MX-flat). In particular, \(h=1,r=3\) requires \(T\ge2\), for every matrix dimension.</p>
+  <p>This necessary condition does not even need commutation or coefficient-field assumptions. A valid matrix interpretation of a commutative polynomial proof would need those additional conditions; dropping them in this lower-bound test only makes its hypothesis weaker. The claim concerns complete Boolean-domain companion images, not images certified using PHP residuals.</p>
+
+  <h4 id="matrix-approximate-majority-normalization-barrier">3. The complete evaluation obstruction also persists</h4>
+  <p>For the <a href="#polynomial-size-three-level-majority-source">three-level approximate-majority source</a>, interpret old bits as scalar matrices and its extension coefficients as polynomial matrices, evaluating each displayed product in its given order. Let \(W(x)\) be a scalar polynomial with nonzero Boolean remainder. Suppose multiplying every complete matrix companion image by \(W\) makes it zero entrywise on the old cube. Let \(Z(x)\) be the top matrix product.</p>
+  <p>At a point with \(W(x)\ne0\), the bottom inputs are scalar zeros or ones. Their companion equations make each bottom product its correct scalar Boolean value times \(I_s\). The same argument applies successively to the middle and top products, giving \(Z(x)=C(x)I_s\). Hence \(Z_{11}\) agrees with \(C\) wherever \(W\ne0\). The <a href="#approximate-majority-all-field-certifiers">partial-representation bound</a> yields</p>
+  <div class="math">\[
+       \deg W+\deg Z\ge\lfloor v/3\rfloor+1,
+  \]</div>
+  <p>where matrix degree is the nonnegative entry-degree ceiling \(\max(0,\max_{i,j}\deg Z_{ij})\), so zero entries cause no degree-convention issue. This statement uses a scalar weight; no claim about arbitrary matrix-valued weights is made. Matrix dimension alone therefore does not rescue that complete Boolean-domain strategy. A PHP-relative or proof-specific interpretation remains a different problem.</p>
+
+  <h4 id="pruning-and-matrix-audit-verdict">4. What remains</h4>
+  <p>The next useful source result must go beyond the existing pruning conditions and control nonzero companion contributions in a full proof context, or directly solve the active PHP-relative equations. The local support calculations, matrix bounds, and finite-cover obstruction supply tests for a proposed mechanism; they do not establish a sufficient invariant.</p>
+  <p>The <a href="https://github.com/kbr-/math-research/blob/main/research/results/proof_specific_pruning_20260915_158/README.md">audit note</a> records the reused claims and exact matrix scope. No numerical suite was needed: the scalar values forced on each diagonal determine the degree bound directly. Late route planning was mixed with the preparation category. A checkpoint check from the preceding cycle stopped on an unrelated user configuration edit; the check was narrowed to the research paths, and that edit was kept outside the research commit.</p>
+  <p><strong>Process assessment.</strong> Claim-index lookup showed that the proposed pruning step was already covered; the existing lookup rule will be moved before proposing the next step, so such duplication is caught before it is published as the next research task.</p>
+  <div class="timing-report" data-session="proof_specific_pruning_20260915_158">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>23 min 26.93 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">8.24 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">15 min 40.21 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 33.16 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.32 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
