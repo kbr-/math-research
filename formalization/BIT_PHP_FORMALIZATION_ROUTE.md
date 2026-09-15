@@ -15,8 +15,8 @@ This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
 The third-party boundary **H** is now proved in Lean: H01–H13 are complete.
-R01–R13, R16, and R18–R23 are verified and integrated, reusing the earlier
-R06/R19–R21 proofs. Five obligations remain: R14, R15, R17, R24, and R25. Proving H does not formalize its downstream consumers or the full paper.
+R01–R13, R16, and R18–R24 are verified and integrated, reusing the earlier
+R06/R19–R21 proofs. Four obligations remain: R14, R15, R17, and R25. Proving H does not formalize its downstream consumers or the full paper.
 
 ## How to use the list
 
@@ -300,11 +300,12 @@ Released R13: the two extracted row-linear and
 ordinary-restriction dimension claims. Released R03: ordinary substitution and fixed-weight PC replay. Both are integrated
 into `formal`; append conflicts preserved all existing articles and index rows.
 
-Current worker allocation: `/root/r_foundations` handles R24 in clause-simulation;
-`/root/h_chessboard` handles R14 in boolean-matching; `/root/h_arithmetic` handles
-R15 in restriction. The other three worktrees are idle, with their completed
-work integrated. The coordinator retains R17/R25 and the final generalization
-sweep after prerequisite integration.
+Current worker allocation: `/root/r_foundations` handles the independent R14
+coefficient-isolation helper in pc-foundations; `/root/h_chessboard` handles the
+concrete board restriction and final R14 assembly in boolean-matching;
+`/root/h_arithmetic` handles final R15 in restriction. Clause-simulation, decoder,
+and affine-removal are idle with their completed work integrated. The coordinator
+retains R17/R25 and the final generalization sweep after prerequisite integration.
 
 Released R05: degree-controlled binary Boolean
 reduction and its explicit NS witnesses. Its implemented proof also uses R02;
@@ -403,15 +404,26 @@ proper high-rank blocks without an implicit properness assumption on the full
 registry or a separate global pruning transformation. The complete three-case
 proof and both theorem scopes are recorded and indexed.
 
-R14 has a verified disjoint-coordinate-pair and residual-size prerequisite on
-its worker branch. It remains to be integrated with the cube-operator/separation
-work; this is not completion of R14.
+R14’s disjoint-coordinate-pair/residual-size and generic cube degree-drop/NS
+operator prerequisites are integrated. Concrete board images and coefficient
+isolation remain; the latter is assigned independently to pc-foundations.
 
 R24 DAG dependency released: actual initial/weakening/resolution/binary syntax,
 primary-clause compression, at most two auxiliary slots per source node, exact
 `3S+|J|` registry size, explicit polynomial input/variable inventory, and replay
 without a height factor. Full R24 still requires instantiation with actual bit-PHP
 initial clauses, the pair-count bound, empty final value, and the R17 family bridge.
+
+R15 dependencies released: finite affine coordinates, ordinary coordinate and
+affine restriction ideal witnesses with degree-bounded coefficients, image
+bounds, and concrete exponential/square/ceiling numerical estimates. Actual
+proper-high-block restrictions and the joint-kernel assembly remain R15.
+
+Released full R24: both actual initial encodings and both rule conventions,
+empty final clause, block count `N≤3S+binom(m,2)`, input bound `NW`, variable
+bound `mℓ+hNW` with `W=max(ℓ,mℓ+2)`, PC degree `max(2h+ℓ,4h+1)`, and the exact
+registry/family-system identity. Its worker has moved to the independent R14
+coefficient lemma. Four R steps remain: R14, R15, R17, and R25.
 
 ### Final generalization sweep (explicit user assignment)
 
