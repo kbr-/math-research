@@ -285,3 +285,7 @@ and restriction; the latter two reuse completed H worker sessions with new paths
 When the complete route is finished, retain this section as **Parallel execution
 history**, update its wording to past tense, and preserve assignments and pinned
 integration checkpoints. Do not rename it complete while obligations remain.
+
+Released R01: `76cc94b` (worker checkpoint `a1e1d72`, rebased onto `bae63b0`),
+verified ordinary PC/NS definitions and base interfaces. R02–R04 remain with
+the foundation worker; no publication conclusion follows from R01 alone.
