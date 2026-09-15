@@ -15,8 +15,9 @@ This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
 The third-party boundary **H** is now proved in Lean: H01–H13 are complete.
-R01–R24 are verified and integrated, reusing the earlier R06/R19–R21 proofs.
-Only R25, the final publication-size conclusion, remains. Proving H does not formalize its downstream consumers or the full paper.
+All R01–R25 obligations are verified and integrated, reusing the earlier
+R06/R19–R21 proofs. The complete theorem is in
+[BitPHPSuperpolynomial.lean](claims/BitPHPSuperpolynomial.lean). Proving H does not formalize its downstream consumers or the full paper.
 
 ## How to use the list
 
@@ -82,8 +83,8 @@ R18 → R22, R23 ───┴→ R24 ────────────┘
 ```
 
 The table, not this simplified sketch, specifies all prerequisites. R06 and
-R19–R21 are already covered by existing Lean files; the rest are remaining
-implementation/proof tasks, except for whatever exact interfaces Mathlib supplies.
+R19–R21 were reused from existing Lean files; all remaining rows were subsequently
+completed, with exact scope and proof links in the claim index.
 R01/R02 now supply ordinary-PC derivations and completed-line multiplication. These are required by both final arguments and are
 not supplied by the semantic `ParityDerivation` type.
 
@@ -102,7 +103,7 @@ The unchanged [original interface](third-party-claims/ChessboardFilling.lean)
 defines the proposition, avoiding an import cycle with its proof. Its file-level
 `Kind: interface` metadata describes that definition module; H itself is now proved
 with all required dependencies, no custom axiom, and no `sorry`. R10 and the
-remaining publication claims still require their own formalizations.
+remaining publication claims were subsequently formalized as well.
 
 ### Exact interface
 
@@ -128,8 +129,8 @@ The target definition is:
 This is a direct finite-chain formulation of the required homology vanishing.
 H02 and H03 now prove boundary-squared-zero and the exact representation bridge;
 H12 and H13 prove the full homological bound and this filling consequence. The s=2 case requires the reduced augmentation, not the claim that
-every unaugmented vertex chain bounds. R10 will build its matching-moment
-cycles in this representation and consume the supplied filling.
+every unaugmented vertex chain bounds. R10 built its matching-moment
+cycles in this representation and consumed the supplied filling.
 
 ### Ordered route to H
 
@@ -191,8 +192,8 @@ For explicit reduced acyclicity conventions, use exactness on k-cell chains for
 dimension bounds using truncated natural subtraction without handling ν=0/1
 and the empty-face-only complex separately.
 
-The local construction from matching marginals to cycles and from fillings back
-to globally consistent moments remains our R10 obligation. Standard library
+R10 completed the local construction from matching marginals to cycles and from
+fillings back to globally consistent moments. Standard library
 support for chains and linear algebra may be reused when available.
 
 The selected chain does **not** need a separate imported Razborov degree lower
@@ -251,205 +252,89 @@ notebook's formalization-gaps section. Do not expand the target to the unrelated
 main Frege research goal. This route itself supplies no new Lean formalization.
 
 
-## Active parallel execution — remaining R route
+## Parallel execution history
 
-User assignment: execute Spin-formalize-parallel for all remaining R01–R25
-obligations, reusing H and R06/R19–R21. Integration branch: `formal`. Local checkpoints only;
-this assignment does not authorize merging main or pushing.
+The assigned H01–H13 and R01–R25 route was completed on `formal`, using local
+checkpoints. No merge into main or push was part of this assignment. Concrete
+commit hashes were omitted because rebases changed them; the claim index and
+research records retain stable claim labels, proof anchors, and evidence paths.
 
-Worker worktrees are under `~/dev/math-worktrees/`, each with a private `.lake`.
-The current runtime permits the coordinator plus three active workers, so six
-worktrees are scheduled in waves. The diagram above is not six simultaneously
-independent tasks: its cross-branch prerequisites still apply.
+Six isolated worktrees were prepared under `~/dev/math-worktrees/`, each with a
+private pinned Lean cache. The runtime allowed the coordinator plus three active
+workers, so the six worktrees were scheduled in waves. The clean completed H
+worktrees were removed, with their historical branch refs retained.
 
-| Worktree | Branch | Exclusive assignment | Release points |
-| --- | --- | --- | --- |
-| pc-foundations | formal-r-pc-foundations | R01–R04 | Release R01 immediately, then R02/R03/R04 separately. |
-| boolean-matching | formal-r-boolean-matching | R05, R09, R10, R14 | R05 unblocks other workers; R14 waits for R12/R13. |
-| decoder | formal-r-decoder | R11, R12 | Start after R01/R05; R12 also needs R02/R03. |
-| affine-removal | formal-r-affine-removal | R07, R08, R16 | Release R07 to restriction and clause workers; respect R03/R05. |
-| restriction | formal-r-restriction | R13, R15 | R13 can develop on R01; R15 waits for R04/R07. |
-| clause-simulation | formal-r-clause-simulation | R18, R22, R23, R24 | Reuse R06/R19–R21; R23 waits for R07. |
+| Worktree | Branch | Completed work |
+| --- | --- | --- |
+| pc-foundations | formal-r-pc-foundations | R01–R04, then the independent R14 coefficient-isolation helper |
+| boolean-matching | formal-r-boolean-matching | R05, R09, R10, R14, including shared squarefree-pair and cube dependencies |
+| decoder | formal-r-decoder | R11 and R12 |
+| affine-removal | formal-r-affine-removal | R07, R08, R16 |
+| restriction | formal-r-restriction | R13 and R15 |
+| clause-simulation | formal-r-clause-simulation | R18, R22, R23, R24, and the unit-span removal bridge |
 
-Coordinator performs R17 and R25 after their prerequisites are integrated.
-Workers perform Resume and restricted Spin-formalize, recording each existing
-indexed claim separately. The coordinator owns living notebook sections, the gap
-list, route updates, sequential rebases, and the final provenance/index audit.
-No worker rebases while editing. Record releases here by claim and verified
-scope; resolve temporary integration pins from Git during each operation. Do not
-store concrete commit hashes in this route. Initial active workers: foundations, Boolean/matching,
-and restriction; the latter two reuse completed H worker sessions with new paths.
+Workers followed Resume and restricted Spin-formalize, preserving complete proofs,
+claim-index scope, and measured evidence. Existing indexed claims received their
+own records. The coordinator maintained the living notebook sections and route,
+integrated clean releases through sequential rebases, and personally proved R17
+and R25. Conflicts preserved complete historical articles and independently
+reviewed claim-status updates. Operational integration pins were resolved from Git
+for each operation rather than stored here.
 
-When the complete route is finished, retain this section as **Parallel execution
-history**, update its wording to past tense, and preserve assignments and
-release history. Do not rename it complete while obligations remain.
+### Releases and dependencies
 
-Released R01:
-verified ordinary PC/NS definitions and base interfaces. R02–R04 remain with
-the foundation worker; no publication conclusion follows from R01 alone.
+- R01/R02 established ordinary PC/NS definitions and completed-line reuse. R13
+  supplied row-linear and restriction dimensions. R03/R04 supplied substitution,
+  bounded duality, and compatible annihilator extension; R05 supplied explicit
+  binary Boolean NS certificates. R05 used R02, and R09 later also used R02/R04.
+- The squarefree forbidden-pair certificate was released early so R11 could
+  proceed without waiting for all of R09. R11's two-row interpolation then
+  supported R12's actual degree-preserving decoder, including the original
+  Boolean/collision certificates and arbitrary-PC transfer for ℓ≥2.
+- R07 was released in reusable parts: affine polynomial representation and span
+  witnesses, coordinate completion/free parametrization, canonical fresh blocks
+  with exact companion degrees, and scalar cleanup. R08 supplied rank-only
+  factor packing, including zero/empty boundary cases. R16 assembled the complete
+  weighted removal ledger through k(D+1).
+- R09 established actual bounded-functional matching-marginal completeness.
+  R10 used checked row-set cycles and fillings to prove prescribed-functional
+  extension, stable NS filtration, PC=NS, and normalized existence/span and
+  nonrefutation. Its construction removed the unnecessary m≥B assumption.
+- R18 built the complete registry over arbitrary finite old-variable types.
+  R22/R23 proved resolution through max(K,4h+1), weakening through max(K,4h),
+  and tautologies through 2h+1. The initial-CNF and finite-DAG helpers then led
+  to full R24: both actual encodings and rule conventions, N≤3S+binom(m,2),
+  W=max(ℓ,mℓ+2), inputs≤NW, variables≤mℓ+hNW, and the exact family-system bridge.
+  The actual v+2 auxiliary-width bound sufficed for the indexed polynomial
+  inventory claim; no tighter bound was claimed.
+- A required assembly refinement extended R16 to accept a unit-span alternative
+  to the high-rank literal witness. A constant specialization killed unit blocks
+  at the same ceiling. The original R16 remained a compatibility wrapper, and
+  no hidden proper-family assumption or global pruning step was needed.
+- R15 released ordinary affine restriction/ideal witnesses and concrete
+  exponential, square-condition, and ceiling estimates before the actual joint
+  kernel. Its final theorem supplied original-tuple coefficients of degree≤k−1
+  and proper/total inventory wrappers, including the no-high-block case.
+- R14 released disjoint coordinate pairs/residual sizes and the generic cube
+  degree/NS operator first. Concrete board restrictions and exact coefficient
+  isolation were proved in parallel. Existing R13 monomial facts were exposed
+  without changing their proofs. Final separation included the actual functional,
+  both PC exclusions, and constant/nonconstant normalization, for arbitrary m.
+- R17 composed the actual kernel, removal, and separator. It covered the original
+  finite ceiling and the polynomial-inventory/polylogarithmic-degree consequence,
+  using one shared uniform parameter estimate. R25 then combined this with R24
+  to prove the actual usual-CNF lower bound for every real K>0.
 
-All six private pinned `.lake` caches were copied successfully before foundation
-work finished. The clean completed H worktrees were removed; their historical
-branch refs were retained.
-
-Released R02:
-completed-line polynomial multiplication, degree-controlled NS multiplication,
-and NS-to-PC inclusion. R03/R04 remain with the foundation worker.
-
-Released R13: the two extracted row-linear and
-ordinary-restriction dimension claims. Released R03: ordinary substitution and fixed-weight PC replay. Both are integrated
-into `formal`; append conflicts preserved all existing articles and index rows.
-
-All worker assignments are complete. The coordinator is finishing R25.
-Verification uses cached prerequisites, and the generalization sweep is deferred
-under the user’s publication-quota constraint.
-
-Released R05: degree-controlled binary Boolean
-reduction and its explicit NS witnesses. Its implemented proof also uses R02;
-the table records this dependency. The append-merge helper now tolerates only
-blank-line differences in existing index content while preserving every
-nonblank line; seven focused tests passed.
-
-Released R04: bounded-degree duality and a
-separately indexed compatible-annihilator extension. The foundation assignment
-is complete. `/root/r_foundations` now works on R11/R12 in decoder from the integrated foundations;
-Boolean/matching and affine-removal remain active.
-
-Early shared release:
-`lem:squarefree-forbidden-pair-certificate`, unblocks R11 without requiring
-all of R09. R09 remains incomplete.
-
-Partial R07 release: the fully indexed affine-form
-representation and affine-system linear-algebra claims (15 audited declarations).
-R07 still requires coordinate completion/parametrization, exact fresh-companion
-degree, and scalar PC cleanup. The affine worker continues these obligations;
-this release does not count as full R07 completion.
-
-Released R11: full two-row interpolation with
-ordinary NS cost `max(deg P,2)`, including the empty-column case. Its proof
-reuses the separately released squarefree-pair helper; full R09 is not required.
-The decoder worker continues R12.
-
-R07 coordinate release: affine coordinate
-completion and injective free-coordinate parametrization with exact zero-set
-range. R07 now still needs fresh-companion degree and scalar PC cleanup; the
-coordinate prerequisite is verified, not assumed.
-
-Released R12: decoder injectivity/exact degree
-for all bit lengths and arbitrary-PC transfer for `ℓ≥2` at every ceiling B.
-The decoder assignment is complete; `/root/r_foundations` now handles
-R18/R22/R23/R24 in clause-simulation.
-
-Released R09: full bounded-functional matching
-marginal completeness, including arbitrary constant moments and N≥1. Its
-implemented proof also uses R02/R04, now recorded in the dependency table.
-The Boolean/matching worker continues R10, then R14.
-
-R07 fresh-block release: canonical disjoint
-coefficient variables, exact fresh-companion degrees and rename compatibility.
-Only scalar PC cleanup remains R07; clause simulation can use this release now.
-
-R07 complete:
-combining the previously released affine witnesses, coordinates, and fresh-degree
-claims with degree-preserving scalar cleanup of complete blocks. Generic cleanup
-requires explicit idempotent constants; binary unit-span cleanup supplies them
-and requires h>0. The affine worker proceeds to R08 and R16, then will return to
-R15 in restriction. Eleven R steps remain after this release.
-
-Released R18: complete affine-clause registry
-over arbitrary finite old-variable types, including its finite-affine polynomial
-bridge, empty-clause value, original degree bounds, and canonical block embedding.
-The clause worker proceeds to R22/R23/R24. Ten R steps remain.
-
-Released R08: no-retained-core low-rank packing, including explicit coefficient
-degree bounds, the exact zero-indicator product, and Boolean NS companion
-certificates. Empty/rank-zero cases are covered by the generalized statement.
-The affine worker continues R16, then R15.
-
-Released R22: complementary-parity resolution, both as a reusable certificate
-engine and in the actual fixed registry, through `max(K,4h+1)`. Overlapping
-contexts and empty conclusions are included. The clause worker continues R23
-and R24. Eight R steps remain: R10, R14–R17, and R23–R25.
-
-Released R23: concrete semantic weakening through `max(K,4h)` and tautological
-conclusions through `2h+1`, including both consistent and empty zero sets.
-Its finite-affine witness bridge reuses R07 without restricting the old-variable
-type. The clause worker continues the initial-CNF and finite-DAG dependencies
-and then full R24.
-
-Released R16: complete simultaneous low/high affine-family removal through
-`k(D+1)`, with the tighter internal ceiling `kD+deg f`. Properness and
-multilinearity are unnecessary; high-rank literal witness existence remains R15.
-The affine worker has returned to restriction for R15.
-
-Released R10: actual row-set cycle fillings, arbitrary prescribed bounded
-functional extension, old NS filtration stability, PC=NS, and normalized-design
-existence/span/nonrefutation. The proof removes `m≥B`, retaining `N≥1` and
-`N≥2B-1`. The Boolean/matching worker proceeds to R14, using the integrated
-R12 decoder and R13 row-linear interfaces. Five R steps remain.
-
-R24 initial dependency released: actual compact-pair/CNF falsification and
-semantic implication, plus concrete registry initial-value certificates through
-`2h+ℓ`. Finite-DAG normalization, counting, and replay remain R24 obligations.
-
-Assembly interface refinement verified: registry clauses may have unit spans.
-[AffineFamilyRemovalWithUnits.lean](claims/AffineFamilyRemovalWithUnits.lean)
-accepts a unit-span alternative to the high-rank literal witness, using a constant
-specialization that kills the block at the same degree ceiling. The original R16
-theorem remains a verified compatibility wrapper. R15 can supply witnesses for
-proper high-rank blocks without an implicit properness assumption on the full
-registry or a separate global pruning transformation. The complete three-case
-proof and both theorem scopes are recorded and indexed.
-
-R14’s disjoint-coordinate-pair/residual-size and generic cube degree-drop/NS
-operator prerequisites are integrated. Concrete board images and coefficient
-isolation remain; the latter is assigned independently to pc-foundations.
-
-R24 DAG dependency released: actual initial/weakening/resolution/binary syntax,
-primary-clause compression, at most two auxiliary slots per source node, exact
-`3S+|J|` registry size, explicit polynomial input/variable inventory, and replay
-without a height factor. Full R24 still requires instantiation with actual bit-PHP
-initial clauses, the pair-count bound, empty final value, and the R17 family bridge.
-
-R15 dependencies released: finite affine coordinates, ordinary coordinate and
-affine restriction ideal witnesses with degree-bounded coefficients, image
-bounds, and concrete exponential/square/ceiling numerical estimates. Actual
-proper-high-block restrictions and the joint-kernel assembly remain R15.
-
-Released full R24: both actual initial encodings and both rule conventions,
-empty final clause, block count `N≤3S+binom(m,2)`, input bound `NW`, variable
-bound `mℓ+hNW` with `W=max(ℓ,mℓ+2)`, PC degree `max(2h+ℓ,4h+1)`, and the exact
-registry/family-system identity. Its worker has moved to the independent R14
-coefficient lemma. Four R steps remain: R14, R15, R17, and R25.
-
-Final R17 scope review: the paper's finite-parameter theorem explicitly assumes
-`D≥2h+1`; the indexed audit also states the polynomial-inventory/polylogarithmic-
-degree consequence. Final assembly must cover both, reusing a shared parameter
-estimate for R25 rather than marking only the finite inequality interface as
-completion of the whole audit. The square-condition kernel interface permits
-uniform parameter choices from inventory bounds. Unit-span blocks are handled
-by the verified removal alternative, so no properness assumption is hidden.
-
-Released full R15: actual proper-high restriction maps, the nonzero joint kernel,
-original-tuple literal coefficients, square-condition and original-ceiling
-parameters, and proper/total inventory wrappers. The result supplies exactly the
-unit-span-or-literal condition consumed by the generalized R16.
-
-R14 prerequisites are integrated: disjoint coordinate pairs and residual bounds,
-the generic cube degree/NS operator, concrete board restrictions and all axiom
-images, and exact row-cube coefficient isolation. The latter uses the exposed,
-unchanged R13 monomial facts. Only final R14 separation assembly remains before
-the coordinator takes R17/R25.
-
-Released R14 and R17: full cube separation and full finite/asymptotic affine-family
-exclusion are verified. The latter includes the proper-inventory statement and a
-shared uniform parameter lemma. All R01–R24 obligations are complete; only the
-final actual-proof-size composition R25 remains.
+Full alternative proofs were recorded using MathJax. Checked worker artifacts
+were reused for final assembly; verification followed the final dependency chain
+without a redundant broad audit. Unnamed local-instance collisions were fixed
+with unique names, and the formalization guidance was updated. The append helper
+was adjusted to tolerate blank-line differences while preserving nonblank index
+content. No new mathematical gap remained in the completed route.
 
 ### Deferred generalization sweep
 
 The user deferred the generalization sweep to preserve quota for publication
-preparation. It is not part of the current completion requirement. Finish R17,
-R25, and their required records/checks; revisit generalization only when requested
+preparation. It is not part of the current completion requirement. R17, R25, and their required records/checks were completed; revisit generalization only when requested
 again, potentially after the publication is ready. The standing guidance still
 permits useful generalization when it directly simplifies an assigned proof.

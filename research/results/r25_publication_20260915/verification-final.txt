@@ -1,0 +1,35 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.BitPHPSuperpolynomial
+Claim file: claims/BitPHPSuperpolynomial.lean
+Claim: thm:publication-Res-parity-bit-PHP
+Source: https://kbr.is-a.dev/math-research/#lean-publication-bit-PHP-superpolynomial
+Scope: Full usual-CNF bit-PHP superpolynomial node lower bound for the finite affine DAG calculus containing both recorded rule conventions. For every real K>0 and sufficiently large bit length, every refutation has more than (2^ℓ)^K nodes.
+Declarations: MathResearch.bitPHP_superpolynomial
+$ lake --wfail build claims.BitPHPSuperpolynomial
+✔ [2484/2484] Built claims.BitPHPSuperpolynomial (3.2s)
+Build completed successfully (2484 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-auxiliary/formalization/.lake/tmp0yfz6n5n.lean
+MathResearch.bitPHP_superpolynomial : ∀ (K : ℝ),
+  0 < K →
+    ∃ L,
+      ∀ ℓ ≥ L,
+        ∀ {S : ℕ}
+          (C :
+            Fin S →
+              MathResearch.PolynomialCalculus.FiniteParityClause (MathResearch.PolynomialCalculus.BitVar (2 ^ ℓ + 1) ℓ))
+          (_dag :
+            MathResearch.PolynomialCalculus.AffineDAG
+              (MathResearch.PolynomialCalculus.usualBitPHPInitials (2 ^ ℓ + 1) ℓ) C)
+          (finish : Fin S), C finish = ∅ → ↑(2 ^ ℓ) ^ K < ↑S
+'MathResearch.bitPHP_superpolynomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 1 audited declarations.
