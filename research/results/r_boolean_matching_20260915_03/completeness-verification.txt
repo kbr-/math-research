@@ -1,0 +1,116 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.MatchingMomentCompleteness
+Claim file: claims/MatchingMomentCompleteness.lean
+Claim: audit:matching-moment-completeness
+Source: https://kbr.is-a.dev/math-research/#lean-matching-moment-completeness
+Scope: Complete bounded ordinary-NS annihilator correspondence with matching moments and all missing-row marginals over F₂, for N≥1; constant moment unrestricted.
+Declarations: MathResearch.PolynomialCalculus.annihilates_matching_normal MathResearch.PolynomialCalculus.annihilates_implies_marginals MathResearch.PolynomialCalculus.marginals_implies_annihilates MathResearch.PolynomialCalculus.matching_marginal_completeness MathResearch.PolynomialCalculus.momentFunctional_support MathResearch.PolynomialCalculus.momentFunctional_monomial MathResearch.PolynomialCalculus.momentFunctional_one MathResearch.PolynomialCalculus.momentFunctional_annihilates_matching MathResearch.PolynomialCalculus.momentFunctional_annihilates MathResearch.PolynomialCalculus.momentFunctional_of_values MathResearch.PolynomialCalculus.bounded_matching_moment_completeness MathResearch.PolynomialCalculus.bounded_moment_recovery
+$ lake --wfail build claims.MatchingMomentCompleteness
+✔ [1996/1997] Built claims.MatchingNormalForm (1.8s)
+✔ [1997/1997] Built claims.MatchingMomentCompleteness (1.9s)
+Build completed successfully (1997 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/tmp8ctzhqsg.lean
+MathResearch.PolynomialCalculus.annihilates_matching_normal : ∀ (m N B : ℕ)
+  (L : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N) →ₗ[ZMod 2] ZMod 2),
+  MathResearch.PolynomialCalculus.AnnihilatesNS (MathResearch.PolynomialCalculus.matchingBase m N) B L →
+    ∀ (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N)),
+      MvPolynomial.totalDegree P ≤ B → L P = L ((MathResearch.PolynomialCalculus.matchingNormal m N) P)
+'MathResearch.PolynomialCalculus.annihilates_matching_normal' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.annihilates_implies_marginals : ∀ (m N B : ℕ)
+  (L : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N) →ₗ[ZMod 2] ZMod 2),
+  MathResearch.PolynomialCalculus.AnnihilatesNS (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B L →
+    MathResearch.PolynomialCalculus.MatchingMarginals m N B fun S =>
+      L (MathResearch.PolynomialCalculus.supportMonomial S)
+'MathResearch.PolynomialCalculus.annihilates_implies_marginals' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.marginals_implies_annihilates : ∀ (m N B : ℕ),
+  1 ≤ N →
+    ∀ (L : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N) →ₗ[ZMod 2] ZMod 2),
+      MathResearch.PolynomialCalculus.AnnihilatesNS (MathResearch.PolynomialCalculus.matchingBase m N) B L →
+        (MathResearch.PolynomialCalculus.MatchingMarginals m N B fun S =>
+            L (MathResearch.PolynomialCalculus.supportMonomial S)) →
+          MathResearch.PolynomialCalculus.AnnihilatesNS (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B L
+'MathResearch.PolynomialCalculus.marginals_implies_annihilates' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.matching_marginal_completeness : ∀ (m N B : ℕ),
+  1 ≤ N →
+    ∀ (L : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N) →ₗ[ZMod 2] ZMod 2),
+      MathResearch.PolynomialCalculus.AnnihilatesNS (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B L ↔
+        MathResearch.PolynomialCalculus.AnnihilatesNS (MathResearch.PolynomialCalculus.matchingBase m N) B L ∧
+          MathResearch.PolynomialCalculus.MatchingMarginals m N B fun S =>
+            L (MathResearch.PolynomialCalculus.supportMonomial S)
+'MathResearch.PolynomialCalculus.matching_marginal_completeness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.momentFunctional_support : ∀ (m N : ℕ)
+  (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2)
+  (S : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+  MathResearch.PolynomialCalculus.IsMatching S →
+    (MathResearch.PolynomialCalculus.momentFunctional m N z) (MathResearch.PolynomialCalculus.supportMonomial S) = z S
+'MathResearch.PolynomialCalculus.momentFunctional_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.momentFunctional_monomial : ∀ (m N : ℕ)
+  (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2) (d : MathResearch.PolynomialCalculus.Cell m N →₀ ℕ)
+  (c : ZMod 2),
+  (MathResearch.PolynomialCalculus.momentFunctional m N z) ((MvPolynomial.monomial d) c) =
+    if MathResearch.PolynomialCalculus.IsMatching d.support then c * z d.support else 0
+'MathResearch.PolynomialCalculus.momentFunctional_monomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.momentFunctional_one : ∀ (m N : ℕ)
+  (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2),
+  (MathResearch.PolynomialCalculus.momentFunctional m N z) 1 = z ∅
+'MathResearch.PolynomialCalculus.momentFunctional_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.momentFunctional_annihilates_matching : ∀ (m N B : ℕ)
+  (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2),
+  MathResearch.PolynomialCalculus.AnnihilatesNS (MathResearch.PolynomialCalculus.matchingBase m N) B
+    (MathResearch.PolynomialCalculus.momentFunctional m N z)
+'MathResearch.PolynomialCalculus.momentFunctional_annihilates_matching' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.momentFunctional_annihilates : ∀ (m N B : ℕ),
+  1 ≤ N →
+    ∀ (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2),
+      MathResearch.PolynomialCalculus.MatchingMarginals m N B z →
+        MathResearch.PolynomialCalculus.AnnihilatesNS (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B
+          (MathResearch.PolynomialCalculus.momentFunctional m N z)
+'MathResearch.PolynomialCalculus.momentFunctional_annihilates' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.momentFunctional_of_values : ∀ (m N : ℕ)
+  (L : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N) →ₗ[ZMod 2] ZMod 2)
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N)),
+  (MathResearch.PolynomialCalculus.momentFunctional m N fun S => L (MathResearch.PolynomialCalculus.supportMonomial S))
+      P =
+    L ((MathResearch.PolynomialCalculus.matchingNormal m N) P)
+'MathResearch.PolynomialCalculus.momentFunctional_of_values' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.bounded_matching_moment_completeness : ∀ (m N B : ℕ),
+  1 ≤ N →
+    ∀ (L : ↥(MathResearch.PolynomialCalculus.degreeSpace B) →ₗ[ZMod 2] ZMod 2),
+      MathResearch.PolynomialCalculus.BoundedAnnihilator m N B L ↔
+        ∃ z,
+          MathResearch.PolynomialCalculus.MatchingMarginals m N B z ∧
+            ∀ (p : ↥(MathResearch.PolynomialCalculus.degreeSpace B)),
+              L p = (MathResearch.PolynomialCalculus.momentFunctional m N z) ↑p
+'MathResearch.PolynomialCalculus.bounded_matching_moment_completeness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.bounded_moment_recovery : ∀ (m N B : ℕ)
+  (L : ↥(MathResearch.PolynomialCalculus.degreeSpace B) →ₗ[ZMod 2] ZMod 2)
+  (z : Finset (MathResearch.PolynomialCalculus.Cell m N) → ZMod 2),
+  (∀ (p : ↥(MathResearch.PolynomialCalculus.degreeSpace B)),
+      L p = (MathResearch.PolynomialCalculus.momentFunctional m N z) ↑p) →
+    ∀ (S : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+      MathResearch.PolynomialCalculus.IsMatching S →
+        ∀ (hcard : S.card ≤ B), L ⟨MathResearch.PolynomialCalculus.supportMonomial S, ⋯⟩ = z S
+'MathResearch.PolynomialCalculus.bounded_moment_recovery' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 12 audited declarations.

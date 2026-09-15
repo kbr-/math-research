@@ -1,0 +1,23 @@
+✔ [1996/1997] Built claims.MatchingNormalForm (9.0s)
+✖ [1997/1997] Building claims.MatchingMomentCompleteness (4.4s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/boolean-matching/formalization/claims/MatchingMomentCompleteness.lean -o /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/MatchingMomentCompleteness.olean -i /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/MatchingMomentCompleteness.ilean -c /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/MatchingMomentCompleteness.c --setup /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/MatchingMomentCompleteness.setup.json --json
+error: claims/MatchingMomentCompleteness.lean:179:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (momentFunctional m N z) (supportMonomial S)
+in the target expression
+  (∑ j, if ColUnused j S then (fun S => (momentFunctional m N z) (supportMonomial S)) (insert (i, j) S) else 0) =
+    (fun S => (momentFunctional m N z) (supportMonomial S)) S
+
+m N B : ℕ
+hN : 1 ≤ N
+z : Finset (Cell m N) → ZMod 2
+hz : MatchingMarginals m N B z
+S : Finset (Cell m N)
+hS : IsMatching S
+hcard : S.card < B
+i : Fin m
+hi : RowUnused i S
+⊢ (∑ j, if ColUnused j S then (fun S => (momentFunctional m N z) (supportMonomial S)) (insert (i, j) S) else 0) =
+    (fun S => (momentFunctional m N z) (supportMonomial S)) S
+Some required targets logged failures:
+- claims.MatchingMomentCompleteness
+error: build failed

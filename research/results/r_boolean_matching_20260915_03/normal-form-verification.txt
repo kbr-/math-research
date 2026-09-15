@@ -1,0 +1,148 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.MatchingNormalForm
+Claim file: claims/MatchingNormalForm.lean
+Claim: lem:functional-matching-normal-form
+Source: https://kbr.is-a.dev/math-research/#lean-functional-matching-normal-form
+Scope: Linear matching normal form for binary functional-unary polynomials, with original-degree Boolean/exclusion NS error and exact encoding identification.
+Declarations: MathResearch.PolynomialCalculus.matchingNormal_monomial MathResearch.PolynomialCalculus.nonmatching_monomial_ns MathResearch.PolynomialCalculus.matchingNormal_ns MathResearch.PolynomialCalculus.functionalUnaryBase_eq MathResearch.PolynomialCalculus.squarefreeExponent_support MathResearch.PolynomialCalculus.supportMonomial_eq_monomial MathResearch.PolynomialCalculus.matchingNormal_support MathResearch.PolynomialCalculus.matchingNormal_boolean_multiple MathResearch.PolynomialCalculus.matchingNormal_exclusion_multiple MathResearch.PolynomialCalculus.matchingNormal_generator_multiple MathResearch.PolynomialCalculus.matchingNormal_ns_zero MathResearch.PolynomialCalculus.matchingNormal_kernel MathResearch.PolynomialCalculus.matchingNormal_support_mul_X MathResearch.PolynomialCalculus.matching_insert_unused MathResearch.PolynomialCalculus.matching_insert_occupied MathResearch.PolynomialCalculus.matchingNormal_row_unused MathResearch.PolynomialCalculus.matchingNormal_row_occupied MathResearch.PolynomialCalculus.matchingNormal_degree MathResearch.PolynomialCalculus.rowEquation_degree_le MathResearch.PolynomialCalculus.rowEquation_degree MathResearch.PolynomialCalculus.rowEquation_ne_zero
+$ lake --wfail build claims.MatchingNormalForm
+Build completed successfully (1994 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/tmpwuh0ad87.lean
+MathResearch.PolynomialCalculus.matchingNormal_monomial : ∀ (m N : ℕ)
+  (d : MathResearch.PolynomialCalculus.Cell m N →₀ ℕ) (c : ZMod 2),
+  (MathResearch.PolynomialCalculus.matchingNormal m N) ((MvPolynomial.monomial d) c) =
+    c • MathResearch.PolynomialCalculus.matchingBasis d
+'MathResearch.PolynomialCalculus.matchingNormal_monomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.nonmatching_monomial_ns : ∀ {m N : ℕ}
+  (S : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+  ¬MathResearch.PolynomialCalculus.IsMatching S →
+    MathResearch.PolynomialCalculus.supportMonomial S ∈
+      MathResearch.PolynomialCalculus.nsSpace (MathResearch.PolynomialCalculus.matchingBase m N) S.card
+'MathResearch.PolynomialCalculus.nonmatching_monomial_ns' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.matchingNormal_ns : ∀ (m N : ℕ)
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N)),
+  P - (MathResearch.PolynomialCalculus.matchingNormal m N) P ∈
+    MathResearch.PolynomialCalculus.nsSpace (MathResearch.PolynomialCalculus.matchingBase m N)
+      (MvPolynomial.totalDegree P)
+'MathResearch.PolynomialCalculus.matchingNormal_ns' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.functionalUnaryBase_eq : ∀ (m N : ℕ),
+  MathResearch.PolynomialCalculus.functionalUnaryBase m N =
+    MathResearch.PolynomialCalculus.matchingBase m N ∪ MathResearch.PolynomialCalculus.rowBase m N
+'MathResearch.PolynomialCalculus.functionalUnaryBase_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.squarefreeExponent_support : ∀ {V : Type} [inst : DecidableEq V] (S : Finset V),
+  (MathResearch.PolynomialCalculus.squarefreeExponent S).support = S
+'MathResearch.PolynomialCalculus.squarefreeExponent_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.supportMonomial_eq_monomial : ∀ {V : Type} [inst : DecidableEq V] (S : Finset V),
+  MathResearch.PolynomialCalculus.supportMonomial S =
+    (MvPolynomial.monomial (MathResearch.PolynomialCalculus.squarefreeExponent S)) 1
+'MathResearch.PolynomialCalculus.supportMonomial_eq_monomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.matchingNormal_support : ∀ (m N : ℕ)
+  (S : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+  (MathResearch.PolynomialCalculus.matchingNormal m N) (MathResearch.PolynomialCalculus.supportMonomial S) =
+    if MathResearch.PolynomialCalculus.IsMatching S then MathResearch.PolynomialCalculus.supportMonomial S else 0
+'MathResearch.PolynomialCalculus.matchingNormal_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.matchingNormal_boolean_multiple : ∀ (m N : ℕ)
+  (d : MathResearch.PolynomialCalculus.Cell m N →₀ ℕ) (c : ZMod 2) (x : MathResearch.PolynomialCalculus.Cell m N),
+  (MathResearch.PolynomialCalculus.matchingNormal m N)
+      ((MvPolynomial.monomial d) c * (MvPolynomial.X x ^ 2 - MvPolynomial.X x)) =
+    0
+'MathResearch.PolynomialCalculus.matchingNormal_boolean_multiple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.matchingNormal_exclusion_multiple : ∀ (m N : ℕ)
+  (d : MathResearch.PolynomialCalculus.Cell m N →₀ ℕ) (c : ZMod 2) (x y : MathResearch.PolynomialCalculus.Cell m N),
+  x ≠ y →
+    x.1 = y.1 ∨ x.2 = y.2 →
+      (MathResearch.PolynomialCalculus.matchingNormal m N)
+          ((MvPolynomial.monomial d) c * (MvPolynomial.X x * MvPolynomial.X y)) =
+        0
+'MathResearch.PolynomialCalculus.matchingNormal_exclusion_multiple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.matchingNormal_generator_multiple : ∀ (m N : ℕ)
+  (q f : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N)),
+  f ∈ MathResearch.PolynomialCalculus.matchingBase m N →
+    (MathResearch.PolynomialCalculus.matchingNormal m N) (q * f) = 0
+'MathResearch.PolynomialCalculus.matchingNormal_generator_multiple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.PolynomialCalculus.matchingNormal_ns_zero : ∀ (m N B : ℕ),
+  ∀ P ∈ MathResearch.PolynomialCalculus.nsSpace (MathResearch.PolynomialCalculus.matchingBase m N) B,
+    (MathResearch.PolynomialCalculus.matchingNormal m N) P = 0
+'MathResearch.PolynomialCalculus.matchingNormal_ns_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.matchingNormal_kernel : ∀ (m N B : ℕ)
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N)),
+  MvPolynomial.totalDegree P ≤ B →
+    (P ∈ MathResearch.PolynomialCalculus.nsSpace (MathResearch.PolynomialCalculus.matchingBase m N) B ↔
+      (MathResearch.PolynomialCalculus.matchingNormal m N) P = 0)
+'MathResearch.PolynomialCalculus.matchingNormal_kernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.matchingNormal_support_mul_X : ∀ (m N : ℕ)
+  (S : Finset (MathResearch.PolynomialCalculus.Cell m N)) (x : MathResearch.PolynomialCalculus.Cell m N),
+  (MathResearch.PolynomialCalculus.matchingNormal m N)
+      (MathResearch.PolynomialCalculus.supportMonomial S * MvPolynomial.X x) =
+    if MathResearch.PolynomialCalculus.IsMatching (insert x S) then
+      MathResearch.PolynomialCalculus.supportMonomial (insert x S)
+    else 0
+'MathResearch.PolynomialCalculus.matchingNormal_support_mul_X' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.PolynomialCalculus.matching_insert_unused : ∀ {m N : ℕ}
+  (S : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+  MathResearch.PolynomialCalculus.IsMatching S →
+    ∀ (i : Fin m),
+      MathResearch.PolynomialCalculus.RowUnused i S →
+        ∀ (j : Fin N),
+          MathResearch.PolynomialCalculus.IsMatching (insert (i, j) S) ↔ MathResearch.PolynomialCalculus.ColUnused j S
+'MathResearch.PolynomialCalculus.matching_insert_unused' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.matching_insert_occupied : ∀ {m N : ℕ}
+  (S : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+  MathResearch.PolynomialCalculus.IsMatching S →
+    ∀ (i : Fin m) (j₀ : Fin N),
+      (i, j₀) ∈ S → ∀ (j : Fin N), MathResearch.PolynomialCalculus.IsMatching (insert (i, j) S) ↔ j = j₀
+'MathResearch.PolynomialCalculus.matching_insert_occupied' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.matchingNormal_row_unused : ∀ (m N : ℕ)
+  (S : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+  MathResearch.PolynomialCalculus.IsMatching S →
+    ∀ (i : Fin m),
+      MathResearch.PolynomialCalculus.RowUnused i S →
+        (MathResearch.PolynomialCalculus.matchingNormal m N)
+            (MathResearch.PolynomialCalculus.supportMonomial S * MathResearch.PolynomialCalculus.rowEquation m N i) =
+          (∑ j,
+              if MathResearch.PolynomialCalculus.ColUnused j S then
+                MathResearch.PolynomialCalculus.supportMonomial (insert (i, j) S)
+              else 0) -
+            MathResearch.PolynomialCalculus.supportMonomial S
+'MathResearch.PolynomialCalculus.matchingNormal_row_unused' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.matchingNormal_row_occupied : ∀ (m N : ℕ)
+  (S : Finset (MathResearch.PolynomialCalculus.Cell m N)),
+  MathResearch.PolynomialCalculus.IsMatching S →
+    ∀ (i : Fin m),
+      ¬MathResearch.PolynomialCalculus.RowUnused i S →
+        (MathResearch.PolynomialCalculus.matchingNormal m N)
+            (MathResearch.PolynomialCalculus.supportMonomial S * MathResearch.PolynomialCalculus.rowEquation m N i) =
+          0
+'MathResearch.PolynomialCalculus.matchingNormal_row_occupied' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.matchingNormal_degree : ∀ (m N : ℕ)
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N)),
+  MvPolynomial.totalDegree ((MathResearch.PolynomialCalculus.matchingNormal m N) P) ≤ MvPolynomial.totalDegree P
+'MathResearch.PolynomialCalculus.matchingNormal_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.rowEquation_degree_le : ∀ (m N : ℕ) (i : Fin m),
+  MvPolynomial.totalDegree (MathResearch.PolynomialCalculus.rowEquation m N i) ≤ 1
+'MathResearch.PolynomialCalculus.rowEquation_degree_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.rowEquation_degree : ∀ (m N : ℕ),
+  1 ≤ N → ∀ (i : Fin m), MvPolynomial.totalDegree (MathResearch.PolynomialCalculus.rowEquation m N i) = 1
+'MathResearch.PolynomialCalculus.rowEquation_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.rowEquation_ne_zero : ∀ (m N : ℕ),
+  1 ≤ N → ∀ (i : Fin m), MathResearch.PolynomialCalculus.rowEquation m N i ≠ 0
+'MathResearch.PolynomialCalculus.rowEquation_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 21 audited declarations.

@@ -1,0 +1,80 @@
+✖ [1994/1994] Building claims.MatchingNormalForm (8.4s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/boolean-matching/formalization/claims/MatchingNormalForm.lean -o /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/MatchingNormalForm.olean -i /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/MatchingNormalForm.ilean -c /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/MatchingNormalForm.c --setup /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/MatchingNormalForm.setup.json --json
+error: claims/MatchingNormalForm.lean:30:2: failed to synthesize instance of type class
+  Decidable (IsMatching d.support)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+error: claims/MatchingNormalForm.lean:33:2: Type mismatch
+  Finsupp.linearCombination (ZMod 2) matchingBasis
+has type
+  ((Cell ?m.25 ?m.26 →₀ ℕ) →₀ ZMod 2) →ₗ[ZMod 2] Poly (ZMod 2) (Cell ?m.25 ?m.26)
+but is expected to have type
+  Poly (ZMod 2) (Cell m N) →ₗ[ZMod 2] Poly (ZMod 2) (Cell m N)
+error: claims/MatchingNormalForm.lean:37:2: Function expected at
+  Finsupp.linearCombination_single ?m.18 ?m.23 ?m.24
+but this term has type
+  (Finsupp.linearCombination ?m.18 ?m.22) (Finsupp.single ?m.24 ?m.23) = ?m.23 • ?m.22 ?m.24
+
+Note: Expected a function because this term is being applied to the argument
+  _
+warning: claims/MatchingNormalForm.lean:47:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+warning: claims/MatchingNormalForm.lean:51:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+error: claims/MatchingNormalForm.lean:68:4: 'change' tactic failed, pattern
+  ∑ d ∈ support P, P.coeff d • supportMonomial d.support - ∑ d ∈ support P, P.coeff d • matchingBasis d = ?m.132
+is not definitionally equal to target
+  squarefreePart P - (matchingNormal m N) P = ∑ d ∈ support P, P.coeff d • (supportMonomial d.support - matchingBasis d)
+error: claims/MatchingNormalForm.lean:80:4: unsolved goals
+case pos
+m N : ℕ
+P : Poly (ZMod 2) (Cell m N)
+hbool : P - squarefreePart P ∈ nsSpace (matchingBase m N) (totalDegree P)
+he :
+  squarefreePart P - (matchingNormal m N) P = ∑ d ∈ support P, P.coeff d • (supportMonomial d.support - matchingBasis d)
+d : Cell m N →₀ ℕ
+hd : d ∈ support P
+hm : IsMatching d.support
+⊢ supportMonomial d.support - sorry () ∈ nsSpace (matchingBase m N) (totalDegree P)
+warning: claims/MatchingNormalForm.lean:80:12: declaration uses `sorry`
+warning: claims/MatchingNormalForm.lean:80:26: This simp argument is unused:
+  hm
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [matchingBasis]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: claims/MatchingNormalForm.lean:81:31: This simp argument is unused:
+  hm
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [matchingBasis, ↓reduceIte, sub_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: claims/MatchingNormalForm.lean:81:34: This simp argument is unused:
+  ↓reduceIte
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [matchingBasis, hm, sub_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: claims/MatchingNormalForm.lean:81:45: This simp argument is unused:
+  sub_zero
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [matchingBasis, hm, ↓reduceIte]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Some required targets logged failures:
+- claims.MatchingNormalForm
+error: build failed

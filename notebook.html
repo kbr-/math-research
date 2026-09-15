@@ -17866,5 +17866,66 @@ R-\sum_zX_{0z}X_{1z}\in\mathcal I_\ell(U).
 <p class="small">Preliminary source/API reading and broad proof planning preceded instrumentation; retries are included, and final checkpoint work follows the snapshot.</p>
 </article>
 
+<article id="entry-2026-09-15-lean-matching-moment-completeness">
+<h3>15 September 2026 — Matching moments are exactly the ordinary-NS annihilator data</h3>
+<p class="entry-meta">R09 complete formalization · binary functional-unary system · constant moment unrestricted</p>
+<h4 id="lean-matching-moment-completeness">Exact statement and source scope</h4>
+<p>On an \(m\)-row, \(N\)-column board with \(N\ge1\), let \(\mathcal F^{\mathrm{fun}}_{m,N}\) be the existing ordinary polynomial system containing Booleanity, distinct-cell same-row and same-column exclusions, and \(\rho_i-1\), where \(\rho_i=\sum_jX_{ij}\). For every \(B\ge0\), a linear functional on the actual subspace \(\mathcal P_{\le B}\) annihilates \(\mathcal I_B(\mathcal F^{\mathrm{fun}}_{m,N})\) if and only if it is the linear extension of matching moments \(z_T\), \(|T|\le B\), satisfying exactly</p>
+<div class="math">\[
+ \sum_{j\notin\operatorname{col}(T)}z_{T\cup\{(i,j)\}}=z_T,
+ \qquad |T|&lt;B,\quad i\notin\operatorname{row}(T).
+\]</div>
+<p>Its value on an ordinary monomial is the moment of its squarefree support if that support is a matching, and zero otherwise. Every assigned matching moment is recovered by evaluation on its matching monomial. In particular the value on one is \(z_\varnothing\), with neither normalization nor positivity nor multiplicativity assumed. This verifies the entire <a href="#matching-moment-completeness-audit">indexed completeness audit</a>, including the converse construction and bounded-domain statement.</p>
+<h4 id="lean-functional-matching-normal-form">Reusable normal form and ordinary-degree proof</h4>
+<p>Let \(\mathcal A\) consist of Booleanity and all explicitly supplied distinct-cell row/column collision equations. The checked encoding identity is \(\mathcal F^{\mathrm{fun}}_{m,N}=\mathcal A\cup\{\rho_i-1:i\}\); it rearranges the original generators, rather than replacing their meaning. A matching is precisely a face of the chessboard complex already used in H. Define a linear map \(\mathcal R\) on monomials by</p>
+<div class="math">\[
+ \mathcal R(cX^e)=
+ \begin{cases}cM_{\operatorname{supp}(e)},&\operatorname{supp}(e)\text{ is a matching},\\
+ 0,&\text{otherwise},\end{cases}
+ \qquad M_S=\prod_{x\in S}X_x.
+\]</div>
+<p>First apply R05's Boolean reduction through \(\deg P\). A nonmatching squarefree support contains two distinct cells sharing a row or column. The <a href="#lean-squarefree-forbidden-pair-certificate">checked pair certificate</a> makes its monomial a single collision-generator multiple through its support cardinality, which is no larger than its original monomial degree. Summing gives</p>
+<div class="math">\[
+ P-\mathcal R(P)\in\mathcal I_{\deg P}(\mathcal A),
+ \qquad \deg\mathcal R(P)\le\deg P.
+\]</div>
+<p>Conversely \(\mathcal R\) annihilates every ordinary multiple of every generator of \(\mathcal A\), even without a degree bound. For a Boolean generator, multiplying an ordinary monomial by \(X_x^2\) or \(X_x\) gives the same squarefree support and hence the same image. For a collision generator, every monomial multiple still contains that conflicting pair and has image zero. Expand an arbitrary multiplier into monomials and use linearity. Consequently, for \(\deg P\le B\),</p>
+<div class="math">\[
+ P\in\mathcal I_B(\mathcal A)\quad\Longleftrightarrow\quad\mathcal R(P)=0.
+\]</div>
+<p>These normal-form facts also hold for empty boards; the later full marginal equivalence retains \(N\ge1\).</p>
+<h4>All row equations, with the original degree charge</h4>
+<p>For a matching \(T\), if row \(i\) is unused, the extension \(T\cup\{(i,j)\}\) is a matching exactly when column \(j\) is unused. Thus</p>
+<div class="math">\[
+ \mathcal R(M_T(\rho_i-1))=
+ \sum_{j\notin\operatorname{col}(T)}M_{T\cup\{(i,j)\}}-M_T.
+\]</div>
+<p>If row \(i\) is occupied at \((i,j_0)\), the only surviving term of \(\rho_iM_T\) is \(j=j_0\), which reduces to \(M_T\), so the displayed product reduces to zero. Both assertions are checked as polynomial identities.</p>
+<p>An annihilator of the full system annihilates \(\mathcal A\), hence has the same value on \(P\) and \(\mathcal R(P)\) whenever \(\deg P\le B\). If \(|T|&lt;B\), then \(M_T(\rho_i-1)\) is a legal multiple through \(B\). Applying the preceding identity therefore proves every stated marginal equation.</p>
+<p>For the converse, take a linear functional annihilating \(\mathcal I_B(\mathcal A)\) whose matching moments satisfy the marginals. It annihilates every matching-monomial row multiple of cardinality below \(B\): use the unused-row identity and its marginal, or the occupied-row zero identity. Now consider any legal ordinary row multiple \(q(\rho_i-1)\) through \(B\). If \(q=0\), there is nothing to prove. Otherwise \(\rho_i-1\) is nonzero and has actual degree one because \(N\ge1\): one of its variable coefficients is one. The polynomial ring is an integral domain, so</p>
+<div class="math">\[
+ \deg(q(\rho_i-1))=\deg q+1\le B.
+\]</div>
+<p>Multiplying the normal-form witness for \(q\) by \(\rho_i-1\) therefore stays in \(\mathcal I_B(\mathcal A)\). The functional has the same value on \(q(\rho_i-1)\) and \(\mathcal R(q)(\rho_i-1)\). The latter is a linear combination of the matching-monomial row multiples already checked, since every surviving support has size at most \(\deg q&lt;B\). This exhausts all legal generators and then their span. The argument subtracts an actual degree, not a loose ceiling. For \(N=0\), the row generator would instead be the degree-zero constant \(-1\), so this reverse argument correctly does not assert that extra case.</p>
+<h4>Every moment assignment, and the actual bounded functional space</h4>
+<p>Given any matching moments satisfying the marginals, define \(L_z\) linearly on ordinary monomials by the rule in the statement. The implementation first applies \(\mathcal R\), then reads each remaining squarefree monomial's moment. It annihilates \(\mathcal A\) by the checked kernel statement, and the row argument proves that it annihilates the full ordinary NS space through \(B\). On a matching monomial \(M_T\) it returns exactly \(z_T\); on one it returns \(z_\varnothing\).</p>
+<p>Conversely, start with a functional \(\lambda\) on \(\mathcal P_{\le B}\) annihilating the indicated NS subspace. The already verified R04 extension lemma supplies an ambient polynomial functional \(E\) agreeing with \(\lambda\) and annihilating the same NS space. Its well-definedness condition is exactly the supplied annihilation on the intersection: on \(\mathcal P_{\le B}+\mathcal I_B\), assign \(u+s\mapsto\lambda(u)\), then extend linearly. Set \(z_T=E(M_T)\). The preceding proof gives the marginals. For every polynomial in the bounded domain, normal-form invariance gives \(\lambda(P)=E(\mathcal R(P))=L_z(P)\). Hence the formal statement is about the actual bounded subspace, not an assumption that its functional was already globally defined. Evaluating on each legal matching monomial recovers its moment uniquely. The Lean array also permits arbitrary values on nonmatching or larger supports; these are unused auxiliary coordinates and impose no conditions on the bounded correspondence.</p>
+<p><strong>Verification and provenance.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/MatchingNormalForm.lean">MatchingNormalForm.lean</a> is a separately indexed reusable dependency. <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/MatchingMomentCompleteness.lean">MatchingMomentCompleteness.lean</a> proves both directions, constructs moment functionals, recovers moments, and proves the bounded-domain equivalence. These are project formalizations of the recorded normal-form and completeness arguments, without a novelty assertion. <a href="https://github.com/kbr-/math-research/blob/main/research/results/r_boolean_matching_20260915_03">Exact types, transitive axiom reports, scope and source hashes</a> preserve verification. All dependencies are checked, including R01/R02/R05 and R04 for the bounded extension; H's face definition is reused without assuming any unproved topology.</p>
+<p><strong>Remaining work and process assessment.</strong> R09 is complete; R10 must still construct compatible extensions across row sets and derive old filtration stability and PC closure. No new mathematical discrepancy was found. The coordinator was sent the R09 progress and actual dependency list and retains ownership of living sections. Splitting a reusable normal form from the bounded-functional theorem kept the exact encoding, degree charge and domain visible; existing guidance was sufficient, so no framework rule was added.</p>
+<div class="timing-report" data-session="r_boolean_matching_20260915_03">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>18 min 31.85 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 6.39 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">13 min 7.66 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 10.65 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">2 min 7.16 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 7.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
