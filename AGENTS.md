@@ -181,8 +181,8 @@ actionable rule over another checklist or a record of one-off setup history.
   and proofs remain unchanged; mathematical corrections require a new dated entry.
 - Maintain [research/CLAIM_INDEX.md](research/CLAIM_INDEX.md) as concise navigation
   to new claims and obstructions: stable labels, status, and full-record links.
-  Before developing or naming a result, search it for the same object or template
-  and read the relevant claims. Label rediscoveries and refinements and link the
+  Before proposing a next step or developing or naming a result, search the index
+  for the same object or template and read the relevant claims. Label rediscoveries and refinements and link the
   original record; link corrections or retractions to their new dated entries.
 - Read **Gaps identified by formalization** during context restoration, including
   ordinary research sessions. This concise section precedes Research record and
