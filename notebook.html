@@ -17563,5 +17563,60 @@ q\mathcal I_B(\mathcal F)\subseteq\mathcal I_{B+\deg q}(\mathcal F),
 <p class="small">Brief preliminary API reading and proof planning preceded this clock; retries are included and final checkpoint work follows the timing snapshot.</p>
 </article>
 
+<article id="entry-2026-09-15-lean-boolean-reduction">
+<h3>15 September 2026 — Binary Boolean reduction with ordinary-degree certificates</h3>
+<p class="entry-meta">R05 formalization · verified binary specialization of degree-controlled field reduction</p>
+<h4 id="lean-binary-degree-controlled-Boolean-reduction">Statement and assigned endpoint</h4>
+<p>Let \(V\) be a finite variable set and work in the ordinary polynomial ring \(\mathbb F_2[X_i:i\in V]\). Put \(\mathrm{BOOL}=\{X_i^2-X_i:i\in V\}\), and let \(\mathcal I_d\) charge the ordinary degree of every individual generator multiple. For an exponent vector \(e\), put \(M_S=\prod_{i\in S}X_i\) and define</p>
+<div class="math">\[
+ \operatorname{red}(P)=\sum_{e\in\operatorname{supp}(P)}[X^e]P\,M_{\operatorname{supp}(e)}.
+\]</div>
+<p>The verified statement is that \(\operatorname{red}(P)\) has individual degrees at most one and total degree at most \(\deg P\), agrees with \(P\) at every Boolean point, and satisfies</p>
+<div class="math">\[
+ P-\operatorname{red}(P)\in\mathcal I_{\deg P}(\mathrm{BOOL}).
+\]</div>
+<p>Consequently a polynomial \(P\) vanishing at all Boolean points belongs to \(\mathcal I_d(\mathrm{BOOL})\) whenever \(\deg P\le d\), and</p>
+<div class="math">\[
+ \deg q\le k\quad\Longrightarrow\quad q^2-q\in\mathcal I_{2k}(\mathrm{BOOL}).
+\]</div>
+<p>This extracts the binary portion of <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/01_foundations.md#lem-fieldreduction">historical Lemma 1.5</a> needed by the bit-PHP paper's Boolean-reduction lemma. It does not mark that broader all-prime, mixed-domain historical claim fully formalized.</p>
+<h4>Full certificate argument</h4>
+<p>For every \(n\ge1\), \(X_i^n-X_i\in\mathcal I_n(\mathrm{BOOL})\). At \(n=1\) the polynomial is zero. Induct using</p>
+<div class="math">\[
+ X_i^{n+1}-X_i=X_i^{n-1}(X_i^2-X_i)+(X_i^n-X_i).
+\]</div>
+<p>The new generator multiple has ordinary degree at most \(n+1\), and the earlier witness remains legal at this larger ceiling. To reduce a product of positive powers, induct over its variables with</p>
+<div class="math">\[
+ AB-ab=A(B-b)+(A-a)b,
+ \qquad A=X_i^{e_i},\quad a=X_i,\quad
+ B=\prod_{j\in S}X_j^{e_j},\quad b=M_S.
+\]</div>
+<p>The first error has certificate cost at most \(e_i+\sum_{j\in S}e_j\). The second has cost at most \(e_i+|S|\), which is no larger because all exponents indexed by \(S\) are positive. Here multiplying an existing ordinary NS witness uses the already verified R02 multiplication closure, which multiplies each legal generator multiple and charges its actual degree. Therefore \(X^e-M_{\operatorname{supp}(e)}\) has certificate cost at most \(\sum_i e_i\). Scalar combination over the monomials of \(P\) gives the stated witness through \(\deg P\). No Boolean quotient degree replaces an original polynomial degree.</p>
+<p>Each \(M_S\) has individual degrees at most one and total degree at most \(|S|\). Since \(|\operatorname{supp}(e)|\le\sum_i e_i\), the remainder has the asserted total-degree bound. At a point of \(\mathbb F_2^V\), every positive power of a coordinate equals that coordinate, proving pointwise agreement.</p>
+<h4>Grid injectivity and boundary cases</h4>
+<p>The formal proof reuses Mathlib's checked finite-field evaluation injectivity. A complete argument for that step is as follows. For \(v=|V|\), the squarefree polynomial space has the \(2^v\) squarefree monomials as a basis. The space of functions on \(\mathbb F_2^V\) also has dimension \(2^v\). Evaluation is onto, since the point \(a\) has the squarefree indicator</p>
+<div class="math">\[
+ \delta_a(X)=\prod_{i:a_i=0}(1-X_i)\prod_{i:a_i=1}X_i.
+\]</div>
+<p>Thus evaluation between these equal-dimensional spaces is an isomorphism. A zero-evaluating squarefree polynomial is zero. Applied to the remainder, this proves the vanishing certificate. Finally \(q^2-q\) vanishes at every Boolean point and has ordinary degree at most \(2\deg q\); monotonicity gives the version with a supplied ceiling \(k\). This includes zero and constant polynomials. For an empty variable set there is one assignment, both spaces above have dimension one, and the empty indicator product is one. Lean uses its natural total-degree convention \(\deg0=0\).</p>
+<p><strong>Verification and dependencies.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/BooleanReduction.lean">BooleanReduction.lean</a> uses the checked R01 ordinary NS definitions and R02 multiplication closure, plus pinned Mathlib polynomial and finite-field facts. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r_boolean_matching_20260915_01/verification.txt">targeted incremental audit</a> prints the full theorem types and transitive axiom reports. <a href="https://github.com/kbr-/math-research/blob/main/research/results/r_boolean_matching_20260915_01">Scope, proof design and reproduction evidence</a> retain all checks. No custom axiom or unproved dependency is introduced.</p>
+<p><strong>Remaining work and process assessment.</strong> R09 still needs the matching normal form and complete marginal-equation equivalence. The main Frege living sections and formalization-gap list were reviewed without a new discrepancy; proposed formalization progress was sent to the coordinator, who owns those sections. Reusing the finite-field interpolation theorem avoided duplicating a separate interpolation proof, while preserving the original-degree accounting required by downstream claims; no additional framework rule is needed. Initial policy/restart-guide reading preceded instrumentation, and the first dependency build timed out before reaching the new proof; the incremental retry completed it.</p>
+<div class="timing-report" data-session="r_boolean_matching_20260915_01">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>22 min 5.18 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 2.06 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 31.48 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">8 min 41.94 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">56.05 s</td></tr>
+<tr><td>Marked overhead and interruptions</td><td class="elapsed">1 min 0.46 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">4 min 53.17 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 4.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

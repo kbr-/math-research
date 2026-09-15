@@ -1,0 +1,99 @@
+✖ [1979/1979] Building claims.BooleanReduction (48s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/boolean-matching/formalization/claims/BooleanReduction.lean -o /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/BooleanReduction.olean -i /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/BooleanReduction.ilean -c /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/BooleanReduction.c --setup /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/BooleanReduction.setup.json --json
+warning: claims/BooleanReduction.lean:22:0: automatically included section variable(s) unused in theorem `MathResearch.PolynomialCalculus.supportMonomial_degree`:
+  [Fintype V]
+  [DecidableEq V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+error: claims/BooleanReduction.lean:29:2: 'change' tactic failed, pattern
+  degreeOf i (supportMonomial S) ≤ 1
+is not definitionally equal to target
+  Multiset.count i (supportMonomial S).degrees ≤ 1
+warning: claims/BooleanReduction.lean:33:8: automatically included section variable(s) unused in theorem `_private.claims.BooleanReduction.0.MathResearch.PolynomialCalculus.support_card_le_sum`:
+  [Fintype V]
+  [DecidableEq V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+error: claims/BooleanReduction.lean:56:74: unsolved goals
+case «0»
+n : ℕ
+hn : n ≠ 0
+⊢ 0 ^ n = 0
+
+case «1»
+n : ℕ
+hn : n ≠ 0
+⊢ 1 ^ n = 1
+warning: claims/BooleanReduction.lean:57:24: This simp argument is unused:
+  hn
+
+Hint: Omit it from the simp argument list.
+  [apply] simp
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+error: claims/BooleanReduction.lean:70:2: Tactic `apply` failed: could not unify the conclusion of `Finset.prod_congr rfl`
+  Finset.prod ?m.58 ?m.55 = Finset.prod ?m.58 ?m.56
+with the goal
+  (eval v) (P.coeff d • ∏ i ∈ d.support, X i) = P.coeff d * (eval v) (∏ a ∈ d.support, (fun n e => X n ^ e) a (d a))
+
+Note: The full type of `Finset.prod_congr rfl` is
+  (∀ x ∈ ?m.58, ?m.55 x = ?m.56 x) → Finset.prod ?m.58 ?m.55 = Finset.prod ?m.58 ?m.56
+
+V : Type u_1
+inst✝¹ : Fintype V
+inst✝ : DecidableEq V
+P : MvPolynomial V (ZMod 2)
+v : V → ZMod 2
+d : V →₀ ℕ
+hd : d ∈ P.support
+⊢ (eval v) (P.coeff d • ∏ i ∈ d.support, X i) = P.coeff d * (eval v) (∏ a ∈ d.support, (fun n e => X n ^ e) a (d a))
+warning: claims/BooleanReduction.lean:63:38: This simp argument is unused:
+  map_smul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [squarefreePart, map_sum]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: claims/BooleanReduction.lean:67:47: This simp argument is unused:
+  map_prod
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [map_mul, eval_C, supportMonomial, eval_X, smul_eq_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: claims/BooleanReduction.lean:67:57: This simp argument is unused:
+  eval_X
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [map_mul, eval_C, supportMonomial, map_prod, smul_eq_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: claims/BooleanReduction.lean:67:65: This simp argument is unused:
+  smul_eq_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [map_mul, eval_C, supportMonomial, map_prod, eval_X]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+error: claims/BooleanReduction.lean:76:2: Tactic `apply` failed: could not unify the conclusion of `eq_zero_of_eval_eq_zero`
+  ?p = 0
+with the goal
+  squarefreePart P = 0
+
+Note: The full type of `eq_zero_of_eval_eq_zero` is
+  ∀ (σ K : Type ?u.27) [inst : Fintype K] [inst_1 : Field K] [Finite σ] (p : MvPolynomial σ K),
+    (∀ (v : σ → K), (eval v) p = 0) → p ∈ restrictDegree σ K (Fintype.card K - 1) → p = 0
+
+V : Type u_1
+inst✝¹ : Fintype V
+inst✝ : DecidableEq V
+P : MvPolynomial V (ZMod 2)
+hP : ∀ (v : V → ZMod 2), (eval v) P = 0
+⊢ squarefreePart P = 0
+Some required targets logged failures:
+- claims.BooleanReduction
+error: build failed

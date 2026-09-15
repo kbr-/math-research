@@ -1,0 +1,75 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.BooleanReduction
+Claim file: claims/BooleanReduction.lean
+Claim: lem:binary-degree-controlled-Boolean-reduction
+Source: https://kbr.is-a.dev/math-research/#lean-binary-degree-controlled-Boolean-reduction
+Scope: Binary squarefree reduction and original-total-degree ordinary NS witnesses; extracted binary scope of historical field reduction.
+Declarations: MathResearch.PolynomialCalculus.supportMonomial_degree MathResearch.PolynomialCalculus.supportMonomial_restricted MathResearch.PolynomialCalculus.squarefreePart_degree MathResearch.PolynomialCalculus.squarefreePart_restricted MathResearch.PolynomialCalculus.squarefreePart_eval MathResearch.PolynomialCalculus.squarefreePart_eq_zero_of_eval_zero MathResearch.PolynomialCalculus.squarefreePart_ns MathResearch.PolynomialCalculus.boolean_vanishing_ns MathResearch.PolynomialCalculus.boolean_vanishing_ns_bound MathResearch.PolynomialCalculus.polynomial_boolean_ns MathResearch.PolynomialCalculus.squarefreePart_ns_bound MathResearch.PolynomialCalculus.polynomial_boolean_ns_bound
+$ lake --wfail build claims.BooleanReduction
+✔ [1990/1990] Built claims.BooleanReduction (7.0s)
+Build completed successfully (1990 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/tmp84xv8nrp.lean
+@MathResearch.PolynomialCalculus.supportMonomial_degree : ∀ {V : Type} (S : Finset V),
+  (MathResearch.PolynomialCalculus.supportMonomial S).totalDegree ≤ S.card
+'MathResearch.PolynomialCalculus.supportMonomial_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.supportMonomial_restricted : ∀ {V : Type} [DecidableEq V] (S : Finset V),
+  MathResearch.PolynomialCalculus.supportMonomial S ∈ MvPolynomial.restrictDegree V (ZMod 2) 1
+'MathResearch.PolynomialCalculus.supportMonomial_restricted' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.squarefreePart_degree : ∀ {V : Type} (P : MvPolynomial V (ZMod 2)),
+  (MathResearch.PolynomialCalculus.squarefreePart P).totalDegree ≤ P.totalDegree
+'MathResearch.PolynomialCalculus.squarefreePart_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.squarefreePart_restricted : ∀ {V : Type} [DecidableEq V] (P : MvPolynomial V (ZMod 2)),
+  MathResearch.PolynomialCalculus.squarefreePart P ∈ MvPolynomial.restrictDegree V (ZMod 2) 1
+'MathResearch.PolynomialCalculus.squarefreePart_restricted' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.squarefreePart_eval : ∀ {V : Type} (P : MvPolynomial V (ZMod 2)) (v : V → ZMod 2),
+  (MvPolynomial.eval v) (MathResearch.PolynomialCalculus.squarefreePart P) = (MvPolynomial.eval v) P
+'MathResearch.PolynomialCalculus.squarefreePart_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.squarefreePart_eq_zero_of_eval_zero : ∀ {V : Type} [DecidableEq V] [Fintype V]
+  (P : MvPolynomial V (ZMod 2)),
+  (∀ (v : V → ZMod 2), (MvPolynomial.eval v) P = 0) → MathResearch.PolynomialCalculus.squarefreePart P = 0
+'MathResearch.PolynomialCalculus.squarefreePart_eq_zero_of_eval_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.PolynomialCalculus.squarefreePart_ns : ∀ {V : Type} [DecidableEq V]
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) V),
+  P - MathResearch.PolynomialCalculus.squarefreePart P ∈
+    MathResearch.PolynomialCalculus.nsSpace MathResearch.PolynomialCalculus.booleanBase (MvPolynomial.totalDegree P)
+'MathResearch.PolynomialCalculus.squarefreePart_ns' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.boolean_vanishing_ns : ∀ {V : Type} [DecidableEq V] [Fintype V]
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) V),
+  (∀ (v : V → ZMod 2), (MvPolynomial.eval v) P = 0) →
+    P ∈ MathResearch.PolynomialCalculus.nsSpace MathResearch.PolynomialCalculus.booleanBase (MvPolynomial.totalDegree P)
+'MathResearch.PolynomialCalculus.boolean_vanishing_ns' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.boolean_vanishing_ns_bound : ∀ {V : Type} [DecidableEq V] [Fintype V]
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) V) (d : ℕ),
+  MvPolynomial.totalDegree P ≤ d →
+    (∀ (v : V → ZMod 2), (MvPolynomial.eval v) P = 0) →
+      P ∈ MathResearch.PolynomialCalculus.nsSpace MathResearch.PolynomialCalculus.booleanBase d
+'MathResearch.PolynomialCalculus.boolean_vanishing_ns_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.polynomial_boolean_ns : ∀ {V : Type} [DecidableEq V] [Fintype V]
+  (q : MathResearch.PolynomialCalculus.Poly (ZMod 2) V),
+  q ^ 2 - q ∈
+    MathResearch.PolynomialCalculus.nsSpace MathResearch.PolynomialCalculus.booleanBase (2 * MvPolynomial.totalDegree q)
+'MathResearch.PolynomialCalculus.polynomial_boolean_ns' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.squarefreePart_ns_bound : ∀ {V : Type} [DecidableEq V]
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) V) (d : ℕ),
+  MvPolynomial.totalDegree P ≤ d →
+    P - MathResearch.PolynomialCalculus.squarefreePart P ∈
+      MathResearch.PolynomialCalculus.nsSpace MathResearch.PolynomialCalculus.booleanBase d
+'MathResearch.PolynomialCalculus.squarefreePart_ns_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.polynomial_boolean_ns_bound : ∀ {V : Type} [DecidableEq V] [Fintype V]
+  (q : MathResearch.PolynomialCalculus.Poly (ZMod 2) V) (k : ℕ),
+  MvPolynomial.totalDegree q ≤ k →
+    q ^ 2 - q ∈ MathResearch.PolynomialCalculus.nsSpace MathResearch.PolynomialCalculus.booleanBase (2 * k)
+'MathResearch.PolynomialCalculus.polynomial_boolean_ns_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 12 audited declarations.
