@@ -18664,5 +18664,35 @@ c_y\prod_{i\in S}\left((c_i)_{a_i}+(c_i+e_{d_i})_{a_i}\right)
 <p class="small">Initial source/API reading preceded instrumentation; API preparation and retries are included, and final checkpoint work follows the snapshot.</p>
 </article>
 
+<article id="entry-2026-09-15-lean-row-cube-restriction">
+<h3>2026-09-15 — Concrete row-cube restrictions and residual NS transport</h3>
+<p><strong>Status:</strong> Lean-verified supporting claim. This discharges the concrete generator-image obligation for R14; coefficient isolation and final separation are separate.</p>
+<h4 id="lean-row-cube-residual-restriction">Claim: concrete residual restriction</h4>
+<p>Let \(S\subseteq[m]\), \(F\subseteq[N]\), and let \(p_i(0),p_i(1)\in F\) for \(i\in S\). Assume every choice \(\varepsilon\in\mathbb F_2^S\) gives an injective assignment \(i\mapsto p_i(\varepsilon_i)\). Map selected-row variables by \(x_{ij}\mapsto[ j=p_i(\varepsilon_i)]\); map remaining rows and columns outside \(F\) to the corresponding variables of the \((m-|S|)\times(N-|F|)\) board, and all other variables to zero. Write this algebra map as \(\rho_\varepsilon\), and \(\Delta=\sum_\varepsilon\rho_\varepsilon\). Then</p>
+\[\deg\Delta P\le\deg P-|S|,\qquad
+\Delta(\mathrm{NS}_B(\mathrm{fPHP}_{m,N}))\subseteq
+\mathrm{NS}_{B-|S|}(\mathrm{fPHP}_{m-|S|,N-|F|}),\]
+<p>where subtraction is truncated at zero. Every source generator has an image independent of the cube choice, equal to zero or an actual residual generator.</p>
+<p><strong>Proof.</strong> A Boolean generator at a selected cell evaluates to zero; at a retained cell it is precisely its residual Boolean generator, and at a deleted cell it is zero. A selected row sum is one minus one. An unselected row sum retains exactly the complement of \(F\), hence becomes its residual row equation. For a collision generator, two nonzero selected cells cannot violate a row or column exclusion: the former would be the same chosen cell, and the latter contradicts injectivity. A selected and an unselected retained cell cannot collide in a column because their column sets are disjoint. Two retained cells preserve distinctness and every common row or column under the complement bijections. Any remaining collision product contains a zero factor. This proves the complete fixed-image assertion for the original functional-unary encoding, including both sorts of exclusions.</p>
+<p>Apply the <a href="#lean-binary-cube-degree-drop">verified cube degree-drop lemma</a>: unselected images have degree at most one, and selected images are constants depending only on their own row choice. If a generator has fixed image \(g\), then \(\Delta(qf)=(\Delta q)g\). The actual-degree argument in that lemma gives the displayed NS budget, including zero products and degrees below \(|S|\). No generator-image hypothesis remains unproved in this application.</p>
+<p>For binary labels \(N=2^\ell\), the compact decoder sends a bit \((i,t)\) to the sum of columns whose label has bit \(t\) equal to one. At a selected row, exactly its chosen column survives, so</p>
+\[\rho_\varepsilon(\tau(z_{it}))=
+\operatorname{bit}_t(p_i(\varepsilon_i)).\]
+<p>At every other row the image is independent of \(\varepsilon\). Algebra-map composition proves the same substitution identity for all polynomials, rather than only coordinates. These are exactly the hypotheses needed by the separate coefficient-isolation lemma. Finally the <a href="#lean-disjoint-binary-coordinate-pairs">disjoint coordinate pairs</a> construct the stipulated data with \(|F|=2|S|\): disjointness makes every endpoint choice injective. All complement relabelings are actual finite equivalences, not just cardinality correspondences.</p>
+<p><strong>Verification and remaining scope.</strong> <a href="formalization/claims/RowCubeRestriction.lean">Lean source</a> and <a href="research/results/r_boolean_matching_20260915_07/verification.txt">targeted declaration/axiom audit</a>. Local failures were coercion and simplification issues; no mathematical discrepancy was found. The complete R14 separator is not claimed here. Some initial interface planning during the integration pause preceded instrumentation.</p>
+<div class="timing-report" data-session="r_boolean_matching_20260915_07">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>16 min 30.58 s</strong></td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">15 min 15.59 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2.93 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">1 min 12.06 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 6.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

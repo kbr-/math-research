@@ -1,0 +1,65 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.RowCubeRestriction
+Claim file: claims/RowCubeRestriction.lean
+Claim: lem:row-cube-residual-restriction
+Source: https://kbr.is-a.dev/math-research/#lean-row-cube-residual-restriction
+Scope: Concrete selected-row one-hot cube restrictions send every ordinary functional-unary generator to zero or a fixed residual generator; exact decoder coordinate compatibility and bounded NS transport.
+Declarations: MathResearch.PolynomialCalculus.rowCube_generators MathResearch.PolynomialCalculus.rowCubeDifference_degree MathResearch.PolynomialCalculus.rowCubeDifference_ns MathResearch.PolynomialCalculus.coordinateRowCube_cols_card MathResearch.PolynomialCalculus.rowCube_decoder_selected MathResearch.PolynomialCalculus.rowCube_decoder_outside MathResearch.PolynomialCalculus.rowCube_decoder_comp
+$ lake --wfail build claims.RowCubeRestriction
+✔ [2020/2020] Built claims.RowCubeRestriction (2.0s)
+Build completed successfully (2020 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/tmpo86_5021.lean
+@MathResearch.PolynomialCalculus.rowCube_generators : ∀ {m N : ℕ} (D : MathResearch.PolynomialCalculus.RowCubeData m N),
+  ∀ f ∈ MathResearch.PolynomialCalculus.functionalUnaryBase m N,
+    ∃ r,
+      (r = 0 ∨ r ∈ MathResearch.PolynomialCalculus.functionalUnaryBase (m - D.rows.card) (N - D.cols.card)) ∧
+        ∀ (e : ↥D.rows → ZMod 2), (MathResearch.PolynomialCalculus.rowCubeMap D e) f = r
+'MathResearch.PolynomialCalculus.rowCube_generators' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.rowCubeDifference_degree : ∀ {m N : ℕ}
+  (D : MathResearch.PolynomialCalculus.RowCubeData m N)
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) (MathResearch.PolynomialCalculus.Cell m N)),
+  MvPolynomial.totalDegree ((MathResearch.PolynomialCalculus.rowCubeDifference D) P) ≤
+    MvPolynomial.totalDegree P - D.rows.card
+'MathResearch.PolynomialCalculus.rowCubeDifference_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.rowCubeDifference_ns : ∀ {m N : ℕ}
+  (D : MathResearch.PolynomialCalculus.RowCubeData m N) (B : ℕ),
+  ∀ P ∈ MathResearch.PolynomialCalculus.nsSpace (MathResearch.PolynomialCalculus.functionalUnaryBase m N) B,
+    (MathResearch.PolynomialCalculus.rowCubeDifference D) P ∈
+      MathResearch.PolynomialCalculus.nsSpace
+        (MathResearch.PolynomialCalculus.functionalUnaryBase (m - D.rows.card) (N - D.cols.card)) (B - D.rows.card)
+'MathResearch.PolynomialCalculus.rowCubeDifference_ns' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.coordinateRowCube_cols_card : ∀ (m ℓ : ℕ) (S : Finset (Fin m)) (d : Fin m → Fin ℓ)
+  (c : Fin m → Fin (2 ^ ℓ)) (hc : MathResearch.PolynomialCalculus.CoordinatePairsDisjoint ℓ S d c),
+  (MathResearch.PolynomialCalculus.coordinateRowCube m ℓ S d c hc).cols.card = 2 * S.card
+'MathResearch.PolynomialCalculus.coordinateRowCube_cols_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.rowCube_decoder_selected : ∀ {m ℓ : ℕ}
+  (D : MathResearch.PolynomialCalculus.RowCubeData m (2 ^ ℓ)) (e : ↥D.rows → ZMod 2) (i : ↥D.rows) (t : Fin ℓ),
+  (MathResearch.PolynomialCalculus.rowCubeMap D e) (MathResearch.PolynomialCalculus.decoderInput m ℓ (↑i, t)) =
+    MvPolynomial.C ((MathResearch.PolynomialCalculus.bitLabelEquiv ℓ) (D.point i (e i)) t)
+'MathResearch.PolynomialCalculus.rowCube_decoder_selected' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.rowCube_decoder_outside : ∀ {m ℓ : ℕ}
+  (D : MathResearch.PolynomialCalculus.RowCubeData m (2 ^ ℓ)) (e e' : ↥D.rows → ZMod 2),
+  ∀ i ∉ D.rows,
+    ∀ (t : Fin ℓ),
+      (MathResearch.PolynomialCalculus.rowCubeMap D e) (MathResearch.PolynomialCalculus.decoderInput m ℓ (i, t)) =
+        (MathResearch.PolynomialCalculus.rowCubeMap D e') (MathResearch.PolynomialCalculus.decoderInput m ℓ (i, t))
+'MathResearch.PolynomialCalculus.rowCube_decoder_outside' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.rowCube_decoder_comp : ∀ {m ℓ : ℕ}
+  (D : MathResearch.PolynomialCalculus.RowCubeData m (2 ^ ℓ)) (e : ↥D.rows → ZMod 2)
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) (Fin m × Fin ℓ)),
+  (MathResearch.PolynomialCalculus.rowCubeMap D e) ((MathResearch.PolynomialCalculus.compactDecoder m ℓ) P) =
+    (MvPolynomial.aeval fun v =>
+        (MathResearch.PolynomialCalculus.rowCubeMap D e) (MathResearch.PolynomialCalculus.decoderInput m ℓ v))
+      P
+'MathResearch.PolynomialCalculus.rowCube_decoder_comp' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 7 audited declarations.

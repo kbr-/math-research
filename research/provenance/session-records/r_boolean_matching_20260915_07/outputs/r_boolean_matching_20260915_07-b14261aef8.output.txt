@@ -1,0 +1,23 @@
+✖ [2020/2020] Building claims.RowCubeRestriction (11s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/boolean-matching/formalization/claims/RowCubeRestriction.lean -o /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/RowCubeRestriction.olean -i /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/RowCubeRestriction.ilean -c /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/RowCubeRestriction.c --setup /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/RowCubeRestriction.setup.json --json
+error: claims/RowCubeRestriction.lean:225:2: Type mismatch: After simplification, term
+  cubeDifference_apply (rowCubeTag D) (rowCubeFree D) (rowCubeScalar D) P
+ has type
+  (cubeDifference (rowCubeTag D) (rowCubeFree D) (rowCubeScalar D)) P =
+    ∑
+      e ∈
+        @Finset.univ (↥D.rows → ZMod 2)
+          (@Pi.instFintype (↥D.rows) (fun a => ZMod 2) (fun a b => Classical.propDecidable (a = b))
+            (Finset.Subtype.fintype D.rows) fun a => ZMod.fintype 2),
+      (aeval (cubeInput (rowCubeTag D) (rowCubeFree D) (rowCubeScalar D) e)) P
+but is expected to have type
+  (cubeDifference (rowCubeTag D) (rowCubeFree D) (rowCubeScalar D)) P =
+    ∑
+      e ∈
+        @Finset.univ (↥D.rows → ZMod 2)
+          (@Pi.instFintype (↥D.rows) (fun a => ZMod 2) (fun a b => a.instDecidableEq b) (Finset.Subtype.fintype D.rows)
+            fun a => ZMod.fintype 2),
+      (aeval (cubeInput (rowCubeTag D) (rowCubeFree D) (rowCubeScalar D) e)) P
+Some required targets logged failures:
+- claims.RowCubeRestriction
+error: build failed

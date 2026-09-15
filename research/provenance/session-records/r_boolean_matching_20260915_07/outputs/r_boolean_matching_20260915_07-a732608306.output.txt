@@ -1,0 +1,30 @@
+✖ [2020/2020] Building claims.RowCubeRestriction (19s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/boolean-matching/formalization/claims/RowCubeRestriction.lean -o /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/RowCubeRestriction.olean -i /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/RowCubeRestriction.ilean -c /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/RowCubeRestriction.c --setup /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/RowCubeRestriction.setup.json --json
+error: claims/RowCubeRestriction.lean:224:2: Type mismatch
+  cubeDifference_apply ?m.26 ?m.27 ?m.28 ?m.29
+has type
+  (cubeDifference ?m.26 ?m.27 ?m.28) ?m.29 =
+    ∑
+      e ∈
+        @Finset.univ (?m.22 → ZMod 2)
+          (@Pi.instFintype ?m.22 (fun a => ZMod 2) (fun a b => Classical.propDecidable (a = b)) ?m.25 fun a =>
+            ZMod.fintype 2),
+      (aeval (cubeInput ?m.26 ?m.27 ?m.28 e)) ?m.29
+but is expected to have type
+  (rowCubeDifference D) P =
+    ∑
+      e ∈
+        @Finset.univ (↥D.rows → ZMod 2)
+          (@Pi.instFintype (↥D.rows) (fun a => ZMod 2) (fun a b => a.instDecidableEq b) (Finset.Subtype.fintype D.rows)
+            fun a => ZMod.fintype 2),
+      (rowCubeMap D e) P
+error: claims/RowCubeRestriction.lean:254:51: invalid `▸` notation, expected result type of cast is 
+  point i (e i) ∈ coordinatePair ℓ (d ↑j) (c ↑j)
+however, the equality 
+  Eq.symm h
+of type 
+  (fun i => point i (e i)) j = (fun i => point i (e i)) i
+does not contain the expected result type on either the left or the right hand side
+Some required targets logged failures:
+- claims.RowCubeRestriction
+error: build failed
