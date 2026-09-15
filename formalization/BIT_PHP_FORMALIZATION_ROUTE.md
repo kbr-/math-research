@@ -281,3 +281,7 @@ list, route updates, sequential rebases, and the final provenance/index audit.
 No worker rebases while editing. Record immutable released/integrated checkpoints
 here as they become available. Initial active workers: foundations, Boolean/matching,
 and restriction; the latter two reuse completed H worker sessions with new paths.
+
+When the complete route is finished, retain this section as **Parallel execution
+history**, update its wording to past tense, and preserve assignments and pinned
+integration checkpoints. Do not rename it complete while obligations remain.
