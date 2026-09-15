@@ -18130,5 +18130,42 @@ U_{B,1-u}(1-u)P+R_B=P.
 <p class="small">Initial source reading and proof planning preceded this clock; build and elaboration retries are included, and final checkpoint work follows the snapshot.</p>
 </article>
 
+<article id="entry-2026-09-15-lean-semantic-weakening">
+<h3>15 September 2026 — Semantic weakening and tautologies in the fixed registry</h3>
+<p class="entry-meta">Status: full formalization of the indexed semantic-weakening degree lemma; R23.</p>
+<h4 id="lean-finite-affine-map-span-witnesses">Affine coefficient witnesses on arbitrary finite coordinates</h4>
+<p><strong>Question and scope.</strong> Formalize <a href="#semantic-weakening-PC-degree">the semantic-weakening PC simulation</a> with actual registry inputs and all consistency cases. The <a href="#lean-affine-clause-PC-system">registry accepts arbitrary finite old-coordinate types</a>, so its affine linear-algebra dependency must do the same. The following is a coordinate generalization of the already checked affine-system witnesses, not a new mathematical principle.</p>
+<p>Let \(g_i,f:K^\sigma\to K\) be affine maps, where \(\sigma\) and the input index set are finite. If the common zero set of the \(g_i\) contains a point and \(f\) vanishes on that zero set, then \(f=\sum_i c_i g_i\) for field constants \(c_i\). If the common zero set is empty, then \(1=\sum_i c_i g_i\).</p>
+<p><strong>Proof by coordinate transport.</strong> Choose a bijection \(e:\sigma\to\mathrm{Fin}(|\sigma|)\), and map a coordinate vector \(y\) to \(x_s=y_{e(s)}\). This is a surjective linear reindexing with inverse \(x\mapsto(j\mapsto x_{e^{-1}(j)})\). Compose every affine map with this reindexing and apply the checked finite-dimensional affine-form vanishing or unit-coefficient theorem. Evaluate the resulting coefficient identity at arbitrary reindexed vectors. Surjectivity gives the same identity at every original vector, hence equality of the original affine maps. The ordinary-polynomial conversion is linear, so these constant coefficient identities also hold as literal ordinary polynomial identities. No finite-field pointwise-to-polynomial principle for nonlinear polynomials is invoked. <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/FiniteAffineSpan.lean">FiniteAffineSpan.lean</a> records this reusable dependency.</p>
+<h4 id="lean-semantic-weakening-PC-degree">Complete semantic weakening through \(\max\{K,4h\}\)</h4>
+<p>Suppose registry clause \(C\) semantically entails \(D\), accuracy \(h\ge1\), and \(P_C\) already has a primitive PC derivation through \(K\). If \(Z(D)\) is nonempty, then \(Z(D)\subseteq Z(C)\): a point falsifying \(D\) cannot satisfy \(C\). Thus each input \(g_{C,i}\) vanishes on \(Z(D)\). The preceding coefficient theorem yields constants with \(g_{C,i}=\sum_j\lambda_{ij}g_{D,j}\), as actual affine-map and ordinary-polynomial identities.</p>
+<p>Multiply each identity by \(P_D\). The resulting \(g_{C,i}P_D\) is a constant linear combination of actual \(D\)-companions and therefore has a degree-\(2h+1\) PC derivation. The checked prefix identity gives</p>
+<div class="math">\[
+P_D=P_CP_D+\sum_iU_{C,i}(g_{C,i}P_D).
+\]</div>
+<p>The first term multiplies a completed premise value of actual degree at most \(2h\) by another polynomial of degree at most \(2h\). Each remaining term multiplies a completed degree-\(2h+1\) companion combination by a cofactor of degree at most \(2h-1\). By completed-line reuse, every term is derived through \(\max\{K,4h\}\), and their sum has the same ceiling.</p>
+<p>If \(Z(D)\) is empty, the unit-coefficient identity \(1=\sum_j\lambda_jg_{D,j}\) instead gives</p>
+<div class="math">\[
+P_D=\sum_j\lambda_j(g_{D,j}P_D).
+\]</div>
+<p>It derives \(P_D\) directly through \(2h+1\), without any premise value. This is the separate tautology theorem and is at most \(4h\) for \(h\ge1\). The two cases prove the full semantic-weakening statement. An empty conclusion is included in the consistent case and has registry value one; its vacuous input set is handled by the same coefficient argument.</p>
+<p><strong>Concrete proof-system scope.</strong> <code>PCClause.weaken_span</code> and <code>PCClause.tautology_span</code> are the general coefficient engines. <code>registry_semantic_weakening</code> and <code>registry_tautology</code> construct every coefficient witness from actual clause semantics, convert it through the checked affine polynomial map and old-variable injection, and instantiate the engines with <code>registryClauseData</code>. No unproved span-membership premise remains in the concrete theorems, and no clause values are added as algebraic axioms.</p>
+<p><strong>Verification and remaining work.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/AffineClauseWeakening.lean">AffineClauseWeakening.lean</a>, the <a href="https://github.com/kbr-/math-research/blob/main/research/results/r23_semantic_weakening_20260915/lean-verification-final.txt">weakening report</a>, <a href="https://github.com/kbr-/math-research/blob/main/research/results/r23_semantic_weakening_20260915/affine-span-verification.txt">affine-span report</a>, and <a href="https://github.com/kbr-/math-research/blob/main/research/results/r23_semantic_weakening_20260915/scope.md">scope map</a> preserve exact types and transitive proof dependencies. Elaboration retries replaced unavailable affine evaluation aliases with a linear evaluation map and unfolded PC submodule membership explicitly; no mathematical correction was needed. Process assessment: transporting the existing affine witnesses extends the registry to product variable types while keeping semantic completeness visible in the concrete theorem. The complete source-DAG/CNF transfer remains R24.</p>
+<div class="timing-report" data-session="r23_semantic_weakening_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 24.73 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 39.93 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">4 min 58.80 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">17.76 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">28.25 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+<p class="small">Initial source/API reading and planning preceded this clock; retries are included, and final checkpoint work follows the snapshot.</p>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

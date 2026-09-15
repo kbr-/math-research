@@ -1,0 +1,29 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.FiniteAffineSpan
+Claim file: claims/FiniteAffineSpan.lean
+Claim: lem:finite-affine-map-span-witnesses
+Source: https://kbr.is-a.dev/math-research/#lean-finite-affine-map-span-witnesses
+Scope: Constant affine-map coefficient witnesses for zero-flat vanishing and inconsistency on arbitrary finite coordinate types, obtained from the verified Fin n affine-system theorem by reindexing.
+Declarations: MathResearch.finite_affine_vanishing_coefficients MathResearch.finite_affine_unit_coefficients
+$ lake --wfail build claims.FiniteAffineSpan
+Build completed successfully (1694 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/tmpl0964so7.lean
+@MathResearch.finite_affine_vanishing_coefficients : ∀ {K σ ι : Type} [inst : Field K] [Fintype σ] [inst_2 : Fintype ι]
+  (g : ι → (σ → K) →ᵃ[K] K) (x : σ → K),
+  (∀ (i : ι), (g i) x = 0) →
+    ∀ (f : (σ → K) →ᵃ[K] K), (∀ (y : σ → K), (∀ (i : ι), (g i) y = 0) → f y = 0) → ∃ c, f = ∑ i, c i • g i
+'MathResearch.finite_affine_vanishing_coefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.finite_affine_unit_coefficients : ∀ {K σ ι : Type} [inst : Field K] [Fintype σ] [inst_2 : Fintype ι]
+  (g : ι → (σ → K) →ᵃ[K] K), (¬∃ x, ∀ (i : ι), (g i) x = 0) → ∃ c, AffineMap.const K (σ → K) 1 = ∑ i, c i • g i
+'MathResearch.finite_affine_unit_coefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 2 audited declarations.

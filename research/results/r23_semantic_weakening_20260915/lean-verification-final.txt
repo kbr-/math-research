@@ -1,0 +1,57 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.AffineClauseWeakening
+Claim file: claims/AffineClauseWeakening.lean
+Claim: lem:semantic-weakening-PC-degree
+Source: https://kbr.is-a.dev/math-research/#lean-semantic-weakening-PC-degree
+Scope: Semantic weakening in the actual fixed affine registry preserves max(K,4h); tautological conclusions are derived through2h+1. General constant-span certificate engines are instantiated using complete affine zero-flat/unit witnesses.
+Declarations: MathResearch.PolynomialCalculus.PCClause.weaken_span MathResearch.PolynomialCalculus.PCClause.tautology_span MathResearch.PolynomialCalculus.registry_semantic_weakening MathResearch.PolynomialCalculus.registry_tautology
+$ lake --wfail build claims.AffineClauseWeakening
+✔ [1822/1822] Built claims.AffineClauseWeakening (1.7s)
+Build completed successfully (1822 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/tmpd49jx1ao.lean
+@MathResearch.PolynomialCalculus.PCClause.weaken_span : ∀ {σ ι τ : Type} [inst : Fintype ι] [inst_1 : Fintype τ]
+  {F : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) σ)} {h K : ℕ}
+  (A : MathResearch.PolynomialCalculus.PCClause F h ι) (T : MathResearch.PolynomialCalculus.PCClause F h τ),
+  1 ≤ h →
+    ∀ (c : ι → τ → ZMod 2),
+      (∀ (i : ι), A.input i = ∑ j, c i j • T.input j) →
+        MathResearch.PolynomialCalculus.Derives F K A.value →
+          MathResearch.PolynomialCalculus.Derives F (max K (4 * h)) T.value
+'MathResearch.PolynomialCalculus.PCClause.weaken_span' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.PCClause.tautology_span : ∀ {σ τ : Type} [inst : Fintype τ]
+  {F : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) σ)} {h : ℕ}
+  (T : MathResearch.PolynomialCalculus.PCClause F h τ) (c : τ → ZMod 2),
+  1 = ∑ j, c j • T.input j → MathResearch.PolynomialCalculus.Derives F (2 * h + 1) T.value
+'MathResearch.PolynomialCalculus.PCClause.tautology_span' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_semantic_weakening : ∀ {ν : Type} [inst : Fintype ν] {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause ν) (h : ℕ)
+  (old : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) ν)),
+  1 ≤ h →
+    ∀ (a t : Fin N),
+      MathResearch.clauseEntails (C a) (C t) →
+        ∀ {K : ℕ},
+          MathResearch.PolynomialCalculus.Derives (MathResearch.PolynomialCalculus.registrySystem C h old) K
+              (MathResearch.PolynomialCalculus.registryValue C h a) →
+            MathResearch.PolynomialCalculus.Derives (MathResearch.PolynomialCalculus.registrySystem C h old)
+              (max K (4 * h)) (MathResearch.PolynomialCalculus.registryValue C h t)
+'MathResearch.PolynomialCalculus.registry_semantic_weakening' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_tautology : ∀ {ν : Type} [inst : Fintype ν] {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause ν) (h : ℕ)
+  (old : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) ν)),
+  1 ≤ h →
+    ∀ (t : Fin N),
+      (¬∃ x, MathResearch.clauseZero (C t) x) →
+        MathResearch.PolynomialCalculus.Derives (MathResearch.PolynomialCalculus.registrySystem C h old) (2 * h + 1)
+          (MathResearch.PolynomialCalculus.registryValue C h t)
+'MathResearch.PolynomialCalculus.registry_tautology' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 4 audited declarations.
