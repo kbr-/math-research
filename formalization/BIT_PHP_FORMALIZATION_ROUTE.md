@@ -15,8 +15,8 @@ This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
 The third-party boundary **H** is now proved in Lean: H01–H13 are complete.
-R01–R09, R11–R13, and R18–R22 are verified and integrated, reusing the earlier
-R06/R19–R21 proofs. The eight remaining obligations are in progress below. Proving H does not formalize its downstream consumers or the full paper.
+R01–R13, R16, and R18–R23 are verified and integrated, reusing the earlier
+R06/R19–R21 proofs. Five obligations remain: R14, R15, R17, R24, and R25. Proving H does not formalize its downstream consumers or the full paper.
 
 ## How to use the list
 
@@ -51,7 +51,7 @@ below means reuse the checked statement and file, not repeat its formalization.
 | R07 | **Affine-system normal form and scalar cleanup:** proper affine input spans have independent linear parts and nonempty zero flats; zero/unit spans can be eliminated; nonzero proper companions have exact degree `2h+1`. Include affine vanishing on a consistent zero set ⇒ constant linear combination of its defining forms, and empty zero set ⇒ a constant combination equal to one. | R01, R03 | Helpers to extract from [affine learning setup](https://kbr.is-a.dev/math-research/#affine-common-vanishing-learning), [semantic weakening](https://kbr.is-a.dev/math-research/#semantic-weakening-PC-degree), and paper §5 `lem:cleanup`. Fresh independent coefficients and genuine degree-one inputs justify equality. These linear-algebra witnesses are stronger than the existing Boolean semantic separator. |
 | R08 | **Low-rank, no-retained-core factor packing:** `r ≤ h(k+1)` affine basis complements fit `h` bins, giving coefficient degree at most `k`, product equal to the zero-flat indicator, and companion Boolean certificates through `r+1`. | R05, R06, R07 | Helper to extract from [mixed packing](https://kbr.is-a.dev/math-research/#mixed-packing-common-vanishing-learning), expanded explicitly in paper §5 `lem:hybrid`. Do not apply the full [optimal retained-core theorem](https://kbr.is-a.dev/math-research/#relative-optimal-linear-packing) with `t=0`: its stated hypotheses require `t≥1`. Its optimality and general retained-core transfer are unnecessary. |
 | R09 | **`audit:matching-moment-completeness`: functional-unary matching normal form and the complete marginal equations.** | R01, R02, R04, R05 | [Exact audit](https://kbr.is-a.dev/math-research/#matching-moment-completeness-audit), paper `lem:marginals`. Reduce Boolean powers and row/column collisions without increasing degree; prove that every remaining row-generator multiple is exactly a legal matching marginal. Include both constant-moment values, not just normalized designs. |
-| R10 | **`audit:matching-extension-arbitrary-row-count`: extend prescribed moments and derive old filtration stability / `C_B = I_B`.** | R02, R04, R09, **H** | [Exact arbitrary-row audit](https://kbr.is-a.dev/math-research/#matching-extension-arbitrary-row-count), paper `thm:moments` and `cor:stability`. Handle `m≥B`, `N≥1`, `N≥2B-1`, degree zero/one, and disjoint new top moments across row sets. Construct the cycles and translate fillings into marginals locally; only existence of the topological fillings is deferred. |
+| R10 | **`audit:matching-extension-arbitrary-row-count`: extend prescribed moments and derive old filtration stability / `C_B = I_B`.** | R02, R04, R09, **H** | [Exact arbitrary-row audit](https://kbr.is-a.dev/math-research/#matching-extension-arbitrary-row-count), paper `thm:moments` and `cor:stability`. Verified for arbitrary `m`, with `N≥1`, `N≥2B-1`, degree zero/one, and disjoint new top moments across row sets. The proof constructs actual cycles and translates checked fillings into marginals; the source hypothesis `m≥B` is unnecessary. |
 | R11 | **`lem:two-functional-row-state-interpolation`: bilinear one-hot interpolation with ordinary NS cost `max(d,2)`.** | R01, R05 | [Statement and proof](https://kbr.is-a.dev/math-research/#two-functional-row-interpolation), paper `lem:interpolation`. Its upstream state reduction is the elementary power/collision normal form in [column-state-reduction](https://kbr.is-a.dev/math-research/#column-state-reduction), applied to rows, followed by explicit row-sum homogenization. Prove that small normal-form helper here or reuse R09's reduction infrastructure; the larger column-normalizer theorem is not required. |
 | R12 | **Degree-preserving compact-to-functional decoder for arbitrary PC consequences**, with original-degree Boolean/collision image certificates; injectivity and ordinary-degree preservation. | R01, R02, R03, R11 | Helper to extract as paper §4 `lem:decoder`, using [compact decoder certificates](https://kbr.is-a.dev/math-research/#compact-bit-PC-lower-bound) and the map in [transported filtration](https://kbr.is-a.dev/math-research/#compact-bit-transported-filtration). For `ℓ≥2`, needed conclusion: `q ∈ C_B(Q_n) ⇒ τq ∈ C_B(Ffun)`. The full `J_k`/annihilator package and separate compact-base degree lower bound are unnecessary. |
 | R13 | **Row-linear polynomial space and dimensions:** `dim L_k = Σ_{j≤k} binom(m,j) ℓ^j`; nonzero members have a nonzero maximal-row coefficient; ordinary restrictions to `v-r` variables have image dimension at most `binom(v-r+k,k)`. | R01 | Helpers in paper §4 equation `eq:row-linear-dimension` and §5 `lem:kernel`; [ordinary restriction audit](https://kbr.is-a.dev/math-research/#ordinary-restriction-affine-family-audit). Use ordinary polynomial monomials, not Boolean quotient dimensions. |
@@ -372,6 +372,23 @@ Released R22: complementary-parity resolution, both as a reusable certificate
 engine and in the actual fixed registry, through `max(K,4h+1)`. Overlapping
 contexts and empty conclusions are included. The clause worker continues R23
 and R24. Eight R steps remain: R10, R14–R17, and R23–R25.
+
+Released R23: concrete semantic weakening through `max(K,4h)` and tautological
+conclusions through `2h+1`, including both consistent and empty zero sets.
+Its finite-affine witness bridge reuses R07 without restricting the old-variable
+type. The clause worker continues the initial-CNF and finite-DAG dependencies
+and then full R24.
+
+Released R16: complete simultaneous low/high affine-family removal through
+`k(D+1)`, with the tighter internal ceiling `kD+deg f`. Properness and
+multilinearity are unnecessary; high-rank literal witness existence remains R15.
+The affine worker has returned to restriction for R15.
+
+Released R10: actual row-set cycle fillings, arbitrary prescribed bounded
+functional extension, old NS filtration stability, PC=NS, and normalized-design
+existence/span/nonrefutation. The proof removes `m≥B`, retaining `N≥1` and
+`N≥2B-1`. The Boolean/matching worker proceeds to R14, using the integrated
+R12 decoder and R13 row-linear interfaces. Five R steps remain.
 
 ### Final generalization sweep (explicit user assignment)
 
