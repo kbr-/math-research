@@ -18319,5 +18319,42 @@ P=E_{ii'}P+\sum_{t&lt;\ell}U_t(g_tP).
 <p class="small">Preliminary source/API reading and planning preceded this clock; final checkpoint work follows the timing snapshot.</p>
 </article>
 
+<article id="entry-2026-09-15-lean-family-removal-unit-blocks">
+<h3>15 September 2026 — Family removal also accepts unit-span high blocks</h3>
+<p class="entry-meta">Status: verified generalization needed to compose the full clause registry with affine removal; the original theorem remains available.</p>
+<h4 id="lean-affine-family-removal-with-unit-blocks">Unit-or-literal high-block removal</h4>
+<p><strong>Question and scope.</strong> The <a href="#lean-affine-clause-PC-system">complete source-clause registry</a> may contain tautological affine clauses. For their unit-span input families, a degree-\(k\) target need not have the degree-\(k-1\) literal coefficient witnesses supplied for proper high blocks. Extend the <a href="#lean-simultaneous-affine-family-removal">verified simultaneous removal theorem</a> by treating a unit-span high block separately. This is a composition requirement, not a counterexample to the earlier theorem under its stated hypotheses.</p>
+<p>Let \(\mathcal F\) contain the old Boolean equations, and let \((g_{b,i})_i\) be finite old-affine input families over \(\mathbb F_2\), with complete independent accuracy-\(h\) ENS blocks and all coefficient Boolean equations. Assume \(h,k\ge1\), \(D\ge2h+1\), and \(\deg f\le k\). Put \(r_b=\dim\operatorname{span}\{g_{b,i}\}\). For every block with \(r_b&gt;h(k+1)\), require either</p>
+<div class="math">\[
+1\in\operatorname{span}_{\mathbb F_2}\{g_{b,i}\},
+\qquad\text{or}\qquad
+f=\sum_i a_{b,i}g_{b,i},\quad \deg a_{b,i}\le k-1.
+\]</div>
+<p>Then a degree-\(D\) primitive PC refutation of the full family implies \(\mathcal F\vdash_{k(D+1)}f\). The input family, coefficient inventory, old system, and degree conventions are unchanged.</p>
+<p><strong>Low blocks.</strong> If \(r_b\le h(k+1)\), use the already verified low-rank specialization. Its coefficient images have degree at most \(k\), and each specialized companion has an ordinary Boolean NS certificate through \(r_b+1\). Multiplying by \(f\) costs at most \(r_b+1+\deg f\le kD+\deg f\). The numerical inequality follows from \(h,k\ge1\) and \(D\ge2h+1\), exactly as in the original proof.</p>
+<p><strong>Unit-span high blocks.</strong> Choose field constants \(c_i\) with \(\sum_i c_i g_{b,i}=1\). In one coefficient row assign \(r_{b,u,i}=c_i\), and assign zero in every other row. The selected factor is \(1-\sum_i c_i g_{b,i}=0\), while the remaining factors are one, so the block value and every companion become zero. Every weighted companion image is therefore zero. The coefficient images have degree zero, and their Boolean equations also become zero because \(c_i\in\mathbb F_2\). No degree-\(k-1\) expression for \(f\) is needed in this branch.</p>
+<p><strong>Literal-witness high blocks.</strong> Use the original specialization: assign \(a_{b,i}\) to one coefficient row and zero to the others. Its value is \(1-f\), and</p>
+<div class="math">\[
+f\,g_{b,i}(1-f)=-g_{b,i}(f^2-f).
+\]</div>
+<p>The checked Boolean certificate for \(f^2-f\) costs at most \(2k\); multiplying by the affine input costs at most \(2k+1\le kD\). Coefficient images have degree at most \(k-1\le k\). These are the original high-block argument and budgets.</p>
+<p><strong>Complete replay.</strong> Choose all block substitutions simultaneously in their disjoint scopes and leave old variables unchanged. Every variable image has degree at most \(k\). A coefficient Booleanity image has a Boolean NS certificate through \(2k\), and multiplying it by \(f\) costs at most \(2k+\deg f\le kD+\deg f\). Every eligible old axiom remains itself, with its original degree retained by the injective old-variable inclusion; multiplying its completed line by \(f\) fits the same ceiling. The three block cases above cover all companions. Thus the checked weighted primitive PC substitution theorem maps the refutation to a derivation of \(f\) through \(kD+\deg f\le k(D+1)\).</p>
+<p><strong>Compatibility and verification.</strong> The stronger theorem lives in <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/AffineFamilyRemovalWithUnits.lean">AffineFamilyRemovalWithUnits.lean</a>. The original <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/AffineFamilyRemoval.lean">AffineFamilyRemoval.lean</a> retains its theorem name and exact literal-only statement as a wrapper choosing the second disjunct. Public family definitions and namespaces remain unchanged through that import; there is no import cycle. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r16_unit_family_extension_20260915/lean-verification.txt">generalization report</a>, <a href="https://github.com/kbr-/math-research/blob/main/research/results/r16_unit_family_extension_20260915/original-wrapper-verification.txt">original-wrapper report</a>, and <a href="https://github.com/kbr-/math-research/blob/main/research/results/r16_unit_family_extension_20260915/scope.md">scope map</a> preserve the checked statements. No source claim was invalidated. Process assessment: accepting a unit-span disjunct directly removes the concrete registry mismatch without a separate global pruning transformation or new DAG restrictions. The pending R24 DAG/counting proof can continue with tautological clauses present.</p>
+<div class="timing-report" data-session="r16_unit_family_extension_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 14.22 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 16.61 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">1 min 15.39 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">17.24 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">24.98 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+<p class="small">Preliminary source reading and coordination preceded this clock; final checkpoint work follows the timing snapshot.</p>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
