@@ -16,7 +16,7 @@ This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
 The third-party boundary **H** is now proved in Lean: H01–H13 are complete.
-R01–R05, R09, and R11–R13 are verified and integrated, alongside the previously
+R01–R05, R07, R09, and R11–R13 are verified and integrated, alongside the previously
 checked R06/R19–R21. The remaining obligations are in progress below. Proving H does not formalize its downstream consumers or the full paper.
 
 ## How to use the list
@@ -364,3 +364,10 @@ The Boolean/matching worker continues R10, then R14.
 R07 fresh-block release: `2322c6d` (worker `b235af1c`), canonical disjoint
 coefficient variables, exact fresh-companion degrees and rename compatibility.
 Only scalar PC cleanup remains R07; clause simulation can use this release now.
+
+R07 complete: `802eab1` (scalar-cleanup worker checkpoint `888f22a2`),
+combining the previously released affine witnesses, coordinates, and fresh-degree
+claims with degree-preserving scalar cleanup of complete blocks. Generic cleanup
+requires explicit idempotent constants; binary unit-span cleanup supplies them
+and requires h>0. The affine worker proceeds to R08 and R16, then will return to
+R15 in restriction. Eleven R steps remain after this release.
