@@ -12,11 +12,33 @@ STANDARD_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
 NAME = r"[A-Za-z_][A-Za-z_0-9']*(?:\.[A-Za-z_][A-Za-z_0-9']*)*"
 
 
+def module_name(path):
+    parts = path.relative_to(ROOT).with_suffix("").parts
+    for part in parts:
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z_0-9'-]*", part):
+            raise ValueError(f"Unsupported module path component: {part}")
+    return ".".join(part if re.fullmatch(r"[A-Za-z_][A-Za-z_0-9']*", part)
+                    else "«" + part + "»" for part in parts)
+
+
+def select_target(files, target):
+    if target is None:
+        return files
+    target = target.removeprefix("./")
+    matches = [path for path in files if target in {
+        str(path), str(path.relative_to(ROOT)), str(path.relative_to(ROOT.parent)),
+        module_name(path), ".".join(path.relative_to(ROOT).with_suffix("").parts)}]
+    if len(matches) != 1:
+        raise ValueError("--target must identify one existing claim module or Lean file")
+    return matches
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, help="save complete output to a new file (relative to repo root)")
     parser.add_argument("--recheck-sources", action="store_true",
-                        help="explicitly re-elaborate every source after the incremental build")
+                        help="explicitly re-elaborate selected sources after the incremental build")
+    parser.add_argument("--target", help="check one module or Lean file and its cached dependencies")
     args = parser.parse_args()
     report = None
     if args.out:
@@ -49,9 +71,11 @@ def main():
             emit(f"Dependency: {package['name']} {package['rev']}")
         files = sorted(path for directory in ("claims", "third-party-claims")
                        for path in (ROOT / directory).rglob("*.lean"))
+        files = select_target(files, args.target)
+        emit("Scope: " + (module_name(files[0]) if args.target else "all claim modules"))
         declarations = []
-        statement_names = set()
-        statement_files = 0
+        interface_names = set()
+        interface_files = 0
         for path in files:
             source = path.read_text()
             header = re.match(r"\s*/-\s*\n(.*?)\n-/", source, re.S)
@@ -67,31 +91,27 @@ def main():
                 raise ValueError("Declarations must list fully qualified Lean names separated by spaces")
             declarations.extend(names)
             status = re.search(r"^Status: (.+)$", header[1], re.M)
-            if status:
-                if status[1] != "statement-only":
-                    raise ValueError("Optional Status field must be statement-only")
-                statement_files += 1
-                statement_names.update(names)
+            kind = re.search(r"^Kind: (.+)$", header[1], re.M)
+            if status and status[1] != "statement-only":
+                raise ValueError("Legacy Status field must be statement-only")
+            if kind and kind[1] != "interface":
+                raise ValueError("Optional Kind field must be interface")
+            if kind or status:  # Keep historical headers readable.
+                interface_files += 1
+                interface_names.update(names)
             emit(f"Claim file: {path.relative_to(ROOT)}\n{header[1]}")
-        run(["lake", "--wfail", "build"])
+        run(["lake", "--wfail", "build"] + ([module_name(files[0])] if args.target else []))
         emit("Verification: incremental Lake build; types and axioms read from compiled modules.")
         if args.recheck_sources:
             for path in files:
                 run(["lake", "env", "lean", "-DwarningAsError=true", str(path.relative_to(ROOT))])
         if files:
-            def module_component(part):
-                if re.fullmatch(r"[A-Za-z_][A-Za-z_0-9']*", part):
-                    return part
-                if not re.fullmatch(r"[A-Za-z_][A-Za-z_0-9'-]*", part):
-                    raise ValueError(f"Unsupported module path component: {part}")
-                return "«" + part + "»"
-            imports = ["import " + ".".join(module_component(part) for part in
-                       path.relative_to(ROOT).with_suffix("").parts) for path in files]
+            imports = ["import " + module_name(path) for path in files]
             commands = []
             for name in declarations:
                 commands.extend(["#check @" + name,
                                  "#print axioms " + name])
-                if name in statement_names:
+                if name in interface_names:
                     commands.append("#print " + name)
             audit = "\n".join(imports + commands) + "\n"
             with tempfile.NamedTemporaryFile(mode="w", suffix=".lean", dir=ROOT / ".lake") as temp:
@@ -108,8 +128,8 @@ def main():
                     raise ValueError(f"Missing axiom report for {name}")
         if any(path.read_bytes() != content for path, content in before.items()):
             raise ValueError("Dependency configuration changed during verification")
-        emit(f"PASS: {len(files) - statement_files} proof files; {statement_files} statement-only files "
-             f"(no proof claimed); {len(declarations)} audited declarations."
+        emit(f"PASS: {len(files) - interface_files} proof files; {interface_files} interface files "
+             f"(definitions, not claim-completion status); {len(declarations)} audited declarations."
              if files else "SETUP ONLY: build passed; no claim files exist and no research claim is verified.")
     except (ValueError, OSError) as error:
         emit("FAIL: " + str(error))

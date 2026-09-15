@@ -15,9 +15,9 @@ developed generalizations. Preserve source attribution and index every new
 mathematical claim. A more general statement alone does not establish novelty,
 and a new proof does not transfer authorship of the theorem. Describe adaptations
 as such without unsupported novelty claims. The two directories may import each
-other without cycles. An unproved target must be
-an explicitly marked statement-only proposition definition, never an axiom or
-`sorry`; follow README.md's metadata convention and do not mark it formalized.
+other without cycles. An unproved target may be a proposition definition in an
+explicitly marked interface module, never an axiom or `sorry`. Follow README.md's
+metadata convention; file role does not establish claim completion.
 
 - Before proving anything, read the exact indexed claim and relevant proof.
   Draft the Lean statement and compare its variables, domains, quantifiers,
@@ -49,7 +49,8 @@ an explicitly marked statement-only proposition definition, never an axiom or
   while preserving their full history in the Research record. Do not duplicate
   proofs there or list a claim merely because it is unformalized; Lean setup
   errors are not mathematical gaps. This section is read by both research and
-  formalization agents during resume.
+  formalization agents during resume. In parallel work, follow the root
+  coordinator-ownership policy for all living sections.
 - Formalize the claim, not necessarily the original proof strategy. Prefer
   explicit constructions when they simplify both the identity and its bounds;
   the first interpolation proof used a recursive quotient instead of division.

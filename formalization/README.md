@@ -60,10 +60,13 @@ or other limitations in `Scope`; a verified special case is not the full claim.
 Shared helper modules under `claims/` use the same header, identifying their
 supporting role and listing the helper declarations to audit.
 
-An unproved external target can be recorded as a `def ... : Prop`, with
-`Status: statement-only` in its header and its proposition name in `Declarations`.
-The verifier prints the definition and explicitly reports that no proof is
-claimed for that file. This introduces neither an axiom nor a `sorry`.
+Record a definition-only module with `Kind: interface` in its header and its
+interface declarations in `Declarations`. The verifier prints the definitions
+and counts interface modules separately from proof modules. This describes the
+file's role, not whether its indexed claim has been proved in another module.
+An unproved external target can be a `def ... : Prop` in such a module, introducing
+neither an axiom nor a `sorry`. The claim index links the proof when it exists.
+Legacy `Status: statement-only` headers are still accepted as interface metadata.
 See [AGENTS.md](AGENTS.md) for the completion policy; compiling a statement is
 not proving it.
 
@@ -72,6 +75,17 @@ From the repository root, run the complete verification command:
 ```bash
 ./formalization/verify.sh
 ```
+
+To check one module and its dependencies, using cached proofs where unchanged:
+
+```bash
+./formalization/verify.sh --target third-party-claims/ChessboardFillingProof.lean
+```
+
+`--target` accepts a module name or a file path relative to `formalization/` or
+the repository root. The report covers that module's listed declarations and
+their transitive axioms; it does not claim to check unrelated modules.
+For an explicit fresh check of just that source, add `--recheck-sources`.
 
 It builds incrementally under `compute.sh` with warnings treated as errors,
 reusing unchanged compiled modules, and prints each listed declaration's type with `#check @name`, including
@@ -90,6 +104,10 @@ preserve the complete output in a new evidence file:
 ./formalization/verify.sh --session TURN --out research/results/TURN/lean-verification.txt
 ```
 
+The complete `--out` report is the canonical evidence. Session archival references
+it when captured output matches exactly, under the
+[output policy](../COMPUTATION_RULES.md#timing-export-and-evidence-archival).
+
 Use `./compute.sh phase TURN formalization` while designing and coding the Lean
 proof, following the phase distinctions in [COMPUTATION_RULES.md](../COMPUTATION_RULES.md).
 The wrapper records the command as `formal_verification` in that session without starting or stopping
@@ -101,8 +119,9 @@ defined in [AGENTS.md](AGENTS.md).
 
 The type and axiom reports inspect compiled declarations; they do not rerun the
 proofs of unchanged dependencies. Use this incremental verification for research
-checkpoints too. `--recheck-sources` explicitly re-elaborates every claim file;
-reserve it for a concrete reason to repeat source checking, not routine additions
+checkpoints too. `--recheck-sources` explicitly re-elaborates the selected source
+(or every claim file when no target is supplied). Reserve it for a concrete
+reason to repeat source checking, not routine additions
 or integration. Lake rebuilds changed modules and their dependents automatically.
 
 ## Reproducible dependencies

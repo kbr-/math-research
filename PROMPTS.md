@@ -132,15 +132,17 @@ Act as coordinator until the final assembly. Work autonomously through these ste
    concurrency. Each must perform Resume and execute Spin-formalize restricted
    to its assigned subset, with its own records and local checkpoints. Coordinate
    additional dependencies through the parent instead of silently expanding into
-   another worker's scope. All workers share the resource limits in
+   another worker's scope. Follow the root coordinator-ownership policy for
+   notebook living sections. All workers share the resource limits in
    [COMPUTATION_RULES.md](COMPUTATION_RULES.md); use distinct timing/evidence IDs
    and private writable build caches. Existing dependency-installation rules apply.
 5. Have workers agree on shared definitions and exact interfaces early and message
    one another about dependencies. Release verified intermediate checkpoints;
    do not make branches wait for each other's entire assignment. Coordinate clean
-   pauses for sequential rebases onto the integration branch, fast-forwarding it
-   after each completed rebase. Preserve both sides' research records and evidence
-   when resolving conflicts. For append-only notebook/index conflicts, use
+   pauses for sequential rebases onto pinned integration commits under the root
+   Git policy, fast-forwarding the integration branch after each completed rebase.
+   Record released commit IDs in the handoff. Preserve both sides' research
+   records and evidence when resolving conflicts. For append-only notebook/index conflicts, use
    `python3 tools/merge-formalization-appends.py --help`; it requires manual review
    for other changes and never stages files or continues a rebase. Do not rebase
    a worktree while its worker is editing.

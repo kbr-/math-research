@@ -237,3 +237,10 @@ Inspect the evidence for credentials and unrelated/private runtime state before
 committing it. Promote any other essential scratch results to `research/results/`
 or `research/provenance/`, using streaming I/O within the shared memory budget.
 The notebook's entry, table-placement, and footnote rules are in AGENTS.md.
+
+For new archives, a captured output identical to its declared `--out` report
+under `research/results/` is stored once: the archive manifest's `canonical_path`
+references that complete report relative to `research/`, with its SHA-256.
+Commit the referenced report with the archive. Different outputs are preserved
+separately, and existing archives are not rewritten. Missing or changed canonical
+reports fail re-archival rather than silently losing evidence.

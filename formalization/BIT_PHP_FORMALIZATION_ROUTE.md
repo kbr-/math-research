@@ -101,7 +101,7 @@ The target is indexed as `third-party:BLVZ-chessboard-filling` and proved by
 [ChessboardFillingProof.lean](third-party-claims/ChessboardFillingProof.lean).
 The unchanged [original interface](third-party-claims/ChessboardFilling.lean)
 defines the proposition, avoiding an import cycle with its proof. Its file-level
-statement-only metadata describes that definition module; H itself is now proved
+`Kind: interface` metadata describes that definition module; H itself is now proved
 with all required dependencies, no custom axiom, and no `sorry`. R10 and the
 remaining publication claims still require their own formalizations.
 

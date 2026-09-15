@@ -2,6 +2,7 @@
 Claim: def:finite-complex-cover
 Source: https://kbr.is-a.dev/math-research/#lean-chessboard-star-cover
 Scope: Finite augmented intersections, covers, and vertex-nonempty nerves; empty faces retained.
+Kind: interface
 Declarations: MathResearch.ThirdParty.Augmented.intersection MathResearch.ThirdParty.Augmented.nerve MathResearch.ThirdParty.Augmented.Covers
 -/
 import claims.AugmentedChainMaps

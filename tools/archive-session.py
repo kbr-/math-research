@@ -20,31 +20,71 @@ def digest(path):
     return result.hexdigest()
 
 
+def canonical_report(event):
+    """A declared --out report may replace an identical captured output."""
+    command = event.get('command', [])
+    if '--out' not in command:
+        return None
+    position = command.index('--out') + 1
+    if position >= len(command):
+        return None
+    candidate = Path(command[position])
+    if not candidate.is_absolute():
+        # Protected commands run from the checkout root. Never use a historical
+        # machine's absolute cwd to locate evidence after moving a checkout.
+        candidate = RESEARCH.parent / candidate
+    candidate = candidate.resolve()
+    if candidate.is_relative_to((RESEARCH / 'results').resolve()) and candidate.is_file():
+        return candidate
+    return None
+
+
 def archive(path):
     events = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
     if not any(e['event'] == 'stop' for e in events):
         return False
     target = DEST / path.stem
-    sources = [(path, 'session.jsonl')]
+    sources = [(path, 'session.jsonl', None)]
     summary = path.with_suffix('.summary.json')
     if not summary.exists():
         raise RuntimeError(f'Missing summary: run ./compute.sh report {path.stem}')
-    sources.append((summary, 'summary.json'))
+    sources.append((summary, 'summary.json', None))
     for event in events:
         if event['event'] == 'run_start' and event.get('output'):
             output = (RESEARCH / event['output']).resolve()
             if not output.is_relative_to(LOGS.resolve()):
                 raise RuntimeError(f'Unexpected output path in {path.name}')
-            sources.append((output, 'outputs/' + output.name))
+            sources.append((output, 'outputs/' + output.name, canonical_report(event)))
     manifest = []
+    index = target / 'manifest.json'
+    previous = {entry['original_path']: entry for entry in json.loads(index.read_text())} \
+        if index.exists() else {}
     exclusion_file = RESEARCH / 'provenance/archive-exclusions.json'
     exclusions = json.loads(exclusion_file.read_text()) if exclusion_file.exists() else {}
-    for source, name in sources:
+    for source, name, canonical in sources:
         source_hash = digest(source)
         original_path = str(source.relative_to(RESEARCH))
+        prior = previous.get(original_path)
+        if prior and prior['sha256'] != source_hash:
+            raise RuntimeError(f'Archived evidence changed: {source}')
         if original_path in exclusions:
             manifest.append({'original_path': original_path, 'omitted': True,
                              'sha256': source_hash, 'reason': exclusions[original_path]})
+            continue
+        if prior and 'canonical_path' in prior:
+            saved = (RESEARCH / prior['canonical_path']).resolve()
+            if not saved.is_relative_to((RESEARCH / 'results').resolve()) \
+                    or not saved.is_file() or digest(saved) != source_hash:
+                raise RuntimeError(f'Canonical evidence missing or changed: {saved}')
+            manifest.append(prior)
+            continue
+        # Preserve existing archive layouts. Deduplicate new outputs only, and
+        # only by complete content equality; never truncate or omit diagnostics.
+        if not prior and canonical and digest(canonical) == source_hash:
+            target.mkdir(parents=True, exist_ok=True)
+            manifest.append({'original_path': original_path,
+                             'canonical_path': str(canonical.relative_to(RESEARCH)),
+                             'sha256': source_hash})
             continue
         destination = target / name
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -59,7 +99,6 @@ def archive(path):
             temporary.replace(destination)
         manifest.append({'original_path': original_path,
                          'archived_path': name, 'sha256': source_hash})
-    index = target / 'manifest.json'
     data = json.dumps(manifest, indent=2).encode() + b'\n'
     if index.exists() and index.read_bytes() != data:
         raise RuntimeError(f'Archive manifest changed: {index}')

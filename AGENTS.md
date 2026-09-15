@@ -42,6 +42,11 @@ actionable rule over another checklist or a record of one-off setup history.
 - Respect the user's chosen research branch. Do not switch or merge into main
   merely to publish work. The Pages workflow deploys when main is pushed;
   local commits on any branch are only checkpoints.
+- Pin integration targets to immutable commit IDs after fetching or receiving a
+  worker checkpoint; rebase and validate against those IDs, not moving branch
+  names. Immediately before a fast-forward, check the destination's current
+  HEAD and worktree status. If it advanced, refresh/rebase or leave it unmerged;
+  never treat validation against an older target as validation of the new one.
 - Work from the repository root; do not assume a particular absolute path, user,
   or machine. `./start-codex.sh` resumes the exact machine-local ID stored in
   `.codex-session-id`, or starts a fresh context-restoration session if absent.
@@ -137,6 +142,11 @@ actionable rule over another checklist or a record of one-off setup history.
   mathematical status has not changed. Lead with the main research goal and
   keep the route and next step on that path; mention side results and their
   publication briefly in the overview.
+  During coordinated parallel formalization, the coordinator alone edits all
+  living sections, including the formalization-gaps list, at integration checkpoints.
+  Workers still review them, append their own full records, maintain claim-index
+  entries, and send proposed overview changes or discrepancies to the coordinator.
+  Flag a discrepancy promptly; do not wait for every branch to finish.
 - Revise and consolidate Working mathematical context by topic; do not append
   a subsection there automatically for every turn. Keep full arguments, failed
   approaches, test details, and reading history in the Research record or linked

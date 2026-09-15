@@ -1,8 +1,8 @@
 /-
 Claim: third-party:BLVZ-chessboard-filling
 Source: https://kbr.is-a.dev/math-research/#third-party-chessboard-filling-interface
-Scope: Exact finite F₂ reduced-cycle filling interface H for s≥2 and N≥2s-1. Statement only; no proof or axiom of H is introduced.
-Status: statement-only
+Scope: Exact finite F₂ reduced-cycle filling interface H for s≥2 and N≥2s-1. Definitions only in this module; ChessboardFillingProof.lean proves H.
+Kind: interface
 Declarations: MathResearch.ThirdParty.ChessboardFilling
 -/
 import Mathlib.Data.ZMod.Basic
@@ -37,7 +37,7 @@ def chessboardBoundary {s N k : ℕ} (c : ChessboardChain s N k) :
     ∑ σ : ChessboardFace s N k, if τ.val ⊆ σ.val then c σ else 0
 
 /-- The precise consequence of BLVZ Theorem 1.1 needed for matching moments.
-This defines the target proposition only: it is NOT a theorem or an axiom.
+This module defines the proposition; ChessboardFillingProof.lean proves it.
 Reference: Björner, Lovász, Vrećica, Živaljević (1994),
 Chessboard complexes and matching complexes, DOI 10.1112/jlms/49.1.25. -/
 def ChessboardFilling : Prop :=
