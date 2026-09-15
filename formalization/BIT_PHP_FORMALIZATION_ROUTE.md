@@ -293,3 +293,7 @@ the foundation worker; no publication conclusion follows from R01 alone.
 All six private pinned `.lake` caches were copied successfully before foundation
 work finished. The clean completed H worktrees were removed; their historical
 branch refs were retained.
+
+Released R02: `866df1e` (worker `aa5ba8f1`, rebased onto `1ef7607`),
+completed-line polynomial multiplication, degree-controlled NS multiplication,
+and NS-to-PC inclusion. R03/R04 remain with the foundation worker.
