@@ -69,7 +69,8 @@ below means reuse the checked statement and file, not repeat its formalization.
 | R24 | **`thm:bit-PHP-affine-clause-PC-transfer`: actual usual-CNF proof to the complete one-level PC endpoint.** | R01, R02, R06, R18, R21, R22, R23 | [Full theorem and CNF bridge](https://kbr.is-a.dev/math-research/#bit-PHP-affine-clause-PC-transfer). Prove compact initial-value certificates through `2h+ℓ`, normalize rule conventions, prepend at most `binom(m,2)` compact initial nodes, and replay the finite DAG without a height factor. Keep the `3S+binom(m,2)` node bound, polynomial input inventory, and original axiom degrees. Conclusion: `D=max(2h+ℓ,4h+1)`. |
 | R25 | **Publication parameter closure and final theorem `thm:publication-Res-parity-bit-PHP`.** | R17, R24 | [Steps 3–5 and conclusion](https://kbr.is-a.dev/math-research/#publication-Res-parity-bit-PHP-proof), paper §7. For arbitrary fixed real `K>0`, close ceilings/logarithms and eventual inequalities with `S≤n^K`, `M≤3n^K+n²+1`, `h=3ℓ`, `D=12ℓ+1`, `k=ceil(sqrt((n+1)ln(4M)))`, `B=k(D+1)=o(n)`. Infer contradiction and the quantified superpolynomial node bound. |
 
-The two branches can proceed independently once their foundations are ready:
+The two final arguments contain several parallel subbranches once their shared
+foundations are ready:
 
 ```text
 R09 → R10 → R14 ────────────────────┐
@@ -250,3 +251,33 @@ Keep existing indexed claims distinct from extracted helpers and separately
 indexed corollaries. Record any newly discovered mathematical gap in the
 notebook's formalization-gaps section. Do not expand the target to the unrelated
 main Frege research goal. This route itself supplies no new Lean formalization.
+
+
+## Active parallel execution — remaining R route
+
+User assignment: execute Spin-formalize-parallel for all remaining R01–R25
+obligations, reusing H and R06/R19–R21. Integration branch: `formal`, initially
+pinned at `3c0a92f43e4f1a944b1b75f0a63c0caa31f395d0`. Local checkpoints only;
+this assignment does not authorize merging main or pushing.
+
+Worker worktrees are under `~/dev/math-worktrees/`, each with a private `.lake`.
+The current runtime permits the coordinator plus three active workers, so six
+worktrees are scheduled in waves. The diagram above is not six simultaneously
+independent tasks: its cross-branch prerequisites still apply.
+
+| Worktree | Branch | Exclusive assignment | Release points |
+| --- | --- | --- | --- |
+| pc-foundations | formal-r-pc-foundations | R01–R04 | Release R01 immediately, then R02/R03/R04 separately. |
+| boolean-matching | formal-r-boolean-matching | R05, R09, R10, R14 | R05 unblocks other workers; R14 waits for R12/R13. |
+| decoder | formal-r-decoder | R11, R12 | Start after R01/R05; R12 also needs R02/R03. |
+| affine-removal | formal-r-affine-removal | R07, R08, R16 | Release R07 to restriction and clause workers; respect R03/R05. |
+| restriction | formal-r-restriction | R13, R15 | R13 can develop on R01; R15 waits for R04/R07. |
+| clause-simulation | formal-r-clause-simulation | R18, R22, R23, R24 | Reuse R06/R19–R21; R23 waits for R07. |
+
+Coordinator performs R17 and R25 after their prerequisites are integrated.
+Workers perform Resume and restricted Spin-formalize, recording each existing
+indexed claim separately. The coordinator owns living notebook sections, the gap
+list, route updates, sequential rebases, and the final provenance/index audit.
+No worker rebases while editing. Record immutable released/integrated checkpoints
+here as they become available. Initial active workers: foundations, Boolean/matching,
+and restriction; the latter two reuse completed H worker sessions with new paths.
