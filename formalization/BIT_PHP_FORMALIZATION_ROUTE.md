@@ -407,6 +407,12 @@ R14 has a verified disjoint-coordinate-pair and residual-size prerequisite on
 its worker branch. It remains to be integrated with the cube-operator/separation
 work; this is not completion of R14.
 
+R24 DAG dependency released: actual initial/weakening/resolution/binary syntax,
+primary-clause compression, at most two auxiliary slots per source node, exact
+`3S+|J|` registry size, explicit polynomial input/variable inventory, and replay
+without a height factor. Full R24 still requires instantiation with actual bit-PHP
+initial clauses, the pair-count bound, empty final value, and the R17 family bridge.
+
 ### Final generalization sweep (explicit user assignment)
 
 After every Rxx obligation is complete, review the Lean project’s statements
