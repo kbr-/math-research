@@ -16,8 +16,8 @@ This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
 The third-party boundary **H** is now proved in Lean: H01–H13 are complete.
-R01 is now verified and integrated. The next project-side foundation is R02,
-followed by the remaining R01–R25 obligations below. Proving H does not formalize its downstream consumers or the full paper.
+R01–R03, R05, and R13 are verified and integrated, alongside the previously
+checked R06/R19–R21. R04 and the remaining obligations are in progress below. Proving H does not formalize its downstream consumers or the full paper.
 
 ## How to use the list
 
@@ -47,7 +47,7 @@ below means reuse the checked statement and file, not repeat its formalization.
 | R02 | **`lem:reuse` and the elementary `I_B ⊆ C_B` inclusion:** multiply a completed PC line by a polynomial through `max(previous ceiling, deg q + deg f)`. | R01 | [Historical Lemmas 1.2–1.3](../php_codex_handoff/manuscript/chapters/01_foundations.md#lem-reuse); paper `lem:pc-product`. Include zero lines and concatenation/reuse of derivations. |
 | R03 | **`lem:substitution`: degree-controlled PC substitution, including weighted replay** from supplied weighted axiom-image proofs. | R01, R02 | [Historical Lemma 1.4](../php_codex_handoff/manuscript/chapters/01_foundations.md#lem-substitution). The crucial predecessor bound is `D-1` for a nonzero variable-multiplication step. |
 | R04 | **`lem:duality`: finite-dimensional separation and annihilator extension interfaces.** | R01, R02 | [Historical Lemma 1.2](../php_codex_handoff/manuscript/chapters/01_foundations.md#lem-duality). Required for old filtration stability and the common restriction kernel; use Mathlib where it matches. |
-| R05 | **Degree-controlled Boolean reduction over `𝔽₂`**: squarefree remainder with ordinary NS witnesses through the original degree; Boolean-grid vanishing implies such membership; `q²-q` has cost at most `2 deg q`. | R01 | Helper to extract from [historical `lem:fieldreduction`](../php_codex_handoff/manuscript/chapters/01_foundations.md#lem-fieldreduction), paper `lem:boolean`. Only the binary Boolean case is needed; no full mixed-domain/all-prime formalization is required for this route. |
+| R05 | **Degree-controlled Boolean reduction over `𝔽₂`**: squarefree remainder with ordinary NS witnesses through the original degree; Boolean-grid vanishing implies such membership; `q²-q` has cost at most `2 deg q`. | R01, R02 | Helper extracted from [historical `lem:fieldreduction`](../php_codex_handoff/manuscript/chapters/01_foundations.md#lem-fieldreduction), paper `lem:boolean`. Only the binary Boolean case is needed; no full mixed-domain/all-prime formalization is required for this route. |
 | R06 | **`lem:mp-telescoping`: explicit ENS prefixes and their joint-degree bounds.** | — (existing Lean) | [MpTelescoping.lean](claims/MpTelescoping.lean). Reuse its identity and upper bounds. The correction to the loose-ceiling equality remains in force; exact proper-block degrees are separately established in R07. |
 | R07 | **Affine-system normal form and scalar cleanup:** proper affine input spans have independent linear parts and nonempty zero flats; zero/unit spans can be eliminated; nonzero proper companions have exact degree `2h+1`. Include affine vanishing on a consistent zero set ⇒ constant linear combination of its defining forms, and empty zero set ⇒ a constant combination equal to one. | R01, R03 | Helpers to extract from [affine learning setup](https://kbr.is-a.dev/math-research/#affine-common-vanishing-learning), [semantic weakening](https://kbr.is-a.dev/math-research/#semantic-weakening-PC-degree), and paper §5 `lem:cleanup`. Fresh independent coefficients and genuine degree-one inputs justify equality. These linear-algebra witnesses are stronger than the existing Boolean semantic separator. |
 | R08 | **Low-rank, no-retained-core factor packing:** `r ≤ h(k+1)` affine basis complements fit `h` bins, giving coefficient degree at most `k`, product equal to the zero-flat indicator, and companion Boolean certificates through `r+1`. | R05, R06, R07 | Helper to extract from [mixed packing](https://kbr.is-a.dev/math-research/#mixed-packing-common-vanishing-learning), expanded explicitly in paper §5 `lem:hybrid`. Do not apply the full [optimal retained-core theorem](https://kbr.is-a.dev/math-research/#relative-optimal-linear-packing) with `t=0`: its stated hypotheses require `t≥1`. Its optimality and general retained-core transfer are unnecessary. |
@@ -85,8 +85,7 @@ R18 → R22, R23 ───┴→ R24 ────────────┘
 The table, not this simplified sketch, specifies all prerequisites. R06 and
 R19–R21 are already covered by existing Lean files; the rest are remaining
 implementation/proof tasks, except for whatever exact interfaces Mathlib supplies.
-R01 now supplies ordinary-PC derivations; R02 completed-line multiplication is
-the next shared foundation. These are required by both final arguments and are
+R01/R02 now supply ordinary-PC derivations and completed-line multiplication. These are required by both final arguments and are
 not supplied by the semantic `ParityDerivation` type.
 
 ## Third-party boundary
@@ -308,3 +307,9 @@ Current worker allocation: `/root/r_foundations` finishes R04 in pc-foundations;
 `/root/h_arithmetic` has moved from completed R13 to R07/R08/R16 in affine-removal.
 R15 remains pending R04/R07 in restriction. Decoder and clause-simulation are
 ready worktrees awaiting a worker slot and their prerequisites.
+
+Released R05: `953e2da` (worker `ea46a68`), degree-controlled binary Boolean
+reduction and its explicit NS witnesses. Its implemented proof also uses R02;
+the table records this dependency. The append-merge helper now tolerates only
+blank-line differences in existing index content while preserving every
+nonblank line; seven focused tests passed (`3c8ab1d`).
