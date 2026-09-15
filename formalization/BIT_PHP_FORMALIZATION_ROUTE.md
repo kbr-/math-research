@@ -338,3 +338,15 @@ R07 coordinate release: `6a21b17` (worker `cfbb6273`), affine coordinate
 completion and injective free-coordinate parametrization with exact zero-set
 range. R07 now still needs fresh-companion degree and scalar PC cleanup; the
 coordinate prerequisite is verified, not assumed.
+
+### Final generalization sweep (explicit user assignment)
+
+After every Rxx obligation is complete, review the Lean statements developed
+for this route for clean generalizations that do not make their proofs more
+complex and may simplify them. Follow formalization/AGENTS.md: retain full
+coverage of the original claims, prove and record broader scope honestly, and
+keep complete human-readable proofs for changed arguments. Apply worthwhile
+generalizations; do not manufacture extensions merely to change every file.
+Use incremental verification for changed modules and their dependents. Complete
+this sweep before reporting the entire assignment finished and converting the
+execution section into its historical form.
