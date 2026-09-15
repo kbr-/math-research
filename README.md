@@ -52,17 +52,18 @@ and historical manuscript preserve the earlier development.
 
 ### Publication in preparation: resolution over parities
 
-A [whitepaper draft (PDF)](publications/drafts/bit-php-resolution-over-parities/whitepaper.pdf)
-proposes a superpolynomial proof-size lower bound for the usual bit pigeonhole
+A [whitepaper preprint (PDF)](publications/bit-php-resolution-over-parities/whitepaper.pdf)
+presents a superpolynomial proof-size lower bound for the usual bit pigeonhole
 principle in unrestricted DAG-like resolution over parities, Res(⊕).
-The proposed result imposes no regularity or proof-depth restriction.
-**It remains a working proof awaiting independent review.**
+The result imposes no regularity or proof-depth restriction.
+**The theorem and its dependencies are verified in Lean, including a fresh
+kernel replay; the preprint has not yet been externally peer reviewed.**
 
-The [TeX sources](publications/drafts/bit-php-resolution-over-parities/)
+The [TeX sources](publications/bit-php-resolution-over-parities/)
 expand the argument and its dependencies. The
-[notebook theorem](https://kbr.is-a.dev/math-research/#publication-Res-parity-bit-PHP-theorem)
+[formalized notebook theorem](https://kbr.is-a.dev/math-research/#lean-publication-bit-PHP-superpolynomial)
 provides a linked proof, and the
-[publication prerequisites](PUBLICATION_PREREQUISITES.md) describe the intended
+[publication prerequisites](publications/bit-php-resolution-over-parities/PUBLICATION_PREREQUISITES.md) describe the intended
 validation before an arXiv v1.
 
 ## How a research cycle works
@@ -313,8 +314,8 @@ metadata. It is ignored by Git.
 
 ## Repository contents
 
-- `publications/drafts/`: review manuscripts with editable TeX and rendered PDFs,
-  including the [bit-PHP resolution-over-parities draft](publications/drafts/bit-php-resolution-over-parities/).
+- `publications/`: manuscripts and preprints with editable TeX and rendered PDFs,
+  including the [bit-PHP resolution-over-parities preprint](publications/bit-php-resolution-over-parities/).
 - `PROMPTS.md`: reusable Dump, Resume, and Spin prompts.
 - `notebook.html`: authoritative current state, working mathematical context,
   and append-only research record.

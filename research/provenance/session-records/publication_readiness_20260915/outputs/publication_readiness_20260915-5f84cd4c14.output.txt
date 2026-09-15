@@ -1,0 +1,13 @@
+MathResearch.bitPHP_superpolynomial : ∀ (K : ℝ),
+  0 < K →
+    ∃ L,
+      ∀ ℓ ≥ L,
+        ∀ {S : ℕ}
+          (C :
+            Fin S →
+              MathResearch.PolynomialCalculus.FiniteParityClause (MathResearch.PolynomialCalculus.BitVar (2 ^ ℓ + 1) ℓ))
+          (_dag :
+            MathResearch.PolynomialCalculus.AffineDAG
+              (MathResearch.PolynomialCalculus.usualBitPHPInitials (2 ^ ℓ + 1) ℓ) C)
+          (finish : Fin S), C finish = ∅ → ↑(2 ^ ℓ) ^ K < ↑S
+'MathResearch.bitPHP_superpolynomial' depends on axioms: [propext, Classical.choice, Quot.sound]

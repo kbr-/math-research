@@ -1,6 +1,6 @@
 # Bit PHP in unrestricted resolution over parities
 
-**Draft for review; theorem and dependencies verified in Lean.** This whitepaper expands the
+**Preprint; theorem and dependencies verified in Lean.** This whitepaper expands the
 [formalized publication theorem](https://kbr.is-a.dev/math-research/#lean-publication-bit-PHP-superpolynomial)
 ([Lean](https://github.com/kbr-/math-research/blob/54f09378e97465522b7f1caf115f90ad1faa7a57/formalization/claims/BitPHPSuperpolynomial.lean))
 and its dependencies, using the generalized statements and human-readable proofs
@@ -17,7 +17,7 @@ Author: Kamil Braun, with assistance from Claude Sonnet, Claude Opus,
 Claude Fable, and GPT-6 Astra. GPT-6 Astra was the main contributor to the
 mathematical development and drafting of this result.
 
-The draft proves its algebraic dependencies inline and includes a homological
+The preprint proves its algebraic dependencies inline and includes a homological
 proof of the required chessboard-complex input. It also describes the Noemesis research
 framework and links to the repository and live notebook. It uses the audited
 h=3*ell route; the subsequent constant-accuracy investigation is not a dependency.
@@ -27,13 +27,13 @@ h=3*ell route; the subsequent constant-accuracy investigation is not a dependenc
 From the repository root, with the resource controls active:
 
 ~~~sh
-./publications/drafts/bit-php-resolution-over-parities/build.sh
+./publications/bit-php-resolution-over-parities/build.sh
 ~~~
 
 During an instrumented research turn, attach the build to its existing clock:
 
 ~~~sh
-./publications/drafts/bit-php-resolution-over-parities/build.sh --session TURN
+./publications/bit-php-resolution-over-parities/build.sh --session TURN
 ~~~
 
 The script runs three pdflatex passes inside the shared compute.sh limits,

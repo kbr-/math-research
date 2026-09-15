@@ -4,7 +4,7 @@ Dependency-first plan for `thm:publication-Res-parity-bit-PHP`, based on the
 [linked end-to-end proof](https://kbr.is-a.dev/math-research/#publication-Res-parity-bit-PHP-proof)
 and its [dependency table](https://kbr.is-a.dev/math-research/#publication-Res-parity-dependencies),
 cross-checked against the expanded
-[paper sources](../publications/drafts/bit-php-resolution-over-parities/whitepaper.tex).
+[paper sources](../publications/bit-php-resolution-over-parities/whitepaper.tex).
 
 The target is the usual bit-PHP CNF with `n = 2^ℓ` holes and `m = n+1`
 pigeons, in unrestricted DAG-like resolution over parities over `𝔽₂`, under
@@ -43,7 +43,7 @@ below means reuse the checked statement and file, not repeat its formalization.
 
 | Order | Claim / precise formalization target | Direct prerequisites | Source and scope |
 | --- | --- | --- | --- |
-| R01 | **Ordinary polynomial proof foundations:** finite variable sets, original joint total degree, primitive PC derivations, truncated ordinary-NS spaces `I_B`, and old Boolean/functional-unary/compact-bit bases. | — | [Paper §2](../publications/drafts/bit-php-resolution-over-parities/sections/02-algebra.tex), [matching base](https://kbr.is-a.dev/math-research/#matching-moment-completeness-audit), [compact base](https://kbr.is-a.dev/math-research/#compact-bit-base-definition). Definitions, not a claim of `PC = NS`. Make each axiom multiple's degree explicit. |
+| R01 | **Ordinary polynomial proof foundations:** finite variable sets, original joint total degree, primitive PC derivations, truncated ordinary-NS spaces `I_B`, and old Boolean/functional-unary/compact-bit bases. | — | [Paper §2](../publications/bit-php-resolution-over-parities/sections/02-algebra.tex), [matching base](https://kbr.is-a.dev/math-research/#matching-moment-completeness-audit), [compact base](https://kbr.is-a.dev/math-research/#compact-bit-base-definition). Definitions, not a claim of `PC = NS`. Make each axiom multiple's degree explicit. |
 | R02 | **`lem:reuse` and the elementary `I_B ⊆ C_B` inclusion:** multiply a completed PC line by a polynomial through `max(previous ceiling, deg q + deg f)`. | R01 | [Historical Lemmas 1.2–1.3](../php_codex_handoff/manuscript/chapters/01_foundations.md#lem-reuse); paper `lem:pc-product`. Include zero lines and concatenation/reuse of derivations. |
 | R03 | **`lem:substitution`: degree-controlled PC substitution, including weighted replay** from supplied weighted axiom-image proofs. | R01, R02 | [Historical Lemma 1.4](../php_codex_handoff/manuscript/chapters/01_foundations.md#lem-substitution). The crucial predecessor bound is `D-1` for a nonzero variable-multiplication step. |
 | R04 | **`lem:duality`: finite-dimensional separation and annihilator extension interfaces.** | R01, R02 | [Historical Lemma 1.2](../php_codex_handoff/manuscript/chapters/01_foundations.md#lem-duality). Required for old filtration stability and the common restriction kernel; use Mathlib where it matches. |
@@ -135,7 +135,7 @@ cycles in this representation and consumed the supplied filling.
 ### Ordered route to H
 
 This is a starting guide based on the paper's
-[topology appendix](../publications/drafts/bit-php-resolution-over-parities/sections/08-topology.tex),
+[topology appendix](../publications/bit-php-resolution-over-parities/sections/08-topology.tex),
 not an audited proof of every intermediate statement. Hxx are planning IDs;
 extract/index individual dependency claims as their statements settle. Generic
 finite-chain helpers may be shared with project claims. Reuse checked Mathlib
