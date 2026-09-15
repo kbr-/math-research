@@ -18167,5 +18167,49 @@ P_D=\sum_j\lambda_j(g_{D,j}P_D).
 <p class="small">Initial source/API reading and planning preceded this clock; retries are included, and final checkpoint work follows the snapshot.</p>
 </article>
 
+<article class="research-entry" id="entry-2026-09-15-lean-affine-family-removal">
+  <h3>15 September 2026 — Simultaneous weighted removal of a complete affine ENS family</h3>
+  <p class="entry-meta"><strong>Status:</strong> complete Lean formalization of R16 with supplied literal high-rank witnesses; their construction remains R15.</p>
+  <p><strong>Obligation and endpoint.</strong> Assemble the <a href="#lean-low-rank-ENS-specialization">verified low-rank specialization</a>, high literal witnesses, every Boolean-domain equation, old axioms and one primitive weighted replay. This formalizes the paper's weighted-removal lemma and the corresponding <a href="#ordinary-restriction-affine-family-audit">ordinary-restriction audit</a>; it does not assume the common-kernel existence argument has already been proved.</p>
+  <h4 id="lean-simultaneous-affine-family-removal">Claim: simultaneous affine family removal</h4>
+  <p>Let \(F\) be an ordinary polynomial axiom set over \(\mathbb F_2\) on finitely many old variables, containing their Boolean equations. For each block \(b\), take a finite old-polynomial family \((g_{bi})\) with \(\deg g_{bi}\le1\). Give all blocks disjoint fresh coefficients \(r_{bui}\), \(u\in[h]\), and let \(P_b=\prod_u(1-\sum_i r_{bui}g_{bi})\). The complete source consists of the old axioms, all old and fresh Boolean variable equations, and all companions \(g_{bi}P_b\), with no product equations.</p>
+  <p>Suppose \(h,k\ge1\), \(D\ge2h+1\), and this source has an ordinary degree-\(D\) PC refutation. Let \(f\) be any old ordinary polynomial of degree at most \(k\). For every block of rank \(r_b&gt;h(k+1)\), suppose supplied literal witnesses satisfy</p>
+  <div class="math">\[
+    f=\sum_i a_{bi}g_{bi},\qquad \deg a_{bi}\le k-1.
+  \]</div>
+  <p>Then \(f\) has an ordinary PC derivation from \(F\) through degree \(k(D+1)\). The formal theorem permits any block index type, since each block input tuple and every PC proof are finite. It does not require \(f\) to be multilinear or the blocks to be proper; it therefore recovers the paper's stated application while retaining the same ceiling.</p>
+  <p><strong>Full proof: local assignments.</strong> Write \(d_f=\deg f\le k\) and \(W=kD+d_f\le k(D+1)\). If \(r_b\le h(k+1)\), use the low-rank theorem to choose coefficient images \(\beta_{bui}\) of degree at most \(k\), with specialized product \(Z_b\) and ordinary certificates \(g_{bi}Z_b\in\mathcal I_{r_b+1}({\rm BOOL})\). Multiplying these certificates by \(f\) costs at most \(r_b+1+d_f\). The elementary inequalities</p>
+  <div class="math">\[
+    r_b+1\le h(k+1)+1\le k(2h+1)\le kD
+  \]</div>
+  <p>put every low weighted companion within \(W\); the middle inequality is equivalent to \((k-1)(h+1)\ge0\).</p>
+  <p>For a high-rank block, put the supplied \(a_{bi}\) in one coefficient row and zero in all others. Since \(h\ge1\), such a row exists. The product becomes \(1-f\) exactly, and the coefficient-image degree is at most \(k\). A weighted companion equals</p>
+  <div class="math">\[
+    f g_{bi}(1-f)=-g_{bi}(f^2-f).
+  \]</div>
+  <p>Boolean reduction supplies \(f^2-f\) through \(2k\); multiplication by the degree-at-most-one input gives an ordinary NS certificate through \(2k+1\). Since \(D\ge3\) and \(k\ge1\), \(2k+1\le3k\le kD\le W\). This uses binary polynomial Booleanity with its checked degree bound, not a multilinearity assumption.</p>
+  <p><strong>One global substitution and all remaining axioms.</strong> The variable type is the disjoint union of old variables and the dependent sum of all block coefficient slots. Fix each old variable, and assign each fresh slot the selected local \(\beta_{bui}\). All images are old polynomials of degree at most \(k\), so the local assignments define one substitution \(s\) even when input tuples overlap. Renaming compatibility of the canonical fresh product identifies every global block image with its local construction.</p>
+  <p>For any source variable whose image is \(\beta\), the weighted Boolean equation becomes \(f(\beta^2-\beta)\). Its Boolean NS certificate has cost at most \(2k+d_f\le kD+d_f=W\). This also handles old-variable Boolean equations in the complete registry. A used old axiom \(q\in F\) has actual degree at most \(D\), since the old-variable embedding preserves degree. Its weighted image \(fq\) is obtained by completed-line multiplication, through \(\max(D,\deg q+d_f)\le W\), using \(D\le kD\). All Boolean NS certificates transfer to \(F\) by inclusion and the checked NS-to-PC theorem. Thus every active source axiom has its weighted image derived through \(W\).</p>
+  <p><strong>Primitive replay.</strong> Apply the checked weighted substitution theorem with coefficient-image bound \(k\) and weight \(f\). At a nonzero multiplication predecessor \(q\), the original degree satisfies \(\deg q+1\le D\). The weighted image has degree at most \(d_f+k\deg q\); multiplying its completed line by a variable image costs at most \(d_f+k(\deg q+1)\le W\). Zero predecessors and linear combinations are covered by the primitive rules. The final weighted image of one is \(f\). Increasing the ceiling from \(W\) to \(k(D+1)\) proves the claim. \(\square\)</p>
+  <p><strong>Original-degree scope.</strong> For the paper's proper nonzero affine inputs, the <a href="#lean-fresh-ENS-block-degree">exact original companion degree</a> is \(2h+1\). The more general theorem here uses the explicit global assumption \(D\ge2h+1\); it does not infer that equality for zero or constant inputs. Old axiom activity and multiplication-predecessor degrees remain their actual ordinary degrees throughout replay.</p>
+  <p><strong>Formalization and evidence.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/AffineFamilyRemoval.lean">AffineFamilyRemoval.lean</a> defines the generic dependent registry, canonical embedded values and complete source system. Its representation matches the specialized clause registry, whose checked fresh-value identity provides the connection. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r16_family_removal_20260915_01/lean-verification.txt">incremental audit</a> checks the full refutation-to-old-consequence theorem and transitive dependencies; the <a href="https://github.com/kbr-/math-research/blob/main/research/results/r16_family_removal_20260915_01/README.md">reproduction record</a> preserves all evidence and exact scope.</p>
+  <p><strong>Dependency refinement.</strong> Relative to the provisional route, this formal proof uses the checked reuse/substitution and Boolean-reduction interfaces, low-rank packing, and canonical fresh products. Proper-span cleanup, affine coordinate completion and exact companion-degree equalities are unnecessary for this generalized removal theorem because the global bound \(D\ge2h+1\) is explicit. The low-bin proof uses the library ordered-product identity rather than the separately formalized ENS telescoping theorem. Those verified helpers remain available for their other consumers; no dependency has been replaced by an assumption.</p>
+  <p><strong>Remaining route and process assessment.</strong> R16 is complete. R15 must still construct the supplied high-rank literal witnesses, and R17 must combine removal with their existence and an old separator. Using the sufficient tighter ceiling \(kD+\deg f\) let the existing weighted-replay theorem apply directly, without new PC infrastructure. No mathematical discrepancy or additional guidance rule was needed; the coordinator owns living-section updates.</p>
+  <div class="timing-report" data-session="r16_family_removal_20260915_01">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 36.19 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">11.69 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 10.57 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">4 min 42.18 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5.01 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">26.75 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
