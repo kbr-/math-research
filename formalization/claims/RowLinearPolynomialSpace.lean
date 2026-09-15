@@ -2,7 +2,7 @@
 Claim: lem:row-linear-polynomial-space
 Source: https://kbr.is-a.dev/math-research/#lean-row-linear-polynomial-space
 Scope: Ordinary row-linear polynomial space, exact dimension, total-degree bound and maximal nonzero coefficient. No quotient injection or PC separation assertion.
-Declarations: MathResearch.rowMonomialIndex_card MathResearch.rowLinearSpace_finrank MathResearch.rowLinearSpace_totalDegree_le MathResearch.rowLinearSpace_top_coefficient
+Declarations: MathResearch.rowMonomialCells_rows MathResearch.rowMonomialCells_card MathResearch.rowMonomialExponent_degree MathResearch.rowMonomialExponent_injective MathResearch.rowMonomialIndex_card MathResearch.rowLinearSpace_finrank MathResearch.rowLinearSpace_totalDegree_le MathResearch.rowLinearSpace_top_coefficient
 -/
 import Mathlib.RingTheory.MvPolynomial.Basic
 import Mathlib.Data.Fintype.Powerset
@@ -45,7 +45,7 @@ theorem rowMonomialIndex_card (m ℓ k : ℕ) :
   simp only [Fintype.card_fun, Fintype.card_fin, hcard]
   simp
 
-private theorem rowMonomialCells_rows {m ℓ k : ℕ} (x : RowMonomialIndex m ℓ k) :
+theorem rowMonomialCells_rows {m ℓ k : ℕ} (x : RowMonomialIndex m ℓ k) :
     (rowMonomialCells x).image Prod.fst = x.2.1.val := by
   ext r
   rw [Finset.mem_image]
@@ -57,7 +57,7 @@ private theorem rowMonomialCells_rows {m ℓ k : ℕ} (x : RowMonomialIndex m �
     refine ⟨(r, x.2.2 ⟨r, hr⟩), ?_, rfl⟩
     exact Finset.mem_map.mpr ⟨⟨r, hr⟩, Finset.mem_univ _, rfl⟩
 
-private theorem rowMonomialCells_card {m ℓ k : ℕ} (x : RowMonomialIndex m ℓ k) :
+theorem rowMonomialCells_card {m ℓ k : ℕ} (x : RowMonomialIndex m ℓ k) :
     (rowMonomialCells x).card = x.1.val := by
   simp only [rowMonomialCells, Finset.card_map, Finset.card_univ, Fintype.card_coe]
   exact (Finset.mem_powersetCard.mp x.2.1.property).2
@@ -87,14 +87,14 @@ private theorem rowMonomialCells_injective {m ℓ k : ℕ} :
   subst g
   rfl
 
-private theorem rowMonomialExponent_injective {m ℓ k : ℕ} :
+theorem rowMonomialExponent_injective {m ℓ k : ℕ} :
     Function.Injective (@rowMonomialExponent m ℓ k) := by
   intro x y h
   apply rowMonomialCells_injective
   apply Finset.val_injective
   exact Multiset.toFinsupp.injective h
 
-private theorem rowMonomialExponent_degree {m ℓ k : ℕ} (x : RowMonomialIndex m ℓ k) :
+theorem rowMonomialExponent_degree {m ℓ k : ℕ} (x : RowMonomialIndex m ℓ k) :
     (rowMonomialExponent x).sum (fun _ n => n) = x.1.val := by
   change (rowMonomialCells x).val.toFinsupp.sum (fun _ => id) = x.1.val
   rw [Multiset.toFinsupp_sum_eq]
