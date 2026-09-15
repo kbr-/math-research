@@ -1,0 +1,39 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.RowCubeCoefficientIsolation
+Claim file: claims/RowCubeCoefficientIsolation.lean
+Claim: lem:row-cube-coefficient-isolation
+Source: https://kbr.is-a.dev/math-research/#lean-row-cube-coefficient-isolation
+Scope: Mixed binary coordinate differences isolate a prescribed maximal-row monomial coefficient of an ordinary row-linear polynomial. Selected-row images are the given two label endpoints; outside images need only be independent of cube choice and may have arbitrary degree. Includes zero polynomials, degree-zero targets, and strict degree bounds.
+Declarations: MathResearch.PolynomialCalculus.row_cube_coefficient_isolation
+$ lake --wfail build claims.RowCubeCoefficientIsolation
+✔ [1699/1699] Built claims.RowCubeCoefficientIsolation (2.8s)
+Build completed successfully (1699 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/tmpbodb7ikt.lean
+@MathResearch.PolynomialCalculus.row_cube_coefficient_isolation : ∀ {m ℓ k : ℕ} {W : Type},
+  ∀ P ∈ MathResearch.rowLinearSpace (ZMod 2) m ℓ k,
+    ∀ (x : MathResearch.RowMonomialIndex m ℓ k),
+      MvPolynomial.totalDegree P ≤ ↑x.fst →
+        ∀ (base : ↥↑x.snd.fst → Fin (2 ^ ℓ))
+          (Φ : (↥↑x.snd.fst → ZMod 2) → Fin m × Fin ℓ → MathResearch.PolynomialCalculus.Poly (ZMod 2) W),
+          (∀ (ε : ↥↑x.snd.fst → ZMod 2) (i : ↥↑x.snd.fst) (t : Fin ℓ),
+              Φ ε (↑i, t) =
+                MvPolynomial.C
+                  ((MathResearch.PolynomialCalculus.bitLabelEquiv ℓ)
+                    (if ε i = 0 then base i else MathResearch.PolynomialCalculus.flipColumn ℓ (x.snd.snd i) (base i))
+                    t)) →
+            (∀ (ε ε' : ↥↑x.snd.fst → ZMod 2) (v : Fin m × Fin ℓ), v.1 ∉ ↑x.snd.fst → Φ ε v = Φ ε' v) →
+              ∑ ε, (MvPolynomial.aeval (Φ ε)) P = MvPolynomial.C (P.coeff (MathResearch.rowMonomialExponent x))
+'MathResearch.PolynomialCalculus.row_cube_coefficient_isolation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 1 audited declarations.

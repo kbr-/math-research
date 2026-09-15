@@ -18624,5 +18624,45 @@ W=\max\{\ell,m\ell+2\},\qquad
 </div>
 </article>
 
+<article id="entry-2026-09-15-lean-row-cube-coefficient-isolation">
+<h3>15 September 2026 — A binary row cube isolates the selected coefficient</h3>
+<p class="entry-meta">Status: verified independent coefficient-isolation dependency for R14; board/PC separation remains separate.</p>
+<h4 id="lean-row-cube-coefficient-isolation">Exact coefficient isolation with unrestricted outside images</h4>
+<p><strong>Statement and scope.</strong> Let \(P\in\mathcal L_k\) be an ordinary binary row-linear polynomial. Choose a row monomial \(x\), with selected row set \(S\), one bit direction \(d_i\) in each selected row, and \(t=|S|\), such that \(\deg P\le t\). Choose any base label \(c_i\) for each \(i\in S\). For every binary choice \(\varepsilon:S\to\mathbb F_2\), let \(\Phi_\varepsilon\) substitute old bit variables by ordinary polynomials in an arbitrary variable type \(W\). On selected rows require</p>
+<div class="math">\[
+\Phi_\varepsilon(b_{ia})=
+\bigl(c_i+\varepsilon_i e_{d_i}\bigr)_a,
+\]</div>
+<p>as a constant polynomial; outside \(S\), require only that each variable image is independent of \(\varepsilon\). There is no degree bound on those outside images, no finiteness condition on \(W\), and no disjoint-pair, packing, nonzero, or \(\ell\ge2\) assumption. Then</p>
+<div class="math">\[
+\sum_{\varepsilon:S\to\mathbb F_2}\Phi_\varepsilon(P)
+ =\operatorname{C}\!\left([x]P\right).
+\]</div>
+<p>This isolates the coefficient used in the <a href="#cube-residual-dual-separation">source cube-separation argument</a>, before its board-specific realization. The weaker degree bound allows \(\deg P&lt;t\), in which case the coefficient and sum are zero.</p>
+<p><strong>Proof.</strong> Expand \(P\) over its actual monomial support. Row-linearity represents each term as \(c_y\prod_{i\in T}b_{i,a_i}\), with one bit per occupied row and \(|T|\le\deg P\le|S|\). If a selected row \(r\in S\) is absent from \(T\), flip only \(\varepsilon_r\). Every factor is unchanged: other selected-row images depend only on their own choice, and outside images are choice-independent by hypothesis. Pairing each cube assignment with this fixed-point-free involution cancels the sum in characteristic two. Such a term cannot be the selected monomial.</p>
+<p>Otherwise \(S\subseteq T\). The cardinality bound forces \(T=S\), so no outside polynomial factor remains. Distributing the independent binary sums over the product yields</p>
+<div class="math">\[
+c_y\prod_{i\in S}\left((c_i)_{a_i}+(c_i+e_{d_i})_{a_i}\right)
+ =c_y\prod_{i\in S}[a_i=d_i].
+\]</div>
+<p>It equals \(c_y\) exactly when every chosen bit agrees with the selected monomial, and zero otherwise. The checked injectivity of the row-monomial exponent representation identifies this condition with equality to \(x\). Summing the original coefficients therefore gives exactly \([x]P\). If \(S\) is empty, the degree bound makes \(P\) constant, the cube has one assignment, and the empty product is one; the same argument applies.</p>
+<p><strong>Verification.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/RowCubeCoefficientIsolation.lean">RowCubeCoefficientIsolation.lean</a> and its <a href="https://github.com/kbr-/math-research/blob/main/research/results/r14_row_cube_isolation_20260915/lean-verification-final.txt">verification report</a> give the exact generic theorem. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r14_row_cube_isolation_20260915/scope.md">scope map</a> separates it from full R14. Previously proved row-monomial support, cardinality, degree, and injectivity facts were exposed in a separate API checkpoint without changing their proofs; its verification is included in this cycle. Retries concerned dependent indices and equivalent finite cube enumerations, not a mathematical gap. Process assessment: the isolated generic coefficient theorem lets the board-specific worker supply only the concrete selected/outside substitution identities. No additional audit or optional generalization was performed after verification passed.</p>
+<div class="timing-report" data-session="r14_row_cube_isolation_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>14 min 43.15 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">10.56 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">8.59 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">12 min 58.54 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">0.11 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">1 min 25.35 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3.</p>
+</div>
+<p class="small">Initial source/API reading preceded instrumentation; API preparation and retries are included, and final checkpoint work follows the snapshot.</p>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

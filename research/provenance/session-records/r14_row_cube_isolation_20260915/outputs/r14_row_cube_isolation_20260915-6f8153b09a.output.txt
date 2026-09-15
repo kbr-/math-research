@@ -1,0 +1,32 @@
+✔ [1696/1699] Built claims.CompactBitDecoder (8.4s)
+✔ [1697/1699] Built claims.BinaryCubeDegreeDrop (8.4s)
+✔ [1698/1699] Built claims.DisjointCoordinatePairs (1.5s)
+✖ [1699/1699] Building claims.RowCubeCoefficientIsolation (1.5s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/pc-foundations/formalization/claims/RowCubeCoefficientIsolation.lean -o /home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/build/lib/lean/claims/RowCubeCoefficientIsolation.olean -i /home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/build/lib/lean/claims/RowCubeCoefficientIsolation.ilean -c /home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/build/ir/claims/RowCubeCoefficientIsolation.c --setup /home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/build/ir/claims/RowCubeCoefficientIsolation.setup.json --json
+error: claims/RowCubeCoefficientIsolation.lean:32:13: unsolved goals
+m ℓ k : ℕ
+y : RowMonomialIndex m ℓ k
+c : ZMod 2
+hs : (rowMonomialExponent y).support = rowMonomialCells y
+⊢ ∏ x ∈ (↑y.snd.fst).attach, X ({ toFun := fun r => (↑r, y.snd.snd r), inj' := ⋯ } x) =
+    ∏ i ∈ (↑y.snd.fst).attach, X (↑i, y.snd.snd i)
+error: claims/RowCubeCoefficientIsolation.lean:41:16: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a + (?b + ?c)
+in the target expression
+  C ((bitLabelEquiv ℓ) c t + (bitLabelEquiv ℓ) (if 1 = 0 then c else flipColumn ℓ d c) t) = if t = d then 1 else 0
+
+W : Type
+ℓ : ℕ
+d t : Fin ℓ
+c : Fin (2 ^ ℓ)
+⊢ C ((bitLabelEquiv ℓ) c t + (bitLabelEquiv ℓ) (if 1 = 0 then c else flipColumn ℓ d c) t) = if t = d then 1 else 0
+warning: claims/RowCubeCoefficientIsolation.lean:40:24: This simp argument is unused:
+  flipColumn_label
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [↓reduceIte]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Some required targets logged failures:
+- claims.RowCubeCoefficientIsolation
+error: build failed

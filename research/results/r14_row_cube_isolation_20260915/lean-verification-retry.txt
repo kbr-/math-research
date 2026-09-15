@@ -1,0 +1,90 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.RowCubeCoefficientIsolation
+Claim file: claims/RowCubeCoefficientIsolation.lean
+Claim: lem:row-cube-coefficient-isolation
+Source: https://kbr.is-a.dev/math-research/#lean-row-cube-coefficient-isolation
+Scope: Mixed binary coordinate differences isolate a prescribed maximal-row monomial coefficient of an ordinary row-linear polynomial. Selected-row images are the given two label endpoints; outside images need only be independent of cube choice and may have arbitrary degree. Includes zero polynomials, degree-zero targets, and strict degree bounds.
+Declarations: MathResearch.PolynomialCalculus.row_cube_coefficient_isolation
+$ lake --wfail build claims.RowCubeCoefficientIsolation
+✖ [1699/1699] Building claims.RowCubeCoefficientIsolation (26s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/pc-foundations/formalization/claims/RowCubeCoefficientIsolation.lean -o /home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/build/lib/lean/claims/RowCubeCoefficientIsolation.olean -i /home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/build/lib/lean/claims/RowCubeCoefficientIsolation.ilean -c /home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/build/ir/claims/RowCubeCoefficientIsolation.c --setup /home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/build/ir/claims/RowCubeCoefficientIsolation.setup.json --json
+error: claims/RowCubeCoefficientIsolation.lean:84:78: unsolved goals
+m ℓ k : ℕ
+W : Type
+c : ZMod 2
+j : Fin (k + 1)
+S : ↥(Finset.powersetCard (↑j) Finset.univ)
+d : ↥↑S → Fin ℓ
+base : ↥↑⟨j, ⟨S, d⟩⟩.snd.fst → Fin (2 ^ ℓ)
+Φ : (↥↑⟨j, ⟨S, d⟩⟩.snd.fst → ZMod 2) → Fin m × Fin ℓ → Poly (ZMod 2) W
+hselected :
+  ∀ (ε : ↥↑⟨j, ⟨S, d⟩⟩.snd.fst → ZMod 2) (i : ↥↑⟨j, ⟨S, d⟩⟩.snd.fst) (t : Fin ℓ),
+    Φ ε (↑i, t) = C ((bitLabelEquiv ℓ) (if ε i = 0 then base i else flipColumn ℓ (⟨j, ⟨S, d⟩⟩.snd.snd i) (base i)) t)
+houtside : ∀ (ε ε' : ↥↑⟨j, ⟨S, d⟩⟩.snd.fst → ZMod 2) (v : Fin m × Fin ℓ), v.1 ∉ ↑⟨j, ⟨S, d⟩⟩.snd.fst → Φ ε v = Φ ε' v
+hScard : (↑S).card = ↑j
+hy : ↑j ≤ ↑j
+e : ↥↑S → Fin ℓ
+hST : ↑S ⊆ ↑S
+hTcard : (↑S).card = ↑j
+hsets : ↑S = ↑S
+ε : ↥↑S → ZMod 2
+⊢ (algebraMap (ZMod 2) (Poly (ZMod 2) W)) c *
+      ∏ x, C ((bitLabelEquiv ℓ) (if ε x = 0 then base x else flipColumn ℓ (d x) (base x)) (e x)) =
+    C c * ∏ x, C ((bitLabelEquiv ℓ) (if ε x = 0 then base x else flipColumn ℓ (d x) (base x)) (e x))
+error: claims/RowCubeCoefficientIsolation.lean:117:4: Tactic `apply` failed: could not unify the conclusion of `cube_sum_cancel i`
+  ∑
+      e ∈
+        @Finset.univ (↥↑S → ZMod 2)
+          (@Pi.instFintype (↥↑S) (fun a => ZMod 2) (fun a b => Classical.propDecidable (a = b))
+            (Finset.Subtype.fintype ↑S) fun a => ZMod.fintype 2),
+      ?f e =
+    0
+with the goal
+  ∑
+      ε ∈
+        @Finset.univ (↥↑⟨j, ⟨S, d⟩⟩.snd.fst → ZMod 2)
+          (@Pi.instFintype (↥↑⟨j, ⟨S, d⟩⟩.snd.fst) (fun a => ZMod 2) (fun a b => a.instDecidableEq b)
+            (Finset.Subtype.fintype ↑⟨j, ⟨S, d⟩⟩.snd.fst) fun a => ZMod.fintype 2),
+      (aeval (Φ ε)) ((monomial (rowMonomialExponent ⟨l, ⟨T, e⟩⟩)) c) =
+    0
+
+Note: The full type of `cube_sum_cancel i` is
+  ∀ (f : (↥↑S → ZMod 2) → ?m.690), (∀ (e : ↥↑S → ZMod 2), f (flipChoice i e) = f e) → ∑ e, f e = 0
+
+case neg
+m ℓ k : ℕ
+W : Type
+c : ZMod 2
+j : Fin (k + 1)
+S : ↥(Finset.powersetCard (↑j) Finset.univ)
+d : ↥↑S → Fin ℓ
+base : ↥↑⟨j, ⟨S, d⟩⟩.snd.fst → Fin (2 ^ ℓ)
+Φ : (↥↑⟨j, ⟨S, d⟩⟩.snd.fst → ZMod 2) → Fin m × Fin ℓ → Poly (ZMod 2) W
+hselected :
+  ∀ (ε : ↥↑⟨j, ⟨S, d⟩⟩.snd.fst → ZMod 2) (i : ↥↑⟨j, ⟨S, d⟩⟩.snd.fst) (t : Fin ℓ),
+    Φ ε (↑i, t) = C ((bitLabelEquiv ℓ) (if ε i = 0 then base i else flipColumn ℓ (⟨j, ⟨S, d⟩⟩.snd.snd i) (base i)) t)
+houtside : ∀ (ε ε' : ↥↑⟨j, ⟨S, d⟩⟩.snd.fst → ZMod 2) (v : Fin m × Fin ℓ), v.1 ∉ ↑⟨j, ⟨S, d⟩⟩.snd.fst → Φ ε v = Φ ε' v
+l : Fin (k + 1)
+T : ↥(Finset.powersetCard (↑l) Finset.univ)
+e : ↥↑T → Fin ℓ
+hy : ↑l ≤ ↑j
+hST : ¬↑S ⊆ ↑T
+r : Fin m
+hrS : r ∈ ↑S
+hrT : r ∉ ↑T
+i : ↥↑S := ⟨r, hrS⟩
+hxy : rowMonomialExponent ⟨l, ⟨T, e⟩⟩ ≠ rowMonomialExponent ⟨j, ⟨S, d⟩⟩
+⊢ ∑ ε, (aeval (Φ ε)) ((monomial (rowMonomialExponent ⟨l, ⟨T, e⟩⟩)) c) = 0
+Some required targets logged failures:
+- claims.RowCubeCoefficientIsolation
+error: build failed
+FAIL: Command failed
