@@ -18552,5 +18552,44 @@ Q_b\models Q_i\lor(1-u=1).
 </div>
 </article>
 
+<article id="entry-2026-09-15-lean-bit-PHP-PC-transfer">
+<h3>15 September 2026 — Full bit-PHP clause-DAG transfer to ordinary PC</h3>
+<p class="entry-meta">Status: full Lean formalization of the indexed forward simulation theorem, for compact clauses and the actual usual CNF; R24.</p>
+<h4 id="lean-bit-PHP-affine-clause-PC-transfer">The actual source proof gives one small fixed affine family</h4>
+<p><strong>Question and scope.</strong> Discharge every remaining hypothesis of the <a href="#lean-finite-affine-DAG-registry">generic DAG controller</a> for the source in <a href="#bit-PHP-affine-clause-PC-transfer">the publication's forward transfer theorem</a>. Both concrete initial sets are formalized: compact pair-difference clauses and the actual usual bit-PHP CNF clauses indexed by a pair and a binary label. The source DAG syntax explicitly permits one-premise semantic weakening, ordinary complementary-parity resolution, and the stronger arbitrary binary semantic rule. Nodes may reuse any earlier predecessor, and the counted \(S\)-node DAG has an empty finish node. There is no proof-height restriction.</p>
+<p>For any accuracy \(h\ge1\), the theorem produces a complete one-level old-affine ENS registry \(R\) over the compact old base \(\mathcal Q\), with</p>
+<div class="math">\[
+N\le3S+\binom m2,\qquad
+W=\max\{\ell,m\ell+2\},\qquad
+|R_c|\le W,\qquad
+\sum_c|R_c|\le NW,
+\]</div>
+<div class="math">\[
+|\mathrm{Vars}(R,h)|\le m\ell+hNW,\qquad
+\mathcal Q+\mathrm{ENS}(R,h)\vdash^{\mathrm{PC}}_D1,
+\quad D=\max\{2h+\ell,4h+1\}.
+\]</div>
+<p>Thus both the input and coefficient inventory are explicitly polynomial in the displayed parameters. The auxiliary width bound is \(m\ell+2\); no stronger \(m\ell+1\) bound is claimed. The transfer is verified for arbitrary natural \(m,\ell\) and positive \(h\), recovering the publication's \(m=2^\ell+1\), \(\ell\ge2\) regime. This broader transfer does not assert the separate decoder theorem at \(\ell=1\).</p>
+<p><strong>Concrete initial cover and its count.</strong> Take one initial registry slot for each strictly ordered pair \((i,i')\), \(i&lt;i'\). The checked finite counting identity gives exactly \(\binom m2\) such pairs. Its clause is \(C_{ii'}=\bigvee_t(b_{it}+b_{i't}=1)\), of width at most \(\ell\). It covers itself for the compact initial set. For the usual CNF initial set, the <a href="#lean-bit-PHP-initial-clause-bridge">checked actual-CNF bridge</a> proves that this same pair clause semantically entails every label-indexed CNF clause. Hence all source initial clauses are covered using only the pair slots, rather than a separate new slot for every binary label.</p>
+<p><strong>Registry construction and initial values.</strong> Apply the generic controller to this concrete initial cover. Its compressed primary clauses have width at most \(m\ell+1\), and its at-most-two auxiliary clauses per source node have width at most \(m\ell+2\). Combining these with the pair slots gives the displayed \(N\) and \(W\) bounds. Each initial slot equals its actual compact pair clause. The previously checked initial-value theorem supplies its primitive PC derivation through \(2h+\ell\), from the genuine compact polynomial axiom and actual registry companions. These proofs fit \(D\). Thus the controller's initial-cover and initial-PC hypotheses are both discharged explicitly.</p>
+<p><strong>Replay and the final value.</strong> Since \(4h+1\le D\), the controller derives every primary value through the same \(D\), following the source node order. The compressed finish clause is a subclause of the original empty clause, hence is itself empty. Its registry value is one, without introducing an empty-clause coefficient block. Substituting this equality into the derived finish value gives the required ordinary PC refutation. Premise values are earlier actual derivations, never additional algebraic axioms.</p>
+<p><strong>Inventory and the removal interface.</strong> Sum the per-clause width bound to get \(\sum_c|R_c|\le NW\). The exact registry variable count is \(m\ell+h\sum_c|R_c|\), yielding the displayed coefficient/variable budget. All inputs are old affine maps converted to ordinary polynomials, with pairwise disjoint tagged coefficient scopes. Finally, the theorem <code>registry_system_eq_ensFamily</code> identifies this literal fixed system with the <a href="#lean-affine-family-removal-with-unit-blocks">family-removal interface</a> on the same variable type. The old injection is the same polynomial renaming; every value is the checked canonical fresh-block renaming; therefore every companion and Boolean domain agrees. No axiom is omitted or introduced by this bridge. Tautological unit-span clauses remain permitted and are handled by the already verified unit-or-literal removal theorem.</p>
+<p><strong>Verification and remaining publication work.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/BitPHPClauseTransfer.lean">BitPHPClauseTransfer.lean</a> exposes separate concrete compact-clause and usual-CNF transfer theorems, the exact pair count, and the system identity. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r24_bit_PHP_transfer_20260915/lean-verification-retry.txt">verification report</a> audits all four declarations and their dependencies; the <a href="https://github.com/kbr-/math-research/blob/main/research/results/r24_bit_PHP_transfer_20260915/scope.md">scope map</a> records the full completion boundary. The first combined build exposed identical generated names for unnamed module-local equality instances in separate dependencies; assigning explicit distinct names fixed the import collision without changing their mathematical statements. The rebuilt composition passed. Process assessment: the actual initial cover, conservative auxiliary width, exact registry count, and system identity make the forward endpoint directly consumable by the remaining lower-bound argument. R24 is complete; the affine exclusion/remaining lower-bound assembly and R25 publication parameter closure are separate obligations, and the main Frege goal remains open.</p>
+<div class="timing-report" data-session="r24_bit_PHP_transfer_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 36.77 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 28.71 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">4 min 14.24 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">28.54 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">25.28 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+<p class="small">Preliminary API reading and assembly planning preceded this clock; the import-collision retry is included, and final checkpoint work follows the snapshot.</p>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

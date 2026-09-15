@@ -1,0 +1,72 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.BitPHPClauseTransfer
+Claim file: claims/BitPHPClauseTransfer.lean
+Claim: thm:bit-PHP-affine-clause-PC-transfer
+Source: https://kbr.is-a.dev/math-research/#lean-bit-PHP-affine-clause-PC-transfer
+Scope: Full finite-DAG transfer for compact pair clauses and the actual usual bit-PHP CNF, covering weakening, complementary resolution, and binary semantic rules. Produces one fixed complete old-affine ENS registry with at most3S+binom(m,2) slots, explicit literal/coefficient inventory, and ordinary PC refutation degree max(2h+ℓ,4h+1), without a height restriction. The registry is identified with the family-removal interface.
+Declarations: MathResearch.PolynomialCalculus.pigeonPair_card MathResearch.PolynomialCalculus.compact_bitPHP_PC_transfer MathResearch.PolynomialCalculus.usual_bitPHP_PC_transfer MathResearch.PolynomialCalculus.registry_system_eq_ensFamily
+$ lake --wfail build claims.BitPHPClauseTransfer
+✔ [2032/2035] Built claims.AffineClauseResolution (7.4s)
+✔ [2033/2035] Built claims.BitPHPInitialBridge (7.5s)
+✔ [2034/2035] Built claims.AffineDAGRegistry (3.2s)
+✔ [2035/2035] Built claims.BitPHPClauseTransfer (1.8s)
+Build completed successfully (2035 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/tmpgabmcetv.lean
+MathResearch.PolynomialCalculus.pigeonPair_card : ∀ (m : ℕ),
+  Fintype.card (MathResearch.PolynomialCalculus.PigeonPair m) = m.choose 2
+'MathResearch.PolynomialCalculus.pigeonPair_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.compact_bitPHP_PC_transfer : ∀ {m ℓ S : ℕ}
+  (C : Fin S → MathResearch.PolynomialCalculus.FiniteParityClause (MathResearch.PolynomialCalculus.BitVar m ℓ))
+  (dag : MathResearch.PolynomialCalculus.AffineDAG (MathResearch.PolynomialCalculus.compactPairInitials m ℓ) C)
+  (finish : Fin S),
+  C finish = ∅ →
+    ∀ (h : ℕ),
+      1 ≤ h →
+        ∃ N R,
+          N ≤ 3 * S + m.choose 2 ∧
+            (∀ (c : Fin N), Finset.card (R c) ≤ max ℓ (m * ℓ + 2)) ∧
+              ∑ c, Finset.card (R c) ≤ N * max ℓ (m * ℓ + 2) ∧
+                Fintype.card (MathResearch.PolynomialCalculus.ClauseRegistryVars R h) ≤
+                    m * ℓ + h * N * max ℓ (m * ℓ + 2) ∧
+                  MathResearch.PolynomialCalculus.Derives
+                    (MathResearch.PolynomialCalculus.registrySystem R h
+                      (MathResearch.PolynomialCalculus.compactBitBase m ℓ))
+                    (max (2 * h + ℓ) (4 * h + 1)) 1
+'MathResearch.PolynomialCalculus.compact_bitPHP_PC_transfer' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.usual_bitPHP_PC_transfer : ∀ {m ℓ S : ℕ}
+  (C : Fin S → MathResearch.PolynomialCalculus.FiniteParityClause (MathResearch.PolynomialCalculus.BitVar m ℓ))
+  (dag : MathResearch.PolynomialCalculus.AffineDAG (MathResearch.PolynomialCalculus.usualBitPHPInitials m ℓ) C)
+  (finish : Fin S),
+  C finish = ∅ →
+    ∀ (h : ℕ),
+      1 ≤ h →
+        ∃ N R,
+          N ≤ 3 * S + m.choose 2 ∧
+            (∀ (c : Fin N), Finset.card (R c) ≤ max ℓ (m * ℓ + 2)) ∧
+              ∑ c, Finset.card (R c) ≤ N * max ℓ (m * ℓ + 2) ∧
+                Fintype.card (MathResearch.PolynomialCalculus.ClauseRegistryVars R h) ≤
+                    m * ℓ + h * N * max ℓ (m * ℓ + 2) ∧
+                  MathResearch.PolynomialCalculus.Derives
+                    (MathResearch.PolynomialCalculus.registrySystem R h
+                      (MathResearch.PolynomialCalculus.compactBitBase m ℓ))
+                    (max (2 * h + ℓ) (4 * h + 1)) 1
+'MathResearch.PolynomialCalculus.usual_bitPHP_PC_transfer' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_system_eq_ensFamily : ∀ {σ : Type} [inst : Fintype σ] {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause σ) (h : ℕ)
+  (old : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) σ)),
+  MathResearch.PolynomialCalculus.registrySystem C h old =
+    MathResearch.ensFamilySystem (fun c g => MathResearch.finiteAffinePolynomial ↑g) h old
+'MathResearch.PolynomialCalculus.registry_system_eq_ensFamily' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 4 audited declarations.

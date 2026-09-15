@@ -14,7 +14,7 @@ namespace MathResearch.PolynomialCalculus
 noncomputable section
 open MvPolynomial
 open scoped BigOperators
-local instance {ν : Type} : DecidableEq ((ν → ZMod 2) →ᵃ[ZMod 2] ZMod 2) := Classical.decEq _
+local instance bitInitialClauseDecidableEq {ν : Type} : DecidableEq ((ν → ZMod 2) →ᵃ[ZMod 2] ZMod 2) := Classical.decEq _
 
 abbrev BitVar (m ℓ : ℕ) := Fin m × Fin ℓ
 

@@ -12,7 +12,7 @@ noncomputable section
 open MvPolynomial
 open scoped BigOperators
 variable {σ ι κ τ : Type} [Fintype ι] [Fintype κ] [Fintype τ]
-local instance {ν : Type} : DecidableEq ((ν → ZMod 2) →ᵃ[ZMod 2] ZMod 2) := Classical.decEq _
+local instance resolutionClauseDecidableEq {ν : Type} : DecidableEq ((ν → ZMod 2) →ᵃ[ZMod 2] ZMod 2) := Classical.decEq _
 variable {F : Set (Poly (ZMod 2) σ)} {h K : ℕ}
 
 private theorem derive_mul_bound {f q : Poly (ZMod 2) σ} {B C : ℕ}

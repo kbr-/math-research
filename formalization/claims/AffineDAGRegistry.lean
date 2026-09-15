@@ -12,7 +12,7 @@ import Mathlib.Data.Fintype.Prod
 namespace MathResearch.PolynomialCalculus
 noncomputable section
 open scoped BigOperators
-local instance {σ : Type} : DecidableEq ((σ → ZMod 2) →ᵃ[ZMod 2] ZMod 2) := Classical.decEq _
+local instance dagClauseDecidableEq {σ : Type} : DecidableEq ((σ → ZMod 2) →ᵃ[ZMod 2] ZMod 2) := Classical.decEq _
 variable {σ J : Type} [Fintype σ] [Fintype J] {S : ℕ}
 
 /-- A source DAG node references only earlier nodes; references may be reused.
