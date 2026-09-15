@@ -1,8 +1,8 @@
-# A Self-Improving Framework for Autonomous Mathematical Research
+# Noemesis: a self-improving framework for autonomous mathematical research
 
-An open framework for autonomous mathematical research and on-demand formal
-verification—with persistent memory, reproducible evidence, and workflows that
-improve through use.
+Noemesis is an open framework combining autonomous investigation and on-demand
+formal verification with persistent memory, reproducible evidence, and workflows
+that improve through use.
 
 - **Research that survives session boundaries.** Resume from findings, proofs,
   and context stored in the repository, even on another machine.
@@ -19,7 +19,7 @@ improve through use.
   complete research checkpoints in Git.
 
 **[Read the research online](https://kbr.is-a.dev/math-research/)** ·
-**[Run the agent](#continue-the-research)** ·
+**[Run Noemesis](#continue-the-research)** ·
 [Formalize claims](#formalize) ·
 [Browse locally](#browse-locally)
 
@@ -28,7 +28,7 @@ improve through use.
 *Selected excerpts from the 13 September 2026 notebook checkpoint, arranged
 side by side.*
 
-The framework supports two complementary workflows: investigating mathematical
+Noemesis supports two complementary workflows: investigating mathematical
 questions and formally verifying selected claims. Both use persistent context,
 protected execution, measured evidence, and a shared research record.
 Self-improvement means refining these workflows and their tools. Formalization
@@ -338,6 +338,11 @@ Verify historical-file integrity, the licensed source PDF, and essential tools:
 
 Runtime binaries, virtual environments, temporary renders, operational logs,
 credentials, and local session state are excluded from version control.
+
+## About the name
+
+Noemesis (noh-EM-uh-sis) is a coined name inspired by *noema*, the philosophical
+term for the content of thought.
 
 ## License and credit
 

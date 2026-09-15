@@ -1,4 +1,4 @@
-# Research workspace instructions
+# Noemesis research workspace instructions
 
 These are explicit user constraints for this workspace and future sessions.
 
