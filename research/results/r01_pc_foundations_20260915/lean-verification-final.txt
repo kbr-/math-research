@@ -1,0 +1,181 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PolynomialCalculus
+Claim file: claims/PolynomialCalculus.lean
+Claim: def:ordinary-polynomial-proof-foundations
+Kind: interface
+Source: https://kbr.is-a.dev/math-research/#ordinary-polynomial-proof-foundations
+Scope: Ordinary polynomial PC and degree-truncated NS interfaces over a field, with Boolean, weak unary, functional unary, and binary compact bases. Natural total degree assigns degree zero to zero. No PC=NS assertion is made. Finite-variable applications instantiate V by a finite type; the core also permits infinite variable types.
+Declarations: MathResearch.PolynomialCalculus.Derives MathResearch.PolynomialCalculus.degreeSpace MathResearch.PolynomialCalculus.pcSpace MathResearch.PolynomialCalculus.nsSpace MathResearch.PolynomialCalculus.booleanBase MathResearch.PolynomialCalculus.unaryBase MathResearch.PolynomialCalculus.functionalUnaryBase MathResearch.PolynomialCalculus.compactBitBase MathResearch.PolynomialCalculus.Derives.degree_le MathResearch.PolynomialCalculus.Derives.mono MathResearch.PolynomialCalculus.mem_pcSpace MathResearch.PolynomialCalculus.nsSpace_le_degreeSpace MathResearch.PolynomialCalculus.degreeSpace_eq_restrictTotalDegree MathResearch.PolynomialCalculus.nsSpace_mono MathResearch.PolynomialCalculus.nsSpace_generator
+$ lake --wfail build claims.PolynomialCalculus
+✔ [1495/1495] Built claims.PolynomialCalculus (50s)
+Build completed successfully (1495 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/tmpuqvy5r9q.lean
+@MathResearch.PolynomialCalculus.Derives : {K : Type u_1} →
+  {V : Type u_2} →
+    [inst : Field K] →
+      Set (MathResearch.PolynomialCalculus.Poly K V) → ℕ → MathResearch.PolynomialCalculus.Poly K V → Prop
+'MathResearch.PolynomialCalculus.Derives' depends on axioms: [propext, Classical.choice, Quot.sound]
+inductive MathResearch.PolynomialCalculus.Derives.{u_1, u_2} : {K : Type u_1} →
+  {V : Type u_2} →
+    [inst : Field K] →
+      Set (MathResearch.PolynomialCalculus.Poly K V) → ℕ → MathResearch.PolynomialCalculus.Poly K V → Prop
+number of parameters: 5
+constructors:
+MathResearch.PolynomialCalculus.Derives.zero : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F : Set (MathResearch.PolynomialCalculus.Poly K V)} {B : ℕ}, MathResearch.PolynomialCalculus.Derives F B 0
+MathResearch.PolynomialCalculus.Derives.hyp : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F : Set (MathResearch.PolynomialCalculus.Poly K V)} {B : ℕ} {f : MathResearch.PolynomialCalculus.Poly K V},
+  f ∈ F → MvPolynomial.totalDegree f ≤ B → MathResearch.PolynomialCalculus.Derives F B f
+MathResearch.PolynomialCalculus.Derives.add : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F : Set (MathResearch.PolynomialCalculus.Poly K V)} {B : ℕ} {f g : MathResearch.PolynomialCalculus.Poly K V},
+  MathResearch.PolynomialCalculus.Derives F B f →
+    MathResearch.PolynomialCalculus.Derives F B g → MathResearch.PolynomialCalculus.Derives F B (f + g)
+MathResearch.PolynomialCalculus.Derives.smul : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F : Set (MathResearch.PolynomialCalculus.Poly K V)} {B : ℕ} (a : K) {f : MathResearch.PolynomialCalculus.Poly K V},
+  MathResearch.PolynomialCalculus.Derives F B f → MathResearch.PolynomialCalculus.Derives F B (a • f)
+MathResearch.PolynomialCalculus.Derives.mul_var : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F : Set (MathResearch.PolynomialCalculus.Poly K V)} {B : ℕ} (v : V) {f : MathResearch.PolynomialCalculus.Poly K V},
+  MathResearch.PolynomialCalculus.Derives F B f →
+    (MvPolynomial.X v * f).totalDegree ≤ B → MathResearch.PolynomialCalculus.Derives F B (MvPolynomial.X v * f)
+@MathResearch.PolynomialCalculus.degreeSpace : {K : Type u_1} →
+  {V : Type u_2} → [inst : Field K] → ℕ → Submodule K (MathResearch.PolynomialCalculus.Poly K V)
+'MathResearch.PolynomialCalculus.degreeSpace' depends on axioms: [propext, Classical.choice, Quot.sound]
+def MathResearch.PolynomialCalculus.degreeSpace.{u_1, u_2} : {K : Type u_1} →
+  {V : Type u_2} → [inst : Field K] → ℕ → Submodule K (MathResearch.PolynomialCalculus.Poly K V) :=
+fun {K} {V} [Field K] B =>
+  { carrier := {f | MvPolynomial.totalDegree f ≤ B}, add_mem' := ⋯, zero_mem' := ⋯, smul_mem' := ⋯ }
+@MathResearch.PolynomialCalculus.pcSpace : {K : Type u_1} →
+  {V : Type u_2} →
+    [inst : Field K] →
+      Set (MathResearch.PolynomialCalculus.Poly K V) → ℕ → Submodule K (MathResearch.PolynomialCalculus.Poly K V)
+'MathResearch.PolynomialCalculus.pcSpace' depends on axioms: [propext, Classical.choice, Quot.sound]
+def MathResearch.PolynomialCalculus.pcSpace.{u_1, u_2} : {K : Type u_1} →
+  {V : Type u_2} →
+    [inst : Field K] →
+      Set (MathResearch.PolynomialCalculus.Poly K V) → ℕ → Submodule K (MathResearch.PolynomialCalculus.Poly K V) :=
+fun {K} {V} [Field K] F B =>
+  { carrier := {f | MathResearch.PolynomialCalculus.Derives F B f}, add_mem' := ⋯, zero_mem' := ⋯, smul_mem' := ⋯ }
+@MathResearch.PolynomialCalculus.nsSpace : {K : Type u_1} →
+  {V : Type u_2} →
+    [inst : Field K] →
+      Set (MathResearch.PolynomialCalculus.Poly K V) → ℕ → Submodule K (MathResearch.PolynomialCalculus.Poly K V)
+'MathResearch.PolynomialCalculus.nsSpace' depends on axioms: [propext, Classical.choice, Quot.sound]
+def MathResearch.PolynomialCalculus.nsSpace.{u_1, u_2} : {K : Type u_1} →
+  {V : Type u_2} →
+    [inst : Field K] →
+      Set (MathResearch.PolynomialCalculus.Poly K V) → ℕ → Submodule K (MathResearch.PolynomialCalculus.Poly K V) :=
+fun {K} {V} [Field K] F B => Submodule.span K {p | ∃ f ∈ F, ∃ q, p = q * f ∧ MvPolynomial.totalDegree p ≤ B}
+@MathResearch.PolynomialCalculus.booleanBase : {K : Type u_1} →
+  {V : Type u_2} → [inst : Field K] → Set (MathResearch.PolynomialCalculus.Poly K V)
+'MathResearch.PolynomialCalculus.booleanBase' depends on axioms: [propext, Classical.choice, Quot.sound]
+def MathResearch.PolynomialCalculus.booleanBase.{u_1, u_2} : {K : Type u_1} →
+  {V : Type u_2} → [inst : Field K] → Set (MathResearch.PolynomialCalculus.Poly K V) :=
+fun {K} {V} [Field K] => {f | ∃ v, f = MvPolynomial.X v ^ 2 - MvPolynomial.X v}
+@MathResearch.PolynomialCalculus.unaryBase : {K : Type u_1} →
+  [inst : Field K] → (m n : ℕ) → Set (MathResearch.PolynomialCalculus.Poly K (Fin m × Fin n))
+'MathResearch.PolynomialCalculus.unaryBase' depends on axioms: [propext, Classical.choice, Quot.sound]
+def MathResearch.PolynomialCalculus.unaryBase.{u_1} : {K : Type u_1} →
+  [inst : Field K] → (m n : ℕ) → Set (MathResearch.PolynomialCalculus.Poly K (Fin m × Fin n)) :=
+fun {K} [Field K] m n =>
+  MathResearch.PolynomialCalculus.booleanBase ∪ {f | ∃ i, f = ∑ j, MvPolynomial.X (i, j) - 1} ∪
+    {f | ∃ i i' j, i ≠ i' ∧ f = MvPolynomial.X (i, j) * MvPolynomial.X (i', j)}
+@MathResearch.PolynomialCalculus.functionalUnaryBase : {K : Type u_1} →
+  [inst : Field K] → (m n : ℕ) → Set (MathResearch.PolynomialCalculus.Poly K (Fin m × Fin n))
+'MathResearch.PolynomialCalculus.functionalUnaryBase' depends on axioms: [propext, Classical.choice, Quot.sound]
+def MathResearch.PolynomialCalculus.functionalUnaryBase.{u_1} : {K : Type u_1} →
+  [inst : Field K] → (m n : ℕ) → Set (MathResearch.PolynomialCalculus.Poly K (Fin m × Fin n)) :=
+fun {K} [Field K] m n =>
+  MathResearch.PolynomialCalculus.unaryBase m n ∪
+    {f | ∃ i j j', j ≠ j' ∧ f = MvPolynomial.X (i, j) * MvPolynomial.X (i, j')}
+MathResearch.PolynomialCalculus.compactBitBase : (m ℓ : ℕ) →
+  Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) (Fin m × Fin ℓ))
+'MathResearch.PolynomialCalculus.compactBitBase' depends on axioms: [propext, Classical.choice, Quot.sound]
+def MathResearch.PolynomialCalculus.compactBitBase : (m ℓ : ℕ) →
+  Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) (Fin m × Fin ℓ)) :=
+fun m ℓ =>
+  MathResearch.PolynomialCalculus.booleanBase ∪
+    {f | ∃ i i', i < i' ∧ f = ∏ t, (1 + MvPolynomial.X (i, t) + MvPolynomial.X (i', t))}
+@MathResearch.PolynomialCalculus.Derives.degree_le : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F : Set (MathResearch.PolynomialCalculus.Poly K V)} {B : ℕ} {f : MathResearch.PolynomialCalculus.Poly K V},
+  MathResearch.PolynomialCalculus.Derives F B f → MvPolynomial.totalDegree f ≤ B
+'MathResearch.PolynomialCalculus.Derives.degree_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+theorem MathResearch.PolynomialCalculus.Derives.degree_le.{u_1, u_2} : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F : Set (MathResearch.PolynomialCalculus.Poly K V)} {B : ℕ} {f : MathResearch.PolynomialCalculus.Poly K V},
+  MathResearch.PolynomialCalculus.Derives F B f → MvPolynomial.totalDegree f ≤ B :=
+fun {K} {V} [Field K] {F} {B} {f} h =>
+  MathResearch.PolynomialCalculus.Derives.rec
+    (of_eq_true (Eq.trans (congrFun' (congrArg LE.le MvPolynomial.totalDegree_zero) B) zero_le._simp_1))
+    (fun {f} a h => h) (fun {f g} a a_1 ih jh => LE.le.trans (MvPolynomial.totalDegree_add f g) (max_le ih jh))
+    (fun a {f} a_1 ih => LE.le.trans (MvPolynomial.totalDegree_smul_le a f) ih) (fun v {f} a h a_ih => h) h
+@MathResearch.PolynomialCalculus.Derives.mono : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F G : Set (MathResearch.PolynomialCalculus.Poly K V)} {B C : ℕ} {f : MathResearch.PolynomialCalculus.Poly K V},
+  MathResearch.PolynomialCalculus.Derives F B f → F ⊆ G → B ≤ C → MathResearch.PolynomialCalculus.Derives G C f
+'MathResearch.PolynomialCalculus.Derives.mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+theorem MathResearch.PolynomialCalculus.Derives.mono.{u_1, u_2} : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F G : Set (MathResearch.PolynomialCalculus.Poly K V)} {B C : ℕ} {f : MathResearch.PolynomialCalculus.Poly K V},
+  MathResearch.PolynomialCalculus.Derives F B f → F ⊆ G → B ≤ C → MathResearch.PolynomialCalculus.Derives G C f :=
+fun {K} {V} [Field K] {F G} {B C} {f} h hFG hBC =>
+  MathResearch.PolynomialCalculus.Derives.rec MathResearch.PolynomialCalculus.Derives.zero
+    (fun {f} hf hd => MathResearch.PolynomialCalculus.Derives.hyp (hFG hf) (LE.le.trans hd hBC))
+    (fun {f g} a a_1 ih jh => MathResearch.PolynomialCalculus.Derives.add ih jh)
+    (fun a {f} a_1 ih => MathResearch.PolynomialCalculus.Derives.smul a ih)
+    (fun v {f} a hd ih => MathResearch.PolynomialCalculus.Derives.mul_var v ih (LE.le.trans hd hBC)) h
+@MathResearch.PolynomialCalculus.mem_pcSpace : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  (F : Set (MathResearch.PolynomialCalculus.Poly K V)) (B : ℕ) (f : MathResearch.PolynomialCalculus.Poly K V),
+  f ∈ MathResearch.PolynomialCalculus.pcSpace F B ↔ MathResearch.PolynomialCalculus.Derives F B f
+'MathResearch.PolynomialCalculus.mem_pcSpace' depends on axioms: [propext, Classical.choice, Quot.sound]
+theorem MathResearch.PolynomialCalculus.mem_pcSpace.{u_1, u_2} : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  (F : Set (MathResearch.PolynomialCalculus.Poly K V)) (B : ℕ) (f : MathResearch.PolynomialCalculus.Poly K V),
+  f ∈ MathResearch.PolynomialCalculus.pcSpace F B ↔ MathResearch.PolynomialCalculus.Derives F B f :=
+fun {K} {V} [Field K] F B f => Iff.rfl
+@MathResearch.PolynomialCalculus.nsSpace_le_degreeSpace : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  (F : Set (MathResearch.PolynomialCalculus.Poly K V)) (B : ℕ),
+  MathResearch.PolynomialCalculus.nsSpace F B ≤ MathResearch.PolynomialCalculus.degreeSpace B
+'MathResearch.PolynomialCalculus.nsSpace_le_degreeSpace' depends on axioms: [propext, Classical.choice, Quot.sound]
+theorem MathResearch.PolynomialCalculus.nsSpace_le_degreeSpace.{u_1, u_2} : ∀ {K : Type u_1} {V : Type u_2}
+  [inst : Field K] (F : Set (MathResearch.PolynomialCalculus.Poly K V)) (B : ℕ),
+  MathResearch.PolynomialCalculus.nsSpace F B ≤ MathResearch.PolynomialCalculus.degreeSpace B :=
+fun {K} {V} [Field K] F B =>
+  Submodule.span_le.mpr fun ⦃p⦄ a =>
+    Exists.casesOn a fun f h =>
+      And.casesOn h fun left right => Exists.casesOn right fun q h => And.casesOn h fun left hd => hd
+@MathResearch.PolynomialCalculus.degreeSpace_eq_restrictTotalDegree : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  (B : ℕ), MathResearch.PolynomialCalculus.degreeSpace B = MvPolynomial.restrictTotalDegree V K B
+'MathResearch.PolynomialCalculus.degreeSpace_eq_restrictTotalDegree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+theorem MathResearch.PolynomialCalculus.degreeSpace_eq_restrictTotalDegree.{u_1, u_2} : ∀ {K : Type u_1} {V : Type u_2}
+  [inst : Field K] (B : ℕ), MathResearch.PolynomialCalculus.degreeSpace B = MvPolynomial.restrictTotalDegree V K B :=
+fun {K} {V} [Field K] B => Submodule.ext fun f => Iff.symm (MvPolynomial.mem_restrictTotalDegree V B f)
+@MathResearch.PolynomialCalculus.nsSpace_mono : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F G : Set (MathResearch.PolynomialCalculus.Poly K V)} {B C : ℕ},
+  F ⊆ G → B ≤ C → MathResearch.PolynomialCalculus.nsSpace F B ≤ MathResearch.PolynomialCalculus.nsSpace G C
+'MathResearch.PolynomialCalculus.nsSpace_mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+theorem MathResearch.PolynomialCalculus.nsSpace_mono.{u_1, u_2} : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F G : Set (MathResearch.PolynomialCalculus.Poly K V)} {B C : ℕ},
+  F ⊆ G → B ≤ C → MathResearch.PolynomialCalculus.nsSpace F B ≤ MathResearch.PolynomialCalculus.nsSpace G C :=
+fun {K} {V} [Field K] {F G} {B C} hFG hBC =>
+  Submodule.span_mono fun ⦃p⦄ a =>
+    Exists.casesOn a fun f h =>
+      And.casesOn h fun hf right =>
+        Exists.casesOn right fun q h =>
+          And.casesOn h fun heq hd => Exists.intro f ⟨hFG hf, Exists.intro q ⟨heq, LE.le.trans hd hBC⟩⟩
+@MathResearch.PolynomialCalculus.nsSpace_generator : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F : Set (MathResearch.PolynomialCalculus.Poly K V)} {B : ℕ} {f q : MathResearch.PolynomialCalculus.Poly K V},
+  f ∈ F → MvPolynomial.totalDegree (q * f) ≤ B → q * f ∈ MathResearch.PolynomialCalculus.nsSpace F B
+'MathResearch.PolynomialCalculus.nsSpace_generator' depends on axioms: [propext, Classical.choice, Quot.sound]
+theorem MathResearch.PolynomialCalculus.nsSpace_generator.{u_1, u_2} : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F : Set (MathResearch.PolynomialCalculus.Poly K V)} {B : ℕ} {f q : MathResearch.PolynomialCalculus.Poly K V},
+  f ∈ F → MvPolynomial.totalDegree (q * f) ≤ B → q * f ∈ MathResearch.PolynomialCalculus.nsSpace F B :=
+fun {K} {V} [Field K] {F} {B} {f q} hf hd => Submodule.subset_span (Exists.intro f ⟨hf, Exists.intro q ⟨rfl, hd⟩⟩)
+PASS: 0 proof files; 1 interface files (definitions, not claim-completion status); 15 audited declarations.

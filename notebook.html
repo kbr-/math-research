@@ -17422,5 +17422,34 @@ B_{\rm support}(\pi)=D+(p-1)\sum_{a\in A(\pi&#x27;)}\delta&#x27;_a.
 </div>
 </article>
 
+<article id="entry-2026-09-15-lean-pc-foundations">
+<h3>15 September 2026 — Ordinary PC and NS foundations for the publication formalization</h3>
+<p class="entry-meta">Status: formalized definitions and elementary interface lemmas; R01. No equality of PC and NS spaces is asserted.</p>
+<h4 id="ordinary-polynomial-proof-foundations">Ordinary polynomial proof foundations</h4>
+<p><strong>Question and stopping point.</strong> Supply the common ordinary-polynomial interface needed by the remaining bit-PHP route, before formalizing completed-line reuse, substitution, or matching reduction. The source is <a href="https://github.com/kbr-/math-research/blob/main/publications/drafts/bit-php-resolution-over-parities/sections/02-algebra.tex">paper §2</a>, together with the <a href="#matching-moment-completeness-audit">functional base</a> and <a href="#compact-bit-base-definition">compact base</a>. Stop with a checked shared interface and a local checkpoint so independent workers can import it.</p>
+<p>Over a field \(K\), use the ordinary ring \(K[V]\). Applications have finite \(V\); the elementary interface also permits arbitrary variable types. Write \(\deg 0=0\), following Mathlib's natural total degree. A derivation through \(B\) is a finite tree whose leaves are zero or axioms of degree at most \(B\), and whose rules are addition, scalar multiplication, and multiplication by a single variable when its output has degree at most \(B\). Trees may reuse their premise derivations; reading the premises in order gives concatenated ordinary PC derivations. No polynomial-multiplication or NS rule is built into this definition.</p>
+<div class="math">\[
+\mathcal C_B(\mathcal F)=\{f:\mathcal F\vdash_B f\},\qquad
+\mathcal I_B(\mathcal F)=\operatorname{span}_K\{qF:F\in\mathcal F,\ \deg(qF)\le B\}.
+\]</div>
+<p><strong>Interface facts and proof.</strong> Every derived polynomial has degree at most \(B\): induct on the tree, using the supplied bounds for axioms and variable multiplication, \(\deg(f+g)\le\max(\deg f,\deg g)\), and \(\deg(af)\le\deg f\). The zero, addition, and scalar rules make \(\mathcal C_B\) a subspace. Enlarging the axiom set or the ceiling preserves every tree, by the same induction. The bounded-degree space is Mathlib's ordinary total-degree submodule. Every spanning generator of \(\mathcal I_B\) lies in it, hence so does its span. Enlarging the axiom set or ceiling enlarges the set of legal products and therefore the span; each individually legal product belongs to that span. These statements include zero generators and zero degree bounds.</p>
+<p>The file also defines Boolean axioms \(X_v^2-X_v\), the weak unary base consisting of Booleanity, row sums minus one, and different-row same-column products, and the functional base adding different-column same-row products. The binary compact base on \(m\) rows and \(\ell\) bits consists of Booleanity and \(\prod_t(1+b_{it}+b_{i't})\) for \(i&lt;i'\). All these are ordinary polynomials; no quotient reduction is implicit, and each NS product is charged before summing.</p>
+<p><strong>Verification and remaining route.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/PolynomialCalculus.lean">PolynomialCalculus.lean</a> records the exact definitions and checked interface declarations. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r01_pc_foundations_20260915/lean-verification-final.txt">verification report</a> preserves theorem types and transitive axiom reports; the <a href="https://github.com/kbr-/math-research/blob/main/research/results/r01_pc_foundations_20260915/scope.md">scope map</a> separates R02–R04 and the later publication obligations. The initial check exposed constructor syntax, a Mathlib argument-order mismatch, and a missing field-instance import; these were corrected without changing the mathematics. No mathematical discrepancy was identified. Process assessment: agreeing on exact shared names before dependent proofs avoids competing PC and NS definitions; Mathlib's existing bounded-degree space is linked rather than rebuilt.</p>
+<div class="timing-report" data-session="r01_pc_foundations_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 33.51 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 43.32 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">3 min 35.92 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">59.97 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">3 min 14.30 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+<p class="small">Initial instruction reading preceded instrumentation; setup waiting and the failed elaboration attempt are included, and final checkpoint work follows the timing snapshot.</p>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
