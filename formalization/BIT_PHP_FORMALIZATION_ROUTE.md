@@ -390,6 +390,17 @@ existence/span/nonrefutation. The proof removes `m≥B`, retaining `N≥1` and
 `N≥2B-1`. The Boolean/matching worker proceeds to R14, using the integrated
 R12 decoder and R13 row-linear interfaces. Five R steps remain.
 
+R24 initial dependency released: actual compact-pair/CNF falsification and
+semantic implication, plus concrete registry initial-value certificates through
+`2h+ℓ`. Finite-DAG normalization, counting, and replay remain R24 obligations.
+
+Assembly interface refinement in progress: registry clauses may have unit spans.
+The clause worker is extending R16 to accept a unit-span alternative to the
+high-rank literal witness, using a constant specialization that kills the block.
+The original R16 theorem remains covered. R15 can then supply witnesses for
+proper high-rank blocks without an implicit properness assumption on the full
+registry or a separate global pruning transformation.
+
 ### Final generalization sweep (explicit user assignment)
 
 After every Rxx obligation is complete, review the Lean project’s statements
