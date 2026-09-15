@@ -5,7 +5,6 @@ Dependency-first plan for `thm:publication-Res-parity-bit-PHP`, based on the
 and its [dependency table](https://kbr.is-a.dev/math-research/#publication-Res-parity-dependencies),
 cross-checked against the expanded
 [paper sources](../publications/drafts/bit-php-resolution-over-parities/whitepaper.tex).
-Source checkpoint: `bba68c96a04c53e1c3953d91b58d88b893934ea3`.
 
 The target is the usual bit-PHP CNF with `n = 2^ℓ` holes and `m = n+1`
 pigeons, in unrestricted DAG-like resolution over parities over `𝔽₂`, under
@@ -255,8 +254,7 @@ main Frege research goal. This route itself supplies no new Lean formalization.
 ## Active parallel execution — remaining R route
 
 User assignment: execute Spin-formalize-parallel for all remaining R01–R25
-obligations, reusing H and R06/R19–R21. Integration branch: `formal`, initially
-pinned at `3c0a92f43e4f1a944b1b75f0a63c0caa31f395d0`. Local checkpoints only;
+obligations, reusing H and R06/R19–R21. Integration branch: `formal`. Local checkpoints only;
 this assignment does not authorize merging main or pushing.
 
 Worker worktrees are under `~/dev/math-worktrees/`, each with a private `.lake`.
@@ -277,15 +275,16 @@ Coordinator performs R17 and R25 after their prerequisites are integrated.
 Workers perform Resume and restricted Spin-formalize, recording each existing
 indexed claim separately. The coordinator owns living notebook sections, the gap
 list, route updates, sequential rebases, and the final provenance/index audit.
-No worker rebases while editing. Record immutable released/integrated checkpoints
-here as they become available. Initial active workers: foundations, Boolean/matching,
+No worker rebases while editing. Record releases here by claim and verified
+scope; resolve temporary integration pins from Git during each operation. Do not
+store concrete commit hashes in this route. Initial active workers: foundations, Boolean/matching,
 and restriction; the latter two reuse completed H worker sessions with new paths.
 
 When the complete route is finished, retain this section as **Parallel execution
-history**, update its wording to past tense, and preserve assignments and pinned
-integration checkpoints. Do not rename it complete while obligations remain.
+history**, update its wording to past tense, and preserve assignments and
+release history. Do not rename it complete while obligations remain.
 
-Released R01: `76cc94b` (worker checkpoint `a1e1d72`, rebased onto `bae63b0`),
+Released R01:
 verified ordinary PC/NS definitions and base interfaces. R02–R04 remain with
 the foundation worker; no publication conclusion follows from R01 alone.
 
@@ -293,13 +292,12 @@ All six private pinned `.lake` caches were copied successfully before foundation
 work finished. The clean completed H worktrees were removed; their historical
 branch refs were retained.
 
-Released R02: `866df1e` (worker `aa5ba8f1`, rebased onto `1ef7607`),
+Released R02:
 completed-line polynomial multiplication, degree-controlled NS multiplication,
 and NS-to-PC inclusion. R03/R04 remain with the foundation worker.
 
-Released R13: `9fbb4ba` (worker `feab2cb3`), the two extracted row-linear and
-ordinary-restriction dimension claims. Released R03: `3b9669d` (worker
-`cbfa2718`), ordinary substitution and fixed-weight PC replay. Both are integrated
+Released R13: the two extracted row-linear and
+ordinary-restriction dimension claims. Released R03: ordinary substitution and fixed-weight PC replay. Both are integrated
 into `formal`; append conflicts preserved all existing articles and index rows.
 
 Current worker allocation: `/root/r_foundations` finishes R04 in pc-foundations;
@@ -308,33 +306,33 @@ Current worker allocation: `/root/r_foundations` finishes R04 in pc-foundations;
 R15 remains pending R04/R07 in restriction. Decoder and clause-simulation are
 ready worktrees awaiting a worker slot and their prerequisites.
 
-Released R05: `953e2da` (worker `ea46a68`), degree-controlled binary Boolean
+Released R05: degree-controlled binary Boolean
 reduction and its explicit NS witnesses. Its implemented proof also uses R02;
 the table records this dependency. The append-merge helper now tolerates only
 blank-line differences in existing index content while preserving every
-nonblank line; seven focused tests passed (`3c8ab1d`).
+nonblank line; seven focused tests passed.
 
-Released R04: `3fbca9c` (worker `bd77fabb`), bounded-degree duality and a
+Released R04: bounded-degree duality and a
 separately indexed compatible-annihilator extension. The foundation assignment
-is complete. `/root/r_foundations` now works on R11/R12 in decoder at this pin;
+is complete. `/root/r_foundations` now works on R11/R12 in decoder from the integrated foundations;
 Boolean/matching and affine-removal remain active.
 
-Early shared release: `3b2d31d` (worker `7405683`),
+Early shared release:
 `lem:squarefree-forbidden-pair-certificate`, unblocks R11 without requiring
 all of R09. R09 remains incomplete.
 
-Partial R07 release: `e738178` (worker `8b6e017a`), the fully indexed affine-form
+Partial R07 release: the fully indexed affine-form
 representation and affine-system linear-algebra claims (15 audited declarations).
 R07 still requires coordinate completion/parametrization, exact fresh-companion
 degree, and scalar PC cleanup. The affine worker continues these obligations;
 this release does not count as full R07 completion.
 
-Released R11: `40baceb` (worker `c89c861b`), full two-row interpolation with
+Released R11: full two-row interpolation with
 ordinary NS cost `max(deg P,2)`, including the empty-column case. Its proof
 reuses the separately released squarefree-pair helper; full R09 is not required.
 The decoder worker continues R12.
 
-R07 coordinate release: `6a21b17` (worker `cfbb6273`), affine coordinate
+R07 coordinate release: affine coordinate
 completion and injective free-coordinate parametrization with exact zero-set
 range. R07 now still needs fresh-companion degree and scalar PC cleanup; the
 coordinate prerequisite is verified, not assumed.
@@ -351,28 +349,28 @@ Use incremental verification for changed modules and their dependents. Complete
 this sweep before reporting the entire assignment finished and converting the
 execution section into its historical form.
 
-Released R12: `a950bb1` (worker `bd70e7e5`), decoder injectivity/exact degree
+Released R12: decoder injectivity/exact degree
 for all bit lengths and arbitrary-PC transfer for `ℓ≥2` at every ceiling B.
 The decoder assignment is complete; `/root/r_foundations` now handles
 R18/R22/R23/R24 in clause-simulation.
 
-Released R09: `f119d3d` (worker `8239881`), full bounded-functional matching
+Released R09: full bounded-functional matching
 marginal completeness, including arbitrary constant moments and N≥1. Its
 implemented proof also uses R02/R04, now recorded in the dependency table.
 The Boolean/matching worker continues R10, then R14.
 
-R07 fresh-block release: `2322c6d` (worker `b235af1c`), canonical disjoint
+R07 fresh-block release: canonical disjoint
 coefficient variables, exact fresh-companion degrees and rename compatibility.
 Only scalar PC cleanup remains R07; clause simulation can use this release now.
 
-R07 complete: `802eab1` (scalar-cleanup worker checkpoint `888f22a2`),
+R07 complete:
 combining the previously released affine witnesses, coordinates, and fresh-degree
 claims with degree-preserving scalar cleanup of complete blocks. Generic cleanup
 requires explicit idempotent constants; binary unit-span cleanup supplies them
 and requires h>0. The affine worker proceeds to R08 and R16, then will return to
 R15 in restriction. Eleven R steps remain after this release.
 
-Released R18: `37a1e00` (worker `e6c59d10`), complete affine-clause registry
+Released R18: complete affine-clause registry
 over arbitrary finite old-variable types, including its finite-affine polynomial
 bridge, empty-clause value, original degree bounds, and canonical block embedding.
 The clause worker proceeds to R22/R23/R24. Ten R steps remain.
