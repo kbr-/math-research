@@ -244,6 +244,40 @@ test or discharge that obligation, and state a concrete stopping point.
 The Git history and notebook research record preserve these framework
 changes and the strategic questions that motivated them.
 
+After the first draft of this whitepaper, the author decided that formal
+verification was required, as he did not have enough expertise to check the
+mathematics himself. He began by extending the framework with a Lean project,
+introduced in commit
+\href{https://github.com/kbr-/math-research/commit/afa42b493549efec332378d1eb40ef55eb335bac}
+{\texttt{afa42b4}}. Working with GPT-6 Astra in Codex, he first requested
+three small formalizations individually, asking after each what the experience
+suggested improving in the framework. This repeated the earlier pattern of
+research followed by process refinement. The telescoping formalization exposed
+a distinction between an upper degree bound and an exact degree that the
+original statement had overlooked. The resulting guidance required checking
+the entire indexed claim and its dependencies, recording discrepancies,
+and explaining any alternative proof adopted during formalization. Separate
+claim files and links from the claim index made the verified results reusable;
+formalization remained an explicitly assigned activity alongside the continuing
+research.
+
+The author then turned to the complete proof of this whitepaper's theorem.
+He asked the agent to map its dependencies and tackle the external chessboard
+homology input first, proving the required statement rather than leaving it
+as an assumption. The dependency map also identified independent branches,
+which Codex subagents developed in separate Git worktrees while a coordinating
+agent integrated their results. This process became the
+\emph{Spin-formalize-parallel} prompt. After completing the topological input,
+the same approach covered the algebraic dependencies, the translation of the
+actual proof DAG, and the final asymptotic argument. Some statements became
+more general, and some proofs changed; the notebook recorded these arguments
+as the formalization proceeded. The final theorem and its complete dependency
+chain were verified in commit
+\href{https://github.com/kbr-/math-research/commit/54f09378e97465522b7f1caf115f90ad1faa7a57}
+{\texttt{54f0937}}. The author then requested that this manuscript be revised
+to present those statements and proofs, with permanent links to their Lean
+sources.
+
 The statements on this publication route are formally verified; this revised
 manuscript remains open to external scrutiny.
 The classical topological input is attributed to \cite{BLVZ94};
