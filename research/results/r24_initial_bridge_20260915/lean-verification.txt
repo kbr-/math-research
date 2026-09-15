@@ -1,0 +1,36 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.BitPHPInitialBridge
+Claim file: claims/BitPHPInitialBridge.lean
+Claim: lem:bit-PHP-initial-clause-bridge
+Source: https://kbr.is-a.dev/math-research/#lean-bit-PHP-initial-clause-bridge
+Scope: The actual compact pair clause semantically entails each usual bit-PHP CNF axiom, and its fixed-registry value has an ordinary PC proof through2h+ℓ from the compact old base and actual companions.
+Declarations: MathResearch.PolynomialCalculus.compact_clause_entails_CNF MathResearch.PolynomialCalculus.registry_compact_initial
+$ lake --wfail build claims.BitPHPInitialBridge
+✔ [1825/1825] Built claims.BitPHPInitialBridge (3.0s)
+Build completed successfully (1825 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/clause-simulation/formalization/.lake/tmp1z90f74f.lean
+@MathResearch.PolynomialCalculus.compact_clause_entails_CNF : ∀ {m ℓ : ℕ} (i i' : Fin m)
+  (z : MathResearch.PolynomialCalculus.BitLabel ℓ),
+  MathResearch.clauseEntails (MathResearch.PolynomialCalculus.compactPairClause i i')
+    (MathResearch.PolynomialCalculus.usualCNFClause i i' z)
+'MathResearch.PolynomialCalculus.compact_clause_entails_CNF' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.registry_compact_initial : ∀ {m ℓ N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause (MathResearch.PolynomialCalculus.BitVar m ℓ)) (h : ℕ)
+  (c : Fin N) (i i' : Fin m),
+  i < i' →
+    C c = MathResearch.PolynomialCalculus.compactPairClause i i' →
+      MathResearch.PolynomialCalculus.Derives
+        (MathResearch.PolynomialCalculus.registrySystem C h (MathResearch.PolynomialCalculus.compactBitBase m ℓ))
+        (2 * h + ℓ) (MathResearch.PolynomialCalculus.registryValue C h c)
+'MathResearch.PolynomialCalculus.registry_compact_initial' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 2 audited declarations.

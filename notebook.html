@@ -18280,5 +18280,44 @@ P_D=\sum_j\lambda_j(g_{D,j}P_D).
 </div>
 </article>
 
+<article id="entry-2026-09-15-lean-bit-PHP-initial-bridge">
+<h3>15 September 2026 — Actual bit-PHP CNF clauses and their compact initial values</h3>
+<p class="entry-meta">Status: verified extracted prerequisites for R24; the full DAG transfer remains separate.</p>
+<h4 id="lean-affine-literal-product-prefix">Sharp prefixes for a product of affine-literal complements</h4>
+<p><strong>Question and stopping point.</strong> Supply the concrete initial-clause boundary in <a href="#bit-PHP-affine-clause-PC-transfer">the publication transfer proof</a>, before assembling the finite source DAG. The first reusable helper is an ordinary identity over any field: if \(g_0,\ldots,g_{n-1}\) have degree at most one, there are polynomials \(U_i\) with</p>
+<div class="math">\[
+1-\prod_{i&lt;n}(1-g_i)=\sum_{i&lt;n}U_i g_i,\qquad \deg U_i\le n-1.
+\]</div>
+<p><strong>Complete recursive proof.</strong> For an empty family the identity is \(0=0\), with no coefficient obligation. For a nonempty family, apply induction to the tail, writing \(1-Q=\sum_{i&gt;0}V_i g_i\). Set \(U_0=1\) and \(U_i=(1-g_0)V_i\) for tail indices. Then \(g_0+(1-g_0)(1-Q)=1-(1-g_0)Q\). The new coefficients have degree at most one plus the tail coefficient degree, hence at most \(n-1\); the first has degree zero. This is an equivalent orientation of the standard prefix identity and retains the sharper \(n-1\) bound needed here. <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/AffineLiteralProduct.lean">AffineLiteralProduct.lean</a> records the general helper.</p>
+<h4 id="lean-bit-PHP-initial-clause-bridge">The usual CNF and the genuine compact polynomial axiom</h4>
+<p>Use bit variables \(b_{it}\). Define the compact pair clause \(C_{ii'}\) by the affine true-indicators \(g_t=b_{it}+b_{i't}\), and define the usual CNF clause for a label \(z\in\mathbb F_2^\ell\) by all indicators \(b_{it}+z_t\) and \(b_{i't}+z_t\). The latter clause is false exactly when both bit rows equal \(z\); the compact clause is false exactly when the two rows agree. These two equivalences are explicitly checked, so the definitions retain the actual standard encoding.</p>
+<p>It follows that \(C_{ii'}\) semantically entails every such CNF clause. For completeness, if the CNF clause is false, then \(b_{it}+z_t=b_{i't}+z_t=0\) for every \(t\). Cancelling \(z_t\) gives \(b_{it}=b_{i't}\), so every compact true-indicator is zero. Taking the contrapositive proves entailment.</p>
+<p>Now let a clause in the fixed registry equal \(C_{ii'}\), with \(i&lt;i'\), and write \(P\) for its actual registry value. The old compact system contains the ordinary degree-\(\ell\) axiom</p>
+<div class="math">\[
+E_{ii'}=\prod_{t&lt;\ell}(1+b_{it}+b_{i't})
+       =\prod_{t&lt;\ell}(1-g_t).
+\]</div>
+<p>It is not treated as an affine axiom. Apply the preceding literal-product identity to the old input polynomials lifted into the registry, and multiply by \(P\):</p>
+<div class="math">\[
+P=E_{ii'}P+\sum_{t&lt;\ell}U_t(g_tP).
+\]</div>
+<p>The old axiom has degree at most \(\ell\) and \(\deg P\le2h\), so completed-line multiplication derives \(E_{ii'}P\) through \(2h+\ell\). Each \(g_tP\) is an actual registry companion through \(2h+1\), and \(\deg U_t\le\ell-1\), so every remaining product fits the same ceiling. If the index set is empty, no companion term is needed and the old product is one. Thus the formal local initial-value theorem includes all natural \(h,\ell\); the publication will use its stated positive-accuracy, large-bit regime.</p>
+<p><strong>Verification and remaining work.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/BitPHPInitialBridge.lean">BitPHPInitialBridge.lean</a> proves the two exact falsifying-set characterizations, semantic entailment, and the concrete fixed-registry initial-value certificate. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r24_initial_bridge_20260915/lean-verification-final.txt">initial-bridge report</a>, <a href="https://github.com/kbr-/math-research/blob/main/research/results/r24_initial_bridge_20260915/prefix-verification.txt">prefix report</a>, and <a href="https://github.com/kbr-/math-research/blob/main/research/results/r24_initial_bridge_20260915/scope.md">scope map</a> preserve full statements and axiom audits. The staged builds and completed audits passed; no mathematical gap was found. Process assessment: explicit falsifying-set characterizations pin the formal clause definitions to the actual CNF, while the sharp literal-product prefixes avoid importing a looser ENS cofactor budget. R24 still needs global DAG normalization, \(3S+\binom m2\) node accounting, polynomial inventory, and height-independent replay.</p>
+<div class="timing-report" data-session="r24_initial_bridge_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 47.56 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 39.69 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">4 min 28.31 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">15.44 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">24.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+<p class="small">Preliminary source/API reading and planning preceded this clock; final checkpoint work follows the timing snapshot.</p>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
