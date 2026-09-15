@@ -18694,5 +18694,37 @@ c_y\prod_{i\in S}\left((c_i)_{a_i}+(c_i+e_{d_i})_{a_i}\right)
 </div>
 </article>
 
+<article id="entry-2026-09-15-lean-cube-residual-dual-separation">
+<h3>2026-09-15 — Full cube/residual dual separation in Lean</h3>
+<p><strong>Status:</strong> The entire indexed claim <code>lem:cube-residual-dual-separation</code> is Lean-verified with its dependencies, using the alternative operator proof below. The row count is generalized to arbitrary \(m\); the paper's \(m=2^\ell+1\) follows immediately.</p>
+<h4 id="lean-cube-residual-dual-separation">Exact statement and proof</h4>
+<p>Set \(n=2^\ell\), with \(\ell\ge2\), \(1\le k\le B\), \(4(k-1)&lt;n\), and \(2B-1\le n\). Let \(P\ne0\) belong to the degree-at-most-\(k\) row-linear bit space: its monomials contain at most one bit from each row. Then there is a binary linear functional \(\mu\) on all unary polynomials satisfying</p>
+\[\mu(\mathrm{PC}_B(\mathrm{fPHP}_{m,n}))=0,
+\qquad \mu(\tau P)=1.\]
+<p>Moreover \(\mu(1)=0\) when \(\deg P&gt;0\), and \(\mu(1)=1\) when \(\deg P=0\). Consequently \(\tau P\notin\mathrm{PC}_B(\mathrm{fPHP}_{m,n})\) and \(P\notin\mathrm{PC}_B(\mathrm{compactBitPHP}_{m,\ell})\). These are memberships in the actual bounded PC derivation spaces, not an assumed abstract ideal or functional interface.</p>
+<p><strong>Construction.</strong> Choose a nonzero top-degree coefficient of \(P\), at a row monomial with selected rows \(S\), \(|S|=t=\deg P\le k\), and bit direction \(a_i\) in row \(i\). The <a href="#lean-disjoint-binary-coordinate-pairs">verified packing lemma</a> supplies pairwise disjoint coordinate lines \(\{c_i,c_i+e_{a_i}\}\). Let \(F\) be their union, so \(|F|=2t\). Their cube choices define the <a href="#lean-row-cube-residual-restriction">concrete restrictions</a> \(\rho_\varepsilon\) onto the residual \((m-t)\times(n-2t)\) board, and put \(\Delta=\sum_{\varepsilon\in\mathbb F_2^S}\rho_\varepsilon\).</p>
+<p>The parameter ledger is essential. Since \(n\) is divisible by four, \(4(k-1)&lt;n\) implies \(4k\le n\), so \(n-2t\ge1\). Also</p>
+\[n-2t\ge 2(B-t)-1.\]
+<p>The latter includes the boundary \(t=B\), where its right side is interpreted as the nonnegative truncated bound zero. These inequalities, including \(t=0\) and \(t=1\), are already proved in <code>cube_residual_parameters</code>. The <a href="#lean-matching-extension-stable-filtration">verified matching extension theorem</a> therefore provides a residual functional \(L\), normalized by \(L(1)=1\), annihilating residual NS through \(B-t\). Its arbitrary-row-count scope imposes no additional condition on \(m-t\).</p>
+<p>Define \(\mu=L\circ\Delta\). The concrete restriction theorem proves, for every original generator, a cube-independent image equal to zero or a residual generator. Hence \(\Delta\) carries original NS through \(B\) into residual NS through \(B-t\). In detail, if a generator has fixed image \(g\), then \(\Delta(qf)=(\Delta q)g\); the cube cancels all terms missing a selected row and lowers the actual multiplier degree by \(t\). The previously checked ordinary-degree ledger bounds the resulting product by \(B-t\). Thus \(\mu\) annihilates original NS through \(B\), and the proved stable-filtration identity \(\mathrm{PC}_B=\mathrm{NS}_B\) makes it annihilate actual PC.</p>
+<p>On a selected bit coordinate, \(\rho_\varepsilon\tau\) evaluates to the corresponding bit of \(c_i+\varepsilon_i e_{a_i}\); outside \(S\), it is independent of \(\varepsilon\). The <a href="#lean-row-cube-coefficient-isolation">verified coefficient-isolation identity</a> now gives</p>
+\[\Delta(\tau P)=\operatorname{coeff}_{\prod_{i\in S}z_{i,a_i}}P=1.\]
+<p>For clarity, its cancellation has no hidden degree hypothesis on the outside images: a row-linear monomial missing a selected row cancels in that cube coordinate. A surviving monomial must use all \(t\) selected rows; the top-degree bound allows no other row. Multiplying the coordinate bit differences leaves one precisely for the chosen directions and zero otherwise. A nonzero binary coefficient is one, so \(\mu(\tau P)=L(1)=1\). This is an operator proof of the same separation, replacing the original explicit tensor-of-moments presentation.</p>
+<p>If \(t&gt;0\), cube cancellation gives \(\Delta1=0\), yielding the claimed zero normalization. If \(t=0\), the nonzero binary polynomial is the constant one, so the already proved separator value yields \(\mu(1)=1\). No constant case was omitted. Finally, membership of \(\tau P\) in unary PC would contradict its functional value. Membership of \(P\) in compact-bit PC would imply unary membership by the <a href="formalization/claims/CompactBitDecoderTransfer.lean">verified decoder PC transfer</a>, giving the second exclusion.</p>
+<p><strong>Scope and checks.</strong> <a href="formalization/claims/CubeResidualDualSeparation.lean">Per-claim Lean source</a>; <a href="research/results/r_boolean_matching_20260915_08/verification.txt">incremental type and transitive axiom audit</a>. All prerequisites are proved, including the homological boundary behind the residual design. No assumption of a separator, <code>sorry</code>, or custom axiom remains. The two final assembly retries concerned only a natural-number positivity proof. This closes R14; later route claims remain separate. A brief exact-interface read during the preceding integration pause preceded this cycle's clock.</p>
+<div class="timing-report" data-session="r_boolean_matching_20260915_08">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 11.85 s</strong></td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">2 min 30.31 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 15.75 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">25.79 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

@@ -1,0 +1,37 @@
+✖ [2025/2025] Building claims.CubeResidualDualSeparation (1.7s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/boolean-matching/formalization/claims/CubeResidualDualSeparation.lean -o /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/CubeResidualDualSeparation.olean -i /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/lib/lean/claims/CubeResidualDualSeparation.ilean -c /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/CubeResidualDualSeparation.c --setup /home/kbr/dev/math-worktrees/boolean-matching/formalization/.lake/build/ir/claims/CubeResidualDualSeparation.setup.json --json
+error: claims/CubeResidualDualSeparation.lean:45:83: No goals to be solved
+error: claims/CubeResidualDualSeparation.lean:45:45: unsolved goals
+m ℓ k B : ℕ
+hℓ : 2 ≤ ℓ
+hk : 1 ≤ k
+hkB : k ≤ B
+hpack : 4 * (k - 1) < 2 ^ ℓ
+hB : 2 * B - 1 ≤ 2 ^ ℓ
+P : Poly (ZMod 2) (Fin m × Fin ℓ)
+hp : P ∈ rowLinearSpace (ZMod 2) m ℓ k
+hne : P ≠ 0
+x : RowMonomialIndex m ℓ k
+hcoeff : P.coeff (rowMonomialExponent x) ≠ 0
+hdegree : ↑x.fst = totalDegree P
+S : Finset (Fin m) := ↑x.snd.fst
+hcard : S.card = ↑x.fst
+htk : S.card ≤ k
+d : Fin m → Fin ℓ := fun i => if hi : i ∈ S then x.snd.snd ⟨i, hi⟩ else ⟨0, ⋯⟩
+c : Fin m → Fin (2 ^ ℓ)
+hc : CoordinatePairsDisjoint ℓ S d c
+D : RowCubeData m (2 ^ ℓ) := coordinateRowCube m ℓ S d c hc
+hrows : D.rows = S
+hcols : D.cols.card = 2 * S.card
+hres : 1 ≤ 2 ^ ℓ - 2 * S.card ∧ 2 * (B - S.card) - 1 ≤ 2 ^ ℓ - 2 * S.card
+L : Poly (ZMod 2) (Cell (m - D.rows.card) (2 ^ ℓ - D.cols.card)) →ₗ[ZMod 2] ZMod 2
+hL : AnnihilatesNS (functionalUnaryBase (m - D.rows.card) (2 ^ ℓ - D.cols.card)) (B - D.rows.card) L
+hL1 : L 1 = 1
+μ : Poly (ZMod 2) (Cell m (2 ^ ℓ)) →ₗ[ZMod 2] ZMod 2 := L ∘ₗ rowCubeDifference D
+Q : Poly (ZMod 2) (Fin m × Fin (2 ^ ℓ))
+hQ : Q ∈ pcSpace (functionalUnaryBase m (2 ^ ℓ)) B
+this : 0 < 2 ^ ℓ
+⊢ 1 ≤ 2 ^ ℓ
+Some required targets logged failures:
+- claims.CubeResidualDualSeparation
+error: build failed
