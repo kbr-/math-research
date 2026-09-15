@@ -394,12 +394,14 @@ R24 initial dependency released: actual compact-pair/CNF falsification and
 semantic implication, plus concrete registry initial-value certificates through
 `2h+ℓ`. Finite-DAG normalization, counting, and replay remain R24 obligations.
 
-Assembly interface refinement in progress: registry clauses may have unit spans.
-The clause worker is extending R16 to accept a unit-span alternative to the
-high-rank literal witness, using a constant specialization that kills the block.
-The original R16 theorem remains covered. R15 can then supply witnesses for
+Assembly interface refinement verified: registry clauses may have unit spans.
+[AffineFamilyRemovalWithUnits.lean](claims/AffineFamilyRemovalWithUnits.lean)
+accepts a unit-span alternative to the high-rank literal witness, using a constant
+specialization that kills the block at the same degree ceiling. The original R16
+theorem remains a verified compatibility wrapper. R15 can supply witnesses for
 proper high-rank blocks without an implicit properness assumption on the full
-registry or a separate global pruning transformation.
+registry or a separate global pruning transformation. The complete three-case
+proof and both theorem scopes are recorded and indexed.
 
 ### Final generalization sweep (explicit user assignment)
 
