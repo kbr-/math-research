@@ -1,0 +1,76 @@
+claims/AffineCoordinates.lean:83:18: error: unsolved goals
+case isTrue
+K : Type u_1
+inst✝ : Field K
+n : ℕ
+ι : Type u_2
+e : ι ↪ Fin n
+y z : AffineFreeIndex e → K
+j : Fin n
+h✝ : j ∈ Set.range ⇑e
+⊢ 0 = (if h : ∃ y, e y = j then 0 else y ⟨j, ⋯⟩) + if h : ∃ y, e y = j then 0 else z ⟨j, ⋯⟩
+
+case isFalse
+K : Type u_1
+inst✝ : Field K
+n : ℕ
+ι : Type u_2
+e : ι ↪ Fin n
+y z : AffineFreeIndex e → K
+j : Fin n
+h✝ : j ∉ Set.range ⇑e
+⊢ y ⟨j, h✝⟩ + z ⟨j, h✝⟩ = (if h : ∃ y, e y = j then 0 else y ⟨j, ⋯⟩) + if h : ∃ y, e y = j then 0 else z ⟨j, ⋯⟩
+claims/AffineCoordinates.lean:84:19: error: unsolved goals
+case isTrue
+K : Type u_1
+inst✝ : Field K
+n : ℕ
+ι : Type u_2
+e : ι ↪ Fin n
+c : K
+y : AffineFreeIndex e → K
+j : Fin n
+h✝ : j ∈ Set.range ⇑e
+⊢ ∀ (h : ∀ (x : ι), ¬e x = j), c = 0 ∨ y ⟨j, ⋯⟩ = 0
+
+case isFalse
+K : Type u_1
+inst✝ : Field K
+n : ℕ
+ι : Type u_2
+e : ι ↪ Fin n
+c : K
+y : AffineFreeIndex e → K
+j : Fin n
+h✝ : j ∉ Set.range ⇑e
+⊢ ∀ (x : ι), e x = j → c = 0 ∨ y ⟨j, h✝⟩ = 0
+claims/AffineCoordinates.lean:99:2: error: Type mismatch: After simplification, term
+  hv
+ has type
+  (if ∃ y, e y = ↑j then 0 else y j) = if ∃ y, e y = ↑j then 0 else z j
+but is expected to have type
+  y j = z j
+claims/AffineCoordinates.lean:99:9: error: declaration uses `sorry`
+claims/AffineCoordinates.lean:122:4: error: unsolved goals
+case neg
+K : Type u_1
+inst✝ : Field K
+n : ℕ
+ι : Type u_2
+g : ι → AffineForm K n
+e : ι ↪ Fin n
+E : (Fin n → K) ≃ᵃ[K] Fin n → K
+he : ∀ (i : ι) (x : Fin n → K), E x (e i) = affineValue (g i) x
+x : Fin n → K
+hx : x ∈ {x | ∀ (i : ι), affineValue (g i) x = 0}
+j : Fin n
+hj : j ∉ Set.range ⇑e
+⊢ ∀ (x_1 : ι), e x_1 = j → 0 = E x j
+claims/AffineCoordinates.lean:112:10: error: declaration uses `sorry`
+claims/AffineCoordinates.lean:122:30: error: This simp argument is unused:
+  hj
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [affineZeroExtend]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

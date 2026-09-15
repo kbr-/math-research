@@ -17779,5 +17779,40 @@ X_{1k}-\rho_0X_{1k}=-X_{1k}(\rho_0-1).
 <p class="small">Initial source reading preceded instrumentation; dependency integration, build work, and retries are included, while final checkpoint work follows the snapshot.</p>
 </article>
 
+<article class="research-entry" id="entry-2026-09-15-lean-affine-coordinates">
+  <h3>15 September 2026 — Complete affine coordinates and exact free parametrization</h3>
+  <p class="entry-meta"><strong>Status:</strong> complete Lean formalization of an extracted R07 dependency; fresh-companion degrees and scalar PC cleanup remain.</p>
+  <p><strong>Obligation and endpoint.</strong> Continue R07 from the <a href="#lean-affine-system-linear-algebra">verified proper-span witnesses</a> by making the paper's affine coordinate completion explicit. The endpoint supplies actual inverse affine coordinates and a parametrization of precisely the common zero set, with the correct number of free coordinates for R15's ordinary restriction bound.</p>
+  <h4 id="lean-affine-coordinate-completion">Claim: affine coordinate completion</h4>
+  <p>Let \(K\) be a field and let \((g_i)_{i\in I}\) be linearly independent affine forms on \(K^n\), with the constant one outside their span. There exist an injection \(e:I\hookrightarrow[n]\) and an affine equivalence \(E:K^n\simeq K^n\) satisfying</p>
+  <div class="math">\[
+    (E(x))_{e(i)}=g_i(x)\qquad(i\in I,\ x\in K^n).
+  \]</div>
+  <p>Write \(J=[n]\setminus e(I)\), and let \(z:K^J\to K^n\) extend coordinates by zero at all selected indices \(e(i)\). Then \(P=E^{-1}\circ z\) is an injective affine map with</p>
+  <div class="math">\[
+    P(K^J)=\{x\in K^n:g_i(x)=0\text{ for all }i\}.
+  \]</div>
+  <p>If \(I=[r]\), then \(|J|=n-r\). Thus these are exactly the required free affine coordinates, and both coordinate changes remain ordinary affine maps. The formal completion theorem even permits any index type \(I\); the resulting injection into \([n]\) certifies its finiteness.</p>
+  <p><strong>Full proof.</strong> By the preceding proper-span theorem, the linear coefficient vectors of the \(g_i\) are independent and they have a common zero \(x_0\). Map a coefficient vector \(a\) to the linear functional \(x\mapsto\sum_j a_jx_j\). This map is injective, since evaluation on coordinate unit vectors recovers every coefficient, so the resulting functionals \(L_i\) are independent. Extend them to a basis \((B_j)\) of the dual of \(K^n\), using the vector-space basis-extension theorem. Reindex that basis by \([n]\); the selected functionals occupy distinct positions \(e(i)\), with \(B_{e(i)}=L_i\).</p>
+  <p>The map \(T:x\mapsto(B_j(x))_{j\in[n]}\) is a linear equivalence: the canonical finite-dimensional identification with the double dual followed by coordinates in the dual basis gives precisely this map. Set \(E(x)=T(x-x_0)\). Since \(g_i(x_0)=0\), its constant coefficient is minus its linear part at \(x_0\). Therefore \((E(x))_{e(i)}=L_i(x-x_0)=g_i(x)\), proving the designated coordinate identity.</p>
+  <p>Zero-extension \(z\) is linear and injective; composing with \(E^{-1}\) gives an injective affine map \(P\). Every \(P(y)\) satisfies all equations because the selected coordinates of \(E(P(y))=z(y)\) are zero. Conversely, if every \(g_i(x)=0\), the selected coordinates of \(E(x)\) vanish. Its remaining coordinates give \(y\in K^J\) with \(z(y)=E(x)\), hence \(P(y)=x\). Finally the image of an injection from \([r]\) has cardinality \(r\), so its complement in \([n]\) has cardinality \(n-r\). This includes an empty selected family, when all coordinates are free, and \(r=n\), when the zero flat is a single point. \(\square\)</p>
+  <p><strong>Formalization and checks.</strong> The extracted claim <code>lem:affine-coordinate-completion</code> is in <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/AffineCoordinates.lean">AffineCoordinates.lean</a>. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r07_coordinates_20260915_02/lean-verification.txt">incremental verification report</a> audits coordinate completion, parametrization injectivity, exact range, and free-index cardinality with their transitive dependencies. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r07_coordinates_20260915_02/README.md">reproduction record</a> retains the complete evidence and initial scope map.</p>
+  <p><strong>Remaining route and process assessment.</strong> This supplies the actual coordinate maps underlying the nonempty affine flat and its codimension, without replacing ordinary polynomial restriction by pointwise vanishing. Exact fresh-companion degree and scalar PC cleanup still remain in R07; R08/R16 remain assigned. Reusing checked dual-basis extension avoided a separate matrix inversion development. No new mathematical gap or framework rule was needed; the coordinator retains living-section ownership.</p>
+  <div class="timing-report" data-session="r07_coordinates_20260915_02">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 58.14 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">22.44 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 51.30 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">3 min 58.07 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3.09 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">43.24 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 4.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

@@ -1,0 +1,30 @@
+claims/AffineCoordinates.lean:20:70: warning: This simp argument is unused:
+  mul_assoc
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Finset.mul_sum, mul_left_comm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/AffineCoordinates.lean:33:28: error: unsolved goals
+K : Type u_1
+inst✝ : Field K
+n : ℕ
+ι : Type u_2
+L : ι → Dual K (Fin n → K)
+hL : LinearIndependent K L
+I : Set (Dual K (Fin n → K)) := ⋯.extend ⋯
+b : Basis (↑I) K (Dual K (Fin n → K)) := Basis.extend ⋯
+b0 : Basis (Fin n) K (Dual K (Fin n → K)) := (Pi.basisFun K (Fin n)).dualBasis
+re : ↑I ≃ Fin n := b.indexEquiv b0
+emb : ι → ↑I := fun i => ⟨L i, ⋯⟩
+hi : Function.Injective emb
+i : ι
+⊢ (Basis.extend ⋯) ⟨L i, ⋯⟩ = L i
+claims/AffineCoordinates.lean:44:37: warning: This simp argument is unused:
+  Basis.extend_apply_self
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Basis.reindex_apply, emb, b]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/AffineCoordinates.lean:70:3: error: unknown tactic
