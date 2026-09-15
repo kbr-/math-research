@@ -16,7 +16,7 @@ This is the shortest sufficient route identified in the recorded proof, not a
 claim that no other mathematical proof could be shorter. It retains `h = 3ℓ`
 and avoids later improvements that the publication proof does not need.
 The third-party boundary **H** is now proved in Lean: H01–H13 are complete.
-R01–R05 and R13 are verified and integrated, alongside the previously
+R01–R05, R11, and R13 are verified and integrated, alongside the previously
 checked R06/R19–R21. The remaining obligations are in progress below. Proving H does not formalize its downstream consumers or the full paper.
 
 ## How to use the list
@@ -328,3 +328,8 @@ representation and affine-system linear-algebra claims (15 audited declarations)
 R07 still requires coordinate completion/parametrization, exact fresh-companion
 degree, and scalar PC cleanup. The affine worker continues these obligations;
 this release does not count as full R07 completion.
+
+Released R11: `40baceb` (worker `c89c861b`), full two-row interpolation with
+ordinary NS cost `max(deg P,2)`, including the empty-column case. Its proof
+reuses the separately released squarefree-pair helper; full R09 is not required.
+The decoder worker continues R12.
