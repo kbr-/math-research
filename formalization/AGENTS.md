@@ -60,8 +60,13 @@ metadata convention; file role does not establish claim completion.
   link or a description of the proof strategy alone is insufficient.
   Use the notebook's MathJax notation for mathematical prose and displayed
   equations; reserve code formatting for Lean identifiers and source references.
-  Generalize only when it simplifies the proof or removes unnecessary
-  dependencies without delaying the assigned claim. Defer optional extensions.
+  Useful generalizations are welcome: choose broader domains, parameters, or
+  reusable interfaces when they improve the mathematics or its formalization.
+  The requested claim is a required application, not a ceiling on generality.
+  Verify that the generalized statement recovers the entire requested claim,
+  keep necessary hypotheses explicit, and record its broader scope and proof.
+  Distinguish a proved generalization from dropping an assumption without proof;
+  defer extensions that would distract from completing the assigned route.
   When a reusable dependency makes a claim's formalization clearer, give it a
   separate Lean file and claim-index entry, with its full human-readable proof
   in the introducing research record. Keep small local helpers in the target
