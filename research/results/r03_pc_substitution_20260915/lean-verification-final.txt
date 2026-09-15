@@ -1,0 +1,49 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PolynomialCalculusSubstitution
+Claim file: claims/PolynomialCalculusSubstitution.lean
+Claim: lem:substitution
+Source: https://kbr.is-a.dev/math-research/#lean-pc-degree-substitution
+Scope: Ordinary PC substitution and fixed-weight replay from supplied weighted axiom-image proofs, with ceiling T*D+degree(weight), over any field. Variable images have total degree at most T; T=0 and zero predecessors are included.
+Declarations: MathResearch.PolynomialCalculus.substitution_degree MathResearch.PolynomialCalculus.Derives.substitute_weighted MathResearch.PolynomialCalculus.Derives.substitute
+$ lake --wfail build claims.PolynomialCalculusSubstitution
+✔ [1655/1655] Built claims.PolynomialCalculusSubstitution (3.3s)
+Build completed successfully (1655 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/pc-foundations/formalization/.lake/tmpfxoqxooj.lean
+@MathResearch.PolynomialCalculus.substitution_degree : ∀ {K : Type u_1} {V : Type u_2} {W : Type u_3} [inst : Field K]
+  (g : V → MathResearch.PolynomialCalculus.Poly K W) (T : ℕ),
+  (∀ (v : V), MvPolynomial.totalDegree (g v) ≤ T) →
+    ∀ (f : MathResearch.PolynomialCalculus.Poly K V),
+      MvPolynomial.totalDegree ((MvPolynomial.aeval g) f) ≤ T * MvPolynomial.totalDegree f
+'MathResearch.PolynomialCalculus.substitution_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.Derives.substitute_weighted : ∀ {K : Type u_1} {V : Type u_2} {W : Type u_3}
+  [inst : Field K] {F : Set (MathResearch.PolynomialCalculus.Poly K V)} {D : ℕ}
+  {f : MathResearch.PolynomialCalculus.Poly K V},
+  MathResearch.PolynomialCalculus.Derives F D f →
+    ∀ (g : V → MathResearch.PolynomialCalculus.Poly K W) (T : ℕ),
+      (∀ (v : V), MvPolynomial.totalDegree (g v) ≤ T) →
+        ∀ (G : Set (MathResearch.PolynomialCalculus.Poly K W)) (weight : MathResearch.PolynomialCalculus.Poly K W),
+          (∀ a ∈ F,
+              MvPolynomial.totalDegree a ≤ D →
+                MathResearch.PolynomialCalculus.Derives G (T * D + MvPolynomial.totalDegree weight)
+                  (weight * (MvPolynomial.aeval g) a)) →
+            MathResearch.PolynomialCalculus.Derives G (T * D + MvPolynomial.totalDegree weight)
+              (weight * (MvPolynomial.aeval g) f)
+'MathResearch.PolynomialCalculus.Derives.substitute_weighted' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.Derives.substitute : ∀ {K : Type u_1} {V : Type u_2} {W : Type u_3} [inst : Field K]
+  {F : Set (MathResearch.PolynomialCalculus.Poly K V)} {D : ℕ} {f : MathResearch.PolynomialCalculus.Poly K V},
+  MathResearch.PolynomialCalculus.Derives F D f →
+    ∀ (g : V → MathResearch.PolynomialCalculus.Poly K W) (T : ℕ),
+      (∀ (v : V), MvPolynomial.totalDegree (g v) ≤ T) →
+        MathResearch.PolynomialCalculus.Derives (⇑(MvPolynomial.aeval g) '' F) (T * D) ((MvPolynomial.aeval g) f)
+'MathResearch.PolynomialCalculus.Derives.substitute' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 3 audited declarations.

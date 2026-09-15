@@ -17526,5 +17526,42 @@ q\mathcal I_B(\mathcal F)\subseteq\mathcal I_{B+\deg q}(\mathcal F),
 </div>
 </article>
 
+<article id="entry-2026-09-15-lean-pc-substitution">
+<h3>15 September 2026 — Degree-controlled substitution and weighted PC replay</h3>
+<p class="entry-meta">Status: full Lean formalization of the polynomial substitution lemma, including weighted replay; R03.</p>
+<h4 id="lean-pc-degree-substitution">Polynomial substitution through the actual predecessor degree</h4>
+<p><strong>Question and stopping point.</strong> Formalize <a href="https://github.com/kbr-/math-research/blob/main/php_codex_handoff/manuscript/chapters/01_foundations.md#lem-substitution">historical Lemma 1.4</a>, retaining the exact primitive multiplication budget needed by later affine removal. Stop at the general replay theorem; constructing the source-specific weighted axiom-image proofs is a downstream obligation.</p>
+<p>Let \(\phi:K[V]\to K[W]\) substitute \(v\mapsto g_v\), with \(\deg g_v\le T\), over a field. If \(\mathcal F\vdash_D f\), then \(\phi(\mathcal F)\vdash_{TD}\phi(f)\). More generally, fix an ordinary polynomial \(w\) and a target system \(\mathcal G\). Suppose every source axiom \(a\in\mathcal F\) of degree at most \(D\) has a supplied derivation</p>
+<div class="math">\[
+\mathcal G\vdash_{TD+\deg w}w\phi(a).
+\qquad\text{Then}\qquad
+\mathcal G\vdash_{TD+\deg w}w\phi(f).
+\]</div>
+<p>The supplied images are actual PC derivations, not extra axioms silently adjoined to \(\mathcal G\). The Lean statement permits arbitrary variable types and every natural \(T\), including \(T=0\); finite-variable applications with \(T\ge1\) recover the source statement.</p>
+<p><strong>Degree bound.</strong> For an actual-support monomial \(c_\alpha X^\alpha\), its substituted polynomial is \(c_\alpha\prod_v g_v^{\alpha_v}\). Its degree is at most \(\sum_v\alpha_v\deg g_v\le T|\alpha|\). Taking the finite sum over the support gives \(\deg\phi(p)\le T\deg p\), without reducing any ordinary powers.</p>
+<p><strong>Weighted proof.</strong> Induct on the source primitive derivation. Zero maps to zero; an axiom uses its supplied image proof; addition and scalar multiplication commute with substitution and multiplication by \(w\). Consider the step \(p\mapsto X_vp\). If \(p=0\), its image is zero. Otherwise the ordinary polynomial ring is a domain and \(\deg(X_vp)=\deg p+1\le D\). By the preceding degree bound,</p>
+<div class="math">\[
+\deg g_v+\deg(w\phi(p))
+\le T+\deg w+T\deg p
+\le TD+\deg w.
+\]</div>
+<p>The inductive image line \(w\phi(p)\) is already derived through \(TD+\deg w\). Apply <a href="#lean-pc-completed-line-reuse">completed-line multiplication</a> by \(g_v\); the displayed inequality keeps its maximum ceiling unchanged. Commutativity identifies the result with \(w\phi(X_vp)\). This proves weighted replay. For ordinary substitution take \(w=1\), the target system \(\phi(\mathcal F)\), and use each axiom image directly; its degree is at most \(TD\).</p>
+<p><strong>Verification and remaining work.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/PolynomialCalculusSubstitution.lean">PolynomialCalculusSubstitution.lean</a> exposes the degree bound, weighted replay, and ordinary substitution in the <a href="https://github.com/kbr-/math-research/blob/main/research/results/r03_pc_substitution_20260915/lean-verification-final.txt">verification report</a>. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r03_pc_substitution_20260915/scope.md">scope map</a> identifies the required dependencies and downstream boundary. The first elaboration attempt needed multiplication-order normalization and an explicit local inequality for arithmetic automation; the corrected check passed. The source proof is preserved in substance; no new mathematical discrepancy was found. Process assessment: explicitly separating zero predecessors and using the actual nonzero predecessor degree prevents a spurious extra \(T\) at every multiplication step. No new framework rule is needed beyond the recorded degree-direction guidance.</p>
+<div class="timing-report" data-session="r03_pc_substitution_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 29.10 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 21.25 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">1 min 42.99 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5.61 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">19.25 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+<p class="small">Brief preliminary API reading and proof planning preceded this clock; retries are included and final checkpoint work follows the timing snapshot.</p>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
