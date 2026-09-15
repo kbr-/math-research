@@ -17814,5 +17814,57 @@ X_{1k}-\rho_0X_{1k}=-X_{1k}(\rho_0-1).
 </div>
 </article>
 
+<article id="entry-2026-09-15-lean-compact-decoder">
+<h3>15 September 2026 — The compact decoder preserves every ordinary PC degree</h3>
+<p class="entry-meta">Status: full Lean formalization of the extracted publication decoder lemma and its coordinate dependency; R12.</p>
+<h4 id="lean-compact-bit-decoder-coordinates">An explicit linear polynomial left inverse</h4>
+<p><strong>Question and scope.</strong> Formalize the degree-preserving old-base transfer in <a href="https://github.com/kbr-/math-research/blob/main/publications/drafts/bit-php-resolution-over-parities/sections/04-decoder-separation.tex">paper §4</a>, using the <a href="#compact-bit-PC-lower-bound">decoder certificate proof</a> and the <a href="#compact-bit-transported-filtration">ordinary coordinate argument</a>. The coordinate map below is valid for all \(m,\ell\ge0\); transfer of compact collision axioms requires \(\ell\ge2\), as the source explicitly states. The known \(\ell=1\) exception is not a new gap. Stop at arbitrary ordinary PC consequences, not the downstream transported-filtration or lower-bound claims.</p>
+<p>Fix a bijection between \(\{1,\ldots,2^\ell\}\) and binary labels \(z\in\mathbb F_2^\ell\). In ordinary polynomial rings define</p>
+<div class="math">\[
+\tau(b_{it})=s_{it}=\sum_{z:z_t=1}X_{iz}.
+\]</div>
+<p>The source proves independence by completing these linear forms to coordinates. Here is the full equivalent left-inverse proof used in Lean. For each bit position \(t\), let \(e_t\) be its unit label. Define a second polynomial substitution</p>
+<div class="math">\[
+\sigma(X_{iz})=\sum_t[\,z=e_t\,]b_{it}.
+\]</div>
+<p>Then \(\sigma(s_{it})=b_{it}\): interchange the two finite sums, and observe that among unit labels only \(e_t\) has its \(t\)-th bit equal to one. Equality on every polynomial generator, together with preservation of constants, gives \(\sigma\tau=\mathrm{id}\) on the entire ordinary polynomial ring. Thus \(\tau\) is injective. Every variable image under either substitution has degree at most one, so the checked <a href="#lean-pc-degree-substitution">substitution degree bound</a> gives</p>
+<div class="math">\[
+\deg\tau(P)\le\deg P
+=\deg\sigma\tau(P)\le\deg\tau(P).
+\]</div>
+<p>Consequently \(\deg\tau(P)=\deg P\), including zero and constants. Empty bit sets cause no exception: there are then no bit variables and both maps agree on constants. This coordinate claim is isolated in its own file and index entry because injectivity and degree preservation are used independently of proof-system transfer.</p>
+<h4 id="lean-compact-bit-ordinary-PC-decoder">Original axiom-image certificates and arbitrary-consequence replay</h4>
+<p>For \(\ell\ge2\), let \(\mathcal Q\) contain bit Booleanity and the compact collision polynomials \(E_{ii'}=\prod_t(1+b_{it}+b_{i't})\), \(i&lt;i'\). Let \(\mathcal F^{\mathrm{fun}}\) be the functional unary base on \(m\) rows and \(2^\ell\) columns. The precise transfer is</p>
+<div class="math">\[
+\mathcal Q\vdash_B P\quad\Longrightarrow\quad
+\mathcal F^{\mathrm{fun}}\vdash_B\tau(P)
+\qquad\text{for every }B\ge0.
+\]</div>
+<p>There is no extra assumption \(B\ge\ell\). Every eligible source axiom is treated at its own original degree before primitive replay.</p>
+<p><strong>Boolean images.</strong> Each \(s_{it}\) is a linear ordinary polynomial. At every Boolean assignment, its value lies in \(\mathbb F_2\), so \(s_{it}^2-s_{it}\) vanishes. The checked <a href="#lean-binary-degree-controlled-Boolean-reduction">degree-two Boolean certificate theorem</a> puts it in \(\mathcal I_2(\mathrm{BOOL})\), hence in \(\mathcal I_2(\mathcal F^{\mathrm{fun}})\). Equivalently, expansion in characteristic two gives the source's explicit identity \(s_{it}^2-s_{it}=\sum_{z:z_t=1}(X_{iz}^2-X_{iz})\). The formal proof uses the former already verified reduction. The original polynomial \(b_{it}^2-b_{it}\) has exact degree two, since its quadratic coefficient is nonzero.</p>
+<p><strong>Collision images.</strong> First use two local rows. The ordinary degree of \(R=\tau(E_{01})\) is at most \(\ell\). At the one-hot states \((e_z,e_w)\), each decoded bit is the corresponding label bit. The factor \(1+z_t+w_t\) is one when those bits agree and zero otherwise. Thus \(R(e_z,e_w)=[z=w]\). The <a href="#lean-two-functional-row-interpolation">R11 interpolation identity</a>, with \(\ell\ge2\), yields</p>
+<div class="math">\[
+R-\sum_zX_{0z}X_{1z}\in\mathcal I_\ell(U).
+\]</div>
+<p>Each remaining summand is a degree-two column-exclusion generator, so \(R\in\mathcal I_\ell(\mathcal F^{\mathrm{fun}}_{2,2^\ell})\). Relabel these local rows injectively as any distinct \(i,i'\). This substitution maps each Boolean, row-sum, same-row, and same-column generator into the corresponding global functional generator. It does not increase ordinary degree. Mapping each legal NS product separately therefore preserves its original degree budget, proving \(\tau(E_{ii'})\in\mathcal I_\ell(\mathcal F^{\mathrm{fun}})\).</p>
+<p><strong>Original collision degree.</strong> For distinct \(i,i'\), every factor \(1+b_{it}+b_{i't}\) has degree exactly one: the coefficient of \(b_{it}\) is one, and its degree is at most one. The ordinary polynomial ring over a field is a domain, so these nonzero factors multiply with additive total degree. Therefore \(\deg E_{ii'}=\ell\). This proof includes the empty product degree convention, although the transfer theorem still requires \(\ell\ge2\).</p>
+<p><strong>Primitive replay.</strong> A source Boolean axiom eligible at ceiling \(B\) has \(2\le B\), and a source collision axiom eligible there has \(\ell\le B\), by the exact degrees just proved. Their NS image certificates thus lie within \(B\), and the checked <a href="#lean-pc-completed-line-reuse">NS-to-PC inclusion</a> supplies actual PC image proofs. Apply <a href="#lean-pc-degree-substitution">weighted substitution</a> with weight one and variable-image bound one. Its primitive multiplication argument uses the actual predecessor degree, so the ceiling remains \(B\) throughout. This proves the stated transfer for every target polynomial and every original proof ceiling.</p>
+<p><strong>Verification and remaining route.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/CompactBitDecoder.lean">CompactBitDecoder.lean</a> supplies the coordinate map and left inverse; <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/CompactBitDecoderTransfer.lean">CompactBitDecoderTransfer.lean</a> supplies the original-degree NS image certificates and arbitrary-PC theorem. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r12_compact_decoder_20260915/coordinate-verification.txt">coordinate report</a>, <a href="https://github.com/kbr-/math-research/blob/main/research/results/r12_compact_decoder_20260915/lean-verification-passed.txt">transfer report</a>, and <a href="https://github.com/kbr-/math-research/blob/main/research/results/r12_compact_decoder_20260915/scope.md">scope map</a> preserve exact types, dependencies, and exclusions. Elaboration retries concerned finite-sum interchange, coefficient support, and finite-field simplification, without a mathematical correction. Process assessment: an explicit unit-column left inverse gives a short reusable ordinary-degree proof, while proving original axiom degrees prevents silently strengthening the PC ceiling. The existing guidance already covers these choices.</p>
+<div class="timing-report" data-session="r12_compact_decoder_20260915">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 16.12 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 58.15 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">8 min 18.78 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">17.96 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">1 min 41.22 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 9.</p>
+</div>
+<p class="small">Preliminary source/API reading and broad proof planning preceded instrumentation; retries are included, and final checkpoint work follows the snapshot.</p>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

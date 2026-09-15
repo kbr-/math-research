@@ -1,0 +1,37 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.CompactBitDecoder
+Claim file: claims/CompactBitDecoder.lean
+Claim: lem:compact-bit-decoder-coordinates
+Source: https://kbr.is-a.dev/math-research/#lean-compact-bit-decoder-coordinates
+Scope: Explicit ordinary affine bit-to-unary decoder on arbitrary m rows and 2^ℓ labels, with a linear polynomial left inverse, injectivity, and exact ordinary total-degree preservation.
+Declarations: MathResearch.PolynomialCalculus.decoderInput_degree MathResearch.PolynomialCalculus.compactDecoder_left_inverse MathResearch.PolynomialCalculus.compactDecoder_injective MathResearch.PolynomialCalculus.compactDecoder_degree
+$ lake --wfail build claims.CompactBitDecoder
+Build completed successfully (1656 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/decoder/formalization/.lake/tmpybvdgh_a.lean
+MathResearch.PolynomialCalculus.decoderInput_degree : ∀ (m ℓ : ℕ) (v : Fin m × Fin ℓ),
+  MvPolynomial.totalDegree (MathResearch.PolynomialCalculus.decoderInput m ℓ v) ≤ 1
+'MathResearch.PolynomialCalculus.decoderInput_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.compactDecoder_left_inverse : ∀ (m ℓ : ℕ)
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) (Fin m × Fin ℓ)),
+  (MvPolynomial.aeval (MathResearch.PolynomialCalculus.decoderInverseInput m ℓ))
+      ((MathResearch.PolynomialCalculus.compactDecoder m ℓ) P) =
+    P
+'MathResearch.PolynomialCalculus.compactDecoder_left_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.compactDecoder_injective : ∀ (m ℓ : ℕ),
+  Function.Injective ⇑(MathResearch.PolynomialCalculus.compactDecoder m ℓ)
+'MathResearch.PolynomialCalculus.compactDecoder_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PolynomialCalculus.compactDecoder_degree : ∀ (m ℓ : ℕ)
+  (P : MathResearch.PolynomialCalculus.Poly (ZMod 2) (Fin m × Fin ℓ)),
+  MvPolynomial.totalDegree ((MathResearch.PolynomialCalculus.compactDecoder m ℓ) P) = MvPolynomial.totalDegree P
+'MathResearch.PolynomialCalculus.compactDecoder_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 4 audited declarations.

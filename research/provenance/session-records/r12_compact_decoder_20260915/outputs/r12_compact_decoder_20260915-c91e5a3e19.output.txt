@@ -1,0 +1,42 @@
+✔ [1655/1656] Built claims.PolynomialCalculusSubstitution (5.5s)
+✖ [1656/1656] Building claims.CompactBitDecoder (1.4s)
+trace: .> LEAN_PATH=/home/kbr/dev/math-worktrees/decoder/formalization/.lake/packages/Cli/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/decoder/formalization/.lake/packages/batteries/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/decoder/formalization/.lake/packages/Qq/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/decoder/formalization/.lake/packages/aesop/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/decoder/formalization/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/decoder/formalization/.lake/packages/importGraph/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/decoder/formalization/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/decoder/formalization/.lake/packages/plausible/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/decoder/formalization/.lake/packages/mathlib/.lake/build/lib/lean:/home/kbr/dev/math-worktrees/decoder/formalization/.lake/build/lib/lean /home/kbr/.elan/toolchains/leanprover--lean4---v4.34.0-rc2/bin/lean /home/kbr/dev/math-worktrees/decoder/formalization/claims/CompactBitDecoder.lean -o /home/kbr/dev/math-worktrees/decoder/formalization/.lake/build/lib/lean/claims/CompactBitDecoder.olean -i /home/kbr/dev/math-worktrees/decoder/formalization/.lake/build/lib/lean/claims/CompactBitDecoder.ilean -c /home/kbr/dev/math-worktrees/decoder/formalization/.lake/build/ir/claims/CompactBitDecoder.c --setup /home/kbr/dev/math-worktrees/decoder/formalization/.lake/build/ir/claims/CompactBitDecoder.setup.json --json
+error: claims/CompactBitDecoder.lean:45:36: Unknown identifier `map_ite`
+error: claims/CompactBitDecoder.lean:46:11: `simp` made no progress
+warning: claims/CompactBitDecoder.lean:45:45: This simp argument is unused:
+  aeval_X
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [decoderInput, map_sum, map_ite, map_zero, decoderInverseInput]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: claims/CompactBitDecoder.lean:45:54: This simp argument is unused:
+  map_zero
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [decoderInput, map_sum, map_ite, aeval_X, decoderInverseInput]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: claims/CompactBitDecoder.lean:45:64: This simp argument is unused:
+  decoderInverseInput
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [decoderInput, map_sum, map_ite, aeval_X, map_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+error: claims/CompactBitDecoder.lean:54:4: Type mismatch
+  decoder_left_inverse_X m ℓ v
+has type
+  (aeval (decoderInverseInput m ℓ)) (decoderInput m ℓ v) = X v
+but is expected to have type
+  (((aeval (decoderInverseInput m ℓ)).comp (compactDecoder m ℓ)) (X v)).coeff m✝ =
+    ((AlgHom.id (ZMod 2) (Poly (ZMod 2) (Fin m × Fin ℓ))) (X v)).coeff m✝
+error: claims/CompactBitDecoder.lean:63:4: Type mismatch: After simplification, term
+  substitution_degree (decoderInput m ℓ) 1 (decoderInput_degree m ℓ) P
+ has type
+  @LE.le ℕ instLENat (totalDegree ((aeval (decoderInput m ℓ)) P)) (totalDegree P)
+but is expected to have type
+  @LE.le ℕ instLENat (totalDegree ((compactDecoder m ℓ) P)) (totalDegree P)
+Some required targets logged failures:
+- claims.CompactBitDecoder
+error: build failed
