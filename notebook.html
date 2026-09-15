@@ -18044,5 +18044,53 @@ U_{c,g}=\sum_{u&lt;h}r_{c,u,g}
 <p class="small">Initial instruction/source reading preceded instrumentation; dependency integration and elaboration retries are included, and final checkpoint work follows the snapshot.</p>
 </article>
 
+<article class="research-entry" id="entry-2026-09-15-lean-low-rank-ENS-packing">
+  <h3>15 September 2026 — No-retained-core low-rank ENS packing</h3>
+  <p class="entry-meta"><strong>Status:</strong> complete Lean formalization of R08, including rank-only existence and ordinary Boolean NS companion certificates.</p>
+  <p><strong>Obligation and endpoint.</strong> Formalize the low-rank part of the paper's weighted-removal lemma and the <a href="#mixed-packing-common-vanishing-learning">mixed-packing argument</a>. The required endpoint assigns old polynomials to all coefficients of a low-rank block with no retained core. It does not invoke the stronger retained-core optimality theorem outside its stated positive-core range.</p>
+  <h4 id="lean-low-rank-ENS-specialization">Claim: low-rank ENS specialization</h4>
+  <p>Let \((g_i)_{i\in I}\) be a finite family of ordinary \(\mathbb F_2\)-polynomials of degree at most one in finitely many variables. Put \(r=\dim\operatorname{span}\{g_i\}\), and suppose \(r\le h(k+1)\), where \(h,k\ge0\). There exist coefficient polynomials \(\beta_{ui}\) and an ordinary polynomial \(Z\) such that</p>
+  <div class="math">\[
+    \deg\beta_{ui}\le k,\qquad
+    \prod_{u=1}^h\left(1-\sum_i\beta_{ui}g_i\right)=Z,
+    \qquad \deg Z\le r.
+  \]</div>
+  <p>At every Boolean point, \(Z\) equals one exactly when all inputs vanish, and equals zero otherwise. Every companion has an ordinary Boolean NS certificate</p>
+  <div class="math">\[
+    g_iZ\in\mathcal I_{r+1}({\rm BOOL}).
+  \]</div>
+  <p>The formal product identity is the actual specialization of the canonical fresh block, fixing all old variables. Properness and independence of the displayed input tuple are unnecessary. Empty inputs and \(r=0\) are included; \(h=0\) forces \(r=0\), and \(k=0\) permits only constant coefficient polynomials.</p>
+  <p><strong>Full proof.</strong> Choose a basis \(F_1,\ldots,F_r\) of the input span. Every basis element is a constant combination \(F_j=\sum_i c_{ji}g_i\), and each original input is a constant combination of the basis. Since the degree-at-most-one polynomials form a vector subspace, \(\deg F_j\le1\).</p>
+  <p>The inequality \(r\le h(k+1)\) permits an injection of the basis indices into \([h]\times[k+1]\). Group indices by the first coordinate of this injection, obtaining disjoint bins \(J_u\), each of size at most \(k+1\). The second coordinate is injective within a bin, proving its capacity bound. Order basis indices by their natural order. For \(j\in J_u\), put \(Q_{uj}=\prod_{t\in J_u,\ t&lt;j}(1-F_t)\), and define</p>
+  <div class="math">\[
+    \beta_{ui}=\sum_{j\in J_u}c_{ji}Q_{uj}.
+  \]</div>
+  <p>The prefix excludes \(j\) itself, so it has at most \(|J_u|-1\le k\) factors, each of degree at most one. Thus \(\deg Q_{uj}\le k\), and scalar multiplication and summation give \(\deg\beta_{ui}\le k\). For empty bins every coefficient is zero.</p>
+  <p>Ordered product telescoping gives</p>
+  <div class="math">\[
+    1-\prod_{j\in J_u}(1-F_j)
+       =\sum_{j\in J_u}F_jQ_{uj}
+       =\sum_i\beta_{ui}g_i.
+  \]</div>
+  <p>Multiplying the bin identities and using the disjoint partition of all basis indices shows that the specialized block product is exactly \(Z=\prod_{j=1}^r(1-F_j)\), as an ordinary polynomial, and \(\deg Z\le r\).</p>
+  <p>At a Boolean point every \(F_j\) takes a value in \(\mathbb F_2\). If all values vanish, every product factor is one; otherwise some value is one and its factor is zero. Mutual span membership says that the basis and original family have identical common zero sets. Hence \(Z\) is the required indicator and \(g_iZ\) vanishes on the whole Boolean cube. Its ordinary degree is at most \(r+1\). The <a href="#lean-binary-degree-controlled-Boolean-reduction">checked Boolean reduction theorem</a> supplies an ordinary NS witness at that degree, with each generator multiple charged separately. No flattened PC assumption is used. \(\square\)</p>
+  <p><strong>Formalization and evidence.</strong> The extracted claim <code>lem:low-rank-ENS-specialization</code> is in <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/LowRankENS.lean">LowRankENS.lean</a>. A stronger intermediate construction works for any mutually spanning finite families; the final theorem chooses a basis and assumes only the numerical rank bound. Its explicit coefficient-degree helper and full specialization theorem are audited in the <a href="https://github.com/kbr-/math-research/blob/main/research/results/r08_low_bins_20260915_01/lean-verification.txt">incremental report</a>. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r08_low_bins_20260915_01/README.md">reproduction record</a> retains exact types, source scope and measured outputs.</p>
+  <p><strong>Remaining route and process assessment.</strong> R08 is complete; R16 must still combine these low-rank certificates with high literal witnesses, coefficient domains, old axioms and one weighted replay over a global registry. Generalizing the construction to any mutually spanning families made the rank-only basis application short and kept all empty cases explicit. No new mathematical discrepancy or framework rule was needed. The coordinator owns route and living-section updates.</p>
+  <div class="timing-report" data-session="r08_low_bins_20260915_01">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 57.05 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2.47 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 55.75 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">3 min 51.23 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4.00 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">1 min 3.60 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

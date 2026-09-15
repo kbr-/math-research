@@ -1,0 +1,108 @@
+claims/LowRankENS.lean:125:75: error: unsolved goals
+case «0»
+hv : 0 ≠ 0
+⊢ 0 = 1
+
+case «1»
+hv : 1 ≠ 0
+⊢ 1 = 1
+claims/LowRankENS.lean:134:8: warning: `if_neg` has been deprecated: Use `ite_eq_right` instead
+claims/LowRankENS.lean:166:39: error: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => (if _a then 1 else 0) = if ∀ (i : ι), (eval x) (g i) = 0 then 1 else 0
+Error: Application type mismatch: The argument
+  Nat.decidableForallFin fun j => (eval x) (F j) = 0
+has type
+  Decidable (∀ (i : Fin r), (eval x) (F i) = 0)
+but is expected to have type
+  Decidable _a
+in the application
+  @ite (ZMod 2) _a (Nat.decidableForallFin fun j => (eval x) (F j) = 0)
+
+Explanation: The rewrite tactic rewrites an expression 'e' using an equality 'a = b' by the following process. First, it looks for all 'a' in 'e'. Second, it tries to abstract these occurrences of 'a' to create a function 'm := fun _a => ...', called the *motive*, with the property that 'm a' is definitionally equal to 'e'. Third, we observe that 'congrArg' implies that 'm a = m b', which can be used with lemmas such as 'Eq.mpr' to change the goal. However, if 'e' depends on specific properties of 'a', then the motive 'm' might not typecheck.
+
+Possible solutions: use rewrite's 'occs' configuration option to limit which occurrences are rewritten, or use 'simp' or 'conv' mode, which have strategies for certain kinds of dependencies (these tactics can handle proofs and 'Decidable' instances whose types depend on the rewritten term, and 'simp' can apply user-defined '@[congr]' theorems as well).
+
+case refine_1
+σ ι : Type
+inst✝¹ : Fintype σ
+inst✝ : Fintype ι
+r h k : ℕ
+g : ι → MvPolynomial σ (ZMod 2)
+hg : ∀ (i : ι), (g i).totalDegree ≤ 1
+F : Fin r → MvPolynomial σ (ZMod 2)
+hF : ∀ (j : Fin r), (F j).totalDegree ≤ 1
+c : Fin r → ι → ZMod 2
+hc : ∀ (j : Fin r), ∑ i, c j i • g i = F j
+d : ι → Fin r → ZMod 2
+hd : ∀ (i : ι), ∑ j, d i j • F j = g i
+hr : r ≤ h * (k + 1)
+e : Fin r ↪ Fin h × Fin (k + 1) := binEmbedding hr
+Z : MvPolynomial σ (ZMod 2) := ∏ j, (1 - F j)
+hzero : ∀ (x : σ → ZMod 2), (∀ (j : Fin r), (eval x) (F j) = 0) ↔ ∀ (i : ι), (eval x) (g i) = 0
+x : σ → ZMod 2
+⊢ (if ∀ (j : Fin r), (eval x) (F j) = 0 then 1 else 0) = if ∀ (i : ι), (eval x) (g i) = 0 then 1 else 0
+claims/LowRankENS.lean:173:8: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  l ≥ 0
+  0 ≤ j ≤ 1
+  f ≥ 0
+  b ≥ 0
+  b - f ≥ 0
+  b - j - l ≤ -2
+  a ≥ 0
+  a - b ≥ 0
+where
+ a := ↑h * ↑(k + 1)
+ b := ↑r
+ f := ↑(∏ j, (1 - F j)).totalDegree
+ j := ↑(g i).totalDegree
+ l := ↑Z.totalDegree
+claims/LowRankENS.lean:177:41: error: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => ((eval x) (g i) * if _a then 1 else 0) = 0
+Error: Application type mismatch: The argument
+  Nat.decidableForallFin fun j => (eval x) (F j) = 0
+has type
+  Decidable (∀ (i : Fin r), (eval x) (F i) = 0)
+but is expected to have type
+  Decidable _a
+in the application
+  @ite (ZMod 2) _a (Nat.decidableForallFin fun j => (eval x) (F j) = 0)
+
+Explanation: The rewrite tactic rewrites an expression 'e' using an equality 'a = b' by the following process. First, it looks for all 'a' in 'e'. Second, it tries to abstract these occurrences of 'a' to create a function 'm := fun _a => ...', called the *motive*, with the property that 'm a' is definitionally equal to 'e'. Third, we observe that 'congrArg' implies that 'm a = m b', which can be used with lemmas such as 'Eq.mpr' to change the goal. However, if 'e' depends on specific properties of 'a', then the motive 'm' might not typecheck.
+
+Possible solutions: use rewrite's 'occs' configuration option to limit which occurrences are rewritten, or use 'simp' or 'conv' mode, which have strategies for certain kinds of dependencies (these tactics can handle proofs and 'Decidable' instances whose types depend on the rewritten term, and 'simp' can apply user-defined '@[congr]' theorems as well).
+
+case hP
+σ ι : Type
+inst✝¹ : Fintype σ
+inst✝ : Fintype ι
+r h k : ℕ
+g : ι → MvPolynomial σ (ZMod 2)
+hg : ∀ (i : ι), (g i).totalDegree ≤ 1
+F : Fin r → MvPolynomial σ (ZMod 2)
+hF : ∀ (j : Fin r), (F j).totalDegree ≤ 1
+c : Fin r → ι → ZMod 2
+hc : ∀ (j : Fin r), ∑ i, c j i • g i = F j
+d : ι → Fin r → ZMod 2
+hd : ∀ (i : ι), ∑ j, d i j • F j = g i
+hr : r ≤ h * (k + 1)
+e : Fin r ↪ Fin h × Fin (k + 1) := binEmbedding hr
+Z : MvPolynomial σ (ZMod 2) := ∏ j, (1 - F j)
+hzero : ∀ (x : σ → ZMod 2), (∀ (j : Fin r), (eval x) (F j) = 0) ↔ ∀ (i : ι), (eval x) (g i) = 0
+i : ι
+x : σ → ZMod 2
+⊢ ((eval x) (g i) * if ∀ (j : Fin r), (eval x) (F j) = 0 then 1 else 0) = 0
+claims/LowRankENS.lean:194:75: error: Application type mismatch: The argument
+  Set.finite_range g
+has type
+  (Set.range g).Finite
+of sort `Prop` but is expected to have type
+  Type ?u.138
+of sort `Type (?u.138 + 1)` in the application
+  @FiniteDimensional.span_of_finite (Set.finite_range g)
+claims/LowRankENS.lean:210:4: error: Type mismatch
+  congrArg Subtype.val (Module.Basis.sum_repr B v)
+has type
+  ↑(∑ i, (B.repr v) i • B i) = ↑v
+but is expected to have type
+  ∑ j, (fun j => (B.repr v) j) j • A j = g i

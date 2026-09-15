@@ -1,0 +1,44 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.LowRankENS
+Claim file: claims/LowRankENS.lean
+Claim: lem:low-rank-ENS-specialization
+Source: https://kbr.is-a.dev/math-research/#lean-low-rank-ENS-specialization
+Scope: No-retained-core packing of an affine input span into bounded bins, exact zero-indicator product, degree-bounded coefficients and ordinary Boolean NS companion certificates.
+Declarations: MathResearch.lowBinCoefficients_degree MathResearch.lowRankENS_specialization
+$ lake --wfail build claims.LowRankENS
+✔ [1993/1993] Built claims.LowRankENS (27s)
+Build completed successfully (1993 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/affine-removal/formalization/.lake/tmps0sdv6uv.lean
+@MathResearch.lowBinCoefficients_degree : ∀ {σ ι : Type} [inst : Fintype ι] {r h k : ℕ}
+  (F : Fin r → MvPolynomial σ (ZMod 2)),
+  (∀ (j : Fin r), (F j).totalDegree ≤ 1) →
+    ∀ (c : Fin r → ι → ZMod 2) (e : Fin r ↪ Fin h × Fin (k + 1)) (v : Fin h × ι),
+      (MathResearch.lowBinCoefficients F c e v).totalDegree ≤ k
+'MathResearch.lowBinCoefficients_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.lowRankENS_specialization : ∀ {σ ι : Type} [Fintype σ] [inst : Fintype ι]
+  (g : ι → MvPolynomial σ (ZMod 2)),
+  (∀ (i : ι), (g i).totalDegree ≤ 1) →
+    ∀ (h k : ℕ),
+      Module.finrank (ZMod 2) ↥(Submodule.span (ZMod 2) (Set.range g)) ≤ h * (k + 1) →
+        ∃ β Z,
+          (∀ (v : Fin h × ι), (β v).totalDegree ≤ k) ∧
+            (MvPolynomial.aeval (Sum.elim MvPolynomial.X β)) (MathResearch.freshENSProduct g h) = Z ∧
+              Z.totalDegree ≤ Module.finrank (ZMod 2) ↥(Submodule.span (ZMod 2) (Set.range g)) ∧
+                (∀ (x : σ → ZMod 2),
+                    (MvPolynomial.eval x) Z = if ∀ (i : ι), (MvPolynomial.eval x) (g i) = 0 then 1 else 0) ∧
+                  ∀ (i : ι),
+                    g i * Z ∈
+                      MathResearch.PolynomialCalculus.nsSpace MathResearch.PolynomialCalculus.booleanBase
+                        (Module.finrank (ZMod 2) ↥(Submodule.span (ZMod 2) (Set.range g)) + 1)
+'MathResearch.lowRankENS_specialization' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 2 audited declarations.
