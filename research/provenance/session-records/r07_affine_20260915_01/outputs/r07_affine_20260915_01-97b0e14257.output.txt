@@ -1,0 +1,81 @@
+claims/AffineSystemLinearAlgebra.lean:27:86: error: unsolved goals
+K : Type u_1
+inst✝ : Field K
+n : ℕ
+L : AffineForm K n →ₗ[K] K
+a : AffineForm K n
+⊢ ((a none * L fun j => if none = j then 1 else 0) + ∑ i, a (some i) * L fun j => if some i = j then 1 else 0) =
+    a none * L (affineUnit none) + ∑ i, a (some i) * L (affineUnit (some i))
+claims/AffineSystemLinearAlgebra.lean:29:46: warning: This simp argument is unused:
+  affineUnit
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Fintype.sum_option, smul_eq_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/AffineSystemLinearAlgebra.lean:35:29: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?a + ?b) / ?c
+in the target expression
+  (affineValue a fun i =>
+      L (affineUnit (some i)) /
+        (affineUnit none none * L (affineUnit none) + ∑ i, affineUnit none (some i) * L (affineUnit (some i)))) =
+    L a / (affineUnit none none * L (affineUnit none) + ∑ i, affineUnit none (some i) * L (affineUnit (some i)))
+
+K : Type u_1
+inst✝ : Field K
+n : ℕ
+L : AffineForm K n →ₗ[K] K
+ht : L (affineUnit none) ≠ 0
+a : AffineForm K n
+⊢ (affineValue a fun i =>
+      L (affineUnit (some i)) /
+        (affineUnit none none * L (affineUnit none) + ∑ i, affineUnit none (some i) * L (affineUnit (some i)))) =
+    L a / (affineUnit none none * L (affineUnit none) + ∑ i, affineUnit none (some i) * L (affineUnit (some i)))
+claims/AffineSystemLinearAlgebra.lean:46:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i, a (some i) * ((1 - L (affineUnit none)) * x i)
+in the target expression
+  a none +
+      (∑ x, a (some x) * L (affineUnit (some x)) +
+        ∑ x_1,
+          a (some x_1) *
+            ((1 -
+                (affineUnit none none * L (affineUnit none) +
+                  ∑ i, affineUnit none (some i) * L (affineUnit (some i)))) *
+              x x_1)) =
+    L a +
+      ((1 - (affineUnit none none * L (affineUnit none) + ∑ i, affineUnit none (some i) * L (affineUnit (some i)))) *
+          a none +
+        (1 - (affineUnit none none * L (affineUnit none) + ∑ i, affineUnit none (some i) * L (affineUnit (some i)))) *
+          ∑ i, a (some i) * x i)
+
+K : Type u_1
+inst✝ : Field K
+n : ℕ
+L : AffineForm K n →ₗ[K] K
+x : Fin n → K
+a : AffineForm K n
+⊢ a none +
+      (∑ x, a (some x) * L (affineUnit (some x)) +
+        ∑ x_1,
+          a (some x_1) *
+            ((1 -
+                (affineUnit none none * L (affineUnit none) +
+                  ∑ i, affineUnit none (some i) * L (affineUnit (some i)))) *
+              x x_1)) =
+    L a +
+      ((1 - (affineUnit none none * L (affineUnit none) + ∑ i, affineUnit none (some i) * L (affineUnit (some i)))) *
+          a none +
+        (1 - (affineUnit none none * L (affineUnit none) + ∑ i, affineUnit none (some i) * L (affineUnit (some i)))) *
+          ∑ i, a (some i) * x i)
+claims/AffineSystemLinearAlgebra.lean:61:2: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+claims/AffineSystemLinearAlgebra.lean:66:6: error: Invalid rewrite argument: Expected an equality or iff proof or definition name, but `?m.102` is a value of type
+  ?m.101
+claims/AffineSystemLinearAlgebra.lean:78:32: error: Invalid rewrite argument: Expected an equality or iff proof or definition name, but `?m.97` is a value of type
+  ?m.96
+claims/AffineSystemLinearAlgebra.lean:78:33: error(lean.unknownIdentifier): Unknown constant `Submodule.mem_dualAnnihilator.mp`

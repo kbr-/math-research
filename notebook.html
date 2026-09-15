@@ -17683,5 +17683,57 @@ q\mathcal I_B(\mathcal F)\subseteq\mathcal I_{B+\deg q}(\mathcal F),
 </div>
 </article>
 
+<article class="research-entry" id="entry-2026-09-15-lean-affine-system-witnesses">
+  <h3>15 September 2026 — Affine-system witnesses and an ordinary polynomial bridge (R07 release)</h3>
+  <p class="entry-meta"><strong>Status:</strong> complete Lean formalization of two extracted supporting claims; this is an intermediate R07 release, not completion of all scalar cleanup or companion-degree obligations.</p>
+  <p><strong>Assignment and stopping point.</strong> The assigned branch formalizes R07, R08 and R16. This cycle releases the affine linear-algebra witnesses required by R15 and semantic weakening: proper-span consistency, constant linear-combination certificates, independent linear parts, and a faithful ordinary polynomial representation. The source is the affine setup of <a href="#affine-common-vanishing-learning">common vanishing learning</a>, the <a href="#semantic-weakening-PC-degree">semantic weakening argument</a>, and the paper's scalar-cleanup discussion. Their larger learning and PC claims remain separate. No new mathematical novelty is asserted.</p>
+  <h4 id="lean-affine-form-polynomial-interface">A faithful finite affine-form interface</h4>
+  <p><strong>Claim <code>lem:affine-form-polynomial-interface</code>.</strong> Let \(K\) be any field and \(n\ge0\). Represent an affine form by a constant \(a_0\) and linear coefficients \(a_1,\ldots,a_n\), collected as a function on an extra constant coordinate together with \([n]\). Define</p>
+  <div class="math">\[
+    E_a(x)=a_0+\sum_{i=1}^n a_i x_i,
+    \qquad P_a=C(a_0)+\sum_{i=1}^n a_iX_i\in K[X_1,\ldots,X_n].
+  \]</div>
+  <p>The map \(a\mapsto P_a\) is linear and injective, \(\deg P_a\le1\), and evaluation gives \(P_a(x)=E_a(x)\). The unit constant form maps to the polynomial one. Every affine map \(F:K^n\to K\) has such a representation, obtained by taking \(a_0=F(0)\) and \(a_i=F^{\rm lin}(e_i)\), and the resulting polynomial evaluates to \(F\).</p>
+  <p><strong>Full proof.</strong> The polynomial assignment is linear because constants and scalar multiples of variables distribute over addition and scalar multiplication. Each summand has degree at most one, so the whole polynomial does too. Evaluation sends each variable to its coordinate and the constant polynomial to its scalar, proving the evaluation identity. Equality of affine values at zero gives equality of constant coefficients. Equality at each coordinate vector \(e_i\), after subtracting the common constant, gives equality of each linear coefficient. Thus equality of affine values implies equality of forms, and polynomial equality implies form equality. For an affine map, \(F(x)=F(0)+F^{\rm lin}(x)\); expand \(x=\sum_i x_i e_i\) and apply linearity. This proves the claimed representation, including \(n=0\). The argument is valid over finite fields because it concerns affine forms specifically, not arbitrary polynomial functions. \(\square\)</p>
+  <h4 id="lean-affine-system-linear-algebra">Proper spans, zero-flat witnesses and linear parts</h4>
+  <p><strong>Claim <code>lem:affine-system-linear-algebra</code>.</strong> Let \(S\) be a subspace of the coefficient space just defined, and let \(u\) denote the constant unit form. If \(u\notin S\), there exists \(x_0\in K^n\) with \(E_a(x_0)=0\) for every \(a\in S\). If such an \(x_0\) exists and an affine form \(f\) vanishes at every common zero of \(S\), then \(f\in S\).</p>
+  <p>Consequently, for a finite input family \((g_i)\), a common zero together with vanishing of \(f\) on the common zero set gives constants \((c_i)\) such that</p>
+  <div class="math">\[
+    f=\sum_i c_i g_i.
+  \]</div>
+  <p>If the input family has no common zero, there instead exist constants with \(u=\sum_i c_i g_i\). These are equalities of forms, hence literal equalities of their ordinary polynomials under the linear map above.</p>
+  <p>For a proper span \(S\), projection to linear coefficients is injective on \(S\). It therefore preserves the dimension of \(S\), and sends every independent family spanning a proper subspace to an independent family of linear parts. Every nonzero \(a\in S\) has \(\deg P_a=1\).</p>
+  <p><strong>Full proof by finite-coordinate duality.</strong> For a linear functional \(L\) on the affine coefficient space, write \(t=L(u)\) and \(v_i=L(u_i)\), where \(u_i\) is the unit vector at the \(i\)-th linear coordinate. Expanding any coefficient vector in the coordinate basis gives</p>
+  <div class="math">\[
+    L(a)=a_0t+\sum_i a_iv_i.
+  \]</div>
+  <p>The vector-space annihilator theorem says that an element lies in a subspace exactly when every functional vanishing on the subspace kills that element. If \(u\notin S\), choose such a functional \(L\) with \(t\ne0\). Set \((x_0)_i=v_i/t\). The displayed identity gives \(E_a(x_0)=L(a)/t=0\) for every \(a\in S\), proving consistency of a proper span.</p>
+  <p>Next fix a common zero \(x_0\), and suppose \(f\) vanishes at all common zeros. Let \(L\) be any functional annihilating \(S\); its constant value \(t\) may now be zero. Put \(y_i=v_i+(1-t)(x_0)_i\). Direct expansion yields, for every form \(a\),</p>
+  <div class="math">\[
+    E_a(y)=L(a)+(1-t)E_a(x_0).
+  \]</div>
+  <p>For \(a\in S\), both terms on the right vanish. Thus \(y\) is another common zero, so \(E_f(y)=E_f(x_0)=0\), and the identity forces \(L(f)=0\). Since every annihilator kills \(f\), the same vector-space theorem gives \(f\in S\). This argument avoids dividing by \(t\) in the vanishing step and therefore includes direction functionals with \(t=0\).</p>
+  <p>For a finite family, membership in its span is equivalent to a finite constant linear combination, giving the first certificate. If there is no common zero but \(u\) were outside its span, the consistency argument would supply a contradiction; therefore \(u\) belongs to the span and gives the unit certificate. To prove injectivity of linear-part projection on a proper span, take \(a,b\in S\) with equal linear coefficients and evaluate at the common zero. Their constant coefficients must agree as well, hence \(a=b\). Restricting this injective linear map to \(S\) gives equal domain and image dimensions and preserves linear independence.</p>
+  <p>Finally, \(\deg P_a\le1\) is already proved. If its degree were zero, the ordinary polynomial would be constant. Its value at the common zero is zero, so it would be the zero polynomial. Injectivity of the coefficient representation would force \(a=0\), contrary to the hypothesis. Thus every nonzero proper input has exact degree one. Empty input families, zero forms, constant forms and zero-dimensional ambient spaces are covered without excluding them implicitly. \(\square\)</p>
+  <p><strong>Formal interfaces and evidence.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/AffineForm.lean">AffineForm.lean</a> contains the reusable representation, polynomial and existing <code>AffineMap</code> bridges. <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/AffineSystemLinearAlgebra.lean">AffineSystemLinearAlgebra.lean</a> contains the system-level witnesses. The separate <a href="https://github.com/kbr-/math-research/blob/main/research/results/r07_affine_20260915_01/affine-form-verification.txt">representation</a> and <a href="https://github.com/kbr-/math-research/blob/main/research/results/r07_affine_20260915_01/affine-system-verification.txt">system</a> reports preserve fifteen checked theorem types and their transitive axiom audits. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/r07_affine_20260915_01/README.md">reproduction record</a> includes the source/dependency scope and complete measured outputs.</p>
+  <p><strong>Remaining route and process assessment.</strong> This release does not yet construct a complete affine coordinate change or its free-coordinate parametrization, prove the exact \(2h+1\) fresh-companion degree, or replay scalar cleanup in PC. Those remain explicit R07 obligations; R08/R16 remain assigned. The two-file split lets clause and polynomial consumers import the representation without system duality, while keeping short coordinate calculations local. No mathematical discrepancy was found; the coordinator was notified of the exact released scope and owns living-section updates.</p>
+  <p>Initial restoration preceded instrumentation; cache and elaboration failures were setup/API issues, not failed mathematical statements.</p>
+  <div class="timing-report" data-session="r07_affine_20260915_01">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>13 min 49.23 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">21.54 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 21.65 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">7 min 35.33 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5.70 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">9.27 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">1 min 15.73 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 7.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

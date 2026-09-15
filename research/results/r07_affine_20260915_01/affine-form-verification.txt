@@ -1,0 +1,42 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.AffineForm
+Claim file: claims/AffineForm.lean
+Claim: lem:affine-form-polynomial-interface
+Source: https://kbr.is-a.dev/math-research/#lean-affine-form-polynomial-interface
+Scope: Canonical finite affine coefficient forms, their faithful ordinary polynomial representation and bridge from AffineMap; degree at most one over any field.
+Declarations: MathResearch.affinePolynomial_eval MathResearch.affinePolynomial_degree MathResearch.affineValue_ext MathResearch.affinePolynomial_injective MathResearch.affineFormOfMap_value MathResearch.affineFormOfMap_polynomial_eval MathResearch.affinePolynomial_unit
+$ lake --wfail build claims.AffineForm
+Build completed successfully (1457 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/affine-removal/formalization/.lake/tmpt58xk46h.lean
+@MathResearch.affinePolynomial_eval : ∀ {K : Type u_1} [inst : Field K] {n : ℕ} (a : MathResearch.AffineForm K n)
+  (x : Fin n → K), (MvPolynomial.eval x) (MathResearch.affinePolynomial a) = MathResearch.affineValue a x
+'MathResearch.affinePolynomial_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affinePolynomial_degree : ∀ {K : Type u_1} [inst : Field K] {n : ℕ} (a : MathResearch.AffineForm K n),
+  (MathResearch.affinePolynomial a).totalDegree ≤ 1
+'MathResearch.affinePolynomial_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affineValue_ext : ∀ {K : Type u_1} [inst : Field K] {n : ℕ} {a b : MathResearch.AffineForm K n},
+  (∀ (x : Fin n → K), MathResearch.affineValue a x = MathResearch.affineValue b x) → a = b
+'MathResearch.affineValue_ext' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affinePolynomial_injective : ∀ {K : Type u_1} [inst : Field K] {n : ℕ},
+  Function.Injective ⇑MathResearch.affinePolynomial
+'MathResearch.affinePolynomial_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affineFormOfMap_value : ∀ {K : Type u_1} [inst : Field K] {n : ℕ} (f : (Fin n → K) →ᵃ[K] K)
+  (x : Fin n → K), MathResearch.affineValue (MathResearch.affineFormOfMap f) x = f x
+'MathResearch.affineFormOfMap_value' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affineFormOfMap_polynomial_eval : ∀ {K : Type u_1} [inst : Field K] {n : ℕ} (f : (Fin n → K) →ᵃ[K] K)
+  (x : Fin n → K), (MvPolynomial.eval x) (MathResearch.affinePolynomial (MathResearch.affineFormOfMap f)) = f x
+'MathResearch.affineFormOfMap_polynomial_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affinePolynomial_unit : ∀ {K : Type u_1} [inst : Field K] {n : ℕ},
+  MathResearch.affinePolynomial (MathResearch.affineUnit none) = 1
+'MathResearch.affinePolynomial_unit' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 7 audited declarations.

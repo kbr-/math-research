@@ -1,0 +1,61 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.AffineSystemLinearAlgebra
+Claim file: claims/AffineSystemLinearAlgebra.lean
+Claim: lem:affine-system-linear-algebra
+Source: https://kbr.is-a.dev/math-research/#lean-affine-system-linear-algebra
+Scope: Finite affine coefficient systems: proper-span consistency, zero-flat vanishing witnesses, unit certificates, and independent linear parts. Polynomial/AffineMap bridges retain ordinary semantics.
+Declarations: MathResearch.affine_proper_common_zero MathResearch.affine_vanishing_mem_span MathResearch.affine_vanishing_coefficients MathResearch.affine_inconsistent_unit_coefficients MathResearch.affineLinearPart_injOn_proper MathResearch.affine_independent_linearParts MathResearch.affine_proper_linearPart_finrank MathResearch.affine_proper_nonzero_degree_one
+$ lake --wfail build claims.AffineSystemLinearAlgebra
+Build completed successfully (1692 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-worktrees/affine-removal/formalization/.lake/tmp4ty75vgw.lean
+@MathResearch.affine_proper_common_zero : ∀ {K : Type u_1} [inst : Field K] {n : ℕ}
+  (S : Submodule K (MathResearch.AffineForm K n)),
+  MathResearch.affineUnit none ∉ S → ∃ x, ∀ a ∈ S, MathResearch.affineValue a x = 0
+'MathResearch.affine_proper_common_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affine_vanishing_mem_span : ∀ {K : Type u_1} [inst : Field K] {n : ℕ}
+  (S : Submodule K (MathResearch.AffineForm K n)) (x : Fin n → K),
+  (∀ a ∈ S, MathResearch.affineValue a x = 0) →
+    ∀ (f : MathResearch.AffineForm K n),
+      (∀ (y : Fin n → K), (∀ a ∈ S, MathResearch.affineValue a y = 0) → MathResearch.affineValue f y = 0) → f ∈ S
+'MathResearch.affine_vanishing_mem_span' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affine_vanishing_coefficients : ∀ {K : Type u_1} [inst : Field K] {n : ℕ} {ι : Type u_2}
+  [inst_1 : Fintype ι] (g : ι → MathResearch.AffineForm K n) (x : Fin n → K),
+  (∀ (i : ι), MathResearch.affineValue (g i) x = 0) →
+    ∀ (f : MathResearch.AffineForm K n),
+      (∀ (y : Fin n → K), (∀ (i : ι), MathResearch.affineValue (g i) y = 0) → MathResearch.affineValue f y = 0) →
+        ∃ c, f = ∑ i, c i • g i
+'MathResearch.affine_vanishing_coefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affine_inconsistent_unit_coefficients : ∀ {K : Type u_1} [inst : Field K] {n : ℕ} {ι : Type u_2}
+  [inst_1 : Fintype ι] (g : ι → MathResearch.AffineForm K n),
+  (¬∃ x, ∀ (i : ι), MathResearch.affineValue (g i) x = 0) → ∃ c, MathResearch.affineUnit none = ∑ i, c i • g i
+'MathResearch.affine_inconsistent_unit_coefficients' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affineLinearPart_injOn_proper : ∀ {K : Type u_1} [inst : Field K] {n : ℕ}
+  (S : Submodule K (MathResearch.AffineForm K n)),
+  MathResearch.affineUnit none ∉ S → Set.InjOn ⇑MathResearch.affineLinearPart ↑S
+'MathResearch.affineLinearPart_injOn_proper' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affine_independent_linearParts : ∀ {K : Type u_1} [inst : Field K] {n : ℕ} {ι : Type u_2}
+  (g : ι → MathResearch.AffineForm K n),
+  LinearIndependent K g →
+    MathResearch.affineUnit none ∉ Submodule.span K (Set.range g) →
+      LinearIndependent K fun i => MathResearch.affineLinearPart (g i)
+'MathResearch.affine_independent_linearParts' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affine_proper_linearPart_finrank : ∀ {K : Type u_1} [inst : Field K] {n : ℕ}
+  (S : Submodule K (MathResearch.AffineForm K n)),
+  MathResearch.affineUnit none ∉ S →
+    Module.finrank K ↥(Submodule.map MathResearch.affineLinearPart S) = Module.finrank K ↥S
+'MathResearch.affine_proper_linearPart_finrank' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.affine_proper_nonzero_degree_one : ∀ {K : Type u_1} [inst : Field K] {n : ℕ}
+  (S : Submodule K (MathResearch.AffineForm K n)),
+  MathResearch.affineUnit none ∉ S → ∀ a ∈ S, a ≠ 0 → (MathResearch.affinePolynomial a).totalDegree = 1
+'MathResearch.affine_proper_nonzero_degree_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 8 audited declarations.

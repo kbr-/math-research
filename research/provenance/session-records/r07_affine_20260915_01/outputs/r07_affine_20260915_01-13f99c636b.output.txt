@@ -1,0 +1,52 @@
+claims/AffineSystemLinearAlgebra.lean:36:42: error(lean.unknownIdentifier): Unknown identifier `sum_div`
+claims/AffineSystemLinearAlgebra.lean:35:35: error: unsolved goals
+K : Type u_1
+inst✝ : Field K
+n : ℕ
+L : AffineForm K n →ₗ[K] K
+ht : L (affineUnit none) ≠ 0
+a : AffineForm K n
+⊢ (affineValue a fun i => L (affineUnit (some i)) / L (affineUnit none)) =
+    a none * L (affineUnit none) / L (affineUnit none) +
+      (∑ i, a (some i) * L (affineUnit (some i))) / L (affineUnit none)
+claims/AffineSystemLinearAlgebra.lean:158:37: warning: This simp argument is unused:
+  smul_smul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [smul_add, Finset.smul_sum, MvPolynomial.smul_eq_C_mul, mul_add, Finset.mul_sum, map_mul, mul_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/AffineSystemLinearAlgebra.lean:158:76: warning: This simp argument is unused:
+  mul_add
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [smul_add, Finset.smul_sum, smul_smul, MvPolynomial.smul_eq_C_mul, Finset.mul_sum, map_mul, mul_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/AffineSystemLinearAlgebra.lean:159:6: warning: This simp argument is unused:
+  Finset.mul_sum
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [smul_add, Finset.smul_sum, smul_smul, MvPolynomial.smul_eq_C_mul, mul_add, map_mul, mul_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/AffineSystemLinearAlgebra.lean:163:39: error(lean.unknownIdentifier): Unknown constant `MvPolynomial.eval_smul`
+claims/AffineSystemLinearAlgebra.lean:163:63: warning: This simp argument is unused:
+  smul_eq_mul
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [affinePolynomial, affineValue, MvPolynomial.eval_smul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/AffineSystemLinearAlgebra.lean:199:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?f ?x
+in the target expression
+  f x = (⇑f.linear + fun x => f 0) x
+
+K : Type u_1
+inst✝ : Field K
+n : ℕ
+f : (Fin n → K) →ᵃ[K] K
+x : Fin n → K
+h : f x = (⇑f.linear + fun x => f 0) x
+⊢ affineValue (affineFormOfMap f) x = f x
