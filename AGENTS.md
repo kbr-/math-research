@@ -78,8 +78,9 @@ actionable rule over another checklist or a record of one-off setup history.
   to falsify it using known
   obstructions or hard instances. Check the hypotheses preserved by each step
   and the accumulated costs under composition against the budget needed for
-  the goal. If those checks fail, address the failure or reconsider the
-  mechanism before sharpening more conditional estimates. Once the question,
+  the goal. If those checks fail or repeated cycles leave the same required
+  implication untouched, review alternative approaches and address the failure
+  before refining the same mechanism. Once the question,
   argument, and evidence are stable, make one focused correctness review;
   move optional extensions to the next cycle. Reopen the argument only
   for a concrete unresolved concern. Prepare the commit message, staging paths,
