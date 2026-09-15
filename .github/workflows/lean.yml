@@ -1,0 +1,106 @@
+name: Verify bit-PHP Lean proof
+
+on:
+  push:
+    branches: [main, formal]
+    paths:
+      - 'formalization/**'
+      - '.github/workflows/lean.yml'
+  pull_request:
+    paths:
+      - 'formalization/**'
+      - '.github/workflows/lean.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lean-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+        working-directory: formalization
+    env:
+      MATHLIB_NO_CACHE_ON_UPDATE: '1'
+      LEAN_NUM_THREADS: '2'
+      EVIDENCE: ${{ runner.temp }}/lean-evidence
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Record revision and reserve disk space
+        run: |
+          mkdir -p "$EVIDENCE"
+          {
+            git rev-parse HEAD
+            cat lean-toolchain
+            cat lake-manifest.json
+            df -h .
+          } | tee "$EVIDENCE/environment.txt"
+          # Disposable runner only: these SDKs are unused by Lean, C, and Python.
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
+          df -h . | tee "$EVIDENCE/disk-before-toolchain.txt"
+          python3 -c 'import shutil; assert shutil.disk_usage(".").free >= 10 * 1024**3, "Need 10 GiB free before Lean installation"'
+
+      - name: Install the pinned Lean toolchain only
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: formalization
+          auto-config: false
+          build: false
+          test: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: false
+
+      - name: Fetch only the final theorem's dependency cache
+        run: |
+          lean --version | tee "$EVIDENCE/lean-version.txt"
+          lake --version | tee "$EVIDENCE/lake-version.txt"
+          df -h . | tee "$EVIDENCE/disk-before-cache.txt"
+          python3 -c 'import shutil; assert shutil.disk_usage(".").free >= 7 * 1024**3, "Need 7 GiB free before dependency download"'
+          lake exe cache get claims/BitPHPSuperpolynomial.lean 2>&1 | tee "$EVIDENCE/cache.txt"
+          # Delete downloaded archives, retaining the extracted library artifacts.
+          lake exe cache clean! 2>&1 | tee "$EVIDENCE/cache-clean.txt"
+          # Never validate our proof by restoring compiled project claims.
+          rm -rf .lake/build
+          git diff --exit-code -- lean-toolchain lakefile.lean lake-manifest.json
+          df -h . | tee "$EVIDENCE/disk-before-build.txt"
+          python3 -c 'import shutil; assert shutil.disk_usage(".").free >= 1024**3, "Need 1 GiB free before project build"'
+
+      - name: Build the final theorem and check its type and transitive axioms
+        # The hosted runner supplies isolation; the local wrapper uses user-systemd.
+        run: |
+          python3 verify.py --target claims/BitPHPSuperpolynomial.lean \
+            --out "$EVIDENCE/verification.txt"
+
+      - name: Replay the final module and imports in a fresh kernel environment
+        run: |
+          printf '%s\n' 'lake env leanchecker --fresh claims.BitPHPSuperpolynomial' | tee "$EVIDENCE/kernel-replay.txt"
+          lake env leanchecker --fresh claims.BitPHPSuperpolynomial 2>&1 | tee -a "$EVIDENCE/kernel-replay.txt"
+          printf '%s\n' 'PASS: fresh kernel replay exited successfully.' | tee -a "$EVIDENCE/kernel-replay.txt"
+
+      - name: Record final disk usage
+        if: always()
+        run: |
+          mkdir -p "$EVIDENCE"
+          df -h . | tee "$EVIDENCE/disk-final.txt"
+          du -sh .lake/build .lake/packages "$HOME/.elan/toolchains" 2>/dev/null | tee "$EVIDENCE/disk-components.txt" || true
+
+      - name: Preserve verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lean-verification-${{ github.sha }}
+          path: ${{ runner.temp }}/lean-evidence/
+          if-no-files-found: error
+          retention-days: 90

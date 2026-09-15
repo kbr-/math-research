@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Worker for verify.sh; run through the protected launcher."""
+"""Worker for verify.sh locally, or directly on the isolated GitHub CI runner."""
 import argparse
 import json
 import re

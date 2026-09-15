@@ -124,6 +124,25 @@ checkpoints too. `--recheck-sources` explicitly re-elaborates the selected sourc
 reason to repeat source checking, not routine additions
 or integration. Lake rebuilds changed modules and their dependents automatically.
 
+## GitHub verification
+
+[Verify bit-PHP Lean proof](../.github/workflows/lean.yml) runs on relevant pushes
+and pull requests, or manually from the Actions tab. It targets
+`claims.BitPHPSuperpolynomial` and its full dependency chain, not unrelated claims.
+Each hosted run downloads only the required pinned Mathlib cache, builds project
+claims from scratch, uses `verify.py` to print the theorem type and enforce the
+standard-axiom allowlist, and runs `leanchecker --fresh` on the final module.
+Logs, the checked commit, dependency pins, and disk measurements are uploaded as
+an artifact even on failure. No project build cache is restored.
+
+Disk checks bracket installation, cache extraction and compilation. The disposable
+Ubuntu runner removes unused Android, .NET and GHC SDKs, then deletes compressed
+Mathlib downloads after extraction. These cleanup steps are CI-only.
+The workflow calls `verify.py` directly because hosted runners do not have our
+local user-systemd resource setup; local verification still uses `verify.sh`.
+A committed workflow is not evidence of a successful hosted build: cite its green
+Actions run and exact checked commit when sharing independent verification.
+
 ## Reproducible dependencies
 
 - `lean-toolchain` selects the Lean version required by the pinned Mathlib revision.
