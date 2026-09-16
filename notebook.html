@@ -18,7 +18,7 @@
   <div class="result">
     <p><strong>What would finish the route:</strong> for every fixed prime, depth, and size exponent, turn any hypothetical short ordinary-PHP proof into a forbidden old-base endpoint, or directly exclude its complete augmented source. A polynomial-size Frege construction would also be valuable; none is established.</p>
   </div>
-  <p><strong>Publication side branch.</strong> The <a href="#publication-Res-parity-bit-PHP-theorem">working unrestricted Res(\(\oplus\)) lower bound for bit-PHP</a> has an <a href="https://github.com/kbr-/math-research/blob/main/publications/bit-php-resolution-over-parities/whitepaper.pdf">whitepaper preprint</a>, pending external review. Its publication is separate from the main Frege route. An <a href="#prime-disequality-bit-PHP-size-bound">affine-disequality calculus</a> gives a related all-prime side result.</p>
+  <p><strong>Publication side branch.</strong> The <a href="#publication-Res-parity-bit-PHP-theorem">working unrestricted Res(\(\oplus\)) lower bound for bit-PHP</a> has an <a href="https://github.com/kbr-/math-research/blob/main/publications/bit-php-resolution-over-parities/whitepaper.pdf">whitepaper preprint</a>, pending external review. A <a href="#entry-2026-09-16-fable-transfer-assessment">bounded scope assessment</a> extracts a generic subspace-consequence criterion and a working exponential parameter corollary; these new formulations are not yet separately formalized or included in the preprint. Its publication is separate from the main Frege route. An <a href="#prime-disequality-bit-PHP-size-bound">affine-disequality calculus</a> gives a related all-prime side result.</p>
 </section>
 
 <section id="remaining-route">
@@ -19367,6 +19367,66 @@ c_y\prod_{i\in S}\left((c_i)_{a_i}+(c_i+e_{d_i})_{a_i}\right)
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">37 min 3.68 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 15.43 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.79 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+
+<article id="entry-2026-09-16-fable-transfer-assessment">
+<h3>16 September 2026 — General consequence transfer and the exponential bit-PHP parameter range</h3>
+<p class="entry-meta"><strong>Status:</strong> working corollaries of the recorded and formalized component theorems; the new generic assembly and exponential conclusion are not separately formalized.</p>
+<p><strong>Question and stopping point.</strong> Assess the author's supplied Fable feedback that Sections 5–6 contain a general Res(\(\oplus\))-to-PC tradeoff and permit \(2^{\Omega(n/\log^2 n)}\) bit-PHP lower bounds. This is a bounded publication-scope assessment, not a restart of Spin or a new attack on the main Frege obligation. Stop after stating the exact generic conclusion, checking a basic short-proof control, and closing the finite bit-PHP parameters with explicit conservative constants. Do not alter the preprint or start an unassigned formalization.</p>
+<h4 id="generic-affine-subspace-consequence-transfer">A generic dimension-budget consequence theorem</h4>
+<p>Let \(\mathcal F\subseteq\mathbb F_2[x_1,\ldots,x_v]\) contain all old Boolean equations. Let \(\Gamma\) adjoin a finite complete one-level affine ENS family with accuracy \(h\ge1\), all companions and fresh coefficient Boolean equations, and old-affine inputs only. Suppose \(\Gamma\) has a degree-\(D\) ordinary-PC refutation, \(D\ge2h+1\). Fix \(k\ge1\) and a linear subspace \(U\subseteq\mathcal P_{\le k}\). Let \(H\) be the blocks with input span not containing one and rank \(r_a&gt;h(k+1)\). Define</p>
+<div class="math">\[
+ B=k(D+1),\qquad R=\sum_{a\in H}\binom{v-r_a+k}{k}.
+\]</div>
+<p>Then</p>
+<div class="math">\[
+ \dim\bigl(U\cap\mathcal C_B(\mathcal F)\bigr)\ge\dim U-R.
+\]</div>
+<p>In particular, \(\dim U&gt;R\) forces a nonzero member of \(U\) to be derivable through \(B\). Conversely, if \(U\cap\mathcal C_B(\mathcal F)=\{0\}\), no such refutation exists whenever the dimension inequality holds. For \(r_*=h(k+1)+1\le v\), one may replace \(R\) by \(|H|\binom{v-r_*+k}{k}\). If \(r_*&gt;v\), then \(H\) is empty and \(R=0\).</p>
+<p><strong>Proof.</strong> For every \(a\in H\), choose affine coordinates on its nonempty common zero flat and let \(\rho_a\) be ordinary polynomial restriction to those coordinates. The <a href="#lean-ordinary-restriction-dimension">ordinary restriction dimension bound</a> gives \(\operatorname{rank}(\rho_a|_U)\le\binom{v-r_a+k}{k}\). The joint restriction map on \(U\) consequently has rank at most \(R\), so its kernel \(K\) has dimension at least \(\dim U-R\). For each \(f\in K\), <a href="#lean-proper-affine-block-restriction">literal affine-ideal membership</a> supplies \(f=\sum_i a_{a,i}g_{a,i}\) with \(\deg a_{a,i}\le k-1\) for every proper high block. Each other high block has one in its span. The <a href="#lean-affine-family-removal-with-unit-blocks">weighted removal theorem</a> therefore derives every \(f\in K\) from \(\mathcal F\) through \(B\). Thus \(K\subseteq U\cap\mathcal C_B(\mathcal F)\), proving the inequality. The rank-threshold specialization follows by monotonicity of the binomial count. These are ordinary restriction maps, not pointwise evaluation maps.</p>
+<p>This abstracts the existing common-kernel argument rather than discovering a new elimination mechanism. Its dependencies are indexed as <code>lem:ordinary-restriction-dimension</code>, <code>lem:proper-affine-block-restriction</code>, and <code>lem:affine-family-removal-with-unit-blocks</code>. Their Lean files verify those ingredients; the displayed arbitrary-\(U\) dimension inequality is a new paper-level assembly, not an additional exported Lean theorem.</p>
+<h4>What is generic, and what still depends on the source</h4>
+<p>The <a href="#lean-finite-affine-DAG-registry">finite DAG registry theorem</a> is generic but requires actual bounded-degree derivations of the supplied initial clause values. For a CNF with \(t\) initial clauses of width at most \(w\), take the old base to contain its ordinary clause polynomials \(F_C=\prod_i(1-g_i)\) and Boolean equations, with \(g_i\) the literal true-indicators. The telescoping identity gives</p>
+<div class="math">\[
+ P_C=F_CP_C+\sum_i\left(\prod_{j&lt;i}(1-g_j)\right)g_iP_C.
+\]</div>
+<p>Each term has a PC/NS certificate through \(w+2h\): the clause product has degree at most \(w\), the block product at most \(2h\), and each prefix-companion product at most \(w+2h\). The empty initial clause directly supplies one. Hence an \(S\)-node source refutation gives a registry with at most \(3S+t\) slots and a refutation through \(D=\max\{4h+1,w+2h\}\). Applying the preceding theorem gives a generic subspace-consequence bound. For another old encoding, an analogous initial-value bridge must be supplied; \(D=O(\log n)\) is not free for arbitrary wide clauses or arbitrary encodings. The publication uses its specific compact bit-PHP bridge.</p>
+<p>The conclusion is not in general a degree-\(B\) PC refutation: the resulting polynomial is some nonzero \(f\), not necessarily one. Nonzero ordinary polynomials can be valid low-degree consequences. For instance, the satisfiable system \(\{x,x^2-x\}\) derives the nonzero polynomial \(x\) but cannot derive one. Thus this argument alone does not establish a conventional universal size-versus-PC-refutation-degree theorem or a Res(\(\oplus\)) size–width relation. A useful application needs a sufficiently large space \(U\) with the additional separation property \(U\cap\mathcal C_B=\{0\}\). In bit PHP that is the substantial row-linear separation theorem, not a consequence of mere absence of a PC refutation.</p>
+<p><strong>Short-proof control.</strong> For any affine \(L\), the old system \(\{L,1-L\}\cup\mathrm{BOOL}\) derives one through degree one. It has a short complementary-parity refutation as well. Consequently, for every \(B\ge k\ge1\), all degree-at-most-\(k\) polynomials are in \(\mathcal C_B\), by multiplying the completed unit line. The generic consequence theorem is compatible with this whole family of easy parity contradictions: its conclusion is already satisfied, while the required separated space does not exist. This is a basic analytic control, not a comprehensive audit of known Res(\(\oplus\)) upper bounds. The latter remains worthwhile before advertising a general tradeoff.</p>
+<h4 id="bit-PHP-exponential-parameter-corollary">The stronger bit-PHP parameter consequence</h4>
+<p>For all sufficiently large \(n=2^\ell\), the recorded finite-parameter exclusion and actual clause transfer imply that every usual-CNF bit-PHP refutation has</p>
+<div class="math">\[
+ S&gt;\exp\!\left(\frac{n}{32768\ell^2}\right)
+   =2^{\Omega(n/(\log n)^2)}.
+\]</div>
+<p><strong>Proof.</strong> Put \(c=1/32768\), \(m=n+1\), \(h=3\ell\), and \(D=12\ell+1\). Suppose \(S\le\exp(cn/\ell^2)\). The <a href="#lean-bit-PHP-affine-clause-PC-transfer">actual usual-CNF transfer</a> supplies at most \(N\le3S+\binom{n+1}{2}\) blocks. Put \(M=\max\{1,N\}\). For all sufficiently large \(\ell\), \(n^2\le\exp(cn/\ell^2)\) and \(\ln20\le cn/\ell^2\); therefore \(M\le5\exp(cn/\ell^2)\) and \(\ln(4M)\le2cn/\ell^2\). Both eventual comparisons follow from \(2^\ell/\ell^3\to\infty\).</p>
+<p>Choose \(k=\lfloor n/(32\ell)\rfloor\). For sufficiently large \(\ell\), \(n\ge64\ell\), hence \(n/(64\ell)\le k\le n/(32\ell)\), in particular \(1\le k\le m\). Since \(m\le2n\),</p>
+<div class="math">\[
+ m\ln(4M)\le4c\frac{n^2}{\ell^2}
+ =\frac{n^2}{8192\ell^2}
+ \le\frac{n^2}{4096\ell^2}\le k^2.
+\]</div>
+<p>Moreover \(D\ge2h+1\), and</p>
+<div class="math">\[
+ B=k(D+1)\le\frac{n(12\ell+2)}{32\ell}\le\frac{7n}{16},
+ \qquad 2B-1\le n,\qquad
+ 4(k-1)\le4k\le\frac{n}{8\ell}&lt;n.
+\]</div>
+<p>These are exactly the hypotheses of <code>affine_family_exclusion_of_square</code> in <a href="https://github.com/kbr-/math-research/blob/54f09378e97465522b7f1caf115f90ad1faa7a57/formalization/claims/AffineFamilyExclusion.lean">the verified finite exclusion theorem</a>. The number of proper high blocks is at most \(N\le M\). The transferred degree-\(D\) refutation is therefore impossible, proving the bound. No optimization of the constant is claimed.</p>
+<p>This uses the existing finite square-condition theorem with a new parameter choice. The already exported final theorem <code>bitPHP_superpolynomial</code> states only the superpolynomial conclusion; the exponential corollary has not been formalized or inserted into the preprint. Its dependence on the same core proof means that the stronger asymptotics are neither independent confirmation of that core nor a contradiction in themselves.</p>
+<p><strong>Outcome and remaining work.</strong> Fable's observation identifies a useful general subspace-consequence theorem and a stronger quantitative corollary. It does not, without additional hypotheses, produce a general low-degree PC refutation. Independent specialist review of the encoding, fixed-registry simulation and weighted removal remains appropriate. If the author requests an extension, isolate the generic theorem, test it against substantive known short-proof families, and formalize the exponential parameter closure before changing the publication's headline. The main Frege goal, remaining route and proposed main research step are unchanged; only the publication-side summary is refreshed. No numerical experiment, Lean rerun, or claim of new literature priority was needed. Initial rules reading preceded timing.</p>
+<div class="timing-report" data-session="fable_transfer_assessment_20260916">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 42.47 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">33.69 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 45.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">23.69 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
