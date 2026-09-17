@@ -107,7 +107,7 @@ do not require formalization.
 ## Tools behind the workflow
 
 The agent follows the research protocol; the tools enforce specific execution
-and evidence checks. The launcher integrates with Codex CLI, while the research
+and evidence checks. The launchers integrate with Codex CLI and Claude Code, while the research
 record uses ordinary HTML, Markdown, code, and data files.
 
 | Task | Tools and records |
@@ -146,7 +146,7 @@ GitHub Actions when relevant notebook or site-tooling changes are pushed to
 ## Continue the research
 
 To run the agent, clone the repository as above, install and authenticate Codex
-CLI, and initialize the [computation controls](#computation-tools) before running
+CLI or Claude Code, and initialize the [computation controls](#computation-tools) before running
 experiments. Browsing the notebook alone does not require those controls.
 
 Research using this framework has only been tested with **GPT-6 Astra** at the
@@ -173,6 +173,12 @@ The launcher selects Vim for Ctrl+G and automatic approval review. Context and
 auto-compaction budgets are editable constants at the top of `start-codex.sh`.
 A Codex CLI version supporting these options is required.
 
+With Claude Code, run `./start-claude.sh` instead. It accepts the same options,
+records its session in `.claude-session-id`, and sets the same auto-compaction
+budget. [`CLAUDE.md`](CLAUDE.md) imports `AGENTS.md`, and the tracked
+[`.claude/settings.json`](.claude/settings.json) pre-approves the routine
+framework commands; it does not pre-approve `git push`.
+
 [AGENTS.md](AGENTS.md) describes the research workflow: maintain the notebook's
 living sections, append each research attempt with its timing and evidence,
 and commit complete checkpoints locally. Publishing requires authorization under
@@ -190,6 +196,9 @@ After restoring context in the session for your chosen checkout:
 - **Codex CLI:** enter `/goal <objective>` in the interactive session.
 - **ChatGPT app:** open the remotely connected Codex session for that checkout,
   enter `/goal`, and supply the same objective in the goal interface.
+- **Claude Code:** use `/loop` in place of `/goal`, for example
+  `/loop Execute the Spin prompt in ./PROMPTS.md.` The same substitution applies
+  to the other goal examples below.
 
 Enter this goal in the CLI, or paste the objective after `/goal` into the app's
 goal field:

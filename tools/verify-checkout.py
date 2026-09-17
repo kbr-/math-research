@@ -56,21 +56,22 @@ def main():
                     failures.append('Local reference differs from the audited version: ' + key)
     required = ['notebook.html', 'index.html', 'server.py', 'AGENTS.md', 'COMPUTATION_RULES.md',
                 'README.md', 'research/notes/RESUME.md', 'research/notes/SOURCE_AUDIT.md',
-                'compute.sh', 'start-codex.sh',
+                'compute.sh', 'start-codex.sh', 'start-claude.sh',
+                'CLAUDE.md', 'research/CLAUDE.md', 'formalization/CLAUDE.md',
                 'resource-controls/setup.py', 'tools/remember-codex-session.py',
                 'tools/archive-session.py', 'requirements-research.txt', 'LICENSE',
                 'ATTRIBUTION.md', 'CITATION.cff', 'THIRD_PARTY_NOTICES.md']
     failures += ['Untracked essential file: ' + name for name in required if name not in tracked]
-    forbidden = ['.codex-session-id', 'php_codex_handoff.zip']
+    forbidden = ['.codex-session-id', '.claude-session-id', 'php_codex_handoff.zip']
     failures += ['Machine-local or redundant file tracked: ' + name for name in forbidden if name in tracked]
     for name in tracked:
-        if name == '.codex/config.toml':
-            continue  # Shared project defaults; all other Codex state stays local.
-        if name.startswith(('.resource-runtime/', '.codex/', '.agents/', 'research/tmp/', 'research/logs/', 'private/')) or '__pycache__/' in name:
+        if name in ('.codex/config.toml', '.claude/settings.json'):
+            continue  # Shared project defaults; all other agent state stays local.
+        if name.startswith(('.resource-runtime/', '.codex/', '.claude/', '.agents/', 'research/tmp/', 'research/logs/', 'private/')) or '__pycache__/' in name:
             failures.append('Runtime or scratch file tracked: ' + name)
     modes = subprocess.check_output(['git', 'ls-files', '--stage', '-z'], cwd=ROOT, text=True).split('\0')
     mode_by_path = {line.split('\t', 1)[1]: line.split(' ', 1)[0] for line in modes if line}
-    for name in ('compute.sh', 'start-codex.sh', 'tools/remember-codex-session.py', 'tools/archive-session.py'):
+    for name in ('compute.sh', 'start-codex.sh', 'start-claude.sh', 'tools/remember-codex-session.py', 'tools/archive-session.py'):
         if mode_by_path.get(name) != '100755':
             failures.append('Executable mode not tracked: ' + name)
     if args.public_history:

@@ -43,7 +43,7 @@ or content license can enforce citation of every abstract mathematical fact.
 See the [EMS publication code](https://euromathsoc.org/code-of-practice) and
 [Creative Commons FAQ](https://creativecommons.org/faq/).
 
-This project uses ChatGPT and Codex for research assistance, exposition, coding,
+This project uses ChatGPT, Codex, and Claude for research assistance, exposition, coding,
 and checking. Such assistance is not independent peer review or a guarantee of
 correctness, novelty, or copyright protection. Human authors remain responsible
 for work they publish and for properly acknowledging contributions and sources.

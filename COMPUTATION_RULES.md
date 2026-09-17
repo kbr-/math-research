@@ -53,7 +53,7 @@ computation group. Never compute without these protections. Polling and kernel
 accounting can produce brief overshoot; no exact maximum overshoot or termination
 latency is guaranteed.
 
-The boundary covers protected computation jobs and their descendants. Codex,
+The boundary covers protected computation jobs and their descendants. The agent,
 the browser, the small control processes, unrelated applications, and commands
 manually run outside the launcher are not inside the workload group.
 
@@ -103,7 +103,10 @@ reconfigure while computation jobs are running.
 Cgroups and running services disappear at shutdown. Project files and unit links
 persist; the services are not enabled at boot. Rerun setup after reboot/login,
 and check status when resuming. Codex needs the appropriate tool escalation to
-access user systemd outside its sandbox.
+access user systemd outside its sandbox; Claude Code reaches it directly.
+The unit links are per-user and point at the checkout that last ran setup. From
+another worktree of the same repository, start the existing controls with
+`systemctl --user start mathcompute-watchdog.service` instead of re-running setup.
 
 Resource-limit validation evidence and implementation details are recorded in
 [resource-controls/README.md](resource-controls/README.md). Do not rerun the

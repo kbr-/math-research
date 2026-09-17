@@ -22,6 +22,7 @@ class RepositoryTools(unittest.TestCase):
         shutil.copy2(ROOT / 'start-codex.sh', self.root / 'start-codex.sh')
         (self.root / 'tools').mkdir()
         shutil.copy2(ROOT / 'tools/remember-codex-session.py', self.root / 'tools/remember-codex-session.py')
+        shutil.copy2(ROOT / 'start-claude.sh', self.root / 'start-claude.sh')
         (self.root / 'bin').mkdir()
         self.capture = self.root / 'capture.json'
         fake = self.root / 'bin/codex'
@@ -30,6 +31,7 @@ class RepositoryTools(unittest.TestCase):
                         'Path(os.environ["MATH_LAUNCH_CAPTURE"]).write_text(json.dumps(' +
                         '{"args":sys.argv[1:],"cwd":os.getcwd(),"editor":os.environ["EDITOR"],"visual":os.environ["VISUAL"]}))\n')
         fake.chmod(0o755)
+        shutil.copy2(fake, self.root / 'bin/claude')
         self.env = dict(os.environ, PATH=str(self.root / 'bin') + os.pathsep + os.environ['PATH'],
                         MATH_LAUNCH_CAPTURE=str(self.capture))
 
@@ -80,6 +82,44 @@ class RepositoryTools(unittest.TestCase):
                                 env=env, capture_output=True, text=True, timeout=5)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual((self.root / '.codex-session-id').read_text(), SESSION + '\n')
+
+    def launch_claude(self, *args):
+        return subprocess.run([str(self.root / 'start-claude.sh'), *args],
+                              cwd='/tmp', env=self.env, capture_output=True, text=True, timeout=5)
+
+    def test_claude_fresh_checkout_binds_and_bootstraps(self):
+        script = self.root / 'start-claude.sh'
+        script.write_text(re.sub(r'AUTO_COMPACT_TOKENS=\d+', 'AUTO_COMPACT_TOKENS=530000', script.read_text()))
+        result = self.launch_claude()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        data = json.loads(self.capture.read_text())
+        bound = (self.root / '.claude-session-id').read_text().strip()
+        self.assertEqual(data['args'][:2], ['--session-id', bound])
+        self.assertNotIn('--resume', data['args'])
+        self.assertIn('research/notes/RESUME.md', data['args'][-1])
+        self.assertEqual(data['args'][2:4], ['--autocompact', '530000'])
+        self.assertEqual(data['cwd'], str(self.root))
+        self.assertEqual((data['editor'], data['visual']), ('vim', 'vim'))
+
+    def test_claude_existing_checkout_uses_exact_session(self):
+        (self.root / '.claude-session-id').write_text(SESSION + '\n')
+        self.assertEqual(self.launch_claude().returncode, 0)
+        args = json.loads(self.capture.read_text())['args']
+        self.assertEqual(args[:2], ['--resume', SESSION])
+        self.assertNotIn('--continue', args)
+
+    def test_claude_explicit_new_replaces_binding(self):
+        (self.root / '.claude-session-id').write_text(SESSION)
+        self.assertEqual(self.launch_claude('--new').returncode, 0)
+        args = json.loads(self.capture.read_text())['args']
+        self.assertNotIn('--resume', args)
+        self.assertNotEqual((self.root / '.claude-session-id').read_text().strip(), SESSION)
+
+    def test_claude_invalid_or_missing_explicit_binding_fails(self):
+        self.assertNotEqual(self.launch_claude('--resume').returncode, 0)
+        (self.root / '.claude-session-id').write_text('invalid session id')
+        self.assertNotEqual(self.launch_claude().returncode, 0)
+        self.assertFalse(self.capture.exists())
 
     def test_archiver_preserves_full_output_and_refuses_replacement(self):
         spec = importlib.util.spec_from_file_location('archive_session', ROOT / 'tools/archive-session.py')

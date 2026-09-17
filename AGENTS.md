@@ -48,12 +48,17 @@ actionable rule over another checklist or a record of one-off setup history.
   HEAD and worktree status. If it advanced, refresh/rebase or leave it unmerged;
   never treat validation against an older target as validation of the new one.
 - Work from the repository root; do not assume a particular absolute path, user,
-  or machine. `./start-codex.sh` resumes the exact machine-local ID stored in
-  `.codex-session-id`, or starts a fresh context-restoration session if absent.
-- On a fresh session explicitly started by this launcher, the main assistant runs
-  `./tools/remember-codex-session.py` to bind its current CODEX_THREAD_ID. Do not
-  overwrite this binding from subagents or unrelated sessions. Never commit it.
+  or machine. The repository supports Codex and Claude Code. `./start-codex.sh`
+  and `./start-claude.sh` resume the exact machine-local ID stored in
+  `.codex-session-id` or `.claude-session-id`, or start a fresh
+  context-restoration session if absent.
+- On a fresh Codex session explicitly started by its launcher, the main assistant
+  runs `./tools/remember-codex-session.py` to bind its current CODEX_THREAD_ID;
+  the Claude launcher binds the ID itself. Do not overwrite a binding from
+  subagents or unrelated sessions. Never commit it.
   A clone restores research from files, not from another machine's chat history.
+  An agent's private memory may hold user preferences only, never mathematical
+  state or research progress.
 - At the end of every research turn, including an unsuccessful attempt or a turn
   with no useful mathematical result, append a Research-record entry and create
   a Git commit. Include the notebook living sections, supporting evidence,

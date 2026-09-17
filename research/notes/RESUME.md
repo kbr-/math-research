@@ -109,5 +109,5 @@ historical mathematical sources only when the current research task needs them.
 - Setup and portable sessions: [README.md](../../README.md). Work from the
   checkout root using relative paths. Only a main session explicitly bootstrapped
   by the launcher should bind its local session ID; never bind an unrelated chat
-  or subagent. Durable research must remain in committed files, not chat history
-  or ignored runtime directories.
+  or subagent. Durable research must remain in committed files, not chat history,
+  an agent's private memory, or ignored runtime directories.
