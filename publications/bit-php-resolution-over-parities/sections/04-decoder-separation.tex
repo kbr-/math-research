@@ -1,8 +1,7 @@
 \section{The bit decoder and a separating functional}\label{sec:decoder}
 
-Here \(m\ge0\) is arbitrary and \(n=2^\ell\). We impose \(\ell\ge2\)
-only for the old-base transfer and separation theorem.
-The old compact bit system is
+Here \(n=2^\ell\) with \(\ell\ge2\), and \(m\) is arbitrary.
+The compact bit system, our old base, is
 \begin{equation}\label{eq:compact-base}
  \mathcal Q_{m,\ell}
   =\{E_{ii'}:i<i'\in[m]\}\cup\Bool_b,
@@ -19,7 +18,7 @@ ordinary ring map
 \end{equation}
 
 \begin{lemma}[Two-row interpolation]\label{lem:interpolation}\lean{claims/TwoRowInterpolation.lean}
-For any common row width \(N\ge0\), let \(\mathcal U_{i,i'}\) consist of Booleanity, same-row exclusions,
+Let \(\mathcal U_{i,i'}\) consist of Booleanity, same-row exclusions,
 and the two row-sum equations for distinct rows \(i,i'\).
 For a polynomial \(R\) supported on these rows and of degree at most \(d\),
 \[
@@ -81,8 +80,8 @@ is one exactly when \(z=w\). Lemma~\ref{lem:interpolation} therefore gives
 The remaining terms are column exclusions of degree two. Thus every axiom
 image has a certificate through its original degree. Replay the source
 proof using Lemma~\ref{lem:substitution} with \(T=1\), \(w=1\).
-Only axioms actually admitted by the source degree ceiling must be replayed;
-there is no additional assumption \(B\ge\ell\).
+Only axioms admitted by the source degree ceiling are replayed, so
+\(B\ge\ell\) need not be assumed.
 \end{proof}
 
 
@@ -91,7 +90,7 @@ Let \(\mathcal L_k\) be the space spanned by monomials of degree at most
 
 \begin{lemma}[Row-linear dimension]\label{lem:row-dimension}
 \lean{claims/RowLinearPolynomialSpace.lean}
-Over any field, for all \(m,\ell,k\ge0\),
+For all \(m,\ell,k\ge0\),
 \begin{equation}\label{eq:row-linear-dimension}
  \dim\mathcal L_k=\sum_{j=0}^k\binom mj\ell^j.
 \end{equation}
@@ -122,7 +121,6 @@ which is zero or a target generator, then
  \Delta\Ideal_B(\mathcal F)\subseteq
        \Ideal_{\max\{B-t,0\}}(\mathcal G).
 \]
-The variable sets may be arbitrary; only the cube index set must be finite.
 \end{lemma}
 \begin{proof}
 A monomial missing one group has equal evaluations in pairs obtained by
@@ -176,6 +174,21 @@ forbid at most \(2j\) of the \(2^{\ell-1}\) pairs in any specified direction.
 The strict packing bound permits the next choice.
 \end{proof}
 
+\paragraph{Idea of the separation theorem.}
+A degree lower bound says that the constant one is not derivable at degree
+\(B\). Section~\ref{sec:affine} needs the same for every nonzero row-linear
+\(f\) of degree \(t\le k\), where \(B\) is much larger than \(k\). Pick a
+monomial of top degree \(t\) in \(f\); it names \(t\) rows and one bit in
+each. For each of these rows choose two labels that differ exactly in the
+named bit, and sum over the \(2^t\) ways of assigning one of its two labels
+to each selected row. Over \(\F\) this signed sum \(\Delta\) annihilates
+every monomial that misses a selected row, so it sends \(\tau f\) to the
+constant one (the chosen coefficient), lowers every degree by \(t\), and
+sends pigeonhole consequences to consequences of the pigeonhole principle
+on the remaining \(m-t\) rows and \(n-2t\) columns. A normalized functional
+\(\lambda\) for that smaller instance, which exists by
+Theorem~\ref{thm:moments}, then gives \(\mu=\lambda\circ\Delta\).
+
 \begin{theorem}[Row-linear separation through a larger PC degree]
 \label{thm:row-separation}\lean{claims/CubeResidualDualSeparation.lean}
 Let \(m\ge0\), \(\ell\ge2\), \(n=2^\ell\), and suppose
@@ -206,8 +219,13 @@ Thus \(n-2t\ge1\), and
 Theorem~\ref{thm:moments} supplies a normalized residual annihilator
 \(\lambda\) through \(B-t\), even if there are fewer than \(B-t\)
 remaining rows. Set \(\mu=\lambda\circ\Delta\).
-The residual NS transport and Corollary~\ref{cor:stability} show that
-\(\mu\) annihilates the old unary PC space. Coefficient isolation gives
+To see that \(\mu\) annihilates \(\Cons_B(\mathcal F^{\mathrm{fun}}_{m,n})\),
+note first that this space equals \(\Ideal_B(\mathcal F^{\mathrm{fun}}_{m,n})\)
+by Corollary~\ref{cor:stability}, which applies since \(2B-1\le n\).
+The first assertion of Lemma~\ref{lem:row-cube} gives
+\(\Delta\Ideal_B(\mathcal F^{\mathrm{fun}}_{m,n})\subseteq
+\Ideal_{B-t}(\mathcal F^{\mathrm{fun}}_{m-t,n-2t})\), and \(\lambda\)
+vanishes on the latter space. Coefficient isolation gives
 \(\mu(\tau f)=1\), whereas \(\Delta1=0\) gives \(\mu(1)=0\).
 Finally apply Lemma~\ref{lem:decoder} for the bit consequence.
 \end{proof}

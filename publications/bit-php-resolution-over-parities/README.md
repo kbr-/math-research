@@ -1,21 +1,44 @@
 # Bit PHP in unrestricted resolution over parities
 
-**Preprint; theorem and dependencies verified in Lean.** This whitepaper expands the
-[formalized publication theorem](https://kbr.is-a.dev/math-research/#lean-publication-bit-PHP-superpolynomial)
-([Lean](https://github.com/kbr-/math-research/blob/54f09378e97465522b7f1caf115f90ad1faa7a57/formalization/claims/BitPHPSuperpolynomial.lean))
-and its dependencies, using the generalized statements and human-readable proofs
-recorded during formalization on 15 September 2026. Each statement links to its Lean source at published
-revision `54f0937`. The appendix includes all
-H01–H13 homological prerequisites and their proofs. External review of the
-manuscript remains separate from formal verification.
+**Preprint, revision 1 (17 September 2026); theorems and dependencies verified in Lean.**
+The whitepaper proves an exponential lower bound, more than exp(n/(32768 ℓ²)) nodes for every
+ℓ ≥ 32 ([Lean](https://github.com/kbr-/math-research/blob/b47e9b1ef1f5b273822001983e83d35d7acbe117/formalization/claims/BitPHPExponential.lean)),
+the [superpolynomial form of version 1](https://kbr.is-a.dev/math-research/#lean-publication-bit-PHP-superpolynomial)
+([Lean](https://github.com/kbr-/math-research/blob/b47e9b1ef1f5b273822001983e83d35d7acbe117/formalization/claims/BitPHPSuperpolynomial.lean)),
+and a generic sufficient condition for Res(⊕) size lower bounds. Each statement links to its Lean
+source at published revision `b47e9b1`; version 1 (15 September 2026) corresponds to `54f0937`.
+The appendix includes all H01–H13 homological prerequisites and their proofs. External review
+of the manuscript remains separate from formal verification.
+
+## Verify the formal proofs
+
+From the repository root, after the one-time Lean setup in
+[formalization/README.md](../../formalization/README.md):
+
+~~~sh
+./formalization/verify.sh --target claims/BitPHPExponential.lean
+~~~
+
+The expected axiom report for each listed declaration, for example the main theorem, is
+
+~~~
+'MathResearch.bitPHP_exponential' depends on axioms: [propext, Classical.choice, Quot.sound]
+~~~
+
+that is, Lean's standard foundations only. Use `--target claims/BitPHPSuperpolynomial.lean`,
+`claims/GenericCNFSubspaceCriterion.lean`, `claims/GenericCNFDensityBound.lean`, or
+`claims/ShortProofControl.lean` for the other cited results.
 
 - [Rendered PDF](whitepaper.pdf)
 - [Main TeX source](whitepaper.tex), with the complete argument in [sections](sections)
 - [Bibliography](references.tex)
+- [Development history](DEVELOPMENT_HISTORY.md), moved out of the paper in revision 1
+- [Feedback checklist for version 1](FEEDBACK.md)
 
 Author: Kamil Braun, with assistance from Claude Sonnet, Claude Opus,
 Claude Fable, and GPT-6 Astra. GPT-6 Astra was the main contributor to the
-mathematical development and drafting of this result.
+mathematical development and drafting of version 1. Claude Fable 5.1 formalized the additions
+of revision 1 (one proof batch delegated to Claude Opus 5) and drafted the revised text.
 
 The preprint proves its algebraic dependencies inline and includes a homological
 proof of the required chessboard-complex input. It also describes the Noemesis research

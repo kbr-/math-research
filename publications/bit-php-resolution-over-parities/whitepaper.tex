@@ -10,7 +10,7 @@
 \usepackage{booktabs}
 \usepackage[colorlinks=true,allcolors=blue,bookmarksnumbered=true]{hyperref}
 \hypersetup{
-  pdftitle={A superpolynomial lower bound for the bit pigeonhole principle in resolution over parities},
+  pdftitle={An exponential lower bound for the bit pigeonhole principle in resolution over parities},
   pdfauthor={Kamil Braun},
   pdfsubject={Research preprint; not externally peer reviewed},
   pdfkeywords={proof complexity, bit pigeonhole principle, resolution over parities, polynomial calculus}
@@ -24,7 +24,7 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \numberwithin{equation}{section}
-\newcommand{\leanref}[2]{\href{https://github.com/kbr-/math-research/blob/54f09378e97465522b7f1caf115f90ad1faa7a57/formalization/#1}{#2}}
+\newcommand{\leanref}[2]{\href{https://github.com/kbr-/math-research/blob/b47e9b1ef1f5b273822001983e83d35d7acbe117/formalization/#1}{#2}}
 \newcommand{\lean}[1]{\textnormal{\small\leanref{#1}{[Lean]}}}
 \newcommand{\leangroup}[1]{\textnormal{\small[Lean: #1]}}
 \newcommand{\leansep}{\,\textperiodcentered\ }
@@ -44,33 +44,44 @@
 \DeclareMathOperator{\Ann}{Ann}
 \setlength{\emergencystretch}{2em}
 \setlength{\parskip}{0.15em}
-\title{A superpolynomial lower bound for the bit pigeonhole principle\\
+\title{An exponential lower bound for the bit pigeonhole principle\\
 in resolution over parities}
 \author{Kamil Braun\\
 \href{mailto:kamilgbraun@gmail.com}{\texttt{kamilgbraun@gmail.com}}\\[0.6em]
 \small With substantial assistance from Claude and GPT models.\\
 \small More details in Section~\ref{sec:model-assistance}.}
-\date{Preprint\\15 September 2026}
+\date{Preprint, revision 1\\17 September 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
-We prove that the usual bit pigeonhole principle with \(n+1\) pigeons and
-\(n=2^\ell\) holes requires superpolynomial-size DAG-like resolution-over-parities
-refutations, without regularity or proof-depth restrictions. An arbitrary short
-refutation yields polynomially many complete affine extension blocks admitting
-an ordinary polynomial-calculus refutation of degree \(O(\log n)\).
-A simultaneous weighted coefficient substitution would produce a nonzero
-row-linear old-base consequence at degree \(O(\sqrt n(\log n)^2)=o(n)\).
-Matching-moment extension and a residual cube functional exclude that consequence.
-The theorem and its dependencies, including the required chessboard homology,
-have been formalized in Lean. We present the verified arguments with permanent links to the formal statements and proofs, and describe
-the open research framework in which they were developed. This manuscript
-is a preprint that has not yet been externally peer reviewed.
+Resolution over parities, \(\mathrm{Res}(\oplus)\), extends resolution by
+allowing clauses whose literals are linear equations over \(\mathbb F_2\).
+Superpolynomial size lower bounds were previously known only for restricted
+refutations: tree-like, regular, or of bounded depth. We prove that every
+DAG-like \(\mathrm{Res}(\oplus)\) refutation of the bit pigeonhole principle
+with \(n+1\) pigeons and \(n=2^\ell\) holes has more than
+\(\exp\bigl(n/(32768\,\ell^2)\bigr)=2^{\Omega(n/\log^2 n)}\) clauses, for every
+\(\ell\ge32\), with no restriction on regularity or depth.
+The proof translates an arbitrary refutation with \(S\) clauses into a
+polynomial calculus refutation of degree \(O(\log n)\) over \(O(S+n^2)\)
+groups of extension variables in the style of Buss, Impagliazzo,
+Kraj\'i\v{c}ek, Pudl\'ak, Razborov, and Sgall. One substitution then removes
+all extension variables at once and leaves a nonzero low-degree polynomial
+derived from the pigeonhole axioms alone at degree \(o(n)\); a degree lower
+bound in the style of Razborov, proved through the homology of chessboard
+complexes, shows that no such derivation exists.
+The argument also yields a general sufficient condition for
+\(\mathrm{Res}(\oplus)\) size lower bounds. The main theorem, this condition,
+and all their dependencies are formalized in Lean 4, and every statement links
+to its formal proof.
+The proof was developed with substantial AI assistance within an open
+research framework described in the final section.
 \end{abstract}
 \clearpage
 \tableofcontents
 \newpage
 \input{sections/01-introduction}
+\input{sections/01b-overview}
 \input{sections/02-algebra}
 \input{sections/03-matching-moments}
 \input{sections/04-decoder-separation}

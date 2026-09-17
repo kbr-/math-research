@@ -1,0 +1,204 @@
+\section{Overview of the proof}\label{sec:overview}
+
+This section describes the argument in words, fixes the terminology and the
+parameters, and works through the simulation of one inference. It contains no
+proofs; every claim made here is proved in the section cited for it.
+
+Fix a \(\Res\) refutation of \(\BPHP^{n+1}_n\) with \(S\) nodes. The proof
+has three steps.
+
+\subsection{Step 1: from a refutation to low-degree polynomial calculus}
+A linear clause \(C\) is a disjunction of affine equations. Write each
+equation through its \emph{true-indicator} \(g_i\), the affine form that is
+one exactly when the equation holds, so that \(C\) is falsified exactly on
+the affine flat \(Z(C)=\{g_1=\cdots=g_s=0\}\). Following Buss, Impagliazzo,
+Kraj\'i\v{c}ek, Pudl\'ak, Razborov, and Sgall \cite{BIKPRS}, we attach to
+\(C\) fresh Boolean variables \(r_{ui}\) and the product
+\[
+ P_C=\prod_{u=1}^{h}\Bigl(1-\sum_{i=1}^{s}r_{ui}g_i\Bigr),
+\]
+together with the axioms \(g_iP_C=0\) and \(r_{ui}^2=r_{ui}\). On \(Z(C)\)
+the product is one. At a point where \(C\) holds, each factor vanishes for
+half of the choices of its coefficients, so \(P_C\) behaves like the
+indicator of ``\(C\) is false'' up to an error that halves with each of the
+\(h\) factors. The axioms \(g_iP_C=0\) say that \(P_C\) is supported on
+\(Z(C)\). The line \(P_C=0\) is \emph{not} an axiom: deriving it is how the
+simulation expresses that \(C\) has been proved.
+
+What matters is that \(P_C\) has degree \(2h\) whatever the width or the
+rank of \(C\). The identity \(1-P_C=\sum_iU_{C,i}g_i\)
+(Corollary~\ref{lem:prefix}) lets a few local polynomial identities of
+degree at most \(4h+1\) simulate complementary-parity resolution and
+semantic weakening (Lemmas~\ref{lem:clause-resolution} and
+\ref{lem:clause-weakening}). Each simulated inference uses the \emph{lines}
+\(P_A=0\), \(P_B=0\) derived earlier, never their derivations, so the
+degree does not grow along the proof. This is why neither the depth of
+the refutation nor regularity enters: the simulation is local and the
+proof DAG is only followed in topological order. An initial clause costs
+degree \(2h+\ell\). Altogether (Theorem~\ref{thm:clause-transfer}) the
+refutation becomes a polynomial calculus refutation of degree
+\[
+ D=\max\{2h+\ell,\,4h+1\}
+\]
+from the compact pigeonhole axioms \(\mathcal Q_{m,\ell}\) of
+\eqref{eq:compact-base} together with at most
+\(N_{\mathrm{reg}}=3S+\binom m2\) blocks of extension axioms. With
+\(h=3\ell\) this is \(D=12\ell+1=O(\log n)\).
+
+\subsection{Step 2: removing all extension variables at once}
+A degree-\(O(\log n)\) refutation with extension variables contradicts
+nothing by itself. We substitute polynomials of degree at most \(k\) in the
+original bit variables for all the \(r_{ui}\), simultaneously, and replay
+the refutation (Lemma~\ref{lem:substitution}). A block whose inputs have
+rank \(r\le h(k+1)\) can be substituted \emph{exactly}: its \(h\) factors,
+each with coefficients of degree at most \(k\), suffice to turn \(P_C\) into
+the true indicator of \(Z(C)\), and the extension axioms become consequences
+of the Boolean axioms (Lemma~\ref{lem:packing}). This is the origin of the
+rank threshold \(h(k+1)\).
+
+A block of higher rank cannot be treated this way within degree \(k\).
+Instead we look for a polynomial \(f\) of degree at most \(k\) whose
+restriction to the flat \(Z(C)\) is identically zero. Then
+\(f=\sum_ia_ig_i\) with \(\deg a_i<k\), and substituting the \(a_i\) into
+the first factor and zero into the others turns \(P_C\) into \(1-f\). The
+extension axiom \(g_iP_C\) becomes \(g_i(1-f)\), which is not a consequence
+of anything; but after multiplication by \(f\) it becomes
+\(-g_i(f^2-f)\), a consequence of the Boolean axioms. So we replay the
+whole refutation \emph{multiplied by \(f\)}. Every axiom image is then
+derivable from \(\mathcal Q_{m,\ell}\) alone, and the final line \(1\)
+becomes \(f\) (Lemma~\ref{lem:hybrid}):
+\[
+ f\in\Cons_{B}(\mathcal Q_{m,\ell}),\qquad B=k(D+1).
+\]
+This is why the end product is a derivation of a nonzero polynomial \(f\)
+and not of the constant one: the weight \(f\) has to vanish on the
+falsifying flats of all high-rank clauses at once, and the constant one
+does not.
+
+A single \(f\) must serve every high-rank block. A flat of codimension
+\(r>h(k+1)\) has so few free coordinates that the restrictions of
+degree-\(k\) polynomials to it span a space smaller, by a factor
+\(e^{-k^2/m}\), than the space \(\mathcal L_k\) of \emph{row-linear}
+polynomials (at most one bit variable from each pigeon). If
+\[
+ m\ln(4M)\le k^2,
+\]
+where \(M\) bounds the number of high-rank blocks, a dimension count gives a
+nonzero \(f\in\mathcal L_k\) restricting to zero on all of them
+(Lemma~\ref{lem:kernel}). This inequality is the only place where the size
+of the refutation enters, through \(M\le N_{\mathrm{reg}}=3S+\binom m2\).
+
+\subsection{Step 3: a nonzero row-linear polynomial is not derivable}
+It remains to show that no nonzero \(f\in\mathcal L_k\) has a polynomial
+calculus derivation of degree \(B\) from the pigeonhole axioms when \(B\)
+is below roughly \(n/2\) (Theorem~\ref{thm:row-separation}). This is
+stronger than the degree lower bound for refutations, which is the case
+\(f=1\). We decode bit labels into the unary (one variable per pigeon and
+hole) functional pigeonhole principle, where, as in Razborov's analysis
+\cite{Raz98}, the linear functionals vanishing on all degree-\(B\)
+consequences are exactly the solutions of the matching-moment equations
+\eqref{eq:marginals}. Theorem~\ref{thm:moments} shows that every solution
+through a lower degree extends through degree \(B\) when \(2B-1\) is at
+most the number of holes; the extension problem is a cycle-filling problem
+in chessboard complexes, solved by the vanishing of their homology in the
+range of Bj\"orner, Lov\'asz, Vre\'cica, and \v{Z}ivaljevi\'c
+\cite{BLVZ94}. To separate a given \(f\) of degree \(t\), a signed sum over a
+\(t\)-dimensional cube of partial assignments isolates one top-degree
+coefficient of \(f\) as the constant one, while mapping pigeonhole
+consequences to consequences of a smaller pigeonhole instance of degree
+\(B-t\), where a normalized functional exists.
+
+\subsection{Parameters}
+The three steps meet in the inequalities of Theorem~\ref{thm:affine}:
+\[
+ (n+1)\ln(4M)\le k^2,\qquad 2k(D+1)-1\le n,\qquad 4(k-1)<n .
+\]
+With \(D=12\ell+1\), the second allows \(k\) up to about \(n/(24\ell)\),
+and then the first holds as long as \(\ln S\) is below a constant times
+\(n/\ell^2\). This gives Theorem~\ref{thm:main}. The symbols used
+throughout are collected here.
+\begin{center}
+\begin{tabular}{@{}p{0.27\textwidth}p{0.68\textwidth}@{}}
+\toprule
+\(\ell,\ n=2^\ell,\ m=n+1,\ v=m\ell\) & bits per label, holes, pigeons (rows), bit variables\\
+\(N\) & number of columns of a unary system (\(N=n\) in the application)\\
+\(S,\ N_{\mathrm{reg}}=3S+\binom m2\) & nodes of the refutation; blocks (slots) of the registry\\
+\(h\) & number of factors of a block product (its \emph{accuracy}); \(h=3\ell\)\\
+\(s\) & number of inputs of a block (clause width after compression, at most \(v+2\))\\
+\(r\) & rank of a block: dimension of the span of its inputs; threshold \(h(k+1)\)\\
+\(D\) & degree of the simulating PC refutation; \(D=12\ell+1\)\\
+\(k\) & degree bound for \(f\) and for the substituted coefficients\\
+\(t\) & degree of a particular \(f\); number of rows in the separating cube; \(t\le k\)\\
+\(M\) & bound on the number of proper high-rank blocks; \(M\le N_{\mathrm{reg}}\)\\
+\(B=k(D+1)\) & degree at which \(f\) would be derived; needs \(2B-1\le n\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Terminology}
+Some terms come from the research notebook in which the proof was developed
+and are kept because the formal statements use them.
+\emph{Old} variables are the bit variables \(b_{it}\) of the formula (in
+Section~\ref{sec:moments}, the unary variables), as opposed to the fresh
+coefficient variables \(r_{ui}\); the \emph{old base} is the axiom system
+before blocks are added, and an \emph{old-base consequence} is a polynomial
+derivable from it alone. A \emph{complete affine extension block of
+accuracy \(h\)} is the package \eqref{eq:block}: affine inputs \(g_i\) in
+the old variables, fresh coefficients, all \emph{companions} \(g_iP\), and
+all coefficient Boolean equations; ``complete'' means that every companion
+is present, and ``one-level'' that no block's inputs mention another
+block's variables. A \emph{registry} is a family of blocks fixed in advance,
+one \emph{slot} per clause that the simulation may need. A polynomial is
+\emph{row-linear} if each monomial has at most one bit variable from each
+pigeon. \(\Ideal_B\) and \(\Cons_B\) denote degree-\(B\) Nullstellensatz and
+polynomial calculus consequences (Section~\ref{sec:algebra}); ``NS'' and
+``PC'' abbreviate the two systems.
+
+\subsection{A worked example: one resolution step}
+Take accuracy \(h=1\) and resolve \(A=(u=1)\) with \(B=(u=0)\), for an
+affine form \(u\), to the empty clause. The true-indicators are \(u\) for
+\(A\) and \(1-u\) for \(B\), so with coefficients \(r\) and \(s\)
+\[
+ P_A=1-ru,\qquad P_B=1-s(1-u),\qquad P_\varnothing=1 .
+\]
+Suppose the lines \(P_A\) and \(P_B\) have been derived. Since
+\(u^2-u\) is a combination of Boolean axioms, polynomial calculus derives
+\[
+ (1-u)P_A-r(u^2-u)=(1-u)(1-ru)-r(u^2-u)=1-u ,
+\]
+which is \eqref{eq:pivot-correction} in this case: from ``\(A\) holds'' we
+have derived that the indicator of \(B\) is zero. Multiplying by \(s\) and
+adding \(P_B\) gives
+\[
+ s(1-u)+\bigl(1-s(1-u)\bigr)=1 ,
+\]
+the value of the empty clause, and the refutation is complete. All lines
+have degree at most three. With side literals present, the same
+computation is carried out after multiplying by the product \(P_T\) of the
+conclusion \(T\), and the side literals are absorbed by the companions of
+\(T\); with \(h\) factors, \(r\) and \(s\) are replaced by the polynomials
+\(U_{A,u}\) and \(U_{B,1-u}\) of degree \(2h-1\), which gives the bound
+\(4h+1\) of Lemma~\ref{lem:clause-resolution}.
+
+\subsection{Why the restriction-based approaches stop short}
+As we understand the earlier lower bounds for regular and bounded-depth
+\(\Res\) \cite{EGI25,BCD24,BC25,BI25,BCBI26,AI25,EI25}, they follow a path
+through the refutation and maintain a set of linear forms (a closure, or
+the state of a game or of a random walk) that records what the path has
+learned. Regularity or a depth bound controls how much such a path can
+accumulate; a general DAG may reuse a node along many long paths, and the
+control is lost. The present argument never follows a path. It is static
+and algebraic: the whole DAG is translated into one polynomial calculus
+refutation whose degree does not depend on depth, in the manner of the
+extension-variable method of \cite{BIKPRS}. That method was designed for
+bounded-depth Frege systems with counting gates, where it reduces lower
+bounds to degree bounds for systems with extension axioms; in that
+generality no low-degree way of removing the extension variables is known. For
+\(\Res\) the extension axioms have inputs that are affine in the original
+variables, and this is exactly what makes the one-shot removal of Step~2
+possible: low rank allows exact substitution, and high rank leaves room
+for a common annihilating polynomial. The price is that the base system
+must exclude every nonzero row-linear consequence, not only the constant
+one, which is the Razborov-style statement of Step~3. For nested
+extension axioms, as they arise from \(\mathrm{AC}^0[p]\)-Frege proofs, we
+know of no corresponding removal step.

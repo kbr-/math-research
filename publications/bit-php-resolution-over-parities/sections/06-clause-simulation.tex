@@ -17,20 +17,19 @@ included among its axioms.
 
 \begin{lemma}[General product telescoping]\label{lem:telescoping}
 \lean{claims/MpTelescoping.lean}
-In any commutative ring, for a finite input index set and \(h\ge0\), put
+For polynomials \(g_i\), \(r_{ui}\) with finitely many indices \(i\), and \(h\ge0\), put
 \[
  P_v=\prod_{u=0}^{v-1}\left(1-\sum_i r_{ui}g_i\right),\qquad
  U_{h,i}=\sum_{v=0}^{h-1}r_{vi}P_v.
 \]
 Then \(1-P_h=\sum_i U_{h,i}g_i\).
-For ordinary polynomials over any commutative coefficient ring, if
-\(\deg g_i\le\delta\), \(\deg r_{vi}\le1\), and \(h\ge1\), then
+If \(\deg g_i\le\delta\), \(\deg r_{vi}\le1\), and \(h\ge1\), then
 \[
  \deg P_h\le h(\delta+1),\qquad
  \deg U_{h,i}\le1+(h-1)(\delta+1),\qquad
  \deg(g_iP_h)\le\deg g_i+h(\delta+1).
 \]
-No freshness or nonvanishing assumption is needed for these upper bounds.
+These are upper bounds; no freshness or nonvanishing of the inputs is assumed.
 \end{lemma}
 \begin{proof}
 The identity holds at \(h=0\). Writing \(s_h=\sum_i r_{hi}g_i\), the
@@ -41,8 +40,7 @@ recurrences \(P_{h+1}=P_h(1-s_h)\) and
 \]
 Each factor has degree at most \(\delta+1\), and each summand of
 \(U_{h,i}\) has degree at most \(1+(h-1)(\delta+1)\).
-The sum and product degree inequalities prove the three bounds, including
-over rings with zero divisors. At \(h=0\), \(P_0=1\) and \(U_{0,i}=0\).
+The sum and product degree inequalities prove the three bounds. At \(h=0\), \(P_0=1\) and \(U_{0,i}=0\).
 \end{proof}
 
 \begin{corollary}[Affine-clause prefix identity]\label{lem:prefix}
@@ -133,7 +131,7 @@ be identically zero, so the already derived premise value is one.
 
 \begin{lemma}[Binary affine separator]\label{lem:binary-separator}
 \lean{claims/BinaryAffineZeroCover.lean}
-Let \(V\) be any vector space over \(\F\), and \(A,B,D\) finite clauses
+Let \(V\) be a vector space over \(\F\), and \(A,B,D\) finite clauses
 of affine true-indicators. Suppose \(A\wedge B\models D\), but neither
 \(A\models D\) nor \(B\models D\). There is an indicator \(u\) already
 in \(A\), taking both values on \(W=Z(D)\), such that
@@ -141,7 +139,6 @@ in \(A\), taking both values on \(W=Z(D)\), such that
  W\cap Z(A)=\{x\in W:u(x)=0\},\qquad
  W\cap Z(B)=\{x\in W:u(x)=1\}.
 \]
-No finite-dimensional assumption is required.
 \end{lemma}
 \begin{proof}
 Choose \(a\in W\) satisfying \(A\) and \(b\in W\) satisfying \(B\).
@@ -158,7 +155,7 @@ fiber equalities. The witnesses \(a,b\) give both values.
 
 \begin{lemma}[Two-premise semantic inference]\label{lem:affine-cover}
 \lean{claims/BinarySemanticAffineCover.lean}
-Over any \(\F\)-vector space, every sound inference \(A\wedge B\models D\)
+Every sound inference \(A\wedge B\models D\)
 between finite affine clauses admits a derivation using at most three
 semantic weakening or complementary-parity resolution steps, introducing
 at most two auxiliary clauses. It is either a one-premise weakening or
@@ -192,6 +189,17 @@ falsifying set. This works for tautologies as well as consistent systems
 and introduces no new indicators.
 \end{proof}
 
+\paragraph{Idea of the registry theorem.}
+The lemmas above simulate one inference at a time, given blocks for its
+premises and its conclusion. A polynomial calculus refutation needs all of
+its axioms fixed in advance, so the next theorem first reserves a block for
+every clause that can occur: one for each node, two for the auxiliary
+clauses that Lemma~\ref{lem:affine-cover} may introduce at that node, and
+one for each supplied initial clause. It then walks through the DAG in
+topological order. Because each step uses only the already derived lines
+\(P_A\), \(P_B\) and costs at most \(4h+1\), the degree of the whole
+derivation is the maximum, not the sum, of the local costs.
+
 \begin{theorem}[A fixed registry for a finite proof DAG]\label{thm:dag-registry}
 \lean{claims/AffineDAGRegistry.lean}
 Consider an \(S\)-node affine-clause DAG on \(v\) old bits, using semantic
@@ -200,9 +208,9 @@ there is a finite supplied family \((A_j)_{j\in J}\), of widths at most
 \(w\), such that each permitted initial clause is implied by some \(A_j\).
 There is one complete accuracy-\(h\) registry with
 \[
- N=3S+|J|\text{ slots},\qquad W=\max\{w,v+2\},
+ N_{\mathrm{reg}}=3S+|J|\text{ slots},\qquad W=\max\{w,v+2\},
 \]
-at most \(NW\) inputs and at most \(v+hNW\) variables. If the supplied
+at most \(N_{\mathrm{reg}}W\) inputs and at most \(v+hN_{\mathrm{reg}}W\) variables. If the supplied
 initial values have PC derivations in this registry through
 \(D\ge4h+1\), then every compressed source value has a derivation through
 that same \(D\). An empty final clause yields a refutation.
@@ -236,9 +244,9 @@ refutation through
 \begin{equation}\label{eq:simulation-degree}
  D=\max\{2h+\ell,4h+1\}.
 \end{equation}
-With \(v=m\ell\), \(N=3S+\binom m2\), and
-\(W=\max\{\ell,v+2\}\), the total input count is at most \(NW\),
-and the total variable count is at most \(v+hNW\). There is no proof-height restriction.
+With \(v=m\ell\), \(N_{\mathrm{reg}}=3S+\binom m2\), and
+\(W=\max\{\ell,v+2\}\), the total input count is at most \(N_{\mathrm{reg}}W\),
+and the total variable count is at most \(v+hN_{\mathrm{reg}}W\). There is no proof-height restriction.
 \end{theorem}
 \begin{proof}
 \lean{claims/BitPHPInitialBridge.lean} Introduce the compact initial linear clauses

@@ -1,6 +1,45 @@
 \section{Closing the proof-size parameters}\label{sec:main-proof}
 
+Both results of Section~\ref{sec:introduction} combine
+Theorem~\ref{thm:clause-transfer} at \(h=3\ell\) with
+Theorem~\ref{thm:affine}; they differ only in the choice of \(k\).
+
 \begin{proof}[Proof of Theorem~\ref{thm:main}]
+Let \(\ell\ge32\), \(n=2^\ell\), \(m=n+1\), and put
+\(x=n/(32768\,\ell^2)\). Suppose a refutation has \(S\le e^x\) nodes.
+Theorem~\ref{thm:clause-transfer} with \(h=3\ell\) gives a complete affine
+family over \(\mathcal Q_{m,\ell}\) with at most
+\(M=3S+\binom{n+1}{2}\) blocks and a PC refutation of degree
+\(D=12\ell+1\ge2h+1\). We verify \eqref{eq:affine-room} for
+\[
+ k=\left\lfloor\frac{n}{32\ell}\right\rfloor .
+\]
+An induction on \(\ell\ge32\) shows
+\(32768\,(2\ell+4)\ell^2\le2^\ell\), that is, \(x\ge2\ell+4\). Hence
+\(e^x\ge2^{2\ell+4}=16n^2\). Since \(\binom{n+1}2\le4n^2\),
+\[
+ 4M\le12e^x+16n^2\le13e^x\le e^{2x},\qquad \ln(4M)\le2x .
+\]
+From \(n\ge64\ell\) we get \(k\ge1\) and \(k+1\le2k\), so
+\(n<(k+1)\,32\ell\le64\ell k\). Therefore
+\[
+ (n+1)\ln(4M)\le2n\cdot2x=\frac{n^2}{8192\,\ell^2}
+ \le\frac{n^2}{4096\,\ell^2}\le k^2 .
+\]
+Moreover \(32\ell k\le n\) gives \(k\le m\), \(4(k-1)<n\), and
+\[
+ 2B=2k(12\ell+2)\le32\ell k\le n .
+\]
+Theorem~\ref{thm:affine} now says that the family has no PC refutation of
+degree \(D\), a contradiction. Hence \(S>e^x\ge2^x\). Both rule conventions
+are covered by Theorem~\ref{thm:clause-transfer}.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:main-superpolynomial}]
+The corollary follows from Theorem~\ref{thm:main}, since
+\(n/(32768\,\ell^2)\ge K\ell\) for large \(\ell\). We also record the
+independent argument of version 1, which is the one formalized in the
+linked file and uses the smaller \(k\) of Lemma~\ref{lem:parameters}.
 Fix \(K>0\) and let \(a=\max\{\lceil K\rceil,2\}\).
 Use Corollary~\ref{cor:polylog-exclusion} with parameters \(a,13,1\),
 and take \(\ell\) above its uniform threshold and at least two.
@@ -9,7 +48,7 @@ Since \(n\ge1\) and \(a\ge K\), \(S\le n^a\).
 Theorem~\ref{thm:clause-transfer}, with \(h=3\ell\), constructs an actual
 complete affine registry with
 \[
- N\le3S+\binom{n+1}{2},\qquad D=12\ell+1.
+ N_{\mathrm{reg}}\le3S+\binom{n+1}{2},\qquad D=12\ell+1.
 \]
 Its initial clauses are those of the usual bit CNF, and its empty final
 clause gives a PC derivation of one from exactly the complete family over
@@ -17,21 +56,19 @@ clause gives a PC derivation of one from exactly the complete family over
 Now
 \[
  \binom{n+1}{2}\le(n+1)^2\le4n^2\le4n^a,
- \qquad N\le7n^a\le13\,2^{a\ell}+1,
+ \qquad N_{\mathrm{reg}}\le7n^a\le13\,2^{a\ell}+1,
  \qquad D\le13(\ell+1).
 \]
-The number of proper blocks is at most \(N\), so these are precisely the
+The number of proper blocks is at most \(N_{\mathrm{reg}}\), so these are precisely the
 inventory and degree bounds excluded by the corollary, a contradiction.
 The threshold is independent of the alleged proof. Therefore \(S>n^K\).
 
-For comparison with the degree mechanism, the verified uniform parameter
-uses \(k=\lceil(\ell+1)(\sqrt2)^\ell\rceil\), giving
+This argument uses \(k=\lceil(\ell+1)(\sqrt2)^\ell\rceil\), giving
 \begin{equation}\label{eq:main-asymptotics}
  k=O(\sqrt n\log n),\qquad
  k(D+1)=O\bigl(\sqrt n(\log n)^2\bigr)=o(n).
 \end{equation}
-The ceiling-square-root-log choice in Corollary~\ref{cor:kernel-parameter}
-is also available, but is not needed by this final assembly.
+far below the room \(k\approx n/(32\ell)\) used for Theorem~\ref{thm:main}.
 \end{proof}
 
 \subsection{What the conclusion uses}
@@ -49,10 +86,6 @@ their compact input descriptions need be polynomial. Expanded PC
 polynomials and their derivations need not have polynomial monomial
 count: the contradiction uses degree.
 
-The value \(B\) in \eqref{eq:main-asymptotics} is sufficient for the
-claimed qualitative theorem. This preprint does not assert a sharper
-explicit exponential size bound.
-
 \subsection{Relationship to the broader PHP project}
 This result arose within a broader mathematical research project led by
 Kamil Braun, whose main objective is a superpolynomial lower
@@ -69,14 +102,131 @@ are publicly available in the \texttt{math-research} repository on GitHub
 \end{center}
 Section~\ref{sec:framework} describes the archive and framework.
 
-The standard substitution from unary PHP into bit PHP replaces a unary
-variable by the conjunction describing one bit label; see, for example,
-\cite{BB21}. For bounded-depth Frege it has polynomial size overhead
-and a constant formula-depth increase. But an affine expression in
-unary variables becomes a polynomial in bit conjunctions, which is
-generally nonlinear. This direct substitution therefore does not
-transfer the present theorem to unary \(\Res\), and a subsystem lower
-bound does not by itself establish a Frege lower bound.
+\section{A generic sufficient condition}\label{sec:generic}
+
+This section can be skipped. It records that Steps~1 and~2 of the proof
+never use the pigeonhole principle, and states what they give for an
+arbitrary set of linear clauses. Everything is over \(\F\). Proofs are by
+reference to the bit-PHP proofs they abstract and to the formal proofs.
+The criterion was first extracted from the argument in an AI review of
+version 1 (Claude Fable 5.1, 16 September 2026, recorded in the research
+notebook) and was then formalized.
+
+For a linear clause \(A\) with true-indicators \(g_1,\ldots,g_s\), its
+\emph{clause polynomial} is \(\prod_i(1-g_i)\), of degree at most the width
+\(s\); it vanishes exactly at the assignments satisfying \(A\). For a
+polynomial system \(\mathcal F\), call a linear space \(U\) of polynomials
+\emph{separated at degree \(B\)} if \(U\cap\Cons_B(\mathcal F)=\{0\}\).
+
+\begin{theorem}[Generic criterion]\label{thm:generic}
+\leangroup{\leanref{claims/GenericAffineSubspaceConsequence.lean}{PC level}
+  \leansep \leanref{claims/GenericCNFSubspaceCriterion.lean}{proof size}}
+Let \(\mathcal I\) be a set of linear clauses in \(v\) variables, and let
+\((A_j)_{j\in J}\) be a finite family of linear clauses of width at most
+\(w\) such that every clause of \(\mathcal I\) is semantically implied by
+some \(A_j\). Let \(\mathcal F\) be a polynomial system containing the
+Boolean equations and the clause polynomials of all \(A_j\). Let
+\(h,k\ge1\) with \(h(k+1)+1\le v\), put
+\[
+ D=\max\{2h+w,\,4h+1\},\qquad B=k(D+1),
+\]
+and let \(U\) be a space of polynomials of degree at most \(k\) that is
+separated at degree \(B\). Then every \(\Res\) refutation of \(\mathcal I\)
+with \(S\) nodes, under either rule convention of
+Section~\ref{sec:introduction}, satisfies
+\begin{equation}\label{eq:generic-criterion}
+ \dim U\le\Bigl(3S+|J|\Bigr)\binom{v-h(k+1)-1+k}{k}.
+\end{equation}
+\end{theorem}
+\begin{proof}[Proof by reference]
+Theorem~\ref{thm:dag-registry} is already stated for arbitrary clause sets
+with a supplied covering family; it gives a registry with \(3S+|J|\) slots.
+The initial values are derived as in \eqref{eq:initial-value}, with the
+clause polynomial of \(A_j\) in place of \(E_{ii'}\), through degree
+\(2h+w\). This gives a PC refutation of degree \(D\) from \(\mathcal F\)
+and the blocks. Lemma~\ref{lem:hybrid} is already stated for an arbitrary
+old system. In place of Lemma~\ref{lem:kernel}, restrict \(U\) to the zero
+flat of each proper block of rank above \(h(k+1)\): by
+Lemma~\ref{lem:restriction-ideal} each image has dimension at most
+\(\binom{v-h(k+1)-1+k}{k}\), so if \eqref{eq:generic-criterion} failed,
+some nonzero \(f\in U\) would restrict to zero on all of them, and
+Lemma~\ref{lem:hybrid} would give \(f\in\Cons_B(\mathcal F)\).
+\end{proof}
+
+\begin{corollary}[Density form]\label{cor:generic-density}
+\lean{claims/GenericCNFDensityBound.lean}
+Under the hypotheses of Theorem~\ref{thm:generic},
+\[
+ 3S+|J|\ \ge\ \delta\,\exp\!\left(\frac{hk^2}{v+k}\right),
+ \qquad \delta=\frac{\dim U}{\binom{v+k}{k}} .
+\]
+\end{corollary}
+\begin{proof}
+Removing \(r\) of \(v\) variables shrinks \(\binom{v+k}{k}\) by at least the
+factor \(\exp(-rk/(v+k))\), since each of the \(k\) factors
+\((v-r+j)/(v+j)\) is at most \(1-r/(v+k)\). Take \(r=h(k+1)+1\ge hk\).
+\end{proof}
+
+Here \(\delta\) is the density of \(U\) among all polynomials of degree at
+most \(k\). The bound is useful only if \(\delta\) is not much smaller than
+\(\exp(-hk^2/(v+k))\) while \(U\) remains separated at degree
+\(k(D+1)\). For bit PHP, \(U=\mathcal L_k\), \(w=\ell\), \(h=3\ell\), the old
+system is \(\mathcal Q_{m,\ell}\), the covering family is the
+\(\binom m2\) compact clauses of Theorem~\ref{thm:clause-transfer}, and
+separation is Theorem~\ref{thm:row-separation}; the sharper count of
+Lemma~\ref{lem:kernel} then gives Theorem~\ref{thm:main}.
+Thus Sections~\ref{sec:affine} and~\ref{sec:clause-simulation} are generic
+for any clause set whose covering clause polynomials are axioms of the base.
+What is specific to bit PHP is the separation theorem over the compact base,
+and the fact that a large separated space exists at all.
+
+\begin{remark}[A sufficient condition, not a tradeoff]\label{rem:not-tradeoff}
+Theorem~\ref{thm:generic} is not a relation between \(\Res\) size and PC
+refutation degree, nor between size and width. Its hypothesis is not that
+\(\mathcal F\) has no low-degree refutation but that a large space \(U\) of
+low-degree polynomials meets the low-degree consequences only in zero.
+The conclusion of Step~2 is a nonzero derivable member of \(U\), not a
+derivation of one, and nonzero polynomials can be legitimate low-degree
+consequences: the satisfiable system \(\{x,\ x^2-x\}\) derives \(x\) and
+does not derive one. We do not know a formula other than bit PHP for which
+a separated space of useful density has been established.
+\end{remark}
+
+\begin{remark}[Formulas with short refutations]\label{rem:short-proofs}
+\lean{claims/ShortProofControl.lean}
+Read contrapositively, a clause set with a size-\(S\) refutation admits no
+separated space of degree \(k\) and dimension above the right side of
+\eqref{eq:generic-criterion}. As a consistency check on the easiest parity
+contradiction: if \(\mathcal F\) contains a polynomial \(L\) of degree at
+most one and also \(1-L\), then it derives one at degree one, every
+polynomial of degree at most \(B\) is derivable at degree \(B\ge1\), and
+the only separated space is zero. This checks one trivial family; it is not
+an audit of the known short \(\Res\) refutations.
+\end{remark}
+
+\subsection{What does not follow}
+\emph{Unary PHP.} The standard substitution from unary PHP into bit PHP
+replaces a unary variable by the conjunction describing one bit label; see,
+for example, \cite{BB21}. For bounded-depth Frege it has polynomial size
+overhead and a constant depth increase. But an affine form in unary
+variables becomes a polynomial in bit conjunctions, which is generally
+nonlinear, so the substitution does not transfer Theorem~\ref{thm:main} to
+unary PHP in \(\Res\). Nor does Theorem~\ref{thm:generic} apply directly:
+no sufficiently dense separated space is known for the unary encoding.
+
+\emph{Size and width.} No relation between \(\Res\) size and width, or
+between size and PC degree, is claimed (Remark~\ref{rem:not-tradeoff}).
+
+\emph{Stronger systems.} A lower bound for the subsystem \(\Res\) does not
+by itself give a Frege lower bound. In the translation of
+\(\mathrm{AC}^0[p]\)-Frege proofs \cite{BIKPRS} the extension axioms are
+nested: inputs of one block mention variables of others. Step~2 uses that
+all inputs are affine in the original variables, and we know of no
+removal step for nested blocks.
+
+Other possible applications suggested in review, such as further succinctly
+encoded principles or resolution over linear equations modulo a prime
+\(p>2\), have not been examined and nothing is claimed about them.
 
 \section{Evidence and the research framework}\label{sec:framework}
 
@@ -94,11 +244,20 @@ this manuscript.
 This manuscript presents the
 \href{https://kbr.is-a.dev/math-research/\#lean-publication-bit-PHP-superpolynomial}
 {formalized notebook theorem and its proof}
-\lean{claims/BitPHPSuperpolynomial.lean}, recorded on 15 September 2026.
-The published repository revision containing the final theorem and its complete
-formal dependency route is
+\lean{claims/BitPHPSuperpolynomial.lean}, recorded on 15 September 2026,
+together with the
+\href{https://kbr.is-a.dev/math-research/\#lean-bit-PHP-exponential}
+{exponential bound} and the
+\href{https://kbr.is-a.dev/math-research/\#lean-generic-CNF-affine-DAG-subspace-criterion}
+{generic criterion}, formalized on 17 September 2026.
+Version 1 corresponds to repository revision
 \href{https://github.com/kbr-/math-research/tree/54f09378e97465522b7f1caf115f90ad1faa7a57}
-{\texttt{54f0937}}.
+{\texttt{54f0937}}, which contains the superpolynomial theorem and its complete
+formal dependency route. The formal content of revision 1 is contained in
+\href{https://github.com/kbr-/math-research/tree/b47e9b1ef1f5b273822001983e83d35d7acbe117}
+{\texttt{b47e9b1}}, which adds the modules for Theorem~\ref{thm:main},
+Theorem~\ref{thm:generic}, Corollary~\ref{cor:generic-density}, and
+Remark~\ref{rem:short-proofs}.
 The earlier
 \href{https://kbr.is-a.dev/math-research/\#bit-PHP-publication-audit-verdict}
 {internal publication audit} and subsequent literature notes in the
@@ -116,14 +275,16 @@ statement. The subsequent Lean formalization now verifies that statement
 and its entire dependency route, including the chessboard filling theorem,
 actual CNF-to-PC translation, and uniform parameter closure. The permanent
 [Lean] links in this revision refer to published commit
-\href{https://github.com/kbr-/math-research/tree/54f09378e97465522b7f1caf115f90ad1faa7a57}
-{\texttt{54f0937}}.
+\href{https://github.com/kbr-/math-research/tree/b47e9b1ef1f5b273822001983e83d35d7acbe117}
+{\texttt{b47e9b1}}.
 Its project pins Lean \texttt{4.34.0-rc2} and the Mathlib dependency revision.
 The final transitive axiom report contains only Lean's standard foundations;
 there is no \texttt{sorry}, custom axiom, or unproved chessboard interface.
-The compiled final module and all its imported declarations also passed a
-fresh kernel replay with the bundled \texttt{leanchecker --fresh} on
-15 September 2026. The complete project was separately rebuilt from empty
+The compiled module of the superpolynomial theorem and all its imported
+declarations also passed a fresh kernel replay with the bundled
+\texttt{leanchecker --fresh} on 15 September 2026; the modules added in
+revision 1 passed the project's verification script, with the same axiom
+report, but were not separately replayed in this way. The complete project was separately rebuilt from empty
 project build outputs using the pinned library caches.
 The proofs here follow the formalization entries, including
 alternative arguments adopted during formalization. Formal verification of
@@ -168,122 +329,40 @@ The durable record uses ordinary source, HTML, Markdown, and data files.
 These mechanisms make work recoverable and reviewable; they do not
 make a recorded proof automatically correct or formally verified.
 
-\subsection{Contributions and development history}\label{sec:model-assistance}
-The principal models used were Claude Sonnet 5, Claude Fable 5.1,
-Claude Opus 5, and GPT-6 Astra. GPT-6 Astra was the main contributor
-to the mathematical development and drafting of this result.
-The following account describes my experience; assessments
-of model performance are my impressions from this investigation.
+\subsection{Contributions and AI assistance}\label{sec:model-assistance}
+The mathematics in this paper was produced by AI models working inside the
+framework above, under my direction. For version 1, GPT-6 Astra (in the
+Codex command-line agent) was the main contributor to the mathematical
+development, the Lean formalization, and the drafting; Claude Sonnet 5,
+Claude Fable 5.1, and Claude Opus 5 were used in earlier exploratory
+conversations. For revision 1, Claude Fable 5.1 (in Claude Code) formalized
+the exponential bound of Theorem~\ref{thm:main} and the generic criterion of
+Section~\ref{sec:generic}, statements and proofs, with one batch of proofs
+delegated to Claude Opus 5; it also triaged reader and AI-review feedback on
+version 1 and drafted the revised text, including the proof overview and
+the related-work discussion. My own contribution is the design, direction,
+and iterative refinement of the research framework, the choice of problems,
+and steering questions about whether the work was approaching its goal; it
+is not the mathematical derivations. I do not have the expertise to check
+the mathematics myself, and I did not check it, in version 1 or in this
+revision. My confidence in the results rests on the Lean formalization,
+whose scope is the statements carrying [Lean] links, under the definitions
+in the linked files. The prose, the overview, the statements about the
+literature, and the fidelity of the formal definitions to the standard
+proof system are not covered by it. Neither version has been externally
+peer reviewed.
 
-I began in a Claude conversation on the
-\$20 Pro plan, initially attempting to attack \(P\ne NP\).
-I used Sonnet 5; Fable models were unavailable to me on that plan.
-As the conversation progressed, the objective shifted to the
-narrower, though still ambitious, problem of superpolynomial lower
-bounds for ordinary PHP in fixed-depth \(\mathrm{AC}^0[p]\)-Frege.
-Repeatedly reaching the five-hour usage limit, and dissatisfied with
-Sonnet 5's capabilities for this task, I upgraded to the Max 20x plan.
+A first-person account of how the project developed (the chat
+conversations it began in, the move to file-based agents, the
+\emph{Spin} research loop, and the parallel formalization) appeared as
+Section~8.3 of version 1. It has been moved out of the paper and is
+preserved in the repository as
+\href{https://github.com/kbr-/math-research/blob/main/publications/bit-php-resolution-over-parities/DEVELOPMENT_HISTORY.md}
+{\texttt{DEVELOPMENT\_HISTORY.md}}; the version-1 source containing it is
+fixed at commit
+\href{https://github.com/kbr-/math-research/blob/b47e9b1ef1f5b273822001983e83d35d7acbe117/publications/bit-php-resolution-over-parities/sections/07-main-proof-framework.tex}
+{\texttt{b47e9b1}}.
 
-I then attempted research with Fable 5.1. Hypotheses and proposed
-lemma proofs accumulated, but no clear route to the goal emerged.
-During the conversation, Claude began classifying my requests as
-unsafe cybersecurity research; the interface
-repeatedly switched me to Opus 4.8. I also attempted to continue
-with Opus 5, but remained dissatisfied with its performance.
-Increasingly frustrated, I purchased OpenAI's ChatGPT Pro x20 plan
-to try GPT-6 Astra.
-
-In the browser-based ChatGPT interface, GPT-6 Astra appeared much more
-confident and optimistic than Opus 5 and produced dozens of proposed
-lemmas and theorems. Two obstacles became apparent. First, it was
-unclear whether this growing body of mathematics advanced the main
-goal or merely supplied additional results without a sufficient
-application. Second, context compaction caused important information,
-including previously derived results, to be lost from the model's
-working context. I therefore sought an explicit context
-management strategy outside the chat interface. I asked ChatGPT to
-prepare a handoff package for Codex, an AI coding-agent environment,
-collecting the results and arguments developed in the conversation
-so that work could continue from files.
-
-I created a Git repository and specified requirements for
-the research framework described above. Using Codex CLI with
-GPT-6 Astra at Max thinking effort, I refined the framework through
-several rounds of interaction. Its first version was preserved in
-the initial commit of the public \texttt{math-research} repository,
-\href{https://github.com/kbr-/math-research/commit/2f9568f}
-{\texttt{2f9568f}}.
-
-Initially, I manually requested individual research turns,
-each followed by a request to identify friction in the framework and
-implement improvements. After several such turns, the need to automate
-this cycle became clear, particularly when I needed to step away
-from the laptop. The resulting \emph{Spin} prompt, introduced in commit
-\href{https://github.com/kbr-/math-research/commit/5570c3e}
-{\texttt{5570c3e}}, instructs the agent to repeat research, record its
-results, assess the process, and improve the framework when warranted.
-I assigned this continuing task through Codex's \texttt{/goal}
-feature. At the time this manuscript version was prepared, the agent
-was continuing these cycles autonomously under that assignment.
-
-My main contribution is the design, direction, and iterative
-refinement of the framework, rather than the mathematical derivations
-themselves. Explicit resume protocols restore context, durable records
-preserve results and failed attempts, and computation tools support
-mathematical reasoning with software. I continue to provide
-strategic questions and steering prompts when I notice weaknesses
-in the process. For example, I questioned whether successive lemmas
-were approaching the main goal or merely orbiting it. This concern is
-recorded in the notebook entry
-\href{https://kbr.is-a.dev/math-research/\#entry-2026-09-12-column-literal-selector-profiles}
-{``Classify column-literal selectors and realize arbitrary joint profiles
-within literal OR syntax.''}
-The resulting reassessment and route audit appear in commits
-\href{https://github.com/kbr-/math-research/commit/432269f}{\texttt{432269f}}
-and \href{https://github.com/kbr-/math-research/commit/603a99d}{\texttt{603a99d}}.
-Commit \href{https://github.com/kbr-/math-research/commit/e25983e}
-{\texttt{e25983e}} revised the workflow to require each research cycle
-to address a named missing implication, explain how its task could
-test or discharge that obligation, and state a concrete stopping point.
-The Git history and notebook research record preserve these framework
-changes and the strategic questions that motivated them.
-
-After the first draft of this whitepaper, I decided that formal
-verification was required, as I did not have enough expertise to check the
-mathematics myself. I began by extending the framework with a Lean project,
-introduced in commit
-\href{https://github.com/kbr-/math-research/commit/afa42b493549efec332378d1eb40ef55eb335bac}
-{\texttt{afa42b4}}. Working with GPT-6 Astra in Codex, I first requested
-three small formalizations individually, asking after each what the experience
-suggested improving in the framework. This repeated the earlier pattern of
-research followed by process refinement. The telescoping formalization exposed
-a distinction between an upper degree bound and an exact degree that the
-original statement had overlooked. The resulting guidance required checking
-the entire indexed claim and its dependencies, recording discrepancies,
-and explaining any alternative proof adopted during formalization. Separate
-claim files and links from the claim index made the verified results reusable;
-formalization remained an explicitly assigned activity alongside the continuing
-research.
-
-I then turned to the complete proof of this whitepaper's theorem.
-I asked the agent to map its dependencies and tackle the external chessboard
-homology input first, proving the required statement rather than leaving it
-as an assumption. The dependency map also identified independent branches,
-which Codex subagents developed in separate Git worktrees while a coordinating
-agent integrated their results. This process became the
-\emph{Spin-formalize-parallel} prompt. After completing the topological input,
-the same approach covered the algebraic dependencies, the translation of the
-actual proof DAG, and the final asymptotic argument. Some statements became
-more general, and some proofs changed; the notebook recorded these arguments
-as the formalization proceeded. The final theorem and its complete dependency
-chain were verified in commit
-\href{https://github.com/kbr-/math-research/commit/54f09378e97465522b7f1caf115f90ad1faa7a57}
-{\texttt{54f0937}}. I then requested that this manuscript be revised
-to present those statements and proofs, with permanent links to their Lean
-sources.
-
-The statements on this publication route are formally verified; this revised
-manuscript has not yet been externally peer reviewed.
 The classical topological input is attributed to \cite{BLVZ94};
 the product-extension methodology is attributed to \cite{BIKPRS}.
 Original manuscript material is distributed under the

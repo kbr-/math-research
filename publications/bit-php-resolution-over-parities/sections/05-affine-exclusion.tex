@@ -21,7 +21,7 @@ span. A nonzero span is called proper if it does not contain one.
 \leangroup{\leanref{claims/AffineSystemLinearAlgebra.lean}{linear algebra}
   \leansep \leanref{claims/FiniteAffineSpan.lean}{affine spans}
   \leansep \leanref{claims/FiniteAffineCoordinates.lean}{coordinates}}
-Over any field \(K\), let a finite affine system on \(K^v\) have span \(S\).
+Let a finite affine system on \(\F^v\) have span \(S\).
 Its common zero set is nonempty exactly when \(1\notin S\).
 In that case it is an affine flat of codimension \(r=\dim S\), every
 affine polynomial vanishing on it belongs to \(S\), and any basis
@@ -51,9 +51,7 @@ relation already identified, normalized to give one.
   \leansep \leanref{claims/FreshENSBlock.lean}{exact degrees}}
 Over \(\F\), zero-span blocks, and unit-span blocks with \(h\ge1\), can
 be removed by constant coefficient substitutions without increasing PC degree.
-More generally over any field, such a substitution works whenever the chosen
-constants satisfy their Boolean equations and every eliminated companion
-maps to zero. If a block has a genuine degree-one input, then
+If a block has a genuine degree-one input, then
 \(\deg P=2h\); each nonzero degree-one input has companion degree \(2h+1\).
 In particular these degree equalities hold after discarding zero inputs in
 a proper nonzero block. Without these hypotheses they are only upper bounds.
@@ -74,7 +72,7 @@ product and on multiplication by a degree-one input.
 \label{lem:restriction-ideal}
 \leangroup{\leanref{claims/OrdinaryRestrictionDimension.lean}{dimension}
   \leansep \leanref{claims/AffineRestrictionIdeal.lean}{ideal membership}}
-Over any field, an affine substitution into \(d\) variables maps a space
+An affine substitution into \(d\) variables maps a space
 of polynomials of degree at most \(k\) to a space of dimension at most
 \(\binom{d+k}{k}\). Suppose the common zero flat of a finite affine
 system \(g_i\) is nonempty. If the ordinary polynomial restriction of
@@ -95,6 +93,16 @@ to one such factor and remove it. The resulting cofactors have degree at
 most \(k-1\). Pull back the affine coordinate change and express each
 \(F_j\) as a constant combination of the original inputs.
 \end{proof}
+
+\paragraph{Idea of the common kernel.}
+The next lemma finds one row-linear \(f\) whose restriction to the zero flat
+of every proper high-rank block is the zero polynomial. It is a dimension
+count. Restriction to a flat of codimension \(r\) is a linear map from
+\(\mathcal L_k\) into polynomials of degree at most \(k\) in \(v-r\) free
+coordinates, a space of dimension \(\binom{v-r+k}{k}\). For
+\(r>3\ell(k+1)\) this is smaller than \(\dim\mathcal L_k\ge\binom mk\ell^k\)
+by a factor \(e^{-k^2/m}\). If \(M\) such maps are given and
+\(Me^{-k^2/m}<1\), their joint kernel is nonzero.
 
 \begin{lemma}[A common ordinary restriction kernel]\label{lem:kernel}
 \leangroup{\leanref{claims/RestrictionKernelBounds.lean}{parameter bounds}
@@ -149,6 +157,13 @@ The radicand is positive; square the inequality defining the ceiling.
 
 \subsection{One simultaneous weighted substitution}
 
+The two substitutions of this subsection were described in
+Section~\ref{sec:overview}: a low-rank block is replaced exactly by the
+indicator of its zero flat, a high-rank block by \(1-f\), and the whole
+refutation is replayed with weight \(f\). The degree accounting below shows
+that every axiom image is derivable from the old base through \(kD+\deg f\),
+after which Lemma~\ref{lem:substitution} does the rest.
+
 \begin{lemma}[Low-rank packing without a retained core]\label{lem:packing}
 \lean{claims/LowRankENS.lean}
 For affine inputs over \(\F\) of span rank \(r\le h(k+1)\), with
@@ -189,8 +204,7 @@ span contains one or it admits \eqref{eq:literal-ideal}. Then
 \[
  f\in\Cons_{k(D+1)}(\mathcal F).
 \]
-There is no multilinearity or properness requirement. The block family
-itself may be arbitrary; a PC derivation uses only finitely many axioms.
+No multilinearity or properness is required of \(f\) or of the blocks.
 \end{lemma}
 \begin{proof}
 Make one simultaneous substitution fixing the old variables, with all

@@ -1,8 +1,16 @@
 \section{Ordinary degree and polynomial calculus}\label{sec:algebra}
 
-The PC and linear-algebra statements in this section hold over any field \(K\),
-with arbitrary sets of variables. The Boolean reduction statement and the
-subsequent main argument use \(K=\F\).
+Throughout, the field is \(K=\F\) and variable sets are finite.
+\begin{remark}[Generality]\label{rem:generality}
+Several statements in Sections~\ref{sec:algebra}--\ref{sec:clause-simulation}
+were formalized in greater generality than is used here: over an arbitrary
+field, for infinite variable sets or infinite-dimensional spaces, or in
+arbitrary commutative rings. The linked Lean files record the exact
+hypotheses. One distinction made visible by formalization is used below:
+the degree of a block product or companion is in general only bounded above
+by the stated value, with equality under the hypotheses of
+Lemma~\ref{lem:cleanup}. The argument only uses the upper bounds.
+\end{remark}
 Degree bounds and accuracy parameters are integers.
 Polynomials are ordinary commutative polynomials. In particular, powers are
 not silently reduced using Booleanity. We use the nonnegative total-degree
@@ -76,15 +84,13 @@ Boolean point belongs to \(\F\), where its square equals itself; apply the
 second assertion at degree \(2k\).
 \end{proof}
 
-We use this reduction lemma only when the required degree is explicitly
-available. The high-rank step below instead needs literal membership in
-an affine ideal; pointwise vanishing on a finite field does not by itself
-supply that stronger conclusion.
-
+The high-rank step of Section~\ref{sec:affine} needs literal membership in
+an affine ideal (Lemma~\ref{lem:restriction-ideal}), which pointwise
+vanishing does not supply.
 
 \begin{lemma}[Substitution and fixed-weight replay]\label{lem:substitution}
 \lean{claims/PolynomialCalculusSubstitution.lean}
-Let \(K\) be any field. Let \(\phi\) substitute polynomials of degree at most
+Let \(\phi\) substitute polynomials of degree at most
 \(T\ge0\) for source variables. Then \(\deg\phi(p)\le T\deg p\), and
 \(\phi\) carries degree-\(D\) PC derivations to degree-\(TD\) derivations
 from the substituted axioms. More generally, fix a target polynomial \(w\)
@@ -107,7 +113,7 @@ and the substituted axioms as target system gives ordinary substitution.
 \begin{lemma}[Separation and compatible extension]\label{lem:duality}
 \leangroup{\leanref{third-party-claims/LinearSeparation.lean}{extension}
   \leansep \leanref{claims/PolynomialCalculusDuality.lean}{PC duality}}
-Let \(U,S\) be subspaces of a vector space \(V\) over any field \(K\).
+Let \(U,S\) be subspaces of a vector space \(V\) over \(K\).
 A linear functional on \(U\) extends to one on \(V\) vanishing on \(S\)
 if and only if it vanishes on \(U\cap S\).
 In particular, if \(p\notin S\), there is a linear functional
@@ -115,7 +121,6 @@ In particular, if \(p\notin S\), there is a linear functional
 Consequently, for either \(S=\Ideal_B(\mathcal F)\) or
 \(S=\Cons_B(\mathcal F)\), a normalized annihilator on
 \(\Pol_{\le B}\) exists exactly when \(1\notin S\).
-No finite-dimensional hypothesis is needed for the extension assertion.
 \end{lemma}
 \begin{proof}
 Define the extension on \(U+S\) by \(\lambda(u+s)=\lambda(u)\).

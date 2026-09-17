@@ -4,7 +4,7 @@ Resolution over parities augments ordinary resolution with affine equations
 over \(\F\). The system was introduced by Itsykson and Sokolov
 \cite{IS14,IS20}. Its unrestricted proof-size lower-bound problem remains an
 explicit open benchmark in the literature reviewed for this preprint
-\cite{IPS26}. The contribution claimed here is a superpolynomial lower
+\cite{IPS26}. The contribution claimed here is an exponential lower
 bound for the standard bit pigeonhole principle in unrestricted DAG-like
 \(\Res\).
 
@@ -47,17 +47,32 @@ Fresh unconstrained propositional variables, if used, may be set to
 constants throughout a proof. Extension axioms defining new predicates
 are not part of the system considered here.
 
-\begin{theorem}[Main theorem]\label{thm:main}\lean{claims/BitPHPSuperpolynomial.lean}
-For every fixed real \(K>0\), there is \(\ell_0(K)\) such that for every
-\(\ell\ge\ell_0(K)\), every DAG-like \(\Res\) refutation of
-\(\BPHP_{2^\ell}^{2^\ell+1}\) has more than \(2^{K\ell}\) nodes.
-The conclusion holds for both rule conventions above.
+\begin{theorem}[Main theorem]\label{thm:main}\lean{claims/BitPHPExponential.lean}
+For every \(\ell\ge32\), with \(n=2^\ell\), every DAG-like \(\Res\)
+refutation of \(\BPHP_{n}^{n+1}\) has more than
+\[
+ \exp\!\left(\frac{n}{32768\,\ell^2}\right)
+\]
+nodes. The same bound holds with base two in place of \(e\), and for both
+rule conventions above.
 \end{theorem}
 
-Thus the minimum line count is \(n^{\omega(1)}\) along powers of two.
-This also implies a superpolynomial lower bound on total proof-description
-size. The input length in \eqref{eq:bit-php} is polynomial in \(n\), so
-using input length instead of \(n\) gives the same qualitative conclusion.
+In terms of \(n\) the bound is \(2^{\Omega(n/\log^2n)}\). The constant
+\(32768=2^{15}\) and the threshold \(32\) are what the formal proof
+verifies; no attempt was made to optimize them. Version 1 of this preprint
+stated only the following qualitative form, which was formalized first and
+which the main theorem implies for large \(\ell\).
+
+\begin{corollary}[Superpolynomial form]\label{cor:main-superpolynomial}
+\lean{claims/BitPHPSuperpolynomial.lean}
+For every fixed real \(K>0\), there is \(\ell_0(K)\) such that for every
+\(\ell\ge\ell_0(K)\), every DAG-like \(\Res\) refutation of
+\(\BPHP_{2^\ell}^{2^\ell+1}\) has more than \(2^{K\ell}=n^K\) nodes.
+\end{corollary}
+
+The input length in \eqref{eq:bit-php} is polynomial in \(n\), so the bound
+is also exponential in a fixed power of the input length, and it bounds the
+total proof-description size from below.
 
 \subsection{Prior results and the scope of the claim}
 Efremenko, Garl\'ik, and Itsykson \cite{EGI25} prove a
@@ -82,27 +97,68 @@ unconditional results retain either a reversible-system restriction or
 a near-quadratic depth bound. They therefore do not give the unrestricted
 usual-bit-PHP size conclusion considered here.
 
-The theorem here removes both regularity and proof-depth
-restrictions. A targeted refresh of the primary literature on 15 September 2026 found
+\paragraph{Resolution over linear equations.}
+\(\Res\) is the characteristic-two member of the family
+\(\mathrm{Res}(\mathrm{lin}_R)\) of resolution over linear equations in a
+ring \(R\), introduced by Raz and Tzameret \cite{RT08}. Part and Tzameret
+\cite{PT21} proved the first superpolynomial lower bounds for DAG-like
+\(\mathrm{Res}(\mathrm{lin}_R)\): the subset-sum principle requires
+exponential size over the rationals. Their technique uses large
+characteristic and does not apply over \(\F\). Khaniki \cite{Kha22} proved
+almost quadratic lower bounds for DAG-like resolution over low-degree
+polynomial equations over finite fields, which includes resolution over
+linear equations, for mod-\(q\) Tseitin formulas and random \(k\)-CNFs.
+To our knowledge these were the first superlinear DAG-like bounds for such
+systems over finite fields; \cite{EGI25} notes that the rules considered
+there differ from the formulation of \(\Res\) used here.
+
+\paragraph{Other work on \(\Res\).}
+Gryaznov, Pudl\'ak, and Talebanfard \cite{GPT22} introduced regular \(\Res\)
+and related it to read-once linear branching programs. Alekseev and Itsykson
+\cite{AI25} lift resolution depth to regular and bounded-depth \(\Res\) size,
+and Efremenko and Itsykson \cite{EI25,EI26} sharpen the closure technique
+of \cite{EGI25} and obtain strong bounds for bounded-depth \(\Res\). All of
+these retain a regularity or depth restriction.
+
+\paragraph{Polynomial calculus and the pigeonhole principle.}
+The degree lower bound at the base of our argument is Razborov's theorem
+\cite{Raz98} that polynomial calculus refutations of the pigeonhole principle
+need degree \(n/2+1\) over every field, which also describes the low-degree
+consequences of the pigeonhole axioms. Related degree bounds and methods are
+due to Impagliazzo, Pudl\'ak, and Sgall \cite{IPS99}, Alekhnovich and Razborov
+\cite{AR03}, and Mik\v{s}a and Nordstr\"om \cite{MN15}. Section~\ref{sec:moments}
+reproves the part of Razborov's theorem that we need, over \(\F\), by a
+different route through chessboard complexes; we do not claim this degree
+range as new (see the discussion before Theorem~\ref{thm:moments}).
+The extension variables are those of Buss, Impagliazzo, Kraj\'i\v{c}ek,
+Pudl\'ak, Razborov, and Sgall \cite{BIKPRS}.
+
+\paragraph{Scope.}
+The theorem here removes both regularity and proof-depth restrictions.
+Targeted searches of the primary literature on 15 and 17 September 2026 found
 no preceding theorem with that scope; this is not an exhaustive certification
-of novelty.
-The full \(\mathrm{AC}^0[p]\)-Frege lower-bound problem remains outside
-the conclusion of Theorem~\ref{thm:main}.
+of novelty. The theorem concerns \(\Res\) only. It does not address unary
+PHP in \(\Res\), and the \(\mathrm{AC}^0[p]\)-Frege lower-bound problem
+remains open; Section~\ref{sec:generic} says what does and does not follow.
 
-\subsection{Proof organization}
-The proof has three interfaces.
-First, matching moments give a stable ordinary-degree filtration for
-functional unary PHP, and a residual cube-difference construction detects
-every nonzero row-linear bit polynomial.
-Second, a restriction-dimension argument supplies a common polynomial for
-all high-rank affine blocks, while low-rank blocks admit exact coefficient
-packing. A single weighted substitution removes the whole affine family.
-Third, each source proof clause is assigned a complete extension block;
-local PC derivations simulate the rules without a proof-height cost.
+\subsection{Changes in revision 1}
+Version 1 (15 September 2026) stated Corollary~\ref{cor:main-superpolynomial}.
+Revision 1 adds the exponential bound of Theorem~\ref{thm:main}
+(Section~\ref{sec:main-proof}) and the generic sufficient condition of
+Section~\ref{sec:generic}, both formalized, a proof overview
+(Section~\ref{sec:overview}), and a fuller account of related work. The
+development history formerly in the last section was condensed. No error in
+the mathematics of version 1 was found or corrected; the registry slot count
+of Section~\ref{sec:clause-simulation} was renamed from \(N\) to
+\(N_{\mathrm{reg}}\) to avoid a clash with the number of unary columns.
 
-Sections~\ref{sec:algebra}--\ref{sec:clause-simulation} prove these interfaces
-in full. Section~\ref{sec:main-proof} closes the parameters.
-Appendix~\ref{sec:topology} includes the precise homological input behind
+\subsection{Organization}
+Section~\ref{sec:overview} gives an overview of the proof, fixes terminology
+and parameters, and works through one simulated inference.
+Sections~\ref{sec:algebra}--\ref{sec:clause-simulation} prove the components
+in full, and Section~\ref{sec:main-proof} closes the parameters.
+Section~\ref{sec:generic} states the generic criterion; it can be skipped.
+Appendix~\ref{sec:topology} proves the homological input behind
 the matching extension. A companion online research notebook records the
 development of the argument and supporting experiments \cite{Repo};
 Section~\ref{sec:framework} describes these supplementary materials.
@@ -110,6 +166,6 @@ The proofs presented here can be read independently of that notebook:
 none of its lemmas is required as an unexpanded black box in this preprint.
 
 Every [Lean] link points to a source file in the published revision
-\href{https://github.com/kbr-/math-research/tree/54f09378e97465522b7f1caf115f90ad1faa7a57}{\texttt{54f0937}}, rather than a moving
+\href{https://github.com/kbr-/math-research/tree/b47e9b1ef1f5b273822001983e83d35d7acbe117}{\texttt{b47e9b1}}, rather than a moving
 branch. The linked files identify their exported statements and dependencies.
 The mathematical notation here is independent of Lean syntax.
