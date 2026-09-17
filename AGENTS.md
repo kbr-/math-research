@@ -23,19 +23,17 @@ actionable rule over another checklist or a record of one-off setup history.
 
 - **While the user-authorized Spin task is active, push reviewed research and
   framework checkpoints to `origin/main` at `github.com/kbr-/math-research`.**
-  On 2026-09-12 at approximately 19:13 UTC, after the earlier approval denials,
-  the user explicitly renewed the action authorization:
-  "You are authorized to make a push and continue making them as long as you
-  are spinning or for the next 12 hours."
-  The additional 12-hour window runs through 2026-09-13 07:13 UTC; the active
-  Spin grant also continues under the scope below.
+  On 2026-09-17 at approximately 23:10 UTC the user refreshed the action
+  authorization: "You're allowed to push during Spin for the next 24 hours."
+  The window runs through 2026-09-18 23:10 UTC and applies only while Spin is
+  active; it replaces the expired 2026-09-12 grant.
   This later authorization covers every reviewed Spin checkpoint and its normal
   GitHub Pages update, superseding the earlier no-push instructions for Spin.
   Compaction does not revoke it: restore this grant and cite the user's actual
   authorization in approval requests. Do not ask again within this scope.
-  It ends when the user stops Spin or revokes or limits the permission; honor
-  later user instructions. Source/history checks and private-backup exclusions
-  below still apply.
+  It ends when the window closes, or earlier if the user stops Spin or revokes
+  or limits the permission; honor later user instructions. Source/history
+  checks and private-backup exclusions below still apply.
 - Outside Spin, commit locally and leave publication to the user unless a prompt
   explicitly authorizes it. A request to research, edit, or commit alone is not
   permission to publish.
