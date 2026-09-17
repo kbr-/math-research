@@ -1,0 +1,79 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.GenericAffineSubspaceConsequence
+Claim file: claims/GenericAffineSubspaceConsequence.lean
+Claim: thm:generic-affine-subspace-consequence-transfer
+Source: https://kbr.is-a.dev/math-research/#generic-affine-subspace-consequence-transfer
+Scope: Full indexed theorem over the binary field, for an arbitrary finite variable type, an arbitrary old base containing the Boolean equations, a finite complete one-level affine ENS family of accuracy h ≥ 1, and an arbitrary linear subspace U of polynomials of total degree at most k. The dimension inequality is stated without natural subtraction as dim U ≤ dim(U ⊓ pcSpace F (k(D+1))) + R, where R sums the ordinary restriction bounds over blocks whose input span omits one and has rank above h(k+1). Includes the kernel membership statement, the nonzero-consequence and exclusion corollaries, the uniform rank-threshold bound on R, and emptiness of the high index when h(k+1)+1 exceeds the number of variables. The CNF initial-value bridge and the short-proof control of the source entry are separate remarks and are not covered.
+Declarations: MathResearch.GenericProperHighIndex MathResearch.generic_affine_subspace_consequence MathResearch.generic_affine_subspace_nonzero_consequence MathResearch.generic_affine_subspace_exclusion MathResearch.generic_proper_high_restriction_sum_le MathResearch.generic_proper_high_isEmpty
+$ lake --wfail build claims.GenericAffineSubspaceConsequence
+✔ [2012/2012] Built claims.GenericAffineSubspaceConsequence (2.4s)
+Build completed successfully (2012 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-auxiliary/formalization/.lake/tmpemp0_145.lean
+@MathResearch.GenericProperHighIndex : {σ κ : Type} →
+  [Fintype σ] →
+    {ι : κ → Type} → [(b : κ) → Fintype (ι b)] → ((b : κ) → ι b → MathResearch.AffineInputMap σ) → ℕ → ℕ → Type
+'MathResearch.GenericProperHighIndex' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.generic_affine_subspace_consequence : ∀ {σ κ : Type} [inst : Fintype σ] [inst_1 : Fintype κ]
+  {ι : κ → Type} [inst_2 : (b : κ) → Fintype (ι b)] (g : (b : κ) → ι b → MathResearch.AffineInputMap σ) (h k D : ℕ),
+  1 ≤ h →
+    1 ≤ k →
+      2 * h + 1 ≤ D →
+        ∀ (F : Set (MvPolynomial σ (ZMod 2))),
+          MathResearch.PolynomialCalculus.booleanBase ⊆ F →
+            ∀ (U : Submodule (ZMod 2) (MvPolynomial σ (ZMod 2))),
+              (∀ p ∈ U, p.totalDegree ≤ k) →
+                MathResearch.PolynomialCalculus.Derives
+                    (MathResearch.ensFamilySystem (fun b i => MathResearch.finiteAffinePolynomial (g b i)) h F) D 1 →
+                  Module.finrank (ZMod 2) ↥U ≤
+                    Module.finrank (ZMod 2) ↥(U ⊓ MathResearch.PolynomialCalculus.pcSpace F (k * (D + 1))) +
+                      ∑ b, (Fintype.card σ - MathResearch.affineInputRank (g ↑b) + k).choose k
+'MathResearch.generic_affine_subspace_consequence' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.generic_affine_subspace_nonzero_consequence : ∀ {σ κ : Type} [inst : Fintype σ] [inst_1 : Fintype κ]
+  {ι : κ → Type} [inst_2 : (b : κ) → Fintype (ι b)] (g : (b : κ) → ι b → MathResearch.AffineInputMap σ) (h k D : ℕ),
+  1 ≤ h →
+    1 ≤ k →
+      2 * h + 1 ≤ D →
+        ∀ (F : Set (MvPolynomial σ (ZMod 2))),
+          MathResearch.PolynomialCalculus.booleanBase ⊆ F →
+            ∀ (U : Submodule (ZMod 2) (MvPolynomial σ (ZMod 2))),
+              (∀ p ∈ U, p.totalDegree ≤ k) →
+                ∑ b, (Fintype.card σ - MathResearch.affineInputRank (g ↑b) + k).choose k < Module.finrank (ZMod 2) ↥U →
+                  MathResearch.PolynomialCalculus.Derives
+                      (MathResearch.ensFamilySystem (fun b i => MathResearch.finiteAffinePolynomial (g b i)) h F) D 1 →
+                    ∃ f ∈ U, f ≠ 0 ∧ MathResearch.PolynomialCalculus.Derives F (k * (D + 1)) f
+'MathResearch.generic_affine_subspace_nonzero_consequence' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.generic_affine_subspace_exclusion : ∀ {σ κ : Type} [inst : Fintype σ] [inst_1 : Fintype κ] {ι : κ → Type}
+  [inst_2 : (b : κ) → Fintype (ι b)] (g : (b : κ) → ι b → MathResearch.AffineInputMap σ) (h k D : ℕ),
+  1 ≤ h →
+    1 ≤ k →
+      2 * h + 1 ≤ D →
+        ∀ (F : Set (MvPolynomial σ (ZMod 2))),
+          MathResearch.PolynomialCalculus.booleanBase ⊆ F →
+            ∀ (U : Submodule (ZMod 2) (MvPolynomial σ (ZMod 2))),
+              (∀ p ∈ U, p.totalDegree ≤ k) →
+                (∀ f ∈ U, MathResearch.PolynomialCalculus.Derives F (k * (D + 1)) f → f = 0) →
+                  ∑ b, (Fintype.card σ - MathResearch.affineInputRank (g ↑b) + k).choose k <
+                      Module.finrank (ZMod 2) ↥U →
+                    ¬MathResearch.PolynomialCalculus.Derives
+                        (MathResearch.ensFamilySystem (fun b i => MathResearch.finiteAffinePolynomial (g b i)) h F) D 1
+'MathResearch.generic_affine_subspace_exclusion' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.generic_proper_high_restriction_sum_le : ∀ {σ κ : Type} [inst : Fintype σ] [inst_1 : Fintype κ]
+  {ι : κ → Type} [inst_2 : (b : κ) → Fintype (ι b)] (g : (b : κ) → ι b → MathResearch.AffineInputMap σ) (h k : ℕ),
+  ∑ b, (Fintype.card σ - MathResearch.affineInputRank (g ↑b) + k).choose k ≤
+    Fintype.card (MathResearch.GenericProperHighIndex g h k) * (Fintype.card σ - (h * (k + 1) + 1) + k).choose k
+'MathResearch.generic_proper_high_restriction_sum_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.generic_proper_high_isEmpty : ∀ {σ κ : Type} [inst : Fintype σ] {ι : κ → Type}
+  [inst_1 : (b : κ) → Fintype (ι b)] (g : (b : κ) → ι b → MathResearch.AffineInputMap σ) (h k : ℕ),
+  Fintype.card σ < h * (k + 1) + 1 → IsEmpty (MathResearch.GenericProperHighIndex g h k)
+'MathResearch.generic_proper_high_isEmpty' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 6 audited declarations.

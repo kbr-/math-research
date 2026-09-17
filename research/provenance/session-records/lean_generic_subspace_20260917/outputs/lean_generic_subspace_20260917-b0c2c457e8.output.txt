@@ -1,0 +1,36 @@
+claims/GenericAffineSubspaceConsequence.lean:38:2: warning: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+claims/GenericAffineSubspaceConsequence.lean:90:2: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  j ≥ 0
+  i ≥ 0
+  f ≥ 0
+  f - i ≤ 0
+  e ≥ 0
+  e - f ≥ 0
+  d ≥ 0
+  d - i + j ≤ -1
+  d + f - i ≥ 0
+  c ≥ 0
+  b ≥ 1
+  a ≥ 1
+  2*a - c ≤ -1
+where
+ a := ↑h
+ b := ↑k
+ c := ↑D
+ d := ↑(finrank (ZMod 2) ↥(U ⊓ pcSpace F (k * (D + 1))))
+ e := ↑(∑ b, (Fintype.card σ - affineInputRank (g ↑b) + k).choose k)
+ f := ↑(finrank (ZMod 2) ↥T.range)
+ i := ↑(finrank (ZMod 2) ↥U)
+ j := ↑(∑ b, (Fintype.card σ - affineInputRank (g ↑b) + k).choose k)
+claims/GenericAffineSubspaceConsequence.lean:106:19: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  Module.Finite (ZMod 2) ↥(U ⊓ pcSpace F (k * (D + 1)))
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
