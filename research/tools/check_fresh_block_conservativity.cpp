@@ -144,6 +144,17 @@ int main(int argc,char** argv){
                 {"E*x1x2",mul(E,mul(v[0],v[1]))},{"E*g1g2",mul(E,mul(g[0],g[1]))},{"E*x1y2",mul(E,mul(v[0],v[4]))},{"E*x1",mul(E,v[0])},{"A*B*g1",mul(mul(A,B),g[0])},{"E+A*B",add(E,mul(A,B))}};
       for(int D:{6,7}) run_case(out,"n3-one-helper-queries",s,D,ok,q); }
     std::cout<<(ok?"ALL PRESERVED":"SOME INTERFACE NOT PRESERVED")<<std::endl; return 0; }
+  if(suite=="cycle170-level-one"){
+    // Level-one bases (Boolean equations plus complete accuracy-one blocks with affine old inputs); fresh affine helpers of rank 3-4,
+    // including inputs that use base coefficients.  Conjecture under test: same-degree conservativity for every rank.
+    { Source s; auto v=olds(s,6); s.block({v[0],v[1],v[2]},false,"A"); s.block({v[3],v[4],v[5]},false,"B"); s.block(G0(v),true,"G0"); for(int D:{4,5,6}) run_case(out,"AB-plus-rank3",s,D,ok); }
+    { Source s; auto v=olds(s,6); s.block({v[0],v[1],v[2]},false,"A"); s.block({v[3],v[4],v[5]},false,"B"); auto g=G0(v); g.push_back(add(v[0],v[4])); s.block(g,true,"rank4"); for(int D:{4,5,6}) run_case(out,"AB-plus-rank4",s,D,ok); }
+    { Source s; auto v=olds(s,3); s.block({v[0],v[1],v[2]},false,"A"); int a=6-3; // coefficient variables of A are 3,4,5
+      s.block({add(v[0],var(a+1)),add(v[1],var(a+2)),add(v[2],var(a+0))},true,"rank3 with base coefficients"); for(int D:{4,5,6,7}) run_case(out,"A-plus-coefficient-mixed-rank3",s,D,ok); }
+    { Source s; auto v=olds(s,6); s.block({v[0],v[1],v[2]},false,"A"); s.block({v[3],v[4],v[5]},false,"B"); s.block(v,false,"C"); auto g=G0(v); g.push_back(add(v[0],v[4])); s.block(g,true,"rank4"); for(int D:{5,6}) run_case(out,"ABC-plus-rank4",s,D,ok); }
+    { Source s; auto v=olds(s,4); s.block({v[0],v[1],v[2]},false,"A"); s.block({v[1],v[2],v[3]},false,"A2"); s.block({add(v[0],v[1]),add(v[1],v[2]),add(add(v[2],v[3]),one())},true,"rank3 overlapping"); for(int D:{4,5,6,7}) run_case(out,"overlapping-blocks-plus-rank3",s,D,ok); }
+    { Source s; auto v=olds(s,4); s.block({v[0],v[1],v[2],v[3]},false,"A"); s.block({add(v[0],v[1]),add(v[1],v[2]),add(v[2],v[3]),add(add(v[3],v[0]),one())},true,"rank4 cyclic"); for(int D:{4,5,6,7}) run_case(out,"A4-plus-rank4-cyclic",s,D,ok); }
+    std::cout<<(ok?"ALL PRESERVED":"SOME INTERFACE NOT PRESERVED")<<std::endl; return 0; }
   if(suite=="cycle169-php"){
     // functional PHP base: n holes, n+1 pigeons, x_{ij} Boolean; rho_i-1, x_ij x_i'j (i!=i'), x_ij x_ik (j!=k)
     auto php=[&](int n,int rank,std::vector<int> Ds,const std::string& name){
