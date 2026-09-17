@@ -1,5 +1,8 @@
 name: Verify bit-PHP Lean proof
 
+# Target: the import-only module gathering every formal result cited by the preprint
+# (exponential theorem, superpolynomial corollary, generic criterion, short-proof control).
+
 # Manual only: run from the Actions tab or `gh workflow run lean.yml --ref BRANCH`.
 on:
   workflow_dispatch:
@@ -14,7 +17,7 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 60
     defaults:
       run:
         shell: bash
@@ -55,13 +58,13 @@ jobs:
           use-github-cache: false
           use-mathlib-cache: false
 
-      - name: Fetch only the final theorem's dependency cache
+      - name: Fetch only the cited results' dependency cache
         run: |
           lean --version | tee "$EVIDENCE/lean-version.txt"
           lake --version | tee "$EVIDENCE/lake-version.txt"
           df -h . | tee "$EVIDENCE/disk-before-cache.txt"
           python3 -c 'import shutil; assert shutil.disk_usage(".").free >= 7 * 1024**3, "Need 7 GiB free before dependency download"'
-          lake exe cache get claims/BitPHPSuperpolynomial.lean 2>&1 | tee "$EVIDENCE/cache.txt"
+          lake exe cache get claims/BitPHPPreprintRevision1.lean 2>&1 | tee "$EVIDENCE/cache.txt"
           # Delete downloaded archives, retaining the extracted library artifacts.
           lake exe cache clean! 2>&1 | tee "$EVIDENCE/cache-clean.txt"
           # Never validate our proof by restoring compiled project claims.
@@ -70,16 +73,16 @@ jobs:
           df -h . | tee "$EVIDENCE/disk-before-build.txt"
           python3 -c 'import shutil; assert shutil.disk_usage(".").free >= 1024**3, "Need 1 GiB free before project build"'
 
-      - name: Build the final theorem and check its type and transitive axioms
+      - name: Build the cited results and check their types and transitive axioms
         # The hosted runner supplies isolation; the local wrapper uses user-systemd.
         run: |
-          python3 verify.py --target claims/BitPHPSuperpolynomial.lean \
+          python3 verify.py --target claims/BitPHPPreprintRevision1.lean \
             --out "$EVIDENCE/verification.txt"
 
       - name: Replay the final module and imports in a fresh kernel environment
         run: |
-          printf '%s\n' 'lake env leanchecker --fresh claims.BitPHPSuperpolynomial' | tee "$EVIDENCE/kernel-replay.txt"
-          lake env leanchecker --fresh claims.BitPHPSuperpolynomial 2>&1 | tee -a "$EVIDENCE/kernel-replay.txt"
+          printf '%s\n' 'lake env leanchecker --fresh claims.BitPHPPreprintRevision1' | tee "$EVIDENCE/kernel-replay.txt"
+          lake env leanchecker --fresh claims.BitPHPPreprintRevision1 2>&1 | tee -a "$EVIDENCE/kernel-replay.txt"
           printf '%s\n' 'PASS: fresh kernel replay exited successfully.' | tee -a "$EVIDENCE/kernel-replay.txt"
 
       - name: Record final disk usage

@@ -129,7 +129,8 @@ or integration. Lake rebuilds changed modules and their dependents automatically
 [Verify bit-PHP Lean proof](../.github/workflows/lean.yml) runs only on manual
 request: from the Actions tab, or with `gh workflow run lean.yml --ref BRANCH`.
 It targets
-`claims.BitPHPSuperpolynomial` and its full dependency chain, not unrelated claims.
+`claims.BitPHPPreprintRevision1`, an import-only module gathering every formal result the
+bit-PHP preprint cites, and its full dependency chain, not unrelated claims.
 Each hosted run downloads only the required pinned Mathlib cache, builds project
 claims from scratch, uses `verify.py` to print the theorem type and enforce the
 standard-axiom allowlist, and runs `leanchecker --fresh` on the final module.
