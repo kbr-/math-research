@@ -32,6 +32,10 @@ def validate_marker(body, marker):
     meta = body.find('<p class="entry-meta">', article, position)
     if meta < 0 or body.find('</p>', meta, position) < 0:
         raise ValueError('The entry needs a <p class="entry-meta"> status line before its timing marker')
+    if '$' in body[article:close]:
+        # MathJax treats a dollar sign as an inline-math delimiter; the notebook uses \( \).
+        raise ValueError('The entry contains a dollar sign, which MathJax reads as a math delimiter; '
+                         'write mathematics with \\( \\) and currency as "USD 5"')
 
 
 def credit_producer(body, marker, producer):

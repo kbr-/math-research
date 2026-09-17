@@ -65,6 +65,8 @@ class FinalizationTest(unittest.TestCase):
             '<section id="research-record">' + marker + '</section>',
             '<section id="research-record"><article></article></section>' + marker,
             '<section id="research-record"><article>' + marker + '</article></section>',
+            '<section id="research-record"><article><p class="entry-meta">Status.</p>'
+            'It cost $5.' + marker + '</article></section>',
         ]
         for content in cases:
             with self.subTest(content=content):
