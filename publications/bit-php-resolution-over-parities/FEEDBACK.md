@@ -33,17 +33,23 @@ The items below come from two Claude review conversations about the preprint, re
 
 ### Mathematical content
 
-- [ ] Formalize the exponential corollary S > exp(n/(32768 ℓ²)) in Lean, then add it to Section 7 and update the abstract and headline to "exponential" (C1, C2). Decided: formalization is a prerequisite.
-- [ ] Generic subspace-consequence theorem: decided against C2's separate companion note; state it as a section or remark in this paper (around Section 7.1: "Sections 5–6 use nothing specific to PHP beyond Theorem 4.7"). Phrase it as a "sufficient condition", never as a size–degree or size–width tradeoff, and keep the {x, x²−x} caveat next to it. Decided: formalize it in Lean before mentioning it in the paper.
+- [ ] Exponential corollary S > exp(n/(32768 ℓ²)) (C1, C2). Decided: formalization is a prerequisite.
+  - [x] Formalized in Lean for every ℓ ≥ 32, with a base-two form: `formalization/claims/BitPHPExponential.lean`, notebook `#lean-bit-PHP-exponential`. The explicit threshold replaces "sufficiently large".
+  - [ ] Add it to Section 7 with the constant and threshold, and update the abstract and headline to "exponential".
+- [ ] Generic subspace-consequence theorem: decided against C2's separate companion note; state it as a section or remark in this paper (around Section 7.1). Phrase it as a "sufficient condition", never as a size–degree or size–width tradeoff, and keep the {x, x²−x} caveat next to it. Decided: formalize it in Lean before mentioning it in the paper.
+  - [x] PC-level theorem formalized over F₂ for arbitrary variables, base, accuracy and subspace: `GenericAffineSubspaceConsequence.lean`, notebook `#lean-generic-affine-subspace-consequence`.
+  - [x] Proof-size form formalized: generic clause-polynomial bridge through 2h+w, transfer with 3S+t slots and degree max(2h+w, 4h+1), and dim U ≤ (3S+t)·C(v−(h(k+1)+1)+k, k) for a separated U: `GenericCNFSubspaceCriterion.lean`, notebook `#lean-generic-CNF-affine-DAG-subspace-criterion`. Decided to formalize this so the paper can speak about refutation size, not only PC.
+  - [ ] Write the section. The pointer sentence can now say that Sections 5–6 are generic for any clause set whose clause polynomials are axioms of the base; what is specific to bit PHP is the separation Theorem 4.7 over the compact base and the bridge to it. State that no other formula is shown to admit a separated subspace, and that everything is over F₂.
+  - Not formalized, so do not rely on it: the short-proof control remark ({L, 1−L}).
 - [ ] Stress-test the method against formulas with short Res(⊕) refutations and nontrivial PC/F₂ degree (C1 tried Tseitin and graph ordering; both fail to break it); report the outcome, or the lack of a ready candidate, as a remark.
 - [ ] Say plainly what does not follow: unary PHP (with the succinct-encoding explanation, once checked), a Res(⊕) size–width relation, and the AC0[p]-Frege goal where nested blocks have no removal step (C2).
-- [ ] Candidate material for that section or remark, only where checked: the general shape S ≥ exp(Ω(d²/(h·v))), the succinct-encoding observation, other succinctly encoded principles, Res(lin) over F_p, and the CDCL-with-XOR reading (C2). These are reviewer suggestions, not checked claims.
+- [ ] Candidate material for that section or remark, only where checked: the general shape S ≥ exp(Ω(d²/(h·v))) (unchecked asymptotics; the verified statement is the binomial inequality above), the succinct-encoding observation, other succinctly encoded principles, Res(lin) over F_p, and the CDCL-with-XOR reading (C2). These are reviewer suggestions, not checked claims.
 - [ ] If notebook text from the 16 September assessment migrates into the paper, attribute it plainly as feedback from an AI review (Claude Fable 5.1), never in a way that suggests a human reviewer. C2 advised omitting the model name; decided to name it.
 
 ### Versioning and verification
 
 - [ ] Add a version marker and date near the title ("revision 1, DATE"); add the ECCC report number once assigned; mention mathematical changes in the introduction, and any error correction explicitly (C1).
-- [ ] Update the cited Lean commit hash everywhere and state which commit the revision corresponds to; either keep or genuinely redo the "literature refresh of 15 September 2026" rather than carrying a stale date (C1).
+- [ ] Update the cited Lean commit hash everywhere (it must include the three new modules above) and state which commit the revision corresponds to; either keep or genuinely redo the "literature refresh of 15 September 2026" rather than carrying a stale date (C1).
 - [ ] Make independent verification trivial: a one-line verify script at the top of the README with the expected `#print axioms` output, a public green CI run, and a tagged release for a stable reference (C2 step 5). Check what already exists; the hosted Lean workflow is now manual-only.
 - [ ] Get the formalization built and its axioms printed by an independent party (C1).
 - [ ] Ask an independent Res(⊕) expert to check that the Lean definitions are the standard system (`AffineDAGRegistry.lean`, `BitPHPInitialBridge.lean`, top-level statement: arbitrary affine pivots, unrestricted semantic weakening, size as node count, BPHP encoding, axiom report). Do this first, without waiting for the rewrite (C2 step 1).
