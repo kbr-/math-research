@@ -19665,5 +19665,47 @@ c_y\prod_{i\in S}\left((c_i)_{a_i}+(c_i+e_{d_i})_{a_i}\right)
 </div>
 </article>
 
+<article class="research-entry" id="entry-2026-09-17-lean-generic-density-form">
+<h3>17 September 2026 — Lean formalization of the density form of the generic criterion and of the short-proof control</h3>
+<p class="entry-meta"><strong>Status:</strong> full Lean formalization of two newly indexed elementary claims, <code>cor:generic-CNF-density-exponential-form</code> and <code>obs:generic-criterion-short-proof-control</code>; consequences of already verified results, with no asymptotic statement. Produced by Claude Code (Claude Fable 5.1, medium effort).</p>
+<p><strong>Assignment, obligation, and stopping point.</strong> A reviewer suggested advertising the generic method through the shape \(S\ge\exp(\Omega(d^2/(hv)))\). That shape silently assumes that the separated subspace is a large fraction of all low-degree polynomials. The user asked for the honest version to be formalized before it may appear in the preprint, and, during the cycle, also for the short-proof control remark of the <a href="#generic-affine-subspace-consequence-transfer">16 September entry</a>. This is publication-side work; the main Frege route is unchanged. Stop once both are checked in Lean with standard axioms and the printed types are reviewed. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/lean_generic_density_form_20260917/dependency-scope-map.md">dependency-and-scope map</a> was written during the cycle, after the first module compiled and before verification.</p>
+<h4 id="lean-generic-CNF-density-exponential-form">Density form of the proof-size criterion</h4>
+<p><strong>Binomial estimate.</strong> For natural numbers \(a,r\) and \(k\ge0\),</p>
+<div class="math">\[
+ \binom{a+k}{k}\le\binom{a+r+k}{k}\exp\!\left(-\frac{rk}{a+r+k}\right).
+\]</div>
+<p><em>Proof.</em> Fix \(K\) and put \(q=\exp(-r/(a+r+K))\). We show \(\binom{a+k}{k}\le\binom{a+r+k}{k}q^k\) for all \(k\le K\) by induction; \(k=0\) is an equality. For \(k+1\le K\), the absorption identity \((n+1)\binom{n}{k}=(k+1)\binom{n+1}{k+1}\) with \(n=a+k\) and \(n=a+r+k\) reduces the step to the single factor inequality \(a+k+1\le(a+r+k+1)q\). Since \(1-x\le e^{-x}\),</p>
+<div class="math">\[
+ (a+r+k+1)\,q\ge(a+r+k+1)-r\,\frac{a+r+k+1}{a+r+K}\ge a+k+1,
+\]</div>
+<p>because \(a+r+k+1\le a+r+K\). Multiplying the induction hypothesis by \(a+k+1\ge0\), applying this factor inequality, and cancelling \(k+1&gt;0\) completes the step. Take \(K=k\) and use \(q^k=\exp(-rk/(a+r+k))\).</p>
+<p><strong>Corollary.</strong> Assume the hypotheses of the verified <a href="#lean-generic-CNF-affine-DAG-subspace-criterion">proof-size criterion</a>: an \(S\)-node affine refutation DAG whose initial clauses are covered by \(t\) clauses of width at most \(w\) with clause polynomials in the old base, Boolean equations in the base, \(h,k\ge1\), and a space \(U\) of polynomials of degree at most \(k\) with no nonzero member derivable through \(k(\max(2h+w,4h+1)+1)\). Put \(r=h(k+1)+1\) and assume \(r\le v\). Then</p>
+<div class="math">\[
+ \dim U\le(3S+t)\binom{v+k}{k}\exp\!\left(-\frac{rk}{v+k}\right)
+ \le(3S+t)\binom{v+k}{k}\exp\!\left(-\frac{hk^2}{v+k}\right).
+\]</div>
+<p><em>Proof.</em> Apply the estimate with \(a=v-r\) to the criterion's binomial \(\binom{v-r+k}{k}\). The second inequality uses \(rk\ge hk^2\).</p>
+<p><strong>Reading.</strong> With the density \(\delta=\dim U/\binom{v+k}{k}\), the fraction of all polynomials of degree at most \(k\) occupied by the separated space, the corollary says \(3S+t\ge\delta\,e^{hk^2/(v+k)}\). An exponential size bound therefore needs \(\delta\) not to cancel the exponential: a dense separated space, few variables, and separation at degree about \(4hk\). Bit PHP has all three; for unary functional PHP the known matching space is too thin, as the reviewer also observed. The heuristic substitution \(k\approx d/(4h)\) that turns the exponent into \(d^2/(16hv)\) is not formalized, and neither is any asymptotic statement. The density is a reading of the inequality, not a Lean term; the formal statement avoids division, and the hypothesis \(r\le v\) is explicit because the criterion's subtraction is truncated.</p>
+<h4 id="lean-generic-criterion-short-proof-control">Short-proof control</h4>
+<p><strong>Statement.</strong> Over any field: if a base \(\mathcal F\) derives one through degree \(d\le B\), then every polynomial of degree at most \(B\) is derivable from \(\mathcal F\) through \(B\). If \(\mathcal F\) contains \(L\) and \(1-L\) with \(\deg L\le1\), it derives one through degree one. Consequently, over such a base, a subspace \(U\) of polynomials of degree at most \(k\) that is separated at any \(B\ge\max(1,k)\) is zero.</p>
+<p><em>Proof.</em> Multiply the derived line one by \(f\) with the verified <a href="#lean-pc-completed-line-reuse">reuse lemma</a>, at cost \(\max(d,\deg f)\le B\). For the pair, add the two axioms. If \(U\) is separated, each \(f\in U\) is derivable and hence zero.</p>
+<p><strong>Purpose.</strong> The easiest parity contradiction has a short refutation, and the generic criterion is consistent with it: no separated space exists, so the criterion yields no lower bound. This is a consistency control on one trivial family, not an audit of known short Res(\(\oplus\)) refutations; that audit remains worthwhile before advertising the criterion.</p>
+<p><strong>Verification.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/GenericCNFDensityBound.lean">GenericCNFDensityBound.lean</a> exports <code>choose_restriction_exp_bound</code>, <code>generic_CNF_density_bound</code>, and <code>generic_CNF_density_bound_simple</code>; <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/ShortProofControl.lean">ShortProofControl.lean</a> exports <code>derives_all_of_derives_one</code>, <code>complementary_pair_derives_one</code>, and <code>no_separated_subspace_of_complementary_pair</code>, all in <code>MathResearch.PolynomialCalculus</code>. Both reports (<a href="https://github.com/kbr-/math-research/blob/main/research/results/lean_generic_density_form_20260917/lean-verification-GenericCNFDensityBound.txt">density form</a>, <a href="https://github.com/kbr-/math-research/blob/main/research/results/lean_generic_density_form_20260917/lean-verification-ShortProofControl.txt">control</a>) pass with only the standard Lean foundations. Statement review: the density theorems repeat the criterion's hypotheses verbatim and add only \(h(k+1)+1\le|\sigma|\); dimensions and binomials are natural numbers cast to the reals; the exponents are \(-((h(k+1)+1)k)/(|\sigma|+k)\) and \(-(hk^2)/(|\sigma|+k)\). The first compile failed on a renamed Mathlib lemma and one rewrite, not on mathematics. <strong>Gaps identified by formalization</strong> is unchanged, and the preprint is not modified.</p>
+<p><strong>Outcome and process assessment.</strong> Both claims are fully formalized and indexed, so every sentence planned for the preprint's generic section now has a checked counterpart. Deriving the reviewer's shape by hand first exposed its hidden density hypothesis before any Lean work, which is the right order; no framework change is needed.</p>
+<div class="timing-report" data-session="lean_generic_density_form_20260917">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 28.13 s</strong></td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">2 min 41.89 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">0.15 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">31.36 s</td></tr>
+<tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">14.73 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>

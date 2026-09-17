@@ -1,0 +1,77 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.GenericCNFDensityBound
+Claim file: claims/GenericCNFDensityBound.lean
+Claim: cor:generic-CNF-density-exponential-form
+Source: https://kbr.is-a.dev/math-research/#lean-generic-CNF-density-exponential-form
+Scope: Full corollary over the binary field. An elementary binomial estimate C(a+k,k) ≤ C(a+r+k,k)·exp(-rk/(a+r+k)), and its combination with the verified proof-size criterion: under the criterion's hypotheses and h(k+1)+1 ≤ v, dim U ≤ (3S+|J|)·C(v+k,k)·exp(-(h(k+1)+1)k/(v+k)), together with the weaker exponent -hk²/(v+k). Stated without division by C(v+k,k); the density dim U / C(v+k,k) is a reading of the inequality, not a Lean term. The hypothesis h(k+1)+1 ≤ v is explicit. No asymptotic statement and no relation between k and a separation degree is formalized.
+Declarations: MathResearch.PolynomialCalculus.choose_restriction_exp_bound MathResearch.PolynomialCalculus.generic_CNF_density_bound MathResearch.PolynomialCalculus.generic_CNF_density_bound_simple
+$ lake --wfail build claims.GenericCNFDensityBound
+✔ [2410/2410] Built claims.GenericCNFDensityBound (2.2s)
+Build completed successfully (2410 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-auxiliary/formalization/.lake/tmprrqtoodl.lean
+MathResearch.PolynomialCalculus.choose_restriction_exp_bound : ∀ (a r K k : ℕ),
+  k ≤ K → ↑((a + k).choose k) ≤ ↑((a + r + k).choose k) * Real.exp (-↑r / (↑a + ↑r + ↑K)) ^ k
+'MathResearch.PolynomialCalculus.choose_restriction_exp_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.PolynomialCalculus.generic_CNF_density_bound : ∀ {σ J : Type} [inst : Fintype σ] [inst_1 : Fintype J]
+  {S : ℕ} (I : Set (MathResearch.PolynomialCalculus.FiniteParityClause σ))
+  (C : Fin S → MathResearch.PolynomialCalculus.FiniteParityClause σ)
+  (dag : MathResearch.PolynomialCalculus.AffineDAG I C) (finish : Fin S),
+  C finish = ∅ →
+    ∀ (A : J → MathResearch.PolynomialCalculus.FiniteParityClause σ) (w : ℕ),
+      (∀ (j : J), Finset.card (A j) ≤ w) →
+        (∀ D ∈ I, ∃ j, MathResearch.clauseEntails (A j) D) →
+          ∀ (old : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) σ)),
+            MathResearch.PolynomialCalculus.booleanBase ⊆ old →
+              (∀ (j : J), MathResearch.PolynomialCalculus.clauseFalsityPolynomial (A j) ∈ old) →
+                ∀ (h k : ℕ),
+                  1 ≤ h →
+                    1 ≤ k →
+                      h * (k + 1) + 1 ≤ Fintype.card σ →
+                        ∀ (U : Submodule (ZMod 2) (MvPolynomial σ (ZMod 2))),
+                          (∀ p ∈ U, p.totalDegree ≤ k) →
+                            (∀ f ∈ U,
+                                MathResearch.PolynomialCalculus.Derives old (k * (max (2 * h + w) (4 * h + 1) + 1)) f →
+                                  f = 0) →
+                              ↑(Module.finrank (ZMod 2) ↥U) ≤
+                                ↑(3 * S + Fintype.card J) * ↑((Fintype.card σ + k).choose k) *
+                                  Real.exp (-(↑(h * (k + 1) + 1) * ↑k) / (↑(Fintype.card σ) + ↑k))
+'MathResearch.PolynomialCalculus.generic_CNF_density_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.generic_CNF_density_bound_simple : ∀ {σ J : Type} [inst : Fintype σ]
+  [inst_1 : Fintype J] {S : ℕ} (I : Set (MathResearch.PolynomialCalculus.FiniteParityClause σ))
+  (C : Fin S → MathResearch.PolynomialCalculus.FiniteParityClause σ)
+  (dag : MathResearch.PolynomialCalculus.AffineDAG I C) (finish : Fin S),
+  C finish = ∅ →
+    ∀ (A : J → MathResearch.PolynomialCalculus.FiniteParityClause σ) (w : ℕ),
+      (∀ (j : J), Finset.card (A j) ≤ w) →
+        (∀ D ∈ I, ∃ j, MathResearch.clauseEntails (A j) D) →
+          ∀ (old : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) σ)),
+            MathResearch.PolynomialCalculus.booleanBase ⊆ old →
+              (∀ (j : J), MathResearch.PolynomialCalculus.clauseFalsityPolynomial (A j) ∈ old) →
+                ∀ (h k : ℕ),
+                  1 ≤ h →
+                    1 ≤ k →
+                      h * (k + 1) + 1 ≤ Fintype.card σ →
+                        ∀ (U : Submodule (ZMod 2) (MvPolynomial σ (ZMod 2))),
+                          (∀ p ∈ U, p.totalDegree ≤ k) →
+                            (∀ f ∈ U,
+                                MathResearch.PolynomialCalculus.Derives old (k * (max (2 * h + w) (4 * h + 1) + 1)) f →
+                                  f = 0) →
+                              ↑(Module.finrank (ZMod 2) ↥U) ≤
+                                ↑(3 * S + Fintype.card J) * ↑((Fintype.card σ + k).choose k) *
+                                  Real.exp (-(↑h * ↑k ^ 2) / (↑(Fintype.card σ) + ↑k))
+'MathResearch.PolynomialCalculus.generic_CNF_density_bound_simple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 3 audited declarations.

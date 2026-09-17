@@ -1,0 +1,49 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.ShortProofControl
+Claim file: claims/ShortProofControl.lean
+Claim: obs:generic-criterion-short-proof-control
+Source: https://kbr.is-a.dev/math-research/#lean-generic-criterion-short-proof-control
+Scope: Over any field and variable type. If a base derives one through degree d, then every polynomial of total degree at most B is derivable through B whenever d ≤ B; hence no nonzero subspace of degree-at-most-k polynomials is separated at any degree B ≥ max d k. Instantiated for a base containing a degree-at-most-one polynomial L and 1 - L, which derives one through degree one. This is the consistency control for the generic criterion on the easiest parity contradiction; it is not an audit of known short Res(⊕) refutations.
+Declarations: MathResearch.PolynomialCalculus.derives_all_of_derives_one MathResearch.PolynomialCalculus.complementary_pair_derives_one MathResearch.PolynomialCalculus.no_separated_subspace_of_complementary_pair
+$ lake --wfail build claims.ShortProofControl
+✔ [1655/1655] Built claims.ShortProofControl (1.2s)
+Build completed successfully (1655 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-auxiliary/formalization/.lake/tmp09nm1gsr.lean
+@MathResearch.PolynomialCalculus.derives_all_of_derives_one : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F : Set (MathResearch.PolynomialCalculus.Poly K V)} {d B : ℕ},
+  MathResearch.PolynomialCalculus.Derives F d 1 →
+    d ≤ B →
+      ∀ (f : MathResearch.PolynomialCalculus.Poly K V),
+        MvPolynomial.totalDegree f ≤ B → MathResearch.PolynomialCalculus.Derives F B f
+'MathResearch.PolynomialCalculus.derives_all_of_derives_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.complementary_pair_derives_one : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K]
+  {F : Set (MathResearch.PolynomialCalculus.Poly K V)} (L : MathResearch.PolynomialCalculus.Poly K V),
+  MvPolynomial.totalDegree L ≤ 1 → L ∈ F → 1 - L ∈ F → MathResearch.PolynomialCalculus.Derives F 1 1
+'MathResearch.PolynomialCalculus.complementary_pair_derives_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.PolynomialCalculus.no_separated_subspace_of_complementary_pair : ∀ {K : Type u_1} {V : Type u_2}
+  [inst : Field K] {F : Set (MathResearch.PolynomialCalculus.Poly K V)} (L : MathResearch.PolynomialCalculus.Poly K V),
+  MvPolynomial.totalDegree L ≤ 1 →
+    L ∈ F →
+      1 - L ∈ F →
+        ∀ (k B : ℕ),
+          1 ≤ B →
+            k ≤ B →
+              ∀ (U : Submodule K (MathResearch.PolynomialCalculus.Poly K V)),
+                (∀ p ∈ U, MvPolynomial.totalDegree p ≤ k) →
+                  (∀ f ∈ U, MathResearch.PolynomialCalculus.Derives F B f → f = 0) → U = ⊥
+'MathResearch.PolynomialCalculus.no_separated_subspace_of_complementary_pair' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 3 audited declarations.
