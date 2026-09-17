@@ -18,7 +18,7 @@
   <div class="result">
     <p><strong>What would finish the route:</strong> for every fixed prime, depth, and size exponent, turn any hypothetical short ordinary-PHP proof into a forbidden old-base endpoint, or directly exclude its complete augmented source. A polynomial-size Frege construction would also be valuable; none is established.</p>
   </div>
-  <p><strong>Publication side branch.</strong> The <a href="#publication-Res-parity-bit-PHP-theorem">working unrestricted Res(\(\oplus\)) lower bound for bit-PHP</a> has an <a href="https://github.com/kbr-/math-research/blob/main/publications/bit-php-resolution-over-parities/whitepaper.pdf">whitepaper preprint</a>, pending external review. A <a href="#entry-2026-09-16-fable-transfer-assessment">bounded scope assessment</a> extracts a generic subspace-consequence criterion and a working exponential parameter corollary; these new formulations are not yet separately formalized or included in the preprint. Its publication is separate from the main Frege route. An <a href="#prime-disequality-bit-PHP-size-bound">affine-disequality calculus</a> gives a related all-prime side result.</p>
+  <p><strong>Publication side branch.</strong> The <a href="#publication-Res-parity-bit-PHP-theorem">working unrestricted Res(\(\oplus\)) lower bound for bit-PHP</a> has an <a href="https://github.com/kbr-/math-research/blob/main/publications/bit-php-resolution-over-parities/whitepaper.pdf">whitepaper preprint</a>, pending external review. A <a href="#entry-2026-09-16-fable-transfer-assessment">bounded scope assessment</a> extracts a generic subspace-consequence criterion and an exponential parameter corollary. The <a href="#lean-bit-PHP-exponential">exponential bound \(S&gt;\exp(n/(32768\ell^2))\) is now Lean-verified for every \(\ell\ge32\)</a>; the generic criterion is not yet formalized, and neither is included in the preprint. Its publication is separate from the main Frege route. An <a href="#prime-disequality-bit-PHP-size-bound">affine-disequality calculus</a> gives a related all-prime side result.</p>
 </section>
 
 <section id="remaining-route">
@@ -19514,6 +19514,65 @@ c_y\prod_{i\in S}\left((c_i)_{a_i}+(c_i+e_{d_i})_{a_i}\right)
 <tr><td>Marked reading and review windows</td><td class="elapsed">33.69 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 45.09 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">23.69 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+
+<article class="research-entry" id="entry-2026-09-17-lean-bit-PHP-exponential">
+<h3>17 September 2026 — Lean formalization of the exponential bit-PHP bound, with an explicit threshold</h3>
+<p class="entry-meta"><strong>Status:</strong> full Lean formalization of <code>cor:bit-PHP-exponential-parameter-bound</code>, strengthened to every bit length \(\ell\ge32\); a parameter corollary of already verified theorems, with no new elimination mechanism. Produced by Claude Code (Claude Fable 5.1, medium effort).</p>
+<p><strong>Assignment, obligation, and stopping point.</strong> The user assigned the Formalize prompt to the <a href="#bit-PHP-exponential-parameter-corollary">exponential parameter corollary</a> of the 16 September assessment, as a prerequisite for stating it in the publication-side preprint. This does not touch the main Frege route. Stop once the complete corollary, with the actual usual-CNF hypotheses, is checked in Lean with only standard axioms and the printed type has been compared with the notebook statement. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/lean_bitphp_exponential_20260917/dependency-scope-map.md">dependency-and-scope map</a> was recorded before proof-writing.</p>
+<h4 id="lean-bit-PHP-exponential">Exact verified statement</h4>
+<p>Let \(\ell\ge32\), \(n=2^\ell\), and \(m=n+1\). Every refutation of the usual bit-PHP CNF with \(m\) pigeons and \(n\) holes in the formal affine DAG calculus, with \(S\) nodes, satisfies</p>
+<div class="math">\[
+ S&gt;\exp\!\left(\frac{n}{32768\,\ell^2}\right),
+ \qquad\text{and consequently}\qquad
+ S&gt;2^{\,n/(32768\,\ell^2)} .
+\]</div>
+<p>The calculus, initial clauses, empty final clause, node count, and both recorded rule conventions are exactly those of the verified <a href="#lean-publication-bit-PHP-superpolynomial">superpolynomial theorem</a>. The earlier record said "for all sufficiently large \(n\)"; the formal statement names the threshold \(\ell\ge32\), which implies it. No optimization of the constant or the threshold is claimed.</p>
+<p><strong>Boundary review.</strong> The threshold excludes small boards, where \(k=\lfloor n/(32\ell)\rfloor\) could be zero and the cubic comparison below fails (it is false at \(\ell=30\)). The inventory \(M=3S+\binom{n+1}{2}\) is at least one even when \(S=0\), so the exclusion theorem's hypothesis \(M\ge1\) needs no case split; a refutation with an empty final clause has \(S\ge1\) anyway.</p>
+<h4 id="lean-bit-PHP-exponential-proof">Full proof as formalized</h4>
+<p>The formal proof follows the recorded argument but replaces its eventual comparisons by one explicit natural-number inequality, and bounds the inventory slightly differently. It is therefore given in full.</p>
+<p><em>Step 1: one growth comparison.</em> For every \(\ell\ge32\),</p>
+<div class="math">\[
+ 32768\,(2\ell+4)\,\ell^2\le2^\ell .
+\]</div>
+<p>At \(\ell=32\) the left side is \(2^{25}\cdot68&lt;2^{32}\). For the induction step it suffices that \((2\ell+6)(\ell+1)^2\le2(2\ell+4)\ell^2\). The difference of the two sides is \(2\ell^3-2\ell^2-14\ell-6\), which is nonnegative because \(\ell^3\ge32\ell^2\) and \(\ell^2\ge32\ell\). Since \(\ell^2\ge32\ell\), the comparison also gives \(n\ge64\ell\).</p>
+<p><em>Step 2: the inventory.</em> Put \(x=n/(32768\ell^2)\) and suppose, for contradiction, that \(S\le e^x\). Step 1 says \(x\ge2\ell+4\). Because \(e\ge2\),</p>
+<div class="math">\[
+ e^x\ge e^{2\ell+4}\ge2^{2\ell+4}=16n^2 .
+\]</div>
+<p>The verified <a href="#lean-bit-PHP-affine-clause-PC-transfer">usual-CNF transfer</a> at accuracy \(h=3\ell\) gives a complete affine registry with \(N\le M:=3S+\binom{n+1}{2}\) blocks and an ordinary-PC refutation through \(D=\max(2h+\ell,4h+1)=12\ell+1\). Since \(\binom{n+1}{2}\le(n+1)^2\le4n^2\),</p>
+<div class="math">\[
+ 4M\le12e^x+16n^2\le13e^x\le e^x\cdot e^x=e^{2x},
+\]</div>
+<p>using \(16n^2\le e^x\) and \(e^x\ge16\ge13\). Hence \(\ln(4M)\le2x\). The earlier record instead used \(M\le5e^x\); both give the same logarithmic bound.</p>
+<p><em>Step 3: the kernel degree.</em> Let \(k=\lfloor n/(32\ell)\rfloor\). Then \(32\ell k\le n&lt;32\ell k+32\ell\). With \(n\ge64\ell\) this gives \(k\ge1\) and \(n\le64\ell k\); also \(k\le n\le m\). Since \(m\le2n\) and \(x\ge0\),</p>
+<div class="math">\[
+ m\ln(4M)\le2n\cdot2x=\frac{4n^2}{32768\,\ell^2}
+ \le\frac{4\,(64\ell k)^2}{32768\,\ell^2}=\frac{k^2}{2}\le k^2 .
+\]</div>
+<p><em>Step 4: the board conditions.</em> From \(32\ell k\le n\) and \(\ell\ge1\) we get \(32k\le n\), so \(4(k-1)&lt;n\). Moreover \(D+1=12\ell+2\) and</p>
+<div class="math">\[
+ 2k(D+1)=24\ell k+4k\le28\ell k\le n,
+\]</div>
+<p>so \(2B-1\le n\) for \(B=k(D+1)\). Finally \(D\ge2h+1=6\ell+1\).</p>
+<p><em>Step 5: exclusion.</em> The number of proper high-rank blocks is at most the number of proper blocks, hence at most \(N\le M\). Steps 2–4 are exactly the hypotheses of the verified finite <a href="#lean-affine-family-exclusion">square-condition exclusion theorem</a> with parameters \(m,\ell,M,k,D\), and the checked registry/family identity identifies the transferred system with its input. The transferred degree-\(D\) refutation is therefore impossible, so \(S&gt;e^x\). The base-two form follows from \(2^y=e^{y\ln2}\le e^y\) for \(y\ge0\), since \(\ln2\le1\).</p>
+<p><strong>Dependencies and scope.</strong> All mathematical content is reused: the finite exclusion theorem (common kernel, weighted removal with unit blocks, cube residual separation) and the actual clause transfer, both previously verified. The new Lean work is the arithmetic of Steps 1–4. The stronger asymptotics rest on the same core proof, so they are not independent confirmation of it. The main ordinary-PHP Frege goal, the remaining route, and the proposed main step are unchanged.</p>
+<p><strong>Verification.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/BitPHPExponential.lean">BitPHPExponential.lean</a> exports <code>MathResearch.bitPHP_exponential_room</code>, <code>MathResearch.bitPHP_exponential</code>, and <code>MathResearch.bitPHP_exponential_base_two</code>. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/lean_bitphp_exponential_20260917/lean-verification.txt">type and transitive axiom report</a> passes with only <code>propext</code>, <code>Classical.choice</code>, and <code>Quot.sound</code>. Statement review: the printed hypotheses of <code>bitPHP_exponential</code> coincide with those of <code>bitPHP_superpolynomial</code> (same clause type, <code>AffineDAG</code> over <code>usualBitPHPInitials (2^ℓ+1) ℓ</code>, arbitrary <code>finish</code> with an empty clause), and the conclusion is <code>Real.exp (↑(2^ℓ) / (32768 * ↑ℓ^2)) &lt; ↑S</code> with natural-number casts. No discrepancy with the informal claim was found, so <strong>Gaps identified by formalization</strong> is unchanged. The preprint is not modified in this cycle.</p>
+<p><strong>Outcome and process assessment.</strong> The corollary is fully formalized and its claim-index entry now links the Lean file. Replacing eventual comparisons with one inductive inequality removed all filter bookkeeping and let the module compile on the first build; no framework change is needed.</p>
+<div class="timing-report" data-session="lean_bitphp_exponential_20260917">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 54.02 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 4.79 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">2 min 59.14 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">0.15 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">41.95 s</td></tr>
+<tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">7.99 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
