@@ -1,6 +1,6 @@
 # Bit PHP in unrestricted resolution over parities
 
-**Preprint, revision 1 (17 September 2026); theorems and dependencies verified in Lean.**
+**Preprint, revision 1 (18 September 2026); theorems and dependencies verified in Lean.**
 The whitepaper proves an exponential lower bound, more than exp(n/(32768 ℓ²)) nodes for every
 ℓ ≥ 32 ([Lean](https://github.com/kbr-/math-research/blob/b47e9b1ef1f5b273822001983e83d35d7acbe117/formalization/claims/BitPHPExponential.lean)),
 the [superpolynomial form of version 1](https://kbr.is-a.dev/math-research/#lean-publication-bit-PHP-superpolynomial)
@@ -16,7 +16,7 @@ From the repository root, after the one-time Lean setup in
 [formalization/README.md](../../formalization/README.md):
 
 ~~~sh
-./formalization/verify.sh --target claims/BitPHPExponential.lean
+./formalization/verify.sh --target claims/BitPHPPreprintRevision1.lean
 ~~~
 
 The expected axiom report for each listed declaration, for example the main theorem, is
@@ -25,9 +25,13 @@ The expected axiom report for each listed declaration, for example the main theo
 'MathResearch.bitPHP_exponential' depends on axioms: [propext, Classical.choice, Quot.sound]
 ~~~
 
-that is, Lean's standard foundations only. Use `--target claims/BitPHPSuperpolynomial.lean`,
-`claims/GenericCNFSubspaceCriterion.lean`, `claims/GenericCNFDensityBound.lean`, or
-`claims/ShortProofControl.lean` for the other cited results.
+that is, Lean's standard foundations only. The target is an import-only module gathering every
+formal result the paper cites; it also passed `leanchecker --fresh` on 18 September 2026
+([record](../../research/results/preprint_rev1_review_fixes_20260917/replay.json)). To replay it:
+
+~~~sh
+cd formalization && lake env leanchecker --fresh claims.BitPHPPreprintRevision1
+~~~
 
 - [Rendered PDF](whitepaper.pdf)
 - [Main TeX source](whitepaper.tex), with the complete argument in [sections](sections)

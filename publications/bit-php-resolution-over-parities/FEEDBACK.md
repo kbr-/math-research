@@ -31,8 +31,8 @@ The items below come from two Claude review conversations about the preprint, re
   - Revision 1: one resolution step at accuracy 1, in Section 2.
 - [x] Move formalization-driven generality ("over any field", "no finite-dimensional hypothesis", exact vs upper-bound degrees) into remarks or leave it to the Lean files; keep generality that the paper or a planned extension uses (C1).
   - Revision 1: one Remark in Section 2 replaces the scattered sentences; lemma-specific hypotheses that the proofs use were kept.
-- [ ] Consolidate the scattered scope and novelty caveats so they do not interrupt the argument (C1).
-  - Revision 1: partly: novelty and scope caveats are now in the Scope paragraph of Section 1 and in "What does not follow" (generic section); the stray remarks after Lemma 2.2 and Corollary 3.3 (version-1 numbers) and the obsolete "no exponential bound is asserted" were removed. Section 8.1 "What the conclusion uses" was left in place.
+- [x] Consolidate the scattered scope and novelty caveats so they do not interrupt the argument (C1).
+  - Revision 1: partly: novelty and scope caveats are now in the Scope paragraph of Section 1 and in "What does not follow" (generic section); the stray remarks after Lemma 2.2 and Corollary 3.3 (version-1 numbers) and the obsolete "no exponential bound is asserted" were removed. Section 8.1 "What the conclusion uses" was shrunk to one short remark pointing to the overview (author's decision).
 - [x] Explain why prior approaches stalled and which step bypasses the obstacle; connect explicitly to the 1996 extension-variable method (BIKPRS) and Razborov-style degree bounds (C1).
   - Revision 1: last subsection of Section 2, hedged with "as we understand". Author or an expert should check the characterization of the closure/lifting papers.
 - [x] Possibly shorten Section 2 to brief preliminaries (C1). Decided: Appendix A stays; it is a real service (C2), despite C1's suggestion to cut it.
@@ -44,7 +44,8 @@ The items below come from two Claude review conversations about the preprint, re
 - [x] Disclose Claude Fable 5.1's role in revision 1, in the same paragraph and consistently with the title-page note: it formalized the exponential corollary and the generic criterion (statements and proofs, with one proof batch delegated to Claude Opus 5), triaged this feedback, and will draft the revised text. The author again did not check the mathematics and relies on Lean.
 - [x] Move the development story (subscription plans, usage limits, model frustrations, classifier episode, prompt history) out of the paper to a permanently linked document: fixed Git commit, Zenodo, or Software Heritage; a personal website only as a convenience link (C1).
   - Revision 1: moved verbatim to `DEVELOPMENT_HISTORY.md`, linked from the paper together with the version-1 source at fixed commit b47e9b1. Author: archive on Zenodo or Software Heritage if a DOI is wanted.
-- [ ] Consider a separate Noemesis writeup for the framework, later (C2 step 8). Until it exists, Section 8 keeps its short description of the framework (8.2), which the abstract's closing sentence points to; only the development story of 8.3 moves out.
+- [x] Consider a separate Noemesis writeup for the framework, later (C2 step 8). Until it exists, Section 8 keeps its short description of the framework (8.2), which the abstract's closing sentence points to; only the development story of 8.3 moves out.
+  - Decided by the author: deferred on purpose. A framework whitepaper should come only after a track record of several solved open problems; until then Section 10.2 of the paper is the description.
 
 Note, not a task: ECCC requires submissions to be understandable by researchers in the area; the overview, abstract, and Section 8 items above serve that criterion (C2).
 
@@ -81,3 +82,16 @@ Note, not a task: ECCC requires submissions to be understandable by researchers 
   - Revision 1: verify command and expected axiom line added to the publication README. Not done, author decisions: a public green CI run (the hosted workflow is manual-only and targets only `claims.BitPHPSuperpolynomial`) and a tagged release.
 - [ ] Get the formalization built and its axioms printed by an independent party (C1).
 - [ ] Ask an independent Res(⊕) expert to check that the Lean definitions are the standard system (`AffineDAGRegistry.lean`, `BitPHPInitialBridge.lean`, top-level statement: arbitrary affine pivots, unrestricted semantic weakening, size as node count, BPHP encoding, axiom report). Do this first, without waiting for the rewrite (C2 step 1).
+
+# Revision 1
+
+Items from a further Claude review conversation of revision 1 (an AI review, not an independent one). It also rechecked the arithmetic of the new Section 8 proof and of the density corollary and found no problem.
+
+- [x] Error in the abstract: "at degree o(n)" was true of version 1's parameters only; with k ≈ n/(32ℓ) the degree B = k(D+1) is about 3n/8. Replaced by "at degree at most n/2". The o(n) in (8.1) belongs to the corollary's smaller k and stays.
+- [x] Run `leanchecker --fresh` on the modules behind Theorem 1.1 and Section 9 and update Section 10.1, so the strongest evidence attaches to the headline statement.
+- [x] "Exponential" in the title: some readers reserve it for 2^Ω(n). Options: "nearly exponential", or the bound itself in the title. Decided by the author: keep "exponential" with a clarifying sentence.
+  - Revision 1: title unchanged; a sentence after Theorem 1.1 now says the bound is 2^(L^(1/3−o(1))) in the formula size L and that no 2^Ω(L) or 2^Ω(n) bound is claimed.
+- [x] Strengthen the short-refutation remark with Tseitin formulas: the clause polynomials derive one at the maximum vertex degree, so no nonzero space is separated. Added with its two-line argument, marked as not formalized.
+- [x] Decided by the author: keep the notebook vocabulary, defined once in Section 2.5; it is part of the paper's character. Suggestion was: terminology, if revised again: "extension axiom" for companion and "block family" for registry, keeping the notebook names in parentheses for the Lean links.
+- [x] Citation key [BIKPRS] lacked a year; now [BIKPRS96].
+

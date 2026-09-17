@@ -71,20 +71,15 @@ This argument uses \(k=\lceil(\ell+1)(\sqrt2)^\ell\rceil\), giving
 far below the room \(k\approx n/(32\ell)\) used for Theorem~\ref{thm:main}.
 \end{proof}
 
-\subsection{What the conclusion uses}
-The source clauses may have any affine rank. The argument partitions
-the actual complete block family by rank, uses one common multiplier
-on the high side, and packs every block on the low side.
-The final contradiction is the impossibility of an old consequence
-\(f\ne0\) in a separated row-linear space. It is not an application
-of a degree lower bound for one alone.
-
-Only the old functional system uses PC/NS equality, established by
-prescribed-moment extension. The augmented system is handled by a
-primitive PC replay. Similarly, only the number of source blocks and
-their compact input descriptions need be polynomial. Expanded PC
-polynomials and their derivations need not have polynomial monomial
-count: the contradiction uses degree.
+\begin{remark}[What the conclusion uses]\label{rem:conclusion-uses}
+As explained in Section~\ref{sec:overview}, the contradiction is the
+impossibility of a nonzero consequence in the separated row-linear space,
+not a degree lower bound for deriving one. Equality of Nullstellensatz and
+polynomial calculus consequences is used only for the old functional
+system, and the argument bounds degree only: the number of blocks enters
+through \(M\), while the monomial size of the simulating derivation is
+irrelevant.
+\end{remark}
 
 \subsection{Relationship to the broader PHP project}
 This result arose within a broader mathematical research project led by
@@ -200,8 +195,17 @@ separated space of degree \(k\) and dimension above the right side of
 contradiction: if \(\mathcal F\) contains a polynomial \(L\) of degree at
 most one and also \(1-L\), then it derives one at degree one, every
 polynomial of degree at most \(B\) is derivable at degree \(B\ge1\), and
-the only separated space is zero. This checks one trivial family; it is not
-an audit of the known short \(\Res\) refutations.
+the only separated space is zero. The same happens, as it must, for Tseitin
+formulas, which have short \(\Res\) refutations: over \(\F\), the sum of
+the clause polynomials of the clauses at a vertex of degree \(d\) is the
+affine polynomial expressing that the vertex constraint fails (both sides
+are multilinear and agree on Boolean points), and the sum of these affine
+polynomials over all vertices is one. So any base containing the clause
+polynomials derives one at degree \(d\), and no nonzero space is separated
+at any degree \(B\ge\max\{d,k\}\). Only the complementary-pair case and the
+step from a derivation of one are formalized; the Tseitin computation is
+not. This is a consistency check, not an audit of the known short \(\Res\)
+refutations.
 \end{remark}
 
 \subsection{What does not follow}
@@ -282,9 +286,14 @@ The final transitive axiom report contains only Lean's standard foundations;
 there is no \texttt{sorry}, custom axiom, or unproved chessboard interface.
 The compiled module of the superpolynomial theorem and all its imported
 declarations also passed a fresh kernel replay with the bundled
-\texttt{leanchecker --fresh} on 15 September 2026; the modules added in
-revision 1 passed the project's verification script, with the same axiom
-report, but were not separately replayed in this way. The complete project was separately rebuilt from empty
+\texttt{leanchecker --fresh} on 15 September 2026. On 18 September 2026 the
+same fresh replay passed for an import-only module,
+\texttt{claims/BitPHPPreprintRevision1.lean}, that gathers every formal
+result cited in this revision (Theorem~\ref{thm:main},
+Corollary~\ref{cor:main-superpolynomial}, and the results of
+Section~\ref{sec:generic}) together with all their imports, with the same
+axiom report. That module was added after commit \texttt{b47e9b1}; the
+sources of the cited results are unchanged from that commit. The complete project was separately rebuilt from empty
 project build outputs using the pinned library caches.
 The proofs here follow the formalization entries, including
 alternative arguments adopted during formalization. Formal verification of

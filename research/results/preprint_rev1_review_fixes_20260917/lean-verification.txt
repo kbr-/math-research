@@ -1,0 +1,130 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.BitPHPPreprintRevision1
+Claim file: claims/BitPHPPreprintRevision1.lean
+Claim: publication aggregate for the bit-PHP preprint, revision 1
+Source: https://kbr.is-a.dev/math-research/#entry-2026-09-17-preprint-revision-1
+Scope: Import-only module with no declarations of its own. It gathers the formal results cited by revision 1 of the preprint (the exponential theorem, the superpolynomial corollary, the generic proof-size criterion with its PC-level theorem and density form, and the short-proof control) so that one build, one axiom report, and one fresh kernel replay cover all of them and their imports. The listed declarations are proved in the imported modules.
+Declarations: MathResearch.bitPHP_exponential MathResearch.bitPHP_exponential_base_two MathResearch.bitPHP_superpolynomial MathResearch.PolynomialCalculus.generic_CNF_subspace_criterion MathResearch.PolynomialCalculus.generic_CNF_density_bound_simple MathResearch.generic_affine_subspace_consequence MathResearch.PolynomialCalculus.no_separated_subspace_of_complementary_pair
+$ lake --wfail build claims.BitPHPPreprintRevision1
+✔ [2490/2490] Built claims.BitPHPPreprintRevision1 (1.9s)
+Build completed successfully (2490 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-auxiliary/formalization/.lake/tmplxas19vi.lean
+MathResearch.bitPHP_exponential : ∀ ℓ ≥ 32,
+  ∀ {S : ℕ}
+    (C :
+      Fin S → MathResearch.PolynomialCalculus.FiniteParityClause (MathResearch.PolynomialCalculus.BitVar (2 ^ ℓ + 1) ℓ))
+    (_dag :
+      MathResearch.PolynomialCalculus.AffineDAG (MathResearch.PolynomialCalculus.usualBitPHPInitials (2 ^ ℓ + 1) ℓ) C)
+    (finish : Fin S), C finish = ∅ → Real.exp (↑(2 ^ ℓ) / (32768 * ↑ℓ ^ 2)) < ↑S
+'MathResearch.bitPHP_exponential' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.bitPHP_exponential_base_two : ∀ ℓ ≥ 32,
+  ∀ {S : ℕ}
+    (C :
+      Fin S → MathResearch.PolynomialCalculus.FiniteParityClause (MathResearch.PolynomialCalculus.BitVar (2 ^ ℓ + 1) ℓ))
+    (_dag :
+      MathResearch.PolynomialCalculus.AffineDAG (MathResearch.PolynomialCalculus.usualBitPHPInitials (2 ^ ℓ + 1) ℓ) C)
+    (finish : Fin S), C finish = ∅ → 2 ^ (↑(2 ^ ℓ) / (32768 * ↑ℓ ^ 2)) < ↑S
+'MathResearch.bitPHP_exponential_base_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.bitPHP_superpolynomial : ∀ (K : ℝ),
+  0 < K →
+    ∃ L,
+      ∀ ℓ ≥ L,
+        ∀ {S : ℕ}
+          (C :
+            Fin S →
+              MathResearch.PolynomialCalculus.FiniteParityClause (MathResearch.PolynomialCalculus.BitVar (2 ^ ℓ + 1) ℓ))
+          (_dag :
+            MathResearch.PolynomialCalculus.AffineDAG
+              (MathResearch.PolynomialCalculus.usualBitPHPInitials (2 ^ ℓ + 1) ℓ) C)
+          (finish : Fin S), C finish = ∅ → ↑(2 ^ ℓ) ^ K < ↑S
+'MathResearch.bitPHP_superpolynomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.generic_CNF_subspace_criterion : ∀ {σ J : Type} [inst : Fintype σ] [inst_1 : Fintype J]
+  {S : ℕ} (I : Set (MathResearch.PolynomialCalculus.FiniteParityClause σ))
+  (C : Fin S → MathResearch.PolynomialCalculus.FiniteParityClause σ)
+  (dag : MathResearch.PolynomialCalculus.AffineDAG I C) (finish : Fin S),
+  C finish = ∅ →
+    ∀ (A : J → MathResearch.PolynomialCalculus.FiniteParityClause σ) (w : ℕ),
+      (∀ (j : J), Finset.card (A j) ≤ w) →
+        (∀ D ∈ I, ∃ j, MathResearch.clauseEntails (A j) D) →
+          ∀ (old : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) σ)),
+            MathResearch.PolynomialCalculus.booleanBase ⊆ old →
+              (∀ (j : J), MathResearch.PolynomialCalculus.clauseFalsityPolynomial (A j) ∈ old) →
+                ∀ (h k : ℕ),
+                  1 ≤ h →
+                    1 ≤ k →
+                      ∀ (U : Submodule (ZMod 2) (MvPolynomial σ (ZMod 2))),
+                        (∀ p ∈ U, p.totalDegree ≤ k) →
+                          (∀ f ∈ U,
+                              MathResearch.PolynomialCalculus.Derives old (k * (max (2 * h + w) (4 * h + 1) + 1)) f →
+                                f = 0) →
+                            Module.finrank (ZMod 2) ↥U ≤
+                              (3 * S + Fintype.card J) * (Fintype.card σ - (h * (k + 1) + 1) + k).choose k
+'MathResearch.PolynomialCalculus.generic_CNF_subspace_criterion' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.PolynomialCalculus.generic_CNF_density_bound_simple : ∀ {σ J : Type} [inst : Fintype σ]
+  [inst_1 : Fintype J] {S : ℕ} (I : Set (MathResearch.PolynomialCalculus.FiniteParityClause σ))
+  (C : Fin S → MathResearch.PolynomialCalculus.FiniteParityClause σ)
+  (dag : MathResearch.PolynomialCalculus.AffineDAG I C) (finish : Fin S),
+  C finish = ∅ →
+    ∀ (A : J → MathResearch.PolynomialCalculus.FiniteParityClause σ) (w : ℕ),
+      (∀ (j : J), Finset.card (A j) ≤ w) →
+        (∀ D ∈ I, ∃ j, MathResearch.clauseEntails (A j) D) →
+          ∀ (old : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) σ)),
+            MathResearch.PolynomialCalculus.booleanBase ⊆ old →
+              (∀ (j : J), MathResearch.PolynomialCalculus.clauseFalsityPolynomial (A j) ∈ old) →
+                ∀ (h k : ℕ),
+                  1 ≤ h →
+                    1 ≤ k →
+                      h * (k + 1) + 1 ≤ Fintype.card σ →
+                        ∀ (U : Submodule (ZMod 2) (MvPolynomial σ (ZMod 2))),
+                          (∀ p ∈ U, p.totalDegree ≤ k) →
+                            (∀ f ∈ U,
+                                MathResearch.PolynomialCalculus.Derives old (k * (max (2 * h + w) (4 * h + 1) + 1)) f →
+                                  f = 0) →
+                              ↑(Module.finrank (ZMod 2) ↥U) ≤
+                                ↑(3 * S + Fintype.card J) * ↑((Fintype.card σ + k).choose k) *
+                                  Real.exp (-(↑h * ↑k ^ 2) / (↑(Fintype.card σ) + ↑k))
+'MathResearch.PolynomialCalculus.generic_CNF_density_bound_simple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.generic_affine_subspace_consequence : ∀ {σ κ : Type} [inst : Fintype σ] [inst_1 : Fintype κ]
+  {ι : κ → Type} [inst_2 : (b : κ) → Fintype (ι b)] (g : (b : κ) → ι b → MathResearch.AffineInputMap σ) (h k D : ℕ),
+  1 ≤ h →
+    1 ≤ k →
+      2 * h + 1 ≤ D →
+        ∀ (F : Set (MvPolynomial σ (ZMod 2))),
+          MathResearch.PolynomialCalculus.booleanBase ⊆ F →
+            ∀ (U : Submodule (ZMod 2) (MvPolynomial σ (ZMod 2))),
+              (∀ p ∈ U, p.totalDegree ≤ k) →
+                MathResearch.PolynomialCalculus.Derives
+                    (MathResearch.ensFamilySystem (fun b i => MathResearch.finiteAffinePolynomial (g b i)) h F) D 1 →
+                  Module.finrank (ZMod 2) ↥U ≤
+                    Module.finrank (ZMod 2) ↥(U ⊓ MathResearch.PolynomialCalculus.pcSpace F (k * (D + 1))) +
+                      ∑ b, (Fintype.card σ - MathResearch.affineInputRank (g ↑b) + k).choose k
+'MathResearch.generic_affine_subspace_consequence' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.no_separated_subspace_of_complementary_pair : ∀ {K : Type u_1} {V : Type u_2}
+  [inst : Field K] {F : Set (MathResearch.PolynomialCalculus.Poly K V)} (L : MathResearch.PolynomialCalculus.Poly K V),
+  MvPolynomial.totalDegree L ≤ 1 →
+    L ∈ F →
+      1 - L ∈ F →
+        ∀ (k B : ℕ),
+          1 ≤ B →
+            k ≤ B →
+              ∀ (U : Submodule K (MathResearch.PolynomialCalculus.Poly K V)),
+                (∀ p ∈ U, MvPolynomial.totalDegree p ≤ k) →
+                  (∀ f ∈ U, MathResearch.PolynomialCalculus.Derives F B f → f = 0) → U = ⊥
+'MathResearch.PolynomialCalculus.no_separated_subspace_of_complementary_pair' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 7 audited declarations.

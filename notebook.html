@@ -19742,5 +19742,31 @@ c_y\prod_{i\in S}\left((c_i)_{a_i}+(c_i+e_{d_i})_{a_i}\right)
 </div>
 </article>
 
+<article class="research-entry" id="entry-2026-09-18-preprint-revision-1-review-fixes">
+<h3>18 September 2026 — Preprint revision 1: fixes after an AI review, and a fresh kernel replay of every cited formal result</h3>
+<p class="entry-meta"><strong>Status:</strong> one correction to the revised abstract, one unformalized consistency remark, and verification evidence (finite check by the Lean kernel); no new mathematical claim. Produced by Claude Code (Claude Fable 5.1, medium effort).</p>
+<p><strong>Assignment and stopping point.</strong> The user supplied a review of <a href="#entry-2026-09-17-preprint-revision-1">revision 1</a> written by Claude in another conversation (an AI review, not an independent one). The task was to fix what it found; the stopping point was a clean PDF build with the verification paragraph updated. The remaining-route obligations of the main goal are untouched.</p>
+<p><strong>Correction to the abstract drafted in the previous entry.</strong> The revised abstract said the old-base consequence is derived "at degree \(o(n)\)". That holds for the corollary's parameter \(k=\lceil(\ell+1)2^{\ell/2}\rceil\), where \(B=k(D+1)=O(\sqrt n(\log n)^2)\). The exponential theorem uses \(k=\lfloor n/(32\ell)\rfloor\) and \(D=12\ell+1\), so \(B=k(12\ell+2)\approx 3n/8\), which is \(\Theta(n)\); the constraint actually used is \(2B\le n\). The abstract now says "at degree at most \(n/2\)". The error was in the prose of the abstract only; the theorem, its written proof, and the Lean statement were not affected. The reviewer also rechecked the arithmetic of the written proof and of the density corollary and found no problem.</p>
+<p><strong>Tseitin consistency remark (not formalized).</strong> For a Tseitin formula over \(\mathbb F_2\), the clause polynomials of the \(2^{d-1}\) clauses at a vertex of degree \(d\) are the indicators of its falsifying local assignments; their sum is multilinear and agrees on Boolean points with the affine polynomial \(\sum_{e\ni v}x_e+c_v\), hence equals it. Summing over vertices, every edge variable cancels and the charges sum to one. So a base containing the clause polynomials derives one at degree \(d\), and by the <a href="#lean-generic-criterion-short-proof-control">verified step from a derivation of one</a> no nonzero space of degree at most \(k\) is separated at any degree \(B\ge\max(d,k)\). The generic criterion is therefore vacuous on Tseitin formulas, as it must be since they have short Res(\(\oplus\)) refutations. The remark in the paper says that this computation is not formalized.</p>
+<p><strong>Kernel replay.</strong> A new import-only module <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/BitPHPPreprintRevision1.lean"><code>claims/BitPHPPreprintRevision1.lean</code></a> gathers the exponential theorem, the superpolynomial corollary, the generic criterion with its PC-level theorem and density form, and the short-proof control. The project verifier passed on it (7 audited declarations, standard axioms only), and <code>leanchecker --fresh</code> replayed it with all imports in a fresh kernel environment: return code 0, 253 seconds. The sources of the cited results are unchanged from commit <code>b47e9b1</code>. A first attempt ran four per-module replays in sequence; the user pointed out the repeated work, it was stopped after about three minutes, and the single aggregate replay replaced it. Evidence: <a href="https://github.com/kbr-/math-research/blob/main/research/results/preprint_rev1_review_fixes_20260917/replay.json">replay record</a>, <a href="https://github.com/kbr-/math-research/blob/main/research/results/preprint_rev1_review_fixes_20260917/lean-verification.txt">verifier output</a>.</p>
+<p><strong>Other changes.</strong> A sentence after the main theorem says in what sense the bound is exponential (\(2^{L^{1/3-o(1)}}\) in the formula size \(L\); no \(2^{\Omega(L)}\) claim); the author decided to keep "exponential" in the title and to keep the notebook vocabulary. The citation label of the 1996 extension-variable paper gained its year. The post-proof subsection "What the conclusion uses", left open in the previous entry, was shrunk to one short remark pointing to the overview, by the author's decision; this edit and its rebuild came after the timing snapshot. The title-page date is 18 September 2026. The review items and decisions are recorded in the preprint's FEEDBACK.md.</p>
+<p><strong>Remaining.</strong> Version 1 is under consideration at ECCC and its fixed-commit link was sent to several readers; how to present this text to ECCC and whether to tag a release are the author's decisions.</p>
+<div class="timing-report" data-session="preprint_rev1_review_fixes_20260917">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 1.21 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">17.15 s</td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">40.06 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">24.27 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.48 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">8 min 26.58 s</td></tr>
+<tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">1 min 11.68 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+
 <!-- Append new dated mathematical entries here, preserving earlier entries. -->
 </section>
