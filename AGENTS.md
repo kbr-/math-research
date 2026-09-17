@@ -176,6 +176,8 @@ actionable rule over another checklist or a record of one-off setup history.
 - Entries are chronological and append-only. Give each a date, descriptive title,
   stable HTML anchor, and a `<p class="entry-meta">` status line, to which
   `finish-turn.py` appends the agent and model recorded by the timing session.
+  Do not number cycles: branches and parallel worktrees cannot share a counter.
+  Refer to an entry by its anchor; label parallel formalization entries by route ID.
   State an explicit status (working proof, conditional result,
   conjecture, finite check, or refutation). State assumptions and the precise
   claim, provide the mathematical argument, and include relevant dependencies,
