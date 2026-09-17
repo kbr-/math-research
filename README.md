@@ -177,7 +177,8 @@ With Claude Code, run `./start-claude.sh` instead. It accepts the same options,
 records its session in `.claude-session-id`, and sets the same auto-compaction
 budget. [`CLAUDE.md`](CLAUDE.md) imports `AGENTS.md`, and the tracked
 [`.claude/settings.json`](.claude/settings.json) pre-approves the routine
-framework commands; it does not pre-approve `git push`.
+framework commands, including `git push origin main`; [AGENTS.md](AGENTS.md)
+still decides when a push is authorized. The launcher selects the `auto` permission mode.
 
 [AGENTS.md](AGENTS.md) describes the research workflow: maintain the notebook's
 living sections, append each research attempt with its timing and evidence,

@@ -25,7 +25,7 @@ if (( $# )); then
   exit 2
 fi
 
-options=(--autocompact "${AUTO_COMPACT_TOKENS}")
+options=(--permission-mode auto --autocompact "${AUTO_COMPACT_TOKENS}")
 if [[ "$mode" != new && -f .claude-session-id ]]; then
   session_id="$(cat .claude-session-id)"
   if [[ ! "$session_id" =~ ^[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$ ]]; then

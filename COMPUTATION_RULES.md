@@ -103,10 +103,9 @@ reconfigure while computation jobs are running.
 Cgroups and running services disappear at shutdown. Project files and unit links
 persist; the services are not enabled at boot. Rerun setup after reboot/login,
 and check status when resuming. Codex needs the appropriate tool escalation to
-access user systemd outside its sandbox; Claude Code reaches it directly.
-The unit links are per-user and point at the checkout that last ran setup. From
-another worktree of the same repository, start the existing controls with
-`systemctl --user start mathcompute-watchdog.service` instead of re-running setup.
+access user systemd outside its sandbox; Claude Code needs no escalation.
+The unit links are per-user. Setup run from a linked Git worktree builds in the
+main checkout's `.resource-runtime/`, so all worktrees share one set of controls.
 
 Resource-limit validation evidence and implementation details are recorded in
 [resource-controls/README.md](resource-controls/README.md). Do not rerun the

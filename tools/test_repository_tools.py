@@ -97,7 +97,7 @@ class RepositoryTools(unittest.TestCase):
         self.assertEqual(data['args'][:2], ['--session-id', bound])
         self.assertNotIn('--resume', data['args'])
         self.assertIn('research/notes/RESUME.md', data['args'][-1])
-        self.assertEqual(data['args'][2:4], ['--autocompact', '530000'])
+        self.assertEqual(data['args'][2:6], ['--permission-mode', 'auto', '--autocompact', '530000'])
         self.assertEqual(data['cwd'], str(self.root))
         self.assertEqual((data['editor'], data['visual']), ('vim', 'vim'))
 

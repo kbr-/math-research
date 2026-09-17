@@ -153,9 +153,26 @@ def unit_quote(value):
     return '"' + str(value).replace('\\', '\\\\').replace('"', '\\"').replace('%', '%%') + '"'
 
 
+def runtime_directory(project):
+    """Share one runtime directory among all Git worktrees of this repository.
+
+    The systemd unit links are per-user, so a linked worktree must not re-point
+    them at its own, possibly short-lived, directory.
+    """
+    try:
+        common = Path(subprocess.run(
+            ['git', 'rev-parse', '--path-format=absolute', '--git-common-dir'],
+            cwd=project, check=True, text=True, capture_output=True).stdout.strip())
+    except (OSError, subprocess.CalledProcessError):
+        return project / '.resource-runtime'
+    if common.name == '.git' and common.parent.is_dir():
+        return common.parent / '.resource-runtime'
+    return project / '.resource-runtime'
+
+
 def main():
     project = Path(__file__).resolve().parent.parent
-    build = project / '.resource-runtime'
+    build = runtime_directory(project)
     for program in ('cc', 'systemctl', 'systemd-run'):
         if shutil.which(program) is None:
             raise RuntimeError(f'{program} is missing. Ask the user to install it; do not install automatically.')

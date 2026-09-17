@@ -8,7 +8,8 @@ python3 resource-controls/setup.py
 
 `setup.py` is self-contained: its embedded C source and unit templates recreate
 everything. It uses only Python's standard library, the existing C compiler, and
-systemd. It builds files in `.resource-runtime/`, links two units into the user's
+systemd. It builds files in `.resource-runtime/` (the main checkout's copy when run from a
+linked Git worktree, so worktrees share one set of controls), links two units into the user's
 systemd configuration, starts the controls, and verifies readiness. It is safe to
 rerun when no computation jobs are running; otherwise it refuses reconfiguration.
 `setup.sh` is a convenience shim for the same script. No packages are installed.
