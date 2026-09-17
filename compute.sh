@@ -372,6 +372,8 @@ def main():
             command, raw = raw[index+1:], raw[:index]
         args = parser.parse_args(raw)
         if action == 'start':
+            if not (args.model or os.environ.get('MATH_AGENT_MODEL')):
+                parser.error('State your model: --model "MODEL, reasoning setting" (or set MATH_AGENT_MODEL)')
             print(start_session(args.session, args.agent, args.model).relative_to(ROOT))
             return 0
         if action != 'run':

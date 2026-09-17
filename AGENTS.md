@@ -234,7 +234,8 @@ actionable rule over another checklist or a record of one-off setup history.
 
 - Measure every research turn, including reading/review, preparation, writing,
   tools, computations, failed attempts, and retries. Start as early as practical
-  with `./compute.sh start TURN`; disclose work preceding instrumentation.
+  with `./compute.sh start TURN --model "MODEL, reasoning setting"`; disclose
+  work preceding instrumentation.
 - Follow [the execution and timing policy](COMPUTATION_RULES.md#unified-execution-and-timing)
   for phase marking, protected commands, reports, and honest measurement scope.
 - Keep full output on disk and display bounded excerpts. After compaction, read

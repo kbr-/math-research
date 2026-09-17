@@ -120,7 +120,7 @@ resource enforcement and timing. Run it directly, not with `bash`.
 From the repository root:
 
 ```bash
-./compute.sh start turn001
+./compute.sh start turn001 --model "MODEL, reasoning setting"
 ./compute.sh phase turn001 reading --note "Read the relevant proof"
 ./compute.sh phase turn001 mathematics
 ./compute.sh phase turn001 coding --note "Design and implement a computation"
@@ -129,8 +129,9 @@ From the repository root:
 ```
 
 `start` records the producing agent (detected, or `--agent NAME`) and its model.
-Pass `--model "MODEL, reasoning setting"` or set `MATH_AGENT_MODEL`; state your
-actual model, never a guess. `finish-turn.py --next` carries both forward, and
+`start` refuses to run without `--model "MODEL, reasoning setting"` or
+`MATH_AGENT_MODEL`. State the model named by your own system context or
+configuration, never a guess; write `unknown` if you cannot determine it. `finish-turn.py --next` carries both forward, and
 `report` prints them. Machine-local session IDs are never recorded.
 
 Alternatively, use `./compute.sh --session turn001 --threads 1 python3 calculation.py`.
