@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Export timing, archive evidence, and fill one notebook timing placeholder."""
 import argparse
+import html
 import json
 import os
 from pathlib import Path
@@ -28,6 +29,19 @@ def validate_marker(body, marker):
     close = body.find('</article>', article) if article >= 0 else -1
     if not (0 <= record < article < position < close < end):
         raise ValueError('Timing marker must be inside a Research-record article')
+    meta = body.find('<p class="entry-meta">', article, position)
+    if meta < 0 or body.find('</p>', meta, position) < 0:
+        raise ValueError('The entry needs a <p class="entry-meta"> status line before its timing marker')
+
+
+def credit_producer(body, marker, producer):
+    """Name the recorded agent and model at the end of the entry's status line."""
+    article = body.rfind('<article', 0, body.index(marker))
+    meta = body.index('<p class="entry-meta">', article)
+    close = body.index('</p>', meta)
+    if producer in body[meta:close]:
+        return body
+    return body[:close] + ' ' + producer + body[close:]
 
 
 def finish(root, turn, next_turn=None):
@@ -67,7 +81,10 @@ def finish(root, turn, next_turn=None):
         validate_marker(current, marker)
     except ValueError as error:
         raise ValueError(f'Timing and archive are saved, but {error}') from error
-    updated = current.replace(marker, fragment.read_text().strip())
+    first = json.loads((root / 'research/logs' / f'{turn}.jsonl').read_text().splitlines()[0])
+    producer = (f"Produced by {html.escape(first.get('agent', 'unrecorded'))} "
+                f"({html.escape(first.get('model', 'unrecorded'))}).")
+    updated = credit_producer(current, marker, producer).replace(marker, fragment.read_text().strip())
     temporary = None
     try:
         with tempfile.NamedTemporaryFile(mode='w', dir=root, prefix='.notebook-timing-',

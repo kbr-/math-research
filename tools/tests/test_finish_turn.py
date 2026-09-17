@@ -33,12 +33,14 @@ class FinalizationTest(unittest.TestCase):
     def test_complete_and_start_next(self):
         notebook = self.root / 'notebook.html'
         content = ('<section id="research-record">\nearlier record\n'
-                   '<article id="new-entry">\n<!-- TIMING test_turn -->\n'
+                   '<article id="new-entry">\n<p class="entry-meta">Status: test.</p>\n'
+                   '<!-- TIMING test_turn -->\n'
                    '</article>\nappend here\n</section>\n')
         notebook.write_text(content)
         self.command('tools/finish-turn.py', 'test_turn', '--next', 'next_turn')
         table = (self.root / 'research/results/test_turn/timing.html').read_text().strip()
-        expected = content.replace('<!-- TIMING test_turn -->', table)
+        expected = content.replace('<!-- TIMING test_turn -->', table).replace(
+            'Status: test.</p>', 'Status: test. Produced by Test agent (Test model, high).</p>')
         self.assertEqual(notebook.read_text(), expected)
         archive = self.root / 'research/provenance/session-records/test_turn'
         self.assertEqual((archive / 'session.jsonl').read_bytes(),
@@ -62,6 +64,7 @@ class FinalizationTest(unittest.TestCase):
             '<section id="research-record"></section>',
             '<section id="research-record">' + marker + '</section>',
             '<section id="research-record"><article></article></section>' + marker,
+            '<section id="research-record"><article>' + marker + '</article></section>',
         ]
         for content in cases:
             with self.subTest(content=content):
