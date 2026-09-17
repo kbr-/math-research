@@ -144,6 +144,20 @@ int main(int argc,char** argv){
                 {"E*x1x2",mul(E,mul(v[0],v[1]))},{"E*g1g2",mul(E,mul(g[0],g[1]))},{"E*x1y2",mul(E,mul(v[0],v[4]))},{"E*x1",mul(E,v[0])},{"A*B*g1",mul(mul(A,B),g[0])},{"E+A*B",add(E,mul(A,B))}};
       for(int D:{6,7}) run_case(out,"n3-one-helper-queries",s,D,ok,q); }
     std::cout<<(ok?"ALL PRESERVED":"SOME INTERFACE NOT PRESERVED")<<std::endl; return 0; }
+  if(suite=="cycle169-php"){
+    // functional PHP base: n holes, n+1 pigeons, x_{ij} Boolean; rho_i-1, x_ij x_i'j (i!=i'), x_ij x_ik (j!=k)
+    auto php=[&](int n,int rank,std::vector<int> Ds,const std::string& name){
+      Source s; int m=n+1; std::vector<std::vector<Poly>> x(m); for(int i=0;i<m;++i) for(int j=0;j<n;++j) x[i].push_back(s.old_var());
+      for(int i=0;i<m;++i){ Poly rho=one(); for(int j=0;j<n;++j) rho=add(rho,x[i][j]); s.gens.push_back({rho,1,false}); }
+      for(int j=0;j<n;++j) for(int i=0;i<m;++i) for(int i2=i+1;i2<m;++i2) s.gens.push_back({mul(x[i][j],x[i2][j]),2,false});
+      for(int i=0;i<m;++i) for(int j=0;j<n;++j) for(int j2=j+1;j2<n;++j2) s.gens.push_back({mul(x[i][j],x[i][j2]),2,false});
+      s.notes.push_back("functional PHP n="+std::to_string(n)+" (base)");
+      std::vector<Poly> g; for(int r=0;r<rank;++r) g.push_back(add(x[r][0],x[(r+1)%m][1%n]));   // affine rank-`rank` helper on distinct pairs
+      s.block(g,true,"affine helper rank "+std::to_string(rank));
+      for(int D:Ds) run_case(out,name,s,D,ok); };
+    php(2,2,{2,3,4,5},"php2-rank2"); php(2,3,{2,3,4,5},"php2-rank3");
+    php(3,2,{3,4,5,6},"php3-rank2"); php(3,3,{3,4,5,6},"php3-rank3");
+    std::cout<<(ok?"ALL PRESERVED":"SOME INTERFACE NOT PRESERVED")<<std::endl; return 0; }
   if(suite=="cycle168-rank4"){
     Source s; auto v=olds(s,6); Poly A=s.block({v[0],v[1],v[2]},false,"A"), B=s.block({v[3],v[4],v[5]},false,"B"); s.block({add(A,one()),add(B,one())},false,"E(1+A,1+B)");
     auto g=G0(v); g.push_back(add(v[0],v[4])); s.block(g,true,"G0+(x1+y2)"); for(int D:{6,7}) run_case(out,"n3-rank4-helper",s,D,ok);
