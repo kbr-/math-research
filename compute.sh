@@ -72,12 +72,21 @@ def ensure_active(events):
         raise ValueError('Session predates this boot; start a new session')
 
 
-def start_session(name):
+def detect_agent():
+    if os.environ.get('MATH_AGENT'): return os.environ['MATH_AGENT']
+    if os.environ.get('CLAUDECODE'): return 'Claude Code'
+    if os.environ.get('CODEX_THREAD_ID'): return 'Codex'
+    return 'unknown'
+
+
+def start_session(name, agent=None, model=None):
+    # Record who produced the cycle; never a machine-local session ID.
     path = session_path(name)
     with locked(path):
         if path.exists():
             raise ValueError('Session exists; choose a new name')
-        add_event(path, 'start', boot_id=boot_id())
+        add_event(path, 'start', boot_id=boot_id(), agent=agent or detect_agent(),
+                  model=model or os.environ.get('MATH_AGENT_MODEL') or 'unspecified')
     return path
 
 
@@ -111,7 +120,8 @@ def check_limits():
     return path, memory
 
 def summary(events:list[dict],end:float)->dict:
-    begin=next(e['monotonic_s'] for e in events if e['event']=='start')
+    first=next(e for e in events if e['event']=='start')
+    begin=first['monotonic_s']
     phases=[(begin,'preparation')]+[(e['monotonic_s'],e['category']) for e in events if e['event']=='phase']
     # Preserve event order at equal timestamps; an explicit phase overrides
     # the initial preparation phase rather than sorting by category name.
@@ -140,7 +150,7 @@ def summary(events:list[dict],end:float)->dict:
             cats={s[2] for s in timed};cat=next(iter(cats)) if len(cats)==1 else 'overlapping_tool_categories'
         else:cat=active[-1][2] if active else 'unclassified'
         totals[cat]=totals.get(cat,0.0)+(b-a)
-    return {'total_instrumented_s':end-begin,'exclusive_categories_s':totals,'command_runs':len(runs),'failed_or_timed_out_commands':len(failures),
+    return {'agent':first.get('agent','unrecorded'),'model':first.get('model','unrecorded'),'total_instrumented_s':end-begin,'exclusive_categories_s':totals,'command_runs':len(runs),'failed_or_timed_out_commands':len(failures),
       'unfinished_commands':len(set(runs)-finished),
       'scope':'Phases label observed work windows, not internal cognition or pure latency. Unexpected interruptions may remain mixed with the active phase. Tool windows include service overhead; overlapping intervals count once. Work after the final snapshot is excluded.'}
 
@@ -343,6 +353,9 @@ def main():
         action = raw.pop(0)
         parser = argparse.ArgumentParser(prog=f'./compute.sh {action}')
         parser.add_argument('session')
+        if action == 'start':
+            parser.add_argument('--agent', help='Default: detected from the environment or MATH_AGENT')
+            parser.add_argument('--model', help='Model and reasoning setting; default: MATH_AGENT_MODEL')
         if action == 'phase':
             parser.add_argument('category', choices=PHASES)
             parser.add_argument('--note', default='')
@@ -359,7 +372,7 @@ def main():
             command, raw = raw[index+1:], raw[:index]
         args = parser.parse_args(raw)
         if action == 'start':
-            print(start_session(args.session).relative_to(ROOT))
+            print(start_session(args.session, args.agent, args.model).relative_to(ROOT))
             return 0
         if action != 'run':
             path = session_path(args.session)

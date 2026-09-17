@@ -174,7 +174,8 @@ actionable rule over another checklist or a record of one-off setup history.
   This full Research record has no word limit and is never consolidated away to
   satisfy the separate working-context target.
 - Entries are chronological and append-only. Give each a date, descriptive title,
-  stable HTML anchor, and explicit status (working proof, conditional result,
+  stable HTML anchor, the producing agent and model in its `entry-meta` line as
+  recorded by the timing session, and explicit status (working proof, conditional result,
   conjecture, finite check, or refutation). State assumptions and the precise
   claim, provide the mathematical argument, and include relevant dependencies,
   degree/parameter accounting, checks, and the remaining gap.

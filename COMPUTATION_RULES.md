@@ -128,6 +128,11 @@ From the repository root:
 ./compute.sh report turn001 --stop
 ```
 
+`start` records the producing agent (detected, or `--agent NAME`) and its model.
+Pass `--model "MODEL, reasoning setting"` or set `MATH_AGENT_MODEL`; state your
+actual model, never a guess. `finish-turn.py --next` carries both forward, and
+`report` prints them. Machine-local session IDs are never recorded.
+
 Alternatively, use `./compute.sh --session turn001 --threads 1 python3 calculation.py`.
 Without a session argument, execution gets an automatically named timing session.
 Every executed workload uses the shared protected group, regardless of timing

@@ -19,7 +19,8 @@ class FinalizationTest(unittest.TestCase):
         (self.root / 'tools').mkdir()
         for name in ('compute.sh', 'tools/finish-turn.py', 'tools/archive-session.py'):
             shutil.copy2(ROOT / name, self.root / name)
-        self.command('compute.sh', 'start', 'test_turn')
+        self.command('compute.sh', 'start', 'test_turn', '--agent', 'Test agent',
+                     '--model', 'Test model, high')
 
     def command(self, script, *args, check=True):
         return subprocess.run([sys.executable, str(self.root / script), *args],
@@ -47,6 +48,8 @@ class FinalizationTest(unittest.TestCase):
         self.assertGreaterEqual(following[0]['monotonic_s'], stop['monotonic_s'])
         self.assertTrue(any(e.get('category') == 'preparation' for e in following))
         self.assertFalse(any(e['event'] == 'stop' for e in following))
+        self.assertEqual((following[0]['agent'], following[0]['model']),
+                         ('Test agent', 'Test model, high'))
         repeated = self.command('tools/finish-turn.py', 'test_turn', check=False)
         self.assertNotEqual(repeated.returncode, 0)
         self.assertEqual(notebook.read_text(), expected)

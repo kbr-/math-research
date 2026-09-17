@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Export timing, archive evidence, and fill one notebook timing placeholder."""
 import argparse
+import json
 import os
 from pathlib import Path
 import re
@@ -41,7 +42,11 @@ def finish(root, turn, next_turn=None):
     subprocess.run([compute, 'report', turn, '--stop', '--html-out', str(fragment)],
                    cwd=root, check=True, stdout=subprocess.PIPE, text=True)
     if next_turn:
-        subprocess.run([compute, 'start', next_turn], cwd=root, check=True,
+        # Continuous research keeps the finished cycle's recorded agent and model.
+        journal = root / 'research/logs' / f'{turn}.jsonl'
+        first = json.loads(journal.read_text().splitlines()[0]) if journal.exists() else {}
+        inherit = [f'--{key}={first[key]}' for key in ('agent', 'model') if first.get(key)]
+        subprocess.run([compute, 'start', next_turn, *inherit], cwd=root, check=True,
                        stdout=subprocess.PIPE, text=True)
         subprocess.run([compute, 'phase', next_turn, 'preparation', '--note',
                         f'Finalize checkpoint {turn}, then begin the next research cycle'],
