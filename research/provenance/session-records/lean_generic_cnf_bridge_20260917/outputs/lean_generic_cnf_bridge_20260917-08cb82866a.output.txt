@@ -1,0 +1,77 @@
+claims/GenericCNFSubspaceCriterion.lean:58:99: error: unsolved goals
+σ : Type
+inst✝ : Fintype σ
+N : ℕ
+C : Fin N → FiniteParityClause σ
+h w : ℕ
+old : Set (Poly (ZMod 2) σ)
+c : Fin N
+hw : Finset.card (C c) ≤ w
+hold : clauseFalsityPolynomial (C c) ∈ old
+e : Fin (Finset.card (C c)) ≃ ↥(C c) := (Finset.equivFin (C c)).symm
+g : Fin (Finset.card (C c)) → Poly (ZMod 2) (ClauseRegistryVars C h) := fun t => registryInput C h c (e t)
+hg : ∀ (t : Fin (Finset.card (C c))), totalDegree (g t) ≤ 1
+U : Fin (Finset.card (C c)) → Poly (ZMod 2) (ClauseRegistryVars C h)
+hU : 1 - ∏ i, (1 - g i) = ∑ i, U i * g i
+hUd : ∀ (i : Fin (Finset.card (C c))), totalDegree (U i) ≤ Finset.card (C c) - 1
+hmap : (registryOld C h) (clauseFalsityPolynomial (C c)) = ∏ f ∈ C c, (1 - (registryOld C h) (finiteAffinePolynomial f))
+⊢ ∏ t, (1 - g t) = ∏ i, (1 - (registryOld C h) (finiteAffinePolynomial ↑(e i)))
+claims/GenericCNFSubspaceCriterion.lean:145:2: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+claims/GenericCNFSubspaceCriterion.lean:155:45: error(lean.invalidField): Invalid field notation: Type of
+  b
+is not known; cannot resolve field `val`
+
+Hint: Consider replacing the field projection with a call to one of the following:
+  • `AddUnits.val`
+  • `Char.val`
+  • `DerivedWanted.val`
+  • `Fin.val`
+  • `Finset.val`
+  • `IntermediateField.val`
+  • `NonScalar.val`
+  • `PNat.val`
+  • `Subalgebra.val`
+  • `SubalgebraClass.val`
+  • `Subtype.val`
+  • `Units.val`
+  • `ZMod.val`
+  • `Array.Mem.val`
+  • `Lean.ExprStructEq.val`
+  • `OrderHom.Subtype.val`
+  • `ST.Out.val`
+  • `Vector.Mem.val`
+  • `Lean.Doc.Parser.val`
+  • `Lean.Doc.WithSyntax.val`
+  • `Lean.Elab.FieldInfo.val`
+  • `Lean.Language.DynamicSnapshot.val`
+  • `Lean.Language.SyntaxGuarded.val`
+  • `Lean.Meta.InstanceEntry.val`
+  • `Lean.Server.WithRpcRef.val`
+  • `Std.Time.Timestamp.val`
+  • `Std.Time.WallTime.val`
+  • `Batteries.BinomialHeap.Imp.FindMin.val`
+  • `Lean.Elab.Term.LetRecToLift.val`
+  • `Lean.Elab.Term.NamedArg.val`
+  • `Lean.Meta.Match.Example.val`
+  • `Lean.Meta.Match.Pattern.val`
+  • `Lean.Meta.Sym.BitVecValue.val`
+  • `Lean.Meta.Sym.FinValue.val`
+  • `Lean.Meta.SynthInstance.Instance.val`
+  • `Std.Time.Internal.UnitVal.val`
+  • `Lean.Meta.Try.Collector.InductionCandidate.val`
+  • `Mathlib.Tactic.Ring.Common.Result.val`
+  • `Lean.Meta.Grind.Arith.Cutsat.SymbolicBound.val`
+claims/GenericCNFSubspaceCriterion.lean:155:52: error: Application type mismatch: The argument
+  Subtype.val_injective
+has type
+  Function.Injective Subtype.val
+but is expected to have type
+  Function.Injective fun b => ?m.282
+in the application
+  Fintype.card_le_of_injective (fun b => ?m.282) Subtype.val_injective

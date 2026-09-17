@@ -1,0 +1,81 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.GenericCNFSubspaceCriterion
+Claim file: claims/GenericCNFSubspaceCriterion.lean
+Claim: thm:generic-CNF-affine-DAG-subspace-criterion
+Source: https://kbr.is-a.dev/math-research/#lean-generic-CNF-affine-DAG-subspace-criterion
+Scope: Also covers lem:generic-CNF-initial-value-bridge. Binary field, arbitrary finite variable type. The ordinary clause polynomial and its evaluation characterization; derivability through 2h+w of the registry value of any slot holding a clause of width at most w whose clause polynomial is an old axiom; the composed transfer of a finite affine refutation DAG (semantic weakening, complementary resolution, binary semantic rules) whose initial clauses are semantically covered by |J| such clauses, giving exactly 3S+|J| registry slots and an ordinary PC refutation through max(2h+w,4h+1); and the proof-size criterion dim U ≤ (3S+|J|)·C(v-(h(k+1)+1)+k,k) for a degree-k subspace U with no nonzero member derivable from the old base through k(max(2h+w,4h+1)+1). A sufficient condition only: no formula other than bit PHP is shown to admit such a subspace, and the short-proof control remark of the source entry is not covered.
+Declarations: MathResearch.PolynomialCalculus.clauseFalsityPolynomial MathResearch.PolynomialCalculus.clauseFalsityPolynomial_eval_eq_zero_iff MathResearch.PolynomialCalculus.registry_generic_initial MathResearch.PolynomialCalculus.generic_CNF_PC_transfer MathResearch.PolynomialCalculus.generic_CNF_subspace_criterion
+$ lake --wfail build claims.GenericCNFSubspaceCriterion
+✔ [2043/2043] Built claims.GenericCNFSubspaceCriterion (1.8s)
+Build completed successfully (2043 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math-auxiliary/formalization/.lake/tmp0gv7tnor.lean
+@MathResearch.PolynomialCalculus.clauseFalsityPolynomial : {σ : Type} →
+  [Fintype σ] → MathResearch.PolynomialCalculus.FiniteParityClause σ → MathResearch.PolynomialCalculus.Poly (ZMod 2) σ
+'MathResearch.PolynomialCalculus.clauseFalsityPolynomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.clauseFalsityPolynomial_eval_eq_zero_iff : ∀ {σ : Type} [inst : Fintype σ]
+  (A : MathResearch.PolynomialCalculus.FiniteParityClause σ) (x : σ → ZMod 2),
+  (MvPolynomial.eval x) (MathResearch.PolynomialCalculus.clauseFalsityPolynomial A) = 0 ↔ MathResearch.clauseHolds A x
+'MathResearch.PolynomialCalculus.clauseFalsityPolynomial_eval_eq_zero_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.PolynomialCalculus.registry_generic_initial : ∀ {σ : Type} [inst : Fintype σ] {N : ℕ}
+  (C : Fin N → MathResearch.PolynomialCalculus.FiniteParityClause σ) (h w : ℕ)
+  (old : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) σ)) (c : Fin N),
+  Finset.card (C c) ≤ w →
+    MathResearch.PolynomialCalculus.clauseFalsityPolynomial (C c) ∈ old →
+      MathResearch.PolynomialCalculus.Derives (MathResearch.PolynomialCalculus.registrySystem C h old) (2 * h + w)
+        (MathResearch.PolynomialCalculus.registryValue C h c)
+'MathResearch.PolynomialCalculus.registry_generic_initial' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.generic_CNF_PC_transfer : ∀ {σ J : Type} [inst : Fintype σ] [inst_1 : Fintype J]
+  {S : ℕ} (I : Set (MathResearch.PolynomialCalculus.FiniteParityClause σ))
+  (C : Fin S → MathResearch.PolynomialCalculus.FiniteParityClause σ)
+  (dag : MathResearch.PolynomialCalculus.AffineDAG I C) (finish : Fin S),
+  C finish = ∅ →
+    ∀ (A : J → MathResearch.PolynomialCalculus.FiniteParityClause σ) (w : ℕ),
+      (∀ (j : J), Finset.card (A j) ≤ w) →
+        (∀ D ∈ I, ∃ j, MathResearch.clauseEntails (A j) D) →
+          ∀ (old : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) σ)),
+            (∀ (j : J), MathResearch.PolynomialCalculus.clauseFalsityPolynomial (A j) ∈ old) →
+              ∀ (h : ℕ),
+                1 ≤ h →
+                  ∃ N R,
+                    N = 3 * S + Fintype.card J ∧
+                      (∀ (c : Fin N), Finset.card (R c) ≤ max w (Fintype.card σ + 2)) ∧
+                        MathResearch.PolynomialCalculus.Derives (MathResearch.PolynomialCalculus.registrySystem R h old)
+                          (max (2 * h + w) (4 * h + 1)) 1
+'MathResearch.PolynomialCalculus.generic_CNF_PC_transfer' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PolynomialCalculus.generic_CNF_subspace_criterion : ∀ {σ J : Type} [inst : Fintype σ] [inst_1 : Fintype J]
+  {S : ℕ} (I : Set (MathResearch.PolynomialCalculus.FiniteParityClause σ))
+  (C : Fin S → MathResearch.PolynomialCalculus.FiniteParityClause σ)
+  (dag : MathResearch.PolynomialCalculus.AffineDAG I C) (finish : Fin S),
+  C finish = ∅ →
+    ∀ (A : J → MathResearch.PolynomialCalculus.FiniteParityClause σ) (w : ℕ),
+      (∀ (j : J), Finset.card (A j) ≤ w) →
+        (∀ D ∈ I, ∃ j, MathResearch.clauseEntails (A j) D) →
+          ∀ (old : Set (MathResearch.PolynomialCalculus.Poly (ZMod 2) σ)),
+            MathResearch.PolynomialCalculus.booleanBase ⊆ old →
+              (∀ (j : J), MathResearch.PolynomialCalculus.clauseFalsityPolynomial (A j) ∈ old) →
+                ∀ (h k : ℕ),
+                  1 ≤ h →
+                    1 ≤ k →
+                      ∀ (U : Submodule (ZMod 2) (MvPolynomial σ (ZMod 2))),
+                        (∀ p ∈ U, p.totalDegree ≤ k) →
+                          (∀ f ∈ U,
+                              MathResearch.PolynomialCalculus.Derives old (k * (max (2 * h + w) (4 * h + 1) + 1)) f →
+                                f = 0) →
+                            Module.finrank (ZMod 2) ↥U ≤
+                              (3 * S + Fintype.card J) * (Fintype.card σ - (h * (k + 1) + 1) + k).choose k
+'MathResearch.PolynomialCalculus.generic_CNF_subspace_criterion' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 5 audited declarations.
