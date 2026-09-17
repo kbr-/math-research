@@ -37,6 +37,12 @@
     .timing-table th, .timing-table td { padding: 10px 12px; border-bottom: 1px solid #dde2d9; text-align: left; vertical-align: top; }
     .timing-table th:last-child, .timing-table .elapsed { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
     .timing-table tbody tr:first-child { background: #eef5ef; }
+    /* Hover a heading to reveal a link to its anchor, as on rendered GitHub Markdown. */
+    .heading-anchor { float: left; width: .9em; margin-left: -.9em; opacity: 0; color: var(--muted); font-family: system-ui, sans-serif; font-weight: 400; text-decoration: none; transition: opacity .15s ease; }
+    .heading-anchor::before { content: '#'; }
+    :is(h2, h3, h4):hover > .heading-anchor, .heading-anchor:focus-visible { opacity: 1; }
+    .heading-anchor:hover { color: var(--accent); }
+    @media (hover: none) { .heading-anchor { opacity: .35; } }
     footer { margin-top: 40px; color: var(--muted); font: 13px/1.6 system-ui, sans-serif; }
     .scroll-nav { position: fixed; z-index: 10; right: max(12px, env(safe-area-inset-right), calc((100% - var(--notebook-width)) / 2 - 60px)); top: 50%; transform: translateY(-50%); display: grid; gap: 8px; }
     .scroll-nav button { width: 44px; height: 44px; padding: 10px; border: 1px solid #c8d8ce; border-radius: 50%; background: var(--paper); color: var(--accent); box-shadow: 0 2px 8px #23372826; cursor: pointer; touch-action: manipulation; }
@@ -51,7 +57,7 @@
       .scroll-nav[data-active], .scroll-nav:has(:focus-visible) { opacity: .75; pointer-events: auto; }
     }
     @media (prefers-reduced-motion: reduce) { .scroll-nav { transition: none; } }
-    @media print { body { background: white; } .toolbar, details, footer, .scroll-nav { display: none; } main { border: 0; box-shadow: none; margin: 0; padding: 0; max-width: none; } .math { overflow: visible; } }
+    @media print { body { background: white; } .toolbar, details, footer, .scroll-nav, .heading-anchor { display: none; } main { border: 0; box-shadow: none; margin: 0; padding: 0; max-width: none; } .math { overflow: visible; } }
   </style>
   <script>
     // BEGIN NOTEBOOK SETTINGS
@@ -102,6 +108,22 @@
     <button type="button" data-scroll="next" aria-label="Next section" title="Next section" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
     <button type="button" data-scroll="end" aria-label="Scroll to end" title="Scroll to end" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 5 6 6 6-6M6 13l6 6 6-6"/></svg></button>
   </nav>
+  <script>
+    // Give every addressable heading a hover link. A heading without its own id uses the id
+    // of the section or article it opens.
+    for (const heading of document.querySelectorAll('main h2, main h3, main h4')) {
+      const parent = heading.parentElement;
+      const opensParent = parent && parent.id && parent.matches('section, article') &&
+        parent.querySelector('h2, h3, h4') === heading;
+      const id = heading.id || (opensParent ? parent.id : '');
+      if (!id) continue;
+      const link = document.createElement('a');
+      link.className = 'heading-anchor';
+      link.href = '#' + id;
+      link.setAttribute('aria-label', 'Link to this heading');
+      heading.prepend(link);
+    }
+  </script>
   <script>
     (() => {
       const navigation = document.querySelector('.scroll-nav');

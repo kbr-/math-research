@@ -22,6 +22,13 @@ async function check(changed) {
   const timers = new Map();
   let timerId = 0;
   const headingTops = [100, 500, 900];
+  // Headings for the hover links: own id, id inherited from the opened article, and none.
+  const article = { id: 'entry-a', matches: selector => selector === 'section, article' };
+  const makeHeading = (id, parentElement) => ({ id, parentElement, links: [],
+    prepend(link) { this.links.push(link); } });
+  const anchorHeadings = [makeHeading('own-id', { id: '', matches: () => false }),
+    makeHeading('', article), makeHeading('', article)];
+  article.querySelector = () => anchorHeadings[1];
   let resizeCallback;
   let reloads = 0;
   const context = {
@@ -34,7 +41,12 @@ async function check(changed) {
           getBoundingClientRect: () => ({ top: headingTops[index] - context.scrollY }),
         }));
         if (selector === '[data-scroll]') return buttons;
+        if (selector === 'main h2, main h3, main h4') return anchorHeadings;
         throw new Error(`Unexpected selector: ${selector}`);
+      },
+      createElement(tag) {
+        assert.equal(tag, 'a');
+        return { attributes: {}, setAttribute(name, value) { this.attributes[name] = value; } };
       },
       querySelector(selector) {
         if (selector === '.scroll-nav') return navigation;
@@ -77,6 +89,9 @@ async function check(changed) {
   assert.equal(status.textContent, live ? 'Live · watching for changes' : 'Published notebook');
   assert.equal(reloads, changed ? 1 : 0);
   if (!changed) assert.deepEqual(delays, [live ? 1000 : 30000]);
+  assert.deepEqual(anchorHeadings.map(heading => heading.links.map(link => link.href)),
+    [['#own-id'], ['#entry-a'], []], 'Headings link to their own or their opened container id');
+  assert.equal(anchorHeadings[0].links[0].className, 'heading-anchor');
   assert.equal(navigation.dataset.active, undefined, 'Overlay starts hidden');
   events.scroll();
   assert.equal(navigation.dataset.active, '', 'Scrolling reveals the overlay');
@@ -146,5 +161,5 @@ async function check(changed) {
 }
 
 Promise.resolve().then(() => check(false)).then(() => check(true)).then(() => {
-  process.stdout.write('Notebook client: update URL, ready status, polling, reload, and navigation passed.\n');
+  process.stdout.write('Notebook client: update URL, ready status, polling, reload, heading links, and navigation passed.\n');
 }).catch(error => { console.error(error); process.exitCode = 1; });
