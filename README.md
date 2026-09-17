@@ -322,6 +322,17 @@ Build a local static notebook artifact with:
 The generated `_site/` directory contains only the rendered page and revision
 metadata. It is ignored by Git.
 
+## Waiting for the maintainer's review
+
+Notes parked for a later decision. They are not rules; remove an item once it is decided.
+
+- [Agent cost and delegation report, 17 September 2026](docs/agent-cost-report-2026-09-17.md):
+  what a long Claude Code session cost, the Fable-statement and Opus-proof delegation trial,
+  and open choices for unattended Spin (compaction threshold, a fresh session per cycle).
+- Undecided: should agents append intermediate findings and the current line of attack to a
+  working file during long cycles, so an unexpected compaction loses less? See the report's
+  final section. The token cost is small; the open question is whether it helps or distracts.
+
 ## Repository contents
 
 - `publications/`: manuscripts and preprints with editable TeX and rendered PDFs,
