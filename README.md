@@ -332,6 +332,9 @@ Notes parked for a later decision. They are not rules; remove an item once it is
 - Undecided: should agents append intermediate findings and the current line of attack to a
   working file during long cycles, so an unexpected compaction loses less? See the report's
   final section. The token cost is small; the open question is whether it helps or distracts.
+- The statement under [Continue the research](#continue-the-research) that the framework has
+  only been tested with GPT-6 Astra: update it once Claude has run a genuine research cycle.
+  So far Claude Fable 5.1 has done formalization and framework work here, not new research.
 
 ## Repository contents
 
