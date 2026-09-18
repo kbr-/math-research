@@ -194,6 +194,9 @@ while command records remain unfinished.
   system, or a satisfiable finite domain.
 - Report the scope of finite checks without treating them as universal proofs.
   Distinguish new runs from archived results; rerun only when the task requires it.
+- Before launching an exhaustive enumeration, compute its size and expected time from
+  the parameters, and shrink or skip cases beyond the budget; a checker should print the
+  size and refuse oversized cases rather than let a run be discovered by its timeout.
 
 ## Persist computation outputs
 
