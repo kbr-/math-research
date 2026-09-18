@@ -113,3 +113,42 @@ decision trees, representation and refinement, the canonical tree T_D(F), and Le
 counting proof. Also Section 6.3 headings (Lemma 10, representation after restriction). The statement
 is nonbipartite (hypergraph matchings on one point set); the bipartite PHP-board versions in PBI 1993
 and KPW 1995 were not obtainable (see the Git-ignored user_requests note).
+
+## New source reading: polynomial calculus with extension variables, 18 September 2026
+
+For the notebook entry
+[Plain exact elimination on the functional PHP cannot reach the recorded second-level loss](https://kbr.is-a.dev/math-research/#entry-2026-09-18-level-two-feasibility),
+two papers were retrieved and read in part. Their statements are imported as context only;
+no notebook result depends on them.
+
+1. Russell Impagliazzo, Sasank Mouli, Toniann Pitassi, *Lower Bounds for Polynomial Calculus
+   with Extension Variables over Finite Fields*, CCC 2023, LIPIcs 264, 7:1-7:24,
+   https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.CCC.2023.7 (CC BY 4.0). Local
+   private copy private/references/IMP2023-LIPIcs-CCC-2023-7.pdf, sha256
+   4f2ec474d5651e8889073880e2e426b3f9ac18f306a30c2572734185a1fa364c, with a pdftotext
+   extraction. Read: the abstract (main theorem: M extension variables of arity kappa =
+   O(log n), size exp(Omega(n^2)/(10^kappa (M + n log n)))); the introduction's paragraph on
+   size lower bounds from degree lower bounds over {0,1}-valued variables; the opening of
+   Section 3 (extracted lines 296-305): the case p = 2 needs no new ideas, extension
+   variables are zero-one valued so size-degree tradeoffs apply, kappa-local extension
+   variables change the degree by at most a factor kappa, tolerating close to n^2/kappa^2
+   extension variables. Also read: the first paragraph of the introduction (superpolynomial
+   bounds for AC^0[p]-Frege are open), Theorems 1 and 2 (extracted lines 94-101), and the remark
+   after Theorem 2 (lines 104-114): extension variables depend on original variables only, the
+   recursive case corresponds to AC^0[p]-Frege, the result is for depth-2.5 refutations.
+   Proofs not read.
+2. Yogesh Dahiya, Meena Mahajan, Sasank Mouli, *New lower bounds for Polynomial Calculus over
+   non-Boolean bases*, ECCC TR23-132 (SAT 2024, LIPIcs), https://eccc.weizmann.ac.il/report/2023/132/.
+   Local private copy private/references/DMM2023-ECCC-TR23-132.pdf, sha256
+   ed4e6045b5d038868092e739aa4b4ed93aa9ddc27fdba7e94c34045c676a14cb, with a pdftotext
+   extraction. Read: the abstract; the introduction (constant-depth PC of Grigoriev and Hirsch
+   simulates AC^0[p]-Frege; Theorem 1.2 with N^(1+eps(1-delta)) extension variables of arity
+   N^(1-eps) and size N^c, size exp(Omega(N^(eps delta)/polylog N)), for an XOR-ification of
+   Razborov's generalised PHP^{m,r}_n); "Our Techniques" and the proof outline of Section 4.1
+   (XOR_2 lift, random restriction reducing extension axioms to logarithmic degree, removal of
+   bounded-degree extension variables by restrictions of small Hamming weight with cleanup,
+   quadratic degree; restriction to p > 2 with a reference to item 1 for p = 2); the caveat of
+   the introduction (extracted lines 72-80) that constant-depth PC also simulates Cutting
+   Planes, SOS, AC^0[q]-Frege for every prime q and TC^0-Frege, so that general lower bounds
+   for it are much harder than for AC^0[p]-Frege. Proofs not
+   read; the license of the ECCC report was not determined, so the copy stays private.
