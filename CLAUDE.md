@@ -65,7 +65,10 @@ example "block", "fresh", "companion", "coefficient", not only "dense form"); a 
 fresh blocks once rediscovered a conjecture that its own next-step paragraph listed as
 parked.
 
-When the proposed next step is a computation, state in it the smallest parameters at which
-the test is nonvacuous and the size of the spaces involved, checked by a count before the
-step is written; a test named on a board where it decides nothing wastes the next cycle's
-opening.
+When the proposed next step is a computation, or a computation is designed inside a cycle,
+state the smallest parameters at which the test is nonvacuous and the size of the spaces
+involved, checked by a count before the step is written or the tool is coded. The count is
+made against the statement under test: compute what the hypothesis predicts at the reachable
+parameters and compare it with the unconditional bounds, because a test whose every outcome
+is compatible with the hypothesis decides nothing (an exact closure computation once filled a
+cycle in a range where the conjectured bound lay below the trivial one).
