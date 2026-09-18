@@ -10,6 +10,9 @@ surviving term in order and branches over the available holes; a row with no ava
 For every restriction with a path of length >= s whose free labels are rich enough (the encoder finds a
 consistent free outside label for every moved row), the trimmed lexicographically first long path is
 encoded as (code restriction in Phi_{e-s}, star vectors beta, delta in (holes)^s) and decoded back.
+Options: --flat random replaces the coordinate subcube by a uniformly random affine subspace of
+dimension L2 (labels are still integers; Q is a set); --skip-dead makes the tree, the encoder, and the
+decoder skip a term that has an uncovered row with no consistent hole of Q unused by the path.
 """
 import argparse, itertools, json, math, random, sys
 
@@ -27,11 +30,22 @@ def term_status(term, assign):
             free.append(row)
     return ('true', None) if not free else ('free', free)
 
+Q_SET = None; SKIP_DEAD = False
+
+def q_dead(term, rows, assign):
+    """True if some uncovered row of the term has no consistent hole of Q unused by rows assigned into Q."""
+    used_q = set(l for l in assign.values() if l in Q_SET)
+    for r in rows:
+        if not any(l not in used_q and all(bit(l, t) == v for t, v in term[r]) for l in Q_SET):
+            return True
+    return False
+
 def first_surviving(F, assign):
     for idx, term in enumerate(F):
         st, rows = term_status(term, assign)
-        if st != 'false':
-            return idx, st, rows
+        if st == 'false': continue
+        if SKIP_DEAD and st == 'free' and q_dead(term, rows, assign): continue
+        return idx, st, rows
     return None, None, None
 
 def canonical_path(F, assign, residual_labels, s):
@@ -70,7 +84,7 @@ def consistent_free_labels(term, row, free_labels):
 
 def encode(F, mu, R, pi, n, N, s):
     assign = dict(mu)                       # outside assignment
-    free_out = sorted(set(range(N, n)) - set(mu.values()))
+    free_out = sorted(set(range(n)) - Q_SET - set(mu.values()))
     rest = list(pi); code_assign = dict(mu); moved = []; deltas = []; rounds = 0; betas = []
     while rest:
         idx, st, rows = first_surviving(F, assign)
@@ -115,6 +129,8 @@ def main():
     ap.add_argument('--e', type=int, default=2); ap.add_argument('--r', type=int, default=2)
     ap.add_argument('--s', type=int, default=2); ap.add_argument('--terms', type=int, default=6)
     ap.add_argument('--seed', type=int, default=20260918); ap.add_argument('--out', required=True)
+    ap.add_argument('--flat', choices=['subcube', 'random'], default='subcube')
+    ap.add_argument('--skip-dead', action='store_true')
     ap.add_argument('--max-restrictions', type=int, default=5_000_000,
                     help='refuse to enumerate a family larger than this (default 5e6)')
     a = ap.parse_args()
@@ -131,7 +147,19 @@ def main():
             bits = rng.sample(range(a.L), k); term[row] = [(t, rng.randint(0, 1)) for t in bits]
             budget -= k
         F.append(term)
-    residual_labels = list(range(N)); O = list(range(N, n)); q = n + 1 - (N + 1 + e)
+    global Q_SET, SKIP_DEAD
+    SKIP_DEAD = a.skip_dead
+    if a.flat == 'random':
+        # uniformly random affine subspace of dimension L2: random independent vectors plus a translate
+        while True:
+            vecs = [rng.randrange(n) for _ in range(a.L2)]
+            span = {0}
+            for v in vecs: span |= {x ^ v for x in span}
+            if len(span) == N: break
+        tr = rng.randrange(n); Q_SET = set(x ^ tr for x in span)
+    else:
+        Q_SET = set(range(N))
+    residual_labels = sorted(Q_SET); O = sorted(set(range(n)) - Q_SET); q = n + 1 - (N + 1 + e)
     if q < 0: sys.exit('e too large: no pigeons left to match')
     size = math.comb(n + 1, q) * math.factorial(n - N) // math.factorial(e)
     print(f'family size |Phi_e| = {size}', file=sys.stderr)
@@ -153,6 +181,7 @@ def main():
             rich_bad += 1
             if decode(F, code, n, N, s) != tuple(sorted(mu.items())): failures += 1
     res = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'e': e, 'r': a.r, 's': s, 'seed': a.seed,
+           'flat': a.flat, 'Q': residual_labels, 'skip_dead': a.skip_dead,
            'terms': [{str(k): v for k, v in t.items()} for t in F], 'restrictions': total, 'bad': bad,
            'rich_bad': rich_bad, 'round_trip_failures': failures}
     with open(a.out, 'a') as f: f.write(json.dumps(res) + '\n')
