@@ -10,8 +10,10 @@ The canonical mixed tree: at a node, take the earliest non-falsified term whose 
 mu if one exists, else the earliest non-falsified term; query all its uncovered tail rows in order (pigeon
 queries over the available holes Q u E); then, if the term is still alive with its pinned pair unkilled,
 make a heavy query: the pigeon i if i has at least two unkilled pinned pairs, else the hole x (branches: an
-unassigned residual row moved to x, or the empty branch).  With --hole-only the heavy query is always the
-hole x (the corrected rule: trigger holes are then distinct along a path).  Heights count queries.  For every restriction
+unassigned residual row moved to x, or the empty branch).  With --rule hole (alias --hole-only) the heavy query
+is always the hole x (trigger holes are then distinct along a path); with --rule both (the corrected
+both-endpoints rule) a heavy round queries the pigeon i and then, unless i went to x, the hole x, so the
+trigger pairs of a path form a matching.  Heights count queries.  For every restriction
 with a path of at least h queries whose free labels are rich enough, the lexicographically first such
 path is encoded (code restriction with the light rows moved to consistent free outside labels avoiding the
 pinned labels, per-round star vectors, recorded answers) and decoded back.  Pinned rows are never moved.
@@ -55,10 +57,10 @@ def pick_term(F, assign, emptied, base):
         if first is None: first = (idx, st, rows, pa)
     return first if first is not None else (None, None, None, None)
 
-HOLE_ONLY = False
+RULE = 'adaptive'   # 'adaptive' | 'hole' | 'both'
 
 def unkilled_pairs(F, i, assign, emptied, holes_all):
-    if HOLE_ONLY: return 1
+    if RULE == 'hole': return 1
     used = set(assign.values())
     return len(set(t['pin'][1] for t in F if t['pin'] is not None and t['pin'][0] == i
                    and t['pin'][1] in holes_all and t['pin'][1] not in used and t['pin'][1] not in emptied))
@@ -93,6 +95,20 @@ def first_long_path(F, mu, R, holes_all, h):
             if st2 == 'true': leaf(path, heavy); return
             i, x = term['pin']
             if len(path) >= h: leaf(path, heavy); return
+            if RULE == 'both':
+                used = set(assign.values()); avail = sorted(l for l in holes_all if l not in used and l not in emptied)
+                for lab in avail:
+                    a2 = dict(assign); a2[i] = lab; p2 = path + [('P', i, lab)]
+                    if lab == x or len(p2) >= h:
+                        rec(a2, emptied, p2, heavy + 1)
+                    else:
+                        for j in sorted(r for r in R if r not in a2):
+                            a3 = dict(a2); a3[j] = x
+                            rec(a3, emptied, p2 + [('H', x, j)], heavy + 2)
+                            if best['path'] is not None: return
+                        rec(a2, emptied | {x}, p2 + [('H', x, None)], heavy + 2)
+                    if best['path'] is not None: return
+                return
             if unkilled_pairs(F, i, assign, emptied, holes_all) >= 2:
                 used = set(assign.values()); avail = sorted(l for l in holes_all if l not in used and l not in emptied)
                 for lab in avail:
@@ -132,6 +148,16 @@ def encode(F, mu, R, path, free_out, holes_all, move_pinned_rows=False):
         if st2 == 'free' and pa2 and pos < len(path):
             assert path[pos][0] in ('P', 'H'), 'an alive pinned pair must be followed by a heavy query'
             kind, key, ans = path[pos]; i, x = term['pin']
+            if RULE == 'both':
+                assert kind == 'P' and key == i
+                assign[i] = ans; deltas.append(('lab', ans)); heavy = 1; pos += 1
+                if ans != x and pos < len(path):
+                    kind2, key2, ans2 = path[pos]
+                    assert kind2 == 'H' and key2 == x, 'the both-endpoints rule queries the hole after the pigeon'
+                    if ans2 is None: emptied.add(x); deltas.append(('empty', None))
+                    else: assign[ans2] = x; deltas.append(('row', ans2))
+                    heavy = 2; pos += 1
+                betas.append((tuple(flags), heavy)); continue
             if kind == 'P':
                 assert key == i and unkilled_pairs(F, i, assign, emptied, holes_all) >= 2
                 assign[i] = ans; deltas.append(('lab', ans))
@@ -157,6 +183,16 @@ def decode(F, code, holes_all):
             st2, rows2, pa2 = status(term, cur, emptied)
             if st2 != 'free' or not pa2: return None
             i, x = term['pin']
+            if RULE == 'both':
+                kind, val = deltas[d]; d += 1
+                if kind != 'lab': return None
+                cur[i] = val; touched.append(i)
+                if heavy == 2:
+                    kind, val = deltas[d]; d += 1
+                    if kind == 'empty': emptied.add(x)
+                    elif kind == 'row': cur[val] = x; touched.append(val)
+                    else: return None
+                continue
             if unkilled_pairs(F, i, cur, emptied, holes_all) >= 2:
                 kind, val = deltas[d]; d += 1
                 if kind != 'lab': return None
@@ -181,9 +217,11 @@ def main():
     ap.add_argument('--two-role-example', action='store_true',
                     help='fixed reader: row 0 pinned in the first term and light in the second (expected to fail)')
     ap.add_argument('--max-restrictions', type=int, default=2_000_000)
-    ap.add_argument('--hole-only', action='store_true', help='always query the trigger hole (corrected rule)')
+    ap.add_argument('--hole-only', action='store_true', help='alias of --rule hole')
+    ap.add_argument('--rule', choices=['adaptive', 'hole', 'both'], default=None,
+                    help='heavy-query rule: adaptive (original), hole (hole only), both (pigeon then hole)')
     a = ap.parse_args()
-    global HOLE_ONLY; HOLE_ONLY = a.hole_only
+    global RULE; RULE = a.rule or ('hole' if a.hole_only else 'adaptive'); a.hole_only = (RULE == 'hole')
     n = 2 ** a.L; N = 2 ** a.L2; e = a.e; rng = random.Random(a.seed)
     while True:
         vecs = [rng.randrange(n) for _ in range(a.L2)]; span = {0}
@@ -231,7 +269,7 @@ def main():
             rich += 1
             if decode(F, code, holes_all) != tuple(sorted(mu.items())): failures += 1
     rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'e': e, 'w': a.w, 'h': a.h, 'seed': a.seed, 'two_role': a.two_role,
-           'hole_only': a.hole_only,
+           'hole_only': a.hole_only, 'rule': RULE,
            'Q': sorted(Q), 'A': A, 'terms': [{'pin': t['pin'], 'tail': [[r, l] for r, l in t['tail']]} for t in F],
            'restrictions': total, 'bad': bad, 'rich_bad': rich, 'round_trip_failures': failures,
            'max_heavy_queries': max_heavy, 'heavy_histogram': {str(k): v for k, v in sorted(heavy_hist.items())}}
