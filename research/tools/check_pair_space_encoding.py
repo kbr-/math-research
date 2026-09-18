@@ -29,6 +29,9 @@ import argparse, itertools, json, math, random, sys
 HOLE_ALWAYS = False   # query the hole after every pigeon answer other than the pin (both-endpoints rule)
 PIN_TEST = False   # a pin at a free outside label is resolved by a pin test (no query in T'); code labels avoid X
 X_PINS = set()
+SKIP_KILLED = False   # after a pigeon answer other than the pin (and the hole query, if any) the node is left: no tail queries
+CODE_RULE = 'avoid-X'   # 'avoid-X': code labels outside X; 'own': code labels whose own filling row is not pinned to them
+PINS = set()   # all (row, label) pins
 
 OUT = 'OUT'   # a filled pinned row assigned to an unknown outside label
 
@@ -115,14 +118,15 @@ def first_long_path(F, mu, R, Q, E, fill, h):
             i, x = term['pin']
             for lab in avail(assign, emptied, i):
                 a2 = dict(assign); a2[i] = lab; p2 = path + [('P', i, lab, i in filled)]
+                after = (lambda a, em, pth: rec(a, em, pth, killed)) if (SKIP_KILLED and lab != x) else (lambda a, em, pth: tail(a, em, pth, 0))
                 if lab == x or x not in Qs or real(p2) >= h or (lab not in Qs and not HOLE_ALWAYS):
-                    tail(a2, emptied, p2, 0)
+                    after(a2, emptied, p2) if real(p2) < h else leaf(p2)
                 else:
                     for j in sorted(r for r in R if r not in a2 and r not in filled):
                         a3 = dict(a2); a3[j] = x
-                        tail(a3, emptied, p2 + [('H', x, j)], 0)
+                        after(a3, emptied, p2 + [('H', x, j)])
                         if best['path'] is not None: return
-                    tail(a2, emptied | {x}, p2 + [('H', x, None)], 0)
+                    after(a2, emptied | {x}, p2 + [('H', x, None)])
                 if best['path'] is not None: return
             return
         tail(dict(assign), emptied, path, 0)
@@ -222,7 +226,7 @@ def encode_entry(F, mu, R, E, fill, path, Q):
     decoder processes nodes until the m-th move; a node without a round and without a move cannot occur on G
     under the hole-always rule when no filled row lies in a tail."""
     assign = dict(mu); emptied = set(); code = dict(mu); free_out = sorted(E); Qs = set(Q)
-    filled = set(fill); m = sum(1 for st in path if st[0] == 'L' and not st[3])
+    filled = set(fill); m = sum(1 for st in path if st[0] == 'L' and not st[3]); fill_inv = {lab: row for row, lab in fill.items()}
     moved = []; betas = []; deltas = []; pos = 0; killed = set()
     while len(moved) < m:
         idx, st, rows, pa = pick_term(F, assign, emptied, mu, killed)
@@ -242,6 +246,8 @@ def encode_entry(F, mu, R, E, fill, path, Q):
                 if st2[2] is None: emptied.add(x); deltas.append(('empty', None))
                 else: assign[st2[2]] = x; deltas.append(('row', st2[2]))
                 pos += 1
+            if SKIP_KILLED and lab != x:
+                assert pos > pos0; continue
             had_round = True
         node_moves = []
         for k, (row, lits) in enumerate(term['tail']):
@@ -250,7 +256,7 @@ def encode_entry(F, mu, R, E, fill, path, Q):
                 assert pos < len(path) and path[pos][0] == 'L' and path[pos][1] == row
                 assign[row] = fill[row]; pos += 1; continue   # not covered by the count: filled tail rows
             step = path[pos]; assert step[0] == 'L' and step[1] == row, 'path row differs from the term row order'
-            cons = [l for l in free_out if consistent(lits, l) and not (PIN_TEST and l in X_PINS)]
+            cons = [l for l in free_out if consistent(lits, l) and not (PIN_TEST and CODE_RULE == 'avoid-X' and l in X_PINS) and not (CODE_RULE == 'own' and (fill_inv[l], l) in PINS)]
             if not cons: raise NotRich()
             code[row] = cons[0]; free_out.remove(cons[0]); moved.append(row); node_moves.append(k)
             assign[row] = step[2]; deltas.append(('ans', step[2])); pos += 1
@@ -288,6 +294,7 @@ def decode_entry(F, code, Q):
                 if k == 'empty': emptied.add(x)
                 elif k == 'row': cur[val] = x; touched.append(val)
                 else: return None
+            if SKIP_KILLED and lab != x: continue
             kind, has_moves = betas[b]; b += 1
             if kind != 'R': return None
         while has_moves:
@@ -303,6 +310,164 @@ def decode_entry(F, code, Q):
     fill = {}
     for f, (k, v) in zip(sigma, sig_labels):
         fill[f] = code_labels[v] if k == 'slot' else v
+    return tuple(sorted(base.items())), tuple(sorted(fill.items()))
+
+# ---------------------------------------------------------------------------------------------------------------
+# Compact mode (cycle 208): the tree is the recorded compact complete-term tree T_c(F, rho') for rho' = rho u rho''
+# (matched-first preference; at an alive pin (i in R', x in Q) the pigeon over the unused holes of Q, then on every
+# answer other than x the hole x over the unassigned rows of R' and the empty branch; then every uncovered tail row).
+# The pair space is only the counting device: the code is (rho*, sigma, beta, delta) with code labels in
+# E(rho) n C(p) whose own filling row is not pinned to them; the decoder simulates T_c from rho*, sigma and the
+# records, treating a pin at an outside label as satisfied exactly when the row's known label is that label.
+
+def status_dec(term, assign, emptied, Qs):
+    """Term status for the decoder: a pin at an outside label is dead unless its row is known to sit there."""
+    free = []
+    for row, lits in term['tail']:
+        if row in assign:
+            if not consistent(lits, assign[row]): return 'false', None, None
+        else:
+            free.append(row)
+    pin = term['pin']; pin_alive = False
+    if pin is not None:
+        i, x = pin
+        if i in assign:
+            if assign[i] != x: return 'false', None, None
+        elif x not in Qs: return 'false', None, None
+        else:
+            if x in emptied or x in set(assign.values()): return 'false', None, None
+            pin_alive = True
+    if not free and not pin_alive: return 'true', None, None
+    return 'free', free, pin_alive
+
+def pick_term_c(F, assign, emptied, base, Qs, dec):
+    first = None
+    for idx, term in enumerate(F):
+        st, rows, pa = (status_dec(term, assign, emptied, Qs) if dec else status(term, assign, emptied))
+        if st == 'false': continue
+        pin = term['pin']
+        if pin is not None and base.get(pin[0]) == pin[1]:
+            return idx, st, rows, pa
+        if first is None: first = (idx, st, rows, pa)
+    return first if first is not None else (None, None, None, None)
+
+def first_long_path_compact(F, mu1, Rp, Q, h):
+    """Lexicographically first path of T_c(F, rho') with at least h queries; mu1 = mu u rho''; Rp = R' (compact
+    residual rows).  Steps: ('L', row, hole), ('P', i, hole), ('H', x, row_or_None)."""
+    Qs = set(Q); best = {'path': None, 'height': 0}
+    def leaf(path):
+        best['height'] = max(best['height'], len(path))
+        if len(path) >= h and best['path'] is None: best['path'] = list(path)
+    def avail(assign, emptied):
+        used = set(assign.values()); return sorted(l for l in Q if l not in used and l not in emptied)
+    def rec(assign, emptied, path):
+        if best['path'] is not None: return
+        if len(path) >= h: leaf(path); return
+        idx, st, rows, pa = pick_term_c(F, assign, emptied, mu1, Qs, False)
+        if idx is None or st == 'true': leaf(path); return
+        term = F[idx]
+        def tail(assign, emptied, path, pos):
+            if best['path'] is not None: return
+            if len(path) >= h: leaf(path); return
+            while pos < len(rows) and rows[pos] in assign: pos += 1
+            if pos == len(rows): rec(assign, emptied, path); return
+            row = rows[pos]; av = avail(assign, emptied)
+            if not av: leaf(path); return
+            for lab in av:
+                a2 = dict(assign); a2[row] = lab
+                tail(a2, emptied, path + [('L', row, lab)], pos + 1)
+                if best['path'] is not None: return
+        if pa:
+            i, x = term['pin']; av = avail(assign, emptied)
+            if not av: leaf(path); return
+            for lab in av:
+                a2 = dict(assign); a2[i] = lab; p2 = path + [('P', i, lab)]
+                if lab == x or len(p2) >= h: tail(a2, emptied, p2, 0)
+                else:
+                    for j in sorted(r for r in Rp if r not in a2):
+                        a3 = dict(a2); a3[j] = x
+                        tail(a3, emptied, p2 + [('H', x, j)], 0)
+                        if best['path'] is not None: return
+                    tail(a2, emptied | {x}, p2 + [('H', x, None)], 0)
+                if best['path'] is not None: return
+            return
+        tail(dict(assign), emptied, path, 0)
+    rec(dict(mu1), frozenset(), [])
+    return best
+
+def encode_compact(F, mu, R, E, fill, path, Q):
+    """Code (rho*, sigma, m, beta, delta) of a path of T_c(F, rho'); code labels obey CODE_RULE."""
+    Qs = set(Q); mu1 = dict(mu); mu1.update(fill)
+    assign = dict(mu1); emptied = set(); code = dict(mu); free_out = sorted(E)
+    fill_inv = {lab: row for row, lab in fill.items()}
+    m = sum(1 for st in path if st[0] == 'L'); moved = []; betas = []; deltas = []; pos = 0
+    while len(moved) < m:
+        idx, st, rows, pa = pick_term_c(F, assign, emptied, mu1, Qs, False)
+        assert idx is not None and st == 'free'
+        term = F[idx]; pos0 = pos
+        if pa:
+            i, x = term['pin']; step = path[pos]
+            assert step[0] == 'P' and step[1] == i, 'the round queries the pigeon first'
+            lab = step[2]; assign[i] = lab; deltas.append(('lab', lab)); pos += 1
+            if lab != x:
+                st2 = path[pos]; assert st2[0] == 'H' and st2[1] == x
+                if st2[2] is None: emptied.add(x); deltas.append(('empty', None))
+                else: assign[st2[2]] = x; deltas.append(('row', st2[2]))
+                pos += 1
+            betas.append(('R', None))   # placeholder so that the decoder's reads stay aligned: replaced below
+        node_moves = []
+        for k, (row, lits) in enumerate(term['tail']):
+            if row in assign: continue
+            step = path[pos]; assert step[0] == 'L' and step[1] == row, 'path row differs from the term row order'
+            cons = [l for l in free_out if consistent(lits, l) and not (CODE_RULE == 'avoid-X' and l in X_PINS) and not (CODE_RULE == 'own' and (fill_inv[l], l) in PINS)]
+            if not cons: raise NotRich()
+            code[row] = cons[0]; free_out.remove(cons[0]); moved.append(row); node_moves.append(k)
+            assign[row] = step[2]; deltas.append(('ans', step[2])); pos += 1
+            if len(moved) == m: break
+        if betas and betas[-1] == ('R', None): betas[-1] = ('R', bool(node_moves))
+        for t, k in enumerate(node_moves): betas.append(('M', k, t == len(node_moves) - 1))
+        assert pos > pos0, 'a node of the path without a query'
+    sigma = tuple(sorted(fill)); code_labels = [code[r] for r in moved]
+    return (tuple(sorted(code.items())), sigma, m, tuple(betas), tuple(deltas),
+            tuple(('slot', code_labels.index(fill[f])) if fill[f] in code_labels else ('E', fill[f]) for f in sigma))
+
+def decode_compact(F, code, Q):
+    code_assign, sigma, m, betas, deltas, sig_labels = code
+    Qs = set(Q); sig = dict(zip(sigma, sig_labels))
+    cur = dict(code_assign); base = dict(code_assign)
+    for f, (k, v) in sig.items():
+        cur[f] = v if k == 'E' else OUT     # a slot label is at no pin of f and outside Q
+        if k == 'E': base[f] = v
+    emptied = set(); d = 0; b = 0; touched = []; moved = []
+    while len(moved) < m:
+        idx, st, rows, pa = pick_term_c(F, cur, emptied, base, Qs, True)
+        if idx is None or st == 'false': return None
+        term = F[idx]; has_moves = True; progress = (len(moved), d)
+        if pa:
+            i, x = term['pin']
+            k, val = deltas[d]; d += 1
+            if k != 'lab': return None
+            cur[i] = val; touched.append(i)
+            if val != x:
+                k, val2 = deltas[d]; d += 1
+                if k == 'empty': emptied.add(x)
+                elif k == 'row': cur[val2] = x; touched.append(val2)
+                else: return None
+            kind, has_moves = betas[b]; b += 1
+            if kind != 'R': return None
+        while has_moves:
+            kind, k, last = betas[b]; b += 1
+            if kind != 'M': return None
+            row = term['tail'][k][0]
+            kk, val = deltas[d]; d += 1
+            if kk != 'ans': return None
+            cur[row] = val; touched.append(row); moved.append(row)
+            if last: break
+        if progress == (len(moved), d): return None
+    for row in moved: base.pop(row, None)
+    for f in sigma: base.pop(f, None)
+    code_labels = [code_assign_get(code_assign, r) for r in moved]
+    fill = {f: (code_labels[v] if k == 'slot' else v) for f, (k, v) in sig.items()}
     return tuple(sorted(base.items())), tuple(sorted(fill.items()))
 
 def code_assign_get(code_assign, row):
@@ -321,10 +486,13 @@ def main():
     ap.add_argument('--max-pairs', type=int, default=3_000_000)
     ap.add_argument('--hole-always', action='store_true', help='query the hole after every pigeon answer other than the pin')
     ap.add_argument('--fill-domain', choices=('any', 'notail'), default='any', help='rows the filling may use: any residual row, or only rows outside every tail')
+    ap.add_argument('--skip-killed', action='store_true', help='leave the node after a pigeon answer other than the pin (no tail queries); filled-pigeon nodes then carry no record')
+    ap.add_argument('--code-rule', choices=('avoid-X', 'own', 'any'), default='avoid-X', help='avoid-X: code labels outside the pinned labels; own: code labels whose own filling row is not pinned to them')
+    ap.add_argument('--tree', choices=('slack', 'compact'), default='slack', help='slack: the restricted slack tree of cycle 207; compact: the compact complete-term tree of rho itself, simulated by the decoder (cycle 208)')
     ap.add_argument('--pin-test', action='store_true', help='resolve a pin at a free outside label by a pin test and choose code labels outside the pinned labels (entry encoding only)')
     ap.add_argument('--encoding', choices=('node', 'entry'), default='node', help='node: per-node record, filled tail rows moved; entry: the encoding of the entry (filled rows never moved, no per-node record)')
     a = ap.parse_args()
-    global HOLE_ALWAYS, PIN_TEST, X_PINS; HOLE_ALWAYS = a.hole_always; PIN_TEST = a.pin_test
+    global HOLE_ALWAYS, PIN_TEST, X_PINS, SKIP_KILLED, CODE_RULE, PINS; HOLE_ALWAYS = a.hole_always; PIN_TEST = a.pin_test; SKIP_KILLED = a.skip_killed; CODE_RULE = a.code_rule
     n = 2 ** a.L; N = 2 ** a.L2; e = a.e; rng = random.Random(a.seed)
     while True:
         vecs = [rng.randrange(n) for _ in range(a.L2)]; span = {0}
@@ -345,7 +513,7 @@ def main():
         if pin is None and not tail: continue
         F.append({'pin': pin, 'tail': tail})
     X = set(t['pin'][1] for t in F if t['pin'] is not None)
-    X_PINS = set(X)
+    X_PINS = set(X); PINS = set(t['pin'] for t in F if t['pin'] is not None)
     tailrows = set(row for t in F for row, _ in t['tail'])
     q = n + 1 - (N + 1 + e)
     size = math.comb(n + 1, q) * math.factorial(n - N) // math.factorial(e)
@@ -362,22 +530,28 @@ def main():
             onG = not (set(E) & X)
             for frows in itertools.permutations([r for r in R if a.fill_domain == 'any' or r not in tailrows], e):
                 fill = dict(zip(frows, E)); stats['pairs'] += 1; stats['G'] += onG
-                res = first_long_path(F, mu, R, Q, E, fill, a.h)
+                if a.tree == 'compact':
+                    mu1 = dict(mu); mu1.update(fill); Rp = [r for r in R if r not in fill]
+                    res = first_long_path_compact(F, mu1, Rp, Q, a.h)
+                else:
+                    res = first_long_path(F, mu, R, Q, E, fill, a.h)
                 stats['max_height'] = max(stats['max_height'], res['height'])
                 if res['path'] is None: continue
                 stats['bad'] += 1; stats['bad_G'] += onG
                 try:
-                    code = encode(F, mu, R, E, fill, res['path'], Q) if a.encoding == 'node' else encode_entry(F, mu, R, E, fill, res['path'], Q)
+                    if a.tree == 'compact': code = encode_compact(F, mu, R, E, fill, res['path'], Q)
+                    else: code = encode(F, mu, R, E, fill, res['path'], Q) if a.encoding == 'node' else encode_entry(F, mu, R, E, fill, res['path'], Q)
                 except NotRich:
                     continue
                 stats['rich_G' if onG else 'rich_offG'] += 1
                 try:
-                    dec = decode(F, code) if a.encoding == 'node' else decode_entry(F, code, Q)
+                    if a.tree == 'compact': dec = decode_compact(F, code, Q)
+                    else: dec = decode(F, code) if a.encoding == 'node' else decode_entry(F, code, Q)
                 except (KeyError, IndexError, TypeError, ValueError):
                     dec = None
                 if dec != (tuple(sorted(mu.items())), tuple(sorted(fill.items()))):
                     stats['fail_G' if onG else 'fail_offG'] += 1
-    rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'e': e, 'w': a.w, 'h': a.h, 'seed': a.seed, 'labels': a.labels, 'hole_always': HOLE_ALWAYS, 'encoding': a.encoding, 'fill_domain': a.fill_domain, 'pin_test': PIN_TEST,
+    rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'e': e, 'w': a.w, 'h': a.h, 'seed': a.seed, 'labels': a.labels, 'hole_always': HOLE_ALWAYS, 'encoding': a.encoding, 'fill_domain': a.fill_domain, 'pin_test': PIN_TEST, 'skip_killed': SKIP_KILLED, 'code_rule': CODE_RULE, 'tree': a.tree,
            'Q': sorted(Q), 'A': A, 'X': sorted(X), 'terms': [{'pin': t['pin'], 'tail': [[r, l] for r, l in t['tail']]} for t in F], **stats}
     with open(a.out, 'a') as f: f.write(json.dumps(rec) + '\n')
     print(json.dumps({k: v for k, v in rec.items() if k not in ('terms', 'Q', 'A')}))
