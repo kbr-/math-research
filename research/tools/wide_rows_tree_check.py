@@ -34,7 +34,9 @@ def readers(n, L, A, B):
         dist.append({'pin': None, 'tail': [(j, [(t, (k >> t) & 1) for t in range(L - 1)])]})
     i0, x0 = A[0], 1                                     # pin (A[0], label 1); label 1 lies in no cube above? it lies in the cube of k=1 (distinct)
     onepin = [{'pin': (i0, x0), 'tail': [(j, p)]} for j in B]
-    return {'same-pattern': same, 'distinct': dist, 'one-pin': onepin}
+    cube = sorted(y for y in range(n) if all(((y >> t) & 1) == 0 for t in range(L - 1)))
+    pins = [{'pin': (a, x), 'tail': [(j, p)]} for a in A for x in cube for j in B]   # cycle 213: pins at the cube's own labels, so a round-first node can exhaust its wide row
+    return {'same-pattern': same, 'distinct': dist, 'one-pin': onepin, 'pins': pins}
 
 def static_skip(F, Rp, Qs):
     """The sub-reader F_{Q,R'}: terms without a residual tail row whose pattern cube misses Q."""
@@ -57,9 +59,11 @@ def main():
     ap.add_argument('--L', type=int, default=3); ap.add_argument('--L2', type=int, default=1)
     ap.add_argument('--pinned', type=int, default=3); ap.add_argument('--out', required=True)
     ap.add_argument('--max-flats', type=int, default=0)
+    ap.add_argument('--wide-order', choices=('wide-first', 'round-first'), default='wide-first', help='node order of the wide-round tree (cycle 213)')
+    ap.add_argument('--readers', default='same-pattern,distinct,one-pin', help='comma-separated reader names among same-pattern, distinct, one-pin, pins')
     ap.add_argument('--tree', choices=('compact', 'wide'), default='compact', help='compact: the complete-term tree, with and without the static skip; wide: the wide-round tree with a canonical minimum vertex cover (cycle 212); rows of L-1 literals are wide')
     a = ap.parse_args()
-    cpe.WIDE_W = a.L - 2
+    cpe.WIDE_W = a.L - 2; cpe.WIDE_ORDER = a.wide_order
     n = 2 ** a.L; N = 2 ** a.L2; rows = list(range(n + 1)); A = rows[:a.pinned]; B = rows[a.pinned:]
     R = readers(n, a.L, A, B); q = n + 1 - (N + 1)
     Fs = flats(n, a.L, a.L2)
@@ -67,12 +71,13 @@ def main():
     p_cube = {y for y in range(n) if all(((y >> t) & 1) == 0 for t in range(a.L - 1))}
     results = {}
     for name, F in R.items():
+        if name not in a.readers.split(','): continue
         for skip in ((False, True) if a.tree == 'compact' else (False,)):
             stats = {}
             for Q in Fs:
                 Qs = set(Q); O = [y for y in range(n) if y not in Qs]; meets = bool(p_cube & Qs)
                 key = f'meets={meets}'
-                st = stats.setdefault(key, {'count': 0, 'h1': 0, 'h2': 0, 'h3': 0, 'hN8': 0, 'sat': 0, 'maxh': 0, 'sumRB': 0, 'maxwide': 0, 'wide_gt_cover': 0, 'sumcover': 0})
+                st = stats.setdefault(key, {'count': 0, 'h1': 0, 'h2': 0, 'h3': 0, 'hN8': 0, 'sat': 0, 'maxh': 0, 'sumRB': 0, 'maxwide': 0, 'wide_gt_cover': 0, 'sumcover': 0, 'maxrounds': 0})
                 for matched in itertools.combinations(rows, q):
                     Rp = [r for r in rows if r not in matched]
                     for labs in itertools.permutations(O, q):
@@ -83,18 +88,19 @@ def main():
                             res = first_long_path_wide(F, mu, Rp, Q, 10 ** 6)
                             st['maxwide'] = max(st['maxwide'], res['max_wide']); st['sumcover'] += res['cover']
                             if res['max_wide'] > res['cover']: st['wide_gt_cover'] += 1
+                            st['maxrounds'] = max(st['maxrounds'], res['max_rounds'])
                         else:
                             F2 = static_skip(F, Rp, Qs) if skip else F
                             res = first_long_path_compact(F2, mu, Rp, Q, 10 ** 6)
                         h = res['height']; st['maxh'] = max(st['maxh'], h)
                         for k in (1, 2, 3):
                             if h >= k: st[f'h{k}'] += 1
-            results[f'{name}|tree={a.tree}|skip={skip}'] = stats
+            results[f'{name}|tree={a.tree}|skip={skip}|order={a.wide_order}'] = stats
             for key, st in stats.items():
                 c = st['count']
-                extra = f" maxwide={st['maxwide']} wide>cover:{st['wide_gt_cover']} meancover={st['sumcover']/c:.3f}" if a.tree == 'wide' else ''
+                extra = f" maxwide={st['maxwide']} wide>cover:{st['wide_gt_cover']} meancover={st['sumcover']/c:.3f} maxrounds={st['maxrounds']} order={a.wide_order}" if a.tree == 'wide' else ''
                 print(f"{name:13s} tree={a.tree} skip={skip!s:5s} {key:12s} rho'={c:7d} satisfied={st['sat']/c:.3f} h>=1:{st['h1']/c:.3f} h>=2:{st['h2']/c:.3f} h>=3:{st['h3']/c:.3f} max={st['maxh']} mean|R' n B|={st['sumRB']/c:.2f}{extra}")
-    rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'pinned': a.pinned, 'flats': len(Fs), 'tree': a.tree, 'results': results}
+    rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'pinned': a.pinned, 'flats': len(Fs), 'tree': a.tree, 'wide_order': a.wide_order, 'readers': a.readers, 'results': results}
     with open(a.out, 'a') as f: f.write(json.dumps(rec) + '\n')
 
 if __name__ == '__main__':

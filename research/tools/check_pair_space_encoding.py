@@ -495,7 +495,17 @@ def decode_compact(F, code, Q):
 # (all in C_holes); a term with a wide uncovered row whose cube has no unresolved hole of Q counts as falsified.
 # Light rows are moved as in the complete-term tree.  Every wide query is answered from delta; no beta entry.
 
-WIDE_ROWS = frozenset()   # cycle 212: rows that are wide in every term (light and wide rows are disjoint sets)
+WIDE_ROWS = frozenset()
+WIDE_ORDER = 'wide-first'   # cycle 213: at a node, wide rows first, then the round if the term is still alive, then light rows; 'round-first' is the cycle-212 order
+
+def node_plan(term):
+    """Processing order of a node: items 'round' or the index of a tail row."""
+    ks = list(range(len(term['tail'])))
+    if WIDE_ORDER == 'round-first': return ['round'] + ks
+    wide = [k for k in ks if is_wide(term['tail'][k][1], term['tail'][k][0])]
+    light = [k for k in ks if k not in wide]
+    return wide + ['round'] + light
+   # cycle 212: rows that are wide in every term (light and wide rows are disjoint sets)
 
 def is_wide(lits, row=None):
     return (WIDE_W is not None and len(lits) > WIDE_W) or (row is not None and row in WIDE_ROWS)
@@ -560,14 +570,17 @@ def pick_term_w(F, assign, emptied, base, Qs, dec):
 def first_long_path_wide(F, mu1, Rp, Q, h, stats=None):
     """Lexicographically first path of the wide-round tree with at least h queries (or the height when none).
     Steps: ('L', row, hole) light move; ('P', i, hole) pigeon of a round; ('H', x, row_or_None) hole query of a round;
-    ('WP', j, hole) wide pigeon query; ('WH', x, row_or_None) wide hole query.  stats, if given, collects the maximum
-    number of wide queries on a path and the cover size."""
-    Qs = set(Q); best = {'path': None, 'height': 0, 'max_wide': 0}
+    ('WP', j, hole) wide pigeon query; ('WH', x, row_or_None) wide hole query.  The node order follows WIDE_ORDER
+    (node_plan); the round is made only if the term is still alive with an alive pin when its turn comes.  best has
+    'height', 'max_wide' (largest number of wide queries on a path), 'max_rounds' (largest number of rounds on a path)
+    and 'cover'."""
+    Qs = set(Q); best = {'path': None, 'height': 0, 'max_wide': 0, 'max_rounds': 0}
     cover = min_vertex_cover(wide_graph(F, Rp, Qs, mu1))
     best['cover'] = len(cover[0]) + len(cover[1])
     def leaf(path):
         best['height'] = max(best['height'], len(path))
         best['max_wide'] = max(best['max_wide'], sum(1 for st in path if st[0] in ('WP', 'WH')))
+        best['max_rounds'] = max(best['max_rounds'], sum(1 for st in path if st[0] == 'P'))
         if len(path) >= h and best['path'] is None: best['path'] = list(path)
     def avail(assign, emptied):
         used = set(assign.values()); return sorted(l for l in Q if l not in used and l not in emptied)
@@ -576,46 +589,49 @@ def first_long_path_wide(F, mu1, Rp, Q, h, stats=None):
         if len(path) >= h: leaf(path); return
         idx, st, rows, pa = pick_term_w(F, assign, emptied, mu1, Qs, False)
         if idx is None or st == 'true': leaf(path); return
-        term = F[idx]
-        def tail(assign, emptied, path, pos):
+        term = F[idx]; plan = node_plan(term)
+        def step(assign, emptied, path, q):
             if best['path'] is not None: return
             if len(path) >= h: leaf(path); return
-            tl = term['tail']
-            while pos < len(tl) and tl[pos][0] in assign: pos += 1
-            if pos == len(tl): rec(assign, emptied, path); return
-            row, lits = tl[pos]
+            if q == len(plan): rec(assign, emptied, path); return
+            it = plan[q]
+            if it == 'round':
+                st2, _, pa2 = status_w(term, assign, emptied, Qs, False)
+                if st2 == 'true': leaf(path); return
+                if st2 != 'free' or not pa2: step(assign, emptied, path, q + 1); return
+                i, x = term['pin']; av = avail(assign, emptied)
+                if not av: leaf(path); return
+                for lab in av:
+                    a2 = dict(assign); a2[i] = lab; p2 = path + [('P', i, lab)]
+                    if lab == x or len(p2) >= h: step(a2, emptied, p2, q + 1)
+                    else:
+                        for jj in sorted(r for r in Rp if r not in a2):
+                            a3 = dict(a2); a3[jj] = x
+                            step(a3, emptied, p2 + [('H', x, jj)], q + 1)
+                            if best['path'] is not None: return
+                        step(a2, emptied | {x}, p2 + [('H', x, None)], q + 1)
+                    if best['path'] is not None: return
+                return
+            row, lits = term['tail'][it]
+            if row in assign: step(assign, emptied, path, q + 1); return
             if not is_wide(lits, row) or row in cover[0]:
                 av = avail(assign, emptied)
                 if not av: leaf(path); return
                 kind = 'L' if not is_wide(lits, row) else 'WP'
                 for lab in av:
                     a2 = dict(assign); a2[row] = lab
-                    tail(a2, emptied, path + [(kind, row, lab)], pos + 1)
+                    step(a2, emptied, path + [(kind, row, lab)], q + 1)
                     if best['path'] is not None: return
                 return
             holes = unresolved_holes(lits, Qs, assign, emptied)
-            if not holes: tail(assign, emptied, path, pos + 1); return   # the row stays uncovered; the term is falsified at the next selection
+            if not holes: step(assign, emptied, path, q + 1); return   # the row stays uncovered; the term counts as falsified
             x = holes[0]
             for i in sorted(r for r in Rp if r not in assign):
                 a2 = dict(assign); a2[i] = x
-                tail(a2, emptied, path + [('WH', x, i)], pos)
+                step(a2, emptied, path + [('WH', x, i)], q)
                 if best['path'] is not None: return
-            tail(dict(assign), emptied | {x}, path + [('WH', x, None)], pos)
-        if pa:
-            i, x = term['pin']; av = avail(assign, emptied)
-            if not av: leaf(path); return
-            for lab in av:
-                a2 = dict(assign); a2[i] = lab; p2 = path + [('P', i, lab)]
-                if lab == x or len(p2) >= h: tail(a2, emptied, p2, 0)
-                else:
-                    for j in sorted(r for r in Rp if r not in a2):
-                        a3 = dict(a2); a3[j] = x
-                        tail(a3, emptied, p2 + [('H', x, j)], 0)
-                        if best['path'] is not None: return
-                    tail(a2, emptied | {x}, p2 + [('H', x, None)], 0)
-                if best['path'] is not None: return
-            return
-        tail(dict(assign), emptied, path, 0)
+            step(dict(assign), emptied | {x}, path + [('WH', x, None)], q)
+        step(dict(assign), emptied, path, 0)
     rec(dict(mu1), frozenset(), [])
     return best
 
@@ -635,17 +651,22 @@ def encode_wide(F, mu, R, E, fill, path, Q):
         assert idx is not None and st == 'free'
         term = F[idx]; pos0 = pos
         if term['pin'] is not None: xcur.add(term['pin'][1])
-        if pa:
-            i, x = term['pin']; step = path[pos]
-            assert step[0] == 'P' and step[1] == i, 'the round queries the pigeon first'
-            lab = step[2]; assign[i] = lab; deltas.append(('lab', lab)); pos += 1
-            if lab != x:
-                st2 = path[pos]; assert st2[0] == 'H' and st2[1] == x
-                if st2[2] is None: emptied.add(x); deltas.append(('empty', None))
-                else: assign[st2[2]] = x; deltas.append(('row', st2[2]))
-                pos += 1
         betas.append(('N', None)); node_beta = len(betas) - 1; node_moves = []
-        for k, (row, lits) in enumerate(term['tail']):
+        for it in node_plan(term):
+            if it == 'round':
+                st2, _, pa2 = status_w(term, assign, emptied, Qs, False)
+                assert st2 != 'true', 'a satisfied term inside a node'
+                if st2 != 'free' or not pa2: continue
+                i, x = term['pin']; step = path[pos]
+                assert step[0] == 'P' and step[1] == i, ('the round expected', step)
+                lab = step[2]; assign[i] = lab; deltas.append(('lab', lab)); pos += 1
+                if lab != x:
+                    st3 = path[pos]; assert st3[0] == 'H' and st3[1] == x
+                    if st3[2] is None: emptied.add(x); deltas.append(('empty', None))
+                    else: assign[st3[2]] = x; deltas.append(('row', st3[2]))
+                    pos += 1
+                continue
+            k = it; row, lits = term['tail'][k]
             if row in assign: continue
             if is_wide(lits, row):
                 if row in cover[0]:
@@ -691,20 +712,24 @@ def decode_wide(F, code, Q):
         idx, st, rows, pa = pick_term_w(F, cur, emptied, base, Qs, True)
         if idx is None or st == 'false': return None
         term = F[idx]; progress = (len(moved), d)
-        if pa:
-            i, x = term['pin']
-            k, val = deltas[d]; d += 1
-            if k != 'lab': return None
-            cur[i] = val
-            if val != x:
-                k, val2 = deltas[d]; d += 1
-                if k == 'empty': emptied.add(x)
-                elif k == 'row': cur[val2] = x
-                else: return None
         kind, has_moves = betas[b]; b += 1
         if kind != 'N': return None
         done = False
-        for k, (row, lits) in enumerate(term['tail']):
+        for it in node_plan(term):
+            if it == 'round':
+                st2, _, pa2 = status_w(term, cur, emptied, Qs, True)
+                if st2 != 'free' or not pa2: continue
+                i, x = term['pin']
+                kk, val = deltas[d]; d += 1
+                if kk != 'lab': return None
+                cur[i] = val
+                if val != x:
+                    kk, val2 = deltas[d]; d += 1
+                    if kk == 'empty': emptied.add(x)
+                    elif kk == 'row': cur[val2] = x
+                    else: return None
+                continue
+            k = it; row, lits = term['tail'][k]
             if is_wide(lits, row):
                 if row in cur: continue          # wide rows are never placed: cur agrees with reality
                 if row in cover[0]:
@@ -765,11 +790,13 @@ def main():
     ap.add_argument('--two-role', action='store_true', help='tails may use pinned rows (a row pinned in one term and light in another)')
     ap.add_argument('--two-role-example', action='store_true', help='the recorded two-role counterexample reader of the mixed-term tool')
     ap.add_argument('--two-role-example2', action='store_true', help='a two-role row pinned at an outside label that is consistent with its light pattern: exhibits the need to exclude the moved row\'s own pinned labels')
+    ap.add_argument('--wide-order', choices=('wide-first', 'round-first'), default='wide-first', help='node order of the wide-round tree (cycle 213): wide rows first, then the round if the term is still alive, then light rows; round-first is the cycle-212 order')
     ap.add_argument('--tree', choices=('slack', 'compact', 'wide'), default='slack', help='slack: the restricted slack tree of cycle 207; compact: the compact complete-term tree of rho itself, simulated by the decoder (cycle 208)')
     ap.add_argument('--pin-test', action='store_true', help='resolve a pin at a free outside label by a pin test and choose code labels outside the pinned labels (entry encoding only)')
     ap.add_argument('--encoding', choices=('node', 'entry'), default='node', help='node: per-node record, filled tail rows moved; entry: the encoding of the entry (filled rows never moved, no per-node record)')
     a = ap.parse_args()
     global HOLE_ALWAYS, PIN_TEST, X_PINS, SKIP_KILLED, CODE_RULE, PINS, REVEAL_SLOTS, WIDE_W, WIDE_ROWS; HOLE_ALWAYS = a.hole_always; PIN_TEST = a.pin_test; SKIP_KILLED = a.skip_killed; CODE_RULE = a.code_rule; REVEAL_SLOTS = a.reveal_slots; WIDE_W = a.wide_w
+    global WIDE_ORDER; WIDE_ORDER = a.wide_order
     n = 2 ** a.L; N = 2 ** a.L2; e = a.e; rng = random.Random(a.seed)
     while True:
         vecs = [rng.randrange(n) for _ in range(a.L2)]; span = {0}
@@ -838,7 +865,7 @@ def main():
                 elif a.tree == 'wide':
                     mu1 = dict(mu); mu1.update(fill); Rp = [r for r in R if r not in fill]
                     res = first_long_path_wide(F, mu1, Rp, Q, a.h)
-                    stats['max_wide'] = max(stats.get('max_wide', 0), res['max_wide']); stats['wide_gt_cover'] = stats.get('wide_gt_cover', 0) + (res['max_wide'] > res['cover'])
+                    stats['max_wide'] = max(stats.get('max_wide', 0), res['max_wide']); stats['wide_gt_cover'] = stats.get('wide_gt_cover', 0) + (res['max_wide'] > res['cover']); stats['max_rounds'] = max(stats.get('max_rounds', 0), res['max_rounds'])
                 else:
                     res = first_long_path(F, mu, R, Q, E, fill, a.h)
                 stats['max_height'] = max(stats['max_height'], res['height'])
@@ -864,7 +891,7 @@ def main():
                     if a.tree in ('compact', 'wide'): stats['xcur_fail' if LAST_XCUR_HIT else 'noxcur_fail'] += 1
                     if has_moves: stats['fail_moves'] += 1
                 elif a.tree in ('compact', 'wide') and LAST_XCUR_HIT: stats['xcur_ok'] += 1
-    rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'e': e, 'w': a.w, 'h': a.h, 'seed': a.seed, 'labels': a.labels, 'hole_always': HOLE_ALWAYS, 'encoding': a.encoding, 'fill_domain': a.fill_domain, 'pin_test': PIN_TEST, 'skip_killed': SKIP_KILLED, 'code_rule': CODE_RULE, 'reveal_slots': REVEAL_SLOTS, 'wide_w': WIDE_W, 'wide_rows': sorted(WIDE_ROWS), 'wide_example': a.wide_example, 'tree': a.tree, 'two_role': a.two_role, 'two_role_example': a.two_role_example, 'two_role_example2': a.two_role_example2, 'dense_example': a.dense_example,
+    rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'e': e, 'w': a.w, 'h': a.h, 'seed': a.seed, 'labels': a.labels, 'hole_always': HOLE_ALWAYS, 'encoding': a.encoding, 'fill_domain': a.fill_domain, 'pin_test': PIN_TEST, 'skip_killed': SKIP_KILLED, 'code_rule': CODE_RULE, 'reveal_slots': REVEAL_SLOTS, 'wide_w': WIDE_W, 'wide_rows': sorted(WIDE_ROWS), 'wide_example': a.wide_example, 'tree': a.tree, 'two_role': a.two_role, 'two_role_example': a.two_role_example, 'two_role_example2': a.two_role_example2, 'dense_example': a.dense_example, 'wide_order': a.wide_order,
            'Q': sorted(Q), 'A': A, 'X': sorted(X), 'terms': [{'pin': t['pin'], 'tail': [[r, l] for r, l in t['tail']]} for t in F], **stats}
     with open(a.out, 'a') as f: f.write(json.dumps(rec) + '\n')
     print(json.dumps({k: v for k, v in rec.items() if k not in ('terms', 'Q', 'A')}))
