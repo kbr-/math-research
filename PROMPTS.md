@@ -181,10 +181,12 @@ So perform the following, in a loop:
 
 - do a research turn, as if I prompted you to "do the next step"
 - after EVERY research turn, assess its contribution and process: state what
-  changed in the named remaining-route obligation, including when nothing
-  changed; identify wasted time or context, repeated work, or difficulty
-  checking the mathematics. Follow AGENTS.md's task-selection guidance.
-  Implement a concrete improvement when warranted, or briefly explain why none
+  changed in the named remaining-route obligation (the top-level item of The
+  remaining route that the entry is tagged with, not a sub-gap of the current
+  line), including when nothing changed, and estimate the chance that the
+  current line advances the main goal; identify wasted time or context,
+  repeated work, or difficulty checking the mathematics. Follow AGENTS.md's
+  task-selection guidance. Implement a concrete improvement when warranted, or briefly explain why none
   is needed. Review this yourself; do not wait for me to identify friction or
   invent changes merely to satisfy this step.
 - update the notebook as usual

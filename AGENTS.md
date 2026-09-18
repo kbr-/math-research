@@ -83,7 +83,15 @@ actionable rule over another checklist or a record of one-off setup history.
   and the accumulated costs under composition against the budget needed for
   the goal. If those checks fail or repeated cycles leave the same required
   implication untouched, review alternative approaches and address the failure
-  before refining the same mechanism. Once the question,
+  before refining the same mechanism. Route reviews are periodic and enforced:
+  tag every entry's `<article>` with `data-kind` (`research`, `review`, or
+  `formalization`) and `data-route`, a `data-route-item` slug of a top-level
+  item of The remaining route (or `side-...`), never a sub-gap of the current
+  line; `finish-turn.py` refuses a fifth consecutive research entry without a
+  review. A review entry states the current line's general claim, what the main
+  goal needs from it, a falsification attempt, an honest estimate of the chance
+  that the line advances the goal, and the next step on the highest-risk item;
+  Proposed next step names the route item it advances. Once the question,
   argument, and evidence are stable, make one focused correctness review;
   move optional extensions to the next cycle. Reopen the argument only
   for a concrete unresolved concern. Prepare the commit message, staging paths,
@@ -172,7 +180,8 @@ actionable rule over another checklist or a record of one-off setup history.
   This full Research record has no word limit and is never consolidated away to
   satisfy the separate working-context target.
 - Entries are chronological and append-only. Give each a date, descriptive title,
-  stable HTML anchor, and a `<p class="entry-meta">` status line, to which
+  stable HTML anchor, the route tags above, and a short `<p class="entry-meta">`
+  status line (`finish-turn.py` rejects more than 300 characters), to which
   `finish-turn.py` appends the agent and model recorded by the timing session.
   Do not number cycles: branches and parallel worktrees cannot share a counter.
   Refer to an entry by its anchor; label parallel formalization entries by route ID.

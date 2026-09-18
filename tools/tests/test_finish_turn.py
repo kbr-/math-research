@@ -76,6 +76,45 @@ class FinalizationTest(unittest.TestCase):
                 self.assertEqual(notebook.read_text(), content)
                 self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
 
+    def test_route_review_and_status_length_are_enforced(self):
+        notebook = self.root / 'notebook.html'
+        marker = '<!-- TIMING test_turn -->'
+        route = '<section id="remaining-route"><li data-route-item="general-step">x</li></section>'
+        def record(earlier, tags, status='Status.'):
+            entries = ''.join(f'<article data-kind="{kind}" data-route="general-step"></article>'
+                              for kind in earlier)
+            return (route + '<section id="research-record">' + entries + f'<article {tags}>'
+                    f'<p class="entry-meta">{status}</p>' + marker + '</article></section>')
+        tagged = 'data-kind="research" data-route="general-step"'
+        rejected = [
+            record([], ''),                                           # untagged entry
+            record([], 'data-kind="research" data-route="sub-gap"'),  # not a declared route item
+            record(['research'] * 4, tagged),                         # fifth research entry in a row
+            record(['review'] + ['research', 'formalization'] * 4, tagged),
+            record([], tagged, status='S' * 301),
+        ]
+        for content in rejected:
+            with self.subTest(content=content[:160]):
+                notebook.write_text(content)
+                result = self.command('tools/finish-turn.py', 'test_turn', check=False)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
+        accepted = [
+            record(['research'] * 4, 'data-kind="review" data-route="general-step"'),
+            record(['research'] * 4 + ['review'] + ['research'] * 3, tagged),
+            record(['research'] * 9, 'data-kind="formalization"'),
+            record(['research'] * 3, 'data-kind="research" data-route="side-preprint"'),
+        ]
+        for content in accepted:
+            with self.subTest(content=content[:160]):
+                body = self.root / 'check.py'
+                body.write_text('import importlib.util, sys\n'
+                                'spec = importlib.util.spec_from_file_location("ft", "tools/finish-turn.py")\n'
+                                'ft = importlib.util.module_from_spec(spec); spec.loader.exec_module(ft)\n'
+                                'ft.validate_marker(open("notebook.html").read(), sys.argv[1])\n')
+                notebook.write_text(content)
+                self.command('check.py', marker)
+
     def test_duplicate_marker_does_not_stop_session(self):
         notebook = self.root / 'notebook.html'
         content = '<!-- TIMING test_turn -->\n' * 2

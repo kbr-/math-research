@@ -19,6 +19,50 @@ def session_name(value):
     return value
 
 
+REVIEW_PERIOD = 4    # research entries allowed in a row before a route review is required
+STATUS_LIMIT = 300   # characters of status-line text, before the producer credit
+KINDS = ('research', 'review', 'formalization')
+
+
+def entry_tags(body, article):
+    tag = body[article:body.index('>', article) + 1]
+    found = {key: re.search(rf'data-{key}="([^"]*)"', tag) for key in ('kind', 'route')}
+    return {key: match.group(1) if match else None for key, match in found.items()}
+
+
+def validate_route(body, article):
+    """Enforce AGENTS.md's periodic route review; active once the notebook declares route items."""
+    items = set(re.findall(r'data-route-item="([^"]+)"', body))
+    if not items:
+        return
+    tags = entry_tags(body, article)
+    if tags['kind'] not in KINDS:
+        raise ValueError('Tag the entry: <article ... data-kind="research|review|formalization" '
+                         'data-route="ITEM">, ITEM a data-route-item of The remaining route or side-...')
+    if tags['kind'] == 'formalization':
+        return
+    if tags['route'] not in items and not (tags['route'] or '').startswith('side-'):
+        raise ValueError(f'data-route must be one of {sorted(items)} or start with side-; '
+                         'name the top-level route item, not a sub-gap of the current line')
+    if tags['kind'] == 'review':
+        return
+    record = body.find('<section id="research-record">')
+    earlier = [m.start() for m in re.finditer(r'<article\b', body[:article]) if m.start() > record]
+    streak = 0
+    for position in reversed(earlier):
+        kind = entry_tags(body, position)['kind']
+        if kind == 'formalization':
+            continue
+        if kind != 'research':   # a review, or an entry from before the tags existed
+            break
+        streak += 1
+    if streak >= REVIEW_PERIOD:
+        raise ValueError(f'The last {streak} research entries have no route review. This entry must be '
+                         'a route review (data-kind="review"): the general claim of the current line, '
+                         'what the main goal needs from it, a falsification attempt, an estimate that '
+                         'the line advances the goal, and the next step on the highest-risk route item')
+
+
 def validate_marker(body, marker):
     if body.count(marker) != 1:
         raise ValueError(f'Notebook must contain exactly one {marker}')
@@ -32,6 +76,11 @@ def validate_marker(body, marker):
     meta = body.find('<p class="entry-meta">', article, position)
     if meta < 0 or body.find('</p>', meta, position) < 0:
         raise ValueError('The entry needs a <p class="entry-meta"> status line before its timing marker')
+    status = re.sub(r'<[^>]*>', '', body[meta:body.find('</p>', meta)]).split('Produced by')[0]
+    if len(status.strip()) > STATUS_LIMIT:
+        raise ValueError(f'The status line has {len(status.strip())} characters; keep it under '
+                         f'{STATUS_LIMIT}: the status and one clause of scope, details in the entry')
+    validate_route(body, article)
     if '$' in body[article:close]:
         # MathJax treats a dollar sign as an inline-math delimiter; the notebook uses \( \).
         raise ValueError('The entry contains a dollar sign, which MathJax reads as a math delimiter; '
@@ -100,6 +149,10 @@ def finish(root, turn, next_turn=None):
     finally:
         if temporary is not None:
             temporary.unlink(missing_ok=True)
+    context = re.search(r'<section id="working-context">(.*?)</section>', updated, re.S)
+    words = len(re.sub(r'<[^>]*>', ' ', context.group(1)).split()) if context else 0
+    if words > 1500:
+        print(f'Working mathematical context has {words} words (soft target 1000): consolidate it.')
     print(f'Finished {turn}: timing embedded and evidence archived; review and commit.')
     print('Stage with the entry: notebook.html '
           f'research/results/{turn}/timing.html research/provenance/session-records/{turn}')
