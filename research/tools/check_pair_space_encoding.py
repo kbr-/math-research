@@ -32,6 +32,7 @@ X_PINS = set()
 SKIP_KILLED = False   # after a pigeon answer other than the pin (and the hole query, if any) the node is left: no tail queries
 CODE_RULE = 'avoid-X'   # 'avoid-X': code labels outside X; 'own': code labels whose own filling row is not pinned to them; 'current': code labels outside the pin labels of the path's current terms so far (cycle 210)
 REVEAL_SLOTS = False    # cycle 210: the decoder learns a slot row's label when the corresponding move is decoded
+WIDE_W = None           # cycle 211: tail rows with more than WIDE_W literals are wide: moved without a code label (answer in delta)
 LAST_XCUR_HIT = False   # cycle 210 diagnostic: the last compact code used a label that was a current term's pin label at the time
 PINS = set()   # all (row, label) pins
 PINS_BY_ROW = {}   # row -> labels it is pinned to (X_j)
@@ -425,16 +426,19 @@ def encode_compact(F, mu, R, E, fill, path, Q):
         for k, (row, lits) in enumerate(term['tail']):
             if row in assign: continue
             step = path[pos]; assert step[0] == 'L' and step[1] == row, 'path row differs from the term row order'
-            cons = [l for l in free_out if consistent(lits, l) and not (CODE_RULE == 'avoid-X' and l in X_PINS) and not (CODE_RULE in ('own', 'own-two-role') and (fill_inv[l], l) in PINS) and not (CODE_RULE in ('own-two-role', 'current-two-role') and l in PINS_BY_ROW.get(row, ())) and not (CODE_RULE in ('current', 'current-two-role') and l in xcur)]
-            if not cons: raise NotRich()
-            if cons[0] in xcur: LAST_XCUR_HIT = True
-            code[row] = cons[0]; free_out.remove(cons[0]); moved.append(row); node_moves.append(k)
+            if WIDE_W is not None and len(lits) > WIDE_W:
+                moved.append(row); node_moves.append(('W', k))   # cycle 211: a wide row stays residual in rho*; its answer is in delta
+            else:
+                cons = [l for l in free_out if consistent(lits, l) and not (CODE_RULE == 'avoid-X' and l in X_PINS) and not (CODE_RULE in ('own', 'own-two-role') and (fill_inv[l], l) in PINS) and not (CODE_RULE in ('own-two-role', 'current-two-role') and l in PINS_BY_ROW.get(row, ())) and not (CODE_RULE in ('current', 'current-two-role') and l in xcur)]
+                if not cons: raise NotRich()
+                if cons[0] in xcur: LAST_XCUR_HIT = True
+                code[row] = cons[0]; free_out.remove(cons[0]); moved.append(row); node_moves.append(('M', k))
             assign[row] = step[2]; deltas.append(('ans', step[2])); pos += 1
             if len(moved) == m: break
         if betas and betas[-1] == ('R', None): betas[-1] = ('R', bool(node_moves))
-        for t, k in enumerate(node_moves): betas.append(('M', k, t == len(node_moves) - 1))
+        for t, (kind, k) in enumerate(node_moves): betas.append((kind, k, t == len(node_moves) - 1))
         assert pos > pos0, 'a node of the path without a query'
-    sigma = tuple(sorted(fill)); code_labels = [code[r] for r in moved]
+    sigma = tuple(sorted(fill)); code_labels = [code[r] for r in moved if r in code]   # placed moves, in order
     return (tuple(sorted(code.items())), sigma, m, tuple(betas), tuple(deltas),
             tuple(('slot', code_labels.index(fill[f])) if fill[f] in code_labels else ('E', fill[f]) for f in sigma))
 
@@ -447,7 +451,7 @@ def decode_compact(F, code, Q):
         cur[f] = v if k == 'E' else OUT     # a slot label is outside Q; under the own rule at no pin of f
         if k == 'E': base[f] = v
         else: slot_row[v] = f
-    emptied = set(); d = 0; b = 0; touched = []; moved = []
+    emptied = set(); d = 0; b = 0; touched = []; moved = []; placed = []
     while len(moved) < m:
         idx, st, rows, pa = pick_term_c(F, cur, emptied, base, Qs, True)
         if idx is None or st == 'false': return None
@@ -466,18 +470,20 @@ def decode_compact(F, code, Q):
             if kind != 'R': return None
         while has_moves:
             kind, k, last = betas[b]; b += 1
-            if kind != 'M': return None
+            if kind not in ('M', 'W'): return None
             row = term['tail'][k][0]
             kk, val = deltas[d]; d += 1
             if kk != 'ans': return None
             cur[row] = val; touched.append(row); moved.append(row)
-            if REVEAL_SLOTS and (len(moved) - 1) in slot_row:   # cycle 210: the k-th code label is now known
-                f = slot_row[len(moved) - 1]; lab = code_assign_get(code_assign, row); cur[f] = lab; base[f] = lab
+            if kind == 'M':
+                placed.append(row)
+                if REVEAL_SLOTS and (len(placed) - 1) in slot_row:   # cycle 210: the k-th code label is now known
+                    f = slot_row[len(placed) - 1]; lab = code_assign_get(code_assign, row); cur[f] = lab; base[f] = lab
             if last: break
         if progress == (len(moved), d): return None
     for row in moved: base.pop(row, None)
     for f in sigma: base.pop(f, None)
-    code_labels = [code_assign_get(code_assign, r) for r in moved]
+    code_labels = [code_assign_get(code_assign, r) for r in placed]
     fill = {f: (code_labels[v] if k == 'slot' else v) for f, (k, v) in sig.items()}
     return tuple(sorted(base.items())), tuple(sorted(fill.items()))
 
@@ -500,6 +506,7 @@ def main():
     ap.add_argument('--skip-killed', action='store_true', help='leave the node after a pigeon answer other than the pin (no tail queries); filled-pigeon nodes then carry no record')
     ap.add_argument('--code-rule', choices=('avoid-X', 'own', 'own-two-role', 'current', 'current-two-role', 'any'), default='avoid-X', help='avoid-X: code labels outside the pinned labels; own: code labels whose own filling row is not pinned to them; current: code labels outside the pin labels of the current terms of the nodes up to the move (cycle 210); current-two-role: also outside the moved row\'s own pinned labels')
     ap.add_argument('--dense-example', action='store_true', help='the all-pairs reader of the dense-cube obstruction: every pinned row pinned to every label of the cube of one literal, tails of that literal on three rows (cycle 210)')
+    ap.add_argument('--wide-w', type=int, default=None, help='tail rows with more literals than this are wide: moved without a code label, the answer recorded in delta (cycle 211)')
     ap.add_argument('--reveal-slots', action='store_true', help='decoder learns a slot row\'s label when the move with that code label is decoded (needed by the current rules)')
     ap.add_argument('--two-role', action='store_true', help='tails may use pinned rows (a row pinned in one term and light in another)')
     ap.add_argument('--two-role-example', action='store_true', help='the recorded two-role counterexample reader of the mixed-term tool')
@@ -508,7 +515,7 @@ def main():
     ap.add_argument('--pin-test', action='store_true', help='resolve a pin at a free outside label by a pin test and choose code labels outside the pinned labels (entry encoding only)')
     ap.add_argument('--encoding', choices=('node', 'entry'), default='node', help='node: per-node record, filled tail rows moved; entry: the encoding of the entry (filled rows never moved, no per-node record)')
     a = ap.parse_args()
-    global HOLE_ALWAYS, PIN_TEST, X_PINS, SKIP_KILLED, CODE_RULE, PINS, REVEAL_SLOTS; HOLE_ALWAYS = a.hole_always; PIN_TEST = a.pin_test; SKIP_KILLED = a.skip_killed; CODE_RULE = a.code_rule; REVEAL_SLOTS = a.reveal_slots
+    global HOLE_ALWAYS, PIN_TEST, X_PINS, SKIP_KILLED, CODE_RULE, PINS, REVEAL_SLOTS, WIDE_W; HOLE_ALWAYS = a.hole_always; PIN_TEST = a.pin_test; SKIP_KILLED = a.skip_killed; CODE_RULE = a.code_rule; REVEAL_SLOTS = a.reveal_slots; WIDE_W = a.wide_w
     n = 2 ** a.L; N = 2 ** a.L2; e = a.e; rng = random.Random(a.seed)
     while True:
         vecs = [rng.randrange(n) for _ in range(a.L2)]; span = {0}
@@ -589,7 +596,7 @@ def main():
                     if a.tree == 'compact': stats['xcur_fail' if LAST_XCUR_HIT else 'noxcur_fail'] += 1
                     if has_moves: stats['fail_moves'] += 1
                 elif a.tree == 'compact' and LAST_XCUR_HIT: stats['xcur_ok'] += 1
-    rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'e': e, 'w': a.w, 'h': a.h, 'seed': a.seed, 'labels': a.labels, 'hole_always': HOLE_ALWAYS, 'encoding': a.encoding, 'fill_domain': a.fill_domain, 'pin_test': PIN_TEST, 'skip_killed': SKIP_KILLED, 'code_rule': CODE_RULE, 'reveal_slots': REVEAL_SLOTS, 'tree': a.tree, 'two_role': a.two_role, 'two_role_example': a.two_role_example, 'two_role_example2': a.two_role_example2, 'dense_example': a.dense_example,
+    rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'e': e, 'w': a.w, 'h': a.h, 'seed': a.seed, 'labels': a.labels, 'hole_always': HOLE_ALWAYS, 'encoding': a.encoding, 'fill_domain': a.fill_domain, 'pin_test': PIN_TEST, 'skip_killed': SKIP_KILLED, 'code_rule': CODE_RULE, 'reveal_slots': REVEAL_SLOTS, 'wide_w': WIDE_W, 'tree': a.tree, 'two_role': a.two_role, 'two_role_example': a.two_role_example, 'two_role_example2': a.two_role_example2, 'dense_example': a.dense_example,
            'Q': sorted(Q), 'A': A, 'X': sorted(X), 'terms': [{'pin': t['pin'], 'tail': [[r, l] for r, l in t['tail']]} for t in F], **stats}
     with open(a.out, 'a') as f: f.write(json.dumps(rec) + '\n')
     print(json.dumps({k: v for k, v in rec.items() if k not in ('terms', 'Q', 'A')}))
