@@ -18,7 +18,9 @@ and the dependency anchors, try to break the argument and name the hypotheses
 the argument never uses; resolve every gap it reports and drop or justify every
 unused hypothesis. Before drafting a corollary, check whether an earlier result
 already gives it under fewer hypotheses than the cycle's own route; corollaries
-have twice inherited route hypotheses that their statements did not need. Keep one reviewer subagent on standby for the whole session
+have twice inherited route hypotheses that their statements did not need. A result
+stated as a composition of recorded results is written as a lemma whose hypotheses
+name one probability space and one tree; a reference to a sketch is not a proof. Keep one reviewer subagent on standby for the whole session
 and continue it with SendMessage for each new draft; a new subagent would have
 to re-establish the dependency context every time. Record the gate in a short
 "Verification gate." paragraph of the entry (dependencies re-read, checks run,
