@@ -13,7 +13,9 @@ make a heavy query: the pigeon i if i has at least two unkilled pinned pairs, el
 unassigned residual row moved to x, or the empty branch).  With --rule hole (alias --hole-only) the heavy query
 is always the hole x (trigger holes are then distinct along a path); with --rule both (the corrected
 both-endpoints rule) a heavy round queries the pigeon i and then, unless i went to x, the hole x, so the
-trigger pairs of a path form a matching.  Heights count queries.  For every restriction
+trigger pairs of a path form a matching; with --rule complete (the complete-term rule) the round comes first and
+the term's uncovered tail rows are queried afterwards whatever the round's outcome, so no row of a current term
+is ever left unassigned (the candidate fix for two-role rows).  Heights count queries.  For every restriction
 with a path of at least h queries whose free labels are rich enough, the lexicographically first such
 path is encoded (code restriction with the light rows moved to consistent free outside labels avoiding the
 pinned labels, per-round star vectors, recorded answers) and decoded back.  Pinned rows are never moved.
@@ -57,7 +59,7 @@ def pick_term(F, assign, emptied, base):
         if first is None: first = (idx, st, rows, pa)
     return first if first is not None else (None, None, None, None)
 
-RULE = 'adaptive'   # 'adaptive' | 'hole' | 'both'
+RULE = 'adaptive'   # 'adaptive' | 'hole' | 'both' | 'complete'
 
 def unkilled_pairs(F, i, assign, emptied, holes_all):
     if RULE == 'hole': return 1
@@ -71,33 +73,35 @@ def first_long_path(F, mu, R, holes_all, h):
     def leaf(path, heavy):
         best['height'] = max(best['height'], len(path)); best['heavy'] = max(best['heavy'], heavy)
         if len(path) >= h and best['path'] is None: best['path'] = list(path)
+    def avail_labels(assign, emptied):
+        used = set(assign.values()); return sorted(l for l in holes_all if l not in used and l not in emptied)
     def rec(assign, emptied, path, heavy):
         if best['path'] is not None: return
         if len(path) >= h: leaf(path, heavy); return
         idx, st, rows, pa = pick_term(F, assign, emptied, mu)
         if idx is None or st == 'true': leaf(path, heavy); return
         term = F[idx]
-        def tail(assign, path, pos):
+        def tail(assign, emptied, path, heavy, pos):
             if best['path'] is not None: return
             if len(path) >= h: leaf(path, heavy); return
             while pos < len(rows) and rows[pos] in assign: pos += 1
-            if pos == len(rows): after_tail(assign, path); return
+            if pos == len(rows): after_tail(assign, emptied, path, heavy); return
             row = rows[pos]
-            used = set(assign.values()); avail = sorted(l for l in holes_all if l not in used and l not in emptied)
+            avail = avail_labels(assign, emptied)
             if not avail: leaf(path, heavy); return
             for lab in avail:
                 a2 = dict(assign); a2[row] = lab
-                tail(a2, path + [('L', row, lab)], pos + 1)
+                tail(a2, emptied, path + [('L', row, lab)], heavy, pos + 1)
                 if best['path'] is not None: return
-        def after_tail(assign, path):
+        def after_tail(assign, emptied, path, heavy):
             st2, rows2, pa2 = status(term, assign, emptied)
             if st2 == 'false': rec(assign, emptied, path, heavy); return
             if st2 == 'true': leaf(path, heavy); return
+            assert RULE != 'complete', 'under the complete-term rule the round precedes the tail'
             i, x = term['pin']
             if len(path) >= h: leaf(path, heavy); return
             if RULE == 'both':
-                used = set(assign.values()); avail = sorted(l for l in holes_all if l not in used and l not in emptied)
-                for lab in avail:
+                for lab in avail_labels(assign, emptied):
                     a2 = dict(assign); a2[i] = lab; p2 = path + [('P', i, lab)]
                     if lab == x or len(p2) >= h:
                         rec(a2, emptied, p2, heavy + 1)
@@ -110,8 +114,7 @@ def first_long_path(F, mu, R, holes_all, h):
                     if best['path'] is not None: return
                 return
             if unkilled_pairs(F, i, assign, emptied, holes_all) >= 2:
-                used = set(assign.values()); avail = sorted(l for l in holes_all if l not in used and l not in emptied)
-                for lab in avail:
+                for lab in avail_labels(assign, emptied):
                     a2 = dict(assign); a2[i] = lab
                     rec(a2, emptied, path + [('P', i, lab)], heavy + 1)
                     if best['path'] is not None: return
@@ -121,7 +124,21 @@ def first_long_path(F, mu, R, holes_all, h):
                     rec(a2, emptied, path + [('H', x, j)], heavy + 1)
                     if best['path'] is not None: return
                 rec(assign, emptied | {x}, path + [('H', x, None)], heavy + 1)
-        tail(dict(assign), path, 0)
+        if RULE == 'complete' and pa:
+            i, x = term['pin']
+            for lab in avail_labels(assign, emptied):
+                a2 = dict(assign); a2[i] = lab; p2 = path + [('P', i, lab)]
+                if lab == x or len(p2) >= h:
+                    tail(a2, emptied, p2, heavy + 1, 0)
+                else:
+                    for j in sorted(r for r in R if r not in a2):
+                        a3 = dict(a2); a3[j] = x
+                        tail(a3, emptied, p2 + [('H', x, j)], heavy + 2, 0)
+                        if best['path'] is not None: return
+                    tail(a2, emptied | {x}, p2 + [('H', x, None)], heavy + 2, 0)
+                if best['path'] is not None: return
+            return
+        tail(dict(assign), emptied, path, heavy, 0)
     rec(dict(mu), frozenset(), [], 0)
     return best
 
@@ -134,6 +151,28 @@ def encode(F, mu, R, path, free_out, holes_all, move_pinned_rows=False):
         idx, st, rows, pa = pick_term(F, assign, emptied, mu)
         assert idx is not None and st == 'free'
         term = F[idx]; flags = []
+        if RULE == 'complete':
+            heavy = 0
+            if pa and pos < len(path):
+                kind, key, ans = path[pos]; i, x = term['pin']
+                assert kind == 'P' and key == i, 'the complete-term rule queries the pigeon first'
+                assign[i] = ans; deltas.append(('lab', ans)); heavy = 1; pos += 1
+                if ans != x and pos < len(path):
+                    kind2, key2, ans2 = path[pos]
+                    assert kind2 == 'H' and key2 == x, 'the complete-term rule queries the hole after the pigeon'
+                    if ans2 is None: emptied.add(x); deltas.append(('empty', None))
+                    else: assign[ans2] = x; deltas.append(('row', ans2))
+                    heavy = 2; pos += 1
+            for row, lits in term['tail']:
+                if row in assign or pos >= len(path) or path[pos][0] != 'L':
+                    flags.append(0); continue
+                kind, prow, lab = path[pos]
+                assert prow == row, 'path row differs from the term row order'
+                cons = [l for l in free_out if consistent(lits, l)]
+                if not cons: raise NotRich()
+                code[row] = cons[0]; free_out.remove(cons[0])
+                assign[row] = lab; deltas.append(lab); flags.append(1); pos += 1
+            betas.append((tuple(flags), heavy)); continue
         for row, lits in term['tail']:
             if row in assign or pos >= len(path) or path[pos][0] != 'L':
                 flags.append(0); continue
@@ -176,6 +215,22 @@ def decode(F, code, holes_all):
         idx, st, rows, pa = pick_term(F, cur, emptied, dict(code_assign))
         if idx is None or st == 'false': return None
         term = F[idx]
+        if RULE == 'complete':
+            if heavy:
+                if st != 'free' or not pa: return None
+                i, x = term['pin']
+                kind, val = deltas[d]; d += 1
+                if kind != 'lab': return None
+                cur[i] = val; touched.append(i)
+                if heavy == 2:
+                    kind, val = deltas[d]; d += 1
+                    if kind == 'empty': emptied.add(x)
+                    elif kind == 'row': cur[val] = x; touched.append(val)
+                    else: return None
+            for (row, lits), flag in zip(term['tail'], flags):
+                if flag:
+                    cur[row] = deltas[d]; d += 1; touched.append(row)
+            continue
         for (row, lits), flag in zip(term['tail'], flags):
             if flag:
                 cur[row] = deltas[d]; d += 1; touched.append(row)
@@ -218,8 +273,8 @@ def main():
                     help='fixed reader: row 0 pinned in the first term and light in the second (expected to fail)')
     ap.add_argument('--max-restrictions', type=int, default=2_000_000)
     ap.add_argument('--hole-only', action='store_true', help='alias of --rule hole')
-    ap.add_argument('--rule', choices=['adaptive', 'hole', 'both'], default=None,
-                    help='heavy-query rule: adaptive (original), hole (hole only), both (pigeon then hole)')
+    ap.add_argument('--rule', choices=['adaptive', 'hole', 'both', 'complete'], default=None,
+                    help='heavy-query rule: adaptive (original), hole (hole only), both (pigeon then hole), complete (round first, then the whole tail)')
     a = ap.parse_args()
     global RULE; RULE = a.rule or ('hole' if a.hole_only else 'adaptive'); a.hole_only = (RULE == 'hole')
     n = 2 ** a.L; N = 2 ** a.L2; e = a.e; rng = random.Random(a.seed)
