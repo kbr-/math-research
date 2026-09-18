@@ -19,7 +19,7 @@ def session_name(value):
     return value
 
 
-REVIEW_PERIOD = 4    # research entries allowed in a row before a route review is required
+REVIEW_PERIOD = 6    # research entries allowed in a row before a route review is required
 STATUS_LIMIT = 300   # characters of status-line text, before the producer credit
 KINDS = ('research', 'review', 'formalization')
 

@@ -89,8 +89,8 @@ class FinalizationTest(unittest.TestCase):
         rejected = [
             record([], ''),                                           # untagged entry
             record([], 'data-kind="research" data-route="sub-gap"'),  # not a declared route item
-            record(['research'] * 4, tagged),                         # fifth research entry in a row
-            record(['review'] + ['research', 'formalization'] * 4, tagged),
+            record(['research'] * 6, tagged),                         # seventh research entry in a row
+            record(['review'] + ['research', 'formalization'] * 6, tagged),
             record([], tagged, status='S' * 301),
         ]
         for content in rejected:
@@ -100,8 +100,8 @@ class FinalizationTest(unittest.TestCase):
                 self.assertNotEqual(result.returncode, 0)
                 self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
         accepted = [
-            record(['research'] * 4, 'data-kind="review" data-route="general-step"'),
-            record(['research'] * 4 + ['review'] + ['research'] * 3, tagged),
+            record(['research'] * 6, 'data-kind="review" data-route="general-step"'),
+            record(['research'] * 6 + ['review'] + ['research'] * 5, tagged),
             record(['research'] * 9, 'data-kind="formalization"'),
             record(['research'] * 3, 'data-kind="research" data-route="side-preprint"'),
         ]

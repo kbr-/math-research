@@ -87,7 +87,7 @@ actionable rule over another checklist or a record of one-off setup history.
   tag every entry's `<article>` with `data-kind` (`research`, `review`, or
   `formalization`) and `data-route`, a `data-route-item` slug of a top-level
   item of The remaining route (or `side-...`), never a sub-gap of the current
-  line; `finish-turn.py` refuses a fifth consecutive research entry without a
+  line; `finish-turn.py` refuses a seventh consecutive research entry without a
   review. A review entry states the current line's general claim, what the main
   goal needs from it, a falsification attempt, an honest estimate of the chance
   that the line advances the goal, and the next step on the highest-risk item;
