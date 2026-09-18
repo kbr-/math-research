@@ -10,7 +10,8 @@ The canonical mixed tree: at a node, take the earliest non-falsified term whose 
 mu if one exists, else the earliest non-falsified term; query all its uncovered tail rows in order (pigeon
 queries over the available holes Q u E); then, if the term is still alive with its pinned pair unkilled,
 make a heavy query: the pigeon i if i has at least two unkilled pinned pairs, else the hole x (branches: an
-unassigned residual row moved to x, or the empty branch).  Heights count queries.  For every restriction
+unassigned residual row moved to x, or the empty branch).  With --hole-only the heavy query is always the
+hole x (the corrected rule: trigger holes are then distinct along a path).  Heights count queries.  For every restriction
 with a path of at least h queries whose free labels are rich enough, the lexicographically first such
 path is encoded (code restriction with the light rows moved to consistent free outside labels avoiding the
 pinned labels, per-round star vectors, recorded answers) and decoded back.  Pinned rows are never moved.
@@ -54,7 +55,10 @@ def pick_term(F, assign, emptied, base):
         if first is None: first = (idx, st, rows, pa)
     return first if first is not None else (None, None, None, None)
 
+HOLE_ONLY = False
+
 def unkilled_pairs(F, i, assign, emptied, holes_all):
+    if HOLE_ONLY: return 1
     used = set(assign.values())
     return len(set(t['pin'][1] for t in F if t['pin'] is not None and t['pin'][0] == i
                    and t['pin'][1] in holes_all and t['pin'][1] not in used and t['pin'][1] not in emptied))
@@ -177,7 +181,9 @@ def main():
     ap.add_argument('--two-role-example', action='store_true',
                     help='fixed reader: row 0 pinned in the first term and light in the second (expected to fail)')
     ap.add_argument('--max-restrictions', type=int, default=2_000_000)
+    ap.add_argument('--hole-only', action='store_true', help='always query the trigger hole (corrected rule)')
     a = ap.parse_args()
+    global HOLE_ONLY; HOLE_ONLY = a.hole_only
     n = 2 ** a.L; N = 2 ** a.L2; e = a.e; rng = random.Random(a.seed)
     while True:
         vecs = [rng.randrange(n) for _ in range(a.L2)]; span = {0}
@@ -225,6 +231,7 @@ def main():
             rich += 1
             if decode(F, code, holes_all) != tuple(sorted(mu.items())): failures += 1
     rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'e': e, 'w': a.w, 'h': a.h, 'seed': a.seed, 'two_role': a.two_role,
+           'hole_only': a.hole_only,
            'Q': sorted(Q), 'A': A, 'terms': [{'pin': t['pin'], 'tail': [[r, l] for r, l in t['tail']]} for t in F],
            'restrictions': total, 'bad': bad, 'rich_bad': rich, 'round_trip_failures': failures,
            'max_heavy_queries': max_heavy, 'heavy_histogram': {str(k): v for k, v in sorted(heavy_hist.items())}}
