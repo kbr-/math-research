@@ -71,4 +71,8 @@ involved, checked by a count before the step is written or the tool is coded. Th
 made against the statement under test: compute what the hypothesis predicts at the reachable
 parameters and compare it with the unconditional bounds, because a test whose every outcome
 is compatible with the hypothesis decides nothing (an exact closure computation once filled a
-cycle in a range where the conjectured bound lay below the trivial one).
+cycle in a range where the conjectured bound lay below the trivial one). When the step targets
+a bound instead, evaluate the bound on the simplest structurally different extremal examples
+and name them in the step, and compare what full success would give with what the goal needs;
+a step once targeted a boost bound that fixing the labels of about sqrt(n) rows refutes, and
+the corrected ceiling did not exceed the working degree it was meant to beat.
