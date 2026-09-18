@@ -32,6 +32,7 @@ X_PINS = set()
 SKIP_KILLED = False   # after a pigeon answer other than the pin (and the hole query, if any) the node is left: no tail queries
 CODE_RULE = 'avoid-X'   # 'avoid-X': code labels outside X; 'own': code labels whose own filling row is not pinned to them
 PINS = set()   # all (row, label) pins
+PINS_BY_ROW = {}   # row -> labels it is pinned to (X_j)
 
 OUT = 'OUT'   # a filled pinned row assigned to an unknown outside label
 
@@ -419,7 +420,7 @@ def encode_compact(F, mu, R, E, fill, path, Q):
         for k, (row, lits) in enumerate(term['tail']):
             if row in assign: continue
             step = path[pos]; assert step[0] == 'L' and step[1] == row, 'path row differs from the term row order'
-            cons = [l for l in free_out if consistent(lits, l) and not (CODE_RULE == 'avoid-X' and l in X_PINS) and not (CODE_RULE == 'own' and (fill_inv[l], l) in PINS)]
+            cons = [l for l in free_out if consistent(lits, l) and not (CODE_RULE == 'avoid-X' and l in X_PINS) and not (CODE_RULE in ('own', 'own-two-role') and (fill_inv[l], l) in PINS) and not (CODE_RULE == 'own-two-role' and l in PINS_BY_ROW.get(row, ()))]
             if not cons: raise NotRich()
             code[row] = cons[0]; free_out.remove(cons[0]); moved.append(row); node_moves.append(k)
             assign[row] = step[2]; deltas.append(('ans', step[2])); pos += 1
@@ -487,7 +488,10 @@ def main():
     ap.add_argument('--hole-always', action='store_true', help='query the hole after every pigeon answer other than the pin')
     ap.add_argument('--fill-domain', choices=('any', 'notail'), default='any', help='rows the filling may use: any residual row, or only rows outside every tail')
     ap.add_argument('--skip-killed', action='store_true', help='leave the node after a pigeon answer other than the pin (no tail queries); filled-pigeon nodes then carry no record')
-    ap.add_argument('--code-rule', choices=('avoid-X', 'own', 'any'), default='avoid-X', help='avoid-X: code labels outside the pinned labels; own: code labels whose own filling row is not pinned to them')
+    ap.add_argument('--code-rule', choices=('avoid-X', 'own', 'own-two-role', 'any'), default='avoid-X', help='avoid-X: code labels outside the pinned labels; own: code labels whose own filling row is not pinned to them')
+    ap.add_argument('--two-role', action='store_true', help='tails may use pinned rows (a row pinned in one term and light in another)')
+    ap.add_argument('--two-role-example', action='store_true', help='the recorded two-role counterexample reader of the mixed-term tool')
+    ap.add_argument('--two-role-example2', action='store_true', help='a two-role row pinned at an outside label that is consistent with its light pattern: exhibits the need to exclude the moved row\'s own pinned labels')
     ap.add_argument('--tree', choices=('slack', 'compact'), default='slack', help='slack: the restricted slack tree of cycle 207; compact: the compact complete-term tree of rho itself, simulated by the decoder (cycle 208)')
     ap.add_argument('--pin-test', action='store_true', help='resolve a pin at a free outside label by a pin test and choose code labels outside the pinned labels (entry encoding only)')
     ap.add_argument('--encoding', choices=('node', 'entry'), default='node', help='node: per-node record, filled tail rows moved; entry: the encoding of the entry (filled rows never moved, no per-node record)')
@@ -500,7 +504,7 @@ def main():
         if len(span) == N: break
     tr = rng.randrange(n); Q = set(x ^ tr for x in span); O = sorted(set(range(n)) - Q)
     rows_all = list(range(n + 1)); A = sorted(rng.sample(rows_all, a.pinned_rows))
-    B = [r for r in rows_all if r not in A]
+    B = rows_all if a.two_role else [r for r in rows_all if r not in A]
     label_pool = rng.sample(range(n), a.labels) if a.labels > 0 else list(range(n))
     F = []
     while len(F) < a.terms:
@@ -509,11 +513,24 @@ def main():
         tail = []
         if kind > 0.1:
             for row in rng.sample(B, rng.randint(1, a.tail_rows)):
+                if pin is not None and row == pin[0]: continue
                 bits = rng.sample(range(a.L), rng.randint(1, a.w)); tail.append((row, [(t, rng.randint(0, 1)) for t in bits]))
         if pin is None and not tail: continue
         F.append({'pin': pin, 'tail': tail})
+    if a.two_role_example:
+        q0, q1 = sorted(Q)[:2]; A = [0, 1, 2, 3]
+        F = [{'pin': (0, q0), 'tail': [(5, [(0, 0)])]}, {'pin': (1, q1), 'tail': [(0, [(1, 0)])]}, {'pin': None, 'tail': [(6, [(2, 1)])]}]
+        a.two_role = True
+    if a.two_role_example2:
+        q0 = sorted(Q)[0]; o0 = O[0]; A = [0, 1]
+        b0 = [(t, (o0 >> t) & 1) for t in range(a.L)][:1]   # one literal of row 0 consistent with o0
+        F = [{'pin': (0, o0), 'tail': [(5, [(1, 0)])]}, {'pin': (1, q0), 'tail': [(0, b0)]}, {'pin': None, 'tail': [(6, [(2, 1)]), (5, [(1, 1)])]}]
+        a.two_role = True
     X = set(t['pin'][1] for t in F if t['pin'] is not None)
     X_PINS = set(X); PINS = set(t['pin'] for t in F if t['pin'] is not None)
+    global PINS_BY_ROW; PINS_BY_ROW = {}
+    for t in F:
+        if t['pin'] is not None: PINS_BY_ROW.setdefault(t['pin'][0], set()).add(t['pin'][1])
     tailrows = set(row for t in F for row, _ in t['tail'])
     q = n + 1 - (N + 1 + e)
     size = math.comb(n + 1, q) * math.factorial(n - N) // math.factorial(e)
@@ -551,7 +568,7 @@ def main():
                     dec = None
                 if dec != (tuple(sorted(mu.items())), tuple(sorted(fill.items()))):
                     stats['fail_G' if onG else 'fail_offG'] += 1
-    rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'e': e, 'w': a.w, 'h': a.h, 'seed': a.seed, 'labels': a.labels, 'hole_always': HOLE_ALWAYS, 'encoding': a.encoding, 'fill_domain': a.fill_domain, 'pin_test': PIN_TEST, 'skip_killed': SKIP_KILLED, 'code_rule': CODE_RULE, 'tree': a.tree,
+    rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'e': e, 'w': a.w, 'h': a.h, 'seed': a.seed, 'labels': a.labels, 'hole_always': HOLE_ALWAYS, 'encoding': a.encoding, 'fill_domain': a.fill_domain, 'pin_test': PIN_TEST, 'skip_killed': SKIP_KILLED, 'code_rule': CODE_RULE, 'tree': a.tree, 'two_role': a.two_role, 'two_role_example': a.two_role_example, 'two_role_example2': a.two_role_example2,
            'Q': sorted(Q), 'A': A, 'X': sorted(X), 'terms': [{'pin': t['pin'], 'tail': [[r, l] for r, l in t['tail']]} for t in F], **stats}
     with open(a.out, 'a') as f: f.write(json.dumps(rec) + '\n')
     print(json.dumps({k: v for k, v in rec.items() if k not in ('terms', 'Q', 'A')}))
