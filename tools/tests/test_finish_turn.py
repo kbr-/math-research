@@ -115,6 +115,21 @@ class FinalizationTest(unittest.TestCase):
                 notebook.write_text(content)
                 self.command('check.py', marker)
 
+    def test_append_only_check_flags_edits_but_not_link_repairs(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('cao', ROOT / 'tools/check-append-only.py')
+        cao = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cao)
+        base = ('<section id="research-record"><article id="a"><p>Claim one.</p></article>'
+                '<article id="b"><p>See the lemma.</p></article></section>')
+        appended = base.replace('</section>', '<article id="c"><p>New.</p></article></section>')
+        linked = base.replace('the lemma', '<a href="#x">the lemma</a>')
+        self.assertEqual(cao.violations(base, appended), ([], []))
+        self.assertEqual(cao.violations(base, linked), ([], []))
+        self.assertEqual(cao.violations(base, base.replace('Claim one.', 'Claim 1.')), ([], ['a']))
+        self.assertEqual(cao.violations(base, base.replace('<article id="b"><p>See the lemma.</p></article>', '')),
+                         (['b'], []))
+
     def test_duplicate_marker_does_not_stop_session(self):
         notebook = self.root / 'notebook.html'
         content = '<!-- TIMING test_turn -->\n' * 2

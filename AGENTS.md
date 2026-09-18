@@ -232,6 +232,11 @@ actionable rule over another checklist or a record of one-off setup history.
 - Preserve earlier entries. Correct or retract mathematics in a new dated entry
   referencing the earlier anchor, and update the living overview accordingly.
   Do not silently rewrite prior claims or proofs to agree with a later result.
+  This covers every sentence of an entry, opinions and assessments included,
+  even when the user objects to its content: withdraw it in a new dated entry.
+  `tools/check-append-only.py` compares all earlier entries with a base revision
+  (link repairs excepted); `finish-turn.py` runs it against HEAD, and it must
+  pass against `origin/main` before every push.
 - Keep current mathematical status in the notebook only. `research/notes/RESUME.md`
   is a stable reading guide; update it only when navigation or workflow changes.
   Supporting notes preserve proofs, provenance, and dated audit evidence, not

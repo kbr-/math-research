@@ -97,10 +97,22 @@ def credit_producer(body, marker, producer):
     return body[:close] + ' ' + producer + body[close:]
 
 
+def validate_append_only(root):
+    """Earlier entries must match HEAD; corrections belong in a new dated entry."""
+    checker = root / 'tools/check-append-only.py'
+    if not checker.exists():
+        return
+    result = subprocess.run([sys.executable, str(checker), '--base', 'HEAD'], cwd=root,
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        raise ValueError(result.stdout.strip())
+
+
 def finish(root, turn, next_turn=None):
     notebook = root / 'notebook.html'
     marker = f'<!-- TIMING {turn} -->'
     validate_marker(notebook.read_text(), marker)
+    validate_append_only(root)
     if next_turn and (root / 'research/logs' / f'{next_turn}.jsonl').exists():
         raise ValueError('Next session already exists; omit --next when retrying finalization')
 
