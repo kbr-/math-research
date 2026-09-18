@@ -50,3 +50,8 @@ and state in one sentence the estimated chance that completing the whole current
 advances the main goal; put the estimate in the process assessment. A low estimate, or a
 line that produces special cases without moving its general implication, makes the cycle
 a route review under AGENTS.md even before `finish-turn.py` forces one.
+
+When the proposed next step is a computation, state in it the smallest parameters at which
+the test is nonvacuous and the size of the spaces involved, checked by a count before the
+step is written; a test named on a board where it decides nothing wastes the next cycle's
+opening.
