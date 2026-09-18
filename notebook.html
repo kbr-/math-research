@@ -33,7 +33,7 @@
 
 <section id="proposed-next-step">
   <h2>Proposed next step</h2>
-  <p>Extend the <a href="#srf-theorem">single-row full-class theorem</a> to general pair sets: define a class's trigger holes through a vertex cover of its alive pairs, replace "label in the flat" by the <a href="#alive-unmatched-comparison">comparison lemma</a> for the unmatched condition, and redo the six exclusions with heavy and light classes in place of labels. Then handle multi-row tails through per-class loading and the <a href="#tail-comparison">tail comparison</a>. Target: the constant-factor heavy bound for all mixed readers, completing the literal window at every polynomial size. Parity terms remain the open core; the <a href="#level-one-conservativity-conjecture">level-one conjecture</a> and <a href="#third-level-restricted-ledger">restricted third level</a> stay parked.</p>
+  <p>Extend the <a href="#srf-theorem">single-row full-class theorem</a> (with the <a href="#entry-2026-09-18-srf-review">reviewed definitions</a>) to column classes \(P_\tau=I_\tau\times\{x_\tau\}\): keep the survivor-rank, residual-row, and sparse-hole steps, and redo the two satisfaction steps with the loading of a label averaged over the occupant of the label, using that a dense label outside the flat is occupied by a pinned row with probability about \(1/(96eN)\). Then general pair sets through vertex covers and the <a href="#alive-unmatched-comparison">comparison lemma</a>, and multi-row tails through per-class loading. Target: the constant-factor heavy bound for all mixed readers. Parity terms remain the open core; the <a href="#level-one-conservativity-conjecture">level-one conjecture</a> and <a href="#third-level-restricted-ledger">restricted third level</a> stay parked.</p>
 </section>
 
 <section id="working-context">
@@ -20854,6 +20854,39 @@ c_y\prod_{i\in S}\left((c_i)_{a_i}+(c_i+e_{d_i})_{a_i}\right)
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 49.16 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7 min 46.13 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2.90 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+
+<article class="research-entry" id="entry-2026-09-18-srf-review">
+  <h3>18 September 2026 — Correctness review of the single-row full-class theorem: self pairs must be excluded from the light loading, the threshold for \(N\) is restated, and "assigned rows" means rows assigned before the last heavy query; the theorem stands</h3>
+  <p class="entry-meta">Status: focused correctness review with two corrections and one clarification to <a href="#srf-theorem">the theorem of the previous entry</a>, which remains a working theorem with the corrected definitions; the general pair-set case is opened with its obstacle named. Spin cycle 192. Produced by Claude Code (Claude Fable 5.1 (claude-fable-5-1), low reasoning effort).</p>
+  <p><strong>Question and stopping point.</strong> Before extending the theorem, its proof was reviewed once as the research protocol asks. The review found one real gap in step (E3), a constant that does not cover step (E5) as stated, and a phrase that needs a definition; all three are repaired below without changing the argument's structure. The stopping point is the corrected statement, and the first obstacle of the general pair-set case.</p>
+
+  <h4 id="srf-self-pairs">1. Correction: self pairs</h4>
+  <p>Call \((j,z)\) a <em>self pair</em> if the only light survivor of \(z\) at row \(j\) is \(z\) itself: \(L_j(z)\cap X_L=\{z\}\), which happens when some class \((j,p,z)\) has \(z\in C(p)\). A self pair is light-loaded and light-good vacuously, but it has no light survivor other than \(z\), so the charge of step (E3), "every light-good pair has a light survivor in \(Q\)", fails for it; a reader with \(n\) labels on every row has up to \(n(n+1)\) self pairs, which would make (E3) vacuous. Self pairs never produce a satisfied term (the occupant of \(z\) is \(j\) itself) nor a hole (the hole \(z\) is the row's own answer), so they are irrelevant to the bad event and should be excluded from the loading. <em>Corrected definitions:</em> a pair is light-loaded if \(L_j(z)\cap X_L\setminus\{z\}\ne\emptyset\); \(\Lambda_L\) is the number of light-loaded pairs divided by \(n\); \(u_{\rm s}(x)=|\{(j,z)\text{ small}:\ x\in L_j(z),\ z\ne x\}|/n\); and \(V=\sum_{x\in X_L}u_{\rm s}(x)\). With these, \(z\notin Q\) lies in \(U^{{\rm out},L}_j(Q)\) exactly when \((j,z)\) is light-loaded and not light-good, every light-good light-loaded pair has a light survivor other than \(z\) in \(Q\) and is small by (E2), so the count of such pairs is at most \(n\,u_{\rm s}(Q)\), and \(V\le k''\Lambda_L\) because each small light-loaded pair has fewer than \(k''\) light survivors other than \(z\). Steps (E3), (E4) and (E5) then read exactly as written, since \(G_j\) already excluded \(z\) from the survivors. Step (E1) is unaffected: it uses \(|U_{x,j}\setminus(Q\cup\{x\})|\).</p>
+
+  <h4 id="srf-threshold">2. Correction: the threshold for \(N\)</h4>
+  <p>Step (E5) needs \(192e\,k''\lambda_22^{c+3}/N\le1/50\), that is \(N\ge2^{2c+21}\cdot3e(c+2)\ln n\), which the stated \(N_0=2^{c+11}(c+2)^2\ln^2n\) does not give for \(c\ge3\) and moderate \(n\). The theorem holds with \(N_0(c)=2^{2c+24}(c+2)\ln n\), which also covers (E4) (\(N/(4\lambda_2)\ge2^{c+3}\)), the requirement \(a=N/(96k'')\ge(c+1)\log_2n\), and the final count \(2^{c+3}+N/96+(2c+1)2^{c+3}<N/24\). The threshold is still polylogarithmic in \(n\), so the conclusion is unchanged.</p>
+
+  <h4 id="srf-assigned">3. Clarification: which rows are assigned</h4>
+  <p>The proof uses that every assigned row \(j\) of a bad path has \(L_j(z_j)\setminus\{z_j\}\subseteq Q\). A row is "assigned" if it is matched by \(\rho'\) or answered by the path <em>before its last heavy query</em>. This is the correct reading: if an answer satisfies the tail of a class with a matched pair, that term is satisfied by \(\rho'\cup\pi\) and stays non-falsified, so from then on the matched-first preference always selects a matched-pair term and no further heavy query occurs; a bad path's heavy queries therefore all precede any such answer, and the rows answered after the last heavy query are not used. Likewise a term satisfied by \(\rho'\) alone prevents every heavy query on every path.</p>
+
+  <h4 id="general-pairs-obstacle">4. General pair sets: the first obstacle</h4>
+  <p>For a class with an arbitrary pair set \(P_\tau\), the events "alive and unmatched" and "matched" are no longer "\(x_\tau\in Q\)" and "\(x_\tau\notin Q\)", but events on \(\mu'\) with the ratio of the <a href="#alive-unmatched-comparison">comparison lemma</a>. Two of the six exclusions transfer directly: the survivor-rank step (E2) and the residual-row step (E6) concern only holes, which remain labels in \(Q\); and triggers at sparse holes, of degree below \(D^\ast\) over all pairs of the reader, form a matching of size below \(N/48\) by the <a href="#sparse-matching-tail">sparse lemma</a> whatever the classes. The obstacle is in the satisfaction steps (E1) and (E3): a dense label outside \(Q\) is occupied by a row pinned to it only with probability about \(1/(96eN)\), and which classes are matched depends on \(\mu'\) at the pair rows, so the out-loading of a row is no longer a fixed set and the negative-association product over tail rows does not apply as stated. The natural first target is the class of <em>column classes</em>, \(P_\tau=I_\tau\times\{x_\tau\}\), where a class is matched exactly when its label is outside \(Q\) and its occupant lies in \(I_\tau\); there the occupant of each label is a single uniform row, and the loading of a label can be averaged over occupants. This is the next cycle's task.</p>
+
+  <p><strong>Main-route assessment.</strong> The first obligation is unchanged. The single-row full-class theorem survives review with corrected definitions and constant; the general pair-set case is reduced to the two satisfaction steps, with column classes as the next restricted case. Parity terms remain the open core.</p>
+  <p><strong>Process assessment.</strong> The review was worth a cycle: the self-pair gap would have propagated into the pair-set generalization; the working context's switching paragraph is consolidated in a separate commit this cycle, since it had grown to over 700 words. No framework change is needed, and no computation was run.</p>
+  <div class="timing-report" data-session="general_pairs_20260918_192">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 59.13 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 55.86 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3.15 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
