@@ -48,3 +48,9 @@ and identified text conversion are public under the verified CC BY 3.0 license.
 The [source audit](../results/general_local_profile_test_20260914_149/source-audit.json)
 records the exact definitions and approximate-majority lemma used; the paper's
 full circuit-size lower-bound proof was not imported.
+
+Beame1994, *A Switching Lemma Primer* (technical report), was read on 18 September 2026 from its
+author-course copy for the matching switching lemma import (Section 5, Lemma 4). The PDF and its
+text extraction are local-only under the ignored private/ directory; the source-audit note records
+the hash and reading scope. The bipartite PHP versions (PBI 1993, KPW 1995) remain unavailable
+locally and are listed in the Git-ignored user_requests file.

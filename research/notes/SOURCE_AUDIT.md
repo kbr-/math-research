@@ -96,3 +96,20 @@ The notebook supplies the explicit modular-row-to-clause derivation and
 the ordinary-ring substitution argument; this addendum records source coverage.
 Krajicek v3's paragraphs around Lemma 5.1 and Theorem 5.2 were also reread to
 separate that source's functionality-containing equivalence from this argument.
+
+## New source reading: matching switching lemma, 18 September 2026
+
+For the notebook entry
+[Importing the matching switching lemma](https://kbr-.github.io/math-research/#entry-2026-09-18-switching-lemma-import),
+read Paul Beame, *A Switching Lemma Primer*, technical report (University of Toronto / University of
+Washington, 1994), from the author-course copy at
+http://www.cs.utoronto.ca/~toni/Courses/Complexity2015/handouts/primer.pdf (also hosted at
+https://users.cs.duke.edu/~reif/courses/complectures/Beame/SwitchingLemmaPrimer.pdf and
+https://homes.cs.washington.edu/~beame/papers/primer.ps). Local private copy
+private/references/Beame1994-switching-lemma-primer.pdf, sha256 67329a8a506ec20f741e565fa1bb038e820601091b4f113cd916a3cbab798050, with a pdftotext extraction.
+Read Section 5 (printed pages 13–17): the q-variables and q-terms over a set D with |D|=qn+1, the
+restriction family M^ell_{D,q} of partial q-matchings leaving q ell+1 unmatched points, matching
+decision trees, representation and refinement, the canonical tree T_D(F), and Lemma 4 with its
+counting proof. Also Section 6.3 headings (Lemma 10, representation after restriction). The statement
+is nonbipartite (hypergraph matchings on one point set); the bipartite PHP-board versions in PBI 1993
+and KPW 1995 were not obtainable (see the Git-ignored user_requests note).
