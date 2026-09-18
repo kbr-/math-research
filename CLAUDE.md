@@ -16,7 +16,10 @@ research/CLAIM_INDEX.md for the same objects (rules, trees, reader families), an
 search the index under the technique's own name for every lemma formulated during the
 cycle (for example "case split", "telescoping", "weight"), because the opening search
 cannot cover a lemma that did not exist yet; a recorded case-split lemma was once
-restated as new and caught only by the reviewer;
+restated as new and caught only by the reviewer; before drafting the proof of a new
+lemma, send its one-paragraph statement to the standing reviewer with the single question
+whether the record already implies it (the reviewer holds the dependency context, and
+three restatements in one day were found only after full drafting);
 (3) run the exhaustive checker for any rule, tree, or encoding change before
 relying on it; (4) have a fresh-context reviewer, a subagent given only the draft
 and the dependency anchors, try to break the argument and name the hypotheses
