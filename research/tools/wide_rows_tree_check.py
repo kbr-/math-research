@@ -36,7 +36,8 @@ def readers(n, L, A, B):
     onepin = [{'pin': (i0, x0), 'tail': [(j, p)]} for j in B]
     cube = sorted(y for y in range(n) if all(((y >> t) & 1) == 0 for t in range(L - 1)))
     pins = [{'pin': (a, x), 'tail': [(j, p)]} for a in A for x in cube for j in B]   # cycle 213: pins at the cube's own labels, so a round-first node can exhaust its wide row
-    return {'same-pattern': same, 'distinct': dist, 'one-pin': onepin, 'pins': pins}
+    allp = [{'pin': None, 'tail': [(j, [(tt, (v >> tt) & 1) for tt in range(L) if tt != f])]} for j in B for f in range(L) for v in range(n) if not (v >> f) & 1]   # cycle 214: every pattern of L-1 literals on every row of B (row mass n|B|)
+    return {'same-pattern': same, 'distinct': dist, 'one-pin': onepin, 'pins': pins, 'all-patterns': allp}
 
 def static_skip(F, Rp, Qs):
     """The sub-reader F_{Q,R'}: terms without a residual tail row whose pattern cube misses Q."""
@@ -60,7 +61,7 @@ def main():
     ap.add_argument('--pinned', type=int, default=3); ap.add_argument('--out', required=True)
     ap.add_argument('--max-flats', type=int, default=0)
     ap.add_argument('--wide-order', choices=('wide-first', 'round-first'), default='wide-first', help='node order of the wide-round tree (cycle 213)')
-    ap.add_argument('--readers', default='same-pattern,distinct,one-pin', help='comma-separated reader names among same-pattern, distinct, one-pin, pins')
+    ap.add_argument('--readers', default='same-pattern,distinct,one-pin', help='comma-separated reader names among same-pattern, distinct, one-pin, pins, all-patterns')
     ap.add_argument('--tree', choices=('compact', 'wide'), default='compact', help='compact: the complete-term tree, with and without the static skip; wide: the wide-round tree with a canonical minimum vertex cover (cycle 212); rows of L-1 literals are wide')
     a = ap.parse_args()
     cpe.WIDE_W = a.L - 2; cpe.WIDE_ORDER = a.wide_order
