@@ -85,6 +85,11 @@ def validate_marker(body, marker):
         # MathJax treats a dollar sign as an inline-math delimiter; the notebook uses \( \).
         raise ValueError('The entry contains a dollar sign, which MathJax reads as a math delimiter; '
                          'write mathematics with \\( \\) and currency as "USD 5"')
+    control = sorted({c for c in body[article:close] if ord(c) < 32 and c != '\n'})
+    if control:
+        # "\rho", "\text", "\bigl" written through a non-raw Python string become CR, TAB, BS.
+        raise ValueError('The entry contains control characters ' + repr(control) + ': a TeX command '
+                         'was written through a non-raw string (\\r, \\t, \\b, \\f); repair the formulas')
 
 
 def credit_producer(body, marker, producer):
