@@ -16,7 +16,9 @@ research/CLAIM_INDEX.md for the same objects (rules, trees, reader families);
 relying on it; (4) have a fresh-context reviewer, a subagent given only the draft
 and the dependency anchors, try to break the argument and name the hypotheses
 the argument never uses; resolve every gap it reports and drop or justify every
-unused hypothesis. Keep one reviewer subagent on standby for the whole session
+unused hypothesis. Before drafting a corollary, check whether an earlier result
+already gives it under fewer hypotheses than the cycle's own route; corollaries
+have twice inherited route hypotheses that their statements did not need. Keep one reviewer subagent on standby for the whole session
 and continue it with SendMessage for each new draft; a new subagent would have
 to re-establish the dependency context every time. Record the gate in a short
 "Verification gate." paragraph of the entry (dependencies re-read, checks run,
