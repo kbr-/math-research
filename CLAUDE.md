@@ -34,3 +34,10 @@ with a verified result is wanted; a fast cycle followed by a correction is not.
 Keep an entry's `entry-meta` status line short: the status (working proof,
 conditional result, conjecture, finite check, refutation) and at most one
 clause of scope, then the cycle label. Details belong in the entry's sections.
+
+## Shell hygiene
+
+Never put a tool's file name in a Bash command that also runs `pkill -f` or
+`pgrep -f`: the pattern matches the shell running the command and kills it
+(exit 144), so nothing after it runs. Kill or check in one command, restart in
+another.
