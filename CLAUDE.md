@@ -51,6 +51,13 @@ advances the main goal; put the estimate in the process assessment. A low estima
 line that produces special cases without moving its general implication, makes the cycle
 a route review under AGENTS.md even before `finish-turn.py` forces one.
 
+Before designing a cycle, read in full every parked or linked item that the notebook's
+Proposed next step names on the same route item, and search research/CLAIM_INDEX.md for
+the cycle's objects under their structural names as well as the current vocabulary (for
+example "block", "fresh", "companion", "coefficient", not only "dense form"); a cycle on
+fresh blocks once rediscovered a conjecture that its own next-step paragraph listed as
+parked.
+
 When the proposed next step is a computation, state in it the smallest parameters at which
 the test is nonvacuous and the size of the spaces involved, checked by a count before the
 step is written; a test named on a board where it decides nothing wastes the next cycle's
