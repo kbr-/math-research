@@ -189,3 +189,21 @@ lemma's proof uses recorded notebook tools only.
    paper was not retrieved) and lines 806-823 (safe dimension; probability bounds for safe
    systems of rank r + l when r <= cn for a small constant c). Proofs not read; the copy stays
    private.
+
+## Further reading of Dahiya, Mahajan, Mouli, 18 September 2026 (route review, cycle 224)
+
+Same private copy and hash as in the entry above (private/references/DMM2023-ECCC-TR23-132.pdf,
+sha256 ed4e6045b5d038868092e739aa4b4ed93aa9ddc27fdba7e94c34045c676a14cb). Read in full in the
+pdftotext extraction: Section 4.1 (lines 372-453: the framework of Impagliazzo, Mouli and
+Pitassi as described there, with cleanup restrictions that need extension variables of
+logarithmic arity and a subquadratic number of them; the outline of the new proof), Section 5.1
+(the formula PHP^{m,r}_n and Razborov's degree bound n/2 + 1), and Section 5.2 through the three
+cases of the proof of Theorem 5.5 (lines 582-760): Lemma 5.3 (an assignment of Hamming weight at
+most l deg(Q) that brings Q to the form (b-a)x + a), Corollary 5.4, Theorem 5.5 (size at least
+exp(Omega(n^2 / ((M + mn) kappa k))) for M extension variables of degree at most k in at most
+kappa variables, r > 2pk), the removal of at most kappa affected holes per round, the
+observation that an assignment of weight below r/2 commits no pigeon to a hole, and the final
+substitution of the definitions at a factor k in degree. Not read: Section 3 (the +-1 basis),
+Section 4.2 beyond the definitions, the remainder of Case 3 and the proof of Theorem 1.2 from
+Theorem 5.5. The statement that the ordinary PHP does not survive these assignments is the
+notebook's own reading, not the paper's. The copy stays private.
