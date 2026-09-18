@@ -101,6 +101,8 @@ def finish(root, turn, next_turn=None):
         if temporary is not None:
             temporary.unlink(missing_ok=True)
     print(f'Finished {turn}: timing embedded and evidence archived; review and commit.')
+    print('Stage with the entry: notebook.html '
+          f'research/results/{turn}/timing.html research/provenance/session-records/{turn}')
     if next_turn:
         print(f'{next_turn} is running in preparation phase.')
 
