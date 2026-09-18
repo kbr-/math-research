@@ -90,7 +90,8 @@ actionable rule over another checklist or a record of one-off setup history.
   line; `finish-turn.py` refuses a seventh consecutive research entry without a
   review. A review entry states the current line's general claim, what the main
   goal needs from it, a falsification attempt, an honest estimate of the chance
-  that the line advances the goal, and the next step on the highest-risk item;
+  that the line advances the goal (of that line only, never a verdict on the
+  program as a whole), and the next step on the highest-risk item;
   Proposed next step names the route item it advances. Once the question,
   argument, and evidence are stable, make one focused correctness review;
   move optional extensions to the next cycle. Reopen the argument only
