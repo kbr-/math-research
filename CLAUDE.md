@@ -16,7 +16,16 @@ research/CLAIM_INDEX.md for the same objects (rules, trees, reader families);
 relying on it; (4) have a fresh-context reviewer, a subagent given only the draft
 and the dependency anchors, try to break the argument and name the hypotheses
 the argument never uses; resolve every gap it reports and drop or justify every
-unused hypothesis. State in the entry which dependencies were re-read, which checks ran, and
-the reviewer's verdict; a result whose gate is incomplete is recorded as
-conditional, not as a working proof. A slower cycle with a verified result is
-wanted; a fast cycle followed by a correction is not.
+unused hypothesis. Keep one reviewer subagent on standby for the whole session
+and continue it with SendMessage for each new draft; a new subagent would have
+to re-establish the dependency context every time. Record the gate in a short
+"Verification gate." paragraph of the entry (dependencies re-read, checks run,
+the reviewer's verdict), not in the status line; a result whose gate is
+incomplete is recorded as conditional, not as a working proof. A slower cycle
+with a verified result is wanted; a fast cycle followed by a correction is not.
+
+## Status lines
+
+Keep an entry's `entry-meta` status line short: the status (working proof,
+conditional result, conjecture, finite check, refutation) and at most one
+clause of scope, then the cycle label. Details belong in the entry's sections.
