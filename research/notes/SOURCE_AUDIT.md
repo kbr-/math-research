@@ -152,3 +152,40 @@ no notebook result depends on them.
    Planes, SOS, AC^0[q]-Frege for every prime q and TC^0-Frege, so that general lower bounds
    for it are much harder than for AC^0[p]-Frege. Proofs not
    read; the license of the ECCC report was not determined, so the copy stays private.
+
+## New source reading: the PHP under linear constraints, 18 September 2026
+
+For the notebook entry
+[The PHP under linear constraints](https://kbr.is-a.dev/math-research/#entry-2026-09-18-parity-subspace),
+two papers were retrieved and read in part. Their statements are imported as context; the
+definition of a safe linear system is used in the entry's Lemma SL with attribution, and the
+lemma's proof uses recorded notebook tools only.
+
+1. Mladen Mikša, Jakob Nordström, *A Generalized Method for Proving Polynomial Calculus Degree
+   Lower Bounds*, CCC 2015 (LIPIcs 33, 467-487); journal version J. ACM 2024,
+   doi:10.1145/3675668 (not read). Read: arXiv:1505.01358v1, local private copy
+   private/references/MN2015-arXiv-1505.01358v1.pdf, sha256
+   6fb604d9a47ba37e697a9699b7d0f1c74faf824da8961c904f2552f397a18230, with a pdftotext
+   extraction. Passages: the abstract; Definitions 3.6, 3.7 and Theorem 3.8 (an
+   (s, delta, xi, E)-expander with overlap d forces degree greater than (delta s - 2 xi)/(2d));
+   Definition 4.1 and Theorem 4.2 (Alekhnovich-Razborov: degree greater than delta s/2 for an
+   (s, delta)-boundary expander incidence graph); the graph PHP axioms (4.2a)-(4.2d);
+   Theorem 4.5 (onto graph PHP, degree greater than delta s/2 - xi under a matching condition);
+   Theorem 4.9 (graph functional PHP over an (s, delta)-boundary expander of left degree at most
+   d requires degree greater than delta s/(2d)). Proofs not read. The arXiv license does not
+   permit redistribution by us, so the copy stays private.
+2. Farzan Byramji, Russell Impagliazzo, *Lower Bounds for Bit Pigeonhole Principles in
+   Bounded-Depth Resolution over Parities*, arXiv:2511.20023v1 (25 November 2025), ECCC
+   TR25-118. Local private copy private/references/BI2025-arXiv-2511.20023.pdf, sha256
+   59f46b182affa0a26ab5af1ce26332311fc675706ae4afa76e23cf1c4dcc9715, with a pdftotext
+   extraction. Read: the abstract (depth N^(2-eps) Res(parity) refutations of the bit PHP with
+   n+1 pigeons have exponential size; no superpolynomial bounds were known for depth superlinear
+   in the formula size); the proof overview, extracted lines 497-531 (affine restrictions; a
+   linear system of rank r is safe if it can be rewritten as fixing r variables from distinct
+   blocks as affine functions of the others, and then the r pigeons go to 2r holes without
+   collisions, each to a pair of holes differing in one bit; closure Cl(Phi) with the
+   decomposition into a part on the closure of rank at least |Cl(Phi)| and a part that is safe
+   once the closure is fixed; all attributed there to Efremenko, Garlík and Itsykson, whose
+   paper was not retrieved) and lines 806-823 (safe dimension; probability bounds for safe
+   systems of rank r + l when r <= cn for a small constant c). Proofs not read; the copy stays
+   private.
