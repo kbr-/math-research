@@ -9,7 +9,8 @@ These apply to Claude Code sessions in addition to the shared rules above.
 Once the question, argument, and evidence of a cycle are stable, pass every new
 lemma, theorem, tree rule, or encoding through this gate before writing its
 status line: (1) re-read the exact statement and proof of each earlier result the
-argument uses, from the notebook, never from a summary or memory; (2) test the
+argument uses, from the notebook, never from a summary or memory, including its
+probability convention (per reader or per source) before restating it; (2) test the
 claim against every counterexample, refutation, or obstruction recorded in
 research/CLAIM_INDEX.md for the same objects (rules, trees, reader families);
 (3) run the exhaustive checker for any rule, tree, or encoding change before
