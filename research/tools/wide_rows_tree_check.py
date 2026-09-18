@@ -13,7 +13,8 @@ reader and per skip mode, the fraction of rho' with height >= h for the threshol
 pattern cube meets the flat.  Usage: wide_rows_tree_check.py --L 3 --L2 1 --out FILE"""
 import argparse, itertools, json, math, sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from check_pair_space_encoding import first_long_path_compact, consistent
+import check_pair_space_encoding as cpe
+from check_pair_space_encoding import first_long_path_compact, first_long_path_wide, consistent
 
 def flats(n, L, L2):
     """Every affine subspace of dimension L2 of F_2^L, as a sorted tuple of labels."""
@@ -56,7 +57,9 @@ def main():
     ap.add_argument('--L', type=int, default=3); ap.add_argument('--L2', type=int, default=1)
     ap.add_argument('--pinned', type=int, default=3); ap.add_argument('--out', required=True)
     ap.add_argument('--max-flats', type=int, default=0)
+    ap.add_argument('--tree', choices=('compact', 'wide'), default='compact', help='compact: the complete-term tree, with and without the static skip; wide: the wide-round tree with a canonical minimum vertex cover (cycle 212); rows of L-1 literals are wide')
     a = ap.parse_args()
+    cpe.WIDE_W = a.L - 2
     n = 2 ** a.L; N = 2 ** a.L2; rows = list(range(n + 1)); A = rows[:a.pinned]; B = rows[a.pinned:]
     R = readers(n, a.L, A, B); q = n + 1 - (N + 1)
     Fs = flats(n, a.L, a.L2)
@@ -64,28 +67,34 @@ def main():
     p_cube = {y for y in range(n) if all(((y >> t) & 1) == 0 for t in range(a.L - 1))}
     results = {}
     for name, F in R.items():
-        for skip in (False, True):
+        for skip in ((False, True) if a.tree == 'compact' else (False,)):
             stats = {}
             for Q in Fs:
                 Qs = set(Q); O = [y for y in range(n) if y not in Qs]; meets = bool(p_cube & Qs)
                 key = f'meets={meets}'
-                st = stats.setdefault(key, {'count': 0, 'h1': 0, 'h2': 0, 'h3': 0, 'hN8': 0, 'sat': 0, 'maxh': 0, 'sumRB': 0})
+                st = stats.setdefault(key, {'count': 0, 'h1': 0, 'h2': 0, 'h3': 0, 'hN8': 0, 'sat': 0, 'maxh': 0, 'sumRB': 0, 'maxwide': 0, 'wide_gt_cover': 0, 'sumcover': 0})
                 for matched in itertools.combinations(rows, q):
                     Rp = [r for r in rows if r not in matched]
                     for labs in itertools.permutations(O, q):
                         mu = dict(zip(matched, labs))
                         st['count'] += 1; st['sumRB'] += sum(1 for r in Rp if r in B)
                         if satisfied(F, mu): st['sat'] += 1; continue
-                        F2 = static_skip(F, Rp, Qs) if skip else F
-                        res = first_long_path_compact(F2, mu, Rp, Q, 10 ** 6)
+                        if a.tree == 'wide':
+                            res = first_long_path_wide(F, mu, Rp, Q, 10 ** 6)
+                            st['maxwide'] = max(st['maxwide'], res['max_wide']); st['sumcover'] += res['cover']
+                            if res['max_wide'] > res['cover']: st['wide_gt_cover'] += 1
+                        else:
+                            F2 = static_skip(F, Rp, Qs) if skip else F
+                            res = first_long_path_compact(F2, mu, Rp, Q, 10 ** 6)
                         h = res['height']; st['maxh'] = max(st['maxh'], h)
                         for k in (1, 2, 3):
                             if h >= k: st[f'h{k}'] += 1
-            results[f'{name}|skip={skip}'] = stats
+            results[f'{name}|tree={a.tree}|skip={skip}'] = stats
             for key, st in stats.items():
                 c = st['count']
-                print(f"{name:13s} skip={skip!s:5s} {key:12s} rho'={c:7d} satisfied={st['sat']/c:.3f} h>=1:{st['h1']/c:.3f} h>=2:{st['h2']/c:.3f} h>=3:{st['h3']/c:.3f} max={st['maxh']} mean|R' n B|={st['sumRB']/c:.2f}")
-    rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'pinned': a.pinned, 'flats': len(Fs), 'results': results}
+                extra = f" maxwide={st['maxwide']} wide>cover:{st['wide_gt_cover']} meancover={st['sumcover']/c:.3f}" if a.tree == 'wide' else ''
+                print(f"{name:13s} tree={a.tree} skip={skip!s:5s} {key:12s} rho'={c:7d} satisfied={st['sat']/c:.3f} h>=1:{st['h1']/c:.3f} h>=2:{st['h2']/c:.3f} h>=3:{st['h3']/c:.3f} max={st['maxh']} mean|R' n B|={st['sumRB']/c:.2f}{extra}")
+    rec = {'L': a.L, 'L2': a.L2, 'n': n, 'N': N, 'pinned': a.pinned, 'flats': len(Fs), 'tree': a.tree, 'results': results}
     with open(a.out, 'a') as f: f.write(json.dumps(rec) + '\n')
 
 if __name__ == '__main__':
