@@ -12,7 +12,11 @@ status line: (1) re-read the exact statement and proof of each earlier result th
 argument uses, from the notebook, never from a summary or memory, including its
 probability convention (per reader or per source) before restating it; (2) test the
 claim against every counterexample, refutation, or obstruction recorded in
-research/CLAIM_INDEX.md for the same objects (rules, trees, reader families);
+research/CLAIM_INDEX.md for the same objects (rules, trees, reader families), and
+search the index under the technique's own name for every lemma formulated during the
+cycle (for example "case split", "telescoping", "weight"), because the opening search
+cannot cover a lemma that did not exist yet; a recorded case-split lemma was once
+restated as new and caught only by the reviewer;
 (3) run the exhaustive checker for any rule, tree, or encoding change before
 relying on it; (4) have a fresh-context reviewer, a subagent given only the draft
 and the dependency anchors, try to break the argument and name the hypotheses
