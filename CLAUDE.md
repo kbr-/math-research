@@ -41,3 +41,15 @@ Never put a tool's file name in a Bash command that also runs `pkill -f` or
 `pgrep -f`: the pattern matches the shell running the command and kills it
 (exit 144), so nothing after it runs. Kill or check in one command, restart in
 another.
+
+## Route check when opening a cycle
+
+Before adopting the notebook's proposed next step, name the item of "The remaining route"
+(its highest-risk list) that the cycle advances, and state in one sentence the estimated
+chance that completing the whole sub-line advances the main goal. If the previous three
+cycles worked on the same sub-obligation and produced special cases, corollaries, or tree
+and encoding refinements without moving the general implication, the cycle is a route
+review instead: state the general claim, decide what the goal needs from the sub-line, try
+to falsify the claim with the recorded obstructions, and propose the next step on the
+highest-risk item. Put the estimate in the cycle's process assessment; a low estimate is a
+reason to change direction, not a remark.
