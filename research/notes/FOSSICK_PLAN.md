@@ -17,7 +17,7 @@ research, formalization, parallel agents, installations, or publication.
 
 **Scope clarified by the user, 20 September 2026:** implement and test the protocol;
 do not execute the historical scan. Test selections must leave the real scan
-unchecked. The initial scan below is deferred until explicitly requested.
+unchecked. The initial scan was then explicitly authorized as a goal and is now complete.
 
 ## Reuse existing features
 
@@ -92,7 +92,7 @@ unchecked. The initial scan below is deferred until explicitly requested.
       the existing attention summary. Load detailed Fossick state only when assigned.
       Preserve bounded output and verify the ordinary resume still fits three calls
       at the current payload size.
-- [ ] **Deferred by explicit user instruction:** run the initial complete scan through its pinned historical endpoint in measured
+- [x] **Separately authorized scan completed 20 September 2026:** run the initial complete scan through its pinned historical endpoint in measured
       bounded cycles when separately authorized. Preserve screening dispositions,
       candidate handoffs and unresolved audits; a completed scan means screened,
       not all candidate audits finished. This is not part of the implementation assignment.
@@ -116,8 +116,10 @@ unchecked. The initial scan below is deferred until explicitly requested.
       audits. Protocol implementation is complete after its tests pass; the first
       historical scan remains separately unchecked until authorized and completed.
 
-Implementation: [tools/FOSSICK.md](../../tools/FOSSICK.md). The initial state has
-`ended_at: null`, no ledger entries and no active batch. Resume shows saved progress
-without executing a scan. A premature historical screening attempt during
-implementation was stopped and its progress reset on the user’s correction; it
-does not count toward the deferred initial scan.
+Implementation: [tools/FOSSICK.md](../../tools/FOSSICK.md). The separately authorized
+initial pass screened all 887 starting claims across 320 articles. Its ended-at
+marker, per-entry decisions and receipts are in FOSSICK_STATE.json. The
+[completion audit](../results/fossick_goal_20260920/completion-audit.json) verifies
+coverage and current fingerprints; candidate audits remain pending in the shared
+attention history. The earlier unrequested implementation-time attempt was reset
+and was not counted toward this authorized pass.

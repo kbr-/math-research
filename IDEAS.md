@@ -229,9 +229,9 @@ interest. It should persist where the last scan finished and resume from there n
 
 **Completed 20 September 2026**, in commit `408ad76`. The [Fossick protocol](tools/FOSSICK.md)
 is implemented and tested, with a durable `ended_at` marker and shared attention
-handoffs. The user explicitly deferred the first historical scan; its state remains
-unstarted. Executing that scan is a separate research assignment, not unfinished
-protocol implementation.
+handoffs. The separately authorized initial scan then completed all 887 starting
+claims across 320 articles; see the [completion audit](research/results/fossick_goal_20260920/completion-audit.json).
+Candidate reviews remain in the shared attention history.
 
 ### 2. Do not solve an open problem and walk away
 

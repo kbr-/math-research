@@ -8,10 +8,6 @@ workflow decisions, not theorem status or publication approval. See [the workflo
 
 ## Pending
 
-- **[audit:bit-PHP-preprint-revision-2](<https://kbr.is-a.dev/math-research/#entry-2026-09-19-preprint-revision-2>)** — Revision-2 attribution, exposition, parameter tables, and self-contained verification map/recipe
-  Significance: context; novelty: not_claimed.
-  Preprint revision is editorial and reuses existing mathematical and kernel evidence.
-  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
 - **[audit:matching-extension-arbitrary-row-count](<https://kbr.is-a.dev/math-research/#matching-extension-arbitrary-row-count>)** — Prescribed lower moments extend across every row set, yielding old PC=NS and stable filtration
   Significance: general_tool; novelty: not_claimed.
   Verified extension gives stable old PC=NS for arbitrary row counts; the earlier m>=B premise is unnecessary.
@@ -77,6 +73,10 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Significance: route_specific; novelty: not_claimed.
   The recorded unary switching proof requires the conditional dense-label satisfaction estimate; its probability premise needs repair. Deterministic tree representation and ordering corrections remain separate.
   Decision (agent): Fossick 20 September: aggregate proof explicitly imports the dense-label bound whose bijection probability premise is unsupported. Status now conditional pending a valid replacement estimate; deterministic tree and sparse/rank pieces remain separate. No refutation of the final inequality is claimed. See entry-2026-09-20-fossick-switching-qualifications.
+- **[thm:uniform-parity-degree-two](<https://kbr.is-a.dev/math-research/#parity-two-uniform>)** — Theorem U: for M independent uniform affine forms and d = N^2-1-M with C(d,2) >= dim Kbar + (log2 d)^2/6 + s and d >= 12N + 8 log2 N + 2s, with probability at least 1 - 2^(-d) - 7*2^(-s) the base with the parity constraints has no degree fall at levels one and two and no PC refutation of degree two; asymptotically M <= N^2 - sqrt2 N^(3/2) (1+o(1)), matching the forced count
+  Significance: route_specific; novelty: not_claimed.
+  Uniform parity theorem is asymptotic and degree two only, not a general HW theorem.
+  Decision (agent): Fossick final batch: possible independently useful degree-two robustness/relative-rank result for random affine constraints on functional PHP. Read Theorems T2 and U: sufficient no-fall condition, explicit probability bounds, and a forced fall-or-extra-relation count. This is not a sharp refutation threshold, a degree-three result, or the general HW claim. Assess novelty and broader utility before promotion; no new literature audit performed. See entry-2026-09-20-fossick-completion.
 - **[thm:universal-ENS-pseudosolution-rate-obstruction](<https://kbr-.github.io/math-research/#universal-ENS-pseudosolution-rate-obstruction>)** — No degree-D design distribution for an unsatisfiable Boolean quadratic system meets gamma>S*(1-1/p)^h at height h+ceil(log2 S), for S>=2 and D>=2h; F2 needs only D>=h+1
   Significance: independent_result; novelty: unknown.
   Standalone candidate method barrier for all unsatisfiable Boolean quadratic systems and finite design distributions in the stated degree regime. Bounded primary-literature audit found close rank-growth prior art but no exact ENS-rate statement; priority remains unknown. Does not settle the weaker diagonal question or imply any Frege bound.
@@ -85,6 +85,10 @@ workflow decisions, not theorem status or publication approval. See [the workflo
 
 ## Reviewed
 
+- **[audit:bit-PHP-preprint-revision-2](<https://kbr.is-a.dev/math-research/#entry-2026-09-19-preprint-revision-2>)** — Revision-2 attribution, exposition, parameter tables, and self-contained verification map/recipe
+  Significance: context; novelty: not_claimed.
+  Preprint revision is editorial and reuses existing mathematical and kernel evidence.
+  Decision (agent): Fossick: editorial revision and verification-map record, covered by the canonical publication theorem and exponential corollary attention items. Preserve it as provenance rather than a separate mathematical candidate; no user approval or external review is inferred.
 - **[thm:working-Res-parity-bit-PHP-size-lower-bound](<https://kbr.is-a.dev/math-research/#working-Res-parity-bit-PHP-size-lower-bound>)** — Bit PHP with n+1 pigeons and n=2^ell holes has no polynomial-size DAG-like Res(parity) refutation under either audited rule convention
   Significance: independent_result; novelty: candidate.
   Earlier formulation of the same unrestricted DAG-like usual-CNF bit-PHP theorem consolidated in thm:publication-Res-parity-bit-PHP; inherits that publication candidate assessment and is not counted as a separate result.
