@@ -488,3 +488,19 @@ Seven registration tests and a real finalizer test cover a notebook-only labelle
 claim that previously escaped the JSON-only check. Unlabelled mathematical novelty
 and false no-claim declarations still require editorial judgment; that limit is
 explicit, not claimed solved by text parsing.
+
+
+Compact-evidence batch `index_metadata_batch3_20260919`: 80 further claims from
+line-scoped simulation through private modified-forest controls have reviewed
+status, topics and significance. Totals: 142 reviewed / 724 unreviewed for those
+three fields; 866 reviewed formalization dispositions; relationships 17 reviewed,
+125 pending, 724 unreviewed. No canonical graph edge was inferred during this
+classification pass. Explicit conditional interfaces, finite fixtures, support
+corrections and rediscovery qualifiers are retained. Packets and the exact manual
+classification decisions are saved in the cycle evidence. Dependency ownership
+and correction/refinement mapping remain pending rather than being called complete.
+
+Clarification of registration enforcement: absence of both an inventory and an
+explicit no-claim disposition already fails. A nonempty but semantically incomplete
+inventory remains possible; the registry guide now states that exhaustiveness
+still requires editorial review, alongside the unlabelled-mathematics limitation.

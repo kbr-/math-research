@@ -196,7 +196,9 @@ declared. An entry introducing no indexed claim uses `data-claims="none"` and a
 specific `data-claim-note` (for example, "Framework tooling; no new mathematics").
 Known claim labels cited in code/backticks may reference existing or historical
 claims; unknown explicit labels are rejected. Arbitrary unlabelled mathematics and
-the truth of a no-claim assertion remain editorial responsibilities. Entries at
+the truth of a no-claim assertion remain editorial responsibilities. A nonempty
+inventory also needs an exhaustiveness review: listing one claim does not prove
+that no other unlabelled result was omitted. Entries at
 `552e562f5253700258438272da90a9f4a31d00f6` predate this rule and are grandfathered;
 there is no rewrite of the append-only record. The same gate runs in finalization
 and CI through the changed command.
