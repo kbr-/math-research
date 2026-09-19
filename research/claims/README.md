@@ -183,6 +183,24 @@ stopping its clock; CI checks the push/PR base, covering all commits being integ
   is complete or that the mathematical judgments are correct. It checks recorded
   scope, freshness and accountability, not the truth of proofs.
 
+New Research-record articles also declare their sourced claim inventory:
+
+```html
+<article id="entry-..." data-kind="research" data-route="general-step"
+         data-claims="lem:example thm:example">
+```
+
+Each declared ID must exist and have a registry source link to that article or
+one of its anchors. Conversely, every claim sourced in the new entry must be
+declared. An entry introducing no indexed claim uses `data-claims="none"` and a
+specific `data-claim-note` (for example, "Framework tooling; no new mathematics").
+Known claim labels cited in code/backticks may reference existing or historical
+claims; unknown explicit labels are rejected. Arbitrary unlabelled mathematics and
+the truth of a no-claim assertion remain editorial responsibilities. Entries at
+`552e562f5253700258438272da90a9f4a31d00f6` predate this rule and are grandfathered;
+there is no rewrite of the append-only record. The same gate runs in finalization
+and CI through the changed command.
+
 Untouched backlog does not block the current cycle, but stays in coverage and in
 the migration acceptance requirements. Use exact source evidence for new reviews;
 update original metadata through the JSON registry and regenerate human views.

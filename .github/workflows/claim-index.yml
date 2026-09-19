@@ -11,6 +11,8 @@ on:
       - tools/claim_reviews.py
       - tools/claim_graph.py
       - tools/claim_maintenance.py
+      - tools/claim_registration.py
+      - tools/tests/test_claim_registration.py
       - tools/tests/test_claim_maintenance.py
       - tools/finish-turn.py
       - tools/tests/test_claim_graph.py
@@ -49,6 +51,7 @@ jobs:
       - run: python3 tools/claim-index.py graph audit
       - run: python3 -m unittest discover -s tools/tests -p test_merge_formalization_appends.py
       - run: python3 -m unittest discover -s tools/tests -p test_claim_maintenance.py
+      - run: python3 -m unittest discover -s tools/tests -p test_claim_registration.py
       - name: Check changed-claim maintenance contract
         env:
           CLAIM_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}

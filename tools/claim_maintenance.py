@@ -4,6 +4,10 @@ from collections import defaultdict
 from pathlib import Path
 from claim_registry import ROOT, parse_json, TEXT_FIELDS, local_target
 from claim_reviews import FIELDS, coverage
+from claim_registration import check_entries, Entries
+
+# Preserve append-only historical entries predating the inventory requirement.
+ENTRY_INVENTORY_BASE = "552e562f5253700258438272da90a9f4a31d00f6"
 
 
 def baseline(revision='HEAD', root=ROOT):
@@ -87,4 +91,15 @@ def check_revision(after, revision='HEAD', root=ROOT):
     changed=subprocess.check_output(command,cwd=root,text=True).splitlines()
     result=maintenance(before,after,root,changed)
     result['base_revision']=commit
+    notebook=root/'notebook.html'
+    if notebook.exists():
+        def notebook_at(ref):
+            if ref=='EMPTY':return ''
+            shown=subprocess.run(['git','show',ref+':notebook.html'],cwd=root,text=True,capture_output=True)
+            return shown.stdout if shown.returncode==0 else ''
+        grandfathered={e['id'] for e in Entries(notebook_at(ENTRY_INVENTORY_BASE)).entries}
+        registration=check_entries(notebook_at(commit),notebook.read_text(),after,root,grandfathered)
+        result['registration']=registration
+        result['errors'].extend(registration['errors'])
+        result['passed']=not result['errors']
     return result

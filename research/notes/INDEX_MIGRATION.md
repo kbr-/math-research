@@ -322,7 +322,7 @@ active; the unchecked items below still need implementation or acceptance eviden
 - [ ] Regenerate human/topic views and machine-readable exports at checkpoints;
       keep pending index metadata reviews visible after compaction, branch integration
       or migration. Graph rendering and notifications are owned by their separate plans.
-- [ ] Close the omitted-registration gap: compare newly appended research records
+- [x] Close the omitted-registration gap: compare newly appended research records
       with declared/indexed claim IDs, flag explicit new claim labels without registry
       records, and require an explicit disposition for entries introducing no claims.
       Test that a notebook-only new labelled claim cannot pass finalization or CI.
@@ -477,3 +477,14 @@ expressions. Known markup stripping now protects TeX spans; regression tests cov
 ordinary and tag-like variable inequalities. The original/intermediate packet
 outputs are retained, with `packets-reviewed.json` the final evidence. Nine
 packet/discovery tests, changed-scope validation and 3,870 source-target checks pass.
+
+
+Registration gate `index_registration_gate_20260919`: new notebook articles declare
+`data-claims` or a reasoned no-claim disposition. The changed-command gate checks
+explicit code/backtick labels against current/historical IDs and checks declared
+claims bidirectionally against source links in the entry. Finalization and CI use
+that same gate. Entries through immutable 552e562 are grandfathered without edits.
+Seven registration tests and a real finalizer test cover a notebook-only labelled
+claim that previously escaped the JSON-only check. Unlabelled mathematical novelty
+and false no-claim declarations still require editorial judgment; that limit is
+explicit, not claimed solved by text parsing.

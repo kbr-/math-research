@@ -217,7 +217,10 @@ actionable rule over another checklist or a record of one-off setup history.
   to pass a check. Record applicable dependencies, refinements, corrections and
   obstructions, and refresh affected existing claims. Preserve stable IDs and dated
   mathematical records. `tools/claim-index.py changed --base REV` checks the changed
-  scope; finalization uses HEAD, and CI uses the integration base. Unchanged historical
+  scope; finalization uses HEAD, and CI uses the integration base. New record
+  articles declare `data-claims="ID ..."` matching the claims sourced there, or
+  `data-claims="none"` with a specific `data-claim-note`. Explicit unregistered
+  labels and inventory/source-link mismatches block the checkpoint. Unchanged historical
   backlog remains separately visible in coverage. Follow the
   [editing contract](research/claims/README.md#changed-claim-maintenance-contract)
   for metadata-only curation, correction scope and evidence handling.

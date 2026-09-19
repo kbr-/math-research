@@ -17,7 +17,7 @@ class FinalizationTest(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
         (self.root / 'tools').mkdir()
-        for name in ('compute.sh', 'tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py'):
+        for name in ('compute.sh', 'tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_registration.py'):
             shutil.copy2(ROOT / name, self.root / name)
         (self.root / 'research/claims').mkdir(parents=True)
         for schema in ('schema.json', 'schema-v1.json'):
@@ -76,12 +76,23 @@ class FinalizationTest(unittest.TestCase):
         complete_path.write_text(json.dumps(data))
         (self.root/'research/CLAIM_INDEX.md').write_text(cr.render(data))
         notebook=self.root/'notebook.html'
-        notebook.write_text('<section id="research-record"><article>'
+        notebook.write_text('<section id="research-record"><article id="new-entry">'
             '<p class="entry-meta">Status: test.</p><!-- TIMING test_turn --></article></section>')
         result=self.command('tools/finish-turn.py','test_turn',check=False)
         self.assertNotEqual(result.returncode,0)
         self.assertIn('Changed-claim metadata incomplete',result.stderr)
         self.assertFalse(any(e['event']=='stop' for e in self.events('test_turn')))
+        complete_path.write_text(json.dumps(empty))
+        (self.root/'research/CLAIM_INDEX.md').write_text(cr.render(empty))
+        notebook.write_text('<section id="research-record"><article id="new-entry" '
+            'data-claims="none" data-claim-note="Framework-only">'
+            '<p class="entry-meta">Status: test.</p><code>lem:forgotten</code>'
+            '<!-- TIMING test_turn --></article></section>')
+        result=self.command('tools/finish-turn.py','test_turn',check=False)
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn('explicit claim label is unregistered',result.stderr)
+        self.assertFalse(any(e['event']=='stop' for e in self.events('test_turn')))
+
 
     def test_misplaced_marker_does_not_stop_session(self):
         notebook = self.root / 'notebook.html'
