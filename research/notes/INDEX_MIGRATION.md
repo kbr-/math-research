@@ -261,6 +261,18 @@ tasks unchecked and briefly note what remains.
 
 ## 12. Context restoration, retrieval and interruption recovery
 
+- [ ] Extend the existing claim tool with an explicit all-claims listing mode and
+      selectable output fields, for example `list --fields id,summary --format tsv`.
+      Emit one claim per line with untruncated values and no JSON syntax, field
+      names, headers, scores, metadata, or footers in this minimal mode. Preserve
+      registry order; do not silently apply search limits to an all-claims listing.
+- [ ] Support the same field projection/plain-text format for filtered retrieval
+      where useful, with explicit limits only when requested. Define delimiter and
+      escaping behavior, retain a lossless machine-readable option, and send any
+      diagnostics or requested omission notices to stderr rather than data stdout.
+- [ ] Document minimal listing in the registry guide and agent retrieval guidance;
+      test that every claim appears exactly once, summaries are not truncated,
+      selected fields stay in the requested order, and no display fluff is emitted.
 - [ ] Measure actual mandatory restoration output and representative claim lookups;
       distinguish byte/word counts, token estimates and measured token accounting.
 - [ ] Extend the existing notebook excerpt tool with compact TOC output, default
