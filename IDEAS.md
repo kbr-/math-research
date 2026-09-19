@@ -8,61 +8,6 @@ workspace rules or authorization to launch parallel research or formalization.
 Implementation checklists: [one plan per idea](research/notes/INDEX_MIGRATION.md#separate-plans-by-idea).
 The index plan covers item 5 and index curation only.
 
-## 1. Fossick protocol: scan the research record for nuggets
-
-**The problem.** The agent solved a twelve-year-old open problem (unrestricted Res(⊕) lower
-bounds) and recorded it as casually as any other cycle: "here is a theorem, moving on". The
-result was noticed only because the user happened to read that entry and asked for a
-publication assessment. That was luck, not process.
-
-**The idea.** A prompt, "Fossick", that scans the Research record for results of independent
-interest. It should persist where the last scan finished and resume from there next time.
-
-**Assistant's comments.**
-
-- Why it was missed: the agent judges every result against the main goal (AC0[p]-Frege), so a
-  theorem that does not advance that route reads as a tool or a side remark. Significance to the
-  field is a different question, and nobody was asked it. The fix is to ask that question
-  explicitly, at two moments: once per cycle (cheap, see idea 2) and periodically over the whole
-  record (the fossick scan, which also catches what the per-cycle check missed).
-- Implementation sketch:
-  - `tools/fossick.py --next` prints the next unscanned entries (title, status line, claim labels,
-    anchor) after a stored cursor, in bounded batches, without dumping the full entries. The
-    cursor is the anchor of the last scanned entry, stored in a small tracked file
-    (`research/notes/FOSSICK_STATE.md`) so the scan survives sessions and machines.
-  - The prompt: for each entry, decide whether it contains (a) an unconditional theorem about a
-    standard proof system, formula or object named in the literature, (b) a refutation of a
-    published claim or conjecture, (c) a reusable general tool. For (a) and (b) do a targeted
-    literature check and write a one-paragraph assessment. Append findings to a tracked
-    `research/NUGGETS.md` (label, one-line claim, why it matters, literature status, suggested
-    action), advance the cursor, commit.
-  - Judge against the literature, not against the route. A results-first reading: "if a stranger
-    posted exactly this theorem, would the field care?"
-  - Keep the scan cheap: read status lines and claim-index rows first, open the full entry only
-    for candidates. Working proofs and finite checks are the candidates; obstructions and failed
-    attempts rarely are, though a clean obstruction can be a publishable negative result.
-- A cheaper variant that needs no new tool: give the claim index a `significance` column
-  (`route-only`, `tool`, `independent`, `open-problem?`) filled in at write time and reviewed
-  during the fossick scan. The scan then reads one file.
-
-**Codex comments (19 September 2026).**
-
-- Strong priority. Separate discovery of a candidate from a novelty audit and publication
-  readiness. A striking theorem or an agent's claim that it settles an open problem warrants
-  attention; it does not establish novelty or correctness by itself.
-- A cursor should mean "screened through here", not "everything here has been resolved".
-  Preserve pending candidates separately, and link later corrections to previously screened
-  claims. Otherwise an incremental scan silently misses changes to its earlier conclusions.
-- Use one candidate register for Fossick findings and per-turn flags, with attention/review
-  states. Separate `NUGGETS.md` and `FLAGS.md` would duplicate the same objects. Do not
-  systematically discount negative results or failed attempts: the useful item may be the
-  counterexample or obstruction they exposed.
-
-**Implementation update (20 September 2026).** The [Fossick protocol](tools/FOSSICK.md)
-is implemented and tested, with a durable `ended_at` marker and shared attention
-handoffs. The user explicitly deferred the first historical scan; its state remains
-unstarted. This item stays pending until that separately requested scan is done.
-
 ## 3. Parallel agents on separate worktrees pursuing alternative next steps
 
 **The idea.** Spend more tokens per unit of time: several agents in separate worktrees each take
@@ -222,17 +167,71 @@ into the notebook.
 
 ## Remaining implementation priorities
 
-1. Implement the incremental Fossick scan using the existing significance metadata
-   and shared attention history (item 1).
-2. Add bounded parallel exploration and targeted asynchronous formalization when
+1. Add bounded parallel exploration and targeted asynchronous formalization when
    assigned (items 3 and 4).
-3. Build graph navigation on the reviewed claim data (item 8).
-4. Evaluate recovery evidence before deciding whether to trial interruption notes
+2. Build graph navigation on the reviewed claim data (item 8).
+3. Evaluate recovery evidence before deciding whether to trial interruption notes
    (remaining part of item 6).
 
 These priorities are proposals, not authorization to launch the work.
 
 ## Completed
+
+### 1. Fossick protocol: scan the research record for nuggets
+
+**The problem.** The agent solved a twelve-year-old open problem (unrestricted Res(⊕) lower
+bounds) and recorded it as casually as any other cycle: "here is a theorem, moving on". The
+result was noticed only because the user happened to read that entry and asked for a
+publication assessment. That was luck, not process.
+
+**The idea.** A prompt, "Fossick", that scans the Research record for results of independent
+interest. It should persist where the last scan finished and resume from there next time.
+
+**Assistant's comments.**
+
+- Why it was missed: the agent judges every result against the main goal (AC0[p]-Frege), so a
+  theorem that does not advance that route reads as a tool or a side remark. Significance to the
+  field is a different question, and nobody was asked it. The fix is to ask that question
+  explicitly, at two moments: once per cycle (cheap, see idea 2) and periodically over the whole
+  record (the fossick scan, which also catches what the per-cycle check missed).
+- Implementation sketch:
+  - `tools/fossick.py --next` prints the next unscanned entries (title, status line, claim labels,
+    anchor) after a stored cursor, in bounded batches, without dumping the full entries. The
+    cursor is the anchor of the last scanned entry, stored in a small tracked file
+    (`research/notes/FOSSICK_STATE.md`) so the scan survives sessions and machines.
+  - The prompt: for each entry, decide whether it contains (a) an unconditional theorem about a
+    standard proof system, formula or object named in the literature, (b) a refutation of a
+    published claim or conjecture, (c) a reusable general tool. For (a) and (b) do a targeted
+    literature check and write a one-paragraph assessment. Append findings to a tracked
+    `research/NUGGETS.md` (label, one-line claim, why it matters, literature status, suggested
+    action), advance the cursor, commit.
+  - Judge against the literature, not against the route. A results-first reading: "if a stranger
+    posted exactly this theorem, would the field care?"
+  - Keep the scan cheap: read status lines and claim-index rows first, open the full entry only
+    for candidates. Working proofs and finite checks are the candidates; obstructions and failed
+    attempts rarely are, though a clean obstruction can be a publishable negative result.
+- A cheaper variant that needs no new tool: give the claim index a `significance` column
+  (`route-only`, `tool`, `independent`, `open-problem?`) filled in at write time and reviewed
+  during the fossick scan. The scan then reads one file.
+
+**Codex comments (19 September 2026).**
+
+- Strong priority. Separate discovery of a candidate from a novelty audit and publication
+  readiness. A striking theorem or an agent's claim that it settles an open problem warrants
+  attention; it does not establish novelty or correctness by itself.
+- A cursor should mean "screened through here", not "everything here has been resolved".
+  Preserve pending candidates separately, and link later corrections to previously screened
+  claims. Otherwise an incremental scan silently misses changes to its earlier conclusions.
+- Use one candidate register for Fossick findings and per-turn flags, with attention/review
+  states. Separate `NUGGETS.md` and `FLAGS.md` would duplicate the same objects. Do not
+  systematically discount negative results or failed attempts: the useful item may be the
+  counterexample or obstruction they exposed.
+
+**Completed 20 September 2026**, in commit `408ad76`. The [Fossick protocol](tools/FOSSICK.md)
+is implemented and tested, with a durable `ended_at` marker and shared attention
+handoffs. The user explicitly deferred the first historical scan; its state remains
+unstarted. Executing that scan is a separate research assignment, not unfinished
+protocol implementation.
 
 ### 2. Do not solve an open problem and walk away
 
