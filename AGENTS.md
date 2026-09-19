@@ -181,8 +181,12 @@ rules to growing checklists or one-off setup narratives.
 - Publish only under explicit user authorization, including a still-active scoped/
   time-limited grant. Research/edit/commit requests alone do not authorize it.
   Restore the actual grant after compaction, honor expiry/later overrides and do
-  not ask again within authorized scope. The September 17 Spin grant expired
-  September 18 at 23:10 UTC; its full text is preserved in Git, not standing permission.
+  not ask again within authorized scope. Current grant (20 September 2026):
+  "You are authorized to git push origin main after each reviewed research or
+  framework checkpoint for the full duration of this Spin run, including after
+  compaction or session restart." It ends when the user stops Spin or revokes
+  permission; restore it with the active assignment. Earlier expired grants are
+  preserved in Git, not standing permission.
 - Respect the user's branch; do not switch/merge into main just to publish. Pin
   integration targets to immutable commits after fetching/receiving workers, rebase
   and validate against those IDs. Immediately before fast-forwarding check the
