@@ -17,7 +17,7 @@ tasks unchecked and briefly note what remains.
 
 - Sections 1–5 record the completed **structural migration**. They do not certify
   that formalization, significance, topics, or relationships have been populated.
-- Sections 6–16 are pending implementation. Nothing formerly called deferred work
+- Sections 6–17 are pending implementation. Nothing formerly called deferred work
   is silently outside this plan. Alternative proposals have explicit decision tasks.
 - Account for every claim and entry, not just a convenient sample. Use resumable
   coverage records so batches survive compaction and newly added claims are picked up.
@@ -43,6 +43,7 @@ tasks unchecked and briefly note what remains.
 | IDEAS 7: context costs, compact views, rule consolidation | 8, 12 |
 | IDEAS 8: typed claim graph and public visualization | 9, 15 |
 | Conversation: complete population, not just empty schema fields | 6–10, 16 |
+| Conversation: every subsequent research cycle maintains complete metadata | 17 |
 | Conversation: preserve contents and fix broken Markdown table | 2–4, completed |
 
 ## 1. Inventory and schema
@@ -369,6 +370,51 @@ tasks unchecked and briefly note what remains.
       each proposal as implemented, explicitly superseded/rejected with a reason,
       or still open. Leave open work visible; do not declare the overall plan complete
       while known metadata or workflow gaps remain.
+
+## 17. Enforce metadata maintenance in every subsequent research cycle
+
+This is an ongoing requirement, not only a one-time enrichment pass. Update the
+workflow during implementation of this phase; this plan update alone does not
+change the active prompts or instructions.
+
+- [ ] Define the per-claim completion contract for all new or substantively revised
+      claims: precise mathematical status, topics, formalization disposition and
+      scope, significance assessment, source references, applicable relationships,
+      and field-level review provenance. Require explicit justified dispositions
+      for genuinely unknown or inapplicable information, not unchecked placeholders.
+- [ ] Require the research cycle to identify and record dependencies, refinements,
+      corrections, rediscoveries, tests and obstructions introduced by its work.
+      Distinguish a reviewed absence of relationships from missing review; do not
+      invent edges or significance merely to satisfy a completeness check.
+- [ ] Make each cycle update affected existing claims and relationships as well
+      as new ones, including formalization-scope changes, correction impact and
+      significance/candidate state. Preserve historical records and stable IDs.
+- [ ] Update root AGENTS.md as the authoritative ongoing rule, and align scoped
+      research/formalization instructions and Codex/Claude entry points by linking
+      to that rule rather than duplicating it.
+- [ ] Update `research/notes/RESUME.md` to restore the populated index, taxonomy,
+      relationship semantics, pending reviews and the maintenance contract through
+      bounded tools. Restoration must not silently revert to Markdown-only editing
+      or import the entire index into context.
+- [ ] Update `PROMPTS.md`: Spin, ordinary research guidance, Formalize,
+      Spin-formalize, parallel variants and future Fossick/Explore/Adversary prompts
+      must apply the same maintenance contract within their assigned scope.
+- [ ] Update the registry guide, authoring tools and templates so a new claim is
+      created with the required metadata and relationship review, rather than
+      inheriting the initial migration's all-null defaults.
+- [ ] Add changed-claim/relationship completeness checks to cycle finalization
+      and CI, with useful diagnostics. Track historical backlog separately so the
+      checks neither excuse incomplete new work nor repeatedly demand a full audit
+      of the whole registry on every turn.
+- [ ] Regenerate human, topic and graph views consistently at checkpoints; ensure
+      pending significance flags and formalization debt remain visible to the next
+      agent after compaction, branch integration or migration to another machine.
+- [ ] Test a fresh cycle, a correction, a formalization update and parallel branch
+      integration end to end. Verify that incomplete new metadata is caught and
+      that justified unknown/not-applicable states are represented honestly.
+- [ ] Include this ongoing-maintenance phase in the overall acceptance review;
+      a fully backfilled index is insufficient if subsequent cycles leave its new
+      fields empty again.
 
 ## Implementation notes
 
