@@ -129,10 +129,16 @@ From the repository root:
 ```
 
 `start` records the producing agent (detected, or `--agent NAME`) and its model.
-`start` refuses to run without `--model "MODEL, reasoning setting"` or
-`MATH_AGENT_MODEL`. State the model named by your own system context or
-configuration, never a guess; write `unknown` if you cannot determine it. `finish-turn.py --next` carries both forward, and
-`report` prints them. Machine-local session IDs are never recorded.
+For Codex, `start` reads the current `CODEX_THREAD_ID`'s latest `turn_context`
+under `CODEX_HOME/sessions` (default `~/.codex/sessions`) and records its `model`
+and `effort`. These active-turn settings take precedence over supplied labels;
+configuration defaults are not evidence of the active setting. Only the model
+and reasoning setting enter the timing record, never the thread ID or transcript.
+If that metadata is unavailable, supply `--model "MODEL, reasoning setting"` or
+`MATH_AGENT_MODEL`; use `unknown` only for information you cannot establish.
+Other agents, including Claude Code, retain their explicit-model/environment
+behavior. `finish-turn.py --next` carries settings forward, with Codex metadata
+refreshed at the next start, and `report` prints them.
 
 Alternatively, use `./compute.sh --session turn001 --threads 1 python3 calculation.py`.
 Without a session argument, execution gets an automatically named timing session.

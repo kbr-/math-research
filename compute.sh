@@ -79,6 +79,43 @@ def detect_agent():
     return 'unknown'
 
 
+def codex_session_model():
+    """Read only the active thread's latest turn settings; never persist its ID."""
+    try:
+        thread = str(uuid.UUID(os.environ.get('CODEX_THREAD_ID', '')))
+        home = Path(os.environ.get('CODEX_HOME') or Path.home() / '.codex')
+        paths = list((home / 'sessions').rglob(f'*-{thread}.jsonl'))
+        if len(paths) != 1:
+            return None
+        latest = {}
+        with paths[0].open() as stream:
+            for line in stream:
+                try:
+                    event = json.loads(line)
+                except json.JSONDecodeError:
+                    continue  # The active log may end in a partially written line.
+                if isinstance(event, dict) and event.get('type') == 'turn_context':
+                    latest = event.get('payload') or {}
+        if not isinstance(latest, dict):
+            return None
+        model, effort = latest.get('model'), latest.get('effort')
+        if isinstance(model, str) and model and isinstance(effort, str) and effort:
+            return f'{model}, {effort} reasoning'
+    except (OSError, ValueError):
+        pass
+    return None
+
+
+def session_model(agent=None, model=None):
+    # Runtime turn metadata outranks a stale or guessed Codex label. Other
+    # agents retain their existing explicit-model/environment precedence.
+    if (agent or detect_agent()) == 'Codex':
+        recorded = codex_session_model()
+        if recorded:
+            return recorded
+    return model or os.environ.get('MATH_AGENT_MODEL')
+
+
 def start_session(name, agent=None, model=None):
     # Record who produced the cycle; never a machine-local session ID.
     path = session_path(name)
@@ -86,7 +123,7 @@ def start_session(name, agent=None, model=None):
         if path.exists():
             raise ValueError('Session exists; choose a new name')
         add_event(path, 'start', boot_id=boot_id(), agent=agent or detect_agent(),
-                  model=model or os.environ.get('MATH_AGENT_MODEL') or 'unspecified')
+                  model=session_model(agent, model) or 'unspecified')
     return path
 
 
@@ -355,7 +392,7 @@ def main():
         parser.add_argument('session')
         if action == 'start':
             parser.add_argument('--agent', help='Default: detected from the environment or MATH_AGENT')
-            parser.add_argument('--model', help='Model and reasoning setting; default: MATH_AGENT_MODEL')
+            parser.add_argument('--model', help='Model and reasoning setting; Codex uses active turn metadata when available, otherwise this value or MATH_AGENT_MODEL')
         if action == 'phase':
             parser.add_argument('category', choices=PHASES)
             parser.add_argument('--note', default='')
@@ -372,7 +409,7 @@ def main():
             command, raw = raw[index+1:], raw[:index]
         args = parser.parse_args(raw)
         if action == 'start':
-            if not (args.model or os.environ.get('MATH_AGENT_MODEL')):
+            if not session_model(args.agent, args.model):
                 parser.error('State your model: --model "MODEL, reasoning setting" (or set MATH_AGENT_MODEL)')
             print(start_session(args.session, args.agent, args.model).relative_to(ROOT))
             return 0
