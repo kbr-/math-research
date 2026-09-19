@@ -21,6 +21,10 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Quantitative publication headline strengthening the earlier superpolynomial conclusion via the same finite exclusion and clause-transfer mechanism, not independent confirmation of that mechanism.
   Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
   Next: External review of the common proof and quantitative publication statement remains outstanding.
+- **[third-party:BLVZ-chessboard-filling](<https://kbr.is-a.dev/math-research/#lean-chessboard-filling>)** — For s≥2 and N≥2s-1, every F₂ reduced (s-2)-cycle of the chessboard complex has a filling
+  Significance: general_tool; novelty: known.
+  Reusable scoped interface; preserve the stated field, degree and source restrictions. BLVZ Theorem 1.1 consequence; full original F₂ statement and all formal proof dependencies verified, including s=2 augmentation
+  Decision (agent): Fossick 20 September: potential reusable formalization artifact, not a new BLVZ theorem. The recorded binary augmented filling proof includes its finite homological-cover and chain-map dependencies. Evaluate packaging or upstream/library reuse with exact F2 scope and attribution; no claim of first formalization, new theorem, fresh kernel replay or publication readiness. See entry-2026-09-20-fossick-formalization-artifacts.
 - **[thm:PHP-reduced-product-Booleanity-gap](<https://kbr-.github.io/math-research/#PHP-reduced-Booleanity-theorem>)** — A single matching-monomial ENS block over full weak PHP has exact NS Booleanity degree e+h and PC degree max(e,2(h+t)) when n-t>=2(e+h)-3
   Significance: general_tool; novelty: unknown.
   Residual-design argument preserves the exact ENS Booleanity-degree example over sufficiently large full weak PHP. It is a scoped strengthening of the preceding accounting tool, not a new general PC/NS separation.
