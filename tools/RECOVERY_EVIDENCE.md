@@ -80,6 +80,8 @@ IDs, per-read fingerprints/counts and job IDs linking to timing records. They om
 source content and local routing identities. Inspect the evidence after several
 resumptions before proposing any interruption-note requirement or claiming savings.
 The full record, index and existing task plans remain the recovery sources.
+Planned command groupings are benchmark controls, not observed agent behavior;
+use actual resume traces before claiming typical call-count or recovery savings.
 
 Collection is best-effort: short SQLite lock timeouts cannot stall research.
 Failures are recorded by exception type in an ignored error journal and exposed
