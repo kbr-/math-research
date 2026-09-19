@@ -54,9 +54,11 @@ def maintenance(before, after, root=ROOT, changed_paths=()):
             if not edge['evidence'] or not edge.get('review'):
                 errors.append(f'{key}: changed relationship needs evidence and an explicit review note')
             if edge['type'] in ('corrects','supersedes') and edge['target']['namespace']=='current':
-                label=edge['target']['id'];need(label,['mathematical_status'],'correction/supersession requires status review')
+                label=edge['target']['id'];need(label,['mathematical_status', 'significance'],'correction/supersession requires status and significance review')
                 if label in old and old[label].get('reviews',{}).get('mathematical_status')==new[label].get('reviews',{}).get('mathematical_status'):
                     errors.append(f'{label}: explicitly refresh status review for {key}; no automatic retraction inferred')
+                if label in old and old[label].get('reviews',{}).get('significance')==new[label].get('reviews',{}).get('significance'):
+                    errors.append(f'{label}: explicitly refresh significance review for {key}')
     report=coverage(after,root)
     rows={(r['id'],r['field']):r for r in report['fields']}
     # Changed cited sources matter even if someone forgot to edit the index.
@@ -77,6 +79,10 @@ def maintenance(before, after, root=ROOT, changed_paths=()):
                 errors.append(f'{label}: {field} needs a reasoned evidence-backed disposition')
             elif row['state']=='pending' and not review['next_action']:
                 errors.append(f'{label}: pending {field} needs a specific next action')
+            if field=='significance' and row['state']=='reviewed':
+                significance=new[label].get('significance') or {}
+                if significance.get('category', 'unassessed')=='unassessed':
+                    errors.append(f'{label}: classify significance or record a pending question with next action')
     return {'passed':not errors,'errors':errors,
             'required_reviews':[{'id':label,'fields':sorted(fields),'reasons':sorted(set(reasons[label]))}
                                 for label,fields in sorted(required.items())],

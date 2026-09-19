@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from claim_registry import load as load_claims, render as render_claims
 from claim_maintenance import check_revision
 from notebook_context import check as check_context
+from claim_attention import sync as sync_attention, brief as attention_brief
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -134,6 +135,16 @@ def finish(root, turn, next_turn=None):
             raise ValueError('Changed-claim metadata incomplete:\n' + '\n'.join(contract['errors']))
     if next_turn and (root / 'research/logs' / f'{next_turn}.jsonl').exists():
         raise ValueError('Next session already exists; omit --next when retrying finalization')
+
+    if (root / 'research/claims/index.json').exists():
+        # The existing maintenance gate already requires reasoned significance
+        # dispositions. Reuse that work; no second essay or automatic web audit.
+        assessed = [r for r in contract['required_reviews'] if 'significance' in r['fields']]
+        history, added = sync_attention(root, claims)
+        print(f'Significance check: {len(assessed)} changed claim dispositions; '
+              f'{len(added)} new/reopened attention items.')
+        print(attention_brief(claims, history), end='')
+        print('Stage attention history/view if changed: research/claims/attention.json research/ATTENTION.md')
 
     compute = str(root / 'compute.sh')
     fragment = root / 'research/results' / turn / 'timing.html'

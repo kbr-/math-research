@@ -94,6 +94,12 @@ def bundle(root, formalization=False, tail=10):
     toc,omitted=book.toc(tail=tail)
     parts.append((f'Research-record contents — latest {tail}; {omitted} earlier entries omitted',toc,
                   'notebook-excerpt',{'anchor':None,'until':None,'current':False,'toc':True,'tail':tail,'since':'None'}))
+    if (root/'research/claims/index.json').exists():
+        from claim_registry import load as load_claims
+        from claim_attention import load, reconcile, brief
+        data=load_claims(root/'research/claims/index.json')
+        history,_=reconcile(data,load(root))
+        parts.append(('Significance attention',brief(data,history),'claim-attention','pending'))
     return parts
 
 

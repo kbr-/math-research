@@ -117,7 +117,8 @@ rules to growing checklists or one-off setup narratives.
   `tools/claim-index.py render`. Preserve labels, exact scope and full-record links.
 - **Index maintenance:** each new or substantively revised claim needs current
   evidence-backed mathematical status, topics, formalization scope/disposition,
-  significance and relationship review. Unknowns need a specific pending question
+  significance and relationship review. Use the [cheap significance/attention workflow](research/claims/README.md#significance-check-and-attention)
+  at each checkpoint; surface new/reopened candidates to the user. Unknowns need a specific pending question
   and next action; do not invent metadata to pass. Record applicable dependencies,
   refinements, corrections and obstructions; refresh affected existing claims.
   `claim-index.py changed --base REV` checks changed scope (HEAD at finalization,

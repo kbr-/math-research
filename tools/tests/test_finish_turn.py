@@ -20,6 +20,7 @@ class FinalizationTest(unittest.TestCase):
         (self.root / 'tools').mkdir()
         shutil.copy2(ROOT / 'tools/notebook_context.py', self.root / 'tools/notebook_context.py')
         shutil.copy2(ROOT / 'tools/recovery_evidence.py', self.root / 'tools/recovery_evidence.py')
+        shutil.copy2(ROOT / 'tools/claim_attention.py', self.root / 'tools/claim_attention.py')
         for name in ('tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_notices.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_evidence.py', 'tools/notebook-excerpt.py', 'tools/claim_registration.py'):
             shutil.copy2(ROOT / name, self.root / name)
         # Exercise real metadata, report generation and archival without requiring

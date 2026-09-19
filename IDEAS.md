@@ -91,6 +91,12 @@ instead of moving on.
   "Unknown novelty" is an honest useful outcome. Keep a compact visible link to the candidate
   register in the overview instead of letting a second result catalogue accumulate there.
 
+**Implementation update (19 September 2026).** The cheap check now reuses claim
+metadata and the checkpoint gate; [attention](research/ATTENTION.md) is generated
+from one decision history with bounded resume visibility. See the
+[completed implementation plan](research/notes/SIGNIFICANCE_ALERTS_PLAN.md).
+Fossick retrospective scanning remains separate.
+
 ## 3. Parallel agents on separate worktrees pursuing alternative next steps
 
 **The idea.** Spend more tokens per unit of time: several agents in separate worktrees each take

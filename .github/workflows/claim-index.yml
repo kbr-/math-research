@@ -11,6 +11,11 @@ on:
       - tools/claim_reviews.py
       - tools/claim_views.py
       - tools/claim_authoring.py
+      - tools/claim_attention.py
+      - tools/resume.py
+      - tools/claim-attention.py
+      - tools/tests/test_claim_attention.py
+      - research/ATTENTION.md
       - tools/claim_notices.py
       - tools/claim_evidence.py
       - tools/record_citations.py
@@ -62,6 +67,8 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       - run: python3 tools/claim-index.py validate
+      - run: python3 tools/claim-attention.py check
+      - run: python3 -m unittest discover -s tools/tests -p test_claim_attention.py
       - run: python3 -m unittest discover -s tools/tests -p test_claim_registry.py
       - run: python3 -m unittest discover -s tools/tests -p test_claim_views.py
       - run: python3 -m unittest discover -s tools/tests -p test_claim_authoring.py

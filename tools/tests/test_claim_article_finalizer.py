@@ -32,7 +32,19 @@ class ArticleFinalizerTest(unittest.TestCase):
         target='https://kbr.is-a.dev/math-research/#'+anchor;ev=Evidence(self.root)
         for field in FIELDS:claim['reviews'][field]=make_review(data,claim,field,[target],revision='a'*40,date='2026-09-19',reviewer='Test',note='Inspected source.',evidence=ev)
         registry.write_text(json.dumps(data));view.write_text(render(data));before=registry.read_bytes()
-        self.command('tools/finish-turn.py','test_turn')
+        claim['significance'].update(category='independent_result',novelty='candidate',publication_status='candidate')
+        claim['reviews']['significance']=make_review(data,claim,'significance',[target],revision='a'*40,date='2026-09-19',reviewer='Test',note='Candidate worth attention, not novelty approval.',evidence=ev)
+        registry.write_text(json.dumps(data));view.write_text(render(data));before=registry.read_bytes()
+        output=self.command('tools/finish-turn.py','test_turn')
+        self.assertIn('Significance check: 1 changed claim dispositions; 1 new/reopened',output.stdout)
+        self.assertIn('lem:new',(self.root/'research/ATTENTION.md').read_text())
+        history=json.loads((self.root/'research/claims/attention.json').read_text())
+        self.assertEqual(history['events'][0]['state'],'pending')
+        from resume import bundle, FILES
+        for name in FILES:
+            path=self.root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('Fixture rules.\n')
+        self.assertTrue(any(label=='Significance attention' and 'lem:new' in body
+                            for label,body,_,_ in bundle(self.root)))
         self.assertEqual(registry.read_bytes(),before) # No stored review silently rewritten.
         self.assertTrue(all(v=={'reviewed':1} for v in coverage(data,self.root)['counts'].values()))
         finished=book.read_text();raw=Evidence(self.root).sha256(target)

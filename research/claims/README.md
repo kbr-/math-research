@@ -83,6 +83,57 @@ Each claim has:
 The initial migration deliberately left the new classifications unreviewed. This does
 not downgrade existing results: their full original assessments and Lean links
 remain intact. Parsing prose into new mathematical judgments is separate curation.
+## Significance check and attention
+
+At each checkpoint ask: **does the result advance this route, supply a reusable
+tool, or have independent interest (including an obstruction or counterexample)?**
+Answer in the claim's existing `significance` category/rationale. A specific pending
+question and next action are acceptable; unknown novelty does not require a web
+search for every lemma. Use the [benchmark map](../OPEN_PROBLEMS.md) for promising
+comparisons. No second per-turn essay is required. Entries with no claims use the
+existing explicit `data-claims="none"` and reason; the tools cannot detect every
+unlabelled result or guarantee an honest assessment.
+
+`finish-turn.py` mechanically checks changed-claim dispositions before stopping the
+clock, prints their count and synchronizes attention. Corrections/supersessions
+require a fresh target significance review as well as a status review. A reviewed
+but unclassified significance field fails; a reasoned pending assessment remains
+pending. The existing changed-claim CI check enforces the same contract.
+
+The single attention history is `research/claims/attention.json`; it stores claim
+IDs, content fingerprints and decisions, not duplicate mathematical assessments.
+[Results and questions for attention](../ATTENTION.md) is its generated human view.
+Candidates/drafts/preprints, candidate novelty, independent/tool/negative results
+of unknown novelty, and pending significance reviews are selected automatically.
+Known reusable tools are not all flagged. Any registered result can also be flagged
+explicitly, including an important surprise with no publication claim:
+
+```bash
+python3 tools/claim-attention.py decide LABEL --state pending --note "Why attention is needed"
+python3 tools/claim-attention.py list --all
+python3 tools/claim-attention.py decide LABEL --state reviewed --note "Audit outcome and remaining action"
+```
+
+States are `pending`, `reviewed`, `actioned`, `dismissed`; decisions require a reason
+and append history. `reviewed` means triaged, not proved or user-approved. The actor
+defaults to `agent`; use `--actor user` only to record an actual user decision. Never
+silently clear an item merely to reduce the pending count. Changes to recorded scope,
+significance, status, formalization, review evidence or incident correction/obstruction
+edges reopen a tracked item. Repeated unchanged scans do not create duplicate events.
+This detects recorded changes, not unrecorded mathematical developments.
+
+The finalizer writes the history/view; stage them when changed. After manual edits
+or decisions run `python3 tools/claim-attention.py sync` to rebuild the view. Resume
+includes at most three pending summaries and an omission count; the full list is
+read on demand. Fossick will use this same history instead of NUGGETS/FLAGS queues.
+Existing candidates are seeded from metadata, without claiming a retrospective
+literature audit. This is a synchronous file/console notification mechanism: it
+works with both Codex and Claude and needs no platform-specific Stop hook, daemon,
+desktop service or dependency. Desktop/push notifications are intentionally omitted;
+agents should mention new/reopened significant items in the user-facing checkpoint.
+
+## Registry representation
+
 Inline Markdown links are parsed into structured `references` in lookup/export
 output; they are not stored a second time as editable metadata. Currently the
 parser supports inline links, balanced parentheses, and angle-bracket targets;

@@ -75,6 +75,8 @@ class MaintenanceTests(unittest.TestCase):
         self.complete(self.data,self.data['claims'][0],['relationships'])
         self.assertFalse(self.check(before,self.data)['passed'])
         self.data['claims'][0]['reviews']['mathematical_status']['note']='Old scope remains working with the separately recorded correction.'
+        self.assertFalse(self.check(before,self.data)['passed'])
+        self.data['claims'][0]['reviews']['significance']['note']='Significance reconsidered under the corrected bound.'
         self.assertTrue(self.check(before,self.data)['passed'])
 
     def test_pending_question_is_explicit_not_fake_completion(self):
@@ -86,6 +88,13 @@ class MaintenanceTests(unittest.TestCase):
             next_action='Compare the stated field hypotheses with the cited theorem.',evidence=Evidence(self.root))
         self.assertTrue(self.check(self.empty,self.data)['passed'])
         self.assertEqual(self.check(self.empty,self.data)['coverage']['significance']['pending'],1)
+
+    def test_reviewed_null_significance_is_not_a_completed_check(self):
+        c=self.data['claims'][0];self.complete(self.data,c)
+        c['significance']=None
+        c['reviews']['significance']=make_review(self.data,c,'significance',['source.md'],
+            revision='a'*40,date='2026-09-19',reviewer='Test',note='Looks reviewed.',evidence=Evidence(self.root))
+        self.assertFalse(self.check(self.empty,self.data)['passed'])
 
     def test_changed_source_detected_without_index_edit(self):
         self.complete(self.data,self.data['claims'][0]);before=copy.deepcopy(self.data)
