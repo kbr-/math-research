@@ -5,6 +5,9 @@ Comments labelled **Assistant's comments** below are from Claude Fable. Addition
 **Codex comments (19 September 2026)** are from GPT-6 Astra. These are proposals, not active
 workspace rules or authorization to launch parallel research or formalization.
 
+Implementation checklists: [one plan per idea](research/notes/INDEX_MIGRATION.md#separate-plans-by-idea).
+The index plan covers item 5 and index curation only.
+
 ## 1. Fossick protocol: scan the research record for nuggets
 
 **The problem.** The agent solved a twelve-year-old open problem (unrestricted Res(⊕) lower

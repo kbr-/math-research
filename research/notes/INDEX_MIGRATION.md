@@ -1,50 +1,44 @@
-# Claim index and research-framework implementation checklist
+# Claim-index migration and curation checklist
 
-This is the implementation plan for the claim index and all related proposals in
-[IDEAS.md](../../IDEAS.md), including the subsequent conversation. Begin with
-the index, then populate its metadata, and build the dependent workflows on it.
-The full plan is not complete merely because the original table was converted.
+This plan covers **IDEAS.md item 5** and the agreed index-specific additions:
+complete metadata population, graph-ready relationships, compact retrieval and
+ongoing index maintenance. It does not implement the other framework ideas.
 
-The structured index will be authoritative for claim metadata; the notebook
-remains authoritative for mathematical statements, proofs, and current research
-status. Preserve the historical handoff unchanged.
+The structured index is authoritative for claim metadata; the notebook remains
+authoritative for mathematical statements, proofs and current research status.
+Preserve the historical handoff unchanged. Record already-existing formalization
+coverage here; new Lean proof work belongs to the separate formalization plan.
 
 Mark tasks complete only after implementation and validation. Record concrete
-paths, decisions, and checkpoint references here as work proceeds. Leave partial
-tasks unchecked and briefly note what remains.
+paths, decisions and checkpoint references as work proceeds. Leave partial tasks
+unchecked and briefly note what remains.
 
 ## Scope and completion discipline
 
-- Sections 1–5 record the completed **structural migration**. They do not certify
-  that formalization, significance, topics, or relationships have been populated.
-- Sections 6–17 are pending implementation. Nothing formerly called deferred work
-  is silently outside this plan. Alternative proposals have explicit decision tasks.
-- Account for every claim and entry, not just a convenient sample. Use resumable
-  coverage records so batches survive compaction and newly added claims are picked up.
-- `null`, an empty list, and "not reviewed" are not evidence of absence. After
-  review, distinguish no applicable data from an unresolved question; retain its
-  reason, evidence, and next action. An unresolved task stays open.
-- A proposal may be rejected or replaced only with a recorded decision and reason;
-  do not check an unimplemented feature off as if it had been delivered.
-- The notebook remains the mathematical source. These tasks do not authorize
-  silent changes to historical entries, public pushes, or automatic research,
-  parallel-agent, or formalization runs beyond their assigned scope.
+- Sections 1–5 record the completed structural migration, not completed metadata
+  curation. Sections 6–13 remain pending.
+- Account for every claim, including additions during the pass, through resumable
+  field-level coverage records. `null`, empty lists and "not reviewed" do not
+  establish absence; record a reasoned disposition or an explicit unresolved item.
+- Preserve stable IDs and original qualifications. Do not check off an unimplemented
+  or unresolved task as complete, or infer dependencies/verification from links alone.
+- Keep one editable source per fact. Other framework plans consume index metadata
+  and interfaces; their implementation is not an acceptance condition of this plan.
+- Planning does not authorize publication, silent historical edits or additional
+  research/formalization/parallel runs beyond the assigned scope.
 
-### Coverage map
+## Separate plans by idea
 
-| Proposal | Implementation sections |
-|---|---|
-| IDEAS 1: incremental Fossick | 10–11 |
-| IDEAS 2: significance flags and user attention | 10–11 |
-| IDEAS 3: parallel exploration and adversarial review | 13 |
-| IDEAS 4: formalize the record and maintain the verified frontier | 7, 14 |
-| IDEAS 5: structured index, curation, grouping, retrieval | 1–9, 12 |
-| IDEAS 6: interruption notes and open-problem map | 10, 12 |
-| IDEAS 7: context costs, compact views, rule consolidation | 8, 12 |
-| IDEAS 8: typed claim graph and public visualization | 9, 15 |
-| Conversation: complete population, not just empty schema fields | 6–10, 16 |
-| Conversation: every subsequent research cycle maintains complete metadata | 17 |
-| Conversation: preserve contents and fix broken Markdown table | 2–4, completed |
+| IDEAS.md item | Owning plan | Boundary with this plan |
+|---|---|---|
+| 1. Fossick | [FOSSICK_PLAN.md](FOSSICK_PLAN.md) | Uses curated significance and lookup; implements scans/cursors separately |
+| 2. Significance alerts | [SIGNIFICANCE_ALERTS_PLAN.md](SIGNIFICANCE_ALERTS_PLAN.md) | Owns flags, candidate queue and notifications; index stores claim assessments |
+| 3. Parallel exploration | [PARALLEL_RESEARCH_PLAN.md](PARALLEL_RESEARCH_PLAN.md) | Owns exploration/adversary workflows; index merge compatibility remains here |
+| 4. Formalization | [FORMALIZATION_PLAN.md](FORMALIZATION_PLAN.md) | Owns new proof work/policy; existing coverage metadata is curated here |
+| 5. Claim index | This file | Migration, curation, relationships, retrieval and maintenance |
+| 6. Smaller utilities | [WORKFLOW_UTILITIES_PLAN.md](WORKFLOW_UTILITIES_PLAN.md) | Owns interruption notes and benchmark map |
+| 7. Context budget | [CONTEXT_BUDGET_PLAN.md](CONTEXT_BUDGET_PLAN.md) | Owns general Resume/overview/rule consolidation; index-specific retrieval stays here |
+| 8. Graph visualization | [CLAIM_GRAPH_PLAN.md](CLAIM_GRAPH_PLAN.md) | Owns graph UI/Pages; reviewed relationship data and queries stay here |
 
 ## 1. Inventory and schema
 
@@ -140,8 +134,8 @@ tasks unchecked and briefly note what remains.
 - [ ] Add bounded commands/reports for missing fields, pending reviews, stale
       reviews, broken references, and coverage by field/topic. Include all claims
       added or corrected while the enrichment pass is in progress.
-- [ ] Establish one authoritative home for each fact and queue. Generate views
-      instead of duplicating editable status across registry, flags and scan files.
+- [ ] Establish one authoritative home for index metadata and its review queue.
+      Expose data to the separate framework plans without duplicate editable fields.
 
 ## 7. Populate existing formalization coverage for every claim
 
@@ -189,7 +183,7 @@ tasks unchecked and briefly note what remains.
       exact scope through lookup. Ensure links work on GitHub, locally and on Pages;
       a bare notebook anchor in a Markdown file is not automatically a valid link.
 
-## 9. Populate and audit the relationship graph
+## 9. Populate and audit relationship data
 
 - [ ] Extract candidate citations from the entire Research record and claim source
       passages, mapping entry anchors to claims without assigning an entry's every
@@ -215,7 +209,7 @@ tasks unchecked and briefly note what remains.
       correction-impact queries. Report that impact is an audit scope, not a proof
       that every descendant is invalidated.
 
-## 10. Significance, publication candidates and field benchmarks
+## 10. Populate claim significance
 
 - [ ] Define structured significance assessments with rationale, exact scope,
       novelty status, source evidence, review date and suggested action. Keep
@@ -228,38 +222,10 @@ tasks unchecked and briefly note what remains.
       checks and failed attempts that expose valuable counterexamples.
 - [ ] Perform targeted literature checks for plausible candidates, preserving
       exact formulations, encodings, versions, dates, uncertainty and source links.
-- [ ] Create a maintained open-problem/benchmark map, including the systems and
-      formulations named in IDEAS.md. Record last verification and link candidates
-      to it; it guides searches rather than replacing current literature review.
-- [ ] Consolidate candidates and user-attention flags into one authoritative
-      register with pending/reviewed/actioned/dismissed states and recorded reasons.
-      Resolve the original `NUGGETS.md`/`FLAGS.md` alternatives through generated
-      views rather than independent editable queues.
-- [ ] Provide a concise "Results of independent interest" overview linked to the
-      register, without turning the living notebook into another result catalogue.
 - [ ] Complete significance coverage for all claims: a reasoned disposition or an
       explicit pending novelty/audit question, not unexplained nulls.
 
-## 11. Fossick, per-turn significance checks and notifications
-
-- [ ] Add a Fossick prompt and bounded scan command using the structured index and
-      compact notebook navigation; open full arguments for candidate assessment.
-- [ ] Persist a portable scan cursor and review revision. Track "screened through"
-      separately from unresolved candidates, and revisit corrections, changed claims
-      and newly recognized dependencies behind the cursor.
-- [ ] Run the initial complete historical scan, recording dispositions and pending
-      audits. Do not stop at implementing the command without using it on the backlog.
-- [ ] Add a cheap per-research-turn significance question and candidate flagging;
-      reserve literature audits for plausible candidates instead of every lemma.
-- [ ] Make pending items visible on resume and at checkpoints, with user attention
-      and acknowledgments tracked without deleting the historical assessment.
-- [ ] Evaluate local notifications for the actual supported Codex and Claude
-      environments, including the proposed Stop-hook approach. Implement a bounded
-      optional notifier or document an explicit decision and reliable file/UI fallback.
-- [ ] Test interrupted scans, repeated scans, cursor drift, newly corrected old
-      entries, duplicate candidate detection, and avoidance of repeated alerts.
-
-## 12. Context restoration, retrieval and interruption recovery
+## 11. Minimal-output claim retrieval
 
 - [ ] Extend the existing claim tool with an explicit all-claims listing mode and
       selectable output fields, for example `list --fields id,summary --format tsv`.
@@ -273,117 +239,27 @@ tasks unchecked and briefly note what remains.
 - [ ] Document minimal listing in the registry guide and agent retrieval guidance;
       test that every claim appears exactly once, summaries are not truncated,
       selected fields stay in the requested order, and no display fluff is emitted.
-- [ ] Measure actual mandatory restoration output and representative claim lookups;
-      distinguish byte/word counts, token estimates and measured token accounting.
-- [ ] Extend the existing notebook excerpt tool with compact TOC output, default
-      bounded tail, `--tail N` and `--since DATE`; avoid a second notebook parser.
-- [ ] Consolidate **Where we stand**, **The remaining route**, and **Working
-      mathematical context** by current obligation rather than chronology, preserving
-      exact hypotheses, costs, unresolved gaps and links to complete records.
-- [ ] Consolidate AGENTS and related instructions: retain every current user
-      constraint once, remove duplication, and move expired authorization history
-      out of mandatory context without accidentally renewing permission.
-- [ ] Update Resume to use the compact overview, TOC, topic map and exact claim
-      lookup, loading full entries only as needed and retaining the gaps section.
-- [ ] Settle and implement a lightweight maintenance trigger for living-section
-      growth, revising the existing finisher warning rather than adding competing
-      checklists. Keep historical entries append-only and unabridged.
-- [ ] Provide a small durable work-in-progress note for long/interrupted tasks:
-      exact question, completed steps, unresolved concern, evidence paths and next
-      action. Define its checkpoint incorporation/retirement so it is not a second
-      live mathematical summary or private memory store.
-- [ ] Validate restoration on representative paused tasks and compare its output
-      cost and ability to recover the needed definitions/dependencies with the baseline.
 
-## 13. Bounded parallel exploration and adversarial review
-
-- [ ] Define an Explore prompt with distinct obligations/mechanisms, shared
-      interfaces, concrete stopping points and an explicit coordinator role.
-- [ ] Define an Adversary prompt giving a reviewer the precise statement and
-      assumptions without relying on the author's persuasive narrative.
-- [ ] Reuse isolated worktrees, pinned integration revisions, shared resource
-      controls and append-only merging; extend integration where the new claim
-      metadata/edge updates require reviewed conflict resolution.
-- [ ] Specify coordinator-only living-section ownership and worker ownership of
-      source records/evidence, with prompt communication of discrepancies.
-- [ ] Preserve all branches' useful results, failures and obstructions; select
-      the next research action without discarding the other records.
-- [ ] Budget aggregate memory, CPUs, token use and duplicated restoration work.
-      Choose concurrency from current headroom and workload, not historical estimates.
-- [ ] When parallel research is explicitly assigned, pilot two bounded workers,
-      record integration and context costs, and adjust before scaling up.
-
-## 14. Formalization backlog and ongoing policy
-
-- [ ] Inventory formalizable statements across the whole record, including
-      negative results, supporting lemmas and finite certificates. Distinguish them
-      from conjectures, abandoned arguments and prose that cannot be treated as proofs.
-- [ ] Build the dependency-and-scope backlog using the populated registry, including
-      prerequisites absent from the current index. Prioritize publication dependencies,
-      frequently used tools, and uncertain claims with large downstream impact.
-- [ ] Resolve the policy alternatives explicitly: the original full historical
-      sweep and per-cycle requirement, active-frontier prioritization, statement-first
-      specification, and asynchronous formalization. Record the chosen policy and
-      completion criteria; do not silently drop the full-coverage proposal.
-- [ ] Specify isolation and labelling for statement-only modules: unproved
-      interfaces must not make dependent claims appear formally verified.
-- [ ] When formalization is assigned, execute the chosen historical backlog in
-      dependency order, recording exact Lean scope, evidence and remaining obligations.
-      An unproved or false claim cannot be checked off through a weaker substitute.
-- [ ] Implement the chosen ongoing policy and formalization-debt view without
-      conflating mathematically reviewed work with formal verification.
-- [ ] For asynchronous work, define discrepancy notifications and pause/review
-      behavior for affected dependents; integrate through the existing correction
-      and formalization-gaps protocol and shared resource controls.
-- [ ] Demonstrate that a discovered scope discrepancy updates claim metadata,
-      relationship audit tasks, the dated record and the visible verified frontier.
-
-## 15. Interactive claim graph, locally and on GitHub Pages
-
-- [ ] Design the graph around the populated, reviewed data; start with a selected
-      claim and its neighborhood, and keep complete-graph views readable.
-- [ ] Select the visualization implementation and obtain any dependency approval
-      required by COMPUTATION_RULES.md. Treat CDN libraries as dependencies too;
-      document licensing and pin/vendor assets if offline use is supported.
-- [ ] Implement zoom/pan, selection, a statement/scope/source side panel, notebook
-      and Lean links, and distinct visual treatment of claims, obstructions and
-      finite checks. Display review and partial-formalization status accurately.
-- [ ] Implement topic/status/date/formalization filters, ancestor/descendant
-      highlighting, current-working-context route view, and correction-impact views.
-- [ ] Provide grouping/collapsing or an alternative date/topic layout to avoid a
-      whole-graph tangle. Treat degree/citation counts as navigation signals, not
-      automatic measures of significance or formalization priority.
-- [ ] Show edge types, evidence, uncertainty and incomplete coverage; disconnected
-      branches are not automatically worthless or dead research.
-- [ ] Provide accessible textual navigation and a useful empty/partial-data state.
-- [ ] Add GraphML or DOT export for external tools, with stable IDs and documented
-      direction/type semantics, alongside the existing JSON export.
-- [ ] Integrate the graph and permitted data/assets into the minimal Pages build
-      and local live mode, preserving project-relative links and update behavior.
-- [ ] Test navigation, filtering, source links, rendering performance and offline
-      behavior where promised; publish only under a separate valid push authorization.
-
-## 16. End-to-end acceptance and maintenance
+## 12. Index acceptance and maintenance
 
 - [ ] Publish a coverage report for all baseline and subsequently added claims:
       populated metadata, reviewed dispositions, pending questions and stale evidence.
-- [ ] Demonstrate a new result travelling through index registration, exact lookup,
-      dependency recording, significance screening, formalization tracking and graph
-      navigation without duplicated manual bookkeeping.
-- [ ] Demonstrate a correction propagating to historical links, dependency-impact
-      review, Fossick reconsideration and the living overview without rewriting history.
-- [ ] Exercise interrupted/resumed work and parallel integration against the same
-      structured source, preserving stable IDs and every accepted research record.
-- [ ] Run appropriate schema, generation, retrieval, graph, workflow and portability
-      checks; preserve complete evidence and reproduction metadata at checkpoints.
-- [ ] Document the resulting minimal operating workflow and remove superseded
-      instructions/tools after compatibility is accounted for.
-- [ ] Review this plan against every item in IDEAS.md and the conversation. Record
-      each proposal as implemented, explicitly superseded/rejected with a reason,
-      or still open. Leave open work visible; do not declare the overall plan complete
-      while known metadata or workflow gaps remain.
+- [ ] Demonstrate a new claim travelling through registration, exact/minimal lookup,
+      topics, relationship recording, significance and formalization metadata without
+      duplicated manual bookkeeping. No graph UI or Fossick implementation is required.
+- [ ] Demonstrate a correction updating source links, scope, affected relationships
+      and review tasks without rewriting the historical notebook record.
+- [ ] Exercise interrupted/resumed curation and existing parallel append integration
+      against the structured source, preserving stable IDs and accepted records.
+- [ ] Run schema, generation, retrieval, metadata, relationship and portability
+      checks; preserve full evidence and reproducibility data at checkpoints.
+- [ ] Document the minimal index editing/curation workflow and remove superseded
+      index instructions or tools after compatibility is accounted for.
+- [ ] Review completion against IDEAS.md item 5 and the conversation's index-specific
+      requirements. Report every metadata gap explicitly; do not make completion
+      depend on implementing the separately owned framework plans.
 
-## 17. Enforce metadata maintenance in every subsequent research cycle
+## 13. Enforce metadata maintenance in every subsequent research cycle
 
 This is an ongoing requirement, not only a one-time enrichment pass. Update the
 workflow during implementation of this phase; this plan update alone does not
@@ -400,7 +276,7 @@ change the active prompts or instructions.
       invent edges or significance merely to satisfy a completeness check.
 - [ ] Make each cycle update affected existing claims and relationships as well
       as new ones, including formalization-scope changes, correction impact and
-      significance/candidate state. Preserve historical records and stable IDs.
+      significance assessments. Preserve historical records and stable IDs.
 - [ ] Update root AGENTS.md as the authoritative ongoing rule, and align scoped
       research/formalization instructions and Codex/Claude entry points by linking
       to that rule rather than duplicating it.
@@ -409,8 +285,9 @@ change the active prompts or instructions.
       bounded tools. Restoration must not silently revert to Markdown-only editing
       or import the entire index into context.
 - [ ] Update `PROMPTS.md`: Spin, ordinary research guidance, Formalize,
-      Spin-formalize, parallel variants and future Fossick/Explore/Adversary prompts
-      must apply the same maintenance contract within their assigned scope.
+      Spin-formalize and existing parallel variants must apply the same index
+      maintenance contract within their assigned scope. Expose that contract for
+      future prompts owned by the separate plans; do not implement those prompts here.
 - [ ] Update the registry guide, authoring tools and templates so a new claim is
       created with the required metadata and relationship review, rather than
       inheriting the initial migration's all-null defaults.
@@ -418,9 +295,9 @@ change the active prompts or instructions.
       and CI, with useful diagnostics. Track historical backlog separately so the
       checks neither excuse incomplete new work nor repeatedly demand a full audit
       of the whole registry on every turn.
-- [ ] Regenerate human, topic and graph views consistently at checkpoints; ensure
-      pending significance flags and formalization debt remain visible to the next
-      agent after compaction, branch integration or migration to another machine.
+- [ ] Regenerate human/topic views and machine-readable exports at checkpoints;
+      keep pending index metadata reviews visible after compaction, branch integration
+      or migration. Graph rendering and notifications are owned by their separate plans.
 - [ ] Test a fresh cycle, a correction, a formalization update and parallel branch
       integration end to end. Verify that incomplete new metadata is caught and
       that justified unknown/not-applicable states are represented honestly.
@@ -447,8 +324,8 @@ Local checkpoint: `c53b032`, "Migrate the complete claim index to a structured r
 - Affected consumers: ranked search, parallel append merger, checkout verification,
   root guidance, resume navigation, and public documentation.
 
-The structural migration's completion criterion was met. Metadata enrichment and
-all subsequent framework features above remain part of this expanded plan.
+The structural migration is complete. Index metadata enrichment remains in this
+plan; the other framework features now have separate plans linked above.
 
 - Generated view and compact lookup are implemented; the complete export and
   qualified/ranked lookup examples are preserved with the evidence.
@@ -456,4 +333,9 @@ all subsequent framework features above remain part of this expanded plan.
   changes remain manual. Turn finalization, checkout validation and CI detect stale views.
 - Focused suites pass: 14 registry, seven append-merge and six finalization tests.
 - The user confirmed the repaired table renders correctly. No mathematical entries
-  or original claim text were edited. Semantic curation and visualization remain pending.
+  or original claim text were edited. Semantic curation remains pending here; visualization is tracked separately.
+
+Scope correction, 19 September 2026: the earlier expansion incorrectly included all
+framework ideas in the index plan. Pending tasks were split into seven sibling
+plans, one for each other numbered idea. The original completed index tasks remain
+checked; no moved feature was marked implemented by this reorganization.
