@@ -1,0 +1,138 @@
+\section{Formal-verification map and reproduction}\label{sec:verification}
+
+The mathematical arguments are given in the body and Appendix~\ref{sec:topology};
+reading them does not require Lean or a supplementary document. This appendix
+locates the principal formal declarations and gives a complete command sequence
+for checking them. Formal verification establishes the statements under the
+encoded definitions; external review of those definitions and of the literature
+claims remains separate.
+
+\subsection{From paper statements to formal declarations}
+
+The table uses the pinned [Lean] links of the paper. File paths are relative to
+\texttt{formalization/}; all names are in namespace \texttt{MathResearch}.
+The prefix \texttt{PC.} below abbreviates
+\nolinkurl{MathResearch.PolynomialCalculus.}, and \texttt{TP.} abbreviates
+\nolinkurl{MathResearch.ThirdParty.}; unprefixed names have prefix
+\texttt{MathResearch.} Each file's header specifies its scope and dependencies.
+The table selects the principal declarations rather than every helper lemma;
+the per-statement links in the body cover the remaining steps.
+
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.65\textwidth}@{}}
+\toprule
+Paper statement and scope & Lean file and declaration\\
+\midrule
+\endfirsthead
+\toprule
+Paper statement and scope & Lean file and declaration\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Matching extension over \(\F\), Theorem~\ref{thm:moments}
+& \leanref{claims/MatchingMomentExtension.lean}{\nolinkurl{claims/MatchingMomentExtension.lean}}\newline
+\nolinkurl{PC.matching_moments_extend}\\
+Chessboard filling over \(\F\), Corollary~\ref{cor:chessboard-filling}
+& \leanref{third-party-claims/ChessboardFillingProof.lean}{\nolinkurl{third-party-claims/ChessboardFillingProof.lean}}\newline
+\nolinkurl{TP.chessboard_filling}\\
+Cube degree drop, Lemma~\ref{lem:cube-drop}
+& \leanref{claims/BinaryCubeDegreeDrop.lean}{\nolinkurl{claims/BinaryCubeDegreeDrop.lean}}\newline
+\nolinkurl{PC.cubeDifference_degree}\\
+Coefficient isolation, Lemma~\ref{lem:row-cube}
+& \leanref{claims/RowCubeCoefficientIsolation.lean}{\nolinkurl{claims/RowCubeCoefficientIsolation.lean}}\newline
+\nolinkurl{PC.row_cube_coefficient_isolation}\\
+Old-system separator, Theorem~\ref{thm:row-separation}
+& \leanref{claims/CubeResidualDualSeparation.lean}{\nolinkurl{claims/CubeResidualDualSeparation.lean}}\newline
+\nolinkurl{PC.cube_residual_dual_separation}\\
+Bounded cofactors for ordinary restriction, Lemma~\ref{lem:restriction-ideal}
+& \leanref{claims/AffineRestrictionIdeal.lean}{\nolinkurl{claims/AffineRestrictionIdeal.lean}}\newline
+\nolinkurl{affine_restriction_coefficients}\\
+Common restriction kernel, Lemma~\ref{lem:kernel}
+& \leanref{claims/CommonAffineRestrictionKernel.lean}{\nolinkurl{claims/CommonAffineRestrictionKernel.lean}}\newline
+\nolinkurl{common_affine_kernel_of_square}\\
+Removal including unit-span blocks, Lemma~\ref{lem:hybrid}
+& \leanref{claims/AffineFamilyRemovalWithUnits.lean}{\nolinkurl{claims/AffineFamilyRemovalWithUnits.lean}}\newline
+\nolinkurl{affine_family_removal_with_units}\\
+Finite exclusion with the square condition, Theorem~\ref{thm:affine}
+& \leanref{claims/AffineFamilyExclusion.lean}{\nolinkurl{claims/AffineFamilyExclusion.lean}}\newline
+\nolinkurl{affine_family_exclusion_of_square}\\
+Actual DAG registry, Theorem~\ref{thm:dag-registry}
+& \leanref{claims/AffineDAGRegistry.lean}{\nolinkurl{claims/AffineDAGRegistry.lean}}\newline
+\nolinkurl{PC.affine_dag_registry}\\
+Usual CNF-to-PC transfer, Theorem~\ref{thm:clause-transfer}
+& \leanref{claims/BitPHPClauseTransfer.lean}{\nolinkurl{claims/BitPHPClauseTransfer.lean}}\newline
+\nolinkurl{PC.usual_bitPHP_PC_transfer}\\
+Main bound, both rule conventions, Theorem~\ref{thm:main}
+& \leanref{claims/BitPHPExponential.lean}{\nolinkurl{claims/BitPHPExponential.lean}}\newline
+\nolinkurl{bitPHP_exponential}; \nolinkurl{bitPHP_exponential_base_two}\\
+Generic sufficient condition over \(\F\), Theorem~\ref{thm:generic}
+& \leanref{claims/GenericCNFSubspaceCriterion.lean}{\nolinkurl{claims/GenericCNFSubspaceCriterion.lean}}\newline
+\nolinkurl{PC.generic_CNF_subspace_criterion}\\
+Density form, Corollary~\ref{cor:generic-density}
+& \leanref{claims/GenericCNFDensityBound.lean}{\nolinkurl{claims/GenericCNFDensityBound.lean}}\newline
+\nolinkurl{PC.generic_CNF_density_bound_simple}\\
+\end{longtable}
+\endgroup
+
+The homological argument is proved in Lean, including the chessboard filling
+used by matching extension; it is not imported as an unchecked axiom.
+The final transitive axiom checks described below cover these supporting
+results as well as the headline theorem.
+
+\subsection{A pinned checkout and verification commands}
+
+Use a machine with Git, Python 3, a C toolchain and \texttt{make}, and
+\href{https://lean-lang.org/install/manual/}{elan}, Lean's toolchain manager,
+on the command path. Network access is needed for the checkout, the pinned
+Lean toolchain and Mathlib dependencies, and their compiled library cache.
+No Python packages are required. Allow disk space for the Lean toolchain and
+library build artifacts. The project pins Lean \texttt{4.34.0-rc2};
+\texttt{lakefile.lean} and \texttt{lake-manifest.json} pin Mathlib and its
+transitive dependencies. Do not update these pins.
+
+The following shell commands create a fresh checkout at commit
+\href{https://github.com/kbr-/math-research/tree/8904bf09a5376f48a00d1c25d079bf0c6441502a}
+{\texttt{8904bf09}}, which contains the aggregate verification module and the
+theorem sources used by every [Lean] link in this paper. Revision 2 changes
+exposition only, so it uses the same verification target. The module's name
+\texttt{BitPHPPreprintRevision1} is retained deliberately.
+
+\begingroup\small
+\begin{verbatim}
+git clone https://github.com/kbr-/math-research.git bit-php-check
+cd bit-php-check
+git checkout --detach 8904bf09a5376f48a00d1c25d079bf0c6441502a
+cd formalization
+export MATHLIB_NO_CACHE_ON_UPDATE=1
+export LEAN_NUM_THREADS=2
+lean --version
+lake exe cache get claims/BitPHPPreprintRevision1.lean
+python3 verify.py --target claims/BitPHPPreprintRevision1.lean \
+  --out verification.txt
+lake env leanchecker --fresh claims.BitPHPPreprintRevision1
+\end{verbatim}
+\endgroup
+
+On a fresh checkout the cache command retrieves the required library artifacts;
+the verifier builds the project proofs and prints the types and transitive
+axioms of the aggregate's listed declarations. It rejects unfinished proofs
+and nonstandard axioms. The output file is written in \texttt{formalization/}; use
+a new name if repeating the command. All commands must exit successfully.
+The final command replays the aggregate and its imports in a fresh Lean kernel
+environment. A successful build alone does not substitute for the type and
+axiom checks or that replay.
+
+For example, the expected main-theorem axiom report is
+\begin{quote}\small\ttfamily
+'MathResearch.bitPHP\_exponential' depends on axioms:\par
+[propext, Classical.choice, Quot.sound]
+\end{quote}
+These are Lean's standard foundations; neither \texttt{sorryAx} nor a
+custom mathematical axiom is allowed. The aggregate also checks the
+superpolynomial corollary, both exponential forms, the generic criterion
+and density form, and the complementary-pair short-proof control, with their
+imports. It does not formalize the informal Tseitin remark, the literature
+comparison, or the AI-assistance disclosure.

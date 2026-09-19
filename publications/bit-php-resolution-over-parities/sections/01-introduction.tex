@@ -1,8 +1,11 @@
 \section{The claim and its setting}\label{sec:introduction}
 
-Resolution over parities augments ordinary resolution with affine equations
-over \(\F\). The system was introduced by Itsykson and Sokolov
-\cite{IS14,IS20}. Its unrestricted proof-size lower-bound problem remains an
+Resolution over linear equations was introduced by Raz and Tzameret
+\cite{RT08}, with equations over the integers. Its characteristic-two
+version, resolution over parities, was subsequently studied by Itsykson
+and Sokolov \cite{IS14,IS20}, who established tree-like lower bounds.
+Here clauses are disjunctions of affine equations over \(\F\), with the
+rules specified below. Its unrestricted proof-size lower-bound problem remains an
 explicit open benchmark in the literature reviewed for this preprint
 \cite{IPS26}. The contribution claimed here is an exponential lower
 bound for the standard bit pigeonhole principle in unrestricted DAG-like
@@ -102,9 +105,10 @@ a near-quadratic depth bound. They therefore do not give the unrestricted
 usual-bit-PHP size conclusion considered here.
 
 \paragraph{Resolution over linear equations.}
-\(\Res\) is the characteristic-two member of the family
-\(\mathrm{Res}(\mathrm{lin}_R)\) of resolution over linear equations in a
-ring \(R\), introduced by Raz and Tzameret \cite{RT08}. Part and Tzameret
+The family \(\mathrm{Res}(\mathrm{lin}_R)\) studies resolution over linear
+equations in a ring \(R\). Raz and Tzameret \cite{RT08} introduced the
+integer formulation; Itsykson and Sokolov \cite{IS14,IS20} studied the
+\(\F\) version in the tree-like setting. Part and Tzameret
 \cite{PT21} proved the first superpolynomial lower bounds for DAG-like
 \(\mathrm{Res}(\mathrm{lin}_R)\): the subset-sum principle requires
 exponential size over the rationals. Their technique uses large
@@ -145,7 +149,7 @@ of novelty. The theorem concerns \(\Res\) only. It does not address unary
 PHP in \(\Res\), and the \(\mathrm{AC}^0[p]\)-Frege lower-bound problem
 remains open; Section~\ref{sec:generic} says what does and does not follow.
 
-\subsection{Changes in revision 1}
+\subsection{Revision history}
 Version 1 (15 September 2026) stated Corollary~\ref{cor:main-superpolynomial}.
 Revision 1 adds the exponential bound of Theorem~\ref{thm:main}
 (Section~\ref{sec:main-proof}) and the generic sufficient condition of
@@ -155,6 +159,14 @@ development history formerly in the last section was condensed. No error in
 the mathematics of version 1 was found or corrected; the registry slot count
 of Section~\ref{sec:clause-simulation} was renamed from \(N\) to
 \(N_{\mathrm{reg}}\) to avoid a clash with the number of unary columns.
+
+Revision 2 (19 September 2026) corrects the historical attribution of
+resolution over linear equations, makes the common-kernel and
+bounded-cofactor steps more explicit, and improves the parameter tables.
+Appendix~\ref{sec:verification} adds a formal-verification map and complete
+reproduction instructions within the paper. The theorem statements,
+mathematical arguments, and Lean dependencies are unchanged from revision 1;
+this revision makes no new mathematical claim.
 
 \subsection{Organization}
 Section~\ref{sec:overview} gives an overview of the proof, fixes terminology
@@ -170,6 +182,8 @@ The proofs presented here can be read independently of that notebook:
 none of its lemmas is required as an unexpanded black box in this preprint.
 
 Every [Lean] link points to a source file in the published revision
-\href{https://github.com/kbr-/math-research/tree/b47e9b1ef1f5b273822001983e83d35d7acbe117}{\texttt{b47e9b1}}, rather than a moving
+\href{https://github.com/kbr-/math-research/tree/8904bf09a5376f48a00d1c25d079bf0c6441502a}{\texttt{8904bf09}}, rather than a moving
 branch. The linked files identify their exported statements and dependencies.
+Appendix~\ref{sec:verification} maps the main proof steps to exact Lean
+declarations and gives the checkout, setup, and verification commands.
 The mathematical notation here is independent of Lean syntax.

@@ -7,7 +7,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{microtype}
-\usepackage{booktabs}
+\usepackage{booktabs,longtable,array}
 \usepackage[colorlinks=true,allcolors=blue,bookmarksnumbered=true]{hyperref}
 \hypersetup{
   pdftitle={An exponential lower bound for the bit pigeonhole principle in resolution over parities},
@@ -24,7 +24,7 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \numberwithin{equation}{section}
-\newcommand{\leanref}[2]{\href{https://github.com/kbr-/math-research/blob/b47e9b1ef1f5b273822001983e83d35d7acbe117/formalization/#1}{#2}}
+\newcommand{\leanref}[2]{\href{https://github.com/kbr-/math-research/blob/8904bf09a5376f48a00d1c25d079bf0c6441502a/formalization/#1}{#2}}
 \newcommand{\lean}[1]{\textnormal{\small\leanref{#1}{[Lean]}}}
 \newcommand{\leangroup}[1]{\textnormal{\small[Lean: #1]}}
 \newcommand{\leansep}{\,\textperiodcentered\ }
@@ -50,12 +50,13 @@ in resolution over parities}
 \href{mailto:kamilgbraun@gmail.com}{\texttt{kamilgbraun@gmail.com}}\\[0.6em]
 \small With substantial assistance from Claude and GPT models.\\
 \small More details in Section~\ref{sec:model-assistance}.}
-\date{Preprint, revision 1\\18 September 2026}
+\date{Preprint, revision 2\\19 September 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
-Resolution over parities, \(\mathrm{Res}(\oplus)\), extends resolution by
-allowing clauses whose literals are linear equations over \(\mathbb F_2\).
+Resolution over parities, \(\mathrm{Res}(\oplus)\), is the characteristic-two
+version of resolution over linear equations: clauses are disjunctions of
+affine equations over \(\mathbb F_2\).
 Superpolynomial size lower bounds were previously known only for restricted
 refutations: tree-like, regular, or of bounded depth. We prove that every
 DAG-like \(\mathrm{Res}(\oplus)\) refutation of the bit pigeonhole principle
@@ -78,7 +79,7 @@ The proof was developed with substantial AI assistance within an open
 research framework described in the final section.
 \end{abstract}
 \clearpage
-\tableofcontents
+\begingroup\small\tableofcontents\endgroup
 \newpage
 \input{sections/01-introduction}
 \input{sections/01b-overview}
@@ -90,5 +91,6 @@ research framework described in the final section.
 \input{sections/07-main-proof-framework}
 \appendix
 \input{sections/08-topology}
+\input{sections/09-verification}
 \input{references}
 \end{document}

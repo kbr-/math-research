@@ -15,6 +15,11 @@ axiom. Coefficients of different blocks are disjoint; every input depends
 only on the old variables. Rank means the dimension of the affine input
 span. A nonzero span is called proper if it does not contain one.
 
+The key step is Lemma~\ref{lem:kernel}: one common polynomial serves all
+proper high-rank blocks. Lemma~\ref{lem:restriction-ideal} supplies bounded
+cofactors, and Lemma~\ref{lem:hybrid} uses them in weighted elimination.
+The resulting exclusion is Theorem~\ref{thm:affine}.
+
 \subsection{Affine linear algebra and ordinary restriction}
 
 \begin{lemma}[Affine spans and coordinates]\label{lem:affine-coordinates}
@@ -119,7 +124,10 @@ that rank threshold either has one in its input span or admits
 restriction of \(f\) to its zero flat is zero.
 \end{lemma}
 \begin{proof}
-Put \(r_*=3\ell(k+1)+1\). If \(r_*>v\), no proper high-rank block
+Put \(r_*=3\ell(k+1)+1\): the extra one expresses the strict rank
+inequality for integer ranks. Properness identifies rank with the
+codimension of a nonempty zero flat (Lemma~\ref{lem:affine-coordinates}).
+If \(r_*>v\), no proper high-rank block
 exists and choose \(f=1\). Otherwise its restriction uses at most
 \(d=v-r_*\) free coordinates. The checked dimension comparison uses
 \[
@@ -208,17 +216,21 @@ No multilinearity or properness is required of \(f\) or of the blocks.
 \end{lemma}
 \begin{proof}
 Make one simultaneous substitution fixing the old variables, with all
-coefficient images of degree at most \(k\). For a low-rank block use
+coefficient images of degree at most \(k\). There are three cases.
+\begin{enumerate}
+\item \emph{Low rank, \(r\le h(k+1)\).} For such a block use
 Lemma~\ref{lem:packing}. Its weighted companions have Boolean certificates
 through \(s+r+1\le s+h(k+1)+1\le s+kD\).
-For a high unit-span block, use the constant substitution making its
-product zero. For every other high block use the cofactors of
+\item \emph{High rank, inconsistent inputs.} One belongs to the input
+span; use the constant substitution making the product zero.
+\item \emph{High rank, proper inputs.} Use the cofactors of
 \eqref{eq:literal-ideal} in the first row and zero elsewhere. Its product
 becomes \(1-f\), and a weighted companion becomes
 \[
  fg_i(1-f)=-g_i(f^2-f).
 \]
 Its Boolean certificate costs at most \(2s+1\le s+kD\).
+\end{enumerate}
 A coefficient image \(\beta\) has weighted Boolean equation
 \(f(\beta^2-\beta)\), certified through \(s+2k\le s+kD\).
 An old axiom of degree \(e\le D\) has weighted image certified through

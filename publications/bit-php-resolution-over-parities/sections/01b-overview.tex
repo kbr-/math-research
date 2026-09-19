@@ -46,7 +46,11 @@ from the compact pigeonhole axioms \(\mathcal Q_{m,\ell}\) of
 \(h=3\ell\) this is \(D=12\ell+1=O(\log n)\).
 
 \subsection{Step 2: removing all extension variables at once}
-A degree-\(O(\log n)\) refutation with extension variables contradicts
+The central mechanism is the common-kernel argument of
+Lemma~\ref{lem:kernel}: many high-rank affine restrictions have one common
+nonzero low-degree kernel polynomial, which enables a single weighted
+elimination of all blocks. Theorem~\ref{thm:affine} combines this with the
+old-system separator. A degree-\(O(\log n)\) refutation with extension variables contradicts
 nothing by itself. We substitute polynomials of degree at most \(k\) in the
 original bit variables for all the \(r_{ui}\), simultaneously, and replay
 the refutation (Lemma~\ref{lem:substitution}). A block whose inputs have
@@ -57,9 +61,14 @@ of the Boolean axioms (Lemma~\ref{lem:packing}). This is the origin of the
 rank threshold \(h(k+1)\).
 
 A block of higher rank cannot be treated this way within degree \(k\).
-Instead we look for a polynomial \(f\) of degree at most \(k\) whose
-restriction to the flat \(Z(C)\) is identically zero. Then
-\(f=\sum_ia_ig_i\) with \(\deg a_i<k\), and substituting the \(a_i\) into
+For a proper high-rank block we look for a polynomial \(f\) of degree at
+most \(k\) whose ordinary polynomial restriction to the nonempty flat
+\(Z(C)\) is zero. This means zero after substitution of affine free
+coordinates, not merely zero at the \(\F\)-points of the flat.
+Lemma~\ref{lem:restriction-ideal} then gives the literal identity
+\(f=\sum_ia_ig_i\) with \(\deg a_i\le k-1\). This bounded-cofactor
+identity is the bridge from the dimension count to elimination.
+Substituting the \(a_i\) into
 the first factor and zero into the others turns \(P_C\) into \(1-f\). The
 extension axiom \(g_iP_C\) becomes \(g_i(1-f)\), which is not a consequence
 of anything; but after multiplication by \(f\) it becomes
@@ -75,7 +84,9 @@ and not of the constant one: the weight \(f\) has to vanish on the
 falsifying flats of all high-rank clauses at once, and the constant one
 does not.
 
-A single \(f\) must serve every high-rank block. A flat of codimension
+An inconsistent high-rank block needs no kernel condition: one is a
+constant linear combination of its inputs, so a constant substitution
+makes its product zero. A single \(f\) must serve every proper high-rank block. A flat of codimension
 \(r>h(k+1)\) has so few free coordinates that the restrictions of
 degree-\(k\) polynomials to it span a space smaller, by a factor
 \(e^{-k^2/m}\), than the space \(\mathcal L_k\) of \emph{row-linear}
@@ -118,19 +129,44 @@ and then the first holds as long as \(\ln S\) is below a constant times
 \(n/\ell^2\). This gives Theorem~\ref{thm:main}. The symbols used
 throughout are collected here.
 \begin{center}
-\begin{tabular}{@{}p{0.27\textwidth}p{0.68\textwidth}@{}}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.68\textwidth}@{}}
 \toprule
-\(\ell,\ n=2^\ell,\ m=n+1,\ v=m\ell\) & bits per label, holes, pigeons (rows), bit variables\\
-\(N\) & number of columns of a unary system (\(N=n\) in the application)\\
-\(S,\ N_{\mathrm{reg}}=3S+\binom m2\) & nodes of the refutation; blocks (slots) of the registry\\
-\(h\) & number of factors of a block product (its \emph{accuracy}); \(h=3\ell\)\\
-\(s\) & number of inputs of a block (clause width after compression, at most \(v+2\))\\
-\(r\) & rank of a block: dimension of the span of its inputs; threshold \(h(k+1)\)\\
-\(D\) & degree of the simulating PC refutation; \(D=12\ell+1\)\\
-\(k\) & degree bound for \(f\) and for the substituted coefficients\\
-\(t\) & degree of a particular \(f\); number of rows in the separating cube; \(t\le k\)\\
-\(M\) & bound on the number of proper high-rank blocks; \(M\le N_{\mathrm{reg}}\)\\
-\(B=k(D+1)\) & degree at which \(f\) would be derived; needs \(2B-1\le n\)\\
+\(\ell,\ n=2^\ell\)\newline\(m=n+1,\ v=m\ell\) & bits per label, holes, pigeons (rows), bit variables\\\addlinespace[0.2em]
+\(N\) & number of columns of a unary system (\(N=n\) in the application)\\\addlinespace[0.2em]
+\(S,\ N_{\mathrm{reg}}=3S+\binom m2\) & nodes of the refutation; blocks (slots) of the registry\\\addlinespace[0.2em]
+\(h\) & number of factors of a block product (its \emph{accuracy}); \(h=3\ell\)\\\addlinespace[0.2em]
+\(s\) & number of inputs of a block (clause width after compression, at most \(v+2\))\\\addlinespace[0.2em]
+\(r\) & rank of a block: dimension of the span of its inputs; threshold \(h(k+1)\)\\\addlinespace[0.2em]
+\(D\) & degree of the simulating PC refutation; \(D=12\ell+1\)\\\addlinespace[0.2em]
+\(k\) & degree bound for \(f\) and for the substituted coefficients\\\addlinespace[0.2em]
+\(t\) & degree of a particular \(f\); number of rows in the separating cube; \(t\le k\)\\\addlinespace[0.2em]
+\(M\) & bound on the number of proper high-rank blocks; \(M\le N_{\mathrm{reg}}\)\\\addlinespace[0.2em]
+\(B=k(D+1)\) & degree at which \(f\) would be derived; needs \(2B-1\le n\)\\\addlinespace[0.2em]
+\bottomrule
+\end{tabular}
+\end{center}
+
+The conditions have distinct roles; the exact joint statement is
+Theorem~\ref{thm:affine}.
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.36\textwidth}>{\raggedright\arraybackslash}p{0.59\textwidth}@{}}
+\toprule
+Condition & Where it is used\\\addlinespace[0.2em]
+\midrule
+\(m\ln(4M)\le k^2,\ k\le m\) & Common-kernel dimension estimate
+(Lemma~\ref{lem:kernel}).\\\addlinespace[0.2em]
+\(r>h(k+1),\ h=3\ell\) & Proper high-rank blocks have sufficiently
+small restriction spaces; lower ranks use packing.\\\addlinespace[0.2em]
+\(D\ge2h+1\) & Weighted companion and Boolean certificates fit the
+removal ceiling (Lemma~\ref{lem:hybrid}).\\\addlinespace[0.2em]
+\(B=k(D+1)\) & Output degree of weighted removal, used as the input
+ceiling for the separator.\\\addlinespace[0.2em]
+\(4(k-1)<n\) & Cube separation for every target degree \(t\le k\)
+(Theorem~\ref{thm:row-separation}).\\\addlinespace[0.2em]
+\(2B-1\le n\) & Matching-moment and residual old-system range in
+that separator, with \(n=2^\ell\).\\\addlinespace[0.2em]
 \bottomrule
 \end{tabular}
 \end{center}

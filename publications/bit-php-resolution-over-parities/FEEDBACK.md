@@ -100,44 +100,46 @@ Items from a further Claude review conversation of revision 1 (an AI review, not
 
 An expert in the area, asked to endorse the arXiv submission, wants time to read and check the argument before deciding. He raised one correction:
 
-- [ ] The introduction says Res(⊕) "was introduced by Itsykson and Sokolov". This overlooks Raz–Tzameret (2008), which introduced resolution over linear equations under an essentially equivalent definition, formulated over the integers; Itsykson and Sokolov subsequently studied the tree-like F₂ version, resolution over parities. Cite both and say, for example, that resolution over linear equations was introduced by Raz and Tzameret and that its F₂ version, resolution over parities, was subsequently studied by Itsykson and Sokolov in the tree-like setting. The same sentence pattern occurs in the abstract's first line ("extends resolution by allowing …") and in the related-work paragraph, which already credits Raz–Tzameret; make all three consistent.
+- [x] The introduction says Res(⊕) "was introduced by Itsykson and Sokolov". This overlooks Raz–Tzameret (2008), which introduced resolution over linear equations under an essentially equivalent definition, formulated over the integers; Itsykson and Sokolov subsequently studied the tree-like F₂ version, resolution over parities. Cite both and say, for example, that resolution over linear equations was introduced by Raz and Tzameret and that its F₂ version, resolution over parities, was subsequently studied by Itsykson and Sokolov in the tree-like setting. The same sentence pattern occurs in the abstract's first line ("extends resolution by allowing …") and in the related-work paragraph, which already credits Raz–Tzameret; make all three consistent.
+  - Revision 2: corrected the introduction and related-work attribution, and aligned the abstract’s description. Primary-source records for RT08 and IS20 support the distinction between the integer formulation and the subsequent tree-like F₂ work.
 
 ### From a ChatGPT review of revision 1
 
 Triaged from the author's additional conversation excerpt. These are AI reviewer
 suggestions, not an independent mathematical or literature audit. Checked items
-below mean already covered or explicitly declined; unchecked items are proposed
-edits, not changes already made to the whitepaper. The excerpt's proposed
-literature table and Lean declaration names still require verification.
+below mean completed, already covered, or explicitly declined; revision-2
+implementation notes distinguish these outcomes. The optional literature table
+was not adopted; declaration names in the new verification map were checked
+against the pinned Lean sources.
 
 #### Focused follow-up edits
 
-- [ ] Make the common-kernel argument easier to find as the conceptual center of
+- [x] Make the common-kernel argument easier to find as the conceptual center of
   the proof: many high-rank affine restrictions → one common low-degree
   polynomial → weighted elimination. Section 2 already explains this and
   Section 5 has an “Idea of the common kernel” paragraph. Strengthen their
   signposting and cross-reference the affine-exclusion theorem; a wholesale
   restructuring or an additional novelty claim is unnecessary.
-- [ ] Emphasize the exact bridge from restriction to elimination in the overview:
+- [x] Emphasize the exact bridge from restriction to elimination in the overview:
   **zero ordinary polynomial restriction**, not just vanishing at F₂ points,
   gives `f = Σ a_i g_i` with `deg a_i ≤ k−1`. Cite the existing standalone
   “Ordinary restriction dimension and ideal membership” lemma directly at that
   step. The lemma already states and proves the distinction; no duplicate boxed
   lemma is needed.
-- [ ] Make the three removal cases visually explicit in Section 5: low rank
+- [x] Make the three removal cases visually explicit in Section 5: low rank
   uses packing; high rank with one in the input span uses a constant substitution
   making the product zero; proper high rank uses the common kernel and bounded
   cofactors. The weighted-removal proof already handles all three. Explain once
   that properness makes the zero flat nonempty and its codimension equal to the
   input-span rank, and that `3ℓ(k+1)+1` is the integer threshold for
   `r > 3ℓ(k+1)`.
-- [ ] Extend the existing parameter table with where the conditions are used,
+- [x] Extend the existing parameter table with where the conditions are used,
   rather than adding a second symbol glossary: `m ln(4M) ≤ k²` and `k ≤ m`
   for the kernel estimate, `D ≥ 2h+1` for removal, `B = k(D+1)` for its output
   degree, `4(k−1) < n` for cube separation, and `2B−1 ≤ n` for the old-system
   moment/separation range. Keep `n = 2^ℓ` explicit and use the actual theorem
   hypotheses rather than the excerpt's compressed formulas.
-- [ ] Add a compact formal-verification map in the paper's verification section
+- [x] Add a compact formal-verification map in the paper's verification section
   or an appendix: paper label → pinned Lean file → exact declaration
   and scope. Prioritize the common kernel, bounded-cofactor ideal membership,
   cube degree drop/coefficient isolation, matching extension and filling,
@@ -145,7 +147,7 @@ literature table and Lean declaration names still require verification.
   already supply much of this; verify declaration names from source rather
   than copying the review's illustrative names. Keep Lean details out of the
   proof narrative and link to the map there.
-- [ ] Include a self-contained reproduction guide in the paper's verification
+- [x] Include a self-contained reproduction guide in the paper's verification
   section or an appendix: repository URL, clone → immutable checkout → setup →
   verify commands, required prerequisites, expected axioms, and the fresh-replay
   command. The existing repository README supplies some of this material, but
@@ -155,7 +157,7 @@ literature table and Lean declaration names still require verification.
   aggregate command needs a pinned commit containing it. This refines the
   existing reproducibility item; it does not require a new build merely to
   record this feedback.
-- [ ] Optional: summarize the existing related-work prose in a small comparison
+- [x] Optional: summarize the existing related-work prose in a small comparison
   table if it improves scanning. Give each row its citation, exact formula,
   inference system, regularity/depth restrictions, and bound with its size
   parameter. Do not copy the excerpt's placeholder rows or presume all prior
@@ -196,7 +198,7 @@ literature table and Lean declaration names still require verification.
 
 ### From the author: parameter-table readability
 
-- [ ] Increase the vertical whitespace between rows of the parameter table in
+- [x] Increase the vertical whitespace between rows of the parameter table in
   Section 2. The current rows are hard to distinguish. Prefer extra row spacing
   over horizontal rules between every row, retaining the existing table rules.
   Check readability in the rendered PDF when implementing this change, including
@@ -208,3 +210,25 @@ The paper will be submitted as a self-contained document; there will be no
 supplementary README. Include the verification map and reproduction instructions
 in the paper or its appendices. Pinned links to the formal proof sources remain
 appropriate, but reader-facing explanations must not be delegated to a README.
+
+### Revision 2 implementation (19 September 2026)
+
+- Applied the common-kernel signposting, explicit ordinary-restriction/cofactor
+  bridge, and three-case removal presentation in the overview and affine-exclusion
+  section. The rank/codimension and integer-threshold explanations are explicit.
+- Increased vertical spacing in the symbol table and added a separate compact
+  condition/use table with matching spacing. Section references use LaTeX labels;
+  the feedback's earlier section numbers were not all current.
+- Added Appendix B within the paper: a map to exact formal declarations and a
+  complete pinned checkout/setup/build/axiom-check/kernel-replay procedure. At the author’s request, all current theorem links and reproduction instructions
+  use `8904bf09`, which contains the aggregate module. No supplementary README is required.
+- Did not add the optional related-work comparison table: the existing prose
+  preserves distinctions among formulas, rules, and restrictions better than
+  the review's placeholder rows. The attribution correction was source-checked;
+  no new broad novelty audit is claimed.
+- Retained the title, its quantitative clarification, and the established
+  terminology. Existing independent-expert review and ECCC-number items remain
+  outstanding; this editorial revision does not claim to satisfy them.
+- Revision 2 uses the local annotated tag `bit-php-preprint-2026-09-19`
+  after its PDF and checkpoint review. No publication or hosted CI run is part
+  of this revision task.
