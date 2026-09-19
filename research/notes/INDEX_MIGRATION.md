@@ -504,3 +504,15 @@ Clarification of registration enforcement: absence of both an inventory and an
 explicit no-claim disposition already fails. A nonempty but semantically incomplete
 inventory remains possible; the registry guide now states that exhaustiveness
 still requires editorial review, alongside the unlabelled-mathematics limitation.
+
+
+Compact-evidence batch `index_metadata_batch4_20260919`: 80 further records from
+constant propagation through categorical-profile certificates were screened.
+Status/topics: 222 reviewed, 644 unreviewed. Significance: 217 reviewed, five
+pending targeted novelty audits, 644 unreviewed. The five possible independent
+results are the odd affine-Booleanity classification, generic and full-PHP
+reduced-product Booleanity gaps, ternary coefficient frontier and heterogeneous
+scalar-profile frontier. They are not claimed novel or publication-ready; exact
+statement/correctness and primary-literature comparisons remain explicit tasks.
+Relationships: 17 reviewed inventories, 205 pending, 644 unreviewed; formalization
+866 reviewed. No new canonical edge was inferred in this classification batch.
