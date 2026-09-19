@@ -49,7 +49,7 @@ workflow decisions, not theorem status or publication approval. See [the workflo
 - **[thm:publication-Res-parity-bit-PHP](<https://kbr.is-a.dev/math-research/#publication-Res-parity-bit-PHP-theorem>)** — Every real K>0 eventually bounds below the node count of every usual-CNF bit-PHP affine DAG refutation with n=2^ℓ holes and n+1 pigeons
   Significance: independent_result; novelty: candidate.
   Publication-side lower bound for unrestricted Res(parity) bit PHP; the recorded focused literature audit identifies an open benchmark. Distinct from the main Frege goal.
-  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Decision (agent): Fossick 20 September: read the exact usual-CNF encoding, both rule conventions, theorem and linked end-to-end proof. This is the canonical publication item; predecessor formulations and later quantitative refinements belong to the same branch. Recorded Lean verification is not independent expert review or renewed novelty certification. See entry-2026-09-20-fossick-publication-review.
   Next: Obtain independent expert review and resolve novelty against the exact literature scope; this curation does not perform a new literature search.
 - **[thm:reduced-product-Booleanity-PC-NS-gap](<https://kbr-.github.io/math-research/#input-reduction-Booleanity-gap>)** — For one monomial-input block over a consistent odd-field domain base, the reduced product has NS Booleanity degree e+h and PC degree max(e,2(h+t))
   Significance: general_tool; novelty: unknown.
