@@ -232,3 +232,13 @@ appropriate, but reader-facing explanations must not be delegated to a README.
 - Revision 2 uses the local annotated tag `bit-php-preprint-2026-09-19`
   after its PDF and checkpoint review. No publication or hosted CI run is part
   of this revision task.
+
+### Further terminology feedback from an expert
+
+- [ ] Use standard proof-complexity terminology: describe refutation size as
+  the number of **proof-lines** (or **lines**), rather than nodes. A proof-line
+  is one formula in the proof sequence, here a linear clause. Review the size
+  definition, theorem statements, and related prose for consistent usage;
+  preserve the existing counting convention, including initial lines. This
+  specific expert recommendation should be addressed despite the earlier
+  decision to retain other notebook terminology. Not yet applied to the paper.
