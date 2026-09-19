@@ -20,6 +20,7 @@ class RepositoryTools(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory(prefix='math-portability-')
         self.root = Path(self.temp.name)
         shutil.copy2(ROOT / 'start-codex.sh', self.root / 'start-codex.sh')
+        shutil.copy2(ROOT / 'start-session.sh', self.root / 'start-session.sh')
         (self.root / 'tools').mkdir()
         shutil.copy2(ROOT / 'tools/remember-codex-session.py', self.root / 'tools/remember-codex-session.py')
         shutil.copy2(ROOT / 'start-claude.sh', self.root / 'start-claude.sh')
@@ -28,7 +29,10 @@ class RepositoryTools(unittest.TestCase):
         fake = self.root / 'bin/codex'
         fake.write_text(f'#!{sys.executable}\n' +
                         'import os,sys,json\nfrom pathlib import Path\n' +
-                        'Path(os.environ["MATH_LAUNCH_CAPTURE"]).write_text(json.dumps(' +
+                        'p=Path(os.environ["MATH_LAUNCH_CAPTURE"])\n' +
+                        'with p.with_suffix(".jsonl").open("a") as f: f.write(json.dumps(sys.argv[1:])+"\\n")\n' +
+                        'if sys.argv[1:]==["remote-control","start"] and os.environ.get("MATH_FAIL_DAEMON"): sys.exit(7)\n' +
+                        'p.write_text(json.dumps(' +
                         '{"args":sys.argv[1:],"cwd":os.getcwd(),"editor":os.environ["EDITOR"],"visual":os.environ["VISUAL"]}))\n')
         fake.chmod(0o755)
         shutil.copy2(fake, self.root / 'bin/claude')
@@ -39,7 +43,7 @@ class RepositoryTools(unittest.TestCase):
         self.temp.cleanup()
 
     def launch(self, *args):
-        return subprocess.run([str(self.root / 'start-codex.sh'), *args],
+        return subprocess.run([str(self.root / 'start-session.sh'), *args],
                               cwd='/tmp', env=self.env, capture_output=True, text=True, timeout=5)
 
     def test_fresh_checkout_bootstraps_from_files(self):
@@ -57,13 +61,36 @@ class RepositoryTools(unittest.TestCase):
         self.assertIn('model_auto_compact_token_limit=530000', data['args'])
         self.assertEqual(data['cwd'], str(self.root))
         self.assertEqual((data['editor'], data['visual']), ('vim', 'vim'))
+        self.assertEqual(data['args'][:2], ['--remote', 'unix://'])
+        calls = self.capture.with_suffix('.jsonl').read_text().splitlines()
+        self.assertEqual(json.loads(calls[0]), ['remote-control', 'start'])
+        self.assertEqual(len(calls), 2)
 
     def test_existing_checkout_uses_exact_session(self):
         (self.root / '.codex-session-id').write_text(SESSION + '\n')
         self.assertEqual(self.launch().returncode, 0)
         args = json.loads(self.capture.read_text())['args']
         self.assertEqual(args[:2], ['resume', SESSION])
+        self.assertEqual(args[2:4], ['--remote', 'unix://'])
         self.assertNotIn('--last', args)
+
+    def test_daemon_only_launcher_does_not_open_a_session(self):
+        result = subprocess.run([str(self.root / 'start-codex.sh')],
+                                cwd='/tmp', env=self.env, capture_output=True, text=True, timeout=5)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(self.capture.read_text())['args'], ['remote-control', 'start'])
+        self.assertEqual(len(self.capture.with_suffix('.jsonl').read_text().splitlines()), 1)
+
+    def test_daemon_failure_prevents_session_launch(self):
+        self.env['MATH_FAIL_DAEMON'] = '1'
+        self.assertEqual(self.launch().returncode, 7)
+        self.assertFalse(self.capture.exists())
+        self.assertEqual(len(self.capture.with_suffix('.jsonl').read_text().splitlines()), 1)
+
+    def test_session_help_does_not_start_daemon(self):
+        self.assertEqual(self.launch('--help').returncode, 0)
+        self.assertFalse(self.capture.exists())
+        self.assertFalse(self.capture.with_suffix('.jsonl').exists())
 
     def test_explicit_new_bypasses_existing_binding(self):
         (self.root / '.codex-session-id').write_text(SESSION)

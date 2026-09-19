@@ -56,7 +56,7 @@ def main():
                     failures.append('Local reference differs from the audited version: ' + key)
     required = ['notebook.html', 'index.html', 'server.py', 'AGENTS.md', 'COMPUTATION_RULES.md',
                 'README.md', 'research/notes/RESUME.md', 'research/notes/SOURCE_AUDIT.md',
-                'compute.sh', 'start-codex.sh', 'start-claude.sh',
+                'compute.sh', 'start-codex.sh', 'start-session.sh', 'start-claude.sh',
                 'CLAUDE.md', 'research/CLAUDE.md', 'formalization/CLAUDE.md',
                 'resource-controls/setup.py', 'tools/remember-codex-session.py',
                 'tools/archive-session.py', 'requirements-research.txt', 'LICENSE',
@@ -71,7 +71,7 @@ def main():
             failures.append('Runtime or scratch file tracked: ' + name)
     modes = subprocess.check_output(['git', 'ls-files', '--stage', '-z'], cwd=ROOT, text=True).split('\0')
     mode_by_path = {line.split('\t', 1)[1]: line.split(' ', 1)[0] for line in modes if line}
-    for name in ('compute.sh', 'start-codex.sh', 'start-claude.sh', 'tools/remember-codex-session.py', 'tools/archive-session.py'):
+    for name in ('compute.sh', 'start-codex.sh', 'start-session.sh', 'start-claude.sh', 'tools/remember-codex-session.py', 'tools/archive-session.py'):
         if mode_by_path.get(name) != '100755':
             failures.append('Executable mode not tracked: ' + name)
     if args.public_history:

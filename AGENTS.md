@@ -47,7 +47,8 @@ actionable rule over another checklist or a record of one-off setup history.
   never treat validation against an older target as validation of the new one.
 - Work from the repository root; do not assume a particular absolute path, user,
   or machine. The repository supports Codex and Claude Code. `./start-codex.sh`
-  and `./start-claude.sh` resume the exact machine-local ID stored in
+  starts the remote-control daemon; `./start-session.sh` and `./start-claude.sh`
+  resume the exact machine-local ID stored in
   `.codex-session-id` or `.claude-session-id`, or start a fresh
   context-restoration session if absent.
 - On a fresh Codex session explicitly started by its launcher, the main assistant

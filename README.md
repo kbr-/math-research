@@ -160,7 +160,7 @@ resuming work does not require repeating it.
 With Codex CLI installed and authenticated, run:
 
 ```bash
-./start-codex.sh
+./start-session.sh
 ```
 
 On a fresh clone, the launcher starts a session that restores context from the
@@ -169,9 +169,19 @@ committed files. Subsequent launches resume the session recorded locally in
 to require an existing binding. Session IDs, chat history, and authentication
 are not included in the repository.
 
-The launcher selects Vim for Ctrl+G and automatic approval review. Context and
-auto-compaction budgets are editable constants at the top of `start-codex.sh`.
-A Codex CLI version supporting these options is required.
+`start-session.sh` starts or reuses the managed Codex daemon with remote control
+enabled, then connects the terminal over its default Unix socket (`unix://`).
+To start only the background daemon, run `./start-codex.sh`. Neither launcher
+requests a daemon restart. Closing the terminal leaves the daemon running.
+For a new phone pairing, run `codex remote-control pair` and follow the
+[Codex Remote instructions](https://learn.chatgpt.com/docs/remote).
+
+The session launcher selects Vim for Ctrl+G and automatic approval review.
+Context and auto-compaction budgets are shared constants at the top of
+`start-codex.sh`, applied when starting or resuming the terminal session.
+The project `.codex/config.toml` also supplies defaults for phone-created sessions.
+Use the same `CODEX_HOME` for both launchers and pairing. A Codex CLI version
+supporting daemon remote control and `--remote unix://` is required.
 
 With Claude Code, run `./start-claude.sh` instead. It accepts the same options,
 records its session in `.claude-session-id`, and sets the same auto-compaction
