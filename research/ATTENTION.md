@@ -21,6 +21,10 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Quantitative publication headline strengthening the earlier superpolynomial conclusion via the same finite exclusion and clause-transfer mechanism, not independent confirmation of that mechanism.
   Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
   Next: External review of the common proof and quantitative publication statement remains outstanding.
+- **[lem:matching-avoidance-with-slack](<https://kbr.is-a.dev/math-research/#matching-avoidance-with-slack>)** — A uniform bijection of m>=1 rows avoids any fixed forbidden pair set P with probability at most 2^(-|P|/m); log(2) is the sharp uniform exponential constant.
+  Significance: general_tool; novelty: not_claimed.
+  Elementary standard-theorem corollary repairing a shared probability input; no independent novelty claim.
+  Decision (agent): A valid universal matching-avoidance estimate replaces the false constant-one premise; one dense-label threshold is repaired. Further affected reader proofs need separate conditioning and constant audits. No novelty claim.
 - **[third-party:BLVZ-chessboard-filling](<https://kbr.is-a.dev/math-research/#lean-chessboard-filling>)** — For s≥2 and N≥2s-1, every F₂ reduced (s-2)-cycle of the chessboard complex has a filling
   Significance: general_tool; novelty: known.
   Reusable scoped interface; preserve the stated field, degree and source restrictions. BLVZ Theorem 1.1 consequence; full original F₂ statement and all formal proof dependencies verified, including s=2 augmentation
