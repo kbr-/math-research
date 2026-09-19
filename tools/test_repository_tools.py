@@ -55,6 +55,7 @@ class RepositoryTools(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         data = json.loads(self.capture.read_text())
         self.assertNotIn('resume', data['args'])
+        self.assertIn('--approve-for-me', data['args'])
         self.assertIn('research/notes/RESUME.md', data['args'][-1])
         self.assertIn('remember-codex-session.py', data['args'][-1])
         self.assertIn('model_context_window=640000', data['args'])
@@ -68,11 +69,18 @@ class RepositoryTools(unittest.TestCase):
 
     def test_existing_checkout_uses_exact_session(self):
         (self.root / '.codex-session-id').write_text(SESSION + '\n')
-        self.assertEqual(self.launch().returncode, 0)
-        args = json.loads(self.capture.read_text())['args']
-        self.assertEqual(args[:2], ['resume', SESSION])
-        self.assertEqual(args[2:4], ['--remote', 'unix://'])
-        self.assertNotIn('--last', args)
+        for mode in ((), ('--resume',)):
+            with self.subTest(mode=mode):
+                self.assertEqual(self.launch(*mode).returncode, 0)
+                args = json.loads(self.capture.read_text())['args']
+                self.assertEqual(args[:2], ['resume', SESSION])
+                self.assertEqual(args[2:4], ['--remote', 'unix://'])
+                self.assertNotIn('--last', args)
+                self.assertNotIn('--approve-for-me', args)
+                self.assertNotIn('--sandbox', args)
+                self.assertNotIn('--ask-for-approval', args)
+                self.assertIn('model_context_window=600000', args)
+                self.assertIn('model_auto_compact_token_limit=550000', args)
 
     def test_daemon_only_launcher_does_not_open_a_session(self):
         result = subprocess.run([str(self.root / 'start-codex.sh')],
@@ -96,6 +104,7 @@ class RepositoryTools(unittest.TestCase):
         (self.root / '.codex-session-id').write_text(SESSION)
         self.assertEqual(self.launch('--new').returncode, 0)
         self.assertNotIn('resume', json.loads(self.capture.read_text())['args'])
+        self.assertIn('--approve-for-me', json.loads(self.capture.read_text())['args'])
 
     def test_invalid_or_missing_explicit_binding_fails(self):
         self.assertNotEqual(self.launch('--resume').returncode, 0)

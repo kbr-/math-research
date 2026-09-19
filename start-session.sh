@@ -21,7 +21,7 @@ if (( $# )); then
   exit 2
 fi
 
-options=(--remote unix:// --approve-for-me
+options=(--remote unix://
   -c "model_context_window=${CONTEXT_WINDOW_TOKENS}"
   -c "model_auto_compact_token_limit=${AUTO_COMPACT_TOKENS}")
 if [[ "$mode" != new && -f .codex-session-id ]]; then
@@ -31,6 +31,7 @@ if [[ "$mode" != new && -f .codex-session-id ]]; then
     exit 1
   fi
   start_codex_daemon
+  # Remote resume retains the task's existing permissions and rejects overrides.
   exec codex resume "$session_id" "${options[@]}"
 fi
 if [[ "$mode" == resume ]]; then
@@ -40,4 +41,4 @@ fi
 
 bootstrap='Restore this repository research context. First run ./tools/remember-codex-session.py to save this main session ID for the launcher. Then read research/notes/RESUME.md fully and follow its restart checklist. Read the notebook living overview and load further sources only as needed; do not repeat the full handoff import. Summarize readiness without beginning a new research attempt.'
 start_codex_daemon
-exec codex "${options[@]}" "$bootstrap"
+exec codex "${options[@]}" --approve-for-me "$bootstrap"

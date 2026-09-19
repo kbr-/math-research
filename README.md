@@ -176,7 +176,9 @@ requests a daemon restart. Closing the terminal leaves the daemon running.
 For a new phone pairing, run `codex remote-control pair` and follow the
 [Codex Remote instructions](https://learn.chatgpt.com/docs/remote).
 
-The session launcher selects Vim for Ctrl+G and automatic approval review.
+The session launcher selects Vim for Ctrl+G and requests automatic approval
+review for new sessions. Remote resumes retain the task's existing permissions;
+Codex rejects permission overrides when resuming a remote task.
 Context and auto-compaction budgets are shared constants at the top of
 `start-codex.sh`, applied when starting or resuming the terminal session.
 The project `.codex/config.toml` also supplies defaults for phone-created sessions.
