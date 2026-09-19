@@ -173,15 +173,15 @@ class RecoveryIntegrationTest(unittest.TestCase):
         self.prepare_bundle()
         source=self.root/'AGENTS.md';source.write_text('数学🙂 '*5000)
         result=self.command('tools/resume.py');info=json.loads(result.stdout.splitlines()[0])
-        self.assertLess(len(result.stdout.encode()),17000)
-        self.assertGreater(info['parts'],2)
+        self.assertLess(len(result.stdout.encode()),21000)
+        self.assertEqual(info['parts'],3)  # Roughly 55 KB, including multibyte text.
         cached=(self.root/info['path']).read_text()
         source.write_text('Changed after preparation')
         pieces=[]
         for i in range(1,info['parts']+1):
             output=self.command('tools/resume.py','--read',info['bundle'],'--part',str(i)).stdout
             body=output.split('\n',1)[1].rsplit('\nEND RESUME PART ',1)[0]
-            self.assertLessEqual(len(body.encode()),16000)
+            self.assertLessEqual(len(body.encode()),20000)
             pieces.append(body)
         self.assertEqual(''.join(pieces),cached)
         retry=self.command('tools/resume.py','--read',info['bundle'],'--part','1')

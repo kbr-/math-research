@@ -14,7 +14,7 @@ from recovery_evidence import Store, observe
 
 ROOT=Path(__file__).resolve().parents[1]
 FILES=('research/notes/RESUME.md','AGENTS.md','research/AGENTS.md','COMPUTATION_RULES.md')
-PART_BYTES=16000
+PART_BYTES=20000
 
 
 def save_bundle(root, parts):

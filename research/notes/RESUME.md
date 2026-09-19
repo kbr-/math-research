@@ -4,7 +4,9 @@ Run **`python3 tools/resume.py` once per restoration**. It saves the complete
 bundle in ignored runtime storage and immediately emits part 1 with its ID and
 part count. Continue through the remaining parts in order with
 `python3 tools/resume.py --read ID --part N`, using separate bounded outputs.
-Each part contains at most 16,000 UTF-8 payload bytes. Do not `cat`
+Each part contains at most 20,000 UTF-8 payload bytes; allow at least 8,000 output
+tokens per call (including any enclosing tool wrapper). The ordinary current bundle
+fits in three calls; larger bundles may need more. Do not `cat`
 the whole bundle or combine all parts into one oversized tool response. If a part
 is truncated, retry that part with sufficient output allowance; **do not prepare
 another resume**. If already reading the parts, continue without rerunning setup

@@ -9,7 +9,7 @@ This measures observable proxies, not forgotten ideas, and never scans transcrip
 - `python3 tools/resume.py` explicitly marks restoration and saves the required
   guide, instructions, living sections and compact TOC in ignored runtime storage.
   Preparation immediately emits part 1 with a compact ID/count header; subsequent
-  `--read ID --part N` calls emit at most 16,000 UTF-8 payload bytes plus small
+  `--read ID --part N` calls emit at most 20,000 UTF-8 payload bytes plus small
   delimiters and the next command. There is no manifest-only round trip. Read all parts,
   never concatenate them into one oversized response. This is not proof that
   compaction occurred: restoration may follow a restart or fresh session. Ordinary
