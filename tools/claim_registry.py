@@ -159,6 +159,11 @@ def validate(data):
                 require(bool(e['locator']), f"{edge['id']}: non-current endpoint needs a locator")
         if edge['review_status'] == 'reviewed':
             require(bool(edge['evidence']), f"{edge['id']}: reviewed edge needs evidence")
+    decisions=data.get('dependency_decisions',[])
+    require(len({d['candidate_id'] for d in decisions})==len(decisions),'Duplicate dependency candidate decision')
+    for decision in decisions:
+        if decision['state']=='accepted':
+            require(decision['relation_id'] in edge_ids,'Accepted candidate has no recorded relationship')
     return data
 
 

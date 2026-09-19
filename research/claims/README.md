@@ -83,6 +83,40 @@ snapshot cannot be checked automatically for changes; a recorded literature
 assessment is not a new literature search. Curation uses existing proof reports,
 not an implied new kernel replay.
 
+`formalization.status = "no_record"` has a narrow meaning: no explicit per-claim
+mapping in the audited index links and per-claim Lean directories. It does not
+assert that the mathematics has never been formalized or that an existing theorem
+cannot imply it. These reviews also hash the audited Lean inventory; new or changed
+artifacts make the negative mapping results stale until the census is refreshed.
+
+## Dependency discovery and review
+
+Use evidence extraction before opening long entries:
+
+```bash
+./compute.sh --threads 1 --category local_processing python3 tools/claim-dependencies.py \
+  scan --out /tmp/dependency-candidates.json
+./tools/claim-dependencies.py show --input /tmp/dependency-candidates.json \
+  --claim thm:publication-Res-parity-bit-PHP --method lean_declaration_reference -n 5
+```
+
+The scan parses notebook regions once, inventories hyperlinks and explicit claim
+labels, and finds Lean imports and declaration references outside comments/strings.
+Shared or widened source regions and ambiguous targets are flagged. Each candidate
+has a stable ID, extraction method, source locator, occurrences and evidence hashes.
+Unmapped targets and external/file references are retained in the report. Context
+snippets and keyword hints are aids, not semantic judgments; negation, unused
+imports and helper declarations can defeat a naive dependency inference.
+
+`decide --input PATH --candidate ID --state accepted|rejected|pending --reason TEXT
+--reviewer NAME --date YYYY-MM-DD [--relation-id ID]` stores the review decision in
+the registry's optional `dependency_decisions` list. Acceptance requires a matching
+relationship already recorded in the registry; it does not create one automatically.
+The command refuses stale evidence, and `show --state ...` rechecks current source
+hashes. Repeated scans retain decisions by stable candidate identity; changed
+evidence becomes stale. Review ambiguous snippets and the exact owning proof before
+recording `depends_on`; ordinary citations stay distinguishable from proof use.
+
 ## Edit and regenerate
 
 1. Add or update a claim in `index.json`. Preserve its ID and record precise scope

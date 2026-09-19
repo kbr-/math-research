@@ -12,7 +12,7 @@ import unittest
 TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
 import claim_registry as cr
-from claim_reviews import Evidence, make_review, coverage
+from claim_reviews import Evidence, make_review, coverage, verified_declarations
 
 
 def tool(name, filename):
@@ -39,6 +39,14 @@ def endpoint(label):
 
 
 class ClaimRegistryTests(unittest.TestCase):
+    def test_verification_selection_does_not_trust_filename_or_header(self):
+        header='Declarations: MathResearch.claim\n'
+        good="'MathResearch.claim' depends on axioms: [propext, Classical.choice, Quot.sound]\n"
+        self.assertEqual(verified_declarations(header),set())
+        self.assertEqual(verified_declarations(header+'error: build failed\n'),set())
+        self.assertEqual(verified_declarations(header+good),{'MathResearch.claim'})
+        self.assertEqual(verified_declarations(good+'FAIL: another check failed\n'),set())
+        self.assertEqual(verified_declarations(good.replace('Quot.sound','sorryAx')),set())
     def test_minimal_listing_is_complete_untruncated_and_ordered(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)
@@ -109,6 +117,19 @@ class ClaimRegistryTests(unittest.TestCase):
             'claim_sha256':'a'*64,'value_sha256':'b'*64,
             'evidence':[{'target':'https://example.org','sha256':None}]}
         with self.assertRaises(ValueError):cr.validate(data)
+
+    def test_no_record_review_becomes_stale_when_lean_inventory_changes(self):
+        data=cr.upgrade(cr.import_markdown(source()));c=data['claims'][0]
+        c['formalization']['status']='no_record';c['formalization']['scope']='No explicit mapping in audited inventory.'
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);(root/'research').mkdir()
+            (root/'research/inventory.json').write_text('{}')
+            c['reviews']['formalization']=make_review(data,c,'formalization',['inventory.json'],
+                revision='a'*40,date='2026-09-19',reviewer='Test',note='Explicit mapping census only.',evidence=Evidence(root))
+            self.assertEqual(coverage(data,root)['counts']['formalization']['reviewed'],1)
+            (root/'formalization/claims').mkdir(parents=True)
+            (root/'formalization/claims/New.lean').write_text('-- new recorded claim')
+            self.assertEqual(coverage(data,root)['counts']['formalization']['stale'],1)
 
     def test_lossless_import_retains_partial_scope_and_order(self):
         d = cr.import_markdown(source())

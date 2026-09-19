@@ -4,10 +4,25 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import re
 
 from claim_registry import ROOT, TEXT_FIELDS, local_target, require
 
 FIELDS = ('mathematical_status', 'formalization', 'topics', 'significance', 'relationships')
+
+
+def verified_declarations(text):
+    """Names with an actual standard-axiom report, not merely echoed in a header."""
+    if re.search(r'^\s*(?:error:|FAIL:)',text,re.M):
+        return set()
+    result=set()
+    for name,axioms in re.findall(r"'([^'\n]+)' depends on axioms:\s*\[([^\]]*)\]",text):
+        used={a.strip() for a in axioms.split(',') if a.strip()}
+        if not used <= {'propext','Classical.choice','Quot.sound'}:
+            return set()
+        result.add(name)
+    result.update(re.findall(r"'([^'\n]+)' does not depend on any axioms",text))
+    return result
 
 
 def digest(value):
@@ -50,15 +65,28 @@ class Evidence:
         self.cache[target] = hashlib.sha256(content).hexdigest()
         return self.cache[target]
 
+    def formalization_inventory(self):
+        key='__formalization_inventory__'
+        if key not in self.cache:
+            rows=[]
+            for name in ('claims','third-party-claims'):
+                for path in sorted((self.root/'formalization'/name).rglob('*.lean')):
+                    rows.append((str(path.relative_to(self.root)),hashlib.sha256(path.read_bytes()).hexdigest()))
+            self.cache[key]=digest(rows)
+        return self.cache[key]
+
 
 def make_review(data, claim, field, targets, *, revision, date, note,
                 reviewer, state='reviewed', next_action=None, evidence=None):
     require(field in FIELDS, 'Unknown review field')
     evidence = evidence or Evidence()
-    return {'state': state, 'revision': revision, 'date': date, 'reviewer': reviewer,
+    review={'state': state, 'revision': revision, 'date': date, 'reviewer': reviewer,
             'note': note, 'next_action': next_action, 'claim_sha256': claim_digest(claim),
             'value_sha256': digest(field_value(data, claim, field)),
             'evidence': [{'target': target, 'sha256': evidence.sha256(target)} for target in targets]}
+    if field=='formalization' and claim['formalization']['status']=='no_record':
+        review['inventory_sha256']=evidence.formalization_inventory()
+    return review
 
 
 def coverage(data, root=ROOT):
@@ -71,6 +99,8 @@ def coverage(data, root=ROOT):
             state = 'unreviewed' if review is None else review['state']
             reasons = []
             if review:
+                if review.get('inventory_sha256') and review['inventory_sha256']!=evidence.formalization_inventory():
+                    reasons.append('formalization inventory changed; rerun mapping audit')
                 if claim_digest(claim) != review['claim_sha256']:
                     reasons.append('claim text changed')
                 if digest(field_value(data, claim, field)) != review['value_sha256']:

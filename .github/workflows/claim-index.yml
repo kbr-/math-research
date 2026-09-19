@@ -9,10 +9,12 @@ on:
       - 'formalization/**/*.lean'
       - tools/claim_registry.py
       - tools/claim_reviews.py
+      - tools/claim-dependencies.py
       - tools/claim-index.py
       - tools/search-claims.py
       - tools/merge-formalization-appends.py
       - 'tools/tests/test_claim_registry.py'
+      - 'tools/tests/test_claim_dependencies.py'
       - 'tools/tests/test_merge_formalization_appends.py'
       - .github/workflows/claim-index.yml
   pull_request:
@@ -36,4 +38,5 @@ jobs:
           persist-credentials: false
       - run: python3 tools/claim-index.py validate
       - run: python3 -m unittest discover -s tools/tests -p test_claim_registry.py
+      - run: python3 -m unittest discover -s tools/tests -p test_claim_dependencies.py
       - run: python3 -m unittest discover -s tools/tests -p test_merge_formalization_appends.py

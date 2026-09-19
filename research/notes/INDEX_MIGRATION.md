@@ -16,7 +16,7 @@ unchecked and briefly note what remains.
 ## Scope and completion discipline
 
 - Sections 1–5 record the completed structural migration, not completed metadata
-  curation. Sections 6–13 remain pending.
+  curation. Sections 6–13 track the ongoing enrichment; completion is marked item by item.
 - Account for every claim, including additions during the pass, through resumable
   field-level coverage records. `null`, empty lists and "not reviewed" do not
   establish absence; record a reasoned disposition or an explicit unresolved item.
@@ -125,9 +125,11 @@ unchecked and briefly note what remains.
 - [x] Define field-level review metadata: reviewed source revision/anchor, review
       date or checkpoint, disposition, evidence, and unresolved work. Avoid a
       single "reviewed" flag that conceals untouched fields.
-- [ ] Inventory every claim against its full source, including later corrections,
-      formalization records, and publication records. Extract explicit information
-      first; mark interpretations requiring mathematical review separately.
+- [ ] Inventory every claim against its source using automated parsing and evidence
+      extraction, including corrections, formalization and publication records.
+      Validate explicit declarations mechanically; reserve manual reading for
+      ambiguous scope, contradictory evidence and semantic judgments rather than
+      rereading every full notebook entry.
 - [x] Version and migrate the schema as needed for richer formalization,
       significance, topics, relationships, and review provenance; update exporters,
       generated views, merge support, validators, and tests together.
@@ -141,10 +143,10 @@ unchecked and briefly note what remains.
 
 - [ ] Inventory all per-claim Lean files, declarations, route maps, verification
       reports and notebook formalization entries; map them to stable claim IDs.
-- [ ] Populate structured formalization records wherever coverage is already
+- [x] Populate structured formalization records wherever coverage is already
       explicit, including source links and exact scope. Do not leave known
       complete or partial coverage null merely to avoid semantic extraction.
-- [ ] Distinguish full verification, partial verification, stronger hypotheses,
+- [x] Distinguish full verification, partial verification, stronger hypotheses,
       statement-only specification, failed/discrepant formalization, and no
       recorded formalization; record evidence for the classification.
 - [x] Support multiple formalization artifacts/scopes for one claim and shared
@@ -157,7 +159,7 @@ unchecked and briefly note what remains.
 - [ ] Audit consistency between informal scope, structured coverage, Lean links
       and recorded verification evidence. Distinguish inspecting existing evidence
       from performing a fresh kernel replay.
-- [ ] Complete a coverage report for the entire index: every claim has a reviewed
+- [x] Complete a coverage report for the entire index: every claim has a reviewed
       formalization disposition or a specifically recorded unresolved item.
 
 ## 8. Mathematical status, topics, compression and deduplication
@@ -188,8 +190,19 @@ unchecked and briefly note what remains.
 - [ ] Extract candidate citations from the entire Research record and claim source
       passages, mapping entry anchors to claims without assigning an entry's every
       citation to every claim in that entry.
-- [ ] Review every claim's direct proof dependencies from the actual argument;
-      do not populate only the publication or active frontier and call the graph complete.
+- [x] Build reusable dependency discovery tools for notebook hyperlinks, explicit
+      dependency language/lists, claim-label mentions, Lean imports and declaration
+      references. Retain source anchors/lines, extraction method, ownership ambiguity
+      and proposed relationship type for every candidate; report unresolved targets.
+- [ ] Review every claim's direct proof dependencies through that evidence inventory.
+      Accept justified explicit information without a redundant full-entry reread;
+      inspect targeted passages when the tool cannot resolve meaning or ownership.
+      Do not treat imports/citations alone as proof dependencies, or a partial
+      publication/frontier audit as completion of the entire graph.
+- [ ] Add bounded candidate lookup, deduplication and decision tracking so reviewed,
+      rejected and pending suggestions survive reruns and compaction. Test ambiguous
+      shared entries, unused imports, negated dependency language, local definitions,
+      corrections and stale evidence; retain human review for semantic uncertainty.
 - [ ] Populate `depends_on`, `cites`, `refines`, `supersedes`, `corrects`,
       `rediscovers`, `formalizes`, `applies`, and `obstructs` wherever justified;
       define direction and meaning consistently and preserve evidence locators.
@@ -349,3 +362,27 @@ and five initial topic definitions are present. The complete taxonomy, dependenc
 route, field backfill and ongoing-maintenance enforcement remain unfinished.
 Next batch: inventory all existing Lean mappings and recorded scope before further
 curation. No new formalization or external novelty verification was performed.
+
+
+Evidence-discovery checkpoint `index_formalization_metadata_20260919`:
+- Inventoried all 76 per-claim Lean files: 75 index claims have explicit mappings;
+  the remaining file is an import-only publication assembly. Recorded scopes,
+  shared-file ownership and actual named axiom reports are preserved. No new
+  kernel replay was performed. Route-map semantic dependency review remains open.
+- All 866 formalization fields have a reviewed disposition: 74 complete, one
+  partial, and 791 with no explicit mapping in the audited inventory. The latter
+  is a bounded census result, not proof of absence; changes to the Lean corpus
+  make these negative census reviews stale automatically.
+- `tools/claim-dependencies.py scan/show/decide` inventories source evidence for
+  all 866 claims and 75 linked Lean files. There are 1,901 candidate records,
+  nine flagged widened regions, and two unresolved target mappings. This does
+  not yet scan every unindexed Research-record passage or complete the graph.
+- Evidence distinguishes notebook links, claim labels, module imports and Lean
+  identifier references. Nested comments/strings are excluded from code evidence;
+  imports and negated dependency language do not become accepted dependencies.
+  Stable decisions survive rescans; changed source/claim fingerprints go stale.
+- One candidate is calibrated against an already-reviewed publication edge.
+  The full semantic relationship pass, corrections/local-name interpretation,
+  historical/external endpoint mapping, and 863 claims' other metadata remain open.
+- Evidence: `research/results/index_formalization_metadata_20260919/`.
+  Twenty-eight focused registry/discovery tests pass; all 3,492 references resolve.

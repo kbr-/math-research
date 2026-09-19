@@ -69,6 +69,7 @@ def main():
                 'CLAUDE.md', 'research/CLAUDE.md', 'formalization/CLAUDE.md',
                 'research/claims/index.json', 'research/claims/schema.json', 'research/claims/schema-v1.json',
                 'tools/claim_reviews.py',
+                'tools/claim-dependencies.py',
                 'research/claims/README.md', 'tools/claim_registry.py', 'tools/claim-index.py',
                 'resource-controls/setup.py', 'tools/remember-codex-session.py',
                 'tools/archive-session.py', 'requirements-research.txt', 'LICENSE',
@@ -83,7 +84,7 @@ def main():
             failures.append('Runtime or scratch file tracked: ' + name)
     modes = subprocess.check_output(['git', 'ls-files', '--stage', '-z'], cwd=ROOT, text=True).split('\0')
     mode_by_path = {line.split('\t', 1)[1]: line.split(' ', 1)[0] for line in modes if line}
-    for name in ('compute.sh', 'start-codex.sh', 'start-session.sh', 'start-claude.sh', 'tools/remember-codex-session.py', 'tools/archive-session.py', 'tools/claim-index.py'):
+    for name in ('compute.sh', 'start-codex.sh', 'start-session.sh', 'start-claude.sh', 'tools/remember-codex-session.py', 'tools/archive-session.py', 'tools/claim-index.py', 'tools/claim-dependencies.py'):
         if mode_by_path.get(name) != '100755':
             failures.append('Executable mode not tracked: ' + name)
     if args.public_history:
