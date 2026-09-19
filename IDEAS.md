@@ -199,72 +199,6 @@ verified frontier never lags.
   It can guide novelty searches but cannot replace them: formulations and published results
   change. Link it to the same significance register instead of maintaining another queue.
 
-## 7. Context budget: the claim index and the Resume protocol
-
-**The problem.** The claim index costs about 90k tokens when read whole (GPT's estimate), and a
-Resume costs 50–60k tokens before any work starts.
-
-**Measurements (18 September 2026).**
-
-- `research/CLAIM_INDEX.md`: 280 KB, 719 rows in one flat table, about 390 bytes per row, so
-  roughly 70k tokens. About 22% of the bytes are URLs: every row carries two to four full
-  `https://kbr.is-a.dev/math-research/#...` links. No topic sections, no grouping.
-- Resume reading: the instruction files that every request carries (`AGENTS.md` 18 KB,
-  `COMPUTATION_RULES.md` 13 KB, `research/AGENTS.md` 3 KB, `formalization/AGENTS.md` 7 KB when
-  assigned) are about 40 KB, roughly 10k tokens; `RESUME.md` plus the living sections are 34 KB,
-  about 8k tokens; the entry-title scan (`rg` over `<article|<h3>|entry-meta`) is 91 KB if run
-  without the `tail`, about 23k tokens, and this is the largest avoidable item; the latest
-  entries read afterwards are 5–15k. The harness's own system prompt and tool definitions add a
-  fixed 15–20k. Working mathematical context is about 1451 words against the 1,000-word target,
-  so its consolidation is overdue and would cut the living sections roughly in half.
-
-**Assistant's comments.**
-
-- Never read the index whole. That is the single biggest saving, and it needs only the search
-  tool from idea 5: `claim-search.py QUERY` returns matching rows, and the AGENTS rule "search
-  the index before naming a result" changes from "open the file" to "run the tool". With the
-  structured source of idea 5, the tool reads JSON and the Markdown is only for humans.
-- Shrink the rows for the cases where it is read: relative anchors (`#anchor`) instead of full
-  site URLs, one link per row (the full record; statement and Lean links live in the entry),
-  and short status codes (`proof`, `lean`, `finite`, `obstruction`, `conjecture`, `retracted`)
-  with the long status text kept in the entry. Together this is about a 50% cut with no loss of
-  navigation.
-- Split by topic once the index is structured: one generated Markdown file per topic under
-  `research/claims/`, plus the thirty-line topic map. An agent working on the affine route
-  never needs the chessboard rows.
-- For Resume: replace the `rg` scan with a `tools/notebook-toc.py` that prints one compact line
-  per entry (date, anchor, ten-word title) with `--tail N` and `--since DATE`; 233 entries fit
-  in about 5k tokens, and the default tail of 30 in about 1k. Make the living sections the
-  only mandatory read, and read entries by anchor only when the task needs them.
-- Consolidate `AGENTS.md`. It has grown to 18 KB with dated authorization history, repeated
-  policy statements and long checklists. Its own first section asks for a small framework. A
-  pass that keeps every user constraint but states each once, and moves expired grants to a
-  dated note, should bring it near 10 KB. This is paid on every request, so it is the cheapest
-  saving per byte, even though caching hides most of the cost within a session.
-- Keep the working context at its target. The 1,000-word rule exists; it has not been applied
-  for a while because Spin cycles add faster than they consolidate. A dedicated consolidation
-  cycle every N research cycles (or when the section exceeds 1,500 words, checked by
-  `finish-turn.py`) would keep the Resume cost flat.
-- What not to do: do not trim the entries themselves, and do not drop the append-only record
-  to save tokens. The cost problem is in what is read by default, not in what is stored.
-
-**Codex comments (19 September 2026).**
-
-- This is an immediate improvement, independent of a JSON migration. The existing search and
-  excerpt tools already allow bounded reads. Add a compact TOC mode to the existing notebook
-  tool instead of a second parser, and use bounded output that reports truncation explicitly.
-- The living overview also needs consolidation. During this resume, **Where we stand** and
-  **The remaining route** had become substantial chronological histories, while only Working
-  mathematical context has a size target. Keep the current conclusion, decisive obstruction
-  and next obligation in the overview, with links to the full history. Trimming only Working
-  mathematical context will not fix that growth.
-- Plain `#anchor` links in a GitHub Markdown index target that Markdown page, not the live
-  notebook. Compact links must still resolve correctly in each rendering surface; shorter
-  agent-facing tool output is a safer first saving than globally rewriting public links.
-- The dated byte counts above are snapshots, not token measurements. Judge improvements by
-  the text actually loaded during restoration and whether it retains necessary hypotheses.
-  Consolidate duplicate rules and expired grants without erasing current constraints.
-
 ## 8. Claim graph: structured, visualized on GitHub Pages
 
 **The idea.** Represent the claims and their relations as a graph in a structured format that a
@@ -381,3 +315,73 @@ context (the notebook excerpt tool does this for entries but not for claims).
   degree conventions and hypotheses can make near-duplicates mathematically different.
   Preserve stable labels and correction links. Retracted claims must remain searchable so
   they are not rediscovered or used accidentally.
+
+### 7. Context budget: the claim index and the Resume protocol
+
+**Completed 19 September 2026.** See the [implemented context plan](research/notes/CONTEXT_BUDGET_PLAN.md)
+and its measurement evidence. Hard budgets cover every pre-record region; original
+proposals and comments are retained below.
+
+**The problem.** The claim index costs about 90k tokens when read whole (GPT's estimate), and a
+Resume costs 50–60k tokens before any work starts.
+
+**Measurements (18 September 2026).**
+
+- `research/CLAIM_INDEX.md`: 280 KB, 719 rows in one flat table, about 390 bytes per row, so
+  roughly 70k tokens. About 22% of the bytes are URLs: every row carries two to four full
+  `https://kbr.is-a.dev/math-research/#...` links. No topic sections, no grouping.
+- Resume reading: the instruction files that every request carries (`AGENTS.md` 18 KB,
+  `COMPUTATION_RULES.md` 13 KB, `research/AGENTS.md` 3 KB, `formalization/AGENTS.md` 7 KB when
+  assigned) are about 40 KB, roughly 10k tokens; `RESUME.md` plus the living sections are 34 KB,
+  about 8k tokens; the entry-title scan (`rg` over `<article|<h3>|entry-meta`) is 91 KB if run
+  without the `tail`, about 23k tokens, and this is the largest avoidable item; the latest
+  entries read afterwards are 5–15k. The harness's own system prompt and tool definitions add a
+  fixed 15–20k. Working mathematical context is about 1451 words against the 1,000-word target,
+  so its consolidation is overdue and would cut the living sections roughly in half.
+
+**Assistant's comments.**
+
+- Never read the index whole. That is the single biggest saving, and it needs only the search
+  tool from idea 5: `claim-search.py QUERY` returns matching rows, and the AGENTS rule "search
+  the index before naming a result" changes from "open the file" to "run the tool". With the
+  structured source of idea 5, the tool reads JSON and the Markdown is only for humans.
+- Shrink the rows for the cases where it is read: relative anchors (`#anchor`) instead of full
+  site URLs, one link per row (the full record; statement and Lean links live in the entry),
+  and short status codes (`proof`, `lean`, `finite`, `obstruction`, `conjecture`, `retracted`)
+  with the long status text kept in the entry. Together this is about a 50% cut with no loss of
+  navigation.
+- Split by topic once the index is structured: one generated Markdown file per topic under
+  `research/claims/`, plus the thirty-line topic map. An agent working on the affine route
+  never needs the chessboard rows.
+- For Resume: replace the `rg` scan with a `tools/notebook-toc.py` that prints one compact line
+  per entry (date, anchor, ten-word title) with `--tail N` and `--since DATE`; 233 entries fit
+  in about 5k tokens, and the default tail of 30 in about 1k. Make the living sections the
+  only mandatory read, and read entries by anchor only when the task needs them.
+- Consolidate `AGENTS.md`. It has grown to 18 KB with dated authorization history, repeated
+  policy statements and long checklists. Its own first section asks for a small framework. A
+  pass that keeps every user constraint but states each once, and moves expired grants to a
+  dated note, should bring it near 10 KB. This is paid on every request, so it is the cheapest
+  saving per byte, even though caching hides most of the cost within a session.
+- Keep the working context at its target. The 1,000-word rule exists; it has not been applied
+  for a while because Spin cycles add faster than they consolidate. A dedicated consolidation
+  cycle every N research cycles (or when the section exceeds 1,500 words, checked by
+  `finish-turn.py`) would keep the Resume cost flat.
+- What not to do: do not trim the entries themselves, and do not drop the append-only record
+  to save tokens. The cost problem is in what is read by default, not in what is stored.
+
+**Codex comments (19 September 2026).**
+
+- This is an immediate improvement, independent of a JSON migration. The existing search and
+  excerpt tools already allow bounded reads. Add a compact TOC mode to the existing notebook
+  tool instead of a second parser, and use bounded output that reports truncation explicitly.
+- The living overview also needs consolidation. During this resume, **Where we stand** and
+  **The remaining route** had become substantial chronological histories, while only Working
+  mathematical context has a size target. Keep the current conclusion, decisive obstruction
+  and next obligation in the overview, with links to the full history. Trimming only Working
+  mathematical context will not fix that growth.
+- Plain `#anchor` links in a GitHub Markdown index target that Markdown page, not the live
+  notebook. Compact links must still resolve correctly in each rendering surface; shorter
+  agent-facing tool output is a safer first saving than globally rewriting public links.
+- The dated byte counts above are snapshots, not token measurements. Judge improvements by
+  the text actually loaded during restoration and whether it retains necessary hypotheses.
+  Consolidate duplicate rules and expired grants without erasing current constraints.

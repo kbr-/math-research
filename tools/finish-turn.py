@@ -13,6 +13,7 @@ import tempfile
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from claim_registry import load as load_claims, render as render_claims
 from claim_maintenance import check_revision
+from notebook_context import check as check_context
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -122,6 +123,7 @@ def finish(root, turn, next_turn=None):
     notebook = root / 'notebook.html'
     marker = f'<!-- TIMING {turn} -->'
     validate_marker(notebook.read_text(), marker)
+    check_context(root)  # Fail before stopping timing, archiving, or changing the notebook.
     validate_append_only(root)
     if (root / 'research/claims/index.json').exists():
         claims = load_claims(root / 'research/claims/index.json')
@@ -181,10 +183,6 @@ def finish(root, turn, next_turn=None):
     finally:
         if temporary is not None:
             temporary.unlink(missing_ok=True)
-    context = re.search(r'<section id="working-context">(.*?)</section>', updated, re.S)
-    words = len(re.sub(r'<[^>]*>', ' ', context.group(1)).split()) if context else 0
-    if words > 1500:
-        print(f'Working mathematical context has {words} words (soft target 1000): consolidate it.')
     print(f'Finished {turn}: timing embedded and evidence archived; review and commit.')
     print('Stage with the entry: notebook.html '
           f'research/results/{turn}/timing.html research/provenance/session-records/{turn}')

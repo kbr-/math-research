@@ -112,7 +112,7 @@ record uses ordinary HTML, Markdown, code, and data files.
 
 | Task | Tools and records |
 | --- | --- |
-| Recover the right context | [Restart guide](research/notes/RESUME.md) and [validated section excerpts](tools/notebook-excerpt.py) avoid repeatedly loading the full history. |
+| Recover the right context | The [restart guide](research/notes/RESUME.md), [bounded contents/excerpts](tools/notebook-excerpt.py) and [enforced overview budgets](tools/notebook_context.py) keep restoration focused without shortening the research record. |
 | Find and reuse results | The [generated claim index](research/CLAIM_INDEX.md) links stable labels and exact scopes to full records; the [structured registry and lookup tools](research/claims/README.md) support compact search and future graph navigation. |
 | Check selected claims formally | The [Lean project](formalization/README.md) pins Lean and Mathlib for terminal-based proof checking; the claim index links completed formalizations and their exact scope. |
 | Run and measure experiments | [compute.sh](compute.sh) combines resource controls, timeouts, complete output logs, and timing reports that count overlap once. |
@@ -221,7 +221,7 @@ goal field:
 ```
 
 The Spin prompt uses the maintainer's standing authorization to push `main`
-under [the Git policy](AGENTS.md#portable-sessions-and-git-checkpoints).
+under [the Git policy](AGENTS.md#portable-sessions-git-and-publication).
 For another checkout or branch, specify any needed overrides in the goal.
 For local-only work, append: "Override Spin's branch and publication
 instructions: stay on the current branch, commit locally, and do not push."

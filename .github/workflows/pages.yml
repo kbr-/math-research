@@ -33,6 +33,8 @@ jobs:
         with:
           persist-credentials: false
       - uses: actions/configure-pages@v5
+      - name: Enforce living notebook budgets
+        run: python3 tools/notebook_context.py
       - name: Test the static notebook build
         run: python3 -m unittest discover -s tests -p 'test_pages.py'
       - name: Build the public notebook

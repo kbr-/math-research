@@ -202,9 +202,10 @@ So perform the following, in a loop:
 - implement any clear, bounded framework improvement identified by that
   assessment, following AGENTS.md's guidance to keep the framework small, and
   `git commit` it separately
-- Push reviewed research and framework checkpoints to origin/main under
-  AGENTS.md's standing Spin publication authorization. It covers the entire
-  active Spin task, not only the latest checkpoint. Stay on main.
+- Push reviewed research and framework checkpoints to origin/main only under
+  an active explicit publication grant, following AGENTS.md's scope/expiry rules.
+  A grant covering Spin applies to its checkpoints until it expires or is revoked;
+  this reference does not renew an expired grant. Stay on main.
 - regarding the above: I want to see https://kbr.is-a.dev/math-research/ updated
   with lots of delicious new research when I wake up
 - **IMPORTANT: if compaction happens, do the resuming**, i.e. "Read

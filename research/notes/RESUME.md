@@ -1,138 +1,83 @@
 # Resume here after compaction
 
-**Read this guide fully, then read the initial sections of
-[notebook.html](../../notebook.html).** The notebook is the single source of truth
-for the current mathematical state. This file is a stable reading map, not a
-second research summary. Change it only when navigation or workflow changes.
-
-**The handoff import is complete.** The notebook's **Before this notebook**
-section is historical context only, not a reading assignment. Do not open or
-follow `php_codex_handoff/HANDOFF.md` during resume, including on a fresh clone,
-and do not repeat its one-off bootstrap/import instructions. Read selected
-historical mathematical sources only when the current research task needs them.
+Read this guide fully. **The notebook is the single source of truth for current
+mathematics.** This file is a stable reading map, not a second status summary.
+The handoff import is complete: **do not read HANDOFF.md or the compendium PDF**
+on resume, even in a fresh clone. “Before this notebook” is historical context.
 
 ## Restart checklist
 
-1. Read the current user request and the root and `research/AGENTS.md` rules.
-   If the request is only to restore context, complete the reading below, report
-   readiness, and stop. Do not begin a research attempt, create a timing session
-   or notebook entry, or rerun verification merely for context restoration.
-   If research is requested or already underway, restore context and continue it;
-   compaction alone is not a reason to stop an authorized task.
-   For active parallel formalization, restore the route's assignments, pinned
-   integration/release commits, and worker status before editing. Follow the
-   root coordinator-ownership policy; do not duplicate an active worker.
-   For active Spin, also restore the standing publication authorization recorded
-   in the root AGENTS.md Git policy, subject to any later user changes.
-   Before computations, read [COMPUTATION_RULES.md](../../COMPUTATION_RULES.md),
-   verify `./compute.sh --status`, and initialize the controls after reboot if
-   needed. For research turns, start timing as early as practical, including
-   necessary context reading; follow the policy for phases, protected jobs,
-   evidence, and timing tables. Do not backfill a separate restoration turn's time.
-2. Read the notebook from its beginning up to the **Research record**:
-   **Where we stand**, **The remaining route**, **Proposed next step**,
-   **Working mathematical context**, and **Gaps identified by formalization**.
-   Both research and formalization agents must read the gaps section; follow
-   its linked entries when a discrepancy affects the assigned work.
-   Working mathematical context is an orientation map of
-   the exact setup and degree conventions, active tools with linked hypotheses
-   and proofs, and unresolved dependencies. It is organized by topic, not as a
-   catalogue of every past turn. From the repository root:
+1. Restore the current user task and root/scoped AGENTS instructions. If asked only
+   to restore context, read and report readiness; do not start research, timing or
+   verification. If authorized work is underway, continue it after restoration.
+   For coordinated work, restore assignments, immutable integration checkpoints
+   and worker status before editing. Restore any actual publication grant and its
+   expiry; compaction neither revokes nor renews authorization. Only an explicitly
+   bootstrapped main Codex session binds its local session ID; never bind a worker.
+2. For an active research cycle, restore/start timing as early as practical under
+   [COMPUTATION_RULES.md](../../COMPUTATION_RULES.md), including required reading;
+   do not invent time for earlier restoration. Before computations check
+   `./compute.sh --status` and initialize controls after reboot if needed. Work
+   from the repository root; no dependency installation without authorization.
+3. Read **all content before Research record**, including formalization gaps:
 
    ```bash
    ./tools/notebook-excerpt.py --current
    ```
 
-3. Scan record titles and stable anchors, then read mathematical entries relevant
-   to the current task or needed to understand the latest mathematical status.
-   Skip administrative/workflow entries unless the task needs them; recency alone
-   does not make an entry necessary. Do not load the entire growing record:
+   This supplies the goal, highest-risk route, next step, exact working conventions
+   and active warnings. Its summaries orient; they do not replace proof reading.
+4. Scan compact record titles, then read relevant entries, not the whole record:
 
    ```bash
-   rg -n '<article|<h3>|class="entry-meta"' notebook.html | tail -n 30
+   ./tools/notebook-excerpt.py --toc
+   ./tools/notebook-excerpt.py --toc --tail 20 --since 2026-09-01
+   ./tools/notebook-excerpt.py ANCHOR
    ```
 
-   Read an exact heading or entry with `./tools/notebook-excerpt.py ANCHOR`.
-   A heading stops before its next peer or enclosing section boundary; an entry
-   includes its full article. Optional `--until END_ANCHOR` validates both ends
-   before output, and `--out PATH` saves a new file. Missing or ambiguous anchors
-   fail instead of spilling the rest of the record into context. Follow explicit
-   correction/retraction links before relying on an earlier result.
-4. Distinguish orientation from proof readiness. The notebook restores enough
-   context to identify the next action; its summaries do not replace exact proofs.
-   Before extending or composing a theorem, read its precise hypotheses and the
-   relevant argument, including degree conventions and dependencies. Load only
-   the passages needed for that task using the source map below. Do not repeat
-   the full manuscript/reference import or rerun historical suites merely to
-   establish context. Restoring an audit summary is not a new source verification.
-5. After each research turn, update the notebook's living sections and append
-   the complete result or failed attempt, with its measured timing table. Archive
-   evidence and commit the related checkpoint locally under the root rules.
-   Follow the root publication policy, including explicit user overrides. Routine setup/admin
-   turns do not require a mathematical entry. Do not maintain a duplicate current
-   mathematical summary in this file or the supporting notes.
-   Revise and consolidate **Working mathematical context** rather than adding a
-   subsection there for every turn. Review it yourself against a soft target of
-   roughly 1,000 prose words, with no user review or approval needed for routine
-   consolidation. Link to full records for arguments, failed approaches, testing,
-   and reading history. Preserve necessary definitions, hypotheses, degree bounds,
-   and gaps even if they need more space. Every research turn still gets its full
-   append-only Research-record entry, with no word limit. Condensing working
-   context must never erase the underlying result or evidence.
+   TOC defaults to the latest ten entries and reports omissions. Dates come from
+   stable entry IDs; undated entries remain visible. Exact heading excerpts stop
+   at the next peer/enclosing boundary; articles include their full record.
+   `--until END_ANCHOR` validates both boundaries; `--out PATH` saves a new file.
+   Recency alone does not make administrative entries necessary reading.
+5. Before mathematical reliance, read exact hypotheses, proof, encoding, original
+   degree conventions and applicable corrections. Before proposing/naming a result,
+   search for existing versions. Reuse saved verification evidence without calling
+   that a fresh verification. Do not rerun old suites solely to restore context.
+6. Follow the root research-turn, index-maintenance and local-checkpoint rules.
+   Keep every research turn's full record and evidence; consolidate living sections
+   yourself under the shared hard budgets. `python3 tools/notebook_context.py`
+   reports counts. Preserve essential mathematics via exact links, not by dropping
+   qualifications. Change this guide only when navigation/workflow changes.
 
-## Source and evidence map
+## Bounded claim and source navigation
 
-- New claims: use `tools/search-claims.py WORDS` for bounded ranked results or
-  `tools/search-claims.py --show LABEL` for complete metadata and source links.
-  Read the indicated notebook passage with the excerpt tool. The
-  [continued-research index](../CLAIM_INDEX.md) is a generated human view of the
-  [structured registry](../claims/README.md); do not read either full data file on resume.
-  If a task explicitly needs the complete inventory, use
-  `tools/claim-index.py list --fields id,summary --format tsv` for untruncated,
-  metadata-free output. `tools/claim-index.py coverage` locates pending/stale
-  field reviews without loading the full registry. Restore the root index
-  maintenance contract: changed claims need complete evidence-backed dispositions,
-  while untouched backlog stays in coverage. Use `claim-index.py changed --base REV`
-  for the current changed scope; a pending question is not completed curation.
-  For dependency curation, `tools/claim-dependencies.py` provides scan/show/decide
-  commands with source evidence and ambiguity flags; see the registry guide.
-  For research orientation and metadata curation, start with
-  `tools/claim-dependencies.py packet --claim ID`;
-  use its statement/qualification excerpts and open larger source passages only
-  for unresolved meaning, scope or conflicting evidence during triage. Before
-  mathematical reliance, follow the exact-statement/proof requirement in step 4.
-  Browse the generated [topic map](../claims/views/topics.md) or use
-  `claim-index.py views topics --out /tmp/claim-topics.json` for taxonomy orientation; consult the registry
-  guide for output options. `claim-index.py graph` provides typed dependency,
-  citation and correction-impact queries. Impact identifies review scope, not
-  automatic invalidation. For new records, `claim-index.py author template`
-  and `author prepare` produce a source-backed proposal; fill its explicit
-  dispositions and validate rather than copying migration-era empty metadata.
-  Default `claim-index.py render` regenerates human and topic views together.
-
-- Formal proofs: [Lean project](../../formalization/README.md) contains per-claim
-  formalizations and verification instructions; the claim index links each
-  formalized result and its verified scope. Consult it when formalization is
-  explicitly assigned, then read [formalization rules](../../formalization/AGENTS.md)
-  under the root AGENTS.md policy. Neither is required during routine resume.
-
-- Historical proofs: [claim index](../../php_codex_handoff/manuscript/CLAIM_INDEX.md)
-  and selected records of `php_codex_handoff/manuscript/claims.json` locate the
-  original chapters and TeX. Preserve the handoff unchanged; new work belongs
-  outside it. Do not read the separately supplied compendium PDF.
-- Source verification: [SOURCE_AUDIT.md](SOURCE_AUDIT.md) and
-  [IMPORT_LOG.md](IMPORT_LOG.md) preserve exact locators, coverage, and limitations.
-  Check [reference availability](../references/README.md) and redistribution
-  metadata before access: some PDFs/full text do not travel with a public clone.
-- Supporting evidence: `research/results/` and `research/provenance/`.
-  The notebook's Research record is the sole research log. Historical import snapshots
-  [MATHEMATICAL_CHECKPOINT.md](MATHEMATICAL_CHECKPOINT.md) and
-  [STATUS_AND_AUDIT.md](STATUS_AND_AUDIT.md) are not live status summaries.
-  Consult their dated audit details as needed; the notebook carries current status
-  and later corrections. A conflict is an audit issue to resolve from the exact
-  evidence, not permission to silently rewrite history.
-- Setup and portable sessions: [README.md](../../README.md). Work from the
-  checkout root using relative paths. Only a main session explicitly bootstrapped
-  by the launcher should bind its local session ID; never bind an unrelated chat
-  or subagent. Durable research must remain in committed files, not chat history,
-  an agent's private memory, or ignored runtime directories.
+- `tools/search-claims.py WORDS` ranks bounded results; `--show LABEL` exposes
+  complete metadata and links. `tools/claim-dependencies.py packet --claim ID`
+  gives selected evidence and limitations, **not proof readiness**.
+- If all claims are needed, use `tools/claim-index.py list --fields id,summary
+  --format tsv`; never load the whole registry by default. The generated
+  [topic map](../claims/views/topics.md) groups claims. `claim-index.py graph`
+  offers dependencies/citations/impact; impact is review scope, not invalidity.
+- `claim-index.py coverage` exposes pending/stale reviews; `changed --base REV`
+  checks changed scope. The [registry workflow](../claims/README.md) explains
+  authoring templates, five-field dispositions, typed edges and explicit article
+  inventories. Edit structured metadata, then `claim-index.py render`; Markdown
+  and topic views are generated. Unknowns need specific questions and next actions.
+- Historical claims: use selected local Markdown passages via the immutable
+  [historical claim index](../../php_codex_handoff/manuscript/CLAIM_INDEX.md).
+  [SOURCE_AUDIT.md](SOURCE_AUDIT.md) and [IMPORT_LOG.md](IMPORT_LOG.md) preserve
+  provenance and limitations. Check [reference availability](../references/README.md)
+  and redistribution policy; private full text does not travel with a public clone.
+- Formalization: only when explicitly assigned, read the [Lean guide](../../formalization/README.md)
+  and [formalization rules](../../formalization/AGENTS.md). Ordinary research still
+  reads notebook formalization gaps. Preserve exact verified scope, not just links.
+- Supporting evidence lives in `research/results/` and `research/provenance/`.
+  Older checkpoint notes and Git revisions are historical snapshots, not current
+  summaries. Resolve conflicts against exact records; do not silently rewrite them.
+  Use the assigned plan's durable progress/evidence for interrupted work; the
+  [workflow-utilities plan](WORKFLOW_UTILITIES_PLAN.md) owns any future generic
+  interruption-note mechanism. This guide creates no competing recovery store.
+- [README.md](../../README.md) owns portable setup. A clone restores research from
+  files, not machine-local chat history or private agent memory. Private memory
+  may hold preferences only, never mathematical state or progress.

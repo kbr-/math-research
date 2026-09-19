@@ -1,0 +1,35 @@
+name: Validate notebook context budgets
+
+on:
+  push:
+    paths:
+      - notebook.html
+      - research/context-budgets.json
+      - tools/notebook_context.py
+      - tools/notebook-excerpt.py
+      - tools/finish-turn.py
+      - tools/tests/test_notebook_context.py
+      - tools/tests/test_notebook_excerpt.py
+      - tools/tests/test_finish_turn.py
+      - .github/workflows/context-budget.yml
+  pull_request:
+    paths:
+      - notebook.html
+      - research/context-budgets.json
+      - 'tools/**'
+      - .github/workflows/context-budget.yml
+
+permissions:
+  contents: read
+
+jobs:
+  context:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - run: python3 tools/notebook_context.py
+      - run: python3 -m unittest discover -s tools/tests -p test_notebook_context.py
+      - run: python3 -m unittest discover -s tools/tests -p test_notebook_excerpt.py
+      - run: python3 -m unittest discover -s tools/tests -p test_finish_turn.py

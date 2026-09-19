@@ -18,6 +18,7 @@ class FinalizationTest(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
         (self.root / 'tools').mkdir()
+        shutil.copy2(ROOT / 'tools/notebook_context.py', self.root / 'tools/notebook_context.py')
         for name in ('tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_notices.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_evidence.py', 'tools/notebook-excerpt.py', 'tools/claim_registration.py'):
             shutil.copy2(ROOT / name, self.root / name)
         # Exercise real metadata, report generation and archival without requiring
@@ -49,6 +50,9 @@ sys.exit(compute.main())
             guard.chmod(0o755)
         self.command_env = dict(os.environ, PATH=str(bin_dir) + os.pathsep + os.environ.get('PATH', ''))
         (self.root / 'research/claims').mkdir(parents=True)
+        (self.root / 'research/context-budgets.json').write_text(json.dumps({
+            'version': 1, 'hard_multiplier': 1.5, 'characters_per_word': 12,
+            'total_soft_words': 100, 'regions': {'@intro': 100}}))
         for schema in ('schema.json', 'schema-v1.json'):
             shutil.copy2(ROOT / 'research/claims' / schema, self.root / 'research/claims' / schema)
         self.command('compute.sh', 'start', 'test_turn', '--agent', 'Test agent',
@@ -221,6 +225,21 @@ sys.exit(compute.main())
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('claim index is stale', result.stderr)
         self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
+
+    def test_context_overflow_leaves_clock_and_evidence_untouched(self):
+        notebook = self.root / 'notebook.html'
+        content = ('<p>' + 'word ' * 151 + '</p><section id="research-record">'
+                   '<article><p class="entry-meta">Status.</p><!-- TIMING test_turn -->'
+                   '</article></section>')
+        notebook.write_text(content)
+        before = (self.root / 'research/logs/test_turn.jsonl').read_bytes()
+        result = self.command('tools/finish-turn.py', 'test_turn', check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('Notebook context hard limit exceeded', result.stderr)
+        self.assertEqual(notebook.read_text(), content)
+        self.assertEqual((self.root / 'research/logs/test_turn.jsonl').read_bytes(), before)
+        self.assertFalse((self.root / 'research/results').exists())
+        self.assertFalse((self.root / 'research/provenance').exists())
 
 
 if __name__ == '__main__':

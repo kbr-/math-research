@@ -3,9 +3,33 @@
 # Copyright (c) 2026 Kamil Braun. SPDX-License-Identifier: MIT
 
 import argparse
+from datetime import date
 from html.parser import HTMLParser
 from pathlib import Path
+import re
 import sys
+
+
+MATH = re.compile(r'\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]')
+
+
+def visible_text(source):
+    """Visible HTML text with literal TeX retained, not mistaken for markup."""
+    class Text(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=True)
+            self.parts = []
+        def handle_data(self, data):
+            self.parts.append(data)
+        def handle_starttag(self, tag, attrs):
+            if tag not in {'a', 'span', 'strong', 'em', 'b', 'i', 'code', 'sub', 'sup'}:
+                self.parts.append(' ')
+        def handle_endtag(self, tag):
+            self.handle_starttag(tag, [])
+    source = MATH.sub(lambda m: m.group().replace('<', '&lt;').replace('>', '&gt;'), source)
+    parser = Text()
+    parser.feed(source); parser.close()
+    return ' '.join(''.join(parser.parts).split())
 
 
 class Notebook(HTMLParser):
@@ -15,7 +39,8 @@ class Notebook(HTMLParser):
         self.offsets = [0]
         for line in source.splitlines(keepends=True):
             self.offsets.append(self.offsets[-1] + len(line))
-        self.feed(source)
+        # Preserve offsets while protecting TeX comparisons from HTML parsing.
+        self.feed(MATH.sub(lambda m: m.group().replace('<', ' ').replace('>', ' '), source))
         self.close()
         if self.stack:
             raise ValueError("Unclosed notebook section or heading")
@@ -66,21 +91,54 @@ class Notebook(HTMLParser):
             raise ValueError("The end anchor must follow the start anchor")
         return self.source[node["start"]:end].rstrip() + "\n"
 
+    def toc(self, tail=10, since=None):
+        if tail < 1:
+            raise ValueError('--tail must be positive')
+        record = self.anchor('research-record')
+        entries = [n for n in self.nodes if n['tag'] == 'article'
+                   and record['start'] < n['start'] < record['close']]
+        rows = []
+        for node in entries:
+            if not node['anchor']:
+                raise ValueError('Research-record article lacks an anchor')
+            match = re.search(r'\d{4}-\d{2}-\d{2}', node['anchor'])
+            stamp = date.fromisoformat(match.group()) if match else None
+            if since and stamp and stamp < since:
+                continue
+            heading = next((n for n in self.nodes if n['tag'] == 'h3'
+                            and node['start'] < n['start'] < node['close']), None)
+            title = visible_text(self.source[heading['start']:heading['end']]) if heading else '(untitled)'
+            # Date is already in the first column; retain only the descriptive title.
+            title = re.sub(r'^\d{1,2} [A-Za-z]+ \d{4}\s*[—–:-]\s*', '', title)
+            words = title.split()
+            short = ' '.join(words[:10]) + (' …' if len(words) > 10 else '')
+            rows.append(f'{stamp or "undated"}\t{node["anchor"]}\t{short}')
+        return '\n'.join(rows[-tail:]) + ('\n' if rows else ''), max(0, len(rows)-tail)
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("anchor", nargs="?", help="Section, article, or heading ID")
     parser.add_argument("--current", action="store_true",
                         help="Read everything before Research record")
+    parser.add_argument('--toc', action='store_true', help='Compact record contents, latest 10 by default')
+    parser.add_argument('--tail', type=int, help='Maximum TOC entries, newest in record order')
+    parser.add_argument('--since', type=date.fromisoformat, help='TOC date filter (YYYY-MM-DD); undated entries retained')
     parser.add_argument("--until", help="Stop before this exact anchor instead")
     parser.add_argument("--out", type=Path, help="Write a new file instead of stdout")
     args = parser.parse_args()
-    if bool(args.anchor) == args.current or (args.current and args.until):
-        parser.error("Choose an anchor (optionally --until), or --current")
+    if sum((bool(args.anchor), args.current, args.toc)) != 1 or (args.until and not args.anchor):
+        parser.error('Choose an anchor (optionally --until), --current, or --toc')
+    if not args.toc and (args.tail is not None or args.since is not None):
+        parser.error('--tail and --since require --toc')
     try:
         source = (Path(__file__).resolve().parents[1] / "notebook.html").read_text()
         notebook = Notebook(source)
-        if args.current:
+        if args.toc:
+            result, omitted = notebook.toc(args.tail if args.tail is not None else 10, args.since)
+            if omitted:
+                print(f'{omitted} matching earlier entries omitted; use --tail to expand.', file=sys.stderr)
+        elif args.current:
             result = source[:notebook.anchor("research-record")["start"]].rstrip() + "\n"
         else:
             result = notebook.excerpt(args.anchor, args.until)
