@@ -80,6 +80,7 @@ Note, not a task: ECCC requires submissions to be understandable by researchers 
   - Revision 1: all [Lean] links pin b47e9b1; Section 10.1 names 54f0937 for version 1 and b47e9b1 for revision 1. Novelty searches were genuinely redone on 17 September 2026 and the text names both dates.
 - [ ] Make independent verification trivial: a one-line verify script at the top of the README with the expected `#print axioms` output, a public green CI run, and a tagged release for a stable reference (C2 step 5). Check what already exists; the hosted Lean workflow is now manual-only.
   - Revision 1: verify command and expected axiom line added to the publication README. Not done, author decisions: a public green CI run (the hosted workflow is manual-only and targets only `claims.BitPHPSuperpolynomial`) and a tagged release.
+  - Later author clarification: the submission is a self-contained paper with no supplementary README. Put the reader-facing verification instructions and expected output in the paper itself; the existing repository README is not a substitute. See the focused reproduction item below.
 - [ ] Get the formalization built and its axioms printed by an independent party (C1).
 - [ ] Ask an independent Res(⊕) expert to check that the Lean definitions are the standard system (`AffineDAGRegistry.lean`, `BitPHPInitialBridge.lean`, top-level statement: arbitrary affine pivots, unrestricted semantic weakening, size as node count, BPHP encoding, axiom report). Do this first, without waiting for the rewrite (C2 step 1).
 
@@ -95,3 +96,115 @@ Items from a further Claude review conversation of revision 1 (an AI review, not
 - [x] Decided by the author: keep the notebook vocabulary, defined once in Section 2.5; it is part of the paper's character. Suggestion was: terminology, if revised again: "extension axiom" for companion and "block family" for registry, keeping the notebook names in parentheses for the Lean links.
 - [x] Citation key [BIKPRS] lacked a year; now [BIKPRS96].
 
+### From an expert asked for arXiv endorsement (18 September 2026)
+
+An expert in the area, asked to endorse the arXiv submission, wants time to read and check the argument before deciding. He raised one correction:
+
+- [ ] The introduction says Res(⊕) "was introduced by Itsykson and Sokolov". This overlooks Raz–Tzameret (2008), which introduced resolution over linear equations under an essentially equivalent definition, formulated over the integers; Itsykson and Sokolov subsequently studied the tree-like F₂ version, resolution over parities. Cite both and say, for example, that resolution over linear equations was introduced by Raz and Tzameret and that its F₂ version, resolution over parities, was subsequently studied by Itsykson and Sokolov in the tree-like setting. The same sentence pattern occurs in the abstract's first line ("extends resolution by allowing …") and in the related-work paragraph, which already credits Raz–Tzameret; make all three consistent.
+
+### From a ChatGPT review of revision 1
+
+Triaged from the author's additional conversation excerpt. These are AI reviewer
+suggestions, not an independent mathematical or literature audit. Checked items
+below mean already covered or explicitly declined; unchecked items are proposed
+edits, not changes already made to the whitepaper. The excerpt's proposed
+literature table and Lean declaration names still require verification.
+
+#### Focused follow-up edits
+
+- [ ] Make the common-kernel argument easier to find as the conceptual center of
+  the proof: many high-rank affine restrictions → one common low-degree
+  polynomial → weighted elimination. Section 2 already explains this and
+  Section 5 has an “Idea of the common kernel” paragraph. Strengthen their
+  signposting and cross-reference the affine-exclusion theorem; a wholesale
+  restructuring or an additional novelty claim is unnecessary.
+- [ ] Emphasize the exact bridge from restriction to elimination in the overview:
+  **zero ordinary polynomial restriction**, not just vanishing at F₂ points,
+  gives `f = Σ a_i g_i` with `deg a_i ≤ k−1`. Cite the existing standalone
+  “Ordinary restriction dimension and ideal membership” lemma directly at that
+  step. The lemma already states and proves the distinction; no duplicate boxed
+  lemma is needed.
+- [ ] Make the three removal cases visually explicit in Section 5: low rank
+  uses packing; high rank with one in the input span uses a constant substitution
+  making the product zero; proper high rank uses the common kernel and bounded
+  cofactors. The weighted-removal proof already handles all three. Explain once
+  that properness makes the zero flat nonempty and its codimension equal to the
+  input-span rank, and that `3ℓ(k+1)+1` is the integer threshold for
+  `r > 3ℓ(k+1)`.
+- [ ] Extend the existing parameter table with where the conditions are used,
+  rather than adding a second symbol glossary: `m ln(4M) ≤ k²` and `k ≤ m`
+  for the kernel estimate, `D ≥ 2h+1` for removal, `B = k(D+1)` for its output
+  degree, `4(k−1) < n` for cube separation, and `2B−1 ≤ n` for the old-system
+  moment/separation range. Keep `n = 2^ℓ` explicit and use the actual theorem
+  hypotheses rather than the excerpt's compressed formulas.
+- [ ] Add a compact formal-verification map in the paper's verification section
+  or an appendix: paper label → pinned Lean file → exact declaration
+  and scope. Prioritize the common kernel, bounded-cofactor ideal membership,
+  cube degree drop/coefficient isolation, matching extension and filling,
+  clause simulation, and headline theorem. Existing per-statement [Lean] links
+  already supply much of this; verify declaration names from source rather
+  than copying the review's illustrative names. Keep Lean details out of the
+  proof narrative and link to the map there.
+- [ ] Include a self-contained reproduction guide in the paper's verification
+  section or an appendix: repository URL, clone → immutable checkout → setup →
+  verify commands, required prerequisites, expected axioms, and the fresh-replay
+  command. The existing repository README supplies some of this material, but
+  the submission must not require a supplementary README. Resolve
+  the version distinction explicitly: the cited theorem sources are pinned to
+  `b47e9b1`, but `claims/BitPHPPreprintRevision1.lean` was added later, so that
+  aggregate command needs a pinned commit containing it. This refines the
+  existing reproducibility item; it does not require a new build merely to
+  record this feedback.
+- [ ] Optional: summarize the existing related-work prose in a small comparison
+  table if it improves scanning. Give each row its citation, exact formula,
+  inference system, regularity/depth restrictions, and bound with its size
+  parameter. Do not copy the excerpt's placeholder rows or presume all prior
+  results concern standard bit-PHP. Verify those facts against primary sources
+  when preparing the table; omit tree-like or other restricted variants unless
+  they materially clarify the comparison. Coordinate with the expert's pending
+  attribution correction above.
+
+#### Already covered or not adopted
+
+- [x] Retitle with “superpolynomial” instead of “exponential”: not adopted.
+  This conflicts with the author's explicit decision above. Keep the title and
+  the existing clarification after Theorem 1.1: the bound is
+  `2^Ω(n/log² n)`, or `2^(L^(1/3−o(1)))` in formula size, with neither
+  `2^Ω(n)` nor `2^Ω(L)` claimed. The reviewer is right to insist on the
+  parameter distinction; the current text already supplies it.
+- [x] State the system and unrestricted scope prominently: already covered by
+  the introduction's displayed rules, arbitrary affine pivots, semantic
+  weakening, DAG node count, and explicit absence of regularity and proof-depth
+  restrictions. Theorem 1.1 and the scope paragraph state the result. Preserve
+  that precision; no second headline theorem or expanded catalogue of systems
+  is needed.
+- [x] Give the dimension argument in one uninterrupted calculation: already
+  present in the common-kernel proof, including the binomial comparison,
+  exponential factor, and total image dimension at most one quarter of the
+  lower bound for `dim L_k`. Preserve the separate `r_* > v` case; the review's
+  compressed display is not a replacement for the proof.
+- [x] State that the homological prerequisites are proved, not axiomatized:
+  already explicit in Section 10.1, which names the chessboard filling theorem
+  and reports no custom axiom or unproved chessboard interface. Appendix A and
+  the existing Lean links support this. The verification map can make it easier
+  to locate without adding another assurance to the mathematical narrative.
+- [x] Globally replace “affine polynomial” with “affine-linear polynomial”:
+  unnecessary as a blanket edit. The affine input tuples and affine forms are
+  defined in context; use “affine-linear” selectively if a particular sentence
+  could be confused with a general polynomial on an affine space. Retain the
+  author's earlier terminology decision.
+
+### From the author: parameter-table readability
+
+- [ ] Increase the vertical whitespace between rows of the parameter table in
+  Section 2. The current rows are hard to distinguish. Prefer extra row spacing
+  over horizontal rules between every row, retaining the existing table rules.
+  Check readability in the rendered PDF when implementing this change, including
+  any added explanations of where parameter conditions are used.
+
+### From the author: self-contained submission
+
+The paper will be submitted as a self-contained document; there will be no
+supplementary README. Include the verification map and reproduction instructions
+in the paper or its appendices. Pinned links to the formal proof sources remain
+appropriate, but reader-facing explanations must not be delegated to a README.
