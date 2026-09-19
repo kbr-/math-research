@@ -82,8 +82,11 @@ historical mathematical sources only when the current research task needs them.
 
 ## Source and evidence map
 
-- New claims: [continued-research index](../CLAIM_INDEX.md) locates full notebook
-  statements, proofs, and obstructions by stable label. Use it for targeted lookup.
+- New claims: use `tools/search-claims.py WORDS` for bounded ranked results or
+  `tools/search-claims.py --show LABEL` for complete metadata and source links.
+  Read the indicated notebook passage with the excerpt tool. The
+  [continued-research index](../CLAIM_INDEX.md) is a generated human view of the
+  [structured registry](../claims/README.md); do not read either full data file on resume.
 
 - Formal proofs: [Lean project](../../formalization/README.md) contains per-claim
   formalizations and verification instructions; the claim index links each

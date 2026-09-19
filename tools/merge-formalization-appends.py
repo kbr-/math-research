@@ -8,9 +8,15 @@ manual review; no historical article or index row may be changed or removed.
 """
 
 import argparse
+import json
 from pathlib import Path
 import re
 import subprocess
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from claim_registry import load as load_registry, validate as validate_registry, render as render_index
+from claim_registry import parse_json
 
 
 ARTICLE = re.compile(r'<article\b[^>]*id="([^"]+)"[^>]*>.*?</article>', re.S)
@@ -102,6 +108,32 @@ def merge_index(base, ours, theirs):
     return original + '\n' + '\n'.join(additions) + '\n'
 
 
+def merge_registry(base, ours, theirs):
+    """Union additions only; refuse semantic edits to existing claims or edges."""
+    records = [validate_registry(parse_json(text)) for text in (base, ours, theirs)]
+    original = records[0]
+    for branch in records[1:]:
+        require({k: v for k, v in branch.items() if k not in ('claims', 'relationships')} ==
+                {k: v for k, v in original.items() if k not in ('claims', 'relationships')},
+                'Registry metadata changed; review manually.')
+        for field in ('claims', 'relationships'):
+            require(branch[field][:len(original[field])] == original[field],
+                    f'Existing {field} changed; review manually.')
+    result = dict(original)
+    for field in ('claims', 'relationships'):
+        result[field] = list(original[field])
+        known = {item['id']: item for item in result[field]}
+        for branch in records[1:]:
+            for item in branch[field][len(original[field]):]:
+                if item['id'] in known:
+                    require(known[item['id']] == item, f'Conflicting {field} ID: {item["id"]}')
+                else:
+                    result[field].append(item)
+                    known[item['id']] = item
+    validate_registry(result)
+    return json.dumps(result, ensure_ascii=False, indent=2) + '\n'
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--overview-file', type=Path,
@@ -113,15 +145,25 @@ def main():
     require(any((Path(git('rev-parse', '--git-path', name).strip())).exists()
                 for name in ('rebase-merge', 'rebase-apply')), 'No rebase is in progress.')
     conflicts = set(git('diff', '--name-only', '--diff-filter=U').splitlines())
-    allowed = {'notebook.html', 'research/CLAIM_INDEX.md'}
+    registry_path = 'research/claims/index.json'
+    allowed = {'notebook.html', 'research/CLAIM_INDEX.md', registry_path}
     require(conflicts and conflicts <= allowed, 'Unrelated conflicts require manual review.')
     reviewed = args.overview_file.read_text() if args.overview_file else None
     outputs = {}
-    originals = {name: (root / name).read_bytes() for name in conflicts}
-    for name in sorted(conflicts):
+    touched = set(conflicts)
+    structured = (root / registry_path).exists()
+    if structured and conflicts & {registry_path, 'research/CLAIM_INDEX.md'}:
+        touched.add('research/CLAIM_INDEX.md')
+        touched.add(registry_path)
+    originals = {name: (root / name).read_bytes() for name in touched}
+    for name in sorted(conflicts - ({'research/CLAIM_INDEX.md'} if structured else set())):
         stages = [git('show', f':{stage}:{name}') for stage in (1, 2, 3)]
-        outputs[name] = (merge_notebook(*stages, reviewed) if name == 'notebook.html'
-                         else merge_index(*stages))
+        outputs[name] = (merge_notebook(*stages, reviewed) if name == 'notebook.html' else
+                         merge_registry(*stages) if name == registry_path else merge_index(*stages))
+    if structured and conflicts & {registry_path, 'research/CLAIM_INDEX.md'}:
+        registry = (json.loads(outputs[registry_path]) if registry_path in outputs else
+                    load_registry(root / registry_path))
+        outputs['research/CLAIM_INDEX.md'] = render_index(registry)
     # Validate all files before writing either one. Leave Git staging explicit.
     for name, original in originals.items():
         require((root / name).read_bytes() == original, 'File changed during review; retry.')

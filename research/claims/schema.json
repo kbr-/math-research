@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Continued-research claim registry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "preamble", "claims", "relationships"],
+  "properties": {
+    "schema_version": {"type": "integer", "enum": [1]},
+    "preamble": {"type": "string"},
+    "claims": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
+    "relationships": {"type": "array", "items": {"$ref": "#/$defs/relationship"}}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1},
+    "strings": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "claim": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "summary", "assessment", "record", "mathematical_status", "formalization", "topics", "significance"],
+      "properties": {
+        "id": {"type": "string", "pattern": "[^\\s`|]+"},
+        "summary": {"$ref": "#/$defs/text"},
+        "assessment": {"$ref": "#/$defs/text"},
+        "record": {"$ref": "#/$defs/text"},
+        "mathematical_status": {"enum": [null, "working_proof", "established", "conditional", "conjecture", "finite_check", "refutation", "retracted", "context"]},
+        "formalization": {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "scope", "references"],
+          "properties": {
+            "status": {"enum": [null, "not_started", "partial", "complete"]},
+            "scope": {"type": ["string", "null"]},
+            "references": {"$ref": "#/$defs/strings"}
+          }
+        },
+        "topics": {"$ref": "#/$defs/strings"},
+        "significance": {"type": ["string", "null"]}
+      }
+    },
+    "endpoint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["namespace", "id", "locator"],
+      "properties": {
+        "namespace": {"enum": ["current", "historical", "external"]},
+        "id": {"$ref": "#/$defs/text"},
+        "locator": {"type": ["string", "null"]}
+      }
+    },
+    "relationship": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "source", "target", "type", "evidence", "review_status"],
+      "properties": {
+        "id": {"$ref": "#/$defs/text"},
+        "source": {"$ref": "#/$defs/endpoint"},
+        "target": {"$ref": "#/$defs/endpoint"},
+        "type": {"enum": ["cites", "depends_on", "refines", "supersedes", "corrects", "rediscovers", "formalizes", "applies", "obstructs"]},
+        "evidence": {"$ref": "#/$defs/strings"},
+        "review_status": {"enum": ["unreviewed", "reviewed"]}
+      }
+    }
+  }
+}

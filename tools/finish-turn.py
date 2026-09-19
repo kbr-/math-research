@@ -10,6 +10,9 @@ import subprocess
 import sys
 import tempfile
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from claim_registry import load as load_claims, render as render_claims
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -118,6 +121,10 @@ def finish(root, turn, next_turn=None):
     marker = f'<!-- TIMING {turn} -->'
     validate_marker(notebook.read_text(), marker)
     validate_append_only(root)
+    if (root / 'research/claims/index.json').exists():
+        claims = load_claims(root / 'research/claims/index.json')
+        if (root / 'research/CLAIM_INDEX.md').read_text() != render_claims(claims):
+            raise ValueError('Generated claim index is stale; run tools/claim-index.py render')
     if next_turn and (root / 'research/logs' / f'{next_turn}.jsonl').exists():
         raise ValueError('Next session already exists; omit --next when retrying finalization')
 

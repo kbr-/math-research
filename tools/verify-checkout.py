@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 import subprocess
 
+from claim_registry import load as load_claims, render as render_claims, check_targets
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -24,6 +26,13 @@ def main():
     args = parser.parse_args()
     tracked = set(subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT, text=True).split('\0')) - {''}
     failures = []
+    try:
+        registry = load_claims(ROOT / 'research/claims/index.json')
+        if (ROOT / 'research/CLAIM_INDEX.md').read_text() != render_claims(registry):
+            failures.append('Generated claim index is stale; run tools/claim-index.py render')
+        failures += ['Claim link: ' + str(error) for error in check_targets(registry, ROOT)['errors']]
+    except (ValueError, OSError) as error:
+        failures.append('Claim registry: ' + str(error))
     manifest = json.loads((ROOT / 'research/provenance/handoff-files.json').read_text())
     for entry in manifest['files']:
         path = ROOT / entry['path']
@@ -58,6 +67,8 @@ def main():
                 'README.md', 'research/notes/RESUME.md', 'research/notes/SOURCE_AUDIT.md',
                 'compute.sh', 'start-codex.sh', 'start-session.sh', 'start-claude.sh',
                 'CLAUDE.md', 'research/CLAUDE.md', 'formalization/CLAUDE.md',
+                'research/claims/index.json', 'research/claims/schema.json',
+                'research/claims/README.md', 'tools/claim_registry.py', 'tools/claim-index.py',
                 'resource-controls/setup.py', 'tools/remember-codex-session.py',
                 'tools/archive-session.py', 'requirements-research.txt', 'LICENSE',
                 'ATTRIBUTION.md', 'CITATION.cff', 'THIRD_PARTY_NOTICES.md']
@@ -71,7 +82,7 @@ def main():
             failures.append('Runtime or scratch file tracked: ' + name)
     modes = subprocess.check_output(['git', 'ls-files', '--stage', '-z'], cwd=ROOT, text=True).split('\0')
     mode_by_path = {line.split('\t', 1)[1]: line.split(' ', 1)[0] for line in modes if line}
-    for name in ('compute.sh', 'start-codex.sh', 'start-session.sh', 'start-claude.sh', 'tools/remember-codex-session.py', 'tools/archive-session.py'):
+    for name in ('compute.sh', 'start-codex.sh', 'start-session.sh', 'start-claude.sh', 'tools/remember-codex-session.py', 'tools/archive-session.py', 'tools/claim-index.py'):
         if mode_by_path.get(name) != '100755':
             failures.append('Executable mode not tracked: ' + name)
     if args.public_history:

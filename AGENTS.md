@@ -198,10 +198,13 @@ actionable rule over another checklist or a record of one-off setup history.
   anchor locally; agents should still read local source excerpts when available.
   Adding or repairing links in earlier entries is allowed if their statements
   and proofs remain unchanged; mathematical corrections require a new dated entry.
-- Maintain [research/CLAIM_INDEX.md](research/CLAIM_INDEX.md) as concise navigation
-  to new claims and obstructions: stable labels, status, and full-record links.
+- Maintain [research/claims/index.json](research/claims/index.json) as the authoritative
+  claim metadata; [research/CLAIM_INDEX.md](research/CLAIM_INDEX.md) is generated navigation.
+  Follow [the registry workflow](research/claims/README.md), preserving labels, exact
+  scope, and full-record links; regenerate with `tools/claim-index.py render`.
   Before proposing a next step or developing or naming a result, search the index
-  for the same object or template and read the relevant claims. Label rediscoveries and refinements and link the
+  with `tools/search-claims.py WORDS` or `--show LABEL`, then read the relevant source
+  passages; do not load the whole registry. Label rediscoveries and refinements and link the
   original record; link corrections or retractions to their new dated entries.
 - Read **Gaps identified by formalization** during context restoration, including
   ordinary research sessions. This concise section precedes Research record and
@@ -213,7 +216,7 @@ actionable rule over another checklist or a record of one-off setup history.
   assigned parallel formalization agent; ordinary research and Spin do not
   require formalizing results. Read [formalization/AGENTS.md](formalization/AGENTS.md)
   when assigned, not as mandatory reading for every research cycle. For each formalized claim,
-  update its entry in research/CLAIM_INDEX.md with a link to the per-claim Lean
+  update its structured claim record and regenerate the index with a link to the per-claim Lean
   file and the exact verified scope, identifying partial coverage or stronger
   hypotheses. Keep formalization status distinct from mathematical status:
   absence of a formalization does not make a result incomplete, and a verified

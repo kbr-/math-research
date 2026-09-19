@@ -17,8 +17,10 @@ class FinalizationTest(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
         (self.root / 'tools').mkdir()
-        for name in ('compute.sh', 'tools/finish-turn.py', 'tools/archive-session.py'):
+        for name in ('compute.sh', 'tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py'):
             shutil.copy2(ROOT / name, self.root / name)
+        (self.root / 'research/claims').mkdir(parents=True)
+        shutil.copy2(ROOT / 'research/claims/schema.json', self.root / 'research/claims/schema.json')
         self.command('compute.sh', 'start', 'test_turn', '--agent', 'Test agent',
                      '--model', 'Test model, high')
 
@@ -137,6 +139,18 @@ class FinalizationTest(unittest.TestCase):
         result = self.command('tools/finish-turn.py', 'test_turn', check=False)
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(notebook.read_text(), content)
+        self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
+
+    def test_stale_claim_view_does_not_stop_session(self):
+        data = {'schema_version': 1, 'preamble': '# Index\n\n', 'claims': [], 'relationships': []}
+        (self.root / 'research/claims/index.json').write_text(json.dumps(data))
+        (self.root / 'research/CLAIM_INDEX.md').write_text('stale view\n')
+        (self.root / 'notebook.html').write_text(
+            '<section id="research-record"><article><p class="entry-meta">Status.</p>'
+            '<!-- TIMING test_turn --></article></section>')
+        result = self.command('tools/finish-turn.py', 'test_turn', check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('claim index is stale', result.stderr)
         self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
 
 
