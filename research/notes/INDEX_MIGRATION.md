@@ -570,3 +570,21 @@ against the actual finite deduction. Totals: 35 reviewed inventories, 327 pendin
 504 unreviewed; 82 canonical edges. Historical computation reports were inspected
 for meaning, not rerun or recertified. Classification totals and seven pending
 significance audits are unchanged.
+
+
+Source/preprocessing cluster `index_source_dependencies_20260919`: fifteen pending
+inventories closed, 29 new scoped edges (four existing edges retained), bringing
+totals to 50 reviewed / 312 pending / 504 unreviewed inventories and 111 edges.
+Imported BIKPRS inputs point to the existing source audit. Accuracy-two refinements
+and the distinct 6p-2/4p-2 MOD images retain their actual scope. The MOD identity and
+its surrounding certificate have a provenance citation cycle, not a proof cycle.
+
+User explicitly authorized parallel migration work on 19 September 2026. Active
+bounded assignments: classifications [360,520), [520,680), [680,end); dependency
+closure [48,160), [160,360); derived topic views and duplicate-discovery tooling.
+Workers write disjoint patch/evidence directories under research/results/parallel_index_*;
+the coordinator alone integrates canonical metadata, notebook records and checkpoints.
+Respect existing reviewed seeds, validate source fingerprints, and retain pending
+questions. This authorizes delegation for the migration, not publication or new
+formalization work. Worker artifacts are integrated only after review; do not stage
+other workers' in-progress files into an unrelated checkpoint.
