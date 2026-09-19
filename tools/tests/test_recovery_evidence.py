@@ -128,8 +128,11 @@ class RecoveryIntegrationTest(unittest.TestCase):
         with patch.dict(os.environ,{'MATH_RECOVERY_DISABLED':'0'}):
             self.assertEqual(snapshot(root=self.root,turn='test_turn')['episodes'],[])
         resumed=self.command('tools/resume.py')  # Finds this stream's active clock.
-        self.assertIn('RESUME BUNDLE',resumed.stdout)
-        self.assertEqual(resumed.stdout.count('Fixture instructions for AGENTS.md'),1)
+        manifest=json.loads(resumed.stdout.splitlines()[0])
+        self.assertIn('Fixture instructions',resumed.stdout)
+        outputs=[self.command('tools/resume.py','--read',manifest['bundle'],'--part',str(i)).stdout
+                 for i in range(1,manifest['parts']+1)]
+        self.assertEqual(''.join(outputs).count('Fixture instructions for AGENTS.md'),1)
         self.command('tools/resume.py','--session','test_turn')
         self.command('tools/notebook-excerpt.py','--current')
         self.command('tools/notebook-excerpt.py','statement')
@@ -155,7 +158,7 @@ class RecoveryIntegrationTest(unittest.TestCase):
         self.command('compute.sh','report','test_turn','--stop')
         logs=self.root/'research/logs';before=sorted(p.name for p in logs.glob('*.jsonl'))
         output=self.command('tools/resume.py')
-        self.assertIn('END RESUME BUNDLE',output.stdout)
+        self.assertGreater(json.loads(output.stdout.splitlines()[0])['parts'],0)
         self.assertEqual(sorted(p.name for p in logs.glob('*.jsonl')),before)
         with patch.dict(os.environ,{'MATH_RECOVERY_DISABLED':'0'}):
             report=snapshot(root=self.root)
@@ -163,6 +166,32 @@ class RecoveryIntegrationTest(unittest.TestCase):
         self.assertIsNone(report['episodes'][0]['timing_session'])
         self.assertIsNone(report['episodes'][0]['elapsed_to_work_s'])
         failed=self.command('tools/resume.py','--session','test_turn',check=False)
+        self.assertNotEqual(failed.returncode,0)
+        self.assertEqual(failed.stdout,'')
+
+    def test_bounded_cached_parts_preserve_unicode_and_retries_do_not_resume(self):
+        self.prepare_bundle()
+        source=self.root/'AGENTS.md';source.write_text('数学🙂 '*5000)
+        result=self.command('tools/resume.py');info=json.loads(result.stdout.splitlines()[0])
+        self.assertLess(len(result.stdout.encode()),17000)
+        self.assertGreater(info['parts'],2)
+        cached=(self.root/info['path']).read_text()
+        source.write_text('Changed after preparation')
+        pieces=[]
+        for i in range(1,info['parts']+1):
+            output=self.command('tools/resume.py','--read',info['bundle'],'--part',str(i)).stdout
+            body=output.split('\n',1)[1].rsplit('\nEND RESUME PART ',1)[0]
+            self.assertLessEqual(len(body.encode()),16000)
+            pieces.append(body)
+        self.assertEqual(''.join(pieces),cached)
+        retry=self.command('tools/resume.py','--read',info['bundle'],'--part','1')
+        self.assertIn('RESUME PART 1/',retry.stdout)
+        with patch.dict(os.environ,{'MATH_RECOVERY_DISABLED':'0'}):
+            report=snapshot(root=self.root,turn='test_turn')
+        self.assertEqual(len(report['episodes']),1)
+        self.assertGreater(report['episodes'][0]['unchanged_repeat_reads'],0)
+        corrupted=self.root/info['path'];raw=bytearray(corrupted.read_bytes());raw[0]^=1;corrupted.write_bytes(raw)
+        failed=self.command('tools/resume.py','--read',info['bundle'],'--part','1',check=False)
         self.assertNotEqual(failed.returncode,0)
         self.assertEqual(failed.stdout,'')
 

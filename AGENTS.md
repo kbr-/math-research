@@ -16,9 +16,10 @@ rules to growing checklists or one-off setup narratives.
 
 ## Restoration and research discipline
 
-- Restore with `python3 tools/resume.py`: its single bundle includes
+- Restore with `python3 tools/resume.py`, then read its listed bounded parts. The bundle includes
   `research/notes/RESUME.md`, required rules, notebook living sections/gaps and
-  compact contents. Follow the included guide without rereading bundled files,
+  compact contents. Retry missing parts without preparing another resume or concatenating
+  the full file into one tool response. Follow the guide without rereading bundled files,
   then load only relevant records. Do not load the growing record or index wholesale.
   Keep `php_codex_handoff/` immutable; its import is complete. New work belongs
   outside it, usually in `research/`. Use targeted source passages.

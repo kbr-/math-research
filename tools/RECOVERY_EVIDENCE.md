@@ -1,15 +1,22 @@
 # Automatic recovery evidence
 
 The existing tools collect a baseline before we decide whether interruption notes
-would pay for themselves. A single explicit resume command replaces the separate
-required-file reads; other hooks add no routine console output or agent steps.
+would pay for themselves. One explicit resume preparation collects the required
+files; bounded reads deliver them without oversized tool responses. Other hooks
+add no routine console output or agent steps.
 This measures observable proxies, not forgotten ideas, and never scans transcripts.
 
-- `python3 tools/resume.py` explicitly marks restoration and emits the required
-  guide, instructions, living sections and compact TOC once. It is not proof that
+- `python3 tools/resume.py` explicitly marks restoration and saves the required
+  guide, instructions, living sections and compact TOC in ignored runtime storage.
+  Preparation immediately emits part 1 with a compact ID/count header; subsequent
+  `--read ID --part N` calls emit at most 16,000 UTF-8 payload bytes plus small
+  delimiters and the next command. There is no manifest-only round trip. Read all parts,
+  never concatenate them into one oversized response. This is not proof that
   compaction occurred: restoration may follow a restart or fresh session. Ordinary
   `notebook-excerpt.py --current` calls never start/reset a recovery window. Repeated
-  explicit resume calls censor the earlier window rather than inventing a duration.
+  explicit preparations censor the earlier window rather than inventing a duration.
+  Part reads/retries do not start a new resume or reset timing. Only emitted parts
+  are logged as reads; saving the bundle is not falsely counted as loaded context.
   The command finds the identified stream's active timing session, or accepts
   `--session TURN`; it marks a **Context restoration** phase there. No session is
   started for a restoration-only request. `--formalization` includes the extra
@@ -46,6 +53,13 @@ boot IDs are exported. Systemd children inherit an opaque routing key. Automatic
 identity uses `CODEX_THREAD_ID` or `CLAUDE_SESSION_ID` when provided; other hosts can
 provide `MATH_RECOVERY_STREAM`. Missing or shared identity limits attribution;
 it must not be interpreted as evidence about an individual agent.
+
+`research/logs/resume-bundles/` holds temporary delivery caches, not a second
+research record or tracked historical snapshot. Each preparation saves one complete
+UTF-8 file and byte-range/hash manifest. Reads use that fixed payload even if source
+files subsequently change, verify part integrity, and never split a UTF-8 character.
+Do not commit these caches. Their read fingerprints are chunk-based, so changing
+source lengths can shift boundaries and conservatively reduce repeat detection.
 
 Existing timing summaries acquire a `recovery_proxy` field for newly instrumented
 sessions. Normal `compute.sh report` output and timing tables are unchanged; the

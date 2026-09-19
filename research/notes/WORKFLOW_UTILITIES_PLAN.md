@@ -16,8 +16,9 @@ research, formalization, parallel agents, installations, or publication.
 - [x] Embed silent recovery-proxy collection into existing retrieval and timing
       tools, with automatic archival in timing summaries. See
       [the mechanism and limitations](../../tools/RECOVERY_EVIDENCE.md).
-- [x] Use an explicit one-call resume bundle as the marker, not ordinary notebook
-      overview reads. Reuse the existing parser and add a restoration phase to an
+- [x] Use explicit resume preparation as the marker, not ordinary notebook
+      overview reads. Deliver the cached bundle in bounded, retryable parts without
+      extra resume events. Reuse the existing parser and add a restoration phase to an
       active cycle's timing table; do not create a research cycle just to restore.
 - [ ] Evaluate several actual recovery candidates: observed delays, repeated
       unchanged outputs and possible computation repeats. Separate necessary
