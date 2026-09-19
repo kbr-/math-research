@@ -126,6 +126,9 @@ class AuthoringTest(unittest.TestCase):
         affected = self.request(base, 'lem:a', base['claims'][0])['submissions'][0]
         affected['dispositions']['mathematical_status']['note'] = 'Original statement retained; correction applies to its bound.'
         request['submissions'].append(affected)
+        with self.assertRaisesRegex(ValueError, 'explicitly refresh significance review for fix-a'):
+            prepare(base, request, self.root)
+        affected['dispositions']['significance']['note'] = 'Corrected bound retains the route-specific significance; no independent novelty claim.'
         proposed, report = prepare(base, request, self.root)
         self.assertTrue(report['passed'])
         self.assertEqual(proposed['claims'][0]['record'], base['claims'][0]['record'])

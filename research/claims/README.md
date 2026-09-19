@@ -290,7 +290,7 @@ stopping its clock; CI checks the push/PR base, covering all commits being integ
 - Metadata-only enrichment checks changed fields/reviews, allowing the historical
   backlog to be curated incrementally. Changed topic definitions affect all their
   users. Changed incident edges affect endpoint relationship reviews.
-- Corrections and supersessions require an explicit new status review of the
+- Corrections and supersessions require explicit new status and significance reviews of the
   target. They do not automatically mark it false: partial corrections and
   refinements need their actual scope recorded. Preserve its stable ID and dated
   source; no silent deletion of indexed claims.
