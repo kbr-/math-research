@@ -16,9 +16,10 @@ rules to growing checklists or one-off setup narratives.
 
 ## Restoration and research discipline
 
-- Start mathematical work with `research/notes/RESUME.md`; follow it after
-  compaction, including all notebook living sections and formalization gaps,
-  then only relevant records. Do not load the growing record or index wholesale.
+- Restore with `python3 tools/resume.py`: its single bundle includes
+  `research/notes/RESUME.md`, required rules, notebook living sections/gaps and
+  compact contents. Follow the included guide without rereading bundled files,
+  then load only relevant records. Do not load the growing record or index wholesale.
   Keep `php_codex_handoff/` immutable; its import is complete. New work belongs
   outside it, usually in `research/`. Use targeted source passages.
 - On opening a research cycle, name the top-level remaining-route obligation,

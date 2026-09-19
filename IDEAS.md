@@ -199,6 +199,13 @@ verified frontier never lags.
   It can guide novelty searches but cannot replace them: formulations and published results
   change. Link it to the same significance register instead of maintaining another queue.
 
+**Implementation update (19 September 2026).** Interruption notes are deferred
+pending evidence of benefit. The [recovery collector](tools/RECOVERY_EVIDENCE.md)
+now uses an explicit one-call resume bundle, existing phase markers and silent
+retrieval/job hooks. Ordinary overview reads are not resume signals. Evaluate the
+observed overhead before adding another note-writing requirement; the benchmark
+map remains a separate pending task.
+
 ## 8. Claim graph: structured, visualized on GitHub Pages
 
 **The idea.** Represent the claims and their relations as a graph in a structured format that a

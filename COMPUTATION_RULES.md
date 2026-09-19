@@ -148,6 +148,11 @@ category (`computation`, `local_processing`, `formal_verification`,
 Metadata commands (`start`, `phase`, `report`, `--status`) are small control
 operations outside computation services.
 
+`tools/resume.py` marks `restoration` in an existing active cycle; ordinary phase
+markers resume normal accounting. Silent [recovery evidence](tools/RECOVERY_EVIDENCE.md)
+is preserved in timing summaries and their existing archives. Resuming alone starts
+no research clock; ordinary notebook overview reads do not mark a resume.
+
 The default timeout is 180 seconds; set `--timeout SECONDS` before `--` for longer
 work. Timeouts and interrupts stop the actual service and its children, with a
 systemd runtime limit as a backstop. Full output and timing records are saved in

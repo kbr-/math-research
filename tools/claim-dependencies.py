@@ -362,7 +362,10 @@ def main():
     elif args.command=='packet':
         packet=metadata_packet(load(),args.claim,limit=args.n,width=args.width)
         if args.out:write_json(args.out,packet)
-        print(packet_text(packet),end='')
+        text=packet_text(packet)
+        print(text,end='')
+        from recovery_evidence import observe
+        observe('read',tool='claim-packet',selector=[args.claim,args.n,args.width],text=text)
     elif args.command=='scan':
         report=scan(load());write_json(args.out,report)
         print(json.dumps({k:v for k,v in report.items() if k not in ('candidates','unresolved','external_or_file_references','widened_source_regions')},indent=2))

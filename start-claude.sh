@@ -43,5 +43,5 @@ fi
 session_id="$(python3 -c 'import uuid; print(uuid.uuid4())')"
 printf '%s\n' "$session_id" > .claude-session-id
 
-bootstrap='Restore this repository research context. Read research/notes/RESUME.md fully and follow its restart checklist. Read the notebook living overview and load further sources only as needed; do not repeat the full handoff import. Summarize readiness without beginning a new research attempt.'
+bootstrap='Restore this repository research context. Run python3 tools/resume.py with enough output allowance for the full bundle. Follow its included restart guide without rereading bundled files; load further sources only as needed; do not repeat the full handoff import. Summarize readiness without beginning a new research attempt.'
 exec claude --session-id "$session_id" "${options[@]}" "$bootstrap"

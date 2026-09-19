@@ -1,5 +1,13 @@
 # Resume here after compaction
 
+Run **`python3 tools/resume.py` once per restoration**. It emits this guide,
+required rules, living sections and compact contents together. If you are reading
+its bundle, **do not rerun it or reread bundled files**. Request sufficient output
+space (about 20,000 tokens as an allowance, not a measurement); if the tool reports
+truncation, repeat with a larger allowance. Use `--session TURN` to select an active
+clock explicitly, and `--formalization` only when assigned. It records restoration
+without starting a research cycle; ordinary `--current` reads are not resume markers.
+
 Read this guide fully. **The notebook is the single source of truth for current
 mathematics.** This file is a stable reading map, not a second status summary.
 The handoff import is complete: **do not read HANDOFF.md or the compendium PDF**
@@ -19,27 +27,16 @@ on resume, even in a fresh clone. “Before this notebook” is historical conte
    do not invent time for earlier restoration. Before computations check
    `./compute.sh --status` and initialize controls after reboot if needed. Work
    from the repository root; no dependency installation without authorization.
-3. Read **all content before Research record**, including formalization gaps:
-
-   ```bash
-   ./tools/notebook-excerpt.py --current
-   ```
-
-   This supplies the goal, highest-risk route, next step, exact working conventions
-   and active warnings. Its summaries orient; they do not replace proof reading.
-4. Scan compact record titles, then read relevant entries, not the whole record:
-
-   ```bash
-   ./tools/notebook-excerpt.py --toc
-   ./tools/notebook-excerpt.py --toc --tail 20 --since 2026-09-01
-   ./tools/notebook-excerpt.py ANCHOR
-   ```
-
-   TOC defaults to the latest ten entries and reports omissions. Dates come from
-   stable entry IDs; undated entries remain visible. Exact heading excerpts stop
-   at the next peer/enclosing boundary; articles include their full record.
-   `--until END_ANCHOR` validates both boundaries; `--out PATH` saves a new file.
-   Recency alone does not make administrative entries necessary reading.
+3. Read the bundled living sections, including formalization gaps: goal,
+   highest-risk route, next step, exact working conventions and active warnings.
+   These summaries orient; they do not replace proof reading.
+4. Use the bundled latest-ten TOC to select relevant entries. For more navigation,
+   use `tools/notebook-excerpt.py --toc --tail 20 --since 2026-09-01`; read an exact
+   source with `tools/notebook-excerpt.py ANCHOR`. Headings stop at the next peer or
+   enclosing boundary; articles include the full record. `--until END_ANCHOR`
+   validates boundaries and `--out PATH` saves a new file. Dates come from stable
+   entry IDs; undated entries and omission counts stay visible. Recency alone does
+   not make administrative entries necessary reading. Never load the full record.
 5. Before mathematical reliance, read exact hypotheses, proof, encoding, original
    degree conventions and applicable corrections. Before proposing/naming a result,
    search for existing versions. Reuse saved verification evidence without calling

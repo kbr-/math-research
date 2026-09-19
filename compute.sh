@@ -25,12 +25,14 @@ import time
 import uuid
 
 ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / 'tools'))
+from recovery_evidence import observe as recovery_observe, snapshot as recovery_snapshot, stream as recovery_stream
 LOGS = ROOT / 'research/logs'
 SLICE = 'mathcompute.slice'
 WATCHDOG = 'mathcompute-watchdog.service'
 MAX_MEMORY = MAX_SWAP = 10_000_000_000
 MAX_CPUS = set(range(14))
-PHASES = ('reading', 'mathematics', 'formalization', 'coding', 'preparation', 'overhead',
+PHASES = ('restoration', 'reading', 'mathematics', 'formalization', 'coding', 'preparation', 'overhead',
           'reasoning_writing', 'external_tool', 'network_tool', 'other')
 RUNS = ('computation', 'network_tool', 'external_tool', 'local_processing', 'formal_verification')
 
@@ -192,6 +194,18 @@ def summary(events:list[dict],end:float)->dict:
       'scope':'Phases label observed work windows, not internal cognition or pure latency. Unexpected interruptions may remain mixed with the active phase. Tool windows include service overhead; overlapping intervals count once. Work after the final snapshot is excluded.'}
 
 
+def recovery_summary(data, path, cutoff):
+    """Freeze portable evidence at the timing snapshot, without extra CLI output."""
+    previous = path.with_suffix('.summary.json')
+    saved = json.loads(previous.read_text()).get('recovery_proxy') if previous.exists() else None
+    recovery = (saved if saved and saved.get('snapshot_unix_s') == cutoff
+                 else recovery_snapshot(ROOT, path.stem, cutoff))
+    # Do not retrofit old completed summaries: their archived bytes are immutable.
+    if recovery.get('session_tracked') or saved or (not previous.exists() and recovery.get('collection') != 'available'):
+        data['recovery_proxy'] = recovery
+    return data
+
+
 def timing_html(data, session):
     """Format measured, exclusive intervals without inventing missing categories."""
     total = float(data['total_instrumented_s'])
@@ -207,6 +221,7 @@ def timing_html(data, session):
         return (f'{minutes} min ' if minutes else '') + f'{seconds}.{hundredths:02d} s'
 
     labels = [
+        ('restoration', 'Context restoration'),
         ('reading', 'Marked reading and review windows'),
         ('mathematics', 'Mathematical reasoning and proof writing'),
         ('formalization', 'Formal proof design and coding'),
@@ -287,9 +302,13 @@ def invocation(command, threads, timeout, unit):
         args.append(f'--setenv={key}={threads}')
     args += ['--setenv=OMP_MAX_ACTIVE_LEVELS=1', '--setenv=MKL_DYNAMIC=FALSE']
     for key in ('PATH', 'VIRTUAL_ENV', 'PYTHONPATH', 'LANG', 'LC_ALL',
-                'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE'):
+                'SSL_CERT_FILE', 'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE',
+                'MATH_RECOVERY_DISABLED'):
         if key in os.environ:
             args.append(f'--setenv={key}={os.environ[key]}')
+    owner = recovery_stream()
+    if owner:
+        args.append(f'--setenv=MATH_RECOVERY_STREAM={owner}')
     return args + ['--', sys.executable, str(Path(__file__).resolve()), '--inside', '--', *command]
 
 
@@ -320,6 +339,7 @@ def run_job(args, command):
         add_event(path, 'run_start', id=rid, category=args.category, command=command,
                   output=str(log.relative_to(ROOT / 'research')), cwd=str(Path.cwd()),
                   systemd_unit=unit, threads=args.threads, timeout_s=args.timeout)
+    recovery_observe('job_start', root=ROOT, turn=name, job=rid, command=command, category=args.category)
     rc, timed_out, interrupted = 1, False, False
     process = None
     previous_term = signal.signal(signal.SIGTERM, lambda *_: (_ for _ in ()).throw(KeyboardInterrupt()))
@@ -352,9 +372,11 @@ def run_job(args, command):
         with locked(path):
             add_event(path, 'run_end', id=rid, returncode=rc,
                       timed_out=timed_out, interrupted=interrupted)
+            recovery_observe('job_end', root=ROOT, turn=name, job=rid, rc=rc)
             if automatic:
                 stop = add_event(path, 'stop')
                 data = summary(read_events(path), stop['monotonic_s'])
+                recovery_summary(data, path, stop['unix_s'])
                 path.with_suffix('.summary.json').write_text(json.dumps(data, indent=2) + '\n')
     if args.tail_bytes:
         with log.open('rb') as output:
@@ -412,6 +434,7 @@ def main():
             if not session_model(args.agent, args.model):
                 parser.error('State your model: --model "MODEL, reasoning setting" (or set MATH_AGENT_MODEL)')
             print(start_session(args.session, args.agent, args.model).relative_to(ROOT))
+            recovery_observe('bind', root=ROOT, turn=args.session)
             return 0
         if action != 'run':
             path = session_path(args.session)
@@ -420,6 +443,7 @@ def main():
                 if action == 'phase':
                     ensure_active(events)
                     add_event(path, 'phase', category=args.category, note=args.note)
+                    recovery_observe('phase', root=ROOT, turn=args.session, category=args.category)
                 else:
                     stop = next((e for e in events if e['event'] == 'stop'), None)
                     if stop is None: ensure_active(events)
@@ -428,15 +452,17 @@ def main():
                         finished = {e['id'] for e in events if e['event'] == 'run_end'}
                         if started - finished: raise ValueError('Jobs are still running; cannot stop timing')
                         stop = add_event(path, 'stop')
+                        recovery_observe('stop', root=ROOT, turn=args.session, at=stop['unix_s'])
                         events = read_events(path)
                     if args.html_out and stop is None:
                         raise ValueError('Use --stop to finalize the session before exporting its timing table')
                     data = summary(events, stop['monotonic_s'] if stop else time.monotonic())
+                    recovery_summary(data, path, stop['unix_s'] if stop else time.time())
                     path.with_suffix('.summary.json').write_text(json.dumps(data, indent=2) + '\n')
                     if args.html_out:
                         args.html_out.parent.mkdir(parents=True, exist_ok=True)
                         args.html_out.write_text(timing_html(data, args.session))
-                    print(json.dumps(data, indent=2))
+                    print(json.dumps({k:v for k,v in data.items() if k != 'recovery_proxy'}, indent=2))
             return 0
     else:
         parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)

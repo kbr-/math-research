@@ -12,8 +12,9 @@ with their proofs, plus remaining route to our goal, into a pdf.
 
 # Resume
 
-Read research/notes/RESUME.md fully and follow its restart checklist. Load other
-sources only as needed.
+Run `python3 tools/resume.py` with enough output allowance for its full bundle.
+Read the included RESUME.md and follow its checklist without rereading bundled
+files. Load other sources only as needed.
 
 # Formalize
 
@@ -208,9 +209,8 @@ So perform the following, in a loop:
   this reference does not renew an expired grant. Stay on main.
 - regarding the above: I want to see https://kbr.is-a.dev/math-research/ updated
   with lots of delicious new research when I wake up
-- **IMPORTANT: if compaction happens, do the resuming**, i.e. "Read
-  research/notes/RESUME.md fully and follow its restart checklist. Load other
-  sources only as needed." -- following the usual prompt.
+- **IMPORTANT: if compaction happens, do the resuming**, i.e. "Run python3 tools/resume.py, read the included restart guide, and load other
+  sources only as needed without rereading the bundle." -- following the usual prompt.
 - After compaction, reread the "Spin" prompt from `PROMPTS.md` and continue the
   active assignment.
 - Do not return to the user. Think for as long as you like and work for as long

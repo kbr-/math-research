@@ -39,6 +39,6 @@ if [[ "$mode" == resume ]]; then
   exit 1
 fi
 
-bootstrap='Restore this repository research context. First run ./tools/remember-codex-session.py to save this main session ID for the launcher. Then read research/notes/RESUME.md fully and follow its restart checklist. Read the notebook living overview and load further sources only as needed; do not repeat the full handoff import. Summarize readiness without beginning a new research attempt.'
+bootstrap='Restore this repository research context. First run ./tools/remember-codex-session.py to save this main session ID for the launcher. Then run python3 tools/resume.py with enough output allowance for the full bundle. Follow its included restart guide without rereading bundled files; load further sources only as needed; do not repeat the full handoff import. Summarize readiness without beginning a new research attempt.'
 start_codex_daemon
 exec codex "${options[@]}" --approve-for-me "$bootstrap"

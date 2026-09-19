@@ -79,6 +79,10 @@ def main():
     parser.add_argument('--json', action='store_true', help='Machine-readable output')
     parser.add_argument('--out', type=Path, help='Save selected data (JSON payload, or the chosen projection format)')
     args = parser.parse_args()
+    from recovery_evidence import observe
+    def observed(text, shown=True):
+        selector={k:v for k,v in vars(args).items() if k!='out'}
+        observe('read',tool='claim-search',selector=selector,text=text,shown=shown)
     if args.n is not None and args.n < 1:
         parser.error('-n must be positive')
     if args.json and args.format not in (None, 'json'):
@@ -132,6 +136,7 @@ def main():
             args.out.write_text(text)
         else:
             sys.stdout.write(text)
+        observed(text, shown=not bool(args.out))
         if total > len(selected):
             print(f'{total-len(selected)} matches omitted by explicit limit.', file=sys.stderr)
         return
@@ -143,18 +148,21 @@ def main():
     if args.out:
         write_json(args.out, payload)
     if output_format == 'json' or args.show:
-        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        text=json.dumps(payload, ensure_ascii=False, indent=2)+'\n'
+        sys.stdout.write(text)
+        observed(text)
         return
     def brief(text, limit):
         return text if len(text) <= limit else text[:limit-1] + '…'
+    lines=[]
     for c in selected:
-        print(c['id'])
-        print('  ' + brief(c['summary'], 230))
-        print('  Assessment: ' + brief(c['assessment'], 150))
-        print('  Formalization classification: ' + (c['formalization']['status'] or 'unknown (see assessment)'))
-        print('  Source: ' + next(r['target'] for r in references(c) if r['field'] == 'record'))
-    print(f'{len(selected)} of {total} matches; {total-len(selected)} omitted. '
-          'Use --show LABEL for full metadata; ellipses mark shortened text.')
+        lines += [c['id'], '  '+brief(c['summary'],230),
+                  '  Assessment: '+brief(c['assessment'],150),
+                  '  Formalization classification: '+(c['formalization']['status'] or 'unknown (see assessment)'),
+                  '  Source: '+next(r['target'] for r in references(c) if r['field']=='record')]
+    lines.append(f'{len(selected)} of {total} matches; {total-len(selected)} omitted. '
+                 'Use --show LABEL for full metadata; ellipses mark shortened text.')
+    text='\n'.join(lines)+'\n';sys.stdout.write(text);observed(text)
 
 
 if __name__ == '__main__':

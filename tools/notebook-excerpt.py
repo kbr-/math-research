@@ -8,6 +8,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 import re
 import sys
+from recovery_evidence import observe
 
 
 MATH = re.compile(r'\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]')
@@ -147,6 +148,10 @@ def main():
                 stream.write(result)
         else:
             sys.stdout.write(result)
+        observe('read', tool='notebook-excerpt', selector={
+            'anchor':args.anchor,'until':args.until,'current':args.current,
+            'toc':args.toc,'tail':args.tail,'since':str(args.since)},
+            text=result, shown=not bool(args.out))
     except (ValueError, OSError) as error:
         parser.exit(2, f"notebook-excerpt: {error}\n")
 

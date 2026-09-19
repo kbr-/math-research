@@ -75,7 +75,7 @@ def main():
                 'CLAUDE.md', 'research/CLAUDE.md', 'formalization/CLAUDE.md',
                 'research/claims/index.json', 'research/claims/schema.json', 'research/claims/schema-v1.json',
                 'tools/claim_reviews.py', 'tools/notebook_context.py', 'tools/notebook-excerpt.py',
-                'research/context-budgets.json',
+                'research/context-budgets.json', 'tools/recovery_evidence.py', 'tools/resume.py',
                 'tools/claim_views.py', 'tools/claim_authoring.py', 'tools/claim_notices.py',
                 'tools/claim_evidence.py', 'tools/tests/test_claim_article_evidence.py',
                 'tools/record_citations.py', 'tools/tests/test_record_citations.py',
