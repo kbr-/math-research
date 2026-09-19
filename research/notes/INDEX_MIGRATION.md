@@ -559,3 +559,14 @@ reference is accepted against the reviewed proof edge. Eleven discovery tests
 pass. This is a scalable retrieval improvement, not automatic semantic acceptance.
 Continue closing connected dependency clusters alongside the remaining backfill;
 neither sampled closure nor candidate count completes the full graph plan.
+
+
+Normalizer dependency cluster `index_normalizer_dependencies_20260919`: twelve
+pending inventories closed, from the resistant finite example through affine
+companion inconsistency. Twenty-seven scoped edges distinguish imported reuse/
+field reduction/substitution, NS cofactor reasoning, method refinements, positive
+controls and dataset provenance. Three QA-7/C3-7/CAD equation candidates accepted
+against the actual finite deduction. Totals: 35 reviewed inventories, 327 pending,
+504 unreviewed; 82 canonical edges. Historical computation reports were inspected
+for meaning, not rerun or recertified. Classification totals and seven pending
+significance audits are unchanged.
