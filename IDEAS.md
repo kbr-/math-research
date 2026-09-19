@@ -179,46 +179,6 @@ verified frontier never lags.
   Asynchronous formalization is attractive once explicitly assigned, with a clear notification
   path when a discrepancy affects ongoing research.
 
-## 5. Claim index: compression, deduplication, second-level index, retrieval tools
-
-**The idea.** The claim index is growing; review it for duplicates, add a second-level index or
-grouping, and give agents a way to retrieve entries without loading the whole index into
-context (the notebook excerpt tool does this for entries but not for claims).
-
-**Assistant's comments.**
-
-- Structure first: convert the index to a structured file (JSON or YAML) with fields such as
-  label, one-line statement, status, topic, anchor, depends_on, superseded_by, formalized_in,
-  significance, and generate the Markdown from it. Tooling then becomes trivial: search, topic
-  listing, dependency graphs, "what cites this", and the fossick scan (idea 1) reads it directly.
-  The Markdown stays the human view.
-- Second level: a topic map of roughly thirty lines, one per topic, each pointing to its group of
-  labels. Working mathematical context is already close to this role; the topic map would be
-  its skeleton without the prose.
-- Compression: mark superseded, retracted and rediscovered claims and move them to an archive
-  section, so the live index lists only claims that a new cycle could still use. Nothing is
-  deleted; the archive keeps the links. Do this in a periodic index-audit cycle, like the
-  working-context consolidation, not on every turn.
-- Retrieval: `tools/claim-search.py QUERY` over labels, statements and entry titles, printing
-  matching rows only (label, status, anchor, one line), with `--show LABEL` handing off to the
-  notebook excerpt tool for the full entry. Plain keyword or TF-IDF scoring in pure Python is
-  enough and needs no new dependencies. An embedding index would need a library and approval;
-  start without it.
-- Duplicate detection can use the same scoring: list pairs of claims whose statements are
-  near-identical, for the audit cycle to merge or link as rediscoveries.
-
-**Codex comments (19 September 2026).**
-
-- `tools/search-claims.py` already implements ranked, stemmed content-word retrieval. Extend
-  it with exact-label lookup, status and source links before creating another search command.
-- Structured data is worthwhile, but migrate incrementally and validate every label and
-  target. Keep one editable source; generate the other views. Start with the fields already
-  known reliably, leaving unreviewed dependencies explicitly unknown rather than inferred.
-- Similar wording is a review hint, not permission to merge claims: encodings, quantifiers,
-  degree conventions and hypotheses can make near-duplicates mathematically different.
-  Preserve stable labels and correction links. Retracted claims must remain searchable so
-  they are not rediscovered or used accidentally.
-
 ## 6. Smaller things noticed along the way
 
 - The cost report's "working file per cycle" idea (append intermediate findings during a long
@@ -375,3 +335,49 @@ into the notebook.
 
 These are suggested priorities for discussion; none of these mechanisms is implemented by
 this commentary update.
+
+## Completed
+
+### 5. Claim index: compression, deduplication, second-level index, retrieval tools
+
+**Completed 19 September 2026.** All items in the
+[index migration and curation plan](research/notes/INDEX_MIGRATION.md) are checked off.
+Implemented in commit `cdaadcc`; the original proposal and comments are retained below.
+
+**The idea.** The claim index is growing; review it for duplicates, add a second-level index or
+grouping, and give agents a way to retrieve entries without loading the whole index into
+context (the notebook excerpt tool does this for entries but not for claims).
+
+**Assistant's comments.**
+
+- Structure first: convert the index to a structured file (JSON or YAML) with fields such as
+  label, one-line statement, status, topic, anchor, depends_on, superseded_by, formalized_in,
+  significance, and generate the Markdown from it. Tooling then becomes trivial: search, topic
+  listing, dependency graphs, "what cites this", and the fossick scan (idea 1) reads it directly.
+  The Markdown stays the human view.
+- Second level: a topic map of roughly thirty lines, one per topic, each pointing to its group of
+  labels. Working mathematical context is already close to this role; the topic map would be
+  its skeleton without the prose.
+- Compression: mark superseded, retracted and rediscovered claims and move them to an archive
+  section, so the live index lists only claims that a new cycle could still use. Nothing is
+  deleted; the archive keeps the links. Do this in a periodic index-audit cycle, like the
+  working-context consolidation, not on every turn.
+- Retrieval: `tools/claim-search.py QUERY` over labels, statements and entry titles, printing
+  matching rows only (label, status, anchor, one line), with `--show LABEL` handing off to the
+  notebook excerpt tool for the full entry. Plain keyword or TF-IDF scoring in pure Python is
+  enough and needs no new dependencies. An embedding index would need a library and approval;
+  start without it.
+- Duplicate detection can use the same scoring: list pairs of claims whose statements are
+  near-identical, for the audit cycle to merge or link as rediscoveries.
+
+**Codex comments (19 September 2026).**
+
+- `tools/search-claims.py` already implements ranked, stemmed content-word retrieval. Extend
+  it with exact-label lookup, status and source links before creating another search command.
+- Structured data is worthwhile, but migrate incrementally and validate every label and
+  target. Keep one editable source; generate the other views. Start with the fields already
+  known reliably, leaving unreviewed dependencies explicitly unknown rather than inferred.
+- Similar wording is a review hint, not permission to merge claims: encodings, quantifiers,
+  degree conventions and hypotheses can make near-duplicates mathematically different.
+  Preserve stable labels and correction links. Retracted claims must remain searchable so
+  they are not rediscovered or used accidentally.
