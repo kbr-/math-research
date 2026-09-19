@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 
 from claim_registry import load as load_claims, render as render_claims, check_targets
+from claim_views import bundle_files
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -31,6 +32,11 @@ def main():
         if (ROOT / 'research/CLAIM_INDEX.md').read_text() != render_claims(registry):
             failures.append('Generated claim index is stale; run tools/claim-index.py render')
         failures += ['Claim link: ' + str(error) for error in check_targets(registry, ROOT)['errors']]
+        for name, content in bundle_files(registry).items():
+            relative = 'research/claims/views/' + name
+            path = ROOT / relative
+            if relative not in tracked or not path.is_file() or path.read_text() != content:
+                failures.append('Missing, untracked, or stale derived claim view: ' + relative)
     except (ValueError, OSError) as error:
         failures.append('Claim registry: ' + str(error))
     manifest = json.loads((ROOT / 'research/provenance/handoff-files.json').read_text())
@@ -69,6 +75,12 @@ def main():
                 'CLAUDE.md', 'research/CLAUDE.md', 'formalization/CLAUDE.md',
                 'research/claims/index.json', 'research/claims/schema.json', 'research/claims/schema-v1.json',
                 'tools/claim_reviews.py',
+                'tools/claim_views.py', 'tools/claim_authoring.py', 'tools/claim_notices.py',
+                'tools/claim_evidence.py', 'tools/tests/test_claim_article_evidence.py',
+                'tools/record_citations.py', 'tools/tests/test_record_citations.py',
+                'tools/tests/test_claim_article_finalizer.py',
+                'tools/tests/test_claim_views.py', 'tools/tests/test_claim_authoring.py',
+                'tools/tests/test_claim_notices.py',
                 'tools/claim-dependencies.py',
                 'research/claims/README.md', 'tools/claim_registry.py', 'tools/claim-index.py',
                 'resource-controls/setup.py', 'tools/remember-codex-session.py',
@@ -84,7 +96,7 @@ def main():
             failures.append('Runtime or scratch file tracked: ' + name)
     modes = subprocess.check_output(['git', 'ls-files', '--stage', '-z'], cwd=ROOT, text=True).split('\0')
     mode_by_path = {line.split('\t', 1)[1]: line.split(' ', 1)[0] for line in modes if line}
-    for name in ('compute.sh', 'start-codex.sh', 'start-session.sh', 'start-claude.sh', 'tools/remember-codex-session.py', 'tools/archive-session.py', 'tools/claim-index.py', 'tools/claim-dependencies.py'):
+    for name in ('compute.sh', 'start-codex.sh', 'start-session.sh', 'start-claude.sh', 'tools/remember-codex-session.py', 'tools/archive-session.py', 'tools/claim-index.py', 'tools/claim-dependencies.py', 'tools/claim_views.py', 'tools/claim_authoring.py'):
         if mode_by_path.get(name) != '100755':
             failures.append('Executable mode not tracked: ' + name)
     if args.public_history:

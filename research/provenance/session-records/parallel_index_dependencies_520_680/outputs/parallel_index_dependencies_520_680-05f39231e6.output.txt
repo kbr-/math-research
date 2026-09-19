@@ -1,0 +1,496 @@
+
+### 531 cor:affine-level-full-old-moment-extension
+affine-level-full-old-moment-extension  4. Prescribed Boolean-consistent old moments extend 
+   Let \(\lambda:\mathcal P^{\rm old}_{\le t}\to\mathbb F_p\) annihilate \(\mathcal I_t({\rm BOOL}_b)\). Equality (HC-full-old-separation) makes the prescription 
+   \[
+       \Lambda(c+q)=\lambda(q),
+       \qquad c\in\mathcal C_D(\Gamma),\
+              q\in\mathcal P^{\rm old}_{\le t},
+  \] 
+   well-defined. Extend it linearly to the entire joint-variable degree-\(D\) polynomial space. Then \(\Lambda\) annihilates every degree-\(D\) PC consequence, and hence every legal degree-\(D\) NS multiple, while agreeing with \(\lambda\) on  all  old moments through \(t\). If \(\lambda(1)=1\), the extension is normalized. 
+   The freely prescribed quotient has dimension \(\sum_{j=0}^{t}\binom{m\ell}{j}\). There is no positivity, multiplicativity, efficient construction, or preservation of independently specified selector moments. In particular the  previous selector-coupling controls  still apply. No equality of the augmented PC and NS spaces is asserted. 
+   The complete power-input and shared-old-probe transfers fix old bits and cost only a fixed-prime constant in degree. Thus their one-level systems inherit the same qualitative full-old-moment window. Source-specific profile interpretations alone do not imply that transfer for arbitrary raw targets. 
+
+
+### 532 ex:higher-cube-complete-moment-checks
+higher-cube-complete-moment-checks  5. Complete new finite witnesses 
+   The  existing sparse matching checker  now accepts  --higher-cubes . It generalizes the selected rows to coordinate cubes and tests two new boards over both \(\mathbb F_2\) and \(\mathbb F_3\). These are new component checks, not reruns of the older edge-only fixtures. 
+   
+       Board and degree  Selected row cubes  Nonzero moments  Stored marginal equations  Selected-row bit monomials checked   
+     
+        \(n=16,m=17,B=4\)  Axes \(\{0,1\}\), \(\{3\}\); six labels removed  2,648  5,466  64 through degree three  
+        \(n=32,m=33,B=4\)  Axes \(\{0,1,2\}\), \(\{4\}\); ten labels removed  22,832  44,526  325 through degree four  
+     
+   
+   Each uses the earlier explicit degree-two residual design. Every nonzero moment contributes all its marginal faces, and every nonzero lower moment contributes all its missing-row right sides. Thus the stored equations cover every potentially nonzero marginal; all omitted ones have only zero terms. The full respective row-equation counts are 32,481,169 and 4,887,387,681, not explicitly enumerated. Boolean powers and collisions are handled by ordinary matching normal form. 
+   The checker evaluates every squarefree monomial on the selected rows with each row occupied and total degree at most the selected bit degree. Exactly the chosen multi-axis monomial has value one. It also evaluates a target with two or three bits in its leading row, a linear term in the multiplier row, and a constant, multiplied by the selected bit of that other row. The product has value one over \(\mathbb F_2\) and two over \(\mathbb F_3\). 
+   Deleting one top moment violates exactly four marginals in each fixture. Replacing every nonzero signed moment by one over \(\mathbb F_3\) violates respectively 3,666 and 29,150 marginals. In the first fixture, a further polynomial \(T(1-z)\), with \(T\) the detected degree-three monomial and \(z\) a bit whose residual-design moment is one, has value zero despite its nonzero lower term \(T\). This last control shows why the fixed detector requires a top term; it is not an old polynomial relation. 
+   All checks passed. A preliminary compiler indentation warning was corrected. Complete  binary  and  signed  moments, constraints, target values, and negative controls are retained with  reproduction instructions , provenance, and measured timing. These small boards test the detector and its residual budget, not the full affine-family asymptotic degree inequalities. 
+    Route assessment.  The first affine level now preserves arbitrary Boolean-consistent old low-degree moments, including products within a pigeon row. This removes a precise limitation of the preceding result. The high-rank nonlinear source still needs information about selector-dependent targets and their joint relations. 
+    Next bounded question.  Test a concrete selector extension: jointly impose value zero on the high-affine-rank first-level selectors, and determine which old-target guarantees survive. Then check the consequence for an actual second-level source input, keeping the distinction between a complete augmented system and a source profile. 
+    Process assessment.  The claim index avoided reproving cube packing and yielded a larger window, while extending the existing sparse checker supplied complete new controls without additional framework machinery. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   19 min 55.98 s   
+  Marked reading and review windows  1.49 s  
+  Mathematical reasoning and proof writing  16 min 4.50 s  
+  Computation design and coding  3 min 7.19 s  
+  Preparation and checkpoint work  36.00 s  
+  Dedicated web and download-attempt windows  2.59 s  
+  Individually measured computation  0.35 s  
+  Individually measured conversion, checks, and local processing  3.86 s  
+  
+ Through final snapshot; overlapping time counted once. 
+ 
+
+
+### 533 thm:joint-high-selector-zero-preservation
+joint-high-selector-zero-preservation  1. Add all eligible zero equations to the complete system 
+   Fix a prime \(p\), \(n=2^\ell\), \(\ell\ge2\), and \(m=n+1\). Let \(\Gamma\) contain \(\mathcal Q_{n,p}\) and a complete one-level affine-bit ENS family of at most \(M\ge1\) blocks, with common accuracy \(h\ge h_0=3(p-1)\ell\). Remove zero/unit input spans by the usual scalar cleanup. Fix \(t\le D\) and \(k\) as in the old-target theorems, and put 
+   \[
+       B=k(D+1),\qquad r_*=3\ell(k+1)+1,\qquad
+       H=\{a:\operatorname{rank}\operatorname{span}(g_{a,i})\ge r_*\}.
+  \] 
+   Rank here is the rank of a proper old-affine input tuple, not a later selector-coefficient matrix. Add the ordinary polynomial equations 
+   \[
+       \Gamma_H=\Gamma\cup\{P_a:a\in H\},
+       \qquad \deg P_a=2h.
+       \tag{ZERO-retained-system}
+  \] 
+    Working theorem.  Both previous old-target conclusions hold over \(\Gamma_H\) with their same hypotheses: 
+   \[
+      \mathcal C_D(\Gamma_H)\cap\mathcal L_t=\{0\},
+       \tag{ZERO-row-linear}
+  \] 
+   under the  row-linear range ; and 
+   \[
+      \mathcal C_D(\Gamma_H)\cap\mathcal P^{\rm old}_{\le t}
+          =\mathcal I_t({\rm BOOL}_b),
+       \tag{ZERO-full-old}
+  \] 
+   under the  full-old range . The same statements hold if only a subset of \(H\) is constrained. 
+    Proof.  The high-rank family is fixed by \(k\) before choosing a target. For any proposed nonzero old target, choose its common multiplier \(f\) using the same restricted row-linear space and ordinary high-flat kernels. Restrict extra accuracy rows to zero if needed. The all-prime substitution sends every high product to \(1-f^{p-1}\). The only additional axiom image is therefore 
+   \[
+       f\,\sigma(P_a)=f-f^p
+              \in\mathcal I_{pk}({\rm BOOL}_b).
+       \tag{ZERO-weighted-image}
+  \] 
+   The Frobenius/Boolean certificate was already used for high companions. Its degree satisfies \(pk\le k(2h+1)\), exactly the required \(k(e+1)\) budget for this new axiom of original degree \(e=2h\). The complete companion, coefficient-field, and old-axiom images are unchanged. Weighted ordinary-PC replay still stays within \(B\) and ends at \(fq\). The same signed edge or multi-axis cube detector gives the contradiction. Thus no new loss in degree, multiplier dimension, or inventory is needed. 
+   The product image is  not  identically zero: at \(f=0\), it is one. The argument retains its multiplication by \(f\). It does not set raw coefficient variables to zero or discard their field equations. 
+
+
+### 534 cor:joint-zero-old-moment-extension
+joint-zero-old-moment-extension  2. Old moments extend together with the permitted selector relations 
+   Apply the same finite-dimensional extension argument to \(\mathcal C_D(\Gamma_H)\). Every permitted old row-linear functional, or every Boolean-consistent full-old functional in (ZERO-full-old), extends to an annihilator \(\Lambda\) of that consequence space. Normalization is preserved when the prescribed old value of one is one. 
+   In addition, for \(a\in H\) and every joint-variable polynomial \(Q\) whose ordinary product degree fits the budget, 
+   \[
+          \Lambda(P_aQ)=0,\qquad \deg(P_aQ)\le D.
+       \tag{ZERO-mixed-moments}
+  \] 
+   These are simultaneous constraints in one functional, because every such product is a legal consequence of the added \(P_a\) equation. A moment outside degree \(D\) is not prescribed. This is a truncated algebraic extension, not a satisfying assignment of PHP, a positive measure, or independent freedom in the other selector coordinates. 
+   The rank condition cannot simply be omitted. For a single Boolean input \(b\), the prefix identity \(1-P=Ub\) gives 
+   \[
+       b-1=bP+U(b^2-b)-P.
+       \tag{ZERO-low-rank-control}
+  \] 
+   After adding \(P=0\), this derives the nonzero old affine target \(b-1\) through \(2h+1\). This uses the  earlier literal-selector relation  and directly refutes arbitrary zero assignment to low-rank products. 
+
+
+### 535 lem:clamped-bottom-zero-source-profile
+clamped-bottom-zero-source-profile  3. A constrained bottom product has a zero-value source profile 
+   Now work in the binary compact source with the exact stage, coherent registry, original weights, and aligned MOD2 conventions of the  rank-profile theorem . Retain an original affine bottom block \(a\in H\) and its coefficient variables in \(\Gamma_H\). Give its logical selector the interpreted value \(v_a=0\), with original cost \(s_a=2h\), and retain its actual prefix polynomials \(U_{a,i}\). 
+   \[
+      1-v_a-\sum_iU_{a,i}g_{a,i}=P_a
+                  \in\mathcal I_{2h}(\Gamma_H),\qquad
+      \deg U_{a,i}+1\le2h.
+       \tag{ZERO-profile}
+  \] 
+   All companions \(g_{a,i}v_a\) and Booleanity \(v_a^2-v_a\) are zero. These are complete  costed NS data , with a supplied prefix residual, rather than an unsupported replacement of a value by a constant. The zero value does not lower its declared proof cost. Unconstrained affine bottom products keep their genuine profiles. 
+   Consequently every actual later source input 
+   \[
+       \widehat g_{a,i}=L_{a,i}(b)+
+          \sum_{c&lt;a}\alpha_{a,i;c}Z_c
+  \] 
+   is interpreted with the selected bottom columns \(Z_c\), \(c\in H\), set to zero. No direct uses of their raw coefficients are substituted in later inputs; the stated source grammar already reads them only through selector values. Their prefix coefficients remain available in the common retained system when the logical compiler uses the zero profiles. 
+
+
+### 536 thm:surviving-selector-rank-source-exclusion
+surviving-selector-rank-source-exclusion  4. Only the surviving selector columns need small rank 
+   Choose in advance a polynomial upper bound \(M\) for the final affine inventory, and fix the binary accuracy \(h=3\ell\). Put \(k=\lceil\sqrt{m\log(4M)}\rceil\). Select \(H\) among the original proper affine bottom blocks using the threshold \(3\ell(k+1)+1\). For each remaining source block, let 
+   \[
+       r_a^{\rm surv}
+          =\operatorname{rank}_{\mathbb F_2}
+             (\alpha_{a,i;c})_{i,\ c\notin H}.
+       \tag{ZERO-surviving-rank}
+  \] 
+    Working source criterion.  If \(r_a^{\rm surv}\le h-1\) for every nonbottom block, all source values have profiles within their original weights over one complete affine family with the selected zero equations. There is at most one retained or new affine block per original registry block. The resulting fixed-source-depth proof compiler has its previous ceiling 
+   \[
+        D\le c(d+1)h^d,\qquad c=\max(M_{\rm fr},10).
+       \tag{ZERO-source-degree}
+  \] 
+   For a hypothetical polynomial-size proof and fixed \(d\), this contradicts the refutation case of Section 1 for sufficiently large \(n\). Thus such a proof must violate the surviving-rank condition somewhere. This is an additional restricted-source exclusion, not the full Frege lower bound. 
+    Profile construction and degree accounting.  Use Section 3 at the selected bottom blocks. After that formal projection, take the full old-affine intersection of each remaining input span and extend it by selected original input positions, in nondecreasing  original  input degree. This is the  existing adapted-basis construction , now applied to the projected tuple. Its affine core and exact nonlinear tail have cost at most 
+   \[
+         s\le2h+r_a^{\rm surv}\delta_a.
+  \] 
+   If a surviving selector contribution remains, its original input degree is at least \(h\), so \(r_a^{\rm surv}\le h-1\) implies \(s\le h(\delta_a+1)=w_a\). If no such contribution remains, the tuple is old-affine after interpretation and uses the affine core alone. In either case the original-prefix pullback obeys 
+   \[
+         \deg W_i+d_i\le w_a:
+         \qquad 2h-1+d_i\le w_a
+  \] 
+   for affine prefix terms, while selected-tail terms retain their own original position and degree. This matters when deleting a selector lowers a tuple's collected degree: the original \(d_i,\delta_a,w_a\) still apply. Zero and unit spans have their usual constant profiles. Companions and Booleanity retain the original \(w_a+d_i\) and \(2w_a\) ceilings. Induction in the strict source order closes over one final retained system. 
+   Keep the original affine bottom blocks and add at most one fresh affine core per other block, so the chosen inventory bound applies. The selected original bottom blocks still meet the high-rank threshold in that final family. Its extra high-rank cores need not be constrained; Section 1 allows any subset of eligible products. The costed modular reconstruction preserves a supplied source NS degree, or the  unbalanced logical-DAG compiler  gives (ZERO-source-degree), without a proof-height loss. 
+   At \(h=3\ell\), polynomial \(M\) and polylogarithmic \(D\) give \(k(D+1)=o(n)\) and room for the separating edges. The clamped endpoint is therefore excluded. No raw degree-preserving map of an arbitrary multilevel coefficient proof is claimed. The previous polynomial necessary rank bound concerns the original registry; no accuracy-independent polynomial bound on this newly projected rank is inferred. 
+
+
+### 537 ex:joint-selector-zero-exact-controls
+joint-selector-zero-exact-controls  5. Exact local controls for the new interface 
+   The  compiled checker  verifies 50 complete ordinary NS certificates. Over \(\mathbb F_2\) and \(\mathbb F_3\), two affine tuples share the quadratic multiplier \(f=x_0x_1+x_2x_3\); all weighted zero equations, companions, and original coefficient-field images are certified. An old zero point has mapped product one and weighted value zero, showing that the weight cannot be discarded. The odd-prime map also has actual coefficient value two. 
+   A separate binary source fixture has \(h=2\), two bottom products \(P_0,P_1\), and four parent inputs \(b_i+P_{\lfloor i/2\rfloor}\). Its selector matrix has rank two before both zero constraints and rank zero afterward. Original input degrees are four and the parent weight is ten. A fresh affine core on the \(b_i\)'s supplies all projected-input comparisons, the original-input prefix residual through degree seven, companions through eight, and Booleanity through eight, within the respective budgets ten, fourteen, and twenty. 
+   The output retains 144 complete canonical models of that clamped local system, including nine with parent value one. Omitting the first clamp gives a satisfying retained-system model where the claimed parent companion is nonzero. Two additional field-specific literal examples certify (ZERO-low-rank-control) and retain satisfying clamped models. 
+   The small tuples in these checks have rank two and do  not  meet the asymptotic high-rank threshold. They test the weighted-image and conditional-profile interfaces and their missing-hypothesis controls; the high-rank existence argument is the preceding dimension proof. All numerical checks passed with a clean final compilation.  Complete certificates and models ,  reproduction instructions , hashes, and timing accompany the record. 
+    Route assessment.  We now have specific simultaneous selector relations compatible with the old-moment theorem and a valid application to the source compiler. Dense dependence on the eligible high-rank bottom products can be removed before measuring the remaining selector rank. Dense dependence on the surviving low-rank bottom products is still unhandled. 
+    Next bounded question.  Test a dense surviving family built from rank-two bottom tuples \((x,y_i)\). Normalize their actual products and examine the parent OR inputs using the shared old bit \(x\). Stop at a complete affine transfer or a counterexample, rather than treating the large formal selector rank as decisive by itself. 
+    Process assessment.  Reusing weighted deletion and the existing profile interface kept the work on a concrete source application; targeted NS and missing-clamp checks were sufficient, with no new framework rule needed. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   17 min 47.86 s   
+  Marked reading and review windows  1.70 s  
+  Mathematical reasoning and proof writing  12 min 57.61 s  
+  Computation design and coding  3 min 59.63 s  
+  Preparation and checkpoint work  40.22 s  
+  Dedicated web and download-attempt windows  3.86 s  
+  Individually measured computation  0.07 s  
+  Individually measured conversion, checks, and local processing  4.76 s  
+  
+ Through final snapshot; overlapping time counted once. 
+ 
+
+
+### 538 def:dense-shared-bit-source-setup
+dense-shared-bit-source-setup  1. An actual source family outside the small-rank criterion 
+   Over \(\mathbb F_p\), let the old base contain bit Booleanity. Fix common accuracy \(h\ge2\). Bottom blocks \(B_i\) have old inputs \(x,y_i\), and let \(Z_i=P_{B_i}\) be their genuine products. A parent block has inputs \(Z_i\), for its chosen nonempty index set. Coefficient variables of distinct blocks are fresh as usual. 
+   In the source convention, this is the OR of negated bottom ORs: a bottom \(F_i=x\vee y_i\) has value \(P_{B_i}\), its negation has value \(1-P_{B_i}\), and the parent's ENS input is \(1-(1-P_{B_i})=P_{B_i}\). Thus the example does not rely on retaining a bare OR inside an OR that the source convention would flatten. 
+   For distinct bottom names, the parent's formal selector matrix is the identity and has rank equal to its fan-in. Each bottom affine tuple has rank two when its two old bits are distinct, so none meets the  large-rank zero threshold . Fan-in can greatly exceed \(h\), leaving the preceding surviving-rank criterion inapplicable. 
+   The original joint degrees are 
+   \[
+      w_{\rm bottom}=2h,\qquad d_i=2h,\qquad
+      w_{\rm parent}=h(2h+1),\qquad
+      e_{\rm parent}=h(2h+1)+2h.
+      \tag{STAR-original-degrees}
+  \] 
+   We keep these degrees after the maps lower actual input degree. Multiple parents may reuse bottom blocks. Different stars may share old bits; each parent must have the displayed common-bit form, and the bottom specializations must be applied once consistently. 
+
+
+### 539 lem:shared-bit-bottom-complete-specialization
+shared-bit-bottom-complete-specialization  2. Specialize the bottom coefficients once 
+   In each bottom block, put coefficient vector \((1,0)\) in its first accuracy row and \((0,1)\) in its second, with zero vectors in all remaining rows. Then, literally as an ordinary polynomial, 
+   \[
+       \sigma(P_{B_i})=(1-x)(1-y_i).
+       \tag{STAR-bottom-image}
+  \] 
+   The two companion images have old Boolean certificates 
+   \[
+       x(1-x)(1-y_i)=-(x^2-x)(1-y_i),\qquad
+       y_i(1-x)(1-y_i)=-(y_i^2-y_i)(1-x),
+  \] 
+   through degree three, within their original \(2h+1\). All bottom coefficient-field equations map to zero because their images are zero or one. This is a full degree-nonincreasing scalar substitution, not a statement only about the selector values. A reused bottom block receives the same map in every parent. 
+
+
+### 540 lem:shared-bit-parent-original-degree-map
+shared-bit-parent-original-degree-map  3. One affine core per parent 
+   Write \(\chi=1-x\) and \(L_i=1-y_i\). After the bottom map the parent inputs are \(G_i=\chi L_i\). Replace the parent's block by one complete affine block on the \(L_i\)'s, with product \(A\), prefixes \(U_i\), and its own coefficients \(R_{u,i}\). Rename the parent coefficients to those \(R_{u,i}\)'s. The combined map \(\Phi\) sends every variable to a constant or a variable. 
+   Set 
+   \[
+       V=x+(1-x)A=1-\chi+\chi A.
+  \] 
+   At \(x=0\), the mapped parent product is \(A\); at \(x=1\), every mapped input is zero and its product is one. These are polynomial identities in the new coefficients, with no coefficient-domain reduction. Old Boolean division therefore supplies 
+   \[
+       \Delta=\Phi(P_{\rm parent})-V
+                    \in\mathcal I_{3h}({\rm BOOL}_b).
+       \tag{STAR-product-difference}
+  \] 
+   The degree bound follows from \(\deg G_i=2\), \(\deg R_{u,i}=1\), and \(\deg V\le2h+1\le3h\). Old Boolean reduction cannot increase original joint degree. Equivalently one may first divide the formal expression in \(\chi\) by \(\chi^2-\chi\), then substitute the old-bit expressions. 
+   Put \(B_x=x^2-x=\chi^2-\chi\). The exact companion identity is 
+   \[
+       G_iV=\chi(L_iA)+B_xL_i(A-1).
+       \tag{STAR-companion}
+  \] 
+   Its NS certificate costs at most \(2h+3\). Consequently 
+   \[
+       \Phi(Z_iP_{\rm parent})=G_i\Delta+G_iV
+               \in\mathcal I_{3h+2}({\rm BOOL}_b,\mathrm{ENS}_{L}),
+  \] 
+   since \(2h+3\le3h+2\). This fits the  original  parent companion degree: 
+   \[
+       3h+2\le h(2h+1)+2h.
+       \tag{STAR-original-budget}
+  \] 
+   Every parent coefficient-field equation is simply renamed to the corresponding genuine \(R^p-R\) axiom, at its original degree \(p\). Old base generators are fixed. Apply these maps simultaneously with disjoint fresh affine-core coefficients for distinct parents, including overlapping parent lists. 
+
+
+### 541 thm:dense-shared-bit-complete-transfer
+dense-shared-bit-complete-transfer  4. Complete transfer and source scope 
+    Working theorem.  A complete two-level family of the displayed type over any old Boolean base transfers to one affine level with one block per parent. Every ordinary NS or PC proof through degree \(D\) transfers through the same \(D\). Additional unaffected old-affine blocks may be retained. 
+    Proof.  All source axiom images have certificates through their own original degrees, by Sections 2–3. The variable map is affine. For NS, an original cofactor of degree at most \(D-e\) remains within that degree, and multiplying its image by the axiom-image certificate stays within \(D\). For PC, replay these certified axioms and each original primitive step; a multiplication predecessor has degree at most \(D-1\) and its variable image has degree at most one. No degree loss occurs. This covers arbitrary raw uses of bottom and parent coefficients in a proof, not only the designated source witnesses. 
+   Over \(\mathcal Q_{n,p}\), polynomially many such blocks at \(h=3(p-1)\ell\) therefore have no polylogarithmic-degree refutation for sufficiently large \(n\), by the  affine endpoint theorem . Since old bits are fixed, the  row-linear  and  full-old target guarantees  also transfer without a degree factor. 
+   The common-bit formula additionally supplies source profiles with the original individual input bounds. Indeed 
+   \[
+       1-V=\sum_iU_iG_i,\qquad
+       V^2-V=\chi(A^2-A)+B_x(A-1)^2.
+  \] 
+   Prefixes cost at most \(4h-1\le w_{\rm parent}\) when charged with the original \(d_i=2h\). The companion witness and the degree-\((4h+2)\) Booleanity witness fit \(w_{\rm parent}+d_i\) and \(2w_{\rm parent}\). These identities explain the interpretation; the complete transfer already supplies the required stronger raw-proof scope for this family. 
+   The parent value is \(x+(1-x)A\), not \(A\) and not necessarily zero. Later blocks reading it still need a justified interpretation or transfer. A general dense family of rank-two bottom tuples need not have a common old bit. Thus a large selector matrix is not itself a universal obstruction, while the full surviving source remains uncovered. 
+
+
+### 542 ex:shared-bit-complete-source-checks
+shared-bit-complete-source-checks  5. Complete overlapping-parent checks 
+   The  compiled checker  uses \(h=2\), three bottom blocks, and two parents reading index sets \(\{0,1,2\}\) and \(\{1,2\}\). Each field run, over \(\mathbb F_2\) or \(\mathbb F_3\), certifies all 37 original axiom images: four old Boolean equations, six bottom companions, twelve bottom fields, five parent companions, and ten parent fields. Two product comparisons and two value-Booleanity witnesses bring the total to 41 certificates per field, 82 in all. 
+   Each source parent has original product degree ten and companion degree fourteen. Its mapped product difference is certified through six, and companion images through eight. All individual original-degree checks pass. The output retains all source and target blocks, the single shared bottom map, original axioms, complete NS cofactors, and the two source value profiles. 
+   For each field, all 16 old Boolean assignments have complete canonical retained-system models, and every original axiom image vanishes in them. When \(x=1\) and all \(y_i=0\), both mapped parent products are one while both affine cores are zero: removing the shared-bit branch gives the wrong value. A missing-affine-companion model makes the corresponding original companion image nonzero. An additional \(\mathbb F_3\) model uses parent coefficient value two, preserving its genuine prime-field domain. 
+   These are local Boolean-base controls, not finite PHP refutations. All checks passed; a preliminary indentation warning was corrected.  Complete evidence ,  reproduction instructions , source hashes, and measured timing accompany the result. 
+    Route assessment.  A concrete dense surviving source, with arbitrarily many low-rank bottom selectors, now has a complete degree-preserving affine transfer. This extends coverage beyond the formal rank criterion. It does not handle arbitrary rank-two tuples or arbitrary later uses of the resulting values. 
+    Next bounded question.  Combine the fresh affine core with the joint-high-selector theorem: when its rank is eligible, test a source profile replacing the original dense parent by the old bit \(x\), and determine the resulting multilevel source criterion. 
+    Process assessment.  Checking the actual negative-child source avoided a redundant flattened-OR example; the now-repeated NS reconstruction and degree writer will be extracted into a shared helper after this checkpoint, with unchanged evidence verified. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   19 min 20.38 s   
+  Marked reading and review windows  0.74 s  
+  Mathematical reasoning and proof writing  14 min 44.23 s  
+  Computation design and coding  3 min 42.81 s  
+  Preparation and checkpoint work  45.12 s  
+  Dedicated web and download-attempt windows  2.49 s  
+  Individually measured computation  0.17 s  
+  Individually measured conversion, checks, and local processing  4.82 s  
+  
+ Through final snapshot; overlapping time counted once. 
+ 
+
+
+### 543 lem:canonical-pair-bottom-source-profiles
+canonical-pair-bottom-source-profiles  1. Canonical pair profiles can be used consistently 
+   Work in the coherent compact binary source with common accuracy \(h\ge2\), retaining its original weights. For a designated bottom tuple \((x,y)\), use the old value 
+   \[
+       z=(1-x)(1-y)
+  \] 
+   at its original cost \(2h\). The  consistent scalar specialization  already proves the complete map. Its source profile has exact prefix 
+   \[
+       1-z=x+(1-x)y.
+  \] 
+   The companions have old Boolean certificates through three, and 
+   \[
+       z^2-z=(1-x)^2(y^2-y)+(1-y)(x^2-x)
+  \] 
+   has a certificate through four. These fit the original input, companion, and Booleanity ceilings. Choose one canonical value for each reused bottom block; all later uses see that same value. 
+   The value \(z\) is old-only but is generally quadratic, not old-affine. Its mixed difference in two distinct bits is one, whereas every affine function has mixed difference zero. Therefore its formal selector column must remain in the subsequent rank calculation unless another justified step removes it. 
+
+
+### 544 lem:shared-core-clamped-old-bit-profile
+shared-core-clamped-old-bit-profile  2. A constrained affine core gives the original parent value \(x\) 
+   For a shared-bit parent \(s\), the interpreted inputs are \(G_{s,i}=(1-x_s)(1-y_{s,i})\), with original individual bounds \(d_{s,i}=2h\) and original parent weight \(w_s=h(2h+1)\). Introduce the  affine core  \(A_s\) on \(1-y_{s,i}\), with exact prefixes \(U_{s,i}\). Suppose its zero equation \(A_s=0\) is included in the retained system. 
+   Give the original parent the value \(v_s=x_s\), keeping cost \(w_s\). Its exact prefix residual is 
+   \[
+       1-x_s-\sum_iU_{s,i}G_{s,i}
+           =(1-x_s)A_s
+              \in\mathcal I_{2h+1}(\Gamma).
+       \tag{CORE-old-bit-prefix}
+  \] 
+   The original input bounds, rather than their reduced degree two, give 
+   \[
+       \deg U_{s,i}+d_{s,i}
+           \le4h-1\le h(2h+1)=w_s.
+       \tag{CORE-original-prefix-cost}
+  \] 
+   Companions have particularly short old Boolean witnesses: 
+   \[
+       G_{s,i}x_s
+           =-(x_s^2-x_s)(1-y_{s,i}),
+       \tag{CORE-old-bit-companion}
+  \] 
+   through degree three. Booleanity of \(v_s\) is the old bit equation through two. Thus all prefix, companion, value-degree, and Booleanity requirements of the  costed source interface  hold within the original ceilings. 
+   This also compares the actual mapped parent polynomial with the old bit. From the previous product difference, 
+   \[
+       \Phi(P_s)-x_s
+          =\bigl(\Phi(P_s)-[x_s+(1-x_s)A_s]\bigr)
+             +(1-x_s)A_s
+              \in\mathcal I_{3h}(\Gamma).
+       \tag{CORE-actual-parent-comparison}
+  \] 
+   No inference \(P_s=0\) follows: even with \(A_s=0\), the parent is one whenever \(x_s=1\). The source assignment is an old-bit value with a certified prefix residual. 
+
+
+### 545 thm:shared-core-projected-source-criterion
+shared-core-projected-source-criterion  3. A multilevel criterion after the correct affine projection 
+   Use the exact binary source stage and original degree conventions of the  adapted-rank compiler , including every required subgroup and coherent copy. Fix source depth \(d\), take \(h=3\ell\), and choose in advance a polynomial upper bound \(M\ge1\) for the final affine inventory. Put 
+   \[
+       k=\left\lceil\sqrt{(n+1)\log(4M)}\right\rceil,\qquad
+       r_*=3\ell(k+1)+1.
+  \] 
+   Select a set \(S\) of shared-bit parents whose proper affine cores \(A_s\) have rank at least \(r_*\). Canonicalize their pair-bottom blocks by Section 1. Optionally also select a set \(H\) of original proper affine bottom blocks of rank at least \(r_*\), using their  zero-value profiles . Retain the corresponding affine blocks and add all equations \(A_s=0\), \(s\in S\), and \(P_c=0\), \(c\in H\). 
+   For every other nonbottom source block, replace its formal inputs by 
+   \[
+    L_{a,i}(b)+\sum_{c&lt;a}\alpha_{a,i;c}Z_c
+       \ \longmapsto\
+    \underbrace{L_{a,i}(b)+
+        \sum_{s\in S,\ s&lt;a}\alpha_{a,i;s}x_s}_{\text{new old-affine part}}
+       +\sum_{\substack{c&lt;a\\c\notin H\cup S}}
+                \alpha_{a,i;c}Z_c .
+       \tag{CORE-source-projection}
+  \] 
+   The columns in \(H\) disappear with value zero; the columns in \(S\) disappear only after their old-bit contribution is added to the affine part. Canonical pair-bottom columns remain in the final sum: being old-only does not make their quadratic values affine. 
+    Working source criterion.  If every remaining nonbottom block has selector-matrix rank at most \(h-1\) after (CORE-source-projection), then the entire source has costed profiles within its original weights over a complete one-level affine family with these eligible core constraints. A hypothetical polynomial-size proof of fixed source depth satisfying this criterion is excluded for sufficiently large \(n\). 
+    Proof.  Assign the canonical pair values first, the selected original high-bottom zero values as before, and the selected shared-bit parent values from Section 2. All use one common retained system and respect strict source order. For every unselected block, apply the old-affine intersection and degree-ordered original-input basis construction to the projected formal tuple. Interpret its remaining selector names only after this basis choice, so their formal cancellation gives genuinely old-affine core inputs. 
+   The old-affine offset in (CORE-source-projection) has degree at most one. Every interpreted earlier value stays within its original weight. The adapted construction therefore retains all original individual \(d_i\)'s and yields cost at most \(2h+r_a^{\rm rem}\delta_a\). If a remaining selector direction occurs, the  original  \(\delta_a\) is at least \(h\), even if that direction's current value has smaller collected degree. Hence \(r_a^{\rm rem}\le h-1\) gives the original \(w_a=h(\delta_a+1)\) bound. Affine, zero, and unit cases have their established profiles. Prefix pullbacks, companions, and Booleanity retain the previous original-degree bounds. 
+   Canonicalized pair bottoms require no retained block; every other original bottom is retained at most once. Each selected star or unselected later block contributes at most one fresh affine core. Thus the final inventory is at most one affine block per source registry block. The chosen \(M\) remains valid, and the designated core ranks are old-affine ranks in that final family. 
+   The  joint-zero theorem  excludes a degree-\(D\) refutation of this endpoint whenever its usual multiplier and old-board bounds fit. The existing source reconstruction preserves its supplied modular NS degree, or the logical-DAG compiler gives 
+   \[
+       D\le\max(M_{\rm fr},10)(d+1)h^d.
+  \] 
+   For fixed \(d\), polynomial \(M\), and \(h=3\ell\), this is polylogarithmic, while \(k(D+1)=o(n)\) and \(4(k-1)&lt;n\). The forbidden affine endpoint follows, completing the criterion. 
+   The criterion must hold for the full retained registry, including mixed auxiliary unions. It is not automatically satisfied by the displayed logical formulas alone. This is a source-profile theorem; it does not assert a raw degree-preserving map of arbitrary later coefficient proofs. General surviving selector dependence and the ordinary unary conversion gap remain open. 
+
+
+### 546 ex:shared-core-third-level-exact-checks
+shared-core-third-level-exact-checks  4. Exact original-input checks at the next level 
+   The  new checker  uses the shared NS witness helper introduced after the preceding checkpoint. Its binary fixture has two shared-bit parents with different old probes, four actual pair-bottom blocks, two constrained affine star cores, and a third-level affine core on \(b_0+x_0,b_1+x_1,b_2+x_0\). 
+   Original star products have degree ten at \(h=2\). The third-level original inputs \(b_i+P_s\) therefore have degree ten and product weight 22. After the consistent bottom scalar map they have collected degree six; after the old-bit interpretation they become affine. The certificates still use their original degree-ten input bounds. 
+   Fifteen complete NS certificates check both actual parent-to-bit comparisons through six, old-bit prefix residuals through five, star companions through three, and bit Booleanity through two. At the third level, the original-input prefix residual is certified through nine, companions through ten, and Booleanity through eight, within original ceilings 22, 32, and 44. 
+   The output retains 288 complete canonical models satisfying both core constraints. In 36 the third value is one; each original star parent is one in 144 models and always equals its own probe. A wrong-zero-projection control changes a later input from one to zero if the old-affine offset is omitted. Removing the first core constraint gives a retained-system model where a claimed third-level companion is nonzero. 
+   The small cores have rank two and are not instances of the asymptotic high-rank eligibility threshold. These are conditional-profile and degree-accounting checks over an old Boolean base, not finite PHP lower bounds. All checks passed with a clean compilation.  Complete source polynomials, certificates, and models ,  commands , hashes, and timing accompany the result. 
+    Route assessment.  Eligible dense shared-bit parents can now contribute old-affine values in arbitrary later source levels, with correct offsets and original proof costs. This gives a genuine compositional application of the one-level joint-zero theorem. The remaining criterion can still fail on dense mixed auxiliary unions. 
+    Next bounded question.  Build a profile for an actual mixed OR union of eligible shared-bit parents using a fresh affine core on their old truth inputs \(1-x_s\). Check the prefix residuals and original-input companions without paying for the number of grouped bottom literals. This tests a concrete auxiliary-group obstruction beyond the remaining-rank condition. 
+    Process assessment.  The shared verifier was reused immediately for the new certificates, and explicit original/mapped input ledgers caught the relevant cost distinction; the mixed-union extension is left for the next checkpoint. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   25 min 9.14 s   
+  Mathematical reasoning and proof writing  14 min 33.51 s  
+  Computation design and coding  9 min 4.86 s  
+  Preparation and checkpoint work  1 min 17.63 s  
+  Dedicated web and download-attempt windows  5.19 s  
+  Individually measured computation  0.44 s  
+  Individually measured conversion, checks, and local processing  7.50 s  
+  
+ Through final snapshot, including the separately committed NS-helper refactor; overlap counted once. 
+ 
+
+
+### 547 def:mixed-star-union-original-setup
+mixed-star-union-original-setup  1. Keep the actual flattened tuple and its original degree 
+   Let selected shared-bit subgroups \(s\) cover the original union input index set \(I\). Their index sets \(I_s\) may overlap. After the consistent pair-bottom specialization, each occurrence in subgroup \(s\) has 
+   \[
+       G_i=(1-x_s)L_{s,i},\qquad L_{s,i}=1-y_{s,i},
+       \qquad i\in I_s.
+  \] 
+   A shared input must have the same polynomial in every occurrence. For example \((1-x_0)(1-x_1)\) can occur in stars with either probe \(x_0\) or probe \(x_1\). The source convention  flattens an OR cluster into its maximal non-OR children . Thus the union still reads the original bottom products, with original bounds 
+   \[
+       \mu_i=2h,\qquad
+       w_U=h(2h+1).
+       \tag{UNION-original-weight}
+  \] 
+   The union and its proper OR subgroups can be at the same ENS level. We do not insert another level or replace the input tuple by the subgroup products to obtain a larger weight. 
+   For each subgroup retain its affine core \(A_s\) on the \(L_{s,i}\)'s, with prefixes \(U_{s,i}\), and assume the eligible equation \(A_s=0\) is present. Put \(\chi_s=1-x_s\). The  old-bit profile  supplies the exact relation 
+   \[
+       \chi_s-\sum_{i\in I_s}U_{s,i}G_i
+           =\chi_s A_s,\qquad
+       \deg U_{s,i}\le2h-1.
+       \tag{UNION-subgroup-prefix}
+  \] 
+   The hypotheses concern the actual tuple, its cover, and the supplied core equations. A general collection of low-rank bottom blocks need not admit such a cover. 
+
+
+### 548 thm:mixed-star-union-affine-core-profile
+mixed-star-union-affine-core-profile  2. Compress the old truth inputs into one affine core 
+   Introduce one fresh complete accuracy-\(h\) affine block on the old bits \((\chi_s)_s\), with product \(B\) and prefixes \(V_s\), so \(1-B=\sum_sV_s\chi_s\) and every \(\chi_sB\) is a companion axiom. Give the original union value \(B\). For its original input position \(i\), put 
+   \[
+       W_i=\sum_{s:i\in I_s}V_sU_{s,i}.
+       \tag{UNION-original-prefix}
+  \] 
+   Every overlapping occurrence contributes to this sum. Substitution of (UNION-subgroup-prefix) gives the exact residual 
+   \[
+       1-B-\sum_{i\in I}W_iG_i
+          =\sum_sV_s\chi_s A_s
+                   \in\mathcal I_{4h}(\Gamma).
+       \tag{UNION-residual}
+  \] 
+   Each displayed generator multiple costs at most \((2h-1)+1+2h=4h\). The original input-weighted prefix bound is 
+   \[
+       \deg W_i+\mu_i
+            \le(2h-1)+(2h-1)+2h=6h-2.
+       \tag{UNION-prefix-cost}
+  \] 
+   For a companion, choose any subgroup \(s\) containing \(i\). Its factorization gives the particularly direct witness 
+   \[
+       G_iB=L_{s,i}(\chi_sB)
+                    \in\mathcal I_{2h+2}(\Gamma).
+       \tag{UNION-companion}
+  \] 
+   There is no need to sum over all groups for this step. Booleanity of the new value has the ordinary identity 
+   \[
+       B^2-B=-\sum_sV_s(\chi_sB)
+                    \in\mathcal I_{4h}(\Gamma).
+       \tag{UNION-Booleanity}
+  \] 
+    Working profile theorem.  These data form a complete profile of cost \(s_U=6h-2\), with the original \(\mu_i=2h\), for every \(h\ge2\). It fits the original union weight because 
+   \[
+       h(2h+1)-(6h-2)=(2h-1)(h-2)\ge0.
+       \tag{UNION-budget}
+  \] 
+   The value degree is at most \(2h\), the residual ceiling \(4h\) is at most \(s_U\), and the companion and Booleanity ceilings fit \(s_U+\mu_i\) and \(2s_U\). All equations are ordinary NS identities and work over every prime. No bound on the number of subgroups or grouped bottom literals appears in these degree estimates. Witness size and input inventory are still retained; no small expanded-monomial-size claim is made. 
+   All affine blocks use only old inputs and have disjoint own coefficients. The union value does not recursively depend on same-level subgroup values. Its NS witnesses use the supplied subgroup coefficients in one fixed retained system, which is permitted by the source interface. 
+
+
+### 549 cor:mixed-union-source-compiler-application
+mixed-union-source-compiler-application  3. Covered auxiliary groups no longer need the rank hypothesis 
+   In the binary source criterion of the  preceding entry , handle a remaining flattened union of selected star tuples by Section 2, even if its formal selector matrix has rank much larger than \(h\). Keep its resulting affine-core value as the interpretation of its original selector name. Apply the adapted-rank condition only to the other remaining nonbottom blocks after the previously justified old-bit and zero projections. 
+   Each covered union adds one affine block. Together with the selected star cores and other source profiles, the inventory remains at most one affine block per original registry block. The original uniform value bounds remain valid because \(s_U\le w_U\). The selected star core equations are still eligible under the same polynomial inventory bound and high-rank threshold. Therefore the existing common-system logical-DAG compiler and  joint-zero affine exclusion  apply unchanged. This extends the restricted-source criterion to include these dense auxiliary groups. 
+    Actual OR interfaces retain their residual terms.  For union and child values \(c,a,b\), use 
+   \[
+       c-ab=c(1-a)+ca(1-b)-ab(1-c).
+  \] 
+   Insert their supplied prefixes and residuals. Positive terms use union companions; negative terms use child companions. With overlapping child lists, assign each original union position to one child that contains it for the negative terms, while retaining both full child prefixes in the positive terms. This yields the  existing sum-of-profile-costs NS ceiling , including the residual correction \(cR_a+caR_b-abR_c\). The construction does not invoke a same-degree PC-to-NS conversion. 
+   The full retained registry still matters. Every other required group must have a valid profile, such as the remaining-rank construction. Arbitrary unions of pair-bottom values without the selected-star cover remain outside this theorem. No full \(\mathrm{AC}^0[p]\)-Frege or ordinary-unary conclusion follows. 
+
+
+### 550 ex:mixed-star-union-exact-checks
+mixed-star-union-exact-checks  4. Overlapping inputs and an actual OR comparison 
+   The  binary checker  uses \(h=2\), three star cores, five actual pair-bottom inputs, and two union cores. The star index sets are \(\{0,1\}\), \(\{0,2\}\), and \(\{3,4\}\): the first input is shared by stars with different probes. The two union tuples are \(\{0,1,2\}\) and \(\{0,1,2,3,4\}\). 
+   The original flattened union products both have degree ten, and every original input has degree four. The composed prefix bound \(6h-2=10\) is tight for this ledger. Thirteen complete NS certificates verify the two union profiles and the actual relation 
+   \[
+       B_{012}-B_{01}x_2=0.
+  \] 
+   Prefix residuals are certified through eight, original-input companions through six, and Booleanity through eight. The corrected OR witness uses degree thirteen, within its source ceiling thirty. Its complete cofactors include the required prefix-residual contributions. 
+   All 54 canonical old Boolean points satisfying the three core equations have complete retained-system models. The two union values are one in six and three models respectively, and the OR relation holds throughout. Three additional models isolate an omitted overlap contribution, a missing star-core equation, and a missing union truth companion. 
+   At a model choosing the second subgroup's union coefficient, dropping its contribution to the shared input prefix gives a residual of one. Separately, deleting the child-prefix-residual contribution \(cR_a\) from the otherwise complete OR witness fails exact NS reconstruction; the shared verifier rejects it before emitting witness terms. The missing core-equation and companion models show the corresponding assumptions are necessary for these witnesses. 
+   All checks passed with a clean final compilation. These small rank-two star cores test conditional source profiles, not the asymptotic high-rank eligibility condition, and the finite old base is Booleanity rather than PHP.  Complete polynomials, NS terms, and models ,  reproduction instructions , hashes, and timing accompany the result. 
+    Route assessment.  A concrete dense mixed auxiliary-group obstruction is now handled within its original weight, including shared inputs and the actual OR comparison. General uncovered groups remain open; extending this family alone would not settle the full goal. 
+    Next bounded question.  Test a broader affine-endpoint improvement: replace row-linear multipliers by polynomials with at most two bits per row, and ask whether the all-prime affine exclusion already works at constant accuracy \(h=2(p-1)\). The old bounded-row-degree and signed-cube tools suggest this may be possible, but its dimension and residual-board bounds have not yet been established in this record. 
+    Process assessment.  Overlap and omitted-residual controls checked the actual source interface, while the shared verifier avoided another reconstruction implementation; the broader multiplier-space question is prioritized over further special-family refinements. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   35 min 31.14 s   
+  Marked reading and review windows  0.74 s  
+  Mathematical reasoning and proof writing  29 min 52.54 s  
+  Computation design and coding  3 min 59.25 s  
+  Preparation and checkpoint work  1 min 30.27 s  
+  Dedicated web and download-attempt windows  2.95 s  
+  Individually measured computation  0.37 s  
+  Individually measured conversion, checks, and local processing  5.01 s  
+  
+ Through final snapshot; overlapping time counted once. 
+ 
+

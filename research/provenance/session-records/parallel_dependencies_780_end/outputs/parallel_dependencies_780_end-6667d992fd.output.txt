@@ -1,0 +1,103 @@
+
+###generic-affine-subspace-consequence-transfer
+A generic dimension-budget consequence theorem
+Let \(\mathcal F\subseteq\mathbb F_2[x_1,\ldots,x_v]\) contain all old Boolean equations. Let \(\Gamma\) adjoin a finite complete one-level affine ENS family with accuracy \(h\ge1\), all companions and fresh coefficient Boolean equations, and old-affine inputs only. Suppose \(\Gamma\) has a degree-\(D\) ordinary-PC refutation, \(D\ge2h+1\). Fix \(k\ge1\) and a linear subspace \(U\subseteq\mathcal P_{\le k}\). Let \(H\) be the blocks with input span not containing one and rank \(r_a>h(k+1)\). Define
+\[
+ B=k(D+1),\qquad R=\sum_{a\in H}\binom{v-r_a+k}{k}.
+\]
+Then
+\[
+ \dim\bigl(U\cap\mathcal C_B(\mathcal F)\bigr)\ge\dim U-R.
+\]
+In particular, \(\dim U>R\) forces a nonzero member of \(U\) to be derivable through \(B\). Conversely, if \(U\cap\mathcal C_B(\mathcal F)=\{0\}\), no such refutation exists whenever the dimension inequality holds. For \(r_*=h(k+1)+1\le v\), one may replace \(R\) by \(|H|\binom{v-r_*+k}{k}\). If \(r_*>v\), then \(H\) is empty and \(R=0\).
+Proof. For every \(a\in H\), choose affine coordinates on its nonempty common zero flat and let \(\rho_a\) be ordinary polynomial restriction to those coordinates. The ordinary restriction dimension bound gives \(\operatorname{rank}(\rho_a|_U)\le\binom{v-r_a+k}{k}\). The joint restriction map on \(U\) consequently has rank at most \(R\), so its kernel \(K\) has dimension at least \(\dim U-R\). For each \(f\in K\), literal affine-ideal membership supplies \(f=\sum_i a_{a,i}g_{a,i}\) with \(\deg a_{a,i}\le k-1\) for every proper high block. Each other high block has one in its span. The weighted removal theorem therefore derives every \(f\in K\) from \(\mathcal F\) through \(B\). Thus \(K\subseteq U\cap\mathcal C_B(\mathcal F)\), proving the inequality. The rank-threshold specialization follows by monotonicity of the binomial count. These are ordinary restriction maps, not pointwise evaluation maps.
+This abstracts the existing common-kernel argument rather than discovering a new elimination mechanism. Its dependencies are indexed as lem:ordinary-restriction-dimension, lem:proper-affine-block-restriction, and lem:affine-family-removal-with-unit-blocks. Their Lean files verify those ingredients; the displayed arbitrary-\(U\) dimension inequality is a new paper-level assembly, not an additional exported Lean theorem.
+
+
+###lean-generic-CNF-initial-value-bridge
+The initial-value bridge
+Let \(\sigma\) be a finite set of old variables over \(\mathbb F_2\). For an affine clause \(A=\{g_1,\ldots,g_n\}\), true when some \(g_i=1\), its ordinary clause polynomial is
+\[
+ F_A=\prod_{g\in A}(1-g).
+\]
+It is the indicator that every literal is zero: \(F_A(x)=0\) exactly when the clause holds at \(x\). This evaluation statement is verified, so the hypothesis "\(F_A\) is an old axiom" is the usual polynomial encoding of the clause.
+Lemma. In a complete clause registry of accuracy \(h\) over an old base containing \(F_A\), let a slot hold the clause \(A\) with \(|A|\le w\), and let \(P\) be its block product. Then \(P\) is derivable in ordinary PC through \(2h+w\).
+Proof. The verified prefix identity gives \(U_1,\ldots,U_n\) with \(\deg U_i\le n-1\) and \(1-\prod_i(1-g_i)=\sum_iU_ig_i\). Multiplying by \(P\),
+\[
+ P=F_A\,P+\sum_{i=1}^{n}U_i\,(g_iP).
+\]
+The first term is an old axiom of degree at most \(n\) multiplied by \(P\), whose degree is at most \(2h\), so it costs at most \(n+2h\). Each companion \(g_iP\) is a registry axiom of degree at most \(2h+1\), and its multiple by \(U_i\) costs at most \((n-1)+(2h+1)=n+2h\). Since \(n\le w\), every line stays within \(2h+w\). For the empty clause \(F_A=1\) and the identity reads \(P=P\) with no companion terms. This is the recorded telescoping argument; the bit-PHP bridge is the case \(w=\ell\) with the compact collision polynomial.
+
+
+###lean-generic-CNF-affine-DAG-subspace-criterion
+Transfer and proof-size criterion
+Transfer. Let \(C_1,\ldots,C_S\) be a refutation DAG in the formal affine calculus (semantic weakening, complementary-parity resolution, and binary semantic inference, with reuse) from a set \(I\) of initial clauses, ending in the empty clause. Let \(A_1,\ldots,A_t\) be clauses of width at most \(w\) such that every member of \(I\) is semantically entailed by some \(A_j\), and let the old base \(\mathcal F\) contain every \(F_{A_j}\). For every \(h\ge1\) there is one fixed complete registry with exactly \(N=3S+t\) slots, each of width at most \(\max(w,v+2)\), whose system over \(\mathcal F\) derives one through
+\[
+ D=\max(2h+w,\;4h+1).
+\]
+Proof. The verified DAG registry theorem supplies the registry and a height-independent replay through any \(D\ge4h+1\), given derivations of the initial slot values; the bridge lemma supplies those through \(2h+w\). The final node's compressed clause is contained in the empty clause, so its value is one.
+Criterion. Assume also that \(\mathcal F\) contains the Boolean equations. Let \(k\ge1\), let \(U\) be a linear space of polynomials of degree at most \(k\), and suppose \(U\) is separated: no nonzero member of \(U\) is derivable from \(\mathcal F\) through \(k(D+1)\). Then every such refutation satisfies
+\[
+ \dim U\le(3S+t)\binom{v-(h(k+1)+1)+k}{k}.
+\]
+Proof. Otherwise the uniform budget of the generic subspace theorem is below \(\dim U\): the proper high-rank blocks number at most \(N=3S+t\), and each contributes at most the displayed binomial. Since \(D\ge2h+1\), the exclusion form of that theorem contradicts the transferred refutation. The subtraction is truncated at zero; when \(v<h(k+1)+1\) there are no proper high blocks, the binomial is one, and the inequality is implied by \(\dim U=0\).
+Reading. Solving for \(S\) gives \(S\ge\bigl(\dim U/\binom{v-h(k+1)-1+k}{k}-t\bigr)/3\). The free parameter \(h\) trades the degree \(D\) at which separation is required against the restriction loss. All the difficulty of an application lies in exhibiting a large separated \(U\); for bit PHP that is the row-linear separation theorem. For a satisfiable or easily refuted base no such \(U\) exists, and the criterion says nothing. No formula other than bit PHP is claimed to satisfy the hypothesis.
+Verification. GenericCNFSubspaceCriterion.lean exports clauseFalsityPolynomial, clauseFalsityPolynomial_eval_eq_zero_iff, registry_generic_initial, generic_CNF_PC_transfer, and generic_CNF_subspace_criterion in MathResearch.PolynomialCalculus. The type and transitive axiom report passes with only the standard Lean foundations. Statement review by the main session: the printed types are exactly the statements drafted before delegation. The DAG type is the same AffineDAG used by the bit-PHP theorems; initial clauses enter through semantic cover by a finite family, as in the verified bit-PHP transfer; the slot count is an equality \(N=3S+|J|\); the separation hypothesis is at degree \(k(\max(2h+w,4h+1)+1)\); and the clause-polynomial hypothesis is tied to clause semantics by the evaluation theorem. No mathematical discrepancy was found, so Gaps identified by formalization is unchanged. The subagent's first compile failed on three elaboration issues, not mathematical ones. The preprint is not modified.
+Outcome and process assessment. Both new claims are fully formalized and indexed, so the generic criterion can now be stated for refutation DAGs of arbitrary affine-clause CNFs with every step verified. The delegation trial worked technically: the subagent filled four proofs without touching a statement, using about 122 thousand tokens, much of it re-reading modules the main session had already read. Priced from the session's usage report it was nevertheless roughly cost-neutral, about USD 3.20 against an estimated USD 3.5–4.5 for the main session, because the main session's context had grown to about 250 thousand tokens and every one of its tool calls re-reads that context, while the fresh subagent averaged under 90 thousand. The cost driver is main-session context size rather than model tier, so long compile loops late in a large session are better run in a fresh subagent or a fresh session; no framework change is made.
+
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval8 min 37.07 s
+Marked reading and review windows1 min 32.33 s
+Formal proof design and coding58.83 s
+Preparation and checkpoint work0.15 s
+Individually measured formal verification22.25 s
+Mixed reasoning and writing (legacy phase)5 min 43.52 s
+
+Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.
+
+
+
+###lean-generic-CNF-density-exponential-form
+Density form of the proof-size criterion
+Binomial estimate. For natural numbers \(a,r\) and \(k\ge0\),
+\[
+ \binom{a+k}{k}\le\binom{a+r+k}{k}\exp\!\left(-\frac{rk}{a+r+k}\right).
+\]
+Proof. Fix \(K\) and put \(q=\exp(-r/(a+r+K))\). We show \(\binom{a+k}{k}\le\binom{a+r+k}{k}q^k\) for all \(k\le K\) by induction; \(k=0\) is an equality. For \(k+1\le K\), the absorption identity \((n+1)\binom{n}{k}=(k+1)\binom{n+1}{k+1}\) with \(n=a+k\) and \(n=a+r+k\) reduces the step to the single factor inequality \(a+k+1\le(a+r+k+1)q\). Since \(1-x\le e^{-x}\),
+\[
+ (a+r+k+1)\,q\ge(a+r+k+1)-r\,\frac{a+r+k+1}{a+r+K}\ge a+k+1,
+\]
+because \(a+r+k+1\le a+r+K\). Multiplying the induction hypothesis by \(a+k+1\ge0\), applying this factor inequality, and cancelling \(k+1>0\) completes the step. Take \(K=k\) and use \(q^k=\exp(-rk/(a+r+k))\).
+Corollary. Assume the hypotheses of the verified proof-size criterion: an \(S\)-node affine refutation DAG whose initial clauses are covered by \(t\) clauses of width at most \(w\) with clause polynomials in the old base, Boolean equations in the base, \(h,k\ge1\), and a space \(U\) of polynomials of degree at most \(k\) with no nonzero member derivable through \(k(\max(2h+w,4h+1)+1)\). Put \(r=h(k+1)+1\) and assume \(r\le v\). Then
+\[
+ \dim U\le(3S+t)\binom{v+k}{k}\exp\!\left(-\frac{rk}{v+k}\right)
+ \le(3S+t)\binom{v+k}{k}\exp\!\left(-\frac{hk^2}{v+k}\right).
+\]
+Proof. Apply the estimate with \(a=v-r\) to the criterion's binomial \(\binom{v-r+k}{k}\). The second inequality uses \(rk\ge hk^2\).
+Reading. With the density \(\delta=\dim U/\binom{v+k}{k}\), the fraction of all polynomials of degree at most \(k\) occupied by the separated space, the corollary says \(3S+t\ge\delta\,e^{hk^2/(v+k)}\). An exponential size bound therefore needs \(\delta\) not to cancel the exponential: a dense separated space, few variables, and separation at degree about \(4hk\). Bit PHP has all three; for unary functional PHP the known matching space is too thin, as the reviewer also observed. The heuristic substitution \(k\approx d/(4h)\) that turns the exponent into \(d^2/(16hv)\) is not formalized, and neither is any asymptotic statement. The density is a reading of the inequality, not a Lean term; the formal statement avoids division, and the hypothesis \(r\le v\) is explicit because the criterion's subtraction is truncated.
+
+
+###lean-generic-criterion-short-proof-control
+Short-proof control
+Statement. Over any field: if a base \(\mathcal F\) derives one through degree \(d\le B\), then every polynomial of degree at most \(B\) is derivable from \(\mathcal F\) through \(B\). If \(\mathcal F\) contains \(L\) and \(1-L\) with \(\deg L\le1\), it derives one through degree one. Consequently, over such a base, a subspace \(U\) of polynomials of degree at most \(k\) that is separated at any \(B\ge\max(1,k)\) is zero.
+Proof. Multiply the derived line one by \(f\) with the verified reuse lemma, at cost \(\max(d,\deg f)\le B\). For the pair, add the two axioms. If \(U\) is separated, each \(f\in U\) is derivable and hence zero.
+Purpose. The easiest parity contradiction has a short refutation, and the generic criterion is consistent with it: no separated space exists, so the criterion yields no lower bound. This is a consistency control on one trivial family, not an audit of known short Res(\(\oplus\)) refutations; that audit remains worthwhile before advertising the criterion.
+Verification. GenericCNFDensityBound.lean exports choose_restriction_exp_bound, generic_CNF_density_bound, and generic_CNF_density_bound_simple; ShortProofControl.lean exports derives_all_of_derives_one, complementary_pair_derives_one, and no_separated_subspace_of_complementary_pair, all in MathResearch.PolynomialCalculus. Both reports (density form, control) pass with only the standard Lean foundations. Statement review: the density theorems repeat the criterion's hypotheses verbatim and add only \(h(k+1)+1\le|\sigma|\); dimensions and binomials are natural numbers cast to the reals; the exponents are \(-((h(k+1)+1)k)/(|\sigma|+k)\) and \(-(hk^2)/(|\sigma|+k)\). The first compile failed on a renamed Mathlib lemma and one rewrite, not on mathematics. Gaps identified by formalization is unchanged, and the preprint is not modified.
+Outcome and process assessment. Both claims are fully formalized and indexed, so every sentence planned for the preprint's generic section now has a checked counterpart. Deriving the reviewer's shape by hand first exposed its hidden density hypothesis before any Lean work, which is the right order; no framework change is needed.
+
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval3 min 28.13 s
+Formal proof design and coding2 min 41.89 s
+Preparation and checkpoint work0.15 s
+Individually measured formal verification31.36 s
+Mixed reasoning and writing (legacy phase)14.73 s
+
+Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.
+
+

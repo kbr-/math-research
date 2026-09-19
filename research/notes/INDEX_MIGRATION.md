@@ -13,10 +13,59 @@ Mark tasks complete only after implementation and validation. Record concrete
 paths, decisions and checkpoint references as work proceeds. Leave partial tasks
 unchecked and briefly note what remains.
 
+## Completion — 19 September 2026
+
+All tasks below are implemented and validated. The final
+[acceptance report](../results/index_parallel_integration_20260919/acceptance.json)
+and [coverage report](../results/index_parallel_integration_20260919/coverage-final.json)
+cover **887 claims, 18 topics and 2,409 scoped relationships**. Every claim has
+all five reviewed dispositions, with no stale or unreviewed field. All 866
+original text records remain exact; 18 source-inventory omissions and three
+dated probability-audit records were added. This completes index curation, not
+the open mathematical program or external review of any paper.
+
+Acceptance evidence by requirement group:
+
+- Sections 6–8: disjoint classification patches, the complete 91-candidate
+  [source adjudication](../results/parallel_index_source_adjudication/README.md),
+  [formalization reconciliation](../results/parallel_formalization_route_reconcile/README.md),
+  and [duplicate review](../results/parallel_index_duplicate_review/README.md).
+  All 75 mapped claims/77 artifacts retain their exact verified scopes. All 22
+  similarity candidates remain distinct; rediscoveries/refinements are linked.
+  [Topic/lifecycle views](../claims/views/topics.md) expose scoped corrections
+  without duplicating editable metadata or deleting historical qualifications.
+- Section 9: the final dependency merger and scope decisions, full-record
+  [citation utility](../results/parallel_record_citations/README.md), and final
+  [graph audit](../results/index_parallel_integration_20260919/graph-final.json).
+  Every direct-dependency inventory is reviewed. Automatic citation ownership
+  remains explicitly ambiguous/unowned where appropriate; extraction flags are
+  not unreviewed theorem metadata or an instruction to invent an edge.
+- Section 10: nine completed targeted significance comparisons are integrated.
+  Eight retain unknown novelty after bounded searches; the binary predecessor
+  is the same publication candidate, not a second result. Follow-up expert/novelty
+  questions remain in the assessments, distinct from unfinished index review.
+- Sections 11–13: compact/exact retrieval, source packets, proposal authoring,
+  registration/correction/formalization tests, interrupted proposal recovery,
+  parallel append integration, generated-view freshness and changed-field gates
+  are implemented. Root guidance, prompts, Resume and registry documentation
+  share the maintenance contract. Full-record citation and evidence-normalization
+  regressions are included in CI and checkout requirements.
+- Combined acceptance: 79 claim tests, seven finalizer tests, seven parallel-merge
+  tests, and 18 citation/discovery tests pass. Source targets, generated views,
+  registration, graph and [portable checkout](../results/index_parallel_integration_20260919/checkout.json)
+  checks pass. The final [machine-readable export](../results/index_parallel_integration_20260919/index-export.json)
+  is retained with provenance. No new Lean build or publication is implied.
+
+The curation uncovered an invalid permutation-probability premise. Its exact
+counterexample, scoped corrections and remaining proof obligations are in the
+dated notebook entry `entry-2026-09-19-permutation-probability-audit`. The index
+records those limitations rather than treating reviewed metadata as proof truth.
+Other IDEAS.md items remain owned by their separate plans.
+
 ## Scope and completion discipline
 
 - Sections 1–5 record the completed structural migration, not completed metadata
-  curation. Sections 6–13 track the ongoing enrichment; completion is marked item by item.
+  curation. Sections 6–13 record the completed enrichment and maintenance acceptance.
 - Account for every claim, including additions during the pass, through resumable
   field-level coverage records. `null`, empty lists and "not reviewed" do not
   establish absence; record a reasoned disposition or an explicit unresolved item.
@@ -125,7 +174,7 @@ unchecked and briefly note what remains.
 - [x] Define field-level review metadata: reviewed source revision/anchor, review
       date or checkpoint, disposition, evidence, and unresolved work. Avoid a
       single "reviewed" flag that conceals untouched fields.
-- [ ] Inventory every claim against its source using automated parsing and evidence
+- [x] Inventory every claim against its source using automated parsing and evidence
       extraction, including corrections, formalization and publication records.
       Validate explicit declarations mechanically; reserve manual reading for
       ambiguous scope, contradictory evidence and semantic judgments rather than
@@ -141,7 +190,7 @@ unchecked and briefly note what remains.
 
 ## 7. Populate existing formalization coverage for every claim
 
-- [ ] Inventory all per-claim Lean files, declarations, route maps, verification
+- [x] Inventory all per-claim Lean files, declarations, route maps, verification
       reports and notebook formalization entries; map them to stable claim IDs.
 - [x] Populate structured formalization records wherever coverage is already
       explicit, including source links and exact scope. Do not leave known
@@ -153,10 +202,10 @@ unchecked and briefly note what remains.
       supporting files without implying that a filename verifies every conclusion.
 - [x] Resolve mixed cases such as `lem:mp-telescoping`: preserve the verified
       identity/bounds, the refuted equality, and the downstream audit limitation.
-- [ ] Populate the Res(⊕) bit-PHP publication theorem, exponential corollary and
+- [x] Populate the Res(⊕) bit-PHP publication theorem, exponential corollary and
       dependency route from their existing records, retaining both rule conventions
       and exact parameter/encoding scope.
-- [ ] Audit consistency between informal scope, structured coverage, Lean links
+- [x] Audit consistency between informal scope, structured coverage, Lean links
       and recorded verification evidence. Distinguish inspecting existing evidence
       from performing a fresh kernel replay.
 - [x] Complete a coverage report for the entire index: every claim has a reviewed
@@ -164,59 +213,59 @@ unchecked and briefly note what remains.
 
 ## 8. Mathematical status, topics, compression and deduplication
 
-- [ ] Populate mathematical status independently of formalization and significance:
+- [x] Populate mathematical status independently of formalization and significance:
       working proof, established/imported result, conditional result, conjecture,
       finite check, refutation, correction/retraction, or contextual record as appropriate.
-- [ ] Define a small reusable topic taxonomy with descriptions and stable IDs;
+- [x] Define a small reusable topic taxonomy with descriptions and stable IDs;
       allow multiple topics per claim. Separate topic, object/proof system, and
       current-route membership where those distinctions are useful.
-- [ ] Assign topics across all claims, resolving ambiguous and uncategorized cases
+- [x] Assign topics across all claims, resolving ambiguous and uncategorized cases
       explicitly rather than leaving an unexamined tail.
-- [ ] Generate a compact topic map and topic-specific index views; choose their
+- [x] Generate a compact topic map and topic-specific index views; choose their
       layout without creating a second editable source or breaking existing links.
-- [ ] Run similarity-based duplicate discovery as a review aid. Check hypotheses,
+- [x] Run similarity-based duplicate discovery as a review aid. Check hypotheses,
       encodings, quantifiers and costs before classifying any pair.
-- [ ] Record true duplicates, rediscoveries, refinements, supersessions and
+- [x] Record true duplicates, rediscoveries, refinements, supersessions and
       corrections with stable-label relationships. Do not delete or conflate claims
       because their wording is similar.
-- [ ] Provide active and historical/retracted views, retaining lookup of every old
+- [x] Provide active and historical/retracted views, retaining lookup of every old
       label and visible correction warnings. A parked result remains discoverable.
-- [ ] Compress generated display text and links where useful while retaining full
+- [x] Compress generated display text and links where useful while retaining full
       exact scope through lookup. Ensure links work on GitHub, locally and on Pages;
       a bare notebook anchor in a Markdown file is not automatically a valid link.
 
 ## 9. Populate and audit relationship data
 
-- [ ] Extract candidate citations from the entire Research record and claim source
+- [x] Extract candidate citations from the entire Research record and claim source
       passages, mapping entry anchors to claims without assigning an entry's every
       citation to every claim in that entry.
 - [x] Build reusable dependency discovery tools for notebook hyperlinks, explicit
       dependency language/lists, claim-label mentions, Lean imports and declaration
       references. Retain source anchors/lines, extraction method, ownership ambiguity
       and proposed relationship type for every candidate; report unresolved targets.
-- [ ] Review every claim's direct proof dependencies through that evidence inventory.
+- [x] Review every claim's direct proof dependencies through that evidence inventory.
       Accept justified explicit information without a redundant full-entry reread;
       inspect targeted passages when the tool cannot resolve meaning or ownership.
       Do not treat imports/citations alone as proof dependencies, or a partial
       publication/frontier audit as completion of the entire graph.
-- [ ] Add bounded candidate lookup, deduplication and decision tracking so reviewed,
+- [x] Add bounded candidate lookup, deduplication and decision tracking so reviewed,
       rejected and pending suggestions survive reruns and compaction. Test ambiguous
       shared entries, unused imports, negated dependency language, local definitions,
       corrections and stale evidence; retain human review for semantic uncertainty.
-- [ ] Populate `depends_on`, `cites`, `refines`, `supersedes`, `corrects`,
+- [x] Populate `depends_on`, `cites`, `refines`, `supersedes`, `corrects`,
       `rediscovers`, `formalizes`, `applies`, and `obstructs` wherever justified;
       define direction and meaning consistently and preserve evidence locators.
-- [ ] Distinguish required dependencies from alternative proofs, contextual
+- [x] Distinguish required dependencies from alternative proofs, contextual
       citations, tests and counterexamples. Record scope/conditions where an edge
       applies to only part of a claim or one proof.
-- [ ] Resolve historical and external endpoints through stable identities and
+- [x] Resolve historical and external endpoints through stable identities and
       locators, leaving the immutable handoff untouched. Decide how entry, method,
       Lean-artifact and publication nodes are represented when they are not claims.
-- [ ] Seed reviewed edges with the documented publication dependency route and
+- [x] Seed reviewed edges with the documented publication dependency route and
       active tools, then continue through the complete index with coverage tracking.
-- [ ] Mark pending edge reviews and claims whose dependencies have been inspected
+- [x] Mark pending edge reviews and claims whose dependencies have been inspected
       but found empty. Do not conflate either case with unexplored dependencies.
-- [ ] Validate endpoints, duplicate/conflicting edges, self-links, and cycles;
+- [x] Validate endpoints, duplicate/conflicting edges, self-links, and cycles;
       distinguish genuine circular proof dependencies from harmless cycles of citation.
 - [x] Add predecessor/successor, ancestor/descendant, "what cites this", and
       correction-impact queries. Report that impact is an audit scope, not a proof
@@ -224,18 +273,18 @@ unchecked and briefly note what remains.
 
 ## 10. Populate claim significance
 
-- [ ] Define structured significance assessments with rationale, exact scope,
+- [x] Define structured significance assessments with rationale, exact scope,
       novelty status, source evidence, review date and suggested action. Keep
       independent interest, novelty, correctness and publication readiness separate.
 - [x] Populate the known Res(⊕) publication result and its corollaries first, using
       the recorded literature/dependency audits and current external-review status;
       do not leave them null or promote an internal assessment to external confirmation.
-- [ ] Screen every remaining claim for independent interest, reusable tools,
+- [x] Screen every remaining claim for independent interest, reusable tools,
       meaningful negative results and corrected published claims. Include finite
       checks and failed attempts that expose valuable counterexamples.
-- [ ] Perform targeted literature checks for plausible candidates, preserving
+- [x] Perform targeted literature checks for plausible candidates, preserving
       exact formulations, encodings, versions, dates, uncertainty and source links.
-- [ ] Complete significance coverage for all claims: a reasoned disposition or an
+- [x] Complete significance coverage for all claims: a reasoned disposition or an
       explicit pending novelty/audit question, not unexplained nulls.
 
 ## 11. Minimal-output claim retrieval
@@ -266,28 +315,27 @@ unchecked and briefly note what remains.
 
 ## 12. Index acceptance and maintenance
 
-- [ ] Publish a coverage report for all baseline and subsequently added claims:
+- [x] Publish a coverage report for all baseline and subsequently added claims:
       populated metadata, reviewed dispositions, pending questions and stale evidence.
-- [ ] Demonstrate a new claim travelling through registration, exact/minimal lookup,
+- [x] Demonstrate a new claim travelling through registration, exact/minimal lookup,
       topics, relationship recording, significance and formalization metadata without
       duplicated manual bookkeeping. No graph UI or Fossick implementation is required.
-- [ ] Demonstrate a correction updating source links, scope, affected relationships
+- [x] Demonstrate a correction updating source links, scope, affected relationships
       and review tasks without rewriting the historical notebook record.
-- [ ] Exercise interrupted/resumed curation and existing parallel append integration
+- [x] Exercise interrupted/resumed curation and existing parallel append integration
       against the structured source, preserving stable IDs and accepted records.
-- [ ] Run schema, generation, retrieval, metadata, relationship and portability
+- [x] Run schema, generation, retrieval, metadata, relationship and portability
       checks; preserve full evidence and reproducibility data at checkpoints.
-- [ ] Document the minimal index editing/curation workflow and remove superseded
+- [x] Document the minimal index editing/curation workflow and remove superseded
       index instructions or tools after compatibility is accounted for.
-- [ ] Review completion against IDEAS.md item 5 and the conversation's index-specific
+- [x] Review completion against IDEAS.md item 5 and the conversation's index-specific
       requirements. Report every metadata gap explicitly; do not make completion
       depend on implementing the separately owned framework plans.
 
 ## 13. Enforce metadata maintenance in every subsequent research cycle
 
 This is an ongoing requirement, not only a one-time enrichment pass. Update the
-workflow during implementation of this phase. The changed-claim contract is now
-active; the unchecked items below still need implementation or acceptance evidence.
+workflow during implementation of this phase. The changed-claim contract and the acceptance checks below are implemented.
 
 - [x] Define the per-claim completion contract for all new or substantively revised
       claims: precise mathematical status, topics, formalization disposition and
@@ -304,7 +352,7 @@ active; the unchecked items below still need implementation or acceptance eviden
 - [x] Update root AGENTS.md as the authoritative ongoing rule, and align scoped
       research/formalization instructions and Codex/Claude entry points by linking
       to that rule rather than duplicating it.
-- [ ] Update `research/notes/RESUME.md` to restore the populated index, taxonomy,
+- [x] Update `research/notes/RESUME.md` to restore the populated index, taxonomy,
       relationship semantics, pending reviews and the maintenance contract through
       bounded tools. Restoration must not silently revert to Markdown-only editing
       or import the entire index into context.
@@ -312,14 +360,14 @@ active; the unchecked items below still need implementation or acceptance eviden
       Spin-formalize and existing parallel variants must apply the same index
       maintenance contract within their assigned scope. Expose that contract for
       future prompts owned by the separate plans; do not implement those prompts here.
-- [ ] Update the registry guide, authoring tools and templates so a new claim is
+- [x] Update the registry guide, authoring tools and templates so a new claim is
       created with the required metadata and relationship review, rather than
       inheriting the initial migration's all-null defaults.
 - [x] Add changed-claim/relationship completeness checks to cycle finalization
       and CI, with useful diagnostics. Track historical backlog separately so the
       checks neither excuse incomplete new work nor repeatedly demand a full audit
       of the whole registry on every turn.
-- [ ] Regenerate human/topic views and machine-readable exports at checkpoints;
+- [x] Regenerate human/topic views and machine-readable exports at checkpoints;
       keep pending index metadata reviews visible after compaction, branch integration
       or migration. Graph rendering and notifications are owned by their separate plans.
 - [x] Close the omitted-registration gap: compare newly appended research records
@@ -328,10 +376,10 @@ active; the unchecked items below still need implementation or acceptance eviden
       Test that a notebook-only new labelled claim cannot pass finalization or CI.
       Document the unavoidable semantic limit: software cannot prove that arbitrary
       unlabelled prose contains no new theorem or that a declared inventory is honest.
-- [ ] Test a fresh cycle, a correction, a formalization update and parallel branch
+- [x] Test a fresh cycle, a correction, a formalization update and parallel branch
       integration end to end. Verify that incomplete new metadata is caught and
       that justified unknown/not-applicable states are represented honestly.
-- [ ] Include this ongoing-maintenance phase in the overall acceptance review;
+- [x] Include this ongoing-maintenance phase in the overall acceptance review;
       a fully backfilled index is insufficient if subsequent cycles leave its new
       fields empty again.
 
@@ -354,8 +402,8 @@ Local checkpoint: `c53b032`, "Migrate the complete claim index to a structured r
 - Affected consumers: ranked search, parallel append merger, checkout verification,
   root guidance, resume navigation, and public documentation.
 
-The structural migration is complete. Index metadata enrichment remains in this
-plan; the other framework features now have separate plans linked above.
+At the structural checkpoint, metadata enrichment remained open in this plan;
+the later completion record below closes it. Other framework features have separate plans.
 
 - Generated view and compact lookup are implemented; the complete export and
   qualified/ranked lookup examples are preserved with the evidence.
@@ -579,8 +627,8 @@ Imported BIKPRS inputs point to the existing source audit. Accuracy-two refineme
 and the distinct 6p-2/4p-2 MOD images retain their actual scope. The MOD identity and
 its surrounding certificate have a provenance citation cycle, not a proof cycle.
 
-User explicitly authorized parallel migration work on 19 September 2026. Active
-bounded assignments: classifications [360,520), [520,680), [680,end); dependency
+User explicitly authorized parallel migration work on 19 September 2026. The completed
+bounded assignments were: classifications [360,520), [520,680), [680,end); dependency
 closure [48,160), [160,360); derived topic views and duplicate-discovery tooling.
 Workers write disjoint patch/evidence directories under research/results/parallel_index_*;
 the coordinator alone integrates canonical metadata, notebook records and checkpoints.

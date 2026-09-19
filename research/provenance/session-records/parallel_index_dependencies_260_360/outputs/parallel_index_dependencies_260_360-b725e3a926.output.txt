@@ -1,0 +1,163 @@
+
+POSITION 280 lem:negative-literal-matching-survival
+Summary: The probability that t fixed disjoint negative literals all avoid becoming one is sum_s binom(t,s)*(q)_s*(N+1)_(t-s)*(N)_(t-s) / ((n+1)_t*(n)_t)
+Assessment: Working exact count; six exhaustive finite equalities
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#negative-matching-survival
+7606: Fix \(t\) disjoint cells, with \(1\le t\le q\), and the associated literals \(1-x_e\). Such a literal is not made constant one precisely when its cell is either selected in \(\mu\), making the literal zero, or has both endpoints unmatched, making it live. The probability that all \(t\) literals avoid becoming one is exactly
+7607: \[ B_t= \frac{\displaystyle\sum_{s=0}^{t} \binom ts(q)_s(N+1)_{t-s}(N)_{t-s}} {(n+1)_t(n)_t}. \tag{LIT-negative} \]
+7614: Proof. Specify the \(s\) cells selected in \(\mu\). The probability that those fixed pairs occur is \((q)_s/((n+1)_s(n)_s)\). Conditional on them, the remaining matching is uniform on the other vertices. The probability that all remaining \(t-s\) specified rows and columns are unmatched is
+7615: \[ \frac{(N+1)_{t-s}}{(n+1-s)_{t-s}}\, \frac{(N)_{t-s}}{(n-s)_{t-s}}. \]
+7628: The first bounds each falling-factorial factor. For the second, bound the summands in the numerator by \(\binom ts q^s[N(N+1)]^{t-s}\), use the binomial theorem, and bound each denominator factor from below.
+Blocks: 5/8; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+
+POSITION 281 thm:literal-family-matching-restriction
+Summary: Every polynomial-size bottom signed-literal ENS collection admits simultaneous affine removal at logarithmic accuracy on a square-root functional PHP residual, preserving completed PC degree D>=max(2h+1,p)
+Assessment: Working global coverage for the literal subclass; arbitrary MOD inputs and multilevel iteration remain open
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#literal-family-global-restriction
+7646: Working theorem. Consider \(M\ge1\) bottom-level ENS blocks whose inputs are \(0,1,x_e,1-x_e\), all with accuracy \(h\). Set
+7647: \[ t=\lfloor h/2\rfloor+1,\qquad q=n-N,\qquad 1\le t\le q,\qquad M(A_t+B_t)<1. \]
+7655: maps to a completed degree-\(D\) refutation over \(\mathcal F_N^{\rm fun}\) and the images of any retained blocks. Every later input and proof line undergoes the same substitution; individual later coefficient uses are allowed. No extra profile hypothesis is imposed.
+7657: If \(\nu(E^-)\ge t\), fix a \(t\)-matching in \(E^-\) before choosing the restriction. Except on an event of probability \(B_t\), some corresponding negative literal becomes one and kills the block. If \(\nu(E^-)<t\), every residual negative graph also has matching number below \(t\). Therefore a block that has no constant-one input, outside its two exceptional events, has both positive and negative support graphs with matching number at most \(t-1\).
+7663: Proof transfer. Apply that matching to the old cell variables and the preceding star normalizers to the removed blocks' coefficient variables; keep all retained coefficient variables. Every variable image is affine. Used base axioms map to residual base axioms or zero. Removed companion images have the supplied NS, hence PC, proofs through \(2h+1\); removed field images cost at most \(p\). Retained ENS companions are exactly rebuilt on the substituted actual inputs. Affine replay of each original PC inference stays within \(D\), and reuse inserts the image proofs within the same ceiling. This gives the stated completed proof. It does not require treating the original degree ledger as the smaller degree of a specialized generator.
+Blocks: 5/11; 0 additional signal blocks omitted.
+Source: https://kbr.is-a.dev/math-research/#literal-family-square-root-parameters
+7678: Thus logarithmic accuracy handles every polynomial-size literal collection on a residual of size \(\Theta(\sqrt n)\), with no degree increase. If these are all the extension blocks, an assumed polylogarithmic-degree refutation satisfying the stated source ceiling would contradict the residual PC lower bound. If other blocks remain, the theorem removes only the specified literal collection.
+7679: The unresolved source application. General bottom MOD inputs are not literals. Already over \(\mathbb F_2\), an affine parity input \(g=x_{11}+x_{22}\) becomes \(1+Y_{22}\) when a matching fixes \(x_{11}=1\) and leaves the second cell live. Hitting one support edge has not made \(g\) constant one. This invalidates the key literal-event inference for an arbitrary affine tuple; it is not a hard-family counterexample, since this tiny input is itself cheaply handled. Likewise, affine coefficient images substitute into later selectors and can produce nonliteral higher inputs. A full MOD-input coverage argument and a multilevel invariant are both still required.
+7680: The result improves the actual family-count dependence on a stated source subclass. It does not rehabilitate the earlier profile assumptions, claim novelty relative to the literature, or prove the final lower bound.
+Blocks: 3/7; 0 additional signal blocks omitted.
+Source: https://kbr.is-a.dev/math-research/#literal-restriction-counting-checks
+7683: The compiled counting checker enumerated all \(15{,}120\) partial matchings for \((n,N)=(6,1)\) and all \(1{,}693{,}440\) for \((8,2)\). On each board it tested six positive graphs, including nonzero bad events, empty and complete controls, and a one-row star. It also checked the exact negative-survival formula for fixed disjoint tuples of sizes one, two, and three. All 18 controls passed; these finite checks support the counting formulas and do not replace the proofs.
+7685: Process assessment. Rechecking the actual imported hypotheses exposed a justified auxiliary strengthening; clarify the existing encoding guidance so that it preserves the default source system while permitting explicitly proved auxiliary bridges.
+7686: <caption>Measured timing</caption> Measured category Elapsed Total instrumented interval 21 min 47.20 s Marked reading and review windows 57.26 s Mathematical reasoning and proof writing 18 min 29.07 s Computation design and coding 2 min 2.35 s Preparation and checkpoint work 17.03 s Individually measured computation 0.27 s Individually measured conversion, checks, and local processing 1.22 s Through final snapshot; overlapping time counted once.
+Blocks: 3/4; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+
+POSITION 282 cor:functional-affine-consequence-rigidity
+Summary: Functional PHP has exactly the row-equation span as its affine PC consequences through b<=floor((N-2)/2)
+Assessment: Working extension of historical Theorem 9.8 using the verified stronger-base and residual degree bounds
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#functional-affine-consequence-rigidity
+7718: Subtracting row equations leaves \(c'+\sum_jv_j\sigma_j\). If two \(v_j\)'s differ, permuting those columns and subtracting derives \(\sigma_j-\sigma_k\). Match one pigeon to \(j\), obtaining \(1-\sigma'_k\); permute the remaining columns to obtain this for every residual hole. Summing those \(N-1\) equations and the \(N\) residual row equations gives \(-1\), another forbidden low-degree refutation. Thus all \(v_j\)'s agree. Row equations reduce the remaining polynomial to a constant, which must be zero. This proves containment in \(H_N\); the reverse containment consists of the row axioms and their linear combinations.
+Blocks: 1/5; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE notebook_link ['cor:functional-auxiliary-PC-bridge'] ['Proof of the extension. The functional system is invariant under row/column permutations, and partial matchings preserve its form. Its base and residual degree lower bounds were checked in the preceding entry . These are the properties used by the historical proof.']
+
+POSITION 283 thm:uniform-residual-affine-rank-families
+Summary: A residual-subboard union bound supplies affine input spaces retaining rank r, pairwise-zero intersections, and no constant-one pair span after every matching with the prescribed residual size
+Assessment: Working refinement of the earlier resistant-family template; includes a complete finite matrix witness
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#affine-residual-robust-family
+7726: Working refinement. If
+7727: \[ \binom M2\,B_{n,N}\,(2^{2r}-1)\,2^{-L}<1, \tag{AFF-residual-union} \]
+7736: In particular no individual block exposes a constant-one span modulo \(H_N\). By (FUN-affine), adjoining all affine base-PC consequences through the displayed \(b\)-range makes no difference.
+7744: The row-sum vectors themselves are independent, so every failed full-rank condition has a nonzero combination involving the random rows. Union-bound over all pairs and all \(B_{n,N}\) residual subboards. The stated inequality leaves a choice where every required linear-part rank is full.
+7746: This is why the count uses residual subboards rather than all matching bijections. One linear-part certificate handles every constant shift induced by a matching with those surviving vertices. It is a refinement of the earlier resistance method, not a rediscovery presented as an unrelated construction.
+Blocks: 5/12; 0 additional signal blocks omitted.
+Source: https://kbr.is-a.dev/math-research/#affine-residual-finite-witness
+7787: The complete 2,206,666-byte witness contains every source coefficient matrix, every restricted linear input, and every individual and pair rank. The checker and reproduction record preserve the exact binary conventions. This finite board tests the rank and quotient claims, not the large-\(n\) parameter asymptotics, and is not an augmented refutation.
+7788: Contribution and next step. The attempt falsifies a proposed extension of the new literal coverage theorem; general MOD coverage remains open. A targeted primary-literature check will now look for a further restriction or proof-use invariant and compare its exact hypotheses with these controls.
+7789: Process assessment. The claim-index check identified the existing resistance template, so the new work was limited to the previously uncovered residual regime and its exact application; no additional workflow rule is warranted.
+7790: <caption>Measured timing</caption> Measured category Elapsed Total instrumented interval 21 min 33.04 s Marked reading and review windows 3 min 44.66 s Mathematical reasoning and proof writing 13 min 27.06 s Computation design and coding 3 min 7.99 s Preparation and checkpoint work 1 min 12.03 s Individually measured computation 0.12 s Individually measured conversion, checks, and local processing 1.18 s Through final snapshot; overlapping time counted once.
+Blocks: 4/7; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE equation_reference ['cor:functional-affine-consequence-rigidity'] [" \\[\n      1\\notin \\mu(V_a)+\\mu(V_b)+H_N\n      \\qquad(a\\ne b).\n    \\] \n     In particular no individual block exposes a constant-one span modulo \\(H_N\\). By (FUN-affine), adjoining all affine base-PC consequences through the displayed \\(b\\)-range makes no difference. \n      Proof.  Choose each block's \\(r\\) coefficient rows ind"]
+
+POSITION 284 cor:affine-square-root-core-obstruction
+Summary: Polynomial MOD2-compatible families can force the existing rank/core criterion to cost Omega(n) on every square-root functional PHP residual, even modulo all affordable affine base consequences
+Assessment: Working criterion-specific obstruction; no augmented refutation or proof-essentiality assertion
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#affine-residual-criterion-obstruction
+7755: Then \(2r\le L/2\), while \(\log_2 B_{n,N}\le(2N+1)\log_2(n+1)\). The logarithm of the left side of (AFF-residual-union) is at most \(-L/2+O(N\log n)\), which tends to minus infinity. The required families therefore exist. They have polynomial descriptions: \(M r=O(n^2)\) input forms, each described by \(O(n^2)\) binary coefficients.
+7765: On every square-root residual the quotient spaces still have rank \(r=\Theta(n)\), pairwise-zero intersections, and no constant-one span. The exact decomposition argument of historical Theorem 9.6 uses precisely this geometry. For the existing affine core–residual criterion, put
+7766: \[ T(r)=\max\{1,\lceil r/h\rceil-1\}. \]
+7775: Indeed, in a batch with at least two spaces the first nested core must be zero, so a residual rank \(r\) already incurs \(T(r)\). All singleton full-core steps give \(D+M\); any multiplicative step costs at least \(T(r)D\), and one all-zero-core batch attains that alternative. No improved ordering changes the minimum.
+7776: For \(D\ge2h+1\) and large \(n\), \(r\ge2h\), whence \(T(r)\ge r/(2h)\) and \(T(r)D\ge r\). Since \(M=n\), the optimized ceiling is at least \(r=\Theta(n)\), which exceeds the desired \(O(N)=O(\sqrt n)\) residual budget. Allowing affine base consequences through any affordable \(b\le\lfloor(N-2)/2\rfloor\) does not change this conclusion.
+7777: What failed. An arbitrary affine MOD tuple need not become constant-normalizable or low-rank enough for this criterion after the much larger matching restriction. The literal global theorem survives; this proposed affine follow-up does not. Nonlinear base consequences, other polynomial substitutions, peer-family reasoning, and transformations exploiting the actual source refutation remain outside the obstruction. The optimized ceiling above is not a lower bound on the actual augmented PC refutation degree.
+Blocks: 6/13; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE equation_reference ['thm:uniform-residual-affine-rank-families'] ['    r=\\left\\lfloor\\frac{N^2-1}{4}\\right\\rfloor.\n    \\] \n     Then \\(2r\\le L/2\\), while\n      \\(\\log_2 B_{n,N}\\le(2N+1)\\log_2(n+1)\\).\n      The logarithm of the left side of (AFF-residual-union) is at most\n      \\(-L/2+O(N\\log n)\\), which tends to minus infinity. The required families therefore exist. They have polynomial descriptions: \\(M r=O(n^2)\\) input forms, each des']
+
+POSITION 285 lem:weighted-ENS-conflict-rate
+Summary: A degree-D NS certificate with S accuracy-h companions yields a height h+ceil(log2 S) conflict tree with non-conflict mass at most S*(1-1/p)^h for any finite design distribution
+Assessment: Working weighted sharp-rate form of Krajicek's averaging proof; original active degrees and input-factor fallback retained
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#pseudo-ENS-rate-bridge
+7829: Let \(\nu\) be a fixed probability distribution on finitely many such designs. Say its conflict-avoidance guarantee at height \(e\) is \(\gamma\) if every allowed tree of height at most \(e\) returns a non-conflict with probability at least \(\gamma\). The source defines this for a uniform finite set; the averaging argument also works with finite weights. One distribution must work for every tree. Choosing a favorable design after seeing the tree is not this assertion.
+7830: Working rate form of the source proof. Suppose a completed degree-\(D\) NS refutation uses an accuracy-\(h\) leveled ENS family with \(S\ge1\) companions in total. Put
+7831: \[ \theta_p=1-\frac1p,\qquad e_*=h+\lceil\log_2S\rceil,\qquad \delta_*=S\theta_p^h. \]
+7842: Proof. This follows the actual averaging and tree construction in Krajíček's Lemmas 3.3–3.4 and Theorem 3.2, retaining the sharper \(\theta_p^h\) estimate. Fix a design and a companion \(g_i\prod_{u\le h}(1-\sum_jr_{uj}g_j)\). If \(\omega(g_i)=0\), it already has a zero-valued factor. Otherwise, under independent uniform coefficient rows, each of the \(h\) linear factors has nonzero design value with probability \(\theta_p\); all do so with probability \(\theta_p^h\). Average over \(\nu\), choose coefficients block by block and level by level, and union-bound the losses. This gives one scalar assignment of all coefficients for which, outside a set of \(\nu\)-mass at most \(S\theta_p^h\), every used companion has a zero-valued factor.
+7843: Only companions with nonzero cofactors in the given certificate need this property. Their original degrees are at most \(D\), so every queried factor image fits the degree bound. Unused companions remain part of the ENS syntax; specializing them does not retroactively change which terms occur in the certificate. The argument with finite weights is unchanged, since each averaging step and union bound concerns probability mass.
+7844: After this scalar substitution the coefficient-field terms vanish. Applying any design to the NS certificate leaves a sum of at most \(S\) companion/cofactor terms with total value one. Binary search on partial sums finds a term \(t_E\) of nonzero design value in at most \(\lceil\log_2S\rceil\) queries. Query its \(h\) linear factors. If a queried factor has value zero, output it and the complementary factor of \(t_E\). If all those values are nonzero, output the input \(g_i\) and its complementary factor instead. On the good part of the distribution, that input is then the zero-valued factor. This last fallback accounts for the input among the source's \(h+1\) factor polynomials; it needs no extra query.
+7846: The source's displayed choice \(e^{h/p}\ge2S^2\) and \(\gamma=S^{-1}\) satisfies this sufficient inequality, since \(\theta_p^h\le e^{-h/p}\). Here the exponential uses Euler's number; \(e_*\) denotes query height. For our project the separate direct NS endpoint supplies the appropriate kind of certificate. Merely having the newer PC endpoint would not justify this application. Adjoining the functional auxiliary axioms is allowed for the NS certificate as well.
+Blocks: 7/13; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE notebook_link ['thm:direct-ordinary-php-transfer'] ["The source's displayed choice \\(e^{h/p}\\ge2S^2\\) and \\(\\gamma=S^{-1}\\) satisfies this sufficient inequality, since \\(\\theta_p^h\\le e^{-h/p}\\). Here the exponential uses Euler's number; \\(e_*\\) denotes query height. For our project the separate direct NS endpoint supplies the appropriate kind of certificate. Merely having the newer PC endpoint would not justify this application. Adjoining the functional auxiliary axioms is allowed for the NS certificate as well."]
+CANDIDATE notebook_link ['cor:functional-auxiliary-PC-bridge'] ["The source's displayed choice \\(e^{h/p}\\ge2S^2\\) and \\(\\gamma=S^{-1}\\) satisfies this sufficient inequality, since \\(\\theta_p^h\\le e^{-h/p}\\). Here the exponential uses Euler's number; \\(e_*\\) denotes query height. For our project the separate direct NS endpoint supplies the appropriate kind of certificate. Merely having the newer PC endpoint would not justify this application. Adjoining the functional auxiliary axioms is allowed for the NS certificate as well."]
+
+POSITION 286 obs:diagonal-pseudosolution-rate-gap
+Summary: The binary-height guarantee e=r*log2(n), gamma=n^(-r) cannot directly satisfy the extracted strict ENS probability inequality
+Assessment: Working black-box application gap; not a refutation of the source theorem or every possible implication of its open problem
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#pseudo-diagonal-rate-gap
+7849: The typeset v3 Definition 3.1 and Problem 3.5 were checked on pages 7 and 9. The latter asks for parameters of the form \(((\log n)^r,r\log n,n^{-r})\). We must not treat that qualitative list as an already matched application of Theorem 3.2.
+7855: Thus \(\gamma_0\le\delta_*/S^2\), so that guaranteed probability cannot meet the strict sufficient condition (PS-rate). A particular distribution could have a better probability than this lower guarantee, or a further argument could strengthen the application. This is a black-box parameter gap under explicit binary-height accounting, not a refutation of Theorem 3.2 or a claim that no pseudo-solution route can work.
+7856: For \(S\le n^a\), an accuracy \(h=C\log_2n+O(1)\) would instead require a guarantee roughly \(n^{-b}\) with
+7857: \[ C\kappa_p>a+b,\qquad \kappa_p=-\log_2(1-1/p), \]
+7861: at height about \((C+a)\log_2n\), and at the source's actual polynomial-in-\(\log n\) degree. The dependence of \(b\) on the allowed height matters; increasing accuracy alone does not settle it.
+Blocks: 5/7; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE equation_reference ['lem:weighted-ENS-conflict-rate'] ['-h}}S,\\qquad\n      \\delta_*=S(1-1/p)^h\\ge S2^{-h}.\n    \\] \n     Thus \\(\\gamma_0\\le\\delta_*/S^2\\), so that guaranteed probability cannot meet the strict sufficient condition (PS-rate). A particular distribution could have a better probability than this lower guarantee, or a further argument could strengthen the application. This is a black-box parameter gap und']
+
+POSITION 287 imp:conflict-to-live-cell-reduction
+Summary: A degree-D conflict tree gains only O(D log n) queries when converted to a live-cell finder for a residual-design lift
+Assessment: Imported Krajicek Lemma 4.3, with both prefix chains made explicit; source degree must fit the residual design
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#pseudo-live-cell-interface
+7865: Imported reduction, Lemma 4.3. A degree-\(D\), height-\(e\) conflict tree can be converted to a tree of height \(e+O(D\log n)\) which outputs a cell with both endpoints unmatched whenever the original tree finds a conflict.
+7867: A simple scope control. A free column alone is always findable with at most \(\lceil\log_2n\rceil\) linear queries. Write \(\sigma_j=\sum_i x_{ij}\). The row equations give
+7868: \[ \omega\!\left(\sum_{j=1}^{n}(1-\sigma_j)\right)=-1\ne0. \]
+7871: Binary-search a nonzero-valued summand by querying partial column-defect sums. Every matched column has \(\sigma_j^\rho=1\), so the resulting column is unmatched. This does not identify an unmatched row in that column; in particular, over \(\mathbb F_2\) the selected column can have \(\omega(\sigma_j)=0\). A free-column argument cannot replace the live-cell obligation.
+Blocks: 4/6; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+
+POSITION 288 obs:design-free-column-search
+Summary: Row-sum defects locate an unmatched column of any partial-matching design lift with at most ceil(log2 n) linear queries
+Assessment: Working exact observation; it does not locate an unmatched row or a live cell
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#pseudo-live-cell-interface [widened; ownership needs review]
+7865: Imported reduction, Lemma 4.3. A degree-\(D\), height-\(e\) conflict tree can be converted to a tree of height \(e+O(D\log n)\) which outputs a cell with both endpoints unmatched whenever the original tree finds a conflict.
+7867: A simple scope control. A free column alone is always findable with at most \(\lceil\log_2n\rceil\) linear queries. Write \(\sigma_j=\sum_i x_{ij}\). The row equations give
+7868: \[ \omega\!\left(\sum_{j=1}^{n}(1-\sigma_j)\right)=-1\ne0. \]
+7871: Binary-search a nonzero-valued summand by querying partial column-defect sums. Every matched column has \(\sigma_j^\rho=1\), so the resulting column is unmatched. This does not identify an unmatched row in that column; in particular, over \(\mathbb F_2\) the selected column can have \(\omega(\sigma_j)=0\). A free-column argument cannot replace the live-cell obligation.
+Blocks: 4/6; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+
+POSITION 289 lem:binary-covariance-conflict-probe
+Summary: For k=E[2^(-rank B_omega)], a degree-two query tree of height t+1 has non-conflict probability at most k+(1-k)*2^(-t)
+Assessment: Working necessary test for binary design distributions; rank of a residual lift equals the residual covariance rank
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#binary-covariance-conflict-probe
+7880: This is an exact finite-field covariance matrix, with no positivity assumption. Booleanity makes its diagonal zero. For a fixed finite design distribution, put \(k_\nu=\mathbb E_{\omega\sim\nu}2^{-\operatorname{rank}B_\omega}\).
+7881: Working probe bound. For every integer \(t\ge1\), there is a deterministic degree-two query tree of height at most \(t+1\) whose non-conflict probability is at most
+7882: \[ k_\nu+(1-k_\nu)2^{-t}. \tag{COV-probe} \]
+7886: Consequently, a height-\(e\) pseudo-solution guarantee must obey \(\gamma\le k_\nu+(1-k_\nu)2^{-(e-1)}\) for integer \(e\ge2\). This is a necessary test; no bound on \(k_\nu\) for the desired higher-degree residual distribution is asserted here.
+7893: A nonzero answer certifies the conflict pair \((f-a,w_s\cdot X)\), because the first factor has design value zero; no separate query of the second factor is needed. If all answers are zero, output \((0,0)\), a non-conflict.
+7894: For fixed \(\omega\), the queried values are \(u^{\mathsf T}B_\omega w_s\). The random \(u\) lies in the left kernel with probability \(2^{-\operatorname{rank}B_\omega}\). In that case all answers vanish. Otherwise the \(t\) answers are independent uniform bits, and all vanish with probability \(2^{-t}\). Average first over the coefficient choices, then over \(\nu\). Some fixed coefficient choice has non-conflict probability no larger than this average, yielding the deterministic tree in (COV-probe).
+7895: For a lift \(\omega=L\circ\rho\), every fixed old variable gives a zero row and column of \(B_\omega\); its products evaluate as scalar multiples. The remaining submatrix is \(B_L\), up to relabeling. Thus the covariance rank is exactly the residual design's rank. This permits a focused study of residual moments, while retaining the distinction between different probability measures on designs.
+7896: The probe shows why mere existence of high-degree designs is not enough to justify a probability claim. The next test will examine the actual residual moment distribution and its higher-degree extension constraints before asserting that the candidate satisfies, or violates, (PS-rate).
+Blocks: 8/12; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE equation_reference ['lem:weighted-ENS-conflict-rate'] ['y claim. The next test will examine the actual residual moment distribution and its higher-degree extension constraints before asserting that the candidate satisfies, or violates, (PS-rate). \n']

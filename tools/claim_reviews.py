@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 
 from claim_registry import ROOT, TEXT_FIELDS, local_target, require
+from claim_evidence import ARTICLE_NORMALIZATION, FRAGMENT_NORMALIZATION, normalize_evidence
 
 FIELDS = ('mathematical_status', 'formalization', 'topics', 'significance', 'relationships')
 
@@ -46,11 +47,14 @@ class Evidence:
     def __init__(self, root=ROOT):
         self.root, self.cache, self.notebooks = root, {}, {}
 
-    def sha256(self, target):
-        if target in self.cache:
-            return self.cache[target]
+    def sha256(self, target, normalization=None):
+        key = (target, normalization)
+        if key in self.cache:
+            return self.cache[key]
         local = local_target(target, self.root)
         if local is None:
+            if normalization is not None:
+                raise ValueError('Normalized evidence requires a local anchored HTML source')
             return None
         path, anchor = local
         if path.suffix == '.html' and anchor:
@@ -62,8 +66,36 @@ class Evidence:
             content = self.notebooks[path].excerpt(anchor).encode()
         else:
             content = path.read_bytes()
-        self.cache[target] = hashlib.sha256(content).hexdigest()
-        return self.cache[target]
+        if normalization is not None:
+            if not (path.suffix == '.html' and anchor):
+                raise ValueError('Article normalization requires an anchored HTML target')
+            content = normalize_evidence(content.decode(), normalization).encode()
+        self.cache[key] = hashlib.sha256(content).hexdigest()
+        return self.cache[key]
+
+    def snapshot(self, target):
+        normalization = None
+        local = local_target(target, self.root)
+        if local is not None:
+            path, anchor = local
+            if path.suffix == '.html' and anchor:
+                self.sha256(target)  # Load and validate the raw excerpt first.
+                excerpt = self.notebooks[path].excerpt(anchor)
+                # Legacy sources need no decoration normalization. In particular,
+                # do not parse their historical free-form HTML more strictly than
+                # the existing excerpt reader just to refresh a metadata review.
+                generated = re.search(
+                    r'<!-- TIMING [A-Za-z0-9_.-]+ -->|'
+                    r'<(?:div|span)\b[^>]*\bdata-generated=[\"\']'
+                    r'finish-turn-(?:producer|timing)-v1[\"\']', excerpt)
+                if generated:
+                    normalization = (ARTICLE_NORMALIZATION
+                                     if self.notebooks[path].anchor(anchor)['tag'] == 'article'
+                                     else FRAGMENT_NORMALIZATION)
+        item = {'target': target, 'sha256': self.sha256(target, normalization)}
+        if normalization is not None:
+            item['normalization'] = normalization
+        return item
 
     def formalization_inventory(self):
         key='__formalization_inventory__'
@@ -83,7 +115,7 @@ def make_review(data, claim, field, targets, *, revision, date, note,
     review={'state': state, 'revision': revision, 'date': date, 'reviewer': reviewer,
             'note': note, 'next_action': next_action, 'claim_sha256': claim_digest(claim),
             'value_sha256': digest(field_value(data, claim, field)),
-            'evidence': [{'target': target, 'sha256': evidence.sha256(target)} for target in targets]}
+            'evidence': [evidence.snapshot(target) for target in targets]}
     if field=='formalization' and claim['formalization']['status']=='no_record':
         review['inventory_sha256']=evidence.formalization_inventory()
     return review
@@ -107,7 +139,7 @@ def coverage(data, root=ROOT):
                     reasons.append('field value changed')
                 for item in review['evidence']:
                     try:
-                        current = evidence.sha256(item['target'])
+                        current = evidence.sha256(item['target'], item.get('normalization'))
                     except (OSError, ValueError):
                         current = 'missing'
                     if current != item['sha256']:

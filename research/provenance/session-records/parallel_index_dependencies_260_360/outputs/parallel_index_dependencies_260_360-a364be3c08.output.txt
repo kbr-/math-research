@@ -1,0 +1,35 @@
+
+### 275 prop:column-literal-selector-normalizers
+column-literal-selector-classification  1. Common zeros of a literal tuple in one column 
+     Write \(Y_i=x_{ij}\), \(1\le i\le m=n+1\), and use the proper column domain \(S=\{0,e_1,\ldots,e_m\}\). The tuple may contain constants zero or one, repeated positive literals \(Y_i\), and repeated negative literals \(1-Y_i\). Let \(A\) be the set of indices appearing positively and \(B\) the set appearing negatively. Ignore constant zeros when describing the common-zero set, while retaining their original coordinates in the ENS block. 
+      Exact classification.  In priority order, the common-zero states and reduced selector are: 
+     
+         Condition  Common-zero states  Reduced selector   
+       
+          An input is \(1\), or \(A\cap B\ne\varnothing\)  \(\varnothing\)  \(0\)  
+          Otherwise \(|B|\ge2\)  \(\varnothing\)  \(0\)  
+          \(B=\{v\}\), with \(v\notin A\)  \(\{e_v\}\)  \(Y_v\)  
+          \(B=\varnothing\), with no constant-one input  \(\{0\}\cup\{e_i:i\notin A\}\)  \(1-\sum_{i\in A}Y_i\)  
+       
+     
+      Proof.  A positive literal requires its cell to be zero. A negative literal requires its cell to be one. A legal column cannot have two different cells one, and opposing literals cannot both vanish. With exactly one negative index \(v\), the only possible state is \(e_v\), which survives precisely when \(v\notin A\). With no negative literal, the empty state and precisely the unlisted occupied states survive. These arguments are field-independent on the legal column domain. 
+     In particular, if the empty state is not a common zero, at most one occupied state can be a common zero. Repetitions do not change these sets. This classification concerns literal tuples; it does not classify all base-only inputs containing MOD subformulas or other nonlinear expressions. 
+
+column-literal-explicit-normalizers  2. Explicit coefficient choices and original degrees 
+     At any accuracy \(h\ge1\), use only the first coefficient row. For each selected literal below, choose one of its original occurrences; set coefficients of repeated unused occurrences and all other unused coordinates to zero. Thus multiplicities cannot accidentally cancel a coefficient sum modulo \(p\). 
+     If a constant-one input occurs, assign its coefficient one. If opposing literals occur, assign one to one occurrence of each member of that pair. In either case \(H=0\) literally, so every companion image vanishes. 
+     With two distinct negative indices \(v,w\), assign coefficients \(1,Y_v\) to \(1-Y_v,1-Y_w\), respectively. Then 
+     \[
+      H=1-(1-Y_v)-Y_v(1-Y_w)=Y_vY_w.
+    \] 
+     This is a column-collision axiom. Every literal companion \(gH\) has an NS certificate through degree at most three; the one nonconstant coefficient field image \(Y_v^p-Y_v\) has its degree-\(p\) Boolean certificate. This is the same efficient pair used by the  PHP clause endpoint . 
+     For \(B=\{v\}\), \(v\notin A\), assign coefficient one to one occurrence of \(1-Y_v\). Then \(H=Y_v\). Negative companions are \((1-Y_v)Y_v\), and positive companions are \(Y_iY_v\) with \(i\ne v\); all have degree-two Boolean or collision certificates. 
+     For \(B=\varnothing\), assign coefficient one to one occurrence of every distinct \(Y_i\), \(i\in A\). Then \(H=1-\sum_{i\in A}Y_i\), and 
+     \[
+      Y_vH=-(Y_v^2-Y_v)
+                -\sum_{\substack{i\in A\\i\ne v}}Y_vY_i
+      \qquad(v\in A).
+    \] 
+     Again the certificates have degree two. All coefficients in these consistent cases are field constants, so their field images vanish. An empty or all-zero tuple gives \(H=1\) and zero companions. 
+     For a tuple containing literals, its original nonzero literal-companion degree is \(2h+1\); all displayed costs are at most that degree. Constant-only cases have zero companion images and require no use of that formula. Every original input coordinate, companion, and coefficient-field equation remains accounted for. The general affine replay therefore preserves completed NS/PC degree. 
+

@@ -1,0 +1,13 @@
+import sys,json,importlib.util,re,html
+from pathlib import Path
+R=Path(__file__).resolve().parents[3];sys.path.insert(0,str(R/'tools'))
+s=importlib.util.spec_from_file_location('d',R/'tools/claim-dependencies.py');m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+d=json.load(open(R/'research/claims/index.json'));text=(R/'notebook.html').read_text();book=m.notebook_parser(text)
+lo,hi=map(int,sys.argv[1:3])
+for i,c in enumerate(d['claims'][lo:hi],lo):
+ print('\n###',i,c['id'])
+ anchors=re.findall(r'https://[^)]+/#([^ )]+)',c['record'])
+ for a in anchors:
+  try: excerpt=m.source_excerpt(book,text,a)[0]
+  except Exception as e: print(e);continue
+  print(a,m.strip_markup(excerpt))

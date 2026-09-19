@@ -1,0 +1,349 @@
+
+### 107 lem:wide-or-product-optimal-coefficients
+mixed-wide-product  6. The next wide-OR interface has a sharp local product cost 
+     There is an exact local rule beyond constant packing. Let \(A=P_g(R)\), \(B=P_f(S)\) have the same accuracy \(h\), nonzero input tuples of degrees \(\delta_A,\delta_B\), and disjoint coefficient families. A flattened parent \(C=P_{(g,f)}(T)\) has the concatenated input tuple. Suppose \(\delta_B\le\delta_A\), and write \(L_{B,u}=1-\sum_jS_{u,j}f_j\). Assign 
+     \[
+      T_{u,g_i}=R_{u,i}L_{B,u},\qquad T_{u,f_j}=S_{u,j}.
+    \] 
+     Each parent factor becomes the product of the corresponding child factors: 
+     \[
+      1-L_{B,u}\sum_iR_{u,i}g_i-\sum_jS_{u,j}f_j
+       =L_{B,u}\left(1-\sum_iR_{u,i}g_i\right).
+    \] 
+     Thus \(C\mapsto AB\), and parent companions become \(g_iAB=B(g_iA)\) or \(f_jAB=A(f_jB)\). The coefficient degree is at most \(\delta_B+2\). 
+      Sharp local coefficient bound.  Any polynomial assignment to the parent coefficients alone, with maximum degree \(T\) and the old inputs and child coefficients fixed, has parent product degree at most \(h(T+\max\{\delta_A,\delta_B\})\). The prescribed nonzero target \(AB\) has degree \(h(\delta_A+\delta_B+2)\). Consequently 
+     \[
+      T\ge\min\{\delta_A,\delta_B\}+2,
+    \] 
+     and the displayed construction attains this bound. These are original ordinary degrees, without field reduction. 
+     The parent originally has product degree \(\max\{\deg A,\deg B\}\), whereas \(AB\) has degree \(\deg A+\deg B\). Every nonzero companion image therefore exceeds its own original companion degree. This particular exact-product normalization cannot use the preceding degree-preserving image argument. Its coefficients can also depend on child OR groups at the same ENS level, so the strict-level triangular theorem does not automatically compose it. The remaining task is a global degree and dependency analysis, not existence of a local product identity. 
+
+
+### 108 thm:composed-wide-product-cost
+wide-composed-product  1. Composing exact products along one OR level 
+     Consider a binary tree of OR groups at one ENS level, with terminal products \(A_j=P_{g^{(j)}}\), all of accuracy \(h\). Their inputs are fixed earlier polynomials, with nonzero tuple degrees \(\delta_j\). Internal input tuples are the concatenations of their children's tuples. Apply the  paired-factor rule  at each internal group, consistently by syntax. 
+     Writing \(L_{j,u}=1-\sum_i r_{j,u,i}g^{(j)}_i\), the resulting root factor at vector \(u\) is \(\prod_jL_{j,u}\), and the root product is \(\prod_jA_j\). Order terminal tuples with a largest \(\delta_j\) first. Direct telescoping gives root coefficients 
+     \[
+      \beta_{u,j,i}=r_{j,u,i}\prod_{k&gt;j}L_{k,u}.
+    \] 
+     Their largest degree is at most 
+     \[
+      T_{\rm root}=\sum_j(\delta_j+1)-\max_j\delta_j.
+    \] 
+     This is optimal for the prescribed nonzero product: its degree is \(h\sum_j(\delta_j+1)\), whereas a degree-\(T\) coefficient assignment to the original root can produce degree at most \(h(T+\max_j\delta_j)\). The same telescoping expression is obtained by recursively substituting the pair rules, so there is no need to use an exponentially loose generic bound in the binary height. 
+     Nevertheless the actual cost can be large. With \(m\) terminal tuples of affine inputs, every original OR product has degree \(2h\), while the root image has degree \(2hm\) and requires coefficient degree \(2m-1\). Such OR groups can all have the same source ENS level; flattening does not bound \(m\). A used nonzero root companion image has this larger degree, so this exact-product transformation cannot give a smaller PC ceiling than that polynomial's own degree. This is a limitation of the prescribed normalization, not a lower bound against other transformations. 
+
+
+### 109 thm:weighted-core-factor-optimum
+wide-weighted-factor-optimum  2. Exact factor granularity for disjoint monomial inputs 
+     For a sharp independent control, let \(g_j\) be nonconstant monomials of degrees \(\delta_j\) on disjoint old variable sets. Child \(j\) has \(h_j\ge1\) independent factors \(1-r_{j,u}g_j\). A parent of accuracy \(h\) has input tuple \((g_j)_j\). Its prescribed target is the product \(Q\) of all \(M=\sum_jh_j\) child factors, with weight \(\delta_j+1\) for each factor of child \(j\). 
+      Working sharp theorem.  Partition these \(M\) factors into at most \(h\) bins. A nonempty bin \(B\) has coefficient cost 
+     \[
+      c(B)=\sum_{v\in B}w_v-\max_{v\in B}(w_v-1)
+           =1+\sum_{\substack{v\in B\\v\ne\text{one largest item}}}w_v.
+    \] 
+     The minimum possible maximum coefficient degree in an exact realization of \(Q\), fixing the old inputs and child coefficients, is 
+     \[
+      T_*=\min_{\text{partitions into }h\text{ bins}}\max_B c(B),
+      \tag{WEIGHTED-factor}
+    \] 
+     with empty bins costing zero. Equivalently, delete the \(\min\{h,M\}\) largest weights as free anchors, partition the remaining weights among \(h\) bins to minimize their maximum load, and add one. 
+      Upper bound.  Put one product of fundamental factors in each parent factor. Order a bin with a largest-degree input first and telescope its product. The coefficient of an input is a sum of terms \(r_v\prod_{\text{later }t}(1-r_tg_t)\). Its degree is at most \(c(B)\). Repeated factors belonging to the same input coordinate have their coefficients collected. The parent's product is exactly \(Q\). 
+      Lower bound.  Each \(1-r_{j,u}g_j\) is an irreducible binomial in the ordinary polynomial ring; its monomial has a variable of exponent one, and its quotient ring embeds as a Laurent-monomial domain. Distinct coefficient variables give nonassociate factors. Unique factorization forces every parent factor to be a product of a subset of these factors. Its scalar unit is one because setting all old input variables to zero makes every parent and fundamental factor one. 
+     For one such subset, its top monomial has degree \(\sum_{v\in B}w_v\). To represent \(1-\prod_{v\in B}(1-r_vg_v)\) as \(\sum_j\beta_jg_j\), that monomial must come from an input whose group is present in the subset: disjoint old supports exclude all other \(g_j\)'s. Dividing by such an input saves at most \(\max_{v\in B}\delta_{\mathrm{group}(v)}\) degrees. Hence some \(\beta_j\) has degree at least \(c(B)\). This proves (WEIGHTED-factor). 
+     For the anchor description, use \(h\) nonempty bins when \(M\ge h\), splitting bins if necessary without increasing cost. If a larger unanchored item lies outside a bin whose anchor is smaller, swap those two items. The receiving bin's residual load is unchanged and the other bin's load decreases. Repeating makes the \(h\) largest items anchors. The remaining objective is exactly maximum residual load. When \(M&lt;h\), one factor per bin gives \(T_*=1\). 
+     The resulting companion image for \(g_j\) is \(g_jQ\), a multiple of its retained child companion \(g_jP_j\), with NS degree \(\delta_j+\deg Q\). Coefficient fields have domain-only image certificates through \(pT_*\). If \(\Delta=\max_j\delta_j\), then 
+     \[
+      \delta_j+\deg Q\le\delta_j+h(T_*+\Delta)
+                  \le T_*\bigl(\delta_j+h(\Delta+1)\bigr).
+    \] 
+     Thus the local NS/PC substitution has the usual \(T_*D\) bound. The theorem does not compose arbitrary multi-level or same-level recursive choices for free. 
+      Why total degree alone can miss the answer.  Three quadratic factors packed into two parent factors need \(T_*=3\), although \(h(T+1)\ge6\) only forces \(T\ge2\). Factor weights \(5,4,4\) with two parent factors need \(T_*=5\), while the total-degree bound is three. The earlier  core-plus-linear-residual theorem  remains correct: it explicitly assumes at most \(h\) quadratic core factors and fills spare capacity with unit-weight residuals. These new controls are outside that assumption. 
+      The disjoint-input hypothesis is essential.  For inputs \(x,xy,x^2y\), the first two fundamental factors multiply as 
+     \[
+      (1-rx)(1-sxy)=1-rx-sxy+rs\,x^2y.
+    \] 
+     A parent factor can therefore use coefficients \(r,s,-rs\), of degree two, and its second factor can realize \(1-tx^2y\). This realizes all three old factors with coefficient degree two; total degree nine and parent accuracy two show optimality. The independent weight formula would give three for weights \(2,3,4\). Algebraic relations between the actual inputs can improve the result. Likewise, choosing a different target product can be much cheaper than preserving the old one. 
+
+
+### 110 thm:Boolean-degree-adapted-input-quotient
+wide-Boolean-input-basis  3. Boolean bases adapted to the listed input degrees 
+      Working input-span quotient.  At a fixed level and common accuracy, group eventual-survivor blocks whose already specialized input tuples span the same literal \(\mathbb F_p\)-linear subspace \(V\) of the earlier polynomial ring. This is ordinary polynomial equality, not equality modulo Boolean, field, or PHP equations. 
+     Take the union of the groups' actual input polynomials, order them by degree, and greedily select a linearly independent basis \(f_1,\ldots,f_r\). Every listed input \(g_i\) has a constant-coefficient expression in basis members of degree at most \(\deg g_i\): when \(g_i\) is processed, the already selected vectors either span it or it is itself selected. This property concerns the listed generators; it does not assert that the basis is adapted to every lower-degree cancellation in the whole span. Because the basis is selected from source inputs, it retains their certified Booleanity. For the zero span, simply zero the coefficients and omit the zero companions, without introducing an empty canonical block. 
+     For a tuple \(g\), write \(f=A_g^{\mathsf T}g\) and map each of its coefficient vectors \(R\) to \(A_gS\), where \(S\) is the common canonical vector on \(f\). The product becomes \(P_f(S)\). If \(g_i=\sum_jc_{ij}f_j\), its companion image is 
+     \[
+      g_iP_f=\sum_jc_{ij}(f_jP_f).
+    \] 
+     Every used \(f_j\) has degree at most \(\deg g_i\). The maximum basis degree equals the maximum degree in the input span, so the new product degree is no larger than the original one. Every displayed companion summand therefore fits that original companion's degree. Field images are linear combinations of canonical field equations, since \((\sum a_jS_j)^p-\sum a_jS_j=\sum a_j(S_j^p-S_j)\). This proves degree-preserving PC and NS transfer. 
+     Each canonical input has an actual surviving source witness. Canonical coefficient variables may be fresh; their number is at most that of any member tuple. The field-image matrix of any member has full column rank, so its surviving field images also linearly span the canonical field equations. No class supported only by deleted blocks is introduced. Process levels in order, retain the source witness for each basis input, and keep all planned private cuts untouched. Survivor closure and the hybrid freshness proof are preserved, as is literal MP alignment. The witness annotations preserve the Booleanity hypotheses for later mixed modes. 
+      Two necessary cautions.  For the Boolean tuple \((x,xy,x-xy)\), an unadapted basis \((xy,x-xy)\) has only degree-two inputs. At accuracy \(h\), both canonical companions have degree \(3h+2\), while the image \(xP\) of the original low-degree companion has degree \(3h+1\). At that lower ceiling no canonical companion is available; the domain point \(x=1,y=0,R=0\) separates the target from every available axiom. The degree-ordered basis \((x,xy)\) avoids this failure. 
+     Degree adaptation alone does not preserve Booleanity if arbitrary linear combinations are chosen. Over \(\mathbb F_3\), \((x+y,x-y)\) spans the same space as the Boolean inputs \((x,y)\), but at \(x=y=1\) its two-factor packed product is two and a companion is one. Selecting a basis from the actual certified Boolean generators avoids that problem. 
+
+
+### 111 thm:Boolean-ideal-generator-cover
+wide-Boolean-ideal-cover  4. Boolean generator covers can beat linear rank 
+      Working cover theorem.  Let \(g_i\) be the inputs of a block with original companion degrees \(e_i\), after processing earlier levels. Choose \(r\le h\) certified Boolean polynomials \(f_j\) in the literal linear span of this tuple; choosing actual input coordinates is sufficient. Suppose each \(f_j\) has an earlier NS Booleanity proof through \(2\deg f_j\). Supply earlier NS input identities 
+     \[
+      g_i=\sum_jq_{ij}f_j+H_i,\qquad
+      H_i\in\langle\text{retained earlier axioms}\rangle,
+    \] 
+     with every term and supplied background certificate through degree \(C_i\). Put \(W=\sum_j\deg f_j\). If 
+     \[
+      C_i+W\le e_i
+      \tag{IDEAL-cover}
+    \] 
+     for every relevant nonzero companion, the block can be removed by constant coefficient assignments through its original image budgets. 
+      Proof.  Use one coefficient vector to express each \(f_j\) as a constant linear combination of the \(g_i\)'s and zero the other vectors. The product becomes \(P'=\prod_j(1-f_j)\). Multiply the displayed input identity by \(P'\). The background terms cost at most \(C_i+W\). Each generator term uses 
+     \[
+      q_{ij}f_jP'=-q_{ij}(f_j^2-f_j)\prod_{k\ne j}(1-f_k),
+    \] 
+     whose NS proof also fits \(C_i+W\), by the given bound on \(q_{ij}f_j\) and sharp Booleanity. Selected field equations vanish. Product Booleanity follows from  (PRODUCT-Bool) . With witnesses supplied in the retained earlier system, the same degree-preserving level induction and outer-cofactor argument as the mixed-mode theorem applies. This requires the actual NS witnesses; a cheap PC refutation alone does not provide them. 
+      Rank corollary.  If the literal input rank is \(r\le h\), the degree-ordered Boolean basis gives \(C_i\le\deg g_i\) and \(W\le h\delta\), hence (IDEAL-cover). Thus the packing criterion can use rank rather than raw coordinate count. 
+      A stronger ideal example.  For the inputs \(x,xy_1,\ldots,xy_m\), the linear rank is \(m+1\), but the single actual generator \(f=x\) suffices with \(g_i=y_if\). Assigning one factor to \(1-x\) makes every companion an old Boolean consequence: 
+     \[
+      x(1-x)=-(x^2-x),\qquad
+      xy_i(1-x)=-y_i(x^2-x).
+    \] 
+     These certificates have degree two or three, independently of \(m\). This removes the entire block even when its arity and linear rank both exceed \(h\). 
+      Affine-bin extension.  More generally, if the Boolean generators can be placed in at most \(h\) bins with the sum of degrees except for one largest generator in each bin at most one, telescoping yields affine coefficient assignments. The same image budget \(C_i+W\le e_i\) works, and affine field images have domain proofs through \(p\). Use already retained earlier variables so the composed map stays affine. For example, three affine Boolean generators fit two factors by pairing two in one factor. This is a sufficient extension; no optimality for arbitrary algebraically related inputs is claimed. 
+
+
+### 112 thm:ideal-retained-core-cover
+wide-ideal-retained-core  5. Ideal-redundant residuals cost no additional core factors 
+     A complementary rule retains a possibly wide core. Let the core have inputs \(f_j\), accuracy \(t\le h\), and product \(P_F\) of degree \(s_F\). Require literal constant-coefficient expressions of each \(f_j\) in the selected parent tuple \(g\), so an affine coefficient map can make the parent product exactly \(P_F\). Suppose earlier NS witnesses express \(g_i\) from the \(f_j\)'s and the retained background through \(C_i\), as above. If 
+     \[
+      C_i+s_F\le e_i,
+      \tag{IDEAL-core}
+    \] 
+     then the parent companions have original-degree NS image certificates. Indeed, multiply the input witnesses by \(P_F\): generator terms use the retained \(f_jP_F\) companions and background terms are ordinary multiples. Fields map to retained field equations or their linear combinations. Designated cores remain retained; witnesses must use the retained system rather than selected same-level axioms. Under these hypotheses the affine substitution and the existing degree-budget induction preserve degree \(D\). 
+      Absorption family.  Let \(a=P_g\) be any retained core, with \(1-a=\sum_iV_i g_i\). Consider a parent whose inputs are all \(g_i\), together with arbitrarily many residuals \((1-a)(1-b_j)\). Then 
+     \[
+      (1-a)(1-b_j)=\sum_i(1-b_j)V_i g_i.
+    \] 
+     Each witness fits the residual's own degree. Copy the full core coefficient vectors into the matched parent coordinates and zero every residual coordinate. The parent becomes \(a\), using no extra factors, and a residual companion image is 
+     \[
+      a(1-a)(1-b_j)
+        =(1-b_j)\sum_iV_i(g_i a).
+    \] 
+     The source-shaped residuals arise after packing the conjunction gates in \(A\vee\bigvee_j(A\wedge B_j)\). Their original parent product budget dominates \(s_F\), so (IDEAL-core) holds. The residuals can lie outside the linear span of the \(g_i\)'s; their explicit ideal witnesses are what remove the extra-factor demand. This eliminates the wider parent but retains the arbitrary core \(a\). 
+
+
+### 113 lem:sharper-ns-formula-copy
+wide-ns-copy-refinement  6. A sharper reusable NS copy ceiling 
+     The earlier NS copy estimate can also use the actual OR product degrees, rather than the coarser bound \(h(L+1)\) at every node. In  (COPY-NS) , a nonconstant OR product of degree \(s\le L\) increases the maximum child-certificate ceiling by at most \(2s\). At a MOD node with pre-power degree \(e\), the difference multiplier adds \((p-2)e\le L\); negation adds nothing. Summing along a source-depth path therefore gives the working bound 
+     \[
+      C_{\rm NS}\le2(\ell'+1)L.
+    \] 
+     Constant equal products need no comparison proof. This is still an NS bound, unlike the depth-independent PC ceiling \(2L\). It can replace the older conservative \(C_{\rm NS}\) in the occurrence-leaf witness formula; no separate tightening of the other source-leaf overhead is claimed here. 
+
+
+### 114 lem:directional-distribution-unit
+axiom-distribution  3. An earlier-level normalizer for implication distribution 
+     Consider the tautology pattern 
+     \[
+      (A\to(B\to C))\to((A\to B)\to(A\to C)).
+      \tag{DIST}
+    \] 
+     Write \(a=A^{\mathrm{ap}}\), \(b=B^{\mathrm{ap}}\). Let \(f_k\) be the complements of the maximal children of \(C\) if \(C\) begins with a disjunction, and the single input \(1-C^{\mathrm{ap}}\) otherwise. The two negated implication subformulas supply earlier products 
+     \[
+      u=P_{(a,b,f)},\qquad
+      v=
+      \begin{cases}
+        P_{(a,g)},& B\text{ begins with a disjunction, }b=P_g,\\
+        P_{(a,1-b)},&\text{otherwise}.
+      \end{cases}
+    \] 
+     The outer block of (DIST) has inputs \((u,v,a,f_k)\). Denote the telescoping coefficients of \(u\) by \(U_a,U_b,U_k\), and those of \(v\) by \(V_a,V_j\) (or \(V_a,V_b\) in the single-complement case). Use 
+     \[
+      \beta_u=1,\qquad
+      \beta_v=U_b b,\qquad
+      \beta_a=U_a+U_b bV_a,\qquad
+      \beta_{f_k}=U_k.
+      \tag{DIST-coeff}
+    \] 
+      Working identity.  The resulting normalization error has the explicit earlier-level certificate 
+     \[
+      H=1-\beta_u u-\beta_v v-\beta_a a-\sum_k\beta_{f_k}f_k
+      =
+      \begin{cases}
+        \displaystyle\sum_jU_bV_jE_{B,j},&
+          b=P_g,\\[1ex]
+        -U_bV_b(b^2-b),&B\text{ does not begin with a disjunction}.
+      \end{cases}
+      \tag{DIST-H}
+    \] 
+      Proof.  Start from \(1=u+U_a a+U_b b+\sum_kU_kf_k\).
+      If \(b=P_g\), telescoping \(v\) and multiplying by \(b\) gives 
+     \[
+      b=bv+bV_a a+\sum_jV_jE_{B,j}.
+    \] 
+     If \(v=P_{(a,1-b)}\), the corresponding identity is
+      \(b=bv+bV_a a-V_b(b^2-b)\).
+      Substitute into the first equation and collect the displayed coefficients. The second case uses the preceding explicit Booleanity certificate. No premise proof is silently taken as an old axiom, and the error terms are not discarded. 
+      Degree and dependency ledger.  If a nonzero constant is an outer input, the block can instead be killed by its constant inverse. Otherwise put
+      \(\delta=\max\{\deg u,\deg v,\deg a,\deg f_k\}\). The products \(u,v\) are nonconstant; their prefix coefficients have degree at most \(\delta\), and \(\deg b\le\delta\). Consequently 
+     \[
+      \max_i\deg\beta_i\le3\delta,\qquad
+      H\in\mathcal I_{4\delta}(G_{<}),
+      \tag{DIST-degree}
+    \] 
+     where \(G_<\) consists of the base, earlier companions, and earlier coefficient-domain equations. In the disjunction case, each \(E_{B,j}\) has degree at most \(2\deg b\le2\delta\); in the other case the Booleanity certificate has that same ceiling. This proves the \(4\delta\) bound. The products \(u,v\) are inputs to the outer block, and \(b\)'s extension variables occur in earlier subformulas, so every variable and axiom used by the normalizer is strictly earlier than the block being removed. 
+     At accuracy \(h\ge4\), its certificate fits the original factor budget: 
+     \[
+      4\delta\le h(\delta+1),\qquad
+      \deg g_i+4\delta\le
+      e_i=\deg g_i+h(\delta+1).
+    \] 
+     The threshold is sufficient; optimality is not claimed. At smaller accuracies, an identity may be valid while this particular certificate exceeds the original companion budget. 
+
+wide-directional-unit  7. A directional unit identity for the next leaf audit 
+     There is a useful alternative to requiring full equality of intermediate OR evaluations. Let \(b=P_g\), \(v=P_{(a,g)}\), and \(u=P_{(a,b,f)}\), with the same polynomial inputs matched literally. Write \(V_a,V_i\) for \(v\)'s prefixes and \(U_a,U_b,U_j\) for \(u\)'s. Then the system with extra inputs \(u,v,a,f_j\) has the exact unit identity 
+     \[
+      1=u+(U_a+U_b bV_a)a+(U_b b)v
+           +\sum_jU_jf_j+\sum_iU_bV_i(g_ib).
+      \tag{DIRECTIONAL-unit}
+    \] 
+      Proof.  Prefix telescoping first gives
+      \(b=bv+bV_a a+\sum_iV_i(g_ib)\).
+      Substitute this into \(1=u+U_a a+U_b b+\sum_jU_jf_j\).
+      No companion of \(u\) or \(v\) is used; only the \(b\)-companions occur. 
+     With original product degrees \(s_U,s_V\), the NS degree is at most \(s_U+s_V\le2L\). Indeed, the maximum \(u\)-input degree is at least \(\deg b\), and the maximum \(v\)-input degree bounds \(\deg a\) and every \(\deg g_i\). Applying the prefix degree bounds to each displayed term gives that ceiling. Zero terms and constant cases are omitted in the usual way. 
+     If instead \(v=P_{(a,1-b)}\), the final sum is replaced by
+      \(-U_bV_{1-b}(b^2-b)\).
+      A sharp Booleanity port for \(b\) gives the same ceiling. These are working polynomial identities. Their intended use is a direct audit of the implication-distribution leaf, including its OR-headed and non-OR-headed argument cases; that source-specific audit and its computation are the next cycle, not part of the checks below. 
+
+dist-refined-local  1. The existing normalizer fits at accuracy two 
+     Retain the notation of  the original entry :
+      \(u=P_{(a,b,f)}\), and \(v=P_{(a,g)}\) when \(b=P_g\) is OR-headed, or \(v=P_{(a,1-b)}\) otherwise. The outer inputs are \((u,v,a,f_j)\), and its first-vector assignment is 
+     \[
+      \beta_u=1,\quad \beta_v=U_b b,\quad
+      \beta_a=U_a+U_b bV_a,\quad \beta_{f_j}=U_j.
+    \] 
+     The error is \(\sum_iU_bV_i(g_ib)\) in the OR-headed case, and
+      \(-U_bV_{1-b}(b^2-b)\) otherwise. Thus its only nondomain axiom requests are the \(b\)-companions or the \(b\)-Booleanity port. Companions of \(u,v\), of \(A\), or of a bypassed \(C\)-root are not needed by this identity. 
+     Write \(s_U=\deg u\), \(s_V=\deg v\), and let \(\Delta\) be the maximum degree of the outer inputs. The  refined prefix accounting  gives an NS error certificate through 
+     \[
+      s_U+s_V\le2\Delta.
+    \] 
+     For example, \(\deg U_b+\deg b\le s_U\) and
+      \(\deg V_i+\deg g_i\le s_V\), so an OR-headed error term fits \(s_U+s_V\). In the other case both matched inputs have degree \(\deg b\), and the sharp Booleanity certificate has degree \(2\deg b\). The same bound follows. Constant and zero cases are handled directly. 
+     Consequently an outer accuracy of at least two supplies the original factor budget:
+      \(s_U+s_V\le2\Delta\le h(\Delta+1)\).
+      Every local companion image has its earlier NS certificate through its own original degree. This improves the old sufficient accuracy threshold four for this assignment. Accuracy two is not asserted to be necessary: some accuracy-one instances fit, while the saved ordinary examples have actual error degree exceeding their accuracy-one budget. 
+
+
+### 115 lem:distribution-refined-degree
+dist-refined-local  1. The existing normalizer fits at accuracy two 
+     Retain the notation of  the original entry :
+      \(u=P_{(a,b,f)}\), and \(v=P_{(a,g)}\) when \(b=P_g\) is OR-headed, or \(v=P_{(a,1-b)}\) otherwise. The outer inputs are \((u,v,a,f_j)\), and its first-vector assignment is 
+     \[
+      \beta_u=1,\quad \beta_v=U_b b,\quad
+      \beta_a=U_a+U_b bV_a,\quad \beta_{f_j}=U_j.
+    \] 
+     The error is \(\sum_iU_bV_i(g_ib)\) in the OR-headed case, and
+      \(-U_bV_{1-b}(b^2-b)\) otherwise. Thus its only nondomain axiom requests are the \(b\)-companions or the \(b\)-Booleanity port. Companions of \(u,v\), of \(A\), or of a bypassed \(C\)-root are not needed by this identity. 
+     Write \(s_U=\deg u\), \(s_V=\deg v\), and let \(\Delta\) be the maximum degree of the outer inputs. The  refined prefix accounting  gives an NS error certificate through 
+     \[
+      s_U+s_V\le2\Delta.
+    \] 
+     For example, \(\deg U_b+\deg b\le s_U\) and
+      \(\deg V_i+\deg g_i\le s_V\), so an OR-headed error term fits \(s_U+s_V\). In the other case both matched inputs have degree \(\deg b\), and the sharp Booleanity certificate has degree \(2\deg b\). The same bound follows. Constant and zero cases are handled directly. 
+     Consequently an outer accuracy of at least two supplies the original factor budget:
+      \(s_U+s_V\le2\Delta\le h(\Delta+1)\).
+      Every local companion image has its earlier NS certificate through its own original degree. This improves the old sufficient accuracy threshold four for this assignment. Accuracy two is not asserted to be necessary: some accuracy-one instances fit, while the saved ordinary examples have actual error degree exceeding their accuracy-one budget. 
+
+
+### 116 thm:coordinate-weighted-prefix-normalization
+dist-weighted-prefix  2. Keep the input weight when normalizers are nested 
+     Use the source-coordinate presentation of the  source-template normalization theorem , with its structural bounds \(\lambda\). For block \(t\), let \(\lambda_{t,i}\) bound input \(g_{t,i}\), set
+      \(\Delta_t=\max_i\lambda_{t,i}\), and \(\lambda_t=h(1+\Delta_t)\).
+      The stronger induction maintains 
+     \[
+      \deg\Phi(P_t)\le\lambda_t,\qquad
+      \deg\Phi(V_{t,i})+\lambda_{t,i}\le\lambda_t
+      \tag{WEIGHTED-prefix}
+    \] 
+     for nonzero prefix images. A selected prefix is not generally subject to the fresh-block estimate \(\lambda_t-\Delta_t\); keeping its own coordinate's weight is the key. 
+      Working proof.  For an unselected block the ordinary prefix degree is at most \(1+(h-1)(1+\Delta_t)\); adding any input weight gives at most \(\lambda_t\). Constant coefficient assignments give the stronger prefix estimate \((h-1)\Delta_t\). The clause assignments have coefficient degrees zero or one and satisfy the same weighted inequality. Complementary-disjunction assignments use an earlier argument prefix, whose bound with its matching input weight is supplied by induction; their product is zero. 
+     For a selected distribution root, its input weights include \(\lambda(u),\lambda(v),\lambda(a),\lambda(f_j)\). The new coefficient \(\beta_v=U_b b\), weighted by its input \(v\), has degree at most \(\lambda(u)+\lambda(v)\). The term \(U_b bV_a\), weighted by input \(a\), has the same bound. The other coefficients fit \(\lambda(u)\) or an input weight directly. 
+     In the error polynomial, pair \(U_b\) with \(b\), and \(V_i\) with \(g_i\), or pair both relevant prefixes with the two copies of \(b\) in its Booleanity polynomial. This bounds the specialized error degree by \(\lambda(u)+\lambda(v)\le2\Delta_t\). At \(h\ge2\), both the product image and every weighted coefficient therefore fit \(\lambda_t\). All coefficient vectors after the first are zero, so the specialized prefix equals the assigned first-vector coefficient. This closes (WEIGHTED-prefix) by the strict-level induction. 
+      Refined global consequence.  For the same portfolio of ordinary clause, complementary-disjunction, and distribution normalizers in that source-coordinate theorem, \(h\ge2\) now suffices for 
+     \[
+      B=\max_r\deg\Phi(r)\le L,\qquad
+      \deg\Phi(\varphi^{\mathrm{ap}})\le\lambda(\varphi).
+    \] 
+     The local original-degree NS certificates satisfy the hierarchical image theorem, giving degree at most \(LD\) for an NS certificate or PC proof. Constant coefficient modes with the required local image certificates also satisfy the structural prefix inequalities. This particular \(L\)-bound is proved with the displayed source-coordinate and witness hypotheses; arbitrary input-basis changes or general leaf-witness substitutions retain their separate bounds until the needed prefix ledger is verified. 
+      Supporting structural NS bounds for the stated clause/CD/distribution portfolio.  In the same level induction, a companion image has an NS certificate through \(\lambda_t+\lambda_{t,i}\), and a source Booleanity image through twice its structural \(\lambda\). For distribution, the weighted prefixes cancel the two input weights in the earlier companion or Booleanity certificate, bounding its error by \(\lambda(u)+\lambda(v)\le\lambda_t\); multiply by the current input for the companion bound. Retained companions are direct axioms, and clause/CD images have their stated base or zero proofs. For an OR Booleanity image, the substituted prefix identity and the companion bound give \(2\lambda_t\); negation preserves it, and MOD uses domain division. These are structural bounds, not a claim of sharp degree in every smaller collected polynomial. 
+
+
+### 117 thm:source-highest-or-level-unused
+source-highest-or-layer  3. The constructed source theorem proof can omit its highest OR level 
+      Working support theorem.  Use the audited \(F(\mathrm{MOD}_p)\) presentation, an expanded tree-like theorem proof with no additional assumption leaves, the repaired strict-support leaf certificates, and the inherited signed scalar construction. Let \(d\ge1\) be the maximum structural ENS level in its original leaf formula trees. The invariant proofs can be chosen to use coefficient variables and companion axioms only at levels at most \(d-1\). The final PHP refutation therefore needs at most \(d-1\) ENS levels, with its existing degree bound unchanged. 
+      Leaf classification.  A sound Boolean axiom scheme in the source language has an OR after leading negations, unless its remaining expression is TRUE and its approximation is zero. A lone propositional placeholder, with either sign, cannot be a tautological axiom scheme. The MOD empty-case axioms also have approximation zero. The MOD recursion axiom, after the source Boolean expansion of equivalence, has an OR after leading negations. Thus every nonzero leaf obligation is handled by the  strict signed-OR input certificates , using only levels below that leaf's boundary. Every remaining value leaf has the zero proof. 
+      MP support induction.  In a literal implication \(c=\neg A\vee B\), the left argument has \(\mu(A)&lt;\mu(c)\). If \(B\) does not begin directly with OR, it too has \(\mu(B)&lt;\mu(c)\). Its scalar/value conversion and any signed OR cut therefore use only levels at most \(d-1\). Input-copy comparisons are literal in the hybrid representation; the old-target and Frobenius operations introduce no higher-level variables. 
+     If \(B\) begins directly with OR, its level can equal \(\mu(c)\), including \(d\). But the inherited positive input invariant uses its already present flattened inputs and never needs that right boundary's coefficients or companions. The implication proof and antecedent conversion already use only levels below \(d\). Thus the level-\(d\) right root can be omitted from the outset; its positive zero replay would have no used lines to change. Every direct-OR boundary input lies at a lower level. 
+     Every represented formula is a subtree of its origin leaf, so its structural level is at most \(d\). These cases prove the support assertion by induction on the proof tree. All remaining level-\(d\) groups and their field variables are unused and can be omitted. The ordinary clause/final-PHP substitutions and the stated level-preserving or level-decreasing preprocessing retain this bound. 
+     This applies once to this constructed theorem proof and these strict leaf witnesses. It does not apply to arbitrary added MOD-headed axiom schemas, unreplayed assumption leaves, or arbitrary ENS refutations. The remaining algebraic proof does not automatically have a new Frege leaf structure to which the argument could be reapplied. Further level elimination still needs a new argument. No approximation or cofactor budget is lowered merely because an unused layer was omitted. 
+
+
+### 118 lem:earlier-zero-constant-mode
+mod-two-earlier-zero  1. Extend base zero to the retained earlier system 
+      Working lemma.  Extend the  constant mixed-mode theorem  by permitting an  earlier-zero  block: after the assignments at strictly earlier levels, a constant assignment to its coefficients makes its product \(q\), and \(q\) has an NS certificate over the retained, specialized earlier system through \(\deg q\). The zero polynomial is allowed with its empty certificate. This mode preserves sharp source Booleanity and supplies every direct companion image through its original degree. 
+      Proof.  The coefficient choices are constants, so the combined substitution \(\Theta\) has degree at most one. For an input \(g_i\), multiply the supplied certificate for \(q\) by \(\Theta g_i\). A nonzero image has certificate degree at most 
+     \[
+      \deg(\Theta g_i)+\deg q
+      =\deg\bigl((\Theta g_i)q\bigr)
+      \le\deg(g_iP)=e_i.
+    \] 
+     Zero targets need no summands. Multiplication of the same certificate by \(q-1\) proves \(q^2-q\) through \(2\deg q\). Selected field equations vanish. Thus both direct access and later Booleanity access are justified. 
+     Induct by levels with the  existing sharp Booleanity proof : retained OR products use their prefix identities, packed products use (PRODUCT-Bool), MOD values use domain division, and this new mode uses the preceding certificate. Every new witness is over the retained earlier system, so no removed axiom or same-level cycle is hidden in that induction. The old base-zero mode is its special case with no retained companions in the witness. 
+     For a degree-\(D\) NS certificate, insert the image certificate against the original cofactor budget \(D-e_i\). For PC, insert it at the original axiom use and substitute each proof line; a multiplication by a removed variable becomes multiplication by its constant. Both transfers stay through degree \(D\). Other assumptions still pass to their images unless separately discharged. Unit-product modes retain their original isolated-port or explicit direct-image hypotheses. An unrestricted ideal-membership assertion, or a PC proof whose degree exceeds \(\deg q\), is not the witness required here. 
+
+
+### 119 thm:mod-schema-accuracy-two
+mod-two-six-gates  2. The forward gate needs only the last argument's Booleanity 
+     Use exactly the  recorded Boolean expansion , without simplifying double negations, and coherent argument approximations shared among the three MOD occurrences. After all earlier constant assignments, write 
+     \[
+      t=\sum_{j=1}^k\varphi_j^{\mathrm{ap}}-(k-i),\quad
+      a=\psi^{\mathrm{ap}},\quad
+      b=t^{p-1},\quad c=(t-1)^{p-1},\quad
+      m=(t+a-1)^{p-1},\quad H_a=a^2-a.
+    \] 
+     Packing the two inner conjunction gates gives \(l=a(1-b)\) and \(r=(1-a)(1-c)\). The existing identity is 
+     \[
+      m-ab-(1-a)c=H_aR_p(t,a),\qquad
+      R_2=0,\quad\deg R_p\le p-3\quad(p\ge3).
+    \] 
+     For the forward tuple \((m,l,r)\), set every coefficient in the first vector to one and every later vector to zero. Its product becomes 
+     \[
+      \varepsilon=1-m-l-r=-H_aR_p(t,a).
+      \tag{MOD-two-forward}
+    \] 
+     This is an ordinary polynomial identity, without a field reduction in \(t\). By the sharp Booleanity induction, \(H_a\) has an earlier retained-system NS certificate through \(2\deg a\). If \(H_aR_p(t,a)\ne0\), multiplication by the specialized quotient gives a certificate through 
+     \[
+      2\deg a+\deg R_p(t,a)=\deg\varepsilon.
+    \] 
+     The equality uses ordinary product degree in an integral domain; any cancellation inside the specialized quotient is already reflected in its collected degree. Nonzero constant \(H_a\) has degree zero, and zero products have the empty certificate. Hence the forward gate is earlier-zero. Its input-image certificates fit their own original degrees by the lemma, and its Booleanity remains available for the outer gate and for any other argument role. 
+      Working theorem.  At uniform \(h\ge2\), pack the gates with tuples \((b,1-a)\), \((c,a)\), \((l,r)\), \((q,1-m)\), and \((d_{\to},d_{\leftarrow})\); use (MOD-two-forward) for the remaining tuple \((m,l,r)\). These constant assignments remove all six schema blocks from an NS or PC proof through its original degree. All retained inputs are specialized explicitly. 
+      Simultaneity and sharing.  Choose one assignment per full-syntax canonical class. Every two-input schema gate has the same packing rule in all its uses; every forward gate has the same first-vector all-ones rule. In this unsimplified source-coordinate presentation, a forward gate's three-input flattened tuple cannot simultaneously be one of the two-input gate classes. Repeated instances therefore receive consistent assignments. Their arbitrary argument classes can themselves have compatible constant modes, including another MOD instance: strict earlier-level witnesses and rebuilt sharp Booleanity close the induction. 
+     The statement assumes literal agreement of the argument polynomials defining \(b,c,m\); independent occurrence copies must first be aligned under an applicable sharing theorem. It does not claim that an arbitrary input-span quotient preserves the syntactic mode classification, or that every polynomial CD/distribution assignment composes with this sharp-degree argument without an additional ledger. Blocks inside arbitrary arguments remain unless an independent removal criterion applies. 
+
+
+### 120 lem:mod-two-axiom-certificate
+mod-two-axiom-certificate  3. The complete specialized axiom has a smaller certificate 
+     With the new forward value \(\varepsilon\), the other images are 
+     \[
+      q=(1-l)(1-r),\qquad d_{\leftarrow}=m(1-q),\qquad
+      z=(1-\varepsilon)(1-d_{\leftarrow}),\qquad F=1-z.
+    \] 
+     Put \(S=R_p+(1-b)(1-c)\) and \(H_m=m^2-m\). Since
+      \(lr=-H_a(1-b)(1-c)\), the interpolation identity gives
+      \(q=m-H_aS\) and \(d_{\leftarrow}=-H_m+mH_aS\). Therefore 
+     \[
+      F=H_a\bigl((1-\varepsilon)mS-R_p\bigr)
+          -(1-\varepsilon)H_m.
+      \tag{MOD-two-axiom}
+    \] 
+      Working degree refinement.  In the formal variables \(t,a\), this is an NS certificate from \(t^p-t,a^2-a\) through degree \(4p-2\). Indeed, \(\deg\varepsilon\le p-1\), \(\deg m=p-1\), and \(\deg S\le2p-2\). The \(H_a\) contribution fits \(4p-2\). The Booleanity of the MOD value \(m\) has a degree-nonincreasing domain certificate through \(2p-2\), so its contribution fits \(3p-3\). For \(p=2\), \(\varepsilon=0\) and the displayed certificate fits the sharper bound five. 
+     After substituting source arguments, let \(d=\max\{1,\deg t,\deg a\}\). Substitute the two-variable certificate, the domain proof of \(t^p-t\) through \(p\deg t\), and the sharp proof of \(H_a\) through \(2\deg a\). The resulting earlier-system certificate is bounded by \((4p-2)d\), improving the old \((6p-2)d\) bound for the different, fully packed forward image. Its only argument-Booleanity request is still that of the final argument; \(t\) needs its field-domain identity. No factor proportional to the prefix length \(k\) appears. 
+

@@ -1,0 +1,227 @@
+
+###nonsharp-packing-single-input
+6. An exact example: more NS cost can still fit the original upper block
+    Use the preceding full-PHP single-block example, with lower accuracy \(a\), matching degree \(t\), and its board-size hypothesis. Let \(b=1-V\), \(d_b=a+t\). Over the retained lower system its Booleanity costs are
+    \[
+      s=(a+1)t+2a,\qquad
+      c_{\rm PC}=\max\{(a+1)t+a,\,2(a+t)\}.
+    \]
+    Add an upper single-input block on \(b\), of accuracy \(k\). Its original companion degree is \(d_b+k(d_b+1)\). Setting its first coefficient to one and all others to zero sends that companion to \(b(1-b)=-(b^2-b)\). The exact image-budget thresholds for this assignment are therefore
+    \[
+      k_{\rm NS}=
+        \left\lceil\frac{a(t+1)}{a+t+1}\right\rceil,\qquad
+      k_{\rm PC}=
+        \left\lceil\frac{\max\{at,a+t\}}{a+t+1}\right\rceil.
+    \]
+    They concern this specified companion image, not optimality among all normalizers. For \(a=t=2\) on \(n\ge19\), the upper accuracy-one companion has degree nine: its PC-eight image fits, while its NS-ten image does not. Accuracy two gives an original degree-fourteen budget, so both fit.
+    If the upper and lower accuracies agree, \(k=a\), then
+    \[
+      d_b+a(d_b+1)-s=a^2.
+    \]
+    Thus even the direct NS image always fits in this common-accuracy rank-one example, despite the genuine loss of sharp Booleanity. Also \(k_{\rm NS}\le t+1\) and \(k_{\rm PC}\le t\). A failed \(2\deg\) annotation is not by itself a failed normalization budget.
+
+
+###uniform-PC-ideal-cover
+1. The common-ceiling ideal-cover ledger
+    Use the preceding block notation \(a_i=\deg g_i\), \(e_i=a_i+h(\delta+1)\). Suppose generators \(b_j\) are literal constant-linear combinations of the inputs, can be placed in the existing affine bins, and have current earlier PC Booleanity proofs through \(C\). Write \(d_j=\deg b_j\), \(Q=\prod_j(1-b_j)\), \(W=\sum_jd_j\le h(\delta+1)\).
+    Supply current earlier PC proofs through \(A_i\) of
+    \[
+      R_i=g_i-\sum_jq_{ij}b_j.
+    \]
+    Multiplying the completed \(R_i\) proof by \(Q\), and using the existing companion identities for the generator terms, gives \(g_iQ\) through
+    \[
+      \max\left\{A_i,\ \deg R_i+W,\
+          \max_j\{C,\deg q_{ij}+d_j+W\}\right\}.
+    \]
+    In particular, if \(A_i\le C\), \(\deg R_i\le a_i\), and every \(\deg(q_{ij}b_j)\le a_i\), this is at most \(\max\{C,e_i\}\). These supplied covers can join the common-ceiling PC pass. Their current polynomial degree conditions must still be checked after input reduction; a proof ceiling alone does not provide the decompositions. This is the direct PC refinement of the earlier ideal-cover certificate.
+
+
+###stable-ideal-normalizer
+2. A normal-form test supplies the actual-degree NS budget
+    Let \(J\) be the proper stable ideal of the input-reduction theorem: specified old-variable domains and genuine column exclusions, with no PHP row equations or ENS companions. Inputs and coefficient images use already retained earlier variables. For any proposed affine coefficient assignment in an accuracy-\(h\) block, put
+    \[
+      H=\prod_{u=1}^{h}\left(1-\sum_j\beta_{uj}g_j\right).
+    \]
+    If
+    \[
+      \operatorname{NF}_J(g_iH)=0\quad\text{for every }i,
+    \]
+    degree-complete division supplies an NS proof of each image through
+    \[
+      \deg(g_iH)\le a_i+h(\delta+1)=e_i.
+    \]
+    Every affine field image has its degree-\(p\) domain proof. Thus this test gives degree-preserving NS and PC substitution, at any number of eligible blocks, with the actual inputs updated level by level. It needs no input rank bound or input Booleanity premise.
+    The selector is forced. On the finite state space of \(J\), all inputs zero imply \(H=1\). If some input is nonzero, its companion equation implies \(H=0\). Hence
+    \[
+      \operatorname{NF}_J(H)=\chi_G
+        :=\operatorname{NF}_J\left(\prod_i(1-g_i^{p-1})\right).
+    \]
+    Conversely this equality implies every companion remainder is zero. It also implies \(\operatorname{NF}_J(H^2-H)=0\), supplying sharp NS Booleanity through \(2\deg H\). These are assertions in the proper finite-state algebra, not in the unit ideal of the full PHP system.
+
+
+###stable-ideal-affine-system
+3. Using one affine coefficient row is exactly a linear problem
+    Set all but the first coefficient row to zero. List all permitted earlier variables as \(z_1,\ldots,z_N\), and put \(z_0=1\). Write \(\beta_j=\sum_{v=0}^{N}b_{jv}z_v\). The companion test is precisely
+    \[
+      \operatorname{NF}_J(g_i)=
+        \sum_{j,v}b_{jv}\operatorname{NF}_J(g_i z_v g_j)
+        \qquad\text{for every }i.
+    \]
+    This is a finite linear system over \(\mathbb F_p\), with one shared set of coefficient unknowns for all companions. A solution gives the explicit affine normalizer and the preceding original-degree certificates. If it is infeasible, finite-dimensional separation gives functionals \(\lambda_i\) on the displayed remainder spaces with
+    \[
+      \sum_i\lambda_i(\operatorname{NF}_J(g_i))=1,\qquad
+      \sum_i\lambda_i(\operatorname{NF}_J(g_i z_v g_j))=0
+          \quad\text{for every }j,v.
+    \]
+    This is a stable-ideal specialization of the earlier companion linear-feasibility criterion, extended here to arbitrary input degree and every prime, with degree-complete NS image certificates. A negative result excludes using just that one affine row over \(J\). It does not exclude multiple nontrivial coefficient rows, additional PHP equations, or other retained companions. The linear system itself may be large; no general polynomial-size algorithm in a compressed input encoding is claimed.
+
+
+###stable-ideal-high-rank-cover
+4. A cover without a common polynomial factor
+    Over independent Boolean variables, let \(m\ge1\), \(b=x+y-xy\), and
+    \[
+      G=\bigl(b,\ xz_1,\ldots,xz_m,\ yw_1,\ldots,yw_m\bigr).
+    \]
+    Its literal rank is \(2m+1\): the linear \(x\)-term isolates \(b\), and every other coordinate has its own distinct monomial. All inputs have degree two and are already stable normal forms; their span has no nonzero affine polynomial. Their common polynomial gcd is one, since \(xz_1\) and \(yw_1\) have disjoint variable supports.
+    At accuracy one, set the coefficient of \(b\) to one and all other coefficients to zero. Then \(H=1-b=(1-x)(1-y)\), and
+    \[
+      bH=-(b^2-b),\qquad
+      xz_iH=-z_i(1-y)(x^2-x),\qquad
+      yw_iH=-w_i(1-x)(y^2-y).
+    \]
+    All images have NS proofs through degree four, below the original companion degree five. The product has sharp Booleanity through degree four. This removes arbitrarily large rank using a domain-only certificate. The variables can be placed in distinct PHP columns; the same Boolean-domain identities remain valid when the full PHP base is added. No occurrence of this family in an arbitrary source proof is asserted.
+    Why the older coarse ideal ledger can miss this example. For the single generator \(b\), an identity \(xz_i=qb+R\), \(R\in J\), cannot use affine \(q\). On the Boolean subcube \(x=1,y=0\), it would require \(q=z_i\); on \(x=0,y=1\), it would require \(q=0\). An affine polynomial cannot have both coefficients for the freely varying \(z_i\). Thus \(\deg(qb)\ge4\). The older sufficient bound \(C_i+W\) is then at least six, exceeding the original five, although the direct companion proof above uses four.
+    This comparison is over the stated Boolean-domain base and for that supplied generator. It demonstrates a genuine saving in the certificate construction, without claiming a lower bound against every formulation of an ideal cover.
+
+
+###stable-ideal-row-difference-control
+5. Selector degree bounds and a full-PHP escape
+    For coefficient images of polynomial degree at most \(T\), any successful stable-ideal normalizer has
+    \[
+      \deg\chi_G\le\deg H\le h(T+\delta).
+    \]
+    The first inequality follows from degree-nonincreasing normal form and the forced selector. It is a necessary condition, not a complete feasibility test.
+    Take the earlier row-difference tuple \(g_j=x_{aj}-x_{bj}\), \(1\le j\le n\), in two distinct rows. Under the proper Boolean/column ideal, all differences vanish precisely when neither designated row occupies any column. Therefore
+    \[
+      \chi_G=\prod_{j=1}^{n}(1-x_{aj}-x_{bj}),\qquad \deg\chi_G=n.
+    \]
+    The degree-\(n\) monomial \(\prod_jx_{aj}\) survives: its variables are in different columns, and no same-row exclusions are imposed. Affine normalizers over this ideal consequently require \(n\le2h\). In characteristic two this bound is sharp: the \(g_j\)'s are Boolean, and the existing affine pair rule realizes \(\prod_j(1-g_j)\) using \(\lceil n/2\rceil\) rows.
+    A stronger odd-characteristic bound. Parameterize each designated column by \(s_j\in\{0,1,-1\}\), with
+    \[
+      x_{aj}=(s_j^2+s_j)/2,\qquad
+      x_{bj}=(s_j^2-s_j)/2,\qquad g_j=s_j.
+    \]
+    Set any other old variables to permissible constants. An affine coefficient becomes a polynomial of degree at most two in the \(s\)'s, so each factor has degree at most three. In the proper algebra with relations \(s_j^3-s_j=0\), the required selector is \(\prod_j(1-s_j^2)\), of degree \(2n\). Reduction never increases degree. Thus
+    \[
+      \boxed{2n\le3h\quad\text{for affine coefficient rows in odd characteristic}.}
+    \]
+    More generally the same argument gives \(2n\le h(2T+1)\). For constant coefficients this is sharp: \(2n\) rows realizing the factors \(1-g_j\) and \(1+g_j\) suffice. For affine coefficients, one row per column with coefficient \(g_j\) also suffices, giving the current interval \(\lceil2n/3\rceil\le h_{\min}\le n\). The first unresolved triple case is \(n=3,h=2\).
+    The row equations change the answer completely. In the full weak PHP base, the already recorded row-difference normalizer uses \(\beta_j=x_{aj}\), giving
+    \[
+      1-\sum_jx_{aj}(x_{aj}-x_{bj})
+       =-(\rho_a-1)-\sum_j(x_{aj}^2-x_{aj})
+                    +\sum_jx_{aj}x_{bj}.
+    \]
+    This has an NS proof through two, so every companion image has a degree-three proof at accuracy one, for every \(n\). Thus the domain-only factor lower bounds do not imply full-PHP normalization lower bounds. The proper ideal deliberately omits the equation supplying the escape.
+
+
+###ternary-triple-map
+1. An integer two-row coefficient map
+    For three independent column pairs, put
+    \[
+      J=\langle a_i^2-a_i,\ b_i^2-b_i,\ a_ib_i:1\le i\le3\rangle,
+      \qquad g_i=a_i-b_i,\quad q_i=1-a_i-b_i,\quad \eta_i=2a_i-1.
+    \]
+    The permitted states of each pair are empty, \(a_i=1\), or \(b_i=1\). Use the affine coefficient rows
+    \[
+      (\beta_{11},\beta_{12},\beta_{13})=(q_2,\eta_2,0),
+      \qquad
+      (\beta_{21},\beta_{22},\beta_{23})=(-q_3,0,\eta_3).
+    \]
+    Then the two factors and their product are
+    \[
+      F=1-q_2g_1-\eta_2g_2,\qquad
+      G=1+q_3g_1-\eta_3g_3,\qquad H=FG.
+    \]
+    On a legal column, \(\eta_i g_i=a_i+b_i\). Consequently
+    \[
+      F\equiv q_2(1-g_1),\qquad
+      G\equiv q_3(1+g_1),\qquad
+      H\equiv q_1q_2q_3\pmod J.
+    \]
+    The first factor vanishes if column two is occupied or the first input is \(+1\). The second vanishes if column three is occupied or the first input is \(-1\). Their product is therefore one only at the common zero input state. All formulas have integer coefficients and are valid in every characteristic; odd characteristic is needed for the optimality statement below.
+
+
+###ternary-triple-degree-certificates
+2. Original-degree certificates, without a semantic shortcut
+    Write \(A_i=(a_i^2-a_i)-a_ib_i\) and \(B_i=(a_i^2-a_i)+(b_i^2-b_i)-2a_ib_i\). Then
+    \[
+      \eta_i g_i-(a_i+b_i)=2A_i,\qquad
+      g_i^2-(a_i+b_i)=B_i.
+    \]
+    For \(\chi=q_1q_2q_3\), multiplication gives the explicit degree-four identity
+    \[
+      H-\chi
+       =-q_2q_3B_1-2A_2q_3(1+g_1)
+           -2A_3q_2(1-g_1)+4A_2A_3.
+    \]
+    Every term is a sum of original \(J\)-generator multiples through degree four. Also
+    \[
+      g_iq_i=-(a_i^2-a_i)+(b_i^2-b_i).
+    \]
+    Thus \(g_iH=g_i(H-\chi)+g_i\chi\) has an NS certificate through five. The source accuracy-two block has affine inputs and all three original companions have degree \(1+2(1+1)=5\), so every image fits exactly within its original budget. Affine coefficient field images have the usual NS proofs through \(p\).
+    Each \(q_i\) has degree-two Booleanity, since \(q_i^2-q_i=(a_i^2-a_i)+(b_i^2-b_i)+2a_ib_i\). Product Booleanity gives \(\chi^2-\chi\) through six, and
+    \[
+      H^2-H=(H-\chi)(H+\chi-1)+(\chi^2-\chi)
+    \]
+    gives sharp NS Booleanity through eight, with \(\deg H=4\). The stable-ideal normal-form theorem gives the same budgets directly. This is a degree-preserving affine normalizer for the full block, with every companion and field image included.
+
+
+###ternary-degree-accuracy-frontier
+3. Exact polynomial coefficient degree versus number of rows
+    Now take \(n\) independent such column pairs and \(g_i=a_i-b_i\). Let \(T\ge0\) be an integer bound on each coefficient polynomial's ordinary degree in the cell variables. Coefficients may also use independent old domain variables; fixing those to legal constants gives the same lower bounds. Normalization is required over the proper domain/column ideal, with no added PHP row equations or other companions.
+    Working exact frontier. The minimum number of coefficient rows is
+    \[
+      \boxed{
+      h_{\min}(n,T)=
+      \begin{cases}
+        \left\lceil n/(T+1)\right\rceil,&p=2,\\[2mm]
+        \left\lceil 2n/(2T+1)\right\rceil,&p\text{ odd}.
+      \end{cases}}
+    \]
+    Lower bounds. Every successful product has forced normal form \(\prod_iq_i\). In characteristic two this has ordinary degree \(n\), while a factor has degree at most \(T+1\), giving \(n\le h(T+1)\). In odd characteristic use the preceding parameterization \(a_i=(s_i^2+s_i)/2\), \(b_i=(s_i^2-s_i)/2\), \(g_i=s_i\), with \(s_i^3-s_i=0\). A degree-\(T\) coefficient becomes degree at most \(2T\), so the product has degree at most \(h(2T+1)\). Its forced selector \(\prod_i(1-s_i^2)\) has degree \(2n\). This gives the odd lower bound without assuming a particular coefficient assignment.
+    Binary upper bound. Partition the inputs into groups of at most \(T+1\). Within a group, telescope the product of \(1-g_i\); the coefficient on its \(\ell\)-th input is the product of the previous \(\ell-1\) factors and has degree at most \(T\). One row per group realizes the selector.
+    Odd upper bound: one row covers up to \(T\) side columns. For an ordered set \(S=(j_1,\ldots,j_k)\), \(k\le T\), put
+    \[
+      Q_S=\prod_{j\in S}q_j,\qquad
+      u_{S,j_\ell}=\eta_{j_\ell}\prod_{r<\ell}q_{j_r}.
+    \]
+    Every coefficient has degree at most \(k\le T\). Since \(\eta_jg_j\equiv1-q_j\), the row \(1-\sum_{j\in S}u_{S,j}g_j\) is congruent to \(Q_S\). The empty set gives the constant-one row.
+    Two rows cover up to \(2T+1\) columns. Choose one central column \(c\) and disjoint side sets \(A,B\), each of size at most \(T\). Use
+    \[
+      F_A=1-Q_Ag_c-\sum_{j\in A}u_{A,j}g_j,\qquad
+      F_B=1+Q_Bg_c-\sum_{j\in B}u_{B,j}g_j.
+    \]
+    All coefficients have degree at most \(T\), and
+    \[
+      F_AF_B\equiv Q_AQ_B(1-g_c^2)
+                     \equiv\prod_{j\in A\cup B\cup\{c\}}q_j\pmod J.
+    \]
+    A pair can cover any nonempty number of columns up to \(2T+1\), by dividing the remaining columns between its two sides. Empty pairs are padded by ones. With \(h\) rows, pair them and allow one leftover single row. Their total capacity is
+    \[
+      hT+\lfloor h/2\rfloor
+       =\left\lfloor\frac{h(2T+1)}2\right\rfloor.
+    \]
+    This is exactly the necessary integer capacity. Partitioning the columns into these slots proves every feasible upper bound, including \(T=0\), when two constant rows handle one column. This proves the frontier.
+    In particular, affine coefficients have optimum \(\lceil2n/3\rceil\) in odd characteristic, and constant coefficients have optimum \(2n\). The triple formula is the \(T=1\) central-column construction with one side column on each row.
+
+
+###ternary-frontier-proof-transfer
+4. What the frontier says about proof degree
+    Every constructed selector product has ordinary degree at most \(h(T+1)\). Degree-complete division therefore proves each companion image through at most \(1+h(T+1)\), and each coefficient field image through at most \(pT\) when \(T\ge1\). The original companion degree is \(2h+1\), and
+    \[
+      1+h(T+1)\le T(2h+1)\qquad(T\ge1).
+    \]
+    Thus these explicit maps have the standard NS/PC substitution cost at most \(TD\); affine and constant maps preserve degree. For the literal column probes considered here, all coefficient formulas use only original cells, so any collection of such maps can be assigned simultaneously without a hidden cascade through earlier coefficients. General polynomial normalizations depending on already modified earlier variables retain their separate composition conditions.
+    This is an exact frontier for the proper state algebra. For differences between the same two PHP rows, the earlier row-equation certificate still gives accuracy-one affine normalization over the full base, independently of \(n\). The frontier does not exclude that certificate or prove an elimination lower bound for the full source family.
+

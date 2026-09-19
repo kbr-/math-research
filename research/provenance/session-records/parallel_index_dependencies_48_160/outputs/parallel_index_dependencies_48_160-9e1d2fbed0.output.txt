@@ -1,0 +1,239 @@
+
+### 88 lem:occurrence-copy-leaf-simulation
+occurrence-copy-convention  1. Formula occurrences, physical descendants, and omitted boundaries 
+     Use the source's binary formula syntax and  flattened OR depth . Give every syntactic OR node in each proof-line formula tree its own fresh coefficient family, including repeated occurrences of identical formulas and OR groups bypassed by flattening. Original propositional variables remain shared. When a parent OR flattens a child OR, its inputs use the values of the same physical maximal non-OR descendant nodes; it does not create another set of those descendants. Distinct proof-line occurrences have disjoint extension-variable families. 
+     The first OR after a line's leading negations is its private signed boundary; omit that block and its coefficient domains from the invariant's axiom system. Every other OR block is proper. A value line has no such boundary. In an MP inference, the implication line has the literal binary root \(\neg A\vee B\), with separate left-\(A\) and right-\(B\) occurrence trees even if \(A\) occurs inside \(B\). Negations are not simplified away. 
+     Structural levels are unchanged: negation preserves \(\mu\), MOD takes the maximum child level, and an OR cluster is one above its non-OR frontier. Proper OR groups can share their parent's level. The approximation bound \(L\), fixed formula-depth bound \(\ell'\), and polynomial companion count survive occurrence copying: the number of nodes and flattened input coordinates is polynomial in the balanced proof's total symbol size. Levels are not reassigned after cancellations. 
+
+occurrence-copy-agreement  2. Copy agreement and occurrence-local axiom leaves 
+      Working lemma.  For two occurrence copies of the same formula, the  formula-copy NS bound  remains valid without identifying repeated subformulas internally: 
+     \[
+      C=(\ell'+1)\bigl(2h(L+1)+(p-2)_+L\bigr).
+      \tag{OCC-copy}
+    \] 
+     Pair positions in the two syntax trees. At OR nodes pair their physical maximal non-OR children and apply  (COPY) ; at MOD use the power-difference identity, and at negation change sign. The induction uses only the two actual occurrence families. The maximum child certificate degree, not the number of children or repeated occurrences, enters the bound. Flattened OR groups are bypassed in this induction, so their binary bracketing introduces no depth factor. 
+     The source-leaf construction also extends to these families. For a presentation-dependent constant \(c_F\), enlarge the uniform leaf ceiling to 
+     \[
+      \widehat A=(h+1)^{c_F}(L+C).
+      \tag{OCC-leaf}
+    \] 
+     A positive signed axiom boundary then has an NS refutation of its input tuple through \(\widehat A\); a negative one has an NS proof of each input through \(\widehat A\). These certificates use strictly earlier levels than the boundary. A value axiom has a proof of its value through the same ceiling using its proper family. 
+      Proof of the leaf assertion.  Repeat the  strict-support construction , assigning pure root-disjunct placeholders the value one and ignoring their actual input coordinates. For each remaining placeholder choose one actual occurrence inside a non-OR schematic child as its reference. Its entire occurrence tree is strictly below the recognized root. Every other occurrence of that same argument formula has the same structural level and is also strictly below the root. Use (OCC-copy) to align their values when they are needed. No extra globally shared reference family is introduced. 
+     The finite schematic Boolean identity is evaluated on the reference values, using their sharp degree-\(2\deg a\) Booleanity certificates. Compare this exact star evaluation with each actual schematic child by induction: placeholder positions use copy agreement, negation and MOD use their polynomial identities, and OR uses the following ordinary composition identities. They work for independent occurrence coefficients. 
+     Write \(a=P_g\), \(b=P_f\), \(c=P_{(g,f)}\), with prefixes \(V,W,U\), respectively, and retain occurrence tags in the concatenated coordinates. Then 
+     \[
+      c-ab=
+       \sum_i V_i E_{c,g_i}+a\sum_j W_j E_{c,f_j}
+       -b\sum_i U_i E_{a,g_i}-a\sum_j U_j E_{b,f_j}.
+      \tag{OCC-OR}
+    \] 
+     Indeed, the positive terms sum to \(c(1-ab)\), while the negative terms sum to \(-ab(1-c)\). If only the first child is OR and the other has value \(b\), the parent inputs are \((g,1-b)\), and 
+     \[
+      c-ab=\sum_i V_iE_{c,g_i}+aE_{c,1-b}
+           -b\sum_iU_iE_{a,g_i}+aU_b(b^2-b).
+    \] 
+     The case with the second child OR is symmetric. If neither child begins with OR, the parent inputs are \((1-a,1-b)\), and 
+     \[
+      c-ab=E_{c,1-a}+aE_{c,1-b}
+               +bU_a(a^2-a)+aU_b(b^2-b).
+    \] 
+     These follow by the same expansion. Prefix bounds and the sharp Booleanity certificates put these local identities within \(3h(L+1)\). Their targets and every block used are the actual descendant occurrences; bypassed groups may be used by this local schematic induction, but lie below the outer recognized root whenever the induction is inside a non-OR maximal child. 
+     The fixed schematic depth and relevant star degrees give a total bound \((h+1)^{O_F(1)}(L+C)\). The number of arguments of a source MOD schema adds no degree factor. At a positive root, the resulting input proofs and the exact schematic product identity give the unit certificate just as in  the repaired proof . At a negative root, every maximal schematic child is individually false; the  separate child argument  gives each input. For a value axiom the same comparison and Boolean identity prove the value directly. Enlarging \(c_F\) proves (OCC-leaf). This construction uses the audited source axiom frames and their original placeholder dependencies, not independent variables for overlapping MOD expressions. 
+
+
+### 89 lem:occurrence-mp-interface-freshness
+occurrence-interface-freshness  3. The two removable interfaces at an MP node 
+     At \(A,\ c=\neg A\vee B\vdash B\), select the first OR after leading negations in the left \(A\) occurrence inside \(c\), if it exists. Also select the first such OR in the right \(B\) occurrence, if it exists. The latter is selected even when \(B\) begins directly with OR and the implication's flattening bypasses that proper block. There are at most two selected coefficient families. 
+      Freshness lemma.  Each selected family is absent from the inputs and axioms of every other retained block and from the conclusion invariant's targets and extra input assumptions. 
+      Proof.  Inside the implication line, the selected node's only OR ancestor outside its own subtree is the private implication root, whose axioms are already omitted. The intermediate nodes are negations. Its descendants do not depend on an ancestor's coefficients. The opposite branch has a distinct occurrence tree, and all other proof lines have independent families. Thus even an occurrence of \(A\) inside \(B\) does not use the selected left-\(A\) coefficients. The two selected blocks are mutually fresh. The conclusion node has its own occurrence family, so its target inputs or value are independent of both. A shared evaluation of \(A\) would not establish this claim: a block inside \(B\) could depend on that shared root, and the desired conclusion target could contain it as well. 
+
+
+### 90 thm:occurrence-mp-interface-transfer
+occurrence-interface-transfer  4. A subtree-local PC invariant with a proof-height charge 
+      Working theorem.  For a balanced tree-like proof of height \(H\), put 
+     \[
+      K_0=\max\{\widehat A,\ C+L,\ 3L\}.
+    \] 
+     At a node \(v\), use only proper blocks belonging to its proof subtree, deleting the selected MP interfaces processed inside that subtree. For a positive signed boundary, this system together with the node's own boundary inputs has a PC refutation; for a negative boundary it derives every such input; for a value line it derives the node's value. All three conclusions have degree at most 
+     \[
+      \boxed{D_v\le K_0+2pH_vL.}
+      \tag{OCC-PC}
+    \] 
+     The node's own proper family remains intact until the node is used as its parent's implication child. In particular, the invariant is about the local axiom set actually surviving at \(v\), not a larger global set that silently restores previously deleted blocks. 
+      Leaves.  Use (OCC-leaf). The positive and negative input certificates already omit the private boundary and have the required support; value axioms use their own proper family. 
+      MP before interface removal.  Combine the two child invariant proofs with the new conclusion node's proper family. If the antecedent has a positive signed boundary, weight its input-system refutation by the proper antecedent value \(\alpha=P_f\) in the implication line. For each weighted input, 
+     \[
+      g_i\alpha=f_i\alpha+(g_i-f_i)\alpha,
+    \] 
+     using a proper companion and a degree-\(C\) input-copy proof.  Weighted replay  derives \(\alpha\) through \(\max\{D_a+L,C,2L\}\). For a negative antecedent, transfer its learned inputs by copy agreement and use prefix telescoping to derive \(\alpha=1-P_f\). For a value antecedent, copy agreement suffices. Both fit the same ceiling. 
+     Replace the antecedent input of the implication child's refutation by this proof of \(\alpha\). The conclusion cases are as follows, retaining the original unsimplified syntax: 
+     
+       If \(B\) begins directly with OR, transfer its flattened input assumptions from the conclusion node by copy agreement. 
+       If \(B\) has a positive boundary under a nonzero even number of negations, its remaining implication input is \(1-P_f\). Under the conclusion input assumptions, transfer the inputs of \(P_f\) and use its prefixes to derive \(1-P_f\). 
+       If \(B\) has a negative boundary, its remaining implication input is \(P_f\). Weight the refutation by each desired conclusion input \(g_i\); the identity above derives \(g_iP_f\) from a proper companion and input-copy agreement. 
+       If \(B\) is a value line with implication-side value \(\beta\), the remaining input is \(1-\beta\). Weight by \(\beta\), supplying \(\beta(1-\beta)\) from its degree-\(2L\) Booleanity proof, and then align the conclusion value by copy agreement. 
+     
+     This is the  signed MP argument  with occurrence-copy certificates. All child input assumptions are discharged or replaced by the desired positive conclusion inputs. Final-line reuse gives 
+     \[
+      D_{\rm pre}\le
+      \max\{D_c+L,\ D_a+2L,\ C+L,\ 3L\}.
+    \] 
+      Remove the selected proper interfaces.  Apply  old-target transfer  separately to the at most two selected blocks. The preceding freshness lemma applies to every retained axiom, the target, and any positive conclusion input assumptions. For a positive invariant the target is one; otherwise each nonzero target has degree \(k\le L\). With input degree \(\delta\le L\) and a working ceiling \(d\ge3L\), 
+     \[
+      \max\{d+(p-1)\delta,\ d+k,\ pk\}
+          \le d+(p-1)L.
+    \] 
+     Zero targets need no proof. The second interface remains fresh after removing the first. Therefore \(D_v\le D_{\rm pre}+2(p-1)L\), which proves (OCC-PC) by induction on height. 
+      Why no deleted block is revived.  Different proof subtrees have disjoint occurrence families. Processing a node deletes blocks only in its implication child's own formula tree. It does not delete blocks in the node's new family. The next parent comparison uses its immediate child lines and the parent's own family, never a family lying strictly inside a child proof subtree. Thus the child lines' proper blocks required by comparison, prefixes, or Booleanity are still available. Their earlier subproofs are inserted with exactly their surviving axioms. The locality assertion is part of the induction and cannot be replaced by permission to use every original proper block. No bound on the length of the resulting PC derivations is claimed. 
+
+occurrence-replay-checks  6. An exact repeated-antecedent replay 
+     The  checker  uses \(A=\neg X\vee X\), \(B=A\wedge\mathrm{TRUE}\), with the source expansion of conjunction. At accuracy one, let \(a_R=P_{(x,1-x)}\) and \(a_L\) be separate right and left occurrences, and put \(D=P_{(a_R,0)}\). The negative \(B\) invariant must derive \(a_R\). All variables are recorded, with original \(x\) Boolean and coefficient variables in \(\mathbb F_p\). 
+     Copy agreement derives \(a_R-a_L\) through degree four. From extra inputs \(a_L,D\), the identity \(1=D+r_{D,0}a_R\) gives the implication input refutation. Summing the two left companions derives \(a_L\) through degree three and discharges that input. Weight by \(a_R\), replacing the weighted \(D\) input by its companion, to obtain the negative conclusion input through degree six. Remove \(D\), permute the remaining axioms without changing their polynomials, and remove the left family with the existing one-block PC engine. 
+     
+         Verified stage  \(\mathbb F_2\)  \(\mathbb F_3\)   
+       
+          Implication input refutation  4  4  
+          Antecedent input discharged  4  4  
+          Negative conclusion input  6  6  
+          Conclusion-side interface removed  8  10  
+          Both proper interfaces removed  9  11  
+       
+     
+     All ten complete traces verify, and each corrupted-final-line control is rejected. The last one-block ceilings are ten and twelve; the displayed actual degrees are lower. Every removed coefficient is absent from the final proof. The right \(A\) copy remains in the satisfiable old system. Replacing \(a_R\) by \(a_L\) in \(D\) makes both a retained companion and the desired target depend on the selected left family, so the shared-copy freshness control fails as intended. These are local traces with supplied premise proofs, not a full Frege compiler or a minimum-degree claim. 
+     The complete 2,136,162-byte  output  preserves all axioms, polynomials, lines, degrees, and controls. The  result record  gives reproduction, encoding, and timing provenance. Compilation and the mathematical checks passed; a later draft-recovery utility failed without changing any mathematical output. 
+      Remaining task.  Audit an inherited-consequent representation in which a derived line uses the actual right-hand subtree of its implication premise. Determine exactly which copy comparisons and surviving families it removes while preserving the locality invariant. The MOD frontier and affordable elimination of essential proper blocks remain open. 
+      Process assessment.  Reusing the existing PC engine kept the experiment bounded; a failed large notebook patch and attempted recovery added avoidable editing work, so the recovered record is applied in smaller independent patches. 
+     
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   51 min 27.84 s   
+  Marked reading and review windows  1 min 16.46 s  
+  Mathematical reasoning and proof writing  43 min 14.16 s  
+  Computation design and coding  5.87 s  
+  Preparation and checkpoint work  2 min 41.76 s  
+  Marked overhead and interruptions  2 min 21.05 s  
+  Dedicated web and download-attempt windows  1 min 45.53 s  
+  Individually measured computation  0.28 s  
+  Individually measured conversion, checks, and local processing  2.72 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1. 
+ 
+
+
+### 91 cor:occurrence-php-interface-transfer
+occurrence-php-transfer  5. Ordinary PHP and further recognized-root pruning 
+     The final unsimplified PHP line is a positive signed boundary whose inputs are the ordinary clause products. Apply the  ordinary affine clause and final-PHP substitutions  to every remaining appropriate occurrence. Deleted interface blocks stay absent; later inputs are specialized. The old original-degree certificates for clause companion images, coefficient fields, and final-PHP copies give a PC refutation of the exact weak base \(\mathcal F_n\) plus the remaining occurrence ENS blocks through 
+     \[
+      B_{\rm occ}\le K_0+2pHL
+      \le(1+\log S)(h+1)^{O(\ell+1)}.
+    \] 
+     There are polynomially many companions and at most the original structural depth. Private line boundaries, the selected proper MP interfaces, and the ordinary clause/final-PHP blocks are absent. Other occurrences of the same logical formulas, their proper descendants, and OR blocks inside MOD-first value lines may remain. This theorem does not bound their essential support, residual ranks, or number of retained cores. 
+     Recognized axiom roots still admit the  repaired triangular pruning , now using \(\widehat A\). A selected MP interface was a maximal proper OR root below the implication's left or right branch, up to negations. No remaining proper OR node can contain that deleted root as a proper descendant. Hence every surviving proper OR subtree is intact with respect to this interface removal, and its occurrence-local leaf certificates remain available. Apply the recognized-root, clause, and final-PHP modes together with local bounds 
+     \[
+      T_*=\max\{1,\widehat A\},\qquad
+      C_*=\max\{\widehat A+L,p\widehat A,2h+2,3,p\}.
+    \] 
+     The  triangular theorem  gives \(\max\{T_*^dB_{\rm occ},T_*^{d-1}C_*\}\), still \((1+\log S)(h+1)^{O((\ell+1)^2)}\). Equivalently, perform these substitutions together on the interface-pruned system before the clause-only specialization; this avoids assuming that an original leaf certificate survives a prior arbitrary polynomial substitution. 
+
+
+### 92 lem:inherited-consequent-live-forest
+inherit-representation  1. Representatives inherited from leaf occurrence trees 
+     Start with a tree-like proof in literal MP syntax \(A,\neg A\vee B\vdash B\). At each axiom leaf allocate the  fully separated occurrence tree , retaining physical descendants under OR flattening. For a leaf \(v\), let \(\rho(v)\) be its formula root. At an MP node \(v\) with implication child \(c\), define \(\rho(v)\) to be the actual right child of the binary OR root \(\rho(c)\). This is a node in one leaf's original formula tree, not a newly copied tree. Original propositional variables are shared between leaves; extension families are not. 
+     Every representative is consequently a nested consequent subtree of a unique origin leaf, reached by repeatedly taking the literal right child at implication roots. Representatives belonging to disjoint proof subtrees have different origin leaves. If a represented formula has leading negations or a MOD root, it cannot serve as a later implication child unless it literally has the required OR syntax; no simplification or logical equivalence is used to continue the path. 
+     For each represented line, use the same positive-boundary, negative-boundary, or value invariant as before. Omit signed boundary blocks at leaves. At each MP node, remove the signed OR interfaces of the left \(A\) and right \(B\) occurrences in \(\rho(c)\), when they exist. Thus a derived line's boundary is removed at the step creating that line. Proper blocks of the antecedent child's own representative are not removed by that step. 
+
+inherit-live-forest  2. Intact descendants and freshness 
+      Working structural lemma.  Throughout this construction: 
+     
+       Every OR node in a currently used representative remains present except its own signed boundary, when it has one. 
+       Every OR ancestor above that representative in its origin leaf is an already removed boundary along its consequent path. 
+       Each selected interface has no retained OR ancestor; hence its coefficients are fresh for every other retained axiom and for the desired invariant targets. 
+       Every remaining OR node has all its proper OR descendants still present. 
+     
+      Proof.  Initially only each leaf's first OR after leading negations is removed. It has no OR ancestor in its leaf. Its proper descendants remain, and families of distinct leaves are disjoint. At an MP step, \(\rho(c)\) is a direct implication root whose own boundary is already absent. A selected left or right interface lies below it through negations only. Its other ancestors are the preceding implication roots on the origin leaf's consequent path, already removed by induction. The two selected subtrees are disjoint. 
+     Deleting these roots cannot damage the proper-descendant family of any retained OR ancestor, because there is no such ancestor. The new representative is the actual right subtree. A deleted left interface is its sibling; its own deleted right interface is its boundary, not one of its proper blocks. Earlier deletions were ancestors or siblings along the same descent path, never proper descendants of the new representative. This proves the induction and the last assertion as well. 
+     Coefficients of an OR occurrence can enter other block inputs only through ancestors in the same leaf. Their absence from every retained OR ancestor proves axiom freshness. A positive conclusion target is one with its own boundary inputs as assumptions; a negative conclusion target is one of those inputs. Both exclude its boundary coefficients. A value conclusion has no selected right interface. The selected left interface belongs to the opposite occurrence subtree. These observations establish target freshness without requiring a separately copied conclusion. 
+     The lemma is stronger than syntactic proper containment: flattened OR groups may still share levels. It uses the actual history of removed ancestors and the tree-like proof scopes. Restoring an old ancestor block during a later comparison would invalidate it. 
+
+
+### 93 lem:positive-boundary-input-zero-replay
+inherit-positive-zero  3. Positive boundary removal by the available inputs 
+      Working replay lemma.  Let \(P=P_g(R)\) be a fresh block for \(G\), with all companions \(g_iP\) and coefficient field axioms. Suppose a degree-\(d\) PC proof refutes either 
+     \[
+      G\cup E_P\cup R_P\cup\{g_i\}_i
+      \quad\text{or}\quad
+      G\cup E_P\cup R_P\cup\{1-P\}.
+    \] 
+     Then \(G\cup\{g_i\}_i\) has a PC refutation through degree \(d\). 
+      Proof.  Set every coefficient in \(R\) to zero in the full proof. The target one is unchanged, \(G\) is fixed, \(P\) becomes one, companions become their input polynomials \(g_i\), and field equations become zero. In the first case the extra input assumptions are unchanged; in the second case the extra assumption \(1-P\) becomes zero. Every nonzero axiom image is therefore an allowed old axiom or input assumption. Constant specialization replays every inference without raising its degree. The inputs are supplied assumptions in the resulting invariant; this is not an assertion that they are consequences of \(G\). 
+     This applies to a direct OR conclusion and to a positive signed OR under a nonzero even number of leading negations. In the latter case the remaining implication input is \(1-P\). Inheritance makes the actual \(g_i\) precisely the conclusion's input tuple, so no input-copy comparison or learned-input assumption is needed. 
+
+
+### 94 thm:inherited-consequent-pc-transfer
+inherit-pc-transfer  4. The inherited PC invariant and degree recurrence 
+      Working theorem.  Retain the occurrence-copy ceiling \(C\), strict leaf ceiling \(\widehat A\), and \(K_0=\max\{\widehat A,C+L,3L\}\) from  the preceding entry . The inherited representation supports the signed PC invariant using only the surviving leaf families of each proof subtree, through 
+     \[
+      \boxed{D_v\le K_0+2pH_vL.}
+      \tag{INHERIT-PC}
+    \] 
+     No new formula family is allocated at an internal proof node, and no consequent-copy certificate is used. 
+      Proof.  The occurrence-local axiom certificates prove the leaves. At MP let \(\alpha\) be the left antecedent value inside \(\rho(c)\). If the antecedent child has a positive boundary, its input refutation is weighted by \(\alpha\), using the left occurrence's companions and input-copy agreement. For a negative boundary transfer its learned inputs and use prefixes; for a value line use value-copy agreement. These are the  previous antecedent conversions , and their required proper families are intact by the structural lemma. 
+     Write \(\varepsilon_a=1\) for a positive-boundary antecedent and zero otherwise, and \(\kappa_a=1\) when it has either sign of OR boundary and zero for a value antecedent. Replacing the antecedent input in the implication child's refutation gives the common intermediate ceiling 
+     \[
+      d=\max\{D_c,\ D_a+\varepsilon_aL,\ C,\ 2L\}.
+    \] 
+     The conclusion cases have the following bounds: 
+     
+         Inherited conclusion  Degree ceiling after interface removal   
+       
+          Positive signed boundary  \(d+\kappa_a(p-1)L\)  
+          Negative signed boundary  \(d+L+(\kappa_a+1)(p-1)L\)  
+          Value line  \(d+L+\kappa_a(p-1)L\)  
+       
+     
+     For a positive conclusion, use the zero-replay lemma to remove its boundary without a degree increase. Then, if present, remove the left antecedent interface by  old-target transfer  with target one. Its charge is at most \((p-1)L\). Positive input assumptions are independent of that left family. 
+     For a negative conclusion, the remaining implication input is its own \(P_g\). Weight the refutation by each desired input \(g_i\). The needed weighted assumption \(g_iP_g\) is literally the corresponding companion, so this costs at most \(L\). Remove the right boundary using old-target transfer; since \(\deg g_i\le\delta_g\le L\), the charge is at most \((p-1)L\). Remove the left interface, if present, with the same uniform charge. Both transfers are fresh for the old targets and retained axioms. 
+     For a value conclusion with actual inherited value \(\beta\), weight its remaining-input refutation by \(\beta\), supplying \(\beta(1-\beta)\) from its sharp Booleanity proof through \(2L\). The target already is the conclusion's value, so there is no final comparison. Only the possible left interface needs old-target removal. For these transfers the general bound \(\max\{d'+(p-1)\delta,d'+k,pk\}\) is at most \(d'+(p-1)L\), since \(k,\delta\le L\) and \(d'\ge2L\). Zero targets are immediate. 
+     The displayed table proves (INHERIT-PC) by height induction. A finer bound is \(K_0+W_v\), where \(W\) is the maximum root-to-leaf sum of node weights \(pL\), \(2pL\), and \((p+1)L\) for positive, negative, and value conclusions, respectively. The table is sharper still when the antecedent is negative or a value line. These are degree bounds, not proof-length bounds. 
+     All inserted child proofs retain their surviving local axiom sets. Comparisons involve the two immediate child representatives; the left occurrence inside \(\rho(c)\) is disjoint from the right inherited subtree, even for identical logical formulas. The structural lemma guarantees their required descendants remain available. Thus the proof does not restore old boundaries or make an unproved global assumption about copy agreement after specialization. 
+
+inherit-php-and-scope  5. PHP endpoint, family savings, and the remaining frontier 
+     The final PHP representative may now lie inside an origin axiom leaf, but its own boundary inputs and intact proper clause subtrees have exactly the required syntax. The  ordinary clause/final-PHP transfer  therefore gives an \(\mathcal F_n\)-plus-ENS refutation through \((1+\log S)(h+1)^{O(\ell+1)}\). The same original-degree image certificates apply occurrence by occurrence. Every surviving OR subtree is intact before these substitutions, so compatible recognized-axiom-root pruning with the strict occurrence-leaf witnesses still gives the earlier \((1+\log S)(h+1)^{O((\ell+1)^2)}\) ceiling. 
+     All extension families now originate at actual proof leaves. Boundaries along inherited consequent paths and their selected left signed roots are absent. This saves more than allocation bookkeeping: descendants of an earlier consequent copy that the independent-line construction abandoned can now be processed when the same physical subtree becomes a later implication premise. 
+     For example, take a two-step spine with premise \(T\to(U\to T)\), separate premise lines \(T,U\), and \(T=X\vee\neg X\), \(U=Y\vee\neg Y\). Its occurrence trees have seven OR blocks when only the three leaf families are allocated; fresh internal-line copies would allocate eleven. Removing the three leaf boundaries and four inherited MP interfaces leaves no OR blocks in this structural fixture. In the independent-line interface construction, two proper descendants in the abandoned original consequent copy can remain. This example concerns the indicated elimination schedule, not a minimum possible family size or an alternative proof of an arbitrary theorem. 
+      Remaining gap.  Leaf argument subtrees and OR roots inside MOD-first value lines can still survive. The number of original leaves is not bounded by proof height, and a leaf can have wide or deeply bracketed argument structure. Inheritance alone therefore supplies neither a global additive elimination budget nor a small retained-core cover. It also does not justify reusing unspecialized comparison or Booleanity proofs after a later elimination has changed the relevant values. 
+
+
+### 95 lem:mod-booleanity-after-polynomial-substitution
+frontier-mod-booleanity  1. MOD-first Booleanity is a domain consequence after substitution 
+      Working lemma.  Suppose a formula's first connective after leading negations is MOD. Its value is \(\beta=u^{p-1}\) or \(1-u^{p-1}\), where \(u\) is the corresponding sum of child approximations minus the source offset. Under any polynomial substitution \(\theta\) into a ring whose old variables have their Boolean or \(\mathbb F_p\) domain equations, the polynomial 
+     \[
+      (\theta\beta)^2-\theta\beta
+    \] 
+     has an ordinary NS certificate using only those domain equations through degree \(2\deg(\theta\beta)\), with zero targets omitted. No companion axiom or Booleanity assumption on the child values is needed. 
+      Proof.  Every polynomial in the remaining variables evaluates to an element of \(\mathbb F_p\) on their mixed product domain. Its \((p-1)\)-st power is zero or one. Thus \(\theta\beta\) is Boolean at every such point, also after an outer negation. The degree-nonincreasing mixed-domain division lemma supplies a domain-ideal certificate within the degree of the displayed target. For a nonconstant value that degree is \(2\deg(\theta\beta)\); Boolean constants give the zero target. 
+     This strengthens the relevant part of the  earlier specialized-Booleanity interface : for MOD-first values, polynomial coefficient assignments need not make selected OR products Boolean constants. The value's outer power already makes it Boolean. The statement concerns the rebuilt Booleanity target; it does not supply the missing images of arbitrary selected companion axioms in a larger proof. 
+
+
+### 96 thm:formula-copy-pc-ceiling
+frontier-copy-pc  2. Formula-copy agreement at one PC ceiling 
+      Working lemma.  Consider two fully separated occurrence copies of the same source formula, with ordinary degrees taken before any field reduction. Write \(d_\eta\) for the approximation degree at a syntactic node \(\eta\), taking constant and zero values to contribute zero to the bound. From the companions of the two copies alone, their value difference has a PC proof through 
+     \[
+      \boxed{M=\max\Bigl\{\max_{\eta\ {\rm OR}}2d_\eta,\quad
+                           \max_{\eta\ {\rm MOD}}d_\eta,\ 0\Bigr\}
+                      \le2L.}
+      \tag{COPY-PC}
+    \] 
+     This holds for subformula comparisons as well, with the same uniform \(2L\) ceiling. Boolean and coefficient-domain axioms are not needed for this agreement lemma. It is a PC statement; the earlier  NS degree \(C\)  remains relevant to extracted polynomial leaf witnesses. 
+      Proof.  Atoms and TRUE agree literally, and negation only changes sign. At a paired OR node, first derive all input differences by induction. If every input is zero, both products are identically one. Otherwise, with maximum nonzero input degree \(\delta\), freshness of the coefficient families gives the original product degree \(s=h(\delta+1)=d_\eta\). The  PC form of (COPY)  uses the already derived input differences and their final-polynomial degrees, giving ceiling \(\max\{M_{\rm child},2s\}\). 
+     At a MOD node write its two pre-power sums as \(u,v\). Sum the child-copy proofs to derive \(u-v\), reusing them through their existing ceiling. The two sums have the same degree \(e\) by coefficient renaming. If they are constants, they are equal. Otherwise multiply the final difference by 
+     \[
+      u^{p-1}-v^{p-1}
+       =(u-v)\sum_{j=0}^{p-2}u^{p-2-j}v^j.
+      \tag{MOD-difference}
+    \] 
+     The multiplier has degree at most \((p-2)e\), and the multiplied final polynomial has degree at most \((p-1)e=d_\eta\). PC reuse preserves the maximum of the old proof ceiling and this new degree, rather than adding the multiplier degree to the entire child proof. Cancellations in the sums cause no problem: form \(u-v\) first, then multiply that final polynomial. Flattened OR nodes compare their maximal non-OR frontiers, so binary grouping contributes no additional recursion depth. This proves (COPY-PC). 
+     For the inherited simulation one may therefore use \(C_{\rm PC}=2L\) for antecedent comparisons and take \(K_0=\max\{\widehat A,3L\}\). The leaf-witness bound \(\widehat A=(h+1)^{c_F}(L+C_{\rm NS})\) still uses the genuine NS ceiling \(C_{\rm NS}\); replacing it by a PC ceiling would not justify the normalizer extraction. 
+

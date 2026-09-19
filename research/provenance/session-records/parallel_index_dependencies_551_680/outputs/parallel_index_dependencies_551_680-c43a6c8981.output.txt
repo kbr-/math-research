@@ -1,0 +1,63 @@
+
+### 551 audit:bit-PHP-publication-scope
+bit-PHP-prior-size-lower-bounds  1. Bit PHP is established territory; the missing restriction is the distinction 
+   
+       Primary source  Scope relevant to the candidate   
+     
+        Efremenko, Garlík, and Itsykson,  Lower Bounds for Regular Resolution over Parities , ECCC TR23-187, revision 2; STOC 2024 and SIAM Journal on Computing 54(4), 2025.  For \(n+1\) pigeons and \(n\) holes, regular Res(\(\oplus\)) requires \(2^{\Omega(n^{1/3}/\log n)}\) size. The report also gives an unrestricted DAG-like affine-width lower bound, which is not a superpolynomial size bound.  
+        Byramji and Impagliazzo,  Lower Bounds for Bit Pigeonhole Principles in Bounded-Depth Resolution over Parities , arXiv v1, 25 November 2025.  Bit-PHP size bounds retain a restriction on proof-DAG depth. This includes the \(n+1\)-pigeon instance; the family itself is not new.  
+        Bhattacharya, Byramji, Chattopadhyay, and Impagliazzo,  Lower Bounds for Near-Quadratic-Depth Resolution over Parities , STOC 2026, pp. 955–966, DOI 10.1145/3798129.3800809.  The official proceedings abstract includes exponential lower bounds for depth \(O(n^{2-\varepsilon})\) Res(\(\oplus\)) refutations of bit PHP with \(n+1\) pigeons and \(n\) holes. This is the merged conference publication, not a separate unrestricted size theorem.  
+        Itsykson, Podolskii, and Shekhovtsov,  Resolution Width Lifts to Near-Quadratic-Depth Res(\(\oplus\)) Size , ECCC TR26-018, 12 February 2026, Introduction, p. 2.  The paper explicitly identifies general superpolynomial Res(\(\oplus\)) size lower bounds as open. Its unrestricted size consequence is quadratic. This paper is distinct from the preceding STOC publication.  
+     
+   
+   The potential contribution is therefore a superpolynomial size lower bound with  neither regularity nor proof-DAG-depth restrictions . “Bounded depth” in this literature concerns paths in the proof DAG, not the constant formula-depth parameter in the broader Frege goal. The primary-source search found no earlier result with the claimed unrestricted scope. That is a provisional literature assessment as of this audit, not a guarantee that all published or unpublished work has been located. 
+   For historical scale, the  STOC 2026 abstract  credits the introduction of Res(\(\oplus\)) to Itsykson and Sokolov at MFCS 2014. The unrestricted superpolynomial-size benchmark has therefore remained open for roughly twelve years from the system's introduction to the explicit 2026 open-problem statement. 
+
+bit-PHP-publication-dependency-audit  2. Focused correctness and scope audit 
+   The review used the shorter sufficient route at \(h=3\ell\), rather than requiring the sharper earlier accuracy bound or later source-profile developments. These are the interfaces checked: 
+   
+      Source calculus.  The rule definition in  TR26-018, p. 2  is complementary-parity resolution plus one-premise semantic weakening. These are exactly the  resolution  and  weakening  simulations. The  two-premise semantic bridge  covers the alternate convention without a proof-height cost. Fresh unrelated propositional variables can be fixed first; no extension rule is being admitted. 
+      Initial encoding and ordinary degree.  The  compact-clause-to-CNF direction  is correct: each compact pair-difference clause implies its label-specific CNF clauses. Initial algebraic values are derived using degree-\(\ell\) collision polynomials. Clause values are completed PC lines, not extra axioms, and multiplying those lines incurs the displayed local degree cost rather than multiplying their entire earlier derivations. 
+      Old annihilators and PC closure.  The  complete matching constraints  and  row-set extension argument  account for all legal generator multiples, cross-row consistency, and the residual rectangular boards. The  BLVZ Theorem 1.1  was checked again at its exact statement: for an \(s\)-row board with \(N\ge2s-1\), it supplies the required reduced homology vanishing. The resulting PC/NS equality is used only for the old functional system. 
+      The final separating direction.  The  edge-cube residual construction  checks every matching marginal, including a missing selected row and a column forbidden by another selected row. Its zero normalization is allowed. It separates the nonzero row-linear polynomial supplied by the  ordinary restriction-kernel argument . That argument gives literal affine ideal membership, uses one simultaneous old-only coefficient map, includes every coefficient field equation, and replays primitive PC multiplication through \(k(D+1)\). 
+   
+   No unresolved gap was found in this pass. The algebraic review was performed by the same research assistant: it is another internal check, not independent peer review or a formal proof certificate. Existing finite traces and matching witnesses were inspected through their recorded scope; no historical numerical suite was rerun, and finite evidence is not being used to certify the asymptotic theorem. The topological connectivity theorem remains an imported dependency, with its own attribution. 
+
+bit-PHP-publication-audit-verdict  4. Verdict and the requested next cycle 
+    Positive for preparing the notebook theorem.  The claimed scope would address an open benchmark identified in the checked literature, and this internal pass found no gap in its sufficient dependency chain. It warrants an end-to-end theorem and proof as a publication candidate, retaining its working-proof status. It is not yet a claim of external correctness verification or an exhaustive novelty certification. 
+   The next cycle will state the usual CNF encoding, the unrestricted DAG-like proof system, the size quantifiers, and the complete contradiction chain with \(h=3\ell\), \(D=12\ell+1\), and \(k=\lceil\sqrt{(n+1)\ln(4M)}\rceil\). Dependency results will be linked by their notebook anchors and claim-index labels; their statements and proofs will not be restated. No expanded whitepaper, submission, or contact with other researchers is part of this step. 
+    Evidence.   Source versions, locators, and scope notes  and the  audit record  accompany this entry. No third-party full text is included. 
+    Route assessment.  The publication candidate has a supported scope distinction and a reviewed short dependency chain; the full Frege obligation remains open, with its standard encoding reduction now stated accurately. 
+    Process assessment.  Restricting the audit to the sufficient dependency chain avoided rerunning old numerical suites; the next entry will make that chain directly navigable, so no additional framework rule is needed. 
+   The active mathematics interval includes compaction and context restoration. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   38 min 9.30 s   
+  Marked reading and review windows  12 min 43.80 s  
+  Mathematical reasoning and proof writing  23 min 4.74 s  
+  Preparation and checkpoint work  1 min 14.96 s  
+  Dedicated web and download-attempt windows  1 min 4.88 s  
+  Individually measured conversion, checks, and local processing  0.93 s  
+  
+ Through final snapshot; overlapping time counted once. 
+ 
+
+
+### 552 obs:unary-to-bit-Frege-encoding
+unary-to-bit-Frege-encoding-clarification  3. What does transfer from bit PHP to ordinary PHP? 
+    Standard reduction, clarified.  Let \(n=2^\ell\), and let \(X_{ij}\) be the variables of ordinary unary PHP. In a depth-\(d\) \(\mathrm{AC}^0[p]\)-Frege refutation, substitute 
+   \[
+    X_{ij}\longmapsto \Lambda_{ij}
+      :=\bigwedge_{t=1}^{\ell}
+        \begin{cases}b_{it},&j_t=1,\\ \neg b_{it},&j_t=0.\end{cases}
+    \tag{PUB-label-substitution}
+  \] 
+   This is the familiar bit-label substitution, also used explicitly by Bonacina and Bonet,   On the strength of Sherali-Adams and Nullstellensatz as propositional proof systems , Definition 4.11 and the proof of Corollary 4.12, p. 18 . Its use here is a clarification of the route, not a claim of a new encoding lemma. 
+    Argument.  A unary collision clause \(\neg X_{ij}\vee\neg X_{i'j}\) becomes exactly the bit-PHP clause forbidding rows \(i,i'\) from both encoding \(j\), after De Morgan expansion. A pigeon axiom becomes the tautology \(T_i=\bigvee_{j<n}\Lambda_{ij}\). This tautology has a polynomial-size, constant-formula-depth Frege derivation: at every complete assignment to the \(\ell\) row bits, the corresponding disjunct of \(T_i\) is true; derive the clause consisting of \(T_i\) and the negations of that assignment's literals, then cut upward through the full binary assignment tree. There are \(O(2^\ell)=O(n)\) tree nodes, and each line has polynomial length and bounded formula depth. This is an ordinary short truth-table derivation on only \(\ell=\log_2n\) variables, not on the entire PHP variable set. 
+   Uniform substitution preserves the Frege inference rules, including MOD\(_p\) occurrences, with polynomial size overhead and formula depth \(d+O(1)\). Replace each substituted pigeon axiom by the preceding derivation and each substituted collision axiom by its bit-PHP clause. Therefore a polynomial-size ordinary-PHP refutation at fixed depth would yield a polynomial-size bit-PHP refutation at another fixed depth. Consequently, bit-PHP lower bounds at  every  fixed \(\mathrm{AC}^0[p]\)-Frege depth suffice for the ordinary-PHP goal. 
+   The powers-of-two restriction does not obstruct that implication. For a general \(N\), let \(n\le N&lt;2n\) be a power of two. Assign the \(N-n\) extra pigeons to distinct extra holes and set surviving-pigeon variables in those holes to zero. Restricting unary PHP on \(N+1\) pigeons and \(N\) holes leaves unary PHP on \(n+1\) pigeons and \(n\) holes. Restriction preserves proof size and bounded depth. 
+    Why the present subsystem bound is insufficient.  Under (PUB-label-substitution), an affine parity \(\bigoplus X_{ij}\) becomes a parity of bit conjunctions, generally a nonlinear polynomial in the bits. That is outside the affine-query language of Res(\(\oplus\)). No polynomial-size Res(\(\oplus\)) conversion follows from this substitution. Likewise, the  existing source obstruction  concerns preservation of a restricted selector-rank hypothesis, not absence of the standard Frege reduction. Earlier references to an “ordinary-unary conversion gap” should be read with this distinction; this dated clarification leaves their original statements intact. 
+

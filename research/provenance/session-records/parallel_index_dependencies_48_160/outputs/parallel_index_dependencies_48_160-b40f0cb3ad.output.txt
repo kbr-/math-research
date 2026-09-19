@@ -1,0 +1,206 @@
+
+### 97 prop:mod-copy-original-support
+frontier-support-lower-bound  4. Arbitrarily many necessary original blocks at constant depth and degree 
+      Working support proposition.  Fix any prime \(p\) and any \(m\ge1\). For each Boolean \(x_j\), take two independent accuracy-one blocks on the identical tuple \((x_j,1-x_j)\), with products 
+     \[
+      P_j=1-r_{j,0}x_j-r_{j,1}(1-x_j),\qquad
+      Q_j=1-s_{j,0}x_j-s_{j,1}(1-x_j).
+    \] 
+     Include all their companions and all Boolean/field domain equations. Define 
+     \[
+      \beta=\left(\sum_{j=1}^mP_j\right)^{p-1},\qquad
+      \beta'=\left(\sum_{j=1}^mQ_j\right)^{p-1}.
+    \] 
+     These are two occurrence copies of a single source MOD gate on tautological OR arguments, with residue \(m\bmod p\); the source offset is zero in \(\mathbb F_p\). Formula depth is bounded independently of \(m\). The difference \(\beta-\beta'\) has a PC proof through 
+     \[
+      \max\{3,2(p-1)\},
+    \] 
+     but every proof of that unchanged difference from a subset of the original axioms, at any degree, must use at least one companion from each of the \(2m\) block families. 
+      Degree upper bound.  The exact identities 
+     \[
+      P_j=x_jP_j+(1-x_j)P_j,\qquad
+      Q_j=x_jQ_j+(1-x_j)Q_j
+    \] 
+     derive each product through degree three. Sum to derive \(u-v\), where \(u=\sum P_j\), \(v=\sum Q_j\), then use final-line multiplication in (MOD-difference). The target degree is \(2(p-1)\), giving the stated ceiling. No optimality assertion for that ceiling is needed. 
+      Support lower bound.  Suppose both companions of a particular \(P_j\) are absent. Set all \(x_i=1\). For every other block, set its first coefficient to one and second to zero, making its product zero. For the omitted block set both coefficients zero, making \(P_j=1\). Every retained companion and every domain equation vanishes, while \(\beta=1\), \(\beta'=0\). Soundness excludes a proof of their difference from those retained axioms. If a \(Q_j\) family is omitted, reverse the roles. Hence every one of the \(2m\) families must contribute. A proof that uses no companion from a family is covered by this countermodel regardless of its intermediate polynomials or degree. 
+     The same assignments satisfy both output Booleanity equations. Thus adding those equations cannot repair the missing comparison information. This gives a direct separation between domain-only Booleanity, bounded PC degree, and unbounded original block support in the MOD interface. 
+      Scope.  This is not an extension-elimination lower bound. Here each input tuple already has the unit identity \(1=x_j+(1-x_j)\). Setting both coefficients of every block to one makes every product identically zero and changes the comparison target to zero. The entire example is cheaply normalizable. The proposition only rules out reducing support by dropping original families while preserving the original polynomial comparison. It does not exclude joint substitutions, retained-core representations, or proof-dependent cancellation in the PHP setting. 
+
+
+### 98 lem:signed-mod-scalar-conversions
+scalar-mod-conversions  1. Four finite-domain PC conversions 
+     Let \(G\) contain the mixed Boolean/\(\mathbb F_p\) domain equations for all variables of a polynomial \(u\). Put \(e=\deg u\ge1\), \(m=p-1\), and \(z=u^m\). The constant cases are immediate and can be handled separately. A proof degree below refers to ordinary collected PC line degree. 
+     
+         Given a degree-\(d\) proof  Resulting proof  Ceiling   
+       
+          \(G\vdash u\)  \(G\vdash z\)  \(\max\{d,me\}\)  
+          \(G\vdash z\)  \(G\vdash u\)  \(\max\{d,pe\}\)  
+          \(G\vdash1-z\)  \(G,u\vdash1\)  \(\max\{d,me\}\)  
+          \(G,u\vdash1\)  \(G\vdash1-z\)  \(\max\{d+me,pe\}\)  
+       
+     
+      Working proof.  The first row multiplies the final \(u\) by \(u^{m-1}\). For the second, multiply the final \(u^{p-1}\) by \(u\), then subtract a domain-only proof of \(u^p-u\) through degree \(pe\). For \(p=2\), \(z=u\) and no conversion is needed. The third row derives \(z\) from the additional \(u\) assumption and adds \(1-z\). For the fourth, weight the whole scalar refutation by \(1-z\). The weighted extra assumption is 
+     \[
+      (1-u^{p-1})u=u-u^p,
+    \] 
+     which has a domain-only proof through \(pe\). All other weighted lines fit \(d+me\), and  weighted replay  gives the result. These are PC transformations using final-line reuse, not equalities of the corresponding bounded NS spaces. 
+      The finite-domain hypothesis matters.  Without domain equations, \(G=\{uv-1\}\) together with \(u\) has the degree-two refutation \(1=-(uv-1)+vu\). But \(1-u^{p-1}\) need not belong to the ideal of \(G\). For \(p=3\), in \(\mathbb F_9=\mathbb F_3[i]/(i^2-2)\), take \(u=i,v=-i\). Then \(uv-1=0\), while \(1-u^2=2\ne0\). The field equations would exclude this assignment. Likewise, for \(p&gt;2\), the ordinary ideal generated by \(u^{p-1}\) does not contain \(u\) without a finite-domain relation. 
+
+
+### 99 thm:signed-scalar-mod-mp
+scalar-signed-invariant  2. The signed line interface 
+     Use the  inherited representatives . Strip a line's leading negations, retaining their parity. Its interface is: 
+     
+       Positive OR: refute the surviving system with all boundary inputs set to zero. 
+       Negative OR: derive every boundary input. 
+       Positive MOD, value \(u^{p-1}\): derive its pre-power sum \(u\). 
+       Negative MOD, value \(1-u^{p-1}\): refute the surviving system with the extra assumption \(u\). 
+       Atom or TRUE after negations: retain the ordinary value derivation. 
+     
+     Positive OR and negative MOD are thus  nonzero interfaces , expressed as refutations of input systems; negative OR and positive MOD are  zero interfaces , expressed as derivations. A MOD interface has exactly one polynomial. That polynomial can still contain many frontier products. 
+     The occurrence-leaf proofs start this invariant. Positive MOD leaves use the second conversion above, with \(pe\le2L\) because \(me\le L\); negative MOD leaves use the third conversion. OR leaves retain their strict-support certificates. Thus \(K_0=\max\{\widehat A,3L\}\) still covers all leaves. The NS ceiling used for \(\widehat A\) is unchanged. 
+
+scalar-mod-mp  3. Direct MP composition without restoring the full value first 
+     At an inherited inference \(A,\neg A\vee B\vdash B\), let \(\alpha\) be the left antecedent value inside the implication representative. Put \(\varepsilon_a=1\) if \(A\) has a nonzero interface (positive OR or negative MOD), and zero otherwise. Let \(\kappa_a=1\) if its first non-negation connective is OR and zero otherwise. 
+      Antecedent conversion.  OR cases use the established weighted or prefix arguments. For a positive MOD antecedent, transfer its derived pre-power sum to the left occurrence by summing child-copy proofs through \(2L\), then raise that final polynomial to the \((p-1)\)-st power within \(L\). For a negative MOD antecedent, weight its scalar refutation by the proper value \(\alpha=1-u_\alpha^{p-1}\). The required weighted scalar assumption has the identity 
+     \[
+      \alpha u_a=(u_\alpha-u_\alpha^p)
+                      +\alpha(u_a-u_\alpha).
+    \] 
+     The first term is a domain consequence through \(pe_a\le2L\). The second uses aggregate copy agreement and final-line reuse through \(2L\). Hence every antecedent case supplies \(\alpha\) through \(\max\{D_a+\varepsilon_aL,2L\}\). Replace the implication refutation's antecedent input by this proof, giving 
+     \[
+      d=\max\{D_c,D_a+\varepsilon_aL,2L\}.
+    \] 
+      Conclusion conversion.  For positive MOD \(B\), the remaining implication input is \(1-u_B^{p-1}\). Weight its refutation directly by \(u_B\). The weighted extra input is \(u_B-u_B^p\), so the scalar target is derived through 
+     \[
+      \max\{d+e_B,pe_B\}=d+e_B,
+    \] 
+     using \(pe_B\le2L\le d\). This weights by degree \(e_B\), not by the full value degree \((p-1)e_B\). For negative MOD \(B\), the remaining implication input is \(u_B^{p-1}\). Under the desired scalar assumption \(u_B=0\), derive that input within \(L\) and insert it into the refutation, with no further degree charge. 
+     The signed OR cases are unchanged: positive boundary zero replay costs nothing, while a negative boundary requires weighting by each input and removing its proper root. Remove the left signed OR interface whenever present, using the existing freshness lemma. For nonconstant MOD sums the full ceilings are therefore: 
+     
+         Conclusion interface  Degree after selected-root removal   
+       
+          Positive OR  \(d+\kappa_a(p-1)L\)  
+          Negative OR  \(d+L+(\kappa_a+1)(p-1)L\)  
+          Positive MOD  \(d+e_B+\kappa_a(p-1)L\)  
+          Negative MOD  \(d+\kappa_a(p-1)L\)  
+          Nonconstant atomic value  \(d+1+\kappa_a(p-1)L\)  
+       
+     
+     For constant scalars, use the zero proof or rescale a nonzero constant assumption; if the remaining implication input is zero, the joined proof already refutes the old system. Each old-target transfer has an old target of degree at most \(L\), or target one with old input assumptions; its general ceiling fits the displayed \((p-1)L\) charge. MOD-first lines have no single selected right OR interface. Their maximal OR frontier families remain present. 
+      Working simulation consequence.  Induction with this table retains \(D_v\le K_0+2pH_vL\) and all the inherited-family freshness and support assertions. The final PHP line is still positive OR, so the ordinary clause/final-PHP transfer is unchanged. The scalar refinement supplies a more precise interface and smaller local weights; it does not itself improve the overall asymptotic lower-bound route. 
+
+
+### 100 cor:scalar-mod-original-support
+scalar-support-control  4. A single scalar still need not have small original support 
+     The preceding  frontier example  also controls these new invariants. With \(m\) blocks \(P_j=P_{(x_j,1-x_j)}\), put \(s=\sum_jP_j\). Summing \(P_j=x_jP_j+(1-x_j)P_j\) derives \(s\) through degree three. The same proof and the extra assumption \(s-1\) refute the system through degree three. 
+     Both invariants require a companion from every original family if their scalar polynomials are left unchanged. Omit one family, set its product to one and every other product to zero using the saved countermodel convention. All retained axioms vanish, while \(s=1\). This contradicts the proposed zero scalar conclusion and satisfies the proposed nonzero-interface assumption \(s-1=0\), defeating its refutation. The old system with all families is satisfiable; it has \(s=0\). 
+     These are positive and negative MOD interfaces with suitable residues, at constant depth and degree independently of \(m\). As before, they are cheaply normalizable. The control concerns deleting original support while retaining the scalar target, not joint transformations of the proof. 
+
+
+### 101 thm:survivor-affine-quotient
+share-survivor-quotient  1. A quotient using only surviving witnesses 
+     Use the uniform source accuracy \(h\), and the inherited occurrence forest before clause or polynomial axiom-root substitutions. Let \(\mathcal S\) be the OR occurrences left after the prescribed boundary and proper-interface removals. By the  live-forest lemma , every proper OR descendant of a member of \(\mathcal S\) also belongs to \(\mathcal S\). 
+     Group members of \(\mathcal S\) only when their complete unsimplified formula syntax, including original propositional-variable labels, is identical. Each class has a chosen surviving witness. Map the coefficient at vector position \(u\), flattened input position \(i\), of every member to the corresponding coefficient of that witness. Original variables are fixed. With varying accuracies one must instead match the entire accuracy-annotated evaluation trees; matching just the root accuracy would not suffice. 
+      Working affine-quotient theorem.  This variable-identification map \(\Phi\) sends every surviving companion to a companion of a canonical surviving block, and every coefficient field equation to its canonical field equation. A PC proof, or an already supplied NS certificate, transfers through the same degree. The canonical family has one block per surviving syntax class and no new level. 
+      Proof.  Induct through the finite syntax trees. Atoms are fixed; negation and MOD commute with substitution. For a surviving OR node, every OR node needed in its maximal non-OR children's values is a surviving proper descendant. Those values therefore map to the common canonical child values. Corresponding coefficient positions are identified, so both the product and each input-times-product companion map literally to their canonical versions. Each canonical block is the image of its chosen live witness, whose descendants supply the required earlier classes. 
+     Full syntax matching precludes a class containing its own proper descendant. Actual polynomial dependencies remain strictly earlier even when bypassed OR groups share a source level. Coefficient domains map as \(r^p-r\mapsto R^p-R\). Variable identification replays PC multiplication directly and cannot increase polynomial degree; in NS it maps each original term within its old degree budget. Polynomial cancellations do not retroactively enlarge an old cofactor space. 
+     A class whose every occurrence was removed has no witness and is absent. If a removed occurrence has the same formula as a surviving one, the latter may supply that formula's canonical block; this uses an already surviving constraint, not the deleted occurrence's axiom. This theorem alone does not justify applying another freshness-dependent elimination after arbitrary sharing. 
+
+
+### 102 thm:shared-survivor-private-cut-simulation
+share-private-cut  2. Share eventual survivors first, and leave all cuts private 
+     The inherited removal schedule is determined from the proof tree and syntax. Mark its complete cut set in advance: leaf signed boundaries, and the proper left/right signed OR interfaces at each MP node. Introduce the preceding identifications only on the complementary survivor set \(\mathcal S\), leaving every coefficient family in the cut set private and unchanged. 
+      Working hybrid theorem.  The inherited signed scalar simulation remains valid with these shared survivors and private cut roots. Every copy comparison needed at MP is literal, so its copy-agreement companion terms are unnecessary. The bound \(K_0+2pHL\), with \(K_0=\max\{\widehat A,3L\}\), and the ordinary-PHP endpoint are preserved. 
+      Proof of freshness.  No surviving OR block has a cut occurrence as a proper descendant, by closure of \(\mathcal S\). Thus the canonical survivor axioms involve no private cut coefficients at all. Identifying survivor coefficients cannot create a dependence on a private family. The private cut blocks themselves remain individually scoped. Their only OR ancestors that could depend on a currently selected family are already removed along the inherited path, exactly as before. Descendants and the opposite occurrence branch do not depend on an ancestor's private coefficients. The original local old-target arguments therefore retain their required freshness. 
+     Source leaf certificates are transformed homomorphically, preserving their degree and strict-level support. Some of their proper blocks are private future cuts, so this does not assert that every source-leaf comparison becomes literal. The surviving blocks map to their canonical axioms; private companions have the same private coefficients with their input polynomials specialized. These are still valid leveled ENS blocks. 
+      Why the MP comparisons disappear.  At an MP step, the antecedent child's origin-leaf consequent path ends there: that proof occurrence is being used as an antecedent, not as an implication premise. All proper OR blocks of its representative are therefore eventual survivors. On the implication side, the left antecedent occurrence lies off the future right-consequent path. Apart from its own signed root, if any, all its OR blocks are survivors too. Earlier removals were ancestors or siblings, not descendants. 
+     For a signed OR antecedent, the two matched input tuples consequently become identical canonical polynomials. The proper left root itself remains private, so weighted input products are its companions and the old target remains fresh. For a MOD or atomic antecedent, the whole compared value—and the MOD pre-power sum—is identical after sharing. Inheritance already removed any need for consequent-copy comparison. Thus every comparison actually used by the MP recurrence is literal. 
+     For example, in the negative MOD antecedent conversion, \(u_a=u_\alpha\) and the weighted input is simply \(u-u^p\), a domain consequence. For a positive MOD antecedent, its derived scalar is already the required left scalar. MOD Booleanity is domain-only as before. Apart from the supplied child invariant proofs, these MOD conversions request no frontier companions for alignment or Booleanity. OR conversions still use their private interface companions, which are then removed by the existing local transfers. 
+     Apply the  signed scalar recurrence  with these literal comparisons. The same bound follows. The genuine NS ceiling \(C_{\rm NS}\) used in the leaf-witness bound \(\widehat A\) is not replaced by zero. After finishing the cut schedule, all remaining classes have intact canonical subtrees, so ordinary clause/final-PHP and recognized-axiom-root preprocessing remain available in that order of construction. 
+
+
+### 103 lem:canonical-mod-signed-multiplicities
+share-mod-multiplicity  3. Signed multiplicities in a MOD scalar 
+     Every OR descendant below a MOD connective in an origin leaf is a survivor: an inherited implication path does not cross a MOD node, and a selected signed OR interface cannot cross one either. Hence all argument evaluations needed by a MOD frame become coherent under the survivor quotient. 
+     At a MOD gate with \(k\) arguments and residue \(i\), strip leading negations from each argument. For each remaining syntactic formula \(\sigma\), let \(n_\sigma^+\) and \(n_\sigma^-\) count the even and odd parities, and write \(V_\sigma\) for its canonical value. Its pre-power scalar is exactly 
+     \[
+      \Phi(u)=
+       \sum_\sigma(n_\sigma^+-n_\sigma^-)V_\sigma
+          +\sum_\sigma n_\sigma^--(k-i),
+      \tag{MOD-multiplicity}
+    \] 
+     with coefficients in \(\mathbb F_p\). This is ordinary polynomial cancellation, with no Booleanity assumption on \(V_\sigma\). If every signed multiplicity vanishes modulo \(p\), the scalar is constant. A zero constant supplies the positive MOD scalar invariant with no axioms; a nonzero constant supplies the negative MOD scalar refutation by constant rescaling. These statements identify trivial local interface proofs, not automatic deletion of every supporting family from the complete simulation. 
+     In particular, \(p\) copies of an arbitrary argument have sum \(pV=0\), and one argument together with its negation has values \(V+(1-V)=1\). They need not be tautological argument formulas and their OR products need not be normalizable to zero. Conversely, \(p+1\) positive copies leave the scalar \(V\); cancellation is controlled by actual multiplicities, not merely many repeated occurrences. 
+     The earlier  unchanged-comparison support bound  is consistent with this: the quotient changes the comparison polynomial itself. Copy differences that previously needed all original families can now be identically zero. This identifies a permitted transformation escaping that particular support-deletion obstruction, while leaving the need to control surviving canonical classes. 
+
+
+### 104 lem:mixed-mode-sharp-booleanity
+mixed-global-modes  2. One global mode for each selected canonical block 
+     Work with the  hybrid simulation after its private cuts , before arbitrary polynomial coefficient normalizations. The old base \(B\) includes propositional Boolean equations; every retained coefficient keeps its field equation. Choose one coefficient assignment per canonical block, consistently in all its uses. All assignments below are constants in \(\mathbb F_p\), and old variables are fixed. 
+     
+        Retain:  keep the coefficients and specialize the inputs. 
+        Unit product:  set all coefficients zero, so \(P\mapsto1\). Its companions may occur inside isolated Booleanity proofs. Any companion used directly outside them must have an explicitly supplied old-base NS certificate for its image, within that companion's original degree. 
+        Pack:  for a tuple of \(k\le h\) inputs \(g_i\), dedicate one factor to \(1-g_i\) and set the other factors to one. Then \(P\mapsto\prod_i(1-\Theta g_i)\). Direct companion uses are allowed. 
+        Base zero:  use a constant assignment whose resulting product \(q\), in old variables, has an old-base NS proof through \(\deg q\); an identically zero product is included. Direct companion uses are allowed. 
+     
+     Here \(\Theta\) is the combined constant substitution, and all retained inputs are specialized. Unit-product removal without supplied direct image certificates is restricted to the  isolated-port condition : no internal line of a replaced Booleanity proof, other than its declared conclusion, may be used outside it. In NS an explicit outer identity with Booleanity polynomials as macro axioms is required. This condition applies to the full outer proof and its non-Booleanity auxiliary arguments. 
+
+mixed-sharp-booleanity  3. Sharp Booleanity survives all these modes 
+      Working lemma.  For every source approximation \(f\), the target \((\Theta f)^2-\Theta f\) has an NS proof over the old base and retained specialized blocks through \(2\deg(\Theta f)\), with zero targets omitted. In particular it fits the original degree of the nonzero macro polynomial \(f^2-f\). 
+      Proof.  Induct through source evaluations and their ENS levels. Atoms use their Boolean equations, and negation preserves the Booleanity polynomial. MOD uses the  domain-only argument . A retained OR has its own fresh coefficients and the ordinary prefix identity \(P^2-P=-\sum_iV_i(g_iP)\), giving the sharp bound without child Booleanity assumptions. A unit-product block has zero Booleanity target. 
+     For a base-zero product \(q\), multiply its supplied degree-\(\deg q\) NS certificate by \(q-1\). For a packed product \(P'=\prod_i a_i\), where \(a_i=1-\Theta g_i\) are the specialized non-OR child values, use 
+     \[
+      (P')^2-P'=
+        \sum_i\left(\prod_{j&lt;i}a_j\right)(a_i^2-a_i)
+                    \left(\prod_{j&gt;i}a_j^2\right).
+      \tag{PRODUCT-Bool}
+    \] 
+     Insert the earlier sharp child certificates. Each summand has degree at most \(2\sum_j\deg a_j=2\deg P'\) when the product is nonzero; if a factor is zero, the target has the zero proof. Constant cases follow from the same identity. The children used by an OR's flattened input tuple lie strictly below it, so same-level bypassed groups cause no circularity. The induction never uses a discarded unit-product companion. 
+     All coefficient substitutions are constant, hence \(\deg(\Theta f)\le\deg f\). This proves the original macro-degree comparison. The lemma extends the earlier constant-product-only Booleanity statement to packed products that can remain nonconstant. 
+
+
+### 105 thm:mixed-booleanity-degree-transfer
+mixed-degree-transfer  4. Same-degree transfer of the outer proof 
+      Working theorem.  Under the preceding mode and port hypotheses, a degree-\(D\) outer PC proof or NS certificate of \(t\) transfers to one of \(\Theta t\) through degree \(D\), over the old base and retained specialized ENS blocks. Any other supplied assumption is carried to its image unless that image has the required old-base certificate. In particular, removing extension blocks does not silently discharge additional assumptions. 
+      Proof of axiom-image bounds.  Selected field equations vanish; retained axioms have their direct specialized images. A base-zero companion image is \((\Theta g_i)q\), whose certificate fits its actual product degree and hence the original companion degree. 
+     For a packed block, write \(\widehat g_i=\Theta g_i\). Its image is 
+     \[
+      \widehat g_i\prod_j(1-\widehat g_j)
+       =-(\widehat g_i^2-\widehat g_i)
+                         \prod_{j\ne i}(1-\widehat g_j).
+    \] 
+     Use the sharp specialized Booleanity certificate. If the original input degrees are \(d_i\), with maximum \(\delta\), the NS ceiling is at most 
+     \[
+      d_i+\sum_jd_j
+           \le d_i+k\delta
+           \le d_i+h(\delta+1)=e_i,
+    \] 
+     the original nonzero companion degree. Zero cases need no certificate. Directly used unit-product images have their stipulated old-base certificates through their own \(e_i\). Their other uses are confined to Booleanity proofs, which are replaced by the sharp rebuilt certificates. 
+     For PC, substitute the outer proof and insert these image proofs only when their final polynomials are needed; every relevant original axiom or macro degree is at most \(D\). For NS, multiply each image certificate by the specialized original cofactor, using the original cofactor budget \(D-e_i\), or the analogous macro degree. The resulting degree remains \(D\). No count, height, or substitution-degree factor is added. 
+     The argument concerns these constant modes and these audited ports. It does not convert an arbitrary flattened companion use into a Booleanity use, or cover every polynomial normalizer from earlier entries. 
+
+mixed-role-example  1. The apparent conflict and the actual obligation 
+     Let \(a\) be an argument approximation, \(b\) another Boolean source value, and \(I=P_{(a,b)}\) at accuracy at least two. Suppose one part of the outer proof uses \(I\)'s companions directly, while another uses \(I\) only through its Booleanity lemma. Zeroing all \(I\)-coefficients gives \(I=1\) and trivial Booleanity, but the direct companions become \(a,b\), which need not be old consequences. 
+     Packing instead gives \(I'=(1-a)(1-b)\), with the exact images 
+     \[
+      aI'=-(1-b)(a^2-a),\qquad
+      bI'=-(1-a)(b^2-b),
+    \]\[
+      (I')^2-I'=(1-b)^2(a^2-a)+(1-a)(b^2-b).
+      \tag{MIXED-I}
+    \] 
+     Thus one assignment serves both roles using argument Booleanity. If \(I\) is in turn an argument of \(J=P_{(I,c)}\), pack \(J\) as \(J'=(1-I')(1-c)\) and repeat the same identities. It is unnecessary to force \(I'\) to a constant merely because one use is a Booleanity port. 
+     This does not make a unit-product assignment valid for a direct-use block. At a model with \(a=1,b=0\), that assignment leaves the direct companion image one; packing gives \(I'=0\). The distinction is between the actual proof obligation and an unnecessarily restrictive local choice. 
+
+
+### 106 cor:mixed-ordinary-php-modes
+mixed-php-modes  5. Ordinary PHP modes and protected assumptions 
+     The ordinary PHP substitutions fit this theorem together with the appropriate old-base image proofs. Add the exact weak base \(\mathcal F_n\) before the substitution. For a row clause with inputs \(x_{ij}\), set its first vector to all ones and its other vectors to zero: 
+     \[
+      P_{C_i}\mapsto1-\rho_i=-(\rho_i-1).
+    \] 
+     This is a base-zero product with a degree-one certificate. At \(h\ge2\), pack a collision clause's two inputs \(1-x_{ij},1-x_{i'j}\), giving \(P_C\mapsto x_{ij}x_{i'j}\), a base-zero product through degree two. Use these same assignments for every canonical occurrence of those clauses, including any argument roles. 
+     A remaining block whose inputs are these clause products can use unit mode: each companion image is then a supplied row or collision generator, within its original degree. This includes proper final-PHP blocks and appropriate OR subgroups of that final expression. The extra clause-product assumptions in the final positive invariant also map to the corresponding base generators and are discharged with their existing degree-one or degree-two proofs. 
+     Ordinary clause classes must receive these compatible modes, or another explicitly justified mode; choosing unit mode merely because a clause has some Booleanity-only use would map its final extra assumption to one and would not discharge it. With the stated choices, any further eligible mixed-mode pruning preserves the hybrid PHP degree. The open question is which other wide classes satisfy the required access condition or have affordable direct image proofs. 
+

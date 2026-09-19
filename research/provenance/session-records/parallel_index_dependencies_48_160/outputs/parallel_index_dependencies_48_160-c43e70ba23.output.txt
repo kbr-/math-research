@@ -1,0 +1,216 @@
+
+### 78 note:nested-projection-syntax
+ports-syntax-clarification  1. Clarify the preceding nested fixture's syntax 
+     The  previous cycle's upper fixture  has root inputs \((1-P_1,1-a_0)\), where \(a_0\) is itself an OR product. To realize that recorded tuple as a source projection instance, take the substituted argument to be \(\neg\neg A_0\): 
+     \[
+      ((\neg\neg A_0)\wedge Y)\to\neg\neg A_0.
+    \] 
+     The double negation leaves its approximation equal to \(a_0\) and prevents flattening the conclusion into the outer disjunction. The earlier phrase “nested projection instances” did not specify this wrapper. Treating that fixture as the bare-OR instance \((A_0\wedge Y)\to A_0\) would be incorrect. The saved polynomial identities, degrees, and general witness-extraction theorem remain valid. The present calculation handles the bare-OR case explicitly. 
+
+
+### 79 lem:flattened-projection-booleanity
+ports-projection  2. The flattened projection error is a Booleanity request 
+     Let \(A\) begin with OR, with canonical product \(a=P_g\), input tuple \(g_i\), and prefixes \(V_i\) satisfying \(1-a=\sum_iV_i g_i\). Let \(b=B^{\mathrm{ap}}\). The inner OR in \(A\wedge B=\neg(\neg A\vee\neg B)\) has product \(I=P_{(a,b)}\). The actual root of \((A\wedge B)\to A\) has input tuple 
+     \[
+      (1-I,\ g_1,\ldots,g_m).
+      \tag{PROJ-inputs}
+    \] 
+     The exact unit identity is 
+     \[
+      1=a(1-I)+\sum_i V_i g_i+aI.
+      \tag{PROJ-unit}
+    \] 
+     Consequently the root's first-vector assignment is \((a,V_1,\ldots,V_m)\), not the two-input assignment \((a,1)\). Other root vectors are zero, and the root product becomes \(aI\), an older inner companion. 
+     At inner accuracy at least two, assign one factor to \(1-a\), another to \(1-b\), and the remaining factors to one. Then 
+     \[
+      I'=(1-a)(1-b),\qquad
+      H:=aI'=-(1-b)(a^2-a).
+      \tag{PROJ-Bool}
+    \] 
+     Write \(H_a=a^2-a\), \(H_b=b^2-b\), and \(d_0=1-I'\). All root and inner companion images now have the exact representations 
+     \[
+      E'_{U,0}=-d_0(1-b)H_a,\qquad
+      E'_{U,i}=-g_i(1-b)H_a,
+    \]\[
+      E'_{I,a}=-(1-b)H_a,\qquad
+      E'_{I,b}=-(1-a)H_b.
+      \tag{PROJ-ports}
+    \] 
+     Coefficient field images use typed-domain certificates only. Thus these local image proofs can expose \(H_a,H_b\) as their only nondomain requests on the argument evaluations. Flattening the proof of \(H_a\) would instead reintroduce the original \(A\)-companions with nonzero cofactors, hiding that interface. 
+
+
+### 80 lem:specialized-source-booleanity
+ports-specialized-booleanity  3. Booleanity survives a suitable constant specialization sharply 
+      Working lemma.  Take source-formula approximations with their original typed domains and leveled ENS blocks. Let \(\Phi\) fix old variables and unselected coefficient variables, assign selected coefficients constants in \(\mathbb F_p\), and make each selected block product identically zero or one. Retain every unselected block with all its inputs specialized. For every source approximation \(b\), the polynomial 
+     \[
+      \Phi(b^2-b)
+    \] 
+     has an NS certificate from the old domains and retained specialized blocks through \(2\deg\Phi(b)\) when \(\Phi(b)\) is nonconstant; a constant value is Boolean and gives the zero polynomial. In particular, the certificate degree is at most the original degree of the nonzero polynomial \(b^2-b\). 
+      Proof.  Strip leading negations, which preserve the Booleanity polynomial. At an atom use its Boolean equation; TRUE is zero. A MOD value is \(u^{p-1}\), so its Booleanity polynomial vanishes on the full remaining typed domain. Degree-nonincreasing domain division supplies a certificate through twice the value's degree; Booleanity of the child formulas is not needed. 
+     A selected OR product becomes a Boolean constant by assumption. An unselected OR product remains a genuine ENS product on its specialized input tuple, with its own coefficient variables still fresh and unchanged. If all inputs vanish, its product is one. Otherwise, with specialized input ceiling \(\delta'\ge0\) and accuracy \(h\), its degree is exactly \(s'=h(\delta'+1)\). The ordinary prefix identity 
+     \[
+      P^2-P=-\sum_i V_i(g_iP)
+    \] 
+     has summand degrees at most \(2s'=2\deg P\). It uses only that retained block's companions and assumes no Booleanity of its inputs. These cases prove the lemma. Finally, a nonconstant polynomial \(b\) has \(\deg(b^2-b)=2\deg b\), and constant substitution cannot increase its degree. This proves the comparison with the original macro target. 
+     The Boolean-constant condition is essential. Over \(\mathbb F_3\), a block on the constant input one has product \(1-r\); assigning \(r=2\) gives product two and Booleanity polynomial two, which is not a consequence of a satisfiable old domain system. Merely using field constants is insufficient. 
+
+
+### 81 thm:booleanity-port-pruning
+ports-removal  4. Remove blocks behind isolated Booleanity conclusions 
+     A  Booleanity port  means that an outer PC proof uses \(H_b=b^2-b\) as a lemma, with its internal derivation kept separate. To replace an existing subproof this way, no internal line other than its declared conclusion may be used outside that subproof. For NS, supply an explicit outer identity with \(H_b\) as an axiom polynomial. Do not infer such a factorization from an arbitrary flattened certificate. 
+      Working removal theorem.  Suppose an outer degree-\(D\) PC proof, or an outer degree-\(D\) NS certificate, uses the old base, retained block axioms, Booleanity ports of source formulas, and possibly selected companions whose products become zero under \(\Phi\). Let \(\Phi\) satisfy the preceding lemma. Selected blocks whose products become one may occur inside the port proofs, but their companions must not be used directly by the outer proof. Then the old base and retained specialized blocks derive \(\Phi(t)\) in the same proof system through degree \(D\). A refutation still ends in one. 
+      Proof.  Selected coefficient field equations vanish. Companions of selected zero-product blocks also vanish. Retained axioms and base axioms have their direct images. Replace every Booleanity-port image by the preceding lemma's NS certificate, which fits the port's own original polynomial degree. In PC, insert that certificate as a derivation and reuse its final line; every outer substituted line stays within \(D\). For NS, a port of original degree \(e\) has cofactor degree at most \(D-e\). Its specialized certificate has degree at most \(e\), so the resulting summands stay within \(D\). The same argument handles retained original axioms. No image proof of a selected unit-product companion is required, because that companion never occurs in the outer proof. 
+     This is a condition on the proof's information flow, stronger than merely observing a few Booleanity identities. A direct use of \(g_iP_g\) outside the ports remains an obligation. The main proof and every auxiliary image proof used in a proposed composition must satisfy the criterion. The lemma applies to the specified source values under constant restrictions; arbitrary polynomially normalized values from the preceding cycle need separate image-certificate accounting. 
+     For the projection calculation, zeroing the argument-\(A\) coefficients makes \(a=1\) and every \(V_i=0\). Together with the two-factor inner assignment and the corresponding root assignment, this gives \(I'=0\) and root product zero. Thus all inner and root companion images vanish directly, while the argument's Booleanity image is zero. This removes the selected projection family whenever its argument companions have no other direct use in the audited outer proof. It does not prove that this condition holds throughout a PHP simulation. 
+
+
+### 82 obs:positive-antecedent-needs-companions
+requests-booleanity-insufficient  1. Booleanity does not supply the positive antecedent 
+     Let \(G\) be the Boolean-domain equations and let \(g=(g_i)\) have a PC refutation with \(G\). A proper block has product \(a=P_g(R)\). The positive-antecedent construction weights the input refutation by \(a\); each weighted input \(g_i a\) is supplied as an actual companion. 
+     Replacing those companions by \(a^2-a\) is insufficient. Set all coefficient variables to zero, so \(a=1\), and take any Boolean assignment to the old variables. This satisfies \(G\), every coefficient field equation, and \(a^2-a=0\), but not \(a=0\). Thus no PC proof of \(a\), at any degree, follows from that Booleanity-only system. An inconsistent input tuple does not invalidate this model, because the \(g_i=0\) equations are not axioms of the Booleanity-only system. 
+     The four-variable control below supplies an input refutation through degree two and a weighted proof of \(a\) through degree five. The first direct companion rejects the displayed all-zero-variable model. Hence the missing information is present in the companions, not just in their use as a convenient Booleanity certificate. 
+
+
+### 83 thm:ns-normalizer-degree-obstruction
+requests-normalizer-lower-bound  2. Every all-companion normalizer yields an NS input certificate 
+      Working theorem.  Over \(\mathbb F_p\), let \(G_{\rm dom}=\{x_j^2-x_j\}\). Suppose \(G_{\rm dom}\cup\{g_i\}\) is inconsistent, \(\max_i\deg g_i\le\delta\), and its minimum ordinary NS refutation degree is \(\Delta\). Assign an accuracy-\(h\) block's coefficients polynomials \(\beta_{u,i}(x)\) of degree at most \(T\ge0\), and put 
+     \[
+      P_\beta=\prod_{u=1}^{h}\left(1-\sum_i\beta_{u,i}g_i\right).
+    \] 
+     If every companion image \(g_iP_\beta\) is a PC consequence of \(G_{\rm dom}\), at any degree, then 
+     \[
+      \boxed{\Delta\le h(T+\delta).}
+      \tag{NS-normalizer}
+    \] 
+     The statement already allows arbitrary PC proofs of the companion images; bounding their proof degrees more generously does not avoid the conclusion. 
+      Proof.  On every Boolean assignment, some \(g_i\) is nonzero, since the tuple is inconsistent. Soundness of the assumed domain proofs gives \(g_iP_\beta=0\) for every \(i\), so \(P_\beta=0\) at every Boolean point. Degree-nonincreasing Boolean-domain division supplies an NS certificate for \(P_\beta\) through 
+     \[
+      \deg P_\beta\le h(T+\delta).
+    \] 
+     Product telescoping also gives the ordinary identity 
+     \[
+      1-P_\beta=\sum_i
+       \left(\sum_{u=1}^{h}\beta_{u,i}
+         \prod_{v&lt;u}\left(1-\sum_j\beta_{v,j}g_j\right)\right)g_i.
+    \] 
+     Each displayed input-axiom summand has degree at most \(h(T+\delta)\). Add the domain certificate for \(P_\beta\) to obtain an NS refutation of the same degree, proving (NS-normalizer). 
+     The old base here consists only of domain equations. Applying this argument directly to an inconsistent PHP base would be invalid: its absence of Boolean models does not imply that \(P_\beta\) vanishes on the full Boolean cube. The theorem also requires images of all companions; it does not rule out transformations that exploit limited actual proof support, retained extension cores, or a different proof-replay method. 
+
+
+### 84 cor:pebbling-normalizer-obstruction
+requests-pebbling-obstruction  3. Constant input-PC degree can coexist with expensive normalizers 
+     Use the audited pebbling encoding 
+     \[
+      g_v=(1-x_v)\prod_{u\in\operatorname{pred}(v)}x_u,
+      \qquad g_{\rm sink}=x_z,
+    \] 
+     on a single-sink DAG of indegree at most two, over the old Boolean-domain base. The input degrees are at most three. The historical  degree-three PC proof  derives \(1-x_v\) in topological order by reusing its predecessor conclusions, then adds \(x_z\). 
+     The previously audited  pebbling paper, Theorem 3.1 and Lemma 4.9 , gives the \(\Gamma(1,r)\) family with \(N=\Theta(r^3)\) vertices and NS degree at least \(r+2\), over every field. The correspondence also holds for multilinear NS, so the Boolean-domain convention does not weaken this lower bound. The same encoding and imported family are recorded at  Imported Input 7.2 . 
+     By (NS-normalizer), every all-companion assignment into the old variables must satisfy 
+     \[
+      h(T+3)\ge r+2.
+      \tag{PEB-normalizer}
+    \] 
+     For \(h=\Theta(\log N)\), this requires \(T=\Omega(N^{1/3}/\log N)\). Thus a constant PC input-refutation degree, constant input degree, and logarithmic accuracy do not suffice to guarantee polylogarithmic-degree normalizers, even for one block with Boolean-valued inputs. 
+     This is a limitation of that normalization inference, not an obstruction to every elimination method or a lower bound for our PHP problem. The  positive-leaf method  remains valid because it starts with a bounded-degree NS certificate, a genuinely stronger supplied input in this respect. 
+
+
+### 85 ex:path-ns-pc-normalizer-tradeoff
+requests-path-control  4. A four-vertex control with exact degrees 
+     Let the old variables be Boolean \(x_0,x_1,x_2,x_3\), and take 
+     \[
+      (g_0,g_1,g_2,g_3,g_4)=
+      (1-x_0,\ x_0(1-x_1),\ x_1(1-x_2),\ x_2(1-x_3),\ x_3).
+    \] 
+      Exact claim, over every field.  The minimum PC refutation degree is two and the minimum NS refutation degree is three. 
+      PC.  Starting with \(1-x_0\), derive 
+     \[
+      1-x_i=(1-x_i)(1-x_{i-1})+g_i,\qquad i=1,2,3,
+    \] 
+     reusing each preceding final line. This stays in degree two; adding \(g_4\) gives one. Degree one cannot introduce a transition or Boolean equation. Its available linear axioms \(1-x_0,x_3\) have a common model, so degree one cannot refute. 
+      NS upper bound and affine normalizer.  The ordinary identity 
+     \[
+      1=(1-x_2)g_0+(1-x_2)g_1+x_0g_2+g_3+x_2g_4
+      \tag{PATH-NS}
+    \] 
+     has degree three. Its cofactors are all affine, giving an accuracy-one assignment with \(T=1\) and product identically zero. The general lower bound (NS-normalizer) then proves this coefficient degree is minimal at accuracy one. 
+      NS lower bound.  Reduce by the Boolean equations. Give a linear functional value one on exactly 
+     \[
+      1,\ x_0,\ x_1,\ x_0x_1,\ x_1x_2
+    \] 
+     and zero on all other squarefree monomials of degree at most two. It takes one on the target and zero on the 13 eligible nondomain rows: \(g_0,g_4\) multiplied by one or any variable, and \(g_1,g_2,g_3\) with constant multipliers. Boolean-generator multiples vanish under reduction. This proves degree-two nonmembership over every field. Notice that the functional is not multiplicative: it gives zero to \(x_2\) but one to \(x_1x_2\). 
+
+requests-constant-accuracy  5. Constants need exactly three factors in the same control 
+      Exact claim.  If all coefficient assignments are constants, the four-vertex input tuple needs accuracy at least three for all companion images to become domain consequences, over every field. Three factors suffice, whereas one factor with affine coefficients already suffices by (PATH-NS). 
+      Lower bound.  The tuple's Boolean value image contains every nonzero Boolean vector on coordinates \(0,2,4\), with coordinates \(1,3\) zero. In increasing order of the nonzero masks \(1,4,5,16,17,20,21\), witnesses are old-variable assignment masks \(0,3,2,15,8,11,10\), where bit \(i\) records \(x_i\). 
+     Restrict a proposed constant-coefficient product to those three abstract input coordinates. It is a degree-at-most-\(h\) polynomial, equals one at their zero vector, and must vanish at all seven nonzero Boolean points. Its unique multilinear representative is \((1-z_0)(1-z_2)(1-z_4)\), of degree three over every field. Boolean reduction cannot increase degree, so \(h\ge3\). 
+      Upper bound.  Choose constant test vectors for \(g_0+g_1\), \(g_2+g_3\), and \(g_4\). Their product has the exact domain certificate 
+     \[
+      \begin{aligned}
+      &(1-g_0-g_1)(1-g_2-g_3)(1-g_4)\\
+      &\quad=-x_0(1-x_2)(1-x_3)(x_1^2-x_1)
+             -x_0x_1x_2(x_3^2-x_3).
+      \end{aligned}
+    \] 
+     It vanishes on the Boolean domain, so all companion images do as well. The displayed certificate has degree five. This exact tradeoff is about this small input tuple; it is not a claim that (NS-normalizer) is always sharp in accuracy. 
+
+
+### 86 obs:proper-or-subgroups-share-level
+levels-flat-depth  1. The source convention and the affected claims 
+      BIKPRS Section 1, depth clause 4, and Definition 6.8(5)  treat an arbitrarily bracketed OR cluster by its maximal non-OR children. A compatible structural ENS level function is 
+     \[
+      \mu(\mathrm{TRUE})=\mu(x)=0,\quad
+      \mu(\neg\psi)=\mu(\psi),\quad
+      \mu(\mathrm{MOD}(\psi_1,\ldots,\psi_k))=\max_j\mu(\psi_j),
+    \]\[
+      \mu(\mathrm{OR\ cluster}(\xi_1,\ldots,\xi_m))
+         =1+\max_i\mu(\xi_i),
+    \] 
+     where the \(\xi_i\) do not begin with OR. An empty maximum is zero. These are structural bounds, not levels lowered after polynomial cancellation. They are bounded by source formula depth. Containment gives only \(\mu(\psi)\le\mu(\phi)\); a bypassed OR subgroup can have equality. 
+     For example, let \(B_k\) be a long binary-bracketed disjunction of negated atoms. Both \(B_k\) and \(\mathrm{TRUE}\vee B_k\) have source depth two and ENS level one. The root is a tautology, but its proper \(B_k\) block and the intermediate OR groups are at the same level. Adding a new level for each binary bracket would destroy the fixed-depth guarantee. 
+      Correction.  The support explanations in  the negative-leaf proper-copy corollary  and  the subsequent all-axiom-boundary corollary  used “proper descendant, hence strictly earlier.” That inference is false under this convention. Their automatic applications needed another argument. The conditional  learned-input  and  triangular PC  theorems already state the correct strict-support hypotheses and remain valid. The signed private-boundary theorem uses freshness rather than this strict-level inference, so this issue does not retract that construction. 
+     The repair below supplies suitable certificates directly. It does not assert that an arbitrary previously supplied leaf certificate acquires strict support merely by zeroing its boundary coefficients. 
+
+
+### 87 lem:strict-level-axiom-input-certificates
+levels-strict-leaf-support  2. A strict-support leaf lemma 
+     Use internally coherent shared-proper evaluations of the source formulas. Keep the fixed Frege basis and the source MOD axiom schemas, with their prescribed unsimplified negation/OR expansions. Let \(L\ge1\) bound the relevant approximations, and \(h\ge1\). There is a presentation-dependent constant \(c_F\) such that 
+     \[
+      A_*=(h+1)^{c_F}L
+      \tag{STRICT-leaf}
+    \] 
+     bounds the following ordinary NS certificates, all using only blocks of level strictly below the recognized axiom boundary: 
+     
+       For a positive signed OR boundary, a refutation of its input tuple together with those earlier axioms. 
+       For a negative signed OR boundary, a derivation of each individual input from those earlier axioms. 
+     
+     The constant can be enlarged to cover the original source leaf bound as well. The proof uses the finite Boolean axiom frames and the fixed MOD frames. Their schematic depth and relevant algebraic degrees are bounded independently of the MOD arity, as in the source Lemmas 6.11–6.12. No bound on the sizes of the substituted argument formulas is assumed. 
+
+levels-positive-support  3. Positive roots: ignore pure root-disjunct arguments 
+     Strip the even number of leading negations from the axiom scheme and view its remaining outer OR cluster at the schematic level. Its maximal schematic children are either whole argument variables or nonvariable formulas beginning with TRUE, negation, or MOD. This is a description of the scheme before substituting the argument formulas. 
+     Call an argument variable  pure at the root  if every occurrence is a whole child of this schematic OR cluster, with no occurrence strictly inside one of its nonvariable children. In the exact schematic tautology, assign such a variable the value one, meaning FALSE. Ignore the corresponding actual flattened input coordinates. The scheme remains a tautology under this assignment. 
+     For every other argument variable \(j\), use \(a_j=\psi_j^{\mathrm{ap}}\). It has an occurrence inside a non-OR schematic child \(\eta\). The instance \(\eta(\psi)\) still does not begin with OR, because substitution does not erase its leading connective. Its approximation is a maximal non-OR child at the recognized root. Monotonicity of \(\mu\) therefore gives 
+     \[
+      \mu(\psi_j)\le\mu(\eta(\psi))
+        &lt;\mu(\text{recognized root}).
+    \] 
+     All blocks needed for \(a_j\), including bypassed OR groups inside \(\psi_j\), are thus earlier. This is the missing strictness argument; it relies on a non-OR context, not arbitrary containment. Shared proper evaluations let an occurrence in that context certify the level of the same argument used as a bare root disjunct elsewhere. 
+     Let \(q_t\) be the exact star-translation of schematic child \(t\), evaluated at these \(a_j\)'s and the assigned ones. Then the exact schematic root polynomial is \(Q=\prod_t q_t\). Because the axiom scheme is a tautology, Boolean-domain division in its schematic variables proves \(Q=0\). Substitute the \(a_j\)'s and their earlier sharp Booleanity certificates. This gives an earlier NS proof of \(Q\) through a presentation-dependent constant times \(L\). 
+     Next prove each \(1-q_t\) from the actual root inputs and earlier axioms: 
+     
+       A pure root variable has \(q_t=1\), so its difference is zero. 
+       A remaining whole variable has \(q_t=a_j\). If \(\psi_j\) begins with OR, use its ordinary prefix identity \(1-a_j=\sum_iV_i g_i\), matching its flattened input coordinates at the root. Its prefixes use earlier variables by the preceding strictness argument. If \(\psi_j\) does not begin with OR, \(1-a_j\) is itself a root input. 
+       For a nonvariable child \(\eta\), the actual root input is \(1-\eta(\psi)^{\mathrm{ap}}\). Source Lemma 6.11 proves \(q_t-\eta(\psi)^{\mathrm{ap}}\) using only the blocks of \(\eta(\psi)\), all earlier than the root. Pure root variables do not occur inside \(\eta\), so every substitution used by that lemma is the actual coherent argument approximation. 
+     
+     TRUE is included in the last case and has root input one. Repeated input coordinates may have their cofactors collected; this does not raise degree. Finally use 
+     \[
+      1-Q=\sum_t\left(\prod_{s&lt;t}q_s\right)(1-q_t)
+    \] 
+     and add the earlier proof of \(Q\). This gives the required input-system NS refutation. The schematic product multipliers have degree \(O_F(L)\); the source approximation comparisons cost \((h+1)^{O_F(1)}L\). The number of formal argument variables inside a MOD gate introduces no degree factor. Enlarging \(c_F\) yields (STRICT-leaf). 
+
+levels-negative-support  4. Negative roots: prove the input conclusions separately 
+     After stripping the odd leading negations, the schematic OR cluster is false on every Boolean assignment to its independent argument variables. Thus each of its maximal schematic children is individually false. No such child can be a bare argument variable or TRUE: assigning that variable TRUE, or using TRUE itself, would make the disjunction true. 
+     Every maximal schematic child \(\eta\) is therefore a nonvariable formula beginning with negation or MOD. After substitution it remains a maximal non-OR child, and its root input is \(g=1-\eta(\psi)^{\mathrm{ap}}\). All relevant argument and comparison blocks lie inside \(\eta(\psi)\), hence strictly below the recognized outer root. 
+     The schematic polynomial \(1-\eta^*\) vanishes on the Boolean cube. Boolean-domain division and substitution of the earlier argument approximations give an NS proof of \(1-\eta^*(a)\). Lemma 6.11 supplies the earlier proof of \(\eta^*(a)-\eta(\psi)^{\mathrm{ap}}\). Adding them derives \(g\) through (STRICT-leaf). This proof does not use the outer boundary or the same-level OR subgroups that merely bracket its children. 
+     The assertion that the children are individually false concerns the actual source schemes in their original independent propositional placeholders. MOD expressions sharing those placeholders are not replaced by unrelated independent macro variables. 
+

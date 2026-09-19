@@ -18,6 +18,8 @@ From the repository root:
 ./tools/claim-index.py list --fields id,summary --format tsv
 ./tools/claim-index.py list --topic bit-php --fields id,summary --format tsv
 ./tools/claim-index.py coverage --field formalization --state unreviewed -n 10
+./tools/claim-index.py views view --topic bit-php --format markdown --out /tmp/bit-php.md
+./tools/claim-index.py views duplicates --threshold 0.6 --out /tmp/duplicate-candidates.json
 ```
 
 Search ranks content words, prints bounded summaries with status and a source
@@ -26,6 +28,16 @@ Read the linked notebook passage with `tools/notebook-excerpt.py ANCHOR`.
 `--has-lean` means a Lean link exists, not that the whole claim is verified.
 `--kind`, `--topic`, and `--formalization` filter reviewed metadata when available;
 `unknown` is distinct from `not_started` and from verified coverage.
+
+The generated [topic map](views/topics.md) links to topic-specific, unclassified,
+all-claim and active/historical views. Historical means explicitly retracted or
+superseded by a reviewed edge; active means only its complement, not validity or
+current-route membership. Correction warnings retain their scopes. Every old ID
+remains available in the all-claim view and exact lookup. These are derived files,
+not additional editable sources. `views bundle --out DIR` writes a portable copy.
+Duplicate discovery reports deterministic summary-token Jaccard candidates only;
+check hypotheses, encodings, quantifiers and costs before recording relationships.
+It never merges records or declares mathematical equivalence.
 
 `list` emits every matching claim in registry order, without an implicit limit.
 TSV output has no headers, scores, metadata, footer or truncated values. `--fields`
@@ -83,6 +95,13 @@ snapshot cannot be checked automatically for changes; a recorded literature
 assessment is not a new literature search. Curation uses existing proof reports,
 not an implied new kernel replay.
 
+New notebook evidence hashes use `notebook-article-v1` or
+`notebook-fragment-v1` normalization when the excerpt includes finalizer-managed
+timing/producer decorations. Only those explicitly machine-marked decorations
+are excluded; mathematical prose changes still invalidate the review. Existing
+raw legacy hashes are not rewritten automatically. Coverage compares each hash
+using its recorded convention, including final heading fragments.
+
 `formalization.status = "no_record"` has a narrow meaning: no explicit per-claim
 mapping in the audited index links and per-claim Lean directories. It does not
 assert that the mathematics has never been formalized or that an existing theorem
@@ -90,6 +109,24 @@ cannot imply it. These reviews also hash the audited Lean inventory; new or chan
 artifacts make the negative mapping results stale until the census is refreshed.
 
 ## Dependency discovery and review
+
+To inventory citations across the entire Research record, including unindexed
+articles and passages, use:
+
+```bash
+python3 tools/claim-dependencies.py record-scan --out /tmp/record-citations.json
+python3 tools/claim-dependencies.py record-show --input /tmp/record-citations.json \
+  --ownership unowned -n 10
+```
+
+`record-show` also filters by `--article`, `--claim`, or `--kind`; `--out PATH`
+saves all matching occurrences despite the bounded display. Reports retain
+hyperlinks, visible explicit-label occurrences, candidate owners, headings and
+unresolved targets, and report notebook/registry changes since scanning. They do
+not infer proof dependencies. Implicit prose citations and labels split across
+HTML text nodes still need review; comments, attributes and living sections are
+deliberately excluded. This complements indexed-claim scans rather than treating
+an empty index mapping as proof that an article contains no relevant reference.
 
 Use evidence extraction before opening long entries. For research orientation and status, topic or
 significance curation, start with `tools/claim-dependencies.py packet --claim ID`:
@@ -141,6 +178,22 @@ recording `depends_on`; ordinary citations stay distinguishable from proof use.
 
 ## Edit and regenerate
 
+For a new claim or a complete existing-record revision, the optional authoring
+tool collects the maintenance contract explicitly:
+
+```bash
+python3 tools/claim-index.py author template lem:example --out /tmp/request.json
+# Fill every REQUIRED answer, including five reasoned source-backed dispositions.
+python3 tools/claim-index.py author prepare --request /tmp/request.json \
+  --out /tmp/index-proposed.json --report /tmp/proposal-check.json
+```
+
+It hashes actual evidence, validates the proposal and writes no canonical change.
+Missing answers, unsupported reviewed-empty values, pending questions without
+next actions, broken targets and intervening registry changes are rejected.
+Include affected existing claims when adding edges/corrections. Import a reviewed
+proposal only against its unchanged base; ordinary checkpoint gates still apply.
+
 1. Add or update a claim in `index.json`. Preserve its ID and record precise scope
    in the assessment; link corrections to their new dated notebook entries.
 2. Set reviewed classifications only when justified. Keep an old partial-scope
@@ -148,10 +201,18 @@ recording `depends_on`; ordinary citations stay distinguishable from proof use.
 3. Run `./compute.sh --threads 1 --category local_processing python3 tools/claim-index.py render`.
 4. Run `./compute.sh --threads 1 --category local_processing python3 tools/claim-index.py validate`.
    Use `--out PATH` to preserve the report, and the active research session when applicable.
-5. Commit the source and generated Markdown together with the research checkpoint.
+5. Commit the source and generated Markdown/topic views together with the research checkpoint.
 
 Rendering preserves row order and text, removes internal blank lines that break
-Markdown tables, and escapes bare math pipes for GFM. `finish-turn.py` rejects a
+Markdown tables, and escapes bare math pipes for GFM. The primary view adds marked,
+generated notices for corrections and conditional/retracted/refutation records;
+partial corrections do not imply whole-claim retraction, and counterexample
+records are not themselves labelled false. Import/reconciliation strips this
+derived block without changing original text. Rendering does not refresh source
+review hashes or independently certify metadata. Default `render` also refreshes
+`views/`; default validation and checkout checks detect stale topic files.
+For an alternate registry/output, use explicit `--views-out DIR` on render and
+`--views-dir DIR` on validation. `finish-turn.py` rejects a
 stale generated index before stopping the clock. Checkout verification and the
 claim-index CI check additionally validate local targets. External URLs remain
 intact; validation does not fetch them or certify their mathematical content.

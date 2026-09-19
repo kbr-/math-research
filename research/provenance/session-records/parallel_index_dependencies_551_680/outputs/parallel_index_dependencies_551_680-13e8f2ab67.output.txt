@@ -1,0 +1,292 @@
+
+### 634 third-party:finite-augmented-chain-api
+lean-finite-augmented-chain-api  Statement and conventions 
+   For a finite vertex type \(V\), let \(K\) be a downward-closed family of finite subsets containing the empty set. Over \(\mathbb F_2\), write \(C(K,k)\) for coefficient functions on all subsets of \(V\) supported on \(k\)-element faces of \(K\). The cell count \(k\) corresponds to reduced simplicial degree \(k-1\). The ambient boundary is \((\partial c)(T)=\sum_{v\notin T}c(T\cup\{v\})\). It is linear, maps \(C(K,k+1)\) into \(C(K,k)\), and vanishes on \(C(K,0)\). In particular, on a vertex chain its empty-face coordinate is the sum of the vertex coefficients, including when \(V\) is empty. 
+    Proof.  Each boundary coordinate is a finite sum of coordinate projections, hence preserves addition and scalar multiplication. If \(T\) is not a face, every superset \(T\cup \{v\}\) is not a face by downward closure. If \(|T|\ne k\) and \(v\) is outside \(T\), then \(|T\cup \{v\}|=|T|+1\ne k+1\). In either case every summand vanishes for a supported input. For a chain supported at cell count zero, every insertion outside \(T\) has positive cardinality and therefore contributes zero. These arguments establish all stated endpoint cases without treating the empty face as a vertex. 
+   Restriction to the \(k\)-element faces and extension by zero are inverse linear maps: on a face they leave the coefficient unchanged; off that set the support condition forces zero. Thus \(C(K,k)\) agrees exactly with the usual finite coefficient space on \(k\)-faces. Taking \(K\) to be sets of cells with injective row and column projections gives the chessboard complex: injectivity is inherited by subsets, and both projections are vacuously injective on the empty set. Reordering the three face conditions identifies its exact-face coefficient functions with the existing ChessboardChain interface. 
+    Verified scope.   AugmentedChains.lean  implements these definitions, linear maps, support proofs, and linear equivalences. This is standard finite simplicial-chain algebra extracted for the BLVZ route, with a full elementary proof here. Boundary squared zero is the next H02 obligation. Compatibility of this insertion formula with the original chessboard incidence-sum boundary is explicitly reserved for H03; a vector-space equivalence alone does not establish it. \(H\) remains a statement-only proposition. 
+    Evidence and process.  The  complete verification report  records theorem types and allowed foundational axioms; the  scope map  records the H01–H03 assignment. The main Frege route and mathematical gap list were reviewed and are unchanged. Ambient supported functions avoid dependent degree casts while retaining an explicit bridge obligation; the existing guidance sufficed, so no framework rule was added. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   5 min 27.62 s   
+  Mathematical reasoning and proof writing  27.46 s  
+  Formal proof design and coding  3 min 59.72 s  
+  Preparation and checkpoint work  10.48 s  
+  Individually measured formal verification  49.96 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1. 
+ 
+
+
+### 635 third-party:augmented-boundary-squared-zero
+lean-augmented-boundary-squared-zero  Statement and full proof 
+   For every finite vertex type \(V\) and every coefficient function \(c\) on finite subsets of \(V\) over \(\mathbb F_2\), the insertion boundary from  H01  satisfies \(\partial (\partial c)=0\). Consequently its restricted maps \(C(K,k+2)\longrightarrow C(K,k+1)\longrightarrow C(K,k)\) compose to zero for every downward-closed complex \(K\) and every \(k\ge 0\). 
+    Proof.  Fix a subset \(T\). Expanding the two boundary sums gives one term \(c(T\cup \{v,w\})\) for each ordered pair of distinct vertices \(v,w\) outside \(T\), and zero for every other pair. Swap \(v\) and \(w\). This is an involution with no fixed point among the nonzero summands; the underlying union and hence its coefficient are unchanged. Each pair of equal coefficients sums to zero in \(\mathbb F_2\). The entire finite sum is therefore zero. Restricting this identity to supported chains proves the graded assertion. When \(k=0\) this includes edges followed by vertex augmentation; the outgoing boundary on chains supported on the empty face is already zero by H01. Empty vertex types and empty sums require no exception. 
+    Verification and route.   AugmentedBoundarySquared.lean  uses a finite-sum involution to verify exactly this proof. The  full audit  records both the ambient and graded theorem types and their axioms. The next assigned obligation is H03 naturality and the original chessboard-boundary bridge. The main Frege goal, working context, and discrepancy list remain unchanged. 
+    Process assessment.  The ungraded ambient identity made the reduced endpoint automatic; one library-name correction was needed, and no mathematical discrepancy or new framework guidance resulted. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   2 min 9.99 s   
+  Mathematical reasoning and proof writing  19.73 s  
+  Formal proof design and coding  1 min 17.65 s  
+  Preparation and checkpoint work  0.13 s  
+  Individually measured formal verification  32.48 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1. 
+ 
+
+
+### 636 third-party:augmented-chain-naturality
+lean-augmented-chain-naturality  Statements and complete human-readable proofs 
+   Use the supported augmented coefficient spaces from  H01 . Let \(e:V\longrightarrow W\) be an injective map of finite vertex types. For an ambient coefficient function \(c\), define \(e_*c(T)=c(e^{-1}T)\) when every vertex of \(T\) belongs to the image of \(e\), and zero otherwise. This map is linear, injective, and commutes with the augmented boundary. If \(e\) sends every face of \(K\) to a face of \(L\), it restricts to a linear chain map \(C(K,k)\longrightarrow C(L,k)\) in every cell count \(k\). For an inclusion of face families on the same vertex type, the chain map is simply the unchanged coefficient function. A bijective relabeling has the inverse induced by the inverse vertex map. 
+    Proof of naturality.  If \(T\) contains a vertex outside the image of \(e\), then every \(T\cup \{w\}\) does too, so both \(\partial (e_*c)(T)\) and \(e_*(\partial c)(T)\) are zero. Otherwise restrict the boundary sum to \(w\) in the image of \(e\): all other terms are zero by definition. Write \(w=e(v)\), uniquely. The condition \(w\notin T\) becomes \(v\notin e^{-1}T\), and the preimage of \(T\cup \{e(v)\}\) is \(e^{-1}T\cup \{v\}\). Thus the remaining sum is exactly \((\partial c)(e^{-1}T)\). This proves naturality including augmentation. Linearity follows coordinatewise from the definition. Also \(e_*c(e(S))=c(S)\), proving injectivity. If a potentially nonzero target coefficient is at \(T\), then \(T=e(e^{-1}T)\); its preimage must be a face of \(K\) of cell count \(k\), so the target is a face of \(L\) of the same count. This proves preservation of support. The inclusion identity and its commutation with the boundary are immediate. For a bijection, the induced map evaluates at the inverse image of \(T\); applying the inverse bijection restores every coefficient, proving the two-sided inverse. 
+    Chessboard transpose.  The cell swap \((i,j)\mapsto (j,i)\) exchanges the two injective-projection conditions defining a matching. Thus it sends every face of the \(s\times N\) chessboard complex to a face of the \(N\times s\) complex. Apply the preceding chain-map construction; applying the swap twice is the identity. Consequently the resulting transpose map preserves cell count, commutes with the boundary, and is invertible. Generic injective maps and face-preservation witnesses likewise permit deleted rows or column complements to be embedded and relabeled without changing incidence. 
+    Exact bridge to the existing interface.  If \(T\) is a \(k\)-face, the insertion-boundary formula on an extension-by-zero chain equals the sum of coefficients on all \((k+1)\)-faces \(S\) containing \(T\). Indeed a nonzero insertion term has \(S=T\cup \{v\}\), with \(v\) outside \(T\) and \(S\) a face; conversely \(|S|=|T|+1\) and \(T\subseteq S\) give a unique such vertex \(v\). Reindexing this bijection proves equality of the two finite sums. Applying the checked chessboard face equivalence therefore identifies the supported differential with the original  chessboardBoundary . At cell count zero the original outgoing boundary and the supported outgoing boundary are both zero. Hence for every \(k\), the boundary of the supported chain corresponding to \(c\) is exactly the supported chain corresponding to its original boundary. In particular, the original boundary vanishes if and only if the ambient supported boundary vanishes. This last implication uses injectivity of the chain-space equivalence, not merely equality of dimensions. 
+    Checked interfaces.   AugmentedChainMaps.lean  contains  chainMap ,  differential_chainMap ,  inclusion ,  differential_inclusion ,  transposeChain , its inverse and boundary theorem, and the all-degree  chessboard_boundary  and  chessboard_cycle_iff . The  full verification report  records all claimed declaration types and axioms. No axiom, placeholder proof, or filling assumption was introduced. 
+    Scope, provenance, and next step.  These are elementary chain identities and project-formulated interfaces for the planned BLVZ proof, not a claim of new topology or new authorship of standard results. Per the user's coordination instruction, directory-placement review is deferred until parallel workers finish. H01–H03 now supply the shared foundations for the homology and chessboard branches; H04–H13 are outside this worker's assignment. The main Frege goal, working context, and formalization gap list were reviewed and remain unchanged. 
+    Process assessment.  Keeping the original incidence bridge explicit caught a real interface obligation before downstream work began; remaining retries concerned Lean coercions and unused-variable warnings rather than mathematical discrepancies. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   8 min 26.83 s   
+  Mathematical reasoning and proof writing  1 min 24.28 s  
+  Formal proof design and coding  6 min 11.27 s  
+  Preparation and checkpoint work  3.45 s  
+  Individually measured formal verification  47.83 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 4. 
+ 
+
+
+### 637 third-party:chessboard-parameter-arithmetic
+chessboard-parameter-arithmetic  Claim: chessboard parameter arithmetic 
+   For natural numbers \(a,b\), let \(\nu(a,b)=\min\{a,b,\lfloor(a+b+1)/3\rfloor\}\). This parameter is symmetric, satisfies \(\nu\le a,b\) and \(3\nu\le a+b+1\), and is positive when both sides are positive. A zero side gives \(\nu=0\); a one-row board with positive column count has \(\nu=1\). For \(2\le a\le b\), 
+   \[
+    \nu(a,b)\le b-1.
+  \] 
+   If also \(2\le t&lt;b\), put \(\mu=\nu(a-1,b-t)\). Then 
+   \[
+    \nu(a,b)+1\le\mu+t,
+    \qquad (\nu(a,b)-2)-t+1\le\mu-2,
+  \] 
+   where the second formula is an integer inequality. For \(1\le a\le b\) and every natural \(t\), both \(\min(a-1,b-t)\) and \(\min(b-t,a-1)\) are strictly below \(\min(a,b)\), with natural truncated subtraction for board sizes. Finally \(2s-1\le N\) implies \(\nu(s,N)=s\); the Lean version uses natural subtraction and also holds for \(s=0\). 
+    Full arithmetic proof.  Symmetry follows by exchanging the first two minimum entries and commuting addition. The three bounds are immediate from the minimum and the defining floor inequality. If \(a,b\ge1\), then all three entries are at least one; if one side is zero their minimum is zero. When \(a=1\) and \(b\ge1\), the minimum is therefore exactly one. 
+   For the ordered bound, if \(a&lt;b\) then \(\nu\le a\le b-1\). If \(a=b\ge2\), then \(2b+1&lt;3b\), so \(\lfloor(2b+1)/3\rfloor\le b-1\). For the intersection inequality let \(r=\nu-t+1\), regarded as an integer. If \(r\le0\), the nonnegativity of \(\mu\) suffices. Otherwise, \(\nu\le a\) and \(t\ge2\) give \(a-1\ge r\), while \(\nu\le b-1\) gives \(b-t\ge r\). The numerator of the third minimum entry is exactly \(a+b-t\), because \(a\ge2\) and \(t&lt;b\). Moreover 
+   \[
+    a+b-t\ge3\nu-t-1\ge3\nu-3t+3=3r,
+  \] 
+   the second inequality being equivalent to \(2t\ge4\). Hence its floor after division by three is at least \(r\), and so is their minimum \(\mu\). Rearranging gives the additive natural inequality and the stated integer-degree inequality. Either orientation of the intersection has smaller side at most \(a-1&lt;a=\min(a,b)\), proving the induction decrease. For the stable range, \(s=0\) is immediate. For \(s\ge1\), the assumption gives \(N\ge s\) and \(s+N+1\ge3s\); thus all entries of the minimum defining \(\nu(s,N)\) are at least \(s\), and its first entry equals \(s\). This proves every parameter assertion. 
+    Reduced-degree boundaries.  If \(k\) counts cells, its reduced simplicial degree is the integer \(k-1\). For natural \(k,n\), the interval condition \(-1\le k-1\le n-2\) is equivalent to \(k&lt;n\), simply by adding one and using integrality. For an integer \(q&lt;-1\), no natural \(k\) satisfies \(k-1\le q\), since \(k-1\ge-1\). In particular \(n=0\) requests no degree, and \(n=1\) requests only \(k=0\), the augmentation coordinate. These are arithmetic facts, not assertions that an empty-face-only complex is acyclic. The restriction \(t&lt;b\) in the intersection theorem is the nonempty-board case; \(t=b\) is deliberately excluded from the inductive homology application. 
+    Formal scope and checks.  The new indexed claim  third-party:chessboard-parameter-arithmetic  is implemented in  ChessboardParameterArithmetic.lean , importing only Lean's checked  omega  tactic. Its thirteen theorem declarations cover the complete statement above. The  full verification report  preserves their explicit types and axiom reports alongside the existing claim audit; the  pre-proof scope map  and  reproduction record  describe dependencies and setup. No assumption of \(H\) or custom axiom is used. 
+    Outcome and process assessment.  H11 is complete; the homological assembly H12 and filling specialization H13 remain separate obligations, and the main Frege route is unchanged. Reviewing the signed expression before coding avoided silently replacing \(\nu-t+1\) by truncated natural subtraction followed by one. The existing statement-first and boundary-case guidance handled this issue, so no additional framework rule is needed. The living overview and mathematical-gap list were reviewed; no new mathematical discrepancy was found. 
+   Initial rule/source reading preceded instrumentation; dependency-cache preparation is measured separately from proof design and verification. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   6 min 27.99 s   
+  Mathematical reasoning and proof writing  2 min 48.31 s  
+  Formal proof design and coding  37.91 s  
+  Preparation and checkpoint work  1 min 21.00 s  
+  Dedicated web and download-attempt windows  1 min 7.88 s  
+  Individually measured formal verification  32.88 s  
+  
+ Through final snapshot; overlapping time counted once. 
+ 
+
+
+### 638 lem:augmented-cone-contraction
+lean-augmented-cone-contraction  Statement and full proof 
+   Let \(K\) be a downward-closed family of finite subsets of a finite vertex set \(V\), containing the empty face. Assume \(v\) is a cone vertex: \(S\cup \{v\}\) belongs to \(K\) for every \(S\) in \(K\). Use the augmented supported chain spaces and insertion boundary from  H01 . Then every supported \(k\)-cell cycle \(c\), for every \(k\ge 0\), has a supported \((k+1)\)-cell filler. This includes the empty-face augmentation \(k=0\). A complex containing only the empty face has no cone vertex and is not covered by the hypothesis. 
+    Construction.  On every ambient coefficient function define \(h(c)(S)=c(S\setminus \{v\})\) if \(v\in S\), and zero otherwise. We prove the full identity \(\partial h(c)+h(\partial c)=c\), without a cycle or support assumption. If \(v\notin S\), the only potentially nonzero insertion term of \(\partial h(c)(S)\) inserts \(v\), and gives \(c(S)\); \(h(\partial c)(S)=0\). If \(v\in S\), the insertion terms of \(\partial c(S\setminus \{v\})\) split into the \(v\) term \(c(S)\), and terms inserting a vertex \(w\) outside \(S\). Each latter term is exactly \(h(c)(S\cup \{w\})\), so \(\partial c(S\setminus \{v\})=c(S)+\partial h(c)(S)\). These repeated terms cancel over \(\mathbb F_2\), proving the identity at \(S\). 
+   If \(c\) is supported on \(k\)-cell faces, a nonzero coefficient of \(h(c)\) at \(S\) implies \(v\in S\) and \(S\setminus \{v\}\) is a \(k\)-cell face. Thus \(S=(S\setminus \{v\})\cup \{v\}\) is a face by the cone hypothesis and has \(k+1\) cells. Hence \(h\) preserves the required shifted support. For \(\partial c=0\) the contraction identity gives \(\partial h(c)=c\). This proves exactness in every cell count, and in particular for a full simplex with a chosen vertex. No homotopy or homology-group machinery is assumed. 
+    Interfaces and scope.   ExactAt K k  means precisely the supported cycle-filling assertion above;  AcyclicThrough K n  requires it for all \(k\lt n\), corresponding to reduced degrees \(-1\) through \(n-2\). The \(n=0\) case is vacuous, while \(n=1\) requires augmentation exactness.  IsCone ,  cone_identity ,  cone_supported , and  cone_exact  live in  AugmentedCone.lean . These project interfaces adapt standard elementary cone contraction; their location implies no claim of novel topology. H05–H07 and the chessboard filling theorem remain separate obligations. 
+    Checks and process assessment.  The  verification report  preserves declaration types and axiom checks. A private cache copy was mistakenly overlapped with an initial build, causing file-creation errors and avoidable rebuilds; later checks ran after restoration completed. The mathematical proof was unchanged by this setup failure. This cycle's useful interface improvement is explicit cell-count exactness, avoiding truncated negative-dimension conventions; no additional framework rule is needed. The main Frege overview, working context, and gap list were reviewed and require no mathematical change. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   6 min 47.89 s   
+  Marked reading and review windows  44.68 s  
+  Mathematical reasoning and proof writing  48.28 s  
+  Formal proof design and coding  31.41 s  
+  Preparation and checkpoint work  34.79 s  
+  Individually measured conversion, checks, and local processing  1 min 25.79 s  
+  Individually measured formal verification  1 min 36.23 s  
+  Overlapping tool categories, counted once  1 min 6.70 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2. 
+ 
+
+
+### 639 third-party:chessboard-star-cover
+lean-chessboard-star-cover  Statement and proof 
+ For a downward-closed finite complex \(K\) containing the empty face and a vertex \(v\), the closed star consists of faces \(S\) for which \(S\cup \{v\}\) is a face of \(K\). It is a subcomplex: \(S\subseteq S\cup \{v\}\), and adjoining \(v\) preserves inclusions. It is a cone with apex \(v\), because adjoining \(v\) twice gives the same face. These facts include the empty face. 
+ On an \((a+1)\)-by-\(b\) chessboard with \(a+1\le b\), let \(L_j\) be the closed star of \((0,j)\). Every nonattacking matching \(M\) is in a star. If \(M\) contains \((0,j)\), then adjoining that cell changes nothing. Otherwise its row projection avoids 0. Injectivity of row projection gives \(|M|\le a\), while column injectivity gives exactly \(|M|\) occupied columns. Since \(a\lt b\), choose an unused column \(j\). Adjoining \((0,j)\) creates neither a repeated row nor a repeated column, so \(M\) belongs to \(L_j\). Thus the first-row stars cover the whole complex. This also proves the one-row case; the later nerve description requires at least two rows. 
+ The shared cover interface records intersections by requiring membership in every selected complex. Its nerve contains an index face precisely when it is empty or the corresponding intersection has a vertex. An intersection with only the empty face is therefore excluded as a nonempty nerve face. The empty index face is retained separately. Covering asserts that every face of \(K\) belongs to some member; subcomplex inclusion remains a separate hypothesis, preventing an implicit strengthening of the later cover lemma. 
+  Provenance and scope.  The star argument is the classical argument expanded in the whitepaper topology appendix, attributable to the chessboard-bound proof rather than claimed as new. The generic cover interface is a project formulation. The cone closure is checked directly; homological cone acyclicity is supplied separately by H04, and the nerve's vanishing by H05 at final assembly. H09–H10 remain this worker's next obligations. The main Frege goal, remaining route, working context and gap list were reviewed and are unchanged. 
+  Evidence.  Lean files  ChessboardStarCover.lean  and  FiniteComplexCover.lean ;  scope and verification evidence . Timing began after initial task orientation and reading the computation policy. 
+  Process assessment.  Agreeing on the empty-face and vertex-nonempty nerve conventions before parallel proof development makes the later interfaces composable; no new framework rule is needed. 
+ 
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   10 min 4.67 s   
+  Marked reading and review windows  26.91 s  
+  Mathematical reasoning and proof writing  42.55 s  
+  Formal proof design and coding  51.87 s  
+  Preparation and checkpoint work  28.35 s  
+  Dedicated web and download-attempt windows  3 min 29.61 s  
+  Individually measured formal verification  3 min 52.42 s  
+  Overlapping tool categories, counted once  12.96 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2. 
+ 
+
+
+### 640 def:finite-complex-cover
+lean-chessboard-star-cover  Statement and proof 
+ For a downward-closed finite complex \(K\) containing the empty face and a vertex \(v\), the closed star consists of faces \(S\) for which \(S\cup \{v\}\) is a face of \(K\). It is a subcomplex: \(S\subseteq S\cup \{v\}\), and adjoining \(v\) preserves inclusions. It is a cone with apex \(v\), because adjoining \(v\) twice gives the same face. These facts include the empty face. 
+ On an \((a+1)\)-by-\(b\) chessboard with \(a+1\le b\), let \(L_j\) be the closed star of \((0,j)\). Every nonattacking matching \(M\) is in a star. If \(M\) contains \((0,j)\), then adjoining that cell changes nothing. Otherwise its row projection avoids 0. Injectivity of row projection gives \(|M|\le a\), while column injectivity gives exactly \(|M|\) occupied columns. Since \(a\lt b\), choose an unused column \(j\). Adjoining \((0,j)\) creates neither a repeated row nor a repeated column, so \(M\) belongs to \(L_j\). Thus the first-row stars cover the whole complex. This also proves the one-row case; the later nerve description requires at least two rows. 
+ The shared cover interface records intersections by requiring membership in every selected complex. Its nerve contains an index face precisely when it is empty or the corresponding intersection has a vertex. An intersection with only the empty face is therefore excluded as a nonempty nerve face. The empty index face is retained separately. Covering asserts that every face of \(K\) belongs to some member; subcomplex inclusion remains a separate hypothesis, preventing an implicit strengthening of the later cover lemma. 
+  Provenance and scope.  The star argument is the classical argument expanded in the whitepaper topology appendix, attributable to the chessboard-bound proof rather than claimed as new. The generic cover interface is a project formulation. The cone closure is checked directly; homological cone acyclicity is supplied separately by H04, and the nerve's vanishing by H05 at final assembly. H09–H10 remain this worker's next obligations. The main Frege goal, remaining route, working context and gap list were reviewed and are unchanged. 
+  Evidence.  Lean files  ChessboardStarCover.lean  and  FiniteComplexCover.lean ;  scope and verification evidence . Timing began after initial task orientation and reading the computation policy. 
+  Process assessment.  Agreeing on the empty-face and vertex-nonempty nerve conventions before parallel proof development makes the later interfaces composable; no new framework rule is needed. 
+ 
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   10 min 4.67 s   
+  Marked reading and review windows  26.91 s  
+  Mathematical reasoning and proof writing  42.55 s  
+  Formal proof design and coding  51.87 s  
+  Preparation and checkpoint work  28.35 s  
+  Dedicated web and download-attempt windows  3 min 29.61 s  
+  Individually measured formal verification  3 min 52.42 s  
+  Overlapping tool categories, counted once  12.96 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2. 
+ 
+
+
+### 641 third-party:simplex-boundary-acyclicity
+lean-simplex-boundary-acyclicity  Statement and full proof 
+   Let \(T\) be a nonempty finite set of \(b\) vertices. The full simplex consists of all subsets of \(T\); its boundary consists of all proper subsets of \(T\). For every cell count \(k\) with \(k+1\lt b\), every supported \(k\)-cell cycle on this boundary admits a supported \((k+1)\)-cell filler on the same boundary. Equivalently, the boundary is  AcyclicThrough n  whenever \(n\lt b\). In reduced simplicial degrees this gives vanishing from \(-1\) through \(b-3\), and does not assert vanishing at the top degree \(b-2\). 
+    Proof.  Choose \(v\in T\). The full simplex is a cone at \(v\) because inserting \(v\) into any subset of \(T\) preserves containment in \(T\). Regard the given boundary cycle \(c\) as a cycle on this full simplex. The  explicit H04 cone contraction  supplies a full-simplex filler \(h(c)\) supported on \((k+1)\)-cell subsets of \(T\). As \(k+1\lt b\), every such subset is proper, so the filler is supported on the boundary itself. Its boundary remains \(c\), proving the assertion. For \(k\lt n\lt b\) we have \(k+1\le n\lt b\), establishing the acyclicity corollary. When \(b=1\) the allowed range is empty; the boundary then contains only the empty face. When \(b=2\) only \(k=0\) is covered, so no false connectivity claim is made about the two-vertex boundary. 
+    Verification and scope.   SimplexBoundary.lean  preserves the exact strict bound and includes the simplex cone witness. The  full verification report  records the theorem types and dependency axioms. This is the standard lower-degree simplex-boundary vanishing used by the paper's star-cover argument, not a new result. H06–H07 and the final chessboard theorem remain open formalization obligations. The main Frege overview, living mathematical context, and formalization-gap list were reviewed and remain unchanged. 
+    Process assessment.  The shared cell-count convention made the top-degree exclusion and the \(b=1,2\) boundary cases immediate; a single Lean coercion repair was needed, and no new framework guidance is warranted. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   2 min 38.29 s   
+  Mathematical reasoning and proof writing  40.24 s  
+  Formal proof design and coding  1 min 9.46 s  
+  Preparation and checkpoint work  4.22 s  
+  Individually measured formal verification  44.38 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1. 
+ 
+
+
+### 642 lem:finite-cover-double-complex
+lean-finite-cover-double-complex  Statements and full human-readable proof 
+   Let \(K\) and \(L_i\) be finite augmented complexes on a finite vertex type \(V\), with finite cover-index type \(I\). Use the  shared intersection, nerve, and cover definitions . A double coefficient \(d(J,S)\) has bidegree \((a,b)\) when it is zero unless \(|J|=a\), \(|S|=b\), \(S\in K\), \(S\in L_i\) for all \(i\in J\), and \(J\) belongs to the nerve. Nerve membership means \(J\) is empty or its intersection has a vertex. Thus the \(a=0\) edge consists of \(K\) chains, while the \(b=0\) edge consists of nerve chains. These augmented coordinates retain precisely the nonempty-intersection convention needed later; an empty-face-only intersection contributes no nonempty nerve face. 
+   Define \(H\) by the insertion boundary in \(J\) and \(V\) by the insertion boundary in \(S\). Both are linear; \(H\) lowers \(a\) by one and \(V\) lowers \(b\) by one, with zero outgoing maps when their count is zero. Each squares to zero by  H02 . They commute: at \((J,S)\), both HVd and VHd sum \(d(J\cup \{i\},S\cup \{v\})\) over \(i\notin J\) and \(v\notin S\); interchange the two finite sums. Hence \((H+V)^2=H^2+HV+VH+V^2=0\) over \(\mathbb F_2\). This is a finite coefficient model of the total differential; the later direct chain chase needs no spectral-sequence convergence theorem. 
+    Support proof.  Removing a cover index preserves common-face membership and nerve membership by downward closure of the nerve. Removing a vertex preserves membership in \(K\) and every \(L_i\), while \(J\)'s nerve membership remains unchanged. Each insertion term therefore can be nonzero only in the claimed lower bidegree. At count zero an insertion would have positive count, so every term vanishes. Support is closed under addition coordinatewise. These facts justify the differential identities on supported spaces, rather than merely on ambient functions. 
+    Horizontal exactness.  Suppose the \(L_i\) cover \(K\), \(b\gt 0\), \(d\) has bidegree \((a,b)\), and \(Hd=0\). For every \(b\)-cell face \(S\) of \(K\) choose \(i(S)\) with \(S\in L_{i(S)}\). Define \(u(J,S)\) by coning the index coefficient \(J\mapsto d(J,S)\) at \(i(S)\), using  H04's ambient cone operator ; define it as zero for other \(S\). Pointwise in \(S\) the contraction identity and \(Hd=0\) give \(Hu=d\). If \(u(J,S)\) is nonzero, \(i(S)\in J\) and \(d(J\setminus \{i(S)\},S)\) is nonzero. Hence \(|J|=a+1\), \(|S|=b\), \(S\in K\), and \(S\) lies in every \(L_i\) for \(i\in J\): the newly added index is covered by its choice. Since \(b\gt 0\), choose \(v\in S\); downward closure places \(\{v\}\) in every such \(L_i\). Thus \(J\) really belongs to the vertex-nonempty nerve. Consequently \(u\) has bidegree \((a+1,b)\), proving exactness of each positive-vertex-degree augmented horizontal row. 
+    Scope and evidence.   CoverDoubleComplex.lean  contains the explicit supported interfaces and all identities; the  full verification report  preserves types and axiom reports. The \(b=0\) row has not been declared exact automatically: it is precisely the nerve and requires H07's nerve hypothesis. No acyclicity of \(K\) or intersection is assumed in H06. These are project-formulated interfaces adapting standard finite double-complex algebra, with no novelty assertion. The main Frege overview and formalization-gap list were reviewed without mathematical change. 
+    Process assessment.  Keeping the augmented nerve edge explicit prevents accidentally treating empty-face-only intersections as nonempty; remaining retries were Lean universe instantiation and declaration syntax, not mathematical corrections. Preliminary chain-chase planning during integration preceded this cycle's instrumentation. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   7 min 1.39 s   
+  Mathematical reasoning and proof writing  1 min 40.36 s  
+  Formal proof design and coding  4 min 29.03 s  
+  Preparation and checkpoint work  2.87 s  
+  Individually measured formal verification  49.13 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 6. 
+ 
+
+
+### 643 third-party:chessboard-star-intersections
+lean-chessboard-star-intersections  Exact intersection statement and proof 
+ Let \(J\) contain at least two distinct columns of an \((a+1)\)-by-\(b\) board. The intersection of their first-row closed stars consists exactly of matchings avoiding row 0 and every column of \(J\). Choose distinct \(j,k\) in \(J\). A cell \(x\) in row 0 in a common face would equal \((0,j)\), by row injectivity in its extension by \((0,j)\), and also equal \((0,k)\), a contradiction. If \(x\) uses column \(j\) in \(J\), column injectivity in the extension by \((0,j)\) forces \(x=(0,j)\), contradicting the absence of row 0. Membership in one star implies the original face is a matching. Conversely, a matching avoiding that row and those columns can be extended by each \((0,j)\) without a row or column collision, so belongs to every selected star. 
+ Enumerate the complement of \(J\) by a bijection with \(b-|J|\) columns. Map the smaller board cell \((r,c)\) to \((r+1,e(c))\), where \(e\) is this enumeration. Both coordinates are injective, so matchings map to matchings. Every common face pulls back by predecessor in its nonzero row and inverse complement enumeration. This gives an exact face correspondence with the a-by-\((b-|J|)\) chessboard, including \(a=0\) or \(|J|=b\). If \(|J|=b\), no cells remain and the common complex has exactly the empty face, not a vertex. 
+
+
+### 644 lem:augmented-subcomplex-relabeling
+lean-chessboard-star-intersections  Exact intersection statement and proof 
+ Let \(J\) contain at least two distinct columns of an \((a+1)\)-by-\(b\) board. The intersection of their first-row closed stars consists exactly of matchings avoiding row 0 and every column of \(J\). Choose distinct \(j,k\) in \(J\). A cell \(x\) in row 0 in a common face would equal \((0,j)\), by row injectivity in its extension by \((0,j)\), and also equal \((0,k)\), a contradiction. If \(x\) uses column \(j\) in \(J\), column injectivity in the extension by \((0,j)\) forces \(x=(0,j)\), contradicting the absence of row 0. Membership in one star implies the original face is a matching. Conversely, a matching avoiding that row and those columns can be extended by each \((0,j)\) without a row or column collision, so belongs to every selected star. 
+ Enumerate the complement of \(J\) by a bijection with \(b-|J|\) columns. Map the smaller board cell \((r,c)\) to \((r+1,e(c))\), where \(e\) is this enumeration. Both coordinates are injective, so matchings map to matchings. Every common face pulls back by predecessor in its nonzero row and inverse complement enumeration. This gives an exact face correspondence with the a-by-\((b-|J|)\) chessboard, including \(a=0\) or \(|J|=b\). If \(|J|=b\), no cells remain and the common complex has exactly the empty face, not a vertex. 
+
+
+### 645 third-party:chessboard-star-nerve
+lean-chessboard-star-nerve  Statement, boundary cases and proof 
+ Assume \(a\ge 1\) and \(b\ge 2\), and consider the first-row stars of the \((a+1)\)-by-\(b\) board. Every proper column subset \(J\) has a common vertex. Choose a column \(j\) outside \(J\) and take the cell \((1,j)\). For every \(i\in J\), its extension by \((0,i)\) has distinct rows and columns, hence is a matching. Thus the singleton \(\{(1,j)\}\) lies in every selected star. This argument includes an empty selected family. 
+ The intersection of all \(b\) stars has precisely the empty face. Indeed H09 says any cell in a common matching must avoid every column, which is impossible; the empty face belongs to every augmented complex. Consequently no vertex lies in the full intersection. By the nerve definition, the empty index face is included and a nonempty index face is included exactly when its intersection has a vertex. Therefore its faces are exactly the proper subsets of all \(b\) columns: the nerve equals the boundary of the \((b-1)\)-simplex as an actual finite augmented complex, not merely up to a cardinality count. 
+ H05 now applies directly to this equality. The nerve is  ExactAt k  whenever \(k+1\lt b\) and  AcyclicThrough n  whenever \(n\lt b\). In simplicial degree \(d=k-1\) this is vanishing strictly below the top degree \(b-2\); no top-degree vanishing is asserted. In particular \(b=2\) retains the two isolated vertices of the boundary of an edge and proves only the required augmented nonemptiness range. Separately, H08's closed-star insertion closure is exactly H04's cone predicate, so  cone_exact  proves each first-row star exact in every cell count. 
+  Verification and dependencies.   ChessboardStarNerve.lean  proves the proper-family vertex witness, full-intersection empty-face statement, nerve face equivalence, actual complex equality, nerve exactness/acyclicity and star exactness. It imports the already verified H08–H09, H04 and H05 proofs; it assumes no missing homological claim.  Exact types, standard-axiom audit, scope map and provenance  preserve the checks. The argument is the classical star-cover argument expanded in the paper, not a new connectivity theorem. 
+  Assignment outcome.  H08–H10 are complete in their full stated scope, including actual chain transport and reuse of cone/simplex-boundary acyclicity. H12 still needs the homological cover theorem and arithmetic induction; H13 then specializes it. Those are separate assignments, and the filling target \(H\) is still an unproved proposition here. All newly introduced claims and reusable dependencies are indexed. Main Frege overview, route, working context and gap list were reviewed without a new mathematical discrepancy. 
+  Process assessment.  The shared definition of nonempty intersection as having a vertex made the full-family edge case explicit and allowed a literal equality with H05's complex; no additional framework rule is warranted. 
+ 
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   4 min 18.98 s   
+  Mathematical reasoning and proof writing  55.07 s  
+  Formal proof design and coding  2 min 27.54 s  
+  Preparation and checkpoint work  9.12 s  
+  Individually measured formal verification  47.26 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2. 
+ 
+
+
+### 646 third-party:homological-cover-lemma
+lean-homological-cover-lemma  Exact statement and source correspondence 
+   Let \(K\) be a finite augmented complex, and let \((L_i)_{i\in I}\) be finitely many subcomplexes covering \(K\). Let \(N\) be their vertex-nonempty nerve. Fix \(n\ge 0\). Suppose  AcyclicThrough N n , and for every nonempty \(J\in N\) and every \(r\) with \(|J|+r\le n\), every \(r\)-cell cycle in the intersection \(L_j\) admits an \((r+1)\)-cell filler there. Then  AcyclicThrough K n . With \(n=q+2\) this is the paper's homological cover lemma: an intersection of \(t\) members is \((q-t+1)\)-acyclic, and \(q\)-acyclicity of the nerve implies \(q\)-acyclicity of \(K\). Indeed an \(r\)-cell chain has reduced degree \(r-1\), so \(r-1\le q-t+1\) is exactly \(t+r\le n\). Empty-face-only intersections are absent from \(N\) and are not assumed exact. At \(t=n\), only augmentation exactness \(r=0\) is required, not connectivity. 
+
+
+### 647 third-party:chessboard-homological-bound
+lean-chessboard-homological-bound  Claim and conventions 
+   For natural \(a,b\ge1\), put \(\nu(a,b)=\min\{a,b,\lfloor(a+b+1)/3\rfloor\}\). Over \(\mathbb F_2\), for every \(0\le k&lt;\nu(a,b)\), each augmented \(k\)-cell cycle of \(\Delta_{a,b}\) is the boundary of a \((k+1)\)-cell chain. Equivalently, the reduced homology vanishes in degrees \(-1\) through \(\nu(a,b)-2\). Cell count zero is the empty-face augmentation coordinate. In Lean this is  AcyclicThrough (chessboardComplex a b) (chessboardNu a b) , with the two explicit positive-size hypotheses. 
+    Augmentation base case.  In any finite complex with a vertex \(v\), a chain supported on zero-cell faces vanishes away from the empty set. Its cone at \(v\) is therefore supported only on the singleton \(\{v\}\), which is a face. The  cone identity  gives \(\partial \operatorname{cone}(v,c)+\operatorname{cone}(v,\partial c)=c\). For a cycle the second term is zero, so this cone fills \(c\). This argument does not require the entire complex to be a cone. A one-row board with at least one column has a vertex and \(\nu(1,b)=1\), so this proves its complete required range. 
+    Transpose transport.  Swapping the two coordinates preserves both matching conditions and induces inverse chain maps, commuting with the augmented boundary by  H03 . Pull a cycle to the transposed board, fill it there, and push the filler back. Support and cell count are preserved, and boundary naturality and the inverse identity give the original cycle. Thus exactness transfers in either direction; \(\nu\) is symmetric. 
+    Inductive assembly.  Use strong induction on \(\min(a,b)\). It suffices to handle the ordered board \(a\le b\), since the preceding transpose transport treats the other orientation without invoking induction at the same measure. The one-row case was proved above. For \(a\ge2\), take the  first-row closed stars . They are subcomplexes and cover the board. Their  nerve  is the boundary of the simplex on \(b\) columns. Since \(\nu(a,b)\le b-1\), H05/H10 supply exactness of this nerve in every cell count below \(\nu(a,b)\). 
+   It remains to check the exact hypotheses of the  homological cover lemma . Let \(J\) be a nonempty nerve face, with \(t=|J|\), and let \(r\ge0\) satisfy \(t+r\le\nu(a,b)\). If \(t=1\), the intersection is a single star and the cone theorem fills every \(r\)-cycle. If \(t\ge2\), nerve membership gives \(t&lt;b\); the full star family has no common vertex. The  intersection equivalence  identifies the augmented chains with those of \(\Delta_{a-1,b-t}\), preserving the differential and transporting actual fillings. Both dimensions are positive and its smaller dimension is at most \(a-1&lt;\min(a,b)\), so induction applies. 
+   Write \(\mu=\nu(a-1,b-t)\). The  checked arithmetic inequality  \(\nu(a,b)+1\le\mu+t\), together with \(t+r\le\nu(a,b)\), gives \(r&lt;\mu\). The induction hypothesis therefore fills exactly the required intersection cycles. Every hypothesis of the cover lemma is satisfied; it gives exactness of the whole board for every \(k&lt;\nu(a,b)\), completing the induction. The verified cover lemma includes the augmentation-only case, so this proof needs a separate base argument only for one-row boards; boards with \(\nu=1\) and at least two rows are covered by the same argument. This is an equivalent organization of the appendix proof, using its recorded finite-chain alternative for the cover step. 
+    Verification and scope.   ChessboardHomology.lean  proves the complete indexed claim  third-party:chessboard-homological-bound  using only checked dependencies. The  full audit  prints the exact type and foundational axioms; the  scope map  separates this claim from H13 and the publication's R-route. No assumption of \(H\) or custom axiom is used. The initial failed check concerned a zero-cardinality elaboration step, not a mathematical discrepancy. 
+    Route and process assessment.  The general homological bound is now available; the next cycle specializes it to \(N\ge 2s-1\) and converts the filling to the original ChessboardChain interface. The main Frege route and discrepancy list are unchanged. The workers' explicit cell-count and filling-transport interfaces made final assembly short; no additional framework rule was needed. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   5 min 42.46 s   
+  Marked reading and review windows  0.36 s  
+  Mathematical reasoning and proof writing  2 min 31.65 s  
+  Formal proof design and coding  2 min 18.16 s  
+  Preparation and checkpoint work  4.53 s  
+  Individually measured formal verification  47.76 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1. 
+ 
+

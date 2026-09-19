@@ -1,0 +1,181 @@
+
+### 669 lem:affine-system-linear-algebra
+lean-affine-system-linear-algebra  Proper spans, zero-flat witnesses and linear parts 
+    Claim  lem:affine-system-linear-algebra .  Let \(S\) be a subspace of the coefficient space just defined, and let \(u\) denote the constant unit form. If \(u\notin S\), there exists \(x_0\in K^n\) with \(E_a(x_0)=0\) for every \(a\in S\). If such an \(x_0\) exists and an affine form \(f\) vanishes at every common zero of \(S\), then \(f\in S\). 
+   Consequently, for a finite input family \((g_i)\), a common zero together with vanishing of \(f\) on the common zero set gives constants \((c_i)\) such that 
+   \[
+    f=\sum_i c_i g_i.
+  \] 
+   If the input family has no common zero, there instead exist constants with \(u=\sum_i c_i g_i\). These are equalities of forms, hence literal equalities of their ordinary polynomials under the linear map above. 
+   For a proper span \(S\), projection to linear coefficients is injective on \(S\). It therefore preserves the dimension of \(S\), and sends every independent family spanning a proper subspace to an independent family of linear parts. Every nonzero \(a\in S\) has \(\deg P_a=1\). 
+    Full proof by finite-coordinate duality.  For a linear functional \(L\) on the affine coefficient space, write \(t=L(u)\) and \(v_i=L(u_i)\), where \(u_i\) is the unit vector at the \(i\)-th linear coordinate. Expanding any coefficient vector in the coordinate basis gives 
+   \[
+    L(a)=a_0t+\sum_i a_iv_i.
+  \] 
+   The vector-space annihilator theorem says that an element lies in a subspace exactly when every functional vanishing on the subspace kills that element. If \(u\notin S\), choose such a functional \(L\) with \(t\ne0\). Set \((x_0)_i=v_i/t\). The displayed identity gives \(E_a(x_0)=L(a)/t=0\) for every \(a\in S\), proving consistency of a proper span. 
+   Next fix a common zero \(x_0\), and suppose \(f\) vanishes at all common zeros. Let \(L\) be any functional annihilating \(S\); its constant value \(t\) may now be zero. Put \(y_i=v_i+(1-t)(x_0)_i\). Direct expansion yields, for every form \(a\), 
+   \[
+    E_a(y)=L(a)+(1-t)E_a(x_0).
+  \] 
+   For \(a\in S\), both terms on the right vanish. Thus \(y\) is another common zero, so \(E_f(y)=E_f(x_0)=0\), and the identity forces \(L(f)=0\). Since every annihilator kills \(f\), the same vector-space theorem gives \(f\in S\). This argument avoids dividing by \(t\) in the vanishing step and therefore includes direction functionals with \(t=0\). 
+   For a finite family, membership in its span is equivalent to a finite constant linear combination, giving the first certificate. If there is no common zero but \(u\) were outside its span, the consistency argument would supply a contradiction; therefore \(u\) belongs to the span and gives the unit certificate. To prove injectivity of linear-part projection on a proper span, take \(a,b\in S\) with equal linear coefficients and evaluate at the common zero. Their constant coefficients must agree as well, hence \(a=b\). Restricting this injective linear map to \(S\) gives equal domain and image dimensions and preserves linear independence. 
+   Finally, \(\deg P_a\le1\) is already proved. If its degree were zero, the ordinary polynomial would be constant. Its value at the common zero is zero, so it would be the zero polynomial. Injectivity of the coefficient representation would force \(a=0\), contrary to the hypothesis. Thus every nonzero proper input has exact degree one. Empty input families, zero forms, constant forms and zero-dimensional ambient spaces are covered without excluding them implicitly. \(\square\) 
+    Formal interfaces and evidence.   AffineForm.lean  contains the reusable representation, polynomial and existing  AffineMap  bridges.  AffineSystemLinearAlgebra.lean  contains the system-level witnesses. The separate  representation  and  system  reports preserve fifteen checked theorem types and their transitive axiom audits. The  reproduction record  includes the source/dependency scope and complete measured outputs. 
+    Remaining route and process assessment.  This release does not yet construct a complete affine coordinate change or its free-coordinate parametrization, prove the exact \(2h+1\) fresh-companion degree, or replay scalar cleanup in PC. Those remain explicit R07 obligations; R08/R16 remain assigned. The two-file split lets clause and polynomial consumers import the representation without system duality, while keeping short coordinate calculations local. No mathematical discrepancy was found; the coordinator was notified of the exact released scope and owns living-section updates. 
+   Initial restoration preceded instrumentation; cache and elaboration failures were setup/API issues, not failed mathematical statements. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   13 min 49.23 s   
+  Marked reading and review windows  21.54 s  
+  Mathematical reasoning and proof writing  4 min 21.65 s  
+  Formal proof design and coding  7 min 35.33 s  
+  Preparation and checkpoint work  5.70 s  
+  Dedicated web and download-attempt windows  9.27 s  
+  Individually measured formal verification  1 min 15.73 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 7. 
+ 
+
+
+### 670 lem:affine-coordinate-completion
+lean-affine-coordinate-completion  Claim: affine coordinate completion 
+   Let \(K\) be a field and let \((g_i)_{i\in I}\) be linearly independent affine forms on \(K^n\), with the constant one outside their span. There exist an injection \(e:I\hookrightarrow[n]\) and an affine equivalence \(E:K^n\simeq K^n\) satisfying 
+   \[
+    (E(x))_{e(i)}=g_i(x)\qquad(i\in I,\ x\in K^n).
+  \] 
+   Write \(J=[n]\setminus e(I)\), and let \(z:K^J\to K^n\) extend coordinates by zero at all selected indices \(e(i)\). Then \(P=E^{-1}\circ z\) is an injective affine map with 
+   \[
+    P(K^J)=\{x\in K^n:g_i(x)=0\text{ for all }i\}.
+  \] 
+   If \(I=[r]\), then \(|J|=n-r\). Thus these are exactly the required free affine coordinates, and both coordinate changes remain ordinary affine maps. The formal completion theorem even permits any index type \(I\); the resulting injection into \([n]\) certifies its finiteness. 
+    Full proof.  By the preceding proper-span theorem, the linear coefficient vectors of the \(g_i\) are independent and they have a common zero \(x_0\). Map a coefficient vector \(a\) to the linear functional \(x\mapsto\sum_j a_jx_j\). This map is injective, since evaluation on coordinate unit vectors recovers every coefficient, so the resulting functionals \(L_i\) are independent. Extend them to a basis \((B_j)\) of the dual of \(K^n\), using the vector-space basis-extension theorem. Reindex that basis by \([n]\); the selected functionals occupy distinct positions \(e(i)\), with \(B_{e(i)}=L_i\). 
+   The map \(T:x\mapsto(B_j(x))_{j\in[n]}\) is a linear equivalence: the canonical finite-dimensional identification with the double dual followed by coordinates in the dual basis gives precisely this map. Set \(E(x)=T(x-x_0)\). Since \(g_i(x_0)=0\), its constant coefficient is minus its linear part at \(x_0\). Therefore \((E(x))_{e(i)}=L_i(x-x_0)=g_i(x)\), proving the designated coordinate identity. 
+   Zero-extension \(z\) is linear and injective; composing with \(E^{-1}\) gives an injective affine map \(P\). Every \(P(y)\) satisfies all equations because the selected coordinates of \(E(P(y))=z(y)\) are zero. Conversely, if every \(g_i(x)=0\), the selected coordinates of \(E(x)\) vanish. Its remaining coordinates give \(y\in K^J\) with \(z(y)=E(x)\), hence \(P(y)=x\). Finally the image of an injection from \([r]\) has cardinality \(r\), so its complement in \([n]\) has cardinality \(n-r\). This includes an empty selected family, when all coordinates are free, and \(r=n\), when the zero flat is a single point. \(\square\) 
+    Formalization and checks.  The extracted claim  lem:affine-coordinate-completion  is in  AffineCoordinates.lean . The  incremental verification report  audits coordinate completion, parametrization injectivity, exact range, and free-index cardinality with their transitive dependencies. The  reproduction record  retains the complete evidence and initial scope map. 
+    Remaining route and process assessment.  This supplies the actual coordinate maps underlying the nonempty affine flat and its codimension, without replacing ordinary polynomial restriction by pointwise vanishing. Exact fresh-companion degree and scalar PC cleanup still remain in R07; R08/R16 remain assigned. Reusing checked dual-basis extension avoided a separate matrix inversion development. No new mathematical gap or framework rule was needed; the coordinator retains living-section ownership. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   7 min 58.14 s   
+  Marked reading and review windows  22.44 s  
+  Mathematical reasoning and proof writing  2 min 51.30 s  
+  Formal proof design and coding  3 min 58.07 s  
+  Preparation and checkpoint work  3.09 s  
+  Individually measured formal verification  43.24 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 4. 
+ 
+
+
+### 671 lem:compact-bit-decoder-coordinates
+lean-compact-bit-decoder-coordinates  An explicit linear polynomial left inverse 
+  Question and scope.  Formalize the degree-preserving old-base transfer in  paper §4 , using the  decoder certificate proof  and the  ordinary coordinate argument . The coordinate map below is valid for all \(m,\ell\ge0\); transfer of compact collision axioms requires \(\ell\ge2\), as the source explicitly states. The known \(\ell=1\) exception is not a new gap. Stop at arbitrary ordinary PC consequences, not the downstream transported-filtration or lower-bound claims. 
+ Fix a bijection between \(\{1,\ldots,2^\ell\}\) and binary labels \(z\in\mathbb F_2^\ell\). In ordinary polynomial rings define 
+ \[
+\tau(b_{it})=s_{it}=\sum_{z:z_t=1}X_{iz}.
+\] 
+ The source proves independence by completing these linear forms to coordinates. Here is the full equivalent left-inverse proof used in Lean. For each bit position \(t\), let \(e_t\) be its unit label. Define a second polynomial substitution 
+ \[
+\sigma(X_{iz})=\sum_t[\,z=e_t\,]b_{it}.
+\] 
+ Then \(\sigma(s_{it})=b_{it}\): interchange the two finite sums, and observe that among unit labels only \(e_t\) has its \(t\)-th bit equal to one. Equality on every polynomial generator, together with preservation of constants, gives \(\sigma\tau=\mathrm{id}\) on the entire ordinary polynomial ring. Thus \(\tau\) is injective. Every variable image under either substitution has degree at most one, so the checked  substitution degree bound  gives 
+ \[
+\deg\tau(P)\le\deg P
+=\deg\sigma\tau(P)\le\deg\tau(P).
+\] 
+ Consequently \(\deg\tau(P)=\deg P\), including zero and constants. Empty bit sets cause no exception: there are then no bit variables and both maps agree on constants. This coordinate claim is isolated in its own file and index entry because injectivity and degree preservation are used independently of proof-system transfer. 
+
+
+### 672 lem:compact-bit-ordinary-PC-decoder
+lean-compact-bit-ordinary-PC-decoder  Original axiom-image certificates and arbitrary-consequence replay 
+ For \(\ell\ge2\), let \(\mathcal Q\) contain bit Booleanity and the compact collision polynomials \(E_{ii'}=\prod_t(1+b_{it}+b_{i't})\), \(i&lt;i'\). Let \(\mathcal F^{\mathrm{fun}}\) be the functional unary base on \(m\) rows and \(2^\ell\) columns. The precise transfer is 
+ \[
+\mathcal Q\vdash_B P\quad\Longrightarrow\quad
+\mathcal F^{\mathrm{fun}}\vdash_B\tau(P)
+\qquad\text{for every }B\ge0.
+\] 
+ There is no extra assumption \(B\ge\ell\). Every eligible source axiom is treated at its own original degree before primitive replay. 
+  Boolean images.  Each \(s_{it}\) is a linear ordinary polynomial. At every Boolean assignment, its value lies in \(\mathbb F_2\), so \(s_{it}^2-s_{it}\) vanishes. The checked  degree-two Boolean certificate theorem  puts it in \(\mathcal I_2(\mathrm{BOOL})\), hence in \(\mathcal I_2(\mathcal F^{\mathrm{fun}})\). Equivalently, expansion in characteristic two gives the source's explicit identity \(s_{it}^2-s_{it}=\sum_{z:z_t=1}(X_{iz}^2-X_{iz})\). The formal proof uses the former already verified reduction. The original polynomial \(b_{it}^2-b_{it}\) has exact degree two, since its quadratic coefficient is nonzero. 
+  Collision images.  First use two local rows. The ordinary degree of \(R=\tau(E_{01})\) is at most \(\ell\). At the one-hot states \((e_z,e_w)\), each decoded bit is the corresponding label bit. The factor \(1+z_t+w_t\) is one when those bits agree and zero otherwise. Thus \(R(e_z,e_w)=[z=w]\). The  R11 interpolation identity , with \(\ell\ge2\), yields 
+ \[
+R-\sum_zX_{0z}X_{1z}\in\mathcal I_\ell(U).
+\] 
+ Each remaining summand is a degree-two column-exclusion generator, so \(R\in\mathcal I_\ell(\mathcal F^{\mathrm{fun}}_{2,2^\ell})\). Relabel these local rows injectively as any distinct \(i,i'\). This substitution maps each Boolean, row-sum, same-row, and same-column generator into the corresponding global functional generator. It does not increase ordinary degree. Mapping each legal NS product separately therefore preserves its original degree budget, proving \(\tau(E_{ii'})\in\mathcal I_\ell(\mathcal F^{\mathrm{fun}})\). 
+  Original collision degree.  For distinct \(i,i'\), every factor \(1+b_{it}+b_{i't}\) has degree exactly one: the coefficient of \(b_{it}\) is one, and its degree is at most one. The ordinary polynomial ring over a field is a domain, so these nonzero factors multiply with additive total degree. Therefore \(\deg E_{ii'}=\ell\). This proof includes the empty product degree convention, although the transfer theorem still requires \(\ell\ge2\). 
+  Primitive replay.  A source Boolean axiom eligible at ceiling \(B\) has \(2\le B\), and a source collision axiom eligible there has \(\ell\le B\), by the exact degrees just proved. Their NS image certificates thus lie within \(B\), and the checked  NS-to-PC inclusion  supplies actual PC image proofs. Apply  weighted substitution  with weight one and variable-image bound one. Its primitive multiplication argument uses the actual predecessor degree, so the ceiling remains \(B\) throughout. This proves the stated transfer for every target polynomial and every original proof ceiling. 
+  Verification and remaining route.   CompactBitDecoder.lean  supplies the coordinate map and left inverse;  CompactBitDecoderTransfer.lean  supplies the original-degree NS image certificates and arbitrary-PC theorem. The  coordinate report ,  transfer report , and  scope map  preserve exact types, dependencies, and exclusions. Elaboration retries concerned finite-sum interchange, coefficient support, and finite-field simplification, without a mathematical correction. Process assessment: an explicit unit-column left inverse gives a short reusable ordinary-degree proof, while proving original axiom degrees prevents silently strengthening the PC ceiling. The existing guidance already covers these choices. 
+ 
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   12 min 16.12 s   
+  Mathematical reasoning and proof writing  1 min 58.15 s  
+  Formal proof design and coding  8 min 18.78 s  
+  Preparation and checkpoint work  17.96 s  
+  Individually measured formal verification  1 min 41.22 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 9. 
+ 
+ Preliminary source/API reading and broad proof planning preceded instrumentation; retries are included, and final checkpoint work follows the snapshot. 
+
+
+### 673 lem:functional-matching-normal-form
+lean-functional-matching-normal-form  Reusable normal form and ordinary-degree proof 
+ Let \(\mathcal A\) consist of Booleanity and all explicitly supplied distinct-cell row/column collision equations. The checked encoding identity is \(\mathcal F^{\mathrm{fun}}_{m,N}=\mathcal A\cup\{\rho_i-1:i\}\); it rearranges the original generators, rather than replacing their meaning. A matching is precisely a face of the chessboard complex already used in H. Define a linear map \(\mathcal R\) on monomials by 
+ \[
+ \mathcal R(cX^e)=
+ \begin{cases}cM_{\operatorname{supp}(e)},&\operatorname{supp}(e)\text{ is a matching},\\
+ 0,&\text{otherwise},\end{cases}
+ \qquad M_S=\prod_{x\in S}X_x.
+\] 
+ First apply R05's Boolean reduction through \(\deg P\). A nonmatching squarefree support contains two distinct cells sharing a row or column. The  checked pair certificate  makes its monomial a single collision-generator multiple through its support cardinality, which is no larger than its original monomial degree. Summing gives 
+ \[
+ P-\mathcal R(P)\in\mathcal I_{\deg P}(\mathcal A),
+ \qquad \deg\mathcal R(P)\le\deg P.
+\] 
+ Conversely \(\mathcal R\) annihilates every ordinary multiple of every generator of \(\mathcal A\), even without a degree bound. For a Boolean generator, multiplying an ordinary monomial by \(X_x^2\) or \(X_x\) gives the same squarefree support and hence the same image. For a collision generator, every monomial multiple still contains that conflicting pair and has image zero. Expand an arbitrary multiplier into monomials and use linearity. Consequently, for \(\deg P\le B\), 
+ \[
+ P\in\mathcal I_B(\mathcal A)\quad\Longleftrightarrow\quad\mathcal R(P)=0.
+\] 
+ These normal-form facts also hold for empty boards; the later full marginal equivalence retains \(N\ge1\). 
+
+
+### 674 lem:fresh-ENS-block-degree
+lean-fresh-ENS-block-degree  Claim: fresh ENS block degrees and renaming 
+   Let \(K\) be any field, let \((g_i)_{i\in I}\subseteq K[X_\sigma]\) be a finite input family with \(\deg g_i\le1\), and let \(h\ge0\). Adjoin distinct new variables \(r_{ui}\), disjoint from all old variables, and define 
+   \[
+    F_u=1-\sum_i r_{ui}g_i,\qquad
+    P=\prod_{u=1}^h F_u,\qquad C_i=g_iP.
+  \] 
+   Always \(\deg F_u\le2\), \(\deg P\le2h\), and \(\deg C_i\le2h+1\). If some selected input \(g_j\) has actual degree one, then 
+   \[
+    \deg F_u=2,\qquad \deg P=2h,\qquad \deg C_j=2h+1.
+  \] 
+   The ordinary degree of any polynomial is preserved by injectively renaming its variables. Renaming the whole block through any variable map \(\rho\) gives exactly the product with coefficient variables \(X_{\rho(r_{ui})}\) and old inputs renamed through the composite old-variable injection. Thus an injective embedding into a global registry preserves these exact degrees. No identification of polynomial functions is used. 
+    Full proof.  For an injective variable map \(e:\alpha\hookrightarrow\beta\), the renamed polynomial has degree at most the original degree. Define a polynomial substitution back from target variables: a variable in the image of \(e\) maps to its unique original variable, and every other variable maps to zero. Every substitution image has degree at most one, and the substitution composed with renaming is the identity on every original variable, hence on every polynomial. The checked substitution degree bound therefore gives the reverse inequality. This argument also works when the original variable type is empty. 
+   Each summand \(r_{ui}g_i\) has degree at most two, giving the factor upper bound; products add these upper bounds and multiplication by \(g_i\) adds at most one. Now assume \(\deg g_j=1\). In one factor, set all coefficient variables other than \(r_{uj}\) to zero and keep all old variables unchanged. The factor becomes \(1-r_{uj}g_j\). Injective old-variable renaming preserves \(\deg g_j=1\), so the product \(r_{uj}g_j\) has degree two in the integral domain \(K[X,r]\). Subtracting it from the degree-zero constant one cannot cancel its top degree. Thus the specialized factor has degree two. The specialization uses variable images of degree at most one and cannot increase degree, proving that the original factor has degree at least two; the upper bound makes this an equality. 
+   Every such factor is nonzero. In a polynomial ring over a field, degrees add under multiplication of nonzero polynomials, so induction over the finite factor set gives \(\deg P=2h\), and its product is nonzero. Multiplication by the nonzero degree-one input \(g_j\) gives \(\deg C_j=2h+1\). When \(h=0\), the product is one and the formulas become \(\deg P=0\) and \(\deg C_j=1\). When all inputs vanish, or the family is empty, only the upper-bound statements apply. Finally, renaming is an algebra homomorphism: it distributes through the displayed sums, products and subtraction, proving the registry identity. \(\square\) 
+    Connection to proper affine blocks.  The  preceding verified claim  proves exact degree one for every nonzero input in a proper affine span. Applying the present companion theorem separately to each retained nonzero input therefore gives the paper's exact \(2h+1\) original degree. A loose degree-one ceiling alone is deliberately insufficient for the equality theorem. 
+    Interface and evidence.   FreshENSBlock.lean  uses variables  σ ⊕ (Fin h × ι) , old renaming through  Sum.inl , and individual fresh variables through  Sum.inr . Its product-renaming identity directly embeds into a registry whose coefficient index is a dependent sum over blocks. The  incremental report  audits eight declarations with transitive axioms, and the  reproduction record  preserves the scope, original degree conventions, and complete checks. 
+    Remaining route and process assessment.  Scalar elimination of zero/unit blocks, including coefficient Boolean equations and degree-preserving PC replay, still remains in R07; R08/R16 remain assigned. Explicit coefficient specialization gave a short degree lower bound without expanding the full product. The distinction between actual degree and an upper ceiling was preserved, and no new mathematical gap or guidance change was needed. The coordinator owns living-section updates. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   8 min 42.11 s   
+  Marked reading and review windows  3.06 s  
+  Mathematical reasoning and proof writing  40.47 s  
+  Formal proof design and coding  7 min 2.31 s  
+  Preparation and checkpoint work  3.44 s  
+  Individually measured formal verification  52.83 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 4. 
+ 
+

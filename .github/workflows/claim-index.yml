@@ -9,6 +9,17 @@ on:
       - 'formalization/**/*.lean'
       - tools/claim_registry.py
       - tools/claim_reviews.py
+      - tools/claim_views.py
+      - tools/claim_authoring.py
+      - tools/claim_notices.py
+      - tools/claim_evidence.py
+      - tools/record_citations.py
+      - tools/tests/test_record_citations.py
+      - tools/tests/test_claim_views.py
+      - tools/tests/test_claim_authoring.py
+      - tools/tests/test_claim_notices.py
+      - tools/tests/test_claim_article_evidence.py
+      - tools/tests/test_claim_article_finalizer.py
       - tools/claim_graph.py
       - tools/claim_maintenance.py
       - tools/claim_registration.py
@@ -46,6 +57,12 @@ jobs:
           fetch-depth: 0
       - run: python3 tools/claim-index.py validate
       - run: python3 -m unittest discover -s tools/tests -p test_claim_registry.py
+      - run: python3 -m unittest discover -s tools/tests -p test_claim_views.py
+      - run: python3 -m unittest discover -s tools/tests -p test_claim_authoring.py
+      - run: python3 -m unittest discover -s tools/tests -p test_claim_notices.py
+      - run: python3 -m unittest discover -s tools/tests -p test_claim_article_evidence.py
+      - run: python3 -m unittest discover -s tools/tests -p test_claim_article_finalizer.py
+      - run: python3 -m unittest discover -s tools/tests -p test_record_citations.py
       - run: python3 -m unittest discover -s tools/tests -p test_claim_dependencies.py
       - run: python3 -m unittest discover -s tools/tests -p test_claim_graph.py
       - run: python3 tools/claim-index.py graph audit

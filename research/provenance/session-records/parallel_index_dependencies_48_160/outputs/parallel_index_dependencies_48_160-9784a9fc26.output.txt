@@ -1,0 +1,373 @@
+
+### 65 thm:signed-proof-boundary-elimination
+copy-signed-boundary-elimination  8. Eliminate every signed disjunction boundary of a proof line 
+     Use the independent, internally coherent line scopes above. Strip a line's leading negations. If its first remaining connective is OR, call that outer disjunction its  boundary block ; the line approximation is \(P\) or \(1-P\) according to the parity of the stripped negations. Otherwise the line is a value line. Let \(G\) contain the original Boolean equations, all nonboundary extension companions, and their coefficient domains, but no boundary-block companions or coefficient domains. 
+      Freshness.  A boundary block's coefficients occur in its own product and companions, but not in the inputs of any other block of its line: all the other blocks are proper descendants. Other proof lines use independent scopes. Thus each boundary family is fresh for \(G\). Proper copies of a formula inside a different line remain in \(G\), even when the formula has its own boundary in its own proof-line scope. 
+      Working theorem.  Let the proof be tree-like of height \(H\), with approximation bound \(L\), axiom-leaf degree bound \(A\), and a common old copy-agreement ceiling \(C=C_{\mathrm{copy}}\). Put 
+     \[
+      K_0=\max\{\max(A,2L)+(p-1)L,\ C+L\}.
+    \] 
+     At every proof node \(v\), the following invariant holds through degree \(B_v\le K_0+2H_vL\), where \(H_v\) is the height of its subproof: 
+     
+       For a positive signed boundary (\(v^{\mathrm{ap}}=P\)), \(G\) together with the boundary input tuple has a PC refutation. 
+       For a negative signed boundary (\(v^{\mathrm{ap}}=1-P\)), \(G\) derives every boundary input polynomial. 
+       For a value line, \(G\) derives \(v^{\mathrm{ap}}\). 
+     
+     Every polynomial and every proof in this invariant uses only the variables of \(G\). The excluded boundary coefficients are never silently treated as old variables. Copy agreements below compare boundary inputs or value formulas, so their supporting blocks are all nonboundary blocks in \(G\). 
+      Axiom leaves.  For a positive boundary, zero-specialize its coefficients in the source degree-\(A\) NS derivation of \(P\). Its target becomes one, its companions become the boundary inputs, and its field equations vanish. All other axioms are in \(G\), giving the first invariant. 
+     For a negative boundary, first derive an input \(g_i\) from the source derivation of \(1-P\), using \(g_i=g_i(1-P)+g_iP\). PC reuse gives an augmented proof through \(d=\max\{A,2L\}\). Apply  the one-block old-target transfer , whose freshness condition holds here, to this old input. Its bound \(\max\{d+(p-1)\delta,d+\deg g_i,p\deg g_i\}\) is at most \(d+(p-1)L\). This supplies the negative invariant for every input. A value line's source derivation already uses only \(G\). 
+      Antecedent conversion at MP.  Let \(a,c\) be the antecedent and implication children, and let \(\alpha\) be the antecedent's proper copy inside \(c\). If \(a\) has a positive boundary, weight its input-system refutation by that proper copy \(P_f=\alpha\). Each weighted input satisfies \(g_iP_f=f_iP_f+(g_i-f_i)P_f\); the first term is a proper-copy companion in \(G\), and the second follows by copy agreement and PC reuse through \(\max\{C,2L\}\). The replay lemma derives \(\alpha\) through \(\max\{B_a+L,C,2L\}\). 
+     If \(a\) has a negative boundary, its derived inputs transfer to the proper copy by agreement. Prefix telescoping then derives \(\alpha=1-P_f\) through \(\max\{B_a,C,2L\}\). If \(a\) is a value line, ordinary value-copy agreement suffices through \(\max\{B_a,C\}\). Thus the first, uniform ceiling handles all antecedents. 
+      Conclusion conversion at MP.  The implication child \(c=\neg a\vee b\) is a positive OR boundary. Its invariant refutes \(G\) with its input tuple through \(B_c\). Replace its antecedent input by the old proof of \(\alpha\) just obtained. 
+     If \(b\) begins directly with OR, the remaining inputs are the proper copies of its maximal children. Transfer them from the conclusion node's own boundary inputs by old agreement, obtaining the positive invariant. If \(b\) is a positive boundary under an even, nonzero number of leading negations, the implication's remaining input is \(1-P_f\). Under the conclusion's input assumptions, transferred inputs \(f_i=0\) and prefix telescoping derive \(1-P_f=0\), again giving the positive invariant. 
+     If \(b\) has a negative boundary, the remaining input is \(P_f\). Weight the resulting refutation of \(G\cup\{P_f\}\) by each conclusion input \(g_i\). The same proper-copy companion and input-agreement argument derives \(g_iP_f\) in \(G\) through \(\max\{C,2L\}\). Weighted replay gives the negative invariant with at most one additional \(L\). 
+     Finally, if \(b\) is a value line with proper copy \(\beta\), the remaining input is \(1-\beta\). Weight its refutation by \(\beta\). The required product \(\beta(1-\beta)\) is an old Booleanity consequence through \(2L\), since every OR block of a value line is nonboundary. This derives \(\beta\), then the conclusion value by copy agreement, with at most one additional \(L\). 
+     All cases fit the common recurrence 
+     \[
+      B_v\le\max\{B_c+L,\ B_a+2L,\ C+L,\ 3L\}.
+    \] 
+     The leaf bound and \(K_0\ge3L\) give the theorem by induction on proof-tree height. The number of copies, inputs, or proof nodes introduces no further degree charge. No size bound on the resulting PC derivation is used. 
+      Shared-proper variant.  Build proper evaluations from one common canonical DAG of syntactic subformulas, with the same no-merging and level conventions, and give only each line's signed boundary a private fresh vector family. All boundary inputs then use the same canonical proper child polynomials as their copies in other lines. Every value line is also its canonical proper value. The comparisons actually used in the invariant are now literal, so the same proof works with \(C=0\) and gives 
+     \[
+      B\le\max\{A,2L\}+(p-1)L+2HL.
+      \tag{SHARED-PROPER}
+    \] 
+     The private boundary product is still distinct from a canonical proper product of the same formula. The weighted and prefix arguments relate their roles; we do not identify those two fresh vector families. Source axiom-leaf proofs are obtained by renaming their distinguished boundary variables while keeping the needed proper evaluations canonical. No other block inside that leaf has inputs depending on its outermost boundary variables, so the required freshness remains valid. Identical proper evaluations can therefore be shared without increasing degree or creating a dependency on a private boundary. 
+
+
+### 66 cor:shared-proper-boundary-simulation
+copy-shared-proper  8. Eliminate every signed disjunction boundary of a proof line 
+     Use the independent, internally coherent line scopes above. Strip a line's leading negations. If its first remaining connective is OR, call that outer disjunction its  boundary block ; the line approximation is \(P\) or \(1-P\) according to the parity of the stripped negations. Otherwise the line is a value line. Let \(G\) contain the original Boolean equations, all nonboundary extension companions, and their coefficient domains, but no boundary-block companions or coefficient domains. 
+      Freshness.  A boundary block's coefficients occur in its own product and companions, but not in the inputs of any other block of its line: all the other blocks are proper descendants. Other proof lines use independent scopes. Thus each boundary family is fresh for \(G\). Proper copies of a formula inside a different line remain in \(G\), even when the formula has its own boundary in its own proof-line scope. 
+      Working theorem.  Let the proof be tree-like of height \(H\), with approximation bound \(L\), axiom-leaf degree bound \(A\), and a common old copy-agreement ceiling \(C=C_{\mathrm{copy}}\). Put 
+     \[
+      K_0=\max\{\max(A,2L)+(p-1)L,\ C+L\}.
+    \] 
+     At every proof node \(v\), the following invariant holds through degree \(B_v\le K_0+2H_vL\), where \(H_v\) is the height of its subproof: 
+     
+       For a positive signed boundary (\(v^{\mathrm{ap}}=P\)), \(G\) together with the boundary input tuple has a PC refutation. 
+       For a negative signed boundary (\(v^{\mathrm{ap}}=1-P\)), \(G\) derives every boundary input polynomial. 
+       For a value line, \(G\) derives \(v^{\mathrm{ap}}\). 
+     
+     Every polynomial and every proof in this invariant uses only the variables of \(G\). The excluded boundary coefficients are never silently treated as old variables. Copy agreements below compare boundary inputs or value formulas, so their supporting blocks are all nonboundary blocks in \(G\). 
+      Axiom leaves.  For a positive boundary, zero-specialize its coefficients in the source degree-\(A\) NS derivation of \(P\). Its target becomes one, its companions become the boundary inputs, and its field equations vanish. All other axioms are in \(G\), giving the first invariant. 
+     For a negative boundary, first derive an input \(g_i\) from the source derivation of \(1-P\), using \(g_i=g_i(1-P)+g_iP\). PC reuse gives an augmented proof through \(d=\max\{A,2L\}\). Apply  the one-block old-target transfer , whose freshness condition holds here, to this old input. Its bound \(\max\{d+(p-1)\delta,d+\deg g_i,p\deg g_i\}\) is at most \(d+(p-1)L\). This supplies the negative invariant for every input. A value line's source derivation already uses only \(G\). 
+      Antecedent conversion at MP.  Let \(a,c\) be the antecedent and implication children, and let \(\alpha\) be the antecedent's proper copy inside \(c\). If \(a\) has a positive boundary, weight its input-system refutation by that proper copy \(P_f=\alpha\). Each weighted input satisfies \(g_iP_f=f_iP_f+(g_i-f_i)P_f\); the first term is a proper-copy companion in \(G\), and the second follows by copy agreement and PC reuse through \(\max\{C,2L\}\). The replay lemma derives \(\alpha\) through \(\max\{B_a+L,C,2L\}\). 
+     If \(a\) has a negative boundary, its derived inputs transfer to the proper copy by agreement. Prefix telescoping then derives \(\alpha=1-P_f\) through \(\max\{B_a,C,2L\}\). If \(a\) is a value line, ordinary value-copy agreement suffices through \(\max\{B_a,C\}\). Thus the first, uniform ceiling handles all antecedents. 
+      Conclusion conversion at MP.  The implication child \(c=\neg a\vee b\) is a positive OR boundary. Its invariant refutes \(G\) with its input tuple through \(B_c\). Replace its antecedent input by the old proof of \(\alpha\) just obtained. 
+     If \(b\) begins directly with OR, the remaining inputs are the proper copies of its maximal children. Transfer them from the conclusion node's own boundary inputs by old agreement, obtaining the positive invariant. If \(b\) is a positive boundary under an even, nonzero number of leading negations, the implication's remaining input is \(1-P_f\). Under the conclusion's input assumptions, transferred inputs \(f_i=0\) and prefix telescoping derive \(1-P_f=0\), again giving the positive invariant. 
+     If \(b\) has a negative boundary, the remaining input is \(P_f\). Weight the resulting refutation of \(G\cup\{P_f\}\) by each conclusion input \(g_i\). The same proper-copy companion and input-agreement argument derives \(g_iP_f\) in \(G\) through \(\max\{C,2L\}\). Weighted replay gives the negative invariant with at most one additional \(L\). 
+     Finally, if \(b\) is a value line with proper copy \(\beta\), the remaining input is \(1-\beta\). Weight its refutation by \(\beta\). The required product \(\beta(1-\beta)\) is an old Booleanity consequence through \(2L\), since every OR block of a value line is nonboundary. This derives \(\beta\), then the conclusion value by copy agreement, with at most one additional \(L\). 
+     All cases fit the common recurrence 
+     \[
+      B_v\le\max\{B_c+L,\ B_a+2L,\ C+L,\ 3L\}.
+    \] 
+     The leaf bound and \(K_0\ge3L\) give the theorem by induction on proof-tree height. The number of copies, inputs, or proof nodes introduces no further degree charge. No size bound on the resulting PC derivation is used. 
+      Shared-proper variant.  Build proper evaluations from one common canonical DAG of syntactic subformulas, with the same no-merging and level conventions, and give only each line's signed boundary a private fresh vector family. All boundary inputs then use the same canonical proper child polynomials as their copies in other lines. Every value line is also its canonical proper value. The comparisons actually used in the invariant are now literal, so the same proof works with \(C=0\) and gives 
+     \[
+      B\le\max\{A,2L\}+(p-1)L+2HL.
+      \tag{SHARED-PROPER}
+    \] 
+     The private boundary product is still distinct from a canonical proper product of the same formula. The weighted and prefix arguments relate their roles; we do not identify those two fresh vector families. Source axiom-leaf proofs are obtained by renaming their distinguished boundary variables while keeping the needed proper evaluations canonical. No other block inside that leaf has inputs depending on its outermost boundary variables, so the required freshness remains valid. Identical proper evaluations can therefore be shared without increasing degree or creating a dependency on a private boundary. 
+
+
+### 67 cor:php-nonboundary-pc-transfer
+copy-php-proper-only  9. The resulting PHP refutation uses only nonboundary blocks 
+     Our unsimplified PHP theorem is a positive signed boundary, \(\neg\neg\bigvee_\nu\neg C_\nu\). Its boundary inputs are the row and collision clause products \(P_{C_\nu}\). The preceding invariant therefore gives a PC refutation of \(G\cup\{P_{C_\nu}\}\) through 
+     \[
+      B\le K_0+2HL
+       \le(1+\log S)(h+1)^{O(\ell+1)}.
+      \tag{PROPER-PC}
+    \] 
+     Apply the ordinary affine clause substitution to every proper row and collision copy in this system. The extra assumptions \(P_{C_\nu}\) become negative row generators or collision generators. Their original degrees are \(2h\), so these replacements fit. Zero any remaining proper copy of the final PHP block as well: after clause substitution, its companions become those same base generators and its field equations vanish. All these images have their established original-degree base certificates. The result is a degree-\(B\) PC refutation of the exact weak base \(\mathcal F_n\) plus an ENS family with polynomially many companions consisting only of the remaining nonboundary blocks, with no increase in levels. The shared-proper variant has the sharper bound (SHARED-PROPER). 
+     Every private proof-line boundary block is absent. A proper evaluation of the  same logical formula  can still remain because another line uses it as an argument. Consequently this is a normalization of the scoped representation, not a guarantee of fewer distinct source gate constraints. It also does not guarantee smaller ENS depth: negation and MOD contexts, and the flattened-disjunction convention, prevent that conclusion. Arbitrary proper subformulas do not inherit theorem proofs of their own. 
+     The original earlier Booleanity and copy-agreement proofs for proper inputs still use only nonboundary blocks. Consequently the uniform-ceiling PC core-cover rule applies there whenever its retained-core and factor-count hypotheses hold. Polynomial source normalizers with substitution degree at most \(L\) and their supplied image certificates can also be replayed in PC through \(LB\); conversion of the new PC refutation back to NS is unnecessary. 
+
+
+### 68 obs:boolean-domain-degree-padding
+copy-degree-obligation  10. Degree padding remains an optional, unused construction 
+     Copies of the same internally coherent formula have equal ordinary degrees by variable renaming. The uniform NS estimate (FORMULA-COPY) still must not be replaced without proof by a small multiple of an individual input's actual degree: MOD cancellations can reduce that degree. The NS budget in (MATCH-budget) retains this issue. The uniform-ceiling PC arguments and (PROPER-PC) use the absolute copy bound directly and require no degree padding. 
+      Possible repair considered, not incorporated.  If \(q\) is a polynomial and \(v\) is a new Boolean variable absent from \(q\), then for \(d\ge\max\{2,\deg q\}\), 
+     \[
+      q^\dagger=q+v^{d-2}(v^2-v)
+    \] 
+     has ordinary degree exactly \(d\), agrees with \(q\) on the Boolean domain, and differs from it by a degree-\(d\) domain certificate. Adding independent Boolean variables to the base does not weaken its PC degree lower bound, since setting them to zero recovers the original base without a degree increase. Integrating such padding into the full simulation, copy scopes, and preprocessing would require a separate proof; none of the present transfer claims assumes that construction. 
+
+
+### 69 ex:copy-ns-pc-separation
+copy-ns-pc-separation  11. An exact copy-matching example: PC degree four, NS degree six 
+     Work over \(\mathbb F_2\) with nine Boolean variables, in the order \((x,y,z,r,s,t,w,u,v)\). Put 
+     \[
+      g=1+rx+sy,\quad f=1+tx+wy,\quad Q=1+uf+vz,
+    \] 
+     and take the six nondomain axioms 
+     \[
+      (A_1,\ldots,A_6)=(xg,yg,xf,yf,fQ,zQ),
+    \] 
+     together with every variable's Boolean equation. The first four axioms belong to two independent copies of a two-input, one-factor block; the last two belong to a retained core on \((f,z)\). Their original ordinary degrees are \((3,3,3,3,5,4)\). The target is the matched companion \(T=z(1+ug+vz)\), of degree four. This is satisfiable extension data: set \(u=1\) and every other variable to zero. 
+      Certified finite claim.  The minimum PC degree for deriving \(T\) is four, whereas its minimum ordinary NS certificate degree is six. 
+      PC upper bound and NS upper bound.  The exact identity 
+     \[
+      D=g+f=tA_1+wA_2+rA_3+sA_4,\qquad
+      T=A_6+uzD
+      \tag{COPY-gap}
+    \] 
+     first derives \(D\), of degree two, through degree four. Multiplying its final line successively by \(u,z\), then adding \(A_6\), stays within degree four. The target's own degree proves optimality for PC. Flattening (COPY-gap) gives an explicit degree-six NS certificate. It uses no domain-equation terms. 
+      NS lower bound.  Reduce ordinary monomials by the nine Boolean equations and define a linear functional \(\lambda\) on degree-at-most-five polynomials. Give value one to precisely these eight squarefree monomials, and zero to every other squarefree monomial of degree at most five: 
+     \[
+      xyztu,\quad yzwu,\quad zv,\quad xyztv,\quad
+      zwv,\quad yzwv,\quad zuv,\quad yzwuv.
+      \tag{COPY-dual}
+    \] 
+     Substitution of these values gives 
+     \[
+      \lambda(T)=1,\qquad
+      \lambda(qA_i)=0
+      \quad\begin{cases}
+        i=1,2,3,4,&amp;\deg q\le2,\\
+        i=5,&amp;q=1,\\
+        i=6,&amp;\deg q\le1,
+      \end{cases}
+    \] 
+     where it suffices to check squarefree monomial multipliers. Boolean-generator multiples vanish under reduction. The allowed multiplier degrees use the original ordinary degrees \((3,3,3,3,5,4)\), before Boolean reduction. Thus \(\lambda\) annihilates every possible summand of a degree-five NS certificate while taking value one on the target. This proves the lower bound. 
+     The exhaustive check contains all 195 nondomain rows at degree five: \(4(1+9+\binom92)+1+(1+9)\). Its exact binary rank is 112, and (COPY-dual) annihilates every row. The degree-four span has 41 rows and rank 32 and also excludes the target; degree six has 576 rows and rank 234 and contains it. The saved dual supports use monomial bit masks \(167,198,260,295,324,326,388,454\) in the stated variable order. Both nonmembership duals, all rows, an ordinary NS lift, and the complete 15-line PC trace are retained in  copy-pc-ns-01.jsonl . This finite separation explains why the uniform PC ceiling can be stronger than original-degree flattened NS image certificates. 
+
+      Normalized-design corollary.  Add \(1-T\) to this system. It now has a degree-four PC refutation: derive \(T\) by (COPY-gap) and add the new axiom. Nevertheless it has an ordinary degree-four design. Let \(\lambda_4\) take value one on \(yzwu,zv\), and zero on the other squarefree monomials through degree four; this is the saved degree-four separating functional. Add it to evaluation at the displayed model of the old system, obtaining \(\ell\). Then \(\ell(1)=1\), \(\ell(T)=1\), and \(\ell\) annihilates the old degree-four axiom span. The new degree-four axiom \(1-T\) has only constant allowed cofactors at this degree, and \(\ell(1-T)=0\). Thus \(\ell\) is the claimed design despite the PC refutation. This auxiliary polynomial system is not PHP; its minimum NS refutation degree is not determined by the preceding minimum-degree claim for deriving \(T\). 
+
+
+### 70 cor:copy-degree-four-design-control
+copy-design-control  11. An exact copy-matching example: PC degree four, NS degree six 
+     Work over \(\mathbb F_2\) with nine Boolean variables, in the order \((x,y,z,r,s,t,w,u,v)\). Put 
+     \[
+      g=1+rx+sy,\quad f=1+tx+wy,\quad Q=1+uf+vz,
+    \] 
+     and take the six nondomain axioms 
+     \[
+      (A_1,\ldots,A_6)=(xg,yg,xf,yf,fQ,zQ),
+    \] 
+     together with every variable's Boolean equation. The first four axioms belong to two independent copies of a two-input, one-factor block; the last two belong to a retained core on \((f,z)\). Their original ordinary degrees are \((3,3,3,3,5,4)\). The target is the matched companion \(T=z(1+ug+vz)\), of degree four. This is satisfiable extension data: set \(u=1\) and every other variable to zero. 
+      Certified finite claim.  The minimum PC degree for deriving \(T\) is four, whereas its minimum ordinary NS certificate degree is six. 
+      PC upper bound and NS upper bound.  The exact identity 
+     \[
+      D=g+f=tA_1+wA_2+rA_3+sA_4,\qquad
+      T=A_6+uzD
+      \tag{COPY-gap}
+    \] 
+     first derives \(D\), of degree two, through degree four. Multiplying its final line successively by \(u,z\), then adding \(A_6\), stays within degree four. The target's own degree proves optimality for PC. Flattening (COPY-gap) gives an explicit degree-six NS certificate. It uses no domain-equation terms. 
+      NS lower bound.  Reduce ordinary monomials by the nine Boolean equations and define a linear functional \(\lambda\) on degree-at-most-five polynomials. Give value one to precisely these eight squarefree monomials, and zero to every other squarefree monomial of degree at most five: 
+     \[
+      xyztu,\quad yzwu,\quad zv,\quad xyztv,\quad
+      zwv,\quad yzwv,\quad zuv,\quad yzwuv.
+      \tag{COPY-dual}
+    \] 
+     Substitution of these values gives 
+     \[
+      \lambda(T)=1,\qquad
+      \lambda(qA_i)=0
+      \quad\begin{cases}
+        i=1,2,3,4,&amp;\deg q\le2,\\
+        i=5,&amp;q=1,\\
+        i=6,&amp;\deg q\le1,
+      \end{cases}
+    \] 
+     where it suffices to check squarefree monomial multipliers. Boolean-generator multiples vanish under reduction. The allowed multiplier degrees use the original ordinary degrees \((3,3,3,3,5,4)\), before Boolean reduction. Thus \(\lambda\) annihilates every possible summand of a degree-five NS certificate while taking value one on the target. This proves the lower bound. 
+     The exhaustive check contains all 195 nondomain rows at degree five: \(4(1+9+\binom92)+1+(1+9)\). Its exact binary rank is 112, and (COPY-dual) annihilates every row. The degree-four span has 41 rows and rank 32 and also excludes the target; degree six has 576 rows and rank 234 and contains it. The saved dual supports use monomial bit masks \(167,198,260,295,324,326,388,454\) in the stated variable order. Both nonmembership duals, all rows, an ordinary NS lift, and the complete 15-line PC trace are retained in  copy-pc-ns-01.jsonl . This finite separation explains why the uniform PC ceiling can be stronger than original-degree flattened NS image certificates. 
+
+      Normalized-design corollary.  Add \(1-T\) to this system. It now has a degree-four PC refutation: derive \(T\) by (COPY-gap) and add the new axiom. Nevertheless it has an ordinary degree-four design. Let \(\lambda_4\) take value one on \(yzwu,zv\), and zero on the other squarefree monomials through degree four; this is the saved degree-four separating functional. Add it to evaluation at the displayed model of the old system, obtaining \(\ell\). Then \(\ell(1)=1\), \(\ell(T)=1\), and \(\ell\) annihilates the old degree-four axiom span. The new degree-four axiom \(1-T\) has only constant allowed cofactors at this degree, and \(\ell(1-T)=0\). Thus \(\ell\) is the claimed design despite the PC refutation. This auxiliary polynomial system is not PHP; its minimum NS refutation degree is not determined by the preceding minimum-degree claim for deriving \(T\). 
+
+
+### 71 ex:signed-boundary-mod-traces
+signed-fixture-setup  1. Explicit tautological fixtures and the MOD inference 
+     Work over \(p=2,3\), at accuracy \(h=1\), with TRUE encoded by zero. Original variables \(x,y\) are Boolean; coefficient variables range over \(\mathbb F_p\). Write \(P_g=1-\sum_i r_i g_i\), keeping independent coefficient families for private line boundaries and canonical proper evaluations. The fixtures use the usual expansions \(X\wedge Y=\neg(\neg X\vee\neg Y)\) and \(A\to B=\neg A\vee B\). 
+     The positive antecedent is the tautology \(A_+=(X\wedge Y)\to X\). Put 
+     \[
+      P=1-rx-sy,\qquad
+      g=(1-P,1-x),\qquad
+      a=P_g.
+    \] 
+     The inner proper block has companions \(xP,yP\). Its exact input-system certificate is 
+     \[
+      1=(1-x)+x(1-P)+xP.
+      \tag{POS-unit}
+    \] 
+     This has ordinary NS degree three. Multiplying by a private product \(U=P_g(R)\) gives a degree-six source-leaf certificate using \(g_1U,xg_0U,U(xP)\). Zeroing \(R\) returns a PC proof of (POS-unit). Weighting that unit proof by the canonical proper product \(a\), and using its companions \(g_i a\), derives \(a\) through degree six. The final dependency cone uses \(xP\) and both canonical-\(A_+\) companions, but not \(yP\). Thus deletion of the private boundary has not removed its proper copy. 
+     The negative antecedent is the tautology 
+     \[
+      A_-=\neg\bigl((X\wedge\neg X)\vee(Y\wedge\neg Y)\bigr).
+    \] 
+     Let \(P_x=P_{(x,1-x)}\), \(P_y=P_{(y,1-y)}\), and let \(W=P_{(P_x,P_y)}\) be the canonical proper boundary product. The antecedent's proper value is \(\alpha=1-W\). Both child products have degree-three proofs: 
+     \[
+      P_x=xP_x+(1-x)P_x,\qquad
+      P_y=yP_y+(1-y)P_y.
+      \tag{NEG-inputs}
+    \] 
+     For a private copy \(U=1-RP_x-SP_y\), these identities give an NS proof of \(1-U=RP_x+SP_y\) through degree four. Derive \(g_i=g_i(1-U)+g_iU\) through degree five and apply the existing  old-target elimination algorithm , with input degree two. Its bound is \(5+2(p-1)\); the generated proofs actually reach degrees six and eight for \(p=2,3\). Their final dependencies involve only the corresponding child block and its domains, strictly below \(W\). Prefix telescoping then derives \(\alpha=1-W\), using the coefficients of \(W\) but neither of its companions. 
+     For either antecedent \(A\), take the value line \(B=\mathrm{MOD}_{p,0}(\neg A)\), whose approximation is \(\beta=\alpha^{p-1}\). On Boolean truth values this singleton MOD formula equals \(A\). The implication \(A\to B\) is therefore a fixed tautological schema for fixed \(p\); its two input polynomials are \(\alpha,1-\beta\), with exact certificate 
+     \[
+      1=(1-\alpha^{p-1})+\alpha^{p-2}\alpha.
+      \tag{MOD-unit}
+    \] 
+     Multiplying by its private boundary product gives the explicit source-leaf certificate; zeroing that boundary gives (MOD-unit). Replace its antecedent input by the proof of \(\alpha\), then weight the resulting refutation of \(G+\{1-\beta\}\) by \(\beta\). Mixed-domain division supplies \(\beta(1-\beta)\) through \(2\deg\beta\). This is the value-conclusion branch of the signed invariant, with every operation saved. 
+     These are fixed derived tautological schemas with explicit algebraic leaf certificates, not a listing of their proofs in a particular primitive Frege basis. A fixed Frege presentation can add these fixed schemas as derived axioms. The computation audits the algebraic boundary construction; it is not an arbitrary-Frege compiler or a PHP refutation. 
+
+
+### 72 thm:earlier-input-pc-pruning
+signed-learned-input-pruning  3. Simultaneous zero substitution from earlier PC input proofs 
+      Working theorem.  Let a leveled ENS system over an old base have a PC derivation of \(t\) through degree \(D\). Select any collection of blocks. For every input \(g_{a,i}\) of every selected block, suppose a supplied PC derivation through \(C_*\) uses only the base and blocks at levels strictly below \(a\). Zero all selected coefficient variables simultaneously, leaving the other variables unchanged; call this substitution \(\Phi\). Then the base together with the specialized retained blocks derives \(\Phi(t)\) through 
+     \[
+      D_*=\max\{D,C_*\}.
+      \tag{LEARNED-zero}
+    \] 
+     There is no bound on the number of selected blocks, their arities, or their accuracies beyond positive accuracy. The theorem concerns PC proofs, not a claim that the same degree suffices for flattened NS certificates. For a refutation, \(\Phi(1)=1\); for a base-variable target, \(\Phi(t)=t\). 
+      Proof.  A selected companion \(g_{a,i}P_a\) becomes \(\Phi(g_{a,i})\), and its coefficient field equations become zero. Retained companions become the prescribed specialized retained axioms. Constant substitution preserves ordinary degree and PC multiplication rules. 
+     Proceed by levels. To supply a selected companion's image, replay the given earlier proof of \(g_{a,i}\). Every selected axiom in that auxiliary proof belongs to a strictly earlier level, so its image proof has already been supplied through \(C_*\). Retained axioms and base axioms have their direct images. Reuse those completed image proofs at each axiom occurrence; do not multiply their derivations. Thus the auxiliary replay derives \(\Phi(g_{a,i})\) through \(C_*\). After all needed images are available, replay the original degree-\(D\) proof through \(D_*\). All later inputs are substituted throughout. The strict-level hypothesis makes the construction well-founded and prevents circular use of the removed blocks. 
+     This is the zero-substitution case of the common-PC-ceiling principle, stated separately because it needs neither a retained core nor one accuracy factor per input. A theorem proof that still uses the selected block, or arbitrary higher-level blocks, does not satisfy the hypothesis. 
+
+
+### 73 cor:negative-leaf-proper-pruning
+signed-negative-leaf-pruning  4. A concrete additional batch: negative axiom-leaf proper copies 
+      Working corollary.  In the shared-proper simulation, select each canonical proper OR block whose formula, under an odd number of leading negations, occurs as an axiom leaf of the balanced proof. Every selected block can be removed simultaneously without raising the shared-proper PC ceiling 
+     \[
+      B=\max\{A,2L\}+(p-1)L+2HL.
+    \] 
+      Proof.  Use that leaf's source proof with a private copy of its signed boundary. All its other evaluation blocks are syntactic proper descendants, hence at strictly earlier levels under the saved level convention. The negative-leaf argument gives a proof of each boundary input through \(\max\{A,2L\}+(p-1)L\), eliminating the private boundary and retaining only those descendants. In the shared-proper convention the input polynomials are literally those of the canonical proper block being selected. These are the earlier proofs required by (LEARNED-zero). Their common ceiling is already at most \(B\), so simultaneous zero substitution adds no degree cost. Selected descendants, if any, are handled by the same level induction. 
+     This removes proper companions in addition to the already removed private copies. It does not authorize removing proper copies of every derived negative theorem: its proof can use unrelated or higher-level blocks, and the strict-earlier hypothesis must then be checked separately. Nor does it remove arbitrary non-tautological arguments. 
+     In the negative fixture, zeroing the canonical \(W\) coefficients sends its companions to \(P_x,P_y\), supplied directly by (NEG-inputs) through degree three. Its negative value becomes zero. The recorded later-block companion image remains nonzero and changes, verifying that the substitution propagates. For a PHP refutation the final target would remain one; the fixture's vanishing value target is not evidence of a PHP lower bound. 
+     The positive fixture also has a specific affine removal: set its proper-\(A_+\) coefficients to \((x,1)\). Then \(a\) becomes \(xP\), and each selected companion becomes \(g_i(xP)\), derived from the older companion \(xP\) within its original degree. Its coefficient field images follow from \(x^2-x\). The saved degree-six replay removes that proper block, leaving only the used inner companion. Extending this positive construction uniformly from arbitrary source axiom-leaf certificates is the next question. 
+
+levels-leaf-pruning  5. Corrected pruning consequence and degree ledger 
+     For a positive root, use the newly constructed strict-support unit certificate to obtain \(\beta_i\) with 
+     \[
+      1=\sum_i\beta_i g_i+H,\qquad
+      H\text{ has an earlier NS certificate through }A_*.
+    \] 
+     The first-vector assignment gives local companion-image proofs through \(A_*+L\), field-image proofs through \(pA_*\), and coefficient degree at most \(T_*=\max\{1,A_*\}\). For a negative root, zero every coefficient and use the individual earlier input certificates through \(A_*\). These are now verified hypotheses of the conditional triangular theorem. 
+     Combine with the existing ordinary clause and final-PHP modes using 
+     \[
+      C_*=\max\{A_*+L,\ pA_*,\ 2h+2,\ 3,\ p\}.
+    \] 
+     If the incoming proper-system proof has degree \(B\), the corrected bound is 
+     \[
+      \max\{T_*^dB,\ T_*^{d-1}C_*\}
+      \le(1+\log S)(h+1)^{O((\ell+1)^2)},
+      \qquad d\le\ell+O(1).
+      \tag{REPAIRED-leaf-pruning}
+    \] 
+     For the negative-only zero mode the bound is \(\max\{B,A_*\}\). It is no extra degree increase when the common source ceiling was chosen to include \(A_*\); this must not be inferred from an arbitrary earlier numerical leaf certificate alone. The older asymptotic axiom-root conclusions are recovered, with this support construction and parameter choice replacing their faulty justification. 
+     No binary-bracket depth is introduced. The selected assignments depend on strictly lower structural ENS levels because of their constructed support, so simultaneous induction remains bounded by the original source depth. 
+
+
+### 74 lem:positive-leaf-witness-extraction
+leaf-positive-extraction  1. The unit certificate contains a normalizer 
+     Let \(G\) be an older system, including its typed domains. A private block has inputs \(g_i\), product \(P=P_g(R)\), and all companions \(g_iP\). Suppose a genuine ordinary NS certificate through degree \(A\) derives \(P\) from \(G\), those companions, and the private coefficient field equations: 
+     \[
+      P=\sum_i q_i(g_iP)+\sum_{F\in G}Q_FF
+                +\sum_j S_j(r_j^p-r_j).
+      \tag{LEAF-NS}
+    \] 
+     Assume \(G\) and the \(g_i\) use only older variables. Set every private coefficient to zero, and put \(\beta_i=q_i|_{R=0}\). The exact identity becomes 
+     \[
+      1=\sum_i\beta_i g_i+\sum_{F\in G}(Q_F|_{R=0})F,
+      \qquad
+      H:=1-\sum_i\beta_i g_i.
+      \tag{LEAF-unit}
+    \] 
+     Thus \(\deg\beta_i\le A\), and \(H\) has an older NS certificate through \(A\). This is extraction from the given NS cofactors; a degree-\(A\) PC refutation of the input system alone would not justify the same cofactor bound. 
+     For a canonical proper block on the same tuple, assign its first vector to \((\beta_i)_i\) and every subsequent vector to zero. Its product becomes \(H\). If \(k_i=\deg g_i\le L\), its companion image \(g_iH\) has an older NS, hence PC, certificate through \(A+k_i\le A+L\). Each nonzero coefficient field image \(\beta_i^p-\beta_i\) has a typed-domain certificate through \(pA\). The block accuracy need only be positive; there is no arity bound. 
+      Degree convention.  The source cofactors in (LEAF-NS) use the original ordinary degrees of the source axioms. Constant substitution does not enlarge them. The new \(A+L\) image ceiling need not fit each selected companion's original degree; the following PC theorem explicitly accommodates that additional cost. 
+
+
+### 75 thm:triangular-polynomial-pc-pruning
+leaf-triangular-pc  2. Triangular polynomial substitution with one PC image ceiling 
+      Working theorem.  Consider a leveled ENS system with at most \(d\ge1\) levels and an old base. Select any collection of blocks. At each selected block \(a\), prescribe polynomial assignments \(\theta_a(r)\), of degree at most \(T\ge1\), using only old variables and variables at strictly earlier levels. Suppose every local companion image \(\theta_a(E_{a,i})\) and local field image \(\theta_a(r)^p-\theta_a(r)\) has a supplied PC derivation through \(C\) in that same strictly earlier ring, from the old base and earlier blocks. Here \(\theta_a\) changes only block \(a\)'s coefficients. 
+     Compose the assignments recursively by levels, obtaining \(\Phi\). Leave unselected coefficients and old variables unchanged, and specialize all retained inputs. A degree-\(D\) PC proof of \(t\) then transfers to a proof of \(\Phi(t)\) over the base and retained specialized blocks through 
+     \[
+      \boxed{\max\{T^dD,\ T^{d-1}C\}.}
+      \tag{TRI-PC}
+    \] 
+     The number of selected blocks does not enter. Constant zero assignments are included by taking \(T=1\). Only degree is controlled; no polynomial bound on expanded coefficient descriptions or final PC proof length is asserted. 
+      Proof.  By induction, every variable at level at most \(j\) has a composed image of degree at most \(T^j\). Unchanged variables have degree one. Suppose local image proofs for selected blocks below level \(j\) have already been replayed through \(T^{j-2}C\), with the empty level-zero case omitted. 
+     A supplied image proof for a level-\(j\) block uses only variables below \(j\). Substitute their images in every line; its ordinary degrees are at most \(T^{j-1}C\). Retained earlier axioms have direct specialized images. Earlier selected axioms use their already supplied image proofs, whose degree is no larger. PC reuse inserts these proofs without multiplying their full derivations. This derives the global image of every selected axiom at level \(j\) through \(T^{j-1}C\). The strict dependency condition makes the induction well-founded. 
+     Finally substitute the entire original proof. Its lines have degree at most \(T^dD\), and each selected axiom image has a derivation through \(T^{d-1}C\). Retained axioms and base axioms have their direct images. Polynomial substitution preserves PC derivability by replacing a variable-multiplication step with multiplication by its image polynomial, using the usual ordinary-degree bound. The final line is \(\Phi(t)\), proving (TRI-PC). 
+     These hypotheses are deliberately stated in the earlier variable ring, not merely as an informal claim that a certificate is “old.” If an earlier-axiom proof contains extraneous later variables but its target does not, first set those unused variables to zero. No selected axiom may depend on its own image proof. The theorem makes no flattened-NS degree assertion. 
+
+
+### 76 cor:all-axiom-boundary-proper-pruning
+leaf-all-boundary-pruning  3. Remove canonical proper copies of both signs of axiom boundary 
+     Use the shared-proper construction with approximation bound \(L\), source leaf NS bound \(A=(h+1)^{c_F}L\), and its degree-\(B\) signed-boundary PC invariant. A  recognized axiom boundary  is an OR formula that, under some number of leading negations, is the formula of an axiom leaf. Select its canonical proper copy if one occurs. This definition excludes interior schema nodes and arbitrary substituted argument formulas that are not themselves such leaves. 
+      Working corollary.  Every recognized axiom-boundary proper copy can be removed simultaneously. For positive parity, use (LEAF-unit). For negative parity, use the preceding  negative-leaf input proofs  and assign every coefficient zero. The positive and negative local image proofs have common bounds 
+     \[
+      T=\max\{1,A\},\qquad
+      C_{\rm leaf}=
+        \max\{A+L,\ pA,\ \max(A,2L)+(p-1)L\}.
+      \tag{LEAF-budget}
+    \] 
+      Why the hypotheses hold.  The audited  BIKPRS Lemma 6.12  supplies an NS proof using the disjunction blocks of the axiom instance itself. Give its distinguished boundary a private family. Every other block in that formula is a proper descendant and hence strictly earlier under the syntactic level convention. Zeroing that private family in the positive case therefore leaves a certificate in precisely the earlier ring required above. In the negative case, old-target elimination removes the private family and leaves only the same descendants. Canonical shared inputs agree literally. A targeted reread of Lemmas 6.11–6.12 confirmed their stated extension-family scope; this is not a new full-paper audit. 
+      Ordinary-PHP endpoint.  The result combines with ordinary clause and final-PHP removal in one substitution. Start from the unpruned proper-system refutation with the clause products as extra assumptions, and add \(\mathcal F_n\) to the old base. For each ordinary clause block use its existing affine assignment; its companion images have base proofs through degree three and its field images through \(p\). For any retained proper final-PHP block use zero coefficients: the local companion images are clause products, whose earlier proofs from \(\mathcal F_n\) and clause blocks have degree at most \(2h+2\). Use these specific modes if a block also has another qualifying description. 
+     All these assignments use strictly earlier variables. After simultaneous substitution the extra clause assumptions become negative row generators or collision generators, with degree-one or degree-two base derivations. Thus (TRI-PC), with 
+     \[
+      C=\max\{C_{\rm leaf},\,2h+2,\,3,\,p\},
+    \] 
+     gives a refutation of \(\mathcal F_n\) plus only the remaining specialized proper blocks through 
+     \[
+      B_{\rm leaf}\le\max\{T^dB,T^{d-1}C\}
+        \le(1+\log S)(h+1)^{O((\ell+1)^2)}.
+      \tag{LEAF-PHP}
+    \] 
+     Here \(d\le\ell+O(1)\); constants depend on the fixed prime and proof presentation. The exponent can be worse than the earlier template-specific estimate, but remains constant at fixed depth. For \(S\le n^K\) and \(h=\lceil\log n\rceil\), the bound remains polylogarithmic in \(n\). The retained companion count and ENS level count do not increase. 
+     This proves a broader root-removal statement than the negative-only rule and does not require an explicit normalizer for each chosen axiom scheme. The certificate extraction can still leave older companions in its error \(H\). Derived theorem boundaries do not automatically qualify: their proofs can depend on blocks outside the formula's proper descendants. 
+
+levels-leaf-pruning  5. Corrected pruning consequence and degree ledger 
+     For a positive root, use the newly constructed strict-support unit certificate to obtain \(\beta_i\) with 
+     \[
+      1=\sum_i\beta_i g_i+H,\qquad
+      H\text{ has an earlier NS certificate through }A_*.
+    \] 
+     The first-vector assignment gives local companion-image proofs through \(A_*+L\), field-image proofs through \(pA_*\), and coefficient degree at most \(T_*=\max\{1,A_*\}\). For a negative root, zero every coefficient and use the individual earlier input certificates through \(A_*\). These are now verified hypotheses of the conditional triangular theorem. 
+     Combine with the existing ordinary clause and final-PHP modes using 
+     \[
+      C_*=\max\{A_*+L,\ pA_*,\ 2h+2,\ 3,\ p\}.
+    \] 
+     If the incoming proper-system proof has degree \(B\), the corrected bound is 
+     \[
+      \max\{T_*^dB,\ T_*^{d-1}C_*\}
+      \le(1+\log S)(h+1)^{O((\ell+1)^2)},
+      \qquad d\le\ell+O(1).
+      \tag{REPAIRED-leaf-pruning}
+    \] 
+     For the negative-only zero mode the bound is \(\max\{B,A_*\}\). It is no extra degree increase when the common source ceiling was chosen to include \(A_*\); this must not be inferred from an arbitrary earlier numerical leaf certificate alone. The older asymptotic axiom-root conclusions are recovered, with this support construction and parameter choice replacing their faulty justification. 
+     No binary-bracket depth is introduced. The selected assignments depend on strictly lower structural ENS levels because of their constructed support, so simultaneous induction remains bounded by the original source depth. 
+
+
+### 77 ex:triangular-witness-degree-growth
+leaf-extraction-checks  4. Exact extraction and a composition control 
+     The  checker  uses the existing ordinary-polynomial and typed-domain kernels over \(p=2,3\). It builds two nested projection instances. With \(P_0=P_{(x,y)}\), set 
+     \[
+      a_0=P_{(1-P_0,\,1-x)},\qquad
+      P_1=P_{(a_0,y)},\qquad
+      a_1=P_{(1-P_1,\,1-a_0)}.
+    \] 
+     Private source-leaf copies give (LEAF-NS). Zero specialization extracts witnesses \((x,1)\) for \(a_0\), and \((a_0,1)\) for \(a_1\), with older errors \(xP_0\) and \(a_0P_1\). The four extracted unit certificates have degrees three and seven; their private source certificates have degrees six and twelve. Both companion images and coefficient field images are reconstructed exactly. The upper witness and the retained \(P_1\) inputs are then specialized through the lower assignment, with stale-input and nonzero-error controls. 
+     A separate synthetic two-level control shows why the composed variable degree cannot simply be replaced by the local \(T\). Both blocks have input tuple \((x,1-x)\). The prescribed first witness is 
+     \[
+      \beta^{(0)}=\bigl(1+y^2(1-x),\,1-y^2x\bigr).
+    \] 
+     For the second, replace \(y\) by the first block's first coefficient \(r\), before substitution. Both local witnesses have degree three and normalization error zero. After composition the upper coefficient images have degree seven, exceeding three and satisfying \(7\le3^2\). The resulting companion images are identically zero, and all composed field images have explicit base-domain certificates. This concerns the prescribed witnesses only: constant alternative normalizers exist for these complementary inputs, so it is not an optimality or impossibility result for normalization. 
+     All blocks, source/unit cofactors, local and composed assignments, image certificates, and degree controls are preserved in  checks-01.jsonl . The initial compilation rejected two misleading-indentation warnings; after correction all mathematical checks passed. The  result record  gives reproduction and provenance. 
+      Remaining gap.  Arbitrary proper arguments and interior schema blocks remain. Their occurrence count, essential support, and affordable elimination are still uncontrolled. The next step is to examine the error left by a projection instance with an arbitrary OR argument, rather than to treat a root-removal theorem as a theorem about its entire subformula family. 
+      Process assessment.  A single targeted extraction suite and one focused proof review sufficed; the ordinary kernels were reused, and optional NS-strengthening and broader support questions were left for later cycles. 
+     
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   15 min 41.36 s   
+  Mathematical reasoning and proof writing  9 min 56.08 s  
+  Computation design and coding  3 min 48.48 s  
+  Preparation and checkpoint work  1 min 52.56 s  
+  Individually measured computation  0.13 s  
+  Individually measured conversion, checks, and local processing  4.11 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1. 
+ 
+

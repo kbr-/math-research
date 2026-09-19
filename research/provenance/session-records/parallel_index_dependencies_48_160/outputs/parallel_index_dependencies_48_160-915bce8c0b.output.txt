@@ -1,0 +1,380 @@
+
+### 145 cor:MOD-goal-aggregate-normalizers
+mod-goal-aggregate  1. A normalizer from one homogeneous aggregate 
+     Let a selected block have current inputs \(g_1,\ldots,g_m\), and fix constants \(b_j\in\mathbb F_p\). Set \(s=\sum_jb_jg_j\). Other inputs may have coefficient zero. All current goals and supplied witness proofs avoid the selected coefficients, and retained ancestors receive the exact coefficient substitution. 
+     If the allowed witness system proves \(s-c\) through \(C\), with \(c\ne0\), set the first coefficient vector to \(b_j/c\) and every later vector to zero. The product image is \(H_{\rm lin}=1-s/c\). If instead it proves \(H_{\rm sel}=1-s^{p-1}\) through \(C\), and \(h\ge p-1\), allocate one vector to each \(\alpha\in\mathbb F_p^\times\), with coefficients \(b_j/\alpha\), and set unused vectors to zero. The  existing field-selector identity  gives 
+     \[
+      \prod_{\alpha\ne0}(1-\alpha^{-1}s)=1-s^{p-1}.
+    \] 
+     In either case every companion image is \(g_jH\), and all selected field images vanish. For the linear mode, \(\deg(g_jH)\le d_j+\delta\), where \(\delta=\max_i\deg g_i\). For the selector mode, 
+     \[
+      \deg(g_jH_{\rm sel})\le d_j+(p-1)\delta
+        \le d_j+h(\delta+1)=e_j.
+    \] 
+     Thus the same completed-witness reuse as in  the preceding normalizer corollary  transfers a degree-\(D\) PC proof through \(\max\{D,C\}\), using the degree of each axiom before its current assignment and retaining any earlier required ledger. The number of inputs does not enter this ceiling. No same-degree NS conclusion follows solely from the PC witness. 
+     The aggregate must be an actual homogeneous linear combination of tuple coordinates. An affine constant offset is not an extra ENS input that can be inserted without justification. This distinction determines which MOD residues work automatically below. 
+
+mod-goal-source  2. Two source criteria from a false MOD goal child 
+     Consider one non-OR child of the current positive OR representative, with its associated goal input set to zero. Write its MOD arguments as \(\psi_1,\ldots,\psi_k\), their truth-indicator inputs as \(g_{B,\nu}=1-\psi_\nu^{\rm ap}\), and 
+     \[
+      s_B=\sum_{\nu=1}^k g_{B,\nu},\qquad u_B=i-s_B.
+    \] 
+     Match each argument input to a selected-block coordinate, preserving multiplicities. A sufficient syntactic case is that all these arguments are maximal non-OR children present in the selected root's frontier. The selected root may have additional children. Repeated arguments may use the same coordinate, adding their multiplicities in \(\mathbb F_p\). With intact source and goal subtrees, copy agreement supplies 
+     \[
+      s_A-s_B\in\mathcal C_{2L},
+    \] 
+     where \(s_A\) is the resulting homogeneous sum of selected coordinates. Match the actual argument values; flattening an OR argument into different inputs is not such a match. 
+      Negative MOD child, nonzero residue.  If the goal child is \(\neg\mathrm{MOD}_{p,i}(\psi)\), the goal input is \(u_B^{p-1}\). Its zero assumption and the  finite-domain conversion  derive \(u_B\): multiply the goal by \(u_B\) and subtract a domain proof of \(u_B^p-u_B\). For \(p=2\) the goal already is \(u_B\). If \(e_B=\deg u_B\) is positive, the domain cost satisfies \(pe_B\le2L\). Hence 
+     \[
+      s_A-i=(s_A-s_B)-u_B
+    \] 
+     has a proof through \(2L\). For \(i\ne0\), use the linear image \(1-s_A/i\), at any positive accuracy. At \(h\ge p-1\), the selector \(1-s_A^{p-1}\) is an alternative: multiply the completed proof of \(s_A-i\) by its power-difference cofactor, using \(i^{p-1}=1\). 
+      Positive MOD child, residue zero.  If the child is \(\mathrm{MOD}_{p,0}(\psi)\), its goal input is 
+     \[
+      1-u_B^{p-1}=1-s_B^{p-1}.
+    \] 
+     At \(h\ge p-1\), the power-difference identity and \(s_A-s_B\) give \(1-s_A^{p-1}\) through the same \(2L\) ceiling. This goal says the scalar is nonzero; it need not specify which nonzero value it has. 
+      Why the power step fits.  Keep the original selected-root approximation bound \(h(\delta_A+1)\le L\). At selector accuracy, \((p-1)\deg s_A\le(p-1)\delta_A\le L\). The actual goal sum has \((p-1)\deg u_B\le L\). Form the aggregate difference before multiplying its final polynomial, so cancellations in the goal sum do not cause an artificial input-degree charge. Both power-difference operations therefore fit \(2L\), independent of arity. Constant sums are handled directly by their constant goal or witness. 
+      Source consequence.  These supplied witnesses fit the ancestor-private schedule and its common \(2L\) image budget. The selected root remains outside the protected representative, and current automatic witness subtrees stay intact. Retain the exact image \(H\) in every affected ancestor. The source degree remains \(K_0+2pHL\), with the previous highest-layer and protected-clause endpoint scope. This is a criterion for matched requests, not a cover theorem for all wide source blocks. 
+
+
+### 146 lem:selector-goal-Booleanity
+mod-goal-booleanity  3. The selector preserves Booleanity without the goal 
+     For \(H_{\rm sel}=1-s^{p-1}\), the identity 
+     \[
+      H_{\rm sel}^2-H_{\rm sel}
+        =s^{p-2}(s^p-s)
+    \] 
+     and mixed-domain field reduction give an NS Booleanity certificate through \(2(p-1)\deg s=2\deg H_{\rm sel}\) when \(s\) is nonconstant. Constant images are zero or one. This proof uses domain equations only; it does not use the MOD goal or companion images. It is the same domain mechanism as  MOD Booleanity . 
+     In contrast, \(H_{\rm lin}=1-s/i\) can be non-Boolean off the goal when \(p&gt;2\). With \(i=1\) and two Boolean inputs equal to one, \(s=2\) and \(H_{\rm lin}=-1\), which is neither zero nor one in such a field. A retained parent can still satisfy its specialized ENS equations by having product zero. Thus the absence of Booleanity is visible in a valid retained-system model, not merely an unconstrained evaluation. 
+     The linear mode remains valid for its conditional PC replay. The selector is a useful alternative when later work needs unconditional Booleanity. That Booleanity does not itself supply the removed companion images \(g_jH\), which can still require the goal. Nor may either nonconstant image be replaced by the zero polynomial merely because the goal proves it zero. 
+
+
+### 147 obs:MOD-goal-invalid-residues
+mod-goal-controls  4. Invalid residues and the accuracy requirement 
+      Zero-sum residue control.  Take \(p\) independent Boolean inputs, all equal to one, so \(s=0\) with nonzero coordinates. A positive MOD child of any residue \(i\ne0\) has goal value \(1-i^{p-1}=0\) there. A negative MOD-zero child has goal value \(0^{p-1}=0\) there. Thus these omitted residue cases allow a nonzero selected vector with aggregate zero. 
+     Any coefficient assignment whose factors all depend only on this homogeneous aggregate has form \(\prod_u(1-\lambda_us)\), and equals one at that point. A companion image is therefore one. The original ENS block itself is satisfiable: set one first-vector coordinate to one and all other coefficients zero, making its original product zero. This excludes the aggregate-only inference in the omitted cases at every accuracy, not arbitrary input-dependent normalizations or additional source constraints. 
+      Accuracy control for constant assignments.  For the valid positive-MOD-zero goal over independent Boolean variables \(g_j=x_j\), with at least \(p-1\) coordinates and only Boolean domain axioms as the base, the accuracy \(h\ge p-1\) is necessary for any constant coefficient assignment making all companion images consequences of that goal. Set all but the first \(p-1\) coordinates to zero. Every nonzero Boolean vector in the remaining subcube has sum between one and \(p-1\), so the goal holds and some companion forces the product image to be zero. At the zero vector, that product image is one because all its factors have constant term one. 
+     Its multilinear reduction is consequently the NOR polynomial \(\prod_{j=1}^{p-1}(1-x_j)\), whose top coefficient is nonzero in \(\mathbb F_p\). Boolean reduction cannot increase degree. But an accuracy-\(h\) product with constant coefficients and linear inputs has degree at most \(h\). Therefore \(h\ge p-1\). This elementary free-input control does not impose a new lower bound in the PHP base with extra constraints, or on polynomial coefficient assignments. For a narrower Boolean tuple, other modes such as direct Boolean packing can use fewer factors. 
+
+
+### 148 lem:MOD-zero-goal-constant-accuracy
+mod-goal-controls  4. Invalid residues and the accuracy requirement 
+      Zero-sum residue control.  Take \(p\) independent Boolean inputs, all equal to one, so \(s=0\) with nonzero coordinates. A positive MOD child of any residue \(i\ne0\) has goal value \(1-i^{p-1}=0\) there. A negative MOD-zero child has goal value \(0^{p-1}=0\) there. Thus these omitted residue cases allow a nonzero selected vector with aggregate zero. 
+     Any coefficient assignment whose factors all depend only on this homogeneous aggregate has form \(\prod_u(1-\lambda_us)\), and equals one at that point. A companion image is therefore one. The original ENS block itself is satisfiable: set one first-vector coordinate to one and all other coefficients zero, making its original product zero. This excludes the aggregate-only inference in the omitted cases at every accuracy, not arbitrary input-dependent normalizations or additional source constraints. 
+      Accuracy control for constant assignments.  For the valid positive-MOD-zero goal over independent Boolean variables \(g_j=x_j\), with at least \(p-1\) coordinates and only Boolean domain axioms as the base, the accuracy \(h\ge p-1\) is necessary for any constant coefficient assignment making all companion images consequences of that goal. Set all but the first \(p-1\) coordinates to zero. Every nonzero Boolean vector in the remaining subcube has sum between one and \(p-1\), so the goal holds and some companion forces the product image to be zero. At the zero vector, that product image is one because all its factors have constant term one. 
+     Its multilinear reduction is consequently the NOR polynomial \(\prod_{j=1}^{p-1}(1-x_j)\), whose top coefficient is nonzero in \(\mathbb F_p\). Boolean reduction cannot increase degree. But an accuracy-\(h\) product with constant coefficients and linear inputs has degree at most \(h\). Therefore \(h\ge p-1\). This elementary free-input control does not impose a new lower bound in the PHP base with extra constraints, or on polynomial coefficient assignments. For a narrower Boolean tuple, other modes such as direct Boolean packing can use fewer factors. 
+
+
+### 149 thm:goal-normalized-sharp-Booleanity
+goal-portfolio-choice  1. Choose compatible images when constructing the replay 
+     Keep the ancestor-private occurrence construction and its exact polynomial images. For a proved nonzero scalar \(s=c\), use the selector \(1-s^{p-1}\) when unconditional Booleanity is needed, rather than the potentially non-Boolean linear image \(1-s/c\). At \(h\ge p-1\), the selected root has enough factors. The completed proof of \(s-c\) and the power-difference identity derive the selector through \(2L\), since \((p-1)\deg s\le L\) under the same source budget as in  the MOD-goal criterion . 
+     This also applies to a single proved nonzero coordinate. A one-factor projection onto an actual child value may be kept when its Booleanity follows from the portfolio below. Covered-zero cuts and the literal zero/one modes remain unchanged. These choices preserve \(K_0+2pHL\); they are made consistently in the source replay, not by changing a finished proof's assignments without replaying its image obligations. 
+     For the convenient constant row/collision endpoint, take \(h\ge\max\{2,p-1\}\), as eventually holds for \(h=\lceil\log n\rceil\). Row clause images \(1-\rho_i\) and collision images \(x_{ij}x_{i'j}\) have their known old-base NS zero proofs through degrees one and two. They are the base-zero cases below. This uses the exact weak PHP base and no same-row exclusions. 
+
+goal-portfolio-Booleanity  2. Sharp NS Booleanity over the actual retained family 
+     Let \(\Phi\) describe the current images of the source evaluations, including accumulated cuts and later compatible packing or same-level affine quotients. Original proposition variables have Boolean equations; every remaining coefficient variable has its \(\mathbb F_p\) field equation. Retained ENS blocks have their complete companion tuples. Here the old base and old variables are at level zero, and those variables stay fixed during the later packing/quotient pass. 
+     Use these modes for each OR value: 
+     
+        Retained:  its image is a genuine ENS product with fresh coefficients and all current companions. 
+        Literal zero or one:  this includes the recorded unit images of already justified cuts. 
+        Projection or Boolean product:  its image is a chosen child value, or a product \(\prod_j(1-\Phi f_j)\) with \(f_j\) actual earlier source input values. Degree-ordered basis packing is included. 
+        Field selector:  its image is \(1-(\Phi s)^{p-1}\), with the scalar expressed in earlier variables. 
+        Base zero:  its image \(q\) is a polynomial in unchanged old variables with an old-base NS proof through \(\deg q\). 
+     
+      Working theorem.  For every source value \(f\) described by this portfolio, 
+     \[
+      (\Phi f)^2-\Phi f
+        \quad\text{has an NS proof through }2\deg(\Phi f)
+    \] 
+     over the old base, remaining domains, and actual retained companions, with no discarded goal assumption. Zero targets use the empty proof. In our constant/affine constructions, \(\deg\Phi f\le\deg f\), so this also fits the original Booleanity macro degree. 
+      Proof.  Rebuild the certificate from the current polynomial, rather than substituting an old certificate and assuming its old degree is still sharp. Atoms use their Boolean equations, TRUE has zero value, and negation preserves the Booleanity polynomial. For a MOD value \(u^{p-1}\) or a selector \(1-u^{p-1}\), use \(u^{p-2}(u^p-u)\). Mixed-domain reduction proves \(u^p-u\) through \(p\deg u\), giving the displayed \(2\deg(\Phi f)\) bound. Constant MOD and selector cases have zero Booleanity target. 
+     For a retained product \(P\), use its own current prefix identity 
+     \[
+      P^2-P=-\sum_iV_i(g_iP).
+    \] 
+     If some input is nonzero and \(\delta=\max_i\deg g_i\), freshness gives \(\deg P=h(\delta+1)\). Each summand has degree at most \(2\deg P\). If every input is zero, \(P=1\). No Booleanity of the inputs is needed for this case. 
+     A projection inherits the earlier value's certificate. For a product \(P'=\prod_j a_j\), with \(a_j=1-\Phi f_j\), use  the existing product identity  
+     \[
+      (P')^2-P'
+        =\sum_j\left(\prod_{\ell&lt;j}a_\ell\right)
+          (a_j^2-a_j)
+          \left(\prod_{\ell&gt;j}a_\ell^2\right).
+    \] 
+     Insert the earlier sharp NS certificates. If no factor is zero, every term fits \(2\sum_j\deg a_j=2\deg P'\); a zero factor gives the empty target. Constant cases follow from the same identity. Finally a base-zero product uses its supplied proof of \(q\), multiplied by \(q-1\), through \(2\deg q\). 
+     The induction follows the current value definitions and strict ENS dependencies. The inputs of an OR block come from its maximal non-OR children and lie strictly below that block's ENS level. Same-level bypassed OR groups are not used as its inputs. A degree-ordered basis is chosen from actual input values, so the required earlier Booleanity witnesses remain available. Arbitrary linear combinations of Boolean inputs need not be Boolean. 
+     This extends the  earlier mixed-mode proof  to selector and goal-dependent projection images. It is a statement about Booleanity of the resulting values. It does not justify a cut whose direct companion images have never been proved. A general earlier-zero mode remains admissible only with its sharp witness in the  current  retained earlier system; the portfolio does not manufacture that witness after further substitutions. 
+
+
+### 150 lem:portfolio-level-support-Booleanity
+goal-portfolio-support  3. The certificate can follow the current level support 
+     There is a useful refinement within this portfolio. If a value image uses only variables at levels below \(j\ge1\), its sharp Booleanity proof can be chosen over the old base and retained families below \(j\), even if its original expression came from a higher source level. 
+      Proof.  A nonconstant retained ENS product contains a fresh coefficient at its own level, so its level must already be below \(j\). Its inputs and companions are then permitted. A MOD power or selector cannot lose dependence on a variable that remains in its collected pre-power scalar: its degree in that variable is multiplied by \(p-1\). Rebuild the domain proof using that scalar's actual support. 
+     For a nonzero product, the degree in each variable is the sum of the factors' degrees in that variable, so all its factors have support below \(j\). Apply the induction to their certificates. Projections and negations inherit it; zero products are immediate, and base-zero witnesses use only old variables. This argument is in the ordinary polynomial ring, which is an integral domain, not after reduction modulo Boolean, field, or PHP equations. It does not assert this support property for arbitrary extra earlier-zero witnesses. 
+
+
+### 151 cor:post-goal-input-space-normal-form
+goal-portfolio-packing  4. Degree-preserving packing is now available for modified low-rank blocks 
+     Work after the protected-clause PHP endpoint, with an actual degree-\(D\) refutation of \(\mathcal F_n\) plus the retained ENS family. The target is one and there are no remaining goal assumptions to protect. All current input values have the preceding sharp Booleanity proofs in strictly earlier levels. 
+     For a block \(a\) at the level being processed, let its current inputs be \(g_i\), degrees \(d_i\), maximum \(\delta\), and accuracy \(h_a\). If their literal \(\mathbb F_p\)-linear rank is \(r\le h_a\), choose a basis \(b_1,\ldots,b_r\) from the actual inputs in increasing degree order. Preserve the representations 
+     \[
+      g_i=\sum_jc_{ij}b_j,\qquad
+      c_{ij}\ne0\Longrightarrow\deg b_j\le d_i.
+    \] 
+     The greedy construction supplies this property for every listed input when it is processed. It is the  existing degree-adapted Boolean basis , not an arbitrary basis of the span and not a claim about every lower-degree cancellation in that span. 
+     Use one coefficient vector per basis coordinate, setting its corresponding actual input coefficient to one and all others zero. The product image is \(P'=\prod_j(1-b_j)\). With \(W=\sum_j\deg b_j\), the exact companion identity is 
+     \[
+      g_iP'=-\sum_jc_{ij}(b_j^2-b_j)
+                    \prod_{\ell\ne j}(1-b_\ell).
+    \] 
+     The sharp earlier NS witnesses give degree at most 
+     \[
+      d_i+W\le d_i+r\delta
+        \le d_i+h_a\delta
+        \le e_i=d_i+h_a(\delta+1).
+    \] 
+     Every image fits the degree of that companion before this packing step; selected fields map to zero. Other blocks retain their specialized inputs. The original-cofactor argument therefore preserves degree \(D\) for an NS certificate if one was supplied, and preserves degree \(D\) for the actual PC refutation here. It does not convert that PC refutation into NS. 
+     This applies the rank corollary of  the existing Boolean generator cover ; the new point is that its sharp earlier Booleanity hypotheses are now available for the modified source family. Rank zero is the trivial all-zero tuple. Literal nonzero constant inputs can also be removed immediately by the earlier zero-product mode. 
+
+goal-portfolio-normal-form  5. One level-ordered pass gives a precise residual normal form 
+     Process ENS levels from bottom to top, using the inputs after all lower-level changes. First remove a block if its literal input span contains \(1\): choose constants with \(\sum_i\beta_i g_i=1\), assign that first coefficient vector, and obtain product zero with all companion and field images zero. Then perform the rank-\(\le h_a\) packings, including the zero span. A change at that level cannot alter another block's inputs at the same or an earlier level. Later levels cannot change them either. Thus no repeated global rank scan is needed. 
+     Among the remaining blocks at the current level and the same accuracy, group equal literal input spans. Use the  existing affine input-span quotient : choose a degree-ordered basis from the union of their actual inputs and introduce one canonical ENS product on it. If \(b=A_a^{\mathsf T}g_a\), map each old coefficient vector to \(A_aR\). Its product becomes the canonical product and each old companion becomes a degree-allowed constant linear combination of canonical companions. Field images are constant linear combinations of the canonical field equations. 
+     Every basis input has an actual retained source witness, so no class supported only by deleted blocks is restored. A basis member's canonical companion is the image of an appropriate listed-input companion at the same degree. The coefficient matrix has full column rank, and its field images span the new field equations. The number of coefficients does not increase. These maps are affine and preserve strict level dependencies. 
+     The Booleanity portfolio remains valid: retained source products become genuine canonical products, selector/projection/product expressions pass to their exact images, and old-base zero products remain fixed. Rebuild the sharp certificates before processing the next level. The current-degree basis and image budgets then apply again. This is a post-simulation transformation, so it does not require preserving the earlier private-cut plan for another Frege replay. 
+      Working residual theorem.  Starting from the Boolean-preserving source construction and its ordinary-PHP endpoint, this pass gives a PC refutation at the same \(D\le K_0+2pHL\), with no added ENS level or increased family count. Every remaining block has an independent Boolean input tuple of rank \(r&gt;h_a\), its span contains no nonzero constant, and input spans are distinct within each level/accuracy class. Every current input has a strictly earlier NS Booleanity proof through twice its current degree. 
+     This is ordinary polynomial rank, not rank modulo the base or domain equations. High rank does not exclude a smaller ideal-generator cover, another core transformation, or an unused block. No bound on the number of essential remaining spaces follows. The pass is an existence construction; no polynomial-time recognition or PC proof-size bound is claimed, and no ranks of an unknown Frege proof were computed here. 
+
+
+### 152 ex:projection-image-PC-NS-gap
+goal-portfolio-pebbling  6. Sharp Booleanity still does not give cheap NS companion images 
+     The saved \(\mathbb F_3\) selector control already shows that \(H=1-(x_1+x_2+x_3)^2\) can be Boolean while \(x_iH\) is not a consequence when the goal is omitted: set all three variables to one, so \(H=1\), and satisfy the retained parent by making its product zero. 
+     A stronger analytic control separates PC and NS even when the companion images really are consequences. Use the recorded bounded-indegree pebbling family, and let \(\Gamma^+\) contain its positive pebbling axioms
+      \(f_v=(1-x_v)\prod_{u\in\operatorname{pred}(v)}x_u\) and Boolean equations, but omit the contradictory sink equation \(x_N=0\). This base is consistent, with every \(x_v=1\). The topological proof in   lem:pebblingpc   derives \(q=1-x_N\) through PC degree three without using the omitted sink equation. 
+     Add fresh Boolean variables \(y_j\) and an accuracy-one ENS block with inputs \((x_N,y_1,\ldots)\). Assign the coefficient of \(x_N\) to one and all others zero. Its product image is \(q\). Every companion image has a PC proof through degree three: \(x_Nq\) is a Boolean-domain consequence, and \(y_jq\) follows by reusing the degree-three proof of \(q\). Also \(q^2-q=x_N^2-x_N\) has an NS proof through degree two. 
+     Nevertheless, an NS proof of \(y_jq\) through \(d\) would, after setting \(y_j=1\) and the other new variables to zero, give an NS proof of \(q\) through \(d\). Adding \(x_N=0\) would refute the full pebbling base through \(\max\{d,1\}\). The  audited pebbling degree input  therefore forces \(d=\Omega(N^{1/3})\) on the recorded family. 
+     Thus a Boolean product of degree one can have PC-three zero/image proofs and a sharp NS Booleanity proof, while an extra companion image has unbounded NS degree. This is a generic consistent-base control, not an ordinary-PHP lower bound. It does not contradict the earlier domain-base normalizer obstruction, whose base omitted these positive pebbling constraints. It also does not contradict rank packing: with an extra \(y_j\), this accuracy-one tuple has rank greater than one. 
+
+
+### 153 thm:small-probe-normalization
+small-probe-extraction  1. Weighted replay extracts a Boolean selector product 
+     Work over \(\mathbb F_p\). Let \(G=(g_i)\) be a selected ENS tuple of accuracy \(h\), with fresh coefficient variables \(R\), input degrees \(d_i\), maximum \(\delta\), and original companion degrees \(e_i=d_i+h(\delta+1)\). Let \(\Gamma\) be the  actual resulting retained system , and let \(F\) be fixed goal assumptions. All inputs, goals, and supplied witnesses below avoid \(R\). Retained ancestors are allowed, but their inputs must be the actual images specified by the proposed substitution. 
+     Choose homogeneous constant-\(\mathbb F_p\) linear combinations of \(G\): Boolean probes \(b_1,\ldots,b_s\) and field probes \(f_1,\ldots,f_t\). Supply NS proofs of \(b_j^2-b_j\) over \(\Gamma\), without \(F\), through \(2\deg b_j\). Every variable has its Boolean or field domain equation. Finally supply a PC refutation of 
+     \[
+      \Gamma\cup F\cup\{b_1,\ldots,b_s,f_1,\ldots,f_t\}
+      \quad\text{through degree }C_0.
+    \] 
+     Define 
+     \[
+      H=\prod_{j=1}^{s}(1-b_j)\prod_{k=1}^{t}(1-f_k^{p-1}),\qquad
+      W=\sum_j\deg b_j+(p-1)\sum_k\deg f_k,\qquad
+      K=s+(p-1)t.
+    \] 
+     Omit zero probes; literal zero factors give the immediate case \(H=0\). For the remaining nonconstant factors, ordinary polynomial degree is additive, so \(\deg H=W\). Constant cases only reduce the upper bound. Then 
+     \[
+      \boxed{\Gamma\cup F\ \vdash_{\rm PC}^{\,C_0+W}\ H.}
+    \] 
+      Proof.  Write \(H=(1-b_j)H_j=(1-f_k^{p-1})H'_k\). The weighted extra assumptions have explicit witnesses 
+     \[
+      b_jH=-(b_j^2-b_j)H_j,\qquad
+      f_kH=-(f_k^p-f_k)H'_k.
+    \] 
+     The Boolean certificate has degree at most \(W+\deg b_j\). Mixed-domain division gives an NS proof of \(f_k^p-f_k\) through \(p\deg f_k\), so the second witness has degree at most \(W+\deg f_k\). Only probes actually introduced in the supplied refutation need these replacements; each such probe has degree at most \(C_0\). Multiply the refutation's lines by \(H\), introducing the supplied weighted witnesses as in  the earlier weighted-refutation lemma . Old axioms and every replayed inference fit \(C_0+W\), and the final one becomes \(H\). This reuses a PC derivation; it does not flatten it into an NS certificate. 
+     Independently of the goal, \(H^2-H\) has an NS proof through \(2W\). Boolean factors use the supplied sharp certificates, field selectors use \(f_k^{p-2}(f_k^p-f_k)\), and the  product identity  combines them. For source composition, choose actual earlier Boolean values or separately verify their stable sharp witnesses; an arbitrary linear combination of Boolean inputs need not be Boolean. 
+
+small-probe-realization  2. Constant coefficient realization and proof transfer 
+     For a Boolean probe \(b_j=\sum_i a_{ji}g_i\), use one coefficient row \(a_j\). For \(f_k=\sum_i c_{ki}g_i\), use the \(p-1\) rows \(c_k/\alpha\), one for each \(\alpha\in\mathbb F_p^\times\). The ordinary identity 
+     \[
+      \prod_{\alpha\in\mathbb F_p^\times}(1-f_k/\alpha)=1-f_k^{p-1}
+    \] 
+     shows that \(K\le h\) suffices to realize \(P_G\mapsto H\); set unused rows to zero. Selected field equations vanish. All companion images \(g_iH\) have PC proofs through 
+     \[
+      \max\{C_0+W,\ d_i+W\},\qquad
+      d_i+W\le d_i+h\delta\le e_i.
+    \] 
+     The last step multiplies the completed proof of \(H\) by \(g_i\). Replaying any original degree-\(D\) PC proof therefore gives its exact image through 
+     \[
+      \boxed{\max\{D,C_0+W\}.}
+    \] 
+     Only used companion axioms need insertion, and each has \(e_i\le D\). Every retained axiom is replaced by its actual image. In a batch, all required witnesses must avoid every removed coefficient family and hold over the common resulting retained system. A proof using the old, unspecialized ancestor inputs does not satisfy this hypothesis. 
+
+
+### 154 cor:affine-probe-factor-pairs
+small-probe-affine-packing  3. Pair suitable factors into one affine coefficient row 
+     The elementary factors above have the form \(1-\ell\), with \(\ell\) a constant linear combination of the tuple. If \(\ell=\sum_i a_i g_i\), \(m=\sum_i c_i g_i\), and \(\deg\ell\le1\) in the actual earlier variables, then 
+     \[
+      (1-\ell)(1-m)
+        =1-\sum_i\bigl(a_i+c_i(1-\ell)\bigr)g_i.
+    \] 
+     The coefficient row is affine. Thus partitioning the \(K\) factors into at most \(h\) singletons or pairs, with an affine form first in every pair, realizes the same \(H\) by an affine substitution. If all forms are affine, \(K\le2h\) is sufficient. This is an application of the existing factor-packing mechanism, not a claim that these pairings optimize every possible normalizer. 
+     An affine substitution preserves ordinary PC line degrees. Its coefficient field images \(\beta^p-\beta\) need not vanish as polynomials, but have domain NS proofs through \(p\), the degree of the original field axiom. Consequently the same transfer bound \(\max\{D,C_0+W\}\) holds. Pair degree is at most \(\delta+1\), so \(W\le h(\delta+1)\) and \(d_i+W\le e_i\). 
+      Source budget.  For a source root whose product bound is \(L\), either realization has \(W\le L\). If the supplied probe-zero refutation has \(C_0\le2L\), its extracted proof fits \(3L\le K_0\). Under the current ancestor-private scheduling and surviving-witness hypotheses, these additional cuts therefore fit the existing \(K_0+2pH_{\rm tree}L\) source ceiling, where \(H_{\rm tree}\) is the balanced derivation height. This is a sufficient criterion; it does not assert the existence of such probes or refutations for all remaining tuples. Keep the actual image \(H\), even when the goals prove it zero. 
+
+
+### 155 obs:pebbling-antichain-probes
+small-probe-antichain  5. Cheap PC refutations can require many probe factors 
+     Use a finite DAG of indegree at most two with a unique sink \(N\). The base \(\Gamma\) now contains  only Boolean domain equations . Define the tuple 
+     \[
+      g_v=(1-x_v)\prod_{u\in\operatorname{pred}(v)}x_u
+      \quad(v\text{ a vertex}),\qquad g_*=x_N.
+    \] 
+     Every input is Boolean with a domain NS Booleanity proof through twice its degree. The system \(\Gamma\cup\{g_v,g_*\}\) has a PC refutation through three: put \(b_v=1-x_v\); for two predecessors \(a,c\), 
+     \[
+      b_v=g_v+b_vb_a+b_vx_ab_c.
+    \] 
+     Sources give \(b_v=g_v\); topological reuse derives each \(b_v\), and \(b_N+g_*=1\). The one-predecessor case omits the final term. This is the familiar  positive pebbling proof , included here to make the control self-contained. 
+     Let \(A\) be any antichain of non-sink vertices. Every nonzero Boolean violation vector supported on \(A\cup\{*\}\) is realized by an old Boolean assignment. For a nonempty \(S\subseteq A\) with sink-input bit zero, set all descendants of \(S\), including \(S\), to zero and all other vertices to one. Exactly the inputs indexed by \(S\) are violated. Each proper descendant has a zero predecessor, while members of \(S\) have no zero predecessor by the antichain property. The unique sink is a descendant of every vertex. 
+     For sink-input bit one and arbitrary \(S\subseteq A\), set only the vertices of \(S\) to zero, and every other vertex to one. Again exactly the positive inputs indexed by \(S\) are violated, and \(g_*=1\). This realizes all \(2^{|A|+1}-1\) nonzero Boolean vectors in the claimed coordinate cube. 
+      Constant-normalizer lower bound.  Suppose a constant coefficient assignment makes every ENS companion a consequence of \(\Gamma\). Since the input tuple is never all zero on an old Boolean assignment, its product image must vanish at every such assignment. Restrict the formal input polynomial to the coordinates \(A\cup\{*\}\): 
+     \[
+      Q(Z)=\prod_{u=1}^{h}
+        \left(1-\sum_{i\in A\cup\{*\}}\beta_{u,i}Z_i\right).
+    \] 
+     It equals one at \(Z=0\) and zero at every other Boolean point. Its unique multilinear representative is \(\prod_i(1-Z_i)\), whose degree is \(|A|+1\) over every field. Multilinearization does not increase degree, so 
+     \[
+      \boxed{h\ge |A|+1.}
+    \] 
+      Probe lower bound.  Suppose a Boolean/field linear probe collection has inconsistent joint zero assumptions over \(\Gamma\). Its formal selector product has degree at most \(K=s+(p-1)t\) in the input coordinates and constant term one. At every old Boolean assignment at least one probe is nonzero, so the product vanishes. The same antichain cube gives 
+     \[
+      \boxed{s+(p-1)t\ge |A|+1,}
+    \] 
+     independently of the probe-zero PC refutation degree. A full binary tree with \(w\) leaves has \(N=2w-1\) vertices and an antichain of size \(w\). Thus the required probe factor count is \(\Omega(N)\) although the full input refutation has degree three. Affine pairing may use fewer coefficient rows to realize a given collection; this argument does not claim \(h\ge|A|+1\) for arbitrary affine or polynomial coefficient assignments. 
+     With at least two sources, these tuples also have independent literal inputs and \(1\) outside their span. For each positive input, zero its descendant closure to realize its unit violation vector; all-one assignments realize the sink-input unit vector. Any linear relation must then have every coefficient zero. A putative expression for one forces every coefficient to be one, but a two-source violation point gives value two, which differs from one in every field. 
+     This is a generic Boolean-base obstruction to obtaining few sufficient probes from cheap PC refutations. It does not prove that PHP source tuples contain these trees, nor exclude transformations that use extra base constraints, selected proof uses, or virtual values instead of all-companion coefficient normalization. 
+
+
+### 156 ex:small-probe-normalizer-replay
+small-probe-example  4. A high-rank example with sharp row counts 
+     Over \(\mathbb F_3\), take independent Boolean variables \(b,x,y,w\), tuple \(G=(b,x,y,w)\), and 
+     \[
+      f=x+y,\quad J=1-f^2,\quad H=(1-b)J,\quad F=\{H\}.
+    \] 
+     The tuple has rank four and its span contains no nonzero constant. The Boolean probe \(b\) and field probe \(f\) have \(K=W=3\). Their zero assumptions with the goal have a PC-three refutation: 
+     \[
+      1=H+b+(1-b)f^2.
+    \] 
+     The weighted construction derives \(H\) through degree six using \(bH=-(b^2-b)J\) and \(fH=-(1-b)(f^3-f)\). Here the goal already supplies \(H\) in degree three; the longer saved proof deliberately checks the general extraction procedure. Its goal-free Booleanity and the nonzero affine field image have exact certificates 
+     \[
+      H^2-H=J^2(b^2-b)
+       +(1-b)f(x+1)(x^2-x)
+       +(1-b)f(y+1)(y^2-y),
+    \]\[
+      f^3-f=(x+1)(x^2-x)+(y+1)(y^2-y).
+    \] 
+     Three constant rows realize \((1-b)(1-f)(1-2f)\). Two rows suffice with affine coefficients: the first chooses \(b\), while the second assigns coefficient \(f\) to both \(x\) and \(y\), giving \((1-b)(1-f^2)\). In the second case the selected coefficient field image is \(f^3-f\), so it must be proved, not dropped. 
+     These row counts are sharp for this free-variable example. Set \(w=0\). The goal holds at every nonzero Boolean point of \((b,x,y)\). Any all-companion normalizer must therefore vanish on those seven points and equal one at the origin. Boolean multilinearization is the NOR polynomial \((1-b)(1-x)(1-y)\), of degree three. Constant coefficient rows yield degree at most \(h\), forcing \(h\ge3\); affine coefficient rows yield degree at most \(2h\), forcing \(h\ge2\). Extra base constraints or higher-degree coefficients change this argument's scope. 
+
+small-probe-checks  6. Exact evidence and remaining obligation 
+     The new  compiled checker  produced  nine complete PC traces and 26 NS certificates . It checks each inference in the ordinary polynomial ring and rejects corruption of a final line. For the two positive realizations, the source target is \(P_G+(r_*^3-r_*)\), derived using 
+     \[
+      P_G=HP_G+E_b+(1-b)f(E_x+E_y).
+    \] 
+     The saved source/replay degrees are \(9\to6\) at constant accuracy three and \(7\to6\) at affine accuracy two. The latter actually uses the nonzero field image \(f^3-f\). All sixteen old Boolean points per realization are saved, including fourteen common source/retained models; the missing-goal control \(b=x=y=0,w=1\) has \(H=wH=1\). Thus unconditional Booleanity alone does not justify a companion. 
+     The seven-vertex binary tree is checked over \(\mathbb F_2,\mathbb F_3,\mathbb F_5\): three PC-three refutations, all 24 input Booleanity certificates, 24 unit-violation points, and all 93 nonzero points of the five-coordinate antichain cubes. The resulting bound \(K\ge5\) is an instance of the analytic argument, not an exhaustive search over coefficient matrices. Both timed mathematical commands succeeded. The  result README  records the schema, reproduction commands, provenance, and scope. 
+      Next step.  Test the local algebra of a virtual zero OR value backed by a strictly earlier PC refutation of its whole input tuple. This may use information that small probe normalizers cannot compress. Require surviving witnesses and stop at a precise local interface theorem; the full source simulation and essential-family bound remain separate obligations. 
+      Process assessment.  Optional future directions were explored too long before this cycle's frozen check; the existing stopping rule addresses that execution problem, so no further framework rule is added, and the two claims are checkpointed together before pursuing the virtual-interface idea. 
+      Timing scope.  The earlier mathematics window includes unseparated exploration and compaction; restoration reading and later coding were marked explicitly, without retrospective estimates. 
+     
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   75 min 0.05 s   
+  Marked reading and review windows  46.66 s  
+  Mathematical reasoning and proof writing  69 min 11.71 s  
+  Computation design and coding  3 min 26.79 s  
+  Preparation and checkpoint work  1 min 32.47 s  
+  Individually measured computation  0.31 s  
+  Individually measured conversion, checks, and local processing  2.11 s  
+  
+ Through final snapshot; overlapping time counted once. 
+ 
+
+
+### 157 lem:unit-annihilator-OR-interface
+virtual-OR-interface  1. The two obligations attached to an OR value 
+     Work in an ordinary polynomial ring over \(\mathbb F_p\), with a fixed retained system \(\Gamma\). Associate a value \(a\) with an input tuple \(G_a=(u_i)\). Its interface consists of complete PC derivations 
+     \[
+      \Gamma\vdash u_i a\quad\text{for every coordinate }i,\qquad
+      \Gamma\cup\{u_i\}_i\vdash1-a.
+      \tag{OR-interface}
+    \] 
+     The first obligation supplies annihilators; the second is a conditional unit proof. They are given derivations over the actual retained system, not semantic promises. Tuples can retain repeated coordinates. The local theorem below uses literal concatenation, so coordinate equalities from different copies would require additional proofs. 
+      Basic realizations.  A genuine ENS product \(a=P_{G_a}\) has its own companions \(u_i a\), and its prefix identity \(1-a=\sum_i V_i u_i\) supplies the conditional proof. If \(\deg a\le L\), both obligations fit \(2L\), with the conditional unit proof itself fitting \(L\). A virtual value \(a=0\) instead needs a supplied refutation of \(\Gamma+G_a\); its annihilators are zero. A virtual value \(a=1\) needs supplied proofs of its inputs over \(\Gamma\); its conditional unit target is zero. 
+     A non-OR value \(a\) can use the singleton tuple \(G_a=(1-a)\), provided a PC Booleanity proof for \(a\) is available. Its annihilator is \(-(a^2-a)\), and its conditional unit proof introduces the singleton assumption. Genuine ENS, literal zero/one, and the earlier compatible portfolio retain their separate Booleanity certificates. The abstract interface theorem does not assert a sharp NS Booleanity or prefix certificate for every value. 
+
+virtual-OR-relation  2. A two-child OR relation from complete conditional proofs 
+      Working theorem.  Suppose \(a,b,c\) have interfaces over the same \(\Gamma\), with 
+     \[
+      G_a=(u_i),\quad G_b=(v_j),\quad
+      G_c=G_a\mathbin{\|}G_b,\qquad
+      \deg a,\deg b,\deg c\le L.
+    \] 
+     Let all supplied interface derivations have degree at most \(C\), with \(C\ge2L\). Then 
+     \[
+      \boxed{\Gamma\vdash_{\rm PC}^{\,C+2L}c-ab.}
+    \] 
+     This is the TRUE-by-zero OR relation. The proof uses no separate Booleanity assumption for the three values. 
+      Proof.  The exact identity is 
+     \[
+      c-ab=c(1-a)+ac(1-b)-ab(1-c).
+      \tag{OR-three-terms}
+    \] 
+     Replay the conditional unit proof of \(1-a\), multiplying its lines by \(c\). Its weighted extra assumptions \(u_i c\) are supplied by the parent's annihilator interface. The proof of \(c(1-a)\) therefore fits \(C+L\). Do the same for \(1-b\) to derive \(c(1-b)\) through \(C+L\). Multiply that completed polynomial by \(a\); its final degree is at most \(3L\le C+L\), so PC reuse proves \(ac(1-b)\) at the same ceiling. 
+     For the parent's unit proof, use weight \(ab\). Its required weighted inputs have proofs 
+     \[
+      u_iab=b(u_i a),\qquad v_jab=a(v_j b)
+    \] 
+     through \(C+L\), by reusing the child annihilator proofs. Weighted replay of the complete parent derivation now proves \(ab(1-c)\) through \(C+2L\). Combining the three terms proves the theorem. Old \(\Gamma\)-axioms are multiplied only when replayed; supplied annihilator derivations are inserted and their final polynomials reused. No NS flattening of a conditional unit derivation is needed. 
+     This extends the existing  weighted-refutation mechanism  from a final constant target to a complete OR interface. When all roots are genuine ENS products, their tighter prefix budgets give the familiar \(3L\) ceiling for this construction: child weighted units fit \(2L\), and multiplication or parent replay fits \(3L\). The general \(C+2L\) bound allows a conditional unit proof with no cheap NS prefix. 
+
+
+### 158 cor:virtual-zero-OR-parent
+virtual-OR-zero-parent  3. A virtual zero parent uses the input refutation directly 
+     There is a sharper specialized statement. Suppose the child annihilator proofs have ceilings \(C_a,C_b\), and 
+     \[
+      \Gamma\cup G_a\cup G_b\vdash_{\rm PC}^{\,C_0}1.
+    \] 
+     Taking \(c=0\), weighted replay with \(ab\) proves 
+     \[
+      \boxed{\Gamma\vdash ab
+        \quad\text{through }\max\{C_a,C_b,C_0+\deg a+\deg b\}.}
+    \] 
+     If \(ab=0\), use the empty proof. Otherwise, for each used input \(g\), its degree is at most \(C_0\). Thus the final weighted input \(gab\) has degree at most \(C_0+\deg a+\deg b\), while its child annihilator proof costs at most \(C_a\) or \(C_b\). These are exactly the hypotheses needed for weighted replay. The relation \(c-ab=-ab\) follows by scalar multiplication. The child conditional unit proofs are unnecessary in this special case. 
+     The virtual value adds no parent coefficient variables or parent ENS axioms. Its input refutation must be supplied in the resulting retained system. For an input tuple supported at an earlier level, a witness using only that earlier system is particularly useful because it cannot rely on the omitted parent's coefficients. This local construction does not specify an assignment to those coefficients or silently replace an expanded product inside an old proof. It gives a new value definition and a new local derivation to be used in a separately justified compilation. 
+
+
+### 159 ex:virtual-pebbling-OR-interface
+virtual-OR-pebbling  4. A strictly earlier pebbling witness with retained children 
+     Use the seven-vertex binary tree from  the preceding antichain control . Its four sources are \(0,1,2,3\), nodes \(4,5\) have predecessors \((0,1),(2,3)\), and sink \(6\) has predecessors \((4,5)\). Write 
+     \[
+      g_v=(1-x_v)\prod_{u\in\operatorname{pred}(v)}x_u,\qquad
+      a=P_{(g_0,\ldots,g_6)},\qquad b=P_{(x_6)}
+    \] 
+     at accuracy one, with disjoint coefficient families. Let \(\Gamma\) consist of Boolean old-variable domains, the two coefficient domains, and these two blocks' companions. Take the parent tuple to be \((g_0,\ldots,g_6,x_6)\) and its virtual value to be \(c=0\). 
+     The topological PC-three refutation uses only the eight parent input assumptions and old variables. It uses no retained ENS axiom or coefficient, so it is a strictly earlier witness for the virtual value. Here \(\deg a=4\), \(\deg b=2\), \(C_a\le7\), and \(C_b\le3\). The specialized theorem yields a PC proof of \(ab\), and hence \(c-ab\), through degree nine. 
+     This retained system is consistent and projects onto every old Boolean assignment. If a positive input \(g_v\) is one, choose its coefficient in \(a\) to be one and all other coefficients zero, giving \(a=0\); if all positive inputs are zero, every vertex is one and \(a=1\). Choose the coefficient in \(b\) to be one when \(x_6=1\), giving \(b=0\), and zero otherwise. All companions hold and \(ab=0\). 
+     The preceding constant-row lower bound still applies to normalizing the full parent tuple over this \(\Gamma\): a constant-coefficient product depends only on old variables, and every old Boolean assignment has an extension satisfying \(\Gamma\). The five-coordinate antichain cube therefore forces at least five constant rows. More generally, the same construction on a binary tree with \(w\) leaves retains the bound \(h\ge w+1\). The local virtual value is available from a PC-three witness without producing such a normalizer. The wide child block remains; no essential-family bound follows from this example. 
+
+virtual-OR-checks  5. Complete traces and necessary-witness controls 
+     The new  checker  saves  eighteen complete PC traces  over \(\mathbb F_2,\mathbb F_3,\mathbb F_5\). Twelve are supplied conditional interface proofs and six are the resulting OR relations. Every line is checked in the ordinary polynomial ring; final-line corruption is rejected. 
+     Three genuine accuracy-one fixtures use \(G_a=(x)\), \(G_b=(y)\), \(G_c=(x,y)\), with all three products retained. Their conditional unit proofs have degree two, and the complete three-term relation proofs have degree six. All four old Boolean assignments per field extend to saved common models. Omitting either parent companion gives a model of the remaining system where \(c-ab=1\), demonstrating the need for the corresponding parent annihilator. 
+     Three virtual-parent fixtures use the preceding pebbling construction. Their conditional refutations have degree three and their composed relation proofs degree nine. The checker verifies that the conditional witnesses use only old variables and the eight extra input assumptions. It saves all 128 old Boolean assignments per field, extended to common retained-system models. 
+     Every one of the eight child companions is necessary for this fixed pebbling target relative to the other displayed axioms: choose its unit-violation old assignment from the preceding cycle and set all child coefficients to zero. Then \(a=b=1\), exactly that companion is violated, and \(c-ab=-1\). These give 24 saved controls. A further three controls use \(G_a=(x),G_b=(y)\) and \(x=y=0\); the child systems hold with \(a=b=1\), while a proposed virtual zero parent would fail the OR relation. Its missing input refutation cannot exist because the same assignment satisfies both zero input assumptions. 
+     In total there are 396 common models and 33 missing-witness controls. The compile and mathematical check both succeeded. The prior antichain proof and input Booleanity certificates are reused with their original scope; no additional NS claim or historical-suite rerun is reported. The  result README  records commands, dependencies, complete output, and provenance. 
+      Remaining obligation.  Before replacing a source occurrence by this value, rebuild every affected copy, leaf, and inference obligation over one compatible retained family. Later input changes can invalidate a previously supplied unit witness. A local same-tuple relation does not yet supply different-copy agreement, original NS degree guarantees, repeated highest-layer omission, or a bound on essential wide blocks. The next cycle will isolate the copy-agreement question. 
+      Process assessment.  Keeping this cycle to one interface identity and its witness controls avoided another search for coefficient normalizers; the existing proof kernel and saved antichain argument were sufficient, so no framework change is warranted. 
+     
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   14 min 13.01 s   
+  Mathematical reasoning and proof writing  9 min 31.54 s  
+  Computation design and coding  3 min 9.26 s  
+  Preparation and checkpoint work  1 min 29.73 s  
+  Individually measured computation  0.12 s  
+  Individually measured conversion, checks, and local processing  2.36 s  
+  
+ Through final snapshot; overlapping time counted once. 
+ 
+

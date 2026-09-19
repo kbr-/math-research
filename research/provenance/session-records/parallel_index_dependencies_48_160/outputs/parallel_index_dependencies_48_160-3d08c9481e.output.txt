@@ -1,0 +1,76 @@
+
+### 70 cor:copy-degree-four-design-control
+copy-design-control  11. An exact copy-matching example: PC degree four, NS degree six 
+     Work over \(\mathbb F_2\) with nine Boolean variables, in the order \((x,y,z,r,s,t,w,u,v)\). Put 
+     \[
+      g=1+rx+sy,\quad f=1+tx+wy,\quad Q=1+uf+vz,
+    \] 
+     and take the six nondomain axioms 
+     \[
+      (A_1,\ldots,A_6)=(xg,yg,xf,yf,fQ,zQ),
+    \] 
+     together with every variable's Boolean equation. The first four axioms belong to two independent copies of a two-input, one-factor block; the last two belong to a retained core on \((f,z)\). Their original ordinary degrees are \((3,3,3,3,5,4)\). The target is the matched companion \(T=z(1+ug+vz)\), of degree four. This is satisfiable extension data: set \(u=1\) and every other variable to zero. 
+      Certified finite claim.  The minimum PC degree for deriving \(T\) is four, whereas its minimum ordinary NS certificate degree is six. 
+      PC upper bound and NS upper bound.  The exact identity 
+     \[
+      D=g+f=tA_1+wA_2+rA_3+sA_4,\qquad
+      T=A_6+uzD
+      \tag{COPY-gap}
+    \] 
+     first derives \(D\), of degree two, through degree four. Multiplying its final line successively by \(u,z\), then adding \(A_6\), stays within degree four. The target's own degree proves optimality for PC. Flattening (COPY-gap) gives an explicit degree-six NS certificate. It uses no domain-equation terms. 
+      NS lower bound.  Reduce ordinary monomials by the nine Boolean equations and define a linear functional \(\lambda\) on degree-at-most-five polynomials. Give value one to precisely these eight squarefree monomials, and zero to every other squarefree monomial of degree at most five: 
+     \[
+      xyztu,\quad yzwu,\quad zv,\quad xyztv,\quad
+      zwv,\quad yzwv,\quad zuv,\quad yzwuv.
+      \tag{COPY-dual}
+    \] 
+     Substitution of these values gives 
+     \[
+      \lambda(T)=1,\qquad
+      \lambda(qA_i)=0
+      \quad\begin{cases}
+        i=1,2,3,4,&amp;\deg q\le2,\\
+        i=5,&amp;q=1,\\
+        i=6,&amp;\deg q\le1,
+      \end{cases}
+    \] 
+     where it suffices to check squarefree monomial multipliers. Boolean-generator multiples vanish under reduction. The allowed multiplier degrees use the original ordinary degrees \((3,3,3,3,5,4)\), before Boolean reduction. Thus \(\lambda\) annihilates every possible summand of a degree-five NS certificate while taking value one on the target. This proves the lower bound. 
+     The exhaustive check contains all 195 nondomain rows at degree five: \(4(1+9+\binom92)+1+(1+9)\). Its exact binary rank is 112, and (COPY-dual) annihilates every row. The degree-four span has 41 rows and rank 32 and also excludes the target; degree six has 576 rows and rank 234 and contains it. The saved dual supports use monomial bit masks \(167,198,260,295,324,326,388,454\) in the stated variable order. Both nonmembership duals, all rows, an ordinary NS lift, and the complete 15-line PC trace are retained in  copy-pc-ns-01.jsonl . This finite separation explains why the uniform PC ceiling can be stronger than original-degree flattened NS image certificates. 
+
+      Normalized-design corollary.  Add \(1-T\) to this system. It now has a degree-four PC refutation: derive \(T\) by (COPY-gap) and add the new axiom. Nevertheless it has an ordinary degree-four design. Let \(\lambda_4\) take value one on \(yzwu,zv\), and zero on the other squarefree monomials through degree four; this is the saved degree-four separating functional. Add it to evaluation at the displayed model of the old system, obtaining \(\ell\). Then \(\ell(1)=1\), \(\ell(T)=1\), and \(\ell\) annihilates the old degree-four axiom span. The new degree-four axiom \(1-T\) has only constant allowed cofactors at this degree, and \(\ell(1-T)=0\). Thus \(\ell\) is the claimed design despite the PC refutation. This auxiliary polynomial system is not PHP; its minimum NS refutation degree is not determined by the preceding minimum-degree claim for deriving \(T\). 
+
+
+### 71 ex:signed-boundary-mod-traces
+signed-fixture-setup  1. Explicit tautological fixtures and the MOD inference 
+     Work over \(p=2,3\), at accuracy \(h=1\), with TRUE encoded by zero. Original variables \(x,y\) are Boolean; coefficient variables range over \(\mathbb F_p\). Write \(P_g=1-\sum_i r_i g_i\), keeping independent coefficient families for private line boundaries and canonical proper evaluations. The fixtures use the usual expansions \(X\wedge Y=\neg(\neg X\vee\neg Y)\) and \(A\to B=\neg A\vee B\). 
+     The positive antecedent is the tautology \(A_+=(X\wedge Y)\to X\). Put 
+     \[
+      P=1-rx-sy,\qquad
+      g=(1-P,1-x),\qquad
+      a=P_g.
+    \] 
+     The inner proper block has companions \(xP,yP\). Its exact input-system certificate is 
+     \[
+      1=(1-x)+x(1-P)+xP.
+      \tag{POS-unit}
+    \] 
+     This has ordinary NS degree three. Multiplying by a private product \(U=P_g(R)\) gives a degree-six source-leaf certificate using \(g_1U,xg_0U,U(xP)\). Zeroing \(R\) returns a PC proof of (POS-unit). Weighting that unit proof by the canonical proper product \(a\), and using its companions \(g_i a\), derives \(a\) through degree six. The final dependency cone uses \(xP\) and both canonical-\(A_+\) companions, but not \(yP\). Thus deletion of the private boundary has not removed its proper copy. 
+     The negative antecedent is the tautology 
+     \[
+      A_-=\neg\bigl((X\wedge\neg X)\vee(Y\wedge\neg Y)\bigr).
+    \] 
+     Let \(P_x=P_{(x,1-x)}\), \(P_y=P_{(y,1-y)}\), and let \(W=P_{(P_x,P_y)}\) be the canonical proper boundary product. The antecedent's proper value is \(\alpha=1-W\). Both child products have degree-three proofs: 
+     \[
+      P_x=xP_x+(1-x)P_x,\qquad
+      P_y=yP_y+(1-y)P_y.
+      \tag{NEG-inputs}
+    \] 
+     For a private copy \(U=1-RP_x-SP_y\), these identities give an NS proof of \(1-U=RP_x+SP_y\) through degree four. Derive \(g_i=g_i(1-U)+g_iU\) through degree five and apply the existing  old-target elimination algorithm , with input degree two. Its bound is \(5+2(p-1)\); the generated proofs actually reach degrees six and eight for \(p=2,3\). Their final dependencies involve only the corresponding child block and its domains, strictly below \(W\). Prefix telescoping then derives \(\alpha=1-W\), using the coefficients of \(W\) but neither of its companions. 
+     For either antecedent \(A\), take the value line \(B=\mathrm{MOD}_{p,0}(\neg A)\), whose approximation is \(\beta=\alpha^{p-1}\). On Boolean truth values this singleton MOD formula equals \(A\). The implication \(A\to B\) is therefore a fixed tautological schema for fixed \(p\); its two input polynomials are \(\alpha,1-\beta\), with exact certificate 
+     \[
+      1=(1-\alpha^{p-1})+\alpha^{p-2}\alpha.
+      \tag{MOD-unit}
+    \] 
+     Multiplying by its private boundary product gives the explicit source-leaf certificate; zeroing that boundary gives (MOD-unit). Replace its antecedent input by the proof of \(\alpha\), then weight the resulting refutation of \(G+\{1-\beta\}\) by \(\beta\). Mixed-domain division supplies \(\beta(1-\beta)\) through \(2\deg\beta\). This is the value-conclusion branch of the signed invariant, with every operation saved. 
+     These are fixed derived tautological schemas with explicit algebraic leaf certificates, not a listing of their proofs in a particular primitive Frege basis. A fixed Frege presentation can add these fixed schemas as derived axioms. The computation audits the algebraic boundary construction; it is not an arbitrary-Frege compiler or a PHP refutation. 
+

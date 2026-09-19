@@ -103,7 +103,8 @@ def credit_producer(body, marker, producer):
     close = body.index('</p>', meta)
     if producer in body[meta:close]:
         return body
-    return body[:close] + ' ' + producer + body[close:]
+    return (body[:close] + ' <span data-generated="finish-turn-producer-v1">'
+            + producer + '</span>' + body[close:])
 
 
 def validate_append_only(root):
@@ -165,7 +166,10 @@ def finish(root, turn, next_turn=None):
     first = json.loads((root / 'research/logs' / f'{turn}.jsonl').read_text().splitlines()[0])
     producer = (f"Produced by {html.escape(first.get('agent', 'unrecorded'))} "
                 f"({html.escape(first.get('model', 'unrecorded'))}).")
-    updated = credit_producer(current, marker, producer).replace(marker, fragment.read_text().strip())
+    timing = fragment.read_text().strip()
+    timing = timing.replace('<div class="timing-report"',
+                            '<div data-generated="finish-turn-timing-v1" class="timing-report"', 1)
+    updated = credit_producer(current, marker, producer).replace(marker, timing)
     temporary = None
     try:
         with tempfile.NamedTemporaryFile(mode='w', dir=root, prefix='.notebook-timing-',

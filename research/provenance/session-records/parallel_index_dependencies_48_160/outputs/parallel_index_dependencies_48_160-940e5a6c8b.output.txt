@@ -1,0 +1,292 @@
+
+### 48 lem:theorem-approximation-simulation
+direct-theorem-approximation  1. Simulate a theorem, without introducing clause assumptions 
+     Fix \(p\), the Frege basis, and accuracy \(h\ge1\). Let a theorem \(\tau\) have a depth-\(\ell\), symbol-length-\(S\) proof, with \(S\ge2\). Use the source's balancing transformation to obtain a tree proof \(\pi\) of polynomial size, height \(H=O(\log S)\), and formula depth \(\ell'=\ell+O(1)\). Let \(E\) contain all companions for the accuracy-\(h\) approximations in \(\pi\), with their coefficient field equations. Original variables retain their Boolean equations. Write 
+     \[
+      L=(\ell'+1)\max\{p-1,h\}^{\ell'},\qquad
+      w=L+1,\qquad \mu=hw.
+    \] 
+      Working theorem-derivation lemma.  These domain and extension equations have an NS derivation of \(\tau^{\mathrm{ap}}\) through 
+     \[
+      D_0\le \max\{A,3hw\}+Hhw
+      \le (1+\log S)(h+1)^{O(\ell+1)},
+      \qquad A=(h+1)^{c_F}L,
+      \tag{DIRECT-AP}
+    \] 
+     where \(c_F\) and the hidden constants depend only on the fixed prime and formalization. The family has polynomially many companions and at most \(\ell+O(1)\) levels. 
+      Proof.  BIKPRS Lemmas 6.10 and 6.12 give the approximation bound \(L\) and an NS certificate through \(A\) for each instantiated logical axiom. There are no assumption leaves. At a modus-ponens node, use the  exact coefficient identity  
+     \[
+      b=c+qa+R,\qquad
+      \deg q\le hw,\qquad
+      R=\sum_F W_FF,\quad \deg(W_FF)\le3hw.
+    \] 
+     If the two premise certificates have degrees \(d_a,d_c\), the conclusion has degree at most \(\max\{d_c,d_a+hw,3hw\}\). Induction up the balanced tree proves (DIRECT-AP). All Booleanity and extension contributions in \(R\) remain in the common axiom system. At the root the target is the theorem's approximation; the induction does not require that it be the constant FALSE polynomial. This is also explicit in the source's induction on the subderivation ending at an arbitrary formula. 
+     The distinction from applying the refutation theorem to ordinary row assumptions is essential: no exact degree-\(n\) row polynomial is being used as an input assumption. The clause approximations occur as subformulas of the final theorem, with their usual small approximation degrees. Polynomial proof size bounds the number of companions; it does not bound the number of monomials in the resulting NS cofactors, and no such bound is needed here. 
+
+
+### 49 lem:ns-target-image-transfer
+direct-target-transfer  2. Image certificates can change the target as well 
+      Working transfer lemma.  Suppose \(t=\sum_F Q_FF\) is an NS derivation through degree \(D\), retaining each used axiom's original degree \(e_F\). Let \(\Phi\) be a polynomial substitution of degree at most \(B\ge1\). If every \(\Phi(F)\) has a certificate from a new axiom set through degree \(Be_F\), then \(\Phi(t)\) has a certificate from that set through degree \(BD\). 
+      Proof.  The image cofactor has degree at most \(B(D-e_F)\). Multiply it by the supplied degree-\(Be_F\) representation of \(\Phi(F)\), and sum. Every original-axiom summand has degree at most \(BD\). The right-hand side is \(\Phi(t)\); it need not equal \(t\). Zero cofactors are omitted. This is the final-cofactor argument in  hierarchical normalization , with the target kept explicit rather than assumed to be one. 
+
+
+### 50 prop:php-final-boundary-pruning
+direct-php-boundary  3. The final PHP product can be made one 
+     Use the  same ordinary clausal PHP formula  as before, for \(n\ge2\). List its row and collision clauses as \(C_1,\ldots,C_M\), and expand the outer conjunction as 
+     \[
+      \mathrm{PHP}_n=\neg\left(\bigwedge_{\nu=1}^M C_\nu\right)
+       =\neg\neg\left(\bigvee_{\nu=1}^M\neg C_\nu\right).
+    \] 
+     With the source's TRUE-by-zero convention and \(q_{ij}=1-x_{ij}\), let \(P_\nu=C_\nu^{\mathrm{ap}}\). Each \(P_\nu\) is a row or collision clause product of ordinary degree \(2h\). The PHP approximation is the final block product 
+     \[
+      Z=\prod_{u=1}^h\left(1-\sum_{\nu=1}^M z_{u,\nu}P_\nu\right).
+      \qquad
+      \deg Z=h(2h+1).
+    \] 
+     Its companions are \(P_\nu Z\), all of original degree 
+     \[
+      e_\nu=2h+h(2h+1)=2h^2+3h.
+      \tag{PHP-boundary-degree}
+    \] 
+      Boundary-only removal.  Set every \(z_{u,\nu}\) to zero. Then \(Z\mapsto1\), \(P_\nu Z\mapsto P_\nu\), and all removed field equations vanish. Each \(P_\nu\) has a strictly earlier certificate from \(\mathcal F_n\) and its clause companions: degree \(2h+1\) for a row and \(2h+2\) for a collision clause, by  the two exact clause identities . For every \(h\ge1\), 
+     \[
+      2h+2\le2h^2+3h=e_\nu.
+    \] 
+     Thus the transfer lemma with \(B=1\) converts the degree-\(D_0\) derivation of \(Z\) into a degree-\(D_0\) refutation over \(\mathcal F_n\) and the remaining ENS blocks. Adding \(\mathcal F_n\) as available axioms introduces no premise into the source Frege proof; these equations are used only to certify the substituted boundary companions. 
+      Simultaneous clause removal.  Also apply the affine  ordinary clause substitution : the first coefficient vector of each row block is all ones, the first collision vector is \((1,x)\) for ordered inputs \((1-x,1-y)\), and all its other coefficients are zero. Then 
+     \[
+      P_i^{\mathrm{row}}\mapsto1-\rho_i,\qquad
+      P_{aa',j}^{\mathrm{col}}\mapsto x_{aj}x_{a'j}.
+    \] 
+     The images of the final boundary companions are consequently just a negative row generator or a collision generator. The lower clause companions have base certificates of degrees two or three, within their original degree \(2h+1\). Every removed coefficient field equation maps either to zero or to 
+     \[
+      x^p-x=(x^2-x)(1+x+\cdots+x^{p-2}),
+    \] 
+     a degree-\(p\) Boolean certificate, matching its original field degree. This is one global affine substitution. It changes every retained input and every cofactor, keeps \(Z\mapsto1\), and certifies every removed axiom within its original degree. The resulting NS refutation still has degree at most \(D_0\). 
+     Any retained block has companions formed from its specialized inputs and its own unchanged fresh variables. The substitution introduces only original incidence variables into the deleted clause coordinates and constants into the final block, so the surviving family remains valid leveled ENS. This includes blocks later than \(Z\) if the PHP formula also occurred earlier in the source proof. No later axiom is silently treated as unchanged. 
+
+
+### 51 thm:direct-ordinary-php-transfer
+direct-php-transfer  4. The direct ordinary-PHP bridge and combined preprocessing 
+      Working theorem.  A depth-\(\ell\), size-\(S\) proof of the ordinary clausal \(\mathrm{PHP}_n\) yields, for every \(h\ge1\), an NS refutation of the exact weak base \(\mathcal F_n\) plus a valid ENS family through 
+     \[
+      D_0\le(1+\log S)(h+1)^{O(\ell+1)}.
+      \tag{DIRECT-PHP}
+    \] 
+     The final PHP block and the ordinary clause blocks have been removed. There are polynomially many surviving companions and at most \(\ell+O(1)\) levels. No MOD-row or clause-conjunction derivation prelude is added. Formula approximations and blocks introduced by the source's proof balancing still count as part of the translated proof. 
+      Proof.  Apply (DIRECT-AP) to the PHP theorem, make the affine truth-convention change, and then apply the simultaneous boundary and clause substitution just proved. All cofactor budgets are the original source degrees. This proves (DIRECT-PHP) without functionality or same-row exclusions. 
+      Combined version.  At \(h\ge4\), remove in addition any eligible covered-disjunction, implication-distribution, and small-arity source blocks from  the preceding preprocessing theorem . Choose one admissible rule per block, giving priority to the final zero-coefficient rule for \(Z\). The same recursive substitution satisfies \(B\le L\), and the full refutation has degree at most \(LD_0\). 
+     Indeed, the original earlier-axiom certificates for \(P_\nu\) fit the final companions' original degrees, so the final block is a valid case of the hierarchical image theorem. Its product image is one and its prefix coefficients are zero. This preserves the product/prefix structural induction used for \(B\le L\), together with the previously proved rules. The target becomes one throughout this combined substitution. There is no additional degree factor for removing the final boundary. 
+     For \(S\le n^K\) and \(h=\lceil\log n\rceil\), both degree bounds remain polylogarithmic in \(n\), for fixed \(p,\ell,K\). At fixed \(h\ge4\), they are \(O_{p,\ell,h}(\log S)\). These are augmented-system refutations; eliminating all surviving blocks below the original or residual PC threshold remains unproved. 
+
+
+### 52 lem:relative-implication-image
+direct-relative-implication  5. A local rule for the next relative-elimination attempt 
+     The direct construction removes avoidable prelude blocks. For the remaining implication blocks, the following identity gives a concrete next interface. Let \(B\) be a core block on inputs \(g_i\), with product \(b\), companions \(E_{B,i}=g_i b\), and telescoping coefficients \(V_i\) satisfying \(1=b+\sum_iV_i g_i\). Let \(U\) be a distinct block on \((a,g_1,\ldots,g_s)\), and suppose \(a^2-a\) has a certificate through \(2\alpha\), where \(\alpha=\deg a\), using equations that do not involve \(U\)'s coefficients. 
+      Working local identity.  Assign the first coefficient of \(a\) in \(U\) to \(b\), its first coefficients on \(g_i\) to \(V_i\), and every other coefficient to zero. Then 
+     \[
+      P_U\longmapsto1-ba-\sum_iV_i g_i=b(1-a),
+      \qquad
+      aP_U\longmapsto-b(a^2-a),
+      \qquad
+      g_iP_U\longmapsto(1-a)E_{B,i}.
+      \tag{REL-IMP}
+    \] 
+     The first equality is the telescoping identity; the other two are direct multiplication. Thus the companion images have certificates through \(\deg b+2\alpha\) and \(\deg b+\alpha+\deg g_i\), respectively, using the core companions and the supplied Booleanity certificate. 
+     For equal accuracy \(h\), let \(\delta=\max\{\alpha,\max_i\deg g_i\}\). Since \(\deg b\le h(1+\delta)\), each image certificate exceeds its corresponding original \(U\)-companion budget by at most \(\alpha\). This is not the degree-preserving image condition. The coefficient polynomials may have degree as large as \(\deg b\); their substitution into source cofactors and field equations also needs to be charged. 
+     For source formulas, \(U\) corresponds to \(\neg A\vee B\) with the outer disjunction of \(B\) flattened. Its core block can lie at the same ENS level. Choosing core blocks that are themselves removed can create long chains of composed substitutions. The identity supplies local certificates, not a globally compatible assignment or an affordable bound on their accumulated cost. The next task is to identify the precise dependency condition under which many uses of (REL-IMP) can be combined. 
+
+
+### 53 thm:affine-retained-core-cover
+relative-affine-core-cover  1. A global affine core-cover theorem 
+     Start with a leveled ENS family and its original companion degrees. Choose disjoint collections of  retained core blocks  \(b\) and blocks \(a\) to remove. For each retained core, choose \(1\le t_b\le h_b\). Assign every selected block \(a\) one retained core \(b(a)\), at a level no higher than \(a\). Require a specified coordinate inclusion of its core tuple in the selected tuple: 
+     \[
+      G_a=(G_{b(a)},A_a),\qquad
+      A_a=(a_1,\ldots,a_{r_a}),\qquad
+      t_{b(a)}+r_a\le h_a.
+      \tag{CORE-cover}
+    \] 
+     Permutation of coordinates is allowed; the inclusion is a literal polynomial tuple inclusion, with multiplicities, not an unsupported quotient or rank assertion. Every residual input \(a_j\) must have a supplied NS certificate for \(a_j^2-a_j\) through \(2\deg a_j\), using strictly earlier levels than its selected block. This is available for the original source inputs by the  sharp Booleanity lemma . 
+      Working theorem.  A degree-\(D\) NS or PC refutation transfers, without increasing degree, to the base plus a valid ENS family in which every selected block is removed and core \(b\) has accuracy \(t_b\). Every other retained input is explicitly specialized. The bound does not depend on the number of blocks or levels. 
+      Construction.  Set all core coefficients after factor \(t_b\) to zero; keep its first \(t_b\) vectors. Denote the shortened core product by \(P_b^{[t_b]}\). In a covered block \(a\), copy those retained core vectors into its first \(t_b\) factors on the matched core coordinates, with zero coefficients elsewhere. Use its next \(r_a\) factors for \(1-a_j\), one factor per residual coordinate, and pad the rest by ones. Every removed variable maps to zero, one, or a retained core coefficient variable. This is one global affine substitution \(\Phi\). 
+     Let \(\bar g=\Phi(g)\), and let \(\bar P_b\) be the product of the actual retained core with accuracy \(t_b\) and specialized inputs. With \(Z_a=\prod_j(1-\bar a_j)\), the exact companion images are 
+     \[
+      \Phi(P_a)=\bar P_bZ_a,\qquad
+      \Phi(E_{a,g_i})=Z_a\bar E_{b,i},\qquad
+      \Phi(E_{a,a_j})=
+       -\bar P_b\!\prod_{u\ne j}(1-\bar a_u)
+          (\bar a_j^2-\bar a_j).
+      \tag{CORE-images}
+    \] 
+     These are just multiplication and the identity \(a_j(1-a_j)=-(a_j^2-a_j)\). A repeated residual coordinate is treated by omitting its chosen occurrence from the product, so multiplicities cause no exception. 
+      Degree proof.  Induct through levels to replace the images of the original earlier Booleanity certificates within their original degree bounds. Retained core companions in (CORE-images) are axioms of the new system even when the core is at the same level. Put \(\alpha_j=\deg a_j\), \(W_a=\sum_j\alpha_j\), and \(\delta_a=\max\deg G_a\). Literal inclusion gives \(\delta_b\le\delta_a\). A core-input image has a certificate through \(k_i+t_b(\delta_b+1)+W_a\), and a residual-input image has the same bound with \(k_i=\alpha_j\). In both cases, 
+     \[
+      k_i+t_b(\delta_b+1)+W_a
+      \le k_i+t_b(\delta_a+1)+r_a\delta_a
+      \le k_i+h_a(\delta_a+1)=e_{a,i}.
+      \tag{CORE-budget}
+    \] 
+     The image of a retained core's original companion is exactly its new, shorter companion; its degree does not increase. A removed field equation maps to zero or a retained core field equation, still of degree at most \(p\). Other retained companions are rebuilt from the specialized inputs. Since a shared variable's core level is no higher than the level of the variable it replaces, every surviving input still uses only earlier levels. 
+     These observations close the degree induction for the Booleanity certificates and all removed axioms. An original NS cofactor of degree at most \(D-e_{a,i}\) stays within that degree under the affine substitution, and (CORE-budget) supplies the remaining budget. Affine substitution and the same supplied NS image certificates also replay a PC derivation through \(D\). We never enlarge source cofactor spaces using a shortened core's smaller degree. 
+      Implication consequence.  A block on \((a,G_B)\) can be removed while retaining core \(B\) at accuracy \(h-1\), for uniform \(h\ge2\). A block on \((a,b,G_C)\) can similarly use a core at accuracy \(h-2\), for \(h\ge3\). The residual formulas may have large degrees: their supplied Booleanity certificates and the original factor budgets already account for those degrees. 
+     One core can serve any number of selected blocks satisfying its budget. The theorem does not require those residual tuples to be nested or disjoint. It does require that the designated cores themselves remain available. 
+
+
+### 54 cor:php-clause-containing-pruning
+relative-php-superclauses  2. A base witness for every clause-containing block 
+      Working PHP corollary.  Any block whose input tuple contains a complete row tuple \((x_{i1},\ldots,x_{in})\), or a collision tuple \((1-x_{aj},1-x_{a'j})\), can be removed without degree increase, even with arbitrarily many additional earlier-level polynomial inputs. All such blocks can be removed at once at any levels. 
+      Proof.  Use the  ordinary clause coefficients  on the indicated coordinates, and zero on every additional coordinate and later factor. Its product becomes \(H=1-\rho_i\) in the row case, or \(H=x_{aj}x_{a'j}\) in the collision case. Each companion becomes \(\Phi(g)H\), an explicit base-generator multiple through degree at most \(\deg g+2\). Since the tuple includes a degree-one input, \(\delta\ge1\), and 
+     \[
+      \deg g+2\le\deg g+h(\delta+1)=e_g.
+    \] 
+     The substitution is affine, fixes all original incidence variables, and gives every removed field equation its existing degree-\(p\) Boolean certificate. Apply it globally to later inputs and original cofactors. The NS and PC proofs therefore transfer through their original degree. No Booleanity assumption is needed for the additional inputs. This is the base-normalizer argument with zero coefficients on the extra coordinates; it does not consume a retained core's accuracy. 
+
+
+### 55 cor:core-cover-source-preprocessing
+relative-combined-source  3. Combine core sharing with the preceding source preprocessing 
+      Working corollary.  The affine core-cover and clause-containing rules can be included in the  combined direct-PHP preprocessing  at the same degree \(LD_0\), subject to three explicit conditions: assign one rule per selected block; do not select a designated core for any removal rule; and match core coordinates as actual source child coordinates with their inherited structural bounds. The final PHP block remains assigned its zero-coefficient rule. 
+      Proof.  Preassign the retained core variables and all core-sharing variables by the affine construction. Other selected coefficient witnesses still depend only on strictly earlier levels and can be recursively composed as before. A copied core variable is fixed and has level no higher than the variable it replaces, so it creates no substitution cycle. 
+     The source structural induction has two additional cases. A clause-containing block has an image of degree at most two and a first-only coefficient vector of degree at most one, exactly as for ordinary clauses. For core sharing, if \(\Delta\) bounds the selected block's input approximations, its product image has degree at most \(t_b(1+\Delta)+r_a\Delta\le h_a(1+\Delta)\). For matched core coordinates its telescoping prefix is the shortened core prefix. For a residual coordinate it is the shortened core product times the preceding residual factors. Both satisfy the same structural bound. Thus the existing template induction still gives \(B=\max\{1,\deg\Phi(r)\}\le L\). 
+     For NS image certificates, use (CORE-images) directly in the final substituted system. The retained shortened core is a new axiom, and the images of earlier Booleanity certificates have degree at most \(2B\alpha_j\) by level induction. The proof of (CORE-budget), scaled by \(B\), bounds each covered companion's image certificate by \(Be_{a,i}\). The preceding normalization rules retain their original image bounds; the final-cofactor argument gives \(BD_0\le LD_0\). This joint proof avoids assuming fresh sharp Booleanity bounds in a family that was already specialized by a different preprocessing step. 
+
+
+### 56 thm:optimal-linear-core-factor-packing
+relative-optimal-linear-packing  4. Optimal factor packing for a prescribed linear-input product 
+     For this local theorem, all core and residual inputs are nonconstant affine polynomials in old variables, fixed by the substitution, and each residual has an old NS Booleanity certificate through degree two. The core and selected block both originally have accuracy \(h\). Retain \(t\) of the core's factors, where \(1\le t\le h\), and let \(k\) be the number of residual inputs. The desired product is 
+     \[
+      Q=P_b^{[t]}\prod_{j=1}^k(1-a_j),\qquad
+      T=\max\left\{1,\left\lceil\frac{2t+k}{h}\right\rceil-1\right\}.
+      \tag{FACTOR-T}
+    \] 
+      Working theorem.  Coefficient polynomials of degree at most \(T\) realize this product and certify every companion image through \(T\) times its original degree. For any number of selected same-level blocks on fixed old inputs, assigned retained same-level cores in this way, one substitution gives NS or PC refutation degree at most \(TD\), with \(T\) taken as the maximum over the selected blocks. Later retained inputs are specialized globally. 
+      Packing construction.  Regard the \(t\) retained core factors as items of weight two and the \(k\) residual factors \(1-a_j\) as items of weight one. Put \(C=T+1\ge2\). There are \(h\) bins of capacity \(C\). Place one core factor in each of the first \(t\) bins, then distribute the unit-weight residual factors into the remaining capacity. This succeeds because \(t\le h\) and \(2t+k\le hC\). 
+     For one bin, ordered fundamental factors \(F_1,\ldots,F_m\) satisfy 
+     \[
+      1-\prod_{\nu=1}^mF_\nu
+        =\sum_{\nu=1}^m(1-F_\nu)\prod_{\mu&lt;\nu}F_\mu.
+      \tag{FACTOR-telescope}
+    \] 
+     A core factor has \(1-F_\nu=\sum_i r_{\nu,i}g_i\), and a residual factor has \(1-F_\nu=a_j\). Collect the coefficients of the selected block's input coordinates in (FACTOR-telescope). If the bin has weight \(w\), each resulting coefficient has degree at most \(w-1\le T\): a core term contributes its prefix degree plus one, and a residual term contributes its prefix degree. The selected block's factor for this bin is therefore exactly the product of the bin's fundamental factors. Empty bins give one. Multiplying all \(h\) bins gives \(Q\). 
+     As in (CORE-images), core-input companions become multiples of retained core companions, and residual-input companions become multiples of their old Booleanity certificates. Every such NS certificate has degree at most \(2t+k+1\). Since the original selected companion degree is \(2h+1\), 
+     \[
+      2t+k+1\le h(T+1)+1\le T(2h+1).
+    \] 
+     Removed field equations have bounded domain certificates through \(pT\). All coefficient witnesses use only the fixed old variables and retained core coefficients. Thus simultaneous same-level substitution has degree at most \(T\), and the original-cofactor argument gives \(TD\). The PC replay uses the same supplied NS image certificates and polynomial substitution bound. This paragraph does not claim the same \(T\) for arbitrary multi-level compositions of nonlinear witnesses. 
+      Sharpness for the prescribed product.  Take independent original Boolean variables for all core and residual inputs, with disjoint core/residual coordinates. The retained core coefficients are independent variables. Then \(Q\) has ordinary degree exactly \(2t+k\). Any substitution of degree at most \(T'\) for the selected coefficients, fixing these old inputs, makes each of its \(h\) factors have degree at most \(T'+1\). Hence \(h(T'+1)\ge2t+k\). Also \(T'\ge1\), because the prescribed product depends on retained core coefficient variables. This proves that (FACTOR-T) is optimal for this target product. It is not a lower bound for every possible relative-elimination strategy. 
+      Affine threshold.  In particular \(T=1\) exactly when \(k\le2(h-t)\). Linear residual inputs can be paired in a factor, improving the one-input-per-factor sufficient condition. If all core factors are retained, \(t=h\), then \(T=1+\lceil k/h\rceil\); distributing residuals over the existing factors avoids placing the entire core product in one coefficient vector. 
+
+
+### 57 ex:raw-core-chain-height-obstruction
+relative-forest-obstruction  5. What this says about chains, and what height does not prove 
+     A same-level forest of literal tuple inclusions can be handled by assigning each selected descendant directly to its retained terminal core. Its residual tuple contains all added coordinates along the path. The affine general theorem applies when the number of those coordinates fits \(h-t\); for affine inputs, (FACTOR-T) gives the sharper degree cost from the total count. The number of descendants is irrelevant, but the residual count from a chosen retained core is not. 
+      Counterexample to a naive height inference.  Let \(B_0=\neg u\vee\neg v\), and \(B_j=\neg a_j\vee B_{j-1}\), using independent atoms. Each \(B_j\) is a flattened disjunction of negated atoms. A fixed Frege proof of the one-variable tautology \(X\vee\neg X\), with \(X=B_k\), has bounded proof-tree height and bounded formula depth independent of \(k\), and size \(O(k)\). Nevertheless its raw collection of disjunction subformulas contains the inclusion chain \(G_{B_0}\subset G_{B_1}\subset\cdots\subset G_{B_k}\), with \(k\) added coordinates. 
+     Thus bounded or logarithmic proof-tree height does not bound every same-level core-inclusion chain in the raw approximation family. This example does  not  make the chain essential to an NS refutation: it is a tautology proof, and unused intermediate blocks may be pruned. A cofactor-sensitive core choice might avoid them. That essential-coverage question must be proved from the actual simulation rather than inferred from the existence of a balanced tree. 
+     The historical  nested-span batch theorem  still gives \(D+(p-1)\delta\) when its genuine-refutation and freshness hypotheses hold. A retained later block depending on the chain needs to be handled before invoking that theorem. The present core substitution explicitly changes later inputs and retains cores; its prescribed-product degree bound does not limit what replay-based PC elimination can achieve. 
+
+
+### 58 lem:block-copy-agreement
+copy-block-agreement  1. Agreement of two blocks with matched input certificates 
+     Let \(P=P_g(R)\), \(Q=P_f(S)\) be accuracy-\(h\) products, with paired input tuples \(g_i,f_i\), degrees at most \(\delta\ge1\), and all companions \(E_i=g_iP\), \(F_i=f_iQ\). Let \(V_i,W_i\) be their telescoping coefficients, so \(1-P=\sum_iV_i g_i\), \(1-Q=\sum_iW_i f_i\). Put \(d_i=g_i-f_i\), and suppose each nonzero \(d_i\) has a supplied old NS certificate through \(C\). Then 
+     \[
+      P-Q=\sum_i W_iE_i-\sum_iV_iF_i
+           -\sum_i(W_iP+V_iQ)d_i.
+      \tag{COPY}
+    \] 
+      Proof.  Expand \(P-Q=P(1-Q)-Q(1-P)\), then substitute \(f_i=g_i-d_i\) in the first sum and \(g_i=f_i+d_i\) in the second. This is an ordinary polynomial identity. If the tuples agree literally, the last sum is zero; the fresh coefficient variables of the two blocks still need not agree. 
+      Working degree bounds.  Put \(s=h(\delta+1)\). Prefix degrees are at most \(s-\delta\). The first two sums have certificates through \(2s\), and the error multipliers have degree at most \(2s-\delta\). Thus the NS agreement degree is at most 
+     \[
+      2s+\max\{0,C-\delta\}.
+      \tag{COPY-NS}
+    \] 
+     If the input differences instead have old PC proofs through \(C\), derive them first and multiply their final polynomials, whose degrees are at most \(\delta\). PC agreement then has degree at most \(\max\{C,2s\}\). This use of final-line reuse is different from flattening the old certificates into one NS identity. 
+
+
+### 59 lem:formula-copy-agreement
+copy-formula-agreement  2. A bounded-degree agreement certificate for formula copies 
+     A  line-scoped copy  uses fresh coefficient variables for the distinct syntactic disjunction subformulas of one proof-line occurrence, reusing them consistently for identical repeated subformulas inside that line. Do not merge distinct syntax nodes merely because their input polynomials coincide. Different line occurrences may have independent copies. Original propositional variables are shared. Assign levels from the syntactic dependencies, consistently between copies, without lowering them after algebraic cancellation. 
+      Working agreement lemma.  Consider two such copies of a source formula, with approximation degrees bounded throughout by \(L\ge1\), and source depth at most \(\ell'\). Their difference has an NS certificate from the two copies' companions and domains through 
+     \[
+      C_{\mathrm{copy}}\le(\ell'+1)
+       \bigl(2h(L+1)+(p-2)_+L\bigr).
+      \tag{FORMULA-COPY}
+    \] 
+     The bound is independent of arity and of the number of repeated copies. It is a conservative uniform bound, not a bound proportional to the actual degree of every individual copied polynomial. 
+      Proof.  Atoms and TRUE have identical polynomials. Negation only changes the sign of a difference. For a MOD gate, apply \(u^{p-1}-v^{p-1}=(u-v)\sum_{j=0}^{p-2}u^{p-2-j}v^j\), where \(u-v\) is the sum of the child-copy differences. This adds at most \((p-2)_+L\) to their certificate degree; the number of children introduces no degree factor. At an outer disjunction, pair the maximal non-OR children and apply (COPY). A coarser bound from (COPY-NS) adds at most \(2h(L+1)\) to the maximum child degree. Induct along the source depth, with negation steps costing zero. Every child-difference certificate uses only lower levels than its parent disjunction block. 
+     Inside each line, the copy remains coherent in the sense needed by the source axiom-template lemmas. Between lines, agreement is a derived consequence with its displayed degree cost. It is not a literal equality of the two polynomial expressions. 
+
+
+### 60 prop:line-scoped-simulation
+copy-aware-mp  3. Modus ponens with independently scoped lines 
+     For an OR-root conclusion, let its node approximation be \(b=P_g\). The implication child has its own approximation \(c=P_{(\alpha,f)}\); its antecedent copy is \(\alpha\), whereas the other proof child supplies \(a\). Let \(U_0,U_i\) be the implication prefixes and \(V_i\) the conclusion prefixes. Direct expansion gives 
+     \[
+      \begin{aligned}
+      b={}&c+(bU_0)a+\sum_iU_iE_{B,i}-\sum_iV_iE_{U,i}\\
+         &+(bU_0)(\alpha-a)
+           +\sum_i(bU_i+cV_i)(f_i-g_i).
+      \end{aligned}
+      \tag{COPY-MP}
+    \] 
+     Here \(E_{B,i}=g_i b\) and \(E_{U,i}=f_i c\). The added terms follow from replacing \(\alpha\) by \(a+(\alpha-a)\), and the paired input tuples by one another, in the original telescoping proof. They vanish only after their agreement certificates are supplied. 
+     For a non-OR conclusion, first apply the usual MP identity to the implication's own conclusion copy \(\beta\), then add the agreement \(b-\beta\) and the antecedent correction \((\beta U_0)(\alpha-a)\). The original Booleanity term for \(\beta\) remains present. All these comparison certificates involve proper input formulas and use strictly lower ENS levels than the implication block. 
+     With \(\mu=h(L+1)\), the new multipliers have degree at most \(\mu\). The source axiom-template argument gives \(A=(h+1)^{c_F}L\) for an internally coherent leaf under this convention: the disjunction-combination identities work with independent coefficient families as well as shared ones. Any fixed-template agreement cost is absorbed into \(c_F\), which depends only on the formalization. A balanced proof of height \(H\) therefore has a line-scoped NS simulation through 
+     \[
+      D_{\mathrm{occ}}\le
+       \max\{A,3\mu,C_{\mathrm{copy}}+\mu\}+H\mu
+       \le(1+\log S)(h+1)^{O(\ell+1)}.
+      \tag{OCC-simulation}
+    \] 
+     There are polynomially many companions: copying the subformula families independently within each line incurs at most a polynomial increase in the balanced proof's symbol size. Levels remain bounded by formula depth. Applying the direct PHP boundary and ordinary clause substitutions to this genuine NS derivation gives the same type of refutation over \(\mathcal F_n\). This construction permits independent line scopes; it does not remove all of their extension blocks. 
+
+
+### 61 thm:matched-core-ns-cover
+copy-matched-core-cover  4. Core cover with supplied earlier input differences 
+     Extend the affine core-cover setting. A retained core has inputs \(f_i\); a selected block has matched inputs \(g_i\) and residuals \(a_j\). Both matched tuples have degrees at most the selected block's original input ceiling \(\delta\). The core is at a level no higher than the selected block, and each difference \(d_i=g_i-f_i\) has a supplied strictly earlier NS certificate through \(C_i\). Set \(C_i=0\) when \(d_i=0\). Retain \(t\) core factors and use one scalar factor per residual, as before. Define 
+     \[
+      k_i=\deg g_i,\quad
+      W=\sum_j\deg a_j,\quad
+      \Gamma=\max\{0,\max_i(C_i-k_i)\}.
+    \] 
+      Working theorem.  Assume residual Booleanity has its original earlier degree-\(2\deg a_j\) certificates, and 
+     \[
+      t+r\le h,\qquad
+      t(\delta+1)+W+\Gamma\le h(\delta+1).
+      \tag{MATCH-budget}
+    \] 
+     Then the selected block can be removed by the same affine variable-sharing substitution without increasing NS or PC degree. Any collection of blocks satisfying these conditions with designated retained cores can be handled simultaneously across levels. All later inputs are specialized. Literal matching recovers the preceding theorem with \(\Gamma=0\). 
+      Proof.  Write \(P_g,P_f\) for the two \(t\)-factor products using the same retained coefficient vectors, on \(g_i,f_i\), respectively, and \(Z=\prod_j(1-a_j)\). The selected product actually becomes \(P_gZ\). With \(\tau=t(\delta+1)\), ordinary product telescoping gives 
+     \[
+      P_g-P_f=\sum_i K_i d_i,\qquad
+      \deg K_i\le1+(t-1)(\delta+1)=\tau-\delta.
+      \tag{MATCH-products}
+    \] 
+     The sign is included in \(K_i\): it is the negative sum of the shared \(i\)-th coefficient times the earlier \(g\)-factors and later \(f\)-factors. For a matched companion, 
+     \[
+      g_iP_gZ
+       =Z\,f_iP_f+ZP_f d_i+Zg_i(P_g-P_f).
+      \tag{MATCH-image}
+    \] 
+     The first term uses the retained core companion. The second and third use the supplied earlier difference certificates. Because \(C_i\le k_i+\Gamma\), \(\max_i C_i\le\delta+\Gamma\), and \(\deg f_i\le k_i+\Gamma\), their combined NS ceiling is \(k_i+\tau+W+\Gamma\). The last degree inequality for \(f_i\) follows from \(f_i=g_i-d_i\), including the literal-match case. 
+     A residual companion still equals \(-P_g\prod_{u\ne j}(1-a_u)(a_j^2-a_j)\), so its certificate has degree at most \(\deg a_j+\tau+W\). Equation (MATCH-budget) puts both kinds within their own original companion degree. Induct through levels to replace the images of earlier difference and Booleanity certificates. Retained shortened cores are new axioms even at the same level; field equations map to zero or retained field equations. The affine substitution and original-cofactor argument finish, exactly as in the literal-cover proof. 
+     A simpler sufficient condition is \(t+r+\lceil\Gamma/(\delta+1)\rceil\le h\), but the weighted condition can be sharper when residual degrees are below \(\delta\). This is an explicit conditional transfer: a polynomial-in-\(h\) agreement bound alone need not make the extra accuracy cost affordable. 
+
+
+### 62 lem:proof-line-core-chains
+copy-proof-line-chains  5. The proof-line chains really are bounded by height 
+      Working structural lemma.  In a tree-like proof with line-scoped approximations, take the OR-root proof-line occurrences as vertices. Whenever an MP conclusion \(B\) is OR-root, draw an edge from its implication-premise occurrence \(\neg A\vee B\) to that conclusion occurrence. This graph is a disjoint union of directed chains, each of length at most the proof-tree height \(H\). 
+      Proof.  An occurrence has only one parent in the proof tree, so it has at most one outgoing edge. A derived occurrence has only one implication child, so it has at most one incoming edge. Every edge goes from a child to its parent; cycles are impossible and a path has at most \(H\) edges. Formula occurrences, not globally identified formula strings, are the vertices. 
+     Along such a chain the implication syntax adds one antecedent input per edge to the terminal formula's flattened child tuple. In the independent line scopes, the terminal child formulas have paired approximation copies rather than literally identical polynomials. They can be compared directly by (FORMULA-COPY), without adding a comparison cost once per edge. Thus each line-root block has at most \(H\) residual antecedent coordinates relative to its chain terminal, together with the explicit matched-input certificate budget \(\Gamma\). 
+      What remains.  Terminal occurrences include OR-root antecedent premises, an OR-root final theorem when that presentation is used, and implication premises whose parent conclusion is non-OR. The last kind has a two-input root block. Proper-subformula OR blocks inside the independently scoped lines are not vertices of this graph. A complete cover must still handle those blocks and the terminal cores. In our unsimplified PHP presentation the final theorem is negation-root; its special final OR boundary is handled by the separate direct-PHP argument. 
+
+
+### 63 thm:matched-core-pc-cover
+copy-pc-core-cover  6. A uniform PC ceiling removes the extra matching-degree charge 
+      Working PC version.  Suppose the matched coordinates satisfy \(\deg f_i\le\deg g_i\), and retain the factor-count condition \(t+r\le h\). Let all supplied strictly earlier input-difference and residual-Booleanity proofs be PC proofs through a common ceiling \(C_*\). A degree-\(D\) PC refutation then transfers by affine core sharing through \(D_*=\max\{D,C_*\}\), with any number of selected blocks across levels. The designated cores remain retained. 
+      Proof.  Construct image proofs by levels, replaying each supplied earlier PC proof through \(D_*\). The final difference \(d_i\) has degree at most \(k_i=\deg g_i\), regardless of the degree of its proof. Equation (MATCH-products) therefore derives \(P_g-P_f\) through \(\max\{D_*,t(\delta+1)\}\), using final-line multiplication. For (MATCH-image), every final multiplied polynomial has degree at most \(k_i+t(\delta+1)+W\le e_{a,i}\). The core term has this same bound because \(\deg f_i\le k_i\). Residual Booleanity is reused in the same way: its final polynomial has degree at most \(2\deg a_j\), so the product remains within the original companion budget. 
+     Only selected axiom images needed by the main or auxiliary proofs must be constructed. Their original degrees are at most \(D_*\). Retained core images and field images satisfy the same bound. Earlier auxiliary proofs use only earlier selected axioms, so the level induction is well-founded; their potentially larger proof degree is reused without multiplication. Replay the original refutation through \(D_*\). For matched line-scoped copies the coordinate degrees agree by variable renaming. This argument pays an absolute PC ceiling once, instead of flattening every auxiliary proof into an NS image certificate. 
+
+
+### 64 lem:weighted-refutation-replay
+copy-weighted-refutation  7. Weighted refutations give old polynomial consequences 
+      Working replay lemma.  Suppose \(G\cup\{q_i\}\) has a PC refutation through \(d\), and each product \(tq_i\) corresponding to a used extra axiom has a PC derivation from \(G\) through \(c\). If \(\deg t=k\), then \(G\) derives \(t\) through \(\max\{d+k,c\}\). 
+      Proof.  Replay the original proof with each line \(f\) replaced by \(tf\). Weighted \(G\)-axioms are derived by multiplication, weighted extra axioms use their supplied proofs, and the original linear-combination and variable-multiplication steps remain valid. The weighted line degrees are at most \(d+k\). The original conclusion one becomes \(t\). Supplied proofs are reused, not multiplied wholesale. No Booleanity of \(t\) is required. 
+

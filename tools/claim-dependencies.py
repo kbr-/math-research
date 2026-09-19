@@ -334,8 +334,32 @@ def main():
     p=sub.add_parser('packet',help='Compact status, scope and qualification evidence')
     p.add_argument('--claim',required=True);p.add_argument('-n',type=int,default=6)
     p.add_argument('--width',type=int,default=700);p.add_argument('--out',type=Path)
+    s=sub.add_parser('record-scan',help='Inventory every research-article citation, including unindexed regions')
+    s.add_argument('--out',type=Path,required=True)
+    v=sub.add_parser('record-show',help='Bounded lookup in a complete record citation inventory')
+    v.add_argument('--input',type=Path,required=True);v.add_argument('--article');v.add_argument('--claim')
+    v.add_argument('--ownership',choices=['unique_candidate','ambiguous_candidates','broad_article_only','unowned'])
+    v.add_argument('--kind',choices=['hyperlink','explicit_claim_label']);v.add_argument('-n',type=int,default=10)
+    v.add_argument('--out',type=Path)
     args=parser.parse_args()
-    if args.command=='packet':
+    if args.command=='record-scan':
+        from record_citations import scan_record
+        report=scan_record(load());write_json(args.out,report)
+        print(json.dumps(report['counts'],indent=2));print('Complete occurrence inventory saved; no relationships inferred.')
+    elif args.command=='record-show':
+        from record_citations import select,sha
+        require(args.n>0,'Limit must be positive')
+        report=json.loads(args.input.read_text());require(report.get('method')=='full-record-html-citations-v1','Wrong report format')
+        rows=select(report,article=args.article,claim=args.claim,ownership=args.ownership,kind=args.kind)
+        stale=sha((ROOT/'notebook.html').read_text())!=report['notebook_sha256']
+        registry_stale=sha(json.dumps(load(),sort_keys=True,ensure_ascii=False))!=report['registry_sha256']
+        if args.out:write_json(args.out,{'source_report':str(args.input),'notebook_changed':stale,'registry_changed':registry_stale,'citations':rows,'count':len(rows)})
+        for r in rows[:args.n]:
+            print(r['id'],r['article'],r['line'],r['kind'],r['source_ownership'],'=>',r['target'])
+            print('  Heading:',r['heading']);print('  Claims:',','.join(r['source_claim_candidates']) or '(none)')
+            print('  Context:',r['context'][:400])
+        print(f'{len(rows)} occurrences; {max(0,len(rows)-args.n)} omitted. Notebook changed since scan: {stale}; registry changed: {registry_stale}. No proof dependency inferred.')
+    elif args.command=='packet':
         packet=metadata_packet(load(),args.claim,limit=args.n,width=args.width)
         if args.out:write_json(args.out,packet)
         print(packet_text(packet),end='')

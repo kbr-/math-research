@@ -1,0 +1,232 @@
+
+###affine-basis-row-count
+1. Count the rows required by this bin construction
+    Consider a current ENS tuple \(G=(g_i)\) of accuracy \(h\), input degrees \(d_i\), maximum degree \(\delta\), and original companion degrees \(e_i=d_i+h(\delta+1)\). Handle the zero span and spans containing one by their existing constant modes. Otherwise choose a degree-ordered basis \(b_1,\ldots,b_r\) from the actual input polynomials, or from the actual input union of an equal-span class, with
+    \[
+      g_i=\sum_j c_{ij}b_j,\qquad
+      c_{ij}\ne0\Longrightarrow\deg b_j\le d_i.
+    \]
+    Each basis member has a supplied strictly earlier NS Booleanity certificate through twice its degree. Let \(r_{\rm aff}\) be the number of affine basis members. Nonzero constant basis members are absent because the span containing one was already handled. All basis degrees are positive, so the old rule that the degrees except for one largest member sum to at most one allows only a singleton or a pair whose first member is affine:
+    \[
+      (1-b_j)(1-b_k)=1-b_j-(1-b_j)b_k.
+    \]
+    The pair's coefficient on \(b_k\) is affine. Pair affine members with nonaffine ones first, then pair remaining affine members with each other. Remaining nonaffine members are singletons. The minimum number of bins under this rule is
+    \[
+      k_{\rm bins}
+       =r-\min\{r_{\rm aff},\lfloor r/2\rfloor\}
+       =\max\{r-r_{\rm aff},\lceil r/2\rceil\}.
+    \]
+    Each pair consumes an affine member and two total members, so it cannot exceed either of those limits; the stated procedure attains both. Thus this construction fits the block exactly when
+    \[
+      \boxed{r\le2h,\qquad r-r_{\rm aff}\le h.}
+    \]
+    This is an exact count for the recorded bin rule, not a claim that every possible affine normalizer must use such a partition. Arbitrary low-degree cancellations in the span need their own Booleanity witnesses before being used as new basis members.
+
+
+###affine-basis-image-ledger
+2. Every image still fits its original degree
+    The resulting product is \(H=\prod_j(1-b_j)\), with \(W=\sum_j\deg b_j\). A pair contributes degree at most \(\delta+1\), and a singleton at most \(\delta\). Consequently \(W\le h(\delta+1)\). Use constant rows for singletons, the displayed affine rows for pairs, and zero rows for padding.
+    For an original tuple rather than the canonical basis, express each \(b_j\) as a constant linear combination of its inputs and compose those coefficients with the rows. This keeps every coefficient image affine in strictly earlier variables. The exact companion identity is
+    \[
+      g_iH=-\sum_jc_{ij}(b_j^2-b_j)
+                   \prod_{k\ne j}(1-b_k).
+    \]
+    The supplied NS Booleanity proofs give an image certificate through
+    \[
+      W+d_i\le d_i+h(\delta+1)=e_i.
+    \]
+    The degree-adapted representations are used in this inequality. An affine coefficient image \(\beta\) has a domain certificate for \(\beta^p-\beta\) through \(p\), matching its original field equation. These images can be nonzero ordinary polynomials and must be proved.
+    Apply the one affine map to the full proof and all later inputs. The image certificates fit each used axiom's original budget, so NS or PC degree is preserved. Product Booleanity has its separate sharp NS proof through \(2W\), by the existing product identity. This is the old affine-bin extension with a closed-form sufficient rank criterion.
+
+
+###affine-basis-merge-first
+3. Merge a class before testing its listed basis
+    At a fixed level and accuracy, group equal literal input spans, using the already specialized inputs. Choose the degree-ordered Boolean basis from the union of those classes' actual listed inputs, as in the existing quotient lemma. Then test the new inequalities. A class can supply an affine input missing from another member's list.
+    For example, over any prime field the two Boolean tuples
+    \[
+      G=(x,y,xy),\qquad
+      F=(xy,x-xy,y-xy)
+    \]
+    span the same rank-three space. The second tuple has no affine listed input, so its listed-basis criterion at \(h=2\) fails. The union supplies the basis \((x,y,xy)\), with two affine members, which fits two rows. The inverse relations \(x=F_1+F_2\), \(y=F_1+F_3\), \(xy=F_1\) make the coefficient conversion explicit. The failure of the second list alone is not a nonnormalizability claim; in this domain-only example its missing affine generators can also be certified directly.
+    For an eligible class, remove its blocks using the composed affine rows; otherwise retain one canonical block. The zero span and spans containing one retain their simpler modes. Process levels from bottom to top. Same-level changes do not alter inputs at that level, and later levels cannot change earlier input spaces.
+    In the source-derived family from the new PHP endpoint, the current Booleanity portfolio is closed under these products and same-level affine quotients. Rebuild its sharp earlier witnesses at each stage. An arbitrary family would need those current witnesses supplied; blindly specializing an older sharp degree is insufficient.
+    The resulting family has the same PC degree, no extra levels or families, distinct input spaces within a level/accuracy, and \(1\notin V_a\). Its chosen bases satisfy
+    \[
+      \boxed{r_a>2h_a\quad\text{or}\quad r_a-r_{{\rm aff},a}>h_a.}
+    \]
+    The affine count concerns the actual degree-ordered basis obtained from the class input union. It is not asserted to equal the dimension of every affine polynomial obtainable by cancellation in the full span.
+
+
+###affine-basis-degree-controls
+4. Sharp controls and the role of Booleanity
+    Free affine inputs. For \(G=(x_1,\ldots,x_r)\) over pure Boolean domains, any affine coefficient normalizer has product degree at most \(2h\). Its product equals one at the all-zero point and must vanish at every nonzero Boolean point, because all companion images vanish there. Its multilinear representative is \(\prod_i(1-x_i)\), of degree \(r\). Hence \(r\le2h\) is necessary, and the paired construction attains it. Extra base constraints can invalidate this free-domain lower-bound argument.
+    A mixed-degree obstruction. Take disjoint inputs
+    \[
+      G=(x_0,x_1x_2,x_3x_4,x_5x_6),\qquad h=2.
+    \]
+    They have rank four, one affine member, and \(\delta=2\). Every affine normalizer product has degree at most \(h(\delta+1)=6\). On the Boolean cube it must equal the all-zero-input indicator \(\prod_j(1-g_j)\), a multilinear polynomial of degree seven because the supports are disjoint. Boolean reduction cannot increase degree, so no such affine normalizer exists over this pure Boolean base. This shows that \(r\le2h\) alone is insufficient; it does not prove necessity of the mixed bin criterion for every algebraically related tuple.
+    Affine does not imply Boolean. Over \(\mathbb F_3\) or \(\mathbb F_5\), the tuple \((x+y,z)\) consists of affine polynomials in Boolean variables. Pairing it without a Booleanity witness gives \(H=(1-x-y)(1-z)\). At \(x=y=1,z=0\), the companion image \((x+y)H=-2\) is nonzero. The coefficient field images do have valid domain certificates. The missing hypothesis is Booleanity of \(x+y\), whose Boolean-domain remainder is \(2xy\).
+
+
+###row-projection-map
+1. An affine projection onto the row equations
+    Let \(n\ge2\), and choose one pivot column \(\pi_i\) for each of the \(n+1\) rows. Define
+    \[
+      \Theta_\pi(x_{ij})=
+        \begin{cases}
+          1-\sum_{k\ne\pi_i}x_{ik},&j=\pi_i,\\
+          x_{ij},&j\ne\pi_i,
+        \end{cases}
+      \qquad \Theta_\pi(r)=r
+    \]
+    for every ENS coefficient variable \(r\). Write \(u_i=\Theta_\pi(x_{i,\pi_i})\). This is an affine, degree-nonincreasing ring homomorphism, with \(\Theta_\pi^2=\Theta_\pi\). Its image uses \(n(n+1)-(n+1)=n^2-1\) free incidence coordinates, and its kernel is the ideal generated by the row equations.
+    Proof of the kernel and degree assertion. Replace the pivot variables successively. The identity \(x_{i,\pi_i}-u_i=\rho_i-1\), together with
+    \[
+      X^k-U^k=(X-U)\sum_{a=0}^{k-1}X^{k-1-a}U^a,
+    \]
+    gives, for every polynomial \(f\),
+    \[
+      f-\Theta_\pi f=\sum_i Q_i(\rho_i-1),\qquad
+      \deg\bigl(Q_i(\rho_i-1)\bigr)\le\deg f.
+    \]
+    The coefficients may contain retained ENS variables, which the map fixes. This proves the reverse kernel inclusion; the forward inclusion follows because every row equation maps to zero. It also shows that \(\Theta_\pi f\) has minimum total degree among representatives of \(f\) modulo the row ideal: any other representative \(g\) has the same image and \(\deg\Theta_\pi f\le\deg g\).
+
+
+###row-projection-transfer
+2. Base images preserve the full proof degree
+    The row equations map to zero. Nonpivot Boolean equations are unchanged. For a pivot \(x=x_{i,\pi_i}\),
+    \[
+      u_i^2-u_i=(x^2-x)-(\rho_i-1)(u_i+x-1).
+    \]
+    For a collision \(xy\) in two distinct rows, put \(\Delta_x=\Theta_\pi x-x\) and \(\Delta_y=\Theta_\pi y-y\). Each difference is zero or a negative row equation, and
+    \[
+      \Theta_\pi(xy)=xy+\Delta_x y+(\Theta_\pi x)\Delta_y.
+    \]
+    These are NS certificates in the original \(\mathcal F_n\) through degree two, matching the original Boolean/collision degree. Coefficient field equations are unchanged.
+    Apply \(\Theta_\pi\) to a completed NS or PC refutation of \(\mathcal F_n\cup\mathcal E\). A retained extension becomes the genuine ENS block on inputs \(\Theta_\pi g_i\), with unchanged own coefficients. Replace the images of used base axioms by the displayed certificates. The affine-substitution rule and original-degree image budgets give
+    \[
+      \boxed{\mathcal F_n\cup\mathcal E\vdash^{D}1
+         \ \Longrightarrow\
+         \mathcal F_n\cup\Theta_\pi\mathcal E\vdash^{D}1}
+    \]
+    in either NS or PC. Levels, accuracies, and family counts do not increase. All later inputs are specialized. The retained input polynomials no longer use pivot cells, although base-image certificates over the original \(\mathcal F_n\) may still use them.
+    Alternatively keep the reduced base \(\mathcal F_n^\pi=\Theta_\pi\mathcal F_n\setminus\{0\}\). For \(n\ge2\), every nonzero image of a Boolean or collision generator still has degree two: pivot images are nonconstant affine forms, and colliding cells lie in different rows. Thus the same image certificates fit the reduced generators' degrees as well. Projection and lifting show that \(\mathcal F_n^\pi\) and \(\mathcal F_n\) have the same bare NS and PC refutation degrees. The same equivalence holds when the identical already projected family \(\Theta_\pi\mathcal E\) is attached to both bases.
+    In particular, the original PC lower bound \(n/2+1\) remains the target. One coordinate per row has been eliminated algebraically; no hole has been deleted. The pivot Booleanity polynomial remains a complete quadratic equation and must not be split into individual same-row exclusions.
+
+
+###row-projection-pivots
+4. Ranks and reduced degrees do not depend on the pivots
+    For two pivot choices \(\pi,\sigma\), the common row-ideal kernel gives
+    \[
+      \Theta_\sigma\Theta_\pi=\Theta_\sigma,\qquad
+      \Theta_\pi\Theta_\sigma=\Theta_\pi.
+    \]
+    Restricting these maps to their image rings gives mutually inverse affine coordinate changes, fixing every ENS coefficient variable. Both directions are degree-nonincreasing, so they preserve ordinary degree exactly. They also preserve linear relations, equality of input spans, membership of one in a span, and the degree filtration of every fixed input list.
+    Thus a pivot search cannot improve the ranks, reduced degrees, or affine-bin eligibility of a fixed family after this projection. These are properties of its image in the row-ideal quotient. This is not reduction modulo the full Boolean/collision ideal. The earlier spread spaces already lying in the last-column row coordinates are unchanged by that projection, so this operation does not bypass their recorded obstruction.
+
+
+###row-projection-sparsity
+5. Balanced pivots minimize one explicit expansion cost
+    Sparsity can differ. Let \(k_j\) be the number of rows pivoting in column \(j\), so \(\sum_jk_j=n+1\). A projected collision has one monomial when neither cell is a pivot, \(n\) when exactly one is a pivot, and \(n^2\) when both are pivots. The row supports are disjoint, so these counts have no field-dependent cancellation.
+    The sum of expanded monomial counts of the listed collision images is
+    \[
+      T_\pi=\sum_{j=1}^{n}\left[
+        \binom{n+1}{2}
+        +(n-1)k_j(n+1-k_j)
+        +(n^2-1)\binom{k_j}{2}\right].
+    \]
+    As an integer-valued expression, its coefficient on \(\sum_jk_j^2\) is \((n-1)^2/2>0\). It is minimized when one column has two pivots and every other column has one. Cyclic pivots attain this distribution. In particular,
+    \[
+      T_{\rm same}=\binom{n+1}{2}(n^2+n-1)=\Theta(n^4),
+    \]\[
+      T_{\rm balanced}
+       =n\binom{n+1}{2}+(n-1)(n^2+n-2)+(n^2-1)
+       =\Theta(n^3).
+    \]
+    The checked values are \(15\) versus \(13\) at \(n=2\), and \(66\) versus \(46\) at \(n=3\). This optimality concerns the expanded listed collision generators. It does not minimize every ENS input or the whole proof representation: in the saved input example, the projected product has four terms when its distinguished cell is not pivoted, and \(3n+1\) terms when it is pivoted. Use sparsity considerations separately from rank and degree.
+
+
+###row-projection-activity
+6. The new family can have newly active companions
+    Do not identify the old and projected truncated consequence spaces. A controlled example uses the consistent row subsystem, with column axioms omitted. Put \(L_0=\rho_0-1\), choose a cell \(x\) in that row and three distinct other-row variables \(y_i\), and take the accuracy-one tuple
+    \[
+      g_i=x+L_0y_i,\qquad
+      P=1-\sum_{i=1}^3 r_i g_i.
+    \]
+    Its inputs have ordinary degree two and rank three, with sharp row-base Booleanity proofs through four. Projection gives three copies of \(v=\Theta_\pi x\), of degree one and rank one, and product \(P'=1-\sum_i r_i v\). The original companions have degree five; the projected ones have degree three.
+    There is an explicit degree-five old proof of the new target \(vP'\). Let \(\epsilon\) indicate whether \(x\) was pivoted, put \(d_i=y_i+\epsilon\), and \(T=\sum_i r_i d_i\). Then
+    \[
+      g_i-v=L_0d_i,\qquad P-P'=-L_0T,\qquad
+      vP'=g_iP+L_0(g_iT-d_iP').
+    \]
+    To exclude a degree-four old proof, put one occupied cell in column zero of every row, choose \(x=x_{0,0}\), and set all \(r_i=0\). Every old row, Boolean, and coefficient-domain axiom of degree at most four holds, while \(vP'=1\). The original degree-five companions are unavailable at that ceiling. Hence the old NS and PC minimum for this target is five, while the new target is an axiom of degree three.
+    This is a row-subsystem consequence-space control, not a full-PHP refutation-degree claim. The global forward transfer and the bare-base equivalence remain valid. Original companion degrees must never be retroactively replaced by the new ones when interpreting an older certificate or design.
+
+
+###column-state-reduction
+1. The column ideal has certificates at the target's ordinary degree
+    Write \(Y_i=x_{ij}\), \(1\le i\le m=n+1\), for one column and let
+    \[
+      J_{\rm col}=\langle Y_i^2-Y_i,\ Y_iY_k\ (i\ne k)\rangle,
+      \qquad S=\{0,e_1,\ldots,e_m\}.
+    \]
+    These generators are actual members of the weak PHP base. No row equation is needed for this local statement. The affine polynomials
+    \[
+      \delta_0=1-\sum_iY_i,\qquad \delta_i=Y_i
+    \]
+    are the point indicators on \(S\), over every \(\mathbb F_p\).
+    Degree-complete reduction. A polynomial \(q(Y)\) vanishing on \(S\) has an NS certificate from the displayed generators through ordinary degree \(\deg q\). Delete any monomial containing two different \(Y\)'s using their collision generator. Reduce every surviving \(Y_i^k\) to \(Y_i\) using \(Y_i^2-Y_i\). Each axiom multiple has degree at most the monomial being reduced, and reduction never increases degree. The remainder is \(a+\sum_i b_iY_i\); evaluation at \(0,e_1,\ldots,e_m\) forces all coefficients to zero.
+    The same division works with other variables as coefficient parameters when every state evaluation vanishes as a polynomial in those parameters. This is a statement about the satisfiable column ideal, not unrestricted ideal membership in the unsatisfiable full PHP system.
+
+
+###column-state-normalizer
+2. Every single-column tuple has an affine coefficient normalizer
+    Take any finite tuple \(g_1,\ldots,g_k\in\mathbb F_p[Y]\), at accuracy \(h\ge1\). The inputs may be nonlinear, non-Boolean, and linearly independent. For each state \(s\in S\) at which some input is nonzero, choose one index \(i(s)\) with \(g_{i(s)}(s)\ne0\). Set
+    \[
+      w_i(s)=
+      \begin{cases}g_i(s)^{-1},&i=i(s),\\0,&\text{otherwise},\end{cases}
+      \qquad
+      \beta_i(Y)=\sum_{s\in S}w_i(s)\delta_s(Y),
+      \qquad H=1-\sum_i\beta_i g_i.
+    \]
+    At a common zero state set all \(w_i(s)=0\). Each \(\beta_i\) is affine. On \(S\), \(H\) is one precisely at common zeros of the tuple and zero elsewhere. Thus every \(g_iH\) and \(H^2-H\) vanishes on \(S\).
+    Set the first ENS coefficient row to \((\beta_i)_i\), and every other row to zero. The block product becomes exactly the ordinary polynomial \(H\). With \(\delta=\max_i\deg g_i\), its degree is at most \(\delta+1\); for every nonzero input of degree \(d_i\), the column reduction gives
+    \[
+      g_iH\in\mathcal I_{d_i+\deg H}(J_{\rm col}),
+      \qquad d_i+\deg H\le d_i+\delta+1
+          \le d_i+h(\delta+1)=e_i.
+    \]
+    Zero images need no certificate. All-zero tuples are immediate with \(\beta=0,H=1\); a nonzero constant input can instead make \(H=0\) identically. The selector itself has sharp NS Booleanity through \(2\deg H\), directly by column reduction.
+    Do not omit coefficient field images. For \(\beta=a_0+\sum_i a_iY_i\), Frobenius gives
+    \[
+      \beta^p-\beta
+       =\sum_i a_i(Y_i^p-Y_i)
+       =\sum_i a_i(Y_i^2-Y_i)\sum_{t=0}^{p-2}Y_i^t.
+    \]
+    This is an NS certificate through \(p\), matching the original field axiom degree. It is generally a nonzero ordinary polynomial.
+    Whole-proof transfer. Apply these affine coefficient assignments, keep every unremoved coefficient variable, and specialize every retained input. The removed companions have the NS image bounds above; retained companions are the corresponding genuine blocks on the actual images of their inputs. All base axioms are fixed. Replaying an NS or PC proof preserves its degree \(D\): a source NS companion cofactor has degree at most \(D-e_i\), and its image multiplies a certificate through at most \(e_i\). The affine PC inference rule gives the same ceiling. A companion inactive at \(D\) requires no prelude.
+    The construction works for any number of eligible blocks simultaneously and level by level. At each step eligibility concerns the current polynomial inputs. Every chosen coefficient depends only on original incidence variables, so the composite map remains affine. There is no cost per block, no new family, and no new level. This supplies a further sharply Boolean value mode for the current constructor-based portfolio; it does not make arbitrary substituted Booleanity witnesses sharp.
+
+
+###column-state-groups
+3. Contradictory subsets and several column groups
+    Inconsistent subset. Suppose some column-supported subset of a block's inputs has no common zero in \(S\). Build its \(\beta\)'s as above and give every other input coefficient zero. Now \(H\) itself vanishes on \(S\), so it has an NS certificate through \(\deg H\). Every additional input \(g\), even one using other columns or earlier ENS variables, satisfies the required companion-image bound by multiplying this certificate by \(g\). The original maximum input degree still bounds the subset's degree. This extends the mechanism of the earlier extra-input result to these column witnesses.
+    For example, the subset \((1-Y_1,1-Y_2)\) has no common zero in a legal column. Choosing \(\beta_1=1-Y_1,\beta_2=Y_1\) gives
+    \[
+      H=Y_1-Y_1^2+Y_1Y_2.
+    \]
+    Its degree-two base certificate uses the genuine collision \(Y_1Y_2=0\). It can therefore handle arbitrary additional companions at accuracy one.
+    Grouped tuples. More generally, assign every input to one of \(s\) column groups, with each input an old polynomial in that group's column alone. If \(s\le h\), put each group's affine coefficient vector in a separate ENS factor, with zero coefficients outside that group. Let the resulting factors be \(H_1,\ldots,H_s\). Then
+    \[
+      H=\prod_{a=1}^{s}H_a,\qquad
+      W=\sum_a\deg H_a\le s(\delta+1)\le h(\delta+1).
+    \]
+    For an input in group \(a\), its column certificate for \(g_iH_a\), multiplied by the other factors, has degree at most \(d_i+W\le e_i\). The same field-image argument applies. The usual product identity for Booleanity gives \(H^2-H\) through \(2W=2\deg H\) when no factor is zero; a zero factor makes the target zero. Factors identically one can be omitted. An inconsistent group permits the preceding subset rule instead. This is a sufficient grouping condition, not an optimal number-of-columns theorem.
+
+
+###column-state-row-coordinates
+4. Compatibility with the row projection
+    After row projection, replace \(Y_i\) by \(\Theta_\pi x_{ij}\). For \(n\ge2\), this embeds the abstract column polynomial ring into the row-coordinate ring and preserves degree. To see this, choose another column \(k\ne j\) and give the row-coordinate ring an affine map to \(\mathbb F_p[Y]\) by assigning, in each row, column \(j\) the value \(Y_i\), column \(k\) the value \(1-Y_i\), and all other columns zero. The row equations hold literally, and the composite on the abstract \(Y_i\)'s is the identity. Both maps are affine, so degrees agree.
+    This section of the row quotient is an algebra map, not a model of all PHP constraints. The projected column Boolean and collision generators have NS certificates in \(\mathcal F_n\) through degree two, as proved in the preceding row-projection entry. Substitute the column certificates and then these base-image certificates; their original-degree bounds are unchanged. The coefficient images remain affine, and the single-column selector's sharp Booleanity degree is preserved.
+    Column membership can be checked in coordinates with pivots outside the candidate column: the current input must literally use only that column's incidence variables, with no earlier coefficients. The inverse affine coordinate changes then return the normalizer to the chosen pivots. This uses the row-ideal quotient only; it does not identify distinct ordinary polynomials modulo all Boolean and collision equations.
+

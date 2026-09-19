@@ -1,0 +1,166 @@
+
+POSITION 290 thm:uniform-functional-quadratic-covariance
+Summary: Uniform degree-two functional-PHP designs have kernel weight at most 2^(-(N-1))+(2^(N-1)-1)*2^(-N*(N-3)) for N>=4
+Assessment: Working exact affine-space law and uniform probability bound; full-space result independent of samples
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#functional-quadratic-design-law
+7923: Work over \(\mathbb F_2\) with the explicitly functional base on \(N+1\) pigeons and \(N\ge3\) holes. The earlier moment construction already used zero same-row cross-moments. For this stronger base those values are required, and it gives a complete parameterization of all normalized degree-two ordinary designs.
+7924: Choose first moments \(\mu_{ij}\) with \(\sum_j\mu_{ij}=1\). Booleanity fixes each square moment to \(\mu_{ij}\), and row/column exclusions fix their cross-moments to zero. For each unordered pair of distinct pigeons \(i,a\), the remaining moments form an \(N\times N\) matrix \(T^{ia}\) with zero diagonal, row sums \(\mu_i\), and column sums \(\mu_a\). These are all the constraints: degree-two NS multiples consist of the quadratic axioms and row equations multiplied by constants or single variables.
+7935: Under its uniform distribution, the first moments are uniform subject to the row sums. Conditional on them, all pair matrices are independent and uniform in their respective margin fibers, since every fiber has the same size. This is a statement about the entire finite affine space, not an inference from samples.
+Blocks: 3/7; 0 additional signal blocks omitted.
+Source: https://kbr.is-a.dev/math-research/#uniform-quadratic-covariance-bound
+7938: Let \(B_\omega\) be the binary covariance matrix from the probe lemma . For \(N\ge4\), set
+7939: \[ \epsilon_N=(2^{N-1}-1)2^{-N(N-3)},\qquad U_N=2^{-(N-1)}+\epsilon_N. \]
+7943: Working bound. For a uniformly chosen degree-two functional-PHP design,
+7944: \[ \Pr[\operatorname{rank}B_\omega<N-1]\le\epsilon_N, \qquad \mathbb E\,2^{-\operatorname{rank}B_\omega}\le U_N. \tag{MOM-covariance} \]
+7951: Conditional on all first moments, consider the random pair matrix between row zero and another pigeon row. Its homogeneous variations have zero margins and diagonal. For distinct \(\ell,\ell'\notin\{j,j'\}\), the four-cycle variation on positions \((j,\ell),(j,\ell'),(j',\ell),(j',\ell')\) is allowed. Multiplication by \(a^{\mathsf T}\) sends it to \(e_\ell+e_{\ell'}\). These vectors span a space of dimension \(N-3\). Hence the image of the uniform pair matrix under this linear map is uniform in an affine space of dimension at least \(N-3\); subtracting the fixed mean-product term does not change that dimension.
+Blocks: 5/8; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE notebook_link ['lem:uniform-degree-two-affine-rigidity'] ['Work over \\(\\mathbb F_2\\) with the explicitly functional base on \\(N+1\\) pigeons and \\(N\\ge3\\) holes. The earlier moment construction already used zero same-row cross-moments. For this stronger base those values are required, and it gives a complete parameterization of all normalized degree-two ordinary designs.']
+CANDIDATE notebook_link ['lem:binary-covariance-conflict-probe'] ['Let \\(B_\\omega\\) be the binary covariance matrix from the probe lemma . For \\(N\\ge4\\), set']
+
+POSITION 291 lem:uniform-lift-distinct-map-comparison
+Summary: Nonzero covariance rows identify the live subboard and matching, bounding distinct-map kernel weight by U_N/(1-eta_N)
+Assessment: Working finite counting comparison when eta_N<1; higher-degree application requires the stated full quadratic marginal
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#uniform-lift-measure-comparison
+7961: Let \(\Omega\) be the set of distinct lifted maps. When \(\eta_N<1\), there are at least \((1-\eta_N)\) times as many distinct maps as pairs. Also the sum of any nonnegative map weight over distinct maps is no larger than its sum over pairs. Applying this to \(2^{-\operatorname{rank}B_\omega}\) gives
+7962: \[ \mathbb E_{\omega\ {\rm uniform\ on}\ \Omega} 2^{-\operatorname{rank}B_\omega} \le \frac{U_N}{1-\eta_N}. \tag{MOM-distinct} \]
+7968: The same argument applies to higher-degree residual designs if their quadratic marginal is the full uniform degree-two law . More precisely, uniform measure on any finite affine design space projects uniformly onto its image, because all fibers have the same size. One may first project to the degree actually queried, count pairs using those projected maps, and then use regularity to recover each pair. This avoids incorrectly identifying uniform pairs with uniform distinct maps.
+Blocks: 3/6; 0 additional signal blocks omitted.
+Source: https://kbr.is-a.dev/math-research/#uniform-design-rate-obstruction
+7977: This rules out the uniform degree-two candidate for that sufficient rate condition. It rules out the corresponding higher-degree uniform candidate only after its quadratic-marginal premise is established. It does not exclude a nonuniform or more structured family of high-degree designs, and it does not refute Krajíček's theorem or the weaker printed diagonal probability question.
+Blocks: 1/4; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE equation_reference ['thm:uniform-functional-quadratic-covariance'] ['ze \\(N\\), and first choose uniformly a partial matching of that size and uniformly a residual degree-two design. The covariance rank of the lifted map equals the residual rank, so (MOM-covariance) applies to this weighted law. To compare it with the uniform set of distinct lifted maps, put \n     \\[\n      \\eta_N=N(N+1)2^{-N(N-3)}.\n    \\] \n     Exce']
+
+POSITION 292 prop:matching-moment-homology-extension
+Summary: Vanishing of reduced H_(k-2)(Delta_(k,N);F2) for 3<=k<=R suffices to extend every quadratic functional-PHP NS design to degree R
+Assessment: Working boundary-filling reduction; source-range homology input not yet verified
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#matching-moment-homology-extension
+7989: These are exactly the remaining row-generator multiples in the proper normal form. A row already used by \(T\) gives the zero relation. This representation is for NS constraints; no iterative PC closure is assumed.
+7992: Working sufficient extension criterion. If
+7993: \[ \widetilde H_{k-2}(\Delta_{k,N};\mathbb F_2)=0 \qquad(3\le k\le R), \tag{MOM-homology} \]
+7998: then every degree-two functional-PHP design extends to degree \(R\). The proof is the preceding row-set construction, inductively for \(k=3,\ldots,R\). Uniform degree-\(R\) designs consequently have the full uniform quadratic marginal. The required source-range homology vanishing is the next verification task; it is not assumed merely from the notation or the finite checks below.
+Blocks: 4/8; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+
+POSITION 293 ex:functional-NS-quadratic-marginals
+Summary: Degree-three designs have quadratic image dimension 45 of 65 for four holes, and the full dimension 434 for six holes
+Assessment: Exact finite NS computation with complete elimination traces; sampled covariance ranks are not full-space expectations
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#functional-design-marginal-checks
+8012: The output also contains 32 seeded samples from each affine design space, with their full moment vectors and covariance ranks. The four-hole ranks were 12 or 14; the six-hole ranks were 32 or 34. Their empirical kernel weights are recorded exactly but are not identified with the expectations over the full spaces. The analytic bound above does not rely on those samples.
+8014: Contribution and next step. The uniform quadratic probability calculation is settled, and the comparison with distinct maps is explicit. The remaining application is now the exact higher-marginal condition (MOM-homology), to be checked against a primary-source connectivity theorem for chessboard complexes. No final proof lower bound or successful alternative design distribution is claimed.
+8015: Process assessment. Reusing the existing binary linear algebra kept implementation small, while the unequal finite marginal dimensions prevented an unsupported extrapolation; no new workflow rule is warranted.
+8016: <caption>Measured timing</caption> Measured category Elapsed Total instrumented interval 30 min 0.04 s Marked reading and review windows 0.47 s Mathematical reasoning and proof writing 26 min 29.35 s Computation design and coding 3 min 10.92 s Preparation and checkpoint work 17.54 s Individually measured computation 0.12 s Individually measured conversion, checks, and local processing 1.63 s Through final snapshot; overlapping time counted once.
+Blocks: 4/7; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE equation_reference ['prop:matching-moment-homology-extension'] ['> The uniform quadratic probability calculation is settled, and the comparison with distinct maps is explicit. The remaining application is now the exact higher-marginal condition (MOM-homology), to be checked against a primary-source connectivity theorem for chessboard complexes. No final proof lower bound or successful alternative design distribution is claimed. \n   ']
+
+POSITION 294 thm:chessboard-quadratic-design-extension
+Summary: Every quadratic functional-PHP design over F2 extends through degree R when N>=2R-1; uniform higher-degree designs have the full uniform quadratic marginal
+Assessment: Working application of the verified BLVZ connectivity theorem to the recorded boundary-filling argument
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#chessboard-connectivity-source
+8038: Björner, Lovász, Vrećica, and Živaljević, Chessboard Complexes and Matching Complexes , Journal of the London Mathematical Society 49 (1994), 25–39, Theorem 1.1, proves that the complex of nonattacking rooks on an \(m\times n\) board is
+8039: \[ \left( \min\left\{m,n,\left\lfloor\frac{m+n+1}{3}\right\rfloor\right\}-2 \right)\text{-connected}. \]
+8044: The definition, theorem, and covering argument were read in the original authors' copy ; the publisher record supplies the bibliographic identity. This is an imported topological theorem, not a new proof of connectivity.
+8049: The coordinates and faces are exactly those of the preceding boundary-filling argument: cells are vertices and matchings are faces. The paper's small-case discussion identifies \(\Delta_{3,4}\) as a torus, consistent with the fact that the theorem does not supply the vanishing needed at \(k=3,N=4\). We do not infer the global 20-condition count from that observation alone.
+Blocks: 4/6; 0 additional signal blocks omitted.
+Source: https://kbr.is-a.dev/math-research/#chessboard-quadratic-extension
+8052: Working application. Over \(\mathbb F_2\), for integers \(R\ge2\) and \(N\ge2R-1\), every normalized degree-two ordinary design of \(\mathcal F_N^{\rm fun}\) extends to a normalized degree-\(R\) ordinary design. Thus the quadratic marginal of the uniform degree-\(R\) design space is the full uniform degree-two law.
+8053: Proof. For every \(3\le k\le R\), the inequality \(N\ge2R-1\) implies \(N\ge2k-1\), giving the required homology vanishing. Apply the proved boundary-filling construction : consistent moments on \((k-1)\)-matchings form a cycle on each \(k\)-row subboard; a filling gives its \(k\)-matching moments; different row sets can be filled independently. Induct from the prescribed quadratic design through degree \(R\). Normalization and all original NS moment equations are retained.
+8055: No multiplicativity or PC-annihilation property has been added: these are ordinary NS designs, precisely the objects used by the pseudo-solution argument.
+Blocks: 3/4; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE notebook_link ['prop:matching-moment-homology-extension'] ['Proof. For every \\(3\\le k\\le R\\), the inequality \\(N\\ge2R-1\\) implies \\(N\\ge2k-1\\), giving the required homology vanishing. Apply the proved boundary-filling construction : consistent moments on \\((k-1)\\)-matchings form a cycle on each \\(k\\)-row subboard; a filling gives its \\(k\\)-matching moments; different row sets can be filled independently. Induct from the prescribed quadratic design through degree \\(R\\). Normalization and all original NS moment equations are retained.']
+
+POSITION 295 thm:uniform-residual-pseudosolution-rate-obstruction
+Summary: The natural uniform higher-degree residual-design candidate over F2 cannot meet gamma>S*2^(-h) at height h+ceil(log2 S), for polynomial S>=2, logarithmic h, and polynomial residual size
+Assessment: Working rate obstruction including distinct-map measure; no claim against the weaker diagonal question, nonuniform designs, or all ENS methods
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#uniform-high-degree-candidate-obstruction
+8068: Uniform degree-\(R\) designs first project uniformly onto their degree-\(D\) image; that image has the full quadratic marginal by the extension theorem. Use those projected residual maps when counting pairs with matchings. The regularity argument recovers the matching and the projected residual map from a regular lifted map. It need not recover higher moments invisible at degree \(D\).
+8084: Working obstruction to the sufficient rate. Suppose \(N=\Theta(n^\varepsilon)\) for fixed \(\varepsilon>0\), \(h=O(\log n)\), and \(2\le S\le n^a\) for fixed \(a\). Put \(s=\lceil\log_2S\rceil\). The degree-two probe gives a deterministic tree of height at most \(h+s\) whose non-conflict probability is at most
+8085: \[ \frac{U_N}{1-\eta_N}+2^{1-h-s} \le 2^{-\Omega(N)}+\frac{2^{1-h}}S < S2^{-h} \]
+8091: Hence this uniform candidate cannot guarantee the probability \(\gamma>S2^{-h}\) required by the sharpened ENS argument . In particular it cannot supply the source theorem's \(\gamma=S^{-1}\) when the accuracy is chosen to make the source error smaller than that value.
+8092: Scope. This closes the uniform-candidate application gap left by the preceding entries. It does not refute Theorem 3.2, settle the weaker printed diagonal probability question, prove an ENS upper bound, or rule out nonuniform design families. It also does not prove the desired Frege lower bound. The constructive task is now to choose a different distribution and control its complete adaptive-query behavior.
+Blocks: 5/14; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE notebook_link ['lem:uniform-lift-distinct-map-comparison'] ['Uniform degree-\\(R\\) designs first project uniformly onto their degree-\\(D\\) image; that image has the full quadratic marginal by the extension theorem. Use those projected residual maps when counting pairs with matchings. The regularity argument recovers the matching and the projected residual map from a regular lifted map. It need not recover higher moments invisible at degree \\(D\\).']
+CANDIDATE notebook_link ['lem:binary-covariance-conflict-probe'] ['Working obstruction to the sufficient rate. Suppose \\(N=\\Theta(n^\\varepsilon)\\) for fixed \\(\\varepsilon&gt;0\\), \\(h=O(\\log n)\\), and \\(2\\le S\\le n^a\\) for fixed \\(a\\). Put \\(s=\\lceil\\log_2S\\rceil\\). The degree-two probe gives a deterministic tree of height at most \\(h+s\\) whose non-conflict probability is at most']
+CANDIDATE notebook_link ['lem:weighted-ENS-conflict-rate'] ["Hence this uniform candidate cannot guarantee the probability \\(\\gamma&gt;S2^{-h}\\) required by the sharpened ENS argument . In particular it cannot supply the source theorem's \\(\\gamma=S^{-1}\\) when the accuracy is chosen to make the source error smaller than that value."]
+
+POSITION 296 ex:rank-two-functional-design
+Summary: A one-collision mean has a rank-two quadratic functional-PHP design over F2, extendible through R when N>=2R-1
+Assessment: Working explicit construction and application of the recorded extension theorem; no query guarantee
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#rank-two-functional-design
+8133: Proof. The matrix \(B\) is symmetric with zero diagonal. Therefore \(A_{aa}=\mu_a\), as required by Booleanity. Each row of \(\mu\) has one nonzero coordinate. The supports of \(u,v\) are in different pigeon rows, so same-row off-diagonal entries of \(A\) vanish. The only same-column pair of mean-one cells is \((0,0),(1,0)\); its product is cancelled by \(B=1\). These are also the only two support cells, one from each of \(u,v\), in a common column, since their extra columns are distinct. Thus all column cross-moments vanish.
+8139: For \(R\ge2\) and \(N\ge2R-1\), the extension theorem extends these prescribed moments to a degree-\(R\) design \(L\). Row and column permutations preserve the construction. A partial matching \(\rho\) from an original \(n\)-hole board to this residual board then gives \(\omega=L\circ\rho\), restricted to any \(2\le D\le R\). It is a design for the functional base, and hence also for the weak source base. Fixed variables have zero covariance rows, so the lifted covariance still has rank two.
+8140: This supplies an explicit class of nonuniform candidates: choose matchings and permutations by any desired finite law, then any law on the nonempty extension fibers. All their first moments remain one-hot on pigeon rows, with one doubled column and every other column singly occupied. Their kernel weight is exactly \(k_\nu=1/4\). This makes the earlier single-direction high-rank estimate uninformative at a vanishing ENS error; it is not a lower bound on survival against other trees.
+Blocks: 3/11; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE notebook_link ['thm:uniform-functional-quadratic-covariance'] ['for every variable \\(a\\) and pigeon \\(i\\). These are exactly the row equations multiplied by single variables; the unmultiplied equations also hold. Together with the quadratic axioms, they exhaust the degree-two NS constraints, as in the complete quadratic law . Finally \\(u,v\\) are independent with disjoint supports, and columns of \\(B\\) include both \\(u\\) and \\(v\\), giving \\(\\operatorname{rank}B=2\\).']
+CANDIDATE notebook_link ['thm:chessboard-quadratic-design-extension'] ['For \\(R\\ge2\\) and \\(N\\ge2R-1\\), the extension theorem extends these prescribed moments to a degree-\\(R\\) design \\(L\\). Row and column permutations preserve the construction. A partial matching \\(\\rho\\) from an original \\(n\\)-hole board to this residual board then gives \\(\\omega=L\\circ\\rho\\), restricted to any \\(2\\le D\\le R\\). It is a design for the functional base, and hence also for the weak source base. Fixed variables have zero covariance rows, so the lifted covariance still has rank two.']
+
+POSITION 297 lem:one-collision-linear-query-attack
+Summary: Every binary design whose first moments give one doubled column and singleton other columns has a conflict tree of height ceil(log2 n)+2*ceil(log2(n+1))-1 using only linear queries
+Assessment: Working design-valued extension and explicit refinement; the earlier pointwise mechanism in Byramji–Impagliazzo 2025 was identified in the dated source audit
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#one-collision-linear-query-attack
+8143: Working attack. Let \(\omega\) be any normalized degree-\(D\) design over \(\mathbb F_2\), \(D\ge2\), for a PHP base containing column exclusions. Suppose its first moments have exactly one one in each of the \(n+1\) rows, one column with two ones, and every other column with one one. There is one deterministic query tree, independent of \(\omega\), that finds a conflict on every such design using only linear queries and height at most
+8144: \[ H(n)=\lceil\log_2 n\rceil+ 2\lceil\log_2(n+1)\rceil-1. \tag{LOWCOV-height} \]
+8156: Their answers are the bits of \(w=a\mathbin{\mathrm{xor}}b\ne0\). Pick a set bit \(s\) of \(w\). Exactly one of \(a,b\) lies among row labels having that bit one. There are at most \(2^{k-1}\) such labels, and a sum of their cell variables has value one. Balanced binary search using row-subset sums finds that row, say \(a\), in at most \(k-1\) further queries. The other row is then \(b=a\mathbin{\mathrm{xor}}w\), requiring no further query.
+8162: Every queried polynomial has degree at most one, and the leaf product has degree two. The argument uses no information about higher moments beyond this axiom. Branches inconsistent with the promised first-moment pattern can end at \((0,0)\); they are never reached by the candidate class. Padding with harmless queries gives a tree at any larger permitted height.
+Blocks: 4/9; 0 additional signal blocks omitted.
+Source: https://kbr.is-a.dev/math-research/#low-covariance-prototype-verdict
+8165: Every distribution supported on the prototype, including every choice of higher-degree fillings and distinct-map weighting, has a height-\(H(n)\) tree with non-conflict probability zero. It cannot satisfy a positive pseudo-solution guarantee at any height \(e\ge H(n)\). In particular it fails the ENS sufficient rate whenever \(h+\lceil\log_2S\rceil\ge H(n)\). A larger constant in logarithmic accuracy does not rescue it.
+8166: The attack applies to any covariance matrix with these first moments, not just the sparse rank-two choice. Densifying \(B\) while keeping this mean pattern would leave the same obstruction. We have not proved that rank-two functional designs must have these means, nor that every low-rank distribution fails. That is the next bounded test.
+8168: The other rows use one canonical bijection in each finite case; alternative bijections give the same answers for this algorithm and were not separately enumerated. The general proof covers them. No higher-degree design was numerically constructed. Complete matrices, mean vectors, query polynomials, answers, reproduction commands, and hashes are retained in the evidence record . Compilation and execution succeeded; no dependency was installed.
+8169: Process assessment. Testing the first moments exposed a complete counterattack before any higher-degree sampling or extension-field probe was needed; the query-guarantee obligation remains open, and this bounded test required no additional framework rule.
+8170: <caption>Measured timing</caption> Measured category Elapsed Total instrumented interval 18 min 35.49 s Marked reading and review windows 13.76 s Mathematical reasoning and proof writing 8 min 7.23 s Computation design and coding 2 min 18.20 s Preparation and checkpoint work 7 min 54.90 s Individually measured computation 0.12 s Individually measured conversion, checks, and local processing 1.28 s Through final snapshot; overlapping time counted once.
+Blocks: 5/6; 0 additional signal blocks omitted.
+Source: https://kbr.is-a.dev/math-research/#pointwise-parity-attack-attribution
+10441: Byramji–Impagliazzo, Remark A.4 , already describes logarithmic parity search for a collision in a unary near-permutation. Our earlier design-valued attack independently reused that pointwise mechanism, with an explicit XOR-based height refinement and extension to every design with the specified first moments. The earlier proof remains valid; its pointwise idea should be attributed to the prior source. The claim index now records that relationship.
+Blocks: 1/1; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE notebook_link ['lem:weighted-ENS-conflict-rate'] ['Every distribution supported on the prototype, including every choice of higher-degree fillings and distinct-map weighting, has a height-\\(H(n)\\) tree with non-conflict probability zero. It cannot satisfy a positive pseudo-solution guarantee at any height \\(e\\ge H(n)\\). In particular it fails the ENS sufficient rate whenever \\(h+\\lceil\\log_2S\\rceil\\ge H(n)\\). A larger constant in logarithmic accuracy does not rescue it.']
+
+POSITION 298 lem:boolean-quadratic-moment-rank-growth
+Summary: For an unsatisfiable Boolean quadratic system, degree-t moment rank grows strictly through floor(D/2), giving covariance rank at least t, or 2t over F2
+Assessment: Working self-contained flatness/operator proof; established flat-extension technique explicitly attributed
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#boolean-quadratic-no-flat-moments
+8197: Working flatness obstruction. For every \(1\le t\le\lfloor D/2\rfloor\),
+8198: \[ r_t>r_{t-1},\qquad\text{and hence}\qquad r_t\ge t+1. \tag{RANK-growth} \]
+8202: Proof. Suppose \(r_t=r_{t-1}=r\). Choose a complement \(W\subseteq V_{t-1}\) to the radical of \(H_{t-1}\), so \(\dim W=r\) and its restricted form is nondegenerate. Orthogonal projection \(P:V_t\to W\) is defined using this restricted form. Since the full form also has rank \(r\), its orthogonal complement to \(W\) is its radical: \(V_t=W\oplus\operatorname{rad}H_t\). In particular \(f-Pf\) is orthogonal to all of \(V_t\), not merely to \(W\).
+8216: The flat-extension technique is established mathematics; see Laurent and Mourrain's arXiv:0812.2563v1 , Theorem 1.4, later published as A generalized flat extension theorem for moment matrices . The general-field convention and theorem statement were checked. The argument above supplies the particular finite-field, quadratic-generator consequence directly; it uses neither a positivity assumption nor an unproved flat-extension step.
+Blocks: 4/12; 0 additional signal blocks omitted.
+Source: https://kbr.is-a.dev/math-research/#all-polynomial-covariance-rank
+8234: This is not a lower bound on the covariance of the original variables alone. A design may have variable covariance rank two while its quadratic-polynomial covariance rank is much larger. No distributional uniformity or extension-fiber hypothesis is used.
+Blocks: 1/7; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+
+POSITION 299 lem:full-polynomial-covariance-probe
+Summary: A height-(q+1) tree querying degree-t polynomials and their products has survival at most kappa+(1-kappa)*p^(-q), with kappa=E[p^(-rank B_t)]
+Assessment: Working extension of the earlier variable probe; degree 2t<=D and arbitrary query descriptions are essential
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#full-space-covariance-query-probe
+8247: Proof. This is the earlier covariance probe on \(V_t\), over \(\mathbb F_p\). Choose independent uniform polynomials \(f,g_1,\ldots,g_q\in V_t\). First query \(f\), obtaining \(a=\omega(f)\); then query \((f-a)g_s\) for each \(s\). A nonzero answer gives the conflict pair \((f-a,g_s)\), because \(\omega(f-a)=0\). No query of \(g_s\) is necessary. If all answers vanish, output \((0,0)\).
+8249: The source definition , pages 6–7, bounds query degree and tree height. It does not bound a query's monomial count or arithmetic-circuit size. Random dense elements of \(V_t\) are therefore legal here. The averaging statement establishes existence of a finite deterministic tree; it does not promise efficient construction or a small polynomial representation.
+Blocks: 2/7; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE notebook_link ['lem:binary-covariance-conflict-probe'] ['Proof. This is the earlier covariance probe on \\(V_t\\), over \\(\\mathbb F_p\\). Choose independent uniform polynomials \\(f,g_1,\\ldots,g_q\\in V_t\\). First query \\(f\\), obtaining \\(a=\\omega(f)\\); then query \\((f-a)g_s\\) for each \\(s\\). A nonzero answer gives the conflict pair \\((f-a,g_s)\\), because \\(\\omega(f-a)=0\\). No query of \\(g_s\\) is necessary. If all answers vanish, output \\((0,0)\\).']

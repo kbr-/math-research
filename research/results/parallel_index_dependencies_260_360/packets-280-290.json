@@ -1,0 +1,915 @@
+[
+  {
+    "position": 280,
+    "packet": {
+      "id": "lem:negative-literal-matching-survival",
+      "summary": "The probability that t fixed disjoint negative literals all avoid becoming one is sum_s binom(t,s)*(q)_s*(N+1)_(t-s)*(N)_(t-s) / ((n+1)_t*(n)_t)",
+      "assessment": "Working exact count; six exhaustive finite equalities",
+      "proof_ready": false,
+      "formalization_scope": {
+        "status": "no_record",
+        "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere."
+      },
+      "references": [
+        {
+          "label": "Formula and proof",
+          "target": "https://kbr-.github.io/math-research/#negative-matching-survival",
+          "field": "record"
+        }
+      ],
+      "passages": [
+        {
+          "target": "https://kbr.is-a.dev/math-research/#negative-matching-survival",
+          "source_sha256": "810aa3f6eede73a248bb092af06dbc97fdf24c02f3893f9fd53e794e09c5fd9c",
+          "widened": false,
+          "excerpts": [
+            {
+              "line": 7606,
+              "text": "Fix \\(t\\) disjoint cells, with \\(1\\le t\\le q\\), and the associated literals \\(1-x_e\\). Such a literal is not made constant one precisely when its cell is either selected in \\(\\mu\\), making the literal zero, or has both endpoints unmatched, making it live. The probability that all \\(t\\) literals avoid becoming one is exactly",
+              "truncated": false
+            },
+            {
+              "line": 7607,
+              "text": "\\[ B_t= \\frac{\\displaystyle\\sum_{s=0}^{t} \\binom ts(q)_s(N+1)_{t-s}(N)_{t-s}} {(n+1)_t(n)_t}. \\tag{LIT-negative} \\]",
+              "truncated": false
+            },
+            {
+              "line": 7614,
+              "text": "Proof. Specify the \\(s\\) cells selected in \\(\\mu\\). The probability that those fixed pairs occur is \\((q)_s/((n+1)_s(n)_s)\\). Conditional on them, the remaining matching is uniform on the other vertices. The probability that all remaining \\(t-s\\) specified rows and columns are unmatched is",
+              "truncated": false
+            },
+            {
+              "line": 7615,
+              "text": "\\[ \\frac{(N+1)_{t-s}}{(n+1-s)_{t-s}}\\, \\frac{(N)_{t-s}}{(n-s)_{t-s}}. \\]",
+              "truncated": false
+            },
+            {
+              "line": 7628,
+              "text": "The first bounds each falling-factorial factor. For the second, bound the summands in the numerator by \\(\\binom ts q^s[N(N+1)]^{t-s}\\), use the binomial theorem, and bound each denominator factor from below.",
+              "truncated": false
+            }
+          ],
+          "omitted_selected_blocks": 0,
+          "total_blocks": 8,
+          "included_blocks": 5
+        }
+      ],
+      "scope": "Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear."
+    },
+    "candidates": []
+  },
+  {
+    "position": 281,
+    "packet": {
+      "id": "thm:literal-family-matching-restriction",
+      "summary": "Every polynomial-size bottom signed-literal ENS collection admits simultaneous affine removal at logarithmic accuracy on a square-root functional PHP residual, preserving completed PC degree D>=max(2h+1,p)",
+      "assessment": "Working global coverage for the literal subclass; arbitrary MOD inputs and multilevel iteration remain open",
+      "proof_ready": false,
+      "formalization_scope": {
+        "status": "no_record",
+        "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere."
+      },
+      "references": [
+        {
+          "label": "Finite-parameter theorem",
+          "target": "https://kbr-.github.io/math-research/#literal-family-global-restriction",
+          "field": "record"
+        },
+        {
+          "label": "polynomial-family parameters and scope",
+          "target": "https://kbr-.github.io/math-research/#literal-family-square-root-parameters",
+          "field": "record"
+        },
+        {
+          "label": "finite evidence",
+          "target": "https://kbr-.github.io/math-research/#literal-restriction-counting-checks",
+          "field": "record"
+        }
+      ],
+      "passages": [
+        {
+          "target": "https://kbr.is-a.dev/math-research/#literal-family-global-restriction",
+          "source_sha256": "c17fd26691849d9554ae180a7a99afc130b8e071bd51a19d4d54da092c22e577",
+          "widened": false,
+          "excerpts": [
+            {
+              "line": 7646,
+              "text": "Working theorem. Consider \\(M\\ge1\\) bottom-level ENS blocks whose inputs are \\(0,1,x_e,1-x_e\\), all with accuracy \\(h\\). Set",
+              "truncated": false
+            },
+            {
+              "line": 7647,
+              "text": "\\[ t=\\lfloor h/2\\rfloor+1,\\qquad q=n-N,\\qquad 1\\le t\\le q,\\qquad M(A_t+B_t)<1. \\]",
+              "truncated": false
+            },
+            {
+              "line": 7655,
+              "text": "maps to a completed degree-\\(D\\) refutation over \\(\\mathcal F_N^{\\rm fun}\\) and the images of any retained blocks. Every later input and proof line undergoes the same substitution; individual later coefficient uses are allowed. No extra profile hypothesis is imposed.",
+              "truncated": false
+            },
+            {
+              "line": 7657,
+              "text": "If \\(\\nu(E^-)\\ge t\\), fix a \\(t\\)-matching in \\(E^-\\) before choosing the restriction. Except on an event of probability \\(B_t\\), some corresponding negative literal becomes one and kills the block. If \\(\\nu(E^-)<t\\), every residual negative graph also has matching number below \\(t\\). Therefore a block that has no constant-one input, outside its two exceptional events, has both positive and negative support graphs with matching number at most \\(t-1\\).",
+              "truncated": false
+            },
+            {
+              "line": 7663,
+              "text": "Proof transfer. Apply that matching to the old cell variables and the preceding star normalizers to the removed blocks' coefficient variables; keep all retained coefficient variables. Every variable image is affine. Used base axioms map to residual base axioms or zero. Removed companion images have the supplied NS, hence PC, proofs through \\(2h+1\\); removed field images cost at most \\(p\\). Retained ENS companions are exactly rebuilt on the substituted actual inputs. Affine replay of each original PC inference stays within \\(D\\), and reuse inserts the image proofs within the same ceiling. This gives the stated completed proof. It does not require treating the original degree ledger as the smaller degree of a specialized generator.",
+              "truncated": false
+            }
+          ],
+          "omitted_selected_blocks": 0,
+          "total_blocks": 11,
+          "included_blocks": 5
+        },
+        {
+          "target": "https://kbr.is-a.dev/math-research/#literal-family-square-root-parameters",
+          "source_sha256": "ae63a85a4e7f11d261cad43ae59188ae4677c5426540e69e827a4385f976178d",
+          "widened": false,
+          "excerpts": [
+            {
+              "line": 7678,
+              "text": "Thus logarithmic accuracy handles every polynomial-size literal collection on a residual of size \\(\\Theta(\\sqrt n)\\), with no degree increase. If these are all the extension blocks, an assumed polylogarithmic-degree refutation satisfying the stated source ceiling would contradict the residual PC lower bound. If other blocks remain, the theorem removes only the specified literal collection.",
+              "truncated": false
+            },
+            {
+              "line": 7679,
+              "text": "The unresolved source application. General bottom MOD inputs are not literals. Already over \\(\\mathbb F_2\\), an affine parity input \\(g=x_{11}+x_{22}\\) becomes \\(1+Y_{22}\\) when a matching fixes \\(x_{11}=1\\) and leaves the second cell live. Hitting one support edge has not made \\(g\\) constant one. This invalidates the key literal-event inference for an arbitrary affine tuple; it is not a hard-family counterexample, since this tiny input is itself cheaply handled. Likewise, affine coefficient images substitute into later selectors and can produce nonliteral higher inputs. A full MOD-input coverage argument and a multilevel invariant are both still required.",
+              "truncated": false
+            },
+            {
+              "line": 7680,
+              "text": "The result improves the actual family-count dependence on a stated source subclass. It does not rehabilitate the earlier profile assumptions, claim novelty relative to the literature, or prove the final lower bound.",
+              "truncated": false
+            }
+          ],
+          "omitted_selected_blocks": 0,
+          "total_blocks": 7,
+          "included_blocks": 3
+        },
+        {
+          "target": "https://kbr.is-a.dev/math-research/#literal-restriction-counting-checks",
+          "source_sha256": "3c9d6372f736e8189034755e4fe7b16d571700b7659a9ddd7e957dbe3d9f2f29",
+          "widened": false,
+          "excerpts": [
+            {
+              "line": 7683,
+              "text": "The compiled counting checker enumerated all \\(15{,}120\\) partial matchings for \\((n,N)=(6,1)\\) and all \\(1{,}693{,}440\\) for \\((8,2)\\). On each board it tested six positive graphs, including nonzero bad events, empty and complete controls, and a one-row star. It also checked the exact negative-survival formula for fixed disjoint tuples of sizes one, two, and three. All 18 controls passed; these finite checks support the counting formulas and do not replace the proofs.",
+              "truncated": false
+            },
+            {
+              "line": 7685,
+              "text": "Process assessment. Rechecking the actual imported hypotheses exposed a justified auxiliary strengthening; clarify the existing encoding guidance so that it preserves the default source system while permitting explicitly proved auxiliary bridges.",
+              "truncated": false
+            },
+            {
+              "line": 7686,
+              "text": "<caption>Measured timing</caption> Measured category Elapsed Total instrumented interval 21 min 47.20 s Marked reading and review windows 57.26 s Mathematical reasoning and proof writing 18 min 29.07 s Computation design and coding 2 min 2.35 s Preparation and checkpoint work 17.03 s Individually measured computation 0.27 s Individually measured conversion, checks, and local processing 1.22 s Through final snapshot; overlapping time counted once.",
+              "truncated": false
+            }
+          ],
+          "omitted_selected_blocks": 0,
+          "total_blocks": 4,
+          "included_blocks": 3
+        }
+      ],
+      "scope": "Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear."
+    },
+    "candidates": []
+  },
+  {
+    "position": 282,
+    "packet": {
+      "id": "cor:functional-affine-consequence-rigidity",
+      "summary": "Functional PHP has exactly the row-equation span as its affine PC consequences through b<=floor((N-2)/2)",
+      "assessment": "Working extension of historical Theorem 9.8 using the verified stronger-base and residual degree bounds",
+      "proof_ready": false,
+      "formalization_scope": {
+        "status": "no_record",
+        "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere."
+      },
+      "references": [
+        {
+          "label": "Full argument",
+          "target": "https://kbr-.github.io/math-research/#functional-affine-consequence-rigidity",
+          "field": "record"
+        }
+      ],
+      "passages": [
+        {
+          "target": "https://kbr.is-a.dev/math-research/#functional-affine-consequence-rigidity",
+          "source_sha256": "259d3da906c49411793d476641a0c2317646d12d5b283feefa84bbeac6fd7f4e",
+          "widened": false,
+          "excerpts": [
+            {
+              "line": 7718,
+              "text": "Subtracting row equations leaves \\(c'+\\sum_jv_j\\sigma_j\\). If two \\(v_j\\)'s differ, permuting those columns and subtracting derives \\(\\sigma_j-\\sigma_k\\). Match one pigeon to \\(j\\), obtaining \\(1-\\sigma'_k\\); permute the remaining columns to obtain this for every residual hole. Summing those \\(N-1\\) equations and the \\(N\\) residual row equations gives \\(-1\\), another forbidden low-degree refutation. Thus all \\(v_j\\)'s agree. Row equations reduce the remaining polynomial to a constant, which must be zero. This proves containment in \\(H_N\\); the reverse containment consists of the row axioms and their linear combinations.",
+              "truncated": false
+            }
+          ],
+          "omitted_selected_blocks": 0,
+          "total_blocks": 5,
+          "included_blocks": 1
+        }
+      ],
+      "scope": "Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear."
+    },
+    "candidates": [
+      {
+        "source": "cor:functional-affine-consequence-rigidity",
+        "targets": [
+          "cor:functional-auxiliary-PC-bridge"
+        ],
+        "method": "notebook_link",
+        "locator": "https://kbr.is-a.dev/math-research/#functional-affine-consequence-rigidity",
+        "token": "#functional-auxiliary-PC-bridge",
+        "id": "2b79270f3ad7b5c6c3037a90",
+        "source_sha256": "259d3da906c49411793d476641a0c2317646d12d5b283feefa84bbeac6fd7f4e",
+        "source_claim_sha256": "cd109aac0bed8fc7955b6f37325e0a87ad62d54ec0c3c02defed93d813db7053",
+        "target_claim_sha256": {
+          "cor:functional-auxiliary-PC-bridge": "d1c11e0f4ddb336533afc4e79bdec32eb730362138029487ffbdcb2635b3ea91"
+        },
+        "proposed_type": "cites",
+        "ownership_ambiguous": false,
+        "hint": "dependency-language; check negation and scope",
+        "occurrences": [
+          {
+            "line": 7716,
+            "context": "Proof of the extension. The functional system is invariant under row/column permutations, and partial matchings preserve its form. Its base and residual degree lower bounds were checked in the preceding entry . These are the properties used by the historical proof."
+          }
+        ],
+        "existing_relationships": [],
+        "candidate_sha256": "0fe4d6dae47c4899f2c3d96532368bfbc1517ac2838c47ed272cd22314dc7689"
+      }
+    ]
+  },
+  {
+    "position": 283,
+    "packet": {
+      "id": "thm:uniform-residual-affine-rank-families",
+      "summary": "A residual-subboard union bound supplies affine input spaces retaining rank r, pairwise-zero intersections, and no constant-one pair span after every matching with the prescribed residual size",
+      "assessment": "Working refinement of the earlier resistant-family template; includes a complete finite matrix witness",
+      "proof_ready": false,
+      "formalization_scope": {
+        "status": "no_record",
+        "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere."
+      },
+      "references": [
+        {
+          "label": "Finite-parameter theorem and proof",
+          "target": "https://kbr-.github.io/math-research/#affine-residual-robust-family",
+          "field": "record"
+        },
+        {
+          "label": "witness",
+          "target": "https://kbr-.github.io/math-research/#affine-residual-finite-witness",
+          "field": "record"
+        }
+      ],
+      "passages": [
+        {
+          "target": "https://kbr.is-a.dev/math-research/#affine-residual-robust-family",
+          "source_sha256": "cdb8c4ade6eacb22ddc1c51c5d2de35941df3c0bde48399c5cde7107620279fc",
+          "widened": false,
+          "excerpts": [
+            {
+              "line": 7726,
+              "text": "Working refinement. If",
+              "truncated": false
+            },
+            {
+              "line": 7727,
+              "text": "\\[ \\binom M2\\,B_{n,N}\\,(2^{2r}-1)\\,2^{-L}<1, \\tag{AFF-residual-union} \\]",
+              "truncated": false
+            },
+            {
+              "line": 7736,
+              "text": "In particular no individual block exposes a constant-one span modulo \\(H_N\\). By (FUN-affine), adjoining all affine base-PC consequences through the displayed \\(b\\)-range makes no difference.",
+              "truncated": false
+            },
+            {
+              "line": 7744,
+              "text": "The row-sum vectors themselves are independent, so every failed full-rank condition has a nonzero combination involving the random rows. Union-bound over all pairs and all \\(B_{n,N}\\) residual subboards. The stated inequality leaves a choice where every required linear-part rank is full.",
+              "truncated": false
+            },
+            {
+              "line": 7746,
+              "text": "This is why the count uses residual subboards rather than all matching bijections. One linear-part certificate handles every constant shift induced by a matching with those surviving vertices. It is a refinement of the earlier resistance method, not a rediscovery presented as an unrelated construction.",
+              "truncated": false
+            }
+          ],
+          "omitted_selected_blocks": 0,
+          "total_blocks": 12,
+          "included_blocks": 5
+        },
+        {
+          "target": "https://kbr.is-a.dev/math-research/#affine-residual-finite-witness",
+          "source_sha256": "65a879463687baa730646cef66eeed63a39f72e5362cd3a3277dd13ed261c973",
+          "widened": false,
+          "excerpts": [
+            {
+              "line": 7787,
+              "text": "The complete 2,206,666-byte witness contains every source coefficient matrix, every restricted linear input, and every individual and pair rank. The checker and reproduction record preserve the exact binary conventions. This finite board tests the rank and quotient claims, not the large-\\(n\\) parameter asymptotics, and is not an augmented refutation.",
+              "truncated": false
+            },
+            {
+              "line": 7788,
+              "text": "Contribution and next step. The attempt falsifies a proposed extension of the new literal coverage theorem; general MOD coverage remains open. A targeted primary-literature check will now look for a further restriction or proof-use invariant and compare its exact hypotheses with these controls.",
+              "truncated": false
+            },
+            {
+              "line": 7789,
+              "text": "Process assessment. The claim-index check identified the existing resistance template, so the new work was limited to the previously uncovered residual regime and its exact application; no additional workflow rule is warranted.",
+              "truncated": false
+            },
+            {
+              "line": 7790,
+              "text": "<caption>Measured timing</caption> Measured category Elapsed Total instrumented interval 21 min 33.04 s Marked reading and review windows 3 min 44.66 s Mathematical reasoning and proof writing 13 min 27.06 s Computation design and coding 3 min 7.99 s Preparation and checkpoint work 1 min 12.03 s Individually measured computation 0.12 s Individually measured conversion, checks, and local processing 1.18 s Through final snapshot; overlapping time counted once.",
+              "truncated": false
+            }
+          ],
+          "omitted_selected_blocks": 0,
+          "total_blocks": 7,
+          "included_blocks": 4
+        }
+      ],
+      "scope": "Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear."
+    },
+    "candidates": [
+      {
+        "source": "thm:uniform-residual-affine-rank-families",
+        "targets": [
+          "cor:functional-affine-consequence-rigidity"
+        ],
+        "method": "equation_reference",
+        "locator": "https://kbr.is-a.dev/math-research/#affine-residual-robust-family",
+        "token": "FUN-affine",
+        "id": "f5546097232853bd28e6829a",
+        "source_sha256": "cdb8c4ade6eacb22ddc1c51c5d2de35941df3c0bde48399c5cde7107620279fc",
+        "source_claim_sha256": "40810816a620245bfec8e55d9be609ffcd9a95d421b1727e93327e9fa8af09e8",
+        "target_claim_sha256": {
+          "cor:functional-affine-consequence-rigidity": "cd109aac0bed8fc7955b6f37325e0a87ad62d54ec0c3c02defed93d813db7053"
+        },
+        "proposed_type": "cites",
+        "ownership_ambiguous": false,
+        "hint": "Named equation reference; definitions may be shared/reused. Check proof role and scope.",
+        "occurrences": [
+          {
+            "line": 7736,
+            "context": " \\[\n      1\\notin \\mu(V_a)+\\mu(V_b)+H_N\n      \\qquad(a\\ne b).\n    \\] \n     In particular no individual block exposes a constant-one span modulo \\(H_N\\). By (FUN-affine), adjoining all affine base-PC consequences through the displayed \\(b\\)-range makes no difference. \n      Proof.  Choose each block's \\(r\\) coefficient rows ind"
+          }
+        ],
+        "existing_relationships": [],
+        "definition_evidence": [
+          {
+            "claims": [
+              "cor:functional-affine-consequence-rigidity"
+            ],
+            "locator": "https://kbr.is-a.dev/math-research/#functional-affine-consequence-rigidity",
+            "sha256": "259d3da906c49411793d476641a0c2317646d12d5b283feefa84bbeac6fd7f4e",
+            "widened": false
+          }
+        ],
+        "candidate_sha256": "61cc4978406ce56016b4a30629c48bb29c51db406a0275f2fbdda1d7625b698f"
+      }
+    ]
+  },
+  {
+    "position": 284,
+    "packet": {
+      "id": "cor:affine-square-root-core-obstruction",
+      "summary": "Polynomial MOD2-compatible families can force the existing rank/core criterion to cost Omega(n) on every square-root functional PHP residual, even modulo all affordable affine base consequences",
+      "assessment": "Working criterion-specific obstruction; no augmented refutation or proof-essentiality assertion",
+      "proof_ready": false,
+      "formalization_scope": {
+        "status": "no_record",
+        "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere."
+      },
+      "references": [
+        {
+          "label": "Parameters, optimized criterion, and scope",
+          "target": "https://kbr-.github.io/math-research/#affine-residual-criterion-obstruction",
+          "field": "record"
+        }
+      ],
+      "passages": [
+        {
+          "target": "https://kbr.is-a.dev/math-research/#affine-residual-criterion-obstruction",
+          "source_sha256": "962c82979505f290b0f39819bb35a8377ff4329054b25717cfb3fef70fa37412",
+          "widened": false,
+          "excerpts": [
+            {
+              "line": 7755,
+              "text": "Then \\(2r\\le L/2\\), while \\(\\log_2 B_{n,N}\\le(2N+1)\\log_2(n+1)\\). The logarithm of the left side of (AFF-residual-union) is at most \\(-L/2+O(N\\log n)\\), which tends to minus infinity. The required families therefore exist. They have polynomial descriptions: \\(M r=O(n^2)\\) input forms, each described by \\(O(n^2)\\) binary coefficients.",
+              "truncated": false
+            },
+            {
+              "line": 7765,
+              "text": "On every square-root residual the quotient spaces still have rank \\(r=\\Theta(n)\\), pairwise-zero intersections, and no constant-one span. The exact decomposition argument of historical Theorem 9.6 uses precisely this geometry. For the existing affine core–residual criterion, put",
+              "truncated": false
+            },
+            {
+              "line": 7766,
+              "text": "\\[ T(r)=\\max\\{1,\\lceil r/h\\rceil-1\\}. \\]",
+              "truncated": false
+            },
+            {
+              "line": 7775,
+              "text": "Indeed, in a batch with at least two spaces the first nested core must be zero, so a residual rank \\(r\\) already incurs \\(T(r)\\). All singleton full-core steps give \\(D+M\\); any multiplicative step costs at least \\(T(r)D\\), and one all-zero-core batch attains that alternative. No improved ordering changes the minimum.",
+              "truncated": false
+            },
+            {
+              "line": 7776,
+              "text": "For \\(D\\ge2h+1\\) and large \\(n\\), \\(r\\ge2h\\), whence \\(T(r)\\ge r/(2h)\\) and \\(T(r)D\\ge r\\). Since \\(M=n\\), the optimized ceiling is at least \\(r=\\Theta(n)\\), which exceeds the desired \\(O(N)=O(\\sqrt n)\\) residual budget. Allowing affine base consequences through any affordable \\(b\\le\\lfloor(N-2)/2\\rfloor\\) does not change this conclusion.",
+              "truncated": false
+            },
+            {
+              "line": 7777,
+              "text": "What failed. An arbitrary affine MOD tuple need not become constant-normalizable or low-rank enough for this criterion after the much larger matching restriction. The literal global theorem survives; this proposed affine follow-up does not. Nonlinear base consequences, other polynomial substitutions, peer-family reasoning, and transformations exploiting the actual source refutation remain outside the obstruction. The optimized ceiling above is not a lower bound on the actual augmented PC refutation degree.",
+              "truncated": false
+            }
+          ],
+          "omitted_selected_blocks": 0,
+          "total_blocks": 13,
+          "included_blocks": 6
+        }
+      ],
+      "scope": "Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear."
+    },
+    "candidates": [
+      {
+        "source": "cor:affine-square-root-core-obstruction",
+        "targets": [
+          "thm:uniform-residual-affine-rank-families"
+        ],
+        "method": "equation_reference",
+        "locator": "https://kbr.is-a.dev/math-research/#affine-residual-criterion-obstruction",
+        "token": "AFF-residual-union",
+        "id": "f1233b49c44e58e974844665",
+        "source_sha256": "962c82979505f290b0f39819bb35a8377ff4329054b25717cfb3fef70fa37412",
+        "source_claim_sha256": "0dde43eef32365758c02cb158eceb746a74e1b57fa89218e9f83d65b1a0fa6d9",
+        "target_claim_sha256": {
+          "thm:uniform-residual-affine-rank-families": "40810816a620245bfec8e55d9be609ffcd9a95d421b1727e93327e9fa8af09e8"
+        },
+        "proposed_type": "cites",
+        "ownership_ambiguous": false,
+        "hint": "Named equation reference; definitions may be shared/reused. Check proof role and scope.",
+        "occurrences": [
+          {
+            "line": 7757,
+            "context": "    r=\\left\\lfloor\\frac{N^2-1}{4}\\right\\rfloor.\n    \\] \n     Then \\(2r\\le L/2\\), while\n      \\(\\log_2 B_{n,N}\\le(2N+1)\\log_2(n+1)\\).\n      The logarithm of the left side of (AFF-residual-union) is at most\n      \\(-L/2+O(N\\log n)\\), which tends to minus infinity. The required families therefore exist. They have polynomial descriptions: \\(M r=O(n^2)\\) input forms, each des"
+          }
+        ],
+        "existing_relationships": [],
+        "definition_evidence": [
+          {
+            "claims": [
+              "thm:uniform-residual-affine-rank-families"
+            ],
+            "locator": "https://kbr.is-a.dev/math-research/#affine-residual-robust-family",
+            "sha256": "cdb8c4ade6eacb22ddc1c51c5d2de35941df3c0bde48399c5cde7107620279fc",
+            "widened": false
+          }
+        ],
+        "candidate_sha256": "cf9e743d680eea72857748c2d2dfc4084b3c52e56ba9f6c5737f864cc290d101"
+      }
+    ]
+  },
+  {
+    "position": 285,
+    "packet": {
+      "id": "lem:weighted-ENS-conflict-rate",
+      "summary": "A degree-D NS certificate with S accuracy-h companions yields a height h+ceil(log2 S) conflict tree with non-conflict mass at most S*(1-1/p)^h for any finite design distribution",
+      "assessment": "Working weighted sharp-rate form of Krajicek's averaging proof; original active degrees and input-factor fallback retained",
+      "proof_ready": false,
+      "formalization_scope": {
+        "status": "no_record",
+        "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere."
+      },
+      "references": [
+        {
+          "label": "Statement and full proof",
+          "target": "https://kbr-.github.io/math-research/#pseudo-ENS-rate-bridge",
+          "field": "record"
+        }
+      ],
+      "passages": [
+        {
+          "target": "https://kbr.is-a.dev/math-research/#pseudo-ENS-rate-bridge",
+          "source_sha256": "8068294ce9c66f57c5f4d4ebea9fb4103321a02fd59e30f148d361241da9b112",
+          "widened": false,
+          "excerpts": [
+            {
+              "line": 7829,
+              "text": "Let \\(\\nu\\) be a fixed probability distribution on finitely many such designs. Say its conflict-avoidance guarantee at height \\(e\\) is \\(\\gamma\\) if every allowed tree of height at most \\(e\\) returns a non-conflict with probability at least \\(\\gamma\\). The source defines this for a uniform finite set; the averaging argument also works with finite weights. One distribution must work for every tree. Choosing a favorable design after seeing the tree is not this assertion.",
+              "truncated": false
+            },
+            {
+              "line": 7830,
+              "text": "Working rate form of the source proof. Suppose a completed degree-\\(D\\) NS refutation uses an accuracy-\\(h\\) leveled ENS family with \\(S\\ge1\\) companions in total. Put",
+              "truncated": false
+            },
+            {
+              "line": 7831,
+              "text": "\\[ \\theta_p=1-\\frac1p,\\qquad e_*=h+\\lceil\\log_2S\\rceil,\\qquad \\delta_*=S\\theta_p^h. \\]",
+              "truncated": false
+            },
+            {
+              "line": 7842,
+              "text": "Proof. This follows the actual averaging and tree construction in Krajíček's Lemmas 3.3–3.4 and Theorem 3.2, retaining the sharper \\(\\theta_p^h\\) estimate. Fix a design and a companion \\(g_i\\prod_{u\\le h}(1-\\sum_jr_{uj}g_j)\\). If \\(\\omega(g_i)=0\\), it already has a zero-valued factor. Otherwise, under independent uniform coefficient rows, each of the \\(h\\) linear factors has nonzero design value with probability \\(\\theta_p\\); all do so with probability \\(\\theta_p^h\\). Average over \\(\\nu\\), choose coefficients block by block and level by level, and union-bound the losses. This gives one scalar assignment of all coefficients for which, outside a set of \\(\\nu\\)-mass at most \\(S\\theta_p^h\\), every used companion has a zero-valued factor.",
+              "truncated": false
+            },
+            {
+              "line": 7843,
+              "text": "Only companions with nonzero cofactors in the given certificate need this property. Their original degrees are at most \\(D\\), so every queried factor image fits the degree bound. Unused companions remain part of the ENS syntax; specializing them does not retroactively change which terms occur in the certificate. The argument with finite weights is unchanged, since each averaging step and union bound concerns probability mass.",
+              "truncated": false
+            },
+            {
+              "line": 7844,
+              "text": "After this scalar substitution the coefficient-field terms vanish. Applying any design to the NS certificate leaves a sum of at most \\(S\\) companion/cofactor terms with total value one. Binary search on partial sums finds a term \\(t_E\\) of nonzero design value in at most \\(\\lceil\\log_2S\\rceil\\) queries. Query its \\(h\\) linear factors. If a queried factor has value zero, output it and the complementary factor of \\(t_E\\). If all those values are nonzero, output the input \\(g_i\\) and its complementary factor instead. On the good part of the distribution, that input is then the zero-valued factor. This last fallback accounts for the input among the source's \\(h+1\\) factor polynomials; it needs no extra query.",
+              "truncated": false
+            },
+            {
+              "line": 7846,
+              "text": "The source's displayed choice \\(e^{h/p}\\ge2S^2\\) and \\(\\gamma=S^{-1}\\) satisfies this sufficient inequality, since \\(\\theta_p^h\\le e^{-h/p}\\). Here the exponential uses Euler's number; \\(e_*\\) denotes query height. For our project the separate direct NS endpoint supplies the appropriate kind of certificate. Merely having the newer PC endpoint would not justify this application. Adjoining the functional auxiliary axioms is allowed for the NS certificate as well.",
+              "truncated": false
+            }
+          ],
+          "omitted_selected_blocks": 0,
+          "total_blocks": 13,
+          "included_blocks": 7
+        }
+      ],
+      "scope": "Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear."
+    },
+    "candidates": [
+      {
+        "source": "lem:weighted-ENS-conflict-rate",
+        "targets": [
+          "thm:direct-ordinary-php-transfer"
+        ],
+        "method": "notebook_link",
+        "locator": "https://kbr.is-a.dev/math-research/#pseudo-ENS-rate-bridge",
+        "token": "#direct-php-transfer",
+        "id": "9e2521f14dbcb47b1581fe6f",
+        "source_sha256": "8068294ce9c66f57c5f4d4ebea9fb4103321a02fd59e30f148d361241da9b112",
+        "source_claim_sha256": "2f75caf40524042ec499bd6c6ebc61b7851086ea50d27ea20af7a2eb45af56e2",
+        "target_claim_sha256": {
+          "thm:direct-ordinary-php-transfer": "23673acc8bd21b76de81f62a6496bb7b03cf195ffdf18344449d6ee14d81109a"
+        },
+        "proposed_type": "cites",
+        "ownership_ambiguous": false,
+        "hint": "dependency-language; check negation and scope",
+        "occurrences": [
+          {
+            "line": 7846,
+            "context": "The source's displayed choice \\(e^{h/p}\\ge2S^2\\) and \\(\\gamma=S^{-1}\\) satisfies this sufficient inequality, since \\(\\theta_p^h\\le e^{-h/p}\\). Here the exponential uses Euler's number; \\(e_*\\) denotes query height. For our project the separate direct NS endpoint supplies the appropriate kind of certificate. Merely having the newer PC endpoint would not justify this application. Adjoining the functional auxiliary axioms is allowed for the NS certificate as well."
+          }
+        ],
+        "existing_relationships": [],
+        "candidate_sha256": "e9020c28f06517f31cb0098ee02154d5dc10de306c7d8230912911333053003c"
+      },
+      {
+        "source": "lem:weighted-ENS-conflict-rate",
+        "targets": [
+          "cor:functional-auxiliary-PC-bridge"
+        ],
+        "method": "notebook_link",
+        "locator": "https://kbr.is-a.dev/math-research/#pseudo-ENS-rate-bridge",
+        "token": "#functional-auxiliary-PC-bridge",
+        "id": "27f7ec4cb0e1563165c67bf5",
+        "source_sha256": "8068294ce9c66f57c5f4d4ebea9fb4103321a02fd59e30f148d361241da9b112",
+        "source_claim_sha256": "2f75caf40524042ec499bd6c6ebc61b7851086ea50d27ea20af7a2eb45af56e2",
+        "target_claim_sha256": {
+          "cor:functional-auxiliary-PC-bridge": "d1c11e0f4ddb336533afc4e79bdec32eb730362138029487ffbdcb2635b3ea91"
+        },
+        "proposed_type": "cites",
+        "ownership_ambiguous": false,
+        "hint": "dependency-language; check negation and scope",
+        "occurrences": [
+          {
+            "line": 7846,
+            "context": "The source's displayed choice \\(e^{h/p}\\ge2S^2\\) and \\(\\gamma=S^{-1}\\) satisfies this sufficient inequality, since \\(\\theta_p^h\\le e^{-h/p}\\). Here the exponential uses Euler's number; \\(e_*\\) denotes query height. For our project the separate direct NS endpoint supplies the appropriate kind of certificate. Merely having the newer PC endpoint would not justify this application. Adjoining the functional auxiliary axioms is allowed for the NS certificate as well."
+          }
+        ],
+        "existing_relationships": [],
+        "candidate_sha256": "9bf77043dc72c5f5d147fce34ed7a22813e34fb13b7b333578ff3d3f95013e43"
+      }
+    ]
+  },
+  {
+    "position": 286,
+    "packet": {
+      "id": "obs:diagonal-pseudosolution-rate-gap",
+      "summary": "The binary-height guarantee e=r*log2(n), gamma=n^(-r) cannot directly satisfy the extracted strict ENS probability inequality",
+      "assessment": "Working black-box application gap; not a refutation of the source theorem or every possible implication of its open problem",
+      "proof_ready": false,
+      "formalization_scope": {
+        "status": "no_record",
+        "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere."
+      },
+      "references": [
+        {
+          "label": "Exact comparison",
+          "target": "https://kbr-.github.io/math-research/#pseudo-diagonal-rate-gap",
+          "field": "record"
+        }
+      ],
+      "passages": [
+        {
+          "target": "https://kbr.is-a.dev/math-research/#pseudo-diagonal-rate-gap",
+          "source_sha256": "ce8358ac5491a486bbeb2d5518866a527b903e75cea28f82315295861b848e8f",
+          "widened": false,
+          "excerpts": [
+            {
+              "line": 7849,
+              "text": "The typeset v3 Definition 3.1 and Problem 3.5 were checked on pages 7 and 9. The latter asks for parameters of the form \\(((\\log n)^r,r\\log n,n^{-r})\\). We must not treat that qualitative list as an already matched application of Theorem 3.2.",
+              "truncated": false
+            },
+            {
+              "line": 7855,
+              "text": "Thus \\(\\gamma_0\\le\\delta_*/S^2\\), so that guaranteed probability cannot meet the strict sufficient condition (PS-rate). A particular distribution could have a better probability than this lower guarantee, or a further argument could strengthen the application. This is a black-box parameter gap under explicit binary-height accounting, not a refutation of Theorem 3.2 or a claim that no pseudo-solution route can work.",
+              "truncated": false
+            },
+            {
+              "line": 7856,
+              "text": "For \\(S\\le n^a\\), an accuracy \\(h=C\\log_2n+O(1)\\) would instead require a guarantee roughly \\(n^{-b}\\) with",
+              "truncated": false
+            },
+            {
+              "line": 7857,
+              "text": "\\[ C\\kappa_p>a+b,\\qquad \\kappa_p=-\\log_2(1-1/p), \\]",
+              "truncated": false
+            },
+            {
+              "line": 7861,
+              "text": "at height about \\((C+a)\\log_2n\\), and at the source's actual polynomial-in-\\(\\log n\\) degree. The dependence of \\(b\\) on the allowed height matters; increasing accuracy alone does not settle it.",
+              "truncated": false
+            }
+          ],
+          "omitted_selected_blocks": 0,
+          "total_blocks": 7,
+          "included_blocks": 5
+        }
+      ],
+      "scope": "Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear."
+    },
+    "candidates": [
+      {
+        "source": "obs:diagonal-pseudosolution-rate-gap",
+        "targets": [
+          "lem:weighted-ENS-conflict-rate"
+        ],
+        "method": "equation_reference",
+        "locator": "https://kbr.is-a.dev/math-research/#pseudo-diagonal-rate-gap",
+        "token": "PS-rate",
+        "id": "9f413729d62bdda531e1b334",
+        "source_sha256": "ce8358ac5491a486bbeb2d5518866a527b903e75cea28f82315295861b848e8f",
+        "source_claim_sha256": "bd6ac62ff7215b6ac78cd35cee9208302d041ab40ff911555d2e46ac55de82d8",
+        "target_claim_sha256": {
+          "lem:weighted-ENS-conflict-rate": "2f75caf40524042ec499bd6c6ebc61b7851086ea50d27ea20af7a2eb45af56e2"
+        },
+        "proposed_type": "cites",
+        "ownership_ambiguous": false,
+        "hint": "Named equation reference; definitions may be shared/reused. Check proof role and scope.",
+        "occurrences": [
+          {
+            "line": 7855,
+            "context": "-h}}S,\\qquad\n      \\delta_*=S(1-1/p)^h\\ge S2^{-h}.\n    \\] \n     Thus \\(\\gamma_0\\le\\delta_*/S^2\\), so that guaranteed probability cannot meet the strict sufficient condition (PS-rate). A particular distribution could have a better probability than this lower guarantee, or a further argument could strengthen the application. This is a black-box parameter gap und"
+          }
+        ],
+        "existing_relationships": [],
+        "definition_evidence": [
+          {
+            "claims": [
+              "lem:weighted-ENS-conflict-rate"
+            ],
+            "locator": "https://kbr.is-a.dev/math-research/#pseudo-ENS-rate-bridge",
+            "sha256": "8068294ce9c66f57c5f4d4ebea9fb4103321a02fd59e30f148d361241da9b112",
+            "widened": false
+          }
+        ],
+        "candidate_sha256": "76538c01bb290c9cc177311ef86392451d42826a1686ec54b7810542fbfaa8f8"
+      }
+    ]
+  },
+  {
+    "position": 287,
+    "packet": {
+      "id": "imp:conflict-to-live-cell-reduction",
+      "summary": "A degree-D conflict tree gains only O(D log n) queries when converted to a live-cell finder for a residual-design lift",
+      "assessment": "Imported Krajicek Lemma 4.3, with both prefix chains made explicit; source degree must fit the residual design",
+      "proof_ready": false,
+      "formalization_scope": {
+        "status": "no_record",
+        "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere."
+      },
+      "references": [
+        {
+          "label": "Reduction and scope",
+          "target": "https://kbr-.github.io/math-research/#pseudo-live-cell-interface",
+          "field": "record"
+        }
+      ],
+      "passages": [
+        {
+          "target": "https://kbr.is-a.dev/math-research/#pseudo-live-cell-interface",
+          "source_sha256": "bc199a0163da0c537caab524244409364e4403037c04ea4490fcc9577d0f502c",
+          "widened": false,
+          "excerpts": [
+            {
+              "line": 7865,
+              "text": "Imported reduction, Lemma 4.3. A degree-\\(D\\), height-\\(e\\) conflict tree can be converted to a tree of height \\(e+O(D\\log n)\\) which outputs a cell with both endpoints unmatched whenever the original tree finds a conflict.",
+              "truncated": false
+            },
+            {
+              "line": 7867,
+              "text": "A simple scope control. A free column alone is always findable with at most \\(\\lceil\\log_2n\\rceil\\) linear queries. Write \\(\\sigma_j=\\sum_i x_{ij}\\). The row equations give",
+              "truncated": false
+            },
+            {
+              "line": 7868,
+              "text": "\\[ \\omega\\!\\left(\\sum_{j=1}^{n}(1-\\sigma_j)\\right)=-1\\ne0. \\]",
+              "truncated": false
+            },
+            {
+              "line": 7871,
+              "text": "Binary-search a nonzero-valued summand by querying partial column-defect sums. Every matched column has \\(\\sigma_j^\\rho=1\\), so the resulting column is unmatched. This does not identify an unmatched row in that column; in particular, over \\(\\mathbb F_2\\) the selected column can have \\(\\omega(\\sigma_j)=0\\). A free-column argument cannot replace the live-cell obligation.",
+              "truncated": false
+            }
+          ],
+          "omitted_selected_blocks": 0,
+          "total_blocks": 6,
+          "included_blocks": 4
+        }
+      ],
+      "scope": "Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear."
+    },
+    "candidates": []
+  },
+  {
+    "position": 288,
+    "packet": {
+      "id": "obs:design-free-column-search",
+      "summary": "Row-sum defects locate an unmatched column of any partial-matching design lift with at most ceil(log2 n) linear queries",
+      "assessment": "Working exact observation; it does not locate an unmatched row or a live cell",
+      "proof_ready": false,
+      "formalization_scope": {
+        "status": "no_record",
+        "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere."
+      },
+      "references": [
+        {
+          "label": "Proof and limitation",
+          "target": "https://kbr-.github.io/math-research/#design-free-column-search",
+          "field": "record"
+        }
+      ],
+      "passages": [
+        {
+          "target": "https://kbr.is-a.dev/math-research/#pseudo-live-cell-interface",
+          "source_sha256": "bc199a0163da0c537caab524244409364e4403037c04ea4490fcc9577d0f502c",
+          "widened": true,
+          "excerpts": [
+            {
+              "line": 7865,
+              "text": "Imported reduction, Lemma 4.3. A degree-\\(D\\), height-\\(e\\) conflict tree can be converted to a tree of height \\(e+O(D\\log n)\\) which outputs a cell with both endpoints unmatched whenever the original tree finds a conflict.",
+              "truncated": false
+            },
+            {
+              "line": 7867,
+              "text": "A simple scope control. A free column alone is always findable with at most \\(\\lceil\\log_2n\\rceil\\) linear queries. Write \\(\\sigma_j=\\sum_i x_{ij}\\). The row equations give",
+              "truncated": false
+            },
+            {
+              "line": 7868,
+              "text": "\\[ \\omega\\!\\left(\\sum_{j=1}^{n}(1-\\sigma_j)\\right)=-1\\ne0. \\]",
+              "truncated": false
+            },
+            {
+              "line": 7871,
+              "text": "Binary-search a nonzero-valued summand by querying partial column-defect sums. Every matched column has \\(\\sigma_j^\\rho=1\\), so the resulting column is unmatched. This does not identify an unmatched row in that column; in particular, over \\(\\mathbb F_2\\) the selected column can have \\(\\omega(\\sigma_j)=0\\). A free-column argument cannot replace the live-cell obligation.",
+              "truncated": false
+            }
+          ],
+          "omitted_selected_blocks": 0,
+          "total_blocks": 6,
+          "included_blocks": 4
+        }
+      ],
+      "scope": "Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear."
+    },
+    "candidates": []
+  },
+  {
+    "position": 289,
+    "packet": {
+      "id": "lem:binary-covariance-conflict-probe",
+      "summary": "For k=E[2^(-rank B_omega)], a degree-two query tree of height t+1 has non-conflict probability at most k+(1-k)*2^(-t)",
+      "assessment": "Working necessary test for binary design distributions; rank of a residual lift equals the residual covariance rank",
+      "proof_ready": false,
+      "formalization_scope": {
+        "status": "no_record",
+        "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere."
+      },
+      "references": [
+        {
+          "label": "Definition and complete counting proof",
+          "target": "https://kbr-.github.io/math-research/#binary-covariance-conflict-probe",
+          "field": "record"
+        }
+      ],
+      "passages": [
+        {
+          "target": "https://kbr.is-a.dev/math-research/#binary-covariance-conflict-probe",
+          "source_sha256": "bc1ddd09dc6cd3fe9b599372366b38e72a60a17c3638ca35e7c52082ee32efdf",
+          "widened": false,
+          "excerpts": [
+            {
+              "line": 7880,
+              "text": "This is an exact finite-field covariance matrix, with no positivity assumption. Booleanity makes its diagonal zero. For a fixed finite design distribution, put \\(k_\\nu=\\mathbb E_{\\omega\\sim\\nu}2^{-\\operatorname{rank}B_\\omega}\\).",
+              "truncated": false
+            },
+            {
+              "line": 7881,
+              "text": "Working probe bound. For every integer \\(t\\ge1\\), there is a deterministic degree-two query tree of height at most \\(t+1\\) whose non-conflict probability is at most",
+              "truncated": false
+            },
+            {
+              "line": 7882,
+              "text": "\\[ k_\\nu+(1-k_\\nu)2^{-t}. \\tag{COV-probe} \\]",
+              "truncated": false
+            },
+            {
+              "line": 7886,
+              "text": "Consequently, a height-\\(e\\) pseudo-solution guarantee must obey \\(\\gamma\\le k_\\nu+(1-k_\\nu)2^{-(e-1)}\\) for integer \\(e\\ge2\\). This is a necessary test; no bound on \\(k_\\nu\\) for the desired higher-degree residual distribution is asserted here.",
+              "truncated": false
+            },
+            {
+              "line": 7893,
+              "text": "A nonzero answer certifies the conflict pair \\((f-a,w_s\\cdot X)\\), because the first factor has design value zero; no separate query of the second factor is needed. If all answers are zero, output \\((0,0)\\), a non-conflict.",
+              "truncated": false
+            },
+            {
+              "line": 7894,
+              "text": "For fixed \\(\\omega\\), the queried values are \\(u^{\\mathsf T}B_\\omega w_s\\). The random \\(u\\) lies in the left kernel with probability \\(2^{-\\operatorname{rank}B_\\omega}\\). In that case all answers vanish. Otherwise the \\(t\\) answers are independent uniform bits, and all vanish with probability \\(2^{-t}\\). Average first over the coefficient choices, then over \\(\\nu\\). Some fixed coefficient choice has non-conflict probability no larger than this average, yielding the deterministic tree in (COV-probe).",
+              "truncated": false
+            },
+            {
+              "line": 7895,
+              "text": "For a lift \\(\\omega=L\\circ\\rho\\), every fixed old variable gives a zero row and column of \\(B_\\omega\\); its products evaluate as scalar multiples. The remaining submatrix is \\(B_L\\), up to relabeling. Thus the covariance rank is exactly the residual design's rank. This permits a focused study of residual moments, while retaining the distinction between different probability measures on designs.",
+              "truncated": false
+            },
+            {
+              "line": 7896,
+              "text": "The probe shows why mere existence of high-degree designs is not enough to justify a probability claim. The next test will examine the actual residual moment distribution and its higher-degree extension constraints before asserting that the candidate satisfies, or violates, (PS-rate).",
+              "truncated": false
+            }
+          ],
+          "omitted_selected_blocks": 0,
+          "total_blocks": 12,
+          "included_blocks": 8
+        }
+      ],
+      "scope": "Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear."
+    },
+    "candidates": [
+      {
+        "source": "lem:binary-covariance-conflict-probe",
+        "targets": [
+          "lem:weighted-ENS-conflict-rate"
+        ],
+        "method": "equation_reference",
+        "locator": "https://kbr.is-a.dev/math-research/#binary-covariance-conflict-probe",
+        "token": "PS-rate",
+        "id": "b8e9b6fe0fc33747efbc1304",
+        "source_sha256": "bc1ddd09dc6cd3fe9b599372366b38e72a60a17c3638ca35e7c52082ee32efdf",
+        "source_claim_sha256": "0cb4286a2720615d165cd696d3c02fdbe92d4fde4db37cde798e0ed16f1f7260",
+        "target_claim_sha256": {
+          "lem:weighted-ENS-conflict-rate": "2f75caf40524042ec499bd6c6ebc61b7851086ea50d27ea20af7a2eb45af56e2"
+        },
+        "proposed_type": "cites",
+        "ownership_ambiguous": false,
+        "hint": "Named equation reference; definitions may be shared/reused. Check proof role and scope.",
+        "occurrences": [
+          {
+            "line": 7896,
+            "context": "y claim. The next test will examine the actual residual moment distribution and its higher-degree extension constraints before asserting that the candidate satisfies, or violates, (PS-rate). \n"
+          }
+        ],
+        "existing_relationships": [],
+        "definition_evidence": [
+          {
+            "claims": [
+              "lem:weighted-ENS-conflict-rate"
+            ],
+            "locator": "https://kbr.is-a.dev/math-research/#pseudo-ENS-rate-bridge",
+            "sha256": "8068294ce9c66f57c5f4d4ebea9fb4103321a02fd59e30f148d361241da9b112",
+            "widened": false
+          }
+        ],
+        "candidate_sha256": "92f408c20855f57f5e88eed8f186d44cea74cfff729686ed3325fb63635f2080"
+      }
+    ]
+  }
+]

@@ -1,0 +1,152 @@
+
+### 659 def:ordinary-polynomial-proof-foundations
+ordinary-polynomial-proof-foundations  Ordinary polynomial proof foundations 
+  Question and stopping point.  Supply the common ordinary-polynomial interface needed by the remaining bit-PHP route, before formalizing completed-line reuse, substitution, or matching reduction. The source is  paper §2 , together with the  functional base  and  compact base . Stop with a checked shared interface and a local checkpoint so independent workers can import it. 
+ Over a field \(K\), use the ordinary ring \(K[V]\). Applications have finite \(V\); the elementary interface also permits arbitrary variable types. Write \(\deg 0=0\), following Mathlib's natural total degree. A derivation through \(B\) is a finite tree whose leaves are zero or axioms of degree at most \(B\), and whose rules are addition, scalar multiplication, and multiplication by a single variable when its output has degree at most \(B\). Trees may reuse their premise derivations; reading the premises in order gives concatenated ordinary PC derivations. No polynomial-multiplication or NS rule is built into this definition. 
+ \[
+\mathcal C_B(\mathcal F)=\{f:\mathcal F\vdash_B f\},\qquad
+\mathcal I_B(\mathcal F)=\operatorname{span}_K\{qF:F\in\mathcal F,\ \deg(qF)\le B\}.
+\] 
+  Interface facts and proof.  Every derived polynomial has degree at most \(B\): induct on the tree, using the supplied bounds for axioms and variable multiplication, \(\deg(f+g)\le\max(\deg f,\deg g)\), and \(\deg(af)\le\deg f\). The zero, addition, and scalar rules make \(\mathcal C_B\) a subspace. Enlarging the axiom set or the ceiling preserves every tree, by the same induction. The bounded-degree space is Mathlib's ordinary total-degree submodule. Every spanning generator of \(\mathcal I_B\) lies in it, hence so does its span. Enlarging the axiom set or ceiling enlarges the set of legal products and therefore the span; each individually legal product belongs to that span. These statements include zero generators and zero degree bounds. 
+ The file also defines Boolean axioms \(X_v^2-X_v\), the weak unary base consisting of Booleanity, row sums minus one, and different-row same-column products, and the functional base adding different-column same-row products. The binary compact base on \(m\) rows and \(\ell\) bits consists of Booleanity and \(\prod_t(1+b_{it}+b_{i't})\) for \(i&lt;i'\). All these are ordinary polynomials; no quotient reduction is implicit, and each NS product is charged before summing. 
+  Verification and remaining route.   PolynomialCalculus.lean  records the exact definitions and checked interface declarations. The  verification report  preserves theorem types and transitive axiom reports; the  scope map  separates R02–R04 and the later publication obligations. The initial check exposed constructor syntax, a Mathlib argument-order mismatch, and a missing field-instance import; these were corrected without changing the mathematics. No mathematical discrepancy was identified. Process assessment: agreeing on exact shared names before dependent proofs avoids competing PC and NS definitions; Mathlib's existing bounded-degree space is linked rather than rebuilt. 
+ 
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   9 min 33.51 s   
+  Mathematical reasoning and proof writing  1 min 43.32 s  
+  Formal proof design and coding  3 min 35.92 s  
+  Preparation and checkpoint work  59.97 s  
+  Individually measured formal verification  3 min 14.30 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1. 
+ 
+ Initial instruction reading preceded instrumentation; setup waiting and the failed elaboration attempt are included, and final checkpoint work follows the timing snapshot. 
+
+
+### 660 lem:reuse
+lean-pc-completed-line-reuse  Completed-line multiplication versus flattened certificates 
+  Question and scope.  Formalize  historical Lemma 1.3  and the elementary inclusion used in Lemma 1.2, using the  primitive ordinary PC interface . The stopping point is a reusable checked multiplication interface for substitution and Boolean reduction; it is not an identification of all bounded PC consequences with NS certificates. 
+ Over any field, if \(f\in\mathcal C_B(\mathcal F)\), then for every ordinary polynomial \(q\), 
+ \[
+qf\in\mathcal C_{\max\{B,\deg q+\deg f\}}(\mathcal F).
+\qquad
+q\mathcal I_B(\mathcal F)\subseteq\mathcal I_{B+\deg q}(\mathcal F),
+\qquad
+\mathcal I_B(\mathcal F)\subseteq\mathcal C_B(\mathcal F).
+\] 
+  Proof of reuse.  Expand \(q=\sum_\alpha c_\alpha X^\alpha\) over its actual support. Starting from the completed line \(f\), scale by \(c_\alpha\) and multiply by each variable occurrence of \(X^\alpha\). Every intermediate new line has degree at most \(|\alpha|+\deg f\le\deg q+\deg f\). The original derivation still costs \(B\); taking the linear combination of these completed products adds no degree. The Lean proof implements this monomial construction by induction under multiplication by a variable. A nonzero monomial gains exactly one in ordinary degree; a zero intermediate multiplier is handled directly by the zero rule. This includes \(q=0\), \(f=0\), constants, and degree-zero derivations. Earlier derivation lines are never multiplied by \(q\). 
+  Proof of the NS bound.  If \(p=\sum_i a_i r_iF_i\) is an ordinary NS certificate with each \(\deg(r_iF_i)\le B\), then \(qp=\sum_i a_i(qr_i)F_i\). Each new generator multiple has degree at most \(\deg q+B\). Formally this is induction on the spanning submodule, with the generator, zero, addition, and scalar cases explicit. Cancellation among larger-degree terms does not authorize any generator. 
+  Proof of inclusion.  Consider one legal generator multiple \(qF\), of degree at most \(B\). If it is zero, the zero PC rule suffices. Otherwise the field polynomial ring is a domain, so \(\deg(qF)=\deg q+\deg F\). Thus \(F\) itself is an eligible degree-\(B\) axiom and completed-line reuse derives \(qF\) through \(B\). Closure under linear combinations proves the inclusion for the entire NS span. The converse remains a separate, system-specific theorem. 
+  Verification and process.   PolynomialCalculusReuse.lean  and the  verification report  expose all three statements and their checked dependencies. The  scope map  records the source and excluded downstream claims. Verification retried after correcting a tactic-module import and one linter warning; these were operational issues. The proof follows the source; the local monomial helper is kept in the same file because it serves this construction. Process assessment: the shared primitive derivation interface makes the degree distinction between reuse and flattening explicit without adding stronger inference rules. Substitution and duality remain R03 and R04. 
+ 
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   3 min 57.39 s   
+  Mathematical reasoning and proof writing  50.04 s  
+  Formal proof design and coding  1 min 42.35 s  
+  Preparation and checkpoint work  16.31 s  
+  Individually measured formal verification  1 min 8.69 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2. 
+ 
+ Source reading and brief initial proof planning preceded this cycle; verification retries are included and final checkpoint work follows the snapshot. 
+
+
+### 661 lem:row-linear-polynomial-space
+lean-row-linear-polynomial-space  Row-linear polynomial space and exact dimension 
+    Claim  lem:row-linear-polynomial-space .  Let \(K\) be any field and \(m,\ell,k\) any natural numbers. In the ordinary polynomial ring \(K[b_{ia}:i\in[m],a\in[\ell]]\), let \(\mathcal L_k\) be the span of monomials of degree at most \(k\) containing at most one variable from each row. Then 
+   \[
+    \dim_K\mathcal L_k=\sum_{j=0}^{k}\binom mj\ell^j,
+    \qquad \deg p\le k\quad(p\in\mathcal L_k).
+  \] 
+   Every nonzero \(p\in\mathcal L_k\) has a nonzero coefficient on a monomial using exactly \(\deg p\) rows. The formal definition uses natural total degree, with \(\deg0=0\), and counts ordinary coefficients; it is not a Boolean quotient. 
+    Full proof.  Index a monomial by \(0\le j\le k\), a \(j\)-element subset \(S\) of the rows, and a function \(a:S\to[\ell]\). Its variable set is the graph \(\{(i,a(i)):i\in S\}\), and its exponent vector assigns one to each graph element and zero elsewhere. This indexing is injective: projecting the graph to rows recovers \(S\), the unique variable in each selected row recovers \(a\), and its cardinality recovers \(j\). Conversely every allowed monomial has exactly this description. Ordinary monomials form a coefficient basis, so the allowed exponent subset gives a basis of \(\mathcal L_k\). 
+   There are \(\binom mj\) row subsets and \(\ell^j\) coordinate functions on each, proving the dimension formula. An indexed exponent has total sum \(j\le k\), so every supported exponent of \(p\) has sum at most \(k\); their maximum is \(\deg p\). If \(p\ne0\), its finite support is nonempty, so choose an exponent attaining that maximum. Its coefficient is nonzero by support membership, and its index uses exactly \(\deg p\) rows. This includes constants through the empty row set. It also covers \(k&gt;m\), since \(\binom mj=0\) for \(j&gt;m\), and \(m=0\) or \(\ell=0\), when only the constant monomial remains. \(\square\) 
+
+
+### 662 lem:ordinary-restriction-dimension
+lean-ordinary-restriction-dimension  Ordinary affine restriction image dimension 
+    Claim  lem:ordinary-restriction-dimension .  For any field \(K\) and natural \(d,k\), the subspace \(K[z_1,\ldots,z_d]_{\le k}\) has dimension at most \(\binom{d+k}{k}\). Let \(U\) be any subspace of ordinary source polynomials, all of degree at most \(k\), and substitute each source variable by an ordinary polynomial of degree at most one in these \(d\) variables. Then degree does not increase and 
+   \[
+    \dim_K\operatorname{res}(U)\le\binom{d+k}{k}.
+  \] 
+   In particular this applies to \(U=\mathcal L_k\) and to affine free coordinates on a codimension-\(r\) flat, taking \(d=v-r\). The formal theorem allows an arbitrary source variable type and requires only the stated degree bounds. 
+    Full proof.  The coefficient basis of the target degree space is indexed by nonnegative exponent vectors \(e\) with \(\sum_i e_i\le k\). Add a dummy symbol with multiplicity \(k-\sum_i e_i\), keeping the original \(d\) multiplicities. The result is a multiset of exactly \(k\) symbols from \(d+1\) choices. The encoding is injective because ignoring the dummy recovers every original exponent. Stars and bars counts these multisets as \(\binom{(d+1)+k-1}{k}=\binom{d+k}{k}\), giving the bound. The encoding is in fact bijective, but injectivity suffices here; equality of the full target dimension is not needed. 
+   If a variable \(x_i\) is replaced by \(g_i\) with \(\deg g_i\le1\), a monomial with exponent \(e\) becomes its scalar coefficient times \(\prod_i g_i^{e_i}\), of degree at most \(\sum_i e_i\). Addition cannot increase the largest term degree, so substitution cannot increase the source polynomial's degree. Thus its image on \(U\) is a subspace of the target degree space, and dimension monotonicity proves the result. This works over finite fields without identifying pointwise vanishing with the zero ordinary polynomial. For \(d=0\) or \(k=0\) the target consists of constants and the binomial bound is one. \(\square\) 
+    Formalization and evidence.   RowLinearPolynomialSpace.lean  provides the explicit monomial index, its cardinality, the polynomial subspace and finite-dimensional instance, the exact dimension theorem, degree bound, and maximal coefficient theorem.  OrdinaryRestrictionDimension.lean  provides the independent reusable target-dimension and affine-restriction interface. Their separate  row-linear  and  restriction  reports retain exact theorem types and transitive axiom audits. The  reproduction record  links the pre-proof scope map, pinned dependencies, and complete measured command evidence. 
+    Review and remaining route.  These seven theorem declarations discharge R13, including constants and empty dimension cases. They do not establish literal affine-ideal membership or the strict common-kernel inequality of R15, and do not formalize the larger quotient-injection or PC-separation claims. The main Frege status and existing mathematical-gap list were reviewed and are unchanged; the coordinator owns their living-section updates. No new mathematical discrepancy was found. 
+    Process assessment.  Separating ordinary restriction dimension from row-specific counting produced a reusable dependency; the small indexing and cardinality helpers remain local. Initial source restoration preceded instrumentation, and the explicit cache-readiness wait is recorded as overhead; failed checks were import, elaboration, or linter issues rather than failed mathematical claims. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   17 min 29.62 s   
+  Marked reading and review windows  26.44 s  
+  Mathematical reasoning and proof writing  6 min 29.88 s  
+  Formal proof design and coding  6 min 11.70 s  
+  Preparation and checkpoint work  9.73 s  
+  Marked overhead and interruptions  2 min 5.35 s  
+  Dedicated web and download-attempt windows  6.71 s  
+  Individually measured formal verification  1 min 59.80 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3. 
+ 
+
+
+### 663 lem:substitution
+lean-pc-degree-substitution  Polynomial substitution through the actual predecessor degree 
+  Question and stopping point.  Formalize  historical Lemma 1.4 , retaining the exact primitive multiplication budget needed by later affine removal. Stop at the general replay theorem; constructing the source-specific weighted axiom-image proofs is a downstream obligation. 
+ Let \(\phi:K[V]\to K[W]\) substitute \(v\mapsto g_v\), with \(\deg g_v\le T\), over a field. If \(\mathcal F\vdash_D f\), then \(\phi(\mathcal F)\vdash_{TD}\phi(f)\). More generally, fix an ordinary polynomial \(w\) and a target system \(\mathcal G\). Suppose every source axiom \(a\in\mathcal F\) of degree at most \(D\) has a supplied derivation 
+ \[
+\mathcal G\vdash_{TD+\deg w}w\phi(a).
+\qquad\text{Then}\qquad
+\mathcal G\vdash_{TD+\deg w}w\phi(f).
+\] 
+ The supplied images are actual PC derivations, not extra axioms silently adjoined to \(\mathcal G\). The Lean statement permits arbitrary variable types and every natural \(T\), including \(T=0\); finite-variable applications with \(T\ge1\) recover the source statement. 
+  Degree bound.  For an actual-support monomial \(c_\alpha X^\alpha\), its substituted polynomial is \(c_\alpha\prod_v g_v^{\alpha_v}\). Its degree is at most \(\sum_v\alpha_v\deg g_v\le T|\alpha|\). Taking the finite sum over the support gives \(\deg\phi(p)\le T\deg p\), without reducing any ordinary powers. 
+  Weighted proof.  Induct on the source primitive derivation. Zero maps to zero; an axiom uses its supplied image proof; addition and scalar multiplication commute with substitution and multiplication by \(w\). Consider the step \(p\mapsto X_vp\). If \(p=0\), its image is zero. Otherwise the ordinary polynomial ring is a domain and \(\deg(X_vp)=\deg p+1\le D\). By the preceding degree bound, 
+ \[
+\deg g_v+\deg(w\phi(p))
+\le T+\deg w+T\deg p
+\le TD+\deg w.
+\] 
+ The inductive image line \(w\phi(p)\) is already derived through \(TD+\deg w\). Apply  completed-line multiplication  by \(g_v\); the displayed inequality keeps its maximum ceiling unchanged. Commutativity identifies the result with \(w\phi(X_vp)\). This proves weighted replay. For ordinary substitution take \(w=1\), the target system \(\phi(\mathcal F)\), and use each axiom image directly; its degree is at most \(TD\). 
+  Verification and remaining work.   PolynomialCalculusSubstitution.lean  exposes the degree bound, weighted replay, and ordinary substitution in the  verification report . The  scope map  identifies the required dependencies and downstream boundary. The first elaboration attempt needed multiplication-order normalization and an explicit local inequality for arithmetic automation; the corrected check passed. The source proof is preserved in substance; no new mathematical discrepancy was found. Process assessment: explicitly separating zero predecessors and using the actual nonzero predecessor degree prevents a spurious extra \(T\) at every multiplication step. No new framework rule is needed beyond the recorded degree-direction guidance. 
+ 
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   3 min 29.10 s   
+  Mathematical reasoning and proof writing  1 min 21.25 s  
+  Formal proof design and coding  1 min 42.99 s  
+  Preparation and checkpoint work  5.61 s  
+  Individually measured formal verification  19.25 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1. 
+ 
+ Brief preliminary API reading and proof planning preceded this clock; retries are included and final checkpoint work follows the timing snapshot. 
+
+
+### 664 lem:binary-degree-controlled-Boolean-reduction
+lean-binary-degree-controlled-Boolean-reduction  Statement and assigned endpoint 
+ Let \(V\) be a finite variable set and work in the ordinary polynomial ring \(\mathbb F_2[X_i:i\in V]\). Put \(\mathrm{BOOL}=\{X_i^2-X_i:i\in V\}\), and let \(\mathcal I_d\) charge the ordinary degree of every individual generator multiple. For an exponent vector \(e\), put \(M_S=\prod_{i\in S}X_i\) and define 
+ \[
+ \operatorname{red}(P)=\sum_{e\in\operatorname{supp}(P)}[X^e]P\,M_{\operatorname{supp}(e)}.
+\] 
+ The verified statement is that \(\operatorname{red}(P)\) has individual degrees at most one and total degree at most \(\deg P\), agrees with \(P\) at every Boolean point, and satisfies 
+ \[
+ P-\operatorname{red}(P)\in\mathcal I_{\deg P}(\mathrm{BOOL}).
+\] 
+ Consequently a polynomial \(P\) vanishing at all Boolean points belongs to \(\mathcal I_d(\mathrm{BOOL})\) whenever \(\deg P\le d\), and 
+ \[
+ \deg q\le k\quad\Longrightarrow\quad q^2-q\in\mathcal I_{2k}(\mathrm{BOOL}).
+\] 
+ This extracts the binary portion of  historical Lemma 1.5  needed by the bit-PHP paper's Boolean-reduction lemma. It does not mark that broader all-prime, mixed-domain historical claim fully formalized. 
+

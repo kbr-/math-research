@@ -1,0 +1,270 @@
+
+###partition-freezing-size-limit
+1. A bound for general affine maps and proved constants
+    Partition the \(n+1\) original pigeons into nonempty classes \(A_t\), of sizes \(m_t\), and set \(s=\max_t m_t\), \(\sigma_{t,j}=\sum_{i\in A_t}x_{ij}\). Let \(\Phi\) be an affine polynomial substitution into the variables of a residual weak PHP base \(\mathcal F_N\), with \(N\ge3\). Assume
+    \[
+      \Phi(f)\in\mathcal C_2(\mathcal F_N)
+          \quad(f\in\mathcal F_n),\qquad
+      \Phi(\sigma_{t,j})-c_{t,j}\in\mathcal C_2(\mathcal F_N)
+          \quad(c_{t,j}\in\mathbb F_p).
+    \]
+    Literal freezing and original-degree base-image certificates are special cases. The assumption even permits degree-two proofs for affine row images and for the statistics' equality to constants.
+    Working theorem. Every \(c_{t,j}\) is zero or one, with at most one one per original column. Write \(J_t=\{j:c_{t,j}=1\}\), \(k_t=|J_t|\). Then \(k_t\equiv m_t\pmod p\), and some deficient class satisfies
+    \[
+      2\le k_t\le m_t-p,\qquad
+      N\le2k_t\le2(s-p).
+    \]
+    In particular, such a hard residual projection requires \(s\ge p+2\). The number of columns assigned to no class is at least \(p-1\) and is congruent to \(-1\pmod p\).
+
+
+###partition-freezing-counts
+2. Degree-two proofs force honest class occupancy counts
+    The audited residual lower bound gives \(1\notin\mathcal C_2(\mathcal F_N)\), since \(N\ge3\). Thus every field constant in this consequence space is zero. Put \(S_{t,j}=\Phi(\sigma_{t,j})\).
+    Column Boolean and collision axioms give original degree-two identities for \(\sigma_{t,j}^2-\sigma_{t,j}\) and, for \(t\ne u\), \(\sigma_{t,j}\sigma_{u,j}\). Their images belong to \(\mathcal C_2\). Since \(S_{t,j}-c_{t,j}\) is affine and already has a degree-two proof, PC reuse permits multiplying it by another affine polynomial within degree two. In particular,
+    \[
+      S_{t,j}^2-S_{t,j}-(c_{t,j}^2-c_{t,j})
+        =(S_{t,j}-c_{t,j})(S_{t,j}+c_{t,j}-1)
+    \]
+    belongs to \(\mathcal C_2\). Hence \(c_{t,j}^2-c_{t,j}=0\). Similarly, expanding the difference between \(S_{t,j}S_{u,j}\) and \(c_{t,j}c_{u,j}\) shows \(c_{t,j}c_{u,j}=0\). This proves the Boolean and disjointness assertions for the constants.
+    Sum the original row equations over \(A_t\), take their images, and subtract the proved statistic-constant differences. The resulting constant is \(k_t-m_t\), so it is zero in the field. Therefore \(k_t\equiv m_t\pmod p\).
+    Because \(\sum_t k_t\le n<n+1=\sum_t m_t\), at least one class has \(m_t>k_t\). Its positive deficit is a multiple of \(p\), so \(k_t\le m_t-p\). If \(z=n-\sum_tk_t\) columns are unassigned, then \(z+1=\sum_t(m_t-k_t)\equiv0\pmod p\). Since \(z\ge0\), this gives \(z\ge p-1\).
+
+
+###partition-freezing-completed-rows
+3. Clear forbidden cells and obtain a short PC contradiction
+    Fix a deficient class, write \(k=k_t\), and let \(Z_{ij}=\Phi(x_{ij})\). For \(i\in A_t\), the original column identity
+    \[
+      x_{ij}\sigma_{t,j}-x_{ij}
+        =(x_{ij}^2-x_{ij})
+           +\sum_{\substack{a\in A_t\\a\ne i}}x_{ij}x_{aj}
+    \]
+    has degree two. Its image and the product \(Z_{ij}(S_{t,j}-c_{t,j})\) both lie in \(\mathcal C_2\). Subtracting them proves \((c_{t,j}-1)Z_{ij}\in\mathcal C_2\). Thus every cell outside \(J_t\) is zero through degree two.
+    Each selected row now has the completed affine consequence
+    \[
+      \rho_i^Z-1\in\mathcal C_2,\qquad
+      \rho_i^Z=\sum_{j\in J_t}Z_{ij}.
+    \]
+    Column-collision images \(Z_{ij}Z_{aj}\) also belong to \(\mathcal C_2\). Choose \(r=k+1\) distinct rows in the class, possible because \(m_t>k_t\). The product \(P=\prod_{i=1}^{r}\rho_i^Z\) expands into terms assigning \(r\) rows to only \(k\) columns. Every term contains a collision image, multiplied by at most \(r-2\) affine cell images. PC reuse gives \(P\in\mathcal C_{\max\{2,r\}}\).
+    The telescoping identity
+    \[
+      1-\prod_{i=1}^{r}\rho_i^Z
+        =\sum_{i=1}^{r}(1-\rho_i^Z)\prod_{a<i}\rho_a^Z
+    \]
+    has the same PC ceiling: the completed row polynomials are affine, and each multiplier has degree at most \(r-1\). If \(k=0\), a cleared row already gives \(-1\in\mathcal C_2\). In every case,
+    \[
+      1\in\mathcal C_{\max\{2,k+1\}}(\mathcal F_N).
+    \]
+    This explicitly uses completed PC consequences. No equally sharp flattened NS certificate is asserted.
+    Compare with the residual bound \(N/2+1>2\). It forces \(k\ge2\), and then \(N/2+1\le k+1\), giving \(N\le2k\le2(s-p)\). The proof uses no same-row exclusions.
+
+
+###partition-freezing-scaling
+4. What the bound settles, and what it does not
+    The existing construction retains \(\lfloor(s-1)/(p-1)\rfloor-1\) holes. For fixed \(p\), its order of growth in \(s\) is therefore optimal within the present affine freezing class; constants may still improve. Balanced partitions have \(s=O(n/B)\), so their \(B\)-dependent size loss cannot be removed by changing only this affine layout.
+    The bound still applies if the class statistics become constants only through degree-two proofs, so affine row-equation adjustments do not avoid it. It does not cover larger image budgets, nonlinear substitutions, or elimination that leaves some class statistics nonconstant.
+    A recorded control. In characteristic three, one class of four pigeons with one assigned column satisfies the modular count \(k=1\equiv4=m\pmod3\), with two empty columns. Nevertheless the all-but-one-column probe system at \(n=3\) has a PC refutation through degree two. Thus those counts cannot be realized by a projection satisfying the theorem with \(N\ge3\). This reuses an existing exact trace and shows that the modular counts alone are not sufficient.
+    Evidence and next step. This is an analytic consequence of the displayed column identities, PC reuse, and the audited residual bound. No new numerical run was performed; the evidence record identifies the reused material. Next test column-dependent partitions: freezing different row classes in different columns need not freeze one common partition across every column.
+    Process assessment. The completed-row argument gave the needed universal bound directly, so reusing the existing degree-two trace was sufficient and no feasibility search or framework change was needed.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval15 min 36.98 s
+Mathematical reasoning and proof writing14 min 13.50 s
+Preparation and checkpoint work1 min 23.23 s
+Individually measured conversion, checks, and local processing0.25 s
+
+Through final snapshot; overlapping time counted once.
+
+
+
+###column-copy-map
+1. A copy permutation for each residual row and column
+    Choose \(K\ge1\), \(K\equiv-1\pmod p\), and write \(n=K(N+1)+r\), \(0\le r<K\), \(N\ge1\). As in ordinary occupancy freezing, first match \(r\) pigeons and holes. Label the remaining ordinary rows \((d,a)\), \(0\le d<K\), \(0\le a\le N\), plus a distinguished row \(*\). The remaining holes are \(K\) empty columns and copied columns \((c,j)\), \(0\le c<K\), \(0\le j<N\).
+    Independently for each \(a,j\), choose a permutation \(\pi_{a,j}\) of the \(K\) copy labels. With residual variables \(y_{aj}\) and \(q_j=1-\sum_a y_{aj}\), define
+    \[
+      \Phi(x_{(d,a),(c,j)})
+         =\mathbf1_{\{c=\pi_{a,j}(d)\}}y_{aj},
+      \qquad
+      \Phi(x_{*,(c,j)})=q_j.
+    \]
+    Empty-column cells are zero; the initial matching has its usual constant images. This is a global affine map.
+    Every ordinary source row has image sum \(\sum_j y_{aj}\), because for each \(j\) it uses exactly one copy column. The distinguished row gives \(K\sum_jq_j-1=-K\sum_a(\rho_a^Y-1)\). Thus row images fit degree one.
+    In each copied column, bijectivity gives exactly one source cell with image \(y_{aj}\) for each residual row \(a\), plus the distinguished \(q_j\). The column sum is literally one. Boolean and collision images have exactly the forms covered by the existing degree-two certificates: residual Boolean/collision polynomials, \(q_j^2-q_j\), \(y_{aj}q_j\), or zero. Hence every original base image fits its original degree.
+    Bijectivity is essential. Sending two copies of the same residual row to the same column would map their collision to \(y_{aj}^2\). For \(N\ge3\), this is not a degree-two base consequence: Booleanity would then imply \(y_{aj}\in\mathcal C_2\), contrary to affine rigidity. No same-row exclusions are used.
+
+
+###column-copy-compatibility
+2. Local partitions and an exact compatibility test
+    For copied column \((c,j)\), its active source rows are
+    \[
+      A_{c,j}=\{*\}\cup
+         \{(\pi_{a,j}^{-1}(c),a):0\le a\le N\}.
+    \]
+    They have size \(N+2\). Their partial column sum becomes one, while the sum on the complementary rows becomes zero.
+    Now prescribe an arbitrary pigeon partition \(\mathcal P_{c,j}\) separately for each copied column, and let \(C_{c,j}\) be its class containing \(*\). Every class statistic in that column freezes literally if and only if \(A_{c,j}\subseteq C_{c,j}\). Indeed, for any class \(C\), its image is
+    \[
+      \mathbf1_{\{*\in C\}}+
+      \sum_{a=0}^{N}
+       \left(
+        \mathbf1_{\{(\pi_{a,j}^{-1}(c),a)\in C\}}
+              -\mathbf1_{\{*\in C\}}
+       \right)y_{aj}.
+    \]
+    The residual variables are independent in the ordinary ring, so this polynomial is constant exactly when every displayed coefficient vanishes. For \(N\ge3\), affine rigidity also shows that a one-column affine image cannot acquire a different constant merely through a degree-two PC proof: a nonzero row-span polynomial cannot be supported on only that column.
+    Fixed-layout criterion. Once the matching prefix, distinguished row, row groups, and column bundles are chosen, compatible permutations exist exactly when the following independent bipartite graphs all have perfect matchings. For each residual pair \(a,j\), take left vertices \(d\), right vertices \(c\), both in \(\{0,\ldots,K-1\}\), with
+    \[
+      d\sim c\quad\Longleftrightarrow\quad(d,a)\in C_{c,j}.
+    \]
+    A perfect matching is precisely an allowed bijection \(\pi_{a,j}\). Choices for different \(a,j\) are independent; the row and collision arguments above remain valid for every combination. Empty columns and initially matched columns freeze any local partition automatically.
+
+
+###column-dependent-package-elimination
+3. Eliminate the compatible local-statistic package
+    Suppose the actual inputs of a selected finite ENS package are polynomials in the class-column statistics of these local partitions and in earlier coefficient variables of this package. If a compatible layout exists, all those statistics become field constants. The level-ordered constant-collapse construction then assigns each block's coefficients to constants, making all its companions and field equations zero.
+    The resulting map is affine, all original base images fit degree one or two, and every removed extension image is zero. Therefore completed NS and PC degree, as well as existing witness ceilings, are preserved. Retained blocks use their actual transformed inputs. There is no family-count, accuracy, arity, or level cost, and the residual board has
+    \[
+      N=\left\lfloor\frac nK\right\rfloor-1.
+    \]
+    When all extensions qualify, the residual PC bound and the corresponding linear design pullbacks apply. The proper-normal-form recognition argument also works with a different partition in each column: the independent within-class orbits still sum to products of the corresponding class statistics. The actual shared inventory within each column must be respected.
+
+
+###column-dependent-discrete-refinement
+4. A linear-size residual with a discrete global refinement
+    Take \(K\ge2\), \(N\ge3\). Since \(K^{N-1}\ge N+1\), choose distinct vectors \(v_a\in(\mathbb Z/K\mathbb Z)^N\), \(0\le a\le N\), with first coordinate zero. For example, use the base-\(K\) digits of \(a\) in the remaining coordinates. Set
+    \[
+      \pi_{a,j}(d)=d+v_a(j)\pmod K.
+    \]
+    In each copied column, take the two-class partition \(\{A_{c,j},A_{c,j}^{\,c}\}\). Every such local partition freezes by construction. The global common refinement, however, separates all remaining source pigeons.
+    An ordinary row \((d,a)\) belongs, for each \(j\), to exactly the active class with index \(c=d+v_a(j)\). Its first coordinate identifies \(d\), and the remaining coordinates then identify \(a\). Thus all ordinary rows have different membership signatures. The distinguished row belongs to every active class, which is a different signature because \(K\ge2\).
+    If the initial matching prefix is nonempty, use the matched pigeon's singleton and its complement as the partition of its matched column. These partitions distinguish the prefix rows as well. Empty columns may use the one-class partition. Therefore the full global common refinement consists of singletons.
+    For odd \(p\), choose \(K=p-1\); for \(p=2\), choose \(K=3\). These are fixed constants with the required congruence and \(K\ge2\), so sufficiently large \(n\) gives \(N=\Theta_p(n)\). This supplies a class of locally partitioned packages with a linear hard residual even though no nontrivial common pigeon class represents their full statistic inventory.
+    There is no conflict with the common-partition capacity bound. The fine global partition's cell statistics do not all freeze in every column; individual source cells still map to residual variables. Only the prescribed local statistics freeze.
+
+
+###column-copy-checks
+5. Complete image certificates and local-statistic families
+    The compiled checker uses \(N=3\), no matching prefix, and \((p,K,n)=(3,2,8),(2,3,12),(5,4,16)\). Its shifts are \(v_a=(0,a\bmod K,\lfloor a/K\rfloor)\), for \(a=0,1,2,3\). The full affine cell maps and all shift data are saved.
+    All 3,939 original base images passed their original-degree checks, with 444 nonzero NS certificates and explicit zero-image records for the rest. All 36 whole-column occupancies and all 63 local class statistics are verified as literal constants. The three global refinements have respectively 9, 13, and 17 singleton classes.
+    Each case also includes one accuracy-one block containing the entire local-statistic inventory: one full-column statistic for every empty column and both class sums for every copied column. All 63 companion and 63 coefficient-field images vanish. The complete source block is specified by these input sums, the standard ENS product formula, its fresh coefficient indices, and original input/companion/field degrees \(1,3,p\). Source polynomials are not regraded after their images become constants.
+    The existing individual-cell and invalid-copy-count controls are checked on the new maps. The latter uses a point satisfying only residual row equations, not a full PHP model. With \(N=3\), the base lower bound already excludes a degree-two refutation, so these image certificates are not vacuous.
+    The complete output and reproduction record retain all maps, certificates, signatures, and family data. Both checker entry points compiled cleanly, and every new mathematical check passed. The old default suite was not rerun.
+    Remaining gap and next step. A compatible layout is supplied here, not proved for arbitrary source profiles. Test a majority-density hypothesis on the incidence graph between ordinary pigeons and the distinguished pigeon's class in each column. Seek an explicit random-grouping construction with \(K=O_{\varepsilon,p}(\log n)\), retaining the exact residual size.
+    Process assessment. Adding optional copy shifts and a family callback reused the full base-certificate checker, so the new map received complete verification without duplicating the engine or rerunning unrelated fixtures.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval23 min 20.66 s
+Mathematical reasoning and proof writing16 min 38.25 s
+Computation design and coding4 min 53.88 s
+Preparation and checkpoint work1 min 44.43 s
+Individually measured computation0.13 s
+Individually measured conversion, checks, and local processing3.98 s
+
+Through final snapshot; overlapping time counted once.
+
+
+
+###majority-profile-elimination
+1. Hypotheses and the exact finite parameter condition
+    For each original column \(j\), prescribe a pigeon partition \(\mathcal P_j\). Fix a distinguished pigeon \(*\), and let \(A_j\) be its class in that partition. Form the bipartite graph \(G\) between the other \(n\) pigeons and the \(n\) columns, with \(i\sim j\) when \(i\in A_j\). Suppose, for \(0<\varepsilon\le1/2\),
+    \[
+      \deg_G(v)\ge(1/2+\varepsilon)n
+        \qquad\text{for every vertex on either side}.
+    \]
+    Working theorem. Choose an integer \(K\ge1\) such that
+    \[
+      K\equiv-1\pmod p,\qquad K\le\varepsilon n/2,\qquad
+      2n^2(1-\varepsilon^2)^{\lfloor K/2\rfloor}<1.
+    \]
+    Then a compatible column-dependent copy layout exists, with
+    \[
+      N=\left\lfloor\frac nK\right\rfloor-1\ge3.
+    \]
+    Every finite ENS package whose inputs are polynomials in these local class statistics and its earlier package coefficients can be removed at unchanged NS/PC degree and existing witness ceilings. Accuracies are positive; no family-count, arity, or level cost is added. If all extensions qualify, the augmented refutation degree is at least \(N/2+1\), and residual designs pull back as before.
+
+
+###majority-profile-prefix
+2. The matching prefix preserves a smaller majority margin
+    Let \(r=n\bmod K\). Match any \(r\) ordinary pigeons to \(r\) distinct columns, keeping \(*\) unmatched. These matching edges need not be edges of \(G\): matched columns already have constant local statistics, regardless of the occupied class.
+    The remaining allowance graph has \(n'=n-r=K(N+1)\) vertices on each side. Deleting the prefix removes at most \(r\) neighbors from any remaining vertex, so
+    \[
+      \deg_{G'}(v)\ge(1/2+\varepsilon)n-r
+                    \ge(1/2+\varepsilon/2)(n-r).
+    \]
+    The last inequality follows from \(r<K\le\varepsilon n/2\): subtracting the right side leaves \(\bigl(\varepsilon n-(1-\varepsilon)r\bigr)/2\ge0\). Partition each side independently and uniformly into \(N+1\) groups of size \(K\). One column group will be empty; the others will be the \(N\) residual column bundles. The row groups are the residual row types.
+
+
+###majority-profile-sampling
+3. The sampling bound, without an external concentration assumption
+    Fix one remaining vertex and one opposite group. Its number \(X\) of nonneighbors in that uniformly random \(K\)-subset is sampled without replacement from a population of size \(n'\), with bad fraction at most \(\theta=(1-\varepsilon)/2\). The standard factorial-moment argument is short enough to record fully.
+    If the population has \(b\) bad elements, then for \(0\le t\le K\),
+    \[
+      \mathbb E\binom Xt
+        =\binom Kt\frac{(b)_t}{(n')_t}
+        \le\binom Kt\theta^t,
+    \]
+    where \((u)_t\) is the descending factorial and the expression is zero when \(b<t\). Each factor \((b-i)/(n'-i)\) is at most \(b/n'\le\theta\). For \(z\ge1\), expand \(z^X=(1+(z-1))^X\) to obtain
+    \[
+      \mathbb E z^X\le(1-\theta+\theta z)^K.
+    \]
+    On the event \(X\ge K/2\), \(z^X\ge z^{K/2}\). Taking \(z=(1-\theta)/\theta\) therefore gives
+    \[
+      \Pr(X\ge K/2)
+       \le\left(2\sqrt{\theta(1-\theta)}\right)^K
+       =(1-\varepsilon^2)^{K/2}
+       \le(1-\varepsilon^2)^{\lfloor K/2\rfloor}.
+    \]
+    This bounds the probability that the vertex has at most \(K/2\) neighbors in the group. There are \(2n'(N+1)\le2n^2\) vertex/group pairs when both sides and even the prospective empty group are included. The union bound is strictly below one by hypothesis. Thus some pair of partitions gives every local \(K\)-by-\(K\) allowance graph minimum degree strictly greater than \(K/2\) on both sides. No independence between these bad events is required.
+
+
+###majority-profile-matchings
+4. Short augmenting paths give every local matching
+    A balanced \(K\)-by-\(K\) bipartite graph with both minimum degrees greater than \(K/2\) has a perfect matching by the following constructive argument. Process left vertices in order. If the next vertex has a free neighbor, match it there. Otherwise all its more than \(K/2\) neighboring right vertices are matched, to a set \(S\) of more than \(K/2\) left vertices.
+    Choose any free right vertex. It also has more than \(K/2\) neighbors, so one belongs to \(S\). Move that vertex's current match to the free right vertex, and use its former right partner for the new left vertex. This is an augmenting path with three edges. The process matches every left vertex.
+    With a stored adjacency matrix, each insertion scans at most a constant number of length-\(K\) lists, giving \(O(K^2)\) work per matching. Apply the fixed-layout criterion to all residual row types and nonempty column groups. The corresponding permutations yield the required affine map. Group verification and all matchings take \(O(n^2)\) profile-membership operations; constructing the profile graph from source mathematics is a separate cost.
+    The package transfer now applies: all required local statistics become constants, selected coefficients are assigned by level, every selected extension image is zero, and base images fit their original degrees.
+
+
+###majority-profile-parameters
+5. Logarithmic copy count and the conditional lower-bound bridge
+    For example, choose the least positive \(K\equiv-1\pmod p\) with
+    \[
+      K\ge1+\frac{2}{\varepsilon^2}
+                       \bigl(\ln(2n^2)+1\bigr).
+    \]
+    Since \(1-u\le e^{-u}\) and \(\lfloor K/2\rfloor\ge(K-1)/2\), its union bound is at most \(e^{-1}\). The congruence adjustment adds less than \(p\), so
+    \[
+      K=O(\varepsilon^{-2}\log n+p).
+    \]
+    The other required condition, \(K\le\varepsilon n/2\), must still be checked. It holds for sufficiently large \(n\) at fixed \(p,\varepsilon\), giving \(N=\Omega_{\varepsilon,p}(n/\log n)\). This exceeds any fixed polylogarithmic source degree for sufficiently large \(n\), conditional on the whole relevant package satisfying the profile hypothesis. A density depending on \(n\) may also be used when the exact size and probability conditions hold.
+    At the displayed choice, uniformly random groupings have a success probability bounded below by a positive constant. Thus repeated candidate generation has constant expected trials. This is a statement about the ideal uniform sampling construction; a saved seeded candidate is independently checked as a finite witness.
+
+
+###majority-profile-checks
+6. Complete compatible layouts and exact scalar bounds
+    The compiled checker uses \(n=6000\), \(\varepsilon=1/4\), and ordinary pigeons \(0,\ldots,5999\), with distinguished pigeon 6000. Column \(j\)'s distinguished class consists of that pigeon and the ordinary indices satisfying \((i-j\bmod6000)<4500\); the other class is its complement. Every raw graph degree is exactly 4500.
+    The two cases use \((p,K,r,N)=(2,613,483,8)\) and \((3,614,474,8)\). The matching prefix is the indicated diagonal. Recorded seeds generate row and column orders by an explicitly specified rejection-sampled Fisher–Yates shuffle. All orders are verified as permutations, and all 162 group-pair graphs meet the strict-majority condition. Their smallest observed degrees are 414 and 415, respectively.
+    All 144 required perfect matchings are saved and verified, containing 88,344 edges. The matcher performs 53 short rewirings across the large layouts. It is also checked exhaustively on all 209 strict-majority \(4\)-by-\(4\) graphs. Three saved Hall-deficient controls show failure when only one side has the majority condition or when both sides are below the threshold.
+    The probability condition is verified by exact positive-integer comparisons \(2n^2\,15^{\lfloor K/2\rfloor}<16^{\lfloor K/2\rfloor}\). The full numerators are saved in base \(2^{32}\), with the denominator powers and bit lengths. No floating-point probability or rank calculation is used.
+    The complete output and reproduction record specify the profile graph, every source grouping and permutation, the matching prefix, and the affine-map recipe. The program verifies the full combinatorial layout; the universal theorem supplies its base-image certificates. It does not enumerate the enormous original axiom list or claim a new full symbolic base check at \(n=6000\). Compilation and all requested checks passed.
+    Remaining gap and next step. No proof yet gives the required majority profiles for every source family. First weaken the need for a distinguished pigeon lying in all chosen large column classes: match away the columns missing a selected pigeon, and compute a sufficient density threshold for the remaining graph.
+    Process assessment. A quadratic-time short-path matcher and streamed layout data made a substantial finite fixture inexpensive; the sampling estimate was proved directly, avoiding a generic matching dependency or a separate concentration-source import.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval30 min 33.36 s
+Mathematical reasoning and proof writing23 min 9.52 s
+Computation design and coding5 min 5.96 s
+Preparation and checkpoint work2 min 15.84 s
+Individually measured computation0.17 s
+Individually measured conversion, checks, and local processing1.88 s
+
+Through final snapshot; overlapping time counted once.
+
+

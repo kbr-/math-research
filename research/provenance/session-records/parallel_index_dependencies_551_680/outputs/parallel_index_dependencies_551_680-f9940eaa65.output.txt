@@ -1,0 +1,216 @@
+
+### 555 lem:two-bit-row-restriction-dimension
+two-bit-row-restriction-dimension  1. A larger multiplier space has the required restriction dimension 
+   Let \(v=m\ell\), and let \(\mathcal A_{2,k}\) be the homogeneous degree-\(k\) space of squarefree bit polynomials using at most two bits in each row. Suppose \(1\le k\le v\), and put 
+   \[
+    \varepsilon=
+      m\binom{\ell}{3}\frac{\binom{v-3}{k-3}}{\binom vk},
+  \] 
+   with \(\varepsilon=0\) if \(k&lt;3\) or \(\ell&lt;3\). Every excluded \(k\)-set of bits contains a triple from one row. A union bound over these triples therefore gives 
+   \[
+      \dim\mathcal A_{2,k}\ge(1-\varepsilon)\binom vk.
+      \tag{CA-dimension}
+  \] 
+   For an affine flat of codimension \(r\), ordinary polynomial restriction has image dimension at most \(\binom{v-r+k}{k}\). If \(r\ge2k+3\), then 
+   \[
+    \frac{\binom{v-r+k}{k}}{\binom vk}
+       =\prod_{j=0}^{k-1}\left(1-\frac{r-k}{v-j}\right)
+       \le \exp\!\left(-\frac{k(r-k)}v\right)
+       \le e^{-k^2/v}.
+       \tag{CA-restriction}
+  \] 
+   Thus, if \(k=\lceil\sqrt{v\ln(4M)}\rceil\), \(\varepsilon\le1/2\), and there are at most \(M\) such flats, the sum of their restriction-image dimensions is at most \(\frac14\binom vk&lt;\dim\mathcal A_{2,k}\). A common nonzero kernel polynomial exists over every field. The restrictions here are ordinary polynomials, so the existing affine-coordinate argument supplies literal ideal representations with coefficient degree at most \(k-1\). If no such flats exist, the kernel assertion is immediate. 
+
+
+### 556 lem:two-bit-row-residual-board-separation
+two-bit-row-residual-board-separation  2. Its top monomials fit the residual-board detector 
+   Take \(n=2^\ell\), \(m=n+1\), \(k\le B\), and assume 
+   \[
+       16(k-1)&lt;n,\qquad n\ge2B+k-1.
+       \tag{CA-board}
+  \] 
+   A nonzero monomial of \(f\in\mathcal A_{2,k}\) occupies \(u\) rows with axis counts \(d_i\in\{1,2\}\). Each required coordinate cube has at most four points. At each greedy placement, at most \(4(u-1)\) previously used labels forbid cosets, out of at least \(n/4\) cosets, so (CA-board) gives disjoint cubes. 
+   The number of removed labels is \(F=\sum_i2^{d_i}=2k\). Since \(k\le2u\), 
+   \[
+      n-F\ge2B-k-1\ge2(B-u)-1.
+  \] 
+   The residual label set is nonempty: (CA-board), with \(B\ge k\), gives this for \(k\ge2\), and \(\ell\ge2\) handles \(k=1\). The  signed multi-axis cube detector  therefore separates every nonzero \(\tau f\) from old degree-\(B\) PC consequences, over each prime field. This uses the earlier detector rather than a new matching-moment construction. 
+
+constant-accuracy-assembly-pending  3. Candidate assembly and what remains to check 
+   At \(h=2(p-1)\), the existing low-rank packing threshold \((p-1)r\le h(k+1)\) becomes \(r\le2(k+1)\), matching the high-rank cutoff in Section 1. The  existing simultaneous weighted map  suggests the same replay ceiling \(B=k(D+1)\), now using \(f\in\mathcal A_{2,k}\). For polynomial \(M\), the proposed \(k\) is \(O(\sqrt n\log n)\), \(\varepsilon=O((\log n)^3/\sqrt n)=o(1)\), and polylogarithmic \(D\) makes (CA-board) eventually available. 
+   Before stating the assembled theorem, check the complete original-degree axiom ledger at this constant \(h\), including every coefficient field equation, and review the changed multiplier space in the weighted replay. A planned focused finite check would exercise genuine rank-\(2k+3\) high tuples, a fully packed low tuple, and within-row quadratic terms, with controls showing why unweighted high images are invalid. No checker was written and no numerical run was performed in this interrupted cycle. 
+    Route assessment.  The dimension and residual-board obstacles to constant accuracy have candidate working solutions; the complete endpoint statement remains unrecorded pending its focused assembly review. The existing publication theorem is unaffected. 
+    Process assessment.  The new multiplier space reused the signed-cube and weighted-map tools; checkpointing the partial investigation lets the explicit whitepaper request take priority without losing the argument. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   11 min 26.90 s   
+  Mathematical reasoning and proof writing  10 min 10.47 s  
+  Preparation and checkpoint work  1 min 13.06 s  
+  Dedicated web and download-attempt windows  2.64 s  
+  Individually measured conversion, checks, and local processing  0.72 s  
+  
+ Through final snapshot; overlapping time counted once. 
+ 
+
+
+### 557 draft:bit-PHP-Res-parity-whitepaper
+expanded-Res-parity-whitepaper-draft  1. The requested manuscript 
+   The  19-page whitepaper PDF  expands the  publication-candidate theorem . Its  main TeX source , section sources, bibliography, and  protected build script  are stored in  publications/drafts/bit-php-resolution-over-parities/ . Rebuildable LaTeX files are Git-ignored, while source and PDF are retained. 
+   The author is Kamil Braun, with assistance from Claude Sonnet, Claude Opus, Claude Fable, and GPT-6 Astra. The requested credit identifies GPT-6 Astra as the main contributor to this result's mathematical development and drafting. The manuscript includes the research framework, its repository and live-notebook links, and the README's features: persistent context, autonomous investigation and process review, inspectable successes and failures, reproducible evidence, and Git checkpoints. 
+   All algebraic dependency statements and proofs appear inline, including ordinary Boolean reduction, complete matching constraints, prescribed-moment extension and old PC closure, the affine decoder, cube separation, simultaneous weighted coefficient substitution, and the direct clause-DAG simulation. The proof uses \(h=3\ell\), \(D=12\ell+1\), and \(B=O(\sqrt n(\log n)^{3/2})\), as in the notebook theorem. It does not incorporate the incomplete constant-accuracy investigation. An appendix also proves the homological input below, so the draft does not require an unexpanded notebook lemma. 
+
+
+### 558 proof:chessboard-homology-expansion
+whitepaper-chessboard-homology-expansion  2. Inline homological background added for the manuscript 
+   This is an exposition of the classical  BLVZ chessboard bound , not a new connectivity theorem. Work with reduced homology over \(\mathbb F_2\). Call a complex \(q\)-acyclic when its reduced homology vanishes from degree \(-1\) through \(q\); \((-1)\)-acyclic means it has a vertex, and conditions below \(-1\) are vacuous. 
+    Homological cover lemma.  Suppose a finite complex \(K\) is covered by subcomplexes \(L_1,\ldots,L_t\), their nerve is \(q\)-acyclic, and every nonempty intersection of \(s\) members is \((q-s+1)\)-acyclic, where \(q\ge0\). Then \(K\) is \(q\)-acyclic. 
+    Proof.  Use the finite double complex 
+   \[
+    D_{a,b}=
+      \bigoplus_{\substack{J\subseteq[t],\ |J|=a+1\\L_J\ne\varnothing}}
+           C_b(L_J;\mathbb F_2),
+       \qquad L_J=\bigcap_{j\in J}L_j,\quad a,b\ge0.
+  \] 
+   The vertical differential is simplicial boundary; the horizontal differential omits a cover index. Their sum squares to zero in characteristic two. Augment horizontal rows to \(C_b(K)\). For any fixed simplex of \(K\), the indices of cover members containing it form a nonempty simplex, whose augmented chain complex is exact. Taking the direct sum over simplices shows that the horizontal rows are exact after augmentation. Computing horizontally first therefore recovers the homology of \(K\). 
+   Vertically first, the first page is \(\bigoplus_{|J|=a+1}H_b(L_J)\). Its groups with \(b&gt;0\), \(a+b\le q\), vanish by the intersection hypotheses. For \(b=0\), \(a\le q\), every nonempty intersection is connected, so the remaining horizontal groups and maps are the nerve chain complex. At \(a=q+1\), the augmentation \(H_0(L_J)\to\mathbb F_2\) is still onto; hence the incoming boundaries contain all nerve boundaries needed in degree \(q\). The second page has zero reduced groups in total degrees at most \(q\). Later pages cannot create nonzero groups from zero entries, and the finite filtration converges. Augmenting degree zero gives the asserted reduced-homology vanishing. \(\square\) 
+    Homological chessboard bound.  For \(a,b\ge1\), define 
+   \[
+    \nu(a,b)=\min\left\{a,b,
+          \left\lfloor\frac{a+b+1}{3}\right\rfloor\right\}.
+  \] 
+   The chessboard complex \(\Delta_{a,b}\) is \((\nu(a,b)-2)\)-acyclic. In particular \(b\ge2a-1\) implies \(\widetilde H_{a-2}(\Delta_{a,b};\mathbb F_2)=0\). 
+    Proof by the standard star cover.  Transpose so \(a\le b\) and induct on \(a\). If \(\nu=1\), nonemptiness suffices. Otherwise \(q=\nu-2\ge0\) and \(a\ge2\). Cover by the closed stars of the row-one vertices \((1,j)\). They are cones. A matching avoiding row one uses at most \(a-1&lt;b\) columns, so it belongs to some star. An intersection of \(s\ge2\) stars is \(\Delta_{a-1,b-s}\), on the remaining rows and columns. Every proper subfamily has a vertex in its intersection, while the full intersection does not. The nerve is the boundary of a \((b-1)\)-simplex, a sphere of dimension \(b-2\). 
+   Here \(\nu\le b-1\), so the nerve is \(q\)-acyclic. For a nonempty \(s\)-fold intersection, \(s\ge2\), let \(\mu=\nu(a-1,b-s)\). Each entry in this minimum is at least \(\nu-s+1\): 
+   \[
+     a-1\ge\nu-s+1,\qquad b-s\ge\nu-s+1,\qquad
+     a+b-s\ge3\nu-s-1\ge3(\nu-s+1).
+  \] 
+   Thus \(\mu\ge\nu-s+1\). Induction, transposing the smaller board if needed, gives \((q-s+1)\)-acyclicity of the intersection. Apply the cover lemma. Finally \(b\ge2a-1\) makes \(\nu=a\), giving the exact consequence used by the matching-moment argument. \(\square\) 
+
+
+### 559 third-party:BLVZ-chessboard-filling
+lean-chessboard-filling  Exact claim 
+   For natural \(s\ge2\) and \(N\ge2s-1\), every augmented \((s-1)\)-cell chain \(c\) of the \(s\times N\) chessboard over \(\mathbb F_2\) with \(\partial c=0\) has an \(s\)-cell filling: 
+   \[
+    \forall c\in C_{s-1}(\Delta_{s,N};\mathbb F_2),\quad
+    \partial c=0\ \Longrightarrow\
+    \exists b\in C_s(\Delta_{s,N};\mathbb F_2):\ \partial b=c.
+  \] 
+   Here the subscripts count cells, as in the original  H interface , so this is reduced homological degree \(s-2\). In particular \(s=2\) uses the vertex augmentation: only vertex chains whose total coefficient is zero are asserted to bound. The verified declaration is exactly  MathResearch.ThirdParty.chessboard_filling : ChessboardFilling , with no extra hypothesis. 
+    Full proof.  The size assumptions give \(s,N\ge1\), and  H11  gives \(\nu(s,N)=s\). Let \(\Phi_k\) be H03's linear equivalence from the original exact-face coefficient space to the supported ambient chain space at cell count \(k\). It commutes with the augmented boundary at every degree. Thus an original cycle \(c\) gives a supported cycle \(\Phi_{s-1}(c)\). Since \(s-1&lt;\nu(s,N)=s\), H12 supplies a supported filler \(D\) with 
+   \[
+    D\in C_s(\Delta_{s,N};\mathbb F_2),\qquad
+    \partial D=\Phi_{s-1}(c).
+  \] 
+   The cell count of the filler is exactly \(s\), using \(s-1+1=s\). Define the original-coordinate chain \(b=\Phi_s^{-1}(D)\). Boundary compatibility yields 
+   \[
+    \Phi_{s-1}(\partial b)
+      =\partial\Phi_s(b)
+      =\partial D
+      =\Phi_{s-1}(c).
+  \] 
+   Injectivity of \(\Phi_{s-1}\) now gives \(\partial b=c\), proving the entire claim. The argument uses the actual boundary bridge, not only a chain-space dimension equality. 
+    Source and verification.  This is the required homological consequence of  BLVZ, Theorem 1.1 . The checked proof is in  ChessboardFillingProof.lean ; the original definitions remain in ChessboardFilling.lean to avoid an import cycle. That definition module still reports  Status: statement-only  for its own proposition declaration; the separate proof module now proves that proposition. H is no longer an open formal dependency. No  sorry , custom axiom, or assumed filling result is used. 
+   The  incremental verification report  passed for twenty proof modules and 107 audited declarations, and preserves the original proposition definition, exact theorem type, dependency pins, and axiom report. Lake reuses unchanged compiled proof modules; the type/axiom inspection reads cached declarations rather than re-elaborating every source. The  scope map  records this target and its dependencies. The initial retry concerned support-subtype elaboration and an already-closed Lean goal, not a mathematical correction. 
+    Outcome and process assessment.  The selected external boundary is completely discharged in Lean over \(\mathbb F_2\), including its augmentation case. The next project-side foundations are R01/R02; matching-moment construction and the remainder of the publication theorem are not yet formalized. The main Frege route and mathematical gap list are unchanged. Explicit source fidelity and boundary-commuting interfaces made the final conversion short; incremental verification now avoids redundant proof checking, and mathematical record notation uses MathJax under the updated guidance. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   4 min 48.84 s   
+  Marked reading and review windows  0.19 s  
+  Mathematical reasoning and proof writing  3 min 15.01 s  
+  Formal proof design and coding  27.15 s  
+  Preparation and checkpoint work  49.97 s  
+  Individually measured conversion, checks, and local processing  0.18 s  
+  Individually measured formal verification  16.34 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1. 
+ 
+
+
+### 560 thm:constant-accuracy-affine-family-exclusion
+constant-accuracy-affine-family-exclusion  1. Complete one-level exclusion at \(h=2(p-1)\) 
+    Working theorem.  Fix a prime \(p\), let \(n=2^\ell\), \(\ell\ge2\), \(m=n+1\), \(v=m\ell\), and use the  correct compact base \(\mathcal Q_{n,p}\) , of collision degree \(\gamma=(p-1)\ell\). Adjoin any complete one-level old-affine ENS family of common accuracy \(h=2(p-1)\), with fresh disjoint coefficient scopes and every coefficient equation \(r^p-r\). Let \(M\ge1\) bound the number of proper blocks after scalar cleanup, and put 
+   \[
+    k=\left\lceil\sqrt{v\ln(4M)}\right\rceil,\qquad
+    B=k(D+1),\qquad
+    \varepsilon=m\binom{\ell}{3}
+             \frac{\binom{v-3}{k-3}}{\binom vk}.
+    \tag{CA-full-parameters}
+  \] 
+   As before set \(\varepsilon=0\) if \(k&lt;3\) or \(\ell&lt;3\). A sufficient finite set of hypotheses is 
+   \[
+    D\ge\max\{\gamma,2h+1\},\qquad
+    1\le k\le v,\quad \varepsilon\le\tfrac12,\qquad
+    16(k-1)&lt;n,\qquad n\ge2B+k-1.
+    \tag{CA-full-room}
+  \] 
+   Under these conditions the augmented system has no ordinary-PC refutation of degree at most \(D\). Consequently, for polynomially many blocks and sufficiently large \(n\), every polylogarithmic degree is excluded at this constant accuracy. 
+    Proof.  Remove zero and unit spans by constant coefficient assignments, which preserve degree. Proper affine spans have the same rank as their linear parts and nonempty zero flats. Split the family at 
+   \[
+    (p-1)r\le h(k+1)
+       \iff r\le2(k+1).
+  \] 
+   The higher ranks are at least \(2k+3\). By the  recorded dimension argument , there is a nonzero homogeneous \(f\in\mathcal A_{2,k}\), using at most two bits per row, that is the zero ordinary polynomial on every high flat. Its dimension estimate uses \(\binom vk\), rather than the smaller row-linear top layer. On each high block, affine coordinates give literal 
+   \[
+    f=\sum_i a_i g_i,\qquad \deg a_i\le k-1.
+  \] 
+   Use \(p-1\) coefficient rows \((\alpha a_i)_i\), \(\alpha\in\mathbb F_p^\times\), and set the remaining rows to zero. This is permitted because \(h=2(p-1)\). The high product becomes \(1-f^{p-1}\). Weight every substituted proof line by \(f\). A high companion has image \(g_i(f-f^p)\), with an old Boolean NS certificate through \(pk+1\). 
+   On a low block, partition the \((p-1)r\) factors \(1-\alpha F_j\) from an affine basis among \(h\) bins of size at most \(k+1\). The  existing telescoping map  has coefficient degree at most \(k\) and produces the exact flat indicator \(Z=\prod_j(1-F_j^{p-1})\). Its companion images have Boolean certificates through \((p-1)r+1\), hence weighted certificates through \((p-1)r+1+k\). 
+   The full original-degree ledger is 
+   \[
+  \begin{array}{c|c|c}
+      \text{source axiom}&\text{original degree }e&
+                          \text{weighted NS ceiling}\\ \hline
+      \text{high companion}&2h+1&pk+1\\
+      \text{low companion}&2h+1&(p-1)r+1+k\\
+      \text{coefficient field}&p&(p+1)k\\
+      \text{old axiom}&e&e+k.
+  \end{array}
+  \tag{CA-full-ledger}
+  \] 
+   Every row fits \(k(e+1)\). For companions, \(2h+2=4p-2\), so \(pk+1\le k(4p-2)\), while 
+   \[
+       (p-1)r+1+k
+          \le h(k+1)+1+k
+          \le k(2h+2).
+  \] 
+   The last inequality is \((k-1)(h+1)\ge0\). For a coefficient image \(\beta\), Boolean reduction certifies \(\beta^p-\beta\) through \(p\deg\beta\le pk\), giving the displayed field row after multiplication by \(f\). This uses the actual field equation, not Booleanity of a general \(\mathbb F_p\)-valued coefficient. Old axioms retain their original degrees. 
+   All maps use only old bits, so they are simultaneous. In a primitive source multiplication, the predecessor degree is at most \(D-1\) and the mapped variable has degree at most \(k\). The same weighted replay therefore derives \(f\) from \(\mathcal Q_{n,p}\) through \(B=k(D+1)\). This step does not use the earlier one-bit-per-row restriction: its algebraic requirements are the stated degree bounds and old Boolean equations. 
+   The  recorded two-bit-row board lemma  now excludes that consequence. Its disjoint cubes delete exactly \(2k\) labels, and (CA-full-room) gives the residual design needed by the  signed detector . The  degree-preserving decoder  and  old PC stability over \(\mathbb F_p\)  give the contradiction. If there are no high blocks, the joint-kernel choice is unrestricted and the same proof works. 
+   For polynomial \(M\), \(k=O(\sqrt n\log n)\) and \(\varepsilon=O((\log n)^3/\sqrt n)=o(1)\). Any polylogarithmic \(D\) gives \(B=\sqrt n\,\operatorname{polylog}n=o(n)\), so all finite conditions hold eventually. A smaller proposed degree can first be enlarged to \(\max\{\gamma,2h+1\}\), which remains polylogarithmic. \(\square\) 
+    Larger accuracies.  The qualitative exclusion also holds when individual blocks have any accuracies \(h_a\ge2(p-1)\): set coefficient rows beyond \(2(p-1)\) to zero in each block. The resulting complete system is covered by the theorem, and this constant substitution does not increase PC degree. No minimality of \(2(p-1)\) is asserted. 
+
+
+### 561 ex:constant-accuracy-complete-image-checks
+constant-accuracy-complete-image-checks  2. Complete finite images and falsifying controls 
+   The  compiled exact checker  uses ten old Boolean variables in five two-bit rows. Its multiplier is \(f=(b_0-b_3)(b_1-b_2)\), whose top terms include two bits in one row. Two high tuples have rank seven, exactly \(2k+3\) for \(k=2\), and a low tuple has rank six, exactly filling all packing bins at \(h=2(p-1)\). 
+   Over \(\mathbb F_2\) and \(\mathbb F_3\), respectively, the checker retains and reconstructs 70 and 110 complete ordinary NS certificates. They include all 20 companion images in each field, every one of the 40 or 80 coefficient-field images, and all ten weighted old Boolean equations. The original system, global coefficient map, complete source products, and every NS cofactor are preserved. High and low image ceilings fit the actual original-degree ledger, including the zero field images. 
+   There are 256 nonzero-multiplier Boolean assignments in each field, and the mapped coefficients give complete models of the local source family on all of them. In \(\mathbb F_3\), the multiplier takes each nonzero value in 128 such models. A separate model has mapped coefficient value two, violating a Boolean coefficient equation while satisfying its correct field equation. At a zero-multiplier point, both high unweighted companions equal one; this checks the necessity of the multiplier. 
+   Five exact counting fixtures compare the two-bit-row top dimension, the triple union bound, and the ordinary restriction bound. For \(m=\ell=16\), \(k=3\), the new homogeneous space has dimension \(2{,}754{,}560\), exceeding the one-flat bound \(2{,}573{,}000\), while the old row-linear space through degree three has only \(2{,}324{,}737\) dimensions. This controls the specific dimension argument, not an actual rank equality or a full PHP instance. 
+   All checks passed with no compiler warning. These are local complete-image and dimension controls; their small boards are outside the combined asymptotic PHP hypotheses. The earlier complete matching-moment suites were reused as dependencies and not rerun.  Full output ,  reproduction instructions , provenance, and timing accompany the result. 
+    Route assessment.  Refutation exclusion now permits constant accuracy. This changes the endpoint's available parameters, but does not by itself handle a new arbitrary dense retained source, preserve all old targets at that accuracy, or finish the Frege goal. 
+    Next actual-source question.  Test a complete dense shared-bit two-level family at accuracy one. The next attempt should allow the maximum coefficient-image degree to exceed the multiplier degree; at odd primes it may need a Booleanized multiplier and the existing bounded-row cube detector. Review the resulting source map and endpoint together rather than asserting that the present accuracy is optimal. 
+    Process assessment.  The shared exact NS verifier checked the full coefficient ledger without another implementation or a historical suite rerun; the next task tests an actual source at the remaining accuracy boundary instead of polishing the sufficient constant here. 
+   Some proof planning remained mixed with the coding phase. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   42 min 37.11 s   
+  Mathematical reasoning and proof writing  28 min 59.07 s  
+  Computation design and coding  11 min 14.59 s  
+  Preparation and checkpoint work  2 min 16.73 s  
+  Dedicated web and download-attempt windows  3.00 s  
+  Individually measured computation  0.53 s  
+  Individually measured conversion, checks, and local processing  3.20 s  
+  
+ Through final snapshot; overlapping time counted once. 
+ 
+

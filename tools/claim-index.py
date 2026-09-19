@@ -11,6 +11,7 @@ from claim_registry import (ROOT, REGISTRY, MARKDOWN, import_markdown, load, ren
 from claim_reviews import coverage, FIELDS
 from claim_graph import query as graph_query, audit as graph_audit
 from claim_maintenance import check_revision
+from claim_views import bundle_files
 
 
 def main():
@@ -23,9 +24,11 @@ def main():
     imp.add_argument('--report', type=Path, required=True)
     ren = sub.add_parser('render')
     ren.add_argument('--out', type=Path, default=MARKDOWN)
+    ren.add_argument('--views-out', type=Path, help='Also write navigable topic/lifecycle views to this directory')
     val = sub.add_parser('validate')
     val.add_argument('--markdown', type=Path, default=MARKDOWN)
     val.add_argument('--out', type=Path)
+    val.add_argument('--views-dir', type=Path, help='Check derived topic/lifecycle files in this directory')
     val.add_argument('--baseline', help='Check a pristine migration against an immutable Git revision')
     exp = sub.add_parser('export')
     exp.add_argument('--out', type=Path, required=True)
@@ -39,6 +42,8 @@ def main():
     cov.add_argument('--out', type=Path, help='Save the complete report, including unshown rows')
     cov.add_argument('--json', action='store_true')
     sub.add_parser('list', add_help=False, help='Minimal listing; forwards filters/fields/format to search')
+    sub.add_parser('views', add_help=False, help='Derived topics, lifecycle views and duplicate candidates')
+    sub.add_parser('author', add_help=False, help='Source-backed template/proposal authoring')
     changed = sub.add_parser('changed', help='Check metadata completeness relative to a Git revision')
     changed.add_argument('--base', default='HEAD')
     changed.add_argument('--out', type=Path)
@@ -53,6 +58,9 @@ def main():
     graph.add_argument('-n', type=int, default=20)
     graph.add_argument('--out', type=Path)
     args, rest = parser.parse_known_args()
+    if args.command in ('views', 'author'):
+        tool = 'claim_views.py' if args.command == 'views' else 'claim_authoring.py'
+        return subprocess.call([sys.executable, str(ROOT/'tools'/tool), '--registry', str(args.registry), *rest])
     if args.command == 'list':
         return subprocess.call([sys.executable, str(ROOT/'tools/search-claims.py'),
                                 '--registry', str(args.registry), '--list', *rest])
@@ -111,6 +119,13 @@ def main():
     elif args.command == 'render':
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(render(data))
+        views = args.views_out
+        if views is None and args.out.resolve() == MARKDOWN.resolve() and args.registry.resolve() == REGISTRY.resolve():
+            views = REGISTRY.parent / 'views'
+        if views is not None:
+            views.mkdir(parents=True, exist_ok=True)
+            for filename, content in bundle_files(data).items():
+                (views / filename).write_text(content)
         print(f"Rendered {len(data['claims'])} claims.")
     elif args.command == 'export':
         write_json(args.out, exported(data))
@@ -119,6 +134,13 @@ def main():
         report = check_targets(data)
         report['claims'] = len(data['claims'])
         report['generated_markdown_current'] = args.markdown.is_file() and args.markdown.read_text() == render(data)
+        views = args.views_dir
+        if views is None and args.markdown.resolve() == MARKDOWN.resolve() and args.registry.resolve() == REGISTRY.resolve():
+            views = REGISTRY.parent / 'views'
+        if views is not None:
+            report['stale_topic_views'] = [name for name, content in bundle_files(data).items()
+                if not (views / name).is_file() or (views / name).read_text() != content]
+            report['passed'] = report['passed'] and not report['stale_topic_views']
         if args.baseline:
             text = subprocess.check_output(['git', 'show', args.baseline + ':research/CLAIM_INDEX.md'], cwd=ROOT, text=True)
             report['reconciliation'] = reconcile(text, data, args.baseline)

@@ -101,6 +101,14 @@ historical mathematical sources only when the current research task needs them.
   use its statement/qualification excerpts and open larger source passages only
   for unresolved meaning, scope or conflicting evidence during triage. Before
   mathematical reliance, follow the exact-statement/proof requirement in step 4.
+  Browse the generated [topic map](../claims/views/topics.md) or use
+  `claim-index.py views topics --out /tmp/claim-topics.json` for taxonomy orientation; consult the registry
+  guide for output options. `claim-index.py graph` provides typed dependency,
+  citation and correction-impact queries. Impact identifies review scope, not
+  automatic invalidation. For new records, `claim-index.py author template`
+  and `author prepare` produce a source-backed proposal; fill its explicit
+  dispositions and validate rather than copying migration-era empty metadata.
+  Default `claim-index.py render` regenerates human and topic views together.
 
 - Formal proofs: [Lean project](../../formalization/README.md) contains per-claim
   formalizations and verification instructions; the claim index links each

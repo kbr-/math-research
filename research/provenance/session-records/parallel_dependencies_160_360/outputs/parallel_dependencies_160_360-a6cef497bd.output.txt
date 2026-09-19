@@ -1,0 +1,164 @@
+
+###categorical-heterogeneous-frontier
+2. The exact heterogeneous frontier
+    Fix integers \(h\ge1\), \(T\ge0\). Coefficient polynomials may use all the old state variables and have ordinary total degree at most \(T\). Require every companion of the block on \(g_1,\ldots,g_N\) to vanish modulo \(J\) after substitution. Sort the alphabet sizes as \(k_{(1)}\le\cdots\le k_{(N)}\), and put
+    \[
+      q_*=\max\{0,N-hT\}.
+    \]
+    Working exact theorem. Such a coefficient assignment exists if and only if
+    \[
+      \boxed{\sum_{i=1}^{q_*}k_{(i)}\le h,}
+    \]
+    where the empty sum is zero. This concerns all-companion normalization over \(J\), not a proof requesting only a subset of the companions or a larger base containing extra equations.
+
+
+###categorical-frontier-lower
+3. Lower bound by counting untouched probe groups
+    For each column use a scalar parameter \(s_j\in\{0\}\cup S_j\). Let \(\ell_{j,\lambda}(s_j)\) be its Lagrange state indicator, of degree \(k_j\), and substitute \(a_{j,\lambda}=\ell_{j,\lambda}(s_j)\). Lagrange interpolation gives the literal polynomial identity \(g_j=s_j\). Work modulo
+    \[
+      f_j(s_j)=s_j\prod_{\lambda\in S_j}(s_j-\lambda).
+    \]
+    Every successful block product has the unique common-zero selector
+    \[
+      \chi(s)=\prod_{j=1}^{N}\prod_{\lambda\in S_j}(1-s_j/\lambda).
+    \]
+    Its monomial \(\prod_j s_j^{k_j}\) has nonzero coefficient. Consider one monomial term in the expanded product of \(h\) coefficient factors. It uses at most \(h\) input occurrences \(s_j\), and at most \(hT\) old state-variable occurrences from its coefficient monomials. Thus at least \(q_*\) probe groups are untouched by coefficient variables.
+    For an untouched group \(j\), the term's only dependence on \(s_j\) comes from its input occurrences. To contribute \(s_j^{k_j}\) after reduction by the monic univariate relation \(f_j\), there must be at least \(k_j\) such occurrences: reduction never increases degree or introduces another variable. Therefore any term contributing the selector's distinguished monomial needs at least the sum of the \(q_*\) smallest \(k_j\)'s input occurrences. There are at most \(h\). If the boxed inequality fails, every term has zero coefficient on that monomial, contradicting the forced selector.
+    This argument allows arbitrary cancellations and arbitrary coefficient polynomials of degree at most \(T\). Independent extra old domain variables can be fixed to permissible constants. It does not assume that the normalizer already has the constructive form used next.
+
+
+###categorical-frontier-upper
+4. Matching construction: central roots and side-column masks
+    Choose \(q_*\) probes with the smallest alphabet sizes as centers. Their total number of nonzero values is at most \(h\), so assign one row to each center-value pair \((c,\lambda)\). Any leftover rows have no center. There are \(N-q_*\le hT\) other probes; distribute them among the \(h\) rows in disjoint ordered sets \(A_r\), each of size at most \(T\).
+    For an ordered side set \(A=(j_1,\ldots,j_t)\), define
+    \[
+      Q_A=\prod_{j\in A}q_j,\qquad
+      v_{A,j_\ell}=u_{j_\ell}\prod_{b<\ell}q_{j_b}.
+    \]
+    Every \(v_{A,j}\) has degree at most \(t\le T\). A row with no center uses \(1-\sum_{j\in A}v_{A,j}g_j\), congruent to \(Q_A\). A row assigned to \((c,\lambda)\) uses
+    \[
+      F_{c,\lambda,A}
+        =1-\lambda^{-1}Q_Ag_c-\sum_{j\in A}v_{A,j}g_j
+        \equiv Q_A(1-g_c/\lambda)\pmod J.
+    \]
+    The central coefficient also has degree at most \(T\). Multiplying all rows gives one \(q_j\) for each side probe, while the rows of a center give \(\prod_{\lambda\in S_c}(1-g_c/\lambda)\equiv q_c\). Hence the product is exactly the required selector modulo \(J\). Empty rows and side sets are padded by ones. This also covers \(T=0\), when every probe is a center and the condition is \(\sum_j k_j\le h\).
+    By the stable-ideal theorem, all companion images have NS proofs through their actual degrees. For affine inputs and coefficient degree \(T\), those degrees are at most \(1+h(T+1)\); field images fit \(pT\) for \(T\ge1\). Thus affine and constant maps preserve NS/PC proof degree, while higher \(T\) has the previously stated substitution cost. Upper certificates remain valid when additional base equations are available; the exact lower bound need not.
+
+
+###categorical-uniform-and-mixed
+5. Uniform alphabets and a useful mixed example
+    If every alphabet has size \(k\), the condition reduces to
+    \[
+      kN\le h(kT+1),\qquad
+      \boxed{h_{\min}=\left\lceil\frac{kN}{kT+1}\right\rceil.}
+    \]
+    The binary or scaled-Boolean case has \(k=1\), and the odd ternary case has \(k=2\), recovering the preceding exact frontiers. A common alphabet set is unnecessary; its cardinality is what enters this formula.
+    For alphabet sizes \((1,1,4,4)\), \(T=1,h=2\), two centers are required and their cost is \(1+1=2\). Each binary center shares its row with one four-value side probe. This gives an affine two-row normalizer even though two of the inputs are non-Boolean over the proper state base. By comparison, four probes all of alphabet size three require three affine rows. The largest alphabet alone does not determine the optimum.
+
+
+###categorical-native-contrast
+6. Bare scalar coordinates have a different frontier
+    Instead use \(s_1,\ldots,s_N\) as the actual old variables, with the explicit finite-alphabet equations \(f_j(s_j)=0\), and count coefficient degree in these variables. Then the forced selector has ordinary degree \(\sum_jk_j\), while each coefficient factor has degree at most \(T+1\). Therefore
+    \[
+      \boxed{h_{\min}^{\rm native}
+          =\left\lceil\frac{\sum_jk_j}{T+1}\right\rceil.}
+    \]
+    The upper bound partitions the \(\sum_jk_j\) linear root factors \(1-s_j/\lambda\) into groups of at most \(T+1\), then telescopes each group into one coefficient row, collecting repeated input coordinates. The coefficients have degree at most \(T\). The lower bound is the selector's ordinary degree. These univariate, separate-variable ideals have degree-complete normal forms. A restricted alphabet requires its stated equation; a bare \(\mathbb F_p\) field variable has the full alphabet \(S_j=\mathbb F_p^\times\).
+    For one \(\mathbb F_5\)-valued input, four Boolean state coordinates provide an affine inverse-value selector, so one affine row suffices. In native scalar coordinates, one affine row is impossible and two are optimal:
+    \[
+      (1-s^2)(1-4s^2)=1-s^4\quad\text{over }\mathbb F_5.
+    \]
+    The two representations describe the same five values, but their ordinary degrees differ. Substituting the Lagrange indicators into a bare scalar polynomial can raise degrees; those indicators may not be treated as affine without actual affine old representatives. This distinction is essential when importing a column argument into a general field-valued source expression.
+
+
+###categorical-vector-caution
+7. A low-degree vector selector need not split into as few linear factors
+    The scalar alphabet size cannot simply be replaced by the degree of a polynomial zero selector for a vector-valued profile. Over \(\mathbb F_7\), take the zero profile together with the eight points of \(u^2+v^2=1\):
+    \[
+      (\pm1,0),\ (0,\pm1),\
+      (2,2),\ (2,-2),\ (-2,2),\ (-2,-2).
+    \]
+    Encode these nine states by one column's Boolean state indicators, and let \(u,v\) be the corresponding affine coordinate probes. The polynomial \(1-u^2-v^2\) is the zero selector and has degree two in the probe coordinates. No affine polynomial can be that selector: a line meets the circle in at most two points. Indeed, \(-1\) is not a square in \(\mathbb F_7\), so substitution of any nonvertical line leaves a genuine quadratic equation; vertical lines also give at most two roots.
+    A constant-coefficient normalizer is a product of factors \(1-\alpha u-\beta v\), each covering at most two of the eight nonzero profiles. It therefore needs at least four factors. Four suffice:
+    \[
+      (1-4u)(1-3u)(1-u-v)(1+u+v).
+    \]
+    The first two factors cover the points with \(u=2,-2\), and the last two cover the four axis points. Every factor is one at the zero profile. Thus the minimum polynomial selector degree is two, while the minimum constant factor count is four. Allowing affine old coefficients makes one row sufficient: choose \((\beta_u,\beta_v)=(u,v)\), producing \(1-u^2-v^2\); its companion images have degree-three proper-ideal NS certificates.
+    This analytic finite example already refutes the naive scalar-frontier replacement by local selector degree at \(T=0,N=1\). It does not determine the general vector-profile frontier. The example was not part of the numerical runs below.
+
+
+###categorical-full-row-cover
+8. A fully covered PHP row bypasses the proper-ideal frontier
+    For the full \(n\)-hole base, let each column have an affine probe \(g_j=\sum_i\lambda_{ij}x_{ij}\). If some fixed pigeon \(a\) has \(\lambda_{aj}\ne0\) in every column, set \(\beta_j=\lambda_{aj}^{-1}x_{aj}\). Then
+    \[
+      1-\sum_j\beta_jg_j
+       =-(\rho_a-1)-\sum_j(x_{aj}^2-x_{aj})
+          -\sum_{\substack{i\ne a\\j}}
+             \frac{\lambda_{ij}}{\lambda_{aj}}x_{aj}x_{ij}.
+    \]
+    This degree-two NS normalization error gives every affine companion a degree-three image, so one coefficient row suffices. Additional old inputs can receive zero coefficients and use the same base-zero error within their original budgets. The construction generalizes the recorded row-difference escape and uses only genuine row, Boolean, and column axioms.
+    Thus even an exact independent-profile frontier does not settle full-PHP elimination. The next step is to replace one fully covered row by a small collection whose uncovered cells occupy too few columns.
+
+
+###categorical-frontier-checks
+9. Exact checks, scope, and process
+    The compiled checker verifies four cases over \(\mathbb F_5\): four three-value column probes in three affine rows; one four-value column probe in one affine row; the native field input in two rows; and the mixed \((1,1,4,4)\) instance in two rows.
+    The first output contains 24 NS certificates and all 266 source models for its three cases. The separate mixed-case run adds thirteen NS certificates and 100 models without rerunning the completed cases. All companion and field images and selector identities are saved with their original-degree budgets. Both builds and all mathematical checks succeeded.
+    The checker deliberately does not expand the large product's squared-minus-itself polynomial: the proved proper-ideal theorem supplies its Booleanity certificate. No expanded Booleanity certificate or full source PC trace is claimed for these runs. Complete old states and separately stored coefficient values still verify every source companion and field equation. Details are in the result record.
+    Remaining scope. The exact theorem is for one scalar probe per independent profile group, with its stated old coordinates. Vector-valued profiles, relations between columns, additional PHP row equations, and proof-specific subsets of companions need their own argument. The actual wide source family remains uncontrolled.
+    Process assessment. The working context was consolidated, and a bounded Frobenius fast path was identified for the polynomial kernel; the cycle also strayed into next-step design, so the existing checkpoint-before-extension rule needs firmer execution rather than another rule.
+    Timing scope. The mathematics window includes forward planning for the kernel change and an initial outline of the next projection.
+    Next step. Verify the proposed column-occupancy freezing projection and use it to eliminate the appropriate ENS packages while retaining a residual weak-PHP lower bound.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval120 min 18.59 s
+Marked reading and review windows0.28 s
+Mathematical reasoning and proof writing95 min 33.44 s
+Computation design and coding9 min 54.90 s
+Preparation and checkpoint work14 min 38.11 s
+Individually measured computation5.63 s
+Individually measured conversion, checks, and local processing6.23 s
+
+Through final snapshot; overlapping time counted once.
+
+
+
+###column-statistic-elimination
+3. Any finite statistic-dependent package disappears at the same degree
+    Working elimination theorem. Consider any finite, level-correct ENS family over \(\mathcal F_n\), with arbitrary positive accuracies. Suppose each input belongs literally to
+    \[
+      \mathbb F_p[\sigma_1,\ldots,\sigma_n,\ R_{\rm earlier}],
+    \]
+    where the coefficient variables come only from earlier levels of this family. There is no restriction on family count, input arity, polynomial degree, or number of levels beyond finiteness. A degree-\(D\) NS or PC refutation of this augmented system yields a refutation of \(\mathcal F_N\) through the same \(D\).
+    Proof. Freeze all incidence variables by \(\Phi\). Process blocks by level. Previous coefficient images are already field constants, and every original \(\sigma_j\) is a literal zero/one constant, so the current block inputs become constants \(c_i\in\mathbb F_p\). If they all vanish, set every own coefficient to zero. Otherwise choose \(c_{i_*}\ne0\), set the first-row coefficient on that input to \(c_{i_*}^{-1}\), and set every other own coefficient to zero.
+    In the first case every companion has zero input; in the second the first factor is zero. Thus every companion becomes the zero polynomial. All own field equations also become zero. The combined map is affine: incidence variables have affine images and all coefficient variables have constant images. Replay the completed proof, replacing only the base images by the preceding degree-one/two NS certificates.
+    For NS, a source base-axiom cofactor of degree at most \(D-\deg f\) multiplies a replacement through at most \(\deg f\), so no term exceeds \(D\). For PC, affine substitution and those same image proofs preserve the ceiling. No witness is charged per block or per level.
+    Taking \(K=p-1\) gives
+    \[
+      \boxed{N=\left\lfloor\frac{n}{p-1}\right\rfloor-1,\qquad
+       \operatorname{NSdeg}(\mathcal F_n+\mathcal E)
+         \ge\operatorname{PCdeg}(\mathcal F_n+\mathcal E)\ge N/2+1.}
+    \]
+    The lower bound uses the audited residual PC theorem; an NS refutation is also a PC refutation at its certificate degree. For fixed \(p\), the residual board has linear size. The degree guarantee therefore applies even to very large statistic-dependent packages, unlike a general family-count-independent elimination claim.
+
+
+###column-freezing-joint-design
+4. Pull back residual designs
+    For \(D<N/2+1\), finite-dimensional separation supplies a normalized residual degree-\(D\) design \(\lambda\). Define
+    \[
+      \Lambda(f)=\lambda(\Phi(f)).
+    \]
+    The map is defined on all source polynomials through degree \(D\), since \(\Phi\) is affine. Every eligible original base multiple maps into the residual NS space at its original budget, and every extension or coefficient-field multiple maps to zero. Hence \(\Lambda\) is an ordinary joint degree-\(D\) design for the augmented source system.
+    Alternatively choose a residual normalized functional annihilating \(\mathcal C_D\). The complete PC replay puts the image of every source degree-\(D\) consequence in residual \(\mathcal C_D\), so its pullback also annihilates the source PC consequence space. No multiplicativity of either functional is assumed.
+
+
+###column-freezing-partial-packages
+5. Partial packages and the current source invariant
+    The base projection can be used even when other blocks remain. If a selected package's inputs depend only on original column sums and its own earlier coefficient variables, assign constants inside that package and leave all other coefficients as variables. Selected companions and fields vanish. Every retained block becomes the genuine ENS block on its actual transformed inputs, with no larger degree or level.
+    This preserves the completed NS or PC degree and any existing current witness ceiling. In particular, the source endpoint's common PC Booleanity ceiling \(2L\) survives; the reduced-input and span pass can be run on the residual board. More generally, a block whose actual transformed inputs have become constants can be removed when it is reached. Merely mentioning a column statistic does not establish the package hypothesis.
+    A useful recognition criterion after input reduction. If a proper domain/column normal form is invariant under arbitrary independent permutations of the pigeon labels within each column, while earlier coefficient variables are held fixed, it is a polynomial in the column sums and those coefficients. Each incidence monomial in that normal form uses at most one cell per column. Invariance makes its coefficient independent of the chosen row in every used column; summing that orbit gives the corresponding product of column sums. This coefficient argument requires no averaging or division by a permutation-group order.
+    Thus the input-replacement theorem can first expose such statistic-dependent inputs at the same proof degree. This is an input-symmetry criterion in the proper normal-form space, not a claim that the full PHP row equations are invariant under independent columnwise relabeling.
+

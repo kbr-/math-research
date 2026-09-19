@@ -1,0 +1,159 @@
+
+POSITION 310 lem:least-degree-Boolean-contraction
+Summary: A functional with least nonzero Boolean degree d has contraction rank at least d; degree-d random products have character bias at most 1/(p*(p-1))
+Assessment: Working diagonal-minor and contraction proof over every prime field; Boolean reduction is essential
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#least-degree-Boolean-contraction
+8561: Let \(M_d\) be the space of multilinear polynomials of degree at most \(d\), with multiplication interpreted modulo \(X_i^2-X_i\). Suppose a linear functional \(\psi:M_d\to\mathbb F_p\) vanishes on \(M_{d-1}\), but not on \(M_d\), where \(d\ge1\). For a homogeneous linear form \(\ell\), define
+8562: \[ (\ell\mathbin{\lrcorner}\psi)(u) =\psi(\operatorname{ml}(\ell u)), \qquad u\in M_{d-1}. \]
+8567: Working contraction bound. The map from \(\ell\) to this functional has rank at least \(d\). A uniform linear form therefore annihilates it with probability at most \(p^{-d}\); every nonzero contraction has least nonzero degree \(d-1\).
+8568: Proof. Choose a \(d\)-set \(A\) with \(\psi(X^A)=c\ne0\). For columns \(\ell=X_j\), \(j\in A\), and tests \(u=X^{A\setminus\{i\}}\), \(i\in A\), the contraction matrix is \(cI_d\). The diagonal product is \(X^A\). Off the diagonal, Boolean reduction gives \(X^{A\setminus\{i\}}\), whose value is zero by the least-degree hypothesis. This proves rank at least \(d\). A contraction vanishes below degree \(d-1\) because multiplication by \(\ell\) increases degree by at most one.
+8575: where \(\chi\) is a nontrivial additive character of \(\mathbb F_p\). Conditional on the first \(d-1\) forms, averaging the last form gives zero for a surviving degree-one functional and one for the zero functional. Iterating the contraction bound gives
+8576: \[ 0\le\beta_d(\psi) \le1-\prod_{j=2}^{d}(1-p^{-j}) \le\sum_{j=2}^{d}p^{-j} \le\frac1{p(p-1)} \le\frac12. \tag{SHALLOW-contraction-bias} \]
+8584: The empty product for \(d=1\) gives zero bias. This proof works over every prime field. Boolean reduction and the least-degree hypothesis are essential, as the raw-power control below illustrates.
+8585: Retained preliminary tensor argument. The least-degree functional also defines a symmetric \(d\)-linear form that vanishes when \(p\) slots are equal, because \(\ell^p=\ell\) in the Boolean quotient. More generally, any nonzero symmetric form with that property has radical codimension at least \(\lceil d/(p-1)\rceil\): in a smaller quotient basis, every basis tuple repeats some vector at least \(p\) times. Contraction preserves the property, so random evaluation is nonzero with probability at least \(\prod_{j=1}^d(1-p^{-\lceil j/(p-1)\rceil})\ge(1-1/p)^p\). The last inequality follows by retaining the first \(p-1\) factors and bounding the remaining product by one minus the sum of its deficits. The diagonal-minor argument strengthens the bound for the Boolean-filtered functionals used here.
+Blocks: 8/10; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+
+POSITION 311 thm:degree-mixture-shallow-generator
+Summary: Mixing degrees 0..t and summing O(t*log(1/epsilon)) random products gives epsilon coefficient bias in the Boolean quotient with depth-three, polynomial-size formulas
+Assessment: Working generator; actual query formulas remain unreduced and have ordinary degree at most t
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#degree-mixture-shallow-generator
+8589: For every nonzero \(\psi:M_t\to\mathbb F_p\), let \(d\) be its least nonzero degree. The \(J=d\) component has character average at most \(1/2\), by (SHALLOW-contraction-bias), or zero when \(d=0\). Every other component has character average between zero and one: conditional averaging of the last linear form, or of the scalar when \(J=0\), has precisely those values. Hence
+8590: \[ 0\le\mathbb E\chi(\psi(\operatorname{ml}(P_J))) \le1-\frac1{2(t+1)}. \]
+8599: The unreduced expression for \(f\) is a sum of products of linear forms. It has ordinary degree at most \(t\), arithmetic depth at most three, and formula size \(O_p(vtL)\). Scalar coefficients can be represented by repeated leaves in addition gates, costing only a fixed-\(p\) factor. No shared dynamic program, extension field, or explicit multilinear expansion is required.
+8600: The bias statement concerns the Boolean reduction, not the independent coefficients of unreduced powers. A degree-\(D\) Boolean design with \(D\ge2t\) sees the same values and pairings on the original formulas and their reductions, by the degree-preserving Boolean reduction argument . Thus this is exactly the bias property needed by the covariance probe.
+Blocks: 4/7; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE equation_reference ['lem:least-degree-Boolean-contraction'] ['e query polynomial. \n     For every nonzero \\(\\psi:M_t\\to\\mathbb F_p\\), let \\(d\\) be its least nonzero degree. The \\(J=d\\) component has character average at most \\(1/2\\), by (SHALLOW-contraction-bias), or zero when \\(d=0\\). Every other component has character average between zero and one: conditional averaging of the last linear form, or of the scalar when \\(J=0\\), has precisel']
+CANDIDATE notebook_link ['lem:small-bias-covariance-probe'] ['The bias statement concerns the Boolean reduction, not the independent coefficients of unreduced powers. A degree-\\(D\\) Boolean design with \\(D\\ge2t\\) sees the same values and pairings on the original formulas and their reductions, by the degree-preserving Boolean reduction argument . Thus this is exactly the bias property needed by the covariance probe.']
+
+POSITION 312 thm:depth-four-ENS-query-obstruction
+Summary: Depth-four query formulas of size O(n^2 log^3 n) defeat the sufficient ENS probability rate at the stated degree and height, including the refined generic source budgets
+Assessment: Working obstruction over every prime field; generic query route parked, not a Frege upper or lower bound
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#shallow-ENS-query-obstruction
+8623: Research verdict. Degree, query height, polynomial description size, and a generic fixed arithmetic-depth bound at least four do not rescue the probability route. We will not keep weakening such bounds without a concrete proof-specific mechanism. The source's exact companion/cofactor relations could matter, but no usable guarantee based on them is established. These obstructions neither construct a short Frege proof nor imply the desired lower bound.
+Blocks: 1/9; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE notebook_link ['cor:circuit-restricted-source-query-criterion', 'thm:succinct-ENS-rate-obstruction'] ['Use the parameters of the compact obstruction : \\(q=h+\\lceil\\log_2S\\rceil-1\\), \\(t=h\\) when \\(D\\ge2h\\), or \\(t=\\lceil h/2\\rceil\\) over \\(\\mathbb F_2\\) when \\(D\\ge h+1\\), and']
+
+POSITION 313 ex:degree-mixture-exhaustive-checks
+Summary: Three F2/F3 fixtures verify all 9001 nonzero coefficient tests, with fixed-degree and non-Boolean raw-power controls
+Assessment: Complete exact distributions and value counts; not PHP design sampling
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#degree-mixture-finite-checks
+8635: All 9001 tests satisfy both the mixture bound and the stronger least-degree bound \(1/[p(p-1)]\). Nonzero field values occur equally often in each tested component, so all character averages are computed with exact integers. Fixing the selected degree to a positive value leaves a constant-coefficient test of bias one. Separately, the raw coefficient of \(X_1^3\), before Boolean reduction, gives character bias \(3/4\) over \(\mathbb F_2\) and \(5/9\) over \(\mathbb F_3\), violating the least-degree bound. These controls distinguish the actual hypotheses from stronger false statements.
+8636: Complete polynomial frequencies, test-value counts, controls, encodings, reproduction commands, and provenance are retained in the evidence record . The source identities and universal sampler proofs are analytic; no PHP moment suite was rerun. Compilation and execution succeeded. The marked reading and coding windows include the proof-development overlaps documented with the evidence.
+8637: Next step. Return to direct elimination of a polynomial-size, one-level affine-input ENS family over \(\mathbb F_2\), keeping the actual NS cofactor budgets. This contains every original level-one binary source block: with no earlier OR approximation, MOD2 and negation preserve affinity. Later blocks are not renumbered after pruning; their transformed inputs need not be affine. Test whether a simultaneous transfer can depend on \(\log M\) rather than charging all \(M\) blocks, against the existing assignment-tree and resistant-affine controls. Stop at a proved transfer or a concrete obstruction at that proposed scale.
+8638: Process assessment. The audit improved the real source representation and then falsified the corresponding generic query premise, so parking that route is warranted; the existing obligation-first workflow needs no additional rule.
+8639: <caption>Measured timing</caption> Measured category Elapsed Total instrumented interval 146 min 51.97 s Marked reading and review windows 3 min 20.38 s Mathematical reasoning and proof writing 40 min 43.72 s Computation design and coding 6 min 19.93 s Preparation and checkpoint work 96 min 24.32 s Dedicated web and download-attempt windows 1.88 s Individually measured computation 0.12 s Individually measured conversion, checks, and local processing 1.61 s Preparation includes a verified 1 h 32 min 6.70 s runtime interruption .
+Blocks: 5/6; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+
+POSITION 314 thm:functional-PHP-stable-filtration
+Summary: Binary functional-PHP designs extend from every k to B when N>=2B-1; hence C_B=I_B and C_B intersect P_<=k equals I_k
+Assessment: Working consequence of the audited chessboard connectivity and matching-moment argument; no augmented-system equality
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#functional-PHP-stable-filtration
+8663: Write \(\mathcal P_{\le k}\) for ordinary polynomials of degree at most \(k\), and use the functional base \(\mathcal F_N^{\rm fun}\) over \(\mathbb F_2\). Let \(\mathcal I_k\) be its degree-\(k\) NS consequence space and \(\mathcal C_k\) its PC consequence space. The following strengthens the recorded quadratic extension theorem ; the topological input is the same, already audited BLVZ connectivity theorem .
+8664: Working theorem. If \(B\ge1\) and \(N\ge2B-1\), every normalized degree-\(k\) design extends to degree \(B\), for every \(0\le k\le B\). Consequently
+8665: \[ \mathcal I_B\cap\mathcal P_{\le k}=\mathcal I_k,\qquad \mathcal C_B=\mathcal I_B,\qquad \mathcal C_B\cap\mathcal P_{\le k}=\mathcal I_k. \tag{AFF-stability} \]
+8671: Proof of extension. Boolean and same-row/column exclusions give the matching-monomial normal form. Its complete remaining design equations are the recorded matching marginals :
+8672: \[ z_\varnothing=1,\qquad \sum_{j\notin{\rm col}(T)}z_{T\cup\{(i,j)\}}=z_T \quad(i\notin{\rm row}(T)). \]
+8677: If only degree zero is prescribed, choose first moments summing to one in every row. Suppose moments through degree \(s-1\) have been assigned, with \(2\le s\le B\). On each specified set of \(s\) pigeon rows, their \((s-1)\)-matching moments form a reduced \((s-2)\)-cycle in \(\Delta_{s,N}\): for \(s=2\) the sum of the two row totals is \(1+1=0\); for \(s\ge3\), each boundary coefficient is the sum of two equal lower marginal sums. Since \(N\ge2s-1\), BLVZ gives \(\widetilde H_{s-2}(\Delta_{s,N};\mathbb F_2)=0\). A filling supplies all new \(s\)-matching moments and exactly their required marginals. Different \(s\)-row sets have disjoint new top moments and common, already fixed lower data. Fill them independently and iterate. This argument begins at any prescribed degree, not only degree two.
+8679: Every NS consequence is a PC consequence within the same ceiling. For the reverse inclusion, induct on a degree-\(B\) PC derivation. Linear combinations preserve \(\mathcal I_B\). At a legal multiplication step \(Xf\), the preceding nonzero \(f\) has degree at most \(B-1\); if \(f\in\mathcal I_B\), the just-proved identity puts it in \(\mathcal I_{B-1}\), so \(Xf\in\mathcal I_B\). Zero lines cause no difficulty. Thus \(\mathcal C_B=\mathcal I_B\), proving all three assertions.
+8680: This is an explicit exception to the general NS/PC distinction, with a field, encoding, and degree range. It does not assert equality on an augmented ENS system. The archived four-hole degree-three failure of full quadratic extension lies outside \(N\ge2B-1\) and remains unchanged.
+Blocks: 8/9; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE notebook_link ['thm:chessboard-quadratic-design-extension'] ['Write \\(\\mathcal P_{\\le k}\\) for ordinary polynomials of degree at most \\(k\\), and use the functional base \\(\\mathcal F_N^{\\rm fun}\\) over \\(\\mathbb F_2\\). Let \\(\\mathcal I_k\\) be its degree-\\(k\\) NS consequence space and \\(\\mathcal C_k\\) its PC consequence space. The following strengthens the recorded quadratic extension theorem ; the topological input is the same, already audited BLVZ connectivity theorem .']
+CANDIDATE notebook_link ['thm:chessboard-quadratic-design-extension'] ['Write \\(\\mathcal P_{\\le k}\\) for ordinary polynomials of degree at most \\(k\\), and use the functional base \\(\\mathcal F_N^{\\rm fun}\\) over \\(\\mathbb F_2\\). Let \\(\\mathcal I_k\\) be its degree-\\(k\\) NS consequence space and \\(\\mathcal C_k\\) its PC consequence space. The following strengthens the recorded quadratic extension theorem ; the topological input is the same, already audited BLVZ connectivity theorem .']
+CANDIDATE notebook_link ['prop:matching-moment-homology-extension'] ['Proof of extension. Boolean and same-row/column exclusions give the matching-monomial normal form. Its complete remaining design equations are the recorded matching marginals :']
+CANDIDATE notebook_link ['ex:functional-NS-quadratic-marginals'] ['This is an explicit exception to the general NS/PC distinction, with a field, encoding, and degree range. It does not assert equality on an augmented ENS system. The archived four-hole degree-three failure of full quadratic extension lies outside \\(N\\ge2B-1\\) and remains unchanged.']
+
+POSITION 315 lem:affine-common-vanishing-learning
+Summary: A one-level affine ENS refutation learns every degree-k polynomial vanishing on all block-zero spaces from the old base through max(1,k-1)*D+k
+Assessment: Working simultaneous weighted specialization over F2; PC and NS versions, old Boolean axioms, D>=2h+1
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#affine-common-vanishing-learning
+8683: Let \(\mathcal F\subseteq\mathbb F_2[X_1,\ldots,X_v]\) contain the old Boolean equations. Adjoin \(M\) one-level affine-input ENS blocks, with common \(h\ge1\), complete companions, and fresh Boolean coefficient variables. Inputs use old \(X\) only. A block whose affine span contains one can be removed by a constant first-row specialization; a zero block can be discarded. For each remaining block \(b\), put
+8684: \[ Z_b=\{x\in\mathbb F_2^v:g_{b,i}(x)=0\text{ for every }i\}. \]
+8688: Working learning lemma. Suppose the augmented system has a degree-\(D\) PC refutation, with \(D\ge2h+1\). If a multilinear polynomial \(f\) of degree at most \(k\ge1\) vanishes on every \(Z_b\), then
+8689: \[ f\in\mathcal C_{B}(\mathcal F),\qquad T=\max\{1,k-1\},\qquad B=TD+k. \tag{AFF-learning} \]
+8701: To see this, choose a basis of the block's inputs and complete it to an invertible affine coordinate system \(u_1,\ldots,u_v\), with \(Z_b\) given by \(u_1=\cdots=u_{r_b}=0\). Affine substitution and Boolean reduction preserve the degree ceiling. The reduced image of \(f\) contains no monomial using only the remaining coordinates, since its restriction there is zero on their entire Boolean cube. Factor one of \(u_1,\ldots,u_{r_b}\) from each monomial, obtaining coefficients of degree at most \(k-1\), and substitute back. Over \(\mathbb F_2\), \(u_j^2-u_j\) is a constant linear combination of the old Boolean equations, so the discarded Boolean reductions have certificates through \(k\). Express basis inputs as constant combinations of the displayed tuple to obtain (AFF-membership).
+8711: For an NS certificate, a companion cofactor specializes to degree at most \(T(D-e)\), where its original degree is \(e=2h+1\ge3\). Inserting (AFF-weighted-companion) costs at most \(T(D-e)+2k+1\le TD+k\), because \(Te\ge k+1\). Field summands cost at most \(T(D-2)+2T+k=B\); an old degree-\(d\) axiom costs at most \(T(D-d)+d+k\le B\). This proves the NS conclusion without flattening a PC derivation. Original activity and cofactor budgets have not been enlarged after substitution.
+Blocks: 6/14; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+
+POSITION 316 thm:affine-family-dimension-exclusion
+Summary: A common-kernel dimension exceeding the functional-PHP consequence dimension excludes augmented PC refutations whenever N>=2*(max(1,k-1)*D+k)-1
+Assessment: Working finite-parameter criterion over F2; explicit matching/row-relation bound and weak-base strengthening
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#affine-family-dimension-exclusion
+8721: Working exclusion theorem. For the consistent, nonzero affine blocks above, there is no degree-\(D\) augmented PC refutation, and hence no such NS refutation, if some integer \(k\ge1\) satisfies
+8722: \[ B=\max\{1,k-1\}D+k,\qquad N\ge2B-1,\qquad \boxed{\ \sum_{b=1}^M b_k(v-r_b)<u_k-t_k.\ } \tag{AFF-dimension} \]
+8727: The same exclusion follows for the weak base \(\mathcal F_N\) with these blocks: any weak-base refutation would still be a refutation after adjoining the functional axioms. This is the explicit auxiliary strengthening , not a derivation of those extra axioms from the weak base.
+8732: Before imposing row equations, the proper Boolean/exclusion quotient has exactly \(u_k\) matching monomials. Their independence follows by evaluation on partial-matchings: the inclusion matrix is triangular when ordered by matching size. A row equation multiplied by a \(j\)-matching is zero if that row is already used; otherwise it is one of \((N+1-j)m_j\) possible marginal equations. These span all remaining NS relations through degree \(k\). Some may be dependent, so
+8733: \[ q_k:=\dim(\mathcal P_{\le k}/\mathcal I_k)\ge u_k-t_k. \]
+8736: By (AFF-stability), the subspace \(\mathcal C_B\cap\mathcal M_k\) has dimension \(b_k(v)-q_k\). By (AFF-learning), an augmented refutation would put the entire \(K_k\) inside this subspace. The strict inequality in (AFF-dimension) makes \(\dim K_k>b_k(v)-q_k\), a contradiction. No explicit construction or efficient enumeration of the separating polynomial is needed for this degree lower bound.
+Blocks: 6/10; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE equation_reference ['thm:functional-PHP-stable-filtration'] ['ining NS relations through degree \\(k\\). Some may be dependent, so \n     \\[\n      q_k:=\\dim(\\mathcal P_{\\le k}/\\mathcal I_k)\\ge u_k-t_k.\n    \\] \n     By (AFF-stability), the subspace \\(\\mathcal C_B\\cap\\mathcal M_k\\) has dimension \\(b_k(v)-q_k\\). By (AFF-learning), an augmented refutation would put the entire \\(K_k\\) inside this subspace. The stri']
+CANDIDATE equation_reference ['lem:affine-common-vanishing-learning'] ['      q_k:=\\dim(\\mathcal P_{\\le k}/\\mathcal I_k)\\ge u_k-t_k.\n    \\] \n     By (AFF-stability), the subspace \\(\\mathcal C_B\\cap\\mathcal M_k\\) has dimension \\(b_k(v)-q_k\\). By (AFF-learning), an augmented refutation would put the entire \\(K_k\\) inside this subspace. The strict inequality in (AFF-dimension) makes \\(\\dim K_k&gt;b_k(v)-q_k\\), a contradiction. No explicit']
+CANDIDATE notebook_link ['cor:functional-auxiliary-PC-bridge'] ['The same exclusion follows for the weak base \\(\\mathcal F_N\\) with these blocks: any weak-base refutation would still be a refutation after adjoining the functional axioms. This is the explicit auxiliary strengthening , not a derivation of those extra axioms from the weak base.']
+
+POSITION 317 cor:high-rank-affine-family-coverage
+Summary: Polynomially many affine blocks of rank at least rho*N*(N+1) admit no polylog-degree one-level refutation on a polynomial residual; covers the earlier resistant family
+Assessment: Working family-wide exclusion with k=O_rho(log(M+1)); intermediate ranks and multilevel source coverage open
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#high-rank-affine-family-coverage
+8739: Asymptotic consequence. Fix \(0<\rho<1\). Suppose \(M\le n^a\), \(N\ge n^\varepsilon\), \(D=\operatorname{polylog}n\), and every remaining block has \(r_b\ge\rho v\). Then, for sufficiently large \(n\), the criterion holds with
+8740: \[ k=\left\lceil\frac{\log(8M)}{-\log(1-\rho)}\right\rceil =O_\rho(\log(M+1)),\qquad B=O_\rho(D\log(M+1)). \]
+8762: The former resistant control is covered. In the recorded residual-rank construction , take \(M=n\), \(N=\lfloor\sqrt n/4\rfloor\), and \(r=\lfloor(N^2-1)/4\rfloor\). After every specified matching restriction, the linear parts retain rank \(r\) and the affine input spans do not contain one. Thus \(r/v\to1/4\), and \(\rho=1/5\) applies for large \(n\). At any polylogarithmic \(D\ge2h+1\), (AFF-dimension) excludes a refutation of the restricted one-level system. Restriction preserves any original proof's degree, so the original family is excluded as well.
+8763: The earlier rank/core calculation still correctly says that its own optimized ceiling is \(\Omega(n)\). The new argument bypasses that criterion and resolves this particular control positively. It establishes neither that these tuples occur essentially in a small PHP proof nor that all source tuples have comparable rank.
+Blocks: 4/11; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE equation_reference ['thm:affine-family-dimension-exclusion'] ['p>Our choice of \\(k\\) makes the sum of these ratios at most \\(1/4\\). For sufficiently large \\(n\\), the quotient lower bound is at least \\(b_k(v)/2\\), and \\(N\\ge2B-1\\). This proves (AFF-dimension). The argument allows arbitrary overlaps among the affine zero spaces. \n      The former resistant control is covered.  In the <a href="#affine-residual-robust-', 'he linear parts retain rank \\(r\\) and the affine input spans do not contain one. Thus \\(r/v\\to1/4\\), and \\(\\rho=1/5\\) applies for large \\(n\\). At any polylogarithmic \\(D\\ge2h+1\\), (AFF-dimension) excludes a refutation of the restricted one-level system. Restriction preserves any original proof\'s degree, so the original family is excluded as well. \n     The <a href="#a']
+CANDIDATE notebook_link ['thm:uniform-residual-affine-rank-families'] ["The former resistant control is covered. In the recorded residual-rank construction , take \\(M=n\\), \\(N=\\lfloor\\sqrt n/4\\rfloor\\), and \\(r=\\lfloor(N^2-1)/4\\rfloor\\). After every specified matching restriction, the linear parts retain rank \\(r\\) and the affine input spans do not contain one. Thus \\(r/v\\to1/4\\), and \\(\\rho=1/5\\) applies for large \\(n\\). At any polylogarithmic \\(D\\ge2h+1\\), (AFF-dimension) excludes a refutation of the restricted one-level system. Restriction preserves any original proof's degree, so the original family is excluded as well."]
+CANDIDATE notebook_link ['cor:affine-square-root-core-obstruction'] ['The earlier rank/core calculation still correctly says that its own optimized ceiling is \\(\\Omega(n)\\). The new argument bypasses that criterion and resolves this particular control positively. It establishes neither that these tuples occur essentially in a small PHP proof nor that all source tuples have comparable rank.']
+
+POSITION 318 ex:affine-vanishing-parameter-checks
+Summary: Twelve exact integer parameter cases include six satisfying both sufficient inequalities, with separate dimension and board-size failure controls
+Assessment: Complete binomial and matching counts; no large affine matrices or proof certificates constructed
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#affine-vanishing-parameter-checks
+8766: The new C++ checker uses the existing Boost multiprecision integer library to retain every binomial term, matching count, row-relation count, dimension margin, and degree check for twelve parameter cases. It constructs no huge input matrices and uses no floating-point arithmetic.
+8776: For the scaled cases, \(k\) is the smallest integer satisfying \(8M\,4^k\le5^k\). At \(q=42\), the exact values are \(k=140\), \(B=245336\), and \(N=524288\). These verify the sufficient numerical criterion for any family with the stated ranks. They do not instantiate the resistant matrices or separately check its source existence union bound; that construction has its own asymptotic proof. A failed sufficient inequality is not an augmented refutation.
+8777: Complete outputs, commands, parameter encodings, and provenance are in the evidence record . The analytic argument proves the universal statements; the arithmetic checks test the parameter application and distinct failure conditions. Compilation and execution succeeded, with no installations.
+8778: What remains. Full affine coverage is still open. The high-rank theorem needs a positive fraction of the \(N(N+1)\) old-variable directions. Low-rank normalizers cover a different range, while intermediate ranks need not fit either bound. No rank dichotomy has been proved for the actual source family, and this proof uses one-level inputs over \(\mathbb F_2\). It does not cover transformed higher-level inputs or odd-prime MOD inputs.
+8779: Next step. Test the intermediate-rank range directly: determine whether actual affine source tuples admit a reduction to the covered classes, or exhibit a precise obstruction to that reduction. Use the completed high-rank theorem as a tool and retain the actual board and degree costs. Do not sharpen its already sufficient constants while that application remains unproved.
+8780: Process assessment. The first route obligation gains genuine coverage of the previously resistant class, and the index prevented the initial window/pebbling review from becoming rediscovery; keeping that review brief needs no additional framework rule.
+8781: <caption>Measured timing</caption> Measured category Elapsed Total instrumented interval 82 min 7.18 s Marked reading and review windows 1 min 8.40 s Mathematical reasoning and proof writing 67 min 42.29 s Computation design and coding 1 min 58.80 s Preparation and checkpoint work 11 min 14.51 s Individually measured computation 0.18 s Individually measured conversion, checks, and local processing 3.00 s Preparation includes forward mathematical planning; intervals end at the final snapshot.
+Blocks: 7/7; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+
+POSITION 319 thm:multiscale-affine-rank-family
+Summary: A polynomial-size dyadic inventory leaves n pairwise-disjoint affine spaces of rank N/2<r<=N modulo rows on every matching residual N>=4*ceil(log2(n+1))
+Assessment: Working refinement of the residual-rank union bound, uniform in the chosen residual size; coarse source syntax only
+Orientation only: selected excerpts do not establish proof readiness.
+Source: https://kbr.is-a.dev/math-research/#multiscale-affine-rank-family
+8804: Working refinement of the residual-rank construction . The coefficients can be chosen so that, for every \(4L\le N\le n\), every matching restriction retaining an \((N+1)\times N\) board, and
+8805: \[ r_N=2^{\lfloor\log_2N\rfloor},\qquad N/2<r_N\le N, \]
+8808: the class of rank \(r_N\) has all its input ranks preserved. Any two of its spaces have zero intersection modulo the residual row-equation span \(H_N\), and their sum with \(H_N\) does not contain one. The entire inventory has \(O(n\log n)\) blocks, fewer than \(2n^2\) input forms, and \(O(n^4)\) binary coefficients.
+8817: For the inequality, use \(L\ge2\), \(L+1\le3L/2\), \(N\ge4L\), and \(3L+1\le2L^2\le N^2/8\). The full failure probability is therefore at most \(n\,2^{-2L^2}<2^{L-2L^2}<1\). One choice satisfies every required rank condition simultaneously.
+8818: A matching changes constant terms but leaves these surviving linear parts fixed. Full rank of the pair together with the row-sum coefficient vectors therefore implies the stated affine-span and nonconstant-one properties, for every matching on each subboard. The count does not need to enumerate matching bijections. Summing the dyadic ranks gives \(\sum_{2^j\le n}2^j<2n\), proving the description bounds.
+8819: Give all tuples common accuracy \(h\ge L\), with \(h=O(\log n)\) if logarithmic accuracy is desired. They are polynomial-size MOD2-compatible inputs with original companion degree \(2h+1\), and their Booleanity identities are sharply degree two. This verifies the coarse input syntax and counting conditions. It does not construct a Frege proof using them essentially.
+Blocks: 6/11; 0 additional signal blocks omitted.
+Selected retrieval evidence, not a complete proof audit. Original assessment is preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.
+
+CANDIDATE notebook_link ['thm:uniform-residual-affine-rank-families'] ['Working refinement of the residual-rank construction . The coefficients can be chosen so that, for every \\(4L\\le N\\le n\\), every matching restriction retaining an \\((N+1)\\times N\\) board, and']

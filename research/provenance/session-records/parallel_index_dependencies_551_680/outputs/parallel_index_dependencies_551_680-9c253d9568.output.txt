@@ -1,0 +1,96 @@
+
+### 639 third-party:chessboard-star-cover
+lean-chessboard-star-cover  Statement and proof 
+ For a downward-closed finite complex \(K\) containing the empty face and a vertex \(v\), the closed star consists of faces \(S\) for which \(S\cup \{v\}\) is a face of \(K\). It is a subcomplex: \(S\subseteq S\cup \{v\}\), and adjoining \(v\) preserves inclusions. It is a cone with apex \(v\), because adjoining \(v\) twice gives the same face. These facts include the empty face. 
+ On an \((a+1)\)-by-\(b\) chessboard with \(a+1\le b\), let \(L_j\) be the closed star of \((0,j)\). Every nonattacking matching \(M\) is in a star. If \(M\) contains \((0,j)\), then adjoining that cell changes nothing. Otherwise its row projection avoids 0. Injectivity of row projection gives \(|M|\le a\), while column injectivity gives exactly \(|M|\) occupied columns. Since \(a\lt b\), choose an unused column \(j\). Adjoining \((0,j)\) creates neither a repeated row nor a repeated column, so \(M\) belongs to \(L_j\). Thus the first-row stars cover the whole complex. This also proves the one-row case; the later nerve description requires at least two rows. 
+ The shared cover interface records intersections by requiring membership in every selected complex. Its nerve contains an index face precisely when it is empty or the corresponding intersection has a vertex. An intersection with only the empty face is therefore excluded as a nonempty nerve face. The empty index face is retained separately. Covering asserts that every face of \(K\) belongs to some member; subcomplex inclusion remains a separate hypothesis, preventing an implicit strengthening of the later cover lemma. 
+  Provenance and scope.  The star argument is the classical argument expanded in the whitepaper topology appendix, attributable to the chessboard-bound proof rather than claimed as new. The generic cover interface is a project formulation. The cone closure is checked directly; homological cone acyclicity is supplied separately by H04, and the nerve's vanishing by H05 at final assembly. H09–H10 remain this worker's next obligations. The main Frege goal, remaining route, working context and gap list were reviewed and are unchanged. 
+  Evidence.  Lean files  ChessboardStarCover.lean  and  FiniteComplexCover.lean ;  scope and verification evidence . Timing began after initial task orientation and reading the computation policy. 
+  Process assessment.  Agreeing on the empty-face and vertex-nonempty nerve conventions before parallel proof development makes the later interfaces composable; no new framework rule is needed. 
+ 
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   10 min 4.67 s   
+  Marked reading and review windows  26.91 s  
+  Mathematical reasoning and proof writing  42.55 s  
+  Formal proof design and coding  51.87 s  
+  Preparation and checkpoint work  28.35 s  
+  Dedicated web and download-attempt windows  3 min 29.61 s  
+  Individually measured formal verification  3 min 52.42 s  
+  Overlapping tool categories, counted once  12.96 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2. 
+ 
+
+
+### 640 def:finite-complex-cover
+lean-chessboard-star-cover  Statement and proof 
+ For a downward-closed finite complex \(K\) containing the empty face and a vertex \(v\), the closed star consists of faces \(S\) for which \(S\cup \{v\}\) is a face of \(K\). It is a subcomplex: \(S\subseteq S\cup \{v\}\), and adjoining \(v\) preserves inclusions. It is a cone with apex \(v\), because adjoining \(v\) twice gives the same face. These facts include the empty face. 
+ On an \((a+1)\)-by-\(b\) chessboard with \(a+1\le b\), let \(L_j\) be the closed star of \((0,j)\). Every nonattacking matching \(M\) is in a star. If \(M\) contains \((0,j)\), then adjoining that cell changes nothing. Otherwise its row projection avoids 0. Injectivity of row projection gives \(|M|\le a\), while column injectivity gives exactly \(|M|\) occupied columns. Since \(a\lt b\), choose an unused column \(j\). Adjoining \((0,j)\) creates neither a repeated row nor a repeated column, so \(M\) belongs to \(L_j\). Thus the first-row stars cover the whole complex. This also proves the one-row case; the later nerve description requires at least two rows. 
+ The shared cover interface records intersections by requiring membership in every selected complex. Its nerve contains an index face precisely when it is empty or the corresponding intersection has a vertex. An intersection with only the empty face is therefore excluded as a nonempty nerve face. The empty index face is retained separately. Covering asserts that every face of \(K\) belongs to some member; subcomplex inclusion remains a separate hypothesis, preventing an implicit strengthening of the later cover lemma. 
+  Provenance and scope.  The star argument is the classical argument expanded in the whitepaper topology appendix, attributable to the chessboard-bound proof rather than claimed as new. The generic cover interface is a project formulation. The cone closure is checked directly; homological cone acyclicity is supplied separately by H04, and the nerve's vanishing by H05 at final assembly. H09–H10 remain this worker's next obligations. The main Frege goal, remaining route, working context and gap list were reviewed and are unchanged. 
+  Evidence.  Lean files  ChessboardStarCover.lean  and  FiniteComplexCover.lean ;  scope and verification evidence . Timing began after initial task orientation and reading the computation policy. 
+  Process assessment.  Agreeing on the empty-face and vertex-nonempty nerve conventions before parallel proof development makes the later interfaces composable; no new framework rule is needed. 
+ 
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   10 min 4.67 s   
+  Marked reading and review windows  26.91 s  
+  Mathematical reasoning and proof writing  42.55 s  
+  Formal proof design and coding  51.87 s  
+  Preparation and checkpoint work  28.35 s  
+  Dedicated web and download-attempt windows  3 min 29.61 s  
+  Individually measured formal verification  3 min 52.42 s  
+  Overlapping tool categories, counted once  12.96 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2. 
+ 
+
+
+### 641 third-party:simplex-boundary-acyclicity
+lean-simplex-boundary-acyclicity  Statement and full proof 
+   Let \(T\) be a nonempty finite set of \(b\) vertices. The full simplex consists of all subsets of \(T\); its boundary consists of all proper subsets of \(T\). For every cell count \(k\) with \(k+1\lt b\), every supported \(k\)-cell cycle on this boundary admits a supported \((k+1)\)-cell filler on the same boundary. Equivalently, the boundary is  AcyclicThrough n  whenever \(n\lt b\). In reduced simplicial degrees this gives vanishing from \(-1\) through \(b-3\), and does not assert vanishing at the top degree \(b-2\). 
+    Proof.  Choose \(v\in T\). The full simplex is a cone at \(v\) because inserting \(v\) into any subset of \(T\) preserves containment in \(T\). Regard the given boundary cycle \(c\) as a cycle on this full simplex. The  explicit H04 cone contraction  supplies a full-simplex filler \(h(c)\) supported on \((k+1)\)-cell subsets of \(T\). As \(k+1\lt b\), every such subset is proper, so the filler is supported on the boundary itself. Its boundary remains \(c\), proving the assertion. For \(k\lt n\lt b\) we have \(k+1\le n\lt b\), establishing the acyclicity corollary. When \(b=1\) the allowed range is empty; the boundary then contains only the empty face. When \(b=2\) only \(k=0\) is covered, so no false connectivity claim is made about the two-vertex boundary. 
+    Verification and scope.   SimplexBoundary.lean  preserves the exact strict bound and includes the simplex cone witness. The  full verification report  records the theorem types and dependency axioms. This is the standard lower-degree simplex-boundary vanishing used by the paper's star-cover argument, not a new result. H06–H07 and the final chessboard theorem remain open formalization obligations. The main Frege overview, living mathematical context, and formalization-gap list were reviewed and remain unchanged. 
+    Process assessment.  The shared cell-count convention made the top-degree exclusion and the \(b=1,2\) boundary cases immediate; a single Lean coercion repair was needed, and no new framework guidance is warranted. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   2 min 38.29 s   
+  Mathematical reasoning and proof writing  40.24 s  
+  Formal proof design and coding  1 min 9.46 s  
+  Preparation and checkpoint work  4.22 s  
+  Individually measured formal verification  44.38 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1. 
+ 
+
+
+### 642 lem:finite-cover-double-complex
+lean-finite-cover-double-complex  Statements and full human-readable proof 
+   Let \(K\) and \(L_i\) be finite augmented complexes on a finite vertex type \(V\), with finite cover-index type \(I\). Use the  shared intersection, nerve, and cover definitions . A double coefficient \(d(J,S)\) has bidegree \((a,b)\) when it is zero unless \(|J|=a\), \(|S|=b\), \(S\in K\), \(S\in L_i\) for all \(i\in J\), and \(J\) belongs to the nerve. Nerve membership means \(J\) is empty or its intersection has a vertex. Thus the \(a=0\) edge consists of \(K\) chains, while the \(b=0\) edge consists of nerve chains. These augmented coordinates retain precisely the nonempty-intersection convention needed later; an empty-face-only intersection contributes no nonempty nerve face. 
+   Define \(H\) by the insertion boundary in \(J\) and \(V\) by the insertion boundary in \(S\). Both are linear; \(H\) lowers \(a\) by one and \(V\) lowers \(b\) by one, with zero outgoing maps when their count is zero. Each squares to zero by  H02 . They commute: at \((J,S)\), both HVd and VHd sum \(d(J\cup \{i\},S\cup \{v\})\) over \(i\notin J\) and \(v\notin S\); interchange the two finite sums. Hence \((H+V)^2=H^2+HV+VH+V^2=0\) over \(\mathbb F_2\). This is a finite coefficient model of the total differential; the later direct chain chase needs no spectral-sequence convergence theorem. 
+    Support proof.  Removing a cover index preserves common-face membership and nerve membership by downward closure of the nerve. Removing a vertex preserves membership in \(K\) and every \(L_i\), while \(J\)'s nerve membership remains unchanged. Each insertion term therefore can be nonzero only in the claimed lower bidegree. At count zero an insertion would have positive count, so every term vanishes. Support is closed under addition coordinatewise. These facts justify the differential identities on supported spaces, rather than merely on ambient functions. 
+    Horizontal exactness.  Suppose the \(L_i\) cover \(K\), \(b\gt 0\), \(d\) has bidegree \((a,b)\), and \(Hd=0\). For every \(b\)-cell face \(S\) of \(K\) choose \(i(S)\) with \(S\in L_{i(S)}\). Define \(u(J,S)\) by coning the index coefficient \(J\mapsto d(J,S)\) at \(i(S)\), using  H04's ambient cone operator ; define it as zero for other \(S\). Pointwise in \(S\) the contraction identity and \(Hd=0\) give \(Hu=d\). If \(u(J,S)\) is nonzero, \(i(S)\in J\) and \(d(J\setminus \{i(S)\},S)\) is nonzero. Hence \(|J|=a+1\), \(|S|=b\), \(S\in K\), and \(S\) lies in every \(L_i\) for \(i\in J\): the newly added index is covered by its choice. Since \(b\gt 0\), choose \(v\in S\); downward closure places \(\{v\}\) in every such \(L_i\). Thus \(J\) really belongs to the vertex-nonempty nerve. Consequently \(u\) has bidegree \((a+1,b)\), proving exactness of each positive-vertex-degree augmented horizontal row. 
+    Scope and evidence.   CoverDoubleComplex.lean  contains the explicit supported interfaces and all identities; the  full verification report  preserves types and axiom reports. The \(b=0\) row has not been declared exact automatically: it is precisely the nerve and requires H07's nerve hypothesis. No acyclicity of \(K\) or intersection is assumed in H06. These are project-formulated interfaces adapting standard finite double-complex algebra, with no novelty assertion. The main Frege overview and formalization-gap list were reviewed without mathematical change. 
+    Process assessment.  Keeping the augmented nerve edge explicit prevents accidentally treating empty-face-only intersections as nonempty; remaining retries were Lean universe instantiation and declaration syntax, not mathematical corrections. Preliminary chain-chase planning during integration preceded this cycle's instrumentation. 
+   
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   7 min 1.39 s   
+  Mathematical reasoning and proof writing  1 min 40.36 s  
+  Formal proof design and coding  4 min 29.03 s  
+  Preparation and checkpoint work  2.87 s  
+  Individually measured formal verification  49.13 s  
+  
+ Through final snapshot; overlapping time counted once. Failed/timed-out commands: 6. 
+ 
+

@@ -1,0 +1,232 @@
+
+###filtered-profile-elimination
+1. An exact integer criterion
+    For each column \(j\), choose a class \(C_j\) of its local pigeon partition. It need not contain a pigeon common to every chosen class. Define
+    \[
+      u=\min_i|\{j:i\in C_j\}|,\qquad
+      v=\min_j|C_j|,\qquad
+      d=\max_i|\{j:i\in C_j\}|,\qquad
+      t=\min\{u,v-1\}.
+    \]
+    Working theorem. Suppose
+    \[
+      2t+d>2n.
+    \]
+    Choose a pigeon \(*\) attaining \(d\), let \(q=n-d\), and put
+    \[
+      \varepsilon=\frac{t-q}{d}-\frac12
+                  =\frac{2t+d-2n}{2d}\in(0,1/2].
+    \]
+    Whenever an integer \(K\ge1\) satisfies
+    \[
+      K\equiv-1\pmod p,\qquad
+      K\le\varepsilon d/2,\qquad
+      2d^2(1-\varepsilon^2)^{\lfloor K/2\rfloor}<1,
+    \]
+    the finite local-statistic ENS package can be removed at the same NS/PC degree and witness ceilings, with
+    \[
+      N=\left\lfloor\frac dK\right\rfloor-1\ge3.
+    \]
+    The package hypothesis is the same as before: actual inputs are polynomials in the local partition statistics and earlier coefficients of the selected package. There is no family-count, arity, accuracy, or level cost. If all extensions qualify, the residual lower bound and joint-design pullbacks apply.
+
+
+###filtered-profile-matching
+2. Filtering and the degree ledger
+    Exactly \(q\) columns have \(*\notin C_j\). Match those columns to any \(q\) distinct pigeons other than \(*\). The original weak PHP board is complete, so this is a genuine matching restriction; no compatibility with the chosen classes is needed on the matched columns.
+    The restriction leaves \(d+1\) pigeons and \(d\) holes. Every matched column's class statistics are constants, determined by its matched pigeon. Every unremoved column keeps its partition restricted to the remaining pigeons; empty classes may be discarded. The selected class still contains \(*\).
+    Any remaining ordinary pigeon loses at most \(q\) of its original class memberships, so its degree in the new profile graph is at least \(u-q\). In a remaining column, deleting \(q\) pigeons and then omitting \(*\) from the ordinary graph leaves at least \(v-q-1\) members of the selected class. Hence both sides of the resulting \(d\)-by-\(d\) graph have minimum degree at least
+    \[
+      \min(u-q,v-q-1)=t-q=(1/2+\varepsilon)d.
+    \]
+    Apply the majority-profile theorem to this board. It adds a matching prefix of size \(d\bmod K\), followed by the compatible copy projection. The total matching deletion is \(q+(d\bmod K)\); the final residual size is the displayed \(N\), which also includes the copy compression.
+    The first restriction sends every source base axiom to a residual axiom or zero within its original degree. Original statistic inputs become polynomials in the restricted statistics and constants. The later affine map then freezes all of them and assigns the selected coefficients by level. Thus the composed map is affine, every original base image fits its old degree, and all selected companion/field images vanish. Completed NS/PC proofs replay through their original ceilings; no activity budget is recomputed after either restriction.
+    For fixed global \(u,v\), choosing maximum \(d\) both retains the most columns and maximizes the guaranteed margin \(1/2-(n-t)/d\). This optimizes this particular worst-case filtering bound, not every possible choice of deleted rows and columns.
+
+
+###filtered-profile-uniform-density
+3. Uniform densities above two thirds suffice
+    Suppose, for fixed \(\alpha\in(2/3,1]\), every pigeon belongs to at least \(\alpha n\) chosen classes and every chosen class has size at least \(\alpha(n+1)\). Then
+    \[
+      d\ge\alpha n,\qquad
+      t\ge\alpha n-(1-\alpha),
+    \]
+    and the exact filtering margin satisfies
+    \[
+      \varepsilon\ge
+       \frac{3\alpha-2}{2\alpha}
+        -\frac{1-\alpha}{\alpha n}.
+    \]
+    In particular, when \(n\ge4(1-\alpha)/(3\alpha-2)\), one may use the fixed positive margin
+    \[
+      \varepsilon_\alpha=\frac{3\alpha-2}{4\alpha}.
+    \]
+    For sufficiently large \(n\), choose \(K\) by the recorded logarithmic bound, applied to \(d\) and \(\varepsilon_\alpha\), while checking its size condition. This yields \(K=O_{\alpha,p}(\log n)\) and
+    \[
+      N=\Omega_{\alpha,p}(n/\log n).
+    \]
+    Thus the same polylogarithmic-degree contradiction follows conditional on these raw profile hypotheses for every relevant source block. The threshold \(2/3\) is sufficient for the displayed estimates; it is not claimed optimal. The exact integer criterion may hold when these simpler uniform bounds do not.
+
+
+###filtered-profile-no-common-pigeon
+4. A family with no common chosen pigeon
+    For \(n>5\), label pigeons \(0,\ldots,n\), and in column \(j\), \(0\le j<n\), use the partition
+    \[
+      C_j=\{0,\ldots,n\}\setminus\{j,j+1\},
+      \qquad C_j^{\,c}=\{j,j+1\}.
+    \]
+    Every pigeon is excluded from at least one chosen class, so \(\bigcap_jC_j=\varnothing\). The endpoint pigeons are excluded once and every interior pigeon twice. Therefore \(u=n-2\), \(v=n-1\), \(d=n-1\), and
+    \[
+      q=1,\qquad
+      \varepsilon=\frac{n-5}{2(n-1)}>0.
+    \]
+    Choose \(*=0\) and match column zero to pigeon one. All remaining chosen classes contain \(*\); the ordinary profile graph has minimum degree \(n-3\) on both sides. In the matched column, the chosen-class statistic becomes zero and the complementary-class statistic one, which is permitted by the constant-collapse argument.
+    This analytic family supplies a positive filtering margin without a common chosen pigeon. The later \(K\) conditions are still required; positive margin alone is not a claim of a useful residual for every small \(n\). For sufficiently large \(n\), the theorem supplies the stated elimination.
+    Evidence and scope. This cycle composes the existing matching transfer with the fully proved majority theorem. No new numerical run was needed. The evidence record identifies the reused layout data and proof dependencies; the no-common-pigeon example is proved by direct counting.
+    Remaining gap and next step. Actual source profiles remain unclassified. For chosen classes with at most \(b\) exceptions per pigeon and per column, try a deterministic grouping with \(K>2b\); it may give \(O(b+p)\) copies without the logarithmic sampling cost.
+    Process assessment. Exact membership counts made the filtering loss explicit and let the previous theorem be reused as a black box; an additional numerical suite or framework rule would not strengthen this analytic step.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval19 min 3.75 s
+Mathematical reasoning and proof writing17 min 14.51 s
+Preparation and checkpoint work1 min 49.00 s
+Individually measured conversion, checks, and local processing0.25 s
+
+Through final snapshot; overlapping time counted once.
+
+
+
+###bounded-exception-elimination
+1. Exact deterministic copy and residual bounds
+    For each column \(j\), choose a class \(C_j\) of its local pigeon partition. Suppose every pigeon is outside at most \(a\) of these classes, and each column excludes at most \(b\) pigeons:
+    \[
+      |\{j:i\notin C_j\}|\le a,\qquad
+      (n+1)-|C_j|\le b.
+    \]
+    Here \(a,b\) are nonnegative integers. Choose any distinguished pigeon \(*\), let \(q=|\{j:*\notin C_j\}|\le a\), and match those \(q\) columns to distinct other pigeons. Put \(d=n-q\).
+    Working theorem. For any integer \(K\ge1\), \(K\ge a+b\), \(K\equiv-1\pmod p\), with \(N=\lfloor d/K\rfloor-1\ge1\), a compatible copy layout exists for every grouping after the usual matching prefix of size \(d\bmod K\). A qualifying finite local-statistic ENS package is eliminated at unchanged NS/PC degree and witness ceilings, with this exact residual size \(N\).
+    One explicit choice is
+    \[
+      \boxed{K=p\left\lceil\frac{a+b+1}{p}\right\rceil-1,\qquad
+             a+b\le K\le a+b+p-1.}
+    \]
+    This also covers \(a=b=0\), giving \(K=p-1\). \(K\) counts board copies; ENS accuracies are unchanged. The package assumptions and level-ordered constant assignments are those of the column-dependent elimination theorem.
+
+
+###bounded-exception-proof
+3. Exceptions survive restriction as absolute bounds
+    After matching the columns missing \(*\), every remaining chosen class contains \(*\). Deleting pigeons and columns cannot increase either count of exceptions. This remains true after removing the additional matching prefix of size \(d\bmod K\).
+    Partition the remaining ordinary pigeons and columns into groups of size \(K\), designate one column group empty, and form the local allowance graphs from the fixed-layout criterion. A left vertex has at most \(a\) forbidden columns in any group, and a right vertex has at most \(b\) forbidden pigeons in any row group. Hence
+    \[
+      \delta_L\ge K-a,\qquad
+      \delta_R\ge K-b,\qquad
+      \delta_L+\delta_R\ge2K-a-b\ge K.
+    \]
+    The preceding matching argument gives all required permutations, independently for every row-type/column-bundle pair. The row/column grouping may be arbitrary; no sampling event or probability estimate remains.
+    The resulting affine map freezes every local class statistic. Matched-column statistics are constants regardless of which class contains the matched pigeon; every copied column's active rows lie in its distinguished class. Selected coefficients are assigned by level, so all selected companions and field images vanish. Base-image proofs fit the original degrees, and the entire completed NS or PC proof replays through its old ceiling.
+    The total matching deletion is \(q+(d\bmod K)\), with final residual \(\lfloor d/K\rfloor-1\). No multiplication of losses across ENS levels occurs.
+
+
+###bounded-exception-parameters
+4. The parameter gain and its limits
+    For the displayed \(K\),
+    \[
+      N\ge\left\lfloor\frac{n-a}{K}\right\rfloor-1,
+      \qquad K\le a+b+p-1.
+    \]
+    If \((a+b+p)D=o(n)\), where \(D\ge1\) is a proposed source degree, then \(q\le a=o(n)\) and \(N/D\) tends to infinity. A full qualifying package would therefore give the forbidden residual refutation for sufficiently large \(n\). In particular, polylogarithmic exception bounds preserve a residual of size \(n/\operatorname{polylog}n\) without the additional logarithmic factor from sampling.
+    The majority theorem remains useful when the exception bounds are linear in \(n\): deterministic \(K\ge a+b\) then gives only a small residual. Nor is \(K\ge a+b\) a lower bound on every specially chosen layout. It is a uniform sufficient condition for arbitrary groupings based on these two local exception bounds.
+
+
+###degree-sum-short-matching
+2. The matching condition extends to equality
+    Let a balanced \(K\)-by-\(K\) bipartite graph have minimum left and right degrees \(\delta_L,\delta_R\), with
+    \[
+      \delta_L+\delta_R\ge K.
+    \]
+    The previous short-path algorithm still gives a perfect matching. Process a new left vertex \(x\). If it has a free neighbor, use it. Otherwise all its neighbors are matched, to a set \(S\) of at least \(\delta_L\) left vertices.
+    Choose any free right vertex \(y\). The current \(x\) is outside \(S\) and is not adjacent to \(y\). If \(y\) had no neighbor in \(S\), its neighborhood would therefore have size at most
+    \[
+      K-|S|-1\le K-\delta_L-1\le\delta_R-1,
+    \]
+    a contradiction. Thus a neighbor of \(y\) in \(S\) provides the same three-edge augmenting path. The argument retains \(O(K^2)\) adjacency work. This is the standard degree-sum sufficient condition, with the equality case accounted for explicitly; no strict majority on each side is needed.
+
+
+###bounded-exception-checks
+5. Equality tests and complete sparse-layout certificates
+    The compiled checker tests all 7,471 \(4\)-by-\(4\) graphs satisfying the degree-sum condition, including 6,566 equality cases. Every returned matching is a verified allowed-edge bijection. A graph with degree sum \(K-1\) has a recorded Hall-deficient subset, showing that the sufficient degree-sum condition cannot simply be weakened by one for arbitrary graphs.
+    The projection fixtures use the consecutive-pair exception family, with \(a=b=2\), over \((p,K,n)=(2,5,21),(3,5,21),(5,4,17)\). Each has \(q=1\), no further residue prefix, and residual \(N=3\). The first matching removes the column missing an endpoint pigeon. Saved row and column label permutations identify the path-profile labels with the certificate engine's canonical coordinates.
+    The actual copy shifts are two when residual row type \(i\) equals \(j+1\), and zero otherwise. All 36 local allowance graphs meet the degree-sum condition, and all recorded copy permutations use allowed edges. Three graphs in the characteristic-five fixture sit exactly at equality, demonstrating the \(K=4\) boundary.
+    Every one of the 13,595 original base images is verified through its original degree, with 689 nonzero NS certificates and explicit zero-image records. All 118 local class statistics become their stated zero/one constants. Three accuracy-one blocks contain the full respective class-statistic inventories; all 118 companion and 118 coefficient-field images vanish, with original degrees \(1,3,p\) retained in the source definitions.
+    The path profiles have empty chosen-class intersection, and their exception counts are checked directly. The existing nonconstant-cell and invalid-copy-count controls also run on these new maps. The latter uses a row-subsystem point, not a full PHP model. The residual \(N=3\) lower bound makes the degree-two image certificates nonvacuous.
+    The complete output and reproduction record preserve every graph test, source label map, base certificate, class input, and coefficient assignment. Compilation and all checks passed. The shared matcher algorithm itself was unchanged; its broader valid domain was proved and tested.
+    Remaining gap and next step. Actual source exception counts remain unbounded. Replace maximum-degree assumptions by a total exception budget: match away high-exception pigeons and columns, then quantify the residual obtained by either the deterministic or majority route.
+    Process assessment. Reusing both verified engines made the equality extension and complete small-board checks focused; no new matching algorithm, dependency, or general framework rule was needed.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval40 min 58.17 s
+Mathematical reasoning and proof writing17 min 18.43 s
+Computation design and coding8 min 55.85 s
+Preparation and checkpoint work14 min 24.70 s
+Dedicated web and download-attempt windows15.23 s
+Individually measured computation0.12 s
+Individually measured conversion, checks, and local processing3.84 s
+
+Through final snapshot; overlapping time counted once.
+
+
+
+###total-exception-trimming
+1. One matching covers both exceptional sets
+    Prescribe a local pigeon partition in every column, and choose one of its classes \(C_j\). Let the exception graph have an edge \((i,j)\) exactly when \(i\notin C_j\), and write
+    \[
+      E=\sum_{j=1}^{n}\bigl((n+1)-|C_j|\bigr).
+    \]
+    For an integer \(B\ge0\), mark every pigeon and every column whose exception degree is greater than \(B\). Let the two marked-set sizes be \(r_B,c_B\), and put
+    \[
+      q=\max(r_B,c_B),\qquad
+      Q=\left\lfloor\frac{E}{B+1}\right\rfloor.
+    \]
+    Working trimming lemma. Both marked sets have size at most \(Q\). If \(q\le n\), a genuine PHP matching of exactly \(q\) edges covers both sets. After restricting that matching, the board has \(n_0=n-q\) holes and \(n_0+1\) pigeons, and both remaining exception degrees are at most \(B\).
+    Proof. Each marked vertex accounts for at least \(B+1\) edges. Sum degrees separately on each side to obtain \(r_B,c_B\le Q\). Choose \(q\) pigeons containing all marked pigeons and \(q\) columns containing all marked columns; their sizes are possible because \(q\le n\). Any bijection between those sets is a matching of the complete original PHP board. It need not follow edges or nonedges of the exception graph. No matching can cover the prescribed sets with fewer than \(\max(r_B,c_B)\) edges.
+    Every surviving vertex was unmarked, so its original exception degree was at most \(B\), and deletion only reduces it. Each removed column's class statistics become constants. Unremoved column partitions restrict to the remaining pigeons; empty classes may be dropped. In the applications below \(n_0>B\), so each chosen class remains nonempty. The usual matching restriction sends every original base axiom to a residual axiom or zero through its old degree.
+
+
+###total-exception-deterministic
+2. A deterministic residual from the total budget
+    Apply the lemma, choose a surviving distinguished pigeon \(*\), and let \(q_*\le B\) count its remaining exceptions. Match the \(q_*\) columns missing that pigeon to distinct other surviving pigeons. Put \(d=n-q-q_*\), and choose
+    \[
+      K=p\left\lceil\frac{2B+1}{p}\right\rceil-1,\qquad
+      2B\le K\le2B+p-1.
+    \]
+    If the following guaranteed bound is at least one, then all required matchings exist and the bounded-exception theorem supplies a deterministic compatible layout:
+    \[
+      \boxed{\quad
+      N=\left\lfloor\frac{n-q-q_*}{K}\right\rfloor-1
+       \ \ge\
+       \left\lfloor\frac{n-Q-B}{K}\right\rfloor-1
+       \ \ge1.\quad}
+    \]
+    Indeed this hypothesis gives \(n-Q-B\ge2K\), hence \(q\le Q<n\), \(n_0>B\), and enough surviving ordinary pigeons for the second matching. Both induced exception bounds are at most \(B\). The final residue matching has size \(d\bmod K\). Thus the complete matching deletion is \(q+q_*+(d\bmod K)\); the copy compression is accounted for by the displayed \(N\).
+    The package and degree hypotheses are exactly those of local-statistic package elimination: actual inputs are polynomials in the prescribed statistics and earlier coefficients of the selected finite package. The composite map is affine, original base images fit degrees one or two, and all selected companion and field images vanish after level-ordered constant assignments. Completed NS/PC degree and existing witness ceilings are unchanged; original companion activity is never recomputed from specialized inputs.
+    For a simple asymptotic choice, take
+    \[
+      B=\left\lceil\frac{2E}{n}\right\rceil,\qquad
+      Q<\frac n2,\qquad
+      K\le\frac{4E}{n}+p+1.
+    \]
+    The strict inequality for \(Q\) follows from \(B+1>2E/n\) when \(E>0\); for \(E=0\), \(Q=0\). If \(D\ge1\) and
+    \[
+      ED=o(n^2),\qquad pD=o(n),
+    \]
+    then \(B=o(n)\), \(d>n/2-B\ge n/3\) eventually, and \(KD=o(n)\). Consequently
+    \[
+      \frac ND\ge\frac{n}{3KD}-\frac2D\longrightarrow\infty.
+    \]
+    All finite size hypotheses therefore hold for sufficiently large \(n\). For example, at fixed \(p\) and polylogarithmic \(D\), this covers \(E=O(n\,\operatorname{polylog}n)\). More generally, when \(E=o(n^2)\) and \(p=o(n)\), the guaranteed residual has order at least \(n^2/(E+pn)\), up to absolute constants for sufficiently large \(n\).
+

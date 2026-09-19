@@ -1,0 +1,131 @@
+--- a/tools/claim_reviews.py
++++ b/tools/claim_reviews.py
+@@ -7,6 +7,7 @@
+ import re
+ 
+ from claim_registry import ROOT, TEXT_FIELDS, local_target, require
++from claim_evidence import ARTICLE_NORMALIZATION, normalize_article
+ 
+ FIELDS = ('mathematical_status', 'formalization', 'topics', 'significance', 'relationships')
+ 
+@@ -46,9 +47,10 @@
+     def __init__(self, root=ROOT):
+         self.root, self.cache, self.notebooks = root, {}, {}
+ 
+-    def sha256(self, target):
+-        if target in self.cache:
+-            return self.cache[target]
++    def sha256(self, target, normalization=None):
++        key = (target, normalization)
++        if key in self.cache:
++            return self.cache[key]
+         local = local_target(target, self.root)
+         if local is None:
+             return None
+@@ -62,8 +64,26 @@
+             content = self.notebooks[path].excerpt(anchor).encode()
+         else:
+             content = path.read_bytes()
+-        self.cache[target] = hashlib.sha256(content).hexdigest()
+-        return self.cache[target]
++        if normalization is not None:
++            if not (path.suffix == '.html' and anchor):
++                raise ValueError('Article normalization requires an anchored HTML target')
++            content = normalize_article(content.decode(), normalization).encode()
++        self.cache[key] = hashlib.sha256(content).hexdigest()
++        return self.cache[key]
++
++    def snapshot(self, target):
++        normalization = None
++        local = local_target(target, self.root)
++        if local is not None:
++            path, anchor = local
++            if path.suffix == '.html' and anchor:
++                self.sha256(target)  # Load and validate the raw excerpt first.
++                if self.notebooks[path].anchor(anchor)['tag'] == 'article':
++                    normalization = ARTICLE_NORMALIZATION
++        item = {'target': target, 'sha256': self.sha256(target, normalization)}
++        if normalization is not None:
++            item['normalization'] = normalization
++        return item
+ 
+     def formalization_inventory(self):
+         key='__formalization_inventory__'
+@@ -83,7 +103,7 @@
+     review={'state': state, 'revision': revision, 'date': date, 'reviewer': reviewer,
+             'note': note, 'next_action': next_action, 'claim_sha256': claim_digest(claim),
+             'value_sha256': digest(field_value(data, claim, field)),
+-            'evidence': [{'target': target, 'sha256': evidence.sha256(target)} for target in targets]}
++            'evidence': [evidence.snapshot(target) for target in targets]}
+     if field=='formalization' and claim['formalization']['status']=='no_record':
+         review['inventory_sha256']=evidence.formalization_inventory()
+     return review
+@@ -107,7 +127,7 @@
+                     reasons.append('field value changed')
+                 for item in review['evidence']:
+                     try:
+-                        current = evidence.sha256(item['target'])
++                        current = evidence.sha256(item['target'], item.get('normalization'))
+                     except (OSError, ValueError):
+                         current = 'missing'
+                     if current != item['sha256']:
+--- a/research/claims/schema.json
++++ b/research/claims/schema.json
+@@ -399,6 +399,11 @@
+             "null"
+           ],
+           "pattern": "[0-9a-f]{64}"
++        },
++        "normalization": {
++          "enum": [
++            "notebook-article-v1"
++          ]
+         }
+       }
+     },
+--- a/tools/finish-turn.py
++++ b/tools/finish-turn.py
+@@ -103,7 +103,8 @@
+     close = body.index('</p>', meta)
+     if producer in body[meta:close]:
+         return body
+-    return body[:close] + ' ' + producer + body[close:]
++    return (body[:close] + ' <span data-generated="finish-turn-producer-v1">'
++            + producer + '</span>' + body[close:])
+ 
+ 
+ def validate_append_only(root):
+@@ -165,7 +166,10 @@
+     first = json.loads((root / 'research/logs' / f'{turn}.jsonl').read_text().splitlines()[0])
+     producer = (f"Produced by {html.escape(first.get('agent', 'unrecorded'))} "
+                 f"({html.escape(first.get('model', 'unrecorded'))}).")
+-    updated = credit_producer(current, marker, producer).replace(marker, fragment.read_text().strip())
++    timing = fragment.read_text().strip()
++    timing = timing.replace('<div class="timing-report"',
++                            '<div data-generated="finish-turn-timing-v1" class="timing-report"', 1)
++    updated = credit_producer(current, marker, producer).replace(marker, timing)
+     temporary = None
+     try:
+         with tempfile.NamedTemporaryFile(mode='w', dir=root, prefix='.notebook-timing-',
+--- a/tools/tests/test_finish_turn.py
++++ b/tools/tests/test_finish_turn.py
+@@ -17,7 +17,7 @@
+         self.addCleanup(self.temporary.cleanup)
+         self.root = Path(self.temporary.name)
+         (self.root / 'tools').mkdir()
+-        for name in ('compute.sh', 'tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_notices.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_registration.py'):
++        for name in ('compute.sh', 'tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_notices.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_evidence.py', 'tools/notebook-excerpt.py', 'tools/claim_registration.py'):
+             shutil.copy2(ROOT / name, self.root / name)
+         (self.root / 'research/claims').mkdir(parents=True)
+         for schema in ('schema.json', 'schema-v1.json'):
+@@ -42,8 +42,9 @@
+         notebook.write_text(content)
+         self.command('tools/finish-turn.py', 'test_turn', '--next', 'next_turn')
+         table = (self.root / 'research/results/test_turn/timing.html').read_text().strip()
++        table = table.replace('<div class="timing-report"', '<div data-generated="finish-turn-timing-v1" class="timing-report"', 1)
+         expected = content.replace('<!-- TIMING test_turn -->', table).replace(
+-            'Status: test.</p>', 'Status: test. Produced by Test agent (Test model, high).</p>')
++            'Status: test.</p>', 'Status: test. <span data-generated="finish-turn-producer-v1">Produced by Test agent (Test model, high).</span></p>')
+         self.assertEqual(notebook.read_text(), expected)
+         archive = self.root / 'research/provenance/session-records/test_turn'
+         self.assertEqual((archive / 'session.jsonl').read_bytes(),

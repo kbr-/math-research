@@ -17,7 +17,7 @@ class FinalizationTest(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
         (self.root / 'tools').mkdir()
-        for name in ('compute.sh', 'tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_registration.py'):
+        for name in ('compute.sh', 'tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_notices.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_evidence.py', 'tools/notebook-excerpt.py', 'tools/claim_registration.py'):
             shutil.copy2(ROOT / name, self.root / name)
         (self.root / 'research/claims').mkdir(parents=True)
         for schema in ('schema.json', 'schema-v1.json'):
@@ -42,8 +42,9 @@ class FinalizationTest(unittest.TestCase):
         notebook.write_text(content)
         self.command('tools/finish-turn.py', 'test_turn', '--next', 'next_turn')
         table = (self.root / 'research/results/test_turn/timing.html').read_text().strip()
+        table = table.replace('<div class="timing-report"', '<div data-generated="finish-turn-timing-v1" class="timing-report"', 1)
         expected = content.replace('<!-- TIMING test_turn -->', table).replace(
-            'Status: test.</p>', 'Status: test. Produced by Test agent (Test model, high).</p>')
+            'Status: test.</p>', 'Status: test. <span data-generated="finish-turn-producer-v1">Produced by Test agent (Test model, high).</span></p>')
         self.assertEqual(notebook.read_text(), expected)
         archive = self.root / 'research/provenance/session-records/test_turn'
         self.assertEqual((archive / 'session.jsonl').read_bytes(),

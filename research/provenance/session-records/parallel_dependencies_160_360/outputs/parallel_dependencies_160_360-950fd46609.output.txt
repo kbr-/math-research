@@ -1,0 +1,248 @@
+
+###column-freezing-map
+1. Copies of a smaller board and one complementary row
+    Fix \(K\ge1\) with \(K\equiv-1\pmod p\), and suppose
+    \[
+      N=\left\lfloor\frac nK\right\rfloor-1\ge1,\qquad
+      r=n\bmod K.
+    \]
+    First make a genuine partial-matching restriction on \(r\) pigeons and holes. It leaves \(n-r=K(N+1)\) holes and \(K(N+1)+1\) pigeons. Relabel the remaining pigeons as \(K\) copies of \(N+1\) rows, plus a distinguished row \(*\). Relabel the holes as \(K\) empty columns and \(K\) copies of \(N\) residual columns.
+    Let \(Y=(y_{ij})\) be the \((N+1)\)-by-\(N\) residual board and \(q_j=1-\sum_i y_{ij}\). Define the remaining incidence-variable images by the block matrix
+    \[
+      \Phi(X_{\rm rem})=
+      \begin{pmatrix}
+        0_{K(N+1)\times K}&\operatorname{diag}(Y,\ldots,Y)\\
+        0_{1\times K}&q^{\mathsf T}\ \cdots\ q^{\mathsf T}
+      \end{pmatrix}.
+    \]
+    There are \(K\) copies of \(Y\) and of the last row vector. Thus an ordinary copied row uses \(y_{ij}\) only in its own column copy; the distinguished row uses \(q_j\) in every copy. Empty columns and off-copy cells become zero. The initial matching cells become one and their other row/column cells zero. This is one global affine polynomial map.
+    Every original column sum \(\sigma_j=\sum_i x_{ij}\) becomes a literal constant: zero on the \(K\) designated empty columns and one on all other columns. In a copied column, \(\sum_i y_{ij}+q_j=1\) identically. No base equation is used for this last equality.
+
+
+###column-freezing-base-images
+2. Every original base image fits degree one or two
+    A matched row equation becomes zero. A copied row equation becomes the corresponding residual row equation. The distinguished row gives
+    \[
+      K\sum_{j=1}^{N}q_j-1
+        =-K\sum_{i=1}^{N+1}(\rho_i^Y-1),
+      \qquad \rho_i^Y=\sum_jy_{ij},
+    \]
+    because \(K+1=0\) in \(\mathbb F_p\). These are degree-one NS identities.
+    Copied Boolean axioms are residual Boolean axioms, and constant cell images have zero Booleanity polynomial. For a distinguished-row cell,
+    \[
+      q_j^2-q_j
+       =\sum_i(y_{ij}^2-y_{ij})
+            +2\sum_{i<k}y_{ij}y_{kj}.
+    \]
+    A column collision between copied rows either becomes an old collision or zero. A collision involving the distinguished row has
+    \[
+      y_{ij}q_j
+       =-(y_{ij}^2-y_{ij})-\sum_{k\ne i}y_{ij}y_{kj}.
+    \]
+    All these certificates have degree two, matching the source axiom degree. The initial matching restriction has its usual zero/residual-axiom images, so the composed map has the same budgets.
+    This verifies exactly the weak PHP base. No same-row exclusion image is required or assumed; repeating \(q_j\) in the distinguished row would not justify such extra axioms. Individual cells generally remain nonconstant even though every original column sum is frozen.
+
+
+###column-freezing-checks
+6. Complete base checks and multilevel controls
+    The compiled checker uses residual \(N=3\) and the cases \((p,K,n)=(2,1,4),(3,2,9),(5,4,17),(2,3,13)\). The latter three include a one-edge matching prefix, and the last checks a nonminimal valid copy count. It preserves and verifies all 4,874 original base images, with 494 nonzero NS certificates and explicit zero-image records for the rest.
+    All 43 column sums are checked as literal constants. Four test packages, each with four blocks across levels \(1,1,2,3\), exercise earlier-coefficient dependence, nonzero field inverses, and the all-zero input case. All 32 companion images and 48 coefficient-field images vanish exactly; five blocks have all-zero input tuples and product image one.
+    The output labels the residual-cell polynomial coordinates separately from the formal statistic/coefficient coordinates used to describe those packages. The formal statistics are identified with two actual original column sums whose images were verified. Every original generator's degree is retained in the image check.
+    Controls confirm that an individual cell can remain a variable, and that an invalid copy count can give a nonzero constant row image at a point satisfying every available degree-one residual axiom. These do not claim a full PHP model or a lower bound against separately normalizing a single-cell block. With \(N=3\), the audited base bound already excludes degree-two refutations, so the base-image certificates are not hidden behind a degree-two refutation.
+    Compilation and every mathematical check succeeded. The complete output and result record preserve maps, all base images, certificates, package definitions, and exact constants.
+    Remaining gap. The theorem removes statistic-dependent packages, not arbitrary label-sensitive input families. It does not show that every source proof can be converted to that class. Iterated or randomized uses must retain an explicit residual-board bound and prove their coverage hypotheses.
+    Process assessment. The separate Frobenius kernel optimization was implemented and verified; this checkpoint closes the base-map and statistic-package argument, leaving the further density-based coverage outline for the next cycle.
+    Timing scope. This interval includes that separately committed kernel work; the projection's initial outline was measured in the preceding cycle.
+    Next step. Analyze whether a short sequence of randomly relabeled freezing maps turns sufficiently dense column-local witness sets into inconsistent residual-column tuples, with explicit dependence on the number of blocks.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval39 min 18.47 s
+Marked reading and review windows0.40 s
+Mathematical reasoning and proof writing21 min 11.78 s
+Computation design and coding10 min 21.60 s
+Preparation and checkpoint work7 min 39.51 s
+Individually measured computation0.12 s
+Individually measured conversion, checks, and local processing5.07 s
+
+Through final snapshot; overlapping time counted once.
+
+
+
+###dense-column-witness-setup
+1. Designated witnesses and literal units
+    Consider a finite, level-correct ENS family over the weak base \(\mathcal F_n\), with arbitrary positive accuracies. In selected blocks, designate some actual inputs that are polynomials in the incidence variables of one original column. A designated input may be nonlinear, and a block may designate several inputs in a column. These witnesses contain no coefficient variables. All other inputs may be arbitrary polynomials in the base and strictly earlier coefficients.
+    For block \(a\), define
+    \[
+      E_a=\{(i,j):g(e_i)\ne0\text{ for some designated input }g
+                       \text{ in column }j\},\qquad
+      S_a=\{j:g(0)\ne0\text{ for some such }g\}.
+    \]
+    Here \(e_i\) is the one-hot occupied state of that column, and \(0\) is its empty state. These are evaluations over \(\mathbb F_p\); no Booleanity assumption on the inputs is needed. A genuine matching edge in \(E_a\), or a literally zero column in \(S_a\), makes an actual input a nonzero constant \(c_a\).
+    Set its first-row coefficient to \(c_a^{-1}\) and every other own coefficient to zero. The first factor, every companion, and every own field image then vanish literally. Arbitrary extra inputs do not affect this identity. Because each chosen witness uses only the base, these constant assignments can be made for all selected blocks, at any levels, without a dependency-closure condition on the selected set. Unselected coefficient variables remain variables, and their blocks become genuine ENS blocks on the actual transformed inputs.
+    This is the literal-unit case of the earlier matching normalization proposition. The new argument below adds quantitative simultaneous coverage, empty states, NS transfer, and the stated multilevel scope; it does not extend the earlier proposition's more general row-span case to arbitrary dependencies.
+
+
+###dense-column-occupied
+2. Dense occupied states need a short matching
+    Working theorem. Suppose \(M_o\ge1\) selected blocks satisfy \(|E_a|\ge\varepsilon n(n+1)\), where \(0<\varepsilon\le1\). If an integer \(q\ge1\) satisfies
+    \[
+      q\le\frac{\varepsilon n}{4},\qquad
+      M_o(1-\varepsilon/2)^q<1,
+    \]
+    some \(q\)-edge matching hits every \(E_a\). It eliminates those blocks without increasing NS or PC degree, leaving \(\mathcal F_{n-q}\) and any retained transformed blocks.
+    Proof. Sample an ordered matching uniformly, choosing each new edge uniformly among unused rows and columns. After \(s<q\) choices, deleting their rows and columns removes at most \(s(2n+1)\) edges of any \(E_a\). At least
+    \[
+      \varepsilon n(n+1)-s(2n+1)
+         \ge \tfrac12\varepsilon n(n+1)
+    \]
+    remain. There are at most \(n(n+1)\) available edges in total, so the conditional probability of hitting \(E_a\) at the next step is at least \(\varepsilon/2\), for every preceding history. The probability of missing one block throughout is at most \((1-\varepsilon/2)^q\). A union bound over the blocks is strictly below one. No independence between their witness sets is needed.
+    The matching restriction sets each hit column to the corresponding one-hot state and maps every weak-PHP base axiom to a residual axiom or zero. Apply the preceding constant coefficient assignments. This is a global affine substitution with zero selected-extension images, so it preserves the completed NS/PC degree.
+
+
+###dense-column-empty
+3. Dense empty states need one freezing map
+    Working theorem. Suppose \(M_e\ge1\) selected blocks satisfy \(|S_a|\ge\eta n\), where \(0<\eta\le1\). If
+    \[
+      K\ge1,\qquad K\equiv-1\pmod p,\qquad n\ge2K,
+      \qquad M_e(1-\eta)^K<1,
+    \]
+    those blocks can be eliminated at the same NS/PC degree while leaving \(\mathcal F_N\), \(N=\lfloor n/K\rfloor-1\), and any retained transformed blocks.
+    Proof. Choose a uniformly random \(K\)-subset \(Z\) of original columns. For each block, sampling without replacement gives
+    \[
+      \Pr(Z\cap S_a=\varnothing)
+        =\frac{\binom{n-|S_a|}{K}}{\binom nK}
+        \le (1-\eta)^K,
+    \]
+    with probability zero when too few columns remain outside \(S_a\). The union bound supplies a set meeting them all. The freezing construction can take any prescribed \(K\) columns as its zero columns: permute the source holes, and choose its matching prefix of size \(r=n\bmod K\) outside \(Z\). There is enough space because \(n\ge2K\) and \(r<K\). Each hit witness becomes its nonzero empty-state value.
+    The recorded base-image certificates have degree at most the source generator's degree, one or two. Selected companions and fields are zero. For an NS certificate through \(D\), an old generator \(f\) has a cofactor of degree at most \(D-\deg f\); multiplying its image certificate preserves \(D\). Affine substitution and those same certificates also replay a PC proof through \(D\). Original companion degrees remain the activity ledger throughout.
+
+
+###dense-column-combined
+4. Mixed families and a residual lower bound
+    Partition selected blocks into occupied and empty classes with the preceding density hypotheses. Choose \(q\) satisfying the occupied theorem, and additionally require \(q<\eta n\). Every empty witness set loses at most \(q\) columns under that matching. On the remaining board of size \(n'=n-q\), its density is at least
+    \[
+      \eta'=\frac{\eta n-q}{n-q}>0.
+    \]
+    If \(K\equiv-1\pmod p\), \(K\ge1\), \(n-q\ge2K\), and \(M_e(1-\eta')^K<1\), apply the empty-state theorem there. Setting some rows to zero in the first matching does not change an input's value at the all-zero state of an untouched column. The first class's literal nonzero values also survive the second map. Consequently all selected blocks disappear at the same degree, with
+    \[
+      \boxed{N=\left\lfloor\frac{n-q}{K}\right\rfloor-1.}
+    \]
+    If the occupied class is absent, take \(q=0\) and use the empty theorem directly. If the empty class is absent, omit freezing and retain the stronger \(N=n-q\). Other blocks need not disappear. Any existing current NS or PC witness ceiling survives the same proof replay; no new sharp Booleanity claim is required.
+    When the selected blocks comprise the entire family, the audited residual PC theorem gives
+    \[
+      \operatorname{NSdeg}(\mathcal F_n+\mathcal E)
+        \ge\operatorname{PCdeg}(\mathcal F_n+\mathcal E)
+        \ge N/2+1.
+    \]
+    Residual normalized ordinary designs, or functionals annihilating the PC consequence space, pull back through the same affine map below that bound, exactly as in the previous design argument. The pullback uses linearity, not multiplicativity.
+    Explicit polynomial-family regime. For \(M_o\ge1\), one may choose
+    \[
+      q=\left\lceil\frac2\varepsilon(\log M_o+1)\right\rceil.
+    \]
+    For fixed positive densities and polynomial family counts, sufficiently large \(n\) makes \(q\le\min\{\varepsilon n/4,\eta n/2\}\), hence \(\eta'\ge\eta/2\). Choose the least positive \(K\equiv-1\pmod p\) with
+    \[
+      K\ge\frac2\eta(\log M_e+1).
+    \]
+    The exponential bound \(1-u\le e^{-u}\) makes each union bound strictly below one. Thus \(K=O_p(\eta^{-1}(\log M_e+1))\), and the mixed case leaves \(N=\Omega(n/\log n)\) for fixed \(p,\varepsilon,\eta\) and a fixed polynomial family-count exponent. This exceeds any fixed polylogarithmic source degree for sufficiently large \(n\). It closes the parameter comparison conditional on this witness coverage; it does not prove that arbitrary source families supply it.
+
+
+###dense-column-checks
+5. One complete mixed-family fixture
+    The compiled exact checker uses \(p=2,n=24,q=3,K=5\), so \(N=3\). Two occupied families have \(E_b=\{(i,j):(i+j)\bmod2=b\}\), each with 300 of the 600 cells. Two empty families use the twelve even or twelve odd columns. All indices in this fixture start at zero. The sufficient failure bounds are
+    \[
+      2(3/4)^3=54/64<1,\qquad
+      \eta'\ge3/7,\qquad 2(4/7)^5=2048/16807<1.
+    \]
+    A deterministic search on rows \(0,1,2\) first rejects matched columns \((0,1,2)\), which miss the odd occupied family, and then accepts \((0,1,3)\). The empty columns \(\{2,4,5,6,7\}\) hit both empty families. A separate all-even choice misses the odd empty family. These are missed-witness controls, not proofs that the rejected choices admit no other normalizer.
+    The extra freezing prefix matches row 3 to column 8. The map has five copies of the residual board and a complementary row; all 600 affine cell images and all 24 literal column sums are saved. The existing universal base-image proof is reused, without rerunning the previous full base-certificate suite.
+    Occupied blocks designate the parity-selected column sums; empty blocks designate \(1-\sigma_j\) on their chosen columns. Each also has a label-sensitive extra input with nonconstant image \(y_{00}\). Blocks lie at levels \(1,1,2,3\); later extras multiply a source cell by an earlier selected coefficient, exercising the permitted dependency. All four accuracies are one.
+    The checker preserves all 76 input images, coefficient assignments, original companion degrees, and 76 zero companion plus 76 zero field images. Its compact source descriptions specify each input and the common ENS product formula completely. This is a deterministic witness fixture, not a sampling experiment or a full PHP satisfying model. Compilation and every check passed. The complete output and reproduction record preserve the data.
+    Remaining gap and next step. Sparse witness sets and inputs genuinely mixing columns are outside the theorem. Test a small Hall-deficiency criterion in the common-zero profile graph, using actual PHP row equations and explicit all-companion degree budgets.
+    Process assessment. Applying the existing matching mechanism directly removed the proposed iteration machinery; one focused fixture sufficed, so no additional framework change was warranted.
+    Timing scope. This session includes context restoration and exploratory outlines deferred to later checkpoints.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval45 min 16.45 s
+Marked reading and review windows43.53 s
+Mathematical reasoning and proof writing41 min 7.11 s
+Computation design and coding2 min 49.17 s
+Preparation and checkpoint work34.68 s
+Individually measured computation0.07 s
+Individually measured conversion, checks, and local processing1.88 s
+
+Through final snapshot; overlapping time counted once.
+
+
+
+###Hall-profile-normalizer
+1. The common-zero graph and the coefficient map
+    Take one ENS block \((g_i)_i\) at accuracy \(h\ge1\) over \(\mathcal F_n\). As in the preceding witness setup, designate actual base-only inputs supported on individual original columns; all other inputs may be arbitrary polynomials in the base and strictly earlier coefficients. Let \(Z\) be the bipartite graph with edge \((a,j)\) precisely when all designated inputs for column \(j\) vanish at its occupied state \(e_a\). A column with no designated input has an edge from every row.
+    Suppose a row set \(A\) and column set \(U\) satisfy
+    \[
+      N_Z(A)\subseteq U,\qquad |U|<r:=|A|\le h.
+    \]
+    Thus, for every \(a\in A,j\notin U\), choose a designated input \(g_{i(a,j)}\) with \(\lambda_{aj}:=g_{i(a,j)}(e_a)\ne0\). Use one coefficient row for each \(a\in A\), setting
+    \[
+      \beta_{a,i}=\sum_{\substack{j\notin U\\i(a,j)=i}}
+                      \lambda_{aj}^{-1}x_{aj},\qquad
+      F_a=1-\sum_i\beta_{a,i}g_i,
+      \qquad H=\prod_{a\in A}F_a.
+    \]
+    Give all remaining coefficient rows zero values, so their factors are one. Inputs outside the selected witnesses receive zero coefficients. Every coefficient image is affine in original incidence variables only.
+    Working theorem. This map gives every companion an NS certificate from the unchanged weak PHP base within its original degree. The coefficient field images also fit their original degree \(p\). It therefore removes the block from any completed NS or PC proof without increasing its degree. Any finite collection of blocks satisfying this criterion can be removed simultaneously, retaining all other blocks on their actual transformed inputs.
+
+
+###Hall-profile-certificate
+2. Local identities, telescoping, and the collision finish
+    For a selected column input, the polynomial
+    \[
+      D_{aj}=\lambda_{aj}^{-1}x_{aj}g_{i(a,j)}-x_{aj}
+    \]
+    vanishes at every empty/one-hot state of column \(j\). The degree-complete column reduction supplies an NS certificate through \(\deg g_{i(a,j)}+1\), using only that column's Boolean and collision axioms.
+    Let \(L_a=\rho_a-1\), \(R_a=\sum_{j\in U}x_{aj}\), and set
+    \[
+      \tau_a=\max\bigl(\{1\}\cup
+               \{1+\deg g_{i(a,j)}:j\notin U\}\bigr),
+      \qquad W=\sum_{a\in A}\tau_a.
+    \]
+    The exact identity
+    \[
+      F_a-R_a=-L_a-\sum_{j\notin U}D_{aj}
+    \]
+    has an NS certificate through \(\tau_a\), and \(\deg F_a\le\tau_a\). Order \(A=\{a_1,\ldots,a_r\}\). The product difference is
+    \[
+      H-\prod_{a\in A}R_a
+       =\sum_{t=1}^{r}(F_{a_t}-R_{a_t})
+                   \prod_{s<t}F_{a_s}\prod_{s>t}R_{a_s}.
+    \]
+    Every certificate multiple on the right has degree at most \(W\). On the other hand, each monomial in \(\prod_aR_a\) assigns the \(r\) distinct rows to only \(|U|<r\) columns. Two rows share a column, so the monomial is a multiple of an actual column-collision generator. This certifies the product through degree \(r\le W\). If \(U\) is empty, that product is already zero.
+    Combining the two certificates gives
+    \[
+      \boxed{H\in\mathcal I_W(\mathcal F_n),\qquad
+        W\le r(\delta+1)\le h(\delta+1),}
+    \]
+    where \(\delta\) is the original block's maximum input degree. The argument never adds same-row exclusions and never divides by \(r\) or a characteristic-dependent row count.
+
+
+###Hall-profile-degree-transfer
+3. Original-degree accounting and simultaneous removal
+    Let \(d_i=\deg g_i\) for a nonzero original input. Under the combined affine coefficient map, its actual image \(g_i'\) has degree at most \(d_i\). Multiplying the base certificate for \(H\) by \(g_i'\) gives the companion image through
+    \[
+      \deg g_i'+W\le d_i+h(\delta+1)=e_i.
+    \]
+    Thus arbitrary extra inputs are handled by the same certificate. Original inactivity is preserved: an NS cofactor on a used companion has degree at most \(D-e_i\), so the replacement stays within \(D\). In PC, the affine inference replay and the same image certificates preserve the ceiling.
+    For any assigned coefficient \(\beta=\sum_v c_vx_v\), Frobenius and Booleanity give
+    \[
+      \beta^p-\beta
+        =\sum_v c_v(x_v^p-x_v)
+        =\sum_v c_v(x_v^2-x_v)\sum_{t=0}^{p-2}x_v^t,
+    \]
+    an NS certificate through \(p\). Zero assigned coefficients have literal zero field images. Every chosen coefficient uses only base variables, so all selected maps form one affine substitution, independently of the number of blocks or their levels. The base is fixed; retained inputs and existing witness proofs are transformed exactly. This preserves any existing common witness ceiling without asserting a new sharply bounded NS Booleanity proof for every transformed input.
+    If every block satisfies the criterion, a refutation through \(D\) yields a refutation of the original \(\mathcal F_n\) through \(D\), hence \(D\ge n/2+1\) by the audited PC lower bound. The theorem has no family-count or board-size loss, but its small-deficiency hypothesis is substantive.
+

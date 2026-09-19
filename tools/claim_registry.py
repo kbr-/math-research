@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 import subprocess
 from urllib.parse import unquote, urlparse
+from claim_notices import render_notices, strip_notices
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = ROOT / 'research/claims/index.json'
@@ -192,6 +193,7 @@ def load(path=REGISTRY):
 
 
 def legacy_rows(text):
+    text = strip_notices(text)
     require(HEADER in text, 'Expected one four-column claim table')
     require(text.count(HEADER) == 1, 'Ambiguous table header')
     preamble, tail = text.split(HEADER)
@@ -231,7 +233,7 @@ def render(data):
     rows = ['| ' + ' | '.join(escape_cell(v) for v in
             ('`' + c['id'] + '`', c['summary'], c['assessment'], c['record'])) + ' |'
             for c in data['claims']]
-    return NOTICE + data['preamble'] + HEADER + '\n'.join(rows) + '\n'
+    return NOTICE + data['preamble'] + render_notices(data) + HEADER + '\n'.join(rows) + '\n'
 
 
 def reconcile(text, data, revision=None):

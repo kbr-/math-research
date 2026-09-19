@@ -1,0 +1,231 @@
+
+###virtual-copy-local
+1. Copy two values with corresponding input equalities
+    Let values \(a,b\) have unit/annihilator interfaces over the same actual retained system \(\Gamma\), with equal-length tuples \(G_a=(u_i)\), \(G_b=(v_i)\). Supply annihilator proofs through \(A_a,A_b\), conditional unit proofs through \(U_a,U_b\), and proofs of
+    \[
+      \epsilon_i=u_i-v_i\quad\text{over }\Gamma
+      \quad\text{through degree }E.
+    \]
+    Write \(d_a=\max\{0,\deg a\}\), \(d_b=\max\{0,\deg b\}\), and let \(\delta_\epsilon\ge0\) bound the degrees of nonzero \(\epsilon_i\). Use empty proofs for zero terms. Then \(a-b\) has a PC proof through
+    \[
+      \boxed{
+      \max\{A_a,A_b,E,\ U_b+d_a,\ U_a+d_b,\
+                  \delta_\epsilon+\max(d_a,d_b)\}.}
+      \tag{COPY-interface}
+    \]
+    Proof. The exact target identity is
+    \[
+      a-b=a(1-b)-b(1-a).
+    \]
+    For the first weighted conditional proof, derive
+    \[
+      a v_i=a u_i-a\epsilon_i.
+    \]
+    The annihilator has its supplied proof through \(A_a\). Multiply the completed equality polynomial \(\epsilon_i\) by \(a\), obtaining \(a\epsilon_i\) through \(\max\{E,d_a+\deg\epsilon_i\}\). The cost is not \(E+d_a\). Replaying the conditional unit proof of \(1-b\) with weight \(a\) now derives \(a(1-b)\) through \(\max\{U_b+d_a,A_a,E,d_a+\delta_\epsilon\}\).
+    Similarly \(b u_i=b v_i+b\epsilon_i\), so weighted replay of the other unit proof derives \(b(1-a)\) within the symmetric bound. Subtract the results. The supplied equality derivations are never multiplied wholesale. All substituted assumptions, retained axioms, and multiplication steps have complete PC witnesses in \(\Gamma\).
+    If \(\deg a,\deg b,\deg\epsilon_i\le L\), and common annihilator/unit ceilings are \(A_*,U_*\), the useful uniform form is
+    \[
+      \boxed{\deg_{\rm PC}(a-b)
+        \le\max\{E,A_*,U_*+L,2L\}.}
+    \]
+    For literally identical inputs the equality terms disappear. A virtual zero can use any supplied PC refutation of its input tuple as its unit proof; it need not have a short NS identity expressing one in those inputs.
+
+
+###virtual-copy-structural
+2. Structural induction does not add the equality cost again
+    Working conditional theorem. Fix one retained system \(\Gamma\) and a collection of formula-value occurrences, all of degree at most \(L\ge1\). Atoms use the same old proposition variables and TRUE has value zero. Negation and MOD retain their literal algebraic definitions. Every OR occurrence has an interface over \(\Gamma\), with annihilator proofs through \(A_*\) and conditional unit proofs through \(U_*\). Its inputs are the complements of its maximal non-OR child values, under the source's flattened OR convention.
+    For any two occurrences of the same formula, align those child positions and preserve all MOD argument multiplicities. Then their values have a copy-equality proof over \(\Gamma\) through
+    \[
+      \boxed{C_{\rm copy}=\max\{A_*,U_*+L,2L\}.}
+    \]
+    All interface witnesses are supplied over the common resulting system. The statement does not assume that witnesses from a different pre-substitution system remain valid.
+    Proof. Induct on formula structure. Atom and TRUE copies agree literally; negation changes the sign of an existing equality. At an OR node, child copy proofs give the coordinate differences through \(C_{\rm copy}\). Their actual polynomial degrees are at most \(L\). The local theorem returns
+    \[
+      \max\{C_{\rm copy},A_*,U_*+L,2L\}=C_{\rm copy}.
+    \]
+    Thus the input-equality cost is retained as a maximum rather than increased by another \(L\). Flattening skips intermediate OR subgroups as inputs; the induction uses proper maximal non-OR children and does not infer strict ENS support merely from proper-subformula containment.
+    For a MOD occurrence with residue \(i\), write its two pre-power scalars as
+    \[
+      s_A=i-\sum_j(1-a_j),\qquad s_B=i-\sum_j(1-b_j).
+    \]
+    The sum of completed child equalities proves \(s_A-s_B\) through \(C_{\rm copy}\). The power-difference identity gives
+    \[
+      s_A^{p-1}-s_B^{p-1}
+        =(s_A-s_B)\sum_{q=0}^{p-2}s_A^{p-2-q}s_B^q.
+    \]
+    In the ordinary polynomial ring, a nonconstant pre-power scalar has degree at most \(L/(p-1)\), since its output value has degree at most \(L\). Multiplication of the completed scalar difference therefore has final degree at most \(L\). Constant and zero cases are immediate. PC reuse preserves \(C_{\rm copy}\). This finishes the induction, with no separate factor for formula height, number of OR brackets, or number of MOD arguments.
+    Comparison with earlier COPY. Genuine ENS values have \(A_*\le2L\), \(U_*\le L\), recovering \(C_{\rm copy}=2L\). The same bound holds for virtual values with those interface budgets, even when their unit witnesses are PC derivations without an available NS prefix certificate. If instead \(U_*\le2L\) and \(A_*\le2L\), the bound is \(3L\). The earlier weighted-prefix COPY lemma remains valid under its stronger algebraic hypotheses; this is a different sufficient PC interface. No \(2L\) NS copy theorem is asserted.
+
+
+###virtual-copy-reuse-example
+3. A costly linear equality is reused without increasing its ceiling
+    For a concrete control, let \(\Gamma\) contain the seven positive pebbling polynomials on the preceding binary tree, Boolean domains, a fresh Boolean variable \(z\), and an accuracy-one block
+    \[
+      a=P_{(x_6,z)}.
+    \]
+    There is no sink equation \(x_6=0\). This base is consistent. The topological positive proof derives \(1-x_6\) through PC degree three, so \(\epsilon=x_6-1\) has a degree-three proof although it is a linear polynomial.
+    Compare \(a\) with a virtual value \(b=0\) on tuple \((1,z)\). Its conditional unit proof introduces the constant-one assumption. The other coordinate equality is zero. The essential weighted input is
+    \[
+      a=a x_6-a(x_6-1).
+    \]
+    The companion \(a x_6\) has degree three, and multiplying the completed linear equality by the quadratic value \(a\) also stays within degree three. Thus the copy proof \(a-b=a\) has degree three. Multiplying every line of the equality derivation by \(a\) would give the unnecessary bound five. This example exercises the precise reuse that closes the structural induction.
+
+
+###virtual-frame-Booleanity
+1. Conditional units supply PC Booleanity
+    Keep one actual retained system \(\Gamma\). Each OR value \(a\), of degree at most \(L\ge1\), has annihilator proofs \(\Gamma\vdash g_i a\) through \(A_*\) and a conditional unit proof \(\Gamma+G_a\vdash1-a\) through \(U_*\). Weight that complete unit proof by \(a\). Its extra assumptions are the supplied annihilators, so
+    \[
+      \Gamma\vdash a^2-a
+      \quad\text{through }\max\{A_*,U_*+\deg a\}.
+    \]
+    Atoms use their Boolean equations, TRUE is zero, and negation preserves the Booleanity polynomial. A literal MOD power \(s^{p-1}\) has its usual domain certificate \(s^{p-2}(s^p-s)\) through twice its current degree. Assume all original Boolean and retained coefficient field equations are in \(\Gamma\). Consequently all current source values have PC Booleanity through
+    \[
+      B=\max\{A_*,U_*+L,2L\}.
+    \]
+    This is the same ceiling as structural copy agreement. It is a PC conclusion; the weighted unit proof need not flatten to an NS certificate at that degree.
+
+
+###virtual-frame-gates
+2. Keep the separate gate budgets
+    The preceding three-term OR proof has a sharper form when every input degree is at most \(L\), as holds for complements of current child values. With annihilator ceiling \(A\) and unit ceiling \(U\), it proves \(c-ab\) through
+    \[
+      \max\{A,U+2L,3L\}.
+    \]
+    Indeed, the first weighted child unit costs \(\max\{A,U+L\}\). Multiplying the second completed weighted child unit by the other child only adds the final-polynomial ceiling \(3L\). For the parent's unit, each weighted input \(g_iab\) is obtained by multiplying a completed child annihilator; its final degree is at most \(3L\), so its proof costs \(\max\{A,3L\}\). The parent replay costs \(U+2L\). This keeps a large annihilator proof ceiling as a maximum rather than adding \(2L\) to it.
+    A non-OR child value \(a\) uses the singleton tuple \((1-a)\), with annihilator supplied by its PC Booleanity through \(B\) and unit cost at most \(L\). Including these singleton interfaces therefore gives the uniform source-gate ceiling
+    \[
+      R=\max\{A_*,U_*+2L,3L\}\ge B.
+    \]
+    Negation relations are literal identities. Every OR relation used here still needs literal concatenation of the corresponding flattened input tuples, or prior copy equalities that align the chosen values. All derivations are over the same \(\Gamma\).
+
+
+###virtual-frame-compiler
+3. Compile a fixed Boolean tautology frame
+    Working theorem. Let \(T\) be a fixed tautology frame using negation and binary OR, with \(m\ge1\) leaf occurrences, counting repetitions and constants. Implication and conjunction may be expanded in this basis without increasing their leaf counts. Substitute arbitrary formulas for its placeholders. Choose current values for every frame node, all of degree at most \(L\), satisfying the preceding gate and copy hypotheses over \(\Gamma\). The substituted formulas may themselves contain MOD gates; this theorem uses their Booleanity and copy agreement. Then the actual root value has a PC proof over \(\Gamma\) through
+    \[
+      \boxed{K_T=\max\{R,mL\}
+        =\max\{A_*,U_*+2L,3L,mL\}.}
+    \]
+    Proof, formal Boolean identity. Give each distinct placeholder a formal variable \(Z_j\), encoding TRUE by zero. Evaluate the frame with negation \(1-z\) and OR product \(zw\). Write \(F_t(Z)\) for the polynomial at node \(t\), and \(m_t\) for its number of leaf occurrences. Induction gives \(\deg F_t\le m_t\). Since \(T\) is a tautology, \(F_{\rm root}\) vanishes at every Boolean assignment over every field.
+    Successive reduction by \(Z_j^2-Z_j\) preserves total degree and gives a multilinear remainder. A multilinear polynomial vanishing on the Boolean cube is zero: evaluate the last variable at zero and one and induct on the remaining variables. Thus there is a formal identity
+    \[
+      F_{\rm root}(Z)=\sum_j Q_j(Z)(Z_j^2-Z_j),
+      \qquad
+      \deg\bigl(Q_j(Z)(Z_j^2-Z_j)\bigr)\le m.
+    \]
+    When \(m<2\), the nonzero right-hand summands are absent. This formal NS identity concerns the finite frame variables; it makes no NS claim about the supplied source witnesses.
+    Proof, actual values. Choose one current representative \(b_j\) per substituted placeholder. For each leaf occurrence, copy agreement proves its value minus \(b_j\) through \(B\); constants agree literally. Inductively derive \(a_t-F_t(b)\). Negation changes its sign. At an OR node with children \(u,v\), use
+    \[
+      a_t-F_u(b)F_v(b)
+        =(a_t-a_u a_v)
+          +(a_u-F_u(b))a_v
+          +F_u(b)(a_v-F_v(b)).
+    \]
+    The gate relation costs \(R\). The two completed child differences are multiplied only at their final lines. Their resulting degrees are at most \((m_u+1)L\le m_tL\) and \((m_u+m_v)L=m_tL\), respectively. Hence \(a_t-F_t(b)\) has a PC proof through \(\max\{R,m_tL\}\).
+    Finally substitute \(Z_j=b_j\) in the formal NS identity. Each factor \(b_j^2-b_j\) has a PC proof through \(B\), and each final cofactor product has degree at most \(mL\). Reuse gives a PC proof of \(F_{\rm root}(b)\) through \(\max\{B,mL\}\). Add it to the root difference. This proves the theorem without multiplying the source Booleanity or copy derivations wholesale.
+    The leaf count is that of the fixed frame, not the lengths of its substituted formulas. For a fixed finite Boolean axiom basis, its maximum \(M\) is a constant. An unbounded-arity schema cannot be treated as a constant-size Boolean frame without an additional argument.
+
+
+###virtual-frame-MP
+4. One modus-ponens step preserves the common ceiling
+    Suppose \(\Gamma\) has PC proofs of a value \(a\) for \(\varphi\) and a value \(c\) for \(\neg\varphi\vee\psi\), through \(D_a,D_c\). Let \(a'\) be the occurrence of \(\varphi\) inside that implication, \(b'\) its consequent occurrence, and \(b\) the desired representative of \(\psi\). Copy agreement supplies \(a-a'\) and \(b'-b\) through \(B\). The local gate relation supplies
+    \[
+      r=c-(1-a')b'
+      \quad\text{through }R.
+    \]
+    Derive \(a'\) from the completed antecedent and its copy difference, then multiply that final polynomial by \(b'\); its degree is at most \(2L\le R\). The exact identity
+    \[
+      b'=c+a'b'-r
+    \]
+    and the consequent copy proof give
+    \[
+      \boxed{\deg_{\rm PC}(b)\le\max\{D_a,D_c,R\}.}
+    \]
+    This extends the earlier augmented-PC reuse observation to the supplied virtual interfaces. The multiplier \(b'\) is an explicitly known polynomial; multiplying by it does not assume \(b'=0\).
+    Conditional composition. A proof whose axiom leaves instantiate a fixed finite Boolean basis with maximum frame leaf count \(M\), and whose inference rule is MP, therefore has value proofs through \(\max\{R,ML\}\). If additional assumption-leaf values already have \(\Gamma\)-proofs through \(D_0\), include \(D_0\) in that maximum. No proof-height factor is added while this one retained system and its complete interface witnesses remain available.
+
+
+###virtual-MOD-alignment
+1. Align actual MOD values without changing their formulas
+    Use the exact recorded expansion of
+    \[
+      M\leftrightarrow((B_0\wedge\neg\psi)\vee(C_0\wedge\psi)),\qquad
+      B_0=\mathrm{MOD}_{p,i}(\varphi_1,\ldots,\varphi_k),\quad
+      C_0=\mathrm{MOD}_{p,i-1}(\varphi_1,\ldots,\varphi_k),\quad
+      M=\mathrm{MOD}_{p,i}(\varphi_1,\ldots,\varphi_k,\psi).
+    \]
+    Do not simplify the prescribed double negations. The expansion has six OR schema nodes and ten leaf occurrences when \(M,B_0,C_0,\psi\) are treated as placeholders. Choose current representative values \(m,b,c,a\) for those four formulas. All current values have degree at most \(L\), and the common retained system \(\Gamma\) supplies the preceding interfaces, domains, and copy proofs through \(B=\max\{A_*,U_*+L,2L\}\).
+    Choose the prefix scalar in the representative \(b\):
+    \[
+      t=\sum_{j=1}^{k}\varphi_{j,b}^{\rm ap}-(k-i),
+      \qquad b=t^{p-1}.
+    \]
+    Let \(s_c,s_m\) be the actual pre-power scalars of the representative values \(c=s_c^{p-1}\) and \(m=s_m^{p-1}\). Summing corresponding argument-copy proofs gives
+    \[
+      s_c-(t-1),\qquad s_m-(t+a-1)
+      \quad\text{through PC degree }B.
+    \]
+    The number of terms affects proof length, not this degree ceiling. Multiplicities are preserved, and \(i-1\) is interpreted in \(\mathbb F_p\). The last argument inside \(M\) is aligned with the chosen \(a\) by its own copy proof.
+    Put \(c^\circ=(t-1)^{p-1}\), \(m^\circ=(t+a-1)^{p-1}\). Power-difference identities and final-line reuse prove
+    \[
+      c-c^\circ\ \text{through }B,\qquad
+      m-m^\circ\ \text{through }\max\{B,(p-1)L\}.
+    \]
+    For the first bound, the nonconstant scalars \(t,s_c\) have degrees at most \(L/(p-1)\), since their actual MOD outputs have degree at most \(L\). For the second, \(t+a-1\) may have degree as large as \(L\); its canonical power may therefore exceed the actual output degree. The displayed \((p-1)L\) allowance retains this possibility instead of assuming that a change of representatives preserves cancellations.
+
+
+###virtual-MOD-interpolation
+2. Derive the actual four-value recursion relation
+    The recorded interpolation identity is
+    \[
+      m^\circ-ab-(1-a)c^\circ=(a^2-a)R_p(t,a),
+      \qquad R_2=0,\quad \deg R_p\le p-3\ (p\ge3).
+    \]
+    For completeness, its left side vanishes at \(a=0,1\), so it is divisible by \(a(a-1)\). Its total degree is at most \(p-1\): in \(ab+(1-a)c^\circ=c^\circ+a(b-c^\circ)\), the leading powers of \(t\) cancel in \(b-c^\circ\). This gives the quotient bound. For \(p=2\), the interpolation is a literal linear identity. No field reduction of \(t\) is needed for this identity.
+    The current Booleanity proof of \(a\) costs at most \(B\). Multiply its completed polynomial by \(R_p(t,a)\); the final degree is at most \((p-1)L\). Combine this with the two power-copy proofs, multiplying \(c-c^\circ\) by \(1-a\) only at its final line. The latter product has degree at most \(2L\). Thus
+    \[
+      J=m-ab-(1-a)c,\qquad
+      \boxed{\Gamma\vdash_{\rm PC}^{\,E}J,\quad
+             E=\max\{B,(p-1)L\}.}
+    \]
+    The arithmetic step uses the last argument's Booleanity and the explicit scalar alignments. It introduces no separate Booleanity requirement for each of the \(k\) prefix arguments. Their copy witnesses and the literal MOD definitions remain required.
+
+
+###virtual-MOD-value
+3. Prove the current axiom value
+    Evaluate only the fixed outer Boolean frame algebraically on \(a,b,c,m\), writing hats for these computed polynomials, not for assigned coefficient images:
+    \[
+      \widehat l=a(1-b),\quad \widehat r=(1-a)(1-c),\quad
+      \widehat q=(1-\widehat l)(1-\widehat r),
+    \]\[
+      \widehat d_\to=(1-m)\widehat q,\quad
+      \widehat d_\leftarrow=m(1-\widehat q),\quad
+      \widehat F=1-(1-\widehat d_\to)(1-\widehat d_\leftarrow).
+    \]
+    Let \(H_a=a^2-a\), \(H_m=m^2-m\), and \(D=(1-b)(1-c)\). The exact identities
+    \[
+      \widehat l\,\widehat r=-H_aD,\qquad
+      e=m-\widehat q=J+H_aD
+    \]
+    give a PC proof of \(e\) through \(\max\{E,B,4L\}\). Reusing that completed polynomial and the MOD Booleanity proof of \(m\) gives
+    \[
+      \widehat d_\to=-H_m-(1-m)e,\qquad
+      \widehat d_\leftarrow=-H_m+me
+    \]
+    through \(\max\{E,B,5L\}\). Finally
+    \[
+      \widehat F=\widehat d_\to+
+                     (1-\widehat d_\to)\widehat d_\leftarrow
+    \]
+    has a PC proof through \(\max\{E,B,10L\}\). These are ordinary polynomial degrees; in particular, the computed direction polynomials can have degree \(5L\) even though their actual current gate values have degree at most \(L\).
+    The frame-comparison part of the preceding compiler proof does not require its abstract frame to be a tautology. It proves the actual axiom value minus \(\widehat F\) through \(\max\{R,10L\}\), using the actual gate relations and repeated-placeholder copy proofs. Here \(R=\max\{A_*,U_*+2L,3L\}\). Combining the results proves
+    \[
+      \boxed{K_{\rm MOD}=\max\{A_*,U_*+2L,10L,(p-1)L\}.}
+    \]
+    This is a value proof under the supplied current interfaces. It does not assume that the six schema blocks were packed or removed, and it imposes no new accuracy-two requirement. Their actual witnesses and the common degree bound \(L\) must be available.
+    The recorded empty cases have literal value zero: \(\mathrm{MOD}_{p,0}()\) has value \(0^{p-1}=0\), and \(\neg\mathrm{MOD}_{p,i}()\), \(i\ne0\), has value \(1-i^{p-1}=0\). Therefore, for the recorded presentation consisting of a fixed Boolean basis with at most \(M\) leaves per frame, these MOD schemas, and MP, the conditional common value-proof bound is
+    \[
+      \boxed{K=\max\{A_*,U_*+2L,\max(M,10,p-1)L\}.}
+    \]
+    Include any separately supplied assumption-value proof ceiling in this maximum. No degree factor for MOD arity or proof height appears while the same retained system and complete interface witnesses remain available. The construction introduces intermediate polynomials, not additional ENS families. It does not provide strict earlier-level leaf certificates or a new ordinary-PHP elimination theorem.
+

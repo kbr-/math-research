@@ -1,0 +1,312 @@
+
+### 260 cor:total-exception-majority-density
+total-exception-majority  3. A majority residual when the total budget is a fixed fraction 
+     The same trimming lemma also feeds the majority theorem. Suppose an integer \(B\ge0\) satisfies 
+     \[
+      E&lt;(B+1)(n-3B).
+    \] 
+     Then \(Q&lt;n-3B\), so \(n_0=n-q&gt;3B\). After the second matching, \(d=n_0-q_*\ge n_0-B&gt;2B\). Its distinguished-pigeon profile graph has both minimum degrees at least \(d-B\). A valid margin is 
+     \[
+      \varepsilon=\frac12-\frac Bd
+      \ \ge\
+      \varepsilon_0
+      :=\frac{n-Q-3B}{2(n-Q-B)}&gt;0.
+    \] 
+     Choose a positive integer \(K\equiv-1\pmod p\) satisfying 
+     \[
+      K\le\varepsilon_0d/2,\qquad
+      2d^2(1-\varepsilon_0^2)^{\lfloor K/2\rfloor}&lt;1.
+    \] 
+     The  majority construction  gives \(N=\lfloor d/K\rfloor-1\ge3\) and the same NS/PC and package transfer as above. These finite conditions remain necessary for this application of that theorem; positive margin by itself does not guarantee an appreciable small-board residual. 
+
+total-exception-density  4. An explicit sufficient density: fewer than \(n^2/12\) exceptions 
+     Fix \(0&lt;\eta&lt;1/12\), and assume 
+     \[
+      E\le(1/12-\eta)n^2.
+    \] 
+     Choose \(B=\lfloor n/6\rfloor\). Since \(B+1&gt;n/6\), 
+     \[
+      Q&lt;(1/2-6\eta)n,\qquad
+      n-Q-3B&gt;6\eta n,\qquad
+      d\ge n-Q-B&gt;(1/3+6\eta)n.
+    \] 
+     In particular the preceding total-budget condition holds. As \(n-Q-B\le n\), the guaranteed margin obeys \(\varepsilon_0&gt;3\eta\). Use the smaller fixed margin \(\bar\varepsilon=3\eta\), and choose the least positive congruent \(K\) above 
+     \[
+      1+\frac{2}{\bar\varepsilon^2}\bigl(\ln(2d^2)+1\bigr).
+    \] 
+     The  recorded parameter argument  gives union bound at most \(e^{-1}\). At fixed \(p,\eta\), \(K=O_{\eta,p}(\log n)\), and \(K\le\bar\varepsilon d/2\) holds for sufficiently large \(n\). Therefore 
+     \[
+      \boxed{N=\Omega_{\eta,p}(n/\log n).}
+    \] 
+     No distribution assumption on the exceptions was used. The constant \(1/12\) comes from maximizing the leading expression \(B(n-3B)\) in this particular trimming estimate. It is a sufficient threshold, not an optimal density theorem or a lower bound on other layouts. A full qualifying package with polylogarithmic source degree would contradict the residual PHP degree lower bound for sufficiently large \(n\); actual source qualification remains unproved. 
+
+
+### 261 thm:affine-inventory-local-partitions
+affine-inventory-partition  1. The exact local partition of an affine inventory 
+     Fix a finite list of actual affine polynomials over \(\mathbb F_p\), with \(m=n+1\) pigeons: 
+     \[
+      g_\alpha=c_\alpha+
+          \sum_{i=1}^{m}\sum_{j=1}^{n} A_{\alpha,i,j}x_{ij}
+          +\sum_s B_{\alpha,s}R_s .
+    \] 
+     The \(R_s\)'s are allowed earlier coefficient variables; any package still obeys its own strict level dependencies. For each column define 
+     \[
+      v_j(i)=(A_{\alpha,i,j})_\alpha,\qquad
+      i\sim_j i'\ \Longleftrightarrow\ v_j(i)=v_j(i').
+    \] 
+      Working recognition theorem.  A family of local partitions \(\mathcal P_j\) represents every \(g_\alpha\) as a polynomial in its class statistics and the \(R_s\)'s if and only if each class of \(\mathcal P_j\) lies inside one \(\sim_j\)-class. Thus the equality classes of \(v_j\) form the unique coarsest local partitions. This equivalence holds for literal polynomial representation and for representation modulo the proper domain/column ideal, including the coefficient-field equations but excluding PHP row equations. 
+      Proof.  If coefficients agree within every class, choose their common value \(A_{\alpha,C,j}\) and write the literal affine identity 
+     \[
+      g_\alpha=c_\alpha+
+        \sum_{j,C\in\mathcal P_j}A_{\alpha,C,j}\sigma_{C,j}
+        +\sum_s B_{\alpha,s}R_s.
+    \] 
+     Conversely, fix a column and two pigeons in one class. Put every other column at its empty state, set \(R=0\), and compare the two occupied states \(e_i,e_{i'}\) in that column. They give identical class-statistic vectors, so every represented input has the same value at both. Their difference is \(A_{\alpha,i,j}-A_{\alpha,i',j}\), proving signature equality for every \(\alpha\). Both points satisfy the proper ideal, so the necessity also applies to representation in that quotient. They are not asserted to be full PHP models. 
+     If \(s_j\) is the largest signature multiplicity in column \(j\), optimizing over all representing local partitions and all choices of one class per column gives exactly 
+     \[
+      \boxed{E_{\min}=\sum_{j=1}^{n}(m-s_j).}
+    \] 
+     Refining a signature class cannot create a larger class; choosing a largest class of the coarsest partition attains the bound independently in each column. This minimizes total exceptions, not every maximum-degree or distinguished-pigeon criterion. 
+     Replacing the input list by any basis of its linear span leaves these equivalence classes unchanged. In one direction each basis element is a linear combination of old inputs; in the other every old input is a combination of the basis. Equality of all coefficient signatures is therefore equivalent for the two lists. This diagnostic fixes the actual polynomials: replacing them by row-equivalent expressions, removing blocks, or changing their later inputs can alter the problem and requires its own transfer argument. 
+
+
+### 262 obs:separating-column-affine-freezing
+affine-inventory-separating-freeze  2. Separating column probes cannot all become low-degree constants 
+     For each column \(j\), let \(u_{j,t}=a_{j,t}+\sum_i b_{j,t,i}x_{ij}\) be affine column probes whose occupied-state vectors 
+     \[
+      w_j(i)=\bigl(u_{j,t}(e_i)\bigr)_t
+    \] 
+     are pairwise distinct for the \(n+1\) pigeons. This condition need not distinguish the empty state from every occupied state. 
+      Working obstruction.  There is no affine substitution \(\Phi\) into a residual \(\mathcal F_N\), \(N\ge3\), such that every original base image belongs to \(\mathcal C_2(\mathcal F_N)\) and, for some field constants \(c_{j,t}\), 
+     \[
+      \Phi(u_{j,t})-c_{j,t}\in\mathcal C_2(\mathcal F_N)
+      \qquad\text{for all }j,t.
+    \] 
+     In particular this excludes literal freezing by any such affine base map, beyond the particular copy layouts. 
+      Proof.  The column axioms give the exact degree-two identity 
+     \[
+      x_{ij}u_{j,t}-u_{j,t}(e_i)x_{ij}
+       =b_{j,t,i}(x_{ij}^2-x_{ij})
+          +\sum_{k\ne i}b_{j,t,k}x_{ij}x_{kj}.
+    \] 
+     Put \(Z_{ij}=\Phi(x_{ij})\), \(U_{j,t}=\Phi(u_{j,t})\). The identity's image lies in \(\mathcal C_2\). Both \(Z_{ij}\) and \(U_{j,t}-c_{j,t}\) are affine, so PC reuse also puts \(Z_{ij}(U_{j,t}-c_{j,t})\) in \(\mathcal C_2\). Subtraction gives 
+     \[
+      \bigl(c_{j,t}-u_{j,t}(e_i)\bigr)Z_{ij}\in\mathcal C_2.
+    \] 
+     Whenever \(w_j(i)\ne(c_{j,t})_t\), a nonzero component clears \(Z_{ij}\) through degree two. In each column at most one pigeon has the matching occupied profile. Across \(n\) columns, at most \(n\) pigeons can be eligible anywhere, so some pigeon \(i_*\) has every \(Z_{i_*j}\in\mathcal C_2\). Its row-image equation \(\sum_j Z_{i_*j}-1\in\mathcal C_2\) yields \(1\in\mathcal C_2\), contradicting the residual lower bound for \(N\ge3\). 
+     This uses the same cell-clearing idea as the  common-partition capacity proof , applied directly to the probes. No same-row exclusion or Booleanity of the probes is needed for this obstruction. The hypotheses concern affine base maps and degree-two constant proofs; they do not exclude general block normalizers. 
+
+
+### 263 ex:sharp-label-inventory-freezing-gap
+affine-inventory-label-control  3. A small sharp Boolean inventory reaches \(E_{\min}=n^2\) 
+     Label pigeons \(0,\ldots,n\) by distinct binary strings of length \(k=\lceil\log_2(n+1)\rceil\). In every column, include 
+     \[
+      g_{j,b}=\sum_{\text{bit }b\text{ of }i\text{ is }1}x_{ij},
+      \qquad 1\le j\le n,\quad 1\le b\le k.
+    \] 
+     There are \(nk=O(n\log n)\) affine inputs. Every column signature recovers the full pigeon label, so \(s_j=1\) and \(E_{\min}=n^2\). Each input is sharply Boolean over every prime field, with the actual degree-two certificate 
+     \[
+      g_{j,b}^2-g_{j,b}
+       =\sum_{i\in A_b}(x_{ij}^2-x_{ij})
+          +2\sum_{\substack{i&lt;i'\\i,i'\in A_b}}x_{ij}x_{i'j}.
+    \] 
+     After any genuine matching restriction leaving \(n'\) holes, the surviving pigeons retain distinct labels. Every surviving column therefore still has singleton signature classes and \(E'_{\min}=(n')^2\). Restriction alone cannot place this inventory below the preceding \(1/12\) density threshold. Replacing its affine inputs by a span basis cannot change that conclusion either. 
+     The occupied probe vectors are distinct, so the preceding obstruction also excludes simultaneous degree-two constant proofs under a general affine map to a hard residual board. 
+
+affine-inventory-normalizable-control  4. The same inventory can be eliminated on the original board 
+     Put the \(k\) probes from column \(j\) in one first-level ENS block, with any positive accuracy \(h_j\), and use fresh coefficients for different columns. This is a polynomial family of \(n\) blocks. The  single-column normalizer  applies to every block simultaneously. 
+     Its coefficient images are affine in the old column variables. Only the first coefficient row need be nonzero. Each companion image has an NS certificate through degree at most three, fitting its original degree \(1+2h_j\); every field image fits degree \(p\). The base stays fixed, and completed NS/PC degree is preserved on the original \(n\)-hole board, without a cost per block. 
+     This directly exhibits the distinction: removing an ENS block requires suitable certificates for its companion and field images, and need not turn its input tuple into constants. The example refines the earlier common-partition control and tests the inference from polynomial count plus sharp Booleanity. It is not claimed to be an unavoidable family in the actual Frege source construction, or an obstruction to all affordable elimination. 
+      Evidence and remaining gap.  The signature proof, explicit Booleanity identities, and counting contradiction are analytic; no numerical suite was needed. The  evidence record  links the reused normalizer certificates and prior controls. For the actual multilevel source, later inputs may use coefficients of a removed block. Their specialized values must be retained when measuring the next profile. 
+      Next step.  Bound the number of occupied-state classes needed by the affine coefficients of a single-column normalizer, and determine how these classes refine a later statistic package. Multiple blocks sharing a column must be charged explicitly. 
+      Process assessment.  Two guessed range endpoints overread source text, so a small exact-anchor excerpt command will replace those fragile reads and reject missing anchors; the mathematical step itself needed no new computation. 
+     
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   13 min 44.41 s   
+  Mathematical reasoning and proof writing  8 min 34.32 s  
+  Preparation and checkpoint work  5 min 9.72 s  
+  Individually measured conversion, checks, and local processing  0.37 s  
+  
+ Through final snapshot; overlapping time counted once. 
+ 
+
+
+### 264 lem:column-normalizer-output-profiles
+normalizer-output-profiles  1. At most \(k(p-1)\) coefficient-output classes 
+     Consider a base-only single-column tuple \(g_1,\ldots,g_k\in\mathbb F_p[Y]\), \(k\ge1\), at accuracy \(h\ge1\). Let \(S=\{0,e_1,\ldots,e_m\}\) be the legal column states. For each state where some input is nonzero, choose one index \(t(s)\) and put 
+     \[
+      w(s)=g_{t(s)}(s)^{-1}e_{t(s)}
+          \in\{\lambda^{-1}e_t:1\le t\le k,\ \lambda\in\mathbb F_p^\times\}.
+    \] 
+     There are at most \(k(p-1)\) possible vectors in this set. At common-zero states, choose any one vector already used at a nonzero state. If every state is a common zero, instead set \(w=0\) everywhere. Interpolate 
+     \[
+      \beta_t(Y)=w_t(0)\left(1-\sum_iY_i\right)
+                   +\sum_iw_t(e_i)Y_i,\qquad
+      H=1-\sum_t\beta_tg_t.
+    \] 
+      Working output bound.  The occupied-state vectors \((\beta_t(e_i))_t=w(e_i)\) take at most \(k(p-1)\) values. If all inputs are Boolean on \(S\), at most \(k\) values suffice. These are bounds for a supplied normalizer, not optimality claims against every coefficient construction or accuracy. 
+     The freedom at common zeros is valid because all companions vanish there regardless of the coefficient values. At every other state \(\sum_t w_t(s)g_t(s)=1\). Consequently every \(g_tH\) vanishes on \(S\), exactly as in the  existing column normalizer . Setting the first coefficient row to \(\beta\) and every other row to zero gives the same original-degree NS/PC transfer. 
+     Explicitly, for \(\delta=\max_t\deg g_t\ge0\) and each nonzero input of degree \(d_t\), column reduction certifies 
+     \[
+      g_tH\in\mathcal I_{d_t+\delta+1}(J_{\rm col}),\qquad
+      d_t+\delta+1\le d_t+h(\delta+1)=e_t.
+    \] 
+     The affine field images have degree-\(p\) certificates by Frobenius and the original cell Boolean axioms. If all ordinary inputs are zero, all companions are zero and the conclusion is immediate. If the inputs merely vanish on every legal state, \(\beta=0,H=1\), and degree-complete column reduction certifies each nonzero input through its own degree. 
+     Let \(\mathcal P^\beta\) group pigeons with the same \(w(e_i)\). For a class \(C\) write its common vector as \(w(C)\). The coefficient images are literally affine functions of its statistics: 
+     \[
+      \beta_t=w_t(0)+
+         \sum_{C\in\mathcal P^\beta}
+                   (w_t(C)-w_t(0))\,\sigma_C.
+    \] 
+     Thus the class bound concerns the actual polynomials later coefficient uses will see, not just an informal enumeration of state values. 
+
+normalizer-output-selector  2. Reading the selector costs at most one further class 
+     Put \(z(s)=1\) at common zeros of the input tuple and \(z(s)=0\) elsewhere. The selector satisfies \(H(s)=z(s)\). Refine the occupied-state partition by the pairs \((w(e_i),z(e_i))\). All common-zero states have the same chosen \(w\), so this adds at most one class: 
+     \[
+      |\mathcal P^{\beta,H}|\le1+k(p-1),
+      \qquad |\mathcal P^{\beta,H}|\le k+1
+          \ \text{for Boolean state values}.
+    \] 
+     With \(z(C)\) constant on each refined class, the proper column normal form is 
+     \[
+      H_{\rm red}=z(0)+
+                \sum_C(z(C)-z(0))\sigma_C,\qquad
+      H-H_{\rm red}\in\mathcal I_{\delta+1}(J_{\rm col}).
+    \] 
+     The certificate follows from equality on all column states and degree-complete reduction. This permits a later-input application of the  certified proper-normal-form pass ; it does not silently replace proof polynomials by quotient classes. 
+      Necessary scope control.  Take one Boolean input \(g=Y_1\). The valid choice \(\beta=1\) is constant on every pigeon, but \(H=1-Y_1\) differs at \(e_1\) and \(e_2\), for \(m\ge2\). Its companion is \(Y_1-Y_1^2\), with a degree-two base certificate. Thus the coefficient-only partition need not suffice if a later input also reads the selector. These are legal column states, not full PHP models. 
+
+
+### 265 thm:normalizer-output-statistic-hybrid
+normalizer-output-hybrid  3. Compose normalizers with a later statistic package 
+     Select blocks \(a\) whose current inputs are base-only polynomials in one column \(j(a)\), and normalize them as above. Let \(\mathcal Q_j\) be local base-statistic partitions used by the remaining selected package. Assume each actual remaining input is a polynomial in those statistics, earlier coefficients of that remaining package, and the earlier removed blocks' coefficient outputs. Selector expressions of removed blocks may also occur if the selector-aware version below is used. No arbitrary additional dependence on their original inputs is included in this hypothesis. 
+     Refine \(\mathcal Q_j\) by all coefficient-output partitions in that column, or by their selector-aware versions when required. Writing the refinement as \(\mathcal P_j\), the automatic class-count bound is 
+     \[
+      |\mathcal P_j|
+        \le\min\!\left\{m,\,
+           |\mathcal Q_j|\prod_{a:j(a)=j} L_a\right\},
+      \qquad
+      L_a=
+      \begin{cases}
+        k_a(p-1),&\text{coefficients only},\\
+        1+k_a(p-1),&\text{coefficients and selector}.
+      \end{cases}
+    \] 
+     Boolean state values allow \(k_a\) and \(k_a+1\), respectively. This product must be charged: one block's small output set alone gives no uniform bound on the common refinement of many blocks in the same column. 
+      Working hybrid transfer.  If these refined local partitions admit one of the established compatible freezing layouts, the selected blocks and the remaining qualifying package can all be eliminated with that layout's residual size and unchanged completed NS/PC degree. 
+      Proof and ledger.  First substitute the base-only affine normalizers. Their companion certificates fit their original \(e_{a,i}\), their field images fit \(p\), and the base is fixed. Every retained block keeps its actual specialized inputs and original source degree ledger. There are no new level dependencies because each removed coefficient becomes a polynomial in old incidence variables alone. 
+     For coefficient-only use, every later input is now literally a polynomial in the refined class statistics and its allowed earlier retained coefficients. If selectors are also used, take the proper normal form of each full actual later input. On the proper column states, each removed selector is the displayed \(H_{\rm red}\); its normal form is therefore invariant within every refined class. The  orbit-sum recognition argument  expresses it in the refined statistics. The input-replacement theorem certifies every old companion through its original degree, including any cancellations in the actual input polynomial. 
+     Finally apply  local-statistic freezing  to the qualifying remaining package. Its selected extension images vanish. Its affine base projection also preserves the already supplied normalizer certificates at their old degrees. Completed proofs therefore replay through the original \(D\), without a cost per block or level. No new sharp NS Booleanity assertion for reduced inputs is made. Other, unselected blocks may be retained on their actual transformed inputs. 
+     The resulting class bound is a recognition tool, not by itself a compatibility theorem for arbitrary differing local partitions. A common partition, a verified matching layout, or one of the sufficient profile conditions is still needed. 
+
+
+### 266 ex:bit-normalizer-linear-residual-package
+normalizer-output-bit-package  4. Fine bit labels can feed a package with a linear hard residual 
+     Use the  bit-label probes  on pigeons \(0,\ldots,n\), with one initial block in each column. Order bits from least significant to most significant. At a nonzero pigeon label choose its first one bit; at label zero and the empty state choose the first coordinate vector as the harmless default. 
+     The coefficient vector is a unit vector identifying the first one bit. Its first class contains label zero and all odd labels; other classes group the remaining labels by their first one bit. The selector flag singles out label zero among occupied states. Thus the selector-aware partition is the same in every column and has largest class 
+     \[
+      s=\left\lfloor\frac{n+1}{2}\right\rfloor,
+    \] 
+     the odd labels. There are at most \(k+1\) classes, \(k=\lceil\log_2(n+1)\rceil\), while the raw input signatures were all distinct. In this example \(H_{\rm red}=1-\sum_{i=1}^{n}x_{ij}\), with pigeon zero excluded from the sum. 
+     Allow any finite later package whose actual inputs are polynomials in whole-column occupancies, these initial coefficient and selector outputs, and its own earlier coefficients. Apply the selector-aware normal-form pass and the  common-partition theorem . With \(K=p-1\), whenever the displayed residual is positive, the entire qualifying package transfers at unchanged NS/PC degree to 
+     \[
+      \boxed{N=
+         \left\lfloor\frac{\lfloor(n+1)/2\rfloor-1}{p-1}\right\rfloor-1
+         =\Theta_p(n).}
+    \] 
+     This extends the earlier independently normalizable control to a multilevel package that can use its outputs. Later uses of the uncompressed bit inputs themselves may destroy the coarse-partition hypothesis and are not covered. No claim is made that every actual Frege source package has this structure. 
+
+
+### 267 obs:affine-definitions-preserve-degree
+affine-definitions-preserve-degree  2. Pure affine defining extensions preserve NS and PC refutation degree 
+     Let \(G\subseteq F[X]\), over any field \(F\). Adjoin finitely many fresh variables in acyclic order with defining equations 
+     \[
+      y_t-\ell_t(X,y_1,\ldots,y_{t-1})=0,
+    \] 
+     where every \(\ell_t\) is affine. Apart from these definitions, add no new axioms. Recursive substitution gives an affine map \(\Theta:F[X,Y]\to F[X]\) fixing \(X\) and sending every defining equation to zero. 
+      Working application.  The minimum ordinary NS refutation degree, and separately the minimum ordinary PC refutation degree, are unchanged by these extensions. 
+      NS proof.  Apply \(\Theta\) to a completed certificate. Definitional terms disappear, base polynomials remain fixed, and each surviving cofactor has no larger degree. Every generator multiple therefore stays within its original degree budget. The converse follows by retaining an old proof unchanged in the extended system. 
+      PC proof.  Linear combinations commute with \(\Theta\). For a source multiplication \(zf\), the source degree bound gives \(\deg f+1\le D\) when \(f\ne0\). Write the affine image \(\Theta z=a_0+\sum_i a_i x_i\); derive each \(x_i\Theta f\) and combine with \(a_0\Theta f\). All new lines have degree at most \(D\), even if the earlier proof of \(\Theta f\) had already used degree \(D\). Zero images can be omitted. Again the reverse implication uses the same old proof. 
+     This concerns degree only. Substituting affine forms into a sparse high-degree monomial may expand it into many monomials. Consequently a small sparse proof using affine names can coexist with a large ordinary-degree lower bound. 
+     In particular, any such proof of our exact weak \(\mathcal F_n\), over any field, still has degree at least \(n/2+1\). A claimed short proof with a different PHP encoding must first be compared with that encoding; its size alone supplies no contradictory degree upper bound. 
+
+affine-definition-domains  3. Coefficient domains must be specified separately 
+     Over \(\mathbb F_p\), if the base includes the Boolean axioms for \(X\), the same preservation allows additional \(y_t^p-y_t\) axioms for affine definitions with coefficients in \(\mathbb F_p\). After recursive substitution, write \(\Theta y_t=a_0+\sum_i a_i x_i\). Then 
+     \[
+      (\Theta y_t)^p-\Theta y_t
+       =\sum_i a_i(x_i^p-x_i)
+       =\sum_i a_i(x_i^2-x_i)\sum_{u=0}^{p-2}x_i^u.
+    \] 
+     This fits the original field-axiom degree \(p\); at a lower proof budget that source axiom was inactive. Arbitrary extra Boolean equations for affine names are not included in this claim, nor are prime-field domain equations for affine forms with coefficients outside \(\mathbb F_p\). 
+      An ENS coefficient is not automatically a defining variable.  Over the satisfiable proper Boolean domain, take \(g=x\), accuracy one, and the block 
+     \[
+      x^2-x=0,\qquad r^p-r=0,\qquad x(1-rx)=0.
+    \] 
+     The point \(x=0,r=1\) satisfies all three equations but violates \(r-x=0\). Thus one cannot simply treat this coefficient as a name defined to equal its input. A normalizer may choose a convenient coefficient value without that equality being an available source axiom. This local model does not concern the full unsatisfiable PHP base and does not exclude more elaborate ENS gadgets. 
+
+
+### 268 lem:ENS-conjunction-full-product-certificate
+ENS-full-product-degree  4. An ENS conjunction selector has an explicit full-product certificate 
+     The preceding coefficient control does not mean that ENS outputs lack gate semantics. Let \(z_1,\ldots,z_m\) be Boolean, use the inputs \(1-z_i\) at accuracy \(h\ge1\), and set 
+     \[
+      A_u=1-\sum_{i=1}^{m}r_{ui}(1-z_i),\qquad
+      P=\prod_{u=1}^{h}A_u,\qquad
+      E_i=(1-z_i)P,\qquad \Pi=\prod_{i=1}^{m}z_i.
+    \] 
+     On any model of the Boolean base and all ENS companions, \(P=\Pi\): when some \(z_i=0\), its companion forces \(P=0\); when all \(z_i=1\), every \(A_u=1\). This is the local conjunction instance of the recorded selector semantics. 
+      Explicit NS identity.  In the ordinary joint-variable ring, 
+     \[
+      \begin{aligned}
+      P-\Pi
+       ={}&\sum_{i=1}^{m}
+                  \left(\prod_{j&lt;i}z_j\right)E_i\\
+          &+\sum_{u=1}^{h}\sum_{i=1}^{m}
+               r_{ui}\left(\prod_{v&lt;u}A_v\right)
+               \left(\prod_{j\ne i}z_j\right)(z_i^2-z_i).
+      \end{aligned}
+    \] 
+     To verify it, write \(P-\Pi=P(1-\Pi)+(P-1)\Pi\), telescope \(1-\Pi\) and \(P-1\), and use \((1-z_i)\Pi=-(z_i^2-z_i)\prod_{j\ne i}z_j\). No coefficient field equation is needed. 
+     Every displayed axiom multiple has degree at most \(m+2h\). The target itself has degree exactly 
+     \[
+      \deg(P-\Pi)=\max(m,2h).
+    \] 
+     Indeed \(P\) contains the nonzero degree-\(2h\) monomial \(z_1^h\prod_u r_{u1}\), while \(\Pi\) has degree \(m\) and contains no coefficient variable, so their top terms cannot cancel. Thus a proof explicitly deriving this equality cannot use a smaller ordinary-degree ceiling than \(\max(m,2h)\), and the displayed NS upper bound is \(m+2h\). 
+     The original companion degrees strengthen the lower bound to \(\max(m,2h+1)\): below \(2h+1\), no companion can occur in a degree-bounded proof. The remaining Boolean and coefficient-field axioms admit \(z=0,r=0\), where \(P-\Pi=1\). They therefore cannot derive the target. This uses the original axiom activity, not degrees recomputed in a quotient. 
+     This is a target-degree observation with a certificate, not a lower bound against alternative interfaces. It explains why replacing a named high-fan-in product by a low-degree ENS selector does not automatically provide its full defining equation within a polylogarithmic degree budget. The original companions have degree \(2h+1\), and the current source compiler uses costed interfaces rather than silently identifying \(P\) with an expanded product. 
+
+
+### 269 obs:occupancy-summary-characteristic
+aggregate-counting-characteristic  5. Ordinary field sums can lose the integer counting contradiction 
+     Let \(\sigma_j=\sum_i x_{ij}\). The weak PHP base implies \(\sigma_j^2-\sigma_j=0\) through degree two and \(\sum_j\sigma_j-(n+1)=0\) through degree one. But keeping just abstract Boolean occupancies and their sum gives the smaller system 
+     \[
+      \mathcal A_n=\{y_j^2-y_j:1\le j\le n\}
+              \cup\left\{\sum_{j=1}^{n}y_j-(n+1)\right\}.
+    \] 
+     If the characteristic is a prime \(p\le n+1\), this system is satisfiable. Let \(r\) be the least nonnegative residue of \(n+1\) modulo \(p\); then \(r\le n\). Assign exactly \(r\) of the \(y_j\)'s one and all others zero. This is an aggregate-system model, not a lift to a PHP matching or a model of \(\mathcal F_n\). 
+     Over characteristic zero or a prime greater than \(n+1\), the same aggregate system has an NS certificate through degree \(n+1\). Put \(S=\sum_jy_j\), \(b=n+1\), and \(F(T)=\prod_{t=0}^{n}(T-t)\). On every Boolean point, \(F(S)=0\), so ordinary Boolean monomial reduction gives a certificate from the Boolean axioms through degree \(n+1\). Polynomial division gives 
+     \[
+      F(S)-(S-b)Q(S)=F(b)=(n+1)!\ne0,\qquad \deg Q=n.
+    \] 
+     Divide by that nonzero constant to obtain the asserted certificate. No small sparse size is claimed for its expanded form. In small characteristic the factorial vanishes and the explicit satisfying point explains why this aggregate argument fails, even over an extension field of the same characteristic. 
+     This control isolates one reason field-sensitive bookkeeping matters: preserving integer information requires more than an ordinary field-valued occupancy sum. It neither establishes the paper's stronger simulation inside ENS nor rules out a different prime-field encoding. 
+
+      Outcome, scope, and next step.  The audit found no contradiction to the current small-degree ENS endpoint and no general elimination theorem. It checked the named source definitions and field statements, gave the exact affine-degree comparison, and exhibited the full-product and aggregate-counting costs. The  source and evidence record  preserves version hashes, locators, and reading coverage. Next inspect the stronger construction's encoding of integer partial sums and identify the exact operation whose ENS realization remains unproved. 
+      Process assessment.  The user's strategic question led to a concrete comparison of proof measures and permitted equations; targeted source excerpts and explicit local controls settled this cycle without a new numerical suite or another framework rule. 
+     
+ 
+<caption>Measured timing</caption>
+   Measured category  Elapsed   
+ 
+  Total instrumented interval   24 min 15.64 s   
+  Marked reading and review windows  1 min 3.68 s  
+  Mathematical reasoning and proof writing  18 min 41.36 s  
+  Preparation and checkpoint work  2 min 10.07 s  
+  Dedicated web and download-attempt windows  2 min 19.91 s  
+  Individually measured conversion, checks, and local processing  0.62 s  
+  
+ Through final snapshot; overlapping time counted once. 
+ 
+

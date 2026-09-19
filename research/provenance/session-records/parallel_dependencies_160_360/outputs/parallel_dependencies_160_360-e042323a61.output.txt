@@ -1,0 +1,325 @@
+
+###Hall-profile-sparse-family
+4. A sparse family and the exact scope of the collision step
+    Fix \(1\le r\le n\), choose \(r\) rows \(A\) and \(r-1\) columns \(U\), and designate
+    \[
+      g_j=\sum_{a\in A}x_{aj},\qquad j\notin U.
+    \]
+    For selected rows, the common-zero neighbors are exactly \(U\). The theorem applies with \(h\ge r\), \(W=2r\), and coefficient \(\beta_{a,j}=x_{aj}\). Affine companions fit degree \(2r+1\). Yet the occupied witness set has only
+    \[
+      |E|=r(n-r+1),\qquad
+      \frac{|E|}{n(n+1)}=\frac{r(n-r+1)}{n(n+1)},
+    \]
+    which tends to zero for fixed \(r\). For \(r=2\), every pair of rows and every one-column exception gives such a block at accuracy two. Any collection of these blocks, also with arbitrary extra inputs under the original degree ledger, can be removed on the original board. This analytic family was not a separate numerical run.
+    More generally, for row-dependent allowed sets \(U_a\), the product \(\prod_a\sum_{j\in U_a}x_{aj}\) has zero proper column normal form exactly when no injective choice \(a\mapsto j\in U_a\) exists. Every noninjective term contains a collision. Every injective choice gives a distinct surviving monomial with coefficient one, so there is no characteristic-dependent cancellation. This describes the collision-only finish, not every possible use of the full PHP row equations.
+    The small Hall criterion is sufficient, not a lower bound on general normalizers. A graph may require many rows in its deficiency, or a different affine combination of row equations may beat this construction. In particular, all-but-one-column occupancy probes have a two-row Hall witness; the next cycle examines whether a one-row map can still work.
+
+
+###Hall-profile-checks
+5. Explicit certificate and missing-hypothesis controls
+    The compiled checker uses the full four-pigeon, three-hole weak base. Its cases \((p,r,h,d_{\rm witness})\) are \((2,3,3,1),(3,2,2,2),(5,1,2,1)\), with \(A=\{0,\ldots,r-1\}\) and \(U=\{0,\ldots,r-2\}\). Weighted column probes exercise nontrivial field inverses; the middle case includes quadratic powers and a collision term. An extra input uses an earlier retained coefficient variable. The last case checks a padded unused coefficient row.
+    All 41 saved NS identities passed: local occupied-state reductions, row identities, telescoping products, every companion image, and nonzero coefficient-field images. All nine companions and twenty field images are accounted for, including literal zero fields. The collision finish is explicitly checked to use no Boolean cofactor and no row equation. The program constructs the displayed certificates directly; it does not solve membership in the unrestricted full PHP ideal.
+    In each of three cases, deleting the last selected row equation admits a recorded point satisfying the column axioms and all remaining selected rows, at which \(H\) and the extra companion both equal one. A second control enlarges the allowed columns to \(r\); a recorded matching makes the collision-finish product one and gives a nonzero proper normal form. These six controls use the stated partial bases, not nonexistent full PHP models. They separate required steps of this construction without claiming lower bounds against all normalizers.
+    Compilation and every check succeeded. The complete certificates and controls and reproduction record preserve the source inputs, coefficient rows, ordinary image polynomials, and original degree budgets.
+    Remaining gap and next step. No argument forces a small Hall witness or another affordable cover for every source block. Audit all-but-one-column occupancy probes as a focused test of whether general affine coefficients can improve the Hall row budget, keeping NS and PC feasibility distinct.
+    Process assessment. Reusing column reduction and checking explicit telescoping certificates kept the verification focused on the new argument and its missing hypotheses; no new workflow rule or historical-suite rerun was needed.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval12 min 20.50 s
+Marked reading and review windows17.45 s
+Mathematical reasoning and proof writing8 min 12.00 s
+Computation design and coding2 min 37.93 s
+Preparation and checkpoint work1 min 10.36 s
+Individually measured computation0.07 s
+Individually measured conversion, checks, and local processing2.69 s
+
+Through final snapshot; overlapping time counted once.
+
+
+
+###occupancy-probe-exact-degrees
+1. Exact degrees of the augmented probe system
+    Use zero-based column indices, \(n\ge3\), \(m=n+1\) pigeons, and \(\sigma_j=\sum_i x_{ij}\). Add all occupancies except column zero as equations:
+    \[
+      \Gamma_n=\mathcal F_n\cup\{\sigma_j:1\le j<n\}.
+    \]
+    These are additional linear equations, not ENS companions. The base remains weak Boolean linear-row PHP, without same-row exclusions.
+    Working theorem. Over every prime field,
+    \[
+      \boxed{\operatorname{PCdeg}(\Gamma_n)=2,\qquad
+      \operatorname{NSdeg}(\Gamma_n)=
+      \begin{cases}2,&p\nmid n,\\3,&p\mid n.\end{cases}}
+    \]
+    The degree-one lower bound follows by setting every \(x_{i0}=1\) and every other cell to zero. This satisfies all degree-one generators, while violating column-zero collisions.
+
+
+###occupancy-probe-upper-bounds
+2. PC reuse gives degree two; NS has a degree-three upper bound
+    Write \(B_{ij}=x_{ij}^2-x_{ij}\), \(L_i=\rho_i-1\), and
+    \[
+      D_{ij}:=x_{ij}\sigma_j-x_{ij}
+        =B_{ij}+\sum_{k\ne i}x_{ij}x_{kj}.
+    \]
+    From the added equation \(\sigma_j=0\), this degree-two base identity yields \(x_{ij}=0\) through PC degree two, for \(j\ge1\). Thus \(R_i:=x_{i0}-1\) has a PC derivation and the following NS certificate through degree two:
+    \[
+      R_i=L_i-\sum_{j=1}^{n-1}x_{ij}\sigma_j
+                    +\sum_{j=1}^{n-1}D_{ij}.
+    \]
+    For distinct rows \(a,b\), put \(X=x_{a0}\), \(Y=x_{b0}\). The identity
+    \[
+      1=XY-(X-1)Y-(Y-1)
+    \]
+    uses a base collision and the completed affine consequences. PC reuse stays in degree two. Multiplying the displayed NS certificate for \(R_a\) by \(Y\) gives an NS refutation through degree three. This places the reuse distinction from the earlier path control inside a full weak-PHP augmented system.
+
+
+###occupancy-probe-moment-design
+4. A normalized degree-two design when \(p\mid n\)
+    Assume \(p\mid n\). Set
+    \[
+      \Lambda(1)=1,\qquad
+      \Lambda(x_{ij})=\Lambda(x_{ij}^2)=\mathbf1_{\{j=0\}},\qquad
+      \Lambda(x_{ij}x_{kj})=0\quad(i\ne k).
+    \]
+    For distinct columns define \(M_{jl}(i,k)=\Lambda(x_{ij}x_{kl})\), with \(M_{lj}=M_{jl}^{\mathsf T}\). Put \(A=J_m-I_m\). It suffices to arrange
+    \[
+      \sum_{l\ne j}M_{jl}=\mathbf1_{\{j=0\}}A,\qquad
+      M_{jl}\mathbf1=0\quad(j\ne l).
+    \]
+    The first identity kills every variable multiple of a row equation. For multiplier \(x_{kj}\), the same-column contribution is \(\mathbf1_{\{j=0\}}\mathbf1_{\{i=k\}}\), and the other columns supply the complementary off-diagonal matrix. Their sum equals \(\Lambda(x_{kj})\), as required. The second identity kills every variable multiple of a probed column sum. Constant multiples of both linear generator types vanish by the first moments. Boolean and column-collision generators vanish by construction.
+    Odd characteristic. Since \(A\mathbf1=n\mathbf1=0\), use only columns \(0,1,2\):
+    \[
+      M_{01}=M_{02}=\tfrac12A,\qquad M_{12}=-\tfrac12A.
+    \]
+    Use transposes in the reverse directions and zero for every other cross-column matrix. The required sums follow immediately.
+    Characteristic two. Here \(n\) is even and \(m\) is odd. Let \(S\) be upper triangular, with every strictly upper entry one and \(S_{ii}=i\bmod2\), \(0\le i<m\). Then
+    \[
+      S+S^{\mathsf T}=A,\qquad S\mathbf1=S^{\mathsf T}\mathbf1=0.
+    \]
+    The row and column sums vanish because the off-diagonal counts \(m-1-i\) in row \(i\) and \(i\) in column \(i\) have the same parity. Set
+    \[
+      M_{01}=S,\qquad M_{02}=S^{\mathsf T},\qquad M_{12}=S^{\mathsf T},
+    \]
+    with reversed transposes and all other matrices zero. The column-zero matrix sum is \(A\); at columns one and two equal matrices cancel. Some same-row cross-column moments are nonzero, as the weak encoding permits.
+    These prescriptions define a normalized linear functional on all ordinary degree-at-most-two polynomials. They annihilate every generator of \(\mathcal I_2(\Gamma_n)\), so \(1\notin\mathcal I_2(\Gamma_n)\). No positivity or multiplicativity is assumed. Together with the upper bound, this proves exact NS degree three when \(p\mid n\). The hypothesis \(n\ge3\) supplies three distinct columns; the excluded \(n=2,p=2\) case is not covered.
+
+
+###occupancy-one-row-feasibility
+3. A degree-two base-zero factor exists exactly when \(p\nmid n\)
+    Suppose \(p\nmid n\), fix a row \(a\), and choose
+    \[
+      X=x_{a0},\qquad \beta_j=x_{aj}+n^{-1}X\quad(1\le j<n),
+      \qquad H=1-\sum_{j=1}^{n-1}\beta_j\sigma_j.
+    \]
+    The exact base identity
+    \[
+      H=-L_a-\sum_{j=1}^{n-1}D_{aj}
+             +n^{-1}D_{a0}-n^{-1}X\sum_{i=0}^{n}L_i
+    \]
+    follows from \(X\sum_iL_i=D_{a0}-nX+X\sum_{j\ge1}\sigma_j\). Every term fits degree two. Consequently \(1=H+\sum_j\beta_j\sigma_j\) is an NS refutation of \(\Gamma_n\) through degree two.
+    These coefficients also give a one-row ENS normalizer: every \(\sigma_jH\) has an NS base certificate through its original companion degree three. Affine coefficient fields have degree-\(p\) Boolean certificates. Additional inputs may receive zero coefficients and multiply the same degree-two certificate within their own original budgets.
+    Conversely, affine \(\beta_j\) with \(H\in\mathcal I_2(\mathcal F_n)\) would give an NS degree-two refutation of \(\Gamma_n\). The design below excludes this when \(p\mid n\). Since the base satisfies \(\mathcal C_2(\mathcal F_n)=\mathcal I_2(\mathcal F_n)\), it also excludes a degree-two PC base certificate for such \(H\). This closure statement is for the base alone; the augmented system has different low-degree consequences.
+
+
+###occupancy-probe-checks
+5. Exact traces, designs, and controls
+    The compiled checker verifies the symbolic certificates for \(n=3\) over \(\mathbb F_2,\mathbb F_3,\mathbb F_5\): three PC degree-two traces, NS degree-three upper certificates, and, where \(p\nmid3\), degree-two refutations and actual one-row ENS companion/field images. All 21 NS identities and three traces passed; each trace also has a corrupted-line rejection check.
+    Complete moment matrices for \((n,p)=(3,3),(4,2),(5,5)\) give normalized designs annihilating all 751 degree-two generator multiples tested. The same recipes at \((4,3),(3,2),(4,5)\), outside their divisibility hypotheses, have recorded nonzero generator values. Three affine-subsystem points supply degree-one controls. These six controls are distinguished from full PHP models.
+    The complete output and reproduction record preserve all certificates, traces, matrices, and violations. The final source compiles without warnings; a formatting-only correction did not change the tested algorithm.
+    Remaining gap and next step. The two-row Hall map remains available in every characteristic. For \(p\mid n\), the design excludes a degree-two base-zero factor certificate, not affine \(H\) whose separate companion images lie in \(\mathcal I_3(\mathcal F_n)\) or \(\mathcal C_3(\mathcal F_n)\). Test that broader one-row feasibility next.
+    Process assessment. Explicit moment formulas avoided a larger generic rank computation; the existing sparse polynomial kernel handled the upper certificates, and routine patch/formatting corrections required no new framework rule.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval18 min 18.09 s
+Mathematical reasoning and proof writing10 min 14.85 s
+Computation design and coding6 min 14.08 s
+Preparation and checkpoint work1 min 43.96 s
+Individually measured computation0.07 s
+Individually measured conversion, checks, and local processing5.12 s
+
+Through final snapshot; overlapping time counted once.
+
+
+
+###occupancy-affine-accuracy-frontier
+1. The precise normalization class and exact row count
+    Let \(g_j=\sigma_j=\sum_{i=0}^{n}x_{ij}\), \(1\le j<n\), over the unchanged weak base \(\mathcal F_n\). A coefficient map is affine in the original incidence variables. At accuracy \(h\), require each companion image to have an NS or PC proof from this base through its original degree \(2h+1\); assigned field images must fit their original degree \(p\).
+    Working theorem. If \(p\mid n\), no affine \(\beta_j\) can satisfy
+    \[
+      H=1-\sum_{j=1}^{n-1}\beta_j\sigma_j,\qquad
+      \sigma_jH\in\mathcal C_3(\mathcal F_n)\quad(1\le j<n)
+    \]
+    under the sufficient board conditions
+    \[
+      n\ge18\quad(p=2),\qquad
+      n\ge6(p-1)\quad(p\text{ odd}).
+    \]
+    This excludes NS image proofs as well. Accuracy two suffices by the Hall construction with any two rows and \(U=\{0\}\): its product has a degree-four base certificate and every affine companion fits degree five. Coefficient fields fit \(p\). Thus the minimum affine accuracy in this class is exactly two in the stated divisible regime.
+    When \(p\nmid n\) and \(n\ge3\), the preceding one-row map gives NS companion images through degree three, so the minimum is one. Higher source accuracies can pad unused coefficient rows with zero. This does not turn an accuracy-one source block into an accuracy-two block at the same original degree.
+
+
+###occupancy-affine-row-averaging
+2. Average a putative affine map over the pigeon rows
+    Assume a one-row map exists in the divisible regime. Put \(m=n+1\); then \(m\ne0\) in \(\mathbb F_p\). Average the coefficients over the cyclic group of all \(m\) pigeon-row shifts:
+    \[
+      \overline\beta_j=\frac1m\sum_{\pi\in C_m}\pi(\beta_j),
+      \qquad
+      \overline H=1-\sum_{j=1}^{n-1}\overline\beta_j\sigma_j.
+    \]
+    Every \(\sigma_j\) is fixed by these row permutations, and the base is invariant. A permuted degree-three PC proof remains such a proof; linear combinations preserve the ceiling. Therefore \(\sigma_j\overline H\in\mathcal C_3(\mathcal F_n)\) for every probed column.
+    Affineness and row transitivity give literal coefficients of the form
+    \[
+      \overline\beta_j=a_j+\sum_{l=0}^{n-1}b_{jl}\sigma_l.
+    \]
+    Consequently \(\overline H\) is a polynomial of degree at most two in the column statistics. Introduce formal zero-column indicators \(z_l=1-\sigma_l\), and call the resulting quadratic polynomial \(Q(z)\). At \(t=(0,1,\ldots,1)\), all probed occupancies vanish, hence
+    \[
+      Q(t)=1.
+    \]
+    The averaging is legitimate because \(p\nmid m\); no average over the full symmetric group, whose order could vanish in the field, is used.
+
+
+###occupancy-affine-forced-slices
+3. Freezing forces zero values on small zero-column slices
+    Write \(T=\{1,\ldots,n-1\}\). Choose \(K\ge1\), \(K\equiv-1\pmod p\), with \(n\ge6K\). For every \(K\)-subset \(S\subseteq T\), use the affine freezing map with exactly those zero columns. It sends the original column statistics to \(1-\mathbf1_S\) and leaves
+    \[
+      N=\left\lfloor\frac nK\right\rfloor-1\ge5
+    \]
+    holes. Its base-image certificates preserve degree. There is a probed column outside \(S\), whose occupancy becomes one, so its companion image is the field constant \(Q(\mathbf1_S)\). If that constant were nonzero, its degree-three PC image proof could be scaled to a degree-three refutation of the residual base. The audited lower bound \(N/2+1>3\) forbids this. Thus
+    \[
+      Q(\mathbf1_S)=0\qquad
+      (S\subseteq T,\ |S|=K).
+    \]
+    This uses actual full-base image proofs and the residual lower bound, not a proper-ideal heuristic or a multiplicative design.
+
+
+###occupancy-quadratic-slice-reconstruction
+4. Reconstruct the missing value from those slices
+    Let \(L=|T|=n-1\). For a polynomial \(Q\), write
+    \[
+      \mathcal S_K(Q)=\sum_{\substack{S\subseteq T\\|S|=K}}Q(\mathbf1_S).
+    \]
+    Odd characteristic. Choose \(K=p-1\). For every ordinary monomial of degree at most two whose distinct-variable support lies in \(T\), let that support size be \(r\le2\le K\). It has value one at \(t\), and its total value on the \(K\)-slice is
+    \[
+      \binom{L-r}{K-r}\equiv1\pmod p.
+    \]
+    Indeed \(L-r\equiv K-r\pmod p\) and \(0\le K-r<p\), so the falling-factorial formula has an invertible denominator and equals \(\binom{K-r}{K-r}=1\). A monomial containing \(z_0\) vanishes both at \(t\) and on every slice point. Linearity therefore gives \(Q(t)=\mathcal S_{p-1}(Q)\). The preceding forced zeros contradict \(Q(t)=1\).
+    Characteristic two. Now \(L\) is odd. Set \(b=\binom L3\bmod2\). For every ordinary quadratic polynomial,
+    \[
+      Q(t)=\mathcal S_3(Q)+(1+b)\mathcal S_1(Q).
+    \]
+    Check this on monomials. On the singleton slice, the constant and each supported linear monomial have total one, and a product of two distinct supported variables has total zero. On the triple slice those totals are respectively \(\binom L3=b\), \(\binom{L-1}2=b\), and \(L-2=1\) in the field. The middle equality follows from \(3\binom L3=L\binom{L-1}2\). Squares have the same values as linear monomials at these Boolean points, and monomials involving \(z_0\) vanish. This proves the identity.
+    Both \(K=1\) and \(K=3\) obey the freezing congruence in characteristic two; \(n\ge18\) makes both residual boards large enough. Their forced zeros again contradict \(Q(t)=1\), completing the lower bound.
+
+
+###occupancy-affine-accuracy-checks
+5. Exact reconstruction and hypothesis controls
+    The compiled checker verifies every ordinary degree-at-most-two monomial, including squares, for \((n,p)=(18,2),(20,2),(12,3),(15,3),(25,5),(42,7)\). All 1,945 identities and seven active residual-board bounds passed. Exact integer binomial counts specify the complete slice families and their uniform weights; no large rank system or enumeration of all slice assignments was needed.
+    Four controls fail as expected: omitting the binary singleton correction where it is needed; trying singletons alone on a quadratic cross term; using the odd-field identity with the wrong target congruence; and applying the \(\mathbb F_3\) quadratic reconstruction to a cubic monomial. These test the stated reconstruction hypotheses, not all possible alternative formulas.
+    The complete coefficient checks and reproduction record preserve every tested monomial, slice count, weight, residual size, and control. Compilation and all checks succeeded. The universal freezing and Hall certificates are reused from their full proofs; their earlier numerical suites were not rerun.
+    Remaining scope and next step. This is an exact row count for affine coefficients with original-degree companion certificates on the fixed base. It does not exclude nonlinear coefficients, larger image budgets, additional ENS context, or base restrictions/projections. These tuples are already covered by statistic-package elimination, so this is a method-specific cost result, not an obstruction to the overall route. Next extend the projection theorem to statistics of a bounded common partition of pigeon labels.
+    Process assessment. Row averaging and binomial reconstruction replaced the planned generic cubic-feasibility computation with a universal proof and small exact coefficient checks; no framework expansion was needed.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval15 min 26.03 s
+Mathematical reasoning and proof writing11 min 52.51 s
+Computation design and coding2 min 30.18 s
+Preparation and checkpoint work1 min 1.55 s
+Individually measured computation0.07 s
+Individually measured conversion, checks, and local processing1.73 s
+
+Through final snapshot; overlapping time counted once.
+
+
+
+###partition-statistic-elimination
+1. The common-partition hypothesis and residual bound
+    Let \(\mathcal P=\{A_1,\ldots,A_B\}\) be a common partition of the \(n+1\) pigeons into nonempty classes. Define
+    \[
+      \sigma_{t,j}=\sum_{i\in A_t}x_{ij},\qquad
+      s=\max_t|A_t|.
+    \]
+    Consider a finite, level-correct ENS package whose every input belongs literally to
+    \[
+      \mathbb F_p[\{\sigma_{t,j}\}_{t,j},R_{\rm earlier}],
+    \]
+    where the coefficient variables come only from earlier levels of this selected package. Accuracies are positive; family count, arity, polynomial degree, and number of levels are otherwise unrestricted.
+    Working theorem. For any \(K\ge1\), \(K\equiv-1\pmod p\), such that
+    \[
+      N=\left\lfloor\frac{s-1}{K}\right\rfloor-1\ge1,
+    \]
+    an affine map freezes all original class-column statistics to zero/one constants and removes the package at the same completed NS or PC degree. Every original base image has an NS certificate within its original degree. Other blocks may be retained on their actual transformed inputs.
+    If the package contains every extension block, the resulting system is the bare residual \(\mathcal F_N\). Consequently its augmented refutation degree is at least \(N/2+1\), by the audited residual PC bound. Below that degree, normalized ordinary or PC-annihilating residual designs pull back to joint designs for the original augmented system.
+
+
+###partition-statistic-projection
+2. Match away the other classes, then freeze the largest
+    Choose a largest class \(A_*\), \(|A_*|=s\), and a genuine matching assigning every pigeon outside it to a distinct hole. This uses
+    \[
+      q=n+1-s
+    \]
+    rows and columns, leaving exactly \(s\) pigeons and \(s-1\) holes: the weak base \(\mathcal F_{s-1}\). The matching restriction sends every original base axiom to a residual axiom or zero, preserving degree.
+    In a matched column, its matched pigeon's class statistic is one and every other class statistic is zero. In an unmatched column, all statistics outside \(A_*\) are zero, while the \(A_*\) statistic is the whole-column occupancy of the remaining board.
+    Apply occupancy freezing to that \((s-1)\)-hole board, with the chosen \(K\). Its internal matching prefix and copied-board construction leave \(\mathcal F_N\), and its degree-one/two image certificates fit every residual generator. Whole-column occupancies become literal zero/one constants. Thus every original \(\sigma_{t,j}\) is now a literal constant, including those in the first matching's columns.
+    The composite incidence-variable map is affine. Composing the matching's zero/residual-axiom images with the freezing certificates preserves each original generator's degree. No same-row exclusions are introduced.
+
+
+###partition-statistic-proof-transfer
+3. Constant collapse and full-proof replay
+    Process selected blocks by level. All their class statistics and earlier selected coefficients have become field constants, so their actual inputs are constants \(c_i\in\mathbb F_p\). If every \(c_i\) is zero, set every own coefficient to zero. Otherwise choose \(c_{i_*}\ne0\), set its first-row coefficient to \(c_{i_*}^{-1}\), and set all other own coefficients to zero.
+    In the first case every companion vanishes through its input; in the second the first factor vanishes. Every selected field image is also zero. Retained coefficients remain variables and their blocks remain genuine ENS products on actual transformed inputs. The package hypothesis is needed: merely having some class-statistic inputs does not make an arbitrary dependence on unselected coefficients constant.
+    The full map is affine, with base images certified through their old degrees and selected extension images zero. An NS cofactor on a source generator \(f\) has degree at most \(D-\deg f\), so its replacement remains within \(D\). PC inference replay and those same image certificates preserve \(D\). Original companion activity is never recomputed after specialization.
+    Every existing current witness proof transfers with its own ceiling, including the source endpoint's common PC Booleanity ceiling. There is no per-block or per-level degree cost. The joint-design assertion is the same linear pullback argument as before, applied to the composite map; no multiplicativity is assumed.
+
+
+###partition-statistic-parameters
+4. Class count and the source parameter comparison
+    Choosing \(K=p-1\) and using \(s\ge\lceil(n+1)/B\rceil\) gives
+    \[
+      N\ge
+      \left\lfloor
+        \frac{\lceil(n+1)/B\rceil-1}{p-1}
+      \right\rfloor-1.
+    \]
+    For fixed \(p\), this is \(\Omega(n/B)\) whenever \(n/B\) tends to infinity. In particular, a constant number of classes retains a linear board. More generally, a proposed degree bound \(D(n)\ge1\) is contradicted whenever all source blocks meet this package hypothesis and
+    \[
+      B(n)D(n)=o(n).
+    \]
+    Then \(N/D\) tends to infinity, so eventually \(N\ge2D\). An explicit sufficient largest-class condition is \(s-1\ge(p-1)(2D+1)\). Thus a polylogarithmic class count would suffice for the existing polylogarithmic source degree. No such partition bound has been proved for arbitrary source families.
+
+
+###partition-statistic-recognition
+5. Recognition in the proper normal form
+    After the certified input-replacement pass, consider an input in proper domain/column normal form, with earlier coefficient variables held fixed. Suppose it is invariant under independent permutations of pigeon labels within each \(A_t\), separately in each column. Then it is a polynomial in the class-column statistics and those coefficients.
+    Each incidence monomial in this normal form contains at most one cell per used column. A within-class orbit fixes, for every used column \(j\), the selected class \(t_j\). Invariance makes the coefficient constant across all row choices in those classes. The orbit sum is precisely \(\prod_j\sigma_{t_j,j}\), times its coefficient-variable monomial. Summing the orbits proves the claim without averaging or division by a group order.
+    This is a symmetry property of inputs in a proper quotient, not a symmetry assertion about the full PHP row equations. A common refinement of several specified partitions is allowed, but its actual number of nonempty classes must be charged.
+
+
+###partition-statistic-bit-control
+6. Few sharp Boolean inputs need not give a coarse partition
+    Label the \(n+1\) pigeons by distinct binary strings of length \(k=\lceil\log_2(n+1)\rceil\). In one fixed column, let \(g_b\) be the sum of cells whose pigeon's \(b\)-th bit is one. There are only \(k\) inputs, all affine, each with a sharp degree-two Booleanity certificate from the column axioms.
+    Any partition for which all these inputs are class-statistic functions must put only identically labeled pigeons together: occupied states in one class have identical class-statistic vectors, whereas the \(g_b\)'s recover every bit. All classes are therefore singletons, so \(B=n+1\). Small input count and sharp Booleanity alone do not force the coarse partition needed by this theorem.
+    This tuple is nevertheless removed by the single-column normalizer. The example disproves only the inference to a coarse common partition, not general affordable elimination.
+    Evidence and scope. This is an analytic composition of the existing matching, freezing, input-replacement, and design arguments. No new numerical run was needed or claimed. The evidence record identifies the reused certificates and their provenance.
+    Remaining gap and next step. The common-partition hypothesis is not established for every source package. Test whether a more general affine freezing of these same statistics can retain a residual board much larger than the largest class, or whether that size dependence is inherent in this projection method.
+    Process assessment. Existing image certificates made this an analytic cycle; consolidating the living overview by topic reduced repetitive restoration text without adding framework rules or rerunning historical checks.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval11 min 18.02 s
+Mathematical reasoning and proof writing9 min 59.14 s
+Preparation and checkpoint work1 min 18.63 s
+Individually measured conversion, checks, and local processing0.25 s
+
+Through final snapshot; overlapping time counted once.
+
+

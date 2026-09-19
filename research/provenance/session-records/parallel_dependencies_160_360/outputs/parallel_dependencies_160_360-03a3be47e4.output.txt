@@ -1,0 +1,210 @@
+
+###affine-Booleanity-checks
+5. Exact spaces and exhaustive slices
+    The compiled checker constructs the ordinary weak-PHP degree-two spaces for \(n=3,4\), \(p=2,3,5\). Its normal coordinates use only degree-preserving Boolean and column reductions; same-row products remain. The affine part in each space is exactly the row span, independently certifying degree-two PC closure in these six cases.
+    On the four-hole board it checks all \(2^9\) and \(3^9\) affine choices supported in two specified rows, and all \(5^5\) choices supported in one specified row. It also checks all column subsets and complements with two prescribed row-gauge choices in each odd field, plus explicit same-row and cross-column sum controls. These give 24,348 tests, with 1,820 positive and 22,528 negative membership decisions; some deliberate positive controls repeat an exhaustive case.
+    The full output preserves each generating row multiple, all echelon bases, every tested affine polynomial, and 282 annihilating dual vectors. Each dual is checked against every original row multiple, and each negative test supplies a dual index and nonzero target evaluation. Domain and collision multiples vanish under the stated degree-two reduction. The classification agrees with every membership decision.
+    The controls reject \(x_{0,0}+x_{0,1}\) in odd characteristic. On the four-hole board over \(\mathbb F_5\), this row expression is Boolean on every legal Boolean row, yet still lacks a degree-two proof. This explicitly distinguishes the certificate ceiling from semantic functionality. No claim of exhaustive enumeration of all board-wide affine polynomials is made. The extra-variable and general-\(n\) results are analytic proofs.
+    The initial build succeeded with two warnings; a guarded helper entry point and clearer indentation removed them, and the final build is clean. The mathematical algorithm was unchanged and the completed suite was not rerun. Commands, output format, and scope are in the result record.
+    Remaining gap. We can recognize a supplied sharply Boolean affine candidate in odd characteristic, but have not given an efficient procedure finding a maximal independent set of such candidates inside an arbitrary span. The binary affine-intersection rule and column criterion still do not control the essential general family.
+    Process assessment. Reusing the existing degree-two space kernel let a single focused run test the classification and its negative controls; the only tool change was a reusable main guard, so no additional workflow rule is warranted.
+    Next step. Audit degree-preserving input reduction modulo the genuine domain and column equations, including whether reduced values keep sharp NS Booleanity after their ordinary degrees fall.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval13 min 27.90 s
+Marked reading and review windows0.80 s
+Mathematical reasoning and proof writing9 min 14.18 s
+Computation design and coding3 min 8.36 s
+Preparation and checkpoint work1 min 1.10 s
+Individually measured computation0.17 s
+Individually measured conversion, checks, and local processing3.29 s
+
+Through final snapshot; overlapping time counted once.
+
+
+
+###input-reduction-checks
+5. Exact replacements, complete traces, and lower-bound controls
+    The compiled checker verifies six input-replacement cases, at accuracies one and two over \(p=2,3,5\). A consistent local base has Boolean variables \(x,y,z\), the column collision \(xy=0\), and an earlier field variable \(a\). The tuple
+    \[
+      \bigl(x^2+xy,\ (a^p-a)z+y^2,\ z^3+xy\bigr)
+    \]
+    reduces to \((x,y,z)\). The output preserves each input and product difference, every old-companion derivation from the new system, and a nonzero original NS consequence replayed with exactly the same target. It checks 120 canonical common-model lifts over all local base states.
+    Twelve gap cases use \(p=3,5\), \(t=1,2\), and \(h=1,2,3\). They preserve complete PC traces, exact NS upper certificates, 24 source models, and twelve missing-companion countermodels. The NS lower functional sets old variables to one, reduces coefficient fields, and extracts \(\prod r_u^2\). It takes one on the target and zero on all 56 enumerated coefficient monomials eligible at the claimed lower ceiling.
+    In total the complete evidence contains 90 NS certificates and twelve fully verified PC traces, with rejected corrupted-trace controls. Every mathematical check passed. A formatting warning was corrected before the run, and the final build is clean. The result record describes all variables, commands, and scopes. These are consistent local systems; the generic proofs above supply the full-family transfer statement.
+    Remaining gap. Input reduction exposes more literal relations but supplies no bound on the essential remaining family. In odd characteristic, subsequent packing must retain actual NS witness costs; the degree of a reduced polynomial alone is insufficient. Persistence of the exact Booleanity gap over the full weak PHP base is the next question.
+    Process assessment. The focused certificates reused one kernel and avoided historical reruns; some early checker design remained in the mathematics window, so the existing phase-marking rule needs more consistent execution rather than another rule.
+    Next step. Attempt to lift the reduced-product gap to a sufficiently large PHP board using a matching restriction and a residual degree-bounded design.
+    
+
+<caption>Measured timing</caption>
+Measured categoryElapsed
+
+Total instrumented interval15 min 45.20 s
+Marked reading and review windows0.34 s
+Mathematical reasoning and proof writing9 min 47.17 s
+Computation design and coding3 min 54.47 s
+Preparation and checkpoint work1 min 58.45 s
+Individually measured computation0.13 s
+Individually measured conversion, checks, and local processing4.64 s
+
+Through final snapshot; overlapping time counted once.
+
+
+
+###PHP-reduced-Booleanity-theorem
+1. Exact degrees on a sufficiently large ordinary PHP board
+    Let \(p\) be odd, \(t,h\ge1\), and choose \(t\) cells \(M\) in distinct rows and columns of the \(n\)-hole board. Put
+    \[
+      g=\prod_{(i,j)\in M}x_{ij},\qquad
+      P=\prod_{u=1}^{h}(1-r_ug),\qquad E=gP,
+      \qquad e=(h+1)t+h,
+    \]
+    \[
+      P_0=\prod_{u=1}^{h}(1-r_u),\qquad
+      V=1-(1-P_0)g,\qquad S=e+h.
+    \]
+    Work in exactly
+    \[
+      \Gamma=\mathcal F_n\cup\{r_u^p-r_u:1\le u\le h\}\cup\{E\}.
+    \]
+    This is one ENS block with one input, so its single companion is the full all-companion family. Assume
+    \[
+      \boxed{n-t\ge2S-3.}
+    \]
+    Then
+    \[
+      \boxed{\operatorname{NSdeg}_{\Gamma}(V^2-V)=S,\qquad
+      \operatorname{PCdeg}_{\Gamma}(V^2-V)
+        =\max\{e,\,2(h+t)\}.}
+    \]
+    The board-size condition is sufficient; its necessity is not asserted. The upper certificates from the preceding generic theorem use only the matching cells' Boolean domains and \(E\), so they remain valid in \(\Gamma\). Only the lower bounds need a new argument.
+
+
+###PHP-reduced-Booleanity-design
+2. A residual design preserves the original NS cofactor budget
+    Set the matched cells to one and every other cell in their rows or columns to zero. This is the legitimate partial-matching restriction \(\tau\), not an inference of same-row functionality from \(g=1\). It sends \(g\) to one and the old base to \(\mathcal F_N\) or zero, where \(N=n-t\). Leave the \(r_u\)'s as variables.
+    Set \(D_0=S-1\). The audited residual lower bound gives
+    \[
+      \operatorname{PCdeg}(\mathcal F_N)\ge N/2+1
+        \ge S-\tfrac12>D_0.
+    \]
+    In particular \(1\notin\mathcal I_{D_0}(\mathcal F_N)\). By historical Lemma 1.2, finite-dimensional separation, there is a normalized degree-\(D_0\) ordinary design \(\lambda\) on the residual incidence variables. No computation of this potentially large functional is needed for the existence proof.
+    Assume a degree-\(D_0\) NS certificate for \(V^2-V\). If the target's ordinary degree already exceeds \(D_0\), this is immediately impossible. Otherwise write the identity using the original generators and restrict it by \(\tau\). Apply \(\lambda\) coefficient by coefficient in the still-free \(r\)-variables. Every residual base term vanishes: its coefficient at a fixed \(r\)-monomial is an eligible multiple of a residual base axiom. Coefficient field terms remain in their field ideal.
+    The original companion cofactor \(Q\) still satisfies
+    \[
+      \deg Q\le D_0-e=h-1.
+    \]
+    Restriction followed by the coefficientwise functional yields a polynomial \(A(r)\) of degree at most \(h-1\). Since \(\tau(E)=P_0(r)\) and \(\lambda(1)=1\), the resulting identity is
+    \[
+      P_0^2-P_0=A(r)P_0+\sum_u B_u(r)(r_u^p-r_u).
+    \]
+    Reduce coefficient fields. The left side has the degree-\(2h\) monomial \(\prod_u r_u^2\) with coefficient one. The right side has degree at most \(2h-1\). This contradiction proves the NS lower bound \(S\).
+    Only linearity, normalization, and annihilation of the residual NS space were used. The design is not assumed multiplicative, and this coefficientwise operation is not claimed to replay general PC inferences. The degree bound on \(Q\) comes from the original degree-\(e\) companion; replacing it by the degree-\(h\) restricted product when counting eligible cofactors would invalidate the proof.
+    Reusable scope of the argument. The NS step works whenever the chosen restriction sends the distinguished input to one and the remaining base, independent of this block's own coefficients, has an ordinary design at the needed degree. Additional families require that stronger residual-design hypothesis. They cannot simply be discarded.
+
+
+###PHP-reduced-Booleanity-PC
+3. The PC lower bound uses activity and a constant restriction
+    The target's ordinary degree is \(2(h+t)\). To prove the additional lower bound \(e\), suppose a PC proof stayed below \(e\). It could not introduce the degree-\(e\) companion \(E\). Apply the matching restriction above and then set \(r_1=-1\), \(r_u=0\) for \(u>1\). The remaining coefficient field axioms vanish and the target becomes the nonzero constant two.
+    Constant substitution preserves PC degree. Dividing the concluding constant by two would therefore give a residual PHP refutation below \(e\), contradicting the bound above, which is larger than \(S-1\ge e\). Thus every PC proof must reach \(e\), and the two lower bounds match the reused upper proof.
+    This argument relies on inactivity of the original companion below \(e\). It does not transform a proof that actually uses \(E\) into a base proof: the chosen assignment would give that companion a nonzero image.
+
+
+###PHP-reduced-Booleanity-examples
+4. Explicit board and accuracy consequences
+    For a two-cell matching, \(t=2\), the sufficient board condition becomes \(n\ge8h+3\). For every \(h\ge2\),
+    \[
+      \deg V=h+2,\qquad
+      \operatorname{PCdeg}_{\Gamma}(V^2-V)=3h+2,\qquad
+      \operatorname{NSdeg}_{\Gamma}(V^2-V)=4h+2.
+    \]
+    In particular, \(h=2,n\ge19\) gives the degree-four value with PC-eight and NS-ten Booleanity. At \(h=3,n\ge27\), a degree-five value needs PC degree eleven and NS degree fourteen. Hence after reduction even the putative PC ceiling \(2\deg V\) can fail when the old companion remains inactive there. This persists in the logarithmic-accuracy regime whenever the stated board inequality holds.
+    The matching monomial \(g\) was already a stable domain/column normal form. A higher input \(1-P\) reduces to \(1-V\), while this lower block stays unchanged. Thus the previous input-replacement theorem can preserve an entire proof while invalidating a subsequently asserted sharp Booleanity annotation over an actual PHP base. It remains possible to use a larger, explicitly budgeted witness.
+    The characteristic assumption matters. In characteristic two the coefficient field reduction identifies \(r_u^2\) with \(r_u\), so the NS separating monomial disappears; the constant-two PC control also vanishes. The binary sharp-Booleanity result is unaffected.
+
+
+###nonsharp-packing-setup
+1. Keep the supplied witness costs in the old companion identity
+    Let \(G=(g_i)\) be a current block, with accuracy \(h\), \(a_i=\deg g_i\), \(\delta=\max_i a_i\), and original companion degrees \(e_i=a_i+h(\delta+1)\). Remove the zero span and spans containing one as before. Choose a literal-span basis \(b_1,\ldots,b_r\), of positive degrees \(d_j\), with degree-adapted expressions
+    \[
+      g_i=\sum_j c_{ij}b_j,\qquad c_{ij}\ne0\Longrightarrow d_j\le a_i.
+    \]
+    Suppose the existing affine-bin rule realizes \(Q=\prod_j(1-b_j)\) in at most \(h\) rows. Set \(W=\sum_jd_j\); then \(W\le h(\delta+1)\). Supply strictly earlier NS Booleanity proofs through \(s_j\), or PC Booleanity proofs through \(c_j^{\rm PC}\), as appropriate. These need not be sharp.
+    The exact companion image is still
+    \[
+      g_iQ=-\sum_{j:c_{ij}\ne0}c_{ij}(b_j^2-b_j)
+                            \prod_{k\ne j}(1-b_k).
+    \]
+    All coefficient images are affine in earlier variables; their field equations have the usual degree-\(p\) domain certificates. A proposed basis vector still needs an actual Booleanity witness: an arbitrary linear combination is not automatically Boolean in odd characteristic.
+
+
+###nonsharp-packing-NS-ledger
+2. Exact supplied NS budgets and the separate PC reuse bound
+    Substituting the supplied NS certificates gives the sufficient image ceiling
+    \[
+      N_i=\max_{j:c_{ij}\ne0}\{s_j+W-d_j\}.
+    \]
+    Thus \(N_i\le e_i\) for every relevant companion supplies the same-degree NS transfer, by the original-cofactor argument. Write \(\kappa_j=s_j-2d_j\ge0\). A simpler sufficient condition is
+    \[
+      W+\max_j\kappa_j\le h(\delta+1),
+    \]
+    because degree adaptation gives \(N_i\le W+a_i+\max_j\kappa_j\). The input-specific maximum can be better. These are budgets of the supplied certificates; cancellation among certificate summands or different normalizers can improve them.
+    PC instead multiplies the completed polynomial \(b_j^2-b_j\). Its image proof uses only
+    \[
+      P_i=\max_{j:c_{ij}\ne0}
+             \{c_j^{\rm PC},\,W+d_j\}
+          \le\max\{C,e_i\},
+      \qquad C=\max_jc_j^{\rm PC}.
+    \]
+    Consequently an affine substitution using these witnesses transfers a degree-\(D\) PC proof through \(\max\{D,C\}\). It does not add \(W\) to \(C\). For a used source companion, its ordinary image degree fits \(e_i\le D\); only the separately supplied Booleanity proof may require the common ceiling \(C\). The NS conclusion needs the stronger \(N_i\le e_i\) conditions above.
+
+
+###nonsharp-packing-product-Booleanity
+3. Order the product Booleanity certificate by witness surplus
+    The new product's own Booleanity also has an explicit ledger. Put \(f_j=1-b_j\). In a chosen ordering, telescope
+    \[
+      Q^2-Q=\sum_j(f_j^2-f_j)
+                    \prod_{k<j}f_k\prod_{k>j}f_k^2.
+    \]
+    The NS certificate obtained from the \(s_j\)-witnesses has ceiling
+    \[
+      2W+\max_j\left\{\kappa_j-\sum_{k<j}d_k\right\}.
+    \]
+    Arrange the \(\kappa_j\)'s in nondecreasing order to minimize this particular bound. For two adjacent items \(i,j\), after a fixed prefix of degree \(A\), their contribution is \(\max\{\kappa_i,\kappa_j-d_i\}-A\). If \(\kappa_i\le\kappa_j\), this is at most \(\kappa_j-A\), exactly the maximum for the reversed pair. Other terms are unchanged by the swap. Repeated swaps prove the claim. This is optimal ordering for the displayed ledger, not a lower bound against all NS certificates.
+    Preceding sharply Boolean factors can therefore absorb later surplus. For the reduced degree-four value with NS Booleanity cost ten, \(\kappa=2\). Multiplying its complement by two independently certified degree-one Boolean factors gives \(W=6\) and the sharp NS ceiling twelve when those factors come first. One such factor gives the upper ceiling eleven; no extra factor leaves the original ceiling ten. PC uses the same product identity through \(\max\{C,2W\}\), by final-line reuse.
+
+
+###nonsharp-packing-uniform-PC
+4. A common ceiling survives the full level-ordered pass
+    Working theorem. Start with a completed degree-\(D\) PC proof from the current base and ENS family. Suppose every input has degree at most \(L\) and a supplied PC Booleanity proof through \(C\ge2L\), over strictly earlier levels. Then the following level-ordered operations preserve a completed proof through \(\max\{D,C\}\), preserve the input witness ceiling \(C\), and do not increase levels or family count:
+    
+      Stable domain/column input reduction, using the currently retained domains.
+      Removal of zero spans and spans containing one.
+      Rank packing or affine-bin packing with a degree-adapted basis of actual current inputs.
+      Equal-span sharing at a fixed level and accuracy, using the same degree adaptation.
+    
+    Input reduction. The old-axiom replacement theorem preserves both the completed proof and the existing Booleanity proofs at their own ceilings. If an input changes from \(g\) to \(g'\), then \(g-g'\) has a stable-ideal certificate through \(\deg g\le L\). Since
+    \[
+      (g^2-g)-(g'^2-g')=(g-g')(g+g'-1),
+    \]
+    the new Booleanity target follows through at most \(\max\{C,2L\}=C\). Its certificate uses only the input's earlier variables and families. Sharpness at \(2\deg g'\) is not required.
+    Packing. At the current level the chosen basis witnesses are already available over retained earlier levels through \(C\). The preceding PC ledger supplies each removed companion image through \(\max\{C,e_i\}\). In the completed proof a used companion has \(e_i\le D\). In an existing Booleanity proof through \(C\), any used companion has \(e_i\le C\). Hence replay preserves the respective ceilings \(\max\{D,C\}\) and \(C\).
+    The coefficient substitution is affine, so every later input's ordinary degree remains at most \(L\), and its old Booleanity target becomes exactly the Booleanity polynomial of its actual image. No same-level Booleanity premise is introduced: a block's basis inputs and their witnesses lie strictly below it.
+    Sharing and continuation. The literal-span quotient maps old companions to combinations of new canonical companions within their original degrees, by the existing degree-adapted proof. Field images have their original budgets. This preserves the same invariant. Process the next level only after all lower substitutions are applied, then reduce its actual inputs. Reduced canonical bases remain normal forms because the stable remainder space is linear. Higher operations never alter an already processed lower input.
+    The resulting surviving spaces exclude one, are distinct within each level/accuracy class, and violate at least one of \(r\le2h\), \(r-r_{\rm aff}\le h\) for the chosen basis. Over \(\mathbb F_2\), one may first take the whole affine intersection, whose vectors have degree-two domain Booleanity. In odd characteristic, extra basis choices require supplied witnesses through \(C\); the theorem automatically covers actual current inputs.
+    This is a PC invariant. An NS Booleanity proof may become only a PC proof after packing that fails the NS image budget. It must not later be used as an NS witness without a separate certificate.
+
+
+###nonsharp-packing-source-endpoint
+5. Apply the invariant to the new PHP simulation
+    The new PHP endpoint, optionally followed by the recorded row projection, supplies input degree at most \(L\) and strictly earlier sharp NS Booleanity, hence PC Booleanity through \(C=2L\). Its completed PC refutation has ceiling
+    \[
+      D_0=(c+2d)L\ge2L.
+    \]
+    Apply the theorem to that completed proof. After stable input reduction and the level-ordered packing/sharing pass, the endpoint still has degree at most \(D_0\), at most \(d\) levels, and polynomial family count. Each retained input is in the current domain/column normal form and retains an earlier PC Booleanity witness through \(2L\).
+    Thus the exact odd-field NS gaps do not obstruct this PC normal-form pass. We have not eliminated the surviving wide spaces, obtained a joint ordinary design for them, or shown that they admit enough further ideal covers. The degree bound and the remaining family-coverage obligation stay separate.
+
