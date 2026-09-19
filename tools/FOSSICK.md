@@ -26,6 +26,10 @@ significance lives in the registry; candidates use the existing
    for plausible candidates or ambiguity. Consult the benchmark map for targeted
    comparisons. Do not infer novelty from a title or treat a no-claim declaration
    as proof that nothing useful is present.
+   For formalization records, compare the actual verified statement with its source:
+   weaker hypotheses, broader domains or stronger conclusions may merit attention
+   even when the original special case does not. Separate these from routine API
+   and empty-case extensions; verification status alone is not the assessment.
 4. Save an edited copy of the batch with a disposition and reason for each screened
    row: `already_assessed` lists every source-linked claim under `reviews`;
    `candidate_linked` also lists persisted claim IDs under `attention`;

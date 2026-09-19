@@ -12,6 +12,10 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Significance: context; novelty: not_claimed.
   Preprint revision is editorial and reuses existing mathematical and kernel evidence.
   Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+- **[audit:matching-extension-arbitrary-row-count](<https://kbr.is-a.dev/math-research/#matching-extension-arbitrary-row-count>)** — Prescribed lower moments extend across every row set, yielding old PC=NS and stable filtration
+  Significance: general_tool; novelty: not_claimed.
+  Verified extension gives stable old PC=NS for arbitrary row counts; the earlier m>=B premise is unnecessary.
+  Decision (agent): Fossick formalization revisit, 20 September: the verified binary statement drops m>=B, allows every row count, and extends arbitrary prescribed bounded annihilators while preserving all values. Assess the generalized matching-ideal interface, not only the original PHP instance; this does not extend to arbitrary augmented ENS systems or certify independent novelty. See entry-2026-09-20-fossick-formalization-generalizations.
 - **[audit:roabp-PHP-field-scope](<https://kbr.is-a.dev/math-research/#roabp-PHP-field-scope-audit>)** — The subset-sum step in HLT2026v1 Proposition 21 is satisfiable in characteristic p<=n+1
   Significance: context; novelty: not_claimed.
   The recorded characteristic obstruction concerns a displayed subset-sum argument, not the cited main theorem.
