@@ -30,7 +30,7 @@ workflow decisions, not theorem status or publication approval. See [the workflo
 - **[thm:heterogeneous-scalar-profile-frontier](<https://kbr-.github.io/math-research/#categorical-heterogeneous-frontier>)** — For N independent encoded scalar profiles and coefficient degree T, h rows suffice exactly when the max(0,N-hT) smallest nonzero alphabet sizes sum to at most h
   Significance: independent_result; novelty: unknown.
   Potential independent exact frontier for polynomial-coefficient ENS factors in independent encoded scalar profiles. Constant coefficients recover classical finite-grid covering; the positive-degree occurrence-budget refinement was not identified in the targeted primary comparison, so novelty remains unknown.
-  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Decision (agent): Fossick 20 September: read the full lower/upper proofs and encoding comparison; retain as a focused independent candidate. Rechecked the classical finite-grid boundary in Bishnoi–Clark–Potukuchi–Schmitt, Theorems 1.1–1.2. Positive-T encoded-coordinate novelty remains unknown; seek expert comparison before promotion. See notebook entry entry-2026-09-20-fossick-profile-frontiers.
   Next: Before promotion, obtain a finite-grid-covering expert comparison of the positive-T encoded-coordinate factor model and its untouched-group budget; distinguish native scalar degree and the already known T=0 case.
 - **[thm:odd-affine-Booleanity-classification](<https://kbr-.github.io/math-research/#affine-Booleanity-classification>)** — For odd p and n>=4, degree-two affine Booleanity is equivalent modulo rows to a partial-column indicator or complement
   Significance: general_tool; novelty: unknown.
