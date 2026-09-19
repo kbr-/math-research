@@ -516,3 +516,14 @@ scalar-profile frontier. They are not claimed novel or publication-ready; exact
 statement/correctness and primary-literature comparisons remain explicit tasks.
 Relationships: 17 reviewed inventories, 205 pending, 644 unreviewed; formalization
 866 reviewed. No new canonical edge was inferred in this classification batch.
+
+
+Compact-evidence batch `index_metadata_batch5_20260919`: 60 records covering column
+freezing, local partitions, compatible layouts, selector profiles and the open
+source bridge were classified. Status/topics: 282 reviewed, 584 unreviewed.
+Significance: 277 reviewed, five pending audits, 584 unreviewed. Relationships:
+17 reviewed, 265 pending, 584 unreviewed. Formalization remains 866 reviewed.
+Standard matching/sampling/replay inputs are explicitly treated as known, and the
+open source-family bridge is context rather than an established theorem. No new
+canonical edge or mathematical result was inferred. Source packets and decisions
+are retained in the batch evidence directory.
