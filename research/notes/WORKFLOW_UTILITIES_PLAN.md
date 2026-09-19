@@ -26,7 +26,7 @@ research, formalization, parallel agents, installations, or publication.
 - [ ] Only if evidence warrants it, trial narrowly scoped interruption notes and
       compare maintenance cost against recovery savings. Prefer existing plans;
       do not introduce a mandatory per-turn note or duplicate living summary.
-- [ ] Create a maintained open-problem/benchmark map, including the systems and
+- [x] Create a maintained open-problem/benchmark map, including the systems and
       formulations named in IDEAS.md. Record last verification and link candidates
       to it; it guides searches rather than replacing current literature review.
 
@@ -36,9 +36,14 @@ research, formalization, parallel agents, installations, or publication.
       missing/censored observations and archival without changing historical data.
 - [ ] If notes are trialled, demonstrate recovery and checkpoint retirement;
       otherwise record why the observed benefit does not justify them.
-- [ ] Populate the benchmark map with precise formulations, dated source checks
+- [x] Populate the benchmark map with precise formulations, dated source checks
       and links to relevant claims; distinguish it from authoritative current status.
-- [ ] Connect the map to significance assessment and Fossick without duplicating
+- [x] Connect the map to significance assessment and Fossick without duplicating
       candidate queues or treating old citations as a permanent novelty verdict.
-- [ ] Document the small workflow and evidence locations, linking guidance from
+- [x] Document the small workflow and evidence locations, linking guidance from
       the appropriate resume and research prompts.
+
+Benchmark-map implementation: [OPEN_PROBLEMS.md](../OPEN_PROBLEMS.md), checked
+19 September 2026. Covers all named formulations, with primary-source scope
+limits and links from Resume, Spin, registry guidance and the Fossick plan.
+Fossick execution and the shared attention register remain separate planned work.

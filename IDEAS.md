@@ -201,10 +201,11 @@ verified frontier never lags.
 
 **Implementation update (19 September 2026).** Interruption notes are deferred
 pending evidence of benefit. The [recovery collector](tools/RECOVERY_EVIDENCE.md)
-now uses an explicit one-call resume bundle, existing phase markers and silent
+now uses an explicit cached resume bundle, existing phase markers and silent
 retrieval/job hooks. Ordinary overview reads are not resume signals. Evaluate the
 observed overhead before adding another note-writing requirement; the benchmark
-map remains a separate pending task.
+map is implemented in [research/OPEN_PROBLEMS.md](research/OPEN_PROBLEMS.md), with
+dated primary-source checks and links from the significance and Fossick workflows.
 
 ## 8. Claim graph: structured, visualized on GitHub Pages
 

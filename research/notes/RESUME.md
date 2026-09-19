@@ -76,6 +76,8 @@ on resume, even in a fresh clone. “Before this notebook” is historical conte
   and [formalization rules](../../formalization/AGENTS.md). Ordinary research still
   reads notebook formalization gaps. Preserve exact verified scope, not just links.
 - Supporting evidence lives in `research/results/` and `research/provenance/`.
+  For significance/novelty review, consult the relevant [benchmark](../OPEN_PROBLEMS.md)
+  on demand; the map is not mandatory restoration reading.
   Older checkpoint notes and Git revisions are historical snapshots, not current
   summaries. Resolve conflicts against exact records; do not silently rewrite them.
   Use the assigned plan's durable progress/evidence for interrupted work; the

@@ -198,6 +198,8 @@ So perform the following, in a loop:
   is needed. Review this yourself; do not wait for me to identify friction or
   invent changes merely to satisfy this step.
 - update the notebook as usual
+- For significance comparisons, use the relevant [benchmark-map entry](research/OPEN_PROBLEMS.md)
+  and its maintenance procedure; do not rerun a literature audit for every lemma.
 - include a one-sentence process assessment in the research entry
 - `git commit` the research step
 - implement any clear, bounded framework improvement identified by that

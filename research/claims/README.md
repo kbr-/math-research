@@ -74,6 +74,8 @@ Each claim has:
 - `topic_definitions` at the registry root gives stable topic IDs and descriptions.
 - `significance`: a structured category/rationale, novelty and publication status,
   references and next action, or `null`; independent of mathematical status.
+  Use the relevant [benchmark-map entry](../OPEN_PROBLEMS.md) when comparing
+  significance; its maintenance section owns the source-refresh procedure.
 - `reviews`: per-field reviewed/pending/not-applicable dispositions with source
   revision, date, reviewer, evidence hashes, rationale and next action. Missing
   field reviews mean unreviewed, not absence of applicable metadata.
