@@ -395,3 +395,21 @@ complete saved output. Structural diagnostics distinguish dependency and citatio
 cycles and report duplicate edges, self-links and conflicting metadata. These
 checks are implemented; semantic graph curation and resolving any later findings
 remain open, so the full relationship-validation checklist item stays unchecked.
+
+
+Initial chronological metadata batch `index_metadata_batch_20260919`:
+14 additional claims have reviewed status, topics, significance and relationships;
+17 are now reviewed in those fields and 849 remain unreviewed. Twenty-two scoped
+relationships bring the graph to 27, including historical citations distinct from
+proof dependencies. Recorded obstructions target omitted hypotheses or stronger
+methods, not the qualified theorems. Ten topic definitions now exist; the global
+taxonomy/backfill is still open. No independent novelty was asserted for this batch.
+
+Process correction requested by the user: this batch read full claim sections
+rather than only ambiguous evidence, which was avoidable overhead. Dependency
+extraction alone did not cover the other metadata fields. Added `packet --claim`
+to `tools/claim-dependencies.py` for verbatim assessments plus bounded statement,
+status and qualification snippets with hashes and omission flags. Start curation
+with packets and relationship candidates; open larger passages only for unresolved
+scope, conflicting evidence or unsupported judgments. Resume and registry guidance
+now point to this path. Do not turn every claim inventory into a full proof reread.

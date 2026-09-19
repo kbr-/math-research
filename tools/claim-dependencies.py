@@ -3,6 +3,7 @@
 import argparse
 from collections import defaultdict
 import hashlib
+import html
 import importlib.util
 import json
 from pathlib import Path
@@ -47,6 +48,21 @@ def lean_code(text):
     return ''.join(out)
 
 
+def source_excerpt(book, text, anchor):
+    try:
+        node=book.anchor(anchor)
+        return book.excerpt(anchor),node['start'],anchor,False
+    except ValueError:
+        matches=list(re.finditer(r'\bid=["\']'+re.escape(anchor)+r'["\']',text))
+        require(len(matches)==1,'Missing or ambiguous source anchor: '+anchor)
+        position=matches[0].start()
+        for node in sorted(book.nodes,key=lambda n:n['start'],reverse=True):
+            if not node['anchor'] or node['start']>position:continue
+            region=book.excerpt(node['anchor'])
+            if node['start']<=position<node['start']+len(region):
+                return region,node['start'],node['anchor'],True
+        raise ValueError('No containing passage for '+anchor)
+
 def scan(data, root=ROOT):
     text=(root/'notebook.html').read_text();book=notebook_parser(text)
     ids={c['id'] for c in data['claims']};anchors=defaultdict(set);files=defaultdict(set)
@@ -71,23 +87,9 @@ def scan(data, root=ROOT):
                 anchors[local[1]].update(owners)
                 for owner in owners:regions[owner].add(local[1])
     candidates={};processed=set();source_articles=defaultdict(set);other_references=[];widened_regions=[]
-    def source_excerpt(anchor):
-        try:
-            node=book.anchor(anchor)
-            return book.excerpt(anchor),node['start'],anchor,False
-        except ValueError:
-            matches=list(re.finditer(r'\bid=["\']'+re.escape(anchor)+r'["\']',text))
-            require(len(matches)==1,'Missing or ambiguous source anchor: '+anchor)
-            position=matches[0].start()
-            for node in sorted(book.nodes,key=lambda n:n['start'],reverse=True):
-                if not node['anchor'] or node['start']>position:continue
-                region=book.excerpt(node['anchor'])
-                if node['start']<=position<node['start']+len(region):
-                    return region,node['start'],node['anchor'],True
-            raise ValueError('No containing passage for '+anchor)
     for anchor,owners in anchors.items():
         try:
-            _,_,resolved,_=source_excerpt(anchor)
+            _,_,resolved,_=source_excerpt(book,text,anchor)
             node=book.anchor(resolved)
         except ValueError as exc:problems.append({'anchor':anchor,'error':str(exc)});continue
         article=node
@@ -111,7 +113,7 @@ def scan(data, root=ROOT):
 
     for source,region_anchors in regions.items():
         for anchor in sorted(region_anchors):
-            try:region,offset,actual_anchor,widened=source_excerpt(anchor)
+            try:region,offset,actual_anchor,widened=source_excerpt(book,text,anchor)
             except ValueError as exc:problems.append({'claim':source,'anchor':anchor,'error':str(exc)});continue
             processed.add(source)
             locator='https://kbr.is-a.dev/math-research/#'+actual_anchor
@@ -224,6 +226,58 @@ def record_decision(data, candidate, *, state, reason, reviewer, date, relation_
     return validate(data)
 
 
+def metadata_packet(data, label, root=ROOT, limit=6, width=700):
+    """Bounded retrieval evidence only; omissions and ownership remain explicit."""
+    claim=next((c for c in data['claims'] if c['id']==label),None)
+    require(claim is not None, 'Unknown claim: '+label)
+    require(limit>0 and width>0, 'Packet limits must be positive')
+    text=(root/'notebook.html').read_text();book=notebook_parser(text)
+    passages=[];seen=set()
+    for reference in references(claim):
+        local=local_target(reference['target'],root)
+        if not local or local[0].resolve()!=(root/'notebook.html').resolve() or not local[1]:continue
+        region,offset,anchor,widened=source_excerpt(book,text,local[1])
+        if anchor in seen:continue
+        seen.add(anchor)
+        blocks=[]
+        for match in re.finditer(r'<(p|div)\b[^>]*>.*?</\1>',region,re.S):
+            body=html.unescape(re.sub(r'<[^>]+>',' ',match.group()))
+            body=re.sub(r'\s+',' ',body).strip()
+            if not body:continue
+            signal=bool(re.search(r'working|lemma|theorem|status|counter|hypothes|requir|conditional|'
+                                 r'\bnot\b|\bno\b|scope|remaining|supersed|correct|conjecture',body,re.I))
+            blocks.append({'line':text.count('\n',0,offset+match.start())+1,
+                           'text':body,'signal':signal,'formula':match.group(1)=='div'})
+        # Preserve document order, including a formula immediately after a signal.
+        selected=[]
+        for i,block in enumerate(blocks):
+            if block['signal'] or (block['formula'] and i and blocks[i-1]['signal']):selected.append(block)
+        if not selected:selected=blocks[:1]
+        excerpts=[{'line':b['line'],'text':b['text'][:width],
+                   'truncated':len(b['text'])>width} for b in selected[:limit]]
+        passages.append({'target':'https://kbr.is-a.dev/math-research/#'+anchor,
+                         'source_sha256':hashlib.sha256(region.encode()).hexdigest(),
+                         'widened':widened,'excerpts':excerpts,
+                         'omitted_selected_blocks':max(0,len(selected)-limit),
+                         'total_blocks':len(blocks),'included_blocks':len(excerpts)})
+    return {'id':label,'summary':claim['summary'],'assessment':claim['assessment'],
+            'references':references(claim),'passages':passages,
+            'scope':'Selected retrieval evidence, not a complete proof audit. Original assessment is '
+                    'preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.'}
+
+
+def packet_text(packet):
+    lines=[packet['id'],'Summary: '+packet['summary'],'Assessment: '+packet['assessment']]
+    for passage in packet['passages']:
+        lines.append('Source: '+passage['target']+(' [widened; ownership needs review]' if passage['widened'] else ''))
+        for item in passage['excerpts']:
+            lines.append(str(item['line'])+': '+item['text']+(' [truncated]' if item['truncated'] else ''))
+        lines.append(f"Blocks: {passage['included_blocks']}/{passage['total_blocks']}; "
+                     f"{passage['omitted_selected_blocks']} additional signal blocks omitted.")
+    lines.append(packet['scope'])
+    return '\n'.join(lines)+'\n'
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     sub=parser.add_subparsers(dest='command',required=True)
@@ -235,8 +289,15 @@ def main():
     d.add_argument('--candidate',required=True);d.add_argument('--state',choices=['accepted','rejected','pending'],required=True)
     d.add_argument('--reason',required=True);d.add_argument('--reviewer',required=True);d.add_argument('--date',required=True)
     d.add_argument('--relation-id')
+    p=sub.add_parser('packet',help='Compact status, scope and qualification evidence')
+    p.add_argument('--claim',required=True);p.add_argument('-n',type=int,default=6)
+    p.add_argument('--width',type=int,default=700);p.add_argument('--out',type=Path)
     args=parser.parse_args()
-    if args.command=='scan':
+    if args.command=='packet':
+        packet=metadata_packet(load(),args.claim,limit=args.n,width=args.width)
+        if args.out:write_json(args.out,packet)
+        print(packet_text(packet),end='')
+    elif args.command=='scan':
         report=scan(load());write_json(args.out,report)
         print(json.dumps({k:v for k,v in report.items() if k not in ('candidates','unresolved','external_or_file_references','widened_source_regions')},indent=2))
         print(f"Broadened source regions (flagged ambiguous): {len(report['widened_source_regions'])}")

@@ -91,7 +91,17 @@ artifacts make the negative mapping results stale until the census is refreshed.
 
 ## Dependency discovery and review
 
-Use evidence extraction before opening long entries:
+Use evidence extraction before opening long entries. For status, topic and
+significance curation, start with `tools/claim-dependencies.py packet --claim ID`:
+it preserves the summary and assessment verbatim and selects bounded statement,
+status and qualification excerpts (including adjacent formula blocks). `--out`
+saves the packet with source hashes; `-n` and `--width` control displayed excerpts.
+Omitted blocks, truncated text and widened source ownership are explicit. These
+are retrieval aids, not complete proofs. Open a larger passage only to resolve
+unclear scope, conflicting evidence or an unsupported judgment. Use dependency
+candidates for relationships; do not reread every full source as a routine step.
+
+Dependency evidence:
 
 ```bash
 ./compute.sh --threads 1 --category local_processing python3 tools/claim-dependencies.py \

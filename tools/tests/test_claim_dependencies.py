@@ -77,6 +77,21 @@ class DependencyTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             deps.record_decision(self.data,candidate,state='accepted',reason='Changed',reviewer='Test',date='2026-09-19',evidence=Evidence(self.root))
 
+    def test_metadata_packet_preserves_qualification_and_reports_omissions(self):
+        path=self.root/'notebook.html'
+        path.write_text(path.read_text().replace('<p>Does not depend',
+            '<p>Working conditional theorem.</p><div class="math">B = C + D</div>'
+            '<p>Scope: only supplied witnesses.</p><p>Does not depend'))
+        packet=deps.metadata_packet(self.data,'lem:a',self.root,limit=2,width=20)
+        passage=packet['passages'][0]
+        self.assertEqual(packet['assessment'],'Working proof')
+        self.assertEqual(passage['included_blocks'],2)
+        self.assertGreater(passage['omitted_selected_blocks'],0)
+        self.assertTrue(passage['excerpts'][0]['truncated'])
+        self.assertIn('B = C + D',passage['excerpts'][1]['text'])
+        self.assertIn('omitted',deps.packet_text(packet))
+        with self.assertRaises(ValueError):deps.metadata_packet(self.data,'missing',self.root)
+
     def test_acceptance_requires_a_matching_curated_relationship(self):
         candidate=next(c for c in deps.scan(self.data,self.root)['candidates'] if c['method']=='notebook_link')
         with self.assertRaises(ValueError):

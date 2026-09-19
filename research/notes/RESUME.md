@@ -93,7 +93,9 @@ historical mathematical sources only when the current research task needs them.
   field reviews without loading the full registry.
   For dependency curation, `tools/claim-dependencies.py` provides scan/show/decide
   commands with source evidence and ambiguity flags; see the registry guide.
-  Use targeted evidence review rather than rereading every whole entry.
+  Start other metadata curation with `tools/claim-dependencies.py packet --claim ID`;
+  use its statement/qualification excerpts and open larger source passages only
+  for unresolved meaning, scope or conflicting evidence.
 
 - Formal proofs: [Lean project](../../formalization/README.md) contains per-claim
   formalizations and verification instructions; the claim index links each
