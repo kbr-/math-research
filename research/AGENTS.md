@@ -5,7 +5,7 @@
 - Start with `notes/RESUME.md`, then read the initial sections of
   `../notebook.html`, including Working mathematical context. The notebook is the
   single source of truth for current mathematical status; RESUME is navigation
-  only. Do not reimport the manuscript or dump large source outputs into context.
+  only. Use the root packet-orientation/source-reading rule for claim triage. Do not reimport the manuscript or dump large source outputs into context.
 - `../php_codex_handoff/` is the immutable historical package. Read selected
   proofs there as needed. All new notes, corrections, tools, logs, reference
   acquisitions, and experiments belong here or elsewhere outside that package.

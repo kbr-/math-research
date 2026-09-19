@@ -203,8 +203,12 @@ actionable rule over another checklist or a record of one-off setup history.
   Follow [the registry workflow](research/claims/README.md), preserving labels, exact
   scope, and full-record links; regenerate with `tools/claim-index.py render`.
   Before proposing a next step or developing or naming a result, search the index
-  with `tools/search-claims.py WORDS` or `--show LABEL`, then read the relevant source
-  passages; do not load the whole registry. Label rediscoveries and refinements and link the
+  with `tools/search-claims.py WORDS` or `--show LABEL`; use
+  `tools/claim-dependencies.py packet --claim ID` for bounded orientation and source
+  triage, and `claim-index.py list --fields id,summary --format tsv` for a complete
+  minimal inventory when needed. Packets omit proof details and sometimes hypotheses:
+  before mathematical reliance, read the exact statement, proof and applicable
+  corrections. Do not load the whole registry. Label rediscoveries and refinements and link the
   original record; link corrections or retractions to their new dated entries.
 - **Index maintenance contract:** every new or substantively revised claim needs
   mathematical status, topics, formalization scope/disposition, significance and

@@ -91,12 +91,17 @@ artifacts make the negative mapping results stale until the census is refreshed.
 
 ## Dependency discovery and review
 
-Use evidence extraction before opening long entries. For status, topic and
+Use evidence extraction before opening long entries. For research orientation and status, topic or
 significance curation, start with `tools/claim-dependencies.py packet --claim ID`:
 it preserves the summary and assessment verbatim and selects bounded statement,
 status and qualification excerpts (including adjacent formula blocks). `--out`
 saves the packet with source hashes; `-n` and `--width` control displayed excerpts.
-Omitted blocks, truncated text and widened source ownership are explicit. These
+Omitted blocks, truncated text and widened source ownership are explicit.
+The packet marks `proof_ready: false` and displays recorded formalization scope
+when available. A five-case evaluation (partial formalization, conditional theorem,
+correction history, finite check and theorem with omitted definitions) supports
+orientation use; it does not establish extraction completeness. Follow the root
+source-reading rule before relying mathematically on a claim. These
 are retrieval aids, not complete proofs. Open a larger passage only to resolve
 unclear scope, conflicting evidence or an unsupported judgment. Use dependency
 candidates for relationships; do not reread every full source as a routine step.

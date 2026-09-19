@@ -261,13 +261,19 @@ def metadata_packet(data, label, root=ROOT, limit=6, width=700):
                          'omitted_selected_blocks':max(0,len(selected)-limit),
                          'total_blocks':len(blocks),'included_blocks':len(excerpts)})
     return {'id':label,'summary':claim['summary'],'assessment':claim['assessment'],
+            'proof_ready':False,
+            'formalization_scope':{'status':claim['formalization']['status'],'scope':claim['formalization']['scope']},
             'references':references(claim),'passages':passages,
             'scope':'Selected retrieval evidence, not a complete proof audit. Original assessment is '
                     'preserved verbatim. Check source when meaning, qualifications or ownership remain unclear.'}
 
 
 def packet_text(packet):
-    lines=[packet['id'],'Summary: '+packet['summary'],'Assessment: '+packet['assessment']]
+    lines=[packet['id'],'Summary: '+packet['summary'],'Assessment: '+packet['assessment'],
+           'Orientation only: selected excerpts do not establish proof readiness.']
+    formal=packet['formalization_scope']
+    if formal['status'] not in (None,'no_record','not_started'):
+        lines.append('Recorded formalization: '+str(formal['status'])+'; '+str(formal['scope']))
     for passage in packet['passages']:
         lines.append('Source: '+passage['target']+(' [widened; ownership needs review]' if passage['widened'] else ''))
         for item in passage['excerpts']:

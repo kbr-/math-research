@@ -1,7 +1,9 @@
 All prompts below, including ordinary research, Spin, Formalize and parallel
 formalization, follow the root [index maintenance contract](AGENTS.md). Apply it
 to new and affected existing claims within the assignment; do not expand an
-assignment into unrelated formalization or metadata audits.
+assignment into unrelated formalization or metadata audits. For research claim
+triage, use the root packet-orientation rule; selected excerpts do not replace
+exact statement/proof reading before reliance.
 
 # Dump
 

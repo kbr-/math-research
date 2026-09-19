@@ -253,12 +253,12 @@ unchecked and briefly note what remains.
       test that every claim appears exactly once, summaries are not truncated,
       selected fields stay in the requested order, and no display fluff is emitted.
 
-- [ ] Evaluate whether compact `packet` evidence is useful beyond metadata curation
+- [x] Evaluate whether compact `packet` evidence is useful beyond metadata curation
       for ordinary research orientation and claim triage. Compare representative
       packets with exact statements, hypotheses and correction records; test whether
       omitted qualifications could mislead a research agent. Distinguish orientation
       from proof readiness, and record the evaluation and limitations.
-- [ ] If that evaluation supports research use, expose `packet` alongside minimal
+- [x] If that evaluation supports research use, expose `packet` alongside minimal
       claim listing in the research workflows: root/scoped agent guidance, Resume,
       registry guide and applicable research prompts. Link to one authoritative
       usage rule; require exact statement/proof reading before mathematical reliance.
@@ -443,3 +443,15 @@ that these focused tests close every end-to-end requirement.
 User addition: evaluate `packet` for ordinary research use before exposing it in
 research workflows (section 11). Current packet guidance concerns metadata
 curation only; proof readiness must not be inferred from a selected excerpt.
+
+
+Packet research-use evaluation `index_packet_evaluation_20260919`: five purposive
+cases preserve critical indexed qualifications (partial proof/counterexample,
+conditional premise, correction/repair history, finite check, working theorem) but
+also demonstrate omitted definitions and proof details. Useful for orientation and
+source triage; explicitly not proof readiness. Packets now report that distinction
+and show recorded formalization scope. Root guidance owns the research-use rule;
+research instructions, Resume, prompts and registry documentation expose it next
+to minimal listing. Full statement/proof/correction reading remains required before
+reliance. Evidence and limitations are in the cycle's evaluation.json; this is not
+an exhaustive extraction benchmark or renewed mathematical verification.

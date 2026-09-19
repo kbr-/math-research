@@ -85,12 +85,19 @@ class DependencyTests(unittest.TestCase):
         packet=deps.metadata_packet(self.data,'lem:a',self.root,limit=2,width=20)
         passage=packet['passages'][0]
         self.assertEqual(packet['assessment'],'Working proof')
+        self.assertFalse(packet['proof_ready'])
+        self.assertIn('Orientation only',deps.packet_text(packet))
         self.assertEqual(passage['included_blocks'],2)
         self.assertGreater(passage['omitted_selected_blocks'],0)
         self.assertTrue(passage['excerpts'][0]['truncated'])
         self.assertIn('B = C + D',passage['excerpts'][1]['text'])
         self.assertIn('omitted',deps.packet_text(packet))
         with self.assertRaises(ValueError):deps.metadata_packet(self.data,'missing',self.root)
+
+    def test_packet_exposes_partial_formalization_scope(self):
+        self.data['claims'][0]['formalization'].update(status='partial',scope='Identity only; equality refuted.')
+        output=deps.packet_text(deps.metadata_packet(self.data,'lem:a',self.root))
+        self.assertIn('partial; Identity only; equality refuted.',output)
 
     def test_acceptance_requires_a_matching_curated_relationship(self):
         candidate=next(c for c in deps.scan(self.data,self.root)['candidates'] if c['method']=='notebook_link')
