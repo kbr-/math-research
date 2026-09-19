@@ -55,6 +55,14 @@ class ClaimRegistryTests(unittest.TestCase):
         self.assertEqual(cr.escape_cell(r'a\|b'), r'a\|b')
         self.assertEqual(cr.escape_cell(r'a\\|b'), r'a\\\|b')
 
+    def test_generated_warning_is_visible_and_names_the_edit_workflow(self):
+        rendered = cr.render(cr.import_markdown(source()))
+        self.assertTrue(rendered.startswith('> **Automatically generated'))
+        self.assertIn('whether human or agent', rendered)
+        self.assertIn('[claims/index.json](claims/index.json)', rendered)
+        self.assertIn('python3 tools/claim-index.py render', rendered)
+        self.assertNotIn('<!--', rendered.split('# Index')[0])
+
     def test_import_rejects_ambiguity_and_nonrows(self):
         for bad in (source().replace('Bound |S|', 'Bound | ambiguous'),
                     source() + 'unparsed text\n', source().replace('`lem:partial`', '`bad label`'),
