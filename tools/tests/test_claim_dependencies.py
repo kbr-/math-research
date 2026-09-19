@@ -99,6 +99,14 @@ class DependencyTests(unittest.TestCase):
         output=deps.packet_text(deps.metadata_packet(self.data,'lem:a',self.root))
         self.assertIn('partial; Identity only; equality refuted.',output)
 
+    def test_markup_stripping_preserves_raw_math_inequalities(self):
+        text='<p>Working theorem: q<n and a>b, with <strong>fixed</strong> p.</p>'
+        cleaned=deps.strip_markup(text)
+        self.assertIn('q<n and a>b',cleaned)
+        self.assertIn('fixed',cleaned)
+        self.assertNotIn('<strong>',cleaned)
+        self.assertIn(r'\(a<p and b>c\)',deps.strip_markup(r'<p>Scope \(a<p and b>c\).</p>'))
+
     def test_acceptance_requires_a_matching_curated_relationship(self):
         candidate=next(c for c in deps.scan(self.data,self.root)['candidates'] if c['method']=='notebook_link')
         with self.assertRaises(ValueError):

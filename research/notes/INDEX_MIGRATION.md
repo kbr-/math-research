@@ -322,6 +322,12 @@ active; the unchecked items below still need implementation or acceptance eviden
 - [ ] Regenerate human/topic views and machine-readable exports at checkpoints;
       keep pending index metadata reviews visible after compaction, branch integration
       or migration. Graph rendering and notifications are owned by their separate plans.
+- [ ] Close the omitted-registration gap: compare newly appended research records
+      with declared/indexed claim IDs, flag explicit new claim labels without registry
+      records, and require an explicit disposition for entries introducing no claims.
+      Test that a notebook-only new labelled claim cannot pass finalization or CI.
+      Document the unavoidable semantic limit: software cannot prove that arbitrary
+      unlabelled prose contains no new theorem or that a declared inventory is honest.
 - [ ] Test a fresh cycle, a correction, a formalization update and parallel branch
       integration end to end. Verify that incomplete new metadata is caught and
       that justified unknown/not-applicable states are represented honestly.
@@ -455,3 +461,19 @@ research instructions, Resume, prompts and registry documentation expose it next
 to minimal listing. Full statement/proof/correction reading remains required before
 reliance. Evidence and limitations are in the cycle's evaluation.json; this is not
 an exhaustive extraction benchmark or renewed mathematical verification.
+
+
+Compact-evidence batch `index_metadata_batch2_20260919`: classified 45 additional
+claims (matching/spread normalization through copy agreement). Status, topics and
+significance now have 62 reviewed and 804 unreviewed records. Formalization stays
+866 reviewed. Twelve scoped edges bring the graph to 39; 45 direct-dependency
+inventories remain explicitly pending because local equation/setup references
+are not fully mapped by hyperlink extraction. Seventeen relationship inventories
+are reviewed, 804 untouched. No pending inventory is counted complete.
+
+The packet workflow avoided whole-entry rereading. A concrete extraction fault
+was found and fixed: broad HTML stripping could swallow raw mathematical less-than
+expressions. Known markup stripping now protects TeX spans; regression tests cover
+ordinary and tag-like variable inequalities. The original/intermediate packet
+outputs are retained, with `packets-reviewed.json` the final evidence. Nine
+packet/discovery tests, changed-scope validation and 3,870 source-target checks pass.

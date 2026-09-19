@@ -139,7 +139,7 @@ def scan(data, root=ROOT):
                     except ValueError: targets=set()
                 start=region.rfind('<p',0,match.start());end=region.find('</p>',match.end())
                 paragraph=region[max(0,start):end+4] if start>=0 and end>=0 else region[max(0,match.start()-160):match.end()+160]
-                clean=re.sub(r'\s+',' ',re.sub(r'<[^>]+>',' ',paragraph)).strip()
+                clean=re.sub(r'\s+',' ',strip_markup(paragraph)).strip()
                 hint='dependency-language; check negation and scope' if re.search(r'depend|\buses?\b|\bby\b',clean,re.I) else None
                 if targets:
                     add(source,targets,'notebook_link',locator,region,href,
@@ -149,7 +149,7 @@ def scan(data, root=ROOT):
                 if match.group(1) in ids:
                     add(source,[match.group(1)],'claim_label',locator,region,match.group(1),
                         base_line+region.count('\n',0,match.start()),
-                        re.sub(r'<[^>]+>',' ',region[max(0,match.start()-120):match.end()+120]),widened or len(anchors[anchor])>1)
+                        strip_markup(region[max(0,match.start()-120):match.end()+120]),widened or len(anchors[anchor])>1)
 
     decls=defaultdict(set);sources={}
     for path,owners in files.items():
@@ -226,6 +226,14 @@ def record_decision(data, candidate, *, state, reason, reviewer, date, relation_
     return validate(data)
 
 
+def strip_markup(text):
+    # Only actual known markup, never a mathematical inequality such as q<n.
+    tags='p|div|span|strong|em|b|i|a|code|sup|sub|br|small|h[1-6]|table|thead|tbody|tr|th|td|ul|ol|li|details|summary'
+    pieces=re.split(r'(\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\])',text)
+    return ''.join(part if i%2 else re.sub(r'</?(?:'+tags+r')(?:\s+[^<>]*?)?\s*/?>',' ',part,flags=re.I)
+                   for i,part in enumerate(pieces))
+
+
 def metadata_packet(data, label, root=ROOT, limit=6, width=700):
     """Bounded retrieval evidence only; omissions and ownership remain explicit."""
     claim=next((c for c in data['claims'] if c['id']==label),None)
@@ -241,7 +249,7 @@ def metadata_packet(data, label, root=ROOT, limit=6, width=700):
         seen.add(anchor)
         blocks=[]
         for match in re.finditer(r'<(p|div)\b[^>]*>.*?</\1>',region,re.S):
-            body=html.unescape(re.sub(r'<[^>]+>',' ',match.group()))
+            body=html.unescape(strip_markup(match.group()))
             body=re.sub(r'\s+',' ',body).strip()
             if not body:continue
             signal=bool(re.search(r'working|lemma|theorem|status|counter|hypothes|requir|conditional|'
