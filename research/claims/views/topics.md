@@ -19,11 +19,11 @@ Multi-topic membership overlaps; unclassified means missing topic metadata.
 | [method-obstructions](topic-d3ed32d2495e6fe98bec.md) | 125 | Counterexamples and limitations with the affected hypothesis or method identified. |
 | [moment-designs](topic-041e7e6a8b6deac21c80.md) | 78 | Truncated moments, annihilating functionals, covariance and design extension. |
 | [nullstellensatz](topic-0e00caa1421aa7b6562b.md) | 80 | Ordinary polynomial ideal certificates, cofactors and certificate degree. |
-| [polynomial-calculus](topic-6afefd068eb1cf50e655.md) | 316 | PC derivations, closure spaces, proof transformations and final-line reuse. |
+| [polynomial-calculus](topic-6afefd068eb1cf50e655.md) | 317 | PC derivations, closure spaces, proof transformations and final-line reuse. |
 | [pseudorandomness](topic-51be920b90e25b6f100f.md) | 5 | Small-bias generators, polynomial sampling and character bounds. |
 | [publication](topic-3f662004cb4676be8aa8.md) | 8 | Statements prepared for independent dissemination and review. |
 | [query-models](topic-271eac1bf49c9fe0d140.md) | 130 | Conflict/query trees, query description bounds and survival probabilities. |
-| [resolution-parities](topic-cc24a4c93fa12321e386.md) | 21 | Affine/parity clause calculi and proof size. |
+| [resolution-parities](topic-cc24a4c93fa12321e386.md) | 22 | Affine/parity clause calculi and proof size. |
 | [substitution](topic-6c4907c0653a336f9a63.md) | 67 | Variable interpretations, weighted replay and removal of extension blocks. |
 | [topological-methods](topic-6a5b0c4744c0c62182f5.md) | 22 | Matching/chessboard complexes and homological extension inputs. |
 | [Unclassified](unclassified.md) | 0 | No assigned topics |
