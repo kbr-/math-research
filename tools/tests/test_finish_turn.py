@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Focused integration checks using isolated metadata sessions and the real launcher."""
+"""Real finalizer/timing/archive integration with a fixture-only job launcher."""
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -17,8 +18,36 @@ class FinalizationTest(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
         (self.root / 'tools').mkdir()
-        for name in ('compute.sh', 'tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_notices.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_evidence.py', 'tools/notebook-excerpt.py', 'tools/claim_registration.py'):
+        for name in ('tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_notices.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py', 'tools/claim_evidence.py', 'tools/notebook-excerpt.py', 'tools/claim_registration.py'):
             shutil.copy2(ROOT / name, self.root / name)
+        # Exercise real metadata, report generation and archival without requiring
+        # this laptop's systemd slice on CI. Only the tiny fixture archiver may
+        # use this test double; production compute.sh is never changed.
+        shutil.copy2(ROOT / 'compute.sh', self.root / 'compute_fixture.py')
+        launcher = self.root / 'compute.sh'
+        launcher.write_text('''#!/usr/bin/env python3
+import sys
+from pathlib import Path
+import compute_fixture as compute
+
+def archive_invocation(command, threads, timeout, unit):
+    expected = Path(__file__).parent / 'tools/archive-session.py'
+    if len(command) != 3 or command[:2] != [sys.executable, str(expected)]:
+        raise AssertionError('Unexpected fixture workload: ' + repr(command))
+    return command
+
+compute.invocation = archive_invocation
+sys.exit(compute.main())
+''')
+        launcher.chmod(0o755)
+        # Make accidental host-service access fail even on a configured laptop.
+        bin_dir = self.root / 'bin'
+        bin_dir.mkdir()
+        for name in ('systemctl', 'systemd-run'):
+            guard = bin_dir / name
+            guard.write_text('#!/bin/sh\necho "Unexpected host-service access in fixture" >&2\nexit 99\n')
+            guard.chmod(0o755)
+        self.command_env = dict(os.environ, PATH=str(bin_dir) + os.pathsep + os.environ.get('PATH', ''))
         (self.root / 'research/claims').mkdir(parents=True)
         for schema in ('schema.json', 'schema-v1.json'):
             shutil.copy2(ROOT / 'research/claims' / schema, self.root / 'research/claims' / schema)
@@ -26,8 +55,11 @@ class FinalizationTest(unittest.TestCase):
                      '--model', 'Test model, high')
 
     def command(self, script, *args, check=True):
-        return subprocess.run([sys.executable, str(self.root / script), *args],
-                              cwd=self.root, text=True, capture_output=True, check=check)
+        result = subprocess.run([sys.executable, str(self.root / script), *args],
+                                cwd=self.root, env=self.command_env, text=True, capture_output=True)
+        if check and result.returncode:
+            self.fail(f'{script} exited {result.returncode}\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}')
+        return result
 
     def events(self, name):
         return [json.loads(line) for line in
