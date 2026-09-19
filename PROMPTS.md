@@ -214,9 +214,14 @@ So perform the following, in a loop:
   line), including when nothing changed, and estimate the chance that the
   current line advances the main goal; identify wasted time or context,
   repeated work, or difficulty checking the mathematics. Follow AGENTS.md's
-  task-selection guidance. Implement a concrete improvement when warranted, or briefly explain why none
-  is needed. Review this yourself; do not wait for me to identify friction or
-  invent changes merely to satisfy this step.
+  task-selection and dependency-checking guidance. When investigating overhead,
+  use existing timing categories and, where relevant, the summary's
+  [recovery evidence](tools/RECOVERY_EVIDENCE.md); these are observable proxies,
+  not proof of wasted work or savings. Address repeated reading with existing
+  bounded retrieval tools before adding infrastructure. Implement a concrete
+  improvement for observed friction when warranted, or briefly explain why none
+  is needed; do not run a separate framework audit every cycle. Review this
+  yourself rather than waiting for me or inventing changes to satisfy this step.
 - update the notebook as usual
 - Apply the [cheap significance check](research/claims/README.md#significance-check-and-attention)
   through claim metadata and the finalizer; surface new/reopened candidates without

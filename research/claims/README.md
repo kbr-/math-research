@@ -94,6 +94,12 @@ comparisons. No second per-turn essay is required. Entries with no claims use th
 existing explicit `data-claims="none"` and reason; the tools cannot detect every
 unlabelled result or guarantee an honest assessment.
 
+Assess the actual scope of a result, including generalizations established during
+formalization: weaker hypotheses, broader domains or stronger conclusions may
+merit attention independently of the original special case. Compare the verified
+statement with its source; distinguish useful generality from routine API or
+empty-case extensions. Verification status alone does not establish significance.
+
 `finish-turn.py` mechanically checks changed-claim dispositions before stopping the
 clock, prints their count and synchronizes attention. Corrections/supersessions
 require a fresh target significance review as well as a status review. A reviewed

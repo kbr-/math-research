@@ -45,6 +45,12 @@ rules to growing checklists or one-off setup narratives.
   `tools/claim-index.py list --fields id,summary --format tsv` for a complete minimal
   inventory when needed. Packets omit proof details and sometimes hypotheses:
   before reliance read the exact statement, proof and applicable corrections.
+  Before committing to a direction, inspect the relevant claims' reviewed
+  dependencies and correction/refinement links using `claim-index.py graph` and
+  exact metadata. Check conditional premises and stronger available versions
+  against the proposed argument; follow only dependencies that matter to it.
+  Missing edges do not establish independence, and an impact warning is not a
+  verdict that a claim is false.
   Label rediscoveries/refinements and link their original records.
 - Once the question, argument and evidence are stable, make one focused correctness
   review. Reopen only for a concrete unresolved concern; defer optional extensions.
