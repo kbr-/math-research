@@ -16,7 +16,10 @@ research/CLAIM_INDEX.md for the same objects (rules, trees, reader families), an
 search the index under the technique's own name for every lemma formulated during the
 cycle (for example "case split", "telescoping", "weight") and under the record's words
 for the same method, not only the cycle's own (a table of costs once missed the recorded
-"old-consequence transfer" because the search used "conservativity"), because the opening
+"old-consequence transfer" because the search used "conservativity"); run
+`tools/search-claims.py` with the content words of each new statement, which ranks the rows
+by shared uncommon words whatever the phrasing (a phrase search for "support size" missed
+the recorded point-support lemma, which this search puts first), because the opening
 search cannot cover a lemma that did not exist yet; a recorded case-split lemma was once
 restated as new and caught only by the reviewer; before drafting the proof of a new
 lemma, send its one-paragraph statement to the standing reviewer with the single question
