@@ -1,7 +1,9 @@
 # Ideas for the framework
 
-Draft, 18 September 2026. Untracked on purpose; commit when it settles. The user's notes are
-rewritten in prose; the assistant's comments follow each one, marked as such.
+Draft begun 18 September 2026; now tracked. The user's notes are rewritten in prose.
+Comments labelled **Assistant's comments** below are from Claude Fable. Additions labelled
+**Codex comments (19 September 2026)** are from GPT-6 Astra. These are proposals, not active
+workspace rules or authorization to launch parallel research or formalization.
 
 ## 1. Fossick protocol: scan the research record for nuggets
 
@@ -40,6 +42,19 @@ interest. It should persist where the last scan finished and resume from there n
   (`route-only`, `tool`, `independent`, `open-problem?`) filled in at write time and reviewed
   during the fossick scan. The scan then reads one file.
 
+**Codex comments (19 September 2026).**
+
+- Strong priority. Separate discovery of a candidate from a novelty audit and publication
+  readiness. A striking theorem or an agent's claim that it settles an open problem warrants
+  attention; it does not establish novelty or correctness by itself.
+- A cursor should mean "screened through here", not "everything here has been resolved".
+  Preserve pending candidates separately, and link later corrections to previously screened
+  claims. Otherwise an incremental scan silently misses changes to its earlier conclusions.
+- Use one candidate register for Fossick findings and per-turn flags, with attention/review
+  states. Separate `NUGGETS.md` and `FLAGS.md` would duplicate the same objects. Do not
+  systematically discount negative results or failed attempts: the useful item may be the
+  counterexample or obstruction they exposed.
+
 ## 2. Do not solve an open problem and walk away
 
 **The idea.** An AGENTS.md rule so that a cycle which settles something long open raises a flag
@@ -63,6 +78,15 @@ instead of moving on.
 - The "Where we stand" section already has a "Publication side branch" paragraph. Generalize it
   to "Results of independent interest" with a link per result, so the living overview itself
   carries the list.
+
+**Codex comments (19 September 2026).**
+
+- Make the per-turn check cheap: flag a plausible candidate with its exact scope and why it
+  might matter. Require targeted literature work when assessing that candidate, rather than
+  automatically conducting a novelty search for every lemma about a standard object.
+- Keep mathematical status, formalization coverage, and possible significance separate.
+  "Unknown novelty" is an honest useful outcome. Keep a compact visible link to the candidate
+  register in the overview instead of letting a second result catalogue accumulate there.
 
 ## 3. Parallel agents on separate worktrees pursuing alternative next steps
 
@@ -97,6 +121,19 @@ a different candidate "next step", and the best branch wins.
   14-CPU, 10 GB budget. Limit to one formalization worker at a time or give each an explicit
   thread count.
 
+**Codex comments (19 September 2026).**
+
+- Agree at genuine forks. Assign a common mathematical interface and budget, but distinct
+  hypotheses to test. Preserve every branch's result; choose which result to pursue next,
+  rather than treating the other records as disposable losers.
+- `tools/merge-formalization-appends.py` already handles a restricted append-only merge.
+  Extend that existing mechanism if needed. Preserve released entries and their dependency
+  order; do not globally reorder the historical record by wall-clock timestamps.
+- Give an adversary the exact statement and relevant source assumptions, without the
+  author's persuasive narrative. Fresh context is useful; missing definitions are not.
+  Start with two bounded workers and measure duplicated reading before scaling up. Historical
+  usage figures are not evidence of the current token or compute headroom.
+
 ## 4. Formalize everything, then require formalization on every cycle
 
 **The idea.** Bring the whole notebook to Lean, then make formalization part of each cycle so the
@@ -126,6 +163,19 @@ verified frontier never lags.
 - Expect corrections. If formalizing the older record finds discrepancies, that is the value, not
   a cost; the correction policy (new dated entry, gaps section) already handles it.
 
+**Codex comments (19 September 2026).**
+
+- I would not require Lean on every exploratory turn. Prioritize publication dependencies,
+  claims used repeatedly, and uncertain interfaces whose failure would invalidate much work.
+  Obstructions and finite certificates can also be formalized; their priority depends on use,
+  not on whether they are positive theorems.
+- Statement-first work is specification, not verification. Isolate unproved interfaces from
+  verified modules, and prevent an assumed statement from making downstream results appear
+  fully verified. The scope comparison between the informal and formal statements still matters.
+- Prefer "not formally verified" to "unverified" for a mathematically reviewed working proof.
+  Asynchronous formalization is attractive once explicitly assigned, with a clear notification
+  path when a discrepancy affects ongoing research.
+
 ## 5. Claim index: compression, deduplication, second-level index, retrieval tools
 
 **The idea.** The claim index is growing; review it for duplicates, add a second-level index or
@@ -154,6 +204,18 @@ context (the notebook excerpt tool does this for entries but not for claims).
 - Duplicate detection can use the same scoring: list pairs of claims whose statements are
   near-identical, for the audit cycle to merge or link as rediscoveries.
 
+**Codex comments (19 September 2026).**
+
+- `tools/search-claims.py` already implements ranked, stemmed content-word retrieval. Extend
+  it with exact-label lookup, status and source links before creating another search command.
+- Structured data is worthwhile, but migrate incrementally and validate every label and
+  target. Keep one editable source; generate the other views. Start with the fields already
+  known reliably, leaving unreviewed dependencies explicitly unknown rather than inferred.
+- Similar wording is a review hint, not permission to merge claims: encodings, quantifiers,
+  degree conventions and hypotheses can make near-duplicates mathematically different.
+  Preserve stable labels and correction links. Retracted claims must remain searchable so
+  they are not rediscovered or used accidentally.
+
 ## 6. Smaller things noticed along the way
 
 - The cost report's "working file per cycle" idea (append intermediate findings during a long
@@ -164,6 +226,15 @@ context (the notebook excerpt tool does this for entries but not for claims).
   problems and benchmarks (for this project: Res(⊕) size, size–width, unary PHP in Res(⊕),
   AC0[p]-Frege PHP, and so on) with citations. A short `research/OPEN_PROBLEMS.md` would make
   "is this known?" a lookup rather than a search each time.
+
+**Codex comments (19 September 2026).**
+
+- A short durable work-in-progress note helps across interruption: exact current question,
+  completed steps, unresolved concern, output locations, and next action. It should expire or
+  be incorporated at the checkpoint, not become another living mathematical summary.
+- An open-problem map should record exact formulations, source dates and last verification.
+  It can guide novelty searches but cannot replace them: formulations and published results
+  change. Link it to the same significance register instead of maintaining another queue.
 
 ## 7. Context budget: the claim index and the Resume protocol
 
@@ -214,6 +285,23 @@ Resume costs 50–60k tokens before any work starts.
 - What not to do: do not trim the entries themselves, and do not drop the append-only record
   to save tokens. The cost problem is in what is read by default, not in what is stored.
 
+**Codex comments (19 September 2026).**
+
+- This is an immediate improvement, independent of a JSON migration. The existing search and
+  excerpt tools already allow bounded reads. Add a compact TOC mode to the existing notebook
+  tool instead of a second parser, and use bounded output that reports truncation explicitly.
+- The living overview also needs consolidation. During this resume, **Where we stand** and
+  **The remaining route** had become substantial chronological histories, while only Working
+  mathematical context has a size target. Keep the current conclusion, decisive obstruction
+  and next obligation in the overview, with links to the full history. Trimming only Working
+  mathematical context will not fix that growth.
+- Plain `#anchor` links in a GitHub Markdown index target that Markdown page, not the live
+  notebook. Compact links must still resolve correctly in each rendering surface; shorter
+  agent-facing tool output is a safer first saving than globally rewriting public links.
+- The dated byte counts above are snapshots, not token measurements. Judge improvements by
+  the text actually loaded during restoration and whether it retains necessary hypotheses.
+  Consolidate duplicate rules and expired grants without erasing current constraints.
+
 ## 8. Claim graph: structured, visualized on GitHub Pages
 
 **The idea.** Represent the claims and their relations as a graph in a structured format that a
@@ -256,3 +344,31 @@ into the notebook.
 - Keep it honest. The graph should show only edges that exist in the record; it is navigation,
   not a proof certificate. A `depends_on` edge means "the entry uses this", not "the dependency
   has been checked".
+
+**Codex comments (19 September 2026).**
+
+- Build this after the structured registry has a useful set of reviewed edges. A one-hop
+  dependency view around a selected claim is a better first interface than the whole graph.
+- Preserve edge provenance and review state. A hyperlink may cite a counterexample, contrast
+  an older approach, or explain history; it is not automatically a proof dependency. Likewise,
+  missing edges mean the graph is incomplete, not that a claim is independent.
+- Citation count alone does not identify the most important claims, and disconnection from
+  the current route does not make a result worthless. Formalization priorities should also
+  reflect uncertainty and consequence of failure. Descendant traversal suggests an audit
+  scope; whether the correction actually invalidates each use still needs mathematical review.
+- A CDN library is still a dependency even without an installation step. Choose and approve
+  that dependency explicitly when implementing the visualization, following the existing
+  dependency policy; prefer a pinned local asset if offline reproducibility matters.
+
+## Suggested first implementation steps — Codex, 19 September 2026
+
+1. Consolidate the living overview and streamline bounded retrieval using existing tools.
+2. Add one significance-candidate register and a cheap per-turn check; then an incremental
+   Fossick prompt that uses the same register. Avoid making literature review a tax on every turn.
+3. Migrate the claim index incrementally to one structured source, preserving labels and links.
+4. Add bounded parallel exploration and targeted asynchronous formalization when assigned.
+5. Build graph navigation on the reviewed claim data, rather than trying to recover dependency
+   semantics through visualization.
+
+These are suggested priorities for discussion; none of these mechanisms is implemented by
+this commentary update.
