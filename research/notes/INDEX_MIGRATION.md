@@ -527,3 +527,17 @@ Standard matching/sampling/replay inputs are explicitly treated as known, and th
 open source-family bridge is context rather than an established theorem. No new
 canonical edge or mathematical result was inferred. Source packets and decisions
 are retained in the batch evidence directory.
+
+
+Compact-evidence batch `index_metadata_batch6_20260919`: 80 matching, moment-design,
+query-obstruction and affine-pair/source-interface records classified. Status/topics:
+362 reviewed / 504 unreviewed. Significance: 355 reviewed, seven pending targeted
+audits, 504 unreviewed. Relationships: 17 reviewed inventories, 345 pending,
+504 unreviewed; canonical edges now 43. Two edges correct only vacuous source
+applications, retaining the algebraic statements; query attacks obstruct a criterion's
+premise and refine its description class, not Frege itself. Two further possible
+independent query-rate results are queued for audit, with no novelty assertion.
+Added reusable topic definitions for moments, query models, pseudorandomness and
+topological methods. Full dependency inventories remain the largest semantic
+backlog; the next route review should assess closure of that backlog rather than
+using classification counts as completion evidence.
