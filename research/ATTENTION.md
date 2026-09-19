@@ -12,6 +12,10 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Significance: context; novelty: not_claimed.
   Preprint revision is editorial and reuses existing mathematical and kernel evidence.
   Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+- **[audit:roabp-PHP-field-scope](<https://kbr.is-a.dev/math-research/#roabp-PHP-field-scope-audit>)** — The subset-sum step in HLT2026v1 Proposition 21 is satisfiable in characteristic p<=n+1
+  Significance: context; novelty: not_claimed.
+  The recorded characteristic obstruction concerns a displayed subset-sum argument, not the cited main theorem.
+  Decision (agent): Fossick 20 September: rechecked arXiv 2605.04544 submission history (only v1 listed) and Proposition 21. The displayed Boolean subset-sum intermediate system is satisfiable in characteristic p<=n+1. Consider an author-facing scope clarification after review; this does not refute the FPHP upper-bound conclusion or main CNF theorem. No contact has been made. See entry-2026-09-20-fossick-publication-scope.
 - **[cor:bit-PHP-exponential-parameter-bound](<https://kbr.is-a.dev/math-research/#bit-PHP-exponential-parameter-corollary>)** — Usual-CNF bit PHP with n=2^ell holes requires more than exp(n/(32768 ell^2)) DAG nodes under the two recorded rule conventions, for every ell>=32
   Significance: independent_result; novelty: candidate.
   Quantitative publication headline strengthening the earlier superpolynomial conclusion via the same finite exclusion and clause-transfer mechanism, not independent confirmation of that mechanism.
@@ -40,7 +44,7 @@ workflow decisions, not theorem status or publication approval. See [the workflo
 - **[thm:prime-disequality-bit-PHP-size-bound](<https://kbr.is-a.dev/math-research/#prime-disequality-bit-PHP-size-bound>)** — The defined DAG-like affine-disequality calculus has no polynomial-size bit-PHP refutations for any fixed prime
   Significance: independent_result; novelty: unknown.
   Working all-prime size bound for the explicitly defined full-field affine-disequality calculus. Potential independent side result; targeted comparison distinguishes equation-clause Res(lin_Fp), Boolean semantic variants and tree-like unary-PHP literature. No novelty or stronger-system identification is certified.
-  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Decision (agent): Fossick 20 September: rechecked the exact full-field disequality calculus, usual-domain clauses and exponential same-coordinate equation-clause conversion example. Part–Tzameret TR18-117 confirms the equation-clause terminology. Retain the working all-prime side result with unknown novelty; no general odd-prime Res(lin) or unary-PHP consequence. See entry-2026-09-20-fossick-publication-scope.
   Next: Before separate publication, obtain expert comparison with affine-subspace-cover calculi and possible Boolean-domain-aware simulations; retain the full-field disequality and explicit-domain scope.
 - **[thm:publication-Res-parity-bit-PHP](<https://kbr.is-a.dev/math-research/#publication-Res-parity-bit-PHP-theorem>)** — Every real K>0 eventually bounds below the node count of every usual-CNF bit-PHP affine DAG refutation with n=2^ℓ holes and n+1 pigeons
   Significance: independent_result; novelty: candidate.
@@ -62,8 +66,11 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Standalone candidate method barrier for all unsatisfiable Boolean quadratic systems and finite design distributions in the stated degree regime. Bounded primary-literature audit found close rank-growth prior art but no exact ENS-rate statement; priority remains unknown. Does not settle the weaker diagonal question or imply any Frege bound.
   Decision (agent): Fossick 20 September: reviewed the full claim summaries, flatness/operator proof and existing targeted priority audit. Retain one joint method-barrier candidate with the depth-four refinement; rank-growth and small-bias ingredients have close prior art. Isolate the additional quantitative survival-rate conclusion for expert review. No novelty or correctness certification. See entry-2026-09-20-fossick-query-obstructions.
   Next: Before any publication claim, isolate the additional quantitative ENS-rate/query contribution from the cited finite-field moment and small-bias ingredients and obtain an independent priority/scope assessment.
+
+## Reviewed
+
 - **[thm:working-Res-parity-bit-PHP-size-lower-bound](<https://kbr.is-a.dev/math-research/#working-Res-parity-bit-PHP-size-lower-bound>)** — Bit PHP with n+1 pigeons and n=2^ell holes has no polynomial-size DAG-like Res(parity) refutation under either audited rule convention
   Significance: independent_result; novelty: candidate.
   Earlier formulation of the same unrestricted DAG-like usual-CNF bit-PHP theorem consolidated in thm:publication-Res-parity-bit-PHP; inherits that publication candidate assessment and is not counted as a separate result.
-  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Decision (agent): Fossick: predecessor formulation is consolidated into thm:publication-Res-parity-bit-PHP, whose separate attention item remains pending. Do not count this as another publication candidate or as user approval.
   Next: Use the publication theorem's independent expert and exact-scope novelty review; do not duplicate this predecessor as a separate publication claim.
