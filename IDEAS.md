@@ -58,6 +58,11 @@ interest. It should persist where the last scan finished and resume from there n
   systematically discount negative results or failed attempts: the useful item may be the
   counterexample or obstruction they exposed.
 
+**Implementation update (20 September 2026).** The [Fossick protocol](tools/FOSSICK.md)
+is implemented and tested, with a durable `ended_at` marker and shared attention
+handoffs. The user explicitly deferred the first historical scan; its state remains
+unstarted. This item stays pending until that separately requested scan is done.
+
 ## 3. Parallel agents on separate worktrees pursuing alternative next steps
 
 **The idea.** Spend more tokens per unit of time: several agents in separate worktrees each take

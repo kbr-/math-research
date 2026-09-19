@@ -79,6 +79,8 @@ on resume, even in a fresh clone. “Before this notebook” is historical conte
   For significance/novelty review, consult the relevant [benchmark](../OPEN_PROBLEMS.md)
   on demand; the map is not mandatory restoration reading. The bundle includes a
   bounded pending-attention summary; inspect `research/ATTENTION.md` only as needed.
+  Fossick progress is also bundled without executing a scan; load its state and
+  [workflow](../../tools/FOSSICK.md) only for an explicit Fossick assignment.
   Older checkpoint notes and Git revisions are historical snapshots, not current
   summaries. Resolve conflicts against exact records; do not silently rewrite them.
   Use the assigned plan's durable progress/evidence for interrupted work; the

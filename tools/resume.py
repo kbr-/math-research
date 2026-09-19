@@ -100,6 +100,9 @@ def bundle(root, formalization=False, tail=10):
         data=load_claims(root/'research/claims/index.json')
         history,_=reconcile(data,load(root))
         parts.append(('Significance attention',brief(data,history),'claim-attention','pending'))
+    if (root/'research/notes/FOSSICK_STATE.json').exists():
+        from fossick import brief as fossick_brief
+        parts.append(('Fossick progress',fossick_brief(root),'fossick','progress'))
     return parts
 
 

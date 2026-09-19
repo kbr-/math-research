@@ -173,6 +173,26 @@ restore the target, route, branch assignments, worker status, released interface
 and integrated checkpoints before continuing. Do not duplicate active workers or
 restart completed proofs. Report the final verified scope and remaining gaps.
 
+# Fossick
+
+Invocation: `Execute the Fossick prompt` (optionally specify a bounded scope).
+This explicitly authorizes a significance-screening pass, not publication or
+formalization. Implementing/testing Fossick alone does not authorize this scan.
+
+Follow [the Fossick workflow](tools/FOSSICK.md), starting a measured research cycle.
+Use the tracked `research/notes/FOSSICK_STATE.json` and bounded `next` batches;
+resume an unfinished batch rather than restarting. Reuse the structured claim
+index, current significance reviews, exact source excerpts when needed, benchmark
+map and shared attention history. Include unindexed entries and negative results.
+Record screening dispositions through `complete`; never advance the cursor merely
+because a packet was read. Keep candidate audits separate from screened coverage.
+Stop at the pinned pass endpoint or the requested narrower scope, reporting the
+ended-at marker, unresolved candidates and actual reading/audit limits. Record and
+commit the measured cycle under the normal rules. Push only if separately authorized.
+After compaction, restore this assignment and the saved batch; do not rescan
+unchanged completed entries. Smoke tests use isolated state, leaving the real
+ledger unchecked for the actual scan.
+
 # Spin
 
 I am now going to sleep. I won't be available to you for the next ~8 hours.
