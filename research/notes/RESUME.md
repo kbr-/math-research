@@ -90,7 +90,10 @@ historical mathematical sources only when the current research task needs them.
   If a task explicitly needs the complete inventory, use
   `tools/claim-index.py list --fields id,summary --format tsv` for untruncated,
   metadata-free output. `tools/claim-index.py coverage` locates pending/stale
-  field reviews without loading the full registry.
+  field reviews without loading the full registry. Restore the root index
+  maintenance contract: changed claims need complete evidence-backed dispositions,
+  while untouched backlog stays in coverage. Use `claim-index.py changed --base REV`
+  for the current changed scope; a pending question is not completed curation.
   For dependency curation, `tools/claim-dependencies.py` provides scan/show/decide
   commands with source evidence and ambiguity flags; see the registry guide.
   Start other metadata curation with `tools/claim-dependencies.py packet --claim ID`;

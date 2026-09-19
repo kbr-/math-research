@@ -1,6 +1,6 @@
 # Current research workspace
 
-- Follow the root AGENTS.md Git/publication policy on the user's chosen branch,
+- Follow the root AGENTS.md index maintenance contract and Git/publication policy on the user's chosen branch,
   including any explicit publication override for the active task.
 - Start with `notes/RESUME.md`, then read the initial sections of
   `../notebook.html`, including Working mathematical context. The notebook is the

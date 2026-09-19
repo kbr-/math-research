@@ -1,3 +1,8 @@
+All prompts below, including ordinary research, Spin, Formalize and parallel
+formalization, follow the root [index maintenance contract](AGENTS.md). Apply it
+to new and affected existing claims within the assignment; do not expand an
+assignment into unrelated formalization or metadata audits.
+
 # Dump
 
 Dump all our findings, as a sequence of sweet self contained lemmas, together

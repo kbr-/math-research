@@ -17,7 +17,7 @@ class FinalizationTest(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
         (self.root / 'tools').mkdir()
-        for name in ('compute.sh', 'tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py'):
+        for name in ('compute.sh', 'tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py', 'tools/claim_maintenance.py', 'tools/claim_reviews.py'):
             shutil.copy2(ROOT / name, self.root / name)
         (self.root / 'research/claims').mkdir(parents=True)
         for schema in ('schema.json', 'schema-v1.json'):
@@ -58,6 +58,30 @@ class FinalizationTest(unittest.TestCase):
         repeated = self.command('tools/finish-turn.py', 'test_turn', check=False)
         self.assertNotEqual(repeated.returncode, 0)
         self.assertEqual(notebook.read_text(), expected)
+
+    def test_incomplete_new_claim_is_rejected_before_clock_stops(self):
+        sys.path.insert(0,str(ROOT/'tools'))
+        import claim_registry as cr
+        data=cr.upgrade(cr.import_markdown('# Index\n\n'+cr.HEADER+
+            '| `lem:new` | New statement | Working proof | [Proof](source.md) |\n'))
+        complete_path=self.root/'research/claims/index.json'
+        empty=dict(data,claims=[])
+        complete_path.write_text(json.dumps(empty))
+        (self.root/'research/CLAIM_INDEX.md').write_text(cr.render(empty))
+        (self.root/'research/source.md').write_text('Source')
+        subprocess.run(['git','init','-q'],cwd=self.root,check=True)
+        subprocess.run(['git','add','research'],cwd=self.root,check=True)
+        subprocess.run(['git','-c','user.name=Test','-c','user.email=test@example.invalid',
+                        'commit','-qm','Baseline'],cwd=self.root,check=True)
+        complete_path.write_text(json.dumps(data))
+        (self.root/'research/CLAIM_INDEX.md').write_text(cr.render(data))
+        notebook=self.root/'notebook.html'
+        notebook.write_text('<section id="research-record"><article>'
+            '<p class="entry-meta">Status: test.</p><!-- TIMING test_turn --></article></section>')
+        result=self.command('tools/finish-turn.py','test_turn',check=False)
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn('Changed-claim metadata incomplete',result.stderr)
+        self.assertFalse(any(e['event']=='stop' for e in self.events('test_turn')))
 
     def test_misplaced_marker_does_not_stop_session(self):
         notebook = self.root / 'notebook.html'

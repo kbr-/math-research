@@ -10,6 +10,7 @@ from claim_registry import (ROOT, REGISTRY, MARKDOWN, import_markdown, load, ren
                             reconcile, check_targets, exported, require, write_json, upgrade)
 from claim_reviews import coverage, FIELDS
 from claim_graph import query as graph_query, audit as graph_audit
+from claim_maintenance import check_revision
 
 
 def main():
@@ -38,6 +39,9 @@ def main():
     cov.add_argument('--out', type=Path, help='Save the complete report, including unshown rows')
     cov.add_argument('--json', action='store_true')
     sub.add_parser('list', add_help=False, help='Minimal listing; forwards filters/fields/format to search')
+    changed = sub.add_parser('changed', help='Check metadata completeness relative to a Git revision')
+    changed.add_argument('--base', default='HEAD')
+    changed.add_argument('--out', type=Path)
     graph = sub.add_parser('graph', help='Typed graph traversal and audit')
     graph.add_argument('mode', choices=['predecessors','successors','ancestors','descendants','cites','impact','audit'])
     graph.add_argument('claim', nargs='?')
@@ -65,7 +69,13 @@ def main():
         print(f"Imported {len(data['claims'])} claims; original fields and links reconciled.")
         return 0
     data = load(args.registry)
-    if args.command == 'graph':
+    if args.command == 'changed':
+        report = check_revision(data, args.base)
+        if args.out:
+            write_json(args.out, report)
+        print(json.dumps(report, indent=2))
+        return 0 if report['passed'] else 1
+    elif args.command == 'graph':
         require(args.n > 0, 'Graph limit must be positive')
         if args.mode == 'audit':
             report = graph_audit(data)

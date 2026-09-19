@@ -149,6 +149,43 @@ then regenerates Markdown. Changes to existing records, conflicting IDs, or
 other unsupported conflicts require manual review. Its legacy Markdown mode
 remains available for older worktrees; new work must edit JSON.
 
+## Changed-claim maintenance contract
+
+The root AGENTS.md requires complete, evidence-backed metadata for new or
+substantively revised claims. `tools/claim-index.py changed --base REV --out PATH`
+pins the base commit and checks current working-tree changes against it. Use
+`EMPTY` only to audit every claim as new. The turn finisher checks HEAD before
+stopping its clock; CI checks the push/PR base, covering all commits being integrated.
+
+- New claims or changed summary/assessment/source records require all five current
+  field reviews. A reviewed empty relationship set is valid when its rationale
+  explains the inspected scope. Absence of a formalization is separate from
+  mathematical incompleteness.
+- Metadata-only enrichment checks changed fields/reviews, allowing the historical
+  backlog to be curated incrementally. Changed topic definitions affect all their
+  users. Changed incident edges affect endpoint relationship reviews.
+- Corrections and supersessions require an explicit new status review of the
+  target. They do not automatically mark it false: partial corrections and
+  refinements need their actual scope recorded. Preserve its stable ID and dated
+  source; no silent deletion of indexed claims.
+- Changed edges need source evidence and a review note. Candidates may remain
+  unreviewed, but must be identified as such; discovery is not acceptance.
+- Changed cited sources trigger their affected field reviews even if the index
+  was not edited. Negative formalization-census staleness remains visible in
+  coverage; it does not demand rereading every claim after a new Lean file.
+- Pending/not-applicable dispositions need evidence and rationale. Pending also
+  needs a specific next action. Passing this gate is not proof that pending work
+  is complete or that the mathematical judgments are correct. It checks recorded
+  scope, freshness and accountability, not the truth of proofs.
+
+Untouched backlog does not block the current cycle, but stays in coverage and in
+the migration acceptance requirements. Use exact source evidence for new reviews;
+update original metadata through the JSON registry and regenerate human views.
+Codex and Claude entry points inherit the root contract, as do all research and
+formalization prompts. The parallel append merger preserves completed additions;
+semantic changes to existing records still need manual integration and rechecking
+against the pinned integration commit.
+
 ## Relationships and future graph clients
 
 `relationships` is an explicit list, initially empty. Each edge has a stable

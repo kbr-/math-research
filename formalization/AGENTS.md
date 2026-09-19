@@ -1,7 +1,7 @@
 # Formalization workflow
 
-Follow the root AGENTS.md opt-in assignment, claim-index, and research-record
-policy. Setup and verification commands live in [README.md](README.md);
+Follow the root AGENTS.md opt-in assignment, index maintenance contract, and
+research-record policy. Setup and verification commands live in [README.md](README.md);
 [COMPUTATION_RULES.md](../COMPUTATION_RULES.md) owns execution and timing.
 Use its `formalization` phase and `formal_verification` command category within
 the active research session; developing a new mathematical argument remains

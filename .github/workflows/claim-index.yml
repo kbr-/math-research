@@ -10,6 +10,9 @@ on:
       - tools/claim_registry.py
       - tools/claim_reviews.py
       - tools/claim_graph.py
+      - tools/claim_maintenance.py
+      - tools/tests/test_claim_maintenance.py
+      - tools/finish-turn.py
       - tools/tests/test_claim_graph.py
       - tools/claim-dependencies.py
       - tools/claim-index.py
@@ -38,9 +41,19 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+          fetch-depth: 0
       - run: python3 tools/claim-index.py validate
       - run: python3 -m unittest discover -s tools/tests -p test_claim_registry.py
       - run: python3 -m unittest discover -s tools/tests -p test_claim_dependencies.py
       - run: python3 -m unittest discover -s tools/tests -p test_claim_graph.py
       - run: python3 tools/claim-index.py graph audit
       - run: python3 -m unittest discover -s tools/tests -p test_merge_formalization_appends.py
+      - run: python3 -m unittest discover -s tools/tests -p test_claim_maintenance.py
+      - name: Check changed-claim maintenance contract
+        env:
+          CLAIM_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [[ -z "$CLAIM_BASE" || "$CLAIM_BASE" =~ ^0+$ ]]; then
+            CLAIM_BASE=EMPTY
+          fi
+          python3 tools/claim-index.py changed --base "$CLAIM_BASE"

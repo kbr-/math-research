@@ -206,6 +206,17 @@ actionable rule over another checklist or a record of one-off setup history.
   with `tools/search-claims.py WORDS` or `--show LABEL`, then read the relevant source
   passages; do not load the whole registry. Label rediscoveries and refinements and link the
   original record; link corrections or retractions to their new dated entries.
+- **Index maintenance contract:** every new or substantively revised claim needs
+  mathematical status, topics, formalization scope/disposition, significance and
+  relationship review, each with current source evidence and a reasoned disposition.
+  Unknowns need a specific pending question and next action; do not invent metadata
+  to pass a check. Record applicable dependencies, refinements, corrections and
+  obstructions, and refresh affected existing claims. Preserve stable IDs and dated
+  mathematical records. `tools/claim-index.py changed --base REV` checks the changed
+  scope; finalization uses HEAD, and CI uses the integration base. Unchanged historical
+  backlog remains separately visible in coverage. Follow the
+  [editing contract](research/claims/README.md#changed-claim-maintenance-contract)
+  for metadata-only curation, correction scope and evidence handling.
 - Read **Gaps identified by formalization** during context restoration, including
   ordinary research sessions. This concise section precedes Research record and
   links to discrepancies and their audit status. The formalization agent maintains

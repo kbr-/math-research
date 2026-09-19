@@ -253,6 +253,17 @@ unchecked and briefly note what remains.
       test that every claim appears exactly once, summaries are not truncated,
       selected fields stay in the requested order, and no display fluff is emitted.
 
+- [ ] Evaluate whether compact `packet` evidence is useful beyond metadata curation
+      for ordinary research orientation and claim triage. Compare representative
+      packets with exact statements, hypotheses and correction records; test whether
+      omitted qualifications could mislead a research agent. Distinguish orientation
+      from proof readiness, and record the evaluation and limitations.
+- [ ] If that evaluation supports research use, expose `packet` alongside minimal
+      claim listing in the research workflows: root/scoped agent guidance, Resume,
+      registry guide and applicable research prompts. Link to one authoritative
+      usage rule; require exact statement/proof reading before mathematical reliance.
+      Do not prescribe research use merely because the command exists.
+
 ## 12. Index acceptance and maintenance
 
 - [ ] Publish a coverage report for all baseline and subsequently added claims:
@@ -275,36 +286,36 @@ unchecked and briefly note what remains.
 ## 13. Enforce metadata maintenance in every subsequent research cycle
 
 This is an ongoing requirement, not only a one-time enrichment pass. Update the
-workflow during implementation of this phase; this plan update alone does not
-change the active prompts or instructions.
+workflow during implementation of this phase. The changed-claim contract is now
+active; the unchecked items below still need implementation or acceptance evidence.
 
-- [ ] Define the per-claim completion contract for all new or substantively revised
+- [x] Define the per-claim completion contract for all new or substantively revised
       claims: precise mathematical status, topics, formalization disposition and
       scope, significance assessment, source references, applicable relationships,
       and field-level review provenance. Require explicit justified dispositions
       for genuinely unknown or inapplicable information, not unchecked placeholders.
-- [ ] Require the research cycle to identify and record dependencies, refinements,
+- [x] Require the research cycle to identify and record dependencies, refinements,
       corrections, rediscoveries, tests and obstructions introduced by its work.
       Distinguish a reviewed absence of relationships from missing review; do not
       invent edges or significance merely to satisfy a completeness check.
-- [ ] Make each cycle update affected existing claims and relationships as well
+- [x] Make each cycle update affected existing claims and relationships as well
       as new ones, including formalization-scope changes, correction impact and
       significance assessments. Preserve historical records and stable IDs.
-- [ ] Update root AGENTS.md as the authoritative ongoing rule, and align scoped
+- [x] Update root AGENTS.md as the authoritative ongoing rule, and align scoped
       research/formalization instructions and Codex/Claude entry points by linking
       to that rule rather than duplicating it.
 - [ ] Update `research/notes/RESUME.md` to restore the populated index, taxonomy,
       relationship semantics, pending reviews and the maintenance contract through
       bounded tools. Restoration must not silently revert to Markdown-only editing
       or import the entire index into context.
-- [ ] Update `PROMPTS.md`: Spin, ordinary research guidance, Formalize,
+- [x] Update `PROMPTS.md`: Spin, ordinary research guidance, Formalize,
       Spin-formalize and existing parallel variants must apply the same index
       maintenance contract within their assigned scope. Expose that contract for
       future prompts owned by the separate plans; do not implement those prompts here.
 - [ ] Update the registry guide, authoring tools and templates so a new claim is
       created with the required metadata and relationship review, rather than
       inheriting the initial migration's all-null defaults.
-- [ ] Add changed-claim/relationship completeness checks to cycle finalization
+- [x] Add changed-claim/relationship completeness checks to cycle finalization
       and CI, with useful diagnostics. Track historical backlog separately so the
       checks neither excuse incomplete new work nor repeatedly demand a full audit
       of the whole registry on every turn.
@@ -413,3 +424,22 @@ status and qualification snippets with hashes and omission flags. Start curation
 with packets and relationship candidates; open larger passages only for unresolved
 scope, conflicting evidence or unsupported judgments. Resume and registry guidance
 now point to this path. Do not turn every claim inventory into a full proof reread.
+
+
+Maintenance checkpoint `index_maintenance_contract_20260919`: root guidance and
+all prompts now share the changed-claim contract. The CLI `changed --base REV`
+pins the comparison revision; finish-turn checks HEAD before stopping timing,
+and CI checks the push/PR integration base. New or substantively revised claim
+text requires all five current dispositions. Metadata-only backfill checks its
+changed fields; affected edge endpoints and correction targets require refreshed
+reviews. Source changes, stable-ID deletion and stale metadata are detected;
+untouched backlog is reported separately. Explicit pending questions pass the
+accountability gate without becoming completed curation. Eight focused contract
+tests plus a real pre-stop finalizer rejection cover new claims, corrections,
+formalization updates and parallel complete additions. Full authoring/retrieval
+acceptance scenarios and template support remain unchecked; no claim is made
+that these focused tests close every end-to-end requirement.
+
+User addition: evaluate `packet` for ordinary research use before exposing it in
+research workflows (section 11). Current packet guidance concerns metadata
+curation only; proof readiness must not be inferred from a selected excerpt.
