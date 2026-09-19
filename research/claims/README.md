@@ -106,6 +106,13 @@ are retrieval aids, not complete proofs. Open a larger passage only to resolve
 unclear scope, conflicting evidence or an unsupported judgment. Use dependency
 candidates for relationships; do not reread every full source as a routine step.
 
+Equation references such as `(RA)` are also discovered from indexed `\tag{RA}`
+definitions. They remain candidates, with shared/repeated definitions flagged.
+Local definitions are not inferred as cross-claim dependencies, and definition
+fingerprints make stale target evidence visible. Resolve proof role explicitly:
+a self-contained lemma's later application is an `applies` edge, not necessarily
+a prerequisite of its own proof.
+
 Dependency evidence:
 
 ```bash

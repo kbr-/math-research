@@ -107,6 +107,23 @@ class DependencyTests(unittest.TestCase):
         self.assertNotIn('<strong>',cleaned)
         self.assertIn(r'\(a<p and b>c\)',deps.strip_markup(r'<p>Scope \(a<p and b>c\).</p>'))
 
+    def test_equation_references_are_candidates_and_definitions_are_fingerprinted(self):
+        path=self.root/'notebook.html'
+        path.write_text(path.read_text().replace('this is a contrast.','we apply (BOUND).').replace(
+            '<p>Statement.</p>',r'<p>Statement.</p><div>\[x=1\tag{BOUND}\]</div>'))
+        row=next(c for c in deps.scan(self.data,self.root)['candidates'] if c['method']=='equation_reference')
+        self.assertEqual(row['targets'],['lem:b'])
+        self.assertEqual(row['proposed_type'],'cites')
+        self.assertTrue(deps.is_current(row,self.data,Evidence(self.root)))
+        path.write_text(path.read_text().replace('x=1','x=2'))
+        self.assertFalse(deps.is_current(row,self.data,Evidence(self.root)))
+
+    def test_local_equation_definition_is_not_a_cross_claim_dependency(self):
+        path=self.root/'notebook.html'
+        path.write_text(path.read_text().replace('this is a contrast.',r'(BOUND) \tag{BOUND}.').replace(
+            '<p>Statement.</p>',r'<p>Statement. \tag{BOUND}</p>'))
+        self.assertFalse(any(c['method']=='equation_reference' for c in deps.scan(self.data,self.root)['candidates']))
+
     def test_acceptance_requires_a_matching_curated_relationship(self):
         candidate=next(c for c in deps.scan(self.data,self.root)['candidates'] if c['method']=='notebook_link')
         with self.assertRaises(ValueError):

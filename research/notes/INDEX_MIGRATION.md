@@ -541,3 +541,21 @@ Added reusable topic definitions for moments, query models, pseudorandomness and
 topological methods. Full dependency inventories remain the largest semantic
 backlog; the next route review should assess closure of that backlog rather than
 using classification counts as completion evidence.
+
+
+Dependency route review `index_dependency_review_20260919`: classification counts
+were advancing while complete relationship reviews remained at 17. A connected
+six-claim matching/normalization audit now closes six pending inventories and adds
+12 scoped current/historical/external edges. Totals: 23 reviewed inventories,
+339 pending, 504 unreviewed; 55 canonical edges. Abstract-lemma prerequisites are
+separated from later applications and historical provenance. The source-relative
+review reuses the existing Razborov audit, not a new paper verification.
+
+The discovery tool now indexes named equation references against source tags;
+local definitions are excluded, repeated/shared ownership is flagged, and target
+definition hashes participate in staleness. This finds 190 additional candidates
+(2,091 total) and fixes the concrete omission that blocked this cluster. One RA
+reference is accepted against the reviewed proof edge. Eleven discovery tests
+pass. This is a scalable retrieval improvement, not automatic semantic acceptance.
+Continue closing connected dependency clusters alongside the remaining backfill;
+neither sampled closure nor candidate count completes the full graph plan.

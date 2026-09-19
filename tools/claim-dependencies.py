@@ -110,6 +110,16 @@ def scan(data, root=ROOT):
                     if e['source']['namespace']=='current' and e['source']['id']==source
                     and e['target']['namespace']=='current' and e['target']['id'] in targets])
         candidates[identifier]['occurrences'].append({'line':line,'context':context})
+        return candidates[identifier]
+
+    equation_definitions=defaultdict(list)
+    for anchor,owners in anchors.items():
+        try:region,offset,actual_anchor,widened=source_excerpt(book,text,anchor)
+        except ValueError:continue
+        for token in sorted(set(re.findall(r'\\tag\{([^}]+)\}',region))):
+            item={'claims':sorted(owners),'locator':'https://kbr.is-a.dev/math-research/#'+actual_anchor,
+                  'sha256':hashlib.sha256(region.encode()).hexdigest(),'widened':widened}
+            if item not in equation_definitions[token]:equation_definitions[token].append(item)
 
     for source,region_anchors in regions.items():
         for anchor in sorted(region_anchors):
@@ -119,6 +129,18 @@ def scan(data, root=ROOT):
             locator='https://kbr.is-a.dev/math-research/#'+actual_anchor
             if widened:widened_regions.append({'claim':source,'anchor':anchor,'containing_anchor':actual_anchor})
             base_line=text.count('\n',0,offset)+1
+            own_tags=set(re.findall(r'\\tag\{([^}]+)\}',region))
+            for match in re.finditer(r'\(([A-Za-z][A-Za-z0-9_.-]*)\)',region):
+                token=match.group(1)
+                if token in own_tags or token not in equation_definitions:continue
+                definitions=equation_definitions[token]
+                targets={label for item in definitions for label in item['claims']}
+                candidate=add(source,targets,'equation_reference',locator,region,token,
+                    base_line+region.count('\n',0,match.start()),
+                    strip_markup(region[max(0,match.start()-180):match.end()+180]),
+                    widened or len(anchors[anchor])>1 or len(definitions)>1,
+                    'Named equation reference; definitions may be shared/reused. Check proof role and scope.')
+                if candidate:candidate['definition_evidence']=definitions
             for match in re.finditer(r'<a\b[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',region,re.S):
                 href=match.group(1);target_anchor=None
                 if href.startswith('#'):target_anchor=href[1:]
@@ -182,6 +204,8 @@ def scan(data, root=ROOT):
     for c in values:
         c['candidate_sha256']=hashed({k:c[k] for k in ('source','targets','method','locator','token',
             'source_sha256','source_claim_sha256','target_claim_sha256','ownership_ambiguous')})
+        if 'definition_evidence' in c:
+            c['candidate_sha256']=hashed([c['candidate_sha256'],c['definition_evidence']])
     return {'schema_version':1,'claims':len(ids),'claims_with_notebook_regions':len(processed),'lean_files':len(files),
             'claims_without_notebook_regions':sorted(ids-processed),
             'candidate_count':len(values),'candidates':values,'unresolved':problems,
@@ -195,6 +219,10 @@ def is_current(candidate, data, evidence=None):
     try:
         if evidence.sha256(candidate['locator'])!=candidate['source_sha256']:return False
     except (OSError,ValueError):return False
+    for item in candidate.get('definition_evidence',[]):
+        try:
+            if evidence.sha256(item['locator'])!=item['sha256']:return False
+        except (OSError,ValueError):return False
     claims={c['id']:c for c in data['claims']}
     for key,expected in {candidate['source']:candidate['source_claim_sha256'],**candidate['target_claim_sha256']}.items():
         if key not in claims or hashed({k:claims[key][k] for k in ('id','summary','assessment','record')})!=expected:return False
