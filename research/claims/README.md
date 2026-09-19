@@ -166,6 +166,35 @@ explicit incomplete-coverage notice. Search `--json` uses the same format
 with selected claims, incident edges and match/omission counts. Future Fossick and
 graph clients can use these interfaces without parsing Markdown tables.
 
+## Graph queries and consistency diagnostics
+
+```bash
+./tools/claim-index.py graph successors thm:publication-Res-parity-bit-PHP
+./tools/claim-index.py graph ancestors audit:ordinary-restriction-affine-family
+./tools/claim-index.py graph cites lem:mp-telescoping
+./tools/claim-index.py graph impact lem:mp-telescoping --out /tmp/impact.json
+./tools/claim-index.py graph audit --out /tmp/graph-audit.json
+```
+
+For A → B (A depends on B), successors/descendants follow dependencies;
+predecessors/ancestors find users. Immediate queries take one edge; transitive
+queries return shortest witness paths. Default traversal uses reviewed
+`depends_on` edges; repeat `--type TYPE` to choose other relations and use
+`--include-unreviewed` explicitly for candidates. `cites` always finds direct
+incoming citations, and `impact` finds transitive incoming dependencies, regardless
+of `--type`. Impact identifies a review scope, not invalidity. Alternative proofs
+and partial-scope edges still require inspection. Namespaces keep historical and
+current labels distinct; use `--namespace` for non-current starting nodes.
+
+Output is bounded by `-n` (default 20) and reports omissions; `--out` preserves
+complete query results. The audit reports semantic duplicate edges (same type,
+endpoints and scope), inconsistent review states or endpoint locators, self-links,
+and dependency strongly connected components. Citation cycles are separate.
+Cycles are review findings, not automatically rejected proofs: alternative proofs
+or scoped statements may explain them. Structural diagnostics cannot detect all
+semantic contradictions. These queries operate on the curated graph, which is
+still incomplete; candidate extraction and claim-level review remain necessary.
+
 ## Migration evidence
 
 The baseline is `21603c76b82afcc8d91014fa752e61e5cab690ac`.

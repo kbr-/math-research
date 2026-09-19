@@ -218,7 +218,7 @@ unchecked and briefly note what remains.
       but found empty. Do not conflate either case with unexplored dependencies.
 - [ ] Validate endpoints, duplicate/conflicting edges, self-links, and cycles;
       distinguish genuine circular proof dependencies from harmless cycles of citation.
-- [ ] Add predecessor/successor, ancestor/descendant, "what cites this", and
+- [x] Add predecessor/successor, ancestor/descendant, "what cites this", and
       correction-impact queries. Report that impact is an audit scope, not a proof
       that every descendant is invalidated.
 
@@ -386,3 +386,12 @@ Evidence-discovery checkpoint `index_formalization_metadata_20260919`:
   historical/external endpoint mapping, and 863 claims' other metadata remain open.
 - Evidence: `research/results/index_formalization_metadata_20260919/`.
   Twenty-eight focused registry/discovery tests pass; all 3,492 references resolve.
+
+
+Graph-query checkpoint `index_graph_queries_20260919`: implemented typed direct
+and transitive traversals, incoming citations and correction-impact review scope,
+with shortest edge witnesses, explicit review/type filters, bounded display and
+complete saved output. Structural diagnostics distinguish dependency and citation
+cycles and report duplicate edges, self-links and conflicting metadata. These
+checks are implemented; semantic graph curation and resolving any later findings
+remain open, so the full relationship-validation checklist item stays unchecked.

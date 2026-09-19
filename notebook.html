@@ -22884,4 +22884,25 @@ then with probability at least \(1-N^22^{-d_L}-9\cdot2^{-s}\) there is no degree
 </div>
 </article>
 
+<article class="research-entry" id="entry-2026-09-19-index-graph-queries" data-kind="research" data-route="side-framework-index">
+  <h3>19 September 2026 — Typed dependency queries and graph consistency diagnostics</h3>
+  <p class="entry-meta">Status: framework implementation and tested graph queries; no new mathematics or newly accepted dependency. Produced by Codex (gpt-6-astra, medium reasoning).</p>
+  <p><strong>Obligation and endpoint.</strong> Continue the full index-migration plan. Reliable dependency navigation supports later source audits for the main general-step obligation. This cycle implements direct and transitive queries, correction-impact scope and structural diagnostics; it does not substitute query tooling for completing the claim-by-claim metadata review.</p>
+  <p><strong>Implemented interface.</strong> <code>tools/claim-index.py graph</code> provides predecessors, successors, ancestors, descendants, incoming citations, impact and audit. With A depending on B, outgoing traversal finds dependencies and incoming traversal finds users. Defaults include only reviewed proof-dependency edges; other types and unreviewed edges require explicit options. Breadth-first traversal records shortest witness paths, preserves endpoint namespaces, terminates on cycles and reports omitted display results while saving full output. Correction impact is an audit scope, not a conclusion that every dependent claim becomes false.</p>
+  <p><strong>Diagnostics and falsification checks.</strong> The graph audit reports semantic duplicates with the same endpoints/type/scope, inconsistent review states or endpoint locators, self-links and dependency strongly connected components. Citation cycles are reported separately. Six new tests exercise direction, review filtering, shortest paths, citation-only cycles, duplicate versus alternative scopes, namespaced identities, missing endpoints, self-links and a 2,001-node cycle without recursion. All 34 focused claim-tool tests pass. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/index_graph_queries_20260919/graph-audit.json">current five-edge audit</a> has no findings; this is a structural check of the recorded graph, not evidence that the full graph is complete. The saved <a href="https://github.com/kbr-/math-research/blob/main/research/results/index_graph_queries_20260919/exclusion-impact.json">exclusion-impact query</a> identifies the two already-recorded publication users.</p>
+  <p><strong>Review and remaining work.</strong> No claim metadata or historical mathematics was altered. The main-goal living sections and formalization gaps were reviewed and remain unchanged. Relationship curation, topic/status/significance backfill, and ongoing maintenance enforcement remain required by the plan. Next use the candidate inventory and these queries to curate source-supported relationships and expose corrections, rather than adding graph UI features. Reusing the existing CLI keeps the interface small; semantic cycle interpretation remains explicit human/agent review. This checkpoint is local and does not authorize publication.</p>
+  <div class="timing-report" data-session="index_graph_queries_20260919">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 14.71 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 54.48 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">18.22 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.01 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+
 </section>

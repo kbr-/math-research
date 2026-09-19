@@ -9,6 +9,7 @@ import sys
 from claim_registry import (ROOT, REGISTRY, MARKDOWN, import_markdown, load, render,
                             reconcile, check_targets, exported, require, write_json, upgrade)
 from claim_reviews import coverage, FIELDS
+from claim_graph import query as graph_query, audit as graph_audit
 
 
 def main():
@@ -37,6 +38,16 @@ def main():
     cov.add_argument('--out', type=Path, help='Save the complete report, including unshown rows')
     cov.add_argument('--json', action='store_true')
     sub.add_parser('list', add_help=False, help='Minimal listing; forwards filters/fields/format to search')
+    graph = sub.add_parser('graph', help='Typed graph traversal and audit')
+    graph.add_argument('mode', choices=['predecessors','successors','ancestors','descendants','cites','impact','audit'])
+    graph.add_argument('claim', nargs='?')
+    graph.add_argument('--namespace', default='current', choices=['current','historical','external'])
+    graph.add_argument('--type', action='append', dest='types',
+                       choices=['depends_on','cites','refines','supersedes','corrects',
+                                'rediscovers','formalizes','applies','obstructs'])
+    graph.add_argument('--include-unreviewed', action='store_true')
+    graph.add_argument('-n', type=int, default=20)
+    graph.add_argument('--out', type=Path)
     args, rest = parser.parse_known_args()
     if args.command == 'list':
         return subprocess.call([sys.executable, str(ROOT/'tools/search-claims.py'),
@@ -54,7 +65,22 @@ def main():
         print(f"Imported {len(data['claims'])} claims; original fields and links reconciled.")
         return 0
     data = load(args.registry)
-    if args.command == 'upgrade':
+    if args.command == 'graph':
+        require(args.n > 0, 'Graph limit must be positive')
+        if args.mode == 'audit':
+            report = graph_audit(data)
+        else:
+            require(args.claim is not None, 'Graph traversal requires a claim ID')
+            report = graph_query(data, args.claim, args.mode, args.types or ('depends_on',),
+                                 args.include_unreviewed, args.namespace)
+        if args.out:
+            write_json(args.out, report)
+        display = dict(report)
+        if 'nodes' in display:
+            display['nodes'] = report['nodes'][:args.n]
+            display['omitted'] = max(0, len(report['nodes'])-args.n)
+        print(json.dumps(display, indent=2))
+    elif args.command == 'upgrade':
         write_json(args.out, upgrade(data))
         print(f"Upgraded {len(data['claims'])} claims without inferring metadata.")
     elif args.command == 'coverage':
