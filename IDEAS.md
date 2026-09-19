@@ -58,45 +58,6 @@ interest. It should persist where the last scan finished and resume from there n
   systematically discount negative results or failed attempts: the useful item may be the
   counterexample or obstruction they exposed.
 
-## 2. Do not solve an open problem and walk away
-
-**The idea.** An AGENTS.md rule so that a cycle which settles something long open raises a flag
-instead of moving on.
-
-**Assistant's comments.**
-
-- Proposed rule (one paragraph, no checklist): "When a cycle produces an unconditional result
-  about a standard system, formula or object with its own literature, add a Significance line
-  to the entry status stating whether the result is new, known, or unknown after a targeted
-  literature check, and append one line to `research/FLAGS.md`. The flags file is the list of
-  items awaiting the user's attention; the user clears it." The Spin process-assessment step
-  already asks what went wrong in the cycle; add "did this cycle produce anything an expert in
-  the field would want to know about?"
-- Make the flag visible outside the notebook. A tracked `research/FLAGS.md` is portable and
-  survives compaction. On Claude, a Stop hook can also fire a desktop notification when the file
-  gained lines during the turn (cheap, local, no dependencies). Codex has no equivalent hook
-  that I know of, so the file is the primary mechanism.
-- Over-flagging is the risk. Keep each flag to one line and let the fossick scan be the second
-  filter. A false positive costs the user ten seconds; a false negative cost days here.
-- The "Where we stand" section already has a "Publication side branch" paragraph. Generalize it
-  to "Results of independent interest" with a link per result, so the living overview itself
-  carries the list.
-
-**Codex comments (19 September 2026).**
-
-- Make the per-turn check cheap: flag a plausible candidate with its exact scope and why it
-  might matter. Require targeted literature work when assessing that candidate, rather than
-  automatically conducting a novelty search for every lemma about a standard object.
-- Keep mathematical status, formalization coverage, and possible significance separate.
-  "Unknown novelty" is an honest useful outcome. Keep a compact visible link to the candidate
-  register in the overview instead of letting a second result catalogue accumulate there.
-
-**Implementation update (19 September 2026).** The cheap check now reuses claim
-metadata and the checkpoint gate; [attention](research/ATTENTION.md) is generated
-from one decision history with bounded resume visibility. See the
-[completed implementation plan](research/notes/SIGNIFICANCE_ALERTS_PLAN.md).
-Fossick retrospective scanning remains separate.
-
 ## 3. Parallel agents on separate worktrees pursuing alternative next steps
 
 **The idea.** Spend more tokens per unit of time: several agents in separate worktrees each take
@@ -185,33 +146,16 @@ verified frontier never lags.
   Asynchronous formalization is attractive once explicitly assigned, with a clear notification
   path when a discrepancy affects ongoing research.
 
-## 6. Smaller things noticed along the way
+## 6. Interruption notes — deferred pending evidence
 
-- The cost report's "working file per cycle" idea (append intermediate findings during a long
-  cycle so an unexpected compaction loses less) worked in the preprint-revision cycle: the notes
-  file plus the checklist ticks carried the plan across a compaction. Worth making a habit for
-  cycles expected to exceed half an hour.
-- Fossick and the per-cycle significance check both need a maintained list of the field's open
-  problems and benchmarks (for this project: Res(⊕) size, size–width, unary PHP in Res(⊕),
-  AC0[p]-Frege PHP, and so on) with citations. A short `research/OPEN_PROBLEMS.md` would make
-  "is this known?" a lookup rather than a search each time.
+The remaining part of the small-utilities idea is whether narrowly scoped
+work-in-progress notes save more recovery work than they cost to maintain.
+Evaluate several ordinary resumes before deciding on a trial; do not introduce
+a mandatory note on every cycle. Existing plans already preserve work in progress.
+See [the remaining workflow-utilities tasks](research/notes/WORKFLOW_UTILITIES_PLAN.md).
 
-**Codex comments (19 September 2026).**
-
-- A short durable work-in-progress note helps across interruption: exact current question,
-  completed steps, unresolved concern, output locations, and next action. It should expire or
-  be incorporated at the checkpoint, not become another living mathematical summary.
-- An open-problem map should record exact formulations, source dates and last verification.
-  It can guide novelty searches but cannot replace them: formulations and published results
-  change. Link it to the same significance register instead of maintaining another queue.
-
-**Implementation update (19 September 2026).** Interruption notes are deferred
-pending evidence of benefit. The [recovery collector](tools/RECOVERY_EVIDENCE.md)
-now uses an explicit cached resume bundle, existing phase markers and silent
-retrieval/job hooks. Ordinary overview reads are not resume signals. Evaluate the
-observed overhead before adding another note-writing requirement; the benchmark
-map is implemented in [research/OPEN_PROBLEMS.md](research/OPEN_PROBLEMS.md), with
-dated primary-source checks and links from the significance and Fossick workflows.
+Recovery instrumentation and the benchmark map are implemented and listed under
+Completed below. Neither proves that interruption notes would be worthwhile.
 
 ## 8. Claim graph: structured, visualized on GitHub Pages
 
@@ -271,20 +215,62 @@ into the notebook.
   that dependency explicitly when implementing the visualization, following the existing
   dependency policy; prefer a pinned local asset if offline reproducibility matters.
 
-## Suggested first implementation steps — Codex, 19 September 2026
+## Remaining implementation priorities
 
-1. Consolidate the living overview and streamline bounded retrieval using existing tools.
-2. Add one significance-candidate register and a cheap per-turn check; then an incremental
-   Fossick prompt that uses the same register. Avoid making literature review a tax on every turn.
-3. Migrate the claim index incrementally to one structured source, preserving labels and links.
-4. Add bounded parallel exploration and targeted asynchronous formalization when assigned.
-5. Build graph navigation on the reviewed claim data, rather than trying to recover dependency
-   semantics through visualization.
+1. Implement the incremental Fossick scan using the existing significance metadata
+   and shared attention history (item 1).
+2. Add bounded parallel exploration and targeted asynchronous formalization when
+   assigned (items 3 and 4).
+3. Build graph navigation on the reviewed claim data (item 8).
+4. Evaluate recovery evidence before deciding whether to trial interruption notes
+   (remaining part of item 6).
 
-These are suggested priorities for discussion; none of these mechanisms is implemented by
-this commentary update.
+These priorities are proposals, not authorization to launch the work.
 
 ## Completed
+
+### 2. Do not solve an open problem and walk away
+
+**Completed 19 September 2026**, in commit `e1ae8c3`. Original proposal and comments
+are retained below; the implementation uses shared metadata and file/console
+notifications rather than separate FLAGS/NUGGETS files or a desktop hook.
+
+**The idea.** An AGENTS.md rule so that a cycle which settles something long open raises a flag
+instead of moving on.
+
+**Assistant's comments.**
+
+- Proposed rule (one paragraph, no checklist): "When a cycle produces an unconditional result
+  about a standard system, formula or object with its own literature, add a Significance line
+  to the entry status stating whether the result is new, known, or unknown after a targeted
+  literature check, and append one line to `research/FLAGS.md`. The flags file is the list of
+  items awaiting the user's attention; the user clears it." The Spin process-assessment step
+  already asks what went wrong in the cycle; add "did this cycle produce anything an expert in
+  the field would want to know about?"
+- Make the flag visible outside the notebook. A tracked `research/FLAGS.md` is portable and
+  survives compaction. On Claude, a Stop hook can also fire a desktop notification when the file
+  gained lines during the turn (cheap, local, no dependencies). Codex has no equivalent hook
+  that I know of, so the file is the primary mechanism.
+- Over-flagging is the risk. Keep each flag to one line and let the fossick scan be the second
+  filter. A false positive costs the user ten seconds; a false negative cost days here.
+- The "Where we stand" section already has a "Publication side branch" paragraph. Generalize it
+  to "Results of independent interest" with a link per result, so the living overview itself
+  carries the list.
+
+**Codex comments (19 September 2026).**
+
+- Make the per-turn check cheap: flag a plausible candidate with its exact scope and why it
+  might matter. Require targeted literature work when assessing that candidate, rather than
+  automatically conducting a novelty search for every lemma about a standard object.
+- Keep mathematical status, formalization coverage, and possible significance separate.
+  "Unknown novelty" is an honest useful outcome. Keep a compact visible link to the candidate
+  register in the overview instead of letting a second result catalogue accumulate there.
+
+**Implementation update (19 September 2026).** The cheap check now reuses claim
+metadata and the checkpoint gate; [attention](research/ATTENTION.md) is generated
+from one decision history with bounded resume visibility. See the
+[completed implementation plan](research/notes/SIGNIFICANCE_ALERTS_PLAN.md).
+Fossick retrospective scanning remains separate.
 
 ### 5. Claim index: compression, deduplication, second-level index, retrieval tools
 
@@ -329,6 +315,25 @@ context (the notebook excerpt tool does this for entries but not for claims).
   degree conventions and hypotheses can make near-duplicates mathematically different.
   Preserve stable labels and correction links. Retracted claims must remain searchable so
   they are not rediscovered or used accidentally.
+
+### 6a. Recovery instrumentation and bounded resume delivery
+
+**Completed 19 September 2026.** The [recovery collector](tools/RECOVERY_EVIDENCE.md)
+records explicit restoration and observable recovery proxies through existing tools.
+The cached resume bundle currently fits three bounded, retryable calls; ordinary
+notebook reads do not count as resumes. See the
+[measured comparison](research/results/resume_protocol_comparison_20260919/README.md).
+Typical token or recovery-time savings have not been demonstrated. Evaluating
+ordinary resumes and deciding whether to trial interruption notes remain pending above.
+
+### 6b. Open-problem and benchmark map
+
+**Completed 19 September 2026**, in commit `360400a`.
+[OPEN_PROBLEMS.md](research/OPEN_PROBLEMS.md) records precise formulations, dated
+primary-source checks and links to relevant research for Res(⊕) size, size–width,
+unary and bit PHP, AC⁰[p]-Frege PHP, and the no-MOD baseline. It is connected to
+significance assessment and the Fossick plan. The map guides fresh novelty checks;
+it is neither another candidate queue nor a permanent novelty verdict.
 
 ### 7. Context budget: the claim index and the Resume protocol
 
