@@ -87,6 +87,10 @@ historical mathematical sources only when the current research task needs them.
   Read the indicated notebook passage with the excerpt tool. The
   [continued-research index](../CLAIM_INDEX.md) is a generated human view of the
   [structured registry](../claims/README.md); do not read either full data file on resume.
+  If a task explicitly needs the complete inventory, use
+  `tools/claim-index.py list --fields id,summary --format tsv` for untruncated,
+  metadata-free output. `tools/claim-index.py coverage` locates pending/stale
+  field reviews without loading the full registry.
 
 - Formal proofs: [Lean project](../../formalization/README.md) contains per-claim
   formalizations and verification instructions; the claim index links each

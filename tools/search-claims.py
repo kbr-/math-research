@@ -64,35 +64,77 @@ def search(data, words, *, status=None, kind=None, topic=None, formalization=Non
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('-n', type=int, default=12, help='rows to print')
+    parser.add_argument('-n', type=int, help='explicit result limit (default 12 only for ordinary search)')
+    parser.add_argument('--list', action='store_true', help='List all matching claims in registry order')
+    parser.add_argument('--fields', help='Comma-separated field paths, e.g. id,summary')
+    parser.add_argument('--format', choices=['display', 'tsv', 'json'])
     parser.add_argument('words', nargs='*')
     parser.add_argument('--registry', type=Path, default=REGISTRY)
     parser.add_argument('--show', metavar='LABEL', help='Exact label lookup, full metadata and source links')
     parser.add_argument('--status', help='Substring in the preserved assessment text')
     parser.add_argument('--kind', help='Reviewed mathematical status, or unknown')
     parser.add_argument('--topic')
-    parser.add_argument('--formalization', choices=['unknown', 'not_started', 'partial', 'complete'])
+    parser.add_argument('--formalization', choices=['unknown', 'not_started', 'no_record', 'statement_only', 'discrepant', 'partial', 'complete'])
     parser.add_argument('--has-lean', action='store_true', help='Has a Lean link; does not imply verified coverage')
     parser.add_argument('--json', action='store_true', help='Machine-readable output')
-    parser.add_argument('--out', type=Path, help='Save the full selected-result JSON payload')
+    parser.add_argument('--out', type=Path, help='Save selected data (JSON payload, or the chosen projection format)')
     args = parser.parse_args()
-    if args.n < 1:
+    if args.n is not None and args.n < 1:
         parser.error('-n must be positive')
+    if args.json and args.format not in (None, 'json'):
+        parser.error('--json conflicts with the selected format')
+    output_format = args.format or ('json' if args.json or args.show else 'tsv' if args.list or args.fields else 'display')
+    fields = args.fields.split(',') if args.fields else ['id', 'summary']
+    allowed = {'id', 'summary', 'assessment', 'record', 'mathematical_status',
+               'formalization.status', 'formalization.scope', 'topics', 'significance'}
+    if args.fields and (len(fields) != len(set(fields)) or not set(fields) <= allowed):
+        parser.error('--fields must name distinct supported claim fields: ' + ', '.join(sorted(allowed)))
+    if args.fields and output_format == 'display':
+        parser.error('--fields requires tsv or json format')
     data = load(args.registry)
     if args.show:
-        if args.words or any([args.status, args.kind, args.topic, args.formalization, args.has_lean]):
+        if args.list or args.words or any([args.status, args.kind, args.topic, args.formalization, args.has_lean]):
             parser.error('--show cannot be combined with search terms or filters')
         selected = [c for c in data['claims'] if c['id'] == args.show]
         if not selected:
             parser.error(f'Unknown claim: {args.show}')
         total = 1
     else:
-        if not args.words and not any([args.status, args.kind, args.topic, args.formalization, args.has_lean]):
+        if not args.list and not args.words and not any([args.status, args.kind, args.topic, args.formalization, args.has_lean]):
             parser.error('Supply content words, --show LABEL, or a filter')
         ranked = search(data, args.words, status=args.status, kind=args.kind, topic=args.topic,
                         formalization=args.formalization, has_lean=args.has_lean)
         total = len(ranked)
-        selected = [c for _, c in ranked[:args.n]]
+        if args.list:
+            matches = {c['id'] for _, c in ranked}
+            ranked = [(0, c) for c in data['claims'] if c['id'] in matches]
+        limit = args.n if args.n is not None else (None if args.list or args.fields or output_format == 'tsv' else 12)
+        selected = [c for _, c in (ranked[:limit] if limit is not None else ranked)]
+    if output_format == 'tsv' or args.fields:
+        def value(claim, field):
+            result = claim
+            for part in field.split('.'):
+                result = result[part]
+            return result
+        projected = [{field: value(c, field) for field in fields} for c in selected]
+        if output_format == 'json':
+            text = json.dumps(projected, ensure_ascii=False, indent=2) + '\n'
+        else:
+            def cell(v):
+                if v is None:
+                    return r'\N'
+                if not isinstance(v, str):
+                    v = json.dumps(v, ensure_ascii=False, separators=(',', ':'))
+                return v.replace('\\', '\\\\').replace('\t', r'\t').replace('\n', r'\n').replace('\r', r'\r')
+            text = ''.join('\t'.join(cell(row[f]) for f in fields) + '\n' for row in projected)
+        if args.out:
+            args.out.parent.mkdir(parents=True, exist_ok=True)
+            args.out.write_text(text)
+        else:
+            sys.stdout.write(text)
+        if total > len(selected):
+            print(f'{total-len(selected)} matches omitted by explicit limit.', file=sys.stderr)
+        return
     payload = exported(data, selected)
     selected_ids = {c['id'] for c in selected}
     payload['relationships'] = [e for e in data['relationships'] if any(
@@ -100,7 +142,7 @@ def main():
     payload.update(total_matches=total, shown=len(selected), omitted=total-len(selected))
     if args.out:
         write_json(args.out, payload)
-    if args.json or args.show:
+    if output_format == 'json' or args.show:
         print(json.dumps(payload, ensure_ascii=False, indent=2))
         return
     def brief(text, limit):

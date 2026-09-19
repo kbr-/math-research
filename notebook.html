@@ -22832,5 +22832,31 @@ then with probability at least \(1-N^22^{-d_L}-9\cdot2^{-s}\) there is no degree
 </div>
 </article>
 
+<article class="research-entry" id="entry-2026-09-19-index-curation-foundations" data-kind="research" data-route="side-framework-index">
+  <h3>19 September 2026 — Minimal claim listings, review provenance, and the first curated records</h3>
+  <p class="entry-meta">Status: index tooling and source-based metadata curation; three claims reviewed, 863 still unreviewed. No new theorem or Lean verification run. Produced by Codex (gpt-6-astra, medium reasoning).</p>
+  <p><strong>Task and endpoint.</strong> Continue the index-only migration and curation plan. This checkpoint supplies field-level review tracking, an untruncated minimal listing mode, and a first batch whose formalization and significance can be populated from explicit existing records. It supports retrieval for the main general-step obligation but makes no mathematical progress on that obligation. Complete index curation remains the active framework assignment.</p>
+  <p><strong>Minimal retrieval.</strong> <code>tools/claim-index.py list --fields id,summary --format tsv</code> lists every matching claim in registry order with no header, footer, scores, JSON framing or implicit result limit. Fields can be selected and reordered, filters can be applied, and limits are explicit. Diagnostics and omission notices use stderr. Backslash/control-character escaping and a distinct null marker preserve values; typed JSON projections remain available. The complete 866-claim output is saved as <a href="https://github.com/kbr-/math-research/blob/main/research/results/index_curation_20260919/claim-inventory.tsv">claim-inventory.tsv</a>.</p>
+  <p><strong>Review model.</strong> Schema version two preserves the original claim text and separates formalization artifacts, significance assessments, topic definitions and per-field reviews. Reviews record source revision, date, evidence, reasons and next actions. Source hashes cover exact notebook excerpts or whole referenced files; unrelated notebook appends do not invalidate an anchored review. Changed claim text, field values or cited sources flag it as stale. Missing reviews remain unreviewed, and pending questions are not silently counted as complete. Version-one imports and data remain readable.</p>
+  <p><strong>First source-reviewed batch.</strong> The <a href="#entry-2026-09-14-lean-mp-telescoping">telescoping record</a> now has partial coverage with separate artifacts for the verified identity/degree upper bounds and the counterexample to a loose-bound equality. The <a href="#lean-publication-bit-PHP-superpolynomial">publication theorem</a> and <a href="#entry-2026-09-17-lean-bit-PHP-exponential">exponential corollary</a> have explicit complete formalization scopes, declarations and links to their existing verification reports. This is reuse of recorded evidence, not a fresh kernel replay or new formalization assignment. Their significance records identify the independent publication result, retain provisional novelty and external-review limitations, and do not imply a new literature search.</p>
+  <p>Five relationships record the publication results' direct exclusion/transfer dependencies and the exponential bound's quantitative refinement of the superpolynomial conclusion. Refinement is not mislabelled as a dependency of the Lean module. Topic IDs have definitions rather than free-floating tags. The five seeded topics are a starting vocabulary, not a completed taxonomy of all research.</p>
+  <p><strong>Checks and remaining work.</strong> Twenty registry tests, seven merge tests and six finalizer tests pass. Coverage reports three reviewed claims in each of the five metadata fields and 863 unreviewed claims in each; no sampled batch is presented as a full audit. All 1,326 current claim/evidence references resolve locally. Reproduction, the enrichment baseline and the complete <a href="https://github.com/kbr-/math-research/blob/main/research/results/index_curation_20260919/coverage.json">coverage report</a> are preserved in <a href="https://github.com/kbr-/math-research/blob/main/research/results/index_curation_20260919/README.md">the evidence directory</a>. The next batch will inventory existing Lean mappings and recorded scopes before continuing through the wider claim set.</p>
+  <p><strong>Process assessment.</strong> Explicit field coverage prevents empty schema fields from looking like completed migration, while anchored source hashes avoid a full re-review after every append. The living mathematical sections and formalization gaps were reviewed and remain unchanged; only index navigation and metadata tooling change. Initial plan inspection preceded instrumentation. The checkpoint is local; Spin remains paused.</p>
+  <div class="timing-report" data-session="index_curation_20260919">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>16 min 48.29 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">56.94 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 7.74 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">12 min 44.08 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 51.66 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">7.88 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+
 
 </section>

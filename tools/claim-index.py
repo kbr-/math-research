@@ -7,7 +7,8 @@ import subprocess
 import sys
 
 from claim_registry import (ROOT, REGISTRY, MARKDOWN, import_markdown, load, render,
-                            reconcile, check_targets, exported, require, write_json)
+                            reconcile, check_targets, exported, require, write_json, upgrade)
+from claim_reviews import coverage, FIELDS
 
 
 def main():
@@ -26,7 +27,22 @@ def main():
     val.add_argument('--baseline', help='Check a pristine migration against an immutable Git revision')
     exp = sub.add_parser('export')
     exp.add_argument('--out', type=Path, required=True)
-    args = parser.parse_args()
+    up = sub.add_parser('upgrade', help='Lossless v1 to v2 expansion, without inferred reviews')
+    up.add_argument('--out', type=Path, required=True)
+    cov = sub.add_parser('coverage', help='Report field-level unreviewed, pending and stale metadata')
+    cov.add_argument('--field', choices=FIELDS)
+    cov.add_argument('--state', choices=['unreviewed', 'reviewed', 'pending', 'not_applicable', 'stale'])
+    cov.add_argument('--topic')
+    cov.add_argument('-n', type=int, default=20)
+    cov.add_argument('--out', type=Path, help='Save the complete report, including unshown rows')
+    cov.add_argument('--json', action='store_true')
+    sub.add_parser('list', add_help=False, help='Minimal listing; forwards filters/fields/format to search')
+    args, rest = parser.parse_known_args()
+    if args.command == 'list':
+        return subprocess.call([sys.executable, str(ROOT/'tools/search-claims.py'),
+                                '--registry', str(args.registry), '--list', *rest])
+    if rest:
+        parser.error('unrecognized arguments: ' + ' '.join(rest))
     if args.command == 'import':
         require(not args.out.exists() and not args.report.exists(), 'Output/report already exists')
         revision = subprocess.check_output(['git', 'rev-parse', args.revision + '^{commit}'], cwd=ROOT, text=True).strip()
@@ -38,7 +54,25 @@ def main():
         print(f"Imported {len(data['claims'])} claims; original fields and links reconciled.")
         return 0
     data = load(args.registry)
-    if args.command == 'render':
+    if args.command == 'upgrade':
+        write_json(args.out, upgrade(data))
+        print(f"Upgraded {len(data['claims'])} claims without inferring metadata.")
+    elif args.command == 'coverage':
+        require(args.n > 0, 'Coverage limit must be positive')
+        report = coverage(data)
+        if args.out:
+            write_json(args.out, report)
+        rows = [r for r in report['fields'] if (not args.field or r['field'] == args.field)
+                and (not args.state or r['state'] == args.state)
+                and (not args.topic or args.topic in r['topics'])]
+        if args.json:
+            print(json.dumps(dict(report, fields=rows[:args.n], omitted=max(0, len(rows)-args.n)), indent=2))
+        else:
+            print(json.dumps(report['counts'], indent=2))
+            for row in rows[:args.n]:
+                print(f"{row['id']}\t{row['field']}\t{row['state']}\t{row['next_action'] or ''}")
+            print(f'{len(rows)} matching field reviews; {max(0,len(rows)-args.n)} omitted.')
+    elif args.command == 'render':
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(render(data))
         print(f"Rendered {len(data['claims'])} claims.")

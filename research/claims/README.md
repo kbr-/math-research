@@ -15,6 +15,9 @@ From the repository root:
 ./tools/search-claims.py --has-lean -n 5
 ./tools/search-claims.py --status conditional -n 5
 ./tools/search-claims.py --formalization unknown --json --out /tmp/claim-results.json
+./tools/claim-index.py list --fields id,summary --format tsv
+./tools/claim-index.py list --topic bit-php --fields id,summary --format tsv
+./tools/claim-index.py coverage --field formalization --state unreviewed -n 10
 ```
 
 Search ranks content words, prints bounded summaries with status and a source
@@ -24,9 +27,20 @@ Read the linked notebook passage with `tools/notebook-excerpt.py ANCHOR`.
 `--kind`, `--topic`, and `--formalization` filter reviewed metadata when available;
 `unknown` is distinct from `not_started` and from verified coverage.
 
+`list` emits every matching claim in registry order, without an implicit limit.
+TSV output has no headers, scores, metadata, footer or truncated values. `--fields`
+selects and orders fields; `--format tsv` also works for ranked search. Limits are
+explicit with `-n`, and omission notices go to stderr. `--out` writes the selected
+TSV/JSON data without echoing it. TSV escapes backslash, tab, newline and carriage
+return as `\\`, `\t`, `\n`, `\r`; null is `\N`, distinct from a literal backslash-N.
+Array/object fields use compact JSON inside one escaped cell. Use `--format json`
+for lossless typed projections. Ordinary human-readable search remains bounded.
+
 ## Schema and scope
 
-[schema.json](schema.json) defines version 1. The standard-library validator
+[schema.json](schema.json) defines version 2; [schema-v1.json](schema-v1.json)
+retains import/backward validation. `claim-index.py upgrade --out PATH` adds the
+new fields without inferring reviews. The standard-library validator
 implements the vocabulary used by that schema and adds ID, reference and scope
 checks. Unsupported schema versions, unknown fields and duplicate JSON keys fail.
 
@@ -41,16 +55,33 @@ Each claim has:
   Partial or complete classifications require a scope and reference. A complete
   classification is a human assertion about the exact claim, not a verdict of
   this metadata validator.
+- `formalization.artifacts`: multiple verified/specification/counterexample scopes,
+  declarations, files, and existing verification evidence; a counterexample does
+  not verify the original false claim.
 - `topics`: optional curated tags; an empty list means unclassified.
-- `significance`: optional assessment, or `null`; not mathematical status.
+- `topic_definitions` at the registry root gives stable topic IDs and descriptions.
+- `significance`: a structured category/rationale, novelty and publication status,
+  references and next action, or `null`; independent of mathematical status.
+- `reviews`: per-field reviewed/pending/not-applicable dispositions with source
+  revision, date, reviewer, evidence hashes, rationale and next action. Missing
+  field reviews mean unreviewed, not absence of applicable metadata.
 
-Migration deliberately leaves the new classifications unreviewed. This does
+The initial migration deliberately left the new classifications unreviewed. This does
 not downgrade existing results: their full original assessments and Lean links
 remain intact. Parsing prose into new mathematical judgments is separate curation.
 Inline Markdown links are parsed into structured `references` in lookup/export
 output; they are not stored a second time as editable metadata. Currently the
 parser supports inline links, balanced parentheses, and angle-bracket targets;
 unsupported link syntax fails rather than silently losing a destination.
+
+`coverage` reports every field, pending reviews and stale evidence. With `--out`
+it saves the complete report even when the displayed list is bounded. Notebook
+evidence hashes cover exact anchored excerpts, so appending an unrelated entry
+does not invalidate an existing review. Changed claim text, field values, topic
+definitions or cited evidence do invalidate it. External URLs without a local
+snapshot cannot be checked automatically for changes; a recorded literature
+assessment is not a new literature search. Curation uses existing proof reports,
+not an implied new kernel replay.
 
 ## Edit and regenerate
 

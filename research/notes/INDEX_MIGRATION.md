@@ -119,22 +119,22 @@ unchecked and briefly note what remains.
 
 ## 6. Complete metadata inventory and review tracking
 
-- [ ] Pin the enrichment baseline and report population of every field. The first
+- [x] Pin the enrichment baseline and report population of every field. The first
       migration has 866 claims, all new classifications/significance null, all
       topics empty, and zero relationships; preserve this as the starting snapshot.
-- [ ] Define field-level review metadata: reviewed source revision/anchor, review
+- [x] Define field-level review metadata: reviewed source revision/anchor, review
       date or checkpoint, disposition, evidence, and unresolved work. Avoid a
       single "reviewed" flag that conceals untouched fields.
 - [ ] Inventory every claim against its full source, including later corrections,
       formalization records, and publication records. Extract explicit information
       first; mark interpretations requiring mathematical review separately.
-- [ ] Version and migrate the schema as needed for richer formalization,
+- [x] Version and migrate the schema as needed for richer formalization,
       significance, topics, relationships, and review provenance; update exporters,
       generated views, merge support, validators, and tests together.
-- [ ] Add bounded commands/reports for missing fields, pending reviews, stale
+- [x] Add bounded commands/reports for missing fields, pending reviews, stale
       reviews, broken references, and coverage by field/topic. Include all claims
       added or corrected while the enrichment pass is in progress.
-- [ ] Establish one authoritative home for index metadata and its review queue.
+- [x] Establish one authoritative home for index metadata and its review queue.
       Expose data to the separate framework plans without duplicate editable fields.
 
 ## 7. Populate existing formalization coverage for every claim
@@ -147,9 +147,9 @@ unchecked and briefly note what remains.
 - [ ] Distinguish full verification, partial verification, stronger hypotheses,
       statement-only specification, failed/discrepant formalization, and no
       recorded formalization; record evidence for the classification.
-- [ ] Support multiple formalization artifacts/scopes for one claim and shared
+- [x] Support multiple formalization artifacts/scopes for one claim and shared
       supporting files without implying that a filename verifies every conclusion.
-- [ ] Resolve mixed cases such as `lem:mp-telescoping`: preserve the verified
+- [x] Resolve mixed cases such as `lem:mp-telescoping`: preserve the verified
       identity/bounds, the refuted equality, and the downstream audit limitation.
 - [ ] Populate the Res(⊕) bit-PHP publication theorem, exponential corollary and
       dependency route from their existing records, retaining both rule conventions
@@ -214,7 +214,7 @@ unchecked and briefly note what remains.
 - [ ] Define structured significance assessments with rationale, exact scope,
       novelty status, source evidence, review date and suggested action. Keep
       independent interest, novelty, correctness and publication readiness separate.
-- [ ] Populate the known Res(⊕) publication result and its corollaries first, using
+- [x] Populate the known Res(⊕) publication result and its corollaries first, using
       the recorded literature/dependency audits and current external-review status;
       do not leave them null or promote an internal assessment to external confirmation.
 - [ ] Screen every remaining claim for independent interest, reusable tools,
@@ -227,16 +227,16 @@ unchecked and briefly note what remains.
 
 ## 11. Minimal-output claim retrieval
 
-- [ ] Extend the existing claim tool with an explicit all-claims listing mode and
+- [x] Extend the existing claim tool with an explicit all-claims listing mode and
       selectable output fields, for example `list --fields id,summary --format tsv`.
       Emit one claim per line with untruncated values and no JSON syntax, field
       names, headers, scores, metadata, or footers in this minimal mode. Preserve
       registry order; do not silently apply search limits to an all-claims listing.
-- [ ] Support the same field projection/plain-text format for filtered retrieval
+- [x] Support the same field projection/plain-text format for filtered retrieval
       where useful, with explicit limits only when requested. Define delimiter and
       escaping behavior, retain a lossless machine-readable option, and send any
       diagnostics or requested omission notices to stderr rather than data stdout.
-- [ ] Document minimal listing in the registry guide and agent retrieval guidance;
+- [x] Document minimal listing in the registry guide and agent retrieval guidance;
       test that every claim appears exactly once, summaries are not truncated,
       selected fields stay in the requested order, and no display fluff is emitted.
 
@@ -339,3 +339,13 @@ Scope correction, 19 September 2026: the earlier expansion incorrectly included 
 framework ideas in the index plan. Pending tasks were split into seven sibling
 plans, one for each other numbered idea. The original completed index tasks remain
 checked; no moved feature was marked implemented by this reorganization.
+
+Curation checkpoint `index_curation_20260919`: schema v2 and per-field review
+provenance are implemented, with anchored evidence hashes and coverage/staleness
+queries. Minimal TSV listing and field projection are implemented and tested.
+Three claims have source-reviewed status, formalization, topics, significance and
+relationships; 863 remain unreviewed in every field. Five reviewed relationships
+and five initial topic definitions are present. The complete taxonomy, dependency
+route, field backfill and ongoing-maintenance enforcement remain unfinished.
+Next batch: inventory all existing Lean mappings and recorded scope before further
+curation. No new formalization or external novelty verification was performed.

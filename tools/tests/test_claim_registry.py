@@ -12,6 +12,7 @@ import unittest
 TOOLS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TOOLS))
 import claim_registry as cr
+from claim_reviews import Evidence, make_review, coverage
 
 
 def tool(name, filename):
@@ -38,6 +39,77 @@ def endpoint(label):
 
 
 class ClaimRegistryTests(unittest.TestCase):
+    def test_minimal_listing_is_complete_untruncated_and_ordered(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            data=cr.import_markdown(source())
+            data['claims'][0]['summary']='long ' * 100
+            cr.write_json(root/'index.json', data)
+            cmd=[sys.executable,str(TOOLS/'claim-index.py'),'--registry',str(root/'index.json'),
+                 'list','--fields','id,summary','--format','tsv']
+            result=subprocess.run(cmd,check=True,capture_output=True,text=True)
+            expected=''.join(c['id']+'\t'+c['summary']+'\n' for c in data['claims'])
+            self.assertEqual(result.stdout,expected)
+            self.assertEqual(result.stderr,'')
+            limited=subprocess.run(cmd+['-n','1'],check=True,capture_output=True,text=True)
+            self.assertEqual(limited.stdout,expected.splitlines(keepends=True)[0])
+            self.assertIn('1 matches omitted',limited.stderr)
+            reordered=subprocess.run(cmd+['--fields','summary,id','--status','refutation'],
+                                     check=True,capture_output=True,text=True)
+            self.assertEqual(reordered.stdout,'Correct earlier bound\tex:correction\n')
+            output=root/'out.tsv'
+            saved=subprocess.run(cmd+['--out',str(output)],check=True,capture_output=True,text=True)
+            self.assertEqual(saved.stdout,'')
+            self.assertEqual(output.read_text(),expected)
+
+    def test_minimal_projection_escaping_and_null_are_distinct(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);data=cr.import_markdown(source())
+            data['claims'][0]['significance']='literal \\N\tand\nnewline'
+            cr.write_json(root/'index.json',data)
+            command=[sys.executable,str(TOOLS/'search-claims.py'),'--registry',str(root/'index.json'),
+                     '--list','--fields','significance','--format','tsv']
+            result=subprocess.run(command,check=True,capture_output=True,text=True)
+            self.assertEqual(result.stdout,'literal \\\\N\\tand\\nnewline\n\\N\n')
+
+    def test_upgrade_preserves_legacy_fields_and_does_not_infer_reviews(self):
+        old=cr.import_markdown(source());new=cr.upgrade(old)
+        self.assertEqual(new['schema_version'],2)
+        self.assertEqual(new['relationships'],[])
+        for a,b in zip(old['claims'],new['claims']):
+            for field in ('id',*cr.TEXT_FIELDS): self.assertEqual(a[field],b[field])
+            self.assertEqual(b['reviews'],{})
+        self.assertEqual(cr.upgrade(new),new)
+
+    def test_field_reviews_detect_only_relevant_source_changes(self):
+        data=cr.upgrade(cr.import_markdown(source()));claim=data['claims'][0]
+        claim['mathematical_status']='working_proof'
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);path=root/'notebook.html'
+            original='<section><h4 id="proof">A</h4><p>Exact statement.</p></section>'
+            path.write_text(original)
+            claim['reviews']['mathematical_status']=make_review(data,claim,'mathematical_status',
+                ['https://kbr.is-a.dev/math-research/#proof'],revision='a'*40,date='2026-09-19',
+                reviewer='Test',note='Read statement',evidence=Evidence(root))
+            cr.validate(data)
+            self.assertEqual(coverage(data,root)['counts']['mathematical_status']['reviewed'],1)
+            self.assertEqual(coverage(data,root)['by_topic']['unclassified']['claims'],2)
+            path.write_text(original.replace('</section>','<h4 id="later">Later</h4></section>'))
+            self.assertEqual(coverage(data,root)['counts']['mathematical_status']['reviewed'],1)
+            path.write_text(original.replace('Exact statement','Changed statement'))
+            self.assertEqual(coverage(data,root)['counts']['mathematical_status']['stale'],1)
+            path.write_text(original);claim['summary']='Changed claim'
+            self.assertEqual(coverage(data,root)['counts']['mathematical_status']['stale'],1)
+
+    def test_reviewed_empty_metadata_is_not_accepted(self):
+        data=cr.upgrade(cr.import_markdown(source()))
+        c=data['claims'][0]
+        c['reviews']['formalization']={'state':'reviewed','revision':'a'*40,'date':'2026-09-19',
+            'reviewer':'Test','note':'Unsupported review','next_action':None,
+            'claim_sha256':'a'*64,'value_sha256':'b'*64,
+            'evidence':[{'target':'https://example.org','sha256':None}]}
+        with self.assertRaises(ValueError):cr.validate(data)
+
     def test_lossless_import_retains_partial_scope_and_order(self):
         d = cr.import_markdown(source())
         report = cr.reconcile(source(), d)
@@ -78,7 +150,7 @@ class ClaimRegistryTests(unittest.TestCase):
 
     def test_schema_and_formalization_scope_guards(self):
         original = cr.import_markdown(source())
-        for mutate in (lambda d: d.update(schema_version=2),
+        for mutate in (lambda d: d.update(schema_version=3),
                        lambda d: d['claims'][0].update(unexpected=True),
                        lambda d: d['claims'][0]['formalization'].update(status='complete'),
                        lambda d: d['claims'][0].update(topics=['same', 'same'])):

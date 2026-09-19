@@ -1,59 +1,457 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Continued-research claim registry v1",
+  "title": "Continued-research claim registry v2",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "preamble", "claims", "relationships"],
+  "required": [
+    "schema_version",
+    "preamble",
+    "claims",
+    "relationships",
+    "topic_definitions"
+  ],
   "properties": {
-    "schema_version": {"type": "integer", "enum": [1]},
-    "preamble": {"type": "string"},
-    "claims": {"type": "array", "items": {"$ref": "#/$defs/claim"}},
-    "relationships": {"type": "array", "items": {"$ref": "#/$defs/relationship"}}
+    "schema_version": {
+      "type": "integer",
+      "enum": [
+        2
+      ]
+    },
+    "preamble": {
+      "type": "string"
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claim"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relationship"
+      }
+    },
+    "topic_definitions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/topic"
+      }
+    }
   },
   "$defs": {
-    "text": {"type": "string", "minLength": 1},
-    "strings": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "strings": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/text"
+      }
+    },
     "claim": {
-      "type": "object", "additionalProperties": false,
-      "required": ["id", "summary", "assessment", "record", "mathematical_status", "formalization", "topics", "significance"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "summary",
+        "assessment",
+        "record",
+        "mathematical_status",
+        "formalization",
+        "topics",
+        "significance",
+        "reviews"
+      ],
       "properties": {
-        "id": {"type": "string", "pattern": "[^\\s`|]+"},
-        "summary": {"$ref": "#/$defs/text"},
-        "assessment": {"$ref": "#/$defs/text"},
-        "record": {"$ref": "#/$defs/text"},
-        "mathematical_status": {"enum": [null, "working_proof", "established", "conditional", "conjecture", "finite_check", "refutation", "retracted", "context"]},
+        "id": {
+          "type": "string",
+          "pattern": "[^\\s`|]+"
+        },
+        "summary": {
+          "$ref": "#/$defs/text"
+        },
+        "assessment": {
+          "$ref": "#/$defs/text"
+        },
+        "record": {
+          "$ref": "#/$defs/text"
+        },
+        "mathematical_status": {
+          "enum": [
+            null,
+            "working_proof",
+            "established",
+            "conditional",
+            "conjecture",
+            "finite_check",
+            "refutation",
+            "retracted",
+            "context"
+          ]
+        },
         "formalization": {
-          "type": "object", "additionalProperties": false,
-          "required": ["status", "scope", "references"],
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "scope",
+            "references",
+            "artifacts"
+          ],
           "properties": {
-            "status": {"enum": [null, "not_started", "partial", "complete"]},
-            "scope": {"type": ["string", "null"]},
-            "references": {"$ref": "#/$defs/strings"}
+            "status": {
+              "enum": [
+                null,
+                "not_started",
+                "partial",
+                "complete",
+                "no_record",
+                "statement_only",
+                "discrepant"
+              ]
+            },
+            "scope": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "references": {
+              "$ref": "#/$defs/strings"
+            },
+            "artifacts": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/artifact"
+              }
+            }
           }
         },
-        "topics": {"$ref": "#/$defs/strings"},
-        "significance": {"type": ["string", "null"]}
+        "topics": {
+          "$ref": "#/$defs/strings"
+        },
+        "significance": {
+          "$ref": "#/$defs/significance"
+        },
+        "reviews": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "mathematical_status": {
+              "$ref": "#/$defs/review"
+            },
+            "formalization": {
+              "$ref": "#/$defs/review"
+            },
+            "topics": {
+              "$ref": "#/$defs/review"
+            },
+            "significance": {
+              "$ref": "#/$defs/review"
+            },
+            "relationships": {
+              "$ref": "#/$defs/review"
+            }
+          }
+        }
       }
     },
     "endpoint": {
-      "type": "object", "additionalProperties": false,
-      "required": ["namespace", "id", "locator"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "namespace",
+        "id",
+        "locator"
+      ],
       "properties": {
-        "namespace": {"enum": ["current", "historical", "external"]},
-        "id": {"$ref": "#/$defs/text"},
-        "locator": {"type": ["string", "null"]}
+        "namespace": {
+          "enum": [
+            "current",
+            "historical",
+            "external"
+          ]
+        },
+        "id": {
+          "$ref": "#/$defs/text"
+        },
+        "locator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "relationship": {
-      "type": "object", "additionalProperties": false,
-      "required": ["id", "source", "target", "type", "evidence", "review_status"],
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source",
+        "target",
+        "type",
+        "evidence",
+        "review_status",
+        "scope",
+        "review"
+      ],
       "properties": {
-        "id": {"$ref": "#/$defs/text"},
-        "source": {"$ref": "#/$defs/endpoint"},
-        "target": {"$ref": "#/$defs/endpoint"},
-        "type": {"enum": ["cites", "depends_on", "refines", "supersedes", "corrects", "rediscovers", "formalizes", "applies", "obstructs"]},
-        "evidence": {"$ref": "#/$defs/strings"},
-        "review_status": {"enum": ["unreviewed", "reviewed"]}
+        "id": {
+          "$ref": "#/$defs/text"
+        },
+        "source": {
+          "$ref": "#/$defs/endpoint"
+        },
+        "target": {
+          "$ref": "#/$defs/endpoint"
+        },
+        "type": {
+          "enum": [
+            "cites",
+            "depends_on",
+            "refines",
+            "supersedes",
+            "corrects",
+            "rediscovers",
+            "formalizes",
+            "applies",
+            "obstructs"
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/strings"
+        },
+        "review_status": {
+          "enum": [
+            "unreviewed",
+            "reviewed"
+          ]
+        },
+        "scope": {
+          "$ref": "#/$defs/text"
+        },
+        "review": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "revision",
+            "date",
+            "reviewer",
+            "note"
+          ],
+          "properties": {
+            "revision": {
+              "$ref": "#/$defs/text"
+            },
+            "date": {
+              "$ref": "#/$defs/text"
+            },
+            "reviewer": {
+              "$ref": "#/$defs/text"
+            },
+            "note": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        }
+      }
+    },
+    "topic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/text"
+        },
+        "title": {
+          "$ref": "#/$defs/text"
+        },
+        "description": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "status",
+        "references",
+        "declarations",
+        "verification"
+      ],
+      "properties": {
+        "scope": {
+          "$ref": "#/$defs/text"
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "partial",
+            "statement_only",
+            "counterexample"
+          ]
+        },
+        "references": {
+          "$ref": "#/$defs/strings"
+        },
+        "declarations": {
+          "$ref": "#/$defs/strings"
+        },
+        "verification": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "significance": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "category",
+        "rationale",
+        "novelty",
+        "publication_status",
+        "references",
+        "next_action"
+      ],
+      "properties": {
+        "category": {
+          "enum": [
+            "independent_result",
+            "general_tool",
+            "route_specific",
+            "negative_result",
+            "context",
+            "unassessed"
+          ]
+        },
+        "rationale": {
+          "$ref": "#/$defs/text"
+        },
+        "novelty": {
+          "enum": [
+            "known",
+            "candidate",
+            "not_claimed",
+            "unknown"
+          ]
+        },
+        "publication_status": {
+          "enum": [
+            "not_applicable",
+            "candidate",
+            "draft",
+            "preprint",
+            "published",
+            "unknown"
+          ]
+        },
+        "references": {
+          "$ref": "#/$defs/strings"
+        },
+        "next_action": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "sha256"
+      ],
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/text"
+        },
+        "sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "[0-9a-f]{64}"
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "revision",
+        "date",
+        "reviewer",
+        "note",
+        "next_action",
+        "claim_sha256",
+        "value_sha256",
+        "evidence"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "reviewed",
+            "pending",
+            "not_applicable"
+          ]
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "[0-9a-f]{40}"
+        },
+        "date": {
+          "type": "string",
+          "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}"
+        },
+        "reviewer": {
+          "$ref": "#/$defs/text"
+        },
+        "note": {
+          "$ref": "#/$defs/text"
+        },
+        "next_action": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "claim_sha256": {
+          "type": "string",
+          "pattern": "[0-9a-f]{64}"
+        },
+        "value_sha256": {
+          "type": "string",
+          "pattern": "[0-9a-f]{64}"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/snapshot"
+          }
+        }
       }
     }
   }

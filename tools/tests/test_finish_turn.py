@@ -20,7 +20,8 @@ class FinalizationTest(unittest.TestCase):
         for name in ('compute.sh', 'tools/finish-turn.py', 'tools/archive-session.py', 'tools/claim_registry.py'):
             shutil.copy2(ROOT / name, self.root / name)
         (self.root / 'research/claims').mkdir(parents=True)
-        shutil.copy2(ROOT / 'research/claims/schema.json', self.root / 'research/claims/schema.json')
+        for schema in ('schema.json', 'schema-v1.json'):
+            shutil.copy2(ROOT / 'research/claims' / schema, self.root / 'research/claims' / schema)
         self.command('compute.sh', 'start', 'test_turn', '--agent', 'Test agent',
                      '--model', 'Test model, high')
 

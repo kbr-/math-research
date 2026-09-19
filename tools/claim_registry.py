@@ -3,6 +3,7 @@
 Standard library only. This module does not assess mathematical correctness.
 """
 import hashlib
+import copy
 import json
 from pathlib import Path
 import re
@@ -121,9 +122,13 @@ def references(claim):
 
 
 def validate(data):
-    shape(data, read_json(SCHEMA))
+    version = data.get('schema_version') if isinstance(data, dict) else None
+    require(version in (1, 2), 'Unsupported claim schema version')
+    shape(data, read_json(SCHEMA if version == 2 else SCHEMA.with_name('schema-v1.json')))
     ids = [c['id'] for c in data['claims']]
     require(len(ids) == len(set(ids)), 'Duplicate claim IDs')
+    topics = [t['id'] for t in data.get('topic_definitions', [])]
+    require(len(topics) == len(set(topics)), 'Duplicate topic IDs')
     for c in data['claims']:
         for field in TEXT_FIELDS:
             require('\n' not in c[field] and '\r' not in c[field], f"{c['id']}: multiline {field}")
@@ -133,6 +138,15 @@ def validate(data):
         if f['status'] in ('partial', 'complete'):
             require(bool(f['scope']) and bool(f['references']),
                     f"{c['id']}: verified coverage requires explicit scope and references")
+        if version == 2:
+            require(set(c['topics']) <= set(topics), f"{c['id']}: undefined topic")
+            for field, review in c['reviews'].items():
+                require(bool(review['evidence']), f"{c['id']}: review needs evidence")
+                if review['state'] == 'pending':
+                    require(bool(review['next_action']), f"{c['id']}: pending review needs next action")
+                if review['state'] == 'reviewed' and field != 'relationships':
+                    value = f['status'] if field == 'formalization' else c[field]
+                    require(value is not None and value != [], f"{c['id']}: reviewed {field} is empty")
     edge_ids = set()
     for edge in data['relationships']:
         require(edge['id'] not in edge_ids, 'Duplicate relationship ID')
@@ -146,6 +160,26 @@ def validate(data):
         if edge['review_status'] == 'reviewed':
             require(bool(edge['evidence']), f"{edge['id']}: reviewed edge needs evidence")
     return data
+
+
+def upgrade(data):
+    """Lossless v1 -> v2 metadata expansion; no curation is inferred."""
+    validate(data)
+    if data['schema_version'] == 2:
+        return copy.deepcopy(data)
+    new = copy.deepcopy(data)
+    new['schema_version'] = 2
+    new['topic_definitions'] = []
+    for claim in new['claims']:
+        claim['reviews'] = {}
+        claim['formalization']['artifacts'] = []
+        if claim['significance'] is not None:
+            claim['significance'] = {'category': 'unassessed', 'rationale': claim['significance'],
+                'novelty': 'unknown', 'publication_status': 'unknown', 'references': [], 'next_action': None}
+    for edge in new['relationships']:
+        edge['scope'] = 'Migrated v1 relationship; scope review pending.'
+        edge['review'] = None
+    return validate(new)
 
 
 def load(path=REGISTRY):
@@ -247,6 +281,15 @@ def file_anchors(path):
 def check_targets(data, root=ROOT):
     refs = [(c['id'], r['target']) for c in data['claims'] for r in references(c)]
     refs += [(c['id'], t) for c in data['claims'] for t in c['formalization']['references']]
+    for c in data['claims']:
+        for artifact in c['formalization'].get('artifacts', []):
+            refs += [(c['id'], t) for t in artifact['references']]
+            if artifact['verification']:
+                refs.append((c['id'], artifact['verification']))
+        if isinstance(c['significance'], dict):
+            refs += [(c['id'], t) for t in c['significance']['references']]
+        for review in c.get('reviews', {}).values():
+            refs += [(c['id'], e['target']) for e in review['evidence']]
     refs += [('preamble', r['target']) for r in markdown_links(data['preamble'])]
     for edge in data['relationships']:
         refs += [(edge['id'], x) for x in edge['evidence']]
@@ -272,7 +315,8 @@ def check_targets(data, root=ROOT):
 
 def exported(data, claims=None):
     claims = data['claims'] if claims is None else claims
-    return {'schema_version': 1, 'reference_base': 'research/CLAIM_INDEX.md',
+    return {'schema_version': data['schema_version'], 'reference_base': 'research/CLAIM_INDEX.md',
+            'topic_definitions': data.get('topic_definitions', []),
             'claims': [dict(c, references=references(c)) for c in claims],
             'relationships': data['relationships'],
             'relationship_coverage': 'incomplete; absent edges do not establish independence'}
