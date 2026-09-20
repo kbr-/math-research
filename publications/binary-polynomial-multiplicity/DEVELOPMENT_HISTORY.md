@@ -1,6 +1,6 @@
 # Development history
 
-## Revision 1 — 20 September 2026
+## Version 1 — 20 September 2026
 
 The user asked whether an existing independent notebook result could lead to a
 published open problem. During that comparison, Codex identified that the bound
@@ -18,3 +18,16 @@ At the user's request, this short preprint was drafted using the publication
 structure of the bit-PHP paper. Definitions and the imported lemma are stated
 explicitly, and the full deduction is given. No new mathematical theorem, Lean
 formalization, external review, author contact or submission is claimed.
+
+### In-place checklist review
+
+The author clarified that the note has not been sent to anyone and is version 1,
+not a first revision. The initial local draft's “revision 1” label was corrected;
+subsequent pre-circulation edits remain within version 1. Earlier notebook entries
+and build snapshots preserve the historical label rather than being rewritten.
+
+The paper-specific checklist prompted a short explanation of the counting idea,
+a directly displayed conclusion in the proposition, a shorter explanation of
+external question numbering, consolidated scope wording, and a clearer disclosure
+of the author/AI roles and outstanding independent review. The mathematical
+statement and proof are unchanged. Item-by-item dispositions are in FEEDBACK.md.

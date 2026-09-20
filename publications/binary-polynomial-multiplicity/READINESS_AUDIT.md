@@ -1,6 +1,8 @@
-# Revision-1 readiness audit
+# Version-1 readiness audit
 
-20 September 2026. Internal source and build review only; no independent expert
+20 September 2026. The uncirculated version 1 was self-reviewed in place against
+[CHECKLIST.md](CHECKLIST.md); all 26 internal dispositions are in [FEEDBACK.md](FEEDBACK.md).
+This is an internal source and build review only; no independent expert
 review, human-author approval, Lean verification or submission is claimed.
 
 ## Source and mathematical scope
@@ -31,18 +33,23 @@ Primary references checked:
 - [x] Three protected pdflatex passes completed with shell escape disabled.
 - [x] Final pass: no warnings, overfull/underfull boxes, missing glyph warnings,
   undefined references or unresolved citations.
-- [x] PDF has two US-letter pages and embedded subset fonts.
+- [x] PDF has two US-letter pages, the version-1 label and embedded subset fonts.
+- [x] PDF hyperlinks contain the two DOI targets, the explicit arXiv v1 target and the direct development-history URL.
 - [x] Extracted definitions, hypotheses, proof, references and disclosure checked.
 - [x] Both pages rendered locally. Automated word-coordinate and raster-margin
   checks pass; no rendered previews are published. This is not a claim of human
   visual review.
 - [x] Source/PDF hashes saved in `reviewed-files.json`.
 
-Full logs and reproducible QA are in
-[the retained build evidence](../../research/results/multiplicity_note_rev1_20260920/).
-The first build exposed loose bibliography spacing, corrected before the final
-build. QA parser retries accommodated Poppler's control-code representations and
-zero-width combining math accents; those were extraction issues, not proof errors.
+Fresh final-build logs and reproducible QA are in
+[the self-review evidence](../../research/results/multiplicity_note_self_review_20260920/).
+The source review was completed before one final three-pass build. Rounding and
+the n=1 and k=1 boundary cases were checked analytically. Earlier build snapshots
+remain in [the initial drafting evidence](../../research/results/multiplicity_note_rev1_20260920/);
+its directory name is historical and does not define the paper's version.
+
+The initial “revision 1” wording was an editorial labeling error, corrected to
+“version 1” at the author's request. No new public version or release was made.
 
 ## Outstanding
 

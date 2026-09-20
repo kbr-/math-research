@@ -18,9 +18,9 @@ The degree bound printed in BBDM 2023 Question 4.3 follows from multiplicity Sch
 
 **Why it matters:** Potentially useful clarification of an explicitly printed question via an earlier standard theorem; not a new lower-bound mechanism or priority claim.
 
-**Decision (agent):** A two-page attributed preprint is drafted in publications/binary-polynomial-multiplicity. The requested bound is a direct consequence of DKSS Lemma 2.7, not a new lower-bound mechanism. Human-author approval, independent confirmation and clarification of prior knowledge or intended scope remain outstanding; no author contact or submission has occurred. See entry-2026-09-20-multiplicity-note-revision-1.
+**Decision (agent):** Uncirculated version 1 has completed internal checklist review; independent confirmation and author approval remain outstanding.
 
-**Next:** Review the two-page draft and independently confirm the source interpretation and any prior clarification before author contact or submission.
+**Next:** Obtain human-author approval and independent confirmation of the source interpretation; clarify prior knowledge or intended scope before submission.
 
 ---
 
