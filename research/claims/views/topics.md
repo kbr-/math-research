@@ -15,14 +15,14 @@ Multi-topic membership overlaps; unclassified means missing topic metadata.
 | [ens](topic-d694d81e0716ed3837f3.md) | 635 | Extension blocks, products, coefficients and source interfaces. |
 | [finite-certificates](topic-e975320b9658014c06ba.md) | 117 | Exact finite traces, separating duals and computational controls. |
 | [frege-simulation](topic-5b718fa8118e12b7a19b.md) | 231 | Translation of proof syntax, source formulas and logical axiom schemas into algebra. |
-| [matching-php](topic-7efcbae331f7ce795cd4.md) | 265 | Partial matchings, matching weights and the unary PHP base. |
+| [matching-php](topic-7efcbae331f7ce795cd4.md) | 268 | Partial matchings, matching weights and the unary PHP base. |
 | [method-obstructions](topic-d3ed32d2495e6fe98bec.md) | 125 | Counterexamples and limitations with the affected hypothesis or method identified. |
 | [moment-designs](topic-041e7e6a8b6deac21c80.md) | 78 | Truncated moments, annihilating functionals, covariance and design extension. |
 | [nullstellensatz](topic-0e00caa1421aa7b6562b.md) | 80 | Ordinary polynomial ideal certificates, cofactors and certificate degree. |
 | [polynomial-calculus](topic-6afefd068eb1cf50e655.md) | 317 | PC derivations, closure spaces, proof transformations and final-line reuse. |
 | [pseudorandomness](topic-51be920b90e25b6f100f.md) | 5 | Small-bias generators, polynomial sampling and character bounds. |
 | [publication](topic-3f662004cb4676be8aa8.md) | 8 | Statements prepared for independent dissemination and review. |
-| [query-models](topic-271eac1bf49c9fe0d140.md) | 135 | Conflict/query trees, query description bounds and survival probabilities. |
+| [query-models](topic-271eac1bf49c9fe0d140.md) | 138 | Conflict/query trees, query description bounds and survival probabilities. |
 | [resolution-parities](topic-cc24a4c93fa12321e386.md) | 22 | Affine/parity clause calculi and proof size. |
 | [substitution](topic-6c4907c0653a336f9a63.md) | 67 | Variable interpretations, weighted replay and removal of extension blocks. |
 | [topological-methods](topic-6a5b0c4744c0c62182f5.md) | 22 | Matching/chessboard complexes and homological extension inputs. |
