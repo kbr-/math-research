@@ -8,9 +8,9 @@ Multi-topic membership overlaps; unclassified means missing topic metadata.
 
 | Topic | Claims | Description |
 |---|---:|---|
-| [affine-linear-algebra](topic-0ff8ac2da0b424f46550.md) | 191 | Subspace ranks, quotient geometry, duality and affine feasibility. |
+| [affine-linear-algebra](topic-0ff8ac2da0b424f46550.md) | 193 | Subspace ranks, quotient geometry, duality and affine feasibility. |
 | [algebraic-branching-programs](topic-94158f2cfe66973d7b3c.md) | 18 | Read-once oblivious algebraic branching programs, matrix representations and evaluation or coefficient cut-rank bounds. |
-| [bit-php](topic-a5f1aa48d43dc2be8a7c.md) | 92 | Bit encodings, their transfers and proof bounds. |
+| [bit-php](topic-a5f1aa48d43dc2be8a7c.md) | 94 | Bit encodings, their transfers and proof bounds. |
 | [degree-accounting](topic-adc04d3b2c9ff7fbea84.md) | 344 | Original polynomial degrees, budgets and degree discrepancies. |
 | [ens](topic-d694d81e0716ed3837f3.md) | 649 | Extension blocks, products, coefficients and source interfaces. |
 | [finite-certificates](topic-e975320b9658014c06ba.md) | 121 | Exact finite traces, separating duals and computational controls. |
@@ -22,7 +22,7 @@ Multi-topic membership overlaps; unclassified means missing topic metadata.
 | [polynomial-calculus](topic-6afefd068eb1cf50e655.md) | 336 | PC derivations, closure spaces, proof transformations and final-line reuse. |
 | [pseudorandomness](topic-51be920b90e25b6f100f.md) | 5 | Small-bias generators, polynomial sampling and character bounds. |
 | [publication](topic-3f662004cb4676be8aa8.md) | 8 | Statements prepared for independent dissemination and review. |
-| [query-models](topic-271eac1bf49c9fe0d140.md) | 143 | Conflict/query trees, query description bounds and survival probabilities. |
+| [query-models](topic-271eac1bf49c9fe0d140.md) | 145 | Conflict/query trees, query description bounds and survival probabilities. |
 | [resolution-parities](topic-cc24a4c93fa12321e386.md) | 22 | Affine/parity clause calculi and proof size. |
 | [substitution](topic-6c4907c0653a336f9a63.md) | 67 | Variable interpretations, weighted replay and removal of extension blocks. |
 | [topological-methods](topic-6a5b0c4744c0c62182f5.md) | 22 | Matching/chessboard complexes and homological extension inputs. |
