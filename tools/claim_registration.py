@@ -35,7 +35,8 @@ class Entries(HTMLParser):
         if len(ids)!=len(set(ids)):raise ValueError('Duplicate research article ID')
 
 
-def check_entries(previous,current,data,root,grandfathered=()):
+def check_entries(previous,current,data,root,grandfathered=(),notebook_path=None):
+    notebook_path = notebook_path or root/'notebook.html'
     before={e['id'] for e in Entries(previous).entries}|set(grandfathered)
     entries=[e for e in Entries(current).entries if e['id'] not in before]
     claims={c['id']:c for c in data['claims']}
@@ -61,7 +62,7 @@ def check_entries(previous,current,data,root,grandfathered=()):
         for key,claim in claims.items():
             for ref in references(claim):
                 target=local_target(ref['target'],root)
-                if target and target[0].resolve()==(root/'notebook.html').resolve() and target[1] in entry['anchors']:
+                if target and target[0].resolve()==notebook_path.resolve() and target[1] in entry['anchors']:
                     linked.add(key);break
         for key in sorted(linked-declared):errors.append(f'{label}: source-linked claim missing from inventory: {key}')
         for key in sorted(declared-linked-missing):errors.append(f'{label}: declared claim needs a source link to this entry: {key}')

@@ -258,6 +258,10 @@ def reconcile(text, data, revision=None):
 
 
 def local_target(target, root=ROOT):
+    from notebooks import public_target
+    notebook = public_target(target, root)
+    if notebook is not None:
+        return notebook
     p = urlparse(target)
     if p.scheme in ('http', 'https'):
         if p.netloc in ('kbr.is-a.dev', 'kbr-.github.io') and p.path.rstrip('/') == '/math-research':

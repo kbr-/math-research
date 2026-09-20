@@ -1,0 +1,73 @@
+....FF...................................................................................
+======================================================================
+FAIL: test_complete_article_review_survives_real_finish_but_content_changes_stale (test_claim_article_finalizer.ArticleFinalizerTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_claim_article_finalizer.py", line 15, in test_complete_article_review_survives_real_finish_but_content_changes_stale
+    self.exercise("entry-fixture")
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_claim_article_finalizer.py", line 38, in exercise
+    output=self.command('tools/finish-turn.py','test_turn')
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_finish_turn.py", line 67, in command
+    self.fail(f'{script} exited {result.returncode}\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}')
+AssertionError: tools/finish-turn.py exited 1
+stdout:
+
+stderr:
+Traceback (most recent call last):
+  File "/tmp/math-finish-turn-zgq81s_t/tools/finish-turn.py", line 215, in <module>
+    main()
+  File "/tmp/math-finish-turn-zgq81s_t/tools/finish-turn.py", line 210, in main
+    finish(ROOT, args.turn, args.next_turn)
+  File "/tmp/math-finish-turn-zgq81s_t/tools/finish-turn.py", line 133, in finish
+    contract = check_revision(claims, root=root)
+  File "/tmp/math-finish-turn-zgq81s_t/tools/claim_maintenance.py", line 98, in check_revision
+    result=maintenance(before,after,root,changed)
+  File "/tmp/math-finish-turn-zgq81s_t/tools/claim_maintenance.py", line 62, in maintenance
+    report=coverage(after,root)
+  File "/tmp/math-finish-turn-zgq81s_t/tools/claim_reviews.py", line 142, in coverage
+    current = evidence.sha256(item['target'], item.get('normalization'))
+  File "/tmp/math-finish-turn-zgq81s_t/tools/claim_reviews.py", line 54, in sha256
+    local = local_target(target, self.root)
+  File "/tmp/math-finish-turn-zgq81s_t/tools/claim_registry.py", line 261, in local_target
+    from notebooks import public_target
+ModuleNotFoundError: No module named 'notebooks'
+
+
+======================================================================
+FAIL: test_last_heading_evidence_survives_real_finish_but_content_changes_stale (test_claim_article_finalizer.ArticleFinalizerTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_claim_article_finalizer.py", line 18, in test_last_heading_evidence_survives_real_finish_but_content_changes_stale
+    self.exercise("last-heading")
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_claim_article_finalizer.py", line 38, in exercise
+    output=self.command('tools/finish-turn.py','test_turn')
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_finish_turn.py", line 67, in command
+    self.fail(f'{script} exited {result.returncode}\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}')
+AssertionError: tools/finish-turn.py exited 1
+stdout:
+
+stderr:
+Traceback (most recent call last):
+  File "/tmp/math-finish-turn-7voggnda/tools/finish-turn.py", line 215, in <module>
+    main()
+  File "/tmp/math-finish-turn-7voggnda/tools/finish-turn.py", line 210, in main
+    finish(ROOT, args.turn, args.next_turn)
+  File "/tmp/math-finish-turn-7voggnda/tools/finish-turn.py", line 133, in finish
+    contract = check_revision(claims, root=root)
+  File "/tmp/math-finish-turn-7voggnda/tools/claim_maintenance.py", line 98, in check_revision
+    result=maintenance(before,after,root,changed)
+  File "/tmp/math-finish-turn-7voggnda/tools/claim_maintenance.py", line 62, in maintenance
+    report=coverage(after,root)
+  File "/tmp/math-finish-turn-7voggnda/tools/claim_reviews.py", line 142, in coverage
+    current = evidence.sha256(item['target'], item.get('normalization'))
+  File "/tmp/math-finish-turn-7voggnda/tools/claim_reviews.py", line 54, in sha256
+    local = local_target(target, self.root)
+  File "/tmp/math-finish-turn-7voggnda/tools/claim_registry.py", line 261, in local_target
+    from notebooks import public_target
+ModuleNotFoundError: No module named 'notebooks'
+
+
+----------------------------------------------------------------------
+Ran 89 tests in 4.349s
+
+FAILED (failures=2)

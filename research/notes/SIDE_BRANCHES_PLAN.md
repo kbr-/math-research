@@ -4,7 +4,7 @@ Draft: 20 September 2026. Implements the proposals in
 [IDEAS.md item 9](../../IDEAS.md#9-side-research-notebooks-with-shared-claim-infrastructure),
 including the proposed `Branch` protocol in `PROMPTS.md`.
 
-Status: **planned, not implemented**. Creating this plan does not start a side
+Status: **implementation in progress**. Creating this plan does not start a side
 investigation or change the active notebook. Mark tasks
 complete only after implementation and validation; record decisions, evidence
 and checkpoint references here. Follow existing workspace policies rather than
@@ -28,18 +28,18 @@ and manual conflict resolution; the merge drivers are not a prerequisite.
 
 ## 1. Establish notebook identity and ownership
 
-- [ ] Inventory assumptions of a single root `notebook.html` in server, client,
+- [x] Inventory assumptions of a single root `notebook.html` in server, client,
       build, restoration, excerpt, registry, review-evidence, timing and validation
       code. Record the affected interfaces before changing their defaults.
-- [ ] Choose the smallest shared notebook catalogue/resolver. A proposed layout is
+- [x] Choose the smallest shared notebook catalogue/resolver. A proposed layout is
       `research/branches/<name>/notebook.html`, with catalogue metadata identifying
       its source path, public route, parent thread, originating entry and lifecycle
       status. Keep the main source at `notebook.html`. Final paths are an
       implementation decision, not an existing interface.
-- [ ] Keep mathematical goals and current assessments in each notebook's living
+- [x] Keep mathematical goals and current assessments in each notebook's living
       sections. Derive navigation summaries where practical; do not create another
       manually synchronized mathematical overview in catalogue metadata.
-- [ ] Define safe, stable names and reject duplicate IDs, path traversal and route
+- [x] Define safe, stable names and reject duplicate IDs, path traversal and route
       collisions. Renaming a Git branch must not rename a published notebook.
       Preserve published URLs when closing or reorganizing research threads.
 - [ ] Give every notebook the familiar living sections and an independent record:
@@ -167,3 +167,23 @@ bounded-restoration policy. [INDEX_MIGRATION.md](INDEX_MIGRATION.md) owns the sh
 claim/review schema; this plan extends its source resolution across notebooks.
 [CLAIM_GRAPH_PLAN.md](CLAIM_GRAPH_PLAN.md) can consume notebook-qualified sources
 without becoming a prerequisite for side notebooks.
+
+## Implementation checkpoints
+
+### Identity and source foundation — 20 September 2026
+
+`tools/notebooks.py` discovers per-thread `research/branches/<name>/notebook.json`
+registrations; each owns `notebook.html` and an explicit `context-budgets.json`.
+No central catalogue edits are needed for independent creation. Metadata stores
+identity/title/status/parent/origin only, not a second mathematical summary. Main
+remains implicit and existing public links preserve their interpretation.
+
+Inventory: `server.py` and `tools/build_pages.py` own rendering; `index.html` owns
+client navigation/search. `resume.py`, `notebook-excerpt.py`, `notebook_context.py`,
+`finish-turn.py` and `check-append-only.py` need selection support. Claim registry,
+registration/maintenance, `claim-dependencies.py` and `record_citations.py` need
+qualified source handling. Registry public-source resolution and per-notebook
+registration checking are implemented first; the other interfaces follow.
+
+No side research was initialized. Initial focused tests cover main compatibility,
+qualified sources, ambiguous anchors, unsafe/missing sources and invalid ancestry.

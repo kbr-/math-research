@@ -97,15 +97,20 @@ def check_revision(after, revision='HEAD', root=ROOT):
     changed=subprocess.check_output(command,cwd=root,text=True).splitlines()
     result=maintenance(before,after,root,changed)
     result['base_revision']=commit
-    notebook=root/'notebook.html'
-    if notebook.exists():
+    from notebooks import paths
+    registrations=[]
+    for notebook in paths(root):
+        relative=notebook.relative_to(root).as_posix()
         def notebook_at(ref):
             if ref=='EMPTY':return ''
-            shown=subprocess.run(['git','show',ref+':notebook.html'],cwd=root,text=True,capture_output=True)
+            shown=subprocess.run(['git','show',ref+':'+relative],cwd=root,text=True,capture_output=True)
             return shown.stdout if shown.returncode==0 else ''
         grandfathered={e['id'] for e in Entries(notebook_at(ENTRY_INVENTORY_BASE)).entries}
-        registration=check_entries(notebook_at(commit),notebook.read_text(),after,root,grandfathered)
-        result['registration']=registration
-        result['errors'].extend(registration['errors'])
-        result['passed']=not result['errors']
+        registration=check_entries(notebook_at(commit),notebook.read_text(),after,root,grandfathered,notebook)
+        registrations.append(registration)
+    result['registration']={'passed':all(r['passed'] for r in registrations),
+                            'errors':[e for r in registrations for e in r['errors']],
+                            'entries':[e for r in registrations for e in r['entries']]}
+    result['errors'].extend(result['registration']['errors'])
+    result['passed']=not result['errors']
     return result
