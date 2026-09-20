@@ -165,6 +165,79 @@ into the notebook.
   that dependency explicitly when implementing the visualization, following the existing
   dependency policy; prefer a pinned local asset if offline reproducibility matters.
 
+## 9. Side research notebooks with shared claim infrastructure
+
+**The idea (20 September 2026).** Give each side research branch its own notebook,
+initially with an empty research record and living sections adjusted to its goal.
+Serve it locally and on GitHub Pages at `/math-research/branches/<name>/`, alongside
+the main notebook. Support multiple such notebooks while sharing the claim registry
+and other framework infrastructure. This avoids temporarily replacing the main
+notebook's goal and then discarding the side branch's living sections at integration.
+
+**Codex comments (20 September 2026).**
+
+- Use stable research-thread names independent of Git branch names: a Git branch
+  can be renamed or deleted without breaking published source links. Each notebook
+  retains its own goal, status, remaining route, next step, working context,
+  formalization gaps and append-only record after integration into main.
+- Keep a small directory of side notebooks with goals and active/completed/abandoned
+  status. Each notebook identifies its thread and links back to the main notebook.
+  A result useful to the main goal gets a brief integration entry there linking to
+  its full argument; do not duplicate proofs or discard unsuccessful side records.
+- Share global claim IDs and relationships. Source locators must identify both
+  notebook and anchor; cross-notebook dependency and correction links need to work
+  in local serving, GitHub Pages and source/evidence checks.
+- Parameterize existing restoration, excerpt/search, context-budget, timing/finishing,
+  append-only, source-validation and publication tools. Preserve the main notebook
+  as the default. Give each side notebook explicit living-section budgets and
+  restore only the selected thread plus relevant shared dependencies, not every
+  notebook. Do not fork the framework into separate implementations.
+- Reuse the existing lazy math rendering and navigation. Search can default to the
+  current notebook with an explicit all-notebooks option; load broader indexes on
+  demand so adding threads does not slow every page's startup.
+- The odd-field multiplicity/double-covering question is a proposed first use case,
+  not an assigned investigation or a claim that a short proof is available.
+
+## 10. Structured Git merge drivers for notebook and claim additions
+
+**The idea (20 September 2026).** Automatically resolve independent notebook
+appends and claim-index additions during rebase/merge, while retaining genuine
+conflicts. Side notebooks reduce contention between different research threads;
+merge drivers also help when two Git branches work on the same thread.
+
+**Codex comments (20 September 2026).**
+
+- Extend/consolidate `tools/merge-formalization-appends.py`, whose existing resolver
+  is restricted to an older formalization workflow. Use separate rules for each
+  authoritative format rather than treating structured content as arbitrary lines.
+- For notebooks, match complete articles by stable ID, preserve existing entries
+  byte-for-byte and in order, combine independent additions deterministically, and
+  deduplicate identical additions. Reject different bodies with the same ID,
+  deleted/modified history or malformed structure. Preserve each branch's addition
+  order and account for dependencies; do not globally sort history by timestamps.
+  Merge living sections normally and retain their genuine conflicts for review.
+- For the claim registry, merge claims and relationships by ID. Independent additions
+  and non-overlapping field changes can be combined; competing edits to the same
+  field or incompatible deletion/edit combinations require review. Related fields
+  may be semantically coupled even when their JSON paths differ.
+- Combine distinct attention events while preserving each history's order. Equal
+  timestamps do not make events identical, and event ordering affects the current
+  disposition. Flag incompatible ordering rather than inventing a latest decision.
+- Regenerate derived claim indexes, topic views and attention views from the merged
+  authoritative data. Do not independently union generated Markdown. Determine a
+  reliable regeneration checkpoint, since per-file drivers have no guaranteed order.
+- Run structural, append-only, evidence-hash and dependency checks after merging.
+  Never manufacture reviewed status or refresh evidence hashes just to make a merge
+  pass: source changes may require a new substantive review. Surface stale metadata
+  explicitly, even where the textual merge is clean.
+- Extra whitespace cannot reliably separate appends at a common insertion point.
+  Git's line-based `merge=union` can interleave repeated HTML/table markup; it is
+  unsuitable here. Prefer a custom driver that refuses unsupported changes.
+- Track path attributes and driver code, with an explicit per-clone setup step for
+  Git configuration. Verify actual merge/rebase behavior, missing-driver behavior,
+  duplicate IDs, conflicting edits and preservation of both sides' records before
+  enabling automatic resolution. Avoid depending on a private one-off merge script.
+
 ## Remaining implementation priorities
 
 1. Add bounded parallel exploration and targeted asynchronous formalization when
@@ -172,6 +245,8 @@ into the notebook.
 2. Build graph navigation on the reviewed claim data (item 8).
 3. Evaluate recovery evidence before deciding whether to trial interruption notes
    (remaining part of item 6).
+4. Add side research notebooks and structured integration support (items 9 and 10);
+   their relative implementation order remains to be decided.
 
 These priorities are proposals, not authorization to launch the work.
 
