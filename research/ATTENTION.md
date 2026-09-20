@@ -21,6 +21,11 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Quantitative publication headline strengthening the earlier superpolynomial conclusion via the same finite exclusion and clause-transfer mechanism, not independent confirmation of that mechanism.
   Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
   Next: External review of the common proof and quantitative publication statement remains outstanding.
+- **[cor:generic-PC-log-inventory-transfer-refuted](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-ordering-source-test>)** — No universal transfer from one-level affine ENS ordinary NS refutations to old PC has degree bounded by a fixed polynomial in D, h and log M, even with polynomial source inventory and complete coefficient domains.
+  Significance: negative_result; novelty: unknown.
+  Rules out a generic old-PC-hardness and logarithmic-inventory replacement for PHP-specific separation, strengthening the earlier PC-easy pebbling and exponential-inventory controls.
+  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Next: Compare with prior ENS and ordering-principle source constructions and obtain independent review of the balanced merge, inventory and original-degree ledger before any novelty or publication claim.
 - **[lem:low-factor-rank-exterior-kernel-criterion](<https://kbr.is-a.dev/math-research/#low-factor-rank-exterior-kernel-criterion>)** — For any field, rank-threshold preservation and injectivity on supports of all low-rank R-tuples force every vanishing cubic of K-factor rank <=R into ker(pi) wedge K.
   Significance: general_tool; novelty: unknown.
   Potentially reusable any-field lifting criterion; applications beyond this conflict ideal and novelty have not been audited.
@@ -68,6 +73,11 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Useful odd-field truncated-ideal classification. Related real permutation/matching degree-one classifications are established, but they do not directly identify this weak-PHP certificate criterion; exact novelty is unresolved.
   Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
   Next: If later proposed for publication, compare the odd-field degree-two weak-row ideal criterion explicitly against finite-characteristic degree-one classifications; pointwise permutation Booleanity is a different hypothesis.
+- **[thm:ordering-affine-source-refutation](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-ordering-source-test>)** — Graph ordering on n vertices has a complete one-level old-affine ENS source with at most n*ceil(log2 n) blocks and 2n(n-1) companions, and NS degree at most max((2ceil(log2 n)+4)h+2,2h+Delta).
+  Significance: general_tool; novelty: unknown.
+  Provides a complete polynomial-inventory, low-degree source over a published PC-hard base; resolves the source-conversion premise left by the preceding audit.
+  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Next: Compare with prior ENS and ordering-principle source constructions and obtain independent review of the balanced merge, inventory and original-degree ledger before any novelty or publication claim.
 - **[thm:prime-disequality-bit-PHP-size-bound](<https://kbr.is-a.dev/math-research/#prime-disequality-bit-PHP-size-bound>)** — The defined DAG-like affine-disequality calculus has no polynomial-size bit-PHP refutations for any fixed prime
   Significance: independent_result; novelty: unknown.
   Working all-prime size bound for the explicitly defined full-field affine-disequality calculus. Potential independent side result; targeted comparison distinguishes equation-clause Res(lin_Fp), Boolean semantic variants and tree-like unary-PHP literature. No novelty or stronger-system identification is certified.
