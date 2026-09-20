@@ -58,8 +58,6 @@ metadata convention; file role does not establish claim completion.
   human-readable alternative argument, with hypotheses and degree accounting,
   in the research-record entry introducing the formalization. A Lean source
   link or a description of the proof strategy alone is insufficient.
-  Use the notebook's MathJax notation for mathematical prose and displayed
-  equations; reserve code formatting for Lean identifiers and source references.
   Useful generalizations are welcome: choose broader domains, parameters, or
   reusable interfaces when they improve the mathematics or its formalization.
   The requested claim is a required application, not a ceiling on generality.

@@ -100,6 +100,8 @@ rules to growing checklists or one-off setup narratives.
   justify an entry. All substantial new mathematics belongs there **in full**;
   supporting notes/chat alone are insufficient. The record has no size limit.
   Routine setup/admin turns need no mathematical entry.
+- Use MathJax for inline mathematical notation as well as displayed equations;
+  reserve code formatting for program identifiers and source references.
 - Give each article a stable anchor, descriptive title/date and explicit status
   (working proof, conditional result, conjecture, finite check, refutation, etc.).
   Include assumptions, precise claim, complete argument, dependencies, parameter/
