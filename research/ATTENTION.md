@@ -8,6 +8,22 @@ workflow decisions, not theorem status or publication approval. See [the workflo
 
 ## Pending
 
+### Binary multiplicity cover question
+
+**Claim:** [audit:binary-multiplicity-cover-question](<https://kbr.is-a.dev/math-research/#binary-multiplicity-cover-question>)
+
+The degree bound printed in BBDM 2023 Question 4.3 follows from multiplicity Schwartz–Zippel for all positive n,k, without the stated k threshold.
+
+**Significance:** `context` · **Novelty:** `not_claimed`
+
+**Why it matters:** Potentially useful clarification of an explicitly printed question via an earlier standard theorem; not a new lower-bound mechanism or priority claim.
+
+**Decision (agent):** The inequality printed in the journal version of BBDM Question 4.3 follows directly from DKSS multiplicity Schwartz–Zippel, even without the k threshold. Confirm the version, intended scope and any prior clarification independently before considering author-facing communication. This is a consequence of existing literature, not a new lower-bound mechanism; no author has been contacted. See entry-2026-09-20-frontier-multiplicity-path.
+
+**Next:** Independently confirm the exact published statement and whether a stronger intended question or prior clarification exists before any author-facing communication.
+
+---
+
 ### Matching extension arbitrary row count
 
 **Claim:** [audit:matching-extension-arbitrary-row-count](<https://kbr.is-a.dev/math-research/#matching-extension-arbitrary-row-count>)
