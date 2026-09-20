@@ -8,17 +8,17 @@ Multi-topic membership overlaps; unclassified means missing topic metadata.
 
 | Topic | Claims | Description |
 |---|---:|---|
-| [affine-linear-algebra](topic-0ff8ac2da0b424f46550.md) | 206 | Subspace ranks, quotient geometry, duality and affine feasibility. |
+| [affine-linear-algebra](topic-0ff8ac2da0b424f46550.md) | 207 | Subspace ranks, quotient geometry, duality and affine feasibility. |
 | [algebraic-branching-programs](topic-94158f2cfe66973d7b3c.md) | 18 | Read-once oblivious algebraic branching programs, matrix representations and evaluation or coefficient cut-rank bounds. |
 | [bit-php](topic-a5f1aa48d43dc2be8a7c.md) | 97 | Bit encodings, their transfers and proof bounds. |
-| [degree-accounting](topic-adc04d3b2c9ff7fbea84.md) | 360 | Original polynomial degrees, budgets and degree discrepancies. |
-| [ens](topic-d694d81e0716ed3837f3.md) | 663 | Extension blocks, products, coefficients and source interfaces. |
+| [degree-accounting](topic-adc04d3b2c9ff7fbea84.md) | 361 | Original polynomial degrees, budgets and degree discrepancies. |
+| [ens](topic-d694d81e0716ed3837f3.md) | 664 | Extension blocks, products, coefficients and source interfaces. |
 | [finite-certificates](topic-e975320b9658014c06ba.md) | 124 | Exact finite traces, separating duals and computational controls. |
 | [frege-simulation](topic-5b718fa8118e12b7a19b.md) | 235 | Translation of proof syntax, source formulas and logical axiom schemas into algebra. |
-| [matching-php](topic-7efcbae331f7ce795cd4.md) | 288 | Partial matchings, matching weights and the unary PHP base. |
-| [method-obstructions](topic-d3ed32d2495e6fe98bec.md) | 153 | Counterexamples and limitations with the affected hypothesis or method identified. |
-| [moment-designs](topic-041e7e6a8b6deac21c80.md) | 80 | Truncated moments, annihilating functionals, covariance and design extension. |
-| [nullstellensatz](topic-0e00caa1421aa7b6562b.md) | 111 | Ordinary polynomial ideal certificates, cofactors and certificate degree. |
+| [matching-php](topic-7efcbae331f7ce795cd4.md) | 290 | Partial matchings, matching weights and the unary PHP base. |
+| [method-obstructions](topic-d3ed32d2495e6fe98bec.md) | 155 | Counterexamples and limitations with the affected hypothesis or method identified. |
+| [moment-designs](topic-041e7e6a8b6deac21c80.md) | 81 | Truncated moments, annihilating functionals, covariance and design extension. |
+| [nullstellensatz](topic-0e00caa1421aa7b6562b.md) | 112 | Ordinary polynomial ideal certificates, cofactors and certificate degree. |
 | [polynomial-calculus](topic-6afefd068eb1cf50e655.md) | 348 | PC derivations, closure spaces, proof transformations and final-line reuse. |
 | [pseudorandomness](topic-51be920b90e25b6f100f.md) | 5 | Small-bias generators, polynomial sampling and character bounds. |
 | [publication](topic-3f662004cb4676be8aa8.md) | 8 | Statements prepared for independent dissemination and review. |
