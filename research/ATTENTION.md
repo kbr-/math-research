@@ -400,6 +400,22 @@ Depth-four query formulas of size O(n^2 log^3 n) defeat the sufficient ENS proba
 
 ---
 
+### Finite field high origin cover
+
+**Claim:** [thm:finite-field-high-origin-cover](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#finite-field-high-origin-cover>)
+
+For every prime power q, n>=1 and k>=2, punctured k-fold vanishing with origin order k-1 forces degree >=n(q-1)+q(k-1), and origin order k-2 forces >=n(q-1)+q(k-1)-1; affine covering products attain both.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Settles both high-origin cases of the general covering target and isolates the factor-sensitive residual problem.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Use the exact scope in the next route assessment; independent review and prior-art clarification remain separate.
+
+---
+
 ### Fixed expander affine source endpoint
 
 **Claim:** [thm:fixed-expander-affine-source-endpoint](<https://kbr.is-a.dev/math-research/#fixed-expander-affine-source-endpoint>)
