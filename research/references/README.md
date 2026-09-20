@@ -62,3 +62,9 @@ typesetting. The [targeted audit](../results/spin_20260920_supplied_sources_audi
 records exact reading coverage, source-version limitations, and the distinction
 between two-sided matching trees and functional-PHP image certificates. All three
 PDFs and their private extractions/renders are excluded from public history.
+
+Haramaty–Shpilka, *On the Structure of Cubic and Quartic Polynomials*,
+[arXiv:0908.2853v4](https://arxiv.org/pdf/0908.2853v4), was inspected for
+Definition 4.1 and Lemma 5.1. Its PDF and extraction are local-only in
+`private/references/`; the [source record](../results/spin_20260920_nonlinear_induction_review/source-audit.json)
+preserves exact version markings, reading coverage and limitations.
