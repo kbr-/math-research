@@ -39,6 +39,11 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Residual-design argument preserves the exact ENS Booleanity-degree example over sufficiently large full weak PHP. It is a scoped strengthening of the preceding accounting tool, not a new general PC/NS separation.
   Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
   Next: If disseminated separately, compare target-degree lower bounds under independent residual designs and retain the sufficient board bound and original companion degree; do not promote the longstanding separation phenomenon as new.
+- **[thm:compact-PHP-quotient-cut-rank](<https://kbr.is-a.dev/math-research/#compact-PHP-quotient-cut-rank>)** — Under the explicit QC-room inequalities, every compact-bit variable cut admits a rank-nonincreasing linear projection fixing selected code-bit polynomials and killing degree-B NS consequences of prime-field PHP plus the stated literal guards.
+  Significance: general_tool; novelty: unknown.
+  Potentially reusable bounded-degree quotient-rank tool: PHP corrections cannot erase the selected bit cut rank under explicit room conditions. Novelty and applications beyond the local source fixture are unassessed.
+  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Next: Audit prior work on bounded-degree quotient rank and identify uses beyond the already foldable OR fixture before any novelty/publication claim.
 - **[thm:depth-four-ENS-query-obstruction](<https://kbr-.github.io/math-research/#shallow-ENS-query-obstruction>)** — Depth-four query formulas of size O(n^2 log^3 n) defeat the sufficient ENS probability rate at the stated degree and height, including the refined generic source budgets
   Significance: independent_result; novelty: unknown.
   Candidate refinement of the same method barrier: polynomial-size arithmetic-depth-four queries already defeat its sufficient rate. Treat jointly with the universal obstruction, with classical pseudorandomness attribution; no exact prior query-rate match found in the bounded audit, and novelty remains unknown.
