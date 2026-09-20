@@ -13,11 +13,12 @@ static bool bit(const Bits& x,int p){return (x[p/64]>>(p%64))&1;}
 static void flip(Bits& x,int p){x[p/64]^=uint64_t(1)<<(p%64);}
 static void add(Bits& x,const Bits& y){for(size_t j=0;j<x.size();++j)x[j]^=y[j];}
 struct Basis {
-  int size,words,rank=0;std::vector<Bits> rows;
+  int size,words,rank=0,last_pivot=-1;std::vector<Bits> rows;
   explicit Basis(int n):size(n),words((n+63)/64),rows(n){}
   bool insert(Bits x,int floor=0){
+    last_pivot=-1;
     for(int p=size-1;p>=floor;--p)if(bit(x,p)){
-      if(rows[p].empty()){rows[p]=std::move(x);++rank;return true;}
+      if(rows[p].empty()){rows[p]=std::move(x);++rank;last_pivot=p;return true;}
       add(x,rows[p]);
     }return false;
   }
@@ -35,11 +36,12 @@ static void numbers(std::ostream& out,const std::vector<uint64_t>& xs){
   out<<'[';for(size_t i=0;i<xs.size();++i){if(i)out<<',';out<<xs[i];}out<<']';
 }
 int main(int argc,char** argv){try{
-  int N=6,M=6;uint64_t seed=1;std::string dest;
+  int N=6,M=6,pc_rhs=-1;uint64_t seed=1;std::string dest;
   for(int i=1;i+1<argc;i+=2){std::string a=argv[i];
     if(a=="--holes")N=std::stoi(argv[i+1]);
     else if(a=="--constraints")M=std::stoi(argv[i+1]);
     else if(a=="--seed")seed=std::stoull(argv[i+1]);
+    else if(a=="--pc-rhs")pc_rhs=std::stoi(argv[i+1]);
     else if(a=="--out")dest=argv[i+1];
     else throw std::runtime_error("unknown option");
   }
@@ -47,6 +49,7 @@ int main(int argc,char** argv){try{
   require(N>=5&&N<=6&&M>=0&&M<=6,"bounded checker requires holes 5..6 and constraints 0..6");
   require(!std::ifstream(dest).good(),"output exists");
   int rows=N+1,t=N-1,v=rows*t,d=v-M,count=1<<M;
+  require(pc_rhs>=-1&&pc_rhs<count,"pc-rhs outside the constant-vector range");
   int low=1+d+d*(d-1)/2,lowwords=(low+63)/64,cubes=c3(d),topwords=(cubes+63)/64;
   int quadratic_start=d+1;
   std::vector<int> pair_index(d*d,-1),triple_index(d*d*d,-1);
@@ -127,6 +130,32 @@ int main(int argc,char** argv){try{
     for(int j=M-1;j>=0;--j)if((a>>j)&1){if(eq_basis[j]){a^=eq_basis[j];b^=eq_rhs[j];}else{eq_basis[j]=a;eq_rhs[j]=b;++variation_rank;a=0;b=0;break;}}
     if(a==0&&b)inconsistent=true;
   }
+  int pc_initial=0,pc_final=0,pc_products=0;bool pc_one=false;
+  if(pc_rhs>=0){
+    Basis closure(low+cubes);
+    auto embed_low=[&](const Bits& a){Bits z(closure.words);for(int p=0;p<low;++p)if(bit(a,p))flip(z,p);return z;};
+    for(const auto& a:q[pc_rhs])closure.insert(embed_low(a));
+    for(const auto& a:leading_basis)if(!a.top.empty()){
+      Bits z(closure.words);for(int p=0;p<cubes;++p)if(bit(a.top,p))flip(z,low+p);
+      for(int p=0;p<low;++p)if((a.lower[pc_rhs*lowwords+p/64]>>(p%64))&1)flip(z,p);
+      closure.insert(std::move(z));
+    }
+    for(const auto& a:falls[pc_rhs].rows)if(!a.empty())closure.insert(embed_low(a));
+    pc_initial=closure.rank;require(pc_initial==leading_rank+k2+falls[pc_rhs].rank,"NS reconstruction rank mismatch");
+    std::vector<int> queue;for(int p=0;p<low;++p)if(!closure.rows[p].empty())queue.push_back(p);
+    for(size_t at=0;at<queue.size();++at){Bits source=closure.rows[queue[at]];
+      for(int x=0;x<d;++x){Bits z(closure.words);
+        if(bit(source,0))flip(z,1+x);
+        for(int j=0;j<d;++j)if(bit(source,1+j))flip(z,j==x?1+x:pair_index[x*d+j]);
+        for(int j=0;j<int(pairs.size());++j)if(bit(source,quadratic_start+j)){
+          auto [a,b]=pairs[j];if(x==a||x==b)flip(z,quadratic_start+j);
+          else{int c=x;if(b>c)std::swap(b,c);if(a>b)std::swap(a,b);flip(z,low+triple_index[(a*d+b)*d+c]);}
+        }
+        ++pc_products;if(closure.insert(std::move(z))&&closure.last_pivot<low)queue.push_back(closure.last_pivot);
+      }
+    }
+    pc_final=closure.rank;pc_one=!closure.rows[0].empty();
+  }
   int quadratic_zero=0,no_fall=0;std::ofstream out(dest);require(bool(out),"cannot open output");
   out<<"{\n\"scope\":\"Exact fixed-space PHP residue test; one common cubic elimination, all right-hand sides; no formal certificate\",\n\"holes\":"<<N<<",\"constraints\":"<<M<<",\"seed\":"<<seed<<",\"v\":"<<v<<",\"d\":"<<d<<",\n\"linear_parts\":";numbers(out,original);
   out<<",\n\"old_coordinate_images\":[";for(int j=0;j<v;++j){if(j)out<<',';out<<"{\"free_mask\":"<<image[j].free<<",\"rhs_mask\":"<<image[j].parameter<<'}';}out<<"],\n";
@@ -139,6 +168,9 @@ int main(int argc,char** argv){try{
   }
   int predicted=inconsistent?0:(1<<(M-variation_rank));require(predicted==quadratic_zero,"affine count mismatch");
   if(M==0){require(no_fall==1,"old-base stability control failed");require(leading_rank==c3(v)-c3(rows)*(N*N*N-6*N*N+8*N-1),"old cubic dimension control failed");}
-  out<<"\n],\n\"quadratic_zero_count\":"<<quadratic_zero<<",\"no_fall_count\":"<<no_fall<<",\"variation_checks\":"<<variation_checks<<",\"estimated_primary_bytes\":"<<memory_estimate<<",\"passed\":true\n}\n";out.close();require(bool(out),"output write failure");
+  out<<"\n],\n\"quadratic_zero_count\":"<<quadratic_zero<<",\"no_fall_count\":"<<no_fall<<",\"variation_checks\":"<<variation_checks<<",\"estimated_primary_bytes\":"<<memory_estimate;
+  if(pc_rhs>=0)out<<",\n\"pc_closure\":{\"rhs\":"<<pc_rhs<<",\"initial_NS_rank\":"<<pc_initial<<",\"final_rank\":"<<pc_final<<",\"ambient\":"<<low+cubes<<",\"products_checked\":"<<pc_products<<",\"complete\":true,\"one_in_PC\":"<<(pc_one?"true":"false")<<'}';
+  out<<",\"passed\":true\n}\n";out.close();require(bool(out),"output write failure");
   std::cout<<"{\"holes\":"<<N<<",\"constraints\":"<<M<<",\"quadratic_rank\":"<<k2<<",\"variation_rank\":"<<variation_rank<<",\"quadratic_zero_count\":"<<quadratic_zero<<",\"no_fall_count\":"<<no_fall<<",\"rhs_count\":"<<count<<",\"passed\":true}\n";
+  if(pc_rhs>=0)std::cout<<"{\"pc_rhs\":"<<pc_rhs<<",\"initial_rank\":"<<pc_initial<<",\"final_rank\":"<<pc_final<<",\"ambient\":"<<low+cubes<<",\"one_in_PC\":"<<(pc_one?"true":"false")<<"}\n";
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
