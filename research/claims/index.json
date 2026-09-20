@@ -91207,10 +91207,10 @@
     },
     {
       "id": "obs:full-class-holes-are-labels",
-      "summary": "For single-row full-class readers every heavy query's hole is a label of the reader inside the flat, so heavy queries number at most the size of the label set's intersection with the flat; readers with at most n^(2/3) labels have fewer than 2^(c+3) heavy queries except with probability n^(-c-1), with no hypothesis on rows or loading",
-      "assessment": "Working observation and corollary (affine rank); contains Case B of the distinct-rows theorem and the bounded-loading theorem for such label sets; holds on the hole-only tree, whose trigger holes are distinct; false for the adaptive tree when c >= 2 ([correction 2026-09-18](https://kbr.is-a.dev/math-research/#adaptive-rule-gap)); on the both-endpoints tree the count bounds heavy rounds, with twice as many queries ([transfer](https://kbr.is-a.dev/math-research/#both-endpoints-rule)); corrected 2026-09-18: for label sets of size n^(2/3) the corollary gives fewer than 2^(3c+4) heavy rounds, not 2^(c+3) ([rank-step correction](https://kbr.is-a.dev/math-research/#rank-step-correction)) Probabilistic small-label corollary now conditional: its union exponent does not give the asserted failure bound. Deterministic label inclusion and distinct-round count under both-endpoints remain valid.",
+      "summary": "For full-class readers trigger holes lie in the reader label set inside Q; on the both-endpoints tree they are distinct rounds. For at most n^(2/3) labels, the corrected threshold is 2^(3c+4) rounds with failure at most n^(-c-1) in the stated asymptotic regime.",
+      "assessment": "Working corrected reading under the historical rank-step correction: larger threshold 2^(3c+4), with round counting on the both-endpoints tree and at most twice as many heavy queries. The old adaptive-tree and smaller-threshold statements are not reinstated. [Correction](https://kbr.is-a.dev/math-research/#rank-step-correction)",
       "record": "[Observation and residual case](https://kbr.is-a.dev/math-research/#label-set-observation)",
-      "mathematical_status": "conditional",
+      "mathematical_status": "working_proof",
       "formalization": {
         "status": "no_record",
         "scope": "No explicit per-claim Lean mapping in the index links or the audited claims/ and third-party-claims/ source inventory. This is not a claim that no formal proof or implicit special-case coverage exists elsewhere.",
@@ -91226,7 +91226,7 @@
       ],
       "significance": {
         "category": "route_specific",
-        "rationale": "Probabilistic small-label corollary now conditional: its union exponent does not give the asserted failure bound. Deterministic label inclusion and distinct-round count under both-endpoints remain valid.",
+        "rationale": "Valid corrected label-set estimate retained; the recent duplicate audit does not downgrade its larger-threshold form.",
         "novelty": "not_claimed",
         "publication_status": "not_applicable",
         "references": [
@@ -91240,12 +91240,12 @@
       "reviews": {
         "formalization": {
           "state": "reviewed",
-          "revision": "77c1f3391b896caf455f2334a1dc5b1d654c58c7",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
           "date": "2026-09-20",
           "reviewer": "Codex GPT-6 Astra",
-          "note": "Probabilistic small-label corollary now conditional: its union exponent does not give the asserted failure bound. Deterministic label inclusion and distinct-round count under both-endpoints remain valid. Existing topic/formalization scope retained; no new Lean proof.",
+          "note": "Working corrected reading under the historical rank-step correction: larger threshold 2^(3c+4), with round counting on the both-endpoints tree and at most twice as many heavy queries. The old adaptive-tree and smaller-threshold statements are not reinstated. [Correction](https://kbr.is-a.dev/math-research/#rank-step-correction) Existing formalization and topic scope retained; no new Lean verification.",
           "next_action": null,
-          "claim_sha256": "2b0556a8b860c1bca426be60f1c20bda4b70b575ee1ba8e9951cfa0148e6796e",
+          "claim_sha256": "08496532ce3098f1c31d0cbd53c9f35d9e43593fe73506cd7acdebd708e35ff1",
           "value_sha256": "1b9454da15d78347632cd055e7148c9b5a84df84f92aa0d342e375dda57ae91c",
           "evidence": [
             {
@@ -91256,19 +91256,28 @@
               "target": "https://kbr.is-a.dev/math-research/#full-class-round-repair-scope",
               "sha256": "b3039c22c4e6aeb59dab415b1794e17b1f4a227c1fa34498cc1e82d7e79a3f5a",
               "normalization": "notebook-fragment-v1"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#rank-step-correction",
+              "sha256": "e03b7fbfc678c6cb4fbdd9b599c5e451adc5a62e538a6b968894b57ad330e557"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ],
           "inventory_sha256": "9abc8625917ccfcd46923cdc44359d1b8b6dc3d1def9ef22674cfd19736efce6"
         },
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "77c1f3391b896caf455f2334a1dc5b1d654c58c7",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
           "date": "2026-09-20",
           "reviewer": "Codex GPT-6 Astra",
-          "note": "Probabilistic small-label corollary now conditional: its union exponent does not give the asserted failure bound. Deterministic label inclusion and distinct-round count under both-endpoints remain valid. Existing topic/formalization scope retained; no new Lean proof.",
+          "note": "Working corrected reading under the historical rank-step correction: larger threshold 2^(3c+4), with round counting on the both-endpoints tree and at most twice as many heavy queries. The old adaptive-tree and smaller-threshold statements are not reinstated. [Correction](https://kbr.is-a.dev/math-research/#rank-step-correction) Existing formalization and topic scope retained; no new Lean verification.",
           "next_action": null,
-          "claim_sha256": "2b0556a8b860c1bca426be60f1c20bda4b70b575ee1ba8e9951cfa0148e6796e",
-          "value_sha256": "c1e2aa5c07548e5df4c6ae909941b717e3bc08e407168cba2d01c9d2f9dde7a6",
+          "claim_sha256": "08496532ce3098f1c31d0cbd53c9f35d9e43593fe73506cd7acdebd708e35ff1",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/#adaptive-rule-gap",
@@ -91294,17 +91303,22 @@
               "target": "https://kbr.is-a.dev/math-research/#full-class-round-repair-scope",
               "sha256": "b3039c22c4e6aeb59dab415b1794e17b1f4a227c1fa34498cc1e82d7e79a3f5a",
               "normalization": "notebook-fragment-v1"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ]
         },
         "topics": {
           "state": "reviewed",
-          "revision": "77c1f3391b896caf455f2334a1dc5b1d654c58c7",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
           "date": "2026-09-20",
           "reviewer": "Codex GPT-6 Astra",
-          "note": "Probabilistic small-label corollary now conditional: its union exponent does not give the asserted failure bound. Deterministic label inclusion and distinct-round count under both-endpoints remain valid. Existing topic/formalization scope retained; no new Lean proof.",
+          "note": "Working corrected reading under the historical rank-step correction: larger threshold 2^(3c+4), with round counting on the both-endpoints tree and at most twice as many heavy queries. The old adaptive-tree and smaller-threshold statements are not reinstated. [Correction](https://kbr.is-a.dev/math-research/#rank-step-correction) Existing formalization and topic scope retained; no new Lean verification.",
           "next_action": null,
-          "claim_sha256": "2b0556a8b860c1bca426be60f1c20bda4b70b575ee1ba8e9951cfa0148e6796e",
+          "claim_sha256": "08496532ce3098f1c31d0cbd53c9f35d9e43593fe73506cd7acdebd708e35ff1",
           "value_sha256": "4d9765ac58ea27bed2a1ebf44092c0a9d044a0bb3ec02d35655851fc605f918a",
           "evidence": [
             {
@@ -91327,18 +91341,23 @@
               "target": "https://kbr.is-a.dev/math-research/#full-class-round-repair-scope",
               "sha256": "b3039c22c4e6aeb59dab415b1794e17b1f4a227c1fa34498cc1e82d7e79a3f5a",
               "normalization": "notebook-fragment-v1"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ]
         },
         "significance": {
           "state": "reviewed",
-          "revision": "77c1f3391b896caf455f2334a1dc5b1d654c58c7",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
           "date": "2026-09-20",
           "reviewer": "Codex GPT-6 Astra",
-          "note": "Probabilistic small-label corollary now conditional: its union exponent does not give the asserted failure bound. Deterministic label inclusion and distinct-round count under both-endpoints remain valid. Existing topic/formalization scope retained; no new Lean proof.",
+          "note": "Working corrected reading under the historical rank-step correction: larger threshold 2^(3c+4), with round counting on the both-endpoints tree and at most twice as many heavy queries. The old adaptive-tree and smaller-threshold statements are not reinstated. [Correction](https://kbr.is-a.dev/math-research/#rank-step-correction) Existing formalization and topic scope retained; no new Lean verification.",
           "next_action": null,
-          "claim_sha256": "2b0556a8b860c1bca426be60f1c20bda4b70b575ee1ba8e9951cfa0148e6796e",
-          "value_sha256": "463eb366ffd3b99e6a8849f78af3fbc944e780346f7f869264506c6879d1efcc",
+          "claim_sha256": "08496532ce3098f1c31d0cbd53c9f35d9e43593fe73506cd7acdebd708e35ff1",
+          "value_sha256": "a4583cc771499c6476749e201a8a0d1ed615ec932fff4febdd7d2f0e368ea562",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/#adaptive-rule-gap",
@@ -91360,18 +91379,23 @@
               "target": "https://kbr.is-a.dev/math-research/#full-class-round-repair-scope",
               "sha256": "b3039c22c4e6aeb59dab415b1794e17b1f4a227c1fa34498cc1e82d7e79a3f5a",
               "normalization": "notebook-fragment-v1"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ]
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "77c1f3391b896caf455f2334a1dc5b1d654c58c7",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
           "date": "2026-09-20",
           "reviewer": "Codex GPT-6 Astra",
-          "note": "Probabilistic small-label corollary now conditional: its union exponent does not give the asserted failure bound. Deterministic label inclusion and distinct-round count under both-endpoints remain valid. Existing topic/formalization scope retained; no new Lean proof.",
+          "note": "Working corrected reading under the historical rank-step correction: larger threshold 2^(3c+4), with round counting on the both-endpoints tree and at most twice as many heavy queries. The old adaptive-tree and smaller-threshold statements are not reinstated. [Correction](https://kbr.is-a.dev/math-research/#rank-step-correction) Existing formalization and topic scope retained; no new Lean verification.",
           "next_action": null,
-          "claim_sha256": "2b0556a8b860c1bca426be60f1c20bda4b70b575ee1ba8e9951cfa0148e6796e",
-          "value_sha256": "5a19fd8f815d21858082d427a3683b3ee298a3ab7f5a2f419f93fd2a8ae3d131",
+          "claim_sha256": "08496532ce3098f1c31d0cbd53c9f35d9e43593fe73506cd7acdebd708e35ff1",
+          "value_sha256": "b4e0c8be3e2ead342ac20c2a9b80a90dc533bba474040b2e7c458ae9b7c24c6a",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/#adaptive-rule-gap",
@@ -91393,6 +91417,11 @@
               "target": "https://kbr.is-a.dev/math-research/#full-class-round-repair-scope",
               "sha256": "b3039c22c4e6aeb59dab415b1794e17b1f4a227c1fa34498cc1e82d7e79a3f5a",
               "normalization": "notebook-fragment-v1"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ]
         }
@@ -94012,17 +94041,22 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "dc1d95b4cb6a463436256b830afd69029c1dc3ed",
-          "date": "2026-09-19",
-          "reviewer": "Codex parallel dependency integration (dry run)",
-          "note": "Elementary rank exponent correction retains narrower theorems with larger constants; unaffected theorems in the same paragraph are not correction targets. Integrated only after pinned core/source validation.",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "Reviewed the new scoped use or rediscovery link; the existing mathematical statement and qualifications are unchanged.",
           "next_action": null,
           "claim_sha256": "a9717b4ed06ac8e96fb0cd604fbb4053793a995cfee7ea3155b0fe8c22a57980",
-          "value_sha256": "df8513d089b68484c28c6a29cdc4c756248e5efa8c1dd4ac0e113e4066124128",
+          "value_sha256": "a9717a56ef3c8b3b298acb0bc6428663abe8fe9db889db88c59e8b3a259a8cf4",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/#rank-step-correction",
               "sha256": "e03b7fbfc678c6cb4fbdd9b599c5e451adc5a62e538a6b968894b57ad330e557"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ]
         }
@@ -104745,17 +104779,22 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "4747534a8c0b68d3eeb7d4e8f199c9d355febd1f",
-          "date": "2026-09-19",
-          "reviewer": "Codex parallel dependency integration (dry run)",
-          "note": "Exterior-space sufficient criterion and Cartan coefficient argument given locally; not necessary in every small instance. Integrated only after pinned core/source validation.",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "Reviewed the new scoped use or rediscovery link; the existing mathematical statement and qualifications are unchanged.",
           "next_action": null,
           "claim_sha256": "89842403af265d12acda641c5cce3ff32da2f98d3fbfb4abb334670871af79d9",
-          "value_sha256": "93bf949d43d998218bd7f6b53de8487d5b208441bf5e4a8cae4ec80b410e2c43",
+          "value_sha256": "1fe16d5fe0d7857f6a0bd0d5be28b8aaf46207123cecc357ff484679285f1ac7",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/#parity-two-criterion",
               "sha256": "e0a68735255873bf92be9ec595ba6a9ad37354b5f95ee44cc277532a80d75f94"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ]
         }
@@ -104858,17 +104897,22 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "4747534a8c0b68d3eeb7d4e8f199c9d355febd1f",
-          "date": "2026-09-19",
-          "reviewer": "Codex parallel dependency integration (dry run)",
-          "note": "R1 uses standard symplectic Lagrangian count; R2 sequential exposure and R3 principal-submatrix reconstruction proved locally. External standard count recorded separately, no new literature audit. Integrated only after pinned core/source validation.",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "Reviewed the new scoped use or rediscovery link; the existing mathematical statement and qualifications are unchanged.",
           "next_action": null,
           "claim_sha256": "b0e8934b19f0dafed1a387ea3901db18cb5fa904991013138eca7e1ca031c086",
-          "value_sha256": "9fced45b786ce5f6ebd88ac0006109a4e83ba272810618b19daffe6a177f76bb",
+          "value_sha256": "26c3cdbf9ec6bbfbbfb88bbce6d1d9469092c9324bb4fd93b0cf739ffe88f1a1",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/#parity-two-lemmas",
               "sha256": "174fc9f02dcb3f227f52c655360c4e46c7476096af031a35a6491e8808dcd47d"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ]
         }
@@ -105311,17 +105355,22 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "4747534a8c0b68d3eeb7d4e8f199c9d355febd1f",
-          "date": "2026-09-19",
-          "reviewer": "Codex parallel dependency integration (dry run)",
-          "note": "Higher-degree relative-rank characterization is proposed, not proved; decomposable trivial-vanishing issue identified explicitly and HW parked. Integrated only after pinned core/source validation.",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "Reviewed the new scoped use or rediscovery link; the existing mathematical statement and qualifications are unchanged.",
           "next_action": null,
           "claim_sha256": "7be531e76d2a362696923915e6e28fe9191e6eb8459838c1899727a6c4342caf",
-          "value_sha256": "915859d16d1c9588d9849a86fe6150f373f5de5eaf4d62dfd48120cabd015063",
+          "value_sha256": "6c876db4e87c12d3beb83a7fc467f56a51c743f306242f47d88bdaefbe1e6d6f",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/#parity-two-obstruction",
               "sha256": "1abc3e418533e6f234dc1f4f43746d9da59fc54b97d17f2199597bd5d217413c"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ]
         }
@@ -110459,7 +110508,7 @@
     {
       "id": "audit:small-label-rank-union-budget",
       "summary": "The old |X|<=n^(2/3) independent-point union bound yields N^(c+4)n^(-(c+4)/3), not the asserted n^(-c-1) for c>1/2.",
-      "assessment": "Proof-budget gap in the stated corollary, not a counterexample to its final probability conclusion; deterministic trigger-label observation retained.",
+      "assessment": "Rediscovery of the existing rank-step correction. The arithmetic gap concerns the original smaller threshold; the corrected larger-threshold corollary remains available.",
       "record": "[Statement and proof](https://kbr.is-a.dev/math-research/#small-label-rank-union-budget)",
       "mathematical_status": "working_proof",
       "formalization": {
@@ -110476,8 +110525,8 @@
         "method-obstructions"
       ],
       "significance": {
-        "category": "negative_result",
-        "rationale": "Proof-budget gap in the stated corollary, not a counterexample to its final probability conclusion; deterministic trigger-label observation retained. This is a scoped repair of recorded research, with no novelty or publication claim.",
+        "category": "context",
+        "rationale": "Duplicate audit retained for provenance and linked to its earlier correction; no newly unresolved mathematical issue.",
         "novelty": "not_claimed",
         "publication_status": "not_applicable",
         "references": [
@@ -110488,81 +110537,126 @@
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "77c1f3391b896caf455f2334a1dc5b1d654c58c7",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
           "date": "2026-09-20",
           "reviewer": "Codex GPT-6 Astra",
-          "note": "Proof-budget gap in the stated corollary, not a counterexample to its final probability conclusion; deterministic trigger-label observation retained.",
+          "note": "Rediscovery of the existing rank-step correction. The arithmetic gap concerns the original smaller threshold; the corrected larger-threshold corollary remains available. Existing formalization and topic scope retained; no new Lean verification.",
           "next_action": null,
-          "claim_sha256": "4cebfeb187b40e3b1b2778e60c3b5034c27e2e01e9c131099bde1d40405bf569",
+          "claim_sha256": "da97f0a8222e05925f39861c2c9af017229a1fa7a375b38f02d41c050ebd1b56",
           "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/#small-label-rank-union-budget",
               "sha256": "92770eac1d7e600da044a879e4203c0cb50ecc0ba34c9957f29edb99bf585610"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#rank-step-correction",
+              "sha256": "e03b7fbfc678c6cb4fbdd9b599c5e451adc5a62e538a6b968894b57ad330e557"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ]
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "77c1f3391b896caf455f2334a1dc5b1d654c58c7",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
           "date": "2026-09-20",
           "reviewer": "Codex GPT-6 Astra",
-          "note": "No Lean work or verification claimed.",
+          "note": "Rediscovery of the existing rank-step correction. The arithmetic gap concerns the original smaller threshold; the corrected larger-threshold corollary remains available. Existing formalization and topic scope retained; no new Lean verification.",
           "next_action": null,
-          "claim_sha256": "4cebfeb187b40e3b1b2778e60c3b5034c27e2e01e9c131099bde1d40405bf569",
+          "claim_sha256": "da97f0a8222e05925f39861c2c9af017229a1fa7a375b38f02d41c050ebd1b56",
           "value_sha256": "ac2bc3c8241721743c2288ba0499f460faf10f68f31b2048755874ef0a928cd6",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/#small-label-rank-union-budget",
               "sha256": "92770eac1d7e600da044a879e4203c0cb50ecc0ba34c9957f29edb99bf585610"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#rank-step-correction",
+              "sha256": "e03b7fbfc678c6cb4fbdd9b599c5e451adc5a62e538a6b968894b57ad330e557"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ]
         },
         "topics": {
           "state": "reviewed",
-          "revision": "77c1f3391b896caf455f2334a1dc5b1d654c58c7",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
           "date": "2026-09-20",
           "reviewer": "Codex GPT-6 Astra",
-          "note": "Matching restrictions, query-tree round bounds and their proof qualifications.",
+          "note": "Rediscovery of the existing rank-step correction. The arithmetic gap concerns the original smaller threshold; the corrected larger-threshold corollary remains available. Existing formalization and topic scope retained; no new Lean verification.",
           "next_action": null,
-          "claim_sha256": "4cebfeb187b40e3b1b2778e60c3b5034c27e2e01e9c131099bde1d40405bf569",
+          "claim_sha256": "da97f0a8222e05925f39861c2c9af017229a1fa7a375b38f02d41c050ebd1b56",
           "value_sha256": "dae491975b22d4a0ed3cdaa7d9aed49816cfb395f3f37304cac08fc87ffb5448",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/#small-label-rank-union-budget",
               "sha256": "92770eac1d7e600da044a879e4203c0cb50ecc0ba34c9957f29edb99bf585610"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#rank-step-correction",
+              "sha256": "e03b7fbfc678c6cb4fbdd9b599c5e451adc5a62e538a6b968894b57ad330e557"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ]
         },
         "significance": {
           "state": "reviewed",
-          "revision": "77c1f3391b896caf455f2334a1dc5b1d654c58c7",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
           "date": "2026-09-20",
           "reviewer": "Codex GPT-6 Astra",
-          "note": "Proof-budget gap in the stated corollary, not a counterexample to its final probability conclusion; deterministic trigger-label observation retained. This is a scoped repair of recorded research, with no novelty or publication claim.",
+          "note": "Rediscovery of the existing rank-step correction. The arithmetic gap concerns the original smaller threshold; the corrected larger-threshold corollary remains available. Existing formalization and topic scope retained; no new Lean verification.",
           "next_action": null,
-          "claim_sha256": "4cebfeb187b40e3b1b2778e60c3b5034c27e2e01e9c131099bde1d40405bf569",
-          "value_sha256": "ffabcad28466244ffe52dc7716e48bc1f09dba1a8747cd264045642754339569",
+          "claim_sha256": "da97f0a8222e05925f39861c2c9af017229a1fa7a375b38f02d41c050ebd1b56",
+          "value_sha256": "48d2a6b1299613d8b2b9688b8f7315c5a797ded62d137388d07b7170318e628e",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/#small-label-rank-union-budget",
               "sha256": "92770eac1d7e600da044a879e4203c0cb50ecc0ba34c9957f29edb99bf585610"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#rank-step-correction",
+              "sha256": "e03b7fbfc678c6cb4fbdd9b599c5e451adc5a62e538a6b968894b57ad330e557"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ]
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "77c1f3391b896caf455f2334a1dc5b1d654c58c7",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
           "date": "2026-09-20",
           "reviewer": "Codex GPT-6 Astra",
-          "note": "Reviewed exact source clauses and the full corrected proof; dependencies and corrections distinguish round bounds from decoder conclusions.",
+          "note": "Rediscovery of the existing rank-step correction. The arithmetic gap concerns the original smaller threshold; the corrected larger-threshold corollary remains available. Existing formalization and topic scope retained; no new Lean verification.",
           "next_action": null,
-          "claim_sha256": "4cebfeb187b40e3b1b2778e60c3b5034c27e2e01e9c131099bde1d40405bf569",
-          "value_sha256": "25d3068bc938b2713a0a6209f65616b7ac3c4a0f1ee174f46f598d45445ccbb0",
+          "claim_sha256": "da97f0a8222e05925f39861c2c9af017229a1fa7a375b38f02d41c050ebd1b56",
+          "value_sha256": "693f8278456cbd868c68de83a0cbf04e3d07a64a09984c13eb7816c1153dc441",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/#small-label-rank-union-budget",
               "sha256": "92770eac1d7e600da044a879e4203c0cb50ecc0ba34c9957f29edb99bf585610"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#rank-step-correction",
+              "sha256": "e03b7fbfc678c6cb4fbdd9b599c5e451adc5a62e538a6b968894b57ad330e557"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank",
+              "sha256": "9d3702e538ac728ba8b63ca1545da70d29e92d751b9332ed9f99096a1fc14ce0",
+              "normalization": "notebook-article-v1"
             }
           ]
         }
@@ -110675,6 +110769,230 @@
             {
               "target": "https://kbr.is-a.dev/math-research/#full-single-row-rounds-with-slack",
               "sha256": "0e4d0566f1d529284709e4b9d9b180db9bed4f517a3ca1361b5df2c0bee19c06"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lem:conflict-two-form-small-rank-collapse",
+      "summary": "For uniform d-subspace U under the explicit rank-count conditions, with probability >=1-8*2^(-s), nonzero conflict two-forms remain nonzero and original rank >=4 stays >=4.",
+      "assessment": "Working proof using isotropic hyperplanes and the recorded R1-R3 estimates; d is at the same leading sqrt(2)*N^(3/2) scale with positive lower-order slack.",
+      "record": "[Statement and proof](https://kbr.is-a.dev/math-research/#conflict-two-form-small-rank-collapse)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "not_started",
+        "scope": "No Lean formalization attempted in this cycle.",
+        "references": [
+          "https://kbr.is-a.dev/math-research/#conflict-two-form-small-rank-collapse"
+        ],
+        "artifacts": []
+      },
+      "topics": [
+        "affine-linear-algebra",
+        "matching-php",
+        "polynomial-calculus"
+      ],
+      "significance": {
+        "category": "route_specific",
+        "rationale": "Tests a rank-stratified approach to the named relative cubic obstruction; not a solution for arbitrary sums or higher-degree hardness.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "https://kbr.is-a.dev/math-research/#conflict-two-form-small-rank-collapse"
+        ],
+        "next_action": null
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "Working proof using isotropic hyperplanes and the recorded R1-R3 estimates; d is at the same leading sqrt(2)*N^(3/2) scale with positive lower-order slack.",
+          "next_action": null,
+          "claim_sha256": "cb1df04da975f068d6d63ff95eb4c723b4be5dfaeb7045aec685bc77029d0aab",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/#conflict-two-form-small-rank-collapse",
+              "sha256": "8fa830a9e4457b00a8bce1a8a08e4c48d977913bbc5c07e11015e8a335f9936a"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "No formal verification attempted.",
+          "next_action": null,
+          "claim_sha256": "cb1df04da975f068d6d63ff95eb4c723b4be5dfaeb7045aec685bc77029d0aab",
+          "value_sha256": "e435c3d65d16b333caa5118e4f6624a6044270e11400a8ead56ff56f0fe98af7",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/#conflict-two-form-small-rank-collapse",
+              "sha256": "8fa830a9e4457b00a8bce1a8a08e4c48d977913bbc5c07e11015e8a335f9936a"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "Alternating forms, the matching conflict ideal and the prospective cubic degree-fall obstruction.",
+          "next_action": null,
+          "claim_sha256": "cb1df04da975f068d6d63ff95eb4c723b4be5dfaeb7045aec685bc77029d0aab",
+          "value_sha256": "ad9d5db5b12c67cb19bf5f3889c60261ed638686a91f2f1745b862dfe02bd137",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/#conflict-two-form-small-rank-collapse",
+              "sha256": "8fa830a9e4457b00a8bce1a8a08e4c48d977913bbc5c07e11015e8a335f9936a"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "Tests a rank-stratified approach to the named relative cubic obstruction; not a solution for arbitrary sums or higher-degree hardness.",
+          "next_action": null,
+          "claim_sha256": "cb1df04da975f068d6d63ff95eb4c723b4be5dfaeb7045aec685bc77029d0aab",
+          "value_sha256": "442e8bdf3526273cf5f018a7b30c8d37840d0edec9c066ac3d2e9d68fee4b491",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/#conflict-two-form-small-rank-collapse",
+              "sha256": "8fa830a9e4457b00a8bce1a8a08e4c48d977913bbc5c07e11015e8a335f9936a"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "Reviewed the full rank split and exterior-annihilator proof; recorded scope is only the first stratum, with multi-summand cancellation open.",
+          "next_action": null,
+          "claim_sha256": "cb1df04da975f068d6d63ff95eb4c723b4be5dfaeb7045aec685bc77029d0aab",
+          "value_sha256": "c105842be52c2d4d8febcaa7b3c08c87d13affdf17e6175c69575202ffecbb6a",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/#conflict-two-form-small-rank-collapse",
+              "sha256": "8fa830a9e4457b00a8bce1a8a08e4c48d977913bbc5c07e11015e8a335f9936a"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cor:rank-one-relative-cubic-kernel-exclusion",
+      "summary": "On the rank-preservation event, every vanishing a wedge kappa with kappa in Kbar lies in W wedge Kbar, simultaneously for all a; W=ann(U).",
+      "assessment": "Working first-stratum relative cubic-kernel exclusion for arbitrary-rank quadratic factors; sums may cancel. No full degree-three kernel or PC-hardness conclusion.",
+      "record": "[Statement and proof](https://kbr.is-a.dev/math-research/#rank-one-relative-cubic-kernel-exclusion)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "not_started",
+        "scope": "No Lean formalization attempted in this cycle.",
+        "references": [
+          "https://kbr.is-a.dev/math-research/#rank-one-relative-cubic-kernel-exclusion"
+        ],
+        "artifacts": []
+      },
+      "topics": [
+        "affine-linear-algebra",
+        "matching-php",
+        "polynomial-calculus"
+      ],
+      "significance": {
+        "category": "route_specific",
+        "rationale": "Tests a rank-stratified approach to the named relative cubic obstruction; not a solution for arbitrary sums or higher-degree hardness.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "https://kbr.is-a.dev/math-research/#rank-one-relative-cubic-kernel-exclusion"
+        ],
+        "next_action": null
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "Working first-stratum relative cubic-kernel exclusion for arbitrary-rank quadratic factors; sums may cancel. No full degree-three kernel or PC-hardness conclusion.",
+          "next_action": null,
+          "claim_sha256": "ab1ff5ac5a5ab6e98bec26a36e21adbbf304de1e2887fd1297f299aef833b1cb",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/#rank-one-relative-cubic-kernel-exclusion",
+              "sha256": "78bfcfaa8f716c4bc9c490113ca5626b1c78f200e4edc985b0c204a65dc72c5d"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "No formal verification attempted.",
+          "next_action": null,
+          "claim_sha256": "ab1ff5ac5a5ab6e98bec26a36e21adbbf304de1e2887fd1297f299aef833b1cb",
+          "value_sha256": "326bb5501dabc126fe87005f36807888098b1a3c574e510bc49804ae1a4777f9",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/#rank-one-relative-cubic-kernel-exclusion",
+              "sha256": "78bfcfaa8f716c4bc9c490113ca5626b1c78f200e4edc985b0c204a65dc72c5d"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "Alternating forms, the matching conflict ideal and the prospective cubic degree-fall obstruction.",
+          "next_action": null,
+          "claim_sha256": "ab1ff5ac5a5ab6e98bec26a36e21adbbf304de1e2887fd1297f299aef833b1cb",
+          "value_sha256": "ad9d5db5b12c67cb19bf5f3889c60261ed638686a91f2f1745b862dfe02bd137",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/#rank-one-relative-cubic-kernel-exclusion",
+              "sha256": "78bfcfaa8f716c4bc9c490113ca5626b1c78f200e4edc985b0c204a65dc72c5d"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "Tests a rank-stratified approach to the named relative cubic obstruction; not a solution for arbitrary sums or higher-degree hardness.",
+          "next_action": null,
+          "claim_sha256": "ab1ff5ac5a5ab6e98bec26a36e21adbbf304de1e2887fd1297f299aef833b1cb",
+          "value_sha256": "41422f220095c1ed0623d90fb6eb889de3e9c10ab9fdda4cbe93977dba8dfd7e",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/#rank-one-relative-cubic-kernel-exclusion",
+              "sha256": "78bfcfaa8f716c4bc9c490113ca5626b1c78f200e4edc985b0c204a65dc72c5d"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+          "date": "2026-09-20",
+          "reviewer": "Codex GPT-6 Astra",
+          "note": "Reviewed the full rank split and exterior-annihilator proof; recorded scope is only the first stratum, with multi-summand cancellation open.",
+          "next_action": null,
+          "claim_sha256": "ab1ff5ac5a5ab6e98bec26a36e21adbbf304de1e2887fd1297f299aef833b1cb",
+          "value_sha256": "8706ab6d817693b602056c18c715d119241cb7eb411028fa86235390fde41697",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/#rank-one-relative-cubic-kernel-exclusion",
+              "sha256": "78bfcfaa8f716c4bc9c490113ca5626b1c78f200e4edc985b0c204a65dc72c5d"
             }
           ]
         }
@@ -172508,16 +172826,17 @@
         "id": "obs:full-class-holes-are-labels",
         "locator": null
       },
-      "scope": "Qualifies the small-label probabilistic corollary for an insufficient union exponent; deterministic trigger-label inclusion for the corrected tree survives.",
+      "scope": "Reiterates only the original smaller-constant proof gap, already repaired by cor:rank-step-correction; does not retract or qualify that larger-threshold reading.",
       "evidence": [
-        "https://kbr.is-a.dev/math-research/#small-label-rank-union-budget"
+        "https://kbr.is-a.dev/math-research/#small-label-rank-union-budget",
+        "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank"
       ],
       "review_status": "reviewed",
       "review": {
-        "revision": "77c1f3391b896caf455f2334a1dc5b1d654c58c7",
+        "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
         "date": "2026-09-20",
         "reviewer": "Codex GPT-6 Astra",
-        "note": "Qualifies the small-label probabilistic corollary for an insufficient union exponent; deterministic trigger-label inclusion for the corrected tree survives."
+        "note": "Reiterates only the original smaller-constant proof gap, already repaired by cor:rank-step-correction; does not retract or qualify that larger-threshold reading."
       }
     },
     {
@@ -172718,6 +173037,131 @@
         "date": "2026-09-20",
         "reviewer": "Codex GPT-6 Astra",
         "note": "The repaired proof avoids the specific older bookkeeping inference identified by this audit."
+      }
+    },
+    {
+      "id": "lem:conflict-two-form-small-rank-collapse::depends_on::lem:alternating-form-isotropy-bounds",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "lem:conflict-two-form-small-rank-collapse",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:alternating-form-isotropy-bounds",
+        "locator": null
+      },
+      "scope": "Use R1 and R2 at d-1 and d, and R3 for the low-rank conflict-form count; the added hyperplane union is proved here.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#conflict-two-form-small-rank-collapse"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+        "date": "2026-09-20",
+        "reviewer": "Codex GPT-6 Astra",
+        "note": "Use R1 and R2 at d-1 and d, and R3 for the low-rank conflict-form count; the added hyperplane union is proved here."
+      }
+    },
+    {
+      "id": "lem:conflict-two-form-small-rank-collapse::depends_on::thm:two-form-no-fall-criterion",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "lem:conflict-two-form-small-rank-collapse",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "thm:two-form-no-fall-criterion",
+        "locator": null
+      },
+      "scope": "Use only its conflict-space setup and dimension formula, not an assumption that degree-three hardness holds.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#conflict-two-form-small-rank-collapse"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+        "date": "2026-09-20",
+        "reviewer": "Codex GPT-6 Astra",
+        "note": "Use only its conflict-space setup and dimension formula, not an assumption that degree-three hardness holds."
+      }
+    },
+    {
+      "id": "cor:rank-one-relative-cubic-kernel-exclusion::depends_on::lem:conflict-two-form-small-rank-collapse",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "cor:rank-one-relative-cubic-kernel-exclusion",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:conflict-two-form-small-rank-collapse",
+        "locator": null
+      },
+      "scope": "Rank preservation reduces all single-product cubic kernels to the automatic W wedge Kbar subspace.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#rank-one-relative-cubic-kernel-exclusion"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+        "date": "2026-09-20",
+        "reviewer": "Codex GPT-6 Astra",
+        "note": "Rank preservation reduces all single-product cubic kernels to the automatic W wedge Kbar subspace."
+      }
+    },
+    {
+      "id": "cor:rank-one-relative-cubic-kernel-exclusion::cites::ctx:HW-parked-relative-rank-count",
+      "type": "cites",
+      "source": {
+        "namespace": "current",
+        "id": "cor:rank-one-relative-cubic-kernel-exclusion",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "ctx:HW-parked-relative-rank-count",
+        "locator": null
+      },
+      "scope": "Extends the older decomposable quadratic-factor calculation to arbitrary conflict two-forms; multi-summand cancellation remains the parked obstruction.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#rank-one-relative-cubic-kernel-exclusion"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+        "date": "2026-09-20",
+        "reviewer": "Codex GPT-6 Astra",
+        "note": "Extends the older decomposable quadratic-factor calculation to arbitrary conflict two-forms; multi-summand cancellation remains the parked obstruction."
+      }
+    },
+    {
+      "id": "audit:small-label-rank-union-budget::rediscovers::cor:rank-step-correction",
+      "type": "rediscovers",
+      "source": {
+        "namespace": "current",
+        "id": "audit:small-label-rank-union-budget",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "cor:rank-step-correction",
+        "locator": null
+      },
+      "scope": "The exponent gap was already corrected in the historical rank-step entry; this audit adds no new gap or refutation of the corrected larger-threshold statement.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/#entry-2026-09-20-probability-route-and-cubic-rank"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "438e0ae3db2b7365422e2d2f8730c1ae5cc2592a",
+        "date": "2026-09-20",
+        "reviewer": "Codex GPT-6 Astra",
+        "note": "The exponent gap was already corrected in the historical rank-step entry; this audit adds no new gap or refutation of the corrected larger-threshold statement."
       }
     }
   ],
