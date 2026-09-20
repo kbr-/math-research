@@ -18,7 +18,7 @@ The degree bound printed in BBDM 2023 Question 4.3 follows from multiplicity Sch
 
 **Why it matters:** Potentially useful clarification of an explicitly printed question via an earlier standard theorem; not a new lower-bound mechanism or priority claim.
 
-**Decision (agent):** Uncirculated version 1 has completed internal checklist review; independent confirmation and author approval remain outstanding.
+**Decision (agent):** Version 1 includes the internal checklist review and additional editorial feedback; independent confirmation and author approval remain outstanding.
 
 **Next:** Obtain human-author approval and independent confirmation of the source interpretation; clarify prior knowledge or intended scope before submission.
 
