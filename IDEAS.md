@@ -167,6 +167,8 @@ into the notebook.
 
 ## 9. Side research notebooks with shared claim infrastructure
 
+Implementation plan for items 9 and 10: [SIDE_BRANCHES_PLAN.md](research/notes/SIDE_BRANCHES_PLAN.md).
+
 **The idea (20 September 2026).** Give each side research branch its own notebook,
 initially with an empty research record and living sections adjusted to its goal.
 Serve it locally and on GitHub Pages at `/math-research/branches/<name>/`, alongside
