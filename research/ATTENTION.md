@@ -131,6 +131,11 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Standalone candidate method barrier for all unsatisfiable Boolean quadratic systems and finite design distributions in the stated degree regime. Bounded primary-literature audit found close rank-growth prior art but no exact ENS-rate statement; priority remains unknown. Does not settle the weaker diagonal question or imply any Frege bound.
   Decision (agent): Fossick 20 September: reviewed the full claim summaries, flatness/operator proof and existing targeted priority audit. Retain one joint method-barrier candidate with the depth-four refinement; rank-growth and small-bias ingredients have close prior art. Isolate the additional quantitative survival-rate conclusion for expert review. No novelty or correctness certification. See entry-2026-09-20-fossick-query-obstructions.
   Next: Before any publication claim, isolate the additional quantitative ENS-rate/query contribution from the cited finite-field moment and small-bias ingredients and obtain an independent priority/scope assessment.
+- **[thm:wide-row-predicate-complex-exactness](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-wide-parity-exactness>)** — In characteristic two, conditioning by a sum of row predicates on t>d active rows has ker(K_d to K_(d-1)) equal to im(K_(d+1) to K_d), if every constant/predicate evaluation pair survives 3d label deletions; full bit labels suffice when N>6d.
+  Significance: general_tool; novelty: unknown.
+  Provides a uniform cross-row contraction exactness theorem and a new geometric route to a wide old MOD2 input, beyond independently prescribed row-bit defects.
+  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Next: Obtain independent review of the forced-coded-row induction and compare with weighted matching-complex homology before claiming novelty; then test collective overlapping parities.
 
 ## Reviewed
 
