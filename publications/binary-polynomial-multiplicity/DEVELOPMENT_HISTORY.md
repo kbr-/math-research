@@ -31,3 +31,12 @@ a directly displayed conclusion in the proposition, a shorter explanation of
 external question numbering, consolidated scope wording, and a clearer disclosure
 of the author/AI roles and outstanding independent review. The mathematical
 statement and proof are unchanged. Item-by-item dispositions are in FEEDBACK.md.
+
+### Additional feedback applied within version 1
+
+The author requested application of the accepted AI feedback without a research
+cycle. Clarified implication wording and validity versus sharpness, added the
+Alon–Füredi comparison with a supporting reference, and checked the suggested
+literature and characteristic-two construction. Details and source-version limits
+are in [the application notes](feedback-application-20260920.md). The proof and
+version remain unchanged; independent review and prior knowledge remain open.

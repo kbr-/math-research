@@ -34,7 +34,7 @@ Primary references checked:
 - [x] Final pass: no warnings, overfull/underfull boxes, missing glyph warnings,
   undefined references or unresolved citations.
 - [x] PDF has two US-letter pages, the version-1 label and embedded subset fonts.
-- [x] PDF hyperlinks contain the two DOI targets, the explicit arXiv v1 target and the direct development-history URL.
+- [x] PDF hyperlinks contain the three DOI targets, the explicit arXiv v1 target and the direct development-history URL.
 - [x] Extracted definitions, hypotheses, proof, references and disclosure checked.
 - [x] Both pages rendered locally. Automated word-coordinate and raster-margin
   checks pass; no rendered previews are published. This is not a claim of human
@@ -42,8 +42,11 @@ Primary references checked:
 - [x] Source/PDF hashes saved in `reviewed-files.json`.
 
 Fresh final-build logs and reproducible QA are in
-[the self-review evidence](../../research/results/multiplicity_note_self_review_20260920/).
-The source review was completed before one final three-pass build. Rounding and
+[the feedback application evidence](../../research/results/multiplicity_feedback_application_20260920/).
+The additional feedback and source comparisons are recorded in
+[the application notes](feedback-application-20260920.md). An initial build
+overflowed to three pages; a shorter paragraph and compact bibliography restored
+two pages before the final three-pass build. Rounding and
 the n=1 and k=1 boundary cases were checked analytically. Earlier build snapshots
 remain in [the initial drafting evidence](../../research/results/multiplicity_note_rev1_20260920/);
 its directory name is historical and does not define the paper's version.

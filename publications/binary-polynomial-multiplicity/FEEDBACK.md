@@ -74,3 +74,64 @@ not missing tasks or claims that such work was performed.
 
 Human-author approval and submission decisions remain in [PUBLICATION_PREREQUISITES.md](PUBLICATION_PREREQUISITES.md).
 No author contact or submission was performed or authorized by this review.
+
+## Additional AI feedback — triage, 20 September 2026
+
+Paraphrased from a privately retained AI conversation. The accepted items below
+were applied or checked in place on 20 September 2026, at the author's request,
+without a research cycle or version increment. This remains internal AI-assisted
+review, not independent mathematical review or a novelty certification.
+
+### Accepted follow-up items — completed
+
+- [x] **Distinguish validity from sharpness.** Added a short qualification and
+  the concrete k=1, n>=3 comparison: the displayed bound gives 2, whereas
+  Alon–Füredi gives n. The origin condition for k=1 is nonvanishing, as required.
+  Cited Sauermann–Wigderson, Theorem 1.1 and Section 4.2, which explicitly records
+  validity over arbitrary fields. Excluding n=1,2 avoids both the exceptional
+  value and the equality case. No claim about the original authors' intentions.
+
+- [x] **Make the implication wording explicit.** Replaced “answers the published
+  Question 4.3” with “implies the bound asked for in the published Question 4.3.”
+  The precise conclusion and proof are unchanged.
+
+- [x] **Follow up the concrete literature leads.** Checked the stated problems
+  and relevant introductory/concluding passages in the suggested papers and
+  compared the original preprint's Section 5 with the journal's Section 4.
+  The leads concern related real-grid or real-hypercube problems; the checked
+  passages did not establish prior acknowledgement of this binary implication.
+  Exact versions and the limits of this bounded check are recorded in
+  [the application notes](feedback-application-20260920.md). No priority claim
+  or speculative explanation of author intent was added.
+
+- [x] **Check the suggested construction as a consistency test.** Checked the
+  displayed characteristic-two construction in Sauermann–Wigderson Section 4.2:
+  multiplicity at least 4 off the origin and a nonzero origin value. Its degree
+  n+4 matches the note's bound at (n,k)=(3,4) and (4,4), giving 7 and 8.
+  Kept this check in the application notes; a table would add little to the short
+  deduction. The vague (5,8) gap was not imported as a claim about the optimum.
+
+### Suggestions not adopted as stated
+
+- **Replace the binary focus by a general-field paper:** not adopted. An optional
+  general-field remark can be considered later, but this note's purpose is the
+  exact printed binary question. Extending the elementary inequality alone does
+  not establish that the different q-ary Question 4.2 is answered; its precise
+  target and hypotheses would need a separate comparison. No such resolution is
+  asserted here.
+
+- **Explain why the authors missed the implication:** not adopted. Their choice
+  of methods may supply factual context if sourced, but it does not establish what
+  they knew or why the question was posed. Preserve the existing prohibition on
+  speculation about author intent.
+
+- **Treat an expert glance as removing review concerns:** independent human
+  feedback is welcome and already requested in the outstanding items, but any
+  resulting disclosure must describe the actual review scope. Neither a second
+  AI's agreement nor an informal glance is formal verification or evidence of
+  novelty. Keep assistance attribution accurate.
+
+The suggestion to seek clarification from an original author reinforces the
+existing external questions rather than creating a duplicate task. Correspondence
+still requires explicit authorization; no message was sent. The feedback's
+qualitative assessment of likely folklore is not adopted as a novelty finding.
