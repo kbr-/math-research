@@ -69,8 +69,9 @@ class CitationHTML(HTMLParser):
         for link in self.open_links:link['text_parts'].append(unescape('&#'+name+';'))
 
 
-def scan_record(data, root=ROOT):
-    root=Path(root);text=(root/'notebook.html').read_text()
+def scan_one(data, root=ROOT, notebook_name='main'):
+    from notebooks import selected
+    root=Path(root);item=selected(notebook_name,root);notebook_path=root/item['source'];text=notebook_path.read_text()
     spec=importlib.util.spec_from_file_location('record_notebook',ROOT/'tools/notebook-excerpt.py')
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);book=module.Notebook(text)
     record=book.anchor('research-record')
@@ -87,7 +88,7 @@ def scan_record(data, root=ROOT):
     for claim in data['claims']:
         for ref in references(claim):
             loc=local_target(ref['target'],root)
-            if not loc or loc[0].resolve()!=(root/'notebook.html').resolve() or not loc[1]:continue
+            if not loc or loc[0].resolve()!=notebook_path.resolve() or not loc[1]:continue
             anchor=loc[1];anchors[anchor].add(claim['id'])
             try:
                 n=book.anchor(anchor);lo=n['start'];hi=lo+len(book.excerpt(anchor));tag=n['tag']
@@ -132,15 +133,18 @@ def scan_record(data, root=ROOT):
             target_state=namespace
         else:
             parsed=urlsplit(target)
-            loc=(root/'notebook.html',parsed.fragment) if not parsed.path and not parsed.scheme and not parsed.netloc and parsed.fragment else local_target(target,root)
-            if loc and loc[0].resolve()==(root/'notebook.html').resolve() and loc[1]:
+            loc=(notebook_path,parsed.fragment) if not parsed.path and not parsed.scheme and not parsed.netloc and parsed.fragment else local_target(target,root)
+            if loc and loc[0].resolve()==notebook_path.resolve() and loc[1]:
                 target_ids=sorted(anchors.get(loc[1],[]))
                 target_state='indexed_anchor' if target_ids else 'unindexed_anchor' if loc[1] in dom.ids else 'missing_anchor'
-            else:target_state='external_or_file'
+            else:
+                target_ids=sorted({c['id'] for c in data['claims'] for ref in references(c)
+                                   if loc and local_target(ref['target'],root)==loc})
+                target_state='indexed_anchor' if target_ids else 'external_or_file'
         key=(aid,kind,target);ordinal[key]+=1
-        identifier=sha(json.dumps([*key,ordinal[key]],ensure_ascii=False))[:24]
+        identifier=sha(json.dumps([*key,ordinal[key]] if notebook_name=='main' else [notebook_name,*key,ordinal[key]],ensure_ascii=False))[:24]
         context=(plain(text[article['start']:pos])[-160:]+' '+plain(text[pos:article['end']])[:420]).strip()
-        row={'id':identifier,'kind':kind,'article':aid,'line':bisect_right(dom.offsets,pos),'article_offset':pos-article['start'],
+        row={'notebook':notebook_name,'id':identifier,'kind':kind,'article':aid,'line':bisect_right(dom.offsets,pos),'article_offset':pos-article['start'],
              'heading':None if heading is None else {'anchor':heading['anchor'],'title':plain(text[heading['start']:heading['end']]),'line':bisect_right(dom.offsets,heading['start'])},
              'target':target,'text':plain(''.join(event['text_parts'])) if kind=='hyperlink' else event['text'],
              'source_ownership':ownership,'source_claim_candidates':owners,
@@ -151,7 +155,7 @@ def scan_record(data, root=ROOT):
     artrows=[]
     for a in articles:
         fragment=text[a['start']:a['end']]
-        artrows.append({'id':a['anchor'],'line':bisect_right(dom.offsets,a['start']),'sha256':sha(fragment),
+        artrows.append({'notebook':notebook_name,'id':a['anchor'],'line':bisect_right(dom.offsets,a['start']),'sha256':sha(fragment),
                         'claim_candidates':sorted(article_claims[a['anchor']]),'citation_ids':by_article[a['anchor']],
                         'citation_count':len(by_article[a['anchor']])})
     return {'schema_version':1,'method':'full-record-html-citations-v1','notebook_sha256':sha(text),
@@ -163,6 +167,24 @@ def scan_record(data, root=ROOT):
             'articles':artrows,'citations':out,'record_occurrences_outside_articles':record_outside,
             'unresolved_index_anchors':unresolved,
             'scope':'Every href-bearing HTML anchor and every recognized claim-label token in visible research-article text nodes is retained, including unindexed articles. HTML attributes, comments, script/style contents and living sections are excluded. Links and labels can overlap as distinct occurrence kinds. Owning headings include unanchored siblings; source owners are candidates, never inferred proof use. Implicit prose citations or labels split across text nodes are outside token discovery. No edges are created.'}
+
+
+def scan_record(data, root=ROOT):
+    from notebooks import catalogue
+    items=catalogue(root)
+    reports=[scan_one(data,root,name) for name in items]
+    result=dict(reports[0])
+    result['notebook_hashes']={item['source']:sha((root/item['source']).read_text()) for item in items.values()}
+    if len(reports)==1:return result
+    for key in ('articles','citations','record_occurrences_outside_articles','unresolved_index_anchors'):
+        result[key]=[value for r in reports for value in r[key]]
+    result['counts']={key:sum(r['counts'][key] for r in reports) for key in
+                      ('articles','articles_with_citations','hyperlinks','explicit_claim_labels','citation_occurrences')}
+    for key in ('source_ownership','target_status'):
+        counts=Counter()
+        for r in reports:counts.update(r['counts'][key])
+        result['counts'][key]=dict(counts)
+    return result
 
 
 def select(report, *, article=None, claim=None, ownership=None, kind=None):

@@ -27,10 +27,23 @@ def violations(base_body, current_body):
 
 
 def check(root, ref):
-    shown = subprocess.run(['git', 'show', f'{ref}:notebook.html'], cwd=root, capture_output=True, text=True)
-    if shown.returncode != 0:
-        return None   # no such revision (fresh clone without the remote, or not a repository)
-    return violations(shown.stdout, (root / 'notebook.html').read_text())
+    from notebooks import paths
+    root = Path(root)
+    listing = subprocess.run(['git','ls-tree','-r','--name-only',ref],cwd=root,capture_output=True,text=True)
+    if listing.returncode:
+        return None
+    before = [p for p in listing.stdout.splitlines() if p == 'notebook.html' or
+              re.fullmatch(r'research/branches/[^/]+/notebook.html',p)]
+    current = {p.relative_to(root).as_posix() for p in paths(root)}
+    missing, changed = [], []
+    for path in before:
+        if path not in current or not (root/path).exists():
+            missing.append(path + ' (notebook deleted or unregistered)'); continue
+        shown = subprocess.check_output(['git','show',f'{ref}:{path}'],cwd=root,text=True)
+        left,right = violations(shown,(root/path).read_text())
+        missing.extend(path+'#'+x for x in left)
+        changed.extend(path+'#'+x for x in right)
+    return missing, changed
 
 
 def main():

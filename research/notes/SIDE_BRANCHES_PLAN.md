@@ -187,3 +187,25 @@ registration checking are implemented first; the other interfaces follow.
 
 No side research was initialized. Initial focused tests cover main compatibility,
 qualified sources, ambiguous anchors, unsafe/missing sources and invalid ancestry.
+
+### Selected workflow — 20 September 2026
+
+Restoration, excerpts, context checks and finalization accept `--notebook NAME`.
+`tools/branch.py select NAME` persists only a worktree-local Git-path selection;
+explicit selection overrides it and no Git branch-name inference occurs. The
+finisher requires a unique timing marker in the selected notebook, preventing a
+selection mistake from stopping the wrong cycle. Append-only checking enumerates
+both base and current notebooks, detecting deletion/unregistration as well as
+changed history. Claim packets and citation scanners now use qualified sources.
+
+The setup tool consumes reviewed living-context JSON and atomically registers
+a side directory containing source, identity metadata and an explicit copy of
+the standard budgets. It refuses duplicates/unsafe paths, checks an originating
+source anchor, supports lifecycle status and optional clean-worktree Git branch
+creation. Publication routes and protocol documentation remain for the next
+checkpoint; no real side mathematical assignment was started.
+
+Validation: the existing 152 tool tests pass; a targeted 19-test workflow run
+includes independent side finalization, empty creation, selection/override, source
+validation, budget enforcement and history deletion/mutation controls. Test
+fixture invocation errors were repaired during this checkpoint.

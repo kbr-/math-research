@@ -78,7 +78,7 @@ sys.exit(compute.main())
                    '<!-- TIMING test_turn -->\n'
                    '</article>\nappend here\n</section>\n')
         notebook.write_text(content)
-        self.command('tools/notebooks.py', 'tools/finish-turn.py', 'test_turn', '--next', 'next_turn')
+        self.command('tools/finish-turn.py', 'test_turn', '--next', 'next_turn')
         table = (self.root / 'research/results/test_turn/timing.html').read_text().strip()
         table = table.replace('<div class="timing-report"', '<div data-generated="finish-turn-timing-v1" class="timing-report"', 1)
         expected = content.replace('<!-- TIMING test_turn -->', table).replace(
@@ -94,7 +94,7 @@ sys.exit(compute.main())
         self.assertFalse(any(e['event'] == 'stop' for e in following))
         self.assertEqual((following[0]['agent'], following[0]['model']),
                          ('Test agent', 'Test model, high'))
-        repeated = self.command('tools/notebooks.py', 'tools/finish-turn.py', 'test_turn', check=False)
+        repeated = self.command('tools/finish-turn.py', 'test_turn', check=False)
         self.assertNotEqual(repeated.returncode, 0)
         self.assertEqual(notebook.read_text(), expected)
 
@@ -117,7 +117,7 @@ sys.exit(compute.main())
         notebook=self.root/'notebook.html'
         notebook.write_text('<section id="research-record"><article id="new-entry">'
             '<p class="entry-meta">Status: test.</p><!-- TIMING test_turn --></article></section>')
-        result=self.command('tools/notebooks.py', 'tools/finish-turn.py','test_turn',check=False)
+        result=self.command('tools/finish-turn.py','test_turn',check=False)
         self.assertNotEqual(result.returncode,0)
         self.assertIn('Changed-claim metadata incomplete',result.stderr)
         self.assertFalse(any(e['event']=='stop' for e in self.events('test_turn')))
@@ -127,7 +127,7 @@ sys.exit(compute.main())
             'data-claims="none" data-claim-note="Framework-only">'
             '<p class="entry-meta">Status: test.</p><code>lem:forgotten</code>'
             '<!-- TIMING test_turn --></article></section>')
-        result=self.command('tools/notebooks.py', 'tools/finish-turn.py','test_turn',check=False)
+        result=self.command('tools/finish-turn.py','test_turn',check=False)
         self.assertNotEqual(result.returncode,0)
         self.assertIn('explicit claim label is unregistered',result.stderr)
         self.assertFalse(any(e['event']=='stop' for e in self.events('test_turn')))
@@ -148,7 +148,7 @@ sys.exit(compute.main())
         for content in cases:
             with self.subTest(content=content):
                 notebook.write_text(content)
-                result = self.command('tools/notebooks.py', 'tools/finish-turn.py', 'test_turn', check=False)
+                result = self.command('tools/finish-turn.py', 'test_turn', check=False)
                 self.assertNotEqual(result.returncode, 0)
                 self.assertEqual(notebook.read_text(), content)
                 self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
@@ -173,7 +173,7 @@ sys.exit(compute.main())
         for content in rejected:
             with self.subTest(content=content[:160]):
                 notebook.write_text(content)
-                result = self.command('tools/notebooks.py', 'tools/finish-turn.py', 'test_turn', check=False)
+                result = self.command('tools/finish-turn.py', 'test_turn', check=False)
                 self.assertNotEqual(result.returncode, 0)
                 self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
         accepted = [
@@ -211,7 +211,7 @@ sys.exit(compute.main())
         notebook = self.root / 'notebook.html'
         content = '<!-- TIMING test_turn -->\n' * 2
         notebook.write_text(content)
-        result = self.command('tools/notebooks.py', 'tools/finish-turn.py', 'test_turn', check=False)
+        result = self.command('tools/finish-turn.py', 'test_turn', check=False)
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(notebook.read_text(), content)
         self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
@@ -223,7 +223,7 @@ sys.exit(compute.main())
         (self.root / 'notebook.html').write_text(
             '<section id="research-record"><article><p class="entry-meta">Status.</p>'
             '<!-- TIMING test_turn --></article></section>')
-        result = self.command('tools/notebooks.py', 'tools/finish-turn.py', 'test_turn', check=False)
+        result = self.command('tools/finish-turn.py', 'test_turn', check=False)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('claim index is stale', result.stderr)
         self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
@@ -235,7 +235,7 @@ sys.exit(compute.main())
                    '</article></section>')
         notebook.write_text(content)
         before = (self.root / 'research/logs/test_turn.jsonl').read_bytes()
-        result = self.command('tools/notebooks.py', 'tools/finish-turn.py', 'test_turn', check=False)
+        result = self.command('tools/finish-turn.py', 'test_turn', check=False)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('Notebook context hard limit exceeded', result.stderr)
         self.assertEqual(notebook.read_text(), content)

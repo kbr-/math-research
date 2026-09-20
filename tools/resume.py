@@ -84,12 +84,14 @@ def active_turn(root):
         if store:store.db.close()
 
 
-def bundle(root, formalization=False, tail=10):
+def bundle(root, formalization=False, tail=10, notebook=None):
+    from notebooks import selected
+    item=selected(notebook,root)
     files=FILES+(('formalization/AGENTS.md','formalization/README.md') if formalization else ())
     parts=[(path,(root/path).read_text(), 'resume-file',path) for path in files]
-    source=(root/'notebook.html').read_text();book=excerpt.Notebook(source)
+    source=(root/item['source']).read_text();book=excerpt.Notebook(source)
     current=source[:book.anchor('research-record')['start']].rstrip()+'\n'
-    parts.append(('notebook.html — living sections',current,'notebook-excerpt',
+    parts.append((item['source']+' — living sections (thread '+item['name']+')',current,'notebook-excerpt',
                   {'anchor':None,'until':None,'current':True,'toc':False,'tail':None,'since':'None'}))
     toc,omitted=book.toc(tail=tail)
     parts.append((f'Research-record contents — latest {tail}; {omitted} earlier entries omitted',toc,
@@ -108,6 +110,7 @@ def bundle(root, formalization=False, tail=10):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--notebook',help='Research thread name; defaults to worktree selection or main')
     parser.add_argument('--session',help='Active timing session; otherwise use this stream’s last active session')
     parser.add_argument('--formalization',action='store_true',help='Include assigned formalization instructions')
     parser.add_argument('--tail',type=int,default=10)
@@ -115,14 +118,14 @@ def main():
     parser.add_argument('--part',type=int,help='One bounded part of --read BUNDLE_ID')
     args=parser.parse_args()
     if args.read:
-        if args.part is None or args.session or args.formalization or args.tail!=10:
+        if args.part is None or args.session or args.notebook or args.formalization or args.tail!=10:
             parser.error('--read requires --part and cannot be combined with preparation options')
     elif args.part is not None:parser.error('--part requires --read')
     try:
         if args.read:
             emit_part(ROOT,args.read,args.part)
             return
-        parts=bundle(ROOT,args.formalization,args.tail)  # Missing context must not become a partial bundle.
+        parts=bundle(ROOT,args.formalization,args.tail,args.notebook)  # Missing context must not become a partial bundle.
         turn=args.session or active_turn(ROOT)
         if turn:
             # Existing CLI validates session name, active state and boot. No new

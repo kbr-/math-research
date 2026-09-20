@@ -120,11 +120,16 @@ def validate_append_only(root):
         raise ValueError(result.stdout.strip())
 
 
-def finish(root, turn, next_turn=None):
-    notebook = root / 'notebook.html'
+def finish(root, turn, next_turn=None, notebook_name=None):
+    from notebooks import selected, paths
+    item = selected(notebook_name, root)
+    notebook = root / item["source"]
     marker = f'<!-- TIMING {turn} -->'
+    owners = [p for p in paths(root) if marker in p.read_text()]
+    if owners != [notebook]:
+        raise ValueError("Timing marker must belong uniquely to selected notebook " + item["name"])
     validate_marker(notebook.read_text(), marker)
-    check_context(root)  # Fail before stopping timing, archiving, or changing the notebook.
+    check_context(root, item["name"])  # Fail before stopping timing, archiving, or changing the notebook.
     validate_append_only(root)
     if (root / 'research/claims/index.json').exists():
         claims = load_claims(root / 'research/claims/index.json')
@@ -194,8 +199,8 @@ def finish(root, turn, next_turn=None):
     finally:
         if temporary is not None:
             temporary.unlink(missing_ok=True)
-    print(f'Finished {turn}: timing embedded and evidence archived; review and commit.')
-    print('Stage with the entry: notebook.html '
+    print(f'Finished {turn} in {item["name"]}: timing embedded and evidence archived; review and commit.')
+    print(f'Stage with the entry: {item["source"]} '
           f'research/results/{turn}/timing.html research/provenance/session-records/{turn}')
     if next_turn:
         print(f'{next_turn} is running in preparation phase.')
@@ -206,8 +211,9 @@ def main():
     parser.add_argument('turn', type=session_name)
     parser.add_argument('--next', dest='next_turn', type=session_name,
                         help='Start the next cycle immediately after the timing snapshot')
+    parser.add_argument('--notebook', help='Research thread name; defaults to worktree selection or main')
     args = parser.parse_args()
-    finish(ROOT, args.turn, args.next_turn)
+    finish(ROOT, args.turn, args.next_turn, args.notebook)
 
 
 if __name__ == '__main__':

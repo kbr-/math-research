@@ -1,0 +1,27 @@
+...............F...
+======================================================================
+FAIL: test_side_finish_does_not_touch_main (test_side_workflow.SideFinalization)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_side_workflow.py", line 57, in test_side_finish_does_not_touch_main
+    self.command('compute.sh','start','test_turn','--model','Test model, high')
+  File "/home/kbr/dev/math-auxiliary/tools/tests/test_finish_turn.py", line 67, in command
+    self.fail(f'{script} exited {result.returncode}\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}')
+AssertionError: compute.sh exited 1
+stdout:
+
+stderr:
+Traceback (most recent call last):
+  File "/tmp/math-finish-turn-wkplj6ik/compute.sh", line 13, in <module>
+    sys.exit(compute.main())
+  File "/tmp/math-finish-turn-wkplj6ik/compute_fixture.py", line 436, in main
+    print(start_session(args.session, args.agent, args.model).relative_to(ROOT))
+  File "/tmp/math-finish-turn-wkplj6ik/compute_fixture.py", line 126, in start_session
+    raise ValueError('Session exists; choose a new name')
+ValueError: Session exists; choose a new name
+
+
+----------------------------------------------------------------------
+Ran 19 tests in 5.036s
+
+FAILED (failures=1)

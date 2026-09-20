@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 import sys
 from recovery_evidence import observe
+from notebooks import selected
 
 
 MATH = re.compile(r'\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]')
@@ -127,13 +128,16 @@ def main():
     parser.add_argument('--since', type=date.fromisoformat, help='TOC date filter (YYYY-MM-DD); undated entries retained')
     parser.add_argument("--until", help="Stop before this exact anchor instead")
     parser.add_argument("--out", type=Path, help="Write a new file instead of stdout")
+    parser.add_argument("--notebook", help="Research thread name; defaults to worktree selection or main")
     args = parser.parse_args()
     if sum((bool(args.anchor), args.current, args.toc)) != 1 or (args.until and not args.anchor):
         parser.error('Choose an anchor (optionally --until), --current, or --toc')
     if not args.toc and (args.tail is not None or args.since is not None):
         parser.error('--tail and --since require --toc')
     try:
-        source = (Path(__file__).resolve().parents[1] / "notebook.html").read_text()
+        root = Path(__file__).resolve().parents[1]
+        item = selected(args.notebook, root)
+        source = (root / item["source"]).read_text()
         notebook = Notebook(source)
         if args.toc:
             result, omitted = notebook.toc(args.tail if args.tail is not None else 10, args.since)
@@ -149,7 +153,7 @@ def main():
         else:
             sys.stdout.write(result)
         observe('read', tool='notebook-excerpt', selector={
-            'anchor':args.anchor,'until':args.until,'current':args.current,
+            'notebook':item['name'],'anchor':args.anchor,'until':args.until,'current':args.current,
             'toc':args.toc,'tail':args.tail,'since':str(args.since)},
             text=result, shown=not bool(args.out))
     except (ValueError, OSError) as error:

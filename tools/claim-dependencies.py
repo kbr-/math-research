@@ -63,8 +63,11 @@ def source_excerpt(book, text, anchor):
                 return region,node['start'],node['anchor'],True
         raise ValueError('No containing passage for '+anchor)
 
-def scan(data, root=ROOT):
-    text=(root/'notebook.html').read_text();book=notebook_parser(text)
+def scan_one(data, root=ROOT, notebook_name='main'):
+    from notebooks import selected, PUBLIC
+    item=selected(notebook_name,root);notebook_path=root/item['source']
+    public=PUBLIC+item['route']+'#'
+    text=notebook_path.read_text();book=notebook_parser(text)
     ids={c['id'] for c in data['claims']};anchors=defaultdict(set);files=defaultdict(set)
     fingerprints={c['id']:hashed({k:c[k] for k in ('id','summary','assessment','record')}) for c in data['claims']}
     regions=defaultdict(set);problems=[]
@@ -73,7 +76,7 @@ def scan(data, root=ROOT):
             local=local_target(r['target'],root)
             if not local:continue
             path,anchor=local
-            if path.resolve()==(root/'notebook.html').resolve() and anchor:
+            if path.resolve()==notebook_path.resolve() and anchor:
                 anchors[anchor].add(c['id']);regions[c['id']].add(anchor)
             elif path.suffix=='.lean':files[path.resolve()].add(c['id'])
     # A few historical index rows link only to the manuscript and Lean file.
@@ -83,7 +86,7 @@ def scan(data, root=ROOT):
         if not header:continue
         for target in re.findall(r'^Source:\s*(\S+)',header.group(1),re.M):
             local=local_target(target,root)
-            if local and local[0].resolve()==(root/'notebook.html').resolve() and local[1]:
+            if local and local[0].resolve()==notebook_path.resolve() and local[1]:
                 anchors[local[1]].update(owners)
                 for owner in owners:regions[owner].add(local[1])
     candidates={};processed=set();source_articles=defaultdict(set);other_references=[];widened_regions=[]
@@ -117,7 +120,7 @@ def scan(data, root=ROOT):
         try:region,offset,actual_anchor,widened=source_excerpt(book,text,anchor)
         except ValueError:continue
         for token in sorted(set(re.findall(r'\\tag\{([^}]+)\}',region))):
-            item={'claims':sorted(owners),'locator':'https://kbr.is-a.dev/math-research/#'+actual_anchor,
+            item={'claims':sorted(owners),'locator':public+actual_anchor,
                   'sha256':hashlib.sha256(region.encode()).hexdigest(),'widened':widened}
             if item not in equation_definitions[token]:equation_definitions[token].append(item)
 
@@ -126,7 +129,7 @@ def scan(data, root=ROOT):
             try:region,offset,actual_anchor,widened=source_excerpt(book,text,anchor)
             except ValueError as exc:problems.append({'claim':source,'anchor':anchor,'error':str(exc)});continue
             processed.add(source)
-            locator='https://kbr.is-a.dev/math-research/#'+actual_anchor
+            locator=public+actual_anchor
             if widened:widened_regions.append({'claim':source,'anchor':anchor,'containing_anchor':actual_anchor})
             base_line=text.count('\n',0,offset)+1
             own_tags=set(re.findall(r'\\tag\{([^}]+)\}',region))
@@ -147,7 +150,13 @@ def scan(data, root=ROOT):
                 else:
                     try:local=local_target(href,root)
                     except ValueError:local=None
-                    if local and local[0].resolve()==(root/'notebook.html').resolve():target_anchor=local[1]
+                    if local and local[0].resolve()==notebook_path.resolve():target_anchor=local[1]
+                    elif local and local[1]:
+                        target_ids={c['id'] for c in data['claims'] for ref in references(c)
+                                    if local_target(ref['target'],root)==local}
+                        add(source,target_ids,'notebook_link',locator,region,href,
+                            base_line+region.count('\n',0,match.start()),strip_markup(match.group()),True,
+                            'Cross-notebook citation; inspect exact proof role.')
                 if not target_anchor:
                     other_references.append({'claim':source,'locator':locator,'target':href})
                     continue
@@ -214,6 +223,21 @@ def scan(data, root=ROOT):
             'scope':'Generated evidence candidates only. No relationship is accepted by this scan.'}
 
 
+def scan(data, root=ROOT):
+    from notebooks import catalogue
+    reports=[scan_one(data,root,name) for name in catalogue(root)]
+    result=reports[0]
+    if len(reports)==1:return result
+    candidates={c['id']:c for r in reports for c in r['candidates']}
+    result['candidates']=list(candidates.values());result['candidate_count']=len(candidates)
+    missing=set.intersection(*(set(r['claims_without_notebook_regions']) for r in reports))
+    result['claims_without_notebook_regions']=sorted(missing)
+    result['claims_with_notebook_regions']=len(data['claims'])-len(missing)
+    for key in ('unresolved','external_or_file_references','widened_source_regions'):
+        result[key]=[v for r in reports for v in r[key]]
+    return result
+
+
 def is_current(candidate, data, evidence=None):
     evidence=evidence or Evidence()
     try:
@@ -267,14 +291,16 @@ def metadata_packet(data, label, root=ROOT, limit=6, width=700):
     claim=next((c for c in data['claims'] if c['id']==label),None)
     require(claim is not None, 'Unknown claim: '+label)
     require(limit>0 and width>0, 'Packet limits must be positive')
-    text=(root/'notebook.html').read_text();book=notebook_parser(text)
+    from notebooks import paths
+    registered={p.resolve() for p in paths(root)}
     passages=[];seen=set()
     for reference in references(claim):
         local=local_target(reference['target'],root)
-        if not local or local[0].resolve()!=(root/'notebook.html').resolve() or not local[1]:continue
+        if not local or local[0].resolve() not in registered or not local[1]:continue
+        text=local[0].read_text();book=notebook_parser(text)
         region,offset,anchor,widened=source_excerpt(book,text,local[1])
-        if anchor in seen:continue
-        seen.add(anchor)
+        if (local[0],anchor) in seen:continue
+        seen.add((local[0],anchor))
         blocks=[]
         for match in re.finditer(r'<(p|div)\b[^>]*>.*?</\1>',region,re.S):
             body=html.unescape(strip_markup(match.group()))
@@ -351,7 +377,9 @@ def main():
         require(args.n>0,'Limit must be positive')
         report=json.loads(args.input.read_text());require(report.get('method')=='full-record-html-citations-v1','Wrong report format')
         rows=select(report,article=args.article,claim=args.claim,ownership=args.ownership,kind=args.kind)
-        stale=sha((ROOT/'notebook.html').read_text())!=report['notebook_sha256']
+        from notebooks import catalogue
+        hashes={i['source']:sha((ROOT/i['source']).read_text()) for i in catalogue(ROOT).values()}
+        stale=(hashes != report['notebook_hashes']) if 'notebook_hashes' in report else hashes['notebook.html']!=report['notebook_sha256']
         registry_stale=sha(json.dumps(load(),sort_keys=True,ensure_ascii=False))!=report['registry_sha256']
         if args.out:write_json(args.out,{'source_report':str(args.input),'notebook_changed':stale,'registry_changed':registry_stale,'citations':rows,'count':len(rows)})
         for r in rows[:args.n]:

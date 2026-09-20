@@ -29,6 +29,8 @@ def catalogue(root=ROOT):
     if directory.is_symlink():
         raise ValueError('Notebook directory must not be a symlink')
     for path in sorted(directory.glob('*/notebook.json')):
+        if path.parent.name.startswith('.'):
+            continue  # Incomplete atomic setup is not a registered notebook.
         name = valid_name(path.parent.name)
         if path.is_symlink() or path.parent.is_symlink():
             raise ValueError('Notebook registration must not use symlinks')
@@ -57,7 +59,7 @@ def catalogue(root=ROOT):
 
 
 def selection_file(root=ROOT):
-    value = subprocess.check_output(['git','rev-parse','--git-path','noemesis-notebook'],cwd=root,text=True).strip()
+    value = subprocess.check_output(['git','rev-parse','--git-path','noemesis-notebook'],cwd=root,text=True,stderr=subprocess.DEVNULL).strip()
     path = Path(value)
     return path if path.is_absolute() else Path(root)/path
 

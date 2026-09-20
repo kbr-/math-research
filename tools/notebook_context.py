@@ -72,8 +72,10 @@ def describe(report):
                      for r in [*report['regions'], report['total']])
 
 
-def check(root=ROOT):
-    report = budgets((root/'notebook.html').read_text(), json.loads((root/'research/context-budgets.json').read_text()))
+def check(root=ROOT, notebook=None):
+    from notebooks import selected
+    item = selected(notebook, root)
+    report = budgets((root/item["source"]).read_text(), json.loads((root/item["budgets"]).read_text()))
     if not report['passed']:
         raise ValueError('Notebook context hard limit exceeded:\n'+describe(report))
     for row in [*report['regions'], report['total']]:
@@ -84,12 +86,20 @@ def check(root=ROOT):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--notebook', type=Path, default=ROOT/'notebook.html')
-    parser.add_argument('--config', type=Path, default=ROOT/'research/context-budgets.json')
+    parser.add_argument('--notebook', help='Thread name, or an explicit HTML path for compatibility')
+    parser.add_argument('--config', type=Path)
     parser.add_argument('--out', type=Path, help='Save complete counts; exit status still enforces limits')
     args = parser.parse_args()
     try:
-        report = budgets(args.notebook.read_text(), json.loads(args.config.read_text()))
+        from notebooks import selected
+        if args.notebook and (args.notebook.endswith(".html") or "/" in args.notebook):
+            source = Path(args.notebook)
+            config = args.config or ROOT/"research/context-budgets.json"
+        else:
+            item = selected(args.notebook, ROOT)
+            source = ROOT/item["source"]
+            config = args.config or ROOT/item["budgets"]
+        report = budgets(source.read_text(), json.loads(config.read_text()))
         if args.out:
             with args.out.open('x') as stream:
                 json.dump(report, stream, indent=2); stream.write('\n')
