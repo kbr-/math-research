@@ -176,6 +176,22 @@ A single matching-monomial ENS block over full weak PHP has exact NS Booleanity 
 
 ---
 
+### All prime unary affine source exclusion
+
+**Claim:** [thm:all-prime-unary-affine-source-exclusion](<https://kbr.is-a.dev/math-research/#all-prime-unary-affine-source-exclusion>)
+
+For every fixed prime p, unary weak or functional PHP plus any polynomial-inventory complete one-level old-affine ENS family excludes polylogarithmic-degree ordinary NS and PC refutations.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Extends the general unary-affine one-level boundary to every fixed prime through one coefficient identity and degree ledger. The graph construction and downstream proof-system applications still need independent review.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently review the ordinary-flat kernel and Fermat normalization scope, then construct a valid first retained-layer interface rather than assuming iteration.
+
+---
+
 ### Coded disjoint trade spanning
 
 **Claim:** [thm:coded-disjoint-trade-spanning](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-coded-trade-spanning>)
@@ -363,6 +379,22 @@ Graph ordering on n vertices has a complete one-level old-affine ENS source with
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Compare with prior ENS and ordering-principle source constructions and obtain independent review of the balanced merge, inventory and original-degree ledger before any novelty or publication claim.
+
+---
+
+### Ordinary unary PHP Res parity superpolynomial
+
+**Claim:** [thm:ordinary-unary-PHP-Res-parity-superpolynomial](<https://kbr.is-a.dev/math-research/#ordinary-unary-PHP-Res-parity-superpolynomial>)
+
+For every real K>0, sufficiently large ordinary unary PHP and its functional variant require more than N^K nodes in unrestricted DAG-like Res(parity), under both recorded rule conventions.
+
+**Significance:** `independent_result` · **Novelty:** `candidate`
+
+**Why it matters:** Potential independent unrestricted lower bound for the ordinary unary PHP encoding, separate from the existing bit-PHP preprint and the main Frege target. The graph argument and its exact same-graph compiler composition need expert review and a fuller prior-art audit.
+
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
+
+**Next:** Arrange independent mathematical review of the graph weight/detector construction and compiler composition; complete an encoding-specific novelty audit before preparing or publishing a separate preprint.
 
 ---
 

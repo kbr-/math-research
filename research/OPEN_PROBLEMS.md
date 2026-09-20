@@ -6,7 +6,7 @@ owns current mathematics; the [claim registry](claims/README.md) owns claim-leve
 assessments. Follow a benchmark anchor from a claim's significance references when
 useful. Absence from this map is not evidence of insignificance or novelty.
 
-**Last source check for every entry below: 19 September 2026.** Initial coverage:
+**Baseline source check: 19 September 2026; dated entry updates are noted below.** Initial coverage:
 targeted primary-source abstracts and introductions, not a systematic literature
 review or re-verification of proofs. “Open in checked literature” is deliberately
 weaker than a certified current open-problem verdict. A preprint is not automatically
@@ -32,7 +32,7 @@ Frege. Rank width (independent equations) and syntactic clause width are distinc
 | [frege-php](#frege-php) | Ordinary PHP in fixed-depth AC⁰[p]-Frege | Main open target |
 | [res-parity-size](#res-parity-size) | Unrestricted Res(⊕) size on an explicit family | Open in checked literature; local candidate linked |
 | [res-parity-bit-php](#res-parity-bit-php) | Unrestricted Res(⊕) size for usual bit PHP | Restricted bounds published; local candidate linked |
-| [res-parity-unary-php](#res-parity-unary-php) | Unrestricted Res(⊕) size for unary PHP | Separate unresolved target in this map |
+| [res-parity-unary-php](#res-parity-unary-php) | Unrestricted Res(⊕) size for unary PHP | Open in checked literature; new local candidate linked |
 | [res-parity-size-width](#res-parity-size-width) | Size versus width and depth | Method benchmark; exact conversion needs audit |
 | [ac0-php-baseline](#ac0-php-baseline) | PHP in bounded-depth Frege without MOD gates | Established lower-bound baseline |
 
@@ -104,16 +104,22 @@ depth versus formula depth; refresh the candidate's literature audit separately.
 **Question.** Superpolynomial unrestricted DAG-like Res(⊕) size for the unary
 CNF defined above, with n+1 pigeons and n holes; record functional variants separately.
 
-**Literature boundary.** The introduction of
+**Literature boundary — refreshed 20 September 2026.** The introduction of
 [Efremenko–Garlík–Itsykson, TR23-187](https://eccc.weizmann.ac.il/report/2023/187/download)
-reports tree-like unary-PHP lower bounds and cites Itsykson–Sokolov. This check
-does not establish a complete best-bound survey for unary DAG proofs; a dedicated
-encoding-specific search remains necessary before calling a new bound novel.
+reports tree-like unary-PHP bounds. The introductory unrestricted-size discussions in
+[Itsykson–Knop, ITCS 2026](https://drops.dagstuhl.de/storage/00lipics/lipics-vol362-itcs2026/html/LIPIcs.ITCS.2026.81/LIPIcs.ITCS.2026.81.html)
+and [Itsykson–Podolskii–Shekhovtsov, TR26-018](https://eccc.weizmann.ac.il/report/2026/018/)
+were checked as well. This targeted check found no matching unrestricted unary theorem;
+it is not an exhaustive best-bound survey or certification of novelty.
 
-**Local connection / next check.** The
-[encoding audit](https://kbr.is-a.dev/math-research/#unary-to-bit-Frege-encoding-clarification)
-does not preserve affine queries under substitution. A bit-PHP Res(⊕) bound must
-not be advertised as a unary-PHP bound without a suitable proof-system reduction.
+**Local connection / next check.** The new
+[working ordinary-PHP theorem](https://kbr.is-a.dev/math-research/#ordinary-unary-PHP-Res-parity-superpolynomial)
+uses a graph restriction, graph-adapted separated weights and the generic affine-DAG
+compiler on that same graph. Its registry entry owns candidate status and the remaining
+independent-review/prior-art work; the [dated audit](https://kbr.is-a.dev/math-research/#ordinary-unary-parity-prior-art-scope)
+records the checked scope. It is not obtained by silently substituting the
+[bit-PHP result](https://kbr.is-a.dev/math-research/#publication-Res-parity-bit-PHP-theorem):
+the usual unary-to-bit substitution does not preserve affine queries.
 
 ## res-parity-size-width
 
