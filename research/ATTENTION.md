@@ -130,6 +130,22 @@ A uniform bijection of m>=1 rows avoids any fixed forbidden pair set P with prob
 
 ---
 
+### Random graph unary separated space
+
+**Claim:** [lem:random-graph-unary-separated-space](<https://kbr.is-a.dev/math-research/#random-graph-unary-separated-space>)
+
+A sixteen-neighbor graph with one distinguished edge per row admits a homogeneous degree-k space in 15(N+1) coordinates of dimension at least one half exp(-5k^2/N) choose(15(N+1),k), separated from old graph PC through N/10^6 for k=O(sqrt(N log N)).
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** A graph-adapted old weight space with enough dimension for common affine kernels, avoiding the need for full old quotient-image decay. The residual-hardness probability and simultaneous coefficient separation merit independent audit.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit the conditioned random-graph distribution, row/CNF encoding transfer, coefficient detectors and dimension constants; compare with existing restriction-based graph-PHP arguments.
+
+---
+
 ### BLVZ chessboard filling
 
 **Claim:** [third-party:BLVZ-chessboard-filling](<https://kbr.is-a.dev/math-research/#lean-chessboard-filling>)
@@ -253,6 +269,22 @@ Every polynomial-block-inventory complete binary ENS family on arbitrary quadrat
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Compare with prior lower bounds for bounded-degree extension systems and obtain independent review of the structural dichotomy and complete source ledger before any novelty or publication claim.
+
+---
+
+### General binary unary affine source exclusion
+
+**Claim:** [thm:general-binary-unary-affine-source-exclusion](<https://kbr.is-a.dev/math-research/#general-binary-unary-affine-source-exclusion>)
+
+Over F2, ordinary functional or weak unary PHP with any polynomial-inventory complete one-level old-affine ENS family has no polylogarithmic-degree NS or PC refutation for sufficiently large N.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Closes the binary one-level unary-affine boundary, including dense middle ranks, by a uniform graph restriction and common-weight mechanism. Possible broader proof-system consequences need a separate end-to-end compiler and prior-art audit; the Frege recurrence remains open.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Audit the graph-weight proof and exact ordinary-PHP affine-source compiler/rule conventions, then check prior art before any standalone proof-system claim. Separately identify the first retained-input obstacle for the main Frege route.
 
 ---
 
