@@ -71,6 +71,7 @@
     .notebook-search input[type=search] { width: 100%; margin: 8px 0; padding: 10px; font: inherit; }
     .search-toggle, .notebook-search button { font: inherit; color: var(--accent); background: var(--paper); border: 1px solid #c8d8ce; border-radius: 5px; padding: 6px 10px; cursor: pointer; }
     .search-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .thread-navigation { max-width: 1100px; margin: 12px auto; padding: 0 18px; overflow-wrap: anywhere; }
     #search-close { margin-left: auto; }
     #search-results { padding: 0; list-style: none; }
     #search-results button { display: block; width: 100%; text-align: left; margin-top: 8px; overflow-wrap: anywhere; }
@@ -121,6 +122,8 @@
     <span><a class="brand" href="https://github.com/kbr-/math-research">Noemesis</a> · Research notebook</span>
     <span id="status" role="status">Loading math…</span>
   </header>
+  <!-- THREAD SETTINGS -->
+  <!-- THREAD NAVIGATION -->
   <main>
     <!-- NOTEBOOK -->
     <footer id="notebook-footer">Changes appear automatically. Right-click an equation for MathJax options.</footer>
@@ -135,6 +138,7 @@
   <aside class="notebook-search" id="notebook-search" aria-label="Search notebook" hidden>
     <div class="search-controls"><label for="search-query"><strong>Search text or TeX</strong></label><button id="search-close" type="button" aria-label="Close search">Close</button></div>
     <input id="search-query" type="search" placeholder="Words or TeX, e.g. \mathcal" autocomplete="off" spellcheck="false" aria-describedby="search-status">
+    <label>Scope <select id="search-scope"><option value="current">This notebook</option><option value="all">All notebooks</option></select></label>
     <label><input id="search-case" type="checkbox"> Match case</label>
     <p id="search-status" role="status">Search the entire notebook, including unvisited equations.</p>
     <ul id="search-results"></ul>
@@ -219,6 +223,9 @@
       const opener = document.getElementById('search-open');
       const input = document.getElementById('search-query');
       const matchCase = document.getElementById('search-case');
+      const scope = document.getElementById('search-scope');
+      const thread = window.notebookThread || {name: 'main', title: 'Main notebook', catalogue: './notebooks.json'};
+      let allPromise;
       const status = document.getElementById('search-status');
       const results = document.getElementById('search-results');
       const previous = document.getElementById('search-previous');
@@ -259,6 +266,36 @@
         })();
         return indexPromise;
       }
+      async function allIndex() {
+        if (allPromise) return allPromise;
+        allPromise = (async () => {
+          const catalogueUrl = new URL(thread.catalogue, location.href);
+          const response = await fetch(catalogueUrl);
+          if (!response.ok) throw new Error('Cannot load notebook directory');
+          const notebooks = await response.json();
+          const records = (await buildIndex()).map(r => ({...r, title: thread.title + ' · ' + r.title}));
+          for (const notebook of notebooks) {
+            if (notebook.name === thread.name) continue;
+            const response = await fetch(new URL(notebook.source, catalogueUrl));
+            if (!response.ok) throw new Error('Cannot load ' + notebook.title);
+            const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+            // Detached source is never inserted/typeset. Index complete sections/articles,
+            // retaining original TeX and navigable source anchors.
+            let deadline = performance.now() + 8;
+            for (const region of doc.querySelectorAll('section:not(#research-record), article')) {
+              const text = normalize(region.textContent);
+              const heading = region.querySelector('h2, h3');
+              records.push({text, lower: text.toLowerCase(), title: notebook.title + ' · ' + (heading?.textContent || 'Overview'),
+                url: new URL(notebook.url + '#' + encodeURIComponent(region.id), catalogueUrl).href});
+              if (performance.now() >= deadline) { await pause(); deadline = performance.now() + 8; }
+            }
+            const intro = [...doc.body.children].filter(e => !e.matches('section')).map(e => e.textContent).join(' ');
+            if (intro.trim()) records.push({text: normalize(intro), lower: normalize(intro).toLowerCase(), title: notebook.title + ' · Overview', url: new URL(notebook.url, catalogueUrl).href});
+          }
+          return records;
+        })().catch(error => { allPromise = null; throw error; });
+        return allPromise;
+      }
       function close() {
         panel.hidden = true;
         opener.setAttribute('aria-expanded', 'false');
@@ -280,6 +317,7 @@
           button.append(title, excerpt);
           button.addEventListener('click', () => {
             close();
+            if (record.url) { location.href = record.url; return; }
             highlighted?.classList.remove('search-hit');
             highlighted = record.element;
             highlighted.classList.add('search-hit');
@@ -318,7 +356,9 @@
         }
         status.dataset.state = 'searching';
         status.textContent = indexPromise ? 'Searching…' : 'Preparing search…';
-        const records = await buildIndex();
+        let records;
+        try { records = await (scope.value === 'all' ? allIndex() : buildIndex()); }
+        catch (error) { if (run === generation) { status.textContent = error.message; status.dataset.state = 'error'; } return; }
         if (run !== generation || panel.hidden) return;
         const started = performance.now();
         const sensitive = matchCase.checked;
@@ -356,6 +396,7 @@
       document.getElementById('search-close').addEventListener('click', () => { close(); opener.focus(); });
       input.addEventListener('input', schedule);
       matchCase.addEventListener('change', schedule);
+      scope.addEventListener('change', schedule);
       input.addEventListener('keydown', event => {
         if (event.key === 'Enter') { clearTimeout(timer); void search(); }
       });

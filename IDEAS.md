@@ -167,7 +167,8 @@ into the notebook.
 
 ## 9. Side research notebooks with shared claim infrastructure
 
-Implementation plan: [SIDE_BRANCHES_PLAN.md](research/notes/SIDE_BRANCHES_PLAN.md).
+Implemented 20 September 2026: [SIDE_BRANCHES_PLAN.md](research/notes/SIDE_BRANCHES_PLAN.md)
+records the checkpoints and acceptance; use [the workflow](tools/SIDE_NOTEBOOKS.md).
 
 **The idea (20 September 2026).** Give each side research branch its own notebook,
 initially with an empty research record and living sections adjusted to its goal.
@@ -196,8 +197,8 @@ research-thread identity. The agent verifies the initialized notebook and report
 its path/URL and initial scope. Opening the branch does not itself authorize
 unbounded research, parallel agents or publication.
 
-This records a protocol to implement later; it does not yet add an active `Branch`
-command to `PROMPTS.md` or create a side notebook.
+The `Branch` protocol is now available in `PROMPTS.md`. Implementation used
+temporary test notebooks; no side mathematical investigation was started.
 
 **Codex comments (20 September 2026).**
 

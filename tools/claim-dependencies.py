@@ -317,7 +317,7 @@ def metadata_packet(data, label, root=ROOT, limit=6, width=700):
         if not selected:selected=blocks[:1]
         excerpts=[{'line':b['line'],'text':b['text'][:width],
                    'truncated':len(b['text'])>width} for b in selected[:limit]]
-        passages.append({'target':'https://kbr.is-a.dev/math-research/#'+anchor,
+        passages.append({'target':reference['target'].split('#')[0]+'#'+anchor,
                          'source_sha256':hashlib.sha256(region.encode()).hexdigest(),
                          'widened':widened,'excerpts':excerpts,
                          'omitted_selected_blocks':max(0,len(selected)-limit),

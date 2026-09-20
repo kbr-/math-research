@@ -89,8 +89,17 @@ def main():
     parser.add_argument('--notebook', help='Thread name, or an explicit HTML path for compatibility')
     parser.add_argument('--config', type=Path)
     parser.add_argument('--out', type=Path, help='Save complete counts; exit status still enforces limits')
+    parser.add_argument('--all', action='store_true', help='Validate every registered notebook')
     args = parser.parse_args()
     try:
+        if args.all:
+            if args.notebook or args.config or args.out:
+                raise ValueError('--all cannot be combined with per-notebook options')
+            from notebooks import catalogue
+            for name in catalogue(ROOT):
+                print(name + ':')
+                print(describe(check(ROOT,name)))
+            return 0
         from notebooks import selected
         if args.notebook and (args.notebook.endswith(".html") or "/" in args.notebook):
             source = Path(args.notebook)

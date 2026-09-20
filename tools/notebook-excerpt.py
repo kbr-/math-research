@@ -8,8 +8,9 @@ from html.parser import HTMLParser
 from pathlib import Path
 import re
 import sys
+import subprocess
 from recovery_evidence import observe
-from notebooks import selected
+from notebooks import selected, resolve_anchor, selection_file
 
 
 MATH = re.compile(r'\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]')
@@ -137,6 +138,15 @@ def main():
     try:
         root = Path(__file__).resolve().parents[1]
         item = selected(args.notebook, root)
+        # Bare lookups without a persisted selection must not pick an arbitrary
+        # notebook when multiple threads reuse an anchor.
+        if args.anchor and args.notebook is None:
+            try:
+                explicit_selection = selection_file(root).exists()
+            except (OSError, subprocess.CalledProcessError):
+                explicit_selection = False
+            if not explicit_selection:
+                item = resolve_anchor(args.anchor, root=root)
         source = (root / item["source"]).read_text()
         notebook = Notebook(source)
         if args.toc:

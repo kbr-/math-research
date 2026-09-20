@@ -16,13 +16,18 @@ ROOT = Path(__file__).resolve().parents[1]
 def entries(body):
     record = body.find('<section id="research-record">')
     found = re.finditer(r'<article\b[^>]*\bid="([^"]+)"[^>]*>.*?</article>', body[max(record, 0):], re.S)
-    return {match.group(1): re.sub(r'</?a\b[^>]*>', '', match.group(0)) for match in found}
+    matches = list(found)
+    if len({m.group(1) for m in matches}) != len(matches):
+        raise ValueError('Duplicate research article IDs')
+    return {match.group(1): re.sub(r'</?a\b[^>]*>', '', match.group(0)) for match in matches}
 
 
 def violations(base_body, current_body):
     base, current = entries(base_body), entries(current_body)
     missing = [name for name in base if name not in current]
     changed = [name for name in base if name in current and base[name] != current[name]]
+    if [name for name in current if name in base] != [name for name in base if name in current]:
+        changed.append('(historical entry order)')
     return missing, changed
 
 

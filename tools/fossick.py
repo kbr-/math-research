@@ -40,12 +40,14 @@ def revision(root):
     return subprocess.check_output(['git', 'rev-parse', 'HEAD^{commit}'], cwd=root, text=True).strip()
 
 
-def inventory(root):
+def inventory_one(root, notebook_name='main'):
+    from notebooks import selected
+    item=selected(notebook_name,root);notebook_path=root/item['source']
     data = load_claims(root / 'research/claims/index.json')
-    source = (root / 'notebook.html').read_text()
+    source = notebook_path.read_text()
     # Repeated bounded batches need not reparse unchanged evidence. The cache is
     # disposable; its key covers the full content of every referenced local file.
-    paths = {root/'notebook.html', root/'research/claims/index.json', Path(__file__),
+    paths = {notebook_path, root/'research/claims/index.json', Path(__file__),
              Path(__file__).with_name('claim_evidence.py'), Path(__file__).with_name('claim_registry.py')}
     for c in data['claims']:
         for review in c.get('reviews', {}).values():
@@ -61,7 +63,7 @@ def inventory(root):
                 h.update(chunk)
         hashes.append((str(path), h.hexdigest()))
     key=digest(hashes)
-    cache=root/'research/logs/fossick-inventory.json'
+    cache=root/'research/logs'/('fossick-inventory.json' if notebook_name=='main' else 'fossick-inventory-'+notebook_name+'.json')
     if cache.exists():
         cached=json.loads(cache.read_text())
         if cached.get('key')==key:
@@ -75,7 +77,7 @@ def inventory(root):
     for c in data['claims']:
         for ref in references(c):
             target = local_target(ref['target'], root)
-            if target and target[0].resolve() == (root/'notebook.html').resolve() and target[1]:
+            if target and target[0].resolve() == notebook_path.resolve() and target[1]:
                 try:
                     position = book.anchor(target[1])['start']
                 except ValueError:
@@ -119,13 +121,21 @@ def inventory(root):
                    'evidence': current_evidence}
         title = re.search(r'<h[23][^>]*>([\s\S]*?)</h[23]>', raw)
         status = re.search(r'<p class="entry-meta">([\s\S]*?)</p>', normalized)
-        rows.append(dict(id=n['anchor'], fingerprint=digest(payload), source_sha256=payload['source'],
+        rows.append(dict(id=n['anchor'] if notebook_name=='main' else notebook_name+'#'+n['anchor'], notebook=notebook_name, source=item['source']+'#'+n['anchor'], fingerprint=digest(payload), source_sha256=payload['source'],
                          normalization=normalization, claims=labels,
                          title=excerpt.visible_text(title.group(1)) if title else n['anchor'],
                          status=excerpt.visible_text(status.group(1)) if status else '',
                          preview=excerpt.visible_text(normalized)[:600]))
     atomic(cache,json.dumps({'key':key,'rows':rows},ensure_ascii=False))
     return data, rows
+
+
+def inventory(root):
+    from notebooks import catalogue
+    rows=[];data=None
+    for name in catalogue(root):
+        data,part=inventory_one(root,name);rows.extend(part)
+    return data,rows
 
 
 def work(state, rows):

@@ -15,8 +15,9 @@ or rereading bundled files. Use `--session TURN` for an explicit active clock an
 `--formalization` only when assigned. Preparation records restoration but starts
 no research cycle; part reads and ordinary `--current` reads are not new resumes.
 
-Read this guide fully. **The notebook is the single source of truth for current
-mathematics.** This file is a stable reading map, not a second status summary.
+Read this guide fully. **The selected notebook owns its thread's current mathematics.**
+Selection defaults to main; `--notebook NAME` overrides the worktree-local choice
+set by `tools/branch.py select NAME`. See [side notebooks](../../tools/SIDE_NOTEBOOKS.md). This file is a stable reading map, not a second status summary.
 The handoff import is complete: **do not read HANDOFF.md or the compendium PDF**
 on resume, even in a fresh clone. “Before this notebook” is historical context.
 

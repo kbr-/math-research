@@ -16,6 +16,26 @@ Run `python3 tools/resume.py`, then read every listed part with separate bounded
 outputs. Retry truncated parts without preparing another resume. Follow the
 included RESUME.md without rereading bundled files; load other sources only as needed.
 
+# Branch
+
+Create a side research notebook for the goal supplied with this protocol, optionally
+identified by an existing notebook entry or claim. This invocation authorizes setup,
+not an unbounded research run. Do not begin the mathematical investigation unless
+also asked. Follow [the side-notebook workflow](tools/SIDE_NOTEBOOKS.md).
+
+Read the named source and applicable claim/dependency/correction records. Choose a
+stable thread name and an appropriate Git branch/worktree without disturbing
+unrelated edits. Prepare the new goal, initial position, remaining obligations,
+first test and stopping point, working context and applicable formalization gaps.
+Use `tools/branch.py create` with reviewed context JSON; the research record starts
+empty. Link inherited results rather than copying their records or upgrading their
+status. Register/select the notebook, run its checks, commit setup and report its
+path, local route and future public URL. A public route is not a deployment.
+
+Subsequent Resume/Spin/research operates on the selected thread, preserving its
+own living sections and using the shared claim registry. No additional permission
+for formalization, parallel work or publication follows from creating a branch.
+
 # Formalize
 
 Invocation: `Execute the Formalize prompt against claim <reference-to-the-claim>`.
@@ -200,7 +220,7 @@ However, I would like for you to continue: both research and framework
 improvements --- on your own.
 
 Autonomously advance the current research goal stated at the top of
-`notebook.html` through bounded, fully recorded research cycles and clear, small
+the selected research notebook (main by default) through bounded, fully recorded research cycles and clear, small
 framework improvements.
 Follow the repository rules for maintaining the notebook, measured evidence,
 and checkpoints. Continue until the user explicitly interrupts.

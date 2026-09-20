@@ -4,6 +4,10 @@ on:
   push:
     paths:
       - notebook.html
+      - research/branches/**
+      - tools/notebooks.py
+      - tools/notebook_site.py
+      - tools/branch.py
       - research/context-budgets.json
       - tools/notebook_context.py
       - tools/notebook-excerpt.py
@@ -19,6 +23,10 @@ on:
   pull_request:
     paths:
       - notebook.html
+      - research/branches/**
+      - tools/notebooks.py
+      - tools/notebook_site.py
+      - tools/branch.py
       - research/context-budgets.json
       - 'tools/**'
       - compute.sh
@@ -34,7 +42,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-      - run: python3 tools/notebook_context.py
+      - run: python3 tools/notebook_context.py --all
       - run: python3 -m unittest discover -s tools/tests -p test_notebook_context.py
       - run: python3 -m unittest discover -s tools/tests -p test_notebook_excerpt.py
       - run: python3 -m unittest discover -s tools/tests -p test_finish_turn.py

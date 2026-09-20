@@ -118,14 +118,16 @@ def session_model(agent=None, model=None):
     return model or os.environ.get('MATH_AGENT_MODEL')
 
 
-def start_session(name, agent=None, model=None):
+def start_session(name, agent=None, model=None, notebook=None):
+    from notebooks import selected
+    notebook = selected(notebook, ROOT)["name"]
     # Record who produced the cycle; never a machine-local session ID.
     path = session_path(name)
     with locked(path):
         if path.exists():
             raise ValueError('Session exists; choose a new name')
         add_event(path, 'start', boot_id=boot_id(), agent=agent or detect_agent(),
-                  model=session_model(agent, model) or 'unspecified')
+                  model=session_model(agent, model) or 'unspecified', notebook=notebook)
     return path
 
 
@@ -413,6 +415,7 @@ def main():
         parser = argparse.ArgumentParser(prog=f'./compute.sh {action}')
         parser.add_argument('session')
         if action == 'start':
+            parser.add_argument('--notebook', help='Research thread; defaults to worktree selection or main')
             parser.add_argument('--agent', help='Default: detected from the environment or MATH_AGENT')
             parser.add_argument('--model', help='Model and reasoning setting; Codex uses active turn metadata when available, otherwise this value or MATH_AGENT_MODEL')
         if action == 'phase':
@@ -433,7 +436,7 @@ def main():
         if action == 'start':
             if not session_model(args.agent, args.model):
                 parser.error('State your model: --model "MODEL, reasoning setting" (or set MATH_AGENT_MODEL)')
-            print(start_session(args.session, args.agent, args.model).relative_to(ROOT))
+            print(start_session(args.session, args.agent, args.model, args.notebook).relative_to(ROOT))
             recovery_observe('bind', root=ROOT, turn=args.session)
             return 0
         if action != 'run':

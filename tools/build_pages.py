@@ -12,16 +12,18 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from server import snapshot
+from notebooks import catalogue
+from notebook_site import manifest
 
 SOURCE_URL = 'https://github.com/kbr-/math-research'
-OUTPUT_FILES = {'index.html', 'revision.json', '.nojekyll'}
+OUTPUT_FILES = {'index.html', 'revision.json', '.nojekyll', 'notebooks.json', 'notebook-source.html'}
 
 
-def build(out, root=ROOT, source_url=SOURCE_URL):
-    out, root = Path(out), Path(root)
+def page(root, source_url, notebook_name):
+    root = Path(root)
     if urlsplit(source_url).scheme != 'https':
         raise ValueError('Source URL must use HTTPS')
-    template, notebook, source_revision = snapshot(root)
+    template, notebook, source_revision = snapshot(root, notebook_name)
     software_license = (root / 'LICENSES/MIT.txt').read_text(encoding='utf-8').strip()
     if '--' in software_license:
         raise ValueError('License text cannot be embedded in an HTML comment unchanged')
@@ -49,18 +51,32 @@ def build(out, root=ROOT, source_url=SOURCE_URL):
     page = page.replace('<head>', '<head>\n<!--\n' + software_license + '\n-->', 1)
     page = page.replace('__REVISION__', revision).replace('<!-- NOTEBOOK -->', notebook)
 
-    # Never package arbitrary contents from an existing output directory.
-    if out.is_symlink():
-        raise ValueError('Output directory must not be a symlink')
+    return page,notebook,revision
+
+
+def build(out, root=ROOT, source_url=SOURCE_URL):
+    out,root=Path(out),Path(root)
+    items=catalogue(root)
+    payload={'.nojekyll':'','notebooks.json':json.dumps(manifest(root))+'\n'}
+    main_revision=None
+    for name,item in items.items():
+        rendered,notebook,revision=page(root,source_url,name)
+        if name=='main':main_revision=revision
+        prefix=item['route']
+        payload[prefix+'index.html']=rendered
+        payload[prefix+'revision.json']=json.dumps({'revision':revision})+'\n'
+        payload[prefix+'notebook-source.html']=notebook
+    allowed_dirs={p.as_posix() for name in payload for p in Path(name).parents if p.as_posix()!='.'}
+    if out.is_symlink():raise ValueError('Output directory must not be a symlink')
     if out.exists():
-        for path in out.iterdir():
-            if path.name not in OUTPUT_FILES or path.is_symlink() or not path.is_file():
-                raise ValueError(f'Unexpected output-directory entry: {path.name}')
-    out.mkdir(parents=True, exist_ok=True)
-    (out / 'index.html').write_text(page, encoding='utf-8')
-    (out / 'revision.json').write_text(json.dumps({'revision': revision}) + '\n', encoding='utf-8')
-    (out / '.nojekyll').write_text('', encoding='utf-8')
-    return revision
+        for existing in out.rglob('*'):
+            rel=existing.relative_to(out).as_posix()
+            if existing.is_symlink() or (existing.is_dir() and rel not in allowed_dirs) or (existing.is_file() and rel not in payload):
+                raise ValueError('Unexpected output-directory entry: '+rel)
+    out.mkdir(parents=True,exist_ok=True)
+    for name,body in payload.items():
+        target=out/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(body)
+    return main_revision
 
 
 def main():
@@ -69,7 +85,7 @@ def main():
     parser.add_argument('--source-url', default=SOURCE_URL)
     args = parser.parse_args()
     build(args.out, source_url=args.source_url)
-    print(f'Built the public notebook in {args.out}: index.html, revision.json, .nojekyll')
+    print(f'Built registered public notebooks in {args.out}; no private or runtime files copied')
 
 
 if __name__ == '__main__':

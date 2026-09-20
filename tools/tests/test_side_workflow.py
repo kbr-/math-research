@@ -53,10 +53,62 @@ class SideFinalization(FinalizationTest):
         (d/'context-budgets.json').write_bytes((self.root/'research/context-budgets.json').read_bytes())
         main=self.root/'notebook.html';before=main.read_bytes() if main.exists() else b''
         if not main.exists():main.write_text('<section id="research-record"></section>');before=main.read_bytes()
-        (d/'notebook.html').write_text('<section id="research-record"><article id="side-entry" data-kind="review" data-route="side-test" data-claims="none" data-claim-note="Fixture"><p class="entry-meta">Test.</p><!-- TIMING test_turn --></article></section>')
-        result=self.command('tools/finish-turn.py','test_turn','--notebook','test')
+        (d/'notebook.html').write_text('<section id="research-record"><article id="side-entry" data-kind="review" data-route="side-test" data-claims="none" data-claim-note="Fixture"><p class="entry-meta">Test.</p><!-- TIMING side_turn --></article></section>')
+        self.command('compute.sh','start','side_turn','--model','Test model, high','--notebook','test')
+        result=self.command('tools/finish-turn.py','side_turn','--notebook','test')
         self.assertIn('in test:',result.stdout)
         self.assertEqual(main.read_bytes(),before)
         self.assertIn('timing-table',(d/'notebook.html').read_text())
 
 if __name__=='__main__':unittest.main()
+
+class SideIntegration(SideWorkflow):
+    def test_resume_only_selected_context(self):
+        create('test','Test',self.ctx,self.root)
+        resume=module('resume')
+        for file in resume.FILES:
+            p=self.root/file;p.parent.mkdir(parents=True,exist_ok=True);p.write_text('Rule fixture')
+        parts=resume.bundle(self.root,notebook='test')
+        content=''.join(body for _,body,_,_ in parts)
+        self.assertIn('Test side goal',content)
+        self.assertNotIn('id="origin"',content)
+    def test_independent_git_branch_merge(self):
+        subprocess.run(['git','add','.'],cwd=self.root,check=True)
+        def git(*args):return subprocess.check_output(['git',*args],cwd=self.root,text=True,stderr=subprocess.DEVNULL)
+        git('-c','user.name=Test','-c','user.email=test@example.invalid','commit','-qm','base')
+        base=git('rev-parse','HEAD').strip()
+        git('switch','-qc','left');create('alpha','Alpha',self.ctx,self.root);git('add','research')
+        git('-c','user.name=Test','-c','user.email=test@example.invalid','commit','-qm','alpha')
+        git('switch','-qc','right',base);create('beta','Beta',self.ctx,self.root);git('add','research')
+        git('-c','user.name=Test','-c','user.email=test@example.invalid','commit','-qm','beta')
+        git('-c','user.name=Test','-c','user.email=test@example.invalid','merge','--no-edit','left')
+        self.assertTrue((self.root/'research/branches/alpha/notebook.html').exists())
+        self.assertTrue((self.root/'research/branches/beta/notebook.html').exists())
+    def test_failed_and_interrupted_setup_is_recoverable(self):
+        import copy
+        from notebooks import catalogue
+        bad=copy.deepcopy(self.ctx);bad['goal']='word '*1000
+        with self.assertRaises(ValueError):create('too-big','Too big',bad,self.root)
+        self.assertNotIn('too-big',catalogue(self.root))
+        interrupted=self.root/'research/branches/.creating-interrupted'
+        interrupted.mkdir(parents=True);(interrupted/'notebook.json').write_text('incomplete')
+        create('recovered','Recovered',self.ctx,self.root)
+        self.assertIn('recovered',catalogue(self.root))
+        with self.assertRaises(ValueError):create('recovered','Recovered',self.ctx,self.root)
+
+    def test_cross_notebook_claim_packet_and_citations(self):
+        from claim_registry import HEADER,upgrade,import_markdown
+        from record_citations import scan_record
+        from claim_reviews import Evidence
+        create('test','Test',self.ctx,self.root)
+        p=self.root/'research/branches/test/notebook.html'
+        p.write_text(p.read_text().replace('<h2>Research record</h2>', '<h2>Research record</h2><article id="side-entry"><h4 id="result">Result</h4><p>Working proof uses <a href="https://kbr.is-a.dev/math-research/#origin">original</a>.</p></article>'))
+        d=upgrade(import_markdown('# Index\n\n'+HEADER+'| `lem:a` | A | Working | [Proof](https://kbr.is-a.dev/math-research/branches/test/#result) |\n| `lem:b` | B | Working | [Proof](https://kbr.is-a.dev/math-research/#origin) |\n'))
+        dependencies=module('claim-dependencies')
+        packet=dependencies.metadata_packet(d,'lem:a',self.root)
+        self.assertIn('/branches/test/',str(packet))
+        report=scan_record(d,self.root)
+        self.assertTrue(any(c['target_claim_candidates']==['lem:b'] for c in report['citations']))
+        report=dependencies.scan(d,self.root)
+        self.assertTrue(any(c['source']=='lem:a' and 'lem:b' in c['targets'] for c in report['candidates']))
+        self.assertTrue(Evidence(self.root).sha256('https://kbr.is-a.dev/math-research/branches/test/#result'))

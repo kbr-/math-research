@@ -124,6 +124,9 @@ def finish(root, turn, next_turn=None, notebook_name=None):
     from notebooks import selected, paths
     item = selected(notebook_name, root)
     notebook = root / item["source"]
+    first = json.loads((root/'research/logs'/f'{turn}.jsonl').read_text().splitlines()[0])
+    if first.get('notebook',item['name']) != item['name']:
+        raise ValueError('Selected notebook differs from timing session notebook')
     marker = f'<!-- TIMING {turn} -->'
     owners = [p for p in paths(root) if marker in p.read_text()]
     if owners != [notebook]:
@@ -160,7 +163,7 @@ def finish(root, turn, next_turn=None, notebook_name=None):
         journal = root / 'research/logs' / f'{turn}.jsonl'
         first = json.loads(journal.read_text().splitlines()[0]) if journal.exists() else {}
         inherit = [f'--{key}={first[key]}' for key in ('agent', 'model') if first.get(key)]
-        subprocess.run([compute, 'start', next_turn, *inherit], cwd=root, check=True,
+        subprocess.run([compute, 'start', next_turn, *inherit, '--notebook', item['name']], cwd=root, check=True,
                        stdout=subprocess.PIPE, text=True)
         subprocess.run([compute, 'phase', next_turn, 'preparation', '--note',
                         f'Finalize checkpoint {turn}, then begin the next research cycle'],

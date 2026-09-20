@@ -4,7 +4,7 @@ Draft: 20 September 2026. Implements the proposals in
 [IDEAS.md item 9](../../IDEAS.md#9-side-research-notebooks-with-shared-claim-infrastructure),
 including the proposed `Branch` protocol in `PROMPTS.md`.
 
-Status: **implementation in progress**. Creating this plan does not start a side
+Status: **implemented; acceptance recorded below**. Creating this plan does not start a side
 investigation or change the active notebook. Mark tasks
 complete only after implementation and validation; record decisions, evidence
 and checkpoint references here. Follow existing workspace policies rather than
@@ -42,113 +42,113 @@ and manual conflict resolution; the merge drivers are not a prerequisite.
 - [x] Define safe, stable names and reject duplicate IDs, path traversal and route
       collisions. Renaming a Git branch must not rename a published notebook.
       Preserve published URLs when closing or reorganizing research threads.
-- [ ] Give every notebook the familiar living sections and an independent record:
+- [x] Give every notebook the familiar living sections and an independent record:
       goal/current position, remaining route, proposed next step, working context
       and applicable formalization gaps. Empty records are valid after creation.
-- [ ] Preserve global claim IDs. Qualify article/source references by notebook and
+- [x] Preserve global claim IDs. Qualify article/source references by notebook and
       anchor; ordinary repeated section IDs are scoped to their notebook. Reject
       ambiguous legacy anchor-only lookups rather than resolving to the wrong file.
 
 ## 2. Parameterize existing tools without duplicating the framework
 
-- [ ] Introduce one shared notebook-selection interface, with an explicit option
+- [x] Introduce one shared notebook-selection interface, with an explicit option
       such as `--notebook NAME` and the main notebook as the backward-compatible
       default. Validate the selection before modifying any file.
-- [ ] Specify persistent selection per worktree/session, without committing machine
+- [x] Specify persistent selection per worktree/session, without committing machine
       paths or agent session IDs. Explicit selection takes precedence. Never infer
       the active research thread solely from the Git branch name; report the chosen
       notebook in restoration and finalization output.
-- [ ] Extend `tools/resume.py` and bounded excerpt/context tools to load only the
+- [x] Extend `tools/resume.py` and bounded excerpt/context tools to load only the
       selected notebook's living sections and compact contents, followed by relevant
       cross-thread sources as needed. Preserve the bounded resume delivery contract;
       do not import the entire main notebook to initialize every side notebook.
-- [ ] Extend `research/context-budgets.json` handling so each notebook has an
+- [x] Extend `research/context-budgets.json` handling so each notebook has an
       explicit allocation using the established policy. Creating a thread does not
       raise the main notebook's limits or waive per-notebook hard limits.
-- [ ] Pass notebook identity through timing and `tools/finish-turn.py`: insert the
+- [x] Pass notebook identity through timing and `tools/finish-turn.py`: insert the
       unique timing marker and producer credit into the selected record, validate
       its route/review cadence, and retain globally unambiguous evidence paths.
-- [ ] Apply append-only, declaration/source-inventory and link checks to every
+- [x] Apply append-only, declaration/source-inventory and link checks to every
       touched notebook. Compare existing records against the relevant integration
       base. Detect deleted notebooks and lost records, not just edits in files that
       remain present. Preserve the historical handoff unchanged.
-- [ ] Update claim source lookup, packets, citation discovery and evidence hashing
+- [x] Update claim source lookup, packets, citation discovery and evidence hashing
       to resolve all registered notebooks. Existing main-notebook links and review
       evidence must keep their meaning; do not blanket-refresh review hashes.
-- [ ] Share claim metadata, relationships, attention history and formalization
+- [x] Share claim metadata, relationships, attention history and formalization
       infrastructure. A cross-thread correction must surface affected dependencies;
       membership in another thread is not evidence of independence.
 
 ## 3. Add the `Branch` protocol and a small setup tool
 
-- [ ] Add a `Branch` section to `PROMPTS.md` only once its tools are usable. Invocation:
+- [x] Add a `Branch` section to `PROMPTS.md` only once its tools are usable. Invocation:
       `Branch: <new goal>`, optionally with a notebook entry/claim reference where
       the goal originated. The agent resolves the reference and reads the exact
       relevant hypotheses, existing results, corrections and remaining gaps.
-- [ ] Separate mechanical scaffolding from mathematical context preparation. The
+- [x] Separate mechanical scaffolding from mathematical context preparation. The
       tool creates/registers a notebook; the agent supplies a faithful goal and
       initial living context. It must not infer a proof, novelty or a reviewed
       dependency merely from the requested goal or a short claim packet.
-- [ ] Select a stable research-thread name and create the associated Git branch or
+- [x] Select a stable research-thread name and create the associated Git branch or
       isolated worktree as appropriate to the assignment and current worktree.
       Preserve unrelated edits and the user's branch. Record the association, not
       an equivalence between Git branch identity and notebook identity.
-- [ ] Initialize a genuinely empty research record. Fill living sections with the
+- [x] Initialize a genuinely empty research record. Fill living sections with the
       new goal, exact starting assumptions, inherited tools and links, highest-risk
       obligations, a concrete first test/stopping point and relevant formalization
       gaps. Do not copy historical entries or claim setup itself as research progress.
-- [ ] Register navigation, source resolution, budgets and active selection. Validate
+- [x] Register navigation, source resolution, budgets and active selection. Validate
       the complete proposed setup before exposing it as ready. Refuse overwriting
       an existing thread and make interrupted setup recoverable without duplicates.
-- [ ] End setup with a local checkpoint and report the source path, local/public
+- [x] End setup with a local checkpoint and report the source path, local/public
       route, goal and next step. Distinguish a future public URL from an already
       deployed page. Creation alone starts no unbounded Spin, parallel assignment,
       Lean work or publication; subsequent research follows the selected thread.
-- [ ] Revise existing root guidance that assumes a sole notebook so each notebook
+- [x] Revise existing root guidance that assumes a sole notebook so each notebook
       owns its thread's mathematical state while the main notebook owns the main
       goal. Link the shared policy rather than copying it into every branch.
 
 ## 4. Serve and publish multiple notebooks
 
-- [ ] Reuse the current page shell, lazy MathJax, navigation controls and source-TeX
+- [x] Reuse the current page shell, lazy MathJax, navigation controls and source-TeX
       search. Add clear thread identity, lifecycle status, a link to main, and a
       small branch directory. Keep the main page's existing URL and behavior.
-- [ ] Resolve assets, refresh endpoints, entry anchors and cross-notebook links under
+- [x] Resolve assets, refresh endpoints, entry anchors and cross-notebook links under
       both local serving and the GitHub Pages project prefix. Nested pages must not
       accidentally fetch the main notebook or use broken relative paths.
-- [ ] Make local live refresh operate for the selected source. Build side pages
+- [x] Make local live refresh operate for the selected source. Build side pages
       through `tools/build_pages.py` into the minimal public artifact; never copy
       the checkout, private feedback, caches or local session metadata.
-- [ ] Default search to the displayed notebook, including unrendered mathematics.
+- [x] Default search to the displayed notebook, including unrendered mathematics.
       Provide an explicit all-notebooks scope with result labels and source links.
       Load wider indexes only on demand; do not typeset other notebooks to search.
-- [ ] Keep completed and abandoned notebooks accessible. Lifecycle changes update
+- [x] Keep completed and abandoned notebooks accessible. Lifecycle changes update
       living status without deleting earlier records. Promotion of a useful result
       creates a concise main integration entry linking the full side proof; the
       shared claim retains its identity and original source.
 
 ## 5. Validation and rollout
 
-- [ ] Preserve a fixture for the current single-notebook workflow. Existing commands,
+- [x] Preserve a fixture for the current single-notebook workflow. Existing commands,
       links, timing output and main-page behavior must work without new arguments.
-- [ ] In disposable repositories/worktrees, exercise `Branch` setup with a prose goal
+- [x] In disposable repositories/worktrees, exercise `Branch` setup with a prose goal
       and with an originating entry; test empty records, duplicate names, invalid
       references, unrelated edits and interrupted/repeated setup.
-- [ ] Verify two threads can run independently with separate living sections/timing,
+- [x] Verify two threads can run independently with separate living sections/timing,
       shared claims, cross-thread dependencies and corrections, and bounded restores.
       Loading one thread must not load every other record.
-- [ ] Test ordinary merge/rebase integration of distinct side notebooks: both
+- [x] Test ordinary merge/rebase integration of distinct side notebooks: both
       notebooks, living sections and records must survive. Check cross-notebook
       source links after integration. Driver-specific conflict fixtures belong
       to the separate Git merge plan.
-- [ ] Run local/server and static Pages tests for nested routes, refresh, assets,
+- [x] Run local/server and static Pages tests for nested routes, refresh, assets,
       cross-links, unrendered-TeX search, mobile controls and browser history.
       Measure startup/render/search costs with multiple growing records; record
       before/after evidence rather than assuming partitioning guarantees speed.
-- [ ] Validate per-notebook budgets, all affected registry evidence, append-only
+- [x] Validate per-notebook budgets, all affected registry evidence, append-only
       preservation and minimal-public-artifact contents. Retain focused evidence
       and checkpoint locally; publish only with applicable user authorization.
-- [ ] After infrastructure acceptance, use an explicitly assigned first side thread
+- [ ] **Deferred until an explicit mathematical assignment:** use a first side thread
       as the pilot. Odd-field double covering is a candidate, not an assignment in
       this plan. Confirm its initialized scope with the requested goal before any
       mathematical investigation.
@@ -209,3 +209,37 @@ Validation: the existing 152 tool tests pass; a targeted 19-test workflow run
 includes independent side finalization, empty creation, selection/override, source
 validation, budget enforcement and history deletion/mutation controls. Test
 fixture invocation errors were repaired during this checkpoint.
+
+### Delivery and acceptance — 20 September 2026
+
+`tools/notebook_site.py` shares page identity/navigation and source payloads between
+the live server and Pages builder. Nested routes and project prefixes work; a
+notebook's content change refreshes that notebook without reloading other records.
+The public artifact contains only rendered pages, revision metadata, a directory
+and explicit public notebook sources. Completed/abandoned pages remain accessible.
+
+`Branch` is now documented in `PROMPTS.md` and `tools/SIDE_NOTEBOOKS.md`. Setup uses
+reviewed context JSON, optionally creates a Git branch in a clean worktree, and
+can run in an independently prepared worktree. No automatic agent delegation,
+publication or mathematical investigation is enabled. Timing records notebook
+identity and the finisher validates it. Main URLs and existing command defaults
+remain compatible; side identity does not depend on a Git branch name.
+
+Shared source tools and Fossick traverse registered notebooks. Tests exercise
+side claim packets, exact evidence hashing, citation candidates and ordinary Git
+merging of independently created side notebooks. Existing main review hashes
+are preserved. Append-only checking also rejects reordered historical entries.
+
+Acceptance evidence is in `research/results/side_notebook_delivery_20260920/` and
+the cycle's timing archive. The 177 tool tests and nine Pages tests pass, alongside
+the static update-client test. Headless Chromium tested local and static project
+routes with 1,000 entries in each of two side notebooks, cross-notebook original
+TeX search, result navigation/back, live refresh and narrow-screen controls.
+No side sources were fetched on startup or current-notebook search. Measured
+current search was 289–309 ms, all-notebook search 225–260 ms after batching,
+and DOM-ready 365–401 ms in these runs. Initial per-entry yields made all-notebook
+search take 8.7 seconds; that implementation was replaced before acceptance.
+These are fixture measurements, not guarantees for every machine or record size.
+
+The separate merge-driver plan remains untouched. No real side mathematical
+thread has been created: the first-pilot checkbox intentionally awaits assignment.

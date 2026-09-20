@@ -405,3 +405,10 @@ copyright property; scholarly attribution remains an ethical expectation.
 Third-party materials retain their own rights. See
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for source licensing and
 redistribution details.
+
+## Side research notebooks
+
+The `Branch` protocol creates a separate research thread with its own goal and
+empty record, while retaining the shared claim registry. See
+[setup, selection and serving](tools/SIDE_NOTEBOOKS.md). Main remains the default;
+creating a notebook does not publish it or start an unbounded investigation.

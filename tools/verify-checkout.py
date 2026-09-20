@@ -69,7 +69,7 @@ def main():
                 local_sources += 1
                 if expected is not None and digest(ROOT / name) != expected:
                     failures.append('Local reference differs from the audited version: ' + key)
-    required = ['notebook.html', 'index.html', 'server.py', 'AGENTS.md', 'COMPUTATION_RULES.md',
+    required = ['tools/notebooks.py', 'tools/notebook_site.py', 'tools/branch.py', 'notebook.html', 'index.html', 'server.py', 'AGENTS.md', 'COMPUTATION_RULES.md',
                 'README.md', 'research/notes/RESUME.md', 'research/notes/SOURCE_AUDIT.md',
                 'compute.sh', 'start-codex.sh', 'start-session.sh', 'start-claude.sh',
                 'CLAUDE.md', 'research/CLAUDE.md', 'formalization/CLAUDE.md',

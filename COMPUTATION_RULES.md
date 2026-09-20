@@ -128,7 +128,9 @@ From the repository root:
 ./compute.sh report turn001 --stop
 ```
 
-`start` records the producing agent (detected, or `--agent NAME`) and its model.
+`start` records the producing agent (detected, or `--agent NAME`), its model,
+and the selected notebook (`--notebook NAME` overrides worktree selection).
+The finisher refuses a different notebook; `--next` carries the notebook forward.
 For Codex, `start` reads the current `CODEX_THREAD_ID`'s latest `turn_context`
 under `CODEX_HOME/sessions` (default `~/.codex/sessions`) and records its `model`
 and `effort`. These active-turn settings take precedence over supplied labels;

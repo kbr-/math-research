@@ -6,10 +6,15 @@ on:
     paths:
       - index.html
       - notebook.html
+      - research/branches/**
+      - tools/notebooks.py
+      - tools/notebook_site.py
+      - tools/branch.py
       - server.py
       - LICENSES/MIT.txt
       - tools/build_pages.py
       - tests/test_pages.py
+      - tests/test_side_pages.py
       - tests/test_pages_client.js
       - .github/workflows/pages.yml
   workflow_dispatch:
@@ -34,9 +39,9 @@ jobs:
           persist-credentials: false
       - uses: actions/configure-pages@v5
       - name: Enforce living notebook budgets
-        run: python3 tools/notebook_context.py
+        run: python3 tools/notebook_context.py --all
       - name: Test the static notebook build
-        run: python3 -m unittest discover -s tests -p 'test_pages.py'
+        run: python3 -m unittest discover -s tests -p 'test*pages.py'
       - name: Build the public notebook
         env:
           SOURCE_REPOSITORY: ${{ github.server_url }}/${{ github.repository }}
