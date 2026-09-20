@@ -1,11 +1,11 @@
-# Side research notebooks and structured integration plan
+# Side research notebooks plan
 
 Draft: 20 September 2026. Implements the proposals in
-[IDEAS.md items 9 and 10](../../IDEAS.md#9-side-research-notebooks-with-shared-claim-infrastructure),
+[IDEAS.md item 9](../../IDEAS.md#9-side-research-notebooks-with-shared-claim-infrastructure),
 including the proposed `Branch` protocol in `PROMPTS.md`.
 
 Status: **planned, not implemented**. Creating this plan does not start a side
-investigation, install Git drivers or change the active notebook. Mark tasks
+investigation or change the active notebook. Mark tasks
 complete only after implementation and validation; record decisions, evidence
 and checkpoint references here. Follow existing workspace policies rather than
 introducing a second research or publication policy.
@@ -22,9 +22,9 @@ The main notebook remains at `/math-research/`. Side notebooks are available at
 under the local server's configured base path. Research-thread names are stable
 identifiers, independent of temporary Git branches and worktree paths.
 
-Structured integration also supports concurrent additions to the same notebook,
-claim registry and attention history. It resolves mechanically compatible edits
-and leaves genuine content or review conflicts explicit.
+Automatic conflict resolution is a separate proposal owned by
+[GIT_MERGE_PLAN.md](GIT_MERGE_PLAN.md). Side notebooks must work with ordinary Git
+and manual conflict resolution; the merge drivers are not a prerequisite.
 
 ## 1. Establish notebook identity and ownership
 
@@ -127,49 +127,7 @@ and leaves genuine content or review conflicts explicit.
       creates a concise main integration entry linking the full side proof; the
       shared claim retains its identity and original source.
 
-## 5. Structured merge rules
-
-Consolidate/generalize `tools/merge-formalization-appends.py`; avoid a parallel
-one-off resolver. Support ordinary merges and merge-backend rebases. Document any
-unsupported backend explicitly. Extra whitespace and line-based `merge=union`
-are not substitutes for preserving complete structured records.
-
-- [ ] Notebook driver: parse complete articles by stable ID, verify base records
-      are preserved byte-for-byte and in order on both sides, and combine independent
-      additions without splitting HTML or timing tables. Deduplicate identical
-      additions; reject differing content with the same ID, altered/deleted history,
-      malformed markup and incompatible ordering constraints.
-- [ ] Preserve each branch's sequence of additions. Define a deterministic ordering
-      for independent additions and respect explicit dependency constraints where
-      available. Do not globally reorder historical entries by timestamps.
-- [ ] Merge living sections and surrounding structure with ordinary three-way
-      semantics. Preserve genuine competing edits as conflicts; never silently
-      choose the main overview and discard a side's changes to the same notebook.
-      Distinct side notebooks should survive integration intact.
-- [ ] Registry driver: three-way merge claims and relationships by ID; accept
-      independent additions and compatible field changes. Reject divergent same-ID
-      additions, same-field competing edits and delete/edit conflicts. Treat arrays
-      according to their schema rather than blindly concatenating them.
-- [ ] Handle coupled review fields conservatively. Combining a statement edit on
-      one branch with a review on another must not certify the combined statement.
-      Existing evidence/value hashes determine staleness; require explicit review
-      when needed, never fabricate a refreshed approval to make the merge pass.
-- [ ] Attention driver: combine distinct events while preserving each side's history
-      order. Deduplicate only identical events; equal timestamps alone are not
-      identity. Conflicting dispositions without a justified ordering require review.
-- [ ] Generated views: regenerate claim indexes, topic views and attention Markdown
-      only after authoritative inputs are merged. Define a reliable integration
-      command/checkpoint because Git does not guarantee per-file driver order.
-      A clean Git merge is not a successful checkpoint while derived views are stale.
-- [ ] Track code and `.gitattributes`, and provide idempotent per-clone Git driver
-      registration without overwriting unrelated configuration. Fresh clones must
-      detect missing setup; ensure unsupported/missing drivers cannot silently
-      bypass required validation. Installation does not authorize publication.
-- [ ] On driver failure, leave recoverable inputs and actionable conflicts. Test
-      abort/retry/continue paths and require the existing post-merge checks before
-      committing or publishing the integrated result.
-
-## 6. Validation and rollout
+## 5. Validation and rollout
 
 - [ ] Preserve a fixture for the current single-notebook workflow. Existing commands,
       links, timing output and main-page behavior must work without new arguments.
@@ -179,11 +137,10 @@ are not substitutes for preserving complete structured records.
 - [ ] Verify two threads can run independently with separate living sections/timing,
       shared claims, cross-thread dependencies and corrections, and bounded restores.
       Loading one thread must not load every other record.
-- [ ] Test real merges and rebases: distinct notebooks, concurrent same-notebook
-      appends, identical/divergent IDs, modified history, overview conflicts,
-      independent/competing claim edits, stale review evidence, attention-event
-      ordering, missing driver configuration and regeneration failures. Confirm
-      both parent histories survive, and genuine conflicts remain visible.
+- [ ] Test ordinary merge/rebase integration of distinct side notebooks: both
+      notebooks, living sections and records must survive. Check cross-notebook
+      source links after integration. Driver-specific conflict fixtures belong
+      to the separate Git merge plan.
 - [ ] Run local/server and static Pages tests for nested routes, refresh, assets,
       cross-links, unrendered-TeX search, mobile controls and browser history.
       Measure startup/render/search costs with multiple growing records; record
@@ -198,9 +155,7 @@ are not substitutes for preserving complete structured records.
 
 Suggested implementation order: identity/resolution and compatibility first,
 then tool parameterization, setup protocol, serving/search and end-to-end checks.
-Structured merge drivers can be developed independently against fixtures and
-integrated once the identity/source conventions are fixed. Do not enable a
-partially wired `Branch` protocol that initializes notebooks the finisher cannot
+Do not enable a partially wired `Branch` protocol that initializes notebooks the finisher cannot
 safely maintain.
 
 ## Boundaries with other plans
@@ -209,6 +164,6 @@ safely maintain.
 this plan supplies persistent thread identity and integration, not permission to
 spawn workers. [CONTEXT_BUDGET_PLAN.md](CONTEXT_BUDGET_PLAN.md) owns budget and
 bounded-restoration policy. [INDEX_MIGRATION.md](INDEX_MIGRATION.md) owns the shared
-claim/review schema; this plan extends its source resolution and merge support.
+claim/review schema; this plan extends its source resolution across notebooks.
 [CLAIM_GRAPH_PLAN.md](CLAIM_GRAPH_PLAN.md) can consume notebook-qualified sources
 without becoming a prerequisite for side notebooks.

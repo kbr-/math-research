@@ -167,7 +167,7 @@ into the notebook.
 
 ## 9. Side research notebooks with shared claim infrastructure
 
-Implementation plan for items 9 and 10: [SIDE_BRANCHES_PLAN.md](research/notes/SIDE_BRANCHES_PLAN.md).
+Implementation plan: [SIDE_BRANCHES_PLAN.md](research/notes/SIDE_BRANCHES_PLAN.md).
 
 **The idea (20 September 2026).** Give each side research branch its own notebook,
 initially with an empty research record and living sections adjusted to its goal.
@@ -224,6 +224,8 @@ command to `PROMPTS.md` or create a side notebook.
   not an assigned investigation or a claim that a short proof is available.
 
 ## 10. Structured Git merge drivers for notebook and claim additions
+
+Implementation plan: [GIT_MERGE_PLAN.md](research/notes/GIT_MERGE_PLAN.md).
 
 **The idea (20 September 2026).** Automatically resolve independent notebook
 appends and claim-index additions during rebase/merge, while retaining genuine

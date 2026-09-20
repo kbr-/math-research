@@ -88,7 +88,8 @@ Other IDEAS.md items remain owned by their separate plans.
 | 6. Smaller utilities | [WORKFLOW_UTILITIES_PLAN.md](WORKFLOW_UTILITIES_PLAN.md) | Owns interruption notes and benchmark map |
 | 7. Context budget | [CONTEXT_BUDGET_PLAN.md](CONTEXT_BUDGET_PLAN.md) | Owns general Resume/overview/rule consolidation; index-specific retrieval stays here |
 | 8. Graph visualization | [CLAIM_GRAPH_PLAN.md](CLAIM_GRAPH_PLAN.md) | Owns graph UI/Pages; reviewed relationship data and queries stay here |
-| 9–10. Side notebooks and structured merges | [SIDE_BRANCHES_PLAN.md](SIDE_BRANCHES_PLAN.md) | Owns thread setup, notebook-qualified sources and integration; shared claim/review schema stays here |
+| 9. Side notebooks | [SIDE_BRANCHES_PLAN.md](SIDE_BRANCHES_PLAN.md) | Owns thread setup and notebook-qualified sources; shared claim/review schema stays here |
+| 10. Structured Git merges | [GIT_MERGE_PLAN.md](GIT_MERGE_PLAN.md) | Owns conflict resolution and regeneration; claim/review semantics stay here |
 
 ## 1. Inventory and schema
 
