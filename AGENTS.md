@@ -29,8 +29,9 @@ rules to growing checklists or one-off setup narratives.
   sufficient endpoint from stronger conveniences before adding conversion steps.
 - Restricted examples must test a named general hypothesis, obstruction or
   mechanism. A growing case list or equivalent reformulation leaves the general
-  implication open. State that implication and try to falsify it with known
-  obstructions/hard instances before further refinement. Check preserved
+  implication open. State that implication and test it against known obstructions,
+  hard instances and allowed equivalent representations before further refinement;
+  a surrogate becoming simple need not resolve the original obligation. Check preserved
   hypotheses and accumulated composition costs against the goal's budget.
   If these fail, or repeated cycles leave the same required implication untouched,
   review alternatives and address the failure before refining the same mechanism.
