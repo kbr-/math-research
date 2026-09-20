@@ -49,6 +49,11 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Candidate refinement of the same method barrier: polynomial-size arithmetic-depth-four queries already defeat its sufficient rate. Treat jointly with the universal obstruction, with classical pseudorandomness attribution; no exact prior query-rate match found in the bounded audit, and novelty remains unknown.
   Decision (agent): Fossick 20 September: read the degree-mixture sampler and explicit depth-four parameter argument. Assess jointly with the universal rate obstruction, not as a second independent discovery. The claim does not settle the weaker diagonal question or constrain exact proof-specific source queries. See entry-2026-09-20-fossick-query-obstructions.
   Next: Before any publication claim, isolate the additional quantitative ENS-rate/query contribution from the cited finite-field moment and small-bias ingredients and obtain an independent priority/scope assessment.
+- **[thm:general-binary-quadratic-source-exclusion](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-general-quadratic-source>)** — Every polynomial-block-inventory complete binary ENS family on arbitrary quadratic old-bit inputs excludes polylog-degree ordinary NS/PC refutations over compact PHP, for sufficiently large n.
+  Significance: general_tool; novelty: unknown.
+  Removes product-shape, leading-head and bounded-summand hypotheses from the complete first nonlinear old-input endpoint, with a fully charged common weight and all coefficient fields.
+  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Next: Compare with prior lower bounds for bounded-degree extension systems and obtain independent review of the structural dichotomy and complete source ledger before any novelty or publication claim.
 - **[thm:generic-CNF-affine-DAG-subspace-criterion](<https://kbr.is-a.dev/math-research/#lean-generic-CNF-affine-DAG-subspace-criterion>)** — An S-node affine refutation DAG whose initial clauses are covered by t width-w clauses gives 3S+t registry slots and PC degree max(2h+w,4h+1); a separated degree-k subspace U then forces dim U <= (3S+t) C(v-(h(k+1)+1)+k,k)
   Significance: general_tool; novelty: not_claimed.
   Generic affine-DAG criterion is sufficient; only bit PHP is shown to meet the separation hypothesis.
@@ -76,8 +81,8 @@ workflow decisions, not theorem status or publication approval. See [the workflo
 - **[thm:quadratic-space-structural-dichotomy](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-quadratic-space-dichotomy>)** — Every binary quadratic input space has either a disjoint leading-pair a-tuple or an input subspace of codimension O(a^4) made affine by at most 16a^2 ceil(log2(v+1))^2 binary probes.
   Significance: general_tool; novelty: unknown.
   A quantitative structural split for arbitrary overlapping quadratic input spaces, potentially removing the independence hypothesis in the current source endpoint; prior-art and end-to-end scope need attention.
-  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
-  Next: Audit the complete quadratic-source ledger next, and compare the structural statement with quadratic regularity and bounded-rank matrix-space literature before any novelty or publication claim.
+  Decision (automatic): Recorded claim, scope, evidence or correction changed; reconsider prior decision.
+  Next: Compare with quadratic regularity and bounded-rank matrix-space literature, and obtain independent review together with the new complete quadratic-source theorem before any novelty or publication claim.
 - **[thm:reduced-product-Booleanity-PC-NS-gap](<https://kbr-.github.io/math-research/#input-reduction-Booleanity-gap>)** — For one monomial-input block over a consistent odd-field domain base, the reduced product has NS Booleanity degree e+h and PC degree max(e,2(h+t))
   Significance: general_tool; novelty: unknown.
   Exact ENS consequence-degree example clarifies original companion activity and static versus dynamic certificate costs. General PC/NS degree separation is classical; originality of this restricted exact formula is unresolved.
