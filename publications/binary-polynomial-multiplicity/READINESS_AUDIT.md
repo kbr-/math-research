@@ -38,11 +38,12 @@ Primary references checked:
 - [x] Extracted definitions, hypotheses, proof, references and disclosure checked.
 - [x] Both pages rendered locally. Automated word-coordinate and raster-margin
   checks pass; no rendered previews are published. This is not a claim of human
-  visual review.
+  visual review. A subsequent AI visual inspection of both pages confirmed
+  the nonzero sign and display (3) render correctly.
 - [x] Source/PDF hashes saved in `reviewed-files.json`.
 
 Fresh final-build logs and reproducible QA are in
-[the feedback application evidence](../../research/results/multiplicity_feedback_application_20260920/).
+[the second feedback application evidence](../../research/results/multiplicity_feedback2_application_20260920/).
 The additional feedback and source comparisons are recorded in
 [the application notes](feedback-application-20260920.md). An initial build
 overflowed to three pages; a shorter paragraph and compact bibliography restored

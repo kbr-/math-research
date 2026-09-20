@@ -135,3 +135,42 @@ The suggestion to seek clarification from an original author reinforces the
 existing external questions rather than creating a duplicate task. Correspondence
 still requires explicit authorization; no message was sent. The feedback's
 qualitative assessment of likely folklore is not adopted as a novelty finding.
+
+## Second AI feedback — triage, 20 September 2026
+
+Paraphrased from a second privately retained AI conversation. Applied in place
+on 20 September 2026, without a research cycle or version increment.
+
+- [x] **Cite Alon–Füredi directly and make source numbering version-safe.**
+  Replaced the secondary SW citation with the original Alon–Füredi paper,
+  *Covering the cube by affine hyperplanes*, European Journal of Combinatorics
+  14(2) (1993), 79–83, [DOI](https://doi.org/10.1006/eujc.1993.1011), Theorem 5.
+  Read the original scanned pages 80–81: Section 5 explicitly works over an
+  arbitrary field, and Theorem 5 is the polynomial nonvanishing bound. For a
+  binary grid with only one nonzero value it implies degree at least n.
+  Removed the now-unused SW bibliography entry. The feedback's theorem-number
+  objection was not correct for [arXiv v2](https://arxiv.org/pdf/2010.00077v2):
+  its Theorem 1.1 is Alon–Füredi, and Section 4.2 confirms arbitrary-field
+  validity. The direct citation removes the edition-alignment issue entirely.
+
+- [x] **Inspect the two flagged formulas in the rendered PDF.** Rendered and
+  visually inspected both final pages. The negation stroke in P != 0 is correctly
+  placed; display (3) has its own line, adequate separation and a correctly
+  aligned equation number. Neither reported extraction artifact is a visible
+  defect, so no formula repair was needed. Final automated checks also pass.
+  This was an AI visual inspection, not independent human review.
+
+**Optional equality examples — retain as optional.** The suggested (n,k)=(3,4)
+and (4,4) checks are already recorded in
+[the application notes](feedback-application-20260920.md). Two short sentences
+could illustrate attainment in the question's stated range, but are not needed
+for the deduction. If promoted into the paper, verify the displayed construction
+at those dimensions rather than inheriting a dimension restriction from a
+nearby characteristic-zero theorem. No new tightness section or table is required.
+
+**Assessment of the remaining comments.** Retain the existing implication wording
+and k=1, n>=3 comparison. The latter shows non-optimality in that range; it does
+not justify the stronger assertion that extending validity adds no usefulness.
+The removed standalone contribution sentence was unnecessary, but its removal
+is not evidence that the original description was false or that priority has now
+been established. Agreement from this AI review is not independent human review.
