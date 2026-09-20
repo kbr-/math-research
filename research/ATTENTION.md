@@ -24,7 +24,7 @@ workflow decisions, not theorem status or publication approval. See [the workflo
 - **[lem:low-factor-rank-exterior-kernel-criterion](<https://kbr.is-a.dev/math-research/#low-factor-rank-exterior-kernel-criterion>)** — For any field, rank-threshold preservation and injectivity on supports of all low-rank R-tuples force every vanishing cubic of K-factor rank <=R into ker(pi) wedge K.
   Significance: general_tool; novelty: unknown.
   Potentially reusable any-field lifting criterion; applications beyond this conflict ideal and novelty have not been audited.
-  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Decision (automatic): Recorded claim, scope, evidence or correction changed; reconsider prior decision.
   Next: Assess general exterior-kernel applications and prior art before making an independent novelty claim.
 - **[lem:matching-avoidance-with-slack](<https://kbr.is-a.dev/math-research/#matching-avoidance-with-slack>)** — A uniform bijection of m>=1 rows avoids any fixed forbidden pair set P with probability at most 2^(-|P|/m); log(2) is the sharp uniform exponential constant.
   Significance: general_tool; novelty: not_claimed.
