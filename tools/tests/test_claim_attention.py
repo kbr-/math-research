@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from claim_attention import reconcile, decide, load, save, brief, latest, fingerprint
+from claim_attention import reconcile, decide, load, save, brief, latest, fingerprint, overview, STATES
 
 
 class AttentionTest(unittest.TestCase):
@@ -70,6 +70,42 @@ class AttentionTest(unittest.TestCase):
         self.assertIn('5 further items omitted',text)
         with self.assertRaises(ValueError):decide(self.data,history,'missing','dismissed','Reason')
         with self.assertRaises(ValueError):decide(self.data,history,'thm:0','dismissed','')
+
+    def test_readable_layout_for_every_attention_state(self):
+        history, _ = reconcile(self.data, self.empty)
+        for state in STATES:
+            with self.subTest(state=state):
+                history = decide(self.data, history, 'thm:one', state, 'Keep the exact scope.', 'user')
+                text = overview(self.data, history)
+                self.assertIn(f'## {state.capitalize()}\n\n### One\n', text)
+                self.assertIn('**Claim:** [thm:one](<https://example.org/proof>)\n\nA candidate\n', text)
+                self.assertIn('**Significance:** `independent_result` · **Novelty:** `candidate`', text)
+                self.assertIn('**Why it matters:** Potentially useful.\n\n', text)
+                self.assertIn('**Decision (user):** Keep the exact scope.\n\n', text)
+                self.assertIn('**Next:** Audit novelty.\n', text)
+
+    def test_entry_separators_and_review_fallbacks_preserve_data(self):
+        first = self.data['claims'][0]
+        first['significance'] = None
+        first['record'] = ''
+        first['reviews'] = {'significance': {'state': 'pending', 'note': 'Needs review.',
+                                            'next_action': 'Check the source.'}}
+        second = copy.deepcopy(first)
+        second.update(id='thm:PHP-field-scope', summary='Full second statement.')
+        second['reviews'] = {'significance': {'state': 'pending'}}
+        self.data['claims'].append(second)
+        history, _ = reconcile(self.data, self.empty)
+        original = copy.deepcopy((self.data, history))
+        text = overview(self.data, history)
+        self.assertEqual((self.data, history), original)
+        self.assertEqual(text.count('\n---\n'), 1)
+        self.assertIn('### PHP field scope\n', text)
+        self.assertIn('**Claim:** thm:one\n', text)
+        self.assertIn('**Significance:** `unassessed` · **Novelty:** `unknown`', text)
+        self.assertIn('**Why it matters:** Needs review.', text)
+        self.assertIn('**Why it matters:** Pending assessment.', text)
+        self.assertIn('**Next:** Check the source.', text)
+        self.assertEqual(text.count('**Next:**'), 1)
 
 
 if __name__=='__main__':unittest.main()

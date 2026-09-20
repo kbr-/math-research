@@ -125,18 +125,26 @@ def overview(data, history):
         if not selected:
             continue
         lines += ['## ' + state.capitalize(), '']
-        for label in selected:
+        for position, label in enumerate(selected):
             c = claims[label]; e = rows[label]; sig = c.get('significance') or {}
             review = c.get('reviews', {}).get('significance') or {}
             refs = links(c)
-            title = link(label, refs[0]['target']) if refs else label
-            lines += [f'- **{title}** — {inline(c["summary"])}',
-                      f'  Significance: {sig.get("category", "unassessed")}; novelty: {sig.get("novelty", "unknown")}.',
-                      f'  {inline(sig.get("rationale") or review.get("note") or "Pending assessment.")}',
-                      f'  Decision ({e["actor"]}): {inline(e["note"])}']
+            claim_link = link(label, refs[0]['target']) if refs else label
+            # Presentation only: derive a short heading without adding or changing
+            # mathematical metadata. Preserve acronym case already in the ID.
+            heading = label.partition(':')[2] or label
+            heading = heading.replace('-', ' ').replace('_', ' ')
+            heading = heading[:1].upper() + heading[1:]
+            if position:
+                lines += ['---', '']
+            lines += [f'### {heading}', '', f'**Claim:** {claim_link}', '',
+                      inline(c['summary']), '',
+                      f'**Significance:** `{sig.get("category", "unassessed")}` · '
+                      f'**Novelty:** `{sig.get("novelty", "unknown")}`', '',
+                      f'**Why it matters:** {inline(sig.get("rationale") or review.get("note") or "Pending assessment.")}', '',
+                      f'**Decision ({e["actor"]}):** {inline(e["note"])}', '']
             if sig.get('next_action') or review.get('next_action'):
-                lines.append('  Next: ' + inline(sig.get('next_action') or review['next_action']))
-        lines.append('')
+                lines += ['**Next:** ' + inline(sig.get('next_action') or review['next_action']), '']
     if not rows:
         lines += ['No candidates flagged.', '']
     return '\n'.join(lines)
