@@ -218,9 +218,9 @@ On the specified strong graph family, a large old admissible-monomial space rema
 
 **Why it matters:** Constructs a relative old-target separator and partial-moment extension through a full affine layer, addressing the missing common-old-root issue rather than merely proving branchwise nonrefutability.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
-**Next:** Independently audit the copied-family synchronization and then test actual retained-parent multiplication images; do not infer their rank from old-subspace separation.
+**Next:** Independently audit copied-branch synchronization. For a final refutation use q=1 and bound the actual parent reduction maps on the old subspace, or construct a retained-system-aware replacement; arbitrary parent-product preservation is not a required preliminary.
 
 ---
 
