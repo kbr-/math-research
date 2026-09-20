@@ -40,7 +40,10 @@ rules to growing checklists or one-off setup narratives.
   Record full arguments, actual tests, dependencies and remaining gaps. Use
   meaningful falsifying tests/controls; do not rerun old suites to simulate progress.
 - Before proposing a next step or naming/developing a result, use
-  `tools/search-claims.py WORDS` or `--show LABEL`. Use
+  `tools/search-claims.py WORDS` or `--show LABEL`. For a generic mechanism, also
+  search the immutable [historical claim index](php_codex_handoff/manuscript/CLAIM_INDEX.md)
+  and read relevant passages: the current-registry search does not cover that index.
+  Use
   `tools/claim-dependencies.py packet --claim ID` for bounded orientation, or
   `tools/claim-index.py list --fields id,summary --format tsv` for a complete minimal
   inventory when needed. Packets omit proof details and sometimes hypotheses:
