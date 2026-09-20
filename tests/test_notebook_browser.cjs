@@ -66,6 +66,7 @@ const {chromium} = require('playwright');
         'Opening search with an empty query should not build an index');
       await cdp.send('HeapProfiler.collectGarbage');
       const beforeHeap = (await cdp.send('Runtime.getHeapUsage')).usedSize;
+      let navigated = false;
       async function query(text, stage) {
         await page.evaluate(text => {
           const input = document.getElementById('search-query');
@@ -93,7 +94,10 @@ const {chromium} = require('playwright');
             status: document.getElementById('search-status').textContent,
           };
         });
-        assert.equal(measurement.mathAfter, measurement.mathBefore, 'Searching must not typeset unseen math');
+        // After choosing a result, nearby math may still be finishing independently
+        // of a subsequent query. Assert isolation before that navigation begins.
+        if (!navigated) assert.equal(measurement.mathAfter, measurement.mathBefore,
+          'Searching must not typeset unseen math');
         report.samples.push({stage: `${label}-${stage}`, ...measurement});
         return measurement;
       }
@@ -115,6 +119,7 @@ const {chromium} = require('playwright');
       await query('finite-domain branch interpolation', 'late-prose');
       assert(await page.locator('#search-results button').count() > 0);
       await page.locator('#search-results button').last().click();
+      navigated = true;
       assert(await page.locator('#notebook-search').isHidden());
       await page.waitForFunction(() => {
         const hit = document.querySelector('.search-hit');
@@ -149,6 +154,7 @@ const {chromium} = require('playwright');
       console.log(JSON.stringify(report, null, 2));
       return;
     }
+    assert.equal(await page.locator('#search-open').innerText(), 'Search notebook (/)');
     await checkSearch('current');
     await page.goto(url + '?aftersearch=1', {waitUntil: 'domcontentloaded'});
     await ready();
@@ -198,7 +204,32 @@ const {chromium} = require('playwright');
     await page.goto(url, {waitUntil: 'domcontentloaded'});
     await ready();
     assert((await sample('mobile-top')).registeredMath < 100);
+    assert.equal(await page.locator('#search-open').evaluate(node => getComputedStyle(node).opacity), '0.75');
+    assert.equal(await page.locator('#search-open').innerText(), 'Search notebook (/)',
+      'A narrow desktop window keeps the keyboard hint');
     assert.equal(await page.locator('mjx-merror').count(), 0);
+    const touchPage = await browser.newPage({isMobile: true, hasTouch: true,
+      viewport: {width: 390, height: 844}});
+    touchPage.on('pageerror', error => report.errors.push(error.message));
+    await touchPage.goto(url, {waitUntil: 'domcontentloaded'});
+    assert.equal(await touchPage.locator('#search-open').innerText(), 'Search notebook');
+    assert.equal(await touchPage.locator('#search-open').evaluate(node => getComputedStyle(node).opacity), '0.75');
+    await touchPage.keyboard.press('/');
+    assert(await touchPage.locator('#notebook-search').isVisible());
+    assert.equal(await touchPage.locator('#search-open').innerText(), 'Search notebook (/)',
+      'Using a keyboard on a touch device reveals the shortcut');
+    await touchPage.keyboard.press('Escape');
+    await touchPage.waitForFunction(() => window.mathReady);
+    await touchPage.evaluate(() => window.scrollTo(0, 100));
+    await touchPage.locator('[data-scroll="end"]').tap();
+    await touchPage.waitForTimeout(2000);
+    const touchHeadingCount = await touchPage.locator('main h2, main h3').count();
+    for (let n = 0; n < 3; n++) await touchPage.locator('[data-scroll="previous"]').tap();
+    await touchPage.waitForTimeout(2000);
+    const touchTop = await touchPage.locator('main h2, main h3').nth(touchHeadingCount - 4)
+      .evaluate(node => node.getBoundingClientRect().top);
+    assert(Math.abs(touchTop - 16) < 3, `Repeated touch navigation lost its target: ${touchTop}`);
+    await touchPage.close();
     await page.setViewportSize({width: 1280, height: 720});
     await page.goto(url + '?growth=1', {waitUntil: 'domcontentloaded'});
     await ready();

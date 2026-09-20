@@ -58,10 +58,14 @@
     @media (max-width: 1083px) {
       .scroll-nav { opacity: 0; pointer-events: none; transition: opacity .2s ease; }
       .scroll-nav[data-active], .scroll-nav:has(:focus-visible) { opacity: .75; pointer-events: auto; }
+      .search-toggle { opacity: .75; }
     }
     @media (prefers-reduced-motion: reduce) { .scroll-nav { transition: none; } }
     .search-toggle, .notebook-search { position: fixed; z-index: 20; font: 14px/1.5 system-ui, sans-serif; }
     .search-toggle { bottom: 18px; right: 18px; }
+    .search-shortcut { display: none; }
+    @media (any-hover: hover) and (any-pointer: fine) { .search-shortcut { display: inline; } }
+    .search-toggle[data-keyboard] .search-shortcut { display: inline; }
     .notebook-search { top: 16px; right: 16px; width: min(560px, calc(100% - 32px)); max-height: 65vh; overflow: auto; padding: 18px; background: var(--paper); border: 1px solid #c8d8ce; border-radius: 8px; box-shadow: 0 8px 30px #23372833; }
     .notebook-search[hidden] { display: none; }
     .notebook-search input[type=search] { width: 100%; margin: 8px 0; padding: 10px; font: inherit; }
@@ -127,7 +131,7 @@
     <button type="button" data-scroll="next" aria-label="Next section" title="Next section" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
     <button type="button" data-scroll="end" aria-label="Scroll to end" title="Scroll to end" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 5 6 6 6-6M6 13l6 6 6-6"/></svg></button>
   </nav>
-  <button class="search-toggle" id="search-open" type="button" aria-controls="notebook-search" aria-expanded="false" title="Search notebook (/)">Search notebook</button>
+  <button class="search-toggle" id="search-open" type="button" aria-controls="notebook-search" aria-expanded="false">Search notebook<span class="search-shortcut"> (/)</span></button>
   <aside class="notebook-search" id="notebook-search" aria-label="Search notebook" hidden>
     <div class="search-controls"><label for="search-query"><strong>Search text or TeX</strong></label><button id="search-close" type="button" aria-label="Close search">Close</button></div>
     <input id="search-query" type="search" placeholder="Words or TeX, e.g. \mathcal" autocomplete="off" spellcheck="false" aria-describedby="search-status">
@@ -165,6 +169,7 @@
             // One paragraph/display per task, so input can run between chunks.
             if (!sources.has(block)) sources.set(block, block.textContent);
             await MathJax.typesetPromise([block]);
+            window.dispatchEvent(new Event('notebook-math-rendered'));
             finished.add(block);
             blockObserver.unobserve(block);
             await pause();
@@ -357,6 +362,7 @@
       previous.addEventListener('click', () => { page--; showResults(); });
       next.addEventListener('click', () => { page++; showResults(); });
       window.addEventListener('keydown', event => {
+        if (!event.target.closest('input, textarea, select, [contenteditable]')) opener.dataset.keyboard = '';
         if (event.key === 'Escape' && !panel.hidden) { close(); opener.focus(); }
         if (event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey &&
             !event.target.closest('input, textarea, select, [contenteditable]')) {
@@ -451,9 +457,22 @@
         update();
       }
 
+      function settleDestination() {
+        if (destination !== null) {
+          destinationTop = destinationPosition();
+          // Scroll anchoring or a smooth-scroll endpoint can change the viewport
+          // without changing the destination's absolute document coordinate.
+          if (Math.abs(window.scrollY - destinationTop) > 1) {
+            window.scrollTo({ top: destinationTop, behavior: 'instant' });
+          }
+        }
+        update();
+      }
+
       for (const [name, button] of Object.entries(buttons)) {
         button.addEventListener('click', () => {
           showNavigation();
+          settleDestination();
           measure();
           if (targets[name] !== null) {
             destination = name === 'top' || name === 'end' ? name : targets[name];
@@ -469,9 +488,16 @@
         if (!pending) { pending = true; requestAnimationFrame(update); }
       }, { passive: true });
       window.addEventListener('resize', measure);
+      window.addEventListener('scrollend', settleDestination);
+      window.addEventListener('notebook-math-rendered', measure);
       const releaseDestination = () => { destination = null; };
-      for (const event of ['wheel', 'touchstart', 'pointerdown', 'hashchange']) {
+      for (const event of ['wheel', 'hashchange']) {
         window.addEventListener(event, releaseDestination, { passive: true });
+      }
+      for (const event of ['pointerdown', 'touchstart']) {
+        window.addEventListener(event, event => {
+          if (!event.target.closest('.scroll-nav')) releaseDestination();
+        }, { passive: true });
       }
       window.addEventListener('keydown', event => {
         if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Tab'].includes(event.key)) {

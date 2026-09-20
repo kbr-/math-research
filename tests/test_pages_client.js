@@ -143,7 +143,7 @@ async function check(changed) {
   headingTops[1] += 120;
   resizeCallback();
   assert.equal(context.scrollY, 604, 'Follow the chosen heading when preceding math expands');
-  events.touchstart();
+  events.touchstart({ target: { closest: () => null } });
   headingTops[1] += 80;
   resizeCallback();
   assert.equal(context.scrollY, 604, 'Touch scrolling releases the heading');
@@ -163,6 +163,20 @@ async function check(changed) {
     'Manual scrolling into an earlier section restores the next-section arrow');
   buttonClicks.next();
   assert.equal(context.scrollY, 1484, 'Next navigation uses the heading’s current position');
+  // Browser anchoring/smooth scrolling can displace the viewport without changing
+  // either the target coordinate or the main element's height. ResizeObserver
+  // alone cannot repair this case.
+  context.scrollY = 1540;
+  events.scroll();
+  events.scrollend();
+  assert.equal(context.scrollY, 1484, 'Scroll completion realigns the unchanged destination');
+  headingTops[2] -= 40;
+  events['notebook-math-rendered']();
+  assert.equal(context.scrollY, 1444, 'Math completion follows a moved heading even at unchanged page height');
+  events.wheel();
+  context.scrollY = 1400;
+  events.scrollend();
+  assert.equal(context.scrollY, 1400, 'Settling must not undo manual scrolling');
 }
 
 Promise.resolve().then(() => check(false)).then(() => check(true)).then(() => {
