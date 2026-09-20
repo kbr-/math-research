@@ -7,7 +7,7 @@
 </section>
 <section id="where-we-stand">
 <h2>Where we stand</h2>
-<p><strong>General k remains open.</strong> The <a href="#finite-field-high-origin-cover">two high-origin cases</a> are settled. For zero-avoiding triple covers, <a href="#scalar-bundled-triple-cover-growth">scalar bundles obey a logarithmic excess bound</a>, but general symbol-balanced codes are not controlled by ordinary distance alone. <a href="#ternary-unpaired-triple-covers">Exactly checked ternary covers</a> in dimensions 3 and 4 have \(2n+4\) planes and are unpaired. They defeat universal bundling, not the eventual conjecture.</p>
+<p><strong>General k remains open.</strong> High-origin cases are settled; lower orders still require factor information. A <a href="#ternary-pair-consuming-lift">universal ternary local lift</a> gives zero-avoiding triple covers of size \(2n+4\) through dimension five, but the <a href="#ternary-local-lift-no-infinite-iteration">exact gadget classification and potential argument</a> show that this entire two-pair domination scheme cannot iterate indefinitely. These are finite-dimensional exceptions, not an asymptotic refutation.</p>
 </section>
 <section id="remaining-route">
 <h2>The remaining route</h2>
@@ -15,7 +15,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: multiplicity-sensitive-lower-bound.</strong> Test a concrete dimension-extension gadget for zero-avoiding ternary triple covers: replace a fixed local group of planes by two more planes in one extra variable, preserving coverage and the additive excess. Require a condition permitting iteration, not just a new isolated example. Stop at such a verified extension or a rigorous obstruction to the proposed local domination rule.</p>
+<p><strong>Route item: multiplicity-sensitive-lower-bound.</strong> Perform the final review of this five-cycle run: distinguish the proved high-origin bounds, refuted polynomial relaxation, bundled-code bound and non-iterable local lift. Test whether a direct factor-sensitive invariant can exploit bounded excess without assuming pairing, and record the precise general gap. Stop after that review even if the general problem remains open.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -23,6 +23,7 @@
 <p><strong>Higher-order obstruction.</strong> For \(3\le k\le q\), \(\sum_{|\beta|<k}F^\beta D^{[\beta]}\Delta\) has degree at most \(D+(q-1)(k-1)\), is one at zero and has order at least \(k\) elsewhere. See the <a href="#punctured-higher-jet-polynomial-obstruction">complete proof</a>. At \(k=3\), it rules out the unrestricted polynomial route for every odd field and all dimensions. Factorization is not established for this family.</p>
 <p><strong>General high-origin reduction.</strong> The unique grid expansion \(P=\sum_\beta F^\beta R_\beta\), with individual degrees of \(R_\beta\) below q, preserves \(q|\beta|+\deg R_\beta\le\deg P\). Origin orders \(k-1,k-2\) give respectively \(D+q(k-1)\) and \(D+q(k-1)-1\). The <a href="#finite-field-high-origin-cover">proof</a> includes all characteristic cases. The <a href="#general-cover-from-zero-avoiding-triples">remaining sufficient endpoint</a> is divergence of the excess for origin-avoiding triple covers; it is not yet established.</p>
 <p><strong>Coding caution.</strong> Normalized zero-avoiding covers correspond to codes in which every nonzero word contains each nonzero symbol at least three times. Minimum distance alone is insufficient. Complete scalar bundles reduce to ordinary distance-three codes and force excess at least \((q-1)\log_q(1+L(q-1))\); arbitrary covers cannot be symmetrized at the same integral cost. Exact unpaired ternary witnesses exist at \((n,m)=(3,10),(4,12)\), but no dimension-extension family is proved.</p>
+<p><strong>Lift limitation.</strong> The <a href="#ternary-pair-consuming-lift">two-pair to six-plane lift</a> adds one dimension and two planes. Its full local domination class consumes \(\Phi=B+2E\), where B counts complete scalar pairs and E their repeated-copy excess. Exact enumeration of all 100947 independent-input multisets gives at most one returned pair; the dependent-input case returns three distinct pairs but consumes duplicate reserve. Thus no finite seed yields an infinite sequence under this rule.</p>
 </section>
 <section id="formalization-gaps">
 <h2>Gaps identified by formalization</h2>
@@ -193,6 +194,39 @@ n=4, m=12:
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">2.70 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">25.85 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.09 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+
+<article id="entry-2026-09-20-pair-consuming-lift" data-kind="research" data-route="multiplicity-sensitive-lower-bound" data-claims="prop:ternary-pair-consuming-lift obs:ternary-local-lift-no-infinite-iteration">
+<h3>20 September 2026 — A ternary dimension lift exists, but a decreasing resource blocks indefinite iteration</h3>
+<p class="entry-meta">Working universal local lift and exact finite gadget classification; no asymptotic counterexample or general lower bound. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Question and stopping point.</strong> Test whether a local operation can turn the finite unpaired triple covers into a fixed-excess family in unbounded dimension. Require both coverage preservation and a replenished input resource; a larger isolated cover is not the endpoint. The operation tested replaces two complete scalar pairs by six planes using their two forms and one new coordinate, adding two planes per dimension.</p>
+<h4 id="ternary-pair-consuming-lift">A coverage-preserving local replacement</h4>
+<p><strong>Working proposition.</strong> Suppose a zero-avoiding triple cover over \(\mathbb F_3^n\) contains the pairs \(u=1,2\) and \(v=1,2\), counted with multiplicities. Remove those four occurrences, introduce a coordinate t, and add the six planes whose left sides are</p>
+<div class="math">\[t,\quad u+t,\quad u+2t,\quad u+v+2t,\quad u+2v+2t,\quad 2u+t,\]</div>
+<p>each equal to one. Extend all other old planes independently of t. The result is a zero-avoiding triple cover in dimension \(n+1\), with two more planes.</p>
+<p><strong>Verification of the local rule.</strong> Let \(N(u,v,t)\) count the six new incidences, and let \(w(u,v)=\mathbf1_{u\ne0}+\mathbf1_{v\ne0}\), the number of removed incidences. When both u,v are nonzero, direct substitution gives \(N=2\) for every t. When exactly one is nonzero, the three counts as t varies are a permutation of \((4,1,1)\). When u=v=0, the counts for t=0,1,2 are \((0,3,3)\). These 27 exact substitutions prove \(N\ge w\) everywhere, with three coverings on the new axis away from zero. For a nonzero old vector the untouched planes plus the replacement preserve at least three coverings. On the new axis the new planes supply three. Zero remains uncovered. No rank assumption on u,v is needed for this implication.</p>
+<p>Starting from the eight-plane triple cover in dimension two consisting of all four projective directions with both nonzero offsets, the rule gives exactly checked covers of sizes 10, 12 and 14 in dimensions 3,4,5. Their numbers of complete scalar pairs are respectively 3,2,1 (the seed has four). Full normal lists and integer incidences are retained in <a href="https://github.com/kbr-/math-research/blob/main/research/results/odd_cover_lift_test_20260920/lifted-covers.json">the iterate report</a>. These examples remain below the conjectured eventual value in finitely many dimensions only.</p>
+<h4 id="ternary-local-lift-no-infinite-iteration">Why this entire local domination scheme cannot iterate forever</h4>
+<p>Consider any six-plane replacement of the same type, not just the displayed gadget: each new equation is a linear combination of u,v,t equal to one, its coverage dominates w on all attainable triples, and it covers the new axis at least three times. Every new plane must have a nonzero t coefficient, since each plane can cover at most one of the two nonzero axis points and six total incidences are required.</p>
+<p><strong>Independent inputs: finite exhaustive certificate.</strong> If u,v are independent, there are exactly 18 normalized possible equations \(au+bv+ct=1\), with \(a,b\in\mathbb F_3\), \(c=1,2\). Enumerate all multisets of six equations: \(\binom{23}{6}=100947\). Exact integer evaluation of the 27 coverage requirements leaves 18 valid multisets, each with at most one complete scalar pair. The <a href="https://github.com/kbr-/math-research/blob/main/research/results/odd_cover_lift_test_20260920/exhaust.py">exhaustive program</a> uses vectorized integer sums, and <a href="https://github.com/kbr-/math-research/blob/main/research/results/odd_cover_lift_test_20260920/exhaustive.json">its full output</a> lists every valid multiset and its pair count. No floating-point infeasibility claim is used. This finite classification is the computational component of the resource proof.</p>
+<p><strong>Dependent inputs: analytic check.</strong> The removed planes are two copies of the same scalar pair. Write \(x_a,y_a\) for multiplicities of \(au+t=1\) and \(au-t=1\), respectively. Axis coverage gives \(\sum x_a=\sum y_a=3\). For either nonzero u, summing over t gives six incidences, so domination of the removed count two forces exactly two at each t. At u=1 the equations are \(x_1+y_1=2,x_0+y_2=2,x_2+y_0=2\); at u=2 they are \(x_2+y_2=2,x_0+y_1=2,x_1+y_0=2\). Thus all y's are equal, all x's are equal, and the axis sums force every multiplicity to be one. This returns three distinct scalar pairs and no repeated pair. The 462-multiset enumeration independently confirms this unique solution.</p>
+<p><strong>Potential argument.</strong> For the full cover let b range over the multiplicities of its complete scalar bundles (the minimum multiplicity of the two opposite normalized normals). Put \(B=\sum b\), \(E=\sum\max(b-1,0)\), and \(\Phi=B+2E\). Independent inputs consume two pairs and return at most one, with no repeated output pair, so \(\Phi\) drops by at least one. Dependent inputs consume two copies of one pair and return three distinct pairs; B rises by one but E falls by at least one, so again \(\Phi\) drops by at least one. New planes have nonzero t coefficient and cannot form additional pairs with untouched old planes, whose t coefficient is zero. Invertible coordinate changes preserve scalar proportionality and pair multiplicities. Hence any sequence of these allowed replacements has length at most its initial \(\Phi\).</p>
+<p>This rules out an infinite counterexample family obtained by this particular pointwise-domination scheme. It does not exclude replacements of larger groups, extra dependence on old coordinates, exploitation of slack in the full cover, or a different structural proof of the conjecture.</p>
+<p><strong>Assessment and process.</strong> The general lower-bound obligation remains open. The tested lift produces finite counterexamples to an all-dimension strengthening but cannot propagate them indefinitely. The final cycle of the bounded run should review the remaining exact obligation and choose a route that accounts for this consumed resource, rather than rerunning larger instances. Process assessment: an initially successful gadget was subjected to an iteration test and then a complete exact classification; the resulting obstruction prevents mistaking local extension for asymptotic progress. All living sections were reviewed; no framework change was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd_cover_lift_test_20260920">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 38.93 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 53.47 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">0.24 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">40.27 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.75 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.19 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>

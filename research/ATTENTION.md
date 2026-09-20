@@ -274,6 +274,22 @@ For 3<=k<=q and every n>=1, a truncated Hasse-Taylor lift of the zero selector i
 
 ---
 
+### Ternary local lift no infinite iteration
+
+**Claim:** [obs:ternary-local-lift-no-infinite-iteration](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#ternary-local-lift-no-infinite-iteration>)
+
+Every coverage-dominating replacement of two ternary scalar pairs by six forms in their span plus one new coordinate decreases Phi=B+2E; hence this local scheme cannot iterate indefinitely.
+
+**Significance:** `negative_result` · **Novelty:** `unknown`
+
+**Why it matters:** Refutes the proposed resource-free iteration mechanism while retaining the valid one-step lift.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Use the exact scope in the next route assessment; independent review and prior-art clarification remain separate.
+
+---
+
 ### Ternary unpaired triple covers
 
 **Claim:** [obs:ternary-unpaired-triple-covers](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#ternary-unpaired-triple-covers>)
