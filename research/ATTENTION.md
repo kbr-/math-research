@@ -258,6 +258,22 @@ A sixteen-neighbor graph with one distinguished edge per row admits a homogeneou
 
 ---
 
+### Punctured higher jet polynomial obstruction
+
+**Claim:** [obs:punctured-higher-jet-polynomial-obstruction](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#punctured-higher-jet-polynomial-obstruction>)
+
+For 3<=k<=q and every n>=1, a truncated Hasse-Taylor lift of the zero selector is nonzero at zero, k-fold vanishing elsewhere, and has degree at most n(q-1)+(q-1)(k-1), below the proposed covering bound.
+
+**Significance:** `negative_result` · **Novelty:** `unknown`
+
+**Why it matters:** Falsifies the proposed arbitrary-polynomial extension in every dimension; actual factor structure is necessary for the covering route.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Use the exact scope in the next route assessment; independent review and prior-art clarification remain separate.
+
+---
+
 ### BLVZ chessboard filling
 
 **Claim:** [third-party:BLVZ-chessboard-filling](<https://kbr.is-a.dev/math-research/#lean-chessboard-filling>)

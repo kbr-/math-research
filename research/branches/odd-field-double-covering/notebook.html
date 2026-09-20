@@ -7,7 +7,7 @@
 </section>
 <section id="where-we-stand">
 <h2>Where we stand</h2>
-<p><strong>The general-multiplicity goal remains open.</strong> At the user's request, this thread now addresses the full \(k\ge2\) formulation of Question 4.2. The <a href="#odd-field-double-cover-exact">completed double-cover theorem</a> proves \(f_q(n,2,1)=(q-1)(n+1)\) for every prime power and every positive dimension. It is a working proof, not independent review or Lean verification.</p><p>The <a href="#finite-field-punctured-first-jet-degree">first-jet lemma</a> handles origin multiplicities zero and one using degree-controlled division and one-point interpolation. Extending this argument to higher Hasse jets is a proposed route, not a proved generalization. The desired lower bound may require the affine-factor structure of a covering polynomial. Prior knowledge of the double-cover implication and current status of the general question still need source clarification.</p>
+<p><strong>General multiplicity remains open; the arbitrary-polynomial route is refuted.</strong> The <a href="#odd-field-double-cover-exact">double-cover theorem</a> is unchanged. For every odd finite field and every dimension, the <a href="#punctured-higher-jet-polynomial-obstruction">truncated Taylor construction</a> gives a polynomial triple-vanishing off zero, nonzero at zero, of degree one below the covering target. The desired covering lower bound therefore needs affine-factor information; this is not a counterexample to the covering conjecture.</p>
 </section>
 <section id="remaining-route">
 <h2>The remaining route</h2>
@@ -15,11 +15,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: multiplicity-sensitive-lower-bound.</strong> Use \(k=3\) as a falsifying test of a general higher-jet mechanism. Read the applicable punctured-grid statements and search existing claims, then derive the degree-controlled constraints through Hasse order two, separating origin orders zero, one and two. Test whether they force \(n(q-1)+2q-1\) without a factorization hypothesis.</p><p>Stop the first assigned cycle at a proved general implication needed for the covering bound, or an explicit obstruction showing what affine-factor information must be retained. Finite checks and equivalent reformulations alone do not solve the general question. Goal reactivation does not itself start another Spin run.</p>
+<p><strong>Route item: multiplicity-sensitive-lower-bound.</strong> Prove or refute the general bound for covers whose origin multiplicity is \(k-1\) or \(k-2\), using degree-controlled powers of the grid ideal. Then identify the precise remaining factor-sensitive case. Stop at the general origin-order reduction or a counterexample; do not pursue the already refuted unrestricted polynomial statement.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
 <h3>General target and conventions</h3><p>\(f_q(n,k,1)\) is the minimum size of a multiset of proper affine hyperplanes covering each nonzero vector of \(\mathbb F_q^n\) at least \(k\) times and zero at most \(k-1\) times. The goal is \(n(q-1)+q(k-1)-1\) for fixed odd prime power \(q\), fixed \(k\ge2\), and sufficiently large \(n\). The classical \(k=1\) value is \(n(q-1)\); the displayed target is not asserted at \(k=1\).</p><p>The source's upper construction extends the double cover by adding \(k-2\) partitions into \(q\) parallel hyperplanes. The unresolved task is the matching lower bound. A covering product retains its actual affine factors and original total degree. For higher multiplicities use Hasse coefficients of \(P(a+z)\); ordinary higher derivatives can lose information in small characteristic. Any use of powers of the grid ideal requires an explicit degree-controlled argument.</p><h3>Established double-cover endpoint</h3><p>\(f_q(n,2,1)\) counts a multiset of proper affine hyperplanes covering each nonzero point of \(\mathbb F_q^n\) at least twice and zero at most once. The <a href="#odd-field-double-cover-exact">working theorem</a> gives \((q-1)(n+1)\) for every prime power and every positive dimension. A once-covered origin requires one additional plane. Affine factors, multiplicities and total degrees are formal, and repeated factors count separately.</p><h3>Proof interface</h3><p>Put \(D=n(q-1)\), \(F_i=x_i^q-x_i\), and \(\Delta=\prod_j(1-x_j^{q-1})\). Monic division gives \(P=c\Delta+\sum_iF_iH_i\) with \(\deg H_i\le\deg P-q\), since values are supported only at zero. On the grid, \(\partial_iP=c\partial_i\Delta-H_i\). A polynomial supported only at zero and nonzero there has degree at least \(D\). If \(c\ne0\), reduced \(\partial_i\Delta\) has degree \(D-1\), forcing \(\deg P\ge D+q-1\). If \(c=0\) and the origin has order one, some \(H_i\) is nonzero only at zero, forcing \(\deg P\ge D+q\). The <a href="#finite-field-punctured-first-jet-degree">record</a> contains the full division, uniqueness and degree argument.</p><h3>Upper construction and checks</h3><p>Take \(x_i=c\) and \(\sum_i x_i=c\) for all nonzero \(c\). At least two nonzero coordinates give two coordinate incidences; exactly one gives a coordinate and a sum incidence. Zero is uncovered, and the two families count with repetition when \(n=1\). Exact jet-rank controls include \(\mathbb F_9\); these are finite falsification attempts, not substitutes for the general proof.</p><h3>Source and qualification</h3><p>Ball–Serra Theorem 4.1 already gives the nonvanishing-origin bound. Its premise alone does not justify the simple-origin case; that case is explicitly proved above. The completed result concerns BBDM (2023) Question 4.2 at \(k=2\); the active goal now concerns all fixed \(k\ge2\). No priority or proved higher-multiplicity claim is made. The prior <a href="https://kbr.is-a.dev/math-research/#categorical-heterogeneous-frontier">frontier</a> and <a href="https://kbr.is-a.dev/math-research/#binary-multiplicity-cover-question">binary observation</a> are not dependencies of this proof.</p>
+<p><strong>Higher-order obstruction.</strong> For \(3\le k\le q\), \(\sum_{|\beta|<k}F^\beta D^{[\beta]}\Delta\) has degree at most \(D+(q-1)(k-1)\), is one at zero and has order at least \(k\) elsewhere. See the <a href="#punctured-higher-jet-polynomial-obstruction">complete proof</a>. At \(k=3\), it rules out the unrestricted polynomial route for every odd field and all dimensions. Factorization is not established for this family.</p>
 </section>
 <section id="formalization-gaps">
 <h2>Gaps identified by formalization</h2>
@@ -82,6 +83,38 @@
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">7.58 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+
+<article id="entry-2026-09-20-higher-jet-obstruction" data-kind="research" data-route="multiplicity-sensitive-lower-bound" data-claims="obs:punctured-higher-jet-polynomial-obstruction">
+<h3>20 September 2026 — Higher jets refute the unrestricted polynomial route already at triple covering</h3>
+<p class="entry-meta">Working general obstruction with finite exact checks; the affine hyperplane-covering conjecture remains open. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, medium reasoning).</span></p>
+<p><strong>Assignment and stopping point.</strong> Start the new user-authorized general-multiplicity Spin, stopping at a solution or five completed research cycles. Test the proposed higher-jet lower bound at multiplicity three, retaining the distinction between arbitrary polynomials and products of affine factors. Stop at a general implication or a concrete obstruction, not a case catalogue.</p>
+<h4 id="punctured-higher-jet-polynomial-obstruction">A dimension-uniform counterfamily to the polynomial relaxation</h4>
+<p><strong>Working proposition.</strong> For every prime power \(q\), \(n\ge1\), and \(3\le k\le q\), there is a polynomial \(Q_k\) with \(Q_k(0)=1\), multiplicity at least \(k\) at every nonzero point, and</p>
+<div class="math">\[\deg Q_k\le n(q-1)+(q-1)(k-1)&lt;n(q-1)+q(k-1)-1.\]</div>
+<p>Thus the covering target cannot follow from these value and multiplicity hypotheses alone, even for arbitrarily large dimension. This does not assert that \(Q_k\) factors into affine polynomials.</p>
+<p><strong>Construction and proof.</strong> Put \(D=n(q-1)\), \(F_i=x_i^q-x_i\) and \(\Delta=\prod_i(1-x_i^{q-1})\). Write \(D^{[\beta]}\) for the Hasse derivative, the coefficient of \(z^\beta\) in translation by \(z\). Define the finite polynomial</p>
+<div class="math">\[Q_k(x)=\sum_{|\beta|&lt;k}F(x)^\beta D^{[\beta]}\Delta(x).\]</div>
+<p>Taylor's polynomial identity gives \(\Delta(x+F(x))=\sum_\beta F(x)^\beta D^{[\beta]}\Delta(x)\). Since \(x_i+F_i=x_i^q\), the left side is \(\Delta(x)^q\). At any nonzero grid point, \(\Delta^q\) has order at least \(q\ge k\). Every omitted term has a product of at least \(k\) grid polynomials \(F_i\), so has order at least \(k\) at every grid point. Subtraction proves the required orders of \(Q_k\). At zero, all terms except \(\beta=0\) vanish and \(\Delta(0)=1\). Finally, each nonzero summand has degree at most \(q|\beta|+D-|\beta|=D+(q-1)|\beta|\). Taking \(|\beta|\le k-1\) proves the bound; its deficit from the proposed covering degree is \(k-2&gt;0\). This proof uses Hasse coefficients, so no factorial division or characteristic restriction was concealed.</p>
+<p><strong>Falsification scope.</strong> Taking \(k=3\) works over every odd finite field, in every dimension. Ordinary reduced-value idempotence was not the only obstacle: even retaining all jets below order three does not force the target among arbitrary polynomials. A new covering proof must use affine factorization or another genuine restriction of hyperplane products. The completed double-cover theorem is unaffected because its target corresponds to \(k=2\), where the degree deficit in this construction is zero.</p>
+<h4>Checks and route assessment</h4>
+<p>Exact Hasse-jet matrices over \((q,n)=(3,1),(3,2),(3,3),(5,2)\) confirmed a nonzero origin value is feasible at degree \(D+2(q-1)\), one below the triple-cover target. Every matrix rank and dimension is in <a href="https://github.com/kbr-/math-research/blob/main/research/results/odd_cover_higher_jets_20260920/checks.json">the retained report</a>; the general construction above, not finite rank evidence, proves the obstruction. No affine factorization was inferred from the test.</p>
+<p><strong>Contribution to multiplicity-sensitive-lower-bound.</strong> The proposed unrestricted polynomial implication is refuted uniformly in dimension. The covering problem remains open, and further jet calculations that ignore factorization cannot prove the missing case. Next isolate the cases with origin multiplicity \(k-1\) or \(k-2\), where degree-controlled grid-ideal division may already suffice, then focus the factor-sensitive obligation on the remaining origin orders. All living sections were reviewed; the working context now preserves this obstruction. Process assessment: the falsifying test prevented an unjustified extrapolation of the successful first-jet proof; existing tools sufficed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd_cover_higher_jets_20260920">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 43.29 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 2.03 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 33.49 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">0.11 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4.02 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.69 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.95 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
