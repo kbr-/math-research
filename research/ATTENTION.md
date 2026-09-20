@@ -44,6 +44,11 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Residual-design argument preserves the exact ENS Booleanity-degree example over sufficiently large full weak PHP. It is a scoped strengthening of the preceding accounting tool, not a new general PC/NS separation.
   Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
   Next: If disseminated separately, compare target-degree lower bounds under independent residual designs and retain the sufficient board bound and original companion degree; do not promote the longstanding separation phenomenon as new.
+- **[thm:coded-disjoint-trade-spanning](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-coded-trade-spanning>)** — Injection arrays annihilated by row evaluation matrices of ranks q_i are spanned by disjoint codeword tensors of row support at most q_i+1, if every matrix retains rank after sum(q_i+1)-1 label deletions.
+  Significance: general_tool; novelty: unknown.
+  Provides a reusable weighted-marginal analogue of matching-trade spanning and the coherence mechanism required by joint predicate correction.
+  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Next: Obtain independent review of the deletion-budget induction and compare with coded/weighted matching-complex results before claiming novelty; test actual-source compatibility next.
 - **[thm:compact-PHP-quotient-cut-rank](<https://kbr.is-a.dev/math-research/#compact-PHP-quotient-cut-rank>)** — Under the explicit QC-room inequalities, every compact-bit variable cut admits a rank-nonincreasing linear projection fixing selected code-bit polynomials and killing degree-B NS consequences of prime-field PHP plus the stated literal guards.
   Significance: general_tool; novelty: unknown.
   Potentially reusable bounded-degree quotient-rank tool: PHP corrections cannot erase the selected bit cut rank under explicit room conditions. Novelty and applications beyond the local source fixture are unassessed.
@@ -68,6 +73,11 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Potential independent exact frontier for polynomial-coefficient ENS factors in independent encoded scalar profiles. Constant coefficients recover classical finite-grid covering; the positive-degree occurrence-budget refinement was not identified in the targeted primary comparison, so novelty remains unknown.
   Decision (agent): Fossick 20 September: read the full lower/upper proofs and encoding comparison; retain as a focused independent candidate. Rechecked the classical finite-grid boundary in Bishnoi–Clark–Potukuchi–Schmitt, Theorems 1.1–1.2. Positive-T encoded-coordinate novelty remains unknown; seek expert comparison before promotion. See notebook entry entry-2026-09-20-fossick-profile-frontiers.
   Next: Before promotion, obtain a finite-grid-covering expert comparison of the positive-T encoded-coordinate factor model and its untouched-group budget; distinguish native scalar degree and the already known T=0 case.
+- **[thm:multirow-predicate-trade-lift](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-coded-trade-spanning>)** — For k designated rows with at most s predicates each, targets in K_d avoiding their own row lift jointly to K_(d+1) exactly when cross-contractions agree, if constant-plus-predicate ranks survive 2d+s min(d,k-1) label deletions.
+  Significance: general_tool; novelty: unknown.
+  Resolves higher-degree other-row marginal coherence and arbitrary designated-row count for a scoped family of predicate corrections, with explicit label room and only one old-degree increment.
+  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Next: Obtain independent review of the deletion-budget induction and compare with coded/weighted matching-complex results before claiming novelty; test actual-source compatibility next.
 - **[thm:odd-affine-Booleanity-classification](<https://kbr-.github.io/math-research/#affine-Booleanity-classification>)** — For odd p and n>=4, degree-two affine Booleanity is equivalent modulo rows to a partial-column indicator or complement
   Significance: general_tool; novelty: unknown.
   Useful odd-field truncated-ideal classification. Related real permutation/matching degree-one classifications are established, but they do not directly identify this weak-PHP certificate criterion; exact novelty is unresolved.
