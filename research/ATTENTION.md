@@ -100,6 +100,22 @@ For every fixed 0<epsilon<1, sufficiently large unary PHP and its functional var
 
 ---
 
+### Retained affine conditioning gap
+
+**Claim:** [cor:retained-affine-conditioning-gap](<https://kbr.is-a.dev/math-research/#retained-affine-conditioning-gap>)
+
+Old affine constraints added to a complete unary affine ENS layer either refute through their selector degree tau or preserve PC hardness through D under the full old-window bounds at D+tau.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Provides a concrete PHP-specific certificate-or-hardness property for affine conditioning through a retained layer; generic PC nonrefutability does not give it.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Audit the selector weighting and full old-window dependency, then test its actual use in fresh-parent compatibility.
+
+---
+
 ### Binary polar common feature lift
 
 **Claim:** [lem:binary-polar-common-feature-lift](<https://kbr.is-a.dev/math-research/#binary-polar-common-feature-lift>)
@@ -317,6 +333,22 @@ Every graph in the stated robust class supports an all-prime affine ENS endpoint
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Audit the finite compatible-pair inequalities and uniform asymptotic use on residual graphs; preserve fixed-prime and complete-source scope.
+
+---
+
+### Full unary affine old preservation
+
+**Claim:** [thm:full-unary-affine-old-preservation](<https://kbr.is-a.dev/math-research/#full-unary-affine-old-preservation>)
+
+A polynomial-inventory affine ENS layer on complete functional unary PHP preserves the full old degree-t matching quotient through degree D when 0<=eta<=alpha and 2alpha+eta<1.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Upgrades complete-board affine-layer control to every low-degree old matching class and arbitrary compatible old moments, enabling conditioned flat states rather than only an old monomial separator.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit the near-balanced extension, all-field detector and copied-family synchronization; compare prior art before any publication claim.
 
 ---
 
