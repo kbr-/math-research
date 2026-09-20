@@ -26,6 +26,11 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Rules out a generic old-PC-hardness and logarithmic-inventory replacement for PHP-specific separation, strengthening the earlier PC-easy pebbling and exponential-inventory controls.
   Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
   Next: Compare with prior ENS and ordering-principle source constructions and obtain independent review of the balanced merge, inventory and original-degree ledger before any novelty or publication claim.
+- **[lem:binary-polar-common-feature-lift](<https://kbr.is-a.dev/math-research/#binary-polar-common-feature-lift>)** — A binary cubic function space whose whole-space polar tensor has partition rank <=P has input codimension <=P and common features consisting of <=P+8P^2 linears and <=2P quadratics, with every surviving input equal to sum lambda_j Q_j + sum L_t H_t + a quadratic.
+  Significance: general_tool; novelty: unknown.
+  Reusable binary common-feature structure with polynomial cost in the packed tensor partition rank. The proof needs independent audit and comparison with earlier rank-space structure results; no novelty or publication claim.
+  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Next: Independently review the matrix-cleaning, direct-sum uniqueness and Boolean lifting argument, then compare this polynomial tradeoff with the common-feature literature.
 - **[lem:low-factor-rank-exterior-kernel-criterion](<https://kbr.is-a.dev/math-research/#low-factor-rank-exterior-kernel-criterion>)** — For any field, rank-threshold preservation and injectivity on supports of all low-rank R-tuples force every vanishing cubic of K-factor rank <=R into ker(pi) wedge K.
   Significance: general_tool; novelty: unknown.
   Potentially reusable any-field lifting criterion; applications beyond this conflict ideal and novelty have not been audited.
