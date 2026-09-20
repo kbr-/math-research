@@ -116,6 +116,22 @@ A binary cubic function space whose whole-space polar tensor has partition rank 
 
 ---
 
+### Finite field punctured first jet degree
+
+**Claim:** [lem:finite-field-punctured-first-jet-degree](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#finite-field-punctured-first-jet-degree>)
+
+Over F_q, a polynomial double-vanishing at all nonzero grid points has degree at least n(q-1)+q-1 if nonzero at the origin, and at least n(q-1)+q if the origin is a simple zero; every prime power q and n>=1.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Handles the permitted exceptional simple zero needed to pass from punctured polynomial bounds to the printed double-cover question.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Obtain independent review and identify any prior statement of the simple-origin strengthening before claiming novelty.
+
+---
+
 ### Low factor rank exterior kernel criterion
 
 **Claim:** [lem:low-factor-rank-exterior-kernel-criterion](<https://kbr.is-a.dev/math-research/#low-factor-rank-exterior-kernel-criterion>)
@@ -379,6 +395,22 @@ For odd p and n>=4, degree-two affine Booleanity is equivalent modulo rows to a 
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** If later proposed for publication, compare the odd-field degree-two weak-row ideal criterion explicitly against finite-characteristic degree-one classifications; pointwise permutation Booleanity is a different hypothesis.
+
+---
+
+### Odd field double cover exact
+
+**Claim:** [thm:odd-field-double-cover-exact](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#odd-field-double-cover-exact>)
+
+For every prime power q>=2 and every n>=1, f_q(n,2,1)=(q-1)(n+1): nonzero vectors covered at least twice, origin at most once, with hyperplane repetitions allowed.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Matches the k=2 specialization of BBDM 2023 Question 4.2 for all dimensions and finite fields. The source construction is known; novelty of the full implication remains unresolved.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently verify the first-jet argument and clarify prior knowledge or intended scope of the printed double-cover question before publication.
 
 ---
 
