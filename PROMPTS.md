@@ -211,8 +211,8 @@ So perform the following, in a loop:
 - after EVERY research turn, assess its contribution and process: state what
   changed in the named remaining-route obligation (the top-level item of The
   remaining route that the entry is tagged with, not a sub-gap of the current
-  line), including when nothing changed, and estimate the chance that the
-  current line advances the main goal; identify wasted time or context,
+  line), including when nothing changed, and assess the current line's prospects
+  qualitatively from evidence, following AGENTS.md; identify wasted time or context,
   repeated work, or difficulty checking the mathematics. Follow AGENTS.md's
   task-selection and dependency-checking guidance. When investigating overhead,
   use existing timing categories and, where relevant, the summary's

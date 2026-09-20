@@ -108,8 +108,11 @@ rules to growing checklists or one-off setup narratives.
   naming a top-level remaining-route `data-route-item` slug (or `side-...`), never
   a sub-gap. The finisher rejects a seventh consecutive research entry without a
   review. A review states the line's general claim, what the main goal needs,
-  a falsification attempt, an honest chance estimate for **that line only**, and
+  a falsification attempt, an evidence-based qualitative assessment of **that line only**, and
   the next step on the highest-risk item. Proposed next step names its route item.
+  Explain progress, obstructions and remaining uncertainty; do not invent numerical
+  probabilities for research prospects. A probability requires a stated quantitative
+  method and evidence, not an uncalibrated impression.
 - Keep entries chronological and append-only, including opinions/assessments even
   when the user objects. Withdraw/correct/retract in a new dated entry linking the
   old anchor; update living status and correction metadata. Never silently rewrite
