@@ -208,6 +208,22 @@ A single matching-monomial ENS block over full weak PHP has exact NS Booleanity 
 
 ---
 
+### Affine layer graph old target window
+
+**Claim:** [thm:affine-layer-graph-old-target-window](<https://kbr.is-a.dev/math-research/#affine-layer-graph-old-target-window>)
+
+On the specified strong graph family, a large old admissible-monomial space remains separated through an arbitrary complete affine ENS layer when k<=B, k<=N^eta polylog N, B<=N^theta polylog N and 0<=eta<=theta with 2 theta+eta<1.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Constructs a relative old-target separator and partial-moment extension through a full affine layer, addressing the missing common-old-root issue rather than merely proving branchwise nonrefutability.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit the copied-family synchronization and then test actual retained-parent multiplication images; do not infer their rank from old-subspace separation.
+
+---
+
 ### All prime unary affine source exclusion
 
 **Claim:** [thm:all-prime-unary-affine-source-exclusion](<https://kbr.is-a.dev/math-research/#all-prime-unary-affine-source-exclusion>)
@@ -285,6 +301,22 @@ Depth-four query formulas of size O(n^2 log^3 n) defeat the sufficient ENS proba
 **Decision (agent):** Fossick 20 September: read the degree-mixture sampler and explicit depth-four parameter argument. Assess jointly with the universal rate obstruction, not as a second independent discovery. The claim does not settle the weaker diagonal question or constrain exact proof-specific source queries. See entry-2026-09-20-fossick-query-obstructions.
 
 **Next:** Before any publication claim, isolate the additional quantitative ENS-rate/query contribution from the cited finite-field moment and small-bias ingredients and obtain an independent priority/scope assessment.
+
+---
+
+### Fixed expander affine source endpoint
+
+**Claim:** [thm:fixed-expander-affine-source-endpoint](<https://kbr.is-a.dev/math-research/#fixed-expander-affine-source-endpoint>)
+
+Every graph in the stated robust class supports an all-prime affine ENS endpoint; uniformly it handles 2 alpha+beta<1 and delta(1-beta)>8 at polynomial right degree in log N.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Supplies a graph-uniform source endpoint, enabling copied residual families to share one old base and moments. Independent review should check the conflict-count and boundary-deletion hypotheses.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Audit the finite compatible-pair inequalities and uniform asymptotic use on residual graphs; preserve fixed-prime and complete-source scope.
 
 ---
 
