@@ -84,6 +84,22 @@ No universal transfer from one-level affine ENS ordinary NS refutations to old P
 
 ---
 
+### Ordinary unary PHP parity near exponential
+
+**Claim:** [cor:ordinary-unary-PHP-parity-near-exponential](<https://kbr.is-a.dev/math-research/#ordinary-unary-PHP-parity-near-exponential>)
+
+For every fixed 0<epsilon<1, sufficiently large unary PHP and its functional variant require more than exp(N^(1-epsilon)) nodes in unrestricted DAG-like Res(parity), under both recorded rule conventions.
+
+**Significance:** `independent_result` · **Novelty:** `candidate`
+
+**Why it matters:** Strengthens the ordinary unary-PHP unrestricted parity candidate to every sublinear power in the exponent, measured in holes. It remains a side result requiring expert and prior-art review, not completion of the Frege target.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit the graph separator, generalized survival bound and same-graph compiler composition before publication; preserve the holes-versus-variables distinction.
+
+---
+
 ### Binary polar common feature lift
 
 **Claim:** [lem:binary-polar-common-feature-lift](<https://kbr.is-a.dev/math-research/#binary-polar-common-feature-lift>)
@@ -395,6 +411,22 @@ For every real K>0, sufficiently large ordinary unary PHP and its functional var
 **Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Arrange independent mathematical review of the graph weight/detector construction and compiler composition; complete an encoding-specific novelty audit before preparing or publishing a separate preprint.
+
+---
+
+### Power budget unary affine source exclusion
+
+**Claim:** [thm:power-budget-unary-affine-source-exclusion](<https://kbr.is-a.dev/math-research/#power-budget-unary-affine-source-exclusion>)
+
+For fixed p and 2 alpha+beta<1, unary PHP plus any complete old-affine ENS family excludes D<=N^alpha polylog N when log(M+1)<=N^beta polylog N, at arbitrary positive accuracies.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Provides the quantitative inventory/degree region needed to compose an actual retained-source map, and extends the ordinary-PHP parity candidate. Independent review of the graph proof remains outstanding.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Audit the generalized graph survival exponent and complete degree ledger; use the range only when the actual target inventory and source degree satisfy 2 alpha+beta<1.
 
 ---
 
