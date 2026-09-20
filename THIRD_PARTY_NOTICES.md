@@ -85,3 +85,9 @@ not relicensed here. Imported quotations and identifiable third-party code or
 figures also retain their original terms. The historical handoff remains a
 byte-preserved record; the root license grants only rights in its original
 project contributions and does not override any third-party rights.
+
+The user-supplied PBI1993 and KPW1995 journal PDFs, and the Alekhnovich–Razborov
+author manuscript dated 13 March 2003, are also local-only. Bibliographic records,
+version identification and reading scope are in
+[the supplied-source audit](research/results/spin_20260920_supplied_sources_audit/source-audit.json).
+No redistribution permission is asserted for these files or their full-text conversions.

@@ -52,5 +52,13 @@ full circuit-size lower-bound proof was not imported.
 Beame1994, *A Switching Lemma Primer* (technical report), was read on 18 September 2026 from its
 author-course copy for the matching switching lemma import (Section 5, Lemma 4). The PDF and its
 text extraction are local-only under the ignored private/ directory; the source-audit note records
-the hash and reading scope. The bipartite PHP versions (PBI 1993, KPW 1995) remain unavailable
-locally and are listed in the Git-ignored user_requests file.
+the hash and reading scope. The bipartite PHP versions (PBI 1993, KPW 1995) were supplied and inspected on
+20 September 2026; see the source audit below.
+
+PBI1993 and KPW1995 are now available locally as `user_supplied/pitassi1993.pdf`
+and `user_supplied/pudlak1995.pdf`. The supplied `user_supplied/AR2003.pdf` is
+an author-format manuscript dated 13 March 2003 (31 pages), not the journal
+typesetting. The [targeted audit](../results/spin_20260920_supplied_sources_audit/source-audit.json)
+records exact reading coverage, source-version limitations, and the distinction
+between two-sided matching trees and functional-PHP image certificates. All three
+PDFs and their private extractions/renders are excluded from public history.
