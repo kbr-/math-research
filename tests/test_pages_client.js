@@ -80,9 +80,14 @@ async function check(changed) {
   context.window = context;
   vm.createContext(context);
   for (const [, attrs, code] of page.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
+    // Real DOM search interactions are covered by test_notebook_browser.cjs.
+    if (attrs.includes('id="notebook-search-client"')) continue;
     if (!/\bsrc=/.test(attrs)) vm.runInContext(code, context);
   }
   context.MathJax.startup.defaultPageReady = async () => {};
+  assert.equal(context.MathJax.startup.typeset, false, 'Startup must not scan the full notebook');
+  // The real observer/typesetter is exercised by test_notebook_browser.cjs.
+  context.startNotebookMath = () => {};
   await context.MathJax.startup.pageReady();
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(new URL(requests[0]).pathname, live ? '/revision' : '/math-research/revision.json');

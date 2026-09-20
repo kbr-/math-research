@@ -30,6 +30,9 @@
     pre { overflow-x: auto; padding: 16px; background: #f1f3ee; border-radius: 4px; line-height: 1.6; }
     code { font: .85em/1.5 ui-monospace, monospace; }
     .research-entry + .research-entry { margin-top: 36px; padding-top: 28px; border-top: 1px solid #e2e5dd; }
+    /* Keep off-screen entries out of layout/paint; native find and fragment links
+       can still reveal them. Remember measured heights after visiting an entry. */
+    .research-entry { content-visibility: auto; contain-intrinsic-size: auto 3000px; padding-left: 24px; margin-left: -24px; }
     .research-entry h3 { font-size: 24px; margin-bottom: 12px; }
     .entry-meta, .timing-note { color: var(--muted); font: 12px/1.6 system-ui, sans-serif; }
     .timing-table { width: 100%; border-collapse: collapse; margin-top: 24px; font: 14px/1.5 system-ui, sans-serif; }
@@ -57,15 +60,29 @@
       .scroll-nav[data-active], .scroll-nav:has(:focus-visible) { opacity: .75; pointer-events: auto; }
     }
     @media (prefers-reduced-motion: reduce) { .scroll-nav { transition: none; } }
-    @media print { body { background: white; } .toolbar, details, footer, .scroll-nav, .heading-anchor { display: none; } main { border: 0; box-shadow: none; margin: 0; padding: 0; max-width: none; } .math { overflow: visible; } }
+    .search-toggle, .notebook-search { position: fixed; z-index: 20; font: 14px/1.5 system-ui, sans-serif; }
+    .search-toggle { bottom: 18px; right: 18px; }
+    .notebook-search { top: 16px; right: 16px; width: min(560px, calc(100% - 32px)); max-height: 65vh; overflow: auto; padding: 18px; background: var(--paper); border: 1px solid #c8d8ce; border-radius: 8px; box-shadow: 0 8px 30px #23372833; }
+    .notebook-search[hidden] { display: none; }
+    .notebook-search input[type=search] { width: 100%; margin: 8px 0; padding: 10px; font: inherit; }
+    .search-toggle, .notebook-search button { font: inherit; color: var(--accent); background: var(--paper); border: 1px solid #c8d8ce; border-radius: 5px; padding: 6px 10px; cursor: pointer; }
+    .search-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    #search-close { margin-left: auto; }
+    #search-results { padding: 0; list-style: none; }
+    #search-results button { display: block; width: 100%; text-align: left; margin-top: 8px; overflow-wrap: anywhere; }
+    #search-results strong, #search-results span { display: block; }
+    #search-results span { color: var(--ink); white-space: pre-wrap; }
+    .search-hit { outline: 2px solid var(--accent); outline-offset: 5px; background: #eef5ef; scroll-margin: 24px; }
+    @media print { .search-toggle, .notebook-search { display: none; } .search-hit { outline: none; background: none; } }
+    @media print { .research-entry { content-visibility: visible; } body { background: white; } .toolbar, details, footer, .scroll-nav, .heading-anchor { display: none; } main { border: 0; box-shadow: none; margin: 0; padding: 0; max-width: none; } .math { overflow: visible; } }
   </style>
   <script>
     // BEGIN NOTEBOOK SETTINGS
     window.notebookSettings = {mode: 'live', revisionUrl: '/revision', pollMs: 1000};
     // END NOTEBOOK SETTINGS
     window.MathJax = {
-      // Render equations near the viewport instead of the entire research record.
-      loader: { load: ['ui/lazy'] },
+      // The viewport scheduler below supplies small explicit containers. ui/lazy
+      // still scans the entire document, which is too costly for this record.
       tex: {
         inlineMath: [['\\(', '\\)'], ['$', '$']],
         displayMath: [['\\[', '\\]'], ['$$', '$$']],
@@ -74,9 +91,11 @@
       },
       svg: { fontCache: 'global' },
       startup: {
+        typeset: false,
         pageReady() {
           return MathJax.startup.defaultPageReady().then(() => {
             window.mathReady = true;
+            window.startNotebookMath();
             document.getElementById('status').textContent = window.notebookSettings.mode === 'published'
               ? 'Published notebook' : 'Live · watching for changes';
             try {
@@ -108,6 +127,245 @@
     <button type="button" data-scroll="next" aria-label="Next section" title="Next section" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
     <button type="button" data-scroll="end" aria-label="Scroll to end" title="Scroll to end" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 5 6 6 6-6M6 13l6 6 6-6"/></svg></button>
   </nav>
+  <button class="search-toggle" id="search-open" type="button" aria-controls="notebook-search" aria-expanded="false" title="Search notebook (/)">Search notebook</button>
+  <aside class="notebook-search" id="notebook-search" aria-label="Search notebook" hidden>
+    <div class="search-controls"><label for="search-query"><strong>Search text or TeX</strong></label><button id="search-close" type="button" aria-label="Close search">Close</button></div>
+    <input id="search-query" type="search" placeholder="Words or TeX, e.g. \mathcal" autocomplete="off" spellcheck="false" aria-describedby="search-status">
+    <label><input id="search-case" type="checkbox"> Match case</label>
+    <p id="search-status" role="status">Search the entire notebook, including unvisited equations.</p>
+    <ul id="search-results"></ul>
+    <div class="search-controls"><button id="search-previous" type="button" disabled>Previous results</button><button id="search-next" type="button" disabled>Next results</button></div>
+  </aside>
+  <script id="viewport-math">
+    // Preserve only blocks that MathJax actually changes. Search builds the rest
+    // of its text index on demand, without reading layout or typesetting anything.
+    window.notebookText = {
+      selector: 'p, li, .math, h1, h2, h3, h4, h5, h6, td, th, summary',
+      sources: new WeakMap(),
+      pause: () => new Promise(resolve => setTimeout(resolve, 0))
+    };
+    // Only nearby regions acquire block observers; only nearby blocks reach MathJax.
+    // Keep the full source in the DOM for native find, anchor links and no-JS reading.
+    window.startNotebookMath = () => {
+      const pending = new Set();
+      const finished = new WeakSet();
+      const blocksByRegion = new WeakMap();
+      let running = false;
+      const {selector, sources, pause} = window.notebookText;
+      const hasMath = element => /\\[([]|\$/.test(element.textContent);
+
+      async function drain() {
+        if (running) return;
+        running = true;
+        try {
+          while (pending.size) {
+            const block = pending.values().next().value;
+            pending.delete(block);
+            if (finished.has(block)) continue;
+            // One paragraph/display per task, so input can run between chunks.
+            if (!sources.has(block)) sources.set(block, block.textContent);
+            await MathJax.typesetPromise([block]);
+            finished.add(block);
+            blockObserver.unobserve(block);
+            await pause();
+          }
+        } catch (error) {
+          window.mathError = true;
+          const status = document.getElementById('status');
+          status.textContent = 'Some math could not render. Refresh to retry.';
+          status.dataset.error = '';
+          console.error(error);
+        } finally { running = false; }
+      }
+      const blockObserver = new IntersectionObserver(entries => {
+        for (const {target, isIntersecting} of entries) {
+          if (isIntersecting && !finished.has(target)) pending.add(target);
+          else pending.delete(target);
+        }
+        void drain();
+      }, {rootMargin: '600px 0px'});
+      const regionObserver = new IntersectionObserver(entries => {
+        for (const {target: region, isIntersecting} of entries) {
+          let blocks = blocksByRegion.get(region);
+          if (isIntersecting && !blocks) {
+            blocks = region.matches(selector) ? [region] :
+              [...region.querySelectorAll(selector)].filter(block =>
+                !block.parentElement.closest(selector) ||
+                !region.contains(block.parentElement.closest(selector)));
+            blocks = blocks.filter(hasMath);
+            blocksByRegion.set(region, blocks);
+          }
+          for (const block of blocks || []) {
+            if (isIntersecting && !finished.has(block)) blockObserver.observe(block);
+            else { blockObserver.unobserve(block); pending.delete(block); }
+          }
+        }
+      }, {rootMargin: '1200px 0px'});
+      for (const region of document.querySelectorAll(
+        'main > :not(#research-record), #research-record > *')) {
+        regionObserver.observe(region);
+      }
+    };
+  </script>
+  <script id="notebook-search-client">
+    (() => {
+      const {selector, sources, pause} = window.notebookText;
+      const panel = document.getElementById('notebook-search');
+      const opener = document.getElementById('search-open');
+      const input = document.getElementById('search-query');
+      const matchCase = document.getElementById('search-case');
+      const status = document.getElementById('search-status');
+      const results = document.getElementById('search-results');
+      const previous = document.getElementById('search-previous');
+      const next = document.getElementById('search-next');
+      const normalize = text => text.replace(/\s+/g, ' ').trim();
+      const pageSize = 30;
+      let indexPromise, matches = [], page = 0, generation = 0, timer, highlighted;
+
+      function buildIndex() {
+        if (indexPromise) return indexPromise;
+        indexPromise = (async () => {
+          performance.mark('notebook-search-index-start');
+          const index = [];
+          const stack = [...document.querySelector('main').children].reverse();
+          const titles = new WeakMap();
+          while (stack.length) {
+            const deadline = performance.now() + 8;
+            do {
+              const element = stack.pop();
+              if (element.matches('script, style, footer, .heading-anchor, mjx-container')) continue;
+              if (element.matches(selector + ', pre') || !element.querySelector(selector + ', pre')) {
+                const text = normalize(sources.get(element) ?? element.textContent);
+                if (!text) continue;
+                const region = element.closest('article, section');
+                if (region && !titles.has(region)) {
+                  const heading = region.querySelector('h2, h3');
+                  titles.set(region, heading ? normalize(sources.get(heading) ?? heading.textContent) : 'Notebook');
+                }
+                index.push({element, text, lower: text.toLowerCase(), title: titles.get(region) || 'Overview'});
+              } else {
+                for (let n = element.children.length - 1; n >= 0; n--) stack.push(element.children[n]);
+              }
+            } while (stack.length && performance.now() < deadline);
+            if (stack.length) await pause();
+          }
+          performance.measure('notebook-search-index', 'notebook-search-index-start');
+          return index;
+        })();
+        return indexPromise;
+      }
+      function close() {
+        panel.hidden = true;
+        opener.setAttribute('aria-expanded', 'false');
+        clearTimeout(timer);
+        generation++;
+      }
+      function showResults() {
+        results.replaceChildren();
+        const start = page * pageSize;
+        for (const {record, position, length} of matches.slice(start, start + pageSize)) {
+          const item = document.createElement('li');
+          const button = document.createElement('button');
+          button.type = 'button';
+          const title = document.createElement('strong');
+          title.textContent = record.title;
+          const excerpt = document.createElement('span');
+          const from = Math.max(0, position - 70), to = Math.min(record.text.length, position + length + 110);
+          excerpt.textContent = (from ? '…' : '') + record.text.slice(from, to) + (to < record.text.length ? '…' : '');
+          button.append(title, excerpt);
+          button.addEventListener('click', () => {
+            close();
+            highlighted?.classList.remove('search-hit');
+            highlighted = record.element;
+            highlighted.classList.add('search-hit');
+            // Search can find text inside a closed disclosure too.
+            for (let parent = highlighted.parentElement; parent; parent = parent.parentElement) {
+              if (parent.matches('details')) parent.open = true;
+            }
+            highlighted.scrollIntoView({block: 'center', behavior: 'instant'});
+            const tabIndex = highlighted.getAttribute('tabindex');
+            highlighted.tabIndex = -1;
+            highlighted.focus({preventScroll: true});
+            highlighted.addEventListener('blur', () => {
+              if (tabIndex === null) record.element.removeAttribute('tabindex');
+              else record.element.setAttribute('tabindex', tabIndex);
+            }, {once: true});
+          });
+          item.append(button);
+          results.append(item);
+        }
+        previous.disabled = page === 0;
+        next.disabled = start + pageSize >= matches.length;
+        status.textContent = matches.length
+          ? `${matches.length} matching passages · ${start + 1}–${Math.min(start + pageSize, matches.length)}`
+          : 'No matching passages.';
+        status.dataset.state = 'ready';
+      }
+      async function search() {
+        const run = ++generation;
+        const query = normalize(input.value);
+        results.replaceChildren();
+        previous.disabled = next.disabled = true;
+        if (!query) {
+          status.textContent = 'Search the entire notebook, including unvisited equations.';
+          status.dataset.state = 'idle';
+          return;
+        }
+        status.dataset.state = 'searching';
+        status.textContent = indexPromise ? 'Searching…' : 'Preparing search…';
+        const records = await buildIndex();
+        if (run !== generation || panel.hidden) return;
+        const started = performance.now();
+        const sensitive = matchCase.checked;
+        const needle = sensitive ? query : query.toLowerCase();
+        const found = [];
+        for (let n = 0; n < records.length;) {
+          const deadline = performance.now() + 8;
+          do {
+            const record = records[n++];
+            const position = (sensitive ? record.text : record.lower).indexOf(needle);
+            if (position !== -1) found.push({record, position, length: query.length});
+          } while (n < records.length && performance.now() < deadline);
+          if (n < records.length) await pause();
+          if (run !== generation || panel.hidden) return;
+        }
+        matches = found;
+        page = 0;
+        showResults();
+        performance.measure('notebook-search-query', {start: started});
+      }
+      function schedule() {
+        generation++; // Invalidate old results immediately, before the debounce.
+        clearTimeout(timer);
+        results.replaceChildren();
+        previous.disabled = next.disabled = true;
+        status.dataset.state = 'pending';
+        timer = setTimeout(() => { void search(); }, 150);
+      }
+      opener.addEventListener('click', () => {
+        panel.hidden = false;
+        opener.setAttribute('aria-expanded', 'true');
+        input.focus();
+        if (input.value && status.dataset.state !== 'ready') schedule();
+      });
+      document.getElementById('search-close').addEventListener('click', () => { close(); opener.focus(); });
+      input.addEventListener('input', schedule);
+      matchCase.addEventListener('change', schedule);
+      input.addEventListener('keydown', event => {
+        if (event.key === 'Enter') { clearTimeout(timer); void search(); }
+      });
+      previous.addEventListener('click', () => { page--; showResults(); });
+      next.addEventListener('click', () => { page++; showResults(); });
+      window.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !panel.hidden) { close(); opener.focus(); }
+        if (event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey &&
+            !event.target.closest('input, textarea, select, [contenteditable]')) {
+          event.preventDefault();
+          opener.click();
+        }
+      });
+    })();
+  </script>
   <script>
     // Give every addressable heading a hover link. A heading without its own id uses the id
     // of the section or article it opens.
@@ -155,17 +413,23 @@
         pending = false;
         const y = window.scrollY;
         const end = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-        // Lazy rendering can move headings even when the total page height stays the same.
-        // Read their current positions on each scroll frame, rather than caching offsets.
-        const positions = headings.map(heading => Math.max(0,
-          heading.getBoundingClientRect().top + y - 16));
-        // Treat the heading just above the viewport as the current section.
-        let current = -1;
-        positions.forEach((position, index) => { if (position <= y + 2) current = index; });
+        // Headings are in document order. Binary search avoids forcing layout for
+        // every off-screen entry on every scroll frame.
+        let low = 0, high = headings.length;
+        while (low < high) {
+          const middle = (low + high) >>> 1;
+          const heading = headings[middle];
+          const box = heading.parentElement?.matches('.research-entry')
+            ? heading.parentElement : heading;
+          const position = box.getBoundingClientRect().top + y - 16;
+          if (position <= y + 2) low = middle + 1;
+          else high = middle;
+        }
+        const current = low - 1;
         targets = {
           top: y > 2 ? 0 : null,
           previous: current > 0 ? headings[current - 1] : null,
-          next: current + 1 < positions.length && y < end - 2
+          next: current + 1 < headings.length && y < end - 2
             ? headings[current + 1] : null,
           end: y < end - 2 ? end : null
         };
@@ -239,7 +503,7 @@
           location.reload();
           return;
         }
-        if (window.mathReady) {
+        if (window.mathReady && !window.mathError) {
           status.textContent = settings.mode === 'published' ? 'Published notebook' : 'Live · watching for changes';
           delete status.dataset.error;
         }

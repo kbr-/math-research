@@ -139,6 +139,18 @@ its rendered mathematics automatically. MathJax loads from a CDN, so the browser
 needs internet access. `index.html` supplies the layout and rendering logic.
 Use `python3 server.py --port 8001` if the default port is occupied.
 
+Math is processed in nearby paragraphs and displays, with pauses between blocks.
+Off-screen research entries defer layout while remaining available to browser
+search and anchor links. Navigation searches section positions without measuring
+the whole record on each scroll. See the
+[performance measurements and browser-check commands](research/results/notebook_performance_20260920/README.md).
+Use **Search notebook** (or `/`) from anywhere on the page to search all prose
+and original TeX, including equations that have not rendered. Results link to
+matching passages; **Match case** distinguishes TeX commands such as `\Gamma`
+and `\gamma`. This is literal search with whitespace normalized, not symbolic
+equivalence or a conversion from rendered symbols to TeX. Ctrl+F remains the
+browser's own search. The reusable text index is built only on the first query.
+
 The [published notebook](https://kbr.is-a.dev/math-research/) is built by
 GitHub Actions when relevant notebook or site-tooling changes are pushed to
 `main`. It is a standalone site and requires no local server.
