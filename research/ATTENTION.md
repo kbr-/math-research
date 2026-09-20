@@ -49,6 +49,11 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Provides a reusable weighted-marginal analogue of matching-trade spanning and the coherence mechanism required by joint predicate correction.
   Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
   Next: Obtain independent review of the deletion-budget induction and compare with coded/weighted matching-complex results before claiming novelty; test actual-source compatibility next.
+- **[thm:collective-parity-trade-lift](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-collective-parity-lift>)** — For s binary affine parities, if every nonzero combination touches more than d+s-1 pigeon rows and N>6(d+s-1), the joint map K_(d+1) to K_d^s is onto the tuples satisfying self-annihilation and cross-contraction equations.
+  Significance: general_tool; novelty: unknown.
+  Supplies a common correction for overlapping old parities under a collective condition, rather than combining independent single-parity extensions.
+  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Next: Obtain independent review of the projective lifting and matching range; compare with known weighted matching/Koszul homology before claiming novelty, and test arbitrary-span decomposition with simultaneous compatibility.
 - **[thm:compact-PHP-quotient-cut-rank](<https://kbr.is-a.dev/math-research/#compact-PHP-quotient-cut-rank>)** — Under the explicit QC-room inequalities, every compact-bit variable cut admits a rank-nonincreasing linear projection fixing selected code-bit polynomials and killing degree-B NS consequences of prime-field PHP plus the stated literal guards.
   Significance: general_tool; novelty: unknown.
   Potentially reusable bounded-degree quotient-rank tool: PHP corrections cannot erase the selected bit cut rank under explicit room conditions. Novelty and applications beyond the local source fixture are unassessed.
