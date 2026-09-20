@@ -18,9 +18,9 @@ The degree bound printed in BBDM 2023 Question 4.3 follows from multiplicity Sch
 
 **Why it matters:** Potentially useful clarification of an explicitly printed question via an earlier standard theorem; not a new lower-bound mechanism or priority claim.
 
-**Decision (agent):** The inequality printed in the journal version of BBDM Question 4.3 follows directly from DKSS multiplicity Schwartz–Zippel, even without the k threshold. Confirm the version, intended scope and any prior clarification independently before considering author-facing communication. This is a consequence of existing literature, not a new lower-bound mechanism; no author has been contacted. See entry-2026-09-20-frontier-multiplicity-path.
+**Decision (agent):** A two-page attributed preprint is drafted in publications/binary-polynomial-multiplicity. The requested bound is a direct consequence of DKSS Lemma 2.7, not a new lower-bound mechanism. Human-author approval, independent confirmation and clarification of prior knowledge or intended scope remain outstanding; no author contact or submission has occurred. See entry-2026-09-20-multiplicity-note-revision-1.
 
-**Next:** Independently confirm the exact published statement and whether a stronger intended question or prior clarification exists before any author-facing communication.
+**Next:** Review the two-page draft and independently confirm the source interpretation and any prior clarification before author contact or submission.
 
 ---
 
