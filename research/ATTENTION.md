@@ -274,6 +274,22 @@ For 3<=k<=q and every n>=1, a truncated Hasse-Taylor lift of the zero selector i
 
 ---
 
+### Ternary unpaired triple covers
+
+**Claim:** [obs:ternary-unpaired-triple-covers](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#ternary-unpaired-triple-covers>)
+
+Explicit zero-avoiding ternary triple covers have 10 planes in dimension 3 and 12 in dimension 4, and are not complete scalar bundles.
+
+**Significance:** `negative_result` · **Novelty:** `unknown`
+
+**Why it matters:** Falsifying controls for a proposed structural shortcut; isolated dimensions are not an asymptotic counterexample.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Use the exact scope in the next route assessment; independent review and prior-art clarification remain separate.
+
+---
+
 ### BLVZ chessboard filling
 
 **Claim:** [third-party:BLVZ-chessboard-filling](<https://kbr.is-a.dev/math-research/#lean-chessboard-filling>)
