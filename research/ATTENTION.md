@@ -264,7 +264,7 @@ For N independent encoded scalar profiles and coefficient degree T, h rows suffi
 
 **Why it matters:** Potential independent exact frontier for polynomial-coefficient ENS factors in independent encoded scalar profiles. Constant coefficients recover classical finite-grid covering; the positive-degree occurrence-budget refinement was not identified in the targeted primary comparison, so novelty remains unknown.
 
-**Decision (agent):** Fossick 20 September: read the full lower/upper proofs and encoding comparison; retain as a focused independent candidate. Rechecked the classical finite-grid boundary in Bishnoi–Clark–Potukuchi–Schmitt, Theorems 1.1–1.2. Positive-T encoded-coordinate novelty remains unknown; seek expert comparison before promotion. See notebook entry entry-2026-09-20-fossick-profile-frontiers.
+**Decision (agent):** Focused open-problem search, 20 September: retain this independent exact frontier as a candidate with unknown novelty. Its constant-coefficient endpoint is classical Alon–Furedi. Located explicit questions concern infinite grids, multiplicities or general weight-determined subsets and are not settled by the finite encoded factor theorem. No matching explicitly posed open problem was identified; obtain expert comparison of the positive-degree encoded model before promotion. See entry-2026-09-20-frontier-open-problem-audit.
 
 **Next:** Before promotion, obtain a finite-grid-covering expert comparison of the positive-T encoded-coordinate factor model and its untouched-group budget; distinguish native scalar degree and the already known T=0 case.
 
