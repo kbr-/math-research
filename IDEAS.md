@@ -174,6 +174,29 @@ the main notebook. Support multiple such notebooks while sharing the claim regis
 and other framework infrastructure. This avoids temporarily replacing the main
 notebook's goal and then discarding the side branch's living sections at integration.
 
+**Proposed `Branch` protocol in `PROMPTS.md`.** Invoke it by naming the protocol
+and describing the new research goal, optionally referencing the notebook entry
+where the goal was first identified (for example, `Branch: investigate the
+odd-field double-covering question discussed in <entry link>`). The agent reads
+the referenced entry and relevant claim/dependency records, then invokes the
+appropriate setup tools to create the new research branch and its side notebook.
+
+The protocol initializes an empty research record and fills the pre-record
+sections with the new goal, starting position, remaining obligations, proposed
+first step, necessary mathematical context and any applicable formalization gaps.
+It links inherited results to their existing records, preserves their hypotheses
+and review status, and does not copy the parent notebook's research history or
+invent progress. Setup includes a stable research-thread name, navigation and
+source-link registration, context-budget configuration, and selection of the new
+notebook for subsequent restoration and research tools. Any Git branch/worktree
+created for the assignment is associated with, but distinct from, that stable
+research-thread identity. The agent verifies the initialized notebook and reports
+its path/URL and initial scope. Opening the branch does not itself authorize
+unbounded research, parallel agents or publication.
+
+This records a protocol to implement later; it does not yet add an active `Branch`
+command to `PROMPTS.md` or create a side notebook.
+
 **Codex comments (20 September 2026).**
 
 - Use stable research-thread names independent of Git branch names: a Git branch
