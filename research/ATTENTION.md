@@ -98,6 +98,11 @@ workflow decisions, not theorem status or publication approval. See [the workflo
   Exact ENS consequence-degree example clarifies original companion activity and static versus dynamic certificate costs. General PC/NS degree separation is classical; originality of this restricted exact formula is unresolved.
   Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
   Next: Use as an exact accounting counterexample. If publication is considered, compare consequence-target examples retaining original generator degree after input reduction, rather than claiming a new PC/NS separation phenomenon.
+- **[thm:row-predicate-trade-lift](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-trade-correction-layer>)** — If 1 and s row-label predicates remain independent after any 2d label deletions, their joint conditioning map from K_(d+1) onto s copies of K_d avoiding that row has a linear right inverse; all row bits qualify when N=2^ell>4d.
+  Significance: general_tool; novelty: unknown.
+  Gives a concrete surjective correction operator using matching geometry, with an all-prime robust bit-code condition and a precise failed-hypothesis control.
+  Decision (automatic): Significance metadata requests candidate attention; not a novelty verdict.
+  Next: Compare with weighted matching-complex lifting results and obtain independent review of the operator/domain and boundary hypotheses before claiming novelty; next test multirow compatibility.
 - **[thm:ternary-coefficient-degree-frontier](<https://kbr-.github.io/math-research/#ternary-degree-accuracy-frontier>)** — For coefficient degree T over the proper column ideal, the exact row count is ceil(2n/(2T+1)) in odd characteristic and ceil(n/(T+1)) in characteristic two
   Significance: general_tool; novelty: unknown.
   Exact independent-column coefficient-degree frontier uses established grid-selector degree techniques; its constant-coefficient case is classical covering and its positive-degree formulation is a special case of the recorded heterogeneous frontier.
