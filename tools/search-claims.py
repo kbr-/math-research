@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Bounded ranked search and exact lookup of the structured claim registry.
 
+Unfiltered display searches also show up to three historical statement matches.
+Machine-readable outputs and registry filters retain their current-registry scope.
+
 A grep for one phrase misses a recorded claim that uses other words ("point-support lower bound"
 was missed by "support size"). Give the statement's content words; rows are ranked by the rarity-
 weighted number of distinct word stems they contain, so a row sharing several uncommon words with
@@ -60,6 +63,38 @@ def search(data, words, *, status=None, kind=None, topic=None, formalization=Non
         result.append((sum(weights[q] for q in hits), c))
     result.sort(key=lambda item: -item[0])
     return result
+
+
+def historical_matches(words, root=ROOT, limit=3):
+    """Rank the immutable index's statements, excluding proofs and later claims."""
+    directory = root / 'php_codex_handoff/manuscript'
+    index = directory / 'CLAIM_INDEX.md'
+    if not index.exists():
+        return []
+    claims, chapters = [], {}
+    pattern = re.compile(r'^\| \[[^\]]+\]\((chapters/[^)#]+)#([^)]+)\) '
+                         r'\| (.*?) \| ([^|]+) \| \[`([^`]+)`\]')
+    for line in index.read_text().splitlines():
+        match = pattern.match(line)
+        if not match:
+            if '(chapters/' in line:
+                raise ValueError('Cannot parse historical index row: ' + line)
+            continue
+        relative, anchor, title, status, ident = match.groups()
+        if relative not in chapters:
+            chapters[relative] = (directory / relative).read_text()
+        chapter = chapters[relative]
+        marker = '<a id="' + anchor + '"></a>'
+        if chapter.count(marker) != 1:
+            raise ValueError('Missing or ambiguous historical anchor: ' + relative + '#' + anchor)
+        excerpt = chapter.split(marker, 1)[1].split('<a id=', 1)[0]
+        statement = excerpt.split('**Proof', 1)[0]
+        statement = re.sub(r'^#{1,6} .*$', '', statement, flags=re.M)
+        claims.append({'id': ident, 'summary': title,
+                       'assessment': ' '.join(statement.split()),
+                       'historical_status': status.strip(),
+                       'source': str((directory / relative).relative_to(root)) + '#' + anchor})
+    return [claim for _, claim in search({'claims': claims}, words)[:limit]]
 
 
 def main():
@@ -162,6 +197,14 @@ def main():
                   '  Source: '+next(r['target'] for r in references(c) if r['field']=='record')]
     lines.append(f'{len(selected)} of {total} matches; {total-len(selected)} omitted. '
                  'Use --show LABEL for full metadata; ellipses mark shortened text.')
+    if (args.words and not args.list and args.registry.resolve() == REGISTRY.resolve()
+            and not any([args.status, args.kind, args.topic, args.formalization, args.has_lean])):
+        historical = historical_matches(args.words)
+        if historical:
+            lines.append('Historical statement matches (at most 3; read source before relying):')
+            for c in historical:
+                lines += [f"  historical:{c['id']} — {c['summary']} [{c['historical_status']}]",
+                          '    '+brief(c['assessment'], 230), '    Source: '+c['source']]
     text='\n'.join(lines)+'\n';sys.stdout.write(text);observed(text)
 
 

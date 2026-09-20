@@ -55,7 +55,7 @@ on resume, even in a fresh clone. “Before this notebook” is historical conte
 
 ## Bounded claim and source navigation
 
-- `tools/search-claims.py WORDS` ranks bounded results; `--show LABEL` exposes
+- `tools/search-claims.py WORDS` ranks bounded current and historical candidates; `--show LABEL` exposes
   complete metadata and links. `tools/claim-dependencies.py packet --claim ID`
   gives selected evidence and limitations, **not proof readiness**.
 - If all claims are needed, use `tools/claim-index.py list --fields id,summary

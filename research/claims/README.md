@@ -48,6 +48,13 @@ return as `\\`, `\t`, `\n`, `\r`; null is `\N`, distinct from a literal backslas
 Array/object fields use compact JSON inside one escaped cell. Use `--format json`
 for lossless typed projections. Ordinary human-readable search remains bounded.
 
+Unfiltered display searches also show up to three historical candidates, ranked
+from the immutable index and local statement excerpts, excluding proofs. Follow
+their source paths; `--show` remains a current-registry lookup. Filtered searches,
+JSON/TSV projections and complete listings keep their existing current-registry
+scope. These bounded suggestions are navigation, not proof readiness or evidence
+that no earlier result applies.
+
 ## Schema and scope
 
 [schema.json](schema.json) defines version 2; [schema-v1.json](schema-v1.json)

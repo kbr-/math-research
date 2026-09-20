@@ -255,6 +255,40 @@ class ClaimRegistryTests(unittest.TestCase):
             result = subprocess.run(command+['--show', 'missing'], capture_output=True, text=True)
             self.assertNotEqual(result.returncode, 0)
 
+    def test_historical_search_uses_statements_and_validated_anchors(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manuscript = root/'php_codex_handoff/manuscript'
+            (manuscript/'chapters').mkdir(parents=True)
+            (manuscript/'CLAIM_INDEX.md').write_text(
+                '| [Theorem 1](chapters/one.md#one) | Additive elimination | working-proof | '
+                '[`thm:one`](latex/one.tex#L1) |\n')
+            chapter = manuscript/'chapters/one.md'
+            chapter.write_text('<a id="one"></a>\n### Theorem 1\n\n'
+                               'A PC refutation loses no fan-in factor.\n\n'
+                               '**Proof.** Zebrafish appear only in this proof.\n'
+                               '<a id="next"></a>\nUnicorn appears in the next statement.\n')
+            rows = search_tool.historical_matches(['PC', 'refutation'], root)
+            self.assertEqual([r['id'] for r in rows], ['thm:one'])
+            self.assertEqual(rows[0]['source'],
+                             'php_codex_handoff/manuscript/chapters/one.md#one')
+            self.assertEqual(search_tool.historical_matches(['zebrafish'], root), [])
+            self.assertEqual(search_tool.historical_matches(['unicorn'], root), [])
+            chapter.write_text(chapter.read_text().replace('id="one"', 'id="missing"'))
+            with self.assertRaisesRegex(ValueError, 'historical anchor'):
+                search_tool.historical_matches(['PC'], root)
+
+    def test_default_display_surfaces_historical_elimination_without_changing_tsv(self):
+        command = [sys.executable, str(TOOLS/'search-claims.py'),
+                   'one', 'block', 'additive', 'elimination', '-n', '1']
+        display = subprocess.run(command, check=True, capture_output=True, text=True).stdout
+        self.assertIn('historical:thm:one-elimination', display)
+        self.assertLessEqual(display.count('  historical:'), 3)
+        tsv = subprocess.run(command+['--format', 'tsv'], check=True,
+                             capture_output=True, text=True).stdout
+        self.assertEqual(len(tsv.splitlines()), 1)
+        self.assertNotIn('historical:', tsv)
+
     def test_append_merge_and_conflicting_metadata(self):
         base = cr.import_markdown(source())
         left, right = copy.deepcopy(base), copy.deepcopy(base)
