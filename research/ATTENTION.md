@@ -430,6 +430,22 @@ For N independent encoded scalar profiles and coefficient degree T, h rows suffi
 
 ---
 
+### Intersection span stratum source map
+
+**Claim:** [thm:intersection-span-stratum-source-map](<https://kbr.is-a.dev/math-research/#intersection-span-stratum-source-map>)
+
+A common affine graph weight and low-rank span-poset inversion give a complete two-level parent map under an explicit bound on the number of generated spans below a rank cutoff.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Constructs an actual complete map for positive readers and mixtures with potentially linear total old feature rank. The key new sufficient quantity is low-rank span inventory; the geometric hypothesis is not automatic.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit the boundary-family count, support-only poset inversion and original-degree replay; then test the span-inventory hypothesis on logarithmic-rank source families.
+
+---
+
 ### Multirow predicate trade lift
 
 **Claim:** [thm:multirow-predicate-trade-lift](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-coded-trade-spanning>)
