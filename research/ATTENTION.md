@@ -696,9 +696,9 @@ For fixed p and alpha<1/5, polynomial complete selector families exclude polylog
 
 **Why it matters:** Adds clausewise dense global directions to the row-local source endpoint with polynomial inventory and controlled full coefficient maps.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
-**Next:** Test the structural dichotomy for independent dense form families under matching restriction before refining this sufficient endpoint further; independently assess novelty before publication.
+**Next:** Use the subsequent sublinear-row-remainder refinement for the best exponent; address arbitrary spread-out source families rather than retuning this narrower endpoint.
 
 ---
 
@@ -968,9 +968,25 @@ For fixed p and alpha<1/5, polynomial inventories of complete accuracy-one selec
 
 **Why it matters:** Handles an all-prime family beyond one-row queries and removes the triple-image control through PHP structure, without bounding block rank or a common row support.
 
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
+
+**Next:** Use the subsequent sublinear-row-remainder refinement for the best exponent; address arbitrary spread-out source families rather than retuning this narrower endpoint.
+
+---
+
+### Sublinear row remainder selector exclusion
+
+**Claim:** [thm:sublinear-row-remainder-selector-exclusion](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#sublinear-row-remainder-selector-exclusion>)
+
+For every fixed p and alpha<1, polynomial complete selector families with clausewise O(log n) affine probes plus per-input n^alpha polylog n row remainders exclude polylog PC degree, hence corresponding ordinary unary-PHP query-restricted Res(Lin) proofs have superpolynomially many lines.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Removes the artificial one-fifth exponent limit by thinning local supports before paying interpolation costs, uniformly over all coefficient choices.
+
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
-**Next:** Test whether shared global probes can reduce spread-out forms to this class with a complete and affordable source map; independently assess novelty before publication.
+**Next:** Address structured remainders needing n^(1-o(1)) rows or prove a common smaller-scale dense-rank/cheap-profile alternative; independently assess novelty before publication.
 
 ---
 
