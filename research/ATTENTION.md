@@ -528,6 +528,22 @@ Every graph in the stated robust class supports an all-prime affine ENS endpoint
 
 ---
 
+### Full board unary selector transfer
+
+**Claim:** [thm:full-board-unary-selector-transfer](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#full-board-unary-selector-transfer>)
+
+Every S-line standard unary PHP Res(lin_Fp) refutation compiles directly over full functional linear-row PHP to at most S complete accuracy-one selector blocks and a PC refutation through 4p-1, without a graph restriction or row-width degree cost.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Removes an unnecessary sparse-graph compilation step and aligns the actual source with complete-board matching preservation. It does not by itself prove the odd-prime lower bound.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Use complete-board matching filtration on the actual nonlinear selector residuals, keeping the PC endpoint and original source degrees.
+
+---
+
 ### Full unary affine old preservation
 
 **Claim:** [thm:full-unary-affine-old-preservation](<https://kbr.is-a.dev/math-research/#full-unary-affine-old-preservation>)
