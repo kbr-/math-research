@@ -180,6 +180,22 @@ Over F_q, a polynomial double-vanishing at all nonzero grid points has degree at
 
 ---
 
+### First active quadratic parent lift
+
+**Claim:** [lem:first-active-quadratic-parent-lift](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#first-active-quadratic-parent-lift>)
+
+For odd p, any F_p-valued retained NS annihilator through max(5,2p) extends jointly through degree five over arbitrarily many private accuracy-one parents whose inputs all have actual degree two; old cutoff five alone fails at p=3.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Proves the first genuinely simultaneous parent extension without an arity/type-count charge and identifies the first mixed-degree gap.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Test degree-six mixed equations and PC closure before drawing any consequence for the actual compiler endpoint.
+
+---
+
 ### Frobenius PC companion compression
 
 **Claim:** [lem:frobenius-PC-companion-compression](<https://kbr.is-a.dev/math-research/#frobenius-PC-companion-compression>)
