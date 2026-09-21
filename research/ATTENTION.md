@@ -990,6 +990,22 @@ For every fixed p and alpha<1, polynomial complete selector families with clause
 
 ---
 
+### Subquadratic cell support source exclusion
+
+**Claim:** [thm:subquadratic-cell-support-source-exclusion](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#subquadratic-cell-support-source-exclusion>)
+
+Polynomially many complete one-level old-input ENS blocks with a common n^(2-epsilon) polylog(n) cell support per block admit simultaneous constant-degree coefficient profiles after one polynomial-size matching restriction; polylog-degree PC refutations over balanced weak or functional unary PHP are excluded.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Abstracts the earlier sparse permutation-support control to arbitrary polynomial inputs on any subquadratic common support, using matching number rather than residual cell count. Leaves the unrestricted dense-support implication open.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** On resumption audit whether arbitrary dense-support selector blocks enter a common cheap-profile or dense-image case; independently check novelty before any publication claim.
+
+---
+
 ### Ternary coefficient degree frontier
 
 **Claim:** [thm:ternary-coefficient-degree-frontier](<https://kbr-.github.io/math-research/#ternary-degree-accuracy-frontier>)
