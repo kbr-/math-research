@@ -55,8 +55,9 @@ rules to growing checklists or one-off setup narratives.
   before reliance read the exact statement, proof and applicable corrections.
   Before committing to a direction, inspect the relevant claims' reviewed
   dependencies and correction/refinement links using `claim-index.py graph` and
-  exact metadata. Check conditional premises and stronger available versions
-  against the proposed argument; follow only dependencies that matter to it.
+  exact metadata. Check conditional premises, stronger available versions and
+  concrete transformations in relevant older proofs before imposing a new
+  interface requirement; follow only dependencies that matter to the argument.
   Missing edges do not establish independence, and an impact warning is not a
   verdict that a claim is false.
   Label rediscoveries/refinements and link their original records.
