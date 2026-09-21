@@ -64,10 +64,14 @@ def rank3(M):
 def nf(C, M):
     """Normal form modulo T in quotient coordinates (non-pivot columns)."""
     if not M.shape[0]: return np.zeros((0, len(C['free'])), dtype=np.uint8)
-    M = M.astype(np.float64)
-    if C['Tb'].shape[0]:
-        M = M - M[:, C['piv']] @ C['Tb'].astype(np.float64)
-    return (np.mod(M, 3)[:, C['free']]).astype(np.uint8)
+    if 'Tbf' not in C: C['Tbf'] = C['Tb'].astype(np.float32)
+    out = np.zeros((M.shape[0], len(C['free'])), dtype=np.uint8)
+    for lo in range(0, M.shape[0], 512):
+        X = M[lo:lo + 512].astype(np.float32)
+        if C['Tb'].shape[0]:
+            X = X - X[:, C['piv']] @ C['Tbf']
+        out[lo:lo + 512] = np.mod(X, 3)[:, C['free']].astype(np.uint8)
+    return out
 
 def build(N, d, k, seed):
     rng = np.random.default_rng(seed)
@@ -170,8 +174,11 @@ if __name__ == '__main__':
     ap.add_argument('--count-only', action='store_true'); a = ap.parse_args()
     jobs = []; summary = {}
     items = list(CONFIGS[a.config].items())
-    with get_context('fork').Pool(min(a.workers, len(items))) as P:
-        prepared = P.map(prepare, items, chunksize=1)
+    if len(items) == 1:
+        prepared = [prepare(items[0])]; prepared[0][1]['Tbf'] = prepared[0][1]['Tb'].astype(np.float32)
+    else:
+        with get_context('fork').Pool(min(a.workers, len(items))) as P:
+            prepared = P.map(prepare, items, chunksize=1)
     for (name, cfg), (_, C) in zip(items, prepared):
         CTX[name] = C
         m = len(C['G']['mults'])
