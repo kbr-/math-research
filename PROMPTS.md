@@ -229,9 +229,9 @@ So perform the following, in a loop:
 
 - do a research turn, as if I prompted you to "do the next step"
 - after EVERY research turn, assess its contribution and process: state what
-  changed in the named remaining-route obligation (the top-level item of The
-  remaining route that the entry is tagged with, not a sub-gap of the current
-  line), including when nothing changed, and assess the current line's prospects
+  changed in the concrete missing implication needed for the goal, including
+  when a scoped result leaves it untouched; the top-level route tag supplies
+  navigation, not the assessment. Assess the current line's prospects
   qualitatively from evidence, following AGENTS.md; identify wasted time or context,
   repeated work, or difficulty checking the mathematics. Follow AGENTS.md's
   task-selection and dependency-checking guidance. When investigating overhead,

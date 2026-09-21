@@ -26,10 +26,11 @@ rules to growing checklists or one-off setup narratives.
   then load only relevant records. Do not load the growing record or index wholesale.
   Keep `php_codex_handoff/` immutable; its import is complete. New work belongs
   outside it, usually in `research/`. Use targeted source passages.
-- On opening a research cycle, name the top-level remaining-route obligation,
-  explain how the task tests/discharges it, and set a concrete stopping point.
-  Prioritize an unproved obligation needed for the main goal; distinguish a
-  sufficient endpoint from stronger conveniences before adding conversion steps.
+- On opening a research cycle, state the concrete missing implication needed for
+  the goal, how this task tests/discharges it, and what evidence ends the test or
+  changes the next action. Route IDs are navigation, not a substitute for that
+  explanation or evidence of progress. Prioritize a necessary unproved obligation;
+  distinguish a sufficient endpoint from stronger conveniences before adding steps.
 - Restricted examples must test a named general hypothesis, obstruction or
   mechanism. A growing case list or equivalent reformulation leaves the general
   implication open. State that implication and test it against known obstructions,
