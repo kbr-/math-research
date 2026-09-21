@@ -180,6 +180,22 @@ Over F_q, a polynomial double-vanishing at all nonzero grid points has degree at
 
 ---
 
+### Frobenius PC companion compression
+
+**Claim:** [lem:frobenius-PC-companion-compression](<https://kbr.is-a.dev/math-research/#frobenius-PC-companion-compression>)
+
+Frobenius recovers an entire F_p-valued input tuple from one extension-field multiplier equation through deg f+p delta, and compresses companion lists globally in PC while retaining every original product and domain.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** An arity-independent PC consequence operation with an explicit global source budget; it separates valid field-extension encoding from an invalid scalar-block replacement.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit the Frobenius reuse ceiling, coefficient-matrix inversion, exact compressed axiom degree and scalar descent; compare standard finite-field axiom compression before claiming novelty.
+
+---
+
 ### Low factor rank exterior kernel criterion
 
 **Claim:** [lem:low-factor-rank-exterior-kernel-criterion](<https://kbr.is-a.dev/math-research/#low-factor-rank-exterior-kernel-criterion>)
