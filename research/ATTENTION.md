@@ -258,6 +258,22 @@ Over any field, a nonzero old functional-PHP class of degree at most t has at mo
 
 ---
 
+### Prime retained rectangular pairing
+
+**Claim:** [lem:prime-retained-rectangular-pairing](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#prime-retained-rectangular-pairing>)
+
+For every prime p and retained PC ceiling B>=pt, a normalized finite-extension annihilator gives a left-nondegenerate pairing Q_t x Q_((p-1)t); every functional on Q_t has a density through (p-1)t, simultaneously at finitely many cutoffs.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Extends the retained binary moment-coordinate construction to every prime with an explicit factor-p ceiling, enabling legitimate odd-prime coupled equations.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Use the coordinates to test actual coupled parent consistency; do not infer feasibility from nondegeneracy.
+
+---
+
 ### Random graph unary separated space
 
 **Claim:** [lem:random-graph-unary-separated-space](<https://kbr.is-a.dev/math-research/#random-graph-unary-separated-space>)
