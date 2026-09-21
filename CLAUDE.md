@@ -67,8 +67,7 @@ another.
 
 Do not take a cycle's task from the previous entry's remaining gap alone. First name the
 top-level item of "The remaining route" that the cycle advances (the entry's `data-route`)
-and state in one sentence the estimated chance that completing the whole current line
-advances the main goal; put the estimate in the process assessment. A low estimate, or a
+and assess that line's prospects as AGENTS.md requires. A weak assessment, or a
 line that produces special cases without moving its general implication, makes the cycle
 a route review under AGENTS.md even before `finish-turn.py` forces one.
 
@@ -104,9 +103,6 @@ session must be resumable anywhere from the repository alone.
   the next cycle, route review or draft review in the current turn and re-arm with a short delay
   (about 60 seconds); a possible user redirection is no reason to idle. Use long delays only for
   genuinely blocked waits, such as a running reviewer or a background batch.
-- Give confidence estimates only for what was asked: a lemma, a cycle, a line of attack. Never
-  volunteer a verdict on the prospects of the research program as a whole, in chat, the
-  notebook, commit messages or other published material.
 - Repeated question marks in the user's messages signal frustration with the process, more
   marks meaning more; they call for a real fix, not an apology. Put that fix into the
   framework, preferably as a mechanical check a tool enforces, and commit it.
