@@ -430,6 +430,22 @@ An S-node affine refutation DAG whose initial clauses are covered by t width-w c
 
 ---
 
+### Greedy internal affine reference transfer
+
+**Claim:** [thm:greedy-internal-affine-reference-transfer](<https://kbr.is-a.dev/math-research/#greedy-internal-affine-reference-transfer>)
+
+Adaptive greedy choices clamp internal products while retaining terminal affine blocks; a degree-D complete-source refutation yields an old target f through TD+t, with f outside old I_t and t<=(p-1)a.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Extends the pure-reader construction to old-affine references at every internal stage and separates internal decision cost from terminal inventory. It supplies a full relative certificate map, not a proposed gluing criterion.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit adaptive old-only decisions, repeated-type certificates, the weighted product telescope and the exact terminal-source PC replay; inspect actual compiler coverage separately.
+
+---
+
 ### Heterogeneous scalar profile frontier
 
 **Claim:** [thm:heterogeneous-scalar-profile-frontier](<https://kbr-.github.io/math-research/#categorical-heterogeneous-frontier>)
