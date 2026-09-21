@@ -22,9 +22,9 @@ by shared uncommon words whatever the phrasing (a phrase search for "support siz
 the recorded point-support lemma, which this search puts first), because the opening
 search cannot cover a lemma that did not exist yet; a recorded case-split lemma was once
 restated as new and caught only by the reviewer; before drafting the proof of a new
-lemma, send its one-paragraph statement to the standing reviewer with the single question
-whether the record already implies it (the reviewer holds the dependency context, and
-three restatements in one day were found only after full drafting);
+lemma, send its one-paragraph statement to the reviewer with the single question
+whether the record already implies it (three restatements in one day were found only
+after full drafting);
 (3) run the exhaustive checker for any rule, tree, or encoding change before
 relying on it; (4) have a fresh-context reviewer, a subagent given only the draft
 and the dependency anchors, try to break the argument and name the hypotheses
@@ -33,9 +33,18 @@ unused hypothesis. Before drafting a corollary, check whether an earlier result
 already gives it under fewer hypotheses than the cycle's own route; corollaries
 have twice inherited route hypotheses that their statements did not need. A result
 stated as a composition of recorded results is written as a lemma whose hypotheses
-name one probability space and one tree; a reference to a sketch is not a proof. Keep one reviewer subagent on standby for the whole session
-and continue it with SendMessage for each new draft; a new subagent would have
-to re-establish the dependency context every time. Record the gate in a short
+name one probability space and one tree; a reference to a sketch is not a proof.
+
+Brief each reviewer narrowly, because a subagent's whole context is re-sent with every
+message (one standing reviewer grew to about 150k tokens in four rounds). Name the exact
+files or anchors to read, allow at most one or two named claim searches, and ask for
+required changes only, as short bullets. Put the dependency excerpts it needs in a
+scratch file rather than asking it to explore. Continue a reviewer with SendMessage only
+while its context concerns the current line and is smaller than a fresh brief would
+need; when the cycle moves to another line, or its context has grown large, start a new
+narrowly briefed reviewer. Scale the number of passes to the claim: one focused pass for
+a short lemma or a reformulation, and a further pass only when the corrections add or
+strengthen a claim, not when they only remove or weaken one. Record the gate in a short
 "Verification gate." paragraph of the entry (dependencies re-read, checks run,
 the reviewer's verdict), not in the status line; a result whose gate is
 incomplete is recorded as conditional, not as a working proof. A slower cycle
