@@ -1082,6 +1082,22 @@ No degree-D design distribution for an unsatisfiable Boolean quadratic system me
 
 ---
 
+### Wide row p complex amplitude exactness
+
+**Claim:** [thm:wide-row-p-complex-amplitude-exactness](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#wide-row-p-complex-amplitude-exactness>)
+
+Over characteristic p, weighted matching contractions satisfy ker D^a = im D^(p-a) at degree d if t>=2d+p-a active rows have constant/predicate evaluation rank two after any 3d+2(p-a) label deletions.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Supplies a general odd-prime amplitude-exactness range on matching moment corrections and resolves the exactness task posed by the preceding topology cycle.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently review the coded-row amplitude theorem and compare modular incidence-homology literature; on the route, test complete-source polarized compatibility rather than sharpen constants.
+
+---
+
 ### Wide row predicate complex exactness
 
 **Claim:** [thm:wide-row-predicate-complex-exactness](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-wide-parity-exactness>)
