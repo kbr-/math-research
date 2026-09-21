@@ -554,7 +554,7 @@ Every S-line standard unary PHP Res(lin_Fp) refutation compiles directly over fu
 
 **Why it matters:** Removes an unnecessary sparse-graph compilation step and aligns the actual source with complete-board matching preservation. It does not by itself prove the odd-prime lower bound.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Use complete-board matching filtration on the actual nonlinear selector residuals, keeping the PC endpoint and original source degrees.
 
