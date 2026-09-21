@@ -942,6 +942,22 @@ Binary affine-after-constants sources with at most cN internal blocks, c<1/4, an
 
 ---
 
+### Subfifth row selector source exclusion
+
+**Claim:** [thm:subfifth-row-selector-source-exclusion](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#subfifth-row-selector-source-exclusion>)
+
+For fixed p and alpha<1/5, polynomial inventories of complete accuracy-one selectors, each on at most n^alpha polylog n rows modulo row equations, have no polylog-degree PC refutation over full functional unary PHP; corresponding ordinary unary Res(Lin) query-restricted proofs need superpolynomially many lines.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Handles an all-prime family beyond one-row queries and removes the triple-image control through PHP structure, without bounding block rank or a common row support.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Test whether shared global probes can reduce spread-out forms to this class with a complete and affordable source map; independently assess novelty before publication.
+
+---
+
 ### Ternary coefficient degree frontier
 
 **Claim:** [thm:ternary-coefficient-degree-frontier](<https://kbr-.github.io/math-research/#ternary-degree-accuracy-frontier>)
