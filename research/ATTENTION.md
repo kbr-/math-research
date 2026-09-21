@@ -84,22 +84,6 @@ No universal transfer from one-level affine ENS ordinary NS refutations to old P
 
 ---
 
-### Generic affine flat avoidance hardness
-
-**Claim:** [cor:generic-affine-flat-avoidance-hardness](<https://kbr.is-a.dev/math-research/#generic-affine-flat-avoidance-hardness>)
-
-For binary uniform codimension-log N affine flats at M<=N/8 inventory, their raw avoidance equations preserve old PHP PC/NS hardness through floor((N+1)/2)-M outside a 2^(-Omega(N log^2 N)) exceptional event.
-
-**Significance:** `general_tool` · **Novelty:** `unknown`
-
-**Why it matters:** Provides a precise positive old-hardness regime for the earlier generic avoidance question, using the new multiplication-rank estimate rather than numerical evidence.
-
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
-
-**Next:** Independently audit the affine-offset model, all-traces exception, raw indicator costs and compact decoder; compare the small-linear-inventory result with existing random-constraint robustness literature before claiming novelty.
-
----
-
 ### Ordinary unary PHP parity near exponential
 
 **Claim:** [cor:ordinary-unary-PHP-parity-near-exponential](<https://kbr.is-a.dev/math-research/#ordinary-unary-PHP-parity-near-exponential>)
@@ -734,6 +718,22 @@ If 1 and s row-label predicates remain independent after any 2d label deletions,
 
 ---
 
+### Safe probe affine augmentation
+
+**Claim:** [thm:safe-probe-affine-augmentation](<https://kbr.is-a.dev/math-research/#safe-probe-affine-augmentation>)
+
+A binary safe bit-affine system of rank a<=cN, c<1/4, gives a degree-preserving restriction of flat avoidance plus any complete affine ENS family to a near-balanced affine PHP source.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Discharges the current affine-augmentation premise by preserving the whole source under a previously recorded affine restriction, avoiding stronger mixed-moment preservation.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit the safe substitution on every original axiom, the near-balanced row counts, adaptive affine-family quantifier and direct all-accuracy source version; compare prior safe-system applications before claiming novelty.
+
+---
+
 ### Ternary coefficient degree frontier
 
 **Claim:** [thm:ternary-coefficient-degree-frontier](<https://kbr-.github.io/math-research/#ternary-degree-accuracy-frontier>)
@@ -821,6 +821,20 @@ Revision-2 attribution, exposition, parameter tables, and self-contained verific
 **Why it matters:** Preprint revision is editorial and reuses existing mathematical and kernel evidence.
 
 **Decision (agent):** Fossick: editorial revision and verification-map record, covered by the canonical publication theorem and exponential corollary attention items. Preserve it as provenance rather than a separate mathematical candidate; no user approval or external review is inferred.
+
+---
+
+### Generic affine flat avoidance hardness
+
+**Claim:** [cor:generic-affine-flat-avoidance-hardness](<https://kbr.is-a.dev/math-research/#generic-affine-flat-avoidance-hardness>)
+
+For binary uniform codimension-log N affine flats at M<=N/8 inventory, their raw avoidance equations preserve old PHP PC/NS hardness through floor((N+1)/2)-M outside a 2^(-Omega(N log^2 N)) exceptional event.
+
+**Significance:** `route_specific` · **Novelty:** `not_claimed`
+
+**Why it matters:** The old linear hardness conclusion also follows by choosing safe probes and using the previously recorded safe-system corollary. Its sharper all-traces probability bound and separate rank proof remain recorded; no independent novelty claim for the old-hardness conclusion is maintained.
+
+**Decision (agent):** The safe-probe record gives an older route to the same old linear-hardness conclusion via safe-systems-lemma. The separate sharper all-traces estimate remains valid, but no independent novelty claim for the hardness corollary is maintained; metadata now records route-specific significance. See entry-2026-09-21-safe-probes-affine-augmentation.
 
 ---
 
