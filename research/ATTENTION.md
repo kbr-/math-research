@@ -1082,6 +1082,22 @@ No degree-D design distribution for an unsatisfiable Boolean quadratic system me
 
 ---
 
+### Wide field predicate conditioned filtration
+
+**Claim:** [thm:wide-field-predicate-conditioned-filtration](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#wide-field-predicate-conditioned-filtration>)
+
+For one allowed-value equation q_A(L)=0 of degree a over Fp, every functional-PHP NS functional extends through B if t>=2B-a active rows have constant/predicate rank robustness through 3B-a label deletions; the conditioned original NS filtration is stable and PC=NS through B.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Converts odd-prime amplitude exactness into a stable conditioned system and arbitrary prescribed-moment extension, distinguishing this stronger interface from mere refutation hardness.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Test higher-degree polarized completion from the endpoint conditions; independently review the prescribed-moment theorem before any novelty or publication claim.
+
+---
+
 ### Wide row p complex amplitude exactness
 
 **Claim:** [thm:wide-row-p-complex-amplitude-exactness](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#wide-row-p-complex-amplitude-exactness>)
