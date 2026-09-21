@@ -958,6 +958,22 @@ For coefficient degree T over the proper column ideal, the exact row count is ce
 
 ---
 
+### Ternary low or dense graph rank exclusion
+
+**Claim:** [thm:ternary-low-or-dense-graph-rank-exclusion](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#ternary-low-or-dense-graph-rank-exclusion>)
+
+Complete accuracy-one quadratic sources over a separated functional PHP graph in F3 have no degree-D PC refutation when every projected nonlinear rank is at most R or at least Q_* and TD+k fits the separator window.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Supplies a dense-rank case without the invalid odd-prime polar extraction, but does not close the unrestricted lower-bound goal.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Address the intermediate projected-rank window using source-compatible profiles or sharper image estimates; assess novelty before a publication claim.
+
+---
+
 ### Unary reader hole query switching
 
 **Claim:** [thm:unary-reader-hole-query-switching](<https://kbr.is-a.dev/math-research/#unary-switching-theorem>)
