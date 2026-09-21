@@ -686,6 +686,22 @@ A common affine graph weight and low-rank span-poset inversion give a complete t
 
 ---
 
+### Log probe row local selector exclusion
+
+**Claim:** [thm:log-probe-row-local-selector-exclusion](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#log-probe-row-local-selector-exclusion>)
+
+For fixed p and alpha<1/5, polynomial complete selector families exclude polylog PC degree when each block admits O(log n) shared global affine probes plus per-input n^alpha polylog n row-local remainders modulo row equations.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Adds clausewise dense global directions to the row-local source endpoint with polynomial inventory and controlled full coefficient maps.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Test the structural dichotomy for independent dense form families under matching restriction before refining this sufficient endpoint further; independently assess novelty before publication.
+
+---
+
 ### Multirow predicate trade lift
 
 **Claim:** [thm:multirow-predicate-trade-lift](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-coded-trade-spanning>)
