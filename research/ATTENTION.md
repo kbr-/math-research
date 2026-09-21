@@ -1048,9 +1048,9 @@ In characteristic three, polarized lifting at adjacent degrees makes endpoint se
 
 **Why it matters:** Turns the compatibility actually supplied by two ternary selectors into a common matching correction at every moment degree, removing the previously unproved polarized-completion premise for pairs.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
-**Next:** Independently review the joint-linear and endpoint constructions; on the route, test three-selector and raw mixed-component coherence before optimizing pair parameters.
+**Next:** Keep the pair theorem as a local tool; audit a uniform family assembly mechanism rather than successive fixed-degree extensions.
 
 ---
 
