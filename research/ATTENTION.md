@@ -100,6 +100,22 @@ For every fixed 0<epsilon<1, sufficiently large unary PHP and its functional var
 
 ---
 
+### Rank free flat value choice
+
+**Claim:** [cor:rank-free-flat-value-choice](<https://kbr.is-a.dev/math-research/#rank-free-flat-value-choice>)
+
+For a distinct proper affine flat types over full functional PHP, one can choose their zero/one values with a nonzero old multiplier of charged degree at most (p-1)a, independent of the flat ranks.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Replaces a rank-sum value-query charge by a bottom-type count using the stable old filtration; potentially reusable for relative source maps.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit the old-NS membership split, propagation of all earlier certificates and the raw-selector versus reduced-degree distinction.
+
+---
+
 ### Retained affine conditioning gap
 
 **Claim:** [cor:retained-affine-conditioning-gap](<https://kbr.is-a.dev/math-research/#retained-affine-conditioning-gap>)
@@ -571,6 +587,22 @@ Every real K>0 eventually bounds below the node count of every usual-CNF bit-PHP
 **Decision (agent):** Fossick 20 September: read the exact usual-CNF encoding, both rule conventions, theorem and linked end-to-end proof. This is the canonical publication item; predecessor formulations and later quantitative refinements belong to the same branch. Recorded Lean verification is not independent expert review or renewed novelty certification. See entry-2026-09-20-fossick-publication-review.
 
 **Next:** Obtain independent expert review and resolve novelty against the exact literature scope; this curation does not perform a new literature search.
+
+---
+
+### Pure reader bottom count lift
+
+**Claim:** [thm:pure-reader-bottom-count-lift](<https://kbr.is-a.dev/math-research/#pure-reader-bottom-count-lift>)
+
+Complete arbitrary-depth pure polynomial readers over affine bottoms have no degree-D PC/NS refutation of unary PHP when N>=2[TD+(p-1)a]-1, with a the number of distinct proper bottom input spans and T constant in p.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Provides a rank-free relative coefficient construction and removes upper-depth charges for a precisely defined class. It covers the audited entropy obstruction while leaving the unrestricted Frege source gap explicit.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit the forced-one companion bound, arbitrary-polynomial weighted telescoping and PC replay; then test higher old-affine parts against the full old-target window.
 
 ---
 
