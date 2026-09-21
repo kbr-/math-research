@@ -718,6 +718,22 @@ The defined DAG-like affine-disequality calculus has no polynomial-size bit-PHP 
 
 ---
 
+### Prime equation clause selector transfer
+
+**Claim:** [thm:prime-equation-clause-selector-transfer](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#prime-equation-clause-selector-transfer>)
+
+An S-line standard F_p equation-clause refutation with initial width w compiles to at most S complete accuracy-one ENS blocks on selectors 1-L^(p-1), with polynomial input inventory and PC degree max(4p-1,p+(p-1)max(w,2)).
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Discharges the standard equation-clause forward transfer into a restricted nonlinear source; leaves the required power-selector exclusion open.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently check the degree ledger and test exclusion of the actual power-selector source, starting with p=3.
+
+---
+
 ### Publication Res parity bit PHP
 
 **Claim:** [thm:publication-Res-parity-bit-PHP](<https://kbr.is-a.dev/math-research/#publication-Res-parity-bit-PHP-theorem>)
