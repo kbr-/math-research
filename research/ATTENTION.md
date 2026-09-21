@@ -368,6 +368,22 @@ For s≥2 and N≥2s-1, every F₂ reduced (s-2)-cycle of the chessboard complex
 
 ---
 
+### PHP quotient rank selector exclusion
+
+**Claim:** [thm:PHP-quotient-rank-selector-exclusion](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#PHP-quotient-rank-selector-exclusion>)
+
+Complete accuracy-one ternary selector families over full functional PHP have no polylog-degree PC refutation at polynomial inventory when every input span has nonlinear rank at most N^sigma polylog N modulo I_2 and affine classes, for fixed sigma<1.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Makes the surviving nonlinear rank a certified PHP-quotient parameter of the actual compiler source and covers every fixed sublinear power; high-rank mixed sources remain open.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Find a source-compatible high-rank alternative that includes the easy two-column control and preserves the required separation budget.
+
+---
+
 ### PHP reduced product Booleanity gap
 
 **Claim:** [thm:PHP-reduced-product-Booleanity-gap](<https://kbr-.github.io/math-research/#PHP-reduced-Booleanity-theorem>)
