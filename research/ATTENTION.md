@@ -432,6 +432,22 @@ Depth-four query formulas of size O(n^2 log^3 n) defeat the sufficient ENS proba
 
 ---
 
+### Empty aware bipartite switching
+
+**Claim:** [thm:empty-aware-bipartite-switching](<https://kbr.is-a.dev/math-research/#empty-aware-bipartite-switching>)
+
+Positive width-r matching DNFs admit valid empty-aware functional-PHP trees under uniform restrictions, with bad-depth-s probability at most (N+2)^s sum_j A^j, A=8rN(N+1)/(n-N+1).
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Repairs a concrete functional-PHP image gap in the occupied-only switching route by changing both the canonical tree and its encoding.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit the empty-marker decoder invariant, all-prime leaf-profile costs and relation to published matching switching lemmas; novelty is not established.
+
+---
+
 ### Finite field high origin cover
 
 **Claim:** [thm:finite-field-high-origin-cover](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#finite-field-high-origin-cover>)
