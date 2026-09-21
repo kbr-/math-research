@@ -258,6 +258,22 @@ A sixteen-neighbor graph with one distinguished edge per row admits a homogeneou
 
 ---
 
+### Relative matching head count
+
+**Claim:** [lem:relative-matching-head-count](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#relative-matching-head-count>)
+
+Adding R disjoint nonedges to a graph of maximum degree Delta reduces its independent k-set count by at least the factor exp(-R k(k-1)/(2s^2)) when 2<=k<=s/[8(Delta+2)]; this gives a degree-filtered quadratic reduction bound relative to genuine old collision monomials.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Provides the missing relative rather than ambient image estimate when new disjoint heads are available; remaining separation and structure hypotheses are explicit.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Test the relative separation density on robust graph PHP and then actual selector-span head structure.
+
+---
+
 ### Punctured higher jet polynomial obstruction
 
 **Claim:** [obs:punctured-higher-jet-polynomial-obstruction](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#punctured-higher-jet-polynomial-obstruction>)
