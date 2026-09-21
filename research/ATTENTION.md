@@ -164,6 +164,22 @@ A binary cubic function space whose whole-space polar tensor has partition rank 
 
 ---
 
+### Buffered mixed affine annihilator codimension
+
+**Claim:** [lem:buffered-mixed-affine-annihilator-codimension](<https://kbr.is-a.dev/math-research/#buffered-mixed-affine-annihilator-codimension>)
+
+For any mixed class f outside C_B over binary PHP, its old bit-affine annihilator leaves more than B-deg f-ell free bit dimensions.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Retains a universal degree-buffer restriction on mixed annihilators after the sharper old-only bound fails. It may constrain joint source constructions but does not solve their feasibility.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit affine parametrization, collision interpolation, decoder costs and final-line PC reuse; assess whether the weaker bound can control normalized mixed-cofactor compatibility.
+
+---
+
 ### Finite field punctured first jet degree
 
 **Claim:** [lem:finite-field-punctured-first-jet-degree](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#finite-field-punctured-first-jet-degree>)
