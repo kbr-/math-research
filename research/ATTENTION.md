@@ -84,6 +84,22 @@ No universal transfer from one-level affine ENS ordinary NS refutations to old P
 
 ---
 
+### Generic affine flat avoidance hardness
+
+**Claim:** [cor:generic-affine-flat-avoidance-hardness](<https://kbr.is-a.dev/math-research/#generic-affine-flat-avoidance-hardness>)
+
+For binary uniform codimension-log N affine flats at M<=N/8 inventory, their raw avoidance equations preserve old PHP PC/NS hardness through floor((N+1)/2)-M outside a 2^(-Omega(N log^2 N)) exceptional event.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Provides a precise positive old-hardness regime for the earlier generic avoidance question, using the new multiplication-rank estimate rather than numerical evidence.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit the affine-offset model, all-traces exception, raw indicator costs and compact decoder; compare the small-linear-inventory result with existing random-constraint robustness literature before claiming novelty.
+
+---
+
 ### Ordinary unary PHP parity near exponential
 
 **Claim:** [cor:ordinary-unary-PHP-parity-near-exponential](<https://kbr.is-a.dev/math-research/#ordinary-unary-PHP-parity-near-exponential>)
