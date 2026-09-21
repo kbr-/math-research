@@ -194,6 +194,22 @@ A uniform bijection of m>=1 rows avoids any fixed forbidden pair set P with prob
 
 ---
 
+### Old bit multiplication annihilator
+
+**Claim:** [lem:old-bit-multiplication-annihilator](<https://kbr.is-a.dev/math-research/#old-bit-multiplication-annihilator>)
+
+Over any field, a nonzero old functional-PHP class of degree at most t has at most t ell annihilating bit-affine directions at cutoff t+1, for N=2^ell>4t and m>=t+1.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** A reusable quantitative lower bound on multiplication rank in the old matching quotient, with a direct application to dense affine event choices.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit the normal-form congruence, appended disjoint-label trade, stability cutoff and all-field fiber bound; inspect whether it supplies a useful full-source compatibility estimate.
+
+---
+
 ### Random graph unary separated space
 
 **Claim:** [lem:random-graph-unary-separated-space](<https://kbr.is-a.dev/math-research/#random-graph-unary-separated-space>)
