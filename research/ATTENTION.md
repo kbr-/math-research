@@ -1038,6 +1038,22 @@ Complete accuracy-one quadratic sources over a separated functional PHP graph in
 
 ---
 
+### Ternary two selector endpoint lift
+
+**Claim:** [thm:ternary-two-selector-endpoint-lift](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#ternary-two-selector-endpoint-lift>)
+
+In characteristic three, polarized lifting at adjacent degrees makes endpoint self/cross conditions D_i z_i=0 and D_1^2 z_2=D_2^2 z_1 sufficient for a common square-contraction lift; on matching spaces collective width 2d+5 and deletion robustness 3d+8 suffice.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Turns the compatibility actually supplied by two ternary selectors into a common matching correction at every moment degree, removing the previously unproved polarized-completion premise for pairs.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently review the joint-linear and endpoint constructions; on the route, test three-selector and raw mixed-component coherence before optimizing pair parameters.
+
+---
+
 ### Unary reader hole query switching
 
 **Claim:** [thm:unary-reader-hole-query-switching](<https://kbr.is-a.dev/math-research/#unary-switching-theorem>)
