@@ -734,6 +734,22 @@ A binary safe bit-affine system of rank a<=cN, c<1/4, gives a degree-preserving 
 
 ---
 
+### Small internal inventory binary source exclusion
+
+**Claim:** [thm:small-internal-inventory-binary-source-exclusion](<https://kbr.is-a.dev/math-research/#small-internal-inventory-binary-source-exclusion>)
+
+Binary affine-after-constants sources with at most cN internal blocks, c<1/4, and arbitrary permitted terminal affine inventory have a degree-preserving reduction to a near-balanced affine source.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Removes the geometric hypotheses from the small-linear internal-count regime by choosing product values adaptively and keeping the exact surviving-board budget.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently audit composition of changing row coordinates, completeness of the terminal family, original-degree replay and the all-block residual barrier; assess useful batching without inferring it from fixed depth.
+
+---
+
 ### Ternary coefficient degree frontier
 
 **Claim:** [thm:ternary-coefficient-degree-frontier](<https://kbr-.github.io/math-research/#ternary-degree-accuracy-frontier>)
