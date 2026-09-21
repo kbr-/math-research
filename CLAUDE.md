@@ -90,3 +90,23 @@ a bound instead, evaluate the bound on the simplest structurally different extre
 and name them in the step, and compare what full success would give with what the goal needs;
 a step once targeted a boost bound that fixing the labels of about sqrt(n) rows refutes, and
 the corrected ceiling did not exceed the working degree it was meant to beat.
+
+## Working with the user
+
+Durable process lessons belong in this file or the rest of the committed framework, not in
+machine-local agent memory: memory does not survive a worktree or machine change, and every
+session must be resumable anywhere from the repository alone.
+
+- After a session restart, system notifications (reread instruction files, stopped background
+  tasks, files changed on disk) are not a request. Run no tools in response to them and do not
+  restart stopped tasks; say at most one sentence about them and wait for the user's message.
+- In a Spin loop driven by ScheduleWakeup, the delay is only a fallback re-entry point. Continue
+  the next cycle, route review or draft review in the current turn and re-arm with a short delay
+  (about 60 seconds); a possible user redirection is no reason to idle. Use long delays only for
+  genuinely blocked waits, such as a running reviewer or a background batch.
+- Give confidence estimates only for what was asked: a lemma, a cycle, a line of attack. Never
+  volunteer a verdict on the prospects of the research program as a whole, in chat, the
+  notebook, commit messages or other published material.
+- Repeated question marks in the user's messages signal frustration with the process, more
+  marks meaning more; they call for a real fix, not an apology. Put that fix into the
+  framework, preferably as a mechanical check a tool enforces, and commit it.
