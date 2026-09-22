@@ -64,6 +64,17 @@ running the command, so `pkill` kills it (exit 144) and a `pgrep` wait loop neve
 ends. Kill or check in one command, restart in another; to wait for a job, rely on
 its own completion notice.
 
+## Naming results
+
+Name each new lemma, theorem, corollary or conjecture after what it says or does, in one to
+four plain words a reader can remember and use in a sentence without looking it up: "the
+separation theorem", "the registry theorem", "the light lemma", "the few-light-rows theorem".
+Never use letter codes or suffix variants such as "Theorem GCp", "Corollary NDp", "Lemma WE" or
+"Proposition MX″": they carry no meaning and force the reader to look them up. A variant of an
+earlier result gets its own descriptive name, or the earlier name with a meaningful qualifier
+("the all-prime clique-head theorem"), not a prime, digit or letter suffix. Follow the names
+GPT-6 Astra gave in the main notebook.
+
 ## Route check when opening a cycle
 
 Do not take a cycle's task from the previous entry's remaining gap alone. First name the
