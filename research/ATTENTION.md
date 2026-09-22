@@ -92,11 +92,11 @@ For every odd prime p, fixed 0<eps<=1/(p-1) and K>0, ordinary unary PHP and its 
 
 **Significance:** `independent_result` · **Novelty:** `candidate`
 
-**Why it matters:** Corollary NDp is, as far as the bounded novelty check shows, among the first superpolynomial size lower bounds for classes of DAG-like Res(lin_Fp) refutations of PHP at an odd prime; its chain is independently audited.
+**Why it matters:** The all-prime nonlocal-dimension corollary is, as far as the bounded novelty check shows, among the first superpolynomial size lower bounds for classes of DAG-like Res(lin_Fp) refutations of PHP at an odd prime; its chain is independently audited.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
-**Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, Proposition MXp); an exact-scope novelty review before any publication decision by the user.
+**Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, the all-prime split-line proposition); an exact-scope novelty review before any publication decision by the user.
 
 ---
 
@@ -456,11 +456,11 @@ For fixed p, 0<eps<=1, A, c and 0<beta<eps/2, every standard syntactic Res(lin_F
 
 **Significance:** `independent_result` · **Novelty:** `candidate`
 
-**Why it matters:** Theorem Y is, as far as the bounded novelty check shows, among the first superpolynomial size lower bounds for classes of DAG-like Res(lin_Fp) refutations of PHP at an odd prime; its chain is independently audited.
+**Why it matters:** The cell-support exceptional-lines theorem is, as far as the bounded novelty check shows, among the first superpolynomial size lower bounds for classes of DAG-like Res(lin_Fp) refutations of PHP at an odd prime; its chain is independently audited.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
-**Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, Proposition MXp); an exact-scope novelty review before any publication decision by the user.
+**Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, the all-prime split-line proposition); an exact-scope novelty review before any publication decision by the user.
 
 ---
 
@@ -738,7 +738,7 @@ For fixed p and alpha<1/5, polynomial complete selector families exclude polylog
 
 **Claim:** [thm:modular-collision-linear-search-hardness](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness>)
 
-Theorem S: for every odd prime p there are C_p, n_p such that for n >= n_p every linear decision tree over F_p (arbitrary affine queries in the variables x_{ih} of unary PHP with n+1 pigeons and n holes) of depth d that outputs two pigeons outputs two pigeons of one hole under the modular-collision near-bijection mu_E (n+1 pigeons onto the holes outside a fixed set E of p-1 holes, one hole receiving p+1) with probability at most C_p d sqrt((d + ln n)/n); so depth Omega_p(n^{1/3}) is needed for success probability 1/2. Proof: swap simulation in dense graphs; combinations of queries close to additive are made additive by revealing the pigeons on their exceptional cells, the others are localized on fresh random pairs whose orientations are hidden uniform bits (Fourier bound for systems), with a transfer from the prior along fixed paths to the adaptive tree.
+The modular-collision theorem: for every odd prime p there are C_p, n_p such that for n >= n_p every linear decision tree over F_p (arbitrary affine queries in the variables x_{ih} of unary PHP with n+1 pigeons and n holes) of depth d that outputs two pigeons outputs two pigeons of one hole under the modular-collision near-bijection mu_E (n+1 pigeons onto the holes outside a fixed set E of p-1 holes, one hole receiving p+1) with probability at most C_p d sqrt((d + ln n)/n); so depth Omega_p(n^{1/3}) is needed for success probability 1/2. Proof: swap simulation in dense graphs; combinations of queries close to additive are made additive by revealing the pigeons on their exceptional cells, the others are localized on fresh random pairs whose orientations are hidden uniform bits (Fourier bound for systems), with a transfer from the prior along fixed paths to the adaptive tree.
 
 **Significance:** `independent_result` · **Novelty:** `not_claimed`
 
@@ -774,11 +774,11 @@ For every odd prime p, fixed eps>0 and c>0 there is C=C(p)>0 such that, for larg
 
 **Significance:** `independent_result` · **Novelty:** `candidate`
 
-**Why it matters:** Theorem NDX-prime is, as far as the bounded novelty check shows, among the first superpolynomial size lower bounds for classes of DAG-like Res(lin_Fp) refutations of PHP at an odd prime; its chain is independently audited.
+**Why it matters:** The linear exceptional-lines theorem is, as far as the bounded novelty check shows, among the first superpolynomial size lower bounds for classes of DAG-like Res(lin_Fp) refutations of PHP at an odd prime; its chain is independently audited.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
-**Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, Proposition MXp); an exact-scope novelty review before any publication decision by the user.
+**Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, the all-prime split-line proposition); an exact-scope novelty review before any publication decision by the user.
 
 ---
 
