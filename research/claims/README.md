@@ -18,8 +18,7 @@ From the repository root:
 ./tools/claim-index.py list --fields id,summary --format tsv
 ./tools/claim-index.py list --topic bit-php --fields id,summary --format tsv
 ./tools/claim-index.py coverage --field formalization --state unreviewed -n 10
-./tools/claim-index.py views view --topic bit-php --format markdown --out /tmp/bit-php.md
-./tools/claim-index.py views duplicates --threshold 0.6 --out /tmp/duplicate-candidates.json
+./tools/claim-index.py duplicates --threshold 0.6 --out /tmp/duplicate-candidates.json
 ```
 
 Search ranks content words, prints bounded summaries with status and a source
@@ -29,13 +28,8 @@ Read the linked notebook passage with `tools/notebook-excerpt.py ANCHOR`.
 `--kind`, `--topic`, and `--formalization` filter reviewed metadata when available;
 `unknown` is distinct from `not_started` and from verified coverage.
 
-The generated [topic map](views/topics.md) links to topic-specific, unclassified,
-all-claim and active/historical views. Historical means explicitly retracted or
-superseded by a reviewed edge; active means only its complement, not validity or
-current-route membership. Correction warnings retain their scopes. Every old ID
-remains available in the all-claim view and exact lookup. These are derived files,
-not additional editable sources. `views bundle --out DIR` writes a portable copy.
-Duplicate discovery reports deterministic summary-token Jaccard candidates only;
+[CLAIM_INDEX.md](../CLAIM_INDEX.md) is the only generated view of the registry; query
+subsets with the tools above rather than from derived files. Duplicate discovery reports deterministic summary-token Jaccard candidates only;
 check hypotheses, encodings, quantifiers and costs before recording relationships.
 It never merges records or declares mathematical equivalence.
 
@@ -275,10 +269,7 @@ generated notices for corrections and conditional/retracted/refutation records;
 partial corrections do not imply whole-claim retraction, and counterexample
 records are not themselves labelled false. Import/reconciliation strips this
 derived block without changing original text. Rendering does not refresh source
-review hashes or independently certify metadata. Default `render` also refreshes
-`views/`; default validation and checkout checks detect stale topic files.
-For an alternate registry/output, use explicit `--views-out DIR` on render and
-`--views-dir DIR` on validation. `finish-turn.py` rejects a
+review hashes or independently certify metadata. `finish-turn.py` rejects a
 stale generated index before stopping the clock. Checkout verification and the
 claim-index CI check additionally validate local targets. External URLs remain
 intact; validation does not fetch them or certify their mathematical content.

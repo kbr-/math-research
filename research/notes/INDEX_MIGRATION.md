@@ -32,8 +32,9 @@ Acceptance evidence by requirement group:
   and [duplicate review](../results/parallel_index_duplicate_review/README.md).
   All 75 mapped claims/77 artifacts retain their exact verified scopes. All 22
   similarity candidates remain distinct; rediscoveries/refinements are linked.
-  [Topic/lifecycle views](../claims/views/topics.md) expose scoped corrections
-  without duplicating editable metadata or deleting historical qualifications.
+  Topic/lifecycle views exposed scoped corrections without duplicating editable
+  metadata (removed on 22 September 2026; [CLAIM_INDEX.md](../CLAIM_INDEX.md)
+  carries the correction notices).
 - Section 9: the final dependency merger and scope decisions, full-record
   [citation utility](../results/parallel_record_citations/README.md), and final
   [graph audit](../results/index_parallel_integration_20260919/graph-final.json).

@@ -61,8 +61,8 @@ on resume, even in a fresh clone. “Before this notebook” is historical conte
   complete metadata and links. `tools/claim-dependencies.py packet --claim ID`
   gives selected evidence and limitations, **not proof readiness**.
 - If all claims are needed, use `tools/claim-index.py list --fields id,summary
-  --format tsv`; never load the whole registry by default. The generated
-  [topic map](../claims/views/topics.md) groups claims. `claim-index.py graph`
+  --format tsv`; never load the whole registry by default; `--topic` selects a
+  topic. `claim-index.py graph`
   offers dependencies/citations/impact; impact is review scope, not invalidity.
 - `claim-index.py coverage` exposes pending/stale reviews; `changed --base REV`
   checks changed scope. The [registry workflow](../claims/README.md) explains
