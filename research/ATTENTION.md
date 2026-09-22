@@ -1032,7 +1032,7 @@ For every fixed p and alpha<1, polynomial complete selector families with clause
 
 **Why it matters:** Removes the artificial one-fifth exponent limit by thinning local supports before paying interpolation costs, uniformly over all coefficient choices.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Address structured remainders needing n^(1-o(1)) rows or prove a common smaller-scale dense-rank/cheap-profile alternative; independently assess novelty before publication.
 
@@ -1048,7 +1048,7 @@ Polynomially many complete one-level old-input ENS blocks with a common n^(2-eps
 
 **Why it matters:** Abstracts the earlier sparse permutation-support control to arbitrary polynomial inputs on any subquadratic common support, using matching number rather than residual cell count. Leaves the unrestricted dense-support implication open.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** On resumption audit whether arbitrary dense-support selector blocks enter a common cheap-profile or dense-image case; independently check novelty before any publication claim.
 
