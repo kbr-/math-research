@@ -45,6 +45,17 @@ for agent in json.load(sys.stdin):
 ' "$1"
 }
 
+# Short id of any background session, running or stopped, with this full session ID.
+known_background() {
+  claude agents --json --all | python3 -c '
+import json, sys
+wanted = sys.argv[1]
+for agent in json.load(sys.stdin):
+    if agent.get("kind") == "background" and agent.get("sessionId") == wanted:
+        print(agent["id"]); break
+' "$1"
+}
+
 open_session() {
   local session_id=$1 short='' tries
   # claude --bg returns at once; give the new session a moment to register.
@@ -71,8 +82,14 @@ if [[ "$mode" != new && -f .claude-session-id ]]; then
     exit 1
   fi
   # Never start a second copy of a session that is already running in the background.
+  # A known background session keeps the options it was first started with, and any flag
+  # passed on resume starts a copy under a new ID, so resume it with --bg alone.
   if [[ -z "$(running_background "$session_id")" ]]; then
-    claude --resume "$session_id" "${options[@]}" >/dev/null
+    if [[ -n "$(known_background "$session_id")" ]]; then
+      claude --bg --resume "$session_id" >/dev/null
+    else
+      claude --resume "$session_id" "${options[@]}" >/dev/null
+    fi
   fi
   open_session "$session_id"
   exit 0
