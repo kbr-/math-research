@@ -58,10 +58,11 @@ clause of scope, then the cycle label. Details belong in the entry's sections.
 
 ## Shell hygiene
 
-Never put a tool's file name in a Bash command that also runs `pkill -f` or
-`pgrep -f`: the pattern matches the shell running the command and kills it
-(exit 144), so nothing after it runs. Kill or check in one command, restart in
-another.
+Never run `pkill -f` or `pgrep -f` with a pattern that also occurs in the same Bash
+command, such as a tool's file name or its arguments: the pattern matches the shell
+running the command, so `pkill` kills it (exit 144) and a `pgrep` wait loop never
+ends. Kill or check in one command, restart in another; to wait for a job, rely on
+its own completion notice.
 
 ## Route check when opening a cycle
 
