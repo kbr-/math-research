@@ -228,6 +228,9 @@ and checkpoints. Continue until the user explicitly interrupts.
 So perform the following, in a loop:
 
 - do a research turn, as if I prompted you to "do the next step"
+- never propose parking, pausing or stopping the thread, and never end a cycle
+  waiting for my decision: when the recorded routes are closed or parked, propose
+  and test a new idea. Lean work happens only when I run a Formalize prompt.
 - after EVERY research turn, assess its contribution and process: state what
   changed in the concrete missing implication needed for the goal, including
   when a scoped result leaves it untouched; the top-level route tag supplies

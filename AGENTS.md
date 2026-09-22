@@ -123,6 +123,8 @@ rules to growing checklists or one-off setup narratives.
   review. A review states the line's general claim, what the main goal needs,
   a falsification attempt, an evidence-based qualitative assessment of **that line only**, and
   the next step on the highest-risk item. Proposed next step names its route item.
+  That step is always research: never park, pause or stop the goal, or wait for a
+  user decision; when recorded routes are closed, propose and test a new idea.
   Explain progress, obstructions and remaining uncertainty; do not invent numerical
   probabilities for research prospects. A probability requires a stated quantitative
   method and evidence, not an uncalibrated impression.
