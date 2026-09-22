@@ -150545,12 +150545,12 @@
         "references": [
           "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-forced-cell-closure-test"
         ],
-        "next_action": "Define an extendability closure and test a size bound C_p times rank."
+        "next_action": "Done: prop:unary-vertex-cover-closure defines an extendability closure for plain PHP; its Delayer step is open."
       },
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "028dfe113f30472807f9d07a2e9158c0feeff4e7",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Counterexample and necessary condition with complete elementary proofs, checked by a fresh-context reviewer. Refutes the forced-cell candidate of the closure route review; the extendability closure remains open.",
@@ -150567,7 +150567,7 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "028dfe113f30472807f9d07a2e9158c0feeff4e7",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Elementary counterexample; no Lean verification.",
@@ -150584,7 +150584,7 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "028dfe113f30472807f9d07a2e9158c0feeff4e7",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Closure notions for unary PHP over F_p.",
@@ -150601,13 +150601,35 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "028dfe113f30472807f9d07a2e9158c0feeff4e7",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Shows that a closure notion for unary PHP over F_p must be defined by extendability, not by forcing, and calibrates its size per equation.",
-          "next_action": "Define an extendability closure and test a size bound C_p times rank.",
+          "next_action": "Done: prop:unary-vertex-cover-closure defines an extendability closure for plain PHP; its Delayer step is open.",
           "claim_sha256": "d3155e5955dcecde9a526c4a130d1fa489a1fadc8d82081a8e3438f031366daf",
-          "value_sha256": "b823913351a3245dc82bc62fa66c373d1a784b28c007c8805c6fb20e025e6c7e",
+          "value_sha256": "c952ac766beeda8b8674de493a4f76b9736adb80c8abdecba54bdad243db3133",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-forced-cell-closure-test",
+              "sha256": "95183924dd99f8e50b6c3b91e67372ecd8ea1083b7b2f4fdb98302b82bbbd148",
+              "normalization": "notebook-article-v1"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure",
+              "sha256": "5977340924630ca020cf735b917c432371ced6595fd10e3544a148222933d0c2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Uses lem:Fp-forced-cells-modulo-occupancy for the size of the one-shot closure.",
+          "next_action": null,
+          "claim_sha256": "d3155e5955dcecde9a526c4a130d1fa489a1fadc8d82081a8e3438f031366daf",
+          "value_sha256": "1053944376fe03016b4a85fb43e91e93c7c93f67348880632a830a4cfb1b5575",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-forced-cell-closure-test",
@@ -150615,20 +150637,233 @@
               "normalization": "notebook-article-v1"
             }
           ]
+        }
+      }
+    },
+    {
+      "id": "prop:unary-vertex-cover-closure",
+      "summary": "For plain unary PHP on a bipartite graph over F_p: call a subspace U of forms theta-dangerous when the vertex-cover number of its support (rows and holes) is below theta dim U; a greedy closure adding minimum covers strictly decreases |S| + theta dim<F[\\S]>, so it has size at most theta rank (O(p r log r) with the theta Lemma C needs). Local consistency (an existential witness S within a budget with F[\\S] theta-safe and a 0/1 solution injective on S, trapped pigeons included) has the leaf property and weakening under span containment, and rejects the forced-collision examples. Its Delayer step through the greedy continuation is refuted: hole covers trap pigeons (x_{as1}+x_{cs1}=1, x_{bs2}+x_{ds2}=1, f = x_{kh}+x_{k'h}); expansion and a cover-choice rule are needed. No least closing set exists (x_{1a}+...+x_{ma}); for functional PHP one row-count equation needs a closure of |R| rows.",
+      "assessment": "Working proofs of the potential bound, span weakening, leaves and the example behaviour, checked by a fresh-context reviewer, who also refuted the draft Delayer reduction by the trapped-pigeon example; the Delayer step is open, so this is not yet a closure theory.",
+      "record": "[Definitions and proofs](https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "not_started",
+        "scope": "Elementary definitions and proofs; no Lean verification.",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure"
+        ],
+        "artifacts": []
+      },
+      "topics": [
+        "resolution-parities"
+      ],
+      "significance": {
+        "category": "route_specific",
+        "rationale": "An F_p closure notion for plain unary PHP with a size bound and the leaf property; its refuted Delayer reduction shows that Hall conditions, not linear algebra alone, govern the step.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure"
+        ],
+        "next_action": "Restate on a bipartite expander with a Hall-preserving cover rule; prove the Delayer step in dimensions 0 and 1."
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Working proofs of the potential bound, span weakening, leaves and the example behaviour, checked by a fresh-context reviewer, who also refuted the draft Delayer reduction by the trapped-pigeon example; the Delayer step is open, so this is not yet a closure theory.",
+          "next_action": null,
+          "claim_sha256": "56390587dced44d87a22a814c516a2236c16ae8e61089b3c8e0a0ca47e81efaf",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure",
+              "sha256": "5977340924630ca020cf735b917c432371ced6595fd10e3544a148222933d0c2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Elementary definitions and proofs; no Lean verification.",
+          "next_action": null,
+          "claim_sha256": "56390587dced44d87a22a814c516a2236c16ae8e61089b3c8e0a0ca47e81efaf",
+          "value_sha256": "33d5da467489c46143f96f2b815e6b5c095e8ac79f47af45051dfb22be264e72",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure",
+              "sha256": "5977340924630ca020cf735b917c432371ced6595fd10e3544a148222933d0c2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Closure notions for unary PHP over F_p.",
+          "next_action": null,
+          "claim_sha256": "56390587dced44d87a22a814c516a2236c16ae8e61089b3c8e0a0ca47e81efaf",
+          "value_sha256": "43de62b873fb2411bcb5702f02e14638befb0055ab2b8bf3993dbff4b88f329f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure",
+              "sha256": "5977340924630ca020cf735b917c432371ced6595fd10e3544a148222933d0c2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "An F_p closure notion for plain unary PHP with a size bound and the leaf property; its refuted Delayer reduction shows that Hall conditions, not linear algebra alone, govern the step.",
+          "next_action": "Restate on a bipartite expander with a Hall-preserving cover rule; prove the Delayer step in dimensions 0 and 1.",
+          "claim_sha256": "56390587dced44d87a22a814c516a2236c16ae8e61089b3c8e0a0ca47e81efaf",
+          "value_sha256": "28aed2850917ec4d05d476748652a58026e12b04855de50e985cb3f8c0ef8ffa",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure",
+              "sha256": "5977340924630ca020cf735b917c432371ced6595fd10e3544a148222933d0c2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "028dfe113f30472807f9d07a2e9158c0feeff4e7",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
-          "note": "Uses lem:Fp-forced-cells-modulo-occupancy for the size of the one-shot closure.",
+          "note": "Uses lem:Fp-support-safe-forms-onto-01; answers the requirement of ex:forced-cell-closure-delayer-failure for plain PHP.",
           "next_action": null,
-          "claim_sha256": "d3155e5955dcecde9a526c4a130d1fa489a1fadc8d82081a8e3438f031366daf",
-          "value_sha256": "8977c04163c4dc6ea990bf7d164d69a06c7957c24016ccc5badd49f22929ee73",
+          "claim_sha256": "56390587dced44d87a22a814c516a2236c16ae8e61089b3c8e0a0ca47e81efaf",
+          "value_sha256": "01475a3942d16ce3c3146b7074ec6f50440161120b770ebda3a77a6594386cdc",
           "evidence": [
             {
-              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-forced-cell-closure-test",
-              "sha256": "95183924dd99f8e50b6c3b91e67372ecd8ea1083b7b2f4fdb98302b82bbbd148",
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure",
+              "sha256": "5977340924630ca020cf735b917c432371ced6595fd10e3544a148222933d0c2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lem:Fp-support-safe-forms-onto-01",
+      "summary": "Over F_p, if a set of forms of rank r in 0/1 variables has |supp U| >= l dim U for every nonzero subspace U of its span, with (1-1/p)^(l-p+2) r < 1 (l >= p ln r + p - 1 suffices), then every value attained over F_p is attained by a 0/1 assignment: by Nash-Williams-Edmonds base packing the columns contain l disjoint bases, and by Alon-Linial-Meshulam Proposition 3.1 their union is an additive basis.",
+      "assessment": "Working proof from two imported theorems (base packing; Alon-Linial-Meshulam 1991, Proposition 3.1, read in the source), checked by a fresh-context reviewer.",
+      "record": "[Lemma C and proof](https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "not_started",
+        "scope": "Lemma from two imported theorems; no Lean verification.",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure"
+        ],
+        "artifacts": []
+      },
+      "topics": [
+        "resolution-parities"
+      ],
+      "significance": {
+        "category": "general_tool",
+        "rationale": "Reusable criterion for 0/1 realizability of linear systems over F_p from support sizes; it makes the free part of the unary closure realizable.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure"
+        ],
+        "next_action": "Extend to the occupancy equations."
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Working proof from two imported theorems (base packing; Alon-Linial-Meshulam 1991, Proposition 3.1, read in the source), checked by a fresh-context reviewer.",
+          "next_action": null,
+          "claim_sha256": "0923acd8f4f24d4cf86b4ebcef8f9bc07007a8b5becde1a7fbded1dd17bbb651",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure",
+              "sha256": "5977340924630ca020cf735b917c432371ced6595fd10e3544a148222933d0c2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Lemma from two imported theorems; no Lean verification.",
+          "next_action": null,
+          "claim_sha256": "0923acd8f4f24d4cf86b4ebcef8f9bc07007a8b5becde1a7fbded1dd17bbb651",
+          "value_sha256": "4e288c4721370e04ceed9553911b3f5d4e114c50b22329e5ff52bb9d02121c06",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure",
+              "sha256": "5977340924630ca020cf735b917c432371ced6595fd10e3544a148222933d0c2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Linear systems over F_p on 0/1 variables.",
+          "next_action": null,
+          "claim_sha256": "0923acd8f4f24d4cf86b4ebcef8f9bc07007a8b5becde1a7fbded1dd17bbb651",
+          "value_sha256": "43de62b873fb2411bcb5702f02e14638befb0055ab2b8bf3993dbff4b88f329f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure",
+              "sha256": "5977340924630ca020cf735b917c432371ced6595fd10e3544a148222933d0c2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Reusable criterion for 0/1 realizability of linear systems over F_p from support sizes; it makes the free part of the unary closure realizable.",
+          "next_action": "Extend to the occupancy equations.",
+          "claim_sha256": "0923acd8f4f24d4cf86b4ebcef8f9bc07007a8b5becde1a7fbded1dd17bbb651",
+          "value_sha256": "1ef2175f786e603fff293b8f422e6e7b3c1bd1fbfff7b86cef7a473ba0fc1123",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure",
+              "sha256": "5977340924630ca020cf735b917c432371ced6595fd10e3544a148222933d0c2",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Imports base packing and Alon-Linial-Meshulam; used by prop:unary-vertex-cover-closure.",
+          "next_action": null,
+          "claim_sha256": "0923acd8f4f24d4cf86b4ebcef8f9bc07007a8b5becde1a7fbded1dd17bbb651",
+          "value_sha256": "0215d5a3035fc6b0d2f22665e52d97ee791c2545d344057081aeb458a9bbbbd3",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure",
+              "sha256": "5977340924630ca020cf735b917c432371ced6595fd10e3544a148222933d0c2",
               "normalization": "notebook-article-v1"
             }
           ]
@@ -234151,6 +234386,56 @@
         "date": "2026-09-22",
         "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
         "note": "The size of the one-shot forced-cell closure is bounded by the lemma."
+      }
+    },
+    {
+      "id": "prop:unary-vertex-cover-closure::depends_on::lem:Fp-support-safe-forms-onto-01",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "prop:unary-vertex-cover-closure",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:Fp-support-safe-forms-onto-01",
+        "locator": null
+      },
+      "scope": "The free part of the Delayer reduction uses the onto lemma.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
+        "date": "2026-09-22",
+        "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+        "note": "The free part of the Delayer reduction uses the onto lemma."
+      }
+    },
+    {
+      "id": "prop:unary-vertex-cover-closure::refines::ex:forced-cell-closure-delayer-failure",
+      "type": "refines",
+      "source": {
+        "namespace": "current",
+        "id": "prop:unary-vertex-cover-closure",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "ex:forced-cell-closure-delayer-failure",
+        "locator": null
+      },
+      "scope": "Replaces the refuted forced-cell closures by a closure defined from supports and cover numbers, for plain PHP.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-vertex-cover-closure"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "6b17abe4619d71b573c6cf471730f649b65d115d",
+        "date": "2026-09-22",
+        "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+        "note": "Replaces the refuted forced-cell closures by a closure defined from supports and cover numbers, for plain PHP."
       }
     }
   ],
