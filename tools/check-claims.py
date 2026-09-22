@@ -6,6 +6,7 @@ tools/verify-checkout.py --public-history runs it before publication, so a push 
 reach CI with a failure this job would find.
 """
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import os
 from pathlib import Path
 import subprocess
@@ -42,10 +43,15 @@ def annotate(title, text):
     print(f'::error title={escape(title).replace(",", "%2C").replace(":", "%3A")}::{escape(text)}')
 
 
-def run(base):
+def run(base, jobs=8):
+    """Checks are independent (read-only, tests in their own temporary directories), so they
+    run concurrently; results are reported in the fixed order of checks()."""
+    listed = list(checks(base))
+    execute = lambda command: subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
+    with ThreadPoolExecutor(max_workers=jobs) as pool:
+        results = list(pool.map(execute, [command for _, command in listed]))
     failures = []
-    for title, command in checks(base):
-        result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
+    for (title, _), result in zip(listed, results):
         if result.returncode == 0:
             print(f'ok    {title}')
             continue
@@ -61,8 +67,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--base', default='origin/main',
                         help='Revision the changed-claim contract compares against (EMPTY audits all claims)')
+    parser.add_argument('--jobs', type=int, default=8, help='Checks run at once (default 8)')
     args = parser.parse_args()
-    failures = run(args.base)
+    failures = run(args.base, args.jobs)
     print(f'{len(failures)} failing claim-index checks' if failures else 'All claim-index checks pass.')
     return 1 if failures else 0
 
