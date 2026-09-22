@@ -1096,7 +1096,7 @@ Complete accuracy-one quadratic sources over a separated functional PHP graph in
 
 **Why it matters:** Supplies a dense-rank case without the invalid odd-prime polar extraction, but does not close the unrestricted lower-bound goal.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Address the intermediate projected-rank window using source-compatible profiles or sharper image estimates; assess novelty before a publication claim.
 
