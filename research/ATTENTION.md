@@ -734,6 +734,22 @@ For fixed p and alpha<1/5, polynomial complete selector families exclude polylog
 
 ---
 
+### Modular collision linear search hardness
+
+**Claim:** [thm:modular-collision-linear-search-hardness](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness>)
+
+Theorem S: for every odd prime p there are C_p, n_p such that for n >= n_p every linear decision tree over F_p (arbitrary affine queries in the variables x_{ih} of unary PHP with n+1 pigeons and n holes) of depth d that outputs two pigeons outputs two pigeons of one hole under the modular-collision near-bijection mu_E (n+1 pigeons onto the holes outside a fixed set E of p-1 holes, one hole receiving p+1) with probability at most C_p d sqrt((d + ln n)/n); so depth Omega_p(n^{1/3}) is needed for success probability 1/2. Proof: swap simulation in dense graphs; combinations of queries close to additive are made additive by revealing the pigeons on their exceptional cells, the others are localized on fresh random pairs whose orientations are hidden uniform bits (Fourier bound for systems), with a transfer from the prior along fixed paths to the adaptive tree.
+
+**Significance:** `independent_result` · **Novelty:** `not_claimed`
+
+**Why it matters:** A distribution on which linear decision trees over F_p need polynomial depth to find a collision in unary PHP, against O(log n) for the one-defect classes; it removes the distribution obstacle of Byramji-Impagliazzo Remark A.4 in search form for odd p.
+
+**Decision (agent):** Polynomial-depth search hardness for F_p-linear decision trees on unary PHP under a modular-collision distribution; novelty unchecked against the literature on linear decision trees and hard distributions for Res(lin_Fp).
+
+**Next:** Prove the probability bound p^{-(rk - dim W)} for systems under mu_E and test it against the star closure; check novelty against the literature on linear decision trees before any write-up.
+
+---
+
 ### Multirow predicate trade lift
 
 **Claim:** [thm:multirow-predicate-trade-lift](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-coded-trade-spanning>)

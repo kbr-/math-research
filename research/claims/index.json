@@ -151398,7 +151398,7 @@
     {
       "id": "obs:modular-collision-search-proof-routes",
       "summary": "For the modular-collision near-bijection mu_E on unary PHP over F_p (p >= 3: n+1 pigeons onto the holes outside a fixed set E of p-1 holes, one hole h* receiving p+1 pigeons): queries constant on the support are exactly those additive on pigeons x (holes outside E); (1) if the cells are partitioned among k players, integer sums of hole labels give an O(k log n)-bit protocol finding two colliding pigeons, so communication bounds through simulations where players hold cells give at most d = O(log n / log p) for linear trees (lifted simulations are not covered); (2) K = O(log n) fixed rank-one queries separate every support point from each of its single swaps (p >= 3), so single-swap sensitivity arguments give at most O(log n). No linear tree faster than sampling (about (n/p) log_p(n/p) queries) was found.",
-      "assessment": "Working proofs of the two obstructions (elementary), checked by a fresh-context reviewer; the absence of a fast tree is evidence, not a theorem. Search hardness of mu_E remains open.",
+      "assessment": "Working proofs of the two obstructions (elementary), checked by a fresh-context reviewer; the absence of a fast tree is evidence, not a theorem. Search hardness of mu_E was later proved up to depth about n^{1/3} (thm:modular-collision-linear-search-hardness).",
       "record": "[Statement and proof](https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-search)",
       "mathematical_status": "working_proof",
       "formalization": {
@@ -151420,34 +151420,39 @@
         "references": [
           "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-search"
         ],
-        "next_action": "Dense-graph simulation for uniform near-bijections under cell deletions (marginals, 4-cycle swap lemma, steps a-c)."
+        "next_action": "Search hardness of mu_E was later proved up to depth about n^{1/3} in thm:modular-collision-linear-search-hardness."
       },
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "94733d24ac116d6af5f20b14ced94508510ff227",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
-          "note": "Working proofs of the two obstructions (elementary), checked by a fresh-context reviewer; the absence of a fast tree is evidence, not a theorem. Search hardness of mu_E remains open.",
+          "note": "Working proofs of the two obstructions (elementary), checked by a fresh-context reviewer; the absence of a fast tree is evidence, not a theorem. Search hardness of mu_E remains open. Search hardness was later proved in thm:modular-collision-linear-search-hardness.",
           "next_action": null,
-          "claim_sha256": "575f52fe1b27db06df7dd9c77a4164d5723ca8d079809cadd10082fdbfad7802",
+          "claim_sha256": "5d932dfa1ff6f98c9a6d01a05ca3c7ffc174598df6f75d3b8aabcfa01601afc0",
           "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-search",
               "sha256": "44ac9d194ac03c3afd56260be8ce29befa146a462bad74a133beb33763b3443a",
               "normalization": "notebook-article-v1"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
             }
           ]
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "94733d24ac116d6af5f20b14ced94508510ff227",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Elementary definitions and proofs; no Lean verification.",
           "next_action": null,
-          "claim_sha256": "575f52fe1b27db06df7dd9c77a4164d5723ca8d079809cadd10082fdbfad7802",
+          "claim_sha256": "5d932dfa1ff6f98c9a6d01a05ca3c7ffc174598df6f75d3b8aabcfa01601afc0",
           "value_sha256": "820c779206dbfe756f664d863c20433f1dccb00eb5be25ea2fd7fb579d8cab22",
           "evidence": [
             {
@@ -151459,12 +151464,12 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "94733d24ac116d6af5f20b14ced94508510ff227",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Closure notions for unary PHP over F_p.",
           "next_action": null,
-          "claim_sha256": "575f52fe1b27db06df7dd9c77a4164d5723ca8d079809cadd10082fdbfad7802",
+          "claim_sha256": "5d932dfa1ff6f98c9a6d01a05ca3c7ffc174598df6f75d3b8aabcfa01601afc0",
           "value_sha256": "43de62b873fb2411bcb5702f02e14638befb0055ab2b8bf3993dbff4b88f329f",
           "evidence": [
             {
@@ -151476,34 +151481,44 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "94733d24ac116d6af5f20b14ced94508510ff227",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Narrows how search hardness of the modular-collision distribution could be proved: simulations that ignore arithmetic modulo p (cell-holding protocols, single-swap sensitivity) cannot work.",
-          "next_action": "Dense-graph simulation for uniform near-bijections under cell deletions (marginals, 4-cycle swap lemma, steps a-c).",
-          "claim_sha256": "575f52fe1b27db06df7dd9c77a4164d5723ca8d079809cadd10082fdbfad7802",
-          "value_sha256": "33d90e6d161ab8ef48918af2b7ecb582154a941edb8aaddc7131ac476d1b08e3",
+          "next_action": "Search hardness of mu_E was later proved up to depth about n^{1/3} in thm:modular-collision-linear-search-hardness.",
+          "claim_sha256": "5d932dfa1ff6f98c9a6d01a05ca3c7ffc174598df6f75d3b8aabcfa01601afc0",
+          "value_sha256": "c07ccbfb99042ef5e622c5ebfcf395d6d94c4bd5777e5f9b7b16fcafc1ce07e4",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-search",
               "sha256": "44ac9d194ac03c3afd56260be8ce29befa146a462bad74a133beb33763b3443a",
+              "normalization": "notebook-article-v1"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
               "normalization": "notebook-article-v1"
             }
           ]
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "94733d24ac116d6af5f20b14ced94508510ff227",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
-          "note": "Tests the distribution side named in the star-closure route review; extends obs:unary-PHP-one-defect-linear-search to the modular-collision candidate.",
+          "note": "Tests the distribution side named in the star-closure route review; extends obs:unary-PHP-one-defect-linear-search to the modular-collision candidate. Its open search question is answered by thm:modular-collision-linear-search-hardness (22 September 2026).",
           "next_action": null,
-          "claim_sha256": "575f52fe1b27db06df7dd9c77a4164d5723ca8d079809cadd10082fdbfad7802",
-          "value_sha256": "17d2db9c9f68177b16fddb35c6d0baa83808d1a6fbdc3f312292bde50b7512e6",
+          "claim_sha256": "5d932dfa1ff6f98c9a6d01a05ca3c7ffc174598df6f75d3b8aabcfa01601afc0",
+          "value_sha256": "5cc4988484ae66e9a571ec2bc959196c4e02ec7be93f5e6d1124c6381d43afe5",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-search",
               "sha256": "44ac9d194ac03c3afd56260be8ce29befa146a462bad74a133beb33763b3443a",
+              "normalization": "notebook-article-v1"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
               "normalization": "notebook-article-v1"
             }
           ]
@@ -151535,12 +151550,12 @@
         "references": [
           "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-search"
         ],
-        "next_action": "Use in the dense-graph simulation; prove a 4-cycle version of L1 inside a dense bipartite graph."
+        "next_action": "Dense-graph version of L1 proved as lem:dense-four-cycle-additivity-test; L2 extended to systems in thm:modular-collision-linear-search-hardness."
       },
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "94733d24ac116d6af5f20b14ced94508510ff227",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Working proofs (elementary counting and Fourier analysis), checked by a fresh-context reviewer, whose mu_E version of L1 and lower bound in L2 were checked by the author. L1 is standard.",
@@ -151557,7 +151572,7 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "94733d24ac116d6af5f20b14ced94508510ff227",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Elementary definitions and proofs; no Lean verification.",
@@ -151574,7 +151589,7 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "94733d24ac116d6af5f20b14ced94508510ff227",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Closure notions for unary PHP over F_p.",
@@ -151591,34 +151606,389 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "94733d24ac116d6af5f20b14ced94508510ff227",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Components of a swap simulation for unary search problems over F_p; they fix the cost of localizing a query at odd primes.",
-          "next_action": "Use in the dense-graph simulation; prove a 4-cycle version of L1 inside a dense bipartite graph.",
+          "next_action": "Dense-graph version of L1 proved as lem:dense-four-cycle-additivity-test; L2 extended to systems in thm:modular-collision-linear-search-hardness.",
           "claim_sha256": "c82fa780581dab9cb1d856438091cd242dfac408c564cd8d20a3464b24495dec",
-          "value_sha256": "832e690fc996dbfce5d02bdc4dc325513aac3d0475b1822a34d9785651eac954",
+          "value_sha256": "dfd7c9cc150563545de28b89dea0b0c92024d515a14435c79108a39554cc23e2",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-search",
               "sha256": "44ac9d194ac03c3afd56260be8ce29befa146a462bad74a133beb33763b3443a",
+              "normalization": "notebook-article-v1"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
               "normalization": "notebook-article-v1"
             }
           ]
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "94733d24ac116d6af5f20b14ced94508510ff227",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
-          "note": "Supports obs:modular-collision-search-proof-routes; adapts the partner trick of Byramji and Impagliazzo (arXiv 2511.20023) to unary odd-prime queries.",
+          "note": "Supports obs:modular-collision-search-proof-routes; adapts the partner trick of Byramji and Impagliazzo (arXiv 2511.20023) to unary odd-prime queries. Refined by lem:dense-four-cycle-additivity-test and used by thm:modular-collision-linear-search-hardness (22 September 2026).",
           "next_action": null,
           "claim_sha256": "c82fa780581dab9cb1d856438091cd242dfac408c564cd8d20a3464b24495dec",
-          "value_sha256": "109993d1c387e3ef425e2724c9716b78179a987ee86f5dcd014cf4ab8130fa0c",
+          "value_sha256": "38e29c5e9797bdf3eb91e9ee2a74143af708ae6533d795e9f2d14811e5b5540a",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-search",
               "sha256": "44ac9d194ac03c3afd56260be8ce29befa146a462bad74a133beb33763b3443a",
+              "normalization": "notebook-article-v1"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lem:near-bijection-dense-marginals",
+      "summary": "Lemma M: let G be a bipartite graph between pigeons A and holes B, |A| = |B| + p, in which every pigeon misses at most mu holes and every hole misses at most mu' pigeons, and nu_G the uniform law on maps g into G with one hole h* receiving p+1 pigeons (the set S*) and every other hole one. With b = |B| and F_1 = b - mu - mu' - 1: nu_G(g(i)=h, h regular) <= 1/F_1; nu_G(i in S*) <= (p+1)/F_1; nu_G(i, i' both in S*) <= p(p+1)/F_1^2; nu_G(h* = h) <= p! b^p / ((b-1) F_2^p) with F_2 = F_1 - p; and nu_G(g(i)=h, h regular) >= F_3 (1 - theta)/((b-1)(b-2)) for every edge, with F_3 = F_1 - 2 and theta = (2p+3)/F_1 + p! b^p/((b-1)F_2^p), hence pair marginals of order 1/b^2.",
+      "assessment": "Working proof (switchings), checked by a fresh-context reviewer.",
+      "record": "[Statement and proof](https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "not_started",
+        "scope": "Elementary definitions and proofs; no Lean verification.",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness"
+        ],
+        "artifacts": []
+      },
+      "topics": [
+        "resolution-parities"
+      ],
+      "significance": {
+        "category": "general_tool",
+        "rationale": "Marginal control of uniform near-bijections with a (p+1)-hole in dense bipartite graphs; the probabilistic input of the swap simulation for the modular-collision distribution.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness"
+        ],
+        "next_action": "Use in the probability bound for the random walk under mu_E."
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Working proof (switchings), checked by a fresh-context reviewer.",
+          "next_action": null,
+          "claim_sha256": "2313ca48919e62bac3ff46765c0f1738cd99fc91cee8ab99ec535347ba2538c3",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Elementary definitions and proofs; no Lean verification.",
+          "next_action": null,
+          "claim_sha256": "2313ca48919e62bac3ff46765c0f1738cd99fc91cee8ab99ec535347ba2538c3",
+          "value_sha256": "e3cc5e2a2349ced718de0509eb38f82dbb4fe5d3d45fd9646c5297d327e35b5f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Distributions and simulations for linear search over F_p on unary PHP.",
+          "next_action": null,
+          "claim_sha256": "2313ca48919e62bac3ff46765c0f1738cd99fc91cee8ab99ec535347ba2538c3",
+          "value_sha256": "43de62b873fb2411bcb5702f02e14638befb0055ab2b8bf3993dbff4b88f329f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Marginal control of uniform near-bijections with a (p+1)-hole in dense bipartite graphs; the probabilistic input of the swap simulation for the modular-collision distribution.",
+          "next_action": "Use in the probability bound for the random walk under mu_E.",
+          "claim_sha256": "2313ca48919e62bac3ff46765c0f1738cd99fc91cee8ab99ec535347ba2538c3",
+          "value_sha256": "bc597c789ea36b87847b6cb38561a454c8d4115432ed2d00f2696d4211199ed5",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Supplies the marginals that obs:modular-collision-search-proof-routes named as missing; used by thm:modular-collision-linear-search-hardness.",
+          "next_action": null,
+          "claim_sha256": "2313ca48919e62bac3ff46765c0f1738cd99fc91cee8ab99ec535347ba2538c3",
+          "value_sha256": "9b646716dd3f2c7429b4a384668b865ff130ea4b02102b8b32ec931e113d9e07",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lem:dense-four-cycle-additivity-test",
+      "summary": "Lemma T: if every pigeon misses fewer than |B|/3 holes of a bipartite graph G, every function C on the edges at distance dist from the additive functions a_i + b_h has alternating sum nonzero on at least a fraction dist/K of the 4-cycles of G, with K = (b(a-1)/((a-mu')(b-mu)))(1 + 3b/(b-3mu))(b/(b-2mu))^2 (K <= 7.3 when mu <= b/15, mu' <= a/15); in particular 4-cycle-invariant functions are additive. Example H: on the blow-up of the 6-cycle (each vertex adjacent to two of three classes) the function 1 on A_1 x B_2 is invisible to every 4-cycle, not additive, and its query is not constant on the support of nu_G (finite check: all values mod 3). Under nu_G with missing bounds <= b/15, a uniform pair of pigeons gives a detecting swap with probability at least dist/15.",
+      "assessment": "Working proof (plurality decoding with a cocycle check on triple neighbourhoods), checked by a fresh-context reviewer; the exact version and Example H confirmed by a finite check (72 random dense graphs, 3 blow-ups).",
+      "record": "[Statement and proof](https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "not_started",
+        "scope": "Elementary definitions and proofs; no Lean verification.",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness"
+        ],
+        "artifacts": []
+      },
+      "topics": [
+        "resolution-parities"
+      ],
+      "significance": {
+        "category": "general_tool",
+        "rationale": "Robust four-point additivity test on dense bipartite graphs with a sharp two-thirds threshold; extends L1 of lem:unary-swap-localization-Fp from the complete board.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness"
+        ],
+        "next_action": "Use in the probability bound for the random walk under mu_E."
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Working proof (plurality decoding with a cocycle check on triple neighbourhoods), checked by a fresh-context reviewer; the exact version and Example H confirmed by a finite check (72 random dense graphs, 3 blow-ups).",
+          "next_action": null,
+          "claim_sha256": "e6164bc37adde973b677da654ef689b364826243aab54c2e99d06d91afff73b0",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Elementary definitions and proofs; no Lean verification.",
+          "next_action": null,
+          "claim_sha256": "e6164bc37adde973b677da654ef689b364826243aab54c2e99d06d91afff73b0",
+          "value_sha256": "e3cc5e2a2349ced718de0509eb38f82dbb4fe5d3d45fd9646c5297d327e35b5f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Distributions and simulations for linear search over F_p on unary PHP.",
+          "next_action": null,
+          "claim_sha256": "e6164bc37adde973b677da654ef689b364826243aab54c2e99d06d91afff73b0",
+          "value_sha256": "43de62b873fb2411bcb5702f02e14638befb0055ab2b8bf3993dbff4b88f329f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Robust four-point additivity test on dense bipartite graphs with a sharp two-thirds threshold; extends L1 of lem:unary-swap-localization-Fp from the complete board.",
+          "next_action": "Use in the probability bound for the random walk under mu_E.",
+          "claim_sha256": "e6164bc37adde973b677da654ef689b364826243aab54c2e99d06d91afff73b0",
+          "value_sha256": "5848bfb3d85d7f3ea4bd7bad842fa46df0ea545ee774f47cc5dd22f62cc0f4ea",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Refines L1 of lem:unary-swap-localization-Fp to dense graphs; Example H shows the degree fraction 1/2 + gamma proposed after obs:modular-collision-search-proof-routes is insufficient.",
+          "next_action": null,
+          "claim_sha256": "e6164bc37adde973b677da654ef689b364826243aab54c2e99d06d91afff73b0",
+          "value_sha256": "f88559d497c40071ab801a61f2c5a474b83e7395f1a6ff70d41f03ffe2f0888c",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "thm:modular-collision-linear-search-hardness",
+      "summary": "Theorem S: for every odd prime p there are C_p, n_p such that for n >= n_p every linear decision tree over F_p (arbitrary affine queries in the variables x_{ih} of unary PHP with n+1 pigeons and n holes) of depth d that outputs two pigeons outputs two pigeons of one hole under the modular-collision near-bijection mu_E (n+1 pigeons onto the holes outside a fixed set E of p-1 holes, one hole receiving p+1) with probability at most C_p d sqrt((d + ln n)/n); so depth Omega_p(n^{1/3}) is needed for success probability 1/2. Proof: swap simulation in dense graphs; combinations of queries close to additive are made additive by revealing the pigeons on their exceptional cells, the others are localized on fresh random pairs whose orientations are hidden uniform bits (Fourier bound for systems), with a transfer from the prior along fixed paths to the adaptive tree.",
+      "assessment": "Working proof, checked by a fresh-context reviewer. Search hardness only: the random walk of Byramji and Impagliazzo also needs a probability bound and a restriction. Novelty not checked.",
+      "record": "[Statement and proof](https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "not_started",
+        "scope": "Elementary definitions and proofs; no Lean verification.",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness"
+        ],
+        "artifacts": []
+      },
+      "topics": [
+        "resolution-parities"
+      ],
+      "significance": {
+        "category": "independent_result",
+        "rationale": "A distribution on which linear decision trees over F_p need polynomial depth to find a collision in unary PHP, against O(log n) for the one-defect classes; it removes the distribution obstacle of Byramji-Impagliazzo Remark A.4 in search form for odd p.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness"
+        ],
+        "next_action": "Prove the probability bound p^{-(rk - dim W)} for systems under mu_E and test it against the star closure; check novelty against the literature on linear decision trees before any write-up."
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Working proof, checked by a fresh-context reviewer. Search hardness only: the random walk of Byramji and Impagliazzo also needs a probability bound and a restriction. Novelty not checked.",
+          "next_action": null,
+          "claim_sha256": "48e0d44c99b2214abad254b9a5e843640efb3643c5226e367b7bad9b997ad5c3",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Elementary definitions and proofs; no Lean verification.",
+          "next_action": null,
+          "claim_sha256": "48e0d44c99b2214abad254b9a5e843640efb3643c5226e367b7bad9b997ad5c3",
+          "value_sha256": "e3cc5e2a2349ced718de0509eb38f82dbb4fe5d3d45fd9646c5297d327e35b5f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Distributions and simulations for linear search over F_p on unary PHP.",
+          "next_action": null,
+          "claim_sha256": "48e0d44c99b2214abad254b9a5e843640efb3643c5226e367b7bad9b997ad5c3",
+          "value_sha256": "43de62b873fb2411bcb5702f02e14638befb0055ab2b8bf3993dbff4b88f329f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "A distribution on which linear decision trees over F_p need polynomial depth to find a collision in unary PHP, against O(log n) for the one-defect classes; it removes the distribution obstacle of Byramji-Impagliazzo Remark A.4 in search form for odd p.",
+          "next_action": "Prove the probability bound p^{-(rk - dim W)} for systems under mu_E and test it against the star closure; check novelty against the literature on linear decision trees before any write-up.",
+          "claim_sha256": "48e0d44c99b2214abad254b9a5e843640efb3643c5226e367b7bad9b997ad5c3",
+          "value_sha256": "c7476989d22b6a96187e54982d08f5070686e2081ff08b7244828aeaba41d261",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Resolves the search question left open by obs:modular-collision-search-proof-routes; uses lem:near-bijection-dense-marginals, lem:dense-four-cycle-additivity-test and L2 of lem:unary-swap-localization-Fp.",
+          "next_action": null,
+          "claim_sha256": "48e0d44c99b2214abad254b9a5e843640efb3643c5226e367b7bad9b997ad5c3",
+          "value_sha256": "304eddd0d754a4462ae7ed73f7745cd118376c207b176fa2d7bfca880424e00b",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness",
+              "sha256": "670a539fda50809df79f1d783c8f6b633149b73b0fb6b3cbf88a48bd63755ab3",
               "normalization": "notebook-article-v1"
             }
           ]
@@ -235491,6 +235861,131 @@
         "date": "2026-09-22",
         "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
         "note": "The entry pairs the blocked routes with the swap lemmas that a working simulation needs."
+      }
+    },
+    {
+      "id": "lem:dense-four-cycle-additivity-test::refines::lem:unary-swap-localization-Fp",
+      "type": "refines",
+      "source": {
+        "namespace": "current",
+        "id": "lem:dense-four-cycle-additivity-test",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:unary-swap-localization-Fp",
+        "locator": null
+      },
+      "scope": "Extends L1 from the complete board to dense bipartite graphs, with a sharp two-thirds threshold.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+        "date": "2026-09-22",
+        "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+        "note": "Extends L1 from the complete board to dense bipartite graphs, with a sharp two-thirds threshold."
+      }
+    },
+    {
+      "id": "thm:modular-collision-linear-search-hardness::depends_on::lem:near-bijection-dense-marginals",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "thm:modular-collision-linear-search-hardness",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:near-bijection-dense-marginals",
+        "locator": null
+      },
+      "scope": "Marginals, spread of the special set and pair lower bounds in the dense graphs of the simulation.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+        "date": "2026-09-22",
+        "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+        "note": "Marginals, spread of the special set and pair lower bounds in the dense graphs of the simulation."
+      }
+    },
+    {
+      "id": "thm:modular-collision-linear-search-hardness::depends_on::lem:dense-four-cycle-additivity-test",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "thm:modular-collision-linear-search-hardness",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:dense-four-cycle-additivity-test",
+        "locator": null
+      },
+      "scope": "Far-from-additive combinations are detected by random swaps.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+        "date": "2026-09-22",
+        "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+        "note": "Far-from-additive combinations are detected by random swaps."
+      }
+    },
+    {
+      "id": "thm:modular-collision-linear-search-hardness::depends_on::lem:unary-swap-localization-Fp",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "thm:modular-collision-linear-search-hardness",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:unary-swap-localization-Fp",
+        "locator": null
+      },
+      "scope": "The Fourier bound of L2, in its system form.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+        "date": "2026-09-22",
+        "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+        "note": "The Fourier bound of L2, in its system form."
+      }
+    },
+    {
+      "id": "thm:modular-collision-linear-search-hardness::refines::obs:modular-collision-search-proof-routes",
+      "type": "refines",
+      "source": {
+        "namespace": "current",
+        "id": "thm:modular-collision-linear-search-hardness",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "obs:modular-collision-search-proof-routes",
+        "locator": null
+      },
+      "scope": "Answers the open search question for mu_E up to depth about n^{1/3}.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "ddc8d175e55d7d84080e601c59e182d35efd3b04",
+        "date": "2026-09-22",
+        "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+        "note": "Answers the open search question for mu_E up to depth about n^{1/3}."
       }
     }
   ],
