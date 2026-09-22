@@ -79,6 +79,10 @@ example "block", "fresh", "companion", "coefficient", not only "dense form"); a 
 fresh blocks once rediscovered a conjecture that its own next-step paragraph listed as
 parked.
 
+A conjectured sufficient condition for a size lower bound must use the size. Check that it does not
+also exclude refutations of every size, since the proof system is complete: ternary conservativity
+over PHP was conjectured and tested for five cycles before completeness of resolution refuted it.
+
 When the proposed next step is a computation, or a computation is designed inside a cycle,
 state the smallest parameters at which the test is nonvacuous and the size of the spaces
 involved, checked by a count before the step is written or the tool is coded. The count is
