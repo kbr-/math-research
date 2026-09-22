@@ -160,6 +160,10 @@ work. Timeouts and interrupts stop the actual service and its children, with a
 systemd runtime limit as a backstop. Full output and timing records are saved in
 `research/logs/`. Only the last 8,000 output bytes are displayed by default;
 `--tail-bytes N` changes that without losing the saved log.
+Jobs run as systemd services and do not inherit the caller's environment, apart from
+the thread-count variables the launcher sets. Pass any other variable inside the
+command, as in `./compute.sh run TURN -- env NAME=VALUE python3 script.py`; a prefix
+before `./compute.sh` is silently dropped.
 
 Mark `formalization` for translating statements into Lean, designing formal
 proofs, writing tactics, and debugging formalization code. Use `mathematics`
