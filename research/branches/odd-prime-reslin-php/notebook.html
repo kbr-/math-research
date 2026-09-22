@@ -18,7 +18,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Every open line of the thread meets at the <a href="#entry-2026-09-23-core-statement-review">core statement</a>: PHP stays hard at polylogarithmic degree under polynomially many collectively wide constraints of total density below one. Its local ingredient, the \(p\)-complex's many-operator lift, holds for <a href="#entry-2026-09-23-symmetric-lift">symmetric targets</a> on free modules, and the <a href="#entry-2026-09-23-cocycle-reduction">cocycle reduction</a> derives it from <em>forced-forms exactness</em> at \(p-1\) levels: each form exact on the joint kernel of the forms added before it. In the matching complex the width symmetric lifting needs shows no growth for up to five forms at \(d=1\). Next, test forced-forms exactness and cocycle lifting in the matching complex at \(p=3\), three disjoint forms of four rows, seven labels, levels two and three (\(\dim K_3=22{,}880\), compiled GF(3) elimination). If they hold, adapt the amplitude theorem's forced-row induction so that the forced object is a whole form's operator. The cycle ends with forced-forms exactness at a width independent of the number of forced forms, or with the point where that number enters.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Every open line of the thread meets at the <a href="#entry-2026-09-23-core-statement-review">core statement</a>: PHP stays hard at polylogarithmic degree under polynomially many collectively wide constraints of total density below one. Its local ingredient, the \(p\)-complex's many-operator lift, holds for <a href="#entry-2026-09-23-symmetric-lift">symmetric targets</a> on free modules and follows from <a href="#entry-2026-09-23-cocycle-reduction">forced-forms exactness</a>: each form exact on the joint kernel of the forms already added. In the matching complex that hypothesis <a href="#entry-2026-09-23-forced-forms-check">holds</a> at \(p=3\), \(d=1\) exactly from the amplitude theorem's one-form row count, with up to two forced forms. Next, prove forced-forms exactness for forms with disjoint supports, uniformly in the number of forced forms. Grade \(K\) by the set \(A\) of a forced form's rows that an array uses. The other forms preserve the grading, and the forced form acts as a cube differential of commuting square-zero marginals. Show each graded piece exact at the one-form width, then that the cube's kernel inherits exactness, then induct. The cycle ends with the proof, or with the step where the number of forced forms enters.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -6825,6 +6825,60 @@ By induction this gives \(D^\beta u^{(q)}_\gamma=\zeta_{\gamma+\beta}\) for \(|\
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">6.76 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-23-forced-forms-check" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:forced-forms-exactness-matching">
+<h3>Forced-forms exactness in the matching complex: in these checks additional forced forms do not raise the width, which coincides with the amplitude theorem's one-form row count</h3>
+<p class="entry-meta">23 September 2026 · Finite check · Three forms on seven labels, levels two and three. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-23-cocycle-reduction">cocycle reduction</a> derives the symmetric many-operator lift at degree \(d\) from <em>forced-forms exactness</em> at the levels \(s=d+1,\dots,d+\delta\): every \(x\in M_j\cap K_{s-1}\) with \(D_j^{p-1}x=0\) is \(D_jy\) with \(y\in M_j\cap K_s\), where \(M_j=\bigcap_{l&gt;j}\ker D_l\). It left open whether this holds in the matching complex, and whether the width it needs grows with the number \(r-j\) of forced forms, as the width of the binary analogues does. This cycle computes both sides exactly at the smallest nonvacuous size, \(p=3\), \(d=1\) (levels 2 and 3), together with cocycle lifting itself, the reduction's actual hypothesis. It ends with the width at which each holds, with and without forced forms.</p>
+<h4>The computation</h4>
+<p>The matching complex is as in the <a href="#wide-row-p-complex-amplitude-exactness">amplitude theorem</a>. \(K_s\) is spanned by arrays on injections of \(s\)-row sets into \(N=7\) labels with zero ordinary marginal in every row, and \(D_l\) is the sum of the \(f^{(l)}_i\)-weighted marginals. The script builds \(D_l:K_s\to U_{s-1}\) block by block in per-set bases of \(K_s\). Here \(U_{s-1}\) is the full array space; it contains \(K_{s-1}\). All ranks are exact over \(\mathbb F_3\) with the recorded bit-sliced elimination. For each level and each \(j=r,\dots,1\) it compares</p>
+<ul>
+<li>\(\dim(\ker D_j^{2}\cap M_j\cap K_{s-1})\) with \(\dim D_j(M_j\cap K_s)\): forced-forms exactness holds when they are equal;</li>
+<li>the cocycles in \(K_{s-1}^r\) with the gradients of \(K_s\): cocycle lifting.</li>
+</ul>
+<p>At level 2, \(D_j^2\) maps \(K_1\) to zero, so the kernel side is all of \(M_j\cap K_1\). Forms have disjoint supports of \(t\) rows each, or are dense (every form on all \(rt\) rows), with random row functions. The largest case has \(\dim K_3=47{,}320\). Each case ran in under 90 seconds on 12 threads.</p>
+<h4>Results</h4>
+<p>Level 3 entries are kernel / image for \(j=r,\dots,1\), then cocycles / gradients. Level 2 was exact in every case with \(N=7\), including \(t=3\) (\(54/54,53/53,52/52\) and \(159/159\)), matching its row condition \(|I|\ge3\). Seeds are recorded in the JSON outputs (0, 24, 25, 33, 34, 35, 104, 105).</p>
+<table><tr><th>forms</th><th>level 3, forced-forms exactness</th><th>level 3, cocycles</th></tr>
+<tr><td>\(r=2\), disjoint, \(t=4\)</td><td>811/810, 763/759</td><td>1574/1569</td></tr>
+<tr><td>\(r=2\), disjoint, \(t=5\)</td><td>1304/1304, 1244/1244</td><td>2548/2548</td></tr>
+<tr><td>\(r=3\), disjoint, \(t=3\)</td><td>1043/1027, 989/973, 936/920</td><td>2968/2920</td></tr>
+<tr><td>\(r=3\), disjoint, \(t=4\)</td><td>1913/1912, 1841/1840, 1770/1766</td><td>5524/5518</td></tr>
+<tr><td>\(r=3\), disjoint, \(t=5\)</td><td>3044/3044, 2954/2954, 2865/2865</td><td>8863/8863</td></tr>
+<tr><td>\(r=3\), dense, 12 rows</td><td>1913/1913, 1841/1841, 1770/1770</td><td>5524/5524</td></tr>
+<tr><td>\(r=3\), dense, 15 rows</td><td>3044/3044, 2954/2954, 2865/2865</td><td>8863/8863</td></tr></table>
+<p>A tiny control (\(r=2\), \(t=2\), \(N=5\)) fails at both levels.</p>
+<h4>What the numbers say</h4>
+<ul>
+<li><strong>The threshold coincides here with the one-form row count.</strong> At level 3 the case \(j=r\) has no forced form. It is plain exactness of one form in the position \(\ker D^2=\operatorname{im}D\) on \(K_2\). The amplitude theorem's row condition for that position is \(|I|\ge2\cdot2+1=5\). With disjoint supports it first holds at \(t=5\), and there every forced case holds too, for one and for two forced forms. Its robustness condition, \(Q=8\) deletions, cannot hold with seven labels, and fails at level 2 too. So exactness holds although the robustness hypothesis fails: that hypothesis is not necessary at this size. With one label count and one seed per case, the data cannot separate the row count from label effects.</li>
+<li><strong>Below the threshold, forced positions can fail by more.</strong> At \(r=3\), \(t=4\) the deficits for \(j=3,2,1\) are \(1,1,4\). At \(r=2\), \(t=4\) they are \(1,4\), so a single forced form already reaches four. The deficit is not a function of the number of forced forms. At \(r=3\), \(t=3\) every position fails by 16. No forced position failed at a width where the unforced position holds.</li>
+<li><strong>The reduction costs one level of width, not more.</strong> Symmetric lifting at \(d=1\) held already at \(t=4\) (<a href="#entry-2026-09-23-cocycle-reduction">previous entry</a>). The reduction's hypothesis needs \(t=5\) with disjoint supports, because it uses exactness on \(K_{d+\delta-1}\) in the position \(\ker D^{p-1}=\operatorname{im}D\). That costs \(2(d+\delta-1)+1\) rows by the amplitude theorem. The recorded two-parameter lemma uses the \(K_{d+\delta}\) position, which costs \(2(d+\delta)+1\), more than the reduction. Dense forms at 12 rows satisfy everything.</li>
+</ul>
+<p>So, at this size, the dependence on \(r\) that the cocycle reduction moved into the forced-forms hypothesis does not appear: the width needed coincides with the amplitude theorem's row count for one form. The evidence is one seed per case, one label count, \(d=1\) and at most two forced forms. The case \(r=4\) would need about 8 GB for the stacked operators and would only extend a prediction that already failed at two forced forms, so the series stops here.</p>
+<h4>Assessment and next step</h4>
+<p>The local ingredient of the core statement now has a concrete target. Prove forced-forms exactness in the matching complex at the one-form width of the amplitude theorem, uniformly in the number of forced forms. The data at the smallest size support that target. A proof would give the symmetric many-operator lift for any number of wide forms at a degree cost independent of that number, within the quadratic ceiling. The step from symmetric lifts to joint extension and the density mechanism would remain open.</p>
+<p>The next step on odd-prime-clause-transfer is that proof for disjoint supports. Decompose \(K\) by the set \(A\subseteq I_l\) of rows of a forced form's support that an array uses. The other forms' operators preserve this grading, and \(D_l\) is the differential of a cube over subsets of \(I_l\), built from commuting square-zero maps \(\delta_i\). The plan has three parts:</p>
+<ul>
+<li>show that each graded piece is exact for \(D_j\) at the amplitude theorem's width, as a forced-row statement with ordinary rather than weighted marginals on \(A\);</li>
+<li>show that the kernel of the cube differential inherits exactness;</li>
+<li>induct on the number of forced forms.</li>
+</ul>
+<p>The cycle ends with the proof, or with the step where the forced forms' number enters.</p>
+<p><strong>Verification gate.</strong> Re-read: the cocycle-reduction entry's two lemmas and next step, the amplitude theorem's statement with its row and robustness conditions, and the definition of \(K\). The script reuses the matching-complex conventions of the previous entry's check. The tiny and \(t=3\) cases fail at level 3 as controls, and in every output the image is at most the kernel and the gradients at most the cocycles. No mathematical claim is made beyond the finite check. A fresh-context reviewer confirmed that the script computes the stated quantities, including the level-2 handling of \(D_j^2\) and kernels taken in the full array space, and that the table and row counts are right. It required the level-2 threshold corrected to \(t\ge3\), the deficit pattern stated for both \(r\), "coincides" instead of "is" for the threshold, the robustness remark clarified, "additional" instead of "earlier" forced forms, and the seeds recorded. All were adopted.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-forced-forms">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 25.57 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 28.70 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 55.31 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4.45 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3 min 53.76 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.35 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
