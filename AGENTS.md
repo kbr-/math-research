@@ -200,10 +200,10 @@ rules to growing checklists or one-off setup narratives.
 - Publish only under explicit user authorization, including a still-active scoped/
   time-limited grant. Research/edit/commit requests alone do not authorize it.
   Restore the actual grant after compaction, honor expiry/later overrides and do
-  not ask again within authorized scope. Current grant (22 September 2026),
-  for the Spin run on the odd-prime-reslin-php thread, committing directly on `main`:
-  "Push after each cycle." It ends when the user stops Spin or revokes
-  permission; restore it with the active assignment. Earlier expired grants are
+  not ask again within authorized scope. Current grant (renewed 22 September
+  2026 for the resumed Spin run on the odd-prime-reslin-php thread), committing
+  directly on `main`: "Push after each cycle." It ends when the user stops Spin
+  or revokes permission; restore it with the active assignment. Earlier expired grants are
   preserved in Git, not standing permission.
 - Respect the user's branch; do not switch/merge into main just to publish. Pin
   integration targets to immutable commits after fetching/receiving workers, rebase
