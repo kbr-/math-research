@@ -214,6 +214,13 @@ while command records remain unfinished.
 - Before launching an exhaustive enumeration, compute its size and expected time from
   the parameters, and shrink or skip cases beyond the budget; a checker should print the
   size and refuse oversized cases rather than let a run be discovered by its timeout.
+  Extrapolate from the smaller runs you already have. Before a long run, apply the exact
+  reductions available (quotients by monomial axioms, incremental reuse of nested results,
+  narrow search brackets) and the parallel paths (OpenMP elimination, `--threads`).
+  `compute.sh` enforces this: `--timeout` above 600 s needs `--expect SECONDS`, and a run
+  expected to exceed 600 s on fewer than 4 threads needs `--serial-reason`; it prints
+  expected against actual time. Stop a superseded run as soon as its replacement is
+  validated.
 
 ## Persist computation outputs
 

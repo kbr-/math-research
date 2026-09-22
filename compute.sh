@@ -340,9 +340,11 @@ def run_job(args, command):
         ensure_active(read_events(path))
         add_event(path, 'run_start', id=rid, category=args.category, command=command,
                   output=str(log.relative_to(ROOT / 'research')), cwd=str(Path.cwd()),
-                  systemd_unit=unit, threads=args.threads, timeout_s=args.timeout)
+                  systemd_unit=unit, threads=args.threads, timeout_s=args.timeout,
+                  expect_s=getattr(args, 'expect', None), serial_reason=getattr(args, 'serial_reason', ''))
     recovery_observe('job_start', root=ROOT, turn=name, job=rid, command=command, category=args.category)
     rc, timed_out, interrupted = 1, False, False
+    started = time.monotonic()
     process = None
     previous_term = signal.signal(signal.SIGTERM, lambda *_: (_ for _ in ()).throw(KeyboardInterrupt()))
     try:
@@ -388,13 +390,27 @@ def run_job(args, command):
         if size > args.tail_bytes:
             print(f'[Showing last {args.tail_bytes} bytes; full output is saved.]')
         print(tail, end='' if tail.endswith('\n') or not tail else '\n')
+    expect = getattr(args, 'expect', None)
+    if expect:
+        elapsed = time.monotonic() - started
+        print(f'Expected {expect:g} s, took {elapsed:.0f} s.')
     print(f'Exit {rc}; log: {log.relative_to(ROOT)}')
     return rc if rc >= 0 else 128 - rc
+
+
+LONG_RUN_S = 600
+PARALLEL_THREADS = 4
 
 
 def run_options(parser):
     parser.add_argument('--threads', type=int, default=14)
     parser.add_argument('--timeout', type=float, default=180)
+    parser.add_argument('--expect', type=float,
+                        help='Estimated running time in seconds, from a count or a smaller run; '
+                             f'required when --timeout exceeds {LONG_RUN_S:g}')
+    parser.add_argument('--serial-reason', default='',
+                        help='Why a run expected to exceed the long-run limit uses fewer than '
+                             f'{PARALLEL_THREADS} threads')
     parser.add_argument('--category', choices=RUNS, default='computation')
     parser.add_argument('--tail-bytes', type=int, default=8000,
                         help='Maximum output displayed; full output is always logged')
@@ -479,6 +495,14 @@ def main():
     if not 1 <= args.threads <= 14: parser.error('--threads must be between 1 and 14')
     if not 0 < args.timeout < float('inf'): parser.error('--timeout must be finite and positive')
     if args.tail_bytes < 0: parser.error('--tail-bytes cannot be negative')
+    if args.timeout > LONG_RUN_S and args.expect is None:
+        parser.error(f'--timeout above {LONG_RUN_S:g} s needs --expect SECONDS: estimate the running '
+                     'time from a count or a smaller run first (COMPUTATION_RULES.md)')
+    if args.expect is not None and not 0 < args.expect <= args.timeout:
+        parser.error('--expect must be positive and at most --timeout')
+    if (args.expect or 0) > LONG_RUN_S and args.threads < PARALLEL_THREADS and not args.serial_reason.strip():
+        parser.error(f'a run expected to exceed {LONG_RUN_S:g} s on fewer than {PARALLEL_THREADS} threads '
+                     'needs --serial-reason: use the parallel paths first (COMPUTATION_RULES.md)')
     return run_job(args, command)
 
 

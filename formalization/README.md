@@ -27,7 +27,7 @@ root, follow the resource-control setup in [COMPUTATION_RULES.md](../COMPUTATION
 then restore dependencies and their compiled cache:
 
 ```bash
-./compute.sh --threads 2 --timeout 1800 bash -c 'source "$HOME/.elan/env"; cd formalization; MATHLIB_NO_CACHE_ON_UPDATE=1 lake exe cache get Mathlib.Algebra.Polynomial.Div Mathlib.Tactic.Ring'
+./compute.sh --threads 2 --timeout 1800 --expect 600 bash -c 'source "$HOME/.elan/env"; cd formalization; MATHLIB_NO_CACHE_ON_UPDATE=1 lake exe cache get Mathlib.Algebra.Polynomial.Div Mathlib.Tactic.Ring'
 ```
 
 Build the project:
