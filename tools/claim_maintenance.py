@@ -105,7 +105,7 @@ def check_revision(after, revision='HEAD', root=ROOT):
             if ref=='EMPTY':return ''
             shown=subprocess.run(['git','show',ref+':'+relative],cwd=root,text=True,capture_output=True)
             return shown.stdout if shown.returncode==0 else ''
-        grandfathered={e['id'] for e in Entries(notebook_at(ENTRY_INVENTORY_BASE)).entries}
+        grandfathered=lambda:{e['id'] for e in Entries(notebook_at(ENTRY_INVENTORY_BASE)).entries}
         registration=check_entries(notebook_at(commit),notebook.read_text(),after,root,grandfathered,notebook)
         registrations.append(registration)
     result['registration']={'passed':all(r['passed'] for r in registrations),

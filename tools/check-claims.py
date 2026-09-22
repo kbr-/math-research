@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import time
 
 ROOT = Path(__file__).resolve().parents[1]
 TESTS = ('claim_attention', 'fossick', 'claim_registry', 'claim_duplicates', 'claim_authoring',
@@ -47,17 +48,20 @@ def run(base, jobs=8):
     """Checks are independent (read-only, tests in their own temporary directories), so they
     run concurrently; results are reported in the fixed order of checks()."""
     listed = list(checks(base))
-    execute = lambda command: subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
+    def execute(command):
+        start = time.monotonic()
+        result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
+        return result, time.monotonic() - start
     with ThreadPoolExecutor(max_workers=jobs) as pool:
         results = list(pool.map(execute, [command for _, command in listed]))
     failures = []
-    for (title, _), result in zip(listed, results):
+    for (title, _), (result, seconds) in zip(listed, results):
         if result.returncode == 0:
-            print(f'ok    {title}')
+            print(f'ok    {seconds:5.1f} s  {title}')
             continue
         text = reason(result.stdout + '\n' + result.stderr)
         failures.append((title, text))
-        print(f'FAIL  {title}\n' + '\n'.join('      ' + line for line in text.splitlines()))
+        print(f'FAIL  {seconds:5.1f} s  {title}\n' + '\n'.join('      ' + line for line in text.splitlines()))
         if os.environ.get('GITHUB_ACTIONS') == 'true':
             annotate(title, text)
     return failures

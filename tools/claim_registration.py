@@ -37,8 +37,13 @@ class Entries(HTMLParser):
 
 def check_entries(previous,current,data,root,grandfathered=(),notebook_path=None):
     notebook_path = notebook_path or root/'notebook.html'
-    before={e['id'] for e in Entries(previous).entries}|set(grandfathered)
-    entries=[e for e in Entries(current).entries if e['id'] not in before]
+    # An unchanged notebook has no new entries; a callable grandfathered set is read only when needed.
+    entries=[] if previous==current else Entries(current).entries
+    if entries:
+        before={e['id'] for e in Entries(previous).entries}
+        entries=[e for e in entries if e['id'] not in before]
+    if entries and callable(grandfathered):grandfathered=grandfathered()
+    entries=[e for e in entries if e['id'] not in set(grandfathered)]
     claims={c['id']:c for c in data['claims']}
     historical=root/'php_codex_handoff/manuscript/CLAIM_INDEX.md'
     historical_ids=set(re.findall(r'`([^`\s]+:[^`\s]+)`',historical.read_text())) if historical.exists() else set()

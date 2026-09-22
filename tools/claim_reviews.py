@@ -34,8 +34,19 @@ def claim_digest(claim):
     return digest({key: claim[key] for key in ('id', *TEXT_FIELDS)})
 
 
-def field_value(data, claim, field):
+def incident_edges(data):
+    """Each current claim's incident relationships, in registry order, each edge once."""
+    result = {}
+    for e in data['relationships']:
+        for label in {e[end]['id'] for end in ('source', 'target') if e[end]['namespace'] == 'current'}:
+            result.setdefault(label, []).append(e)
+    return result
+
+
+def field_value(data, claim, field, edges=None):
     if field == 'relationships':
+        if edges is not None:
+            return edges.get(claim['id'], [])
         return [e for e in data['relationships'] if any(
             e[end]['namespace'] == 'current' and e[end]['id'] == claim['id'] for end in ('source', 'target'))]
     if field == 'topics':
@@ -123,6 +134,7 @@ def make_review(data, claim, field, targets, *, revision, date, note,
 
 def coverage(data, root=ROOT):
     evidence = Evidence(root)
+    edges = incident_edges(data)
     counts = {field: Counter() for field in FIELDS}
     rows = []
     for claim in data['claims']:
@@ -135,7 +147,7 @@ def coverage(data, root=ROOT):
                     reasons.append('formalization inventory changed; rerun mapping audit')
                 if claim_digest(claim) != review['claim_sha256']:
                     reasons.append('claim text changed')
-                if digest(field_value(data, claim, field)) != review['value_sha256']:
+                if digest(field_value(data, claim, field, edges)) != review['value_sha256']:
                     reasons.append('field value changed')
                 for item in review['evidence']:
                     try:

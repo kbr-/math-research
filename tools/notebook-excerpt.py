@@ -72,7 +72,11 @@ class Notebook(HTMLParser):
         node["end"] = self.source.index(">", node["close"]) + 1
 
     def anchor(self, name):
-        matches = [n for n in self.nodes if n["anchor"] == name.removeprefix("#")]
+        if not hasattr(self, "by_anchor"):
+            self.by_anchor = {}
+            for n in self.nodes:
+                self.by_anchor.setdefault(n["anchor"], []).append(n)
+        matches = self.by_anchor.get(name.removeprefix("#"), [])
         if len(matches) != 1:
             raise ValueError(f"Expected one section/heading anchor {name!r}; found {len(matches)}")
         return matches[0]

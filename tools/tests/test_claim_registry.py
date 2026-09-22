@@ -301,9 +301,9 @@ class ClaimRegistryTests(unittest.TestCase):
             merge_tool.merge_registry(*map(json.dumps, (base, left, right)))
 
     def test_repository_registry_and_retrieval(self):
+        # Rendering and link targets of the real registry are checked by `claim-index.py validate`,
+        # which tools/check-claims.py runs next to this test; only retrieval is tested here.
         d = cr.load()
-        self.assertEqual(cr.MARKDOWN.read_text(), cr.render(d))
-        self.assertTrue(cr.check_targets(d)['passed'])
         for words, expected in [(['point', 'support', 'lower', 'bound'], 'lem:Boolean-design-point-support-lower-bound'),
                                 (['two', 'form', 'no', 'fall', 'criterion'], 'thm:two-form-no-fall-criterion')]:
             ids = [c['id'] for _, c in search_tool.search(d, words)[:5]]

@@ -51,40 +51,50 @@ def write_json(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
 
 
+SHAPE_TYPES = {'object': dict, 'array': list, 'string': str, 'integer': int, 'null': type(None)}
+
+
 def shape(value, spec, path='$', schema=None):
-    """Validate the deliberately small JSON-Schema vocabulary used by schema.json."""
+    """Validate the deliberately small JSON-Schema vocabulary used by schema.json.
+
+    `path` may be a string or a callable returning it; it is formatted only when a check
+    fails, since the registry has hundreds of thousands of values.
+    """
     schema = spec if schema is None else schema
-    if '$ref' in spec:
+    where = path if callable(path) else (lambda: path)
+    while '$ref' in spec:
         target = schema
         for key in spec['$ref'].removeprefix('#/').split('/'):
             target = target[key]
-        return shape(value, target, path, schema)
-    types = {'object': dict, 'array': list, 'string': str, 'integer': int, 'null': type(None)}
+        spec = target
     expected = spec.get('type')
     if expected:
         choices = expected if isinstance(expected, list) else [expected]
-        require(any(type(value) is types[t] for t in choices), f'{path}: expected {expected}')
-    if 'enum' in spec:
-        require(value in spec['enum'], f'{path}: invalid value {value!r}')
+        if not any(type(value) is SHAPE_TYPES[t] for t in choices):
+            raise ValueError(f'{where()}: expected {expected}')
+    if 'enum' in spec and value not in spec['enum']:
+        raise ValueError(f'{where()}: invalid value {value!r}')
     if isinstance(value, str):
-        require(len(value) >= spec.get('minLength', 0), f'{path}: empty string')
-        if 'pattern' in spec:
-            require(re.fullmatch(spec['pattern'], value) is not None, f'{path}: invalid syntax')
-    if isinstance(value, dict):
+        if len(value) < spec.get('minLength', 0):
+            raise ValueError(f'{where()}: empty string')
+        if 'pattern' in spec and re.fullmatch(spec['pattern'], value) is None:
+            raise ValueError(f'{where()}: invalid syntax')
+    elif isinstance(value, dict):
         props = spec.get('properties', {})
-        require(set(spec.get('required', [])) <= value.keys(), f'{path}: missing required fields')
-        if spec.get('additionalProperties') is False:
-            require(value.keys() <= props.keys(), f'{path}: unknown fields {value.keys() - props.keys()}')
+        if not set(spec.get('required', [])) <= value.keys():
+            raise ValueError(f'{where()}: missing required fields')
+        if spec.get('additionalProperties') is False and not value.keys() <= props.keys():
+            raise ValueError(f'{where()}: unknown fields {value.keys() - props.keys()}')
         for key, child in value.items():
             if key in props:
-                shape(child, props[key], f'{path}.{key}', schema)
-    if isinstance(value, list):
-        if spec.get('uniqueItems'):
-            require(len({json.dumps(v, sort_keys=True) for v in value}) == len(value),
-                    f'{path}: duplicate items')
-        for i, child in enumerate(value):
-            if 'items' in spec:
-                shape(child, spec['items'], f'{path}[{i}]', schema)
+                shape(child, props[key], lambda key=key: f'{where()}.{key}', schema)
+    elif isinstance(value, list):
+        if spec.get('uniqueItems') and len({json.dumps(v, sort_keys=True) for v in value}) != len(value):
+            raise ValueError(f'{where()}: duplicate items')
+        if 'items' in spec:
+            items = spec['items']
+            for i, child in enumerate(value):
+                shape(child, items, lambda i=i: f'{where()}[{i}]', schema)
 
 
 def markdown_links(text):
