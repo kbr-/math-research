@@ -744,9 +744,9 @@ Theorem S: for every odd prime p there are C_p, n_p such that for n >= n_p every
 
 **Why it matters:** A distribution on which linear decision trees over F_p need polynomial depth to find a collision in unary PHP, against O(log n) for the one-defect classes; it removes the distribution obstacle of Byramji-Impagliazzo Remark A.4 in search form for odd p.
 
-**Decision (agent):** Polynomial-depth search hardness for F_p-linear decision trees on unary PHP under a modular-collision distribution; novelty unchecked against the literature on linear decision trees and hard distributions for Res(lin_Fp).
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
-**Next:** Prove the probability bound p^{-(rk - dim W)} for systems under mu_E and test it against the star closure; check novelty against the literature on linear decision trees before any write-up.
+**Next:** Its route to a proof-system bound is blocked at the restriction (lem:dense-class-restrictions-imply-additive, prop:ResLin-padding-far-inequation); route review next; check novelty before any write-up.
 
 ---
 
