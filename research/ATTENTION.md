@@ -300,7 +300,7 @@ A sixteen-neighbor graph with one distinguished edge per row admits a homogeneou
 
 **Why it matters:** A graph-adapted old weight space with enough dimension for common affine kernels, avoiding the need for full old quotient-image decay. The residual-hardness probability and simultaneous coefficient separation merit independent audit.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Independently audit the conditioned random-graph distribution, row/CNF encoding transfer, coefficient detectors and dimension constants; compare with existing restriction-based graph-PHP arguments.
 
@@ -442,7 +442,7 @@ For every fixed prime p, unary weak or functional PHP plus any polynomial-invent
 
 **Why it matters:** Extends the general unary-affine one-level boundary to every fixed prime through one coefficient identity and degree ledger. The graph construction and downstream proof-system applications still need independent review.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Independently review the ordinary-flat kernel and Fermat normalization scope, then construct a valid first retained-layer interface rather than assuming iteration.
 
@@ -650,7 +650,7 @@ Over F2, ordinary functional or weak unary PHP with any polynomial-inventory com
 
 **Why it matters:** Closes the binary one-level unary-affine boundary, including dense middle ranks, by a uniform graph restriction and common-weight mechanism. Possible broader proof-system consequences need a separate end-to-end compiler and prior-art audit; the Frege recurrence remains open.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Audit the graph-weight proof and exact ordinary-PHP affine-source compiler/rule conventions, then check prior art before any standalone proof-system claim. Separately identify the first retained-input obstacle for the main Frege route.
 
@@ -826,7 +826,7 @@ For every real K>0, sufficiently large ordinary unary PHP and its functional var
 
 **Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
-**Next:** Arrange independent mathematical review of the graph weight/detector construction and compiler composition; complete an encoding-specific novelty audit before preparing or publishing a separate preprint.
+**Next:** Audit the binary CNF-to-affine-registry transfer (width sixteen, PC degree 18), the one part of the chain not yet independently reviewed; then an expert review. The graph weight and composition passed an independent audit on 22 September 2026, and the bounded novelty check of that day found no published unrestricted unary bound.
 
 ---
 
