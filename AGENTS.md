@@ -212,6 +212,7 @@ rules to growing checklists or one-off setup narratives.
   validation against an old target is not validation of a new one.
 - Preserve private `pre-publish`; never publish it or use `--all`/`--mirror`.
   Before authorized publication run `tools/verify-checkout.py --public-history BRANCH`
+  (it includes the claim-index CI job, `tools/check-claims.py`, against `origin/BRANCH`)
   and the append-only check, unless explicitly overridden by the user. Pages targets
   main only; local commits are checkpoints. The Pages workflow builds HTML/site-tool
   changes with `tools/build_pages.py --out _site`: upload only that minimal artifact,

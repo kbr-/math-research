@@ -51,6 +51,7 @@ on:
       - 'tools/tests/test_claim_registry.py'
       - 'tools/tests/test_claim_dependencies.py'
       - 'tools/tests/test_merge_formalization_appends.py'
+      - tools/check-claims.py
       - .github/workflows/claim-index.yml
   pull_request:
     paths:
@@ -76,29 +77,11 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - run: python3 tools/claim-index.py validate
-      - run: python3 tools/claim-attention.py check
-      - run: python3 -m unittest discover -s tools/tests -p test_claim_attention.py
-      - run: python3 -m unittest discover -s tools/tests -p test_fossick.py
-      - run: python3 -m unittest discover -s tools/tests -p test_claim_registry.py
-      - run: python3 -m unittest discover -s tools/tests -p test_claim_duplicates.py
-      - run: python3 -m unittest discover -s tools/tests -p test_claim_authoring.py
-      - run: python3 -m unittest discover -s tools/tests -p test_claim_notices.py
-      - run: python3 -m unittest discover -s tools/tests -p test_claim_article_evidence.py
-      - run: python3 -m unittest discover -s tools/tests -p test_claim_article_finalizer.py
-      - run: python3 -m unittest discover -s tools/tests -p test_finish_turn.py
-      - run: python3 -m unittest discover -s tools/tests -p test_record_citations.py
-      - run: python3 -m unittest discover -s tools/tests -p test_claim_dependencies.py
-      - run: python3 -m unittest discover -s tools/tests -p test_claim_graph.py
-      - run: python3 tools/claim-index.py graph audit
-      - run: python3 -m unittest discover -s tools/tests -p test_merge_formalization_appends.py
-      - run: python3 -m unittest discover -s tools/tests -p test_claim_maintenance.py
-      - run: python3 -m unittest discover -s tools/tests -p test_claim_registration.py
-      - name: Check changed-claim maintenance contract
+      - name: Claim-index checks (tools/check-claims.py; also run before every push)
         env:
           CLAIM_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
           if [[ -z "$CLAIM_BASE" || "$CLAIM_BASE" =~ ^0+$ ]]; then
             CLAIM_BASE=EMPTY
           fi
-          python3 tools/claim-index.py changed --base "$CLAIM_BASE"
+          python3 tools/check-claims.py --base "$CLAIM_BASE"

@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
 
 from claim_registry import load as load_claims, render as render_claims, check_targets
 
@@ -76,7 +77,7 @@ def main():
                 'tools/tests/test_claim_article_finalizer.py',
                 'tools/tests/test_claim_duplicates.py', 'tools/tests/test_claim_authoring.py',
                 'tools/tests/test_claim_notices.py',
-                'tools/claim-dependencies.py',
+                'tools/claim-dependencies.py', 'tools/check-claims.py',
                 'research/claims/README.md', 'tools/claim_registry.py', 'tools/claim-index.py',
                 'resource-controls/setup.py', 'tools/remember-codex-session.py',
                 'tools/archive-session.py', 'requirements-research.txt', 'LICENSE',
@@ -91,7 +92,7 @@ def main():
             failures.append('Runtime or scratch file tracked: ' + name)
     modes = subprocess.check_output(['git', 'ls-files', '--stage', '-z'], cwd=ROOT, text=True).split('\0')
     mode_by_path = {line.split('\t', 1)[1]: line.split(' ', 1)[0] for line in modes if line}
-    for name in ('compute.sh', 'start-codex.sh', 'start-session.sh', 'start-claude.sh', 'tools/remember-codex-session.py', 'tools/archive-session.py', 'tools/claim-index.py', 'tools/claim-dependencies.py', 'tools/claim_duplicates.py', 'tools/claim_authoring.py'):
+    for name in ('compute.sh', 'start-codex.sh', 'start-session.sh', 'start-claude.sh', 'tools/remember-codex-session.py', 'tools/archive-session.py', 'tools/claim-index.py', 'tools/claim-dependencies.py', 'tools/claim_duplicates.py', 'tools/claim_authoring.py', 'tools/check-claims.py'):
         if mode_by_path.get(name) != '100755':
             failures.append('Executable mode not tracked: ' + name)
     if args.public_history:
@@ -110,6 +111,16 @@ def main():
                 continue
             if name in private_paths or name.startswith('private/') or Path(name).name in excluded_names:
                 failures.append('Local-only material remains in public history: ' + name)
+        # Run the claim-index CI job against the published branch, so a push cannot fail it.
+        remote = 'origin/' + args.public_history.removeprefix('origin/')
+        known = subprocess.run(['git', 'rev-parse', '--verify', '--quiet', remote], cwd=ROOT,
+                               capture_output=True).returncode == 0
+        claims = subprocess.run([sys.executable, str(ROOT / 'tools/check-claims.py'),
+                                 '--base', remote if known else 'EMPTY'],
+                                cwd=ROOT, text=True, capture_output=True)
+        if claims.returncode:
+            failures += ['Claim-index CI check: ' + line.strip() for line in claims.stdout.splitlines()
+                         if line.startswith(('FAIL', '      '))]
     report = {'tracked_files': len(tracked), 'historical_files_checked': len(manifest['files']),
               'public_reference_pdfs_checked': len(policy['public']),
               'local_only_references_available': local_sources,
