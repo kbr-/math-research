@@ -1,6 +1,6 @@
 """Witness checks for general base shapes (vectorized soundness; same checks as witness.py).
-Usage: witness2.py TAG V D HA HB NBASE SEED...  (instances as conservativity.make builds them);
-results in c3_witness_TAG_D{D}.json.  Checks: new elements of the existing part of C_D(base+B)
+Usage: witness2.py TAG[@LABEL] V D HA HB NBASE SEED...  (instances as conservativity.make builds
+them from TAG; an optional @LABEL only names the output); results in c3_witness_TAG[_LABEL]_D{D}.json.  Checks: new elements of the existing part of C_D(base+B)
 that are independent of C_D(base) in the base ring's own coordinates; soundness by evaluation on
 every solution of the base; least D' in {D+1, D+2} with the element in C_{D'}(base)."""
 import itertools, json, os, sys
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     tag, v, D0, hA, hB, nb = sys.argv[1], *map(int, sys.argv[2:7])
     out = []
     for seed in map(int, sys.argv[7:]):
-        inst = make(tag, v, D0, hA, hB, seed, 'random', nb)
+        inst = make(tag.split('@')[0], v, D0, hA, hB, seed, 'random', nb)
         R = elements(inst)
         sp0 = R['sp0']; S = solution_values(sp0, R['gens0'])
         higher = []
@@ -73,4 +73,4 @@ if __name__ == '__main__':
         print(json.dumps({'name': rec['name'], 'n_new': len(rec['new']),
                           'summary': [(n['degree'], n['terms'], n['sound'], n['in_base_closure_at']) for n in rec['new']]}), flush=True)
         out.append(rec)
-    json.dump(out, open(os.path.join(HERE, f'c3_witness_{tag}_D{D0}.json'), 'w'), indent=1)
+    json.dump(out, open(os.path.join(HERE, f"c3_witness_{tag.replace('@', '_')}_D{D0}.json"), 'w'), indent=1)
