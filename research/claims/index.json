@@ -150060,12 +150060,12 @@
         "references": [
           "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-fp-closure-obstruction"
         ],
-        "next_action": "Test the modular-collision distribution against general linear queries over F_p."
+        "next_action": "Done: the modular-collision candidate fails the closure probability property, and exempting column forms is blocked by safety; see prop:unary-PHP-column-dichotomy."
       },
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "44b6c0323c88c4b7f3629f4f194af6ac08e9ac26",
+          "revision": "fd8de55c657174448c8f44c6f01fd0ec20992187",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Working proof of the Observation (elementary binary searches; p=2 via the tree of Byramji-Impagliazzo), checked by a fresh-context reviewer. The consequence for the method is a heuristic reading, not a theorem; the bounded-depth line is conditional on a hard distribution, not closed.",
@@ -150082,7 +150082,7 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "44b6c0323c88c4b7f3629f4f194af6ac08e9ac26",
+          "revision": "fd8de55c657174448c8f44c6f01fd0ec20992187",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Elementary decision-tree observation; no Lean verification.",
@@ -150099,7 +150099,7 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "44b6c0323c88c4b7f3629f4f194af6ac08e9ac26",
+          "revision": "fd8de55c657174448c8f44c6f01fd0ec20992187",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Linear decision trees for unary PHP search.",
@@ -150116,34 +150116,159 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "44b6c0323c88c4b7f3629f4f194af6ac08e9ac26",
+          "revision": "fd8de55c657174448c8f44c6f01fd0ec20992187",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
           "note": "Identifies why the bounded-depth closure method does not transfer to plain unary PHP with its known distributions, and names the candidate that would restart it.",
-          "next_action": "Test the modular-collision distribution against general linear queries over F_p.",
+          "next_action": "Done: the modular-collision candidate fails the closure probability property, and exempting column forms is blocked by safety; see prop:unary-PHP-column-dichotomy.",
           "claim_sha256": "53abaf4fd83139a8704ea55f3202cebfa0eb1fb83b2ca07119e740974b28db2a",
-          "value_sha256": "52534d8768c82e9fb7ae1d6ab6a7e4cc47cc3c0444a7b20a3937b90d6289688a",
+          "value_sha256": "d2caa10bab535fb24852288dbf242cfe61a4b9dfb796daa9f55bbc21c45a9713",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-fp-closure-obstruction",
               "sha256": "3fe89001d590ba3bc556ea0e2bb03ac465780d5a0145e059f09862ccb4e1be2d",
+              "normalization": "notebook-article-v1"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-test",
+              "sha256": "1cbf74e5a6165a7daec9b87d82c7bc82ce19eb43fd22b28edeccf0af00b2c65b",
               "normalization": "notebook-article-v1"
             }
           ]
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "44b6c0323c88c4b7f3629f4f194af6ac08e9ac26",
+          "revision": "fd8de55c657174448c8f44c6f01fd0ec20992187",
           "date": "2026-09-22",
           "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
-          "note": "Extends Remark A.4 of Byramji-Impagliazzo (external) to every prime; no registered dependency.",
+          "note": "Extends Remark A.4 of Byramji-Impagliazzo (external) to every prime; no registered dependency. Refined by prop:unary-PHP-column-dichotomy (22 September 2026): The column dichotomy extends the one-defect easiness to every distribution whose column systems have small probability, and tests the modular-collision candidate proposed there.",
           "next_action": null,
           "claim_sha256": "53abaf4fd83139a8704ea55f3202cebfa0eb1fb83b2ca07119e740974b28db2a",
-          "value_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "value_sha256": "27ed95ff20c67606e423a0712ee1ef2a771aafaf04730c363119a43d1e25444d",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-fp-closure-obstruction",
               "sha256": "3fe89001d590ba3bc556ea0e2bb03ac465780d5a0145e059f09862ccb4e1be2d",
+              "normalization": "notebook-article-v1"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-test",
+              "sha256": "1cbf74e5a6165a7daec9b87d82c7bc82ce19eb43fd22b28edeccf0af00b2c65b",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "prop:unary-PHP-column-dichotomy",
+      "summary": "Column dichotomy for unary PHP^{n+1}_n on any bipartite graph G, any prime p: for a hole set H_0 with |H_0| >= n/2, if the systems {occupancy(h) = 1 mod p for h in H'}, over uniform r_0-subsets H' of H_0, hold with average probability at most delta, then for every eta in (0,1) a linear decision tree over F_p of depth O(r_0 log(2/eta)(log n + log(2/eta))) finds a falsified hole clause with probability at least 1 - 4 delta/3 - eta; boards without a matching covering n/2 holes are easy outright. So the closure method's probability property, if it charges these safe column systems, contradicts its distributional search hardness for every distribution on every board. Exempting the occupancy forms as Byramji-Impagliazzo Lemma 5.7 exempts column sums is blocked by safety: beside the n-p+1 fixed occupancy forms of the modular-collision distribution, a safe system has at most p further independent forms.",
+      "assessment": "Working proof of the Proposition (elementary: counting visible holes, sampling a pigeon, modular subset tests), checked by a fresh-context reviewer. Its consequence for the bounded-depth closure line: the probability property fails as charged, and a column-exempt version would need a new danger notion and closure lemma, which neither the record nor the cited sources have.",
+      "record": "[Proposition and proof](https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-test)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "not_started",
+        "scope": "Elementary decision-tree proposition; no Lean verification.",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-test"
+        ],
+        "artifacts": []
+      },
+      "topics": [
+        "resolution-parities"
+      ],
+      "significance": {
+        "category": "negative_result",
+        "rationale": "Shows that the bounded-depth closure method does not transfer to unary PHP at any prime: its probability property must exempt the occupancy forms, and EGI safety leaves room for at most p further forms beside them.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-test"
+        ],
+        "next_action": "Thread route review weighing the bounded-depth sub-line, which now needs new closure machinery, against other directions."
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "fd8de55c657174448c8f44c6f01fd0ec20992187",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Working proof of the Proposition (elementary: counting visible holes, sampling a pigeon, modular subset tests), checked by a fresh-context reviewer. Its consequence for the bounded-depth closure line: the probability property fails as charged, and a column-exempt version would need a new danger notion and closure lemma, which neither the record nor the cited sources have.",
+          "next_action": null,
+          "claim_sha256": "a8b296d20a0073a3034f4630d933ff81019426a76bc91f8d6f695360a6b4f684",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-test",
+              "sha256": "1cbf74e5a6165a7daec9b87d82c7bc82ce19eb43fd22b28edeccf0af00b2c65b",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "fd8de55c657174448c8f44c6f01fd0ec20992187",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Elementary decision-tree proposition; no Lean verification.",
+          "next_action": null,
+          "claim_sha256": "a8b296d20a0073a3034f4630d933ff81019426a76bc91f8d6f695360a6b4f684",
+          "value_sha256": "fea9bf09901ff71e8ab6c308281e8fd6169197bab0578e4650b3421dc7525db6",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-test",
+              "sha256": "1cbf74e5a6165a7daec9b87d82c7bc82ce19eb43fd22b28edeccf0af00b2c65b",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "fd8de55c657174448c8f44c6f01fd0ec20992187",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Linear decision trees and hard distributions for unary PHP.",
+          "next_action": null,
+          "claim_sha256": "a8b296d20a0073a3034f4630d933ff81019426a76bc91f8d6f695360a6b4f684",
+          "value_sha256": "43de62b873fb2411bcb5702f02e14638befb0055ab2b8bf3993dbff4b88f329f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-test",
+              "sha256": "1cbf74e5a6165a7daec9b87d82c7bc82ce19eb43fd22b28edeccf0af00b2c65b",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "fd8de55c657174448c8f44c6f01fd0ec20992187",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Shows that the bounded-depth closure method does not transfer to unary PHP at any prime: its probability property must exempt the occupancy forms, and EGI safety leaves room for at most p further forms beside them.",
+          "next_action": "Thread route review weighing the bounded-depth sub-line, which now needs new closure machinery, against other directions.",
+          "claim_sha256": "a8b296d20a0073a3034f4630d933ff81019426a76bc91f8d6f695360a6b4f684",
+          "value_sha256": "e86001aae25cb4b3bafc8e5998c979d3c2020d4dcea58f009b2cdc2a4334f12d",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-test",
+              "sha256": "1cbf74e5a6165a7daec9b87d82c7bc82ce19eb43fd22b28edeccf0af00b2c65b",
+              "normalization": "notebook-article-v1"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "fd8de55c657174448c8f44c6f01fd0ec20992187",
+          "date": "2026-09-22",
+          "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+          "note": "Refines obs:unary-PHP-one-defect-linear-search from the one-defect classes to every distribution satisfying (COL); reads Byramji-Impagliazzo Lemmas 5.7 and 5.8 (external).",
+          "next_action": null,
+          "claim_sha256": "a8b296d20a0073a3034f4630d933ff81019426a76bc91f8d6f695360a6b4f684",
+          "value_sha256": "27ed95ff20c67606e423a0712ee1ef2a771aafaf04730c363119a43d1e25444d",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-test",
+              "sha256": "1cbf74e5a6165a7daec9b87d82c7bc82ce19eb43fd22b28edeccf0af00b2c65b",
               "normalization": "notebook-article-v1"
             }
           ]
@@ -233591,6 +233716,31 @@
         "date": "2026-09-22",
         "reviewer": "Claude Code (Opus 5) with a fresh-context auditor subagent",
         "note": "Independent audit of the graph weight and composition: sound; tautological inner lines deleted by induction; the CNF compiler was not audited."
+      }
+    },
+    {
+      "id": "prop:unary-PHP-column-dichotomy::refines::obs:unary-PHP-one-defect-linear-search",
+      "type": "refines",
+      "source": {
+        "namespace": "current",
+        "id": "prop:unary-PHP-column-dichotomy",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "obs:unary-PHP-one-defect-linear-search",
+        "locator": null
+      },
+      "scope": "The column dichotomy extends the one-defect easiness to every distribution whose column systems have small probability, and tests the modular-collision candidate proposed there.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-test"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "fd8de55c657174448c8f44c6f01fd0ec20992187",
+        "date": "2026-09-22",
+        "reviewer": "Claude Code (Opus 5) with a fresh-context reviewer subagent",
+        "note": "The column dichotomy extends the one-defect easiness to every distribution whose column systems have small probability, and tests the modular-collision candidate proposed there."
       }
     }
   ],
