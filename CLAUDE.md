@@ -77,7 +77,9 @@ Proposed next step names on the same route item, and search research/CLAIM_INDEX
 the cycle's objects under their structural names as well as the current vocabulary (for
 example "block", "fresh", "companion", "coefficient", not only "dense form"); a cycle on
 fresh blocks once rediscovered a conjecture that its own next-step paragraph listed as
-parked.
+parked. Restate a restart condition or calibration only from the latest entry that states
+it, after searching the notebook for later entries that met or replaced it; a route review
+once proposed a single-block calibration that a later review had already met.
 
 A conjectured sufficient condition for a size lower bound must use the size. Check that it does not
 also exclude refutations of every size, since the proof system is complete: ternary conservativity
