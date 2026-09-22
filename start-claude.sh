@@ -56,6 +56,28 @@ for agent in json.load(sys.stdin):
 ' "$1"
 }
 
+# All background session IDs, running or stopped, one per line.
+background_ids() {
+  claude agents --json --all | python3 -c '
+import json, sys
+for agent in json.load(sys.stdin):
+    if agent.get("kind") == "background":
+        print(agent["sessionId"])
+'
+}
+
+# Full ID of a background session started in this directory that is not among $1.
+new_background() {
+  claude agents --json --all | python3 -c '
+import json, os, sys
+before = set(sys.argv[1].split())
+for agent in json.load(sys.stdin):
+    if (agent.get("kind") == "background" and agent.get("cwd") == os.getcwd()
+            and agent["sessionId"] not in before):
+        print(agent["sessionId"]); break
+' "$1"
+}
+
 open_session() {
   local session_id=$1 short='' tries
   # claude --bg returns at once; give the new session a moment to register.
@@ -101,10 +123,19 @@ if [[ "$mode" == resume ]]; then
   exit 1
 fi
 
-# Claude Code accepts the session ID at launch, so the launcher binds it directly.
-session_id="$(python3 -c 'import uuid; print(uuid.uuid4())')"
-printf '%s\n' "$session_id" > .claude-session-id
-
 bootstrap='Restore this repository research context. Run python3 tools/resume.py and read every listed part with separate bounded outputs. Retry missing parts without preparing another resume. Follow its included restart guide without rereading bundled files; load further sources only as needed; do not repeat the full handoff import. Summarize readiness without beginning a new research attempt.'
-claude --session-id "$session_id" "${options[@]}" "$bootstrap" >/dev/null
+# --bg assigns its own session ID and ignores --session-id, so bind the ID it created.
+before="$(background_ids)"
+claude "${options[@]}" "$bootstrap" >/dev/null
+session_id=''
+for tries in 1 2 3 4 5 6 7 8 9 10; do
+  session_id="$(new_background "$before")"
+  [[ -n "$session_id" ]] && break
+  sleep 0.5
+done
+if [[ -z "$session_id" ]]; then
+  printf '%s\n' 'New background session not found; see claude agents --all.' >&2
+  exit 1
+fi
+printf '%s\n' "$session_id" > .claude-session-id
 open_session "$session_id"
