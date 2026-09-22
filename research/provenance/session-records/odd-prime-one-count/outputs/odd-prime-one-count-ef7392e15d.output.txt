@@ -1,0 +1,48 @@
+...FFF.....F...
+======================================================================
+FAIL: test_claude_existing_checkout_uses_exact_session (__main__.RepositoryTools)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/test_repository_tools.py", line 142, in test_claude_existing_checkout_uses_exact_session
+    self.assertEqual(self.launch_claude().returncode, 0)
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_claude_explicit_new_replaces_binding (__main__.RepositoryTools)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/test_repository_tools.py", line 149, in test_claude_explicit_new_replaces_binding
+    self.assertEqual(self.launch_claude('--new').returncode, 0)
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_claude_fresh_checkout_binds_and_bootstraps (__main__.RepositoryTools)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/test_repository_tools.py", line 130, in test_claude_fresh_checkout_binds_and_bootstraps
+    self.assertEqual(result.returncode, 0, result.stderr)
+AssertionError: 1 != 0 : Traceback (most recent call last):
+  File "<string>", line 3, in <module>
+  File "/usr/lib/python3.10/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/usr/lib/python3.10/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.10/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.10/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+
+======================================================================
+FAIL: test_fresh_checkout_bootstraps_from_files (__main__.RepositoryTools)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/kbr/dev/math-auxiliary/tools/test_repository_tools.py", line 59, in test_fresh_checkout_bootstraps_from_files
+    self.assertIn('research/notes/RESUME.md', data['args'][-1])
+AssertionError: 'research/notes/RESUME.md' not found in 'Restore this repository research context. First run ./tools/remember-codex-session.py to save this main session ID for the launcher. Use default tool output allowances for all resume calls, including enclosing wrappers. Then run python3 tools/resume.py and read every listed part with separate bounded outputs. Retry missing parts without preparing another resume. Follow its included restart guide without rereading bundled files; load further sources only as needed; do not repeat the full handoff import. Summarize readiness without beginning a new research attempt.'
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.782s
+
+FAILED (failures=4)
