@@ -20,5 +20,18 @@
       "Bash(ls:*)",
       "Bash(wc:*)"
     ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf %s '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"Compaction happened. Immediately perform the Resume protocol before doing anything else\"}}'"
+          }
+        ]
+      }
+    ]
   }
 }
