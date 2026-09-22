@@ -198,8 +198,14 @@ Use the same `CODEX_HOME` for both launchers and pairing. A Codex CLI version
 supporting daemon remote control and `--remote unix://` is required.
 
 With Claude Code, run `./start-claude.sh` instead. It accepts the same options,
-records its session in `.claude-session-id`, and sets the same auto-compaction
-budget. [`CLAUDE.md`](CLAUDE.md) imports `AGENTS.md`, and the tracked
+records its session in `.claude-session-id`, and sets its own auto-compaction budget.
+Like the Codex daemon, the session runs in the background (`claude --bg`) and the
+launcher attaches the terminal to it (`claude attach`), reusing a running session
+rather than starting a copy; closing the terminal only detaches. `--detached` starts
+or reuses it without attaching. The tracked `remoteControlAtStartup` setting makes
+it reachable from claude.ai/code and the Claude app through Remote Control, and the
+terminal and the phone can use it at the same time. `claude stop ID` ends it.
+[`CLAUDE.md`](CLAUDE.md) imports `AGENTS.md`, and the tracked
 [`.claude/settings.json`](.claude/settings.json) pre-approves the routine
 framework commands, including `git push origin main`; [AGENTS.md](AGENTS.md)
 still decides when a push is authorized. The launcher selects the `auto` permission mode.
