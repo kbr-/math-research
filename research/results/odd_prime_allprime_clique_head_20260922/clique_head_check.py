@@ -5,21 +5,26 @@
         J_{<=k} = sum_{j<=k} sum_{i<delta} C(m,i) C(s-m, j-i).
     The lemma claims J_{<=k} <= 2 C_delta C(s,k) exp(-mk/(2s)) with
         C_delta = (4(delta-1))^(delta-1) e^(1/4-(delta-1)),
-    under 2 <= delta <= m and k, m <= s/4.  Every admissible (s, m, k, delta) in the tested range is
-    checked against the closed form, and the closed form is confirmed against brute-force
-    enumeration of all subsets for the smallest boards.
+    under 2 <= delta <= m and k, m <= s/4.  The closed form is the extremal family binom(M,delta);
+    any larger family only lowers J, so checking it checks the lemma for every admissible family.
+    The closed form is checked against the lemma's bound, and against brute-force enumeration of
+    all subsets for the smallest boards.  Scope: the sweep has mk/(2s) <= s/32 <= 1.25, so it
+    exercises essentially the constant C_delta and not the exponential regime of the application,
+    and it covers delta <= 6, that is p <= 7.
 
 (2) The vanishing bound eps_p = 1 - (1 - 1/p)^delta.  For a nonzero homogeneous multilinear form
     B(a) = sum_S B_S prod_{u in S} a_u of degree delta in m variables over F_p, the entry's union
     bound needs Pr_a[B(a) = 0] <= eps_p for a uniform a in F_p^m.  Small cases are enumerated over
-    all nonzero B and all points; larger ones sample B with deterministic seeds.  A single monomial
-    attains the bound, so the test is tight and a wrong exponent would show.
+    all nonzero B and all points; larger ones sample B with deterministic seeds and additionally
+    insert the extremal single monomial, so attainment is a finding only in the exhaustive cases.
+    Forms are homogeneous of degree exactly delta, which is the case the entry uses.  No case has
+    delta = p-1 at p = 7.
 
 (3) The Wilson coefficient step.  After multilinear (Boolean) reduction, the coefficient of
     prod_{u in S} x_u in 1 - L^delta, for |S| = delta and L = sum_u a_u x_u over F_p, must equal
     prod_{u in S} a_u.  Coefficients are recovered by Moebius inversion of the Boolean values.
-    The projection step is checked too: substituting x_d = 1 - sum_{w != d} x_w for a distinguished
-    cell d of a row must replace a_w by a_w - a_d on the other cells of that row.
+    The projection identity is a rearrangement of one sum, so its check tests the sign convention
+    a'_u = a_u - a_{d(r_u)}, not the projection step itself.
 """
 import itertools, json, random, sys
 from math import comb, exp
