@@ -69,6 +69,27 @@ def validate_route(body, article):
                          'the line advances the goal, and the next step on the highest-risk route item')
 
 
+# External labels kept by the odd-prime name map (entry-2026-09-22-result-names); every other
+# "Lemma K"-style code must be replaced by a descriptive name.
+KEPT_LABELS = {'Corollary SL', 'Conjecture SR', 'Remark A.4'}
+LABEL_NOUNS = 'Lemma|Theorem|Corollary|Conjecture|Proposition|Observation|Question|Remark|Criterion'
+
+
+def letter_code_labels(html_text):
+    """Letter-code result labels ("Lemma K", "Theorem NDX′", "Conjecture H1") in an entry's prose."""
+    text = re.sub(r'<table\b.*?</table>', ' ', html_text, flags=re.S)   # name maps live in tables
+    text = re.sub(r'<[^>]*>', ' ', text)
+    found = []
+    for m in re.finditer(r'\b(' + LABEL_NOUNS + r')\s+([A-Z][A-Za-z0-9.]*[′″]*)', text):
+        code = m.group(2).rstrip('.')
+        if re.fullmatch(r'[A-Z][a-z]{2,}', code):          # an ordinary capitalized word
+            continue
+        label = f'{m.group(1)} {code}'
+        if label not in KEPT_LABELS and label not in found:
+            found.append(label)
+    return found
+
+
 def validate_marker(body, marker):
     if body.count(marker) != 1:
         raise ValueError(f'Notebook must contain exactly one {marker}')
@@ -91,6 +112,11 @@ def validate_marker(body, marker):
         # MathJax treats a dollar sign as an inline-math delimiter; the notebook uses \( \).
         raise ValueError('The entry contains a dollar sign, which MathJax reads as a math delimiter; '
                          'write mathematics with \\( \\) and currency as "USD 5"')
+    coded = letter_code_labels(body[article:close])
+    if coded:
+        raise ValueError('The entry names results by letter codes ' + ', '.join(coded) + ': cite them '
+                         'by descriptive names (CLAUDE.md, Naming results), e.g. "the constant-row clamp" '
+                         'rather than "Lemma K"; the claim ID usually gives the name')
     control = sorted({c for c in body[article:close] if ord(c) < 32 and c != '\n'})
     if control:
         # "\rho", "\text", "\bigl" written through a non-raw Python string become CR, TAB, BS.

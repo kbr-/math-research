@@ -73,7 +73,9 @@ Never use letter codes or suffix variants such as "Theorem GCp", "Corollary NDp"
 "Proposition MX″": they carry no meaning and force the reader to look them up. A variant of an
 earlier result gets its own descriptive name, or the earlier name with a meaningful qualifier
 ("the all-prime clique-head theorem"), not a prime, digit or letter suffix. Follow the names
-GPT-6 Astra gave in the main notebook.
+GPT-6 Astra gave in the main notebook. Cite older coded results ("Lemma K") by a descriptive
+name, usually their claim ID's words ("the constant-row clamp"); the finisher rejects new entries
+that name results by letter codes outside tables.
 
 ## Route check when opening a cycle
 
