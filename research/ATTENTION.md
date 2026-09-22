@@ -84,6 +84,22 @@ No universal transfer from one-level affine ENS ordinary NS refutations to old P
 
 ---
 
+### Low nonlocal dimension ResLinp hardness
+
+**Claim:** [cor:low-nonlocal-dimension-ResLinp-hardness](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#low-nonlocal-dimension-ResLinp-hardness>)
+
+For every odd prime p, fixed 0<eps<=1/(p-1) and K>0, ordinary unary PHP and its functional variant have no standard Res(lin_Fp) refutation with at most n^K lines in which every line has nonlocal dimension at most n^(1/(p-1)-eps).
+
+**Significance:** `independent_result` · **Novelty:** `candidate`
+
+**Why it matters:** Corollary NDp is, as far as the bounded novelty check shows, among the first superpolynomial size lower bounds for classes of DAG-like Res(lin_Fp) refutations of PHP at an odd prime; its chain is independently audited.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, Proposition MXp); an exact-scope novelty review before any publication decision by the user.
+
+---
+
 ### Ordinary unary PHP parity near exponential
 
 **Claim:** [cor:ordinary-unary-PHP-parity-near-exponential](<https://kbr.is-a.dev/math-research/#ordinary-unary-PHP-parity-near-exponential>)
@@ -378,7 +394,7 @@ Complete accuracy-one ternary selector families over full functional PHP have no
 
 **Why it matters:** Makes the surviving nonlinear rank a certified PHP-quotient parameter of the actual compiler source and covers every fixed sublinear power; high-rank mixed sources remain open.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Find a source-compatible high-rank alternative that includes the easy two-column control and preserves the required separation budget.
 
@@ -429,6 +445,22 @@ For every fixed prime p, unary weak or functional PHP plus any polynomial-invent
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Independently review the ordinary-flat kernel and Fermat normalization scope, then construct a valid first retained-layer interface rather than assuming iteration.
+
+---
+
+### Cell support exclusion with exceptional lines
+
+**Claim:** [thm:cell-support-exclusion-with-exceptional-lines](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#cell-support-exclusion-with-exceptional-lines>)
+
+For fixed p, 0<eps<=1, A, c and 0<beta<eps/2, every standard syntactic Res(lin_Fp) refutation of ordinary or functional unary PHP^{n+1}_n with at most n^c lines has more than K_n=Theta(n^beta) lines whose clause has union of cell supports above n^{2-eps}(log n)^A, for large n; K_n=floor((floor((N+1)/2)/T-(4p-1))/(p-1)^2) with N=ceil(n^beta) and T=max(1,2(k-1)), k least with k(eps-2beta)>c+1.
+
+**Significance:** `independent_result` · **Novelty:** `candidate`
+
+**Why it matters:** Theorem Y is, as far as the bounded novelty check shows, among the first superpolynomial size lower bounds for classes of DAG-like Res(lin_Fp) refutations of PHP at an odd prime; its chain is independently audited.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, Proposition MXp); an exact-scope novelty review before any publication decision by the user.
 
 ---
 
@@ -538,7 +570,7 @@ Every graph in the stated robust class supports an all-prime affine ENS endpoint
 
 **Why it matters:** Supplies a graph-uniform source endpoint, enabling copied residual families to share one old base and moments. Independent review should check the conflict-count and boundary-deletion hypotheses.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Audit the finite compatible-pair inequalities and uniform asymptotic use on residual graphs; preserve fixed-prime and complete-source scope.
 
@@ -718,6 +750,22 @@ For k designated rows with at most s predicates each, targets in K_d avoiding th
 
 ---
 
+### Nonlocal dimension exclusion linear exceptional lines
+
+**Claim:** [thm:nonlocal-dimension-exclusion-linear-exceptional-lines](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#nonlocal-dimension-exclusion-linear-exceptional-lines>)
+
+For every odd prime p, fixed eps>0 and c>0 there is C=C(p)>0 such that, for large n, every standard syntactic Res(lin_Fp) refutation of ordinary or functional unary PHP^{n+1}_n with at most n^c lines has more than Cn lines of nonlocal dimension above n^{1/(p-1)-eps}.
+
+**Significance:** `independent_result` · **Novelty:** `candidate`
+
+**Why it matters:** Theorem NDX-prime is, as far as the bounded novelty check shows, among the first superpolynomial size lower bounds for classes of DAG-like Res(lin_Fp) refutations of PHP at an odd prime; its chain is independently audited.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, Proposition MXp); an exact-scope novelty review before any publication decision by the user.
+
+---
+
 ### Odd affine Booleanity classification
 
 **Claim:** [thm:odd-affine-Booleanity-classification](<https://kbr-.github.io/math-research/#affine-Booleanity-classification>)
@@ -824,7 +872,7 @@ An S-line standard F_p equation-clause refutation with initial width w compiles 
 
 **Why it matters:** Discharges the standard equation-clause forward transfer into a restricted nonlinear source; leaves the required power-selector exclusion open.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Independently check the degree ledger and test exclusion of the actual power-selector source, starting with p=3.
 
