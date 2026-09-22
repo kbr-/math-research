@@ -39,6 +39,10 @@ rules to growing checklists or one-off setup narratives.
   hypotheses and accumulated composition costs against the goal's budget.
   If these fail, or repeated cycles leave the same required implication untouched,
   review alternatives and address the failure before refining the same mechanism.
+  Stop a series of runs once its prediction has passed or failed at the sizes that
+  test it. A larger size, degree or sample needs a stated question that the finished
+  runs cannot answer, and an answer that would change the goal's missing implication;
+  sharper constants for a result off the critical path are not a reason.
 - Distinguish working proofs, imported statements, conditional results, finite
   checks, conjectures and refutations. Match source hypotheses, encodings and
   versions; preserve original joint degrees and exact parameter accounting.
