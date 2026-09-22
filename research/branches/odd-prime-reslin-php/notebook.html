@@ -15,7 +15,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Restate the <a href="#entry-2026-09-22-vertex-cover-closure">vertex-cover closure</a> on a bipartite expander, with a cover-choice rule that preserves Hall's condition. For plain unary PHP over \(\mathbb F_p\) the closure has size \(O(p\,r\log r)\), the leaf property and weakening under span containment. But a trapped-pigeon example refutes its Delayer step through greedy hole covers. Then prove the Delayer step in dimensions \(0\) and \(1\): Hall's condition, and one form with \(p-1\) switches along a matching. Exhaustive search is infeasible from dimension two, with about \(3^{68}\) subspaces at \(p=3\). The occupancy equations and a canonical closure are also open. Full success would give only a bounded-depth endpoint, not the goal. The write-up of the audited <a href="#entry-2026-09-22-odd-prime-statement-set">statement set</a> and the binary compiler audit await user decisions.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Test danger modulo the occupancy span for the <a href="#entry-2026-09-22-vertex-cover-closure">vertex-cover closure</a> for plain unary PHP over \(\mathbb F_p\). Measure each subspace by the cover number of its best representative modulo that span. The <a href="#entry-2026-09-22-closure-candidates-review">route review</a> found that block column sums over at least \(\theta\) holes are safe under the plain notion, and that the column dichotomy then applies to them with its depth threshold raised by the factor \(\theta\); the quotient is the candidate remedy. Test whether the potential bound and the leaf property survive, then extend the onto lemma to the occupancy equations. After that, restate the closure on a bounded-degree expander with Hall's condition for the closure's own pigeons. The test case is a pigeon of degree \(d\) whose other \(d-1\) holes are pinned. Full success would give only a bounded-depth endpoint, not the goal. The write-up of the audited <a href="#entry-2026-09-22-odd-prime-statement-set">statement set</a> and the binary compiler audit await user decisions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -5148,6 +5148,65 @@ Each form has cover number \(1\), with the unique minimum covers \(\{s_1\}\) and
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">3 min 45.28 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3.61 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-22-closure-candidates-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of the closure sub-line after the forced-cell and vertex-cover candidates; one elementary extension of the column dichotomy to block column sums, checked in the entry; no new claim registered.">
+<h3>Route review: the vertex-cover closure handles rank-one collisions, but block column sums revive the column dichotomy and the Delayer step is open; the closure sub-line stays weak</h3>
+<p class="entry-meta">22 September 2026 · Route review of the closure sub-line · Weak; block column sums revive the column dichotomy; next: danger modulo the occupancy span, then Hall on expanders. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5, high effort).</span></p>
+
+<p><strong>The line's general claim.</strong> A closure theory for unary PHP over \(\mathbb F_p\) would support Efremenko, Garlík and Itsykson's path argument and, with a hard distribution, Byramji and Impagliazzo's random walk. It would give size lower bounds for \(\mathrm{Res}(\mathrm{lin}_{\mathbb F_p})\) refutations of bounded depth. <strong>What the goal needs</strong> is more: the thread's goal is unrestricted refutations, and bounded depth is a restriction. The line is the only recorded candidate that could handle more than \(Cn\) window lines, if it can be built. Since the <a href="#entry-2026-09-22-closure-route-review">last route review</a>, two cycles have tested closure candidates. The <a href="#entry-2026-09-22-forced-cell-closure-test">forced-cell test</a> refuted forcing as a basis for local consistency. The <a href="#entry-2026-09-22-vertex-cover-closure">vertex-cover closure</a> proved a size bound, the leaf property and weakening under span containment, and its reviewer refuted the greedy reduction of its Delayer step.</p>
+
+<h4>Falsification attempt: the live candidate against the recorded obstructions</h4>
+<p>The candidate is the vertex-cover closure: a subspace \(U\) of forms is dangerous when the rows and holes covering its support number fewer than \(\theta\dim U\). The candidate was checked against each obstruction recorded on this line.</p>
+<ol>
+<li><em>Rank-one collisions.</em> \(x_{1a}+x_{2a}+x_{3a}=2\) forces a collision at rank one. Its support has cover number one, so it is dangerous, and the value \(2\) is rejected. So is the calibration family. Handled.</li>
+<li><em>The column dichotomy.</em> Every nonzero form on a single hole is dangerous. So is every system of occupancy forms with fewer than \(\theta\) holes per dimension: \(r\) occupancy forms on distinct holes have cover number at most \(r&lt;\theta r\). But block sums behave differently. Take disjoint blocks \(B_1,\ldots,B_r\) of \(\theta\) holes each, with a single matching covering their union. The system of sums \(\sum_{h\in B_j}\mathrm{col}_h\) is \(\theta\)-safe. These sums have disjoint supports, so a subspace \(U\) is supported on all cells at the holes of \(\bigcup_{j\in J}B_j\), for some \(J\) with \(|J|\ge\dim U\). By König's theorem that support has cover number \(\theta|J|\ge\theta\dim U\). One matching for each block separately is not enough: two blocks whose holes meet only the same \(\theta\) pigeons have cover number \(\theta&lt;2\theta\). The dichotomy's proof applies to block sums, as checked below. A block whose sum differs from its size contains a visible hole, whose occupancy is not \(1\) modulo \(p\). So, if safe block systems are charged, a linear tree of depth \(O(r_0\theta\log(2/\eta)(\log n+\log(2/\eta)))\) finds a falsified hole clause with high probability. For fixed \(\eta\) and a charge \(2^{-cr_0}\), the depth is \(O(\theta\log n)\). So, for the random walk's probability bound, the obstruction survives under the vertex-cover notion, with its depth threshold raised by the factor \(\theta\). A constant \(\theta\) would need the open additive-basis conjecture of item 6. The alternative is a danger notion that does not charge safe block systems. Measuring danger modulo the occupancy span is one candidate way to do that, and it belongs to the open item on the occupancy equations. For the distribution-free path argument the obstruction does not arise.</li>
+<li><em>The safety cap.</em> The cap concerned safety with pigeon rows as blocks. A witness can pin the holes of the occupancy forms that actually appear in a system, at a cost of one per hole. But the occupancy equations themselves were left out of local consistency and remain open.</li>
+<li><em>Functional PHP.</em> For functional PHP, one row-count equation over pigeons \(R\) needs a closure at least the cover number of \(R\)'s cells, which is \(|R|\) when \(R\) has a matching into its holes. This holds if the Delayer step holds up to rank \(\sum_{i\in R}\deg i\). So the candidate is restricted to plain PHP, the thread's default. A lower bound for plain PHP is the weaker statement.</li>
+<li><em>No canonical closure, and weakening.</em> No least closing set exists, so local consistency uses an existential witness. A path argument then bounds the closure by the number of steps, not the rank. Weakening holds under span containment, which semantic implication over \(\mathbb F_p\) with \(0/1\) points does not give. So the path argument needs proof rules with that property. Open.</li>
+<li><em>Size.</em> The onto lemma needs \(\theta\) of order \(p\ln r\), so the closure bound is \(O(p\,r\log r)\). A constant \(\theta\) would need the open conjecture of Jaeger, Linial, Payan and Tarsi. Accepted for bounded depth.</li>
+<li><em>The Delayer step.</em> Its reduction through the greedy continuation is refuted by the trapped-pigeon example. Covers by rows fail on the same example, because the pigeons that join the closure still have only one free hole. What is refuted is the reduction, not the Delayer step. The step also needs (MR′): an assignment on the new cells, injective there, with prescribed values. The natural route is a matching whose columns contain an additive basis, a matroid intersection with no known min-max theorem that is NP-hard in general. Open.</li>
+</ol>
+<p><em>Block sums, checked here.</em> Let \(\theta\ge1\) be an integer with \(r_0\theta\le n_0\). In the column dichotomy's step 1, replace the random set \(H'\) of \(r_0\) holes by \(r_0\) disjoint blocks of \(\theta\) holes of \(H_0\), chosen uniformly at random, so that each chosen hole is uniform on \(H_0\). The hypothesis is that, over the blocks and \(\nu\) together, every chosen block sum is \(\theta\) modulo \(p\) with probability at most \(\delta\). A fixed assignment with \(|V\cap H_0|\le n_0/(4r_0\theta)\) has all chosen blocks disjoint from the visible set \(V\) with probability at least \(3/4\), by the union bound over the \(r_0\theta\) chosen holes. Then every chosen block sum equals the block size modulo \(p\). So the hypothesis gives \(\nu(|V\cap H_0|\le n_0/(4r_0\theta))\le\tfrac43\delta\). Steps 2 to 4 run as before with \(r_0\theta\) in place of \(r_0\). The success probability of one trial becomes at least \(1/(34r_0\theta)\), which gives the stated depth.</p>
+
+<h4>Assessment</h4>
+<ul>
+<li><strong>odd-prime-clause-transfer</strong>, the window: weak, unchanged.</li>
+<li><strong>odd-prime-clause-transfer</strong>, the closure sub-line: weak. The vertex-cover closure handles rank-one collisions and has a size bound, the leaf property and span weakening. Four items are open, in order of risk:
+<ol>
+<li>the occupancy span: block sums revive the column dichotomy for the random walk, so either its depth threshold rises by the factor \(\theta\), or the danger notion must stop charging safe block systems, for instance by measuring danger modulo the occupancy span;</li>
+<li>the Delayer step, with Hall's condition for the closure's own pigeons and (MR′);</li>
+<li>proof rules with span containment;</li>
+<li>a canonical closure, or a path argument that recomputes closures.</li>
+</ol>
+Expanders and a Hall-preserving cover rule are a further design step, not a known repair. After these come the probability bound, the restriction step and search hardness. The payoff is still limited to bounded depth.</li>
+<li><strong>same-graph-composition</strong>: nothing open.</li>
+<li><strong>scope-and-review</strong>: complete up to external review. The write-up and the binary compiler audit await user decisions.</li>
+</ul>
+
+<h4>Next step</h4>
+<p><strong>Next step (odd-prime-clause-transfer):</strong> test the candidate remedy for block sums first, because for the random walk they are where the dichotomy bites. Define danger modulo the occupancy span, measuring each subspace by the cover number of its best representative modulo that span. Test whether Lemma A's potential bound and the leaf property survive. Then extend the onto lemma to the occupancy equations. After that, restate the closure on a bounded-degree expander. Require Hall's condition for the closure's own pigeons into the holes that are not pinned. The test case is the trapped-pigeon example's analogue on an expander: a pigeon of degree \(d\) whose other \(d-1\) holes the closure pins.</p>
+
+<h4>Sheaf check</h4>
+<p>The vertex-cover notion pins a hole's occupancy as a local section when it appears alone. Summed over enough holes, occupancy becomes a safe, global-looking section again, and the column dichotomy returns. Quotienting the occupancy span out, instead of pinning it piece by piece, is the candidate remedy. Hall's condition for the pinned pigeons, and the injective gluing (MR′) on new closure cells, remain the other two gluing obstructions.</p>
+
+<p><strong>Verification gate.</strong> No result is registered. Re-read in full: the <a href="#entry-2026-09-22-vertex-cover-closure">vertex-cover closure</a> entry, the <a href="#entry-2026-09-22-forced-cell-closure-test">forced-cell test</a>, and the proposition and proof of the <a href="#entry-2026-09-22-modular-collision-test">column dichotomy</a>, whose proof the block-sum paragraph adapts. Two fresh-context review passes were run.</p>
+<ul>
+<li><em>First pass.</em> Verdict: sound with fixes. It showed that the draft's claim that the column dichotomy does not apply was false, because block column sums over at least \(\theta\) holes are safe. It also found that several items strengthened the previous entry, and that the draft omitted two of its limits: span containment and the size \(O(p\,r\log r)\). Further fixes: the assessment and sheaf check overclaimed, and the next step's test case was vacuous. The entry was rewritten. The rewrite added the block-sum extension of the dichotomy.</li>
+<li><em>Second pass.</em> It checked the extension, which adds a claim. Verdict: sound with fixes. Safety needs one matching over all blocks. The random-block hypotheses had to be stated. The obstruction survives with its depth threshold raised by the factor \(\theta\). Quotienting by the occupancy span is a candidate remedy, not a forced one. These fixes only qualify claims.</li>
+</ul>
+<p>No computation was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd_prime_expander_closure_20260922">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 29.12 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 58.38 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 30.60 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
