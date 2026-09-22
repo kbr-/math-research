@@ -202,7 +202,7 @@ records its session in `.claude-session-id`, and sets its own auto-compaction bu
 Like the Codex daemon, the session runs in the background (`claude --bg`) and the
 launcher attaches the terminal to it (`claude attach`), reusing a running session
 rather than starting a copy; closing the terminal only detaches. `--detached` starts
-or reuses it without attaching. The tracked `remoteControlAtStartup` setting makes
+or reuses it without attaching. The session is started with `--remote-control`, which makes
 it reachable from claude.ai/code and the Claude app through Remote Control, and the
 terminal and the phone can use it at the same time. `claude stop ID` ends it.
 [`CLAUDE.md`](CLAUDE.md) imports `AGENTS.md`, and the tracked

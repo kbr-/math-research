@@ -21,7 +21,7 @@ while (( $# )); do
       printf '%s\n' 'Usage: ./start-claude.sh [--new|--resume] [--detached]' \
         'Run the session as a background session and attach this terminal to it.' \
         'Closing the terminal only detaches; the session keeps running and stays' \
-        'reachable from the Claude app through Remote Control (.claude/settings.json).' \
+        'reachable from the Claude app through Remote Control.' \
         'Default: attach to the running session in .claude-session-id, or resume it' \
         'in the background first, or start fresh when no ID is recorded.' \
         '--new starts a fresh session and binds its ID to this checkout.' \
@@ -74,7 +74,9 @@ open_session() {
   printf 'Background session %s is running; attach with: claude attach %s\n' "$short" "$short"
 }
 
-options=(--bg --permission-mode auto --autocompact "${AUTO_COMPACT_TOKENS}")
+# These options are saved with a session when it first runs in the background and apply to
+# every later resume. --remote-control takes an optional name, so keep another flag after it.
+options=(--bg --remote-control --permission-mode auto --autocompact "${AUTO_COMPACT_TOKENS}")
 if [[ "$mode" != new && -f .claude-session-id ]]; then
   session_id="$(cat .claude-session-id)"
   if [[ ! "$session_id" =~ ^[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$ ]]; then
