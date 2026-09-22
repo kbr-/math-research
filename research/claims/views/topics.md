@@ -23,7 +23,7 @@ Multi-topic membership overlaps; unclassified means missing topic metadata.
 | [pseudorandomness](topic-51be920b90e25b6f100f.md) | 5 | Small-bias generators, polynomial sampling and character bounds. |
 | [publication](topic-3f662004cb4676be8aa8.md) | 10 | Statements prepared for independent dissemination and review. |
 | [query-models](topic-271eac1bf49c9fe0d140.md) | 154 | Conflict/query trees, query description bounds and survival probabilities. |
-| [resolution-parities](topic-cc24a4c93fa12321e386.md) | 56 | Affine/parity clause calculi and proof size. |
+| [resolution-parities](topic-cc24a4c93fa12321e386.md) | 57 | Affine/parity clause calculi and proof size. |
 | [substitution](topic-6c4907c0653a336f9a63.md) | 137 | Variable interpretations, weighted replay and removal of extension blocks. |
 | [topological-methods](topic-6a5b0c4744c0c62182f5.md) | 35 | Matching/chessboard complexes and homological extension inputs. |
 | [Unclassified](unclassified.md) | 0 | No assigned topics |
