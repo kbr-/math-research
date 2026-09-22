@@ -2,9 +2,9 @@
 set -euo pipefail
 
 # Edit this when you want a different auto-compaction budget for the next launch.
-# It mirrors AUTO_COMPACT_TOKENS in start-codex.sh; Claude Code has no separate
-# context-window cap below the model's own window.
-readonly AUTO_COMPACT_TOKENS=550000
+# Claude Code accepts 100k-1M here and has no separate context-window cap below the
+# model's own window. start-codex.sh keeps its own AUTO_COMPACT_TOKENS.
+readonly AUTO_COMPACT_TOKENS=800000
 
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 export VISUAL=vim
