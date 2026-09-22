@@ -238,6 +238,10 @@ CONFIGS = {
     'rerun': [('twobase2', 6, D, 2, 2, s, 'random', 2) for D in (6, 7) for s in range(12)] +
              [('threebase', 5, 6, 2, 2, s, 'random', 3) for s in range(8)],
     'threebase7': [('threebase', 5, 7, 2, 2, s, 'random', 3) for s in (0, 2, 4, 7)],
+    'r3base': [(f'r3v{v}', v, D, 3, 3, s, 'random', 2) for v in (5, 6) for D in (6, 7) for s in range(6)],
+    'r3d6': [(f'r3v{v}', v, 6, 3, 3, s, 'random', 2) for v in (5, 6) for s in range(6)],
+    'r3d7': [('r3v5', 5, 7, 3, 3, s, 'random', 2) for s in (1, 2, 5)] +
+            [('r3v6', 6, 7, 3, 3, s, 'random', 2) for s in (0, 5)],
     'd8': [('threebase', 5, 8, 2, 2, 4, 'random', 3)],
     'threebase8': [('threebase', 5, 8, 2, 2, s, 'random', 3) for s in range(8)],
     'twobase': [('twobase', 6, D, 2, 2, s, 'random', 2) for D in (6, 7) for s in range(6)],

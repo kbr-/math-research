@@ -4,7 +4,7 @@ import json, os, collections
 HERE = os.path.dirname(os.path.abspath(__file__))
 sat = {(r['name'], r['D']): r for r in json.load(open(os.path.join(HERE, 'c3_saturation.json')))}
 res = {}
-for f in ('c3_small.json', 'c3_twobase.json', 'c3_rerun.json', 'c3_lag.json', 'c3_threebase7.json', 'c3_d8.json'):
+for f in ('c3_small.json', 'c3_twobase.json', 'c3_rerun.json', 'c3_lag.json', 'c3_threebase7.json', 'c3_d8.json', 'c3_r3d6.json', 'c3_r3d7.json'):
     path = os.path.join(HERE, f)
     if os.path.exists(path):
         for r in json.load(open(path)): res[(r['name'], r['D'])] = r

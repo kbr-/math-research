@@ -42,7 +42,7 @@ if __name__ == '__main__':
     have = {(r['name'], r['D']): r for r in json.load(open(out_path))} if os.path.exists(out_path) else {}
     jobs = [j for c in sys.argv[1:] for j in CONFIGS[c]]
     jobs = [j for j in jobs if j[5] != 'fake' and j[5] != 'axiomP']
-    with Pool(10) as pool:
+    with Pool(int(os.environ.get('C3_WORKERS', '10'))) as pool:
         for r in pool.imap_unordered(work, jobs):
             have[(r['name'], r['D'])] = r
     res = sorted(have.values(), key=lambda r: (r['name'], r['D']))
