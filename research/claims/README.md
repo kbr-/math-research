@@ -137,9 +137,9 @@ This detects recorded changes, not unrecorded mathematical developments.
 
 The finalizer writes the history/view; stage them when changed. After manual edits
 or decisions run `python3 tools/claim-attention.py sync` to rebuild the view. Resume
-lists every headline item and only counts the automatically queued ones. The resume
-reader is the agent, not the user: when restoring, report new headline items to the
-user; the full list is read on demand. Fossick will use this same history instead of NUGGETS/FLAGS queues.
+prints one line with the two counts. `ATTENTION.md` itself is the user's alert; no
+other notification is wanted. The agent reads resume, and the user is usually absent,
+so the readiness report only mentions the counts and the file in one sentence. Fossick will use this same history instead of NUGGETS/FLAGS queues.
 Existing candidates are seeded from metadata, without claiming a retrospective
 literature audit. This is a synchronous file/console notification mechanism: it
 works with both Codex and Claude and needs no platform-specific Stop hook, daemon,

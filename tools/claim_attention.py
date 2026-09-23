@@ -215,18 +215,11 @@ def sync(root, data):
     return history, added
 
 
-def brief(data, history, limit=30):
-    """Every headline item, then a count of the automatically queued rest."""
+def brief(data, history):
+    """One line for the agent. ATTENTION.md is the user's alert; the agent reads nothing more."""
     top, rest = pending_groups(data, history)
     if not top and not rest:
         return 'Significance attention: no pending items.\n'
-    claims = {c['id']: c for c in data['claims']}
-    lines = [f'Significance attention: {len(top)} headline and {len(rest)} automatically queued '
-             'pending items; research/ATTENTION.md has scope and next actions. Tell the user about new '
-             'headline items.']
-    for label in top[:limit]:
-        text = ' '.join(claims[label]['summary'].split())
-        lines.append(f'- {label}: {text[:120]}' + ('…' if len(text) > 120 else ''))
-    if len(top) > limit:
-        lines.append(f'{len(top)-limit} further headline items omitted; tools/claim-attention.py list --all')
-    return '\n'.join(lines) + '\n'
+    return (f'Significance attention: {len(top)} headline and {len(rest)} automatically queued items '
+            'await the user in research/ATTENTION.md. In the readiness report, mention the count '
+            'and the file in one sentence; the user may not be present.\n')

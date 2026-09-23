@@ -43,7 +43,9 @@ class ArticleFinalizerTest(unittest.TestCase):
         from resume import bundle, FILES
         for name in FILES:
             path=self.root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text('Fixture rules.\n')
-        self.assertTrue(any(label=='Significance attention' and 'lem:new' in body
+        # Resume gives the agent one line: the counts and the file the user reads.
+        self.assertTrue(any(label=='Significance attention' and 'research/ATTENTION.md' in body
+                            and body.count('\n')==1 and 'await the user' in body
                             for label,body,_,_ in bundle(self.root)))
         self.assertEqual(registry.read_bytes(),before) # No stored review silently rewritten.
         self.assertTrue(all(v=={'reviewed':1} for v in coverage(data,self.root)['counts'].values()))

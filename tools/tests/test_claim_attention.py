@@ -66,11 +66,8 @@ class AttentionTest(unittest.TestCase):
         self.data['claims']=[dict(copy.deepcopy(self.data['claims'][0]),id=f'thm:{i}') for i in range(8)]
         history,_=reconcile(self.data,self.empty)
         text=brief(self.data,history)
-        self.assertEqual(text.count('\n- '),8)
+        self.assertEqual(text.count('\n'),1)
         self.assertIn('8 headline and 0 automatically queued',text)
-        text=brief(self.data,history,limit=3)
-        self.assertEqual(text.count('\n- '),3)
-        self.assertIn('5 further headline items omitted',text)
         with self.assertRaises(ValueError):decide(self.data,history,'missing','dismissed','Reason')
         with self.assertRaises(ValueError):decide(self.data,history,'thm:0','dismissed','')
 
@@ -86,12 +83,11 @@ class AttentionTest(unittest.TestCase):
         self.assertLess(text.index('### One'),text.index('## Pending: automatically queued'))
         summary=brief(self.data,history)
         self.assertIn('1 headline and 1 automatically queued',summary)
-        self.assertNotIn('lem:a-tool',summary)
         groups={i['claim']:(i['state'],i['group']) for i in current(self.data,history)['items']}
         self.assertEqual(groups,{'thm:one':('pending','headline'),'lem:a-tool':('pending','automatic')})
         # An agent's explicit flag promotes a tool to the headline group.
         history=decide(self.data,history,'lem:a-tool','pending','Broadly reusable; worth a look.')
-        self.assertIn('- lem:a-tool',brief(self.data,history))
+        self.assertIn('2 headline and 0 automatically queued',brief(self.data,history))
 
     def test_readable_layout_for_every_attention_state(self):
         history, _ = reconcile(self.data, self.empty)

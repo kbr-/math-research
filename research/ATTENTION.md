@@ -54,22 +54,6 @@ The subset-sum step in HLT2026v1 Proposition 21 is satisfiable in characteristic
 
 ---
 
-### Bit PHP exponential parameter bound
-
-**Claim:** [cor:bit-PHP-exponential-parameter-bound](<https://kbr.is-a.dev/math-research/#bit-PHP-exponential-parameter-corollary>)
-
-Usual-CNF bit PHP with n=2^ell holes requires more than exp(n/(32768 ell^2)) DAG nodes under the two recorded rule conventions, for every ell>=32
-
-**Significance:** `independent_result` · **Novelty:** `candidate`
-
-**Why it matters:** Quantitative publication headline strengthening the earlier superpolynomial conclusion via the same finite exclusion and clause-transfer mechanism, not independent confirmation of that mechanism.
-
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
-
-**Next:** External review of the common proof and quantitative publication statement remains outstanding.
-
----
-
 ### Generic PC log inventory transfer refuted
 
 **Claim:** [cor:generic-PC-log-inventory-transfer-refuted](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-ordering-source-test>)
@@ -349,22 +333,6 @@ The defined DAG-like affine-disequality calculus has no polynomial-size bit-PHP 
 **Decision (agent):** Fossick 20 September: rechecked the exact full-field disequality calculus, usual-domain clauses and exponential same-coordinate equation-clause conversion example. Part–Tzameret TR18-117 confirms the equation-clause terminology. Retain the working all-prime side result with unknown novelty; no general odd-prime Res(lin) or unary-PHP consequence. See entry-2026-09-20-fossick-publication-scope.
 
 **Next:** Before separate publication, obtain expert comparison with affine-subspace-cover calculi and possible Boolean-domain-aware simulations; retain the full-field disequality and explicit-domain scope.
-
----
-
-### Publication Res parity bit PHP
-
-**Claim:** [thm:publication-Res-parity-bit-PHP](<https://kbr.is-a.dev/math-research/#publication-Res-parity-bit-PHP-theorem>)
-
-Every real K>0 eventually bounds below the node count of every usual-CNF bit-PHP affine DAG refutation with n=2^ℓ holes and n+1 pigeons
-
-**Significance:** `independent_result` · **Novelty:** `candidate`
-
-**Why it matters:** Publication-side lower bound for unrestricted Res(parity) bit PHP; the recorded focused literature audit identifies an open benchmark. Distinct from the main Frege goal.
-
-**Decision (agent):** Fossick 20 September: read the exact usual-CNF encoding, both rule conventions, theorem and linked end-to-end proof. This is the canonical publication item; predecessor formulations and later quantitative refinements belong to the same branch. Recorded Lean verification is not independent expert review or renewed novelty certification. See entry-2026-09-20-fossick-publication-review.
-
-**Next:** Obtain independent expert review and resolve novelty against the exact literature scope; this curation does not perform a new literature search.
 
 ---
 
@@ -1255,3 +1223,35 @@ Bit PHP with n+1 pigeons and n=2^ell holes has no polynomial-size DAG-like Res(p
 **Decision (agent):** Fossick: predecessor formulation is consolidated into thm:publication-Res-parity-bit-PHP, whose separate attention item remains pending. Do not count this as another publication candidate or as user approval.
 
 **Next:** Use the publication theorem's independent expert and exact-scope novelty review; do not duplicate this predecessor as a separate publication claim.
+
+## Actioned
+
+### Bit PHP exponential parameter bound
+
+**Claim:** [cor:bit-PHP-exponential-parameter-bound](<https://kbr.is-a.dev/math-research/#bit-PHP-exponential-parameter-corollary>)
+
+Usual-CNF bit PHP with n=2^ell holes requires more than exp(n/(32768 ell^2)) DAG nodes under the two recorded rule conventions, for every ell>=32
+
+**Significance:** `independent_result` · **Novelty:** `candidate`
+
+**Why it matters:** Quantitative publication headline strengthening the earlier superpolynomial conclusion via the same finite exclusion and clause-transfer mechanism, not independent confirmation of that mechanism.
+
+**Decision (user):** Published in the bit-PHP Res(parity) preprint (revision 2, arXiv) and verified in Lean; only external review remains. Marked actioned at the user's request, 23 September 2026.
+
+**Next:** External review of the common proof and quantitative publication statement remains outstanding.
+
+---
+
+### Publication Res parity bit PHP
+
+**Claim:** [thm:publication-Res-parity-bit-PHP](<https://kbr.is-a.dev/math-research/#publication-Res-parity-bit-PHP-theorem>)
+
+Every real K>0 eventually bounds below the node count of every usual-CNF bit-PHP affine DAG refutation with n=2^ℓ holes and n+1 pigeons
+
+**Significance:** `independent_result` · **Novelty:** `candidate`
+
+**Why it matters:** Publication-side lower bound for unrestricted Res(parity) bit PHP; the recorded focused literature audit identifies an open benchmark. Distinct from the main Frege goal.
+
+**Decision (user):** Published in the bit-PHP Res(parity) preprint (revision 2, arXiv) and verified in Lean; only external review remains. Marked actioned at the user's request, 23 September 2026.
+
+**Next:** Obtain independent expert review and resolve novelty against the exact literature scope; this curation does not perform a new literature search.
