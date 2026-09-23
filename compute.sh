@@ -410,6 +410,102 @@ MAX_RUN_S = 1800
 # command allowed more than KERNEL_RUN_S must state in --kernel-reason which compiled kernel does the heavy work
 # and why the driver does not repeat it (for example one incremental elimination, not one per parameter).
 KERNEL_RUN_S = 120
+# Python loops (user instruction, 23 September 2026, after a driver built its matrices in four nested Python loops
+# behind a --kernel-reason that named only the elimination kernel): the reason is a declaration the guard cannot
+# verify, so a long Python computation is also scanned statically. Loop nesting of depth MAX_PY_LOOP_DEPTH or more
+# (for/while statements and comprehension generators) in the script or in any local module it imports is refused;
+# vectorize it (numpy index arithmetic) or move it into the compiled kernel. Only a quoted user approval overrides.
+MAX_PY_LOOP_DEPTH = 3
+
+
+def python_loop_offenders(script, root=None):
+    """(file, line, depth) of loops nested MAX_PY_LOOP_DEPTH deep in code the script can run: the whole script, and
+    in each local module it imports the module-level statements plus the imported names and every top-level
+    definition they reference, transitively (unused library functions are not scanned)."""
+    import ast
+    root = Path(root or Path(__file__).resolve().parent)
+    trees, found, done = {}, set(), set()
+
+    def tree(path):
+        if path not in trees:
+            try:
+                trees[path] = ast.parse(path.read_text(), str(path))
+            except (OSError, SyntaxError, UnicodeDecodeError):
+                trees[path] = None
+        return trees[path]
+
+    def locate(name, near):
+        for p in [near.parent / f'{name}.py'] + sorted((root / 'research' / 'results').glob(f'*/{name}.py')):
+            if p.exists():
+                return p.resolve()
+        return None
+
+    def small(it):                                    # a literal range or tuple of at most 64 constants is bounded work
+        if isinstance(it, (ast.Tuple, ast.List, ast.Set)) and all(isinstance(e, ast.Constant) for e in it.elts):
+            return len(it.elts) <= 64
+        if (isinstance(it, ast.Call) and getattr(it.func, 'id', '') == 'range' and it.args
+                and all(isinstance(e, ast.Constant) and isinstance(e.value, int) for e in it.args)):
+            return len(range(*[e.value for e in it.args])) <= 64
+        return False
+
+    def loops(node, depth, path):
+        loop = isinstance(node, (ast.For, ast.AsyncFor)) and not small(node.iter) or isinstance(node, ast.While)
+        gens = (sum(not small(g.iter) for g in node.generators)
+                if isinstance(node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)) else 0)
+        here = depth + (1 if loop else 0) + gens
+        if (loop or gens) and here >= MAX_PY_LOOP_DEPTH:
+            found.add((str(path), getattr(node, 'lineno', 0), here))
+        for child in ast.iter_child_nodes(node):
+            if not isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                loops(child, here, path)
+
+    def visit(path, names):
+        t = tree(path)
+        if t is None:
+            return
+        defs = {n.name: n for n in t.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))}
+        main = lambda n: (isinstance(n, ast.If) and isinstance(n.test, ast.Compare)
+                          and getattr(n.test.left, 'id', '') == '__name__')
+        entry = names is None
+        units = [n for n in t.body if not isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+                 and (entry or not main(n))]
+        wanted = set(defs) if entry else set(names or ())
+        while True:                                   # close the wanted definitions under references
+            refs = {n.id for u in units + [defs[w] for w in wanted if w in defs] for n in ast.walk(u)
+                    if isinstance(n, ast.Name) and n.id in defs}
+            if refs <= wanted:
+                break
+            wanted |= refs
+        reach = units + [defs[w] for w in wanted if w in defs]
+        used = {n.id for u in reach if not isinstance(u, (ast.Import, ast.ImportFrom)) for n in ast.walk(u)
+                if isinstance(n, ast.Name)}
+        for u in reach:
+            key = (path, getattr(u, 'lineno', 0))
+            if key in done:
+                continue
+            done.add(key)
+            if isinstance(u, ast.ClassDef):
+                for m in u.body:
+                    loops(m, 0, path)
+            elif isinstance(u, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                for m in u.body:
+                    loops(m, 0, path)
+            else:
+                loops(u, 0, path)
+            for n in ast.walk(u):
+                if isinstance(n, ast.ImportFrom) and n.module and not n.level:
+                    p = locate(n.module.split('.')[0], path)
+                    if p:
+                        visit(p, [alias.name for alias in n.names if entry or (alias.asname or alias.name) in used])
+                elif isinstance(n, ast.Import):
+                    for alias in n.names:
+                        p = locate(alias.name.split('.')[0], path)
+                        if p:
+                            visit(p, list({a.attr for a in ast.walk(t) if isinstance(a, ast.Attribute)
+                                           and getattr(a.value, 'id', '') == (alias.asname or alias.name)}))
+
+    visit(Path(script).resolve(), None)
+    return sorted(found)
 
 
 def run_options(parser):
@@ -535,6 +631,15 @@ def main():
                      'least six words: name the compiled C/C++ kernel doing the heavy work (including product '
                      'or row generation) and the reuse (one incremental pass per series, shared prefixes '
                      'computed once and copied); never launch with known waste (CLAUDE.md)')
+    if (exe.startswith('python') and args.timeout > KERNEL_RUN_S and args.category == 'computation'
+            and not args.user_approved.strip()):
+        script = next((c for c in command[1:] if c.endswith('.py')), None)
+        offenders = python_loop_offenders(script) if script else []
+        if offenders:
+            shown = '; '.join(f'{Path(f).name}:{line} (depth {d})' for f, line, d in offenders[:6])
+            parser.error(f'a Python computation allowed more than {KERNEL_RUN_S} s may not nest loops '
+                         f'{MAX_PY_LOOP_DEPTH} deep in its script or local imports: {shown}. Vectorize or move them '
+                         'into the compiled kernel (CLAUDE.md); only --user-approved overrides')
     return run_job(args, command)
 
 

@@ -108,9 +108,10 @@ Apply every rule below before launching a run.
 7. **Keep long runs observable.** Print progress with flush, and do not pipe a long run
    through a filter that holds its output until the end.
 
-`./compute.sh` enforces rules 3 to 5 in part. A Python computation allowed more than
-120 s needs a `--kernel-reason` of at least six words, naming the compiled kernel and
-the reuse.
+`./compute.sh` enforces rules 3 to 5 in part. A Python computation allowed more than 120 s needs a
+`--kernel-reason` of at least six words, naming the compiled kernel and the reuse. Because a stated reason
+cannot be verified, `compute.sh` also scans the code such a run can reach (the script, and in its local imports
+the module-level code and the names it uses) and refuses loops nested three deep over non-literal ranges.
 
 After editing any framework tool (`compute.sh`, `tools/*.py`), run its tests before
 committing: from `tools/tests`, `python3 -m unittest`.

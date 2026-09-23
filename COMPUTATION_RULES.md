@@ -74,6 +74,8 @@ manually run outside the launcher are not inside the workload group.
   against the existing basis.
   `compute.sh` requires `--kernel-reason` for a Python computation allowed more
   than 120 s: name the compiled kernel doing the heavy work (CLAUDE.md states the default).
+  It also refuses such a run when its reachable Python nests loops three deep over
+  non-literal ranges; vectorize them or move them into the kernel.
 - Budget process counts and library threads together. Across concurrent work,
   keep worker count times threads per worker within 14; avoid nested thread
   pools and oversubscription.
