@@ -221,6 +221,15 @@ while command records remain unfinished.
   expected to exceed 600 s on fewer than 4 threads needs `--serial-reason`; it prints
   expected against actual time. Stop a superseded run as soon as its replacement is
   validated.
+- **Hard computation budget** (user instruction, 23 September 2026, after a cycle with
+  110 minutes of computation): a run may take at most 15 minutes, and the computation
+  runs of one research cycle (one timing session) at most 30 minutes in total, failed and
+  stopped runs included. `compute.sh` charges each run its `--timeout` before it starts and
+  refuses runs beyond either limit. Only an explicit user approval, quoted in
+  `--user-approved`, lifts them. Design tests to fit: the smallest informative size,
+  symmetry classes instead of all cases, early exit (for example, stop a closure once 1 is
+  in the span), and a sizing run before the full one. When the budget runs out, finish the
+  cycle with the data in hand and move the open cases to the next step.
 
 ## Persist computation outputs
 

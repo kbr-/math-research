@@ -337,11 +337,22 @@ def run_job(args, command):
     unit = f'mathcompute-job-{uuid.uuid4().hex}.service'
     log = LOGS / f'{name}-{rid}.output.txt'
     with locked(path):
-        ensure_active(read_events(path))
+        events = read_events(path)
+        ensure_active(events)
+        approved = getattr(args, 'user_approved', '').strip()
+        if not automatic and args.category == 'computation' and not approved:
+            used = session_compute_s(events)
+            if used + args.timeout > CYCLE_BUDGET_S:
+                raise RuntimeError(
+                    f'cycle computation budget: {used:.0f} s used in session {name}, this run may take '
+                    f'{args.timeout:g} s, limit {CYCLE_BUDGET_S} s. Shrink the test (smaller size, '
+                    'symmetry reductions, early exit, fewer cases) or quote the user\'s approval in '
+                    '--user-approved (COMPUTATION_RULES.md)')
         add_event(path, 'run_start', id=rid, category=args.category, command=command,
                   output=str(log.relative_to(ROOT / 'research')), cwd=str(Path.cwd()),
                   systemd_unit=unit, threads=args.threads, timeout_s=args.timeout,
-                  expect_s=getattr(args, 'expect', None), serial_reason=getattr(args, 'serial_reason', ''))
+                  expect_s=getattr(args, 'expect', None), serial_reason=getattr(args, 'serial_reason', ''),
+                  user_approved=getattr(args, 'user_approved', ''))
     recovery_observe('job_start', root=ROOT, turn=name, job=rid, command=command, category=args.category)
     rc, timed_out, interrupted = 1, False, False
     started = time.monotonic()
@@ -400,6 +411,22 @@ def run_job(args, command):
 
 LONG_RUN_S = 600
 PARALLEL_THREADS = 4
+# Hard computation budget (user instruction, 23 September 2026: a cycle with 110 minutes of computation
+# is too much).  Charged against each run's --timeout, the most it can take: a run may not exceed
+# MAX_RUN_S, and the runs of one timing session (one research cycle) may not exceed CYCLE_BUDGET_S in
+# total.  Only an explicit user approval, quoted in --user-approved, lifts either limit.
+MAX_RUN_S = 900
+CYCLE_BUDGET_S = 1800
+
+
+def session_compute_s(events):
+    """Seconds charged to a session's runs: elapsed for finished runs, the timeout for running ones."""
+    starts, used = {}, 0.0
+    for e in events:
+        if e.get('event') == 'run_start': starts[e['id']] = e
+        elif e.get('event') == 'run_end' and e.get('id') in starts:
+            used += e['monotonic_s'] - starts.pop(e['id'])['monotonic_s']
+    return used + sum(e.get('timeout_s') or 0 for e in starts.values())
 
 
 def run_options(parser):
@@ -412,6 +439,9 @@ def run_options(parser):
                         help='Why a run expected to exceed the long-run limit uses fewer than '
                              f'{PARALLEL_THREADS} threads')
     parser.add_argument('--category', choices=RUNS, default='computation')
+    parser.add_argument('--user-approved', default='',
+                        help='Quote of the user\'s explicit approval for a run beyond MAX_RUN_S or the '
+                             'cycle budget CYCLE_BUDGET_S')
     parser.add_argument('--tail-bytes', type=int, default=8000,
                         help='Maximum output displayed; full output is always logged')
 
@@ -498,6 +528,10 @@ def main():
     if args.timeout > LONG_RUN_S and args.expect is None:
         parser.error(f'--timeout above {LONG_RUN_S:g} s needs --expect SECONDS: estimate the running '
                      'time from a count or a smaller run first (COMPUTATION_RULES.md)')
+    if args.timeout > MAX_RUN_S and not args.user_approved.strip():
+        parser.error(f'--timeout above {MAX_RUN_S} s needs --user-approved "QUOTE": runs are limited to '
+                     f'{MAX_RUN_S // 60} minutes and cycles to {CYCLE_BUDGET_S // 60} minutes of computation '
+                     'unless the user explicitly approves more (COMPUTATION_RULES.md)')
     if args.expect is not None and not 0 < args.expect <= args.timeout:
         parser.error('--expect must be positive and at most --timeout')
     if (args.expect or 0) > LONG_RUN_S and args.threads < PARALLEL_THREADS and not args.serial_reason.strip():
