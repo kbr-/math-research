@@ -18,7 +18,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Every open line of the thread meets at the <a href="#entry-2026-09-23-core-statement-review">core statement</a>, read as the recorded relative semi-regularity conjecture (Conjecture SR) for collectively robustly wide constraints. Its first nonlinear case is <a href="#entry-2026-09-23-selector-semiregularity">measured exactly</a>: random selectors \(1-L^2\) over \(\mathbb F_3\) have no degree-three fall until the graded count forces one. The <a href="#entry-2026-09-23-selector-first-moment">first-moment entry</a> reduced this to a kernel statement conditioned on a spread event. The <a href="#entry-2026-09-23-spread-lemma">spread lemma</a> bounds that event's failure by \(M\cdot3^{-(1-o(1))n^2}\), by third differences on triple-pigeon components. Next, apply the same method to the kernel stratum of span dimension one with support at least two. Show that \(e\sum_bc_b\ell_b^2=0\) forces \(e=0\) outside a rare event, bound that event, and count the stratum's contribution. Then extend to span dimension two. The cycle ends with those strata bounded, or with the smallest support where the triple method stops forcing \(e=0\).</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Every open line of the thread meets at the <a href="#entry-2026-09-23-core-statement-review">core statement</a>, read as the recorded relative semi-regularity conjecture (Conjecture SR) for collectively robustly wide constraints. Its first nonlinear case is <a href="#entry-2026-09-23-selector-semiregularity">measured exactly</a>: random selectors \(1-L^2\) over \(\mathbb F_3\) at degree three. It is reduced to a <a href="#entry-2026-09-23-selector-first-moment">kernel union bound</a> on a <a href="#entry-2026-09-23-spread-lemma">spread event</a>. The <a href="#entry-2026-09-23-span-one-stratum">span-one stratum</a> is now proved for supports up to \(cn^3/\log M\), and conditional above \(2\gamma_1\) on the multiplication bound \(\min_{e\ne0}\dim(eA_2)\ge M+\gamma_1+\omega(1)\). Next, write out the proof of that bound, \(\dim\operatorname{Ann}_{A_2}(e)=O(n^3)\), by the triple method. Then extend the rank lemma to span dimension two, where two terms per cycle should need block rank six. The cycle ends with the bound proved and the span-two stratum bounded, or with the obstruction.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -7154,6 +7154,69 @@ For a robust pigeon \(x\) and a pair \(P\) with \(\delta f_x(P)\ne0\), put \(r_x
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.30 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-23-span-one-stratum" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="thm:selector-span-one-stratum ex:selector-span-one-probes">
+<h3>The span-one stratum: no single multiplier kills a combination of two to \(cn^3/\log M\) random squares, except on a rare event</h3>
+<p class="entry-meta">23 September 2026 · Working proof, conditional above \(2\gamma_1\) on a multiplication bound. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-23-selector-first-moment">first-moment entry</a> reduced the no-fall statement for random selectors \(1-L^2\) over \(\mathbb F_3\) at degree three to this: \(\ker\Phi\) contains only the Frobenius kernel. The <a href="#entry-2026-09-23-spread-lemma">spread lemma</a> handled a single square. This cycle treats the kernel tuples of span dimension one, \(a_b=c_be\), with support \(S=\operatorname{supp}c\) of size \(s\ge2\). The event is \(eQ_c=0\) with \(Q_c=\sum_{b\in S}c_b\ell_b^2\). The cycle ends with the stratum bounded, or with the support size where the method stops.</p>
+<h4>Notation</h4>
+<p>As in the spread lemma, forms are families of row functions: \(\ell_b\leftrightarrow(f^b_x)_x\) and \(e\leftrightarrow(g_x)_x\), each defined up to constants. The triple component of \(eQ_c\) on pigeons \(\{x,y,z\}\) has third differences, over disjoint label pairs \(P_x,P_y,P_z\),
+\[
+\sum_{\rm cyc}\delta g_x(P_x)\,C\bigl(u_y(P_y),u_z(P_z)\bigr)=0,\qquad u_x(P)=(\delta f^b_x(P))_{b\in S},\quad C(u,v)=\sum_bc_bu^bv^b .
+\tag{S1}
+\]
+The \(\ell_b\) are independent across \(b\) and uniform in \(A_1\), as drawn in the <a href="#entry-2026-09-23-selector-semiregularity">selector check</a>; both probability bounds below use this. Write \(H_{yz}=\sum_bc_bf^b_y\otimes f^b_z\), a function on label pairs, for fixed representatives of the row functions (uniform ones in the probability parts). Then (S1) reads \(\sum_{\rm cyc}\delta g_x\,\Delta^2_{P_y,P_z}H_{yz}=0\).</p>
+<h4>Supports two to four</h4>
+<p>Call pigeon \(x\) <em>good</em> for \(S\) if the \(s+1\) functions \(\{f^b_x\}_{b\in S}\cup\{1\}\) are linearly independent on every set of \(n-8\) labels. Then the vectors \(u_x(P)\), over pairs \(P\) inside any such set, span \(\mathbb F_3^S\).</p>
+<p><strong>Lemma (small support).</strong> If \(2\le s\) and at least three pigeons are good for \(S\), then \(eQ_c=0\) implies \(e=0\), for every \(c\) with \(\operatorname{supp}c=S\) and every \(e\). With support one, \(e=\mu\ell_b\) is a solution, which the spread lemma handles.</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>Each good \(g_x\) lies in the span of the \(f^b_x\).</em> Let \(x,y,z\) be good. Choose disjoint pairs \(P_y,P_z\) with \(C(u_y,u_z)\ne0\), possible by spanning. For every pair \(P_x\) in the \(n-4\) remaining labels, (S1) gives \(\delta g_x(P_x)=\lambda(u_x(P_x))\) for a linear functional \(\lambda\). So \(g_x-\sum_b\lambda_bf^b_x\) is constant there. Any two labels lie in such a set. The coefficients are unique on the intersection of two such sets, which has at least \(n-8\) labels, by goodness. So \(g_x=\sum_b\kappa^b_xf^b_x+\text{const}\).</li>
+<li><em>The coefficients vanish.</em> Substitute into (S1) for good \(x,y,z\). The resulting trilinear form in \((u_x,u_y,u_z)\) vanishes on realizable triples, which span in each argument with the other two fixed. So it vanishes identically. For \(b\ne b_0\), the monomial \(u^b_xu^{b_0}_yu^{b_0}_z\) arises only from \(\kappa^b_xc_{b_0}\). Since \(s\ge2\), some \(b_0\ne b\) has \(c_{b_0}\ne0\), so \(\kappa^b_x=0\), and \(g_x\) is constant.</li>
+<li><em>Other pigeons.</em> For any pigeon \(w\), take two good pigeons \(y,z\ne w\). Then (S1) gives \(\delta g_w(P_w)C(u_y,u_z)=0\). Choosing pairs avoiding \(P_w\) with \(C\ne0\) gives \(\delta g_w=0\). \(\square\)</li>
+</ul>
+<p>For uniform row functions, pigeon \(x\) fails to be good with probability at most \(\binom n8\,3^{s+9-n}\): there are \(3^s\) nonzero coefficient patterns, and each gives a constant on \(n-8\) labels with probability \(3^{1-(n-8)}\). So fewer than three pigeons are good with probability at most \(\binom{n+1}2\bigl(\binom n83^{s+9-n}\bigr)^{n-1}=3^{-(1-o(1))n^2}\) for \(s\le4\). A union over the at most \(M^4\) supports keeps this superpolynomially small. The event depends only on the \(\ell_b\), so it covers every \(c\) and \(e\) at once.</p>
+<h4>Supports five and more</h4>
+<p><strong>Lemma (rank).</strong> Suppose that for every pigeon \(x\) there are pigeons \(y\ne z\), both \(\ne x\), such that \(H_{yz}\) has three \(5\times5\) blocks of rank \(5\). Each block has disjoint row and column label sets, and the three blocks use 30 distinct labels. Then \(eQ_c=0\) implies \(e=0\).</p>
+<p><strong>Proof.</strong> Suppose \(g_x\) is not constant, and choose \(P_x\) with \(\delta g_x(P_x)\ne0\). Take \(y,z\) as assumed, and a block \(R\times C\) of rank five avoiding the two labels of \(P_x\). By (S1), for pairs \(P_y\subseteq R\) and \(P_z\subseteq C\), which are disjoint from each other and from \(P_x\),
+\[
+\Delta^2_{P_y,P_z}\bigl(H_{yz}+\delta g_x^{-1}(g_y\otimes\eta+\theta\otimes g_z)\bigr)=0,
+\]
+where \(\eta(j)=H_{xz}(p,j)-H_{xz}(p',j)\) and \(\theta(j)=H_{xy}(p,j)-H_{xy}(p',j)\) for \(P_x=(p,p')\). A function on \(R\times C\) whose second differences all vanish has the form \(a(j)+b(j')\). So \(H_{yz}\) restricted to \(R\times C\) has rank at most \(2+2=4\), for every choice of representatives, a contradiction. So every \(g_x\) is constant and \(e=0\). \(\square\)</p>
+<p>For a fixed \((S,c)\) with \(s\ge5\), a block equals \(F_R\operatorname{diag}(c)F_C^{\mathsf T}\) with independent uniform \(5\times s\) matrices. If \(F_R\operatorname{diag}(c)\) has rank five, which happens with probability at least \(q_0=\prod_{i=1}^5(1-3^{-i})\approx0.561\), then the block is a uniform \(5\times5\) matrix and is invertible with probability \(q_0\). So each block has rank five with probability at least \(q_0^2&gt;0.31\). Blocks on disjoint labels are independent. With \(\lfloor n/10\rfloor\) of them, a pair \((y,z)\) fails with probability \(3^{-\Omega(n)}\). Disjoint pigeon pairs are independent, so a pigeon \(x\) finds no good pair with probability \(3^{-\Omega(n^2)}\), and a union over the \(n+1\) pigeons keeps this bound.</p>
+<p>Taking \(k\times k\) blocks with \(k=\lfloor n/12\rfloor\), five disjoint ones, improves this for large \(s\). Write \(A=F_R\operatorname{diag}(c)\). Then \(\Pr[\operatorname{rank}A=r]\lesssim3^{-(k-r)(s-r)}\), and given that rank, the block \(AF_C^{\mathsf T}\) has rank at most four with probability \(\lesssim3^{-(r-4)(k-4)}\). The sum over \(r\) is dominated near \(r\approx(s+4)/2\), which gives an exponent of \((s-4)(4k-s-12)/4\) for \(s\le k\). So a \(k\times k\) block has rank at most four with probability at most \(C\,k\,3^{-\frac34(k-4)(\min(s,k)-4)}\). So the failure probability for fixed \((S,c)\) is \(3^{-\Omega(n^2(\min(s,n)-4))}\). Against the \((2M)^s\) choices of \((S,c)\), the union bound closes for \(5\le s\le c\,n^3/\log M\) and some constant \(c&gt;0\).</p>
+<h4>Supports above \(2\gamma_1\): conditional on a multiplication bound</h4>
+<p>For \(s\ge2\gamma_1+2\) the combination \(Q_c\) is nearly uniform on \(A_2\). The squares span \(A_2\), since \(\ell m=(\ell+m)^2-(\ell-m)^2\) over \(\mathbb F_3\). So a nonzero \(\chi\in A_2^*\) defines a nonzero quadratic form \(\ell\mapsto\chi(\ell^2)\) of some rank \(r\ge1\), and \(|\mathbb E\,\omega^{\chi(c_b\ell^2)}|=3^{-r/2}\). There are at most \(3^{r\gamma_1}\) forms of rank \(r\). For any subspace \(W\subseteq A_2\) of codimension \(k\),
+\[
+\Pr[Q_c\in W]\le3^{-k}\Bigl(1+\sum_{r\ge1}3^{r\gamma_1-rs/2}\Bigr)\le2\cdot3^{-k}.
+\]
+Apply this to \(W=\operatorname{Ann}_{A_2}(e)\), whose codimension is \(\dim(eA_2)\), and take a union over the \(3^{\gamma_1}\) choices of \(e\) and the at most \(3^M\) choices of \(c\). The stratum closes for these supports if
+\[
+k_{\min}=\min_{e\ne0}\dim(eA_2)\ \ge\ M+\gamma_1+\omega(1).
+\tag{MM}
+\]
+The two regimes overlap, because \(2\gamma_1\approx2n^2\) is below \(cn^3/\log M\) for large \(n\).</p>
+<p><strong>Evidence for (MM).</strong> At \(n=6\): \(\dim(eA_2)=266\) for a variable and for a column form, 461 for ten random \(e\), and 391 to 452 for ten forms on one pigeon. The bound needed near the threshold is \(M+\gamma_1\approx110\). A proof sketch by the same triple method: if \(g_x\) is not constant, then (S1) with \(Q\) in place of \(Q_c\) determines each pair component \(q_{yz}\) of \(q\in\operatorname{Ann}_{A_2}(e)\), \(y,z\ne x\). It fixes \(q_{yz}\) modulo row, column and diagonal parts from \(q_{xy}\) and \(q_{xz}\). The free data are the \(q_{xy}\), the row, column and diagonal parts, and the same-pigeon components \(\{y,y\}\), each \(O(n^3)\) in total. So \(\dim\operatorname{Ann}_{A_2}(e)=O(n^3)\), and \(k_{\min}\ge\gamma_2-O(n^3)\). Since \(\gamma_2\approx n^4/2\), this is above \(M+\gamma_1\) for \(M\) up to the threshold, which is about \(n^4/6\). The sketch is not yet written out, so this regime is conditional.</p>
+<h4>Finite check</h4>
+<p>At \(n=6\), \(\dim\operatorname{Ann}_{A_1}(Q_c)=0\) in all 20 samples for each support size 2, 3, 4, 5, 8, 16, 35 and 70, with random nonzero \(c\). This is below the lemmas' ranges, which need \(n\) large. Files: <code>research/results/odd_prime_span_one_20260923/</code> (<code>support_probe.py</code>, <code>mult_dims.py</code> and JSON outputs).</p>
+<h4>Assessment and next step</h4>
+<p>The span-one stratum is now proved for supports from two up to \(cn^3/\log M\), with failure probability \(3^{-\Omega(n^2)}\) after the union. It is conditional on (MM) above \(2\gamma_1\). The methods are the spread lemma's third differences, and a rank bound for the pair functions \(H_{yz}\).</p>
+<p>The next step on odd-prime-clause-transfer has two parts. First, write out the proof of (MM), the bound \(\dim\operatorname{Ann}_{A_2}(e)=O(n^3)\). Then extend the rank lemma to span dimension two, where \(e_1Q_1+e_2Q_2=0\) gives two terms per cycle of (S1). The rank argument should carry over with block rank six, because the right side then has rank at most \(2\cdot2+2\). The cycle ends with (MM) proved and the span-two stratum bounded, or with the obstruction.</p>
+<p><strong>Verification gate.</strong> Re-read: the spread lemma (component decomposition, third differences, robustness counting) and the first-moment entry (kernel criterion, strata). The block probability \(q_0\) was computed. A claim search (span one stratum, squares, annihilator, rank, block) found no restatement. The nearest record is the <a href="https://kbr.is-a.dev/math-research/#rank-one-relative-cubic-kernel-exclusion">rank-one relative cubic-kernel exclusion</a>, the first stratum of the degree-three question for affine generators over \(\mathbb F_2\) in exterior form. It is the analogue for different generators, not the same statement. A fresh-context reviewer confirmed (S1), the spanning, gluing and monomial steps, the rank-four derivation, \(q_0\), the Gauss-sum and rank-count bounds and the (MM) union. It found the \(k\times k\) block exponent too strong by \((s-4)^2/4\), now corrected with the sum over the rank of \(F_R\operatorname{diag}(c)\); the conclusions survive. It also required the support condition, independence across \(b\), fixed representatives, the union over \(x\), the meta and title qualified, and the (MM) count completed. All were adopted.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-span-one">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 30.98 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 31.35 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 32.33 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4.42 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">19.54 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.36 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
