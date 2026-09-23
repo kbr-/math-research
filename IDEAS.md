@@ -165,65 +165,6 @@ into the notebook.
   that dependency explicitly when implementing the visualization, following the existing
   dependency policy; prefer a pinned local asset if offline reproducibility matters.
 
-## 9. Side research notebooks with shared claim infrastructure
-
-Implemented 20 September 2026: [SIDE_BRANCHES_PLAN.md](research/notes/SIDE_BRANCHES_PLAN.md)
-records the checkpoints and acceptance; use [the workflow](tools/SIDE_NOTEBOOKS.md).
-
-**The idea (20 September 2026).** Give each side research branch its own notebook,
-initially with an empty research record and living sections adjusted to its goal.
-Serve it locally and on GitHub Pages at `/math-research/branches/<name>/`, alongside
-the main notebook. Support multiple such notebooks while sharing the claim registry
-and other framework infrastructure. This avoids temporarily replacing the main
-notebook's goal and then discarding the side branch's living sections at integration.
-
-**Proposed `Branch` protocol in `PROMPTS.md`.** Invoke it by naming the protocol
-and describing the new research goal, optionally referencing the notebook entry
-where the goal was first identified (for example, `Branch: investigate the
-odd-field double-covering question discussed in <entry link>`). The agent reads
-the referenced entry and relevant claim/dependency records, then invokes the
-appropriate setup tools to create the new research branch and its side notebook.
-
-The protocol initializes an empty research record and fills the pre-record
-sections with the new goal, starting position, remaining obligations, proposed
-first step, necessary mathematical context and any applicable formalization gaps.
-It links inherited results to their existing records, preserves their hypotheses
-and review status, and does not copy the parent notebook's research history or
-invent progress. Setup includes a stable research-thread name, navigation and
-source-link registration, context-budget configuration, and selection of the new
-notebook for subsequent restoration and research tools. Any Git branch/worktree
-created for the assignment is associated with, but distinct from, that stable
-research-thread identity. The agent verifies the initialized notebook and reports
-its path/URL and initial scope. Opening the branch does not itself authorize
-unbounded research, parallel agents or publication.
-
-The `Branch` protocol is now available in `PROMPTS.md`. Implementation used
-temporary test notebooks; no side mathematical investigation was started.
-
-**Codex comments (20 September 2026).**
-
-- Use stable research-thread names independent of Git branch names: a Git branch
-  can be renamed or deleted without breaking published source links. Each notebook
-  retains its own goal, status, remaining route, next step, working context,
-  formalization gaps and append-only record after integration into main.
-- Keep a small directory of side notebooks with goals and active/completed/abandoned
-  status. Each notebook identifies its thread and links back to the main notebook.
-  A result useful to the main goal gets a brief integration entry there linking to
-  its full argument; do not duplicate proofs or discard unsuccessful side records.
-- Share global claim IDs and relationships. Source locators must identify both
-  notebook and anchor; cross-notebook dependency and correction links need to work
-  in local serving, GitHub Pages and source/evidence checks.
-- Parameterize existing restoration, excerpt/search, context-budget, timing/finishing,
-  append-only, source-validation and publication tools. Preserve the main notebook
-  as the default. Give each side notebook explicit living-section budgets and
-  restore only the selected thread plus relevant shared dependencies, not every
-  notebook. Do not fork the framework into separate implementations.
-- Reuse the existing lazy math rendering and navigation. Search can default to the
-  current notebook with an explicit all-notebooks option; load broader indexes on
-  demand so adding threads does not slow every page's startup.
-- The odd-field multiplicity/double-covering question is a proposed first use case,
-  not an assigned investigation or a claim that a short proof is available.
-
 ## 10. Structured Git merge drivers for notebook and claim additions
 
 Implementation plan: [GIT_MERGE_PLAN.md](research/notes/GIT_MERGE_PLAN.md).
@@ -438,8 +379,7 @@ triage task if one appears.
 2. Build graph navigation on the reviewed claim data (item 8).
 3. Evaluate recovery evidence before deciding whether to trial interruption notes
    (remaining part of item 6).
-4. Add side research notebooks and structured integration support (items 9 and 10);
-   their relative implementation order remains to be decided.
+4. Add structured integration support for notebook and claim additions (item 10).
 5. Build the literature corpus in stages (all-time arXiv categories, then zbMATH Open, then
    OpenAlex citations) with full-text search, and evaluate embedding search against known
    literature connections before requesting the install (item 11).
@@ -679,3 +619,64 @@ Resume costs 50–60k tokens before any work starts.
 - The dated byte counts above are snapshots, not token measurements. Judge improvements by
   the text actually loaded during restoration and whether it retains necessary hypotheses.
   Consolidate duplicate rules and expired grants without erasing current constraints.
+
+### 9. Side research notebooks with shared claim infrastructure
+
+**Completed 20 September 2026**, in commits `3fcd105e` and `eef76117`.
+[SIDE_BRANCHES_PLAN.md](research/notes/SIDE_BRANCHES_PLAN.md) records the checkpoints and
+acceptance; use [the workflow](tools/SIDE_NOTEBOOKS.md). Original proposal and comments
+follow.
+
+**The idea (20 September 2026).** Give each side research branch its own notebook,
+initially with an empty research record and living sections adjusted to its goal.
+Serve it locally and on GitHub Pages at `/math-research/branches/<name>/`, alongside
+the main notebook. Support multiple such notebooks while sharing the claim registry
+and other framework infrastructure. This avoids temporarily replacing the main
+notebook's goal and then discarding the side branch's living sections at integration.
+
+**Proposed `Branch` protocol in `PROMPTS.md`.** Invoke it by naming the protocol
+and describing the new research goal, optionally referencing the notebook entry
+where the goal was first identified (for example, `Branch: investigate the
+odd-field double-covering question discussed in <entry link>`). The agent reads
+the referenced entry and relevant claim/dependency records, then invokes the
+appropriate setup tools to create the new research branch and its side notebook.
+
+The protocol initializes an empty research record and fills the pre-record
+sections with the new goal, starting position, remaining obligations, proposed
+first step, necessary mathematical context and any applicable formalization gaps.
+It links inherited results to their existing records, preserves their hypotheses
+and review status, and does not copy the parent notebook's research history or
+invent progress. Setup includes a stable research-thread name, navigation and
+source-link registration, context-budget configuration, and selection of the new
+notebook for subsequent restoration and research tools. Any Git branch/worktree
+created for the assignment is associated with, but distinct from, that stable
+research-thread identity. The agent verifies the initialized notebook and reports
+its path/URL and initial scope. Opening the branch does not itself authorize
+unbounded research, parallel agents or publication.
+
+The `Branch` protocol is now available in `PROMPTS.md`. Implementation used
+temporary test notebooks; no side mathematical investigation was started.
+
+**Codex comments (20 September 2026).**
+
+- Use stable research-thread names independent of Git branch names: a Git branch
+  can be renamed or deleted without breaking published source links. Each notebook
+  retains its own goal, status, remaining route, next step, working context,
+  formalization gaps and append-only record after integration into main.
+- Keep a small directory of side notebooks with goals and active/completed/abandoned
+  status. Each notebook identifies its thread and links back to the main notebook.
+  A result useful to the main goal gets a brief integration entry there linking to
+  its full argument; do not duplicate proofs or discard unsuccessful side records.
+- Share global claim IDs and relationships. Source locators must identify both
+  notebook and anchor; cross-notebook dependency and correction links need to work
+  in local serving, GitHub Pages and source/evidence checks.
+- Parameterize existing restoration, excerpt/search, context-budget, timing/finishing,
+  append-only, source-validation and publication tools. Preserve the main notebook
+  as the default. Give each side notebook explicit living-section budgets and
+  restore only the selected thread plus relevant shared dependencies, not every
+  notebook. Do not fork the framework into separate implementations.
+- Reuse the existing lazy math rendering and navigation. Search can default to the
+  current notebook with an explicit all-notebooks option; load broader indexes on
+  demand so adding threads does not slow every page's startup.
+- The odd-field multiplicity/double-covering question is a proposed first use case,
+  not an assigned investigation or a claim that a short proof is available.
