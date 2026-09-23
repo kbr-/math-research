@@ -94,7 +94,10 @@ example "block", "fresh", "companion", "coefficient", not only "dense form"); a 
 fresh blocks once rediscovered a conjecture that its own next-step paragraph listed as
 parked. Restate a restart condition or calibration only from the latest entry that states
 it, after searching the notebook for later entries that met or replaced it; a route review
-once proposed a single-block calibration that a later review had already met.
+once proposed a single-block calibration that a later review had already met. Likewise, before
+taking up a question from an earlier entry, grep the notebook for later links to its anchor and
+read those entries: two cycles once reopened a first case that three later entries had already
+computed, reduced and set aside.
 
 A conjectured sufficient condition for a size lower bound must use the size. Check that it does not
 also exclude refutations of every size, since the proof system is complete: ternary conservativity
