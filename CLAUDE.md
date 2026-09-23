@@ -103,6 +103,12 @@ Apply every rule below before launching a run.
    loop, repeated series) and remove every piece of waste already identified. "It does
    not change the results" is not a reason: it changes the approach, and the user has
    rejected it.
+   Design each run from the question it must answer, never from the nearest existing
+   driver. Name the one output the conclusion uses, then cut everything else: skip the
+   parameters that proved results or earlier runs already settle, start where they stop,
+   and stop each computation as soon as its question is decided (a closure that only
+   has to decide whether 1 is derivable stops when 1 enters). A reused driver carries
+   the previous question's outputs, which are waste for the new one.
 6. **Report only what the result files say.** Take every quoted number, case count and
    sampling grid from the saved output, read by a script rather than from memory.
 7. **Keep long runs observable.** Print progress with flush, and do not pipe a long run
