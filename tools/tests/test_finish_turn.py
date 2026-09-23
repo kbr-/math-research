@@ -157,11 +157,13 @@ sys.exit(compute.main())
         notebook = self.root / 'notebook.html'
         marker = '<!-- TIMING test_turn -->'
         route = '<section id="remaining-route"><li data-route-item="general-step">x</li></section>'
-        def record(earlier, tags, status='Status.'):
-            entries = ''.join(f'<article data-kind="{kind}" data-route="general-step"></article>'
-                              for kind in earlier)
+        general = ('<p><strong>General statement.</strong> For every level the kernel is spanned by '
+                   'short elements (conj:fixture-general).</p>')
+        def record(earlier, tags, status='Status.', general=general, earlier_status='Status.'):
+            entries = ''.join(f'<article data-kind="{kind}" data-route="general-step">'
+                              f'<p class="entry-meta">{earlier_status}</p></article>' for kind in earlier)
             return (route + '<section id="research-record">' + entries + f'<article {tags}>'
-                    f'<p class="entry-meta">{status}</p>' + marker + '</article></section>')
+                    f'<p class="entry-meta">{status}</p>' + general + marker + '</article></section>')
         tagged = 'data-kind="research" data-route="general-step"'
         rejected = [
             record([], ''),                                           # untagged entry
@@ -169,6 +171,11 @@ sys.exit(compute.main())
             record(['research'] * 6, tagged),                         # seventh research entry in a row
             record(['review'] + ['research', 'formalization'] * 6, tagged),
             record([], tagged, status='S' * 301),
+            record([], tagged, general=''),                           # no General statement
+            record([], tagged, general='<p><strong>General statement.</strong> A claim for all '
+                   'parameters without any registered identifier.</p>'),
+            record(['research'], tagged + ' data-claims="ex:b"', status='Finite check.',
+                   earlier_status='Finite check.'),                   # two finite checks in a row
         ]
         for content in rejected:
             with self.subTest(content=content[:160]):
@@ -181,6 +188,11 @@ sys.exit(compute.main())
             record(['research'] * 6 + ['review'] + ['research'] * 5, tagged),
             record(['research'] * 9, 'data-kind="formalization"'),
             record(['research'] * 3, 'data-kind="research" data-route="side-preprint"'),
+            record(['research'], tagged + ' data-claims="ex:b"', status='Finite check.'),
+            record(['research', 'review'], tagged + ' data-claims="ex:b"', status='Finite check.',
+                   earlier_status='Finite check.'),                   # a review resets the streak
+            record(['research'], tagged + ' data-claims="none"', status='Literature step.',
+                   earlier_status='Literature step.'),
         ]
         for content in accepted:
             with self.subTest(content=content[:160]):

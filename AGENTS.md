@@ -33,7 +33,9 @@ rules to growing checklists or one-off setup narratives.
   distinguish a sufficient endpoint from stronger conveniences before adding steps.
 - Restricted examples must test a named general hypothesis, obstruction or
   mechanism. A growing case list or equivalent reformulation leaves the general
-  implication open. State that implication and test it against known obstructions,
+  implication open. `finish-turn.py` enforces this: each research entry has a
+  "General statement." paragraph citing the registered claim ID of its all-parameter
+  claim, and two finite-check-only entries in a row on one route are rejected. State that implication and test it against known obstructions,
   hard instances and allowed equivalent representations before further refinement;
   a surrogate becoming simple need not resolve the original obligation. Check preserved
   hypotheses and accumulated composition costs against the goal's budget.

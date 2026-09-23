@@ -69,6 +69,69 @@ def validate_route(body, article):
                          'the line advances the goal, and the next step on the highest-risk route item')
 
 
+GENERAL_RE = re.compile(r'<p><strong>General statement\.</strong>(.*?)</p>', re.S)
+PROOF_WORDS = ('proof', 'refutation', 'counterexample', 'conditional result')
+
+
+GENERAL_ID = re.compile(r'\b(?:conj|lem|thm|prop|cor):[A-Za-z0-9-]+')
+
+
+def cases_only(body, article):
+    """An entry that reports only cases: every registered claim is a finite check (ex:) and the
+    status line names no proof, refutation, counterexample or conditional result."""
+    tag = body[article:body.index('>', article) + 1]
+    claims = (re.search(r'data-claims="([^"]*)"', tag) or [None, ''])[1].split()
+    status = entry_status(body, article).lower()
+    claims = [c for c in claims if c != 'none']
+    reports_cases = 'finite check' in status or any(c.startswith('ex:') for c in claims)
+    return (reports_cases and all(c.startswith('ex:') for c in claims)
+            and not any(word in status for word in PROOF_WORDS))
+
+
+def entry_status(body, article):
+    meta = body.find('<p class="entry-meta">', article)
+    return re.sub(r'<[^>]*>', '', body[meta:body.find('</p>', meta)]).split('Produced by')[0]
+
+
+def validate_general(body, article, close):
+    """AGENTS.md: restricted examples must test a named general statement; enforce it mechanically.
+    Every research entry states its general claim for all parameters, and two finite-check entries
+    in a row on one route (neither with a proof or refutation) are rejected."""
+    if not re.search(r'data-route-item="', body):     # active once the notebook declares route items
+        return
+    tags = entry_tags(body, article)
+    if tags['kind'] != 'research':
+        return
+    found = GENERAL_RE.search(body, article, close)
+    text = re.sub(r'<[^>]*>', ' ', found.group(1)).strip() if found else ''
+    if len(text) < 40:
+        raise ValueError('A research entry needs a <p><strong>General statement.</strong> ...</p> '
+                         'paragraph: the claim this cycle tests or proves, for all parameters, with '
+                         'its conjectured bound as a formula (AGENTS.md, restricted examples)')
+    ids = GENERAL_ID.findall(found.group(1))
+    registry = ROOT / 'research/claims/index.json'
+    if registry.exists():
+        registered = {c['id'] for c in load_claims(registry)['claims']}
+        ids = [i for i in ids if i in registered]
+    if not ids:
+        raise ValueError('The General statement must cite the registered claim ID (conj:, lem:, thm:, '
+                         'prop: or cor:) that states it for all parameters; register a conjecture if '
+                         'it is not proved')
+    if not cases_only(body, article):
+        return
+    record = body.find('<section id="research-record">')
+    earlier = [m.start() for m in re.finditer(r'<article\b', body[:article]) if m.start() > record]
+    for position in reversed(earlier):
+        previous = entry_tags(body, position)
+        if previous['kind'] == 'formalization' or previous['route'] != tags['route']:
+            continue
+        if previous['kind'] == 'research' and cases_only(body, position):
+            raise ValueError('The previous research entry on this route was also a finite check '
+                             'without a proof or refutation. Stop adding cases: this entry must '
+                             'attempt a proof or a refutation of its General statement (AGENTS.md)')
+        break
+
+
 # External labels kept by the odd-prime name map (entry-2026-09-22-result-names); every other
 # "Lemma K"-style code must be replaced by a descriptive name.
 KEPT_LABELS = {'Corollary SL', 'Conjecture SR', 'Remark A.4'}
@@ -108,6 +171,7 @@ def validate_marker(body, marker):
         raise ValueError(f'The status line has {len(status.strip())} characters; keep it under '
                          f'{STATUS_LIMIT}: the status and one clause of scope, details in the entry')
     validate_route(body, article)
+    validate_general(body, article, close)
     if '$' in body[article:close]:
         # MathJax treats a dollar sign as an inline-math delimiter; the notebook uses \( \).
         raise ValueError('The entry contains a dollar sign, which MathJax reads as a math delimiter; '
