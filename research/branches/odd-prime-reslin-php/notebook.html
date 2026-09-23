@@ -18,7 +18,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> The goal rests on the <a href="#entry-2026-09-23-core-statement-review">core statement</a>: polynomially many small constraints on collectively wide form families, of total density below one. The <a href="#entry-2026-09-23-affine-line-review">affine-line review</a> judged the affine-conditioning line weak for it: its conjecture concerns constraints that are not small and is capped below \(N^2\) blocks. In the <a href="#entry-2026-09-23-low-density-cores">low-density model</a> every recorded defect came from an overlapping subfamily. Next, recompute those 144 instances with a component-corrected prediction: merge constraints joined by circuits of at most three, and use each component's exact series. Exact agreement in every instance with two or more components would suggest that the inductive step splits into bounded components (the <a href="#entry-2026-09-23-planted-overload">bounded-span equivalence</a>) and a genericity theorem for overlap-free families. Then sample at \(v=12\), where the test is less vacuous. The step ends with the corrected comparison.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The goal rests on the <a href="#entry-2026-09-23-core-statement-review">core statement</a>: polynomially many small constraints on collectively wide form families, of total density below one. In the low-density model, the <a href="#entry-2026-09-23-component-correction">component correction</a> explains every defect seen by small overlapping subfamilies, of span at most 4. Circuits of span 6 to 9 showed none, even in their own ring, and overlap-free families met the prediction at \(v=12\). That supports splitting the inductive step into bounded components (the <a href="#entry-2026-09-23-planted-overload">bounded-span equivalence</a>) and genericity for the rest, but the model has no PHP base. Next, test the pattern on the board algebra \(A\). At \(n=7\) only degree 5 is informative, so first count \(\gamma_5,\gamma_6\) at \(n=8\). If the degree-6 rank fits the run limit, compare a planted overlapping pair, random wide pairs and overlap-free families. The step ends with that comparison or with the count.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -8101,6 +8101,68 @@ So \(w\ne0\) in \(A\).</p>
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 24.49 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 23.65 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">0.09 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-23-component-correction" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:component-corrected-low-density">
+<h3>Merging overlapping constraints explains most low-density defects; at \(v=12\) neither random nor planted mid-size circuits fail through degree eight</h3>
+<p class="entry-meta">23 September 2026 · Finite check · Width-two product constraints in \(\mathbb F_3[s]/(s_i^3)\), \(v\le12\), degree at most eight. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-23-affine-line-review">affine-line review</a> returned the thread to the <a href="#entry-2026-09-23-core-statement-review">core statement</a>'s regime of small constraints. The <a href="#entry-2026-09-23-low-density-cores">low-density entry</a> found every recorded defect in an overlapping subfamily, but measured it against the independent-product prediction, which is wrong for such a subfamily by construction. This cycle recomputes those instances with a component-corrected prediction, then samples at \(v=12\), where overlap-free random families are typical, and plants mid-size circuits there. The cycle ends with the comparison.</p>
+<h4>The corrected prediction</h4>
+<p>The model is the low-density entry's: \(B=\mathbb F_3[s_1,\dots,s_v]/(s_i^3)\), with \(M\) constraints whose tops are \(P_b=\mu_{2b}^2\mu_{2b+1}^2\), each of density \(1/9\).</p>
+<ul>
+<li>A <em>circuit</em> is a set \(S\) of constraints whose \(2|S|\) forms span fewer than \(2|S|\) dimensions, while every proper nonempty subset has full span.</li>
+<li>Constraints are merged into components along circuits of at most three constraints.</li>
+<li>A component \(C\) whose forms span \(d_C\) dimensions contributes the factor \(\mathrm{HS}(B_C/(P_b:b\in C))/(1+t+t^2)^{d_C}\). Here \(B_C\) is the truncated ring on the span, and the quotient is computed exactly in it. A component without a circuit is one constraint, with the old factor \(1-t^4/(1+t+t^2)^2\).</li>
+<li>The corrected prediction is \(\mathrm{HS}_B\) times the product of the factors, truncated at its first nonpositive coefficient.</li>
+</ul>
+<p>It is exact when the component spans are in direct sum, since the quotient is then a tensor product. Otherwise it is a heuristic, like the old one (<code>component.py</code>).</p>
+<h4>The recorded instances</h4>
+<p>The 144 recorded instances (\(v\le9\), \(M\le8\), \(2M&gt;v\)) are mostly degenerate for this test. When six forms lie in at most five dimensions, every triple is deficient, so at \(v\le5\) the circuits almost always connect everything, and often at \(v=6,7\). Only four instances at \(v\le5\) have two or more components.</p>
+<ul>
+<li>83 instances form a single component. The comparison is tautological there. They hold 44 of the 53 recorded defects.</li>
+<li>61 instances have two or more components. They hold 9 recorded defects. After correction, 7 of the 9 disappear and no new mismatch appears.</li>
+<li>The two that remain are at \(v=4\) (excess 1 in degree 6, where the corrected prediction is 0) and at \(v=5\) (\(H_7=8\) against a corrected prediction of 6). In both, two components of span 3 lie inside a space of dimension 4 or 5. So their spans overlap, and the tensor-product justification fails (<code>component_v4_9.json</code>).</li>
+</ul>
+<p>So on the recorded data every defect is explained by overlaps: circuits of at most three constraints, or components whose spans intersect. Most instances are too small to test anything else.</p>
+<h4>Overlap-free random families at \(v=12\)</h4>
+<p>At \(v=12\) the ring has dimensions \((1,12,78,352,1221,3432,8074,16236,28314)\) through degree 8. With \(M=7\) or 8 the prediction stays positive through degree 8 (\(W_8=24030\) and \(23422\)). The \(2M=14\) or 16 forms are dependent, but random pairs span 4 dimensions and circuits of at most three are rare, so the corrected and old predictions coincide. Four of the six families do contain circuits of five constraints spanning 9 dimensions.</p>
+<p>Six random families, three for each \(M\), all have Hilbert function exactly the prediction through degree 8 (<code>products_v12.json</code>, from the low-density entry's <code>products.py</code>). No defect, although the forms are dependent. Their smallest deficient subfamilies span 9 or 11 dimensions. The low-density entry's pattern would put such a subfamily's failure near the top of its own ring, about degree \(2d_S\), far above 8, if it fails at all; see below. So the result agrees with the hypothesis "a defect in degree \(D\) has a core of span at most about \(D\)". It cannot separate that hypothesis from stronger ones, since all of them predict no defect here.</p>
+<h4>Planted mid-size circuits</h4>
+<p>One circuit was planted at \(v=12\): \(k\) constraints with their \(2k\) forms in a random \(d\)-dimensional subspace, \(d&lt;2k\), no proper subset deficient, and no circuit of at most three in the whole family of 8. Other circuits of four or five constraints can occur and do: for example, two families with a planted span-7 circuit contain a second one. Three families each for \((k,d)=(4,6),(4,7),(5,8),(5,9)\) were computed through degree 8 (<code>planted_circuit.py</code>, <code>planted_circuit_v12.json</code>). All twelve match the prediction exactly through degree 8.</p>
+<p>The circuits were then examined on their own (<code>own_ring.py</code>, <code>own_ring_v12.json</code>). Every circuit of at most five constraints in the eighteen \(v=12\) families was listed: 34 in the planted families and 9 in the random ones, with spans 6 to 9. Each was computed in the truncated ring on its span, through degree \(2d\), against its own truncated prediction. None has a defect in any degree. So these mid-size circuits are generic even in their own ring. The pattern "a subfamily fails near the top of its ring, at about twice its span" holds for the recorded small cores of span 2 to 4, and not for these.</p>
+<p>The refutation criterion set in advance, a defect by degree 6 from a span-9 circuit, was not met. The random families already contained span-9 circuits.</p>
+<h4>Assessment and next step</h4>
+<p>The component picture survives, in a sharper form. Every defect seen in this model is explained by a small overlapping subfamily, of span at most 4. Circuits of span 6 to 9 showed no defect at all, even in their own ring. Overlap-free families at \(v=12\), random or with planted mid-size circuits, meet the prediction through degree 8. That is what the inductive step of the core statement would need in the model: bounded components on the structured side, genericity for the rest. Three limits:</p>
+<ul>
+<li>the model has no PHP base;</li>
+<li>the families are random, while the goal's forms come from a refutation;</li>
+<li>the planted circuits are random inside their spans, so special position inside a mid-size span (a conic, a pencil) was not tested.</li>
+</ul>
+<p>The core statement is about PHP, which the model lacks. The next step on odd-prime-clause-transfer moves the test to the board algebra \(A\). Width-two pair constraints have top \(\ell_a^2\ell_b^2\) of degree 4. The prediction \(\mathrm{HS}_A(1-t^4/(1+t+t^2)^2)^M\) is the model's with \(\mathrm{HS}_A\) in place of \(\mathrm{HS}_B\).</p>
+<p>The counts were made first (<code>gamma.py</code>). At \(n=6\) the graded dimensions are \((1,35,462,2569,3094,21,0)\), and at \(n=7\) they are \((1,48,924,8688,34950,21792,28)\). At \(n=7\) the prediction is positive in degree 5, for instance \(W_5=21424\) at \(M=8\), and negative in degree 6, where \(A\) is only 28-dimensional. So \(n=7\) tests only degree 5, one above the constraints, which sees only linear syzygies. The model's overlapping-pair defect sits at degree 6 and would not show. A board test of the model's pattern needs \(n=8\) in degree 6.</p>
+<p>The step counts \(\gamma_5,\gamma_6\) at \(n=8\) and the prediction there. If the degree-6 rank, about \(M\gamma_2\) rows by \(\gamma_6\) columns, fits the run limit, compare three kinds of family: a planted overlapping pair, where the model predicts a defect near degree 6; random wide pairs; and overlap-free families. It ends with that comparison, or with the count showing what it would cost.</p>
+<p><strong>Verification gate.</strong> Re-read: the low-density entry (model, prediction, the 53 cores), the affine-line review's definition of the test, and the bounded-span equivalence. Claim searches (merged or component-corrected predictions, overlap-free genericity) found only the relative-span entry's overloaded subfamilies. A fresh-context reviewer verified the component code, including the factor's exactness for spans in direct sum, and every count against the data. It required changes, all adopted:</p>
+<ul>
+<li>the pattern "failure at about twice the span" withdrawn for mid-size circuits: its own-ring check, reproduced here for all 43 circuits, shows them generic;</li>
+<li>the random \(v=12\) families described correctly, since four of them contain span-9 circuits;</li>
+<li>the other circuits in the planted families stated;</li>
+<li>the \(v\le5\) statement corrected to "almost always";</li>
+<li>a stale code comment removed.</li>
+</ul>
+
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-component-correction">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>13 min 45.68 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 28.61 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 35.87 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">15.09 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">6 min 25.98 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
