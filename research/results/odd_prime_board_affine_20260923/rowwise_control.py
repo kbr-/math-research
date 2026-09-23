@@ -1,7 +1,7 @@
 """Control for the partial occupancy pair: forms supported on the same used rows I as n8_K3_partial_pairs.json trial --trial,
 each used row carrying its own random hole permutation of the configuration AG(2,3) minus a point (so every nonzero
 combination is 4-robust on every used row, as for the occupancy pair), but not column-type.  Reports the Hilbert function
-of A/(l_1,l_2) through degree 3 and, with --rhs, the degree-3 refutation status.  Usage: --trial s4-0 --seed --rhs 0,0 --out"""
+of A/(l_1,l_2) through degree 3 and, with --rhs, the degree-3 refutation status.  Closures stop early once 1 is in the span (early_closure.py).  Usage: --trial s4-0 --seed --rhs 0,0 --out"""
 import json, os, sys, time
 import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__)); a = dict(zip(sys.argv[1::2], sys.argv[2::2]))
@@ -19,6 +19,7 @@ if '--rhs' in a:
     c1, c2 = (int(v) for v in a['--rhs'].split(','))
     sys.argv = [sys.argv[0], '--n', '8', '--D', '3', '--rs', '']
     exec(open(os.path.join(HERE, 'occupancy_refute.py')).read().split("res = dict(n=n, D=D, php_alone_refuted")[0])
+    sys.path.insert(0, HERE); from early_closure import closure_of_early as closure_of
     P, W_, _ = closure_of(space, base_rows(8) + [form_eq(F[0], c1), form_eq(F[1], c2)])
     out.update(c=[c1, c2], refuted=bool(refuted(space, P, W_))); print('refuted', out['refuted'], flush=True)
 json.dump(out, open(a['--out'], 'w'), indent=1, default=int)
