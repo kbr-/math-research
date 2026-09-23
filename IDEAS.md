@@ -266,6 +266,121 @@ merge drivers also help when two Git branches work on the same thread.
   duplicate IDs, conflicting edits and preservation of both sides' records before
   enabling automatic resolution. Avoid depending on a private one-off merge script.
 
+## 11. A searchable literature corpus: arXiv metadata, full-text and embedding search
+
+**The problem (24 September 2026).** Prior-art checks are the weakest step of the workflow.
+The multiplicity note answered a published question with a standard lemma (the DKSS
+multiplicity Schwartz–Zippel lemma) that one of the question's authors had studied and
+overlooked, as he confirmed by email. The novelty checks behind the headline items in
+[ATTENTION.md](research/ATTENTION.md) are still outstanding. The verification gate searches
+our own claim index, but nothing searches the outside literature systematically: web searches
+are ad hoc, and `search-claims.py` only knows what we have recorded ourselves.
+
+**The idea.** Keep a local corpus of arXiv metadata (titles, abstracts, authors, categories,
+dates) for the relevant categories, fetched automatically and kept current. Search it **on
+demand** whenever a cycle formulates a new lemma, obstruction or technique: first with
+full-text search, then with embedding-based semantic search on the local GPU.
+
+**Why on demand, not a relevance filter at arrival.** The first proposal was to classify each
+new paper as relevant or not, with a cheap model, when it appears. The user rejected that,
+correctly: relevance is not a fixed property of a paper. We started with no tools; expanders,
+matching switching, chessboard-complex fillings and covering arguments were all developed
+along the way, and the tools we will use are unknown. A filter written today encodes today's
+route and would permanently discard the papers that supply tomorrow's tools, which are the
+most valuable finds. So the corpus stores everything in the chosen categories, and the
+questions change with the research: a paper that looked irrelevant in 2025 can surface in a
+2027 query. Graph theory and combinatorics in particular are not "unrelated": we analyse proof
+DAGs, and much of our machinery is combinatorial.
+
+**Components.**
+
+1. **Corpus and automatic fetch.** Harvest the last two years once, then add new listings
+   daily or weekly. arXiv permits this for metadata: the
+   [API terms](https://info.arxiv.org/help/api/tou.html) put metadata under CC0 and ask for
+   at most one request every three seconds on one connection; the
+   [bulk-data page](https://info.arxiv.org/help/bulk_data.html) offers the API, OAI-PMH (the
+   intended harvesting protocol, by set and date) and RSS. Full text is different: do not
+   harvest PDFs programmatically or re-host them. The corpus is metadata only.
+2. **Full-text search, no install.** Python's bundled SQLite has FTS5 (checked: SQLite 3.37.2
+   with FTS5), with BM25 ranking and phrase and prefix queries answering in milliseconds over
+   tens of thousands of abstracts. NumPy is also installed if a hand-written TF-IDF ranking is
+   wanted. This is the baseline.
+3. **Embedding search on the GPU.** A small embedding model maps abstracts and queries to
+   vectors and ranks by meaning rather than shared words. Relevant combinatorics papers rarely
+   use our vocabulary ("every bounded annihilator on a matching board extends" versus
+   "homology of chessboard complexes"), which is exactly where keyword search fails. The
+   machine has an NVIDIA RTX 3070 Laptop GPU with 8 GB of video memory; suitable models have
+   from about a hundred million to a few hundred million parameters and need 1–2 GB of it.
+   Embedding the two-year corpus once should take minutes on the GPU (to be confirmed by a
+   sizing run), each query is instant, and the vectors take a few tens of megabytes.
+   Candidates: one general-purpose model and one trained on scientific papers, such as
+   AllenAI's SPECTER family, which learns from citation links, close to our question "is this
+   paper useful for that one".
+4. **Hooks into the workflow.** Add a corpus search to step 2 of the verification gate,
+   alongside the claim-index search, using the new lemma's own statement as the query. Use it
+   in Fossick and in the novelty checks for ATTENTION.md items. Keep one light weekly skim for
+   plainly on-topic papers (PHP, algebraic proof systems, Res(⊕), AC^0[p]-Frege), the one area
+   where an up-front relevance judgement is safe; its findings go into ATTENTION.md or the
+   notebook, not into a separate alert.
+
+**Measured volume (arXiv API, 24 September 2026; categories include cross-lists).**
+
+| Category | Last 4 weeks | Last 2 years |
+|---|---:|---:|
+| cs.CC | 163 | 2,460 |
+| cs.LO | 165 | 3,783 |
+| math.CO | 1,149 | 15,099 |
+| cs.DM | 145 | 2,529 |
+| All four, deduplicated | 1,485 | 21,723 |
+
+That is about 370 new papers a week, too many to read in full, and a two-year backlog of
+roughly 6–7 million tokens of abstracts.
+
+**Assistant's comments (Claude Opus 5.5, 24 September 2026).**
+
+- Evaluate before trusting either search mode. Use the literature connections the record has
+  already made as test queries with known answers: DKSS for the multiplicity question,
+  Alon–Füredi and Sauermann–Wigderson for its comparisons, the BLVZ chessboard-complex
+  filling, and the sources behind the switching and expander tools. Write each query in our
+  own words and compare how highly FTS5, a general embedding model and a scientific one rank
+  the known paper. If FTS5 already finds them, skip the install; if it misses many, that is
+  the concrete case for the embedding stack.
+- The install needs explicit approval under COMPUTATION_RULES.md: a virtual environment with
+  PyTorch built for CUDA (several gigabytes) plus `sentence-transformers`, and one model
+  download of a few hundred megabytes, all run through `./compute.sh`. Video memory is outside
+  the 10 GB RAM-plus-swap budget, but the host process needs a few gigabytes of RAM that must
+  actually be free. On 23 September a k3d cluster and the ChatGPT desktop app held about
+  1.7 GB; available RAM rose from 4.9 GB to 6.6 GB once they were stopped.
+- Storage: the metadata is CC0, so committing it is legally fine, but at tens of megabytes and
+  fully regenerable it is better kept out of Git. Commit the harvest script, a manifest
+  (categories, date range, counts, hashes) and the evaluation results instead. The embedding
+  vectors are derived data and likewise regenerable.
+- Choosing categories is itself an up-front relevance judgement, so keep the choice generous
+  and revisit it. Candidates beyond the four above: math.AC (the Gröbner bases and Hilbert
+  functions behind PC degree), math.AT (chessboard and matching complexes), math.PR (the
+  permutation-probability tools) and cs.DS. arXiv is also not the whole literature: much proof
+  complexity appears on ECCC, and older papers predate arXiv. A citation graph (OpenAlex or
+  Semantic Scholar) could add "papers citing X", often the best way to find follow-ups to a
+  known key result.
+- Search results are leads, not verdicts. A missing hit does not establish novelty, and a hit
+  must be read in the primary source before the record cites it, as the gate already
+  requires.
+- Automated requests should identify the tool in the User-Agent, but must not carry the
+  user's email or other personal data unless the user asks. An early count script sent the
+  user's address to arXiv by mistake.
+- Practical note: Python's `urllib` got HTTP 406 from the API for date-range queries that
+  `curl` served normally. Use `curl`, or set request headers deliberately.
+
+**Considered and rejected: a decision model such as Jev.** TypeSafe AI's Jev (released
+September 2026) returns probabilities over options fixed in advance, quickly and cheaply. It
+does not fit the retrieval problem above, which ranks papers against statements that do not
+exist yet. Nor should it choose research steps: that choice requires reading proofs and
+recorded obstructions, happens once per cycle, has no outcome data to calibrate against, and
+AGENTS.md forbids uncalibrated probabilities for research prospects. Its documented
+sensitivity to prompt injection also matters when the agent that prefers one option writes
+the option list. A cheap classifier could still serve a genuinely high-volume, low-stakes
+triage task if one appears.
+
 ## Remaining implementation priorities
 
 1. Add bounded parallel exploration and targeted asynchronous formalization when
@@ -275,6 +390,8 @@ merge drivers also help when two Git branches work on the same thread.
    (remaining part of item 6).
 4. Add side research notebooks and structured integration support (items 9 and 10);
    their relative implementation order remains to be decided.
+5. Build the literature corpus with full-text search, then evaluate embedding search
+   against known literature connections before requesting the install (item 11).
 
 These priorities are proposals, not authorization to launch the work.
 
