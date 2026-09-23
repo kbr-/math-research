@@ -19,18 +19,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> The <a href="#entry-2026-09-24-relative-line-review">relative-line review</a> finds the adversarial difficulty relocated into two statements:</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> In the column model, a column span appears to be free through degree \(t\) exactly when its worst direction is (\(c_{\min}\ge2t-1\)), for \(n\) large enough. The fit is 96 of 97 cases, with one exception near capacity (<a href="#entry-2026-09-24-worst-direction">worst direction</a>). If this holds and the model is exact for \(A\), robust column components satisfy condition (c) of relative gluing at \(Q\ge2D-2\). Prove it first for pencils, \(d=2\), where the geometry is sharpest.</p>
 <ul>
-<li>(a) weak unary PHP alone has no degree fall below \(D\);</li>
-<li>the column component's own closure, the occupancy window.</li>
+<li>The recorded <a href="#entry-2026-09-23-occupancy-pair-defect">pencil splitting identity</a> turns degree-\(k\) freeness of a pencil into the splitting type of a kernel bundle on \(\mathbf P^1\), by Grothendieck's theorem.</li>
+<li>Its trivial summands count the free part, and a defect is a change of splitting type.</li>
+<li>Show that in the column model the splitting type is balanced whenever all four rational directions have \(c\ge2t-1\) and \(n\) exceeds an explicit bound. Test the bound against the \(d=2\) data.</li>
 </ul>
-<p>Only column-type structure fails to split in the tests so far, sub-board members included. On the column component, the highest risk, pursue the Gale-dual geometry:</p>
-<ol>
-<li>For the defective degree-4 and degree-5 model configurations at \(n=15,\dots,20\), compute the Gale points \([m_j]\) and locate the special position: points on a conic or rational normal curve, repeated points, collinear subsets.</li>
-<li>Test a candidate criterion exhaustively on robust configurations at small \(n\), up to symmetry.</li>
-<li>Derive the characteristic-3 apolarity, with divided powers.</li>
-</ol>
-<p>The step ends with a defect criterion in geometric terms, or with defective configurations no simple special position explains. In parallel, read Razborov's polynomial-calculus analysis of PHP for (a). Pending: the random-form half at \(n=10\), and a verified \(\mathbb F_3\) chessboard bound beyond three rows.</p>
+<p>The step ends with the pencil case proved, or with a pencil whose directions all clear the threshold and which still changes splitting type. Pending: model exactness for \(A\) beyond degree 3; condition (a) through Razborov's PHP analysis; the random-form half at \(n=10\); and a verified \(\mathbb F_3\) chessboard bound beyond three rows.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -11936,6 +11931,67 @@ At \(n=6\) degree 3 saturates before the spans exceed \(\gamma_1\), so there onl
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 52.75 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">23.06 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.08 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-worst-direction" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:gale-group-algebra conj:worst-direction-freeness ex:worst-direction-tests">
+<h3>Conjecturally, a column span is free when its worst direction is: a graded Dade-type criterion fits 96 of 97 cases, and the defects are not overfull Gale flats</h3>
+<p class="entry-meta">24 September 2026 · Lemma, refutations, conjecture and finite check · Column model, spans of dimension 2 to 4, degrees 3 to 5, \(n\le20\).  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-relative-line-review">relative-line review</a> put the column component first. It asked for the special position behind the column model's degree-4 and degree-5 defects, and a criterion for them. The cycle ends with a criterion, or with defects that no simple special position explains.</p>
+<p><strong>General statement.</strong> conj:worst-direction-freeness: for fixed span dimension \(d\) and degree \(t\), and \(n\ge n_0(d,t)\), a column span is free in the column model through degree \(t\) exactly when every nonzero direction has column count \(c\ge2t-1\), that is \(c_{\min}\ge2t-1\), the single-form threshold. lem:gale-group-algebra: in characteristic 3 the Gale-dual quotient is \(T_r/(m_1^2,\dots,m_n^2)\) with \(T_r=\mathbb F_3[(\mathbb Z/3)^r]\), so the column component's model is again squares of linear forms on a group algebra. The finite check ex:worst-direction-tests supports the conjecture in 96 of 97 configurations. Its one exception, near capacity, refutes the version without the size condition, and the check also refutes the overfull-flat explanation of the defects.</p>
+
+<h4>The group-algebra form</h4>
+<p><strong>Lemma (Gale quotient as a group-algebra quotient).</strong> In the setting of prop:column-model-gale, \(\operatorname{Sym}(V)/(m_1^2,\dots,m_n^2)=T_V/(m_1^2,\dots,m_n^2)\), where \(T_V=\operatorname{Sym}(V)/(v^3:v\in V)\cong\mathbb F_3[(\mathbb Z/3)^r]\), \(r=\dim V\).</p>
+<p><strong>Proof.</strong> The \(m_j\) span \(V\), since the \(e_j\) span \(\mathbb F_3^n\). For \(v=\sum_jc_jm_j\), characteristic 3 gives \(v^3=\sum_jc_j^3m_j^3\), and \(m_j^3=m_j\cdot m_j^2\) lies in the ideal. So every cube of a linear form lies in \((m_j^2)\), and the quotient factors through \(T_V\). \(\square\)</p>
+<p>So the column component's model is an instance of the thread's own question: squares of linear forms on a free group algebra, here in the Gale-dual position. tr_squares.py computes \(\mathrm{HF}(T_r/(m_j^2))\) directly. It equals the column model's in all six degree-4 configurations at \(n=15,16,17\), an independent check of the proposition. For \(n\) uniform random vectors in \(\mathbb F_3^r\), five draws per configuration, the result reaches the free prediction in 20 of 30 draws, against 3 of the 6 model configurations. Random \(\mathbb F_3\) vectors are themselves often in special position, so these data do not separate special position from a counting effect. A first draft read only two draws per configuration and claimed all were free; the full count above replaces that claim.</p>
+
+<h4>Not flats</h4>
+<p>gale_flats.py computes, for the model configurations of the Gale entry, the largest number of Gale points in flats of rank 1, 2 and 3. In every configuration, defective or free, the Gale points are in general position there: at most 1, 2 and 3 points respectively. So the defects do not come from overfull Gale flats of rank at most 3, the only flats tested. That candidate is refuted; special position of other kinds is not.</p>
+
+<h4>The worst direction</h4>
+<p>In the primal hole configurations, the defects did not track repeated values or lines. They tracked the minimum column count \(c_{\min}\) over the span's nonzero directions. For a single column form with count \(c\), the <a href="#entry-2026-09-23-occupancy-witness">occupancy theorem</a> and the \(\mathbb Z/3\) heuristic of the Gale entry give freeness exactly through degree \(\lceil c/2\rceil\), that is through degree \(t\) iff \(c\ge2t-1\). In the positive-prediction cases of the Gale entry, every degree-4 defect had \(c_{\min}\le6\), every degree-4 free span \(c_{\min}\ge7\), and every degree-5 span tested \(c_{\min}\le8\) and a defect.</p>
+<p>worst_direction.py tests this deliberately. It draws random hole functions with a prescribed \(c_{\min}\) and compares freeness in the model with the criterion \(c_{\min}\ge2t-1\).</p>
+<table>
+<tr><th>\(d\)</th><th>\(t\)</th><th>\(n\)</th><th>\(c_{\min}\)</th><th>Cases</th><th>Agree</th></tr>
+<tr><td>2</td><td>3</td><td>10, 12, 14</td><td>3–6</td><td>24</td><td>24</td></tr>
+<tr><td>2</td><td>4</td><td>13, 15, 17</td><td>5–8</td><td>24</td><td>24</td></tr>
+<tr><td>3</td><td>4</td><td>15, 16, 17</td><td>5–8</td><td>24</td><td>24</td></tr>
+<tr><td>3</td><td>5</td><td>18, 20</td><td>7–10</td><td>8</td><td>8</td></tr>
+<tr><td>4</td><td>3</td><td>12, 14</td><td>4–6</td><td>11</td><td>10</td></tr>
+<tr><td>4</td><td>4</td><td>16, 18</td><td>6–8</td><td>6</td><td>6</td></tr>
+</table>
+<p>All predictions were positive. The exception is \(n=12\), \(d=4\), \(t=3\), \(c_{\min}=6\): Hilbert function \((1,7,16,8)\) against the free \((1,7,16,5)\). The prediction there is small (5), close to capacity. The same \(d\) and \(t\) at \(n=14\) agree in all six cases. So the criterion without a size condition is false, and the conjecture requires \(n\ge n_0(d,t)\).</p>
+<p>A heuristic for why the worst direction might decide. Dade's lemma detects ungraded, full freeness over \((\mathbb Z/3)^d\) on cyclic shifted subgroups over \(\overline{\mathbb F}_3\), and the conjecture is a graded, truncated analogue of it. Non-rational directions have column counts no smaller than the rational ones. For \(u\in\overline{\mathbb F}_3^{\,d}\), let \(W_u=u^\perp\cap\mathbb F_3^d\), a proper rational subspace. Two holes take the same value under \(u\) exactly when \(\varphi(j)-\varphi(j')\in W_u\). A rational \(u'\ne0\) with \(W_u\subseteq u'^\perp\) has classes that are unions of classes of \(u\), so \(c(u)\ge c(u')\ge c_{\min}\). But \(\ell_u\) can take more than three values in \(\overline{\mathbb F}_3\), and the single-form threshold is recorded only for \(\mathbb F_3\) values. So "no worse" also needs freeness to depend only on the partition of the holes, monotonically under refinement. That step is open. The recorded <a href="#entry-2026-09-23-sheaf-observations">truncated Dade counterexample</a> shows that such a lemma fails for general column tensors. The data suggest the truncated analogue holds for column spans away from capacity; this is a heuristic, not an argument. The rank-variety theory of elementary abelian groups (Carlson, Friedlander–Pevtsova) is the tool for a proof, recalled here as context.</p>
+
+<h4>What it would give</h4>
+<p>Everything in this paragraph is conditional on the conjecture and on the model being exact for \(A\), which is checked in degree 3 in three cases. Condition (c) at PC degree \(D\) concerns the syzygies of the squares \(\ell_i^2\) in degrees at most \(D\). By the truncation step of the Künneth lemma, \(\operatorname{Tor}_1\) through degree \(D\) depends only on degrees at most \(D\). Freeness of the column component over the algebra of its forms through degree \(D\) therefore makes that \(\operatorname{Tor}_1\) the algebra's own: Frobenius \(y_ie_i\) and Koszul \(y_j^2e_i-y_i^2e_j\). So the threshold is \(c\ge2D-1\) at degree \(t=D\). Q-robustness bounds every value class by \(n-Q-1\) holes, so \(c\ge Q+1\), and \(c\ge2D-1\) is \(Q\ge2D-2\), the threshold of conj:column-component-splitting. Such a component would be free through degree \(D\). Its top syzygies would be Koszul and Frobenius, which lift by the recorded Frobenius lemma. That is condition (c) of the <a href="#entry-2026-09-24-column-splitting-n10">relative gluing theorem</a> for the column component. The only remaining column obstruction would be narrow directions, with \(c&lt;2t-1\), which involve few holes, the local structure the local-fall conjecture reduces away. At the goal's degree, \(t\) of order \(\log n\), the threshold \(c\ge2t-1\) is logarithmic in \(n\).</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the Gale proposition, the occupancy theorem's threshold, the recorded truncated Dade counterexample, and the relative gluing theorem's condition (c). A fresh-context reviewer checked the lemma and its proof, the table counts, the exception, the \(n=14\) agreement and the flat counts against the result files. It required changes, all adopted:</p>
+<ul>
+<li>withdraw the random-vector claim, which rested on a partial reading of the output, and give the full count of 20 of 30;</li>
+<li>mark the criterion as conjectural in the title;</li>
+<li>correct the non-rational-direction argument and state its open step;</li>
+<li>make the degree bookkeeping and the \(Q\)/\(c\) correspondence explicit and label the chain conditional;</li>
+<li>limit the flat refutation to rank at most 3;</li>
+<li>mark the Dade link as heuristic.</li>
+</ul>
+<p>The changes restrict or withdraw claims, so no second pass was made.</p>
+
+<h4>Remaining gap</h4>
+<p>A proof of the worst-direction criterion with an explicit \(n_0(d,t)\), perhaps via rank varieties, since \(T_r\) is a group algebra. Model exactness for \(A\). And the exceptional configuration at \(n=12\): what distinguishes it.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-gale-defects">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 46.55 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 49.42 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">0.17 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 7.21 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 47.69 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.05 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
