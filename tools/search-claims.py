@@ -3,6 +3,7 @@
 
 Unfiltered display searches also show up to three historical statement matches.
 Machine-readable outputs and registry filters retain their current-registry scope.
+Each hit lists the claims recorded as its newer versions (refinements, corrections, formalizations).
 
 A grep for one phrase misses a recorded claim that uses other words ("point-support lower bound"
 was missed by "support size"). Give the statement's content words; rows are ranked by the rarity-
@@ -63,6 +64,21 @@ def search(data, words, *, status=None, kind=None, topic=None, formalization=Non
         result.append((sum(weights[q] for q in hits), c))
     result.sort(key=lambda item: -item[0])
     return result
+
+
+NEWER = ('refines', 'corrects', 'supersedes', 'formalizes', 'rediscovers')
+
+
+def newer_versions(data, claim_id):
+    """Claims recorded as refining, correcting, superseding, formalizing or rediscovering claim_id.
+
+    A search that lands on an older statement must also show its later versions: a formalized
+    refinement can drop hypotheses that the older statement still carries."""
+    status = {c['id']: c['formalization']['status'] for c in data['claims']}
+    return [(e['source']['id'], e['type'], status.get(e['source']['id']))
+            for e in data['relationships']
+            if e['type'] in NEWER and e['target']['namespace'] == 'current'
+            and e['target']['id'] == claim_id and e['source']['namespace'] == 'current']
 
 
 def historical_matches(words, root=ROOT, limit=3):
@@ -179,6 +195,9 @@ def main():
     selected_ids = {c['id'] for c in selected}
     payload['relationships'] = [e for e in data['relationships'] if any(
         e[end]['namespace'] == 'current' and e[end]['id'] in selected_ids for end in ('source', 'target'))]
+    payload['newer_versions'] = {c['id']: [{'id': i, 'type': t, 'formalization': f}
+                                           for i, t, f in newer_versions(data, c['id'])]
+                                 for c in selected if newer_versions(data, c['id'])}
     payload.update(total_matches=total, shown=len(selected), omitted=total-len(selected))
     if args.out:
         write_json(args.out, payload)
@@ -195,6 +214,10 @@ def main():
                   '  Assessment: '+brief(c['assessment'],150),
                   '  Formalization classification: '+(c['formalization']['status'] or 'unknown (see assessment)'),
                   '  Source: '+next(r['target'] for r in references(c) if r['field']=='record')]
+        newer = newer_versions(data, c['id'])
+        if newer:
+            lines.append('  Newer versions (read before relying on this one): '+'; '.join(
+                f'{i} ({t}, formalization {f or "unknown"})' for i, t, f in newer))
     lines.append(f'{len(selected)} of {total} matches; {total-len(selected)} omitted. '
                  'Use --show LABEL for full metadata; ellipses mark shortened text.')
     if (args.words and not args.list and args.registry.resolve() == REGISTRY.resolve()
