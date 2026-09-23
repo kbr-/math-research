@@ -34,6 +34,11 @@ def guidance(body, ft):
             continue
         last = mine[-1]
         tags = ft.entry_tags(body, last)
+        research = [a for a in mine if ft.entry_tags(body, a)['kind'] == 'research'][-(ft.CASE_WINDOW - 1):]
+        if sum(ft.registers_cases(body, a) for a in research) >= ft.CASE_LIMIT:
+            notes.append(f'Route {item}: {sum(ft.registers_cases(body, a) for a in research)} of the last '
+                         f'{len(research)} research entries registered new finite checks; this cycle may not register '
+                         'another one. Derive a general formula or proof instead.')
         if tags['kind'] == 'research' and ft.cases_only(body, last):
             notes.append(f'Route {item}: the last entry is a finite check without a proof or refutation. '
                          'Another finite-check-only research entry on this route will be rejected; this '

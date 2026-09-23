@@ -159,9 +159,11 @@ sys.exit(compute.main())
         route = '<section id="remaining-route"><li data-route-item="general-step">x</li></section>'
         general = ('<p><strong>General statement.</strong> For every level the kernel is spanned by '
                    'short elements (conj:fixture-general).</p>')
-        def record(earlier, tags, status='Status.', general=general, earlier_status='Status.'):
-            entries = ''.join(f'<article data-kind="{kind}" data-route="general-step">'
-                              f'<p class="entry-meta">{earlier_status}</p></article>' for kind in earlier)
+        def record(earlier, tags, status='Status.', general=general, earlier_status='Status.', earlier_claims=None):
+            claims = earlier_claims or [''] * len(earlier)
+            entries = ''.join(f'<article data-kind="{kind}" data-route="general-step"'
+                              + (f' data-claims="{cl}"' if cl else '') + '>'
+                              f'<p class="entry-meta">{earlier_status}</p></article>' for kind, cl in zip(earlier, claims))
             return (route + '<section id="research-record">' + entries + f'<article {tags}>'
                     f'<p class="entry-meta">{status}</p>' + general + marker + '</article></section>')
         tagged = 'data-kind="research" data-route="general-step"'
@@ -176,6 +178,12 @@ sys.exit(compute.main())
                    'parameters without any registered identifier.</p>'),
             record(['research'], tagged + ' data-claims="ex:b"', status='Finite check.',
                    earlier_status='Finite check.'),                   # two finite checks in a row
+            record(['research'], tagged + ' data-claims="ex:b"', status='Finite check and a failed proof route.',
+                   earlier_status='Finite check.'),                   # status words do not escape the rule
+            record(['research', 'research', 'research'], tagged + ' data-claims="ex:d lem:e"',
+                   earlier_claims=['conj:a', 'ex:b lem:x', 'ex:c prop:y']),   # third of four entries with cases
+            record(['research', 'review', 'research', 'research'], tagged + ' data-claims="ex:d"', status='Proof sketch.',
+                   earlier_claims=['ex:a', 'ex:r', 'conj:b', 'ex:c lem:z']),  # reviews neither count nor reset
         ]
         for content in rejected:
             with self.subTest(content=content[:160]):
@@ -193,6 +201,10 @@ sys.exit(compute.main())
                    earlier_status='Finite check.'),                   # a review resets the streak
             record(['research'], tagged + ' data-claims="none"', status='Literature step.',
                    earlier_status='Literature step.'),
+            record(['research', 'research', 'research'], tagged + ' data-claims="ex:d lem:e"',
+                   earlier_claims=['ex:a', 'conj:b', 'lem:c']),       # two of four entries with cases
+            record(['research', 'research', 'research'], tagged + ' data-claims="thm:e"',
+                   earlier_claims=['ex:a', 'ex:b lem:x', 'ex:c prop:y']),  # a general entry is always allowed
         ]
         for content in accepted:
             with self.subTest(content=content[:160]):

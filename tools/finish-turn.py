@@ -70,22 +70,40 @@ def validate_route(body, article):
 
 
 GENERAL_RE = re.compile(r'<p><strong>General statement\.</strong>(.*?)</p>', re.S)
-PROOF_WORDS = ('proof', 'refutation', 'counterexample', 'conditional result')
 
 
 GENERAL_ID = re.compile(r'\b(?:conj|lem|thm|prop|cor):[A-Za-z0-9-]+')
 
 
-def cases_only(body, article):
-    """An entry that reports only cases: every registered claim is a finite check (ex:) and the
-    status line names no proof, refutation, counterexample or conditional result."""
+def entry_claims(body, article):
     tag = body[article:body.index('>', article) + 1]
-    claims = (re.search(r'data-claims="([^"]*)"', tag) or [None, ''])[1].split()
-    status = entry_status(body, article).lower()
-    claims = [c for c in claims if c != 'none']
-    reports_cases = 'finite check' in status or any(c.startswith('ex:') for c in claims)
-    return (reports_cases and all(c.startswith('ex:') for c in claims)
-            and not any(word in status for word in PROOF_WORDS))
+    return [c for c in (re.search(r'data-claims="([^"]*)"', tag) or [None, ''])[1].split() if c != 'none']
+
+
+FINITE_PREFIXES = ('ex:', 'check:')
+
+
+def registered_status():
+    registry = ROOT / 'research/claims/index.json'
+    return {c['id']: c.get('mathematical_status') for c in load_claims(registry)['claims']} if registry.exists() else {}
+
+
+def cases_only(body, article, status_of=None):
+    """An entry that reports only cases: every registered claim is a finite check (ex: or check:) and
+    none of them is registered as a refutation.  Decided from the claims, not from status-line words:
+    a status such as "a failed proof route" does not make an entry more than a finite check."""
+    claims = entry_claims(body, article)
+    status_of = registered_status() if status_of is None else status_of
+    reports_cases = 'finite check' in entry_status(body, article).lower() or any(c.startswith(FINITE_PREFIXES) for c in claims)
+    return (reports_cases and all(c.startswith(FINITE_PREFIXES) for c in claims)
+            and not any(status_of.get(c) == 'refutation' for c in claims))
+
+
+def registers_cases(body, article):
+    return any(c.startswith(FINITE_PREFIXES) for c in entry_claims(body, article))
+
+
+CASE_WINDOW, CASE_LIMIT = 4, 2
 
 
 def entry_status(body, article):
@@ -117,19 +135,34 @@ def validate_general(body, article, close):
         raise ValueError('The General statement must cite the registered claim ID (conj:, lem:, thm:, '
                          'prop: or cor:) that states it for all parameters; register a conjecture if '
                          'it is not proved')
-    if not cases_only(body, article):
-        return
     record = body.find('<section id="research-record">')
     earlier = [m.start() for m in re.finditer(r'<article\b', body[:article]) if m.start() > record]
-    for position in reversed(earlier):
-        previous = entry_tags(body, position)
-        if previous['kind'] == 'formalization' or previous['route'] != tags['route']:
-            continue
-        if previous['kind'] == 'research' and cases_only(body, position):
-            raise ValueError('The previous research entry on this route was also a finite check '
-                             'without a proof or refutation. Stop adding cases: this entry must '
-                             'attempt a proof or a refutation of its General statement (AGENTS.md)')
-        break
+    status_of = registered_status()
+    if cases_only(body, article, status_of):
+        for position in reversed(earlier):
+            previous = entry_tags(body, position)
+            if previous['kind'] == 'formalization' or previous['route'] != tags['route']:
+                continue
+            if previous['kind'] == 'research' and cases_only(body, position, status_of):
+                raise ValueError('The previous research entry on this route was also a finite check '
+                                 'without a proof or refutation. Stop adding cases: this entry must '
+                                 'attempt a proof or a refutation of its General statement (AGENTS.md)')
+            break
+    if registers_cases(body, article):
+        window = [article]
+        for position in reversed(earlier):
+            previous = entry_tags(body, position)
+            if previous['kind'] != 'research' or previous['route'] != tags['route']:
+                continue            # reviews and formalization entries neither count nor reset
+            window.append(position)
+            if len(window) == CASE_WINDOW:
+                break
+        count = sum(registers_cases(body, position) for position in window)
+        if count > CASE_LIMIT:
+            raise ValueError(f'{count} of the last {len(window)} research entries on this route register '
+                             f'new finite checks (at most {CASE_LIMIT} of any {CASE_WINDOW}). The case list is '
+                             'growing: this entry must derive a general formula or proof without new finite '
+                             'checks (AGENTS.md, restricted examples)')
 
 
 # External labels kept by the odd-prime name map (entry-2026-09-22-result-names); every other
