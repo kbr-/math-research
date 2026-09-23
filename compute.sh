@@ -411,11 +411,12 @@ def run_job(args, command):
 
 LONG_RUN_S = 600
 PARALLEL_THREADS = 4
-# Hard computation budget (user instruction, 23 September 2026: a cycle with 110 minutes of computation
-# is too much).  Charged against each run's --timeout, the most it can take: a run may not exceed
-# MAX_RUN_S, and the runs of one timing session (one research cycle) may not exceed CYCLE_BUDGET_S in
-# total.  Only an explicit user approval, quoted in --user-approved, lifts either limit.
-MAX_RUN_S = 900
+# Hard computation budget (user instructions, 23 September 2026: a cycle with 110 minutes of
+# computation is too much; a single run may take up to 30 minutes).  Charged against each run's
+# --timeout, the most it can take: a run may not exceed MAX_RUN_S, and the runs of one timing
+# session (one research cycle) may not exceed CYCLE_BUDGET_S in total.  Only an explicit user
+# approval, quoted in --user-approved, lifts either limit.
+MAX_RUN_S = 1800
 CYCLE_BUDGET_S = 1800
 
 
