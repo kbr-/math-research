@@ -294,13 +294,16 @@ DAGs, and much of our machinery is combinatorial.
 
 **Components.**
 
-1. **Corpus and automatic fetch.** Harvest the last two years once, then add new listings
-   daily or weekly. arXiv permits this for metadata: the
+1. **Corpus and automatic fetch.** Harvest the whole arXiv history of the chosen categories
+   once (not only recent years; see the coverage section below), then add new listings daily
+   or weekly. arXiv permits this for metadata: the
    [API terms](https://info.arxiv.org/help/api/tou.html) put metadata under CC0 and ask for
    at most one request every three seconds on one connection; the
    [bulk-data page](https://info.arxiv.org/help/bulk_data.html) offers the API, OAI-PMH (the
    intended harvesting protocol, by set and date) and RSS. Full text is different: do not
-   harvest PDFs programmatically or re-host them. The corpus is metadata only.
+   harvest PDFs programmatically or re-host them. The corpus is metadata only. For a large
+   initial load, the bulk-data page points to a complete metadata snapshot (Kaggle, S3), which
+   avoids paging through the API.
 2. **Full-text search, no install.** Python's bundled SQLite has FTS5 (checked: SQLite 3.37.2
    with FTS5), with BM25 ranking and phrase and prefix queries answering in milliseconds over
    tens of thousands of abstracts. NumPy is also installed if a hand-written TF-IDF ranking is
@@ -311,8 +314,9 @@ DAGs, and much of our machinery is combinatorial.
    "homology of chessboard complexes"), which is exactly where keyword search fails. The
    machine has an NVIDIA RTX 3070 Laptop GPU with 8 GB of video memory; suitable models have
    from about a hundred million to a few hundred million parameters and need 1–2 GB of it.
-   Embedding the two-year corpus once should take minutes on the GPU (to be confirmed by a
-   sizing run), each query is instant, and the vectors take a few tens of megabytes.
+   Embedding the two-year corpus once should take minutes on the GPU and the all-time arXiv
+   categories somewhat longer (both to be confirmed by a sizing run); each query is instant,
+   and the vectors take tens to hundreds of megabytes.
    Candidates: one general-purpose model and one trained on scientific papers, such as
    AllenAI's SPECTER family, which learns from citation links, close to our question "is this
    paper useful for that one".
@@ -336,12 +340,59 @@ DAGs, and much of our machinery is combinatorial.
 That is about 370 new papers a week, too many to read in full, and a two-year backlog of
 roughly 6–7 million tokens of abstracts.
 
+**Coverage beyond the last two years (added 24 September 2026).** A two-year window cannot
+serve the evaluation, or most prior-art checks: the literature the record actually relies on
+is older. The arXiv API reports these all-time totals (including cross-lists):
+
+| Category | All time |
+|---|---:|
+| math.CO | 82,593 |
+| cs.CC | 13,450 |
+| cs.LO | 20,240 |
+| cs.DM | 16,174 |
+
+That is about 115,000–130,000 papers after deduplication, still small. Of the evaluation
+papers, DKSS (`0901.2529`, 2009) and Sauermann–Wigderson (`2010.00077`, 2020) are on arXiv;
+Alon–Füredi (1993) and the BLVZ chessboard-complex paper (1994) are not. Anything from the
+2000s on is mostly covered by arXiv; the classics are not. Sources for them:
+
+- **zbMATH Open**: a mathematics-specific database reaching back to the nineteenth century,
+  with an open API. Many records carry a reviewer's summary, which serves as the abstract for
+  old papers. This is the best fit for exactly the Alon–Füredi and BLVZ kind of paper.
+- **OpenAlex**: an open catalogue of most scholarly works, with a free API and a full data
+  snapshot. It has abstracts for part of it and, importantly, citation links.
+- **Semantic Scholar**: similar, but needs an API key.
+- **ECCC**: much proof complexity appears there, often before or instead of a journal.
+
+Check each source's licence and rate limits before harvesting; do not assume they match
+arXiv's CC0 metadata terms.
+
+Citation links are a side door to the classics. Old papers are cited heavily by newer ones,
+so once the arXiv records carry OpenAlex reference lists, "papers cited by the top search
+hits" reaches Alon–Füredi even with no abstract of it on file. That is often how an expert
+finds a classic too: through the recent paper that uses it.
+
+"Abstracts of all mathematics" is within this machine's reach: a few million records, a few
+gigabytes of text, embeddings of a few gigabytes stored on disk and searched from there, and
+an embedding run of hours on the GPU rather than days (an estimate for a sizing run to pin
+down). The limit is coverage, not compute: an old paper with no abstract or review anywhere
+is invisible to text search, and only the citation route reaches it.
+
+Stages, each evaluated on the known connections it should be able to find:
+
+1. All of arXiv in the chosen categories. The evaluation then covers DKSS and
+   Sauermann–Wigderson.
+2. zbMATH Open for older mathematics, covering Alon–Füredi and BLVZ if their reviews are
+   there.
+3. OpenAlex citation links, for classics without usable abstracts and for follow-up searches.
+
 **Assistant's comments (Claude Opus 5.5, 24 September 2026).**
 
 - Evaluate before trusting either search mode. Use the literature connections the record has
   already made as test queries with known answers: DKSS for the multiplicity question,
   Alon–Füredi and Sauermann–Wigderson for its comparisons, the BLVZ chessboard-complex
-  filling, and the sources behind the switching and expander tools. Write each query in our
+  filling, and the sources behind the switching and expander tools. Each test counts only
+  once the corpus stage that should contain its paper exists. Write each query in our
   own words and compare how highly FTS5, a general embedding model and a scientific one rank
   the known paper. If FTS5 already finds them, skip the install; if it misses many, that is
   the concrete case for the embedding stack.
@@ -351,17 +402,16 @@ roughly 6–7 million tokens of abstracts.
   the 10 GB RAM-plus-swap budget, but the host process needs a few gigabytes of RAM that must
   actually be free. On 23 September a k3d cluster and the ChatGPT desktop app held about
   1.7 GB; available RAM rose from 4.9 GB to 6.6 GB once they were stopped.
-- Storage: the metadata is CC0, so committing it is legally fine, but at tens of megabytes and
-  fully regenerable it is better kept out of Git. Commit the harvest script, a manifest
+- Storage: the arXiv metadata is CC0, so committing it is legally fine, but at tens of
+  megabytes or more and fully regenerable it is better kept out of Git. Commit the harvest script, a manifest
   (categories, date range, counts, hashes) and the evaluation results instead. The embedding
   vectors are derived data and likewise regenerable.
 - Choosing categories is itself an up-front relevance judgement, so keep the choice generous
   and revisit it. Candidates beyond the four above: math.AC (the Gröbner bases and Hilbert
   functions behind PC degree), math.AT (chessboard and matching complexes), math.PR (the
-  permutation-probability tools) and cs.DS. arXiv is also not the whole literature: much proof
-  complexity appears on ECCC, and older papers predate arXiv. A citation graph (OpenAlex or
-  Semantic Scholar) could add "papers citing X", often the best way to find follow-ups to a
-  known key result.
+  permutation-probability tools) and cs.DS. Sources beyond arXiv and the citation route are
+  in the coverage section above; "papers citing X" is also often the best way to find
+  follow-ups to a known key result.
 - Search results are leads, not verdicts. A missing hit does not establish novelty, and a hit
   must be read in the primary source before the record cites it, as the gate already
   requires.
@@ -390,8 +440,9 @@ triage task if one appears.
    (remaining part of item 6).
 4. Add side research notebooks and structured integration support (items 9 and 10);
    their relative implementation order remains to be decided.
-5. Build the literature corpus with full-text search, then evaluate embedding search
-   against known literature connections before requesting the install (item 11).
+5. Build the literature corpus in stages (all-time arXiv categories, then zbMATH Open, then
+   OpenAlex citations) with full-text search, and evaluate embedding search against known
+   literature connections before requesting the install (item 11).
 
 These priorities are proposals, not authorization to launch the work.
 
