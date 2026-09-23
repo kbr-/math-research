@@ -13,7 +13,7 @@ import a4lib as L
 ap = argparse.ArgumentParser(); ap.add_argument('--n', type=int, default=7); ap.add_argument('--rs', default='2,3,4,5')
 ap.add_argument('--K', type=int, default=3); ap.add_argument('--family', default='random'); ap.add_argument('--trials', type=int, default=4)
 ap.add_argument('--Q', type=int, default=2); ap.add_argument('--t', type=int, default=5); ap.add_argument('--seed', type=int, default=0)
-ap.add_argument('--phis', default=None); ap.add_argument('--out'); opt = ap.parse_args(); L.setup(opt.n); n = opt.n; P1 = n + 1; rng = np.random.default_rng(opt.seed)
+ap.add_argument('--phis', default=None); ap.add_argument('--cmin', type=int, default=0); ap.add_argument('--out'); opt = ap.parse_args(); L.setup(opt.n); n = opt.n; P1 = n + 1; rng = np.random.default_rng(opt.seed)
 Q = {}; g = {}
 for k in range(1, opt.K + 1): Q[k], g[k] = L.quotient(k, 2)
 g[0] = 1; basis = {k: [q['cols'][c] for q in Q[k].values() for c in q['nonp']] for k in Q}; basis[0] = [()]
@@ -21,7 +21,8 @@ def robust_row(f):
     return all(len(set(f[j] for j in range(n) if j not in X)) >= 2 for X in itertools.combinations(range(n), opt.Q))
 def robust_system(F):   # F: list of r arrays of shape (P1, n)
     r = len(F)
-    for c in itertools.product(range(3), repeat=r):
+    combos = itertools.product(range(3), repeat=r) if r <= 10 else (rng.integers(0, 3, size=r) for _ in range(20000))   # sampled above r = 10
+    for c in combos:
         if not any(c): continue
         G = sum(ci * Fi for ci, Fi in zip(c, F)) % 3
         if sum(robust_row(G[i]) for i in range(P1)) < opt.t: return False
@@ -46,6 +47,12 @@ def hilbert(F):
 def draw(r):
     if opt.family == 'random': return [rng.integers(0, 3, size=(P1, n)) for _ in range(r)]
     if opt.family == 'column': return [np.tile(rng.integers(0, 3, size=n), (P1, 1)) for _ in range(r)]
+    if opt.family == 'column-robust':   # column-type forms whose every nonzero combination has column count >= cmin
+        while True:
+            phis = [rng.integers(0, 3, size=n) for _ in range(r)]
+            ok = all(n - max(np.bincount(sum(a * p for a, p in zip(co, phis)) % 3, minlength=3)) >= opt.cmin
+                     for co in itertools.product(range(3), repeat=r) if any(co))
+            if ok: return [np.tile(p, (P1, 1)) for p in phis]
     if opt.family == 'mixed': return [np.tile(rng.integers(0, 3, size=n), (P1, 1)) if b % 2 == 0 else rng.integers(0, 3, size=(P1, n)) for b in range(r)]
 res = []
 if opt.phis:   # explicit single column-type forms, one system per hole function
