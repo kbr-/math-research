@@ -12,6 +12,10 @@
     .brand { color: var(--accent); font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
     #status::before { content: '●'; margin-right: 8px; color: var(--accent); }
     #status[data-error]::before { color: #b77324; }
+    #update-notice { position: fixed; z-index: 10; left: max(12px, env(safe-area-inset-left)); bottom: max(12px, env(safe-area-inset-bottom)); padding: 6px 14px; border: 1px solid #c8d8ce; border-radius: 999px; background: var(--paper); color: var(--accent); font: 13px/1.5 system-ui, sans-serif; box-shadow: 0 2px 8px #23372826; cursor: pointer; }
+    #update-notice[hidden] { display: none; }
+    #update-notice:hover { background: #eef5ef; }
+    #update-notice:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
     main { max-width: var(--notebook-width); margin: 0 auto 64px; padding: 56px 70px; background: var(--paper); border: 1px solid #dde2d9; border-radius: 8px; box-shadow: 0 12px 40px #23372806; overflow-wrap: anywhere; }
     h1, h2, h3 { line-height: 1.25; font-weight: 500; }
     h1 { font-size: clamp(32px, 5vw, 46px); margin: 0 0 20px; letter-spacing: -.035em; }
@@ -126,6 +130,7 @@
     <span><a class="brand" href="https://github.com/kbr-/math-research">Noemesis</a> · Research notebook</span>
     <span id="status" role="status">Loading math…</span>
   </header>
+  <button id="update-notice" type="button" hidden title="Reload the updated notebook at the current position">Notebook updated · reload</button>
   <!-- THREAD SETTINGS -->
   <!-- THREAD NAVIGATION -->
   <main>
@@ -561,6 +566,11 @@
       status.textContent = 'Math could not load. Check your internet connection and refresh.';
       status.dataset.error = '';
     });
+    const updateNotice = document.getElementById('update-notice');
+    updateNotice.addEventListener('click', () => {
+      try { sessionStorage.setItem('math-scroll', String(window.scrollY)); } catch (_) {}
+      location.reload();
+    });
     async function watch() {
       try {
         const endpoint = new URL(settings.revisionUrl, window.location.href);
@@ -569,11 +579,9 @@
         if (!response.ok) throw new Error('Server unavailable');
         const { revision } = await response.json();
         if (typeof revision !== 'string') throw new Error('Invalid revision');
-        if (revision !== '__REVISION__') {
-          try { sessionStorage.setItem('math-scroll', String(window.scrollY)); } catch (_) {}
-          location.reload();
-          return;
-        }
+        // Never reload by itself: an automatic reload interrupts reading while agents edit.
+        // The local server offers a reload instead, keeping the position; Pages shows nothing.
+        updateNotice.hidden = settings.mode !== 'live' || revision === '__REVISION__';
         if (window.mathReady && !window.mathError) {
           status.textContent = settings.mode === 'published' ? 'Published notebook' : 'Live · watching for changes';
           delete status.dataset.error;

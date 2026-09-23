@@ -73,7 +73,7 @@ def main():
     except OSError as error:
         parser.exit(1, f"Could not start server: {error}\nTry another port: --port 8001\n")
     print(f"Noemesis notebook: http://localhost:{args.port}", flush=True)
-    print("Edit notebook.html; the browser refreshes automatically. Ctrl+C to stop.", flush=True)
+    print("Edit notebook.html; the page offers a reload when it changes. Ctrl+C to stop.", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

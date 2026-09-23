@@ -90,7 +90,7 @@ rules to growing checklists or one-off setup narratives.
   [the side-notebook workflow](tools/SIDE_NOTEBOOKS.md); never replace main
   living sections with a side goal. Edit the selected notebook directly;
   `python3 server.py` serves the live notebook on localhost:8000
-  with automatic refresh. `index.html` owns layout. `research/notes/RESUME.md`
+  and offers a reload when it changes. `index.html` owns layout. `research/notes/RESUME.md`
   is navigation only: change it for workflow/navigation, not new findings.
   Supporting notes hold evidence, proofs and dated audits, not duplicate living
   summaries. Label historical snapshots; Git already preserves prior overviews.
