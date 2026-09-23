@@ -19,7 +19,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Relative gluing is proved, conditionally: splitting by members, members without falls of their own, and a base without falls exclude refutations (<a href="#entry-2026-09-24-column-splitting-n10">relative gluing</a>). For adversarial inventories the open conditions sit in the column component, which does not split internally. So test condition (c) there. Does a robust column component, alone with the weak base, have a degree fall below \(D=3\)? Use the recorded occupancy pair at \(n=8\), the 4-robust three-dimensional spans at \(n=9,10\), and controls with narrow directions, which should fall, all with equation right-hand sides. Run the recorded compiled closure kernel (gf3_closure.c) and compare the low part with the base's; add the early stop first. The local-fall picture predicts no fall for robust components. A fall there would locate the adversarial obstruction inside the column component itself. Sizing: the closure at \(n=8\), \(D=3\) fits (recorded); \(n=9\) is to be sized before launch. A route review is due within two research entries. Pending: the random-form half at \(n=10\), and a verified \(\mathbb F_3\) chessboard bound beyond three rows.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The column component's defects are, at the three measured sizes, those of the column model. Its quotients are squares of Gale-dual linear forms (<a href="#entry-2026-09-24-column-model-gale">Gale entry</a>), which turns freeness of column spans into a Hilbert-function question for an ideal of squares of linear forms in a specific configuration. A route review is due first, since this is the sixth research entry since the last one. After it, take up the defect criterion:</p>
+<ol>
+<li>For the defective degree-4 and degree-5 configurations found at \(n=15,\dots,20\), compute the Gale points \([m_j]\) and locate the special position: points on a conic or rational normal curve, repeated points, collinear subsets.</li>
+<li>Test a candidate criterion on all robust configurations at small \(n\), by exhaustive enumeration up to symmetry.</li>
+<li>Derive the characteristic-3 apolarity statement, with divided powers.</li>
+</ol>
+<p>Then compare the model with the board beyond the three measured cases. Pending: condition (c) of relative gluing for column components, the random-form half at \(n=10\), and a verified \(\mathbb F_3\) chessboard bound beyond three rows.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -11774,6 +11780,82 @@ At \(n=6\) degree 3 saturates before the spans exceed \(\gamma_1\), so there onl
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 1.65 s</td></tr>
 <tr><td>Other external-tool windows</td><td class="elapsed">6 min 7.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.02 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-column-model-gale" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:column-model-gale ex:column-model-excess">
+<h3>The column model matches the column defects in degree 3, and its quotients are squares of Gale-dual linear forms</h3>
+<p class="entry-meta">24 September 2026 · Working proof and finite check · Column spans on weak unary PHP; the column model through degree 5, \(n\le20\).  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The user asked for algebraic geometry that makes a jump. The column component is where the adversary's structure concentrates (<a href="#entry-2026-09-24-column-members-split">column members</a>), and only a description of its bad configurations could reach adversarial inventories. Zariski openness only shows the good set is dense. The cycle asks two questions:</p>
+<ul>
+<li>Does the recorded column model reproduce the board's column defects, which were measured at the limit of the computations?</li>
+<li>If so, what classical object do its defects become?</li>
+</ul>
+<p><strong>General statement.</strong> prop:column-model-gale holds for every \(n\) and every column span. The column model's quotient by a span of hole functions \(\varphi_1,\dots,\varphi_d\) is \(\mathbb F_3[s_1,\dots,s_{n-e}]/(m_1^2,\dots,m_n^2)\), with \(e\) the dimension of the span of \(\mathbf 1,\varphi_1,\dots,\varphi_d\), where the \(m_j\) are the images of the hole variables. They are the Gale transform of the hole-value configuration \(\{(1,\varphi_1(j),\dots,\varphi_d(j))\}_j\). So freeness of a column span in the model is the Hilbert function of an ideal of squares of linear forms, a question of Fröberg and Alexander–Hirschowitz type about a specific point configuration. The finite check ex:column-model-excess finds the model's degree-3 excess equal to the board's in all three measured cases (3, 7, 1). In the model, the sampled robust three-dimensional spans (two per \(n\)) are free through degree 3 for \(n=11,\dots,14\). Where the degree-4 prediction is positive, some keep defects of 1 to 3 up to \(n=17\), others are free, and the three sampled at \(n=16,18,20\) are free in degree 4. Every configuration tested in degree 5 is defective: 6, 1 and 1 at \(n=16,18,20\).</p>
+
+<h4>The Gale-dual reduction</h4>
+<p>The column model is \(R=\mathbb F_3[t_1,\dots,t_n]/(t_j^2,\ \sum_jt_j)\), the <a href="#entry-2026-09-23-sub-board-refutations">recorded model</a> in which a column-type form \(\ell_\varphi=\sum_j\varphi(j)C_j\) acts as \(\sum_j\varphi(j)t_j\).</p>
+<p><strong>Proposition (column model and Gale duality).</strong> Let \(\varphi_1,\dots,\varphi_d:[n]\to\mathbb F_3\), and let \(W\subseteq\mathbb F_3^n\) be the span of the vectors \(\mathbf 1,\varphi_1,\dots,\varphi_d\), of dimension \(e\). Put \(V=\mathbb F_3^n/W\), with \(m_j\in V\) the image of the \(j\)-th unit vector. Then, as graded algebras,</p>
+\[R/(\ell_{\varphi_1},\dots,\ell_{\varphi_d})R\;\cong\;\operatorname{Sym}(V)/(m_1^2,\dots,m_n^2),\]
+<p>a polynomial ring in \(n-e\) variables modulo the squares of the \(n\) vectors \(m_j\). The configuration \(\{m_j\}\subseteq V\) is the Gale transform of the configuration of columns \(\{(1,\varphi_1(j),\dots,\varphi_d(j))\}\subseteq\mathbb F_3^{d+1}\): the linear relations among the \(m_j\) are exactly the vectors of \(W\).</p>
+<p><strong>Proof.</strong> Write \(S=\mathbb F_3[t_1,\dots,t_n]=\operatorname{Sym}(\mathbb F_3^n)\). Then</p>
+\[R/(\ell_{\varphi})R=S/\bigl((t_j^2)_j+(\textstyle\sum_jt_j)+(\ell_{\varphi_b})_b\bigr).\]
+<p>The linear forms \(\sum_jt_j\) and \(\ell_{\varphi_b}\) span \(W\subseteq S_1\). So \(S/(W)=\operatorname{Sym}(\mathbb F_3^n/W)=\operatorname{Sym}(V)\), and \(t_j\mapsto m_j\) carries \(t_j^2\) to \(m_j^2\). A relation \(\sum_ja_jm_j=0\) in \(V\) holds exactly when \(\sum_ja_je_j\in W\), which is the definition of the Gale transform of the columns of the \((d+1)\times n\) matrix with rows \(\mathbf 1,\varphi_1,\dots,\varphi_d\) (up to its usual normalization when \(e&lt;d+1\)). \(\square\)</p>
+<p>Consequences:</p>
+<ul>
+<li>Freeness of the span in the model through degree \(t\) means \(\mathrm{HF}(\operatorname{Sym}(V)/(m_j^2))_s=[q^s]\,\mathrm{HS}_R/(1+q+q^2)^d\) for \(s\le t\). That is a Fröberg-type statement for squares of \(n\) specific linear forms in \(n-e\) variables.</li>
+<li>In characteristic 0, the apolarity of Emsalem and Iarrobino gives \((m_1^2,\dots,m_n^2)_s=((I_Z)_s)^\perp\), with \(Z\) the fat points of multiplicity \(s-1\) at the points \([m_j]\in\mathbb P(V)\). So the ideal's degree-\(s\) dimension is the number of conditions \(Z\) imposes on degree-\(s\) forms, and the quotient's degree-\(s\) part has dimension \(\dim(I_Z)_s\), the degree-\(s\) forms with those fat points. Degree 3 is then double points on cubics, the Alexander–Hirschowitz setting.</li>
+<li>Over \(\mathbb F_3\) the dual side needs divided powers, and whether that identification holds as stated is not checked here.</li>
+<li>The Gale transform is the setting of Eisenbud and Popescu's projective geometry of Gale duality, recalled here as context and not read.</li>
+</ul>
+<p>The \(\mathbb Z/3\) view gives a heuristic for the single-form case. \(\mathbb F_3[\ell]/(\ell^3)\) is the group algebra of \(\mathbb Z/3\), and multiplication by \(\sum_jt_j\) on \(\bigotimes_{j\le c}\mathbb F_3[t_j]/(t_j^2)\) is the primitive (derivation) action \(x\otimes1+1\otimes x\) on a tensor power of the Jordan block \(J_2\). For these small blocks the primitive and group-like tensor structures give the same Jordan decompositions. By \(J_2\otimes J_2=J_3\oplus J_1\) and \(J_3\otimes J_2=J_3\oplus J_3\), \(J_2^{\otimes c}\) is free up to one block of size 1 or 2 sitting in the middle degree. That matches the recorded first failure at \(\lceil c/2\rceil+1\) for \(c=2,\dots,5\), if the non-free block sits in the middle degree, which is asserted and not shown. The model's relation \(\sum t_j=0\) is not accounted for here, so this is an explanation of the pattern, not a proof.</p>
+
+<h4>Computations</h4>
+<p>column_model.py computes \(\mathrm{HF}(R/(\ell_\varphi)R)\) through degree 3 for the three spans measured on the board. The rank computations are exact over GF(3), on the squarefree monomials.</p>
+<table>
+<tr><th>Span</th><th>Model \(\mathrm{HF}\)</th><th>Free prediction</th><th>Model excess, degree 3</th><th>Board excess, degree 3</th></tr>
+<tr><td>occupancy pair, \(n=8\)</td><td>(1, 5, 7, 1)</td><td>(1, 5, 7, −2)</td><td>3</td><td>3</td></tr>
+<tr><td>robust 3-span, \(n=9\)</td><td>(1, 5, 6, 1)</td><td>(1, 5, 6, −6)</td><td>7</td><td>7</td></tr>
+<tr><td>robust 3-span, \(n=10\)</td><td>(1, 6, 11, 1)</td><td>(1, 6, 11, 0)</td><td>1</td><td>1</td></tr>
+</table>
+<p>In all three cases the model's free prediction is nonpositive in degree 3, and the actual value is 1. The board's defect is the model running out of room.</p>
+<p>model_scaling_n.py draws random 4-robust three-dimensional spans (all 13 directions with \(c\ge5\)) and computes the model excess, one or two configurations per \(n\):</p>
+<ul>
+<li>Degree 3: excess 7 at \(n=9\), 1 at \(n=10\), and 0 at \(n=11,\dots,14\), where the prediction is positive.</li>
+<li>Degree 4: 15 at \(n=11\) and 11 and 9 at 12, where the prediction is nonpositive (−15, −4), so these are truncation. Where it is positive: 4 and 3 at 13, 2 and 1 at 14, 0 and 3 at 15, 1 and 0 at 16, 0 and 1 at 17, and 0 for the degree-5 runs' configurations at 16, 18 and 20.</li>
+<li>Degree 5: 6 at \(n=16\), 1 at 18, 1 at 20.</li>
+</ul>
+<p>So the defects shrink with \(n\), but some configurations keep a small defect even where the prediction is positive, and every tested configuration is defective in degree 5. The random robust configurations are points of \(\mathbb F_3^3\) with multiplicities, which is special position, and the defects vary between configurations.</p>
+
+<h4>What this means</h4>
+<p>In degree 3, in the three measured cases, all of them truncation cases where the model's prediction is nonpositive, the board's column defects equal the model's. By the proposition, the model's defects are Hilbert-function defects of an ideal of squares of Gale-dual linear forms. The adversary's column configurations are finite point sets over \(\mathbb F_3\). If the model is exact for \(A\), a criterion for which configurations are defective, in the language of interpolation of fat points and of Gale duality, would describe the bad set for every column span an adversary can choose. That is the kind of statement openness cannot give. Neither the criterion nor the exactness of the model for \(A\) in general is established. The recorded entry found \(A\) not free over the column subalgebra, and only three cases are compared here.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the recorded column model and its scaling entry, and the board excesses of the column-members and \(n=10\) entries. A fresh-context reviewer checked the proposition and its proof, including the Gale transform over any field and the case \(e&lt;d+1\), every number against the result files, and the 4-robustness of all 21 sampled spans. It required changes, all adopted:</p>
+<ul>
+<li>the apolarity statement, which had the conditions and the quotient swapped;</li>
+<li>\(n-e\) variables;</li>
+<li>per-degree statements of the data, with the truncation cases marked;</li>
+<li>"matches in degree 3" in place of "carries exactly", with the bad-set sentence conditional on the model's exactness;</li>
+<li>the primitive action in the \(\mathbb Z/3\) heuristic.</li>
+</ul>
+<p>The changes restrict or correct, so no second pass was made.</p>
+
+<h4>Remaining gap</h4>
+<p>A proof that the board's column defects equal the model's. The defect criterion for the Gale-dual squares ideal, starting from the defective configurations found in degrees 4 and 5. The characteristic-3 form of the apolarity to fat points.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-column-closure">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 46.78 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 37.38 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 22.18 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">0.11 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 19.24 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">26.83 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.03 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
