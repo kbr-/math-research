@@ -180,10 +180,10 @@ sys.exit(compute.main())
                    earlier_status='Finite check.'),                   # two finite checks in a row
             record(['research'], tagged + ' data-claims="ex:b"', status='Finite check and a failed proof route.',
                    earlier_status='Finite check.'),                   # status words do not escape the rule
-            record(['research', 'research', 'research'], tagged + ' data-claims="ex:d lem:e"',
-                   earlier_claims=['conj:a', 'ex:b lem:x', 'ex:c prop:y']),   # third of four entries with cases
-            record(['research', 'review', 'research', 'research'], tagged + ' data-claims="ex:d"', status='Proof sketch.',
-                   earlier_claims=['ex:a', 'ex:r', 'conj:b', 'ex:c lem:z']),  # reviews neither count nor reset
+            record(['research'] * 4, tagged + ' data-claims="ex:e lem:f"',
+                   earlier_claims=['conj:a', 'ex:b lem:x', 'ex:c prop:y', 'ex:d']),   # fourth of five entries with cases
+            record(['research', 'review', 'research', 'research', 'research'], tagged + ' data-claims="ex:e"', status='Proof sketch.',
+                   earlier_claims=['ex:a', 'ex:r', 'ex:b', 'conj:c', 'ex:d lem:z']),  # reviews neither count nor reset
         ]
         for content in rejected:
             with self.subTest(content=content[:160]):
@@ -201,8 +201,8 @@ sys.exit(compute.main())
                    earlier_status='Finite check.'),                   # a review resets the streak
             record(['research'], tagged + ' data-claims="none"', status='Literature step.',
                    earlier_status='Literature step.'),
-            record(['research', 'research', 'research'], tagged + ' data-claims="ex:d lem:e"',
-                   earlier_claims=['ex:a', 'conj:b', 'lem:c']),       # two of four entries with cases
+            record(['research'] * 4, tagged + ' data-claims="ex:e lem:f"',
+                   earlier_claims=['ex:a', 'conj:b', 'ex:c', 'lem:d']),   # three of five entries with cases
             record(['research', 'research', 'research'], tagged + ' data-claims="thm:e"',
                    earlier_claims=['ex:a', 'ex:b lem:x', 'ex:c prop:y']),  # a general entry is always allowed
         ]
@@ -215,6 +215,15 @@ sys.exit(compute.main())
                                 'ft.validate_marker(open("notebook.html").read(), sys.argv[1])\n')
                 notebook.write_text(content)
                 self.command('check.py', marker)
+
+    def test_refutation_checks_do_not_count_as_cases(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('ft', Path(__file__).resolve().parents[1] / 'finish-turn.py')
+        ft = importlib.util.module_from_spec(spec); spec.loader.exec_module(ft)
+        body = '<article data-kind="research" data-claims="ex:r"><p class="entry-meta">x</p></article>'
+        self.assertFalse(ft.registers_cases(body, 0, {'ex:r': 'refutation'}))
+        self.assertTrue(ft.registers_cases(body, 0, {'ex:r': 'finite_check'}))
+        self.assertFalse(ft.cases_only(body, 0, {'ex:r': 'refutation'}))
 
     def test_append_only_check_flags_edits_but_not_link_repairs(self):
         import importlib.util

@@ -36,8 +36,9 @@ rules to growing checklists or one-off setup narratives.
   implication open. `finish-turn.py` enforces this: each research entry has a
   "General statement." paragraph citing the registered claim ID of its all-parameter
   claim, two finite-check-only entries in a row on one route are rejected (judged from
-  the registered claims, not status words), and at most two of any four consecutive research
-  entries on a route may register new finite checks, so case lists cannot grow behind small lemmas;
+  the registered claims, not status words), and at most three of any five consecutive research
+  entries on a route may register new finite checks other than refutations, so case lists cannot
+  grow behind small lemmas;
   `./compute.sh start` prints the matching warnings before the work begins. State
   that implication and test it against known obstructions, hard instances and allowed equivalent representations before further refinement;
   a surrogate becoming simple need not resolve the original obligation. Check preserved

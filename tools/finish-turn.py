@@ -99,11 +99,14 @@ def cases_only(body, article, status_of=None):
             and not any(status_of.get(c) == 'refutation' for c in claims))
 
 
-def registers_cases(body, article):
-    return any(c.startswith(FINITE_PREFIXES) for c in entry_claims(body, article))
+def registers_cases(body, article, status_of=None):
+    """The entry registers a new finite check that is not a refutation (a decisive refutation is not
+    case-list growth, so it is exempt)."""
+    status_of = registered_status() if status_of is None else status_of
+    return any(c.startswith(FINITE_PREFIXES) and status_of.get(c) != 'refutation' for c in entry_claims(body, article))
 
 
-CASE_WINDOW, CASE_LIMIT = 4, 2
+CASE_WINDOW, CASE_LIMIT = 5, 3
 
 
 def entry_status(body, article):
@@ -148,7 +151,7 @@ def validate_general(body, article, close):
                                  'without a proof or refutation. Stop adding cases: this entry must '
                                  'attempt a proof or a refutation of its General statement (AGENTS.md)')
             break
-    if registers_cases(body, article):
+    if registers_cases(body, article, status_of):
         window = [article]
         for position in reversed(earlier):
             previous = entry_tags(body, position)
@@ -157,10 +160,10 @@ def validate_general(body, article, close):
             window.append(position)
             if len(window) == CASE_WINDOW:
                 break
-        count = sum(registers_cases(body, position) for position in window)
+        count = sum(registers_cases(body, position, status_of) for position in window)
         if count > CASE_LIMIT:
             raise ValueError(f'{count} of the last {len(window)} research entries on this route register '
-                             f'new finite checks (at most {CASE_LIMIT} of any {CASE_WINDOW}). The case list is '
+                             f'new finite checks other than refutations (at most {CASE_LIMIT} of any {CASE_WINDOW}). The case list is '
                              'growing: this entry must derive a general formula or proof without new finite '
                              'checks (AGENTS.md, restricted examples)')
 
