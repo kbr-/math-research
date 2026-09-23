@@ -65,6 +65,9 @@ command, such as a tool's file name or its arguments: the pattern matches the sh
 running the command, so `pkill` kills it (exit 144) and a `pgrep` wait loop never
 ends. Kill or check in one command, restart in another; to wait for a job, rely on
 its own completion notice.
+Never discard the output or exit status of `./compute.sh phase` or `start`: an invalid category
+exits with status 2, and a redirected failure once left most of two cycles' time in the wrong
+category.
 
 ## Naming results
 
