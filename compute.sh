@@ -342,6 +342,7 @@ def run_job(args, command):
                   output=str(log.relative_to(ROOT / 'research')), cwd=str(Path.cwd()),
                   systemd_unit=unit, threads=args.threads, timeout_s=args.timeout,
                   expect_s=getattr(args, 'expect', None), serial_reason=getattr(args, 'serial_reason', ''),
+                  kernel_reason=getattr(args, 'kernel_reason', ''),
                   user_approved=getattr(args, 'user_approved', ''))
     recovery_observe('job_start', root=ROOT, turn=name, job=rid, command=command, category=args.category)
     rc, timed_out, interrupted = 1, False, False
@@ -405,6 +406,10 @@ PARALLEL_THREADS = 4
 # is too much; a single run may take up to 30 minutes, and a cycle's total is left to judgement).
 # A run's --timeout may not exceed MAX_RUN_S unless the user's approval is quoted in --user-approved.
 MAX_RUN_S = 1800
+# Compiled-kernel default (user instruction, 23 September 2026, after repeated slow Python drivers): a Python
+# command allowed more than KERNEL_RUN_S must state in --kernel-reason which compiled kernel does the heavy work
+# and why the driver does not repeat it (for example one incremental elimination, not one per parameter).
+KERNEL_RUN_S = 120
 
 
 def run_options(parser):
@@ -416,6 +421,9 @@ def run_options(parser):
     parser.add_argument('--serial-reason', default='',
                         help='Why a run expected to exceed the long-run limit uses fewer than '
                              f'{PARALLEL_THREADS} threads')
+    parser.add_argument('--kernel-reason', default='',
+                        help=f'For a Python command with --timeout above {KERNEL_RUN_S} s: the compiled kernel (C/C++) '
+                             'doing the heavy work and why nothing is recomputed')
     parser.add_argument('--category', choices=RUNS, default='computation')
     parser.add_argument('--user-approved', default='',
                         help='Quote of the user\'s explicit approval for a run beyond MAX_RUN_S')
@@ -520,6 +528,12 @@ def main():
     if (args.expect or 0) > LONG_RUN_S and args.threads < PARALLEL_THREADS and not args.serial_reason.strip():
         parser.error(f'a run expected to exceed {LONG_RUN_S:g} s on fewer than {PARALLEL_THREADS} threads '
                      'needs --serial-reason: use the parallel paths first (COMPUTATION_RULES.md)')
+    exe = Path(command[0]).name if command else ''
+    if (exe.startswith('python') and args.timeout > KERNEL_RUN_S and args.category == 'computation'
+            and not args.kernel_reason.strip()):
+        parser.error(f'a Python computation allowed more than {KERNEL_RUN_S} s needs --kernel-reason "...": '
+                     'write heavy loops as a C/C++ kernel by default, compute every parameter in one '
+                     'incremental pass, and name the kernel here (CLAUDE.md, COMPUTATION_RULES.md)')
     return run_job(args, command)
 
 

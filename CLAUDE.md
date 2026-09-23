@@ -69,6 +69,16 @@ Never discard the output or exit status of `./compute.sh phase` or `start`: an i
 exits with status 2, and a redirected failure once left most of two cycles' time in the wrong
 category.
 
+## Compiled kernels by default
+
+Write every computation's heavy loop as a compiled kernel (C or C++, OpenMP where it parallelizes) from
+the start; Python is for orchestration only, and a Python-only computation needs evidence that it runs in
+seconds. Compute all parameters of a series in one incremental pass (prefix ranks from one elimination,
+nested results reused), never one full recomputation per parameter: a Φ₄ series once re-eliminated
+the whole matrix for each of six M values (396 s) where one incremental C pass gave all 41 in 222 s.
+`./compute.sh` enforces the default: a Python computation allowed more than 120 s needs `--kernel-reason`
+naming the compiled kernel and why nothing is recomputed.
+
 ## Naming results
 
 Name each new lemma, theorem, corollary or conjecture after what it says or does, in one to

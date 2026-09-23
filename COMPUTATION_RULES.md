@@ -72,6 +72,8 @@ manually run outside the launcher are not inside the workload group.
   compiled calls can still waste most of the time, for example by re-reducing a
   whole matrix for every chunk of new rows instead of reducing only the new rows
   against the existing basis.
+  `compute.sh` requires `--kernel-reason` for a Python computation allowed more
+  than 120 s: name the compiled kernel doing the heavy work (CLAUDE.md states the default).
 - Budget process counts and library threads together. Across concurrent work,
   keep worker count times threads per worker within 14; avoid nested thread
   pools and oversubscription.
