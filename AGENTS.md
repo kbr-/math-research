@@ -222,7 +222,8 @@ rules to growing checklists or one-off setup narratives.
 - Preserve private `pre-publish`; never publish it or use `--all`/`--mirror`.
   Before authorized publication run `tools/verify-checkout.py --public-history BRANCH`
   (it includes the claim-index CI job, `tools/check-claims.py`, against `origin/BRANCH`)
-  and the append-only check, unless explicitly overridden by the user. Pages targets
+  and the append-only check, unless explicitly overridden by the user; push with
+  `tools/checked-push.sh`, which runs both and pushes only if both pass. Pages targets
   main only; local commits are checkpoints. The Pages workflow builds HTML/site-tool
   changes with `tools/build_pages.py --out _site`: upload only that minimal artifact,
   never the checkout/private sources. Preserve live mode and project-relative
