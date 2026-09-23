@@ -6,7 +6,7 @@ const vm = require('node:vm');
 async function check(changed) {
   const page = fs.readFileSync(process.argv[2] || '_site/index.html', 'utf8');
   const live = process.argv[3] === 'live';
-  const revision = page.match(/revision !== '([a-f0-9]{64})'/)[1];
+  const revision = page.match(/revision === '([a-f0-9]{64})'/)[1];
   const status = { textContent: '', dataset: {} };
   const requests = [], delays = [];
   const events = {}, buttonClicks = {};
@@ -31,11 +31,14 @@ async function check(changed) {
   article.querySelector = () => anchorHeadings[1];
   let resizeCallback;
   let reloads = 0;
+  const notice = { hidden: true, addEventListener(event, handler) {
+    assert.equal(event, 'click'); notice.click = handler; } };
   const context = {
     URL,
     AbortSignal: { timeout: () => undefined },
     document: {
-      getElementById: id => id === 'status' ? status : { addEventListener() {} },
+      getElementById: id => id === 'status' ? status : id === 'update-notice' ? notice
+        : { addEventListener() {} },
       querySelectorAll(selector) {
         if (selector === 'main h2, main h3') return headingTops.map((_, index) => ({
           getBoundingClientRect: () => ({ top: headingTops[index] - context.scrollY }),
@@ -92,7 +95,10 @@ async function check(changed) {
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(new URL(requests[0]).pathname, live ? '/revision' : '/math-research/revision.json');
   assert.equal(status.textContent, live ? 'Live · watching for changes' : 'Published notebook');
-  assert.equal(reloads, changed ? 1 : 0);
+  // A changed revision never reloads by itself: the local server offers a reload, Pages shows nothing.
+  assert.equal(reloads, 0);
+  assert.equal(notice.hidden, !(changed && live), 'Only a live page with a changed revision offers a reload');
+  if (changed && live) { notice.click(); assert.equal(reloads, 1, 'The offered reload reloads once'); }
   if (!changed) assert.deepEqual(delays, [live ? 1000 : 30000]);
   assert.deepEqual(anchorHeadings.map(heading => heading.links.map(link => link.href)),
     [['#own-id'], ['#entry-a'], []], 'Headings link to their own or their opened container id');
