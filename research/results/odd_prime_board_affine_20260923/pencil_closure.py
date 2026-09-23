@@ -6,7 +6,8 @@ its eigenvalues.  By the Kronecker form, rho = sum(eps) + sum(eta) + k_reg, with
 and k_reg the total size of the regular part (finite plus infinite eigenvalues with multiplicity).  Block-Toeplitz ranks give
 sum(eps) = rank T_d - (d+1) rho once rank T_d - rank T_{d-1} = rho (all eps <= d), and likewise sum(eta) from the left
 Toeplitz matrix.  So k_reg, and hence the number of finite eigenvalues, is computed exactly over F_3.  Also records ranks at
-the four F_3-points and the six F_9-points (w = a + b i, i^2 = -1).  Usage: --inp JSON --out JSON"""
+the four F_3-points and the six F_9-points (w = a + b i, i^2 = -1).  The Toeplitz ranks give the minimal indices themselves: #{eps_i <= d} = N - (rank T_d - rank T_{d-1}), which for a
+pencil without eigenvalues is the splitting type of its kernel bundle on P^1.  Usage: --inp JSON --out JSON"""
 import json, os, sys
 import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -46,10 +47,10 @@ for run in d_in['runs']:
         rho = max(list(pts.values()) + list(f9.values()))
         sums = {}
         for left in (False, True):
-            prev = 0
+            prev = 0; ranks = []
             for d in range(0, 8):
-                rk = toeplitz(Ga, Gb, d, left)
-                if rk - prev == rho: sums['eta' if left else 'eps'] = dict(d=d, rank=rk, sum=rk - (d + 1) * rho); break
+                rk = toeplitz(Ga, Gb, d, left); ranks.append(rk)
+                if rk - prev == rho: sums['eta' if left else 'eps'] = dict(d=d, rank=rk, sum=rk - (d + 1) * rho, toeplitz_ranks=ranks); break
                 prev = rk
             else: sums['eta' if left else 'eps'] = dict(d=None)
         k_reg = rho - sums['eps']['sum'] - sums['eta']['sum'] if sums['eps']['d'] is not None and sums['eta']['d'] is not None else None
