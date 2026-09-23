@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Inspect candidate attention or append a reasoned decision; no novelty inference."""
 import argparse
+import json
 from pathlib import Path
 from claim_registry import load as load_claims
-from claim_attention import load, reconcile, sync, decide, save, brief, overview, STATES
+from claim_attention import load, reconcile, sync, decide, save, brief, overview, current, STATES
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -12,6 +13,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     sub = p.add_subparsers(dest='command', required=True)
     listing = sub.add_parser('list'); listing.add_argument('--all', action='store_true')
+    listing.add_argument('--json', action='store_true', help='current state per claim, with pending group')
     sub.add_parser('sync')
     sub.add_parser('check')
     d = sub.add_parser('decide')
@@ -34,6 +36,9 @@ def main():
                     raise ValueError('Attention history/view stale; run tools/claim-attention.py sync')
                 print('Attention history and generated view are current.')
                 return
+        if a.command == 'list' and a.json:
+            print(json.dumps(current(data, history), ensure_ascii=False, indent=2))
+            return
         print(overview(data, history) if a.command == 'list' and a.all else brief(data, history), end='')
     except (ValueError, OSError) as e:
         p.exit(2, f'attention: {e}\n')

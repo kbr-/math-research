@@ -112,8 +112,14 @@ IDs, content fingerprints and decisions, not duplicate mathematical assessments.
 [Results and questions for attention](../ATTENTION.md) is its generated human view.
 Candidates/drafts/preprints, candidate novelty, independent/tool/negative results
 of unknown novelty, and pending significance reviews are selected automatically.
-Known reusable tools are not all flagged. Any registered result can also be flagged
-explicitly, including an important surprise with no publication claim:
+Known reusable tools are not all flagged. Pending items fall into two groups (user,
+23 September 2026): **headline results** (publication or novelty candidates,
+independent and negative results, and anything an agent or the user decided on) and
+**automatically queued** items, mostly reusable tools of unknown novelty. The view
+shows them in separate sections. `list --json` prints the current state and group of
+every tracked claim for agents and workflows such as Fossick; it is derived from the
+history, not stored. Any registered result can also be flagged explicitly, which puts
+it in the headline group, including an important surprise with no publication claim:
 
 ```bash
 python3 tools/claim-attention.py decide LABEL --state pending --note "Why attention is needed"
@@ -131,8 +137,9 @@ This detects recorded changes, not unrecorded mathematical developments.
 
 The finalizer writes the history/view; stage them when changed. After manual edits
 or decisions run `python3 tools/claim-attention.py sync` to rebuild the view. Resume
-includes at most three pending summaries and an omission count; the full list is
-read on demand. Fossick will use this same history instead of NUGGETS/FLAGS queues.
+lists every headline item and only counts the automatically queued ones. The resume
+reader is the agent, not the user: when restoring, report new headline items to the
+user; the full list is read on demand. Fossick will use this same history instead of NUGGETS/FLAGS queues.
 Existing candidates are seeded from metadata, without claiming a retrospective
 literature audit. This is a synchronous file/console notification mechanism: it
 works with both Codex and Claude and needs no platform-specific Stop hook, daemon,

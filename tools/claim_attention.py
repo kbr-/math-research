@@ -36,6 +36,33 @@ def candidate(claim):
             or review.get('state') == 'pending')
 
 
+def headline(claim, decided):
+    """Results the user should see first; the rest are queued only because their novelty is unknown.
+
+    Headline: a publication or novelty candidate, an independent or negative result, or an
+    item an agent or the user has decided on. Automatically queued reusable tools and
+    other pending items form the second group (user, 23 September 2026).
+    """
+    sig = claim.get('significance') or {}
+    return (sig.get('publication_status') in ('candidate', 'draft', 'preprint')
+            or sig.get('novelty') == 'candidate'
+            or sig.get('category') in ('independent_result', 'negative_result')
+            or claim['id'] in decided)
+
+
+def decided_claims(history):
+    return {e['claim'] for e in history['events'] if e['actor'] != 'automatic'}
+
+
+def pending_groups(data, history):
+    """Pending claim IDs split into (headline, automatically queued), each sorted."""
+    claims = {c['id']: c for c in data['claims']}
+    decided = decided_claims(history)
+    pending = sorted(k for k, v in latest(history).items() if v['state'] == 'pending')
+    top = [k for k in pending if headline(claims[k], decided)]
+    return top, [k for k in pending if k not in top]
+
+
 def load(root):
     path = root / HISTORY
     if not path.exists():
@@ -120,11 +147,21 @@ def overview(data, history):
              'Pending means attention requested, not an established novel result. Review states are',
              'workflow decisions, not theorem status or publication approval. See [the workflow](claims/README.md#significance-check-and-attention).', '']
     rows = latest(history)
-    for state in STATES:
-        selected = sorted(k for k, v in rows.items() if v['state'] == state)
+    top, rest = pending_groups(data, history)
+    sections = [('Pending: headline results', top,
+                 'Publication or novelty candidates, independent and negative results, and items an '
+                 'agent or the user decided on.'),
+                ('Pending: automatically queued', rest,
+                 'Queued automatically because their novelty is unknown, mostly reusable tools; '
+                 'lower priority than the headline results.')]
+    sections += [(state.capitalize(), sorted(k for k, v in rows.items() if v['state'] == state), None)
+                 for state in STATES if state != 'pending']
+    for title, selected, intro in sections:
         if not selected:
             continue
-        lines += ['## ' + state.capitalize(), '']
+        lines += ['## ' + title, '']
+        if intro:
+            lines += [intro, '']
         for position, label in enumerate(selected):
             c = claims[label]; e = rows[label]; sig = c.get('significance') or {}
             review = c.get('reviews', {}).get('significance') or {}
@@ -150,6 +187,23 @@ def overview(data, history):
     return '\n'.join(lines)
 
 
+def current(data, history):
+    """Current state per tracked claim, for agents and workflows such as Fossick.
+
+    Derived from the event history and the registry; never stored separately.
+    """
+    claims = {c['id']: c for c in data['claims']}
+    top, rest = pending_groups(data, history)
+    group = {**{k: 'headline' for k in top}, **{k: 'automatic' for k in rest}}
+    items = []
+    for label, e in sorted(latest(history).items()):
+        sig = claims[label].get('significance') or {}
+        items.append(dict(claim=label, state=e['state'], group=group.get(label), actor=e['actor'],
+                          note=e['note'], at=e['at'], category=sig.get('category'),
+                          novelty=sig.get('novelty'), summary=' '.join(claims[label]['summary'].split())))
+    return {'version': 1, 'items': items}
+
+
 def save(root, data, history):
     atomic(root / HISTORY, json.dumps(history, ensure_ascii=False, indent=2) + '\n')
     atomic(root / VIEW, overview(data, history))
@@ -161,16 +215,18 @@ def sync(root, data):
     return history, added
 
 
-def brief(data, history, limit=3):
-    rows = latest(history)
-    pending = sorted(k for k, v in rows.items() if v['state'] == 'pending')
-    if not pending:
+def brief(data, history, limit=30):
+    """Every headline item, then a count of the automatically queued rest."""
+    top, rest = pending_groups(data, history)
+    if not top and not rest:
         return 'Significance attention: no pending items.\n'
     claims = {c['id']: c for c in data['claims']}
-    lines = [f'Significance attention: {len(pending)} pending; research/ATTENTION.md has scope and next actions.']
-    for label in pending[:limit]:
+    lines = [f'Significance attention: {len(top)} headline and {len(rest)} automatically queued '
+             'pending items; research/ATTENTION.md has scope and next actions. Tell the user about new '
+             'headline items.']
+    for label in top[:limit]:
         text = ' '.join(claims[label]['summary'].split())
-        lines.append(f'- {label}: {text[:160]}' + ('…' if len(text) > 160 else ''))
-    if len(pending) > limit:
-        lines.append(f'{len(pending)-limit} further items omitted; tools/claim-attention.py list --all')
+        lines.append(f'- {label}: {text[:120]}' + ('…' if len(text) > 120 else ''))
+    if len(top) > limit:
+        lines.append(f'{len(top)-limit} further headline items omitted; tools/claim-attention.py list --all')
     return '\n'.join(lines) + '\n'

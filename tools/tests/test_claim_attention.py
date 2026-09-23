@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from claim_attention import reconcile, decide, load, save, brief, latest, fingerprint, overview, STATES
+from claim_attention import reconcile, decide, load, save, brief, latest, fingerprint, overview, current, STATES
 
 
 class AttentionTest(unittest.TestCase):
@@ -66,10 +66,32 @@ class AttentionTest(unittest.TestCase):
         self.data['claims']=[dict(copy.deepcopy(self.data['claims'][0]),id=f'thm:{i}') for i in range(8)]
         history,_=reconcile(self.data,self.empty)
         text=brief(self.data,history)
+        self.assertEqual(text.count('\n- '),8)
+        self.assertIn('8 headline and 0 automatically queued',text)
+        text=brief(self.data,history,limit=3)
         self.assertEqual(text.count('\n- '),3)
-        self.assertIn('5 further items omitted',text)
+        self.assertIn('5 further headline items omitted',text)
         with self.assertRaises(ValueError):decide(self.data,history,'missing','dismissed','Reason')
         with self.assertRaises(ValueError):decide(self.data,history,'thm:0','dismissed','')
+
+    def test_automatic_tools_are_grouped_after_headline_results(self):
+        tool=dict(copy.deepcopy(self.data['claims'][0]),id='lem:a-tool',summary='A reusable tool')
+        tool['significance']=dict(category='general_tool',novelty='unknown',publication_status='not_applicable')
+        self.data['claims'].append(tool)
+        history,added=reconcile(self.data,self.empty)
+        self.assertEqual(sorted(added),['lem:a-tool','thm:one'])
+        text=overview(self.data,history)
+        self.assertLess(text.index('## Pending: headline results'),text.index('### One'))
+        self.assertLess(text.index('## Pending: automatically queued'),text.index('### A tool'))
+        self.assertLess(text.index('### One'),text.index('## Pending: automatically queued'))
+        summary=brief(self.data,history)
+        self.assertIn('1 headline and 1 automatically queued',summary)
+        self.assertNotIn('lem:a-tool',summary)
+        groups={i['claim']:(i['state'],i['group']) for i in current(self.data,history)['items']}
+        self.assertEqual(groups,{'thm:one':('pending','headline'),'lem:a-tool':('pending','automatic')})
+        # An agent's explicit flag promotes a tool to the headline group.
+        history=decide(self.data,history,'lem:a-tool','pending','Broadly reusable; worth a look.')
+        self.assertIn('- lem:a-tool',brief(self.data,history))
 
     def test_readable_layout_for_every_attention_state(self):
         history, _ = reconcile(self.data, self.empty)
@@ -77,7 +99,9 @@ class AttentionTest(unittest.TestCase):
             with self.subTest(state=state):
                 history = decide(self.data, history, 'thm:one', state, 'Keep the exact scope.', 'user')
                 text = overview(self.data, history)
-                self.assertIn(f'## {state.capitalize()}\n\n### One\n', text)
+                title = 'Pending: headline results' if state == 'pending' else state.capitalize()
+                self.assertIn(f'## {title}\n\n', text)
+                self.assertIn('\n\n### One\n', text)
                 self.assertIn('**Claim:** [thm:one](<https://example.org/proof>)\n\nA candidate\n', text)
                 self.assertIn('**Significance:** `independent_result` · **Novelty:** `candidate`', text)
                 self.assertIn('**Why it matters:** Potentially useful.\n\n', text)

@@ -6,7 +6,9 @@
 Pending means attention requested, not an established novel result. Review states are
 workflow decisions, not theorem status or publication approval. See [the workflow](claims/README.md#significance-check-and-attention).
 
-## Pending
+## Pending: headline results
+
+Publication or novelty candidates, independent and negative results, and items an agent or the user decided on.
 
 ### Binary multiplicity cover question
 
@@ -116,6 +118,302 @@ For every fixed 0<epsilon<1, sufficiently large unary PHP and its functional var
 
 ---
 
+### Finite field punctured first jet degree
+
+**Claim:** [lem:finite-field-punctured-first-jet-degree](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#finite-field-punctured-first-jet-degree>)
+
+Over F_q, a polynomial double-vanishing at all nonzero grid points has degree at least n(q-1)+q-1 if nonzero at the origin, and at least n(q-1)+q if the origin is a simple zero; every prime power q and n>=1.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Handles the permitted exceptional simple zero needed to pass from punctured polynomial bounds to the printed double-cover question.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Obtain independent review and identify any prior statement of the simple-origin strengthening before claiming novelty.
+
+---
+
+### Matching avoidance with slack
+
+**Claim:** [lem:matching-avoidance-with-slack](<https://kbr.is-a.dev/math-research/#matching-avoidance-with-slack>)
+
+A uniform bijection of m>=1 rows avoids any fixed forbidden pair set P with probability at most 2^(-|P|/m); log(2) is the sharp uniform exponential constant.
+
+**Significance:** `general_tool` · **Novelty:** `not_claimed`
+
+**Why it matters:** Elementary standard-theorem corollary repairing a shared probability input; no independent novelty claim.
+
+**Decision (agent):** A valid universal matching-avoidance estimate replaces the false constant-one premise; one dense-label threshold is repaired. Further affected reader proofs need separate conditioning and constant audits. No novelty claim.
+
+---
+
+### Punctured higher jet polynomial obstruction
+
+**Claim:** [obs:punctured-higher-jet-polynomial-obstruction](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#punctured-higher-jet-polynomial-obstruction>)
+
+For 3<=k<=q and every n>=1, a truncated Hasse-Taylor lift of the zero selector is nonzero at zero, k-fold vanishing elsewhere, and has degree at most n(q-1)+(q-1)(k-1), below the proposed covering bound.
+
+**Significance:** `negative_result` · **Novelty:** `unknown`
+
+**Why it matters:** Falsifies the proposed arbitrary-polynomial extension in every dimension; actual factor structure is necessary for the covering route.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Use the exact scope in the next route assessment; independent review and prior-art clarification remain separate.
+
+---
+
+### Ternary local lift no infinite iteration
+
+**Claim:** [obs:ternary-local-lift-no-infinite-iteration](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#ternary-local-lift-no-infinite-iteration>)
+
+Every coverage-dominating replacement of two ternary scalar pairs by six forms in their span plus one new coordinate decreases Phi=B+2E; hence this local scheme cannot iterate indefinitely.
+
+**Significance:** `negative_result` · **Novelty:** `unknown`
+
+**Why it matters:** Refutes the proposed resource-free iteration mechanism while retaining the valid one-step lift.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Use the exact scope in the next route assessment; independent review and prior-art clarification remain separate.
+
+---
+
+### Ternary unpaired triple covers
+
+**Claim:** [obs:ternary-unpaired-triple-covers](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#ternary-unpaired-triple-covers>)
+
+Explicit zero-avoiding ternary triple covers have 10 planes in dimension 3 and 12 in dimension 4, and are not complete scalar bundles.
+
+**Significance:** `negative_result` · **Novelty:** `unknown`
+
+**Why it matters:** Falsifying controls for a proposed structural shortcut; isolated dimensions are not an asymptotic counterexample.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Use the exact scope in the next route assessment; independent review and prior-art clarification remain separate.
+
+---
+
+### BLVZ chessboard filling
+
+**Claim:** [third-party:BLVZ-chessboard-filling](<https://kbr.is-a.dev/math-research/#lean-chessboard-filling>)
+
+For s≥2 and N≥2s-1, every F₂ reduced (s-2)-cycle of the chessboard complex has a filling
+
+**Significance:** `general_tool` · **Novelty:** `known`
+
+**Why it matters:** Reusable scoped interface; preserve the stated field, degree and source restrictions. BLVZ Theorem 1.1 consequence; full original F₂ statement and all formal proof dependencies verified, including s=2 augmentation
+
+**Decision (agent):** Fossick 20 September: potential reusable formalization artifact, not a new BLVZ theorem. The recorded binary augmented filling proof includes its finite homological-cover and chain-map dependencies. Evaluate packaging or upstream/library reuse with exact F2 scope and attribution; no claim of first formalization, new theorem, fresh kernel replay or publication readiness. See entry-2026-09-20-fossick-formalization-artifacts.
+
+---
+
+### Cell support exclusion with exceptional lines
+
+**Claim:** [thm:cell-support-exclusion-with-exceptional-lines](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#cell-support-exclusion-with-exceptional-lines>)
+
+For fixed p, 0<eps<=1, A, c and 0<beta<eps/2, every standard syntactic Res(lin_Fp) refutation of ordinary or functional unary PHP^{n+1}_n with at most n^c lines has more than K_n=Theta(n^beta) lines whose clause has union of cell supports above n^{2-eps}(log n)^A, for large n; K_n=floor((floor((N+1)/2)/T-(4p-1))/(p-1)^2) with N=ceil(n^beta) and T=max(1,2(k-1)), k least with k(eps-2beta)>c+1.
+
+**Significance:** `independent_result` · **Novelty:** `candidate`
+
+**Why it matters:** The cell-support exceptional-lines theorem is, as far as the bounded novelty check shows, among the first superpolynomial size lower bounds for classes of DAG-like Res(lin_Fp) refutations of PHP at an odd prime; its chain is independently audited.
+
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
+
+**Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, the all-prime split-line proposition); an exact-scope novelty review before any publication decision by the user.
+
+---
+
+### Depth four ENS query obstruction
+
+**Claim:** [thm:depth-four-ENS-query-obstruction](<https://kbr-.github.io/math-research/#shallow-ENS-query-obstruction>)
+
+Depth-four query formulas of size O(n^2 log^3 n) defeat the sufficient ENS probability rate at the stated degree and height, including the refined generic source budgets
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Candidate refinement of the same method barrier: polynomial-size arithmetic-depth-four queries already defeat its sufficient rate. Treat jointly with the universal obstruction, with classical pseudorandomness attribution; no exact prior query-rate match found in the bounded audit, and novelty remains unknown.
+
+**Decision (agent):** Fossick 20 September: read the degree-mixture sampler and explicit depth-four parameter argument. Assess jointly with the universal rate obstruction, not as a second independent discovery. The claim does not settle the weaker diagonal question or constrain exact proof-specific source queries. See entry-2026-09-20-fossick-query-obstructions.
+
+**Next:** Before any publication claim, isolate the additional quantitative ENS-rate/query contribution from the cited finite-field moment and small-bias ingredients and obtain an independent priority/scope assessment.
+
+---
+
+### Generic CNF affine DAG subspace criterion
+
+**Claim:** [thm:generic-CNF-affine-DAG-subspace-criterion](<https://kbr.is-a.dev/math-research/#lean-generic-CNF-affine-DAG-subspace-criterion>)
+
+An S-node affine refutation DAG whose initial clauses are covered by t width-w clauses gives 3S+t registry slots and PC degree max(2h+w,4h+1); a separated degree-k subspace U then forces dim U <= (3S+t) C(v-(h(k+1)+1)+k,k)
+
+**Significance:** `general_tool` · **Novelty:** `not_claimed`
+
+**Why it matters:** Generic affine-DAG criterion is sufficient; only bit PHP is shown to meet the separation hypothesis.
+
+**Decision (agent):** Fossick 20 September: substantive generalization beyond bit PHP to arbitrary binary old bases and separated polynomial subspaces, with a verified generic CNF bridge. Evaluate as a reusable sufficient lower-bound criterion; finding a large separated U remains the difficult hypothesis. Not a size-degree or size-width relation. The satisfiable-base prose slip is corrected separately, without changing the formal theorem. See entry-2026-09-20-fossick-generic-criterion.
+
+---
+
+### Heterogeneous scalar profile frontier
+
+**Claim:** [thm:heterogeneous-scalar-profile-frontier](<https://kbr-.github.io/math-research/#categorical-heterogeneous-frontier>)
+
+For N independent encoded scalar profiles and coefficient degree T, h rows suffice exactly when the max(0,N-hT) smallest nonzero alphabet sizes sum to at most h
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Potential independent exact frontier for polynomial-coefficient ENS factors in independent encoded scalar profiles. Constant coefficients recover classical finite-grid covering; the positive-degree occurrence-budget refinement was not identified in the targeted primary comparison, so novelty remains unknown.
+
+**Decision (agent):** Focused open-problem search, 20 September: retain this independent exact frontier as a candidate with unknown novelty. Its constant-coefficient endpoint is classical Alon–Furedi. Located explicit questions concern infinite grids, multiplicities or general weight-determined subsets and are not settled by the finite encoded factor theorem. No matching explicitly posed open problem was identified; obtain expert comparison of the positive-degree encoded model before promotion. See entry-2026-09-20-frontier-open-problem-audit.
+
+**Next:** Before promotion, obtain a finite-grid-covering expert comparison of the positive-T encoded-coordinate factor model and its untouched-group budget; distinguish native scalar degree and the already known T=0 case.
+
+---
+
+### Modular collision linear search hardness
+
+**Claim:** [thm:modular-collision-linear-search-hardness](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness>)
+
+The modular-collision theorem: for every odd prime p there are C_p, n_p such that for n >= n_p every linear decision tree over F_p (arbitrary affine queries in the variables x_{ih} of unary PHP with n+1 pigeons and n holes) of depth d that outputs two pigeons outputs two pigeons of one hole under the modular-collision near-bijection mu_E (n+1 pigeons onto the holes outside a fixed set E of p-1 holes, one hole receiving p+1) with probability at most C_p d sqrt((d + ln n)/n); so depth Omega_p(n^{1/3}) is needed for success probability 1/2. Proof: swap simulation in dense graphs; combinations of queries close to additive are made additive by revealing the pigeons on their exceptional cells, the others are localized on fresh random pairs whose orientations are hidden uniform bits (Fourier bound for systems), with a transfer from the prior along fixed paths to the adaptive tree.
+
+**Significance:** `independent_result` · **Novelty:** `not_claimed`
+
+**Why it matters:** A distribution on which linear decision trees over F_p need polynomial depth to find a collision in unary PHP, against O(log n) for the one-defect classes; it removes the distribution obstacle of Byramji-Impagliazzo Remark A.4 in search form for odd p.
+
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
+
+**Next:** Its route to a proof-system bound is blocked at the restriction (lem:dense-class-restrictions-imply-additive, prop:ResLin-padding-far-inequation); route review next; check novelty before any write-up.
+
+---
+
+### Nonlocal dimension exclusion linear exceptional lines
+
+**Claim:** [thm:nonlocal-dimension-exclusion-linear-exceptional-lines](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#nonlocal-dimension-exclusion-linear-exceptional-lines>)
+
+For every odd prime p, fixed eps>0 and c>0 there is C=C(p)>0 such that, for large n, every standard syntactic Res(lin_Fp) refutation of ordinary or functional unary PHP^{n+1}_n with at most n^c lines has more than Cn lines of nonlocal dimension above n^{1/(p-1)-eps}.
+
+**Significance:** `independent_result` · **Novelty:** `candidate`
+
+**Why it matters:** The linear exceptional-lines theorem is, as far as the bounded novelty check shows, among the first superpolynomial size lower bounds for classes of DAG-like Res(lin_Fp) refutations of PHP at an odd prime; its chain is independently audited.
+
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
+
+**Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, the all-prime split-line proposition); an exact-scope novelty review before any publication decision by the user.
+
+---
+
+### Odd field double cover exact
+
+**Claim:** [thm:odd-field-double-cover-exact](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#odd-field-double-cover-exact>)
+
+For every prime power q>=2 and every n>=1, f_q(n,2,1)=(q-1)(n+1): nonzero vectors covered at least twice, origin at most once, with hyperplane repetitions allowed.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Matches the k=2 specialization of BBDM 2023 Question 4.2 for all dimensions and finite fields. The source construction is known; novelty of the full implication remains unresolved.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Independently verify the first-jet argument and clarify prior knowledge or intended scope of the printed double-cover question before publication.
+
+---
+
+### Ordinary unary PHP Res parity superpolynomial
+
+**Claim:** [thm:ordinary-unary-PHP-Res-parity-superpolynomial](<https://kbr.is-a.dev/math-research/#ordinary-unary-PHP-Res-parity-superpolynomial>)
+
+For every real K>0, sufficiently large ordinary unary PHP and its functional variant require more than N^K nodes in unrestricted DAG-like Res(parity), under both recorded rule conventions.
+
+**Significance:** `independent_result` · **Novelty:** `candidate`
+
+**Why it matters:** Potential independent unrestricted lower bound for the ordinary unary PHP encoding, separate from the existing bit-PHP preprint and the main Frege target. The graph argument and its exact same-graph compiler composition need expert review and a fuller prior-art audit.
+
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
+
+**Next:** Audit the binary CNF-to-affine-registry transfer (width sixteen, PC degree 18), the one part of the chain not yet independently reviewed; then an expert review. The graph weight and composition passed an independent audit on 22 September 2026, and the bounded novelty check of that day found no published unrestricted unary bound.
+
+---
+
+### Prime disequality bit PHP size bound
+
+**Claim:** [thm:prime-disequality-bit-PHP-size-bound](<https://kbr.is-a.dev/math-research/#prime-disequality-bit-PHP-size-bound>)
+
+The defined DAG-like affine-disequality calculus has no polynomial-size bit-PHP refutations for any fixed prime
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Working all-prime size bound for the explicitly defined full-field affine-disequality calculus. Potential independent side result; targeted comparison distinguishes equation-clause Res(lin_Fp), Boolean semantic variants and tree-like unary-PHP literature. No novelty or stronger-system identification is certified.
+
+**Decision (agent):** Fossick 20 September: rechecked the exact full-field disequality calculus, usual-domain clauses and exponential same-coordinate equation-clause conversion example. Part–Tzameret TR18-117 confirms the equation-clause terminology. Retain the working all-prime side result with unknown novelty; no general odd-prime Res(lin) or unary-PHP consequence. See entry-2026-09-20-fossick-publication-scope.
+
+**Next:** Before separate publication, obtain expert comparison with affine-subspace-cover calculi and possible Boolean-domain-aware simulations; retain the full-field disequality and explicit-domain scope.
+
+---
+
+### Publication Res parity bit PHP
+
+**Claim:** [thm:publication-Res-parity-bit-PHP](<https://kbr.is-a.dev/math-research/#publication-Res-parity-bit-PHP-theorem>)
+
+Every real K>0 eventually bounds below the node count of every usual-CNF bit-PHP affine DAG refutation with n=2^ℓ holes and n+1 pigeons
+
+**Significance:** `independent_result` · **Novelty:** `candidate`
+
+**Why it matters:** Publication-side lower bound for unrestricted Res(parity) bit PHP; the recorded focused literature audit identifies an open benchmark. Distinct from the main Frege goal.
+
+**Decision (agent):** Fossick 20 September: read the exact usual-CNF encoding, both rule conventions, theorem and linked end-to-end proof. This is the canonical publication item; predecessor formulations and later quantitative refinements belong to the same branch. Recorded Lean verification is not independent expert review or renewed novelty certification. See entry-2026-09-20-fossick-publication-review.
+
+**Next:** Obtain independent expert review and resolve novelty against the exact literature scope; this curation does not perform a new literature search.
+
+---
+
+### Unary reader hole query switching
+
+**Claim:** [thm:unary-reader-hole-query-switching](<https://kbr.is-a.dev/math-research/#unary-switching-theorem>)
+
+In the random-flat family a unary reader has, with probability >= 1 - 1/(8S) - Delta_0^{k_2}(N/n)^{ceil(log2 k_2)+1} - 2^{-k_1}, a pigeon-and-hole-query tree of height <= k_1 + k_2 whose 1-leaves contain a satisfied term and whose 0-leaves falsify or annihilate every term; for S = n^c readers, k_1 = ceil(log2(16S)), k_2 = 2^{c+2}, one restriction serves all unary readers with height O(log S + 2^c); readers with separate light and unary terms are covered with the light encoding
+
+**Significance:** `route_specific` · **Novelty:** `not_claimed`
+
+**Why it matters:** Unary-only qualitative switching has a separately proved repair. Original finite constants and grouped separate-light composition are not automatically certified; the general literal/parity frontier remains open.
+
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
+
+---
+
+### Uniform parity degree two
+
+**Claim:** [thm:uniform-parity-degree-two](<https://kbr.is-a.dev/math-research/#parity-two-uniform>)
+
+Theorem U: for M independent uniform affine forms and d = N^2-1-M with C(d,2) >= dim Kbar + (log2 d)^2/6 + s and d >= 12N + 8 log2 N + 2s, with probability at least 1 - 2^(-d) - 7*2^(-s) the base with the parity constraints has no degree fall at levels one and two and no PC refutation of degree two; asymptotically M <= N^2 - sqrt2 N^(3/2) (1+o(1)), matching the forced count
+
+**Significance:** `route_specific` · **Novelty:** `not_claimed`
+
+**Why it matters:** Uniform parity theorem is asymptotic and degree two only, not a general HW theorem.
+
+**Decision (agent):** Fossick final batch: possible independently useful degree-two robustness/relative-rank result for random affine constraints on functional PHP. Read Theorems T2 and U: sufficient no-fall condition, explicit probability bounds, and a forced fall-or-extra-relation count. This is not a sharp refutation threshold, a degree-three result, or the general HW claim. Assess novelty and broader utility before promotion; no new literature audit performed. See entry-2026-09-20-fossick-completion.
+
+---
+
+### Universal ENS pseudosolution rate obstruction
+
+**Claim:** [thm:universal-ENS-pseudosolution-rate-obstruction](<https://kbr-.github.io/math-research/#universal-ENS-pseudosolution-rate-obstruction>)
+
+No degree-D design distribution for an unsatisfiable Boolean quadratic system meets gamma>S*(1-1/p)^h at height h+ceil(log2 S), for S>=2 and D>=2h; F2 needs only D>=h+1
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Standalone candidate method barrier for all unsatisfiable Boolean quadratic systems and finite design distributions in the stated degree regime. Bounded primary-literature audit found close rank-growth prior art but no exact ENS-rate statement; priority remains unknown. Does not settle the weaker diagonal question or imply any Frege bound.
+
+**Decision (agent):** Fossick 20 September: reviewed the full claim summaries, flatness/operator proof and existing targeted priority audit. Retain one joint method-barrier candidate with the depth-four refinement; rank-growth and small-bias ingredients have close prior art. Isolate the additional quantitative survival-rate conclusion for expert review. No novelty or correctness certification. See entry-2026-09-20-fossick-query-obstructions.
+
+**Next:** Before any publication claim, isolate the additional quantitative ENS-rate/query contribution from the cited finite-field moment and small-bias ingredients and obtain an independent priority/scope assessment.
+
+## Pending: automatically queued
+
+Queued automatically because their novelty is unknown, mostly reusable tools; lower priority than the headline results.
+
 ### Rank free flat value choice
 
 **Claim:** [cor:rank-free-flat-value-choice](<https://kbr.is-a.dev/math-research/#rank-free-flat-value-choice>)
@@ -180,22 +478,6 @@ For any mixed class f outside C_B over binary PHP, its old bit-affine annihilato
 
 ---
 
-### Finite field punctured first jet degree
-
-**Claim:** [lem:finite-field-punctured-first-jet-degree](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#finite-field-punctured-first-jet-degree>)
-
-Over F_q, a polynomial double-vanishing at all nonzero grid points has degree at least n(q-1)+q-1 if nonzero at the origin, and at least n(q-1)+q if the origin is a simple zero; every prime power q and n>=1.
-
-**Significance:** `general_tool` · **Novelty:** `unknown`
-
-**Why it matters:** Handles the permitted exceptional simple zero needed to pass from punctured polynomial bounds to the printed double-cover question.
-
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
-
-**Next:** Obtain independent review and identify any prior statement of the simple-origin strengthening before claiming novelty.
-
----
-
 ### First active quadratic parent lift
 
 **Claim:** [lem:first-active-quadratic-parent-lift](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#first-active-quadratic-parent-lift>)
@@ -241,20 +523,6 @@ For any field, rank-threshold preservation and injectivity on supports of all lo
 **Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Assess general exterior-kernel applications and prior art before making an independent novelty claim.
-
----
-
-### Matching avoidance with slack
-
-**Claim:** [lem:matching-avoidance-with-slack](<https://kbr.is-a.dev/math-research/#matching-avoidance-with-slack>)
-
-A uniform bijection of m>=1 rows avoids any fixed forbidden pair set P with probability at most 2^(-|P|/m); log(2) is the sharp uniform exponential constant.
-
-**Significance:** `general_tool` · **Novelty:** `not_claimed`
-
-**Why it matters:** Elementary standard-theorem corollary repairing a shared probability input; no independent novelty claim.
-
-**Decision (agent):** A valid universal matching-avoidance estimate replaces the false constant-one premise; one dense-label threshold is repaired. Further affected reader proofs need separate conditioning and constant audits. No novelty claim.
 
 ---
 
@@ -322,68 +590,6 @@ Adding R disjoint nonedges to a graph of maximum degree Delta reduces its indepe
 
 ---
 
-### Punctured higher jet polynomial obstruction
-
-**Claim:** [obs:punctured-higher-jet-polynomial-obstruction](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#punctured-higher-jet-polynomial-obstruction>)
-
-For 3<=k<=q and every n>=1, a truncated Hasse-Taylor lift of the zero selector is nonzero at zero, k-fold vanishing elsewhere, and has degree at most n(q-1)+(q-1)(k-1), below the proposed covering bound.
-
-**Significance:** `negative_result` · **Novelty:** `unknown`
-
-**Why it matters:** Falsifies the proposed arbitrary-polynomial extension in every dimension; actual factor structure is necessary for the covering route.
-
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
-
-**Next:** Use the exact scope in the next route assessment; independent review and prior-art clarification remain separate.
-
----
-
-### Ternary local lift no infinite iteration
-
-**Claim:** [obs:ternary-local-lift-no-infinite-iteration](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#ternary-local-lift-no-infinite-iteration>)
-
-Every coverage-dominating replacement of two ternary scalar pairs by six forms in their span plus one new coordinate decreases Phi=B+2E; hence this local scheme cannot iterate indefinitely.
-
-**Significance:** `negative_result` · **Novelty:** `unknown`
-
-**Why it matters:** Refutes the proposed resource-free iteration mechanism while retaining the valid one-step lift.
-
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
-
-**Next:** Use the exact scope in the next route assessment; independent review and prior-art clarification remain separate.
-
----
-
-### Ternary unpaired triple covers
-
-**Claim:** [obs:ternary-unpaired-triple-covers](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#ternary-unpaired-triple-covers>)
-
-Explicit zero-avoiding ternary triple covers have 10 planes in dimension 3 and 12 in dimension 4, and are not complete scalar bundles.
-
-**Significance:** `negative_result` · **Novelty:** `unknown`
-
-**Why it matters:** Falsifying controls for a proposed structural shortcut; isolated dimensions are not an asymptotic counterexample.
-
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
-
-**Next:** Use the exact scope in the next route assessment; independent review and prior-art clarification remain separate.
-
----
-
-### BLVZ chessboard filling
-
-**Claim:** [third-party:BLVZ-chessboard-filling](<https://kbr.is-a.dev/math-research/#lean-chessboard-filling>)
-
-For s≥2 and N≥2s-1, every F₂ reduced (s-2)-cycle of the chessboard complex has a filling
-
-**Significance:** `general_tool` · **Novelty:** `known`
-
-**Why it matters:** Reusable scoped interface; preserve the stated field, degree and source restrictions. BLVZ Theorem 1.1 consequence; full original F₂ statement and all formal proof dependencies verified, including s=2 augmentation
-
-**Decision (agent):** Fossick 20 September: potential reusable formalization artifact, not a new BLVZ theorem. The recorded binary augmented filling proof includes its finite homological-cover and chain-map dependencies. Evaluate packaging or upstream/library reuse with exact F2 scope and attribution; no claim of first formalization, new theorem, fresh kernel replay or publication readiness. See entry-2026-09-20-fossick-formalization-artifacts.
-
----
-
 ### PHP quotient rank selector exclusion
 
 **Claim:** [thm:PHP-quotient-rank-selector-exclusion](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#PHP-quotient-rank-selector-exclusion>)
@@ -448,22 +654,6 @@ For every fixed prime p, unary weak or functional PHP plus any polynomial-invent
 
 ---
 
-### Cell support exclusion with exceptional lines
-
-**Claim:** [thm:cell-support-exclusion-with-exceptional-lines](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#cell-support-exclusion-with-exceptional-lines>)
-
-For fixed p, 0<eps<=1, A, c and 0<beta<eps/2, every standard syntactic Res(lin_Fp) refutation of ordinary or functional unary PHP^{n+1}_n with at most n^c lines has more than K_n=Theta(n^beta) lines whose clause has union of cell supports above n^{2-eps}(log n)^A, for large n; K_n=floor((floor((N+1)/2)/T-(4p-1))/(p-1)^2) with N=ceil(n^beta) and T=max(1,2(k-1)), k least with k(eps-2beta)>c+1.
-
-**Significance:** `independent_result` · **Novelty:** `candidate`
-
-**Why it matters:** The cell-support exceptional-lines theorem is, as far as the bounded novelty check shows, among the first superpolynomial size lower bounds for classes of DAG-like Res(lin_Fp) refutations of PHP at an odd prime; its chain is independently audited.
-
-**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
-
-**Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, the all-prime split-line proposition); an exact-scope novelty review before any publication decision by the user.
-
----
-
 ### Coded disjoint trade spanning
 
 **Claim:** [thm:coded-disjoint-trade-spanning](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-coded-trade-spanning>)
@@ -509,22 +699,6 @@ Under the explicit QC-room inequalities, every compact-bit variable cut admits a
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Audit prior work on bounded-degree quotient rank and identify uses beyond the already foldable OR fixture before any novelty/publication claim.
-
----
-
-### Depth four ENS query obstruction
-
-**Claim:** [thm:depth-four-ENS-query-obstruction](<https://kbr-.github.io/math-research/#shallow-ENS-query-obstruction>)
-
-Depth-four query formulas of size O(n^2 log^3 n) defeat the sufficient ENS probability rate at the stated degree and height, including the refined generic source budgets
-
-**Significance:** `independent_result` · **Novelty:** `unknown`
-
-**Why it matters:** Candidate refinement of the same method barrier: polynomial-size arithmetic-depth-four queries already defeat its sufficient rate. Treat jointly with the universal obstruction, with classical pseudorandomness attribution; no exact prior query-rate match found in the bounded audit, and novelty remains unknown.
-
-**Decision (agent):** Fossick 20 September: read the degree-mixture sampler and explicit depth-four parameter argument. Assess jointly with the universal rate obstruction, not as a second independent discovery. The claim does not settle the weaker diagonal question or constrain exact proof-specific source queries. See entry-2026-09-20-fossick-query-obstructions.
-
-**Next:** Before any publication claim, isolate the additional quantitative ENS-rate/query contribution from the cited finite-field moment and small-bias ingredients and obtain an independent priority/scope assessment.
 
 ---
 
@@ -656,20 +830,6 @@ Over F2, ordinary functional or weak unary PHP with any polynomial-inventory com
 
 ---
 
-### Generic CNF affine DAG subspace criterion
-
-**Claim:** [thm:generic-CNF-affine-DAG-subspace-criterion](<https://kbr.is-a.dev/math-research/#lean-generic-CNF-affine-DAG-subspace-criterion>)
-
-An S-node affine refutation DAG whose initial clauses are covered by t width-w clauses gives 3S+t registry slots and PC degree max(2h+w,4h+1); a separated degree-k subspace U then forces dim U <= (3S+t) C(v-(h(k+1)+1)+k,k)
-
-**Significance:** `general_tool` · **Novelty:** `not_claimed`
-
-**Why it matters:** Generic affine-DAG criterion is sufficient; only bit PHP is shown to meet the separation hypothesis.
-
-**Decision (agent):** Fossick 20 September: substantive generalization beyond bit PHP to arbitrary binary old bases and separated polynomial subspaces, with a verified generic CNF bridge. Evaluate as a reusable sufficient lower-bound criterion; finding a large separated U remains the difficult hypothesis. Not a size-degree or size-width relation. The satisfiable-base prose slip is corrected separately, without changing the formal theorem. See entry-2026-09-20-fossick-generic-criterion.
-
----
-
 ### Greedy internal affine reference transfer
 
 **Claim:** [thm:greedy-internal-affine-reference-transfer](<https://kbr.is-a.dev/math-research/#greedy-internal-affine-reference-transfer>)
@@ -683,22 +843,6 @@ Adaptive greedy choices clamp internal products while retaining terminal affine 
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Independently audit adaptive old-only decisions, repeated-type certificates, the weighted product telescope and the exact terminal-source PC replay; inspect actual compiler coverage separately.
-
----
-
-### Heterogeneous scalar profile frontier
-
-**Claim:** [thm:heterogeneous-scalar-profile-frontier](<https://kbr-.github.io/math-research/#categorical-heterogeneous-frontier>)
-
-For N independent encoded scalar profiles and coefficient degree T, h rows suffice exactly when the max(0,N-hT) smallest nonzero alphabet sizes sum to at most h
-
-**Significance:** `independent_result` · **Novelty:** `unknown`
-
-**Why it matters:** Potential independent exact frontier for polynomial-coefficient ENS factors in independent encoded scalar profiles. Constant coefficients recover classical finite-grid covering; the positive-degree occurrence-budget refinement was not identified in the targeted primary comparison, so novelty remains unknown.
-
-**Decision (agent):** Focused open-problem search, 20 September: retain this independent exact frontier as a candidate with unknown novelty. Its constant-coefficient endpoint is classical Alon–Furedi. Located explicit questions concern infinite grids, multiplicities or general weight-determined subsets and are not settled by the finite encoded factor theorem. No matching explicitly posed open problem was identified; obtain expert comparison of the positive-degree encoded model before promotion. See entry-2026-09-20-frontier-open-problem-audit.
-
-**Next:** Before promotion, obtain a finite-grid-covering expert comparison of the positive-T encoded-coordinate factor model and its untouched-group budget; distinguish native scalar degree and the already known T=0 case.
 
 ---
 
@@ -734,22 +878,6 @@ For fixed p and alpha<1/5, polynomial complete selector families exclude polylog
 
 ---
 
-### Modular collision linear search hardness
-
-**Claim:** [thm:modular-collision-linear-search-hardness](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#entry-2026-09-22-modular-collision-hardness>)
-
-The modular-collision theorem: for every odd prime p there are C_p, n_p such that for n >= n_p every linear decision tree over F_p (arbitrary affine queries in the variables x_{ih} of unary PHP with n+1 pigeons and n holes) of depth d that outputs two pigeons outputs two pigeons of one hole under the modular-collision near-bijection mu_E (n+1 pigeons onto the holes outside a fixed set E of p-1 holes, one hole receiving p+1) with probability at most C_p d sqrt((d + ln n)/n); so depth Omega_p(n^{1/3}) is needed for success probability 1/2. Proof: swap simulation in dense graphs; combinations of queries close to additive are made additive by revealing the pigeons on their exceptional cells, the others are localized on fresh random pairs whose orientations are hidden uniform bits (Fourier bound for systems), with a transfer from the prior along fixed paths to the adaptive tree.
-
-**Significance:** `independent_result` · **Novelty:** `not_claimed`
-
-**Why it matters:** A distribution on which linear decision trees over F_p need polynomial depth to find a collision in unary PHP, against O(log n) for the one-defect classes; it removes the distribution obstacle of Byramji-Impagliazzo Remark A.4 in search form for odd p.
-
-**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
-
-**Next:** Its route to a proof-system bound is blocked at the restriction (lem:dense-class-restrictions-imply-additive, prop:ResLin-padding-far-inequation); route review next; check novelty before any write-up.
-
----
-
 ### Multirow predicate trade lift
 
 **Claim:** [thm:multirow-predicate-trade-lift](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-coded-trade-spanning>)
@@ -763,22 +891,6 @@ For k designated rows with at most s predicates each, targets in K_d avoiding th
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Obtain independent review of the deletion-budget induction and compare with coded/weighted matching-complex results before claiming novelty; test actual-source compatibility next.
-
----
-
-### Nonlocal dimension exclusion linear exceptional lines
-
-**Claim:** [thm:nonlocal-dimension-exclusion-linear-exceptional-lines](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#nonlocal-dimension-exclusion-linear-exceptional-lines>)
-
-For every odd prime p, fixed eps>0 and c>0 there is C=C(p)>0 such that, for large n, every standard syntactic Res(lin_Fp) refutation of ordinary or functional unary PHP^{n+1}_n with at most n^c lines has more than Cn lines of nonlocal dimension above n^{1/(p-1)-eps}.
-
-**Significance:** `independent_result` · **Novelty:** `candidate`
-
-**Why it matters:** The linear exceptional-lines theorem is, as far as the bounded novelty check shows, among the first superpolynomial size lower bounds for classes of DAG-like Res(lin_Fp) refutations of PHP at an odd prime; its chain is independently audited.
-
-**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
-
-**Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, the all-prime split-line proposition); an exact-scope novelty review before any publication decision by the user.
 
 ---
 
@@ -798,22 +910,6 @@ For odd p and n>=4, degree-two affine Booleanity is equivalent modulo rows to a 
 
 ---
 
-### Odd field double cover exact
-
-**Claim:** [thm:odd-field-double-cover-exact](<https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#odd-field-double-cover-exact>)
-
-For every prime power q>=2 and every n>=1, f_q(n,2,1)=(q-1)(n+1): nonzero vectors covered at least twice, origin at most once, with hyperplane repetitions allowed.
-
-**Significance:** `independent_result` · **Novelty:** `unknown`
-
-**Why it matters:** Matches the k=2 specialization of BBDM 2023 Question 4.2 for all dimensions and finite fields. The source construction is known; novelty of the full implication remains unresolved.
-
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
-
-**Next:** Independently verify the first-jet argument and clarify prior knowledge or intended scope of the printed double-cover question before publication.
-
----
-
 ### Ordering affine source refutation
 
 **Claim:** [thm:ordering-affine-source-refutation](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-ordering-source-test>)
@@ -827,22 +923,6 @@ Graph ordering on n vertices has a complete one-level old-affine ENS source with
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Compare with prior ENS and ordering-principle source constructions and obtain independent review of the balanced merge, inventory and original-degree ledger before any novelty or publication claim.
-
----
-
-### Ordinary unary PHP Res parity superpolynomial
-
-**Claim:** [thm:ordinary-unary-PHP-Res-parity-superpolynomial](<https://kbr.is-a.dev/math-research/#ordinary-unary-PHP-Res-parity-superpolynomial>)
-
-For every real K>0, sufficiently large ordinary unary PHP and its functional variant require more than N^K nodes in unrestricted DAG-like Res(parity), under both recorded rule conventions.
-
-**Significance:** `independent_result` · **Novelty:** `candidate`
-
-**Why it matters:** Potential independent unrestricted lower bound for the ordinary unary PHP encoding, separate from the existing bit-PHP preprint and the main Frege target. The graph argument and its exact same-graph compiler composition need expert review and a fuller prior-art audit.
-
-**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
-
-**Next:** Audit the binary CNF-to-affine-registry transfer (width sixteen, PC degree 18), the one part of the chain not yet independently reviewed; then an expert review. The graph weight and composition passed an independent audit on 22 September 2026, and the bounded novelty check of that day found no published unrestricted unary bound.
 
 ---
 
@@ -862,22 +942,6 @@ For fixed p and 2 alpha+beta<1, unary PHP plus any complete old-affine ENS famil
 
 ---
 
-### Prime disequality bit PHP size bound
-
-**Claim:** [thm:prime-disequality-bit-PHP-size-bound](<https://kbr.is-a.dev/math-research/#prime-disequality-bit-PHP-size-bound>)
-
-The defined DAG-like affine-disequality calculus has no polynomial-size bit-PHP refutations for any fixed prime
-
-**Significance:** `independent_result` · **Novelty:** `unknown`
-
-**Why it matters:** Working all-prime size bound for the explicitly defined full-field affine-disequality calculus. Potential independent side result; targeted comparison distinguishes equation-clause Res(lin_Fp), Boolean semantic variants and tree-like unary-PHP literature. No novelty or stronger-system identification is certified.
-
-**Decision (agent):** Fossick 20 September: rechecked the exact full-field disequality calculus, usual-domain clauses and exponential same-coordinate equation-clause conversion example. Part–Tzameret TR18-117 confirms the equation-clause terminology. Retain the working all-prime side result with unknown novelty; no general odd-prime Res(lin) or unary-PHP consequence. See entry-2026-09-20-fossick-publication-scope.
-
-**Next:** Before separate publication, obtain expert comparison with affine-subspace-cover calculi and possible Boolean-domain-aware simulations; retain the full-field disequality and explicit-domain scope.
-
----
-
 ### Prime equation clause selector transfer
 
 **Claim:** [thm:prime-equation-clause-selector-transfer](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#prime-equation-clause-selector-transfer>)
@@ -891,22 +955,6 @@ An S-line standard F_p equation-clause refutation with initial width w compiles 
 **Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Independently check the degree ledger and test exclusion of the actual power-selector source, starting with p=3.
-
----
-
-### Publication Res parity bit PHP
-
-**Claim:** [thm:publication-Res-parity-bit-PHP](<https://kbr.is-a.dev/math-research/#publication-Res-parity-bit-PHP-theorem>)
-
-Every real K>0 eventually bounds below the node count of every usual-CNF bit-PHP affine DAG refutation with n=2^ℓ holes and n+1 pigeons
-
-**Significance:** `independent_result` · **Novelty:** `candidate`
-
-**Why it matters:** Publication-side lower bound for unrestricted Res(parity) bit PHP; the recorded focused literature audit identifies an open benchmark. Distinct from the main Frege goal.
-
-**Decision (agent):** Fossick 20 September: read the exact usual-CNF encoding, both rule conventions, theorem and linked end-to-end proof. This is the canonical publication item; predecessor formulations and later quantitative refinements belong to the same branch. Recorded Lean verification is not independent expert review or renewed novelty certification. See entry-2026-09-20-fossick-publication-review.
-
-**Next:** Obtain independent expert review and resolve novelty against the exact literature scope; this curation does not perform a new literature search.
 
 ---
 
@@ -1115,50 +1163,6 @@ In characteristic three, polarized lifting at adjacent degrees makes endpoint se
 **Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Keep the pair theorem as a local tool; audit a uniform family assembly mechanism rather than successive fixed-degree extensions.
-
----
-
-### Unary reader hole query switching
-
-**Claim:** [thm:unary-reader-hole-query-switching](<https://kbr.is-a.dev/math-research/#unary-switching-theorem>)
-
-In the random-flat family a unary reader has, with probability >= 1 - 1/(8S) - Delta_0^{k_2}(N/n)^{ceil(log2 k_2)+1} - 2^{-k_1}, a pigeon-and-hole-query tree of height <= k_1 + k_2 whose 1-leaves contain a satisfied term and whose 0-leaves falsify or annihilate every term; for S = n^c readers, k_1 = ceil(log2(16S)), k_2 = 2^{c+2}, one restriction serves all unary readers with height O(log S + 2^c); readers with separate light and unary terms are covered with the light encoding
-
-**Significance:** `route_specific` · **Novelty:** `not_claimed`
-
-**Why it matters:** Unary-only qualitative switching has a separately proved repair. Original finite constants and grouped separate-light composition are not automatically certified; the general literal/parity frontier remains open.
-
-**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
-
----
-
-### Uniform parity degree two
-
-**Claim:** [thm:uniform-parity-degree-two](<https://kbr.is-a.dev/math-research/#parity-two-uniform>)
-
-Theorem U: for M independent uniform affine forms and d = N^2-1-M with C(d,2) >= dim Kbar + (log2 d)^2/6 + s and d >= 12N + 8 log2 N + 2s, with probability at least 1 - 2^(-d) - 7*2^(-s) the base with the parity constraints has no degree fall at levels one and two and no PC refutation of degree two; asymptotically M <= N^2 - sqrt2 N^(3/2) (1+o(1)), matching the forced count
-
-**Significance:** `route_specific` · **Novelty:** `not_claimed`
-
-**Why it matters:** Uniform parity theorem is asymptotic and degree two only, not a general HW theorem.
-
-**Decision (agent):** Fossick final batch: possible independently useful degree-two robustness/relative-rank result for random affine constraints on functional PHP. Read Theorems T2 and U: sufficient no-fall condition, explicit probability bounds, and a forced fall-or-extra-relation count. This is not a sharp refutation threshold, a degree-three result, or the general HW claim. Assess novelty and broader utility before promotion; no new literature audit performed. See entry-2026-09-20-fossick-completion.
-
----
-
-### Universal ENS pseudosolution rate obstruction
-
-**Claim:** [thm:universal-ENS-pseudosolution-rate-obstruction](<https://kbr-.github.io/math-research/#universal-ENS-pseudosolution-rate-obstruction>)
-
-No degree-D design distribution for an unsatisfiable Boolean quadratic system meets gamma>S*(1-1/p)^h at height h+ceil(log2 S), for S>=2 and D>=2h; F2 needs only D>=h+1
-
-**Significance:** `independent_result` · **Novelty:** `unknown`
-
-**Why it matters:** Standalone candidate method barrier for all unsatisfiable Boolean quadratic systems and finite design distributions in the stated degree regime. Bounded primary-literature audit found close rank-growth prior art but no exact ENS-rate statement; priority remains unknown. Does not settle the weaker diagonal question or imply any Frege bound.
-
-**Decision (agent):** Fossick 20 September: reviewed the full claim summaries, flatness/operator proof and existing targeted priority audit. Retain one joint method-barrier candidate with the depth-four refinement; rank-growth and small-bias ingredients have close prior art. Isolate the additional quantitative survival-rate conclusion for expert review. No novelty or correctness certification. See entry-2026-09-20-fossick-query-obstructions.
-
-**Next:** Before any publication claim, isolate the additional quantitative ENS-rate/query contribution from the cited finite-field moment and small-bias ingredients and obtain an independent priority/scope assessment.
 
 ---
 
