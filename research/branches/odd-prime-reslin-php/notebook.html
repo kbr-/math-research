@@ -18,7 +18,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Every open line meets at the <a href="#entry-2026-09-23-core-statement-review">core statement</a>, whose batched part is the unproved \(r\)-parameter lift of the <a href="#entry-2026-09-22-p-complex-family-transversal">wide-conditioning conjecture</a>. Its freeness form fails on the board for the <a href="#entry-2026-09-23-occupancy-pair-defect">occupancy pair</a>, though in the column-subalgebra model its early failure was not seen at \(n=16\). The <a href="#entry-2026-09-23-sub-board-refutations">sub-board refutations</a> calibrate the conjecture itself: at degree 3 it needs \(t\ge8\) or \(Q\ge5\). Its hypothesis also admits robust systems that injectivity on the used pigeons already contradicts: one empty hole forced onto a missing value, refuted at degree 3 at \(n=8\). Next, test that one-empty-hole family at \(n=9\): 8 used rows, 4-robust, right-hand side \(d+p\) for the doubled value \(d\), degree 3, with a C++ closure using incremental reduction. A refutation there extends the calibration to \(t\ge9\) or \(Q\ge5\). If the family also stays refuted as robustness grows, the conjecture as stated fails and needs a local-consistency hypothesis. The step ends with the \(n=9\) verdict.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The goal rests on the <a href="#entry-2026-09-23-core-statement-review">core statement</a>: polynomially many small constraints on collectively wide form families, of total density below one. The <a href="#entry-2026-09-23-affine-line-review">affine-line review</a> judged the affine-conditioning line weak for it: its conjecture concerns constraints that are not small and is capped below \(N^2\) blocks. In the <a href="#entry-2026-09-23-low-density-cores">low-density model</a> every recorded defect came from an overlapping subfamily. Next, recompute those 144 instances with a component-corrected prediction: merge constraints joined by circuits of at most three, and use each component's exact series. Exact agreement in every instance with two or more components would suggest that the inductive step splits into bounded components (the <a href="#entry-2026-09-23-planted-overload">bounded-span equivalence</a>) and a genericity theorem for overlap-free families. Then sample at \(v=12\), where the test is less vacuous. The step ends with the corrected comparison.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -8046,6 +8046,61 @@ So \(w\ne0\) in \(A\).</p>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 1.69 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">18 min 43.03 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-23-affine-line-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of the affine-conditioning and freeness line after the occupancy-pair cycles; no new claim.">
+<h3>Route review: the affine-conditioning line left the core statement's regime of small constraints; back to low density, with overlapping constraints merged</h3>
+<p class="entry-meta">23 September 2026 · Route review · The affine line is weak for the goal; the next step tests component-corrected predictions at low density. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>The line's general claim.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. Since the <a href="#entry-2026-09-23-freeness-line-review">freeness-line review</a>, the thread has worked on affine systems on the board. The claim behind it was that the batched mechanism would follow from freeness of the PHP algebra \(A\) over the forms' span: the \(r\)-parameter lift of the <a href="#entry-2026-09-22-p-complex-family-transversal">wide-conditioning conjecture</a>, with that conjecture as the target.</p>
+<p><strong>What the goal needs.</strong> The goal rests on the <a href="#entry-2026-09-23-core-statement-review">core statement</a>. PHP must stay hard at polylogarithmic degree under polynomially many constraints, each saying that a collectively wide family of forms avoids a small set of values, with total density below one. Here the density of a constraint is the fraction of its family's value tuples it forbids, as in the <a href="#entry-2026-09-23-low-density-cores">low-density entry</a>. Each constraint must forbid a small set of values. An affine equation forbids \(1-1/p\) of its form's values. An affine system of \(r\) equations, read as one constraint on its family, forbids \(1-p^{-r}\) of them, below one but not small. So the wide-conditioning conjecture concerns constraints that are not small. The core-statement review listed random affine constraints as support for the core statement. They support this large-constraint analogue, not the statement itself. Its own recorded ceiling says that even if true it certifies no transversal at about \(N^2\) random blocks. The ceiling limits it as a sufficient condition, not the underlying mechanism, and does not cover non-affine conditionings. The <a href="#entry-2026-09-23-clause-transfer-review">clause-transfer review</a> reached the same cap from the freeness side.</p>
+<h4>What the line established</h4>
+<ul>
+<li>The <a href="#entry-2026-09-23-occupancy-witness">occupancy non-freeness theorem</a>: freeness proofs need \(Q\ge2D-2\) for column-type forms.</li>
+<li>A non-pointwise freeness defect on the board at \(r=2\) (<a href="#entry-2026-09-23-occupancy-pair-defect">occupancy pair</a>). In the column-subalgebra model its one-degree-early failure was not seen at \(n=16\).</li>
+<li>A calibration of the conjecture at degree 3 and \(n=8\): \(t\ge8\) or \(Q\ge5\) (<a href="#entry-2026-09-23-sub-board-refutations">sub-board refutations</a>). Also, its hypothesis admits robust systems that are locally infeasible.</li>
+</ul>
+<h4>Falsification attempt</h4>
+<p>Do these refutations contradict a recorded positive result, or the core statement?</p>
+<ul>
+<li><strong>The recorded lifts.</strong> The <a href="#collectively-wide-two-form-prime-lift">two-form lift</a> needs evaluation robustness through \(3d+3p-1=3d+8\) deleted labels, the labels being the 8 holes, and its size condition \(N&gt;p(3d+3p-1)/(p-1)\ge12\). Neither holds at \(n=8\) for any \(d\), so all \(n=8\) refutations lie outside it. No contradiction.</li>
+<li><strong>The core statement.</strong> The refuted 5-row system is one constraint on a two-form family, "the pair avoids eight of its nine values", of density \(8/9\). That is not a small set of values, and its width is 5 rows. The core statement lets the width grow with \(n\), polylogarithmically in the prefix reduction. So a degree-3 refutation at width 5 is consistent with it on both counts.</li>
+<li><strong>A density-small version.</strong> A density-\(1/9\) constraint would forbid one value of the pair. Its refutation status was not computed. It is the natural low-density analogue.</li>
+</ul>
+<p>So the attempt found no contradiction. It confirmed that the line's objects are constraints that are not small, outside the core statement's hypothesis.</p>
+<h4>Assessment of this line</h4>
+<p>The affine line is weak for the goal. Its target conjecture is capped, as a sufficient condition, below \(N^2\) random blocks by its own dimension bound. Its natural proof route, freeness, fails in its plain form at \(r=2\) on one structured span, the occupancy pair; in the model that failure was not seen at higher robustness. Its recent cycles produced calibrations, which are special cases at \(n=8\), not a mechanism. None of it concerns polynomially many small constraints, the core statement's regime. Further affine cycles would refine a statement the goal cannot use as it stands.</p>
+<p>One observation carries over: robust systems can be locally infeasible, and the <a href="#entry-2026-09-22-star-closure-delayer-step">closure sub-line</a>'s local-consistency notions may be needed in any correct version of such statements.</p>
+<h4>Next step: merge overlapping constraints, then test the remainder</h4>
+<p>The last cycle in the core statement's regime was the <a href="#entry-2026-09-23-low-density-cores">low-density entry</a>. In the truncated ring \(B=\mathbb F_3[s_1,\dots,s_v]/(s_i^3)\), with width-two product constraints \(\mu_a^2\mu_b^2\) of total density below one, all 53 defects in 144 random instances came from overlapping subfamilies. Those are constraints whose forms span fewer dimensions than their number.</p>
+<p>Those defects were measured against the independent-product prediction \(W=\mathrm{HS}_B(1-t^4/(1+t+t^2)^2)^M\). For an overlapping subfamily that prediction is simply wrong: its forms live in a small span, with its own exact quotient ring. Such a subfamily is bounded-span structure. The recorded <a href="#entry-2026-09-23-planted-overload">bounded-span equivalence</a> turns it into conditioning on its allowed patterns.</p>
+<p>So the natural decomposition is structure plus remainder. Call a subfamily of constraints a <em>circuit</em> when its forms span fewer than \(2|S|\) dimensions but those of every proper subfamily span the full \(2|S'|\). Merge constraints into components, connecting two when they lie in a common circuit of at most three constraints. Replace each component's factor in the prediction by its own exact series: the Hilbert series of the component's quotient, divided by that of the truncated ring on its span. Keep the truncation rule, zero from the first nonpositive coefficient. If families met this component-corrected prediction whenever their components are small, that would suggest the inductive step the core statement needs splits in two:</p>
+<ul>
+<li>bounded components, handled on the structured side by the bounded-span equivalence;</li>
+<li>a genericity theorem for families of components whose spans do not overlap.</li>
+</ul>
+<p>The next step on odd-prime-clause-transfer recomputes the 144 recorded instances (<code>products.json</code>) with the component-corrected prediction. The prediction to test is that \(H\) equals the corrected truncated prediction through degree 8 in every instance with at least two components. Instances forming a single component are tautological and excluded. A circuit's own excess is removed by construction, so the test is whether any mismatch remains elsewhere, including new mismatches the correction creates. A mismatch would be special position that the small overlaps do not explain, at low density. That is the obstruction the inductive step would have to face.</p>
+<p>The recorded instances have \(v\le9\), the range the low-density entry called barely tested, since a nonvacuous test needs \(v\ge2D\). So after the recorded instances, sample new ones at \(v=12\). There the truncated ring has dimensions \((1,12,78,352,1221,3432,8074,16236,28314)\) through degree 8, so a degree-8 rank with \(M\le8\) constraints is at most about \(8\cdot1221\times28314\), well within reach. The corrected prediction's positivity through the tested degree is checked per instance before its comparison counts. The board version needs its own sizing: a two-form predicate has degree 4 on \(A\), so it needs degree at least 5 there. The step ends with the corrected comparison on the recorded and the \(v=12\) instances.</p>
+<p><strong>Verification gate.</strong> Re-read: the core-statement review (the statement, its density wording and its list of supporting lines), the low-density entry (model, prediction, cores), the wide-conditioning conjecture's ceiling paragraph, the bounded-span equivalence, the two-form lift's claim row, and the recent affine entries summarized above. Claim searches for merged or component-corrected predictions found the relative-span entry's overloaded subfamilies, on the structured side, and no such correction. A fresh-context reviewer required changes, all adopted:</p>
+<ul>
+<li>the density convention stated, and the exclusion of the affine line rested on constraints not being small, since an \(r\)-equation system read as one constraint has density \(1-p^{-r}&lt;1\);</li>
+<li>"closed" weakened to "weak", with the ceiling described as a limit on a sufficient condition;</li>
+<li>the two-form lift's labels and size condition made explicit;</li>
+<li>components defined through circuits, since any triple containing an overlapping pair also has deficient span;</li>
+<li>the test made able to fail: exact agreement required, single-component instances excluded, and the barely-tested range of the recorded data noted, with a \(v=12\) extension sized;</li>
+<li>the unsized board step reduced to its degree constraint.</li>
+</ul>
+
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-window-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 48.23 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 24.49 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 23.65 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">0.09 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
