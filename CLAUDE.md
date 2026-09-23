@@ -16,7 +16,9 @@ research/CLAIM_INDEX.md for the same objects (rules, trees, reader families), an
 search the index under the technique's own name for every lemma formulated during the
 cycle (for example "case split", "telescoping", "weight") and under the record's words
 for the same method, not only the cycle's own (a table of costs once missed the recorded
-"old-consequence transfer" because the search used "conservativity"); run
+"old-consequence transfer" because the search used "conservativity"), and under the dual
+formulation, since the record often states a result for the adjoint maps (two single-square
+annihilator lemmas were rediscoveries of an exactness theorem for weighted-marginal contractions); run
 `tools/search-claims.py` with the content words of each new statement, which ranks the rows
 by shared uncommon words whatever the phrasing (a phrase search for "support size" missed
 the recorded point-support lemma, which this search puts first), because the opening
