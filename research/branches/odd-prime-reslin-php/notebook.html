@@ -18,7 +18,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> A route review, forced after six research entries. The local lift is now proved: the symmetric many-form lift holds at every degree \(d\) for forms independent modulo constants on every row, on \(2d+2\) rows with label robustness \(O(d^2r^2)\) (<a href="#entry-2026-09-23-short-generation-theorem">short-generation theorem</a>). The review weighs this against what the goal needs: fullness against the goal's forms; the step from symmetric lifts to joint extension; the quadratic ceiling of common conditioning; and the density mechanism the <a href="#entry-2026-09-23-local-lift-review">local-lift review</a> found missing. It then chooses the highest-risk of these and its first test.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The symmetric many-form lift is proved at every degree for full robust forms (<a href="#entry-2026-09-23-short-generation-theorem">short-generation theorem</a>). The <a href="#entry-2026-09-23-lift-route-review">route review</a> ranks source compatibility as the highest risk. Next, <em>r-selector completion</em> at \(p=3\): do the source's endpoint data for \(r\) ternary selectors, satisfying self relations \(D_iz_i=0\) and pairwise cross relations, complete to a symmetric tuple with mixed entries and triple consistency? For two selectors the <a href="#ternary-two-selector-endpoint-lift">ternary pair theorem</a> says yes. Decide it first at \(d=1\), where the conditions are linear in scalar moments. The step ends with the completion lemma, or with the obstruction and the extra source relation it needs.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -8869,6 +8869,61 @@ Then for \(0\le s\le d\) and every \(F\), every \(x\in Z_s^F\) is a sum of level
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 12.12 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">18.84 s</td></tr>
 <tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">3 min 2.61 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-23-lift-route-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of the many-form lift line after the short-generation theorem; no new claim.">
+<h3>Route review: the many-form lift is proved; the next obligation is completing r selectors' endpoint data to symmetric tuples</h3>
+<p class="entry-meta">23 September 2026 · Route review · The local lift holds at every degree for full robust forms; its next consumer is r-selector completion. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>The line's general claim.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. Since the <a href="#entry-2026-09-23-component-review">component review</a>, the thread has worked on the joint lift for many forms, the batched mechanism named by the <a href="#entry-2026-09-23-clause-transfer-review">clause-transfer review</a>. Its local form is now proved.</p>
+<ul>
+<li><a href="#entry-2026-09-23-short-generation">The short-generation reduction</a> reduces the symmetric lift to spanning of joint kernels by short elements.</li>
+<li>The <a href="#entry-2026-09-23-short-generation-theorem">short-generation theorem</a> proves that spanning for forms independent modulo constants on every row. So symmetric tuples in \(K_d\) lift to \(K_{d+2}\) on \(2d+2\) rows, with label robustness \(O(d^2r^2)\).</li>
+</ul>
+<p>The line's claim is that this local lift, fed by the source, gives hardness under many wide constraints.</p>
+<p><strong>What the goal needs.</strong> The core statement, read by the <a href="#entry-2026-09-23-density-principle">density entry</a> as Conjecture SR for robust wide constraints. PHP must stay hard at polylogarithmic degree under polynomially many such constraints. Along this line that splits into three obligations:</p>
+<ol>
+<li>the source must supply symmetric tuples to lift;</li>
+<li>the lift must hold for the goal's forms;</li>
+<li>batches of polylogarithmically many constraints must glue across polynomially many.</li>
+</ol>
+<h4>Falsification attempt</h4>
+<p>Do the recorded refutations contradict the new theorem, or the line's claim that local lifts feed hardness? Each falls outside the theorem's hypotheses, in an informative way.</p>
+<ul>
+<li><strong>Occupancy predicates</strong> (<a href="#entry-2026-09-23-symmetric-lift">symmetric-lift entry</a>), refuted from 8 predicates. The column forms have row functions that are indicators, so they are full. But one deleted label makes a column form constant on a row, so robustness fails. The robustness hypothesis is what excludes them, as the density entry's Boolean-image control already showed.</li>
+<li><strong>The random affine law</strong>: about \((N+1-2D)(N-1)\) equations refute at degree \(D\). That is \(r\) of order \(N^2\), while the theorem's robustness \(O(d^2r^2)\) needs far more labels than \(N\). Below \(r\approx\sqrt N\) the law predicts hardness, consistent with the lift.</li>
+<li><strong>The three-selector control</strong>: the forms \(a,b,a+b\) are dependent, hence not full, and it derives a consequence, not a refutation.</li>
+<li><strong>The closed-tuple failure</strong>: the theorem lifts symmetric tuples only.</li>
+</ul>
+<p>So nothing recorded refutes the line. But the occupancy case shows that full forms with local lifts can still be refuted. The hypotheses that matter are robustness and the source's supply of symmetric tuples.</p>
+<h4>Assessment of this line</h4>
+<p>The local part is now strong: a theorem at every degree, for any number of forms, with the row threshold the data show, and with polynomial label cost.</p>
+<p>The obligations above differ in risk.</p>
+<ol>
+<li><strong>Source compatibility, highest risk.</strong> For two ternary selectors the recorded <a href="#ternary-two-selector-endpoint-lift">ternary pair theorem</a> completes the source's endpoint data at every degree. Those data are the self relations \(D_iz_i=0\) and the cross relations \(D_1^2z_2=D_2^2z_1\). For \(r\) selectors the source's <a href="#entry-2026-09-21-field-predicate-source-interface">endpoint relations</a> are pairwise, while the lift needs a symmetric tuple with mixed entries \(z_{e_i+e_j}\) and triple consistency \(D_kz_{e_i+e_j}=D_iz_{e_j+e_k}\). For \(r=2\) the two notions agree. For \(r\ge3\) the symmetric-lift entry showed that closedness is strictly weaker than symmetry, so pairwise endpoint data may fail to complete. If they fail for the source, the many-predicate route fails whatever the lift can do.</li>
+<li><strong>The goal's forms.</strong> Fullness requires every form to be active on every row, jointly independent. Collectively wide forms from compiled blocks need not be. For unequal evaluation spaces, the peeling spares must cover each row's space, and the reserve argument then gives only a bound exponential in the level. The conjectured \(s(r+1)\) is open.</li>
+<li><strong>Gluing.</strong> Beyond polylogarithmic batches, the line is still bounded by the quadratic ceiling of common conditioning. It needs the Conjecture SR-type genericity that no line has reached. This is the deepest item, and it has resisted several lines. It is not the next test, because the first item decides whether batches exist at all.</li>
+</ol>
+<h4>Next step: r-selector completion</h4>
+<p>The next step on odd-prime-clause-transfer states and tests <em>r-selector completion</em> at \(p=3\). Take \(r\) ternary selectors on full, robust, independent forms. For endpoint data \((z_i)\) in \(K_d\) satisfying the source's self and pairwise cross relations, the question is whether mixed entries \(z_{e_i+e_j}\) exist making \((z_\alpha)_{|\alpha|=2}\) a symmetric tuple. The new theorem then lifts it.</p>
+<ul>
+<li>First decide it where it is exact: at \(d=1\), where \(K_0=k\), the conditions are linear in scalar moments. On the free module, where the symmetric lift holds, pairwise data may still carry a triple-consistency obstruction.</li>
+<li>If completion fails, find which further source relation, if any, restores it, from the source identities of the source-interface entry.</li>
+<li>If it holds, the one-predicate theorem's conditioned filtration extends to \(r\) predicates for full robust forms. That would be the core statement for polylogarithmically many constraints, and the batch that gluing needs.</li>
+</ul>
+<p>The step ends with the completion lemma proved, or with the obstruction and the source relation it requires.</p>
+<p><strong>Process.</strong> The turn-start guidance announced this review before the cycle began, and the finish-time check would have enforced it.</p>
+<p><strong>Verification gate.</strong> Re-read: the core-statement review, the density entry, and the short-generation theorem and reduction. Also re-read the source-interface entry's endpoint relations and its statement that many-form completion is open, together with the claim records of the one-predicate theorem, the two-selector compatibility lemma and the ternary pair theorem. Each falsification case was checked against the theorem's exact hypotheses. The occupancy forms' non-robustness is the density entry's recorded control. This review proves nothing new and registers no claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-lift-route-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 0.16 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 7.44 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3.28 s</td></tr>
+<tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">49.43 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
