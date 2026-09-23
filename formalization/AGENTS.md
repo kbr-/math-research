@@ -20,9 +20,13 @@ explicitly marked interface module, never an axiom or `sorry`. Follow README.md'
 metadata convention; file role does not establish claim completion.
 Never use `native_decide` or any other evaluation that trusts compiled code
 (it adds the axiom `Lean.ofReduceBool`, which verification rejects). When a proof
-needs a large computation, such as a rank or kernel certificate from the research
-kernels, rewrite the algorithm in Lean, prove it correct, and run the compiled form of that
-verified Lean code; do not trust the research C code (user instruction, 23 September 2026).
+needs a large computation, such as a rank or kernel statement, use a certificate:
+data that makes the claim cheap to check (for example an invertible minor with its
+inverse for a rank lower bound, and explicit independent kernel vectors for a kernel
+bound). Any code may produce it, including unverified C, since its correctness does not
+matter. The kernel checks the certificate by `decide` or `rfl`, with a checker proved
+correct in Lean. A wrong certificate fails the check. Only the checker and the lemma
+turning a passing check into the claim need proofs (user instructions, 23 September 2026).
 
 - Before proving anything, read the exact indexed claim and relevant proof.
   Draft the Lean statement and compare its variables, domains, quantifiers,
