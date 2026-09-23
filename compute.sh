@@ -461,6 +461,13 @@ def main():
                 parser.error('State your model: --model "MODEL, reasoning setting" (or set MATH_AGENT_MODEL)')
             print(start_session(args.session, args.agent, args.model, args.notebook).relative_to(ROOT))
             recovery_observe('bind', root=ROOT, turn=args.session)
+            try:   # advisory only: what finish-turn.py would reject, said before the work starts
+                guide = subprocess.run([sys.executable, str(ROOT / 'tools/turn_guidance.py')]
+                                       + ([args.notebook] if args.notebook else []),
+                                       cwd=ROOT, capture_output=True, text=True, timeout=60)
+                print(guide.stdout, end='')
+            except (OSError, subprocess.SubprocessError):
+                pass
             return 0
         if action != 'run':
             path = session_path(args.session)

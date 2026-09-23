@@ -35,8 +35,9 @@ rules to growing checklists or one-off setup narratives.
   mechanism. A growing case list or equivalent reformulation leaves the general
   implication open. `finish-turn.py` enforces this: each research entry has a
   "General statement." paragraph citing the registered claim ID of its all-parameter
-  claim, and two finite-check-only entries in a row on one route are rejected. State that implication and test it against known obstructions,
-  hard instances and allowed equivalent representations before further refinement;
+  claim, and two finite-check-only entries in a row on one route are rejected;
+  `./compute.sh start` prints the matching warnings before the work begins. State
+  that implication and test it against known obstructions, hard instances and allowed equivalent representations before further refinement;
   a surrogate becoming simple need not resolve the original obligation. Check preserved
   hypotheses and accumulated composition costs against the goal's budget.
   If these fail, or repeated cycles leave the same required implication untouched,
