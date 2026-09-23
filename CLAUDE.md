@@ -11,11 +11,13 @@ lemma, theorem, rule, or encoding through this gate before writing its status li
 
 1. Re-read the exact statement and proof of each earlier result the argument uses,
    from the notebook, never from a summary or memory, including its conventions
-   (such as how probabilities are normalized) before restating it. Use its latest
-   and most general version: when the user or a source points to a publication or a
-   Lean file, read the theorem statement there first, and follow the "Newer versions"
-   line that `tools/search-claims.py` prints for refinements and formalizations. A
-   version found through older citations can carry hypotheses a later one dropped.
+   (such as how probabilities are normalized) before restating it. When the user or a
+   source points to a publication or a Lean file, read the theorem statement there
+   first, and read every version that the "Newer versions" line of
+   `tools/search-claims.py` lists. Compare their hypotheses one by one (field, ranges,
+   encoding) and use the version whose hypotheses the argument meets: a later or
+   formalized version can drop one hypothesis and add another, such as a narrower field.
+   Record a `refines` edge only when one version implies the other.
 2. Test the claim against every counterexample, refutation, or obstruction
    recorded in research/CLAIM_INDEX.md for the same objects. Search the index for
    every lemma formulated during the cycle in four ways:
