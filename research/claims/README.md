@@ -255,6 +255,23 @@ python3 tools/claim-index.py author prepare --request /tmp/request.json \
   --out /tmp/index-proposed.json --report /tmp/proposal-check.json
 ```
 
+For a research checkpoint, `author build` expands a compact spec into that request and can
+prepare it in the same call:
+
+```bash
+python3 tools/claim-index.py author build --spec spec.json --out request.json \
+  --proposal index-proposed.json --report proposal-check.json
+```
+
+The spec names the source entry once (`record`, evidence `targets`, `label`), the reviewer and
+date, spec-wide `topics`, the new claims (`id`, `summary`, `assessment`, `status`, `rationale`,
+`next_action`, optional `topics`, `category`, per-field `notes`), and the relationships as
+`[source, type, target, scope]` tuples. Every existing claim that a new relationship touches is
+refreshed automatically: its relationships review gains a note naming the new neighbours. The
+optional `refresh` (`{id: note}` or `{id: {field: note}}`, e.g. significance for a correction)
+and `overrides` (`{id: {field: value}}`, e.g. a corrected assessment) cover the rest. The
+revision defaults to `git rev-parse HEAD`.
+
 It hashes actual evidence, validates the proposal and writes no canonical change.
 Missing answers, unsupported reviewed-empty values, pending questions without
 next actions, broken targets and intervening registry changes are rejected.

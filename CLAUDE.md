@@ -157,6 +157,14 @@ Before designing a cycle:
 A conjectured sufficient condition for a size lower bound must use the size. Check that it
 does not also exclude refutations of every size, since the proof system is complete.
 
+## Reusable tooling
+
+When a cycle needs a helper that earlier cycles also wrote for the same job, extend the committed
+framework tool instead of writing it again in scratch space, with tests, and use it from then on.
+A script rebuilt every cycle is a missing framework feature. Claim registration uses
+`tools/claim-index.py author build` with a compact spec (research/claims/README.md), not a
+per-cycle builder script.
+
 ## Working with the user
 
 Durable process lessons belong in this file or the rest of the committed framework, not in

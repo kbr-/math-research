@@ -159,5 +159,43 @@ class AuthoringTest(unittest.TestCase):
         self.assertTrue(maintenance(self.empty, merged, self.root)['passed'])
 
 
+class BuildTest(unittest.TestCase):
+    """author build: a compact spec expands into a complete request that prepare accepts."""
+    setUp = AuthoringTest.setUp
+    request = AuthoringTest.request
+    def spec(self, claims, relationships=(), **extra):
+        return dict(source={'record': '[Proof](../notebook.html#a)', 'targets': ['source.md'], 'label': 'Fixture entry'},
+                    reviewer='Fixture reviewer', date='2026-09-24', topics=['pc'], claims=claims,
+                    relationships=[list(r) for r in relationships], **extra)
+    def item(self, cid):
+        return {'id': cid, 'summary': 'Scoped fixture claim ' + cid, 'assessment': 'Working proof',
+                'status': 'working_proof', 'rationale': 'Fixture bridge.', 'next_action': None}
+    def test_build_new_claim_prepares(self):
+        from claim_authoring import build
+        request = build(self.empty, self.spec([self.item('lem:a')]), 'a' * 40)
+        proposed, report = prepare(self.empty, request, self.root)
+        self.assertTrue(report['passed'])
+        self.assertEqual([c['id'] for c in proposed['claims']], ['lem:a'])
+    def test_touched_existing_claim_is_refreshed_automatically(self):
+        from claim_authoring import build
+        base, _ = prepare(self.empty, self.request(self.empty), self.root)
+        request = build(base, self.spec([self.item('lem:b')], [('lem:b', 'depends_on', 'lem:a', 'Uses the fixture bound.')]), 'b' * 40)
+        self.assertEqual(sorted(s['claim']['id'] for s in request['submissions']), ['lem:a', 'lem:b'])
+        refreshed = [s for s in request['submissions'] if s['claim']['id'] == 'lem:a'][0]
+        self.assertIn('lem:b', refreshed['dispositions']['relationships']['note'])
+        proposed, report = prepare(base, request, self.root)
+        self.assertTrue(report['passed'])
+        request['submissions'] = [s for s in request['submissions'] if s['claim']['id'] != 'lem:a']
+        with self.assertRaises(ValueError):
+            prepare(base, request, self.root)
+    def test_overrides_update_existing_fields(self):
+        from claim_authoring import build
+        base, _ = prepare(self.empty, self.request(self.empty), self.root)
+        request = build(base, self.spec([], overrides={'lem:a': {'assessment': 'Working proof; scope narrowed.'}},
+                                        refresh={'lem:a': 'Scope narrowed at this checkpoint.'}), 'c' * 40)
+        proposed, report = prepare(base, request, self.root)
+        self.assertEqual(proposed['claims'][0]['assessment'], 'Working proof; scope narrowed.')
+
+
 if __name__ == '__main__':
     unittest.main()
