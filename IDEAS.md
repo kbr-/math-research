@@ -303,7 +303,10 @@ Alon–Füredi (1993) and the BLVZ chessboard-complex paper (1994) are not. Anyt
 - **OpenAlex**: an open catalogue of most scholarly works, with a free API and a full data
   snapshot. It has abstracts for part of it and, importantly, citation links.
 - **Semantic Scholar**: similar, but needs an API key.
-- **ECCC**: much proof complexity appears there, often before or instead of a journal.
+
+ECCC is excluded: the user decided (24 September 2026) that the corpus must not harvest or
+scrape it. Proof-complexity papers posted only there are reached through OpenAlex or
+Semantic Scholar metadata and citation links, where those sources carry them.
 
 Check each source's licence and rate limits before harvesting; do not assume they match
 arXiv's CC0 metadata terms.
