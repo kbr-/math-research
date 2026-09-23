@@ -69,15 +69,45 @@ Never discard the output or exit status of `./compute.sh phase` or `start`: an i
 exits with status 2, and a redirected failure once left most of two cycles' time in the wrong
 category.
 
-## Compiled kernels by default
+## Designing and running computations
 
-Write every computation's heavy loop as a compiled kernel (C or C++, OpenMP where it parallelizes) from
-the start; Python is for orchestration only, and a Python-only computation needs evidence that it runs in
-seconds. Compute all parameters of a series in one incremental pass (prefix ranks from one elimination,
-nested results reused), never one full recomputation per parameter: a Φ₄ series once re-eliminated
-the whole matrix for each of six M values (396 s) where one incremental C pass gave all 41 in 222 s.
-`./compute.sh` enforces the default: a Python computation allowed more than 120 s needs `--kernel-reason`
-naming the compiled kernel and why nothing is recomputed.
+Every rule below comes from a mistake made in a real cycle; apply all of them before launching a run.
+
+1. **Decide first whether the test can decide.** In the same cycle and before coding, count what the
+   statement under test predicts at the reachable sizes and check that those sizes satisfy its hypotheses.
+   Put the count in the entry. A syzygy-locality test was run on boards far below the conjecture's
+   robustness (about 950 labels needed, 6 available). A degree-5 step was proposed whose fill point was
+   M = 3. Both were near-vacuous, which a two-line count would have shown.
+2. **Compute the statement's own quantity, on inputs that meet its hypotheses.** Write the tested statement
+   in the script's docstring, generate inputs that satisfy it, and assert the hypotheses in code. One run
+   measured Koszul locality where the conjecture was about pair locality, on random forms that were not
+   pairwise full, and had to be redone.
+3. **Heavy loops belong in a compiled kernel, including row and product generation.** Use C or C++, with
+   OpenMP where it parallelizes. Python only orchestrates, and a Python-only computation needs evidence
+   that it runs in seconds. Validate a new kernel against the reference implementation on small cases
+   before scaling it, and declare ctypes argument types, since a missing declaration segfaulted.
+4. **One pass per series, shared work once.** Compute every parameter of a series in one incremental pass:
+   prefix ranks from one elimination, and nested closures continued rather than restarted. Compute shared
+   prefixes, such as a base closure or a common random series, once and copy them. Two cases:
+   - a Φ₄ series re-eliminated the whole matrix for each of six M values (396 s), where one incremental pass
+     gave all 41 (222 s);
+   - a closure driver restarted the base and the random series for every member series, and formed products
+     in Python.
+5. **No known waste at launch.** List the run's stages first (setup, generation, elimination, repeated
+   series) and remove every piece of waste already identified. "It does not change the results" is not a
+   reason: it changes the approach, and the user has rejected it.
+6. **Report only what the result files say.** Take every quoted number, case count and sampling grid from
+   the saved output, read by a script rather than from memory. Examples: "up to 41 forms" had to become 40,
+   and "17 of 18 cases" had to be restated against the actual M grid.
+7. **Keep long runs observable.** Print progress with flush. Do not pipe a long run through `tail`, which
+   hides its progress until the run ends.
+
+`./compute.sh` enforces rules 3 to 5 in part. A Python computation allowed more than 120 s needs a
+`--kernel-reason` of at least six words, naming the compiled kernel and the reuse.
+
+After editing any framework tool (`compute.sh`, `tools/*.py`), run its tests before committing: from
+`tools/tests`, `python3 -m unittest`. A guard added to `compute.sh` without running them broke two finisher
+tests, which the checked push then caught.
 
 ## Naming results
 

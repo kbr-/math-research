@@ -530,10 +530,11 @@ def main():
                      'needs --serial-reason: use the parallel paths first (COMPUTATION_RULES.md)')
     exe = Path(command[0]).name if command else ''
     if (exe.startswith('python') and args.timeout > KERNEL_RUN_S and args.category == 'computation'
-            and not args.kernel_reason.strip()):
-        parser.error(f'a Python computation allowed more than {KERNEL_RUN_S} s needs --kernel-reason "...": '
-                     'write heavy loops as a C/C++ kernel by default, compute every parameter in one '
-                     'incremental pass, and name the kernel here (CLAUDE.md, COMPUTATION_RULES.md)')
+            and len(args.kernel_reason.split()) < 6):
+        parser.error(f'a Python computation allowed more than {KERNEL_RUN_S} s needs --kernel-reason "..." of at '
+                     'least six words: name the compiled C/C++ kernel doing the heavy work (including product '
+                     'or row generation) and the reuse (one incremental pass per series, shared prefixes '
+                     'computed once and copied); never launch with known waste (CLAUDE.md)')
     return run_job(args, command)
 
 
