@@ -18,6 +18,11 @@ as such without unsupported novelty claims. The two directories may import each
 other without cycles. An unproved target may be a proposition definition in an
 explicitly marked interface module, never an axiom or `sorry`. Follow README.md's
 metadata convention; file role does not establish claim completion.
+Never use `native_decide` or any other evaluation that trusts compiled code
+(it adds the axiom `Lean.ofReduceBool`, which verification rejects). When a proof
+needs a large computation, such as a rank or kernel certificate from the research
+kernels, rewrite the algorithm in Lean, prove it correct, and run the compiled form of that
+verified Lean code; do not trust the research C code (user instruction, 23 September 2026).
 
 - Before proving anything, read the exact indexed claim and relevant proof.
   Draft the Lean statement and compare its variables, domains, quantifiers,
