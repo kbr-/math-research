@@ -13,7 +13,7 @@ import a4lib as L
 ap = argparse.ArgumentParser(); ap.add_argument('--n', type=int, default=7); ap.add_argument('--rs', default='2,3,4,5')
 ap.add_argument('--K', type=int, default=3); ap.add_argument('--family', default='random'); ap.add_argument('--trials', type=int, default=4)
 ap.add_argument('--Q', type=int, default=2); ap.add_argument('--t', type=int, default=5); ap.add_argument('--seed', type=int, default=0)
-ap.add_argument('--out'); opt = ap.parse_args(); L.setup(opt.n); n = opt.n; P1 = n + 1; rng = np.random.default_rng(opt.seed)
+ap.add_argument('--phis', default=None); ap.add_argument('--out'); opt = ap.parse_args(); L.setup(opt.n); n = opt.n; P1 = n + 1; rng = np.random.default_rng(opt.seed)
 Q = {}; g = {}
 for k in range(1, opt.K + 1): Q[k], g[k] = L.quotient(k, 2)
 g[0] = 1; basis = {k: [q['cols'][c] for q in Q[k].values() for c in q['nonp']] for k in Q}; basis[0] = [()]
@@ -36,18 +36,27 @@ def hilbert(F):
     lins = [{(i * n + j,): int(Fb[i, j]) for i in range(P1) for j in range(n) if Fb[i, j]} for Fb in F]
     H = [1]
     for k in range(1, opt.K + 1):
-        rows = np.zeros((len(basis[k - 1]) * len(lins), g[k]), dtype=np.uint8); t = 0
-        for m in basis[k - 1]:
-            for lin in lins:
-                rows[t] = L.normal_form(L.mul({m: 1} if m else {(): 1}, lin) if m else lin, Q[k], g[k]); t += 1
-        H.append(g[k] - L.gf3.rank(rows, parallel=True))
+        pairs = [(m, lin) for m in basis[k - 1] for lin in lins]; packs = []; Wk = (g[k] + 63) // 64
+        for c0 in range(0, len(pairs), 2000):   # pack in chunks: a dense degree-4 block at n=8 would need about 4 GB
+            ch = pairs[c0:c0 + 2000]; rows = np.zeros((len(ch), g[k]), dtype=np.uint8)
+            for t, (m, lin) in enumerate(ch): rows[t] = L.normal_form(L.mul({m: 1}, lin) if m else lin, Q[k], g[k])
+            packs.append(L.gf3.pack(rows)[0])
+        H.append(g[k] - L.gf3.rref(None, parallel=True, packed=(np.vstack(packs), Wk, g[k]))[2].shape[0])
     return H
 def draw(r):
     if opt.family == 'random': return [rng.integers(0, 3, size=(P1, n)) for _ in range(r)]
     if opt.family == 'column': return [np.tile(rng.integers(0, 3, size=n), (P1, 1)) for _ in range(r)]
     if opt.family == 'mixed': return [np.tile(rng.integers(0, 3, size=n), (P1, 1)) if b % 2 == 0 else rng.integers(0, 3, size=(P1, n)) for b in range(r)]
 res = []
-for r in map(int, opt.rs.split(',')):
+if opt.phis:   # explicit single column-type forms, one system per hole function
+    W, T = W_trunc(1, opt.K)
+    for s_ in opt.phis.split(';'):
+        phi = np.array([int(x) for x in s_.split(',')]); F = [np.tile(phi, (P1, 1))]
+        H = hilbert(F); excess = [h - x for h, x in zip(H, T)]
+        res.append(dict(r=1, family='explicit-column', phi=phi.tolist(), robust=robust_system(F), H=H, T=T, W=W, excess=excess))
+        print({k: res[-1][k] for k in ('phi', 'robust', 'H', 'T', 'excess')}, flush=True)
+    opt.rs = ''
+for r in (map(int, opt.rs.split(',')) if opt.rs else []):
     W, T = W_trunc(r, opt.K)
     for tr in range(opt.trials):
         for att in range(500):

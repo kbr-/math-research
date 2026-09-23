@@ -10,10 +10,27 @@ import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, '..', 'odd_prime_one_count_20260922'))
 sys.path.insert(0, os.path.join(HERE, '..', 'odd_prime_alignment_mechanism_20260922'))
-from random_conditioning_fast import QSpace, closure_of, refuted, base_rows
+from random_conditioning_fast import QSpace, refuted, base_rows, rref_stack
+import gf3
+from scipy import sparse
+def close(space, P, W, piv, chunk=40):
+    """Same closure as random_conditioning_fast.close, in smaller chunks converted to uint8 per variable: at n=8, D=3 the
+    original chunk of 400 rows times 72 variables needs about 5 GB of dense integers."""
+    cols = space.cols
+    while True:
+        old = P.shape[0]; low = np.nonzero(space.deg[piv] <= space.D - 1)[0]; Pold = P
+        for s in range(0, len(low), chunk):
+            Lm = sparse.csr_matrix(gf3.unpack(Pold[low[s:s + chunk]], W, cols), dtype=np.int32)
+            prod = np.vstack([((Lm @ My).toarray() % 3).astype(np.uint8) for My in space.mult])
+            P, W, piv = rref_stack(P, W, cols, prod)
+        if P.shape[0] == old: return P, W, piv
+def closure_of(space, gens):
+    M = np.array([space.vec(g) for g in gens], dtype=np.uint8)
+    P, W, piv = gf3.rref(M, parallel=True)
+    return close(space, P, W, piv)
 ap = argparse.ArgumentParser(); ap.add_argument('--n', type=int, default=6); ap.add_argument('--D', type=int, default=3)
 ap.add_argument('--rs', default='1,2,3'); ap.add_argument('--trials', type=int, default=2); ap.add_argument('--seed', type=int, default=0)
-ap.add_argument('--out'); opt = ap.parse_args(); n, D = opt.n, opt.D; rng = np.random.default_rng(opt.seed)
+ap.add_argument('--phis', default=None); ap.add_argument('--out'); opt = ap.parse_args(); n, D = opt.n, opt.D; rng = np.random.default_rng(opt.seed)
 t0 = time.time(); space = QSpace(n, D); base = base_rows(n)
 def form_eq(F, c):   # F: (n+1, n) row functions; equation l_F - c = 0
     p = {(i * n + j,): int(F[i, j]) for i in range(n + 1) for j in range(n) if F[i, j] % 3}
@@ -39,6 +56,7 @@ print('PHP alone refuted:', res['php_alone_refuted'], f'({time.time()-t0:.0f}s)'
 for r in map(int, opt.rs.split(',')):
     for tr in range(opt.trials):
         while True:
+            if opt.phis: phis = [np.array([int(x) for x in s_.split(',')]) for s_ in opt.phis.split(';')][tr * r:(tr + 1) * r]; break
             phis = [rng.integers(0, 3, size=n) for _ in range(r)]
             M = np.array(phis + [np.ones(n, dtype=int)])
             from itertools import product as _p
