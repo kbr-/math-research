@@ -19,13 +19,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Every pencil class obeys the worst-direction criterion in the column model from \(n=10\) on at the degrees tested. The only exceptions are the affine-plane configurations at \(n=8,9\) (<a href="#entry-2026-09-24-pencil-exhaustive">pencils</a>). Every column conclusion still assumes that the model is exact for the board algebra \(A\), which is checked only in degree 3 in three cases. Test that now, where it is decisive and cheap:</p>
-<ul>
-<li>for every pencil class at \(n=8\) (54 classes), compute \(\mathrm{HF}(A/(\ell_1,\ell_2)A)\) through degree 3 on the weak unary board, with the recorded a4lib machinery in batches under two minutes each;</li>
-<li>the same at \(n=9\) (94 classes) in Macaulay2, sized from the recorded 5 s per system;</li>
-<li>compare the excesses over the free prediction with the model's.</li>
-</ul>
-<p>Agreement on every class makes the model a theorem-grade proxy at these sizes, worth proving in general. A class where the board and the model differ shows what the model misses. Pending: a proof of the pencil case (the kernel sheaf on \(\mathbf P^1\)); condition (a) through Razborov's PHP analysis; the random-form half at \(n=10\); and a verified \(\mathbb F_3\) chessboard bound beyond three rows.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The column model is a direct summand of the weak PHP algebra, \(A=R\oplus A_{\ge1}\) by U-degree, so every model defect lifts to the board (<a href="#entry-2026-09-24-column-model-summand">summand</a>). The free direction needs \(A_{\ge1}\) free through degree \(t\) for robust column spans. Derive it:</p>
+<ol>
+<li>Describe \(A^{(k)}\) exactly: \(\bigoplus_{|S|=k}K_{[n]\setminus S}\otimes U_S\) modulo \(s\) and the images of \(r_1,\dots,r_n\) from U-degree \(k-1\). The pieces over each \(S\) are column models on fewer holes.</li>
+<li>Find an exact resolution of these relations by pieces of the same form. The row sums for different pigeons act on disjoint pigeon coordinates of \(U_S\), which suggests a product structure over pigeons.</li>
+<li>Show the truncated free-resolution step over the self-injective \(S_d\).</li>
+</ol>
+<p>The result would be model exactness for robust spans, conditional only on the worst-direction criterion in the model. The step registers no new finite checks. Pending: a proof of the worst-direction criterion; condition (a) through Razborov's PHP analysis; and a verified \(\mathbb F_3\) chessboard bound beyond three rows.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -12046,6 +12046,72 @@ At \(n=6\) degree 3 saturates before the spans exceed \(\gamma_1\), so there onl
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.03 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-column-model-summand" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:column-model-summand">
+<h3>The column model is a direct summand of the weak PHP algebra, so every column defect lifts to the board</h3>
+<p class="entry-meta">24 September 2026 · Working proof · The weak unary top algebra over its column subalgebra, every \(n\).  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. Every column statement since the <a href="#entry-2026-09-24-column-model-gale">Gale entry</a> was made in the column model, with its exactness for the board algebra \(A\) only computed. The user asked for general formulas instead of further cases. The cycle asks what the relation between \(A\) and the model is, for every \(n\).</p>
+<p><strong>General statement.</strong> prop:column-model-summand holds for every \(n\) and every column span. As a module over the column subalgebra, the weak unary top algebra \(A\) over \(\mathbb F_3\) decomposes as \(A=R\oplus A_{\ge1}\) by a grading, the U-degree. \(R=\mathbb F_3[C_1,\dots,C_n]/(C_j^2,\sum_jC_j)\) is exactly the column model, the U-degree-0 part. Consequently, for any column span:</p>
+<ul>
+<li>\(\mathrm{HF}(A/(\ell_\varphi)A)=\mathrm{HF}(R/(\ell_\varphi)R)+\mathrm{HF}(A_{\ge1}/(\ell_\varphi)A_{\ge1})\);</li>
+<li>the board's excess over the free prediction is the model's excess plus that of \(A_{\ge1}\);</li>
+<li>if the model is not free through degree \(t\), neither is \(A\).</li>
+</ul>
+
+<h4>Setting</h4>
+<p>\(A=\mathbb F_3[x_{ij}:i\in[n+1],\,j\in[n]]/(x_{ij}^2,\ x_{ij}x_{i'j}\ (i\ne i'),\ r_i)\) with row sums \(r_i=\sum_jx_{ij}\), as in the <a href="#entry-2026-09-23-component-hypothesis">component-hypothesis entry</a>. Its column sums are \(C_j=\sum_ix_{ij}\), and a column-type form is \(\ell_\varphi=\sum_j\varphi(j)C_j\). \(K=\mathbb F_3[C_1,\dots,C_n]/(C_j^2)\) is the free column algebra, and the model \(R\) is \(K/(\sum_jC_j)\).</p>
+
+<h4>The decomposition</h4>
+<p><strong>Proposition (column model as a summand).</strong> Let \(B=\mathbb F_3[x]/(x_{ij}^2,\ x_{ij}x_{i'j})\), so \(A=B/(r_0,\dots,r_n)\). For each hole \(j\) let \(U_j=\operatorname{span}\{x_{ij}:i\ge1\}\). Then:</p>
+<ol>
+<li>\(B=\bigotimes_jB_j\) with \(B_j=\mathbb F_3\oplus\mathbb F_3C_j\oplus U_j\), all products inside \(B_j\) zero. Hence \(B=\bigoplus_{S\subseteq[n]}K_{[n]\setminus S}\otimes U_S\), with \(K_T=\mathbb F_3[C_j:j\in T]/(C_j^2)\) and \(U_S=\bigotimes_{j\in S}U_j\). Call \(|S|\) the U-degree. The summand of U-degree \(k\) is a \(K\)-submodule, with \(C_j\) acting as zero on the factor \(U_j\).</li>
+<li>\(r_i\) has U-degree 1 for \(i\ge1\), and \(r_0\equiv s:=\sum_jC_j\) modulo \((r_1,\dots,r_n)\), with \(s\) of U-degree 0. So the ideal \((r_0,\dots,r_n)=(s,r_1,\dots,r_n)\) is homogeneous for the U-degree, and \(A=\bigoplus_{k\ge0}A^{(k)}\) as \(K\)-modules.</li>
+<li>\(A^{(0)}=K/(s)=R\).</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>The relations of \(B\) involve one hole at a time, so \(B\) is the tensor product of the algebras \(B_j=\mathbb F_3[x_{0j},\dots,x_{nj}]/(\text{all products})=\mathbb F_3\oplus V_j\), with \(V_j\) the span of the \(x_{ij}\). Since \(x_{0j}=C_j-\sum_{i\ge1}x_{ij}\), \(V_j=\mathbb F_3C_j\oplus U_j\). Expanding the tensor product over the choice, for each \(j\), of \(\mathbb F_3\oplus\mathbb F_3C_j\) or \(U_j\) gives the sum over \(S\). The column sums act factorwise and kill \(U_j\), since products in \(V_j\) vanish. So each summand is a \(K\)-submodule on which \(C_j\) for \(j\in S\) acts as 0, and it is isomorphic to \(K_{[n]\setminus S}\otimes U_S\).</li>
+<li>For \(i\ge1\), \(r_i=\sum_jx_{ij}\) with \(x_{ij}\in U_j\), which is U-degree 1. And \(r_0=\sum_jx_{0j}=\sum_jC_j-\sum_{i\ge1}r_i\). Multiplication by an element of fixed U-degree shifts the U-degree by that amount: products of summands for \(S\), \(S'\) vanish unless \(S\cap S'=\emptyset\), where they land in \(S\cup S'\), or unless a \(C_j\) meets \(U_j\), where they are 0. So the ideal generated by U-homogeneous elements is U-homogeneous, and the quotient inherits the grading as \(K\)-modules.</li>
+<li>The ideal \(\sum_{i\ge1}r_iB\) lies in U-degree at least 1. So the U-degree-0 part of \(A\) is \(B^{(0)}/(sB)^{(0)}=K/sK\). \(\square\)</li>
+</ol>
+<p><strong>Corollary.</strong> Let \(\ell_{\varphi_1},\dots,\ell_{\varphi_d}\) be column forms, and let \(S_d=\mathbb F_3[x_1,\dots,x_d]/(x_i^3)\), the group algebra of \((\mathbb Z/3)^d\), act on both \(A\) and \(R\) by \(x_b\mapsto\ell_{\varphi_b}\). It is one algebra for both, and it is self-injective. The column subalgebra of \(A\) is exactly \(R\), since \(K\cap I=I^{(0)}=sK\). The forms lie in \(K\), in U-degree 0, so they preserve the decomposition: \(A/(\ell)A=R/(\ell)R\oplus A_{\ge1}/(\ell)A_{\ge1}\). Take the free prediction of a module \(M\) to be the untruncated coefficients \([q^s]\,\mathrm{HS}_M/(1+q+q^2)^d\), which are linear in \(\mathrm{HS}_M\). Since \(\mathrm{HS}_A=\mathrm{HS}_R+\mathrm{HS}_{A_{\ge1}}\), the board's excess is the model's excess plus \(A_{\ge1}\)'s. Freeness over \(S_d\) through degree \(t\) is the vanishing of \(\operatorname{Tor}_1^{S_d}(\mathbb F_3,-)\) in degrees at most \(t\), and \(\operatorname{Tor}_1\) of a direct sum is the direct sum. So if \(R\) is not free through \(t\), neither is \(A\). \(\square\)</p>
+
+<h4>What it explains, and what is left</h4>
+<ul>
+<li><em>Every model defect is a board defect</em>, for every \(n\). This includes the single-form threshold, so the non-free direction of the worst-direction criterion transfers from the model to the board with no computation. In the 54 pencil classes at \(n=8\) and the 25 robust ones at \(n=9\) compared in this cycle's validation runs (board_pencils.py, compare_n9.py), the board's excess was never below the model's. By additivity, that means \(A_{\ge1}\)'s excess was nonnegative in these data. The decomposition alone forces only the lowest nonzero coefficient of a non-free summand's excess to be positive.</li>
+<li><em>Model exactness through degree \(t\) is the freeness of \(A_{\ge1}\) through \(t\).</em> Zero excess through \(t\) means that the surjection \(G\otimes S_d\to M\), from lifts \(G\) of generators, is an isomorphism through \(t\). At \(n=9\) the board equals the model in all 25 robust pencil classes (\(c_{\min}\ge4\)), so \(A_{\ge1}\) contributes nothing there. At \(n=8\) it contributes large excesses exactly for narrow pencils (\(c_{\min}\le3\), board excess 27 to 600 in degree 3 against the model's 3 to 8).</li>
+<li><em>A route to the free direction.</em> \(A^{(k)}\) is \(\bigoplus_{|S|=k}K_{[n]\setminus S}\otimes U_S\) modulo \(s\) and the images of the \(r_i\) from U-degree \(k-1\). Its pieces are column models on the holes outside \(S\), shifted by \(k\). A robust span loses at most \(k\) of its column count on \([n]\setminus S\) while the degree drops by \(k\): \(c-k\ge2(t-k)-1\) whenever \(c\ge2t-1\). Here \(c\) is the column count of a direction of the span restricted to the holes outside \(S\). Removing a hole lowers each class size of that direction by at most one, so \(c\) drops by at most \(k\). Under the worst-direction conjecture, every piece would then be free in the needed range. Suppose the row-sum relations admit an exact resolution in the U-direction, by pieces of the same form; that resolution is still to be found, and is not the Koszul complex of the \(r_i\), which are not expected to form a regular sequence. Then freeness of \(A^{(k)}\) would follow, because \(S_d\) is self-injective and a module with a finite resolution by free \(S_d\)-modules is free. The truncated form of that step needs care. This is a route, not a result.</li>
+</ul>
+<p>With this, the column chain has three links. The proposition carries every model defect to the board. The worst-direction criterion in the model is conjectured, with exhaustive pencil evidence. Model exactness for robust spans is the freeness of \(A_{\ge1}\), for which the route above is the next step.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the weak base's definition in the component-hypothesis entry, the column model and the Gale proposition. A fresh-context reviewer confirmed four points: the tensor structure of \(B\), the splitting \(V_j=\mathbb F_3C_j\oplus U_j\) in any characteristic, the U-grading as an algebra grading, and \(A^{(0)}=K/sK\). It required changes, all adopted:</p>
+<ul>
+<li>the untruncated, linear free prediction;</li>
+<li>one self-injective algebra \(S_d\) acting on both \(R\) and \(A\), with the column subalgebra of \(A\) identified with \(R\);</li>
+<li>nonnegativity of \(A_{\ge1}\)'s excess attributed to the data, not to the decomposition;</li>
+<li>"through degree \(t\)";</li>
+<li>the route's caveats: the resolution is not the Koszul complex, \(c\) is defined on sub-hole-sets, and the conjecture is assumed.</li>
+</ul>
+<p>The changes restrict or make precise, so no second pass was made.</p>
+
+<h4>Remaining gap</h4>
+<p>Exactness of the U-direction row-sum complex, and the truncated free-resolution step, which together would give model exactness for robust spans. A proof of the worst-direction criterion in the model.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-model-exactness">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>16 min 59.78 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 21.70 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">0.06 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">53.94 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">10 min 17.42 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 25.63 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.02 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
