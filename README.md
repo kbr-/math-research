@@ -161,8 +161,10 @@ To run the agent, clone the repository as above, install and authenticate Codex
 CLI or Claude Code, and initialize the [computation controls](#computation-tools) before running
 experiments. Browsing the notebook alone does not require those controls.
 
-Research using this framework has only been tested with **GPT-6 Astra** at the
-**Max** thinking setting.
+Research using this framework has been tested with several GPT and Claude models:
+**GPT-6 Astra** in Codex, and **Claude Opus 5 and 5.5** and **Claude Fable 5.1** in Claude
+Code, at various reasoning settings. Each notebook entry credits the model and setting that
+produced it.
 
 [research/notes/RESUME.md](research/notes/RESUME.md) is the reading guide for
 restoring research context. It points to the notebook's authoritative initial
@@ -362,9 +364,6 @@ Notes parked for a later decision. They are not rules; remove an item once it is
 - Undecided: should agents append intermediate findings and the current line of attack to a
   working file during long cycles, so an unexpected compaction loses less? See the report's
   final section. The token cost is small; the open question is whether it helps or distracts.
-- The statement under [Continue the research](#continue-the-research) that the framework has
-  only been tested with GPT-6 Astra: update it once Claude has run a genuine research cycle.
-  So far Claude Fable 5.1 has done formalization and framework work here, not new research.
 
 ## Repository contents
 
