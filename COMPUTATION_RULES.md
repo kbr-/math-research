@@ -65,6 +65,13 @@ manually run outside the launcher are not inside the workload group.
   Python. Python is appropriate for orchestration and small control operations.
 - Vectorize where appropriate. Use chunking when full vectorization would
   produce excessive temporary arrays or exceed the shared memory budget.
+- When a computation is expected to be expensive or long, consider writing it in
+  C++ with the installed `g++` (user suggestion, 23 September 2026). GPT-6 Astra
+  wrote most of its checkers that way (`research/tools/*.cpp`, with shared headers
+  such as `pc_boundary.hpp`), and they were consistently fast. A Python loop around
+  compiled calls can still waste most of the time, for example by re-reducing a
+  whole matrix for every chunk of new rows instead of reducing only the new rows
+  against the existing basis.
 - Budget process counts and library threads together. Across concurrent work,
   keep worker count times threads per worker within 14; avoid nested thread
   pools and oversubscription.
