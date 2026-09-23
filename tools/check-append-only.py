@@ -2,7 +2,8 @@
 """Check that Research-record entries of a base revision are unchanged: the notebook is append-only.
 
 Every <article id=...> of BASE:notebook.html must reappear in the working notebook with the same
-text. Only link repairs are tolerated, as AGENTS.md allows: <a ...> and </a> tags are ignored.
+text. Only presentation changes are tolerated, as AGENTS.md allows: <a ...> and </a> tags are
+ignored (link repairs), and a non-breaking space counts as a space (layout).
 Usage: check-append-only.py [--base REF]   (default origin/main; exit 1 on any changed or missing entry)"""
 import argparse
 from pathlib import Path
@@ -19,7 +20,12 @@ def entries(body):
     matches = list(found)
     if len({m.group(1) for m in matches}) != len(matches):
         raise ValueError('Duplicate research article IDs')
-    return {match.group(1): re.sub(r'</?a\b[^>]*>', '', match.group(0)) for match in matches}
+    return {match.group(1): normalize(match.group(0)) for match in matches}
+
+
+def normalize(article):
+    article = re.sub(r'</?a\b[^>]*>', '', article)
+    return article.replace('&nbsp;', ' ').replace('\u00a0', ' ')
 
 
 def violations(base_body, current_body):

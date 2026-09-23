@@ -138,7 +138,8 @@ rules to growing checklists or one-off setup narratives.
 - Keep entries chronological and append-only, including opinions/assessments even
   when the user objects. Withdraw/correct/retract in a new dated entry linking the
   old anchor; update living status and correction metadata. Never silently rewrite
-  prior mathematics to match later results. Link repairs alone are allowed.
+  prior mathematics to match later results. Link repairs and presentation-only
+  changes that leave the text unchanged, such as non-breaking spaces, are allowed.
   `tools/check-append-only.py` checks HEAD at finalization and must pass against
   `origin/main` before a push, unless the user explicitly overrides the check.
 - Historical labels link directly to Markdown statement/proof anchors using
