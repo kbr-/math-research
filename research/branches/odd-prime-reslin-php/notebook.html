@@ -19,13 +19,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> In the column model, a column span appears to be free through degree \(t\) exactly when its worst direction is (\(c_{\min}\ge2t-1\)), for \(n\) large enough. The fit is 96 of 97 cases, with one exception near capacity (<a href="#entry-2026-09-24-worst-direction">worst direction</a>). If this holds and the model is exact for \(A\), robust column components satisfy condition (c) of relative gluing at \(Q\ge2D-2\). Prove it first for pencils, \(d=2\), where the geometry is sharpest.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Every pencil class obeys the worst-direction criterion in the column model from \(n=10\) on at the degrees tested. The only exceptions are the affine-plane configurations at \(n=8,9\) (<a href="#entry-2026-09-24-pencil-exhaustive">pencils</a>). Every column conclusion still assumes that the model is exact for the board algebra \(A\), which is checked only in degree 3 in three cases. Test that now, where it is decisive and cheap:</p>
 <ul>
-<li>The recorded <a href="#entry-2026-09-23-occupancy-pair-defect">pencil splitting identity</a> turns degree-\(k\) freeness of a pencil into the splitting type of a kernel bundle on \(\mathbf P^1\), by Grothendieck's theorem.</li>
-<li>Its trivial summands count the free part, and a defect is a change of splitting type.</li>
-<li>Show that in the column model the splitting type is balanced whenever all four rational directions have \(c\ge2t-1\) and \(n\) exceeds an explicit bound. Test the bound against the \(d=2\) data.</li>
+<li>for every pencil class at \(n=8\) (54 classes), compute \(\mathrm{HF}(A/(\ell_1,\ell_2)A)\) through degree 3 on the weak unary board, with the recorded a4lib machinery in batches under two minutes each;</li>
+<li>the same at \(n=9\) (94 classes) in Macaulay2, sized from the recorded 5 s per system;</li>
+<li>compare the excesses over the free prediction with the model's.</li>
 </ul>
-<p>The step ends with the pencil case proved, or with a pencil whose directions all clear the threshold and which still changes splitting type. Pending: model exactness for \(A\) beyond degree 3; condition (a) through Razborov's PHP analysis; the random-form half at \(n=10\); and a verified \(\mathbb F_3\) chessboard bound beyond three rows.</p>
+<p>Agreement on every class makes the model a theorem-grade proxy at these sizes, worth proving in general. A class where the board and the model differ shows what the model misses. Pending: a proof of the pencil case (the kernel sheaf on \(\mathbf P^1\)); condition (a) through Razborov's PHP analysis; the random-form half at \(n=10\); and a verified \(\mathbb F_3\) chessboard bound beyond three rows.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -11992,6 +11992,58 @@ At \(n=6\) degree 3 saturates before the spans exceed \(\gamma_1\), so there onl
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 7.21 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 47.69 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.05 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-pencil-exhaustive" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:pencil-worst-direction">
+<h3>Every pencil class obeys the worst-direction criterion except the affine plane, and a tensor-decomposition proof fails on degree-0 blocks</h3>
+<p class="entry-meta">24 September 2026 · Finite check and a failed proof route · Pencils in the column model, degrees 3 to 5, \(n\le14\), exhaustive up to symmetry.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-worst-direction">worst-direction entry</a> proposed proving conj:worst-direction-freeness for pencils first. Before a proof, the pencil case turns out to be finite at each size and can be decided exhaustively. The cycle does that and tries one proof route.</p>
+<p><strong>General statement.</strong> The statement under test is conj:worst-direction-freeness for \(d=2\): for \(n\ge n_0(2,t)\), a pencil of column forms is free in the column model through degree \(t\) iff its four rational directions all have column count \(c\ge2t-1\). The finite check ex:pencil-worst-direction confirms it on every pencil class at degree 3 for \(n=10,11,12\), at degree 4 for \(n=9,\dots,14\), and at degree 5 for \(n=12,13,14\). The only exceptions at the sizes tested are two configurations at degree 3. One is the affine plane \(\mathrm{AG}(2,3)\), every point once, at \(n=9\). The other is the plane minus a point, the recorded occupancy pair, at \(n=8\). So \(n_0(2,3)=10\) at the sizes tested.</p>
+
+<h4>Reduction to a finite check</h4>
+<p>A pencil's column model depends only on the multiset of value points \((\varphi_1(j),\varphi_2(j))\in\mathbb F_3^2\), up to the affine group \(\mathrm{AGL}(2,3)\) of 432 elements:</p>
+<ul>
+<li>hole permutations do not change \(R\) or the quotient;</li>
+<li>a change of basis of the pencil does not change the span;</li>
+<li>adding a constant to a hole function changes a form by a multiple of \(\sum_jt_j=0\).</li>
+</ul>
+<p>pencil_exhaustive.py enumerates the compositions of \(n\) into 9 multiplicities, reduces them modulo \(\mathrm{AGL}(2,3)\), and discards the classes whose span is not 2-dimensional modulo constants. For each remaining class it computes \(c_{\min}\) over the four rational directions and the model Hilbert function through degree \(t\), by exact GF(3) ranks, and compares freeness with the criterion.</p>
+
+<h4>Results</h4>
+<table>
+<tr><th>\(t\)</th><th>\(n\)</th><th>Classes</th><th>Agree</th><th>Prediction positive</th><th>Exceptions</th></tr>
+<tr><td>3</td><td>8</td><td>54</td><td>53</td><td>no</td><td>plane minus a point: \(c_{\min}=5\), \(\mathrm{HF}\) (1, 5, 7, 1) against (1, 5, 7, −2)</td></tr>
+<tr><td>3</td><td>9</td><td>94</td><td>93</td><td>yes</td><td>the plane: \(c_{\min}=6\), \(\mathrm{HF}\) (1, 6, 12, 7) against (1, 6, 12, 5)</td></tr>
+<tr><td>3</td><td>10, 11, 12</td><td>156, 252, 403</td><td>all</td><td>yes</td><td>none</td></tr>
+<tr><td>4</td><td>9, 10</td><td>94, 156</td><td>all</td><td>no</td><td>none</td></tr>
+<tr><td>4</td><td>11, 12, 13, 14</td><td>252, 403, 618, 938</td><td>all</td><td>yes</td><td>none</td></tr>
+<tr><td>5</td><td>12</td><td>403</td><td>all</td><td>no</td><td>none</td></tr>
+<tr><td>5</td><td>13, 14</td><td>618, 938</td><td>all</td><td>yes</td><td>none</td></tr>
+</table>
+<p>The two exceptions are the most uniform configurations, every point of the plane used once, rather than concentrated ones. At \(n=9\) the prediction is positive and the plane still fails, so the size condition of the conjecture is needed even for pencils. From \(n=10\) on no exception occurs at the degrees tested.</p>
+
+<h4>A proof route that fails</h4>
+<p>A natural attempt drops the relation \(\sum_jt_j=0\) by treating the constant as a third direction. It writes \(\mathbb F_3[t]/(t_j^2)=\bigotimes_p B_p\) over value points \(p\), with \(B_p\) the \(m_p\)-th tensor power of the Jordan block \(J_2\), inflated along the affine character \((1,p)\). The algebra \(\mathbb F_3[y]/(y^3)\) with primitive \(y\) is a Hopf algebra, so projective tensor anything is projective. Each \(B_p\) is free over \(\mathbb Z/3\) up to one small block in its middle degree. Expanding, every term with free factors along a spanning set of characters is free. The non-free terms need all points off some line to contribute their small blocks, which first happens near degree \(c/2\) for that line's direction: the criterion.</p>
+<p>The argument fails for two reasons. A point of multiplicity 1 contributes \(B_p=J_2\), a non-free block starting in degree 0. And freeness through degree \(t\) is a statement about relations in low degree, not about direct summands: the whole module has dimension \(2^n\), never divisible by 27, so it is never free. The two exceptions are exactly configurations made of multiplicity-1 points. A proof must control truncated freeness directly. The rank-variety or vector-bundle view of the pencil, Grothendieck splitting of its kernel sheaf on \(\mathbf P^1\), is the remaining candidate.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the worst-direction conjecture and its data, and the recorded pencil splitting identity. The symmetry reduction preserves the model's Hilbert function, by the three reasons listed. The enumeration is exhaustive over compositions, and every number above is read from the result files. The exceptions coincide with the recorded occupancy pair and the model's recorded full-plane configuration. The entry has no proof, only a failed route, and was not sent to a reviewer.</p>
+
+<h4>Remaining gap</h4>
+<p>A proof for pencils, and \(n_0(d,t)\) in general. Model exactness for \(A\), which carries every column statement to the board: the next step tests it on all pencil classes at \(n=8,9\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-pencil-freeness">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 24.13 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 5.88 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">0.06 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 9.00 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 8.17 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.03 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
