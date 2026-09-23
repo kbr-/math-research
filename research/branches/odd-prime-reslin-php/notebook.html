@@ -18,7 +18,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> The goal rests on the <a href="#entry-2026-09-23-core-statement-review">core statement</a>: polynomially many small constraints on collectively wide form families, of total density below one. In the low-density model, the <a href="#entry-2026-09-23-component-correction">component correction</a> explains every defect seen by small overlapping subfamilies, of span at most 4. Circuits of span 6 to 9 showed none, even in their own ring, and overlap-free families met the prediction at \(v=12\). That supports splitting the inductive step into bounded components (the <a href="#entry-2026-09-23-planted-overload">bounded-span equivalence</a>) and genericity for the rest, but the model has no PHP base. Next, test the pattern on the board algebra \(A\). At \(n=7\) only degree 5 is informative, so first count \(\gamma_5,\gamma_6\) at \(n=8\). If the degree-6 rank fits the run limit, compare a planted overlapping pair, random wide pairs and overlap-free families. The step ends with that comparison or with the count.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The goal rests on the <a href="#entry-2026-09-23-core-statement-review">core statement</a>: polynomially many small constraints on collectively wide form families, of total density below one. In the low-density model, the <a href="#entry-2026-09-23-component-correction">component correction</a> explains every defect seen by small overlapping subfamilies, of span at most 4. Circuits of span 6 to 9 showed none, even in their own ring, and overlap-free families met the prediction at \(v=12\). That supports splitting the inductive step into bounded components (the <a href="#entry-2026-09-23-planted-overload">bounded-span equivalence</a>) and genericity for the rest, but the model has no PHP base. On the board at \(n=7\), in degrees 4 and 5, random families and planted components meet the corrected prediction exactly (<a href="#entry-2026-09-23-board-low-density">board low-density entry</a>), but that degree sees only linear syzygies. Next, the degree-6 test at \(n=8\): count \(\gamma_5,\gamma_6\) one degree at a time within the memory budget, then compare a planted overlapping pair, where the model predicts a degree-6 defect, with random and overlap-free families. The step ends with that comparison or with the count.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -8165,6 +8165,41 @@ So \(w\ne0\) in \(A\).</p>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-23-board-low-density" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:board-low-density-degree-five">
+<h3>On the board at \(n=7\), low-density product constraints meet the component-corrected prediction in degree five</h3>
+<p class="entry-meta">23 September 2026 · Finite check · Weak unary PHP over \(\mathbb F_3\), \(n=7\), degrees four and five. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-23-component-correction">component correction</a> found, in a model without the PHP base, that every low-density defect comes from a small overlapping subfamily and is predicted by that component's exact series. Does the board algebra \(A\) behave the same way? The cycle ends with the comparison at the largest degree the available sizes allow.</p>
+<h4>Sizes</h4>
+<p>Width-two pair constraints have top \(P_b=\ell_{2b}^2\ell_{2b+1}^2\) of degree 4. The plain prediction is \(W=\mathrm{HS}_A(1-t^4/(1+t+t^2)^2)^M\). The component-corrected prediction replaces the planted component's factor by its exact series in the model ring on its span.</p>
+<p>The graded dimensions are \((1,35,462,2569,3094,21,0)\) at \(n=6\) and \((1,48,924,8688,34950,21792,28)\) at \(n=7\) (<code>gamma.py</code>, in the component-correction results). At \(n=7\) and \(M=8\), \(W\) is positive in degree 5 and negative in degree 6 (\(W_6=-6604\)), so only degrees 4 and 5 are informative, the latter only for linear syzygies.</p>
+<p>A count of \(\gamma_5,\gamma_6\) at \(n=8\), needed for a degree-6 test, was stopped by the system because the machine ran low on memory. It was not restarted.</p>
+<h4>Comparison at \(n=7\), \(M=8\)</h4>
+<p>Forms are random row functions on all 8 rows. \(\dim(A/(P_1,\dots,P_8))_k\) was computed exactly for \(k=4,5\) (<code>board_low_density.py</code>, <code>n7_M8.json</code>):</p>
+<ul>
+<li><strong>Random families (three):</strong> \(H=(34942,21424)=W\) in degrees 4 and 5.</li>
+<li><strong>A planted overlapping pair</strong> (two constraints whose four forms span 3 dimensions) plus six random constraints, three trials: \(H=W\). Relative to the plain prediction the model puts this pair's defect in degree 6 (its own series differs by \(t^6\)), so none is expected in degree 5.</li>
+<li><strong>A planted triple</strong> (three constraints whose six forms lie in a random 3-dimensional span) plus five random constraints, three trials. Two match \(W\), as does the model for them. In the third, the three tops are linearly dependent, already in the model ring (model \(H_4=4\) against 3). The board shows excess \((1,46)\) in degrees 4 and 5. The component-corrected prediction gives exactly \((34943,21470)\): the correction is \(\gamma_1-2\gamma_0=46\) in degree 5 (<code>corrected_prediction.py</code>, <code>corrected_prediction_n7.json</code>).</li>
+</ul>
+<p>So in all nine families the board's Hilbert function through degree 5 equals the component-corrected prediction, computed from the model ring on the planted span.</p>
+<h4>Assessment and next step</h4>
+<p>In the degrees available at \(n=7\), \(A\) behaves like the model locally. Random constraints are free there, and a planted component contributes exactly its own model series. That is the first board evidence for the split of the inductive step suggested by the component correction. It is weak evidence: degree 5 sees only linear syzygies, one degree above the constraints, where the model's small-core defects, at degree 6 for pairs spanning 3, cannot yet appear.</p>
+<p>The next step on odd-prime-clause-transfer is the degree-6 test at \(n=8\). First count \(\gamma_5,\gamma_6\) there, one degree at a time and within the memory budget, since the system stopped the combined count this time. Then compare a planted overlapping pair, where the model predicts a degree-6 defect, with random and overlap-free families. At \(n=8\), \(M=8\), \(\gamma_2=1656\), the degree-6 rank has \(M\gamma_2=13{,}248\) rows, the constraints times the degree-2 multipliers, and \(\gamma_6\) columns. If the count shows the dense elimination does not fit the memory budget, write it in C++ with incremental reduction, as the computation rules suggest. The step ends with the degree-6 comparison or with the count.</p>
+<p><strong>Verification gate.</strong> Re-read: the component-correction entry (the corrected prediction), the low-density entry's model, and the board code's product and normal-form routines. A fresh-context reviewer checked that the degree-5 part of the ideal is spanned by the computed products, since \(A\) is generated in degree 1. It recomputed the corrected predictions, which are now also produced by <code>corrected_prediction.py</code>, and confirmed every number against the data. It found that the script does not guarantee the planted span's dimension modulo rows. The stored forms were checked instead: the planted forms have rank 3 modulo rows, each constraint's pair rank 2, and the families rank 13 (triples) and 15 (pairs). It also required wording changes, all adopted: the degree-6 defect of the pair stated relative to the plain prediction, "at \(M=8\)" added, an unverified remark on the stopped job removed, and the next step stated without waiting and with its size.</p>
+
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-board-low-density">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>30 min 46.47 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">25 min 29.47 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">16.54 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5 min 0.33 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
