@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> The <a href="#entry-2026-09-24-freeness-route-review">freeness route review</a> finds the freeness side of the one-count link settled for generic forms at \(p=3\). Random \(\mathbb F_3\) forms within the count fail only through the line condition. The open core is whether an ENS block acts as a member. Next: compute the degree-\(D\) shadow in \(x\) of one complete accuracy-one ENS block over the weak base on a small board, with the exact \(\mathbb F_3\) PC-closure tester. Decide whether the shadow is generated in the block's input forms. Then test whether the shadows of two blocks on independent inputs add. Any surviving statement must use the number of blocks, and the recorded conservativity refutations are the controls.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The one-count link's two gaps are now removed under its own hypotheses, with freeness known on a nonempty open set, and without conservativity: ENS blocks are members with private variables (<a href="#entry-2026-09-24-ens-members">ENS members</a>), and freeness holds on a nonempty open set of up to about \(mN/(2D-1)\) forms (<a href="#entry-2026-09-24-general-forms-freeness">generic forms</a>). That is the restart condition of the restriction-mixture line. Next: compose the chain against the top-size lemma, obs:restriction-mixture-top-size-reduction. Determine which input counts \(h\) it requires the one-count design for, given that independence caps \(nh\) near \(N^2/(2D-1)\). Then list every remaining hypothesis of the resulting conditional lower bound: typicality, rational forms, and the input counts beyond the cap.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -16082,6 +16082,81 @@ Hence \(a_b=\sum_c\beta_{bc}r_c\) with \(\beta\) antisymmetric, the Koszul bound
 <tr><td>Computation design and coding</td><td class="elapsed">28.87 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 30.50 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">13.48 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-ens-members" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="cor:ens-members">
+<h3>ENS members: a family of ENS blocks with independent free input forms is a member with private variables, so it has no refutation below D with no conservativity needed</h3>
+<p class="entry-meta">24 September 2026 · Working proof (ENS members) · The first gap of prop:one-count-by-freeness; cycle odd-prime-ens-shadow.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-freeness-route-review">freeness route review</a> named the highest-risk item of the one-count link: whether the compiler's ENS blocks act as members in their input forms. It proposed computing one block's degree-\(D\) shadow and testing whether the shadows of two blocks add.</p>
+<p><strong>Why the proposed computation was not run.</strong> The record already contains that computation. The <a href="#entry-2026-09-22-ternary-conservativity-refuted">conservativity refutation</a> measured shadows over Boolean bases of blocks, and every witness entered the base closure one degree higher. Its <code>accumulate.py</code> ran the only nonvacuous accumulation test, at low power, and its assessment is that accumulation is almost untestable at reachable sizes. On the weak PHP base itself a nonvacuous test needs the base unrefuted at degree 6, so about \(N\ge6\) holes and some \(C(56,6)\approx3\times10^7\) monomials. Repeating it would be a rediscovery. This cycle asks instead whether the member hypothesis needs conservativity at all.</p>
+<p><strong>General statement.</strong> cor:ens-members: over \(\mathbb F_3\), let the weak unary base have \(m\ge D\) rows and \(N\ge2D-1\) columns. Take any family of complete accuracy-one ENS blocks. Block \(a\) has affine input forms \(L_{a,i}\), inputs \(q_{a,i}=1-L_{a,i}^2\), private coefficient variables \(r_{a,i}\) with \(r^3=r\), product \(P_a=1-\sum_ir_{a,i}q_{a,i}\), and companions \(q_{a,i}P_a\). As in the compiler and the shared-support endpoint, a complete block consists of exactly its coefficient field equations and its companions. \(P_a\) is not asserted. Suppose two things:</p>
+<ul>
+<li>the linear parts of all input forms of all blocks are linearly independent modulo the row sums;</li>
+<li>the weak top algebra \(A\) is free through \(D\) over the truncated algebra of their span.</li>
+</ul>
+<p>Then the base plus all the blocks is \(z\)-injective below \(D\) and has no PC refutation of degree \(D\).</p>
+<ul>
+<li><em>Where it has content.</em> For \(m\le N\) the weak base is satisfiable, and every block extends every assignment, so there is no refutation at any degree by soundness. The refutation content is at \(m&gt;N\), together with the \(z\)-injectivity. For \(D\le4\), companions of degree 5 cannot be used.</li>
+<li><em>What it closes.</em> The corollary removes the first gap of prop:one-count-by-freeness, ENS blocks versus members, under exactly that proposition's own hypotheses.</li>
+<li><em>Where the hypotheses hold.</em> By thm:general-forms-freeness, they hold on a nonempty Zariski-open set over \(\overline{\mathbb F}_3\) of families with at most \(m(\lfloor N/(2D-1)\rfloor-1)\) input forms, and the corollary applies at its \(\mathbb F_3\)-rational points. Whether a given random \(\mathbb F_3\) inventory lies in that set stays open.</li>
+</ul>
+<p><em>Relation to substitution.</em> lem:ternary-first-active-selector-substitution already turns a degree-\(D\) refutation with blocks of at most \(h\) inputs into a refutation of the base alone at degree \(2(h-1)D\), for any number of blocks. So blocks with few inputs, \(2(h-1)D\) below the base's own refutation degree, need nothing new. This makes sense for \(m&gt;N\), where the base has a refutation degree. The corollary is independent of \(h\). It needs only independence and freeness. The count \(m(\lfloor N/(2D-1)\rfloor-1)\) is where freeness is known generically. Its use is for blocks with many inputs.</p>
+
+<h4>Proof</h4>
+<p>Let the base \(\Gamma'\) be the weak base together with every coefficient variable \(r\) and its field equation \(r^3-r\). Treat the whole family as one member \(U\). Its constraints are the companions, which are polynomials over \(\mathbb F_3\) in the forms \(\ell\), the linear parts of the \(L\), and in the variables \(r\). Unreduced they have degree 5, which is at most \(D\) for \(D\ge5\). Span transfer needs reduced constraints, so replace each companion by its reduction modulo \(y^3-y\): \(L^4\) becomes \(L^2\). By the seeded-member theorem's remark that reduction is free at degree \(D\), the difference is a multiple of the homogenized field equations within degree \(D\). So the original and the reduced systems have the same degree-\(D\) closure.</p>
+<ol>
+<li><em>Base stability.</em> The supplied generators of \(\Gamma'\) lie in disjoint sets of variables: the weak base's in \(x\), the field equations in \(r\). So the quotient by their homogenizations is \(B'=B\otimes_{\mathbb F[z]}\mathbb F[z][r]/(r^3-rz^2)\). The second factor is free over \(\mathbb F[z]\), with basis the monomials of degree \(\le2\) in each \(r\). So \(B'\) is a direct sum of shifted copies of \(B\). \(B\) is \(z\)-injective below \(D\) by thm:tensor-power-freeness, through prop:stability-from-tensor-power, since \(m\ge D\) and \(N\ge2D-1\). Each copy is shifted up, so \(B'\) is \(z\)-injective below \(D\). That is hypothesis (a) of thm:relative-gluing.</li>
+<li><em>Freeness over the joint span.</em> The top algebra of \(\Gamma'\) is \(A'=A\otimes\mathbb F[r]/(r^3)\). By the freeness hypothesis, \(A\) decomposes as \((T'\otimes C)\oplus Q'\), with \(T'\) the truncated algebra on the forms and \(Q'\) in degrees \(\ge D+1\). Tensoring with \(\mathbb F[r]/(r^3)\) gives \(A'\cong(T''\otimes C)\oplus Q''\), with \(T''=T'\otimes\mathbb F[r]/(r^3)\) the truncated algebra on the forms and the \(r\) together, and \(Q''=Q'\otimes\mathbb F[r]/(r^3)\) still in degrees \(\ge D+1\). Span transfer uses only degrees \(\le D\), as thm:generic-span-members states, so this decomposition is what it needs.</li>
+<li><em>Span transfer.</em> lem:span-transfer uses no property of its forms beyond \(\mathbb F_p\) coefficients and this decomposition. Its one base-specific step is that \(\phi(y^p-yz^{p-1})\) lies in the homogenized field ideal. For a form \(\ell\) this holds by Booleanity. For a private variable \(r\) the image is \(r^3-rz^2\), a generator of \(\Gamma'\). So the lemma applies with \(r\) among the forms.</li>
+<li><em>Allowed set and augmentation.</em> Relative gluing is stated for any homogenized base algebra, so it applies to \(\Gamma'\). Put \(y\) for the variables of the forms and \(s\) for those of the \(r\). The allowed set of \(U\) in \(\mathbb F_3^{\#y+\#s}\) is nonempty. The blocks have disjoint variables, and each block is satisfied at every value of its \(y\): if some \(q_{a,i}=1\), put \(s_{a,i}=1\) and the other coefficients 0, so \(P_a=0\); if every \(q_{a,i}=0\), every companion vanishes. Add \(h(y,s)\) for \(h\) in a reduced degree-order Gröbner basis of the companions together with \(y^3-y\) and \(s^3-s\), as in thm:seeded-member-condition. The augmented member has no fall below \(D\) in its span ring. The allowed set is nonempty, so no augmented constraint is a nonzero constant. A nonconstant \(h(y,s)\) stays nonconstant in \(x\) and \(r\): its top is nonzero, because \(T''\to A'\) is injective in degrees \(\le D\), and the tops step of span transfer holds for \(r\). The base generators \(r^3-r\), the Booleanity and collision generators, and \(\rho_i-1\) are nonconstant too. That is (d). Span transfer then gives (c).</li>
+<li><em>Gluing.</em> The whole family is one member, so every top syzygy of the member is member-supported, and hypothesis (b) holds vacuously, exactly as in cor:joint-span-families and prop:one-count-by-freeness. As in thm:generic-span-members, the augmentation adds the Gröbner basis elements of degree \(\le D\). The freeness used is that of \(A'\) over the span algebra \(T''\), which does not depend on which constraints are added. Relative gluing gives \(z\)-injectivity of \(\Gamma'\) plus the augmented member below \(D\), and no PC refutation of degree \(D\). The reduced system is a subset of the augmented one, and it has the same degree-\(D\) closure as the original. \(\square\)</li>
+</ol>
+
+<h4>Why this does not contradict the recorded refutations</h4>
+<ul>
+<li><em>Conservativity.</em> The conservativity refutations (ex:ternary-fresh-block-conservativity-refuted, ex:ternary-rank-three-conservativity-refuted) show that a fresh block derives new consequences in the existing variables at degree \(D\). Relative gluing claims only that the combined system has no falls. A consequence that the base alone reaches one degree later is not a fall of the combined system. So the two are compatible.</li>
+<li><em>Completeness.</em> obs:ternary-php-conservativity-completeness-refutation compiles every resolution refutation of PHP into selector blocks with a PC refutation at degree 11. That observation is over the full functional base \(F_N\), not the weak base. Its forms are independent within each block but shared across blocks, so the family is not independent. In any case the number of blocks \(T_N\) is exponential, far above \(\dim A_1=m(N-1)\) and above the known free range \(m(g-1)\). The hypotheses therefore use the size of the inventory, as a lower-bound statement must.</li>
+</ul>
+
+<h4>What remains for the one-count problem</h4>
+<ul>
+<li><em>Input counts.</em> Independence needs \(nh\le\dim A_1\approx mN\), and the free set reaches \(nh\le m(\lfloor N/(2D-1)\rfloor-1)\). With \(n\approx N\) tuples and \(m=N+1\), that is \(h\lesssim N/(2D-1)\). The window of the one-count problem runs up to \(h\approx Q(L)\approx1.6\times10^4L\Lambda_M\), far above that. So the corollary covers only the lower part of the window. Whether the top-size lemma needs the one-count design at every input count, or only at one it may choose, decides whether that suffices.</li>
+<li><em>Rational forms.</em> The random \(\mathbb F_3\) inventory must lie in the free set. The route review's test found this fails only through the line condition at small sizes.</li>
+<li><em>Randomness.</em> The top-size lemma's reduction to the one-count problem, with its typicality and size assumptions, must deliver independent blocks, as prop:one-count-by-freeness assumes.</li>
+<li><em>Structured inventories.</em> For the goal's unrestricted inventories, dependent forms are the rule. There the members overlap, and hypothesis (b) or a closure argument is needed again.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: lem:span-transfer (statement and proof, including its remark that it uses no property of the forms beyond \(\mathbb F_p\) coefficients and freeness), thm:seeded-member-condition, cor:joint-span-families, prop:one-count-by-freeness, thm:relative-gluing (hypotheses (a) to (d)), the compiler's block definition, and the three conservativity records named above. A fresh-context agent checked the statement against the record before drafting. It found the corollary new: the one-count entry names this step as its first open gap. It also pointed to the substitution lemma, which is now discussed. A fresh-context reviewer then confirmed:</p>
+<ul>
+<li>the tensor description of \(B'\) and the transfer of \(z\)-injectivity;</li>
+<li>that the three steps of span transfer which might need linear forms in \(x\) still hold for \(r\): the tops step, the injectivity of \(T''\to A'\), and the field-equation step;</li>
+<li>that (b) is vacuous with one member, and the needs of the augmentation;</li>
+<li>the consistency with the conservativity refutations.</li>
+</ul>
+<p>It required these changes, all adopted:</p>
+<ul>
+<li>the reduction of the companions and the equality of degree-\(D\) closures;</li>
+<li>(d) for nonconstant augmented constraints and for the base generators;</li>
+<li>the freeness hypothesis tied to the decomposition;</li>
+<li>the overclaim about general position replaced by rational points of the open set;</li>
+<li>the trivial range \(m\le N\) stated;</li>
+<li>the substitution comparison and the completeness bullet corrected;</li>
+<li>the complete constraint list of a block stated.</li>
+</ul>
+<p>The changes justify or weaken, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-ens-shadow">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 20.14 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">4 min 1.66 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 45.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 33.25 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
