@@ -28,12 +28,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: q-ary-extension. Test whether the additive-roots method extends to \(\mathbb F_q\) grids. The starting point: \(y_i=x_i^q-x_i\), the local root \(x(y)=-\sum_t y^{q^t}\) of \(X^q-X=y\), and the \(\mathbb F_q\)-span of the \(y_i\), with \(q^n\) elements.</p>
-<ul>
-<li>First generalize the origin-jet lemma and the jet kernel to \(\mathbb F_3\). Compute \(\delta_3(n,k,\ell)\) for \(n\le3\) and small \(k\), and compare with the natural guess \(n(q-1)+\ldots\).</li>
-<li>Read Menezes' statement for general fields first, and search the claim index for the odd-field thread's related results (<code>thm:finite-field-high-origin-cover</code>), so as not to rediscover them.</li>
-</ul>
-<p>The per-order theorem over \(\mathbb F_2\) is a candidate for the preprint and for Lean. Both are the user's decisions.</p>
+<p>Route item: q-ary-extension. Prove the <a href="#q-ary-per-order-conjecture">base-\(q\) law</a> for prime \(q\).</p>
+<ol>
+<li>State and prove the \(q\)-ary coefficient lemma: the coefficient of \(x^\varepsilon y^e\) is \([y^e]\bigl(w\prod_i\gamma_{\varepsilon_i}(x(y_i))\bigr)\). Check it against the kernel on random jets.</li>
+<li>Transfer the lower-bound proof. Use \(\mathbb F_q\)-multilinear forms with generators repeated up to \(q-1\) times, the repeated-argument recursion (multinomial cancellation mod \(q\)), and reduction modulo the subspace polynomial of the \(q^n\)-element span.</li>
+<li>Find the remainder construction, testing the jet \(v=1\) first.</li>
+</ol>
+<p>Publication and Lean remain the user's decisions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -1121,6 +1122,59 @@ Each \(E^{(t)}_j\) is symmetric and additive in each variable, and \(E^{(t)}_j(y
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 48.65 s</strong></td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 35.14 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">13.51 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-q-ary-scoping" data-kind="research" data-route="q-ary-extension" data-claims="conj:q-ary-per-order-formula check:q-ary-per-order-values">
+<h3>25 September 2026 — On the full grid F_q^n the per-order minimum follows the same law in base q</h3>
+<p class="entry-meta">Conjecture with a finite check: δ_q(n,k,ℓ) = n(q−1) + qℓ + (q−1)Σ_{j&lt;n}⌊(k−ℓ−1)/q^j⌋ for prime q. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Question.</strong> The binary proof rests on the additive local root of \(X^2+X=y\) and on a root count over the \(2^n\)-element span of the \(y_i\). On the full grid \(\mathbb F_q^n\) the same objects exist:</p>
+<ul>
+<li>\(y_i=x_i^q-x_i\);</li>
+<li>the \(\mathbb F_q\)-additive root \(x(y)=-\sum_ty^{q^t}\) of \(X^q-X=y\);</li>
+<li>the \(q^n\)-element \(\mathbb F_q\)-span of the \(y_i\).</li>
+</ul>
+<p>The question is whether the per-order minimum \(\delta_q(n,k,\ell)\) follows a base-\(q\) law. Here \(\delta_q\) is the least degree of \(P\in\mathbb F_q[x]\) with multiplicity \(\ge k\) on \(\mathbb F_q^n\setminus\{0\}\) and exactly \(\ell\) at the origin. This is the polynomial side of the odd-field thread's covering problem. Menezes' theorem concerns the cube \(\{0,1\}^n\), not \(\mathbb F_q^n\).</p>
+<p><strong>Prior records.</strong> The odd-field thread proves two cases:</p>
+<ul>
+<li>origin order \(k-1\) forces degree \(n(q-1)+q(k-1)\), and order \(k-2\) one less (<code>thm:finite-field-high-origin-cover</code>);</li>
+<li>\(k=2\), \(\ell=0\) gives \(n(q-1)+q-1\) (<code>lem:finite-field-punctured-first-jet-degree</code>).</li>
+</ul>
+<p>Its higher-jet obstruction concerns covers, not this minimum.</p>
+<p><strong>Method.</strong> <code>research/tools/bmd_jet_orders_q.cpp</code> repeats the jet reduction over a prime field \(\mathbb F_p\):</p>
+<ul>
+<li>basis \(x^\varepsilon y^e\) with \(0\le\varepsilon_i&lt;p\) and degree \(\max(|\varepsilon|+p|e|)\);</li>
+<li>jets lifted by \(g_b=x^b(1-x^{(p-1)p^K})\);</li>
+<li>one elimination per case gives every order.</li>
+</ul>
+<p>The origin-jet lemma's proof carries over word for word, with the Chinese remainder dimension \(p^n\binom{n+k-1}{n}\). For \(p=2\) the kernel reproduces the binary values, for example at \((3,5)\), \((2,5)\) and \((4,7)\). For \(p=3,5\) it reproduces both recorded results in every computed case (the recorded-check column of <code>bmd_q_series.py</code>).</p>
+<h4 id="q-ary-per-order-conjecture">The base-\(q\) law</h4>
+<p><strong>Finite check</strong> (<code>check:q-ary-per-order-values</code>). The check covers \(q=3\) with \(n\le3\), \(k\le8\) (\(k\le7\) for \(n=3\)), and \(q=5\) with \(n\le2\), \(k\le7\): 149 values in total. Every value equals</p>
+<div class="math">\[ \Phi_q(n,k,\ell)=n(q-1)+q\ell+(q-1)\sum_{j=0}^{n-1}\Bigl\lfloor\frac{k-\ell-1}{q^j}\Bigr\rfloor \]</div>
+<p>(<code>research/results/bmd-r7-q-ary-scoping/formula-check.txt</code>).</p>
+<p><strong>Conjecture</strong> (<code>conj:q-ary-per-order-formula</code>). For every prime \(q\), \(n\ge1\) and \(0\le\ell&lt;k\), \(\delta_q(n,k,\ell)=\Phi_q(n,k,\ell)\). For \(q=2\) this is the proved <a href="#per-order-value-all-dimensions">binary theorem</a>. It agrees with the two recorded cases: \(\ell=k-1\) gives \(n(q-1)+q(k-1)\), and \(k=2\), \(\ell=0\) gives \(n(q-1)+q-1\).</p>
+<p><strong>The Legendre form.</strong> Write \(m=k-\ell-1=Qq^n+r\) with \(0\le r&lt;q^n\). Base-\(q\) Legendre gives \(\sum_{j\ge0}\lfloor m/q^j\rfloor=m+(m-s_q(m))/(q-1)\). The same identity for \(Q\) handles the tail \(j\ge n\), and \(s_q(m)=s_q(Q)+s_q(r)\). Together these give</p>
+<div class="math">\[ \Phi_q=n(q-1)+q(k-1)-h_q,\qquad h_q=qQ+s_q(r). \]</div>
+<p>\(h_q\) is the number of parts in the decomposition of \(m\) into powers of \(q\), each at most \(q^{n-1}\): \(qQ\) copies of \(q^{n-1}\) and the base-\(q\) digits of \(r\).</p>
+<p><strong>Proof plan.</strong> Both halves of the binary proof have direct analogues.</p>
+<ul>
+<li><strong>Upper bound.</strong> Every nonzero point lies on \(q^{n-1}\) of the \(q^n-1\) hyperplanes \(u\cdot x=1\). So the hyperplane product \(F\) has multiplicity \(q^{n-1}\) there and degree \(q^n-1\), and \(F^{qQ}\) has degree \(qQ(q^n-1)\), which is exactly the block part of \(\Phi_q\). A \(q\)-ary truncated product for the remainder \(r\) is still needed. The jet \(v=1\) is the first candidate.</li>
+<li><strong>Coefficient lemma.</strong> The \(q\) roots \(x(y)+a\), \(a\in\mathbb F_q\), with Lagrange interpolation, give the coefficient of \(x^\varepsilon y^e\) as \([y^e]\bigl(w\prod_i\gamma_{\varepsilon_i}(x(y_i))\bigr)\). Here \(\gamma_\varepsilon(x)\) is the coefficient of \(X^\varepsilon\) in \(1-(X-x)^{q-1}\), a nonzero multiple of \(x^{q-1-\varepsilon}\) plus \(1\) when \(\varepsilon=0\).</li>
+<li><strong>Lower bound.</strong> The degree conditions involve \(w\prod_ix_i^{d_i}\) with \(d_i\le q-1\). A generator repeated \(q\) times reduces as in characteristic 2, because \(q!/\prod(\text{mult}!)\equiv0\pmod q\) unless all exponents agree. Reduction modulo the subspace polynomial of the \(q^n\)-element span then plays the role of \(L_V\).</li>
+</ul>
+<p>The prime hypothesis enters through the multinomial cancellation.</p>
+<p><strong>General statement.</strong> <code>conj:q-ary-per-order-formula</code>, for every prime \(q\), \(n\ge1\) and \(0\le\ell&lt;k\).</p>
+<p><strong>Verification gate.</strong> The kernel was validated on the binary values and on both recorded \(q\)-ary results. The 149 comparisons were made by script from the saved outputs. The Legendre form was checked by hand. No new lemma is claimed as proved in this entry, so no reviewer pass was needed.</p>
+<p><strong>Assessment.</strong> The new route item has a precise, well-supported target, with a proof plan that transfers the binary argument. The missing implications are the \(q\)-ary coefficient lemma, the \(q\)-ary lower bound and the remainder construction. Process: generalizing the kernel to \(\mathbb F_p\) took one short step, and the recorded odd-field results served as the validation.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r7-q-ary-scoping">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 24.95 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 24.76 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.19 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
