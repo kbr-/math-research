@@ -184489,9 +184489,9 @@
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "0a67dda78ca0b870fe87941499206a596d45c485",
+          "revision": "e5fcabf74e5006bb7ef8c95b55b54811cbb61cc3",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "Status checked against the entry and its verification gate.",
           "next_action": null,
           "claim_sha256": "ca1663664d1a576590e042285377f9b68392df496f7e7a37bdf6f13d82f4d556",
@@ -184514,9 +184514,9 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "0a67dda78ca0b870fe87941499206a596d45c485",
+          "revision": "e5fcabf74e5006bb7ef8c95b55b54811cbb61cc3",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "No Lean artifact.",
           "next_action": null,
           "claim_sha256": "ca1663664d1a576590e042285377f9b68392df496f7e7a37bdf6f13d82f4d556",
@@ -184539,9 +184539,9 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "0a67dda78ca0b870fe87941499206a596d45c485",
+          "revision": "e5fcabf74e5006bb7ef8c95b55b54811cbb61cc3",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "Topics checked against the entry.",
           "next_action": null,
           "claim_sha256": "ca1663664d1a576590e042285377f9b68392df496f7e7a37bdf6f13d82f4d556",
@@ -184564,9 +184564,9 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "0a67dda78ca0b870fe87941499206a596d45c485",
+          "revision": "e5fcabf74e5006bb7ef8c95b55b54811cbb61cc3",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "Significance assessed at this checkpoint.",
           "next_action": null,
           "claim_sha256": "ca1663664d1a576590e042285377f9b68392df496f7e7a37bdf6f13d82f4d556",
@@ -184589,13 +184589,13 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "0a67dda78ca0b870fe87941499206a596d45c485",
+          "revision": "e5fcabf74e5006bb7ef8c95b55b54811cbb61cc3",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
-          "note": "New claim; relationships recorded. Prior-art entry (24 September 2026): new relationship with lem:per-order-dimension-step, thm:binary-multiplicity-degree-all-k-conditional.",
+          "reviewer": "Claude Code (Opus 5.5)",
+          "note": "New claim; relationships recorded. Prior-art entry (24 September 2026): new relationship with lem:per-order-dimension-step, thm:binary-multiplicity-degree-all-k-conditional. Lean linear form avoidance entry (24 September 2026): new relationship with lem:binary-linear-form-avoidance.",
           "next_action": null,
           "claim_sha256": "ca1663664d1a576590e042285377f9b68392df496f7e7a37bdf6f13d82f4d556",
-          "value_sha256": "3f458d2c2dff49fd05f82a46d056be74bf5f6ba8b0e9a70bd8d29958b650e652",
+          "value_sha256": "57a77e64cf52ce8a1a6270faa4ce31336265ac60503fcc6e6313ffb054137f26",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#one-dimension-degree-step",
@@ -188292,6 +188292,156 @@
             {
               "target": "results/bmd-f1-schwartz-zippel/lean-verification-hasse-multiplicity.txt",
               "sha256": "a30762068c0a666cf1809bdfc18503baefbe345f2a9e97835ddd289c855d05fa"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lem:binary-linear-form-avoidance",
+      "summary": "Over F_2, a nonzero polynomial in finitely many variables of total degree below 2^n - 1 is not divisible by some nonzero linear form; over any field, an invertible linear substitution sends any nonzero linear form to any chosen variable.",
+      "assessment": "Working proof, verified in Lean: the 2^n - 1 nonzero forms are pairwise non-associated primes of the UFD F_2[x] (the only unit is 1), so their product would divide P; the substitution comes from extending a map of lines to a linear automorphism.",
+      "record": "[Lean linear form avoidance](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-lean-linear-form-avoidance)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "complete",
+        "scope": "Complete Lean proof of both parts for every finite variable type (part 2 over every field).",
+        "references": [
+          "../formalization/claims/LinearFormAvoidance.lean",
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-lean-linear-form-avoidance"
+        ],
+        "artifacts": [
+          {
+            "scope": "Linear form avoidance over F_2 and straightening a linear form to a coordinate.",
+            "status": "complete",
+            "references": [
+              "../formalization/claims/LinearFormAvoidance.lean"
+            ],
+            "declarations": [
+              "MathResearch.LinearFormAvoidance.exists_linForm_not_dvd",
+              "MathResearch.LinearFormAvoidance.exists_subst_linForm_eq_X"
+            ],
+            "verification": "results/bmd-f2-linear-form/lean-verification.txt"
+          }
+        ]
+      },
+      "topics": [
+        "degree-accounting"
+      ],
+      "significance": {
+        "category": "general_tool",
+        "rationale": "Helper of the one-dimension step, which needs a coordinate not dividing the lowest component at the origin.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-linear-form-avoidance",
+          "results/bmd-f2-linear-form/lean-verification.txt"
+        ],
+        "next_action": "Use in the Lean one-dimension step with the substitution's degree and multiplicity facts."
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "e5fcabf74e5006bb7ef8c95b55b54811cbb61cc3",
+          "date": "2026-09-24",
+          "reviewer": "Claude Code (Opus 5.5)",
+          "note": "Status checked against the entry and its verification gate.",
+          "next_action": null,
+          "claim_sha256": "fc7543ca524f24be62b5026a83613bbd3ff01930c88a06fb6218a7ae45369b77",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-linear-form-avoidance",
+              "sha256": "bedec3344c1bf379e4f766a24b339ece6370e729a7aab3d3c012616091a5ac2e",
+              "normalization": "notebook-fragment-v1"
+            },
+            {
+              "target": "results/bmd-f2-linear-form/lean-verification.txt",
+              "sha256": "c4a08f8b3cca937e00c4b50c8cc12f300c9fb7aa32f48d82c5fe4625afca13b9"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "e5fcabf74e5006bb7ef8c95b55b54811cbb61cc3",
+          "date": "2026-09-24",
+          "reviewer": "Claude Code (Opus 5.5)",
+          "note": "Lean artifacts checked against their verification reports.",
+          "next_action": null,
+          "claim_sha256": "fc7543ca524f24be62b5026a83613bbd3ff01930c88a06fb6218a7ae45369b77",
+          "value_sha256": "091afe025885dbcf4c8024f54d52a58dc1e6c31170b6b4848088dd786f0b95af",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-linear-form-avoidance",
+              "sha256": "bedec3344c1bf379e4f766a24b339ece6370e729a7aab3d3c012616091a5ac2e",
+              "normalization": "notebook-fragment-v1"
+            },
+            {
+              "target": "results/bmd-f2-linear-form/lean-verification.txt",
+              "sha256": "c4a08f8b3cca937e00c4b50c8cc12f300c9fb7aa32f48d82c5fe4625afca13b9"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "e5fcabf74e5006bb7ef8c95b55b54811cbb61cc3",
+          "date": "2026-09-24",
+          "reviewer": "Claude Code (Opus 5.5)",
+          "note": "Topics checked against the entry.",
+          "next_action": null,
+          "claim_sha256": "fc7543ca524f24be62b5026a83613bbd3ff01930c88a06fb6218a7ae45369b77",
+          "value_sha256": "c77a2b25ecfcfe121fba78df653f060d42a3c2d21a5921fe71b12ec7e76a788f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-linear-form-avoidance",
+              "sha256": "bedec3344c1bf379e4f766a24b339ece6370e729a7aab3d3c012616091a5ac2e",
+              "normalization": "notebook-fragment-v1"
+            },
+            {
+              "target": "results/bmd-f2-linear-form/lean-verification.txt",
+              "sha256": "c4a08f8b3cca937e00c4b50c8cc12f300c9fb7aa32f48d82c5fe4625afca13b9"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "e5fcabf74e5006bb7ef8c95b55b54811cbb61cc3",
+          "date": "2026-09-24",
+          "reviewer": "Claude Code (Opus 5.5)",
+          "note": "Significance assessed at this checkpoint.",
+          "next_action": null,
+          "claim_sha256": "fc7543ca524f24be62b5026a83613bbd3ff01930c88a06fb6218a7ae45369b77",
+          "value_sha256": "8aeac1df7686b2bc7dcb2e6f898187e762a23683c5f1c727019d15253a5890f9",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-linear-form-avoidance",
+              "sha256": "bedec3344c1bf379e4f766a24b339ece6370e729a7aab3d3c012616091a5ac2e",
+              "normalization": "notebook-fragment-v1"
+            },
+            {
+              "target": "results/bmd-f2-linear-form/lean-verification.txt",
+              "sha256": "c4a08f8b3cca937e00c4b50c8cc12f300c9fb7aa32f48d82c5fe4625afca13b9"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "e5fcabf74e5006bb7ef8c95b55b54811cbb61cc3",
+          "date": "2026-09-24",
+          "reviewer": "Claude Code (Opus 5.5)",
+          "note": "New claim; relationships recorded.",
+          "next_action": null,
+          "claim_sha256": "fc7543ca524f24be62b5026a83613bbd3ff01930c88a06fb6218a7ae45369b77",
+          "value_sha256": "336b98609e28995d517595da8fb2842c27e06b51f8d4ca9f0f308409f2e23b52",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-linear-form-avoidance",
+              "sha256": "bedec3344c1bf379e4f766a24b339ece6370e729a7aab3d3c012616091a5ac2e",
+              "normalization": "notebook-fragment-v1"
+            },
+            {
+              "target": "results/bmd-f2-linear-form/lean-verification.txt",
+              "sha256": "c4a08f8b3cca937e00c4b50c8cc12f300c9fb7aa32f48d82c5fe4625afca13b9"
             }
           ]
         }
@@ -298111,6 +298261,32 @@
         "date": "2026-09-24",
         "reviewer": "Claude Code (Opus 5.5)",
         "note": "The note's deduction applies the lemma with S = F_2."
+      }
+    },
+    {
+      "id": "lem:one-dimension-degree-step::depends_on::lem:binary-linear-form-avoidance",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "lem:one-dimension-degree-step",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:binary-linear-form-avoidance",
+        "locator": null
+      },
+      "scope": "Chooses the split coordinate so that it does not divide the lowest component at the origin.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-linear-form-avoidance",
+        "results/bmd-f2-linear-form/lean-verification.txt"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "e5fcabf74e5006bb7ef8c95b55b54811cbb61cc3",
+        "date": "2026-09-24",
+        "reviewer": "Claude Code (Opus 5.5)",
+        "note": "Chooses the split coordinate so that it does not divide the lowest component at the origin."
       }
     },
     {

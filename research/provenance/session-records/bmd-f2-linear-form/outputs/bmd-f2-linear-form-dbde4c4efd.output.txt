@@ -1,0 +1,44 @@
+claims/LinearFormAvoidance.lean:33:46: warning: `MvPolynomial.coeff_X'` has been deprecated: Use `MvPolynomial.coeff_X` instead
+claims/LinearFormAvoidance.lean:45:11: warning: `MvPolynomial.totalDegree_finset_sum` has been deprecated: Use `MvPolynomial.totalDegree_finsetSum` instead
+claims/LinearFormAvoidance.lean:76:28: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  IsReduced (ZMod 2)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+claims/LinearFormAvoidance.lean:71:0: warning: automatically included section variable(s) unused in theorem `MathResearch.LinearFormAvoidance.units_subsingleton_zmod_two`:
+  [Fintype σ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype σ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/LinearFormAvoidance.lean:90:32: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  Field (ZMod 2)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+claims/LinearFormAvoidance.lean:148:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  C (?m.60 * ?m.61)
+in the target expression
+  C (v i) * (C (A i j) * X j) = C (v i) * C (A i j) * X j
+
+σ : Type u_1
+F : Type u_2
+inst✝¹ : Fintype σ
+inst✝ : Field F
+A : Matrix σ σ F
+v : σ → F
+j : σ
+a✝¹ : j ∈ Finset.univ
+i : σ
+a✝ : i ∈ Finset.univ
+⊢ C (v i) * (C (A i j) * X j) = C (v i) * C (A i j) * X j
+
+Note: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  function expected
+    A i
+claims/LinearFormAvoidance.lean:178:12: warning: This simp argument is unused:
+  Pi.single_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hj]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

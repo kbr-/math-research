@@ -1,0 +1,67 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.LinearFormAvoidance
+Claim file: claims/LinearFormAvoidance.lean
+Claim: lem:binary-linear-form-avoidance
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-lean-linear-form-avoidance
+Scope: Over F_2 with a finite variable type σ, a nonzero polynomial of total degree below 2^|σ| - 1 is not
+divisible by some nonzero linear form Σ v_i x_i; and over any field, every nonzero linear form becomes any
+chosen variable x_{i0} under an invertible linear substitution x_i ↦ Σ_j A_ij x_j. Helper for the
+one-dimension step (lem:one-dimension-degree-step), where it is applied to the lowest homogeneous
+component at the origin, of degree at most k - 1 < 2^n - 1.
+Declarations: MathResearch.LinearFormAvoidance.linForm MathResearch.LinearFormAvoidance.coeff_linForm_single MathResearch.LinearFormAvoidance.linForm_injective MathResearch.LinearFormAvoidance.totalDegree_linForm MathResearch.LinearFormAvoidance.prime_linForm MathResearch.LinearFormAvoidance.units_subsingleton_zmod_two MathResearch.LinearFormAvoidance.exists_linForm_not_dvd MathResearch.LinearFormAvoidance.subst MathResearch.LinearFormAvoidance.subst_linForm MathResearch.LinearFormAvoidance.exists_subst_linForm_eq_X
+$ lake --wfail build claims.LinearFormAvoidance
+✔ [1905/1905] Built claims.LinearFormAvoidance (2.4s)
+Build completed successfully (1905 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmp8_cqc7u0.lean
+@MathResearch.LinearFormAvoidance.linForm : {σ : Type u_1} →
+  {F : Type u_2} → [Fintype σ] → [inst : Field F] → (σ → F) → MvPolynomial σ F
+'MathResearch.LinearFormAvoidance.linForm' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.LinearFormAvoidance.coeff_linForm_single : ∀ {σ : Type u_1} {F : Type u_2} [inst : Fintype σ]
+  [inst_1 : Field F] [DecidableEq σ] (v : σ → F) (i : σ),
+  (MathResearch.LinearFormAvoidance.linForm v).coeff (Finsupp.single i 1) = v i
+'MathResearch.LinearFormAvoidance.coeff_linForm_single' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.LinearFormAvoidance.linForm_injective : ∀ {σ : Type u_1} {F : Type u_2} [inst : Fintype σ]
+  [inst_1 : Field F], Function.Injective MathResearch.LinearFormAvoidance.linForm
+'MathResearch.LinearFormAvoidance.linForm_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.LinearFormAvoidance.totalDegree_linForm : ∀ {σ : Type u_1} {F : Type u_2} [inst : Fintype σ]
+  [inst_1 : Field F] {v : σ → F}, v ≠ 0 → (MathResearch.LinearFormAvoidance.linForm v).totalDegree = 1
+'MathResearch.LinearFormAvoidance.totalDegree_linForm' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.LinearFormAvoidance.prime_linForm : ∀ {σ : Type u_1} {F : Type u_2} [inst : Fintype σ] [inst_1 : Field F]
+  {v : σ → F}, v ≠ 0 → Prime (MathResearch.LinearFormAvoidance.linForm v)
+'MathResearch.LinearFormAvoidance.prime_linForm' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.LinearFormAvoidance.units_subsingleton_zmod_two : ∀ {σ : Type u_1},
+  Subsingleton (MvPolynomial σ (ZMod 2))ˣ
+'MathResearch.LinearFormAvoidance.units_subsingleton_zmod_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.LinearFormAvoidance.exists_linForm_not_dvd : ∀ {σ : Type u_1} [inst : Fintype σ]
+  {P : MvPolynomial σ (ZMod 2)},
+  P ≠ 0 → P.totalDegree < 2 ^ Fintype.card σ - 1 → ∃ v, v ≠ 0 ∧ ¬MathResearch.LinearFormAvoidance.linForm v ∣ P
+'MathResearch.LinearFormAvoidance.exists_linForm_not_dvd' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.LinearFormAvoidance.subst : {σ : Type u_1} →
+  {F : Type u_2} → [Fintype σ] → [inst : Field F] → Matrix σ σ F → MvPolynomial σ F →ₐ[F] MvPolynomial σ F
+'MathResearch.LinearFormAvoidance.subst' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.LinearFormAvoidance.subst_linForm : ∀ {σ : Type u_1} {F : Type u_2} [inst : Fintype σ] [inst_1 : Field F]
+  (A : Matrix σ σ F) (v : σ → F),
+  (MathResearch.LinearFormAvoidance.subst A) (MathResearch.LinearFormAvoidance.linForm v) =
+    MathResearch.LinearFormAvoidance.linForm (Matrix.vecMul v A)
+'MathResearch.LinearFormAvoidance.subst_linForm' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.LinearFormAvoidance.exists_subst_linForm_eq_X : ∀ {σ : Type u_1} {F : Type u_2} [inst : Fintype σ]
+  [inst_1 : Field F] [inst_2 : DecidableEq σ] {v : σ → F},
+  v ≠ 0 →
+    ∀ (i0 : σ),
+      ∃ A,
+        IsUnit A ∧
+          (MathResearch.LinearFormAvoidance.subst A) (MathResearch.LinearFormAvoidance.linForm v) = MvPolynomial.X i0
+'MathResearch.LinearFormAvoidance.exists_subst_linForm_eq_X' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 10 audited declarations.

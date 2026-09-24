@@ -11,11 +11,11 @@
 </section>
 <section id="remaining-route">
 <h2>The remaining route</h2>
-<ol><li data-route-item="formalization"><strong>Formalize the formula in Lean.</strong> Assigned 24 September 2026; the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a> orders the obligations down to multiplicity Schwartz–Zippel. Verified: that lemma over every field (<a href="#entry-2026-09-24-lean-multiplicity-schwartz-zippel">Lean entry</a>) with the multiplicity foundations. Next highest-risk items: the linear form not dividing a low-degree form, and the truncated product.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li><li data-route-item="low-origin-degree"><strong>Optional: per-order values below \(n=k-1\).</strong> The formula for \(D\) is proved. The per-order lower bound \(\delta(n,k,\ell)\ge n+2k-2-s_2(k-\ell-1)\) for \(m(k)\le n&lt;k-1\) is open for the orders that do not attain \(D\); the goal does not need it.</li></ol>
+<ol><li data-route-item="formalization"><strong>Formalize the formula in Lean.</strong> Assigned 24 September 2026; the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a> orders the obligations down to multiplicity Schwartz–Zippel. Verified so far:<ul><li>that lemma over every field, with the multiplicity foundations (<a href="#entry-2026-09-24-lean-multiplicity-schwartz-zippel">Lean entry</a>);</li><li>the <a href="#entry-2026-09-24-lean-linear-form-avoidance">linear-form avoidance lemma</a> the step needs.</li></ul>Next highest-risk item: the truncated product.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li><li data-route-item="low-origin-degree"><strong>Optional: per-order values below \(n=k-1\).</strong> The formula for \(D\) is proved. The per-order lower bound \(\delta(n,k,\ell)\ge n+2k-2-s_2(k-\ell-1)\) for \(m(k)\le n&lt;k-1\) is open for the orders that do not attain \(D\); the goal does not need it.</li></ol>
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: formalization. Formalize M09 of the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a>, with the substitution facts of M08 that it needs. A nonzero homogeneous \(L\in\mathbb F_2[x_1,\dots,x_n]\) of degree below \(2^n-1\) is not divisible by some nonzero linear form, and each nonzero linear form becomes \(x_n\) after an invertible change of coordinates. Then formalize M13, the truncated product. The note's content and any correspondence remain the user's decision.</p>
+<p>Route item: formalization. Formalize M13 of the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a>, the <a href="#catalan-truncation-vanishing">truncated product</a> \(g_s\) over \(\mathbb F_2\). It needs the telescoping identity \((1+x)+\sum_{j\le J}y^{2^j}=(1+x)^{2^{J+1}}\), the split \(\prod_iN_s(x_i)=g_s+R\), multiplicity at least \(s\) off the origin, \(g_s(0)=1\), and the degree bound \(n+2(s-1)-s_2(s-1)\). It also needs the elementary factor bounds (M03) and the binary digit facts (M12). The note's content and any correspondence remain the user's decision.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -437,6 +437,45 @@
 <tr><td>Individually measured formal verification</td><td class="elapsed">51.32 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 6.</p>
+</div>
+</article>
+<article id="entry-2026-09-24-lean-linear-form-avoidance" data-kind="formalization" data-route="formalization" data-claims="lem:binary-linear-form-avoidance">
+<h3>24 September 2026 — Lean: a linear form avoiding a low-degree polynomial, and straightening it to a coordinate</h3>
+<p class="entry-meta">Formalized: new helper lemma lem:binary-linear-form-avoidance (route item M09), extracted from the one-dimension step. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Assignment and endpoint.</strong> This is the second of the three highest-risk items of the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a>. The <a href="#one-dimension-degree-step">one-dimension step</a> needs a coordinate \(x_n\) that does not divide the lowest component \(L\) at the origin. Its proof says that at most \(\ell\le2^n-2\) distinct linear forms divide \(L\), and then changes coordinates. This cycle states and verifies both facts. The endpoint was a verified Lean proof.</p>
+<h4 id="binary-linear-form-avoidance">The lemma</h4>
+<p><strong>Working lemma</strong> (<code>lem:binary-linear-form-avoidance</code>). Let \(\sigma\) be a finite set of variables, and write \(\lambda_v=\sum_iv_ix_i\) for the linear form of a vector \(v\).</p>
+<ol>
+<li>If \(P\in\mathbb F_2[x_\sigma]\) is nonzero with total degree below \(2^{|\sigma|}-1\), then some nonzero \(v\in\mathbb F_2^\sigma\) has \(\lambda_v\nmid P\).</li>
+<li>Over any field \(F\), for every nonzero \(v\in F^\sigma\) and every variable \(x_{i_0}\), there is an invertible matrix \(A\) such that the substitution \(x_i\mapsto\sum_jA_{ij}x_j\) sends \(\lambda_v\) to \(x_{i_0}\).</li>
+</ol>
+<p><strong>Proof of (1).</strong></p>
+<ul>
+<li>\(F[x_\sigma]\) is a unique factorization domain (Mathlib).</li>
+<li>A nonzero \(\lambda_v\) has total degree 1, and the gcd of its coefficients is a unit, so it is irreducible (Mathlib's <code>irreducible_of_totalDegree_eq_one</code>) and hence prime.</li>
+<li>Over \(\mathbb F_2\) the only unit of \(\mathbb F_2[x_\sigma]\) is \(1\): a unit is a constant unit, and \(\mathbb F_2^\times=\{1\}\). So distinct forms are not associated.</li>
+<li>The forms are distinct for distinct \(v\), because the coefficient of \(x_i\) in \(\lambda_v\) is \(v_i\).</li>
+</ul>
+<p>If all \(2^{|\sigma|}-1\) nonzero forms divided \(P\), their product would divide \(P\) (<code>Finset.prod_primes_dvd</code>, which needs exactly this uniqueness of units). Degrees add in a domain, so the product has total degree \(2^{|\sigma|}-1\). Writing \(P=\prod\lambda_v\cdot c\) with \(c\ne0\) then gives \(\deg P\ge2^{|\sigma|}-1\), a contradiction.</p>
+<p><strong>Proof of (2).</strong> The substitution sends \(\lambda_v\) to \(\lambda_{vA}\), where \(vA\) is the row vector \(v\) times \(A\). Extend the isomorphism \(F v\cong F e_{i_0}\) between the two lines to a linear automorphism \(g\) of \(F^\sigma\), which exists in finite dimension. Put \(A=(\text{matrix of }g)^{\mathsf T}\). Then \(vA=g(v)=e_{i_0}\), and \(A\) is invertible because \(\det g\) is a unit.</p>
+<p><strong>Use in the step.</strong> There \(L\) is nonzero with degree \(\ell\le k-1&lt;2^n-1\). Part (1) gives a form not dividing \(L\), and part (2) makes it the split coordinate. The substitution's effect on degree and multiplicity is route item M08, left for the step's own cycle.</p>
+<p><strong>Files.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/LinearFormAvoidance.lean"><code>claims/LinearFormAvoidance.lean</code></a> has 10 audited declarations and passes <code>verify.sh</code> with only the standard axioms. The report is in <code>research/results/bmd-f2-linear-form/lean-verification.txt</code>.</p>
+<p><strong>General statement.</strong> <code>lem:binary-linear-form-avoidance</code>, for every finite variable set.</p>
+<p><strong>Verification gate.</strong> The statement was compared with the step's proof, as re-read from this notebook: the degree bound \(\ell\le2^n-2\), then a coordinate change making the chosen form a coordinate. The printed Lean types state exactly (1) and (2), with no extra hypotheses beyond a finite variable type and decidable equality for (2). A claim search for linear forms dividing the lowest component found only the step itself. The proof is checked by Lean, so no separate reviewer pass was run.</p>
+<p><strong>Remaining route and process assessment.</strong> M09 is complete; M08 (the substitution's effect on degree and multiplicity) remains for the step. The third high-risk item, M13 (the truncated product), is next. Process: every Mathlib ingredient existed, and the only friction was deprecation warnings, which verification treats as errors. No framework change is needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-f2-linear-form">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 22.89 s</strong></td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">1 min 43.22 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 12.94 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">12.21 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">14.38 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 </section>

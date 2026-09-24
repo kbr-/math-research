@@ -1,0 +1,17 @@
+claims/LinearFormAvoidance.lean:34:46: warning: `MvPolynomial.coeff_X'` has been deprecated: Use `MvPolynomial.coeff_X` instead
+claims/LinearFormAvoidance.lean:46:11: warning: `MvPolynomial.totalDegree_finset_sum` has been deprecated: Use `MvPolynomial.totalDegree_finsetSum` instead
+claims/LinearFormAvoidance.lean:95:2: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+claims/LinearFormAvoidance.lean:96:2: warning: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
