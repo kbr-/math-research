@@ -1,0 +1,35 @@
+// Test of conj:bounded-linkage-large-h at D = 8, h = 5 (the first case where R matters).
+// Blocks a, b, c over F_3, five inputs each, private coefficients:
+//   a: x, ya(2..5);  b: x+1, yb(2..5);  c: x, yc(2..5)  (a, c identical on x; b parallel to both).
+// Each block is Groebner-augmented separately (reduced dp basis of its companions and field equations).
+// withR = 1 adds R_ab = P_a P_b (q_a - q_b) and R_cb = P_c P_b (q_c - q_b) (degree 7); withR = 0 is the control.
+// J = homogenization with z of all these plus every field equation.  Printed: the lowest degree < DB of an element
+// of (J : z) not in J (a fall), or DB if none.  Prediction of the conjecture: no fall below 8 with R; control falls at 7.
+option(redSB);
+proc runcase(int withR, int DB)
+{
+  int h = 5; int i;
+  ring S = 3, (x, ya(2..h), yb(2..h), yc(2..h), ra(1..h), rb(1..h), rc(1..h), z), dp;
+  ideal La = x; ideal Lb = x + 1; ideal Lc = x;
+  for (i = 2; i <= h; i++) { La = La, ya(i); Lb = Lb, yb(i); Lc = Lc, yc(i); }
+  poly Pa = 1; poly Pb = 1; poly Pc = 1;
+  for (i = 1; i <= h; i++) { Pa = Pa - ra(i)*(1 - La[i]^2); Pb = Pb - rb(i)*(1 - Lb[i]^2); Pc = Pc - rc(i)*(1 - Lc[i]^2); }
+  ideal Fa = x^3 - x; ideal Fb = x^3 - x; ideal Fc = x^3 - x;
+  for (i = 2; i <= h; i++) { Fa = Fa, ya(i)^3 - ya(i); Fb = Fb, yb(i)^3 - yb(i); Fc = Fc, yc(i)^3 - yc(i); }
+  for (i = 1; i <= h; i++) { Fa = Fa, ra(i)^3 - ra(i); Fb = Fb, rb(i)^3 - rb(i); Fc = Fc, rc(i)^3 - rc(i); }
+  ideal Ia = Fa; ideal Ib = Fb; ideal Ic = Fc;
+  for (i = 1; i <= h; i++) { Ia = Ia, (1 - La[i]^2)*Pa; Ib = Ib, (1 - Lb[i]^2)*Pb; Ic = Ic, (1 - Lc[i]^2)*Pc; }
+  ideal Ga = std(Ia); ideal Gb = std(Ib); ideal Gc = std(Ic);
+  ideal J = homog(Ga, z) + homog(Gb, z) + homog(Gc, z);
+  if (withR) {
+    poly Rab = Pa*Pb*((1 - La[1]^2) - (1 - Lb[1]^2)); poly Rcb = Pc*Pb*((1 - Lc[1]^2) - (1 - Lb[1]^2));
+    J = J, homog(Rab, z), homog(Rcb, z);
+  }
+  degBound = DB; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+  int lowest = DB;
+  for (i = 1; i <= ncols(Q); i++) { if (Q[i] != 0 && deg(Q[i]) < lowest) { if (reduce(Q[i], SJ) != 0) { lowest = deg(Q[i]); } } }
+  print("CASE h=5 withR=" + string(withR) + " DB=" + string(DB) + " lowest_fall=" + string(lowest));
+}
+runcase(0, 8);
+runcase(1, 8);
+quit;
