@@ -188,6 +188,15 @@ class BuildTest(unittest.TestCase):
         request['submissions'] = [s for s in request['submissions'] if s['claim']['id'] != 'lem:a']
         with self.assertRaises(ValueError):
             prepare(base, request, self.root)
+    def test_new_claim_may_carry_formalization(self):
+        from claim_authoring import build
+        item = dict(self.item('lem:a'), formalization={
+            'status': 'complete', 'scope': 'Whole statement.', 'references': ['source.md'], 'artifacts': []})
+        request = build(self.empty, self.spec([item]), 'd' * 40)
+        proposed, report = prepare(self.empty, request, self.root)
+        self.assertTrue(report['passed'])
+        self.assertEqual(proposed['claims'][0]['formalization']['status'], 'complete')
+        self.assertIn('Lean artifacts', proposed['claims'][0]['reviews']['formalization']['note'])
     def test_overrides_update_existing_fields(self):
         from claim_authoring import build
         base, _ = prepare(self.empty, self.request(self.empty), self.root)

@@ -265,7 +265,7 @@ python3 tools/claim-index.py author build --spec spec.json --out request.json \
 
 The spec names the source entry once (`record`, evidence `targets`, `label`), the reviewer and
 date, spec-wide `topics`, the new claims (`id`, `summary`, `assessment`, `status`, `rationale`,
-`next_action`, optional `topics`, `category`, per-field `notes`), and the relationships as
+`next_action`, optional `topics`, `category`, per-field `notes`, and a complete `formalization` object for a claim registered already formalized), and the relationships as
 `[source, type, target, scope]` tuples. Every existing claim that a new relationship touches is
 refreshed automatically: its relationships review gains a note naming the new neighbours. The
 optional `refresh` (`{id: note}` or `{id: {field: note}}`, e.g. significance for a correction)

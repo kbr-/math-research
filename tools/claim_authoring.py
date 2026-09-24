@@ -131,6 +131,8 @@ def build(data, spec, revision):
 
     spec keys: source {record, targets, label}, reviewer, date, claims [...], relationships [[src, type, tgt, scope]],
     optional refresh {id: note or {field: note}}, overrides {id: {field: value}}, topics (default for new claims).
+    A new claim may carry a complete `formalization` object (status, scope, references, artifacts) when it is
+    registered already formalized; otherwise it starts as not_started with `formalization_scope`.
     Every existing claim that is an endpoint of a new relationship is refreshed automatically (its relationships
     review gains a note), which is what the maintenance check requires; refresh/overrides add more."""
     require(set(spec) <= {'source', 'reviewer', 'date', 'claims', 'relationships', 'refresh', 'overrides', 'topics'},
@@ -140,13 +142,15 @@ def build(data, spec, revision):
     submissions, new_ids = [], set()
     for item in spec.get('claims', []):
         require(set(item) <= {'id', 'summary', 'assessment', 'status', 'rationale', 'next_action', 'topics', 'category',
-                              'novelty', 'formalization_scope', 'notes'}, 'Unexpected claim keys in ' + item.get('id', '?'))
+                              'novelty', 'formalization_scope', 'formalization', 'notes'},
+                'Unexpected claim keys in ' + item.get('id', '?'))
         cid = item['id']; new_ids.add(cid)
         claim = {'id': cid, 'summary': item['summary'], 'assessment': item['assessment'], 'record': source['record'],
                  'mathematical_status': item['status'],
-                 'formalization': {'status': 'not_started',
-                                   'scope': item.get('formalization_scope', 'Informal proof or computation; no Lean verification.'),
-                                   'references': list(targets), 'artifacts': []},
+                 'formalization': deepcopy(item['formalization']) if 'formalization' in item else
+                 {'status': 'not_started',
+                  'scope': item.get('formalization_scope', 'Informal proof or computation; no Lean verification.'),
+                  'references': list(targets), 'artifacts': []},
                  'topics': item.get('topics', spec.get('topics')),
                  'significance': {'category': item.get('category', 'route_specific'), 'rationale': item['rationale'],
                                   'novelty': item.get('novelty', 'not_claimed'), 'publication_status': 'not_applicable',
@@ -154,7 +158,9 @@ def build(data, spec, revision):
         require(bool(claim['topics']), cid + ': topics are required (per claim or spec-wide)')
         notes = item.get('notes', {})
         default = {'mathematical_status': 'Status checked against the entry and its verification gate.',
-                   'formalization': 'No Lean artifact.', 'topics': 'Topics checked against the entry.',
+                   'formalization': ('Lean artifacts checked against their verification reports.'
+                                     if 'formalization' in item else 'No Lean artifact.'),
+                   'topics': 'Topics checked against the entry.',
                    'significance': 'Significance assessed at this checkpoint.', 'relationships': 'New claim; relationships recorded.'}
         submissions.append({'claim': claim, 'dispositions': {f: {'state': 'reviewed', 'note': notes.get(f, default[f]),
                                                                   'targets': list(targets), 'next_action': None} for f in FIELDS}})
