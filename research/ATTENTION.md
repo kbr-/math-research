@@ -252,9 +252,25 @@ Assuming Menezes' characteristic-2 upper bound at n = k-1: for every k >= 1 and 
 
 **Why it matters:** Answers the co-author's tightness question in its whole range k < 2^(n-1), which the published n >= k-1 result does not cover.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Verify Menezes' construction (proof and exact small checks) or build the power-of-two factors uniformly.
+
+---
+
+### Binary multiplicity degree formula
+
+**Claim:** [thm:binary-multiplicity-degree-formula](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-catalan-construction>)
+
+For every k >= 1 and n >= floor(log2 k)+2, the minimum degree of an F_2 polynomial with Hasse multiplicity >= k at nonzero points of F_2^n and < k at the origin is 2k+n-2-floor(log2 k); the upper bound holds for every n >= 1.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Answers the tightness follow-up to Question 4.3 of Bishnoi-Boyadzhiyska-Das-Meszaros in its whole range k < 2^(n-1).
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** User decision on the note; check Menezes' later versions and citing works before claiming novelty.
 
 ---
 
@@ -271,6 +287,22 @@ For every k >= 1 and n >= floor(log2 k)+2, an F_2 polynomial with Hasse multipli
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Prior-art check against Alon-Furedi, Ball-Serra, Clifton-Huang and Sauermann-Wigderson style lower bounds in characteristic 2 before any novelty claim.
+
+---
+
+### Catalan truncation per order construction
+
+**Claim:** [thm:catalan-truncation-per-order-construction](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-catalan-construction>)
+
+For all n,k >= 1 and 0 <= l <= k-1, y_1^l g_(k-l) over F_2 has multiplicity >= k at nonzero cube points, origin order exactly l and degree <= n+2k-2-s_2(k-l-1); so delta(n,k,l) <= n+2k-2-s_2(k-l-1) in every dimension.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Removes the dimension restriction from the upper bound and the import from the full formula.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Per-order lower bound for n < k-1 (optional).
 
 ---
 
