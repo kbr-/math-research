@@ -19,11 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Two sufficient routes to the Taylor glue's endpoint now stand side by side. One is relative gluing over the closed column base: (a) conj:closed-row-freeness, (b) conj:closed-base-splitting, which passes checks at \(n=8,9\), and (c), untested. The other is <a href="#entry-2026-09-24-global-closure">global closure</a>: row freeness of \(\operatorname{gr}\mathbb F^{\mathcal Q}\) for the budget's solution set, which fails when a row count is pinned. Both need tests at sizes in range. Next:</p>
-<ol>
-<li>Build the compiled direct-sum kernel for the closure (placed products \(x_Yg\)). Use it to test conj:closed-row-freeness at \(D\ge5\) and (c) over the closed base at sizes in range.</li>
-<li>State global row freeness for the budget's \(\mathcal Q\) with a hypothesis excluding pinned rows, and relate it to the budget's robustness.</li>
-</ol>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Closed column members on few holes have no falls (<a href="#entry-2026-09-24-sparse-closure">sparse closure</a>). The proof needs seeds from unconstrained holes, and the budget's members touch every hole. Next, the dense case: for \(Z'\) the members' forbidden-value sets on the whole cube, prove the kernel condition of lem:slice-strictness and the freeness over \(T_u\) for \(\operatorname{gr}\mathbb F^{\mathcal P_{Z'}}\). A route is to show that removing a low-density forbidden set of low-degree structure preserves freeness below the degree where it becomes visible. Then (c) over the closed base and global row freeness for the budget's solution set.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -13411,6 +13407,69 @@ the sum over column-injective cell sets \(Y\) in rows \(1,\dots,m-1\), with \(S(
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-sparse-closure" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:slice-strictness cor:slice-saturation thm:sparse-closure-stability">
+<h3>Sparse closure stability: any closed column member on few holes has no falls with the weak base, and the slice is saturated in range</h3>
+<p class="entry-meta">24 September 2026 · Working proofs · Closed row freeness for members on few holes; cycle odd-prime-direct-sum-kernel.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. By thm:closure-gluing, a closed column member has no falls with the weak base when the graded functions \(G=\operatorname{gr}\mathbb F^{\mathcal P_Z}\) on its allowed assignments are row-free. conj:closed-row-freeness asserts this for allowed sets covering half the slice. The closure-gluing condition had no proved case beyond onto, and the conjecture's checks run below range (<a href="#entry-2026-09-24-closure-gluing">closure gluing</a>). The route's finite-check budget is spent, so the cycle proves the condition for members on few holes. This is the closed analog of lem:sparse-row-freeness.</p>
+<p><strong>General statement.</strong> thm:sparse-closure-stability: over a field of characteristic \(p\), let \(Z\) be the patterns in the slice whose restriction to a hole set \(H\) lies in a set \(Z_H\), with \(Z\) nonempty. If \(N-|H|\ge(p-1)(D+1)(D+p-1)\), the weak base plus the closed member \(\mathcal M_D(\mathcal P_Z)\) is \(z\)-injective below \(D\) and has no PC refutation of degree \(D\). The key step is lem:slice-strictness: if \(\ker(s|\Gamma_e)=s^{p-1}\Gamma_{e-p+1}\) for \(e\le D+p-2\) in a filtered algebra's graded algebra \(\Gamma\), the level set \(t=s-m=0\) (\(t^p=t\)) is cut out without degree loss through degree \(D\). cor:slice-saturation: the occupancy slice is saturated through degree \(D\) when \(N\ge(p-1)(D+p-1)\), on the cube and on the weak board with any number of rows.</p>
+
+<h4>Slice strictness</h4>
+<p><strong>Lemma (slice strictness).</strong> Let \(F\) be a filtered commutative algebra of functions on a finite set, \(F_0=\mathbb F\subseteq F_1\subseteq\cdots\), \(\Gamma=\operatorname{gr}F\). Let \(t\in F_1\) satisfy \(t^p=t\), with top \(s\in\Gamma_1\). Suppose that for \(e\le D+p-2\), \(\ker(s:\Gamma_e\to\Gamma_{e+1})=s^{p-1}\Gamma_{e-p+1}\). Then \(F_d\cap tF=tF_{d-1}\) for \(d\le D\), and the functions on the level set \(\{t=0\}\) satisfy \(\operatorname{gr}_d\mathbb F^{\{t=0\}}=\Gamma_d/s\Gamma_{d-1}\) for \(d\le D\).</p>
+<p><em>Proof.</em> Let \(h\in F_d\cap tF\). Then \(h\) vanishes on \(\{t=0\}\), and \(t^{p-1}=1\) off it, since \(t\) takes values in \(\mathbb F_p\) there. So \(h=t\cdot f\) with \(f=ht^{p-2}\), of degree \(\le d+p-2\). While \(e=\deg f\ge d\): the product \(tf=h\) has degree \(\le d\le e\), so \(s\bar f=0\) in \(\Gamma_{e+1}\), with \(\bar f\) the top of \(f\). Since \(e\le D+p-2\), \(\bar f=s^{p-1}\bar g\) for some \(g\in F_{e-p+1}\) with top \(\bar g\). Put \(f'=f-t^{p-1}g+g\). Then \(tf'=tf-t^pg+tg=tf\). The top of \(t^{p-1}g\) is \(s^{p-1}\bar g=\bar f\), so \(\deg(f-t^{p-1}g)&lt;e\), and \(\deg g&lt;e\). So \(\deg f'&lt;e\). Repeating ends with \(\deg f\le d-1\), so \(h\in tF_{d-1}\). For the level set, \(\mathbb F^{\{t=0\}}=F/tF\) with the image filtration, and \(\operatorname{gr}_d=F_d/(F_d\cap tF+F_{d-1})=F_d/(tF_{d-1}+F_{d-1})=\Gamma_d/s\Gamma_{d-1}\). \(\square\)</p>
+
+<h4>The theorem</h4>
+<p><strong>Theorem (sparse closure stability).</strong> Over a field of characteristic \(p\), with \(m\ge1\), a hole set \(H\), and \(Z=\{c\text{ in the slice}:c_H\in Z_H\}\) nonempty, suppose \(N-|H|\ge(p-1)(D+1)(D+p-1)\). Then the homogenized weak base plus \(\mathcal M_D(\mathcal P_Z)\) is \(z\)-injective below \(D\) and has no PC refutation of degree \(D\).</p>
+<p><em>Proof.</em> By thm:closure-gluing it suffices that every Koszul 1-cycle of \((r_1,\dots,r_{m-1})\) on \(G\) of degree at most \(D\) is Frobenius plus a boundary.</p>
+<ol>
+<li><em>Content reduction.</em> By lem:closure-saturation, \(G=\bigoplus_Yx_Y\operatorname{gr}\mathbb F^{Z_{S(Y)}}\), graded by the content of rows \(1,\dots,m-1\). Its content-\(c\) part, and the content-\(c\) parts of \(K_1,K_2\), coincide with those for the same construction on the rows of \(\operatorname{supp}c\), \(u=|\operatorname{supp}c|\le D\). The summands \(\operatorname{gr}\mathbb F^{Z_S}\) do not depend on the rows. By the same lemma, that construction is \(\operatorname{gr}\mathbb F^{\mathcal P^{(u)}_Z}\), where \(\mathcal P^{(u)}_Z\) is the set of assignments of holes to the rows of \(\operatorname{supp}c\) and a bulk row, with occupancy in \(Z\). The lemma's proof (bulk basis, vanishing, saturation) never uses the slice, only that the set is nonempty and that row 0 exists, so it applies to this set. The \(r_i\)-action on the summands depends only on the \(Z_S\), so the identification is one of \(T_u\)-modules. Work with this set.</li>
+<li><em>Dropping the slice.</em> Let \(\mathcal P'\) be the same assignments with \(c_H\in Z_H\) but no slice condition, and \(F=\mathbb F^{\mathcal P'}\) with the degree filtration in the variables \(C_j\), \(x_{ij}\) (\(i\in\operatorname{supp}c\)). \(\mathcal P'=\mathcal P'_H\times\mathcal P_{H^c}\), where \(\mathcal P_{H^c}\) is all assignments of the holes of \(H^c\), and the variables split. So \(\Gamma=\operatorname{gr}F=\operatorname{gr}\mathbb F^{\mathcal P'_H}\otimes\operatorname{gr}\mathbb F^{\mathcal P_{H^c}}\). The second factor is \(\bigotimes_{j\in H^c}V_j\), \(V_j=\operatorname{span}(1,C_j,x_{ij})\) square-zero, since \(C_j^2=C_j\) and \(C_jx_{ij}=x_{ij}\) as functions. This is the weak column tensor power on \(u+1\) rows, with \(C_j\) in the place of row 0.</li>
+<li><em>Free seeds.</em> \(T_{u+1}=\mathbb F[R_0,\dots,R_u]/(R^p)\) acts on \(\Gamma\) by \(R_0\mapsto s=\sum_jC_j\) and \(R_i\mapsto r_i\), diagonally over the two factors. The \(p\)-th powers vanish in \(\Gamma\): \(s^p=s\) and \(r_i^p=r_i\) as functions, since they take values in \(\mathbb F_p\), so their degree-\(p\) tops are 0. On the first factor, \(R_0\) and \(R_i\) act through \(s_H=\sum_{j\in H}C_j\) and \(r_i^H\), which take values in \(\mathbb F_p\). Their \(p\)-th powers equal themselves as functions and vanish in gr, so \(\operatorname{gr}\mathbb F^{\mathcal P'_H}\) is a graded \(T_{u+1}\)-module in degrees \(\ge0\). The isomorphism \(\Gamma\cong\operatorname{gr}\mathbb F^{\mathcal P'_H}\otimes\bigotimes_{j\in H^c}V_j\) is \(T_{u+1}\)-linear with the diagonal action, since \(s=s_H+\sum_{j\in H^c}C_j\) and likewise for \(r_i\). Step 3 of the <a href="#entry-2026-09-24-weak-base-stability">weak-base stability proof</a> on \(u+1\) rows gives seed blocks of \((p-1)(u+1)\) holes of \(H^c\), at least \(D+p-1\) of them. The free-seed lemma, with \(M=\operatorname{gr}\mathbb F^{\mathcal P'_H}\otimes(\text{leftover holes})\), gives \(\Gamma\cong\Phi\oplus Q\), with \(\Phi\) free over \(T_{u+1}\) and \(Q\) in degrees \(\ge D+p-1\).</li>
+<li><em>Restoring the slice.</em> Let \(x\in\Gamma_e\), \(e\le D+p-2\), with \(sx=0\). Then \(Q_e=0\), so \(x\in\Phi_e\). \(\Phi\) is free over \(T_{u+1}\), hence over \(\mathbb F[R_0]/(R_0^p)\), so \(x\in s^{p-1}\Phi_{e-p+1}\). So lem:slice-strictness applies with \(t=s-m\): \(\operatorname{gr}\mathbb F^{\mathcal P^{(u)}_Z}=\Gamma/s\Gamma\cong\Phi/R_0\Phi\oplus Q/R_0Q\) through degree \(D\). Here \(\Phi/R_0\Phi\) is free over \(T_u\), and \(Q/R_0Q\) lives in degrees \(\ge D+p-1\).</li>
+<li><em>Frobenius.</em> \(H_1\) in degrees \(\le D\) uses \(\Gamma/s\Gamma\) only in degrees \(\le D\), and its identification with \(\operatorname{gr}\mathbb F^{\mathcal P^{(u)}_Z}\) is compatible with the \(r_i\), since restriction is an algebra map. As in Step 3's consequence, \(H_1(r;\cdot)\) in degrees \(\le D\) is spanned by Frobenius classes. Their content components are Frobenius cycles plus boundaries, which gives the hypothesis content by content. \(\square\)</li>
+</ol>
+<p><strong>Corollary (slice saturation).</strong> Over a field of characteristic \(p\), let \(F\) be the functions on the cube \(\{0,1\}^N\), or on the weak board's column-injective assignments with any number of rows, with the degree filtration, and \(s=\sum_jC_j\). If \(N\ge(p-1)(D+p-1)\), then \(I(\{s\equiv m\})\cap F_d=(s-m)F_{d-1}\) for \(d\le D\).</p>
+<p><em>Proof.</em> \(\Gamma=\bigotimes_jV_j\), with \(V_j=\operatorname{span}(1,C_j)\) on the cube and \(\operatorname{span}(1,C_j,x_{ij})\) on the board, square-zero. \(s\) acts diagonally as the primitive \(R\) of \(\mathbb F[R]/(R^p)\), by \(C_j\) on \(V_j\), and \(s^p=0\) in \(\Gamma\). On a block of \(p-1\) holes, \(s^{p-1}\cdot1=(p-1)!\,C_1\cdots C_{p-1}\ne0\), so \(\operatorname{Ann}(1)=0\) and the block is a free seed. With \(N\ge(p-1)(D+p-1)\) there are \(D+p-1\) blocks. The free-seed lemma, with the other factors as \(M\), gives \(\Gamma\cong\Phi\oplus Q\), \(\Phi\) free and \(Q\) in degrees \(\ge D+p-1\). So the kernel condition of lem:slice-strictness holds for \(e\le D+p-2\). \(\square\)</p>
+<p>At \(p=3\) the bound is \(N\ge2(D+2)\). The fiber-gluing check (<code>hered_s1.json</code>, <code>hered_s2.json</code>) asserted this saturation on cubes for \((n,d)\) with \(d\le3\) at \(n=10\) and \(d\le4\) at \(n=11\). The corollary covers all of these except \(n=11\), \(d=4\), which needs \(N\ge12\).</p>
+<p><em>Cases.</em> A merge of a hole set \(H\) is a case, with \(Z_H\) the patterns occupying at most one hole of \(H\). The theorem gives the conclusion of cor:merging-members for its closed system in the range \(N-|H|\ge(p-1)(D+1)(D+p-1)\). The theorem allows any constraint on the occupancy of \(H\), including selectors and clauses whose forms vanish off \(H\).</p>
+
+<h4>What this means</h4>
+<ul>
+<li>The theorem proves the conclusion of conj:closed-row-freeness, the closure-gluing hypothesis, for every \(Z\) of the form slice \(\cap\{c_H\in Z_H\}\), with no density condition but in the larger range \(N-|H|\ge(p-1)(D+1)(D+p-1)\). It covers the conjecture's own instances only when \(N-|H|\) meets that range. The members the goal produces touch every hole, so the conjecture's dense case stays open.</li>
+<li>The proof gives a sufficient condition for the dense case. Take an extension \(Z'\not\subseteq\) slice with \(Z'\cap\text{slice}=Z\), for example the members' forbidden-value sets on the whole cube, and \(\mathcal P'=\mathcal P_{Z'}\) on \(u\) rows and the bulk row. The condition is the kernel condition of lem:slice-strictness for \(\Gamma=\operatorname{gr}\mathbb F^{\mathcal P'}\), together with freeness of \(\Gamma/s\Gamma\) over \(T_u\) through degree \(D\). Freeness of \(\Gamma\) over \(T_{u+1}\) below degree \(D+p-1\) gives both. For a sparse member the product structure supplied it; a dense member has no unconstrained holes to supply seeds.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: lem:closure-saturation and thm:closure-gluing with their proofs, lem:sparse-row-freeness, and the free-seed lemma and Step 3 of the weak-base stability proof. The claim search (sparse closed member, slice saturation) found no result implying the lemma or the theorem; cor:merging-members is the nearest special case. A fresh-context reviewer found the lemma (construction, descent, degree bookkeeping, gr of the level set) and the theorem's proof (product decomposition, square-zero factor, seed count, free-seed hypotheses, quotient by \(s\), Frobenius conclusion) correct. It required these changes, all adopted:</p>
+<ul>
+<li>the relation to conj:closed-row-freeness stated precisely (its conclusion, in a larger range);</li>
+<li>"no proved case beyond onto" referred to the closure-gluing condition;</li>
+<li>the saturation claim restated as cor:slice-saturation, proved with seeds of \(p-1\) holes on the cube and on the board with any number of rows, and compared exactly with the earlier check's sizes;</li>
+<li>the merge case weakened to the conclusion of cor:merging-members;</li>
+<li>closure saturation's use without the slice justified;</li>
+<li>the module structures, the kernel condition and the compatibility with the \(r_i\) written out;</li>
+<li>the dense-case condition stated as a sufficient condition with its extension \(Z'\);</li>
+<li>the unused hypothesis \(D\ge1\) dropped.</li>
+</ul>
+<p>cor:slice-saturation is new in this form; its proof is the reviewer's suggested argument and uses only the free-seed lemma and lem:slice-strictness, so no further pass was made.</p>
+
+<h4>Remaining gap</h4>
+<ul>
+<li>Freeness of \(\operatorname{gr}\mathbb F^{\mathcal P'}\) over the row-sum algebra for dense \(Z\) (conj:closed-row-freeness).</li>
+<li>(c) for generic members over the closed base; global row freeness for the budget's solution set.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-direct-sum-kernel">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 49.17 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 22.13 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 26.90 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
