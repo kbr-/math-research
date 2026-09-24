@@ -11,11 +11,11 @@
 </section>
 <section id="remaining-route">
 <h2>The remaining route</h2>
-<ol><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li><li data-route-item="low-origin-degree"><strong>Optional: per-order values below \(n=k-1\).</strong> The formula for \(D\) is proved. The per-order lower bound \(\delta(n,k,\ell)\ge n+2k-2-s_2(k-\ell-1)\) for \(m(k)\le n&lt;k-1\) is open for the orders that do not attain \(D\); the goal does not need it.</li></ol>
+<ol><li data-route-item="formalization"><strong>Formalize the formula in Lean.</strong> Assigned 24 September 2026 under Spin-formalize-parallel, planning phase done: the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a> orders fifteen obligations down to multiplicity Schwartz–Zippel, which is formalized too. Nothing is verified yet.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li><li data-route-item="low-origin-degree"><strong>Optional: per-order values below \(n=k-1\).</strong> The formula for \(D\) is proved. The per-order lower bound \(\delta(n,k,\ell)\ge n+2k-2-s_2(k-\ell-1)\) for \(m(k)\le n&lt;k-1\) is open for the orders that do not attain \(D\); the goal does not need it.</li></ol>
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: note-revision. Present the complete answer to the user: the formula for all \(k\), its one-page proof (the multiplicity bound, the one-dimension step, the characteristic-two Catalan truncation) and the division of credit with Menezes. Then wait for the user's decision on the note and any correspondence. Further research here, such as the optional per-order lower bound, only on the user's request.</p>
+<p>Route item: formalization. Restore the pinned Mathlib cache for the route's imports, settle the provisional Mathlib names, then formalize M01 (multiplicity foundations) and M02 (products) as the first checkpoint, following the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a>. The note's content and any correspondence remain the user's decision.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -360,6 +360,42 @@
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-09-24-formalization-route" data-kind="formalization" data-route="formalization" data-claims="none" data-claim-note="Planning only: the route names existing claims and one future third-party claim, and registers none.">
+<h3>24 September 2026 — Formalization route for the degree formula, down to multiplicity Schwartz–Zippel</h3>
+<p class="entry-meta">Formalization plan: dependency route for thm:binary-multiplicity-degree-formula; no Lean written. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Assignment and endpoint.</strong> The user assigned formalization of the <a href="#binary-multiplicity-degree-formula-theorem">formula theorem</a> under the Spin-formalize-parallel protocol. The user asked for the planning phase only: no partition and no assignments. The user also asked that the input be formalized too. The planning phase ends with a dependency route that reaches every result the proof uses, down to the imported multiplicity Schwartz–Zippel lemma. The route is saved in <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md"><code>formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md</code></a>.</p>
+<p><strong>Target statement.</strong> The Lean target states the minimum as two conjuncts. (i) Every admissible \(P\) has total degree at least \(2k+n-2-\lfloor\log_2k\rfloor\) when \(n\ge m(k)\). (ii) For every \(n\ge1\), some admissible \(P\) has total degree at most that value. Multiplicity is defined as the least total degree in the support of \(P(a+z)\), and \(\infty\) for \(P=0\). So the origin condition \(\operatorname{mult}_0P&lt;k\) excludes \(P=0\), as in the notebook.</p>
+<p><strong>Dependency trace.</strong> The proof uses five ingredients, which the route orders into fifteen obligations:</p>
+<ul>
+<li><a href="#binary-multiplicity-lower-bound">the lower bound</a>;</li>
+<li><a href="#one-dimension-degree-step">the one-dimension step</a>;</li>
+<li><a href="https://kbr.is-a.dev/math-research/#binary-multiplicity-cover-question">the note's deduction</a>, with its imported lemma: Dvir–Kopparty–Saraf–Sudan, Lemma 2.7, which is not yet indexed and gets a new third-party claim when formalized;</li>
+<li><a href="#catalan-truncation-vanishing">the truncated product</a>;</li>
+<li><a href="#catalan-truncation-per-order-construction">the per-order construction</a>.</li>
+</ul>
+<p>Supporting obligations extracted from these proofs:</p>
+<ul>
+<li>multiplicity foundations and product superadditivity, with equality over a domain;</li>
+<li>the elementary factor bounds;</li>
+<li>multivariate Hasse coefficient polynomials and the univariate root-multiplicity bridge, needed only by Schwartz–Zippel;</li>
+<li>invertible linear substitutions over \(\mathbb F_2\);</li>
+<li>a linear form not dividing a low-degree homogeneous polynomial, via unique factorization;</li>
+<li>binary digit arithmetic.</li>
+</ul>
+<p>Two results the proof does not use need no formalization: Alon–Füredi (the case \(k=1\) follows from the deduction at \(n=2\)) and Menezes' theorem (the construction is proved independently). The degree drop of \(P(x',0)+P(x',1)\) is a case of the existing <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/BinaryCubeDegreeDrop.lean">binary cube degree drop</a> module, which is to be checked for fit. No local Mathlib checkout exists, so every Mathlib name in the route is marked provisional.</p>
+<p><strong>Remaining route and process assessment.</strong> Nothing is formalized yet. All fifteen obligations remain, and the heaviest is expected to be the Schwartz–Zippel induction with its multivariate Hasse coefficients. Process: the protocol text is in <code>PROMPTS.md</code>, which nothing in the instructions or the resume guide referenced, so the search first went through skills and formalization guides. A one-line pointer in <code>CLAUDE.md</code> fixes this, committed separately.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-f0-route">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 13.74 s</strong></td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">53.16 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 20.58 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 </section>
