@@ -15,7 +15,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: low-origin-degree. Construct the power-of-two factors \(Q_{2^j}\) uniformly (<code>conj:power-of-two-factor-existence</code>): value one at the origin, degree \(2^{j+1}-j-2\), multiplicity \(\ge2^j-|a|\) at weights \(1..2^j-1\), in every dimension. The <a href="#bit-algebra-factor-ansatz-fails">bit-function ansatz</a> and the <a href="#multiplicative-factor-recursion-obstruction">multiplicative recursion</a> are excluded, so a construction must be additive. Leads: the staircase top term \(m_{(2^j-1,\ldots,3,1)}\), agreement with the truncation of \(\prod(1+x_i)^{-1}\) below degree \(2^j\), and the Reed–Muller threshold factor. Compute the full solution space for \(K=4,8\) (dimension and a canonical element, e.g. minimal support or invariance under extra symmetries), and test additive recursions \(Q_{2^{j+1}}=A\,Q_{2^j}^2+B\) with the dimension-free parity conditions before any larger search; a \(K=16\) certificate needs the compiled kernel. Stop at a uniform construction with proof, or a precise obstruction to the product form for some \(j\), which would leave room for non-product constructions. Keep the note decision for the user: the lower bound and the \(k\le15\) formula already answer the co-author's question.</p>
+<p>Route item: low-origin-degree. Route review (five research entries in a row). State the line's general claim (the formula, now equivalent to <code>conj:power-of-two-factor-existence</code> and to reverse steps via <code>lem:reverse-step-sufficient-condition</code>), attempt to falsify the factor conjecture at \(K=16\) with the compiled solver restricted to the forced low part, assess both upper-half routes from the evidence of the <a href="#power-of-two-factor-routes">excluded constructions</a> and the <a href="#power-of-two-factor-forced-structure">forced structure</a>, and choose the next target. Send the conditional reverse-step lemma to a fresh-context reviewer. The user decides what reaches the note; the lower bound and the \(k\le15\) formula already answer the co-author's question.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -168,6 +168,36 @@
 <tr><td>Computation design and coding</td><td class="elapsed">2 min 35.18 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 14.73 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">52.66 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-24-factor-solution-space" data-kind="research" data-route="low-origin-degree" data-claims="obs:power-of-two-factor-forced-structure lem:reverse-step-sufficient-condition">
+<h3>24 September 2026 — The factors' low part is forced, and a reverse step reduces to one jet condition</h3>
+<p class="entry-meta">Finite check of forced structure for K=4,8 and a conditional reformulation of the upper half; no construction. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5 (claude-opus-5-5), default reasoning).</span></p>
+<p><strong>Question and stopping point.</strong> After the <a href="#power-of-two-factor-routes">two structured routes</a> failed, determine what every power-of-two factor must look like, and reformulate the missing upper-bound step so that the obligation is a single, testable condition. Stop at forced structure or a construction.</p>
+<h4 id="power-of-two-factor-forced-structure">Forced structure of the symmetric factors</h4>
+<p><code>research/tools/bmd_factor_space.py</code> computes the full space of symmetric solutions of the dimension-free conditions. For \(K=4\) (degree \(\le4\)) the solutions with constant term one form an affine space of dimension one; for \(K=8\) (degree \(\le11\)) of dimension 30. In both cases the part of degree below \(K\) is forced and equals the truncation of \(\prod_i(1+x_i)^{-1}\), so every symmetric factor gives \(\prod_i(1+x_i)Q=1+(\text{terms of degree}\ge K)\). The top term is forced to be the staircase: \(m_{(3,1)}\) for \(K=4\); for \(K=8\), 25 higher terms are forced, including \(m_{(7,3,1)}\) and every forced term of degree 10 (\(m_{73},m_{721},m_{7111},m_{631},m_{3331}\)). The forced terms alone do not form a factor (14 of 204 conditions fail), so no canonical minimal factor falls out.</p>
+<p>A Frobenius shortcut is too strong: for \(K=2^j\), \((x_i+a_i)^K=x_i^K+a_i\), so membership in \((x_1^K+a_1,\ldots,x_n^K+a_n)\) suffices for multiplicity \(K\) at \(a\), but writing \(P=\sum_\beta x^{K\beta}P_\beta\) in base-\(K\) digits turns this into an Alon–Füredi problem in \(y_i=x_i^K\) and forces degree \(nK\).</p>
+<h4 id="reverse-step-sufficient-condition">A reverse step reduces to one jet condition</h4>
+<p><strong>Conditional lemma</strong> (gate incomplete: no fresh-context review yet). Let \(S\) be admissible in dimension \(n-1\) for multiplicity \(K\), of degree \(s\) and origin order \(\ell&lt;K\). Suppose \(C\in\mathbb F_2[x_1,\ldots,x_n]\) has degree at most \(s-1\), multiplicity at least \(K-1\) at every point \((a',c)\) with \(a'\ne0\), and satisfies \(S(z')+(1+z_n)\,C((0',1)+z)\in(z)^{K-1}\). Then</p>
+<div class="math">\[P=S(x')+x_nS(x')+x_n(x_n+1)\,C(x)\]</div>
+<p>is admissible in dimension \(n\) with degree at most \(s+1\), so \(D(n,K)\le D(n-1,K)+1\) whenever such \(C\) exists for an extremal \(S\).</p>
+<p><strong>Proof.</strong> Degree: \(\max(s,s+1,2+\deg C)\le s+1\). At \((a',c)\), \(a'\ne0\): \(P((a',c)+z)=S(a'+z')(1+c+z_n)+(c+z_n)(c+1+z_n)C((a',c)+z)\); the first term has order \(\ge K\) and \((c+z_n)(c+1+z_n)=z_n(1+z_n)\) for both \(c\), so the second has order \(\ge1+(K-1)\). At \((0',1)\): \(P=z_n\bigl[S(z')+(1+z_n)C((0',1)+z)\bigr]\), of order \(\ge1+(K-1)\) by the jet condition. At the origin the \(x_n\)-free part of \(P\) is \(S(z')\), of order \(\ell&lt;K\), which the other terms cannot cancel.</p>
+<p>So the upper half of the formula follows from the threshold values (realized for every \(k\) by the Reed–Muller factor times \((x_1^2+x_1)^r\)) if, at each dimension step, a polynomial \(C\) of degree one below \(D(n,K-1)\) exists that is exempt at one point, carries a prescribed jet of order \(\ell\) at another, and has multiplicity \(K-1\) elsewhere. The lower bound does not forbid this, because of the exempt point. The simplest choice \(C=S\,U(x_n)\) fails on degree.</p>
+<p><strong>General statement.</strong> The all-parameter claim is <code>conj:power-of-two-factor-existence</code>, unchanged; this cycle adds the finite check <code>obs:power-of-two-factor-forced-structure</code> and the conditional reformulation <code>lem:reverse-step-sufficient-condition</code>.</p>
+<p><strong>Verification gate.</strong> The solution-space computation reuses the dimension-free conditions (validated in the <a href="#power-of-two-reduction">certificate entry</a>). The reverse-step lemma was checked term by term here but not yet reviewed by a fresh-context reader, so it is recorded as conditional.</p>
+<p><strong>Assessment.</strong> The missing implication is unchanged: no uniform factor. The forced structure narrows what a construction must produce, and the reverse-step reformulation gives a second, independent target. Five consecutive research entries on this route: the next cycle is a route review. Process: all computations took seconds.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-c5-factor-solution-space">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 1.06 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 26.91 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 33.18 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.83 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
