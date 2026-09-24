@@ -1,0 +1,30 @@
+// Parallel pair with R added: blocks a (inputs x, ya(2..h)) and b (inputs x+1, yb(2..h)) over F_3, private
+// coefficients, each Groebner-augmented separately, plus R = P_a P_b (q_a - q_b).  J = homogenization with z of
+// all these and every field equation.  Printed: lowest degree < DB of an element of (J:z) not in J (DB if none).
+// Route-review falsification of conj:r-added-parallel-fall on unequal sizes: predicted lowest fall min(h_a,h_b)+4.
+option(redSB);
+proc runcase(int ha, int hb, int DB)
+{
+  int i;
+  ring S = 3, (x, ya(2..ha), yb(2..hb), ra(1..ha), rb(1..hb), z), dp;
+  ideal La = x; ideal Lb = x + 1;
+  for (i = 2; i <= ha; i++) { La = La, ya(i); } for (i = 2; i <= hb; i++) { Lb = Lb, yb(i); }
+  poly Pa = 1; poly Pb = 1;
+  for (i = 1; i <= ha; i++) { Pa = Pa - ra(i)*(1 - La[i]^2); } for (i = 1; i <= hb; i++) { Pb = Pb - rb(i)*(1 - Lb[i]^2); }
+  ideal Fa = x^3 - x; ideal Fb = x^3 - x;
+  for (i = 2; i <= ha; i++) { Fa = Fa, ya(i)^3 - ya(i); } for (i = 2; i <= hb; i++) { Fb = Fb, yb(i)^3 - yb(i); }
+  for (i = 1; i <= ha; i++) { Fa = Fa, ra(i)^3 - ra(i); } for (i = 1; i <= hb; i++) { Fb = Fb, rb(i)^3 - rb(i); }
+  ideal Ia = Fa; ideal Ib = Fb;
+  for (i = 1; i <= ha; i++) { Ia = Ia, (1 - La[i]^2)*Pa; } for (i = 1; i <= hb; i++) { Ib = Ib, (1 - Lb[i]^2)*Pb; }
+  ideal Ga = std(Ia); ideal Gb = std(Ib);
+  poly R = Pa*Pb*((1 - La[1]^2) - (1 - Lb[1]^2));
+  ideal J = homog(Ga, z) + homog(Gb, z), homog(R, z);
+  degBound = DB; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+  int lowest = DB;
+  for (i = 1; i <= ncols(Q); i++) { if (Q[i] != 0 && deg(Q[i]) < lowest) { if (reduce(Q[i], SJ) != 0) { lowest = deg(Q[i]); } } }
+  int hm = ha; if (hb < hm) { hm = hb; }
+  print("CASE ha=" + string(ha) + " hb=" + string(hb) + " DB=" + string(DB) + " predicted_lowest_fall=" + string(hm + 4) + " lowest_fall=" + string(lowest));
+}
+runcase(3, 5, 10);
+runcase(4, 5, 10);
+quit;
