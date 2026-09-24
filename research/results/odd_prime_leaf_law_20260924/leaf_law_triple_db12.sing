@@ -1,0 +1,48 @@
+// Decide the modular law (star) of lem:leaf-reduction for the h = 3 path a-b-c-d of complete accuracy-one ENS blocks
+// over F_3 with private coefficients: a on (x, 2 private), b on (x+1, y, yb3), c on (y+1, w, yc3), d on (w+1, yd2, yd3).
+// Step 1 (peel a over x): A_R = truncated algebra of x, y, w and the variables of b, c, d; M_U = tops of b,
+//   M_W = tops of c and d.  Law: x^al A_R cap (M_U + M_W) = (x^al A_R cap M_U) + x^al M_W for al = 1, 2.
+// Step 2 (peel b over y inside {b,c,d}; x is private to b there): M_U = tops of c, M_W = tops of d, variable y.
+// Tops of a block = tops of its reduced dp Groebner basis (companions + field equations); the algebra is the
+// quotient by all cubes.  Computed with degree bound DB: the two sides are compared in every degree < DB.
+// Follow-up 3 (degree bound 12, syzygy degrees <= 11 as falls below D = 11 need): the law with U = {b, c} (peeling a into the triple a-b-c), which suffices for three-block locality of the path.  Output per step and al: the least degree < DB in which the left side has an element outside the right side
+// (DB if none).
+option(redSB);
+ring P = 3, (x, y, w, yb3, yc3, yd2, yd3, rb(1..3), rc(1..3), rd(1..3)), dp;
+proc tops(ideal L, ideal rr)
+{
+  poly Pp = 1; int i;
+  for (i = 1; i <= 3; i++) { Pp = Pp - rr[i]*(1 - L[i]^2); }
+  ideal I; for (i = 1; i <= 3; i++) { I = I, (1 - L[i]^2)*Pp; }
+  for (i = 1; i <= nvars(basering); i++) { I = I, var(i)^3 - var(i); }
+  ideal G = std(I); ideal Tp; int d; poly g;
+  for (i = 1; i <= ncols(G); i++) { g = G[i]; d = deg(g); Tp = Tp, jet(g, d) - jet(g, d - 1); }
+  return(Tp);
+}
+ideal Tb = tops(ideal(x + 1, y, yb3), ideal(rb(1..3)));
+ideal Tc = tops(ideal(y + 1, w, yc3), ideal(rc(1..3)));
+ideal Td = tops(ideal(w + 1, yd2, yd3), ideal(rd(1..3)));
+ideal Cubes; int i; for (i = 1; i <= nvars(P); i++) { Cubes = Cubes, var(i)^3; }
+qring Q = std(Cubes);
+ideal Tb = fetch(P, Tb); ideal Tc = fetch(P, Tc); ideal Td = fetch(P, Td);
+int DB = 12;
+// Control (must pass): with an empty far part the law is an identity.
+proc lawfail(poly v, ideal MU, ideal MW, int al, int DB)
+{
+  degBound = DB;
+  ideal Xa = v^al;
+  ideal L = intersect(Xa, MU + MW);
+  ideal Rt = intersect(Xa, MU) + (v^al) * MW;
+  ideal SRt = std(Rt);
+  degBound = 0;
+  int least = DB; poly witness = 0; int k;
+  for (k = 1; k <= ncols(L); k++) {
+    if (L[k] != 0 && deg(L[k]) < least) { if (reduce(L[k], SRt) != 0) { least = deg(L[k]); witness = L[k]; } }
+  }
+  print("  least_failure_degree=" + string(least) + " witness_terms=" + string(size(witness)));
+  if (witness != 0) { print("  witness: " + string(witness)); }
+  return(least);
+}
+print("step1' peel a over x with U = {b,c}, al=1:"); int t1 = lawfail(x, Tb + Tc, Td, 1, DB);
+print("step1' peel a over x with U = {b,c}, al=2:"); int t2 = lawfail(x, Tb + Tc, Td, 2, DB);
+quit;

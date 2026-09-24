@@ -1,0 +1,42 @@
+// Prediction stated before the run, from the formula 3k + h + 2 fitted to leaf_law_h3*.out and leaf_law_h4.out
+// (after the h-independent prediction 3k + 5 failed at h = 4): for h = 5 and k = 1 (U = {b}), the modular law of
+// lem:leaf-reduction for peeling a over x fails first at degree 10.  Degree bound 11 (degrees <= 10 compared).
+// Blocks with h = 5 inputs, private coefficients: b on (x+1, y, yb3..yb5), c on (y+1, w, yc3..yc5),
+// d on (w+1, yd2..yd5).
+option(redSB);
+ring P = 3, (x, y, w, yb3, yb4, yb5, yc3, yc4, yc5, yd2, yd3, yd4, yd5, rb(1..5), rc(1..5), rd(1..5)), dp;
+proc tops(ideal L, ideal rr)
+{
+  poly Pp = 1; int i;
+  for (i = 1; i <= 5; i++) { Pp = Pp - rr[i]*(1 - L[i]^2); }
+  ideal I; for (i = 1; i <= 5; i++) { I = I, (1 - L[i]^2)*Pp; }
+  for (i = 1; i <= nvars(basering); i++) { I = I, var(i)^3 - var(i); }
+  ideal G = std(I); ideal Tp; int d; poly g;
+  for (i = 1; i <= ncols(G); i++) { g = G[i]; d = deg(g); Tp = Tp, jet(g, d) - jet(g, d - 1); }
+  return(Tp);
+}
+ideal Tb = tops(ideal(x + 1, y, yb3, yb4, yb5), ideal(rb(1..5)));
+ideal Tc = tops(ideal(y + 1, w, yc3, yc4, yc5), ideal(rc(1..5)));
+ideal Td = tops(ideal(w + 1, yd2, yd3, yd4, yd5), ideal(rd(1..5)));
+ideal Cubes; int i; for (i = 1; i <= nvars(P); i++) { Cubes = Cubes, var(i)^3; }
+qring Q = std(Cubes);
+ideal Tb = fetch(P, Tb); ideal Tc = fetch(P, Tc); ideal Td = fetch(P, Td);
+proc lawfail(poly v, ideal MU, ideal MW, int al, int DB)
+{
+  degBound = DB;
+  ideal Xa = v^al;
+  ideal L = intersect(Xa, MU + MW);
+  ideal Rt = intersect(Xa, MU) + (v^al) * MW;
+  ideal SRt = std(Rt);
+  degBound = 0;
+  int least = DB; poly witness = 0; int k;
+  for (k = 1; k <= ncols(L); k++) {
+    if (L[k] != 0 && deg(L[k]) < least) { if (reduce(L[k], SRt) != 0) { least = deg(L[k]); witness = L[k]; } }
+  }
+  print("  least_failure_degree=" + string(least));
+  if (witness != 0) { print("  witness: " + string(witness)); }
+  return(least);
+}
+int DB = 11;
+print("h=5 k=1 (U = {b}), al=1:"); int t1 = lawfail(x, Tb, Tc + Td, 1, DB);
+quit;
