@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Count-based conditions transfer by openness from free-span witnesses to a nonempty open set of board tuples. Freeness-based ones do not (<a href="#entry-2026-09-24-openness-transfer">openness transfer</a>). So the goal's ENS blocks need a count-based sufficient condition. Next: a Taylor-glue analogue for ENS members. State the syzygy condition on the companions \(q_iP\), with \(P=1-\sum_kr_kq_k\) linear in private variables, under which there is no refutation at degree \(D\). The condition should be an explicit list of Taylor-type syzygies spanning the top syzygies. Check that it is a maximal-rank, hence open, condition. Verify it inside a free span, where cor:ens-span-members already gives the conclusion.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Unaugmented ENS blocks fall in their span ring, and their companions' top syzygies are not spanned by the natural liftable list (<a href="#entry-2026-09-24-ens-taylor-obstruction">ENS Taylor obstruction</a>). So a count-based, openness-transferable condition must use Gröbner-augmented blocks. Next: compute the reduced degree-order Gröbner basis of one augmented block in its span ring for \(h=2,3,4\), with generators by degree. Then test, in the free-span model, whether an extended explicit list spans the augmented tops' syzygies. That list is Frobenius, Koszul, P-Frobenius, the annihilator and \(r_1e_1-r_2e_2\)-type syzygies, and those of the added consequences.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -16566,6 +16566,77 @@ Condition (b') implies (a'), that the \(\ell_t^2\) are independent in \(T_2\). U
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 41.97 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">57.20 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 44.63 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-ens-taylor-obstruction" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:ens-block-span-fall">
+<h3>ENS Taylor condition: the natural lifting syzygies miss most top syzygies of ENS companions, and a two-input block already falls in its span ring</h3>
+<p class="entry-meta">24 September 2026 · Working proof (a fall of a two-input block) with a finite check · Obstruction to an unaugmented ENS Taylor glue; cycle odd-prime-ens-taylor.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-openness-transfer">openness-transfer entry</a> showed that count-based sufficient conditions can be witnessed inside a free span and transferred to a nonempty open set of board tuples. For the goal's ENS blocks it asked for such a condition: a Taylor-glue analogue, in which the companions' top syzygies are spanned by an explicit list of syzygies that lift.</p>
+<p><strong>General statement.</strong> lem:ens-block-span-fall. Over \(\mathbb F_3\), take one complete accuracy-one ENS block with two inputs, affine forms \(L_1,L_2\) with independent linear parts, \(q_i=1-L_i^2\), coefficients \(r_1,r_2\) and \(P=1-r_1q_1-r_2q_2\). Its companions \(c_i=q_iP\) have a fall in their span ring. With \(R=L_2q_1(1-r_1)\), a degree-4 consequence of the block, \(zR\) is a nonzero element of degree 5 of the span ring modulo the companions, and \(z\cdot zR=0\). So the member does not satisfy the no-fall hypothesis of lem:span-transfer until it is Gröbner-augmented, as cor:ens-members does.</p>
+<p>A finite check shows more: in the free-span model of the top algebra, the natural list misses many top syzygies of ENS companions. The list is Frobenius \(\ell_ie_i\), block Koszul, cross-block Koszul, and the new P-Frobenius \(\rho^2e_i\), which lifts because \(P^3=z^6P\) after homogenization. At degree 6 for two inputs, the missing syzygies are of the fall type above. In higher degrees they are not identified. So an ENS Taylor condition, and the openness transfer it would allow, must be stated for Gröbner-augmented blocks.</p>
+
+<h4>Tops and the natural list</h4>
+<p>Reduced modulo \(y^3-y\) and \(r^3-r\), and using \(q^2=q\), a companion is \(c_i=q_i(1-r_i)-\sum_{k\ne i}r_kq_iq_k\). For \(h\ge2\) its top has degree 5: \(t_i=-\ell_i^2\sum_{k\ne i}r_k\ell_k^2\), which equals \(-\ell_i^2\rho\) in the top algebra, with \(\rho=\sum_kr_k\ell_k^2\) and \(\ell^3=0\). For \(h=1\) the top is \(r\ell^2\), of degree 3.</p>
+<p>The natural list, each entry with its exact lift:</p>
+<ul>
+<li>Frobenius \(\ell_ie_i\): \(u^3=uz^2\) in the homogenized base.</li>
+<li>Block and cross-block Koszul syzygies: exact identities.</li>
+<li>P-Frobenius \(\rho^2e_i\). In characteristic 3, \(P^3=1-\sum r_k^3q_k^3=P\). Homogenized, with \((z^2-u^2)^3=z^4(z^2-u^2)\) and \(r^3=rz^2\), this is \((P^{\rm h})^3=z^6P^{\rm h}\), so \((P^{\rm h})^2c_i^{\rm h}=z^6c_i^{\rm h}\).</li>
+</ul>
+
+<h4>The check</h4>
+<p><code>ens_syzygies.py</code> (<code>syz_v2.json</code>) works in \(T''=\mathbb F_3[y_1,\dots,y_d,r]/(\text{cubes})\), the top algebra's model over a free span of dimension \(d\), with seeded random forms. The script asserts that the forms are independent within each block, and resamples until they are. Across blocks they are random, so dependence is allowed. It compares, in each degree \(s\le11\), the dimension of the companions' syzygy module with that of the natural list's span. The number of extra syzygies:</p>
+<ul>
+<li>\((d,h,\text{blocks})=(3,2,1)\): 3, 12, 23, 29, 24 in degrees 6 to 10;</li>
+<li>\((4,3,1)\): 0, 6, 39, 111, 195, 237 in degrees 6 to 11;</li>
+<li>\((4,2,2)\): 6, 42, 158, 398, 732, 1034 in degrees 6 to 11;</li>
+<li>\((5,3,1)\): 0, 6, 45, 156, 345, 543 in degrees 6 to 11.</li>
+</ul>
+<p>Every case has extra syzygies from degree 7 on. The cases with \(h=2\) already have them at degree 6: 3 for one block, 6 for two. Two older runs are excluded. The cases with \(h=1\) in <code>sizing.json</code> are invalid, because their degree-5 top vanishes. The first run, <code>syz.json</code>, had dependent forms within the \((4,3,1)\) block, violating the hypothesis; the independence assertion was then added.</p>
+
+<h4>Where the extra syzygies come from</h4>
+<p>For \(h=2\), \(t_1=-r_2\ell_1^2\ell_2^2\) and \(t_2=-r_1\ell_1^2\ell_2^2\). Three degree-6 syzygies are not in the natural list, and they plausibly account for the 3 extras at \((3,2,1)\): \(\ell_2e_1\), \(\ell_1e_2\), and \(r_1e_1-r_2e_2\). The reviewer verified that the last one's lift, \(r_1c_1-r_2c_2=z^2\bigl(r_1q_1(z-r_1)-r_2q_2(z-r_2)\bigr)\), leaves a remainder outside \(J\). For \(\ell_2e_1\), the lift is \(L_2c_1=L_2q_1(1-r_1)-r_2q_1(L_2q_2)\), and \(L_2q_2=L_2-L_2^3\) lies in the field-equation ideal. So the lift leaves the remainder \(L_2q_1(1-r_1)\), of degree 4. For general \(h\), the product \(\prod_{k\ne i}\ell_k\) annihilates \(t_i\) in the same way, and its lift leaves \(\prod_{k\ne i}L_k\,q_i(1-r_i)\). With "input \(k\) true" meaning \(L_k=0\), that is \(q_k=1\), this is the block's consequence "if input \(i\) is the only true input, then \(r_i=1\)". The extra syzygies in degrees \(\ge7\) are not identified here.</p>
+
+<h4>Proof of the lemma</h4>
+<p>Work in the span ring \(S=\mathbb F_3[y_1,y_2,r_1,r_2,z]\) modulo the homogenized field equations, with \(L_i=y_i\) after an affine change. Let \(J\) be the ideal of the homogenized companions, which have degree 5.</p>
+<ol>
+<li><em>In \(J\) after multiplying by \(z^2\).</em> The identity \(L_2c_1=L_2q_1(1-r_1)-r_2q_1(L_2q_2)\), with \(L_2q_2\) in the field-equation ideal, puts \(z^2\) times the homogenized remainder \(R=L_2q_1(1-r_1)\), of degree 4, in \(J\) in degree 6.</li>
+<li><em>Not in lower degrees.</em> The parts of \(J\) in degrees 4 and 5 contain no companion multiple except the companions themselves in degree 5. The field-equation ideal \(F\) is \(z\)-saturated, because \(\{y^3-yz^2\}\) is the homogenization of a degree-order Gröbner basis. So an element of \(F\) is exactly one that vanishes at every point. At \(y_1=0\), \(y_2=1\), \(r_1=0\), \(R\) is \(1\cdot1\cdot1=1\), so \(R\notin F\). The reviewer checked directly that \(zR\notin J_5\).</li>
+</ol>
+<p>So \(zR\) is a nonzero element of \((S/J)_5\) with \(z\cdot zR=0\): \(z\) is not injective on \(S/J\), and the member falls. \(\square\) The consequence \(R\) is sound, since it vanishes on the block's solutions. Adding it is exactly the Gröbner augmentation.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>An unaugmented ENS Taylor glue is not available. The top syzygies of ENS companions include annihilator syzygies whose lifts leave the block's own lower-degree consequences.</li>
+<li>A count-based condition for ENS families has to be stated for Gröbner-augmented blocks. Their generators include the consequences \(\prod_{k\ne i}L_kq_i(1-r_i)\) and possibly more.</li>
+<li>The openness transfer then needs either of two things. One is a Taylor list for the augmented single member. The other is hypothesis (b) for many augmented members with dependent spans. The recorded way to obtain (b), lem:tensor-splitting-locality as used in thm:relative-gluing, assumes that the top algebra splits over the members' form algebras, which is the independent-span case.</li>
+<li>The record's evidence on (b) with overlapping spans (prop:overlap-tor) is negative for selectors.</li>
+</ul>
+<p>Next: the augmented ENS block. Compute the reduced degree-order Gröbner basis of one block's companions with the field equations in its span ring, for \(h=2,3,4\), and list its generators by degree. In the free-span model, compare the augmented tops' syzygies with an extended natural list: Frobenius, Koszul, P-Frobenius, the annihilator syzygies \(\prod_{k\ne i}\ell_ke_i\), and \(r_1e_1-r_2e_2\)-type syzygies, together with those of the added consequences. If a finite, explicit list spans, that is an open Taylor condition for augmented ENS families, to be transferred as in the openness-transfer entry.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the openness-transfer entry, cor:ens-members and its augmentation step, lem:span-transfer (the no-fall hypothesis in the span ring), thm:based-taylor-glue (its Taylor list), and prop:overlap-tor. The first model, with \(h=1\), was wrong because the degree-5 top vanishes. It was caught before use and is excluded. A fresh-context reviewer confirmed the companion formula, the tops and the \(P^3=z^6P\) lift. It verified the fall directly in the span ring. It required these changes, all adopted:</p>
+<ul>
+<li>the torsion element located in degree 5, as \(zR\);</li>
+<li>the saturation of the field-equation ideal stated;</li>
+<li>the within-block independence asserted in the script, with the rerun in <code>syz_v2.json</code>;</li>
+<li>the second fall-type syzygy \(r_1e_1-r_2e_2\) added;</li>
+<li>the true-input convention stated;</li>
+<li>the claim about (b) tied to lem:tensor-splitting-locality.</li>
+</ul>
+<p>The changes correct or weaken, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-ens-taylor">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 57.88 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 21.65 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 33.56 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2.53 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
