@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Satisfiable members on generic spans satisfy (c) and (d) (<a href="#entry-2026-09-24-generic-span-members">generic span members</a>). Clauses whose only dependent factors are their heads glue when the head system is consistent (<a href="#entry-2026-09-24-head-dependencies">head dependencies</a>). Next: combine the two. Prove that Gröbner-augmented members on spans \(W_i\) glue when every relation across members involves only one designated head form per member, the rest of the spans are independent, and the head system is consistent.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> On a free joint span, satisfiable families have no degree-\(D\) refutation, with no splitting needed (<a href="#entry-2026-09-24-joint-span-review">joint-span review</a>). The goal lies beyond the free range, where nothing recorded controls the syzygies. Next: test planted, satisfiable families of generic selectors over the weak base on 3 rows and 18 holes at \(D=3\), below and beyond the Taylor count of about 361. Measure falls, after a sizing run, against random-valued controls. The outcome decides whether large satisfiable families lift beyond freeness.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -15322,6 +15322,50 @@ Always \(\Delta_d\le0\).</li>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 37.78 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 50.46 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.66 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-joint-span-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="cor:joint-span-families">
+<h3>Route review: on a free joint span, satisfiable families need no splitting; the open core is gluing beyond the free range</h3>
+<p class="entry-meta">24 September 2026 · Route review with a working corollary (joint-span families) · The (b) and (c) line of relative gluing; cycle odd-prime-members-with-heads.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-head-dependencies">head-dependencies entry</a> proposed combining generic span members with head dependencies across members. Before proving it, this cycle checked what the combination would add. It adds nothing beyond one step: the whole family can be treated as one member. That changes the line's picture, so this entry is a route review.</p>
+<p><strong>General statement.</strong> cor:joint-span-families: over \(\mathbb F_p\), take any family of reduced \(\mathbb F_p\)-polynomial constraints of degree \(\le D\) in linear forms on the weak unary board. Suppose a basis of the family's joint span has a seeded single-row projection at \(t=D\) with \(N\ge(p-1)(D+1)(D+1+d)\), \(d\) the joint dimension, and \(m\ge D\). Suppose also that the family's allowed set in \(\mathbb F_p^d\) is nonempty. Then the weak base plus the family has no PC refutation of degree \(D\). This is thm:generic-span-members applied to the family as a single member, so hypothesis (b) is not used. It contains the consistent cases of prop:circuit-syzygies and thm:head-dependencies, since a solvable head system satisfies every clause, though not their exact-lift and no-fall statements for the unaugmented family. So (b) is needed only when the joint span is not free, beyond about \(N/((p-1)(D+1))\) dimensions under the seed count and in any case beyond \(\dim A_1\).</p>
+
+<h4>The corollary</h4>
+<p><em>Proof.</em> Let \(\ell_1,\dots,\ell_d\) be a basis of the joint span and write each constraint as \(h_k(\ell)\) with \(h_k\) reduced, which is free at degree \(D\) by the reduction remark of the span-transfer entry. thm:generic-span-members, part 2, applies to the single member \(\{h_k(\ell)\}\): its hypotheses are the seeded projection, the hole and row counts, reducedness, degree \(\le D\) and a nonempty allowed set. For single clauses \(C_i=(\Lambda_i-a_i)M_i\) with a solvable head system, any solution of the heads satisfies every clause, so the allowed set is nonempty. \(\square\)</p>
+<p>The circuit and head results remain useful for what the corollary does not give. They show that the family itself, without Gröbner augmentation, has no fall. They name the one syzygy per circuit and its degree. And they describe the inconsistent case through the resolvent.</p>
+
+<h4>Review of the line</h4>
+<p><em>General claim of the line.</em> The goal's inventory, compiled to product constraints over the weak base, has no PC refutation of degree \(D=O(\log n)\). Relative gluing proves this from (a), no falls of the base, and from the liftability of all top syzygies, which (b) and (c) supply.</p>
+<p><em>What has been proved since the last review</em> (<a href="#entry-2026-09-24-projection-freeness">projection review</a>):</p>
+<ul>
+<li>Every satisfiable member of degree \(\le D\) on a generic span, dependent forms included, satisfies (c) and (d) (<a href="#entry-2026-09-24-generic-span-members">generic span members</a>).</li>
+<li>For two members on a free joint span, (b) is the vanishing of \((I_1\cap I_2)/(I_1I_2+I_{12})\) (<a href="#entry-2026-09-24-overlap-tor">overlap Tor</a>).</li>
+<li>Circuits among heads give one syzygy each, which lifts exactly when consistent (<a href="#entry-2026-09-24-circuit-syzygies">circuits</a>, <a href="#entry-2026-09-24-head-dependencies">heads</a>).</li>
+</ul>
+<p>With the corollary, all of this is subsumed on free joint spans. Satisfiable families there are not refutable at degree \(D\).</p>
+<p><em>What the goal needs.</em> The inventory has \(N^K\) constraints, for every \(K\), on forms spanning up to \(\dim A_1=(N+1)(N-1)\) dimensions. The free range is at most about \(N/(2(D+1))\) under the seed count, and freeness over a span of dimension \(d\) needs \(d\le\dim A_1\) in any case. So the goal lies beyond the free range. There the syzygies are not controlled by any recorded result.</p>
+<p><em>Falsification attempt.</em> The line's claim could fail beyond the free range in two recorded ways:</p>
+<ul>
+<li>Random selectors on the weak base are refuted exactly at the Taylor count \(M=\lceil\gamma_3/(\gamma_1-1)\rceil\) (ex:selector-semiregular-thresholds). Those families are not satisfiable in the span sense. Their values are random, so they fall outside the corollary. They show that beyond the free range, satisfiability or some other structure is indispensable.</li>
+<li>Pencils stay additive past \(\gamma_1\) (ex:member-configurations-free). That is dimension evidence beyond the free range, not syzygy splitting.</li>
+</ul>
+<p>Nothing recorded decides whether satisfiable families beyond the free range have falls.</p>
+<p><em>Assessment of this line.</em> The member side is settled for generic spans. The recent cycles restate, at the syzygy level, results already implied on free spans. The line's content is now the original batched question in algebraic form: the liftability of top syzygies of a satisfiable constraint family whose joint span is not free. The route description calls this the batched mechanism the window needs, and nothing recorded provides it. The line has not produced evidence either way on it. Further refinement on free spans would not advance the goal.</p>
+<p><em>Next step, on the highest-risk item (odd-prime-clause-transfer).</em> Test the core directly at the smallest informative size. Over the weak base on 3 rows and 18 holes at \(D=3\), inside the base's stability range, take planted families of generic row-dependent selectors. Each selector's value is set by one fixed matching, so every family is satisfiable, and some families are larger than the Taylor count. That count is about \(18065/50\approx361\), from \(\gamma_1=51\) and \(\gamma_3=18065\) (<code>mf_3x18_D3.json</code>). Measure \(z\)-injectivity below 3, which is falls, not refutation, since satisfiable families are never refuted. If planted families beyond the count have no falls, their syzygies beyond the Taylor span lift. That would be the first evidence for a mechanism beyond freeness. If they fall, the no-fall route cannot glue large families, and the base must absorb them. Run a sizing case first. The controls are random-valued families at the same size, which the record shows refuted, and planted families below the count.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:generic-span-members (hypotheses and part 2), prop:circuit-syzygies, thm:head-dependencies, ex:selector-semiregular-thresholds, ex:member-configurations-free, and the in-range values in <code>mf_3x18_D3.json</code>. The corollary is a direct application of a reviewed theorem, and no new argument is involved beyond satisfiability of solvable heads. So no reviewer pass was run. The subsumption of the consistent circuit and head cases was missed by the reviews of those entries and is recorded here.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-members-with-heads">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 3.81 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">42.46 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 15.81 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.54 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
