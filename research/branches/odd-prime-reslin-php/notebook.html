@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Locality as stated fails by pairing and covering, and must hold between members. Its base case is settled for selectors: one dependency among \(t+1\) selectors is invisible exactly below degree \(\lceil t/2\rceil\) (<a href="#entry-2026-09-24-single-dependency">single-dependency threshold</a>). The proof goes through the one non-free summand of the Boolean algebra over its full sum. Next: the single-dependency threshold for clauses of width \(k\ge2\), where each dependent clause has \(k-1\) further forms. The calibration puts 4 clauses of width 2 at degree 8. Reduce with the same normal form, and handle the extra forms by the adapted-basis product argument on each clause's own block.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Member locality now has an exact single-dependency threshold over \(\mathbb F_3\) at every width. It is \(\lceil t/2\rceil+2\sum_b(k_b-1)\) for one dependency among \(t+1\) clauses (<a href="#entry-2026-09-24-single-dependency">selectors</a>, <a href="#entry-2026-09-24-wide-dependency">wide dependency</a>). The calibration shows that two independent dependencies among 4 clauses surface earlier. Next: dependency spaces of dimension \(r\ge2\). Put \(r\) independent dependencies in normal form and peel the forms outside the dependent part, which reduces the question to several selector dependencies sharing coordinates. Then find their threshold, starting with two dependencies.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -14246,6 +14246,66 @@ Always \(\Delta_d\le0\).</li>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 45.14 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 12.08 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-wide-dependency" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:peeling thm:wide-dependency-threshold">
+<h3>Wide dependency threshold: each extra form of a dependent clause delays the dependency by exactly p−1 degrees</h3>
+<p class="entry-meta">24 September 2026 · Working proof (wide dependency threshold) · Single dependencies among clauses of any widths over F_3; cycle odd-prime-wide-dependency.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-single-dependency">single-dependency threshold</a> settled one dependency among \(t+1\) selectors. The budget's clauses have width \(k\) of order \(\log n\). The missing implication is the degree below which one dependency among \(t+1\) such clauses stays invisible. That number decides how much independence member locality must ask of the budget.</p>
+<p><strong>General statement.</strong> thm:wide-dependency-threshold: over \(\mathbb F_3\), let clauses \(b=1,\dots,t+1\) of widths \(k_b\) forbid one point each. Suppose their combined linear parts have exactly one dependency and every \(t\) clauses have independent combined linear parts. Then degreewise locality holds in every degree \(e&lt;\lceil t/2\rceil+2\sum_b(k_b-1)\), for all forbidden points, and fails at that degree for suitable points. The proof is lem:peeling, which holds over any \(\mathbb F_p\). Removing a form that is a coordinate occurring in no other clause lowers the locality question by exactly \(p-1\) degrees. This holds in both directions whenever the remaining clauses are local in the relevant degrees, for example point-forbidding clauses with jointly independent forms. At \(p=3\) and the budget's degree \(D=22k\), the threshold \(\tau\) exceeds \(D\) when \(t+1\ge12\) and \(k\ge10\). So such a dependency, with no other clauses present, is invisible in every degree \(\le D\).</p>
+
+<h4>The peeling lemma</h4>
+<p>Setting: \(R\) is the functions on \(\mathbb F_p^s\) with the degree filtration. A clause forbids one point of its forms, and \(I_e\), \(U_c\), locality at degree \(e\) are as in lem:degreewise-gluing. Let \(F\) be a family of clauses, and let \(w\) be a coordinate that occurs in exactly one clause \(b\), whose forbidden set is a product \(\{w=0\}\times B'_b\). Let \(R'\) be the functions of the other coordinates. \(F'\) is \(F\) with \(w\) removed from clause \(b\), so clause \(b\) forbids \(B'_b\), and \(F\setminus b\) is \(F\) without clause \(b\). Both are families on the coordinates other than \(w\), and their locality is taken in \(R'\).</p>
+<p><strong>Lemma (peeling).</strong> If \(F\) is local at degree \(e\), then \(F'\) is local at degree \(e-(p-1)\). Conversely, if \(F'\) is local at degree \(e-(p-1)\) and \(F\setminus b\) is local in degrees \(e-p+2,\dots,e\), then \(F\) is local at degree \(e\). For \(e&lt;p-1\) the condition on \(F'\) holds trivially.</p>
+<p><em>Proof.</em> Write \(R=R'\otimes R_w\), where \(R'\) is the functions of the other coordinates. In \(R_w\) take the filtration-compatible basis \(1,w,\dots,w^{p-2},\delta\), with \(\delta=1-w^{p-1}\) the indicator of \(w=0\) of degree \(p-1\). Every \(g\in R_{\le e}\) is uniquely \(\sum_{i&lt;p-1}A_iw^i+C\delta\), with \(A_i\in R'_{\le e-i}\) and \(C\in R'_{\le e-p+1}\). At \(w=0\), \(g=A_0+C\). At each of the \(p-1\) nonzero values of \(w\), \(g=\sum_iA_iw^i\). This is a Vandermonde system in the \(A_i\), invertible over the \(p-1\) distinct nonzero values. Over \(w\ne0\), clause \(b\) is inactive and the allowed set of \(F\) is \(Z(F\setminus b)\). Over \(w=0\) it is \(Z(F')\), and \(Z(F')\subseteq Z(F\setminus b)\).</p>
+<p>(\(\Leftarrow\)) Let \(f\in I_e(Z(F))\). By the Vandermonde system, every \(A_i\) vanishes on \(Z(F\setminus b)\). Locality of \(F\setminus b\) in degrees \(e-i\), \(i&lt;p-1\), gives \(A_i=\sum_{c\ne b}a_{c,i}\) with \(a_{c,i}\in I_{e-i}(U_c)\). Each \(a_{c,i}w^i\) lies in \(I_e(U_c)\), since \(U_c\) does not involve \(w\). \(A_0+C\) vanishes on \(Z(F')\) and so does \(A_0\), so \(C\in I_{e-p+1}(Z(F'))\). Locality of \(F'\) gives \(C=\sum_{c\ne b}c_c+c'_b\), with \(c_c\in I_{e-p+1}(U_c)\) and \(c'_b\) vanishing on the narrowed clause's allowed set \(U'_b\). Then \(c_c\delta\in I_e(U_c)\). And \(c'_b\delta\in I_e(U_b)\): \(U_b\) is \(U'_b\) together with \(\{w\ne0\}\), where \(c'_b=0\) and \(\delta=0\) respectively. So \(f\in\sum_cI_e(U_c)\).</p>
+<p>(\(\Rightarrow\)) This direction uses no hypothesis on \(F\setminus b\). Let \(C\in I_{e-p+1}(Z(F'))\) be outside \(\sum_cI_{e-p+1}(U'_c)\), where \(U'_c=U_c\) for \(c\ne b\). Then \(f=C\delta\in R_{\le e}\) vanishes on \(Z(F)\). Suppose \(f=\sum_ca_c\) with \(a_c\in I_e(U_c)\), and take \(\delta\)-coefficients, a linear map by uniqueness of the expansion. For \(c\ne b\), \(a_c\) vanishes on \(U_c\times\mathbb F_p\). By the Vandermonde system its \(A\)-coefficients vanish on \(U_c\), and then its \(\delta\)-coefficient \(C_c\) does too, from the value at \(w=0\). For \(a_b\), vanishing on \(\{w\ne0\}\) forces its \(A\)-coefficients to be 0, and then its \(C_b\) vanishes on \(U'_b\). So \(C=\sum C_c\in\sum_cI_{e-p+1}(U'_c)\), a contradiction. \(\square\)</p>
+
+<h4>The theorem</h4>
+<p><strong>Theorem (wide dependency threshold).</strong> Over \(\mathbb F_3\), let \(t\ge1\) and let clause \(b\), \(1\le b\le t+1\), forbid \(\{\ell_b=\alpha_b\}\) for \(k_b\) affine forms \(\ell_b\). Suppose the \(\sum_bk_b\) linear parts have rank \(\sum_bk_b-1\), and those of every \(t\) clauses are independent. This implies independence within each clause, and, given the rank, it is equivalent to the unique dependency having a nonzero component \(\mu_b\) in every clause. \(p=3\) enters only through the base threshold and through \(p-1=2\) in \(\tau\). Put \(\tau=\lceil t/2\rceil+2\sum_b(k_b-1)\). Then \(I_e(\bigcap_bU_b)=\sum_bI_e(U_b)\) for every \(e&lt;\tau\) and all \(\alpha\), and this fails at \(e=\tau\) for suitable \(\alpha\).</p>
+<p><em>Proof.</em> <em>Normal form.</em> The dependency is \(\sum_b\mu_b=0\), where \(\mu_b\) is a linear combination of clause \(b\)'s linear parts. Every \(\mu_b\ne0\), since every \(t\) clauses are independent. Extend \(\mu_b\) to a basis \(\mu_b,\nu_{b,1},\dots,\nu_{b,k_b-1}\) of clause \(b\)'s span. The only relation among all these forms is \(\sum_b\mu_b=0\). So \(y_b=\mu_b-(\text{const})\) for \(b\le t\), together with all \(w_{b,j}=\nu_{b,j}-(\text{const})\), extended by free coordinates \(z\), is a coordinate system. Clause \(b\)'s forbidden point is an invertible affine image of \(\{\ell_b=\alpha_b\}\). With the constants chosen, clause \(b\le t\) forbids \(\{y_b=0,\ w_b=0\}\), and clause \(t+1\) forbids \(\{y_1+\dots+y_t=c,\ w_{t+1}=0\}\). Here \(c\) runs over \(\mathbb F_3\) as \(\alpha_{t+1}\) varies. The free coordinates \(z\) are kept: the lemma allows arbitrary other coordinates, and the single-dependency threshold covers selector families in any ambient dimension.</p>
+<p><em>Peeling.</em> Remove the coordinates \(w_{b,j}\) one at a time with the lemma, in the ring of the coordinates not yet removed. At each stage the family without the clause being narrowed consists of \(t\) clauses. Their forms are independent: the \(y_c\) for \(c\le t\), \(c\ne b\), and \(\sum y\) if \(b\ne t+1\), together with their remaining \(w\)'s. After a linear change they are disjoint coordinate blocks, each clause forbidding one point of its block. Such a family is local in every degree by the product argument. In each block take the monomials in the shifted coordinates, with the top monomial replaced by the point indicator \(\delta_c\). The transition from monomials is triangular in degree, so the tensor basis is filtration-compatible. The non-\(\delta\) elements restrict to a basis of the functions on the block minus its point. So a function of degree \(\le e\) vanishing on the product of these sets is a sum of basis tensors of degree \(\le e\), each containing some \(\delta_c\) and hence lying in \(I_e(U_c)\). After \(\sum_b(k_b-1)\) steps, locality at degree \(e\) is equivalent to locality at degree \(e-2\sum_b(k_b-1)\) of the selector family, the canonical family of the single-dependency threshold. That family is local below \(\lceil t/2\rceil\) for every \(c\), and fails at \(\lceil t/2\rceil\) for \(c=t+w_0\), in any ambient dimension. So the wide family is local for \(e&lt;\tau\) and fails at \(\tau\). \(\square\)</p>
+<p><em>Consistency.</em> <code>wide_single.py</code> computes the defect in normal form for widths \((2,1,1)\), \((1,1,2)\), \((2,2,1)\), \((2,2,2)\) with \(t=2\), and \((1,1,1,2)\) with \(t=3\) (<code>wide_single.json</code>). It finds 0 below \(\tau\) and a defect of 1 at \(\tau\) when \(c=t+w_0\), and no defect at \(\tau\) for \(t=3\), \(c=0\), where no \(w_0\) matches.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>For single dependencies the member-locality threshold is now exact over \(\mathbb F_3\) at every width. The cost of a dependency is \(\lceil t/2\rceil\) from the dependent forms, plus \(p-1\) for every other form of every dependent clause.</li>
+<li>At the budget's width \(k\), with \(D=(4p-1)(p-1)k=22k\), a family of exactly \(t+1\) clauses of width \(k\) with one dependency, every \(t\) independent and no other clauses present, is local in every degree \(\le D\) once \(\tau&gt;D\). For \(t+1=12\) that holds when \(k\ge10\); for large \(k\) the condition approaches \(t+1&gt;11\). So a single such dependency needs about a dozen clauses to be harmless. Several dependencies, and dependencies inside larger families, are not covered.</li>
+<li>The <a href="#entry-2026-09-24-locality-line-review">calibration</a> families had a two-dimensional space of dependencies among 4 clauses of width 2, and failed at degree 8. The single-dependency prediction for 4 clauses of width 2 is \(2+8=10\). So several dependencies can surface earlier, and the next case is a dependency space of dimension more than one.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:single-dependency-threshold (statement, normal form, Step 2), prop:pairing-obstruction's canonical family, the product argument, and ex:combined-locality-calibration. The consistency runs agree with \(\tau\) in every case. A fresh-context reviewer found no gap in the lemma or the chain of equivalences. It required these changes, all adopted:</p>
+<ul>
+<li>the numeric boundary corrected: the draft's \(k\ge12\) gave equality at \(t+1=12\), now \(\tau&gt;D\) for \(t+1\ge12\), \(k\ge10\);</li>
+<li>the rings of \(F'\) and \(F\setminus b\) stated;</li>
+<li>the exact degrees in which \(F\setminus b\) is used, and that one direction needs no hypothesis;</li>
+<li>the product form of clause \(b\)'s forbidden set;</li>
+<li>the peeling principle's wording;</li>
+<li>the free coordinates kept rather than removed;</li>
+<li>the product argument written out;</li>
+<li>notation, the implied hypothesis, and the role of \(p=3\);</li>
+<li>the overreach about dozens of clauses qualified.</li>
+</ul>
+<p>The changes correct one numeric claim and weaken or make precise the rest, so no further pass was made.</p>
+
+<h4>Remaining gap</h4>
+<ul>
+<li>Dependency spaces of dimension \(\ge2\), and families with many overlapping dependencies, as in the budget.</li>
+<li>From member locality to row freeness of the closure.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-wide-dependency">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 27.55 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 26.98 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 59.88 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.54 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.15 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
