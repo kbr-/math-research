@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Falls of separately augmented linked ENS blocks are degree defects. For pairs, a fiber decomposition over the shared coordinates shows they are killed by \(z^{2|V|}\), and that none lies below the fiber-sum degree. That degree is only 4 for ENS pairs, so conj:bounded-linkage-large-h stays open (<a href="#entry-2026-09-24-fiber-decomposition">fiber decomposition</a>). The obstacle is the cost of lifting a fiber element to its block's ideal: some elements lift at no cost, others cost two degrees. Next: formulate a lifting-cost refinement of the fiber-sum bound for a pair sharing one linear part, check it against the six observed lowest falls, and prove it.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> A fiber criterion reduces membership in a linked pair's ideal to the blocks' separate fiber ideals. With it, separately augmented parallel pairs are proved to fall at degree 7 for \(3\le h_a\le8\), \(4\le h_b\le8\), and for all larger \(h\) if every block with at least three inputs has no nonzero element of degree \(\le4\) (<a href="#entry-2026-09-24-parallel-fall-theorem">parallel fall theorem</a>). Next: prove that minimum-degree statement for single blocks, then apply the fiber criterion to a parallel pair with \(R\) added, to locate its next possible fall.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -17341,6 +17341,106 @@ where each \(A_i\) is a fixed scalar combination of the \(\alpha_v\), so \(A_i\i
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 53.24 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 57.36 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-parallel-fall-theorem" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="thm:parallel-pair-fall">
+<h3>Parallel fall theorem: two separately augmented ENS blocks with parallel inputs fall at degree 7, proved by a fiber criterion for 3 ≤ h_a ≤ 8, 4 ≤ h_b ≤ 8, and for all larger h under a minimum-degree hypothesis</h3>
+<p class="entry-meta">24 September 2026 · Working proof (fiber criterion, true-fiber degree lemma, parallel fall), partly conditional · cycle odd-prime-lifting-cost.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-fiber-decomposition">fiber-decomposition entry</a> proved general but weak bounds and located the missing ingredient: how the fiber pieces of an element lift to a block's ideal. This cycle makes that precise for one shared linear part, as an exact criterion for membership in a block's ideal by fiber components. It then applies the criterion to the parallel consequence \(R\). The degree-7 fall of parallel pairs was a conjecture (conj:shared-input-falls), with exact checks for \(h\le5\). Here it is proved for every \(h\) in a range, and for all larger \(h\) under a minimum-degree hypothesis.</p>
+<p><strong>General statement.</strong> thm:parallel-pair-fall. Over \(\mathbb F_3\), let \(a\) and \(b\) be complete accuracy-one ENS blocks with \(h_a,h_b\ge2\) inputs and private coefficients, with parallel inputs \(x+c_a\) and \(x+c_b\), \(c_a\ne c_b\), and all other inputs independent. Let each be Gröbner-augmented separately. Suppose:</p>
+<ul>
+<li>\(a\)'s false-fiber ideal has no nonzero element of degree \(\le3\);</li>
+<li>the minimum degrees of \(a\)'s true-fiber ideal and \(b\)'s false-fiber ideal sum to at least 8.</li>
+</ul>
+<p>Then \(R=P_aP_b(q_a-q_b)\), of degree 7, lies in \(J\) after multiplication by \(z\) but not in degree 7, so the pair falls at degree 7. The hypotheses hold for \(3\le h_a\le8\) and \(4\le h_b\le8\), because the false fibers are blocks with up to seven inputs, all computed. They hold for all \(h_a\ge3\), \(h_b\ge4\) if every block with at least three inputs has no nonzero element of degree \(\le4\), which <code>gb_blocks.json</code> confirms up to seven inputs.</p>
+
+<h4>The fiber criterion</h4>
+<p>Translate so that \(a\)'s shared input is \(x\), true at \(x=0\), and \(b\)'s is \(x+1\), true at \(x=2\). The third value, \(x=1\), makes both false. Let \(Y_a\) be \(a\)'s other variables, its other inputs and its coefficients, and \(Y_b\) likewise. Let \(T\) be the ring of \(x,Y_a,Y_b\) modulo field equations.</p>
+<ul>
+<li>\(I_a^{\rm T}=I(Z_a^{\rm T})\) is \(a\)'s true-fiber ideal, in \(Y_a\): the points with \(r_{a,1}+\sum_{k\in T'}r_{a,k}=1\), where \(T'\) is the set of true other inputs.</li>
+<li>\(I_a^{\rm F}\) is \(a\)'s false-fiber ideal: the zero set of the block on its other \(h_a-1\) inputs, with \(r_{a,1}\) free.</li>
+<li>\(I_b^{\rm T}\) and \(I_b^{\rm F}\) are defined the same way.</li>
+</ul>
+<p>Reduce every element in \(x\) and write \(G=G_0+xG_1+x^2G_2\), with \(G_i\) in the \(Y\) variables. Because the ideals contain the field equations, membership is vanishing on the zero set. Reducing modulo the field equations, which lie in both ideals, keeps degree \(\le s\) and keeps membership, so reduced representatives may be used. Evaluating at \(x=0,1,2\), using \(x^2=1\) at \(x=\pm1\) and characteristic 3:</p>
+<ul>
+<li>\(G\in I_aT\) if and only if \(G_0\in I_a^{\rm T}T\), \(G_1\in I_a^{\rm F}T\) and \(G_0+G_2\in I_a^{\rm F}T\);</li>
+<li>\(H\in I_bT\) if and only if \(H_0\in I_b^{\rm F}T\), \(H_1+H_2\in I_b^{\rm F}T\) and \(H_0-H_1+H_2\in I_b^{\rm T}T\).</li>
+</ul>
+<p>A degree bound \(\deg G\le s\) is \(\deg G_i\le s-i\). So \(J_s\), dehomogenized, consists of the \(G+H\) with these conditions and bounds. This is an exact criterion in the separate fiber ideals, which live in disjoint variables.</p>
+
+<h4>The true-fiber degree lemma</h4>
+<p><em>For \(h\ge3\), \(I^{\rm T}\) has no nonzero element of degree \(\le2\).</em></p>
+<ol>
+<li><em>On each fiber of the other inputs.</em> Fix the values \(u\) of the other inputs, with true set \(T'(u)\). Then \(g(u,\cdot)\) vanishes on the hyperplane \(\ell_u=r_1+\sum_{T'(u)}r_k-1=0\). After an affine change making \(\ell_u\) an affine coordinate \(t_1\), divide: \(g(u,\cdot)=t_1\lambda_u+g'(t_2,\dots)\). The remainder \(g'\) has degree \(\le2\), so it is reduced, and it vanishes on all of \(\mathbb F_3^{n-1}\), so it is 0. So \(g(u,\cdot)=\ell_u\lambda_u\) with \(\deg\lambda_u\le1\).</li>
+<li><em>The quadratic part in \(r\) vanishes.</em> Since \(\deg g\le2\), it is a form \(Q\) independent of \(u\). With every other input false, \(Q=r_1\mu\); with only input 2 true, \(Q=(r_1+r_2)\mu'\); with only input 3 true, \(Q=(r_1+r_3)\mu''\). Unique factorization forces \(Q=0\), which uses \(h\ge3\). So \(g(u,\cdot)=c(u)\,\ell_u\) with \(c(u)\) constant in \(r\).</li>
+<li><em>The coefficient \(c\) vanishes.</em> The coefficient of \(r_1\) in \(g\) is \(c(u)\), of degree \(\le1\) in \(u\). The coefficient \(B(u)\) of \(r_2\) in \(g\) has degree \(\le1\), and equals \(c(u)\) where \(u_2=0\) and 0 where \(u_2\ne0\). So the affine \(B\) vanishes on both hyperplanes \(u_2=\pm1\), hence \(B=0\), and \(c\) vanishes where \(u_2=0\). Similarly \(c\) vanishes where \(u_3=0\). An affine \(c\) vanishing on both hyperplanes is zero. \(\square\)</li>
+</ol>
+<p>The element \(p^{\rm T}=1-r_1-\sum_{k\ge2}r_kq_k\), \(P\) restricted to the true fiber, has degree 3, so the minimum degree of \(I^{\rm T}\) is exactly 3.</p>
+
+<h4>Proof of the theorem</h4>
+<p>Write \(P_a=p_a^{\rm F}-r_{a,1}q_a\), where \(p_a^{\rm F}=1-\sum_{k\ge2}r_{a,k}q_{a,k}\) is \(P\) on the false fiber, of degree 3, and \(p_a^{\rm T}=p_a^{\rm F}-r_{a,1}\). Similarly for \(b\). Also \(q_a-q_b=1-x\). The fiber values of \(R\) are:</p>
+<ul>
+<li>\(u=p_a^{\rm T}p_b^{\rm F}\) at \(x=0\);</li>
+<li>\(0\) at \(x=1\);</li>
+<li>\(-w\) at \(x=2\), with \(w=p_a^{\rm F}p_b^{\rm T}\).</li>
+</ul>
+<p>So \(R_0=u\), \(R_1=-w\) and \(R_2=w-u\). \(u\) and \(w\) have degree 6 with the same top \(\rho'_a\rho'_b\), where \(\rho'_a=\sum_{k\ge2}r_{a,k}\ell_{a,k}^2\), nonzero since \(h_a\ge2\). So \(\deg R_2\le5\) and \(\deg R=7\).</p>
+<p>Suppose \(R=G+H\) with \(G\in I_aT\), \(H\in I_bT\), both of degree \(\le7\).</p>
+<ol>
+<li><em>The degree-0 coefficient.</em> \(R_0=G_0+H_0\) with \(G_0\in I_a^{\rm T}T\) and \(H_0\in I_b^{\rm F}T\). Since \(u\in I_a^{\rm T}T\), \(G_0=u+\varepsilon\) and \(H_0=-\varepsilon\), with \(\varepsilon\in I_a^{\rm T}T\cap I_b^{\rm F}T\).
+<ul>
+<li>In disjoint variables that intersection is the product ideal, and its associated graded is the product of the associated gradeds.</li>
+<li>So its nonzero elements have degree \(\ge m(I_a^{\rm T})+m(I_b^{\rm F})\ge8\). Since \(\deg\varepsilon\le7\), \(\varepsilon=0\).</li>
+</ul></li>
+<li><em>The degree-2 coefficient.</em> \(G_0+G_2\in I_a^{\rm F}T\) with \(G_2=R_2-H_2\) gives \(w-H_2\in I_a^{\rm F}T\). So \(H_2=w-\varphi\) with \(\varphi\in I_a^{\rm F}T\).</li>
+<li><em>The degree bound.</em> \(\deg H_2\le5\) forces \(\varphi=w+(\text{degree}\le5)\). So \(\deg\varphi=6\) exactly, and \(\operatorname{top}(\varphi)=\operatorname{top}(w)=\rho'_a\otimes\rho'_b\in\operatorname{gr}(I_a^{\rm F})\otimes\operatorname{gr}(\mathbb F[Y_b])\).</li>
+<li><em>The contradiction.</em> Take the component of bidegree \((3,3)\) in the \(Y_a\) and \(Y_b\) variables, and apply \(\mathrm{id}\otimes f\) for a linear functional \(f\) with \(f(\rho'_b)=1\). Then \(\rho'_a\in\operatorname{gr}(I_a^{\rm F})\) in degree 3. That contradicts the first hypothesis.</li>
+</ol>
+<p>Only \(H_0\in I_b^{\rm F}T\) and \(\deg H_2\le5\) are used from \(H\). A necessary condition that fails is enough. So \(R\notin J_7\). But \(R=P_b(q_aP_a)-P_a(q_bP_b)\) has degree-8 terms in the two ideals, so \(zR\in J\). \(R\) is \(z\)-torsion in degree 7. \(\square\)</p>
+<p><em>The hypotheses.</em> \(I_a^{\rm F}\) is the ideal of the \((h_a-1)\)-input block, extended by the free \(r_{a,1}\). Its minimum degree is that block's minimum non-field degree, which is 4 for two inputs and 5 for three to seven inputs, from <code>gb_blocks.json</code>.</p>
+<ul>
+<li>The first hypothesis needs \(h_a-1\ge2\).</li>
+<li>The second needs \(3+m(I_b^{\rm F})\ge8\), that is \(h_b-1\ge3\), by the lemma.</li>
+</ul>
+<p>So both hold unconditionally for \(3\le h_a\le8\), \(4\le h_b\le8\). For larger \(h\) they need the minimum degree 5 of blocks with \(\ge3\) inputs, observed only up to seven inputs.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>The \(R\) part of conj:shared-input-falls is now a theorem in the range above, including the checked \(h=4,5\) and the unchecked \(h=6,7,8\). It is conditional beyond that on a minimum-degree statement about single blocks, which is simpler to attack than the pair.</li>
+<li>For the band, with \(h\ge10\), parallel pairs of separately augmented blocks fall at degree 7, under that statement. So \(R\) must be added, as conj:bounded-linkage-large-h does.</li>
+<li>The criterion reduces pair questions to single-block fiber ideals in disjoint variables. That is the tool the lifting-cost refinement asked for. The \(W\) and \(E_k\) falls, and the conjecture with \(R\) added, are the next applications.</li>
+</ul>
+<p>Next: prove that every block with at least three inputs has no nonzero element of degree \(\le4\), which removes the condition in the theorem. Then apply the fiber criterion to a parallel pair with \(R\) added, to find the next degree where a fall can occur.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: prop:fiber-decomposition-bounds (disjoint-variable products of extended ideals), lem:shared-input-consequences (\(R\) and its degree-8 representation), conj:shared-input-falls, and the minimum degrees in <code>gb_blocks.json</code>. The theorem agrees with the exact checks \(R\notin J_7\) at \(h=3,4,5\). At \(h=3\) it is not covered, since \(m(I_b^{\rm F})=4\), but it is computed. No computation was run in this cycle.</p>
+<p>A fresh-context reviewer checked all of these and found no missed case:</p>
+<ul>
+<li>the fiber criterion in characteristic 3;</li>
+<li>\(R\)'s fiber values and coefficients, and the tops;</li>
+<li>\(\varepsilon=0\), the contradiction and \(zR\in J\);</li>
+<li>the thresholds.</li>
+</ul>
+<p>It required these changes, all adopted:</p>
+<ul>
+<li>the range extended from 7 to 8 inputs, since the seven-input block also has minimum degree 5;</li>
+<li>the division step and the \(B=0\) link in the lemma;</li>
+<li>\(\deg\varphi=6\), and the extraction of \(\rho'_a\);</li>
+<li>the note that only a necessary condition on \(H\) is used;</li>
+<li>reduction modulo field equations justified.</li>
+</ul>
+<p>The range extension follows from recorded data by the same argument, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-lifting-cost">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 11.63 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 36.89 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">3 min 34.61 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
