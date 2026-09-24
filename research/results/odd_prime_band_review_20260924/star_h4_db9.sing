@@ -1,0 +1,42 @@
+// Route-review falsification test of thm:star-degree-locality with lem:section-retraction (both unconditional at h = 4):
+// the four-block star of star_h4.sing (a, b on x; c on x+1; d on x+2; h = 4; R on the parallel pairs, T on acd and bcd)
+// with degree bound 9, so falls at degree <= 8 are visible.  Linked pairs with R at h = 4 fall first at 8
+// (r_added_pair.out), so the theorem and the section lemma predict, stated before the run: the family's lowest fall is
+// exactly 8 (a fall at 8 exists, none below).
+option(redSB);
+ring S = 3, (x, ya(2..4), yb(2..4), yc(2..4), yd(2..4), ra(1..4), rb(1..4), rc(1..4), rd(1..4), z), dp;
+proc blockP(ideal L, ideal rr)
+{
+  poly P = 1; int i;
+  for (i = 1; i <= 4; i++) { P = P - rr[i]*(1 - L[i]^2); }
+  return(P);
+}
+proc blockI(ideal L, poly P)
+{
+  ideal I; int i;
+  for (i = 1; i <= 4; i++) { I = I, (1 - L[i]^2)*P; }
+  return(I);
+}
+ideal La = x, ya(2), ya(3), ya(4);      ideal Ra = ra(1..4);
+ideal Lb = x, yb(2), yb(3), yb(4);      ideal Rb = rb(1..4);
+ideal Lc = x + 1, yc(2), yc(3), yc(4);  ideal Rc = rc(1..4);
+ideal Ld = x + 2, yd(2), yd(3), yd(4);  ideal Rd = rd(1..4);
+poly Pa = blockP(La, Ra); poly Pb = blockP(Lb, Rb); poly Pc = blockP(Lc, Rc); poly Pd = blockP(Ld, Rd);
+ideal F; int i;
+for (i = 1; i <= nvars(basering) - 1; i++) { F = F, var(i)^3 - var(i); }
+ideal Ga = std(blockI(La, Pa) + F); ideal Gb = std(blockI(Lb, Pb) + F);
+ideal Gc = std(blockI(Lc, Pc) + F); ideal Gd = std(blockI(Ld, Pd) + F);
+poly qa = 1 - La[1]^2; poly qb = 1 - Lb[1]^2; poly qc = 1 - Lc[1]^2; poly qd = 1 - Ld[1]^2;
+ideal Cross = Pa*Pc*(qa - qc), Pa*Pd*(qa - qd), Pb*Pc*(qb - qc), Pb*Pd*(qb - qd), Pc*Pd*(qc - qd), Pa*Pc*Pd, Pb*Pc*Pd;
+proc lowestfall(ideal J, int DB)
+{
+  degBound = DB; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+  int lowest = DB; int k;
+  for (k = 1; k <= ncols(Q); k++) { if (Q[k] != 0 && deg(Q[k]) < lowest) { if (reduce(Q[k], SJ) != 0) { lowest = deg(Q[k]); } } }
+  return(lowest);
+}
+int DB = 9;
+ideal Jab = homog(F, z) + homog(Ga, z) + homog(Gb, z);
+ideal Jall = Jab + homog(Gc, z) + homog(Gd, z) + homog(Cross, z);
+print("SUB abcd DB=" + string(DB) + " lowest_fall=" + string(lowestfall(Jall, DB)));
+quit;
