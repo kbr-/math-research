@@ -230,7 +230,9 @@ while command records remain unfinished.
   narrow search brackets) and the parallel paths (OpenMP elimination, `--threads`).
   `compute.sh` enforces this: `--timeout` above 600 s needs `--expect SECONDS`, and a run
   expected to exceed 600 s on fewer than 4 threads needs `--serial-reason`; it prints
-  expected against actual time. Stop a superseded run as soon as its replacement is
+  expected against actual time. A run expected to exceed 600 s must also cite `--sized-by RUN_ID`,
+  a completed run of the same program in the same session whose measured time the estimate
+  extrapolates (user instruction, 24 September 2026, after unsized runs of 20+ minutes). Stop a superseded run as soon as its replacement is
   validated.
 - **Run limit** (user instructions, 23 September 2026, after a cycle with 110 minutes
   of computation): a run may take at most 30 minutes. `compute.sh` refuses a `--timeout`

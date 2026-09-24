@@ -416,6 +416,9 @@ KERNEL_RUN_S = 120
 # (for/while statements and comprehension generators) in the script or in any local module it imports is refused;
 # vectorize it (numpy index arithmetic) or move it into the compiled kernel. Only a quoted user approval overrides.
 MAX_PY_LOOP_DEPTH = 3
+# Sizing runs (user instruction, 24 September 2026, after two runs in one session were launched for 20+ minutes on an
+# estimate that no measurement supported): a run expected to exceed LONG_RUN_S must cite, with --sized-by RUN_ID, a
+# completed run of the same program in the same session, whose measured time the estimate extrapolates.
 
 
 def python_loop_offenders(script, root=None):
@@ -508,6 +511,30 @@ def python_loop_offenders(script, root=None):
     return sorted(found)
 
 
+def program_key(command):
+    """The program a command runs: its first script argument, else the executable's name."""
+    script = next((c for c in command[1:] if Path(c).suffix in ('.py', '.sh', '.sing', '.g', '.m2')), None)
+    return Path(script).name if script else Path(command[0]).name if command else ''
+
+
+def sizing_error(events, sized_by, command, expect):
+    """None if RUN_ID `sized_by` is a completed run of the same program in `events`; else the reason it is not.
+    On success the second value is the sizing run's measured seconds."""
+    start = next((e for e in events if e['event'] == 'run_start' and e.get('id') == sized_by), None)
+    if start is None:
+        return f'--sized-by {sized_by}: no run with that id in this session', None
+    end = next((e for e in events if e['event'] == 'run_end' and e.get('id') == sized_by), None)
+    if end is None or end.get('returncode') != 0 or end.get('timed_out') or end.get('interrupted'):
+        return f'--sized-by {sized_by}: that run did not complete successfully', None
+    if program_key(start['command']) != program_key(command):
+        return (f'--sized-by {sized_by}: that run used {program_key(start["command"])}, not '
+                f'{program_key(command)}'), None
+    took = end['monotonic_s'] - start['monotonic_s']
+    if expect < took:
+        return f'--expect {expect:g} is below the sizing run\'s own {took:.0f} s', None
+    return None, took
+
+
 def run_options(parser):
     parser.add_argument('--threads', type=int, default=14)
     parser.add_argument('--timeout', type=float, default=180)
@@ -520,6 +547,9 @@ def run_options(parser):
     parser.add_argument('--kernel-reason', default='',
                         help=f'For a Python command with --timeout above {KERNEL_RUN_S} s: the compiled kernel (C/C++) '
                              'doing the heavy work and why nothing is recomputed')
+    parser.add_argument('--sized-by', default='',
+                        help=f'For --expect above {LONG_RUN_S:g} s: the id of a completed smaller run of the same '
+                             'program in this session (the id in its log name SESSION-ID.output.txt)')
     parser.add_argument('--category', choices=RUNS, default='computation')
     parser.add_argument('--user-approved', default='',
                         help='Quote of the user\'s explicit approval for a run beyond MAX_RUN_S')
@@ -624,6 +654,16 @@ def main():
     if (args.expect or 0) > LONG_RUN_S and args.threads < PARALLEL_THREADS and not args.serial_reason.strip():
         parser.error(f'a run expected to exceed {LONG_RUN_S:g} s on fewer than {PARALLEL_THREADS} threads '
                      'needs --serial-reason: use the parallel paths first (COMPUTATION_RULES.md)')
+    if (args.expect or 0) > LONG_RUN_S and not args.user_approved.strip():
+        if not args.sized_by or not getattr(args, 'session', None):
+            parser.error(f'a run expected to exceed {LONG_RUN_S:g} s needs --session and --sized-by RUN_ID: first run '
+                         'the same program at a smaller size in this session and extrapolate --expect from its '
+                         'measured time (CLAUDE.md, COMPUTATION_RULES.md); only --user-approved overrides')
+        journal = session_path(args.session)
+        events = read_events(journal) if journal.exists() else []
+        error, took = sizing_error(events, args.sized_by, command, args.expect)
+        if error: parser.error(error + ' (CLAUDE.md, COMPUTATION_RULES.md)')
+        print(f'Sized by run {args.sized_by}: took {took:.0f} s; expecting {args.expect:g} s.')
     exe = Path(command[0]).name if command else ''
     if (exe.startswith('python') and args.timeout > KERNEL_RUN_S and args.category == 'computation'
             and len(args.kernel_reason.split()) < 6):
