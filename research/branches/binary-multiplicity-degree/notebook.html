@@ -29,12 +29,14 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic. Test whether the method reaches the cube \(\{0,1\}^n\) over fields of characteristic \(p\ne2\), which is Menezes' setting. There \(y=x^2-x\) still gives the basis and the origin-jet lemma, but the local root \(x(y)=\sum_jC_{j-1}y^j\), with signs, is a Catalan series and not additive.</p>
+<p>Route item: cube-odd-characteristic. Prove the <a href="#cube-square-per-order-any-field">dimension-two conjecture</a> over every field, starting with \(\ell=0\):</p>
 <ul>
-<li>Generalize the jet kernel to the cube over \(\mathbb F_p\), with \(y=x^2-x\), 2 roots and \(p\) odd. Compute \(\delta_{\mathbb F_3}(n,k,\ell)\) for small \(n,k\), and compare with Menezes' \(n+2k-2-\rho_F(k-\ell)\) for \(n\ge k-1\).</li>
-<li>Find the law below his range, and check whether a root-count mechanism exists; the Catalan parity pattern modulo \(p\) is the natural candidate.</li>
+<li>the line dichotomy with \(F=(1-x_1)(1-x_2)(1-x_1-x_2)\);</li>
+<li>the step \(P(x',1)-P(x',0)\), which needs no characteristic-two cancellation at \(\ell=0\);</li>
+<li>the upper bound from \(F^j\) and \(F^j(1-x_1)(1-x_2)\).</li>
 </ul>
-<p>Publication, Lean and the odd-field thread's use of the \(\mathbb F_q\) theorem remain the user's decisions.</p>
+<p>Then test whether the exchange law holds for \(n=2\) in every characteristic; the data say it does. After that, examine \(n=3\), where \(\mathbb F_3\) and \(\mathbb F_5\) agree and the exchange law fails, using the kernel's witness structure.</p>
+<p>Publication, Lean and correspondence remain the user's decisions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -1255,6 +1257,43 @@ Each \(E^{(t)}_j\) is symmetric and additive in each variable, and \(E^{(t)}_j(y
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 39.37 s</strong></td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 38.15 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.22 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-odd-cube-scoping" data-kind="research" data-route="cube-odd-characteristic" data-claims="check:odd-cube-per-order-values ex:odd-cube-exchange-law-failure conj:cube-square-per-order-any-field">
+<h3>25 September 2026 — The cube over odd characteristic: Menezes confirmed, the binary laws break from n = 3</h3>
+<p class="entry-meta">Finite check and refutation; conjecture for n = 2 over every field. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Question.</strong> Does the per-order law reach Menezes' own setting, the cube \(\{0,1\}^n\) over a field of odd characteristic? There \(y=x^2-x\) still gives the basis and the origin-jet lemma, with lift \(g_b=x^b(1-x^{p^K})\). But the local root of \(X^2-X=y\) is a Catalan series, not additive, so the root-count proof has no direct analogue.</p>
+<p><strong>Method.</strong> <code>research/tools/bmd_jet_orders_q.cpp</code> gained a <code>--cube</code> mode: basis \(x^\varepsilon y^e\) with \(\varepsilon\in\{0,1\}\), \(y=x^2-x\), over \(\mathbb F_p\). Its other modes are unchanged; it reproduces the binary values and the full-grid values. The series ran over \(p=3\) (\(n\le5\), \(k\le13\)) and \(p=5\) (\(n\le5\), \(k\le12\)), in <code>research/results/bmd-r9-odd-cube/</code>.</p>
+<p><strong>Findings.</strong></p>
+<ul>
+<li><strong>Menezes' theorem.</strong> In his range \(n\ge k-1\), all 100 computed values agree with \(n+2k-2-\rho_F(k-\ell)\) (<code>bmd_cube_series.py</code>). Here \(\rho_F\) counts the fewest parts \(a\) with \(C_{a-1}\ne0\) in \(\mathbb F_p\).</li>
+<li><strong>Below his range</strong> the degree falls under his expression; for example \(\delta_{\mathbb F_3}(3,5,0)=9\), against \(10\). Write the savings as \(\rho_n(m)=n+2(k-1)-\delta\), \(m=k-\ell-1\) (table in <code>summary.txt</code>):
+<ul>
+<li>\(n=1\): the savings are \(m\) for every field;</li>
+<li>\(n=2\): the savings are \(\lceil m/2\rceil\) for \(\mathbb F_3\) and \(\mathbb F_5\), as for \(\mathbb F_2\); all 169 values fit;</li>
+<li>\(n=3\): \(\mathbb F_3\) and \(\mathbb F_5\) agree with each other (0 1 1 1 2 2 2 2 ·) but not with \(\mathbb F_2\);</li>
+<li>\(n\ge4\): the savings depend on the field through the Catalan numbers modulo \(p\), as in Menezes' formula.</li>
+</ul></li>
+<li><strong>A capped Catalan model fails.</strong> The analogue of the binary law, with parts \(a\) having \(C_{a-1}\ne0\) and \(a\le A_n\), fits \(n=1,2,4\) but no cap fits \(n=3\) over \(\mathbb F_3\) (<code>bmd_cube_cap_fit.py</code>).</li>
+</ul>
+<h4 id="odd-cube-exchange-law-failure">The exchange law fails</h4>
+<p><strong>Refutation</strong> (<code>ex:odd-cube-exchange-law-failure</code>). Over \(\mathbb F_3\) and \(\mathbb F_5\), \(\delta(3,12,3)=22&lt;2\cdot3+\delta(3,9,0)=23\). So the binary exchange law \(\delta(n,k,\ell)=2\ell+\delta(n,k-\ell,0)\) fails on the odd-characteristic cube, and origin order can cost less than two degrees per unit there. The \(\ell=0,1,2\) values at \(m=8\) still satisfy it. This is a genuine difference from the full grid \(\mathbb F_q^n\), where the base-\(q\) law holds.</p>
+<h4 id="cube-square-per-order-any-field">Dimension two</h4>
+<p><strong>Conjecture</strong> (<code>conj:cube-square-per-order-any-field</code>). For every field \(F\) and \(0\le\ell&lt;k\), \(\delta_F(2,k,\ell)=2k-\lceil(k-\ell-1)/2\rceil\). This is proved for \(F=\mathbb F_2\) (<a href="#per-order-value-all-dimensions">binary theorem</a>) and fits all 169 values over \(\mathbb F_3,\mathbb F_5\).</p>
+<p>For \(\ell=0\) a proof looks immediate. The three lines \(x_1=1\), \(x_2=1\), \(x_1+x_2=1\) avoid the origin and contain two cube points each, so they give the <a href="#hyperplane-restriction-dichotomy">dichotomy</a> over any field: \(\deg P\ge2c\), or \(F=(1-x_1)(1-x_2)(1-x_1-x_2)\) divides \(P\). Each nonzero cube point lies on two of the lines. The step \(P(x',1)-P(x',0)\) needs no characteristic-two cancellation when \(\ell=0\). Powers \(F^j\) and \(F^j(1-x_1)(1-x_2)\) give the matching upper bound. This will be written with a proof next.</p>
+<p><strong>General statement.</strong> <code>conj:cube-square-per-order-any-field</code>, for every field and all \(0\le\ell&lt;k\). <code>ex:odd-cube-exchange-law-failure</code> refutes the transfer of the exchange law.</p>
+<p><strong>Verification gate.</strong> The kernel's new mode was validated against Menezes' theorem on 100 values, and its other modes against earlier data. All counts come from scripts over the saved outputs (<code>summary.txt</code>). No proof is claimed in this entry.</p>
+<p><strong>Assessment.</strong> Over odd characteristic the cube behaves differently from both \(\mathbb F_2\) and the full grid. Menezes' Catalan structure appears at \(n\ge4\), and the exchange law fails at \(n=3\). A complete law below his range would need a new mechanism, beyond additive roots. The realistic next steps are the \(n=2\) theorem over every field and a closer look at \(n=3\), where \(\mathbb F_3\) and \(\mathbb F_5\) agree. Process: the kernel extension took minutes, and the Menezes check made its output trustworthy immediately.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r9-odd-cube">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 46.50 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 41.67 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4.84 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>

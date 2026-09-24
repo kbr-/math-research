@@ -11,7 +11,8 @@
 // x^b mod x^k and vanishes to order p^K at every nonzero a.  One leftmost-pivot elimination with
 // columns in descending |beta| and rows in descending degree gives delta_p(n,k,l) for every l.
 //
-// Usage: bmd_jet_orders_q p n k [--out PATH]
+// Usage: bmd_jet_orders_q p n k [--out PATH] [--cube]
+// --cube: the cube {0,1}^n over F_p instead of the full grid (y = x^2 - x, eps in {0,1}).
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
@@ -22,25 +23,26 @@
 #include <chrono>
 
 static int P;
+static int S;  // grid size per coordinate: P (full grid F_p^n) or 2 (cube {0,1}^n)
 static int md(long a) { a %= P; return a < 0 ? a + P : a; }
 static int inv(int a) { for (int b = 1; b < P; ++b) if (a * b % P == 1) return b; return 0; }
 
-// f = sum_j (sum_{eps<p} T[eps][j] x^eps) y^j, y = x^p - x; returns T[eps][j] for j < jmax.
+// f = sum_j (sum_{eps<S} T[eps][j] x^eps) y^j, y = x^S - x; returns T[eps][j] for j < jmax.
 static void ybasis(std::vector<int> f, std::vector<std::vector<int>>& T, int jmax) {
-    T.assign(P, std::vector<int>(jmax, 0));
+    T.assign(S, std::vector<int>(jmax, 0));
     for (int j = 0; ; ++j) {
         while (!f.empty() && f.back() == 0) f.pop_back();
         if (f.empty()) break;
         // divide f by the monic y = x^p - x: f = quot * y + rem, deg rem < p
-        std::vector<int> quot(f.size() > (size_t)P ? f.size() - P : 0, 0);
-        for (int d = (int)f.size() - 1; d >= P; --d) {
+        std::vector<int> quot(f.size() > (size_t)S ? f.size() - S : 0, 0);
+        for (int d = (int)f.size() - 1; d >= S; --d) {
             int c = f[d];
             if (!c) continue;
-            quot[d - P] = c;
+            quot[d - S] = c;
             f[d] = 0;
-            f[d - P + 1] = md(f[d - P + 1] + c);  // subtract c x^(d-p) (x^p - x): adds c x^(d-p+1)
+            f[d - S + 1] = md(f[d - S + 1] + c);  // subtract c x^(d-S) (x^S - x): adds c x^(d-S+1)
         }
-        if (j < jmax) for (int e = 0; e < P && e < (int)f.size(); ++e) T[e][j] = f[e];
+        if (j < jmax) for (int e = 0; e < S && e < (int)f.size(); ++e) T[e][j] = f[e];
         f = quot;
     }
 }
@@ -48,13 +50,17 @@ static void ybasis(std::vector<int> f, std::vector<std::vector<int>>& T, int jma
 int main(int argc, char** argv) {
     if (argc < 4) { std::fprintf(stderr, "usage: bmd_jet_orders_q p n k [--out PATH]\n"); return 2; }
     P = std::atoi(argv[1]); int n = std::atoi(argv[2]), k = std::atoi(argv[3]);
+    S = P;
     std::string out;
-    for (int i = 4; i < argc; ++i) if (!std::strcmp(argv[i], "--out") && i + 1 < argc) out = argv[++i];
+    for (int i = 4; i < argc; ++i) {
+        if (!std::strcmp(argv[i], "--out") && i + 1 < argc) out = argv[++i];
+        else if (!std::strcmp(argv[i], "--cube")) S = 2;
+    }
     auto t0 = std::chrono::steady_clock::now();
     long pK = 1; while (pK < k) pK *= P;
     std::vector<std::vector<std::vector<int>>> T(k);  // T[b][eps][j]
     for (int b = 0; b < k; ++b) {
-        long top = b + (P - 1) * pK;
+        long top = b + (S - 1) * pK;  // g_b = x^b (1 - x^((S-1) p^K)): order p^K at every nonzero grid value
         std::vector<int> f(top + 1, 0);
         f[b] = 1; f[top] = md(-1);
         ybasis(f, T[b], k);
@@ -70,8 +76,8 @@ int main(int argc, char** argv) {
     long C = cols.size();
     std::vector<int> lev(C); std::vector<long> N(k, 0);
     for (long c = 0; c < C; ++c) { int s = 0; for (int x : cols[c]) s += x; lev[c] = s; N[s]++; }
-    long npow = 1; for (int i = 0; i < n; ++i) npow *= P;
-    int maxdeg = n * (P - 1) + P * (k - 1);
+    long npow = 1; for (int i = 0; i < n; ++i) npow *= S;
+    int maxdeg = n * (S - 1) + S * (k - 1);
     std::vector<long> pivrow(C, -1);
     std::vector<std::vector<uint8_t>> basis;
     std::vector<long> pivcount(k, 0);
@@ -80,9 +86,9 @@ int main(int argc, char** argv) {
     for (int D = maxdeg; D >= 0 && remaining > 0; --D) {
         for (long epsId = 0; epsId < npow; ++epsId) {
             std::vector<int> eps(n); long t = epsId; int pe = 0;
-            for (int i = 0; i < n; ++i) { eps[i] = t % P; t /= P; pe += eps[i]; }
-            if ((D - pe) % P != 0 || D - pe < 0) continue;
-            int se = (D - pe) / P;
+            for (int i = 0; i < n; ++i) { eps[i] = t % S; t /= S; pe += eps[i]; }
+            if ((D - pe) % S != 0 || D - pe < 0) continue;
+            int se = (D - pe) / S;
             for (const auto& e : es) {
                 int s = 0; for (int x : e) s += x;
                 if (s != se) continue;
@@ -113,7 +119,7 @@ int main(int argc, char** argv) {
             if (delta[l] < 0 && !(pivcount[l] < N[l])) { delta[l] = D; --remaining; }
     }
     double secs = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
-    std::string js = "{\"p\": " + std::to_string(P) + ", \"n\": " + std::to_string(n) + ", \"k\": " + std::to_string(k) +
+    std::string js = "{\"p\": " + std::to_string(P) + ", \"grid\": " + std::to_string(S) + ", \"n\": " + std::to_string(n) + ", \"k\": " + std::to_string(k) +
         ", \"columns\": " + std::to_string(C) + ", \"rows_used\": " + std::to_string(rowsUsed) +
         ", \"seconds\": " + std::to_string(secs) + ", \"delta\": [";
     for (int l = 0; l < k; ++l) js += (l ? ", " : "") + std::to_string(delta[l]);
