@@ -64,9 +64,25 @@ For 1<=k<2^(n-1), the minimum degree of an F_2 polynomial with Hasse multiplicit
 
 **Why it matters:** Would answer the co-author's question below the threshold: the multiplicity bound is not attained, and each dimension beyond floor(log2 k)+2 costs one degree; in characteristic two it undercuts the real-field answer n+2k-3 for k>=4.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Prove the upper half through an n-independent product factor Q_k, then the lower one-dimension step D(n,k) >= D(n-1,k)+1.
+
+---
+
+### Binary multiplicity degree small k
+
+**Claim:** [cor:binary-multiplicity-degree-small-k](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-one-dimension-step>)
+
+For 1 <= k <= 15 and n >= floor(log2 k)+2, the minimum degree of an F_2 polynomial with Hasse multiplicity >= k off the origin and < k at the origin is exactly 2k+n-2-floor(log2 k).
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Exact answer in the co-author's range for small k; for large n it gives n+4 at k=4 and n+2k-2-floor(log2 k) in general, below the real-field n+2k-3 for k >= 4.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Extend to all k through conj:power-of-two-factor-existence.
 
 ---
 
@@ -207,6 +223,22 @@ For s≥2 and N≥2s-1, every F₂ reduced (s-2)-cycle of the chessboard complex
 **Why it matters:** Reusable scoped interface; preserve the stated field, degree and source restrictions. BLVZ Theorem 1.1 consequence; full original F₂ statement and all formal proof dependencies verified, including s=2 augmentation
 
 **Decision (agent):** Fossick 20 September: potential reusable formalization artifact, not a new BLVZ theorem. The recorded binary augmented filling proof includes its finite homological-cover and chain-map dependencies. Evaluate packaging or upstream/library reuse with exact F2 scope and attribution; no claim of first formalization, new theorem, fresh kernel replay or publication readiness. See entry-2026-09-20-fossick-formalization-artifacts.
+
+---
+
+### Binary multiplicity lower bound
+
+**Claim:** [thm:binary-multiplicity-lower-bound](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-one-dimension-step>)
+
+For every k >= 1 and n >= floor(log2 k)+2, an F_2 polynomial with Hasse multiplicity >= k at every nonzero point and < k at the origin has degree >= 2k+n-2-floor(log2 k).
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Proves the lower half of the degree formula for all k and answers the co-author's tightness question: below the threshold the multiplicity bound is never attained.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Prior-art check against Alon-Furedi, Ball-Serra, Clifton-Huang and Sauermann-Wigderson style lower bounds in characteristic 2 before any novelty claim.
 
 ---
 
@@ -539,6 +571,22 @@ Over any field, a nonzero old functional-PHP class of degree at most t has at mo
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Independently audit the normal-form congruence, appended disjoint-label trade, stability cutoff and all-field fiber bound; inspect whether it supplies a useful full-source compatibility estimate.
+
+---
+
+### One dimension degree step
+
+**Claim:** [lem:one-dimension-degree-step](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-one-dimension-step>)
+
+For n >= 2 and 1 <= k < 2^n, D(n-1,k) <= D(n,k)-1: after a linear change of coordinates making x_n not divide the lowest component at the origin, S = P(x',0)+P(x',1) is admissible in dimension n-1 with degree one lower.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** The Alon-Furedi discrete-derivative induction extended to Hasse multiplicities over F_2; it yields the full lower half of the degree formula.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** None for the lower half; consider whether a reverse step exists for the upper half.
 
 ---
 
