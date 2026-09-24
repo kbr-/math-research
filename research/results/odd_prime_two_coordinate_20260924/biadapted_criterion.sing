@@ -1,0 +1,84 @@
+// Monomial adapted-basis criterion over S = F_3[x,y]/(x^3,y^3) for one block reading two shared coordinates.
+// Tested statement (lem:monomial-adapted-basis-criterion): a family Sigma of graded submodules of a graded free
+// S-module F has a common homogeneous basis e_i with M = sum_i J_i(M) e_i, J_i(M) monomial ideals of S, iff
+//  (i)   phi(C) = (C + (x,y)F)/(x,y)F preserves finite intersections of the colons C = (M : m), m a monomial of S;
+//  (ii)  the phi(C) generate a distributive lattice;
+//  (iii) dim_k M = sum over the 9 monomials m of dim phi((M : m)), for each M in Sigma.
+// Block: complete accuracy-one ENS, inputs x, y (shared), yp(3..h) private, private coefficients r(1..h), tops of
+// the reduced dp basis in F_3[vars]/(cubes).  Families: model = {rho'Q, rho'A} (Q = (x^2, y^2, yp_i^2)),
+// full = {n, rho'A} with n the top ideal.
+// Predictions stated before the run: the model passes (i), (ii), (iii) at h = 3, 4, 5 (it passed (i), (ii) at
+// h = 3, 4 in biadapted_check.out); the full family fails (i) at h = 3, 4, as there.  For failures of (i) on pairs
+// the least degree of a failing element of V = A/(x,y)A is printed.
+option(redSB);
+proc eqideal(ideal I1, ideal I2)
+{
+  ideal S1 = std(I1); ideal S2 = std(I2); int k;
+  for (k = 1; k <= ncols(I1); k++) { if (reduce(I1[k], S2) != 0) { return(0); } }
+  for (k = 1; k <= ncols(I2); k++) { if (reduce(I2[k], S1) != 0) { return(0); } }
+  return(1);
+}
+proc findin(list Lst, ideal J)
+{
+  int k; for (k = 1; k <= size(Lst); k++) { if (eqideal(Lst[k], J) == 1) { return(k); } }
+  return(0);
+}
+proc brun(int h, int model)
+{
+  ring P = 3, (x, y, yp(3..h), r(1..h)), dp;
+  ideal L = x, y; int i; for (i = 3; i <= h; i++) { L = L, yp(i); }
+  poly rho = 0; for (i = 1; i <= h; i++) { rho = rho + r(i)*L[i]^2; }
+  ideal Qm; for (i = 1; i <= h; i++) { Qm = Qm, L[i]^2; }
+  ideal Tp;
+  if (model == 0) {
+    poly Pp = 1; for (i = 1; i <= h; i++) { Pp = Pp - r(i)*(1 - L[i]^2); }
+    ideal I; for (i = 1; i <= h; i++) { I = I, (1 - L[i]^2)*Pp; }
+    for (i = 1; i <= nvars(P); i++) { I = I, var(i)^3 - var(i); }
+    ideal G = std(I); int d; poly g;
+    for (i = 1; i <= ncols(G); i++) { g = G[i]; d = deg(g); Tp = Tp, jet(g, d) - jet(g, d - 1); }
+  }
+  ideal Cubes; for (i = 1; i <= nvars(P); i++) { Cubes = Cubes, var(i)^3; }
+  qring Q = std(Cubes);
+  ideal Tp = fetch(P, Tp); poly rho = fetch(P, rho); ideal Qm = fetch(P, Qm);
+  list Sig; string nm;
+  if (model == 1) { Sig = std(rho*Qm), std(ideal(rho)); nm = "model"; } else { Sig = std(Tp), std(ideal(rho)); nm = "full"; }
+  ideal XY = std(ideal(x, y)); int dA = vdim(std(ideal(0))); int dV = vdim(XY);
+  list C; int a; int b; int c; ideal cand; int dimM; int sumW;
+  for (i = 1; i <= size(Sig); i++) {
+    dimM = dA - vdim(Sig[i]); sumW = 0;
+    for (a = 0; a <= 2; a++) { for (b = 0; b <= 2; b++) {
+      if (a + b == 0) { cand = Sig[i]; } else { cand = std(quotient(Sig[i], ideal(x^a*y^b))); }
+      sumW = sumW + dV - vdim(std(cand + XY));
+      if (findin(C, cand) == 0) { C = C + list(cand); }
+    } }
+    print("h=" + string(h) + " " + nm + " member " + string(i) + " (iii) dim M=" + string(dimM) + " sum dim phi(M:m)=" + string(sumW));
+  }
+  int nc = size(C); int t1 = 0; int f1 = 0; int mindeg = 1000; ideal T1; ideal T2; int k;
+  for (a = 1; a <= nc; a++) { for (b = a + 1; b <= nc; b++) {
+    t1++; T1 = std(intersect(C[a], C[b]) + XY); T2 = intersect(C[a] + XY, C[b] + XY);
+    if (eqideal(T1, T2) == 0) { f1++;
+      for (k = 1; k <= ncols(T2); k++) { if (reduce(T2[k], T1) != 0) { if (deg(T2[k]) < mindeg) { mindeg = deg(T2[k]); } } }
+    }
+    for (c = b + 1; c <= nc; c++) {
+      t1++; if (eqideal(intersect(C[a], C[b], C[c]) + XY, intersect(C[a] + XY, C[b] + XY, C[c] + XY)) == 0) { f1++; }
+    }
+  } }
+  print("h=" + string(h) + " " + nm + " colons=" + string(nc) + " (i) pairs+triples tested=" + string(t1) + " failed=" + string(f1) + " least failing degree on pairs=" + string(mindeg));
+  if (f1 > 0) { return(); }
+  list Lat; for (i = 1; i <= nc; i++) { cand = std(C[i] + XY); if (findin(Lat, cand) == 0) { Lat = Lat + list(cand); } }
+  int changed = 1; int m0;
+  while (changed == 1) {
+    changed = 0; m0 = size(Lat);
+    for (a = 1; a <= m0; a++) { for (b = a + 1; b <= m0; b++) {
+      cand = std(Lat[a] + Lat[b]); if (findin(Lat, cand) == 0) { Lat = Lat + list(cand); changed = 1; }
+      cand = std(intersect(Lat[a], Lat[b])); if (findin(Lat, cand) == 0) { Lat = Lat + list(cand); changed = 1; }
+    } }
+  }
+  int m = size(Lat); int t2 = 0; int f2 = 0;
+  for (a = 1; a <= m; a++) { for (b = 1; b <= m; b++) { for (c = b + 1; c <= m; c++) {
+    t2++; if (eqideal(intersect(Lat[a], Lat[b] + Lat[c]), intersect(Lat[a], Lat[b]) + intersect(Lat[a], Lat[c])) == 0) { f2++; }
+  } } }
+  print("h=" + string(h) + " " + nm + " (ii) closure=" + string(m) + " triples=" + string(t2) + " failed=" + string(f2));
+}
+brun(3, 1); brun(4, 1); brun(3, 0); brun(4, 0); brun(5, 1);
+quit;
