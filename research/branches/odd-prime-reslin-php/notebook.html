@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Hypothesis (c) for generic members has in-range evidence. Generic selectors over the weak base never fall at \(D=3\) with 18 holes, while the column merge control falls (<a href="#entry-2026-09-24-generic-member-falls">generic member falls</a>). Falls through placed pigeons are specific to column constraints. Next: prove (c) for generic selectors over the weak base in the range of the weak-base stability theorem. Show with the free-seed decomposition that multiplying a generic form by a cell never lowers its degree modulo the base. Then extend to generic clauses and to the closed base.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Hypothesis (c) for generic members has in-range evidence at \(D=3\) (<a href="#entry-2026-09-24-generic-member-falls">generic member falls</a>), but the seeded proof needs content reduction, which row-dependent forms break (<a href="#entry-2026-09-24-generic-member-proof-attempt">attempt</a>). Next: check whether relative gluing's use of (c), lifting member-supported top syzygies, can be supplied by the extension designs of the coherent product-constraints theorem, which handle row-dependent forms independent modulo constants on every row.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -14789,6 +14789,39 @@ Always \(\Delta_d\le0\).</li>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-generic-member-proof-attempt" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Unsuccessful proof attempt: the seeded proof of (c) needs content reduction, which fails for row-dependent forms; no claim is registered.">
+<h3>Proof attempt for (c): the seeded argument needs content reduction, which row-dependent forms break</h3>
+<p class="entry-meta">24 September 2026 · Unsuccessful proof attempt · Hypothesis (c) for generic selectors over the weak base; cycle odd-prime-generic-member-proof.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-generic-member-falls">generic-member entry</a> found generic selectors without falls over the weak base in range at \(D=3\), and proposed proving hypothesis (c) of thm:relative-gluing for them. The implication sought: in the range of thm:weak-base-stability-quadratic, the weak base plus one generic selector \(1-(\ell-v)^2\), with \(\ell=\sum_{ij}f_{ij}x_{ij}\) row-dependent, has no fall below \(D\).</p>
+<p><strong>General statement.</strong> The target was hypothesis (c) of thm:relative-gluing for row-dependent generic selectors, and it is not proved. By cor:seeded-selector-members's mechanism, (c) for a selector follows from freeness of the weak top algebra \(A\) over \(\mathbb F[\ell]/(\ell^3)\) through \(D\). The recorded way to prove such freeness is the seeded argument of thm:seeded-closure-stability and thm:board-seed-freeness. It reduces to at most \(D\) rows plus a bulk row by content reduction, and that reduction needs the constraint to be symmetric in the rows outside the support. A row-dependent form is not, and without the reduction the seeds would have to serve all \(m=N+1\) rows, which needs more holes than there are.</p>
+
+<h4>The attempt</h4>
+<p><em>Reduction.</em> As in cor:seeded-selector-members, the top of the selector is \(-\ell^2\), and \(\ell^3=0\) in \(A\) in characteristic 3, since the tops of the \(x_{ij}\) square to 0. If \(A\) is free over \(\mathbb F[\ell]/(\ell^3)\) through \(D\), the member's top syzygies are Frobenius \(\ell\,e\) plus boundaries and lift by the Frobenius lift lemma, which is (c). The filtered freeness transfer lemma adds that the selector then generates its closure degree by degree. So the unclosed and closed member coincide through \(D\), and (c) is also the row-freeness condition of thm:global-closure-gluing for \(\mathcal Q=\{\ell\ne v\}\).</p>
+<p><em>Where the seeded proof stops.</em> For column forms \(\ell=\sum_j\varphi(j)C_j\), the constraint depends only on column occupancies. A Koszul cycle of the row sums of content \(c\) then lives on the rows of \(\operatorname{supp}c\), at most \(D\) of them, with all other rows merged into one bulk row. That is the content reduction of the sparse- and seeded-closure proofs. Seeds for those \(u+1\le D+1\) rows need \((u+1)(p-1)\) holes each, and \(D+1\) seeds fit when \(N\ge(p-1)(D+1)^2\). For \(\ell=\sum_{ij}f_{ij}x_{ij}\) with row-dependent coefficients, rows outside the support cannot be merged: their contributions \(\sum_{i\notin S}f_{ij}x_{ij}\) are not functions of the bulk occupancy. The selector's ideal is not homogeneous in the row content either, so the content decomposition itself is lost. Seeds over all \(m=N+1\) rows would need \(m(p-1)\) holes per seed, more than \(N\).</p>
+<p><em>What the record offers for row-dependent forms.</em> lem:member-pinning and thm:coherent-product-constraints handle forms whose row-linear parts are independent modulo constants on every row. They work on the functional base with extension designs, and they conclude non-refutability of the base plus the member, not \(z\)-injectivity. Relative gluing uses (c) only to lift member-supported top syzygies. Whether a design-level statement of that kind can replace (c) in the gluing is not settled by the record.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>(c) for generic members has in-range evidence at \(D=3\), but no proof mechanism: the only freeness method on record needs row symmetry.</li>
+<li>Next: check whether relative gluing's use of (c) can be replaced by what the product-constraints method proves for row-dependent forms. That is, whether member-supported top syzygies of a member with per-row independent forms lift through the extension designs of thm:coherent-product-constraints. If so, (c) for robust generic members follows from recorded results. If not, the row-dependent freeness of \(A\) over the member's forms needs a new decomposition, by rows instead of columns.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:relative-gluing (the role of (c)), cor:seeded-selector-members, the seeded-closure entry's proof (content reduction, joint seeds, transfer), lem:member-pinning, and the summary of thm:coherent-product-constraints. No claim is registered, so no reviewer pass was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-generic-member-proof">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 47.67 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 27.53 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4.53 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 15.47 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
