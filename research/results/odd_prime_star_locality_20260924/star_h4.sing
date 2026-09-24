@@ -1,0 +1,47 @@
+// Falsification test of conj:family-fall-locality for a star family with cross generators (after the repaired-star
+// proof attempt failed at its diagonalization step).  Over F_3: four separately augmented complete accuracy-one ENS
+// blocks with h = 4 inputs, private coefficients: a on (x, ya2..ya4), b on (x, yb2..yb4), c on (x+1, ...), d on (x+2, ...).
+// Cross set by the rule of conj:bounded-linkage-large-h: R for the parallel pairs ac, ad, bc, bd, cd; T for the
+// triples covering the three translates, acd and bcd.  Field equations for all variables.
+// Output: the lowest degree t < DB of an element of (J:z) not in J (DB if none), for the whole family and for the
+// identical pair ab.  DB = 8: a fall at degree t needs z*g in degree t+1 <= DB, so falls at degree <= 7 are visible.
+// Prediction stated before the run: the family has no fall below 8 (every linked pair at h = 4 has lowest fall >= 8:
+// parallel pairs with R fall first at 8 by r_added_pair.out; the identical pair is computed here).
+option(redSB);
+ring S = 3, (x, ya(2..4), yb(2..4), yc(2..4), yd(2..4), ra(1..4), rb(1..4), rc(1..4), rd(1..4), z), dp;
+proc blockP(ideal L, ideal rr)
+{
+  poly P = 1; int i;
+  for (i = 1; i <= 4; i++) { P = P - rr[i]*(1 - L[i]^2); }
+  return(P);
+}
+proc blockI(ideal L, poly P)
+{
+  ideal I; int i;
+  for (i = 1; i <= 4; i++) { I = I, (1 - L[i]^2)*P; }
+  return(I);
+}
+ideal La = x, ya(2), ya(3), ya(4);      ideal Ra = ra(1..4);
+ideal Lb = x, yb(2), yb(3), yb(4);      ideal Rb = rb(1..4);
+ideal Lc = x + 1, yc(2), yc(3), yc(4);  ideal Rc = rc(1..4);
+ideal Ld = x + 2, yd(2), yd(3), yd(4);  ideal Rd = rd(1..4);
+poly Pa = blockP(La, Ra); poly Pb = blockP(Lb, Rb); poly Pc = blockP(Lc, Rc); poly Pd = blockP(Ld, Rd);
+ideal F; int i;
+for (i = 1; i <= nvars(basering) - 1; i++) { F = F, var(i)^3 - var(i); }
+ideal Ga = std(blockI(La, Pa) + F); ideal Gb = std(blockI(Lb, Pb) + F);
+ideal Gc = std(blockI(Lc, Pc) + F); ideal Gd = std(blockI(Ld, Pd) + F);
+poly qa = 1 - La[1]^2; poly qb = 1 - Lb[1]^2; poly qc = 1 - Lc[1]^2; poly qd = 1 - Ld[1]^2;
+ideal Cross = Pa*Pc*(qa - qc), Pa*Pd*(qa - qd), Pb*Pc*(qb - qc), Pb*Pd*(qb - qd), Pc*Pd*(qc - qd), Pa*Pc*Pd, Pb*Pc*Pd;
+proc lowestfall(ideal J, int DB)
+{
+  degBound = DB; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+  int lowest = DB; int k;
+  for (k = 1; k <= ncols(Q); k++) { if (Q[k] != 0 && deg(Q[k]) < lowest) { if (reduce(Q[k], SJ) != 0) { lowest = deg(Q[k]); } } }
+  return(lowest);
+}
+int DB = 8;
+ideal Jab = homog(F, z) + homog(Ga, z) + homog(Gb, z);
+print("SUB ab DB=" + string(DB) + " lowest_fall=" + string(lowestfall(Jab, DB)));
+ideal Jall = Jab + homog(Gc, z) + homog(Gd, z) + homog(Cross, z);
+print("SUB abcd DB=" + string(DB) + " lowest_fall=" + string(lowestfall(Jall, DB)));
+quit;

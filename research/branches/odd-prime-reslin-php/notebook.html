@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Family locality for linked ENS blocks reduces to one inequality: no family falls below all of its subfamilies of at most three blocks (conj:family-fall-locality, by the <a href="#entry-2026-09-24-family-sections">section lemma</a>). The <a href="#entry-2026-09-24-star-locality">star locality theorem</a> proves it for blocks sharing one coordinate without cross generators: the shared algebra \(\mathbb F_3[x]/(x^3)\) is a chain ring, so top syzygies split into pair syzygies. Next: extend the splitting to star families with \(R\), whose tops are not extended from one block. Otherwise find the first four-block star syzygy that does not split, in the graded algebra alone. Two shared coordinates and the weak base come after.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Family locality for linked ENS blocks reduces to one inequality: no family falls below all of its subfamilies of at most three blocks (conj:family-fall-locality, by the <a href="#entry-2026-09-24-family-sections">section lemma</a>). It is proved for stars without cross generators (<a href="#entry-2026-09-24-star-locality">star locality</a>). The extension to \(R\) and \(T\) <a href="#entry-2026-09-24-repaired-star-attempt">failed at diagonalization</a>, though a four-block star at \(h=4\) has no fall below 8. Next: decide whether one block's \(A_a\) has a basis adapted at once to \(n_a\), \(\rho'_aA_a\) and \(x\rho''_aA_a\), at \(h=3,4\), in one computation. Prove it if it holds; otherwise work modulo the block ideals, where \(\rho'_a\) generates a summand.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -17840,6 +17840,73 @@ where \(\epsilon_j\) is the \(j\)-th unit tuple. Each term is a pair syzygy: \(g
 <tr><td>Marked reading and review windows</td><td class="elapsed">2 min 0.79 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 24.21 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 10.73 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-repaired-star-attempt" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:p-top-summand">
+<h3>Star families with R and T: a proof attempt that fails at diagonalization, the P-top summand lemma it leaves, and a four-block star at h = 4 without a fall below 8</h3>
+<p class="entry-meta">24 September 2026 · Working proof (P-top summand lemma); failed proof attempt; finite check · cycle odd-prime-star-r-locality.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-star-locality">star locality theorem</a> proved conj:family-fall-locality for star families without cross generators. Parallel pairs need \(R\) (cor:parallel-pair-fall-all-h), and conj:bounded-linkage-large-h adds \(T\) for triples covering the three translates. This cycle tried to extend the chain argument to star families with \(R\) and \(T\). A fresh-context reviewer found that the attempt fails at its diagonalization step. The entry records the lemma that survives, the exact gap, and one falsification test at the smallest size where it can decide.</p>
+<p><strong>General statement.</strong> lem:p-top-summand: over \(\mathbb F_3\), for a separately augmented complete accuracy-one ENS block \(a\) with \(h\ge3\) inputs, one of them the shared coordinate \(x\) (up to translation) and the rest private, the top \(\rho'_a\) of \(P_a\) generates a pure cyclic summand of order \(x^2\) of \(A_a/n_a\) over \(S=\mathbb F_3[x]/(x^3)\). So \(A_a\) has a homogeneous \(S\)-basis adapted to \(n_a\) that contains \(\rho'_a\). conj:family-fall-locality stays open for star families with \(R\) and \(T\).</p>
+
+<h4>Notation</h4>
+<p>As in the star locality entry: \(S=\mathbb F_3[x]/(x^3)\), \(A_j=\mathbb F_3[x,Y_j]/(\text{cubes})\), free over \(S\), \(A=\bigotimes_SA_j\), and \(n_j=\operatorname{gr}(I_jT_j)\subseteq A_j\). The top of \(P_j\) is \(\rho'_j=r_{j,1}x^2+\rho''_j\), where \(\rho''_j=\sum_{i\ge2}r_{j,i}y_{j,i}^2\) is free of \(x\). Since \(q_a-q_b=\kappa_{ab}\ell_{ab}\), with \(\kappa_{ab}=2(c_b-c_a)\) and \(\ell_{ab}=x-(c_a+c_b)\) over \(\mathbb F_3\), the cross tops are \(\operatorname{top}(R_{ab})=\kappa_{ab}x\rho''_a\rho''_b\) and \(\operatorname{top}(T_{abc})=\rho'_a\rho'_b\rho'_c\).</p>
+
+<h4>The P-top summand lemma</h4>
+<p><em>Proof.</em> Let \(M=A_a/n_a\) and \(m\) the image of \(\rho'_a\). By the graded Smith normal form, \(A_a=\bigoplus_kSe_k\), \(n_a=\bigoplus_kx^{a_k}Se_k\) and \(M=\bigoplus_kS/(x^{a_k})\bar e_k\). Write \(m=\sum_ks_k\bar e_k\).</p>
+<ul>
+<li><em>Order.</em> \(x^2m=0\), since \(\operatorname{top}(q_{a,1}P_a)=-x^2\rho'_a\in n_a\). And \(xm\ne0\), since \(x\rho'_a\) has degree 4, and \(n_a\) is zero in degrees \(\le4\) for \(h\ge3\) (lem:block-min-degree). So \(s_k\in x^{a_k-2}S\) whenever \(a_k=3\).</li>
+<li><em>Height.</em> \(xm\notin x^2M\). The degree-4 part of \(x^2A_a+n_a\) is \(x^2(A_a)_2\). But \(x\rho'_a=x\rho''_a\) is nonzero, since \(a\) has private inputs, and every term of it has \(x\)-degree 1.</li>
+<li><em>Summand.</em> So some \(xs_k\bar e_k\) is nonzero modulo \(x^2\): \(s_k\) is a unit and \(a_k\ge2\), and the order bound forces \(a_k=2\). Call this index \(k_0\).</li>
+<li><em>Exchange.</em> Replace \(e_{k_0}\) by \(\rho'_a\). Its \(e_{k_0}\)-coefficient is a unit, because the part from \(n_a\) lies in \(x^2S\). So the new set is a basis. Modulo \(\bigoplus_{k\ne k_0}x^{a_k}Se_k\), \(x^2\rho'_a\) is a unit times \(x^2e_{k_0}\). This uses \(x^2\tilde s_k\in x^{a_k}S\): by the order bound, \(\tilde s_k\in xS\), when \(a_k=3\), and trivially when \(a_k\le2\). Hence \(n_a=x^2S\rho'_a\oplus\bigoplus_{k\ne k_0}x^{a_k}Se_k\). \(\square\)</li>
+</ul>
+
+<h4>The attempted theorem and where it fails</h4>
+<p>The attempt claimed: a star family of such blocks, with \(R\) for parallel pairs and \(T\) for covering triples, falls no lower than its subfamilies of at most three blocks. Its plan had three steps.</p>
+<ol>
+<li>Take a product basis of \(A\) over \(S\) in which every piece's image is diagonal.</li>
+<li>Split every top syzygy, by chain distributivity, into syzygies between two pieces.</li>
+<li>Show that each pair syzygy spanning four or five blocks is Koszul or lifts exactly. These use the identities \(\kappa_{cd}P_cP_dR_{ab}-\kappa_{ab}P_aP_bR_{cd}=\kappa_{ab}\kappa_{cd}(c_c+c_d-c_a-c_b)P_aP_bP_cP_d\), \(P_dP_eR_{ab}=\kappa_{ab}\ell_{ab}P_b\,T_{ade}\) and \(P_{B'\setminus B}T=P_{B\setminus B'}T'\).</li>
+</ol>
+<p>The identities are correct, and in the first the remainder is a multiple of the \(T\) of a covering triple. The reviewer found two errors.</p>
+<ul>
+<li><em>Step 1 is false.</em> The image of \(R_{ab}\) is the ideal \(x\rho''_a\rho''_bA\), not the \(S\)-span of the product basis vectors through \(\rho'_a\) and \(\rho'_b\). Multiplication by \(A\) acts inside \(A_a\) and \(A_b\) too; for example \(y_{a,2}\,x\rho''_a\rho''_b\) is in the image. The lemma above diagonalizes \(S\rho'_a\), not the ideals \(\rho'_aA_a\) and \(x\rho''_aA_a\). Over a chain ring, several submodules need not have a common adapted basis.</li>
+<li><em>Step 3 then needs recomputation.</em> In a component the least common multiple is \(x\) to the larger of the two exponents, so the pair syzygies need not be multiples of the product syzygies used. A concrete case: a block \(j\) outside \(T=T_{abc}\), \(w_0=\prod_{i\ge2}y_{a,i}^2\), which kills \(\rho''_a\), and \(u=\rho'_jw_0\). Then \(u\,\operatorname{top}(T)\) lies in \(N_j\), but \(u\) is not in \(N_j\), and this four-block syzygy is not Koszul. It still decomposes through \(N_a\), so the theorem is not refuted, only this case argument.</li>
+</ul>
+<p>What a repair needs: a homogeneous basis of each \(A_a\) adapted at once to \(n_a\), \(\rho'_aA_a\) and \(x\rho''_aA_a\). Then every piece would be diagonal, since products of diagonal submodules over \(S\) are diagonal. After that, a per-component analysis of the four- and five-block pair syzygies would still be needed, routing each through a block piece where the example above shows it must go. Both are statements about a single block, apart from the final routing.</p>
+
+<h4>The check</h4>
+<p>Can a test decide? At \(h=3\) every linked pair already falls at 7, so the section lemma pins every family at 7 and nothing can be seen. At \(h=4\), parallel pairs with \(R\) fall first at 8 (<code>r_added_pair.out</code>). So a four-block star falling at degree \(\le7\) would refute conj:family-fall-locality, provided its identical pair does not itself fall below 8.</p>
+<p><code>star_h4.sing</code> (<code>star_h4.out</code>) is one Singular run of about 5 s with degree bound 8, enough to see falls at degree \(\le7\). The star has four blocks with \(h=4\): \(a\) and \(b\) on \(x\), \(c\) on \(x+1\), \(d\) on \(x+2\). Its cross set follows the rule: \(R\) for the five parallel pairs, and \(T\) for \(acd\) and \(bcd\). \(T\) has degree 9, so it cannot act below the bound. The header predicts no fall below 8. The identical pair \(ab\) has no fall below 8, and neither has the whole star. So no four-block interaction appears at \(h=4\) below the pairs' lowest falls. This is one star at one size, and it checks the conjecture's conclusion, not the failed proof.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>conj:family-fall-locality is proved for stars without cross generators and still open with them. The four-block check supports it at \(h=4\).</li>
+<li>The obstacle is algebraic: whether one block's module \(A_a\) has a basis adapted to its top ideal and to the ideals of its \(P\)-top at once. This is decidable for \(h=3,4\) by one module computation, and provable, if true, from the structure of \(n_a\).</li>
+</ul>
+<p>Next: decide the simultaneous adaptation for one block at \(h=3,4\) in one computation of the \(S\)-module structure of \(n_a\), \(\rho'_aA_a\) and \(x\rho''_aA_a\). If it holds, prove it and complete the routing. If it fails, bypass it: work in \(A/\sum_jN_j=\bigotimes_SM_j\), where only the images of the cross tops matter. In that ring, the image of \(\rho'_a\) generates a summand by the lemma.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the star locality entry, lem:block-min-degree, lem:shared-input-consequences, conj:bounded-linkage-large-h for \(T\) and the cross rule, and the \(h=4\) value in <code>r_added_pair.out</code>. The value is read from <code>star_h4.out</code>. A claim search for pure summands, adapted bases and star cross generators found only the star theorem and the conjecture.</p>
+<p>A fresh-context reviewer read the full proof attempt and confirmed these parts:</p>
+<ul>
+<li>the P-top summand lemma, with one overlap in its case split corrected;</li>
+<li>the three identities and their degrees;</li>
+<li>the supports of the cases that stay within three blocks.</li>
+</ul>
+<p>It found the diagonalization error and the failing case above. So the theorem is not recorded. For a cross generator \(c\), \(J_s\) contains exactly the reductions of \(Uc\) with \(\deg U\le s-\deg c\), so each cross generator is a piece filtered by multiplier degree. No further pass was made, since this entry only removes the attempted claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-star-r-locality">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>14 min 11.42 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">8 min 3.74 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">11.11 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 51.15 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5.27 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
