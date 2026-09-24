@@ -1,0 +1,108 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.HasseMultiplicity
+Claim file: claims/HasseMultiplicity.lean
+Claim: supporting module for third-party:DKSS-multiplicity-schwartz-zippel and thm:binary-multiplicity-degree-formula
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-lean-multiplicity-schwartz-zippel
+Scope: Hasse multiplicity of a formal multivariate polynomial at a point, defined as the order (least total
+degree of a nonzero coefficient, ⊤ for zero) of the Taylor shift P(a + x); coefficient characterization,
+behaviour under sums, products (superadditive, additive over a domain), constants and renaming.
+Declarations: MathResearch.HasseMultiplicity.shift MathResearch.HasseMultiplicity.mult MathResearch.HasseMultiplicity.shift_X MathResearch.HasseMultiplicity.shift_C MathResearch.HasseMultiplicity.shift_neg_shift MathResearch.HasseMultiplicity.shift_injective MathResearch.HasseMultiplicity.mult_eq_top_iff MathResearch.HasseMultiplicity.mult_zero MathResearch.HasseMultiplicity.mult_ne_top MathResearch.HasseMultiplicity.coe_le_mult_iff MathResearch.HasseMultiplicity.mult_le_degree MathResearch.HasseMultiplicity.exists_coeff_ne_zero_degree_eq_mult MathResearch.HasseMultiplicity.min_le_mult_add MathResearch.HasseMultiplicity.add_le_mult_mul MathResearch.HasseMultiplicity.mult_mul MathResearch.HasseMultiplicity.constantCoeff_shift MathResearch.HasseMultiplicity.one_le_mult_iff MathResearch.HasseMultiplicity.mult_eq_zero_iff MathResearch.HasseMultiplicity.shift_rename MathResearch.HasseMultiplicity.mult_comp_le_mult_rename MathResearch.HasseMultiplicity.mult_rename_equiv
+$ lake --wfail build claims.HasseMultiplicity
+✔ [1360/1360] Built claims.HasseMultiplicity (1.3s)
+Build completed successfully (1360 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpdghd64l1.lean
+@MathResearch.HasseMultiplicity.shift : {σ : Type u_1} →
+  {R : Type u_2} → [inst : CommRing R] → (σ → R) → MvPolynomial σ R →ₐ[R] MvPolynomial σ R
+'MathResearch.HasseMultiplicity.shift' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.mult : {σ : Type u_1} →
+  {R : Type u_2} → [inst : CommRing R] → (σ → R) → MvPolynomial σ R → ℕ∞
+'MathResearch.HasseMultiplicity.mult' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.shift_X : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R) (i : σ),
+  (MathResearch.HasseMultiplicity.shift a) (MvPolynomial.X i) = MvPolynomial.X i + MvPolynomial.C (a i)
+'MathResearch.HasseMultiplicity.shift_X' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.shift_C : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R) (r : R),
+  (MathResearch.HasseMultiplicity.shift a) (MvPolynomial.C r) = MvPolynomial.C r
+'MathResearch.HasseMultiplicity.shift_C' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.shift_neg_shift : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R)
+  (P : MvPolynomial σ R), (MathResearch.HasseMultiplicity.shift (-a)) ((MathResearch.HasseMultiplicity.shift a) P) = P
+'MathResearch.HasseMultiplicity.shift_neg_shift' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.shift_injective : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R),
+  Function.Injective ⇑(MathResearch.HasseMultiplicity.shift a)
+'MathResearch.HasseMultiplicity.shift_injective' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.mult_eq_top_iff : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R)
+  (P : MvPolynomial σ R), MathResearch.HasseMultiplicity.mult a P = ⊤ ↔ P = 0
+'MathResearch.HasseMultiplicity.mult_eq_top_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.mult_zero : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R),
+  MathResearch.HasseMultiplicity.mult a 0 = ⊤
+'MathResearch.HasseMultiplicity.mult_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.mult_ne_top : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R)
+  {P : MvPolynomial σ R}, P ≠ 0 → MathResearch.HasseMultiplicity.mult a P ≠ ⊤
+'MathResearch.HasseMultiplicity.mult_ne_top' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.coe_le_mult_iff : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R)
+  (P : MvPolynomial σ R) (n : ℕ),
+  ↑n ≤ MathResearch.HasseMultiplicity.mult a P ↔
+    ∀ (d : σ →₀ ℕ), Finsupp.degree d < n → ((MathResearch.HasseMultiplicity.shift a) P).coeff d = 0
+'MathResearch.HasseMultiplicity.coe_le_mult_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.mult_le_degree : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R)
+  (P : MvPolynomial σ R) {d : σ →₀ ℕ},
+  ((MathResearch.HasseMultiplicity.shift a) P).coeff d ≠ 0 →
+    MathResearch.HasseMultiplicity.mult a P ≤ ↑(Finsupp.degree d)
+'MathResearch.HasseMultiplicity.mult_le_degree' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.exists_coeff_ne_zero_degree_eq_mult : ∀ {σ : Type u_1} {R : Type u_2}
+  [inst : CommRing R] (a : σ → R) {P : MvPolynomial σ R},
+  P ≠ 0 →
+    ∃ d,
+      ((MathResearch.HasseMultiplicity.shift a) P).coeff d ≠ 0 ∧
+        ↑(Finsupp.degree d) = MathResearch.HasseMultiplicity.mult a P
+'MathResearch.HasseMultiplicity.exists_coeff_ne_zero_degree_eq_mult' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.HasseMultiplicity.min_le_mult_add : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R)
+  (P Q : MvPolynomial σ R),
+  min (MathResearch.HasseMultiplicity.mult a P) (MathResearch.HasseMultiplicity.mult a Q) ≤
+    MathResearch.HasseMultiplicity.mult a (P + Q)
+'MathResearch.HasseMultiplicity.min_le_mult_add' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.add_le_mult_mul : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R)
+  (P Q : MvPolynomial σ R),
+  MathResearch.HasseMultiplicity.mult a P + MathResearch.HasseMultiplicity.mult a Q ≤
+    MathResearch.HasseMultiplicity.mult a (P * Q)
+'MathResearch.HasseMultiplicity.add_le_mult_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.mult_mul : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] [IsDomain R] (a : σ → R)
+  (P Q : MvPolynomial σ R),
+  MathResearch.HasseMultiplicity.mult a (P * Q) =
+    MathResearch.HasseMultiplicity.mult a P + MathResearch.HasseMultiplicity.mult a Q
+'MathResearch.HasseMultiplicity.mult_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.constantCoeff_shift : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R)
+  (P : MvPolynomial σ R),
+  MvPolynomial.constantCoeff ((MathResearch.HasseMultiplicity.shift a) P) = (MvPolynomial.eval a) P
+'MathResearch.HasseMultiplicity.constantCoeff_shift' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.one_le_mult_iff : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R)
+  (P : MvPolynomial σ R), 1 ≤ MathResearch.HasseMultiplicity.mult a P ↔ (MvPolynomial.eval a) P = 0
+'MathResearch.HasseMultiplicity.one_le_mult_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.mult_eq_zero_iff : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (a : σ → R)
+  (P : MvPolynomial σ R), MathResearch.HasseMultiplicity.mult a P = 0 ↔ (MvPolynomial.eval a) P ≠ 0
+'MathResearch.HasseMultiplicity.mult_eq_zero_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.shift_rename : ∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommRing R]
+  (e : σ → τ) (a : τ → R) (P : MvPolynomial σ R),
+  (MathResearch.HasseMultiplicity.shift a) ((MvPolynomial.rename e) P) =
+    (MvPolynomial.rename e) ((MathResearch.HasseMultiplicity.shift (a ∘ e)) P)
+'MathResearch.HasseMultiplicity.shift_rename' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.mult_comp_le_mult_rename : ∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3}
+  [inst : CommRing R] (e : σ → τ) (a : τ → R) (P : MvPolynomial σ R),
+  MathResearch.HasseMultiplicity.mult (a ∘ e) P ≤ MathResearch.HasseMultiplicity.mult a ((MvPolynomial.rename e) P)
+'MathResearch.HasseMultiplicity.mult_comp_le_mult_rename' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.HasseMultiplicity.mult_rename_equiv : ∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommRing R]
+  (e : σ ≃ τ) (a : τ → R) (P : MvPolynomial σ R),
+  MathResearch.HasseMultiplicity.mult a ((MvPolynomial.rename ⇑e) P) = MathResearch.HasseMultiplicity.mult (a ∘ ⇑e) P
+'MathResearch.HasseMultiplicity.mult_rename_equiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 21 audited declarations.

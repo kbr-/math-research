@@ -1,0 +1,51 @@
+claims/HasseMultiplicity.lean:40:21: warning: This simp argument is unused:
+  ← C_add
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [add_assoc]
+
+Note: Simp arguments with `←` have the additional effect of removing the other direction from the simp set, even if the simp argument itself is unused. If the hint above does not work, try replacing `←` with `-` to only get that effect and silence this warning.
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/HasseMultiplicity.lean:87:6: error: Function expected at
+  MvPowerSeries.ne_zero_iff_order_finite
+but this term has type
+  ?m.76 ≠ 0 ↔ ↑(MvPowerSeries.order ?m.76).toNat = MvPowerSeries.order ?m.76
+
+Note: Expected a function because this term is being applied to the argument
+  _
+claims/HasseMultiplicity.lean:88:16: error: Type mismatch: After simplification, term
+  hd
+ has type
+  Not ((MvPowerSeries.coeff d) ((shift a) P).coeff.2 = 0)
+but is expected to have type
+  Not (((shift a) P).coeff d = 0)
+claims/HasseMultiplicity.lean:89:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  MvPowerSeries.order ((shift a) P).coeff.2
+in the target expression
+  ↑(Finsupp.degree d) = (↑((shift a) P)).order
+
+σ : Type u_1
+R : Type u_3
+inst✝ : CommRing R
+a : σ → R
+P : MvPolynomial σ R
+hP : P ≠ 0
+hne : ↑((shift a) P) ≠ 0
+d : σ →₀ ℕ
+hd : (MvPowerSeries.coeff d) ((shift a) P).coeff.2 ≠ 0
+hdeg : ↑(Finsupp.degree d) = MvPowerSeries.order ((shift a) P).coeff.2
+⊢ ↑(Finsupp.degree d) = (↑((shift a) P)).order
+claims/HasseMultiplicity.lean:123:88: error: unexpected token '('; expected ')', ',' or ':'
+claims/HasseMultiplicity.lean:115:14: warning: `ENat.coe_zero` has been deprecated: Use `ENat.natCast_zero` instead
+claims/HasseMultiplicity.lean:118:33: error(lean.unknownIdentifier): Unknown identifier `coeff_zero_eq_constantCoeff_apply`
+claims/HasseMultiplicity.lean:114:93: error: unsolved goals
+case mpr
+σ : Type u_1
+R : Type u_3
+inst✝ : CommRing R
+a : σ → R
+P : MvPolynomial σ R
+⊢ (eval a) P = 0 → ¬(↑((shift a) P)).order = ↑0
+claims/HasseMultiplicity.lean:144:6: error: Invalid rewrite argument: Expected an equality or iff proof or definition name, but `mult a ?P` is a value of type
+  ℕ∞

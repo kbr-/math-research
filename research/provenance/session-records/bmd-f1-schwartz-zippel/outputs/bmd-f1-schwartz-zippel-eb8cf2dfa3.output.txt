@@ -1,0 +1,134 @@
+third-party-claims/MultiplicitySchwartzZippel.lean:149:40: warning: `if_pos` has been deprecated: Use `ite_eq_left` instead
+third-party-claims/MultiplicitySchwartzZippel.lean:177:6: warning: `MvPolynomial.coeff_zero` has been deprecated: Use `AddMonoidAlgebra.coeff_zero` instead
+
+Note: The updated constant has a different type:
+  ∀ {R : Type u_1} {M : Type u_4} [inst : Semiring R], AddMonoidAlgebra.coeff 0 = 0
+instead of
+  ∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R], AddMonoidAlgebra.coeff 0 = 0
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.coeff_zero` to `AddMonoidAlgebra.coeff_zero x`).
+third-party-claims/MultiplicitySchwartzZippel.lean:173:34: error: unsolved goals
+F : Type u_1
+inst✝ : Field F
+σ : Type u_2
+S : Finset F
+P : MvPolynomial (Option σ) F
+a' : σ → F
+Q0 : Polynomial (MvPolynomial σ F) := (optionEquivLeft F σ) P
+hPt : Q0.leadingCoeff ≠ 0
+t : ℕ := Q0.natDegree
+β : σ →₀ ℕ
+hβ : ((shift a') Q0.leadingCoeff).coeff β ≠ 0
+hβdeg : ↑(Finsupp.degree β) = mult a' Q0.leadingCoeff
+g : Polynomial F := (sliceMap (lcoeff F β)) (Polynomial.map (shift a').toRingHom Q0)
+hg : g = (sliceMap (lcoeff F β)) (Polynomial.map (shift a').toRingHom Q0)
+hgcoeff : ∀ (j : ℕ), g.coeff j = ((shift a') (Q0.coeff j)).coeff β
+hg0 : g ≠ 0
+j : ℕ
+hj : t < j
+⊢ 0 β = 0
+third-party-claims/MultiplicitySchwartzZippel.lean:193:0: warning: automatically included section variable(s) unused in theorem `MathResearch.ThirdParty.MultiplicitySchwartzZippel.sum_piFinset_option`:
+  [Field F]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Field F] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+third-party-claims/MultiplicitySchwartzZippel.lean:201:15: warning: This simp argument is unused:
+  Finset.mem_coe
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Finset.mem_product, Fintype.mem_piFinset] at ha ⊢
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+third-party-claims/MultiplicitySchwartzZippel.lean:204:15: warning: This simp argument is unused:
+  Finset.mem_coe
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Finset.mem_product, Fintype.mem_piFinset] at hp ⊢
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+third-party-claims/MultiplicitySchwartzZippel.lean:240:17: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  Fintype α
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+third-party-claims/MultiplicitySchwartzZippel.lean:240:52: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  Fintype α
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+third-party-claims/MultiplicitySchwartzZippel.lean:242:14: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  Fintype α
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+third-party-claims/MultiplicitySchwartzZippel.lean:229:2: error: unsolved goals
+case e'_3.h
+F : Type u_1
+inst✝⁴ : Field F
+S : Finset F
+σ : Type u
+inst✝³ : Fintype σ
+inst✝² : DecidableEq σ
+α β : Type u
+inst✝¹ : Fintype β
+e : α ≃ β
+ih :
+  ∀ [inst : DecidableEq α] (P : MvPolynomial α F),
+    P ≠ 0 → S.card * ∑ a ∈ Fintype.piFinset fun x => S, (mult a P).toNat ≤ P.totalDegree * S.card ^ Fintype.card α
+inst✝ : DecidableEq β
+P : MvPolynomial β F
+hP : P ≠ 0
+P' : MvPolynomial α F := (rename ⇑e.symm) P
+hP' : P' ≠ 0
+hback : (rename ⇑e) P' = P
+hdeg : P'.totalDegree = P.totalDegree
+hcard : sorry = Fintype.card β
+hsum : ∑ a ∈ Fintype.piFinset fun x => S, (mult a P).toNat = ∑ b ∈ sorry, (mult b P').toNat
+this : S.card * ∑ a ∈ Fintype.piFinset fun x => S, (mult a P').toNat ≤ P'.totalDegree * S.card ^ Fintype.card α
+⊢ sorry = Fintype.piFinset fun x => S
+
+case e'_4
+F : Type u_1
+inst✝⁴ : Field F
+S : Finset F
+σ : Type u
+inst✝³ : Fintype σ
+inst✝² : DecidableEq σ
+α β : Type u
+inst✝¹ : Fintype β
+e : α ≃ β
+ih :
+  ∀ [inst : DecidableEq α] (P : MvPolynomial α F),
+    P ≠ 0 → S.card * ∑ a ∈ Fintype.piFinset fun x => S, (mult a P).toNat ≤ P.totalDegree * S.card ^ Fintype.card α
+inst✝ : DecidableEq β
+P : MvPolynomial β F
+hP : P ≠ 0
+P' : MvPolynomial α F := (rename ⇑e.symm) P
+hP' : P' ≠ 0
+hback : (rename ⇑e) P' = P
+hdeg : P'.totalDegree = P.totalDegree
+hcard : sorry = Fintype.card β
+hsum : ∑ a ∈ Fintype.piFinset fun x => S, (mult a P).toNat = ∑ b ∈ sorry, (mult b P').toNat
+this : S.card * ∑ a ∈ Fintype.piFinset fun x => S, (mult a P').toNat ≤ P'.totalDegree * S.card ^ Fintype.card α
+⊢ sorry = Fintype.card α
+third-party-claims/MultiplicitySchwartzZippel.lean:245:19: warning: This simp argument is unused:
+  Finset.mem_coe
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Fintype.mem_piFinset] at ha ⊢
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+third-party-claims/MultiplicitySchwartzZippel.lean:248:19: warning: This simp argument is unused:
+  Finset.mem_coe
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Fintype.mem_piFinset] at hb ⊢
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+third-party-claims/MultiplicitySchwartzZippel.lean:313:11: warning: `ENat.coe_toNat` has been deprecated: Use `ENat.natCast_toNat` instead
+third-party-claims/MultiplicitySchwartzZippel.lean:316:4: warning: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`

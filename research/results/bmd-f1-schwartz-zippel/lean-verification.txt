@@ -1,0 +1,89 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: «third-party-claims».MultiplicitySchwartzZippel
+Claim file: third-party-claims/MultiplicitySchwartzZippel.lean
+Claim: third-party:DKSS-multiplicity-schwartz-zippel
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-lean-multiplicity-schwartz-zippel
+Scope: Dvir, Kopparty, Saraf and Sudan, "Extensions to the method of multiplicities", SICOMP 2013,
+Lemma 2.7 (arXiv 0901.2529v2, Lemma 8), for Hasse multiplicity as in their Definition 2.2 / Definition 3:
+for any field F, finite index type σ with at least one variable, nonzero P ∈ F[x_σ] and finite S ⊆ F,
+∑_{a ∈ S^σ} mult(P, a) ≤ totalDegree(P) · |S|^{|σ|-1}, with multiplicities in ℕ∞. Also the scaled form
+|S| · ∑ mult ≤ totalDegree(P) · |S|^{|σ|}, valid for every finite σ including the empty one. The proof
+follows theirs by induction on the number of variables, with their Hasse derivative P^{(i,0)} evaluated
+on a line replaced by the coefficient of z'^i in P(a' + z', y).
+Declarations: MathResearch.ThirdParty.MultiplicitySchwartzZippel.sliceMap MathResearch.ThirdParty.MultiplicitySchwartzZippel.coeff_sliceMap MathResearch.ThirdParty.MultiplicitySchwartzZippel.sliceMap_taylor MathResearch.ThirdParty.MultiplicitySchwartzZippel.sum_rootMultiplicity_le MathResearch.ThirdParty.MultiplicitySchwartzZippel.optionEquivLeft_shift MathResearch.ThirdParty.MultiplicitySchwartzZippel.mult_le_line MathResearch.ThirdParty.MultiplicitySchwartzZippel.multiplicity_schwartz_zippel_scaled MathResearch.ThirdParty.MultiplicitySchwartzZippel.multiplicity_schwartz_zippel
+$ lake --wfail build «third-party-claims».MultiplicitySchwartzZippel
+✔ [1527/1527] Built «third-party-claims».MultiplicitySchwartzZippel (1.7s)
+Build completed successfully (1527 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmp84lctxz2.lean
+@MathResearch.ThirdParty.MultiplicitySchwartzZippel.sliceMap : {R : Type u_1} →
+  {A : Type u_2} →
+    [inst : CommRing R] → [inst_1 : CommRing A] → [inst_2 : Algebra R A] → (A →ₗ[R] R) → Polynomial A →ₗ[R] Polynomial R
+'MathResearch.ThirdParty.MultiplicitySchwartzZippel.sliceMap' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.ThirdParty.MultiplicitySchwartzZippel.coeff_sliceMap : ∀ {R : Type u_1} {A : Type u_2} [inst : CommRing R]
+  [inst_1 : CommRing A] [inst_2 : Algebra R A] (L : A →ₗ[R] R) (Q : Polynomial A) (j : ℕ),
+  ((MathResearch.ThirdParty.MultiplicitySchwartzZippel.sliceMap L) Q).coeff j = L (Q.coeff j)
+'MathResearch.ThirdParty.MultiplicitySchwartzZippel.coeff_sliceMap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.ThirdParty.MultiplicitySchwartzZippel.sliceMap_taylor : ∀ {R : Type u_1} {A : Type u_2}
+  [inst : CommRing R] [inst_1 : CommRing A] [inst_2 : Algebra R A] (L : A →ₗ[R] R) (Q : Polynomial A) (c : R) (r : ℕ),
+  L (((Polynomial.taylor ((algebraMap R A) c)) Q).coeff r) =
+    ((Polynomial.taylor c) ((MathResearch.ThirdParty.MultiplicitySchwartzZippel.sliceMap L) Q)).coeff r
+'MathResearch.ThirdParty.MultiplicitySchwartzZippel.sliceMap_taylor' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.ThirdParty.MultiplicitySchwartzZippel.sum_rootMultiplicity_le : ∀ {F : Type u_1} [inst : Field F]
+  (S : Finset F) (g : Polynomial F), ∑ c ∈ S, Polynomial.rootMultiplicity c g ≤ g.natDegree
+'MathResearch.ThirdParty.MultiplicitySchwartzZippel.sum_rootMultiplicity_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.ThirdParty.MultiplicitySchwartzZippel.optionEquivLeft_shift : ∀ {F : Type u_1} [inst : Field F]
+  {σ : Type u_2} (c : F) (a' : σ → F) (P : MvPolynomial (Option σ) F),
+  (MvPolynomial.optionEquivLeft F σ)
+      ((MathResearch.HasseMultiplicity.shift (MathResearch.ThirdParty.MultiplicitySchwartzZippel.pt c a')) P) =
+    (Polynomial.taylor (MvPolynomial.C c))
+      (Polynomial.map (MathResearch.HasseMultiplicity.shift a').toRingHom ((MvPolynomial.optionEquivLeft F σ) P))
+'MathResearch.ThirdParty.MultiplicitySchwartzZippel.optionEquivLeft_shift' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.ThirdParty.MultiplicitySchwartzZippel.mult_le_line : ∀ {F : Type u_1} [inst : Field F] {σ : Type u_2}
+  (P : MvPolynomial (Option σ) F) (a' : σ → F) (β : σ →₀ ℕ) (g : Polynomial F),
+  g =
+      (MathResearch.ThirdParty.MultiplicitySchwartzZippel.sliceMap (MvPolynomial.lcoeff F β))
+        (Polynomial.map (MathResearch.HasseMultiplicity.shift a').toRingHom ((MvPolynomial.optionEquivLeft F σ) P)) →
+    g ≠ 0 →
+      ∀ (c : F),
+        MathResearch.HasseMultiplicity.mult (MathResearch.ThirdParty.MultiplicitySchwartzZippel.pt c a') P ≤
+          ↑(Finsupp.degree β + Polynomial.rootMultiplicity c g)
+'MathResearch.ThirdParty.MultiplicitySchwartzZippel.mult_le_line' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.ThirdParty.MultiplicitySchwartzZippel.multiplicity_schwartz_zippel_scaled : ∀ {F : Type u_2}
+  [inst : Field F] (S : Finset F) (σ : Type u_1) [inst_1 : Fintype σ] [inst_2 : DecidableEq σ] (P : MvPolynomial σ F),
+  P ≠ 0 →
+    S.card * ∑ a ∈ Fintype.piFinset fun x => S, (MathResearch.HasseMultiplicity.mult a P).toNat ≤
+      P.totalDegree * S.card ^ Fintype.card σ
+'MathResearch.ThirdParty.MultiplicitySchwartzZippel.multiplicity_schwartz_zippel_scaled' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.ThirdParty.MultiplicitySchwartzZippel.multiplicity_schwartz_zippel : ∀ {F : Type u_2} [inst : Field F]
+  {σ : Type u_1} [inst_1 : Fintype σ] [inst_2 : DecidableEq σ],
+  0 < Fintype.card σ →
+    ∀ (S : Finset F) {P : MvPolynomial σ F},
+      P ≠ 0 →
+        ∑ a ∈ Fintype.piFinset fun x => S, MathResearch.HasseMultiplicity.mult a P ≤
+          ↑(P.totalDegree * S.card ^ (Fintype.card σ - 1))
+'MathResearch.ThirdParty.MultiplicitySchwartzZippel.multiplicity_schwartz_zippel' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 8 audited declarations.
