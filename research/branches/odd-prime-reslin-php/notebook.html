@@ -19,10 +19,10 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> With the closed column member in the base (<a href="#entry-2026-09-24-closed-base-review">review</a>), relative gluing needs (a) conj:closed-row-freeness, (b) conj:closed-base-splitting, which now passes exact checks at \(n=8,9\) through degree 3 (<a href="#entry-2026-09-24-closed-splitting">closed splitting</a>), and (c) no falls of each generic member over the closed base. Next:</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Two sufficient routes to the Taylor glue's endpoint now stand side by side. One is relative gluing over the closed column base: (a) conj:closed-row-freeness, (b) conj:closed-base-splitting, which passes checks at \(n=8,9\), and (c), untested. The other is <a href="#entry-2026-09-24-global-closure">global closure</a>: row freeness of \(\operatorname{gr}\mathbb F^{\mathcal Q}\) for the budget's solution set, which fails when a row count is pinned. Both need tests at sizes in range. Next:</p>
 <ol>
-<li>Test (c): a generic selector over the weak base plus a closed column member, \(z\)-injectivity through the largest reachable degree, with the base-only control.</li>
-<li>Test conj:closed-row-freeness at \(D\ge5\) with a compiled kernel on the direct sum \(G=\bigoplus_Yx_Y\operatorname{gr}\mathbb F^{Z_{S(Y)}}\).</li>
+<li>Build the compiled direct-sum kernel for the closure (placed products \(x_Yg\)). Use it to test conj:closed-row-freeness at \(D\ge5\) and (c) over the closed base at sizes in range.</li>
+<li>State global row freeness for the budget's \(\mathcal Q\) with a hypothesis excluding pinned rows, and relate it to the budget's robustness.</li>
 </ol>
 </section>
 <section id="working-context">
@@ -13341,6 +13341,76 @@ the sum over column-injective cell sets \(Y\) in rows \(1,\dots,m-1\), with \(S(
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-global-closure" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="thm:global-closure-gluing">
+<h3>Global closure: closing all constraints at once gives an alternative sufficient condition for non-refutability; the generic members' own condition is not decidable at the sizes point-ideal Gröbner bases reach</h3>
+<p class="entry-meta">24 September 2026 · Working proof (global closure gluing); cycle odd-prime-generic-over-closed.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. After the <a href="#entry-2026-09-24-closed-base-review">closed-base review</a> and the <a href="#entry-2026-09-24-closed-splitting">closed-splitting check</a>, the untested obligation is (c): each generic member alone has no fall over the weak base plus the closed column member. The cycle tests it exactly on small boards. The test is not decidable at the sizes the point-ideal Gröbner computation reaches. The cycle then observes that the closure argument does not need members at all.</p>
+<p><strong>General statement.</strong> thm:global-closure-gluing: over a field of characteristic \(p\), for any nonempty set \(\mathcal Q\) of column-injective assignments whose total occupancy is \(\equiv m\pmod p\), and \(D\ge1\), the weak base plus all polynomials of degree at most \(D\) vanishing on \(\mathcal Q\) has no fall below \(D\) and no PC refutation of degree \(D\), provided the row-sum syzygies on the graded functions \(\operatorname{gr}\mathbb F^{\mathcal Q}\) are Frobenius through degree \(D\). With \(\mathcal Q\) the assignments in the slice satisfying every budget constraint (row equations excluded), this is an alternative sufficient condition, besides (a) to (c) of relative gluing, for the lower bound the <a href="#entry-2026-09-23-taylor-glue">Taylor glue</a> uses. The small-board attempt at (c) is recorded below and decides nothing.</p>
+
+<h4>The test of (c) and why it cannot decide</h4>
+<p><code>generic_fall.py</code> computes \(\dim\ker z\) exactly in Singular over \(\mathbb F_3\), from Hilbert functions truncated at \(D\). It compares four systems:</p>
+<ul>
+<li>the weak base;</li>
+<li>the base plus a generic selector \(1-(\ell-v)^2\), \(\ell\) a uniform random form with row-dependent coefficients;</li>
+<li>the base plus a closed column member, the degree-\(\le D\) part of the saturated homogenization of its point ideal;</li>
+<li>the base plus both.</li>
+</ul>
+<p>On the \(3\times7\) board, \(D=4\) (<code>gf_3x7.json</code>), \(\dim\ker z\) in degrees 0 to 3:</p>
+<table>
+<tr><th>column member</th><th>seed</th><th>base</th><th>base + generic</th><th>closed</th><th>closed + generic</th></tr>
+<tr><td>selector</td><td>1</td><td>0, 0, 0, 0</td><td>0, 0, 0, 0</td><td>0, 0, 1, 27</td><td>0, 0, 1, 27</td></tr>
+<tr><td>selector</td><td>2</td><td>0, 0, 0, 0</td><td>0, 0, 0, 1</td><td>0, 0, 1, 27</td><td>0, 0, 1, 28</td></tr>
+<tr><td>merge</td><td>1</td><td>0, 0, 0, 0</td><td>0, 0, 0, 0</td><td>0, 0, 0, 21</td><td>0, 0, 0, 27</td></tr>
+</table>
+<p>The closed merge's falls, 0, 0, 0, 21, equal the recorded fat-board value on this board (ex:placed-pigeon-falls, base plus closure), a consistency check of the closure computation. The closed base falls at this size, and so does the base plus a generic member in one seed. Both are below their ranges: thm:weak-base-stability-quadratic needs \(N\ge(p-1)D^2=32\), and conj:closed-row-freeness needs \((p-1)(D+1)D=40\). So (c), which presupposes (a) for the closed base, cannot be isolated here. At \(3\times12\), \(D=3\), the Gröbner basis of the closed point ideal did not finish within the run's 120 s limit. The base and the base plus a generic selector have no fall there, but that board is also below both ranges (18 and 24), so this is not evidence either. Reaching the range needs the direct-sum construction of the closure, as in closure saturation, not a point-ideal Gröbner basis. It decides nothing about (c), and no finite-check claim is registered for it.</p>
+
+<h4>Global closure</h4>
+<p>Setting as in the <a href="#entry-2026-09-24-closure-gluing">closure-gluing entry</a>: \(\mathcal P\) the column-injective assignments, \(F_d\) the functions of degree \(\le d\), \(\tilde A_z\) the Rees algebra. For a nonempty \(\mathcal Q\subseteq\mathcal P\) whose assignments all place a number of pigeons \(\equiv m\pmod p\), put \(\mathcal M_D(\mathcal Q)=I(\mathcal Q)\cap F_D\), as generators.</p>
+<p><strong>Theorem (global closure gluing).</strong> Over a field of characteristic \(p\), with \(m\ge1\) and \(D\ge1\), put \(\operatorname{gr}\mathbb F^{\mathcal Q}=\bigoplus_dF_d|_{\mathcal Q}/F_{d-1}|_{\mathcal Q}\), and suppose every Koszul 1-cycle of \((r_1,\dots,r_{m-1})\) on \(\operatorname{gr}\mathbb F^{\mathcal Q}\) of degree at most \(D\) is a sum of Frobenius cycles \(r_i^{p-1}c\,e_i\) (\(i\ge1\), \(c\in\operatorname{gr}\mathbb F^{\mathcal Q}\)) and boundaries. Then the homogenized weak base plus \(\mathcal M_D(\mathcal Q)\) is \(z\)-injective below \(D\) and has no PC refutation of degree \(D\). Consequently, the weak base plus any constraints of degree at most \(D\) vanishing on \(\mathcal Q\) has no PC refutation of degree \(D\). In particular this applies to constraints of degree at most \(D\) when \(\mathcal Q\), the assignments in \(\mathcal P\) with total occupancy \(\equiv m\) on which the constraints vanish, is nonempty and satisfies the hypothesis. The row equations are not among the constraints: if they were, every \(r_i\) would be constant on \(\mathcal Q\), \(e_i\) would be a cycle that is neither Frobenius nor a boundary, and the hypothesis would fail for every \(m\ge2\).</p>
+<p><em>Proof.</em> The closure-gluing proof applies verbatim. Saturation: for \(d\le D\), every element of \(I(\mathcal Q)\cap F_d\) is a generator, so the degree-\(d\) part of the ideal is \(I(\mathcal Q)\cap F_d\) and \(z\) is injective in degrees \(&lt;D\). The top algebra agrees with \(\operatorname{gr}\mathbb F^{\mathcal Q}\) through degree \(D\). Since \(s-m\) vanishes on \(\mathcal Q\) and \(D\ge1\), it is a generator, and \(r_0-z\) lies in the ideal generated by \(\mathcal M_D(\mathcal Q)\) and the \(r_i-z\), \(i\ge1\). The Koszul sequence and Step 1's Frobenius lift give \(z\)-injectivity. The socle criterion excludes a refutation, since no generator is a nonzero constant for nonempty \(\mathcal Q\). For the consequence: each constraint \(g\) reduces, by the Boolean and column-exclusion axioms within degree \(\deg g\), to its multilinear form \(\bar g\in I(\mathcal Q)\cap F_D\). So a PC refutation of the smaller system of degree \(\le D\) is one of the larger system. Only non-refutability passes to the smaller system; \(z\)-injectivity does not, as the placed-pigeon falls show. \(\square\)</p>
+<p>The column-member case is thm:closure-gluing, with \(\mathcal Q=\mathcal P_Z\). The direct-sum description of \(\operatorname{gr}\mathbb F^{\mathcal Q}\) used there is special to column members. For general \(\mathcal Q\) the graded module has no such decomposition, and no content reduction is available in general.</p>
+<p><em>The hypothesis is not automatic for large \(\mathcal Q\).</em> Let \(m\ge2\), \(p\ge3\), \(N\ge p+1\), and let \(\mathcal Q\) be the assignments with at most one pigeon in row 1 and total occupancy \(\equiv m\). Then \(r_1^2-r_1\) vanishes on \(\mathcal Q\), so \(r_1^2=0\) in \(\operatorname{gr}\mathbb F^{\mathcal Q}\), and \(r_1e_1\) is a cycle of degree 2. For \(p\ge3\) no Frobenius cycle has degree 2. The only affine relation on \(\mathcal Q\) is \(s=m\): pick \(1\le k\le N-1\) with \(k\equiv m\) and put \(k\) pigeons in row 0. Moving one of them to another row at the same hole (allowed for row 1, which is empty) shows that a relation \(\sum a_{ij}x_{ij}=b\) has \(a_{0j}=a_{ij}\), and moving it to an empty hole shows \(a_{0j}=a_{0j'}\). So every affine relation is a multiple of \(s-m\), and the \(r_i\), \(i\ge1\), are independent in \(\operatorname{gr}_1\). Degree-2 boundaries have coefficients in \(\operatorname{gr}_0=\mathbb F\), so the \(e_1\)-coefficient of a boundary is \(\sum_{j\ge2}a_jr_j\ne r_1\). The hypothesis fails. The weak base already derives \(r_1^2-r_1\) at degree 2. The obstruction comes from the extra generators, such as \(x_{1j}x_{1j'}\), not from \(r_1^2-r_1\). The failure of this sufficient hypothesis does not show a fall or a refutation. It shows that a conjecture for the budget's \(\mathcal Q\) must exclude such sets.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>For the lower bound the Taylor glue needs, no PC refutation of degree \(B\) for the weak base plus the budget's constraints of degree at most \(B\), the theorem gives an alternative sufficient condition: row freeness through degree \(B\) of \(\operatorname{gr}\mathbb F^{\mathcal Q}\), with \(\mathcal Q\) the assignments in the slice satisfying all budget constraints (row equations excluded), nonempty. The entry shows no implication in either direction between this condition and (a) to (c). It does not give the unclosed system's \(z\)-injectivity, which the placed-pigeon falls show can fail.</li>
+<li>The pinned-row example shows that some condition excluding pinned rows is needed in any conjecture of this form.</li>
+<li>(c) for generic members over the closed base is not decidable at the sizes the point-ideal Gröbner computation reaches; the direct-sum construction of the closure is needed to reach the range.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the closure-gluing entry (setting, lemma, theorem, proof), Step 1 of the weak-base stability proof, the socle criterion, and the Taylor glue's conclusion. Claim search (vanishing ideal of a solution set, graded functions, row freeness) found lem:closure-saturation and the cycle's neighbours, none implying the theorem. The small-board numbers are read from <code>gf_3x7.json</code> and the run logs. A fresh-context reviewer found the transfer of the closure-gluing proof sound. It required these changes, all adopted:</p>
+<ul>
+<li>the consequence restricted to non-refutability, with the reduction of constraints to multilinear forms;</li>
+<li>\(\mathcal Q\) defined in the slice, nonempty, without row equations, and \(D\ge1\);</li>
+<li>\(\operatorname{gr}\mathbb F^{\mathcal Q}\) and the Frobenius cycles defined;</li>
+<li>the content-reduction remark weakened;</li>
+<li>the pinned-row example proved, with its hypotheses, and its conclusions limited;</li>
+<li>"replaces" changed to "an alternative sufficient condition", and the relative-gluing and robustness claims removed;</li>
+<li>"untestable" made precise;</li>
+<li>the ranges named and the \(3\times12\) case placed below them.</li>
+</ul>
+<p>The changes weaken or justify statements; the pinned-row argument adds no claim beyond the draft's. No further pass was made.</p>
+
+<h4>Remaining gap</h4>
+<ul>
+<li>A statement of global row freeness for the budget's \(\mathcal Q\), with its robustness hypothesis, and evidence at sizes in range.</li>
+<li>conj:closed-row-freeness at \(D\ge5\); (c) for generic members over the closed base, tested with the direct-sum closure.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-generic-over-closed">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 8.33 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 42.90 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 19.27 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">2 min 6.02 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
