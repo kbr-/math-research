@@ -1,0 +1,145 @@
+% SPDX-License-Identifier: CC-BY-4.0
+\section{Introduction}\label{sec:introduction}
+
+Polynomials that vanish to high order on a grid are a basic tool of the
+polynomial method. Over the Boolean cube a natural extremal question asks how
+small the degree of such a polynomial can be when it is required to vanish to
+order \(k\) everywhere except at one point. Over \(\mathbb R\) this question was
+answered by Sauermann and Wigderson~\cite{SW20}: the least degree of
+\(P\in\mathbb R[x_1,\ldots,x_n]\) with \(P(\zero)\ne0\) and zeros of multiplicity
+at least \(k\ge2\) at all other points of \(\{0,1\}^n\) is \(n+2k-3\). They observed
+that the answer depends on the field and that characteristic two behaves
+differently.
+
+This paper determines the binary analogue. Throughout, multiplicity means Hasse
+multiplicity of formal polynomials (Definition~\ref{def:mult}); in particular no
+polynomial is reduced modulo \(x_i^2-x_i\), which would not preserve multiplicities.
+
+\begin{definition}\label{def:admissible}
+For integers \(n\ge1\) and \(k\ge1\), a polynomial
+\(P\in\Ft[x_1,\ldots,x_n]\) is \emph{\(k\)-admissible} if
+\(\mult_a(P)\ge k\) for every \(a\in\Ft^n\setminus\{\zero\}\) and
+\(\mult_{\zero}(P)\le k-1\) \lean{claims/BinaryMultiplicityDegreeFormula.lean}.
+Let \(D(n,k)\) be the least total degree of a \(k\)-admissible polynomial.
+\end{definition}
+
+The condition at the origin excludes \(P=0\) and allows any origin order below
+\(k\), not only a nonzero value at the origin.
+Bishnoi, Boyadzhiyska, Das and M\'esz\'aros~\cite[Question~4.3]{BBDM23} asked,
+in the study of subspace coverings with multiplicities, whether
+\(D(n,k)\ge2k-\lfloor k/2^{n-1}\rfloor\) when \(k\ge2^{n-2}\). This bound
+follows for all \(n\) and \(k\) from the multiplicity Schwartz--Zippel lemma of Dvir,
+Kopparty, Saraf and Sudan~\cite{DKSS13}; see Proposition~\ref{prop:cover-bound},
+which was the content of an earlier note~\cite{Note}. That leaves open when the
+bound is attained, and what \(D(n,k)\) is when it is not.
+
+\subsection{Main result}
+
+\begin{theorem}\label{thm:main}
+For all integers \(n\ge1\) and \(k\ge1\) with \(k<3\cdot2^{n-1}\),
+\[
+ D(n,k)=2k+n-2-\lfloor\log_2k\rfloor
+\]
+\lean{claims/BinaryMultiplicityDegreeExtendedRange.lean}.
+Moreover, for every \(n\ge1\) and \(k\ge1\) there is a \(k\)-admissible
+polynomial of degree at most \(2k+n-2-\lfloor\log_2k\rfloor\)
+\lean{claims/BinaryMultiplicityDegreeFormula.lean}.
+\end{theorem}
+
+The substance lies below \(2^{n-1}\), that is, for \(n\ge\lfloor\log_2k\rfloor+2\)
+(Theorem~\ref{thm:main-formal}). For \(2^{n-1}\le k<3\cdot2^{n-1}\) the
+Schwartz--Zippel bound already meets the construction (Corollary~\ref{cor:extended}).
+Three features of the formula stand out.
+\begin{itemize}
+ \item \textbf{Where the Schwartz--Zippel bound is exact.} It equals the formula
+ exactly when \(2^{n-2}\le k<3\cdot2^{n-1}\). For \(k<2^{n-2}\) it is never
+ attained. For \(k\ge3\cdot2^{n-1}\) the two known bounds differ, and \(D(n,k)\)
+ is open.
+ \item \textbf{Each dimension costs one degree.} For fixed \(k\), \(D(n,k)-n\)
+ is constant for \(n\ge\lfloor\log_2k\rfloor+2\). For example \(D(n,1)=n\),
+ \(D(n,4)=n+4\), \(D(n,8)=n+11\) and \(D(n,15)=n+25\).
+ \item \textbf{Comparison with the reals.} Sauermann and
+ Wigderson~\cite{SW20} show that over \(\mathbb R\) the least degree with
+ \(P(\zero)\ne0\) is \(n+2k-3\) for \(k\ge2\). Over \(\Ft\) our construction
+ with \(P(\zero)\ne0\) (origin order \(\ell=0\)) has degree
+ \(n+2k-2-s_2(k-1)\), which is \(s_2(k-1)-1\) lower. Allowing any origin order
+ below \(k\) lowers the degree further, to \(D(n,k)\), which is
+ \(\lfloor\log_2k\rfloor-1\) below \(n+2k-3\). Both savings are zero for
+ \(k=2,3\), and the second requires \(n\ge\lfloor\log_2k\rfloor+2\).
+\end{itemize}
+
+We also prove the upper bound for each prescribed origin order in every
+dimension (Theorem~\ref{thm:per-order}): for \(0\le\ell<k\) there is an
+admissible polynomial with origin order exactly \(\ell\) and degree at most
+\(n+2k-2-s_2(k-\ell-1)\), where \(s_2\) is the binary digit sum.
+
+\subsection{Relation to previous work}
+
+\begin{itemize}
+ \item \textbf{Menezes~\cite{Men26}.} In a recent preprint, Menezes determines,
+ over every field \(\F\), the least degree \(\delta_\F(n,k,\ell)\) of a polynomial
+ with order at least \(k\) at the nonzero vertices of \(\{0,1\}^n\) and order
+ exactly \(\ell\) at the origin, for \(k\ge2\) and \(n\ge k-1\). In characteristic
+ two his formula is \(n+2k-2-s_2(k-\ell-1)\) \cite[Corollary~1.3]{Men26}.
+ Minimizing over \(\ell\) gives Theorem~\ref{thm:main} when \(n\ge k-1\).
+ Our contribution is the range \(\lfloor\log_2k\rfloor+2\le n<k-1\), which
+ grows with \(k\). For \(k=2^j\) with \(j\ge3\), it is \(j+2\le n\le2^j-2\),
+ while \(n\ge2^j-1\) is covered by~\cite{Men26}. The polynomials of our upper
+ bound are Menezes' Catalan truncation specialized to \(\Ft\). His degree
+ formula is stated for \(n\ge k-1\), the range of his theorem. We read his
+ statements, not his proofs, so we do not claim that his argument is limited to
+ that range. The telescoping identity of Lemma~\ref{lem:telescope} gives a
+ short self-contained proof that the construction works in every dimension.
+ Our lower bound is proved differently, by the one-dimension step of
+ Theorem~\ref{thm:step} from the multiplicity Schwartz--Zippel lemma.
+ \item \textbf{Sauermann and Wigderson~\cite{SW20}.} Their theorem is the real
+ case described above. In characteristic two they give a polynomial of degree
+ \(n+4\) for \(k=4\), below \(n+2k-3=n+5\), showing that the real formula
+ fails there.
+ \item \textbf{Dvir, Kopparty, Saraf and Sudan~\cite{DKSS13}.} Their
+ multiplicity Schwartz--Zippel lemma is the only external input. It gives the
+ base case \(n=\lfloor\log_2k\rfloor+2\) of the lower bound.
+ \item \textbf{Alon and F\"uredi~\cite{AF93}.} For \(k=1\), Theorem~\ref{thm:main}
+ says \(D(n,1)=n\) for \(n\ge2\). The lower bound is the case \(\F=\Ft\) of
+ their Theorem~5, which our argument reproves.
+\end{itemize}
+
+Two web searches, for high-order vanishing on the hypercube in positive
+characteristic and for punctured multiplicity Nullstellens\"atze over
+\(\Ft\), found no statement for the range \(n<k-1\) other than the results
+above. A bounded search does not establish that none exists.
+
+\subsection{Proof outline}
+
+\begin{itemize}
+ \item \textbf{Lower bound (Section~\ref{sec:lower}).} Take an admissible
+ \(P\) in \(n\) variables. After an invertible linear change of coordinates
+ in which the lowest homogeneous part at the origin is not divisible by
+ \(x_n\), the polynomial \(S=P(x',0)+P(x',1)\) is admissible in \(n-1\)
+ variables, has the same origin order, and has degree at least one lower
+ (Theorem~\ref{thm:step}). Iterating down to \(m=\lfloor\log_2k\rfloor+2\),
+ where the multiplicity Schwartz--Zippel lemma already gives degree \(2k\),
+ yields \(D(n,k)\ge2k+n-m\).
+ \item \textbf{Upper bound (Section~\ref{sec:upper}).} With
+ \(y=x^2+x\) we have \((1+x)+\sum_{j<K}y^{2^j}=(1+x)^{2^K}\) over \(\Ft\).
+ Expanding \(\prod_i(1+x_i)^{2^K}\) this way and discarding the terms of
+ cost at least \(s\) leaves a polynomial \(g_s\). It still vanishes to order
+ \(s\) off the origin, takes the value \(1\) at the origin, and has small
+ degree (Theorem~\ref{thm:truncated-product}). Multiplying by
+ \(y_1^\ell\) sets the origin order (Theorem~\ref{thm:per-order}).
+\end{itemize}
+
+\subsection{Formal verification}
+
+Theorem~\ref{thm:main}, every lemma it uses, and the multiplicity
+Schwartz--Zippel lemma itself are proved in Lean~4 with Mathlib. The proofs
+use only Lean's standard axioms. Each statement in this paper carries a
+[Lean] link to its formal proof at a fixed repository commit.
+Appendix~\ref{sec:verification} maps statements to declarations and gives the
+commands to check them. The external input is stated without proof in the
+text, with a citation, but its formal proof is linked like every other
+statement, so the formal verification has no unchecked premise. Formal
+verification covers the statements under the linked definitions. It does not
+cover the prose, the comparison with the literature, or the fidelity of the
+definitions to the informal notions, although the definitions are short
+(Definitions~\ref{def:mult} and~\ref{def:admissible}).

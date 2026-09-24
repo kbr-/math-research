@@ -1,0 +1,144 @@
+% SPDX-License-Identifier: CC-BY-4.0
+\section{The upper bound}\label{sec:upper}
+
+\subsection{Binary digit sums}
+
+Let \(s_2(m)\) be the sum of the binary digits of \(m\ge0\).
+
+\begin{lemma}\label{lem:digits}
+For all \(a,b,j,J\ge0\):
+\begin{enumerate}
+ \item \(s_2(a+b)\le s_2(a)+s_2(b)\) and \(s_2(2^j)=1\). Hence a sum of \(r\)
+ powers of two has digit sum at most \(r\).
+ \item \(s_2(a)\le a\).
+ \item If \(a\le b\), then \(2a+s_2(b)\le2b+s_2(a)\). That is,
+ \(a\mapsto2a-s_2(a)\) is monotone.
+ \item \(s_2(2^J-1)=J\).
+\end{enumerate}
+\textnormal{\small\leanref{claims/TruncatedProduct.lean}{[Lean: parts 1--3]}\,\leanref{claims/BinaryMultiplicityDegreeFormula.lean}{[Lean: part 4]}}
+\end{lemma}
+
+\begin{proof}
+All four parts use the recursion \(s_2(m)=(m\bmod2)+s_2(\lfloor m/2\rfloor)\).
+\begin{enumerate}
+ \item The first inequality is proved by strong induction on \(a+b\), using
+ \(\lfloor(a+b)/2\rfloor=\lfloor a/2\rfloor+\lfloor b/2\rfloor+c\), where
+ \(c=\lfloor((a\bmod2)+(b\bmod2))/2\rfloor\) is the carry. The value
+ \(s_2(2^j)=1\) follows from the recursion by induction on \(j\).
+ \item This is standard; Mathlib proves it for every base.
+ \item Induct on \(b-a\), using \(s_2(b+1)\le s_2(b)+1\), which is part~1 with
+ second summand \(1\).
+ \item \(2^{J+1}-1\) is odd with \(\lfloor(2^{J+1}-1)/2\rfloor=2^J-1\). \qedhere
+\end{enumerate}
+\end{proof}
+
+\subsection{The truncated product}
+
+Put \(y_i=x_i^2+x_i=x_i(1+x_i)\).
+
+\begin{lemma}\label{lem:telescope}
+In every commutative ring of characteristic two and for every \(t\) and \(K\ge0\),
+\(\sum_{j<K}(t^2+t)^{2^j}=t^{2^K}+t\). In particular, over \(\Ft\),
+\[
+ (1+x)+\sum_{j<K}y^{2^j}=(1+x)^{2^K},\qquad y=x^2+x
+\]
+\lean{claims/TruncatedProduct.lean}.
+\end{lemma}
+
+\begin{proof}
+By Frobenius, \((t^2+t)^{2^j}=t^{2^{j+1}}+t^{2^j}\), so the sum telescopes. For the
+second form take \(t=1+x\), for which \(t^2+t=x^2+x\).
+\end{proof}
+
+\begin{definition}[Truncated product]\label{def:truncated}
+For \(s\ge1\), let \(g_s\in\Ft[x_\sigma]\) be the sum, over all subsets
+\(S\subseteq\sigma\) and all assignments \(i\mapsto a_i\) of powers of two to
+\(i\in S\) with \(\sum_{i\in S}a_i\le s-1\), of
+\[
+ \prod_{i\in S}y_i^{a_i}\prod_{i\notin S}(1+x_i)
+\]
+\lean{claims/TruncatedProduct.lean}.
+\end{definition}
+
+In characteristic two the Catalan number \(C_{a-1}\) is odd exactly when \(a\) is a
+power of two. So \(g_s\) is the specialization to \(\Ft\) of the Catalan truncation
+of Menezes~\cite[Section~3]{Men26}. In Lean the pair \((S,a)\) is encoded by a
+map \(c:\sigma\to\{\bot,0,\ldots,s-1\}\): \(c_i=\bot\) means \(i\notin S\), and \(c_i=j\) means
+\(a_i=2^j\). The sum runs over maps of cost \(\sum_{c_i\ne\bot}2^{c_i}\le s-1\).
+The bound \(j<s\) is automatic, because \(2^j\le s-1<2^s\). (The Lean statements
+hold for every \(s\ge0\) with natural-number subtraction, where \(s-1=0\) for
+\(s=0\), so \(g_0=g_1\); only \(s\ge1\) is used.)
+
+\begin{theorem}\label{thm:truncated-product}
+For every finite \(\sigma\) with \(|\sigma|=n\) and every \(s\ge1\):
+\begin{enumerate}
+ \item \(\mult_a(g_s)\ge s\) for every nonzero \(a\in\Ft^\sigma\);
+ \item \(g_s(\zero)=1\);
+ \item \(\deg g_s\le n+2(s-1)-s_2(s-1)\).
+\end{enumerate}
+\lean{claims/TruncatedProduct.lean}
+\end{theorem}
+
+\begin{proof}
+\emph{Expansion.} By Lemma~\ref{lem:telescope} with \(K=s\),
+\[
+ \prod_{i\in\sigma}(1+x_i)^{2^s}=\prod_{i\in\sigma}\Bigl((1+x_i)+\sum_{j<s}y_i^{2^j}\Bigr).
+\]
+Expanding the right-hand side gives the terms of Definition~\ref{def:truncated}
+of every cost. Hence the left-hand side equals \(g_s+R\), where \(R\) collects the
+terms of cost at least \(s\). This includes every term that uses a power
+\(2^j>s-1\).
+
+\emph{Multiplicity (1).}
+\begin{itemize}
+ \item Since \(u^2+u=0\) on \(\Ft\), each \(y_i\) vanishes at every point of
+ \(\Ft^\sigma\). Lemma~\ref{lem:mult-basic}(3) then gives each term of \(R\)
+ multiplicity at least its cost, so at least \(s\) everywhere. By
+ Lemma~\ref{lem:mult-basic}(2), so does \(R\).
+ \item At a nonzero \(a\), choose \(i_0\) with \(a_{i_0}=1\). Then
+ \((1+x_{i_0})^{2^s}\) has multiplicity at least \(2^s\ge s\) at \(a\), and so does
+ the whole product.
+\end{itemize}
+In characteristic two, \(g_s\) equals the product plus \(R\), so
+\(\mult_a(g_s)\ge s\).
+
+\emph{Value (2).} Every term with \(S\ne\emptyset\) vanishes at \(\zero\), and the term
+with \(S=\emptyset\) is \(\prod(1+0)=1\).
+
+\emph{Degree (3).} The term of \((S,a)\) has degree at most
+\((n-|S|)+2w\), where \(w=\sum_{i\in S}a_i\le s-1\). By
+Lemma~\ref{lem:digits}(1), \(|S|\ge s_2(w)\). By Lemma~\ref{lem:digits}(3),
+\(2w-s_2(w)\le2(s-1)-s_2(s-1)\).
+\end{proof}
+
+\subsection{Prescribing the origin order}
+
+\begin{theorem}\label{thm:per-order}
+Let \(\sigma\) be finite with \(|\sigma|=n\ge1\), fix \(x_1\in\sigma\), and let
+\(0\le\ell<k\). The polynomial \(P=y_1^{\ell}\,g_{k-\ell}\) satisfies:
+\begin{enumerate}
+ \item \(\mult_a(P)\ge k\) for every nonzero \(a\);
+ \item \(\mult_{\zero}(P)=\ell\);
+ \item \(\deg P\le n+2k-2-s_2(k-\ell-1)\).
+\end{enumerate}
+In particular, the least degree of a polynomial with multiplicity at least \(k\)
+off the origin and origin order exactly \(\ell\) is at most
+\(n+2k-2-s_2(k-\ell-1)\), in every dimension \(n\ge1\)
+\lean{claims/PerOrderConstruction.lean}.
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+ \item \(\mult_a(y_1^\ell)\ge\ell\) and \(\mult_a(g_{k-\ell})\ge k-\ell\), so
+ Lemma~\ref{lem:mult-basic}(3) gives the bound.
+ \item \(y_1\) has origin order exactly one: its coefficient of \(x_1\) is \(1\).
+ Also \(g_{k-\ell}(\zero)=1\) has origin order zero. Multiplicities add over
+ \(\Ft\) (Lemma~\ref{lem:mult-basic}(3)).
+ \item \(\deg y_1^\ell\le2\ell\). Add the bound of
+ Theorem~\ref{thm:truncated-product}(3) with \(s=k-\ell\ge1\). \qedhere
+\end{enumerate}
+\end{proof}
+
+Menezes proves this degree is optimal when \(n\ge k-1\) \cite[Corollary~1.3]{Men26}.
+For \(n<k-1\) we prove optimality only for the orders that attain \(D(n,k)\)
+(Section~\ref{sec:main}).

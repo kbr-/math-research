@@ -1,0 +1,62 @@
+% SPDX-License-Identifier: CC-BY-4.0
+\section{Multiplicity and the external input}\label{sec:prelim}
+
+Let \(\F\) be a field and \(\sigma\) a finite set of variables. Degrees are total
+degrees of formal polynomials in \(\F[x_\sigma]\). For a multi-index
+\(\beta\in\mathbb Z_{\ge0}^\sigma\) write \(|\beta|=\sum_i\beta_i\).
+
+\begin{definition}[Hasse multiplicity]\label{def:mult}
+For \(P\in\F[x_\sigma]\) and \(a\in\F^\sigma\), write
+\(P(a+z)=\sum_\beta c_\beta z^\beta\). The \emph{multiplicity} of \(P\) at \(a\) is
+\[
+ \mult_a(P)=\min\{|\beta|:c_\beta\ne0\}\in\mathbb Z_{\ge0}\cup\{\infty\},
+\]
+with \(\mult_a(0)=\infty\)
+\lean{claims/HasseMultiplicity.lean}.
+\end{definition}
+
+The coefficient \(c_\beta\) is the Hasse derivative \(P^{(\beta)}(a)\), so this is the
+definition of Dvir, Kopparty, Saraf and Sudan~\cite[Definition~2.2]{DKSS13}.
+In Lean, \(\mult_a(P)\) is the order, in \(\mathbb N_\infty\), of the power series of
+the shifted polynomial \(P(a+z)\).
+
+\begin{lemma}\label{lem:mult-basic}
+Let \(P,Q\in\F[x_\sigma]\) and \(a\in\F^\sigma\).
+\begin{enumerate}
+ \item For \(m\in\mathbb Z_{\ge0}\), \(\mult_a(P)\ge m\) if and only if every
+ coefficient of \(P(a+z)\) of degree less than \(m\) vanishes.
+ \item \(\mult_a(P+Q)\ge\min(\mult_a(P),\mult_a(Q))\).
+ \item \(\mult_a(PQ)=\mult_a(P)+\mult_a(Q)\). (The inequality \(\ge\) holds over
+ every commutative ring, equality over every integral domain.)
+ \item \(\mult_a(P)=0\) if and only if \(P(a)\ne0\).
+ \item If \(e:\sigma\to\tau\) is a bijection and \(P^e\in\F[x_\tau]\) is obtained by
+ renaming \(x_i\) to \(x_{e(i)}\), then \(\mult_b(P^e)=\mult_{b\circ e}(P)\) for all
+ \(b\in\F^\tau\).
+\end{enumerate}
+\lean{claims/HasseMultiplicity.lean}
+\end{lemma}
+
+\begin{proof}
+Part~1 is the definition. Part~2 holds because a coefficient of the sum of degree
+below both minima is a sum of two zero coefficients. For part~3, the lowest
+homogeneous parts of \(P(a+z)\) and \(Q(a+z)\) multiply to the part of degree
+\(\mult_a(P)+\mult_a(Q)\) of \((PQ)(a+z)\); over a field this product is nonzero
+when both factors are. Part~4 holds because the constant coefficient of
+\(P(a+z)\) is \(P(a)\). For part~5, renaming commutes with the shift, and it
+maps the monomials of degree \(d\) bijectively to the monomials of degree \(d\).
+\end{proof}
+
+The only result we use without proof is the multiplicity Schwartz--Zippel lemma.
+
+\begin{theorem}[Multiplicity Schwartz--Zippel {\cite[Lemma~2.7]{DKSS13}}]\label{thm:dkss}
+Let \(\F\) be a field, \(\sigma\) a nonempty finite set, \(P\in\F[x_\sigma]\) a
+nonzero polynomial and \(S\subseteq\F\) a finite set. Then
+\[
+ \sum_{a\in S^\sigma}\mult_a(P)\le\deg P\cdot|S|^{|\sigma|-1}
+\]
+\lean{third-party-claims/MultiplicitySchwartzZippel.lean}.
+\end{theorem}
+
+The Lean proof follows the induction on the number of variables in~\cite{DKSS13}
+(Lemma~8 of the arXiv version). It also proves the scaled form
+\(|S|\sum_a\mult_a(P)\le\deg P\cdot|S|^{|\sigma|}\), which holds with no variables.

@@ -1,0 +1,182 @@
+% SPDX-License-Identifier: CC-BY-4.0
+\section{The lower bound}\label{sec:lower}
+
+From now on the field is \(\Ft\) unless stated otherwise.
+
+\subsection{The Schwartz--Zippel bound}
+
+\begin{proposition}\label{prop:cover-bound}
+Let \(n\ge1\) and \(k\ge0\). Every nonzero \(P\in\Ft[x_1,\ldots,x_n]\) with
+\(\mult_a(P)\ge k\) for all \(a\ne\zero\) satisfies
+\[
+ \deg P\ge2k-\lfloor k/2^{n-1}\rfloor
+\]
+\lean{claims/BinaryMultiplicityCoverBound.lean}.
+In particular this holds for every \(k\)-admissible \(P\).
+\end{proposition}
+
+\begin{proof}
+Put \(d=\deg P\) and \(m=2^{n-1}\). The \(2^n-1\) nonzero points contribute at least
+\(k(2^n-1)\) to \(\sum_{a\in\Ft^n}\mult_a(P)\), and Theorem~\ref{thm:dkss} with
+\(S=\Ft\) bounds this sum by \(dm\). So \(k(2m-1)\le dm\).
+
+Let \(q=\lfloor k/m\rfloor\), and suppose \(d+q<2k\). Then
+\(dm+(q+1)m\le2km\). Since \((q+1)m>k\), this gives \(dm<2km-k=k(2m-1)\), a
+contradiction.
+\end{proof}
+
+This is the deduction of the earlier note~\cite{Note}, stated without the
+restriction \(k\ge2^{n-2}\) of~\cite[Question~4.3]{BBDM23}. As the note
+observed, the origin condition is used only to exclude \(P=0\).
+
+\subsection{Linear substitutions}
+
+For a matrix \(A\in\F^{\sigma\times\sigma}\) over any field, let \(P\mapsto P\circ A\) be
+the algebra map with \(x_i\mapsto\sum_jA_{ij}x_j\). The same matrix acts on
+points by \((Aa)_i=\sum_jA_{ij}a_j\).
+
+\begin{lemma}\label{lem:subst}
+Let \(A,B\in\F^{\sigma\times\sigma}\) and \(P\in\F[x_\sigma]\).
+\begin{enumerate}
+ \item If \(P\) is homogeneous of degree \(d\), so is \(P\circ A\). Hence
+ \(P\mapsto P\circ A\) commutes with taking homogeneous components, and
+ \(\deg(P\circ A)\le\deg P\).
+ \item \((P\circ A)\circ B=P\circ(AB)\).
+ \item If \(A\) is invertible, then \(\mult_{\zero}(P\circ A)=\mult_{\zero}(P)\) and
+ \(\mult_a(P\circ A)=\mult_{Aa}(P)\) for every \(a\).
+\end{enumerate}
+\lean{claims/OneDimensionStep.lean}
+\end{lemma}
+
+\begin{proof}
+Part~1 holds because each \(x_i\) goes to a linear form. Part~2 can be checked
+on the variables. For part~3, by part~2 an invertible \(A\) gives an injective
+substitution. The origin order is the least \(j\) with a nonzero homogeneous
+component of degree \(j\), and by part~1 this is preserved.
+
+For the second claim, the shift commutes with substitution:
+\((P\circ A)(a+z)=P(Aa+Az)=(P(Aa+z))\circ A\). So
+\(\mult_a(P\circ A)=\mult_{\zero}(P(Aa+z)\circ A)=\mult_{\zero}(P(Aa+z))=\mult_{Aa}(P)\).
+\end{proof}
+
+\begin{lemma}\label{lem:linear-form}
+Write \(\lambda_v=\sum_iv_ix_i\) for the linear form of a vector \(v\).
+\begin{enumerate}
+ \item Let \(L\in\Ft[x_\sigma]\) be nonzero with \(\deg L<2^{|\sigma|}-1\). Then
+ \(\lambda_v\nmid L\) for some nonzero \(v\in\Ft^\sigma\).
+ \item Over any field \(\F\), for every nonzero \(v\in\F^\sigma\) and every
+ \(i_0\in\sigma\) there is an invertible \(A\) with \(\lambda_v\circ A=x_{i_0}\).
+\end{enumerate}
+\lean{claims/LinearFormAvoidance.lean}
+\end{lemma}
+
+\begin{proof}
+(1) The ring \(\Ft[x_\sigma]\) is a unique factorization domain. Each nonzero
+\(\lambda_v\) has degree one, so it is irreducible, hence prime. The only unit of \(\Ft[x_\sigma]\) is \(1\), so
+distinct forms are not associated. Distinct vectors give distinct forms. If all
+\(2^{|\sigma|}-1\) nonzero forms divided \(L\), their product would divide \(L\),
+forcing \(\deg L\ge2^{|\sigma|}-1\).
+
+(2) By definition \(\lambda_v\circ A=\lambda_{vA}\), with \(vA\) the row vector \(v\)
+times \(A\). Extend the isomorphism between the lines \(\F v\) and \(\F e_{i_0}\)
+that sends \(v\) to \(e_{i_0}\) to a linear automorphism \(g\) of \(\F^\sigma\), and
+let \(A\) be the transpose of the matrix of \(g\). Then \(vA=g(v)=e_{i_0}\).
+\end{proof}
+
+\subsection{The one-dimension step}
+
+Write the variable set as \(\sigma\cup\{x_0\}\) and a point as \((c,a')\) with
+\(c\in\Ft\) and \(a'\in\Ft^\sigma\). For \(Q\in\Ft[x_0,x_\sigma]\) and \(c\in\Ft\), let
+\(Q(c,x')\in\Ft[x_\sigma]\) denote the substitution \(x_0=c\).
+
+\begin{lemma}\label{lem:restrict}
+For all \(Q\), \(c\) and \(a'\), \(\mult_{a'}(Q(c,x'))\ge\mult_{(c,a')}(Q)\)
+\lean{claims/OneDimensionStep.lean}.
+\end{lemma}
+
+\begin{proof}
+The shift of \(Q(c,x')\) at \(a'\) is \(Q((c,a')+(w,z'))\) with \(w=0\). Its
+coefficients are the coefficients of \(Q((c,a')+(w,z'))\) at monomials without
+\(w\), and these have the same degree.
+\end{proof}
+
+\begin{theorem}[One-dimension step]\label{thm:step}
+Let \(\sigma\) be a finite set, \(n=|\sigma|+1\) and \(k<2^n\). Let
+\(P\in\Ft[x_0,x_\sigma]\) satisfy \(\mult_a(P)\ge k\) for every nonzero point \(a\)
+and \(\mult_{\zero}(P)<k\). Then there is \(S\in\Ft[x_\sigma]\) with
+\(\mult_{a'}(S)\ge k\) for every nonzero \(a'\), with
+\(\mult_{\zero}(S)=\mult_{\zero}(P)\), and with
+\[
+ \deg S+1\le\deg P
+\]
+\lean{claims/OneDimensionStep.lean}.
+\end{theorem}
+
+In particular \(D(n-1,k)\le D(n,k)-1\) for \(n\ge2\) and \(k<2^n\). Since the
+origin order is kept exactly, the same holds for the least degree with a
+prescribed origin order.
+
+\begin{proof}
+Let \(\ell=\mult_{\zero}(P)<k\) and let \(L\ne0\) be the homogeneous component of
+\(P\) of degree \(\ell\).
+
+\emph{Choosing coordinates.} We have \(\deg L=\ell\le k-1<2^n-1\), so
+Lemma~\ref{lem:linear-form} gives a nonzero form \(\lambda_v\nmid L\) and an
+invertible \(A\) with \(\lambda_v\circ A=x_0\). Put \(Q=P\circ A\). By
+Lemma~\ref{lem:subst}:
+\begin{itemize}
+ \item \(Q\) satisfies the hypotheses, because \(A\) permutes the nonzero points;
+ \item \(\mult_{\zero}(Q)=\ell\) and \(\deg Q\le\deg P\);
+ \item the degree-\(\ell\) component of \(Q\) is \(L\circ A\);
+ \item \(x_0\nmid L\circ A\): otherwise substituting \(A^{-1}\) would give
+ \(\lambda_v\mid L\).
+\end{itemize}
+
+\emph{The difference.} Let \(S=Q(0,x')+Q(1,x')\). Write \(Q=\sum_{t\ge0}x_0^tQ_t\)
+with \(Q_t\in\Ft[x_\sigma]\). Then \(S=\sum_{t\ge1}Q_t\), since the \(t=0\) terms
+cancel in characteristic two.
+\begin{itemize}
+ \item \emph{Degree.} \(\deg Q_t+t\le\deg Q\), so \(\deg S\le\deg Q-1\). Moreover
+ \(\deg Q\ge1\), for otherwise \(S=0\), which the next item excludes.
+ \item \emph{Nonzero points.} For \(a'\ne\zero\), both \((0,a')\) and \((1,a')\) are
+ nonzero, so Lemma~\ref{lem:restrict} and Lemma~\ref{lem:mult-basic}(2) give
+ \(\mult_{a'}(S)\ge k\).
+ \item \emph{Origin order, lower bound.} Lemma~\ref{lem:restrict} gives
+ \(\mult_{\zero}(Q(0,x'))\ge\ell\), and \(\mult_{\zero}(Q(1,x'))\ge k\) because
+ \((1,\zero)\ne\zero\). So \(\mult_{\zero}(S)\ge\ell\).
+ \item \emph{Origin order, upper bound.} The constant term of \(L\circ A\) in
+ \(x_0\), namely \((L\circ A)(0,x')\), is nonzero because \(x_0\nmid L\circ A\).
+ Take a monomial \(z^\beta\) with a nonzero coefficient in it. Then
+ \(|\beta|=\ell\), and the same coefficient appears in \(Q(0,x')\). The
+ coefficient of \(z^\beta\) in \(Q(1,x')\) vanishes, because
+ \(\ell<k\le\mult_{\zero}(Q(1,x'))\). So \(z^\beta\) occurs in \(S\), and
+ \(\mult_{\zero}(S)\le\ell\).
+\end{itemize}
+Finally \(\deg S+1\le\deg Q\le\deg P\).
+\end{proof}
+
+\subsection{The lower bound}
+
+\begin{theorem}\label{thm:lower}
+Let \(k\ge1\) and \(n\ge\lfloor\log_2k\rfloor+2\). Every \(k\)-admissible
+\(P\in\Ft[x_1,\ldots,x_n]\) satisfies
+\[
+ \deg P\ge2k+n-2-\lfloor\log_2k\rfloor
+\]
+\lean{claims/BinaryMultiplicityLowerBound.lean}.
+\end{theorem}
+
+\begin{proof}
+Let \(m=\lfloor\log_2k\rfloor+2\), so \(k<2^{m-1}\). Argue by induction on \(n\ge m\).
+
+For \(n=m\), Proposition~\ref{prop:cover-bound} gives
+\(\deg P\ge2k-\lfloor k/2^{m-1}\rfloor=2k\), which is the claim.
+
+For \(n+1>m\), identify the variables with \(\{x_0\}\cup\sigma\), where \(|\sigma|=n\).
+This relabelling preserves degree, and by Lemma~\ref{lem:mult-basic}(5) it
+preserves multiplicities at the relabelled points. Since
+\(k<2^{m-1}\le2^{n+1}\), Theorem~\ref{thm:step} gives a \(k\)-admissible \(S\) in
+\(n\) variables with \(\deg S+1\le\deg P\). The induction hypothesis bounds
+\(\deg S\).
+\end{proof}
+

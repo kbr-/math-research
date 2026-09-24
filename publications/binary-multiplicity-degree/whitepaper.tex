@@ -1,0 +1,80 @@
+% SPDX-License-Identifier: CC-BY-4.0
+% Copyright (c) 2026 Kamil Braun
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage[colorlinks=true,allcolors=blue,bookmarksnumbered=true]{hyperref}
+\hypersetup{
+  pdftitle={The minimum degree of binary polynomials vanishing to high order off the origin},
+  pdfauthor={Kamil Braun},
+  pdfsubject={Research preprint; not externally peer reviewed},
+  pdfkeywords={polynomial method, Hasse multiplicity, hypercube, finite fields, Lean}
+}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\newcommand{\leancommit}{0bb1f4101d1a4e47364ffc773b38edba6ea20ddb}
+\newcommand{\leanref}[2]{\href{https://github.com/kbr-/math-research/blob/\leancommit/formalization/#1}{#2}}
+\newcommand{\lean}[1]{\textnormal{\small\leanref{#1}{[Lean]}}}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Ft}{\mathbb F_2}
+\newcommand{\zero}{\mathbf 0}
+\DeclareMathOperator{\mult}{mult}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.15em}
+\title{The minimum degree of binary polynomials\\
+vanishing to high order off the origin}
+\author{Kamil Braun\\
+\href{mailto:kamilgbraun@gmail.com}{\texttt{kamilgbraun@gmail.com}}\\[0.6em]
+\small With substantial assistance from Claude and GPT models.\\
+\small More details in Section~\ref{sec:model-assistance}.}
+\date{Preprint, version 1\\24 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let \(D(n,k)\) be the least degree of a polynomial
+\(P\in\Ft[x_1,\ldots,x_n]\) that vanishes with (Hasse) multiplicity at least
+\(k\) at every nonzero point of \(\Ft^n\) and with multiplicity less than \(k\)
+at the origin. Bishnoi, Boyadzhiyska, Das and M\'esz\'aros asked whether
+\(D(n,k)\ge2k-\lfloor k/2^{n-1}\rfloor\) when \(k\ge2^{n-2}\); this bound
+follows for all \(n,k\) from the multiplicity Schwartz--Zippel lemma of Dvir,
+Kopparty, Saraf and Sudan. We determine \(D(n,k)\) exactly for all
+\(1\le k<3\cdot2^{n-1}\):
+\[
+ D(n,k)=2k+n-2-\lfloor\log_2k\rfloor .
+\]
+So the bound above is attained exactly when \(2^{n-2}\le k<3\cdot2^{n-1}\).
+Below \(2^{n-2}\) it is not attained, and each further dimension costs exactly
+one degree. For \(k<2^{n-1}\) the lower bound combines the
+multiplicity Schwartz--Zippel lemma with a one-dimension reduction that
+lowers the degree by one while keeping the origin order. The upper bound is a
+characteristic-two specialization of a Catalan truncation of Menezes, who
+determined the minimum for \(n\ge k-1\); a telescoping identity makes the
+construction work in every dimension. The main theorem and all its
+dependencies, including the multiplicity Schwartz--Zippel lemma, are
+formalized in Lean~4, and every statement links to its formal proof.
+\end{abstract}
+\clearpage
+\begingroup\small\tableofcontents\endgroup
+\newpage
+\input{sections/01-introduction}
+\input{sections/02-preliminaries}
+\input{sections/03-lower-bound}
+\input{sections/04-upper-bound}
+\input{sections/05-main-theorem}
+\input{sections/06-framework}
+\appendix
+\input{sections/07-verification}
+\input{references}
+\end{document}

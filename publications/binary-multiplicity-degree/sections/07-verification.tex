@@ -1,0 +1,101 @@
+% SPDX-License-Identifier: CC-BY-4.0
+\section{Formal-verification map and reproduction}\label{sec:verification}
+
+The arguments are complete in the body; reading them requires no Lean. This
+appendix locates the formal declarations and gives commands to check them. File
+paths are relative to \texttt{formalization/}. The table uses the prefix
+\texttt{MR.} for \nolinkurl{MathResearch.}; the external input lies under
+\nolinkurl{MathResearch.ThirdParty.}
+
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.65\textwidth}@{}}
+\toprule
+Paper statement & Lean file and declarations\\
+\midrule
+\endfirsthead
+\toprule
+Paper statement & Lean file and declarations\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Hasse multiplicity, Definition~\ref{def:mult}; Lemma~\ref{lem:mult-basic}
+& \leanref{claims/HasseMultiplicity.lean}{\nolinkurl{claims/HasseMultiplicity.lean}}\newline
+\nolinkurl{MR.HasseMultiplicity.mult}, \nolinkurl{coe_le_mult_iff}, \nolinkurl{min_le_mult_add},
+\nolinkurl{add_le_mult_mul}, \nolinkurl{mult_mul}, \nolinkurl{mult_eq_zero_iff}, \nolinkurl{mult_rename_equiv}\\
+Multiplicity Schwartz--Zippel \cite{DKSS13}, Theorem~\ref{thm:dkss}
+& \leanref{third-party-claims/MultiplicitySchwartzZippel.lean}{\nolinkurl{third-party-claims/MultiplicitySchwartzZippel.lean}}\newline
+\nolinkurl{MR.ThirdParty.MultiplicitySchwartzZippel.multiplicity_schwartz_zippel}\\
+Schwartz--Zippel bound over \(\Ft\), Proposition~\ref{prop:cover-bound}
+& \leanref{claims/BinaryMultiplicityCoverBound.lean}{\nolinkurl{claims/BinaryMultiplicityCoverBound.lean}}\newline
+\nolinkurl{MR.BinaryMultiplicityCoverBound.cover_bound}, \nolinkurl{cover_bound_of_origin}\\
+Linear substitutions, Lemma~\ref{lem:subst}; restriction, Lemma~\ref{lem:restrict}
+& \leanref{claims/OneDimensionStep.lean}{\nolinkurl{claims/OneDimensionStep.lean}}\newline
+\nolinkurl{MR.OneDimensionStep.homogeneousComponent_subst}, \nolinkurl{totalDegree_subst_le},
+\nolinkurl{subst_comp}, \nolinkurl{mult_zero_subst}, \nolinkurl{mult_subst}, \nolinkurl{mult_restrict}\\
+Avoiding a linear form, Lemma~\ref{lem:linear-form}
+& \leanref{claims/LinearFormAvoidance.lean}{\nolinkurl{claims/LinearFormAvoidance.lean}}\newline
+\nolinkurl{MR.LinearFormAvoidance.exists_linForm_not_dvd}, \nolinkurl{exists_subst_linForm_eq_X}\\
+One-dimension step, Theorem~\ref{thm:step}
+& \leanref{claims/OneDimensionStep.lean}{\nolinkurl{claims/OneDimensionStep.lean}}\newline
+\nolinkurl{MR.OneDimensionStep.one_dimension_step}\\
+Lower bound, Theorem~\ref{thm:lower}
+& \leanref{claims/BinaryMultiplicityLowerBound.lean}{\nolinkurl{claims/BinaryMultiplicityLowerBound.lean}}\newline
+\nolinkurl{MR.BinaryMultiplicityLowerBound.lower_bound}\\
+Digit sums, Lemma~\ref{lem:digits}
+& \leanref{claims/TruncatedProduct.lean}{\nolinkurl{claims/TruncatedProduct.lean}}\newline
+\nolinkurl{MR.TruncatedProduct.s2_add_le}, \nolinkurl{s2_two_pow}, \nolinkurl{s2_le_self},
+\nolinkurl{two_mul_add_s2_le}; \nolinkurl{MR.BinaryMultiplicityDegreeFormula.s2_two_pow_sub_one}\\
+Telescoping, Lemma~\ref{lem:telescope}; truncated product, Theorem~\ref{thm:truncated-product}
+& \leanref{claims/TruncatedProduct.lean}{\nolinkurl{claims/TruncatedProduct.lean}}\newline
+\nolinkurl{MR.TruncatedProduct.telescope}, \nolinkurl{g}, \nolinkurl{truncated_product}\\
+Per-order construction, Theorem~\ref{thm:per-order}
+& \leanref{claims/PerOrderConstruction.lean}{\nolinkurl{claims/PerOrderConstruction.lean}}\newline
+\nolinkurl{MR.PerOrderConstruction.per_order_construction}\\
+Formula below \(2^{n-1}\), Theorem~\ref{thm:main-formal}; upper bound of Theorem~\ref{thm:main}; Definition~\ref{def:admissible}
+& \leanref{claims/BinaryMultiplicityDegreeFormula.lean}{\nolinkurl{claims/BinaryMultiplicityDegreeFormula.lean}}\newline
+\nolinkurl{MR.BinaryMultiplicityDegreeFormula.Admissible}, \nolinkurl{degree_formula},
+\nolinkurl{degree_formula_exact}, \nolinkurl{degree_formula_of_lt_two_pow}\\
+Extended range, Corollary~\ref{cor:extended}; main theorem, Theorem~\ref{thm:main}
+& \leanref{claims/BinaryMultiplicityDegreeExtendedRange.lean}{\nolinkurl{claims/BinaryMultiplicityDegreeExtendedRange.lean}}\newline
+\nolinkurl{MR.BinaryMultiplicityDegreeExtendedRange.degree_formula_extended}\\
+\end{longtable}
+\endgroup
+
+\paragraph{Reading the formal statements.} In Lean, points are functions
+\(\mathrm{Fin}\,n\to\mathrm{ZMod}\,2\), degree is \texttt{MvPolynomial.totalDegree},
+and multiplicity is \nolinkurl{MR.HasseMultiplicity.mult}, the order of
+\(P(a+z)\) in \(\mathbb N_\infty\). The one-dimension step is stated for the
+variables \(\mathrm{Option}\,\sigma\), with \(\mathrm{none}\) playing the role of
+\(x_0\). The lower bound relabels \(\mathrm{Fin}(n+1)\) as
+\(\mathrm{Option}(\mathrm{Fin}\,n)\).
+
+\paragraph{Commands.} The project pins Lean \texttt{4.34.0-rc2} and Mathlib in
+\texttt{lakefile.lean} and \texttt{lake-manifest.json}. With
+\href{https://lean-lang.org/install/manual/}{elan}, Git and Python~3 installed:
+
+\begingroup\small
+\begin{verbatim}
+git clone https://github.com/kbr-/math-research.git bmd-check
+cd bmd-check
+git checkout --detach 0bb1f4101d1a4e47364ffc773b38edba6ea20ddb
+cd formalization
+export MATHLIB_NO_CACHE_ON_UPDATE=1
+lake exe cache get claims/BinaryMultiplicityDegreeExtendedRange.lean
+python3 verify.py --target claims/BinaryMultiplicityDegreeExtendedRange.lean \
+  --out verification.txt
+\end{verbatim}
+\endgroup
+
+The target imports every module in the table, so the build covers the whole
+chain, and its axiom report is transitive. The verifier builds the proofs, prints each listed
+declaration's type, and rejects unfinished proofs and nonstandard axioms. The
+expected axiom report for the main theorem is
+\begin{quote}\small\ttfamily
+'MathResearch.BinaryMultiplicityDegreeExtendedRange.\par
+degree\_formula\_extended' depends on axioms:\par
+[propext, Classical.choice, Quot.sound]
+\end{quote}
+These are Lean's standard foundations.
