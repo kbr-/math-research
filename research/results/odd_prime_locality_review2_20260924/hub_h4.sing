@@ -1,0 +1,38 @@
+// Route-review falsification test of conj:family-fall-locality on a new shape: a hub block reading three shared
+// coordinates, each linked to one other block.  Over F_3, four separately augmented complete accuracy-one ENS blocks
+// with h = 4 inputs, private coefficients: b on (x, y, w, 1 private); a on (x+1, 3 private); c on (y+1, 3 private);
+// d on (w+1, 3 private).  Cross set by the rule of conj:bounded-linkage-large-h: R for the parallel links ab, bc, bd;
+// no triple covers three translates.  Output: lowest degree t < DB of an element of (J:z) not in J (DB if none).
+// DB = 8 sees falls at degree <= 7.  Prediction stated before the run: no fall below 8 (linked pairs at h = 4 with R
+// fall first at 8).
+option(redSB);
+ring S = 3, (x, y, w, yb4, ya(2..4), yc(2..4), yd(2..4), ra(1..4), rb(1..4), rc(1..4), rd(1..4), z), dp;
+proc blockP(ideal L, ideal rr)
+{
+  poly P = 1; int i;
+  for (i = 1; i <= 4; i++) { P = P - rr[i]*(1 - L[i]^2); }
+  return(P);
+}
+proc blockI(ideal L, poly P)
+{
+  ideal I; int i;
+  for (i = 1; i <= 4; i++) { I = I, (1 - L[i]^2)*P; }
+  return(I);
+}
+ideal Lb = x, y, w, yb4;                    ideal Rb = rb(1..4);
+ideal La = x + 1, ya(2), ya(3), ya(4);      ideal Ra = ra(1..4);
+ideal Lc = y + 1, yc(2), yc(3), yc(4);      ideal Rc = rc(1..4);
+ideal Ld = w + 1, yd(2), yd(3), yd(4);      ideal Rd = rd(1..4);
+poly Pa = blockP(La, Ra); poly Pb = blockP(Lb, Rb); poly Pc = blockP(Lc, Rc); poly Pd = blockP(Ld, Rd);
+ideal F; int i;
+for (i = 1; i <= nvars(basering) - 1; i++) { F = F, var(i)^3 - var(i); }
+ideal Ga = std(blockI(La, Pa) + F); ideal Gb = std(blockI(Lb, Pb) + F);
+ideal Gc = std(blockI(Lc, Pc) + F); ideal Gd = std(blockI(Ld, Pd) + F);
+ideal Cross = Pa*Pb*((1 - La[1]^2) - (1 - Lb[1]^2)), Pb*Pc*((1 - Lb[2]^2) - (1 - Lc[1]^2)), Pb*Pd*((1 - Lb[3]^2) - (1 - Ld[1]^2));
+int DB = 8;
+ideal J = homog(F, z) + homog(Ga, z) + homog(Gb, z) + homog(Gc, z) + homog(Gd, z) + homog(Cross, z);
+degBound = DB; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+int lowest = DB; int k;
+for (k = 1; k <= ncols(Q); k++) { if (Q[k] != 0 && deg(Q[k]) < lowest) { if (reduce(Q[k], SJ) != 0) { lowest = deg(Q[k]); } } }
+print("SUB hub abcd DB=" + string(DB) + " lowest_fall=" + string(lowest));
+quit;
