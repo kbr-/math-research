@@ -1,0 +1,68 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.TruncatedProduct
+Claim file: claims/TruncatedProduct.lean
+Claim: lem:catalan-truncation-vanishing
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#catalan-truncation-vanishing
+Scope: Over F_2 = ZMod 2 with a finite variable type σ, for every s: the truncated product
+g_s = Σ_c ∏_i f_i(c_i), over maps c : σ → Option (Fin s) of cost Σ_{c_i = some j} 2^j ≤ s - 1, where
+f_i(none) = 1 + x_i and f_i(some j) = (x_i^2 + x_i)^(2^j), has Hasse multiplicity ≥ s at every nonzero
+point of F_2^σ, value 1 at the origin, and total degree ≤ |σ| + 2(s-1) - s_2(s-1) with s_2 the binary
+digit sum. The maps c with cost ≤ s - 1 correspond exactly to the notebook's pairs (S, a) with
+a_i ∈ T_s (powers of two ≤ s - 1) and Σ a_i ≤ s - 1 (c_i = some j ↔ i ∈ S, a_i = 2^j; j < s holds
+automatically), so this is the notebook's g_s. The degree-equality clause of the notebook's degree
+remark is not claimed (it is not used downstream).
+Declarations: MathResearch.TruncatedProduct.s2 MathResearch.TruncatedProduct.s2_add_le MathResearch.TruncatedProduct.s2_two_pow MathResearch.TruncatedProduct.s2_le_self MathResearch.TruncatedProduct.two_mul_add_s2_le MathResearch.TruncatedProduct.s2_sum_two_pow_le MathResearch.TruncatedProduct.telescope MathResearch.TruncatedProduct.g MathResearch.TruncatedProduct.prod_expansion MathResearch.TruncatedProduct.mult_g_ge MathResearch.TruncatedProduct.eval_zero_g MathResearch.TruncatedProduct.totalDegree_g_le MathResearch.TruncatedProduct.truncated_product
+$ lake --wfail build claims.TruncatedProduct
+✔ [1579/1579] Built claims.TruncatedProduct (1.9s)
+Build completed successfully (1579 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpk9aie3ai.lean
+MathResearch.TruncatedProduct.s2 : ℕ → ℕ
+'MathResearch.TruncatedProduct.s2' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.TruncatedProduct.s2_add_le : ∀ (a b : ℕ),
+  MathResearch.TruncatedProduct.s2 (a + b) ≤ MathResearch.TruncatedProduct.s2 a + MathResearch.TruncatedProduct.s2 b
+'MathResearch.TruncatedProduct.s2_add_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.TruncatedProduct.s2_two_pow : ∀ (j : ℕ), MathResearch.TruncatedProduct.s2 (2 ^ j) = 1
+'MathResearch.TruncatedProduct.s2_two_pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.TruncatedProduct.s2_le_self : ∀ (n : ℕ), MathResearch.TruncatedProduct.s2 n ≤ n
+'MathResearch.TruncatedProduct.s2_le_self' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.TruncatedProduct.two_mul_add_s2_le : ∀ {a b : ℕ},
+  a ≤ b → 2 * a + MathResearch.TruncatedProduct.s2 b ≤ 2 * b + MathResearch.TruncatedProduct.s2 a
+'MathResearch.TruncatedProduct.two_mul_add_s2_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.TruncatedProduct.s2_sum_two_pow_le : ∀ {ι : Type u_1} (S : Finset ι) (j : ι → ℕ),
+  MathResearch.TruncatedProduct.s2 (∑ i ∈ S, 2 ^ j i) ≤ S.card
+'MathResearch.TruncatedProduct.s2_sum_two_pow_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.TruncatedProduct.telescope : ∀ {R : Type u_1} [inst : CommRing R] [CharP R 2] (t : R) (K : ℕ),
+  ∑ j ∈ Finset.range K, (t ^ 2 + t) ^ 2 ^ j = t ^ 2 ^ K + t
+'MathResearch.TruncatedProduct.telescope' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.TruncatedProduct.g : {σ : Type u_1} → [Fintype σ] → [DecidableEq σ] → ℕ → MvPolynomial σ (ZMod 2)
+'MathResearch.TruncatedProduct.g' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.TruncatedProduct.prod_expansion : ∀ {σ : Type u_1} [inst : Fintype σ] [inst_1 : DecidableEq σ] (s : ℕ),
+  ∏ i, (1 + MvPolynomial.X i) ^ 2 ^ s = ∑ c, MathResearch.TruncatedProduct.term c
+'MathResearch.TruncatedProduct.prod_expansion' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.TruncatedProduct.mult_g_ge : ∀ {σ : Type u_1} [inst : Fintype σ] [inst_1 : DecidableEq σ] (s : ℕ)
+  (a : σ → ZMod 2), a ≠ 0 → ↑s ≤ MathResearch.HasseMultiplicity.mult a (MathResearch.TruncatedProduct.g s)
+'MathResearch.TruncatedProduct.mult_g_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.TruncatedProduct.eval_zero_g : ∀ {σ : Type u_1} [inst : Fintype σ] [inst_1 : DecidableEq σ] (s : ℕ),
+  (MvPolynomial.eval 0) (MathResearch.TruncatedProduct.g s) = 1
+'MathResearch.TruncatedProduct.eval_zero_g' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.TruncatedProduct.totalDegree_g_le : ∀ {σ : Type u_1} [inst : Fintype σ] [inst_1 : DecidableEq σ] (s : ℕ),
+  (MathResearch.TruncatedProduct.g s).totalDegree ≤
+    Fintype.card σ + 2 * (s - 1) - MathResearch.TruncatedProduct.s2 (s - 1)
+'MathResearch.TruncatedProduct.totalDegree_g_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.TruncatedProduct.truncated_product : ∀ {σ : Type u_1} [inst : Fintype σ] [inst_1 : DecidableEq σ] (s : ℕ),
+  (∀ (a : σ → ZMod 2), a ≠ 0 → ↑s ≤ MathResearch.HasseMultiplicity.mult a (MathResearch.TruncatedProduct.g s)) ∧
+    (MvPolynomial.eval 0) (MathResearch.TruncatedProduct.g s) = 1 ∧
+      (MathResearch.TruncatedProduct.g s).totalDegree ≤
+        Fintype.card σ + 2 * (s - 1) - MathResearch.TruncatedProduct.s2 (s - 1)
+'MathResearch.TruncatedProduct.truncated_product' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 13 audited declarations.

@@ -1,0 +1,139 @@
+claims/TruncatedProduct.lean:105:64: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a ^ ?n * ?a
+in the target expression
+  t ^ 2 ^ K + t + (t ^ (2 * 2 ^ K) + t ^ 2 ^ K) = t ^ 2 ^ (K + 1) + t
+
+case succ
+R : Type u_1
+inst✝¹ : CommRing R
+inst✝ : CharP R 2
+t : R
+K : ℕ
+ih : ∑ j ∈ Finset.range K, (t ^ 2 + t) ^ 2 ^ j = t ^ 2 ^ K + t
+⊢ t ^ 2 ^ K + t + (t ^ (2 * 2 ^ K) + t ^ 2 ^ K) = t ^ 2 ^ (K + 1) + t
+claims/TruncatedProduct.lean:142:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i_1, (X i ^ 2 + X i) ^ 2 ^ ↑i_1
+in the target expression
+  (1 + X i) ^ 2 ^ s =
+    (match
+        Option.map (fun j => j) do
+          let a ← none
+          pure ↑a with
+      | none => 1 + X i
+      | some j => (X i ^ 2 + X i) ^ 2 ^ j) +
+      ∑ i_1,
+        match
+          Option.map (fun j => j) do
+            let a ← some i_1
+            pure ↑a with
+        | none => 1 + X i
+        | some j => (X i ^ 2 + X i) ^ 2 ^ j
+
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+s : ℕ
+i : σ
+⊢ (1 + X i) ^ 2 ^ s =
+    (match
+        Option.map (fun j => j) do
+          let a ← none
+          pure ↑a with
+      | none => 1 + X i
+      | some j => (X i ^ 2 + X i) ^ 2 ^ j) +
+      ∑ i_1,
+        match
+          Option.map (fun j => j) do
+            let a ← some i_1
+            pure ↑a with
+        | none => 1 + X i
+        | some j => (X i ^ 2 + X i) ^ 2 ^ j
+claims/TruncatedProduct.lean:141:15: warning: This simp argument is unused:
+  Option.map_none
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Option.map_some, factor]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/TruncatedProduct.lean:141:32: warning: This simp argument is unused:
+  Option.map_some
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Option.map_none, factor]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/TruncatedProduct.lean:157:0: warning: automatically included section variable(s) unused in theorem `MathResearch.TruncatedProduct.le_mult_pow`:
+  [Fintype σ]
+  [DecidableEq σ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype σ] [DecidableEq σ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/TruncatedProduct.lean:173:4: error: Type mismatch
+  LE.le.trans (add_le_add_left ih (mult a ?m.72)) (add_le_mult_mul a (∏ i ∈ T, f i) ?m.72)
+[Error pretty printing: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)]
+claims/TruncatedProduct.lean:175:0: warning: automatically included section variable(s) unused in theorem `MathResearch.TruncatedProduct.le_mult_sum`:
+  [Fintype σ]
+  [DecidableEq σ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype σ] [DecidableEq σ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/TruncatedProduct.lean:185:0: warning: automatically included section variable(s) unused in theorem `MathResearch.TruncatedProduct.one_le_mult_y`:
+  [Fintype σ]
+  [DecidableEq σ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype σ] [DecidableEq σ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/TruncatedProduct.lean:191:0: warning: automatically included section variable(s) unused in theorem `MathResearch.TruncatedProduct.one_le_mult_one_add_X`:
+  [Fintype σ]
+  [DecidableEq σ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype σ] [DecidableEq σ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/TruncatedProduct.lean:205:33: warning: This simp argument is unused:
+  Option.map_some
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Option.elim_some, factor, Nat.cast_pow, Nat.cast_ofNat]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/TruncatedProduct.lean:225:12: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  CharP P2 2
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+claims/TruncatedProduct.lean:229:57: error: Function expected at
+  zero_le
+but this term has type
+  0 ≤ ?m.553
+
+Note: Expected a function because this term is being applied to the argument
+  _
+claims/TruncatedProduct.lean:260:2: error: unsolved goals
+case h₁
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+s : ℕ
+h : (fun x => none) ∉ {c | cost c ≤ s - 1}
+⊢ (fun x => none) ∈ {c | (∑ i, (c i).elim 0 fun j => 2 ^ ↑j) ≤ s - 1}
+claims/TruncatedProduct.lean:291:5: warning: `MvPolynomial.totalDegree_finset_prod` has been deprecated: Use `MvPolynomial.totalDegree_finsetProd` instead
+claims/TruncatedProduct.lean:266:8: warning: declaration uses `sorry`
+claims/TruncatedProduct.lean:278:17: warning: This simp argument is unused:
+  Option.map_none
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [factor, Option.elim_none]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/TruncatedProduct.lean:281:17: warning: This simp argument is unused:
+  Option.map_some
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [factor, Option.elim_some]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

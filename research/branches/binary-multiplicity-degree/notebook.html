@@ -11,11 +11,11 @@
 </section>
 <section id="remaining-route">
 <h2>The remaining route</h2>
-<ol><li data-route-item="formalization"><strong>Formalize the formula in Lean.</strong> Assigned 24 September 2026; the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a> orders the obligations down to multiplicity Schwartz–Zippel. Verified so far:<ul><li>that lemma over every field, with the multiplicity foundations (<a href="#entry-2026-09-24-lean-multiplicity-schwartz-zippel">Lean entry</a>);</li><li>the <a href="#entry-2026-09-24-lean-linear-form-avoidance">linear-form avoidance lemma</a> the step needs.</li></ul>Next highest-risk item: the truncated product.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li><li data-route-item="low-origin-degree"><strong>Optional: per-order values below \(n=k-1\).</strong> The formula for \(D\) is proved. The per-order lower bound \(\delta(n,k,\ell)\ge n+2k-2-s_2(k-\ell-1)\) for \(m(k)\le n&lt;k-1\) is open for the orders that do not attain \(D\); the goal does not need it.</li></ol>
+<ol><li data-route-item="formalization"><strong>Formalize the formula in Lean.</strong> Assigned 24 September 2026; the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a> orders the obligations down to multiplicity Schwartz–Zippel. The three highest-risk items are verified:<ul><li>that lemma over every field (<a href="#entry-2026-09-24-lean-multiplicity-schwartz-zippel">Lean entry</a>);</li><li>the <a href="#entry-2026-09-24-lean-linear-form-avoidance">linear-form avoidance lemma</a>;</li><li>the <a href="#entry-2026-09-24-lean-truncated-product">truncated product</a>.</li></ul>Remaining: the note's arithmetic, the substitution facts, the step, the lower bound, the per-order construction and the assembly.</li><li>the <a href="#entry-2026-09-24-lean-linear-form-avoidance">linear-form avoidance lemma</a> the step needs.</li></ul>Next highest-risk item: the truncated product.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li><li data-route-item="low-origin-degree"><strong>Optional: per-order values below \(n=k-1\).</strong> The formula for \(D\) is proved. The per-order lower bound \(\delta(n,k,\ell)\ge n+2k-2-s_2(k-\ell-1)\) for \(m(k)\le n&lt;k-1\) is open for the orders that do not attain \(D\); the goal does not need it.</li></ol>
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: formalization. Formalize M13 of the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a>, the <a href="#catalan-truncation-vanishing">truncated product</a> \(g_s\) over \(\mathbb F_2\). It needs the telescoping identity \((1+x)+\sum_{j\le J}y^{2^j}=(1+x)^{2^{J+1}}\), the split \(\prod_iN_s(x_i)=g_s+R\), multiplicity at least \(s\) off the origin, \(g_s(0)=1\), and the degree bound \(n+2(s-1)-s_2(s-1)\). It also needs the elementary factor bounds (M03) and the binary digit facts (M12). The note's content and any correspondence remain the user's decision.</p>
+<p>Route item: formalization. Continue the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a> with the upper-bound branch, which now needs only M14: \(y_1^\ell g_{k-\ell}\) has multiplicity at least \(k\) off the origin, origin order exactly \(\ell\) (additivity over a domain and \(g(0)=1\)), and degree \(2\ell+\deg g_{k-\ell}\). Then do the note's deduction M07 on top of Schwartz–Zippel. The step M10 needs the substitution facts M08 and is the last large item before M11 and the assembly M15. The note's content and any correspondence remain the user's decision.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -476,6 +476,53 @@
 <tr><td>Individually measured formal verification</td><td class="elapsed">14.38 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-09-24-lean-truncated-product" data-kind="formalization" data-route="formalization" data-claims="lem:catalan-truncation-vanishing">
+<h3>24 September 2026 — Lean: the truncated product vanishes to order s off the origin</h3>
+<p class="entry-meta">Formalized: lem:catalan-truncation-vanishing for every s and every finite variable set (route item M13, with M03 and M12). <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Assignment and endpoint.</strong> This is the third of the three highest-risk route items. It is the <a href="#catalan-truncation-vanishing">truncated product lemma</a> behind the upper bound. The endpoint was a verified Lean proof of the indexed statement. Over \(\mathbb F_2\), \(g_s\) has multiplicity at least \(s\) at every nonzero point, \(g_s(0)=1\), and \(\deg g_s\le n+2(s-1)-s_2(s-1)\).</p>
+<h4 id="lean-truncated-product">The formalized statement</h4>
+<p><strong>Encoding of \(g_s\).</strong> In Lean, \(g_s\) is a sum over choice maps \(c:\sigma\to\mathrm{Option}\,(\mathrm{Fin}\,s)\) of cost \(\sum_{c_i=j}2^j\le s-1\), of the products \(\prod_if_i(c_i)\), where \(f_i(\text{none})=1+x_i\) and \(f_i(j)=y_i^{2^j}\). These maps correspond exactly to the notebook's pairs \((S,a)\) with every \(a_i\) a power of two at most \(s-1\) and \(\sum a_i\le s-1\): take \(i\in S\) and \(a_i=2^j\) when \(c_i=j\). The bound \(j&lt;s\) is automatic, because \(2^j\le s-1&lt;2^s\). The digit sum \(s_2\) is the sum of Mathlib's binary digits. The theorem <code>TruncatedProduct.truncated_product</code> holds for every \(s\) and every finite \(\sigma\), with \(n=|\sigma|\).</p>
+<h4>The proof, as formalized</h4>
+<p>The proof is the notebook's, with one simplification: \(j\) runs over all of \(\mathrm{Fin}\,s\), not only over \(2^j\le s-1\).</p>
+<p><strong>Telescoping.</strong> In characteristic two, \(\sum_{j&lt;K}(t^2+t)^{2^j}=t^{2^K}+t\), by Frobenius and induction. With \(t=1+x\) we have \(t^2+t=x^2+x=y\), so \((1+x)+\sum_{j&lt;s}y^{2^j}=(1+x)^{2^s}\).</p>
+<p><strong>Expansion.</strong> By <code>Finset.prod_univ_sum</code>, \(\prod_i(1+x_i)^{2^s}\) is the sum of the products \(\prod_if_i(c_i)\) over all choice maps. Splitting by cost gives \(g_s+R\), where \(R\) collects the maps of cost at least \(s\). This includes every map that uses some \(2^j&gt;s-1\).</p>
+<p><strong>Multiplicity off the origin.</strong></p>
+<ul>
+<li><strong>Each term of \(R\).</strong> Every \(y_i\) has multiplicity at least 1 at every point of \(\mathbb F_2^\sigma\), since \(a^2+a=0\) on \(\mathbb F_2\). Multiplicity is superadditive on products and powers. So each term of \(R\) has multiplicity at least its cost, which is at least \(s\).</li>
+<li><strong>\(R\) itself.</strong> A sum has multiplicity at least the minimum over its terms, so \(R\) also has multiplicity at least \(s\).</li>
+<li><strong>The product.</strong> At a nonzero \(a\), pick \(a_{i_0}=1\). Then \(1+x_{i_0}\) vanishes at \(a\), so \((1+x_{i_0})^{2^s}\) has multiplicity at least \(2^s\ge s\), and so does the product.</li>
+</ul>
+<p>In characteristic two \(g_s\) equals the product plus \(R\), so \(g_s\) has multiplicity at least \(s\).</p>
+<p><strong>Value at the origin.</strong> Only the all-\(\text{none}\) map survives evaluation at \(0\), and its term is \(\prod(1+0)=1\).</p>
+<p><strong>Degree.</strong> A term has degree at most \((n-|S|)+2\cdot\mathrm{cost}\). Writing the cost as a sum of \(|S|\) powers of two forces \(|S|\ge s_2(\mathrm{cost})\), by \(s_2(a+b)\le s_2(a)+s_2(b)\) and \(s_2(2^j)=1\). The map \(\sigma\mapsto2\sigma-s_2(\sigma)\) is monotone, stated without subtraction as \(2a+s_2(b)\le2b+s_2(a)\) for \(a\le b\) and proved from \(s_2(m+1)\le s_2(m)+1\). With cost at most \(s-1\), this gives the bound. The digit-sum facts are proved by strong induction on \(s_2(m)=m\bmod2+s_2(\lfloor m/2\rfloor)\) (route item M12). Mathlib has none of them.</p>
+<p><strong>Files.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/TruncatedProduct.lean"><code>claims/TruncatedProduct.lean</code></a> has 13 audited declarations and imports the multiplicity foundations. It passes <code>verify.sh</code> with only the standard axioms; the report is in <code>research/results/bmd-f3-truncated-product/lean-verification.txt</code>.</p>
+<p><strong>General statement.</strong> <code>lem:catalan-truncation-vanishing</code>, now formalized in full.</p>
+<p><strong>Verification gate.</strong> The indexed statement and the notebook's lemma and proof were re-read before drafting. The printed Lean type states the three conclusions for every \(s\), which also covers the claim's range \(s\ge1\). The encoding of \(g_s\) was checked against the notebook's sum over \((S,a)\), as above. The notebook's degree-equality clause was never part of the indexed claim, is not used downstream, and is not formalized. The proof is checked by Lean.</p>
+<p><strong>Remaining route and process assessment.</strong> The three highest-risk items are done: M06, M09 and M13, with M01, M03, M05 and M12 as far as they need. What remains for the target is short:</p>
+<ul>
+<li>M07, the note's arithmetic;</li>
+<li>M08, the substitution's degree and multiplicity;</li>
+<li>M10, the step;</li>
+<li>M11, the lower bound;</li>
+<li>M14, \(y_1^\ell g_{k-\ell}\);</li>
+<li>M15, the assembly.</li>
+</ul>
+<p>Process: this module needed three rounds of API fixes, mostly renamed lemmas and a missing instance import, and no mathematical change. No framework change is needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-f3-truncated-product">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 4.19 s</strong></td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">3 min 40.21 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 26.66 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">14.78 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">42.41 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 5.</p>
 </div>
 </article>
 </section>

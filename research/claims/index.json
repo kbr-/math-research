@@ -186996,20 +186996,32 @@
       "id": "lem:catalan-truncation-vanishing",
       "summary": "Over F_2, g_s = sum over S and powers of two a_i (i in S) with sum a_i <= s-1 of prod y_i^(a_i) prod_(j notin S)(1+x_j), y_i = x_i^2+x_i, has Hasse multiplicity >= s at every nonzero cube point, g_s(0) = 1, and degree <= n+2(s-1)-s_2(s-1).",
       "assessment": "Working proof: N_s = (1+x)+sum y^(2^j) telescopes to (1+x)^(2^(J+1)), and prod N_s(x_i) - g_s has multiplicity >= s everywhere; degree by the binary digit count. Menezes' Catalan truncation specialized to F_2; fresh-context review found no gap.",
-      "record": "[Construction and full formula](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-catalan-construction)",
+      "record": "[Construction and full formula](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-catalan-construction), [Lean formalization](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-lean-truncated-product)",
       "mathematical_status": "working_proof",
       "formalization": {
-        "status": "not_started",
-        "scope": "Informal proof or computation; no Lean verification.",
+        "status": "complete",
+        "scope": "Complete Lean proof of all three conclusions (multiplicity >= s at nonzero points of F_2^n, g_s(0) = 1, degree <= n + 2(s-1) - s_2(s-1)) for every s and every finite variable type; g_s encoded by choice maps into Option (Fin s), equivalent to the notebook's sum over (S, a).",
         "references": [
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#catalan-truncation-vanishing",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#catalan-truncation-per-order-construction",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-multiplicity-degree-formula-theorem",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#power-of-two-factor-construction",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#catalan-truncation-exact-verification",
-          "results/binary-multiplicity-degree/c8-construction/summary.txt"
+          "../formalization/claims/TruncatedProduct.lean",
+          "../formalization/claims/HasseMultiplicity.lean",
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-lean-truncated-product"
         ],
-        "artifacts": []
+        "artifacts": [
+          {
+            "scope": "Truncated product: vanishing, value at the origin and degree bound, with binary digit-sum lemmas and the characteristic-two telescoping identity.",
+            "status": "complete",
+            "references": [
+              "../formalization/claims/TruncatedProduct.lean"
+            ],
+            "declarations": [
+              "MathResearch.TruncatedProduct.truncated_product",
+              "MathResearch.TruncatedProduct.mult_g_ge",
+              "MathResearch.TruncatedProduct.eval_zero_g",
+              "MathResearch.TruncatedProduct.totalDegree_g_le"
+            ],
+            "verification": "results/bmd-f3-truncated-product/lean-verification.txt"
+          }
+        ]
       },
       "topics": [
         "degree-accounting"
@@ -187032,12 +187044,12 @@
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "b3dfd627c8d952109be67839726d1d16565b8c72",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "Status checked against the entry and its verification gate.",
           "next_action": null,
-          "claim_sha256": "3351bad2cd934b2ffcd3a24e998d0e8bc87178c054d4fde379f0114454757ff5",
+          "claim_sha256": "a10191b814abe23c7ce2a6877b67f501114a533242995d8fb51b3b46ac6bad1a",
           "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
           "evidence": [
             {
@@ -187069,13 +187081,13 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "b3dfd627c8d952109be67839726d1d16565b8c72",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
-          "note": "No Lean artifact.",
+          "reviewer": "Claude Code (Opus 5.5)",
+          "note": "No Lean artifact. Formalized in full in Lean in the truncated product entry; record links it.",
           "next_action": null,
-          "claim_sha256": "3351bad2cd934b2ffcd3a24e998d0e8bc87178c054d4fde379f0114454757ff5",
-          "value_sha256": "ea326df73308681b465f173bd1903a05e7f4bd3df305f6da6f26673a185a369c",
+          "claim_sha256": "a10191b814abe23c7ce2a6877b67f501114a533242995d8fb51b3b46ac6bad1a",
+          "value_sha256": "d9ea4d08d9074da04c843ae51df3ed4c2ad9eff343e16b058196834dddf45af3",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#catalan-truncation-vanishing",
@@ -187106,12 +187118,12 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "b3dfd627c8d952109be67839726d1d16565b8c72",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "Topics checked against the entry.",
           "next_action": null,
-          "claim_sha256": "3351bad2cd934b2ffcd3a24e998d0e8bc87178c054d4fde379f0114454757ff5",
+          "claim_sha256": "a10191b814abe23c7ce2a6877b67f501114a533242995d8fb51b3b46ac6bad1a",
           "value_sha256": "c77a2b25ecfcfe121fba78df653f060d42a3c2d21a5921fe71b12ec7e76a788f",
           "evidence": [
             {
@@ -187143,12 +187155,12 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "b3dfd627c8d952109be67839726d1d16565b8c72",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "Significance assessed at this checkpoint.",
           "next_action": null,
-          "claim_sha256": "3351bad2cd934b2ffcd3a24e998d0e8bc87178c054d4fde379f0114454757ff5",
+          "claim_sha256": "a10191b814abe23c7ce2a6877b67f501114a533242995d8fb51b3b46ac6bad1a",
           "value_sha256": "8a6beab38a6bf7fe9a1cb6bd6e9e439b6a2c299a1905133353dcdefc7ef038f4",
           "evidence": [
             {
@@ -187180,12 +187192,12 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "b3dfd627c8d952109be67839726d1d16565b8c72",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "New claim; relationships recorded.",
           "next_action": null,
-          "claim_sha256": "3351bad2cd934b2ffcd3a24e998d0e8bc87178c054d4fde379f0114454757ff5",
+          "claim_sha256": "a10191b814abe23c7ce2a6877b67f501114a533242995d8fb51b3b46ac6bad1a",
           "value_sha256": "5d5c8594ad09d8e4c4254b857139f6c8b49aa7898e8ab2cba96cd655f2487d8b",
           "evidence": [
             {
