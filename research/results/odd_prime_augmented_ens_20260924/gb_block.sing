@@ -1,0 +1,27 @@
+// Reduced degree-order Groebner basis of one complete accuracy-one ENS block over F_3
+// (inputs y_i, coefficients r_i, q_i = 1 - y_i^2, P = 1 - sum r_i q_i, companions q_i P)
+// together with the field equations; prints each element's degree and the bidegrees
+// (y-degree, r-degree) of the monomials of its top-degree form.
+option(redSB);
+int h = HH;
+ring R = 3, (y(1..h), r(1..h)), dp;
+poly P = 1;
+int i; int k;
+for (i = 1; i <= h; i++) { P = P - r(i) * (1 - y(i)^2); }
+ideal I;
+for (i = 1; i <= h; i++) { I = I, (1 - y(i)^2) * P; }
+for (i = 1; i <= h; i++) { I = I, y(i)^3 - y(i), r(i)^3 - r(i); }
+ideal G = std(I);
+G = simplify(G, 2);
+int n = ncols(G);
+intvec wy = 1:h; wy = wy, 0:h;
+intvec wr = 0:h; wr = wr, 1:h;
+for (i = 1; i <= n; i++) {
+  poly g = G[i]; int dg = deg(g); poly t = jet(g, dg) - jet(g, dg - 1);
+  string bd = "";
+  for (k = 1; k <= size(t); k++) { bd = bd + "(" + string(deg(t[k], wy)) + "," + string(deg(t[k], wr)) + ")"; }
+  print("GEN deg=" + string(dg) + " top=" + string(t) + " bideg=" + bd);
+  kill g; kill dg; kill t; kill bd;
+}
+print("VDIM " + string(vdim(G)));
+quit;
