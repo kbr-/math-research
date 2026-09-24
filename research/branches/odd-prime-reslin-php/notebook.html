@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Family locality with the cross generators \(R\) and \(T\) (conj:family-fall-locality) is the open case the band needs. One block's top ideal, the ideals of its \(P\)-top and the powers of \(x\) pass the distributive law at \(h=3,4\), also after closing under \(x\) and colon by \(x\) (<a href="#entry-2026-09-24-block-distributivity">block distributivity</a>). That is necessary for the common adapted basis the repaired-star argument lacked. Next: prove or refute that distributivity of this \(x\)-closed lattice gives a common adapted basis over \(\mathbb F_3[x]/(x^n)\). Then redo the routing of the four- and five-block pair syzygies of the repaired-star attempt.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Family locality with the cross generators \(R\) and \(T\) (conj:family-fall-locality) is the open case the band needs. The repaired-star argument lacked a basis of each block's algebra adapted at once to its top ideal and to the ideals of its \(P\)-top. The <a href="#entry-2026-09-24-adapted-basis-criterion">adapted-basis criterion</a> makes that two finite checks on the nine colon ideals: meets commute with reduction modulo \(x\), and the reductions generate a distributive lattice. Next: decide both for one block at \(h=3,4\). If they hold, redo the routing of the repaired-star attempt in the product of these bases.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -18358,6 +18358,92 @@ Whether distributivity of this closed family gives a common adapted basis over t
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">50.45 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">40.41 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-adapted-basis-criterion" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:adapted-basis-criterion">
+<h3>Adapted-basis criterion: submodules of a free module over k[x]/(xⁿ) have a common adapted basis exactly when their colon modules and xF generate a distributive lattice</h3>
+<p class="entry-meta">24 September 2026 · Working proof · cycle odd-prime-chain-ring-bases.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-block-distributivity">block distributivity</a> entry checked a necessary condition for a common adapted basis of one block's ideals over \(S=\mathbb F_3[x]/(x^3)\). Its reviewer showed that distributivity together with the powers of \(x\) is not sufficient. This cycle proves an exact criterion over \(k[x]/(x^n)\). The criterion turns the question the repaired-star argument needs into a lattice check on nine colon ideals, instead of a search over bases.</p>
+<p><strong>General statement.</strong> lem:adapted-basis-criterion. Let \(S=k[x]/(x^n)\), with \(k\) a field. Let \(F\) be a finitely generated free \(S\)-module of rank \(m\), and \(\Sigma\) a finite family of submodules. Let \(\mathcal C=\{(M:x^j): M\in\Sigma,\ 0\le j\le n\}\), let \(V=F/xF\), and let \(\varphi(A)=(A+xF)/xF\). The following are equivalent.</p>
+<ol type="a">
+<li>The members of \(\Sigma\) have a common adapted basis: \(F=\bigoplus_iSe_i\) with \(M=\bigoplus_ix^{a_i(M)}Se_i\) for every \(M\in\Sigma\).</li>
+<li>Two conditions hold:
+<ul>
+<li>(i) \(\varphi\) preserves finite intersections of members of \(\mathcal C\);</li>
+<li>(ii) the subspaces \(\varphi(C)\), \(C\in\mathcal C\), generate a distributive lattice of subspaces of \(V\).</li>
+</ul></li>
+<li>\(\mathcal C\cup\{xF\}\) generates a distributive lattice of submodules of \(F\).</li>
+</ol>
+<p>The graded version holds with homogeneous bases: \(S\) graded with \(x\) homogeneous, \(F\) graded free, and the members of \(\Sigma\) graded.</p>
+
+<h4>A classical fact</h4>
+<p>A finite family of subspaces of a finite-dimensional vector space \(V\) that generates a distributive lattice has a common adapted basis.</p>
+<p><em>Proof.</em> Adjoin \(0\) and \(V\), which keeps the lattice \(L\) distributive.</p>
+<ol>
+<li>For each join-irreducible \(a\in L\), with lower cover \(a_-\), choose a complement \(U_a\) of \(a_-\) in \(a\).</li>
+<li>For a cover \(c\lessdot d\) in \(L\) there is a unique join-irreducible \(a\) with \(a\le d\) and \(a\not\le c\). Distributivity gives \(d=c+a\) and \(c\cap a=a_-\), so \(\dim d-\dim c=\dim U_a\).</li>
+<li>Along a maximal chain from 0 to \(b\), this gives \(\dim b=\sum_{a\le b}\dim U_a\). By induction on \(b\), \(b=\sum_{a\le b}U_a\), so this sum is direct.</li>
+<li>Take bases of the \(U_a\). Their union is a basis of \(V\), and it contains a basis of every \(b\in L\). \(\square\)</li>
+</ol>
+<p>In the graded case the lattice of degree-\(d\) components is a homomorphic image, so it is distributive. Apply the fact in each degree.</p>
+
+<h4>Proof of the criterion</h4>
+<p><em>(b) implies (a).</em></p>
+<ol>
+<li><em>A basis of \(V\).</em> For \(M\in\Sigma\) put \(W_j(M)=\varphi((M:x^j))\). These increase with \(j\), and \(W_n(M)=V\) since \((M:x^n)=F\). By (ii) and the classical fact, the finitely many \(\varphi(C)\) have a common adapted basis \(\bar e_1,\dots,\bar e_m\) of \(V\), homogeneous in the graded case.</li>
+<li><em>Lifts.</em> For each \(i\) let \(E_i\) be the intersection of those \(C\in\mathcal C\) with \(\bar e_i\in\varphi(C)\). By (i), \(\varphi(E_i)=\bigcap\varphi(C)\ni\bar e_i\). So some \(e_i\in E_i\), homogeneous in the graded case, reduces to \(\bar e_i\). By Nakayama's lemma, \(e_1,\dots,e_m\) is a basis of \(F\).</li>
+<li><em>Candidates.</em> For \(M\in\Sigma\) let \(a_i=\min\{j:\bar e_i\in W_j(M)\}\le n\). Then \(e_i\in E_i\subseteq(M:x^{a_i})\), so \(x^{a_i}e_i\in M\). Hence \(M'=\bigoplus_ix^{a_i}Se_i\subseteq M\), where \(a_i=n\) gives a zero summand.</li>
+<li><em>Equality.</em> Let \(G_j(N)=(N\cap x^jF+x^{j+1}F)/x^{j+1}F\) for \(j&lt;n\).
+<ul>
+<li>Since \(F\) is free, multiplication by \(x^j\) induces an isomorphism \(V\to x^jF/x^{j+1}F\). It carries \(W_j(M)\) onto \(G_j(M)\). If \(x^jv=m+x^{j+1}w\) with \(m\in M\), then \(v-xw\in(M:x^j)\) and has the same residue as \(v\).</li>
+<li>\(W_j(M)\) is spanned by the \(\bar e_i\) it contains, and \(\bar e_i\in W_j(M)\) exactly when \(a_i\le j\). So \(G_j(M')\supseteq G_j(M)\). From \(M'\subseteq M\), also \(G_j(M')\subseteq G_j(M)\), so the two are equal.</li>
+<li>The length of \(F/N\) is \(\sum_{j&lt;n}(m-\dim G_j(N))\). So \(M'\) and \(M\) have the same colength, and \(M'=M\).</li>
+</ul></li>
+</ol>
+<p><em>(a) implies (c).</em> In a common adapted basis every \(M\) is monomial, and so are its colons \((M:x^j)=\bigoplus x^{\max(a_i-j,0)}Se_i\) and \(xF\). Intersections and sums of monomial modules are monomial, with the larger and the smaller exponents. So the lattice generated by \(\mathcal C\cup\{xF\}\) embeds in a product of chains, and it is distributive.</p>
+<p><em>(c) implies (b).</em> Let \(\Lambda\) be the lattice generated by \(\mathcal C\cup\{xF\}\).</p>
+<ul>
+<li>Distributivity gives \((A\cap B)+xF=(A+xF)\cap(B+xF)\) for \(A,B\in\Lambda\), and (i) follows by induction on the number of members.</li>
+<li>\(A\mapsto A+xF\) always preserves sums, and by the same identity it preserves meets. So it is a lattice homomorphism from \(\Lambda\) onto a distributive lattice of subspaces of \(V\). The lattice generated by the \(\varphi(C)\) is a sublattice of that image, which gives (ii). \(\square\)</li>
+</ul>
+
+<h4>The two counterexamples</h4>
+<ul>
+<li>The leaf reduction's example is over \(k[x]/(x^2)\), with \(F=Se_1\oplus Se_2\), \(M=S(e_1+xe_2)\) and \(P=Se_1\). Here (i) fails: \(M\cap P=Sxe_1\) has \(\varphi=0\), but \(\varphi(M)\cap\varphi(P)=\langle\bar e_1\rangle\). Condition (ii) holds: the \(\varphi(C)\) are \(\langle\bar e_1\rangle\) and \(V\), since \((P:x)=Se_1+xSe_2\) and \((M:x)=F\). So (ii) does not imply (i).</li>
+<li>The distributivity reviewer's example is over \(k[x]/(x^n)\), \(n\ge2\), with \(F=Se_1\oplus Se_2\), \(M=Se_1+xF\), \(N=Se_2\) and \(P=Sx(e_1+e_2)\). Here (ii) fails. We have \((N:x)=Se_2+x^{n-1}Se_1\) and \((P:x)=S(e_1+e_2)+x^{n-1}F\). So \(\varphi(M)=\langle\bar e_1\rangle\), \(\varphi((N:x))=\langle\bar e_2\rangle\) and \(\varphi((P:x))=\langle\bar e_1+\bar e_2\rangle\): three lines in a plane.</li>
+</ul>
+<p>Only colons enter the criterion, not multiples \(x^jM\). Checking the distributive law on triples of generators is not enough. In \(k^3\) the lines \(\langle e_1\rangle,\langle e_2\rangle,\langle e_3\rangle,\langle e_1+e_2+e_3\rangle\) pass it on every three but generate a lattice that is not distributive.</p>
+
+<h4>What this gives for the cross-generator case</h4>
+<p>For one block, take \(\Sigma=\{\mathfrak n,\ \rho'A,\ x\rho''A\}\) in its truncated algebra \(A\), which is free over \(S=\mathbb F_3[x]/(x^3)\). Here \(\mathfrak n\) is the block's top ideal, written \(n\) in the earlier entries. The criterion reduces the basis that the repaired-star argument needs to one distributivity check on the nine colon ideals \((M:x^j)\), \(j=0,1,2\), together with \(xA\). Equivalently, it reduces to (i) on at most \(2^9\) meets and (ii) on nine subspaces of \(A/xA\). The colons are ideals of \(A\), and the \(\varphi(C)\) are ideals containing \(xA\). So these are ideal computations of the kind already run. The earlier distributivity checks tested triples of generators only, which does not decide (c).</p>
+<p>Next: decide (i) and (ii) for one block at \(h=3,4\). If both hold, the criterion gives the basis. Then redo the routing of the four- and five-block pair syzygies of the repaired-star attempt in the product of these bases.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the block distributivity entry and its reviewer's counterexample, the leaf reduction's counterexample, the repaired-star attempt (what its step 1 needs), and lem:p-top-summand. A claim search for adapted bases, distributive lattices and chain rings found only the entries of this line.</p>
+<p>With \(O=k[[x]]\), submodules of \(F\) are \(O\)-lattices \(L\) with \(x^nO^m\subseteq L\subseteq O^m\). A common adapted basis is an apartment of the Bruhat–Tits building of \(\mathrm{GL}_m(k((x)))\) containing all \(L_M\) and \(O^m\), and \((M:x^j)\) corresponds to \(x^{-j}L_M\cap O^m\). Criteria for lattices to lie in a common apartment are likely classical. No source was checked, so no novelty is claimed.</p>
+<p>A fresh-context reviewer found no mathematical error and no unused hypothesis. It required these changes, all adopted:</p>
+<ul>
+<li>a proof of the classical field fact;</li>
+<li>the identification of \(W_j(M)\) with \(G_j(M)\) made precise;</li>
+<li>the sufficient form stated as an equivalence, with its converse;</li>
+<li>the index renamed and \(\mathfrak n\) distinguished from the exponent \(n\);</li>
+<li>the counterexamples' ambient data, and which condition each satisfies;</li>
+<li>the graded setup;</li>
+<li>the wording of the cross-generator section;</li>
+<li>the exact dictionary with the building.</li>
+</ul>
+<p>The equivalence adds the converse (a) implies (c), which follows directly from the monomial description. The other changes clarify, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-chain-ring-bases">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 4.29 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 19.66 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 44.50 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
