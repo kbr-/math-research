@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Non-locality does not break closed freeness in range. An inconsistent pair of budget clauses at \(N=24\), \(D=3\) is visibly non-local and still row-free, and seeded stability covers small clusters with any allowed values (<a href="#entry-2026-09-24-closure-route-review">closure route review</a>). The open danger is chaining. Next: an in-range test of inconsistent chains at \(D=3\), \(N=24\). Use width-2 clauses whose consecutive members share a form with incompatible values, with chain lengths up to beyond the joint-freeness threshold of about 10 forms, against consistent chains and the base.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Hypothesis (a) over the closed base, closed row freeness for entangled column constraints, cannot be decided in range at \(D=3\). Non-local pairs and inconsistent chains pass wherever the density is not extreme (<a href="#entry-2026-09-24-closure-route-review">review</a>, <a href="#entry-2026-09-24-inconsistent-chains">chains</a>). Next: turn to the generic members' hypotheses over the closed base \(B^\sharp\). These are (b), conj:closed-base-splitting, and (c), each generic member alone without falls over \(B^\sharp\), neither examined since the <a href="#entry-2026-09-24-closed-base-review">closed-base review</a>. Re-read their recorded checks, then design a test of (c) that the faster direct-sum kernel or its row-dependent extension can decide.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -14698,6 +14698,54 @@ Always \(\Delta_d\le0\).</li>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-inconsistent-chains" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Inconclusive in-range test: the only failure, the length-12 inconsistent chain, has an allowed set of about 95 points, so inconsistency and sparseness are confounded; no claim is registered. The entry also records a faster, revalidated version of the direct-sum kernel.">
+<h3>Inconsistent chains in range: only the sparsest chain fails, so the test cannot separate inconsistency from sparseness</h3>
+<p class="entry-meta">24 September 2026 · Inconclusive finite test and a kernel speedup · Chains of width-2 budget clauses at N = 24, D = 3; cycle odd-prime-inconsistent-chains.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-closure-route-review">closure route review</a> named chained small dependencies as the open danger for thm:global-closure-gluing's hypothesis on the budget. It asked whether chains of inconsistent links break closed row freeness in range, against consistent chains and the base.</p>
+<p><strong>General statement.</strong> The claim under test is the hypothesis of thm:global-closure-gluing for chains. Chains of 2, 4 and 8 inconsistent width-2 links pass at \(N=24\), \(D=3\). The chain of 12 fails with excess 1 in degree 2, while the consistent chain of 12 passes. But inconsistency propagates along the chain. The inconsistent chain of 12 allows a fraction \(1.7\cdot10^{-5}\) of the forms' values, about 95 points of the slice, against 0.0069 for the consistent chain. So the failure is confounded with extreme sparseness, the covering regime. No claim is registered.</p>
+
+<h4>The test</h4>
+<p>Forms \(f_0,\dots,f_L\) are independent dense random column forms. Clause \(i\) allows \(f_{i-1}=u\) or \(f_i=v\), with \((u,v)=(0,1)\) for inconsistent links and \((0,0)\) for consistent ones. The kernel inputs are written by <code>chain_inputs.py</code> and run by <code>run_chains.sh</code> (<code>chains_N24_D3.json</code>).</p>
+<table>
+<tr><th>\(L\)</th><th>consistent: dims, excess</th><th>inconsistent: dims, excess</th><th>allowed fraction (inc / con)</th></tr>
+<tr><td>2</td><td>1, 47, 1054, 14996; 0, 0, 0</td><td>1, 47, 1053, 14950; 0, 0, 0</td><td>0.259 / 0.407</td></tr>
+<tr><td>4</td><td>1, 47, 1052, 14904; 0, 0, 0</td><td>1, 47, 1046, 14639; 0, 0, 0</td><td>0.045 / 0.177</td></tr>
+<tr><td>8</td><td>1, 47, 1048, 14720; 0, 0, 0</td><td>1, 47, 1020, 13565; 0, 0, 0</td><td>0.00097 / 0.035</td></tr>
+<tr><td>12</td><td>1, 47, 1044, 14536; 0, 0, 0</td><td>1, 47, 862, 7261; 0, 0, 1</td><td>0.000017 / 0.0069</td></tr>
+</table>
+<p>The fractions are exact counts in the forms' value space, which dense random forms approximate on the slice (<code>chain_density.py</code>, <code>chain_density.txt</code>). The chain of 2 reproduces the <a href="#entry-2026-09-24-closure-route-review">pair test</a>'s dimensions.</p>
+<p><strong>Why it cannot decide.</strong> In an inconsistent chain, once a clause uses its second literal every later clause must, so the allowed patterns form about \(L+1\) thin families. The sparseness grows with the length, so a chain long enough to entangle many forms is also too sparse to be budget-like. Adding private forms to each clause would restore density. But a width-3 inconsistent link is non-local only from degree \(\sum(k_b-1)=4\), by thm:budget-cluster-dichotomy, beyond what \(D=3\) sees in range. So no in-range test at \(D=3\) can decide whether inconsistent chains matter at budget density. This should have been found from the density count before the runs.</p>
+
+<h4>The kernel</h4>
+<p>The first run of the eight cases took 26 minutes for two of them, 22 minutes on the inconsistent chain of 12 alone, and was stopped. The cost was the verification step. Each kernel vector was checked on its whole subcube by a subset-sum transform, with up to \(2^{24}\) entries, and a sparse allowed set has thousands of kernel vectors per block. <code>direct_sum_v2.cpp</code> makes two changes.</p>
+<ul>
+<li>It checks 40 random combinations of the kernel vectors instead of every vector. A kernel vector that is nonzero at an allowed point survives all 40 checks with probability at most \(3^{-40}\) per block, so the result is exact except with that probability.</li>
+<li>It caps the rejection sampling and falls back to one scan of the subcube with a uniform reservoir sample.</li>
+</ul>
+<p>It reproduces every recorded validation value, including the excess 970 of the symmetric pin (<code>revalidate_v2.json</code>). It gives the same result as the original on the inconsistent chain of 12, in 198 s instead of 22 minutes. The original file is unchanged, and the consistent chain of 12 was computed with it.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>At \(D=3\) in range, inconsistent chains of up to 8 links, with allowed fractions down to \(10^{-3}\), are row-free. The one failure is at an allowed set of about 95 points, where low-degree functions degenerate for reasons unrelated to inconsistency.</li>
+<li>The chaining question, like the entangled closed base in general, cannot be decided in range at \(D=3\). The closed-base line has spent many cycles on this obligation, hypothesis (a) over the closed base. The generic members' hypotheses (b) and (c) over the closed base have not been examined since the <a href="#entry-2026-09-24-closed-base-review">closed-base review</a>. The next cycle turns to them.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the closure route review's test design, thm:budget-cluster-dichotomy (non-locality degree), and the direct-sum kernel's validation list. The table and fractions are read from the saved files. The patched kernel was revalidated on every recorded value before use. No claim is registered, so no reviewer pass was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-inconsistent-chains">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>60 min 31.66 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 22.71 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 49.49 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">53 min 19.32 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
