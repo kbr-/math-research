@@ -20,7 +20,7 @@ The degree bound printed in BBDM 2023 Question 4.3 follows from multiplicity Sch
 
 **Why it matters:** Potentially useful clarification of an explicitly printed question via an earlier standard theorem; not a new lower-bound mechanism or priority claim.
 
-**Decision (agent):** Version 1 incorporates both AI feedback rounds, including original-source citation and targeted PDF visual checks; independent confirmation and author approval remain outstanding.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Obtain human-author approval and independent confirmation of the source interpretation; clarify prior knowledge or intended scope before submission.
 

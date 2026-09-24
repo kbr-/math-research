@@ -1,0 +1,40 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.BinaryMultiplicityCoverBound
+Claim file: claims/BinaryMultiplicityCoverBound.lean
+Claim: audit:binary-multiplicity-cover-question
+Source: https://kbr.is-a.dev/math-research/#binary-multiplicity-cover-question
+Scope: For positive n and k, every nonzero P ∈ F_2[x_1,…,x_n] with Hasse multiplicity at least k at every
+nonzero point of F_2^n has total degree at least 2k − ⌊k/2^(n−1)⌋ (the bound asked in BBDM 2023
+Question 4.3, without its k ≥ 2^(n−2) threshold), by multiplicity Schwartz–Zippel with S = F_2. The
+version with the question's hypothesis mult_0(P) ≤ k − 1 in place of P ≠ 0 is also stated.
+Declarations: MathResearch.BinaryMultiplicityCoverBound.cover_bound MathResearch.BinaryMultiplicityCoverBound.cover_bound_of_origin
+$ lake --wfail build claims.BinaryMultiplicityCoverBound
+✔ [1566/1566] Built claims.BinaryMultiplicityCoverBound (2.3s)
+Build completed successfully (1566 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmptf4hla4f.lean
+@MathResearch.BinaryMultiplicityCoverBound.cover_bound : ∀ {n : ℕ},
+  0 < n →
+    ∀ (k : ℕ) {P : MvPolynomial (Fin n) (ZMod 2)},
+      P ≠ 0 →
+        (∀ (a : Fin n → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+          2 * k - k / 2 ^ (n - 1) ≤ P.totalDegree
+'MathResearch.BinaryMultiplicityCoverBound.cover_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.BinaryMultiplicityCoverBound.cover_bound_of_origin : ∀ {n : ℕ},
+  0 < n →
+    ∀ (k : ℕ) {P : MvPolynomial (Fin n) (ZMod 2)},
+      (∀ (a : Fin n → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+        MathResearch.HasseMultiplicity.mult 0 P < ↑k → 2 * k - k / 2 ^ (n - 1) ≤ P.totalDegree
+'MathResearch.BinaryMultiplicityCoverBound.cover_bound_of_origin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 2 audited declarations.
