@@ -1,0 +1,29 @@
+// True-fiber ideal of a complete accuracy-one ENS block over F_3: the block with its first input true,
+// Z^T = { r_1 + sum_{k >= 2, u_k = 0} r_k = 1 }, ideal (p^T) + field equations, p^T = 1 - r_1 - sum_{k>=2} r_k (1 - u_k^2).
+// Printed for h = 2..7: the reduced degree-order Groebner basis's non-field elements by degree, and for each
+// whether its top form is a multiple of rho' = top(p^T) = sum_{k>=2} r_k u_k^2 in the truncated algebra
+// (test: reduce the top modulo rho' and the cubes).
+option(redSB);
+proc runh(int h)
+{
+  int i; int k;
+  ring S = 3, (u(2..h), r(1..h)), dp;
+  poly pT = 1 - r(1); for (k = 2; k <= h; k++) { pT = pT - r(k)*(1 - u(k)^2); }
+  ideal F; for (k = 2; k <= h; k++) { F = F, u(k)^3 - u(k); } for (k = 1; k <= h; k++) { F = F, r(k)^3 - r(k); }
+  ideal G = std(F + pT);
+  poly rho = 0; for (k = 2; k <= h; k++) { rho = rho + r(k)*u(k)^2; }
+  ideal Cub; for (k = 2; k <= h; k++) { Cub = Cub, u(k)^3; } for (k = 1; k <= h; k++) { Cub = Cub, r(k)^3; }
+  ideal Mrho = std(Cub + rho);
+  string out = "";
+  for (i = 1; i <= ncols(G); i++) {
+    poly g = G[i]; int dg = deg(g); poly t = jet(g, dg) - jet(g, dg - 1);
+    if (reduce(t, std(Cub)) != 0) {  // skip field equations (tops are cubes)
+      string m = "new"; if (reduce(t, Mrho) == 0) { m = "rho-mult"; }
+      out = out + string(dg) + ":" + m + " ";
+    }
+    kill g; kill dg; kill t;
+  }
+  print("H " + string(h) + " " + out);
+}
+for (int hh = 2; hh <= 7; hh++) { runh(hh); }
+quit;
