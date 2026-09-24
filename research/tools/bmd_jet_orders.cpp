@@ -71,7 +71,13 @@ int main(int argc, char** argv) {
     if (argc < 3) { std::fprintf(stderr, "usage: bmd_jet_orders n k [--out PATH]\n"); return 2; }
     int n = std::atoi(argv[1]), k = std::atoi(argv[2]);
     std::string out;
-    for (int i = 3; i < argc; ++i) if (!std::strcmp(argv[i], "--out") && i + 1 < argc) out = argv[++i];
+    int wl = -1, wd = -1;  // --witness L D: print a jet of order L with deg P(v) <= D, if one exists
+    std::string jetFile;
+    for (int i = 3; i < argc; ++i) {
+        if (!std::strcmp(argv[i], "--jet") && i + 1 < argc) { jetFile = argv[++i]; continue; }
+        if (!std::strcmp(argv[i], "--out") && i + 1 < argc) out = argv[++i];
+        else if (!std::strcmp(argv[i], "--witness") && i + 2 < argc) { wl = std::atoi(argv[++i]); wd = std::atoi(argv[++i]); }
+    }
     auto t0 = std::chrono::steady_clock::now();
     int K = 0; while ((1 << K) < k) ++K;
     // per-variable tables T[eps][b][j] for b < k, j < k
@@ -93,6 +99,40 @@ int main(int argc, char** argv) {
           int sa = 0, sb = 0; for (int x : a) sa += x; for (int x : b) sb += x; return sa > sb; });
       cols = all; }
     long C = cols.size(); int W = (C + 63) / 64;
+    if (!jetFile.empty()) {
+        // --jet FILE: lines of n exponents; print deg P(v) for the jet v = sum of these monomials (mod m^k)
+        std::vector<long> supp;
+        FILE* f = std::fopen(jetFile.c_str(), "r");
+        std::vector<int> b(n);
+        while (true) {
+            bool ok = true;
+            for (int i = 0; i < n && ok; ++i) ok = std::fscanf(f, "%d", &b[i]) == 1;
+            if (!ok) break;
+            int s = 0; for (int x : b) s += x;
+            if (s >= k) continue;
+            for (long c = 0; c < C; ++c) if (cols[c] == b) { supp.push_back(c); break; }
+        }
+        std::fclose(f);
+        std::vector<std::vector<int>> es2;
+        { std::vector<int> cur(n, 0);
+          struct R { static void go(int i, int left, int n, std::vector<int>& cur, std::vector<std::vector<int>>& o) {
+              if (i == n) { o.push_back(cur); return; }
+              for (int e = 0; e <= left; ++e) { cur[i] = e; go(i + 1, left - e, n, cur, o); } cur[i] = 0; } };
+          R::go(0, k - 1, n, cur, es2); }
+        int top = -1;
+        for (unsigned eps = 0; eps < (1u << n); ++eps)
+            for (const auto& e : es2) {
+                uint8_t s = 0;
+                for (long c : supp) {
+                    bool t = true;
+                    for (int i = 0; i < n && t; ++i) t = ((eps >> i) & 1u) ? Q[cols[c][i]][e[i]] : P[cols[c][i]][e[i]];
+                    s ^= t;
+                }
+                if (s) { int dg = __builtin_popcount(eps); for (int x : e) dg += 2 * x; top = std::max(top, dg); }
+            }
+        std::printf("{\"n\": %d, \"k\": %d, \"jet_terms\": %zu, \"degree\": %d}\n", n, k, supp.size(), top);
+        return 0;
+    }
     std::vector<int> lev(C); std::vector<long> N(k, 0);
     for (long c = 0; c < C; ++c) { int s = 0; for (int x : cols[c]) s += x; lev[c] = s; N[s]++; }
     // rows: (eps, e) with |e| < k, grouped by degree |eps| + 2|e|, descending
@@ -166,6 +206,43 @@ int main(int argc, char** argv) {
             if (delta[l] < 0 && !(pivcount[l] < N[l])) { delta[l] = D; --remaining; }
         std::fprintf(stderr, "n=%d k=%d degree %d: %ld rows, rank %ld, open orders %d\n", n, k, D, B, rank, remaining);
         std::fflush(stderr);
+        if (D == wd + 1) {
+            // Back-substitute: one free column of level wl set to 1, other free columns 0.
+            long freeCol = -1;
+            for (long c = 0; c < C && freeCol < 0; ++c) if (lev[c] == wl && pivrow[c] < 0) freeCol = c;
+            if (freeCol < 0) { std::printf("witness: none of order %d with degree <= %d\n", wl, wd); return 0; }
+            std::vector<uint8_t> v(C, 0); v[freeCol] = 1;
+            for (long c = C - 1; c >= 0; --c) {
+                if (pivrow[c] < 0) continue;
+                const u64* br = &basis[(size_t)pivrow[c] * W];
+                uint8_t s = 0;
+                for (long d = c + 1; d < C; ++d) if (v[d] && ((br[d >> 6] >> (d & 63)) & 1)) s ^= 1;
+                v[c] = s;
+            }
+            // P(v) in the basis x^eps y^e, |e| < k
+            std::printf("witness n=%d k=%d order %d degree<=%d; jet:", n, k, wl, wd);
+            for (long c = 0; c < C; ++c) if (v[c]) { std::printf(" x^("); for (int i = 0; i < n; ++i) std::printf("%s%d", i ? "," : "", cols[c][i]); std::printf(")"); }
+            std::printf("\nP(v) terms [eps | e | degree]:\n");
+            int top = 0;
+            for (unsigned eps = 0; eps < (1u << n); ++eps)
+                for (const auto& e : es) {
+                    uint8_t s = 0;
+                    for (long c = 0; c < C; ++c) if (v[c]) {
+                        bool t = true;
+                        for (int i = 0; i < n && t; ++i) t = ((eps >> i) & 1u) ? Q[cols[c][i]][e[i]] : P[cols[c][i]][e[i]];
+                        s ^= t;
+                    }
+                    if (!s) continue;
+                    int dg = __builtin_popcount(eps); for (int x : e) dg += 2 * x;
+                    top = std::max(top, dg);
+                    std::printf("  ");
+                    for (int i = 0; i < n; ++i) std::printf("%d", (eps >> i) & 1u);
+                    std::printf(" | "); for (int i = 0; i < n; ++i) std::printf("%s%d", i ? "," : "", e[i]);
+                    std::printf(" | %d\n", dg);
+                }
+            std::printf("witness degree %d\n", top);
+            return 0;
+        }
     }
     double secs = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
     std::string js = "{\"n\": " + std::to_string(n) + ", \"k\": " + std::to_string(k) + ", \"columns\": " +
