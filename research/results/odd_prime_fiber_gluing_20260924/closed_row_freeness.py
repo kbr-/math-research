@@ -7,7 +7,7 @@ Abar = E/(G). Condition (ii) for u = 1 says Abar is free over F[rho]/(rho^p), rh
 (rho^p = 0 in E), so the test compares Hilbert functions: excess[k] = HF(I + rho^(p-1))[k] - HF(I : rho)[k] >= 0,
 and (ii) holds in degree k exactly when excess[k] = 0.
 Members: 'base' (G = (s)), 'onto' (all c_j), 'merge' (s, c_1 c_2), 'linear' (the top ideal of s = m, l = v for
-a column form l = sum phi_j C_j), 'selectorsT' (T selectors on independent dense forms, span T), 'clausesT' (T clauses, each forbidding one value pattern of two fresh dense random
+a column form l = sum phi_j C_j), 'e3pin' (e_3(c) fixed mod p, a symmetric count pin of degree 3), 'selectorsT' (T selectors on independent dense forms, span T), 'clausesT' (T clauses, each forbidding one value pattern of two fresh dense random
 forms: an entangled family of span 2T), 'pairs' (at most one occupied hole in each pair 2t, 2t+1 of a perfect
 matching: span N/2 of forms C_a + C_b), 'selector' (forbid l = v: 1 - (l-v)^(p-1) = 0), 'clause2' (forbid l_1 = v_1 and
 l_2 = v_2). Top ideals of the occupancy systems are computed exactly: homogenize the ideal
@@ -45,6 +45,9 @@ for case in sys.argv[2:]:
         fam.append((fs, [rnd.randrange(p) for _ in range(2)]))
     lf = lambda f: '(' + '+'.join(f'{f[j]}*{c(j)}' for j in range(N)) + ')'
     clause = lambda fs, vs: '*'.join(f'(1-({lf(f)}-{v})^{p-1})' for f, v in zip(fs, vs))
+    import itertools as _it
+    e3 = '+'.join(f'{c(a)}*{c(b)}*{c(d)}' for a, b, d in _it.combinations(range(N), 3))
+    members['e3pin'] = [f'({e3})-{rnd.randrange(p)}']   # pins e_3(c) mod p (weight mod p^2 by Lucas): degree 3
     for T in (2, 3, 4):
         members[f'clauses{T}'] = [clause(fs, vs) for fs, vs in fam[:T]]
         # T selectors on independent dense forms (degree p-1 each, visible at D >= p-1; span T)
