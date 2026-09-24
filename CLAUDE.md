@@ -128,7 +128,8 @@ Apply every rule below before launching a run.
 6. **Report only what the result files say.** Take every quoted number, case count and
    sampling grid from the saved output, read by a script rather than from memory.
 7. **Keep long runs observable.** Print progress with flush, and do not pipe a long run
-   through a filter that holds its output until the end.
+   through a filter that holds its output until the end. Write each completed case to
+   the output file as it finishes, so a timeout keeps the finished cases.
 
 8. **Answer refusals by optimizing, never by splitting.** When a guard refuses a run, make the computation
    itself efficient: move the loops into the compiled kernel, parallelize it, reuse shared work and stop
