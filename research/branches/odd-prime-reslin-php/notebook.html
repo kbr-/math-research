@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Satisfiable families on a free joint span are not refutable at degree \(D\) (<a href="#entry-2026-09-24-joint-span-review">joint-span review</a>). Beyond the count, planted families pin their point: each extra selector adds one fall, so no-fall gluing stops there, and dense parts act as restrictions (<a href="#entry-2026-09-24-planted-families">planted families</a>). Next: conditioned gluing. Prove that the weak base with the ideal of a partial matching on \(r\) rows has no falls below \(D\) when the restricted board is in the stability range, so that pinned members can be absorbed into the base. Then test a family that pins one row and is generic elsewhere against the conditioned count.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Beyond the count, planted families pin their point (<a href="#entry-2026-09-24-planted-families">planted families</a>), and pinned parts can be absorbed by conditioning: closing the pins of a partial matching gives the restricted weak base (<a href="#entry-2026-09-24-conditioned-base">conditioned base</a>). Next: connect conditioning with the restriction-mixture line. Re-read its entries and the top-size lemma. Then determine whether conditioning pinned rows into the base, with generic gluing on the restricted board by projection freeness and joint-span families, supplies its one-count design.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -15411,6 +15411,61 @@ Always \(\Delta_d\le0\).</li>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">7.60 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 4.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-conditioned-base" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:conditioned-base">
+<h3>Conditioned base: closing the pins of a partial matching gives the restricted weak base, so pinned parts can be absorbed</h3>
+<p class="entry-meta">24 September 2026 · Working proof (conditioned base) · Base condition (a) after pinning a partial matching; cycle odd-prime-conditioned-gluing.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-planted-families">planted-families entry</a> found that dense satisfiable families pin their point, so no-fall gluing stops at the count, and dense parts act as restrictions. Its next step asked for the interface: when does the weak base together with a pinned partial matching satisfy hypothesis (a), no falls below \(D\)?</p>
+<p><strong>General statement.</strong> prop:conditioned-base: over any field, let \(\rho\) be a partial matching on a set \(R\) of \(r\) rows of the weak unary board. Consider the closed pins: \(x_{ij}-[j=\rho(i)]\) for \(i\in R\) and all \(j\), and \(x_{i'j}\) for \(i'\notin R\) and \(j\in\rho(R)\). The homogenized algebra of the weak base plus the closed pins is isomorphic, as a graded \(\mathbb F[z]\)-algebra, to the homogenized weak base on the \((m-r)\times(N-r)\) board. So, under the field hypotheses of thm:weak-base-stability-quadratic, the conditioned base has no falls below \(D\) when \(N-r\ge(p-1)D^2\) and \(m-r\ge D\). Its top algebra is the restricted board's. With only the open pins \(x_{i\rho(i)}-1\), there are falls (for \(r\ge1\), \(m\ge2\), \(N\ge2\)). And a PC refutation of degree \(D\) of the weak base plus any constraints restricts to one of the restricted base plus the restricted constraints. So a lower bound for the restricted system gives one for the original.</p>
+
+<h4>Proof</h4>
+<ol>
+<li><em>Elimination.</em> The homogenized closed pins are \(x_{ij}-[j=\rho(i)]z\) and \(x_{i'j}\), linear and homogeneous. Quotienting \(\mathbb F[x,z]\) by them substitutes these values for the fixed variables and leaves the polynomial ring in the free variables (\(i\notin R\), \(j\notin\rho(R)\)) and \(z\).</li>
+<li><em>The base generators.</em> Under the substitution:
+<ul>
+<li>Booleanity of a fixed variable becomes \(c^2z^2-cz\cdot z=0\) for \(c\in\{0,1\}\).</li>
+<li>A column exclusion with a fixed variable becomes 0. In a pinned column \(\rho(i)\), every variable other than the pinned cell is fixed to 0, because \(\rho\) is injective: a second pinned row \(i''\) has \(x_{i''\rho(i)}\) fixed to 0, while \(\rho(i)=\rho(i'')\) would map \(x_{i\rho(i)}x_{i''\rho(i)}\) to \(z^2\). In a free column, a variable of a pinned row is fixed to 0.</li>
+<li>A pinned row's equation becomes \(z-z=0\).</li>
+<li>A free row's equation becomes the restricted row equation \(\sum_{j\notin\rho(R)}x_{i'j}-z\).</li>
+<li>Generators among free variables are unchanged.</li>
+</ul>
+So the quotient is the restricted homogenized weak base, as a graded \(\mathbb F[z]\)-algebra, and \(z\)-injectivity transfers degree by degree.</li>
+<li><em>Open pins fall.</em> Let \(r\ge1\), \(m\ge2\), \(N\ge2\), and \(i'\ne i\). With only the open pins added, homogenized, \(z\,x_{i'\rho(i)}=x_{i'\rho(i)}x_{i\rho(i)}-x_{i'\rho(i)}(x_{i\rho(i)}-z)\) lies in the ideal in degree 2. The degree-1 part of the ideal is spanned by the homogenized row equations and open pins, since there are no other linear generators. In a combination \(\sum_ka_k(\rho_k-z)+\sum_{i\in R}b_i(x_{i\rho(i)}-z)\), the coefficient of \(x_{i'j}\) for \(j\ne\rho(i)\) is \(a_{i'}\), which must vanish for \(x_{i'\rho(i)}\) to result. Then \(x_{i'\rho(i)}\) has coefficient 0. So \(x_{i'\rho(i)}\) is not in the ideal in degree 1, and \(z\) is not injective from degree 1 to degree 2.</li>
+<li><em>Restriction.</em> Substituting the closed-pin values into a PC refutation maps each base generator to a restricted base generator or to 0, as in step 2. It maps each constraint to its restriction, and it does not raise degrees. PC rules commute with substitution. So a lower bound for the restricted system gives one for the original. If some constraint restricts to a nonzero constant, the restricted system is trivially refutable, so \(\rho\) must be chosen consistent with the constraints. \(\square\)</li>
+</ol>
+
+<h4>What this means</h4>
+<ul>
+<li>Pinned parts of a family can be absorbed: condition on the pinned matching, work on the restricted board, and keep the rest of the family restricted. The theorem then gives (a) while \(N-r\ge(p-1)D^2\) and \(m-r\ge D\). This is the range in which it applies, not a limit on pinning.</li>
+<li>A conditional remark on the compiled inventory. The weak-base compiler produces selector inputs \(1-L^{p-1}\), whose tops have degree \(p-1=2\) at \(p=3\), with a PC refutation through the fixed degree \(4p-1\). Degree 3 is the first degree where a Taylor count for such tops bites, since the (F) syzygies \(\ell e\) appear there and Koszul syzygies only at degree 4. The count \(M(\gamma_1-1)\le\gamma_3\) caps selectors on distinct forms. On the PHP board, \(\gamma_1=(N+1)(N-1)\), and \(\gamma_3\) is at most the number of multilinear degree-3 monomials in distinct columns, about \(\binom N3(N+1)^3\approx N^6/6\). So the cap is of order \(N^4/6\), and beyond it Taylor generation fails. Whether the no-fall route also stops there is conj:planted-excess-falls, supported only by the degree-2 check and ex:selector-semiregular-thresholds. Whether the compiled inventory has that many distinct selector forms is not established here.</li>
+<li>Conditioning helps only for dense parts supported on few rows. A dense family of generic forms on all rows constrains the whole board. How the compiled inventory's constraints sit relative to rows is the question the recorded restriction-mixture line reduced to a one-count design problem (the <a href="#entry-2026-09-22-restriction-mixture-top-size">top-size lemma</a>).</li>
+</ul>
+<p>Next: connect the two lines. Re-read the restriction-mixture entries and the top-size lemma. Then determine whether the conditioning here, which absorbs pinned rows into the base, together with generic gluing on the restricted board, which uses projection freeness and joint-span families, supplies that one-count design.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:weak-base-stability-quadratic (range and hypotheses), the weak-base compiler statement (inputs \(1-L^{p-1}\), ceiling \(4p-1\)), conj:planted-excess-falls, and ex:selector-semiregular-thresholds. A fresh-context reviewer confirmed the elimination and the restriction. It required these changes, all adopted:</p>
+<ul>
+<li>the column-exclusion case of pinned rows in free columns, with the use of injectivity of \(\rho\);</li>
+<li>the open-pin identity homogenized, and its non-membership proved from the degree-1 part of the ideal, with \(r\ge1\), \(m\ge2\), \(N\ge2\);</li>
+<li>the field hypotheses of the stability theorem;</li>
+<li>the direction of the restriction transfer, and consistency of \(\rho\);</li>
+<li>the range remark;</li>
+<li>the density remark made conditional, with the count derived.</li>
+</ul>
+<p>The changes correct or weaken, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-conditioned-gluing">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 17.50 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 17.63 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">0.11 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 54.11 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.65 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
