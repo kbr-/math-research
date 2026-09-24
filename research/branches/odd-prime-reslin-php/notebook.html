@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> At \(p=3\) the column tensor powers are free at the sharp threshold (<a href="#entry-2026-09-24-tensor-power-freeness">tensor-power freeness</a>). The row sums absorb into the top algebra, and the top algebra is free over order \(mN/(2D-1)\) forms in general position (<a href="#entry-2026-09-24-general-forms-freeness">general forms</a>). That is the freeness hypothesis of the one-count link for inventories in general position. The route review is due next: two conjectures were settled, and the remaining items need re-ranking. On the research side, the highest-risk item is whether the compiler's ENS blocks can be replaced by members in their input forms. Without that, neither the one-count link nor relative gluing applies to the actual inventory.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The <a href="#entry-2026-09-24-freeness-route-review">freeness route review</a> finds the freeness side of the one-count link settled for generic forms at \(p=3\). Random \(\mathbb F_3\) forms within the count fail only through the line condition. The open core is whether an ENS block acts as a member. Next: compute the degree-\(D\) shadow in \(x\) of one complete accuracy-one ENS block over the weak base on a small board, with the exact \(\mathbb F_3\) PC-closure tester. Decide whether the shadow is generated in the block's input forms. Then test whether the shadows of two blocks on independent inputs add. Any surviving statement must use the number of blocks, and the recorded conservativity refutations are the controls.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -16025,6 +16025,63 @@ Hence \(a_b=\sum_c\beta_{bc}r_c\) with \(\beta\) antisymmetric, the Koszul bound
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 49.10 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 11.68 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.99 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-freeness-route-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review; the falsification test of thm:general-forms-freeness on random F_3 tuples registers no new claim.">
+<h3>Route review: the freeness side of the one-count link is settled for generic forms; the open core is whether an ENS block's degree-D shadow is a member</h3>
+<p class="entry-meta">24 September 2026 · Route review · The (b), (c) and one-count line after the tensor-power review; cycle odd-prime-freeness-route-review.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. Five research entries have followed the <a href="#entry-2026-09-24-tensor-power-review">tensor-power review</a>, and two conjectures were settled at \(p=3\). This review states the line's claim and what the goal needs, tries to falsify the newest result, assesses the line, and names the highest-risk item.</p>
+<p><strong>General statement.</strong> The line's general claim is that the one-count problem of the restriction-mixture line has a degree-\(D\) PC design, for the weak base plus \(n\) random blocks with \(h\) input forms each. prop:one-count-by-freeness reduces this to three hypotheses: stability of the base, blocks that are satisfiable members in their input forms, and freeness of the weak top algebra over the joint span of the \(nh\) forms. The freeness hypothesis now holds on a nonempty open set of inventories, and base stability now holds at the linear threshold. The member hypothesis is untouched.</p>
+
+<h4>What happened since the last review</h4>
+<ul>
+<li>Stability from tensor powers: cover-freeness of the column tensor power through \(D\) is what the base's stability proof uses (<a href="#entry-2026-09-24-stability-from-tensor-power">stability link</a>).</li>
+<li>The tensor-power conjecture was proved in three steps.
+<ul>
+<li>Degree 2 (<a href="#entry-2026-09-24-tensor-power-degree-two">degree two</a>).</li>
+<li>Contents with every entry below \(p\), through the chessboard complex, and every content with at most one heavy row (<a href="#entry-2026-09-24-chessboard-link">chessboard link</a>).</li>
+<li>All contents, by peeling rows with an FI-module coresolution (<a href="#entry-2026-09-24-tensor-power-freeness">tensor-power freeness</a>). With it, \(p=3\) base stability holds at \(N\ge2D-1\).</li>
+</ul></li>
+<li>The row sums absorb into the top algebra. Grouped row sums give freeness through \(t\) on a nonempty open set of up to \(m(\lfloor N/(2t-1)\rfloor-1)\) forms (<a href="#entry-2026-09-24-general-forms-freeness">generic forms</a>). With \(m=N+1\) and \(D=11\), that is about \(N^2/21\) forms. The one-count problem needs about \(N^2/(4.4\times10^7)\), under the one-count entry's assumptions \(n\approx N\) and \(L\) of order \(N\). So the count is no longer the obstruction.</li>
+</ul>
+
+<h4>What the goal needs from this line</h4>
+<ol>
+<li><em>Blocks as members.</em> The compiler's blocks are ENS blocks. Their companions \(g_iP\), with \(P=\prod_\ell(1-\sum_ir_{i\ell}g_i)\), use fresh coefficient variables with field equations. Semantically such a block constrains its inputs not at all: if some \(g_i(x)\ne0\), a choice of \(r\) makes \(P=0\). What it contributes is proof power: its degree-\(D\) shadow, the polynomials in \(x\) that PC derives with it at degree \(D\) beyond the base. prop:one-count-by-freeness needs each shadow to be a satisfiable member in the block's input forms, and the shadows of \(n\) blocks to act as the union of these members. The record refutes fresh-block conservativity in every exact form (<a href="#ternary-fresh-block-conservativity-refuted">refutation</a>, <a href="#entry-2026-09-22-block-count-route-review">completeness</a>). So shadows are nontrivial, and any statement about them must use the number of blocks, since exponentially many blocks refute PHP.</li>
+<li><em>Rational forms.</em> The freeness result covers a nonempty open set. The inventory's forms are fixed \(\mathbb F_3\) forms from random blocks.</li>
+<li><em>The rest of the reduction.</em> The top-size lemma's typicality, and the assumptions \(n\approx N\) and \(L\) of order \(N\). Also \(p\ge5\), where the Clebsch–Gordan input changes.</li>
+</ol>
+
+<h4>Falsification attempt</h4>
+<p>thm:general-forms-freeness is weakest where it meets the actual inventory, which consists of \(\mathbb F_3\)-rational forms rather than generic ones. <code>random_within_count.py</code> (<code>random_within_count.json</code>) drew uniformly random \(\mathbb F_3\) tuples \(G\) at the theorem's largest count \(e=m(\lfloor N/(2t-1)\rfloor-1)\). It tested the top algebra's freeness through \(t\), that is, \(\tilde A\) over the row sums plus \(G\).</p>
+<ul>
+<li>Sizes: \((m,N,t,e)=(3,6,2,3),(4,6,2,4),(2,9,2,4),(3,9,2,6),(2,10,3,2),(3,10,3,3)\), with 40, 40, 40, 30, 30 and 20 draws.</li>
+<li>Free: 198 of 200. The 2 failures, both at \((3,6,2,3)\), are exactly the draws where some rational direction meets fewer than \(2t-1\) columns. prop:line-necessity forces non-freeness there.</li>
+<li>No draw satisfied that line condition and still failed.</li>
+</ul>
+<p>So, at these sizes, the rational gap is the line condition and nothing more. The line condition asks that no nonzero \(\gamma\in G\) has \(N-2t+2\) or more of its column vectors equal to one \(r\in\mathbb F_3^m\). For random forms it fails with probability at most \(3^{m+e}\Pr[\mathrm{Bin}(N,3^{-m})\ge N-2t+2]\), which vanishes as \(N\) grows. The test did not falsify the line. It does not reach the special-position failures of ex:truncated-dade-special-position or ex:pencil-worst-direction, which lie outside the count.</p>
+
+<h4>Assessment of this line</h4>
+<p>The algebraic side of the line is in good shape at \(p=3\), and the evidence for that is proofs, not data. Base stability is linear. The column tensor powers are free at the sharp threshold with all higher Tor. The row sums absorb. Freeness over order \(N^2/D\) generic forms holds on a nonempty open set, and at small sizes random \(\mathbb F_3\) forms fail only through the line condition. What these results do not touch is item 1, the question the line depends on. There the record's evidence points the other way: conservativity fails in exact forms, and the loss comes from PC reuse (<a href="#entry-2026-09-22-ns-level-no-loss">NS test</a>). The freeness results make the rest of the chain ready to use once members are available. They give no evidence that members are available. Item 1 is therefore the highest-risk item, and the line should not produce further freeness refinements until it is tested.</p>
+
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer: the shadow of one ENS block. Take the weak base on a small board plus one complete accuracy-one ENS block with random input forms. Compute, with the exact \(\mathbb F_3\) PC-closure tester, its degree-\(D\) shadow in \(x\) beyond the base's own degree-\(D\) closure. Decide whether the shadow is generated by polynomials in the block's input forms, that is, whether it is a member. Then do the same for two blocks on independent inputs, and ask whether the joint shadow is the sum of the single shadows. Reuse is exactly the failure of that additivity. A statement that survives must depend on the number of blocks, since exponentially many blocks refute PHP. Use the recorded conservativity refutations as controls.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the five entries since the tensor-power review and their claims, prop:one-count-by-freeness and its size paragraph, the ENS companion formula of the shared-support endpoint, the recorded example of active torsion in an ENS block, and the conservativity refutations named above. The falsification values are read from <code>random_within_count.json</code>. No new claim is registered, so no reviewer pass was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-freeness-route-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 6.69 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 53.71 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">28.87 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 30.50 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">13.48 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
