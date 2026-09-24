@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> (c) and (d) hold for every satisfiable member of degree \(\le D\) on a span whose basis has a seeded single-row projection, dependent forms included. A single such member with the weak base is hard at degree \(D\) (<a href="#entry-2026-09-24-generic-span-members">generic span members</a>). What remains is (b) across members, whose spans must overlap, since there are \(N^K\) members and \(\dim A_1\approx N^2\). Next: two generic members with \(\dim(W_1\cap W_2)=1\). Test whether their top syzygies through \(D\) split into member-supported and cross-member Koszul syzygies, or whether merging them onto \(W_1+W_2\) is forced.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> (c) and (d) hold for satisfiable members on generic spans (<a href="#entry-2026-09-24-generic-span-members">generic span members</a>). For two members on a free joint span, (b) holds exactly when their ideals meet only in products and common generators. Pairwise conditions fail for three members: a linear dependency among forms of different members gives extra syzygies, as the three-selector configuration shows (<a href="#entry-2026-09-24-overlap-tor">overlap Tor</a>). Next: for members with tops that are products of \(w\) forms, find the least degree at which a dependency among \(s\) forms of different members yields a syzygy outside the member-supported and Koszul span, and compare it with \(D\) and with the budget-cluster dichotomy.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -15144,6 +15144,62 @@ Always \(\Delta_d\le0\).</li>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 23.47 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 35.06 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.55 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-overlap-tor" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:overlap-tor">
+<h3>Overlap Tor: two members on a free joint span split exactly when their ideals meet only in products and shared generators</h3>
+<p class="entry-meta">24 September 2026 · Working proof (overlap Tor) · Hypothesis (b) for two members with overlapping spans; cycle odd-prime-overlapping-members.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. After the <a href="#entry-2026-09-24-generic-span-members">generic span members</a>, (c) and (d) hold for satisfiable members on generic spans. The open hypothesis is (b), splitting of the top syzygies across members. lem:tensor-splitting-locality proves (b) when the members' spans form a direct sum. The inventory's members cannot all have independent spans. The missing implication is (b) for members whose spans intersect, starting with two members.</p>
+<p><strong>General statement.</strong> prop:overlap-tor: over \(\mathbb F_3\), let two members have tops generating ideals \(I_1\subseteq T(W_1)\) and \(I_2\subseteq T(W_2)\), where \(T(W)=\mathrm{Sym}(W)/(\text{cubes})\). Let \(I_{12}\) be the ideal of the generators common to both. Suppose the top algebra \(A\) is free through \(D\) over \(T(V)\), \(V=W_1+W_2\), meaning its minimal free cover is bijective in degrees \(\le D\). Then (b) holds for the two members through \(D\) if and only if \((I_1T\cap I_2T)/(I_1T\cdot I_2T+I_{12}T)\) vanishes in degrees \(\le D\). With no shared generators this module is \(\operatorname{Tor}_1^S(T(W_1)/I_1,T(W_2)/I_2)\), \(S=T(W_1\cap W_2)\). For selector members on all directions of \(W_1\) and \(W_2\), it has dimension \(k(d_1-k)(d_2-k)\) in degree 3, where \(k=\dim(W_1\cap W_2)\). That is the recorded formula for the shortfall of member additivity (ex:member-configurations-free). Pairwise conditions do not suffice for more than two members. Three single selectors on \(x\), \(y\), \(x+y\) have pairwise independent spans, yet (b) fails in degree 3.</p>
+<h4>The proposition</h4>
+<p>Setting. Let \(V=W_1+W_2\) and \(U=W_1\cap W_2\), and choose complements \(W_i=W_i'\oplus U\), so \(V=W_1'\oplus U\oplus W_2'\). Then \(T=T(V)=T(W_1)\otimes_ST(W_2)\) with \(S=T(U)\), and each \(T(W_i)=T(W_i')\otimes S\) is free over \(S\). Member \(i\) has generators \(g\), its tops, in \(T(W_i)\), generating \(I_i\). Hypothesis (b) of thm:relative-gluing asks that every top syzygy of the combined generators be a combination of syzygies supported on one member and of cross-member Koszul syzygies \(g_2e_{g_1}-g_1e_{g_2}\).</p>
+<p><strong>Proposition (overlap Tor).</strong> Take the union of the two generating sets, each common generator listed once, with \(G_{12}\) the common generators and \(I_{12}\) their ideal. In \(T\), the top syzygies modulo member-supported and cross-member Koszul syzygies form a graded module isomorphic to \(Q=(I_1T\cap I_2T)/(I_1T\cdot I_2T+I_{12}T)\). If \(G_{12}=\emptyset\), \(Q=\operatorname{Tor}_1^T(T/I_1T,T/I_2T)\cong\operatorname{Tor}_1^S(M_1,M_2)\), with \(M_i=T(W_i)/I_i\). If \(A\) is free through \(D\) over \(T\), then (b) holds through \(D\) exactly when \(Q\) vanishes in degrees \(\le D\).</p>
+<p><em>Proof.</em></p>
+<ol>
+<li><em>The quotient.</em> Count the common generators with member 1. Send a syzygy \((a_g)\) to \(\sum_{g\in G_1}a_gg\). This equals \(-\sum_{g\in G_2\setminus G_{12}}a_gg\), so it lies in \(I_1T\cap I_2T\), and the map onto the intersection is surjective. Its kernel is the syzygies whose two partial sums vanish, which are sums of syzygies supported on \(G_1\) and on \(G_2\setminus G_{12}\). A syzygy supported on member 2 that uses common generators maps into \(I_{12}T\), and every element of \(I_{12}T\) arises this way: \(\sum_{g\in G_{12}}a_gg\) against the same combination read in member 2. A Koszul syzygy \(g_2e_{g_1}-g_1e_{g_2}\) maps to \(\pm g_1g_2\), so the Koszul syzygies map onto \(I_1T\cdot I_2T\). Hence the quotient is \(Q\). With no common generators, \(Q=(I_1T\cap I_2T)/(I_1T\cdot I_2T)=\operatorname{Tor}_1^T(T/I_1T,T/I_2T)\).</li>
+<li><em>Base change</em> (no common generators). \(T/I_1T=M_1\otimes_ST(W_2)\) and \(T/I_2T=T(W_1)\otimes_SM_2\). Take a free \(T(W_1)\)-resolution \(P\to M_1\). Since \(T(W_2)\) is free over \(S\), \(P\otimes_ST(W_2)\) is a free \(T\)-resolution of \(T/I_1T\). Tensoring it over \(T\) with \(T(W_1)\otimes_SM_2\) gives \(P\otimes_SM_2\), and \(P\) is an \(S\)-free resolution of \(M_1\). So \(\operatorname{Tor}^T_1=\operatorname{Tor}^S_1(M_1,M_2)\), degree by degree. The complements may be chosen separately for each member, since \(W_1'\oplus U\oplus W_2'=V\) for any choices.</li>
+<li><em>In \(A\).</em> Let the cover \(T\otimes C\to A\) be bijective in degrees \(\le D\). A top syzygy of degree \(s\le D\) in \(A\) is the image of one in \(T\otimes C\), and it splits along a basis of \(C\) into syzygies in \(T\), as in the span-transfer argument. The splitting preserves member support and Koszul syzygies. So if \(Q\) vanishes through \(D\), (b) holds in \(A\) through \(D\). Conversely, a syzygy in \(T\) not in the member-supported and Koszul span stays outside that span in \(A\): its image is its tensor with \(1\in C_0\), and the projection onto the coordinate of \(1\) recovers it. \(\square\)</li>
+</ol>
+<p><strong>Consequences.</strong></p>
+<ul>
+<li>If \(W_1\cap W_2=0\) and there are no common generators, then \(S=\mathbb F_3\) and \(Q=0\). This is the two-member case of lem:tensor-splitting-locality. The same holds when a member's generators lie in \(T(L)\) for some \(L\) with \(L\cap W_2=0\), which is that lemma applied with span \(L\).</li>
+<li><em>Selectors on all directions.</em> Here \(I_i\) is spanned by the squares of forms in \(W_i\), which span \(\mathrm{Sym}^2W_i\) in characteristic 3, and the common generators are the squares of forms in \(U=W_1\cap W_2\). In degree 3 there are no Koszul products. Modulo \(I_{12}T\), the intersection is spanned by the monomials \(xuy\), with \(x\), \(u\), \(y\) running over bases of complements \(W_1'\), \(U\), \(W_2'\). Indeed \(xu\in I_1\) and \(uy\in I_2\), so \(xuy\) lies in both ideals, while every other monomial of degree 3 lies in only one ideal or in \(I_{12}T\). So \(\dim Q_3=k(d_1-k)(d_2-k)\).</li>
+<li><em>More than two members.</em> Pairwise vanishing does not give (b). Take three single selectors \(x^2\), \(y^2\), \((x+y)^2\) in \(T(x,y)\). Every pair has independent spans, so every pairwise \(Q\) vanishes. But the degree-3 syzygies form a space of dimension \(6-2=4\), against 3 member-supported (Frobenius) ones, and Koszul syzygies start in degree 4. This is the three-selector configuration, whose extra syzygy derives \(a-b\) at degree 3 when the values conflict.</li>
+</ul>
+<h4>Consistency with the record</h4>
+<p><code>overlap_tor.py</code> computes, exactly over \(\mathbb F_3\) in \(T(V)\) for selector members on all directions, \(\dim(I_1T\cap I_2T)_3\) and the dimension of the part generated by the common selectors. Their difference is \(\dim Q_3\), since \(I_1T\cdot I_2T\) starts in degree 4. In the six configurations \((d_1,d_2,k)=(2,2,1),(3,3,1),(3,4,1),(3,3,2),(4,4,2),(4,5,2)\), it is 1, 4, 6, 2, 8, 12 (<code>overlap_tor.json</code>). Those are the values of \(k(d_1-k)(d_2-k)\), as the monomial argument predicts. That is the formula the record gives for the degree-3 shortfall of member additivity on the functional top algebra, where the record also reports agreement with the freeness prediction over the joint span. The six configurations here were chosen to test the formula and are not claimed to be the record's measured ones.</p>
+<h4>What this means</h4>
+<ul>
+<li>For two members on a free joint span, (b) is exactly the vanishing of \(Q\): their ideals may meet only in products and common generators. When both members constrain shared directions, \(Q\) can be nonzero, as for selectors. Such members can be merged into one member on \(W_1+W_2\). thm:generic-span-members covers the merged member if it is satisfiable and its span basis has a seeded single-row projection.</li>
+<li>Pairwise conditions are not enough. A linear dependency among forms of different members produces syzygies outside the member-supported and Koszul span, even when every pair of spans is independent. So (b) for the inventory depends on its dependencies, not only on overlaps. This is the dependency structure the recorded budget-cluster dichotomy classified for locality: consistent clusters are local, inconsistent ones fail.</li>
+<li>Uniformly random forms have no small dependencies. \(s\) forms in a space of dimension about \(N^2\) are dependent with probability about \(3^{s-N^2}\). Adversarial inventories can have them, since the budget's clauses form dependent clusters freely.</li>
+</ul>
+<p>Next: dependency-induced syzygies for wide tops. For members whose tops are products of \(w\) forms, find the least degree at which a linear dependency among \(s\) forms of different members yields a syzygy outside the member-supported and Koszul span. Compare it with \(D\). If it exceeds \(D\) for the inventory's widths, (b) holds in range despite dependencies. If not, compare the extra syzygies with the budget-cluster dichotomy.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:relative-gluing (hypothesis (b) and its union of generating sets), lem:tensor-splitting-locality and lem:kunneth-component-locality, ex:member-configurations-free, and lem:span-transfer's use of the cover. The claim search (members, overlapping spans, intersection, Tor, shared forms) found ex:member-configurations-free, whose shortfall formula this explains. The check computes the entry's quantity and was read from its JSON. A fresh-context reviewer confirmed the Tor identity, the base change to \(S\) and the passage to \(A\). It required these changes, all adopted:</p>
+<ul>
+<li>common generators: the quotient is \(Q\), with the \(I_{12}T\) term, and it equals Tor only without them;</li>
+<li>the selector values restated for \(Q\), with the monomial proof;</li>
+<li>the free-complement consequence identified as lem:tensor-splitting-locality;</li>
+<li>the converse in \(A\) written out;</li>
+<li>the relation to the record stated as matching its formula;</li>
+<li>"What this means" weakened;</li>
+<li>the proposed next step replaced. It claimed that pairwise vanishing suffices, which the three-selector configuration refutes.</li>
+</ul>
+<p>The changes correct or weaken, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-overlapping-members">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 47.25 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 17.57 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 23.61 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.48 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.59 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
