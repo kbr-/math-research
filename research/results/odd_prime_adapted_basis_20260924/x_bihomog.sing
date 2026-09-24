@@ -1,0 +1,36 @@
+// Question: is the top ideal n = gr(I T) of one separately augmented complete accuracy-one ENS block over F_3, with
+// inputs x (shared) and y_2..y_h (private), coefficients r_1..r_h, homogeneous for the x-degree grading (x weight 1,
+// all other variables weight 0) in the truncated algebra F_3[x,y,r]/(cubes)?  If yes, the tops ideal splits as
+// sum_d x^d (x) F_d with subspaces F_0 <= F_1 <= F_2 of the x-free part, which the repair of the star-locality
+// argument with cross generators needs.  Method: tops of the reduced dp Groebner basis generate gr(I); for every
+// element of a standard basis of gr(I) + cubes, each x-degree component must lie in the ideal.
+// Output per h: number of standard-basis elements, number whose x-components are not all in the ideal.
+option(redSB);
+proc xtest(int h)
+{
+  ring R = 3, (x, y(2..h), r(1..h)), dp;
+  ideal L = x; int i;
+  for (i = 2; i <= h; i++) { L = L, y(i); }
+  poly P = 1;
+  for (i = 1; i <= h; i++) { P = P - r(i)*(1 - L[i]^2); }
+  ideal I; for (i = 1; i <= h; i++) { I = I, (1 - L[i]^2)*P; }
+  ideal Fe; for (i = 1; i <= nvars(R); i++) { Fe = Fe, var(i)^3 - var(i); }
+  ideal G = std(I + Fe);
+  ideal Tops; int d; poly g;
+  for (i = 1; i <= ncols(G); i++) { g = G[i]; d = deg(g); Tops = Tops, jet(g, d) - jet(g, d - 1); }
+  ideal Cubes; for (i = 1; i <= nvars(R); i++) { Cubes = Cubes, var(i)^3; }
+  ideal N = std(Tops + Cubes);
+  intvec wx = 1; for (i = 2; i <= nvars(R); i++) { wx = wx, 0; }
+  int bad = 0; int k; poly f; poly part;
+  for (i = 1; i <= ncols(N); i++) {
+    f = N[i];
+    for (k = 0; k <= 2; k++) {
+      part = jet(f, k, wx) - jet(f, k - 1, wx);
+      if (k == 0) { part = jet(f, 0, wx); }
+      if (reduce(part, N) != 0) { bad++; break; }
+    }
+  }
+  print("h=" + string(h) + " gr_basis_size=" + string(ncols(N)) + " not_x_homogeneous=" + string(bad));
+}
+xtest(3); xtest(4); xtest(5);
+quit;

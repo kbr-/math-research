@@ -1,0 +1,22 @@
+// Base case of the witness for the non-homogeneity lemma: on the zero set Z_h of the complete accuracy-one ENS block
+// with inputs x, y_2..y_h and coefficients r_1..r_h over F_3 (ideal = companions + field equations = I(Z_h)), is
+// r_1*q_x*q_{y_2} congruent to a polynomial of degree <= 4?  With a degree-compatible Groebner basis this holds iff the
+// normal form of r_1*q_x*q_{y_2} has degree <= 4.  At h = 2 it does (normal form q_y (1 - r_2), degree 3); the lemma
+// needs degree 5 at h = 3, from which every h >= 3 follows by restriction.  h = 4 is a control.
+option(redSB);
+proc wit(int h)
+{
+  ring R = 3, (x, y(2..h), r(1..h)), dp;
+  ideal L = x; int i;
+  for (i = 2; i <= h; i++) { L = L, y(i); }
+  poly P = 1;
+  for (i = 1; i <= h; i++) { P = P - r(i)*(1 - L[i]^2); }
+  ideal I; for (i = 1; i <= h; i++) { I = I, (1 - L[i]^2)*P; }
+  for (i = 1; i <= nvars(R); i++) { I = I, var(i)^3 - var(i); }
+  ideal G = std(I);
+  poly f = r(1)*(1 - x^2)*(1 - y(2)^2);
+  poly nf = reduce(f, G);
+  print("h=" + string(h) + " deg_normal_form=" + string(deg(nf)) + " points=" + string(vdim(G)));
+}
+wit(2); wit(3); wit(4);
+quit;
