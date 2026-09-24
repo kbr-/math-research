@@ -289,8 +289,9 @@ def finish(root, turn, next_turn=None, notebook_name=None):
         journal = root / 'research/logs' / f'{turn}.jsonl'
         first = json.loads(journal.read_text().splitlines()[0]) if journal.exists() else {}
         inherit = [f'--{key}={first[key]}' for key in ('agent', 'model') if first.get(key)]
-        subprocess.run([compute, 'start', next_turn, *inherit, '--notebook', item['name']], cwd=root, check=True,
-                       stdout=subprocess.PIPE, text=True)
+        started = subprocess.run([compute, 'start', next_turn, *inherit, '--notebook', item['name']], cwd=root,
+                                 check=True, stdout=subprocess.PIPE, text=True)
+        guidance = next_cycle_guidance(started.stdout)
         subprocess.run([compute, 'phase', next_turn, 'preparation', '--note',
                         f'Finalize checkpoint {turn}, then begin the next research cycle'],
                        cwd=root, check=True)
@@ -333,6 +334,16 @@ def finish(root, turn, next_turn=None, notebook_name=None):
           f'research/results/{turn}/timing.html research/provenance/session-records/{turn}')
     if next_turn:
         print(f'{next_turn} is running in preparation phase.')
+        # Printed last so that a truncated view of this output still shows what the next entry must be.
+        for line in guidance:
+            print(f'NEXT CYCLE {next_turn}: {line}')
+
+
+def next_cycle_guidance(start_stdout):
+    """The advisory notes `compute.sh start` printed after the session path (user instruction,
+    24 September 2026: a required route review went unnoticed because this output was discarded)."""
+    lines = [line.strip() for line in start_stdout.splitlines() if line.strip()]
+    return lines[1:]
 
 
 def main():
