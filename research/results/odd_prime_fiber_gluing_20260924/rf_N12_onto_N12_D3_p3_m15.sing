@@ -1,0 +1,19 @@
+ring O = 3, (c(1..12), z), dp;
+option(redSB);
+ideal J = c(1)^2-c(1), c(2)^2-c(2), c(3)^2-c(3), c(4)^2-c(4), c(5)^2-c(5), c(6)^2-c(6), c(7)^2-c(7), c(8)^2-c(8), c(9)^2-c(9), c(10)^2-c(10), c(11)^2-c(11), c(12)^2-c(12), (c(1)+c(2)+c(3)+c(4)+c(5)+c(6)+c(7)+c(8)+c(9)+c(10)+c(11)+c(12))-15, c(1)-1, c(2)-1, c(3)-1, c(4)-1, c(5)-1, c(6)-1, c(7)-1, c(8)-1, c(9)-1, c(10)-1, c(11)-1, c(12)-1;
+ideal Jh = homog(std(J), z);
+Jh = sat(Jh, z)[1];
+Jh = subst(Jh, z, 0);
+ring R = 3, (c(1..12), y(1..12)), dp;
+option(redSB);
+degBound = 4;
+ideal G = imap(O, Jh);
+ideal I = G, c(1)^2, y(1)^2, c(1)*y(1), c(2)^2, y(2)^2, c(2)*y(2), c(3)^2, y(3)^2, c(3)*y(3), c(4)^2, y(4)^2, c(4)*y(4), c(5)^2, y(5)^2, c(5)*y(5), c(6)^2, y(6)^2, c(6)*y(6), c(7)^2, y(7)^2, c(7)*y(7), c(8)^2, y(8)^2, c(8)*y(8), c(9)^2, y(9)^2, c(9)*y(9), c(10)^2, y(10)^2, c(10)*y(10), c(11)^2, y(11)^2, c(11)*y(11), c(12)^2, y(12)^2, c(12)*y(12);
+I = std(I);
+poly rho = y(1)+y(2)+y(3)+y(4)+y(5)+y(6)+y(7)+y(8)+y(9)+y(10)+y(11)+y(12);
+ideal K = std(quotient(I, rho));
+ideal F = std(I + ideal(rho^2));
+string sk = "HFK {"; string sf = "HFF {"; int t;
+for (t = 0; t < 3; t++) { if (t > 0) { sk = sk + ","; sf = sf + ","; } sk = sk + string(size(kbase(K, t))); sf = sf + string(size(kbase(F, t))); }
+print(sk + "}"); print(sf + "}");
+quit;

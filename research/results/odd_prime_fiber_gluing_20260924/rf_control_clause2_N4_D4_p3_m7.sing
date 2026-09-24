@@ -1,0 +1,19 @@
+ring O = 3, (c(1..4), z), dp;
+option(redSB);
+ideal J = c(1)^2-c(1), c(2)^2-c(2), c(3)^2-c(3), c(4)^2-c(4), (c(1)+c(2)+c(3)+c(4))-7, (1-((1*c(1)+1*c(2)+2*c(3)+1*c(4))-1)^2)*(1-((1*c(1)+1*c(2)+2*c(3)+1*c(4))-1)^2);
+ideal Jh = homog(std(J), z);
+Jh = sat(Jh, z)[1];
+Jh = subst(Jh, z, 0);
+ring R = 3, (c(1..4), y(1..4)), dp;
+option(redSB);
+degBound = 5;
+ideal G = imap(O, Jh);
+ideal I = G, c(1)^2, y(1)^2, c(1)*y(1), c(2)^2, y(2)^2, c(2)*y(2), c(3)^2, y(3)^2, c(3)*y(3), c(4)^2, y(4)^2, c(4)*y(4);
+I = std(I);
+poly rho = y(1)+y(2)+y(3)+y(4);
+ideal K = std(quotient(I, rho));
+ideal F = std(I + ideal(rho^2));
+string sk = "HFK {"; string sf = "HFF {"; int t;
+for (t = 0; t < 4; t++) { if (t > 0) { sk = sk + ","; sf = sf + ","; } sk = sk + string(size(kbase(K, t))); sf = sf + string(size(kbase(F, t))); }
+print(sk + "}"); print(sf + "}");
+quit;
