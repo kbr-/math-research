@@ -1,0 +1,41 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PerOrderConstruction
+Claim file: claims/PerOrderConstruction.lean
+Claim: thm:catalan-truncation-per-order-construction
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#catalan-truncation-per-order-construction
+Scope: Over F_2 with a finite variable type σ and a chosen variable x₁ (so n = |σ| ≥ 1): for all k and
+ℓ < k, P = (x₁² + x₁)^ℓ · g_{k−ℓ} has Hasse multiplicity ≥ k at every nonzero point, origin order exactly
+ℓ, and total degree ≤ n + 2k − 2 − s₂(k − ℓ − 1). The degree-equality clause is not claimed.
+Declarations: MathResearch.PerOrderConstruction.mult_zero_y_pow MathResearch.PerOrderConstruction.per_order_construction
+$ lake --wfail build claims.PerOrderConstruction
+✔ [1580/1580] Built claims.PerOrderConstruction (1.6s)
+Build completed successfully (1580 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpjr04mjzm.lean
+@MathResearch.PerOrderConstruction.mult_zero_y_pow : ∀ {σ : Type u_1} [DecidableEq σ] (i : σ) (ℓ : ℕ),
+  MathResearch.HasseMultiplicity.mult 0 ((MvPolynomial.X i ^ 2 + MvPolynomial.X i) ^ ℓ) = ↑ℓ
+'MathResearch.PerOrderConstruction.mult_zero_y_pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderConstruction.per_order_construction : ∀ {σ : Type u_1} [inst : Fintype σ] [inst_1 : DecidableEq σ]
+  (i1 : σ) {k ℓ : ℕ},
+  ℓ < k →
+    (∀ (a : σ → ZMod 2),
+        a ≠ 0 →
+          ↑k ≤
+            MathResearch.HasseMultiplicity.mult a
+              ((MvPolynomial.X i1 ^ 2 + MvPolynomial.X i1) ^ ℓ * MathResearch.TruncatedProduct.g (k - ℓ))) ∧
+      MathResearch.HasseMultiplicity.mult 0
+            ((MvPolynomial.X i1 ^ 2 + MvPolynomial.X i1) ^ ℓ * MathResearch.TruncatedProduct.g (k - ℓ)) =
+          ↑ℓ ∧
+        ((MvPolynomial.X i1 ^ 2 + MvPolynomial.X i1) ^ ℓ * MathResearch.TruncatedProduct.g (k - ℓ)).totalDegree ≤
+          Fintype.card σ + 2 * k - 2 - MathResearch.TruncatedProduct.s2 (k - ℓ - 1)
+'MathResearch.PerOrderConstruction.per_order_construction' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 2 audited declarations.

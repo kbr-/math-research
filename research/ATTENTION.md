@@ -300,7 +300,7 @@ For all n,k >= 1 and 0 <= l <= k-1, y_1^l g_(k-l) over F_2 has multiplicity >= k
 
 **Why it matters:** Removes the dimension restriction from the upper bound and the import from the full formula.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Per-order lower bound for n < k-1 (optional).
 
