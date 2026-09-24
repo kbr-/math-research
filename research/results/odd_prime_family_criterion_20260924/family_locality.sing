@@ -1,0 +1,55 @@
+// Local-to-global test (k = 3) for separately augmented ENS blocks over F_3 with h = 3 inputs, private coefficients.
+// Family: a (x, ya2, ya3), b (x+1, y, yb3), c (x, yc2, yc3), d (y+1, yd2, yd3).
+// Links: a-b parallel (x), c-b parallel (x), a-c identical (x), b-d parallel (y).  Added generators: R for each
+// parallel pair among the blocks present (R_ab, R_cb, R_bd).  For every subfamily S (the whole family and every
+// subfamily of 2 or 3 blocks), J_S = homogenized separate bases of S's blocks + R's of parallel pairs inside S +
+// all field equations; printed: the lowest degree < DB of an element of (J_S : z) not in J_S (DB if none).
+// Prediction stated before the run (bounded linkage with k = 3): the whole family's lowest fall equals the least
+// lowest fall over its subfamilies of at most 3 blocks.
+option(redSB);
+ring S = 3, (x, y, ya2, ya3, yb3, yc2, yc3, yd2, yd3, ra(1..3), rb(1..3), rc(1..3), rd(1..3), z), dp;
+proc blockdata(ideal L, ideal rr)
+{
+  poly P = 1; int i;
+  for (i = 1; i <= 3; i++) { P = P - rr[i]*(1 - L[i]^2); }
+  ideal I;
+  for (i = 1; i <= 3; i++) { I = I, (1 - L[i]^2)*P; }
+  return(P, I);
+}
+ideal La = x, ya2, ya3;      ideal Ra = ra(1), ra(2), ra(3);
+ideal Lb = x + 1, y, yb3;    ideal Rb = rb(1), rb(2), rb(3);
+ideal Lc = x, yc2, yc3;      ideal Rc = rc(1), rc(2), rc(3);
+ideal Ld = y + 1, yd2, yd3;  ideal Rd = rd(1), rd(2), rd(3);
+list A = blockdata(La, Ra); list B = blockdata(Lb, Rb); list C = blockdata(Lc, Rc); list Dd = blockdata(Ld, Rd);
+poly Pa = A[1]; poly Pb = B[1]; poly Pc = C[1]; poly Pd = Dd[1];
+ideal F; int i;
+for (i = 1; i <= nvars(basering) - 1; i++) { F = F, var(i)^3 - var(i); }
+// separate augmentation of each block (std of its companions with all field equations; z absent)
+ideal Ga = std(A[2] + F); ideal Gb = std(B[2] + F); ideal Gc = std(C[2] + F); ideal Gd = std(Dd[2] + F);
+poly Rab = Pa*Pb*((1 - La[1]^2) - (1 - Lb[1]^2));
+poly Rcb = Pc*Pb*((1 - Lc[1]^2) - (1 - Lb[1]^2));
+poly Rbd = Pb*Pd*((1 - Lb[2]^2) - (1 - Ld[1]^2));
+list Gs = Ga, Gb, Gc, Gd; list bnames = "a", "b", "c", "d";
+proc lowestfall(intvec mem, int DB)
+{
+  ideal J = homog(F, z); int k;
+  for (k = 1; k <= 4; k++) { if (mem[k]) { J = J + homog(Gs[k], z); } }
+  if (mem[1] && mem[2]) { J = J, homog(Rab, z); }
+  if (mem[3] && mem[2]) { J = J, homog(Rcb, z); }
+  if (mem[2] && mem[4]) { J = J, homog(Rbd, z); }
+  degBound = DB; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+  int lowest = DB;
+  for (k = 1; k <= ncols(Q); k++) { if (Q[k] != 0 && deg(Q[k]) < lowest) { if (reduce(Q[k], SJ) != 0) { lowest = deg(Q[k]); } } }
+  return(lowest);
+}
+int DB = 9;
+list subs = intvec(1,1,1,1), intvec(1,1,0,0), intvec(0,1,1,0), intvec(1,0,1,0), intvec(0,1,0,1),
+            intvec(1,1,1,0), intvec(1,1,0,1), intvec(0,1,1,1), intvec(1,0,1,1);
+int s; string lab;
+for (s = 1; s <= size(subs); s++) {
+  intvec m = subs[s]; lab = "";
+  for (i = 1; i <= 4; i++) { if (m[i]) { lab = lab + bnames[i]; } }
+  print("SUB " + lab + " DB=" + string(DB) + " lowest_fall=" + string(lowestfall(m, DB)));
+  kill m;
+}
+quit;

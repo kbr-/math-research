@@ -1,0 +1,30 @@
+// Direct check of step 2 of the section lemma: for ENS blocks over F_3 with shared inputs, every element of the
+// block's reduced dp basis, after substituting the standard section for its private variables, reduces to 0 modulo
+// the field equations of the shared coordinates; and P maps to 0.  Blocks: (h=3) b on x+1, y, private yb3 (section
+// at yb3); (h=4) e on x, x+y, private y3, y4 (sections at y3 and at y4).
+option(redSB);
+ring S = 3, (x, y, u3, u4, r(1..4)), dp;
+ideal Fs = x^3 - x, y^3 - y;
+proc check(ideal L, int h, int j)
+{
+  // L: the h inputs; inputs with index >= h - (number of private) are private variables u3, u4 as given
+  poly P = 1; int i;
+  for (i = 1; i <= h; i++) { P = P - r(i)*(1 - L[i]^2); }
+  ideal I; for (i = 1; i <= h; i++) { I = I, (1 - L[i]^2)*P; }
+  for (i = 1; i <= nvars(basering); i++) { I = I, var(i)^3 - var(i); }
+  ideal G = std(I);
+  // standard section: private input j -> 0, r(j) -> 1, other private inputs -> 1, other r -> 0
+  map s; ideal im = maxideal(1);
+  for (i = 1; i <= 4; i++) { im[4 + i] = 0; }
+  im[4 + j] = 1;
+  im[3] = 1; im[4] = 1;
+  if (j == 3) { im[3] = 0; }  if (j == 4) { im[4] = 0; }
+  s = S, im;
+  ideal SG = s(G); ideal SF = std(Fs);
+  int bad = 0; for (i = 1; i <= ncols(SG); i++) { if (reduce(SG[i], SF) != 0) { bad++; } }
+  print("h=" + string(h) + " section_input=" + string(j) + " basis_size=" + string(ncols(G)) + " nonzero_after_section=" + string(bad) + " P_image=" + string(s(P)));
+}
+check(ideal(x + 1, y, u3), 3, 3);
+check(ideal(x, x + y, u3, u4), 4, 3);
+check(ideal(x, x + y, u3, u4), 4, 4);
+quit;
