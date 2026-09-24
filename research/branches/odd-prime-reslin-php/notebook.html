@@ -18,7 +18,7 @@
 <p>The goal follows from S1 by the proved <a href="#weak-base-unary-selector-transfer">compiler</a>. S2 to S5 are what the current route, relative gluing on the window, needs for S1. No proved reduction yet turns them into S1 for adversarial inventories, and S2 is where it is missing. Order: highest risk first after S1.</p>
 <ol>
 <li><strong>S1, block hardness.</strong> Over \(\mathbb F_3\), for fixed \(K\) and large \(n\), the weak unary PHP base on \(n+1\) rows and \(n\) columns plus any \(n^K\) complete accuracy-one ENS blocks has no PC refutation of degree 11 (\(4p-1\) at other odd \(p\)). The blocks have arbitrary affine inputs \(L\), \(q=1-L^2\), private coefficients \(r\), and companions \(qP\) with \(P=1-\sum rq\). <em>Status:</em> proved when every block's projected rank is at most \(R\) or at least \(Q_*\) (<a href="#ternary-low-or-dense-graph-rank-exclusion">graph criterion</a>); open in the window between.</li>
-<li><strong>S2, dependent forms.</strong> In the window, blocks whose input forms are linearly dependent glue: the base plus the blocks has no fall below 11. It must cover the band, whose forms outnumber a glued member's independence bound about \(10^8\)-fold (<a href="#entry-2026-09-24-mixture-composition">count</a>). <em>Status:</em> open, highest risk. No member notion exists beyond repeated linear parts, and pairwise conditions fail for selectors on \(x,y,x+y\) (prop:overlap-tor). Evidence: separately augmented ENS circuits have no fall below 11, for length 3 at \(h=3,4\) and length 4 at \(h=3\) (<a href="#entry-2026-09-25-goal-statements-review">review</a>).</li>
+<li><strong>S2, dependent forms.</strong> In the window, blocks whose input forms are linearly dependent glue: the base plus the blocks has no fall below 11. It must cover the band, whose forms outnumber a glued member's independence bound about \(10^8\)-fold (<a href="#entry-2026-09-24-mixture-composition">count</a>). <em>Status:</em> open, highest risk. No member notion exists beyond repeated linear parts, and pairwise conditions fail for selectors on \(x,y,x+y\) (prop:overlap-tor). Proved when each block shares one input: dependencies among the shared forms cause no fall below 11, and proportional ones reduce to S5 (<a href="#entry-2026-09-25-one-shared-input-locality">one shared input</a>). Open for blocks sharing several inputs, as all band blocks do.</li>
 <li><strong>S3, freeness.</strong> The weak top algebra is free through degree 11 over the span of the inventory's forms. <em>Status:</em> proved on a Zariski-open set for at most \(m(\lfloor N/21\rfloor-1)\) forms (<a href="#entry-2026-09-24-general-forms-freeness">general forms</a>); open for the band's rational and adversarial tuples.</li>
 <li><strong>S4, companion tops.</strong> A single block's top ideal equals \(\rho'Q\) below degree \(h+2\) (conj:companion-tops-low-degree). <em>Status:</em> checked through \(h=7\), degree 8; needed for \(h\ge10\), degree 11.</li>
 <li><strong>S5, repeated linear parts.</strong> Pairs and triples of blocks with identical or parallel linear parts, with \(R\) and \(T\), have no fall below 11 when \(h\ge7\) (conj:r-added-parallel-fall; triples with \(T\)). Identical pairs fall no lower than \(h+4\) (conj:shared-input-falls). <em>Status:</em> checked at small \(h\). With S4, the locality theorems reduce components with repeated linear parts and at most two multi-coordinate blocks to these.</li>
@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> The <a href="#entry-2026-09-25-goal-statements-review">goal statements review</a> placed the locality line under S5, and found that the band's forms are necessarily dependent, which is S2. Next: four blocks on all four lines of \(\mathbb F_3^2\) (\(x\), \(y\), \(x+y\), \(x-y\)), \(h=3,4\), degree bound 11. Then state the dependent-forms member conjecture, that blocks with pairwise non-parallel linear parts have no fall below 11 whatever their dependencies, and attempt it through Tor over the overlaps of the blocks' spans (prop:overlap-tor).</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> <a href="#entry-2026-09-25-one-shared-input-locality">One-shared-input locality</a> settles S2 below 11 for blocks sharing one input, whatever the dependencies. What remains is blocks sharing several inputs. Next: two such blocks whose spans overlap in two dimensions. Decide whether \(\operatorname{Tor}_1^{T(U)}(A_a/\mathfrak n_a,A_b/\mathfrak n_b)\) vanishes below degree 12 for \(\dim U=2\) and non-proportional input forms, by generalizing lem:hub-torsion-floor to the truncated algebra of a plane.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -19267,6 +19267,102 @@ Each component lies in its piece's image, since \(-v_0,-v_1\in y^kA_{01}=\operat
 <tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">48.93 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-one-shared-input-locality" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="thm:one-shared-input-locality">
+<h3>One-shared-input locality: blocks with one shared input each fall below 11 only where three do, whatever the linear dependencies among their forms; without proportional forms they have no fall below 11</h3>
+<p class="entry-meta">25 September 2026 · Working proof (i), unconditional; conditional result (ii), on conj:block-adapted-basis or companion tops · S2 · cycle odd-prime-dependent-forms.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement S2 (dependent forms). The <a href="#entry-2026-09-25-goal-statements-review">goal statements review</a> found that the band's forms are necessarily dependent, while the locality theorems assume identical-or-independent linear parts. Its circuit test found no fall below 11 for blocks on \(x,y,x+y\) and on \(x,y,w,x+y+w\). This cycle asks whether that is a theorem.</p>
+<p><strong>General statement.</strong> thm:one-shared-input-locality. Over \(\mathbb F_3\), let \(F\) be a family of separately augmented complete accuracy-one ENS blocks with \(h\ge3\) inputs and private coefficients. Block \(a\) has one input \(\ell_a+c_a\), whose linear part \(\ell_a\ne0\) lies in the space \(V\) of linear forms in the shared coordinates, and \(h-1\) private inputs. The family includes the field equations of all variables. The \(\ell_a\) may satisfy any linear dependencies. Since \((-\ell+c)^2=(\ell-c)^2\), the input \(q\) depends on \(\pm(\ell_a+c_a)\) only, so proportional linear parts can be normalized to equal ones. Two blocks with equal linear parts are then parallel (\(c_a\ne c_b\)) or identical (\(c_a=c_b\)).</p>
+<ol type="i">
+<li>If no two \(\ell_a\) are proportional, the cross rule produces no generators (and \(W\) is excluded). Then \(F\) has no span-ring fall below 11, that is, at degree \(\le10\). This uses neither (F2) nor the form of the cross generators.</li>
+<li>With proportional linear parts allowed, normalized as above, take the cross set \(R\) for parallel pairs and \(T\) for covering triples of one linear part, without \(W\). Suppose each block has a homogeneous basis over \(S_{\ell_a}=\mathbb F_3[\ell_a]/(\ell_a^3)\) adapted to its top ideal and to \(\rho'_aA_a\) (conj:block-adapted-basis, proved at \(h=3,4,5\)). Alternatively, it may have top ideal \(\rho'Q\) in degrees \(\le11\), which conj:companion-tops-low-degree gives for \(h\ge10\). Then every fall of \(F\) at a degree \(s\le10\) is a fall at degree \(s\), computed in the family's algebra, of a subfamily of at most three blocks with its rule cross set. In its own variables that subfamily falls at some degree \(\le s\). With lem:section-retraction, the lowest fall equals the least over such subfamilies whenever that is at most 10.</li>
+</ol>
+<p>Part (i) needs no basis hypothesis. Part (ii) covers every configuration of blocks with one shared input each: stars, paths, trees, and arbitrary dependencies among the shared forms. It needs the same condition as thm:star-degree-locality.</p>
+
+<h4>Setting</h4>
+<p>Let \(T(V)=\operatorname{Sym}(V)/(\text{cubes})\). In characteristic 3, \(\ell^3=\sum c_i^3x_i^3\) for \(\ell=\sum c_ix_i\), so the ideal of cubes is invariant under linear changes of coordinates. Any nonzero \(\ell\) can therefore be taken as a coordinate, and \(T(V)\) is free over \(S_\ell\). Also \((\ell+c)^3=\ell+c\) modulo the field equations. So each block's algebra \(A_a=S_{\ell_a}\otimes B_a\), with \(B_a\) the truncated algebra of its private inputs and coefficients, maps into the family's algebra
+\[A=T(V)\otimes\textstyle\bigotimes_aB_a=\bigotimes_{T(V),a}\bigl(A_a\otimes_{S_{\ell_a}}T(V)\bigr).\]
+Tops are translation invariant. With separate augmentation, the pieces are those of thm:star-degree-locality:</p>
+<ul>
+<li>\(N_a=\mathfrak n_aA\) for each block;</li>
+<li>\(Ae_c\), mapped by \(\operatorname{top}(c)\), for each cross generator \(c\).</li>
+</ul>
+<p>Its step 1 applies verbatim, because \(A\) is free over each \(A_a\): \(F\) has no fall at degree \(s\) exactly when every top syzygy of degree \(s+1\) lifts. It uses no property of the shared forms beyond that freeness.</p>
+
+<h4>Proof</h4>
+<ol>
+<li><em>Components.</em> A single graded submodule \(M\) of a graded free module \(F\) over the chain ring \(S_{\ell_a}\) has an adapted homogeneous basis. By lem:adapted-basis-criterion with \(\Sigma=\{M\}\), it suffices that the colons \((M:\ell^j)\), which form a chain, together with \(\ell F\) generate a distributive lattice. A lattice generated by a chain and one element in a modular lattice is distributive, as is any lattice generated by two chains (Birkhoff). In (ii) the basis is adapted to \(\mathfrak n_a\) and \(U_a=\rho'_aA_a\) by hypothesis, and in (i) to \(\mathfrak n_a\) alone. Write
+\[\mathfrak n_a=\bigoplus_i\ell_a^{e_{a,i}}S_{\ell_a}f_{a,i},\qquad U_a=\bigoplus_i\ell_a^{u_{a,i}}S_{\ell_a}f_{a,i}.\]
+The products \(f_t=\prod_af_{a,t_a}\) form a \(T(V)\)-basis of \(A\), and each piece's image is \(\bigoplus_tX_p(t)f_t\).
+<ul>
+<li>\(X_{N_a}(t)=\ell_a^{e_{a,t_a}}T(V)\);</li>
+<li>\(X_{R_{ab}}(t)=\ell^{1+u_{a,t_a}+u_{b,t_b}}T(V)\), with \(\ell=\ell_a=\ell_b\) up to scalars, since \(\operatorname{top}(R_{ab})=\kappa\ell\rho'_a\rho'_b\) with \(\kappa\) a unit;</li>
+<li>\(X_{T_{abc}}(t)=\ell^{u_a+u_b+u_c}T(V)\).</li>
+</ul>
+Exponents \(\ge3\) give 0. Up to kernel syzygies of single pieces, a top syzygy is the sum over \(t\) of its component syzygies, with components \(w_{p,t}\in X_p(t)\) of one degree \(d\). Its total degree is
+\[D=d+\textstyle\sum_a\deg f_{a,t_a}.\]</li>
+<li><em>The floor.</em> Let \(G\) be the set of blocks of the pieces with \(w_{p,t}\ne0\). Every \(a\in G\) has \(\deg f_{a,t_a}\ge3\):
+<ul>
+<li>for \(N_a\), \(e=e_{a,t_a}\le2\) and \(\ell_a^ef_{a,t_a}\) is a nonzero element of \(\mathfrak n_a\), of degree \(\ge5\) by lem:block-min-degree, so \(\deg f\ge5-e\ge3\);</li>
+<li>for a cross piece, \(u\le2\), and (F2) of thm:star-degree-locality gives \(\deg f\ge3\). That uses two private inputs, which each block has.</li>
+</ul>
+So \(D\ge d+3|G|\). A component syzygy of degree \(\le11\) has \(|G|\le3\), and is a syzygy of the subfamily on \(G\) with its rule cross set.</li>
+<li><em>Part (ii).</em> By steps 1 and 2 and step 4 of thm:star-degree-locality, a non-lifting top syzygy of degree \(s+1\le11\) has a non-lifting component supported on at most three blocks. That subfamily falls at degree \(s\). Under the model alternative, the truncation argument of cor:band-star-locality applies. Adaptation of \(\mathfrak n_a\) is replaced by that of \(\rho'_aQ_a\), which prop:companion-model-basis gives with \(\ell_a\) in the role of \(x\).</li>
+<li><em>Part (i): no small subfamily falls.</em> With no cross generators, every piece is some \(N_a\). A component syzygy of degree \(D\le11\) on \(G\) has \(e_a\le d\) for \(a\in G\), because \(w_{a,t}\ne0\) lies in \(\ell_a^{e_a}T(V)\) in degree \(d\).
+<ul>
+<li>\(|G|=1\): impossible. A block piece maps by inclusion, so its component would be \(w_a=0\).</li>
+<li>\(|G|=2\): \(\ell_a\) and \(\ell_b\) are independent and can be taken as coordinates, so \(\ell_a^{e_a}T(V)\cap\ell_b^{e_b}T(V)=\ell_a^{e_a}\ell_b^{e_b}T(V)\). The common element is \(g\,\ell_a^{e_a}f_{a}\cdot\ell_b^{e_b}f_{b}\cdot(\text{rest})\), a multiple of the product of an element of \(\mathfrak n_a\) and one of \(\mathfrak n_b\). So the syzygy is a Koszul syzygy, and it lifts exactly.</li>
+<li>\(|G|=3\): \(D\ge d+\sum_{a\in G}(5-e_a)\), with every \(e_a\le\min(d,2)\). If \(d\le1\), \(D\ge d+3(5-d)\ge12\). If \(d\ge2\), then \(D\ge d+9\), so \(D\le11\) forces \(d=2\) and every \(e_a=2\). Then \(w_{a,t}=c_a\ell_a^2\) with scalars \(c_a\), and \(\sum c_a\ell_a^2=0\). Squares of three pairwise non-proportional linear forms are linearly independent over \(\mathbb F_3\). If the forms span a plane, write \(\ell_c=\alpha\ell_a+\beta\ell_b\) with \(\alpha\beta\ne0\); then \(\ell_c^2\) has the term \(2\alpha\beta\ell_a\ell_b\), which \(\ell_a^2\) and \(\ell_b^2\) lack. If they span three dimensions, the squares are distinct monomials in suitable coordinates. So all \(c_a=0\), and there is no such syzygy.</li>
+<li>\(|G|\ge4\): \(D\ge12\).</li>
+</ul>
+So every top syzygy of degree \(\le11\) lifts, and \(F\) has no fall below 11. \(\square\)</li>
+</ol>
+
+<h4>Checks against the record</h4>
+<ul>
+<li><em>Parallel pairs.</em> For \(\ell_a=\ell_b\), the intersection is \(\ell^{\max(e_a,e_b)}T(V)\), not the Koszul product. The floor gives \(D\ge d+6\ge8\), with equality at \(d=2\), \(e_a=e_b=2\). That a syzygy of degree 8 fails to lift, a fall at 7, is cor:parallel-pair-fall-all-h. So the floor is consistent with that fall and sharp for it.</li>
+<li><em>Circuits.</em> The review's circuit families are case (i). Their computed outputs say that nothing falls at degree \(\le10\), and the theorem proves this, including the undecided circuit4 at \(h=4\). It also decides the planned test on the four lines \(x,y,x+y,x-y\) of \(\mathbb F_3^2\) at degree \(\le10\), so that test is not run.</li>
+<li><em>Covering obstruction.</em> prop:covering-obstruction breaks locality for selectors whose allowed set is a point. ENS blocks with private coefficients extend every assignment of their shared input (cor:ens-members), so the family never cuts the shared space. Part (i) is consistent with it. The same holds for prop:member-inconsistency, where \(t+1\) members with one dependency are non-local. Its members forbid two points each of their forms' values, and ENS blocks forbid none.</li>
+<li><em>Earlier theorems.</em> For blocks with one shared input and falls at degree \(\le10\), part (ii) contains thm:star-degree-locality with a shorter proof. The routing and the floor 13 there were needed only for falls at degree 11. The hub theorems remain the only results for blocks with several shared inputs.</li>
+</ul>
+
+<h4>What this means for S2</h4>
+<ul>
+<li>The method stops at 11. At syzygy degree 12 the floor allows \(|G|=3\) with \(d=3\), and on \(x,y,x+y\) there is a non-Koszul component with all three parts nonzero: \(x^2\cdot y+y^2\cdot(-x)+(x+y)^2\cdot x=3x^2y=0\) in \(T(V)_3\). Whether it lifts is not decided.</li>
+<li>Dependencies among the forms of different blocks cause no falls below 11, as long as each block shares one input. Only proportional linear parts do, and those are S5, handled by \(R\), \(T\) and locality.</li>
+<li>The band's blocks share many inputs: all their inputs are forms in the board variables. So the remaining content of S2 is blocks with several shared inputs, whose spans overlap in subspaces of any dimension. For two such blocks, prop:overlap-tor identifies the cross syzygies with \(\operatorname{Tor}_1^{T(W_a\cap W_b)}\). lem:hub-torsion-floor bounds that Tor only when the overlap is a single coordinate. No hub has a monomial basis (ex:hub-no-monomial-basis), so the floor argument above does not extend directly.</li>
+</ul>
+<p>Next: S2 for two blocks with several shared inputs whose spans overlap in two dimensions. Decide whether \(\operatorname{Tor}_1^{T(U)}(A_a/\mathfrak n_a,A_b/\mathfrak n_b)\), with \(\dim U=2\) and non-proportional input forms, vanishes below degree 12. Generalize lem:hub-torsion-floor to \(T(U)\), the truncated algebra of a two-dimensional space.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:star-degree-locality (steps 1 and 4, (F2)), cor:band-star-locality and prop:companion-model-basis (truncation and model), lem:block-min-degree (hypotheses: inputs independent up to translation, \(h\ge3\); here each block's own inputs \(\ell_a\) and its private inputs are independent), lem:section-retraction, cor:parallel-pair-fall-all-h, cor:ens-members, prop:covering-obstruction, prop:overlap-tor and the review's circuit outputs. Claim searches for dependent forms, single shared inputs and squares of linear forms found prop:covering-obstruction and prop:member-inconsistency, discussed above, and nothing implying the theorem.</p>
+<p>A fresh-context reviewer found no mathematical error in the setting, the components, the floor, part (i) through syzygy degree 11, or part (ii). It required these changes, all adopted:</p>
+<ul>
+<li>the title's claim limited to falls below 11, with the degree-12 component on \(x,y,x+y\) recorded;</li>
+<li>the case \(|G|=1\) corrected to impossible;</li>
+<li>\(\ell_a\ne0\), the full shared space with its field equations, and the sign normalization stated;</li>
+<li>part (ii) qualified to falls in the family's algebra;</li>
+<li>the absence of cross generators in (i) derived from the rule;</li>
+<li>the adapted basis for one submodule justified;</li>
+<li>the checks against the parallel-pair fall and the circuits worded exactly;</li>
+<li>prop:member-inconsistency addressed;</li>
+<li>the model alternative's source named;</li>
+<li>the status line naming its conditions;</li>
+<li>the hypotheses used by (i) stated.</li>
+</ul>
+<p>These weaken or clarify claims and add no new one, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-dependent-forms">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 11.69 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 22.37 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">9 min 49.18 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
