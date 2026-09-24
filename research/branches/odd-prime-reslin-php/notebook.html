@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Cover-freeness of the \(D\)-row column tensor power through \(D\) is exactly what the base's stability proof uses. So conj:column-tensor-power-freeness implies the \(p=3\) case of conj:weak-base-stability, as well as freeness over up to \(m\) generic forms (<a href="#entry-2026-09-24-stability-from-tensor-power">stability from tensor powers</a>). Its "only if" half is proved. Next: the "if" half for \(d=2\). \(w_1\) acts by the Clebsch–Gordan decomposition. Compute the Jordan type of \(w_2\) on \(M_N/w_1M_N\), the 2-row algebra modulo its first row sum, and check that the iterative criterion holds through \(t\).</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> conj:column-tensor-power-freeness would give linear base stability at \(p=3\) and freeness over up to \(m\) generic forms. Its "only if" half is proved, and its "if" half now holds through degree 2 for every \(d\) (<a href="#entry-2026-09-24-tensor-power-degree-two">degree two</a>). Next: a general mechanism. The row sums' Koszul complex, graded by row content, resembles the chessboard complexes, whose imported connectivity bound has the conjectured threshold \(N\ge2k-1\). First settle whether an identification exists despite the missing simplicial signs. If it does, derive the vanishing of \(\operatorname{Tor}_1\) in degree \(k\) from it.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -15751,6 +15751,55 @@ So the quotient is the restricted homogenized weak base, as a graded \(\mathbb F
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 13.65 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 53.07 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.65 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-tensor-power-degree-two" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:tensor-power-degree-two">
+<h3>Tensor powers through degree 2: cover-free through degree 2 for every number of forms once N ≥ 3; chessboard connectivity has the conjectured threshold</h3>
+<p class="entry-meta">24 September 2026 · Working proof (tensor powers through degree 2) · The "if" half of conj:column-tensor-power-freeness at t = 2; cycle odd-prime-two-form-dade.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. By the <a href="#entry-2026-09-24-stability-from-tensor-power">stability link</a>, the "if" half of conj:column-tensor-power-freeness would give both linear base stability at \(p=3\) and freeness over up to \(m\) generic forms. Its "only if" half is prop:line-necessity. This cycle proves the first nontrivial case of the "if" half for every number of forms, and looks for a general mechanism.</p>
+<p><strong>General statement.</strong> prop:tensor-power-degree-two: over any field of characteristic \(\ne2\), the weak algebra without row sums on \(d\) rows and \(N\ge3\) columns, \(\tilde A=\mathbb F[x_{bj}]/(x_{bj}x_{b'j})\), has only Koszul relations among its row sums \(r_b=\sum_jx_{bj}\) in degrees \(\le2\). So in characteristic 3 it is cover-free through 2 over \(T=\mathbb F[R]/(R^3)\), for every \(d\). With prop:line-necessity, the threshold at \(t=2\) is exactly \(N\ge3=2t-1\), as conj:column-tensor-power-freeness predicts. For the general case, the content-graded Koszul complex of the row sums appears to be related to row-labelled chessboard complexes. The imported connectivity bound yields \((k-2)\)-connectivity of the \(k\times N\) chessboard complex for \(N\ge2k-1\), and only \((k-3)\) at \(N=2k-2\). That is the conjecture's threshold, a heuristic hint at a proof, not a proof.</p>
+
+<h4>Degree 2</h4>
+<p><em>Proof.</em> By prop:stability-from-tensor-power, cover-freeness through 2 is the vanishing of \(\operatorname{Tor}_1^T(\mathbb F,\tilde A)\) in degrees 1 and 2. \(\tilde A\) is a \(T\)-module, since \(r_b^3=6\sum x\,x\,x=0\) in characteristic 3. \(\operatorname{Tor}_1\) vanishes in degree 0 because the \(e_b\) have degree 1. Frobenius classes start in degree 3, so the claim is that relations \(\sum_br_ba_b=0\) of degree \(\le2\) are Koszul.</p>
+<ul>
+<li><em>Degree 1:</em> \(a_b\) are constants, and \(\sum_b\beta_br_b=0\) forces \(\beta=0\), since the row sums involve disjoint variables.</li>
+<li><em>Degree 2:</em> write \(a_b=\sum_{c,k}\alpha_{bck}x_{ck}\). In \(\tilde A_2\), whose basis is the products \(x_{bj}x_{ck}\) with \(j\ne k\), the coefficient of \(x_{bj}x_{ck}\) is \(\alpha_{bck}+\alpha_{cbj}\). So \(\alpha_{bck}=-\alpha_{cbj}\) for all \(b,c\) and \(j\ne k\).
+<ul>
+<li>Fix \(b,c\) and two columns \(k\ne k'\). With \(N\ge3\) there is a column \(j\) different from both, and then \(\alpha_{bck}=-\alpha_{cbj}=\alpha_{bck'}\). So \(\alpha_{bck}=\beta_{bc}\) does not depend on \(k\), and \(\beta_{bc}=-\beta_{cb}\).</li>
+<li>For \(b=c\) this gives \(\beta_{bb}=-\beta_{bb}\), so \(\beta_{bb}=0\) in characteristic \(\ne2\).</li>
+</ul>
+Hence \(a_b=\sum_c\beta_{bc}r_c\) with \(\beta\) antisymmetric, the Koszul boundary of \(\sum_{b&lt;c}\beta_{bc}\,e_b\wedge e_c\). \(\square\)</li>
+</ul>
+<p>At \(N=2\) the argument fails, as prop:line-necessity requires. There is no third column, and for one row \(b\), \(a_b=x_{b1}-x_{b2}\) gives \(r_ba_b=x_{b1}^2-x_{b2}^2=0\) with \(a_b\) not in the Koszul span. Degree-2 boundaries have every \(a_b\) in the span of the \(r_c\), and there are no Frobenius classes in degree 2. So with \(a_c=0\) for \(c\ne b\) it is a relation of degree 2 that is not Koszul.</p>
+
+<h4>A general mechanism: chessboard complexes (heuristic, not a proof)</h4>
+<p>Grade \(\tilde A\) by row content \(c\in\mathbb N^d\): a monomial \(x_P\), \(P\) a column-injective cell set, has content \(c_b=\#\{\text{cells of }P\text{ in row }b\}\). The Koszul complex of the row sums respects this grading, with \(e_b\) of content \(e_b\). In content \(c\), the relevant spaces are spanned by column-injective placements of a multiset of row labels into the \(N\) columns. These are the faces of the \(|c|\times N\) chessboard complex, taken modulo permutations of equal labels, which is harmless in characteristic 3 when every \(c_b\le2\). Frobenius classes absorb labels of multiplicity 3 and more. The maps, however, carry no simplicial signs. For \(d=1\), multiplication by \(r\) on square-free monomials is the unsigned up-operator of the Boolean lattice, with \(r^2\ne0\). It is not a simplicial coboundary, which is why the Clebsch–Gordan decomposition over \(\mathbb F_3[r]/(r^3)\) applies there. The Clebsch–Gordan count gives the threshold \(N\ge2t-1\) at \(d=1\). The chessboard connectivity bound, \((k-2)\)-connectivity of the \(k\times N\) chessboard complex for \(N\ge2k-1\) (imported in lem:zero-marginal-chessboard-cycles), has the same threshold at \(k=t\). Its sharpness below \(2k-1\) is a separate result, not imported. The conjecture would follow if \(\operatorname{Tor}_1^T\) in content \(c\) embeds in the reduced homology of such a complex below its connectivity range. The degree-2 proof above is the case \(|c|=2\) done by hand.</p>
+
+<p>Next: make the chessboard reduction precise, if it exists. First settle the sign issue: the Koszul complex over the commutative \(\tilde A\) has no simplicial signs, so any identification with a chessboard chain complex needs a sign twist or a different complex. Then identify the content-\(c\) strand of the Koszul complex of the row sums, modulo Frobenius classes, with a chain complex of the \(|c|\times N\) chessboard complex, symmetrized over equal labels. Then derive \(\operatorname{Tor}_1^T=0\) in degree \(k\) from the imported \((k-2)\)-connectivity for \(N\ge2k-1\). Check it against the degree-2 proof and the tensor-power data.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: prop:stability-from-tensor-power (Tor as Koszul homology modulo Frobenius classes), prop:line-necessity, and lem:zero-marginal-chessboard-cycles (the imported connectivity bound). A fresh-context reviewer confirmed the degree 1 and 2 argument, the case \(b=c\), the use of \(N\ge3\) and of characteristic \(\ne2\), and the \(N=2\) counterexample. It found one false statement, the claim that for \(d=1\) the complex is a simplex boundary map, since multiplication by \(r\) is unsigned. It required these changes, all adopted:</p>
+<ul>
+<li>degree 0 and the module structure stated;</li>
+<li>the boundary form of the Koszul relation and the reason the counterexample is not a boundary;</li>
+<li>the connectivity statement worded as what the imported bound gives, with sharpness named as not imported;</li>
+<li>the false \(d=1\) remark replaced, and the sign issue flagged as the first question of the next step;</li>
+<li>the chessboard paragraph marked as heuristic;</li>
+<li>the title made precise.</li>
+</ul>
+<p>The changes correct or weaken, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-two-form-dade">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 30.97 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 33.71 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">0.12 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 51.56 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.59 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
