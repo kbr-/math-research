@@ -268,7 +268,7 @@ For every k >= 1 and n >= floor(log2 k)+2, the minimum degree of an F_2 polynomi
 
 **Why it matters:** Answers the tightness follow-up to Question 4.3 of Bishnoi-Boyadzhiyska-Das-Meszaros in its whole range k < 2^(n-1).
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** User decision on the note; check Menezes' later versions and citing works before claiming novelty.
 

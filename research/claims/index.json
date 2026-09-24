@@ -183585,17 +183585,28 @@
       "id": "conj:binary-multiplicity-degree-formula",
       "summary": "For 1<=k<2^(n-1), the minimum degree of an F_2 polynomial with Hasse multiplicity >= k at every nonzero point of F_2^n and < k at the origin is 2k+n-2-floor(log2 k).",
       "assessment": "Proved for every k by thm:binary-multiplicity-degree-formula (lower bound plus the characteristic-two Catalan truncation); for n >= k-1 it is Menezes' result (imp:menezes-characteristic-drop-degree).",
-      "record": "[Exact values and formula](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-exact-small-table)",
+      "record": "[Exact values and formula](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-exact-small-table), [Lean formalization](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-lean-degree-formula)",
       "mathematical_status": "working_proof",
       "formalization": {
-        "status": "not_started",
-        "scope": "Informal proof or computation; no Lean verification.",
+        "status": "complete",
+        "scope": "Complete Lean proof of the exact minimum in the range 1 <= k < 2^(n-1), all dependencies verified.",
         "references": [
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-multiplicity-degree-exact-table",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-multiplicity-degree-formula",
-          "results/binary-multiplicity-degree/c1-exact-table/table.txt"
+          "../formalization/claims/BinaryMultiplicityDegreeFormula.lean",
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-lean-degree-formula"
         ],
-        "artifacts": []
+        "artifacts": [
+          {
+            "scope": "Complete Lean proof of the exact minimum in the range 1 <= k < 2^(n-1), all dependencies verified.",
+            "status": "complete",
+            "references": [
+              "../formalization/claims/BinaryMultiplicityDegreeFormula.lean"
+            ],
+            "declarations": [
+              "MathResearch.BinaryMultiplicityDegreeFormula.degree_formula_of_lt_two_pow"
+            ],
+            "verification": "results/bmd-f8-formula/lean-verification.txt"
+          }
+        ]
       },
       "topics": [
         "degree-accounting",
@@ -183616,12 +183627,12 @@
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "3a69ae6bc116f77cdc19180852825e264f4334d9",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "Status checked against the entry and its verification gate. Lower half proved for all k and the formula proved for k <= 15 in the one-dimension-step entry; still a conjecture for k >= 16. Formula now proved for k <= 31 in the route review; still a conjecture for k >= 32. Prior-art entry found Menezes' result and a conditional proof for all k; kept as conjecture until the import is verified. Proved in the Catalan construction entry.",
           "next_action": null,
-          "claim_sha256": "5c6166c6d59c14563c4c886c1affbd6e47cb321ab71b491fc2e12a3381d38a56",
+          "claim_sha256": "3d6b427f45aa3e965303b82d5ecfe14c207d942bcc086e45f343e28fd3d4c905",
           "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
           "evidence": [
             {
@@ -183641,13 +183652,13 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "3a69ae6bc116f77cdc19180852825e264f4334d9",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
-          "note": "No Lean artifact.",
+          "reviewer": "Claude Code (Opus 5.5)",
+          "note": "No Lean artifact. Formalized in Lean in the Lean degree formula entry; record links it.",
           "next_action": null,
-          "claim_sha256": "5c6166c6d59c14563c4c886c1affbd6e47cb321ab71b491fc2e12a3381d38a56",
-          "value_sha256": "d4a662cdd4ccba391efdacb3496a1f5ecded5ca5ff73f917a29f53d4f8af52af",
+          "claim_sha256": "3d6b427f45aa3e965303b82d5ecfe14c207d942bcc086e45f343e28fd3d4c905",
+          "value_sha256": "55213c77edf433a9108d42ef5322429aae6e562510a1c6a5903a50d73e617e6d",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-multiplicity-degree-exact-table",
@@ -183666,12 +183677,12 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "3a69ae6bc116f77cdc19180852825e264f4334d9",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "Topics checked against the entry.",
           "next_action": null,
-          "claim_sha256": "5c6166c6d59c14563c4c886c1affbd6e47cb321ab71b491fc2e12a3381d38a56",
+          "claim_sha256": "3d6b427f45aa3e965303b82d5ecfe14c207d942bcc086e45f343e28fd3d4c905",
           "value_sha256": "030126e8b759f555c2114e7d2f53e17b3220944cb4593a4ed71fafb6b420736f",
           "evidence": [
             {
@@ -183691,12 +183702,12 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "3a69ae6bc116f77cdc19180852825e264f4334d9",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "Significance assessed at this checkpoint.",
           "next_action": null,
-          "claim_sha256": "5c6166c6d59c14563c4c886c1affbd6e47cb321ab71b491fc2e12a3381d38a56",
+          "claim_sha256": "3d6b427f45aa3e965303b82d5ecfe14c207d942bcc086e45f343e28fd3d4c905",
           "value_sha256": "438c1c278980dcef35d33f8d810d252f9590f86d1593936e39d809c178bd1433",
           "evidence": [
             {
@@ -183716,12 +183727,12 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "3a69ae6bc116f77cdc19180852825e264f4334d9",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "New claim; relationships recorded. Power-of-two reduction entry (24 September 2026): new relationship with thm:binary-multiplicity-upper-bound-small-k. Factor solution space entry (24 September 2026): new relationship with lem:reverse-step-sufficient-condition.",
           "next_action": null,
-          "claim_sha256": "5c6166c6d59c14563c4c886c1affbd6e47cb321ab71b491fc2e12a3381d38a56",
+          "claim_sha256": "3d6b427f45aa3e965303b82d5ecfe14c207d942bcc086e45f343e28fd3d4c905",
           "value_sha256": "fca1037254553cf12bfcaf8ac6078808c141ee70b04db8eda0fa9407b50ee56e",
           "evidence": [
             {
@@ -187510,20 +187521,29 @@
       "id": "thm:binary-multiplicity-degree-formula",
       "summary": "For every k >= 1 and n >= floor(log2 k)+2, the minimum degree of an F_2 polynomial with Hasse multiplicity >= k at nonzero points of F_2^n and < k at the origin is 2k+n-2-floor(log2 k); the upper bound holds for every n >= 1.",
       "assessment": "Working proof: thm:binary-multiplicity-lower-bound plus thm:catalan-truncation-per-order-construction with l = k - 2^floor(log2 k). Menezes (arXiv 2609.19009) proves the value for n >= k-1; the range floor(log2 k)+2 <= n < k-1 is not covered there.",
-      "record": "[Construction and full formula](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-catalan-construction)",
+      "record": "[Construction and full formula](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-catalan-construction), [Lean formalization](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-lean-degree-formula)",
       "mathematical_status": "working_proof",
       "formalization": {
-        "status": "not_started",
-        "scope": "Informal proof or computation; no Lean verification.",
+        "status": "complete",
+        "scope": "Complete Lean proof with every dependency verified down to multiplicity Schwartz-Zippel: lower bound for n >= floor(log2 k)+2, upper bound for every n >= 1, exact minimum.",
         "references": [
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#catalan-truncation-vanishing",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#catalan-truncation-per-order-construction",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-multiplicity-degree-formula-theorem",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#power-of-two-factor-construction",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#catalan-truncation-exact-verification",
-          "results/binary-multiplicity-degree/c8-construction/summary.txt"
+          "../formalization/claims/BinaryMultiplicityDegreeFormula.lean",
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-lean-degree-formula"
         ],
-        "artifacts": []
+        "artifacts": [
+          {
+            "scope": "Complete Lean proof with every dependency verified down to multiplicity Schwartz-Zippel: lower bound for n >= floor(log2 k)+2, upper bound for every n >= 1, exact minimum.",
+            "status": "complete",
+            "references": [
+              "../formalization/claims/BinaryMultiplicityDegreeFormula.lean"
+            ],
+            "declarations": [
+              "MathResearch.BinaryMultiplicityDegreeFormula.degree_formula",
+              "MathResearch.BinaryMultiplicityDegreeFormula.degree_formula_exact"
+            ],
+            "verification": "results/bmd-f8-formula/lean-verification.txt"
+          }
+        ]
       },
       "topics": [
         "degree-accounting"
@@ -187546,12 +187566,12 @@
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "3a69ae6bc116f77cdc19180852825e264f4334d9",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "Status checked against the entry and its verification gate.",
           "next_action": null,
-          "claim_sha256": "2aa1c796968958f88ac3c15ce187fa6d14d15e8d4f86fdb7c89249c97d677ad0",
+          "claim_sha256": "194890f293c1039c3e3e6f3be2054be0a99e8ddb1b76ff9855ac9b256a14cb68",
           "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
           "evidence": [
             {
@@ -187583,13 +187603,13 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "3a69ae6bc116f77cdc19180852825e264f4334d9",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
-          "note": "No Lean artifact.",
+          "reviewer": "Claude Code (Opus 5.5)",
+          "note": "No Lean artifact. Formalized in Lean in the Lean degree formula entry; record links it.",
           "next_action": null,
-          "claim_sha256": "2aa1c796968958f88ac3c15ce187fa6d14d15e8d4f86fdb7c89249c97d677ad0",
-          "value_sha256": "ea326df73308681b465f173bd1903a05e7f4bd3df305f6da6f26673a185a369c",
+          "claim_sha256": "194890f293c1039c3e3e6f3be2054be0a99e8ddb1b76ff9855ac9b256a14cb68",
+          "value_sha256": "b23010745be197bb499ec6bcf599c01ea28e325bb00528a22d088e21444f8fd1",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#catalan-truncation-vanishing",
@@ -187620,12 +187640,12 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "3a69ae6bc116f77cdc19180852825e264f4334d9",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "Topics checked against the entry.",
           "next_action": null,
-          "claim_sha256": "2aa1c796968958f88ac3c15ce187fa6d14d15e8d4f86fdb7c89249c97d677ad0",
+          "claim_sha256": "194890f293c1039c3e3e6f3be2054be0a99e8ddb1b76ff9855ac9b256a14cb68",
           "value_sha256": "c77a2b25ecfcfe121fba78df653f060d42a3c2d21a5921fe71b12ec7e76a788f",
           "evidence": [
             {
@@ -187657,12 +187677,12 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "3a69ae6bc116f77cdc19180852825e264f4334d9",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "Significance assessed at this checkpoint.",
           "next_action": null,
-          "claim_sha256": "2aa1c796968958f88ac3c15ce187fa6d14d15e8d4f86fdb7c89249c97d677ad0",
+          "claim_sha256": "194890f293c1039c3e3e6f3be2054be0a99e8ddb1b76ff9855ac9b256a14cb68",
           "value_sha256": "585a5940815091636b80ba9b025eefeab7253ded88a7add0fc1e9069b925f032",
           "evidence": [
             {
@@ -187694,12 +187714,12 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "2d8d5553e2c449921c91518a2f82aeecc5e6486b",
+          "revision": "3a69ae6bc116f77cdc19180852825e264f4334d9",
           "date": "2026-09-24",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context reviewer subagent",
+          "reviewer": "Claude Code (Opus 5.5)",
           "note": "New claim; relationships recorded.",
           "next_action": null,
-          "claim_sha256": "2aa1c796968958f88ac3c15ce187fa6d14d15e8d4f86fdb7c89249c97d677ad0",
+          "claim_sha256": "194890f293c1039c3e3e6f3be2054be0a99e8ddb1b76ff9855ac9b256a14cb68",
           "value_sha256": "9ee7f3506879f476117e4b28adeb4e68017cb86ca39e0f4dd4f2606fbdb04ddd",
           "evidence": [
             {

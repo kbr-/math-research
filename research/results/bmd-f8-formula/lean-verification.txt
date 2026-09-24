@@ -1,0 +1,70 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.BinaryMultiplicityDegreeFormula
+Claim file: claims/BinaryMultiplicityDegreeFormula.lean
+Claim: thm:binary-multiplicity-degree-formula
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-multiplicity-degree-formula-theorem
+Scope: For every k ≥ 1: (i) for n ≥ ⌊log₂ k⌋ + 2, every P ∈ F_2[x_1,…,x_n] with Hasse multiplicity ≥ k at
+every nonzero point and < k at the origin has total degree ≥ 2k + n − 2 − ⌊log₂ k⌋; (ii) for every n ≥ 1
+some such P has total degree ≤ 2k + n − 2 − ⌊log₂ k⌋. Hence for n ≥ ⌊log₂ k⌋ + 2 (equivalently
+1 ≤ k < 2^(n−1), the range of conj:binary-multiplicity-degree-formula) the minimum degree is exactly
+2k + n − 2 − ⌊log₂ k⌋. Everything used is verified in Lean, down to multiplicity Schwartz–Zippel.
+Declarations: MathResearch.BinaryMultiplicityDegreeFormula.Admissible MathResearch.BinaryMultiplicityDegreeFormula.s2_two_pow_sub_one MathResearch.BinaryMultiplicityDegreeFormula.upper_bound MathResearch.BinaryMultiplicityDegreeFormula.degree_formula MathResearch.BinaryMultiplicityDegreeFormula.degree_formula_exact MathResearch.BinaryMultiplicityDegreeFormula.degree_formula_of_lt_two_pow
+$ lake --wfail build claims.BinaryMultiplicityDegreeFormula
+✔ [1929/1929] Built claims.BinaryMultiplicityDegreeFormula (1.5s)
+Build completed successfully (1929 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmprq4o06br.lean
+MathResearch.BinaryMultiplicityDegreeFormula.Admissible : (n : ℕ) → ℕ → MvPolynomial (Fin n) (ZMod 2) → Prop
+'MathResearch.BinaryMultiplicityDegreeFormula.Admissible' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.BinaryMultiplicityDegreeFormula.s2_two_pow_sub_one : ∀ (J : ℕ),
+  MathResearch.TruncatedProduct.s2 (2 ^ J - 1) = J
+'MathResearch.BinaryMultiplicityDegreeFormula.s2_two_pow_sub_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.BinaryMultiplicityDegreeFormula.upper_bound : ∀ {k n : ℕ},
+  1 ≤ k →
+    1 ≤ n →
+      ∃ P, MathResearch.BinaryMultiplicityDegreeFormula.Admissible n k P ∧ P.totalDegree ≤ 2 * k + n - 2 - Nat.log 2 k
+'MathResearch.BinaryMultiplicityDegreeFormula.upper_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.BinaryMultiplicityDegreeFormula.degree_formula : ∀ {k : ℕ},
+  1 ≤ k →
+    (∀ (n : ℕ),
+        Nat.log 2 k + 2 ≤ n →
+          ∀ (P : MvPolynomial (Fin n) (ZMod 2)),
+            MathResearch.BinaryMultiplicityDegreeFormula.Admissible n k P →
+              2 * k + n - 2 - Nat.log 2 k ≤ P.totalDegree) ∧
+      ∀ (n : ℕ),
+        1 ≤ n →
+          ∃ P,
+            MathResearch.BinaryMultiplicityDegreeFormula.Admissible n k P ∧ P.totalDegree ≤ 2 * k + n - 2 - Nat.log 2 k
+'MathResearch.BinaryMultiplicityDegreeFormula.degree_formula' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.BinaryMultiplicityDegreeFormula.degree_formula_exact : ∀ {k n : ℕ},
+  1 ≤ k →
+    Nat.log 2 k + 2 ≤ n →
+      (∃ P,
+          MathResearch.BinaryMultiplicityDegreeFormula.Admissible n k P ∧ P.totalDegree = 2 * k + n - 2 - Nat.log 2 k) ∧
+        ∀ (P : MvPolynomial (Fin n) (ZMod 2)),
+          MathResearch.BinaryMultiplicityDegreeFormula.Admissible n k P → 2 * k + n - 2 - Nat.log 2 k ≤ P.totalDegree
+'MathResearch.BinaryMultiplicityDegreeFormula.degree_formula_exact' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.BinaryMultiplicityDegreeFormula.degree_formula_of_lt_two_pow : ∀ {k n : ℕ},
+  1 ≤ k →
+    k < 2 ^ (n - 1) →
+      (∃ P,
+          MathResearch.BinaryMultiplicityDegreeFormula.Admissible n k P ∧ P.totalDegree = 2 * k + n - 2 - Nat.log 2 k) ∧
+        ∀ (P : MvPolynomial (Fin n) (ZMod 2)),
+          MathResearch.BinaryMultiplicityDegreeFormula.Admissible n k P → 2 * k + n - 2 - Nat.log 2 k ≤ P.totalDegree
+'MathResearch.BinaryMultiplicityDegreeFormula.degree_formula_of_lt_two_pow' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 6 audited declarations.

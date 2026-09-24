@@ -8,6 +8,13 @@ this file fixes the target, the dependency order and the obligations. It assigns
 is not evidence of verification. `Mxx` identifiers are planning references, not claim-index
 labels.
 
+**Status (24 September 2026): complete.** Every obligation below is verified in Lean. The
+supporting rows M01–M03, M05 and M12 are verified inside the files named by the rows that
+use them: [HasseMultiplicity.lean](claims/HasseMultiplicity.lean),
+[MultiplicitySchwartzZippel.lean](third-party-claims/MultiplicitySchwartzZippel.lean) and
+[TruncatedProduct.lean](claims/TruncatedProduct.lean). M04 was removed. The target theorem is
+[BinaryMultiplicityDegreeFormula.lean](claims/BinaryMultiplicityDegreeFormula.lean).
+
 ## Target
 
 For every `k ≥ 1` and `n ≥ m(k) = ⌊log₂ k⌋ + 2`, the least total degree of a formal
@@ -72,7 +79,7 @@ Mathlib (commit `67248ba3`), whose sources are in `formalization/.lake/packages/
 | M12 | **Binary digit arithmetic.** `s₂(2ʲ) = 1`, `s₂(a+b) ≤ s₂ a + s₂ b`, so `r` powers of two summing to `σ` need `r ≥ s₂ σ`. `s₂(σ+1) ≤ s₂ σ + 1`, so `σ ↦ 2σ − s₂ σ` is monotone. `s₂(2ʲ − 1) = j`. `2^{Nat.log 2 k} ≤ k < 2^{Nat.log 2 k + 1}`. | — | Used by M13–M15. Mathlib `Nat.digits`/bit lemmas (provisional). |
 | M13 | **Verified 24 September 2026** in [TruncatedProduct.lean](claims/TruncatedProduct.lean), for every `s`, with M03 and M12 as far as needed (choices over `Fin s`; product `(1+x)^(2^s)`). **The truncated product** (`lem:catalan-truncation-vanishing`). Over `𝔽₂`, `g_s` is the sum, over maps `c : Fin n → Option (Fin (J+1))` with cost `Σ 2^{c i} ≤ s−1`, of `∏_{c i = some j} yᵢ^{2ʲ} · ∏_{c i = none} (1+xᵢ)`. It satisfies `mult a g_s ≥ s` at nonzero `a`, `eval 0 g_s = 1`, and `totalDegree g_s ≤ n + 2(s−1) − s₂(s−1)`. | M01, M02, M03, M12 | [Statement and proof](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#catalan-truncation-vanishing); Menezes' construction (arXiv 2609.19009, §3), specialized and proved independently, so it goes in `claims/`, with attribution in the header. Steps: telescoping `(1+x) + Σ_{j≤J} y^{2ʲ} = (1+x)^{2^{J+1}}` (Frobenius in characteristic two, `add_pow_char_pow`); `∏ᵢ Nₛ(xᵢ) = g_s + R` by `Finset.prod_univ_sum` and a filter split; `mult R ≥ s` (M02, M03); M03 for the product. The degree-equality clause is not used and is omitted. Boundary cases `s = 1` (empty `T_s`, `g₁ = ∏(1+xᵢ)`) and `J` defined by `2ᴶ ≤ s−1 < 2^{J+1}`. |
 | M14 | **Verified 24 September 2026** in [PerOrderConstruction.lean](claims/PerOrderConstruction.lean). **The per-order construction** (`thm:catalan-truncation-per-order-construction`). For `n ≥ 1`, `k ≥ 1` and `ℓ < k`, `P = y₁^ℓ · g_{k−ℓ}` has `mult a P ≥ k` at nonzero `a`, `mult 0 P = ℓ` and `totalDegree P ≤ n + 2k − 2 − s₂(k−ℓ−1)`. | M02, M03, M13 | [Statement and proof](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#catalan-truncation-per-order-construction). The exact origin order uses M02 equality and `mult 0 g = 0`. |
-| M15 | **Final theorem** (`thm:binary-multiplicity-degree-formula`). Conjuncts (i) and (ii) of the target. | M11, M12, M14 | [Statement and proof](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-multiplicity-degree-formula-theorem). (ii): `ℓ = k − 2^J`, `J = Nat.log 2 k`, `s₂(2ᴶ−1) = J`, for every `n ≥ 1`. (i): M11. |
+| M15 | **Verified 24 September 2026** in [BinaryMultiplicityDegreeFormula.lean](claims/BinaryMultiplicityDegreeFormula.lean); the target is complete. **Final theorem** (`thm:binary-multiplicity-degree-formula`). Conjuncts (i) and (ii) of the target. | M11, M12, M14 | [Statement and proof](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-multiplicity-degree-formula-theorem). (ii): `ℓ = k − 2^J`, `J = Nat.log 2 k`, `s₂(2ᴶ−1) = J`, for every `n ≥ 1`. (i): M11. |
 
 ```text
 M01 → M02 → M03 ─────────────┐
