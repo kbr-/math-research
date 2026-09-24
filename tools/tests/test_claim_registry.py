@@ -39,6 +39,21 @@ def endpoint(label):
 
 
 class ClaimRegistryTests(unittest.TestCase):
+    def test_complete_formalization_scope_must_cover_boundary_words(self):
+        data=cr.upgrade(cr.import_markdown(source()))
+        claim=data['claims'][0]
+        claim['summary']='The bound is attained exactly for small k'
+        claim['formalization']={'status':'complete','scope':'The bound for small k.',
+                                'references':['../formalization/a.lean'],'artifacts':[]}
+        self.assertEqual(cr.unformalized_boundary_words(claim),['exactly'])
+        with self.assertRaisesRegex(Exception,'asserts exactly beyond'):
+            cr.validate(data)
+        claim['formalization']['scope']='The exact minimum: attained exactly for small k.'
+        cr.validate(data)
+        claim['formalization']['status']='partial'
+        claim['summary']='Open for large k'
+        self.assertEqual(cr.unformalized_boundary_words(claim),[])
+        cr.validate(data)
     def test_verification_selection_does_not_trust_filename_or_header(self):
         header='Declarations: MathResearch.claim\n'
         good="'MathResearch.claim' depends on axioms: [propext, Classical.choice, Quot.sound]\n"
