@@ -5,7 +5,7 @@ Tested statement: M is free through t over u(W) iff HF(M/mM)_k = [q^k] HS_M/(1+q
 k-subset S of the N columns and a label in {1..d} per column of S; w_b sends (S, lab) to the sum over j not in S
 of (S + j, lab with b at j). Ranks of W (x) M_{k-1} -> M_k are exact over F_3 (vectorized elimination).
 Reports the largest t with M free through t, for small (N, d), capped by matrix size.
-Usage: python3 tensor_power.py OUT.json"""
+Usage: python3 tensor_power.py OUT.json [N:d,N:d,...]"""
 import itertools, json, sys, time
 import numpy as np
 p = 3
@@ -48,8 +48,11 @@ def pred(N, d, t):
     return [sum(hs[a] * ser[k - a] for a in range(k + 1)) for k in range(t + 1)]
 
 out = sys.argv[1]; res = []; CAP = 6000
-for N in range(2, 9):
-    for d in range(1, 5):
+CASES = [(N, d) for N in range(2, 9) for d in range(1, 5)]
+if len(sys.argv) > 2:                      # explicit cases N:d,N:d,...
+    CASES = [tuple(map(int, c.split(':'))) for c in sys.argv[2].split(',')]
+for N, d in CASES:
+    if True:
         t0 = time.time(); free_through = -1; hf = []
         for k in range(0, N + 1):
             from math import comb
