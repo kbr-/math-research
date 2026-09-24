@@ -86,6 +86,22 @@ For 1 <= k <= 15 and n >= floor(log2 k)+2, the minimum degree of an F_2 polynomi
 
 ---
 
+### Binary multiplicity degree through 31
+
+**Claim:** [cor:binary-multiplicity-degree-through-31](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-route-review>)
+
+For 1 <= k <= 31 and n >= floor(log2 k)+2, the minimum degree of an F_2 polynomial with Hasse multiplicity >= k off the origin and < k at the origin is exactly 2k+n-2-floor(log2 k).
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Exact answer to the co-author's tightness question for all k <= 31.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Prior-art check before any novelty claim; uniform construction for k >= 32.
+
+---
+
 ### Generic PC log inventory transfer refuted
 
 **Claim:** [cor:generic-PC-log-inventory-transfer-refuted](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-ordering-source-test>)
