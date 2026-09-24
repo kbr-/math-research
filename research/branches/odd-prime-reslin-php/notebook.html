@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> By the <a href="#entry-2026-09-24-pure-part-reduction">pure-part reduction</a>, private coefficients make the gluing condition of augmented ENS families local in the blocks, except for (P), a Taylor-type condition on the pure tops \(\ell_{a,1}\cdots\ell_{a,h}\ell_{a,j}\ell_{a,k}\) of degree \(h+2\). It rests on conj:bihomogeneous-ens-tops, checked for \(h\le7\). Next: (P) at \(h=2\) in the free-span model \(T(W)\). Find the largest number of generic blocks whose tops \(\ell_{a,1}^2\ell_{a,2}^2\) have only member-supported and Koszul syzygies through degree \(D\), with dependent spans; the degree-5 case is the rank \(M(d-2)\) against \(\dim T_5\). Compare that count with the band's. In parallel, try to prove the bihomogeneity conjecture from the zero set's fibre structure.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The <a href="#entry-2026-09-24-pure-part-reduction">pure-part reduction</a> leaves (P), a condition on the pure tops, as the only coupling among many augmented ENS blocks. At two inputs (P) reaches its maximal-rank count in every exact case with \(d\le10\), \(D\le8\). Unconditionally it holds for \(26\lfloor d/10\rfloor\) blocks, which is linear in \(d\). It fails for two blocks sharing a direction when \(D\ge2h+2\) (<a href="#entry-2026-09-24-pure-top-count">pure-top count</a>). Next: test the band against these requirements. Do the window's blocks with \(h\le4\) share input forms? If they do, how must they be merged into members, and what are the merged members' pure tops? If they do not, attempt a proof of conj:two-input-pure-tops-maximal-rank for all \(d\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -16747,6 +16747,119 @@ With relative gluing's condition (c) for each block, these give no PC refutation
 <tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">5 min 3.40 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-pure-top-count" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:two-input-pure-tops-maximal-rank prop:pure-top-sums lem:shared-direction-pure-tops">
+<h3>Pure tops at two inputs: maximal rank in every tested case once no two blocks share a direction; one shared direction breaks (P) at degree 2h+2</h3>
+<p class="entry-meta">24 September 2026 · Working proofs (an instance of overlap Tor and a Künneth composition) and a conjecture with exact checks for d ≤ 10, D ≤ 8 · cycle odd-prime-pure-part-count.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-pure-part-reduction">pure-part reduction</a> left one condition coupling unboundedly many augmented ENS blocks. That condition is (P) for the pure tops, the monomials \(\ell_{a,1}\cdots\ell_{a,h}\ell_{a,j}\ell_{a,k}\) of degree \(h+2\). It helps beyond freeness only if it holds for many more blocks than a free span of the same dimension carries. This cycle asks how many two-input blocks satisfy (P) in the free-span model \(T(W)=\mathbb F_3[y_1,\dots,y_d]/(y_i^3)\), and what forces it to fail.</p>
+<p><strong>General statement.</strong> lem:shared-direction-pure-tops, prop:pure-top-sums and conj:two-input-pure-tops-maximal-rank.</p>
+<ul>
+<li>lem:shared-direction-pure-tops: two blocks with \(h\ge2\) inputs that share a direction have a top syzygy of degree \(2h+2\) outside the span of member-supported syzygies and Koszul pairs, when their \(2h-1\) distinct forms are independent and the top algebra is free through \(2h+2\) over their span. So, under those conditions, (P) through \(D\ge2h+2\) fails for any two blocks that share a direction.</li>
+<li>prop:pure-top-sums: (P) is additive over complementary spans. With the exact witnesses below, for every \(d\), (P) through degree 8 holds for \(26\lfloor d/10\rfloor\) two-input blocks with \(\mathbb F_3\)-rational forms in \(T(W)\). That is \(52\lfloor d/10\rfloor/d\) forms per dimension, asymptotically 5.2. The condition with the explicit list, which implies (P), then holds on a nonempty open set of board tuples with \(\mathbb F_3\)-points, whenever \(d\le m(\lfloor N/15\rfloor-1)\).</li>
+<li>conj:two-input-pure-tops-maximal-rank: for every \(d\ge4\) and \(5\le D\le8\), two-input pure tops of forms generic over \(\overline{\mathbb F}_3\), and \(\mathbb F_3\)-rational ones with pairwise non-proportional forms, satisfy (P) through \(D\) for every \(M\le M_{\rm exp}(D,d)\), the maximal-rank count. Counting forces failure above it only in degrees \(\le7\). At \(D=8\), \(M_{\rm exp}\sim cd^4\) with \(c=\tfrac1{24}-\sqrt{\tfrac1{576}-\tfrac1{20160}}\approx1/1668\), including the \(\binom M2\) term. This is an asymptotic rate: \(d^4/M_{\rm exp}\) is 385 at \(d=10\).</li>
+</ul>
+
+<h4>Setting</h4>
+<p>For two inputs, block \(a\) has one pure top, \(m_a=\ell_{a,1}^2\ell_{a,2}^2\), with \(\ell_{a,1},\ell_{a,2}\) independent. Its member-supported syzygies are \(\operatorname{ann}(m_a)e_a=(\ell_{a,1},\ell_{a,2})e_a\), since \(T(W)\) is free over \(T(\ell_{a,1},\ell_{a,2})\). The Koszul pairs \(m_be_a-m_ae_b\) have degree 8. So (P) in degree \(s\) is:</p>
+<ul>
+<li>for \(s\le7\): the map \(\bigoplus_a\bigl(T/(\ell_{a,1},\ell_{a,2})\bigr)_{s-4}\to T_s\), \((w_a)\mapsto\sum_am_aw_a\), is injective, with rank \(M\dim T_{s-4}(d-2)\);</li>
+<li>for \(s=8\): the map has rank \(M\dim T_4(d-2)-\binom M2\), and the Koszul pairs are independent in its domain.</li>
+</ul>
+<p>Degree 4, the independence of the \(m_a\), follows from degree 5, as in the (b′)-implies-(a′) argument of the free-span double-points entry. \(M_{\rm exp}(D,d)\) is the largest \(M\) whose expected rank fits in \(\dim T_s\) for every \(5\le s\le D\). It is decreasing in \(D\): at \(d=10\) it is 181, 79, 42, 26 for \(D=5,6,7,8\).</p>
+
+<h4>The shared-direction lemma</h4>
+<p><strong>lem:shared-direction-pure-tops.</strong> Over \(\mathbb F_3\), let blocks \(a\ne b\) with \(h\ge2\) inputs share a form \(x\) up to a scalar. Suppose \(x\), the other \(h-1\) forms of \(a\) and the other \(h-1\) forms of \(b\) are linearly independent, and the top algebra \(G\) is free through \(2h+2\) over their span (for \(T(W)\) this is automatic). Take as pure tops the monomials of conj:bihomogeneous-ens-tops, which are the pure tops for \(h\le7\). Then the pure tops of \(a\) and \(b\) have a syzygy of degree \(2h+2\) that is not a combination of syzygies supported on one block and Koszul pairs.</p>
+<p><em>Proof.</em></p>
+<ol>
+<li><em>Two pure tops through \(x\).</em> Pick a second form \(\ell_{a,k}\) of \(a\). The pure top of \(a\) with \(x\) and \(\ell_{a,k}\) squared is \(x^2u_a\), where \(u_a=\ell_{a,k}^2\prod_{i\ne x,k}\ell_{a,i}\) has degree \(h\). Define \(u_b\) the same way for \(b\).</li>
+<li><em>The syzygy.</em> \(\sigma=u_b\,e_{x^2u_a}-u_a\,e_{x^2u_b}\) is a syzygy, of degree \(2h+2\).</li>
+<li><em>No Koszul pairs.</em> Koszul pairs of pure tops have degree \(2h+4\), so none occurs in degree \(2h+2\).</li>
+<li><em>Not member-supported.</em> Suppose \(\sigma\) were a sum of syzygies supported on one block each. Its part on block \(a\)'s coordinates would itself be a syzygy, so \(u_bx^2u_a=0\). But \(x^2u_au_b\) is a monomial in \(2h-1\) independent forms with every exponent at most 2. It is nonzero in \(T\) of their span, and so in \(G\) by the freeness. \(\square\)</li>
+</ol>
+<p>For pure tops, this gives an explicit nonzero element of prop:overlap-tor's quotient \(Q\) in degree \(2h+2\). \(Q\) is \(\operatorname{Tor}_1^{T(W_a\cap W_b)}\) because the two blocks have no common generators. Whether \(2h+2\) is the lowest degree of \(Q\) is not shown. Over \(\mathbb F_3\), \(W\) has only \((3^d-1)/2\) directions, so shared directions must be excluded explicitly. The witnesses below all have pairwise non-proportional forms.</p>
+<p>For the goal: blocks with \(h\le(D-2)/2\) inputs that share an input form, with their other forms independent over a free span, cannot be glued as separate members through this route. At \(D=11\) that is \(h\le4\). They must be merged into one member and augmented jointly. Whether the window's band has blocks sharing input forms is not known.</p>
+
+<h4>The witnesses</h4>
+<p><code>pure_tops.cpp</code> (<code>witnesses.jsonl</code>) is one compiled run, taking 8.6 s. For every \(4\le d\le10\) and \(5\le D\le8\), it searches seeds for one \(\mathbb F_3\) tuple of \(M_{\rm exp}(D,d)\) blocks that satisfies (P) in every degree \(5\le s\le D\).</p>
+<ul>
+<li><em>Method.</em>
+<ul>
+<li>Each block uses the quotient basis of monomials in the \(d-2\) coordinates that complement a nonzero \(2\times2\) minor of its forms.</li>
+<li>Elimination is incremental over the blocks. A seed is abandoned as soon as a prefix falls short, since (P) passes to prefixes.</li>
+<li>Koszul independence at \(s=8\) is checked through the reductions of the \(m_b\) modulo \((\ell_{a,1},\ell_{a,2})\).</li>
+<li>Small cases run in parallel, one case per thread. Cases with \(\dim T_D\ge3000\) run one at a time, with parallel row reduction.</li>
+</ul></li>
+<li><em>Result.</em> All 28 cases have a witness, and every rank equals its expected value. For example, \((d,D)=(10,8)\) with 26 blocks has ranks 208, 936, 2912 and 6591 in degrees 5 to 8. 25 cases needed at most three seeds, and the others 4, 13 and 15.</li>
+<li><em>Validation.</em> <code>validate_p.py</code> (<code>validation.json</code>) takes 12 of the final kernel's witness tuples, with \(d=5,6,7\), \(s=5\) to 8 and \(M\) up to 14. It works on the full domain, with no quotient basis, and all ranks come from <code>rank_modp</code>. In every case it checks three things:<ul><li>the full map's rank equals the kernel's;</li><li>every vector of the explicit list maps to zero;</li><li>the list's rank equals the kernel dimension, which is (P) itself.</li></ul>All 12 pass, including degree 8. An earlier version of the kernel was also compared with <code>reference.py</code>, on ranks only.</li>
+</ul>
+<p>These are exact certificates for the certified \((d,D)\). Rank is lower semicontinuous, so each witness shows that (P) holds on a nonempty open set of tuples. No defect appeared once shared directions were excluded.</p>
+
+<h4>Additivity and the unconditional count</h4>
+<p><strong>prop:pure-top-sums.</strong> Let \(W=W'\oplus W''\), and let families of two-input blocks with forms in \(W'\) and in \(W''\) each satisfy (P) through \(D\), in \(T(W')\) and \(T(W'')\). Then their union satisfies (P) through \(D\) in \(T(W)\). With the witness at \((10,8)\):</p>
+<ul>
+<li>for every \(d\), \(26\lfloor d/10\rfloor\) blocks on \(\lfloor d/10\rfloor\) coordinate copies satisfy (P) through 8 in \(T(W)\);</li>
+<li>when \(d\le m(\lfloor N/15\rfloor-1)\), the explicit-list condition, which implies (P), holds for the same count on a nonempty Zariski-open set of board tuples with \(\mathbb F_3\)-points. A positive count needs \(d\ge10\), so \(N\ge30\).</li>
+</ul>
+<p><em>Proof.</em> This is lem:kunneth-component-locality, taking the two families as components, with (P) applied inside each. For completeness:</p>
+<ol>
+<li>\(T=T'\otimes T''\), and \(T/I'T\) and \(T/I''T\) are extended from different tensor factors. So \(\operatorname{Tor}_1^T\) of the two vanishes, and \(I'T\cap I''T=I'I''T\).</li>
+<li>For a syzygy \((\alpha,\beta)\), \(\sum\alpha_ig'_i\in I'T\cap I''T\), so it equals \(\sum c_{ij}g'_ig''_j\).</li>
+<li>Subtracting \(\sum c_{ij}(g''_je_i-g'_ie_j)\) leaves a syzygy of the \(g'\) plus a syzygy of the \(g''\). Over \(T\), these are extended from \(T'\) and \(T''\) by flatness, and (P) in each factor finishes.</li>
+</ol>
+<p><em>The board.</em></p>
+<ul>
+<li>thm:general-forms-freeness gives an \(\mathbb F_3\)-rational span \(W\) over which \(G\) is free through 8. Then \(G\cong T(W)\otimes C\), and (P) in \(G\) is (P) in \(T(W)\), tensored with \(C\).</li>
+<li>(P) with the explicit list, the multiples of \((\ell_{a,1},\ell_{a,2})\) and the Koszul pairs, says that the rank of the top map plus the rank of the list map equals the dimension of the domain. Both ranks are lower semicontinuous and their sum never exceeds that dimension. So the condition is Zariski-open, and the witness gives the \(\mathbb F_3\)-point. \(\square\)</li>
+</ul>
+
+<h4>What this means</h4>
+<ul>
+<li>Within \(d\le10\) and \(D\le8\), the pure part at two inputs shows no defect beyond shared directions.</li>
+<li>Unconditionally, it holds at asymptotically 5.2 forms per dimension. That is linear in \(d\), a constant factor beyond independent spans (1 form per dimension). The window needs a factor of order \(n\), by the <a href=\"#entry-2026-09-24-mixture-composition\">composition entry</a>.</li>
+<li>The count the route needs is the conjecture, with asymptotic growth about \(d^4/1668\) at \(D=8\). Proving it for all \(d\) is a truncated Terracini problem for products of squares. It is of the same kind as conj:truncated-double-points, which is also unproved.</li>
+<li>The compiler's \(D=11\) is beyond the degrees checked here. There the expected count must also include the Koszul pairs' multiples in degrees 9 to 11.</li>
+<li>Two structural requirements now stand for gluing ENS families through the pure-part reduction: blocks with \(h\le(D-2)/2\) must not share directions, and the local conditions need independence over at most \(D-2\) blocks.</li>
+</ul>
+<p>Next: the band's structure against these requirements. Do the window's blocks share input forms, and how often? If they do, merged members are needed, and their pure tops and local conditions must be redone. If they do not, the next target is a proof of conj:two-input-pure-tops-maximal-rank, for example a Horace argument adapted to products of squares.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:ens-pure-part-reduction (its (P)), prop:overlap-tor, lem:kunneth-component-locality, thm:general-forms-freeness, prop:board-double-points-from-free-spans (the openness argument) and conj:truncated-double-points. The claim searches found that the additivity is lem:kunneth-component-locality and the shared-direction obstruction an instance of prop:overlap-tor. Both are recorded as a composition and an instance, not as new mechanisms. The values are read from <code>witnesses.jsonl</code> and <code>validation.json</code>.</p>
+<p>A fresh-context reviewer confirmed these points:</p>
+<ul>
+<li>the lemma's proof;</li>
+<li>the Künneth argument and its citation;</li>
+<li>the count \(26\lfloor d/10\rfloor\);</li>
+<li>the openness argument: the list's image lies in the kernel, so the two ranks sum to at most the domain's dimension;</li>
+<li>the kernel's quotient basis, substitution, Koszul check and prefix abort;</li>
+<li>the quoted ranks and \(M_{\rm exp}\).</li>
+</ul>
+<p>It checked degree 8 independently by brute force. It required these changes, all adopted:</p>
+<ul>
+<li>a degree-8 validation on the final kernel, saved as a result file, replacing evidence that existed only in the session logs;</li>
+<li>the exact growth constant, including the \(\binom M2\) term, stated as asymptotic;</li>
+<li>the conjecture restated as "(P) for all \(M\le M_{\rm exp}\)", with genericity over \(\overline{\mathbb F}_3\);</li>
+<li>the rate \(52\lfloor d/10\rfloor/d\) forms per dimension;</li>
+<li>the board condition corrected to \(N\ge30\), with the explicit-list condition named;</li>
+<li>the lemma's consequence qualified by its hypotheses;</li>
+<li>"lowest-degree" dropped;</li>
+<li>a link for the window's factor \(n\).</li>
+</ul>
+<p>The changes weaken or re-source claims, and the added validation is a check, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-pure-part-count">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>28 min 9.40 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">4 min 8.09 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">10 min 53.06 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">9 min 29.92 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 55.15 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">43.04 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
