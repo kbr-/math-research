@@ -284,7 +284,7 @@ For every k >= 1 and n >= floor(log2 k)+2, an F_2 polynomial with Hasse multipli
 
 **Why it matters:** Proves the lower half of the degree formula for all k and answers the co-author's tightness question: below the threshold the multiplicity bound is never attained.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Prior-art check against Alon-Furedi, Ball-Serra, Clifton-Huang and Sauermann-Wigderson style lower bounds in characteristic 2 before any novelty claim.
 

@@ -11,11 +11,11 @@
 </section>
 <section id="remaining-route">
 <h2>The remaining route</h2>
-<ol><li data-route-item="formalization"><strong>Formalize the formula in Lean.</strong> Assigned 24 September 2026; the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a> orders the obligations down to multiplicity Schwartz–Zippel. Verified:<ul><li>that lemma over every field (<a href="#entry-2026-09-24-lean-multiplicity-schwartz-zippel">Lean entry</a>);</li><li>the <a href="#entry-2026-09-24-lean-linear-form-avoidance">linear-form avoidance lemma</a>;</li><li>the <a href="#entry-2026-09-24-lean-truncated-product">truncated product</a>;</li><li>the <a href="#entry-2026-09-24-lean-cover-bound">note's deduction</a>;</li><li>the <a href="#entry-2026-09-24-lean-dimension-step">one-dimension step</a>.</li></ul>Remaining: the lower bound, the per-order construction and the assembly.</li><li>the <a href="#entry-2026-09-24-lean-linear-form-avoidance">linear-form avoidance lemma</a> the step needs.</li></ul>Next highest-risk item: the truncated product.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li><li data-route-item="low-origin-degree"><strong>Optional: per-order values below \(n=k-1\).</strong> The formula for \(D\) is proved. The per-order lower bound \(\delta(n,k,\ell)\ge n+2k-2-s_2(k-\ell-1)\) for \(m(k)\le n&lt;k-1\) is open for the orders that do not attain \(D\); the goal does not need it.</li></ol>
+<ol><li data-route-item="formalization"><strong>Formalize the formula in Lean.</strong> Assigned 24 September 2026; the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a> orders the obligations down to multiplicity Schwartz–Zippel. Verified:<ul><li>that lemma over every field (<a href="#entry-2026-09-24-lean-multiplicity-schwartz-zippel">Lean entry</a>);</li><li>the <a href="#entry-2026-09-24-lean-linear-form-avoidance">linear-form avoidance lemma</a>;</li><li>the <a href="#entry-2026-09-24-lean-truncated-product">truncated product</a>;</li><li>the <a href="#entry-2026-09-24-lean-cover-bound">note's deduction</a>;</li><li>the <a href="#entry-2026-09-24-lean-dimension-step">one-dimension step</a>;</li><li>the <a href="#entry-2026-09-24-lean-lower-bound">lower bound</a>.</li></ul>Remaining: the per-order construction and the assembly.</li><li>the <a href="#entry-2026-09-24-lean-linear-form-avoidance">linear-form avoidance lemma</a> the step needs.</li></ul>Next highest-risk item: the truncated product.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li><li data-route-item="low-origin-degree"><strong>Optional: per-order values below \(n=k-1\).</strong> The formula for \(D\) is proved. The per-order lower bound \(\delta(n,k,\ell)\ge n+2k-2-s_2(k-\ell-1)\) for \(m(k)\le n&lt;k-1\) is open for the orders that do not attain \(D\); the goal does not need it.</li></ol>
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: formalization. Formalize the <a href="#binary-multiplicity-lower-bound">lower bound</a> (route item M11): \(D(n,k)\ge2k+n-m(k)\) for \(n\ge m(k)\). Start from the note's deduction at \(n=m(k)\), where \(\lfloor k/2^{m-1}\rfloor=0\), and iterate the verified step, relabelling \(n+1\) variables as \(\mathrm{Option}\) of \(n\). Then formalize the per-order construction M14 and the assembly M15. The note's content and any correspondence remain the user's decision.</p>
+<p>Route item: formalization. Formalize the <a href="#catalan-truncation-per-order-construction">per-order construction</a> (route item M14). \(y_1^\ell g_{k-\ell}\) has multiplicity at least \(k\) off the origin, origin order exactly \(\ell\) (additivity over a domain and \(g(0)=1\)), and degree at most \(n+2k-2-s_2(k-\ell-1)\). Then assemble the <a href="#binary-multiplicity-degree-formula-theorem">formula theorem</a> (M15) from the verified lower bound. The note's content and any correspondence remain the user's decision.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -602,6 +602,37 @@
 <tr><td>Individually measured formal verification</td><td class="elapsed">44.93 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 7.</p>
+</div>
+</article>
+<article id="entry-2026-09-24-lean-lower-bound" data-kind="formalization" data-route="formalization" data-claims="thm:binary-multiplicity-lower-bound">
+<h3>24 September 2026 — Lean: the lower bound for every k</h3>
+<p class="entry-meta">Formalized: thm:binary-multiplicity-lower-bound for every k and n ≥ m(k) (route item M11). <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Assignment and endpoint.</strong> This cycle continues the bottom-up formalization of the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a> with the <a href="#binary-multiplicity-lower-bound">lower bound</a>, the lower half of the formula. The endpoint was a verified Lean proof.</p>
+<h4 id="lean-lower-bound">The formalized statement and proof</h4>
+<p><strong>Statement</strong> (<code>BinaryMultiplicityLowerBound.lower_bound</code>). For every \(k\) and \(n\ge\lfloor\log_2k\rfloor+2\), every \(P\in\mathbb F_2[x_1,\dots,x_n]\) with multiplicity at least \(k\) at every nonzero point and origin order below \(k\) satisfies</p>
+<div class="math">\[ \deg P\ge2k+n-2-\lfloor\log_2k\rfloor. \]</div>
+<p>The claim's hypothesis \(k\ge1\) is not needed: for \(k=0\) the origin condition cannot hold.</p>
+<p><strong>Proof.</strong> This is the notebook's proof, by induction on \(n\) from \(m=\lfloor\log_2k\rfloor+2\).</p>
+<ul>
+<li><strong>Base.</strong> At \(n=m\), <a href="#lean-cover-bound">the note's deduction</a> gives \(\deg P\ge2k-\lfloor k/2^{m-1}\rfloor\). Here \(k&lt;2^{\lfloor\log_2k\rfloor+1}=2^{m-1}\), so the floor is 0.</li>
+<li><strong>Step.</strong> For \(n+1\) variables, relabel them as \(\mathrm{Option}\) of \(n\) (Mathlib's <code>finSuccEquiv</code>). Relabelling preserves multiplicities at the correspondingly relabelled points, the origin order and the total degree. Then apply the <a href="#lean-dimension-step">verified step</a>, which is allowed because \(k&lt;2^{m-1}\le2^{n+1}\). The induction hypothesis applies to its output \(S\), and \(\deg S+1\le\deg P\).</li>
+</ul>
+<p><strong>Files.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/BinaryMultiplicityLowerBound.lean"><code>claims/BinaryMultiplicityLowerBound.lean</code></a> passes <code>verify.sh</code> with only the standard axioms. The report is in <code>research/results/bmd-f6-lower-bound/lean-verification.txt</code>.</p>
+<p><strong>General statement.</strong> <code>thm:binary-multiplicity-lower-bound</code>, now formalized with all its dependencies: the step, the linear-form avoidance lemma, the note's deduction, and multiplicity Schwartz–Zippel.</p>
+<p><strong>Verification gate.</strong> The theorem's statement and proof were re-read from this notebook. The printed Lean type states the bound for \(n\ge m(k)\) with the notebook's hypotheses, and with \(k\ge1\) dropped because it is not used. The proof is checked by Lean.</p>
+<p><strong>Remaining route and process assessment.</strong> The lower half of the formula is fully formalized. What remains is the per-order construction M14 and the assembly M15. Process: the file compiled on the first attempt because every interface it uses had been verified with exactly the needed form. No framework change is needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-f6-lower-bound">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 25.00 s</strong></td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">49.21 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">28.36 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">7.29 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 </section>

@@ -1,0 +1,31 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.BinaryMultiplicityLowerBound
+Claim file: claims/BinaryMultiplicityLowerBound.lean
+Claim: thm:binary-multiplicity-lower-bound
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-multiplicity-lower-bound
+Scope: For every k and n ≥ ⌊log₂ k⌋ + 2, every P ∈ F_2[x_1,…,x_n] with Hasse multiplicity ≥ k at every
+nonzero point and multiplicity < k at the origin has total degree ≥ 2k + n − 2 − ⌊log₂ k⌋. The claim's
+k ≥ 1 is not needed (for k = 0 the hypotheses are contradictory). Proof: the note's deduction at
+n = ⌊log₂ k⌋ + 2, then the one-dimension step for each further variable.
+Declarations: MathResearch.BinaryMultiplicityLowerBound.lower_bound
+$ lake --wfail build claims.BinaryMultiplicityLowerBound
+✔ [1926/1926] Built claims.BinaryMultiplicityLowerBound (1.5s)
+Build completed successfully (1926 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpsozi_9yi.lean
+MathResearch.BinaryMultiplicityLowerBound.lower_bound : ∀ (k : ℕ) {n : ℕ},
+  Nat.log 2 k + 2 ≤ n →
+    ∀ (P : MvPolynomial (Fin n) (ZMod 2)),
+      (∀ (a : Fin n → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+        MathResearch.HasseMultiplicity.mult 0 P < ↑k → 2 * k + n - 2 - Nat.log 2 k ≤ P.totalDegree
+'MathResearch.BinaryMultiplicityLowerBound.lower_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 1 audited declarations.
