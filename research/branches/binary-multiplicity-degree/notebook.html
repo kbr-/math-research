@@ -11,11 +11,11 @@
 </section>
 <section id="remaining-route">
 <h2>The remaining route</h2>
-<ol><li data-route-item="formalization"><strong>Formalize the formula in Lean.</strong> Assigned 24 September 2026; the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a> orders the obligations down to multiplicity Schwartz–Zippel. Verified:<ul><li>that lemma over every field (<a href="#entry-2026-09-24-lean-multiplicity-schwartz-zippel">Lean entry</a>);</li><li>the <a href="#entry-2026-09-24-lean-linear-form-avoidance">linear-form avoidance lemma</a>;</li><li>the <a href="#entry-2026-09-24-lean-truncated-product">truncated product</a>;</li><li>the <a href="#entry-2026-09-24-lean-cover-bound">note's deduction</a>.</li></ul>Remaining: the substitution facts, the step, the lower bound, the per-order construction and the assembly.</li><li>the <a href="#entry-2026-09-24-lean-linear-form-avoidance">linear-form avoidance lemma</a> the step needs.</li></ul>Next highest-risk item: the truncated product.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li><li data-route-item="low-origin-degree"><strong>Optional: per-order values below \(n=k-1\).</strong> The formula for \(D\) is proved. The per-order lower bound \(\delta(n,k,\ell)\ge n+2k-2-s_2(k-\ell-1)\) for \(m(k)\le n&lt;k-1\) is open for the orders that do not attain \(D\); the goal does not need it.</li></ol>
+<ol><li data-route-item="formalization"><strong>Formalize the formula in Lean.</strong> Assigned 24 September 2026; the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a> orders the obligations down to multiplicity Schwartz–Zippel. Verified:<ul><li>that lemma over every field (<a href="#entry-2026-09-24-lean-multiplicity-schwartz-zippel">Lean entry</a>);</li><li>the <a href="#entry-2026-09-24-lean-linear-form-avoidance">linear-form avoidance lemma</a>;</li><li>the <a href="#entry-2026-09-24-lean-truncated-product">truncated product</a>;</li><li>the <a href="#entry-2026-09-24-lean-cover-bound">note's deduction</a>;</li><li>the <a href="#entry-2026-09-24-lean-dimension-step">one-dimension step</a>.</li></ul>Remaining: the lower bound, the per-order construction and the assembly.</li><li>the <a href="#entry-2026-09-24-lean-linear-form-avoidance">linear-form avoidance lemma</a> the step needs.</li></ul>Next highest-risk item: the truncated product.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li><li data-route-item="low-origin-degree"><strong>Optional: per-order values below \(n=k-1\).</strong> The formula for \(D\) is proved. The per-order lower bound \(\delta(n,k,\ell)\ge n+2k-2-s_2(k-\ell-1)\) for \(m(k)\le n&lt;k-1\) is open for the orders that do not attain \(D\); the goal does not need it.</li></ol>
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: formalization. Formalize the <a href="#one-dimension-degree-step">one-dimension step</a> (route items M08 and M10). Under an invertible substitution, total degree is preserved and \(\operatorname{mult}_a(P\circ A)=\operatorname{mult}_{Aa}P\). Then \(S=P(x',0)+P(x',1)\), after straightening a form that does not divide the lowest component, has degree at most \(\deg P-1\), multiplicity at least \(k\) off the origin, and origin order exactly \(\ell\). The lower bound M11, the per-order construction M14 and the assembly M15 follow. The note's content and any correspondence remain the user's decision.</p>
+<p>Route item: formalization. Formalize the <a href="#binary-multiplicity-lower-bound">lower bound</a> (route item M11): \(D(n,k)\ge2k+n-m(k)\) for \(n\ge m(k)\). Start from the note's deduction at \(n=m(k)\), where \(\lfloor k/2^{m-1}\rfloor=0\), and iterate the verified step, relabelling \(n+1\) variables as \(\mathrm{Option}\) of \(n\). Then formalize the per-order construction M14 and the assembly M15. The note's content and any correspondence remain the user's decision.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -554,6 +554,54 @@
 <tr><td>Individually measured formal verification</td><td class="elapsed">13.08 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3.</p>
+</div>
+</article>
+<article id="entry-2026-09-24-lean-dimension-step" data-kind="formalization" data-route="formalization" data-claims="lem:one-dimension-degree-step lem:per-order-dimension-step">
+<h3>24 September 2026 — Lean: the one-dimension step, keeping the origin order</h3>
+<p class="entry-meta">Formalized: lem:one-dimension-degree-step and lem:per-order-dimension-step, with the substitution facts (route items M08, M10). <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Assignment and endpoint.</strong> This cycle continues the bottom-up formalization of the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a>. The target is the <a href="#one-dimension-degree-step">one-dimension step</a> in the order-preserving form of the <a href="#per-order-dimension-step">per-order step</a>, together with the facts about invertible linear substitutions it needs. The endpoint was a verified Lean proof.</p>
+<h4 id="lean-dimension-step">The formalized statement</h4>
+<p><strong>Statement</strong> (<code>OneDimensionStep.one_dimension_step</code>). Let \(\sigma\) be finite, \(n=|\sigma|+1\) and \(k&lt;2^n\). Let \(P\in\mathbb F_2[x_{\mathrm{Option}\,\sigma}]\) have multiplicity at least \(k\) at every nonzero point and origin order below \(k\). Then some \(S\in\mathbb F_2[x_\sigma]\) has multiplicity at least \(k\) at every nonzero point, the same origin order as \(P\), and \(\deg S+1\le\deg P\).</p>
+<p>Applied to a \(P\) of least degree, this gives \(D(n-1,k)\le D(n,k)-1\). Applied to a \(P\) of least degree with a given origin order \(\ell\), it gives \(\delta(n-1,k,\ell)\le\delta(n,k,\ell)-1\). The statement also holds for \(n=1\), which the claims exclude.</p>
+<h4>The proof, as formalized</h4>
+<p><strong>Substitution facts (M08).</strong> Let \(x_i\mapsto\sum_jA_{ij}x_j\) be a linear substitution.</p>
+<ul>
+<li>It maps a homogeneous polynomial of degree \(d\) to one of degree \(d\) (Mathlib's <code>IsHomogeneous.aeval</code>). Hence it commutes with taking homogeneous components, and it does not raise total degree.</li>
+<li>Substitutions compose as matrix products, so an invertible \(A\) gives an injective substitution.</li>
+<li>The origin order is the least \(j\) with a nonzero component of degree \(j\). So an invertible substitution preserves it.</li>
+<li>Shifting commutes with substitution: \(\operatorname{shift}_a(P\circ A)=(\operatorname{shift}_{Aa}P)\circ A\). Hence \(\operatorname{mult}_a(P\circ A)=\operatorname{mult}_{Aa}P\), and \(A\) permutes the nonzero points.</li>
+</ul>
+<p><strong>Choosing coordinates.</strong> Let \(\ell\) be the origin order and \(L\) the degree-\(\ell\) component, which is nonzero with \(\ell\le k-1&lt;2^n-1\).</p>
+<ul>
+<li>The <a href="#binary-linear-form-avoidance">linear-form avoidance lemma</a> gives a nonzero form \(\lambda_v\nmid L\), and an invertible \(A\) with \(\lambda_v\circ A=x_{\text{none}}\).</li>
+<li>Put \(Q=P\circ A\). Its degree-\(\ell\) component is \(L\circ A\).</li>
+<li>If \(x_{\text{none}}\mid L\circ A\), then substituting back with \(A^{-1}\) would give \(\lambda_v\mid L\). So \(x_{\text{none}}\nmid L\circ A\).</li>
+</ul>
+<p><strong>The core (<code>step_core</code>).</strong> Let \(Q'\) be \(Q\) viewed as a polynomial in \(x_{\text{none}}\), and write \(r_c(Q)=Q'(c)\). Put \(S=r_0(Q)+r_1(Q)\).</p>
+<ul>
+<li><strong>Restriction.</strong> Restricting to \(x_{\text{none}}=c\) never lowers multiplicity: \(\operatorname{mult}_{(c,a')}Q\le\operatorname{mult}_{a'}r_c(Q)\). The reason is that \(\operatorname{shift}_{a'}r_c(Q)=r_0(\operatorname{shift}_{(c,a')}Q)\), and the coefficients of \(r_0\) are coefficients of \(Q\) of the same degree. So \(S\) has multiplicity at least \(k\) at every nonzero \(a'\).</li>
+<li><strong>Origin order, lower bound.</strong> \(\operatorname{mult}_0S\ge\min(\ell,k)=\ell\), since \((1,0)\) is a nonzero point.</li>
+<li><strong>Origin order, upper bound.</strong> \(r_0(L\circ A)\) is the constant coefficient of \(L\circ A\) in \(x_{\text{none}}\), and it is nonzero because \(x_{\text{none}}\nmid L\circ A\). Any nonzero coefficient \(z^\beta\) of it has degree \(\ell\) and appears in \(S\), because \(r_1(Q)\) has no terms of degree below \(k\). So \(\operatorname{mult}_0S\le\ell\).</li>
+<li><strong>Degree.</strong> \(S=\sum_{i\ge1}Q'_i\), since the \(i=0\) terms cancel in characteristic two. Mathlib's bound gives \(\deg Q'_i+i\le\deg Q\), so \(\deg S\le\deg Q-1\). Also \(\deg Q\ge1\), because otherwise \(S=0\), contradicting \(\operatorname{mult}_0S=\ell\).</li>
+</ul>
+<p>This is the notebook's proof with the lowest-component argument spelled out. It needs no use of the reduction modulo \(x_i^2-x_i\).</p>
+<p><strong>Files.</strong> <a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/OneDimensionStep.lean"><code>claims/OneDimensionStep.lean</code></a> passes <code>verify.sh</code> with only the standard axioms. The report is in <code>research/results/bmd-f5-dimension-step/lean-verification.txt</code>.</p>
+<p><strong>General statement.</strong> <code>lem:one-dimension-degree-step</code> and <code>lem:per-order-dimension-step</code>, both covered by one Lean theorem for every finite variable set.</p>
+<p><strong>Verification gate.</strong> The step's statement and proof, parts (a)–(c), and the per-order lemma were re-read from this notebook. The printed Lean type states the order-preserving step for every \(n\ge1\) and \(k&lt;2^n\). Both indexed claims follow from it by minimizing degree, without extra hypotheses. The proof is checked by Lean.</p>
+<p><strong>Remaining route and process assessment.</strong> The lower bound M11 is next. It iterates this step from \(n=m(k)\) and needs relabelling a set of \(n\) variables as \(\mathrm{Option}\) of \(n-1\). After it come M14 and the assembly M15. Process: several Mathlib lemmas on MvPolynomial coefficients are now deprecated in favour of <code>AddMonoidAlgebra</code> ones, which cost two compile rounds. No framework change is needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-f5-dimension-step">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 13.51 s</strong></td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">4 min 47.06 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 35.81 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">5.57 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">44.93 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 7.</p>
 </div>
 </article>
 </section>

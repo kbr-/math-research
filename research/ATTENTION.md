@@ -648,7 +648,7 @@ For n >= 2 and 1 <= k < 2^n, D(n-1,k) <= D(n,k)-1: after a linear change of coor
 
 **Why it matters:** The Alon-Furedi discrete-derivative induction extended to Hasse multiplicities over F_2; it yields the full lower half of the degree formula.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** None for the lower half; consider whether a reverse step exists for the upper half.
 
@@ -664,7 +664,7 @@ For n >= 2, k < 2^n and 0 <= l <= k-1, if delta(n,k,l) is finite then delta(n-1,
 
 **Why it matters:** Transfers per-order constructions from large to small dimension.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** None beyond use in the per-order bound.
 

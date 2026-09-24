@@ -1,0 +1,127 @@
+claims/OneDimensionStep.lean:258:35: warning: `ENat.coe_toNat` has been deprecated: Use `ENat.natCast_toNat` instead
+claims/OneDimensionStep.lean:281:6: error: Type mismatch
+  h
+has type
+  restrict 0 L = 0
+but is expected to have type
+  Polynomial.eval (C 0) ((optionEquivLeft (ZMod 2) σ) L) = C 0
+claims/OneDimensionStep.lean:289:8: warning: `if_neg` has been deprecated: Use `ite_eq_right` instead
+claims/OneDimensionStep.lean:289:19: error: Tactic `assumption` failed
+
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+k : ℕ
+Q : Q2
+hQ : ∀ (a : Option σ → ZMod 2), a ≠ 0 → ↑k ≤ mult a Q
+h0 : mult 0 Q < ↑k
+ℓ : ℕ := (mult 0 Q).toNat
+hℓdef : ℓ = (mult 0 Q).toNat
+hℓ : ↑ℓ = mult 0 Q
+hℓk : ℓ < k
+S : P2 := restrict 0 Q + restrict 1 Q
+hSdef : S = restrict 0 Q + restrict 1 Q
+h1 : ↑k ≤ mult 0 (restrict 1 Q)
+h00 : mult 0 Q ≤ mult 0 (restrict 0 Q)
+hmult : ∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ mult a S
+L : Q2 := (homogeneousComponent ℓ) Q
+hL : ¬X none ∣ L
+hL0 : restrict 0 L ≠ 0
+β : σ →₀ ℕ
+hβ : (if Finsupp.degree (Finsupp.optionElim 0 β) = ℓ then Q.coeff (Finsupp.optionElim 0 β) else 0) ≠ 0
+hne : ¬(Finsupp.weight fun x => 1) (Finsupp.optionElim 0 β) = ℓ
+⊢ ¬Finsupp.degree (Finsupp.optionElim 0 β) = ℓ
+claims/OneDimensionStep.lean:291:6: warning: `if_pos` has been deprecated: Use `ite_eq_left` instead
+claims/OneDimensionStep.lean:291:17: error: Tactic `assumption` failed
+
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+k : ℕ
+Q : Q2
+hQ : ∀ (a : Option σ → ZMod 2), a ≠ 0 → ↑k ≤ mult a Q
+h0 : mult 0 Q < ↑k
+ℓ : ℕ := (mult 0 Q).toNat
+hℓdef : ℓ = (mult 0 Q).toNat
+hℓ : ↑ℓ = mult 0 Q
+hℓk : ℓ < k
+S : P2 := restrict 0 Q + restrict 1 Q
+hSdef : S = restrict 0 Q + restrict 1 Q
+h1 : ↑k ≤ mult 0 (restrict 1 Q)
+h00 : mult 0 Q ≤ mult 0 (restrict 0 Q)
+hmult : ∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ mult a S
+L : Q2 := (homogeneousComponent ℓ) Q
+hL : ¬X none ∣ L
+hL0 : restrict 0 L ≠ 0
+β : σ →₀ ℕ
+hβ : (if Finsupp.degree (Finsupp.optionElim 0 β) = ℓ then Q.coeff (Finsupp.optionElim 0 β) else 0) ≠ 0
+hβdeg : (Finsupp.weight fun x => 1) (Finsupp.optionElim 0 β) = ℓ
+⊢ Finsupp.degree (Finsupp.optionElim 0 β) = ℓ
+claims/OneDimensionStep.lean:293:15: error(lean.unknownIdentifier): Unknown identifier `coeff_add`
+claims/OneDimensionStep.lean:335:6: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  g ≥ 0
+  f ≥ 0
+  f - g ≥ 1
+  e ≥ 0
+  d ≥ 1
+  d - g ≤ 1
+  d + e - g ≤ 1
+  c ≥ 0
+  c - g ≤ 1
+  b ≥ 0
+  a ≥ 0
+  a - b ≥ 1
+where
+ a := ↑k
+ b := ↑(Finsupp.degree (Finsupp.optionElim 0 β))
+ c := ↑Q'.natDegree
+ d := ↑i
+ e := ↑(((optionEquivLeft (ZMod 2) σ) Q).coeff i).totalDegree
+ f := ↑(Q'.coeff i).totalDegree
+ g := ↑(Q.totalDegree - 1)
+claims/OneDimensionStep.lean:346:4: error: `simp` made no progress
+claims/OneDimensionStep.lean:367:35: warning: `ENat.coe_toNat` has been deprecated: Use `ENat.natCast_toNat` instead
+claims/OneDimensionStep.lean:378:8: warning: `if_pos` has been deprecated: Use `ite_eq_left` instead
+claims/OneDimensionStep.lean:378:23: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finsupp.weight fun x => 1
+in the target expression
+  Finsupp.degree β = ℓ
+
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+k : ℕ
+hk : k < 2 ^ (Fintype.card σ + 1)
+P : MvPolynomial (Option σ) (ZMod 2)
+hP : ∀ (a : Option σ → ZMod 2), a ≠ 0 → ↑k ≤ mult a P
+h0 : mult 0 P < ↑k
+hPne : P ≠ 0
+ℓ : ℕ := (mult 0 P).toNat
+hℓ : ↑ℓ = mult 0 P
+hℓk : ℓ < k
+L : MvPolynomial (Option σ) (ZMod 2) := (homogeneousComponent ℓ) P
+β : Option σ →₀ ℕ
+hβ : P.coeff β ≠ 0
+hdeg : ↑(Finsupp.degree β) = mult 0 P
+h : L = 0
+this : (if Finsupp.degree β = ℓ then P.coeff β else 0) = (AddMonoidAlgebra.coeff 0) β
+⊢ Finsupp.degree β = ℓ
+claims/OneDimensionStep.lean:385:4: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+  d ≥ 0
+  c ≥ 0
+  c - d ≥ 0
+  b ≥ 0
+  b - c ≥ 1
+  a ≥ 1
+  a ≥ 1
+  2*a - b ≥ 1
+  2*a - e ≤ 1
+where
+ a := ↑2 ^ Fintype.card σ
+ b := ↑k
+ c := ↑(mult 0 P).toNat
+ d := ↑((homogeneousComponent ℓ) P).totalDegree
+ e := ↑L.totalDegree

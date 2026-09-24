@@ -1,0 +1,80 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.OneDimensionStep
+Claim file: claims/OneDimensionStep.lean
+Claim: lem:one-dimension-degree-step
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#one-dimension-degree-step
+Scope: Over F_2 with variables Option σ (σ finite, |Option σ| = n): if k < 2^n and P has Hasse
+multiplicity ≥ k at every nonzero point and origin order < k, then some S in the variables σ has
+multiplicity ≥ k at every nonzero point, the same origin order as P, and totalDegree S + 1 ≤ totalDegree P.
+This is the order-preserving form (it also covers lem:per-order-dimension-step); the claim's statement
+D(n-1,k) ≤ D(n,k) - 1 follows by taking P of least degree. Includes the invertible-substitution facts
+(route item M08): homogeneous components commute with substitution, degree does not increase, origin
+order is preserved, and mult_a(P ∘ A) = mult_{A a}(P).
+Declarations: MathResearch.OneDimensionStep.subst_comp MathResearch.OneDimensionStep.homogeneousComponent_subst MathResearch.OneDimensionStep.totalDegree_subst_le MathResearch.OneDimensionStep.mult_zero_subst MathResearch.OneDimensionStep.mult_subst MathResearch.OneDimensionStep.mult_restrict MathResearch.OneDimensionStep.step_core MathResearch.OneDimensionStep.one_dimension_step
+$ lake --wfail build claims.OneDimensionStep
+✔ [1924/1924] Built claims.OneDimensionStep (2.8s)
+Build completed successfully (1924 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpscy03jyx.lean
+@MathResearch.OneDimensionStep.subst_comp : ∀ {τ : Type u_1} {F : Type u_2} [inst : Fintype τ] [inst_1 : Field F]
+  (A B : Matrix τ τ F) (f : MvPolynomial τ F),
+  (MathResearch.LinearFormAvoidance.subst B) ((MathResearch.LinearFormAvoidance.subst A) f) =
+    (MathResearch.LinearFormAvoidance.subst (A * B)) f
+'MathResearch.OneDimensionStep.subst_comp' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.OneDimensionStep.homogeneousComponent_subst : ∀ {τ : Type u_1} {F : Type u_2} [inst : Fintype τ]
+  [inst_1 : Field F] (A : Matrix τ τ F) (f : MvPolynomial τ F) (j : ℕ),
+  (MvPolynomial.homogeneousComponent j) ((MathResearch.LinearFormAvoidance.subst A) f) =
+    (MathResearch.LinearFormAvoidance.subst A) ((MvPolynomial.homogeneousComponent j) f)
+'MathResearch.OneDimensionStep.homogeneousComponent_subst' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.OneDimensionStep.totalDegree_subst_le : ∀ {τ : Type u_1} {F : Type u_2} [inst : Fintype τ]
+  [inst_1 : Field F] (A : Matrix τ τ F) (f : MvPolynomial τ F),
+  ((MathResearch.LinearFormAvoidance.subst A) f).totalDegree ≤ f.totalDegree
+'MathResearch.OneDimensionStep.totalDegree_subst_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.OneDimensionStep.mult_zero_subst : ∀ {τ : Type u_1} {F : Type u_2} [inst : Fintype τ]
+  [inst_1 : DecidableEq τ] [inst_2 : Field F] {A : Matrix τ τ F},
+  IsUnit A →
+    ∀ (f : MvPolynomial τ F),
+      MathResearch.HasseMultiplicity.mult 0 ((MathResearch.LinearFormAvoidance.subst A) f) =
+        MathResearch.HasseMultiplicity.mult 0 f
+'MathResearch.OneDimensionStep.mult_zero_subst' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.OneDimensionStep.mult_subst : ∀ {τ : Type u_1} {F : Type u_2} [inst : Fintype τ] [inst_1 : DecidableEq τ]
+  [inst_2 : Field F] {A : Matrix τ τ F},
+  IsUnit A →
+    ∀ (a : τ → F) (f : MvPolynomial τ F),
+      MathResearch.HasseMultiplicity.mult a ((MathResearch.LinearFormAvoidance.subst A) f) =
+        MathResearch.HasseMultiplicity.mult (A.mulVec a) f
+'MathResearch.OneDimensionStep.mult_subst' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.OneDimensionStep.mult_restrict : ∀ {σ : Type u_1} (c : ZMod 2) (a' : σ → ZMod 2)
+  (Q : MvPolynomial (Option σ) (ZMod 2)),
+  MathResearch.HasseMultiplicity.mult (MathResearch.ThirdParty.MultiplicitySchwartzZippel.pt c a') Q ≤
+    MathResearch.HasseMultiplicity.mult a' (MathResearch.OneDimensionStep.restrict c Q)
+'MathResearch.OneDimensionStep.mult_restrict' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.OneDimensionStep.step_core : ∀ {σ : Type u_1} (k : ℕ) (Q : MvPolynomial (Option σ) (ZMod 2)),
+  (∀ (a : Option σ → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a Q) →
+    MathResearch.HasseMultiplicity.mult 0 Q < ↑k →
+      ¬MvPolynomial.X none ∣ (MvPolynomial.homogeneousComponent (MathResearch.HasseMultiplicity.mult 0 Q).toNat) Q →
+        ∃ S,
+          (∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a S) ∧
+            MathResearch.HasseMultiplicity.mult 0 S = MathResearch.HasseMultiplicity.mult 0 Q ∧
+              S.totalDegree + 1 ≤ Q.totalDegree
+'MathResearch.OneDimensionStep.step_core' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.OneDimensionStep.one_dimension_step : ∀ {σ : Type u_1} [inst : Fintype σ] [DecidableEq σ],
+  ∀ k < 2 ^ (Fintype.card σ + 1),
+    ∀ (P : MvPolynomial (Option σ) (ZMod 2)),
+      (∀ (a : Option σ → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+        MathResearch.HasseMultiplicity.mult 0 P < ↑k →
+          ∃ S,
+            (∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a S) ∧
+              MathResearch.HasseMultiplicity.mult 0 S = MathResearch.HasseMultiplicity.mult 0 P ∧
+                S.totalDegree + 1 ≤ P.totalDegree
+'MathResearch.OneDimensionStep.one_dimension_step' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 8 audited declarations.

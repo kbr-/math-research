@@ -1,0 +1,34 @@
+claims/OneDimensionStep.lean:294:15: warning: `MvPolynomial.coeff_add` has been deprecated: Use `AddMonoidAlgebra.coeff_add` instead
+
+Note: The updated constant has a different type:
+  ∀ {R : Type u_1} {M : Type u_4} [inst : Semiring R] (x y : AddMonoidAlgebra R M), (x + y).coeff = x.coeff + y.coeff
+instead of
+  ∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (m : σ →₀ ℕ) (p q : MvPolynomial σ R),
+    (p + q).coeff m = p.coeff m + q.coeff m
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.coeff_add` to `AddMonoidAlgebra.coeff_add x`).
+claims/OneDimensionStep.lean:252:0: warning: automatically included section variable(s) unused in theorem `MathResearch.OneDimensionStep.step_core`:
+  [Fintype σ]
+  [DecidableEq σ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype σ] [DecidableEq σ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/OneDimensionStep.lean:383:4: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+  d ≥ 0
+  c ≥ 0
+  c - d ≥ 0
+  b ≥ 0
+  b - c ≥ 1
+  a ≥ 1
+  a ≥ 1
+  2*a - b ≥ 1
+  2*a - e ≤ 1
+where
+ a := ↑2 ^ Fintype.card σ
+ b := ↑k
+ c := ↑(mult 0 P).toNat
+ d := ↑((homogeneousComponent ℓ) P).totalDegree
+ e := ↑L.totalDegree
