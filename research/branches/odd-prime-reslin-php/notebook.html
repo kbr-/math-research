@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Locality as stated fails by pairing and covering. With independence and sparsity together, a dependency among \(t+1\) clauses first breaks locality at about half their combined degree. Adversarial budget clauses share forms, so independence must hold between members, not clauses (<a href="#entry-2026-09-24-locality-line-review">locality line review</a>). Next: formulate member locality precisely. Members are grouped by spans, their spans are \(t\)-wise independent with \(t\) of order \(2(4p-1)\), and each span is jointly free. Then prove it below degree \((t+1)\) times half the least member indicator degree, starting from one dependency among \(t+1\) spans.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Locality as stated fails by pairing and covering, and must hold between members. Its base case is settled for selectors: one dependency among \(t+1\) selectors is invisible exactly below degree \(\lceil t/2\rceil\) (<a href="#entry-2026-09-24-single-dependency">single-dependency threshold</a>). The proof goes through the one non-free summand of the Boolean algebra over its full sum. Next: the single-dependency threshold for clauses of width \(k\ge2\), where each dependent clause has \(k-1\) further forms. The calibration puts 4 clauses of width 2 at degree 8. Reduce with the same normal form, and handle the extra forms by the adapted-basis product argument on each clause's own block.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -14183,6 +14183,71 @@ Always \(\Delta_d\le0\).</li>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 4.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-single-dependency" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="thm:single-dependency-threshold lem:pair-seed-decomposition">
+<h3>Single-dependency threshold: one dependency among t+1 selectors is invisible exactly below degree ⌈t/2⌉</h3>
+<p class="entry-meta">24 September 2026 · Working proof (single-dependency threshold) · The base case of member locality, for selectors over F_3; cycle odd-prime-member-locality.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-locality-line-review">locality line review</a> asked for member locality, starting from its base case: one linear dependency among \(t+1\) members, every \(t\) of them independent. The missing implication is the degree below which such a dependency cannot create a function vanishing on the allowed set that the single members' ideals do not already give. The review's calibration, and the pairing obstruction for selectors, measured that degree. This cycle proves it for selectors over \(\mathbb F_3\).</p>
+<p><strong>General statement.</strong> thm:single-dependency-threshold: over \(\mathbb F_3\), let \(t+1\) selectors have linear parts with exactly one dependency, and every \(t\) of them independent. Then degreewise locality holds in every degree \(e&lt;\lceil t/2\rceil\), for all forbidden values, and it fails at \(e=\lceil t/2\rceil\) for suitable values by prop:pairing-obstruction. So the threshold is exactly \(\lceil t/2\rceil\). The proof reduces the question to the Boolean cube, as in the pairing obstruction. It then uses lem:pair-seed-decomposition: \(\mathbb F_3[x_1,\dots,x_s]/(x_i^2)\) is a free module over \(\mathbb F_3[e_1]/(e_1^3)\) plus one summand of dimension at most 2, in degree \(\lceil s/2\rceil\). This refines lem:free-seed-tensor at \(p=3\).</p>
+
+<h4>The decomposition</h4>
+<p>Put \(\Lambda=\mathbb F_3[y]/(y^3)\), graded with \(y\) in degree 1, and give it the coproduct \(y\mapsto y\otimes1+1\otimes y\). This respects \(y^3=0\) in characteristic 3, since \((y\otimes1+1\otimes y)^3=y^3\otimes1+1\otimes y^3\). Let \(A_s=\mathbb F_3[x_1,\dots,x_s]/(x_i^2)\), graded, with \(y\) acting as \(e_1=x_1+\dots+x_s\). Then \(A_{s+s'}=A_s\otimes A_{s'}\) with \(y\) acting diagonally. Write \(J_a\) for the Jordan block \(\Lambda/(y^a)\), and \([m]\) for a shift putting its lowest degree at \(m\).</p>
+<p><strong>Lemma (pair-seed decomposition).</strong> As graded \(\Lambda\)-modules, \(A_s\cong P_s\oplus N_s\), with \(P_s\) graded free, \(N_{2m}=J_1[m]\) and \(N_{2m+1}=J_2[m]\). Consequently \(\ker(e_1\colon A_{s,d}\to A_{s,d+1})=e_1^2A_{s,d-2}\) for every \(d\ne\lceil s/2\rceil\), and this fails at \(d=\lceil s/2\rceil\).</p>
+<p><em>Proof.</em> \(A_1=J_2[0]\), with basis \(1,x\). Three small products suffice.</p>
+<ul>
+<li>\(J_1[a]\otimes J_2=J_2[a]\).</li>
+<li>\(J_2\otimes J_2\cong\Lambda\oplus J_1[1]\). This is \(A_2\): \(e_1\cdot1=x_1+x_2\) and \(e_1^2\cdot1=2x_1x_2\ne0\), so \(\Lambda\cdot1\) has dimension 3. \(x_1-x_2\) spans a complement in degree 1, killed by \(e_1\) since \((x_1+x_2)(x_1-x_2)=x_1^2-x_2^2=0\).</li>
+<li>\(\Lambda\otimes J_2\cong\Lambda\oplus\Lambda[1]\). With \(Y=y\otimes1+1\otimes y\) and \(J_2\) spanned by \(1,x\): \(Y(1\otimes1)=y\otimes1+1\otimes x\), \(Y^2(1\otimes1)=y^2\otimes1+2y\otimes x\), \(Y(1\otimes x)=y\otimes x\) and \(Y^2(1\otimes x)=y^2\otimes x\). These six vectors span the 6-dimensional space, so \(1\otimes1\) and \(1\otimes x\) are free generators.</li>
+</ul>
+<p>Induction on \(s\), using \(A_{s+1}=A_s\otimes J_2\): \(P_s\otimes J_2\) is free by the third item, applied summand by summand. \(N_{2m}\otimes J_2=J_2[m]=N_{2m+1}\) by the first. \(N_{2m+1}\otimes J_2=(\Lambda\oplus J_1[1])[m]\) is \(\Lambda[m]\oplus N_{2m+2}\) by the second. For the consequence: a free module satisfies \(\ker y=y^2(\cdot)\) in every degree. \(J_1[m]\) violates it only in degree \(m\). \(J_2[m]\), spanned by \(v\) in degree \(m\) and \(yv\) in degree \(m+1\), has \(\ker y\) spanned by \(yv\), while \(y^2(\cdot)=0\), so it violates it only in degree \(m+1\). In both cases that degree is \(\lceil s/2\rceil\). \(\square\)</p>
+<p>lem:free-seed-tensor, with \(W=A_2\), gives a free part plus a summand in degrees \(\ge\lfloor s/2\rfloor\). The lemma identifies that summand up to isomorphism. For odd \(s=2m+1\) the summand \(J_2[m]\) still starts in degree \(m\), but \(\ker e_1=e_1^2(\cdot)\) now holds in degree \(\lfloor s/2\rfloor=m\) as well. That is the degree the theorem below needs.</p>
+
+<h4>The theorem</h4>
+<p><strong>Theorem (single-dependency threshold).</strong> Over \(\mathbb F_3\), let \(t\ge1\) and let \(L_1,\dots,L_{t+1}\) be affine forms on \(\mathbb F_3^{s'}\) whose linear parts span a space of dimension \(t\), with every \(t\) of them independent. Given rank \(t\), this is equivalent to the unique dependency having every coefficient nonzero. For any values \(\alpha_b\), put \(U_b=\{L_b\ne\alpha_b\}\). Then \(I_e(\bigcap_bU_b)=\sum_bI_e(U_b)\) for every \(e&lt;\lceil t/2\rceil\). For suitable \(\alpha\) this fails at \(e=\lceil t/2\rceil\).</p>
+<p><em>Proof.</em> Every step below is an invertible affine change of coordinates, which preserves the degree filtration, or a product decomposition.</p>
+<p><em>Step 1 (normal form).</em> The dependency is \(\sum_b\lambda_bL_b^{\mathrm{lin}}=0\) with every \(\lambda_b\ne0\), since every \(t\) linear parts are independent. Take \(y_b=\lambda_b(L_b-\alpha_b)\) for \(b\le t\), and extend by coordinates \(z\) to a coordinate system. Then \(U_b=\{y_b\ne0\}\) for \(b\le t\), and \(U_{t+1}=\{y_1+\dots+y_t\ne c\}\), where \(c\) runs over all of \(\mathbb F_3\) as \(\alpha_{t+1}\) varies. No set depends on \(z\).</p>
+<p><em>Step 2 (free coordinates).</em> All sets have the form \(X\times\mathbb F_3^{z}\), and \(R=R_y\otimes R_z\) with the tensor filtration. By the product argument of the <a href="#entry-2026-09-24-locality-route-review">locality review</a>, \(I_e(X\times\mathbb F_3^z)=\sum_jI_j(X)\otimes(R_z)_{\le e-j}\), and the same holds for sums of such ideals. Put \(\mathrm{def}_j=\dim I_j(\bigcap_bX_b)-\dim\sum_bI_j(X_b)\) in \(y\)-space. It is \(\ge0\), since the sum lies in the ideal of the intersection. The defect in degree \(e\) is then \(\sum_j\mathrm{def}_j\cdot\dim\operatorname{gr}_{e-j}R_z\). Since \(\dim\operatorname{gr}_0R_z=1\) and all terms are \(\ge0\), it vanishes for all \(e&lt;\tau\) if and only if \(\mathrm{def}_e=0\) for all \(e&lt;\tau\), and it is positive at \(e\) whenever \(\mathrm{def}_e&gt;0\). Hence take \(s'=t\), in both directions.</p>
+<p><em>Step 3 (reduction to the cube).</em> \(C'=\bigcap_{b\le t}U_b=\{1,2\}^t\) is a product. In each coordinate the filtration-compatible basis \(\{1,y_b,1-y_b^2\}\) is adapted to \(I(U_b)\), and \(I_e(U_b)=(1-y_b^2)R_{\le e-2}\). So the product argument gives \(\sum_{b\le t}I_e(U_b)=I_e(C')\). Put \(y=1+x\) on \(C'\), with \(x\in\{0,1\}^t\). Restriction \(\pi\) to \(C'\) maps \(R_{\le e}\) onto the multilinear functions of \(x\) of degree \(\le e\), \(F_{\le e}(C')\). By Step 0 of the pairing obstruction, \(I_e(U_{t+1})=\chi R_{\le e-2}\) with \(\chi=1-(\sum y-c)^2\). On \(C'\), \(\sum y=t+|x|\), so \(\pi(\chi)=\chi_W:=1-(e_1-r)^2\), the indicator of \(W_r=\{|x|\equiv r\}\), with \(r=c-t\). Here \(e_1=\sum x_i\) is read mod 3. Since \(I_e(C')=\ker\pi\cap R_{\le e}\) lies in both sides, locality at \(e\) holds if and only if every \(f\in F_{\le e}(C')\) supported on \(W_r\) lies in \(\chi_WF_{\le e-2}(C')\).</p>
+<p><em>Step 4 (descent).</em> Identify \(\operatorname{gr}F(C')\) with \(A_t\): the multilinear monomials of degree \(d\) give a basis of \(\operatorname{gr}_d\). Let \(f\in F_{\le d}(C')\) be supported on \(W_r\), with \(d\le e&lt;\lceil t/2\rceil\) and degree-\(d\) part \(\sigma_d(f)\in A_{t,d}\). Since \(e_1-r\) vanishes on \(W_r\), \((e_1-r)f=0\). Its degree-\((d+1)\) part is \(e_1\sigma_d(f)\), because reducing \(x_i^2\) to \(x_i\) lowers degree. So \(e_1\sigma_d(f)=0\), and by the lemma, since \(d\ne\lceil t/2\rceil\), \(\sigma_d(f)=e_1^2a\) with \(a\in A_{t,d-2}\); here \(a=0\) if \(d&lt;2\). Lift \(a\) to \(h\in F_{\le d-2}(C')\). The degree-2 part of \(\chi_W\) is \(-e_1^2\), so the degree-\(d\) part of \(\chi_Wh\) is \(-e_1^2a\). Then \(f+\chi_Wh\) is supported on \(W_r\) and has degree \(\le d-1\). By induction on \(d\) it lies in \(\chi_WF_{\le d-3}(C')\), so \(f\in\chi_WF_{\le d-2}(C')\). The base \(d&lt;0\) is \(f=0\). \(\square\)</p>
+<p><em>Consistency.</em> The pairing cycle computed the weight-class defect for \(s\le9\) and every \(r\). It found 0 below \(\lceil s/2\rceil\) and a failure at \(\lceil s/2\rceil\) for some \(r\) (<code>weight_class_2_9.json</code>), as the theorem and the pairing obstruction predict.</p>
+<p><em>The failure half.</em> By Step 1, \(c\) can be chosen as \(t+w_0\), which gives the canonical family of prop:pairing-obstruction, stated there for every \(s\ge1\). That proposition gives a positive defect at \(\lceil t/2\rceil\) in \(y\)-space. For \(t=1\) directly: if \(c\ne0\), the intersection is the single value \(y_1=\) the remaining element of \(\{1,2\}\), so \(y_1\) minus that value lies in \(I_1\), while \(I_1(U_b)=0\). By Step 2 the failure persists in the full space.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>For selectors the base case of member locality is settled. One dependency among \(t+1\) selectors is invisible exactly below \(\lceil t/2\rceil\). The mechanism is the only non-free summand of the Boolean algebra over its full sum. The pairing obstruction shows that the pair-difference product represents it; the lemma fixes the summand only up to isomorphism.</li>
+<li>For clauses of width \(k\), the review's calibration (one dependency among 4 clauses of width 2 first visible at degree 8) suggests the same mechanism with each dependent clause contributing its extra indicator degree. The general case needs the analog of Step 3 with the other forms of each clause, where the product structure is no longer available. That is the next step.</li>
+<li>The threshold grows linearly in the number of dependent members, as the budget needs. A dependency among \(t+1\) selector members is invisible in every degree \(\le D\) once \(\lceil t/2\rceil&gt;D\). For wide members the calibration suggests far fewer.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: prop:pairing-obstruction (statement, Step 0 and the canonical family), the product argument of the locality review, lem:free-seed-tensor, cor:slice-saturation and the pairing cycle's weight-class data. Claim search (free seed, block of holes, free over the sum) found lem:free-seed-tensor, which the lemma refines at \(p=3\), and no statement of the theorem. The theorem's prediction matches the recorded weight-class data. A fresh-context reviewer found no error in the lemma or the theorem. It required these changes, all adopted:</p>
+<ul>
+<li>the failure half derived for general forms, through the choice of \(c\) and both directions of Step 2, with the case \(t=1\) checked directly;</li>
+<li>the defect's nonnegativity and \(\dim\operatorname{gr}_0R_z=1\) stated in Step 2;</li>
+<li>the adapted basis cited in Step 3;</li>
+<li>the comparison with lem:free-seed-tensor corrected;</li>
+<li>the claim that the pair-difference product is the non-free summand weakened;</li>
+<li>the hypothesis stated as nonzero dependency coefficients.</li>
+</ul>
+<p>The changes add justification and weaken one remark, so no further pass was made.</p>
+
+<h4>Remaining gap</h4>
+<ul>
+<li>The single-dependency threshold for clauses of width \(k\ge2\), and then several dependencies at once, the case of five clauses in the calibration, which failed a degree earlier.</li>
+<li>Member locality for the budget, and from it row freeness of the closure.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-member-locality">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 57.35 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 45.14 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 12.08 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
