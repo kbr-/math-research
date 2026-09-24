@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> For member-type blocks, the one-count problem needs freeness of the weak top algebra over many generic forms (<a href="#entry-2026-09-24-one-count-link">one-count link</a>). Every seed proof caps near \(N/(2(t+1))\) forms, while the record shows generic freeness up to the positivity bound (<a href="#entry-2026-09-24-many-form-freeness">many forms</a>). Next: a mechanism beyond seeds. Compute the lowest degree of a non-free summand of \((u(W)/\mathfrak m^2)^{\otimes N}\) over \(u(W)=\mathbb F_3[W]/(w^3)\), for small \(d=\dim W\) and \(N\), with a compiled rank kernel after a sizing run, and look for a formula in \(N\) and \(d\).</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Forms with injective column maps, up to the number of rows, act like row sums. Freeness over them is the freeness of column tensor powers over row sums, whose threshold the data put at \(N\ge2t-1\) for every \(d\le4\), against the seed cap near \(N/(2t)\) (<a href="#entry-2026-09-24-column-tensor-power">column tensor power</a>). Next: prove conj:column-tensor-power-freeness. By the iterative criterion, \(w_1\) is handled by the Clebsch–Gordan rule. Study the quotient by \(w_1\) as a module over the remaining forms. Then treat column maps with kernels, the case \(d&gt;m\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -15550,6 +15550,58 @@ So the quotient is the restricted homogenized weak base, as a graded \(\mathbb F
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.91 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-column-tensor-power" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:generic-forms-as-row-sums conj:column-tensor-power-freeness ex:column-tensor-power-thresholds">
+<h3>Generic forms, up to the number of rows, are row sums; conjectured threshold N ≥ 2t−1 for every such number</h3>
+<p class="entry-meta">24 September 2026 · Working proof (generic forms as row sums), a conjecture and a finite check · Column tensor powers over F_3; cycle odd-prime-column-tensor-power.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-many-form-freeness">many-forms entry</a> found the seed method capped near \(N/(2t)\) forms. It asked for the lowest non-free degree of the column tensor power \((u(W)/\mathfrak m^2)^{\otimes N}\), \(u(W)=\mathbb F_3[W]/(w^3)\), \(d=\dim W\). The missing implication is freeness over many generic forms.</p>
+<p><strong>General statement.</strong> prop:generic-forms-as-row-sums: over any field of characteristic \(p\), let \(d\le m\) linear forms on the weak board without row sums, \(\tilde A=\bigotimes_j(\mathbb F\oplus V_j)\), have injective column maps \(\pi_j:W\to V_j\). This holds for generic forms over an extension field, but uniformly random forms over \(\mathbb F_3\) with \(d=m\) usually fail it in some column. Let \(u(W)=\mathbb F[W]/(w^p)\). Then, as a graded \(u(W)\)-module, \(\tilde A\) is a direct sum of shifted copies of \((u(W)/\mathfrak m^2)^{\otimes k}\), and \((u(W)/\mathfrak m^2)^{\otimes k}\) is the weak algebra on \(d\) rows and \(k\) holes over its row sums. So freeness over such forms is the freeness of column tensor powers over row sums, which is the kind of freeness the base's stability proof uses, up to the caveat below on the notion of freeness. conj:column-tensor-power-freeness: over \(\mathbb F_3\), the weak algebra without row sums on \(d\ge1\) rows and \(N\) holes is free through \(t\) over its row sums, in the sense of the minimal free cover, if and only if \(N\ge2t-1\), for every \(d\). ex:column-tensor-power-thresholds confirms the threshold exactly in all 25 cases checked to completion (\(2\le N\le8\), \(1\le d\le4\)). If true, \(\tilde A\) is free over any \(d\le m\) forms with injective column maps through \(t\) exactly when \(N\ge2t-1\). That goes far beyond the seed cap. It matches the threshold of the recorded conj:weak-base-stability, though whether cover-freeness suffices for that conjecture's proof route is not checked.</p>
+
+<h4>Generic forms as row sums</h4>
+<p><em>Proof.</em> In a tensor product of commutative algebras, multiplication by \(\ell=\sum_j\ell_j\) satisfies the Leibniz rule, so it is the diagonal action of a primitive element. The forms commute and \(\ell^p=\sum_j\ell_j^p=0\), so this is an action of \(u(W)\). \(W\) acts on \(\mathbb F\oplus V_j\) by \(w\cdot1=\pi_j(w)\) and \(w\cdot V_j=0\), since \(V_j^2=0\). Choose a complement \(V_j=\pi_j(W)\oplus V_j'\). Then \(\mathbb F\oplus V_j=(\mathbb F\oplus\pi_j(W))\oplus V_j'\) as \(u(W)\)-modules, with \(V_j'\) trivial in degree 1. When \(\pi_j\) is injective, \(\mathbb F\oplus\pi_j(W)\cong u(W)/\mathfrak m^2\) by \(1\mapsto1\), \(\pi_j(w)\mapsto w\). The diagonal action on the tensor product distributes over direct sums, so \(\tilde A\cong\bigoplus_{S\subseteq[N]}(u(W)/\mathfrak m^2)^{\otimes([N]\setminus S)}\otimes\bigotimes_{j\in S}V_j'\). The factor \(\bigotimes_{j\in S}V_j'\) is trivial, in degree \(|S|\). On \(d\) rows with forms the row sums \(R_i\mapsto r_i=\sum_jx_{ij}\), each \(\pi_j\) sends \(R_i\) to \(x_{ij}\), an isomorphism onto \(V_j\). So the \(d\)-row algebra on \(k\) holes is \((u(W)/\mathfrak m^2)^{\otimes k}\) over its row sums. \(\square\)</p>
+<p>A tensor factor that is trivial and sits in degree \(s\) shifts freeness degrees by \(s\). So \(\tilde A\) is free through \(t\) over the \(d\) forms exactly when \((u/\mathfrak m^2)^{\otimes(N-s)}\) is free through \(t-s\) for every \(s\) with nonzero multiplicity. Under the conjecture that requires \(N-s\ge2(t-s)-1\). The summand \(s=0\) always occurs with multiplicity 1, so it binds: \(N\ge2t-1\).</p>
+
+<h4>The check</h4>
+<p><code>tensor_power.py</code> builds \(M=(u(W)/\mathfrak m^2)^{\otimes N}\) with basis (column subset, labels) and the action of \(w_b\) inserting label \(b\) in a new column. It computes \(\mathrm{HF}(M/\mathfrak mM)\) by exact ranks over \(\mathbb F_3\) and compares with \([q^k](1+dq)^N/(1+q+q^2)^d\). It stops at the first inequality. The lemma's failure test is \(\mathrm{HF}&gt;\mathrm{pred}\), and every recorded failure has \(\mathrm{HF}&gt;\mathrm{pred}\). By the openness lemma of thm:projection-freeness, equality through \(t\) is equivalent to the minimal free cover being bijective through \(t\). Matrices are capped at 6000 columns. Results (<code>tensor_power.json</code>):</p>
+<ul>
+<li>In all 25 cases that reached their first failure (\(2\le N\le8\), \(1\le d\le4\)), \(M\) is free through exactly \(\lceil N/2\rceil\) and not through \(\lceil N/2\rceil+1\), whatever \(d\).</li>
+<li>Three cases stopped at the cap while still free: \((N,d)=(7,4)\) through 3, \((8,3)\) through 4, \((8,4)\) through 3. They are consistent with the pattern.</li>
+<li>For \(d=1\) the values agree with the Clebsch–Gordan count, which was not computed separately by the script. The reviewer recomputed \((N,d)=(4,2),(5,2),(6,1),(8,1),(4,3),(6,2)\) with separate code over full tuples, and all matched.</li>
+</ul>
+<p>This extends the record's evidence. The weak-base-stability entry found \(\mathrm{HF}_A\), which is \(M/\mathfrak mM\), equal to the freeness prediction on the \(4\times7\) and \(5\times9\) boards at \(N=2D-1\), and unequal on boards that fall. That entry calls equality "necessary for that freeness, not sufficient". For freeness in the sense of the minimal free cover, the openness lemma makes it sufficient too. Whether that weaker notion suffices for Step 3 of the stability proof, whose free-seed decomposition is into free plus high-degree parts, is not checked here.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>Two open ends of the line meet. The base's stability proof uses freeness of column tensor powers over row sums, in the free-plus-high-degree sense. Freeness over forms with injective column maps is cover-freeness of the same modules for \(d\le m\). The data put the cover-freeness threshold at \(N\ge2t-1\) independently of \(d\), against the seed cap \(d\le N/(2(t+1))\).</li>
+<li>Not covered: more forms than rows, \(d&gt;m\), where the column maps have kernels; and the weak algebra with its row sums together with further forms, which is again more than \(m\) directions. The one-count problem needs \(d\) up to about \(N^2\), so both matter.</li>
+</ul>
+<p>Next: prove conj:column-tensor-power-freeness. The iterative criterion reduces freeness over \(u(w_1,\dots,w_d)\) to \(w_1\) acting freely and freeness of the quotient over the rest. The Clebsch–Gordan rule handles \(w_1\). The quotient is the question. Then treat non-injective column maps, the case \(d&gt;m\), with the same kernel.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the weak-base stability entry (Steps 1 to 3, the free-seed lemma, the \(\mathrm{HF}_A\) evidence and its remark), the openness lemma of thm:projection-freeness, lem:seed-cap, and conj:weak-base-stability. The check was validated for \(d=1\) against the Clebsch–Gordan count, and the reviewer recomputed six cases independently. A fresh-context reviewer confirmed the decomposition, the identification with the row-sum algebra, the shift argument, and the case counts. It required these changes, all adopted:</p>
+<ul>
+<li>the title and statement hedged: the threshold is a conjecture, and the proposition covers \(d\le m\) forms with injective column maps;</li>
+<li>the identification with the stability ingredient qualified by the cover-freeness caveat;</li>
+<li>characteristic \(p\) with \(u(W)=\mathbb F[W]/(w^p)\), and the reason the action is defined;</li>
+<li>injectivity stated as the hypothesis, with random \(\mathbb F_3\) forms flagged;</li>
+<li>the conjecture's letter changed to \(d\);</li>
+<li>the Clebsch–Gordan comparison and the script's stopping test described accurately.</li>
+</ul>
+<p>The changes weaken or clarify, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-column-tensor-power">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 12.01 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 19.30 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">44.51 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 56.62 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5.98 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.60 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
