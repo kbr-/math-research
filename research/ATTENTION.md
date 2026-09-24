@@ -70,6 +70,22 @@ For 1<=k<2^(n-1), the minimum degree of an F_2 polynomial with Hasse multiplicit
 
 ---
 
+### Binary multiplicity degree extended range
+
+**Claim:** [cor:binary-multiplicity-degree-extended-range](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-extended-range>)
+
+For n >= 1 and 1 <= k < 3*2^(n-1), the minimum degree of an F_2 polynomial with Hasse multiplicity >= k off the origin and < k at the origin is 2k+n-2-floor(log2 k); the note's bound 2k - floor(k/2^(n-1)) is attained exactly for 2^(n-2) <= k < 3*2^(n-1).
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Extends the exact value beyond the conjecture's range and shows exactly where the note's bound is tight.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Determine D(n,k) for k >= 3*2^(n-1), where the known bounds differ.
+
+---
+
 ### Binary multiplicity degree small k
 
 **Claim:** [cor:binary-multiplicity-degree-small-k](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-one-dimension-step>)
