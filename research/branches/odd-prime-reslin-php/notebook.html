@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> A fiber criterion reduces membership in a linked pair's ideal to the blocks' separate fiber ideals. With it, separately augmented parallel pairs are proved to fall at degree 7 for \(3\le h_a\le8\), \(4\le h_b\le8\), and for all larger \(h\) if every block with at least three inputs has no nonzero element of degree \(\le4\) (<a href="#entry-2026-09-24-parallel-fall-theorem">parallel fall theorem</a>). Next: prove that minimum-degree statement for single blocks, then apply the fiber criterion to a parallel pair with \(R\) added, to locate its next possible fall.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Separately augmented ENS blocks with parallel inputs fall at degree 7 for every \(h\ge3\) (<a href="#entry-2026-09-24-block-min-degree">block minimum degree</a>, <a href="#entry-2026-09-24-parallel-fall-theorem">parallel fall theorem</a>). So gluing needs \(R\) for every parallel pair unless other generators supply it. Next: apply the fiber criterion to a parallel pair with \(R\) added. Find the least degree at which a consequence outside \((I_a)+(I_b)+(R)\) can appear, as a function of \(h\), and compare it with \(D=11\). That is the first case of conj:bounded-linkage-large-h that can be proved rather than tested.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -17441,6 +17441,74 @@ where each \(A_i\) is a fixed scalar combination of the \(\alpha_v\), so \(A_i\i
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 36.89 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">3 min 34.61 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-block-min-degree" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:block-min-degree cor:parallel-pair-fall-all-h">
+<h3>Block minimum degree: ENS blocks with two inputs have no consequence below degree 4, and with three or more none below 5, so every parallel pair with h ≥ 3 (otherwise independent inputs, the pair alone) falls at degree 7</h3>
+<p class="entry-meta">24 September 2026 · Working proof (induction from two exact base cases) and an unconditional corollary · cycle odd-prime-block-min-degree.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-parallel-fall-theorem">parallel fall theorem</a> proved the degree-7 fall of separately augmented parallel pairs up to eight inputs. For more inputs it assumed that a block with at least three inputs has no nonzero consequence of degree \(\le4\). The band's blocks have \(h\ge10\). This cycle proves that assumption, and the matching one for two inputs, for every \(h\).</p>
+<p><strong>General statement.</strong> lem:block-min-degree and cor:parallel-pair-fall-all-h.</p>
+<ul>
+<li>lem:block-min-degree: over \(\mathbb F_3\), modulo field equations, the ideal of a complete accuracy-one ENS block with \(h\) inputs, taken as independent coordinates \(y_i\) with \(q_i=1-y_i^2\), has no nonzero element of degree \(\le3\) when \(h\ge2\), and none of degree \(\le4\) when \(h\ge3\). The same holds after adjoining free variables.</li>
+<li>cor:parallel-pair-fall-all-h: every pair of separately augmented complete accuracy-one ENS blocks with \(h_a,h_b\ge3\) inputs, private coefficients, parallel inputs \(x+c_a\ne x+c_b\) and otherwise independent inputs falls at degree 7: \(R\notin J_7\) and \(zR\in J\). This is for the pair alone, with field equations. Whether it survives with the weak base and other blocks is unchecked, as in conj:shared-input-falls.</li>
+</ul>
+
+<h4>Proof of the lemma</h4>
+<p>Let \(Z_h\) be the block's zero set: whenever the true set \(T(y)=\{i:y_i=0\}\) is nonempty, \(\sum_{i\in T}r_i=1\). Let \(g\) be a reduced polynomial vanishing on \(Z_h\), with \(\deg g\le d\), where \(d=3\) or \(d=4\).</p>
+<ol>
+<li><em>Base cases.</em> For \(h=2\) with \(d=3\), and for \(h=3\) with \(d=4\), the exact reduced degree-order Gröbner bases in <code>gb_blocks.json</code> have their least non-field top degree at 4 and 5 respectively. A nonzero reduced \(g\) in the ideal, of degree \(\le d\), has a leading monomial divisible by some basis top. The only tops of degree \(\le d\) are \(y_i^3\) and \(r_i^3\), which divide no reduced monomial. They are the field tops: the counts of bidegree \((3,0)\) and \((0,3)\) at degree 3 equal \(h\) (<code>field_y_tops</code> is 2 and 3). So there is no such \(g\).</li>
+<li><em>Restriction.</em> Let \(h\) exceed the base, and fix an input \(i\) and a value \(v=\pm1\). On \(y_i=v\) input \(i\) is false. So the restriction of \(Z_h\) is the zero set of the block on the other \(h-1\) inputs, with \(r_i\) free. The restriction \(g|_{y_i=v}\) vanishes there and has degree \(\le d\). By induction, adjoining the free \(r_i\) does not lower the minimum degree, since the ideal is extended from the other variables. So \(g|_{y_i=v}=0\).</li>
+<li><em>Support.</em> Every point with some \(y_i\ne0\) lies on such a slice, so as a function \(g\) is supported on \(y=0\). There \(g=\prod_{i=1}^hq_i(y)\cdot g(0,r)\).</li>
+<li><em>Degree.</em> If \(g(0,\cdot)\ne0\), the reduced form of \(\prod_iq_i\,g(0,r)\) contains \(\prod_i(-y_i^2)\operatorname{top}(g(0,\cdot))\), of degree \(\ge2h\). That is above \(d\), because \(2h\ge6&gt;3\) and \(2h\ge8&gt;4\) in the respective steps. Reduced representatives are unique, so \(g=0\). \(\square\)</li>
+</ol>
+<p>Free variables are handled by the same argument, or directly: the ideal is extended from the block's variables, and a degree-order basis stays one.</p>
+
+<h4>The corollary</h4>
+<p>thm:parallel-pair-fall has two hypotheses:</p>
+<ul>
+<li>\(a\)'s false-fiber ideal, the \((h_a-1)\)-input block's ideal with a free coefficient, has no nonzero element of degree \(\le3\);</li>
+<li>the minimum degrees of \(a\)'s true-fiber ideal and \(b\)'s false-fiber ideal sum to at least 8.</li>
+</ul>
+<p>By the lemma the first holds for \(h_a\ge3\). By the lemma, \(m(I_b^{\rm F})\ge5\) for \(h_b\ge4\), and the true-fiber lemma gives \(m(I_a^{\rm T})=3\) for \(h_a\ge3\). So the second holds for \(h_a\ge3\), \(h_b\ge4\). \(R_{ab}=-R_{ba}\), so the roles can be swapped, which covers \(h_a\ge4\), \(h_b\ge3\). The remaining pair, \(h_a=h_b=3\), is the exact check of the shared-input entry: \(R\notin J_7\) and \(zR\in J\) at \(h=3\), for the pair alone, in <code>pair_falls.out</code>. That check has \(c_a=0\), \(c_b=1\) and degree bound 9. General \(c_a\ne c_b\) reduce to it by translation, and by \(x\mapsto-x\) together with \(q(-y)=q(y)\), which maps the difference 2 to 1. Both maps preserve degree and the homogenized ideal. \(\square\)</p>
+
+<h4>What this means</h4>
+<ul>
+<li>For every \(h\ge3\), including the band's \(h\ge10\), two separately augmented blocks with parallel inputs fall at degree 7, below \(D=11\). This is now unconditional.</li>
+<li>So gluing separately augmented blocks needs \(R\), or something that implies it, for every parallel pair, unless other generators supply it. conj:bounded-linkage-large-h adds \(R\), and asks whether that, with \(T\) for triples, is enough.</li>
+<li>The \(R\) part of conj:shared-input-falls is proved for all \(h\ge3\). Its \(W\) part, for identical inputs, stays open.</li>
+<li>With the minimum degrees now known for all \(h\), the fiber criterion can be applied without size limits.</li>
+</ul>
+<p>Next: apply the fiber criterion to a parallel pair with \(R\) added. Find the least degree at which a consequence outside \((I_a)+(I_b)+(R)\) can appear, as a function of \(h\), and compare it with \(D=11\). That is the first case of conj:bounded-linkage-large-h that can be proved rather than tested.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:parallel-pair-fall and its true-fiber lemma, the minimum degrees and \(h=2,3\) bases in <code>gb_blocks.json</code>, and the \(h=3\) parallel check in <code>pair_falls.out</code>. No computation was run in this cycle.</p>
+<p>A fresh-context reviewer confirmed these points:</p>
+<ul>
+<li>the restriction to \(y_i=\pm1\), and free variables;</li>
+<li>the support step, and the degree \(\ge2h\);</li>
+<li>both induction chains;</li>
+<li>the corollary's hypotheses, and the swap.</li>
+</ul>
+<p>It required these changes, all adopted:</p>
+<ul>
+<li>the independent-coordinate setting stated;</li>
+<li>the base cases argued through leading monomials, with the field-top counts;</li>
+<li>general \(c_a\ne c_b\) reduced to the computed case;</li>
+<li>the pair-alone scope stated;</li>
+<li>"must add \(R\)" weakened.</li>
+</ul>
+<p>The changes are scope and presentation, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-block-min-degree">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 51.10 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 41.16 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+<tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">3 min 9.74 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
