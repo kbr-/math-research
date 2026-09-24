@@ -25,16 +25,16 @@
 </section>
 <section id="remaining-route">
 <h2>The remaining route</h2>
-<ol><li data-route-item="cube-odd-characteristic"><strong>The cube over odd characteristic.</strong> Menezes' setting \(\{0,1\}^n\) over fields with \(p\ne2\). The origin-jet lemma still holds with \(y=x^2-x\), but the local root is a Catalan series, not additive. Test whether a root-count mechanism exists below his range \(n\ge k-1\).</li><li data-route-item="q-ary-extension"><strong>\(\mathbb F_q\) grids: solved.</strong> \(\delta_q(n,k,\ell)=n(q-1)+q\ell+(q-1)\sum_{j&lt;n}\lfloor(k-\ell-1)/q^j\rfloor\) for every prime power \(q\) (<a href="#q-ary-per-order-value">theorem</a>). This gives a polynomial lower bound for the odd-field thread's covering numbers.</li><li data-route-item="low-origin-degree"><strong>Per-order values (the user's target): solved.</strong> \(\delta(n,k,\ell)=n+2\ell+\sum_{j&lt;n}\lfloor(k-\ell-1)/2^j\rfloor\) in every dimension (<a href="#per-order-value-all-dimensions">theorem</a>). Remaining: a Lean formalization and the preprint, both on the user's request.</li><li data-route-item="formalization"><strong>Formalize the answer in Lean: complete.</strong> The <a href="#binary-multiplicity-degree-complete">complete formula</a> for all \(n,k\ge1\), the <a href="#entry-2026-09-24-lean-degree-formula">formula theorem</a> and every dependency are verified, down to multiplicity Schwartz–Zippel over every field and BBDM's hyperplane covers, following the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a>. Downstream corollaries such as the power-of-two factors remain informal.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> A draft preprint with Lean links, <a href="https://github.com/kbr-/math-research/tree/main/publications/binary-multiplicity-degree"><code>publications/binary-multiplicity-degree</code></a>, was prepared on 24 September; it is unpublished and awaits the user. The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li></ol>
+<ol><li data-route-item="cube-odd-characteristic"><strong>The cube over odd characteristic (deprioritized).</strong> Menezes' formula is confirmed in his range. Dimension two is proved over every field (<a href="#cube-square-per-order-any-field-theorem">theorem</a>). From \(n=3\) the binary laws fail, and no elementary mechanism is known (<a href="#entry-2026-09-25-odd-cube-route-review">route review</a>).</li><li data-route-item="q-ary-extension"><strong>\(\mathbb F_q\) grids: solved.</strong> \(\delta_q(n,k,\ell)=n(q-1)+q\ell+(q-1)\sum_{j&lt;n}\lfloor(k-\ell-1)/q^j\rfloor\) for every prime power \(q\) (<a href="#q-ary-per-order-value">theorem</a>). This gives a polynomial lower bound for the odd-field thread's covering numbers.</li><li data-route-item="low-origin-degree"><strong>Per-order values (the user's target): solved.</strong> \(\delta(n,k,\ell)=n+2\ell+\sum_{j&lt;n}\lfloor(k-\ell-1)/2^j\rfloor\) in every dimension (<a href="#per-order-value-all-dimensions">theorem</a>). Remaining: a Lean formalization and the preprint, both on the user's request.</li><li data-route-item="formalization"><strong>Formalize the answer in Lean: complete.</strong> The <a href="#binary-multiplicity-degree-complete">complete formula</a> for all \(n,k\ge1\), the <a href="#entry-2026-09-24-lean-degree-formula">formula theorem</a> and every dependency are verified, down to multiplicity Schwartz–Zippel over every field and BBDM's hyperplane covers, following the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a>. Downstream corollaries such as the power-of-two factors remain informal.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> A draft preprint with Lean links, <a href="https://github.com/kbr-/math-research/tree/main/publications/binary-multiplicity-degree"><code>publications/binary-multiplicity-degree</code></a>, was prepared on 24 September; it is unpublished and awaits the user. The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li></ol>
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic. Understand \(n=3\) over odd characteristic, where the exchange law fails (<a href="#odd-cube-exchange-law-failure">refutation</a>).</p>
+<p>Route item: q-ary-extension. Test the per-order law on additive-subgroup grids \(S^n\), with \(S\subseteq\mathbb F_q\) an \(\mathbb F_p\)-subspace of size \(s=p^b\). There \(y=\prod_{s'\in S}(x-s')\) is an additive polynomial, the local root is additive, and the \(q\)-ary proof may transfer, with Lagrange interpolation over the \(s\) roots \(x(y)+s'\).</p>
 <ul>
-<li>Extend the prime-field kernel with the witness mode of the binary kernel. Extract a minimal polynomial for \(\delta_{\mathbb F_3}(3,12,3)=22\), and compare its structure with \(y_1^3\) times an order-zero polynomial.</li>
-<li>Classify the hyperplanes that avoid the origin by their intersection with the cube in odd characteristic, and test the dichotomy recursion arithmetically against the computed savings table.</li>
+<li>Add \(\mathbb F_{2^a}\) arithmetic to the prime-field kernel.</li>
+<li>Compute \(S=\{0,1,\alpha,1+\alpha\}\subset\mathbb F_8\) for \(n\le3\), and compare with the guess \(n(s-1)+s\ell+(s-1)\sum_{j&lt;n}\lfloor(k-\ell-1)/s^j\rfloor\).</li>
 </ul>
-<p>Publication, Lean and correspondence remain the user's decisions.</p>
+<p>The odd-characteristic cube is deprioritized; see the <a href="#entry-2026-09-25-odd-cube-route-review">route review</a>. Publication, Lean and correspondence remain the user's decisions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -1377,6 +1377,49 @@ Each \(E^{(t)}_j\) is symmetric and additive in each variable, and \(E^{(t)}_j(y
 <tbody>
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 37.47 s</strong></td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 37.47 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-odd-cube-route-review" data-kind="review" data-route="cube-odd-characteristic" data-claims="none" data-claim-note="Route review with a refuted working hypothesis (cubed linear forms); no new claim is registered.">
+<h3>25 September 2026 — Route review of the odd-characteristic cube: dimension two is settled, dimension three resists</h3>
+<p class="entry-meta">Route review; a cubed-linear-form hypothesis for n = 3 over F_3 is refuted. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<ul>
+<li><strong>The line's general claim.</strong> Find \(\delta_F(n,k,\ell)\) on \(\{0,1\}^n\) over fields of characteristic \(p\ne2\) below Menezes' range \(n\ge k-1\).</li>
+<li><strong>What is established.</strong>
+<ul>
+<li>Menezes' formula agrees with all 100 computed values in his range (<a href="#odd-cube-exchange-law-failure">data entry</a>).</li>
+<li>Dimension two is proved over every field and every order (<a href="#cube-square-per-order-any-field-theorem">theorem</a>).</li>
+<li>The binary exchange law fails at \(n=3\) over \(\mathbb F_3\) and \(\mathbb F_5\) (<code>ex:odd-cube-exchange-law-failure</code>).</li>
+</ul></li>
+<li><strong>What the goal needs.</strong> The thread's goal, \(D(n,k)\) over \(\mathbb F_2\), is proved. This line is an extension beyond it, and no goal depends on it.</li>
+</ul>
+<h4>Falsification attempt this cycle</h4>
+<p>The prime-field kernel <code>research/tools/bmd_jet_orders_q.cpp</code> gained two modes.</p>
+<ul>
+<li><strong>Witness mode</strong> prints a minimal-degree polynomial. For \(\delta_{\mathbb F_3}(3,12,3)=22\) the witness has 842 terms in the \(x^\varepsilon y^e\) basis, and none exists at degree 21.</li>
+<li><strong>Per-point mode</strong> (<code>--mult BITS:M</code>) allows different multiplicities at different cube points. It adds free jet columns at those points, lifted by \((x-1)^bx^{p^K}\). It reproduces the uniform values and the one-variable values \(m+\ell\).</li>
+</ul>
+<p><strong>Hypothesis tested.</strong> In characteristic 3, \(L^3=x_1^3+x_2^3+x_3^3\) with \(L=x_1+x_2+x_3\) has degree 3 and order 3 at the origin. It vanishes to order 3 at \((1,1,1)\), where \(L=3=0\). So it buys origin order at half the cost of \(y_1^3\), which could explain \(\delta(3,12,3)=22&lt;23\).</p>
+<p><strong>Result: refuted.</strong> The least degree of \(Q\) with \(Q(0)\ne0\), multiplicity 12 at the six points of weight 1 and 2, and multiplicity 9 at \((1,1,1)\) is 21 (per-point mode). So \(L^3Q\) has degree 24.</p>
+<p>The data show a different picture. Over \(\mathbb F_3\), \(\delta(3,12,\ell)=22\) for \(\ell=0,\ldots,3\) (<code>[22,22,22,22,23,23,23,23,24,24,24,25]</code>). So order up to 3 is free relative to order 0, and the savings depend jointly on \(m\) and \(\ell\).</p>
+<h4>Assessment and next step</h4>
+<p>The elementary tools stop at dimension three here:</p>
+<ul>
+<li>the line dichotomy needs hyperplanes meeting the cube in sub-cubes;</li>
+<li>the additive-root method needs an additive local root;</li>
+<li>neither holds for \(n\ge3\) in odd characteristic.</li>
+</ul>
+<p>Further progress would need a genuinely new idea, possibly Menezes' own basis construction read in full. The line has no bearing on the thread's goal, so it is deprioritized.</p>
+<p>The more natural extension of the proved method is to grids \(S^n\) where \(S\) is an additive subgroup of \(\mathbb F_q\). There \(y=\prod_{s\in S}(x-s)\) is an additive polynomial and the local root is additive again. The next step moves there: route item q-ary-extension, testing additive subgroup grids such as a 4-element \(\mathbb F_2\)-subspace of \(\mathbb F_8\) that is not a subfield.</p>
+<p>Process: per-point multiplicities made the hypothesis test a single run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r12-odd-cube-witness">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 36.79 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 36.79 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
