@@ -4,7 +4,7 @@
 The arguments are complete in the body; reading them requires no Lean. This
 appendix locates the formal declarations and gives commands to check them. File
 paths are relative to \texttt{formalization/}. The table uses the prefix
-\texttt{MR.} for \nolinkurl{MathResearch.}; the external input lies under
+\texttt{MR.} for \nolinkurl{MathResearch.}; the external inputs lie under
 \nolinkurl{MathResearch.ThirdParty.}
 
 \begingroup
@@ -58,9 +58,17 @@ Formula below \(2^{n-1}\), Theorem~\ref{thm:main-formal}; upper bound of Theorem
 & \leanref{claims/BinaryMultiplicityDegreeFormula.lean}{\nolinkurl{claims/BinaryMultiplicityDegreeFormula.lean}}\newline
 \nolinkurl{MR.BinaryMultiplicityDegreeFormula.Admissible}, \nolinkurl{degree_formula},
 \nolinkurl{degree_formula_exact}, \nolinkurl{degree_formula_of_lt_two_pow}\\
-Extended range, Corollary~\ref{cor:extended}; main theorem, Theorem~\ref{thm:main}
+Extended range, Corollary~\ref{cor:extended}
 & \leanref{claims/BinaryMultiplicityDegreeExtendedRange.lean}{\nolinkurl{claims/BinaryMultiplicityDegreeExtendedRange.lean}}\newline
 \nolinkurl{MR.BinaryMultiplicityDegreeExtendedRange.degree_formula_extended}\\
+Hyperplane covers \cite{BBDM23}, Theorem~\ref{thm:hyperplane}
+& \leanref{third-party-claims/HyperplaneCoverUpperBound.lean}{\nolinkurl{third-party-claims/HyperplaneCoverUpperBound.lean}}\newline
+\nolinkurl{MR.ThirdParty.HyperplaneCoverUpperBound.hyperplane_cover_upper_bound},
+\nolinkurl{card_dot_eq_one}\\
+Main theorem, Theorem~\ref{thm:main}
+& \leanref{claims/BinaryMultiplicityDegreeComplete.lean}{\nolinkurl{claims/BinaryMultiplicityDegreeComplete.lean}}\newline
+\nolinkurl{MR.BinaryMultiplicityDegreeComplete.degreeMin}, \nolinkurl{degree_complete},
+\nolinkurl{cover_bound_attained_iff}\\
 \end{longtable}
 \endgroup
 
@@ -80,11 +88,11 @@ variables \(\mathrm{Option}\,\sigma\), with \(\mathrm{none}\) playing the role o
 \begin{verbatim}
 git clone https://github.com/kbr-/math-research.git bmd-check
 cd bmd-check
-git checkout --detach 0bb1f4101d1a4e47364ffc773b38edba6ea20ddb
+git checkout --detach 8651228097422970d147972353bbf9a1c6ed6938
 cd formalization
 export MATHLIB_NO_CACHE_ON_UPDATE=1
-lake exe cache get claims/BinaryMultiplicityDegreeExtendedRange.lean
-python3 verify.py --target claims/BinaryMultiplicityDegreeExtendedRange.lean \
+lake exe cache get claims/BinaryMultiplicityDegreeComplete.lean
+python3 verify.py --target claims/BinaryMultiplicityDegreeComplete.lean \
   --out verification.txt
 \end{verbatim}
 \endgroup
@@ -94,8 +102,8 @@ chain, and its axiom report is transitive. The verifier builds the proofs, print
 declaration's type, and rejects unfinished proofs and nonstandard axioms. The
 expected axiom report for the main theorem is
 \begin{quote}\small\ttfamily
-'MathResearch.BinaryMultiplicityDegreeExtendedRange.\par
-degree\_formula\_extended' depends on axioms:\par
+'MathResearch.BinaryMultiplicityDegreeComplete.\par
+degree\_complete' depends on axioms:\par
 [propext, Classical.choice, Quot.sound]
 \end{quote}
 These are Lean's standard foundations.

@@ -120,6 +120,15 @@ explicit author decisions unless the author changes them.
   rules, hypotheses and quantifiers to the declarations. Explain partial coverage,
   stronger assumptions, or informal additions. Audit transitive dependencies and
   distinguish proved prerequisites from custom axioms or admitted interfaces.
+- [ ] **If formalized, give every boundary claim a formal statement or a flag.** Prose
+  such as "exactly when", "only if", "never attained", "optimal" or "open" asserts
+  more than a bound that holds on a range. Without its own Lean statement, such prose
+  is unverified, even beside verified theorems. Prove it, mark it as unverified, or
+  drop it. Before claiming that a bound fails or a case is open, state every cited
+  result on the same objects and check it against that boundary. One draft wrongly
+  claimed that a bound was not attained for large parameters. The claim came from the
+  gap between the two bounds the paper had. A cited paper's construction, never
+  stated in the draft, attained the bound there.
 - [ ] **If formalized, provide a compact verification map.** Link paper statements
   to immutable source files, exact declarations and verified scope. Check names
   against the source. Keep the map outside the main mathematical narrative.

@@ -45,13 +45,47 @@ dimension, so it remains to match it with Proposition~\ref{prop:cover-bound} in 
 \end{itemize}
 \end{proof}
 
-At \(k=3\cdot2^{n-1}\) the bounds are \(2k-3\) and \(2k-2\), and the gap grows with
-\(k\). Proposition~\ref{prop:cover-bound} is therefore attained exactly for
-\(2^{n-2}\le k<3\cdot2^{n-1}\).
+For \(k\ge2^{n-1}\) the value comes from the hyperplane covers of~\cite{BBDM23}.
+
+\begin{theorem}[Hyperplane covers {\cite[Theorem~1.2(a) with \(d=1\), arXiv v1]{BBDM23}}]\label{thm:hyperplane}
+Let \(n\ge1\) and \(k\ge2^{n-1}\), and write \(k=a2^{n-1}+b\) with
+\(0\le b<2^{n-1}\). Then
+\[
+ P=\prod_{u\in\Ft^n\setminus\{\zero\}}(1+u\cdot x)^a\cdot(x_1^2+x_1)^b
+\]
+is \(k\)-admissible and \(\deg P\le2k-\lfloor k/2^{n-1}\rfloor\)
+\lean{third-party-claims/HyperplaneCoverUpperBound.lean}.
+\end{theorem}
+
+In the language of~\cite{BBDM23}, \(P\) is the product of the linear forms of
+a cover by \(a\) copies of the \(2^n-1\) hyperplanes \(u\cdot x=1\), which avoid
+the origin, and \(b\) copies of the parallel pair \(x_1=0\), \(x_1=1\). Their
+theorem gives the least size of a cover for every \(k\ge2^{n-2}\); we use only
+this upper bound for \(k\ge2^{n-1}\), in the polynomial form above, which is
+what the Lean file proves.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+For \(k<2^{n-1}\) the value is Theorem~\ref{thm:main-formal}. For
+\(k\ge2^{n-1}\), Proposition~\ref{prop:cover-bound} gives the lower bound and
+Theorem~\ref{thm:hyperplane} the upper bound. By
+Proposition~\ref{prop:cover-bound} every admissible polynomial has degree at
+least \(2k-\lfloor k/2^{n-1}\rfloor\), so for the equivalence it remains to
+compare \(D(n,k)\) with this bound in three cases.
+\begin{itemize}
+ \item If \(k\ge2^{n-1}\), they are equal by the first part.
+ \item If \(2^{n-2}\le k<2^{n-1}\), then \(\lfloor\log_2k\rfloor=n-2\) and
+ \(\lfloor k/2^{n-1}\rfloor=0\), so both equal \(2k\).
+ \item If \(k<2^{n-2}\), then \(n\ge3\), \(\lfloor\log_2k\rfloor\le n-3\) and
+ \(\lfloor k/2^{n-1}\rfloor=0\), so \(D(n,k)\ge2k+1\).
+\end{itemize}
+The upper bound in every dimension is Theorem~\ref{thm:main-formal}(2).
+\end{proof}
+
+At \(k=3\cdot2^{n-1}\) the logarithmic expression is \(2k-2\), while
+\(D(n,k)=2k-3\) by Theorem~\ref{thm:main}.
 
 \begin{remark}[Which origin orders are extremal]
-Let \(n\ge\lfloor\log_2k\rfloor+2\), or more generally \(k<3\cdot2^{n-1}\), so that
-\(D(n,k)\) is known. Theorem~\ref{thm:per-order} gives degree
+Let \(k<3\cdot2^{n-1}\), so that \(D(n,k)=2k+n-2-\lfloor\log_2k\rfloor\). Theorem~\ref{thm:per-order} gives degree
 \(n+2k-2-s_2(k-\ell-1)\) at origin order \(\ell\). This equals \(D(n,k)\) exactly
 when \(s_2(k-\ell-1)=\lfloor\log_2k\rfloor\), for instance \(\ell=k-2^{\lfloor\log_2k\rfloor}\).
 The 69 per-order minima computed exactly for \(n\le7\) in the
@@ -67,9 +101,6 @@ computation is evidence, not part of the formalized result.
  that \(n+2k-2-s_2(k-\ell-1)\) is the least degree at an origin order \(\ell\)
  with \(s_2(k-\ell-1)<\lfloor\log_2k\rfloor\). For \(n\ge k-1\) this is part of
  Menezes' theorem~\cite{Men26}.
- \item \textbf{Large \(k\).} For \(k\ge3\cdot2^{n-1}\) the lower bound of
- Proposition~\ref{prop:cover-bound} and the upper bound of Theorem~\ref{thm:main-formal}(2)
- differ, and we do not determine \(D(n,k)\).
  \item \textbf{Other fields and grids.} The lower bound uses the binary setting in
  several places: the cancellation of the \(x_0\)-free part in \(Q(0,x')+Q(1,x')\),
  the finite number of linear forms in Lemma~\ref{lem:linear-form}, and \(S=\Ft\) in

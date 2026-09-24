@@ -30,31 +30,43 @@ in the study of subspace coverings with multiplicities, whether
 \(D(n,k)\ge2k-\lfloor k/2^{n-1}\rfloor\) when \(k\ge2^{n-2}\). This bound
 follows for all \(n\) and \(k\) from the multiplicity Schwartz--Zippel lemma of Dvir,
 Kopparty, Saraf and Sudan~\cite{DKSS13}; see Proposition~\ref{prop:cover-bound},
-which was the content of an earlier note~\cite{Note}. That leaves open when the
-bound is attained, and what \(D(n,k)\) is when it is not.
+which was the content of an earlier note~\cite{Note}. In the same paper they
+construct multisets of \(2k-\lfloor k/2^{n-1}\rfloor\) affine hyperplanes that
+cover every nonzero point at least \(k\) times and the origin at most \(k-1\)
+times, for \(k\ge2^{n-2}\) \cite[Theorem~1.2(a) of arXiv v1]{BBDM23}. The
+product of the linear forms of such a cover is \(k\)-admissible, so the bound is
+attained for \(k\ge2^{n-2}\) (Theorem~\ref{thm:hyperplane}). This paper
+determines \(D(n,k)\) in the remaining range.
 
 \subsection{Main result}
 
 \begin{theorem}\label{thm:main}
-For all integers \(n\ge1\) and \(k\ge1\) with \(k<3\cdot2^{n-1}\),
+For all integers \(n\ge1\) and \(k\ge1\),
 \[
- D(n,k)=2k+n-2-\lfloor\log_2k\rfloor
+ D(n,k)=\begin{cases}
+ 2k+n-2-\lfloor\log_2k\rfloor, & k<2^{n-1},\\
+ 2k-\lfloor k/2^{n-1}\rfloor, & k\ge2^{n-1},
+ \end{cases}
 \]
-\lean{claims/BinaryMultiplicityDegreeExtendedRange.lean}.
+and some \(k\)-admissible polynomial has degree exactly
+\(2k-\lfloor k/2^{n-1}\rfloor\) if and only if \(k\ge2^{n-2}\)
+\lean{claims/BinaryMultiplicityDegreeComplete.lean}.
 Moreover, for every \(n\ge1\) and \(k\ge1\) there is a \(k\)-admissible
 polynomial of degree at most \(2k+n-2-\lfloor\log_2k\rfloor\)
 \lean{claims/BinaryMultiplicityDegreeFormula.lean}.
 \end{theorem}
 
 The substance lies below \(2^{n-1}\), that is, for \(n\ge\lfloor\log_2k\rfloor+2\)
-(Theorem~\ref{thm:main-formal}). For \(2^{n-1}\le k<3\cdot2^{n-1}\) the
-Schwartz--Zippel bound already meets the construction (Corollary~\ref{cor:extended}).
+(Theorem~\ref{thm:main-formal}). For \(k\ge2^{n-1}\) the value is the
+Schwartz--Zippel bound, attained by the hyperplane covers of~\cite{BBDM23}
+(Theorem~\ref{thm:hyperplane}). The two expressions agree for
+\(2^{n-2}\le k<3\cdot2^{n-1}\) (Corollary~\ref{cor:extended}), so the new values
+are those with \(k<2^{n-2}\).
 Three features of the formula stand out.
 \begin{itemize}
- \item \textbf{Where the Schwartz--Zippel bound is exact.} It equals the formula
- exactly when \(2^{n-2}\le k<3\cdot2^{n-1}\). For \(k<2^{n-2}\) it is never
- attained. For \(k\ge3\cdot2^{n-1}\) the two known bounds differ, and \(D(n,k)\)
- is open.
+ \item \textbf{Where the Schwartz--Zippel bound is exact.} It is attained if
+ and only if \(k\ge2^{n-2}\). For \(k<2^{n-2}\), \(D(n,k)\) exceeds it by
+ \(n-2-\lfloor\log_2k\rfloor\ge1\).
  \item \textbf{Each dimension costs one degree.} For fixed \(k\), \(D(n,k)-n\)
  is constant for \(n\ge\lfloor\log_2k\rfloor+2\). For example \(D(n,1)=n\),
  \(D(n,4)=n+4\), \(D(n,8)=n+11\) and \(D(n,15)=n+25\).
@@ -76,14 +88,25 @@ admissible polynomial with origin order exactly \(\ell\) and degree at most
 \subsection{Relation to previous work}
 
 \begin{itemize}
+ \item \textbf{Bishnoi, Boyadzhiyska, Das and M\'esz\'aros~\cite{BBDM23}.} They
+ determine the least size of a multiset of affine hyperplanes (and, more
+ generally, subspaces of codimension \(d\)) covering the nonzero points of
+ \(\Ft^n\) at least \(k\) times and the origin at most \(k-1\) times, for
+ \(k\ge2^{n-2}\). Their covers give the upper bound for \(k\ge2^{n-2}\), and
+ with Proposition~\ref{prop:cover-bound}, which answers their question on the
+ polynomial version, they determine \(D(n,k)\) there. We use their construction
+ only for \(k\ge2^{n-1}\); for \(2^{n-2}\le k<2^{n-1}\) ours has the same
+ degree \(2k\).
  \item \textbf{Menezes~\cite{Men26}.} In a recent preprint, Menezes determines,
  over every field \(\F\), the least degree \(\delta_\F(n,k,\ell)\) of a polynomial
  with order at least \(k\) at the nonzero vertices of \(\{0,1\}^n\) and order
  exactly \(\ell\) at the origin, for \(k\ge2\) and \(n\ge k-1\). In characteristic
  two his formula is \(n+2k-2-s_2(k-\ell-1)\) \cite[Corollary~1.3]{Men26}.
- Minimizing over \(\ell\) gives Theorem~\ref{thm:main} when \(n\ge k-1\).
- Our contribution is the range \(\lfloor\log_2k\rfloor+2\le n<k-1\), which
- grows with \(k\). For \(k=2^j\) with \(j\ge3\), it is \(j+2\le n\le2^j-2\),
+ Minimizing over \(\ell\) gives the value of \(D(n,k)\) when \(n\ge k-1\).
+ Together with the covers of~\cite{BBDM23}, which settle
+ \(n\le\lfloor\log_2k\rfloor+2\), our contribution is the range
+ \(\lfloor\log_2k\rfloor+3\le n<k-1\), which grows with \(k\). For \(k=2^j\)
+ with \(j\ge3\), it is \(j+3\le n\le2^j-2\),
  while \(n\ge2^j-1\) is covered by~\cite{Men26}. The polynomials of our upper
  bound are Menezes' Catalan truncation specialized to \(\Ft\). His degree
  formula is stated for \(n\ge k-1\), the range of his theorem. We read his
@@ -97,7 +120,8 @@ admissible polynomial with origin order exactly \(\ell\) and degree at most
  \(n+4\) for \(k=4\), below \(n+2k-3=n+5\), showing that the real formula
  fails there.
  \item \textbf{Dvir, Kopparty, Saraf and Sudan~\cite{DKSS13}.} Their
- multiplicity Schwartz--Zippel lemma is the only external input. It gives the
+ multiplicity Schwartz--Zippel lemma is one of the two external inputs, with
+ the hyperplane covers above. It gives the
  base case \(n=\lfloor\log_2k\rfloor+2\) of the lower bound.
  \item \textbf{Alon and F\"uredi~\cite{AF93}.} For \(k=1\), Theorem~\ref{thm:main}
  says \(D(n,1)=n\) for \(n\ge2\). The lower bound is the case \(\F=\Ft\) of
@@ -131,13 +155,13 @@ above. A bounded search does not establish that none exists.
 
 \subsection{Formal verification}
 
-Theorem~\ref{thm:main}, every lemma it uses, and the multiplicity
-Schwartz--Zippel lemma itself are proved in Lean~4 with Mathlib. The proofs
+Theorem~\ref{thm:main}, every lemma it uses, the multiplicity
+Schwartz--Zippel lemma and the hyperplane covers are proved in Lean~4 with Mathlib. The proofs
 use only Lean's standard axioms. Each statement in this paper carries a
 [Lean] link to its formal proof at a fixed repository commit.
 Appendix~\ref{sec:verification} maps statements to declarations and gives the
-commands to check them. The external input is stated without proof in the
-text, with a citation, but its formal proof is linked like every other
+commands to check them. The two external inputs are stated without proof in
+the text, with citations, but their formal proofs are linked like every other
 statement, so the formal verification has no unchecked premise. Formal
 verification covers the statements under the linked definitions. It does not
 cover the prose, the comparison with the literature, or the fidelity of the
