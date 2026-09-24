@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> (b) and (c) are proved together for coherent families on forms of low affine row rank, via the row-change lemma and seeds (<a href="#entry-2026-09-24-row-rank-seeds">row-rank seeds</a>). Generic row-dependent forms have high row rank. By the row-change lemma, most random single forms on the PHP board are isomorphic to the diagonal form \(\sum_jx_{jj}\). Next: test freeness of the weak top algebra over \(\mathbb F_3[\ell]/(\ell^3)\) for the diagonal form through degree 3 in range, with a failing control. Then look for a proof that uses its permutation symmetry in place of content reduction.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> (b) and (c) are proved together for coherent families on forms of low affine row rank (<a href="#entry-2026-09-24-row-rank-seeds">row-rank seeds</a>). Most random single forms on the PHP board are isomorphic to the diagonal form \(\sum_jx_{jj}\), and exact checks show it free through degree \(t\) exactly when \(N\ge2t\), for \(t\le4\), earlier than column forms (<a href="#entry-2026-09-24-diagonal-form">diagonal form</a>). Next: prove conj:diagonal-freeness. Seeds would need all \(N\) form rows, so look for a presentation that uses the simultaneous row and hole symmetry, such as a filtration by the number of diagonal cells used.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -14971,6 +14971,50 @@ Always \(\Delta_d\le0\).</li>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">7.59 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-diagonal-form" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:diagonal-freeness ex:diagonal-freeness-thresholds">
+<h3>The diagonal form: the generic single form is free once the board has about 2t holes, earlier than column forms</h3>
+<p class="entry-meta">24 September 2026 · Finite check and a conjecture · Freeness of the weak top algebra over the diagonal form, on N+1 rows; cycle odd-prime-diagonal-form.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-row-rank-seeds">row-rank seeds entry</a> proved (b) and (c) for coherent families on forms of low row rank. Generic forms have high row rank. With \(m\ge N\) rows, a single form whose column differences \(f_{\cdot j}-f_{\cdot0}\) are linearly independent is isomorphic, by the row-change lemma, to the diagonal form \(\ell=\sum_{j=1}^{N-1}x_{jj}\). So one form decides freeness for most random single forms on the PHP board. The missing implication is freeness of the weak top algebra \(A\) over \(\mathbb F_3[\ell]/(\ell^3)\) through \(D\), which gives (b) and (c) for one generic selector via the based glue. This cycle measures where freeness starts, against column forms at the same sizes.</p>
+<p><strong>General statement.</strong> conj:diagonal-freeness: over \(\mathbb F_3\), the weak unary top algebra on \(N+1\) rows and \(N\) holes is free through degree \(t\) over \(\mathbb F_3[\ell]/(\ell^3)\), \(\ell=\sum_jx_{jj}\), if and only if \(N\ge2t\). ex:diagonal-freeness-thresholds: exact Hilbert functions agree with this for \(t=2,3,4\), including the prediction at \(N=8\), \(t=4\), which was made before that run. At the same sizes, column forms are not free where the diagonal form is. If the conjecture holds at the goal's degrees, one generic selector with independent column differences satisfies the Taylor condition on the PHP board far below the \(N\ge2D^2\) that the base already needs.</p>
+
+<h4>Decidability</h4>
+<p>The tested quantity is the statement's own: \(\mathrm{HF}(A/\ell A)_k\) against \([q^k]\mathrm{HS}_A/(1+q+q^2)\) for \(k\le t\). By prop:syzygies-as-tor with \(J=\mathfrak m\), equality through \(t\) is freeness through \(t\). A failing control exists: a single-row form on 2 holes (ex:row-rank-freeness-check). The board \(A\) itself ends near degree \(N\), so small \(N\) must fail, and the question is where freeness starts compared with column forms. The run at \(N=8\), \(t=4\) took 1484 s. It was launched on an estimate of 1300 s from monomial counts, without a smaller sizing run of the same case. That breaks the computation rules, and <code>compute.sh</code> now refuses such runs without a cited sizing run. Larger sizes need a compiled rank kernel that uses the symmetry, not this generic Gröbner computation.</p>
+
+<h4>Results</h4>
+<p>All on \(m=N+1\) rows, computed exactly over \(\mathbb F_3\) with Singular by <code>row_rank_free.py</code>, with values read from the result files:</p>
+<ul>
+<li>\(t=2\): not free at \(N=3\) (degree 2: 1 against a prediction of \(-2\)); free at \(N=4\) (45 = 45 in degree 2).</li>
+<li>\(t=3\): not free at \(N=4,5\) (at \(N=5\), 247 against 242 in degree 3); free at \(N=6,7,8,9\).</li>
+<li>\(t=4\): not free at \(N=5,6,7\) (at \(N=6\), 1237 against 559; at \(N=7\), 26316 against 26309); free at \(N=8\) (145280 = 145280 in degree 4).</li>
+<li>Column forms, \(t=4\): at \(N=6\), \(\sum\varphi(j)C_j\) with \(\varphi\) taking the values 0, 1, 2 twice each fails already in degree 3 (2117 against 2108), and so does the indicator of 3 holes (2146). At \(N=7\) the column form with values 0, 1, 2 fails in degree 3 (7766 against 7765) and in degree 4 by 676, where the diagonal form misses by 7.</li>
+<li>A uniform random form at \(N=9\) has exactly the diagonal form's Hilbert function, as the row-change lemma predicts for independent differences.</li>
+</ul>
+
+<h4>What this means</h4>
+<ul>
+<li>Spreading a form over the rows helps freeness. The diagonal form, the generic case, starts being free near \(N=2t\). Column forms, which the seeded theorems cover, start later at the same \(N\). So the generic row-dependent case, not proved, looks easier than the proved column case.</li>
+<li>Scope: one form, \(m=N+1\) rows, \(t\le4\). Content reduction does not apply, so other row counts are separate questions. For \(m&lt;N-1\), generic forms are not diagonal. Their configurations of \(N\) points in \(\mathbb F_3^m\) up to affine maps form many classes.</li>
+<li>The conjecture is stated at the smallest threshold consistent with the data. The worst-direction threshold of column spans, column count at least \(2t-1\), is of the same order.</li>
+</ul>
+<p>Next: prove conj:diagonal-freeness. Its symmetry is the simultaneous permutation of rows and holes. Seeds would need all \(N\) form rows. A different presentation is needed, for example a filtration by the number of diagonal cells used, with the off-diagonal part a weak board on which the row sums act.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the row-change lemma and the diagonal reduction in the row-rank entry, as corrected there (\(m\ge N\)); prop:syzygies-as-tor (freeness as a Hilbert-function identity for one form); and the control of ex:row-rank-freeness-check. The checker was refactored this cycle to avoid nested loops, and it reproduced three recorded values before use. All numbers are read from the JSON files. The conjecture was searched under diagonal, generic form and freeness threshold; the nearest records are conj:worst-direction-freeness, for column spans, and ex:board-random-defect-pointwise, which already found 15 of 16 random affine systems free at \(n=8\) through degree 3. The degree-3 values here repeat that evidence for single forms. The new parts are the reduction to one form, the threshold at \(t=2,3,4\) and the comparison with column forms. No proof is claimed, so no reviewer pass was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-diagonal-form">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>44 min 33.45 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 49.41 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 24.50 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">46.82 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">39 min 27.12 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.61 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
