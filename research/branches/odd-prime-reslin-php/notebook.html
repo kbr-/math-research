@@ -19,12 +19,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> For the column component of any span dimension, hypothesis (c) is proved in content 0 (<a href="#entry-2026-09-24-occupancy-transfer">occupancy transfer</a>). Content one is resolved by column models on \(n\) and \(n-1\) holes in the goal's degrees (<a href="#entry-2026-09-24-restriction-injectivity">restriction injectivity</a>). Next, content one of (c):</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Column members can fall on the board through placed pigeons, even without occupancy falls. After placed-pigeon closure, the tested merging member falls exactly like the weak base on the merged board (<a href="#entry-2026-09-24-placed-pigeon-falls">placed-pigeon falls</a>, conj:effective-board). Six research entries have passed since the last review, so the next entry is a route review. It should weigh:</p>
 <ol>
-<li>From \(0\to R\to\bigoplus_jR_{[n]\setminus j}\to A^{(e_i)}\to0\), write the member's content-one syzygies through the Koszul long exact sequence: syzygies on \(\bigoplus_jR_{[n]\setminus j}\), and the kernel of \(R/(P)\to\bigoplus_jR_{[n]\setminus j}/(P|_j)\).</li>
-<li>Lift the first kind summand by summand, using the placed-pigeon identity after augmenting the specialized members \(h^{\rm h}|_{C_j=z}\) in the occupancy rings of \(n-1\) holes. Decide whether the second kind vanishes. It is the restriction injectivity for the member's quotient.</li>
+<li>the effective-board picture as the form of hypothesis (c) for column members, with (a) on the effective board as its content;</li>
+<li>the question it raises for the goal: how far budget column constraints can shrink the effective board;</li>
+<li>the extension of hypothesis (b) to closed members, whose tops carry pigeon cells.</li>
 </ol>
-<p>Pending: contents \(|c|\ge2\); hypothesis (b); non-column members.</p>
+<p>Then prove the effective-board conjecture for merging members. Pending: contents \(|c|\ge2\) in the syzygy route; non-column members.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -12793,6 +12794,60 @@ The \(|a|\) factors go to distinct holes. A hole receiving a factor \(L_b\) cont
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 8.23 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 45.42 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 22.68 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-placed-pigeon-falls" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:placed-pigeon-falls conj:effective-board">
+<h3>Placed-pigeon falls: a column member without occupancy falls can fall on the board, and after its placed-pigeon closure it falls exactly like the weak base on the merged board</h3>
+<p class="entry-meta">24 September 2026 · Refutation by finite check, and conjecture · Hypothesis (c) for column members beyond content 0; cycle odd-prime-content-one.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-occupancy-transfer">occupancy-transfer entry</a> proved hypothesis (c) for column members in content 0, and the <a href="#entry-2026-09-24-restriction-injectivity">restriction-injectivity entry</a> resolved content one by column models on \(n\) and \(n-1\) holes. The proposed route for content one needed the specialized members, with one pigeon placed, to have no falls. The cycle first tests whether a column member whose occupancy system has no fall can fall on the board at all.</p>
+<p><strong>General statement.</strong> ex:placed-pigeon-falls refutes the extension of occupancy transfer to all contents. The member \(\{C_1C_2\}\), holes 1 and 2 not both occupied, has no fall in the occupancy ring, yet with the weak base it falls on the board. The falls come from placed pigeons: \(x_{i1}C_2\equiv x_{i1}C_1C_2\) is derivable at degree 3 but not at its own degree 2. After the member is closed under its placed-pigeon consequences, derivable one degree higher by lem:placed-pigeon-identity, the remaining falls coincide in every tested case with those of the weak base on the board with holes 1 and 2 merged. conj:effective-board: for a column member, the weak base plus the member's placed-pigeon closure has, below \(D\), the falls of the weak base on the member's effective board. Hypothesis (c) for column members is then hypothesis (a) on a smaller board.</p>
+
+<h4>The test</h4>
+<p><strong>Tested statement.</strong> Hypothesis (c) of thm:relative-gluing for the member \(\{C_1C_2\}\), \(C_j=\sum_ix_{ij}\): the homogenized weak base plus \((C_1C_2)^{\rm h}\) is \(z\)-injective below \(D\). Its occupancy system \(\{C_j^2-C_j,\ \sum C_j-m,\ C_1C_2\}\) has no fall, so the occupancy-transfer argument covers its content-0 syzygies. The quantity is \(\dim\ker(z:B_k\to B_{k+1})\), from exact Hilbert functions truncated at \(D\) in Singular (<code>member_fall.py</code>, <code>fall.json</code>). Controls: the base alone, and the weak base on \(N-1\) columns (<code>merged_compare.json</code>, the recorded <code>base_injectivity.py</code>).</p>
+<table>
+<tr><th>rows × \(N\)</th><th>\(D\)</th><th>base</th><th>base + \(C_1C_2\)</th><th>base + closure</th><th>weak base, rows × \((N-1)\)</th></tr>
+<tr><td>3 × 5</td><td>3</td><td>0, 0, 0</td><td>0, 0, 5</td><td>0, 0, 8</td><td>0, 0, 8</td></tr>
+<tr><td>3 × 7</td><td>4</td><td>0, 0, 0, 0</td><td>0, 0, 4, 52</td><td>0, 0, 0, 21</td><td>0, 0, 0, 21</td></tr>
+<tr><td>4 × 7</td><td>4</td><td>0, 0, 0, 0</td><td>0, 0, 6, 106</td><td>0, 0, 0, 69</td><td>0, 0, 0, 69</td></tr>
+</table>
+<p>The entries are \(\dim\ker z\) in degrees \(0,\dots,D-1\). The closure adds, for all rows \(i,i'\), the placed-pigeon consequences \(x_{i1}C_2\) and \(x_{i2}C_1\) (a pigeon in one hole empties the other), and \(x_{i1}x_{i'2}\) (no pigeons in both).</p>
+
+<h4>What the numbers show</h4>
+<ul>
+<li><em>The member falls.</em> On the 3 × 7 board the fall in degree 2 has dimension 4. That is the span of \(x_{i1}C_2\) and \(x_{i2}C_1\), \(i=0,1,2\), modulo their two sums over \(i\), which equal \(C_1C_2\) and so lie in the member ideal at degree 2. Each \(x_{i1}C_2\) is derivable at degree 3: \(x_{i1}\cdot C_1C_2\equiv x_{i1}C_2\) by the placed-pigeon identity (\(x_{i1}C_1\equiv x_{i1}\)). So occupancy no-fall does not imply board no-fall, and hypothesis (c) fails for this member as it stands.</li>
+<li><em>The closure removes the placed-pigeon falls, and what remains is the merged board.</em> The closure's elements are derivable from the member at one degree more, so the closed system has the same PC closure at every degree \(D\ge3\). Its falls equal, in all three cases, those of the weak base on \(N-1\) columns. Semantically, \(C_1C_2=0\) with its closure makes holes 1 and 2 one hole: \(y_i=x_{i1}+x_{i2}\) satisfies \(y_i^2\equiv y_i\) and \(y_iy_{i'}\equiv0\) modulo the closure, and the row sums become those of the merged board. At \(N=7\), \(D=4\), the merged board has \(N-1=6&lt;2D-1\) columns, below the stability range of conj:weak-base-stability, and its falls appear.</li>
+</ul>
+
+<h4>The conjecture</h4>
+<p><strong>Conjecture (effective board).</strong> For a column member with allowed set \(Z\) in the occupancy cube, let its placed-pigeon closure be the member together with all \(x_Xf\) for column-injective cell sets \(X\) of size at most \(D\) and polynomials \(f\) in the other holes' \(C\) vanishing on the points of \(Z\) with the holes of \(X\) occupied, of degree at most \(D-|X|\). Below \(D\), the weak base plus the closure falls exactly as the weak base on the member's effective board does: the board on which \(Z\) becomes a structure of merged or removed holes. In particular, for members that merge holes, the closure is stable below \(D\) when the merged board has at least \((p-1)D^2\) columns (thm:weak-base-stability-quadratic).</p>
+<p>Evidence: the three exact matches above, for the simplest merging member. What is checked directly: the closure is derivable one degree higher (lem:placed-pigeon-identity). The merged base maps into the closed system through \(y_i=x_{i1}+x_{i2}\): \(y_i^2-y_i\equiv2x_{i1}x_{i2}\), \(y_iy_{i'}\equiv x_{i1}x_{i'2}+x_{i2}x_{i'1}\) modulo column exclusions, and both lie in the closure, while the row sums map to row sums. Open: a definition of the effective board for general \(Z\), and the isomorphism of fall spaces.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>Hypothesis (c) must be applied to members after placed-pigeon closure. The closure carries pigeon cells, so hypothesis (b) must allow tops of positive content, and the tensor-splitting framework, stated for tops in the members' form algebras, must be extended.</li>
+<li>If the conjecture holds, (c) for column members is hypothesis (a) on a smaller board, and a column member is harmless exactly when it leaves an effective board in the stability range. For the goal, the column constraints come from wide clauses in the budget (lem:quiet-members), each forbidding a fraction about \(p^{-k}\) of the occupancy patterns. How far such constraints can shrink the effective board is the question that decides the column component.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the relative gluing theorem's hypothesis (c), the occupancy-transfer lemma's scope (content 0), and the placed-pigeon identity. The Singular driver reproduced the base-alone controls. They show no fall, matching the recorded weak-base data (these sizes lie below the proved quadratic range). The merged-board values come from the recorded, cross-engine-validated <code>base_injectivity.py</code>. The fall dimension 4 at 3 × 7 is explained after the run by 6 placed-pigeon products minus 2 sums; the value 5 at 3 × 5 is not explained. The entry registers one finite check and one conjecture, and no proof, so no reviewer pass was run.</p>
+
+<h4>Remaining gap</h4>
+<ul>
+<li>A proof of the effective-board conjecture, first for merging members.</li>
+<li>The extension of hypothesis (b) to members with tops of positive content.</li>
+<li>The size of the effective board left by budget column members.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-content-one">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 28.94 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 37.27 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 51.53 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
