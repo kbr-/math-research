@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> The <a href="#entry-2026-09-24-selector-model-review">selector-model review</a> finds the free-span results capped below the window, whose band spans all of \(A_1\). It stops further free-span refinement. Next: planted selector families at degree 3 on the full board, beyond freeness. Use direct linear algebra with the OpenMP rank kernel on small boards, 3 rows and 10 to 14 holes. Compare \(\ker z\) below 3 for planted and random families across \(M\) with a degree-3 count built like the degree-2 one. If planted families fall only beyond the count, and exactly by the dimension difference, the degree-2 mechanism generalizes and its proof is next. If they fall earlier, identify the degree-3 obstruction.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Count-based conditions transfer by openness from free-span witnesses to a nonempty open set of board tuples. Freeness-based ones do not (<a href="#entry-2026-09-24-openness-transfer">openness transfer</a>). So the goal's ENS blocks need a count-based sufficient condition. Next: a Taylor-glue analogue for ENS members. State the syzygy condition on the companions \(q_iP\), with \(P=1-\sum_kr_kq_k\) linear in private variables, under which there is no refutation at degree \(D\). The condition should be an explicit list of Taylor-type syzygies spanning the top syzygies. Check that it is a maximal-rank, hence open, condition. Verify it inside a free span, where cor:ens-span-members already gives the conclusion.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -16514,6 +16514,58 @@ Condition (b') implies (a'), that the \(\ell_t^2\) are independent in \(T_2\). U
 <tr><td>Computation design and coding</td><td class="elapsed">46.87 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 24.49 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 12.98 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-openness-transfer" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:board-double-points-from-free-spans">
+<h3>Openness transfer: a free-span witness makes board double points hold on a nonempty open set of board tuples; a narrower correction to the selector-model review</h3>
+<p class="entry-meta">24 September 2026 · Working proof (openness transfer), unconditional at certified d · Corrects the cap stated in the selector-model review; cycle odd-prime-planted-degree-three.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-selector-model-review">selector-model review</a> proposed computing planted selector families at degree 3 on the full board. It also stated that the free-span results cannot reach the window. Before computing, two checks were made. This entry records both, and corrects the review.</p>
+<ol>
+<li><em>The proposed computation is recorded.</em> At degree 3, with selectors only, the degree-3 part of the ideal is \(S_3=B_1S_2\). As in the degree-2 proof, \(\dim\ker(z:B'_2\to B'_3)=\dim(zB_2\cap S_3)-\dim S_2=\dim S_3-\dim\sum_t\ell_t^2G_1-M\). In \(B\), \(u^3=uz^2\), so \(u_ts_t^{\rm h}=u_t(z^2-u_t^2)=0\). With \(\dim B_1=\gamma_1+1\) and \(u_t\ne0\), this gives \(\dim B_1s_t^{\rm h}\le\gamma_1\) and \(\dim S_3\le M\gamma_1\). The weak base has \(z\) injective \(B_k\to B_{k+1}\) for \(k\le2\), which holds for \(m\ge3\) and \(N\ge5\) by thm:tensor-power-freeness through prop:stability-from-tensor-power. Under (a), \(\dim S_2=M\). So the kernel of \(S_3\to G_3\) contains \(zS_2\), of dimension \(M\), so \(\dim S_3\ge\dim\sum\ell_t^2G_1+M\). If the double points have full rank \(M(\gamma_1-1)\), then \(\dim S_3=M\gamma_1\) and \(\ker z_2=0\). So below the crossing, "planted families have no falls at degree 3" is implied by the board double-point condition of thm:glued-double-points. That condition is recorded as conj:aligned-double-points, with evidence at \(n=6,7,8\). The converse is not shown, since \(\dim S_3\) can drop together with the double-point rank. The sufficient condition is recorded, so the computation was not run.</li>
+<li><em>The review's cap is too strong.</em> It is right for freeness-based statements, such as cor:ens-span-members, which need freeness over the members' whole span. That is impossible once the span is all of \(A_1\). Count-based conditions such as full-rank double points are Zariski-open in the forms, so one witness inside a free span gives them on a nonempty open set of board tuples. That set is not confined to a free span. It does not place any specified tuple inside it.</li>
+</ol>
+<p><strong>General statement.</strong> prop:board-double-points-from-free-spans: over \(\mathbb F_3\), on the weak base with \(m\ge3\) rows and \(N\ge5\) columns, let \(d\le m(\lfloor N/5\rfloor-1)\), with \(N\ge10\) and \(d\ge4\). Suppose the truncated double-point property holds at \(d\), with an exact \(\mathbb F_3\) witness. It does for \(4\le d\le24\) (prop:truncated-double-points-small) and for \(d=28,32,36\) (the review's files <code>best_28.json</code>, <code>best_32.json</code>, <code>best_36.json</code>). Then for every \(M\le\lfloor(\binom{d+2}3-d)/(d-1)\rfloor\), the \(M\)-tuples of linear forms on the board satisfying conditions (a) and (b) of thm:glued-double-points in the weak top algebra form a nonempty Zariski-open set with \(\mathbb F_3\)-rational points. For selectors whose forms are an \(\mathbb F_3\)-rational point of it, with any values, there is no PC refutation of degree 3. Under conj:truncated-double-points, the count can be about \(d^2/6\) with \(d\approx m\lfloor N/5\rfloor\), about \(N^4/150\) for \(m=N+1\). The board crossing is about \(N^4/6\). The only \(\mathbb F_3\)-rational points identified are the free-span witnesses. Whether a given rational tuple lies in the open set is open, as it is in thm:general-forms-freeness.</p>
+
+<h4>Proof</h4>
+<ol>
+<li><em>An \(\mathbb F_3\)-rational free span.</em> By thm:general-forms-freeness, the grouped row sums over \(g=\lfloor N/5\rfloor\) column groups span a space containing \(R\). A complement \(G_0\) of \(R\) in it has dimension \(m(g-1)\), and the top algebra \(G\) is free through 3 over \(T(G_0)\). Any \(d\)-dimensional subspace \(W\subseteq G_0\) is also free through 3, by restriction to sub-spans. Take \(W\) spanned by \(d\) basis vectors, so it is \(\mathbb F_3\)-rational.</li>
+<li><em>A witness in \(W\).</em> Identify \(W\) with \(\mathbb F_3^d\). The truncated property at \(d\) gives \(\mathbb F_3\)-rational forms \(\ell_1,\dots,\ell_M\in W\) with \(\Phi\) of rank \(M(d-1)\) in \(T(W)\). For the certified \(d\) these are the recorded witnesses. By prop:free-span-double-points, they satisfy (a) and (b) in \(G\).</li>
+<li><em>Openness.</em> Condition (a), independence of the \(\ell_t^2\) in \(G_2\), and condition (b), \(\dim\sum_t\ell_t^2G_1=M(\gamma_1-1)\), are maximal-rank conditions on matrices whose entries are polynomial in the forms' coefficients over \(\mathbb F_3\). So each holds on a Zariski-open set. The witness shows both sets are nonempty and have an \(\mathbb F_3\)-rational point in common. The common witness makes the intersection nonempty. Irreducibility of the space of \(M\)-tuples then makes it dense.</li>
+<li><em>Gluing.</em> At an \(\mathbb F_3\)-rational point of the open set, possibly outside any free span, (a) and (b) are the hypotheses of thm:glued-double-points, in its weak balanced version. That gives no degree-3 refutation for any values. At the free-span witnesses the same follows from prop:free-span-double-points and thm:based-taylor-glue. \(\square\)</li>
+</ol>
+
+<h4>Correction and consequences</h4>
+<ul>
+<li><em>Correction, narrower than first drafted.</em> The selector-model review said the free-span results "cannot reach the window". That holds for freeness-based statements, including ENS members through cor:ens-span-members. For count-based conditions it is too strong: they transfer by openness to a nonempty open set of board tuples, which are not confined to a free span. Openness does not raise the count, which stays at the free-span count of about \(d^2/6\). It does not place the band, or any other specified tuple, in the open set. The composition entry's comparison, form count against span capacity \(L^2\), has the same scope: it is the right measure for freeness, not for count-based conditions.</li>
+<li><em>The band at degree 3, in the selector model.</em> At residual size \(L\) with about \(L\) rows, the count is about \(L^4/150\). The band's forms number about \(1.3\times10^8nL^2\Lambda_M^2\). The count would cover them once \(L^2\gtrsim2\times10^{10}n\Lambda_M^2\), that is, \(L\gtrsim1.4\times10^5\sqrt n\,\Lambda_M\). That needs the conjecture, and also that the band's \(\mathbb F_3\) tuples lie in the open set, which is unproved. This is a model: selectors at degree 3, not the goal's ENS blocks at degree 11.</li>
+<li><em>The method.</em> Count-based sufficient conditions can be witnessed inside free spans, where the structure theorem reduces them to \(T(W)\), and then transferred to the whole board by openness. For ENS members at degree \(D\), the missing piece is a count-based sufficient condition, a Taylor-glue analogue whose hypotheses are maximal-rank conditions. cor:ens-span-members instead uses freeness over the whole span, which cannot be transferred this way.</li>
+</ul>
+<p>Next: the Taylor-glue analogue for ENS members. thm:based-taylor-glue covers product constraints in forms. ENS companions \(q_iP\) have a second factor \(P=1-\sum_kr_kq_k\) that is linear in private variables. State the syzygy condition for ENS families that would give no refutation at degree \(D\): the top syzygies of the companions spanned by an explicit list of Taylor-type syzygies. Check that it is a maximal-rank condition, and so open. Verify it inside a free span, where cor:ens-span-members already gives the conclusion.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the selector-model review, the composition entry, prop:free-span-double-points, prop:truncated-double-points-small, thm:general-forms-freeness (its grouped construction and sub-span restriction), thm:glued-double-points and thm:based-taylor-glue, and the planted-falls proof whose kernel identity is reused at degree 3. A fresh-context reviewer found the openness proposition sound once steps 3 and 4 were fixed and the witness range sourced. It required these changes, all adopted:</p>
+<ul>
+<li>item 1 stated one way, as "implied by", with the unproved converse dropped;</li>
+<li>\(u_ts_t^{\rm h}=0\) in \(B\);</li>
+<li>the degree-3 injectivity of the weak base cited;</li>
+<li>the unconditional range restricted to the certified \(d\);</li>
+<li>step 4 citing thm:glued-double-points outside free spans;</li>
+<li>step 3's nonemptiness from the common witness;</li>
+<li>the correction and the band remark weakened, since openness raises no count and places no specified tuple;</li>
+<li>\(N\ge10\).</li>
+</ul>
+<p>The changes weaken or fix citations, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-planted-degree-three">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 41.97 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">57.20 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 44.63 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
