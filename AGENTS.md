@@ -16,6 +16,9 @@ rules to growing checklists or one-off setup narratives.
 
 ## Restoration and research discipline
 
+- Named prompts (Resume, Branch, Spin, Formalize, Spin-formalize, Spin-formalize-parallel,
+  Fossick and others) are defined in [PROMPTS.md](PROMPTS.md); read the named section
+  before acting on one.
 - Restore with `python3 tools/resume.py`, then read its listed bounded parts.
   For Codex resume calls, omit `max_output_tokens` on `exec_command` and omit
   `max_output_tokens` on any enclosing `functions.exec` directive: keep their
