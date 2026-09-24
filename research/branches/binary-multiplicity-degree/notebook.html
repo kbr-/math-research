@@ -29,14 +29,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic. Prove the <a href="#cube-square-per-order-any-field">dimension-two conjecture</a> over every field, starting with \(\ell=0\):</p>
+<p>Route item: cube-odd-characteristic. Prove the \(\ell&gt;0\) part of the <a href="#cube-square-per-order-any-field">dimension-two conjecture</a> over every field. The step fails to keep the origin order, so look for an \(\ell\)-aware replacement, such as restricting to the lines through the origin (\(x_1=0\), \(x_2=0\), \(x_1=x_2\)) together with the dichotomy.</p>
 <ul>
-<li>the line dichotomy with \(F=(1-x_1)(1-x_2)(1-x_1-x_2)\);</li>
-<li>the step \(P(x',1)-P(x',0)\), which needs no characteristic-two cancellation at \(\ell=0\);</li>
-<li>the upper bound from \(F^j\) and \(F^j(1-x_1)(1-x_2)\).</li>
+<li>First test candidate recursions arithmetically against the 169 computed values.</li>
+<li>Then use witness structure at \(n=3\) over \(\mathbb F_3\) to understand why origin order becomes cheap from \(\ell=p\) on.</li>
 </ul>
-<p>Then test whether the exchange law holds for \(n=2\) in every characteristic; the data say it does. After that, examine \(n=3\), where \(\mathbb F_3\) and \(\mathbb F_5\) agree and the exchange law fails, using the kernel's witness structure.</p>
-<p>Publication, Lean and correspondence remain the user's decisions.</p>
+<p>The <a href="#polynomial-relaxation-value-for-covers">relaxation value for covers</a> concerns the odd-field thread's goal. Recording it there is for that thread's own cycle or the user.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -1294,6 +1292,51 @@ Each \(E^{(t)}_j\) is symmetric and additive in each variable, and \(E^{(t)}_j(y
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 46.50 s</strong></td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 41.67 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">4.84 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-square-and-cover-limit" data-kind="research" data-route="cube-odd-characteristic" data-claims="thm:cube-square-order-zero-any-field cor:polynomial-relaxation-value-for-covers">
+<h3>25 September 2026 — The square over every field, and the exact value of the polynomial relaxation for covers</h3>
+<p class="entry-meta">Working proofs: the square over every field at order zero; the exact value of the cover relaxation. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Question.</strong> This entry takes two steps from the last one. First, the \(\ell=0\) case of the <a href="#cube-square-per-order-any-field">dimension-two conjecture</a> over every field. Second, what the <a href="#q-ary-per-order-value">\(q\)-ary theorem</a> says about the odd-field thread's covering problem. That thread showed that multiplicity conditions alone cannot prove its target \(n(q-1)+q(k-1)-1\) for \(f_q(n,k,1)\), \(3\le k\le q\), via a polynomial \(Q_k\) of degree \(\le n(q-1)+(q-1)(k-1)\) (<a href="https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#punctured-higher-jet-polynomial-obstruction">higher-jet obstruction</a>).</p>
+<h4 id="cube-square-order-zero-any-field">The square over every field</h4>
+<p><strong>Working theorem</strong> (<code>thm:cube-square-order-zero-any-field</code>). Let \(F\) be any field and \(c\ge1\). The least degree of \(P\in F[x_1,x_2]\) with \(P(0)\ne0\) and Hasse multiplicity \(\ge c\) at \((1,0)\), \((0,1)\) and \((1,1)\) is \(T(c)=2c-\lceil(c-1)/2\rceil\).</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><strong>Upper bound.</strong> Let \(G=(1-x_1)(1-x_2)(1-x_1-x_2)\), of degree 3. Each nonzero point lies on exactly two of the three lines, so \(G\) has multiplicity 2 there, and \(G(0)=1\). For \(c=2j\) take \(G^j\), of degree \(3j=T(2j)\). For \(c=2j+1\) take \(G^j(1-x_1)(1-x_2)\), of degree \(3j+2=T(2j+1)\). Its multiplicities are \(2j+1\), \(2j+1\) and \(2j+2\).</li>
+<li><strong>Step.</strong> Write \(P=\sum_jx_2^jP_j(x_1)\) and \(S(t)=P(t,1)-P(t,0)=\sum_{j\ge1}P_j(t)\), so \(\deg S\le\deg P-1\). \(S(0)=-P(0,0)\ne0\), because \(P(0,1)=0\). Both restrictions vanish to order \(\ge c\) at \(t=1\), so \((t-1)^c\mid S\). Since \(S\ne0\), \(\deg S\ge c\), and \(\deg P\ge c+1\).</li>
+<li><strong>Dichotomy.</strong> Each line \(L\in\{x_1=1,\ x_2=1,\ x_1+x_2=1\}\) avoids the origin and contains two nonzero cube points. Parametrize \(L\) affinely by \(t\). The restriction of \(P\) vanishes to order \(\ge c\) at two values of \(t\), so it is zero or of degree \(\ge2c\). If \(\deg P&lt;2c\), the three pairwise non-associate affine forms all divide \(P\), so \(P=GP'\). Multiplicities add under products, so \(P'\) has multiplicity \(\ge c-2\) at the three points, \(P'(0)=P(0)\ne0\), and \(\deg P'=\deg P-3\).</li>
+<li><strong>Induction.</strong> With \(\delta(c)=0\) for \(c\le0\), \(\delta(c)\ge\max\bigl(c+1,\min(2c,3+\delta(c-2))\bigr)\). Now \(T(1)=2\), \(T(2)=3\), \(T(c)=T(c-2)+3\) for \(c\ge3\), and \(T(c)\le2c\). Induction on \(c\) gives \(\delta(c)\ge T(c)\). \(\square\)</li>
+</ul>
+<p>The proof uses no property of the field. It fits the \(\ell=0\) values among the 169 computed values over \(\mathbb F_3\) and \(\mathbb F_5\) with \(n=2\) (<a href="#odd-cube-exchange-law-failure">previous entry</a>). An independent brute force by rank over all monomials gives \(T(c)\) for \(c\le9\) over \(\mathbb F_2\), \(\mathbb F_3\) and \(\mathbb F_7\) (<code>research/results/bmd-r10-square-and-cover-limit/sq.py</code>). For \(\ell&gt;0\) the step no longer controls the origin order. In characteristic \(\ne2\), only the swap of coordinates fixes both the origin and the cube. In characteristic 2, \(\mathrm{GL}_2(\mathbb F_2)\) acts on the three nonzero points, and the binary theorem covers every such field. So the rest of the conjecture is open for fields of characteristic \(\ne2\).</p>
+<h4 id="polynomial-relaxation-value-for-covers">The polynomial relaxation of the covering problem</h4>
+<p><strong>Working corollary</strong> (<code>cor:polynomial-relaxation-value-for-covers</code>). Let \(q\) be a prime power and \(n,k\ge1\). The least degree of a polynomial over \(\mathbb F_q\) with multiplicity \(\ge k\) on \(\mathbb F_q^n\setminus\{0\}\) and \(&lt;k\) at the origin is</p>
+<div class="math">\[ D_q(n,k)=n(q-1)+q(k-1)-\max_{0\le m\le k-1}\Bigl(q\bigl\lfloor m/q^n\bigr\rfloor+s_q\bigl(m\bmod q^n\bigr)\Bigr). \]</div>
+<ul>
+<li>\(f_q(n,k,1)\ge D_q(n,k)\), because the product of the affine forms of a cover is such a polynomial.</li>
+<li>No argument that uses only these value and multiplicity conditions can prove more than \(D_q(n,k)\), because \(D_q(n,k)\) is attained.</li>
+<li>For \(k\le q^n\) the maximum is \(\max_{m&lt;k}s_q(m)\).</li>
+<li>For \(k\le q\) the value is \(D_q(n,k)=n(q-1)+(q-1)(k-1)\). So the thread's \(Q_k\) is optimal, and its deficit \(k-2\) from the covering target is exactly the deficit of the relaxation.</li>
+</ul>
+<p><strong>Proof.</strong> Minimize the <a href="#q-ary-per-order-value">\(q\)-ary theorem</a> over \(\ell\), using the form \(n(q-1)+q(k-1)-h(k-\ell-1)\). For \(k\le q\), \(m\le k-1&lt;q\le q^n\) gives \(h(m)=s_q(m)=m\), with maximum \(k-1\). \(\square\)</p>
+<p>This extends the thread's obstruction to every \(k\), including \(k&gt;q\): the relaxation's gap to the target \(n(q-1)+q(k-1)-1\) is \(\max_mh(m)-1\). For odd \(q\) and \(k\ge3\) the gap \(\max_mh(m)-1\) is at least 1, so a covering proof must use affine factorization, as that thread concluded; the size of the gap is now exact. For \(q=2\) the gap can vanish, for example at \(n\ge2\), \(k=3\).</p>
+<p><strong>General statement.</strong> <code>thm:cube-square-order-zero-any-field</code> (every field and \(c\)) and <code>cor:polynomial-relaxation-value-for-covers</code> (every prime power \(q\), \(n\), \(k\)). The first proves the \(\ell=0\) case of <code>conj:cube-square-per-order-any-field</code>.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the \(q\)-ary theorem, and the odd-field thread's obstruction with its covering target. A fresh-context reviewer made these checks:</p>
+<ul>
+<li>the constructions, the step, the dichotomy in every characteristic (at \((1,1)\), \(x_1+x_2=2\ne1\)) and the recursion;</li>
+<li>the minimization and the claims about covers;</li>
+<li>a brute force of the square theorem over three fields.</li>
+</ul>
+<p>It found no mathematical error. It asked for scope corrections, all made: characteristic 2 versus odd characteristic, the \(\ell=0\) data, odd \(q\) for the gap, the process note, and a shorter status line.</p>
+<p><strong>Assessment.</strong> The odd-characteristic cube yields a clean theorem only in dimension two for \(\ell=0\). The failure of the exchange law at \(n=3\) marks the limit of the elementary tools there. The cross-thread corollary is the more useful result: it settles exactly how far the polynomial relaxation reaches for the odd-field covering problem. Next: either the \(\ell&gt;0\) part of dimension two, or a report to the odd-field thread on how to use the corollary, since that thread owns the covering goal. Process: the corollary is a short minimization of the \(q\)-ary theorem, and the square theorem is a new self-contained argument built from the step and the line dichotomy.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r10-square-and-cover-limit">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 9.59 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 9.59 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
