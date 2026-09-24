@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Closed column members on few holes have no falls (<a href="#entry-2026-09-24-sparse-closure">sparse closure</a>). The proof needs seeds from unconstrained holes, and the budget's members touch every hole. Next, the dense case: for \(Z'\) the members' forbidden-value sets on the whole cube, prove the kernel condition of lem:slice-strictness and the freeness over \(T_u\) for \(\operatorname{gr}\mathbb F^{\mathcal P_{Z'}}\). A route is to show that removing a low-density forbidden set of low-degree structure preserves freeness below the degree where it becomes visible. Then (c) over the closed base and global row freeness for the budget's solution set.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Closed column members have no falls with the weak base when their forms have a seeded span, for any allowed values (<a href="#entry-2026-09-24-seeded-closure">seeded closure</a>), or when they sit on few holes. The seed argument stops at span dimension about \(N/((p-1)(D+1))\), which the budget can exceed. Next: freeness of the column tensor power over a form algebra of large span, or a combination of seeded blocks with a transfer across blocks. Then (c) over the closed base and (b) for closed members.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -13468,6 +13468,80 @@ the sum over column-injective cell sets \(Y\) in rows \(1,\dots,m-1\), with \(S(
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 22.13 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 26.90 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-seeded-closure" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:filtered-freeness-transfer thm:seeded-closure-stability cor:seed-transfer-ranges">
+<h3>Seeded closure stability: every closed column member whose forms have a seeded span has no falls with the weak base, whatever its allowed values</h3>
+<p class="entry-meta">24 September 2026 · Working proofs · Closed row freeness for seeded dense members; cycle odd-prime-dense-closure.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-sparse-closure">sparse-closure entry</a> proved the closure-gluing hypothesis for members on few holes, with seeds from unconstrained holes. The budget's members touch every hole. The cycle asks whether seeds for the members' own forms, as in thm:board-seed-freeness, can replace the unconstrained holes, for any allowed set of form values.</p>
+<p><strong>General statement.</strong> lem:filtered-freeness-transfer: let \(R\) be the algebra of functions on a finite set of form values, filtered by degree, acting on a filtered algebra \(F\) of functions. If \(\operatorname{gr}F\) agrees below degree \(n_0\) with a free \(\operatorname{gr}R\)-submodule, then for every ideal \(J\subseteq R\), \(\operatorname{gr}(F/JF)=\operatorname{gr}F\otimes_{\operatorname{gr}R}\operatorname{gr}(R/J)\) in degrees \(&lt;n_0\). thm:seeded-closure-stability: over a field of characteristic \(p\), if column forms \(\ell_1,\dots,\ell_d\) have an affine basis of values with multiplicity \((p-1)(D+1)^2\) at \(P_0\) and \((p-1)(D+1)\) at each other point, then for every set \(\Omega\) of allowed values, the weak base plus the closed member of \(Z=\{c\text{ in the slice}:\ell(c)\in\Omega\}\), if nonempty, has no fall below \(D\) and no PC refutation of degree \(D\). cor:seed-transfer-ranges: the same lemma improves cor:slice-saturation to \(N\ge(p-1)(D+1)\) and thm:sparse-closure-stability to \(N-|H|\ge(p-1)(D+1)^2\).</p>
+
+<h4>Filtered freeness transfer</h4>
+<p><strong>Lemma (filtered freeness transfer).</strong> Let \(R=\mathbb F^{\mathbb F_p^e}\), filtered by polynomial degree, with \(T_R=\operatorname{gr}R=\mathbb F[w_1,\dots,w_e]/(w^p)\). Let \(F\) be a filtered algebra with \(F_{-1}=0\) and a filtered algebra map \(R\to F\), and put \(\Gamma=\operatorname{gr}F\), a graded \(T_R\)-module. Suppose \(\Phi\subseteq\Gamma\) is a graded \(T_R\)-submodule, free on a homogeneous basis \((\bar b_\alpha)\) of degrees \(a_\alpha\), and \(\Gamma_d=\Phi_d\) for \(d&lt;n_0\). Then for every ideal \(J\subseteq R\) and \(d&lt;n_0\):</p>
+<ol type="a">
+<li>\(F_d\cap JF=\sum_\alpha(J\cap R_{d-a_\alpha})\,b_\alpha\), for lifts \(b_\alpha\in F_{a_\alpha}\) of \(\bar b_\alpha\);</li>
+<li>\(\operatorname{gr}_d(F/JF)\cong\bigoplus_\alpha\operatorname{gr}_{d-a_\alpha}(R/J)=(\Phi\otimes_{T_R}\operatorname{gr}(R/J))_d\).</li>
+</ol>
+<p>Suppose moreover that \(\Phi\) is free over \(T_R\otimes T_{\rm row}\), \(T_{\rm row}=\mathbb F[y_1,\dots,y_u]/(y^p)\), on a basis \((\bar c_\beta)\), with \(T_{\rm row}\) acting through the tops of elements \(y_i\in F_1\) that satisfy \(y_i^p=y_i\) in \(F\). Then in degrees \(&lt;n_0\), \(\operatorname{gr}(F/JF)\) agrees with \(T_{\rm row}\otimes\operatorname{gr}(R/J)\otimes\operatorname{span}(\bar c_\beta)\), with \(y_i\) acting on the first factor. Nothing is claimed about \(y_i\) from degree \(n_0-1\) into degree \(n_0\).</p>
+<p><em>Proof.</em> Define \(\psi:\bigoplus_\alpha R\,e_\alpha\to F\), \(e_\alpha\mapsto b_\alpha\), filtered with \(e_\alpha\) in degree \(a_\alpha\). For \(r\in R\) of exact degree \(k\), the top of \(rb_\alpha\) is \(\bar r\bar b_\alpha\ne0\), since \(\Phi\) is free. So \(\operatorname{gr}\psi\) is the inclusion \(\Phi\hookrightarrow\Gamma\), and \(\psi\) is injective and strict: \(\psi(x)\in F_d\) exactly when \(x\) has filtration degree \(\le d\). For \(d&lt;n_0\), \(\Gamma_d=\Phi_d\), so by induction on \(d\) from \(F_{-1}=0\), \(F_d=\psi\bigl(\bigoplus_\alpha R_{d-a_\alpha}e_\alpha\bigr)\).</p>
+<p>\(R\) is a product of copies of \(\mathbb F\), so every \(R\)-module is semisimple; here only the \(R\)-module structure of \(F\) is used. The submodule \(M=\psi(\bigoplus R\,e_\alpha)\) is a direct summand, \(F=M\oplus M'\), and \(JF=JM\oplus JM'\). For \(d&lt;n_0\), \(F_d\subseteq M\), so \(F_d\cap JF=F_d\cap JM=F_d\cap\psi(\bigoplus J\,e_\alpha)\). By strictness this is \(\psi(\bigoplus(J\cap R_{d-a_\alpha})e_\alpha)\), which is (a). Then \(\operatorname{gr}_d(F/JF)=F_d/(F_d\cap JF+F_{d-1})\). By (a) and \(F_{d-1}=\psi(\bigoplus R_{d-1-a_\alpha}e_\alpha)\), this is \(\bigoplus_\alpha R_{d-a_\alpha}/(J\cap R_{d-a_\alpha}+R_{d-1-a_\alpha})\), which is (b).</p>
+<p>For the last part, take the \(T_R\)-basis \(\bar y^a\bar c_\beta\) of \(\Phi\), with \(0\le a_i&lt;p\), and lifts \(y^ac_\beta\); these are lifts because the top of a product is the product of the tops. In \(F/JF\), \(y_i\cdot(\rho\,y^ac_\beta)=\rho\,y^{a+e_i}c_\beta\) if \(a_i+1&lt;p\). Otherwise it is \(\rho\,y_i^py^{a-(p-1)e_i}c_\beta\), and \(y_i^p=y_i\) has lower degree, so the product vanishes in gr. So \(y_i\) acts on \(\bigoplus\operatorname{gr}(R/J)\,[\bar y^a\bar c_\beta]\) as on \(T_{\rm row}\otimes\operatorname{gr}(R/J)\otimes\operatorname{span}(\bar c_\beta)\), in degrees \(&lt;n_0\). \(\square\)</p>
+<p><em>The slice case.</em> For \(e=1\), \(R\) the functions of \(s\), and \(J\) the functions vanishing at \(m\): \(J\cap R_k=(s-m)R_{k-1}\) for every \(k\). Polynomials of degree \(\le\min(k,p-1)\) represent \(R_k\), and \((w-m)R_{p-2}\) already has dimension \(p-1=\dim J\). So (a) gives \(F_d\cap JF=(s-m)F_{d-1}\) for \(d&lt;n_0\), the conclusion of lem:slice-strictness. The hypotheses differ: slice strictness assumes a kernel condition through degree \(D+p-2\), the transfer lemma a free submodule below \(D+1\), and neither implies the other.</p>
+
+<h4>The theorem</h4>
+<p><strong>Theorem (seeded closure stability).</strong> Over a field \(\mathbb F\) of characteristic \(p\), with \(m\ge1\), let column forms \(\ell_b=\sum_j\varphi_b(j)C_j\), \(\varphi_b:[N]\to\mathbb F_p\), \(b=1,\dots,d\), have an affine basis \(P_0,\dots,P_d\) of \(\mathbb F_p^d\) among the value vectors \((\varphi_1(j),\dots,\varphi_d(j))\). Let \(P_0\) be taken by at least \((p-1)(D+1)^2\) holes and each \(P_b\) by at least \((p-1)(D+1)\). Let \(\Omega\subseteq\mathbb F_p^d\), and let \(Z=\{c\text{ in the slice}:\ell(c)\in\Omega\}\) be nonempty. Then the homogenized weak base plus \(\mathcal M_D(\mathcal P_Z)\) is \(z\)-injective below \(D\) and has no PC refutation of degree \(D\).</p>
+<p><em>Proof.</em> By thm:closure-gluing it suffices that the row-sum Koszul cycles on \(G=\operatorname{gr}\mathbb F^{\mathcal P_Z}\) of degree at most \(D\) are Frobenius plus boundaries.</p>
+<ol>
+<li><em>Content reduction.</em> As in the sparse-closure proof, step 1, the content-\(c\) part of \(G\) is that of \(\operatorname{gr}\mathbb F^{\mathcal P_Z^{(u)}}\) on the \(u=|\operatorname{supp}c|\le D\) rows of \(\operatorname{supp}c\) and a bulk row. The identification is one of \(T_u\)-modules.</li>
+<li><em>Joint seeds.</em> Let \(F\) be the functions on all assignments to these \(u+1\) rows. Then \(\Gamma=\operatorname{gr}F\) is the column tensor power \(\tilde A_{u+1}\). The proof of thm:board-seed-freeness shows, for the full column tensor power on \(u'\) rows, with \(T=\mathbb F[Y_0,\dots,Y_{u'-1},W_1,\dots,W_d]/(Y_i^p,W_b^p)\) acting by \(Y_i\mapsto r_i\) and \(W_b\mapsto\ell_b\): a hole set with \(u'(p-1)\) holes of value \(P_0\) and \(p-1\) of each \(P_b\) is a seed, and \(t+1\) disjoint seeds give \(\tilde A_{u'}\cong(T\otimes M_0)\oplus Q\), with \(Q\) in degrees \(\ge t+1\). Here \(u'=u+1\le D+1\) and \(t=D\). The \(D+1\) blocks need \((u+1)(p-1)(D+1)\le(p-1)(D+1)^2\) holes at \(P_0\) and \((p-1)(D+1)\) at each \(P_b\). Replace \(Y_0\) by \(S=\sum_iY_i\), which acts as \(s=\sum_jC_j\). Since \((\sum_iY_i)^p=\sum_iY_i^p=0\), \(T=T_u\otimes T_R\) with \(T_u=\mathbb F[Y_1,\dots,Y_u]/(Y^p)\) and \(T_R=\mathbb F[S,W]/(p\text{-th powers})\). A \(T\)-module isomorphism does not depend on the choice of generators.</li>
+<li><em>Transfer.</em> Let \(R\) be the functions on \(\mathbb F_p^{1+d}\), mapping to \(F\) by \((s,\ell_1,\dots,\ell_d)\). These take values in \(\mathbb F_p\), so \(R\to F\) is a filtered algebra map with \(\operatorname{gr}R=T_R\). Let \(J\) be the functions vanishing on \(\{m\}\times\Omega\). Then \(F/JF\) is the functions on \(\mathcal P_Z^{(u)}\). The lemma, with \(n_0=D+1\), \(\Phi=T\otimes M_0\), and \(T_{\rm row}=T_u\) acting through the \(r_i\), \(i\in\operatorname{supp}c\), gives that \(\operatorname{gr}\mathbb F^{\mathcal P_Z^{(u)}}\) is free over \(T_u\) in degrees \(\le D\).</li>
+<li><em>Frobenius.</em> \(H_1\) of the row sums in degrees \(\le D\) uses only degrees \(\le D\). On a free \(T_u\)-module it is spanned by Frobenius classes, whose content components are Frobenius cycles plus boundaries. \(\square\)</li>
+</ol>
+<p><em>Scope.</em> \(\Omega\) is arbitrary, so the theorem covers every member defined by conditions modulo \(p\) on forms in the seeded span: a single clause forbidding one value pattern, several clauses whose forms lie in one seeded span, and selectors or equations on such forms. A clause whose forms' value vectors span only a proper affine subspace must first be rewritten on a basis of that span. Members defined by integer occupancy counts, such as exactly one occupied hole of a set of at least \(p\) holes, are not of this form. The members need not be sparse: every hole may carry nonzero coefficients.</p>
+
+<h4>Improved ranges</h4>
+<p><strong>Corollary (seed-transfer ranges).</strong> Over a field of characteristic \(p\):</p>
+<ul>
+<li>the conclusion of cor:slice-saturation holds for \(N\ge(p-1)(D+1)\);</li>
+<li>the conclusion of thm:sparse-closure-stability holds for \(N-|H|\ge(p-1)(D+1)^2\).</li>
+</ul>
+<p><em>Proof.</em> In both proofs replace lem:slice-strictness by the transfer lemma with \(R\) the functions of \(s\) and \(J\) the functions vanishing at \(m\), using \(J\cap R_k=(s-m)R_{k-1}\) (the slice case above). It needs the free submodule only below degree \(D+1\). For the slice, seed blocks of \(p-1\) holes, \(D+1\) of them, give \(\Gamma\) free over \(\mathbb F[S]/(S^p)\) up to degrees \(\ge D+1\). For sparse members, blocks of \((p-1)(u+1)\) holes of \(H^c\), \(D+1\) of them, give freeness over \(T_{u+1}\supseteq\mathbb F[S]/(S^p)\). The \(T_u\)-freeness of the quotient follows from the lemma's last part. \(\square\)</p>
+
+<h4>What this means</h4>
+<ul>
+<li>The closure-gluing hypothesis now holds for every closed column member, with any allowed values, whose forms have an affine basis of values with multiplicities \((p-1)(D+1)^2\) at \(P_0\) and \((p-1)(D+1)\) at each other point, and whose allowed set \(Z\) is nonempty. This includes dense single clauses and families of clauses sharing such a span.</li>
+<li>For this approach, what remains for the column component is span dimension. The theorem needs \(d\le(N-(p-1)(D+1)^2)/((p-1)(D+1))\). Above that the seed argument gives nothing, and freeness there is open. The budget's column constraints, from up to \(N^K\) clauses of about \(\log N\) forms each, can span that much. The transfer lemma gives a sufficient condition: freeness of the column tensor power over the full form algebra. Hypothesis (b) for closed members and (c) over the closed base remain open, as the remaining gap lists.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:board-seed-freeness with its proof, including the seed criterion and the lemma on board seed blocks for the full column tensor power, quoted in step 2; lem:closure-saturation, thm:closure-gluing, the sparse-closure proof and lem:slice-strictness. The claim search (seeded closed member, freeness transfer) found no result implying the lemma or the theorem; cor:seeded-selector-members is the nearest, for unclosed augmented selectors at \(p=3\). A fresh-context reviewer found the lemma (injectivity, strictness, surjectivity below \(n_0\), the direct summand, (a), (b), the last part including \(a_i+1=p\)), \(F/JF\) as the functions on \(\mathcal P_Z^{(u)}\), the degree bookkeeping, and both corollary ranges correct. It required these changes, all adopted:</p>
+<ul>
+<li>the relation to slice strictness corrected, with \(J\cap R_k=(s-m)R_{k-1}\) proved;</li>
+<li>the lemma's hypotheses stated as used, with "free in degrees \(&lt;n_0\)" defined;</li>
+<li>the board-seeds claim quoted exactly, with the block count;</li>
+<li>notation clashes removed;</li>
+<li>the scope limited to conditions modulo \(p\) on forms in the span;</li>
+<li>the comparison with cor:seeded-selector-members removed;</li>
+<li>the span-dimension bullet restricted to this approach, with the theorem's bound and open status.</li>
+</ul>
+<p>The changes weaken or justify statements and add no claim, so no further pass was made.</p>
+
+<h4>Remaining gap</h4>
+<ul>
+<li>Closed column members whose forms span more than seeds allow.</li>
+<li>(c) for generic members over the closed base; global row freeness for the budget's solution set.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-dense-closure">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 44.90 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7 min 10.49 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 34.28 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
