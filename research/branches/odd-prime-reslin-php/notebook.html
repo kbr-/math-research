@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Separately augmented ENS blocks linked by shared linear parts fall because of cross-consequences whose degree-compatible representations are 1 or 2 degrees higher. For large blocks the known low ones are parallel: \(R\), of degree 7, and \(T\), of degree 9 (<a href="#entry-2026-09-24-chain-consequences">chain consequences</a>). With \(R\) added, one configuration of three linked five-input blocks has no fall below 8, in the first case of conj:bounded-linkage-large-h (<a href="#entry-2026-09-24-linkage-test">linkage test</a>). Next: attempt a proof for a parallel pair. Compare the associated graded of the sum of the two blocks' ideals with the sum of their graded ideals, as modules over \(T(x)\), and show that \(R\) generates the only defect below a bound growing with \(h\).</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Falls of separately augmented linked ENS blocks are degree defects. For pairs, a fiber decomposition over the shared coordinates shows they are killed by \(z^{2|V|}\), and that none lies below the fiber-sum degree. That degree is only 4 for ENS pairs, so conj:bounded-linkage-large-h stays open (<a href="#entry-2026-09-24-fiber-decomposition">fiber decomposition</a>). The obstacle is the cost of lifting a fiber element to its block's ideal: some elements lift at no cost, others cost two degrees. Next: formulate a lifting-cost refinement of the fiber-sum bound for a pair sharing one linear part, check it against the six observed lowest falls, and prove it.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -17259,6 +17259,88 @@ Degree 11 in about 24 variables is beyond this approach. No value is claimed for
 <tr><td>Individually measured computation</td><td class="elapsed">8 min 16.99 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">2 min 6.67 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-fiber-decomposition" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:fiber-decomposition-bounds">
+<h3>Fiber decomposition for linked pairs: falls are killed by z^{2|V|}, and none lies below the fiber-sum degree, but that bound is only 4 for ENS pairs</h3>
+<p class="entry-meta">24 September 2026 · Working proof (two general bounds) and a proof attempt that stops short of the conjecture · cycle odd-prime-parallel-pair-proof.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-linkage-test">linkage test</a> confirmed conj:bounded-linkage-large-h for one configuration. It proposed a proof for a pair of blocks sharing one linear part, through the degree-defect view: the joint ideal of linked blocks is the sum of the separate ideals, and falls are degree defects. This cycle attempts that proof. It proves two general bounds by decomposing along the values of the shared coordinates, and shows why they fall short of the observed falls.</p>
+<p><strong>General statement.</strong> prop:fiber-decomposition-bounds, for every pair of systems sharing coordinates \(V\): falls are killed by \(z^{(p-1)|V|}\), and none lies below \(m_a+m_b\).</p>
+<p>Over \(\mathbb F_p\), modulo all field equations, let two constraint systems \(a\) and \(b\), for example ENS blocks, live in variables \((x_V,Y_a)\) and \((x_V,Y_b)\), with \(Y_a\cap Y_b=\emptyset\). This needs the non-shared input forms and private variables of the two systems to be jointly independent, after an affine change of coordinates over \(\mathbb F_p\). Such a change keeps the field-equation ideal and the degree filtration. Let \(T\) be the ring of all variables modulo field equations. Let \(I_a\), \(I_b\) be the systems' ideals, which contain the field equations, so \(I_a=I(Z_a)\), and let \(J\) be the homogenization, with variable \(z\), of their separate degree-order Gröbner bases.</p>
+<ol>
+<li><em>Defect bound.</em> Every polynomial of degree \(s\) vanishing on the joint zero set lies in \((I_aT)_{\le s+(p-1)|V|}+(I_bT)_{\le s+(p-1)|V|}\). So \(z^{(p-1)|V|}\) kills every \(z\)-torsion element modulo \(J\).</li>
+<li><em>Fiber-sum bound.</em> Let \(Z_a^v\), for \(v\in\mathbb F_p^V\), be the fibers of \(a\)'s zero set over the shared values. Let \(m_a\) be the least degree of a nonzero element of \(K_a=\sum_vI(Z_a^v)\), an ideal in the \(Y_a\) variables, and define \(m_b\) likewise. Then there is no fall of \(J\) in degrees below \(m_a+m_b\). Both bounds are for two systems; the \(k\)-system version is not proved here.</li>
+<li>For ENS blocks sharing one linear part, identical or parallel, \(m_a=m_b=2\). So the fiber-sum bound gives no fall below 4, while the observed falls start at 5 to 8.</li>
+</ol>
+
+<h4>The two bounds</h4>
+<p><em>Fibers.</em> Modulo the field equations, polynomials are functions on a finite set. So for \(v\in\mathbb F_p^V\), with \(e_v(x_V)=\prod_{i\in V}\bigl(1-(x_i-v_i)^{p-1}\bigr)\) of degree \((p-1)|V|\), every \(f\) equals \(\sum_ve_v\,f(v,\cdot)\). The joint zero set's fiber over \(v\) is the product \(Z_a^v\times Z_b^v\) in disjoint variables. Its ideal is \(I(Z_a^v)+I(Z_b^v)\), and the union of the two fibers' degree-order bases, in disjoint variables, is a degree-order basis of the sum. So every fiber restriction \(f(v,\cdot)\) of degree \(\le s\) splits as \(\alpha_v+\beta_v\), with \(\alpha_v\in I(Z_a^v)T\), \(\beta_v\in I(Z_b^v)T\), both of degree \(\le s\). The cofactors may involve the other system's variables.</p>
+<p><em>1. Defect bound.</em> \(e_v\alpha_v\) vanishes on \(a\)'s zero set, extended to all variables, since on the fiber over \(v\) \(\alpha_v\) does, and elsewhere \(e_v\) does. Since \(I_aT\) contains the field equations, it is the ideal of that set, so \(e_v\alpha_v\in I_aT\), of degree \(\le s+(p-1)|V|\), and similarly for \(\beta\). Summing over \(v\) gives the representation. Each ideal's degree-order basis gives degree-compatible representations. \(\square\)</p>
+<p><em>2. Fiber-sum bound.</em> First reduce \(f\) in \(x_V\), with exponents below \(p\). This does not raise its degree, and it makes \(f=\sum_ve_vf(v,\cdot)\) an exact polynomial identity after reducing the right side too. Put \(A=\sum_ve_v\alpha_v\in I_aT\) and \(B=\sum_ve_v\beta_v\in I_bT\), reduced in \(x_V\), so \(f=A+B\) exactly. Expand in the shared variables:
+\[A=\sum_iA_i\,x_V^{\,i},\qquad B=\sum_iB_i\,x_V^{\,i},\]
+where each \(A_i\) is a fixed scalar combination of the \(\alpha_v\), so \(A_i\in K_aT\) and \(\deg A_i\le s\). Likewise \(B_i\in K_bT\). With \(f=\sum_if_ix_V^{\,i}\), we have \(f_i=A_i+B_i\) and \(\deg f_i\le s-|i|\).</p>
+<ul>
+<li>Let \(t=\max(\deg A_i,\deg B_i)\), and suppose \(t&gt;s-|i|\). Then the degree-\(t\) parts cancel: \(\operatorname{top}_t(A_i)=-\operatorname{top}_t(B_i)\), both nonzero.</li>
+<li>That element lies in \(\operatorname{gr}(K_a)\,T\cap\operatorname{gr}(K_b)\,T\). \(K_a\) and \(K_b\) live in disjoint variables, and the associated graded of an ideal extended from one tensor factor is the extension of its associated graded. Indeed \(T\) is free over the \(Y_a\)-part on the monomials in the other variables, so the top form of \(\sum_jk_jm_j\) is \(\sum\operatorname{top}(k_j)m_j\) over the maximal terms. So this intersection is \((\operatorname{gr}K_a\otimes-)\cap(-\otimes\operatorname{gr}K_b)=\operatorname{gr}(K_a)\operatorname{gr}(K_b)\,T\) over a field, as in the proof of prop:pure-top-sums. Its nonzero elements have degree \(\ge m_a+m_b\).</li>
+<li>So if \(s&lt;m_a+m_b\), then \(t\le s&lt;m_a+m_b\) gives a contradiction, and \(\deg A_i\le s-|i|\) for every \(i\).</li>
+</ul>
+<p>Then \(A\in I_aT\) has degree \(\le s\), and \(B=f-A\in I_bT\) too. \(a\)'s degree-order basis stays a Gröbner basis in \(T\), since it involves only \(a\)'s variables. So \(A\) has a representation of degree \(\le s\), and \(f\in(I_aT)_{\le s}+(I_bT)_{\le s}\).</p>
+<p>A fall at degree \(s\) is a homogeneous \(w\notin J\) with \(zw\in J\). Its dehomogenization vanishes on the joint zero set and has degree \(\le s\). So for \(s&lt;m_a+m_b\) it lies in \(J\) after homogenizing, which is a contradiction. \(\square\)</p>
+<p><em>3. The ENS value.</em> For a block whose first input is \(x+c\), the fibers are the true fiber, where the input vanishes, and the false fiber. So \(K_a=I(Y)\), with \(Y\) the intersection of the two fibers, in the variables \(u_2,\dots,u_h,r_1,\dots,r_h\).</p>
+<ul>
+<li>On \(Y\), \(r_1=0\) when some other input is true, and \(r_1=1\) otherwise. So \(r_1^2-r_1\in K_a\), of degree 2.</li>
+<li>No nonzero linear function vanishes on \(Y\). A linear function vanishing on the points with every other input false, \(r_1=1\) and the other \(r\) free has no \(u\) or \(r_{k\ge2}\) terms and constant \(-b_1\), where \(b_1\) is the coefficient of \(r_1\). The points with some other input true and \(r_1=0\) then force \(b_1=0\).</li>
+</ul>
+<p>So \(m_a=2\), and likewise \(m_b=2\), for every \(h\ge2\). The argument uses \(h\ge2\), and that \(Y\) is nonempty. \(\square\)</p>
+
+<h4>Why the attempt stops short</h4>
+<p>The fiber-sum bound treats \(K_a\) as one ideal. But each piece \(\alpha_v\) lies in the ideal of one fiber, and each pair of fiber types (true or false for \(a\), true or false for \(b\)) occurs only at certain shared values.</p>
+<ul>
+<li><em>Parallel inputs.</em> The pair "both true" never occurs.</li>
+<li><em>Identical inputs.</em> The pairs "\(a\) true, \(b\) false" and the reverse never occur.</li>
+</ul>
+<p>A sharper bound would use the least degrees of the non-occurring products. As a heuristic count, fitted after the fact to the observed values, let \(m^t\) be the least degree of the true-fiber ideal: 2 at \(h=2\), and 3, from \(P\) restricted, for \(h\ge3\), which is not proved. Let \(m^f\) be the least degree of the false-fiber ideal, the \((h-1)\)-input block's: 3, 4 and 5 for \(h-1=1,2\) and \(3\le h-1\le6\), observed in <code>gb_blocks.json</code> only up to its computed \(h\). The count then gives two predictions. The \(+1\) for parallel pairs is ad hoc: it stands for a linear factor vanishing on the fiber where both inputs are false.</p>
+<ul>
+<li>parallel pairs: \(m^t_a+m^t_b+1\), which is 5 at \(h=2\) and 7 for \(h\ge3\);</li>
+<li>identical pairs: \(m^t+m^f\), which is 5, 7 and 8 at \(h=2,3,4\).</li>
+</ul>
+<p>Both match every observed lowest fall. But the count is not a proof. Its natural degree-8 witness for identical pairs, for every \(h\ge4\), is \(G=P_a\,q_{b,2}P_b^{(-1)}\), where \(P_b^{(-1)}\) is \(b\)'s \(P\) without its shared input. \(G\) is not a fall, so the observed \(h=4\) fall at 8 must come from another element: \(q_{b,2}P_b^{(-1)}=q_{b,2}P_b+r_{b,1}q_xq_{b,2}\), so \(G=P_a\cdot(q_{b,2}P_b)+r_{b,1}q_{b,2}\cdot(q_xP_a)\) lies in \(J_8\). So defects depend on how fiber elements lift to the block's ideal, not only on their degrees. Elements like \(F_b=q_{b,2}\prod_{j\ge3}L_{b,j}(1-r_{b,2})\) of lem:shared-input-consequences, whose lift needs \(L_x^2\), have defect 2. Elements like \(q_{b,2}P_b^{(-1)}\), which lift through \(q_x\), have none. A proof of conj:bounded-linkage-large-h has to control this lifting cost.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>Proved in general for pairs: their falls are shallow, killed by \(z^{2|V|}\) at \(p=3\), and none lies below the fiber-sum degree.</li>
+<li>For ENS pairs the fiber-sum degree is 4, so this bound neither proves nor refutes the conjecture. It is still open.</li>
+<li>The next proof step is a lifting-cost refinement of the fiber-sum argument: split each fiber ideal by the degree at which its elements extend to the block's ideal.</li>
+</ul>
+<p>Next: formulate and prove the lifting-cost refinement for a pair sharing one linear part. For each fiber type, the relevant quantity is the least degree of a fiber element whose extension to the block costs 1 or 2 extra degrees. Check the refinement against the six observed lowest falls before relying on it.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: conj:bounded-linkage-large-h, ex:bounded-linkage-d8, lem:shared-input-consequences, lem:chain-consequences, and prop:pure-top-sums (the product of extended ideals in disjoint variables). The observed falls quoted are from the recorded result files. No computation was run in this cycle.</p>
+<p>A fresh-context reviewer found no mathematical gap in the two bounds or in \(m_a=2\). It confirmed the identity behind \(G\in J_8\). It required these changes, all adopted:</p>
+<ul>
+<li>\(I_aT\) and \(K_aT\) for the extended ideals, and \(I_a=I(Z_a)\) from the field equations;</li>
+<li>reduction in \(x_V\), so that the identities are exact;</li>
+<li>the case where \(B_i\) has the larger degree;</li>
+<li>the freeness justification for top forms and the extended Gröbner basis;</li>
+<li>the independence hypotheses;</li>
+<li>\(h\ge2\) and nonempty \(Y\);</li>
+<li>\(G\) described as the count's witness, which is not a fall;</li>
+<li>the heuristic marked as fitted after the fact, with \(+1\) ad hoc and \(m^f\) observed only to the computed \(h\);</li>
+<li>\(F_b\) defined;</li>
+<li>"families" narrowed to "pairs".</li>
+</ul>
+<p>The changes fix notation and justification, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-parallel-pair-proof">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 50.74 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 53.24 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 57.36 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
