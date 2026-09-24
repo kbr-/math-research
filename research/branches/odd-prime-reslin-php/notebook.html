@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> The locality sub-line has exact thresholds for point-forbidding clauses. Suitable dependent members fail at \(2\sum_b(k_b-1)\), below \(D\) for clusters with \(\sum_b(k_b-1)\le11k\) (<a href="#entry-2026-09-24-member-inconsistency">member inconsistency</a>). So member locality needs a hypothesis on the budget that nothing recorded provides. Next: a route review of the clause-transfer line. Determine what structure the logarithmic-prefix reduction's budget actually has, and whether it excludes small inconsistent dependent clusters. Weigh the locality program against attacking row freeness of the closure of the dense allowed set directly.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The reduction's budget realizes inconsistent dependent clusters freely, for example forms \(\ell_1\), \(\ell_2\), \(\ell_1+\ell_2-c\) in three blocks. So the locality program cannot reduce its closure to members, and the global freeness claim stands without a mechanism (<a href="#entry-2026-09-24-budget-structure-review">budget review</a>). Next: a controlled test of whether closed row freeness itself survives such a cluster. Run the direct-sum kernel on three width-2 clauses with \(c\ne0\) (inconsistent) against \(c=0\) and the base, at the largest board it reaches with \(D\ge7\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -14426,6 +14426,43 @@ Always \(\Delta_d\le0\).</li>
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 31.14 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 5.13 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 25.88 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-budget-structure-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review; it registers no new claim and assesses the locality sub-line with thm:global-closure-gluing, prop:member-inconsistency and prop:rank-threshold-failure.">
+<h3>Route review: the budget's clauses form inconsistent dependent clusters freely, so the locality program cannot reduce its closure to members</h3>
+<p class="entry-meta">24 September 2026 · Route review · The locality sub-line against the reduction's actual budget; cycle odd-prime-budget-structure-review.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>General statement.</strong> The line's claim is the hypothesis of thm:global-closure-gluing for the budget: row freeness through degree \(D\) of the graded functions on the allowed set \(Z\) of the logarithmic-prefix reduction's constraints. The locality sub-line tried to reduce this to members. prop:member-inconsistency shows that small inconsistent dependent clusters break member locality below \(D\). This review checks the reduction's budget and finds such clusters admissible, so the reduction to members is unavailable for the budget as stated.</p>
+
+<h4>What the budget is</h4>
+<p>thm:logarithmic-prefix-wide-clause-reduction takes any \(M=n^K\) families of affine forms, arising from the lines of a refutation, and chooses prefix sets \(S_b\) with \(|S_b|=\min(k,h_b)\). The constraints are \(g_{b,i}\prod_{j\in S_b}L_{b,j}^{p-1}\). Their allowed sets are \(\{\text{some }L_{b,j}=0,\ j\in S_b\}\), up to the multipliers \(g_{b,i}\). Each clause therefore forbids the product set \(\{L_{b,j}\ne0\ \forall j\in S_b\}\), two values per form at \(p=3\), subject only to \(M(1-1/p)^k&lt;1\). The forms are arbitrary. The recorded choice-rule entries (<a href="#entry-2026-09-23-random-choice-rule">uniform rule</a>, <a href="#entry-2026-09-23-density-choice-rule">density rule</a>) showed that any rule for \(S_b\) must be invariant modulo the base, and no such rule is known.</p>
+
+<h4>Falsification attempt: inconsistent clusters in the budget</h4>
+<p>Take three blocks whose chosen forms include \(\ell_1\), \(\ell_2\) and \(\ell_1+\ell_2-c\) with \(c\ne0\), the rest of each block's forms being private. At the level of these three forms each clause allows only the value 0, and the three conditions are inconsistent. This is the configuration of prop:member-inconsistency with \(t=2\), except that here each factor forbids \(\{\ell\ne0\}\) rather than a single point. The proposition's proof applies unchanged: the \(y\)-level family, forbidding \(\{y_1\ne0\}\), \(\{y_2\ne0\}\) and \(\{y_1+y_2\ne c\}\), has an empty allowed set and is non-local at degree 0. The private factors \(\{L\ne0\}^{k-1}\) share a point, for example all ones. So by lem:point-extension the three clauses are non-local at degree \(3\cdot2(k-1)=6(k-1)&lt;D=22k\). The configuration only needs one affine relation among three forms from different lines, for example \(X_{11}\), \(X_{12}\) and \(X_{11}+X_{12}-1\) in a refutation's lines. It is compatible with the density condition. So member locality fails for budgets the reduction must handle, unless a choice of \(S_b\) excludes all such clusters. No recorded choice rule does, and when a block has \(h_b=k\) there is no choice at all.</p>
+<p>Merging each cluster into one member removes its non-locality but enlarges the member. Whether merging stays bounded for adversarial families is not shown. It is plausibly not: \(n^Kk\) forms on \(n\) coordinates admit many short affine relations.</p>
+
+<h4>What the goal needs and what is proved</h4>
+<p>The goal needs the global statement, row freeness of \(\operatorname{gr}\mathbb F^Z\) in degrees between about \(\log_2n\) and \(D\), for every admissible budget. Proved statements cover structured \(Z\): sparse, seeded, block, and every \(Z\) whose forms are jointly free. The locality sub-line then gave exact thresholds for point-forbidding clauses in general position, and obstructions (pairing, covering, member inconsistency) that close it for adversarial budgets. Non-locality is not a failure of the goal. It only removes the reduction to members. Whether an inconsistent cluster breaks closed row freeness itself is untested.</p>
+
+<h4>Assessment of the line</h4>
+<p>The closure route stands on thm:global-closure-gluing, and its hypothesis is proved only where the forms are jointly free. The locality program was the plan for reaching adversarial \(Z\) from such pieces, and it is now closed by an obstruction the budget can realize. What remains is the global freeness statement with no reduction and no mechanism. The one computational handle, the direct-sum kernel, reaches the conjecture's range only at \(D=3\), below the degrees where clusters act. On this evidence the line is blocked at its central claim. The next step must either test that claim against the new obstruction or leave the line for another.</p>
+
+<h4>The highest-risk item and the next step</h4>
+<p>The highest-risk item is whether closed row freeness survives inconsistent clusters. If it fails, the closure route is refuted for adversarial budgets, as the symmetric pin refuted low-density classes. If it holds where locality fails, the line continues without locality, and the structure that saves it becomes the target.</p>
+<p>Next step, on route item <strong>odd-prime-clause-transfer</strong>: a controlled test of closed row freeness on an inconsistent three-clause cluster, with the direct-sum kernel. Use clauses of width 2 whose dependent forms satisfy \(\ell_1+\ell_2-\ell_3=c\). Compare \(c\ne0\), the inconsistent case, non-local at degree 6, with \(c=0\), the consistent case, and with the base, at the largest board the kernel reaches with \(D\ge7\). The board will be below the conjecture's range. As with the symmetric pin, only a difference between the inconsistent case and its controls at the same size would carry a conclusion.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:logarithmic-prefix-wide-clause-reduction (statement and constraint form), both choice-rule entries, prop:member-inconsistency and lem:point-extension (arbitrary forbidden sets in the first factor), and thm:global-closure-gluing. The cluster application is the proposition's proof with forbidden sets \(\{\ell\ne0\}\) and a shared all-ones private point. The review registers no claim, so no reviewer pass was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-budget-structure-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 48.41 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 12.24 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 36.04 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
