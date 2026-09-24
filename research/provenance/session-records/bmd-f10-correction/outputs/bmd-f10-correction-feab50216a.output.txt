@@ -1,0 +1,45 @@
+third-party-claims/HyperplaneCoverUpperBound.lean:115:15: error: Tactic `rcases` failed: `a✝ : Quot.lift (fun l => u ∈ l) ⋯ {a | a ≠ 0 ∧ dot a x = 1}.val` is not an inductive datatype
+third-party-claims/HyperplaneCoverUpperBound.lean:117:15: error: Invalid `⟨...⟩` notation: The expected type
+  Quot.lift (fun l => u ∈ l) ⋯ {a | a ≠ 0 ∧ dot a x = 1}.val
+is not an inductive type
+
+Note: This notation can only be used when the expected type is an inductive type with a single constructor
+third-party-claims/HyperplaneCoverUpperBound.lean:118:8: error: No goals to be solved
+third-party-claims/HyperplaneCoverUpperBound.lean:129:29: error: unsolved goals
+n k : ℕ
+hn : 1 ≤ n
+m : ℕ := 2 ^ (n - 1)
+hk : m ≤ k
+hm : m = 2 ^ (n - 1)
+hmpos : 0 < m
+a : ℕ := k / m
+b : ℕ := k % m
+hka : a * m + b = k
+hb : b < m
+ha : 1 ≤ a
+T : Finset (Fin n → ZMod 2) := {u | u ≠ 0}
+F : MvPolynomial (Fin n) (ZMod 2) := ∏ u ∈ T, (1 + linForm u)
+i1 : Fin n := ⟨0, hn⟩
+P : MvPolynomial (Fin n) (ZMod 2) := F ^ a * (X i1 ^ 2 + X i1) ^ b
+hF : ∀ (x : Fin n → ZMod 2), x ≠ 0 → ↑m ≤ mult x F
+⊢ ¬∏ x ∈ T, (1 + constantCoeff (linForm x)) = 0
+third-party-claims/HyperplaneCoverUpperBound.lean:178:53: error: Type mismatch
+  Nat.mul_le_mul_left a hdegF
+has type
+  a * F.totalDegree ≤ a * (2 ^ n - 1)
+but is expected to have type
+  F.totalDegree * a ≤ a * (2 ^ n - 1)
+third-party-claims/HyperplaneCoverUpperBound.lean:131:10: warning: This simp argument is unused:
+  eval_linForm
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [dot]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+third-party-claims/HyperplaneCoverUpperBound.lean:131:24: warning: This simp argument is unused:
+  dot
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [eval_linForm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

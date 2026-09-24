@@ -1,0 +1,106 @@
+third-party-claims/HyperplaneCoverUpperBound.lean:53:22: error: Tactic `decide` failed for proposition
+  (fun i => i) ⟨0, ⋯⟩ + 1 + 1 = (fun i => i) ⟨0, ⋯⟩
+because its `Decidable` instance
+  Classical.propDecidable ((fun i => i) ⟨0, ⋯⟩ + 1 + 1 = (fun i => i) ⟨0, ⋯⟩)
+did not reduce to `isTrue` or `isFalse`.
+
+After unfolding the instance `Classical.propDecidable`, reduction got stuck at the `Decidable` instance
+  Classical.choice ⋯
+
+Hint: Reduction got stuck on `Classical.choice`, which indicates that a `Decidable` instance is defined using classical reasoning, proving an instance exists rather than giving a concrete construction. The `decide` tactic works by evaluating a decision procedure via reduction, and it cannot make progress with such instances. This can occur due to the `open scoped Classical` command, which enables the instance `Classical.propDecidable`.
+third-party-claims/HyperplaneCoverUpperBound.lean:53:22: error: Tactic `decide` failed for proposition
+  (fun i => i) ⟨1, ⋯⟩ + 1 + 1 = (fun i => i) ⟨1, ⋯⟩
+because its `Decidable` instance
+  Classical.propDecidable ((fun i => i) ⟨1, ⋯⟩ + 1 + 1 = (fun i => i) ⟨1, ⋯⟩)
+did not reduce to `isTrue` or `isFalse`.
+
+After unfolding the instance `Classical.propDecidable`, reduction got stuck at the `Decidable` instance
+  Classical.choice ⋯
+
+Hint: Reduction got stuck on `Classical.choice`, which indicates that a `Decidable` instance is defined using classical reasoning, proving an instance exists rather than giving a concrete construction. The `decide` tactic works by evaluating a decision procedure via reduction, and it cannot make progress with such instances. This can occur due to the `open scoped Classical` command, which enables the instance `Classical.propDecidable`.
+third-party-claims/HyperplaneCoverUpperBound.lean:59:63: warning: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+third-party-claims/HyperplaneCoverUpperBound.lean:62:63: warning: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+third-party-claims/HyperplaneCoverUpperBound.lean:111:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 ^ (n - 1)
+in the target expression
+  {u ∈ T | dot u x = 1}.card = m
+
+n k : ℕ
+hn : 1 ≤ n
+m : ℕ := 2 ^ (n - 1)
+hk : m ≤ k
+hm : m = 2 ^ (n - 1)
+hmpos : 0 < m
+a : ℕ := k / m
+b : ℕ := k % m
+hka : a * m + b = k
+hb : b < m
+ha : 1 ≤ a
+T : Finset (Fin n → ZMod 2) := {u | u ≠ 0}
+F : MvPolynomial (Fin n) (ZMod 2) := ∏ u ∈ T, (1 + linForm u)
+i1 : Fin n := ⟨0, hn⟩
+P : MvPolynomial (Fin n) (ZMod 2) := F ^ a * (X i1 ^ 2 + X i1) ^ b
+x : Fin n → ZMod 2
+hx : x ≠ 0
+⊢ {u ∈ T | dot u x = 1}.card = m
+third-party-claims/HyperplaneCoverUpperBound.lean:129:29: error: unsolved goals
+n k : ℕ
+hn : 1 ≤ n
+m : ℕ := 2 ^ (n - 1)
+hk : m ≤ k
+hm : m = 2 ^ (n - 1)
+hmpos : 0 < m
+a : ℕ := k / m
+b : ℕ := k % m
+hka : a * m + b = k
+hb : b < m
+ha : 1 ≤ a
+T : Finset (Fin n → ZMod 2) := {u | u ≠ 0}
+F : MvPolynomial (Fin n) (ZMod 2) := ∏ u ∈ T, (1 + linForm u)
+i1 : Fin n := ⟨0, hn⟩
+P : MvPolynomial (Fin n) (ZMod 2) := F ^ a * (X i1 ^ 2 + X i1) ^ b
+hF : ∀ (x : Fin n → ZMod 2), x ≠ 0 → ↑m ≤ mult x F
+⊢ ¬∏ x ∈ T, (1 + constantCoeff (linForm x)) = 0
+third-party-claims/HyperplaneCoverUpperBound.lean:162:56: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  {a ∈ ?s | a ≠ ?b}
+in the target expression
+  T.card = 2 ^ n - 1
+
+n k : ℕ
+hn : 1 ≤ n
+m : ℕ := 2 ^ (n - 1)
+hk : m ≤ k
+hm : m = 2 ^ (n - 1)
+hmpos : 0 < m
+a : ℕ := k / m
+b : ℕ := k % m
+hka : a * m + b = k
+hb : b < m
+ha : 1 ≤ a
+T : Finset (Fin n → ZMod 2) := {u | u ≠ 0}
+F : MvPolynomial (Fin n) (ZMod 2) := ∏ u ∈ T, (1 + linForm u)
+i1 : Fin n := ⟨0, hn⟩
+P : MvPolynomial (Fin n) (ZMod 2) := F ^ a * (X i1 ^ 2 + X i1) ^ b
+hF : ∀ (x : Fin n → ZMod 2), x ≠ 0 → ↑m ≤ mult x F
+hF0 : mult 0 F = 0
+⊢ T.card = 2 ^ n - 1
+third-party-claims/HyperplaneCoverUpperBound.lean:177:53: error: Type mismatch
+  Nat.mul_le_mul_left a hdegF
+has type
+  a * F.totalDegree ≤ a * (2 ^ n - 1)
+but is expected to have type
+  F.totalDegree * a ≤ a * (2 ^ n - 1)
+third-party-claims/HyperplaneCoverUpperBound.lean:131:13: warning: This simp argument is unused:
+  eval_linForm
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [F, dot]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+third-party-claims/HyperplaneCoverUpperBound.lean:131:27: warning: This simp argument is unused:
+  dot
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [F, eval_linForm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

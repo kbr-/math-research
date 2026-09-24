@@ -1,0 +1,38 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: «third-party-claims».HyperplaneCoverUpperBound
+Claim file: third-party-claims/HyperplaneCoverUpperBound.lean
+Claim: third-party:BBDM-hyperplane-cover-large-k
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-complete-degree
+Scope: Polynomial form of the upper bound in Bishnoi, Boyadzhiyska, Das and Mészáros, "Subspace coverings
+with multiplicities" (arXiv:2101.11947v1, Theorem 1.2(a) with d = 1), for k ≥ 2^(n−1): writing
+k = a·2^(n−1) + b with 0 ≤ b < 2^(n−1), the product of a copies of all 2^n − 1 affine hyperplanes avoiding
+the origin, u·x = 1 (u ≠ 0), and b copies of the parallel pair x₁ = 0, x₁ = 1, is a k-admissible
+polynomial over F_2 of total degree at most 2k − ⌊k/2^(n−1)⌋. (Their range 2^(n−2) ≤ k < 2^(n−1) is
+covered by claims/PerOrderConstruction.lean.)
+Declarations: MathResearch.ThirdParty.HyperplaneCoverUpperBound.card_dot_eq_one MathResearch.ThirdParty.HyperplaneCoverUpperBound.hyperplane_cover_upper_bound
+$ lake --wfail build «third-party-claims».HyperplaneCoverUpperBound
+Build completed successfully (1930 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpu66d2tsy.lean
+@MathResearch.ThirdParty.HyperplaneCoverUpperBound.card_dot_eq_one : ∀ {n : ℕ} {x : Fin n → ZMod 2},
+  x ≠ 0 → {u | MathResearch.ThirdParty.HyperplaneCoverUpperBound.dot u x = 1}.card = 2 ^ (n - 1)
+'MathResearch.ThirdParty.HyperplaneCoverUpperBound.card_dot_eq_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.ThirdParty.HyperplaneCoverUpperBound.hyperplane_cover_upper_bound : ∀ {n k : ℕ},
+  1 ≤ n →
+    2 ^ (n - 1) ≤ k →
+      ∃ P, MathResearch.BinaryMultiplicityDegreeFormula.Admissible n k P ∧ P.totalDegree ≤ 2 * k - k / 2 ^ (n - 1)
+'MathResearch.ThirdParty.HyperplaneCoverUpperBound.hyperplane_cover_upper_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 2 audited declarations.
