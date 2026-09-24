@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Under the reduction's prefix rule, inconsistent clusters cannot be avoided, but adding a cluster's resolvent restores locality in every degree (<a href="#entry-2026-09-24-resolvent-absorption">resolvent absorption</a>, for isolated simple clusters). Next: the saturated-locality conjecture. A budget closed under resolvents of inconsistent clusters of at most about 22 clauses would be local through \(D\) unless the closure derives the empty clause. Test it on two overlapping inconsistent clusters and on a resolvent that joins a new cluster, the first interactions the isolated theorem leaves open.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Saturation does not restore locality. Dense pairs of budget clauses whose spans meet in dimension 2 are non-local at low degree and admit no resolvent (<a href="#entry-2026-09-24-saturated-locality">saturated locality</a>). Every reduction of the locality program now fails for adversarial budgets. Next: a route review of the clause-transfer line. Decide whether the closure route has any remaining mechanism for adversarial budgets, or whether the route should turn to a different handle on the wide-clause statement. Consider the proved single-dependency and absorption results as tools for that handle, not as steps of locality.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -14607,6 +14607,45 @@ Always \(\Delta_d\le0\).</li>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 1.36 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 4.54 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.91 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-saturated-locality" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:saturated-locality-failure">
+<h3>Saturated locality fails: dense pairs of budget clauses with overlapping spans are non-local at low degree and admit no resolvent</h3>
+<p class="entry-meta">24 September 2026 · Finite check (refutation of the saturated-locality conjecture in form space) · Dense budget-type families over F_3; cycle odd-prime-saturated-locality.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-resolvent-absorption">resolvent-absorption entry</a> conjectured that a budget closed under resolvents of small inconsistent clusters is local through \(D\), unless the closure derives the empty clause. That was the last reduction the locality program offered for adversarial budgets. The cycle tests it where it could fail: dense families in which clusters overlap or have more than one dependency.</p>
+<p><strong>General statement.</strong> The conjecture tested is saturated locality: a family of budget clauses closed under resolution of inconsistent literal sets, and not containing the empty clause, is local in every degree. ex:saturated-locality-failure refutes its form-space version in the dense regime. Over \(\mathbb F_3^4\), two clauses of width 3 whose spans meet in dimension 2 admit no resolvent. They are non-local at degree 4 in 4 of the 5 such pairs tested, with allowed sets of density about 1/2. So consistency and saturation do not give locality once a dependency space has dimension 2 or a component mixes several forms of a clause. thm:budget-cluster-dichotomy and thm:resolvent-absorption are sharp in their scope, single simple dependencies.</p>
+
+<h4>The test</h4>
+<p><strong>Can it decide.</strong> A counterexample needs a saturated family, meaning no resolvent applies or all are added, with a dense allowed set and a locality defect. Form space is exact at \(s\le5\). Width-3 clauses forbid \(8/27\) each, so two or three of them keep density near 1/2 or above. These are the smallest sizes where the budget's density regime and non-simple dependencies coexist.</p>
+<p><code>saturated.py</code> draws random clauses of \(k\) affine forms on \(\mathbb F_3^s\), each allowing "some form \(=0\)". It closes them under the rule: from clauses \(C_1,\dots,C_r\), \(r\le3\), and one literal from each whose zero sets are jointly inconsistent, derive the union of the other literals, keeping only minimal clauses. It computes the locality defect in every degree up to \(2s\) before and after closure (<code>sat_*.json</code>).</p>
+<ul>
+<li>With 2 or 3 clauses of width 2 on \(\mathbb F_3^3\), allowed sets of 2 to 5 points: saturation removes some defects, as absorption predicts, but others remain. These families are in the covering regime.</li>
+<li>With width 3 on \(\mathbb F_3^4\) and \(\mathbb F_3^5\), allowed density 0.31 to 0.58: of 20 families, 15 are non-local before closure, and the same 15, at the same first degree (3 to 5), after closure. Closure added clauses in 7 families and changed no first failing degree.</li>
+<li>Two-clause families, where no resolvent can apply unless the literal sets are inconsistent: of 5 pairs whose spans meet in dimension 2, 4 fail first at degree 4. Of 5 pairs meeting in dimension 1, 1 fails, first at degree 5. That pair has a single dependency, so its component in some clause must mix several forms; otherwise the dichotomy would give locality or a first failure at 4.</li>
+</ul>
+<p>This is ex:saturated-locality-failure. Inspection of the first failing pair: forms of ranks 3 and 3, all six of rank 4, spans meeting in dimension 2, consistent, with no inconsistent literal set.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>Locality at clause level fails for dense, consistent, saturated budget families as soon as two clauses share a two-dimensional part of their spans. An adversarial budget can contain such pairs. So no closure under resolution restores clause-level locality.</li>
+<li>Grouping overlapping clauses into members removes these pairs but brings back member-level obstructions: prop:member-inconsistency, and the chaining that merging may cause. The locality program has now been tested against every reduction it offered: t-wise, member, cluster and resolvent. Each fails for adversarial budgets, and the positive results cover only single simple dependencies.</li>
+<li>This is the point for a route review of the clause-transfer line. Three research entries have passed since the <a href="#entry-2026-09-24-budget-structure-review">budget review</a>, which already found the central claim without a mechanism.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:budget-cluster-dichotomy and thm:resolvent-absorption (scope: single simple dependencies), and the absorption entry's conjecture. Every count is read from the result files by script. The resolution rule and the defect computation reuse the validated form-space routines. The entry registers a finite check and no proof, so no reviewer pass was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-saturated-locality">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 50.61 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 9.05 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 37.34 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4.08 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
