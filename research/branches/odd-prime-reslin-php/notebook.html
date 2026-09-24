@@ -19,12 +19,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> The <a href="#entry-2026-09-24-closed-base-review">closed-base review</a> moves the closed column member into the base: relative gluing then needs (a) conj:closed-row-freeness, (b) conj:closed-base-splitting for the generic members, and (c) no falls of each generic member over the closed base. (b) is the least tested. Next:</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> With the closed column member in the base (<a href="#entry-2026-09-24-closed-base-review">review</a>), relative gluing needs (a) conj:closed-row-freeness, (b) conj:closed-base-splitting, which now passes exact checks at \(n=8,9\) through degree 3 (<a href="#entry-2026-09-24-closed-splitting">closed splitting</a>), and (c) no falls of each generic member over the closed base. Next:</p>
 <ol>
-<li>Test conj:closed-base-splitting at \(n=8,9\) through degree 3, the sizes of the recorded splitting checks: Hilbert series of the closed base's top algebra modulo random generic forms against \(\mathrm{HS}/(1+q+q^2)^k\), for a closed selector and a closed clause, with unclosed and base-only controls.</li>
-<li>Then test conj:closed-row-freeness at \(D\ge5\) with a compiled kernel on the direct sum \(G=\bigoplus_Yx_Y\operatorname{gr}\mathbb F^{Z_{S(Y)}}\).</li>
+<li>Test (c): a generic selector over the weak base plus a closed column member, \(z\)-injectivity through the largest reachable degree, with the base-only control.</li>
+<li>Test conj:closed-row-freeness at \(D\ge5\) with a compiled kernel on the direct sum \(G=\bigoplus_Yx_Y\operatorname{gr}\mathbb F^{Z_{S(Y)}}\).</li>
 </ol>
-<p>Pending: (c) for generic members over the closed base.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -13277,6 +13276,68 @@ the sum over column-injective cell sets \(Y\) in rows \(1,\dots,m-1\), with \(S(
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 27.57 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 7.85 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 19.59 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-closed-splitting" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:closed-base-splitting">
+<h3>Closed-base splitting: generic forms split exactly over the weak base plus a closed column member at n = 8, 9 through degree 3</h3>
+<p class="entry-meta">24 September 2026 · Finite check · conj:closed-base-splitting at the recorded splitting sizes; cycle odd-prime-closed-splitting.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-closed-base-review">closed-base review</a> moved the closed column member into the base and named hypothesis (b) in its new form, conj:closed-base-splitting, as the least tested obligation. The cycle tests it where the recorded splitting checks ran.</p>
+<p><strong>General statement.</strong> conj:closed-base-splitting: the top algebra of the weak base plus a closed column member is free over generic forms through the degrees considered. ex:closed-base-splitting finds it exact in all 14 tested cases, including 7 where the closure changes the algebra.</p>
+
+<h4>The test</h4>
+<p><strong>Tested statement.</strong> For the weak unary top algebra \(A\) over \(\mathbb F_3\) on \(n\) holes and \(n+1\) rows, and a column allowed set \(Z\), let \(A^\sharp=A/N\), with \(N\) the top ideal of the closed member. By lem:closure-saturation, \(N\) is spanned in degree \(t\) by \(x_Y\tau(C)\), \(Y\) in rows \(1,\dots,n\), \(\tau\) in the degree-\((t-|Y|)\) tops of polynomials vanishing on \(Z_{S(Y)}\). The prediction is \(\mathrm{HS}(A^\sharp/(\ell_1,\dots,\ell_k)A^\sharp)=\mathrm{HS}(A^\sharp)/(1+q+q^2)^k\) through degree 3, for \(k\le4\) uniform random forms \(\ell\in\mathbb F_3^{(n+1)\times n}\), which are row-dependent and generic. By graded Nakayama this is freeness over \(\mathbb F_3[\ell]/(\ell^3)\) through degree 3.</p>
+<p><strong>Can it decide.</strong> The recorded splitting checks ran at these sizes: ex:column-member-splitting and ex:column-splitting-boundary, at \(n=8,9\) through degree 3. There random forms split off from the weak base and from unclosed column components. A failure would show that closing the member breaks the splitting. The test also records the closure's effect \(\dim A^\sharp_{\rm unclosed}-\dim A^\sharp\) by degree, so cases where the closure changes nothing are identified. Control: the unclosed member, the ideal of \(A\) generated by the augmented member's tops.</p>
+<p><code>closed_split.py</code> uses the a4lib normal forms and the compiled prefix-rank kernel of the recorded checks. Members: selector (forbid \(\ell=v\)), clause2 (forbid \(\ell_1=v_1,\ell_2=v_2\)) and merge (\(C_1C_2\)), on column forms with coefficients in \(\{1,2\}\), two seeds; the base is the whole slice. Independent check: for the merge, the closed member must give the fat board of cor:merging-members. <code>validate_fat.py</code> computes the fat board's top algebra in Singular: 1, 63, 1575, 19284 at \(n=8\) and 1, 80, 2645, 45940 at \(n=9\). These equal <code>closed_split.py</code>'s \(\mathrm{HS}(A^\sharp)\) (<code>validate_fat.json</code>).</p>
+<table>
+<tr><th>\(n\)</th><th>member</th><th>seed</th><th>\(|Z|\)/slice</th><th>\(\dim A^\sharp_2,\dim A^\sharp_3\)</th><th>closure effect, degrees 2, 3</th><th>excess, closed, \(k\le4\)</th><th>excess, unclosed</th></tr>
+<tr><td>8</td><td>base</td><td>1</td><td>85/85</td><td>1656, 22929</td><td>0, 0</td><td>0</td><td>0</td></tr>
+<tr><td>8</td><td>selector</td><td>1</td><td>43/85</td><td>1594, 21399</td><td>0, 0</td><td>0</td><td>0</td></tr>
+<tr><td>8</td><td>selector</td><td>2</td><td>52/85</td><td>1654, 22830</td><td>0, 0</td><td>0</td><td>0</td></tr>
+<tr><td>8</td><td>clause2</td><td>1</td><td>64/85</td><td>1647, 22524</td><td>8, 360</td><td>0</td><td>0</td></tr>
+<tr><td>8</td><td>clause2</td><td>2</td><td>75/85</td><td>1656, 22929</td><td>0, 0</td><td>0</td><td>0</td></tr>
+<tr><td>8</td><td>merge</td><td>1</td><td>64/85</td><td>1575, 19284</td><td>80, 3600</td><td>0</td><td>0</td></tr>
+<tr><td>8</td><td>merge</td><td>2</td><td>64/85</td><td>1575, 19284</td><td>80, 3600</td><td>0</td><td>0</td></tr>
+<tr><td>9</td><td>base</td><td>1</td><td>171/171</td><td>2745, 51940</td><td>0, 0</td><td>0</td><td>0</td></tr>
+<tr><td>9</td><td>selector</td><td>1</td><td>108/171</td><td>2716, 50219</td><td>27, 1593</td><td>0</td><td>0</td></tr>
+<tr><td>9</td><td>selector</td><td>2</td><td>129/171</td><td>2744, 50890</td><td>0, 972</td><td>0</td><td>0</td></tr>
+<tr><td>9</td><td>clause2</td><td>1</td><td>156/171</td><td>2745, 51940</td><td>0, 0</td><td>0</td><td>0</td></tr>
+<tr><td>9</td><td>clause2</td><td>2</td><td>156/171</td><td>2745, 51940</td><td>0, 0</td><td>0</td><td>0</td></tr>
+<tr><td>9</td><td>merge</td><td>1</td><td>129/171</td><td>2645, 45940</td><td>99, 5940</td><td>0</td><td>0</td></tr>
+<tr><td>9</td><td>merge</td><td>2</td><td>129/171</td><td>2645, 45940</td><td>99, 5940</td><td>0</td><td>0</td></tr>
+
+</table>
+<p>The excess is 0 in every degree for \(k=0,\dots,4\), closed and unclosed, in all 14 cases (<code>n8_*.json</code>, <code>n9_*.json</code>). The closure changes the algebra in 7 cases, by up to 5940 in degree 3; the closed algebra splits exactly there too. The two-form clause at \(n=9\) and seed 2 at \(n=8\) are invisible through degree 3. The selector covers 43 of 85 slice patterns at \(n=8\), seed 1, near the conjecture's half-slice bound.</p>
+<p><em>A corrected control.</em> A first version of the unclosed control used only the member's degree-\(t\) tops in degree \(t\), not their multiples by lower-degree monomials. That is not an ideal, and it showed negative excess, which graded Nakayama excludes for a module. After the correction every unclosed case splits too. The closed rows needed no correction: they span the top ideal of the saturated member, as the fat-board match confirms. The recorded files are those of the corrected run.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>conj:closed-base-splitting passes at the recorded sizes, including cases where the closure changes the algebra. So moving the closed column member into the base does not break the splitting of generic forms there.</li>
+<li>The check covers uniform random forms, which the budget's generic members only resemble, and degree 3 only. Splitting of column-type forms among themselves is not claimed; the record shows it fails (ex:column-member-splitting), which is why the column component is kept whole.</li>
+<li>Of the three remaining obligations, (b) now has evidence comparable to what the unclosed version had. (a), through conj:closed-row-freeness, and (c) for generic members over the closed base remain untested at the degrees where the closure matters.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the recorded splitting drivers and results (<code>column_random.py</code>, <code>member_split.py</code>, ex:column-member-splitting, ex:column-splitting-boundary), lem:closure-saturation, and cor:merging-members. The closure rows were checked independently against the fat board in Singular. A control error was found and corrected before recording, as described above. The entry registers a finite check and no proof, so no reviewer pass was run.</p>
+
+<h4>Remaining gap</h4>
+<ul>
+<li>(c): each generic member alone over the closed base has no fall.</li>
+<li>(a): conj:closed-row-freeness at \(D\ge5\).</li>
+<li>Splitting at degrees above 3 and for the budget's structured generic forms.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-closed-splitting">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>15 min 53.46 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 58.41 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 43.31 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">9.00 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 2.59 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
