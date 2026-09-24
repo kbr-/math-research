@@ -247,7 +247,69 @@ static std::string poly_json(int n, const std::vector<Mono>& P) {
     return s + "]";
 }
 
+// Fast independent check by shifting: expand prod_i (a_i + z_i)^{alpha_i} monomial by monomial.
+// Where a_i = 1 the surviving z-exponents are the bit-submasks of alpha_i (Lucas); where a_i = 0 only
+// alpha_i itself.  Terms of total degree >= cap are pruned; coefficients are XOR-accumulated.
+// Returns the least degree of a surviving z-monomial, or cap if none (n <= 8, exponents < 256).
+#include <unordered_map>
+static int shifted_multiplicity(int n, unsigned a, const std::vector<Mono>& P, int cap) {
+    std::unordered_map<u64, unsigned char> coef;
+    std::vector<int> cur(n);
+    for (const Mono& al : P) {
+        int fixed = 0;                                // degree forced by coordinates with a_i = 0
+        for (int i = 0; i < n; ++i) if (!((a >> i) & 1u)) fixed += al[i];
+        if (fixed >= cap) continue;
+        struct Rec { static void go(int i, int n, unsigned a, const Mono& al, int used, int cap, u64 key,
+                                    std::unordered_map<u64, unsigned char>& coef) {
+            if (used >= cap) return;
+            if (i == n) { coef[key] ^= 1; return; }
+            if (!((a >> i) & 1u)) { go(i + 1, n, a, al, used + al[i], cap, key | ((u64)al[i] << (8 * i)), coef); return; }
+            int e = al[i];
+            for (int b = e; ; b = (b - 1) & e) {       // all bit-submasks of e, including 0
+                go(i + 1, n, a, al, used + b, cap, key | ((u64)b << (8 * i)), coef);
+                if (b == 0) break;
+            }
+        } };
+        Rec::go(0, n, a, al, 0, cap, 0, coef);
+    }
+    int best = cap;
+    for (auto& kv : coef) if (kv.second) {
+        int d = 0; for (int i = 0; i < n; ++i) d += (int)((kv.first >> (8 * i)) & 255);
+        best = std::min(best, d);
+    }
+    return best;
+}
+
+// verify n k FILE: FILE holds one monomial per line as n exponents.  Prints the degree, the origin
+// order and the least multiplicity over nonzero points (capped at k), by direct Hasse evaluation.
+static int verify_file(int n, int k, const char* path) {
+    FILE* f = std::fopen(path, "r");
+    if (!f) { std::perror(path); return 2; }
+    std::vector<Mono> P; Mono m(n);
+    while (true) {
+        int got = 0;
+        for (int i = 0; i < n; ++i) got += std::fscanf(f, "%d", &m[i]);
+        if (got != n) break;
+        P.push_back(m);
+    }
+    std::fclose(f);
+    int dP = 0; for (auto& x : P) dP = std::max(dP, deg(x));
+    int m0 = shifted_multiplicity(n, 0, P, k), mmin = k;
+    #pragma omp parallel for reduction(min:mmin) schedule(dynamic)
+    for (long a = 1; a < (1L << n); ++a) mmin = std::min(mmin, shifted_multiplicity(n, (unsigned)a, P, k));
+    // cross-check the shift method against the direct evaluation where that is cheap
+    if (P.size() * (1u << n) < 200000) {
+        int d0 = multiplicity(n, 0, P, k), dmin = k;
+        for (unsigned a = 1; a < (1u << n); ++a) dmin = std::min(dmin, multiplicity(n, a, P, k - 1));
+        if (std::min(d0, k) != m0 || std::min(dmin, k) != mmin) { std::printf("VERIFY methods disagree\n"); return 5; }
+    }
+    std::printf("VERIFY n=%d k=%d monomials=%zu degree=%d origin_order=%d min_nonzero_mult>=%d %s\n", n, k,
+                P.size(), dP, m0, mmin, (m0 < k && mmin >= k) ? "OK" : "FAIL");
+    return (m0 < k && mmin >= k) ? 0 : 3;
+}
+
 int main(int argc, char** argv) {
+    if (argc == 5 && !std::strcmp(argv[1], "verify")) return verify_file(std::atoi(argv[2]), std::atoi(argv[3]), argv[4]);
     if (argc < 4) { std::fprintf(stderr, "usage: bmd_min_degree n k dcap [--out PATH] [--check] [--per-order]\n"); return 2; }
     int n = std::atoi(argv[1]), k = std::atoi(argv[2]), dcap = std::atoi(argv[3]);
     const char* out = nullptr; bool check = false, perOrder = false;

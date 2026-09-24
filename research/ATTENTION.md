@@ -462,6 +462,22 @@ For any mixed class f outside C_B over binary PHP, its old bit-affine annihilato
 
 ---
 
+### Dimension free symmetric certificates
+
+**Claim:** [lem:dimension-free-symmetric-certificates](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-power-of-two-reduction>)
+
+For a sum Q of monomial symmetric functions, the Taylor coefficients of Q(a+z) at a weight-w point are parities of placement counts independent of n, so finitely many parity conditions certify mult_a Q >= K-|a| for all 1 <= |a| < K in every dimension.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Turns dimension-uniform multiplicity statements for symmetric polynomials into finite checks.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Use for further certificates only if a uniform construction needs them.
+
+---
+
 ### First active quadratic parent lift
 
 **Claim:** [lem:first-active-quadratic-parent-lift](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#first-active-quadratic-parent-lift>)
@@ -523,6 +539,22 @@ Over any field, a nonzero old functional-PHP class of degree at most t has at mo
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** Independently audit the normal-form congruence, appended disjoint-label trade, stability cutoff and all-field fiber bound; inspect whether it supplies a useful full-source compatibility estimate.
+
+---
+
+### Power of two factor reduction
+
+**Claim:** [lem:power-of-two-factor-reduction](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-power-of-two-reduction>)
+
+If Q in F_2[x_1..x_n] has degree <= 2^(j+1)-j-2, origin order < 2^j and Hasse multiplicity >= 2^j-|a| at points of weight 1..2^j-1, then prod(1+x_i) Q (x_1^2+x_1)^r witnesses D(n,2^j+r) <= n+2k-2-floor(log2 k) for every 0 <= r < 2^j.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Reduces the upper half of the degree formula to one factor per power of two and explains the computed origin orders k - 2^floor(log2 k).
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Construct Q_(2^j) uniformly in j, or prove its existence.
 
 ---
 
