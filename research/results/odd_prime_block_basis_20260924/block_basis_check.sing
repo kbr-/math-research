@@ -1,0 +1,78 @@
+// Decide the conditions of lem:adapted-basis-criterion for one complete accuracy-one ENS block over F_3 (inputs x
+// shared, y(2..h) private, coefficients r(1..h); A = F_3[vars]/(all cubes), free over S = F_3[x]/(x^3)), for the
+// family Sigma = {top ideal n, rho'A, x rho''A}.
+// C = distinct colon ideals (M : x^j), j = 0, 1, 2 (j = 3 gives A).  phi(I) = I + xA.
+// (i): for every nonempty subset of C, phi(meet) = meet of phi.  (ii): the ideals phi(C) generate a distributive
+// lattice: build its closure under + and cap (all contain xA) and test the distributive law on all triples.
+// Output per h: |C|, subsets tested for (i) and failures, closure size for (ii), triples tested and failures.
+option(redSB);
+proc eqideal(ideal I1, ideal I2)
+{
+  ideal S1 = std(I1); ideal S2 = std(I2); int k;
+  for (k = 1; k <= ncols(I1); k++) { if (reduce(I1[k], S2) != 0) { return(0); } }
+  for (k = 1; k <= ncols(I2); k++) { if (reduce(I2[k], S1) != 0) { return(0); } }
+  return(1);
+}
+proc findin(list Lst, ideal J)
+{
+  int k; for (k = 1; k <= size(Lst); k++) { if (eqideal(Lst[k], J) == 1) { return(k); } }
+  return(0);
+}
+proc brun(int h)
+{
+  ring P = 3, (x, y(2..h), r(1..h)), dp;
+  ideal L = x; int i; for (i = 2; i <= h; i++) { L = L, y(i); }
+  poly Pp = 1; for (i = 1; i <= h; i++) { Pp = Pp - r(i)*(1 - L[i]^2); }
+  ideal I; for (i = 1; i <= h; i++) { I = I, (1 - L[i]^2)*Pp; }
+  for (i = 1; i <= nvars(P); i++) { I = I, var(i)^3 - var(i); }
+  ideal G = std(I); ideal Tp; int d; poly g;
+  for (i = 1; i <= ncols(G); i++) { g = G[i]; d = deg(g); Tp = Tp, jet(g, d) - jet(g, d - 1); }
+  poly rho = r(1)*x^2; for (i = 2; i <= h; i++) { rho = rho + r(i)*y(i)^2; }
+  poly rho2 = 0; for (i = 2; i <= h; i++) { rho2 = rho2 + r(i)*y(i)^2; }
+  ideal Cubes; for (i = 1; i <= nvars(P); i++) { Cubes = Cubes, var(i)^3; }
+  qring Q = std(Cubes);
+  ideal Tp = fetch(P, Tp); poly rho = fetch(P, rho); poly rho2 = fetch(P, rho2);
+  list Sig = std(Tp), std(ideal(rho)), std(ideal(x*rho2));
+  list C; int j; ideal cand;
+  for (i = 1; i <= 3; i++) { for (j = 0; j <= 2; j++) {
+    if (j == 0) { cand = Sig[i]; } else { cand = std(quotient(Sig[i], ideal(x^j))); }
+    if (findin(C, cand) == 0) { C = C + list(cand); }
+  } }
+  int nc = size(C); ideal XA = std(ideal(x));
+  // (i)
+  int sub; int b; int tested1 = 0; int failed1 = 0; ideal meet; ideal meetphi;
+  for (sub = 1; sub < 2^nc; sub++) {
+    int first = 1;
+    for (b = 1; b <= nc; b++) {
+      if ((sub div 2^(b-1)) mod 2 == 1) {
+        if (first == 1) { meet = C[b]; meetphi = std(C[b] + XA); first = 0; }
+        else { meet = std(intersect(meet, C[b])); meetphi = std(intersect(meetphi, C[b] + XA)); }
+      }
+    }
+    kill first;
+    tested1++;
+    if (eqideal(meet + XA, meetphi) == 0) { failed1++; }
+  }
+  print("h=" + string(h) + " colons=" + string(nc) + " (i): subsets=" + string(tested1) + " failed=" + string(failed1));
+  // (ii): closure of phi(C) under + and cap
+  list Lat; for (i = 1; i <= nc; i++) { cand = std(C[i] + XA); if (findin(Lat, cand) == 0) { Lat = Lat + list(cand); } }
+  int changed = 1; int a; int cap = 400;
+  while (changed == 1 && size(Lat) <= cap) {
+    changed = 0; int m0 = size(Lat);
+    for (a = 1; a <= m0; a++) { for (b = a + 1; b <= m0; b++) {
+      cand = std(Lat[a] + Lat[b]); if (findin(Lat, cand) == 0) { Lat = Lat + list(cand); changed = 1; }
+      cand = std(intersect(Lat[a], Lat[b])); if (findin(Lat, cand) == 0) { Lat = Lat + list(cand); changed = 1; }
+    } }
+    kill m0;
+  }
+  int m = size(Lat); int tested2 = 0; int failed2 = 0; int c;
+  if (m <= cap) {
+    for (a = 1; a <= m; a++) { for (b = 1; b <= m; b++) { for (c = b + 1; c <= m; c++) {
+      tested2++;
+      if (eqideal(intersect(Lat[a], Lat[b] + Lat[c]), intersect(Lat[a], Lat[b]) + intersect(Lat[a], Lat[c])) == 0) { failed2++; }
+    } } }
+    print("h=" + string(h) + " (ii): closure_size=" + string(m) + " triples=" + string(tested2) + " failed=" + string(failed2));
+  } else { print("h=" + string(h) + " (ii): closure exceeded cap " + string(cap)); }
+}
+brun(3);
+quit;
