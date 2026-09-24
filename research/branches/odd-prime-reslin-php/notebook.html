@@ -19,12 +19,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Column members act as board restrictions. After placed-pigeon closure, a merging member's system is a weak base with a fat column. The exact effective-board law fails below the stability range, and its stability form is the target (<a href="#entry-2026-09-24-effective-board-review">effective-board review</a>). Next:</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Merging column members satisfy hypothesis (c) after placed-pigeon closure while \((p-1)D^2\) holes stay unmerged (<a href="#entry-2026-09-24-fat-columns">fat columns</a>). Next, the column members the goal produces:</p>
 <ol>
-<li>Prove conj:effective-board-stability for merging members: extend the proof of thm:weak-base-stability-quadratic to boards with fat columns, which enter the free-seed lemma as the extra factor \(M\), with seeds from at least \((p-1)D^2\) ordinary columns.</li>
-<li>Then determine the effective boards that budget column constraints can produce.</li>
+<li>Classify the allowed sets of budget column constraints. These are product clauses of width \(k\approx2.5(K+1)\log n\) on column-type forms, each forbidding one value pattern. Decide whether their placed-pigeon closures are fat boards, merges and removals, or need a new effective-board notion.</li>
+<li>Start with a single wide forbid-value clause \(\prod_{b\le k}(1-(\ell_b-v_b)^{p-1})\) on column forms. Compute its closure's falls on small boards, and compare with the weak base.</li>
 </ol>
-<p>Pending: hypothesis (b) for closed members; non-column members.</p>
+<p>Pending: hypothesis (b) for closed members, whose tops carry pigeon cells; non-column members.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -12913,6 +12913,81 @@ The \(|a|\) factors go to distinct holes. A hole receiving a factor \(L_b\) cont
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 3.63 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 18.62 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">44.87 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-fat-columns" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="thm:fat-board-stability cor:merging-members">
+<h3>Fat columns: a weak board with merged holes has no falls below D when (p−1)D² holes stay unmerged, so merging members satisfy condition (c) after closure</h3>
+<p class="entry-meta">24 September 2026 · Working proof · Effective-board stability for merging column members, every \(p\); cycle odd-prime-fat-columns.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-effective-board-review">effective-board review</a> found that a merging column member, closed under its placed-pigeon consequences, is exactly a weak base with a fat column. It proposed proving conj:effective-board-stability for such members by extending the weak-base stability proof. The cycle carries this out.</p>
+<p><strong>General statement.</strong> thm:fat-board-stability: over a field of characteristic \(p\), take a weak board whose columns are ordinary or fat. A fat column is a set of cells \((i,a)\), \(a\) in a hole set \(H\), with every product of two distinct of its cells a generator. If the board has \(m\ge D\) rows and at least \((p-1)D^2\) ordinary columns, its homogenized base is \(z\)-injective below \(D\). cor:merging-members: for disjoint hole sets \(H_1,\dots,H_q\), the weak base plus the merging constraints \(C_aC_b\) (\(a\ne b\) in the same \(H_s\)) and their placed-pigeon closure generates the same homogenized ideal as such a fat board. So if at least \((p-1)D^2\) holes lie outside \(\bigcup_sH_s\), the closed system has no fall below \(D\) and no PC refutation of degree \(D\). The closed member satisfies hypothesis (c) of thm:relative-gluing through \(D\). Hypothesis (b) must then accommodate its tops, which are not polynomials in the column sums. The unclosed system has no refutation of degree \(D\) either.</p>
+
+<h4>The fat board</h4>
+<p>Rows \(0,\dots,m-1\). Columns are ordinary holes \(j\), with cells \((i,j)\), or fat columns \(F\) with cells \((i,a)\), \(a\in H_F\). The generators are Booleanity \(x_c^2-x_c\) for every cell, the products \(x_cx_{c'}\) of distinct cells in the same column, ordinary or fat, and the row equations \(\sum_{c\in\text{row }i}x_c-1\). An ordinary column is the case \(|H|=1\), with the usual column exclusions.</p>
+
+<h4>The proof</h4>
+<p><strong>Theorem (fat-board stability).</strong> Under the hypotheses of the general statement, \(z\) is injective on the homogenized fat base below \(D\).</p>
+<p><em>Proof.</em> The proof of thm:weak-base-stability-quadratic (<a href="#entry-2026-09-24-weak-base-stability">weak-base stability</a>) goes through, with these changes.</p>
+<ol>
+<li><em>Step 1 (falls come from non-Frobenius syzygies).</em> \(\tilde A_z=\mathbb F[x,z]/(x_c^2-x_cz,\ x_cx_{c'})\), for all pairs of distinct cells in a common column. Use a degree order with every \(x_c&gt;z\), so \(x_c^2\) leads. Then \(\tilde A_z\) is free over \(\mathbb F[z]\) on the monomials \(x_T\), \(T\) meeting each column in at most one cell. The only S-pairs without coprime leading terms, other than pairs of monomials, are \(x_{c'}(x_c^2-x_cz)-x_c(x_cx_{c'})=-x_cx_{c'}z\), and symmetrically in \(c'\); they reduce to 0. The Koszul exact sequence, the connecting map and the Frobenius lift are unchanged: \(r_i^p=\sum_cx_c^p=r_iz^{p-1}\) in characteristic \(p\).</li>
+<li><em>Step 2 (free seed).</em> Unchanged.</li>
+<li><em>Step 3 (column tensor power).</em> On \(u\) rows, \(\tilde A=\bigotimes_{\text{columns}}V\). An ordinary column has \(V=\mathbb F\oplus\operatorname{span}(x_{ij}:i&lt;u)\). A fat column has \(V_F=\mathbb F\oplus\operatorname{span}(x_{ia}:i&lt;u,\ a\in H_F)\). Both are square-zero. \(R_i\) acts on \(V_F\) as multiplication by \(y_i=\sum_{a\in H_F}x_{ia}\), which sends \(1\) to \(y_i\) and every \(x_{ia}\) to 0. The \(y_i\) commute, and \(y_i^p=0\), so \(V_F\) is a \(T\)-module. Multiplication by \(r_i\) is the diagonal primitive action, as before. The seeds are taken among the ordinary columns: \(b=u(p-1)\) of them carry a free copy of \(T\), by the same computation. The fat columns, the ordinary columns of the leftover \(e\), and the other ordinary columns outside the seed blocks form the factor \(M\) of the free-seed lemma, which may be any graded module in degrees \(\ge0\). With at least \((p-1)D\cdot D\) ordinary columns and \(u=D\), there are \(n\ge D\) seed blocks.</li>
+<li><em>Row reduction.</em> The content splitting and the row-reduction lemma (lem:weak-row-reduction) go through. Annihilators are functions \(\mu\) on cell sets meeting each column at most once. For \(|T|\le k-1\) and each row \(i\), the equation is \(\sum_c\mu(T\cup\{c\})=(1-c_i(T))\mu(T)\). The sum runs over the cells \(c\) of row \(i\) whose column, ordinary or fat, meets no cell of \(T\), and \(c_i(T)\) counts the cells of \(T\) in row \(i\), fat cells included. Every equation involves one row content. Restricting an \(m\)-row annihilator to the sets within \(r\) rows gives an \(r\)-row fat-board annihilator, since each row-\(i\) equation involves only the rows of \(T\cup\{i\}\). The rest of the restriction argument is unchanged.</li>
+</ol>
+<p>So \(z\) is injective below \(D\) on the \(D\)-row fat board, and by row reduction on \(m\ge D\) rows. \(\square\)</p>
+
+<h4>Merging members</h4>
+<p><strong>Corollary (merging members).</strong> Over a field of characteristic \(p\), let \(H_1,\dots,H_q\) be disjoint hole sets, and let the member \(U\) consist of the constraints \(C_aC_b\) for \(a\ne b\) in a common \(H_s\), with \(C_j=\sum_ix_{ij}\). Let the closure \(\bar U\) be \(U\) together with \(x_{ia}C_b\) and \(x_{ia}x_{i'b}\), for all rows \(i,i'\), \(i=i'\) included, and \(a\ne b\) in a common \(H_s\). The \(x_{ia}C_b\) and the \(C_aC_b\) are sums of the \(x_{ia}x_{i'b}\). If at least \((p-1)D^2\) holes lie outside \(\bigcup_sH_s\) and \(m\ge D\), then:</p>
+<ol>
+<li>the weak base plus \(\bar U\) generates, in every degree, the same homogenized ideal as the fat base with fat columns \(H_1,\dots,H_q\). So it has no fall below \(D\), and no PC refutation of degree \(D\): by the <a href="#homogenized-PC-socle-criterion">socle criterion</a>, as in step 5 of the relative gluing proof, \(z\)-injectivity below \(D\) with no constant generator excludes one;</li>
+<li>the weak base plus \(U\) alone has no PC refutation of degree \(D\), since its generators are a subset;</li>
+<li>\(\bar U\), as a member of the relative gluing theorem, satisfies hypothesis (c): every top syzygy of degree at most \(D\) supported on it is liftable. This follows from the sufficient condition stated in (c), \(z\) injective on the base plus the member below \(D\), which is item 1. The relative gluing theorem allows any polynomial constraints as members, so \(\bar U\) is admissible. Its tops are not polynomials in the column sums, which matters for (b), not for (c).</li>
+</ol>
+<p><em>Proof.</em> For item 1, the generators of the weak base plus \(\bar U\) are Booleanity, the column exclusions inside each hole, the products \(x_{ia}x_{i'b}\) across holes of one \(H_s\), and the row equations. Together these are all products of distinct cells in each fat column. \(C_aC_b=\sum_{i,i'}x_{ia}x_{i'b}\) and \(x_{ia}C_b=\sum_{i'}x_{ia}x_{i'b}\) lie in the ideal they generate at the same degree. The theorem applies with the unmerged holes as ordinary columns. Items 2 and 3 follow as stated. \(\square\)</p>
+<p>Relation to the data. At \(p=3\) the corollary needs at least 18 unmerged holes for \(D=3\) and 32 for \(D=4\). The tested boards of ex:placed-pigeon-falls and ex:merge-three-effective-board have 5 to 9 columns, so the data lie below the proved range, neither testing the corollary nor following from it. Those checks compared the closed system, the fat base, with the ordinary weak base on \(N-|H|+1\) columns. The fat base's falls can exceed that board's (3 × 7: 108 against 48), so the exact effective-board law is not claimed.</p>
+<p>The closure is also cheap to derive. \(x_{ia}\cdot C_aC_b\equiv x_{ia}C_b\) at degree 3 by the placed-pigeon identity, and \(x_{i'b}\cdot x_{ia}C_b\equiv z\,x_{ia}x_{i'b}\). So the closure is PC-derivable from the member at degree 3. For lower bounds only the subset direction of item 2 is needed.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>conj:effective-board-stability, stated with at least \((p-1)D^2\) ordinary columns, is proved for merging members in that range.</li>
+<li>Remark: a member forcing \(C_j=0\) gives \(x_{ij}C_j\equiv x_{ij}z\), so each \(x_{ij}\) is derivable at degree 2, and the system is the weak base on \(N-1\) columns. Removals therefore reduce the ordinary column count by one.</li>
+<li>Other column members, such as couplings \(C_1=C_2\) or cardinality patterns on several holes, are not known to close to fat boards. Their effective boards are not yet defined.</li>
+<li>For the goal, the question becomes which effective boards the budget column constraints can produce, and whether they always leave order \(D^2\) ordinary columns.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the weak-base stability proof in full, the row-reduction lemma and content splitting, the relative gluing theorem's hypothesis (c) and step 5, and the two finite checks. A fresh-context reviewer found the theorem's proof correct (Steps 1 to 3 and row reduction), item 1 of the corollary correct with the ideal-equality wording, and no unused hypothesis. It required these changes, all adopted:</p>
+<ul>
+<li>the data placed below the proved range;</li>
+<li>the comparison board named correctly;</li>
+<li>(c) quoted and matched in degree, with admissibility and the consequence for (b);</li>
+<li>\(\bar U\) defined explicitly, with \(i=i'\);</li>
+<li>ideal equality in place of identity;</li>
+<li>the term order and the symmetric S-pairs;</li>
+<li>the fat module's \(T\)-structure;</li>
+<li>the row equation and the restriction step written out;</li>
+<li>the socle criterion cited for nonrefutation;</li>
+<li>the removal remark derived and the coupling remark weakened;</li>
+<li>the derivation degree stated.</li>
+</ul>
+<p>The changes make statements precise or weaken them, so no further pass was made.</p>
+
+<h4>Remaining gap</h4>
+<ul>
+<li>Column members whose closure is not a fat board.</li>
+<li>The effective boards of budget column constraints.</li>
+<li>Hypothesis (b) for closed members; non-column members.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-fat-columns">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 9.43 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 54.95 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 14.34 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
