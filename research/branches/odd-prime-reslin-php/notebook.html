@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Entangled dense column members pass the one-row closed test at small sizes (<a href="#entry-2026-09-24-entangled-probe">entangled probe</a>), and hole deletions and pigeon placements cannot reach the seeded theorem for them. Next: look for a seeded sub-span that determines the allowed set up to degree \(D\), since low-degree functions vanishing on a nearly full allowed set involve few forms each; state it as a lemma about functions supported on unions of forbidden sets, and test it at the sizes of the closed checks.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Two cycles on entangled column members left their implication untouched: restrictions cannot supply seeds (<a href="#entry-2026-09-24-entangled-probe">entangled probe</a>), and clause-by-clause transfer reduces to the whole allowed set (<a href="#entry-2026-09-24-sequential-transfer">sequential attempt</a>). Next: a route review of the clause-transfer line as a whole. It should weigh the closure route against the recorded alternatives on the same obligation (the \(p\)-complex, restriction mixtures, the local-fall conjecture), and name a new mechanism for nearly full allowed sets cut by dense forms, or a counterexample search at visible degrees.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -13750,6 +13750,47 @@ the sum over column-injective cell sets \(Y\) in rows \(1,\dots,m-1\), with \(S(
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">39.59 s</td></tr>
 <tr><td>Other external-tool windows</td><td class="elapsed">18 min 51.16 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-sequential-transfer" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Attempt withdrawn at review: the sequential transfer reduces to one application of lem:filtered-freeness-transfer at the last step; small-size data recorded without a claim.">
+<h3>Sequential transfer attempt: cutting clauses out one at a time gives no reduction, since only the last step's hypothesis is used</h3>
+<p class="entry-meta">24 September 2026 · Unsuccessful attempt, withdrawn at review · Entangled column members; cycle odd-prime-subspan.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. thm:seeded-closure-stability needs freeness over all of a member's forms at once, which stops at a span threshold (ex:generic-form-freeness). The cycle tried to cut an entangled member's clauses out one at a time, so that each step would involve one clause's few forms and the total span would never enter.</p>
+<p><strong>General statement.</strong> The all-parameter claim the cycle targeted is conj:closed-row-freeness for entangled members. The attempt does not advance it. Iterating lem:filtered-freeness-transfer does not carry freeness over the next clause's forms through a quotient, since the lemma returns only freeness over the rows. So a clause-by-clause statement uses only its last step's hypothesis, which involves every clause through the quotient. No claim is registered.</p>
+
+<h4>Why the reduction is vacuous</h4>
+<p>Put \(F_0\) for the functions on all assignments to \(u\) rows and the bulk row, and \(F_t=F_{t-1}/J_tF_{t-1}\) for the clauses in some order, with the slice last. The drafted lemma assumed, at each step \(t\), that \(\operatorname{gr}F_{t-1}\) is free below degree \(n_0\) over clause \(t\)'s forms and the rows, and concluded freeness of the final quotient over the rows. The last part of lem:filtered-freeness-transfer returns freeness over the rows only, so step \(t\) never supplies step \(t+1\)'s hypothesis. The conclusion follows from the last step alone, by one application of the transfer lemma to \(F_{T-1}\). With the slice last, that hypothesis is that the graded functions on the unsliced set allowed by all clauses are free below \(D+1\) over \(\mathbb F[S]/(S^p)\otimes T_u\), which involves every clause. A genuinely sequential version would carry freeness over the remaining clauses' forms through each quotient. The transfer lemma's last-part argument extends to any \(\mathbb F_p\)-valued degree-1 elements, but that version needs joint freeness at the first step, which is the threshold the attempt meant to avoid. A fresh-context reviewer identified this, and the lemma is withdrawn before registration.</p>
+
+<h4>The small-size data</h4>
+<p><code>seq_freeness.py</code> computed, on one board row and the bulk row (\(u=1\)) at \(N=12\), \(D=3\) over \(\mathbb F_3\), whether \(G_{t-1}\) is free through degree \(D\) over \(s\), \(r=\sum_jy_j\) and clause \(t\)'s forms. \(G_{t-1}\) is gr of the functions on the unsliced assignments allowed by clauses \(1,\dots,t-1\). The quantity is excess \(=\mathrm{HF}(G_{t-1}/(s,r,\ell_t))-[q^k]\,\mathrm{HS}(G_{t-1})\bigl((1-q)/(1-q^3)\bigr)^{2+k_t}\) in degrees 0 to 3, with the \(T\)-action induced by the forms and the row sum. By graded Nakayama a positive excess refutes freeness. Zero excess is necessary for freeness but does not verify the transfer lemma's hypothesis in higher degrees. The joint control is freeness of \(G_0\) over all the forms at once (<code>seq_*.json</code>):</p>
+<table>
+<tr><th>family</th><th>seed</th><th>excess per step (0 = zero in all degrees)</th><th>joint</th></tr>
+<tr><td>4 selectors</td><td>1</td><td>0; 0; 0,0,0,1; 0,0,0,1</td><td>0,0,0,9</td></tr>
+<tr><td>4 selectors</td><td>2</td><td>0; 0,0,0,2; 0,0,0,1; 0,0,1,21</td><td>0,0,1,30</td></tr>
+<tr><td>2 two-form clauses</td><td>1</td><td>0; 0,0,0,4</td><td>0,0,0,5</td></tr>
+</table>
+<p>These numbers do not test the only hypothesis the reduction uses, the slice step on the full allowed set, which was not computed. They also cannot show that earlier clauses degrade freeness over later ones, since the control over each clause's forms alone on \(G_0\) was not run. The selector failures, with one form per step, are unexplained at this size. The excesses of steps and joint control belong to rings with different numbers of generators and are not compared. The run covers \(u=1\) only. A run at \(N=16\) did not finish within 30 minutes.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>There is no clause-by-clause shortcut through the transfer lemma. Any route through it needs freeness of the whole allowed set's graded functions over the rows and \(s\), which is the closure-gluing hypothesis itself, or joint freeness over the forms, which stops at the span threshold.</li>
+<li>The entangled case needs a new idea. Either a freeness mechanism for nearly full allowed sets that uses more than the forms, or a counterexample at degrees where the clauses are visible.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:filtered-freeness-transfer and the seeded-closure proof. A fresh-context reviewer found the drafted lemma formally correct but vacuous as a sequential reduction. It found that the data test neither the used hypothesis nor any degradation. The lemma is withdrawn, the data are recorded with their limits, and no claim is registered.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-subspan">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>33 min 46.53 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">25.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 21.16 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">30 min 0.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
