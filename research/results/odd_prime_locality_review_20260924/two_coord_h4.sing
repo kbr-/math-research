@@ -1,0 +1,42 @@
+// Route-review falsification test of conj:family-fall-locality outside the proved star case (two shared coordinates).
+// Over F_3: four separately augmented complete accuracy-one ENS blocks with h = 4 inputs, private coefficients:
+//   a on (x, 3 private), b on (x+1, y, 2 private), c on (y+1, 3 private), d on (y+2, 3 private).
+// Linear parts x and y are independent; every block has private inputs.  Cross set by the rule of
+// conj:bounded-linkage-large-h: R for the parallel pairs ab (x), bc, bd, cd (y); T for the triple bcd covering the
+// three translates of y (degree 9, above the bound).  Field equations for all variables.
+// Output: lowest degree t < DB of an element of (J:z) not in J (DB if none), for the whole family.  DB = 8 sees falls
+// at degree <= 7.  Prediction stated before the run: no fall below 8 (linked pairs at h = 4 fall first at 8), so the
+// family does not fall below all of its subfamilies of at most three blocks.
+option(redSB);
+ring S = 3, (x, y, ya(2..4), yb(3..4), yc(2..4), yd(2..4), ra(1..4), rb(1..4), rc(1..4), rd(1..4), z), dp;
+proc blockP(ideal L, ideal rr)
+{
+  poly P = 1; int i;
+  for (i = 1; i <= 4; i++) { P = P - rr[i]*(1 - L[i]^2); }
+  return(P);
+}
+proc blockI(ideal L, poly P)
+{
+  ideal I; int i;
+  for (i = 1; i <= 4; i++) { I = I, (1 - L[i]^2)*P; }
+  return(I);
+}
+ideal La = x, ya(2), ya(3), ya(4);          ideal Ra = ra(1..4);
+ideal Lb = x + 1, y, yb(3), yb(4);          ideal Rb = rb(1..4);
+ideal Lc = y + 1, yc(2), yc(3), yc(4);      ideal Rc = rc(1..4);
+ideal Ld = y + 2, yd(2), yd(3), yd(4);      ideal Rd = rd(1..4);
+poly Pa = blockP(La, Ra); poly Pb = blockP(Lb, Rb); poly Pc = blockP(Lc, Rc); poly Pd = blockP(Ld, Rd);
+ideal F; int i;
+for (i = 1; i <= nvars(basering) - 1; i++) { F = F, var(i)^3 - var(i); }
+ideal Ga = std(blockI(La, Pa) + F); ideal Gb = std(blockI(Lb, Pb) + F);
+ideal Gc = std(blockI(Lc, Pc) + F); ideal Gd = std(blockI(Ld, Pd) + F);
+// parallel pairs: ab through x (a input 1 vs b input 1); bc, bd through y (b input 2 vs c, d input 1); cd through y
+poly qax = 1 - La[1]^2; poly qbx = 1 - Lb[1]^2; poly qby = 1 - Lb[2]^2; poly qcy = 1 - Lc[1]^2; poly qdy = 1 - Ld[1]^2;
+ideal Cross = Pa*Pb*(qax - qbx), Pb*Pc*(qby - qcy), Pb*Pd*(qby - qdy), Pc*Pd*(qcy - qdy), Pb*Pc*Pd;
+int DB = 8;
+ideal J = homog(F, z) + homog(Ga, z) + homog(Gb, z) + homog(Gc, z) + homog(Gd, z) + homog(Cross, z);
+degBound = DB; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+int lowest = DB; int k;
+for (k = 1; k <= ncols(Q); k++) { if (Q[k] != 0 && deg(Q[k]) < lowest) { if (reduce(Q[k], SJ) != 0) { lowest = deg(Q[k]); } } }
+print("SUB abcd DB=" + string(DB) + " lowest_fall=" + string(lowest));
+quit;
