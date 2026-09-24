@@ -19,22 +19,22 @@
 <ul>
 <li>The upper bound is \(y_1^\ell F^{2q}g_{r+1}\), where \(k-\ell-1=q2^n+r\) and \(F\) is the hyperplane product (<a href="#per-order-all-dimension-upper-bound">construction</a>).</li>
 <li>The lower bound reads the degree off \(y\)-coefficients of the jet (<a href="#y-coefficient-degree-formula">lemma</a>). Low degree forces multi-additive forms to vanish on the span \(V\) of \(y_1,\ldots,y_n\), and reduction modulo the subspace polynomial of \(V\) isolates the jet's order-\(\ell\) part.</li>
+<li>The same law holds in base \(q\) on every full grid \(\mathbb F_q^n\), for every prime power \(q\) (<a href="#q-ary-per-order-value">\(q\)-ary theorem</a>).</li>
 <li>These results are not formalized in Lean. Whether they go into the preprint is the user's decision.</li>
 </ul>
 </section>
 <section id="remaining-route">
 <h2>The remaining route</h2>
-<ol><li data-route-item="q-ary-extension"><strong>Extend the method to \(\mathbb F_q\) grids.</strong> Over \(\mathbb F_q\), \(y_i=x_i^q-x_i\), and the local root \(x(y)\) of \(X^q-X=y\) is again additive. The analogue of the per-order problem, with multiplicity \(k\) on \(\mathbb F_q^n\setminus\{0\}\) and order \(\ell\) at the origin, has not been studied in this thread below Menezes' range; check the odd-field thread's records first. First test: compute small cases for \(q=3\) with a jet kernel over \(\mathbb F_3\) and guess the formula.</li><li data-route-item="low-origin-degree"><strong>Per-order values (the user's target): solved.</strong> \(\delta(n,k,\ell)=n+2\ell+\sum_{j&lt;n}\lfloor(k-\ell-1)/2^j\rfloor\) in every dimension (<a href="#per-order-value-all-dimensions">theorem</a>). Remaining: a Lean formalization and the preprint, both on the user's request.</li><li data-route-item="formalization"><strong>Formalize the answer in Lean: complete.</strong> The <a href="#binary-multiplicity-degree-complete">complete formula</a> for all \(n,k\ge1\), the <a href="#entry-2026-09-24-lean-degree-formula">formula theorem</a> and every dependency are verified, down to multiplicity Schwartz–Zippel over every field and BBDM's hyperplane covers, following the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a>. Downstream corollaries such as the power-of-two factors remain informal.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> A draft preprint with Lean links, <a href="https://github.com/kbr-/math-research/tree/main/publications/binary-multiplicity-degree"><code>publications/binary-multiplicity-degree</code></a>, was prepared on 24 September; it is unpublished and awaits the user. The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li></ol>
+<ol><li data-route-item="cube-odd-characteristic"><strong>The cube over odd characteristic.</strong> Menezes' setting \(\{0,1\}^n\) over fields with \(p\ne2\). The origin-jet lemma still holds with \(y=x^2-x\), but the local root is a Catalan series, not additive. Test whether a root-count mechanism exists below his range \(n\ge k-1\).</li><li data-route-item="q-ary-extension"><strong>\(\mathbb F_q\) grids: solved.</strong> \(\delta_q(n,k,\ell)=n(q-1)+q\ell+(q-1)\sum_{j&lt;n}\lfloor(k-\ell-1)/q^j\rfloor\) for every prime power \(q\) (<a href="#q-ary-per-order-value">theorem</a>). This gives a polynomial lower bound for the odd-field thread's covering numbers.</li><li data-route-item="low-origin-degree"><strong>Per-order values (the user's target): solved.</strong> \(\delta(n,k,\ell)=n+2\ell+\sum_{j&lt;n}\lfloor(k-\ell-1)/2^j\rfloor\) in every dimension (<a href="#per-order-value-all-dimensions">theorem</a>). Remaining: a Lean formalization and the preprint, both on the user's request.</li><li data-route-item="formalization"><strong>Formalize the answer in Lean: complete.</strong> The <a href="#binary-multiplicity-degree-complete">complete formula</a> for all \(n,k\ge1\), the <a href="#entry-2026-09-24-lean-degree-formula">formula theorem</a> and every dependency are verified, down to multiplicity Schwartz–Zippel over every field and BBDM's hyperplane covers, following the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a>. Downstream corollaries such as the power-of-two factors remain informal.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> A draft preprint with Lean links, <a href="https://github.com/kbr-/math-research/tree/main/publications/binary-multiplicity-degree"><code>publications/binary-multiplicity-degree</code></a>, was prepared on 24 September; it is unpublished and awaits the user. The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li></ol>
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: q-ary-extension. Prove the <a href="#q-ary-per-order-conjecture">base-\(q\) law</a> for prime \(q\).</p>
-<ol>
-<li>State and prove the \(q\)-ary coefficient lemma: the coefficient of \(x^\varepsilon y^e\) is \([y^e]\bigl(w\prod_i\gamma_{\varepsilon_i}(x(y_i))\bigr)\). Check it against the kernel on random jets.</li>
-<li>Transfer the lower-bound proof. Use \(\mathbb F_q\)-multilinear forms with generators repeated up to \(q-1\) times, the repeated-argument recursion (multinomial cancellation mod \(q\)), and reduction modulo the subspace polynomial of the \(q^n\)-element span.</li>
-<li>Find the remainder construction, testing the jet \(v=1\) first.</li>
-</ol>
-<p>Publication and Lean remain the user's decisions.</p>
+<p>Route item: cube-odd-characteristic. Test whether the method reaches the cube \(\{0,1\}^n\) over fields of characteristic \(p\ne2\), which is Menezes' setting. There \(y=x^2-x\) still gives the basis and the origin-jet lemma, but the local root \(x(y)=\sum_jC_{j-1}y^j\), with signs, is a Catalan series and not additive.</p>
+<ul>
+<li>Generalize the jet kernel to the cube over \(\mathbb F_p\), with \(y=x^2-x\), 2 roots and \(p\) odd. Compute \(\delta_{\mathbb F_3}(n,k,\ell)\) for small \(n,k\), and compare with Menezes' \(n+2k-2-\rho_F(k-\ell)\) for \(n\ge k-1\).</li>
+<li>Find the law below his range, and check whether a root-count mechanism exists; the Catalan parity pattern modulo \(p\) is the natural candidate.</li>
+</ul>
+<p>Publication, Lean and the odd-field thread's use of the \(\mathbb F_q\) theorem remain the user's decisions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -1175,6 +1175,86 @@ Each \(E^{(t)}_j\) is symmetric and additive in each variable, and \(E^{(t)}_j(y
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 24.95 s</strong></td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 24.76 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.19 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-q-ary-proof" data-kind="research" data-route="q-ary-extension" data-claims="lem:q-ary-coefficient-formula thm:q-ary-per-order-value conj:q-ary-per-order-formula">
+<h3>25 September 2026 — The per-order minimum on F_q^n for every prime power q</h3>
+<p class="entry-meta">Working proof: δ_q(n,k,ℓ) = n(q−1) + qℓ + (q−1)Σ_{j&lt;n}⌊(k−ℓ−1)/q^j⌋ for every prime power q. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Question.</strong> Does the binary proof transfer to the <a href="#q-ary-per-order-conjecture">base-\(q\) law</a>? The ingredients to transfer are the origin jets, the coefficient formula, the root count on the span, and the construction.</p>
+<p><strong>Outcome.</strong> Everything transfers, so the conjecture holds for every prime power \(q\). The only new points are these:</p>
+<ul>
+<li>Lagrange interpolation over the \(q\) roots of \(X^q-X=y\);</li>
+<li>generators repeated up to \(q-1\) times;</li>
+<li>the vanishing of multinomial coefficients \(q!/\prod m_i!\) modulo \(p\) for the collapse of \(q\) repeats;</li>
+<li>a subadditivity bound for the construction.</li>
+</ul>
+<p><strong>Setup.</strong> Fix a prime power \(q=p^a\). Let \(y_i=x_i^q-x_i\), and let \(x(y)=-\sum_{t\ge0}y^{q^t}\) be the root of \(X^q-X=y\) with \(x(0)=0\); it is \(\mathbb F_q\)-linear. The <a href="#binary-origin-jet-parametrization">origin-jet lemma</a> holds over \(\mathbb F_q\) with the same proof:</p>
+<ul>
+<li>the basis is \(x^\varepsilon y^e\) with \(0\le\varepsilon_i&lt;q\), with degree \(\max(|\varepsilon|+q|e|)\), since the top monomials \(x^{\varepsilon+qe}\) are distinct;</li>
+<li>\((y)^k=\bigcap_a\mathfrak m_a^k\), by the Chinese remainder dimension \(q^n\binom{n+k-1}{n}\);</li>
+<li>jets are lifted by \(g_b=x^b(1-x^{q-1})^{q^K}\), with \(q^K\ge k\).</li>
+</ul>
+<p>Write \(P(v)\) for the admissible polynomial of a jet \(v\), and \(w=v\circ x\).</p>
+<h4 id="q-ary-coefficient-formula">The coefficient formula</h4>
+<p><strong>Working lemma</strong> (<code>lem:q-ary-coefficient-formula</code>). The coefficient of \(x^\varepsilon y^e\) (\(|e|&lt;k\)) in \(P(v)\) is \([y^e]\bigl(w\prod_i\gamma_{\varepsilon_i}(x(y_i))\bigr)\), where \(\gamma_\varepsilon(x)\) is the coefficient of \(X^\varepsilon\) in \(1-(X-x)^{q-1}\). Explicitly, \(\gamma_\varepsilon(x)=\delta_{\varepsilon,0}-\binom{q-1}{\varepsilon}(-x)^{q-1-\varepsilon}\), and \(\binom{q-1}{\varepsilon}\ne0\) in \(\mathbb F_p\) by Lucas.</p>
+<p><strong>Proof.</strong> Take one variable, with \(f\) vanishing to order \(\ge k\) at every \(a\in\mathbb F_q^*\), and write \(R(X)=\sum_{j&lt;k}R_j(X)y^j\) with \(\deg R_j&lt;q\).</p>
+<ul>
+<li>The \(q\) series \(x(y)+a\), \(a\in\mathbb F_q\), all satisfy \(X^q-X=y\). So \(R(x(y)+a)\equiv f(x(y)+a)\) modulo \(y^k\). This vanishes for \(a\ne0\), because \(x(y)\) has order 1.</li>
+<li>\(R\) has degree \(&lt;q\) in \(X\), so Lagrange interpolation at the nodes \(x(y)+a\) gives \(R(X)\equiv f(x(y))\,\ell_0(X-x(y))\). Here \(\ell_0(Z)=1-Z^{q-1}\), the unique polynomial of degree \(&lt;q\) that is \(1\) at \(0\) and \(0\) on \(\mathbb F_q^*\).</li>
+<li>Taking coefficients of \(X^\varepsilon\) gives the one-variable case. The multivariate case factors as in the binary lemma, and \(g_b(x(y))\equiv x(y)^b\) coefficientwise. \(\square\)</li>
+</ul>
+<p>Put \(d_i=q-1-\varepsilon_i\in[0,q-1]\). For \(0&lt;\varepsilon_i\le q-1\), \(\gamma_{\varepsilon_i}\) is a nonzero multiple of \(x^{d_i}\) (a constant for \(d_i=0\)). For \(\varepsilon_i=0\), that is \(d_i=q-1\), \(\gamma_0=1-x^{q-1}\). The term \(x^\varepsilon y^e\) has degree \(n(q-1)-|d|+q|e|\).</p>
+<h4 id="q-ary-per-order-value">The theorem</h4>
+<p><strong>Working theorem</strong> (<code>thm:q-ary-per-order-value</code>). For every prime power \(q\), \(n\ge1\) and \(0\le\ell&lt;k\), the least degree of \(P\in\mathbb F_q[x_1,\ldots,x_n]\) with Hasse multiplicity \(\ge k\) at every nonzero point of \(\mathbb F_q^n\) and exactly \(\ell\) at the origin is</p>
+<div class="math">\[ \delta_q(n,k,\ell)=n(q-1)+q\ell+(q-1)\sum_{j=0}^{n-1}\Bigl\lfloor\frac{k-\ell-1}{q^j}\Bigr\rfloor=n(q-1)+q(k-1)-h, \]</div>
+<p>where \(k-\ell-1=Qq^n+r\) with \(0\le r&lt;q^n\), and \(h=qQ+s_q(r)\) (the Legendre form of the <a href="#q-ary-per-order-conjecture">previous entry</a>).</p>
+<p><strong>Upper bound.</strong> Put \(F=\prod_{u\in\mathbb F_q^n\setminus\{0\}}(1-u\cdot x)\), of degree \(q^n-1\), with \(F(0)=1\). At \(a\ne0\) exactly \(q^{n-1}\) factors vanish, each simply, so \(\operatorname{mult}_aF=q^{n-1}\). Put \(G=P(1)\), the polynomial of the jet \(v=1\) truncated at \((y)^{r+1}\). It has multiplicity \(\ge r+1\) at nonzero points and \(G(0)=1\). By the lemma with \(w=1\), a nonzero coefficient at \(x^\varepsilon y^e\) requires, in each variable \(i\), that \(e_i\) be a sum of exactly \(d_i\le q-1\) powers of \(q\), or \(e_i=0\) when \(\varepsilon_i=0\). With at most \(q-1\) parts no base-\(q\) carries occur, so \(s_q(e_i)\le d_i\) in every case. Such a term has degree \(\sum_i(q-1-d_i+qe_i)\le n(q-1)+\sum_i(qe_i-s_q(e_i))\). Digit sums are subadditive and \(qm-s_q(m)\) is increasing, so with \(\sum e_i\le r\) this is at most \(n(q-1)+qr-s_q(r)\). The polynomial \((x_1^q-x_1)^\ell F^{qQ}G\) then has:</p>
+<ul>
+<li>multiplicity \(\ge\ell+qQ\cdot q^{n-1}+r+1=k\) at nonzero points;</li>
+<li>order exactly \(\ell\) at the origin, since \(F^{qQ}G\) is a unit there;</li>
+<li>degree \(\le q\ell+qQ(q^n-1)+n(q-1)+qr-s_q(r)=n(q-1)+q(k-1)-h\).</li>
+</ul>
+<p><strong>Lower bound.</strong> This follows the <a href="#per-order-value-all-dimensions">binary proof</a>, with these changes. Suppose \(\deg P(v)\le n(q-1)+q(k-1)-h-1\), with \(\operatorname{ord}v=\ell\).</p>
+<ul>
+<li><strong>Step 1.</strong> Take \(|e|=k-1-t\). The degree bound kills the coefficients for all \(d\in[0,q-1]^n\) with \(|d|\le h-qt\). Expanding the factors \(1-x_i^{q-1}\) and inducting on \(|d|\) gives \((w\prod_ix_i^{d_i})_{k-1-t}=0\) for all such \(d\).</li>
+<li><strong>Step 2.</strong> Let \(E^{(t)}_j(Y_1,\ldots,Y_j)=\sum_{t_1,\ldots,t_j}\prod_aY_a^{q^{t_a}}\,w_{k-1-t-\sum_aq^{t_a}}\). It is symmetric and \(\mathbb F_q\)-linear in each variable. Up to the sign \((-1)^j\), \((w\prod x_i^{d_i})_{k-1-t}\) equals \(E^{(t)}_{|d|}\) at the tuple listing each \(y_i\) exactly \(d_i\) times. So \(E^{(t)}_j\) vanishes at generator tuples in which no generator appears \(q\) or more times, for \(j\le h-qt\).</li>
+<li><strong>Step 3.</strong> Put \(q\) equal arguments \(Y\).
+<ul>
+<li>The ordered exponent tuples \((t_1,\ldots,t_q)\) with a given multiset occur \(q!/\prod m_i!\) times. That count is \(\equiv0\pmod p\) unless the multiset is a single value, by Lucas.</li>
+<li>Hence \(E^{(t)}_j(Y^{\times q},Z)=E^{(t)}_{j-q+1}(Y,Z)-Y\,E^{(t+1)}_{j-q}(Z)\), with \(j-q+1\le h-qt\) and \(j-q\le h-q(t+1)\).</li>
+<li>Induction on \(j\), for all \(t\) at once, shows that \(E^{(t)}_j\) vanishes at all generator tuples. By multilinearity it vanishes on \(V^j\), where \(V\) is the \(\mathbb F_q\)-span of the \(y_i\): \(q^n\) distinct elements of \(\mathbb F_q[y]\).</li>
+</ul></li>
+<li><strong>Step 4.</strong> The subspace polynomial \(L_V(Y)=\prod_{a\in V}(Y-a)\) is a monic \(q\)-polynomial of degree \(q^n\). Replace each \(Y_a^{q^{t_a}}\) in \(E^{(0)}_h\) by its remainder modulo \(L_V\). The result \(R\) has degree \(&lt;q^n\) in each variable and vanishes on \(V^h\), a grid of \(q^n\) distinct points per variable in the domain \(\mathbb F_q[y]\). So \(R=0\).</li>
+<li><strong>Step 5.</strong> Write \(k-1-\ell=\sum_{a=1}^hq^{s_a}\), with \(qQ\) parts \(q^{n-1}\) and \(r\)'s base-\(q\) digits as repeated parts, so all \(s_a&lt;n\). As in the binary proof, only \(M^*=\prod Y_a^{q^{s_a}}\) contributes to its own coefficient in \(R\), which is \(w_\ell\ne0\). This is a contradiction. \(\square\)</li>
+</ul>
+<p><strong>Checks.</strong> For \(q=2\) this is the binary theorem. It agrees with all 149 kernel values for \(q=3,5\) (<code>check:q-ary-per-order-values</code>). It also agrees with the recorded odd-field results at \(\ell=k-1\) and at \((k,\ell)=(2,0)\), which it contains. An independent brute force, which computes ranks over all monomials with Hasse conditions and does not use the jet kernel, checks that degree \(\Phi_q\) is attained and \(\Phi_q-1\) is not in 260 cases:</p>
+<ul>
+<li>\(q=3\): \(n=1\), \(k\le12\); and \(n=2\), \(k\le12\), including six cases with \(k-\ell-1\ge9=q^n\);</li>
+<li>\(q=4\): \(n=1\), \(k\le10\); and \(n=2\), \(k\le7\);</li>
+<li>\(q=9\): \(n=1\), \(k\le5\); and \(n=2\), \(k\le3\).</li>
+</ul>
+<p>So the check includes non-prime \(q\) (<code>research/results/bmd-r8-q-ary-proof/</code>: <code>bf_q.py</code> and the <code>brute-*.txt</code> outputs).</p>
+<p><strong>Consequence.</strong> Minimizing over \(\ell\) gives the least degree \(D_q(n,k)\) with multiplicity \(\ge k\) off the origin and \(&lt;k\) at it: \(D_q(n,k)=n(q-1)+q(k-1)-\max_{0\le m\le k-1}\bigl(q\lfloor m/q^n\rfloor+s_q(m\bmod q^n)\bigr)\). For \(k\le q^n\) this is \(n(q-1)+q(k-1)-\max_{m&lt;k}s_q(m)\). This is a lower bound for the odd-field thread's covering numbers \(f_q(n,k,1)\), since the product of the forms of a cover is admissible. How it compares with that thread's cover bounds is left to that thread.</p>
+<p><strong>General statement.</strong> <code>thm:q-ary-per-order-value</code>, for every prime power \(q\), \(n\ge1\) and \(0\le\ell&lt;k\). It proves <code>conj:q-ary-per-order-formula</code> and extends it to prime powers.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the binary theorem and its proof, the origin-jet lemma, and the Legendre form of the conjecture entry. An adversarial fresh-context reviewer made these checks:</p>
+<ul>
+<li>the transfer of the origin-jet lemma, the Lagrange step and \(\gamma_\varepsilon\);</li>
+<li>the upper bound;</li>
+<li>steps 1–5, including the multinomial vanishing for prime powers, case coverage (a generator appears at most \(q-1\) or at least \(q\) times) and repeated \(s_a\) in step 5;</li>
+<li>the bound for covers: the thread's \(f_q(n,k,1)\) allows at most \(k-1\) incidences at the origin, and \(D_q\) equals its target \(n(q-1)+q(k-1)-1\) at \(k=2\).</li>
+</ul>
+<p>It wrote the brute force above. It asked for three wording changes, all made: the range of \(d_i\), the Lagrange constant, and the checks paragraph.</p>
+<p><strong>Assessment.</strong> The method is not special to characteristic two. It determines the per-order minimum on every full grid \(\mathbb F_q^n\). Next: the cube \(\{0,1\}^n\) over fields of characteristic \(\ne2\), which is Menezes' setting. There the local root of \(X^2-X=y\) is a Catalan series, not additive. So a different mechanism is needed, and it would test whether the method's reach ends at additivity. Process: the transfer needed one new idea, the multinomial vanishing modulo \(p\); everything else carried over line by line.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r8-q-ary-proof">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 39.37 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 38.15 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.22 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
