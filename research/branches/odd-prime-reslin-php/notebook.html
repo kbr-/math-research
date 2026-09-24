@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> The <a href="#entry-2026-09-24-gluing-route-review">gluing route review</a> found that block-by-block gluing does not reach compiled inventories. Blocks sharing linear parts fall even with pairwise joint augmentation: at \(h=3\), separately augmented linked pairs fall at degree 7, and pairwise-augmented triples at degree 9. Next: test a bounded-linkage locality. At degree \(D\), is a family fall-free once every linked subgroup of at most \(k(D)\) blocks is augmented jointly? First compute chains of four blocks at \(h=3\) with all triples jointly augmented; a lowest fall at degree 11 or more extends the growth. Also compute a triple at \(h=4\), since the band has \(h\ge10\). Then identify the fall witnesses, and prove or refute a growth mechanism.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Identically linked chains of ENS blocks have an explicit fall witness of degree \(h+4+(k-2)(h-1)\), which is above \(D\) once \(h\ge D-3\) (<a href="#entry-2026-09-24-chain-consequences">chain consequences</a>). For the band's large blocks, the known low falls are parallel ones: \(R\), of degree 7, and \(T\), of degree 9, each on at most three blocks. Next: test conj:bounded-linkage-large-h at \(D=8\), \(h=5\), the first case where \(R\) matters. Take four or five blocks mixing parallel and identical links, augment each separately, add \(R\), and check for a fall below 8 in one compiled run. \(T\) matters only from \(D=10\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -17082,6 +17082,112 @@ Here \(q_a+q_b+q_c=1\) identically, so \(T=P_aP_bP_c\), of degree 9, is a conseq
 <tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">2 min 38.64 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-chain-consequences" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:chain-consequences conj:bounded-linkage-large-h">
+<h3>Chain consequences: identically linked ENS blocks have an explicit fall witness of degree h+4+(k−2)(h−1), above the compiler's degree once h ≥ 8; a bounded-linkage conjecture for large blocks</h3>
+<p class="entry-meta">24 September 2026 · Working proof (chain consequences and degrees) and a conjecture (bounded linkage for large h) · cycle odd-prime-bounded-linkage.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-gluing-route-review">gluing route review</a> found that linked ENS blocks fall even with pairwise joint augmentation. It left one question: is there a bounded linkage \(k(D)\) such that augmenting linked subgroups of at most \(k(D)\) blocks suffices at degree \(D\)? This cycle identifies the falls of identically linked chains, gives their degrees for every \(h\) and length, and compares them with the parallel ones.</p>
+<p><strong>General statement.</strong> lem:chain-consequences and conj:bounded-linkage-large-h.</p>
+<ul>
+<li>lem:chain-consequences: in a chain of \(k\ge2\) complete accuracy-one ENS blocks with \(h\ge2\) inputs each, consecutive blocks share one identical input. Independence of the other inputs and private coefficients are not needed here. They matter only for whether \(E_k\) lies in \(J\) at its own degree.
+<ul>
+<li>An explicit product \(E_k\) of degree \(h+4+(k-2)(h-1)\) vanishes on the chain's zero set.</li>
+<li>\(z^2E_k\) lies in the joint augmentation of its two subchains of length \(k-1\).</li>
+<li>So the chain, augmented on its subchains, falls at degree at most \(\deg E_k+1\) unless \(E_k\) lies in that ideal at its own degree.</li>
+<li>For \(h\ge D-3\), every \(E_k\) with \(k\ge2\) has degree above \(D\). This locates the known witness only. It does not exclude lower falls from other elements; at \(h=2\) one occurs.</li>
+</ul></li>
+<li>conj:bounded-linkage-large-h: fix \(D\) and \(h\ge D-3\). Take a family of complete accuracy-one ENS blocks with \(h\) inputs and private coefficients, whose linear parts are either identical or independent, with no further affine dependence. Augment each block separately and add these generators:
+<ul>
+<li>\(R_{ab}=P_aP_b(q_a-q_b)\) for each pair with parallel inputs \(x+c\), \(x+c'\), \(c\ne c'\);</li>
+<li>\(T_{abc}=P_aP_bP_c\) for each triple covering the three translates of one linear part.</li>
+</ul>
+Then the family has no span-ring fall below \(D\): in the homogenized ideal, with field equations but without the weak base, \(z\) is injective in degrees below \(D\).</li>
+</ul>
+
+<h4>The chain consequence</h4>
+<p>Let the chain be \(b_1,\dots,b_k\). Block \(b_m\) and block \(b_{m+1}\) share the identical affine input \(\lambda_m\). An input is true when it vanishes, and \(q=1-L^2\) is its indicator.</p>
+<ul>
+<li><em>End factor.</em> Block \(b_k\) has inputs \(\lambda_{k-1}\), a second input \(u\) and others \(w_j\). Put \(F=q_u\prod_jL_{w_j}\,(1-r_{b_k,u})\), of degree \(h+1\). It is nonzero on \(b_k\)'s zero set only if \(u\) is true, every \(w_j\) is false and \(r_{b_k,u}\ne1\). Then \(b_k\)'s true set is \(\{u\}\) or \(\{u,\lambda_{k-1}\}\), and the first would force \(r_{b_k,u}=1\). So \(F\ne0\) forces \(\lambda_{k-1}\) true.</li>
+<li><em>Middle factors.</em> Block \(b_m\), \(1&lt;m&lt;k\), has inputs \(\lambda_{m-1}\), \(\lambda_m\) and others \(w_j\). Put \(G_m=(1-r_{b_m,\lambda_m})\prod_jL_{w_j}\), of degree \(h-1\). If \(\lambda_m\) is true and \(G_m\ne0\), the true set is \(\{\lambda_m\}\) or \(\{\lambda_m,\lambda_{m-1}\}\), and the first would force \(r_{b_m,\lambda_m}=1\). So \(\lambda_{m-1}\) is true.</li>
+<li><em>Start factor.</em> If \(\lambda_1\) is true, \(b_1\)'s true set is nonempty, so \(P_{b_1}=0\).</li>
+</ul>
+<p>So \(E_k=F\,G_{k-1}\cdots G_2\,P_{b_1}\) vanishes on the chain's zero set, by induction along the chain. Its degree is \((h+1)+(k-2)(h-1)+3\). Neither independence of the other inputs nor private coefficients was used.</p>
+<p><em>The degree-\((\deg E_k+2)\) representation.</em> With \(1=q_{\lambda_1}+L_{\lambda_1}^2\): \[E_k=F\,G_{k-1}\cdots G_2\cdot(q_{\lambda_1}P_{b_1})+L_{\lambda_1}\cdot\bigl(L_{\lambda_1}F\,G_{k-1}\cdots G_2\bigr)\cdot P_{b_1}.\]</p>
+<ul>
+<li>\(q_{\lambda_1}P_{b_1}\) is a companion of \(b_1\).</li>
+<li>\(L_{\lambda_1}FG_{k-1}\cdots G_2\) vanishes on the zero set of the subchain \(b_2,\dots,b_k\): the factors force \(\lambda_1\) true there, where \(L_{\lambda_1}=0\). So it lies in that subchain's joint augmentation, in its own degree.</li>
+</ul>
+<p>Both terms have degree \(\deg E_k+2\), so \(z^2E_k\) lies in the ideal \(J\) generated by the two subchains' homogenized joint bases. If \(E_k\notin J_{\deg E_k}\), then \(E_k\) or \(zE_k\) is \(z\)-torsion, so the chain falls at degree at most \(\deg E_k+1\). For \(k=2\) this is the \(W\) of lem:shared-input-consequences. \(\square\)</p>
+<p><em>Large \(h\).</em> \(\deg E_k\ge\deg E_2=h+4\), so \(h\ge D-3\) puts every \(E_k\) above \(D\). That the \(E_k\) are the lowest falls is observed only at \(h=3,4\) for pairs and \(h=3\) for triples. At \(h=2\) lower falls exist.</p>
+
+<h4>Checks</h4>
+<ul>
+<li><em>Earlier values.</em> The shared-input entry and the review are consistent with \(E_k\) being the lowest fall. At \(h=3\) the predicted degrees are 7 for pairs and 9 for chain triples, the observed lowest falls. At \(h=4\), pairs are predicted at 8, as observed.</li>
+<li><em>This cycle's run.</em> <code>chain_witness.sing</code> (<code>chain_witness.out</code>) confirms \(E_3\) is the witness at \(h=3\): \(E_3\notin J_9\) and \(zE_3\in J\), with \(J\) the pairwise joint augmentation. At \(h=2\), \(E_3\), of degree 7, is also torsion, but the lowest fall is at 6, from another element, as with the \(h=2\) pairs.</li>
+<li><em>Not reached.</em> The run was killed at its 1200-second limit, as recorded in <code>run_status.txt</code>.
+<ul>
+<li>The \(h=4\) chain triple, predicted to have no fall below 11 since \(E_3\) has degree 11, was still running.</li>
+<li>The \(h=4\) parallel triple, predicted at 9, never started.</li>
+</ul>
+Degree 11 in about 24 variables is beyond this approach. No value is claimed for either case.</li>
+</ul>
+
+<h4>Parallel links, and the conjecture</h4>
+<ul>
+<li><em>Parallel consequences do not grow with \(h\).</em> They are \(R=P_aP_b(q_a-q_b)\), of degree 7, for a pair of blocks with inputs \(x+c\), \(x+c'\), and \(T=P_aP_bP_c\), of degree 9, for three blocks covering all three translates. Both are products of the blocks' \(P\)s, of degree 3 each, with at most a linear form. A product of four \(P\)s has degree 12. So below \(D=11\), such products involve at most three blocks. That every parallel failure has this product form is a heuristic.</li>
+<li><em>The picture for large \(h\).</em> The known witnesses for identically linked chains lie above \(D\) (the lemma). Lower falls from other elements are not excluded; they are observed only at \(h=2\). The known parallel failures involve at most three blocks of one parallel class. Mixed configurations, a parallel link followed by identical links, contain an end or middle factor of degree at least \(h-1\), so they also exceed \(D\) for large \(h\). That last point is a heuristic, not proved.</li>
+<li><em>The conjecture.</em> conj:bounded-linkage-large-h is the resulting locality. Its evidence is this mechanism analysis and the computed falls, all at \(h\le5\). It is untested at \(h\ge D-3\).
+<ul>
+<li>For \(D\le7\) it is still a claim, but the added generators do not matter.</li>
+<li>\(D=8\), \(h=5\) is the first case where \(R\) matters: parallel pairs fall at 7, and identical pairs have their witness at 9.</li>
+<li>\(T\), of degree 9, matters only from \(D=10\), with \(h\ge7\).</li>
+</ul></li>
+</ul>
+
+<h4>What this means</h4>
+<ul>
+<li>The band's blocks have \(h\ge10\ge D-3\). For them the known identical-chain witnesses lie above 11. Whether identical sharing causes other, lower falls is open, and at \(h=2\) it does.</li>
+<li>If the conjecture holds, the gluing line needs only local repairs: cross-consequences within parallel classes, on at most three blocks. With the pure-part reduction's local conditions, that is a bounded-linkage locality that compiled inventories can satisfy.</li>
+<li>If it fails, the failure identifies the next consequence to add, or ends the member-gluing line.</li>
+<li>All falls here are span-ring falls of the linked blocks alone, without the weak base.</li>
+</ul>
+<p>Next: test conj:bounded-linkage-large-h at \(D=8\), \(h=5\), where it is first nonvacuous. Take a family of four or five blocks that mixes a parallel pair or triple with identical links. Augment each block separately, add \(R\) as generators, and check for a fall below 8, as one compiled run with the degree bound at 8. At \(D=8\) this tests \(R\) and the identical links; \(T\) is not tested there.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: lem:shared-input-consequences (its \(W\) is \(E_2\)), conj:shared-input-falls, ex:pairwise-augmentation-triple-falls and the review's configurations. The chain witness is checked in <code>chain_witness.out</code>.</p>
+<p>A fresh-context reviewer confirmed these points:</p>
+<ul>
+<li>the forcing arguments, including \(r\ne1\) and the true-set alternatives;</li>
+<li>the degree formula and the representation;</li>
+<li>membership in the subchain's ideal at its own degree, by radicality and degree-compatible bases;</li>
+<li>\(z^2E_k\in J\), and the fall at degree \(\le\deg E_k+1\);</li>
+<li>the large-\(h\) degree bound;</li>
+<li>the script's \(E_3\).</li>
+</ul>
+<p>It required these changes, all adopted:</p>
+<ul>
+<li>the "fail only at" and "removes identical sharing" claims weakened to the known witness;</li>
+<li>the unused hypotheses dropped from the lemma;</li>
+<li>the timeout recorded in a result file, with the parallel case marked as never started;</li>
+<li>the conjecture's generator list, input configurations and "span-ring fall" made exact;</li>
+<li>the first cases where \(R\) and \(T\) matter stated;</li>
+<li>the product form of parallel failures labelled a heuristic.</li>
+</ul>
+<p>The changes weaken or make the statements precise, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-bounded-linkage">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>28 min 6.08 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">50.01 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 28.00 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">20 min 0.04 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">3 min 47.89 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 

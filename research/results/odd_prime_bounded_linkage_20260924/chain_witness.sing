@@ -1,0 +1,52 @@
+// Bounded-linkage test: fall witnesses of three pairwise-augmented ENS blocks, and the dependence on h.
+// Predictions: chain witness E = F_c G_b P_a (degree h+4+(h-1)); parallel witness T = P_a P_b P_c (degree 9).
+// Blocks a, b, c over F_3 with h inputs each and private coefficients.  Configurations:
+//   mode 0 (parallel triple): first inputs x, x+1, x+2; other inputs independent.
+//   mode 1 (chain): a and b share first input x; b and c share b's second input y; a and c share nothing.
+// J = homogenization of the three pairwise JOINT dp Groebner bases (ab, bc, ac, each of the pair's companions and
+// field equations) plus all field equations.  Tested: z injective on S/J below DB (no fall).  For mode 0 also whether
+// T = P_a P_b P_c (degree 9, a consequence since q_a + q_b + q_c = 1) lies in J.  Printed: lowest fall degree.
+option(redSB);
+proc runcase(int h, int mode, int DB)
+{
+  ring S = 3, (x, y, ya(2..h), yb(2..h), yc(2..h), ra(1..h), rb(1..h), rc(1..h), z), dp;
+  ideal La = x; ideal Lb = x + 1; ideal Lc = x + 2; int i;
+  if (mode == 1) { Lb = x; Lc = y; }
+  for (i = 2; i <= h; i++) { La = La, ya(i); Lc = Lc, yc(i); }
+  if (mode == 0) { for (i = 2; i <= h; i++) { Lb = Lb, yb(i); } }
+  else { Lb = Lb, y; for (i = 3; i <= h; i++) { Lb = Lb, yb(i); } }
+  poly Pa = 1; poly Pb = 1; poly Pc = 1;
+  for (i = 1; i <= h; i++) { Pa = Pa - ra(i)*(1 - La[i]^2); Pb = Pb - rb(i)*(1 - Lb[i]^2); Pc = Pc - rc(i)*(1 - Lc[i]^2); }
+  ideal F = x^3 - x, y^3 - y;
+  for (i = 2; i <= h; i++) { F = F, ya(i)^3 - ya(i), yb(i)^3 - yb(i), yc(i)^3 - yc(i); }
+  for (i = 1; i <= h; i++) { F = F, ra(i)^3 - ra(i), rb(i)^3 - rb(i), rc(i)^3 - rc(i); }
+  ideal Ca; ideal Cb; ideal Cc;
+  for (i = 1; i <= h; i++) { Ca = Ca, (1 - La[i]^2)*Pa; Cb = Cb, (1 - Lb[i]^2)*Pb; Cc = Cc, (1 - Lc[i]^2)*Pc; }
+  // pairwise joint augmentation (field equations of all variables included; z absent)
+  ideal Gab = std(Ca + Cb + F); ideal Gbc = std(Cb + Cc + F); ideal Gac = std(Ca + Cc + F);
+  ideal J = homog(Gab, z) + homog(Gbc, z) + homog(Gac, z);
+  degBound = DB; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+  int lowest = DB;
+  for (i = 1; i <= ncols(Q); i++) { if (Q[i] != 0 && deg(Q[i]) < lowest) { if (reduce(Q[i], SJ) != 0) { lowest = deg(Q[i]); } } }
+  string ein = "n/a";
+  if (mode == 1) {
+    // chain witness: F_c = q_{c,2} prod_{j>=3} L_{c,j} (1 - r_{c,2}) forces y true in c; G_b = (1 - r_{b,2}) prod_{j>=3} L_{b,j}
+    // (b's input 2 is y) forces x true in b once y is true; P_a vanishes once x is true.
+    poly Fc = (1 - Lc[2]^2) * (1 - rc(2)); for (i = 3; i <= h; i++) { Fc = Fc * Lc[i]; }
+    poly Gb = 1 - rb(2); for (i = 3; i <= h; i++) { Gb = Gb * Lb[i]; }
+    poly E = Fc * Gb * Pa; poly Eh = homog(E, z);
+    if (deg(E) + 1 <= DB) {
+      string e1 = " not in J"; if (reduce(Eh, SJ) == 0) { e1 = " in J"; }
+      string e2 = "NOT in J"; if (reduce(z*Eh, SJ) == 0) { e2 = "in J"; }
+      ein = "E deg " + string(deg(E)) + e1 + ", z E " + e2;
+    } else { ein = "E deg " + string(deg(E)) + " (above bound)"; }
+  }
+  string tin = "n/a";
+  if (mode == 0) { poly Th = homog(Pa*Pb*Pc, z); tin = "T=PaPbPc deg " + string(deg(Pa*Pb*Pc)); if (reduce(Th, SJ) == 0) { tin = tin + " in J"; } else { tin = tin + " not in J"; } }
+  print("CASE h=" + string(h) + " mode=" + string(mode) + " DB=" + string(DB) + " lowest_fall=" + string(lowest) + " " + tin + " " + ein);
+}
+runcase(2, 1, 11);
+runcase(3, 1, 11);
+runcase(4, 1, 11);
+runcase(4, 0, 11);
+quit;
