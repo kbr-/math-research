@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> (c) and (d) hold for satisfiable members on generic spans (<a href="#entry-2026-09-24-generic-span-members">generic span members</a>). For two members on a free joint span, (b) holds exactly when their ideals meet only in products and common generators. Pairwise conditions fail for three members: a linear dependency among forms of different members gives extra syzygies, as the three-selector configuration shows (<a href="#entry-2026-09-24-overlap-tor">overlap Tor</a>). Next: for members with tops that are products of \(w\) forms, find the least degree at which a dependency among \(s\) forms of different members yields a syzygy outside the member-supported and Koszul span, and compare it with \(D\) and with the budget-cluster dichotomy.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> (c) and (d) hold for satisfiable members on generic spans (<a href="#entry-2026-09-24-generic-span-members">generic span members</a>). (b) fails across members through linear dependencies of their forms (<a href="#entry-2026-09-24-overlap-tor">overlap Tor</a>). One circuit among \(s\) clauses of width \(w\) adds a single syzygy in degree \(s(w-1)+1\). It lifts exactly for a consistent cluster, and for an inconsistent one it lifts if and only if the resolvent is in the ideal (<a href="#entry-2026-09-24-circuit-syzygies">circuit syzygies</a>). Next: two circuits sharing clauses. Compute the syzygies of four clauses whose forms satisfy two independent circuits, by the same grading. Test whether the two circuit syzygies, Koszul and Frobenius syzygies generate them, and compare any new syzygy's lift with the saturated-locality failure.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -15200,6 +15200,71 @@ Always \(\Delta_d\le0\).</li>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 23.61 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.48 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.59 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-circuit-syzygies" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:circuit-syzygies">
+<h3>Circuit syzygies: a dependency among s clauses adds one syzygy in degree s(w−1)+1, which lifts exactly when the cluster is consistent and derives the resolvent otherwise</h3>
+<p class="entry-meta">24 September 2026 · Working proof (circuit syzygies) · Hypothesis (b) for single-clause members whose forms have one linear dependency; cycle odd-prime-dependency-degree.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-overlap-tor">overlap Tor entry</a> showed that a linear dependency among forms of different members breaks hypothesis (b) of relative gluing, even when every pair of spans is independent. The missing implication is the degree at which such a dependency acts for wide tops, and whether the syzygies it creates lift. Relative gluing needs lifting, not splitting: its proof uses (b) only to write every top syzygy through \(D\) as a combination of liftable ones, as in the component-hypothesis criterion.</p>
+<p><strong>General statement.</strong> prop:circuit-syzygies: over \(\mathbb F_3\), take \(s\ge2\) single-clause members \(C_i=(\Lambda_i-a_i)M_i\). Each \(M_i\) is a product of \(w-1\) linear factors \(Y_{i,t}-b_{i,t}\). The linear parts of the \(\Lambda_i\) form one circuit, \(\sum_i\lambda_i=0\), so \(\sum_i\Lambda_i\) is a constant \(c\). The linear parts \(\lambda_1,\dots,\lambda_{s-1}\) and all \(y_{i,t}\) are linearly independent. Suppose the top algebra is free through \(D\) over the truncated algebra of their span. Then, through \(D\), the top syzygies are spanned by member-supported (Frobenius) syzygies, cross-member Koszul syzygies, and \(A\)-multiples of one circuit syzygy \(\sigma=(\prod_{j\ne i}m_j)_i\) of degree \(s(w-1)+1\). As polynomials, \(\sum_i\prod_{j\ne i}M_j\cdot C_i=(c-\sum_ia_i)\prod_jM_j\). So \(\sigma\) lifts exactly when the cluster is consistent (\(\sum a_i=c\)). The base plus the clauses then has no fall below \(D\) and no PC refutation of degree \(D\) over the weak base in its stability range. When the cluster is inconsistent, \(\sigma\) is liftable if and only if the homogenized resolvent \(R^{\rm h}\), \(R=\prod_jM_j\) of degree \(s(w-1)\), lies in the constraint ideal. Otherwise there is a fall in degree \(s(w-1)\). Adding \(R\) makes \(\sigma\) liftable. This is the syzygy form of the recorded budget-cluster dichotomy and resolvent absorption. Circuits with \(s(w-1)+1&gt;D\) do not act below \(D\).</p>
+
+<h4>Setting</h4>
+<p>Over \(\mathbb F_3\), the base is the weak unary base, \(A\) is its top algebra, and \(B\) is its homogenized algebra. Clause \(i\) is \(C_i=(\Lambda_i-a_i)M_i\) with \(M_i=\prod_{t&lt;w}(Y_{i,t}-b_{i,t})\), all forms affine with \(\mathbb F_3\) coefficients, and linear parts \(\lambda_i\), \(y_{i,t}\). The tops are \(P_i=\lambda_im_i\), \(m_i=\prod_ty_{i,t}\). The circuit is \(\sum_i\lambda_i=0\), after rescaling each \(\Lambda_i\) and \(a_i\) by a nonzero constant, which multiplies \(C_i\) by a unit. Then \(\sum_i\Lambda_i\) is a constant, called \(c\). Any proper subset of the \(\lambda_i\) is linearly independent: a relation among them would be a multiple of the circuit, whose coefficients are all nonzero. Over \(\mathbb F_3\), the cube of every linear form lies in the ideal of the cubes of any basis, so \(T(V)\) does not depend on the basis. Let \(V\) be spanned by \(\lambda_1,\dots,\lambda_{s-1}\) and the \(y_{i,t}\), all linearly independent, so \(\dim V=s-1+s(w-1)\). Let \(T(V)=\mathrm{Sym}(V)/(\text{cubes})=T(\lambda)\otimes T(y)\). Assume the minimal free cover \(T(V)\otimes C\to A\) is bijective in degrees \(\le D\). By thm:projection-freeness this holds, for instance, when these forms are jointly affinely independent on enough holes.</p>
+
+<h4>The syzygies</h4>
+<p><strong>Lemma.</strong> In \(T(V)\), in degrees \(\le D\), every syzygy of \(P_1,\dots,P_s\) is a combination of the Frobenius syzygies \(\ell^2e_i\), for \(\ell\) a factor of \(P_i\), the Koszul syzygies \(P_je_i-P_ie_j\), and \(T(V)\)-multiples of \(\sigma=(\prod_{j\ne i}m_j)_i\). No syzygy of degree below \(s(w-1)+1\) needs \(\sigma\).</p>
+<p><em>Proof.</em> Grade \(T(V)\) by the exponent vector \(\beta\) in the \(y\)-variables. The \(\lambda\)'s have degree 0 in this grading, and \(P_i\) has degree \(\delta_i\), the indicator of member \(i\)'s variables. The supports of the \(\delta_i\) are disjoint. The syzygy module is graded, so take a syzygy of degree \(\beta\). Its component \(a_i\) is \(y^{\beta-\delta_i}\alpha_i\) with \(\alpha_i\in T(\lambda)\), and it is nonzero only if \(\beta\ge\delta_i\).</p>
+<ul>
+<li>If some entry of \(\beta\) is at least 3, then \(y^\beta=0\) and each term \(a_iP_i\) vanishes separately. A nonzero \(a_i\) then has exponent 2 on a variable of \(\delta_i\), since \(\beta-\delta_i\) has entries at most 2. So \(a_ie_i\) is a multiple of the Frobenius syzygy of that factor.</li>
+<li>Otherwise every \(y^{\beta-\delta_i}m_i=y^\beta\ne0\), and the equation reads \(y^\beta\sum_{i\in I}\alpha_i\lambda_i=0\), with \(I=\{i:\beta\ge\delta_i\}\). Since \(T(V)=T(\lambda)\otimes T(y)\), this is \(\sum_{i\in I}\alpha_i\lambda_i=0\) in \(T(\lambda)\).
+<ul>
+<li>If \(I\ne\{1,\dots,s\}\), the \(\lambda_i\), \(i\in I\), are linearly independent, so they are coordinates. In the truncated ring the syzygies of coordinates are generated by \(\lambda_j e_i-\lambda_ie_j\) and \(\lambda_i^2e_i\). The first becomes \(y^{\beta-\delta_i-\delta_j}(P_je_i-P_ie_j)\), since \(\beta\ge\delta_i+\delta_j\) for disjoint supports. The second is Frobenius.</li>
+<li>If \(I=\{1,\dots,s\}\), substitute \(\lambda_s=-\sum_{i&lt;s}\lambda_i\). Then \((\alpha_i-\alpha_s)_{i&lt;s}\) is a syzygy of coordinates, so \(\alpha=\alpha_s(1,\dots,1)\) plus Koszul and Frobenius terms. The term \(\alpha_s(1,\dots,1)\) gives \(y^{\beta-\sum\delta_j}\alpha_s\sigma\).</li>
+</ul></li>
+</ul>
+<p>\(\sigma\) is needed only when \(\beta\ge\sum_j\delta_j\), that is, in total degree at least \(s(w-1)+1\). \(\square\)</p>
+<p>\(\sigma\) is not in the span of the other syzygies. Setting all \(\lambda\) to 0 kills every Koszul syzygy and every Frobenius syzygy of a \(\lambda\)-factor, and it leaves \(\sigma\) unchanged. The remaining Frobenius syzygies have components divisible by the square of a \(y\)-factor of their own member, while \(\sigma_i=\prod_{j\ne i}m_j\) is squarefree in the other members' variables. For \(s=2\) the circuit is a shared form, \(\lambda_2=-\lambda_1\), and \(\sigma=(m_2,m_1)\) is the syzygy that performs the resolution step on that form. Clauses with equal factors on the shared form have dependent \(y\)'s only when their other factors agree too, which is outside the setting.</p>
+
+<h4>Lifting</h4>
+<p>As polynomials, \(\sum_i\bigl(\prod_{j\ne i}M_j\bigr)C_i=\prod_jM_j\cdot\sum_i(\Lambda_i-a_i)=(c-\sum_ia_i)\prod_jM_j\). Homogenizing at degree \(s(w-1)+1\) gives \(\sum_i\tilde\sigma_iC_i^{\rm h}=z\,(c-\sum a_i)\,R^{\rm h}\), with \(R=\prod_jM_j\) of degree \(s(w-1)\).</p>
+<p><strong>Proposition (circuit syzygies).</strong> In the setting above, with \(D\) at most the base's stability range:</p>
+<ol>
+<li>If \(\sum_ia_i=c\) (a consistent cluster), every top syzygy through \(D\) is a combination of liftable ones. The weak base plus \(C_1,\dots,C_s\) has no fall below \(D\) and no PC refutation of degree \(D\).</li>
+<li>If \(\sum_ia_i\ne c\), then \(\sigma\) is liftable if and only if \(R^{\rm h}\in J_U\). In any case \(zR^{\rm h}\in J_U\), so either \(R^{\rm h}\in J_U\) or there is a fall in degree \(s(w-1)\). Adding \(R\) as a constraint makes \(\sigma\) liftable. The enlarged family is not analysed here: its locality in the recorded setting is thm:resolvent-absorption. Its new syzygies \(\prod_{j\ne i}m_je_i-\lambda_ie_R\) lift exactly and sum to \(\sigma\).</li>
+</ol>
+<p><em>Proof.</em> For part 1, apply the lemma in \(A\) through the cover, as in the span-transfer argument. Frobenius syzygies \(\ell^2e_i\) of a linear factor \(L-a\) of \(C_i\) lift. With the lift \(((L-a)^{\rm h})^2\) the correction is \(zC_i^{\rm h}\in J_U\), because \((L-a)^3-(L-a)\) lies in the base ideal in degree 3 for affine forms over \(\mathbb F_3\). Koszul syzygies lift exactly, by step 2 of the relative gluing proof. \(\sigma\) lifts with correction 0 by the identity. Liftable syzygies are closed under combinations. Steps 4 and 5 of the relative gluing proof then give no fall below \(D\) from the base's \(z\)-injectivity (thm:weak-base-stability-quadratic), and no refutation, since no generator is a nonzero constant. For part 2, the identity gives \(\rho=(c-\sum a_i)R^{\rm h}\). Two lifts differ by \(z\) times an element of \(J_U\), since they agree modulo \(z\), so \(\rho\) is determined modulo \(J_U\). Hence \(\sigma\) is liftable if and only if \(R^{\rm h}\in J_U\). \(\square\)</p>
+
+<h4>What this means</h4>
+<ul>
+<li>This is the syzygy form of the recorded results. thm:budget-cluster-dichotomy found consistent clusters local and inconsistent ones failing at degree \(\sum_b(k_b-1)\). thm:resolvent-absorption added the resolvent. Here the obstruction is the circuit syzygy's lift, at degree \(s(w-1)\), and the repair is the same resolvent. That \(R^{\rm h}\notin J_U\) for inconsistent clusters, so that a fall really occurs, is the dichotomy's result and is not reproved here.</li>
+<li>Only circuits with \(s(w-1)+1\le D\) matter. For clauses of width \(k\) at \(D=(4p-1)(p-1)k=22k\) (\(p=3\)), that is \(s\le22\) roughly, as in the dichotomy's count. Uniformly random forms rarely have such small circuits: \(s\) forms in a space of dimension about \(N^2\) are dependent with probability about \(3^{s-N^2}\). Adversarial inventories can.</li>
+<li>The proposition treats one circuit with otherwise independent factors. Interacting circuits and shared factors are not covered. Several circuits can create new ones after resolvents are added. That is the saturation question, whose finite check failed for dense overlapping pairs (<a href="#entry-2026-09-24-saturated-locality">saturated locality</a>).</li>
+</ul>
+<p>Next: two circuits sharing clauses, the smallest interaction. Compute the syzygies of four clauses whose forms satisfy two independent circuits, by the same grading. Test whether they are generated by the two circuit syzygies, Koszul and Frobenius syzygies. If a new syzygy appears, find its lift, and compare with the saturated-locality failure.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:relative-gluing with its definition of liftable syzygies and steps 2 to 5; thm:budget-cluster-dichotomy and thm:resolvent-absorption (summaries and statements); thm:projection-freeness; lem:span-transfer's use of the cover; thm:weak-base-stability-quadratic. The claim search (dependency, circuit, resolvent, syzygy, cluster) returned the budget-cluster results, which this rederives on the syzygy level. A fresh-context reviewer confirmed the lemma (both cases, the Koszul conversion, the full-circuit substitution, the degree, and the independence of \(\sigma\)), the identity and its homogenization, the passage through the cover, and the arithmetic. Its Python check over \(\mathbb F_3\) for \(s=3\), \(w=2\) found the listed generators short exactly in degrees 4 to 7 without \(\sigma\), and complete with it. It required these changes, all adopted:</p>
+<ul>
+<li>the \(s=2\) remark kept inside the setting;</li>
+<li>part 2 stated as an if-and-only-if, with the fall alternative and without claiming non-membership;</li>
+<li>\(c\) defined rather than assumed, with the rescaling explained;</li>
+<li>basis independence of \(T(V)\) and independence of proper subsets of the circuit;</li>
+<li>the Frobenius lift's correction stated exactly;</li>
+<li>the enlarged family attributed to thm:resolvent-absorption.</li>
+</ul>
+<p>The changes correct or weaken, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-dependency-degree">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 31.49 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">55.95 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 17.93 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 12.02 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.60 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
