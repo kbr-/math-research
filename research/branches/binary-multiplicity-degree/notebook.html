@@ -29,12 +29,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic. Prove the \(\ell&gt;0\) part of the <a href="#cube-square-per-order-any-field">dimension-two conjecture</a> over every field. The step fails to keep the origin order, so look for an \(\ell\)-aware replacement, such as restricting to the lines through the origin (\(x_1=0\), \(x_2=0\), \(x_1=x_2\)) together with the dichotomy.</p>
+<p>Route item: cube-odd-characteristic. Understand \(n=3\) over odd characteristic, where the exchange law fails (<a href="#odd-cube-exchange-law-failure">refutation</a>).</p>
 <ul>
-<li>First test candidate recursions arithmetically against the 169 computed values.</li>
-<li>Then use witness structure at \(n=3\) over \(\mathbb F_3\) to understand why origin order becomes cheap from \(\ell=p\) on.</li>
+<li>Extend the prime-field kernel with the witness mode of the binary kernel. Extract a minimal polynomial for \(\delta_{\mathbb F_3}(3,12,3)=22\), and compare its structure with \(y_1^3\) times an order-zero polynomial.</li>
+<li>Classify the hyperplanes that avoid the origin by their intersection with the cube in odd characteristic, and test the dichotomy recursion arithmetically against the computed savings table.</li>
 </ul>
-<p>The <a href="#polynomial-relaxation-value-for-covers">relaxation value for covers</a> concerns the odd-field thread's goal. Recording it there is for that thread's own cycle or the user.</p>
+<p>Publication, Lean and correspondence remain the user's decisions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -1337,6 +1337,46 @@ Each \(E^{(t)}_j\) is symmetric and additive in each variable, and \(E^{(t)}_j(y
 <tbody>
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 9.59 s</strong></td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 9.59 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-square-all-orders" data-kind="research" data-route="cube-odd-characteristic" data-claims="thm:cube-square-per-order-any-field conj:cube-square-per-order-any-field">
+<h3>25 September 2026 — The square over every field, every origin order</h3>
+<p class="entry-meta">Working proof: δ_F(2,k,ℓ) = 2k − ⌈(k−ℓ−1)/2⌉ for every field F. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-square-order-zero-any-field">previous entry</a> proved the \(\ell=0\) case of the <a href="#cube-square-per-order-any-field">dimension-two conjecture</a>. It left \(\ell&gt;0\) open in characteristic \(\ne2\), because the step does not keep the origin order.</p>
+<p><strong>Outcome.</strong> The step is not needed. The line dichotomy alone reduces every case to origin order \(\ell\ge k-2\), and the two base cases follow from the origin-jet lemma.</p>
+<h4 id="cube-square-per-order-any-field-theorem">The theorem</h4>
+<p><strong>Working theorem</strong> (<code>thm:cube-square-per-order-any-field</code>). For every field \(F\) and \(0\le\ell&lt;k\), the least degree of \(P\in F[x_1,x_2]\) with Hasse multiplicity \(\ge k\) at \((1,0)\), \((0,1)\) and \((1,1)\), and exactly \(\ell\) at the origin, is</p>
+<div class="math">\[ \delta_F(2,k,\ell)=2k-\Bigl\lceil\frac{k-\ell-1}{2}\Bigr\rceil . \]</div>
+<p><strong>Facts over any field.</strong> Let \(y_i=x_i^2-x_i\). The following hold over every field, with the same one-line reasons as in the binary <a href="#binary-origin-jet-parametrization">origin-jet lemma</a>:</p>
+<ol type="a">
+<li>\(F[x_1,x_2]\) has the basis \(x^\varepsilon y^e\) with \(\varepsilon\in\{0,1\}^2\), and \(\deg=\max(|\varepsilon|+2|e|)\): \(y_i\) is monic, so the top monomial of \(x^\varepsilon y^e\) is \(x^{\varepsilon+2e}\).</li>
+<li>\((y)^j\) is spanned by the basis elements with \(|e|\ge j\), because \(x_i^2=y_i+x_i\), so multiplying by \(x_i\) never lowers \(e\).</li>
+<li>\((y)^j=\bigcap_{a\in\{0,1\}^2}\mathfrak m_a^j\): the inclusion holds, the four ideals are comaximal, and both quotients have dimension \(4\binom{j+1}{2}\).</li>
+<li>Hasse multiplicity \(\ge j\) at \(a\) means membership in \(\mathfrak m_a^j\).</li>
+</ol>
+<p>In particular a nonzero element of \((y)^j\) has degree \(\ge2j\).</p>
+<p><strong>Proof.</strong> Put \(m=k-\ell-1\) and \(\tau(k,\ell)=2k-\lceil m/2\rceil\), and let \(G=(1-x_1)(1-x_2)(1-x_1-x_2)\).</p>
+<ul>
+<li><strong>Upper bound.</strong> \(y_1\) vanishes simply at all four cube points and has order 1 at the origin. So \(y_1^\ell\) times the polynomial of the <a href="#cube-square-order-zero-any-field">order-zero theorem</a> for \(c=k-\ell\) has multiplicity \(\ge k\) off the origin and order exactly \(\ell\) at it. Its degree is \(2\ell+2c-\lceil(c-1)/2\rceil=\tau(k,\ell)\).</li>
+<li><strong>Dichotomy.</strong> This is the line argument of the order-zero theorem, which never used the origin. If \(\deg P&lt;2k\), then \(P=GP'\), where \(P'\) has multiplicity \(\ge k-2\) at the three points. \(G\) is a unit at the origin, so \(P'\) has order exactly \(\ell\) there, and \(\deg P'=\deg P-3\).</li>
+<li><strong>Induction for \(m\ge2\).</strong> Here \(k-2&gt;\ell\), so \(P'\) is an instance with parameters \((k-2,\ell)\). By induction on \(m\), \(\deg P\ge\min(2k,3+\tau(k-2,\ell))=\min(2k,\tau(k,\ell))=\tau(k,\ell)\), since \(\tau(k,\ell)-\tau(k-2,\ell)=3\) and \(\tau\le2k\).</li>
+<li><strong>Base \(m=1\)</strong> (\(k=\ell+2\), target \(2\ell+3\)). Either \(\deg P\ge2k&gt;2\ell+3\), or \(P=GP'\). Then \(P'\) has multiplicity \(\ge\ell\) at all four cube points, so \(P'\in(y)^\ell\) by (c) and (d). By (a) and (b), \(\deg P'\ge2\ell\), so \(\deg P\ge2\ell+3\).</li>
+<li><strong>Base \(m=0\)</strong> (\(k=\ell+1\), target \(2\ell+2=2k\)). Either \(\deg P\ge2k\), or \(P=GP'\), where \(P'\) has multiplicity \(\ge\ell-1\) everywhere and order exactly \(\ell\) at the origin. If \(\ell=0\), \(\deg P\ge3\). If \(\ell\ge1\), then \(P'\in(y)^{\ell-1}\) by (c) and (d). If \(\deg P'\le2\ell-2\), then by (a) and (b) all its terms \(x^\varepsilon y^e\) have \(|e|=\ell-1\) and \(\varepsilon=0\), so \(P'=H(y_1,y_2)\) with \(H\ne0\) homogeneous of degree \(\ell-1\). Its lowest form at the origin is \(H(-x_1,-x_2)\ne0\), of degree \(\ell-1\), which contradicts order \(\ell\). So \(\deg P'\ge2\ell-1\) and \(\deg P\ge2\ell+2\). \(\square\)</li>
+</ul>
+<p>Over \(\mathbb F_2\) this is the \(n=2\) case of the <a href="#per-order-value-all-dimensions">binary theorem</a>. It fits all 169 computed values over \(\mathbb F_3\) and \(\mathbb F_5\) with \(n=2\) (<code>research/results/bmd-r9-odd-cube/summary.txt</code>). So the <a href="#cube-square-per-order-any-field">conjecture</a> holds.</p>
+<p><strong>What this says about \(n=3\).</strong> The same scheme needs hyperplanes that avoid the origin and meet the cube in a sub-cube, together with a matching product \(G\). In dimension two the three lines play both roles in every characteristic. In dimension three over odd characteristic, the plane \(x_1+x_2+x_3=1\) meets the cube only in the three unit vectors (in characteristic 2 it also contains \((1,1,1)\)), and the multiplicities of the product differ from point to point. This fits the exchange-law failure at \(n=3\).</p>
+<p><strong>General statement.</strong> <code>thm:cube-square-per-order-any-field</code>, for every field and all \(0\le\ell&lt;k\). It proves <code>conj:cube-square-per-order-any-field</code>.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the order-zero theorem, its line argument, and the facts (a)–(d). A fresh-context reviewer checked the upper bound, the dichotomy for general \(\ell\), the induction and both base cases, and facts (a)–(d) over an arbitrary field. It checked the \(n=3\) remark too: the plane \(x_1+x_2+x_3=1\) also contains \((1,1,1)\) in characteristic 2. An independent brute force by rank over all monomials agrees with the formula in all 108 cases over \(\mathbb F_2\), \(\mathbb F_3\) and \(\mathbb F_7\), \(k\le8\) (<code>research/results/bmd-r11-square-all-orders/r11bf.py</code>). Its one requested change, to state (a)–(d) explicitly instead of pointing to the binary lemma, is made.</p>
+<p><strong>Assessment.</strong> Dimension two is settled in every characteristic. For the odd-characteristic cube, the next question is \(n=3\), where the exchange law fails and origin order becomes cheaper from \(\ell=p\) on. Understanding that needs the kernel's witnesses at \(n=3\) over \(\mathbb F_3\). Process: removing the step, and handling the origin through the base cases, made the proof shorter than the order-zero one.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r11-square-all-orders">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 37.47 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 37.47 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
