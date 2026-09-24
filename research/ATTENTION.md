@@ -54,6 +54,22 @@ The subset-sum step in HLT2026v1 Proposition 21 is satisfiable in characteristic
 
 ---
 
+### Binary multiplicity degree formula
+
+**Claim:** [conj:binary-multiplicity-degree-formula](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-exact-small-table>)
+
+For 1<=k<2^(n-1), the minimum degree of an F_2 polynomial with Hasse multiplicity >= k at every nonzero point of F_2^n and < k at the origin is 2k+n-2-floor(log2 k).
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Would answer the co-author's question below the threshold: the multiplicity bound is not attained, and each dimension beyond floor(log2 k)+2 costs one degree; in characteristic two it undercuts the real-field answer n+2k-3 for k>=4.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Prove the upper half through an n-independent product factor Q_k, then the lower one-dimension step D(n,k) >= D(n-1,k)+1.
+
+---
+
 ### Generic PC log inventory transfer refuted
 
 **Claim:** [cor:generic-PC-log-inventory-transfer-refuted](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-ordering-source-test>)
