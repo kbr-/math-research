@@ -18,7 +18,7 @@
 <p>The goal follows from S1 by the proved <a href="#weak-base-unary-selector-transfer">compiler</a>. S2 to S5 are what the current route, relative gluing on the window, needs for S1. No proved reduction yet turns them into S1 for adversarial inventories, and S2 is where it is missing. Order: highest risk first after S1.</p>
 <ol>
 <li><strong>S1, block hardness.</strong> Over \(\mathbb F_3\), for fixed \(K\) and large \(n\), the weak unary PHP base on \(n+1\) rows and \(n\) columns plus any \(n^K\) complete accuracy-one ENS blocks has no PC refutation of degree 11 (\(4p-1\) at other odd \(p\)). The blocks have arbitrary affine inputs \(L\), \(q=1-L^2\), private coefficients \(r\), and companions \(qP\) with \(P=1-\sum rq\). <em>Status:</em> proved when every block's projected rank is at most \(R\) or at least \(Q_*\) (<a href="#ternary-low-or-dense-graph-rank-exclusion">graph criterion</a>); open in the window between.</li>
-<li><strong>S2, dependent forms.</strong> In the window, blocks whose input forms are linearly dependent glue: the base plus the blocks has no fall below 11. It must cover the band, whose forms outnumber a glued member's independence bound about \(10^8\)-fold (<a href="#entry-2026-09-24-mixture-composition">count</a>). <em>Status:</em> open, highest risk. No member notion exists beyond repeated linear parts, and pairwise conditions fail for selectors on \(x,y,x+y\) (prop:overlap-tor). Proved when each block shares one input: dependencies among the shared forms cause no fall below 11, and proportional ones reduce to S5 (<a href="#entry-2026-09-25-one-shared-input-locality">one shared input</a>). Open for blocks sharing several inputs, as all band blocks do.</li>
+<li><strong>S2, dependent forms.</strong> In the window, blocks whose input forms are linearly dependent glue: the base plus the blocks has no fall below 11. It must cover the band, whose forms outnumber a glued member's independence bound about \(10^8\)-fold (<a href="#entry-2026-09-24-mixture-composition">count</a>). <em>Status:</em> open, highest risk. No member notion exists beyond repeated linear parts, and pairwise conditions fail for selectors on \(x,y,x+y\) (prop:overlap-tor). Proved when each block shares one input: dependencies among the shared forms cause no fall below 11, and proportional ones reduce to S5 (<a href="#entry-2026-09-25-one-shared-input-locality">one shared input</a>). Open for blocks sharing several inputs, as all band blocks do: two blocks with two shared inputs each and overlapping, non-proportional forms fall at 7 or 8, below 11, at \(h=3,4,5\), so such overlaps need cross generators beyond \(R\) and \(T\) (<a href="#entry-2026-09-25-overlap-pairs">overlap pairs</a>). Band blocks have no private inputs, and S2 must be tested in that form.</li>
 <li><strong>S3, freeness.</strong> The weak top algebra is free through degree 11 over the span of the inventory's forms. <em>Status:</em> proved on a Zariski-open set for at most \(m(\lfloor N/21\rfloor-1)\) forms (<a href="#entry-2026-09-24-general-forms-freeness">general forms</a>); open for the band's rational and adversarial tuples.</li>
 <li><strong>S4, companion tops.</strong> A single block's top ideal equals \(\rho'Q\) below degree \(h+2\) (conj:companion-tops-low-degree). <em>Status:</em> checked through \(h=7\), degree 8; needed for \(h\ge10\), degree 11.</li>
 <li><strong>S5, repeated linear parts.</strong> Pairs and triples of blocks with identical or parallel linear parts, with \(R\) and \(T\), have no fall below 11 when \(h\ge7\) (conj:r-added-parallel-fall; triples with \(T\)). Identical pairs fall no lower than \(h+4\) (conj:shared-input-falls). <em>Status:</em> checked at small \(h\). With S4, the locality theorems reduce components with repeated linear parts and at most two multi-coordinate blocks to these.</li>
@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> <a href="#entry-2026-09-25-one-shared-input-locality">One-shared-input locality</a> settles S2 below 11 for blocks sharing one input, whatever the dependencies. What remains is blocks sharing several inputs. Next: two such blocks whose spans overlap in two dimensions. Decide whether \(\operatorname{Tor}_1^{T(U)}(A_a/\mathfrak n_a,A_b/\mathfrak n_b)\) vanishes below degree 12 for \(\dim U=2\) and non-proportional input forms, by generalizing lem:hub-torsion-floor to the truncated algebra of a plane.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> One shared input per block is settled below 11. Blocks sharing several overlapping inputs fall at 7 or 8 without cross generators (<a href="#entry-2026-09-25-overlap-pairs">overlap pairs</a>), and band blocks have no private inputs. Next: identify the plane pair's degree-7 and the line pair's degree-8 witnesses. Then test whether one bounded-degree cross generator per overlapping pair removes every fall below 11, including the none-indicator elements \(P_a-P_b-\overline{(N_a-N_b)}\) for blocks without private inputs.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -19361,6 +19361,87 @@ So every top syzygy of degree \(\le11\) lifts, and \(F\) has no fall below 11. \
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 22.37 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">9 min 49.18 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-overlap-pairs" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:none-indicator-identity ex:overlap-pair-falls">
+<h3>Overlap pairs: two blocks sharing two inputs each, without proportional inputs, fall below 11 at h = 3, 4, 5, with the same lowest fall at h = 4 and 5; P equals the none-indicator on each block</h3>
+<p class="entry-meta">25 September 2026 · Working proof (none-indicator identity) and a finite check (overlap pair falls) · open statement S2 · cycle odd-prime-plane-overlap.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement S2. thm:one-shared-input-locality settles S2 below 11 for blocks sharing one input. Band blocks share many inputs. For two blocks, the cross syzygies are \(\operatorname{Tor}_1\) over the truncated algebra of the overlap of their spans (prop:overlap-tor). This cycle asks the smallest deciding question: does a pair of blocks sharing two inputs each, with no two input forms proportional but with overlapping spans, fall below 11?</p>
+<p><strong>General statement.</strong> lem:none-indicator-identity and ex:overlap-pair-falls.</p>
+<ul>
+<li>lem:none-indicator-identity. Let a complete accuracy-one ENS block over \(\mathbb F_3\) have inputs \(L_1,\dots,L_h\), \(q_i=1-L_i^2\) and \(P=1-\sum_ir_iq_i\). Let \(I\) be the block's ideal together with the field equations \(v^3-v\) of all its variables. Then
+\[P-N\in I,\qquad N=\prod_iL_i^2,\]
+and \(N\) is the indicator that no input is true. So for any two blocks, \(P_a-P_b-\overline{(N_a-N_b)}\in I_a+I_b\), where the bar denotes reduction modulo the field equations.</li>
+<li>ex:overlap-pair-falls. Consider separately augmented pairs over \(\mathbb F_3\) with private coefficients, two shared inputs and \(h-2\) private inputs each, and no cross generators. Both configurations fall below 11 for \(h=3,4,5\): the plane pair at 5, 7, 7 and the line pair at 7, 8, 8. So the lowest fall is the same at \(h=4\) and \(h=5\). The configurations are:
+<ul>
+<li>the plane pair \(a\) on \((x,y)\), \(b\) on \((x+y,x-y)\);</li>
+<li>the line pair \(a\) on \((x,y)\), \(b\) on \((x+y,w)\).</li>
+</ul></li>
+</ul>
+
+<h4>Proof of the identity</h4>
+<p>With field equations, \(I\) is radical, so it suffices to check vanishing at every \(\mathbb F_3\)-point of the block's zero set. Since \(q_i=1-L_i^2\in\{0,1\}\), \(N=\prod(1-q_i)\) is 1 exactly when no input is true.</p>
+<ul>
+<li>If some \(q_i=1\), the companion \(q_iP\) forces \(P=0=N\).</li>
+<li>If every \(q_i=0\), then \(P=1-\sum r_i\cdot0=1=N\).</li>
+</ul>
+<p>So \(P-N\) vanishes on the zero set, and \(P-N\in I\). The rest follows by subtracting two such elements. \(\square\)</p>
+
+<h4>The computations</h4>
+<p><code>pair_overlap.sing</code> (<code>pair_overlap.out</code>) and <code>pair_overlap_h5.sing</code> (<code>pair_overlap_h5.out</code>) compute the lowest span-ring fall with degree bound 11. Two controls are included: an identical shared input, and a parallel one.</p>
+<table>
+<thead><tr><th>Pair</th><th>\(h=3\)</th><th>\(h=4\)</th><th>\(h=5\)</th></tr></thead>
+<tbody>
+<tr><td>plane: \((x,y)\) and \((x+y,x-y)\)</td><td>5</td><td>7</td><td>7</td></tr>
+<tr><td>line: \((x,y)\) and \((x+y,w)\)</td><td>7</td><td>8</td><td>8</td></tr>
+<tr><td>identical: \((x,y)\) and \((x,w)\)</td><td>7</td><td>8</td><td>not run</td></tr>
+<tr><td>parallel: \((x,y)\) and \((x+1,w)\)</td><td>7</td><td>7</td><td>not run</td></tr>
+</tbody>
+</table>
+<p>The controls agree with the record: identical pairs fall at \(h+4\) (conj:shared-input-falls), and parallel pairs at 7 (cor:parallel-pair-fall-all-h).</p>
+
+<h4>What was predicted and what failed</h4>
+<ul>
+<li><em>The product \(P_aP_b\).</em> The plane pair's inputs satisfy \(q_{a1}+q_{a2}+q_{b1}+q_{b2}=1\), since \(x^2+y^2+(x+y)^2+(x-y)^2=3(x^2+y^2)=0\). So \(P_aP_b=P_b\,g_a+P_a\,g_b\), with \(g_a=P_a(q_{a1}+q_{a2})\in I_a\), is a consequence of degree 6 derived at degree 8, as \(T\) is for covering triples. The prediction was that adding \(C=P_aP_b\) would remove the plane pair's low falls. It did not: the falls stayed 5 and 7 (<code>pair_plane_c.out</code>). So \(C\) is not the witness.</li>
+<li><em>The witness at \(h=3\).</em> <code>plane_witness.sing</code> (<code>plane_witness.out</code>) prints four fall witnesses of degree 5. One simplifies to \(y_ay_b\,(P_a-P_b+x^2+y^2)\), with \(y_a\), \(y_b\) the private inputs. It is the identity's element. With \(Y_a=\prod(\text{private inputs of }a)\), one has \(Y_aN_a\equiv Y_a\cdot x^2y^2\) modulo field equations, and
+\[x^2y^2-(x+y)^2(x-y)^2\equiv-(x^2+y^2).\]
+So \(Y_aY_b\bigl(P_a-P_b-\overline{(N_a-N_b)}\bigr)\equiv Y_aY_b(P_a-P_b+x^2+y^2)\) modulo the field equations.</li>
+<li><em>Growth with \(h\).</em> That element has degree \(2(h-2)+3=2h-1\), consistent with 5 and 7. It was identified only at \(h=3\), and at \(h=4\) it may still be the lowest witness. The prediction of 9 at \(h=5\) failed: the plane pair falls at 7. So from \(h=5\) another witness, not yet identified, falls first. The line pair was predicted at \(h+4=9\), by analogy with identical pairs, and falls at 8, the value it had at \(h=4\).</li>
+</ul>
+
+<h4>What this means for S2</h4>
+<ul>
+<li>The two tested configurations, two shared inputs each with overlapping spans and no proportional inputs, fall below 11 at \(h=3,4,5\). \(R\) and \(T\) do not apply to them: they have no parallel inputs and are not covering triples, which is why no cross generators were added. So S2 needs cross generators for such overlaps beyond \(R\) and \(T\). Adding \(C=P_aP_b\) alone does not remove the plane pair's falls.</li>
+<li><em>A modelling gap.</em> Every block model on this route has private inputs. Band blocks have none, since all their inputs are forms in the board variables. For such blocks the identity gives \(P_a-P_b-\overline{(N_a-N_b)}\in J\) with no factor \(Y\). A pair whose none-indicators differ by a function of degree \(\delta\) then has a consequence of degree \(\max(3,\delta)\). Heuristically the pair derives it only near degree \(2h\), the degree of the \(N\)'s. Whether it is a fall at all is untested. S2 must be stated and tested for blocks without private inputs, and the S2 entry of the Open statements now says so.</li>
+</ul>
+<p>Next: identify the plane pair's degree-7 witness at \(h=5\) and the line pair's degree-8 witness at \(h=4,5\). Then test whether one cross generator per overlapping pair of bounded degree removes all falls below 11, and whether the none-indicator elements \(P_a-P_b-\overline{(N_a-N_b)}\) are those generators for blocks without private inputs.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the compiler's block definition (complete blocks, private coefficients), prop:overlap-tor, conj:shared-input-falls, cor:parallel-pair-fall-all-h, thm:one-shared-input-locality and its scope. Every value is read from the named outputs. The witness was simplified by hand from <code>plane_witness.out</code>, term by term against \(r_{a,i}q_{a,i}\) and \(r_{b,i}q_{b,i}\). A claim search for the none-indicator identity found no earlier statement of it. The identity is a two-line consequence of the block's definition.</p>
+<p>A fresh-context reviewer found no mathematical error. It checked the radicality (every script adds \(v^3-v\) for every variable), the identity, witness 4, the quartic identity, the scripts' construction and the table. It required these changes, all adopted:</p>
+<ul>
+<li>the field equations placed in the lemma's ideal;</li>
+<li>the unproved "derived only near \(2h\)" moved out of the lemma and marked as a heuristic;</li>
+<li>the title and the check stated with the observed values;</li>
+<li>the growth paragraph limited to what \(h=5\) shows;</li>
+<li>the conclusions limited to the two tested configurations, and to \(C\) alone;</li>
+<li>the reason \(R\) and \(T\) do not apply stated;</li>
+<li>the Open statements edited in the same commit.</li>
+</ul>
+<p>These weaken or clarify claims, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-plane-overlap">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>15 min 47.51 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 3.18 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 6.75 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">7 min 33.30 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">3 min 4.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>

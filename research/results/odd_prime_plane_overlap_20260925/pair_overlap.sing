@@ -1,0 +1,36 @@
+// Open statement S2 for blocks sharing several inputs, smallest case: a PAIR of separately augmented complete
+// accuracy-one ENS blocks over F_3 with private coefficients, each with two shared inputs and h-2 private inputs,
+// no cross generators.  Question: does a pair whose shared input forms are pairwise non-proportional, but whose
+// spans overlap, fall below 11 (the compiler's degree)?  Cross syzygies are Tor_1 over the truncated algebra of the
+// overlap (prop:overlap-tor), so a fall would call for a new cross generator.
+//   P1 plane:  a on (x, y),   b on (x+y, x-y)   overlap = the plane, no two of the four forms proportional
+//   P2 line:   a on (x, y),   b on (x+y, w)     overlap = the line x+y, which is not an input of a
+//   P3 control identical: a on (x, y), b on (x, w)   shared identical input (W case)
+//   P4 control parallel:  a on (x, y), b on (x+1, w) parallel inputs: pairs fall at 7 (cor:parallel-pair-fall-all-h)
+// Output: lowest degree t < DB of an element of (J:z) not in J (DB if none), DB = 11, h = 3, 4.
+option(redSB);
+proc pairfall(int h, int kind, int DB)
+{
+  ring S = 3, (x, y, w, ya(1..h-2), yb(1..h-2), ra(1..h), rb(1..h), z), dp;
+  ideal La = x, y; ideal Lb;
+  if (kind == 1) { Lb = x + y, x - y; }
+  if (kind == 2) { Lb = x + y, w; }
+  if (kind == 3) { Lb = x, w; }
+  if (kind == 4) { Lb = x + 1, w; }
+  int i; for (i = 1; i <= h - 2; i++) { La = La, ya(i); Lb = Lb, yb(i); }
+  poly Pa = 1; poly Pb = 1;
+  for (i = 1; i <= h; i++) { Pa = Pa - ra(i)*(1 - La[i]^2); Pb = Pb - rb(i)*(1 - Lb[i]^2); }
+  ideal F; for (i = 1; i <= nvars(basering) - 1; i++) { F = F, var(i)^3 - var(i); }
+  ideal Ia; ideal Ib; for (i = 1; i <= h; i++) { Ia = Ia, (1 - La[i]^2)*Pa; Ib = Ib, (1 - Lb[i]^2)*Pb; }
+  ideal J = homog(F, z) + homog(std(Ia + F), z) + homog(std(Ib + F), z);
+  degBound = DB; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+  int lowest = DB; int k;
+  for (k = 1; k <= ncols(Q); k++) { if (Q[k] != 0 && deg(Q[k]) < lowest) { if (reduce(Q[k], SJ) != 0) { lowest = deg(Q[k]); } } }
+  return(lowest);
+}
+list nm = "P1 plane", "P2 line", "P3 identical", "P4 parallel";
+int h; int kind;
+for (h = 3; h <= 4; h++) { for (kind = 1; kind <= 4; kind++) {
+  print(nm[kind] + " h=" + string(h) + " DB=11 lowest_fall=" + string(pairfall(h, kind, 11)));
+} }
+quit;

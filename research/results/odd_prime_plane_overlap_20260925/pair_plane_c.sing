@@ -1,0 +1,30 @@
+// Test of the quadric-dependency cross rule on the plane pair P1: a on (x, y), b on (x+y, x-y), h - 2 private inputs
+// each, private coefficients, separately augmented.  Its inputs satisfy q_a1 + q_a2 + q_b1 + q_b2 = 1 over F_3
+// (x^2 + y^2 + (x+y)^2 + (x-y)^2 = 0), so C = P_a P_b is a consequence of degree 6 derived at degree 8, as R and T
+// are for parallel pairs and covering triples.  pair_overlap.out: P1 falls at 5 (h = 3) and 7 (h = 4) without C.
+// Prediction stated before the run: with C added, P1's lowest fall rises to h + 4 (7 at h = 3, 8 at h = 4), the value
+// of identical pairs (conj:shared-input-falls) and of the line pair P2; if it does not rise, C is not the witness.
+// Output: lowest degree < DB of an element of (J:z) not in J (DB if none), DB = 11.
+option(redSB);
+proc pairfall(int h, int kind, int DB)
+{
+  ring S = 3, (x, y, w, ya(1..h-2), yb(1..h-2), ra(1..h), rb(1..h), z), dp;
+  ideal La = x, y; ideal Lb;
+  if (kind == 1) { Lb = x + y, x - y; }
+  if (kind == 2) { Lb = x + y, w; }
+  if (kind == 3) { Lb = x, w; }
+  if (kind == 4) { Lb = x + 1, w; }
+  int i; for (i = 1; i <= h - 2; i++) { La = La, ya(i); Lb = Lb, yb(i); }
+  poly Pa = 1; poly Pb = 1;
+  for (i = 1; i <= h; i++) { Pa = Pa - ra(i)*(1 - La[i]^2); Pb = Pb - rb(i)*(1 - Lb[i]^2); }
+  ideal F; for (i = 1; i <= nvars(basering) - 1; i++) { F = F, var(i)^3 - var(i); }
+  ideal Ia; ideal Ib; for (i = 1; i <= h; i++) { Ia = Ia, (1 - La[i]^2)*Pa; Ib = Ib, (1 - Lb[i]^2)*Pb; }
+  ideal J = homog(F, z) + homog(std(Ia + F), z) + homog(std(Ib + F), z) + homog(ideal(Pa*Pb), z);
+  degBound = DB; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+  int lowest = DB; int k;
+  for (k = 1; k <= ncols(Q); k++) { if (Q[k] != 0 && deg(Q[k]) < lowest) { if (reduce(Q[k], SJ) != 0) { lowest = deg(Q[k]); } } }
+  return(lowest);
+}
+int h;
+for (h = 3; h <= 4; h++) { print("P1 plane + C h=" + string(h) + " DB=11 lowest_fall=" + string(pairfall(h, 1, 11))); }
+quit;

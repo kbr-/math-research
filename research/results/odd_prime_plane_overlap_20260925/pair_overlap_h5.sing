@@ -1,0 +1,29 @@
+// Prediction test at h = 5 for the two overlap pairs of pair_overlap.sing (same construction, DB = 11).
+// P1 plane (a on (x, y), b on (x+y, x-y)): the h = 3 witness is y_a y_b (P_a - P_b + x^2 + y^2) (plane_witness.out);
+// its analogue with all private inputs, Y_a Y_b (P_a - P_b + x^2 + y^2), has degree 2(h-2) + 3 = 2h - 1, matching the
+// falls 5 and 7 at h = 3, 4.  Prediction stated before the run: P1 falls first at 9 at h = 5.
+// P2 line (a on (x, y), b on (x+y, w)): falls 7, 8 at h = 3, 4, the identical-pair law h + 4 of conj:shared-input-falls.
+// Prediction stated before the run: P2 falls first at 9 at h = 5.
+option(redSB);
+proc pairfall(int h, int kind, int DB)
+{
+  ring S = 3, (x, y, w, ya(1..h-2), yb(1..h-2), ra(1..h), rb(1..h), z), dp;
+  ideal La = x, y; ideal Lb;
+  if (kind == 1) { Lb = x + y, x - y; }
+  if (kind == 2) { Lb = x + y, w; }
+  if (kind == 3) { Lb = x, w; }
+  if (kind == 4) { Lb = x + 1, w; }
+  int i; for (i = 1; i <= h - 2; i++) { La = La, ya(i); Lb = Lb, yb(i); }
+  poly Pa = 1; poly Pb = 1;
+  for (i = 1; i <= h; i++) { Pa = Pa - ra(i)*(1 - La[i]^2); Pb = Pb - rb(i)*(1 - Lb[i]^2); }
+  ideal F; for (i = 1; i <= nvars(basering) - 1; i++) { F = F, var(i)^3 - var(i); }
+  ideal Ia; ideal Ib; for (i = 1; i <= h; i++) { Ia = Ia, (1 - La[i]^2)*Pa; Ib = Ib, (1 - Lb[i]^2)*Pb; }
+  ideal J = homog(F, z) + homog(std(Ia + F), z) + homog(std(Ib + F), z);
+  degBound = DB; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+  int lowest = DB; int k;
+  for (k = 1; k <= ncols(Q); k++) { if (Q[k] != 0 && deg(Q[k]) < lowest) { if (reduce(Q[k], SJ) != 0) { lowest = deg(Q[k]); } } }
+  return(lowest);
+}
+print("P1 plane h=5 DB=11 lowest_fall=" + string(pairfall(5, 1, 11)));
+print("P2 line h=5 DB=11 lowest_fall=" + string(pairfall(5, 2, 11)));
+quit;
