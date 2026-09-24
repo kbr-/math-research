@@ -19,12 +19,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> By <a href="#entry-2026-09-24-closure-gluing">closure gluing</a>, a column member closed under all its vanishing polynomials satisfies hypothesis (c) when the row sums act freely on the graded functions \(G\) on its allowed assignments. conj:closed-row-freeness asks this for allowed sets covering half the slice; members of low weight fail it. Next:</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The <a href="#entry-2026-09-24-closed-base-review">closed-base review</a> moves the closed column member into the base: relative gluing then needs (a) conj:closed-row-freeness, (b) conj:closed-base-splitting for the generic members, and (c) no falls of each generic member over the closed base. (b) is the least tested. Next:</p>
 <ol>
-<li>Test the conjecture where the closure matters, \(D\ge5\), with a compiled kernel on the direct sum \(G=\bigoplus_Yx_Y\operatorname{gr}\mathbb F^{Z_{S(Y)}}\), for selectors and clauses, in one- and two-row contents.</li>
-<li>Seek a proof through the fibers: each is free in low degree by onto stability, and the question is whether the degree filtration glues them freely.</li>
+<li>Test conj:closed-base-splitting at \(n=8,9\) through degree 3, the sizes of the recorded splitting checks: Hilbert series of the closed base's top algebra modulo random generic forms against \(\mathrm{HS}/(1+q+q^2)^k\), for a closed selector and a closed clause, with unclosed and base-only controls.</li>
+<li>Then test conj:closed-row-freeness at \(D\ge5\) with a compiled kernel on the direct sum \(G=\bigoplus_Yx_Y\operatorname{gr}\mathbb F^{Z_{S(Y)}}\).</li>
 </ol>
-<p>Pending: hypothesis (b) for closed members, whose tops carry pigeon cells; non-column members.</p>
+<p>Pending: (c) for generic members over the closed base.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -13222,6 +13222,64 @@ the sum over column-injective cell sets \(Y\) in rows \(1,\dots,m-1\), with \(S(
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-closed-base-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="conj:closed-base-splitting">
+<h3>Route review: the closed column member belongs in the base; three obligations remain, and the generic members' splitting over the closed base is the least tested</h3>
+<p class="entry-meta">24 September 2026 · Route review and conjecture · The relative gluing line after closure gluing; cycle odd-prime-closed-freeness.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>General statement.</strong> The line's claim is thm:relative-gluing applied to the budget's members. After thm:closure-gluing, the column component enters closed, and its closed tops carry pigeon cells. So the column component can no longer be a member in the sense of hypothesis (b), whose tops must be polynomials in the member's own forms. The review moves it into the base. The new claim is conj:closed-base-splitting: the generic members' forms split over the top algebra of the weak base plus the closed column member, as conj:column-component-splitting asserted over the weak base alone.</p>
+
+<h4>The line after closure</h4>
+<p>Put \(B^\sharp\) for the homogenized weak base plus the closed column member \(\mathcal M_D(Z)\), \(Z\) the column constraints' allowed set. Apply thm:relative-gluing with \(B^\sharp\) as base and the generic (non-column) members as members. It needs:</p>
+<ol type="a">
+<li>\(z\) injective on \(B^\sharp\) below \(D\): by thm:closure-gluing this follows from conj:closed-row-freeness for \(Z\);</li>
+<li>top syzygies through \(D\) split into cross-member Koszul syzygies and member-supported ones. By lem:tensor-splitting-locality this holds when the top algebra of \(B^\sharp\) is, through \(D\), free over the generic members' form algebras, or of the tensor form that lemma allows. This is conj:closed-base-splitting;</li>
+<li>each generic member alone over \(B^\sharp\) has no fall below \(D\);</li>
+<li>no constant generator, which holds since \(\mathcal P_Z\) is nonempty.</li>
+</ol>
+<p>Hypothesis (a) of the weak base alone is proved (thm:weak-base-stability-quadratic, cor:base-by-fibers); it is now the case \(Z=\) the whole slice.</p>
+
+<h4>What the goal needs</h4>
+<p>For every fixed odd \(p\) and \(K\), all three items for the product clauses of any \(n^K\) adversarial families, at \(D=O(\log n)\), with column constraints in \(Z\) and all others as generic members. Items (a) to (c) are each open in general.</p>
+
+<h4>Falsification attempt</h4>
+<p>The attempt checks conj:closed-row-freeness, the input to (a), against the obstructions and parameters now recorded.</p>
+<ul>
+<li><em>Low weight.</em> prop:single-hole-member and its weight generalization refute the closed system when every pattern of \(Z\) has weight below \(\min(m,D)\). The budget's \(Z\) is the slice minus the patterns on which some clause's forms all take the forbidden values. By lem:quiet-members' union bound, those patterns have density at most \(n^K(1-1/p)^k\le1/n\) in the forms' value space. When the forms' values are close to uniform on the slice, which is the robustness the budget assumes, \(Z\) covers all but about \(1/n\) of the slice. So it contains patterns of every weight near \(N/2\), and the conjecture's density hypothesis holds. The obstruction does not apply.</li>
+<li><em>Range.</em> \(N\ge(p-1)(D+1)D\) holds at \(D=O(\log n)\) for large \(n\).</li>
+<li><em>Visibility.</em> lem:quiet-members bounds the degree of polynomials vanishing on the allowed set in the forms' coordinates, not in the \(C_j\). Heuristically, a nonzero polynomial in the \(C_j\) of low degree cannot vanish off a set of density about \(1/n\), so \(\mathcal M_D(Z)\) agrees with the slice's own ideal up to degree of order \(\log n\). The closure would then matter only between that degree and \(D\), where the finite checks cannot reach. In ex:closed-row-freeness and ex:hereditary-falls the specialization falls start at board degree 4, which needs \(D\ge5\), and \(N\ge20\) for one row or \(N\ge60\) for the range.</li>
+<li><em>Splitting.</em> The closure's placed products \(x_Yg\) are not polynomials in column forms. So conj:column-component-splitting, stated for column-type constraints over the weak base, does not transfer. Its evidence, at \(n=8,9\) through degree 3, concerns unclosed components.</li>
+</ul>
+<p>No obstruction refutes the conjectures. The attempt finds that (b) had to change form, and that its new form is untested.</p>
+
+<h4>Assessment of the line</h4>
+<p>Since the <a href="#entry-2026-09-24-effective-board-review">effective-board review</a>, five cycles proved general statements:</p>
+<ul>
+<li>fat-board stability;</li>
+<li>onto stability;</li>
+<li>fiber gluing, with a second proof of the base condition;</li>
+<li>closure saturation;</li>
+<li>closure gluing.</li>
+</ul>
+<p>Hypothesis (c) for the column component went from a conjecture about effective boards to one freeness conjecture, stated for allowed sets covering half the slice, with a proved sparse analog. A necessary condition on the pattern weights is known. The evidence is exact but small, below the conjecture's range, and at degrees where the closure changes nothing. So the column side is reduced but not decided. The generic side has not moved since the splitting checks at \(n\le9\). Moving the column component into the base changes what (b) and (c) mean there, and neither has been tested in the new form. On this evidence the line is coherent and each step is general, but its decisive statements are conjectures whose tests exceed the current tools.</p>
+
+<h4>The highest-risk item and the next step</h4>
+<p>The highest-risk item is (b) in its new form, since the architecture fails if it fails and nothing tests it. conj:closed-base-splitting: over \(\mathbb F_p\), for a column allowed set \(Z\) covering at least half the slice and generic forms \(\ell_1,\dots,\ell_k\) of the kind conj:column-component-splitting allows, the top algebra of \(B^\sharp\) is, through degree \(t\), free over \(\mathbb F[\ell_1,\dots,\ell_k]/(\ell^p)\) plus a part above degree \(t\).</p>
+<p>Next step, on route item <strong>odd-prime-clause-transfer</strong>: test conj:closed-base-splitting at the sizes of the recorded splitting checks, \(n=8,9\) through degree 3. Compare the Hilbert series of the closed base's top algebra modulo random generic forms with the free prediction \(\mathrm{HS}/(1+q+q^2)^k\), for a closed selector and a closed clause, with the unclosed and base-only controls. Then return to conj:closed-row-freeness with a compiled kernel on the direct sum of \(G\).</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the statements of thm:relative-gluing (hypotheses (a) to (d)), lem:tensor-splitting-locality, conj:column-component-splitting and its checks, lem:quiet-members, and the last five entries. The review adds a conjecture and no proof, so no reviewer pass was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-closed-freeness">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 27.57 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 7.85 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 19.59 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
