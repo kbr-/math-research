@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> On a free joint span, satisfiable families have no degree-\(D\) refutation, with no splitting needed (<a href="#entry-2026-09-24-joint-span-review">joint-span review</a>). The goal lies beyond the free range, where nothing recorded controls the syzygies. Next: test planted, satisfiable families of generic selectors over the weak base on 3 rows and 18 holes at \(D=3\), below and beyond the Taylor count of about 361. Measure falls, after a sizing run, against random-valued controls. The outcome decides whether large satisfiable families lift beyond freeness.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Satisfiable families on a free joint span are not refutable at degree \(D\) (<a href="#entry-2026-09-24-joint-span-review">joint-span review</a>). Beyond the count, planted families pin their point: each extra selector adds one fall, so no-fall gluing stops there, and dense parts act as restrictions (<a href="#entry-2026-09-24-planted-families">planted families</a>). Next: conditioned gluing. Prove that the weak base with the ideal of a partial matching on \(r\) rows has no falls below \(D\) when the restricted board is in the stability range, so that pinned members can be absorbed into the base. Then test a family that pins one row and is generic elsewhere against the conditioned count.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -15368,6 +15368,49 @@ Always \(\Delta_d\le0\).</li>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.54 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-planted-families" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:planted-excess-falls ex:planted-excess-falls-check">
+<h3>Planted families beyond the count pin their point: every selector past the top dimension adds one fall, so no-fall gluing stops there</h3>
+<p class="entry-meta">24 September 2026 · Finite check and a conjecture · Degree-2 falls of planted and random generic selector families over the weak base, 3 rows and 18 holes; cycle odd-prime-planted-families.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-joint-span-review">joint-span review</a> found that satisfiable families on a free joint span need no splitting. The goal lies beyond the free range. It asked whether satisfiable (planted) families of generic selectors beyond the Taylor count still have no falls, which would indicate a gluing mechanism beyond freeness. If they fall, the no-fall route cannot glue large families.</p>
+<p><strong>General statement.</strong> conj:planted-excess-falls: over \(\mathbb F_3\), on the weak unary base in its degree-2 stability range, a planted family of \(M\) generic selectors has \(\dim\ker(z:B_1\to B_2)=\min\bigl(\gamma_1,\max(0,M-\tau_2)\bigr)\). A planted family is one whose values avoid the forms' values at a fixed matching, so it is satisfiable. Here \(\tau_2\) is the dimension of the degree-2 top space the selectors can fill, and \(\gamma_1=\dim A_1\). So planted families have no falls up to the count. Each selector beyond it adds exactly one derived linear consequence, until the family's degree-2 closure is the whole ideal of the planted point. Random-valued families are refuted instead. ex:planted-excess-falls-check confirms this exactly at 3 rows and 18 holes, where \(\tau_2=1218\) and \(\gamma_1=51\).</p>
+
+<h4>Decidability and method</h4>
+<p>At degree 3 the test is out of reach this way. Singular took 28 s for 25 dense selectors and exceeded 90 s for 50, against a count of about 361. At degree 2 the same question is linear algebra. The base is \(z\)-injective below 2 for \(N\ge8\), and the Taylor count at degree 2 is the dimension \(\tau_2\) of the top space. <code>fall_d2.py</code> works on multilinear monomials of degree \(\le2\) with no two cells in one column, 1432 coordinates. Booleanity and column exclusions are degree-2 generators, so reducing modulo them stays inside \(V_2\). \(V_2\) is spanned by the reduced selectors and the products \((r_i-1)m\), \(\deg m\le1\). \(\ker z_1=\dim(V_2\cap P_{\le1})-\dim V_1\), computed as \(\operatorname{rank}V_2-\operatorname{rank}(\text{top part})-3\). It reproduces Singular's values at \(M=200\) and 400: top-algebra dimensions 1018 and 818, \(\ker z=0\) (<code>validate_d2.json</code>). It uses the same random stream as <code>planted_fall.py</code>. Planted values satisfy \(v_t\ne\ell_t(x^*)\), since \(1-(\ell-v)^2=0\) means \(\ell\ne v\), for the matching \(x^*\) with row \(i\) in hole \(i\).</p>
+
+<h4>Results</h4>
+<p>All on 3 rows and 18 holes, seed 1, values read from the JSON files:</p>
+<ul>
+<li>Planted, \(M=200,400,1000,1218\): \(\ker z_1=0\) (<code>validate_d2.json</code>, <code>below_count.json</code>, <code>at_count.json</code>).</li>
+<li>Planted, \(M=1219\): 1; \(M=1240\): 22 (<code>at_count.json</code>); \(M=1300,1500,2000\): 51 (<code>planted_beyond.json</code>). \(V_2\) then has rank 1431 of 1432: every polynomial of degree \(\le2\) vanishing at \(x^*\), and 1 is not derived.</li>
+<li>Random values, \(M=1000\): \(\ker z_1=0\) (<code>below_count.json</code>); \(M=1300,1500,2000\): 1 is derived, a refutation at degree 2 (<code>random_beyond.json</code>).</li>
+<li>The top part has rank \(1159+\) until it saturates at 1377, the full degree-2 coordinate space. The base's own tops take 159, so \(\tau_2=1377-159=1218\).</li>
+</ul>
+
+<h4>What this means</h4>
+<ul>
+<li>Below the count, planted and random families behave alike and have no falls. Beyond it, the difference is satisfiability. Random families are refuted. Planted families pin their point: each extra selector forces one more linear consequence, as a maximal-rank count predicts. This matches ex:planted-overload-thresholds, where pinned forms derived their values and refutation thresholds followed the conditioned base's count.</li>
+<li>So the no-fall route of relative gluing cannot glue dense satisfiable families. Their closure is a restriction, here the ideal of a point. The recorded way to handle such members is closure into the base. For a pinned family the closure is the ideal of the pinned partial assignment, and the base conditioned on it is again a weak base, on fewer rows and holes.</li>
+<li>For the goal this points to conditioning. Dense parts of the inventory act as restrictions of PHP, and hardness must survive them. This is the restriction-mixture line, parked at its <a href="#entry-2026-09-22-restriction-mixture-top-size">top-size lemma</a>.</li>
+</ul>
+<p>Next: conditioned gluing. Prove that the weak base together with the ideal of a partial matching \(\rho\) on \(r\) rows has no falls below \(D\) whenever the restricted board, \(m-r\) rows and \(N-r\) holes, is in the stability range. The base conditioned on \(\rho\) is then a valid base for relative gluing, and pinned members can be absorbed into it. Then test a family that pins one row and leaves the rest generic, against the prediction from the conditioned count.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the joint-span review's proposed test and counts; ex:selector-semiregular-thresholds and ex:planted-overload-thresholds (the conditioning interpretation); the fall formula of the generic-members checker. The degree-2 kernel was validated against Singular on two recorded-style cases before use, and all numbers are read from the result files. A sign error in the first planted runs (values equal to the forms at \(x^*\), which makes \(x^*\) violate every selector) was found before any result was used, and those runs were discarded. The conjecture was searched under planted, pinning, closure and dense selectors. The nearest records are ex:planted-overload-thresholds and ex:confined-family-falls. No proof is claimed, so no reviewer pass was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-planted-families">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>13 min 18.38 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 15.98 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 17.22 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 10.54 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8 min 27.05 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">7.60 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 4.</p>
 </div>
 </article>
 
