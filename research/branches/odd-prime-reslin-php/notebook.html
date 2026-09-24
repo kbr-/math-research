@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> The <a href="#entry-2026-09-24-hub-locality">hub</a> and <a href="#entry-2026-09-24-two-hub-locality">two-hub</a> locality theorems extend the family step below degree 11 to components with one multi-coordinate block, or two sharing one coordinate that no other block reads, on the same condition as stars: adapted bases (\(h\le5\)) or conj:companion-tops-low-degree for the band. The two-hub proof is a Tor vanishing over the shared coordinate's chain ring, from lem:hub-torsion-floor. Next: allow one-coordinate blocks on the shared coordinate. Route their pieces within the \(y\)-class, then bound the Tor degree with the representative's direction degrees included, since \(y^kA\) gives torsion in degree 0.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The <a href="#entry-2026-09-24-hub-locality">hub</a>, <a href="#entry-2026-09-24-two-hub-locality">two-hub</a> and <a href="#entry-2026-09-24-shared-coordinate-blocks">general two-hub</a> locality theorems reduce every component with at most two multi-coordinate blocks, sharing at most one coordinate, to its subfamilies of at most three blocks below degree 11, on the same condition as stars. This line now sits several conditions below the goal. Next: a route review that restates the open part of the goal as a short list of self-contained statements, as the <a href="#entry-2026-09-23-sheaf-generalization-review">generalization review</a> did with its three hard axes, places the locality line on it, and decides whether that line still discharges one of them.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -19089,6 +19089,106 @@ and \(w_0\) lies in the numerator. This is the identification of prop:overlap-to
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>15 min 25.79 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 27.26 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">9 min 58.39 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-shared-coordinate-blocks" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="thm:general-two-hub-locality">
+<h3>General two-hub locality: blocks on the hubs' shared coordinate are absorbed modulo a power of y, so every component with two multi-coordinate blocks sharing one coordinate is local below 11</h3>
+<p class="entry-meta">24 September 2026 · Conditional result (on adapted bases of the one-coordinate blocks) · cycle odd-prime-shared-coordinate-blocks.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. thm:two-hub-degree-locality assumes that no one-coordinate block reads the hubs' shared coordinate \(y\). Such blocks have ideals \(y^kA\), and \(A_0/y^kA_0\) has \(S_y\)-torsion in degree 0, so lem:hub-torsion-floor does not apply to them directly. This cycle removes the assumption.</p>
+<p><strong>General statement.</strong> thm:general-two-hub-locality. Let \(F\) be a connected family as in thm:two-hub-degree-locality, but with any number of one-coordinate blocks on \(y\), and \(T\) on covering triples of \(y\) including those with one or both hubs. Then every fall of \(F\) at a degree \(s\le10\) is a fall at degree \(s\) of a subfamily of at most three blocks. With lem:section-retraction: if none falls below 11, neither does \(F\). The hypotheses are:</p>
+<ul>
+<li>exactly two blocks \(h_0,h_1\) read several shared coordinates;</li>
+<li>they share exactly one coordinate \(y\);</li>
+<li>each hub has at least two private inputs;</li>
+<li>every other block has an adapted basis, or top ideal \(\rho'Q\) in degrees \(\le11\);</li>
+<li>\(F\) is connected, all blocks have \(h\ge3\) inputs and private coefficients, and every block has a private input;</li>
+<li>the cross set is \(R\) for parallel pairs on a common coordinate, including \(R_{h_ia}\) with \(a\) on \(y\) and \(R_{h_0h_1}\), and \(T\) for covering triples, without \(W\).</li>
+</ul>
+<p>This refines thm:two-hub-degree-locality by dropping its hypothesis that no other block reads \(y\).</p>
+
+<h4>Setting</h4>
+<p>As in thm:two-hub-degree-locality, the coefficient ring is \(A_{01}=A_0\otimes_{S_y}A_1\) over the product basis \(e_t\) of the one-coordinate blocks. Fix a component syzygy of total degree \(\le11\) on a set \(G\) of at least four blocks. Its pieces fall into four types.</p>
+<ul>
+<li>Type 0: \(X_p\otimes A_1\). This covers hub-0 pieces, including \(R_{h_0a}\) and \(T_{h_0ab}\) with \(a,b\) on \(y\), with ideals \(y^e\rho'_0A_0\subseteq\rho'_0A_0\), and pieces of blocks on \(C_0\setminus y\).</li>
+<li>Type 1: symmetrically.</li>
+<li>Type \(y\): pieces of one-coordinate blocks on \(y\) (\(N_a\), \(R_{ab}\), \(T_{abc}\)), with ideals \(y^kA_{01}\).</li>
+<li>Type 01: \(R_{h_0h_1}\) and \(T_{h_0h_1a}\).</li>
+</ul>
+<p>If \(G\) contains at most one hub, the proof of thm:hub-degree-locality applies. The other hub's algebra enters only as a free coefficient factor: blocks on \(C_1\setminus y\) give monomial classes \(x_c^iA_{01}\), and \(A_{01}\) is free over \(A_0\) and over \(S_{C_0\cup C_1}\). Its routing pairs are then of three kinds. Star pairs lie on at most three blocks, are basic \(T\)-\(T\), or have degree \(\ge13\). Pairs within a class \(\mathcal U_c\) have degree \(\ge13\) or are basic \(T\)-\(T\). A residual on four or more blocks with one hub has degree \(\ge d+9\ge12\). Without a hub, the syzygy splits monomially into pairs on at most three blocks or of degree \(\ge13\). So assume \(h_0,h_1\in G\). Then \(G\) has at least two other blocks, each of direction degree \(\ge3\).</p>
+
+<h4>Proof</h4>
+<ol>
+<li><em>Type 01.</em> \(R_{h_0h_1}\) forces \(d\ge7\). \(T_{h_0h_1a}\) forces \(d\ge6\). With the two further blocks, the total is \(\ge12\) in both cases, so neither occurs.</li>
+<li><em>Type \(y\).</em> The ideals \(y^kA_{01}\) form a chain. Route all type-\(y\) pieces to one representative \(s\) with the least exponent \(k\in\{0,1,2\}\), as in thm:hub-degree-locality. The routing pairs are pairs of a star on \(y\), handled by thm:star-degree-locality. If there is no type-\(y\) piece, put \(k=3\) and \(w_s=0\). The syzygy is now \(w_0+w_1+w_s=0\), with \(w_s\in y^kA_{01}\).</li>
+<li><em>Reduction modulo \(y^k\).</em> Let \(\bar S=S_y/y^k\), and write bars for reduction modulo \(y^k\). Then \(\bar w_0=-\bar w_1\), and \(\bar A_0,\bar A_1\) are free over \(\bar S\). As in prop:overlap-tor, \(\bar w_0\) defines a class in \(\operatorname{Tor}_1^{\bar S}(\bar A_0/\bar X,\ \bar A_1/\bar Y)\), where \(X\) and \(Y\) are the sums of the type-0 and type-1 ideals in the syzygy. The class is zero in each of the following cases.
+<ul>
+<li>\(k=0\): the ring is 0.</li>
+<li>\(k=1\): \(\bar S\) is a field.</li>
+<li>\(k=3\): lem:hub-torsion-floor applies to \(X\) and \(Y\), exactly as in thm:two-hub-degree-locality. The hub-0 ideals on \(y\) lie in \(\rho'_0A_0\), so \(X_{\le4}\subseteq M_0+\rho'_0A_0\) still holds. A nonzero class has degree \(\ge3+3+1=7\), and total degree \(\ge7+6=13\).</li>
+<li>\(k=2\): here the torsion generators of \(\bar A_0/\bar X\) over \(\bar S\) also have degree \(\ge3\). If \(\deg\mu\le2\) and \(y\mu\in X+y^2A_0\), then \(y^2\mu\in yX+y^3A_0\subseteq X\). So lem:hub-torsion-floor with \(a=2\) gives \(\mu\in X+yA_0\). \(\operatorname{Tor}_1^{\bar S}(\bar S/y(-d),\bar S/y(-d'))\) sits in degree \(d+d'+1\), and free summands contribute nothing. So a nonzero class again has degree \(\ge7\), and total degree \(\ge13\).</li>
+</ul></li>
+<li><em>Splitting.</em> So \(\bar w_0=\sum\bar u_{pq}\), with \(\bar u_{pq}\) in the image of \(\bar X_p\otimes\bar Y_q\). The image of \(X_p\otimes Y_q\) maps onto that of \(\bar X_p\otimes\bar Y_q\), so there are lifts \(u_{pq}\), homogeneous of the common degree \(d\), in the images of \(X_p\otimes Y_q\). Then \(v_0:=w_0-\sum u_{pq}\in y^kA_{01}\). Put \(v_1:=w_1+\sum u_{pq}\). Then \(v_1=-v_0-w_s\in y^kA_{01}\). The syzygy is the sum of three kinds of syzygy.
+<ul>
+<li>(R0): \(w_p-\sum_qu_{pq}\) on the type-0 pieces and \(-v_0\) on \(s\). It is a syzygy of the one-hub family formed by \(h_0\) and all one-coordinate blocks on \(C_0\), those on \(y\) included.</li>
+<li>(R1): \(w_q+\sum_pu_{pq}\) on the type-1 pieces and \(-v_1\) on \(s\). It is a syzygy of the one-hub family formed by \(h_1\) and all one-coordinate blocks on \(C_1\).</li>
+<li>Cross pairs \(u_{pq}e_p-u_{pq}e_q\).</li>
+</ul>
+Each component lies in its piece's image, since \(-v_0,-v_1\in y^kA_{01}=\operatorname{Im}s\). The three parts sum to the original syzygy, since on \(s\) they give \(-v_0-v_1=w_s\).</li>
+<li><em>Floors.</em> Write \(A_{01}=A_0\otimes V\) with \(V=S_{C_1\setminus y}\otimes B_1\). Then \(y^kA_{01}=y^kA_0\otimes V\), and splitting (R0) along a homogeneous basis of \(V\) preserves every component ideal, that of \(s\) included, as in step 4 of thm:two-hub-degree-locality. \(A_{01}\) is also free over \(S_{C_0}\), which covers the case \(h_0\notin G\). The same holds for (R1). By the proof of thm:hub-degree-locality they are sums of syzygies on at most three blocks, basic \(T\)-\(T\) syzygies and syzygies of degree \(\ge12\). A cross pair's element has degree at least the sum of the least degrees of \(X_p\) and \(Y_q\).
+<ul>
+<li>When \(p\) and \(q\) have disjoint blocks, \(\ell(p)+\ell(q)\ge6+2(|p|+|q|)\ge14\) on four or more blocks, as in thm:two-hub-degree-locality.</li>
+<li>They can share only blocks on \(y\), and only through hub pieces on \(y\). The image of \(y^e\rho'_0A_0\otimes y^f\rho'_1A_1\) is \(y^{e+f}\rho'_0\rho'_1A_{01}\), of degree \(\ge6+e+f\). The cases are:
+<ul>
+<li>\(R_{h_0a}\) with \(R_{h_1a}\): three blocks, harmless;</li>
+<li>\(T_{h_0ab}\) with \(T_{h_1ab}\): \(\ge6+6=12\);</li>
+<li>\(T_{h_0ab}\) with \(R_{h_1a}\), or \(R_{h_0a}\) with \(T_{h_1ab}\): \(\ge7+6=13\);</li>
+<li>\(T\)'s sharing one block: five blocks, \(\ge6+9=15\).</li>
+</ul></li>
+</ul></li>
+</ol>
+<p>So every top syzygy of degree \(\le11\) is a sum of syzygies on at most three blocks and exactly liftable ones. Step 4 of thm:star-degree-locality and, for the model alternative, cor:band-star-locality give the theorem. \(\square\)</p>
+<p>The type-\(y\) representative absorbs the cross part in the degrees where it lives. Modulo \(y^k\) the shared ring is shorter. For \(k\le1\) nothing is left, and for \(k=2,3\) the hubs' torsion starts in degree 3.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>Below degree 11, the family step now covers every connected component in which at most two blocks read several shared coordinates, two such blocks share at most one, and each has at least two private inputs. The condition is the same as for stars: adapted bases (\(h\le5\)), or conj:companion-tops-low-degree for the band.</li>
+<li>Not covered:
+<ul>
+<li>three or more multi-coordinate blocks;</li>
+<li>two that share two coordinates;</li>
+<li>\(W\);</li>
+<li>the weak base;</li>
+<li>the pair and triple statements.</li>
+</ul></li>
+</ul>
+<p>Next: a route review before further locality work. The locality line now sits several conditions below the goal: relative gluing, its member condition, and family locality. The review restates the open part of the goal as a short list of self-contained statements, places this line on it, and decides whether it still discharges one of them.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:two-hub-degree-locality and lem:hub-torsion-floor (the degree-\(\le4\) coefficient argument, reused for \(k=2\)), thm:hub-degree-locality (its routing, its residual floor for one hub, and the freeness used), prop:overlap-tor (the identification, applied over \(\bar S\)), thm:star-degree-locality and cor:band-star-locality. No computation was run. Claim searches for Tor modulo \(y^k\), truncated chain rings and blocks on a shared coordinate found only this line's entries.</p>
+<p>A fresh-context reviewer found no mathematical error and no recorded result already implying the theorem. It required these changes, all adopted:</p>
+<ul>
+<li>the one-hub families of (R0) and (R1) enlarged to all one-coordinate blocks on \(C_0\), respectively \(C_1\);</li>
+<li>the signs of (R1) and the sum of the three parts written out;</li>
+<li>the splitting along \(V\) and the freeness used made explicit;</li>
+<li>the one-hub reduction's routing pairs stated correctly;</li>
+<li>the \(k=2\) floor reduced to lem:hub-torsion-floor;</li>
+<li>the lift of \(\bar u_{pq}\) justified;</li>
+<li>the cross-pair floors for shared blocks derived and completed;</li>
+<li>the hypothesis list completed, in the statement and in its summary;</li>
+<li>two unneeded remarks dropped.</li>
+</ul>
+<p>The changes make steps explicit or complete lists, and add no claim, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-shared-coordinate-blocks">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 50.39 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">52.79 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 57.46 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
