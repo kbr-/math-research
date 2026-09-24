@@ -1,0 +1,24 @@
+// For the leaf-law witnesses x^2*B*rho''_c on the three-block path (leaf_law_3path.out), check that the witnesses'
+// own B satisfies x^2*B in n_b + (y^2) and x^2*B not in n_b, where n_b is the top ideal (modulo all cubes) of block
+// b with inputs x (translate of the peeled coordinate), y (the link to c) and private y(3..h), coefficients r(1..h).
+// h = 4: B = y(4)^2*r(1)*r(4);  h = 5: B = y(4)*y(5)^2*r(1)*r(5).
+option(redSB);
+proc wb(int h)
+{
+  ring P = 3, (x, y(2..h), r(1..h)), dp;
+  ideal L = x; int i; for (i = 2; i <= h; i++) { L = L, y(i); }
+  poly Pp = 1; for (i = 1; i <= h; i++) { Pp = Pp - r(i)*(1 - L[i]^2); }
+  ideal I; for (i = 1; i <= h; i++) { I = I, (1 - L[i]^2)*Pp; }
+  for (i = 1; i <= nvars(P); i++) { I = I, var(i)^3 - var(i); }
+  ideal G = std(I); ideal Tp; int d; poly g;
+  for (i = 1; i <= ncols(G); i++) { g = G[i]; d = deg(g); Tp = Tp, jet(g, d) - jet(g, d - 1); }
+  ideal Cubes; for (i = 1; i <= nvars(P); i++) { Cubes = Cubes, var(i)^3; }
+  poly B;
+  if (h == 4) { B = y(4)^2*r(1)*r(4); }
+  if (h == 5) { B = y(4)*y(5)^2*r(1)*r(5); }
+  poly f = x^2*B;
+  ideal SN = std(Tp + Cubes); ideal SNy = std(Tp + Cubes + ideal(y(2)^2));
+  print("h=" + string(h) + " x^2*B in n: " + string(reduce(f, SN) == 0) + "; x^2*B in n + (y^2): " + string(reduce(f, SNy) == 0));
+}
+wb(4); wb(5);
+quit;

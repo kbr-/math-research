@@ -1,0 +1,47 @@
+// Test of conj:leaf-law-degree on the three-block path a-b-c (far part {c}, nonempty), peeling a over x with
+// U = {b} (k = 1), alpha = 1, 2.  Blocks: b on (x+1, y, private), c on (y+1, private); complete accuracy-one ENS,
+// private coefficients.  Tops of each block's reduced dp basis, in the truncated algebra (all cubes).
+// Calibration: h = 4 must give 9, the value found on the four-block path (leaf_law_h4.out).
+// Prediction stated before the run (formula 3k + h + 2, unconfirmed): h = 5 fails first at degree 10.
+// Degree bound DB: degrees < DB compared; DB = 11 for both.
+option(redSB);
+proc tops(ideal L, ideal rr, int h)
+{
+  poly Pp = 1; int i;
+  for (i = 1; i <= h; i++) { Pp = Pp - rr[i]*(1 - L[i]^2); }
+  ideal I; for (i = 1; i <= h; i++) { I = I, (1 - L[i]^2)*Pp; }
+  for (i = 1; i <= nvars(basering); i++) { I = I, var(i)^3 - var(i); }
+  ideal G = std(I); ideal Tp; int d; poly g;
+  for (i = 1; i <= ncols(G); i++) { g = G[i]; d = deg(g); Tp = Tp, jet(g, d) - jet(g, d - 1); }
+  return(Tp);
+}
+proc lawrun(int h, int DB)
+{
+  ring P = 3, (x, y, yb(3..h), yc(2..h), rb(1..h), rc(1..h)), dp;
+  ideal Lb = x + 1, y; int i; for (i = 3; i <= h; i++) { Lb = Lb, yb(i); }
+  ideal Lc = y + 1; for (i = 2; i <= h; i++) { Lc = Lc, yc(i); }
+  ideal Tb = tops(Lb, ideal(rb(1..h)), h);
+  ideal Tc = tops(Lc, ideal(rc(1..h)), h);
+  ideal Cubes; for (i = 1; i <= nvars(P); i++) { Cubes = Cubes, var(i)^3; }
+  qring Q = std(Cubes);
+  ideal Tb = fetch(P, Tb); ideal Tc = fetch(P, Tc);
+  int al; int k;
+  for (al = 1; al <= 2; al++) {
+    degBound = DB;
+    ideal Xa = x^al;
+    ideal L = intersect(Xa, Tb + Tc);
+    ideal Rt = intersect(Xa, Tb) + (x^al) * Tc;
+    ideal SRt = std(Rt);
+    degBound = 0;
+    int least = DB; poly witness = 0;
+    for (k = 1; k <= ncols(L); k++) {
+      if (L[k] != 0 && deg(L[k]) < least) { if (reduce(L[k], SRt) != 0) { least = deg(L[k]); witness = L[k]; } }
+    }
+    print("h=" + string(h) + " k=1 al=" + string(al) + " DB=" + string(DB) + " least_failure_degree=" + string(least));
+    if (witness != 0) { print("  witness: " + string(witness)); }
+    kill Xa, L, Rt, SRt, least, witness;
+  }
+}
+lawrun(4, 11);
+lawrun(5, 11);
+quit;

@@ -1,0 +1,18 @@
+// The first tops of one block (h = 4: inputs x, y2, y3, y4 with y2 playing the linking coordinate) beyond the
+// companion-top ideal: print the standard-basis elements of degree h + 2 = 6 of n not in (rho'*L_i^2) + cubes.
+option(redSB);
+ring P = 3, (x, y(2..4), r(1..4)), dp;
+ideal L = x, y(2), y(3), y(4); int i;
+poly Pp = 1; for (i = 1; i <= 4; i++) { Pp = Pp - r(i)*(1 - L[i]^2); }
+ideal I; for (i = 1; i <= 4; i++) { I = I, (1 - L[i]^2)*Pp; }
+for (i = 1; i <= nvars(P); i++) { I = I, var(i)^3 - var(i); }
+ideal G = std(I); ideal Tp; int d; poly g;
+for (i = 1; i <= ncols(G); i++) { g = G[i]; d = deg(g); Tp = Tp, jet(g, d) - jet(g, d - 1); }
+poly rho = 0; for (i = 1; i <= 4; i++) { rho = rho + r(i)*L[i]^2; }
+ideal C; for (i = 1; i <= 4; i++) { C = C, rho*L[i]^2; }
+ideal Cubes; for (i = 1; i <= nvars(P); i++) { Cubes = Cubes, var(i)^3; }
+degBound = 7; ideal SN = std(Tp + Cubes); ideal SC = std(C + Cubes); degBound = 0;
+int k; int n = 0;
+for (k = 1; k <= ncols(SN); k++) { if (deg(SN[k]) == 6) { if (reduce(SN[k], SC) != 0) { n++; print("extra: " + string(SN[k])); } } }
+print("count_extra_degree_6=" + string(n));
+quit;
