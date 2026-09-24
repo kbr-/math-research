@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Saturation does not restore locality. Dense pairs of budget clauses whose spans meet in dimension 2 are non-local at low degree and admit no resolvent (<a href="#entry-2026-09-24-saturated-locality">saturated locality</a>). Every reduction of the locality program now fails for adversarial budgets. Next: a route review of the clause-transfer line. Decide whether the closure route has any remaining mechanism for adversarial budgets, or whether the route should turn to a different handle on the wide-clause statement. Consider the proved single-dependency and absorption results as tools for that handle, not as steps of locality.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Non-locality does not break closed freeness in range. An inconsistent pair of budget clauses at \(N=24\), \(D=3\) is visibly non-local and still row-free, and seeded stability covers small clusters with any allowed values (<a href="#entry-2026-09-24-closure-route-review">closure route review</a>). The open danger is chaining. Next: an in-range test of inconsistent chains at \(D=3\), \(N=24\). Use width-2 clauses whose consecutive members share a form with incompatible values, with chain lengths up to beyond the joint-freeness threshold of about 10 forms, against consistent chains and the base.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -14646,6 +14646,55 @@ Always \(\Delta_d\le0\).</li>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 9.05 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 37.34 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">4.08 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-closure-route-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="ex:inconsistent-pair-in-range">
+<h3>Route review: non-locality does not break closed freeness in range; small clusters are covered by seeded stability, and the open case is chains of small dependencies</h3>
+<p class="entry-meta">24 September 2026 · Route review with a finite check · The closure route after the locality program; cycle odd-prime-closure-route-review.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>General statement.</strong> The line's claim is the hypothesis of thm:global-closure-gluing for the budget: row freeness of the graded functions on the budget's allowed set \(Z\) through degree \(D\). The locality program is closed for adversarial budgets (ex:saturated-locality-failure). This review's falsification attempt, ex:inconsistent-pair-in-range, tests whether non-locality breaks the claim itself. It does not, in range at \(D=3\): an inconsistent pair of budget clauses is visibly non-local and still row-free, like its controls.</p>
+
+<h4>Where the line stands</h4>
+<p>Since the <a href="#entry-2026-09-24-budget-structure-review">budget review</a>:</p>
+<ul>
+<li>thm:budget-cluster-dichotomy: an isolated simple cluster breaks locality only through an affine inconsistency, first at its number of private forms;</li>
+<li>thm:resolvent-absorption: adding the cluster's resolvent restores locality;</li>
+<li>ex:saturated-locality-failure: dense pairs with overlapping spans stay non-local after saturation.</li>
+</ul>
+<p>Proved before: closure gluing, global closure gluing, and closed stability for sparse, seeded and block-structured members. thm:seeded-closure-stability allows any set of allowed values for forms with an affine basis of values of sufficient multiplicity.</p>
+
+<h4>Falsification attempt: does non-locality break closed freeness?</h4>
+<p><strong>Can it decide.</strong> Two budget clauses of width 2 sharing their dependent form, one allowing \(\ell=0\) and the other \(\ell=c\) with \(c\ne0\), form an inconsistent pair. By the dichotomy with \(t=1\) it is non-local at degree \(2(k-1)=2\). That is visible in the one-row closed test at \(D=3\), whose kernel condition covers degrees \(\le2\). \(N=24\) is in the conjecture's range at \(D=3\), and the direct-sum kernel reaches it. The pair's allowed set covers about a third of the slice, outside the conjecture's half-slice class. As with the symmetric pin, a failure where the controls pass would carry the conclusion, and a pass shows that non-locality alone does not force failure.</p>
+<p><code>pair_freeness.py</code> writes the kernel inputs and <code>run_pairs.sh</code> runs the kernel (<code>pair_N24.json</code>, forms from seed 1):</p>
+<table>
+<tr><th>variant</th><th>dims, degrees 0 to 3</th><th>excess</th></tr>
+<tr><td>base</td><td>1, 47, 1056, 15089</td><td>0, 0, 0</td></tr>
+<tr><td>consistent pair (\(c=0\))</td><td>1, 47, 1054, 14996</td><td>0, 0, 0</td></tr>
+<tr><td>inconsistent pair (\(c=1\))</td><td>1, 47, 1053, 14950</td><td>0, 0, 0</td></tr>
+<tr><td>inconsistent pair (\(c=2\))</td><td>1, 47, 1053, 14950</td><td>0, 0, 0</td></tr>
+</table>
+<p>The inconsistent pairs lose one more dimension in degree 2 than the consistent pair: the resolvent, a product of the two private forms, is in the closure. So the non-locality is present in range, and the closed algebra is still row-free. A dry run at \(N=18\) gave the same pass. This is ex:inconsistent-pair-in-range.</p>
+
+<h4>What the goal needs, and the assessment</h4>
+<p>The recorded stability theorems already cover small clusters. A cluster's forms are a bounded number of dense forms, and thm:seeded-closure-stability allows any allowed set in their value space, consistent or not. So a small dependent cluster, closed as one member with its resolvent, is covered, and in range the kernel confirms that its non-locality is harmless. The locality program's obstructions show only that members cannot be single clauses. They do not show that the closure route fails.</p>
+<p>What the route needs is a decomposition of the budget into members, each a group of clauses with a bounded number of jointly free forms, such that the members do not interact through degree \(D\). The obstructions say which groupings are forced: clauses in a small inconsistent cluster, and clauses whose spans overlap. The open danger is chaining. If small dependencies link clauses into ever larger groups, the groups exceed the joint-freeness range, which is about \(N/2\) forms at \(D=3\) (conj:generic-form-freeness). Then the global question returns. On this evidence the route is alive but unproved. Its central claim survived the obstruction built against it, and the remaining risk is precisely stated.</p>
+
+<h4>The highest-risk item and the next step</h4>
+<p>The highest-risk item is chained small dependencies. Next step, on route item <strong>odd-prime-clause-transfer</strong>: an in-range test of inconsistent chains at \(D=3\), \(N=24\). Use clauses of width 2 in which consecutive clauses share a form with incompatible allowed values, so that every link is an inconsistent pair. Chain lengths should run from 2 up to beyond the joint-freeness threshold of about 10 forms, with consistent chains and the base as controls. A failure that grows with the chain would locate the obstruction to the closure route. A pass would say that inconsistent links, like single pairs, are absorbed by the closure.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:global-closure-gluing, thm:seeded-closure-stability (any allowed values), conj:generic-form-freeness, the dichotomy and absorption theorems, ex:saturated-locality-failure, and the direct-sum kernel's validation. The kernel inputs are generated by the committed script, and the table is read from the saved output. A first launch was refused by the runner's loop-depth guard, and a grep filter hid the refusal. The inputs were then generated separately and the compiled kernel run directly. The review adds a finite check and no proof, so no reviewer pass was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-closure-route-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>13 min 49.94 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 4.41 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 31.14 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8 min 14.25 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
