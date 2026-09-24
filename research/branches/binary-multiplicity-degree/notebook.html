@@ -29,11 +29,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: q-ary-extension. Prove the <a href="#four-element-subspace-square-conjecture">four-element square conjecture</a>: for a four-element \(\mathbb F_2\)-subspace \(S\) with \(c_1\ne0\), \(\delta_S(2,k,\ell)=6+4(k-1)-2\lfloor m/8\rfloor-\lceil(m\bmod8)/2\rceil\) with \(m=k-\ell-1\).</p>
+<p>Route item: q-ary-extension. Settle the base block \(m\le7\) of the <a href="#four-element-subspace-square-conjecture">four-element square conjecture</a>, for every four-element subspace with \(c_1\ne0\), as the <a href="#entry-2026-09-25-subspace-route-review">route review</a> plans.</p>
 <ul>
-<li><strong>Conditions.</strong> By the <a href="#subspace-grid-coefficient-formula">coefficient formula</a>, degree \(\le6+4(k-1)-h\) means that \(w\,x(y_1)^ax(y_2)^b\) has no terms of degree in \([k-\lfloor(h+3-a-b)/4\rfloor,k-1]\) for all \(a,b\le3\) with \(a+b\le h-1\). The <a href="#second-coefficient-savings">second-coefficient theorem</a> is the case \(h=2\).</li>
-<li><strong>Lower bound.</strong> Adapt the multi-additive forms of the \(q\)-ary proof. Pairing two equal arguments now gives the slot \(x^2\), and \(x^4=y+c_0x+c_1x^2\) replaces the single shift.</li>
-<li><strong>Upper bound.</strong> Find jets attaining \(h=2\) at \(m=8\), for example from products of powers of \(L(x_1)\), \(L(x_2)\) and \(L(x_1+x_2)\).</li>
+<li><strong>Setting.</strong> After scaling, \(x(y)=y+y^2+b_2y^4+\cdots\), and only \(b_2\) matters for \(m\le7\). The conditions of the <a href="#subspace-grid-coefficient-formula">coefficient formula</a> are \(\mathbb F_2(b_2)[y_1,y_2]\)-linear in the homogeneous parts of \(w\).</li>
+<li><strong>Computation.</strong> In Singular, for each \(m\le7\), compute the syzygies of the conditions at \(h=\lceil m/2\rceil\) and \(h+1\). Existence at \(h\) with \(\ell=0\) gives every \(\ell\), by multiplying \(w\) by \(y_1\). Nonexistence at \(h+1\) must hold in every degree: the projection of the syzygy module to the co-degree-\(m\) part must vanish. Check the special values of \(b_2\) separately.</li>
+<li><strong>Then.</strong> Look in the syzygies for the mechanism of the block step \(\delta_S(2,k+8,\ell)\ge\delta_S(2,k,\ell)+30\). If none appears, stop the line at the conjecture and turn to a new question.</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions.</p>
 </section>
@@ -1542,6 +1542,53 @@ Hence \(\deg P(v)\ge\Phi-1\) for every jet of order \(k-3\), and by fact (c) the
 <tbody>
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 12.12 s</strong></td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">9 min 11.98 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-subspace-route-review" data-kind="review" data-route="q-ary-extension" data-claims="none" data-claim-note="Route review: the line-dichotomy attempt and the reductions recorded here are elementary remarks, not registered results.">
+<h3>25 September 2026 — Route review of the grid extensions: full grids solved, subspace grids reduced to one conjecture</h3>
+<p class="entry-meta">Route review; the line dichotomy does not prove the four-element square conjecture. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<ul>
+<li><strong>The line's general claim.</strong> Determine the per-order least degree \(\delta_S(n,k,\ell)\) on grids \(S^n\) beyond \(\mathbb F_2^n\): full grids \(\mathbb F_q^n\), and additive subgroups \(S\) of a field of characteristic 2.</li>
+<li><strong>What is established.</strong>
+<ul>
+<li>Every full grid \(\mathbb F_q^n\) follows the base-\(q\) law (<a href="#q-ary-per-order-value">\(q\)-ary theorem</a>), and so does every scaled subfield \(\lambda\mathbb F_s\) (<a href="#entry-2026-09-25-subspace-grids">subspace grids</a>).</li>
+<li>If the \(x^2\) coefficient \(c_1\) of \(L=\prod_{t\in S}(x-t)\) is nonzero, the base-\(s\) law fails at \(m=2\) in every dimension \(n\ge2\) (<a href="#second-coefficient-savings">second-coefficient theorem</a>).</li>
+<li>For eight-element subspaces the values depend on \(S\), and sometimes on \(\ell\) as well as \(m\).</li>
+<li>For four-element \(S\) with \(c_1\ne0\) and \(n=2\), one law fits all 4245 values (<a href="#four-element-subspace-square-conjecture">four-element square conjecture</a>); its case \(m=2\) is proved.</li>
+</ul></li>
+<li><strong>What the goal needs.</strong> Nothing: the thread's goal, \(D(n,k)\) over \(\mathbb F_2\), is proved and formalized. This line decides how far the method reaches, which matters for what the preprint can claim.</li>
+</ul>
+<h4>Falsification attempt: the line dichotomy</h4>
+<p>For the square \(\{0,1\}^2\) the three lines through two cube points proved dimension two over every field (<a href="#cube-square-per-order-any-field-theorem">theorem</a>). Here the analogue fails, for a structural reason. Let \(|S|=4\), \(c_1\ne0\), \(n=2\), and let \(P\) have degree \(\le4k+2-h\).</p>
+<ul>
+<li><strong>The four-point lines.</strong> The fibres of \((x_1,x_2)\mapsto\alpha x_1+\beta x_2\) on \(S^2\) are cosets of its kernel. So a line \(\alpha x_1+\beta x_2=t\) avoiding the origin meets \(S^2\) in four points only if \(|\alpha S+\beta S|=4\), that is, \(\alpha=0\), \(\beta=0\) or \(\alpha S=\beta S\). Since \(\lambda S=S\) forces \(\lambda\in\mathbb F_2\) when \(S\) is not a scaled \(\mathbb F_4\), these lines are the nine lines \(x_1=t\), \(x_2=t\), \(x_1+x_2=t\) with \(t\in S\setminus0\). Their product \(G\) has degree 9. It has multiplicity 2 at the nine points with \(x_1x_2(x_1+x_2)=0\), called axis points, and multiplicity 3 at the six others, called generic points.</li>
+<li><strong>Forced factors.</strong> Each of the nine lines contains two axis points and two generic points. Suppose \(P=G^jR\), where \(R\) has multiplicity \(\ge k-2j\) at axis points and \(\ge k-3j\) at generic points. Then the restriction of \(R\) to each line is zero or has degree \(\ge4k-10j\). Also \(\deg R\le4k+2-h-9j\), which is \(&lt;4k-10j\) exactly when \(j\le h-3\). By induction on \(j\), \(G^{h-2}\mid P\), as long as \(k\ge3(h-3)\), which holds in the conjectured range.</li>
+<li><strong>Where it stops.</strong> The quotient has unequal multiplicities, \(k-2(h-2)\) and \(k-3(h-2)\), and no other line meets \(S^2\) in more than two points. Bounding it by the uniform problem at the smaller multiplicity \(k'=k-3(h-2)\), with savings \(h'\) there, gives \(\deg P\ge4k+2-3(h-2)-h'\). This excludes \(\deg P\le4k+2-h\) only if \(h'&lt;6-2h\), so it excludes nothing once \(h\ge3\). The square worked because all three lines had equal multiplicity at every point. This is the same obstruction that stopped the odd-characteristic cube at \(n=3\).</li>
+</ul>
+<p><strong>What does reduce.</strong></p>
+<ul>
+<li><strong>Upper half.</strong> Products add multiplicities, and \(L(x_1)\) vanishes simply on \(S^2\) with order 1 at the origin. So \(\delta_S(2,k,\ell)\le4\ell+\delta_S(2,k-\ell,0)\) and \(\delta_S(2,k+8,\ell)\le\delta_S(2,k,\ell)+\delta_S(2,8,0)\). The conjectured formula is additive in exactly this way, so its upper half follows from the eight order-zero values \(\delta_S(2,c,0)\le4c+2-\lceil(c-1)/2\rceil\), \(c\le8\). The values for \(c=1,2\) are attained by \(\prod_i L(x_i)/x_i\) (degree 6) and by \(G\) (degree 9). For \(c=3,\ldots,8\) the kernel finds them for the six tested classes, but no explicit construction valid for every \(S\) is known. A degree-30 polynomial for \(c=8\) cannot be \(G^3\) times a cubic: a cubic with multiplicity 2 at the three axis points on \(x_2=0\) vanishes on that line, hence at the origin.</li>
+<li><strong>One parameter for \(m\le7\).</strong> By the <a href="#subspace-grid-coefficient-formula">coefficient formula</a>, degree \(\le4k+2-h\) means that \(w\,x(y_1)^ax(y_2)^b\) has no terms in degrees \([k-\lfloor(h+3-a-b)/4\rfloor,k-1]\) for \(a,b\le3\), \(a+b\le h-1\). For \(m\le7\) only the terms of \(x(y)\) below \(y^8\) enter. Substituting \(y_i\mapsto(a_0/a_1)y_i\) and dividing by a constant turns \(x(y)\) into \(y+y^2+b_2y^4+\cdots\), with \(b_2=a_2a_0^2/a_1^3\). So for \(m\le7\) the problem depends on \(S\) only through \(b_2\). The tested classes include \(b_2=0\) (\(\mathbb F_8\), where \(a_2=0\)) and \(b_2\ne0\), with equal values.</li>
+</ul>
+<h4>Assessment and next step</h4>
+<p>The line has done what it can do cheaply. Full grids are solved, and the base-\(s\) law is characterized for four-element subspaces. For larger subspaces no single law exists, since the values depend on \(S\). What remains is one clean statement, the four-element square conjecture. It needs a mechanism that neither the line dichotomy nor the \(q\)-ary recursion supplies directly: pairing equal arguments in the multi-additive forms gives the slot \(x^2\), and \(x^4=y+c_0x+c_1x^2\) couples three slots, not two.</p>
+<p>The conjecture splits into three parts:</p>
+<ul>
+<li>the base block \(m\le7\), a one-parameter problem;</li>
+<li>the eight order-zero constructions;</li>
+<li>a block step \(\delta_S(2,k+8,\ell)\ge\delta_S(2,k,\ell)+30\).</li>
+</ul>
+<p>The first two can be settled by exact computation over \(\mathbb F_2(b_2)\): Singular and Macaulay2 are installed, and the conditions form a graded syzygy problem over \(\mathbb F_2(b_2)[y_1,y_2]\). The special values of \(b_2\) would then be checked one by one. The block step is the genuinely open part. The next step computes the base block, and uses its syzygies to look for the block step's mechanism. If the base block does not give a mechanism within one cycle, the line should stop at the conjecture.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r15-four-element-square">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 17.87 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 17.73 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
