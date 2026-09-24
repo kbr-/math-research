@@ -19,12 +19,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Hypothesis (c) for the column component, of any span dimension, is proved in content 0 (<a href="#entry-2026-09-24-occupancy-transfer">occupancy transfer</a>). Content one is the cokernel of the restriction map \(\rho:R_{[n]}\to\bigoplus_jR_{[n]\setminus j}\), which is injective in all 24 tested cases with \(2t&lt;n\) over \(\mathbb F_3\). Next:</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> For the column component of any span dimension, hypothesis (c) is proved in content 0 (<a href="#entry-2026-09-24-occupancy-transfer">occupancy transfer</a>). Content one is resolved by column models on \(n\) and \(n-1\) holes in the goal's degrees (<a href="#entry-2026-09-24-restriction-injectivity">restriction injectivity</a>). Next, content one of (c):</p>
 <ol>
-<li>Prove \(\rho\) injective for \(2t&lt;n\) over \(\mathbb F_p\): every zero-marginal function on \(t\)-subsets is a sum of hole-avoiding zero-marginal ones. Wilson's diagonal form, as used for one-row contents, is the natural tool.</li>
-<li>Then carry content one through the proposed route: restricted members on \(n-1\) holes, their augmentation, and the transfer through \(x_{ij}\cdot\phi\) with right-hand side \(m-1\).</li>
+<li>From \(0\to R\to\bigoplus_jR_{[n]\setminus j}\to A^{(e_i)}\to0\), write the member's content-one syzygies through the Koszul long exact sequence: syzygies on \(\bigoplus_jR_{[n]\setminus j}\), and the kernel of \(R/(P)\to\bigoplus_jR_{[n]\setminus j}/(P|_j)\).</li>
+<li>Lift the first kind summand by summand, using the placed-pigeon identity after augmenting the specialized members \(h^{\rm h}|_{C_j=z}\) in the occupancy rings of \(n-1\) holes. Decide whether the second kind vanishes. It is the restriction injectivity for the member's quotient.</li>
 </ol>
-<p>Pending: contents \(|c|\ge2\); hypothesis (b), including for augmented tops; non-column members.</p>
+<p>Pending: contents \(|c|\ge2\); hypothesis (b); non-column members.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -12721,6 +12721,78 @@ The \(|a|\) factors go to distinct holes. A hole receiving a factor \(L_b\) cont
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 2.92 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 5.70 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 57.08 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-restriction-injectivity" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="thm:restriction-injectivity lem:placed-pigeon-identity">
+<h3>The restriction map of column models is injective below n/2 in every characteristic, so content one is resolved by column models on n and n−1 holes</h3>
+<p class="entry-meta">24 September 2026 · Working proof · Injectivity of the restriction map \(\rho\) for \(2t&lt;n\), any field of characteristic \(p\) or 0; cycle odd-prime-restriction-injectivity.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-occupancy-transfer">occupancy-transfer entry</a> proved hypothesis (c) for column members in content 0. It showed that content one is \(\operatorname{coker}\bigl(\rho:R_{[n]}\to\bigoplus_jR_{[n]\setminus j}\bigr)\), and found \(\rho\) injective in all 24 tested cases with \(2t&lt;n\) over \(\mathbb F_3\) (ex:restriction-injectivity-small). The cycle asks for a proof.</p>
+<p><strong>General statement.</strong> thm:restriction-injectivity: over any field of characteristic \(p\) or 0, for \(n\ge2t+1\), every zero-marginal function on the \(t\)-subsets of \([n]\) is a sum of zero-marginal functions each vanishing on the sets that contain some hole \(j\) and zero-marginal on \([n]\setminus j\). Equivalently, \(\rho\) is injective in degree \(t\). So for every row \(i\ge1\), \(0\to R_{[n]}\to\bigoplus_jR_{[n]\setminus j}\to A^{(e_i)}\to0\) is exact with the first two terms in degree \(t\) and \(A^{(e_i)}\) in degree \(t+1\), for \(t\le(n-1)/2\). lem:placed-pigeon-identity: multiplying by \(x_{ij}\) carries the occupancy relations of the other holes, with right-hand side \(m-1\), into the homogenized weak base ideal. So a lifting identity for the specialized member \(h^{\rm h}|_{C_j=z}\) in the occupancy ring of the other holes gives an identity for \(x_{ij}\) times a lift on the \(j\)-th summand, one piece of the proposed content-one route.</p>
+
+<h4>Notation</h4>
+<p>For a finite set \(X\) and \(t\ge0\), \(Z_t(X)\) is the space of functions \(f\) on \(t\)-subsets of \(X\) with zero marginals: \(\sum_{k\in X\setminus S'}f(S'\cup\{k\})=0\) for every \((t-1)\)-subset \(S'\). \(Z_0(X)=\mathbb F\). For \(j\in X\), \(\iota_j\) extends a function on \(t\)-subsets of \(X\setminus j\) by zero, and \(\iota_jZ_t(X\setminus j)\subseteq Z_t(X)\). Indeed, at \(S'\not\ni j\) the extra term \(f(S'\cup\{j\})\) is 0, and at \(S'\ni j\) every term is 0. The link at \(j\) is \(f^{+j}(S')=f(S'\cup\{j\})\), for \((t-1)\)-subsets \(S'\) of \(X\setminus j\). \(R_X\) is the column model on \(X\), with \((R_X)_t^*=Z_t(X)\), and \(\rho^*\) is extension by zero (<a href="#entry-2026-09-24-occupancy-transfer">occupancy-transfer entry</a>).</p>
+
+<h4>Two lemmas</h4>
+<p><strong>Lemma 1 (links are zero-marginal).</strong> For \(f\in Z_t(X)\), \(f^{+j}\in Z_{t-1}(X\setminus j)\). If moreover \(f^{+j}=0\), then \(f\in\iota_jZ_t(X\setminus j)\).</p>
+<p><em>Proof.</em> The marginal of \(f^{+j}\) at a \((t-2)\)-subset \(T\) of \(X\setminus j\) is \(\sum_{k\notin T\cup\{j\}}f(T\cup\{j,k\})\), the marginal of \(f\) at \(T\cup\{j\}\), which is 0. If \(f^{+j}=0\), then \(f\) vanishes on sets containing \(j\). The marginals of its restriction to \(X\setminus j\) are those of \(f\) at sets avoiding \(j\), minus the term \(f(S'\cup\{j\})=0\), so they vanish. \(\square\)</p>
+<p><strong>Lemma 2 (link surjectivity).</strong> Over a field of characteristic \(p\) or 0, if \(|X|\ge2t\) and \(t\ge1\), then \(Z_t(X)\to Z_{t-1}(X\setminus j)\), \(f\mapsto f^{+j}\), is surjective.</p>
+<p><em>Proof.</em> Given \(h\in Z_{t-1}(X\setminus j)\), set \(f(S'\cup\{j\})=h(S')\), and look for the values \(f_0\) of \(f\) on \(t\)-subsets of \(Y=X\setminus j\).</p>
+<ul>
+<li>The marginals of \(f\) at sets containing \(j\) are marginals of \(h\), which vanish.</li>
+<li>At a \((t-1)\)-subset \(S''\subseteq Y\), the marginal is \((W_{t-1,t}f_0)(S'')+h(S'')\), with \(W_{t-1,t}\) the inclusion matrix on \(Y\).</li>
+</ul>
+<p>So we need \(-h\in\operatorname{Im}W_{t-1,t}\) on \(Y\), \(|Y|\ge2t-1=2(t-1)+1\). For \(t=1\), \(h\) is a constant and \(\operatorname{Im}W_{0,1}=\mathbb F\) because \(Y\ne\emptyset\). Let \(t\ge2\). By the kernel identification in the proof of thm:weak-single-row-contents (<a href="#entry-2026-09-24-repeated-contents">repeated contents</a>), applied with \(k=t-1\) on \(Y\), \(\ker W_{t-1,t}^{\mathsf T}=\operatorname{Im}W_{i_*,t-1}^{\mathsf T}\). The lemma uses only the cokernel paragraph of that proof, which needs only \(|Y|\ge2k+1\). Here \(i_*\) is the largest \(i\le t-1\) with \(i\equiv t\pmod p\), and the kernel is 0 if there is none. The identification is proved over \(\mathbb F_p\). Both sides are given by integer matrices, so the dimensions and the equality persist over any field of characteristic \(p\). In characteristic 0 the kernel is 0: for a prime \(p&gt;t\), Wilson's formula gives full rank over \(\mathbb F_p\), since every \(\binom{t-i}{t-1-i}=t-i\) lies in \(1,\dots,t\), and the rank of an integer matrix over \(\mathbb Q\) is at least its rank over \(\mathbb F_p\). So it suffices that \(W_{i_*,t-1}h=0\). Since \(i_*\le t-p\le t-2\), \(W_{i_*,t-2}W_{t-2,t-1}=(t-1-i_*)W_{i_*,t-1}\), and \(t-1-i_*\equiv-1\pmod p\) is a unit. Hence \(W_{i_*,t-1}h=(t-1-i_*)^{-1}W_{i_*,t-2}(W_{t-2,t-1}h)=0\), because \(W_{t-2,t-1}h\) is the marginal of \(h\). \(\square\)</p>
+
+<h4>The theorem</h4>
+<p><strong>Theorem (restriction injectivity).</strong> Over a field of characteristic \(p\) or 0, for \(t\ge0\) and \(|X|\ge2t+1\), \(Z_t(X)=\sum_{j\in X}\iota_jZ_t(X\setminus j)\).</p>
+<p><em>Proof.</em> By induction on \(t\). For \(t=0\), \(\iota_jZ_0(X\setminus j)=Z_0(X)\). Let \(t\ge1\), \(f\in Z_t(X)\), and fix \(j\in X\).</p>
+<ol>
+<li>By Lemma 1, \(h=f^{+j}\in Z_{t-1}(X\setminus j)\). Since \(|X\setminus j|\ge2t\ge2(t-1)+1\), the induction hypothesis gives \(h=\sum_{k\ne j}\iota_kh_k\) with \(h_k\in Z_{t-1}(X\setminus\{j,k\})\).</li>
+<li>For each \(k\ne j\), Lemma 2 on \(X'=X\setminus k\), \(|X'|\ge2t\), with the point \(j\), gives \(\varphi_k\in Z_t(X\setminus k)\) with \(\varphi_k^{+j}=h_k\). Then \(\iota_k\varphi_k\in Z_t(X)\), and \((\iota_k\varphi_k)^{+j}=\iota_kh_k\): on sets containing \(k\) both sides are 0.</li>
+<li>\(\varphi=\sum_{k\ne j}\iota_k\varphi_k\) lies in the span and satisfies \(\varphi^{+j}=h=f^{+j}\). By Lemma 1, \(f-\varphi\in\iota_jZ_t(X\setminus j)\). So \(f=\varphi+(f-\varphi)\) lies in the span. \(\square\)</li>
+</ol>
+<p><strong>Corollary.</strong> For \(n\ge2t+1\), \(\rho\) is injective in degree \(t\), since \(\rho^*\) is extension by zero and the theorem is its surjectivity. For every row \(i\ge1\), \(0\to R_{[n]}\to\bigoplus_jR_{[n]\setminus j}\to A^{(e_i)}\to0\) is exact with the first two terms in degree \(t\) and \(A^{(e_i)}\) in degree \(t+1\) (the shift by \(\deg x_{ij}\)), for \(t\le(n-1)/2\). The goal needs only \(t\le D-1\) with \(n\ge2D+1\) (occupancy-transfer entry), which lies inside this range.</p>
+<p>The theorem proves ex:restriction-injectivity-small's pattern for \(2t&lt;n\) at every \(n\) and \(p\). The recorded failures all have \(2t\ge n\), outside the theorem.</p>
+
+<h4>The placed-pigeon identity</h4>
+<p><strong>Lemma (placed pigeon).</strong> With \(m\) rows, any row \(i\), hole \(j\), and \(C_{j'}\) standing for \(\sum_{i'}x_{i'j'}\): \(x_{ij}(C_j-z)\), \(x_{ij}\bigl(\sum_{j'\ne j}C_{j'}-(m-1)z\bigr)\) and \(x_{ij}(C_{j'}^2-C_{j'}z)\) lie in the homogenized weak base ideal. So \(x_{ij}\,H(C,z)\equiv x_{ij}\,H(C,z)|_{C_j=z}\) modulo that ideal for every polynomial \(H\).</p>
+<p><em>Proof.</em> \(x_{ij}C_j=x_{ij}^2+\sum_{i'\ne i}x_{ij}x_{i'j}\equiv x_{ij}z\), by Booleanity and column exclusions. So \(x_{ij}(C_j-z)\) lies in the ideal, and \(x_{ij}\bigl(\sum_{j'\ne j}C_{j'}-(m-1)z\bigr)=x_{ij}\bigl(\sum_{j'}C_{j'}-mz\bigr)-x_{ij}(C_j-z)\). The first term is \(x_{ij}\sum_{i'}(r_{i'}-z)\). The relations \(C_{j'}^2-C_{j'}z\) are in the ideal by the occupancy transfer lemma. Substituting \(C_j\to z\) in \(h\) changes \(x_{ij}h\) by multiples of \(x_{ij}(C_j-z)\). \(\square\)</p>
+<p>Apply this to \(H=h_k^{\rm h}\), the homogenized member, and its specialization \(h_k^{\rm h}|_{C_j=z}\), a polynomial in the other holes' \(C\) and \(z\). Take an identity \(\sum_k\tilde\sigma_k\,h_k^{\rm h}|_{C_j=z}=z\sum_kq_k\,h_k^{\rm h}|_{C_j=z}\) in the occupancy ring of the holes \([n]\setminus j\) with right-hand side \(m-1\). Multiplied by \(x_{ij}\), it becomes \(\sum_kx_{ij}\tilde\sigma_k\,g_k^{\rm h}\equiv z\sum_kx_{ij}q_k\,g_k^{\rm h}\) modulo the homogenized weak base. That is an identity for \(x_{ij}\) times a lift on the \(j\)-th summand. Using the specialization of the homogenized member, rather than the homogenization of the restricted member, avoids a power of \(z\) whenever \(h_k|_{C_j=1}\) has lower degree than \(h_k\). A content-\(e_i\) syzygy is a sum over \(j\) whose summands need not be syzygies separately, so what the route still needs is:</p>
+<ul>
+<li>augmentation of the restricted members, since restricting a Gröbner basis does not give one;</li>
+<li>the long exact sequence of the resolution above for the member's syzygies: syzygies on \(\bigoplus_jR_{[n]\setminus j}\), plus the kernel of \(R/(P)\to\bigoplus_jR_{[n]\setminus j}/(P|_j)\), whose lifts must be compared.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the one-row theorem's kernel identification and its hypotheses, and the occupancy-transfer entry's content-one proposition and transfer lemma. A fresh-context reviewer checked Lemma 1, the extension by zero, the marginal computation of Lemma 2, \(i_*\le t-2\) and the unit, the product formula, the induction sizes, the link of \(\iota_k\varphi_k\), the final step, the duality with \(\rho\), and the placed-pigeon memberships, and found no error. It required these changes, all adopted:</p>
+<ul>
+<li>characteristic 0 and general fields of characteristic \(p\) justified;</li>
+<li>\(t=1\) handled directly;</li>
+<li>the degree shift of \(A^{(e_i)}\) stated;</li>
+<li>the degree claim replaced by the recorded need;</li>
+<li>the title corrected;</li>
+<li>two unused hypotheses dropped from the placed-pigeon lemma;</li>
+<li>the transfer restated for the specialized homogenized member, and narrowed to one summand.</li>
+</ul>
+<p>The changes add justifications and narrow claims, so no further pass was made.</p>
+
+<h4>Remaining gap</h4>
+<ul>
+<li>The content-one syzygy argument: the two items above.</li>
+<li>Contents \(|c|\ge2\): the analogous resolutions over several removed holes.</li>
+<li>Hypothesis (b).</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-restriction-injectivity">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 8.23 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 45.42 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 22.68 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
