@@ -13,8 +13,10 @@ from notebooks import ROOT, PUBLIC, catalogue, selected, select, valid_name
 from notebook_context import budgets
 
 SECTIONS = {'before-this-notebook':'Starting point', 'where-we-stand':'Where we stand',
-            'remaining-route':'The remaining route', 'proposed-next-step':'Proposed next step',
+            'open-statements':'Open statements', 'remaining-route':'The remaining route', 'proposed-next-step':'Proposed next step',
             'working-context':'Working mathematical context', 'formalization-gaps':'Gaps identified by formalization'}
+
+OPEN_STATEMENTS_WORDS = 300
 
 
 def create(name,title,context,root=ROOT,parent='main',origin=None):
@@ -22,7 +24,7 @@ def create(name,title,context,root=ROOT,parent='main',origin=None):
     if name in items: raise ValueError('Notebook already exists; use select to resume it')
     selected(parent,root)
     if set(context) != {'goal',*SECTIONS} or not all(isinstance(v,str) and v.strip() for v in context.values()):
-        raise ValueError('Context JSON needs nonempty goal and all six living-section HTML values')
+        raise ValueError('Context JSON needs nonempty goal and all seven living-section HTML values')
     if origin:
         from claim_registry import local_target,file_anchors
         target=local_target(origin,root)
@@ -40,6 +42,8 @@ def create(name,title,context,root=ROOT,parent='main',origin=None):
         source += f'<section id="{key}">\n<h2>{label}</h2>\n{context[key]}\n</section>\n'
     source += '<section id="research-record">\n<h2>Research record</h2>\n</section>\n'
     config=json.loads((root/'research/context-budgets.json').read_text())
+    # Every thread keeps its open statements; older configs predate the section.
+    config['regions'].setdefault('open-statements',OPEN_STATEMENTS_WORDS)
     report=budgets(source,config)
     if not report['passed']:raise ValueError('Initial context exceeds hard budgets')
     if 'data-route-item=' not in context['remaining-route']:

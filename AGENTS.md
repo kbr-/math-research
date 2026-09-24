@@ -97,9 +97,11 @@ rules to growing checklists or one-off setup narratives.
   is navigation only: change it for workflow/navigation, not new findings.
   Supporting notes hold evidence, proofs and dated audits, not duplicate living
   summaries. Label historical snapshots; Git already preserves prior overviews.
-- After every research turn, review/update **Where we stand**, **The remaining
-  route** (highest risk first), **Proposed next step**, and **Working mathematical
-  context**. Lead with the selected thread's goal, keep the route/next step on
+- After every research turn, review/update **Where we stand**, **Open statements**,
+  **The remaining route** (highest risk first), **Proposed next step**, and **Working
+  mathematical context**. **Open statements** lists at most about five self-contained
+  open statements whose conjunction with proved results gives the goal, each with its
+  status and the instances it must cover; every cycle names the one it advances. Lead with the selected thread's goal, keep the route/next step on
   its path, and
   mention side publications briefly. Do not invent progress. Keep exact setup,
   degree conventions, linked hypotheses/proofs and unresolved dependencies needed

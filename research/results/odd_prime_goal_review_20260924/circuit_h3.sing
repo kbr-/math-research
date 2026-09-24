@@ -1,0 +1,44 @@
+// Route-review falsification test of the locality line's reach (conj:family-fall-locality applied to dependent forms).
+// Over F_3, four separately augmented complete accuracy-one ENS blocks with h = 3 inputs and private coefficients:
+// a on (x, 2 private), b on (y, 2 private), c on (w, 2 private), d on (x+y+w, 2 private).  No two linear parts are
+// identical or parallel, so the cross rule adds nothing.  Every proper subset of {x, y, w, x+y+w} is independent, so
+// every subfamily of at most three blocks is a family with independent input forms, which has no fall (Kunneth, as in
+// thm:star-family-locality with no shared coordinate).  Hence any fall of the four-block family is non-local: a fall
+// that no subfamily of at most three blocks explains.  Output: lowest degree t < DB of an element of (J:z) not in J
+// (DB if none), for the circuit family and for the control with d on a fourth independent coordinate v.
+// Question decided: does locality in subfamilies of at most three blocks survive a linear dependency of length 4?
+// A fall below DB = 9 answers no.  No fall below 9 leaves it open (falls at 9 or 10 unseen).
+option(redSB);
+ring S = 3, (x, y, w, v, ya(2..3), yb(2..3), yc(2..3), yd(2..3), ra(1..3), rb(1..3), rc(1..3), rd(1..3), z), dp;
+proc blockP(ideal L, ideal rr)
+{
+  poly P = 1; int i;
+  for (i = 1; i <= 3; i++) { P = P - rr[i]*(1 - L[i]^2); }
+  return(P);
+}
+proc blockI(ideal L, poly P)
+{
+  ideal I; int i;
+  for (i = 1; i <= 3; i++) { I = I, (1 - L[i]^2)*P; }
+  return(I);
+}
+proc lowestfall(ideal Ld, int DB)
+{
+  ideal La = x, ya(2), ya(3);   ideal Ra = ra(1..3);
+  ideal Lb = y, yb(2), yb(3);   ideal Rb = rb(1..3);
+  ideal Lc = w, yc(2), yc(3);   ideal Rc = rc(1..3);
+  ideal Rd = rd(1..3);
+  poly Pa = blockP(La, Ra); poly Pb = blockP(Lb, Rb); poly Pc = blockP(Lc, Rc); poly Pd = blockP(Ld, Rd);
+  ideal F; int i;
+  for (i = 1; i <= nvars(basering) - 1; i++) { F = F, var(i)^3 - var(i); }
+  ideal Ga = std(blockI(La, Pa) + F); ideal Gb = std(blockI(Lb, Pb) + F);
+  ideal Gc = std(blockI(Lc, Pc) + F); ideal Gd = std(blockI(Ld, Pd) + F);
+  ideal J = homog(F, z) + homog(Ga, z) + homog(Gb, z) + homog(Gc, z) + homog(Gd, z);
+  degBound = DB; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+  int lowest = DB; int k;
+  for (k = 1; k <= ncols(Q); k++) { if (Q[k] != 0 && deg(Q[k]) < lowest) { if (reduce(Q[k], SJ) != 0) { lowest = deg(Q[k]); } } }
+  return(lowest);
+}
+print("circuit abcd (d on x+y+w) DB=9 lowest_fall=" + string(lowestfall(ideal(x + y + w, yd(2), yd(3)), 9)));
+print("control abcd (d on v) DB=9 lowest_fall=" + string(lowestfall(ideal(v, yd(2), yd(3)), 9)));
+quit;

@@ -1,0 +1,41 @@
+// Route-review falsification test of the locality line's reach: ENS blocks whose linear parts are linearly DEPENDENT
+// (a circuit), not identical or parallel.  Over F_3, separately augmented complete accuracy-one ENS blocks with h
+// inputs (one shared form, h-1 private) and private coefficients; no cross generators (no two linear parts are equal).
+// Families, for h = 3, 4, degree bound DB = 11 (the compiler's degree, so falls at degree <= 10 are visible):
+//   circuit3: a on x, b on y, c on x+y        (every pair independent; the triple is the circuit)
+//   circuit4: a on x, b on y, c on w, d on x+y+w (every proper subset independent)
+//   control4: a on x, b on y, c on w, d on v  (independent; Kunneth predicts no fall)
+// Every proper subfamily of a circuit has independent forms and hence no fall, so a fall of circuit4 below 11 would
+// be a fall no subfamily of at most three blocks explains (locality fails for dependent forms), and a fall of
+// circuit3 below 11 would show that dependent triples need a new cross generator.  Output: lowest degree < DB of an
+// element of (J:z) not in J (DB if none).  circuit_h3.out (DB = 9) found none for circuit4 and control4 at h = 3.
+option(redSB);
+proc famfall(int h, int kind, int DB)
+{
+  int nb = 4; if (kind == 3) { nb = 3; }
+  ring S = 3, (x, y, w, v, yy(1..nb*(h-1)), rr(1..nb*h), z), dp;
+  ideal sh = x, y, w, v;
+  if (kind == 3) { sh[3] = x + y; }
+  if (kind == 4) { sh[4] = x + y + w; }
+  ideal F; int i; int j;
+  for (i = 1; i <= nvars(basering) - 1; i++) { F = F, var(i)^3 - var(i); }
+  ideal J = homog(F, z);
+  for (j = 1; j <= nb; j++) {
+    ideal L = sh[j]; for (i = 1; i <= h - 1; i++) { L = L, yy((j-1)*(h-1) + i); }
+    poly P = 1; for (i = 1; i <= h; i++) { P = P - rr((j-1)*h + i)*(1 - L[i]^2); }
+    ideal I; for (i = 1; i <= h; i++) { I = I, (1 - L[i]^2)*P; }
+    ideal G = std(I + F);
+    J = J + homog(G, z);
+    kill L; kill P; kill I; kill G;
+  }
+  degBound = DB; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+  int lowest = DB; int k;
+  for (k = 1; k <= ncols(Q); k++) { if (Q[k] != 0 && deg(Q[k]) < lowest) { if (reduce(Q[k], SJ) != 0) { lowest = deg(Q[k]); } } }
+  return(lowest);
+}
+list nm = "control4", "", "circuit3", "circuit4";
+int h; int kind;
+for (h = 3; h <= 4; h++) { for (kind = 1; kind <= 4; kind++) { if (kind != 2) {
+  print(nm[kind] + " h=" + string(h) + " DB=11 lowest_fall=" + string(famfall(h, kind, 11)));
+} } }
+quit;

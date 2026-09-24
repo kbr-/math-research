@@ -159,6 +159,20 @@ and assess that line's prospects as AGENTS.md requires. A weak assessment, or a 
 produces special cases without moving its general implication, makes the cycle a route
 review under AGENTS.md even before `finish-turn.py` forces one.
 
+Recheck a line's standing hypotheses against the instances the goal must handle at every
+cycle, not only when the line opens. A recorded count or obstruction showing that the goal's
+instances violate them ends the line's relevance, however sound each step is. On 24 September
+2026 a locality line assumed identical-or-independent input forms, but a recorded count showed
+that the band's forms are necessarily dependent.
+
+To make such drift visible, the notebook's **Open statements** living section (AGENTS.md)
+always holds the open part of the goal as a short list of self-contained statements. Each is
+stated in full, readable without other entries, with its status and the instances it must
+cover. Read it before designing a cycle and name the statement the cycle advances. When a line
+has descended more than one reduction below every statement on the list, the next cycle is a
+route review, which revises the list and places the line on it (user feedback, 24 September
+2026).
+
 Before designing a cycle:
 - Read in full every parked or linked item that the notebook's Proposed next step names on
   the same route item.
