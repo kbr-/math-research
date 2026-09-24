@@ -19,13 +19,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Hypothesis (a) of relative gluing is proved on both bases at logarithmic degree; on the weak base by a free seed in the column tensor power (<a href="#entry-2026-09-24-weak-base-stability">weak-base stability</a>). The highest-risk hypothesis is (c) for the column component. Apply the same device there:</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Hypothesis (a) of relative gluing is proved at logarithmic degree (<a href="#entry-2026-09-24-weak-base-stability">weak-base stability</a>). For the column component, the model is free through \(t\) when an affine basis of the span's values has multiplicity \((p-1)(t+1)\) (<a href="#entry-2026-09-24-column-seeds">column seeds</a>). The next obligation is the board: freeness of \(A_{\ge1}\) for such spans, which with the <a href="#entry-2026-09-24-column-model-summand">summand</a> gives board freeness.</p>
 <ol>
-<li>On the column algebra \(K=\bigotimes_j\mathbb F[C_j]/(C_j^2)\), column-type forms \(\ell_\varphi=\sum_j\varphi(j)C_j\) act diagonally as primitive elements. State when a block of columns carries a free seed for the span's truncated algebra, in terms of the span's column structure.</li>
-<li>Deduce freeness of \(K\) through degree about the number of disjoint seed blocks, and pass from \(K\) to the column model \(R=K/(\sum_jC_j)\) and, by the <a href="#entry-2026-09-24-column-model-summand">summand</a>, to the weak algebra's column part.</li>
-<li>Compare the seed condition with the recorded worst-direction criterion and its counterexamples.</li>
+<li>Describe \(A^{(k)}\), the part of \(U\)-degree \(k\), as \(\bigoplus_{|S|=k}K_{[n]\setminus S}\otimes U_S\) modulo \(\sum_jC_j\) and the images of the row sums \(r_1,\dots,r_n\).</li>
+<li>Each \(K_{[n]\setminus S}\) is a column algebra on fewer holes. Seeds survive the removal of \(S\) when the multiplicities exceed \((p-1)(t+1)+k\). Use the free-seed lemma on each piece, and resolve the row-sum relations over them.</li>
 </ol>
-<p>The step registers no new finite checks. Pending: freeness of \(A_{\ge1}\) for robust spans; the linear range of conj:weak-base-stability, not needed for the goal; a verified \(\mathbb F_3\) chessboard bound beyond three rows.</p>
+<p>The step registers no new finite checks. Pending: seeds for spans with mostly distinct values; hypothesis (b) at logarithmic width; the linear range of conj:weak-base-stability, not needed for the goal.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -12431,6 +12430,73 @@ the sum over pairwise disjoint column sets with \(|P_i|=a_i\), because \(x^2=0\)
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 37.24 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">42.04 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">55.06 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-column-seeds" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="thm:column-seed-freeness">
+<h3>Column seeds: a column span is free in the model through degree t when an affine basis of its values has multiplicity (p−1)(t+1)</h3>
+<p class="entry-meta">24 September 2026 · Working proof · The free direction of the worst-direction conjecture, in a provable range.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-base-settled-review">route review</a> left hypothesis (c) for the column component as the highest risk. The recorded chain to (c) for robust column components uses conj:worst-direction-freeness for the column model and model exactness for the board. The cycle applies the free-seed lemma (lem:free-seed-tensor) to column spans, to prove a free direction for the model in a range polynomial in the degree.</p>
+<p><strong>General statement.</strong> thm:column-seed-freeness: over a field of characteristic \(p\), let \(\varphi_1,\dots,\varphi_d\) be hole functions on \([n]\). Call a set \(B\) of holes a <em>seed</em> when, for every \(e\le(d+1)(p-1)\), the products \(\prod_{j\in S}L_j\), \(S\subseteq B\), \(|S|=e\), of the forms \(L_j(y)=y_0+\sum_b\varphi_b(j)y_b\) span the degree-\(e\) part of \(\mathbb F[y_0,\dots,y_d]/(y_0^p,\dots,y_d^p)\). If the holes contain \(t+1\) pairwise disjoint seeds, then the column model \(R=\mathbb F[C_1,\dots,C_n]/(C_j^2,\sum_jC_j)\) is free over \(\mathbb F[\ell_1,\dots,\ell_d]/(\ell_b^p)\), \(\ell_b=\sum_j\varphi_b(j)C_j\), through degree \(t\), with no lower bound on \(n\). One seed already forces \(1,\varphi_1,\dots,\varphi_d\) to be linearly independent, since otherwise the \(L_j\) span a proper subspace of the linear forms, so \(\ell_1,\dots,\ell_d\) span a \(d\)-dimensional space of forms. In particular this holds when some affine basis of \(\mathbb F^d\) has all its points taken as values \((\varphi_1(j),\dots,\varphi_d(j))\) by at least \((p-1)(t+1)\) holes each.</p>
+
+<h4>The algebra</h4>
+<p>\(K=\bigotimes_{j=1}^nV_j\) with \(V_j=\mathbb F\oplus\mathbb FC_j\), \(C_j^2=0\), is the free column algebra, and \(R=K/(s)\) with \(s=\sum_jC_j\). Put \(\ell_0=s\) and \(T=\mathbb F[L_0,\dots,L_d]/(L_b^p)\) with \(L_b\) primitive, acting on \(K\) by \(L_b\mapsto\ell_b\). Multiplication by \(\ell_b=\sum_j\varphi_b(j)C_j\), with \(\varphi_0\equiv1\), is the diagonal action in which \(L_b\) acts on \(V_j\) as multiplication by \(\varphi_b(j)C_j\). Since \(\ell_b^p=\sum_j\varphi_b(j)^pC_j^p=0\), \(K\) is a graded \(T\)-module.</p>
+
+<h4>Seeds</h4>
+<p><strong>Lemma (seed criterion).</strong> For a set \(B\) of holes, \(\operatorname{Ann}_T(1)=0\) in \(K_B=\bigotimes_{j\in B}V_j\) if and only if \(B\) is a seed.</p>
+<p><em>Proof.</em> For \(0\le a_b\le p-1\), expanding the product and using \(C_j^2=0\) gives
+\[\prod_bL_b^{a_b}\cdot1=\prod_ba_b!\sum_{S\subseteq B,\ |S|=|a|}\Bigl([y^a]\prod_{j\in S}L_j(y)\Bigr)C_S.\]
+The \(|a|\) factors go to distinct holes. A hole receiving a factor \(L_b\) contributes \(\varphi_b(j)\), and the sum over assignments with the given multiplicities is the coefficient of \(y^a\), up to the orderings \(\prod a_b!\), which are units. Images of different degrees \(|a|\) are independent. Within degree \(e\), the images of the \(y^a\) with all \(a_b\le p-1\) are independent exactly when the matrix \(\bigl([y^a]\prod_{j\in S}L_j\bigr)_{a,S}\) has full row rank. That is, when the \(\prod_{j\in S}L_j\), reduced modulo \((y_b^p)\), span the degree-\(e\) part of the truncated ring. The basis of the truncated ring is the \(y^a\) with \(a_b\le p-1\). \(\square\)</p>
+<p><strong>Lemma (multiplicity seeds).</strong> If \(B\) contains \(p-1\) holes with value \(P_i\) for each point \(P_i\) of an affine basis \(P_0,\dots,P_d\) of \(\mathbb F^d\), then \(B\) is a seed.</p>
+<p><em>Proof.</em> The forms \(M_i=y_0+\langle P_i,y'\rangle\), \(y'=(y_1,\dots,y_d)\), are a basis of the linear forms, since the \((1,P_i)\) are linearly independent. In characteristic \(p\) the ideal \((y_0^p,\dots,y_d^p)\) is the ideal generated by the \(p\)-th powers of all linear forms, because \((\sum c_by_b)^p=\sum c_b^py_b^p\). So it equals \((M_0^p,\dots,M_d^p)\), and the truncated ring has the basis \(\prod_iM_i^{k_i}\), \(k_i\le p-1\). Each such monomial is \(\prod_{j\in S}L_j\) for \(S\) made of \(k_i\) of the \(p-1\) holes of value \(P_i\). \(\square\)</p>
+
+<h4>The theorem</h4>
+<p><strong>Theorem (column seeds).</strong> Let \(\mathbb F\) have characteristic \(p\), and let \([n]\) contain \(t+1\) pairwise disjoint seeds for \(\varphi_1,\dots,\varphi_d\). Then \(\mathrm{HF}(R/(\ell_1,\dots,\ell_d)R)_k=[q^k]\,\mathrm{HS}_R\,\bigl((1-q)/(1-q^p)\bigr)^d\) for \(k\le t\), and \(R\) is a free \(\mathbb F[\ell]/(\ell^p)\)-module plus a part in degrees \(\ge t+1\). For \(p=3\) this is freeness through \(t\) in the sense of conj:worst-direction-freeness, whose divisor \((1+q+q^2)^d\) is \(((1-q^3)/(1-q))^d\); for other \(p\) it is the same notion with \((1-q^p)/(1-q)\).</p>
+<p><em>Proof.</em></p>
+<ol>
+<li>Group the holes as \(B_0,\dots,B_t\) (the seeds) and the rest. \(K=K_{B_0}\otimes\cdots\otimes K_{B_t}\otimes K_{\rm rest}\) as algebras, and multiplication by \(\ell_b\) is the diagonal action of the primitive \(L_b\) on this tensor product, by the Leibniz rule. By the seed criterion, \(T\to K_{B_i}\), \(t\mapsto t\cdot1\), is injective. By graded self-injectivity of \(T\), \(K_{B_i}=T\cdot1\oplus Q_{1,i}\), with \(Q_{1,i}\) in degrees \(\ge1\) because \((K_{B_i})_0=\mathbb F\cdot1\). Expand \(\bigl(\bigotimes_i(T\cdot1\oplus Q_{1,i})\bigr)\otimes K_{\rm rest}\). Every term with a factor \(T\cdot1\) is graded free, by cocommutativity (to move that factor to the front) and the tensor identity. The remaining term \(\bigotimes_iQ_{1,i}\otimes K_{\rm rest}\) lies in degrees \(\ge t+1\). Hence \(K\cong(T\otimes C)\oplus Q\) by a graded \(T\)-linear isomorphism, where \(T\) acts on \(T\otimes C\) through the left factor, \(C\) is a graded vector space and \(Q\) lies in degrees \(\ge t+1\). This is the free-seed lemma's argument with unequal factors.</li>
+<li>\(R/(\ell_1,\dots,\ell_d)R=K/(\ell_0,\dots,\ell_d)K=\mathbb F\otimes_TK\). Its Hilbert function is \(\mathrm{HS}_C\) plus a part in degrees \(\ge t+1\).</li>
+<li>Reducing the \(T\)-linear isomorphism modulo \(\ell_0\) gives \(R=K/\ell_0K\cong(T/L_0T\otimes C)\oplus Q/\ell_0Q\) as \(T'\)-modules, with \(T/L_0T=\mathbb F[L_1,\dots,L_d]/(L^p)=:T'\). So \(\mathrm{HS}_R=\mathrm{HS}_{T'}\mathrm{HS}_C\) plus a part in degrees \(\ge t+1\), and \([q^k]\mathrm{HS}_R/\mathrm{HS}_{T'}=[q^k]\mathrm{HS}_C\) for \(k\le t\). Here \(\mathrm{HS}_{T'}=((1-q^p)/(1-q))^d\) has constant term 1.</li>
+<li>Items 2 and 3 give the equality for \(k\le t\). As a \(T'\)-module, \(R\) is \(T'\otimes C\) plus a part in degrees \(\ge t+1\), which is freeness through \(t\). \(\square\)</li>
+</ol>
+<p><strong>Corollary (multiplicity form).</strong> If some affine basis of \(\mathbb F^d\) has each of its points as the value of at least \((p-1)(t+1)\) holes, the column model is free through degree \(t\).</p>
+<p><em>Comparison with the conjecture.</em> The multiplicity hypothesis forces every nonzero direction \(\lambda\) to have column count \(c(\lambda)\ge(p-1)(t+1)\), the number of holes outside the most frequent level set of \(\lambda\circ\varphi\). A nonconstant affine function is not constant on an affine basis, so at least one basis point, with its \((p-1)(t+1)\) holes, lies outside that level set. For \(p=3\) this gives \(c\ge2t+2&gt;2t-1\). The corollary therefore lies strictly inside the conjectured free range, consistently with the conjecture. It also misses spans the conjecture covers. For \(d=1\), \(p=3\), value multiplicities \((n-2t,t,t)\) give \(c=2t\ge2t-1\), but no value other than the first is taken \(2(t+1)\) times. The gap lies in how the holes are distributed among values, not only in their number.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>The worst-direction conjecture now has a proved sufficient condition for freeness, strictly inside its conjectured range: multiplicity \((p-1)(t+1)\) on an affine basis of the values. The "if" direction at the conjectured threshold \(c\ge2t-1\), and the converse, remain open.</li>
+<li>For \(p=3\), where the <a href="#entry-2026-09-24-column-model-summand">summand</a> is stated, model freeness is the \(U\)-degree-0 half of freeness of the weak board; the summand has not been checked for other \(p\). Model exactness, freeness of \(A_{\ge1}\), is still needed for the board.</li>
+<li>The multiplicity form needs \((p-1)(d+1)(t+1)\) holes at least, and needs repeated values. A span of dimension \(d\approx\log_pn\) can take mostly distinct values, and then only the general seed criterion can apply: products of distinct forms \(L_j\) spanning the truncated ring. It resembles the <a href="#entry-2026-09-24-column-model-gale">Gale entry</a>'s reformulation through squares of the Gale transform, but the relation between the two is not worked out.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the free-seed lemma and its proof, the statement of conj:worst-direction-freeness, and the summand proposition's scope. A fresh-context reviewer checked the diagonal action and \(\ell_b^p=0\), including \(b=0\); the seed-criterion formula, its \(a_b!\) factor and its converse; the equality \((y_b^p)=(M_i^p)\) and the monomial basis; and the Hilbert-series bookkeeping. It required these changes, all adopted:</p>
+<ul>
+<li>the independence hypothesis dropped, as it is implied by one seed;</li>
+<li>the general-\(p\) definition of freeness through \(t\) stated;</li>
+<li>the unequal-factor splitting written out;</li>
+<li>the \(T\)-linearity of the splitting made explicit;</li>
+<li>the comparison with the conjectured threshold made precise, with a consistency check and an example the corollary misses;</li>
+<li>the transfer to the board limited to \(p=3\).</li>
+</ul>
+<p>The changes clarify or weaken, so no further pass was made.</p>
+
+<h4>Remaining gap</h4>
+<ul>
+<li>Freeness of \(A_{\ge1}\) for spans with seeds (model exactness).</li>
+<li>Seeds for spans with mostly distinct values (the general criterion).</li>
+<li>Hypothesis (b) at logarithmic width.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-column-seed-proof">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 29.57 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 20.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 9.34 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
