@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Closed column members have no falls with the weak base when their forms have a seeded span, for any allowed values (<a href="#entry-2026-09-24-seeded-closure">seeded closure</a>), or when they sit on few holes. The seed argument stops at span dimension about \(N/((p-1)(D+1))\), which the budget can exceed. Next: freeness of the column tensor power over a form algebra of large span, or a combination of seeded blocks with a transfer across blocks. Then (c) over the closed base and (b) for closed members.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Five research cycles since the <a href="#entry-2026-09-24-closed-base-review">closed-base review</a> proved closed stability for sparse and seeded column members and found that freeness over the full form algebra stops at a span threshold that shrinks with \(D\) (<a href="#entry-2026-09-24-generic-form-freeness">generic form freeness</a>). Next: a route review of the column component, weighing large spans through the allowed set against the untested (b) and (c) over the closed base, before further refinement.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -13542,6 +13542,58 @@ the sum over column-injective cell sets \(Y\) in rows \(1,\dots,m-1\), with \(S(
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7 min 10.49 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 34.28 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-generic-form-freeness" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:generic-form-freeness conj:generic-form-freeness">
+<h3>Generic form freeness: random column forms act freely far beyond the seed range, up to a span threshold that shrinks with the degree</h3>
+<p class="entry-meta">24 September 2026 · Finite check and conjecture · Freeness over large column spans; cycle odd-prime-large-span.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. thm:seeded-closure-stability needs the column tensor power free over the row sums and the members' forms, which board seeds give only for span dimension up to about \(N/((p-1)(D+1))\) (<a href="#entry-2026-09-24-seeded-closure">seeded closure</a>). Seeds are sufficient, not necessary. The cycle asks how far freeness actually extends for generic forms, and whether it can carry the large spans the budget produces.</p>
+<p><strong>General statement.</strong> conj:generic-form-freeness: for each \(D\) there is \(c_D&gt;0\) such that for column forms in general position with span dimension \(d\le c_DN-O(1)\), the column tensor power on few rows is free through degree \(D\) over its row sums and the forms. ex:generic-form-freeness supports it at \(p=3\), \(D=3,4\), and shows that freeness fails beyond a threshold, of about \(N/2\) at \(D=3\) and \(N/4\) at \(D=4\). So freeness over the full form algebra cannot carry spans of order \(N\) at the goal's degrees.</p>
+
+<h4>The test</h4>
+<p><strong>Tested statement.</strong> Over \(\mathbb F_3\), the column tensor power \(\tilde A\) on \(R=2\) rows and \(N\) holes is free through degree \(D\) over \(T=\mathbb F[Y_0,Y_1,W_1,\dots,W_d]/(p\text{-th powers})\), acting by the row sums and column forms \(\ell_b=\sum_j\varphi_b(j)C_j\). By graded Nakayama this holds exactly when \(\mathrm{HF}(\tilde A/(r,\ell))_k=[q^k]\,(1+2q)^N/(1+q+q^2)^{2+d}\) for \(k\le D\), with the prediction positive there. That is the hypothesis lem:filtered-freeness-transfer needs in the seeded-closure proof on one board row plus the bulk row. <code>form_freeness.py</code> computes the Hilbert function in Singular. Forms: uniform random \(\varphi_b\in\mathbb F_3^N\), one seed. Controls: \(d=0\), the row sums alone, and coordinate forms \(C_1,\dots,C_d\), for which \(C_b^2=0\) forces failure.</p>
+<p><strong>Can it decide.</strong> Board seeds at \(D=3\) need an affine basis with multiplicity \((p-1)(D+1)^2=32\) at one point, so at these \(N\) they give nothing for any \(d\ge1\). A pass is freeness beyond seeds; a failure with positive prediction is genuine non-freeness.</p>
+<p>Excess \(\mathrm{HF}-\text{prediction}\), from degree 2 up (degrees 0 and 1 are 0 throughout; <code>ff_R2_D3.json</code>, <code>ff_R2_D3_large.json</code>, <code>ff_R2_D4.json</code>; the prediction is positive in every case):</p>
+<table>
+<tr><th>\(D\)</th><th>\(N\)</th><th>results</th></tr>
+<tr><td>3</td><td>12</td><td>d=0: free; d=2: free; d=4: excess 0, 7; d=6: excess 1, 46; d=8: excess 6, 112; coord d=4: excess 8, 132</td></tr>
+<tr><td>3</td><td>16</td><td>d=0: free; d=2: free; d=4: free; d=6: excess 0, 1; d=8: excess 0, 25; coord d=4: excess 8, 196</td></tr>
+<tr><td>3</td><td>20</td><td>d=4: free; d=6: free; d=8: free; d=10: excess 0, 4; d=12: excess 0, 43</td></tr>
+<tr><td>3</td><td>24</td><td>d=4: free; d=6: free; d=8: free; d=10: free; d=12: excess 0, 1</td></tr>
+<tr><td>4</td><td>16</td><td>d=2: free; d=4: free; d=6: excess 0, 1, 71; d=8: excess 0, 25, 558; d=10: excess 2, 118, 1335</td></tr>
+<tr><td>4</td><td>20</td><td>d=2: free; d=4: free; d=6: excess 0, 0, 6; d=8: excess 0, 0, 50; d=10: excess 0, 4, 548</td></tr>
+<tr><td>4</td><td>24</td><td>d=2: free; d=4: free; d=6: free; d=8: excess 0, 0, 1; d=10: excess 0, 0, 8</td></tr>
+
+</table>
+<p>Random forms are free up to \(d=2,4,8,10\) at \(N=12,16,20,24\) for \(D=3\), and up to \(d=4,4,6\) at \(N=16,20,24\) for \(D=4\). They fail from \(d=4,6,10,12\) and \(d=6,6,8\) respectively. Coordinate forms fail from degree 2, and the row sums alone are free. This is ex:generic-form-freeness.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>Freeness extends far beyond the seed range for generic forms: at \(N=24\), \(D=3\), ten random forms act freely where seeds allow none.</li>
+<li>It still stops at a span threshold that shrinks with \(D\): about \(N/2\) at \(D=3\) and \(N/4\) at \(D=4\). The data cannot tell whether the decay is like \(1/D\) or exponential in \(D\); \(D=5\) would need \(N\) near 48. Either way the covered span shrinks relative to \(N\) as \(D\) grows, while the budget's column constraints can span up to \(N\) at \(D=O(\log N)\).</li>
+<li>So the transfer lemma must be applied with a smaller algebra than all the forms: the member needs only \(\operatorname{gr}\mathbb F^{\mathcal P_Z}\) free over the rows, not freeness over its forms. Large spans need an argument that uses the allowed set, for instance through a seeded sub-span that already determines \(Z\) up to low degree.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:seeded-closure-stability and lem:filtered-freeness-transfer, the board-seeds proof's seed criterion, and the graded-Nakayama criterion used in the recorded board-affine checks. The controls behave as predicted: the row sums alone are free, and coordinate forms fail from degree 2 since \(C_b^2=0\). The entry registers a finite check and a conjecture and no proof, so no reviewer pass was run.</p>
+
+<h4>Remaining gap</h4>
+<ul>
+<li>The rate of the threshold in \(D\); a proof of generic freeness below it.</li>
+<li>Closed column members of large span, through the allowed set rather than the full form algebra.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-large-span">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 38.17 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 57.34 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 14.98 s</td></tr>
+<tr><td>Other external-tool windows</td><td class="elapsed">1 min 25.71 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
