@@ -33,20 +33,26 @@ class PythonLoopGuardTest(unittest.TestCase):
 
 
 class SeriesGuardTest(unittest.TestCase):
-    def ev(self, *argsets, category='computation', prog='scan.py'):
-        return [{'event': 'run_start', 'category': category, 'command': ['/usr/bin/python3', prog, *a]} for a in argsets]
+    def ev(self, *argsets, category='computation', prog='scan.py', exe='/usr/bin/python3', timeout=100):
+        return [{'event': 'run_start', 'category': category, 'timeout_s': timeout, 'command': [exe, prog, *a]}
+                for a in argsets]
 
-    def test_fourth_new_argument_list_is_refused(self):
-        events = self.ev(['1'], ['2'], ['3'])
-        self.assertIsNotNone(CS.series_error(events, ['python3', 'scan.py', '4']))
+    def six(self, **kw):
+        return self.ev(*[[str(i)] for i in range(CS.MAX_SERIES_ARGSETS)], **kw)
 
-    def test_repeat_and_small_series_are_allowed(self):
-        self.assertIsNone(CS.series_error(self.ev(['1'], ['2'], ['3']), ['python3', 'scan.py', '2']))
-        self.assertIsNone(CS.series_error(self.ev(['1'], ['2']), ['python3', 'scan.py', '3']))
+    def test_seventh_new_short_python_argument_list_is_refused(self):
+        self.assertIsNotNone(CS.series_error(self.six(), ['python3', 'scan.py', 'new'], 100))
 
-    def test_other_programs_and_categories_do_not_count(self):
-        events = self.ev(['1'], ['2'], prog='other.py') + self.ev(['3'], category='local_processing')
-        self.assertIsNone(CS.series_error(events, ['python3', 'scan.py', '4']))
+    def test_repeats_small_series_and_long_runs_are_allowed(self):
+        self.assertIsNone(CS.series_error(self.six(), ['python3', 'scan.py', '2'], 100))
+        self.assertIsNone(CS.series_error(self.ev(['1'], ['2'], ['3'], ['4']), ['python3', 'scan.py', '5'], 100))
+        self.assertIsNone(CS.series_error(self.six(), ['python3', 'scan.py', 'new'], 600))
+        self.assertIsNone(CS.series_error(self.six(timeout=600), ['python3', 'scan.py', 'new'], 100))
+
+    def test_other_programs_categories_and_compiled_runs_do_not_count(self):
+        events = self.six(prog='other.py') + self.six(category='local_processing')
+        self.assertIsNone(CS.series_error(events, ['python3', 'scan.py', 'new'], 100))
+        self.assertIsNone(CS.series_error(self.six(exe='research/tmp/kernel', prog='x.py'), ['research/tmp/kernel', 'x.py', 'n'], 100))
 
 
 if __name__ == '__main__':
