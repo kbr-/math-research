@@ -19,13 +19,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Column members can fall on the board through placed pigeons, even without occupancy falls. After placed-pigeon closure, the tested merging member falls exactly like the weak base on the merged board (<a href="#entry-2026-09-24-placed-pigeon-falls">placed-pigeon falls</a>, conj:effective-board). Six research entries have passed since the last review, so the next entry is a route review. It should weigh:</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Column members act as board restrictions. After placed-pigeon closure, a merging member's system is a weak base with a fat column. The exact effective-board law fails below the stability range, and its stability form is the target (<a href="#entry-2026-09-24-effective-board-review">effective-board review</a>). Next:</p>
 <ol>
-<li>the effective-board picture as the form of hypothesis (c) for column members, with (a) on the effective board as its content;</li>
-<li>the question it raises for the goal: how far budget column constraints can shrink the effective board;</li>
-<li>the extension of hypothesis (b) to closed members, whose tops carry pigeon cells.</li>
+<li>Prove conj:effective-board-stability for merging members: extend the proof of thm:weak-base-stability-quadratic to boards with fat columns, which enter the free-seed lemma as the extra factor \(M\), with seeds from at least \((p-1)D^2\) ordinary columns.</li>
+<li>Then determine the effective boards that budget column constraints can produce.</li>
 </ol>
-<p>Then prove the effective-board conjecture for merging members. Pending: contents \(|c|\ge2\) in the syzygy route; non-column members.</p>
+<p>Pending: hypothesis (b) for closed members; non-column members.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -12848,6 +12847,72 @@ The \(|a|\) factors go to distinct holes. A hole receiving a factor \(L_b\) cont
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 28.94 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 37.27 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 51.53 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-effective-board-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="ex:merge-three-effective-board conj:effective-board-stability">
+<h3>Route review: column members act as board restrictions; the exact effective-board law fails below the stability range, and its stability form is the target</h3>
+<p class="entry-meta">24 September 2026 · Route review with a refutation · The relative gluing line after the column-member cycles; cycle odd-prime-effective-board-review.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>General statement.</strong> The line's claim is thm:relative-gluing with (a) proved at logarithmic degree (thm:weak-base-stability-quadratic). For column members, (c) holds after Gröbner augmentation on seeded spans (thm:seeded-member-condition) and in content 0 for any span (lem:occupancy-transfer). Beyond content 0 it holds only after placed-pigeon closure (ex:placed-pigeon-falls). The review's new claim is conj:effective-board-stability: for a column member whose closed system is a weak base on an effective board, the closed system is stable below \(D\) when that board is in the stability range. ex:merge-three-effective-board refutes the exact form of conj:effective-board below that range.</p>
+
+<h4>What the goal needs</h4>
+<p>At degree \(D=O(\log n)\), for the product clauses of any \(n^K\) adversarial families:</p>
+<ul>
+<li>(a): proved.</li>
+<li>(c) for the column component, which cannot split: after placed-pigeon closure, no falls below \(D\). If column members act as board restrictions, this asks that the adversary's column constraints leave an effective board in the stability range, of order \(D^2\) columns.</li>
+<li>(c) for non-column members: open.</li>
+<li>(b) for closed members, whose tops carry pigeon cells: open, and the tensor-splitting framework needs extending.</li>
+</ul>
+
+<h4>Falsification attempt: a three-hole merge</h4>
+<p>If the exact effective-board law held, merging holes 1, 2, 3 (\(C_aC_b=0\), \(a\ne b\)) with its placed-pigeon closure (\(x_{ia}C_b\), \(x_{ia}x_{i'b}\)) would fall exactly like the weak base on \(N-2\) columns. <code>merge3.py</code> computes the closed system's falls exactly in Singular (<code>merge3.json</code>), and <code>base_injectivity.py</code> the comparison (<code>merge3_compare.json</code>). Values are \(\dim\ker z\) in degrees 0 to 3, \(D=4\), over \(\mathbb F_3\):</p>
+<table>
+<tr><th>rows × \(N\)</th><th>closed merge of 3</th><th>weak base, rows × \((N-2)\)</th></tr>
+<tr><td>4 × 8</td><td>0, 0, 0, 69</td><td>0, 0, 0, 69</td></tr>
+<tr><td>3 × 9</td><td>0, 0, 0, 0</td><td>0, 0, 0, 0</td></tr>
+<tr><td>3 × 7</td><td>0, 0, 0, 108</td><td>0, 0, 0, 48</td></tr>
+</table>
+<p>The exact law fails at 3 × 7, where the merged board has 5 columns, below \(2D-1=7\). There the closed system falls more than the merged base. It holds at 4 × 8, and at 3 × 9, where the merged board has 7 columns and neither falls. The attempt refutes the exact form. It leaves the stability form, which matters for the goal: no falls when the effective board is in range.</p>
+
+<h4>Why the stability form should be provable for merging members</h4>
+<p>For a merge of a hole set \(H\), the closed system is exactly a weak base with one fat column. The generators \(x_{ia}x_{i'b}\), \(a\ne b\in H\), together with the column exclusions inside each hole of \(H\), make the span of all \(x_{ia}\), \(a\in H\), a square-zero column. The member's constraints \(C_aC_b\) and \(x_{ia}C_b\) are combinations of these. The proof of thm:weak-base-stability-quadratic uses:</p>
+<ul>
+<li>a column tensor product with square-zero columns and a \(z\)-free lift;</li>
+<li>row sums acting diagonally;</li>
+<li>Frobenius lifts;</li>
+<li>seeds made of ordinary columns;</li>
+<li>row reduction.</li>
+</ul>
+<p>A fat column is one more tensor factor, the module \(M\) of the free-seed lemma. So the closed system should be stable below \(D\) whenever the ordinary columns number at least \((p-1)D^2\). This is the next step, to be written as a proof.</p>
+
+<h4>Assessment of the line</h4>
+<p>In twelve cycles the line went from four conjectural hypotheses to a proved base condition (a), a proved member condition (c) in two regimes, seeded spans and content 0, and a precise picture of what remains. Column members behave as restrictions of the board. Their harm is measured by how much board they leave, which is the PHP counting question in its natural form.</p>
+<p>The evidence for this picture is exact, but at sizes \(n\le9\) and \(D\le4\). Its exact form has now failed once, below the stability range. Two parts are untested at the goal's scale:</p>
+<ul>
+<li>whether budget column constraints, wide and few, can shrink the effective board below order \(D^2\);</li>
+<li>whether (b) survives the closure.</li>
+</ul>
+<p>Both are where the thread's oldest difficulty, the occupancy window, now sits.</p>
+
+<h4>The highest-risk item and the next step</h4>
+<p>The column component remains the highest risk. Next:</p>
+<ol>
+<li>Prove conj:effective-board-stability for merging members, by the fat-column extension of the weak-base stability proof.</li>
+<li>Then ask what effective boards budget column constraints can produce: members that forbid a \(p^{-k}\) fraction of occupancy patterns on spans of dimension about \(\log n\).</li>
+</ol>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the placed-pigeon-falls entry and its conjecture, the weak-base stability proof's ingredients, and the free-seed lemma. The comparison values come from the recorded, cross-engine-validated driver. The refutation is exact; the stability form is recorded as a conjecture. No reviewer pass was run, since the review adds no proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-effective-board-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 3.63 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 18.62 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">44.87 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
