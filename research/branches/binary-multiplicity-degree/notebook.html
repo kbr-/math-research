@@ -19,23 +19,20 @@
 <ul>
 <li>The upper bound \(\delta\le\Phi\) is proved by \(y_1^\ell F^{2q}g_{r+1}\) (<a href="#per-order-all-dimension-upper-bound">construction</a>).</li>
 <li>The minimum of \(\Phi\) over \(\ell\) is exactly \(D(n,k)\), so the lower bound holds at the minimizing orders.</li>
-<li>For \(n\ge m(k)\), \(\Phi=n+2k-2-s_2(k-\ell-1)\), proved for \(k\le16\) by exact computation through the <a href="#binary-origin-jet-parametrization">origin-jet lemma</a>.</li>
-<li>For \(\ell=0\) the lower bound is proved when \(n\le3\), by a <a href="#hyperplane-restriction-dichotomy">hyperplane dichotomy</a>; the argument first fails at \((n,c)=(4,9)\).</li>
+<li><strong>Proved whenever \(k-\ell\le2^n\)</strong>, in particular for every \(n\ge m(k)\): \(\delta=n+2k-2-s_2(k-\ell-1)\) (<a href="#per-order-value-small-multiplicity">additive-roots theorem</a>). The degree is read off from \(y\)-coefficients of the jet, and additive polynomials cannot vanish on the \(2^n\)-element span of the \(y_i\).</li>
+<li>With the <a href="#hyperplane-restriction-dichotomy">hyperplane dichotomy</a>, \(\delta=\Phi\) for every order when \(n\le4\) (<a href="#per-order-all-dimensions-small-n">corollary</a>). Open: \(n\ge5\) with \(k-\ell&gt;2^n\), first \((5,33)\).</li>
 <li>Orders \(k-1\) and \(k-2\) are settled in every dimension by the <a href="https://kbr.is-a.dev/math-research/branches/odd-field-double-covering/#finite-field-high-origin-cover">high-origin cover theorem</a>.</li>
 </ul>
 </section>
 <section id="remaining-route">
 <h2>The remaining route</h2>
-<ol><li data-route-item="low-origin-degree"><strong>Per-order values (the user's target).</strong> Proved for \(k\le16\), \(n\ge m(k)\). Conjectured in every dimension: \(\delta(n,k,\ell)=n+2\ell+\sum_{j&lt;n}\lfloor(k-\ell-1)/2^j\rfloor\). Equivalently, a halving law \(\delta(n,c,0)=c+\delta(n-1,\lceil c/2\rceil,0)\) and an exchange law \(\delta(n,k,\ell)=2\ell+\delta(n,k-\ell,0)\) (<a href="#per-order-all-dimension-conjecture">statement</a>). The upper bound \(\delta\le\Phi\) is proved in every dimension (<a href="#per-order-all-dimension-upper-bound">construction</a>). Open: the lower bound \(\delta\ge\Phi\), proved for \(\ell=0\), \(n\le3\) (<a href="#order-zero-value-small-dimensions">small dimensions</a>); the step and the hyperplane dichotomy first fail at \((4,9)\). The one-dimension step gains only one degree; the halving law needs a step that trades a dimension and half the multiplicity for \(c\) degrees.</li><li data-route-item="formalization"><strong>Formalize the answer in Lean: complete.</strong> The <a href="#binary-multiplicity-degree-complete">complete formula</a> for all \(n,k\ge1\), the <a href="#entry-2026-09-24-lean-degree-formula">formula theorem</a> and every dependency are verified, down to multiplicity Schwartz–Zippel over every field and BBDM's hyperplane covers, following the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a>. Downstream corollaries such as the power-of-two factors remain informal.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> A draft preprint with Lean links, <a href="https://github.com/kbr-/math-research/tree/main/publications/binary-multiplicity-degree"><code>publications/binary-multiplicity-degree</code></a>, was prepared on 24 September; it is unpublished and awaits the user. The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li></ol>
+<ol><li data-route-item="low-origin-degree"><strong>Per-order values (the user's target): proved in the conjectured range.</strong> The per-order formula \(\delta(n,k,\ell)=n+2k-2-s_2(k-\ell-1)\) holds whenever \(k-\ell\le2^n\), so for every \(n\ge m(k)\) (<a href="#per-order-value-small-multiplicity">additive-roots theorem</a>). The all-dimension form \(\Phi\) holds for \(n\le4\) and its upper half everywhere. Open: \(\delta\ge\Phi\) for \(n\ge5\), \(k-\ell&gt;2^n\) (BBDM's covering regime), first \((5,33)\). Planned tool: reduce the forms \(E_j\) modulo the subspace polynomial of the span.</li><li data-route-item="formalization"><strong>Formalize the answer in Lean: complete.</strong> The <a href="#binary-multiplicity-degree-complete">complete formula</a> for all \(n,k\ge1\), the <a href="#entry-2026-09-24-lean-degree-formula">formula theorem</a> and every dependency are verified, down to multiplicity Schwartz–Zippel over every field and BBDM's hyperplane covers, following the <a href="https://github.com/kbr-/math-research/blob/main/formalization/BINARY_MULTIPLICITY_DEGREE_FORMALIZATION_ROUTE.md">route</a>. Downstream corollaries such as the power-of-two factors remain informal.</li><li data-route-item="note-revision"><strong>Decide what reaches the note.</strong> A draft preprint with Lean links, <a href="https://github.com/kbr-/math-research/tree/main/publications/binary-multiplicity-degree"><code>publications/binary-multiplicity-degree</code></a>, was prepared on 24 September; it is unpublished and awaits the user. The co-author's question is answered in full, with Menezes' construction and his large-\(n\) theorem cited. Whether the note becomes a short paper, how it credits Menezes, and any correspondence with the co-author or Menezes are the user's decisions.</li><li data-route-item="prior-art"><strong>Place the answer in the literature.</strong> Found: Menezes, arXiv 2609.19009 (every field, \(n\ge k-1\)). Check his later versions and citing works before the note names results; two searches do not establish novelty for the small-\(n\) range.</li></ol>
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: low-origin-degree. Close the lower bound \(\delta\ge\Phi\) in the gap region \(c-1\ge2^{n-1}\), \(2q+s_2(r)&lt;n-2\), starting with \((n,c,\ell)=(4,9,0)\). There the step and the <a href="#hyperplane-restriction-dichotomy">hyperplane dichotomy</a> give 18, while the true value is 19. Two refinements to try first:</p>
-<ul>
-<li>divide only the hyperplane forms on which \(P\) vanishes, and apply Schwartz–Zippel to the quotient restricted to a remaining hyperplane, with the reduced multiplicities;</li>
-<li>combine the dichotomy on \(H_u\) with the step along a linear hyperplane that uses the origin.</li>
-</ul>
-<p>Test each refined recursion against \(\Phi\) arithmetically, as <code>research/tools/bmd_dichotomy_bound.py</code> does, before proving it. The exchange law for \(\ell&gt;0\) is the other open half. Publication and correspondence remain the user's decisions.</p>
+<p>Route item: low-origin-degree. Prove \(\delta\ge\Phi\) in the one open range, \(n\ge5\) and \(k-\ell&gt;2^n\), first case \((n,c)=(5,33)\).</p>
+<p>Redo the <a href="#per-order-value-small-multiplicity">additive-roots argument</a> modulo the subspace polynomial \(L_V(Y)=\prod_{a\in V}(Y-a)\) of the span \(V\) of \(y_1,\ldots,y_n\). It is additive, of degree \(2^n\), with \(L_V(y_i)=0\). The forms \(E_j\) now have degree \(\ge2^n\). The expected reduction strips one factor \(L_V\), which should correspond to a factor \(F^2\) of the construction, per block of \(2^n\) in \(c-1\), and gives \(\Phi\).</p>
+<p>The per-order results are a candidate for the preprint. Publication, correspondence and any Lean formalization of the new theorem remain the user's decisions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -990,6 +987,81 @@
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 35.87 s</strong></td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 35.71 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.16 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-additive-roots" data-kind="review" data-route="low-origin-degree" data-claims="lem:y-coefficient-degree-formula thm:per-order-value-small-multiplicity cor:per-order-all-dimensions-small-n conj:binary-multiplicity-per-order-formula">
+<h3>25 September 2026 — The per-order formula is proved: additive polynomials on the span of the y_i</h3>
+<p class="entry-meta">Working proof: δ(n,k,ℓ) = n+2k−2−s₂(k−ℓ−1) whenever k−ℓ ≤ 2^n, hence for all n ≥ m(k). <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Question.</strong> The first case of \(\delta\ge\Phi\) not covered by the step and the <a href="#hyperplane-restriction-dichotomy">hyperplane dichotomy</a> is \((n,c,\ell)=(4,9,0)\). This cycle looks for the mechanism that decides it. It starts from a closed form for the coefficients of the polynomial attached to an origin jet.</p>
+<p><strong>Outcome.</strong> The degree of \(P(v)\) is read off from \(y\)-coefficients of \(w=v\circ x\), where \(x(Y)=\sum_{t\ge0}Y^{2^t}\) is additive. The lower bound then follows from a root count, applied to multi-additive forms one variable at a time: a nonzero additive polynomial of degree below \(2^n\) cannot vanish on the \(2^n\)-element \(\mathbb F_2\)-span of \(y_1,\ldots,y_n\). This proves the <a href="#binary-multiplicity-per-order-conjecture">per-order conjecture</a> for every \(k\), and the <a href="#per-order-all-dimension-conjecture">all-dimension conjecture</a> for \(n\le4\).</p>
+<h4 id="y-coefficient-degree-formula">The degree in terms of \(y\)-coefficients</h4>
+<p>Let \(x(Y)=\sum_{t\ge0}Y^{2^t}\in\mathbb F_2[[Y]]\), the root of \(X^2+X=Y\) with \(x(0)=0\). Substituting \(x_i=x(y_i)\) is an automorphism of \(\mathbb F_2[[y]]\) that preserves the order.</p>
+<p><strong>Working lemma</strong> (<code>lem:y-coefficient-degree-formula</code>). Let \(v\) be an origin jet (\(|\beta|&lt;k\)), let \(P(v)\) be as in the <a href="#binary-origin-jet-parametrization">origin-jet lemma</a>, and put \(w(y)=v(x(y_1),\ldots,x(y_n))\). Then the coefficient of \(x^\varepsilon y^e\) (\(|e|&lt;k\)) in \(P(v)\) is</p>
+<div class="math">\[ [y^e]\Bigl(w\prod_{i:\varepsilon_i=0}\bigl(1+x(y_i)\bigr)\Bigr), \]</div>
+<p>and therefore</p>
+<div class="math">\[ \deg P(v)=\max\Bigl\{n-|S|+2|e|:\ S\subseteq[n],\ |e|&lt;k,\ [y^e]\bigl(w\,u^S\bigr)\ne0\Bigr\},\qquad u^S=\prod_{i\in S}\bigl(1+x(y_i)\bigr). \]</div>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><strong>One variable.</strong> Let \(f\in\mathbb F_2[x]\) vanish to order at least \(k\) at \(x=1\), and write \(f=\sum_j(p_j+q_jx)y^j\). In \(\mathbb F_2[[y]]\), the substitutions \(x\mapsto x(y)\) and \(x\mapsto1+x(y)\) both send \(x^2+x\) to \(y\). The second has \(f(1+x(y))\equiv0\) modulo \(y^k\), since \(x(y)\) has order 1. So modulo \(y^k\):
+<ul>
+<li>\(\sum_j q_jy^j\equiv f(x(y))+f(1+x(y))\equiv f(x(y))\), because \((p+qx)+(p+q+qx)=q\);</li>
+<li>\(\sum_jp_jy^j\equiv\sum_jq_j(1+x(y))y^j\equiv(1+x(y))f(x(y))\), from \(f(1+x(y))\equiv0\).</li>
+</ul></li>
+<li><strong>Several variables.</strong> \(P(v)=T\bigl(\sum_\beta v_\beta\prod_ig_{\beta_i}(x_i)\bigr)\), and \(g_b(x)=x^b(1+x^{2^K})\) vanishes to order \(2^K\ge k\) at \(1\). The coefficient of \(x^\varepsilon y^e\) factors over the variables: in variable \(i\) it is \([y_i^{e_i}]\bigl((1+x(y_i))^{1-\varepsilon_i}g_{\beta_i}(x(y_i))\bigr)\). Since \(x(y)^{2^K}\) has order \(2^K\ge k&gt;e_i\), we may replace \(g_b(x(y))\) by \(x(y)^b\). Summing over \(\beta\) gives the displayed coefficient.</li>
+<li><strong>The degree.</strong> The degree formula is part (a) of the origin-jet lemma, with \(S=\{i:\varepsilon_i=0\}\). \(\square\)</li>
+</ul>
+<p>As a control, the formula was compared with the kernel's degree of \(P(v)\) for 240 random jets (\(n\le3\), \(k\le8\)), with zero mismatches (<code>research/results/bmd-r5-additive-roots/ycoef-check.txt</code>).</p>
+<h4 id="per-order-value-small-multiplicity">The per-order value when \(k-\ell\le2^n\)</h4>
+<p><strong>Working theorem</strong> (<code>thm:per-order-value-small-multiplicity</code>). Let \(n\ge1\) and \(0\le\ell&lt;k\) with \(k-\ell\le2^n\). Then</p>
+<div class="math">\[ \delta(n,k,\ell)=n+2k-2-s_2(k-\ell-1). \]</div>
+<p>In particular this holds for every \(n\ge m(k)=\lfloor\log_2k\rfloor+2\), since then \(k&lt;2^{n-1}\). So the <a href="#binary-multiplicity-per-order-conjecture">per-order conjecture</a> is proved.</p>
+<p><strong>Proof.</strong> The upper bound is the <a href="#catalan-truncation-per-order-construction">per-order construction</a>. For the lower bound, put \(c=k-\ell\) and \(h=s_2(c-1)\). The only use of \(c\le2^n\) is the degree bound \(c-1&lt;2^n\) in step 3. Suppose \(\deg P\le n+2k-3-h\) for some admissible \(P\) of origin order \(\ell\). By the origin-jet lemma we may take \(P=P(v)\) with \(\operatorname{ord}v=\ell\). Then \(w\) has order \(\ell\): its degree-\(d\) parts \(w_d\) vanish for \(d&lt;\ell\), and \(w_\ell\ne0\).</p>
+<ul>
+<li><strong>Step 1: the degree conditions.</strong> Take \(|e|=k-1\) and \(|S|\le h\) in the lemma. Then \(n-|S|+2(k-1)&gt;\deg P\), so the degree-\((k-1)\) part of \(w\,u^S\) vanishes. Expanding \(u^S=\sum_{T\subseteq S}x^T\), with \(x^T=\prod_{i\in T}x(y_i)\), and inducting on \(|T|\) gives \((w\,x^T)_{k-1}=0\) for every set \(T\) of at most \(h\) distinct indices.</li>
+<li><strong>Step 2: the multi-additive forms.</strong> For \(0\le j\le h\) let
+\[ E_j(Y_1,\ldots,Y_j)=\sum_{t_1,\ldots,t_j\ge0}Y_1^{2^{t_1}}\cdots Y_j^{2^{t_j}}\,w_{k-1-\sum_a2^{t_a}} \]
+(terms with \(k-1-\sum2^{t_a}&lt;\ell\) vanish). Since \(x(y_i)=\sum_ty_i^{2^t}\), we have \((w\,x_{i_1}\cdots x_{i_j})_{k-1}=E_j(y_{i_1},\ldots,y_{i_j})\). So \(E_j\) vanishes at every tuple of distinct generators. \(E_j\) is symmetric and additive in each variable. Its degree in each variable is at most \(c-1&lt;2^n\), because only exponents with \(\sum2^{t_a}\le k-1-\ell=c-1\) occur.</li>
+<li><strong>Step 3: induction on \(j\).</strong> We show \(E_j=0\) as a polynomial. For \(j=0\) this is \(w_{k-1}=0\), which is step 1 with \(S=\emptyset\). Assume \(E_{j-1}=0\).
+<ul>
+<li>At a tuple with a repeated generator \(Y_1=Y_2\), the terms with \(t_1\ne t_2\) cancel in pairs. The terms with \(t_1=t_2=t\) carry coefficients \(w_{k-1-2^{t+1}-\ldots}\), which are coefficients of \(E_{j-1}\) and hence zero. So \(E_j\) vanishes on \(\{y_1,\ldots,y_n\}^j\).</li>
+<li>By additivity it vanishes on \(V^j\), where \(V\) is the \(\mathbb F_2\)-span of the \(y_i\): \(2^n\) distinct elements of the domain \(\mathbb F_2[y]\).</li>
+<li>Viewed as a polynomial in \(Y_1\) over \(\mathbb F_2[y][Y_2,\ldots,Y_j]\), specialized at any point of \(V^{j-1}\), it has degree \(&lt;2^n\) and \(2^n\) roots, so it is zero. Each \(Y_1\)-coefficient therefore vanishes on \(V^{j-1}\), and induction on the number of variables gives \(E_j=0\).</li>
+</ul></li>
+<li><strong>Step 4: the contradiction.</strong> Write \(c-1=\sum_{a=1}^h2^{t_a}\) in binary. The coefficient of \(\prod_aY_a^{2^{t_a}}\) in \(E_h\) is \(w_{k-1-(c-1)}=w_\ell\), so \(w_\ell=0\), a contradiction. Hence \(\deg P\ge n+2k-2-h\). \(\square\)</li>
+</ul>
+<p>For \(k-\ell-1&lt;2^n\) the value equals \(\Phi(n,k,\ell)\) (part (i) of the <a href="#per-order-all-dimension-minimum">minimum lemma</a>). So this theorem is the all-dimension conjecture in the range \(k-\ell\le2^n\). It covers the case \((4,9,0)\) and all 136 values of the <a href="#per-order-formula-through-16">computer-assisted check</a>. As a consistency check, all 477 exact values with \(k-\ell\le2^n\) among the 81 computed cases agree with it, 306 of them below \(m(k)\) (<code>theorem-vs-data.txt</code>).</p>
+<h4 id="per-order-all-dimensions-small-n">Every order in dimensions up to four</h4>
+<p><strong>Working corollary</strong> (<code>cor:per-order-all-dimensions-small-n</code>). For \(1\le n\le4\) and all \(0\le\ell&lt;k\), \(\delta(n,k,\ell)=\Phi(n,k,\ell)\).</p>
+<p><strong>Proof.</strong> The upper bound is the <a href="#per-order-all-dimension-upper-bound">all-dimension upper bound</a>. For the lower bound, induct on \(c=k-\ell\). If \(c\le2^n\), apply the theorem above. If \(c&gt;2^n\), the first sentence of the <a href="#hyperplane-restriction-dichotomy">dichotomy</a> gives \(\delta(n,k,\ell)\ge\min\bigl(2k,\,2^n-1+\delta(n,k-2^{n-1},\ell)\bigr)\), since \(P'\) keeps order exactly \(\ell\). The right side is defined because \(k-2^{n-1}-\ell=c-2^{n-1}\ge1\). By induction, \(\delta(n,k-2^{n-1},\ell)\ge\Phi(n,k-2^{n-1},\ell)\). Now \(\Phi(n,k,\ell)=2\ell+\Phi(n,c,0)\), and identity (D) of the <a href="#order-zero-value-small-dimensions">small-dimension entry</a> at \(c&gt;2^{n-1}\) gives \(2^n-1+\Phi(n,k-2^{n-1},\ell)=\Phi(n,k,\ell)\). Finally, \(\Phi(n,k,\ell)\le2k\) is equivalent to \(2q+s_2(r)\ge n-2\), where \(c-1=q2^n+r\). This holds because \(q\ge1\) and \(n\le4\). \(\square\)</p>
+<p><strong>What remains.</strong> The all-dimension conjecture is open only for \(n\ge5\) and \(k-\ell&gt;2^n\). For \(\ell=0\), an arithmetic comparison of the combined recursion with \(\Phi\) over \(n\le8\), \(c\le300\) (<code>research/results/bmd-r5-additive-roots/closure.txt</code>) shows shortfalls only there, the first at \((5,33)\). In that regime the forms \(E_j\) have degree up to \(c-1\ge2^n\). Additive polynomials vanishing on \(V\) are then multiples of the subspace polynomial \(L_V(Y)=\prod_{a\in V}(Y-a)\), of degree \(2^n\). The natural next step is to reduce the \(E_j\) modulo \(L_V\), matching the blocks \(F^{2q}\) of the construction.</p>
+<h4 id="per-order-route-review">Route review of the per-order line</h4>
+<p>This entry is also the route review due after six research entries on this item.</p>
+<ul>
+<li><strong>The line's general claim.</strong> For every \(n\ge1\) and \(0\le\ell&lt;k\), \(\delta(n,k,\ell)=\Phi(n,k,\ell)\) (<code>conj:binary-multiplicity-per-order-all-dimensions</code>). It contains the per-order formula for \(n\ge m(k)\).</li>
+<li><strong>What the goal needs.</strong> The thread's main goal, \(D(n,k)\), is proved and verified. This line is the user's chosen extension: the per-order lower bound below Menezes' range, which makes the preprint a per-order theorem. That need is now met: the per-order formula holds for every \(n\ge m(k)\).</li>
+<li><strong>Falsification attempts.</strong> \(\Phi\) was fitted on 696 values. It survived:
+<ul>
+<li>the provable identity \(\min_\ell\Phi=D\) in every dimension;</li>
+<li>the recursion of proved bounds, which never exceeds \(\Phi\) over \(n\le8\), \(c\le300\);</li>
+<li>the theorem itself, which agrees with all 477 computed values in its range.</li>
+</ul>
+A counterexample would have to lie at \(n\ge5\), \(k-\ell&gt;2^n\), beyond the computed range.</li>
+<li><strong>Assessment.</strong> The line has advanced as far as the goal needs: in five cycles it went from a finite check to a proof. The remaining range is a side question in BBDM's covering regime, where \(D\) is already known. It is lower priority than turning the results into the preprint, which is the user's decision.</li>
+<li><strong>Next step on the highest-risk item.</strong> The open range \(n\ge5\), \(k-\ell&gt;2^n\), through the subspace polynomial of the span. Formalizing the additive-roots theorem in Lean would also be natural, but that needs a Formalize prompt.</li>
+</ul>
+<p><strong>General statement.</strong> <code>thm:per-order-value-small-multiplicity</code> proves <code>conj:binary-multiplicity-per-order-formula</code> for every \(k\), and <code>conj:binary-multiplicity-per-order-all-dimensions</code> for \(k-\ell\le2^n\). <code>cor:per-order-all-dimensions-small-n</code> proves the latter for \(n\le4\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the origin-jet lemma (a)–(c), the per-order construction, the minimum lemma (i), the dichotomy and identity (D). The coefficient formula was checked against the kernel on random jets, and the theorem against all 477 computed values in its range. A thorough fresh-context reviewer checked the one-variable derivation, the multivariate factorization, steps 1–4 (including the repeated-argument cancellation, the root count over \(\mathbb F_2[y]\) and the final coefficient \(w_\ell\)), the corollary and the result files. It found no mathematical error. It asked for the general-\(\ell\) form of the dichotomy and of (D) in the corollary, the word "nonzero" in the root-count statement, and a note that only \(c\le2^n\) is used; all are made.</p>
+<p><strong>Assessment.</strong> This closes the line's goal. The characteristic-two per-order formula now holds in Menezes' range and below it, down to \(k-\ell\le2^n\), and the proof is short. The key is that \(x(Y)=\sum Y^{2^t}\) is additive, so the multiplicity conditions become root conditions for multi-additive forms on an \(\mathbb F_2\)-space of size \(2^n\). The remaining open part, \(k-\ell&gt;2^n\) with \(n\ge5\), is BBDM's covering regime, where \(D\) is already known. Process: the closed coefficient form came from the kernel's one-variable tables. Hand work on the smallest open case then exposed the additive structure, which carried to the general proof in one step.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r5-additive-roots">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 17.87 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 17.18 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.69 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>

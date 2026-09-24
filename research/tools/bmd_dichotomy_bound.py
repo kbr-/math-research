@@ -5,7 +5,7 @@ B combines two proved mechanisms (entry-2026-09-25-hyperplane-dichotomy):
   dichotomy:  delta(n,c,0) >= min(2c, 2^n - 1 + delta(n, c - 2^(n-1), 0))
 with delta(n,c,0) = 0 for c <= 0 (constant 1) and delta(1,c,0) = c.
 Phi(n,c,0) = n + sum_{j<n} floor((c-1)/2^j).  Prints the (n,c) where B < Phi.
-Usage: bmd_dichotomy_bound.py NMAX CMAX
+Usage: bmd_dichotomy_bound.py NMAX CMAX [additive]  (additive: also use delta(n,c,0) = Phi for c <= 2^n)
 """
 import functools, sys
 
@@ -16,6 +16,8 @@ def B(n, c):
         return 0
     if n == 1:
         return c
+    if ADDITIVE and c <= 2 ** n:
+        return phi(n, c)  # additive-root theorem: exact whenever c <= 2^n
     rest = B(n, c - 2 ** (n - 1)) if c > 2 ** (n - 1) else 0
     return max(B(n - 1, c) + 1, min(2 * c, 2 ** n - 1 + rest))
 
@@ -25,6 +27,7 @@ def phi(n, c):
 
 
 nmax, cmax = int(sys.argv[1]), int(sys.argv[2])
+ADDITIVE = sys.argv[3:] == ['additive']
 sys.setrecursionlimit(100000)
 gaps = [(n, c, B(n, c), phi(n, c)) for n in range(1, nmax + 1) for c in range(1, cmax + 1) if B(n, c) != phi(n, c)]
 over = [g for g in gaps if g[2] > g[3]]
