@@ -7,7 +7,8 @@ Abar = E/(G). Condition (ii) for u = 1 says Abar is free over F[rho]/(rho^p), rh
 (rho^p = 0 in E), so the test compares Hilbert functions: excess[k] = HF(I + rho^(p-1))[k] - HF(I : rho)[k] >= 0,
 and (ii) holds in degree k exactly when excess[k] = 0.
 Members: 'base' (G = (s)), 'onto' (all c_j), 'merge' (s, c_1 c_2), 'linear' (the top ideal of s = m, l = v for
-a column form l = sum phi_j C_j), 'pairs' (at most one occupied hole in each pair 2t, 2t+1 of a perfect
+a column form l = sum phi_j C_j), 'selectorsT' (T selectors on independent dense forms, span T), 'clausesT' (T clauses, each forbidding one value pattern of two fresh dense random
+forms: an entangled family of span 2T), 'pairs' (at most one occupied hole in each pair 2t, 2t+1 of a perfect
 matching: span N/2 of forms C_a + C_b), 'selector' (forbid l = v: 1 - (l-v)^(p-1) = 0), 'clause2' (forbid l_1 = v_1 and
 l_2 = v_2). Top ideals of the occupancy systems are computed exactly: homogenize the ideal
 (C_j^2 - C_j, s - m, member), saturate by z, set z = 0.
@@ -34,6 +35,20 @@ for case in sys.argv[2:]:
     members = {'base': [], 'onto': [f'{c(j)}-1' for j in range(N)], 'merge': [f'{c(0)}*{c(1)}'],
                'linear': [f'{ell(0)}-{v[0]}'], 'selector': [ind(0)], 'clause2': [f'{ind(0)}*{ind(1)}'],
                'pairs': [f'{c(2*t)}*{c(2*t+1)}' for t in range(N // 2)]}
+    # entangled clause family: T clauses, each forbidding one value pattern of 2 fresh random dense forms (span 2T)
+    fam = []
+    for _ in range(4):
+        fs = []
+        while len(fs) < 2:
+            f = [rnd.randrange(1, p) for _ in range(N)]
+            if len(set(f)) > 1: fs.append(f)
+        fam.append((fs, [rnd.randrange(p) for _ in range(2)]))
+    lf = lambda f: '(' + '+'.join(f'{f[j]}*{c(j)}' for j in range(N)) + ')'
+    clause = lambda fs, vs: '*'.join(f'(1-({lf(f)}-{v})^{p-1})' for f, v in zip(fs, vs))
+    for T in (2, 3, 4):
+        members[f'clauses{T}'] = [clause(fs, vs) for fs, vs in fam[:T]]
+        # T selectors on independent dense forms (degree p-1 each, visible at D >= p-1; span T)
+        members[f'selectors{T}'] = [clause(fs[:1], vs[:1]) for fs, vs in fam[:T]]
     for label, mem in members.items():
         if only and label not in only: continue
         occ = [f'{c(j)}^2-{c(j)}' for j in range(N)] + [f'y({j+1})^2-y({j+1})' for j in range(N)]
