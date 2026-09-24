@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> In a free span, degree-3 selector gluing is the truncated double-point problem in \(T=\mathbb F_3[y_1,\dots,y_d]/(y_i^3)\), and it is proved generically for \(4\le d\le24\) (<a href="#entry-2026-09-24-free-span-double-points">free-span double points</a>). Next: prove conj:truncated-double-points for all \(d\), by a Horace-type induction on the tensor structure \(T=T'\otimes\mathbb F_3[y_d]/(y_d^3)\). Test the coupled residual on the verified range first. A route review is due within two research entries. It should weigh this degree-3 model against the goal's degree-11 ENS blocks.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The route review is due. Five research entries followed the <a href="#entry-2026-09-24-freeness-route-review">freeness route review</a>. They were ENS members, the mixture composition, planted falls at degree 2, free-span double points at degree 3, and the <a href="#entry-2026-09-24-horace-residual-defect">Horace residual defect</a>. The line has moved from the one-count link to selector models at degrees 2 and 3, while the goal's blocks are ENS blocks at degree 11. The review should state the line's general claim and what the goal needs. It should also make a falsification attempt and assess whether the selector models test the goal's implication. Then name the next step on the highest-risk item.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -16372,6 +16372,88 @@ Condition (b') implies (a'), that the \(\ell_t^2\) are independent in \(T_2\). U
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 13.45 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 54.60 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">45.68 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-horace-residual-defect" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:horace-residual-defect">
+<h3>Naive Horace for truncated double points: the residual loses at least C(r−1,2), so the trace-plus-residual inequality proves only about two new forms per dimension</h3>
+<p class="entry-meta">24 September 2026 · Working proof (a defect lower bound) with a best-of-seeds finite check · Obstruction to the simplest proof of conj:truncated-double-points; cycle odd-prime-truncated-horace.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-free-span-double-points">free-span double points</a> entry proved conj:truncated-double-points for \(4\le d\le24\). It proposed a Horace induction on \(d\) through \(T=T'\otimes\mathbb F_3[y_d]/(y_d^3)\). This cycle tests the simplest version: specialize \(s\) forms to the hyperplane \(y_d=0\) and leave \(r=M-s\) forms free.</p>
+<p><strong>General statement.</strong> lem:horace-residual-defect. In \(T=\mathbb F_3[y_1,\dots,y_d]/(y_i^3)\), split \(T_3=T'_3\oplus T'_2y_d\oplus T'_1y_d^2\). Then \(\operatorname{rank}\Phi\ge\operatorname{rank}(\text{trace})+\operatorname{rank}(\text{residual})\), where:</p>
+<ul>
+<li>the trace is the double-point map of the \(s\) specialized forms in \(T'_3\);</li>
+<li>the residual is the image modulo \(T'_3\), inside \(T'_2\oplus T'_1\).</li>
+</ul>
+<p>The dimension count splits exactly, since \(\dim T_3(d)-\dim T_3(d-1)=(d-1)(d+2)/2=\dim(T'_2\oplus T'_1)\). For \(r\le d-1\) free forms with independent linear parts in \(W'\), the residual map has kernel of dimension at least \(r+\binom{r-1}2\): the \(r\) Frobenius syzygies and \(\binom{r-1}2\) Koszul combinations. So the residual has rank at most \(s+r(d-1)-\binom{r-1}2\).</p>
+<p><code>horace_residual.py</code> (<code>horace_residual.json</code>) measures the best residual rank over 5 seeds at the balanced split. That split takes \(M=M_{\rm inj}(d)\) and \(s=\min(M,M_{\rm inj}(d-1))\), giving \(r=M-s\) between 2 and 14 for \(6\le d\le40\).</p>
+<ul>
+<li>The measured rank equals \(\min\bigl(\dim(T'_2\oplus T'_1),\,s+r(d-1)-\binom{r-1}2\bigr)\) for every \(d\) except \(d=8\), where it is one lower. That exception is unexplained, with 5 seeds over \(\mathbb F_3\), and is not part of the claim.</li>
+<li>For every split, trace rank is at most \(s(d-2)\) and residual rank at most \(s+r(d-1)-\binom{r-1}2\). So the inequality bounds \(\operatorname{rank}\Phi\) below by at most \(M(d-1)-\binom{r-1}2\). It certifies maximal rank only when \(r\le2\).</li>
+<li>With at most two free forms per step, the inequality alone adds only about two forms per dimension. The conjecture asks for \(d^2/6\).</li>
+<li>The loss is in the inequality, not in the specialization. Exactly, \(\operatorname{rank}\Phi=\operatorname{rank}(\text{residual})+\dim\Phi(\ker\text{residual})\), and \(\Phi(\ker\text{residual})\) contains the trace and also the Koszul cubics \(\sum\mu_{tu}(\ell_t'^2\ell'_u-\ell_u'^2\ell'_t)\). The reviewer's check shows the specialized configuration beating the inequality: at \(d=11\), \(\operatorname{rank}\Phi=268\) against trace plus residual \(206+60=266\); at \(d=9\), 150 against 149.</li>
+</ul>
+
+<h4>The Horace inequality</h4>
+<p>The image of \(\Phi\) contains the trace image, which lies in \(T'_3\), and it projects onto the residual image modulo \(T'_3\). So its dimension is at least the sum of the two ranks.</p>
+<ul>
+<li><em>Trace.</em> A specialized form \(\ell\in W'\) contributes \(\ell^2w'\in T'_3\) for \(w'\in W'\). This is the same problem in \(d-1\) variables.</li>
+<li><em>Residual.</em> A specialized form also contributes \(\ell^2y_d\), which is \((\ell^2,0)\) in \(T'_2\oplus T'_1\).</li>
+<li>A free form \(\ell=\ell'+y_d\) has \(\ell^2=\ell'^2+2\ell'y_d+y_d^2\). Modulo \(T'_3\), \(\ell^2w'\) is \((2\ell'w',w')\), and \(\ell^2y_d\) is \((\ell'^2,2\ell')\), since \(y_d^3=0\).</li>
+</ul>
+
+<h4>The defect</h4>
+<ul>
+<li><em>Frobenius.</em> The input \((w',c)=(\ell',1)\) of a free form maps to \((2\ell'^2+\ell'^2,\ell'+2\ell')=(0,0)\).</li>
+<li><em>Koszul combinations.</em> Free forms may be taken as \(\ell'+y_d\): scaling \(\ell\) by a unit scales each \(\ell^2w\) by a unit square and leaves the image unchanged, and forms with zero \(y_d\) coefficient are the specialized ones. For free forms \(t\ne u\), let \(K_{tu}\) set \(w'_t=\ell'_u\) and \(w'_u=-\ell'_t\), with all other inputs 0. It maps to \((2\ell'_t\ell'_u-2\ell'_u\ell'_t,\ \ell'_u-\ell'_t)=(0,\ell'_u-\ell'_t)\). A combination \(\sum\mu_{tu}K_{tu}\) maps to \((0,\sum\mu_{tu}(\ell'_u-\ell'_t))\). The differences span at most \(r-1\) dimensions, so a space of \(\mu\) of dimension at least \(\binom r2-(r-1)=\binom{r-1}2\) maps to 0.</li>
+<li><em>Independence.</em> If the \(\ell'_t\) are independent, which needs \(r\le d-1\), a nonzero combination of the \(K_{tu}\) is nonzero on some \(w'_t\). Its \(w'_t\) component is \(\sum_u\pm\mu_{tu}\ell'_u\), which vanishes for all \(t\) only if \(\mu=0\). The \(K_{tu}\) have \(c=0\), so they are also independent of the Frobenius vectors. \(\square\) For dependent \(\ell'\) or \(r\ge d\) the bound still limits every choice: generic rank bounds every specialization, and the kernel only grows as forms are added, so a defect of at least 1 holds for every \(r\ge3\).</li>
+</ul>
+<p>The finite check confirms the bound exactly, in both regimes.</p>
+<ul>
+<li>Cases below the target:
+<ul>
+<li>\(r=4\) at \(d=11,13\), deficit 3;</li>
+<li>\(r=5\) at \(d=15\), deficit 6;</li>
+<li>\(r=6\) at \(d=17,19\), deficit 10;</li>
+<li>up to \(r=13\) at \(d=39\), deficit 66.</li>
+</ul></li>
+<li>Surjective cases: the rank is \(s+r(d-1)-\binom{r-1}2\) where that is below the target, for example 282 at \(d=24\), and the target otherwise.</li>
+</ul>
+
+<h4>What this means</h4>
+<ul>
+<li>The trace-plus-residual inequality cannot prove conj:truncated-double-points in its quadratic range. The Koszul pairs of the unspecialized forms reappear in the residual because \(T'_1\) sees only the \(r-1\) differences. They resemble the defect of double points on quadrics, but that link is not established here.</li>
+<li>There are three possible repairs:
+<ul>
+<li>a differential Horace, degenerating the free forms onto the hyperplane to first order;</li>
+<li>a specialization to a coordinate subspace of codimension at least 2;</li>
+<li>counting \(\Phi(\ker\text{residual})\), which exceeds the trace by the Koszul cubics, in place of the trace alone.</li>
+</ul></li>
+<li>The obstruction concerns this proof method only. The conjecture itself holds for every tested \(d\le24\).</li>
+</ul>
+<p>Next: the route review. Five research entries have followed the <a href="#entry-2026-09-24-freeness-route-review">freeness route review</a>. The line has moved from the one-count link to degree-2 and degree-3 selector models, and the goal's blocks are ENS blocks at degree 11. The review should weigh whether the selector models test the goal's implication, before further work on conj:truncated-double-points.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: the free-span double-points entry and conj:truncated-double-points, and the checker <code>double_points_T.py</code>, whose functions the Horace script reuses. The bound is proved above, and its equality is read from <code>horace_residual.json</code>. The first prediction, \(\binom r2-(d-1)\), was wrong. It is recorded here, and the proof corrects it: the \(T'_1\) conditions lie in the \((r-1)\)-dimensional span of the differences. The JSON field <code>koszul_excess</code> and the script's docstring still carry that refuted prediction. A fresh-context reviewer confirmed the formulas, signs, Frobenius and Koszul vectors, the count, their independence, the script's rows, and the equality in 34 of 35 cases. Its own check found \(\operatorname{rank}\Phi\) above the inequality at \(d=9,11\), with values quoted from its report. It required these changes, all adopted:</p>
+<ul>
+<li>the consequence restricted to the inequality, with the split-independent bound and the third repair;</li>
+<li>the normalization \(a=1\) and the semicontinuity remark;</li>
+<li>the quadric link softened;</li>
+<li>"cases below the target";</li>
+<li>\(d=8\) marked unexplained;</li>
+<li>"best-of-seeds" in the status line.</li>
+</ul>
+<p>The changes weaken, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-truncated-horace">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 7.48 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 59.06 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 59.13 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">9.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
