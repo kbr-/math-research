@@ -1,0 +1,76 @@
+// Two complete accuracy-one ENS blocks over F_3 that share an input direction x:
+// block a has inputs x + ca, ya(2..h); block b has inputs x + cb, yb(2..h); private coefficients ra, rb.
+// Each block is Groebner-augmented separately (reduced dp Groebner basis of its companions q_i P and field
+// equations, in its own variables).  J = homogenization (variable z) of both bases plus all field equations.
+// Tested statement: z is injective on S/J in degrees < DB (no fall), where S is the span ring.  Printed: for
+// each case, the degrees of elements of (J : z) not in J (falls), up to DB - 1, and for ca != cb whether the
+// degree-7 consequence R = P_a P_b (q_a - q_b), homogenized, lies in J; for ca = cb the witness W below.
+option(redSB); option(redTail);
+proc runcase(int h, int ca, int cb, int DB, int mode)
+{
+  int n = 2*h - 1;
+  ring S = 3, (x, xb, ya(2..h), yb(2..h), ra(1..h), rb(1..h), z), dp;
+  // affine inputs
+  ideal La = x + ca; ideal Lb = x + cb; int i;
+  if (mode == 2) { Lb = xb + cb; }
+  for (i = 2; i <= h; i++) { La = La, ya(i); Lb = Lb, yb(i); }
+  poly Pa = 1; poly Pb = 1;
+  for (i = 1; i <= h; i++) { Pa = Pa - ra(i)*(1 - La[i]^2); Pb = Pb - rb(i)*(1 - Lb[i]^2); }
+  ideal Fa = x^3 - x; ideal Fb = x^3 - x, xb^3 - xb;
+  for (i = 2; i <= h; i++) { Fa = Fa, ya(i)^3 - ya(i); Fb = Fb, yb(i)^3 - yb(i); }
+  for (i = 1; i <= h; i++) { Fa = Fa, ra(i)^3 - ra(i); Fb = Fb, rb(i)^3 - rb(i); }
+  ideal Ia = Fa; ideal Ib = Fb;
+  for (i = 1; i <= h; i++) { Ia = Ia, (1 - La[i]^2)*Pa; Ib = Ib, (1 - Lb[i]^2)*Pb; }
+  // separate augmentation: dp Groebner bases (z does not occur, so these are bases in each block's variables)
+  ideal Ga = std(Ia); ideal Gb = std(Ib);
+  ideal J = homog(Ga, z) + homog(Gb, z);
+  if (mode == 1) { J = homog(Ga, z) + homog(Fb, z); }
+  degBound = DB;
+  ideal SJ = std(J);
+  ideal Q = quotient(SJ, z);
+  degBound = 0;
+  string falls = ""; int lowest = DB; poly witness = 0;
+  for (i = 1; i <= ncols(Q); i++) {
+    if (Q[i] != 0 && deg(Q[i]) < DB) { if (reduce(Q[i], SJ) != 0) { falls = falls + string(deg(Q[i])) + " ";
+      if (deg(Q[i]) < lowest) { lowest = deg(Q[i]); witness = reduce(Q[i], SJ); } } }
+  }
+  string win = "n/a";
+  if (ca == cb && mode == 0) {
+    // W = F_b P_a, F_b = q_{b,2} prod_{j>2} L_{b,j} (1 - r_{b,2}): degree h+4, vanishes on the pair's zero set,
+    // and z^2 W lies in J (W = F_b (q_x P_a) + L_x (L_x F_b) P_a).  Fall iff W is not in J in degree h+4.
+    poly Fw = (1 - Lb[2]^2) * (1 - rb(2)); for (i = 3; i <= h; i++) { Fw = Fw * Lb[i]; }
+    poly W = Fw * Pa; poly Wh = homog(W, z);
+    if (deg(W) + 2 <= DB) {
+      string w1 = " not in J"; if (reduce(Wh, SJ) == 0) { w1 = " in J"; }
+      string w2 = "NOT in J"; if (reduce(z^2*Wh, SJ) == 0) { w2 = "in J"; }
+      string w0 = "NOT in J"; if (reduce(z*Wh, SJ) == 0) { w0 = "in J"; }
+      win = "W deg " + string(deg(W)) + w1 + ", z W " + w0 + ", z^2 W " + w2;
+    }
+  }
+  string rin = "n/a";
+  if (ca != cb) {
+    poly R = Pa*Pb*((1 - La[1]^2) - (1 - Lb[1]^2));
+    poly Rh = homog(R, z) * z^(7 - deg(R));
+    if (reduce(Rh, SJ) == 0) { rin = "R in J"; } else { rin = "R not in J (deg " + string(deg(R)) + ")"; }
+    if (DB >= 8) { string r2 = "NOT in J"; if (reduce(z*Rh, SJ) == 0) { r2 = "in J"; } rin = rin + ", z R " + r2; }
+  }
+  print("CASE mode=" + string(mode) + " h=" + string(h) + " ca=" + string(ca) + " cb=" + string(cb) + " DB=" + string(DB) + " lowest_fall=" + string(lowest) + " " + win + "; " + rin);
+  if (lowest < DB && h == 2) { print("WITNESS " + string(witness)); print("WITNESS_FACTORS " + string(factorize(subst(witness, z, 1), 1))); }
+}
+// controls: one block alone (mode 1); two blocks with disjoint inputs (mode 2)
+runcase(2, 0, 0, 11, 1);
+runcase(2, 0, 0, 11, 2);
+runcase(3, 0, 0, 9, 1);
+runcase(3, 0, 0, 10, 2);
+runcase(4, 0, 0, 10, 2);
+// identical shared input (lowest fall and the witness W, degree bound h+6)
+runcase(2, 0, 0, 11, 0);
+runcase(3, 0, 0, 9, 0);
+runcase(4, 0, 0, 10, 0);
+// parallel inputs x and x + 1 or x + 2 (R = P_a P_b (q_a - q_b), degree 7)
+runcase(2, 0, 2, 11, 0);
+runcase(2, 0, 1, 11, 0);
+runcase(3, 0, 1, 9, 0);
+runcase(4, 0, 1, 8, 0);
+runcase(5, 0, 1, 8, 0);
+quit;
