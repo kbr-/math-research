@@ -242,6 +242,22 @@ For s≥2 and N≥2s-1, every F₂ reduced (s-2)-cycle of the chessboard complex
 
 ---
 
+### Binary multiplicity degree all k conditional
+
+**Claim:** [thm:binary-multiplicity-degree-all-k-conditional](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-prior-art-menezes>)
+
+Assuming Menezes' characteristic-2 upper bound at n = k-1: for every k >= 1 and n >= floor(log2 k)+2, D(n,k) = 2k+n-2-floor(log2 k).
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Answers the co-author's tightness question in its whole range k < 2^(n-1), which the published n >= k-1 result does not cover.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Verify Menezes' construction (proof and exact small checks) or build the power-of-two factors uniformly.
+
+---
+
 ### Binary multiplicity lower bound
 
 **Claim:** [thm:binary-multiplicity-lower-bound](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-one-dimension-step>)
@@ -603,6 +619,22 @@ For n >= 2 and 1 <= k < 2^n, D(n-1,k) <= D(n,k)-1: after a linear change of coor
 **Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
 
 **Next:** None for the lower half; consider whether a reverse step exists for the upper half.
+
+---
+
+### Per order dimension step
+
+**Claim:** [lem:per-order-dimension-step](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-24-prior-art-menezes>)
+
+For n >= 2, k < 2^n and 0 <= l <= k-1, if delta(n,k,l) is finite then delta(n-1,k,l) <= delta(n,k,l)-1 (binary Hasse multiplicity, exact origin order l).
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Transfers per-order constructions from large to small dimension.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** None beyond use in the per-order bound.
 
 ---
 
