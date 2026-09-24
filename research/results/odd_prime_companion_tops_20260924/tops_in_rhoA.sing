@@ -1,0 +1,32 @@
+// Question: are all tops of one complete accuracy-one ENS block (inputs x, y(2..h), coefficients r(1..h); tops of
+// the reduced dp basis in F_3[vars]/(cubes)) multiples of rho' = sum r_i L_i^2, i.e. is n contained in rho'A?
+// Output per h: the least degree in which n has an element outside rho'A (DB if none), and the least degree in
+// which n has an element outside the companion-top ideal rho'Q (for comparison).
+option(redSB);
+proc tr(int h, int DB)
+{
+  ring P = 3, (x, y(2..h), r(1..h)), dp;
+  ideal L = x; int i; for (i = 2; i <= h; i++) { L = L, y(i); }
+  poly Pp = 1; for (i = 1; i <= h; i++) { Pp = Pp - r(i)*(1 - L[i]^2); }
+  ideal I; for (i = 1; i <= h; i++) { I = I, (1 - L[i]^2)*Pp; }
+  for (i = 1; i <= nvars(P); i++) { I = I, var(i)^3 - var(i); }
+  degBound = DB; ideal G = std(I); degBound = 0;
+  ideal Tp; int d; poly g;
+  for (i = 1; i <= ncols(G); i++) { g = G[i]; d = deg(g); if (d < DB) { Tp = Tp, jet(g, d) - jet(g, d - 1); } }
+  poly rho = 0; for (i = 1; i <= h; i++) { rho = rho + r(i)*L[i]^2; }
+  ideal Cubes; for (i = 1; i <= nvars(P); i++) { Cubes = Cubes, var(i)^3; }
+  ideal Qm; for (i = 1; i <= h; i++) { Qm = Qm, L[i]^2; }
+  degBound = DB;
+  ideal SN = std(Tp + Cubes); ideal SR = std(ideal(rho) + Cubes); ideal SC = std(rho*Qm + Cubes);
+  degBound = 0;
+  int outR = DB; int outC = DB; int k;
+  for (k = 1; k <= ncols(SN); k++) {
+    if (SN[k] != 0 && deg(SN[k]) < DB) {
+      if (deg(SN[k]) < outR) { if (reduce(SN[k], SR) != 0) { outR = deg(SN[k]); } }
+      if (deg(SN[k]) < outC) { if (reduce(SN[k], SC) != 0) { outC = deg(SN[k]); } }
+    }
+  }
+  print("h=" + string(h) + " DB=" + string(DB) + " least_outside_rhoA=" + string(outR) + " least_outside_rhoQ=" + string(outC));
+}
+tr(3, 10); tr(4, 11); tr(5, 11);
+quit;
