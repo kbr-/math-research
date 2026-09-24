@@ -416,6 +416,11 @@ KERNEL_RUN_S = 120
 # (for/while statements and comprehension generators) in the script or in any local module it imports is refused;
 # vectorize it (numpy index arithmetic) or move it into the compiled kernel. Only a quoted user approval overrides.
 MAX_PY_LOOP_DEPTH = 3
+# Parameter series (user instruction, 24 September 2026, after a driver refused by the loop guard was split into one
+# invocation per parameter pair and looped from the shell): a series over parameters belongs in one run of one program
+# (CLAUDE.md rules 3 to 5), so a computation program already run in the session with MAX_SERIES_ARGSETS different
+# argument lists is refused a further new one. Only a quoted user approval overrides.
+MAX_SERIES_ARGSETS = 3
 # Sizing runs (user instruction, 24 September 2026, after two runs in one session were launched for 20+ minutes on an
 # estimate that no measurement supported): a run expected to exceed LONG_RUN_S must cite, with --sized-by RUN_ID, a
 # completed run of the same program in the same session, whose measured time the estimate extrapolates.
@@ -515,6 +520,19 @@ def program_key(command):
     """The program a command runs: its first script argument, else the executable's name."""
     script = next((c for c in command[1:] if Path(c).suffix in ('.py', '.sh', '.sing', '.g', '.m2')), None)
     return Path(script).name if script else Path(command[0]).name if command else ''
+
+
+def series_error(events, command):
+    """None unless `command` would be a further new argument list for a computation program that `events` (the
+    session journal) already ran with MAX_SERIES_ARGSETS different argument lists; else the reason."""
+    key = program_key(command)
+    seen = {tuple(e['command'][1:]) for e in events if e['event'] == 'run_start'
+            and e.get('category', 'computation') == 'computation' and program_key(e['command']) == key}
+    if tuple(command[1:]) in seen or len(seen) < MAX_SERIES_ARGSETS:
+        return None
+    return (f'{key} already ran with {len(seen)} different argument lists in this session: a parameter series '
+            'belongs in one run, with the loop in the compiled kernel, not in the shell or in repeated invocations '
+            '(CLAUDE.md rules 3 to 5); only --user-approved overrides')
 
 
 def sizing_error(events, sized_by, command, expect):
@@ -664,6 +682,10 @@ def main():
         error, took = sizing_error(events, args.sized_by, command, args.expect)
         if error: parser.error(error + ' (CLAUDE.md, COMPUTATION_RULES.md)')
         print(f'Sized by run {args.sized_by}: took {took:.0f} s; expecting {args.expect:g} s.')
+    if args.category == 'computation' and getattr(args, 'session', None) and not args.user_approved.strip():
+        journal = session_path(args.session)
+        error = series_error(read_events(journal) if journal.exists() else [], command)
+        if error: parser.error(error)
     exe = Path(command[0]).name if command else ''
     if (exe.startswith('python') and args.timeout > KERNEL_RUN_S and args.category == 'computation'
             and len(args.kernel_reason.split()) < 6):

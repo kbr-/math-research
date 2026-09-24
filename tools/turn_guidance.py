@@ -26,7 +26,12 @@ def guidance(body, ft):
     record = body.find('<section id="research-record">')
     articles = [m.start() for m in re.finditer(r'<article\b', body) if m.start() > record]
     notes = ['Every research entry needs a <p><strong>General statement.</strong> ...</p> citing the '
-             'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.']
+             'registered claim ID (conj:, lem:, thm:, prop: or cor:) of its all-parameter claim.',
+             'Computations: avoid expensive work and deeply nested loops in Python. Optimize and parallelize: write '
+             'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
+             'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
+             'Before each computation, ask whether further computations are needed, or whether the results you '
+             'already have are enough to propose a general statement and attempt to prove it.']
     for item in items:
         mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item
                 and ft.entry_tags(body, a)['kind'] != 'formalization']

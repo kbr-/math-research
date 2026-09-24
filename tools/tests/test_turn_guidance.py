@@ -40,6 +40,11 @@ class TurnGuidanceTest(unittest.TestCase):
         six = five + [('research', 'lem:b', 'Working proof.')]
         self.assertIn('must be a route review', self.notes(six))
 
+    def test_computation_and_generalization_notes(self):
+        notes = self.notes([('research', 'lem:a', 'Working proof.')])
+        self.assertIn('C or C++ kernels', notes)
+        self.assertIn('propose a general statement and attempt to prove it', notes)
+
     def test_silent_without_route_items(self):
         self.assertEqual(self.guide.guidance('<section id="research-record"></section>', self.ft), [])
 

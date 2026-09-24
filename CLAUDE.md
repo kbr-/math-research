@@ -120,10 +120,19 @@ Apply every rule below before launching a run.
 7. **Keep long runs observable.** Print progress with flush, and do not pipe a long run
    through a filter that holds its output until the end.
 
-`./compute.sh` enforces rules 3 to 5 in part. A Python computation allowed more than 120 s needs a
+8. **Answer refusals by optimizing, never by splitting.** When a guard refuses a run, make the computation
+   itself efficient: move the loops into the compiled kernel, parallelize it, reuse shared work and stop
+   early. Never split it into shorter invocations or drive a parameter series from a shell loop; that keeps
+   the waste and defeats the guard.
+9. **Stop testing cases once they have answered.** Before each further run, ask whether the finished runs
+   already decide the model question. If they do, compute nothing more and state and prove the general
+   proposition the cases point to.
+
+`./compute.sh` enforces rules 3 to 5 and 8 in part. A Python computation allowed more than 120 s needs a
 `--kernel-reason` of at least six words, naming the compiled kernel and the reuse. Because a stated reason
 cannot be verified, `compute.sh` also scans the code such a run can reach (the script, and in its local imports
-the module-level code and the names it uses) and refuses loops nested three deep over non-literal ranges.
+the module-level code and the names it uses) and refuses loops nested three deep over non-literal ranges. It also refuses a program a further new argument list once the
+session has run it with three different ones, since a parameter series belongs in one run.
 
 After editing any framework tool (`compute.sh`, `tools/*.py`), run its tests before
 committing: from `tools/tests`, `python3 -m unittest`.

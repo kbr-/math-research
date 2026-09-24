@@ -31,5 +31,23 @@ class PythonLoopGuardTest(unittest.TestCase):
         self.assertEqual(self.scan({'main.py': 'from lib import slow\nslow([1])\n', 'lib.py': lib}), [('lib.py', 4, 3)])
 
 
+
+class SeriesGuardTest(unittest.TestCase):
+    def ev(self, *argsets, category='computation', prog='scan.py'):
+        return [{'event': 'run_start', 'category': category, 'command': ['/usr/bin/python3', prog, *a]} for a in argsets]
+
+    def test_fourth_new_argument_list_is_refused(self):
+        events = self.ev(['1'], ['2'], ['3'])
+        self.assertIsNotNone(CS.series_error(events, ['python3', 'scan.py', '4']))
+
+    def test_repeat_and_small_series_are_allowed(self):
+        self.assertIsNone(CS.series_error(self.ev(['1'], ['2'], ['3']), ['python3', 'scan.py', '2']))
+        self.assertIsNone(CS.series_error(self.ev(['1'], ['2']), ['python3', 'scan.py', '3']))
+
+    def test_other_programs_and_categories_do_not_count(self):
+        events = self.ev(['1'], ['2'], prog='other.py') + self.ev(['3'], category='local_processing')
+        self.assertIsNone(CS.series_error(events, ['python3', 'scan.py', '4']))
+
+
 if __name__ == '__main__':
     unittest.main()
