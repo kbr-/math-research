@@ -106,9 +106,17 @@ Apply every rule below before launching a run.
 4. **One pass per series, shared work once.** Compute every parameter of a series in
    one incremental pass, never one full recomputation per parameter: results for
    nested inputs continue from the previous ones. Compute shared prefixes, such as a
-   common base or a common random sequence, once and copy them.
+   common base or a common random sequence, once and copy them. Count the expensive
+   operations the design performs (eliminations, closures, enumerations) and compare
+   the count with the number of distinct objects involved: when several questions
+   (cutoffs, orders, degree bounds) concern one object, order a single factorization
+   so it answers all of them. For example, eliminating columns in ascending degree
+   yields every prefix rank at once; one exact-degree run once used 2k+1 eliminations
+   where three sufficed.
 5. **No known waste at launch.** List the run's stages first (setup, generation, main
-   loop, repeated series) and remove every piece of waste already identified. "It does
+   loop, repeated series) and remove every piece of waste already identified. Time the
+   largest case by extrapolating from a measured smaller run, never by guessing, and
+   pass that figure to `--expect`. "It does
    not change the results" is not a reason: it changes the approach, and the user has
    rejected it.
    Design each run from the question it must answer, never from the nearest existing
