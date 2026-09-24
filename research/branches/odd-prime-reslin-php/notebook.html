@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> Every structured column member is proved closed-stable; entangled ones are open, and pinned symmetric counts break freeness at low density (<a href="#entry-2026-09-24-clause-transfer-line-review">line review</a>). Such pins need degree about \(\log_2N\) on the budget's nearly full allowed sets. Next: a compiled kernel for the closed algebra's direct sum \(G=\bigoplus_Yx_Y\operatorname{gr}\mathbb F^{Z_{S(Y)}}\) on one row, and a counterexample search with entangled selector and clause families in range (\(N\ge24\) at \(D=3\)), including families built to approximate a pin.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> A validated compiled kernel shows entangled selector families closed row-free in range at \(D=3\), but their constraints do not interact through degree 3 (<a href="#entry-2026-09-24-direct-sum-search">direct-sum search</a>). Computation cannot reach degrees where they interact in range. Next: a structural statement for the interaction degrees. Show that the closed algebra of an intersection of allowed sets is, through degree \(D\), determined by pairwise and small interactions of the constraints, and prove freeness under a robustness condition on those interactions, the analog of the recorded pairwise-coherence hypothesis for product constraints.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -13830,6 +13830,67 @@ the sum over column-injective cell sets \(Y\) in rows \(1,\dots,m-1\), with \(S(
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-direct-sum-search" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:in-range-selector-freeness">
+<h3>Direct-sum search: a compiled kernel for the closed algebra finds entangled selector families row-free in range at degree 3, where they do not yet interact</h3>
+<p class="entry-meta">24 September 2026 · Finite check with a validated kernel · Entangled column members in the conjecture's range; cycle odd-prime-direct-sum-search.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-clause-transfer-line-review">line review</a> asked for a counterexample search for closed row freeness on entangled members at sizes in range, beyond what point-ideal Gröbner bases reach, including members built to approximate a pin.</p>
+<p><strong>General statement.</strong> conj:closed-row-freeness, in its one-row case. ex:in-range-selector-freeness: at \(N=24\), \(D=3\), inside the conjecture's range \(N\ge(p-1)(D+1)D=24\), the base and families of 1 to 16 selectors on independent dense random forms (three seeds up to 8 forms, two seeds for 12 and 16) all pass. Families of 12 and 16 forms are beyond the generic-form threshold of about 10 at this size. The selectors' contributions to the Hilbert function are exactly additive through degree 3, so at this degree they do not interact and the test cannot see entanglement.</p>
+
+<h4>The kernel</h4>
+<p><code>direct_sum.cpp</code> computes the one-row test on the direct-sum form of lem:closure-saturation: \(G=\bigoplus_Sy_SQ_S\), \(Q_{S,e}=\mathrm{Mon}_e(S^c)/\mathfrak a_{S,e}\), with \(\rho(\mu y_S)=\sum_{j\notin S\cup\mu}[\mu]_{S\cup j}y_{S\cup j}\). The excess is \(\dim\ker(\rho|G_k)-\dim\rho^{p-1}G_{k-p+1}\) for \(k\le D-1\), the quantity of <code>closed_row_freeness.py</code>. The tops \(\mathfrak a_{S,e}\) come from the kernel of evaluation on a random sample of allowed points. Each kernel vector is verified on every point of the subcube by a subset-sum transform, and failures add points and repeat, so the result is exact. <code>run_direct_sum.py</code> builds the members with the recorded random sequence.</p>
+<p><em>Validation.</em> Against the recorded Singular values the kernel agrees in every case tried (<code>ds_validation.json</code>):</p>
+<ul>
+<li>the base and four selectors at \(N=12\), \(D=3\): 0, 0, 0;</li>
+<li>the symmetric pin at \(N=9\), \(D=4\): 0, 1, 0, 0;</li>
+<li>at \(N=12\), \(D=4\): 0, 0, 0, 970 for the symmetric pin, and 0 for the base and a selector;</li>
+<li>the below-range controls: 0, 1, 1, 0 for the base at \(N=3\), and 0, 0, 2, 0 for a selector and a clause at \(N=4\).</li>
+</ul>
+<p>An \(N=18\) case takes 2 seconds, and an \(N=24\), \(D=3\) case about 2 to 3 minutes on 12 threads.</p>
+
+<h4>The in-range search</h4>
+<p><strong>Can it decide.</strong> \(N=24\), \(D=3\) is the smallest size in the conjecture's range at \(D=3\). A selector has degree 2 and is visible in the degrees compared, \(\le2\) for the kernel condition. Symmetric pins of degree 3 are not visible at \(D=3\), and \(D=4\) in range would need \(N\ge40\), out of reach, so the pin-approximating families asked for by the review were not run. The families' allowed sets cover about \((2/3)^T\) of the slice, so for \(T\ge2\) they lie outside the conjecture's half-slice class. A failure would still be informative. A pass is evidence only for what the degrees compared can see.</p>
+<table>
+<tr><th>member</th><th>seeds</th><th>dims, degrees 0 to 3</th><th>excess</th></tr>
+<tr><td>base</td><td>1</td><td>1, 47, 1056, 15089</td><td>0, 0, 0</td></tr>
+<tr><td>1 selector</td><td>1, 2, 3</td><td>1, 47, 1055, 15043</td><td>0, 0, 0</td></tr>
+<tr><td>2 selectors</td><td>1, 2, 3</td><td>1, 47, 1054, 14997 (14996 for seed 3)</td><td>0, 0, 0</td></tr>
+<tr><td>4 selectors</td><td>1, 2, 3</td><td>1, 47, 1052, 14905 (14903 for seed 3)</td><td>0, 0, 0</td></tr>
+<tr><td>6 selectors</td><td>1, 2, 3</td><td>1, 47, 1050, 14813 (14811 for seed 3)</td><td>0, 0, 0</td></tr>
+<tr><td>8 selectors</td><td>1, 2, 3</td><td>1, 47, 1048, 14721, 14720, 14719</td><td>0, 0, 0</td></tr>
+<tr><td>12 selectors</td><td>1, 2</td><td>1, 47, 1044, 14537, 14536</td><td>0, 0, 0</td></tr>
+<tr><td>16 selectors</td><td>1, 2</td><td>1, 47, 1040, 14353, 14351</td><td>0, 0, 0</td></tr>
+</table>
+<p>Files: <code>ds_N24_D3_part1.json</code> (14 cases, written from the run's log after it reached its 30-minute cap), <code>ds_N24_D3_part2.json</code>, <code>ds_N24_D3_beyond.json</code>. This is ex:in-range-selector-freeness.</p>
+<p><em>What the dimensions show.</em> Each selector lowers \(\dim G_2\) by 1 and \(\dim G_3\) by 46, up to a deficit of at most 2 in degree 3 from coincidences. For 16 selectors, \(15089-14353=736=16\cdot46\). So through degree 3 the selectors' ideals meet as if independent. The entangled interactions a counterexample would need do not appear at this degree, and the pass is evidence of freeness for non-interacting dense constraints, not for entangled ones.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>The kernel makes the one-row closed test exact and fast, with all Singular values reproduced. It reaches the conjecture's range at \(D=3\) and closes the "below range" objection there.</li>
+<li>At \(D=3\), however, dense selector families do not interact, so no in-range test at this degree can probe entanglement. Interactions need degree at least that of products of the members' constraints, which is \(\ge4\) for selectors at \(p=3\), and \(D=4\) in range needs \(N\ge40\). The entangled case therefore stays undecided by computation, and needs a proof or a structural argument about interactions.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: lem:closure-saturation's direct-sum form, the definition of the excess in <code>closed_row_freeness.py</code>, and the recorded values used for validation. The kernel was validated case by case against Singular before the in-range runs, including a failing case (excess 970) and below-range controls. The entry registers a finite check and no proof, so no reviewer pass was run.</p>
+
+<h4>Remaining gap</h4>
+<ul>
+<li>Entangled members at degrees where their constraints interact.</li>
+<li>A proof of closed row freeness for nearly full allowed sets cut by dense forms.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-direct-sum-search">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>53 min 56.23 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 25.96 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 37.41 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">45 min 52.72 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
