@@ -19,7 +19,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> The line now rests on the column tensor powers \(M_N=(u(W)/\mathfrak m^2)^{\otimes N}\). They carry the base's stability, freeness over up to \(m\) generic forms, and, through the one-count link, the restriction-mixture problem. Their conjectured threshold \(N\ge2t-1\) has its "only if" half proved (<a href="#entry-2026-09-24-tensor-power-review">tensor-power review</a>). Next: the "if" half, a graded Dade lemma for \(M_N\). Check constant-Jordan-type theory with the primitive coproduct, and prove the case \(d=2\) by the iterative criterion. Then extend to column maps with kernels.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> Cover-freeness of the \(D\)-row column tensor power through \(D\) is exactly what the base's stability proof uses. So conj:column-tensor-power-freeness implies the \(p=3\) case of conj:weak-base-stability, as well as freeness over up to \(m\) generic forms (<a href="#entry-2026-09-24-stability-from-tensor-power">stability from tensor powers</a>). Its "only if" half is proved. Next: the "if" half for \(d=2\). \(w_1\) acts by the Clebsch–Gordan decomposition. Compute the Jordan type of \(w_2\) on \(M_N/w_1M_N\), the 2-row algebra modulo its first row sum, and check that the iterative criterion holds through \(t\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -15705,6 +15705,52 @@ So the quotient is the restricted homogenized weak base, as a graded \(\mathbb F
 <tr><td>Computation design and coding</td><td class="elapsed">35.58 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5.70 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.85 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-24-stability-from-tensor-power" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:stability-from-tensor-power">
+<h3>Stability from tensor powers: cover-freeness of the D-row column tensor power through D is what the stability proof uses, so the tensor-power conjecture implies linear stability at p = 3</h3>
+<p class="entry-meta">24 September 2026 · Working proof (stability from tensor powers) · The link between conj:column-tensor-power-freeness and conj:weak-base-stability; cycle odd-prime-dade-tensor.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-24-tensor-power-review">tensor-power review</a> left a caveat. The base's stability proof decomposes the column tensor power into free plus high-degree parts. The tensor-power conjecture concerns only freeness in the sense of the minimal free cover. Does the conjecture give the base's stability?</p>
+<p><strong>General statement.</strong> prop:stability-from-tensor-power: over \(\mathbb F_p\), let \(\tilde A\) be the weak algebra without row sums on \(D\) rows and \(N\) columns, and \(T=\mathbb F_p[R_1,\dots,R_D]/(R_i^p)\) acting through its row sums. Then \(\operatorname{Tor}_1^T(\mathbb F,\tilde A)\) is the Koszul homology \(H_1(r;\tilde A)\) modulo the Frobenius classes \(r_i^{p-1}a\,e_i\). So \(\tilde A\) is free through \(t\) over \(T\), in the sense of the minimal free cover, exactly when \(H_1(r;\tilde A)\) is spanned by Frobenius classes in degrees \(\le t\). That is the only consequence of Step 3 that the stability proof uses. Hence, if \(\tilde A\) is cover-free through \(D\), the weak base on any \(m\ge D\) rows and \(N\) columns has no falls below \(D\). In particular conj:column-tensor-power-freeness, over \(\mathbb F_3\) with \(d=D\) and \(t=D\), implies the \(p=3\) case of conj:weak-base-stability, \(N\ge2D-1\). The review's caveat is resolved. The record calls Hilbert-function equality "necessary, not sufficient" for freeness in the direct-sum sense, which remains unrefuted. But the stability proof never needs that stronger sense. Equality through \(D\) is cover-freeness through \(D\), by the openness lemma of thm:projection-freeness, and that suffices.</p>
+
+<h4>Proof</h4>
+<ol>
+<li><em>Tor over the truncated algebra.</em> \(T=\bigotimes_i\mathbb F_p[R_i]/(R_i^p)\). The minimal resolution of \(\mathbb F\) over each factor is periodic: \(A\xleftarrow{R}A(-1)\xleftarrow{R^{p-1}}A(-p)\leftarrow\cdots\). Their tensor product is a free resolution of \(\mathbb F\) over \(T\) whose first two terms are \(P_1=\bigoplus_iT(-1)e_i\) and \(P_2=\bigoplus_iT(-p)f_i\oplus\bigoplus_{i&lt;j}T(-2)e_{ij}\). Here \(f_i\mapsto R_i^{p-1}e_i\) and \(e_{ij}\mapsto R_je_i-R_ie_j\). Tensoring with \(M=\tilde A\) gives \(\operatorname{Tor}_1^T(\mathbb F,M)=\ker\bigl(\bigoplus_iM(-1)\to M\bigr)/\bigl(\text{Frobenius}+\text{Koszul images}\bigr)\).</li>
+<li><em>Koszul homology.</em> The Koszul complex of \(r_1,\dots,r_D\) on \(M\) over \(\mathcal S=\mathbb F_p[R]\) gives \(H_1(r;M)=\ker\bigl(\bigoplus_iM(-1)\to M\bigr)/(\text{Koszul images})\). The kernels agree, so \(\operatorname{Tor}_1^T(\mathbb F,M)=H_1(r;M)/\langle r_i^{p-1}a\,e_i\rangle\), degree by degree, with \(e_i\) in degree 1.</li>
+<li><em>Cover-freeness.</em> By graded Nakayama, the kernel of the minimal free cover over \(T\) starts in the lowest degree of \(\operatorname{Tor}_1^T(\mathbb F,M)\). So cover-freeness through \(t\) is the vanishing of \(\operatorname{Tor}_1^T\) in degrees \(\le t\), that is, \(H_1\) spanned by Frobenius classes there. It is also Hilbert-function equality, by the openness lemma of thm:projection-freeness. The cover \(T\otimes M/\mathfrak mM\to M\) is onto, and the Hilbert function of its source through \(t\) depends only on \(M/\mathfrak mM\) through \(t\). So \(\mathrm{HF}_{M/\mathfrak mM}=[q^k]\,\mathrm{HS}_M/\mathrm{HS}_T\) for all \(k\le t\) holds exactly when the kernel vanishes through \(t\).</li>
+<li><em>Stability.</em> The proof of thm:weak-base-stability-quadratic uses Step 3 only through its stated consequence: \(H_1(r;\tilde A)_{k+1}\) is spanned by Frobenius classes for \(k&lt;D\), on the \(D\)-row board. Step 1 then kills these classes under the connecting map, so \(z\) is injective in degree \(k\) on the \(D\)-row board. lem:weak-row-reduction extends this to \(m\ge D\) rows. Replacing Step 3 by cover-freeness through \(D\), which gives the same consequence by items 1 to 3, proves the claim. \(\square\)</li>
+</ol>
+
+<h4>Consequences</h4>
+<ul>
+<li>The two open ends identified in the review are linked one way. conj:column-tensor-power-freeness at \(d=D\), \(t=D\), \(N=2D-1\) implies the \(p=3\) case of conj:weak-base-stability. Stability is not shown to imply cover-freeness. By prop:line-necessity, cover-freeness through \(D\) fails for \(N\le2D-2\). The stability conjecture's sharpness at \(D=4\), recorded for \(N=6\), is consistent with that failure, but a failure of cover-freeness does not by itself force a fall.</li>
+<li>Over \(\mathbb F_3\), the recorded Hilbert-function equalities on the \(4\times7\) and \(5\times9\) boards now prove \(z\)-injectivity below \(D=4\) and \(D=5\) on those boards and, by row reduction, on every \(m\ge D\). ex:weak-base-stability-small already records these cases for every \(m\ge D\) by direct computation, so this route adds no new case there. It is consistent.</li>
+<li>Over \(\mathbb F_3\), ex:column-tensor-power-thresholds gives cover-freeness through 3 for \((N,d)=(5,3)\) and \((6,3)\). So the weak base on \(m\ge3\) rows and \(N=5\) or \(6\) columns has no falls below 3. That lies below the quadratic theorem's range, \(N\ge(p-1)D^2=18\) at \(p=3\), \(D=3\).</li>
+</ul>
+<p>Next: the graded Dade half of conj:column-tensor-power-freeness, which would give both linear stability and freeness over up to \(m\) generic forms. Try \(d=2\) directly: \(w_1\) acts on \(M_N\) with the Clebsch–Gordan decomposition. Compute the Jordan type of \(w_2\) on \(M_N/w_1M_N\), which is the 2-row algebra modulo its first row sum, and show it is free through \(\lceil N/2\rceil\). Then check that the iterative criterion holds through \(t\) in the truncated setting.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: thm:weak-base-stability-quadratic (Steps 1 to 3 and the proof), lem:weak-row-reduction, conj:weak-base-stability (scope: every \(p\)) and ex:weak-base-stability-small (every \(m\ge D\) at \((4,7)\) and \((5,9)\)), the openness lemma of thm:projection-freeness, and the tensor-power JSON. A fresh-context reviewer confirmed the resolution and its maps, the identification of \(\operatorname{Tor}_1^T\) with \(H_1\) modulo Frobenius classes, the Nakayama step, the degree bookkeeping of the replacement in the stability proof, and the JSON values at \((5,3)\) and \((6,3)\). It required these changes, all adopted:</p>
+<ul>
+<li>the link between Hilbert-function equality and cover-freeness made explicit;</li>
+<li>the "too pessimistic" remark rephrased, since the direct-sum sense is not refuted;</li>
+<li>"coincide exactly" replaced by a one-way implication;</li>
+<li>characteristic 3 stated, with the implication limited to the \(p=3\) case of the stability conjecture;</li>
+<li>the overlap with ex:weak-base-stability-small stated.</li>
+</ul>
+<p>The changes weaken or clarify, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-dade-tensor">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 50.05 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">37.68 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 13.65 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 53.07 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.65 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
