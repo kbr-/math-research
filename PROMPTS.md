@@ -223,14 +223,17 @@ Autonomously advance the current research goal stated at the top of
 the selected research notebook (main by default) through bounded, fully recorded research cycles and clear, small
 framework improvements.
 Follow the repository rules for maintaining the notebook, measured evidence,
-and checkpoints. Continue until the user explicitly interrupts.
+and checkpoints. Continue until the user explicitly interrupts or the goal is reached.
+The goal is reached when the notebook's Where we stand records the goal statement as proved;
+then finish and commit the current cycle and stop the loop instead of opening another cycle
+(user instruction, 25 September 2026).
 
 So perform the following, in a loop:
 
 - do a research turn, as if I prompted you to "do the next step"
-- never propose parking, pausing or stopping the thread, and never end a cycle
-  waiting for my decision: when the recorded routes are closed or parked, propose
-  and test a new idea. Lean work happens only when I run a Formalize prompt.
+- while the goal is open, never propose parking, pausing or stopping the thread, and
+  never end a cycle waiting for my decision: when the recorded routes are closed or
+  parked, propose and test a new idea. Once the goal is reached, stop (above). Lean work happens only when I run a Formalize prompt.
 - after EVERY research turn, assess its contribution and process: state what
   changed in the concrete missing implication needed for the goal, including
   when a scoped result leaves it untouched; the top-level route tag supplies
