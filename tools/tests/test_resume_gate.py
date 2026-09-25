@@ -41,6 +41,19 @@ class ResumeGateTest(unittest.TestCase):
                   **self.bash('python3 tools/resume.py --read abc --part 2'))
         self.assertEqual(self.call('pre', **self.bash('ls'))[0], 0)
 
+    def test_only_resume_runs_pass_the_gate(self):
+        self.call('start')
+        for command in ['python3 tools/resume.py', 'cd /repo && python3 tools/resume.py --read a --part 2',
+                        './tools/resume.py --read a --part 3 2>&1', 'python3 -u tools/resume.py; cd /repo']:
+            with self.subTest(command=command):
+                self.assertEqual(self.call('pre', **self.bash(command))[0], 0)
+        for command in ['cat tools/resume.py', 'rg FILES tools/resume.py', 'echo resume.py',
+                        'python3 tools/resume.py; ls', 'python3 tools/resume.py && git status',
+                        'python3 tools/resume.py | sh', 'python3 tools/resume.py $(touch x)',
+                        'python3 tools/test_resume.py', 'cd /repo']:
+            with self.subTest(command=command):
+                self.assertEqual(self.call('pre', **self.bash(command))[0], 2)
+
     def test_other_sessions_and_unmarked_sessions_pass(self):
         self.call('start')
         self.assertEqual(self.call('pre', session_id='s2', **self.bash('ls'))[0], 0)
