@@ -83,47 +83,52 @@ def short_strings(holes, e, sysfun):
            {d: int(len(B[d])) for d in B}
 
 
-out = {}
-for name, allowed in members.items():
-    pts = np.array([c for c in itertools.product((0, 1), repeat=N) if sum(c) % 3 == m % 3 and allowed(c)])
-    out[name] = {}
-    for j, kind in ((9, 'free hole'), (0, 'support hole')):
-        holes = [h for h in range(N) if h != j]
-        Z0 = pts[pts[:, j] == 0][:, holes]
-        Z1 = pts[pts[:, j] == 1][:, holes]
-        res = {}
-        for e in (1, 2):
-            def fib(Zf):
-                def f(S):
-                    sel = Zf[np.all(Zf[:, [holes.index(h) for h in S]] == 1, axis=1)] if S else Zf
-                    rest = [h for h in holes if h not in S]
-                    return tops(sel[:, [holes.index(h) for h in rest]], rest, e)[1]
-                return f
-            f0, f1 = fib(Z0), fib(Z1)
-            nonuni = [0]
-            def fsum(S):
-                a, b = f0(S), f1(S)
-                M = np.vstack([a, b]) if len(a) and len(b) else (a if len(a) else b)
-                return rref3(M)[0] if len(M) else M
-            def fint(S):
-                a, b = f0(S), f1(S)
-                if len(a) == 0 or len(b) == 0:
-                    return np.zeros((0, a.shape[1] if len(a) else b.shape[1]), dtype=np.int64)
-                if not (rank3(a) == rank3(b) == rank3(np.vstack([a, b]))):
-                    nonuni[0] += 1
-                # intersection of row spaces: solve x a = y b
-                M = np.vstack([a, -b % 3])
-                ns = nullspace3(M.T)          # combos (x, y) with x a - y b = 0
-                if len(ns) == 0:
-                    return np.zeros((0, a.shape[1]), dtype=np.int64)
-                I = (ns[:, :len(a)] @ a) % 3
-                return rref3(I)[0]
-            s_sum, d_sum = short_strings(holes, e, fsum)
-            s_int, d_int = short_strings(holes, e, fint)
-            s0, d0 = short_strings(holes, e, f0)
-            res[e] = {'short_Z0': s0, 'short_Z1': short_strings(holes, e, f1)[0], 'short_sum': s_sum,
-                      'short_int': s_int, 'dim_sum': d_sum, 'dim_int': d_int, 'nonuniform_links': nonuni[0]}
-        out[name][kind] = res
-        print(name, kind, json.dumps(res), flush=True)
-if '--out' in sys.argv:
-    json.dump({'phi': phi.tolist(), 'results': out}, open(sys.argv[sys.argv.index('--out') + 1], 'w'), indent=1)
+def main():
+    out = {}
+    for name, allowed in members.items():
+        pts = np.array([c for c in itertools.product((0, 1), repeat=N) if sum(c) % 3 == m % 3 and allowed(c)])
+        out[name] = {}
+        for j, kind in ((9, 'free hole'), (0, 'support hole')):
+            holes = [h for h in range(N) if h != j]
+            Z0 = pts[pts[:, j] == 0][:, holes]
+            Z1 = pts[pts[:, j] == 1][:, holes]
+            res = {}
+            for e in (1, 2):
+                def fib(Zf):
+                    def f(S):
+                        sel = Zf[np.all(Zf[:, [holes.index(h) for h in S]] == 1, axis=1)] if S else Zf
+                        rest = [h for h in holes if h not in S]
+                        return tops(sel[:, [holes.index(h) for h in rest]], rest, e)[1]
+                    return f
+                f0, f1 = fib(Z0), fib(Z1)
+                nonuni = [0]
+                def fsum(S):
+                    a, b = f0(S), f1(S)
+                    M = np.vstack([a, b]) if len(a) and len(b) else (a if len(a) else b)
+                    return rref3(M)[0] if len(M) else M
+                def fint(S):
+                    a, b = f0(S), f1(S)
+                    if len(a) == 0 or len(b) == 0:
+                        return np.zeros((0, a.shape[1] if len(a) else b.shape[1]), dtype=np.int64)
+                    if not (rank3(a) == rank3(b) == rank3(np.vstack([a, b]))):
+                        nonuni[0] += 1
+                    # intersection of row spaces: solve x a = y b
+                    M = np.vstack([a, -b % 3])
+                    ns = nullspace3(M.T)          # combos (x, y) with x a - y b = 0
+                    if len(ns) == 0:
+                        return np.zeros((0, a.shape[1]), dtype=np.int64)
+                    I = (ns[:, :len(a)] @ a) % 3
+                    return rref3(I)[0]
+                s_sum, d_sum = short_strings(holes, e, fsum)
+                s_int, d_int = short_strings(holes, e, fint)
+                s0, d0 = short_strings(holes, e, f0)
+                res[e] = {'short_Z0': s0, 'short_Z1': short_strings(holes, e, f1)[0], 'short_sum': s_sum,
+                          'short_int': s_int, 'dim_sum': d_sum, 'dim_int': d_int, 'nonuniform_links': nonuni[0]}
+            out[name][kind] = res
+            print(name, kind, json.dumps(res), flush=True)
+    if '--out' in sys.argv:
+        json.dump({'phi': phi.tolist(), 'results': out}, open(sys.argv[sys.argv.index('--out') + 1], 'w'), indent=1)
+
+
+if __name__ == "__main__":
+    main()

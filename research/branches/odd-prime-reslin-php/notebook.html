@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> W-like column members have fibers with different vanishing tops at every hole, yet the sum and intersection of those tops stay free in every small exact check. So the hole-splitting recursion's conditions hold without fiber uniformity (conj:fiber-lattice-freeness, <a href="#entry-2026-09-25-fiber-uniformity">fibers</a>). Next: prove a hole-splitting rule for sums and intersections of two vanishing-top systems, and decide whether the lattice they generate is closed under the fiber operations up to extensions.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> The fibers' vanishing tops generate a non-distributive lattice once two clauses interact, so no adapted basis carries the hole-splitting recursion past one step, while the first-level sums and intersections stay free (ex:fiber-lattice-nondistributive, <a href="#entry-2026-09-25-fiber-lattice">fiber lattice</a>). Next: locate the non-distributive defect for the two-block pair and compare it with the pair's fall restricted to the fibers.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -23694,6 +23694,52 @@ The fall is \(v\,wQ_v\). The model is a statement about functions on \(\mathbb F
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 1.85 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">17.10 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-fiber-lattice" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:fiber-lattice-nondistributive">
+<h3>The fibers' vanishing tops generate a non-distributive lattice once two clauses interact, so no adapted basis carries the hole-splitting recursion past one step; a single clause and the slice are distributive in every check</h3>
+<p class="entry-meta">25 September 2026 · Refutation of a mechanism, by exact check · open statement A1, closure route · cycle odd-prime-lattice-splitting.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. conj:fiber-lattice-freeness (<a href="#entry-2026-09-25-fiber-uniformity">fibers</a>) asks that the sum and intersection of the two fibers' vanishing tops stay free, so that lem:hole-splitting can be iterated. One step of the recursion produces sums and intersections of the fibers' systems. The next step splits those again. For a submodule \(M\) of \(\tilde V\), the splitting at a hole gives:</p>
+<ul>
+<li>for \(M=A\cap B\): column-\(j\) part \(A^{(j)}\cap B^{(j)}\), and \(K(M)=K(A)\cap K(B)\), but only \(Q(M)\subseteq Q(A)\cap Q(B)\);</li>
+<li>for \(M=A+B\): \(Q(M)=Q(A)+Q(B)\), but only \(K(M)\supseteq K(A)+K(B)\).</li>
+</ul>
+<p>Iterating therefore produces lattice words in the fibers' systems at several holes. Those stay tractable exactly when the systems generate a distributive lattice, that is, when one basis is adapted to all of them. Do they?</p>
+<p><strong>General statement.</strong> The statement under test is conj:fiber-lattice-freeness, through the mechanism that would prove it by iteration. The check registered here, ex:fiber-lattice-nondistributive, refutes that mechanism for interacting clauses. It leaves the conjecture itself open.</p>
+
+<h4>The check</h4>
+<p><code>distributivity_check.py</code> works over \(\mathbb F_3\) with \(N=10\), \(m=11\), \(e\in\{1,2\}\), and the four members of <code>fiber_check.py</code>. It uses two pairs of holes: two support holes, and a support hole with the free hole. The four fibers at the two holes are pattern sets on the other 8 holes. For every link \(S\) with \(|S|\le2\), it compares \(\dim\) of the sum of the four subspaces \(a_{S,e}(Z^{ab})\) with the inclusion–exclusion sum of the dimensions of their intersections. It does the same for every triple. For three subspaces, equality is equivalent to distributivity.</p>
+<p>Results (<code>distributivity_check.json</code>, 74 links and degrees per member and pair of holes):</p>
+<ul>
+<li>The slice and one clause: inclusion–exclusion holds everywhere, for triples and quadruples, at both pairs of holes.</li>
+<li>The two-block pair: 6 triples fail at each pair of holes, each by 1.</li>
+<li>Three clauses on four forms: 41 triples and 9 quadruples fail at two support holes, with gaps up to 3. At the support and free hole, 39 triples and 15 quadruples fail, with gaps up to 2.</li>
+</ul>
+<p>So as soon as two clauses interact, the fibers' vanishing tops generate a non-distributive lattice.</p>
+
+<h4>What it means</h4>
+<ul>
+<li>The iterated recursion cannot be organized by a common adapted basis. After one step it meets sums and intersections in a non-distributive lattice, which has no combinatorial normal form. Freeness of such lattice words would need its own argument at each level.</li>
+<li>Non-distributivity appears exactly with interaction between clauses. It is absent for a single clause, as it is for link uniformity and for the clause-level falls. The route meets the same object again: the pair.</li>
+<li>conj:fiber-lattice-freeness is untouched. Its first-level sum and intersection were free in every case, including those that fail distributivity. What is refuted is only the easy way to iterate it.</li>
+</ul>
+<p>Next: locate the non-distributivity. For the two-block pair, find which links and triples fail. Compare the failing part, \(A\cap(B+C)\) modulo \(A\cap B+A\cap C\), with the pair's fall \(C-C'\) restricted to the fibers. If the defect is spanned by the fall's tops, the closure route's obstruction is the same object as the clause route's, and a combined treatment of pairs is the next target.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:hole-splitting, conj:fiber-lattice-freeness and the fiber-uniformity entry's data. The splitting rules for sums and intersections above follow from the definitions: the column-\(j\) part and \(K\) are intersections with fixed subspaces, and \(Q\) is a linear projection. The check reuses the rank and nullspace routines validated earlier, and computes intersections from exact nullspaces. The slice and single-clause controls satisfy inclusion–exclusion throughout. All numbers were read from the saved JSON. The entry registers a finite check refuting a mechanism, and no proof, so no proof reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-lattice-splitting">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 39.75 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">18.30 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 4.11 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 11.71 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5.49 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
