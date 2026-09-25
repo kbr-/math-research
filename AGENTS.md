@@ -243,6 +243,12 @@ rules to growing checklists or one-off setup narratives.
   results. Third-party papers are not ours to relicense: follow THIRD_PARTY_NOTICES.md
   and research/references/redistribution.json. Keep uncleared PDFs/full text and
   source-containing diagnostics out of public commits/reachable history; preserve
-  needed personal copies locally, never publish private/backups. If retrieval fails
-  after an honest attempt, create/update Git-ignored `user_requests` with citation,
-  attempted links and purpose; continue independent work while awaiting the user.
+  needed personal copies locally, never publish private/backups. A source that cannot
+  be retrieved after an honest attempt is a user request (below), with citation,
+  attempted links and purpose.
+- Every request to the user goes into the Git-ignored `user_requests` file: a missing
+  source, an installation, a permission, a choice between research directions, or any
+  other question. Give what is needed, why, what was tried, and the default being followed
+  meanwhile. Never stop, pause or idle to wait for the answer: follow the recommended
+  default and continue. Mention a new request in one sentence of the turn's report, and
+  mark items fulfilled when answered.
