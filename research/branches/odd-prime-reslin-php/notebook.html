@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Square-class priority defends every square-hole-type family on the recorded expansion event (prop:square-priority-hole-families, <a href="#entry-2026-09-26-square-hole-transfer">square hole transfer</a>). Next: the first non-hole family, blocks on two holes. Decide whether weak graph PHP plus the chosen implications between holes is hard on the expansion event, or whether chains of implications force every hole occupied, which counting modulo 3 refutes.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> For any choice, cell blocks give occupancy implications, so W on cell families is hardness of weak PHP plus implications (prop:cell-block-implications, <a href="#entry-2026-09-26-cell-block-implications">cell-block implications</a>). Next: search the record and the literature for PC bounds on PHP with conditional occupancy (partial onto-PHP, relativized PHP), then state the hardness conjecture for implication systems that leave many holes unforced, and test it against counting modulo 3.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24953,6 +24953,57 @@ where \(q(w)\) is the single-divided-power probability of prop:divided-power-col
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 15.71 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 7.45 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-cell-block-implications" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:cell-block-implications">
+<h3>Cell blocks give occupancy implications: for any choice, every clause of a block of cell forms says that a pigeon in one hole forces some other hole of the block to be occupied by its prefix pigeons, so W on cell families is hardness of PHP with occupancy implications</h3>
+<p class="entry-meta">26 September 2026 · Working proof, with an analysis of the first non-hole family · open statement A1 · cycle odd-prime-two-hole-implications.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. prop:square-priority-hole-families (<a href="#entry-2026-09-26-square-hole-transfer">square hole transfer</a>) settled blocks whose forms are cells of one hole, where the chosen clauses are deletions. The chooser review asked for the first non-hole family, blocks on two holes. What do the chosen clauses of a block of cell forms on several holes say, for any choice?</p>
+<p><strong>General statement.</strong> prop:cell-block-implications. Over \(\mathbb F_3\), let a block consist of forms square-equivalent, modulo \(C_{20k+1}(B)\), to cell forms \(X_{jt}-1\) on holes \(s_1,\dots,s_r\). The hypothesis covers every form of the block, including prefix forms. Let the prefix correspond to the cells \(P=\bigcup_bP_b\), with \(P_b\) the prefix pigeons at \(s_b\), \(|P|\le k\); two prefix forms may be equivalent to one cell. Write \(X_{jt}\) and \(x_{jt}\) for the same Boolean cell variable. Then, modulo \(C_{22k+1}(B)\), the clause of an excluded cell \((i,s_a)\) is equivalent in both directions to the occupancy implication
+\[ I_{i,s_a}=x_{is_a}\prod_{b\ne a,\ P_b\ne\varnothing}\Bigl(1-\sum_{j\in P_b}x_{js_b}\Bigr), \]
+"pigeon \(i\) in \(s_a\) forces some other hole \(s_b\) of the block to hold one of its prefix pigeons". When no other hole has prefix pigeons, this is the deletion \(x_{is_a}\). An excluded form equivalent to a prefix cell gives a clause in \(C_{22k+1}(B)\), which is trivial. The weak base has no row exclusions, so if \(i\in P_b\) the implication can be met by \(i\) itself sitting in \(s_b\). Consequently, for families of cell blocks and any choice: a degree-\(22k\) refutation of the base plus the chosen clauses gives a degree-\((22k+1)\) refutation of weak unary PHP plus the implications. Conversely, a degree-\(22k\) refutation of the latter gives a degree-\((22k+1)\) refutation of the former.</p>
+
+<h4>Proof</h4>
+<ul>
+<li><em>From forms to cells.</em> As in prop:square-priority-hole-families, replacing each form by its cell form changes a clause by an element of \(C_{22k+1}(B)\), and \((X-1)^2\equiv1-x\), \(1-(X-1)^2\equiv x\) at degree 2. Since \(1-(X-1)^2=1-(1-x)^2=x(2-x)\equiv x\) by Booleanity, the clause is \(x_{is_a}\prod_{(j,u)\in P}(1-x_{ju})\) modulo \(C_{22k+1}(B)\).</li>
+<li><em>The excluded cell's own hole.</em> For \(j\in P_a\), \(j\ne i\), the collision \(x_{is_a}x_{js_a}\in B\) gives \(x_{is_a}(1-x_{js_a})\equiv x_{is_a}\), so the factors at \(s_a\) drop at degree at most \(2k+2\). Here \(i\notin P_a\), since \((i,s_a)\) is excluded.</li>
+<li><em>Other holes.</em> For \(b\ne a\), \(\prod_{j\in P_b}(1-x_{js_b})\equiv1-\sum_{j\in P_b}x_{js_b}\) modulo the collisions at \(s_b\). The products of two or more distinct cells of one hole vanish. Every step is an identity modulo \(B\) at degree at most \(2k+2\), so the equivalence holds in both directions. \(\square\)</li>
+</ul>
+
+<h4>The first non-hole family, under square-class priority</h4>
+<ul>
+<li><em>The family.</em> Hole blocks \(H_s=\{X_{js}-1:j\}\) for every hole, and singleton-plus-hole blocks \(B_{i,s,t'}=\{X_{is}-1\}\cup\{X_{jt'}-1:j\}\) for all \(i\), \(s\ne t'\). This is polynomially many blocks, all of cell forms.</li>
+<li><em>The chosen clauses.</em> Let \(T_u\) be the top \(k\) cells of hole \(u\). The hole blocks delete everything outside \(T_s\) at each \(s\). Call \((i,s)\) exceptional for \(t'\) if it ranks above the \(k\)-th cell of \(t'\), whether or not \(i\in T_s\). Then \(B_{i,s,t'}\) has prefix \(\{(i,s)\}\) plus the top \(k-1\) of \(t'\), and its clause for the \(k\)-th cell \((j_k,t')\) is \(x_{j_kt'}(1-x_{is})\). When \((i,s)\) is deleted, this deletes \(x_{j_kt'}\). For a typical \(t'\), some cell of another hole outranks \(t'\)'s \(k\)-th cell. So almost every hole keeps only its top \(k-1\) cells, and the kept graph has hole neighbourhoods \(T_s^{-}\), the top \(k-1\) of \(s\), for most holes. The implication "\(j_k\) in \(t'\) forces \(i\) into \(s\)" is then vacuous there. For a non-exceptional \((i,s)\) with \(i\in T_s\), the prefix is \(T_{t'}\), and the clause is "\(i\) in \(s\) forces \(t'\) occupied by \(T_{t'}\)". The system is weak graph PHP on these neighbourhoods plus these implications. The expansion event needed is that of prop:hole-family-random-choice with \(k-1\) in place of \(k\).</li>
+<li><em>When counting would refute (heuristic).</em> Hole \(t'\) is derivably occupied if some pigeon \(i\) has all its allowed cells non-exceptional for \(t'\). Then its linear row equation \(\sum_sx_{is}=1\), times \(1-\mathrm{occ}(t')\), derives it. So \(t'\) is forced when the rank of its \(k\)-th cell is below \(R^*=\max_i\min\{\mathrm{rank}(i,s):(i,s)\text{ allowed}\}\), of order \(m\ln m\). A typical \(k\)-th-cell rank is of order \(kn\). If every hole were forced, the rows would give \(\sum_t\mathrm{occ}(t)\equiv m\) and the holes \(n\), which refutes when \(m\not\equiv n\pmod3\). For \(k\) at most about \(\ln n\), most or all holes are forced, and the chosen system is likely refuted this way. For W's \(k\approx2.5(K+1)\log n\), a hole is forced only when its \(k\)-th cell ranks several standard deviations high. So few holes are forced, and the counting constrains only the unforced holes' total occupancy modulo 3, which is satisfiable. This is an estimate, not a proof of hardness, and it shows that the rule's success here depends on \(k\) exceeding about \(\ln n\).</li>
+<li><em>Contrast with literal priority (sketch).</em> With literal forms, write the hole blocks in the shifted forms of prop:shifted-duplicates. The \(B\)-blocks' prefix \(T'_{t'}\) at \(t'\) is then independent of the kept set \(T_{t'}\), and usually disjoint from it. The non-exceptional clause \(x_{is}\prod_{j\in T'_{t'}}(1-x_{jt'})\) reduces, modulo the deletions at \(t'\), to the deletion \(x_{is}\). So almost every allowed cell is deleted directly, as in prop:shifted-duplicates, with no counting needed. Square classes remove that decorrelation.</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li><em>A combinatorial core for A1 on cell families.</em> Any choice rule turns a family of cell blocks into weak PHP plus occupancy implications. Hole blocks give deletions, and multi-hole blocks give implications into other holes. A rule is good when the implications it creates do not force enough holes occupied to count, and when the remaining system is hard. The latter is a PHP variant between graph PHP and onto PHP.</li>
+<li><em>What is open.</em>
+ <ul>
+ <li>Hardness of weak graph PHP plus occupancy implications on the expansion event: no recorded bound covers it.</li>
+ <li>The forcing estimate made precise, including the regime \(k\gtrsim\ln n\).</li>
+ <li>Blocks with forms that are not equivalent to cells.</li>
+ </ul></li>
+<li>No new case of W is proved.</li>
+</ul>
+<p>Next: search the record and the literature for PC lower bounds for PHP variants with conditional occupancy constraints: partial onto-PHP, PHP with hole-occupancy implications, and the relativized PHP. Then state the hardness conjecture for PHP with implications whose forcing closure leaves many holes unforced, and test it against the counting obstruction.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:square-priority-hole-families (reduction to cells), prop:priority-hole-families (clause step), prop:shifted-duplicates and conj:square-class-priority. A fresh-context reviewer confirmed the proposition: the collisions it uses are column collisions only, and it holds for empty \(P_b\) and when pigeon \(i\) lies in another prefix. It required these changes, all adopted: \(|P|\le k\), trivial clauses and the hypothesis on all forms; the case \(i\in P_b\); the degree accounting as two one-directional bounds; the missed exceptional deletions, which reduce most holes to their top \(k-1\) cells; the forcing estimate with its regime and the counting hypotheses \(m\not\equiv n\), linear rows; and the literal contrast recast as a labelled sketch of the direct-deletion mechanism. The changes correct the family analysis and weaken its claims, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-two-hole-implications">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 33.18 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 13.16 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 19.89 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
