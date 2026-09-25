@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> Closed row freeness follows from freeness of the links' vanishing tops over the row sums, which for one row is exactness of a \(p\)-complex (lem:free-vanishing-tops, <a href="#entry-2026-09-25-free-vanishing-tops">free vanishing tops</a>). Next: one-row freeness of the vanishing-top module \(A_e\) for a single W clause on column forms, at degrees \(e\ge k+2\), where its vanishing top first enters. Write \(A_e\) as a weighted matching contraction and check the robust-active-row hypothesis of thm:wide-row-p-complex-amplitude-exactness for dense column forms.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> On column members, closed row freeness is freeness of the vanishing tops (lem:free-vanishing-tops). W-like members pass every small exact check while a refuted control fails, but the tops are not uniform across links, and the refined criteria cover column forms only (<a href="#entry-2026-09-25-closure-route-review">closure-route review</a>). Next: close or measure that scope gap. Decide whether lem:closure-saturation's content reduction extends to allowed sets cut by affine forms in the cell variables, or whether W with cell forms transfers to W with column forms. Start from the recorded analysis of W's forms, rigid forms and forms the base cannot prove nonzero, and state which of W's forms are column forms modulo the base.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -23436,6 +23436,84 @@ The fall is \(v\,wQ_v\). The model is a statement about functions on \(\mathbb F
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 46.80 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">31.16 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-closure-route-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of the closure route with exact small checks of lem:free-vanishing-tops on column members (Jordan types, link uniformity, signed cohomology); no new claim.">
+<h3>Route review: on column members the closure route's criterion is freeness of the vanishing tops, which W-like members satisfy in every small exact check while a refuted control fails; the tops are not uniform across links, and the route's refined criteria cover column forms only</h3>
+<p class="entry-meta">25 September 2026 · Route review with exact small checks · open statement A1, closure route · cycle odd-prime-clause-tops-freeness.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The last two entries moved A1 to the closure route. The <a href="#entry-2026-09-25-closure-test-settled">closure test</a> found the member to be the gluing unit. lem:free-vanishing-tops (<a href="#entry-2026-09-25-free-vanishing-tops">free vanishing tops</a>) turned the link criterion into freeness of the links' vanishing-top modules \(A_e\) over the row sums. The step it proposed, one-row freeness for a single W clause, is already settled for nonrefutation (<a href="#entry-2026-09-25-column-wilson">column Wilson</a>). So the route check calls for a review of the closure route as a whole.</p>
+<p><strong>General statement.</strong> The line's claim is thm:global-closure-gluing: W follows if the row sums' Koszul 1-cycles on the graded functions of W's allowed set \(Q\) are Frobenius plus boundaries through \(22k\). For column members this is (L) of prop:link-criterion, and so, up to a degree shift, freeness of the vanishing-top modules (lem:free-vanishing-tops). conj:closed-row-freeness asserts it for column members of density at least one half. The goal needs A1: arbitrary affine forms in the cell variables, not only column forms.</p>
+
+<h4>Falsification attempt: exact Jordan types at small size</h4>
+<p><code>vanishing_tops.py</code> computes, over \(\mathbb F_3\) with one explicit row, \(N=10\) and \(m=11\):</p>
+<ul>
+<li>every link's vanishing tops \(a_{Y,e}\), \(e\le2\), from exact nullspaces of evaluation matrices;</li>
+<li>the modules \(A_e\) and \(V_e=\tilde V_e/A_e\) in total degrees \(\le4\);</li>
+<li>the number of short Jordan strings of \(r\) ending in each degree, by exact fflas-ffpack ranks of \(r\) and \(r^2\).</li>
+</ul>
+<p>The members are the slice, a control allowing at most two occupied holes, and three W-like members on four seeded-random dense column forms: one clause, the two-block pair with equal outside indices, and three clauses. Their clauses are \(\chi_a(\ell_i)\prod(\ell_j-a_j)\) with \(k=1\) (<code>vanishing_tops.json</code>).</p>
+<ul>
+<li>The slice and all three W-like members have no short strings in \(A_e\) or \(V_e\) through degree 4, for every \(e\le2\). They allow 272, 176 and 157 of the 342 slice points, so the last lies below half density. Their links carry vanishing tops beyond the slice's: \(\dim A_{2,4}\) is 369, 487 and 465, against 360 for the slice.</li>
+<li>The control fails. \(V_e\) has short strings ending in degree 2 (44, 80 and 35 for \(e=0,1,2\)), as its recorded degree-2 refutation predicts. \(A_e\) has short strings in degrees 3 and 4, as the near-converse's shift predicts.</li>
+</ul>
+<p>So the test discriminates, and it found no failure on W-like members. It is far below the conjecture's range, \(N\ge2(D+1)D\), which is 40 at \(D=4\). The clause width is \(k=1\), so the Koszul range and W's widths are not reached.</p>
+
+<h4>Assessment of the closure route</h4>
+<ul>
+<li><em>What it has.</em>
+ <ul>
+ <li>A sufficient criterion that absorbs every within-member fall.</li>
+ <li>The seeded and sparse theorems (thm:seeded-closure-stability, thm:sparse-closure-stability), which prove it at every degree for members on seeded forms or on few holes.</li>
+ <li>A module formulation, freeness of \(A_e\), that passed every small exact check this cycle.</li>
+ </ul></li>
+<li><em>What it lacks.</em>
+ <ul>
+ <li>A mechanism for dense forms. The only freeness mechanism in the record is the free-seed tensor argument, which needs seeds or free holes and so re-imports the count limit.</li>
+ <li>Link uniformity, the natural structural candidate. It fails (Gotzmann lead below), so that route is closed.</li>
+ <li>Tests in range. Brute force is infeasible past \(N\approx16\): the slice has \(2^N/3\) points, and the conjecture's range at \(D=4\) is \(N=40\).</li>
+ </ul></li>
+<li><em>A scope gap.</em> lem:closure-saturation, prop:link-criterion and lem:free-vanishing-tops need \(Z\) to be a set of occupancy patterns, that is, constraints on column forms. W's forms are arbitrary affine forms in the cells \(x_{ij}\). For them only thm:global-closure-gluing's general hypothesis is available, without the content reduction. A claim search (cell forms, column forms, reduction, occupancy) found no reduction from cell forms to column forms. So the closure route's refined machinery does not yet address A1 as stated, only its column-form case.</li>
+</ul>
+
+<h4>Outside leads</h4>
+<ul>
+<li><em>Dade's lemma and Carlson's rank varieties (Dade, Ann. of Math. 1978; Carlson, Invent. Math. 1983), with modules of constant Jordan type (Carlson, Friedlander and Pevtsova, J. reine angew. Math. 2008), for A1 on the closure route.</em> \(\Lambda_u=\mathbb F_3[(\mathbb Z/3)^u]\). A module is free exactly when its restriction to every shifted cyclic subgroup is free, and the rank variety records where it is not. Closed row freeness is freeness of \(A_e\), so the tools of modular representation theory for elementary abelian groups apply to it. <em>Where it breaks:</em> the criterion needs all shifted cyclic subgroups for \(u&gt;1\), and it detects freeness without proving it. <strong>Test.</strong> Passed. For \(u=1\) the rank variety is the Jordan type of \(r\), computed exactly above: free through degree 4 for the W-like members, not free for the refuted control.</li>
+<li><em>Gotzmann's persistence theorem and Macaulay's bound (Gotzmann, Math. Z. 1978), for link uniformity.</em> If the links' vanishing ideals were the restrictions of one ideal, \(a_{S,e}=\pi_S(a_{\emptyset,e})\), persistence-type control of its Hilbert function would make \(A_e\) a quotient of a free module by a controlled kernel. The entry on free vanishing tops proposed this as the mechanism. <em>Where it breaks:</em> the links' constants shift, which can create extra low-degree vanishing. <strong>Test.</strong> Falsified. <code>lead_checks.py</code> compared \(a_{Y,e}\) with \(\pi_Y(a_{\emptyset,e})\) for \(e\le2\), \(|Y|\le2\), 110 cases per member. The link's space is strictly larger in 6, 37 and 32 cases for the three W-like members, and never smaller (<code>lead_checks.json</code>). Yet \(A_e\) stayed free, so uniformity is neither the mechanism nor needed.</li>
+<li><em>Mayer's homology of \(p\)-complexes and Spanier's comparison (Mayer, Ann. of Math. 1942; Spanier, "The Mayer homology theory", Bull. Amer. Math. Soc. 1949), for the one-row condition.</em> \((A_e,r)\) with the unsigned coboundary is a Mayer 3-complex on the lattice of hole sets. Spanier showed that for simplicial complexes Mayer homology is determined by ordinary homology. If a coefficient-system analogue held, freeness of \(A_e\) would reduce to acyclicity of the ordinary signed complex \((A_e,\delta)\), \(\delta(x_Yg)=\sum_j(-1)^{|\{y\in Y:y&lt;j\}|}x_{Y+j}\,g|_{C_j=0}\). <em>Where it breaks:</em> Spanier's theorem is for constant coefficients, and here the coefficients vary. <strong>Test.</strong> Passed, with a caveat. In all 15 member and degree cases, the ordinary cohomology of \((A_e,\delta)\) vanished exactly where the short strings did. In the control, the nonzero dimensions matched the short strings one degree up for \(e=1,2\) (71 and 71, 35 and 35), and differed by one for \(e=0\) (36 against 35), at the edge of the computed range (<code>vanishing_tops.json</code>).</li>
+</ul>
+
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>Spin coupling in quantum chemistry (Kotani's branching diagrams; the Clebsch–Gordan series), read in characteristic 3.</em> Each column's algebra \(\mathbb F_3[x]/(x^2)\), with \(r\) acting as the lowering operator, is a doublet. The column tensor power \(W_N\) couples \(N\) doublets, and \(r=\sum_jx_j\) is the total lowering operator. In characteristic 3 the multiplets are Jordan strings of length at most 3, and freeness means every multiplet is a triplet. <em>What a theorem there gives:</em> the modular Clebsch–Gordan series, the Green ring of \(\mathbb Z/3\). A projective module tensored with any module is projective, which is the recorded free-seed tensor lemma, and a sum of many doublets is free up to one short multiplet. <em>Smallest test:</em> the Jordan type of \(r\) on \(W_{10}\). <strong>Test.</strong> Passed. Exactly one short string, ending in degree 5, and every other string is a triplet (<code>lead_checks.json</code>). This is lem:pair-seed-decomposition read as Clebsch–Gordan coupling. The bridge relabels a recorded result rather than adding one. A member's constraints act as a coupling to further spins whose multiplet structure is the open question.</li>
+<li><em>Persistence barcodes from topological data analysis (the stability theorem of Cohen-Steiner, Edelsbrunner and Harer, 2007).</em> Jordan strings of \(r\) along the degree filtration are bars. Freeness means every bar has full length 3, and each added clause perturbs \(A_e\). A bottleneck-stability theorem would bound the short bars a clause can create by the size of the perturbation, so freeness would persist under adding clauses whose tops change \(A_e\) little. <em>Smallest test:</em> count short bars in range as clauses are added, from one clause to two to three. <strong>Test.</strong> Passed, but it does not discriminate. No short bar appears in range at any stage (<code>vanishing_tops.json</code>), so stability cannot be distinguished from plain freeness at this size.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>The highest-risk item remains A1, and the closure route's refined machinery covers only column forms. The next step on odd-prime-clause-transfer closes that scope gap or measures it. Decide whether the content reduction of lem:closure-saturation extends to allowed sets cut by affine forms in the cell variables, with the explicit rows carrying the forms' row parts. Otherwise, find a transfer from W with cell forms to W with column forms. Start from the recorded row-parts analysis of W's forms, such as rigid forms and the forms the base cannot prove nonzero, and state which of W's forms are column forms modulo the base.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>prop:link-criterion and lem:free-vanishing-tops, whose quantities the script computes;</li>
+<li>lem:closure-saturation, for the scope;</li>
+<li>thm:seeded-closure-stability and thm:sparse-closure-stability;</li>
+<li>lem:pair-seed-decomposition, whose one short summand the spin-coupling test matches;</li>
+<li>conj:closed-row-freeness.</li>
+</ul>
+<p>The kernel's ranks come from fflas-ffpack RowRankProfile through declared ctypes signatures. The nullspaces come from an exact numpy reduction modulo 3. The slice gives the expected free answer, and the control reproduces its recorded degree-2 refutation, so the controls pass. All numbers were read from the saved JSON files. This review registers no claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-clause-tops-freeness">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 59.39 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 0.75 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 4.31 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 51.75 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 2.38 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
