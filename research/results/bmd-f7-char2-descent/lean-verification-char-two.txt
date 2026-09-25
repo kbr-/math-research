@@ -1,0 +1,81 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PerOrderCharTwo
+Claim file: claims/PerOrderCharTwo.lean
+Claim: thm:per-order-value-char-two
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-value-char-two
+Scope: Descent from a commutative ring R of characteristic two (for example any field of characteristic
+two) to 𝔽₂. For an additive map φ : R → 𝔽₂ applied to every coefficient, the Hasse coefficients of
+the image at a point a ∈ 𝔽₂^σ are the images of those of P at a, and the support can only shrink.
+Choosing φ nonzero on one coefficient of lowest degree at the origin gives: every P ∈ R[x_1..x_n] with
+multiplicity ≥ k at the nonzero points of {0,1}^n and exactly ℓ at the origin has total degree
+≥ Φ(n,k,ℓ), and the 𝔽₂ polynomial of the per-order theorem, mapped to R, attains Φ. Hence the
+per-order value δ_R(n,k,ℓ) = Φ(n,k,ℓ) for n ≥ 1, ℓ < k, and the least degree of a k-admissible
+polynomial over R is degreeMin n k for n, k ≥ 1.
+Declarations: MathResearch.PerOrderCharTwo.coeffMap MathResearch.PerOrderCharTwo.coeff_shift_coeffMap MathResearch.PerOrderCharTwo.totalDegree_coeffMap_le MathResearch.PerOrderCharTwo.lower_bound_char_two MathResearch.PerOrderCharTwo.per_order_value_char_two MathResearch.PerOrderCharTwo.degree_complete_char_two
+$ lake --wfail build claims.PerOrderCharTwo
+✔ [1945/1945] Built claims.PerOrderCharTwo (1.7s)
+Build completed successfully (1945 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmplfnpcebn.lean
+@MathResearch.PerOrderCharTwo.coeffMap : {σ : Type u_1} →
+  {R : Type u_2} → [inst : CommRing R] → (R →+ ZMod 2) → MvPolynomial σ R → MvPolynomial σ (ZMod 2)
+'MathResearch.PerOrderCharTwo.coeffMap' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderCharTwo.coeff_shift_coeffMap : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R]
+  [inst_1 : CharP R 2] (φ : R →+ ZMod 2) (a : σ → ZMod 2) (P : MvPolynomial σ R) (d : σ →₀ ℕ),
+  ((MathResearch.HasseMultiplicity.shift a) (MathResearch.PerOrderCharTwo.coeffMap φ P)).coeff d =
+    φ (((MathResearch.HasseMultiplicity.shift fun i => (MathResearch.PerOrderCharTwo.iota R) (a i)) P).coeff d)
+'MathResearch.PerOrderCharTwo.coeff_shift_coeffMap' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderCharTwo.totalDegree_coeffMap_le : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R]
+  (φ : R →+ ZMod 2) (P : MvPolynomial σ R), (MathResearch.PerOrderCharTwo.coeffMap φ P).totalDegree ≤ P.totalDegree
+'MathResearch.PerOrderCharTwo.totalDegree_coeffMap_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderCharTwo.lower_bound_char_two : ∀ {R : Type u_1} [inst : CommRing R] [inst_1 : CharP R 2]
+  {n k ℓ : ℕ},
+  1 ≤ n →
+    ℓ < k →
+      ∀ (P : MvPolynomial (Fin n) R),
+        (∀ (a : Fin n → ZMod 2),
+            a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult (fun i => (MathResearch.PerOrderCharTwo.iota R) (a i)) P) →
+          MathResearch.HasseMultiplicity.mult 0 P = ↑ℓ → MathResearch.PerOrderUpperBound.Phi n k ℓ ≤ P.totalDegree
+'MathResearch.PerOrderCharTwo.lower_bound_char_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderCharTwo.per_order_value_char_two : ∀ {R : Type u_1} [inst : CommRing R] [inst_1 : CharP R 2]
+  {n k ℓ : ℕ},
+  1 ≤ n →
+    ℓ < k →
+      (∃ P,
+          (∀ (a : Fin n → ZMod 2),
+              a ≠ 0 →
+                ↑k ≤ MathResearch.HasseMultiplicity.mult (fun i => (MathResearch.PerOrderCharTwo.iota R) (a i)) P) ∧
+            MathResearch.HasseMultiplicity.mult 0 P = ↑ℓ ∧ P.totalDegree = MathResearch.PerOrderUpperBound.Phi n k ℓ) ∧
+        ∀ (P : MvPolynomial (Fin n) R),
+          (∀ (a : Fin n → ZMod 2),
+              a ≠ 0 →
+                ↑k ≤ MathResearch.HasseMultiplicity.mult (fun i => (MathResearch.PerOrderCharTwo.iota R) (a i)) P) →
+            MathResearch.HasseMultiplicity.mult 0 P = ↑ℓ → MathResearch.PerOrderUpperBound.Phi n k ℓ ≤ P.totalDegree
+'MathResearch.PerOrderCharTwo.per_order_value_char_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderCharTwo.degree_complete_char_two : ∀ {R : Type u_1} [inst : CommRing R] [inst_1 : CharP R 2]
+  {n k : ℕ},
+  1 ≤ n →
+    1 ≤ k →
+      (∃ P,
+          (∀ (a : Fin n → ZMod 2),
+              a ≠ 0 →
+                ↑k ≤ MathResearch.HasseMultiplicity.mult (fun i => (MathResearch.PerOrderCharTwo.iota R) (a i)) P) ∧
+            MathResearch.HasseMultiplicity.mult 0 P < ↑k ∧
+              P.totalDegree = MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k) ∧
+        ∀ (P : MvPolynomial (Fin n) R),
+          (∀ (a : Fin n → ZMod 2),
+              a ≠ 0 →
+                ↑k ≤ MathResearch.HasseMultiplicity.mult (fun i => (MathResearch.PerOrderCharTwo.iota R) (a i)) P) →
+            MathResearch.HasseMultiplicity.mult 0 P < ↑k →
+              MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k ≤ P.totalDegree
+'MathResearch.PerOrderCharTwo.degree_complete_char_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 6 audited declarations.
