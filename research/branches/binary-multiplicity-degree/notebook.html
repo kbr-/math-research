@@ -21,7 +21,7 @@
 <li>The lower bound reads the degree off \(y\)-coefficients of the jet (<a href="#y-coefficient-degree-formula">lemma</a>). Low degree forces multi-additive forms to vanish on the span \(V\) of \(y_1,\ldots,y_n\), and reduction modulo the subspace polynomial of \(V\) isolates the jet's order-\(\ell\) part.</li>
 <li>The same law holds in base \(q\) on every full grid \(\mathbb F_q^n\), for every prime power \(q\) (<a href="#q-ary-per-order-value">\(q\)-ary theorem</a>), but not on additive-subgroup grids whose subspace polynomial has a nonzero \(x^2\) coefficient (<a href="#second-coefficient-savings">second-coefficient theorem</a>).</li>
 <li>On every finite grid the savings stabilize for large \(\ell\); on the cube over characteristic 0 their limit is \(\min\{d:N_{2,n}(d)&gt;m\}\), \(m=k-\ell-1\), for every \(n\) (<a href="#cube-initial-segment-char-zero">theorem</a>).</li>
-<li>The per-order theorem and its construction are verified in Lean (<a href="#entry-2026-09-25-lean-per-order-value">formalization</a>). Whether they go into the preprint is the user's decision.</li>
+<li>The per-order theorem, its construction and the minimum over \(\ell\) are verified in Lean (<a href="#entry-2026-09-25-lean-per-order-value">formalization</a>, <a href="#entry-2026-09-25-preprint-per-order">minimum</a>). Preprint version 2 (<code>publications/binary-multiplicity-degree/</code>, local) makes the per-order theorem its main result; publication is the user's decision.</li>
 </ul>
 </section>
 <section id="remaining-route">
@@ -3352,6 +3352,53 @@ When \(e=0\) the same count holds, with the \(q-1\) joins giving \(m=4d+q-1\) an
 <tr><td>Individually measured formal verification</td><td class="elapsed">4 min 18.99 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 20.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-preprint-per-order" data-kind="formalization" data-route="formalization" data-claims="none" data-claim-note="Formalizes part (ii) of the existing lem:per-order-all-dimension-minimum and revises the preprint; no new mathematical claim.">
+<h3>25 September 2026 — Lean: the minimum of Φ over the origin order; preprint version 2 with the per-order theorem as its headline</h3>
+<p class="entry-meta">Formalization: part (ii) of the minimum lemma verified in Lean; the preprint rewritten around the per-order theorem. Cycle bmd-f2-paper-v2. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Assignment.</strong> The user asked to formalize the per-order theorem and then update the preprint draft, choosing the per-order theorem as the new headline, with \(D(n,k)\) as a corollary and the version-1 proof kept as a second proof.</p>
+<h4 id="lean-per-order-minimum-scope">The minimum over the origin order in Lean</h4>
+<p><code>MathResearch.PerOrderMinimum.min_phi</code> (<a href="https://github.com/kbr-/math-research/blob/main/formalization/claims/PerOrderMinimum.lean"><code>PerOrderMinimum.lean</code></a>) states, for \(n\ge1\) and \(k\ge1\), that \(\Phi(n,k,\ell)\ge D(n,k)\) for every \(\ell&lt;k\) and that some \(\ell&lt;k\) attains equality, where <code>degreeMin n k</code> is the closed form of the <a href="#binary-multiplicity-degree-complete">complete formula</a>. This is part (ii) of the <a href="#per-order-all-dimension-minimum">minimum lemma</a>, so the lemma is now formalized completely.</p>
+<p><em>Proof, which differs from the notebook's digit argument.</em></p>
+<ul>
+<li>For \(\ell&lt;k\), the per-order theorem gives a polynomial of degree \(\Phi(n,k,\ell)\) with origin order \(\ell\). It is \(k\)-admissible, so its degree is at least \(D(n,k)\) by the complete formula.</li>
+<li>The complete formula gives a \(k\)-admissible \(P\) of degree \(D(n,k)\). Its origin order \(\ell\) is finite and below \(k\). The lower half of the per-order theorem gives \(\Phi(n,k,\ell)\le\deg P=D(n,k)\). \(\square\)</li>
+</ul>
+<p>The aggregate module <code>claims/BinaryMultiplicityDegreePaper2.lean</code> imports the per-order chain and the version-1 chain. Its header lists the eight declarations the preprint cites. <code>verify.sh</code> passes for both modules, with only the standard axioms (<code>research/results/bmd-f2-paper-v2/lean-verification-minimum.txt</code>, <code>lean-verification-paper2.txt</code>).</p>
+<h4 id="preprint-per-order-version-two">Preprint version 2</h4>
+<p><code>publications/binary-multiplicity-degree/</code>, retitled "Binary polynomials vanishing to high order off the origin: the minimum degree at every origin order", version 2 of 25 September 2026:</p>
+<ul>
+<li>the main theorem is \(\delta(n,k,\ell)=\Phi(n,k,\ell)\) for all \(n\ge1\), \(\ell&lt;k\), and the value of \(D(n,k)\) with the Schwartz–Zippel attainment criterion is a corollary;</li>
+<li>a new section proves the lower bound along the Lean route: the expansion, the congruence without the jet polynomial, the lowest part of \(w\), the forms, the grid-vanishing lemma of Alon's combinatorial Nullstellensatz, and the grid reduction;</li>
+<li>the upper-bound section adds the Legendre form, the hyperplane product and the construction \(y_1^\ell F^{2q}g_{r+1}\);</li>
+<li>the version-1 lower bound (Schwartz–Zippel and the one-dimension step) is kept as a second proof;</li>
+<li>the comparison with Menezes says that his characteristic-two formula is the case \(k-\ell-1&lt;2^n\), and that the value is strictly smaller when \(k-\ell-1\ge2^n\) (proved in the text, not formalized);</li>
+<li>the Lean links and the reproduction commands point to commit <code>4f43ed20</code>, which contains the aggregate module.</li>
+</ul>
+<p>The review record is <code>publications/binary-multiplicity-degree/REVIEW-v2.md</code>.</p>
+<p><strong>General statement.</strong> <code>lem:per-order-all-dimension-minimum</code>, for all \(n\ge1\) and \(k\ge1\), is now formalized in both parts.</p>
+<p><strong>Verification gate.</strong> Before the preprint was drafted, the per-order theorem, the minimum lemma, the construction and the formalization entry were re-read from this notebook. Every declaration name in the preprint's verification map was checked by script against the Lean sources. A fresh-context referee checked the lower bound step by step, the construction and the minimum lemma (including \(n=1\) and \(k=2^n\), and numerically for \(n\le7\), \(k&lt;300\)). It found no mathematical gap. It asked for four text corrections, all made:</p>
+<ul>
+<li>the smallest example with \(k-\ell-1\ge2^n\) is \(n=1\), \(k=3\), \(\ell=0\) (3 against 4), not the example first given;</li>
+<li>the abstract names that case correctly;</li>
+<li>the real value \(n+2k-3\) now carries the hypothesis \(n\ge2k-3\) (checked against Sauermann and Wigderson, arXiv v2, Theorem 1.3);</li>
+<li>the grid-vanishing lemma is marked as taken from Mathlib, without its own link.</li>
+</ul>
+<p>Alon (1999) was checked against Crossref.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-f2-paper-v2">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>18 min 43.48 s</strong></td></tr>
+<tr><td>Formal proof design and coding</td><td class="elapsed">13 min 26.29 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 12.34 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">33.82 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.50 s</td></tr>
+<tr><td>Individually measured formal verification</td><td class="elapsed">22.54 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 </section>

@@ -1,5 +1,5 @@
 % SPDX-License-Identifier: CC-BY-4.0
-\section{Multiplicity and the Schwartz--Zippel lemma}\label{sec:prelim}
+\section{Multiplicity}\label{sec:prelim}
 
 Let \(\F\) be a field and \(\sigma\) a finite set of variables. Degrees are total
 degrees of formal polynomials in \(\F[x_\sigma]\). For a multi-index
@@ -46,17 +46,12 @@ when both factors are. Part~4 holds because the constant coefficient of
 maps the monomials of degree \(d\) bijectively to the monomials of degree \(d\).
 \end{proof}
 
-The only result we use without proof is the multiplicity Schwartz--Zippel lemma.
-
-\begin{theorem}[Multiplicity Schwartz--Zippel {\cite[Lemma~2.7]{DKSS13}}]\label{thm:dkss}
-Let \(\F\) be a field, \(\sigma\) a nonempty finite set, \(P\in\F[x_\sigma]\) a
-nonzero polynomial and \(S\subseteq\F\) a finite set. Then
-\[
- \sum_{a\in S^\sigma}\mult_a(P)\le\deg P\cdot|S|^{|\sigma|-1}
-\]
-\lean{third-party-claims/MultiplicitySchwartzZippel.lean}.
-\end{theorem}
-
-The Lean proof follows the induction on the number of variables in~\cite{DKSS13}
-(Lemma~8 of the arXiv version). It also proves the scaled form
-\(|S|\sum_a\mult_a(P)\le\deg P\cdot|S|^{|\sigma|}\), which holds with no variables.
+One further fact about orders at the origin is used repeatedly. For
+\(f\) in a polynomial ring over \(\F\), write \(f_d\) for its homogeneous component
+of degree \(d\), and \(\operatorname{ord}f=\mult_{\zero}(f)\) for the least \(d\) with
+\(f_d\ne0\). If \(z_i\) (\(i\in\sigma\)) are elements of a polynomial ring over
+\(\F\) without constant term, then substituting
+\(x_i\mapsto z_i\) does not lower the order: a monomial of degree \(d\) goes to a
+product of \(d\) elements of order at least one. Hence
+\(\mult_a(P)\ge m\) implies \(\operatorname{ord}P(a+z)\ge m\) for every such
+substitution \(z\).

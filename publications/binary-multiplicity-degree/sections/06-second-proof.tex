@@ -1,9 +1,30 @@
 % SPDX-License-Identifier: CC-BY-4.0
-\section{The lower bound}\label{sec:lower}
+\section{A second proof of the value of \texorpdfstring{\(D(n,k)\)}{D(n,k)}}\label{sec:second-proof}
 
-From now on the field is \(\Ft\) unless stated otherwise.
+This section gives the proof of the lower half of Corollary~\ref{cor:main} from
+version~1 of this paper. It does not use Section~\ref{sec:lower}, and it does not
+determine \(\delta(n,k,\ell)\) for individual orders. Its lower bound combines
+the multiplicity Schwartz--Zippel lemma with a one-dimension reduction; the
+upper bound is Theorem~\ref{thm:construction}, or the hyperplane covers for
+\(k\ge2^{n-1}\). The formal proof of Lemma~\ref{lem:minimum} uses this route.
 
 \subsection{The Schwartz--Zippel bound}
+
+The only result used here without proof is the multiplicity Schwartz--Zippel
+lemma.
+
+\begin{theorem}[Multiplicity Schwartz--Zippel {\cite[Lemma~2.7]{DKSS13}}]\label{thm:dkss}
+Let \(\F\) be a field, \(\sigma\) a nonempty finite set, \(P\in\F[x_\sigma]\) a
+nonzero polynomial and \(S\subseteq\F\) a finite set. Then
+\[
+ \sum_{a\in S^\sigma}\mult_a(P)\le\deg P\cdot|S|^{|\sigma|-1}
+\]
+\lean{third-party-claims/MultiplicitySchwartzZippel.lean}.
+\end{theorem}
+
+The Lean proof follows the induction on the number of variables in~\cite{DKSS13}
+(Lemma~8 of the arXiv version). It also proves the scaled form
+\(|S|\sum_a\mult_a(P)\le\deg P\cdot|S|^{|\sigma|}\), which holds with no variables.
 
 \begin{proposition}\label{prop:cover-bound}
 Let \(n\ge1\) and \(k\ge0\). Every nonzero \(P\in\Ft[x_1,\ldots,x_n]\) with
@@ -178,5 +199,55 @@ preserves multiplicities at the relabelled points. Since
 \(k<2^{m-1}\le2^{n+1}\), Theorem~\ref{thm:step} gives a \(k\)-admissible \(S\) in
 \(n\) variables with \(\deg S+1\le\deg P\). The induction hypothesis bounds
 \(\deg S\).
+\end{proof}
+
+\subsection{The value of \texorpdfstring{\(D(n,k)\)}{D(n,k)}}
+
+For \(k\ge2^{n-1}\), version~1 used the hyperplane covers of~\cite{BBDM23} as
+the upper bound, and the formal proof still does.
+
+\begin{theorem}[Hyperplane covers {\cite[Theorem~1.2(a) with \(d=1\), arXiv v1]{BBDM23}}]\label{thm:hyperplane}
+Let \(n\ge1\) and \(k\ge2^{n-1}\), and write \(k=a2^{n-1}+b\) with
+\(0\le b<2^{n-1}\). Then
+\[
+ P=F^a\cdot(x_1^2+x_1)^b
+\]
+is \(k\)-admissible and \(\deg P\le2k-\lfloor k/2^{n-1}\rfloor\)
+\lean{third-party-claims/HyperplaneCoverUpperBound.lean}.
+\end{theorem}
+
+In the language of~\cite{BBDM23}, \(P\) is the product of the linear forms of
+a cover by \(a\) copies of the \(2^n-1\) hyperplanes \(u\cdot x=1\), which avoid
+the origin, and \(b\) copies of the parallel pair \(x_1=0\), \(x_1=1\). Their
+theorem gives the least size of a cover for every \(k\ge2^{n-2}\); we use only
+this upper bound for \(k\ge2^{n-1}\), in the polynomial form above, which is
+what the Lean file proves. It follows from Lemma~\ref{lem:hyperplane-product}:
+the multiplicity at \(a\ne\zero\) is at least \(a2^{n-1}+b=k\), the origin order
+is \(b<k\), and the degree is at most \(a(2^n-1)+2b=2k-a\).
+
+\begin{theorem}[Second proof of the value of \(D(n,k)\)]\label{thm:main-formal}
+For all \(n\ge1\) and \(k\ge1\), \(D(n,k)\) takes the values of
+Corollary~\ref{cor:main}. More precisely:
+\begin{enumerate}
+ \item for \(n\ge\lfloor\log_2k\rfloor+2\), equivalently \(k<2^{n-1}\), every
+ \(k\)-admissible \(P\) has \(\deg P\ge2k+n-2-\lfloor\log_2k\rfloor\);
+ \item for every \(n\ge1\), some \(k\)-admissible \(P\) has
+ \(\deg P\le2k+n-2-\lfloor\log_2k\rfloor\);
+ \item for \(k\ge2^{n-1}\), \(D(n,k)=2k-\lfloor k/2^{n-1}\rfloor\).
+\end{enumerate}
+\lean{claims/BinaryMultiplicityDegreeFormula.lean}\,\lean{claims/BinaryMultiplicityDegreeComplete.lean}
+\end{theorem}
+
+\begin{proof}
+Part~1 is Theorem~\ref{thm:lower}. For \(k\ge1\), \(k<2^{n-1}\) is equivalent to
+\(\lfloor\log_2k\rfloor<n-1\), which is \(n\ge\lfloor\log_2k\rfloor+2\).
+
+For part~2, let \(J=\lfloor\log_2k\rfloor\) and \(\ell=k-2^J<k\), so that
+\(k-\ell-1=2^J-1\). By Proposition~\ref{prop:menezes-polynomial} the polynomial
+\(y_1^\ell g_{2^J}\) is \(k\)-admissible, with degree at most
+\(n+2k-2-s_2(2^J-1)=n+2k-2-J\) by Lemma~\ref{lem:digits}(4).
+
+For part~3, Proposition~\ref{prop:cover-bound} gives the lower bound and
+Theorem~\ref{thm:hyperplane} the upper bound.
 \end{proof}
 

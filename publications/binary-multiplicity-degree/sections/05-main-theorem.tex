@@ -1,32 +1,64 @@
 % SPDX-License-Identifier: CC-BY-4.0
-\section{Proof of the main theorem}\label{sec:main}
+\section{Proof of the main results}\label{sec:main}
 
-\begin{theorem}[The formula below \(2^{n-1}\)]\label{thm:main-formal}
-Let \(k\ge1\).
-\begin{enumerate}
- \item For every \(n\ge\lfloor\log_2k\rfloor+2\), every \(k\)-admissible
- \(P\in\Ft[x_1,\ldots,x_n]\) has \(\deg P\ge2k+n-2-\lfloor\log_2k\rfloor\).
- \item For every \(n\ge1\), some \(k\)-admissible \(P\in\Ft[x_1,\ldots,x_n]\) has
- \(\deg P\le2k+n-2-\lfloor\log_2k\rfloor\).
-\end{enumerate}
-Hence \(D(n,k)=2k+n-2-\lfloor\log_2k\rfloor\) whenever \(n\ge\lfloor\log_2k\rfloor+2\),
-equivalently \(k<2^{n-1}\), and a polynomial of exactly this degree exists
-\lean{claims/BinaryMultiplicityDegreeFormula.lean}.
-\end{theorem}
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Theorem~\ref{thm:construction} gives a polynomial with the required
+multiplicities and degree at most \(\Phi(n,k,\ell)\), and
+Theorem~\ref{thm:per-order-lower} shows that every such polynomial has degree at
+least \(\Phi(n,k,\ell)\). So the constructed polynomial has degree exactly
+\(\Phi(n,k,\ell)\).
+\end{proof}
+
+\begin{lemma}[The minimum over the origin order]\label{lem:minimum}
+For \(n\ge1\) and \(k\ge1\), \(\min_{0\le\ell<k}\Phi(n,k,\ell)\) equals
+\(2k+n-2-\lfloor\log_2k\rfloor\) for \(k<2^{n-1}\), and
+\(2k-\lfloor k/2^{n-1}\rfloor\) for \(k\ge2^{n-1}\)
+\lean{claims/PerOrderMinimum.lean}.
+\end{lemma}
 
 \begin{proof}
-Part~1 is Theorem~\ref{thm:lower}.
+Write \(m=k-\ell-1=q2^n+r\) as before and \(h(m)=2q+s_2(r)\). By
+Lemma~\ref{lem:legendre}, \(\Phi=n+2k-2-h(m)\), so the minimum is
+\(n+2k-2-\max_{0\le m\le k-1}h(m)\). Write \(k-1=Q2^n+R\) with \(0\le R<2^n\).
+Let \(\lambda=\lfloor\log_2(R+1)\rfloor\). The largest digit sum among
+\(0,\ldots,R\) is \(\lambda\): it is attained at \(2^\lambda-1\le R\), and every
+number up to \(R\) is below \(2^{\lambda+1}-1\), so it has at most \(\lambda\)
+binary ones. With \(q=Q\) the best value of \(h\) is \(2Q+\lambda\). With
+\(q\le Q-1\), possible only if \(Q\ge1\), it is at most \(2Q-2+n\), attained at
+\(m=Q2^n-1\).
+\begin{itemize}
+ \item If \(Q=0\), that is \(k\le2^n\), the minimum is
+ \(n+2k-2-\lfloor\log_2k\rfloor\). This is the first case when \(k<2^{n-1}\). For
+ \(2^{n-1}\le k<2^n\) it is \(2k-1\), and for \(k=2^n\) it is \(2k-2\); both equal
+ \(2k-\lfloor k/2^{n-1}\rfloor\).
+ \item If \(Q\ge1\), then \(k=Q2^n+(R+1)\) with \(1\le R+1\le2^n\), and
+ \(\lfloor k/2^{n-1}\rfloor=2Q+\lfloor(R+1)/2^{n-1}\rfloor\). Moreover
+ \(\max(\lambda,n-2)=n-2+\lfloor(R+1)/2^{n-1}\rfloor\) in each of
+ the three ranges \(R+1<2^{n-1}\), \(2^{n-1}\le R+1<2^n\) and \(R+1=2^n\) (for
+ \(n=1\) the first is empty). So the minimum is
+ \(n+2k-2-2Q-(n-2)-\lfloor(R+1)/2^{n-1}\rfloor=2k-\lfloor k/2^{n-1}\rfloor\). \qedhere
+\end{itemize}
+\end{proof}
 
-For part~2, let \(J=\lfloor\log_2k\rfloor\), so \(2^J\le k\), and let \(\ell=k-2^J<k\).
-The polynomial of Theorem~\ref{thm:per-order} is \(k\)-admissible with origin order
-\(\ell\), and its degree is at most
-\[
- n+2k-2-s_2(2^J-1)=n+2k-2-J
-\]
-by Lemma~\ref{lem:digits}(4).
+The Lean proof of Lemma~\ref{lem:minimum} does not formalize this digit
+argument. It derives the minimum from Theorem~\ref{thm:main} and the value of
+\(D(n,k)\) proved in Section~\ref{sec:second-proof}: every \(\Phi(n,k,\ell)\) is
+the degree of a \(k\)-admissible polynomial, and the origin order of a
+\(k\)-admissible polynomial of least degree attains the minimum.
 
-For \(k\ge1\), \(k<2^{n-1}\) is equivalent to \(\lfloor\log_2k\rfloor<n-1\), which is
-\(n\ge\lfloor\log_2k\rfloor+2\).
+\begin{proof}[Proof of Corollary~\ref{cor:main}]
+Since \(D(n,k)=\min_\ell\delta(n,k,\ell)\), Theorem~\ref{thm:main} and
+Lemma~\ref{lem:minimum} give the value. By Proposition~\ref{prop:cover-bound}, or
+directly from the value, every \(k\)-admissible polynomial has degree at least
+\(2k-\lfloor k/2^{n-1}\rfloor\). So a polynomial of exactly this degree exists if
+and only if \(D(n,k)\) equals it. Compare the two in three cases.
+\begin{itemize}
+ \item If \(k\ge2^{n-1}\), they are equal.
+ \item If \(2^{n-2}\le k<2^{n-1}\), then \(\lfloor\log_2k\rfloor=n-2\) and
+ \(\lfloor k/2^{n-1}\rfloor=0\), so both equal \(2k\).
+ \item If \(k<2^{n-2}\), then \(n\ge3\), \(\lfloor\log_2k\rfloor\le n-3\) and
+ \(\lfloor k/2^{n-1}\rfloor=0\), so \(D(n,k)\ge2k+1\). \qedhere
+\end{itemize}
 \end{proof}
 
 \begin{corollary}\label{cor:extended}
@@ -35,75 +67,36 @@ For \(n\ge1\) and \(1\le k<3\cdot2^{n-1}\), \(D(n,k)=2k+n-2-\lfloor\log_2k\rfloo
 \end{corollary}
 
 \begin{proof}
-For \(k<2^{n-1}\) this is Theorem~\ref{thm:main-formal}. The upper bound holds in every
-dimension, so it remains to match it with Proposition~\ref{prop:cover-bound} in two cases.
+For \(k<2^{n-1}\) this is Corollary~\ref{cor:main}. Otherwise compare with
+\(2k-\lfloor k/2^{n-1}\rfloor\).
 \begin{itemize}
  \item If \(2^{n-1}\le k<2^n\), then \(\lfloor\log_2k\rfloor=n-1\) and
- \(\lfloor k/2^{n-1}\rfloor=1\), so both bounds equal \(2k-1\).
+ \(\lfloor k/2^{n-1}\rfloor=1\), so both expressions equal \(2k-1\).
  \item If \(2^n\le k<3\cdot2^{n-1}\), then \(\lfloor\log_2k\rfloor=n\) and
  \(\lfloor k/2^{n-1}\rfloor=2\), so both equal \(2k-2\). \qedhere
 \end{itemize}
 \end{proof}
 
-For \(k\ge2^{n-1}\) the value comes from the hyperplane covers of~\cite{BBDM23}.
-
-\begin{theorem}[Hyperplane covers {\cite[Theorem~1.2(a) with \(d=1\), arXiv v1]{BBDM23}}]\label{thm:hyperplane}
-Let \(n\ge1\) and \(k\ge2^{n-1}\), and write \(k=a2^{n-1}+b\) with
-\(0\le b<2^{n-1}\). Then
-\[
- P=\prod_{u\in\Ft^n\setminus\{\zero\}}(1+u\cdot x)^a\cdot(x_1^2+x_1)^b
-\]
-is \(k\)-admissible and \(\deg P\le2k-\lfloor k/2^{n-1}\rfloor\)
-\lean{third-party-claims/HyperplaneCoverUpperBound.lean}.
-\end{theorem}
-
-In the language of~\cite{BBDM23}, \(P\) is the product of the linear forms of
-a cover by \(a\) copies of the \(2^n-1\) hyperplanes \(u\cdot x=1\), which avoid
-the origin, and \(b\) copies of the parallel pair \(x_1=0\), \(x_1=1\). Their
-theorem gives the least size of a cover for every \(k\ge2^{n-2}\); we use only
-this upper bound for \(k\ge2^{n-1}\), in the polynomial form above, which is
-what the Lean file proves.
-
-\begin{proof}[Proof of Theorem~\ref{thm:main}]
-For \(k<2^{n-1}\) the value is Theorem~\ref{thm:main-formal}. For
-\(k\ge2^{n-1}\), Proposition~\ref{prop:cover-bound} gives the lower bound and
-Theorem~\ref{thm:hyperplane} the upper bound. By
-Proposition~\ref{prop:cover-bound} every admissible polynomial has degree at
-least \(2k-\lfloor k/2^{n-1}\rfloor\), so for the equivalence it remains to
-compare \(D(n,k)\) with this bound in three cases.
-\begin{itemize}
- \item If \(k\ge2^{n-1}\), they are equal by the first part.
- \item If \(2^{n-2}\le k<2^{n-1}\), then \(\lfloor\log_2k\rfloor=n-2\) and
- \(\lfloor k/2^{n-1}\rfloor=0\), so both equal \(2k\).
- \item If \(k<2^{n-2}\), then \(n\ge3\), \(\lfloor\log_2k\rfloor\le n-3\) and
- \(\lfloor k/2^{n-1}\rfloor=0\), so \(D(n,k)\ge2k+1\).
-\end{itemize}
-The upper bound in every dimension is Theorem~\ref{thm:main-formal}(2).
-\end{proof}
-
 At \(k=3\cdot2^{n-1}\) the logarithmic expression is \(2k-2\), while
-\(D(n,k)=2k-3\) by Theorem~\ref{thm:main}.
+\(D(n,k)=2k-3\).
 
 \begin{remark}[Which origin orders are extremal]
-Let \(k<3\cdot2^{n-1}\), so that \(D(n,k)=2k+n-2-\lfloor\log_2k\rfloor\). Theorem~\ref{thm:per-order} gives degree
-\(n+2k-2-s_2(k-\ell-1)\) at origin order \(\ell\). This equals \(D(n,k)\) exactly
-when \(s_2(k-\ell-1)=\lfloor\log_2k\rfloor\), for instance \(\ell=k-2^{\lfloor\log_2k\rfloor}\).
-The 69 per-order minima computed exactly for \(n\le7\) in the
-\href{https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-multiplicity-per-order-formula}{research notebook}
-all equal \(n+2k-2-s_2(k-\ell-1)\), including 15 values with \(n<k-1\). That
+The orders \(\ell\) attaining \(D(n,k)\) are those for which \(k-\ell-1=q2^n+r\)
+maximizes \(2q+s_2(r)\). For \(k\le2^n\), by the proof of
+Lemma~\ref{lem:minimum}, they are the \(\ell\) with
+\(s_2(k-\ell-1)=\lfloor\log_2k\rfloor\), for instance
+\(\ell=k-2^{\lfloor\log_2k\rfloor}\). Exact rank computations of
+\(\delta(n,k,\ell)\) recorded in the
+\href{https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-all-dimension-minimum}{research notebook}
+agree with \(\Phi\): all 696 values for \(n\le5\), \(k\le16\) and for
+\((n,k)=(6,16)\), and an independent brute force for \(n=2\), \(k\le9\). This
 computation is evidence, not part of the formalized result.
 \end{remark}
 
 \subsection*{What does not follow}
 
-\begin{itemize}
- \item \textbf{Per-order minima below \(n=k-1\).} For \(n<k-1\) we do not prove
- that \(n+2k-2-s_2(k-\ell-1)\) is the least degree at an origin order \(\ell\)
- with \(s_2(k-\ell-1)<\lfloor\log_2k\rfloor\). For \(n\ge k-1\) this is part of
- Menezes' theorem~\cite{Men26}.
- \item \textbf{Other fields and grids.} The lower bound uses the binary setting in
- several places: the cancellation of the \(x_0\)-free part in \(Q(0,x')+Q(1,x')\),
- the finite number of linear forms in Lemma~\ref{lem:linear-form}, and \(S=\Ft\) in
- Proposition~\ref{prop:cover-bound}. The upper bound uses characteristic two in the
- telescoping identity. We make no claim about other fields or grids.
-\end{itemize}
+The proofs use the binary setting throughout: the expansion in
+\(x^\varepsilon(x^2+x)^e\) with squarefree \(x^\varepsilon\), the additivity of
+\(Y\mapsto Y^{2^s}\), the two shifts \(\delta_i\in\{0,1\}\) in
+Lemma~\ref{lem:congruence}, and the telescoping identity. We make no claim about
+other fields or grids.

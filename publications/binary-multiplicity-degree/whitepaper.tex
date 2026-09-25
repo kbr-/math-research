@@ -10,7 +10,7 @@
 \usepackage{booktabs,longtable,array}
 \usepackage[colorlinks=true,allcolors=blue,bookmarksnumbered=true]{hyperref}
 \hypersetup{
-  pdftitle={The minimum degree of binary polynomials vanishing to high order off the origin},
+  pdftitle={Binary polynomials vanishing to high order off the origin: the minimum degree at every origin order},
   pdfauthor={Kamil Braun},
   pdfsubject={Research preprint; not externally peer reviewed},
   pdfkeywords={polynomial method, Hasse multiplicity, hypercube, finite fields, Lean}
@@ -24,7 +24,7 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \numberwithin{equation}{section}
-\newcommand{\leancommit}{8651228097422970d147972353bbf9a1c6ed6938}
+\newcommand{\leancommit}{4f43ed20ae088e3a27ceae94bca7f0ec92d7c7b3}
 \newcommand{\leanref}[2]{\href{https://github.com/kbr-/math-research/blob/\leancommit/formalization/#1}{#2}}
 \newcommand{\lean}[1]{\textnormal{\small\leanref{#1}{[Lean]}}}
 \newcommand{\F}{\mathbb F}
@@ -33,49 +33,54 @@
 \DeclareMathOperator{\mult}{mult}
 \setlength{\emergencystretch}{2em}
 \setlength{\parskip}{0.15em}
-\title{The minimum degree of binary polynomials\\
-vanishing to high order off the origin}
+\title{Binary polynomials vanishing to high order off the origin:\\
+the minimum degree at every origin order}
 \author{Kamil Braun\\
 \href{mailto:kamilgbraun@gmail.com}{\texttt{kamilgbraun@gmail.com}}\\[0.6em]
 \small With substantial assistance from Claude and GPT models.\\
 \small More details in Section~\ref{sec:model-assistance}.}
-\date{Preprint, version 1\\24 September 2026}
+\date{Preprint, version 2\\25 September 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
-Let \(D(n,k)\) be the least degree of a polynomial
-\(P\in\Ft[x_1,\ldots,x_n]\) that vanishes with (Hasse) multiplicity at least
-\(k\) at every nonzero point of \(\Ft^n\) and with multiplicity less than \(k\)
-at the origin. The multiplicity Schwartz--Zippel lemma of Dvir, Kopparty,
-Saraf and Sudan gives \(D(n,k)\ge2k-\lfloor k/2^{n-1}\rfloor\), a bound asked
-for by Bishnoi, Boyadzhiyska, Das and M\'esz\'aros, and their hyperplane covers
-attain it for \(k\ge2^{n-2}\). We determine \(D(n,k)\) in the remaining range:
-for \(1\le k<2^{n-1}\),
+For \(0\le\ell<k\), let \(\delta(n,k,\ell)\) be the least degree of a polynomial
+\(P\in\Ft[x_1,\ldots,x_n]\) that vanishes with (Hasse) multiplicity at least \(k\)
+at every nonzero point of \(\Ft^n\) and with multiplicity exactly \(\ell\) at the
+origin. We prove that for all \(n\ge1\),
 \[
- D(n,k)=2k+n-2-\lfloor\log_2k\rfloor .
+ \delta(n,k,\ell)=n+2\ell+\sum_{j=0}^{n-1}\Bigl\lfloor\frac{k-\ell-1}{2^j}\Bigr\rfloor .
 \]
-So \(D(n,k)\) is known for all \(n\) and \(k\). The Schwartz--Zippel bound is
-attained if and only if \(k\ge2^{n-2}\), and below \(2^{n-2}\) each further
-dimension costs exactly one degree. The lower bound combines the
-multiplicity Schwartz--Zippel lemma with a one-dimension reduction that
-lowers the degree by one while keeping the origin order. The upper bound is a
-characteristic-two specialization of a Catalan truncation of Menezes, who
-determined the minimum for \(n\ge k-1\); a telescoping identity makes the
-construction work in every dimension. The main theorem and all its
-dependencies, including the multiplicity Schwartz--Zippel lemma and the
-hyperplane covers, are
-formalized in Lean~4, and every statement links to its formal proof.
+Menezes determined \(\delta\) over every field for \(n\ge k-1\); in
+characteristic two his value is \(n+2k-2-s_2(k-\ell-1)\), which our formula
+recovers whenever \(k-\ell-1<2^n\). When \(k-\ell-1\ge2^n\) the value is smaller: each
+block of \(2^n\) in \(k-\ell-1\) is paid for by the square of the product of the
+\(2^n-1\) affine hyperplanes that avoid the origin. The lower bound expands a
+polynomial in the basis \(x^\varepsilon(x^2+x)^e\), inverts \(x^2+x\) locally by
+an additive power series, and turns the multiplicity conditions into additive
+forms that vanish on the span of \(x_1^2+x_1,\ldots,x_n^2+x_n\); reducing
+modulo the vanishing polynomial of this span exposes the lowest part of the
+polynomial at the origin. Minimizing over \(\ell\) gives the least degree
+\(D(n,k)\) of a polynomial with multiplicity at least \(k\) off the origin and
+less than \(k\) at the origin: \(D(n,k)=2k+n-2-\lfloor\log_2k\rfloor\) for
+\(k<2^{n-1}\), and the multiplicity Schwartz--Zippel bound
+\(2k-\lfloor k/2^{n-1}\rfloor\), asked for by Bishnoi, Boyadzhiyska, Das and
+M\'esz\'aros, for \(k\ge2^{n-1}\). That bound is attained if and only if
+\(k\ge2^{n-2}\). We also give a second proof of \(D(n,k)\), from the
+Schwartz--Zippel lemma and a one-dimension reduction. All results and their
+dependencies are formalized in Lean~4, and every statement links to its
+formal proof.
 \end{abstract}
 \clearpage
 \begingroup\small\tableofcontents\endgroup
 \newpage
 \input{sections/01-introduction}
 \input{sections/02-preliminaries}
-\input{sections/03-lower-bound}
-\input{sections/04-upper-bound}
+\input{sections/03-upper-bound}
+\input{sections/04-lower-bound}
 \input{sections/05-main-theorem}
-\input{sections/06-framework}
+\input{sections/06-second-proof}
+\input{sections/07-framework}
 \appendix
-\input{sections/07-verification}
+\input{sections/08-verification}
 \input{references}
 \end{document}

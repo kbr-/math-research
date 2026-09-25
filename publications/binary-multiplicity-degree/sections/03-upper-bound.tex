@@ -1,6 +1,8 @@
 % SPDX-License-Identifier: CC-BY-4.0
 \section{The upper bound}\label{sec:upper}
 
+From now on the field is \(\Ft\) unless stated otherwise.
+
 \subsection{Binary digit sums}
 
 Let \(s_2(m)\) be the sum of the binary digits of \(m\ge0\).
@@ -30,6 +32,28 @@ All four parts use the recursion \(s_2(m)=(m\bmod2)+s_2(\lfloor m/2\rfloor)\).
  second summand \(1\).
  \item \(2^{J+1}-1\) is odd with \(\lfloor(2^{J+1}-1)/2\rfloor=2^J-1\). \qedhere
 \end{enumerate}
+\end{proof}
+
+\begin{lemma}[Legendre form]\label{lem:legendre}
+Let \(n\ge0\), \(q\ge0\) and \(0\le r<2^n\), and put \(m=q2^n+r\). Then
+\[
+ \sum_{j=0}^{n-1}\Bigl\lfloor\frac m{2^j}\Bigr\rfloor+2q+s_2(r)=2m .
+\]
+Hence, for \(n\ge1\), \(0\le\ell<k\) and \(k-\ell-1=q2^n+r\) with \(0\le r<2^n\),
+\(\Phi(n,k,\ell)=n+2k-2-2q-s_2(r)\), and \(\Phi(n,k,\ell)=n+2k-2-s_2(k-\ell-1)\) when
+\(k-\ell-1<2^n\). Moreover \(m\) is the sum of \(h=2q+s_2(r)\) powers of two, each
+at most \(2^{n-1}\) when \(n\ge1\): \(2q\) copies of \(2^{n-1}\) and the binary
+digits of \(r\) \lean{claims/PerOrderLegendre.lean}.
+\end{lemma}
+
+\begin{proof}
+For \(j<n\), \(\lfloor m/2^j\rfloor=q2^{n-j}+\lfloor r/2^j\rfloor\), and
+\(\sum_{j<n}q2^{n-j}=2q2^n-2q\). Since \(r<2^n\), \(\sum_{j<n}\lfloor r/2^j\rfloor
+=\sum_{j\ge0}\lfloor r/2^j\rfloor\), which is \(2r-s_2(r)\): for \(r=2r'+b\) with
+\(b\in\{0,1\}\) the sum is \(r+(2r'-s_2(r'))=2r-s_2(r)\) by induction. Adding gives
+\(2m-2q-s_2(r)\). The formula for \(\Phi\) follows with \(m=k-\ell-1\), since
+\(n+2\ell+2m=n+2k-2\). For the decomposition, \(2q\cdot2^{n-1}=q2^n\), and the
+binary digits of \(r<2^n\) are powers \(2^j\) with \(j\le n-1\).
 \end{proof}
 
 \subsection{The truncated product}
@@ -111,34 +135,81 @@ Lemma~\ref{lem:digits}(1), \(|S|\ge s_2(w)\). By Lemma~\ref{lem:digits}(3),
 \(2w-s_2(w)\le2(s-1)-s_2(s-1)\).
 \end{proof}
 
-\subsection{Prescribing the origin order}
+\subsection{The hyperplane product}
 
-\begin{theorem}\label{thm:per-order}
-Let \(\sigma\) be finite with \(|\sigma|=n\ge1\), fix \(x_1\in\sigma\), and let
-\(0\le\ell<k\). The polynomial \(P=y_1^{\ell}\,g_{k-\ell}\) satisfies:
+Let \(F=\prod_{u\in\Ft^n\setminus\{\zero\}}(1+u\cdot x)\), where
+\(u\cdot x=\sum_iu_ix_i\).
+
+\begin{lemma}\label{lem:hyperplane-product}
+For \(n\ge1\): \(\mult_a(F)\ge2^{n-1}\) for every nonzero \(a\in\Ft^n\),
+\(F(\zero)=1\), and \(\deg F\le2^n-1\)
+\lean{claims/PerOrderUpperBound.lean}.
+\end{lemma}
+
+\begin{proof}
+Fix \(a\ne\zero\) and \(i\) with \(a_i=1\). Flipping \(u_i\) is an involution of
+\(\Ft^n\) that changes \(u\cdot a\) by one, so exactly \(2^{n-1}\) vectors \(u\)
+satisfy \(u\cdot a=1\). All of them are nonzero, so they index factors of \(F\)
+that vanish at \(a\). Lemma~\ref{lem:mult-basic}(3,4) gives the first claim.
+Each factor takes the value \(1\) at \(\zero\) and has degree at most one.
+\end{proof}
+
+These are the facts behind the hyperplane covers of~\cite{BBDM23}
+(Theorem~\ref{thm:hyperplane}).
+
+\subsection{The construction}
+
+\begin{theorem}\label{thm:construction}
+Let \(\sigma\) be finite with \(|\sigma|=n\ge1\), fix \(x_1\in\sigma\), let
+\(0\le\ell<k\), and write \(k-\ell-1=q2^n+r\) with \(0\le r<2^n\). The polynomial
+\[
+ P=y_1^{\ell}\,F^{2q}\,g_{r+1}
+\]
+satisfies:
 \begin{enumerate}
  \item \(\mult_a(P)\ge k\) for every nonzero \(a\);
  \item \(\mult_{\zero}(P)=\ell\);
- \item \(\deg P\le n+2k-2-s_2(k-\ell-1)\).
+ \item \(\deg P\le\Phi(n,k,\ell)\).
 \end{enumerate}
-In particular, the least degree of a polynomial with multiplicity at least \(k\)
-off the origin and origin order exactly \(\ell\) is at most
-\(n+2k-2-s_2(k-\ell-1)\), in every dimension \(n\ge1\)
-\lean{claims/PerOrderConstruction.lean}.
+Hence \(\delta(n,k,\ell)\le\Phi(n,k,\ell)\)
+\lean{claims/PerOrderUpperBound.lean}.
 \end{theorem}
 
 \begin{proof}
 \begin{enumerate}
- \item \(\mult_a(y_1^\ell)\ge\ell\) and \(\mult_a(g_{k-\ell})\ge k-\ell\), so
- Lemma~\ref{lem:mult-basic}(3) gives the bound.
+ \item Since \(u^2+u=0\) on \(\Ft\), \(y_1\) vanishes at every point, so
+ \(\mult_a(y_1^\ell)\ge\ell\). With Lemma~\ref{lem:hyperplane-product},
+ Theorem~\ref{thm:truncated-product}(1) and Lemma~\ref{lem:mult-basic}(3), at
+ \(a\ne\zero\) we get
+ \(\mult_a(P)\ge\ell+2q\cdot2^{n-1}+(r+1)=\ell+(k-\ell-1)+1=k\).
  \item \(y_1\) has origin order exactly one: its coefficient of \(x_1\) is \(1\).
- Also \(g_{k-\ell}(\zero)=1\) has origin order zero. Multiplicities add over
- \(\Ft\) (Lemma~\ref{lem:mult-basic}(3)).
- \item \(\deg y_1^\ell\le2\ell\). Add the bound of
- Theorem~\ref{thm:truncated-product}(3) with \(s=k-\ell\ge1\). \qedhere
+ Also \(F(\zero)=g_{r+1}(\zero)=1\), so these factors have origin order zero.
+ Multiplicities add over \(\Ft\) (Lemma~\ref{lem:mult-basic}(3)).
+ \item \(\deg y_1^\ell\le2\ell\), \(\deg F^{2q}\le2q(2^n-1)\), and
+ \(\deg g_{r+1}\le n+2r-s_2(r)\) by Theorem~\ref{thm:truncated-product}(3). The
+ sum is \(n+2\ell+2(q2^n+r)-2q-s_2(r)=n+2k-2-2q-s_2(r)\), which is
+ \(\Phi(n,k,\ell)\) by Lemma~\ref{lem:legendre}. \qedhere
 \end{enumerate}
 \end{proof}
 
-Menezes proves this degree is optimal when \(n\ge k-1\) \cite[Corollary~1.3]{Men26}.
-For \(n<k-1\) we prove optimality only for the orders that attain \(D(n,k)\)
-(Section~\ref{sec:main}).
+For \(k-\ell-1<2^n\) we have \(q=0\), and \(P=y_1^\ell g_{k-\ell}\) is Menezes'
+polynomial over \(\Ft\). It works in every dimension, with the digit-sum bound,
+also when \(k-\ell-1\ge2^n\), where Theorem~\ref{thm:construction} does better.
+
+\begin{proposition}\label{prop:menezes-polynomial}
+Let \(|\sigma|=n\ge1\), \(x_1\in\sigma\) and \(0\le\ell<k\). Then
+\(P=y_1^\ell g_{k-\ell}\) has \(\mult_a(P)\ge k\) for every nonzero \(a\),
+\(\mult_{\zero}(P)=\ell\), and \(\deg P\le n+2k-2-s_2(k-\ell-1)\)
+\lean{claims/PerOrderConstruction.lean}.
+\end{proposition}
+
+\begin{proof}
+As in the proof of Theorem~\ref{thm:construction}, with \(g_{k-\ell}\) in place of
+\(F^{2q}g_{r+1}\): the multiplicity off the origin is at least \(\ell+(k-\ell)\),
+the origin order is \(\ell\), and the degree is at most
+\(2\ell+n+2(k-\ell-1)-s_2(k-\ell-1)\) by Theorem~\ref{thm:truncated-product}(3).
+\end{proof}
+
+Menezes proves the degree \(n+2k-2-s_2(k-\ell-1)\) optimal when \(n\ge k-1\)
+\cite[Corollary~1.3]{Men26}. Section~\ref{sec:lower} proves
+Theorem~\ref{thm:construction} optimal in every dimension.

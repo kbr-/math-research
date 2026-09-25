@@ -12,18 +12,23 @@ dated entries record the exact computations, the failed routes and the reviews.
  \item \textbf{Earlier upper bound.} Until the literature search found
  Menezes' construction, the upper bound was proved only for \(k\le31\), by
  explicit symmetric factors found by a solver and checked independently.
- \item \textbf{Checks of the construction.} The construction of
- Theorem~\ref{thm:per-order} was checked by exact multiplicity computation in
- 417 cases with \(k\le12\) and \(n\le7\), 305 of them below Menezes' range
- \(n\ge k-1\).
- \item \textbf{Review.} The informal proofs of the step, the lower bound and the
- construction were checked by fresh-context reviewers before being recorded.
- \item \textbf{Formalization.} The whole chain of Theorem~\ref{thm:main} was
- then formalized. The Lean proofs follow the arguments given here.
+ \item \textbf{Checks of the construction.} The polynomial of
+ Proposition~\ref{prop:menezes-polynomial} was checked by exact multiplicity
+ computation in 417 cases with \(k\le12\) and \(n\le7\), 305 of them below
+ Menezes' range \(n\ge k-1\).
+ \item \textbf{Per-order values.} Exact computations of \(\delta(n,k,\ell)\) for
+ \(n\le6\) suggested the formula \(\Phi\), including its change of form at
+ \(k-\ell-1\ge2^n\), before it was proved.
+ \item \textbf{Review.} The informal proofs were checked by fresh-context
+ reviewers before being recorded.
+ \item \textbf{Formalization.} Theorem~\ref{thm:main}, Corollary~\ref{cor:main}
+ and the second proof were then formalized. The Lean proofs follow the
+ arguments given here, with the differences noted in the text and in
+ Appendix~\ref{sec:verification}.
 \end{itemize}
-The one-dimension step, the truncated product and the Schwartz--Zippel lemma
-use generalized forms, such as every \(n\ge1\), every \(s\) and every field; this
-paper states them in those forms.
+Several lemmas are stated in generalized forms, such as every \(n\ge1\), every
+\(s\), every field or every integral domain and finite set; this paper states
+them in those forms.
 
 \subsection{Noemesis}
 
@@ -48,11 +53,11 @@ carrying [Lean] links.
  was drafted with GPT-6 Astra in the Codex agent.
  \item \textbf{This paper.} The rest of the mathematics was produced by Claude
  Opus 5.5 in Claude Code, working inside the framework above under the
- author's direction: the exact computations, the formula, the one-dimension
- step, the literature search that found~\cite{Men26}, the characteristic-two
- proof of the construction, the complete Lean formalization, and the draft of
- this paper. Fresh-context Claude Opus reviewers checked the informal
- arguments.
+ author's direction: the exact computations, the formulas, the per-order lower
+ bound, the one-dimension step, the literature search that found~\cite{Men26},
+ the characteristic-two proof of the construction, the complete Lean
+ formalization, and the draft of this paper. Fresh-context Claude Opus
+ reviewers checked the informal arguments.
  \item \textbf{The author.} The author chose the problem, directed the
  investigation and designed the research framework.
 \end{itemize}
@@ -60,7 +65,9 @@ The paper has not been externally peer reviewed. Formal verification covers
 the statements with [Lean] links, under the definitions in the linked files.
 It does not cover the prose or the comparison with the literature.
 
-The construction of Section~\ref{sec:upper} is due to Menezes~\cite{Men26}, and
+The truncated product of Section~\ref{sec:upper} is due to
+Menezes~\cite{Men26}, the hyperplane product to Bishnoi, Boyadzhiyska, Das and
+M\'esz\'aros~\cite{BBDM23}, the grid-vanishing lemma to Alon~\cite{Alo99}, and
 the multiplicity Schwartz--Zippel lemma to Dvir, Kopparty, Saraf and
 Sudan~\cite{DKSS13}. Original manuscript material is distributed under the
 \href{https://creativecommons.org/licenses/by/4.0/}{Creative Commons Attribution
