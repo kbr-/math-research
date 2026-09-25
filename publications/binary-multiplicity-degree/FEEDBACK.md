@@ -226,11 +226,15 @@ case analysis in Lemma 5.1. Numbers are those of the version it read.
 - [ ] Move Lean-motivated remarks out of the mathematics to Appendix B (R2-4): the Lean encoding
   of mult after Definition 2.1; the remark on t < k after Lemma 4.5; "Mathlib proves this lemma"
   after Lemma 4.6; the V = ∅ case in the proof of Lemma 4.7, which the argument never uses.
-- [ ] The result may hold over every field of characteristic 2 (R2-5). The expansion and the
+- [x] The result may hold over every field of characteristic 2 (R2-5). The expansion and the
   congruence use only shifts in {0,1}ⁿ, the forms need only Frobenius additivity, V stays the
   F₂-span in an integral domain, the construction has F₂ coefficients, and multiplicity does not
   change under field extension. State it, or say why not.
   - Note: a stronger theorem if true; it needs a written proof and a Lean generalization first.
+  - Applied: proved by a descent to F₂ (an additive map R → F₂ applied to the coefficients), for
+    every commutative ring of characteristic two, and verified in Lean (PerOrderCharTwo.lean,
+    commit 7fc6175b). The paper states it as Lemma 5.4 and Theorem 5.5, and the abstract and
+    introduction mention it.
 - [ ] Lemma 3.5 (Catalan parity) is used only for the comparison with Menezes' truncation
   (R2-6). Demote it to a remark with its citations, or say that it serves only that comparison.
   Explain the restriction "for s ≥ 2" (Menezes' own range), and define v₂ and C_a.

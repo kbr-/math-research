@@ -81,12 +81,64 @@ maximizes \(2q+s_2(r)\). For \(k\le2^n\) they are the \(\ell\) with
 \(\ell=k-2^{\lfloor\log_2k\rfloor}\) \lean{claims/PerOrderMinimumDirect.lean}.
 \end{remark}
 
+\subsection*{Fields of characteristic two}
+
+The values of Theorem~\ref{thm:main} and Corollary~\ref{cor:main} hold over every
+field of characteristic two, by a descent to \(\Ft\). Definition~\ref{def:mult}
+makes sense over any commutative ring, and the descent works in that generality. For a commutative ring \(R\) of characteristic two,
+\(\Ft\subseteq R\), and for an additive map \(\varphi\colon R\to\Ft\) and
+\(P\in R[x_\sigma]\) let \(P^\varphi\in\Ft[x_\sigma]\) be obtained by applying
+\(\varphi\) to every coefficient.
+
+\begin{lemma}[Descent]\label{lem:descent}
+Let \(R\) be a commutative ring of characteristic two, \(\varphi\colon R\to\Ft\)
+additive, \(P\in R[x_\sigma]\) and \(a\in\Ft^\sigma\). Every coefficient of
+\(P^\varphi(a+z)\) is the image under \(\varphi\) of the corresponding coefficient
+of \(P(a+z)\), and \(\deg P^\varphi\le\deg P\)
+\lean{claims/PerOrderCharTwo.lean}.
+\end{lemma}
+
+\begin{proof}
+Write \(P=\sum_uc_ux^u\). Since \(a\) has entries in \(\Ft\), each \((a+z)^u\) has
+coefficients \(t_{u,\gamma}\in\Ft\), and the coefficient of \(z^\gamma\) in
+\(P(a+z)\) is \(\sum_uc_ut_{u,\gamma}\). For \(t\in\{0,1\}\),
+\(\varphi(ct)=t\,\varphi(c)\), so \(\varphi\) maps this coefficient to
+\(\sum_u\varphi(c_u)t_{u,\gamma}\), the coefficient of \(z^\gamma\) in
+\(P^\varphi(a+z)\). A monomial with coefficient zero in \(P\) has coefficient
+\(\varphi(0)=0\) in \(P^\varphi\), so the degree does not increase.
+\end{proof}
+
+\begin{theorem}[Every field of characteristic two]\label{thm:char-two}
+Let \(R\) be a field of characteristic two, or more generally a commutative ring
+of characteristic two, \(n\ge1\) and \(0\le\ell<k\). The least degree of
+\(P\in R[x_1,\ldots,x_n]\) with \(\mult_a(P)\ge k\) for every
+\(a\in\{0,1\}^n\setminus\{\zero\}\) and \(\mult_{\zero}(P)=\ell\) is
+\(\Phi(n,k,\ell)\). For \(k\ge1\), the least degree of such a \(P\) with
+\(\mult_{\zero}(P)\le k-1\) is the value \(D(n,k)\) of Corollary~\ref{cor:main}
+\lean{claims/PerOrderCharTwo.lean}.
+\end{theorem}
+
+\begin{proof}
+The polynomial of Theorem~\ref{thm:construction}, read in \(R[x]\), has the same
+Hasse coefficients at the points of \(\{0,1\}^n\) and the same degree, because
+\(\Ft\to R\) is injective; so the value \(\Phi\) is attained. Conversely, let \(P\)
+have multiplicity at least \(k\) at the nonzero points and origin order \(\ell\).
+Then \(P\ne0\), and some coefficient \(c\) of \(P(z)\) of degree \(\ell\) is
+nonzero. As an \(\Ft\)-vector space \(R\) has an additive map \(\varphi\colon R\to\Ft\)
+with \(\varphi(c)\ne0\). By Lemma~\ref{lem:descent}, \(P^\varphi\) has multiplicity
+at least \(k\) at the nonzero points, its coefficients of degree below \(\ell\) at
+the origin vanish, and its coefficient at the monomial of \(c\) is
+\(\varphi(c)\ne0\); so \(\mult_{\zero}(P^\varphi)=\ell\). By Theorem~\ref{thm:main},
+\(\deg P\ge\deg P^\varphi\ge\Phi(n,k,\ell)\). The statement about \(D(n,k)\) follows
+by minimizing over \(\ell<k\) with Lemma~\ref{lem:minimum}.
+\end{proof}
+
 \begin{remark}[Other fields and grids]\label{rem:open}
-The proofs use the binary setting throughout: the expansion in
-\(x^\varepsilon(x^2+x)^e\) with squarefree \(x^\varepsilon\), the additivity of
-\(Y\mapsto Y^{2^j}\), the two shifts \(\gamma_i\in\{0,1\}\) in
-Lemma~\ref{lem:congruence}, and the telescoping identity. The natural next
-questions are the least degree at every origin order over other fields below
-Menezes' range \(n\ge k-1\), and the analogue on grids other than
-\(\{0,1\}^n\).
+The proofs of Sections~\ref{sec:upper} and~\ref{sec:lower} use characteristic two
+throughout: the expansion in \(x^\varepsilon(x^2+x)^e\) with squarefree
+\(x^\varepsilon\), the additivity of \(Y\mapsto Y^{2^j}\), the two shifts
+\(\gamma_i\in\{0,1\}\) in Lemma~\ref{lem:congruence}, and the telescoping identity.
+The natural next questions are the least degree at every origin order over
+fields of odd characteristic and characteristic zero below Menezes' range
+\(n\ge k-1\), and the analogue on grids other than \(\{0,1\}^n\).
 \end{remark}
