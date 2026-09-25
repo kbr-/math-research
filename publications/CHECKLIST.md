@@ -49,9 +49,22 @@ explicit author decisions unless the author changes them.
 - [ ] **Qualify novelty honestly.** Distinguish established prior work from a
   potentially new formulation or proof. A bounded search with no match does not
   establish priority. Attribute reviewer opinions as opinions, not literature facts.
-- [ ] **Check the relevant recent work.** Give the actual scope and date of any
-  literature refresh. Do not carry forward a stale date or imply an exhaustive
-  review. Use a comparison table only if verified rows improve on the prose.
+- [ ] **Search for the result itself before writing the related-work section.** A
+  keyword search alone does not satisfy this item. For every revision that changes a
+  headline, run it afresh:
+  - list the works whose results the paper extends, uses or answers, and read the
+    works that cite each of them (Semantic Scholar, OpenAlex or Google Scholar),
+    reading in full text every citing work that could bear on the claim;
+  - read the closest prior work in full, not only its abstract and main theorem.
+    Its remarks, examples and open-problem sections often settle a special case of
+    the claim or name its range as open;
+  - check the special and boundary cases of the claim (smallest parameters, one
+    variable, the extreme order) against that literature, and credit any case already
+    known;
+  - record the date, the sources, the citation lists and the works read in the
+    paper's review file, and state the search's scope and date in the paper, without
+    implying an exhaustive review.
+  Use a comparison table only if verified rows improve on the prose.
 
 ## 3. Exposition for human readers
 

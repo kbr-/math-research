@@ -78,17 +78,27 @@ its corrections are in [REVIEW-v2.md](REVIEW-v2.md).
   — **Applied.** The comparison with the reals now states Sauermann–Wigderson's range
   n ≥ 2k − 3 and compares per origin order. The Menezes comparison states his range and why
   it does not reach n < k − 1.
+  **Correction (25 September 2026):** Menezes' Section 8 does reach n = 1, which the first
+  pass missed because it read only his statements. Huang–Wang–Wang's real range n ≥ k − 1 was
+  also missing. Both are now in the text.
 - [x] **Qualify novelty honestly.** Distinguish established prior work from a
   potentially new formulation or proof. A bounded search with no match does not
   establish priority. Attribute reviewer opinions as opinions, not literature facts.
   — **Applied.** The ℓ = k − 1 case is now credited to Sauermann–Wigderson. The search caveat
   is kept.
-- [x] **Check the relevant recent work.** Give the actual scope and date of any
-  literature refresh. Do not carry forward a stale date or imply an exhaustive
-  review. Use a comparison table only if verified rows improve on the prose.
-  — **Applied.** The web searches are now dated (24 September 2026), and the Menezes version
-  check is dated (25 September 2026). No new search was run for version 2; this is stated
-  implicitly by the date. No comparison table.
+- [x] **Search for the result itself before writing the related-work section.** (The shared
+  item was strengthened on 25 September 2026 after this paper exposed the gap.)
+  — **First pass insufficient, then applied.** The first pass ticked the weaker earlier item on
+  two keyword searches: "no new search was run for version 2", and Menezes was read in
+  statements only. The novelty check of 25 September 2026
+  ([REVIEW-v2.md](REVIEW-v2.md#novelty-check-25-september-2026)) read:
+  - the Semantic Scholar citation lists of Sauermann–Wigderson (18), Bishnoi et al. (9) and
+    Menezes (none), and in full text every citing work that could bear on the claim;
+  - Menezes' Section 8, which records n = 1 and names smaller dimensions as open.
+
+  It found that case, and Huang–Wang–Wang's extension of the real range to n ≥ k − 1. Both
+  are now credited, the new range is stated as 2 ≤ n < k − 1, and the paper states the
+  search's scope and date.
 
 ## 3. Exposition for human readers
 
