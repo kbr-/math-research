@@ -31,10 +31,10 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 1. By the <a href="#cube-line-restriction-bound">line-restriction bound</a> the law follows from the <a href="#cube-double-point-sharp-order">sharp pair</a>: every solution vanishes to order \(\mu=\sum\lfloor p_i^2/2\rfloor\) at the double points, and \(b_{\min}(E_L)=B-\mu\) on a line in general position through one. Both hold in every computed case.</p>
+<p>Route item: cube-odd-characteristic; open statement 1. By the <a href="#cube-line-restriction-bound">line-restriction bound</a> the law follows from the <a href="#cube-double-point-sharp-order">sharp pair</a>: vanishing order \(\mu=\sum\lfloor p_i^2/2\rfloor\) at the double points, and \(b_{\min}(E_L)=B-\mu\) on a line through one. The per-part value \(\lfloor p^2/2\rfloor\) is explained by the <a href="#cube-boundary-double-point-cone">Tate degeneration</a> with \(q\sim s^2t^2\), which predicted the exact tangent cones at \(p=4,5\).</p>
 <ul>
-<li><strong>One part first.</strong> Prove that the boundary generator \(\Delta_{3,p}/g_{3,p}\) (the case \(\rho=1\), \(d=p\)) vanishes to order exactly \(\lfloor p^2/2\rfloor\) at a double point. Its zero set is the \(p\)-division locus of \(2c_1\), so this is a question about how that locus passes through the degenerate fibre at the double point. Then show that the vanishing orders add over the parts of the product witnesses.</li>
-<li><strong>Then the splitting type</strong> \(\beta=\sum(\lceil p_i^2/2\rceil-1)\), from the family of elliptic curves over a line through the double point.</li>
+<li><strong>Make the Tate picture rigorous at one part.</strong> Over \(F[[s,t]]\), construct the uniformization of \(v^2=x(x-y_1)(x-y_2)(x-y_3)\) near \((1{:}1{:}0)\), and identify \(F_p\) with the reduced \(p\)-division locus of \(c\).</li>
+<li><strong>Then all solutions.</strong> Describe the local solution module at \(P\) through sections of \(O(\rho p_0-dc)\) on the Tate curve (residue duality), and read off the vanishing order \(\mu\).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions.</p>
 </section>
@@ -3919,6 +3919,53 @@ The audit also found that the new modules stated the facts about \(D\) for the c
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 25.76 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2 min 25.76 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.56 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-cube-boundary-tate" data-kind="research" data-route="cube-odd-characteristic" data-claims="prop:cube-boundary-double-point-cone">
+<h3>25 September 2026 — Why ⌊p²/2⌋: the division locus at a double point, through the Tate degeneration</h3>
+<p class="entry-meta">Conditional result: the boundary generator's tangent cone at a double point, confirmed at d = 4, 5. Cycle bmd-r47-one-part-order. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-double-point-sharp-order">sharp pair</a> rests on one number per part: the boundary generator \(F_p=\Delta_{3,p}/g_{3,p}\) (\(\rho=1\), \(d=p\)) should vanish to order \(\lfloor p^2/2\rfloor\) at a double point. Where does \(\lfloor p^2/2\rfloor\) come from? The test ends with a derivation that predicts more than the number, namely the tangent cone, and a check of that prediction.</p>
+<h4>The curve as a quartic</h4>
+<p>Put \(x=-1/(4T)\). The branch points \(T=-1/(4y_i)\) and \(T=\infty\) of the <a href="#cube-dimension-three-law">curve \(\bar C_y\)</a> become \(x=y_1,y_2,y_3\) and \(x=0\), and \(p_0\) lies over \(x=\infty\). A \((\mathbb Z/2)^3\)-cover of \(\mathbb P^1\) branched at four points is the multiplication-by-2 cover of the double cover. So \(\bar C_y\) is isomorphic to the elliptic curve \(E_y:v^2=x(x-y_1)(x-y_2)(x-y_3)\), with \(p_0\) at a point \(\infty_+\) at infinity. The four points of \(H_\infty\) form a coset \(R+E[2]\), where \(R\) is a halving of the ramification point \(Q_0=(0,0)\). So \(c=[H_\infty-4p_0]\) is \(2(Q_0-\infty_+)\) up to this identification, the recorded point \(2c_1\). This also explains the symmetry: the affine maps of \(x\) permute \(\{0,y_1,y_2,y_3\}\), and the Möbius transport is the translation \(x\mapsto x-y_2\).</p>
+<h4 id="cube-boundary-double-point-cone">The division locus at a double point</h4>
+<p>At \(P=(1{:}1{:}0)\), with \(s=y_3\) and \(t=y_1-y_2\), the pairs \(\{0,y_3\}\) and \(\{y_1,y_2\}\) of branch points collide. The quartic becomes \(v^2=x^2(x-1)^2\), two rational components meeting in two nodes (type \(I_2\)). Along an arc with \(v(s)=a\), \(v(t)=b\), the nodes have thicknesses \(2a\) and \(2b\), since \(v^2=x^2-s^2\) near the first. So the Tate parameter has \(v(q)=2a+2b\), and heuristically \(q=s^2t^2\cdot(\text{unit})\).</p>
+<ul>
+<li>\(\infty_+\) lies on one component.</li>
+<li>\(Q_0\) lies at the middle of the bridge between the colliding points 0 and \(s\), at tropical distance \(a\).</li>
+<li>So \(c=2(Q_0-\infty_+)\) has Tate coordinate \(u_c=s^2\cdot(\text{unit})\).</li>
+</ul>
+<p>Then \(p\,c=0\) means \(u_c^{\,p}=q^n\) for some \(n\). This is possible near \(P\) only for \(1\le n\le p-1\), and it reads</p>
+<div class="math">\[ s^{2(p-n)}A^p=t^{2n}B^n\qquad(A,B\text{ units}),\qquad n=1,\ldots,p-1. \]</div>
+<p>Each such germ has multiplicity \(2\min(n,p-n)\). Its lowest form is \(s^{2(p-n)}\) if \(p-n&lt;n\), \(t^{2n}\) if \(n&lt;p-n\), and \(A_0^ps^p-B_0^nt^p\) if \(p=2n\).</p>
+<p><strong>Proposition, conditional</strong> (<code>prop:cube-boundary-double-point-cone</code>). Assume two things near \(P\): the family \(E_y\) has a two-parameter Tate uniformization with \(q=s^2t^2\cdot(\text{unit})\) and \(u_c=s^2\cdot(\text{unit})\); and \(F_p\) is a reduced equation of the \(p\)-division locus of \(c\), whose identification with the division locus as a scheme is not proved (<a href="#cube-dimension-three-boundary-threshold">boundary theorem</a>). Then:</p>
+<ul>
+<li>\(\operatorname{mult}_PF_p=\sum_{n=1}^{p-1}2\min(n,p-n)=2\lfloor p^2/4\rfloor=\lfloor p^2/2\rfloor\);</li>
+<li>its tangent cone is the product of the lowest forms above: \(s^2-t^2\) type for \(p=2\), \(s^2t^2\) for \(p=3\), \(s^2t^2(s^4-\kappa t^4)\) for \(p=4\), and \(s^6t^6\) for \(p=5\).</li>
+</ul>
+<p><strong>Check.</strong> The point-scheme kernel at \(\rho=1\) computes the principal local ideal \((F_p)\) modulo \(\mathfrak m^K\). Over \(\mathbb F_{1000003}\) (<code>research/results/bmd-r47-one-part-order/</code>):</p>
+<ul>
+<li>at \(p=4\) (\(N=22\), \(K=10\)) the lowest form is exactly \(s^6t^2-s^2t^6=s^2t^2(s^4-t^4)\), so \(\kappa=1\);</li>
+<li>at \(p=5\) (\(N=24\), \(K=14\)) it is exactly \(s^6t^6\);</li>
+<li>at \(p=2\), \(F_2=L_2\), whose two lines through \(P\) are \(s=\pm t\), the shape \(s^2-t^2\);</li>
+<li>at \(p=3\) the recorded multiplicity is 4.</li>
+</ul>
+<p>The general-position degree on a line through \(P\), \(p^2-1-\lfloor p^2/2\rfloor=\lceil p^2/2\rceil-1\), is the splitting value \(\beta\) of the sharp conjecture for one part. That agrees with the computed \(b=1,4,7,12\) at \(p=2,\ldots,5\).</p>
+<p><strong>What this explains.</strong> The number \(\lfloor p^2/2\rfloor\) counts the torsion branches through \(P\): for each \(n\), the torsion points at tropical position \(n/p\) of the \(I_{2a+2b}\) circle. The bound \(\min(n,p-n)\) is the order of contact of such a branch with the two collision lines. A proof of the one-part case therefore needs the two assumptions, which are standard in the theory of degenerating elliptic curves, made rigorous over \(F[[s,t]]\). The general case needs the order \(\mu\) for every solution, not only the product witnesses.</p>
+<p><strong>General statement.</strong> <code>prop:cube-boundary-double-point-cone</code>, for every \(p\ge2\) in characteristic \(\ne2\), conditional on the two stated assumptions.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the dimension-3 theorem's elliptic curve, the boundary theorem (with its caveat on the scheme structure of the division locus), and the sharp pair. Record searches for Tate, degeneration, division locus and tangent cone found only the boundary theorem's set-theoretic statement. The predictions were fixed before the \(p=4,5\) runs, and both match exactly, including the binomial \(s^4-t^4\). No proof beyond the conditional derivation is claimed, so no reviewer pass was run; the status is conditional.</p>
+<p><strong>Assessment.</strong> This cycle gives the sharp pair a mechanism. The vanishing order per part is the number of torsion branches through the degenerate fibre at a double point. It follows from a two-parameter Tate curve with \(q\sim s^2t^2\), a model that also predicted the exact tangent cones at \(p=4\) and \(p=5\). The line is now on the ground of degenerating elliptic curves, where the remaining statements have natural proofs: the one-part order by Tate uniformization; the order for all solutions by comparing the solution module with sections of line bundles on the Tate curve; the splitting type by heights on the elliptic surface over a line. Process: the tool <code>tools/save-run-output.py</code> saved this cycle's outputs directly.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r47-one-part-order">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 1.66 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 43.75 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 48.89 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">27.56 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.46 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
