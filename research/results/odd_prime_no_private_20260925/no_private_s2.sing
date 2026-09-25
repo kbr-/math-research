@@ -1,0 +1,54 @@
+// Open statement S2 in its corrected form (S2 band review), for blocks WITHOUT private inputs, as band blocks are:
+// four complete accuracy-one ENS blocks over F_3 with h = 3 inputs, all of them lines of F_3^3 (variables x, y, w),
+// each block's three inputs independent (full rank), private coefficients.  Members: every triple, augmented by the
+// reduced dp Groebner basis of its joint ideal with field equations (no degree bound), plus the single blocks.
+// Question decided: does the four-block family, with all triples fully augmented, fall below 11?  A fall means that
+// bounded members of three blocks fail for blocks without private inputs.
+//   F1 mixed:  a (x,y,w), b (x+y, y+w, x-w), c (x+w, x-y, y-w), d (x+y+w, x-y+w, y)
+//   F2 planar: a (x,y,w), b (x+y, x-y, w), c (x, x+y, w), d (y, x-y, w)   (plane4 with a shared third input w)
+// (A first version also computed the unaugmented family for scale; run 78d7680df7 exited with code 255 in that step,
+// consistent with the memory cap, so it is omitted.)
+// Output: lowest degree < 11 of an element of (J:z) not in J (11 meaning none), read by Bayer from a degree-11 basis.
+option(redSB);
+system("--ticks-per-sec", 1); int t0 = rtimer;
+proc blockideal(ideal L, ideal rr)
+{
+  int hh = ncols(L); poly P = 1; int i;
+  for (i = 1; i <= hh; i++) { P = P - rr[i]*(1 - L[i]^2); }
+  ideal I; for (i = 1; i <= hh; i++) { I = I, (1 - L[i]^2)*P; }
+  return(I);
+}
+proc lowestfall(ideal J)
+{
+  degBound = 11; ideal SJ = slimgb(J); degBound = 0;
+  int lowest = 11; poly g; int k;
+  for (k = 1; k <= ncols(SJ); k++) { g = SJ[k]; if (g != 0 && deg(g) <= 11 && subst(g, z, 0) == 0) { g = g / z; if (deg(g) < lowest) { if (reduce(g, SJ) != 0) { lowest = deg(g); } } } }
+  return(lowest);
+}
+proc runfamily(int kind)
+{
+  ring S = 3, (x, y, w, r(1..12), z), dp;
+  list L;
+  if (kind == 1) { L = ideal(x, y, w), ideal(x + y, y + w, x - w), ideal(x + w, x - y, y - w), ideal(x + y + w, x - y + w, y); }
+  else { L = ideal(x, y, w), ideal(x + y, x - y, w), ideal(x, x + y, w), ideal(y, x - y, w); }
+  string nm = "F1 mixed"; if (kind == 2) { nm = "F2 planar"; }
+  ideal F; int i; for (i = 1; i <= nvars(basering) - 1; i++) { F = F, var(i)^3 - var(i); }
+  list BI; int j; ideal rr;
+  for (j = 1; j <= 4; j++) { rr = r(3*j-2), r(3*j-1), r(3*j); BI = BI + list(blockideal(L[j], rr)); }
+  ideal J = homog(F, z);
+  for (j = 1; j <= 4; j++) { J = J + homog(std(BI[j] + F), z); }
+  print(nm + " start, " + string(rtimer - t0) + " s");
+  int a; ideal IT; ideal GT; int md;
+  for (a = 1; a <= 4; a++) {
+    IT = F; for (j = 1; j <= 4; j++) { if (j != a) { IT = IT + BI[j]; } }
+    GT = slimgb(IT);
+    md = 0; for (i = 1; i <= ncols(GT); i++) { if (deg(GT[i]) > md) { md = deg(GT[i]); } }
+    print(nm + " triple without block " + string(a) + ": full basis " + string(ncols(GT)) + " elements, max degree " + string(md) + ", " + string(rtimer - t0) + " s");
+    J = J + homog(GT, z);
+  }
+  print(nm + " all triples added, computing the family basis, " + string(rtimer - t0) + " s");
+  print(nm + " with fully augmented triples: lowest_fall=" + string(lowestfall(J)) + ", " + string(rtimer - t0) + " s");
+}
+runfamily(1);
+runfamily(2);
+quit;

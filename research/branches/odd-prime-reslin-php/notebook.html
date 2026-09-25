@@ -18,7 +18,7 @@
 <p>The goal follows from S1 by the proved <a href="#weak-base-unary-selector-transfer">compiler</a>. S2 to S5 are what the current route, relative gluing on the window, needs for S1. No proved reduction yet turns them into S1 for adversarial inventories, and S2 is where it is missing. Order: highest risk first after S1.</p>
 <ol>
 <li><strong>S1, block hardness.</strong> Over \(\mathbb F_3\), for fixed \(K\) and large \(n\), the weak unary PHP base on \(n+1\) rows and \(n\) columns plus any \(n^K\) complete accuracy-one ENS blocks has no PC refutation of degree 11 (\(4p-1\) at other odd \(p\)). The blocks have arbitrary affine inputs \(L\), \(q=1-L^2\), private coefficients \(r\), and companions \(qP\) with \(P=1-\sum rq\). <em>Status:</em> proved when every block's projected rank is at most \(R\) or at least \(Q_*\) (<a href="#ternary-low-or-dense-graph-rank-exclusion">graph criterion</a>); open in the window between.</li>
-<li><strong>S2, dependent forms.</strong> In the window, the base plus the blocks has no fall below 11 once members of bounded size are fully augmented (<a href="#entry-2026-09-25-s2-band-review">corrected form</a>); band blocks have high rank and no private inputs. It must cover the band, whose forms are necessarily dependent (<a href="#entry-2026-09-24-mixture-composition">count</a>). <em>Status:</em> open, highest risk. Proved for one shared input per block (<a href="#entry-2026-09-25-one-shared-input-locality">one shared input</a>). For several shared inputs, overlapping pairs fall at 7 or 8 (<a href="#entry-2026-09-25-overlap-pairs">pairs</a>). Members of three blocks fail at \(h=3\) for four blocks on one plane, through a consequence supported where every input outside the plane is false (<a href="#entry-2026-09-25-three-local-augmentation">three-local</a>, <a href="#entry-2026-09-25-s2-route-review">review</a>). One more private input on one block removes it below 11 (<a href="#entry-2026-09-25-outside-input-floor">floor</a>). So such consequences seem to need inputs concentrated in a small span, which high projected rank excludes (conj:outside-input-floor).</li>
+<li><strong>S2, dependent forms.</strong> In the window, the base plus the blocks has no fall below 11 once members of bounded size are fully augmented (<a href="#entry-2026-09-25-s2-band-review">corrected form</a>); band blocks have high rank and no private inputs. Without private inputs this bounded form fails at \(h=3\): fully augmented triples leave four-block falls at 3 and 5, one explained by an indicator relation \(P_1+P_2-P_3-P_4\) (<a href="#entry-2026-09-25-no-private-inputs">no private inputs</a>). It must cover the band, whose forms are necessarily dependent (<a href="#entry-2026-09-24-mixture-composition">count</a>). <em>Status:</em> open, highest risk. Proved for one shared input per block (<a href="#entry-2026-09-25-one-shared-input-locality">one shared input</a>). For several shared inputs, overlapping pairs fall at 7 or 8 (<a href="#entry-2026-09-25-overlap-pairs">pairs</a>). Members of three blocks fail at \(h=3\) for four blocks on one plane, through a consequence supported where every input outside the plane is false (<a href="#entry-2026-09-25-three-local-augmentation">three-local</a>, <a href="#entry-2026-09-25-s2-route-review">review</a>). One more private input on one block removes it below 11 (<a href="#entry-2026-09-25-outside-input-floor">floor</a>). So such consequences seem to need inputs concentrated in a small span, which high projected rank excludes (conj:outside-input-floor).</li>
 <li><strong>S3, freeness.</strong> The weak top algebra is free through degree 11 over the span of the inventory's forms. <em>Status:</em> proved on a Zariski-open set for at most \(m(\lfloor N/21\rfloor-1)\) forms (<a href="#entry-2026-09-24-general-forms-freeness">general forms</a>); open for the band's rational and adversarial tuples.</li>
 <li><strong>S4, companion tops.</strong> A single block's top ideal equals \(\rho'Q\) below degree \(h+2\) (conj:companion-tops-low-degree). <em>Status:</em> checked through \(h=7\), degree 8; needed for \(h\ge10\), degree 11.</li>
 <li><strong>S5, repeated linear parts.</strong> Pairs and triples of blocks with identical or parallel linear parts, with \(R\) and \(T\), have no fall below 11 when \(h\ge7\) (conj:r-added-parallel-fall; triples with \(T\)). Identical pairs fall no lower than \(h+4\) (conj:shared-input-falls). <em>Status:</em> checked at small \(h\). With S4, the locality theorems reduce components with repeated linear parts and at most two multi-coordinate blocks to these.</li>
@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> The <a href="#entry-2026-09-25-s2-band-review">S2 band review</a> re-posed S2 with fully augmented members, since degree-bounded augmentation always leaves falls. Its test on plane4 was stopped for low memory after the triples' full bases reached degree 12. Next: rerun that test when memory allows (about 5 GB). Meanwhile, state S2 for blocks without private inputs, as band blocks are, and test its smallest instances at \(h=3\) with full augmentation, where lem:none-indicator-identity predicts the candidate falls.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> <a href="#entry-2026-09-25-no-private-inputs">Without private inputs</a>, fully augmented triples do not stop four-block falls at \(h=3\); linear relations among none-indicators give consequences spanning whole relations. Next: a route review of S2. It decides between restricting S2 to inventories whose low-degree indicator relations are local, which is a combinatorial question about the band, and replacing S2 by a fall-tolerant statement, since S1 needs only the absence of a refutation.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -19780,6 +19780,73 @@ By step 1 applied block by block, as in the lemma's corollary, \(\sigma_Sf\in J_
 <tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">11.78 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-no-private-inputs" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:indicator-relation-consequences ex:no-private-triple-falls">
+<h3>Without private inputs, fully augmented triples do not stop falls: four blocks fall at 3 and 5 at h = 3, and the degree-3 witness is an indicator relation P₁ + P₂ − P₃ − P₄</h3>
+<p class="entry-meta">25 September 2026 · Working proof (indicator relations) and a finite check refuting bounded members at h = 3 · open statement S2 · cycle odd-prime-no-private-inputs.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement S2 in the corrected form of the <a href="#entry-2026-09-25-s2-band-review">S2 band review</a>: members of at most three blocks, fully augmented, for blocks without private inputs, as band blocks are. The smallest instances of this model are cheap: four blocks with three inputs each, all on lines of \(\mathbb F_3^3\), need 15 variables. So this cycle tests the corrected form there.</p>
+<p><strong>General statement.</strong> lem:indicator-relation-consequences and ex:no-private-triple-falls.</p>
+<ul>
+<li>lem:indicator-relation-consequences. For complete accuracy-one ENS blocks over \(\mathbb F_3\), let \(N_a=\prod_iL_{a,i}^2\) be block \(a\)'s none-indicator, and let \(\Phi\) be the ideal of the field equations of all variables, the coefficients included. For any scalars \(c_a\), let \(g\) be the reduction of \(\sum_ac_aN_a\) modulo \(\Phi\). Then
+\[\sum_ac_aP_a-g\in\sum_aI_a+\Phi.\]
+<em>Proof.</em> \(P_a-N_a\in I_a+\Phi\) by lem:none-indicator-identity, whose ideal is radical because it contains \(\Phi\). Also \(\sum_ac_aN_a-g\in\Phi\). Sum. \(\square\)
+When \(g\) has low degree, this is a low-degree consequence whose expression involves every block with \(c_a\ne0\). That involvement is only syntactic: the lemma does not decide whether a subfamily derives the consequence at the same degree.</li>
+<li>ex:no-private-triple-falls. Take four blocks with \(h=3\), no private inputs, private coefficients, all inputs lines of \(\mathbb F_3^3\), and each block's inputs independent. Augment every triple by its full reduced Gröbner basis. The family still falls:
+<ul>
+<li>F1, mixed lines: at 5;</li>
+<li>F2, the planar family with a shared third input \(w\): at 3.</li>
+</ul>
+For F2, the degree-3 fall space is spanned, modulo \(J\), by \(P_1+P_2-P_3-P_4\), for which \(N_1+N_2-N_3-N_4=0\) as functions. Adding it as a cross generator raises F2's lowest fall only to 6.</li>
+</ul>
+
+<h4>The computations</h4>
+<p><code>no_private_s2_db9.sing</code> (<code>no_private_s2_db9.out</code>, 358 s, degree bound 9), a degree-9 version of <code>no_private_s2.sing</code>, builds the four blocks with their private coefficients. It computes each triple's full reduced basis: about 780 to 1420 elements, of maximum degree 9 to 11. It adds these to the separately augmented blocks and reads the lowest fall from the truncated basis. The blocks are:</p>
+<table>
+<thead><tr><th>Family</th><th>blocks (inputs)</th><th>lowest fall</th></tr></thead>
+<tbody>
+<tr><td>F1</td><td>\((x,y,w)\), \((x+y,y+w,x-w)\), \((x+w,x-y,y-w)\), \((x+y+w,x-y+w,y)\)</td><td>5</td></tr>
+<tr><td>F2</td><td>\((x,y,w)\), \((x+y,x-y,w)\), \((x,x+y,w)\), \((y,x-y,w)\)</td><td>3</td></tr>
+</tbody>
+</table>
+<p>A fall below 9 is visible with degree bound 9, and both falls are far below 11. So the degree-11 run, which hit its 600 s limit (<code>no_private_s2_timeout.out</code>), is not needed for the conclusion.</p>
+<p><code>no_private_witness.sing</code> (<code>no_private_witness.out</code>) prints F2's degree-3 witness, as a normal form modulo the truncated family basis. Term by term it is \((P_1-1)+(P_2-1)-(P_3-1)-(P_4-1)=P_1+P_2-P_3-P_4\). The indicators cancel. Here \(N_1=x^2y^2w^2\) and \(N_2=(x+y)^2(x-y)^2w^2\equiv w^2(x^2+x^2y^2+y^2)\), and \(N_3=x^2(x+y)^2w^2\equiv w^2(x^2+2xy+x^2y^2)\) and \(N_4=y^2(x-y)^2w^2\equiv w^2(x^2y^2-2xy+y^2)\). So \(N_1+N_2-N_3-N_4\equiv0\). <code>no_private_indicator.sing</code> (<code>no_private_indicator.out</code>) adds this generator; the lowest fall becomes 6.</p>
+
+<h4>What this means</h4>
+<ul>
+<li><em>S2's bounded form fails at \(h=3\) without private inputs, even fully augmented.</em> For F2 the mechanism is explicit: a linear relation among the blocks' none-indicators gives a consequence linear in the \(P\)'s that the triples miss. The lemma gives such consequences for every relation with low remainder degree. Whether triples miss them in general, forcing members to contain whole relations, is shown only for F2. F1's fall at 5 has no identified mechanism, and F2 still falls at 6 after the relation's generator is added.</li>
+<li><em>Relation to the private-input model, a heuristic.</em> With private inputs, \(N_a\) carries the private factors \(\prod p^2\). So relations among indicators would need the private-false locus, which costs degree. That may be why plane4 with private inputs fell only at 9, and why one more private input pushed it past 11. Without private inputs nothing pays that cost. This causal reading is untested.</li>
+<li><em>For the band.</em> Band blocks have \(h\ge10\) board inputs. Reduction modulo the field equations already lowers degree, so a reduced \(N_a\) has degree at most \(2n\) in \(n\) board variables. An indicator relation with low remainder needs the top-degree parts of several reduced \(N_a\) to cancel. Whether the band's blocks, or adversarial compiled inventories, admit such relations is now the concrete question behind S2. The small cases show that dense configurations do.</li>
+<li><em>For the route.</em> Relative gluing needs members without falls. With indicator relations spanning arbitrary block sets, members of bounded size may not exist for dense inventories. The alternative the goal allows is a statement that tolerates falls, since S1 needs only the absence of a refutation.</li>
+</ul>
+<p>Next: a route review of S2. It should decide between two statements. One is S2 restricted to inventories whose indicator relations of low remainder degree are local, a combinatorial question about the band. The other is a fall-tolerant replacement of S2, for example a degree-11 design built from the section normal form, with the indicator relations as its constraints.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: lem:none-indicator-identity (its ideal includes the field equations), the S2 band review (the corrected form), ex:overlap-pair-falls and ex:four-block-overlap-falls (the private-input model), and prop:one-count-composition (band blocks). The witness and the indicator cancellation were checked by hand term by term. Every value is read from the named outputs. The scripts reuse the reviewed fall readout, via the truncated Bayer lemma, with full triple bases in place of degree-bounded ones. Two claim searches for the lemma, one under linear combinations of \(P\) and none-indicators and one under indicator relations with low-degree remainder, found no earlier statement.</p>
+<p>A fresh-context reviewer confirmed the witness term by term, the indicator cancellation, and every readout. It required these changes, all adopted:</p>
+<ul>
+<li>the band paragraph corrected to the reduced indicators;</li>
+<li>the lemma stated with the field-equation ideal \(\Phi\), with its second proof step;</li>
+<li>the syntactic involvement and the explicit mechanism limited to what is shown, F2 only;</li>
+<li>the private-input explanation marked as a heuristic;</li>
+<li>the witness described as a normal form spanning the degree-3 fall space;</li>
+<li>the stale comments in the three scripts corrected, with the code unchanged;</li>
+<li>the gate completed.</li>
+</ul>
+<p>These weaken or clarify claims, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-no-private-inputs">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>35 min 17.83 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 39.86 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 41.86 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">26 min 7.73 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">2 min 48.24 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
 </div>
 </article>
 
