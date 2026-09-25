@@ -19,7 +19,9 @@
 // t = y_1 - y_2; each arc's leading vector (sigma A, tau B or sigma A + tau B by the valuations of s, t)
 // kills S_gamma(0), and the program reports whether A_m and B_m are forced to vanish.
 //
-// Direction-bundle mode (CASE = d:m:PREC:bundle:K:J, chart y_2 = 1 at P = (1:1:0)): a local solution W of order k
+// Direction-bundle mode (CASE = d:m:PREC:bundle:K:J[:X:Y], chart y_2 = 1 at P = (1:1:0)); with weights (X, Y) the arcs
+// are (s, t) = (sigma e^X, tau e^Y), forms are weighted-homogeneous of weighted degree k (sigma of weight X, tau of
+// weight Y), and the bound reads: weighted order of a local solution >= least weighted degree of a section. Default X = Y = 1: a local solution W of order k
 // at P has a tangent cone W_k(sigma, tau), a vector of degree-k forms, and along the line y = (1 + tau e, 1, sigma e)
 // its leading vector W_k(sigma, tau) kills S_gamma(0). So W_k is a section of N(k), where N is the bundle on the
 // exceptional line of directions whose fibre is the annihilator of tau_m(S_gamma(0)); hence k >= e_min(N). The
@@ -159,16 +161,18 @@ int main(int argc, char **argv) {
         int d = atoi(f[0].c_str()), m = atoi(f[1].c_str()), prec = atoi(f[2].c_str());
         if (f[3] == "bundle") {
             int K = atoi(f[4].c_str()), J = atoi(f[5].c_str());
+            int X = f.size() > 7 ? atoi(f[6].c_str()) : 1, Y = f.size() > 7 ? atoi(f[7].c_str()) : 1;
             int M = m + 1;
             if (P % 2 == 0 || P <= (u64)m + 2) { fprintf(stderr, "need odd p > m + 2\n"); return 2; }
-            printf("bundle d=%d m=%d rho=%d prec=%d K=%d J=%d\n", d, m, M - 4 * d, prec, K, J); fflush(stdout);
+            printf("bundle d=%d m=%d rho=%d prec=%d K=%d J=%d weights=(%d,%d)\n", d, m, M - 4 * d, prec, K, J, X, Y); fflush(stdout);
             mt19937_64 rng(12345 + 1000 * d + m);
             vector<u64> sg(J), ta(J);
             for (int j = 0; j < J; j++) { sg[j] = 1 + rng() % (P - 1); ta[j] = 1 + rng() % (P - 1); }
             vector<vector<Vec>> reds(J); vector<int> ok(J), st(J); vector<vector<int>> ords(J);
             #pragma omp parallel for schedule(dynamic)
             for (int j = 0; j < J; j++) {
-                vector<Vec> ys = {Vec{1, ta[j]}, Vec{1}, Vec{0, sg[j]}};
+                Vec y1(Y + 1, 0), y3(X + 1, 0); y1[0] = 1; y1[Y] = ta[j]; y3[X] = sg[j];
+                vector<Vec> ys = {y1, Vec{1}, y3};
                 ok[j] = arc_limit(d, m, prec, ys, reds[j], st[j], ords[j]);
             }
             int maxsteps = 0;
@@ -181,14 +185,18 @@ int main(int argc, char **argv) {
                 int Jh = half ? J : J / 2;
                 printf("  samples %d: h0(N(k)) for k = 0..%d:", Jh, K);
                 for (int k = 0; k <= K; k++) {
-                    int cols = (k + 1) * M, rows = Jh * 4 * d;
+                    vector<pair<int,int>> mons;  // sigma^a tau^b with X a + Y b = k
+                    for (int a = 0; X * a <= k; a++) if ((k - X * a) % Y == 0) mons.push_back({a, (k - X * a) / Y});
+                    int nm = mons.size();
+                    if (!nm) { printf(" 0"); continue; }
+                    int cols = nm * M, rows = Jh * 4 * d;
                     nmod_mat_t A; nmod_mat_init(A, rows, cols, P);
                     int r = 0;
                     for (int j = 0; j < Jh; j++) {
-                        vector<u64> cf(k + 1);  // sigma^(k-i) tau^i
-                        for (int i = 0; i <= k; i++) cf[i] = pw(sg[j], k - i) * pw(ta[j], i) % P;
+                        vector<u64> cf(nm);
+                        for (int i = 0; i < nm; i++) cf[i] = pw(sg[j], mons[i].first) * pw(ta[j], mons[i].second) % P;
                         for (auto &row : reds[j]) {
-                            for (int i = 0; i <= k; i++) for (int c = 0; c < M; c++)
+                            for (int i = 0; i < nm; i++) for (int c = 0; c < M; c++)
                                 nmod_mat_entry(A, r, i * M + c) = cf[i] * row[c] % P;
                             r++;
                         }
