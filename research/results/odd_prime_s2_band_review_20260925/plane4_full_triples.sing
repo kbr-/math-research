@@ -1,0 +1,39 @@
+// Route-review falsification test (open statement S2, well-posed form).  Relative gluing needs members WITHOUT
+// falls, i.e. fully augmented (a complete Groebner basis of the member's ideal, all degrees), not augmented by
+// degree-bounded consequences (self_aug_control.out: that always leaves falls).  Family plane4 at h = 3: blocks on
+// (x,y,p1), (x+y,x-y,p2), (x,x+y,p3), (y,x-y,p4), private coefficients.  Members: the four triples, each augmented
+// by the reduced dp Groebner basis of its joint ideal with field equations (no degree bound), plus the four blocks.
+// Question decided: does the four-block family, with all triples fully augmented, fall below 11?  No fall means the
+// degree-9 consequence outside the degree-11 three-local ideal (ex:four-block-overlap-falls) is captured by a
+// triple's higher-degree consequence, so bounded members of three blocks survive in this instance.
+option(redSB);
+system("--ticks-per-sec", 1); int t0 = rtimer;
+ring S = 3, (x, y, p(1..4), r(1..12), z), dp;
+proc blockideal(ideal L, ideal rr)
+{
+  int hh = ncols(L); poly P = 1; int i;
+  for (i = 1; i <= hh; i++) { P = P - rr[i]*(1 - L[i]^2); }
+  ideal I; for (i = 1; i <= hh; i++) { I = I, (1 - L[i]^2)*P; }
+  return(I);
+}
+list L = ideal(x, y, p(1)), ideal(x + y, x - y, p(2)), ideal(x, x + y, p(3)), ideal(y, x - y, p(4));
+ideal F; int i; for (i = 1; i <= nvars(basering) - 1; i++) { F = F, var(i)^3 - var(i); }
+list BI; int j; ideal rr;
+for (j = 1; j <= 4; j++) { rr = r(3*j-2), r(3*j-1), r(3*j); BI = BI + list(blockideal(L[j], rr)); }
+ideal J = homog(F, z);
+for (j = 1; j <= 4; j++) { J = J + homog(std(BI[j] + F), z); }
+int a; ideal IT; ideal GT;
+for (a = 1; a <= 4; a++) {
+  IT = F; for (j = 1; j <= 4; j++) { if (j != a) { IT = IT + BI[j]; } }
+  GT = slimgb(IT);
+  int md = 0; for (i = 1; i <= ncols(GT); i++) { if (deg(GT[i]) > md) { md = deg(GT[i]); } }
+  print("triple without block " + string(a) + ": full basis " + string(ncols(GT)) + " elements, max degree " + string(md) + ", " + string(rtimer - t0) + " s");
+  J = J + homog(GT, z);
+  kill md;
+}
+degBound = 11; ideal SJ = slimgb(J); degBound = 0;
+print("family basis: " + string(ncols(SJ)) + " elements, " + string(rtimer - t0) + " s");
+int lowest = 11; poly g; int k;
+for (k = 1; k <= ncols(SJ); k++) { g = SJ[k]; if (g != 0 && deg(g) <= 11 && subst(g, z, 0) == 0) { g = g / z; if (deg(g) < lowest) { if (reduce(g, SJ) != 0) { lowest = deg(g); } } } }
+print("plane4 with fully augmented triples: lowest_fall=" + string(lowest) + " (11 meaning none below 11), " + string(rtimer - t0) + " s");
+quit;

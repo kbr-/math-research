@@ -18,7 +18,7 @@
 <p>The goal follows from S1 by the proved <a href="#weak-base-unary-selector-transfer">compiler</a>. S2 to S5 are what the current route, relative gluing on the window, needs for S1. No proved reduction yet turns them into S1 for adversarial inventories, and S2 is where it is missing. Order: highest risk first after S1.</p>
 <ol>
 <li><strong>S1, block hardness.</strong> Over \(\mathbb F_3\), for fixed \(K\) and large \(n\), the weak unary PHP base on \(n+1\) rows and \(n\) columns plus any \(n^K\) complete accuracy-one ENS blocks has no PC refutation of degree 11 (\(4p-1\) at other odd \(p\)). The blocks have arbitrary affine inputs \(L\), \(q=1-L^2\), private coefficients \(r\), and companions \(qP\) with \(P=1-\sum rq\). <em>Status:</em> proved when every block's projected rank is at most \(R\) or at least \(Q_*\) (<a href="#ternary-low-or-dense-graph-rank-exclusion">graph criterion</a>); open in the window between.</li>
-<li><strong>S2, dependent forms.</strong> In the window, the base plus the blocks has no fall below 11 once members of bounded size carry their own degree-11 consequences. It must cover the band, whose forms are necessarily dependent (<a href="#entry-2026-09-24-mixture-composition">count</a>). <em>Status:</em> open, highest risk. Proved for one shared input per block (<a href="#entry-2026-09-25-one-shared-input-locality">one shared input</a>). For several shared inputs, overlapping pairs fall at 7 or 8 (<a href="#entry-2026-09-25-overlap-pairs">pairs</a>). Members of three blocks fail at \(h=3\) for four blocks on one plane, through a consequence supported where every input outside the plane is false (<a href="#entry-2026-09-25-three-local-augmentation">three-local</a>, <a href="#entry-2026-09-25-s2-route-review">review</a>). One more private input on one block removes it below 11 (<a href="#entry-2026-09-25-outside-input-floor">floor</a>). So such consequences seem to need inputs concentrated in a small span, which high projected rank excludes (conj:outside-input-floor).</li>
+<li><strong>S2, dependent forms.</strong> In the window, the base plus the blocks has no fall below 11 once members of bounded size are fully augmented (<a href="#entry-2026-09-25-s2-band-review">corrected form</a>); band blocks have high rank and no private inputs. It must cover the band, whose forms are necessarily dependent (<a href="#entry-2026-09-24-mixture-composition">count</a>). <em>Status:</em> open, highest risk. Proved for one shared input per block (<a href="#entry-2026-09-25-one-shared-input-locality">one shared input</a>). For several shared inputs, overlapping pairs fall at 7 or 8 (<a href="#entry-2026-09-25-overlap-pairs">pairs</a>). Members of three blocks fail at \(h=3\) for four blocks on one plane, through a consequence supported where every input outside the plane is false (<a href="#entry-2026-09-25-three-local-augmentation">three-local</a>, <a href="#entry-2026-09-25-s2-route-review">review</a>). One more private input on one block removes it below 11 (<a href="#entry-2026-09-25-outside-input-floor">floor</a>). So such consequences seem to need inputs concentrated in a small span, which high projected rank excludes (conj:outside-input-floor).</li>
 <li><strong>S3, freeness.</strong> The weak top algebra is free through degree 11 over the span of the inventory's forms. <em>Status:</em> proved on a Zariski-open set for at most \(m(\lfloor N/21\rfloor-1)\) forms (<a href="#entry-2026-09-24-general-forms-freeness">general forms</a>); open for the band's rational and adversarial tuples.</li>
 <li><strong>S4, companion tops.</strong> A single block's top ideal equals \(\rho'Q\) below degree \(h+2\) (conj:companion-tops-low-degree). <em>Status:</em> checked through \(h=7\), degree 8; needed for \(h\ge10\), degree 11.</li>
 <li><strong>S5, repeated linear parts.</strong> Pairs and triples of blocks with identical or parallel linear parts, with \(R\) and \(T\), have no fall below 11 when \(h\ge7\) (conj:r-added-parallel-fall; triples with \(T\)). Identical pairs fall no lower than \(h+4\) (conj:shared-input-falls). <em>Status:</em> checked at small \(h\). With S4, the locality theorems reduce components with repeated linear parts and at most two multi-coordinate blocks to these.</li>
@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> <a href="#entry-2026-09-25-section-normal-form">Section normal form</a> reduces consequences modulo smaller subfamilies at no cost in degree, but gives only the floor \(|F|\). The floor of conj:outside-input-floor needs the membership criterion's fiber bounds. The line is now two reductions below S2, so next: a route review. It restates S2 against the band's actual blocks, which have no private inputs, and decides whether the floor route or a fall-tolerant replacement of S2 advances S1.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> The <a href="#entry-2026-09-25-s2-band-review">S2 band review</a> re-posed S2 with fully augmented members, since degree-bounded augmentation always leaves falls. Its test on plane4 was stopped for low memory after the triples' full bases reached degree 12. Next: rerun that test when memory allows (about 5 GB). Meanwhile, state S2 for blocks without private inputs, as band blocks are, and test its smallest instances at \(h=3\) with full augmentation, where lem:none-indicator-identity predicts the candidate falls.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -19724,6 +19724,62 @@ By step 1 applied block by block, as in the lemma's corollary, \(\sigma_Sf\in J_
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-s2-band-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of S2 against the band's blocks; restates S2 with full augmentation and records a stopped test without registering a claim.">
+<h3>Route review: S2 must be posed with fully augmented members; the band's blocks have high rank and no private inputs; the deciding test was stopped by memory pressure</h3>
+<p class="entry-meta">25 September 2026 · Route review (falsification test undecided: stopped for low memory) · open statement S2 on odd-prime-clause-transfer; cycle odd-prime-s2-band-review.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement S2. The line had reached two reductions below S2, through conj:outside-input-floor and lem:section-normal-form. This review, triggered by the depth rule in CLAUDE.md, re-poses S2 against the band's actual blocks and decides the next step.</p>
+<p><strong>General statement.</strong> The line's claim is S2: in the window, the base plus the blocks has no fall below 11 when grouped into members of bounded size. This review corrects its formulation, as follows.</p>
+
+<h4>Three corrections to how S2 was posed</h4>
+<ol>
+<li><em>Members must be fully augmented.</em> The self-augmentation control of ex:four-block-overlap-falls shows the defect. Adding a family's consequences derivable within degree 11 still leaves falls at 9, because the ideal they generate is not closed under the cutoff. Relative gluing asks for members without falls, and that means members augmented by their complete Gröbner bases. So S2's bounded-member form is: jointly augment every subfamily of at most three blocks by its full basis; then the family has no fall below 11. conj:three-local-augmentation, which augments within degree 11, is a degree-bounded proxy, and its refutation at \(h=3\) does not decide this form.</li>
+<li><em>Band blocks have no private inputs.</em> Here "band" means the setting of prop:one-count-composition. On a residual board of size \(L\), a band block has \(R(L)&lt;h&lt;Q(L)\approx1.6\times10^4L\Lambda_M\) inputs, all of them forms in the board variables, and projected rank about \(h\). So a band block has high rank and more inputs than the board has columns. The first-active substitution (lem:ternary-first-active-selector-substitution) costs \(2(h-1)\cdot11\), far above the residual base's refutation degree, so it cannot handle them. The private-input model of conj:outside-input-floor is a stand-in for "inputs outside a common span", and its extension to the band is unproved.</li>
+<li><em>Satisfiability alone does not stop falls.</em> The record's other lead for the dependent regime, suggested in the <a href="#entry-2026-09-24-mixture-composition">mixture composition</a> entry, is thm:head-dependencies. For single-clause members, consistent circuits lift, so solvable systems do not fall. ENS blocks are satisfiable at every point, yet the overlap pairs of ex:overlap-pair-falls fall at 7 or 8. So an ENS analogue needs ENS-specific cross generators as well.</li>
+</ol>
+
+<h4>Falsification attempt</h4>
+<p><code>plane4_full_triples.sing</code> tests the corrected form on the one known non-local instance, plane4 at \(h=3\). It augments each triple by its full reduced basis, without a degree bound, and asks whether the four-block family falls below 11. The four triple bases were computed:</p>
+<ul>
+<li>2430, 2609, 2449 and 2575 elements;</li>
+<li>maximum degree 12 each.</li>
+</ul>
+<p>So full augmentation adds degree-12 elements that the degree-11 proxy never saw. Claude Code then stopped the run because the machine was low on memory: another job's process was using about 4.7 GB. The family step was not reached. Its partial output is in <code>plane4_full_triples_partial.out</code>, and the run was not restarted. The test is undecided.</p>
+
+<h4>Assessment of this line</h4>
+<ul>
+<li><em>Solid ground.</em>
+<ul>
+<li>One shared input per block: S2 proved below 11.</li>
+<li>The none-indicator identity.</li>
+<li>The section normal form.</li>
+<li>A correct inclusion test, with a proved truncated Bayer lemma.</li>
+<li>The band's high rank.</li>
+</ul></li>
+<li><em>The gap.</em> S2 for blocks sharing many inputs, in its correct, fully augmented form, is untested. The only counterexample is to the degree-bounded proxy.</li>
+<li><em>Prospects.</em> Better than the last review suggested. The proxy failure may be an artifact of the cutoff: triples' full bases reach degree 12. The band is high-rank, where even the proxy's failure disappeared with one more outside input. Every test of the band's own shape, blocks with many shared inputs and no private inputs, still lies beyond reachable sizes.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, S2, in the corrected form. First rerun the fully augmented plane4 test when memory allows; it needs about 5 GB. Meanwhile, and whatever that result, state S2 for blocks without private inputs, and test its smallest instance. That is a pair and a four-block family of blocks with only shared inputs at \(h=3\), with full augmentation, where lem:none-indicator-identity predicts the candidate falls.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: ex:four-block-overlap-falls with its self-augmentation control, conj:three-local-augmentation, conj:outside-input-floor, lem:section-normal-form, prop:one-count-composition and its band definition, lem:ternary-first-active-selector-substitution, and thm:head-dependencies. The values are read from <code>plane4_full_triples_partial.out</code>. No claim is registered, so no reviewer pass was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-s2-band-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 50.99 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">48.14 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">50.21 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">52.33 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4 min 8.33 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+<tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">11.78 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
