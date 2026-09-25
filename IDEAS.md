@@ -207,6 +207,29 @@ merge drivers also help when two Git branches work on the same thread.
   duplicate IDs, conflicting edits and preservation of both sides' records before
   enabling automatic resolution. Avoid depending on a private one-off merge script.
 
+**Commit hashes recorded in tracked files (25 September 2026).** Rebasing rewrites the hash
+of every rebased commit, but tracked files keep naming the old ones, and no check notices.
+A branch of 76 commits prepared for rebase onto `main` had three kinds of such references:
+- review `revision` fields in `research/claims/index.json` (about 830);
+- a preprint's Lean pin (`\leancommit`, checkout commands, the repository citation, its README);
+- prose in a notebook entry and a review record.
+
+`main` already carried 160 stale `revision` fields naming 21 commits that earlier rebases
+had replaced. The mapping was recoverable only because the old commits were still in the
+local object store: each matched exactly one commit on `main` with the same author timestamp,
+subject and message, and a patch that differed only in re-rendered or conflict-resolved
+files. After garbage collection that recovery would be impossible. So the integration
+tooling should also:
+- remap recorded hashes whenever history is rewritten. Git's `post-rewrite` hook receives the
+  old→new pairs for rebase and amend, so it can apply them to the registry `revision` fields
+  and to publication pins, then re-render; a merge driver alone never sees the rewrite;
+- add a mechanical check (in `tools/check-claims.py` or `verify-checkout.py`) that every
+  recorded revision and publication pin is an ancestor of the checked branch, so a stale
+  hash fails before a push rather than being found later;
+- repair the 21 known stale revisions on `main` with the recovered mapping
+  ([research/provenance/rebased-revisions-main-2026-09-25.json](research/provenance/rebased-revisions-main-2026-09-25.json),
+  old → new full hashes).
+
 ## 11. A searchable literature corpus: arXiv metadata, full-text and embedding search
 
 **The problem (24 September 2026).** Prior-art checks are the weakest step of the workflow.

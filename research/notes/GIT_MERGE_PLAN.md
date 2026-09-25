@@ -56,6 +56,12 @@ are not substitutes for preserving complete structured records.
       registration without overwriting unrelated configuration. Fresh clones must
       detect missing setup; ensure unsupported/missing drivers cannot silently
       bypass required validation. Installation does not authorize publication.
+- [ ] Rewritten commit hashes: a `post-rewrite` hook (rebase and amend) applies the
+      old→new pairs to recorded hashes (registry review `revision` fields, publication
+      Lean pins and repository citations) and regenerates derived views. A check
+      rejects any recorded revision or pin that is not an ancestor of the checked
+      branch. See the 25 September 2026 note in IDEAS.md item 10, which also records
+      21 stale revisions already on `main` and how their mapping was recovered.
 - [ ] On driver failure, leave recoverable inputs and actionable conflicts. Test
       abort/retry/continue paths and require the existing post-merge checks before
       committing or publishing the integrated result.
@@ -71,6 +77,9 @@ are not substitutes for preserving complete structured records.
 - [ ] Test independent and competing claim/relationship changes, delete/edit cases,
       coupled statement/review edits and stale evidence. Confirm no review hashes
       or dispositions are fabricated and genuine conflicts remain actionable.
+- [ ] Test hash remapping: rebase and amend a branch whose registry and publication
+      pins name its own commits; confirm every recorded hash is remapped, and that the
+      ancestor check fails on a deliberately stale hash.
 - [ ] Test attention-event deduplication, equal timestamps, incompatible history
       order and conflicting decisions. Confirm the current disposition is not
       chosen accidentally by concatenation order.
