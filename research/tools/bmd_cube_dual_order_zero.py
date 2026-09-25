@@ -11,7 +11,7 @@ thresholds can be compared (the V_{3,d} threshold should be 5d - 1).
 Mode "V n": test space V_{n,d}; mode "U n": test space {T^Q z^a : Q + |a| <= d}.  Linear algebra
 over F_p (p large) with numpy; Phi_0 = 1 is the inhomogeneous part.
 Usage: bmd_cube_dual_order_zero.py MODE n DMAX MMAX p
-       bmd_cube_dual_order_zero.py LOWEST n d m l p   (test space V_{n,d}: the space of possible
+       bmd_cube_dual_order_zero.py LOWEST n d m l p [LMAX]   (test space V_{n,d}: the space of possible
        lowest parts Phi_l of dual solutions at order l, i.e. the degree-l part of the threshold ideal
        I^{(d+1)}_m, printed as a basis of polynomials)
 """
@@ -154,15 +154,17 @@ def lowest_parts(n, d, m, l, p, kappa):
 def main():
     if sys.argv[1] == 'LOWEST':
         n, d, m, l, p = map(int, sys.argv[2:7])
+        lmax = int(sys.argv[7]) if len(sys.argv) > 7 else l  # optional: every degree l..LMAX in one run
         cat = [1]
-        for j in range(1, l + m + 2):
+        for j in range(1, lmax + m + 2):
             cat.append(cat[-1] * 2 * (2 * j - 1) // (j + 1))
-        kappa = [0] + [((-1) ** j * cat[j - 1]) % p for j in range(1, l + m + 2)]
-        r, B, names = lowest_parts(n, d, m, l, p, kappa)
-        print(f'n={n} d={d} m={m} l={l}: dimension of the degree-l part of I = {r}')
-        for v in B:
-            terms = [f'{(int(c) if c <= p // 2 else int(c) - p)}*u^{e}' for c, e in zip(v, names) if c]
-            print('  ' + ' + '.join(terms))
+        kappa = [0] + [((-1) ** j * cat[j - 1]) % p for j in range(1, lmax + m + 2)]
+        for ll in range(l, lmax + 1):
+            r, B, names = lowest_parts(n, d, m, ll, p, kappa)
+            print(f'n={n} d={d} m={m} l={ll}: dimension of the degree-l part of I = {r}', flush=True)
+            for v in B:
+                terms = [f'{(int(c) if c <= p // 2 else int(c) - p)}*u^{e}' for c, e in zip(v, names) if c]
+                print('  ' + ' + '.join(terms), flush=True)
         return
     mode, n, dmax, mmax, p = sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5])
     cat = [1]
