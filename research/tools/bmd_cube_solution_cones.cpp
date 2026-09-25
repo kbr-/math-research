@@ -9,7 +9,10 @@
 // in J^j + m^k (multiplicity < j), and the rank over F(sigma, tau) of the degree-j cones of all solutions of excess
 // <= l, by evaluation at a random point.  Rank rho with j = mu(d, rho) is what the squeeze lemma needs in tight cases.
 //
-// Usage: bmd_cube_solution_cones prime seed d rho j lmin lmax
+// With a final argument "sym", the witness spaces are computed in their S_3-trivial and sign parts separately (orbit
+// sums, conditions at the vertex representatives (1,0,0), (1,1,0), (1,1,1)); the standard part is not computed.
+//
+// Usage: bmd_cube_solution_cones prime seed d rho j lmin lmax [sym]
 #include <cstdio>
 #include <cstdlib>
 #include <cstdint>
@@ -17,6 +20,7 @@
 #include <map>
 #include <array>
 #include <random>
+#include <string>
 #include <flint/flint.h>
 #include <flint/nmod_mat.h>
 using namespace std;
@@ -30,6 +34,9 @@ static u64 inv(u64 a) { return pw(a, P - 2); }
 static vector<vector<u64>> C;
 static u64 binom(int n, int k) { return (k < 0 || k > n) ? 0 : C[n][k]; }
 typedef vector<u64> Ser;
+static bool SYM = false;
+static const int PERMS[6][3] = {{0, 1, 2}, {0, 2, 1}, {1, 0, 2}, {1, 2, 0}, {2, 0, 1}, {2, 1, 0}};
+static const int PSIGN[6] = {1, -1, -1, 1, 1, -1};
 static int N;
 static Ser smul(const Ser &a, const Ser &b) {
     Ser r(N, 0);
@@ -56,7 +63,8 @@ static long rank_mod(vector<vector<u64>> M) {
 }
 
 int main(int argc, char **argv) {
-    if (argc < 8) { fprintf(stderr, "usage: prime seed d rho j lmin lmax\n"); return 2; }
+    if (argc < 8) { fprintf(stderr, "usage: prime seed d rho j lmin lmax [sym]\n"); return 2; }
+    SYM = argc > 8 && string(argv[8]) == "sym";
     P = atoll(argv[1]); unsigned seed = atoi(argv[2]);
     int d = atoi(argv[3]), rho = atoi(argv[4]), j = atoi(argv[5]), lmin = atoi(argv[6]), lmax = atoi(argv[7]);
     { const char *th = getenv("OMP_NUM_THREADS"); flint_set_num_threads(th ? atoi(th) : 1); }
@@ -70,25 +78,43 @@ int main(int argc, char **argv) {
     printf("(d,rho)=(%d,%d) m=%d j=%d face exponent %d; evaluation point tau=%llu sigma=%llu\n", d, rho, m, j, e,
            (unsigned long long)tau, (unsigned long long)sig); fflush(stdout);
     for (int l = lmin; l <= lmax; l++) {
-        int k = l + m + 1, D = 2 * k - d, Dp = D - 3 * e;
-        vector<array<int, 3>> mons;
-        for (int t = l; t <= Dp; t++) for (int a = t; a >= 0; a--) for (int b = t - a; b >= 0; b--) mons.push_back({a, b, t - a - b});
-        int U = mons.size();
+      int k = l + m + 1, D = 2 * k - d, Dp = D - 3 * e;
+      for (int chi = SYM ? 0 : -1; chi <= (SYM ? 1 : -1); chi++) {
+        // basis of P': single monomials (dense), or S_3 orbit sums for the character chi (0 trivial, 1 sign)
+        vector<vector<pair<array<int, 3>, int>>> basis;
+        for (int t = l; t <= Dp; t++) for (int a = t; a >= 0; a--) for (int b = t - a; b >= 0; b--) {
+            int c = t - a - b;
+            if (chi < 0) { basis.push_back({{{a, b, c}, 1}}); continue; }
+            if (b > a || c > b) continue;
+            array<int, 3> al = {a, b, c};
+            map<array<int, 3>, int> terms;
+            for (int s = 0; s < 6; s++) { array<int, 3> g; for (int i = 0; i < 3; i++) g[PERMS[s][i]] = al[i]; terms[g] += chi ? PSIGN[s] : 1; }
+            vector<pair<array<int, 3>, int>> el;
+            for (auto &kv : terms) if (kv.second) el.push_back({kv.first, kv.second > 0 ? 1 : -1});
+            if (!el.empty()) basis.push_back(el);
+        }
+        int U = basis.size();
+        vector<array<int, 3>> verts;
+        if (chi < 0) { for (int v = 1; v < 8; v++) verts.push_back({v & 1, (v >> 1) & 1, (v >> 2) & 1}); }
+        else verts = {{1, 0, 0}, {1, 1, 0}, {1, 1, 1}};
         vector<vector<pair<int, u64>>> rows;
-        for (int v = 1; v < 8; v++) {
-            int vv[3] = {v & 1, (v >> 1) & 1, (v >> 2) & 1}, w = vv[0] + vv[1] + vv[2];
-            int K = k - e * w;
+        for (auto &vv : verts) {
+            int w = vv[0] + vv[1] + vv[2], K = k - e * w;
             for (int s = 0; s < K; s++) for (int a0 = s; a0 >= 0; a0--) for (int a1 = s - a0; a1 >= 0; a1--) {
                 int al[3] = {a0, a1, s - a0 - a1};
                 vector<pair<int, u64>> row;
                 for (int u = 0; u < U; u++) {
-                    u64 c = 1; bool ok = true;
-                    for (int i = 0; i < 3 && ok; i++) {
-                        int bi = mons[u][i];
-                        if (bi < al[i] || (!vv[i] && bi != al[i])) { ok = false; break; }
-                        c = mulm(c, binom(bi, al[i]));
+                    u64 acc = 0;
+                    for (auto &te : basis[u]) {
+                        u64 c = 1; bool ok = true;
+                        for (int i = 0; i < 3 && ok; i++) {
+                            int bi = te.first[i];
+                            if (bi < al[i] || (!vv[i] && bi != al[i])) { ok = false; break; }
+                            c = mulm(c, binom(bi, al[i]));
+                        }
+                        if (ok) acc = te.second > 0 ? addm(acc, c) : subm(acc, c);
                     }
-                    if (ok && c) row.push_back({u, c});
+                    if (acc) row.push_back({u, acc});
                 }
                 rows.push_back(row);
             }
@@ -114,12 +140,16 @@ int main(int argc, char **argv) {
             map<array<int, 3>, u64> Pl;
             bool hasL = false;
             for (int u = 0; u < U; u++) {
-                u64 x = nmod_mat_entry(X, u, col); if (!x) continue;
-                if (mons[u][0] + mons[u][1] + mons[u][2] == l) hasL = true;
-                for (int a = 0; a <= e; a++) for (int b = 0; b <= e; b++) for (int c = 0; c <= e; c++) {
-                    array<int, 3> g = {mons[u][0] + a, mons[u][1] + b, mons[u][2] + c};
-                    if (g[0] + g[1] + g[2] >= k) continue;
-                    Pl[g] = addm(Pl[g], mulm(x, mulm(f[a], mulm(f[b], f[c]))));
+                u64 x0 = nmod_mat_entry(X, u, col); if (!x0) continue;
+                for (auto &te : basis[u]) {
+                    u64 x = te.second > 0 ? x0 : (P - x0) % P;
+                    auto &mo = te.first;
+                    if (mo[0] + mo[1] + mo[2] == l) hasL = true;
+                    for (int a = 0; a <= e; a++) for (int b = 0; b <= e; b++) for (int c = 0; c <= e; c++) {
+                        array<int, 3> g = {mo[0] + a, mo[1] + b, mo[2] + c};
+                        if (g[0] + g[1] + g[2] >= k) continue;
+                        Pl[g] = addm(Pl[g], mulm(x, mulm(f[a], mulm(f[b], f[c]))));
+                    }
                 }
             }
             exactOrder += hasL;
@@ -154,9 +184,10 @@ int main(int argc, char **argv) {
         }
         nmod_mat_clear(X);
         long rk = rank_mod(coneRows);
-        printf("l=%d: k=%d D=%d unknowns %d, witness space dim %ld (%d with a nonzero degree-l part), %d with jet outside J^%d + m^k;"
-               " cumulative cone rank %ld\n", l, k, D, U, nul, exactOrder, lowViol, j, rk);
+        printf("l=%d%s: k=%d D=%d unknowns %d, witness space dim %ld (%d with a nonzero degree-l part), %d with jet outside J^%d + m^k;"
+               " cumulative cone rank %ld\n", l, chi < 0 ? "" : (chi ? " (sign part)" : " (trivial part)"), k, D, U, nul, exactOrder, lowViol, j, rk);
         fflush(stdout);
+      }
     }
     return 0;
 }

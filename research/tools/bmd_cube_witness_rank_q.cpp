@@ -10,7 +10,10 @@
 // J^j + m^k (J = (x1 - x2, x3)); P' and P = prod (x_i - 1)^d P' satisfy this together, since the product is a unit at
 // the origin.  Equal ranks mean every rational witness of excess l has multiplicity >= j at (1:1:0).
 //
-// Usage: bmd_cube_witness_rank_q d rho [J=j] l [l ...]
+// With T as the first argument after rho (before J=j), the space is restricted to its S_3-trivial part: orbit sums of
+// monomials, conditions at the vertex representatives (1,0,0), (1,1,0), (1,1,1).
+//
+// Usage: bmd_cube_witness_rank_q d rho [T] [J=j] l [l ...]
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
@@ -25,40 +28,62 @@ int main(int argc, char **argv) {
     int d = atoi(argv[1]), rho = atoi(argv[2]);
     { const char *th = getenv("OMP_NUM_THREADS"); flint_set_num_threads(th ? atoi(th) : 1); }
     int m = 4 * d + rho - 1, e = d;
-    int jj = 0, first = 3;
-    if (argc > 3 && argv[3][0] == 'J') { jj = atoi(argv[3] + 2); first = 4; }
+    int jj = 0, first = 3; bool triv = false;
+    if (argc > first && argv[first][0] == 'T') { triv = true; first++; }
+    if (argc > first && argv[first][0] == 'J') { jj = atoi(argv[first] + 2); first++; }
     for (int ai = first; ai < argc; ai++) {
         int l = atoi(argv[ai]), k = l + m + 1, D = 2 * k - d, Dp = D - 3 * e;
-        vector<array<int, 3>> mons;
-        for (int t = l; t <= Dp; t++) for (int a = t; a >= 0; a--) for (int b = t - a; b >= 0; b--) mons.push_back({a, b, t - a - b});
-        int U = mons.size();
+        // basis: monomials, or S_3 orbit sums (trivial part)
+        vector<vector<array<int, 3>>> basis;
+        for (int t = l; t <= Dp; t++) for (int a = t; a >= 0; a--) for (int b = t - a; b >= 0; b--) {
+            int c = t - a - b;
+            if (!triv) { basis.push_back({{a, b, c}}); continue; }
+            if (b > a || c > b) continue;
+            vector<array<int, 3>> orb;
+            int perm[6][3] = {{0, 1, 2}, {0, 2, 1}, {1, 0, 2}, {1, 2, 0}, {2, 0, 1}, {2, 1, 0}};
+            int al[3] = {a, b, c};
+            for (int s = 0; s < 6; s++) {
+                array<int, 3> g; for (int i = 0; i < 3; i++) g[perm[s][i]] = al[i];
+                bool seen = false; for (auto &o : orb) if (o == g) seen = true;
+                if (!seen) orb.push_back(g);
+            }
+            basis.push_back(orb);
+        }
+        vector<array<int, 3>> mons;  // first monomial of each basis element (for the jet rows below, dense mode only)
+        for (auto &bb : basis) mons.push_back(bb[0]);
+        int U = basis.size();
+        vector<array<int, 3>> verts;
+        if (!triv) { for (int v = 1; v < 8; v++) verts.push_back({v & 1, (v >> 1) & 1, (v >> 2) & 1}); }
+        else verts = {{1, 0, 0}, {1, 1, 0}, {1, 1, 1}};
         long nrows = 0;
-        for (int v = 1; v < 8; v++) { int w = (v & 1) + ((v >> 1) & 1) + ((v >> 2) & 1); long K = k - e * w; if (K > 0) nrows += K * (K + 1) * (K + 2) / 6; }
+        for (auto &vv : verts) { int w = vv[0] + vv[1] + vv[2]; long K = k - e * w; if (K > 0) nrows += K * (K + 1) * (K + 2) / 6; }
         fmpz_mat_t A; fmpz_mat_init(A, nrows, U);
         fmpz_t c, bin; fmpz_init(c); fmpz_init(bin);
         long r = 0;
-        for (int v = 1; v < 8; v++) {
-            int vv[3] = {v & 1, (v >> 1) & 1, (v >> 2) & 1}, w = vv[0] + vv[1] + vv[2];
+        for (auto &vv : verts) {
+            int w = vv[0] + vv[1] + vv[2];
             int K = k - e * w;
             for (int s = 0; s < K; s++) for (int a0 = s; a0 >= 0; a0--) for (int a1 = s - a0; a1 >= 0; a1--) {
                 int al[3] = {a0, a1, s - a0 - a1};
                 for (int u = 0; u < U; u++) {
-                    bool ok = true; fmpz_one(c);
-                    for (int i = 0; i < 3 && ok; i++) {
-                        int bi = mons[u][i];
-                        if (bi < al[i] || (!vv[i] && bi != al[i])) { ok = false; break; }
-                        fmpz_bin_uiui(bin, bi, al[i]); fmpz_mul(c, c, bin);
+                    for (auto &mo : basis[u]) {
+                        bool ok = true; fmpz_one(c);
+                        for (int i = 0; i < 3 && ok; i++) {
+                            int bi = mo[i];
+                            if (bi < al[i] || (!vv[i] && bi != al[i])) { ok = false; break; }
+                            fmpz_bin_uiui(bin, bi, al[i]); fmpz_mul(c, c, bin);
+                        }
+                        if (ok) fmpz_add(fmpz_mat_entry(A, r, u), fmpz_mat_entry(A, r, u), c);
                     }
-                    if (ok) fmpz_set(fmpz_mat_entry(A, r, u), c);
                 }
                 r++;
             }
         }
         fmpz_mat_t B; fmpz_mat_init(B, nrows, U); fmpz_t den; fmpz_init(den);
         long rk = fmpz_mat_rref_mul(B, den, A);
-        printf("(d,rho)=(%d,%d) l=%d: unknowns %d, rows %ld, rank over Q %ld, dimension over Q %ld\n", d, rho, l, U, nrows, rk, (long)U - rk);
+        printf("(d,rho)=(%d,%d) l=%d%s: unknowns %d, rows %ld, rank over Q %ld, dimension over Q %ld\n", d, rho, l, triv ? " (trivial part)" : "", U, nrows, rk, (long)U - rk);
         fflush(stdout);
-        if (jj > 0) {
+        if (jj > 0 && !triv) {
             // jet rows: coefficient of t^a u^b s^c (b + c < jj, a + b + c < k) in P'(t, t - u, s)
             vector<array<int, 3>> keys;
             for (int tot = 0; tot < k; tot++) for (int bc = 0; bc < jj && bc <= tot; bc++) for (int b = 0; b <= bc; b++) keys.push_back({tot - bc, b, bc - b});
