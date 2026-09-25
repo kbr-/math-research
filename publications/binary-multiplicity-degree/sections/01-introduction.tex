@@ -23,27 +23,27 @@ multiplicity means Hasse multiplicity of formal polynomials
 Let \(n\ge1\) and \(k\ge1\). For \(0\le\ell<k\), let \(\delta(n,k,\ell)\) be the
 least total degree of a polynomial \(P\in\Ft[x_1,\ldots,x_n]\) with
 \(\mult_a(P)\ge k\) for every \(a\in\Ft^n\setminus\{\zero\}\) and
-\(\mult_{\zero}(P)=\ell\); we call \(\mult_{\zero}(P)\) the \emph{origin order} of
-\(P\). A polynomial is \emph{\(k\)-admissible} if
-\(\mult_a(P)\ge k\) for every nonzero \(a\) and \(\mult_{\zero}(P)\le k-1\)
-\lean{claims/BinaryMultiplicityDegreeFormula.lean}, and \(D(n,k)\) is the least
-total degree of a \(k\)-admissible polynomial. Thus
-\(D(n,k)=\min_{0\le\ell<k}\delta(n,k,\ell)\).
+\(\mult_{\zero}(P)=\ell\) (such polynomials exist by
+Theorem~\ref{thm:construction}); we call \(\mult_{\zero}(P)\) the \emph{origin
+order} of \(P\). A polynomial is \emph{\(k\)-admissible} if \(\mult_a(P)\ge k\)
+for every nonzero \(a\) and \(\mult_{\zero}(P)\le k-1\), and \(D(n,k)\) is the
+least total degree of a \(k\)-admissible polynomial. Thus
+\(D(n,k)=\min_{0\le\ell<k}\delta(n,k,\ell)\)
+\lean{claims/BinaryMultiplicityDegreeFormula.lean}.
 \end{definition}
 
-The condition at the origin excludes \(P=0\)
-\lean{claims/DegreeFormulaArithmetic.lean} and allows any origin order below
-\(k\), not only a nonzero value at the origin.
-Bishnoi, Boyadzhiyska, Das and M\'esz\'aros~\cite[Question~4.3]{BBDM23} asked,
-in the study of subspace coverings with multiplicities, whether
-\(D(n,k)\ge2k-\lfloor k/2^{n-1}\rfloor\) when \(k\ge2^{n-2}\). This bound
-follows for all \(n\) and \(k\) from the multiplicity Schwartz--Zippel lemma of Dvir,
-Kopparty, Saraf and Sudan~\cite{DKSS13}; see Proposition~\ref{prop:cover-bound},
-which was the content of an earlier note~\cite{Note}. Bishnoi et al.\ also
-construct multisets of \(2k-\lfloor k/2^{n-1}\rfloor\) affine hyperplanes that
-cover every nonzero point at least \(k\) times and the origin at most \(k-1\)
-times, for \(k\ge2^{n-2}\) \cite[Theorem~1.2(a) of arXiv v1]{BBDM23}, and the
-bound is attained for \(k\ge2^{n-2}\) (Corollary~\ref{cor:main}).
+The condition at the origin excludes \(P=0\) and allows any origin order below
+\(k\), not only a nonzero value at the origin. Returning to a question of
+Sauermann and Wigderson, this time over \(\Ft\), Bishnoi, Boyadzhiyska, Das and
+M\'esz\'aros~\cite[Question~4.3]{BBDM23} asked whether
+\(D(n,k)\ge2k-\lfloor k/2^{n-1}\rfloor\) when \(k\ge2^{n-2}\). This bound holds
+for all \(n\) and \(k\) by the multiplicity Schwartz--Zippel lemma of Dvir,
+Kopparty, Saraf and Sudan~\cite{DKSS13} (Proposition~\ref{prop:cover-bound},
+the content of an earlier note~\cite{Note}). Bishnoi et al.\ also construct
+multisets of \(2k-\lfloor k/2^{n-1}\rfloor\) affine hyperplanes that cover every
+nonzero point at least \(k\) times and the origin at most \(k-1\) times, for
+\(k\ge2^{n-2}\) \cite[Theorem~1.2(a)]{BBDM23}, and the bound is attained for
+\(k\ge2^{n-2}\) (Corollary~\ref{cor:main}).
 
 \subsection{Main results}
 
@@ -63,14 +63,11 @@ degree \(\Phi(n,k,\ell)\), and every such polynomial has degree at least
 Write \(k-\ell-1=q2^n+r\) with \(0\le r<2^n\), and let \(s_2\) be the binary
 digit sum. By Legendre's formula (Lemma~\ref{lem:legendre}),
 \[
- \Phi(n,k,\ell)=n+2k-2-2q-s_2(r)
+ \Phi(n,k,\ell)=n+2k-2-2q-s_2(r).
 \]
-\lean{claims/PerOrderArithmetic.lean}.
-In particular \(\Phi(n,k,\ell)=n+2k-2-s_2(k-\ell-1)\) when \(k-\ell-1<2^n\)
-\lean{claims/PerOrderLegendre.lean}. When
+In particular \(\Phi(n,k,\ell)=n+2k-2-s_2(k-\ell-1)\) when \(k-\ell-1<2^n\). When
 \(k-\ell-1\ge2^n\), that is \(q\ge1\), \(\Phi\) is strictly smaller, since
-\(s_2(k-\ell-1)=s_2(q)+s_2(r)\le q+s_2(r)<2q+s_2(r)\)
-\lean{claims/PerOrderArithmetic.lean}.
+\(s_2(k-\ell-1)=s_2(q)+s_2(r)\le q+s_2(r)<2q+s_2(r)\).
 A polynomial of degree \(\Phi\) is \(y_1^\ell F^{2q}g_{r+1}\), where
 \(y_1=x_1^2+x_1\), \(F\) is the product of the \(2^n-1\) affine forms
 \(1+u\cdot x\) with \(u\ne\zero\), and \(g_{r+1}\) is a truncated product
@@ -78,9 +75,8 @@ A polynomial of degree \(\Phi\) is \(y_1^\ell F^{2q}g_{r+1}\), where
 example with \(k-\ell-1\ge2^n\) is \(n=1\), \(k=3\), \(\ell=0\): there
 \(\delta=\Phi=3\), attained by \((1+x)^3\), while \(n+2k-2-s_2(k-\ell-1)=4\). The same
 example appears in Menezes' discussion of dimensions below his range
-\cite[Section~8]{Men26}. For
-\(n=2\), \(k=5\), \(\ell=0\) the two values are \(8\) and \(9\)
-\lean{claims/PerOrderArithmetic.lean}.
+\cite[Section~8]{Men26}. For \(n=2\), \(k=5\), \(\ell=0\) the two values are \(8\)
+and \(9\).
 
 Minimizing over \(\ell\) gives \(D(n,k)\).
 
@@ -100,26 +96,25 @@ and some \(k\)-admissible polynomial has degree exactly
 Three features of these formulas stand out.
 \begin{itemize}
  \item \textbf{Blocks of \(2^n\).} As a function of \(k-\ell\), the excess
- \(\Phi-n-2\ell\) grows by \(2^{n+1}-2\) with each block of \(2^n\)
- \lean{claims/PerOrderArithmetic.lean}. The product \(F^2\) has degree at most
- \(2^{n+1}-2\) and multiplicity at least \(2^n\) at every nonzero point
- (Lemma~\ref{lem:hyperplane-product}) \lean{claims/PerOrderArithmetic.lean}, and the
- construction pays each block with
- one factor \(F^2\) and the remainder \(r\) with the truncated product
- \(g_{r+1}\).
+ \(\Phi-n-2\ell\) grows by \(2^{n+1}-2\) with each block of \(2^n\). The
+ product \(F^2\) has degree at most \(2^{n+1}-2\) and multiplicity at least
+ \(2^n\) at every nonzero point (Lemma~\ref{lem:hyperplane-product}), and the
+ construction pays each block with one factor \(F^2\) and the remainder \(r\)
+ with the truncated product \(g_{r+1}\).
  \item \textbf{Where the Schwartz--Zippel bound is exact.} It is attained if
  and only if \(k\ge2^{n-2}\). For \(k<2^{n-2}\), \(D(n,k)\) exceeds it by
- \(n-2-\lfloor\log_2k\rfloor\ge1\), and for fixed \(k\) each further dimension
- costs exactly one degree. For example \(D(n,1)=n\), \(D(n,4)=n+4\),
- \(D(n,8)=n+11\) and \(D(n,15)=n+25\) for \(n\ge\lfloor\log_2k\rfloor+2\)
- \lean{claims/DegreeFormulaArithmetic.lean}.
- \item \textbf{Comparison with the reals.} Over \(\mathbb R\), for \(k\ge2\) and
- \(n\ge2k-3\), the least degree with origin order \(\ell\) is \(n+2k-3\) for every
- \(\ell\le k-2\), and \(n+2k-2\) for \(\ell=k-1\) \cite[Theorems~1.4 and~1.5]{SW20};
- Huang, Wang and Wang extend the first case to \(n\ge k-1\)
- \cite[Theorem~1.8 of arXiv v3]{HWW26}. In the range \(n\ge2k-3\) \(k-\ell-1<2^n\), so over \(\Ft\) it is
+ \(n-2-\lfloor\log_2k\rfloor\ge1\). In the range \(n\ge\lfloor\log_2k\rfloor+2\)
+ of the logarithmic formula, each further dimension costs exactly one degree;
+ for example \(D(n,1)=n\), \(D(n,4)=n+4\), \(D(n,8)=n+11\) and \(D(n,15)=n+25\)
+ there.
+ \item \textbf{Comparison with the reals.} Over \(\mathbb R\), for \(k\ge2\),
+ the least degree with origin order \(\ell\le k-2\) is \(n+2k-3\) when
+ \(n\ge2k-3\) \cite[Theorem~1.4]{SW20}, a range that Huang, Wang and Wang extend
+ to \(n\ge k-1\) \cite[Theorem~1.8]{HWW26}, and the least degree with origin
+ order \(k-1\) is \(n+2k-2\) for every \(n\ge1\) \cite[Theorem~1.5]{SW20}. For
+ \(n\ge k-1\) we have \(k-\ell-1<2^n\), so over \(\Ft\) the value is
  \(n+2k-2-s_2(k-\ell-1)\): lower by \(s_2(k-\ell-1)-1\ge0\) for \(\ell\le k-2\),
- and the same for \(\ell=k-1\) \lean{claims/PerOrderArithmetic.lean}.
+ and the same for \(\ell=k-1\).
 \end{itemize}
 
 \subsection{Relation to previous work}
@@ -130,20 +125,17 @@ Three features of these formulas stand out.
  with order at least \(k\) at the nonzero vertices of \(\{0,1\}^n\) and order
  exactly \(\ell\) at the origin, for \(k\ge2\) and \(n\ge k-1\). In characteristic
  two his formula is \(n+2k-2-s_2(k-\ell-1)\) \cite[Corollary~1.3]{Men26}. For
- \(n\ge k-1\) we have \(k-\ell-1<2^n\), so Theorem~\ref{thm:main} agrees with
- it there \lean{claims/PerOrderArithmetic.lean} and extends it, over \(\Ft\), to every \(n\ge1\) and every \(k\ge1\).
- The new range is \(2\le n<k-1\) (Menezes treats \(n=1\); see below), and there the formula changes form as soon as
- \(k-\ell-1\ge2^n\). Our upper-bound construction multiplies Menezes'
- Catalan truncation, specialized to \(\Ft\), by powers of \(F\). The telescoping
- identity of Lemma~\ref{lem:telescope} gives a short self-contained proof that
- the truncation works in every dimension. His degree formula is stated for
- \(n\ge k-1\), the range of his theorem. He notes that this hypothesis is
- substantive, gives \(\delta_\F(1,k,\ell)=k+\ell\) over every field, and names
- smaller dimensions as a further direction, where a formula must account for
- cancellation between his basis elements \cite[Section~8]{Men26}. For \(n=1\)
- our formula also gives \(k+\ell\) \lean{claims/PerOrderArithmetic.lean}. We checked on 25 September 2026 that arXiv
- lists only version~1 of~\cite{Men26}.
- Our lower bound is proved independently of~\cite{Men26}.
+ \(n\ge k-1\) we have \(k-\ell-1<2^n\), so Theorem~\ref{thm:main} agrees with it
+ there. He notes that the hypothesis \(n\ge k-1\) is substantive, gives
+ \(\delta_\F(1,k,\ell)=k+\ell\) over every field, and names smaller dimensions as
+ a further direction, where a formula must account for cancellation between his
+ basis elements \cite[Section~8]{Men26}. For \(n=1\) our formula also gives
+ \(k+\ell\). So the new range is \(2\le n<k-1\), where the formula changes form as
+ soon as \(k-\ell-1\ge2^n\). Our upper-bound construction multiplies Menezes'
+ Catalan truncation, specialized to \(\Ft\) (Lemma~\ref{lem:catalan}), by powers
+ of \(F\); the telescoping identity of Lemma~\ref{lem:telescope} gives a short
+ self-contained proof that the truncation works in every dimension. Our lower
+ bound is proved independently of~\cite{Men26}.
  \item \textbf{Bishnoi, Boyadzhiyska, Das and M\'esz\'aros~\cite{BBDM23}.} They
  determine the least size of a multiset of affine hyperplanes (and, more
  generally, subspaces of codimension \(d\)) covering the nonzero points of
@@ -153,35 +145,31 @@ Three features of these formulas stand out.
  \(k\ge2^{n-2}\). Corollary~\ref{cor:main} completes the range \(k<2^{n-2}\), and
  Theorem~\ref{thm:main} refines every value by the origin order. They refine
  their covers in the same way, by the number of times the origin is covered
- \cite[Section~2 of arXiv v1]{BBDM23}. The factor \(F\) is the product of the
- linear forms of the \(2^n-1\) hyperplanes of their covers that avoid the
- origin.
+ \cite[Section~2]{BBDM23}. The factor \(F\) is the product of the affine forms of
+ the \(2^n-1\) hyperplanes of their covers that avoid the origin.
  \item \textbf{Sauermann and Wigderson~\cite{SW20}.} Their theorems are the real
- case described above. The case \(\ell=k-1\), with value \(n+2k-2\) for every
- \(n\ge1\), is their Theorem~1.5; they state it over \(\mathbb R\), and Bishnoi
- et al.\ note that its proof is valid over every field \cite[Section~1.3 of
- arXiv v1]{BBDM23}. So the case
- \(\ell=k-1\) of Theorem~\ref{thm:main}, where \(\Phi(n,k,k-1)=n+2k-2\), is not
- new \lean{claims/PerOrderArithmetic.lean}. In characteristic two they give a polynomial of degree \(n+4\) for
+ case described above. Their Theorem~1.5, the case \(\ell=k-1\) with value
+ \(n+2k-2\) for every \(n\ge1\), is stated over \(\mathbb R\), and Bishnoi et al.\
+ note that its proof is valid over every field \cite[Section~1.3]{BBDM23}. So the
+ case \(\ell=k-1\) of Theorem~\ref{thm:main}, where \(\Phi(n,k,k-1)=n+2k-2\), is
+ not new. In characteristic two they give a polynomial of degree \(n+4\) for
  \(k=4\), below \(n+2k-3=n+5\), showing that the real formula fails there.
  \item \textbf{Dvir, Kopparty, Saraf and Sudan~\cite{DKSS13}.} Their
  multiplicity Schwartz--Zippel lemma is used only in the second proof of
  Corollary~\ref{cor:main} (Appendix~\ref{sec:second-proof}) and for
  Proposition~\ref{prop:cover-bound}.
  \item \textbf{Alon~\cite{Alo99} and Alon and F\"uredi~\cite{AF93}.} The lower
- bound of Theorem~\ref{thm:main} uses the grid-vanishing lemma of the
- combinatorial Nullstellensatz~\cite[Lemma~2.1]{Alo99}, for a grid of \(2^n\)
- polynomials. For \(k=1\), Corollary~\ref{cor:main} says \(D(n,1)=n\) for
- \(n\ge2\) \lean{claims/DegreeFormulaArithmetic.lean}; the lower bound is the case \(\F=\Ft\) of~\cite[Theorem~5]{AF93}.
+ bound of Theorem~\ref{thm:main} reduces to the grid-vanishing lemma of the
+ combinatorial Nullstellensatz~\cite[Lemma~2.1]{Alo99}, applied to a grid
+ \(V^h\) whose base \(V\subset\Ft[y_1,\ldots,y_n]\) is the \(\Ft\)-span of
+ \(y_1,\ldots,y_n\), of size \(2^n\). For \(k=1\) and \(n\ge2\), where \(k<2^{n-1}\),
+ Corollary~\ref{cor:main} gives \(D(n,1)=n\); the lower bound is the case
+ \(\F=\Ft\) of~\cite[Theorem~5]{AF93}.
 \end{itemize}
 
-On 24 and 25 September 2026 we searched the web for high-order vanishing on the
-hypercube in positive characteristic and for punctured multiplicity
-Nullstellens\"atze, and read the works that Semantic Scholar lists as citing
-\cite{SW20}, \cite{BBDM23} or~\cite{Men26}. None determines \(\delta\) over
-\(\Ft\) for \(n<k-1\) and \(n\ge2\); the citing works treat the reals, hyperplane
-covers or simple vanishing. A bounded search does not establish that no such
-result exists.
+A search on 25 September 2026 of the works citing~\cite{SW20}, \cite{BBDM23}
+and~\cite{Men26} found no determination of \(\delta\) over \(\Ft\) for
+\(2\le n<k-1\); a bounded search does not establish that none exists.
 
 \subsection{Notation}
 
@@ -193,10 +181,10 @@ nonzero points and \(\ell<k\) the origin order. We write
 variable, and substituting \(y_i\mapsto x_i^2+x_i\) recovers this meaning);
 \(F=\prod_{u\ne\zero}(1+u\cdot x)\) is the hyperplane product
 (Section~\ref{sec:upper}); \(g_s\) is the truncated product
-(Definition~\ref{def:truncated}); \(\hat x_K(Y)=\sum_{s<K}Y^{2^s}\) is the local
-inverse of \(x\mapsto x^2+x\), and \(w=P(\hat x_K(y_1),\ldots,\hat x_K(y_n))\)
-(Section~\ref{sec:lower}). For a polynomial \(f\), \(f_d\) is its homogeneous
-component of degree \(d\).
+(Definition~\ref{def:truncated}); \(\hat x_K(Y)=\sum_{j<K}Y^{2^j}\) is the
+truncated local inverse of \(x\mapsto x^2+x\), and
+\(w=P(\hat x_K(y_1),\ldots,\hat x_K(y_n))\) (Section~\ref{sec:lower}). For a
+polynomial \(f\), \(f_d\) is its homogeneous component of degree \(d\).
 
 \subsection{Proof outline}
 
@@ -207,56 +195,44 @@ component of degree \(d\).
  cost at least \(s\) leaves a polynomial \(g_s\). It still vanishes to order
  \(s\) off the origin, takes the value \(1\) at the origin, and has small
  degree (Theorem~\ref{thm:truncated-product}). The product \(F\) has
- multiplicity at least \(2^{n-1}\) at every nonzero point. Multiplying \(F^{2q}g_{r+1}\)
- by \(y_1^\ell\) sets the origin order (Theorem~\ref{thm:construction}).
+ multiplicity at least \(2^{n-1}\) at every nonzero point. Multiplying
+ \(F^{2q}g_{r+1}\) by \(y_1^\ell\) sets the origin order
+ (Theorem~\ref{thm:construction}).
  \item \textbf{Lower bound (Section~\ref{sec:lower}).} Write
  \(P=\sum_\varepsilon x^\varepsilon A_\varepsilon(x^2+x)\) with squarefree
  \(x^\varepsilon\). A nonzero coefficient of \(y^e\) in \(A_\varepsilon\) forces
  \(\deg P\ge|\varepsilon|+2|e|\). The multiplicity conditions determine the
- low-degree parts of every \(A_\varepsilon\) from one power series \(w\), the
- composition of \(P\) with the additive local inverse
- \(\hat x(y)=\sum_sy^{2^s}\) of \(x^2+x\). So a polynomial of degree below
- \(\Phi\) makes certain parts of \(w\,\prod_{i\in T}\hat x(y_i)\) vanish. These
+ low-degree parts of every \(A_\varepsilon\) from one polynomial \(w\), the
+ composition of \(P\) with the truncated additive local inverse
+ \(\hat x_K(y)=\sum_{j<K}y^{2^j}\) of \(x^2+x\). So a polynomial of degree below
+ \(\Phi\) makes certain parts of \(w\,\prod_{i\in T}\hat x_K(y_i)\) vanish. These
  parts are values of additive forms, and a recursion for repeated arguments
  shows that the forms vanish on the whole span \(V\) of \(y_1,\ldots,y_n\).
  Reducing modulo \(\prod_{v\in V}(Y-v)\) and applying the grid-vanishing lemma
  then isolates the lowest part \(w_\ell\), which is nonzero.
  \item \textbf{Second proof of Corollary~\ref{cor:main}
  (Appendix~\ref{sec:second-proof}).} After an invertible linear change of
- coordinates, \(S=P(x',0)+P(x',1)\) is admissible in \(n-1\) variables, has the
- same origin order, and has degree at least one lower
- (Theorem~\ref{thm:step}). Iterating down to \(n_0=\lfloor\log_2k\rfloor+2\),
- where the multiplicity Schwartz--Zippel lemma already gives degree \(2k\),
- yields \(D(n,k)\ge2k+n-n_0\). This was the proof of version~1 of this paper.
+ coordinates \(Q=P\circ A\), the polynomial \(S=Q(0,x')+Q(1,x')\) has
+ multiplicity at least \(k\) at the nonzero points of \(\Ft^{n-1}\), the same
+ origin order as \(P\), and degree at least one lower (Theorem~\ref{thm:step}).
+ Iterating down to \(n_0=\lfloor\log_2k\rfloor+2\), where the multiplicity
+ Schwartz--Zippel lemma already gives degree \(2k\), yields
+ \(D(n,k)\ge2k+n-n_0\).
 \end{itemize}
 
 \subsection{Formal verification}
 
-Every mathematical claim of this paper is proved in Lean~4 with Mathlib: the
-theorems and lemmas, the remarks, the examples and the comparisons made in the
-text, together with the multiplicity Schwartz--Zippel lemma, the hyperplane
-covers and the parity of Catalan numbers. The proofs use only Lean's standard
-axioms. Each claim carries a [Lean] link to its formal proof at a fixed
-repository commit, except the grid-vanishing lemma
-(Lemma~\ref{lem:grid-vanishing}), which the Lean proof takes from Mathlib.
-Appendix~\ref{sec:verification} maps statements to declarations and gives the
-commands to check them. Not formalized are statements about the content of
-other papers, which we cite rather than prove: what their theorems say over
-other fields or in other ranges, and how their constructions relate to ours.
-Formal verification covers the statements under the linked definitions. It does
-not cover the prose, the comparison with the literature, or the fidelity of the
-definitions to the informal notions, although the definitions are short
-(Definitions~\ref{def:mult} and~\ref{def:admissible}).
-
-\paragraph{Changes from version~1.} Version~1 (24 September 2026) determined
-\(D(n,k)\) by the argument now in Appendix~\ref{sec:second-proof}, and gave the
-upper bound \(n+2k-2-s_2(k-\ell-1)\) for each origin order
-(Proposition~\ref{prop:menezes-polynomial}), leaving its optimality open for
-\(n<k-1\). Version~2 determines \(\delta(n,k,\ell)\) in every dimension
-(Theorem~\ref{thm:main}). That bound is optimal when \(k-\ell-1<2^n\), and the
-new construction of Theorem~\ref{thm:construction} has degree below that bound otherwise
-\lean{claims/PerOrderArithmetic.lean}. The
-title, abstract and introduction are rewritten around the per-order result,
-Sections~\ref{sec:lower} and~\ref{sec:main} are new, and the Lean links point to
-a later commit. Version~1 contains no mathematical error that this version
-corrects.
+Every theorem, lemma, proposition and corollary of this paper is proved in
+Lean~4 with Mathlib, including the multiplicity Schwartz--Zippel lemma, the
+hyperplane covers and the parity of Catalan numbers, and so are the arithmetic
+facts used in the remarks, examples and comparisons. The proofs use only Lean's
+standard axioms. Each numbered statement carries a [Lean] link to its formal
+proof at a fixed repository commit, except the grid-vanishing lemma
+(Lemma~\ref{lem:grid-vanishing}), which the Lean proof takes from Mathlib;
+Appendix~\ref{sec:verification} maps every statement, including the facts in the
+prose, to its declarations and gives the commands to check them. Not formalized
+are statements about the content of other papers, which we cite rather than
+prove. Formal verification covers the statements under the linked definitions,
+not the prose or the fidelity of the definitions to the informal notions,
+although the definitions are short (Definitions~\ref{def:mult}
+and~\ref{def:admissible}).

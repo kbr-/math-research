@@ -24,7 +24,7 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \numberwithin{equation}{section}
-\newcommand{\leancommit}{ab7b3377138bc474e774ba9e4f0f009fd3a74eaa}
+\newcommand{\leancommit}{eec3af0eaaebaf683fefa10a85404fcd78f4c175}
 \newcommand{\leanref}[2]{\href{https://github.com/kbr-/math-research/blob/\leancommit/formalization/#1}{#2}}
 \newcommand{\lean}[1]{\textnormal{\small\leanref{#1}{[Lean]}}}
 \newcommand{\F}{\mathbb F}
@@ -52,24 +52,19 @@ origin. We prove that for all \(n\ge1\),
 \]
 Menezes determined \(\delta\) over every field for \(k\ge2\) and \(n\ge k-1\); in
 characteristic two his value is \(n+2k-2-s_2(k-\ell-1)\), which our formula
-recovers whenever \(k-\ell-1<2^n\). When \(k-\ell-1\ge2^n\) the value is smaller: each
-block of \(2^n\) in \(k-\ell-1\) is paid for by the square of the product of the
-\(2^n-1\) affine hyperplanes \(u\cdot x=1\), \(u\ne0\), which avoid the origin. The lower bound expands a
-polynomial in the basis \(x^\varepsilon(x^2+x)^e\), inverts \(x^2+x\) locally by
-an additive power series, and turns the multiplicity conditions into additive
-forms that vanish on the span of \(x_1^2+x_1,\ldots,x_n^2+x_n\); reducing
-modulo the vanishing polynomial of this span isolates the lowest homogeneous
-part of the polynomial composed with that series, which the origin order makes
-nonzero. Minimizing over \(\ell\) gives the least degree
-\(D(n,k)\) of a polynomial with multiplicity at least \(k\) off the origin and
-less than \(k\) at the origin: \(D(n,k)=2k+n-2-\lfloor\log_2k\rfloor\) for
-\(k<2^{n-1}\), and the multiplicity Schwartz--Zippel bound
-\(2k-\lfloor k/2^{n-1}\rfloor\), asked for by Bishnoi, Boyadzhiyska, Das and
-M\'esz\'aros, for \(k\ge2^{n-1}\). That bound is attained if and only if
-\(k\ge2^{n-2}\). We also give a second proof of \(D(n,k)\), from the
-Schwartz--Zippel lemma and a one-dimension reduction. Every mathematical claim of
-the paper is formalized in Lean~4, and an appendix maps each to its formal
-proof.
+recovers whenever \(k-\ell-1<2^n\). When \(k-\ell-1\ge2^n\) the value is smaller:
+each block of \(2^n\) in \(k-\ell-1\) is paid for by the square of the product of
+the affine forms \(1+u\cdot x\), \(u\ne0\), of the \(2^n-1\) hyperplanes avoiding the
+origin. The lower bound inverts \(x^2+x\) by an additive power series and reduces
+modulo the vanishing polynomial of the span of \(x_1^2+x_1,\ldots,x_n^2+x_n\).
+Minimizing over \(\ell\) gives the least degree \(D(n,k)\) of a polynomial with
+multiplicity at least \(k\) off the origin and less than \(k\) at the origin:
+\(D(n,k)=2k+n-2-\lfloor\log_2k\rfloor\) for \(k<2^{n-1}\), and
+\(2k-\lfloor k/2^{n-1}\rfloor\) for \(k\ge2^{n-1}\). So the multiplicity
+Schwartz--Zippel bound \(2k-\lfloor k/2^{n-1}\rfloor\), which Bishnoi,
+Boyadzhiyska, Das and M\'esz\'aros asked about for \(k\ge2^{n-2}\), is attained if
+and only if \(k\ge2^{n-2}\). Every theorem, lemma and corollary is formalized in
+Lean~4, and an appendix maps each to its formal proof.
 \end{abstract}
 \input{sections/01-introduction}
 \input{sections/02-preliminaries}

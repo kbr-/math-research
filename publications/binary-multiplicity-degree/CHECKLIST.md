@@ -42,7 +42,7 @@ its corrections are in [REVIEW-v2.md](REVIEW-v2.md).
 - [x] **State the boundary once, where useful.** Explain the important conclusions
   that do not follow. Keep a caveat next to a statement if omitting it would
   mislead; consolidate repeated scope and novelty disclaimers elsewhere.
-  — **Satisfied.** "What does not follow" (Section 5) states the binary-only scope once; the
+  — **Satisfied.** Remark 5.4 (other fields and grids) states the binary-only scope once; the
   novelty caveat appears once, after the related work.
 
 ## 2. Attribution and literature
@@ -188,7 +188,8 @@ its corrections are in [REVIEW-v2.md](REVIEW-v2.md).
   cases can reveal a definition, scope or interpretation mistake. Describe what
   a check establishes; one toy example is not a survey of known upper bounds.
   — **Satisfied.** Edge cases n = 1, k = 2^n and ℓ = k − 1 (now matched against
-  Sauermann–Wigderson's Theorem 1.5) agree; Remark 5.3 describes the finite checks as evidence.
+  Sauermann–Wigderson's Theorem 1.5) agree. The finite checks were cited in Remark 5.3 as
+  evidence until the referee pass of 25 September 2026 removed them (see FEEDBACK.md).
 - [x] **Separate evidence types.** Distinguish an informal proof, finite check,
   AI review, independent expert review and formal verification. Reused archived
   evidence is not a fresh run. Verification does not establish novelty or the

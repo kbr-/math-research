@@ -46,12 +46,20 @@ when both factors are. Part~4 holds because the constant coefficient of
 maps the monomials of degree \(d\) bijectively to the monomials of degree \(d\).
 \end{proof}
 
-One further fact about orders at the origin is used repeatedly. For
-\(f\) in a polynomial ring over \(\F\), write \(f_d\) for its homogeneous component
-of degree \(d\), and \(\operatorname{ord}f=\mult_{\zero}(f)\) for the least \(d\) with
-\(f_d\ne0\). Over \(\Ft\), if \(z_i\) (\(i\in\sigma\)) are elements of
-\(\Ft[y_\sigma]\) without constant term, then substituting \(x_i\mapsto z_i\) does
-not lower the order: a monomial of degree \(d\) goes to a product of \(d\)
-elements of order at least one. Hence \(\mult_a(P)\le\operatorname{ord}P(a+z)\)
-for every such substitution \(z\)
+For \(f\) in a polynomial ring over \(\F\), write \(f_d\) for its homogeneous
+component of degree \(d\), and \(\operatorname{ord}f=\mult_{\zero}(f)\) for the least
+\(d\) with \(f_d\ne0\).
+
+\begin{lemma}[Substitution]\label{lem:substitution}
+Let \(P\in\Ft[x_\sigma]\), \(a\in\Ft^\sigma\), and let \(\zeta_i\) (\(i\in\sigma\)) be
+polynomials over \(\Ft\) without constant term. Then
+\(\mult_a(P)\le\operatorname{ord}P(a+\zeta)\)
 \lean{claims/PerOrderArithmetic.lean}.
+\end{lemma}
+
+\begin{proof}
+Write \(P(a+z)=\sum_\beta c_\beta z^\beta\), so that \(P(a+\zeta)=\sum_\beta
+c_\beta\zeta^\beta\). Substituting elements of order at least one does not lower the
+order: \(\zeta^\beta\) is a product of \(|\beta|\) such elements. Every \(\beta\) with
+\(c_\beta\ne0\) has \(|\beta|\ge\mult_a(P)\).
+\end{proof}

@@ -9,14 +9,26 @@ variables \(y_i\). For \(A\in\Ft[y_\sigma]\), \(A(x^2+x)\) denotes the substitut
 \(|e|=\sum_ie_i\). Recall that \(f_d\) is the homogeneous component of degree
 \(d\) of \(f\), and put \(f_d=0\) for \(d<0\). For \(K\ge0\) let
 \[
- \hat x_K(Y)=\sum_{s<K}Y^{2^s}.
+ \hat x_K(Y)=\sum_{j<K}Y^{2^j}.
 \]
-Over \(\Ft\), \(\hat x_K(Y)^2+\hat x_K(Y)=Y+Y^{2^K}\), by the telescoping of
-Lemma~\ref{lem:telescope} \lean{claims/PerOrderYCoefficient.lean}. So
-\(\hat x_K(y)\) inverts \(x\mapsto x^2+x\) up to order \(2^K\); it is the
-truncation below degree \(2^K\) of the classical additive power series
-\(\sum_{s\ge0}Y^{2^s}\), which solves the Artin--Schreier equation \(X^2+X=Y\) in
-\(\Ft[[Y]]\) \lean{claims/ArtinSchreierSeries.lean}.
+
+\begin{lemma}[The local inverse]\label{lem:local-inverse}
+Over \(\Ft\), \(\hat x_K(Y)^2+\hat x_K(Y)=Y+Y^{2^K}\). The series
+\(\hat x(Y)=\sum_{j\ge0}Y^{2^j}\) satisfies \(\hat x^2+\hat x=Y\) in \(\Ft[[Y]]\), and
+\(\hat x_K\) is its truncation below degree \(2^K\)
+\textnormal{\small\leanref{claims/PerOrderYCoefficient.lean}{[Lean: \(\hat x_K\)]}\,\leanref{claims/ArtinSchreierSeries.lean}{[Lean: series]}}.
+\end{lemma}
+
+\begin{proof}
+By Frobenius, \(\hat x_K^2+\hat x_K=\sum_{j<K}(Y^{2^{j+1}}+Y^{2^j})\), which
+telescopes to \(Y+Y^{2^K}\). The
+coefficients of \(\hat x\) and \(\hat x_K\) agree below degree \(2^K\), so the
+coefficients of \(\hat x^2+\hat x\) and \(\hat x_K^2+\hat x_K\) agree below degree
+\(2^K\); letting \(K\) grow gives \(\hat x^2+\hat x=Y\).
+\end{proof}
+
+So \(\hat x_K(y)\) inverts \(x\mapsto x^2+x\) up to order \(2^K\): it is the
+truncation of the additive root of the Artin--Schreier equation \(X^2+X=Y\).
 
 \paragraph{Plan.} Suppose \(\deg P<\Phi\). Lemmas~\ref{lem:expansion}
 and~\ref{lem:congruence} turn the degree bound and the multiplicities into the
@@ -75,19 +87,18 @@ Let \(k\ge1\) and \(K\) with \(2^K\ge k\). Let \(P\in\Ft[x_\sigma]\) have
 \begin{proof}
 Write \(\equiv\) for equality of all homogeneous components of degree below \(k\).
 \begin{itemize}
- \item \emph{The substitution.} For \(\delta\in\Ft^\sigma\) substitute
- \(x_i\mapsto\hat x_i+\delta_i\). Since \(\delta_i^2=\delta_i\) and the cross term
+ \item \emph{The substitution.} For \(\gamma\in\Ft^\sigma\) substitute
+ \(x_i\mapsto\hat x_i+\gamma_i\). Since \(\gamma_i^2=\gamma_i\) and the cross term
  vanishes in characteristic two, \(x_i^2+x_i\) goes to
- \(\hat x_i^2+\hat x_i=y_i+y_i^{2^K}=:\hat y_i\) for both values of \(\delta_i\).
- Hence
+ \(\hat x_i^2+\hat x_i=y_i+y_i^{2^K}=:\hat y_i\) for both values of \(\gamma_i\)
+ (Lemma~\ref{lem:local-inverse}). Hence
  \[
-  P(\hat x+\delta)=\sum_{\varepsilon'}\prod_{i\in\varepsilon'}(\hat x_i+\delta_i)\,
+  P(\hat x+\gamma)=\sum_{\varepsilon'}\prod_{i\in\varepsilon'}(\hat x_i+\gamma_i)\,
   A_{\varepsilon'}(\hat y).
  \]
- \item \emph{Nonzero shifts.} For \(\delta\ne\zero\), \(P(\hat x+\delta)\) is
- \(P(\delta+z)\) at \(z_i=\hat x_i\), which have no constant term. Since
- \(\mult_\delta(P)\ge k\), \(P(\hat x+\delta)\) has order at least \(k\)
- (Section~\ref{sec:prelim}), so \(P(\hat x+\delta)\equiv0\).
+ \item \emph{Nonzero shifts.} The \(\hat x_i\) have no constant term, so for
+ \(\gamma\ne\zero\) Lemma~\ref{lem:substitution} and \(\mult_\gamma(P)\ge k\) give
+ \(\operatorname{ord}P(\gamma+\hat x)\ge k\), that is, \(P(\hat x+\gamma)\equiv0\).
  \item \emph{Inversion.} For \(c\in\Ft\) put \(N_i(c)=1\) if \(i\in\varepsilon\), and
  otherwise \(N_i(0)=1+\hat x_i\), \(N_i(1)=\hat x_i\). A check of the four cases
  gives
@@ -97,13 +108,13 @@ Write \(\equiv\) for equality of all homogeneous components of degree below \(k\
  \]
  For instance, for \(i\notin\varepsilon\) and \(i\in\varepsilon'\) the sum is
  \((1+\hat x_i)\hat x_i+\hat x_i(\hat x_i+1)=0\). Multiplying over \(i\) and summing
- over \(\delta\in\Ft^\sigma\) gives
- \(\sum_\delta\prod_iN_i(\delta_i)\prod_{i\in\varepsilon'}(\hat x_i+\delta_i)
+ over \(\gamma\in\Ft^\sigma\) gives
+ \(\sum_\gamma\prod_iN_i(\gamma_i)\prod_{i\in\varepsilon'}(\hat x_i+\gamma_i)
  =[\varepsilon'=\varepsilon]\), and therefore
  \[
-  A_\varepsilon(\hat y)=\sum_{\delta}\prod_iN_i(\delta_i)\,P(\hat x+\delta).
+  A_\varepsilon(\hat y)=\sum_{\gamma}\prod_iN_i(\gamma_i)\,P(\hat x+\gamma).
  \]
- \item \emph{Conclusion.} Modulo \(\equiv\) only \(\delta=\zero\) survives, and it
+ \item \emph{Conclusion.} Modulo \(\equiv\) only \(\gamma=\zero\) survives, and it
  contributes \(\prod_{i\notin\varepsilon}(1+\hat x_i)\,w\). Finally
  \(\hat y_i-y_i=y_i^{2^K}\) has order \(2^K\ge k\), so
  \(A_\varepsilon(\hat y)\equiv A_\varepsilon(y)\). \qedhere
@@ -111,20 +122,23 @@ Write \(\equiv\) for equality of all homogeneous components of degree below \(k\
 \end{proof}
 
 \begin{lemma}[The lowest part]\label{lem:lowest-part}
-In Lemma~\ref{lem:congruence}, if moreover \(\mult_{\zero}(P)=\ell<k\), then
-\(w_d=0\) for \(d<\ell\) and \(w_\ell\ne0\)
-\lean{claims/PerOrderLowerBound.lean}.
+Let \(0\le\ell<k\) and \(P\in\Ft[x_\sigma]\) with \(\mult_{\zero}(P)=\ell\), and put
+\(w=P(\hat x_k(y_1),\ldots,\hat x_k(y_n))\). Then \(w_d=0\) for \(d<\ell\) and
+\(w_\ell\ne0\) \lean{claims/PerOrderLowerBound.lean}.
 \end{lemma}
+
+\noindent No condition at the nonzero points is needed here. In the proof,
+\(K=k\), so \(2^K\ge k\).
 
 \begin{proof}
 Since the \(\hat x_i\) have no constant term, \(\operatorname{ord}w\ge\ell\)
-(Section~\ref{sec:prelim}). Substitute \(y_i\mapsto x_i^2+x_i\) in \(w\). By
+(Lemma~\ref{lem:substitution}). Substitute \(y_i\mapsto x_i^2+x_i\) in \(w\). By
 Lemma~\ref{lem:telescope} with \(t=x_i\), \(\hat x_K(x_i^2+x_i)=x_i+x_i^{2^K}\), so
 the result is \(P(x+x^{2^K})\). The difference \(P(x+x^{2^K})-P(x)\) lies in the
 ideal generated by the \(x_i^{2^K}\), so it has order at least \(2^K\ge k>\ell\),
 and \(P(x+x^{2^K})\) has order exactly \(\ell\). If \(w_\ell\) were zero, then
 \(\operatorname{ord}w>\ell\), and since each \(x_i^2+x_i\) has order one,
-\(P(x+x^{2^K})\) would have order above \(\ell\).
+\(P(x+x^{2^K})\) would have order above \(\ell\), by Lemma~\ref{lem:substitution}.
 \end{proof}
 
 \subsection{Additive forms}
@@ -137,6 +151,7 @@ Fix \(k\ge1\) and \(w\in\Ft[y_\sigma]\). For \(t\ge0\), \(j\ge0\) and
 \]
 
 \begin{lemma}[Forms]\label{lem:forms}
+For all \(t,j\ge0\):
 \begin{enumerate}
  \item \(E^{(t)}_j\) is symmetric, and additive in each argument.
  \item For \(t<k\) and \(i_1,\ldots,i_j\in\sigma\),
@@ -149,6 +164,9 @@ Fix \(k\ge1\) and \(w\in\Ft[y_\sigma]\). For \(t\ge0\), \(j\ge0\) and
 \lean{claims/PerOrderForms.lean}
 \end{lemma}
 
+\noindent Part~2 is stated for \(t<k\), the only case used; this also keeps the
+degree \(k-1-t\) nonnegative in the Lean statement.
+
 \begin{proof}
 \begin{enumerate}
  \item Permuting the arguments permutes the index set. Additivity holds because
@@ -158,10 +176,10 @@ Fix \(k\ge1\) and \(w\in\Ft[y_\sigma]\). For \(t\ge0\), \(j\ge0\) and
  \(\sum_a2^{\tau_a}\), so the component of degree \(k-1-t\) of \(w\) times it is
  \(\prod_ay_{i_a}^{2^{\tau_a}}w_{k-1-t-\sum_a2^{\tau_a}}\).
  \item In \(E^{(t)}_{j+2}(Y,Y,Z)\) the terms with \(\tau_1\ne\tau_2\) cancel in pairs
- under the exchange of \(\tau_1\) and \(\tau_2\). The terms with \(\tau_1=\tau_2=s\)
- give \(Y^{2^{s+1}}w_{k-1-t-2^{s+1}-\Sigma}\), where \(\Sigma\) is the contribution of
- \(Z\). In \(E^{(t)}_{j+1}(Y,Z)\), the terms with \(Y\)-exponent \(2^{s+1}\),
- \(0\le s<k-1\), are the same terms. The remaining diagonal term \(s=k-1\) is zero,
+ under the exchange of \(\tau_1\) and \(\tau_2\). The terms with \(\tau_1=\tau_2=\nu\)
+ give \(Y^{2^{\nu+1}}w_{k-1-t-2^{\nu+1}-\Sigma}\), where \(\Sigma\) is the contribution of
+ \(Z\). In \(E^{(t)}_{j+1}(Y,Z)\), the terms with \(Y\)-exponent \(2^{\nu+1}\),
+ \(0\le\nu<k-1\), are the same terms. The remaining diagonal term \(\nu=k-1\) is zero,
  because \(2^k>k-1-t\) makes the index of \(w\) negative. The terms of
  \(E^{(t)}_{j+1}(Y,Z)\) with \(Y\)-exponent \(1\) are
  \(Y\,w_{k-1-(t+1)-\Sigma}\), which sum to \(Y\,E^{(t+1)}_j(Z)\). Signs do not
@@ -188,7 +206,7 @@ Mathlib proves this lemma as part of the combinatorial Nullstellensatz, and
 the Lean proof uses that version.
 
 \begin{lemma}[Grid reduction]\label{lem:grid-reduction}
-Let \(D\) be an integral domain, \(V\subseteq D\) finite and nonempty,
+Let \(D\) be an integral domain, \(V\subseteq D\) finite,
 \(L_V=\prod_{v\in V}(Y-v)\), and \(\rho_N\) the remainder of \(Y^N\) modulo \(L_V\).
 Let \(I\) be finite, \(c_i\in D\) and \(d_{i,a}\ge0\) for \(i\in I\) and
 \(a=1,\ldots,h\). If
@@ -203,7 +221,8 @@ then for all exponents \(e_1,\ldots,e_h<|V|\),
 \end{lemma}
 
 \begin{proof}
-Let \(R=\sum_ic_i\prod_a\rho_{d_{i,a}}(Y_a)\). It has degree less than \(|V|\) in
+If \(V\) is empty, the conclusion is vacuous for \(h\ge1\) and is the hypothesis
+for \(h=0\); so let \(V\) be nonempty. Let \(R=\sum_ic_i\prod_a\rho_{d_{i,a}}(Y_a)\). It has degree less than \(|V|\) in
 each variable, because \(\deg\rho_N<|V|\). Since \(L_V\) divides
 \(Y^N-\rho_N\) and vanishes on \(V\), \(\rho_N(v)=v^N\) for \(v\in V\), so \(R\)
 vanishes on \(V^h\). By Lemma~\ref{lem:grid-vanishing}, \(R=0\). Its coefficient of
@@ -221,8 +240,8 @@ Let \(n\ge1\) and \(0\le\ell<k\). Every \(P\in\Ft[x_\sigma]\) with
 \begin{proof}
 Let \(m=k-\ell-1=q2^n+r\) with \(0\le r<2^n\), and \(h=2q+s_2(r)\). By
 Lemma~\ref{lem:legendre}, \(\Phi(n,k,\ell)=n+2(k-1)-h\), and
-\(m=\sum_{a=1}^h2^{s_a}\) with \(s_a\le n-1\) for all \(a\). Since every part is at
-least one, \(h\le m\le k-1\), and \(2^{s_a}\le m\) gives \(s_a<k\).
+\(m=\sum_{a=1}^h2^{b_a}\) with \(b_a\le n-1\) for all \(a\). Since every part is at
+least one, \(h\le m\le k-1\), and \(2^{b_a}\le m\) gives \(b_a<k\).
 
 Suppose that \(\deg P\le\Phi(n,k,\ell)-1\). Take \(K=k\), so \(2^K\ge k\), an
 expansion of \(P\) (Lemma~\ref{lem:expansion}), and \(w=P(\hat x)\) as in
@@ -261,18 +280,18 @@ Let \(V=\{\sum_{i\in U}y_i:U\subseteq\sigma\}\), the \(\Ft\)-span of the variabl
 \emph{Step 3: reduction.} Apply Lemma~\ref{lem:grid-reduction} with
 \(D=\Ft[y_\sigma]\), this \(V\), \(I=\{0,\ldots,k-1\}^h\),
 \(c_\tau=w_{k-1-\sum_a2^{\tau_a}}\), \(d_{\tau,a}=2^{\tau_a}\), and
-\(e_a=2^{s_a}<2^n\). It gives
+\(e_a=2^{b_a}<2^n\). It gives
 \[
- \sum_\tau w_{k-1-\sum_a2^{\tau_a}}\prod_a\bigl[Y^{2^{s_a}}\bigr]\rho_{2^{\tau_a}}=0 .
+ \sum_\tau w_{k-1-\sum_a2^{\tau_a}}\prod_a\bigl[Y^{2^{b_a}}\bigr]\rho_{2^{\tau_a}}=0 .
 \]
 Since \(L_V\) is monic of degree \(2^n\), \(\rho_N=Y^N\) for \(N<2^n\).
 \begin{itemize}
- \item If \(\tau_a<s_a\) for some \(a\), then \(\rho_{2^{\tau_a}}=Y^{2^{\tau_a}}\) has
- no \(Y^{2^{s_a}}\) term, and the term vanishes.
- \item If \(\tau_a\ge s_a\) for all \(a\) and \(\tau\ne s\), then
+ \item If \(\tau_a<b_a\) for some \(a\), then \(\rho_{2^{\tau_a}}=Y^{2^{\tau_a}}\) has
+ no \(Y^{2^{b_a}}\) term, and the term vanishes.
+ \item If \(\tau_a\ge b_a\) for all \(a\) and \(\tau\ne b\), then
  \(\sum_a2^{\tau_a}>m\), so the index \(k-1-\sum_a2^{\tau_a}\) is below \(\ell\), and
  \(w\) has no such component by Lemma~\ref{lem:lowest-part}.
- \item For \(\tau=s\), \(\rho_{2^{s_a}}=Y^{2^{s_a}}\), and the term is
+ \item For \(\tau=b\), \(\rho_{2^{b_a}}=Y^{2^{b_a}}\), and the term is
  \(w_{k-1-m}=w_\ell\).
 \end{itemize}
 So \(w_\ell=0\), contradicting Lemma~\ref{lem:lowest-part}.

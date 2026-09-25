@@ -7,7 +7,7 @@ Hasse multiplicity at least k at every nonzero point and exactly ℓ at the orig
 
   δ(n,k,ℓ) = n + 2ℓ + Σ_{j<n} ⌊(k − ℓ − 1)/2^j⌋ = n + 2k − 2 − 2q − s₂(r),  where k − ℓ − 1 = q·2^n + r, 0 ≤ r < 2^n
 
-([Lean](https://github.com/kbr-/math-research/blob/ab7b3377138bc474e774ba9e4f0f009fd3a74eaa/formalization/claims/PerOrderValue.lean)).
+([Lean](https://github.com/kbr-/math-research/blob/eec3af0eaaebaf683fefa10a85404fcd78f4c175/formalization/claims/PerOrderValue.lean)).
 Menezes (arXiv:2609.19009) determined δ over every field for n ≥ k − 1, where k − ℓ − 1 < 2^n and
 the value is n + 2k − 2 − s₂(k − ℓ − 1). Over F₂ the theorem extends this to every dimension. When k − ℓ − 1 ≥ 2^n
 the formula changes form: each block of 2^n in k − ℓ − 1 is paid for by the square of
@@ -27,8 +27,9 @@ only if k ≥ 2^(n−2).
 - **Second proof of D(n,k).** Version 1's route, kept as Appendix A: the multiplicity
   Schwartz–Zippel lemma of Dvir, Kopparty, Saraf and Sudan with a one-dimension step.
 
-Every mathematical claim, including the remarks, examples and comparisons, links to its Lean
-source at commit `ab7b3377`; only statements about other papers are cited instead. The external inputs are stated
+Every theorem, lemma and corollary links to its Lean source at commit `eec3af0e`, and the
+paper's appendix maps the arithmetic facts of the remarks, examples and comparisons to their
+declarations too; only statements about other papers are cited instead. The external inputs are stated
 without proof in the text, but they are formalized as well, so the formal verification has no
 unchecked premise. The paper supersedes version 1 and the deduction of the earlier
 [note](../binary-polynomial-multiplicity/), which reappears as its Proposition A.2.

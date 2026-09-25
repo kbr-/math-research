@@ -79,23 +79,39 @@ second form take \(t=1+x\), for which \(t^2+t=x^2+x\).
 
 \begin{definition}[Truncated product]\label{def:truncated}
 For \(s\ge1\), let \(g_s\in\Ft[x_\sigma]\) be the sum, over all subsets
-\(S\subseteq\sigma\) and all assignments \(i\mapsto a_i\) of powers of two to
-\(i\in S\) with \(\sum_{i\in S}a_i\le s-1\), of
+\(S\subseteq\sigma\) and all assignments \(i\mapsto p_i\) of powers of two to
+\(i\in S\) with \(\sum_{i\in S}p_i\le s-1\), of
 \[
- \prod_{i\in S}y_i^{a_i}\prod_{i\notin S}(1+x_i)
+ \prod_{i\in S}y_i^{p_i}\prod_{i\notin S}(1+x_i)
 \]
 \lean{claims/TruncatedProduct.lean}.
 \end{definition}
 
-The Catalan number \(C_{a-1}\) is odd exactly when \(a\) is a power of two;
-more precisely \(v_2(C_{a-1})=s_2(a)-1\) \cite{AK73}, \cite[Theorem~2.1 of the arXiv
-version]{DS06} \lean{third-party-claims/CatalanParity.lean}. So \(g_s\) is the specialization to \(\Ft\) of the Catalan truncation
-of Menezes~\cite[Section~3]{Men26}. In Lean the pair \((S,a)\) is encoded by a
-map \(c:\sigma\to\{\bot,0,\ldots,s-1\}\): \(c_i=\bot\) means \(i\notin S\), and \(c_i=j\) means
-\(a_i=2^j\). The sum runs over maps of cost \(\sum_{c_i\ne\bot}2^{c_i}\le s-1\).
-The bound \(j<s\) is automatic, because \(2^j\le s-1<2^s\). (The Lean statements
-hold for every \(s\ge0\) with natural-number subtraction; only \(s\ge1\) is
-used.)
+\begin{lemma}[Catalan parity {\cite{AK73}, \cite[Theorem~2.1]{DS06}}]\label{lem:catalan}
+For \(a\ge1\), \(v_2(C_{a-1})=s_2(a)-1\). In particular the Catalan number
+\(C_{a-1}\) is odd if and only if \(a\) is a power of two
+\lean{third-party-claims/CatalanParity.lean}.
+\end{lemma}
+
+\begin{proof}
+By Kummer's theorem, \(v_2\binom{2n}{n}\) is the number of carries when adding \(n\)
+to itself in base two, which is \(s_2(n)\). Since \((n+1)C_n=\binom{2n}{n}\),
+\(v_2(C_n)=s_2(n)-v_2(n+1)=s_2(n+1)-1\), where the last step is
+\(s_2(n+1)+v_2(n+1)=s_2(n)+1\): adding one clears the \(v_2(n+1)\) trailing ones of
+\(n\) and sets one bit. Take \(n=a-1\).
+\end{proof}
+
+For \(s\ge2\), Menezes' Catalan truncation~\cite[equation~(12)]{Men26} is the
+integral polynomial
+\[
+ \widehat g_s=(-1)^{s-1}\sum_{S,\,(a_i)}(-1)^{\sum_{i\in S}a_i}
+ \prod_{i\in S}C_{a_i-1}\bigl(x_i(x_i-1)\bigr)^{a_i}\prod_{j\notin S}(x_j-1),
+\]
+summed over \(S\subseteq\sigma\) and integers \(a_i\ge1\) (\(i\in S\)) with
+\(\sum_{i\in S}a_i\le s-1\). Modulo two the signs disappear, \(x(x-1)\) becomes
+\(y=x^2+x\), \(x_j-1\) becomes \(1+x_j\), and by Lemma~\ref{lem:catalan} a term
+survives exactly when every \(a_i\) is a power of two. So \(\widehat g_s\) reduces
+to \(g_s\).
 
 \begin{theorem}\label{thm:truncated-product}
 For every finite \(\sigma\) with \(|\sigma|=n\) and every \(s\ge1\):
@@ -133,16 +149,16 @@ In characteristic two, \(g_s\) equals the product plus \(R\), so
 \emph{Value (2).} Every term with \(S\ne\emptyset\) vanishes at \(\zero\), and the term
 with \(S=\emptyset\) is \(\prod(1+0)=1\).
 
-\emph{Degree (3).} The term of \((S,a)\) has degree at most
-\((n-|S|)+2w\), where \(w=\sum_{i\in S}a_i\le s-1\). By
-Lemma~\ref{lem:digits}(1), \(|S|\ge s_2(w)\). By Lemma~\ref{lem:digits}(3),
-\(2w-s_2(w)\le2(s-1)-s_2(s-1)\).
+\emph{Degree (3).} The term of \((S,p)\) has degree at most
+\((n-|S|)+2\mu\), where \(\mu=\sum_{i\in S}p_i\le s-1\). By
+Lemma~\ref{lem:digits}(1), \(|S|\ge s_2(\mu)\). By Lemma~\ref{lem:digits}(3),
+\(2\mu-s_2(\mu)\le2(s-1)-s_2(s-1)\).
 \end{proof}
 
 \subsection{The hyperplane product}
 
 Let \(F=\prod_{u\in\Ft^n\setminus\{\zero\}}(1+u\cdot x)\), where
-\(u\cdot x=\sum_iu_ix_i\). Its \(2^n-1\) factors \lean{claims/PerOrderArithmetic.lean} define the hyperplanes
+\(u\cdot x=\sum_iu_ix_i\). Its \(2^n-1\) factors define the hyperplanes
 \(u\cdot x=1\), which avoid the origin.
 
 \begin{lemma}\label{lem:hyperplane-product}
@@ -160,7 +176,7 @@ Each factor takes the value \(1\) at \(\zero\) and has degree at most one.
 \end{proof}
 
 These are the facts behind the hyperplane covers of~\cite{BBDM23}
-(Theorem~\ref{thm:hyperplane}).
+(Remark~\ref{rem:hyperplane}).
 
 \subsection{The construction}
 
@@ -198,10 +214,9 @@ Hence \(\delta(n,k,\ell)\le\Phi(n,k,\ell)\)
 \end{proof}
 
 For \(k-\ell-1<2^n\) we have \(q=0\), and \(P=y_1^\ell g_{k-\ell}\) is Menezes'
-polynomial over \(\Ft\). It works in every dimension, with the digit-sum bound,
-also when \(k-\ell-1\ge2^n\), where Theorem~\ref{thm:construction} has degree below
-that bound
-\lean{claims/PerOrderArithmetic.lean}.
+polynomial over \(\Ft\). Proposition~\ref{prop:menezes-polynomial} shows that it
+works in every dimension; when \(k-\ell-1\ge2^n\) its degree bound exceeds
+\(\Phi(n,k,\ell)\).
 
 \begin{proposition}\label{prop:menezes-polynomial}
 Let \(|\sigma|=n\ge1\), \(x_1\in\sigma\) and \(0\le\ell<k\). Then
@@ -220,4 +235,4 @@ the origin order is \(\ell\), and the degree is at most
 Menezes proves the degree \(n+2k-2-s_2(k-\ell-1)\) optimal when \(n\ge k-1\)
 \cite[Corollary~1.3]{Men26}. Section~\ref{sec:lower} proves
 Theorem~\ref{thm:construction} optimal in every dimension; the construction has
-degree exactly \(\Phi(n,k,\ell)\) \lean{claims/PerOrderArithmetic.lean}.
+degree exactly \(\Phi(n,k,\ell)\).

@@ -1,13 +1,12 @@
 % SPDX-License-Identifier: CC-BY-4.0
 \section{A second proof of the value of \texorpdfstring{\(D(n,k)\)}{D(n,k)}}\label{sec:second-proof}
 
-This appendix gives the proof of the lower half of Corollary~\ref{cor:main} from
+This appendix gives a second proof of Corollary~\ref{cor:main}, the one of
 version~1 of this paper. It does not use Section~\ref{sec:lower}, and it does not
 determine \(\delta(n,k,\ell)\) for individual orders. Its lower bound combines
 the multiplicity Schwartz--Zippel lemma with a one-dimension reduction; the
-upper bound is Theorem~\ref{thm:construction}, or the hyperplane covers for
-\(k\ge2^{n-1}\). The second formal proof of Lemma~\ref{lem:minimum} uses this
-route.
+upper bound is Proposition~\ref{prop:menezes-polynomial} for \(k<2^{n-1}\) and
+the hyperplane covers (Remark~\ref{rem:hyperplane}) for \(k\ge2^{n-1}\).
 
 \subsection{The Schwartz--Zippel bound}
 
@@ -22,10 +21,6 @@ nonzero polynomial and \(S\subseteq\F\) a finite set. Then
 \]
 \lean{third-party-claims/MultiplicitySchwartzZippel.lean}.
 \end{theorem}
-
-The Lean proof follows the induction on the number of variables in~\cite{DKSS13}
-(Lemma~8 of the arXiv version). It also proves the scaled form
-\(|S|\sum_a\mult_a(P)\le\deg P\cdot|S|^{|\sigma|}\), which holds with no variables.
 
 \begin{proposition}\label{prop:cover-bound}
 Let \(n\ge1\) and \(k\ge0\). Every nonzero \(P\in\Ft[x_1,\ldots,x_n]\) with
@@ -117,9 +112,9 @@ For all \(Q\), \(c\) and \(a'\), \(\mult_{a'}(Q(c,x'))\ge\mult_{(c,a')}(Q)\)
 \end{lemma}
 
 \begin{proof}
-The shift of \(Q(c,x')\) at \(a'\) is \(Q((c,a')+(w,z'))\) with \(w=0\). Its
-coefficients are the coefficients of \(Q((c,a')+(w,z'))\) at monomials without
-\(w\), and these have the same degree.
+The shift of \(Q(c,x')\) at \(a'\) is \(Q((c,a')+(z_0,z'))\) with \(z_0=0\). Its
+coefficients are the coefficients of \(Q((c,a')+(z_0,z'))\) at monomials without
+\(z_0\), and these have the same degree.
 \end{proof}
 
 \begin{theorem}[One-dimension step]\label{thm:step}
@@ -133,12 +128,6 @@ and \(\mult_{\zero}(P)<k\). Then there is \(S\in\Ft[x_\sigma]\) with
 \]
 \lean{claims/OneDimensionStep.lean}.
 \end{theorem}
-
-In particular \(D(n-1,k)\le D(n,k)-1\) for \(n\ge2\) and \(k<2^n\). Since the
-origin order is kept exactly, the same holds for the least degree with a
-prescribed origin order. By Corollary~\ref{cor:main} and
-Theorem~\ref{thm:main}, both inequalities hold for every \(k\ge1\)
-\textnormal{\small\leanref{claims/DegreeFormulaArithmetic.lean}{[Lean: \(D\)]}\,\leanref{claims/PerOrderArithmetic.lean}{[Lean: \(\delta\)]}}.
 
 \begin{proof}
 Let \(\ell=\mult_{\zero}(P)<k\) and let \(L\ne0\) be the homogeneous component of
@@ -160,8 +149,6 @@ Lemma~\ref{lem:subst}:
 with \(Q_t\in\Ft[x_\sigma]\). Then \(S=\sum_{t\ge1}Q_t\), since the \(t=0\) terms
 cancel in characteristic two.
 \begin{itemize}
- \item \emph{Degree.} \(\deg Q_t+t\le\deg Q\), so \(\deg S\le\deg Q-1\). Moreover
- \(\deg Q\ge1\), for otherwise \(S=0\), which the next item excludes.
  \item \emph{Nonzero points.} For \(a'\ne\zero\), both \((0,a')\) and \((1,a')\) are
  nonzero, so Lemma~\ref{lem:restrict} and Lemma~\ref{lem:mult-basic}(2) give
  \(\mult_{a'}(S)\ge k\).
@@ -170,14 +157,24 @@ cancel in characteristic two.
  \((1,\zero)\ne\zero\). So \(\mult_{\zero}(S)\ge\ell\).
  \item \emph{Origin order, upper bound.} The constant term of \(L\circ A\) in
  \(x_0\), namely \((L\circ A)(0,x')\), is nonzero because \(x_0\nmid L\circ A\).
- Take a monomial \(z^\beta\) with a nonzero coefficient in it. Then
+ Take a monomial \((x')^\beta\) with a nonzero coefficient in it. Then
  \(|\beta|=\ell\), and the same coefficient appears in \(Q(0,x')\). The
- coefficient of \(z^\beta\) in \(Q(1,x')\) vanishes, because
- \(\ell<k\le\mult_{\zero}(Q(1,x'))\). So \(z^\beta\) occurs in \(S\), and
- \(\mult_{\zero}(S)\le\ell\).
+ coefficient of \((x')^\beta\) in \(Q(1,x')\) vanishes, because
+ \(\ell<k\le\mult_{\zero}(Q(1,x'))\). So \((x')^\beta\) occurs in \(S\), and
+ \(\mult_{\zero}(S)\le\ell\). In particular \(S\ne0\).
+ \item \emph{Degree.} Since \(S\ne0\) and \(\deg Q_t+t\le\deg Q\) for every
+ \(t\ge1\), \(\deg S\le\deg Q-1\).
 \end{itemize}
 Finally \(\deg S+1\le\deg Q\le\deg P\).
 \end{proof}
+
+\begin{remark}\label{rem:dimension-step}
+In particular \(D(n-1,k)\le D(n,k)-1\) for \(n\ge2\) and \(k<2^n\), and, since
+the origin order is kept exactly, the same holds for \(\delta\). By
+Corollary~\ref{cor:main} and Theorem~\ref{thm:main}, both inequalities hold for
+every \(k\ge1\)
+\textnormal{\small\leanref{claims/DegreeFormulaArithmetic.lean}{[Lean: \(D\)]}\,\leanref{claims/PerOrderArithmetic.lean}{[Lean: \(\delta\)]}}.
+\end{remark}
 
 \subsection{The lower bound}
 
@@ -206,27 +203,17 @@ preserves multiplicities at the relabelled points. Since
 
 \subsection{The value of \texorpdfstring{\(D(n,k)\)}{D(n,k)}}
 
-For \(k\ge2^{n-1}\), version~1 used the hyperplane covers of~\cite{BBDM23} as
-the upper bound, and the formal proof still does.
-
-\begin{theorem}[Hyperplane covers {\cite[Theorem~1.2(a) with \(d=1\), arXiv v1]{BBDM23}}]\label{thm:hyperplane}
-Let \(n\ge1\) and \(k\ge2^{n-1}\), and write \(k=a2^{n-1}+b\) with
-\(0\le b<2^{n-1}\). Then
-\[
- P=F^a\cdot(x_1^2+x_1)^b
-\]
-is \(k\)-admissible and \(\deg P\le2k-\lfloor k/2^{n-1}\rfloor\)
-\lean{third-party-claims/HyperplaneCoverUpperBound.lean}.
-\end{theorem}
-
-In the language of~\cite{BBDM23}, \(P\) is the product of the linear forms of
-a cover by \(a\) copies of the \(2^n-1\) hyperplanes \(u\cdot x=1\), which avoid
-the origin, and \(b\) copies of the parallel pair \(x_1=0\), \(x_1=1\). Their
-theorem gives the least size of a cover for every \(k\ge2^{n-2}\); we use only
-this upper bound for \(k\ge2^{n-1}\), in the polynomial form above, which is
-what the Lean file proves. It follows from Lemma~\ref{lem:hyperplane-product}:
-the multiplicity at \(a\ne\zero\) is at least \(a2^{n-1}+b=k\), the origin order
-is below \(k\), and the degree is at most \(a(2^n-1)+2b=2k-a\).
+\begin{remark}[Hyperplane covers {\cite[Theorem~1.2(a) with \(d=1\)]{BBDM23}}]\label{rem:hyperplane}
+Let \(n\ge1\) and \(k\ge2^{n-1}\), and write \(k=c2^{n-1}+b\) with
+\(0\le b<2^{n-1}\). Then \(P=F^c\cdot(x_1^2+x_1)^b\) is \(k\)-admissible and
+\(\deg P\le2k-\lfloor k/2^{n-1}\rfloor\)
+\lean{third-party-claims/HyperplaneCoverUpperBound.lean}. This is the polynomial
+form of a cover of Bishnoi et al.\ by \(c\) copies of the \(2^n-1\) hyperplanes
+avoiding the origin and \(b\) copies of the pair \(x_1=0\), \(x_1=1\), and it
+follows from Lemma~\ref{lem:hyperplane-product}: the multiplicity at a nonzero
+point is at least \(c2^{n-1}+b=k\), the origin order is \(b<k\), and the degree
+is at most \(c(2^n-1)+2b=2k-c\).
+\end{remark}
 
 \begin{theorem}[Second proof of the value of \(D(n,k)\)]\label{thm:main-formal}
 For all \(n\ge1\) and \(k\ge1\), \(D(n,k)\) takes the values of
@@ -251,6 +238,6 @@ For part~2, let \(J=\lfloor\log_2k\rfloor\) and \(\ell=k-2^J<k\), so that
 \(n+2k-2-s_2(2^J-1)=n+2k-2-J\) by Lemma~\ref{lem:digits}(4).
 
 For part~3, Proposition~\ref{prop:cover-bound} gives the lower bound and
-Theorem~\ref{thm:hyperplane} the upper bound.
+Remark~\ref{rem:hyperplane} the upper bound.
 \end{proof}
 
