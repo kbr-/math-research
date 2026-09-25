@@ -1,0 +1,41 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.ArtinSchreierSeries
+Claim file: claims/ArtinSchreierSeries.lean
+Claim: lem:artin-schreier-additive-root
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#artin-schreier-additive-root
+Scope: Over F_2 = ZMod 2, the power series A = Σ_{s≥0} Y^(2^s) (coefficient 1 exactly at the powers of
+two) solves the Artin–Schreier equation A² + A = Y in F_2[[Y]], and its truncation below degree 2^K is
+the partial sum x̂_K(Y) = Σ_{s<K} Y^(2^s), which satisfies x̂_K² + x̂_K = Y + Y^(2^K).
+Declarations: MathResearch.ArtinSchreierSeries.xhatPoly MathResearch.ArtinSchreierSeries.xhatPoly_sq_add MathResearch.ArtinSchreierSeries.asRoot MathResearch.ArtinSchreierSeries.coeff_asRoot_eq_one_iff MathResearch.ArtinSchreierSeries.asRoot_sq_add MathResearch.ArtinSchreierSeries.trunc_asRoot
+$ lake --wfail build claims.ArtinSchreierSeries
+Build completed successfully (1609 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpnjpgju30.lean
+MathResearch.ArtinSchreierSeries.xhatPoly : ℕ → Polynomial (ZMod 2)
+'MathResearch.ArtinSchreierSeries.xhatPoly' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ArtinSchreierSeries.xhatPoly_sq_add : ∀ (K : ℕ),
+  MathResearch.ArtinSchreierSeries.xhatPoly K ^ 2 + MathResearch.ArtinSchreierSeries.xhatPoly K =
+    Polynomial.X + Polynomial.X ^ 2 ^ K
+'MathResearch.ArtinSchreierSeries.xhatPoly_sq_add' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ArtinSchreierSeries.asRoot : PowerSeries (ZMod 2)
+'MathResearch.ArtinSchreierSeries.asRoot' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ArtinSchreierSeries.coeff_asRoot_eq_one_iff : ∀ (d : ℕ),
+  (PowerSeries.coeff d) MathResearch.ArtinSchreierSeries.asRoot = 1 ↔ ∃ s, d = 2 ^ s
+'MathResearch.ArtinSchreierSeries.coeff_asRoot_eq_one_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ArtinSchreierSeries.asRoot_sq_add : MathResearch.ArtinSchreierSeries.asRoot ^ 2 +
+    MathResearch.ArtinSchreierSeries.asRoot =
+  PowerSeries.X
+'MathResearch.ArtinSchreierSeries.asRoot_sq_add' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.ArtinSchreierSeries.trunc_asRoot : ∀ (K : ℕ),
+  (PowerSeries.trunc (2 ^ K)) MathResearch.ArtinSchreierSeries.asRoot = MathResearch.ArtinSchreierSeries.xhatPoly K
+'MathResearch.ArtinSchreierSeries.trunc_asRoot' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 6 audited declarations.

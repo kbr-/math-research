@@ -1,0 +1,40 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.BinaryDigitSums
+Claim file: claims/BinaryDigitSums.lean
+Claim: lem:binary-digit-sum-identities
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-digit-sum-identities
+Scope: For the binary digit sum s₂ (MathResearch.TruncatedProduct.s2, the sum of Nat.digits 2):
+(1) s₂(q·2^n + r) = s₂(q) + s₂(r) for r < 2^n; (2) 2^(s₂ r) ≤ r + 1, hence s₂(r) ≤ ⌊log₂(r+1)⌋;
+(3) s₂(r) ≥ 1 for r ≥ 1; (4) s₂(x) = 1 iff x is a power of two; (5) s₂(n+1) + v₂(n+1) = s₂(n) + 1,
+with v₂ the 2-adic valuation (padicValNat 2).
+Declarations: MathResearch.BinaryDigitSums.s2_mul_two_pow_add MathResearch.BinaryDigitSums.two_pow_s2_le MathResearch.BinaryDigitSums.s2_le_log MathResearch.BinaryDigitSums.s2_pos MathResearch.BinaryDigitSums.s2_eq_one_iff MathResearch.BinaryDigitSums.s2_succ_add_padicValNat
+$ lake --wfail build claims.BinaryDigitSums
+Build completed successfully (1582 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmp17_ncq6t.lean
+MathResearch.BinaryDigitSums.s2_mul_two_pow_add : ∀ (q : ℕ) {n r : ℕ},
+  r < 2 ^ n →
+    MathResearch.TruncatedProduct.s2 (q * 2 ^ n + r) =
+      MathResearch.TruncatedProduct.s2 q + MathResearch.TruncatedProduct.s2 r
+'MathResearch.BinaryDigitSums.s2_mul_two_pow_add' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.BinaryDigitSums.two_pow_s2_le : ∀ (r : ℕ), 2 ^ MathResearch.TruncatedProduct.s2 r ≤ r + 1
+'MathResearch.BinaryDigitSums.two_pow_s2_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.BinaryDigitSums.s2_le_log : ∀ (r : ℕ), MathResearch.TruncatedProduct.s2 r ≤ Nat.log 2 (r + 1)
+'MathResearch.BinaryDigitSums.s2_le_log' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.BinaryDigitSums.s2_pos : ∀ {r : ℕ}, 0 < r → 0 < MathResearch.TruncatedProduct.s2 r
+'MathResearch.BinaryDigitSums.s2_pos' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.BinaryDigitSums.s2_eq_one_iff : ∀ (x : ℕ), MathResearch.TruncatedProduct.s2 x = 1 ↔ ∃ s, x = 2 ^ s
+'MathResearch.BinaryDigitSums.s2_eq_one_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.BinaryDigitSums.s2_succ_add_padicValNat : ∀ (n : ℕ),
+  MathResearch.TruncatedProduct.s2 (n + 1) + padicValNat 2 (n + 1) = MathResearch.TruncatedProduct.s2 n + 1
+'MathResearch.BinaryDigitSums.s2_succ_add_padicValNat' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 6 audited declarations.

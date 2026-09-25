@@ -1,0 +1,70 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PerOrderMinimumDirect
+Claim file: claims/PerOrderMinimumDirect.lean
+Claim: lem:per-order-all-dimension-minimum (part (ii), the paper's digit argument; and the extremal orders)
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-all-dimension-minimum
+Scope: For n, k ≥ 1, with h(m) = 2⌊m/2^n⌋ + s₂(m mod 2^n) (so Φ(n,k,ℓ) + h(k−ℓ−1) = n + 2(k−1)):
+the largest value of h on 0 ≤ m ≤ k − 1 is n + 2(k−1) − D(n,k), where D = degreeMin is the closed form;
+hence min_{ℓ<k} Φ(n,k,ℓ) = D(n,k), proved by the digit argument of the preprint (largest digit sum up
+to R is ⌊log₂(R+1)⌋, and the case analysis on k − 1 = Q2^n + R), without the Schwartz–Zippel route.
+Also: Φ(n,k,ℓ) = D(n,k) iff h(k−ℓ−1) is maximal; for 1 ≤ k ≤ 2^n, iff s₂(k−ℓ−1) = ⌊log₂k⌋; and
+ℓ = k − 2^⌊log₂k⌋ is such an order.
+Declarations: MathResearch.PerOrderMinimumDirect.hval MathResearch.PerOrderMinimumDirect.phi_add_hval MathResearch.PerOrderMinimumDirect.hval_le MathResearch.PerOrderMinimumDirect.hval_attain MathResearch.PerOrderMinimumDirect.min_phi_direct MathResearch.PerOrderMinimumDirect.phi_eq_degreeMin_iff MathResearch.PerOrderMinimumDirect.extremal_of_le_two_pow MathResearch.PerOrderMinimumDirect.extremal_example
+$ lake --wfail build claims.PerOrderMinimumDirect
+Build completed successfully (1948 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmp6s9djsyk.lean
+MathResearch.PerOrderMinimumDirect.hval : ℕ → ℕ → ℕ
+'MathResearch.PerOrderMinimumDirect.hval' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderMinimumDirect.phi_add_hval : ∀ {n k ℓ : ℕ},
+  ℓ < k →
+    MathResearch.PerOrderUpperBound.Phi n k ℓ + MathResearch.PerOrderMinimumDirect.hval n (k - ℓ - 1) = n + 2 * (k - 1)
+'MathResearch.PerOrderMinimumDirect.phi_add_hval' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderMinimumDirect.hval_le : ∀ {n k : ℕ},
+  1 ≤ n →
+    1 ≤ k →
+      ∀ {m : ℕ}, m ≤ k - 1 → MathResearch.PerOrderMinimumDirect.hval n m ≤ MathResearch.PerOrderMinimumDirect.hmax n k
+'MathResearch.PerOrderMinimumDirect.hval_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderMinimumDirect.hval_attain : ∀ {n k : ℕ},
+  1 ≤ n → 1 ≤ k → ∃ m ≤ k - 1, MathResearch.PerOrderMinimumDirect.hval n m = MathResearch.PerOrderMinimumDirect.hmax n k
+'MathResearch.PerOrderMinimumDirect.hval_attain' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderMinimumDirect.min_phi_direct : ∀ {n k : ℕ},
+  1 ≤ n →
+    1 ≤ k →
+      (∀ ℓ < k,
+          MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k ≤ MathResearch.PerOrderUpperBound.Phi n k ℓ) ∧
+        ∃ ℓ < k, MathResearch.PerOrderUpperBound.Phi n k ℓ = MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k
+'MathResearch.PerOrderMinimumDirect.min_phi_direct' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderMinimumDirect.phi_eq_degreeMin_iff : ∀ {n k ℓ : ℕ},
+  1 ≤ n →
+    ℓ < k →
+      (MathResearch.PerOrderUpperBound.Phi n k ℓ = MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k ↔
+        ∀ ℓ' < k,
+          MathResearch.PerOrderMinimumDirect.hval n (k - ℓ' - 1) ≤
+            MathResearch.PerOrderMinimumDirect.hval n (k - ℓ - 1))
+'MathResearch.PerOrderMinimumDirect.phi_eq_degreeMin_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderMinimumDirect.extremal_of_le_two_pow : ∀ {n k ℓ : ℕ},
+  1 ≤ n →
+    k ≤ 2 ^ n →
+      ℓ < k →
+        (MathResearch.PerOrderUpperBound.Phi n k ℓ = MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k ↔
+          MathResearch.TruncatedProduct.s2 (k - ℓ - 1) = Nat.log 2 k)
+'MathResearch.PerOrderMinimumDirect.extremal_of_le_two_pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderMinimumDirect.extremal_example : ∀ {n k : ℕ},
+  1 ≤ n →
+    1 ≤ k →
+      k ≤ 2 ^ n →
+        k - 2 ^ Nat.log 2 k < k ∧
+          MathResearch.PerOrderUpperBound.Phi n k (k - 2 ^ Nat.log 2 k) =
+            MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k
+'MathResearch.PerOrderMinimumDirect.extremal_example' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 8 audited declarations.
