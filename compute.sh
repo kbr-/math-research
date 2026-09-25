@@ -384,6 +384,12 @@ def run_job(args, command):
                 data = summary(read_events(path), stop['monotonic_s'])
                 recovery_summary(data, path, stop['unix_s'])
                 path.with_suffix('.summary.json').write_text(json.dumps(data, indent=2) + '\n')
+    size = log.stat().st_size
+    with log.open('rb') as output:
+        lines = sum(chunk.count(b'\n') for chunk in iter(lambda: output.read(1 << 20), b''))
+    # Computation output is never displayed (user instruction, 25 September 2026): a large output would bury
+    # the launcher's guidance, and a filtered display hides it. The agent reads the saved log instead.
+    print(f'Output: {lines} lines, {size} bytes, saved in {log.relative_to(ROOT)}; read it from that file.')
     if args.tail_bytes:
         with log.open('rb') as output:
             size = output.seek(0, os.SEEK_END)
@@ -583,8 +589,9 @@ def run_options(parser):
     parser.add_argument('--category', choices=RUNS, default='computation')
     parser.add_argument('--user-approved', default='',
                         help='Quote of the user\'s explicit approval for a run beyond MAX_RUN_S')
-    parser.add_argument('--tail-bytes', type=int, default=8000,
-                        help='Maximum output displayed; full output is always logged')
+    parser.add_argument('--tail-bytes', type=int, default=0,
+                        help='Output tail to display for non-computation categories (default none); computation '
+                             'output is never displayed, only saved')
 
 
 def main():
@@ -673,6 +680,9 @@ def main():
     if not 1 <= args.threads <= 14: parser.error('--threads must be between 1 and 14')
     if not 0 < args.timeout < float('inf'): parser.error('--timeout must be finite and positive')
     if args.tail_bytes < 0: parser.error('--tail-bytes cannot be negative')
+    if args.tail_bytes and getattr(args, 'category', 'computation') == 'computation':
+        parser.error('computation output is never displayed, so that the launcher\'s guidance stays visible; '
+                     'read the saved log it names (user instruction, 25 September 2026)')
     if args.timeout > LONG_RUN_S and args.expect is None:
         parser.error(f'--timeout above {LONG_RUN_S:g} s needs --expect SECONDS: estimate the running '
                      'time from a count or a smaller run first (COMPUTATION_RULES.md)')

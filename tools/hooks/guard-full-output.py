@@ -5,7 +5,7 @@ Some commands print text the agent must read whole: the resume bundle
 (`tools/resume.py`), the turn guidance and warnings of `./compute.sh start`, the
 finisher's report (`tools/finish-turn.py`), and every computation run by `./compute.sh`
 (`run`, or an option-led invocation), whose refusals and guard messages would otherwise be
-filtered away; its display is already bounded to the output's tail. Piping them through head, tail, sed or
+filtered away; it displays only its own lines, and the workload's output is in the saved log. Piping them through head, tail, sed or
 grep, or redirecting their standard output to a file, silently drops that text. The
 hook reads the tool call as JSON on stdin and exits with status 2 (block, message on
 stderr) for such commands.
@@ -28,7 +28,7 @@ GUARDED = [
     (re.compile(INVOKED + r"finish-turn\.py\b"),
      "tools/finish-turn.py prints checks, warnings and staging instructions"),
     (re.compile(INVOKED + r"compute\.sh\s+(?:run\b|--(?!status\b))"),
-     "./compute.sh runs print guard refusals and guidance (and their display is already bounded); "
+     "./compute.sh runs print guard refusals and guidance, and only those (the output is in the saved log); "
      "save a full result with tools/save-run-output.py"),
 ]
 # Command lists split on ;, &&, || and newlines; a remaining single | is a pipe.

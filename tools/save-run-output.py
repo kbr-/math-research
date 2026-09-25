@@ -3,7 +3,7 @@
 # Copyright (c) 2026 Kamil Braun
 """Save the full output of a ./compute.sh run as a result file, headed by its command line.
 
-compute.sh displays only the tail of a run's output, so a redirected display is not a result file.
+compute.sh does not display a computation's output, only the path of its saved log.
 This copies the complete log research/logs/SESSION-RUNID.output.txt to OUT, prefixed by two comment
 lines naming the command (scratch-directory prefixes given with --strip are removed) and the run.
 It refuses to overwrite OUT, and OUT must lie inside the repository.

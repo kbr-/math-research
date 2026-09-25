@@ -187,8 +187,9 @@ no research clock; ordinary notebook overview reads do not mark a resume.
 The default timeout is 180 seconds; set `--timeout SECONDS` before `--` for longer
 work. Timeouts and interrupts stop the actual service and its children, with a
 systemd runtime limit as a backstop. Full output and timing records are saved in
-`research/logs/`. Only the last 8,000 output bytes are displayed by default;
-`--tail-bytes N` changes that without losing the saved log.
+`research/logs/`. Computation output is never displayed: the launcher prints only its own
+lines (guard messages, timing, exit status) and the path and size of the saved log, which is
+read from the file. Other categories can show a tail with `--tail-bytes N` (default none).
 Jobs run as systemd services and do not inherit the caller's environment, apart from
 the thread-count variables the launcher sets. Pass any other variable inside the
 command, as in `./compute.sh run TURN -- env NAME=VALUE python3 script.py`; a prefix
@@ -278,8 +279,8 @@ context usage only; saved output is full. Include essential data with its
 checkpoint under the Git rules in AGENTS.md.
 
 A program without `--out` is saved with `tools/save-run-output.py SESSION RUN_ID OUT`, which copies
-the run's complete log under its command line; never redirect the `compute.sh` display, which
-shows only the tail.
+the run's complete log under its command line; the `compute.sh` display holds only the launcher's
+own lines.
 
 Reference output paths in the relevant notebook Research-record entry. Preserve
 the generating command, parameters, random seed if applicable, data encoding or
