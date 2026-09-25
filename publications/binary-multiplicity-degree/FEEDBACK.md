@@ -205,13 +205,17 @@ A second fresh Claude Opus 5.5 agent reviewed the version tagged
 Lemma 4.3, the diagonal recursion in Lemma 4.5, the case split in Step 3 of Theorem 4.8 and the
 case analysis in Lemma 5.1. Numbers are those of the version it read.
 
-- [ ] Quote Question 4.3 of Bishnoi et al. verbatim, with its multiplicity convention (R2-1,
+- [x] Quote Question 4.3 of Bishnoi et al. verbatim, with its multiplicity convention (R2-1,
   marked major). A referee may doubt that an open question is answered in two lines from the
   multiplicity Schwartz–Zippel lemma. If the quotation matches, say plainly that the answer is
   immediate. In the abstract, make clear that only the "only if" direction of the attainment
   criterion is new.
   - Note: the paraphrase was checked against the version of record on 25 September 2026 and
     matches, including "multiplicity at most k − 1 at the origin".
+  - Applied in revision 2: the introduction says the bound is a direct application of the
+    multiplicity Schwartz–Zippel lemma, that their covers attain it for k ≥ 2^(n−2), and that
+    what was open is k < 2^(n−2), where Corollary 1.3 shows it is not attained. The abstract says
+    the same. Not quoted verbatim: the paraphrase is exact.
 - [ ] Menezes' identifier arXiv:2609.19009 is a September identifier but the entry gives
   14 August 2026 (R2-2). Also: the key SW20 labels a 2022 article, and the [Note] URL points to
   `tree/main` instead of a pinned commit.
@@ -230,15 +234,22 @@ case analysis in Lemma 5.1. Numbers are those of the version it read.
 - [ ] Lemma 3.5 (Catalan parity) is used only for the comparison with Menezes' truncation
   (R2-6). Demote it to a remark with its citations, or say that it serves only that comparison.
   Explain the restriction "for s ≥ 2" (Menezes' own range), and define v₂ and C_a.
-- [ ] Say exactly what is taken from Menezes (R2-7). "A short self-contained proof that the
+- [x] Say exactly what is taken from Menezes (R2-7). "A short self-contained proof that the
   truncation works in every dimension" can read as a correction of Menezes; cite his statement
   (equation or theorem number) and its range.
   - Note: Menezes' Theorem 3.2 states the Catalan truncation for every s ≥ 2 and n ≥ 1, so the
     truncation is his in every dimension; the sentence must not suggest otherwise.
-- [ ] Comparison with the reals: "lower by s₂(k−ℓ−1) − 1 ≥ 0" is not lower when k − ℓ − 1 is a power
+  - Applied in revision 2: the introduction credits his Theorem 3.2 (vanishing in every
+    dimension) and Section 8 (degrees of his basis elements, including y₁^ℓ ĝ_{k−ℓ} for
+    ℓ ≤ k − 2, for all n), says only his exact minimum needs n ≥ k − 1, and calls the telescoping
+    proof an alternative. Section 3 says Proposition 3.9 is his result specialized to F₂.
+- [x] Comparison with the reals: "lower by s₂(k−ℓ−1) − 1 ≥ 0" is not lower when k − ℓ − 1 is a power
   of two (R2-8). Say "at most the real value, and strictly lower unless k − ℓ − 1 is a power of
   two". The Sauermann–Wigderson real result appears three times with Theorems 1.3 and 1.4; check
   the numbers and merge the passages.
+  - Applied in revision 2: "at most the real value n + 2k − 3, and strictly lower unless k − ℓ − 1
+    is a power of two; for ℓ = k − 1 it is n + 2k − 2, as over the reals". Merging the three
+    passages is left for the journal version.
 - [ ] The abstract's "span of x₁² + x₁, …, xₙ² + xₙ" should be the span of y₁, …, yₙ with yᵢ standing
   for xᵢ² + xᵢ (R2-9).
 - [ ] Notation (R2-10): y means x² + x in Section 3 but an independent variable in Section 4; σ is
