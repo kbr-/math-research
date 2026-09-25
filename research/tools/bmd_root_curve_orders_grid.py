@@ -8,7 +8,9 @@ with equality for large l.  The script specializes y at random in GF(p^a), print
 N_{s,n}(d) and a KAPPA line per trial, for comparison with kernel data (bmd_kappa_compare.py).
 S is given as field elements encoded base p (digit i = coefficient of the i-th power of the
 generator of the primitive polynomial found by search), e.g. S = 0 1 for the cube.
-Usage: bmd_root_curve_orders_grid.py p a n DMAX TRIALS SEED S0 S1 ...
+An optional token M=VALUE sets the T-truncation (default s^n (DMAX+2)/2 + 8); with a smaller M,
+orders >= M are invisible, so only kappa(m) for m < M is reported reliably.
+Usage: bmd_root_curve_orders_grid.py p a n DMAX TRIALS SEED [M=VALUE] S0 S1 ...
    or: bmd_root_curve_orders_grid.py --batch OUTDIR PREFIX 'p a n DMAX TRIALS SEED S0 S1 ...' ...
 """
 import itertools, random, sys
@@ -16,7 +18,8 @@ import itertools, random, sys
 
 def run(args, out):
     p, a, n, dmax, trials, seed = map(int, args[:6])
-    S = [int(v) for v in args[6:]]
+    Mset = [int(v[2:]) for v in args[6:] if v.startswith('M=')]
+    S = [int(v) for v in args[6:] if not v.startswith('M=')]
     assert 0 in S and len(set(S)) == len(S)
     Q = p ** a
 
@@ -85,7 +88,7 @@ def run(args, out):
             counts = new
         return sum(cnt for Qd in range(0, d + 1, s) for i, cnt in enumerate(counts) if i <= d - Qd)
 
-    M = s ** n * (dmax + 2) // 2 + 8
+    M = Mset[0] if Mset else s ** n * (dmax + 2) // 2 + 8  # T-truncation; orders >= M are not seen
 
     def smul(fs, gs):
         h = [0] * M
@@ -146,6 +149,7 @@ def run(args, out):
             print(f'subspace S={S} n={n} trial {trial} y={y} d={d}: |Ord|={len(basis)}, N={N(d)}: '
                   + ('count match' if len(basis) == N(d) else 'COUNT DIFFER'), file=out, flush=True)
         print(f'KAPPA trial {trial}: ' + ' '.join(f'{m}:{kappa[m]}' for m in sorted(kappa)), file=out, flush=True)
+        print(f'MISSING below M={M}: ' + ' '.join(str(m) for m in range(M) if m not in kappa), file=out, flush=True)
 
 
 def main():
