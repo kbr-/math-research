@@ -15,7 +15,7 @@
 </ul>
 <p><strong>Per-order values: solved in every dimension.</strong> The least degree with origin order exactly \(\ell\) is</p>
 <div class="math">\[ \delta(n,k,\ell)=n+2\ell+\sum_{j&lt;n}\bigl\lfloor(k-\ell-1)/2^j\bigr\rfloor \]</div>
-<p>for all \(n\ge1\) and \(0\le\ell&lt;k\) (<a href="#per-order-value-all-dimensions">theorem</a>). For \(n\ge m(k)\) it equals \(n+2k-2-s_2(k-\ell-1)\), Menezes' formula below his range. Its minimum over \(\ell\) is \(D(n,k)\).</p>
+<p>for all \(n\ge1\) and \(0\le\ell&lt;k\) (<a href="#per-order-value-all-dimensions">theorem</a>). For \(n\ge m(k)\) it equals \(n+2k-2-s_2(k-\ell-1)\), Menezes' formula below his range. Its minimum over \(\ell\) is \(D(n,k)\). The case \(\ell=k-1\) is Sauermann–Wigderson's Theorem 1.5 (<a href="#entry-2026-09-25-sw-top-order-attribution">attribution</a>).</p>
 <ul>
 <li>The upper bound is \(y_1^\ell F^{2q}g_{r+1}\), where \(k-\ell-1=q2^n+r\) and \(F\) is the hyperplane product (<a href="#per-order-all-dimension-upper-bound">construction</a>).</li>
 <li>The lower bound reads the degree off \(y\)-coefficients of the jet (<a href="#y-coefficient-degree-formula">lemma</a>). Low degree forces multi-additive forms to vanish on the span \(V\) of \(y_1,\ldots,y_n\), and reduction modulo the subspace polynomial of \(V\) isolates the jet's order-\(\ell\) part.</li>
@@ -3397,6 +3397,42 @@ When \(e=0\) the same count holds, with the \(q-1\) joins giving \(m=4d+q-1\) an
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">33.82 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.50 s</td></tr>
 <tr><td>Individually measured formal verification</td><td class="elapsed">22.54 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-sw-top-order-attribution" data-kind="research" data-route="prior-art" data-claims="third-party:SW-top-origin-order-value">
+<h3>25 September 2026 — Attribution: the case ℓ = k − 1 of the per-order value is Sauermann–Wigderson's Theorem 1.5</h3>
+<p class="entry-meta">Imported statement with a checked field-independent proof: the top origin order of the per-order theorem is prior work. Cycle bmd-f4-sw-attribution. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Question.</strong> The preprint's self-review found that the case \(\ell=k-1\) of the <a href="#per-order-value-all-dimensions">per-order theorem</a>, \(\Phi(n,k,k-1)=n+2k-2\), is a theorem of Sauermann and Wigderson. The <a href="#sauermann-wigderson-scope">first reading of their paper</a> in this notebook noted that their Theorem 1.5 holds over every field, but the per-order theorem and its claim did not say that one of its cases is known. This entry records the attribution and checks the field independence it relies on.</p>
+<h4 id="sw-top-origin-order">The imported statement</h4>
+<p><strong>Imported theorem</strong> (<code>third-party:SW-top-origin-order-value</code>; Sauermann–Wigderson, arXiv 2010.00077v2, Theorem 1.5, re-read on 25 September 2026). Let \(k\ge2\) and \(n\ge1\). A polynomial with multiplicity at least \(k\) at every point of \(\{0,1\}^n\setminus\{0\}\) and multiplicity exactly \(k-1\) at the origin has degree at least \(n+2k-2\), and \(x_1^{k-1}(x_1-1)^{k-1}(x_1-1)\cdots(x_n-1)\) attains it. They state it over \(\mathbb R\) and remark that it also holds for \(k=1\) (Alon–Füredi). Bishnoi, Boyadzhiyska, Das and Mészáros (arXiv 2101.11947v1, Section 1.3) note that its proof is valid over every field.</p>
+<p><strong>Field independence, checked.</strong> The proof (their Section 2, Claims 2.1–2.3 and Corollary 2.4) goes through over every field with Hasse multiplicity:</p>
+<ul>
+<li>Claim 2.1 reduces a polynomial modulo multiples of \(x_{i_1}(x_{i_1}-1)\cdots x_{i_k}(x_{i_k}-1)\) and of \(x_{i_1}(x_{i_1}-1)\cdots x_{i_{k-1}}(x_{i_{k-1}}-1)(x_1-1)\cdots(x_n-1)\); only additivity of multiplicity under products is used.</li>
+<li>Claim 2.2 counts monomials, and the number of Hasse derivatives of order below \(t\) is the same count \(M_t(n)\).</li>
+<li>Claim 2.3 needs surjectivity of the map recording those derivatives. Their explicit interpolating polynomial divides by factorials and fails in characteristic 2. Surjectivity holds over every field by the Chinese remainder theorem: the ideals \(\mathfrak m_a^k\) (\(a\ne0\)) and \(\mathfrak m_0^{k-1}\) of the distinct points are pairwise comaximal, and the Hasse derivatives of order below \(t\) at \(a\) are coordinates on \(F[x]/\mathfrak m_a^t\).</li>
+<li>The proof of Theorem 1.5 is then the same dimension count.</li>
+</ul>
+<p><strong>Relation to our results.</strong></p>
+<ul>
+<li>Over \(\mathbb F_2\) the imported theorem is exactly the case \(\ell=k-1\) of the per-order theorem, since \(\Phi(n,k,k-1)=n+2(k-1)+0=n+2k-2\) for every \(n\ge1\).</li>
+<li>Their extremal polynomial is, over \(\mathbb F_2\), our construction at \(\ell=k-1\): there \(q=r=0\), and \(y_1^{k-1}g_1\) with \(g_1=\prod_i(1+x_i)\).</li>
+<li>Their Theorem 1.4 (origin order at most \(k-2\), degree \(n+2k-3\) for \(n\ge2k-3\)) is over \(\mathbb R\) and fails over \(\mathbb F_2\), as they show; it does not cover other orders here.</li>
+<li>The other cases \(\ell\le k-2\) are covered by prior work only through Menezes' range \(n\ge k-1\) (<a href="#entry-2026-09-24-prior-art-menezes">prior-art entry</a>).</li>
+</ul>
+<p>The preprint (version 2, <code>publications/binary-multiplicity-degree/</code>) already states this attribution in its related-work section.</p>
+<p><strong>General statement.</strong> <code>thm:per-order-value-all-dimensions</code>: its case \(\ell=k-1\) rediscovers <code>third-party:SW-top-origin-order-value</code> over \(\mathbb F_2\); the cases \(\ell\le k-2\) with \(n&lt;k-1\) remain without a prior source in the searches recorded here.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: Sauermann–Wigderson Theorems 1.3–1.5 and Section 2 (Claims 2.1–2.3, Corollary 2.4, the proof of Theorem 1.5) from arXiv v2; Bishnoi et al. Section 1.3 from arXiv v1; the per-order theorem and its construction in this notebook. The field-independence check above is the one change the proof needs. No computation was run. The attribution restricts a novelty statement and adds no mathematics of ours beyond the interpolation remark, so no separate reviewer pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-f4-sw-attribution">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 9.64 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">37.58 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">24.62 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 7.44 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
