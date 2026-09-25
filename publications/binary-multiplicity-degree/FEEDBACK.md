@@ -197,6 +197,71 @@ the Lean pin moved to eec3af0e.
   natural open question: other fields and other grids (R26).
   - Applied: Remark 5.4.
 
+### Second blind referee pass
+
+A second fresh Claude Opus 5.5 agent reviewed the version tagged
+`binary-multiplicity-degree-preprint-2026-09-25-rev1` (commit edabe475) under the same brief
+(R2, 25 September 2026). It found no mathematical gap. It re-derived by hand the inversion in
+Lemma 4.3, the diagonal recursion in Lemma 4.5, the case split in Step 3 of Theorem 4.8 and the
+case analysis in Lemma 5.1. Numbers are those of the version it read.
+
+- [ ] Quote Question 4.3 of Bishnoi et al. verbatim, with its multiplicity convention (R2-1,
+  marked major). A referee may doubt that an open question is answered in two lines from the
+  multiplicity Schwartz–Zippel lemma. If the quotation matches, say plainly that the answer is
+  immediate. In the abstract, make clear that only the "only if" direction of the attainment
+  criterion is new.
+  - Note: the paraphrase was checked against the version of record on 25 September 2026 and
+    matches, including "multiplicity at most k − 1 at the origin".
+- [ ] Menezes' identifier arXiv:2609.19009 is a September identifier but the entry gives
+  14 August 2026 (R2-2). Also: the key SW20 labels a 2022 article, and the [Note] URL points to
+  `tree/main` instead of a pinned commit.
+  - Note: the date is the one arXiv shows, and the entry now says so. The key and the unpinned
+    URL still need fixing.
+- [ ] Lemma 3.1(2) is proved only by "Mathlib proves it for every base" (R2-3). Give the
+  one-line induction s₂(m) = (m mod 2) + s₂(⌊m/2⌋) ≤ 1 + ⌊m/2⌋ ≤ m.
+- [ ] Move Lean-motivated remarks out of the mathematics to Appendix B (R2-4): the Lean encoding
+  of mult after Definition 2.1; the remark on t < k after Lemma 4.5; "Mathlib proves this lemma"
+  after Lemma 4.6; the V = ∅ case in the proof of Lemma 4.7, which the argument never uses.
+- [ ] The result may hold over every field of characteristic 2 (R2-5). The expansion and the
+  congruence use only shifts in {0,1}ⁿ, the forms need only Frobenius additivity, V stays the
+  F₂-span in an integral domain, the construction has F₂ coefficients, and multiplicity does not
+  change under field extension. State it, or say why not.
+  - Note: a stronger theorem if true; it needs a written proof and a Lean generalization first.
+- [ ] Lemma 3.5 (Catalan parity) is used only for the comparison with Menezes' truncation
+  (R2-6). Demote it to a remark with its citations, or say that it serves only that comparison.
+  Explain the restriction "for s ≥ 2" (Menezes' own range), and define v₂ and C_a.
+- [ ] Say exactly what is taken from Menezes (R2-7). "A short self-contained proof that the
+  truncation works in every dimension" can read as a correction of Menezes; cite his statement
+  (equation or theorem number) and its range.
+  - Note: Menezes' Theorem 3.2 states the Catalan truncation for every s ≥ 2 and n ≥ 1, so the
+    truncation is his in every dimension; the sentence must not suggest otherwise.
+- [ ] Comparison with the reals: "lower by s₂(k−ℓ−1) − 1 ≥ 0" is not lower when k − ℓ − 1 is a power
+  of two (R2-8). Say "at most the real value, and strictly lower unless k − ℓ − 1 is a power of
+  two". The Sauermann–Wigderson real result appears three times with Theorems 1.3 and 1.4; check
+  the numbers and merge the passages.
+- [ ] The abstract's "span of x₁² + x₁, …, xₙ² + xₙ" should be the span of y₁, …, yₙ with yᵢ standing
+  for xᵢ² + xᵢ (R2-9).
+- [ ] Notation (R2-10): y means x² + x in Section 3 but an independent variable in Section 4; σ is
+  both an index set and a set of variables; n is reused in the proof of Lemma 3.5; Y is both the
+  variable of x̂_K and L_V and the arguments of E^(t)_j; h is the number of parts, the number of
+  grid variables and the function in Lemma 5.1.
+- [ ] Lemma 4.4 states x̂_k but the note and proof use K with K = k (R2-11). Use one symbol.
+- [ ] The abstract and the introduction disagree on what is formalized (R2-12): the introduction
+  adds propositions and excepts the grid-vanishing lemma. Make them agree.
+- [ ] Length and journal fit (R2-13): Appendix A and the version history belong in the arXiv
+  comments or the repository; Appendix B's table and commands, the "Formal verification"
+  subsection and the dated search sentence could be supplementary material; the Menezes
+  comparison appears three times.
+  - Note: the dated search sentence is required by the shared checklist; keep it in some form.
+- [ ] Mention Corollary 5.2 next to Corollary 1.3, since the logarithmic formula holds up to
+  k < 3·2ⁿ⁻¹, or give one closed form (R2-14, optional).
+- [ ] Remark 5.3 describes the extremal orders only for k ≤ 2ⁿ (R2-15). Give the maximizers the
+  proof of Lemma 5.1 finds for k > 2ⁿ: m = Q·2ⁿ + 2^λ − 1, and m = Q·2ⁿ − 1 when λ ≤ n − 2.
+  - Note: needs a Lean statement if added.
+- [ ] Alon's Lemma 2.1 is stated over a field, while the paper applies it over the integral
+  domain F₂[y] (R2-16). Say "pass to the fraction field", or rely on the included proof, which
+  works over any integral domain.
+
 ### Outstanding before a journal submission
 
 - [ ] An expert reads the Section 4 lower bound (C). Das or Menezes are the natural readers;
