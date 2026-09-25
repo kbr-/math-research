@@ -32,10 +32,10 @@ Declined: dropping the unused hypothesis t < k in Lemma 4.5(2), since the Lean s
 - Revision identity: version 2, dated, with a "Changes from version 1" paragraph.
 - Verification map: every cited declaration name was checked against the Lean sources by
   script. The aggregate target `claims/BinaryMultiplicityDegreePaper2.lean` passes `verify.sh`
-  at commit c391ad0d (`research/results/bmd-f2-paper-v2/lean-verification-paper2.txt`).
+  at commit 86d8a6ba (`research/results/bmd-f2-paper-v2/lean-verification-paper2.txt`).
 
 ## Outstanding
 
-- The Lean links and the reproduction commands point to commit c391ad0d, which exists only
+- The Lean links and the reproduction commands point to commit 86d8a6ba, which exists only
   locally until the author pushes it.
 - Publication and correspondence are the author's decisions.
