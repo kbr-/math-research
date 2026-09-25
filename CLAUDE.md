@@ -72,8 +72,9 @@ clause of scope, then the cycle label. Details belong in the entry's sections.
   command. The pattern matches the shell running the command, so `pkill` kills that
   shell and a `pgrep` wait loop never ends. Kill or check in one command, restart in
   another, and to wait for a job rely on its own completion notice.
-- Read the output of `./compute.sh start` and `./tools/finish-turn.py` in full. Never pipe it through
-  `head`, `tail` or `grep`: its turn guidance and warnings can appear anywhere in it.
+- Read the output of `./compute.sh start`, `./tools/finish-turn.py` and `tools/resume.py` in full.
+  Never pipe it through `head`, `tail` or `grep`: its turn guidance and warnings can appear anywhere
+  in it. The PreToolUse hook `tools/hooks/guard-full-output.py` refuses such commands.
 - Never discard the output or exit status of a command whose failure would silently
   corrupt a record, such as `./compute.sh phase` or `start`: an invalid argument exits
   with an error that a redirection hides.

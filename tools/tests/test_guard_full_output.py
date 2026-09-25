@@ -4,7 +4,7 @@ import sys
 import unittest
 from pathlib import Path
 
-HOOK = Path(__file__).resolve().parents[1] / "hooks" / "guard-resume.py"
+HOOK = Path(__file__).resolve().parents[1] / "hooks" / "guard-full-output.py"
 
 
 def run(command, tool="Bash"):
@@ -13,7 +13,7 @@ def run(command, tool="Bash"):
                           capture_output=True)
 
 
-class GuardResumeTest(unittest.TestCase):
+class GuardFullOutputTest(unittest.TestCase):
     def test_blocks_filters_and_redirections(self):
         for command in [
             "python3 tools/resume.py 2>&1 | head -40",
@@ -21,11 +21,16 @@ class GuardResumeTest(unittest.TestCase):
             "python3 tools/resume.py --read ab --part 4 | head -120; git log",
             "python3 tools/resume.py | tail -5",
             "python3 tools/resume.py > out.txt",
+            "./compute.sh start t1 --model 'M, high' | tail -20",
+            "cd /repo && ./compute.sh start t1 --model M 2>&1 | grep -i warn",
+            "./compute.sh start t1 > start.txt",
+            "./tools/finish-turn.py t1 2>&1 | tail -15",
+            "./tools/finish-turn.py t1 --next t2 | head",
         ]:
             with self.subTest(command=command):
                 result = run(command)
                 self.assertEqual(result.returncode, 2)
-                self.assertIn("resume.py bare", result.stderr)
+                self.assertIn("read its output in full", result.stderr)
 
     def test_allows_bare_calls_and_other_commands(self):
         for command in [
@@ -35,6 +40,12 @@ class GuardResumeTest(unittest.TestCase):
             "python3 tools/resume.py --read ab --part 3; git log | head",
             "git log --oneline | head -3",
             "python3 tools/resume.py || echo failed",
+            "./compute.sh start t1 --model 'M, high'",
+            "./compute.sh start t1 --model M 2>&1",
+            "./compute.sh run t1 -- python3 x.py | tail -5",
+            "./compute.sh phase t1 reading",
+            "./tools/finish-turn.py t1",
+            "./tools/finish-turn.py t1 && git status | head",
         ]:
             with self.subTest(command=command):
                 self.assertEqual(run(command).returncode, 0)
