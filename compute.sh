@@ -391,6 +391,11 @@ def run_job(args, command):
             tail = output.read().decode('utf-8', errors='replace')
         if size > args.tail_bytes:
             print(f'[Showing last {args.tail_bytes} bytes; full output is saved.]')
+            if not sys.stdout.isatty():
+                # A redirected or piped display is not a result file: say so where it is seen.
+                print(f'compute.sh: displayed output truncated to its last {args.tail_bytes} bytes; '
+                      f'copy the full log {log.relative_to(ROOT)} (or write results with --out) '
+                      f'instead of redirecting the display.', file=sys.stderr)
         print(tail, end='' if tail.endswith('\n') or not tail else '\n')
     expect = getattr(args, 'expect', None)
     if expect:
