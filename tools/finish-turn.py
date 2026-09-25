@@ -72,13 +72,16 @@ def validate_route(body, article):
 LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
 BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
 LEADS_MIN, BRIDGES_MIN = 3, 2
+TEST_RE = re.compile(r'<strong>Test\.</strong>\s*(Passed|Falsified|Not run)\b')
 
 
 def validate_leads(body, article, close):
     """AGENTS.md: a route review reaches outside the record's toolkit (user instructions, 25 September
     2026, after classical tools were proposed only once the user named their fields).  It lists Outside
     leads, from fields that study the open statement's objects, and Absurd bridges, from fields that never
-    stood near them."""
+    stood near them.  Each item records the outcome of its cheap test, run in the review cycle (user
+    instruction, 25 September 2026): passed, falsified, or not run with the reason. Falsified items stay
+    listed and count."""
     if not re.search(r'data-route-item="', body) or entry_tags(body, article)['kind'] != 'review':
         return
     for pattern, heading, least, what in (
@@ -93,6 +96,12 @@ def validate_leads(body, article, close):
         if found is None or len(re.findall(r'<li\b', found.group(1))) < least:
             raise ValueError(f'A route review needs an <h4>{heading}</h4> section followed by a <ul> of at '
                              f'least {least} {what} (AGENTS.md)')
+        items = re.findall(r'<li\b(.*?)</li>', found.group(1), re.S)
+        untested = [i for i, item in enumerate(items, 1) if not TEST_RE.search(item)]
+        if untested:
+            raise ValueError(f'{heading} item(s) {untested} lack a test outcome: run each cheap test in the '
+                             'review cycle and end the item with "<strong>Test.</strong> Passed ...", '
+                             '"Falsified ..." or "Not run: <reason>" (AGENTS.md); falsified items stay and count')
 
 
 GENERAL_RE = re.compile(r'<p><strong>General statement\.</strong>(.*?)</p>', re.S)

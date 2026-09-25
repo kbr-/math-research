@@ -80,7 +80,8 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
              'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
              'or anything else (Absurd bridges). Every route review lists at least three '
-             'Outside leads and two Absurd bridges.']
+             'Outside leads and two Absurd bridges, and runs their cheap tests in the same cycle, recording each '
+             'outcome (falsified items still count).']
     notes += [note for note in (algebra_note(which), library_note(has)) if note]
     for item in items:
         mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item

@@ -145,7 +145,10 @@ rules to growing checklists or one-off setup narratives.
   because nobody thought of applying them here, from any field (mathematics, computer
   science, theoretical physics, chemistry or anything else), each with the translation that would carry
   the objects across, what a theorem there would give, and the smallest test of the
-  translation. In the user's words (25 September 2026): "absurd bridges can reach for
+  translation. Run every cheap test named in these sections within the review cycle itself, and end
+  each item with its outcome, `<strong>Test.</strong>` followed by Passed, Falsified or "Not run:" and
+  the reason (the finisher checks this); falsified items stay listed and count toward the minimums
+  (user, 25 September 2026). In the user's words (25 September 2026): "absurd bridges can reach for
   mathematics, computer science, theoretical physics, quantum fucking chemistry, I don't
   give a fuck. That's why they are absurd." Reaching for other areas is the agent's job at
   every cycle, not only when the user names a field.

@@ -168,12 +168,16 @@ sys.exit(compute.main())
                     f'<p class="entry-meta">{status}</p>' + general + marker + '</article></section>')
         tagged = 'data-kind="research" data-route="general-step"'
         reviewed = 'data-kind="review" data-route="general-step"'
-        leads = ('<h4>Outside leads</h4><ul><li>a</li><li>b</li><li>c</li></ul>'
-                 '<h4>Absurd bridges</h4><ul><li>d</li><li>e</li></ul>')
+        ok = ' <strong>Test.</strong> Passed.'
+        leads = (f'<h4>Outside leads</h4><ul><li>a{ok}</li><li>b <strong>Test.</strong> Falsified: x.</li>'
+                 f'<li>c{ok}</li></ul><h4>Absurd bridges</h4><ul><li>d{ok}</li>'
+                 '<li>e <strong>Test.</strong> Not run: needs a kernel.</li></ul>')
         rejected = [
             record(['research'] * 6, reviewed),                       # a review without outside leads
-            record(['research'] * 6, reviewed, general=general + leads.replace('<li>c</li>', '')),
-            record(['research'] * 6, reviewed, general=general + leads.replace('<li>e</li>', '')),
+            record(['research'] * 6, reviewed, general=general + leads.replace(f'<li>c{ok}</li>', '')),
+            record(['research'] * 6, reviewed, general=general + leads.replace(
+                '<li>e <strong>Test.</strong> Not run: needs a kernel.</li>', '')),
+            record(['research'] * 6, reviewed, general=general + leads.replace(f'<li>d{ok}</li>', '<li>d</li>')),  # untested
             record([], ''),                                           # untagged entry
             record([], 'data-kind="research" data-route="sub-gap"'),  # not a declared route item
             record(['research'] * 6, tagged),                         # seventh research entry in a row
