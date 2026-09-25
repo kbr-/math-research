@@ -1,0 +1,37 @@
+// Form-space test of the proposed shared-link lemma over F_3 (free coordinates l, b, c; functions on F_3^3).
+// Claim tested: if gr F^Q and gr F^{Q'} (Q' in Q) are free over T(b) (x) T(c), T(v) = F_3[v]/(v^3), then for
+// X = (Q cap {b in W}) cup (Q' cap {b not in W}), gr F^X is free over T(c) (c plays the role of a row sum).
+// Freeness over T(c) through degree 6 is tested by the Hilbert criterion dim (G/cG)_s = [q^s] HS_G/(1+q+q^2).
+// Every case has Q = F_3^3 (free over T(b,c)) and Q' = {l = c} or {l = c + 1} (functions of b, c: free over T(b,c)),
+// so the hypotheses hold; the output is the first degree where freeness of gr F^X over T(c) fails (-1: none).
+option(redSB);
+ring S = 3, (l, b, c, z), dp;
+ideal F = l^3 - l, b^3 - b, c^3 - c;
+proc tops(ideal I) { ideal H = std(homog(std(I + F), z)); return(std(subst(H, z, 0))); }
+proc hf(ideal n, int s) { ideal nn = n + z; return(size(kbase(std(nn), s))); }
+proc check(string nm, ideal IX)
+{
+  ideal n = tops(IX); ideal nc = std(n + c);
+  list g; list q; int s; for (s = 0; s <= 6; s++) { g = g + list(hf(n, s)); q = q + list(hf(nc, s)); }
+  list w; int ws; int first = -1;
+  for (s = 0; s <= 6; s++) { ws = g[s+1]; if (s >= 1) { ws = ws - w[s]; } if (s >= 2) { ws = ws - w[s-1]; } w = w + list(ws);
+    if (first < 0 && q[s+1] != ws) { first = s; } }
+  string out = nm + ": G "; for (s = 0; s <= 6; s++) { out = out + string(g[s+1]) + " "; }
+  out = out + "| G/cG "; for (s = 0; s <= 6; s++) { out = out + string(q[s+1]) + " "; }
+  print(out + "| first_mismatch=" + string(first));
+}
+// vanishing ideal of X = {b in W} cup (Q' cap {b not in W}) = I({b in W}) * ... computed as intersection of ideals
+proc Xideal(poly qprime, poly bW, poly bnotW)
+{ // I(A cup B) = I(A) cap I(B); A = {bW = 0}, B = {qprime = 0, bnotW = 0}
+  return(intersect(std(ideal(bW) + F), std(ideal(qprime, bnotW) + F)));
+}
+// W = {0}: b in W iff b = 0 (bW = b); b not in W iff b^2 = 1 (bnotW = b^2 - 1)
+check("W0_Q'=l-c", Xideal(l - c, b, b^2 - 1));
+check("W0_Q'=l-c-1", Xideal(l - c - 1, b, b^2 - 1));
+// W = {1, 2}: b in W iff b^2 = 1; not in W iff b = 0
+check("W12_Q'=l-c", Xideal(l - c, b^2 - 1, b));
+// W = {0, 1}: b(b-1) = 0; not in W iff b = 2
+check("W01_Q'=l-c", Xideal(l - c, b*(b - 1), b - 2));
+// control: Q' = Q (X = Q), free over T(c)
+check("control_Q'=Q", Xideal(0, b, b^2 - 1));
+quit;
