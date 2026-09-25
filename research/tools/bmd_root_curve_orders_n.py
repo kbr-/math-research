@@ -10,7 +10,8 @@ and compares with the law named on the command line:
   binary: S = {0,1},        H(m) = 2 floor(m/2^n) + s_2(m mod 2^n)   (all-dimension theorem)
   qary4:  S = F_4 in GF(4^j), H(m) = 4 floor(m/4^n) + s_4(m mod 4^n) (q-ary theorem, q = 4)
 Field arithmetic is carry-less multiplication modulo poly, so a may be large (generic y).
-Usage: bmd_root_curve_orders_n.py LAW a poly n DMAX TRIALS SEED
+  subspace: S given after SEED; prints |Ord(d)| against N_{s,n}(d) and kappa(m) = min{d : m in Ord(d)}
+Usage: bmd_root_curve_orders_n.py LAW a poly n DMAX TRIALS SEED [S0 S1 ...]
 """
 import random, sys
 
@@ -58,8 +59,11 @@ def main():
                 break
             g += 1
         S, base = [0, 1, w, w ^ 1], 4
+    elif law == 'subspace':
+        S, base = [int(v) for v in sys.argv[8:]], None
+        assert len({u ^ v for u in S for v in S} | set(S)) == len(S), 'S is not an additive subgroup'
     else:
-        raise SystemExit('law must be binary or qary4')
+        raise SystemExit('law must be binary, qary4 or subspace')
     L = [1]
     for t in S:
         L = [0] + L
@@ -69,7 +73,19 @@ def main():
     dd = s.bit_length() - 1
     c = [L[1 << i] for i in range(dd + 1)]
 
+    def N(d):  # #{(Q, r) in N x [0, s-1]^n : sQ + |r| <= d}
+        counts = [1]
+        for _ in range(n):
+            new = [0] * (len(counts) + s - 1)
+            for i, cnt in enumerate(counts):
+                for j in range(s):
+                    new[i + j] += cnt
+            counts = new
+        return sum(cnt for Qd in range(0, d + 1, s) for i, cnt in enumerate(counts) if i <= d - Qd)
+
     def H(m):
+        if base is None:
+            return None
         q, r = divmod(m, base ** n)
         digits = 0
         while r:
@@ -77,8 +93,11 @@ def main():
             r //= base
         return base * q + digits
 
-    top = max(m for m in range(base ** n * (dmax + 2)) if H(m) <= dmax)
-    M = top + 4
+    if base is None:
+        M = s ** n * (dmax + 2) // 2 + 8
+    else:
+        top = max(m for m in range(base ** n * (dmax + 2)) if H(m) <= dmax)
+        M = top + 4
     A = [inv(c[0])]
     while (1 << len(A)) < M:
         u = len(A)
@@ -122,7 +141,7 @@ def main():
                         seen.add(e2)
                         layer.append((e2, smul(ser, z[i])))
             layers.append(layer)
-        basis = {}
+        basis, kappa = {}, {}
         for d in range(dmax + 1):
             for _, v in layers[d]:
                 v = list(v)
@@ -136,10 +155,18 @@ def main():
                     iv = inv(v[lead])
                     basis[lead] = [mul(iv, x) for x in v]
             orders = sorted(basis)
+            for m in orders:
+                kappa.setdefault(m, d)
+            if base is None:
+                print(f'subspace S={S} n={n} trial {trial} y={y} d={d}: |Ord|={len(orders)}, N={N(d)}: '
+                      + ('count match' if len(orders) == N(d) else 'COUNT DIFFER'), flush=True)
+                continue
             predicted = sorted(m for m in range(M) if H(m) <= d)
             status = 'match' if orders == predicted else 'DIFFER'
             print(f'{law} n={n} trial {trial} d={d}: |Ord|={len(orders)}, #{{H<=d}}={len(predicted)}: {status}'
                   + ('' if status == 'match' else f' got {orders} predicted {predicted}'), flush=True)
+        if base is None:
+            print(f'KAPPA trial {trial}: ' + ' '.join(f'{m}:{kappa[m]}' for m in sorted(kappa)), flush=True)
 
 
 if __name__ == '__main__':

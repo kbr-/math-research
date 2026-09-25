@@ -64,6 +64,7 @@ int main(int argc, char** argv) {
         if (!std::strcmp(argv[i], "--out") && i + 1 < argc) { out = argv[++i]; continue; }
         S.push_back(std::atoi(argv[i]));
     }
+    if (A < 1 || A > 16) { std::fprintf(stderr, "a must be in 1..16 (row entries are 16-bit)\n"); return 2; }
     init_field();
     int s = S.size();
     for (int a : S) for (int b : S) if (std::find(S.begin(), S.end(), a ^ b) == S.end()) {
@@ -92,7 +93,7 @@ int main(int argc, char** argv) {
     long npow = 1; for (int i = 0; i < n; ++i) npow *= s;
     int maxdeg = n * (s - 1) + s * (k - 1);
     std::vector<long> pivrow(C, -1);
-    std::vector<std::vector<uint8_t>> basis;
+    std::vector<std::vector<uint16_t>> basis;
     std::vector<long> pivcount(k, 0);
     std::vector<int> delta(k, -1);
     int remaining = k;
@@ -105,7 +106,7 @@ int main(int argc, char** argv) {
             for (const auto& e : es) {
                 int t2 = 0; for (int x : e) t2 += x;
                 if (t2 != se) continue;
-                std::vector<uint8_t> row(C);
+                std::vector<uint16_t> row(C);
                 for (long c = 0; c < C; ++c) {
                     int v = 1;
                     for (int i = 0; i < n && v; ++i) v = gmul(v, T[cols[c][i]][eps[i]][e[i]]);
