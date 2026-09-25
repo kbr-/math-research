@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> The one-block core is decided up to a degree window: refuting the base plus \(\Delta=0\) is rigidity up to \(p-1\) degrees (prop:one-block-core, <a href="#entry-2026-09-26-one-block-core">one-block core</a>). Next: mixed blocks on two holes under random priority, whose clauses become implications between holes. Decide whether the implication system has a low-degree refutation, or reduce it to graph PHP with implications and locate where expansion arguments break.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Random priority on literal forms is refuted by row-shifted duplicates, and an order modulo linear consequences by square-preserving shifts. The rule must order square classes (prop:shifted-duplicates, conj:square-class-priority, <a href="#entry-2026-09-26-shifted-duplicates">shifted duplicates</a>). Next: restate the hole-type result for square classes, then test the two-hole implication families.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24787,6 +24787,53 @@ where \(q(w)\) is the single-divided-power probability of prop:divided-power-col
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 1.82 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 12.43 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-shifted-duplicates" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:shifted-duplicates conj:square-class-priority">
+<h3>Shifted duplicates: random priority on forms is refuted by copies of hole blocks shifted by row equations, and so is an order modulo the base's linear consequences, so the order must be taken on square classes, as the record's base-invariance lesson requires</h3>
+<p class="entry-meta">26 September 2026 · Refutation of a choice rule, with a refined conjecture · open statement A1 · cycle odd-prime-two-hole-blocks.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. conj:random-priority-choice (<a href="#entry-2026-09-26-rigid-products">rigid products</a>) orders the scalar classes of non-rigid forms uniformly at random, and each block takes its top \(k\). The planned attack was mixed blocks on two holes. A simpler attack targets the rule's one arbitrary feature: it ranks forms that the base proves equal as if they were unrelated. Does that defeat it?</p>
+<p><strong>General statement.</strong> Two claims, prop:shifted-duplicates and conj:square-class-priority.</p>
+<ol>
+<li>prop:shifted-duplicates, a refutation. Over \(\mathbb F_3\), take two blocks per hole \(t\). The first consists of the forms \(X_{jt}-1\), and the second of \(Y_{jt}=X_{jt}+R_j-2\), with \(R_j=\sum_uX_{ju}\), over all pigeons \(j\). Every form is non-rigid below degree about \(n/2\), and \(Y_{jt}-(X_{jt}-1)=R_j-1\) is a base axiom. Under the random-priority rule of conj:random-priority-choice, with \(m\ge n\) pigeons and \(k=o(\sqrt n)\), the system is refuted at degree about \(2k+3\), below \(22k\), with probability \(1-o(1)\). The \(2n\) blocks are at most \(n^K\). So that conjecture is false. The family is defended by the correlated choice that gives each \(Y\) block the classes matching its \(X\) block's prefix, conditionally on the expansion event of prop:hole-family-random-choice.</li>
+<li>conj:square-class-priority. Over \(\mathbb F_3\), with \(D_0=20k\), call forms \(L,L'\) square-equivalent if \(L^2-L'^2\in C_{D_0+1}(B)\). This is an equivalence relation, because \(C_{D_0+1}(B)\) is a subspace. Clauses see a form only through its square, so the relation absorbs scalars, shifts by affine forms of \(C_{D_0}(B)\) (since \((L+\lambda)^2-L^2=\lambda(2L+\lambda)\in C_{D_0+1}(B)\)), and shifts that preserve the square modulo the base. Order the square classes of non-rigid forms uniformly at random. Each block takes as prefix one form from each of its top \(k\) classes, completing with rigid forms. Conjecture: for every family of \(n^K\) blocks in which every form is rigid at \(20k\) or non-rigid at \(22k+2\), W's conclusion holds with probability \(1-o(1)\).
+ <ul>
+ <li>The hypothesis is strengthened from conj:random-priority-choice's "non-rigid at \(20k+2\)" to "non-rigid at \(22k+2\)". This makes every class all rigid or all non-rigid. By prop:one-block-core it also defends shared decoys, since any such top decoy is non-rigid at \(22k+2\).</li>
+ <li>Forms of a block in one class: \((1-L'^2)L^2\equiv L^2-L^4\equiv0\) modulo \(C_{D_0+1}(B)\) by Frobenius, so the extra forms' clauses are trivial there.</li>
+ <li>Forms rigid at \(20k\) include those in the zero class. Since \(B\) has no refutation of degree \(D_0\), no nonzero constant is in \(C_{D_0}(B)\).</li>
+ </ul></li>
+</ol>
+
+<h4>Proof of the refutation</h4>
+<ul>
+<li><em>Shifted clauses reduce like unshifted ones.</em> Write \(Y=X'+\varepsilon\) with \(X'=X_{jt}-1\) and \(\varepsilon=R_j-1\in B\). Then \(Y^2=X'^2+\varepsilon(2X'+\varepsilon)\). A clause \((1-Y_{it}^2)\prod_{j\in S}Y_{jt}^2\) of the second block differs from its \(X\) version by a sum of terms, each a multiple of some \(\varepsilon\) by a polynomial of degree at most \(2k+1\). So the difference lies in \(C_{2k+2}(B)\). As in prop:duplicated-hole-family, the \(X\) version gives the deletion \(x_{it}\) modulo the collision axioms at degree about \(2k+2\). So both blocks at \(t\) delete every pigeon outside their prefix.</li>
+<li><em>Independent prefixes.</em> The \(2nm\) forms are pairwise distinct scalar classes. For \(n\ge2\), \(Y_{jt}=-(X_{jt}-1)+\sum_{u\ne t}X_{ju}\) is not a multiple of \(X_{jt}-1\). Every form is non-rigid, so no block is completed with rigid forms, and the blocks' class sets are pairwise disjoint. So the random order restricted to each block's classes is uniform, independently across the \(2n\) blocks, and the two prefixes at each hole are independent uniform \(k\)-subsets of the pigeons. Pigeon 1 keeps hole \(t\) only if it lies in both, with probability \((k/m)^2\). It keeps some hole with probability at most \(n(k/m)^2\le k^2/n=o(1)\), using \(m\ge n\) and \(k=o(\sqrt n)\). Its row equation then refutes at degree about \(2k+3\).</li>
+<li><em>Non-rigidity.</em> \(X_{jt}-1\) is non-rigid below about \(n/2\) (rigid-forms entry). Since \(Y_{jt}-(X_{jt}-1)\in C_1(B)\), \(1-Y_{jt}^2\) and \(1-(X_{jt}-1)^2\) differ by an element of \(C_2(B)\), and \(C_2(B)\subseteq C_D(B)\) for \(D\ge2\), so \(Y_{jt}\) is non-rigid at exactly the same degrees. At W's \(k\), \(22k+2\) is far below \(n/2\). So both conjectures' hypotheses hold for this family.</li>
+<li><em>The defence.</em> Give the \(Y\) block at \(t\) the prefix \(\{Y_{jt}:X_{jt}-1\in S_t\}\). Each \(Y\)-clause then equals its \(X\)-clause plus explicit multiples of the row axioms \(\varepsilon_j\), of degree at most \(2k+2\). So any multiple \(p\) of a \(Y\)-clause is derivable from \(B\) and the \(X\)-clauses at degree \(\deg p+2k+2\). A degree-\(22k\) refutation of the full system therefore yields one of the \(X\)-only hole family at degree \(22k\), which prop:hole-family-random-choice excludes on its expansion event. \(\square\)</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li><em>The record's lesson, twice.</em> obs:collision-padding-refutes-density-rule concluded that a choice rule must be base-invariant up to the substituted degree. Random priority on literal forms is not: the base identifies \(X_{jt}-1\) and \(Y_{jt}\) at degree 1. Ordering modulo the affine forms \(\Lambda\) of \(C_{D_0}(B)\) is not enough either. A fresh-context reviewer found shifts that preserve squares, \(Y_{jt}=X_{jt}-X_{\sigma(j)t}-1\) for a derangement \(\sigma\). With Booleanity and the collision \(x_{jt}x_{\sigma(j)t}=0\), \(Y_{jt}^2\equiv1-x_{jt}\equiv(X_{jt}-1)^2\) at degree 2, so the clauses reduce to the same deletions. But \(Y_{jt}-(X_{jt}-1)=-x_{\sigma(j)t}\) is not in \(\Lambda\), since otherwise the cell would be rigid. So the \(\Lambda\)-rule ranks the two copies independently and is refuted like literal priority, provided \(X_{jt}+X_{\sigma(j)t}-1\notin\Lambda\), which is not checked. Square classes absorb both kinds of shift by construction.</li>
+<li><em>What carries over is open.</em> prop:priority-hole-families and the shared-decoy analysis need distinct cells in distinct square classes. That needs \(x_{jt}-x_{j't'}\notin C_{D_0+1}(B)\) for distinct cells, since \((X-1)^2\equiv1-x\), which holds below the cells' rigidity degree. Whether the square-class order still gives the independence those arguments use is not verified.</li>
+<li><em>Pattern.</em> Every failed rule broke an equivalence the base or the family imposes: rigid fillers, shared forms, base-equal forms, square-equal forms. The square-class rule respects all of these by construction, since clauses depend on forms only through their squares modulo the closure. Whether some other structure of the family defeats it is the open question.</li>
+<li>No new case of W is proved.</li>
+</ul>
+<p>Next: restate prop:priority-hole-families for the square-class rule. Show that distinct cells lie in distinct square classes below their rigidity degree, and that each block's order is uniform. Then test the rule on the two-hole implication families, whose clauses are implications between holes.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read conj:random-priority-choice, prop:duplicated-hole-family, prop:priority-hole-families, prop:hole-family-random-choice, obs:collision-padding-refutes-density-rule and the rigid-forms entry's non-rigidity of cell forms. A fresh-context reviewer confirmed the refutation. It found the square-preserving shifts that defeat the \(\Lambda\)-refinement, and required these changes, all adopted: the conjecture restated on square classes; the parameter regime \(m\ge n\), \(k=o(\sqrt n)\); the strengthened hypothesis justified; the rule's well-definedness (zero class, several forms per class, one form per class); exact non-rigidity transfer; the defence's direction and degrees; the independence details; and the carry-over marked open. The restatement replaces a refuted formulation, and the refutation itself only gained its stated regime, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-two-hole-blocks">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 58.25 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 34.77 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 23.29 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
