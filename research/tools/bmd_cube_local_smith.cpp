@@ -67,15 +67,19 @@ static std::vector<int> smith(std::vector<std::vector<ser>> A, bool& ok) {
 }
 
 int main(int argc, char** argv) {
-    // Line mode: bmd_cube_local_smith line p n DMIN DMAX PREC c_1 b_1 ... c_n b_n puts
-    // y_i = c_i + b_i s for every i, e.g. a line through a double point.
+    // Line mode: bmd_cube_local_smith line p n DMIN DMAX PREC c_1 b_1 ... c_n b_n [RHO] puts
+    // y_i = c_i + b_i s for every i, e.g. a line through a double point.  With RHO, A has the
+    // N + RHO columns T^0..T^{N+RHO-1} (m = N + RHO - 1); A' is still A minus its last column.
+    // RHO = 0 runs every RHO = 2..d on column prefixes of one matrix, printing "d=D rho=R A: ...".
     bool line = argc > 1 && std::string(argv[1]) == "line";
     if (line) { ++argv; --argc; }
     if (argc < 6) { std::fprintf(stderr, "usage: [line] p n DMIN DMAX PREC ...\n"); return 2; }
     P = std::atoll(argv[1]); int n = std::atoi(argv[2]), dmin = std::atoi(argv[3]), dmax = std::atoi(argv[4]); PREC = std::atoi(argv[5]);
     std::vector<ll> cc(n, 0), bb(n, 0);
+    int rho = 1;
     if (line) {
-        if (argc != 6 + 2 * n) { std::fprintf(stderr, "bad arguments\n"); return 2; }
+        if (argc != 6 + 2 * n && argc != 7 + 2 * n) { std::fprintf(stderr, "bad arguments\n"); return 2; }
+        if (argc == 7 + 2 * n) rho = std::atoi(argv[6 + 2 * n]);
         for (int i = 0; i < n; ++i) { cc[i] = md(std::atoll(argv[6 + 2 * i])); bb[i] = md(std::atoll(argv[7 + 2 * i])); }
     } else {
         if (argc != 6 + n - 1 && argc != 6 + n) { std::fprintf(stderr, "bad arguments\n"); return 2; }
@@ -87,7 +91,7 @@ int main(int argc, char** argv) {
     for (int Q = 0; 2 * Q <= d; ++Q)
         for (unsigned r = 0; r < (1u << n); ++r)
             if (2 * Q + __builtin_popcount(r) <= d) basis.push_back({Q, r});
-    int N = (int)basis.size(), M = N + 1;
+    int N = (int)basis.size(), M = N + (rho == 0 ? d : rho);
     std::vector<ll> cat(M + 1); cat[0] = 1;
     for (int j = 1; j <= M; ++j) cat[j] = cat[j - 1] * md(2 * (2 * j - 1)) % P * pw(j + 1, P - 2) % P;
     // z_i as series in T whose coefficients are series in s
@@ -116,16 +120,20 @@ int main(int argc, char** argv) {
         }
         A[b] = sr;
     }
+    for (int r = (rho == 0 ? 2 : rho); r <= (rho == 0 ? d : rho); ++r) {
+    int Mr = N + r;
     bool ok1, ok2;
-    std::vector<int> e = smith(A, ok1);
-    std::vector<std::vector<ser>> A2(N, std::vector<ser>(N));
-    for (int b = 0; b < N; ++b) for (int c = 0; c < N; ++c) A2[b][c] = A[b][c];
+    std::vector<std::vector<ser>> A1(N, std::vector<ser>(Mr)), A2(N, std::vector<ser>(Mr - 1));
+    for (int b = 0; b < N; ++b) for (int c = 0; c < Mr; ++c) { A1[b][c] = A[b][c]; if (c < Mr - 1) A2[b][c] = A[b][c]; }
+    std::vector<int> e = smith(A1, ok1);
     std::vector<int> e2 = smith(A2, ok2);
     std::sort(e.begin(), e.end()); std::sort(e2.begin(), e2.end());
     int s1 = 0, s2 = 0;
-    std::printf("d=%d A:", d); for (int x : e) { std::printf(" %d", x); s1 += x; } std::printf(" (sum %d)%s\n", s1, ok1 ? "" : " insufficient precision");
-    std::printf("d=%d A':", d); for (int x : e2) { std::printf(" %d", x); s2 += x; } std::printf(" (sum %d)%s\n", s2, ok2 ? "" : " insufficient precision");
+    char tag[32]; if (rho == 0) std::snprintf(tag, sizeof tag, "d=%d rho=%d", d, r); else std::snprintf(tag, sizeof tag, "d=%d", d);
+    std::printf("%s A:", tag); for (int x : e) { std::printf(" %d", x); s1 += x; } std::printf(" (sum %d)%s\n", s1, ok1 ? "" : " insufficient precision");
+    std::printf("%s A':", tag); for (int x : e2) { std::printf(" %d", x); s2 += x; } std::printf(" (sum %d)%s\n", s2, ok2 ? "" : " insufficient precision");
     std::fflush(stdout);
+    }
     }
     return 0;
 }
