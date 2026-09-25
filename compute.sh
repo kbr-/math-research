@@ -542,7 +542,9 @@ def series_error(events, command, timeout):
     return (f'{key} already ran with {len(seen)} different argument lists in this session: a parameter series or a '
             'set of validation cases belongs in one run with a series interface, not in the shell or in repeated '
             'invocations; and once the finished runs answer the question, compute nothing more and derive the general '
-            'statement (CLAUDE.md rules 3 to 5, 8 and 9); only --user-approved overrides')
+            'statement (CLAUDE.md rules 3 to 5, 8 and 9); only --user-approved overrides. '
+            'Please Please Please for the love of God consider stating a general statement instead of running '
+            'more cases!!! In the name of the user!!! They don\'t have patience!!!')
 
 
 def sizing_error(events, sized_by, command, expect):

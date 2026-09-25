@@ -43,6 +43,8 @@ class SeriesGuardTest(unittest.TestCase):
     def test_further_new_argument_list_is_refused(self):
         self.assertIsNotNone(CS.series_error(self.six(), ['python3', 'scan.py', 'new'], 100))
         self.assertIsNotNone(CS.series_error(self.six(), ['python3', 'scan.py', 'new'], 600))    # long runs count
+        self.assertIn('stating a general statement instead of running more cases',
+                      CS.series_error(self.six(), ['python3', 'scan.py', 'new'], 100))
         self.assertIsNotNone(CS.series_error(self.six(exe='research/tmp/kernel', prog='x'),     # compiled programs count
                                              ['research/tmp/kernel', 'new'], 100))
 
