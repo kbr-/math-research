@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> The closure route's recursion reaches dense members only through the recorded transfer (<a href="#entry-2026-09-26-recursion-review">recursion review</a>). Next, developing the linked-cluster bridge: prove or refute \(H(A\cap B)\,H(\text{slice})=H(A)\,H(B)\) for the Hilbert series of two members on arbitrary forms through the degree range, identify the connected corrections (the coset-distance obstruction), and decide what multiplicativity gives for the Tor vanishing A1 needs. Tag the entry <code>data-bridge</code>.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A3 (degree), continuing bridge of the <a href="#entry-2026-09-26-recursion-review">recursion review</a>.</strong> The linked-cluster bridge reduces to the transfer lemma inside its range, and its computed instances lie outside it (prop:hilbert-factorization, <a href="#entry-2026-09-26-linked-cluster">linked cluster</a>). Next: the unitary-design bridge for conj:product-top-cohen-lenstra. Write the kernel moments of product-top matrices as products of per-column moment operators, compute the second-moment operator and its spectral gap, and decide whether a uniform gap proves the Cohen–Lenstra second moment. Tag the entry <code>data-bridge</code>.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24330,6 +24330,82 @@ The fall is \(v\,wQ_v\). The model is a statement about functions on \(\mathbb F
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-linked-cluster" data-kind="research" data-route="odd-prime-clause-transfer" data-bridge="entry-2026-09-26-recursion-review:1" data-claims="prop:hilbert-factorization">
+<h3>The linked-cluster bridge: in the transfer range a member's Hilbert series factors through its allowed values, which makes independent clauses size consistent; the computed instances all lie outside that range, and there size consistency fails from degree 5</h3>
+<p class="entry-meta">26 September 2026 · Working proof, with an exact check outside its range · open statement A1 · cycle odd-prime-linked-cluster.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. This entry develops the linked-cluster bridge of the <a href="#entry-2026-09-26-recursion-review">recursion review</a>. That review tested \(H(A\cap B)\,H(\text{slice})=H(A)\,H(B)\) for the Hilbert series of graded functions, through degree 4. <em>Correction to that test.</em> The drops of \(A\) and \(B\) from the slice start at degree 3, so through degree 5 the identity only says that the drops add. The product term, the linked-cluster prediction proper, first enters at degree 6. Additivity through degree \(2k+2=4\) is already recorded for private supports (<a href="#entry-2026-09-25-private-width-k">private supports</a>). So the review's test was nonvacuous but weaker than its reading. When does size consistency hold, and what are the connected corrections?</p>
+<p><strong>General statement.</strong> prop:hilbert-factorization. Over a field of characteristic \(p\), let \(F\) be the functions on a finite point set \(\mathcal X\), filtered by degree, with \(\Gamma=\operatorname{gr}F\) and \(H(\Gamma)=H(\mathcal X)\). Let \(\lambda_1,\dots,\lambda_r\) be polynomials of degree \(\le1\) with values in \(\mathbb F_p\), mapping \(R=\mathbb F^{\mathbb F_p^r}\) to \(F\), with \(T=\operatorname{gr}R=\mathbb F[w]/(w^p)\). Suppose \(\Gamma\) contains a free \(T\)-submodule \(\Phi\) with \(\Phi_d=\Gamma_d\) for \(d&lt;n_0\). Then:</p>
+<ol>
+<li>For every \(\Omega\subseteq\mathbb F_p^r\), \(Z_\Omega=\{x:\lambda(x)\in\Omega\}\) satisfies
+\[H(Z_\Omega)\equiv\frac{H(\Gamma)\,H(\Omega)}{H(T)}\pmod{q^{n_0}},\qquad H(T)=\Bigl(\tfrac{1-q^p}{1-q}\Bigr)^r,\]
+where \(H(\Omega)\) is the affine Hilbert series of \(\Omega\): the graded functions of \(\Omega\) under the degree filtration, with each variable of degree \(&lt;p\).</li>
+<li>Size consistency. Split the coordinates into three groups, \(0\), \(1\) and \(2\), with \(T=T_0\otimes T_1\otimes T_2\). For \(\Omega=\Omega_0\times\Omega_1\times\Omega_2\), with \(*\) the whole group space,
+\[H(Z_{\Omega_0\times\Omega_1\times\Omega_2})\,H(Z_{\Omega_0\times*\times*})\equiv H(Z_{\Omega_0\times\Omega_1\times*})\,H(Z_{\Omega_0\times*\times\Omega_2})\pmod{q^{n_0}}.\]
+The single hypothesis, freeness over the forms of all groups jointly, covers all four sets. For clause members, group 0 is the slice form \(s\) with \(\Omega_0=\{m\}\), and groups 1 and 2 are the forms of \(A\) and of \(B\).</li>
+<li>Shared forms. If \(A\) and \(B\) use the same forms, with allowed values \(\Omega_A\) and \(\Omega_B\) in \(\mathbb F_p^{r_1}\), then modulo \(q^{n_0}\)
+\[H(A\cap B)\,H(\text{slice})-H(A)\,H(B)\equiv\Bigl(\frac{H(\Gamma)\,H(\{m\})}{H(T)}\Bigr)^2\bigl[H(\Omega_A\cap\Omega_B)\,H(T_1)-H(\Omega_A)\,H(\Omega_B)\bigr].\]</li>
+</ol>
+<p>Nothing uses that \(\mathcal X\) consists of 0/1 points. Freeness with \(n_0\ge1\) forces the forms to be affinely independent and \(\lambda\) to be surjective. It also forces \((p-1)r\le\max\deg\Gamma\), since \(T\cdot1\) must contain the socle element in degree \((p-1)r\). This is the series form of lem:filtered-freeness-transfer, part (b). cor:free-hole-uniformity used part (a), the tops, for the same sets \(Z'_a\). prop:shared-form-obstruction records when freeness over a truncated algebra containing a clause's form fails, so it bounds where item 3 can apply.</p>
+
+<h4>Proof</h4>
+<ul>
+<li><em>Item 1.</em> Let \(J\) be the ideal of \(\Omega\). \(R\) is semisimple and \(J\) is generated by the idempotent \(1-1_\Omega\), so \(JF\) is the ideal of \(Z_\Omega\) and \(F/JF=\mathbb F^{Z_\Omega}\). The quotient filtration on \(F/JF\) is the degree filtration of functions on \(Z_\Omega\), and \(\operatorname{gr}(R/J)\) is the affine graded ring of \(\Omega\). Part (b) of the lemma gives \(\dim\operatorname{gr}_d\mathbb F^{Z_\Omega}=\sum_\alpha\dim\operatorname{gr}_{d-a_\alpha}(R/J)\) for \(d&lt;n_0\), where \(a_\alpha\) are the degrees of a basis of \(\Phi\). So \(H(Z_\Omega)\equiv H_U\,H(\Omega)\), with \(H_U=\sum_\alpha q^{a_\alpha}\). Freeness gives \(H(\Phi)=H_U\,H(T)\), and \(\Phi_d=\Gamma_d\) for \(d&lt;n_0\) gives \(H(\Phi)\equiv H(\Gamma)\). Multiplication by \(1/H(T)\), a power series with constant term 1, preserves congruences modulo \(q^{n_0}\). So \(H_U\equiv H(\Gamma)/H(T)\).</li>
+<li><em>Products.</em> For point sets \(\Omega_i\subseteq\mathbb F_p^{r_i}\), the top ideal of \(\Omega_1\times\Omega_2\) contains \(\operatorname{top}(I_{\Omega_1})T+\operatorname{top}(I_{\Omega_2})T\). A function of one group's coordinates has the same degree on \(\mathbb F_p^{r}\) as on its own space, since reduced representatives are unique. Both ideals have codimension \(|\Omega_1||\Omega_2|\) in \(T\), so they are equal. Hence \(\operatorname{gr}\mathbb F^{\Omega_1\times\Omega_2}\) is the graded tensor product, and \(H(\Omega_1\times\Omega_2)=H(\Omega_1)H(\Omega_2)\).</li>
+<li><em>Items 2 and 3.</em> By item 1 and the product rule, each side of item 2 is congruent to \((H(\Gamma)/H(T))^2H(\Omega_0)^2H(\Omega_1)H(\Omega_2)H(T_1)H(T_2)\), using \(H(*)=H(T_i)\). Item 3 is item 1 applied to the four sets \(\{m\}\times\Omega_A\cap\Omega_B\), \(\{m\}\times*\), \(\{m\}\times\Omega_A\) and \(\{m\}\times\Omega_B\), subtracted. \(\square\)</li>
+</ul>
+<p>For clause members, \(\mathcal X\) is the Boolean cube and \(\lambda\) consists of \(s\) and the members' forms. The proposition applies below the \(n_0\) of that system, which exists exactly when hypothesis (T) of cor:free-hole-uniformity holds on the whole cube. It then says that every interaction between clauses is visible in the value space \(\mathbb F_p^r\). The socle bound \((p-1)r\le N\) excludes every family whose forms, together with \(s\), have affine rank above \(N/(p-1)\), for every \(n_0\ge1\). A1's families of \(n^K\) clauses with about \(\log n\) forms each can reach that rank.</p>
+
+<h4>The computed instances, all outside the range</h4>
+<p><code>hilbert_series.py</code> computed \(H\) through degree 7 over \(\mathbb F_3\) at \(N=12\), with one elimination per set, for the slice, \(A\), \(B\) and \(A\cap B\) (<code>hilbert_series.json</code>). <code>transfer_range.py</code> computed each instance's exact \(n_0\) (<code>transfer_range.json</code>). Its freeness test reduces each degree's span to a basis and is validated against the free-hole check's implementation on \(N=7,8,9\). Values:</p>
+<ul>
+<li>independent clauses on disjoint supports (holes 0–5 and 6–11), five forms: \(n_0=1\);</li>
+<li>dense independent forms, five forms: \(n_0=2\);</li>
+<li>shared forms (the two-block pair), three forms: \(n_0=2\).</li>
+</ul>
+<p>So every computed degree \(\ge2\) lies outside the proved range, and the data only show how the formula behaves beyond it:</p>
+<ul>
+<li><em>Disjoint supports.</em> Size consistency holds through degree 4 and fails from degree 5: \(23311\) against \(23313\), then \(60676\) against \(60700\). The drops of \(A\cap B\) are 2, 21, 84 and 163, against \(1+1\), \(11+10\), \(44+38\) and \(89+73\). At degree 5, then, the intersection has two vanishing tops beyond the sum, and neither additivity nor the product law holds. In this instance (\(k=1\)) the failure starts at degree \(2k+3\), the degree where the record's gluing of private supports ends. The data show only that the two degrees coincide here.</li>
+<li><em>Dense independent forms.</em> Also size consistent through degree 4, with a deficit of 4 at degree 5.</li>
+<li><em>Shared forms.</em> Multiplicativity fails from degree 2. The value-space correction of item 3 gives \(H_2(A\cap B)=53\), which is observed, and predicts 144 at degree 3, against 143 observed. Both lie outside the range.</li>
+<li><em>Single clauses.</em> The value-space prediction \(1,11,54,154,276,309,\dots\) matches some clauses through degree 4 (\(B\) on disjoint supports). Others fall one short from degree 3 or 4.</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li><em>What the bridge gives.</em> A closed form for the Hilbert series of any member in the transfer range, factoring through the value space. That locates every interaction of shared forms in \(\mathbb F_p^r\). Size consistency is implied there by independence of the form groups. The formula is the series form of lem:filtered-freeness-transfer. The bridge supplied the question, not a new mechanism.</li>
+<li><em>What it does not give.</em> The proved range is tiny at computable sizes (\(n_0\le2\) here), and it is empty for families whose forms have affine rank above \(N/(p-1)\). Beyond it, in the one instance computed, size consistency fails from degree 5. So for A1 the bridge describes members inside a transfer range, not the family.</li>
+<li>No new case of W is proved.</li>
+</ul>
+<p>Next: the continuing bridge of the recursion review, the moment operator for conj:product-top-cohen-lenstra (A3). Compute the second-moment transfer operator for product-top columns and its spectral gap.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:filtered-freeness-transfer, parts (a) and (b), and cor:free-hole-uniformity. Also re-read prop:shared-form-obstruction's statement and the private-support entry's range. Claim searches (Hilbert series, factorization, value space, transfer, size consistency, shared forms) found cor:free-hole-uniformity, the tops version for the same sets, and prop:shared-form-obstruction. Neither states the series formula. A fresh-context reviewer confirmed item 1 and the product step. It required these changes, all adopted:</p>
+<ul>
+<li>the size-consistency statement given relative to a shared slice factor, which the application needs;</li>
+<li>the correction term written as an identity;</li>
+<li>the clause application made conditional, with the socle bound;</li>
+<li>the exact \(n_0\) of each computed instance, which moved every computed degree outside the range;</li>
+<li>the causal reading of the degree \(2k+3\) coincidence dropped;</li>
+<li>"exactly" replaced by "implied by";</li>
+<li>unused hypotheses named;</li>
+<li>both related claims cited.</li>
+</ul>
+<p>The changes restate item 2 in the form the application uses and otherwise weaken claims. Item 2's proof is the same substitution, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-linked-cluster">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>14 min 52.17 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 47.90 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 53.68 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 46.26 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">6 min 24.18 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3.</p>
 </div>
 </article>
 
