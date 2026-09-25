@@ -8,7 +8,9 @@ Delta_{n,d} lies in Z[y_1..y_n]; the conjecture over F says Delta_{n,d} != 0 in 
 builds the entries with sympy and computes and factors Delta_{n,d} in Singular.
 Prints the integer content of Delta (its prime factors are the characteristics where the
 law fails identically) and each irreducible factor's degree, size, multiplicity and content.
-Usage: bmd_cube_order_determinant.py n d [OUT]
+With --lead it skips the factorization and prints the coefficients of the lex-leading and
+lex-trailing monomials of Delta (orders lp and rp), whose gcd with the content bounds the content.
+Usage: bmd_cube_order_determinant.py n d [OUT] [--lead]
 """
 import itertools, subprocess, sys
 import sympy as sp
@@ -46,19 +48,28 @@ def main():
     # determinant and factorization in Singular (fast multivariate arithmetic over QQ)
     names = ','.join(str(y) for y in ys)
     entries = ','.join(str(sp.expand(cols[j][i])).replace('**', '^') for i in range(size) for j in range(size))
+    lead = '--lead' in sys.argv
+    argv = [a for a in sys.argv if a != '--lead']
     script = (f'LIB "polylib.lib";\nring R = 0, ({names}), dp;\nmatrix A[{size}][{size}] = {entries};\n'
-              'poly D = det(A);\nprint("CONTENT " + string(content(D)));\n'
-              'list L = factorize(D);\nint i;\n'
-              'for (i = 1; i <= size(L[1]); i++) { poly f = L[1][i]; '
-              'string sf = "(large)"; if (size(f) <= 4) { sf = string(f); } '
-              'print("FACTOR deg=" + string(deg(f)) + " terms=" + string(size(f)) + " mult=" + string(L[2][i]) '
-              '+ " content=" + string(content(f)) + " " + sf); kill f; kill sf; }\n'
-              'quit;\n')
+              'poly D = det(A);\nprint("CONTENT " + string(content(D)));\n')
+    if lead:
+        script += (f'ring R1 = 0, ({names}), lp;\npoly D1 = imap(R, D);\n'
+                   'print("LEX-LEADING " + string(leadcoef(D1)) + " * " + string(leadmonom(D1)));\n'
+                   f'ring R2 = 0, ({names}), rp;\npoly D2 = imap(R, D);\n'
+                   'print("REVLEX-LEADING " + string(leadcoef(D2)) + " * " + string(leadmonom(D2)));\n'
+                   'print("TERMS " + string(size(D2)));\nquit;\n')
+    else:
+        script += ('list L = factorize(D);\nint i;\n'
+                   'for (i = 1; i <= size(L[1]); i++) { poly f = L[1][i]; '
+                   'string sf = "(large)"; if (size(f) <= 4) { sf = string(f); } '
+                   'print("FACTOR deg=" + string(deg(f)) + " terms=" + string(size(f)) + " mult=" + string(L[2][i]) '
+                   '+ " content=" + string(content(f)) + " " + sf); kill f; kill sf; }\n'
+                   'quit;\n')
     res = subprocess.run(['Singular', '-q'], input=script, capture_output=True, text=True, check=True)
     out = f'n={n} d={d}: N={Nd}, matrix {size}x{size}\n' + res.stdout.strip() + '\n'
     print(out, end='', flush=True)
-    if len(sys.argv) > 3:
-        open(sys.argv[3], 'w').write(out)
+    if len(argv) > 3:
+        open(argv[3], 'w').write(out)
 
 
 if __name__ == '__main__':
