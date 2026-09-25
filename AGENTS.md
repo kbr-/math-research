@@ -148,7 +148,12 @@ rules to growing checklists or one-off setup narratives.
   translation. Run every cheap test named in these sections within the review cycle itself, and end
   each item with its outcome, `<strong>Test.</strong>` followed by Passed, Falsified or "Not run:" and
   the reason (the finisher checks this); falsified items stay listed and count toward the minimums
-  (user, 25 September 2026). In the user's words (25 September 2026): "absurd bridges can reach for
+  (user, 25 September 2026). A passed bridge is a lead to develop, not only to list: each
+  later review on the route reports, under a **Bridge follow-up** heading, one
+  `<li data-bridge="REVIEW-ANCHOR:N">` per passed bridge not yet closed, with the work done on it in
+  that cycle and `<strong>Follow-up.</strong>` Developed, Continuing or Closed (with the reason the attempt
+  found). A research entry developing one carries `data-bridge`; the finisher checks reviews and reminds
+  research entries (user, 26 September 2026: "give the bridges a chance"). In the user's words (25 September 2026): "absurd bridges can reach for
   mathematics, computer science, theoretical physics, quantum fucking chemistry, I don't
   give a fuck. That's why they are absurd." Reaching for other areas is the agent's job at
   every cycle, not only when the user names a field.

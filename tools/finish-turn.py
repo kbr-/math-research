@@ -104,6 +104,93 @@ def validate_leads(body, article, close):
                              '"Falsified ..." or "Not run: <reason>" (AGENTS.md); falsified items stay and count')
 
 
+FOLLOWUP_RE = re.compile(r'<h4>Bridge follow-up</h4>\s*<ul>(.*?)</ul>', re.S)
+FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-bridge="([^"]+)"[^>]*>(.*?)</li>', re.S)
+FOLLOWUP_OUTCOME = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed)\b')
+BRIDGE_WINDOW = 3    # research entries after a review before a reminder to develop an open passed bridge
+
+
+def route_articles(body, article, route):
+    """(position, id, kind, close) of the earlier Research-record articles on one route."""
+    record = body.find('<section id="research-record">')
+    out = []
+    for m in re.finditer(r'<article\b', body[:article]):
+        if m.start() <= record:
+            continue
+        tags = entry_tags(body, m.start())
+        if tags['route'] != route:
+            continue
+        tag = body[m.start():body.index('>', m.start()) + 1]
+        ident = re.search(r'\bid="([^"]+)"', tag)
+        out.append((m.start(), ident.group(1) if ident else None, tags['kind'], body.find('</article>', m.start())))
+    return out
+
+
+def open_bridges(body, articles, current=None):
+    """IDs (review-anchor:item) of Absurd bridges that passed their test and that no Bridge follow-up
+    item has closed."""
+    passed, closed = [], set()
+    for position, ident, kind, close in articles + ([current] if current else []):
+        text = body[position:close]
+        if kind == 'review' and ident and (position, ident, kind, close) != current:
+            found = BRIDGES_RE.search(text)
+            if found:
+                for n, item in enumerate(re.findall(r'<li\b(.*?)</li>', found.group(1), re.S), 1):
+                    outcome = TEST_RE.search(item)
+                    if outcome and outcome.group(1) == 'Passed':
+                        passed.append(f'{ident}:{n}')
+        found = FOLLOWUP_RE.search(text)
+        if found:
+            for ident2, item in FOLLOWUP_ITEM.findall(found.group(1)):
+                outcome = FOLLOWUP_OUTCOME.search(item)
+                if outcome and outcome.group(1) == 'Closed':
+                    closed.add(ident2)
+    return [b for b in passed if b not in closed]
+
+
+def validate_bridges(body, article, close):
+    """Passed Absurd bridges must be developed, not only listed (user question, 26 September 2026: six
+    bridges had passed their smallest tests and none was ever explored further).  A route review reports,
+    under Bridge follow-up, the work done in its cycle on every passed bridge of earlier reviews on its
+    route that no follow-up has closed.  After BRIDGE_WINDOW research entries since a review with none
+    developing an open passed bridge (tagged data-bridge="REVIEW-ANCHOR:N"), it prints a reminder."""
+    if not re.search(r'data-route-item="', body):
+        return
+    tags = entry_tags(body, article)
+    if tags['kind'] not in ('research', 'review') or not tags['route']:
+        return
+    earlier = route_articles(body, article, tags['route'])
+    if tags['kind'] == 'review':
+        pending = open_bridges(body, earlier)
+        if not pending:
+            return
+        found = FOLLOWUP_RE.search(body, article, close)
+        items = dict(FOLLOWUP_ITEM.findall(found.group(1))) if found else {}
+        missing = [b for b in pending if b not in items]
+        if missing:
+            raise ValueError('Passed Absurd bridges of earlier reviews are still open: ' + ', '.join(missing)
+                             + '. Add an <h4>Bridge follow-up</h4> <ul> with one <li data-bridge="ID"> per '
+                             'bridge, reporting the work done on it in this cycle (AGENTS.md)')
+        bare = [b for b in pending if not FOLLOWUP_OUTCOME.search(items[b])]
+        if bare:
+            raise ValueError('Bridge follow-up item(s) ' + ', '.join(bare) + ' lack an outcome: end each with '
+                             '"<strong>Follow-up.</strong> Developed ...", "Continuing ..." or "Closed: <reason '
+                             'found by the attempt>" (AGENTS.md)')
+        return
+    reviews = [i for i, a in enumerate(earlier) if a[2] == 'review']
+    if not reviews:
+        return
+    since = [a for a in earlier[reviews[-1] + 1:] if a[2] == 'research']
+    tag = body[article:body.index('>', article) + 1]
+    developing = 'data-bridge="' in tag or any(
+        'data-bridge="' in body[a[0]:body.index('>', a[0]) + 1] for a in since)
+    if len(since) + 1 >= BRIDGE_WINDOW and not developing and open_bridges(body, earlier):
+        # A reminder, not a rejection (user, 26 September 2026: "use your judgement, but give the bridges a chance").
+        print(f'Warning: {len(since) + 1} research entries since the last route review and none develops an '
+              'open passed Absurd bridge (' + ', '.join(open_bridges(body, earlier)) + '). Consider giving one '
+              'a real attempt, tagged data-bridge="REVIEW-ANCHOR:N" (AGENTS.md).', file=sys.stderr)
+
+
 GENERAL_RE = re.compile(r'<p><strong>General statement\.</strong>(.*?)</p>', re.S)
 
 
@@ -244,6 +331,7 @@ def validate_marker(body, marker):
     validate_route(body, article)
     validate_general(body, article, close)
     validate_leads(body, article, close)
+    validate_bridges(body, article, close)
     if '$' in body[article:close]:
         # MathJax treats a dollar sign as an inline-math delimiter; the notebook uses \( \).
         raise ValueError('The entry contains a dollar sign, which MathJax reads as a math delimiter; '

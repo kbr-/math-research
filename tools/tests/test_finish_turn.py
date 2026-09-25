@@ -153,6 +153,49 @@ sys.exit(compute.main())
                 self.assertEqual(notebook.read_text(), content)
                 self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
 
+    def test_passed_bridges_need_follow_up(self):
+        notebook = self.root / 'notebook.html'
+        marker = '<!-- TIMING test_turn -->'
+        route = '<section id="remaining-route"><li data-route-item="general-step">x</li></section>'
+        general = ('<p><strong>General statement.</strong> For every level the kernel is spanned by '
+                   'short elements (conj:fixture-general).</p>')
+        ok = ' <strong>Test.</strong> Passed.'
+        leads = (f'<h4>Outside leads</h4><ul><li>a{ok}</li><li>b{ok}</li><li>c{ok}</li></ul>'
+                 f'<h4>Absurd bridges</h4><ul><li>d{ok}</li><li>e <strong>Test.</strong> Falsified: x.</li></ul>')
+        old_review = ('<article id="rev1" data-kind="review" data-route="general-step">'
+                      '<p class="entry-meta">Review.</p>' + general + leads + '</article>')
+        research = '<article data-kind="research" data-route="general-step"{}><p class="entry-meta">S.</p></article>'
+        def record(earlier, tags, extra=''):
+            return (route + '<section id="research-record">' + old_review + earlier + f'<article {tags}>'
+                    '<p class="entry-meta">Status.</p>' + general + extra + marker + '</article></section>')
+        tagged = 'data-kind="research" data-route="general-step"'
+        reviewed = 'id="rev2" data-kind="review" data-route="general-step"'
+        follow = '<h4>Bridge follow-up</h4><ul><li data-bridge="rev1:1">Tried it. <strong>Follow-up.</strong> {}</li></ul>'
+        rejected = [
+            record(research.format('') * 6, reviewed, leads),                  # review ignores the open bridge
+            record(research.format('') * 6, reviewed, leads + follow.format('Pending.')),   # no outcome
+        ]
+        accepted = [
+            record(research.format('') * 2, tagged),                          # third entry: a reminder only
+            record(research.format(' data-bridge="rev1:1"') + research.format(''), tagged),
+            record(research.format('') * 2, tagged + ' data-bridge="rev1:1"'),
+            record(research.format('') * 6, reviewed, leads + follow.format('Continuing: next cycle.')),
+            record(research.format('') * 6, reviewed, leads + follow.format('Closed: the translation fails.')),
+        ]
+        checker = self.root / 'check.py'
+        checker.write_text('import importlib.util, sys\n'
+                           'spec = importlib.util.spec_from_file_location("ft", "tools/finish-turn.py")\n'
+                           'ft = importlib.util.module_from_spec(spec); spec.loader.exec_module(ft)\n'
+                           'ft.validate_marker(open("notebook.html").read(), sys.argv[1])\n')
+        for content in rejected:
+            with self.subTest(content=content[-400:]):
+                notebook.write_text(content)
+                self.assertNotEqual(self.command('check.py', marker, check=False).returncode, 0)
+        for content in accepted:
+            with self.subTest(content=content[-400:]):
+                notebook.write_text(content)
+                self.command('check.py', marker)
+
     def test_route_review_and_status_length_are_enforced(self):
         notebook = self.root / 'notebook.html'
         marker = '<!-- TIMING test_turn -->'
