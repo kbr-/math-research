@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The safe-probe port fails at odd primes for random dense flats (<a href="#entry-2026-09-25-odd-prime-safe-maps">safe maps</a>), and feature expansion stops below the linear window. Next, read the proof of thm:logarithmic-prefix-wide-clause-reduction and determine the largest prefix length its substitution degree and inventory budget allow. The current length \(k=O(\log n)\) is set by W's density condition, and a longer prefix makes the clauses much thinner. If a power of \(N\) is allowed, state the thin-clause form of W and test it against the recorded attacks. The step ends with that statement or with the budget that pins \(k\) to \(O(\log n)\).</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> W is sufficient at every prefix length from \(k_0\) up to order \(\sqrt n\) (<a href="#entry-2026-09-25-prefix-length">prefix length</a>). At length \(n^c\) it is implied by hardness of weak PHP at degree \(22n^c\) under \(2^{O(n^c)}\) forbidden flats of rank \(n^c+1\) whose union has density below one. State that forbidden-flat statement precisely. Then check whether the main record's binary flat-avoidance results beyond the safe probes, the adaptive row endpoint and the row-transversal criterion, have odd-prime forms. The step ends with an odd-prime flat-avoidance mechanism or with its obstruction.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -22225,6 +22225,48 @@ where \(Z\) is the Hasse fat points of multiplicity \(s-1\) at the nonzero \(m_j
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 28.47 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 42.91 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">20.93 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-prefix-length" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="cor:prefix-length-freedom">
+<h3>Prefix length: the logarithmic-prefix reduction works for every prefix length below the barrier, but beyond order √n the expansion bound cannot certify the hole family under any choice</h3>
+<p class="entry-meta">25 September 2026 · Working proof (a corollary) and a bound on the expansion method · open statement W · cycle odd-prime-prefix-length.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement W. The <a href="#entry-2026-09-25-odd-prime-safe-maps">safe-maps entry</a> asked how long a prefix the logarithmic-prefix reduction allows. A longer prefix makes the clauses thinner and gives the chooser more room. Blocks with at most \(k\) forms get the full prefix and contribute no clauses.</p>
+<p><strong>General statement.</strong> cor:prefix-length-freedom: the proof of thm:logarithmic-prefix-wide-clause-reduction uses \(k\) only through its degree bound, which holds for every \(k\ge1\), and through \(M(1-1/p)^k&lt;1\), which holds for \(k\ge k_0=\lceil(K+1)\log n/\log\frac p{p-1}\rceil\). So W at any prefix length \(k\ge k_0\), with degree \((4p-1)(p-1)k\), excludes Res(lin\(_{\mathbb F_p}\)) refutations of ordinary unary PHP with at most \(n^K\) lines. W's premise can hold only while \((4p-1)(p-1)k\) is below the weak base's refutation degree, which is at least \(n/2+1\); that is, \(k\le n/44\) at \(p=3\). For the hole family, the expansion bound behind prop:hole-family-random-choice is at most \((n+1)/(2k)\) under every choice of prefixes. So it cannot certify that family once \(k\) exceeds about \(\sqrt{(n+1)/46}\).</p>
+
+<h4>The corollary</h4>
+<p><strong>Corollary (prefix-length freedom).</strong> Fix an odd prime \(p\) and \(K\). Let \(k=k(n)\ge k_0\). Suppose that for every family of \(M\le n^K\) blocks there are prefix sets \(S_b\), \(|S_b|=\min(k,h_b)\), for which the weak base plus the clauses \(g_{b,i}\prod_{j\in S_b}L_{b,j}^{p-1}\), \(i\notin S_b\), has no PC refutation of degree \((4p-1)(p-1)k\). Then no Res(lin\(_{\mathbb F_p}\)) refutation of ordinary unary PHP\(^{n+1}_n\) has at most \(n^K\) lines.</p>
+<p><em>Proof.</em> The proof of the reduction applies verbatim. It compiles the refutation into at most \(n^K\) complete accuracy-one blocks with a PC refutation of degree \(4p-1\), and substitutes the partial prefix on the sets \(S_b\). The image is a PC refutation of the clause system of degree at most \((4p-1)(p-1)k\). The degree bound \(\max(D\max(1,(p-1)(k-1)),(p-1)(k+1))\le(4p-1)(p-1)k\) and the field-image check hold for every \(k\ge1\). The parameter condition \(M(1-1/p)^k&lt;1\) holds for \(k\ge k_0\). The upper bound \(k\le c\log n\) in W's recorded statement is not used. \(\square\)</p>
+<p><em>Where the premise can hold.</em> If \((4p-1)(p-1)k\) reaches the weak base's own refutation degree, the base alone is refuted within the budget, W's premise fails, and the corollary is vacuous. By Razborov's bound that degree is at least \(n/2+1\) over every field, as applied in cor:functional-auxiliary-PC-bridge. So the premise can hold for \(k\le n/44\) at \(p=3\). Blocks with \(h_b\le k\) receive the full prefix, and their companions map into the Boolean ideal, as in the reduction.</p>
+
+<h4>The useful range, from the hole family</h4>
+<p>At prefix length \(k\), the hole family becomes weak graph PHP on the bipartite graph whose hole \(t\) has neighbourhood \(S_t\), of size \(k\). This is the computation of prop:hole-family-random-choice, and it holds for any \(k\). Its lower-bound route is the imported Miksa–Nordström bound, which excludes degree up to about \(\delta s/(2d)\). It needs \(\delta s/(2d)&gt;(4p-1)(p-1)k+d\), about \(23k\) at \(p=3\).</p>
+<p><strong>Remark (the expansion bound is capped).</strong> For every choice of the sets \(S_t\), \(\delta s/(2d)\le(n+1)/(2k)\). In an \((s,\delta)\)-boundary expander, a pigeon set of size \(s\) has at least \(\delta s\) distinct boundary holes, so \(\delta s\le n\). The maximum pigeon degree is at least the average, \(d\ge kn/(n+1)\). Hence the route can certify the hole family only if \((n+1)/(2k)&gt;23k\), that is, \(k&lt;\sqrt{(n+1)/46}\), whatever the chooser does. This is a limit of the method, not a refutation. The true degree of this graph PHP is not recorded.</p>
+<p>For random choices the bound is lower still. Boundary expansion \(\delta\approx(1-2\varepsilon)k\) holds only up to about \(s\approx\varepsilon n/(ek)\), which gives at best about \(n/(43k)\) and a crossover near \(\sqrt n/32\). This part is heuristic. So W is equally sufficient at every prefix length from \(k_0\) up to order \(\sqrt n\), where the simplest family can still be certified. At \(k=n^c\), \(c&lt;1/2\), each clause forbids an event of density about \((1-1/p)^{n^c}\), and only blocks with more than \(n^c\) forms contribute clauses.</p>
+
+<h4>Assessment</h4>
+<p>This widens W's parameter range without changing its nature. The thin-clause form is no more tractable by any recorded mechanism. Expanding a clause's prefix of length \(n^c\) gives \((p-1)^{n^c}\) flats. The expanded system implies the clause system, via \(L^{p-1}\equiv\sum_{a\ne0}(1-(L-a)^{p-1})\) modulo \(L^p-L\), which follows from Booleanity at degree \(p\). When \(\log h_b=O(n^c)\), the inventory \(\sum_b(h_b-k)(p-1)^k\) fits the budget of thm:near-balanced-unary-affine-endpoint: degree at most \(N^\alpha\operatorname{polylog}N\), log inventory at most \(N^\beta\operatorname{polylog}N\), with \(2\alpha+\beta&lt;1\) at \(\alpha=\beta=c&lt;1/3\). But the expanded constraints forbid flats; they are not definitional ENS blocks. Forbidding flats at odd primes is exactly the flat-avoidance problem, where the <a href="#entry-2026-09-25-odd-prime-safe-maps">safe-map obstruction</a> applies.</p>
+<p>Next: an endpoint for forbidden flats at odd primes. At prefix length \(n^c\), W is implied by the statement that weak PHP stays hard at degree \(22n^c\) under \(2^{O(n^c)}\) forbidden flats of rank \(n^c+1\). The union of the flats has density at most \(M(1-1/p)^k&lt;1\), since each block's flats lie inside its prefix set; the sum of their densities can exceed one. State it precisely, and check whether the main record's binary flat-avoidance results do more than the safe probes, for example through the adaptive row endpoint or the row-transversal criterion, before concluding that no mechanism exists.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>the proof of thm:logarithmic-prefix-wide-clause-reduction, for where \(k\) enters: the degree bound and the parameter condition only;</li>
+<li>prop:hole-family-random-choice, with its heuristic expansion values;</li>
+<li>conj:partial-prefix-substitution-capacity, the constant-prefix random-inventory form;</li>
+<li>prop:odd-prime-safe-maps-local.</li>
+</ul>
+<p>The corollary is elementary, and its proof is the recorded one. A fresh-context reviewer confirmed that the proof uses \(k\) only as stated. It found that the barrier hypothesis was unused, and that the hole-family cap holds for every chooser: the draft had called it heuristic. It also found that the needed degree is \(23k\) and that the random-choice constant was optimistic. It required union density and a named endpoint. All changes were adopted. No computation was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-prefix-length">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 45.37 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 2.34 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 21.93 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">21.10 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
