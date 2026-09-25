@@ -22,6 +22,12 @@ class NotebookAppendTests(unittest.TestCase):
         self.assertIn('<h2>Proposed next step</h2>\n<p>new</p>\n</section>', out)
         self.assertNotIn('<p>old</p>', out)
 
+    def test_accepts_attributes_before_the_anchor(self):
+        out = tool.append(NOTEBOOK, '<article class="research-entry" id="a3" data-kind="review">three</article>')
+        self.assertIn('<article id="a2">two</article>\n<article class="research-entry" id="a3"', out)
+        with self.assertRaisesRegex(ValueError, 'already present'):
+            tool.append(NOTEBOOK, '<article class="research-entry" id="a2">dup</article>')
+
     def test_keeps_next_step_without_option(self):
         out = tool.append(NOTEBOOK, '<article id="a3">three</article>')
         self.assertIn('<p>old</p>', out)

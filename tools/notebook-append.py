@@ -19,7 +19,7 @@ HEADING = '<h2>Proposed next step</h2>'
 
 def append(source, entry, next_html=None):
     entry = entry.strip()
-    m = re.match(r'<article id="([^"]+)"', entry)
+    m = re.match(r'<article\b[^>]*?\sid="([^"]+)"', entry)
     if not m or not entry.endswith('</article>'):
         raise ValueError('entry must be one <article id="..."> ... </article> element')
     if f'id="{m.group(1)}"' in source:
