@@ -2,8 +2,10 @@
 """Claude Code PreToolUse hook: refuse filtered or redirected output of must-read commands.
 
 Some commands print text the agent must read whole: the resume bundle
-(`tools/resume.py`), the turn guidance and warnings of `./compute.sh start`, and the
-finisher's report (`tools/finish-turn.py`). Piping them through head, tail, sed or
+(`tools/resume.py`), the turn guidance and warnings of `./compute.sh start`, the
+finisher's report (`tools/finish-turn.py`), and every computation run by `./compute.sh`
+(`run`, or an option-led invocation), whose refusals and guard messages would otherwise be
+filtered away; its display is already bounded to the output's tail. Piping them through head, tail, sed or
 grep, or redirecting their standard output to a file, silently drops that text. The
 hook reads the tool call as JSON on stdin and exits with status 2 (block, message on
 stderr) for such commands.
@@ -14,7 +16,7 @@ import sys
 
 # The start of a command-list segment up to the program it runs: optional parentheses, variable
 # assignments and env/nohup/time wrappers, then optionally an interpreter with its options.
-INVOKED = (r"^\s*\(*\s*(?:\w+=\S*\s+)*(?:(?:env|nohup|time)\s+)*"
+INVOKED = (r"^\s*(?:(?:do|then|else)\s+)?\(*\s*(?:\w+=\S*\s+)*(?:(?:env|nohup|time)\s+)*"
            r"(?:\S*python[\d.]*\s+(?:-\S+\s+)*|(?:ba)?sh\s+)?(?:\S*/)?")
 # Each must-read command, run at the start of a segment, with the reason shown when it is filtered.
 # A command that only names the file, as in `grep x tools/resume.py | head`, is not guarded.
@@ -25,6 +27,9 @@ GUARDED = [
      "./compute.sh start prints turn guidance and warnings that can appear anywhere"),
     (re.compile(INVOKED + r"finish-turn\.py\b"),
      "tools/finish-turn.py prints checks, warnings and staging instructions"),
+    (re.compile(INVOKED + r"compute\.sh\s+(?:run\b|--(?!status\b))"),
+     "./compute.sh runs print guard refusals and guidance (and their display is already bounded); "
+     "save a full result with tools/save-run-output.py"),
 ]
 # Command lists split on ;, &&, || and newlines; a remaining single | is a pipe.
 SEPARATOR = re.compile(r"\|\||&&|;|\n")

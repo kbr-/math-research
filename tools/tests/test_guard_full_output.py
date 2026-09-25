@@ -29,6 +29,11 @@ class GuardFullOutputTest(unittest.TestCase):
             "FOO=1 python3 -u tools/resume.py | head",
             "(python3 tools/resume.py) | head",
             "bash compute.sh start t1 | tail",
+            "./compute.sh run t1 -- python3 x.py | tail -5",
+            "./compute.sh run t1 --threads 1 -- ./kernel 3 | grep n=",
+            "./compute.sh --session t1 --threads 1 python3 x.py | head",
+            "for a in 1 2; do ./compute.sh run t1 -- ./k $a 2>&1 | grep x; done",
+            "./compute.sh run t1 -- ./k > out.txt",
         ]:
             with self.subTest(command=command):
                 result = run(command)
@@ -45,7 +50,8 @@ class GuardFullOutputTest(unittest.TestCase):
             "python3 tools/resume.py || echo failed",
             "./compute.sh start t1 --model 'M, high'",
             "./compute.sh start t1 --model M 2>&1",
-            "./compute.sh run t1 -- python3 x.py | tail -5",
+            "./compute.sh run t1 -- python3 x.py",
+            "./compute.sh --status | head",
             "./compute.sh phase t1 reading",
             "./tools/finish-turn.py t1",
             "./tools/finish-turn.py t1 && git status | head",
