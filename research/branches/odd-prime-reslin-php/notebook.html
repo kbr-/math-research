@@ -18,7 +18,7 @@
 <p>The goal follows from S1 by the proved <a href="#weak-base-unary-selector-transfer">compiler</a>. S2 to S5 are what the current route, relative gluing on the window, needs for S1. No proved reduction yet turns them into S1 for adversarial inventories, and S2 is where it is missing. Order: highest risk first after S1.</p>
 <ol>
 <li><strong>S1, block hardness.</strong> Over \(\mathbb F_3\), for fixed \(K\) and large \(n\), the weak unary PHP base on \(n+1\) rows and \(n\) columns plus any \(n^K\) complete accuracy-one ENS blocks has no PC refutation of degree 11 (\(4p-1\) at other odd \(p\)). The blocks have arbitrary affine inputs \(L\), \(q=1-L^2\), private coefficients \(r\), and companions \(qP\) with \(P=1-\sum rq\). <em>Status:</em> proved when every block's projected rank is at most \(R\) or at least \(Q_*\) (<a href="#ternary-low-or-dense-graph-rank-exclusion">graph criterion</a>); open in the window between.</li>
-<li><strong>S2, dependent forms.</strong> In the window, blocks whose input forms are linearly dependent glue: the base plus the blocks has no fall below 11. It must cover the band, whose forms outnumber a glued member's independence bound about \(10^8\)-fold (<a href="#entry-2026-09-24-mixture-composition">count</a>). <em>Status:</em> open, highest risk. No member notion exists beyond repeated linear parts, and pairwise conditions fail for selectors on \(x,y,x+y\) (prop:overlap-tor). Proved when each block shares one input: dependencies among the shared forms cause no fall below 11, and proportional ones reduce to S5 (<a href="#entry-2026-09-25-one-shared-input-locality">one shared input</a>). Open for blocks sharing several inputs, as all band blocks do: two blocks with two shared inputs each and overlapping, non-proportional forms fall at 7 or 8, below 11, at \(h=3,4,5\), so such overlaps need cross generators beyond \(R\) and \(T\) (<a href="#entry-2026-09-25-overlap-pairs">overlap pairs</a>). Band blocks have no private inputs, and S2 must be tested in that form.</li>
+<li><strong>S2, dependent forms.</strong> In the window, blocks whose input forms are linearly dependent glue: the base plus the blocks has no fall below 11. It must cover the band, whose forms outnumber a glued member's independence bound about \(10^8\)-fold (<a href="#entry-2026-09-24-mixture-composition">count</a>). <em>Status:</em> open, highest risk. No member notion exists beyond repeated linear parts, and pairwise conditions fail for selectors on \(x,y,x+y\) (prop:overlap-tor). Proved when each block shares one input: dependencies among the shared forms cause no fall below 11, and proportional ones reduce to S5 (<a href="#entry-2026-09-25-one-shared-input-locality">one shared input</a>). Open for blocks sharing several inputs, as all band blocks do: two blocks with two shared inputs each and overlapping, non-proportional forms fall at 7 or 8, below 11, at \(h=3,4,5\), so such overlaps need cross generators beyond \(R\) and \(T\) (<a href="#entry-2026-09-25-overlap-pairs">overlap pairs</a>). Members of at most three blocks, with their own degree-11 consequences, suffice for a spread-out four-block cycle but not for four blocks on the lines of one plane at \(h=3\) (<a href="#entry-2026-09-25-three-local-augmentation">three-local</a>). Band blocks have no private inputs, and S2 must be tested in that form.</li>
 <li><strong>S3, freeness.</strong> The weak top algebra is free through degree 11 over the span of the inventory's forms. <em>Status:</em> proved on a Zariski-open set for at most \(m(\lfloor N/21\rfloor-1)\) forms (<a href="#entry-2026-09-24-general-forms-freeness">general forms</a>); open for the band's rational and adversarial tuples.</li>
 <li><strong>S4, companion tops.</strong> A single block's top ideal equals \(\rho'Q\) below degree \(h+2\) (conj:companion-tops-low-degree). <em>Status:</em> checked through \(h=7\), degree 8; needed for \(h\ge10\), degree 11.</li>
 <li><strong>S5, repeated linear parts.</strong> Pairs and triples of blocks with identical or parallel linear parts, with \(R\) and \(T\), have no fall below 11 when \(h\ge7\) (conj:r-added-parallel-fall; triples with \(T\)). Identical pairs fall no lower than \(h+4\) (conj:shared-input-falls). <em>Status:</em> checked at small \(h\). With S4, the locality theorems reduce components with repeated linear parts and at most two multi-coordinate blocks to these.</li>
@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> One shared input per block is settled below 11. Blocks sharing several overlapping inputs fall at 7 or 8 without cross generators (<a href="#entry-2026-09-25-overlap-pairs">overlap pairs</a>), and band blocks have no private inputs. Next: identify the plane pair's degree-7 and the line pair's degree-8 witnesses. Then test whether one bounded-degree cross generator per overlapping pair removes every fall below 11, including the none-indicator elements \(P_a-P_b-\overline{(N_a-N_b)}\) for blocks without private inputs.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> The <a href="#entry-2026-09-25-three-local-augmentation">three-local test</a> refuted bounded members of at most three blocks at \(h=3\), in the densest planar configuration. Next: a route review. It decides whether to test the planar four-block consequence at \(h=4\), to let members grow with the planar density of the forms, or to replace S2 by a statement that tolerates falls, since S1 needs only the absence of a refutation. It also addresses the modelling gap for blocks without private inputs.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -19444,6 +19444,96 @@ So \(Y_aY_b\bigl(P_a-P_b-\overline{(N_a-N_b)}\bigr)\equiv Y_aY_b(P_a-P_b+x^2+y^2
 <tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">3 min 4.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-three-local-augmentation" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:three-local-augmentation ex:four-block-overlap-falls">
+<h3>Three-local consequences: for four blocks sharing two inputs each at h = 3, the cycle family's degree-11 consequences all come from its triples, while the planar family has a four-block consequence of degree 9</h3>
+<p class="entry-meta">25 September 2026 · Refutation at h = 3 (finite check; the cycle instance holds, the planar one fails) · open statement S2 · cycle odd-prime-overlap-witnesses.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement S2. ex:overlap-pair-falls showed that pairs of blocks sharing two inputs fall below 11 without cross generators. Adding each pair's witnesses as generators would produce one case per configuration. The deciding question is locality instead: are the consequences a family derives within degree 11 generated by those of its subfamilies of at most three blocks? If yes, S2 has a general form with members of bounded size. If no, members must grow.</p>
+<p><strong>General statement.</strong> conj:three-local-augmentation and ex:four-block-overlap-falls.</p>
+<ul>
+<li>conj:three-local-augmentation, refuted at \(h=3\). Let \(F\) be a family of separately augmented complete accuracy-one ENS blocks over \(\mathbb F_3\) with \(h\ge3\) inputs, private coefficients, arbitrary affine inputs and no cross generators. For a family \(G\), let \(C_{11}(G)\) be the set of \(f\) with \(z^{11-\deg f}f\in J_G\): its consequences derivable within degree 11. Then \(C_{11}(F)\) lies in the ideal generated by \(J_F\) and the \(C_{11}(G)\) over subfamilies \(G\) of at most three blocks. The members of a gluing would then need at most three blocks, with their own degree-11 consequences as cross generators. It generalizes the question of conj:family-fall-locality to arbitrary overlaps. For blocks sharing one input, thm:one-shared-input-locality suggests it but does not imply it as stated, so that case is expected, not derived.</li>
+<li>ex:four-block-overlap-falls, the refutation. The following holds at \(h=3\), with two shared inputs and one private input per block, computed with degree bound 11.
+<ul>
+<li>For the <em>cycle</em> family \((x,y)\), \((x+y,w)\), \((w,v)\), \((v,x-y)\), the inclusion holds: all 4634 generators of \(C_{11}(F)\) lie in the three-local ideal.</li>
+<li>For the <em>plane4</em> family \((x,y)\), \((x+y,x-y)\), \((x,x+y)\), \((y,x-y)\) it fails. \(C_{11}(F)\) is not contained in the three-local ideal. The least degree of an element outside is exactly 9, since the ideal is homogeneous and every generator of degree \(\le8\) reduces to 0. The outside element found comes from a basis element of degree 11, so \(z^2f\in J_F\). In the computed generating set, one generator of 6589 lies outside. That count depends on the generating set, and the dimension of the quotient was not computed.</li>
+</ul>
+Plane4 uses only the four lines of one plane over \(\mathbb F_3\), each twice. So at \(h=3\) the densest dependent configuration has a four-block consequence below 11, and a spread-out cycle does not. Whether a form for larger \(h\) holds is open.</li>
+</ul>
+
+<h4>The formulation, and a withdrawn first reading</h4>
+<p>The first version of the test added the triples' consequences as generators and asked whether the result still falls below 11. Both families fell at 9, which I first read as a four-block phenomenon. The reviewer pointed out a flaw in that formulation. The ideal generated by degree-bounded consequences is not closed under the cutoff: if \(z^{11-s}g\in J\), then \(xg\) is in the ideal, but in general only \(z^{12-s}xg\in J\).</p>
+<p><code>self_aug_control.sing</code> (<code>self_aug_control.out</code>) confirms this. It augments each family by its own \(C_{11}(F)\), and both still fall at 9. So "no fall after augmentation" is the wrong formulation, and the first reading is withdrawn. The inclusion test above is the right form. <code>three_local_inclusion.sing</code> (<code>three_local_inclusion.out</code>) runs it in five steps:</p>
+<ol>
+<li>compute the family's truncated basis with degree bound 11;</li>
+<li>take generators of each triple's \(C_{11}\) and of \(C_{11}(F)\);</li>
+<li>form the three-local ideal \(J_F+\sum_T(C_{11}(T))\);</li>
+<li>compute its truncated basis;</li>
+<li>reduce the generators of \(C_{11}(F)\) modulo that basis, and count those that do not vanish.</li>
+</ol>
+
+<h4>Generators of the consequences</h4>
+<p><em>Truncated Bayer lemma.</em> Let \(J\) be homogeneous, the order dp with \(z\) last, and \(G\) a basis of \(J\) through degree \(D\). For \(g\in G\) let \(m(g)\) be the largest power of \(z\) dividing \(g\). Then the \(g/z^{m(g)}\) generate an ideal whose degree-\(s\) part contains every \(f\) with \(z^{D-s}f\in J\), for \(s\le D\). Each \(g/z^{m(g)}\) is itself such an element.</p>
+<p><em>Proof.</em> In dp with \(z\) last, \(z\) divides a homogeneous polynomial exactly when it divides its leading term. Let \(f\ne0\) with \(z^kf\in J\) and \(\deg z^kf\le D\). Removing powers of \(z\) from \(f\) keeps the condition, so assume \(z\nmid f\). The leading term of \(z^kf\) is \(z^k\operatorname{LT}(f)\). It is divisible by \(\operatorname{LT}(g)\) for some \(g\in G\), since \(G\) is a basis through degree \(D\). As \(z\nmid\operatorname{LT}(f)\), \(m(g)\le k\), and \(\operatorname{LT}(g/z^{m(g)})\) divides \(\operatorname{LT}(f)\). Subtract the multiple of \(g/z^{m(g)}\) that cancels \(\operatorname{LT}(f)\). The result \(f'\) still satisfies \(z^kf'\in J\) and has a smaller leading term. By induction \(f\) lies in the ideal of the \(g/z^{m(g)}\). \(\square\)</p>
+<p><em>Degree check.</em> The lemma needs every basis element used to have degree \(\le11\). <code>three_local_inclusion_checked.sing</code> (<code>three_local_inclusion_checked.out</code>) asserts this: every family and triple basis has maximum degree 11, and no element was skipped. Its results equal those of <code>three_local_inclusion.out</code>.</p>
+<p><em>Does <code>slimgb</code> honor <code>degBound</code>?</em> The outputs agree with <code>std</code>. The family basis has 9544 elements under both (<code>three_local_timeout.out</code>, run d744f87ac7), and the triples' consequence counts 1930, 890 and 1466 match. The bases at bound 9 and bound 11 differ, with 2216 and 9544 elements.</p>
+
+<h4>The witnesses of the overlap pairs</h4>
+<p><code>overlap_witnesses.sing</code> (<code>overlap_witnesses.out</code>) prints and factors normal forms modulo \(J\) of the lowest fall witnesses.</p>
+<ul>
+<li><em>Line pair at \(h=4\), fall 8.</em> All four witnesses have the factor
+\[w^2r_{b2}+y_{b1}^2r_{b3}+y_{b2}^2r_{b4}-r_{b1}-r_{b2}-r_{b3}-r_{b4}+1.\]
+That is \(P_b\) with \(q_u=1\), that is \(u=x+y=0\): the shared input true. Witnesses 1 and 3 share the \(a\)-part, and witness 3 has the extra factor \(r_{a4}\). By hand, and modulo \(x^3=x\), \(y^3=y\), the \(a\)-part is \(-(x-y)(P_a+r_{a1}xy)\). So these witnesses have the product shape of \(R=P_aP_b(q_a-q_b)\), with specialized \(P\)'s.</li>
+<li><em>Plane pair at \(h=5\), fall 7.</em> The one normal form printed has 113 terms and does not factor. A different representative modulo \(J\) might factor, so this says little about the witness itself.</li>
+</ul>
+
+<h4>Computation record</h4>
+<p>Four earlier attempts at degree bound 11 hit the 600 s limit (<code>three_local_timeout.out</code>). The fixes, in order, were:</p>
+<ul>
+<li>one colon per degree, replaced by the truncated Bayer lemma;</li>
+<li>a second basis for the fall, replaced by reading it from the first;</li>
+<li>unreduced generators, now filtered;</li>
+<li>Singular's <code>std</code>, replaced by <code>slimgb</code>;</li>
+<li>element-by-element reduction, replaced by one batch reduction.</li>
+</ul>
+<p>The counts of triple consequences in the outputs are counts of distinct nonzero normal forms. They depend on the basis, and the conclusion does not use them.</p>
+
+<h4>What this means for S2</h4>
+<ul>
+<li>With members of at most three blocks, carrying their own degree-11 consequences, the spread-out cycle family is covered at \(h=3\). The planar family is not, by one element of degree 9. Dense planar configurations are exactly what the band's many forms in small spans make likely.</li>
+<li>Small \(h\) has misled before: parallel pairs fall at 5 at \(h=2\) but at 7 for \(h\ge3\). The refutation is at \(h=3\), and the band needs \(h\ge10\). Whether the planar four-block consequence persists at \(h=4\) decides whether bounded members could work for larger \(h\).</li>
+<li>Relation to conj:family-fall-locality. That conjecture is about blocks with private inputs whose linear parts are identical or independent, with \(R\) and \(T\). The present families violate its hypotheses, so this result neither refutes nor refines it. The present conjecture is the corresponding question for arbitrary overlaps.</li>
+</ul>
+<p>Next: a route review on odd-prime-clause-transfer. S2's bounded-member form now has one small counterexample, in the densest planar configuration at \(h=3\). There is also the open modelling gap for blocks without private inputs. The review should decide between testing the planar four-block consequence at \(h=4\), letting members grow with the planar density of the forms, and replacing S2 by a statement that tolerates falls.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: ex:overlap-pair-falls and its scripts (same block construction), thm:one-shared-input-locality, conj:family-fall-locality (its hypotheses), ex:pairwise-augmentation-triple-falls, and prop:overlap-tor. The truncated Bayer lemma is proved above. Every value is read from the named outputs. A fresh-context reviewer found no coding error. It found the flawed first formulation and required the self-augmentation control, whose result withdrew the first reading and led to the inclusion test. It also required these corrections, all adopted:</p>
+<ul>
+<li>the interpretation stated exactly;</li>
+<li>the truncated Bayer lemma proved;</li>
+<li>the <code>slimgb</code> cross-check recorded;</li>
+<li>the \(b\)-part stated as \(u=0\), with all four witnesses and the reduction modulo field equations;</li>
+<li>the plane witness's non-factorization qualified;</li>
+<li>the conjecture stated for \(h\ge3\) and recorded as refuted, with the hypothesis of no cross generators;</li>
+<li>the count of outside generators replaced by intrinsic facts, and the degree bound asserted in a rerun;</li>
+<li>the one-shared-input case marked as expected;</li>
+<li>the relation to conj:family-fall-locality stated;</li>
+<li>the counts qualified.</li>
+</ul>
+<p>The inclusion test added a result, so a second short pass checked it. That pass found the \(h\) range inconsistent with the test and the degree bound unasserted. Both were fixed: the conjecture is now stated for \(h\ge3\), and the rerun asserts the bound.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-overlap-witnesses">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>125 min 55.04 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 39.17 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 5.53 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">108 min 41.80 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">9 min 28.40 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 6.</p>
 </div>
 </article>
 

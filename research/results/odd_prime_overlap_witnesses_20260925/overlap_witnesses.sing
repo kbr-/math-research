@@ -1,0 +1,29 @@
+// Lowest fall witnesses of the overlap pairs of ex:overlap-pair-falls (same construction: separately augmented
+// complete accuracy-one ENS pairs over F_3, private coefficients, two shared inputs and h-2 private inputs each, no
+// cross generators).  Cases: plane pair (a on (x, y), b on (x+y, x-y)) at h = 5, lowest fall 7; line pair (a on (x, y),
+// b on (x+y, w)) at h = 4, lowest fall 8.  For each, prints up to 4 elements of (J:z) of the lowest-fall degree not in
+// J, reduced modulo J with z = 1, and their factorizations, to identify the consequence that falls.
+option(redSB);
+proc witnesses(int h, int kind, int t)
+{
+  ring S = 3, (x, y, w, ya(1..h-2), yb(1..h-2), ra(1..h), rb(1..h), z), dp;
+  ideal La = x, y; ideal Lb;
+  if (kind == 1) { Lb = x + y, x - y; } else { Lb = x + y, w; }
+  int i; for (i = 1; i <= h - 2; i++) { La = La, ya(i); Lb = Lb, yb(i); }
+  poly Pa = 1; poly Pb = 1;
+  for (i = 1; i <= h; i++) { Pa = Pa - ra(i)*(1 - La[i]^2); Pb = Pb - rb(i)*(1 - Lb[i]^2); }
+  ideal F; for (i = 1; i <= nvars(basering) - 1; i++) { F = F, var(i)^3 - var(i); }
+  ideal Ia; ideal Ib; for (i = 1; i <= h; i++) { Ia = Ia, (1 - La[i]^2)*Pa; Ib = Ib, (1 - Lb[i]^2)*Pb; }
+  ideal J = homog(F, z) + homog(std(Ia + F), z) + homog(std(Ib + F), z);
+  degBound = t + 1; ideal SJ = std(J); ideal Q = quotient(SJ, z); degBound = 0;
+  int k; int n = 0; poly g; poly g1;
+  for (k = 1; k <= ncols(Q); k++) { if (Q[k] != 0 && deg(Q[k]) == t) { g = reduce(Q[k], SJ); if (g != 0 && n < 4) {
+    n++; g1 = subst(g, z, 1);
+    print("kind " + string(kind) + " h=" + string(h) + " witness " + string(n) + " (" + string(size(g1)) + " terms): " + string(g1));
+    print("  factors: " + string(factorize(g1, 1)));
+  } } }
+  print("kind " + string(kind) + " h=" + string(h) + " witnesses printed at degree " + string(t) + ": " + string(n));
+}
+witnesses(5, 1, 7);
+witnesses(4, 2, 8);
+quit;
