@@ -277,6 +277,10 @@ ignored logs/tmp/runtime folders. The CLI's bounded output preview limits
 context usage only; saved output is full. Include essential data with its
 checkpoint under the Git rules in AGENTS.md.
 
+A program without `--out` is saved with `tools/save-run-output.py SESSION RUN_ID OUT`, which copies
+the run's complete log under its command line; never redirect the `compute.sh` display, which
+shows only the tail.
+
 Reference output paths in the relevant notebook Research-record entry. Preserve
 the generating command, parameters, random seed if applicable, data encoding or
 schema, and verification/provenance (including hashes when useful). Use distinct

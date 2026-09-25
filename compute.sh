@@ -394,7 +394,7 @@ def run_job(args, command):
             if not sys.stdout.isatty():
                 # A redirected or piped display is not a result file: say so where it is seen.
                 print(f'compute.sh: displayed output truncated to its last {args.tail_bytes} bytes; '
-                      f'copy the full log {log.relative_to(ROOT)} (or write results with --out) '
+                      f'save the full log {log.relative_to(ROOT)} with tools/save-run-output.py (or use --out) '
                       f'instead of redirecting the display.', file=sys.stderr)
         print(tail, end='' if tail.endswith('\n') or not tail else '\n')
     expect = getattr(args, 'expect', None)
