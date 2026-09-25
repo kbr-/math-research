@@ -33,8 +33,8 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 1, then 3).</p>
 <ul>
-<li><strong>Construct the solutions the squeeze needs</strong> (open statement 1). In the tight cases \(\rho\mu=\operatorname{mult}_PF_d\), the order half is equivalent to \(\rho\) local solutions of multiplicity \(\mu\) with independent tangent cones (<a href="#cube-order-squeeze">squeeze lemma</a>). First settle whether a product of boundary witnesses has multiplicity at \(P\) equal to the sum of its factors' (the dual vectors multiply only up to truncation). Then find the missing source where products run short, as at \((5,3)\): multiplication by functions in \(L(kp_0)\) through residue duality, or the Möbius images of products at the same point.</li>
-<li><strong>Dimension 4 by mechanism</strong> (open statement 3). The fit \(3d^2+5d-3\) is untested: \(20d-21\) fits the same data. Find the window lemma's analogue at the points where several collision hyperplanes meet, using the exact collision limits (<a href="#cube-collision-limit-space">collision limit lemma</a>); if the mechanism leaves the question open, the one run at \(d=4\), \(m=59\) separates the two readings.</li>
+<li><strong>Construct the solutions the squeeze needs</strong> (open statement 1). In the tight cases \(\rho\mu=\operatorname{mult}_PF_d\), the order half is equivalent to \(\rho\) local solutions of multiplicity \(\mu\) with independent tangent cones (<a href="#cube-order-squeeze">squeeze lemma</a>). Products of boundary witnesses supply at most one per partition; at \((5,2)\) the second solution of order 6 must come from elsewhere. Find that source.</li>
+<li><strong>Dimension 4 through jets</strong> (open statement 3). Point windows reach only 14 of the threshold 19 at \(d=2\) (<a href="#entry-2026-09-25-cube-dimension-four-point-windows">point windows</a>). Compute the vanishing orders at the collision points of \(\mathbb P^3\) of the solutions just below the threshold, as the sharp pair does in dimension 3, and look for the analogue of \(\mu\).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions.</p>
 </section>
@@ -4647,6 +4647,42 @@ since \(A(N-A)=4xy\) and \(\bar A=2r\). This is \(d^2\cdot\tfrac12\operatorname{
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 30.97 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 34.68 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.33 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-cube-dimension-four-point-windows" data-kind="research" data-route="cube-odd-characteristic" data-claims="lem:cube-point-window-bound check:cube-dimension-four-point-windows">
+<h3>25 September 2026 — Dimension 4: point windows stop at 14, below the threshold 19</h3>
+<p class="entry-meta">Working proof of the point-window bound in every dimension; finite check that in dimension 4 it explains neither recorded threshold mechanism. Cycle bmd-r65. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> Open statement 3 has the order-zero thresholds \(5,19,39\) on \(\{0,1\}^4\) (\(d=1,2,3\)). The quadratic fit \(3d^2+5d-3\) and the linear \(20d-21\) both match them (<a href="#entry-2026-09-25-cube-route-review-6">route review</a>). The review asked for the mechanism instead of the next case. In dimension 3 the threshold \(5d-1\) comes from point windows: at a double point the value \(W(P)\) of an order-zero solution kills the union of arc limits there, which contains \(T^m\) for \(m\le5d-2\) (<a href="#cube-double-point-windows">window lemma</a>). A point mechanism gives linear thresholds. Do point windows at the collision-rich points of \(\mathbb P^3\) reach the dimension-4 threshold 19 at \(d=2\)? The test ends with the largest \(m\) they exclude.</p>
+<h4 id="cube-point-window-bound">The point-window bound</h4>
+<p><strong>Lemma</strong> (<code>lem:cube-point-window-bound</code>). On \(\{0,1\}^n\) in characteristic \(\ne2\), let \(P\in\bar F^n\) and let \(\Gamma\) be a set of arcs through \(P\) whose generic points have nonzero, pairwise distinct coordinates. Let \(\Sigma_P\subseteq\bar F[[T]]\) be the span of their limit spaces \(S_\gamma\) (<a href="#cube-flat-limit-order-bound">flat-limit order bound</a>). If \(\Sigma_P\) has an element of \(T\)-order exactly \(m\), then no order-zero solution exists at \(m\). So the order-zero threshold (the least \(m\) with savings \(\ge d+1\) at \(\ell=0\)) is at least the least \(m\) that is an order of no \(\Sigma_P\).</p>
+<p><strong>Proof.</strong> Let \(W\) be an order-zero solution at \(m\). For \(\gamma\in\Gamma\), \(W(\gamma)\) kills \(\tau_m(f)\) for every \(f\in V\), hence by linearity for every \(f\in\Lambda_\gamma\). Reducing modulo \(\varepsilon\), \(W(P)\) kills \(\tau_m(S_\gamma)\), and so \(\tau_m(\Sigma_P)\). An element \(g\in\Sigma_P\) of order exactly \(m\) has \(\tau_m(g)=cT^m\) with \(c\ne0\). So \(cW_m(P)=0\), against \(W_m=1\). \(\square\)</p>
+<p>This is the argument of the window lemma, for any \(n\), any point and any arcs. The window lemma is the case \(n=3\) at a double point with the two extreme arcs.</p>
+<h4>The computation</h4>
+<p><strong>Kernel.</strong> <code>research/tools/bmd_cube_point_windows.cpp</code> (C++, OpenMP, FLINT) computes the limit spaces of \(V_{n,d}\) along random arcs \(y(\varepsilon)=P+\sum_{k\le L}\varepsilon^kv_k\). Each \(v_k\) is constant on the blocks of a random partition of the coordinates and 0, so coordinates and their differences vanish to many different orders. The last level has distinct random values, and every fifth arc is a line. It prints the orders of \(\Sigma_P\) and the least \(m\) excluded at no point. The flat-limit saturation uses truncation \(M\ge2^{n-1}d\), so the limits are the full-series ones.</p>
+<p><strong>Validation.</strong> For \(n=3\), \(d=3\) (120 arcs), \(\Sigma_P\) at the double point \((1,1,0)\) has orders exactly \(0,\ldots,13\). So it excludes \(m\le13\) and reproduces the threshold \(14=5d-1\), which cannot be exceeded. At a random point it has orders \(0,\ldots,11\), which is \(4d\) (local-limits lemma, Part 2) (<code>research/results/bmd-r65-point-windows/</code>).</p>
+<p><strong>Finite check</strong> (<code>check:cube-dimension-four-point-windows</code>). For \(n=4\), \(d=2\), over \(\mathbb F_{1000003}\):</p>
+<ul>
+<li>With 150 arcs at each of \((1,1,0,0)\), \((1,1,1,1)\), \((1,1,1,0)\), \((1,0,0,0)\), \((1,1,5,5)\), \((1,1,5,0)\) and a random point, \(\Sigma_P\) has orders \(0,\ldots,13\) at \((1,1,0,0)\) and \((1,1,1,0)\), \(0,\ldots,12\) at the other special points, and \(0,\ldots,11=N_{2,4}(2)-1\) at the random point.</li>
+<li>With 500 richer arcs (\(L=8\), another seed) at \((1,1,0,0)\), \((1,1,1,0)\), \((1,1,1,1)\), the orders are the same.</li>
+</ul>
+<p>So point windows exclude only \(m\le13\) at \(d=2\), while no order-zero solution exists below \(m=19\).</p>
+<p><strong>What it shows.</strong> The points tried cover the two transport classes of maximal collision in \(\mathbb P^3\), \(\{(1,1,0,0),(1,1,1,0)\}\) and \(\{(1,1,1,1),(1,0,0,0)\}\), and two one-parameter families. At \(d=2\) the dimension-4 threshold is not a point phenomenon. The obstructions for \(14\le m\le18\) must involve derivatives of \(W\), or several points jointly, or curves of points. That is what happens in dimension 3 for \(\rho\ge2\), whose thresholds are quadratic. A single point cannot produce the dimension-4 thresholds, so the linear reading \(20d-21\) has lost the natural mechanism it would need. That is evidence for the quadratic reading, not a proof: a linear threshold could still come from jets.</p>
+<p><strong>General statement.</strong> <code>lem:cube-point-window-bound</code>, for every \(n\), \(d\), point and set of arcs.</p>
+<p><strong>Verification gate.</strong> The lemma is the window lemma's argument, re-read together with the flat-limit bound, whose saturation step makes \(\Lambda_\gamma\) the full-series lattice for \(M\ge2^{n-1}d\). The kernel was validated against the proved dimension-3 threshold (exactly reproduced, never exceeded). The dimension-4 counts are stable under a fourfold richer arc family. The lemma needs no referee pass beyond its dimension-3 instance, which was reviewed with the window lemma. The check is a finite computation over one field, and its conclusion is stated for \(d=2\) and the points tried.</p>
+<p><strong>Assessment.</strong> For open statement 3, the question moves from which formula fits to which mechanism. Point mechanisms are excluded at \(d=2\). The next attempt is the dimension-4 analogue of the jet structure: the vanishing orders of order-zero-type solutions at the collision points of \(\mathbb P^3\). In dimension 3 the vanishing orders at the double points (the sharp pair) govern the quadratic thresholds for \(\rho\ge2\). For the order half in dimension 3 this cycle changed nothing. The squeeze lemma's construction problem remains the next step there. Process: three runs of one new kernel, one of them validation; the question was settled at \(d=2\), so \(d=3\) was not run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r65">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 4.32 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 3.68 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 29.74 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 15.11 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">12.99 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.80 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
