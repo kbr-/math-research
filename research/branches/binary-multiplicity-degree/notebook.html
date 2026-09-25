@@ -29,14 +29,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: q-ary-extension. Route review of the grid-extension line. It now has a full structural answer, the <a href="#stable-per-order-law">stable per-order law</a>, and exact laws on full and four-element grids. Weigh its remaining questions against the thread's needs:</p>
+<p>Route item: q-ary-extension. Prove the characteristic-\(p\) version of the root-curve theory, as the <a href="#entry-2026-09-25-grid-route-review">route review</a> plans. The setting is an \(\mathbb F_p\)-subspace \(S\) of size \(s=p^\sigma\) of a field of characteristic \(p\), with \(L=\prod_{t\in S}(x-t)\).</p>
 <ul>
-<li>computing \(\kappa\) for a given \(S\);</li>
-<li>the stabilization threshold \(\ell_0\);</li>
-<li>the characteristic-\(p\) version, which would reprove the \(q\)-ary lower bound for odd \(q\);</li>
-<li>the counting proof of the binary per-order lower bound, which makes the preprint shorter.</li>
+<li><strong>Coefficient formula.</strong> Generalize the <a href="#subspace-grid-coefficient-formula">coefficient formula</a>: the Lagrange constant is \(\prod_{t\ne0}(-t)\), and \(\binom{s-1}{a}\not\equiv0\) modulo \(p\).</li>
+<li><strong>Lemmas.</strong> Carry over lemma (a), the independence and sharpness lemmas (the minors \(y_1L(Z_i)-y_iL(Z_1)\)), and the <a href="#root-curve-counting-principle">counting principle</a>.</li>
+<li><strong>Payoff.</strong> This gives a counting proof of the <a href="#q-ary-per-order-value">\(q\)-ary lower bound</a> for every prime power, by the digit bijection. Check it against <code>check:q-ary-per-order-values</code> (\(q=3,5\)).</li>
 </ul>
-<p>Choose the highest-value next research on the thread's route.</p>
 <p>Publication, Lean and correspondence remain the user's decisions.</p>
 </section>
 <section id="working-context">
@@ -1878,6 +1876,54 @@ Every family of homogeneous \(w^{(c)}\) of degrees \(\ell+m-c\) with \(w^{(m)}\n
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 59.89 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2.40 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-grid-route-review" data-kind="review" data-route="q-ary-extension" data-claims="none" data-claim-note="Route review with a falsification test of thm:stable-per-order-law in dimension three; no new claim is registered.">
+<h3>25 September 2026 — Route review of the grid extensions: the root curve settles the structure</h3>
+<p class="entry-meta">Route review; the stable per-order law passes a dimension-three test it was not built on. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<ul>
+<li><strong>The line's general claim.</strong> Determine the per-order least degree \(\delta_S(n,k,\ell)\) on additive grids \(S^n\) beyond \(\mathbb F_2^n\).</li>
+<li><strong>What is established.</strong>
+<ul>
+<li><strong>Exact laws.</strong> Every full grid \(\mathbb F_q^n\) (<a href="#q-ary-per-order-value">\(q\)-ary theorem</a>), and every four-element square grid with \(c_1\ne0\) (<a href="#four-element-square-law">four-element square theorem</a>).</li>
+<li><strong>The base-\(s\) law fails</strong> whenever \(c_1\ne0\), in every dimension (<a href="#second-coefficient-savings">second-coefficient theorem</a>).</li>
+<li><strong>The structure.</strong> On every additive grid in characteristic 2:
+<ul>
+<li>the savings are bounded by the root-curve orders \(\kappa(m)\), and equal them for large \(\ell\);</li>
+<li>exactly \(N_{s,n}(d)\) values of \(\kappa\) are \(\le d\) (<a href="#stable-per-order-law">stable per-order law</a>);</li>
+<li>any attained law with that count is exact for every \(\ell\) (<a href="#root-curve-counting-principle">counting principle</a>). This reproves the binary per-order lower bound in about a page.</li>
+</ul></li>
+</ul></li>
+<li><strong>What the goal needs.</strong> Nothing: \(D(n,k)\) over \(\mathbb F_2\) is proved and formalized. The line's value for the thread is the shorter counting proof of the per-order lower bound, and the reach it shows: the method is a statement about orders on a curve, not about \(\mathbb F_2\).</li>
+</ul>
+<h4>Falsification attempt: dimension three</h4>
+<p>The stable law was checked in the previous entry only for \(n=2\). Here is a test in dimension three: the four-element subspace \(\{0,1,\alpha,1+\alpha\}\subset\mathbb F_8\), where the kernel data show a threshold in \(\ell\) at \(m=16\) (savings 1 for \(\ell\le3\), 2 for \(\ell\ge4\)).</p>
+<ul>
+<li>The prediction needs \(\kappa\) for \(n=3\), which a random specialization of \(y\) inside \(\mathbb F_8\) cannot give, since every choice there is special. So \(\mathbb F_8\) is embedded in \(\mathbb F_{512}\) (modulus \(x^9+x^4+1\); \(\alpha\mapsto336\), a root of \(X^3+X+1\) in the order-7 subgroup). <code>bmd_root_curve_orders_n.py subspace</code> computes \(\mathrm{Ord}(d)\) for \(d\le4\) at two random points.</li>
+<li>One point is special: it has fewer orders than \(N_{4,3}(d)\) from \(d=2\) on. The other has \(|\mathrm{Ord}(d)|=N_{4,3}(d)=1,4,10,20,33\), and gives \(\kappa(16)=2\), \(\kappa(24)=3\) and \(\kappa(32)=2\), among others.</li>
+<li><code>bmd_kappa_compare.py</code>, which now uses the first trial with no count deficit, compares these with the kernel values for \(k\le34\) at every \(m\) with \(\kappa(m)\le4\). No savings exceed \(\kappa(m)\), and the largest \(\ell\) attains \(\kappa(m)\) everywhere. In particular, at \(m=16\) the threshold \(\ell=4\) takes the savings from 1 up to \(\kappa=2\).</li>
+<li>Files: <code>research/results/bmd-r20-grid-route-review/</code>. The same comparison for the \(\mathbb F_{1024}\) data of the previous entry is unchanged.</li>
+</ul>
+<p>The test could have failed in two ways: savings above \(\kappa\), or a large-\(\ell\) value below it. Neither occurred.</p>
+<h4>Assessment and next step</h4>
+<p>The line is structurally complete in characteristic 2. What remains is of two kinds.</p>
+<ul>
+<li><strong>Arithmetic.</strong> Computing \(\kappa\) for a given \(S\), and bounding the threshold \(\ell_0\). Both are special-case work of diminishing value.</li>
+<li><strong>Extension.</strong> The characteristic-\(p\) version. The lemmas use characteristic 2 only in notation, and the coefficient formula is recorded in every characteristic for \(S=\mathbb F_q\). It would give a counting proof of the \(q\)-ary lower bound for every prime power, and the stable law for \(\mathbb F_p\)-subspace grids. This is the one remaining general implication on the line.</li>
+</ul>
+<p>The next step writes the characteristic-\(p\) versions of the coefficient formula for \(\mathbb F_p\)-subspaces, of lemma (a), of the independence and sharpness lemmas, and of the principle, and checks them against the recorded \(q=3,5\) data. If that goes through, the line closes with a single counting theorem for all additive grids.</p>
+<p>The counting proof of the binary lower bound is a candidate for the preprint, as is a Lean formalization of it. Both are the user's decisions.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r20-grid-route-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 31.13 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 30.80 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.19 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
