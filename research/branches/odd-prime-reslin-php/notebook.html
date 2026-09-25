@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The <a href="#entry-2026-09-25-thread-review-boxes">thread review</a> places the odd-prime gap at boxes versus flats: W's clauses lie below every dimension-counting threshold. Port the main record's thm:safe-probe-affine-augmentation to \(\mathbb F_3\) and to W's clauses. For total prefix rank at most \(cN\), with arbitrary dependent forms, show that a safe-probe restriction preserves degree and reduces weak PHP plus the clauses to a near-balanced source excluded by thm:all-prime-unary-affine-source-exclusion. The step ends with A1's first adversarial result beyond pinning, or with the odd-prime failure of safety at the binary row-Booleanity step.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The safe-probe port fails at odd primes for random dense flats (<a href="#entry-2026-09-25-odd-prime-safe-maps">safe maps</a>), and feature expansion stops below the linear window. Next, read the proof of thm:logarithmic-prefix-wide-clause-reduction and determine the largest prefix length its substitution degree and inventory budget allow. The current length \(k=O(\log n)\) is set by W's density condition, and a longer prefix makes the clauses much thinner. If a power of \(N\) is allowed, state the thin-clause form of W and test it against the recorded attacks. The step ends with that statement or with the budget that pins \(k\) to \(O(\log n)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -22163,6 +22163,68 @@ where \(Z\) is the Hasse fat points of multiplicity \(s-1\) at the nonzero \(m_j
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 48.84 s</strong></td></tr>
 <tr><td>Marked reading and review windows</td><td class="elapsed">4 min 37.04 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">11.80 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-odd-prime-safe-maps" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:odd-prime-safe-maps-local">
+<h3>Odd-prime safe maps are local: binary-shape safe maps cannot force a probe in a random dense flat, and the two-level feature endpoint stops below the window</h3>
+<p class="entry-meta">25 September 2026 · Working proof (an obstruction) · open statement A1 · cycle odd-prime-safe-probe-port.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-25-thread-review-boxes">thread review</a> proposed porting the main record's thm:safe-probe-affine-augmentation to \(\mathbb F_3\) and W's clauses. That theorem handles adversarial affine families after a degree-preserving map that forces one probe per avoided flat. Does the map exist at odd primes for dense probes?</p>
+<p><strong>General statement.</strong> prop:odd-prime-safe-maps-local: over \(\mathbb F_p\), \(p\) odd, take a map of the binary safe-map shape. It fixes the unmarked rows, sets the reserved columns to 0, and sends two cells of each of \(a\) marked rows to \(u_i\) and \(1-u_i\), with \(u_i\) affine in the residual cells. Suppose it sends every Booleanity axiom into the residual base's degree-2 ideal. Then each \(u_i\) is, modulo residual rows, a constant, a row- or column-subset indicator, or a complement. A probe \(F\) can be forced only if it is \(a\)-coverable: some \(F|_{\mathrm{res}}-\sum_r\lambda_rR_r\) is supported in a union of \(a\) residual rows and columns. So the one-forced-probe mechanism fails for a flat whose input span has no \(a\)-coverable form. Random spans of dimension \(o(N'^2)\) have this property with high probability when \(a\le(1-\varepsilon)N'\).</p>
+
+<h4>The binary map, and where it uses characteristic 2</h4>
+<p>The binary map sends two cells of each marked row \(i\) to \(u_i\) and \(1+u_i\), with \(u_i\) affine in the residual cells. Everything else in marked rows and reserved columns goes to 0, and unmarked cells are fixed. Degree preservation needs the image of each marked cell's Booleanity axiom, \(u_i^2-u_i\), to lie in the residual base's degree-2 closure. Over \(\mathbb F_2\) this holds for every affine \(u_i\) by Frobenius. The main record flags the odd-prime failure of this row-Booleanity step.</p>
+
+<h4>The proposition</h4>
+<p><strong>Proposition (odd-prime safe maps are local).</strong> Let \(p\) be odd, and let \(\sigma\) be a map on the unary board of the shape above: identity on unmarked, unreserved cells; 0 on reserved columns in unmarked rows; affine images \(\sigma(x)\) in the residual cells for the cells \(x\) of marked rows. The residual board has \(N'\ge4\) holes. Suppose \(\sigma\) sends every Booleanity axiom into the degree-2 closure of the residual functional base. Forcing \(F\) means that \(\sigma(F)-c\) lies in the affine part of that closure for some constant \(c\). By the classification entry's projected-relations step, that affine part is the row span.</p>
+<ol>
+<li>Every \(\sigma(x)\) is, modulo residual row equations, 0, 1, a row- or column-subset indicator of the residual board, or the complement of one.</li>
+<li>If an affine form \(F\) satisfies \(\sigma(F)\equiv c\) modulo residual rows, then \(F|_{\mathrm{res}}\), the restriction of \(F\) to the unmarked unreserved cells, lies modulo rows and constants in the span of the \(\sigma(x)\), \(x\) marked with nonzero coefficient in \(F\).</li>
+<li>In the binary shape, each marked row has two cells with images \(u_i\) and \(1-u_i\), so the nonconstant images span at most \(a\) indicators. A forced probe is therefore \(a\)-coverable: for some multiples \(\lambda_r\) of the residual row equations \(R_r\), \(F|_{\mathrm{res}}-\sum_r\lambda_rR_r\) is supported in a union of at most \(a\) residual rows and columns.</li>
+</ol>
+<p><em>Proof.</em></p>
+<ul>
+<li><em>Part 1.</em> This is thm:functional-affine-Booleanity-classification. For \(N'\ge4\) in odd characteristic, affine Booleanity through degree 2 over functional unary PHP holds exactly for row- and column-subset indicators and their complements, modulo rows. It is stated for \(m=N+1\), and the residual board has \(m'=N'+a+1\) rows. Rereading its proof shows it uses only \(N'\ge4\), at least three projected columns, and pairs of rows: the projected relations, (FB-cross) and the row- and column-supported reductions. It never uses \(m=N+1\), so it applies to the residual board. The weak base's degree-2 closure is contained in the functional one, so the conclusion holds for either residual base.</li>
+<li><em>Part 2.</em> \(\sigma(F)=\mathrm{const}+\sum_{x\ \mathrm{marked}}c_x\sigma(x)+F|_{\mathrm{res}}\), since unmarked unreserved cells are fixed and the other cells go to 0. So \(\sigma(F)\equiv c\) puts \(F|_{\mathrm{res}}\) in the stated span, modulo rows and constants.</li>
+<li><em>Part 3.</em> By part 1 each nonconstant \(u_i\) is an indicator supported in one residual row or one column, and its complement differs from it only by a constant. A combination of the \(a\) of them is supported in at most \(a\) rows and columns, and part 2 gives the claim. \(\square\)</li>
+</ul>
+<p><em>Which flats are affected.</em> Coverability is not density: a row-constant form \(\sum_i\alpha_iR_i\) is 0-coverable however dense it is. Fix a set \(C\) of at most \(a\) residual lines. A form is coverable through \(C\) exactly when each of the at least \(m'-a\) residual rows outside \(C\) is constant off the columns of \(C\). That is a linear condition of codimension at least \((m'-a)(N'-a-1)\). There are at most \(2^{m'+N'}\) line sets. So a uniformly random input span of dimension \(d\) contains a nonzero coverable form with probability at most \(2^{m'+N'}p^{\,d-(m'-a)(N'-a-1)}\). This is \(o(1)\) for \(a\le(1-\varepsilon)N'\) and \(d=o(N'^2)\). Offsets do not matter, since forcing concerns the homogeneous part. The unmarked rows carry the obstruction. A degree-preserving reduction to a residual PHP fixes most of the board, so a probe that is dense there keeps its dense part, and only local images are available to cancel it. This is the safe-map form of obs:middle-rank-frontier, which records that matching restrictions cannot make dense forms constant.</p>
+
+<h4>The two-level feature endpoint</h4>
+<p>The main record's thm:sublinear-feature-two-level-endpoint works over every fixed prime. Its \(u\) is the per-parent dimension of the used bottom spans, not the thread's projected rank. It treats parents whose used bottom spans have dimension \(u\le N^\eta\), for any \(\eta&lt;1\) at polylogarithmic degree. It does so by expanding each parent over its \(p^{u}\) feature assignments, feeding an affine endpoint whose log-inventory budget is \(N^\eta\). This is the expansion of a box of rank \(u\) into flats, and it works up to sublinear rank. Graph restriction and projection do not raise the feature dimension, as that section notes. So a selector source whose projected rank lies in the thread's linear window, about \([N/(4.4\times10^7),1140N]\) at \(p=3\), has linear \(u\), outside the endpoint. Its low side already reaches linear rank through the graph criterion (thm:allprime-low-or-dense-graph-rank-exclusion and thm:ternary-low-or-dense-graph-rank-exclusion). So feature expansion covers no new rank. At linear rank, substitution costs degree above PHP's own, and full-codimension charging stops at its model ceiling (obs:ternary-window-separator-ceiling).</p>
+
+<h4>Assessment</h4>
+<p>The one-forced-probe mechanism of the binary safe map, in its binary shape into the degree-2 ideal, fails at odd primes for random flats of the kind A1 must cover. The proposition does not exclude other odd-prime maps: ones sending axioms into a higher-degree ideal, giving many cells of a marked row nonzero images, or making a flat's image refutable by combining several images. The main record's safe-probe entry already observes the binary limitation, with \(u=1-x-y\) giving \(u^2-u\equiv2xy\), and leaves other odd-prime maps open. This proposition refines that remark and obs:middle-rank-frontier. Feature expansion adds no coverage at the window.</p>
+<p>Next: the logarithmic-prefix reduction fixes the prefix length \(k=O(\log n)\) by W's density condition. A longer prefix makes the clauses much thinner, with density about \((2/3)^{k'}\). Read the reduction's proof and determine the largest prefix length its substitution and inventory budget allow, possibly a power of \(N\). If a power is allowed, state the thin-clause form of W and test it against the recorded attacks.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>the main record's safe-probe entry: the map, the row-Booleanity step and (SA-residual);</li>
+<li>thm:functional-affine-Booleanity-classification, statement;</li>
+<li>thm:sublinear-feature-two-level-endpoint, statement and inventory step (SF-inventory);</li>
+<li>obs:middle-rank-frontier, and the safe-probe entry's binary-limitation paragraph;</li>
+<li>the window's endpoints in the Working context.</li>
+</ul>
+<p>The classification proof was reread for the \(m=N+1\) hypothesis. A fresh-context reviewer found parts 1 and 2 sound once that extension is justified. It required changes, all adopted:</p>
+<ul>
+<li>the scope restricted to binary-shape maps into the degree-2 ideal, with one forced probe per flat;</li>
+<li>forcing defined;</li>
+<li>the obstruction stated per flat span, with a union bound in place of the density claim, which a row-constant form refutes;</li>
+<li>the two-level paragraph tied to feature dimension, with its conclusions cited;</li>
+<li>the prior binary-limitation remark cited.</li>
+</ul>
+<p>No computation was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-safe-probe-port">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 32.31 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 28.47 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 42.91 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">20.93 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
