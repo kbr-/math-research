@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> When the empty fiber's vanishing tops lie in every row fiber's, cell splitting closes on sets as a deletion–link recursion. W-like members are monotone at the whole-fiber level but not on every link (cor:monotone-fiber-recursion, <a href="#entry-2026-09-25-monotone-fibers">monotone fibers</a>). Next: decide whether every set in the recursion has a monotone column, link by link, for W-like members, and characterize the non-monotone links by size.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> At \(N=12\) every tested W-like column member has good columns, where the monotone recursion closes on sets (conj:good-column, <a href="#entry-2026-09-25-good-columns">good columns</a>). Next: follow the recursion two steps. Choose a good column, test whether the fibers on 11 holes again have good columns, reporting by link size, and run the same test for cell-form sets against all row fibers.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24066,6 +24066,51 @@ The fall is \(v\,wQ_v\). The model is a statement about functions on \(\mathbb F
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 52.96 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">6.20 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.00 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-good-columns" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:good-column ex:good-columns">
+<h3>Good columns: at \(N=12\) every tested W-like column member has holes where the empty fiber's tops lie in the occupied fiber's on every link, so the monotone recursion can always choose its column there</h3>
+<p class="entry-meta">25 September 2026 · Conjecture with an exact check · open statement A1, closure route · cycle odd-prime-monotone-columns.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. cor:monotone-fiber-recursion (<a href="#entry-2026-09-25-monotone-fibers">monotone fibers</a>) closes the closure recursion on sets at a column where the empty fiber's vanishing tops lie in the occupied fiber's, on every link. At hole 0 and \(N=10\), W-like members failed that on most small links. The recursion may choose its column at each step. Is there always a good one?</p>
+<p><strong>General statement.</strong> conj:good-column. For the allowed set \(Z\) of W clauses on column forms, and for every set arising from \(Z\) by taking fibers and links, there is a hole \(j\) at which \(a_S(Z^0_j)\subseteq a_S(Z^1_j)\) for every link \(S\not\ni j\), in every degree within the free range. With cor:monotone-fiber-recursion, this would reduce the Koszul hypothesis of thm:global-closure-gluing for such \(Z\) to base cases, along a deletion–link recursion. The registered check is ex:good-columns.</p>
+
+<h4>The check</h4>
+<p><code>good_column.py</code> and <code>good_column_dense.py</code> work over \(\mathbb F_3\) with \(N=12\), \(m=13\), \(e=2\) and links \(|S|\le2\). For every hole \(j\) they count the links where the inclusion fails, split by \(|S|\) (<code>good_column.json</code>, <code>good_column_dense.json</code>).</p>
+<ul>
+<li><em>The correction entry's forms</em> (hole 11 free). Good holes: 10 of 12 for one clause, 6 for the two-block pair, 10 for the three clauses. Holes 3 and 8 fail on every link, including \(|S|=0\), for all three members. There the outside form \(\ell_0\), which is supported only on holes 3, 7 and 8, has coefficient 2. Hole 7, with coefficient 1, is good. The pair's other failures are on links with \(|S|=2\) at holes 6, 7, 9 and 10.</li>
+<li><em>A dense outside form</em> (\(\ell_0\) nonzero on every hole but the free one). Good holes: 8 for one clause and 4 for the two-block pair, the free hole among them. No hole fails at \(|S|=0\). Failures sit on links with \(|S|\le2\), mostly \(|S|=2\).</li>
+</ul>
+<p>So at this size every member has good columns, with or without a dense outside form. The failures concentrate on the smallest links and on holes where the outside form shifts by 2. Links with \(|S|=2\) at \(N=12\) leave 9 holes, near the edge of the free range, so size effects are not excluded.</p>
+
+<h4>What it means</h4>
+<ul>
+<li>The closure route for column members now has a concrete conjectural mechanism. Choose a good column at each step, recurse on the empty and occupied fibers, and stop at base cases. Every step is proved except the existence of good columns, conj:good-column, and the base cases.</li>
+<li>Open points:
+ <ul>
+ <li>good columns for the fibers produced later in the recursion, which the check does not test;</li>
+ <li>what "base case" means as the free range shrinks;</li>
+ <li>cell forms, where lem:cell-splitting has \(m+1\) fibers per column and the monotone condition must hold against every row fiber;</li>
+ <li>widths \(k&gt;1\).</li>
+ </ul></li>
+<li>No new case of W is proved.</li>
+</ul>
+<p>Next: follow the recursion two steps. At \(N=12\), choose a good column, and test whether the empty and occupied fibers on 11 holes again have good columns, reporting by link size. Then run the same test for cell-form sets against all row fibers.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read cor:monotone-fiber-recursion and lem:cell-splitting. The scripts reuse the validated rank routines. Inclusion is tested by a rank comparison of stacked bases. All numbers were read from the saved JSON. This entry states a conjecture and a finite check, and no proof, so no proof reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-monotone-columns">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 38.09 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">13.67 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 3.83 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">49.52 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">30.92 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
