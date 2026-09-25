@@ -60,3 +60,9 @@ rather than about the least degrees. The fixes:
 
 The aggregate lists 64 declarations and passes `verify.sh` at commit 168a0c8e
 (`research/results/bmd-f5-formalize-remarks/lean-verification-paper2-r2.txt`).
+
+## Shortening (25 September 2026)
+
+The main text is now 14 pages, and the whole PDF 22. The second proof moved to Appendix A, and
+the Lean map is Appendix B. The framework and assistance section became the one-paragraph
+"How this paper was produced". The table of contents was dropped. The mathematics is unchanged.

@@ -137,8 +137,8 @@ its corrections are in [REVIEW-v2.md](REVIEW-v2.md).
 - [x] **Keep supporting detail proportionate.** Retain appendices that supply
   genuinely useful proofs or verification information. Remove repetitive
   summaries and duplicated lemmas rather than cutting essential arguments.
-  — **Satisfied.** The second proof (Section 6) is kept because the formal proof of Lemma 5.1
-  uses it; the appendix is the verification map.
+  — **Applied.** The main text is 14 pages. The second proof is Appendix A: one of the two formal
+  proofs of Lemma 5.1 uses it. Appendix B is the verification map.
 
 ## 4. Terminology, notation and layout
 
@@ -152,7 +152,7 @@ its corrections are in [REVIEW-v2.md](REVIEW-v2.md).
   Where parameters are numerous, provide one compact summary of their meanings,
   dependencies and where the main inequalities are used.
   — **Applied.** A Notation subsection (1.3) summarizes n, k, ℓ, m, q, r, h, y_i, F, g_s, x̂_K,
-  w and f_d, and states that y_i is an independent variable in Section 4. In Section 6 and
+  w and f_d, and states that y_i is an independent variable in Section 4. In Appendix A and
   the outline, m and q no longer take other meanings (renamed M, c and n₀).
 - [x] **Make tables readable.** Use adequate row spacing or restrained horizontal
   rules, sensible column widths and alignment. Check the rendered table, including
@@ -183,7 +183,7 @@ its corrections are in [REVIEW-v2.md](REVIEW-v2.md).
   AI review, independent expert review and formal verification. Reused archived
   evidence is not a fresh run. Verification does not establish novelty or the
   correctness of the correspondence between formal and conventional definitions.
-  — **Satisfied.** Sections 1.5 and 7 keep these apart; the finite checks are cited from the
+  — **Satisfied.** Section 1.5 and the closing paragraph keep these apart; the finite checks are cited from the
   notebook, not rerun.
 - [x] **If formalized, verify the actual headline.** Match the paper's definitions,
   rules, hypotheses and quantifiers to the declarations. Explain partial coverage,
@@ -198,7 +198,7 @@ its corrections are in [REVIEW-v2.md](REVIEW-v2.md).
   extremal orders of Remark 5.3; the examples, blocks and dimension steps are stated for the
   least degrees D and δ themselves (degreeSet, deltaSet). Only the grid-vanishing lemma comes
   from Mathlib, and statements about other papers are cited.
-- [x] **If formalized, provide a compact verification map.** — **Satisfied.** Appendix A, with
+- [x] **If formalized, provide a compact verification map.** — **Satisfied.** Appendix B, with
   every cited declaration name checked by script against the Lean sources.
 - [x] **If formalized, make reproduction self-contained.** — **Applied.** The appendix gives the
   repository, the pinned commit (which contains the aggregate module and all cited files),
@@ -212,10 +212,11 @@ its corrections are in [REVIEW-v2.md](REVIEW-v2.md).
 ## 6. Assistance, versions and final checks
 
 - [ ] **Disclose assistance specifically and concisely.** — **Outstanding for the author.**
-  Section 7.3 identifies the AI contributions and the AI reviews. It does not say what the
+  The closing paragraph, "How this paper was produced", identifies the AI contributions and
+  the AI reviews. It does not say what the
   author checked personally; only the author can state that, so no sentence was invented.
-- [x] **Keep development history separate.** — **Satisfied.** Section 7 is brief; the history
-  is in the linked notebook.
+- [x] **Keep development history separate.** — **Satisfied.** The framework and assistance
+  material is one paragraph; the history is in the linked notebook.
 - [x] **Make revision identity clear.** — **Satisfied.** Version 2 with date, a "Changes from
   version 1" paragraph, and one Lean commit used consistently in the links, the commands, the
   repository citation and the README.

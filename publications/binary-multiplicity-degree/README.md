@@ -24,14 +24,14 @@ only if k ≥ 2^(n−2).
   series Σ y^(2^s). The multiplicity conditions become additive forms that vanish on the span of
   x₁² + x₁, …, xₙ² + xₙ. Reducing modulo the vanishing polynomial of that span, with the
   combinatorial Nullstellensatz, exposes the lowest part of P at the origin.
-- **Second proof of D(n,k).** Version 1's route, kept as Section 6: the multiplicity
+- **Second proof of D(n,k).** Version 1's route, kept as Appendix A: the multiplicity
   Schwartz–Zippel lemma of Dvir, Kopparty, Saraf and Sudan with a one-dimension step.
 
 Every mathematical claim, including the remarks, examples and comparisons, links to its Lean
 source at commit `168a0c8e`; only statements about other papers are cited instead. The external inputs are stated
 without proof in the text, but they are formalized as well, so the formal verification has no
 unchecked premise. The paper supersedes version 1 and the deduction of the earlier
-[note](../binary-polynomial-multiplicity/), which reappears as its Proposition 6.2.
+[note](../binary-polynomial-multiplicity/), which reappears as its Proposition A.2.
 
 ## Verify the formal proofs
 
@@ -48,7 +48,7 @@ The expected axiom report for the main theorem is
 'MathResearch.PerOrderValue.per_order_value' depends on axioms: [propext, Classical.choice, Quot.sound]
 ~~~
 
-and the same for the other listed declarations. Appendix A of the paper gives the
+and the same for the other listed declarations. Appendix B of the paper gives the
 statement-to-declaration map and commands for a fresh checkout.
 
 - [Rendered PDF](whitepaper.pdf)

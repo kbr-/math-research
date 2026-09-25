@@ -1,74 +1,16 @@
 % SPDX-License-Identifier: CC-BY-4.0
-\section{Evidence and the research framework}\label{sec:framework}
+\section*{How this paper was produced}\label{sec:model-assistance}
 
-\subsection{Development and checks}
-
-The results were developed in a public research notebook~\cite{Notebook}. Its
-dated entries record the exact computations, the failed routes and the reviews.
-\begin{itemize}
- \item \textbf{Exact computation.} Before the general statement was proved,
- minimum degrees were computed exactly for \(n\le7\) by rank computations
- over \(\Ft\). This produced the formula.
- \item \textbf{Earlier upper bound.} Until the literature search found
- Menezes' construction, the upper bound was proved only for \(k\le31\), by
- explicit symmetric factors found by a solver and checked independently.
- \item \textbf{Checks of the construction.} The polynomial of
- Proposition~\ref{prop:menezes-polynomial} was checked by exact multiplicity
- computation in 417 cases with \(k\le12\) and \(n\le7\), 305 of them below
- Menezes' range \(n\ge k-1\).
- \item \textbf{Per-order values.} Exact computations of \(\delta(n,k,\ell)\) for
- \(n\le6\) suggested the formula \(\Phi\), including its change of form at
- \(k-\ell-1\ge2^n\), before it was proved.
- \item \textbf{Review.} The informal proofs were checked by fresh-context
- reviewers before being recorded.
- \item \textbf{Formalization.} Theorem~\ref{thm:main}, Corollary~\ref{cor:main}
- and the second proof were then formalized. The Lean proofs follow the
- arguments given here, with the differences noted in the text and in
- Appendix~\ref{sec:verification}.
-\end{itemize}
-Several lemmas are stated in generalized forms, such as every \(n\ge1\), every
-\(s\), every field or every integral domain and finite set; this paper states
-them in those forms.
-
-\subsection{Noemesis}
-
-The work used \emph{Noemesis}, an open framework for autonomous mathematical
-research, distributed with the repository~\cite{Repo}. It consists of
-instructions, tools and record-keeping conventions that let an AI assistant
-continue an investigation across sessions with inspectable evidence:
-\begin{itemize}
- \item a living overview and a claim index;
- \item dated, append-only research entries, including failures;
- \item protected and timed computations with retained outputs;
- \item dependency-indexed Lean formalization, linked from the claim index.
-\end{itemize}
-These mechanisms make the work recoverable and reviewable. They do not make a
-recorded proof correct; the Lean formalization does that for the statements
-carrying [Lean] links.
-
-\subsection{Contributions and AI assistance}\label{sec:model-assistance}
-
-\begin{itemize}
- \item \textbf{The earlier note~\cite{Note}.} Proposition~\ref{prop:cover-bound}
- was drafted with GPT-6 Astra in the Codex agent.
- \item \textbf{This paper.} The rest of the mathematics was produced by Claude
- Opus 5.5 in Claude Code, working inside the framework above under the
- author's direction: the exact computations, the formulas, the per-order lower
- bound, the one-dimension step, the literature search that found~\cite{Men26},
- the characteristic-two proof of the construction, the complete Lean
- formalization, and the draft of this paper. Fresh-context Claude Opus
- reviewers checked the informal arguments.
- \item \textbf{The author.} The author chose the problem, directed the
- investigation and designed the research framework.
-\end{itemize}
-The paper has not been externally peer reviewed. Formal verification covers
-the statements with [Lean] links, under the definitions in the linked files.
-It does not cover the prose or the comparison with the literature.
-
-The truncated product of Section~\ref{sec:upper} is due to
-Menezes~\cite{Men26}, the hyperplane product to Bishnoi, Boyadzhiyska, Das and
-M\'esz\'aros~\cite{BBDM23}, the grid-vanishing lemma to Alon~\cite{Alo99}, and
-the multiplicity Schwartz--Zippel lemma to Dvir, Kopparty, Saraf and
-Sudan~\cite{DKSS13}. Original manuscript material is distributed under the
-\href{https://creativecommons.org/licenses/by/4.0/}{Creative Commons Attribution
-4.0 International license (CC BY 4.0)}.
+The results were developed in a public research notebook~\cite{Notebook}, whose
+dated entries record the exact computations that suggested the formulas, the
+failed routes and the reviews, using \emph{Noemesis}, an open framework for
+AI-assisted mathematical research distributed with the repository~\cite{Repo}.
+Proposition~\ref{prop:cover-bound} was drafted with GPT-6 Astra in the Codex
+agent~\cite{Note}. The rest of the mathematics, the Lean formalization and the
+draft of this paper were produced by Claude Opus 5.5 in Claude Code under the
+author's direction, and fresh-context Claude reviewers checked the informal
+arguments. The author chose the problem, directed the investigation and designed
+the framework. The paper has not been externally peer reviewed; formal
+verification covers the statements with [Lean] links, not the prose or the
+comparison with the literature. Original manuscript material is distributed
+under the \href{https://creativecommons.org/licenses/by/4.0/}{CC BY 4.0} license.
