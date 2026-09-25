@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> Test conj:near-solution-chooser (<a href="#entry-2026-09-25-shared-cell-conflict">near-solution chooser</a>) on its simplest nontrivial family, the planted hole family: decide whether a near-solution's matching plus random hole neighbourhoods of size \(k\) keeps the boundary expansion that prop:hole-family-random-choice needs, which would prove the conjecture for that family at every \(n\). Then look for a family defeating every near-solution, built from forms such as \(C_s-1\) that vanish at all of them. The step ends with the planted-family proof or a family refuting the conjecture.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The <a href="#entry-2026-09-25-chooser-line-review">chooser-line review</a> closed the chooser line at one concrete rule, conj:near-solution-chooser. Test it directly with a fall search at small size, using the exact GF(3) PC-closure tester. At the largest \(n\) where weak PHP's own refutation degree \(d_{\mathrm{PHP}}\) exceeds the clause degree \(2(k+1)\) (\(k=1,2\); confirm this first), compare the first refutation degree under the best near-solution choice with \(d_{\mathrm{PHP}}\) and with the uniform rule. Use families built from forms vanishing at every near-solution, mixed occupancy blocks, and random dense blocks. A fall below \(d_{\mathrm{PHP}}\) refutes the rule's small-size analogue. No fall is evidence for the rule, and the next cycle states the mechanism behind its cancellations.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -21987,6 +21987,64 @@ where \(Z\) is the Hasse fat points of multiplicity \(s-1\) at the nonzero \(m_j
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 1.92 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 35.91 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">15.23 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-chooser-line-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of the chooser line (rigid-form reduction and near-solution chooser); registers no claim.">
+<h3>Route review: the chooser line has reduced W's choice to one concrete rule and can go no further, so the next step tests that rule directly for a fall</h3>
+<p class="entry-meta">25 September 2026 · Route review (no computation) · open statement W (A1) · cycle odd-prime-planted-hole-family.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. Since the <a href="#entry-2026-09-25-designed-line-review">designed-line review</a>, three cycles have worked on W's chooser:</p>
+<ul>
+<li>the <a href="#entry-2026-09-25-falsify-w">falsification attempt</a>;</li>
+<li>the <a href="#entry-2026-09-25-rigid-forms">rigid-form reduction</a>, an equivalent reformulation;</li>
+<li>the <a href="#entry-2026-09-25-shared-cell-conflict">near-solution chooser</a>, a restriction of W.</li>
+</ul>
+<p>The proposed next step, the planted hole family, would add one special case under an imported bound. By the route check, a line producing reformulations and special cases calls for a review first.</p>
+<p><strong>General statement.</strong> The line's claim is W, through a chooser: prop:rigid-form-reduction and conj:near-solution-chooser.</p>
+
+<h4>What the goal needs, and what the line gave</h4>
+<p>The goal needs W: hardness at degree \(22k\) for \(n^K\) blocks of arbitrary forms. The line gave three things:</p>
+<ul>
+<li>the chooser may ignore forms the base proves nonzero, with no loss;</li>
+<li>every recorded refutation of a choice rule is excluded;</li>
+<li>one concrete rule remains: keep a non-rigid form vanishing at a near-solution \(\psi\) in each prefix.</li>
+</ul>
+<p>The hardness itself is untouched. The only proof tool attached to the rule, pinning to \(\psi\), is capped below about \(N^2\) forms (obs:deciding-designs-capped).</p>
+
+<h4>Falsification attempt: can a family force the holes full?</h4>
+<p>Every near-solution fills all holes, and weak PHP plus \(C_s=1\) for all \(s\) is refuted at degree 1. So the natural attack on a near-solution chooser is a family whose clauses derive \(C_s=1\) under every allowed choice. Over \(\mathbb F_3\), with \(C_s\) Boolean modulo the base, the only non-rigid functions of one occupancy are \(C_s\) and \(C_s-1\). If a block's prefix contains both, \(Q\) has the factor \(C_s^2(C_s-1)^2\equiv C_s(1-C_s)\equiv0\), and every clause of the block vanishes. The rule allows this whenever \(k\ge2\), since \(C_s-1\) vanishes at \(\psi\). So blocks built from one occupancy are defended. Mixed blocks, with \(C_s\) beside forms coupling several holes or pigeons, are not settled by this argument.</p>
+<p>The attack shows why the rule is not yet a mechanism. Since the base has no solutions, semantic protection of points proves nothing, and every defence here is a local cancellation in the prefix product. Whether those cancellations persist under PC reasoning at degree \(22k\) is the hardness question.</p>
+
+<h4>Assessment of this line</h4>
+<p>The chooser line has reached its end. W's choice is reduced to non-rigid forms and a concrete rule, and further work on the rule alone can only add special cases. As a route to the goal it is weak: it delivered necessary groundwork and no hardness mechanism. Its lasting value is that a counterexample to W must now defeat every near-solution choice, and that any hardness argument may assume non-rigid prefix forms vanishing at \(\psi\).</p>
+
+<h4>The next step</h4>
+<p>A1 is the highest risk. The cheapest decisive test of the remaining rule is a direct fall search, not another special case.</p>
+<p><strong>Next step.</strong> On odd-prime-clause-transfer, A1: search for a fall under the near-solution chooser at small size.</p>
+<ul>
+<li><em>What to compute.</em> Use the recorded exact GF(3) PC-closure tester. Take weak PHP at the largest \(n\) where its own refutation degree \(d_{\mathrm{PHP}}\) exceeds the clause degree \(2(k+1)\) at \(k=1\) or 2. Add dense adversarial families built from forms vanishing at every near-solution, the mixed occupancy blocks above, and random dense blocks. Compare the first refutation degree under the best near-solution choice with \(d_{\mathrm{PHP}}\) and with the uniform rule.</li>
+<li><em>Count first.</em> Establish \(d_{\mathrm{PHP}}\) at the reachable \(n\), and confirm that \(2(k+1)&lt;d_{\mathrm{PHP}}\), so the test is not vacuous.</li>
+<li><em>What ends the step.</em> A family whose best near-solution choice is refuted below \(d_{\mathrm{PHP}}\) refutes the rule's small-size analogue and points to the attack. If no such family exists at the reachable sizes, that is evidence for the rule, and the next cycle states the mechanism the cancellations suggest.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>the three chooser entries and their claims;</li>
+<li>obs:deciding-designs-capped;</li>
+<li>the falsification entry's occupancy defence.</li>
+</ul>
+<p>The occupancy computation \(C(C-1)\) modulo Booleanity is checked by hand. The review registers no claim and runs no computation.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-planted-hole-family">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 0.43 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 3.21 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">44.17 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">13.05 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
