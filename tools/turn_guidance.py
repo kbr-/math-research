@@ -77,7 +77,9 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              'already have are enough to propose a general statement and attempt to prove it.',
              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
              'fields study the objects of the open statement this cycle advances, and what their strongest '
-             'theorems say about them. Every route review lists at least three such Outside leads.']
+             'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
+             'nobody thought of applying them here (Absurd bridges). Every route review lists at least three '
+             'Outside leads and two Absurd bridges.']
     notes += [note for note in (algebra_note(which), library_note(has)) if note]
     for item in items:
         mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item

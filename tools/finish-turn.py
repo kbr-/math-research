@@ -70,21 +70,28 @@ def validate_route(body, article):
 
 
 LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
-LEADS_MIN = 3
+BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
+LEADS_MIN, BRIDGES_MIN = 3, 2
 
 
 def validate_leads(body, article, close):
-    """AGENTS.md: a route review reaches outside the record's toolkit.  It needs an Outside leads list of
-    at least LEADS_MIN ideas from other areas of mathematics (user instruction, 25 September 2026, after
-    classical tools were proposed only once the user named their fields)."""
+    """AGENTS.md: a route review reaches outside the record's toolkit (user instructions, 25 September
+    2026, after classical tools were proposed only once the user named their fields).  It lists Outside
+    leads, from fields that study the open statement's objects, and Absurd bridges, from fields that never
+    stood near them."""
     if not re.search(r'data-route-item="', body) or entry_tags(body, article)['kind'] != 'review':
         return
-    found = LEADS_RE.search(body, article, close)
-    if found is None or len(re.findall(r'<li\b', found.group(1))) < LEADS_MIN:
-        raise ValueError(f'A route review needs an <h4>Outside leads</h4> section followed by a <ul> of at '
-                         f'least {LEADS_MIN} leads from other areas of mathematics: for each, a named theorem or '
-                         'source (not just a field), the open statement it targets, and where it would break. '
-                         'Include leads the record names but never followed (AGENTS.md)')
+    for pattern, heading, least, what in (
+            (LEADS_RE, 'Outside leads', LEADS_MIN, 'leads from areas of mathematics that study the open '
+             'statement\'s objects: for each, a named theorem or source (not just a field), the open statement '
+             'it targets, and where it would break. Include leads the record names but never followed'),
+            (BRIDGES_RE, 'Absurd bridges', BRIDGES_MIN, 'bridges to areas that never stood near these objects, '
+             'which nobody thought of applying here: for each, the translation that would carry the objects '
+             'across, what a theorem there would give, and the smallest test of the translation')):
+        found = pattern.search(body, article, close)
+        if found is None or len(re.findall(r'<li\b', found.group(1))) < least:
+            raise ValueError(f'A route review needs an <h4>{heading}</h4> section followed by a <ul> of at '
+                             f'least {least} {what} (AGENTS.md)')
 
 
 GENERAL_RE = re.compile(r'<p><strong>General statement\.</strong>(.*?)</p>', re.S)

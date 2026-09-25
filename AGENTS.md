@@ -140,8 +140,12 @@ rules to growing checklists or one-off setup narratives.
   the next step on the highest-risk item. It also has an **Outside leads** section (the
   finisher requires at least three): ideas from other areas of mathematics, each a named
   theorem or source rather than a field, with the open statement it targets and where it
-  would break, including leads the record names but never followed. Reaching for other
-  areas is the agent's job at every cycle, not only when the user names a field.
+  would break, including leads the record names but never followed. It also has an
+  **Absurd bridges** section (at least two): areas that never stood near these objects
+  because nobody thought of applying them here, each with the translation that would carry
+  the objects across, what a theorem there would give, and the smallest test of the
+  translation. Reaching for other areas is the agent's job at every cycle, not only when
+  the user names a field.
   Proposed next step names its route item.
   While the goal is open that step is always research: never park, pause or stop the
   goal, or wait for a user decision; when recorded routes are closed, propose and test
