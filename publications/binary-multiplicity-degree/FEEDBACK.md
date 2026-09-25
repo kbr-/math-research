@@ -279,9 +279,7 @@ case analysis in Lemma 5.1. Numbers are those of the version it read.
 
 ### Outstanding before a journal submission
 
-- [ ] An expert reads the Section 4 lower bound (C). Das or Menezes are the natural readers;
-  correspondence is the author's decision.
-  - A reply to Dr. Das is drafted (private, not in the repository).
+- [ ] An expert reads the Section 4 lower bound (C).
 - [ ] The author adds a sentence on what they checked personally to "How this paper was produced"
   (C; the shared checklist's assistance item).
 - [ ] Run the Lean build outside the author's machine, for example by pointing the repository's

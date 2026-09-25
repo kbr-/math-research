@@ -62,7 +62,7 @@ For 1<=k<2^(n-1), the minimum degree of an F_2 polynomial with Hasse multiplicit
 
 **Significance:** `independent_result` · **Novelty:** `unknown`
 
-**Why it matters:** Would answer the co-author's question below the threshold: the multiplicity bound is not attained, and each dimension beyond floor(log2 k)+2 costs one degree; in characteristic two it undercuts the real-field answer n+2k-3 for k>=4.
+**Why it matters:** Would answer Question 4.3 of Bishnoi et al. below the threshold: the multiplicity bound is not attained, and each dimension beyond floor(log2 k)+2 costs one degree; in characteristic two it undercuts the real-field answer n+2k-3 for k>=4.
 
 **Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
@@ -92,9 +92,9 @@ For 1 <= k <= 15 and n >= floor(log2 k)+2, the minimum degree of an F_2 polynomi
 
 **Significance:** `independent_result` · **Novelty:** `unknown`
 
-**Why it matters:** Exact answer in the co-author's range for small k; for large n it gives n+4 at k=4 and n+2k-2-floor(log2 k) in general, below the real-field n+2k-3 for k >= 4.
+**Why it matters:** Exact answer in the range of Question 4.3 of Bishnoi et al. for small k; for large n it gives n+4 at k=4 and n+2k-2-floor(log2 k) in general, below the real-field n+2k-3 for k >= 4.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Extend to all k through conj:power-of-two-factor-existence.
 
@@ -108,9 +108,9 @@ For 1 <= k <= 31 and n >= floor(log2 k)+2, the minimum degree of an F_2 polynomi
 
 **Significance:** `independent_result` · **Novelty:** `unknown`
 
-**Why it matters:** Exact answer to the co-author's tightness question for all k <= 31.
+**Why it matters:** Exact answer to the tightness question of Bishnoi et al. (Question 4.3) for all k <= 31.
 
-**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+**Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Prior-art check before any novelty claim; uniform construction for k >= 32.
 
@@ -264,7 +264,7 @@ Assuming Menezes' characteristic-2 upper bound at n = k-1: for every k >= 1 and 
 
 **Significance:** `independent_result` · **Novelty:** `unknown`
 
-**Why it matters:** Answers the co-author's tightness question in its whole range k < 2^(n-1), which the published n >= k-1 result does not cover.
+**Why it matters:** Answers the tightness question of Bishnoi et al. (Question 4.3) in its whole range k < 2^(n-1), which the published n >= k-1 result does not cover.
 
 **Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
@@ -296,7 +296,7 @@ For every k >= 1 and n >= floor(log2 k)+2, an F_2 polynomial with Hasse multipli
 
 **Significance:** `independent_result` · **Novelty:** `unknown`
 
-**Why it matters:** Proves the lower half of the degree formula for all k and answers the co-author's tightness question: below the threshold the multiplicity bound is never attained.
+**Why it matters:** Proves the lower half of the degree formula for all k and answers the tightness question of Bishnoi et al. (Question 4.3): below the threshold the multiplicity bound is never attained.
 
 **Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
