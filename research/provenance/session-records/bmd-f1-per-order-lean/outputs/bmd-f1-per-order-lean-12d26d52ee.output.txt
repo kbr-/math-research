@@ -1,0 +1,143 @@
+claims/PerOrderExpansion.lean:185:4: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (homogeneousComponent ?m.69) ?φ
+in the target expression
+  X i ^ 2 + (homogeneousComponent 2) (X i) = X i ^ 2
+
+σ : Type u_1
+i : σ
+⊢ X i ^ 2 + (homogeneousComponent 2) (X i) = X i ^ 2
+claims/PerOrderExpansion.lean:233:15: warning: `Finsupp.finset_sum_apply` has been deprecated: Use `Finsupp.finsetSum_apply` instead
+claims/PerOrderExpansion.lean:253:51: error: Tactic `tauto` failed
+
+σ : Type u_1
+inst✝ : DecidableEq σ
+ε ε' : Finset σ
+e e' : σ →₀ ℕ
+h : indic ε + 2 • e = indic ε' + 2 • e'
+i : σ
+h1 : i ∈ ε
+h2 : i ∉ ε'
+this : 1 + 2 * e i = 0 + 2 * e' i
+⊢ i ∈ ε ↔ i ∈ ε'
+claims/PerOrderExpansion.lean:253:51: error: Tactic `tauto` failed
+
+σ : Type u_1
+inst✝ : DecidableEq σ
+ε ε' : Finset σ
+e e' : σ →₀ ℕ
+h : indic ε + 2 • e = indic ε' + 2 • e'
+i : σ
+h1 : i ∉ ε
+h2 : i ∈ ε'
+this : 0 + 2 * e i = 1 + 2 * e' i
+⊢ i ∈ ε ↔ i ∈ ε'
+claims/PerOrderExpansion.lean:268:13: warning: `MvPolynomial.monomial_mul` has been deprecated: Use `MvPolynomial.monomial_mul_monomial` instead
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+claims/PerOrderExpansion.lean:287:86: error: unsolved goals
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+P : P2
+A : Finset σ → P2
+hP : P = ∑ ε, xmon ε * (aeval yv) (A ε)
+ε✝ : Finset σ
+e✝ : σ →₀ ℕ
+he : (A ε✝).coeff e✝ ≠ 0
+S : Finset ((_ : Finset σ) × (σ →₀ ℕ)) := Finset.univ.sigma fun ε => (A ε).support
+W : (_ : Finset σ) × (σ →₀ ℕ) → ℕ := fun p => p.fst.card + 2 * Finsupp.degree p.snd
+hmem : ⟨ε✝, e✝⟩ ∈ S
+ε0 : Finset σ
+e0 : σ →₀ ℕ
+hp0 : ⟨ε0, e0⟩ ∈ S
+hmax : ∀ x' ∈ S, W x' ≤ W ⟨ε0, e0⟩
+μ0 : σ →₀ ℕ := indic ε0 + 2 • e0
+hμ0 : Finsupp.degree μ0 = W ⟨ε0, e0⟩
+ε : Finset σ
+a✝¹ : ε ∈ Finset.univ
+e : σ →₀ ℕ
+a✝ : e ∈ (A ε).support
+⊢ xmon ε * C ((A ε).coeff e) * (aeval yv) ((monomial e) 1) = xmon ε * C ((A ε).coeff e) * (aeval yv) ((monomial e) 1)
+claims/PerOrderExpansion.lean:304:70: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Finsupp.degree μ0
+in the target expression
+  ε.card + 2 * Finsupp.degree e < ∑ i ∈ μ0.support, μ0 i
+
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+P : P2
+A : Finset σ → P2
+hP : P = ∑ ε, xmon ε * (aeval yv) (A ε)
+ε✝ : Finset σ
+e✝ : σ →₀ ℕ
+he : (A ε✝).coeff e✝ ≠ 0
+S : Finset ((_ : Finset σ) × (σ →₀ ℕ)) := Finset.univ.sigma fun ε => (A ε).support
+W : (_ : Finset σ) × (σ →₀ ℕ) → ℕ := fun p => p.fst.card + 2 * Finsupp.degree p.snd
+hmem : ⟨ε✝, e✝⟩ ∈ S
+ε0 : Finset σ
+e0 : σ →₀ ℕ
+hp0 : ⟨ε0, e0⟩ ∈ S
+hmax : ∀ x' ∈ S, W x' ≤ W ⟨ε0, e0⟩
+μ0 : σ →₀ ℕ := indic ε0 + 2 • e0
+hμ0 : Finsupp.degree μ0 = W ⟨ε0, e0⟩
+hexp : P = ∑ ε, ∑ e ∈ (A ε).support, C ((A ε).coeff e) * (xmon ε * yvpow e)
+ε : Finset σ
+e : σ →₀ ℕ
+hS : ⟨ε, e⟩ ∈ S
+ht1 : (xmon ε * yvpow e).totalDegree ≤ ε.card + 2 * Finsupp.degree e
+ht2 : (homogeneousComponent (ε.card + 2 * Finsupp.degree e)) (xmon ε * yvpow e) = (monomial (indic ε + 2 • e)) 1
+hW : W ⟨ε, e⟩ ≤ W ⟨ε0, e0⟩
+hlt : W ⟨ε, e⟩ < W ⟨ε0, e0⟩
+⊢ ε.card + 2 * Finsupp.degree e < ∑ i ∈ μ0.support, μ0 i
+claims/PerOrderExpansion.lean:304:89: warning: `if_neg` has been deprecated: Use `ite_eq_right` instead
+claims/PerOrderExpansion.lean:308:10: warning: `if_pos` has been deprecated: Use `ite_eq_left` instead
+claims/PerOrderExpansion.lean:311:6: error: unsolved goals
+case pos
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+P : P2
+A : Finset σ → P2
+hP : P = ∑ ε, xmon ε * (aeval yv) (A ε)
+ε✝ : Finset σ
+e✝ : σ →₀ ℕ
+he : (A ε✝).coeff e✝ ≠ 0
+S : Finset ((_ : Finset σ) × (σ →₀ ℕ)) := Finset.univ.sigma fun ε => (A ε).support
+W : (_ : Finset σ) × (σ →₀ ℕ) → ℕ := fun p => p.fst.card + 2 * Finsupp.degree p.snd
+hmem : ⟨ε✝, e✝⟩ ∈ S
+ε0 : Finset σ
+e0 : σ →₀ ℕ
+hp0 : ⟨ε0, e0⟩ ∈ S
+hmax : ∀ x' ∈ S, W x' ≤ W ⟨ε0, e0⟩
+μ0 : σ →₀ ℕ := indic ε0 + 2 • e0
+hμ0 : Finsupp.degree μ0 = W ⟨ε0, e0⟩
+hexp : P = ∑ ε, ∑ e ∈ (A ε).support, C ((A ε).coeff e) * (xmon ε * yvpow e)
+ε : Finset σ
+e : σ →₀ ℕ
+hS : ⟨ε, e⟩ ∈ S
+ht1 : (xmon ε * yvpow e).totalDegree ≤ ε.card + 2 * Finsupp.degree e
+ht2 : (homogeneousComponent (ε.card + 2 * Finsupp.degree e)) (xmon ε * yvpow e) = (monomial (indic ε + 2 • e)) 1
+hW : W ⟨ε, e⟩ ≤ W ⟨ε0, e0⟩
+heq : W ⟨ε, e⟩ = W ⟨ε0, e0⟩
+hc : (if indic ε + 2 • e = μ0 then 1 else 0) = (xmon ε * yvpow e).coeff μ0
+hq : indic ε + 2 • e = μ0
+h1 : ε = ε0
+h2 : e = e0
+⊢ indic ε0 + 2 • e0 = μ0
+claims/PerOrderExpansion.lean:313:12: warning: `if_neg` has been deprecated: Use `ite_eq_right` instead
+claims/PerOrderExpansion.lean:313:23: warning: `if_neg` has been deprecated: Use `ite_eq_right` instead
+claims/PerOrderExpansion.lean:319:40: warning: `if_pos` has been deprecated: Use `ite_eq_left` instead
+claims/PerOrderExpansion.lean:321:54: warning: `if_neg` has been deprecated: Use `ite_eq_right` instead
+claims/PerOrderExpansion.lean:328:52: warning: `if_neg` has been deprecated: Use `ite_eq_right` instead
+claims/PerOrderExpansion.lean:312:14: warning: This simp argument is unused:
+  hq
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [h1, h2]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

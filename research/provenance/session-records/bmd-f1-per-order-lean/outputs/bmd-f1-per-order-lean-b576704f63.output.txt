@@ -1,0 +1,46 @@
+claims/PerOrderLowerBound.lean:213:11: error: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+claims/PerOrderLowerBound.lean:245:11: warning: `if_neg` has been deprecated: Use `ite_eq_right` instead
+claims/PerOrderLowerBound.lean:279:6: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  Fintype ℕ
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+claims/PerOrderLowerBound.lean:276:82: error: unsolved goals
+σ : Type u_1
+k : ℕ
+w : P2
+t j : ℕ
+y : P2
+u : Fin j → P2
+⊢ ∑ x, ∑ i, y ^ 2 ^ ↑x * (y ^ 2 ^ ↑i * E k w (t + 2 ^ ↑x + 2 ^ ↑i) j u) =
+    ∑ s, y ^ 2 ^ (↑s + 1) * E k w (t + 2 ^ (↑s + 1)) j u
+claims/PerOrderLowerBound.lean:301:46: warning: `Fin.coe_castSucc` has been deprecated: Use `Fin.val_castSucc` instead
+claims/PerOrderLowerBound.lean:318:10: warning: `if_pos` has been deprecated: Use `ite_eq_left` instead
+claims/PerOrderLowerBound.lean:319:24: warning: `if_neg` has been deprecated: Use `ite_eq_right` instead
+claims/PerOrderLowerBound.lean:321:10: warning: `if_pos` has been deprecated: Use `ite_eq_left` instead
+claims/PerOrderLowerBound.lean:325:8: warning: `if_neg` has been deprecated: Use `ite_eq_right` instead
+claims/PerOrderLowerBound.lean:344:8: warning: `if_pos` has been deprecated: Use `ite_eq_left` instead
+claims/PerOrderLowerBound.lean:344:19: warning: `if_pos` has been deprecated: Use `ite_eq_left` instead
+claims/PerOrderLowerBound.lean:346:8: warning: `if_neg` has been deprecated: Use `ite_eq_right` instead
+claims/PerOrderLowerBound.lean:346:19: warning: `if_neg` has been deprecated: Use `ite_eq_right` instead
+claims/PerOrderLowerBound.lean:346:38: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * 0
+in the target expression
+  0 * ∏ a, X (i a) ^ 2 ^ ↑(τ a) = 0
+
+case neg
+σ : Type u_1
+inst✝ : Fintype σ
+k t : ℕ
+ht : t < k
+w : P2
+j : ℕ
+i : Fin j → σ
+hprod : ∏ a, xhat k (X (i a)) = ∑ τ, ∏ a, X (i a) ^ 2 ^ ↑(τ a)
+τ : Fin j → Fin k
+a✝ : τ ∈ Finset.univ
+hhom : (∏ a, X (i a) ^ 2 ^ ↑(τ a)).IsHomogeneous (∑ a, 2 ^ ↑(τ a))
+hS : ¬t + ∑ a, 2 ^ ↑(τ a) < k
+⊢ 0 * ∏ a, X (i a) ^ 2 ^ ↑(τ a) = 0

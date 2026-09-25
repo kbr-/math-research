@@ -1,0 +1,49 @@
+claims/PerOrderSubspaceReduction.lean:26:0: warning: automatically included section variable(s) unused in theorem `MathResearch.PerOrderSubspaceReduction.Lpoly_monic`:
+  [IsDomain D]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [IsDomain D] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/PerOrderSubspaceReduction.lean:39:0: warning: automatically included section variable(s) unused in theorem `MathResearch.PerOrderSubspaceReduction.eval_Lpoly`:
+  [IsDomain D]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [IsDomain D] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/PerOrderSubspaceReduction.lean:65:0: warning: automatically included section variable(s) unused in theorem `MathResearch.PerOrderSubspaceReduction.eval_aeval_X`:
+  [IsDomain D]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [IsDomain D] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/PerOrderSubspaceReduction.lean:92:0: warning: automatically included section variable(s) unused in theorem `MathResearch.PerOrderSubspaceReduction.prod_X_pow_eq_monomial`:
+  [IsDomain D]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [IsDomain D] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/PerOrderSubspaceReduction.lean:153:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  0 (Finsupp.equivFunOnFinite.symm e)
+in the target expression
+  ∑ i, c i * ∏ a, (rho V (d i a)).coeff (e a) = 0
+
+D : Type u_1
+inst✝² : CommRing D
+inst✝¹ : IsDomain D
+V : Finset D
+hV : V.Nonempty
+h : ℕ
+ι : Type u_2
+inst✝ : Fintype ι
+c : ι → D
+d : ι → Fin h → ℕ
+hvan : ∀ (v : Fin h → D), (∀ (a : Fin h), v a ∈ V) → ∑ i, c i * ∏ a, v a ^ d i a = 0
+e : Fin h → ℕ
+he : ∀ (a : Fin h), e a < V.card
+R : MvPolynomial (Fin h) D := ∑ i, MvPolynomial.C (c i) * ∏ a, (Polynomial.aeval (MvPolynomial.X a)) (rho V (d i a))
+hR : R = ∑ i, MvPolynomial.C (c i) * ∏ a, (Polynomial.aeval (MvPolynomial.X a)) (rho V (d i a))
+hR0 : R = 0
+hc :
+  ∑ x, c x * (∏ a, (Polynomial.aeval (MvPolynomial.X a)) (rho V (d x a))).coeff (Finsupp.equivFunOnFinite.symm e) =
+    0 (Finsupp.equivFunOnFinite.symm e)
+⊢ ∑ i, c i * ∏ a, (rho V (d i a)).coeff (e a) = 0

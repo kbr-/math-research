@@ -1,0 +1,222 @@
+claims/PerOrderYCoefficient.lean:43:23: warning: this constant has no effect on the linear combination; it can be dropped from the term
+claims/PerOrderYCoefficient.lean:43:4: error: ring failed, ring expressions not equal
+σ : Type u_1
+Y : P2
+K : ℕ
+ih :
+  (∑ s ∈ Finset.range K, Y ^ 2 ^ s) ^ 2 = ∑ s ∈ Finset.range K, Y ^ 2 ^ (s + 1) →
+    ∑ s ∈ Finset.range K, Y ^ 2 ^ (s + 1) + ∑ s ∈ Finset.range K, Y ^ 2 ^ s = Y + Y ^ 2 ^ K
+hsq : (∑ s ∈ Finset.range (K + 1), Y ^ 2 ^ s) ^ 2 = ∑ s ∈ Finset.range (K + 1), Y ^ 2 ^ (s + 1)
+this : Y ^ 2 ^ (K + 1) + Y ^ 2 ^ K + Y ^ 2 ^ K = Y ^ 2 ^ (K + 1)
+⊢ ∑ x ∈ Finset.range K, Y ^ 2 ^ (x + 1) - Y + Y ^ 2 ^ K + ∑ x ∈ Finset.range K, Y ^ 2 ^ x = 0
+claims/PerOrderYCoefficient.lean:38:18: warning: This simp argument is unused:
+  two_eq_zero_P2
+
+Hint: Omit it from the simp argument list.
+  [apply] simp
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/PerOrderYCoefficient.lean:57:20: error: Expected type must not contain free variables
+  C ((fun i => i) ⟨0, ⋯⟩ ^ 2 + (fun i => i) ⟨0, ⋯⟩) = 0
+
+Hint: Use the `+revert` option to automatically clean up and revert free variables
+claims/PerOrderYCoefficient.lean:57:20: error: Expected type must not contain free variables
+  C ((fun i => i) ⟨1, ⋯⟩ ^ 2 + (fun i => i) ⟨1, ⋯⟩) = 0
+
+Hint: Use the `+revert` option to automatically clean up and revert free variables
+claims/PerOrderYCoefficient.lean:58:2: error: ring failed, ring expressions not equal
+σ : Type u_1
+inst✝ : Fintype σ
+u : P2
+c : ZMod 2
+hc : C c ^ 2 + C c = 0
+⊢ -(u * 2) + u * C c * 2 - C c * 2 = 0
+claims/PerOrderYCoefficient.lean:89:6: error: Tactic `apply` failed: could not unify the conclusion of `@funext`
+  ?f = ?g
+with the goal
+  (aeval fun i => (aeval (z δ)) (yv i)) = aeval yh
+
+Note: The full type of `@funext` is
+  ∀ {α : Sort ?u.241} {β : α → Sort ?u.240} {f g : (x : α) → β x}, (∀ (x : α), f x = g x) → f = g
+
+case e_a
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+k K : ℕ
+hK : k ≤ 2 ^ K
+P : P2
+hP : ∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ mult a P
+A : Finset σ → P2
+hA : P = ∑ ε, xmon ε * (aeval yv) (A ε)
+ε : Finset σ
+Q : Ideal P2 := lowIdeal k
+x : σ → P2 := fun i => xhat K (X i)
+yh : σ → P2 := fun i => X i + X i ^ 2 ^ K
+z : (σ → ZMod 2) → σ → P2 := fun δ i => x i + C (δ i)
+hyv : ∀ (δ : σ → ZMod 2) (i : σ), (aeval (z δ)) (yv i) = yh i
+δ : σ → ZMod 2
+ε' : Finset σ
+a✝ : ε' ∈ Finset.univ
+⊢ (aeval fun i => (aeval (z δ)) (yv i)) = aeval yh
+claims/PerOrderYCoefficient.lean:97:6: error: Tactic `apply` failed: could not unify the conclusion of `@funext`
+  ?f = ?g
+with the goal
+  aeval (z δ) = aeval fun i => (aeval x) (X i + C (δ i))
+
+Note: The full type of `@funext` is
+  ∀ {α : Sort ?u.282} {β : α → Sort ?u.281} {f g : (x : α) → β x}, (∀ (x : α), f x = g x) → f = g
+
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+k K : ℕ
+hK : k ≤ 2 ^ K
+P : P2
+hP : ∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ mult a P
+A : Finset σ → P2
+hA : P = ∑ ε, xmon ε * (aeval yv) (A ε)
+ε : Finset σ
+Q : Ideal P2 := lowIdeal k
+x : σ → P2 := fun i => xhat K (X i)
+yh : σ → P2 := fun i => X i + X i ^ 2 ^ K
+z : (σ → ZMod 2) → σ → P2 := fun δ i => x i + C (δ i)
+hyv : ∀ (δ : σ → ZMod 2) (i : σ), (aeval (z δ)) (yv i) = yh i
+hsub : ∀ (δ : σ → ZMod 2), (aeval (z δ)) P = ∑ ε', (∏ i ∈ ε', z δ i) * (aeval yh) (A ε')
+δ : σ → ZMod 2
+hδ : δ ≠ 0
+⊢ aeval (z δ) = aeval fun i => (aeval x) (X i + C (δ i))
+claims/PerOrderYCoefficient.lean:110:60: warning: `if_true` has been deprecated: Use `ite_true` instead
+claims/PerOrderYCoefficient.lean:110:69: warning: `if_false` has been deprecated: Use `ite_false` instead
+claims/PerOrderYCoefficient.lean:113:56: warning: this constant has no effect on the linear combination; it can be dropped from the term
+claims/PerOrderYCoefficient.lean:113:6: error: ring failed, ring expressions not equal
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+k K : ℕ
+hK : k ≤ 2 ^ K
+P : P2
+hP : ∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ mult a P
+A : Finset σ → P2
+hA : P = ∑ ε, xmon ε * (aeval yv) (A ε)
+ε : Finset σ
+Q : Ideal P2 := ⋯
+x : σ → P2 := ⋯
+yh : σ → P2 := ⋯
+z : (σ → ZMod 2) → σ → P2 := ⋯
+hyv : ∀ (δ : σ → ZMod 2) (i : σ), (aeval (z δ)) (yv i) = yh i
+hsub : ∀ (δ : σ → ZMod 2), (aeval (z δ)) P = ∑ ε', (∏ i ∈ ε', z δ i) * (aeval yh) (A ε')
+hzero : ∀ (δ : σ → ZMod 2), δ ≠ 0 → (aeval (z δ)) P ∈ Q
+N : σ → ZMod 2 → P2 := ⋯
+ε' : Finset σ
+i : σ
+h1 : i ∈ ε
+h2 : i ∈ ε'
+⊢ 2 + x i * 2 = 0
+claims/PerOrderYCoefficient.lean:121:66: error: unsolved goals
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+k K : ℕ
+hK : k ≤ 2 ^ K
+P : P2
+hP : ∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ mult a P
+A : Finset σ → P2
+hA : P = ∑ ε, xmon ε * (aeval yv) (A ε)
+ε : Finset σ
+Q : Ideal P2 := lowIdeal k
+x : σ → P2 := fun i => xhat K (X i)
+yh : σ → P2 := fun i => X i + X i ^ 2 ^ K
+z : (σ → ZMod 2) → σ → P2 := fun δ i => x i + C (δ i)
+hyv : ∀ (δ : σ → ZMod 2) (i : σ), (aeval (z δ)) (yv i) = yh i
+hsub : ∀ (δ : σ → ZMod 2), (aeval (z δ)) P = ∑ ε', (∏ i ∈ ε', z δ i) * (aeval yh) (A ε')
+hzero : ∀ (δ : σ → ZMod 2), δ ≠ 0 → (aeval (z δ)) P ∈ Q
+N : σ → ZMod 2 → P2 := fun i c => if i ∈ ε then 1 else if c = 0 then 1 + x i else x i
+hcell : ∀ (ε' : Finset σ) (i : σ), (∑ c, N i c * if i ∈ ε' then x i + C c else 1) = if i ∈ ε ↔ i ∈ ε' then 1 else 0
+ε' : Finset σ
+δ : σ → ZMod 2
+⊢ (∏ i, if i ∈ Finset.univ then N i (δ i) else 1) * ∏ i ∈ ε', z δ i =
+    (∏ i, if i ∈ Finset.univ then N i (δ i) else 1) * ∏ x_1, if x_1 ∈ ε' then x x_1 + C (δ x_1) else 1
+claims/PerOrderYCoefficient.lean:144:6: error: Tactic `apply` failed: could not unify the conclusion of `@funext`
+  ?f = ?g
+with the goal
+  (aeval fun i => (Ideal.Quotient.mkₐ (ZMod 2) Q) (yh i)) = aeval fun i => (Ideal.Quotient.mkₐ (ZMod 2) Q) (X i)
+
+Note: The full type of `@funext` is
+  ∀ {α : Sort ?u.607} {β : α → Sort ?u.606} {f g : (x : α) → β x}, (∀ (x : α), f x = g x) → f = g
+
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+k K : ℕ
+hK : k ≤ 2 ^ K
+P : P2
+hP : ∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ mult a P
+A : Finset σ → P2
+hA : P = ∑ ε, xmon ε * (aeval yv) (A ε)
+ε : Finset σ
+Q : Ideal P2 := lowIdeal k
+x : σ → P2 := fun i => xhat K (X i)
+yh : σ → P2 := fun i => X i + X i ^ 2 ^ K
+z : (σ → ZMod 2) → σ → P2 := fun δ i => x i + C (δ i)
+hyv : ∀ (δ : σ → ZMod 2) (i : σ), (aeval (z δ)) (yv i) = yh i
+hsub : ∀ (δ : σ → ZMod 2), (aeval (z δ)) P = ∑ ε', (∏ i ∈ ε', z δ i) * (aeval yh) (A ε')
+hzero : ∀ (δ : σ → ZMod 2), δ ≠ 0 → (aeval (z δ)) P ∈ Q
+N : σ → ZMod 2 → P2 := fun i c => if i ∈ ε then 1 else if c = 0 then 1 + x i else x i
+hcell : ∀ (ε' : Finset σ) (i : σ), (∑ c, N i c * if i ∈ ε' then x i + C c else 1) = if i ∈ ε ↔ i ∈ ε' then 1 else 0
+hinv : ∀ (ε' : Finset σ), ∑ δ, (∏ i, N i (δ i)) * ∏ i ∈ ε', z δ i = if ε' = ε then 1 else 0
+q : P2 →+* P2 ⧸ Q := Ideal.Quotient.mk Q
+f : P2
+⊢ (aeval fun i => (Ideal.Quotient.mkₐ (ZMod 2) Q) (yh i)) = aeval fun i => (Ideal.Quotient.mkₐ (ZMod 2) Q) (X i)
+claims/PerOrderYCoefficient.lean:164:2: error: unsolved goals
+case neg
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+k K : ℕ
+hK : k ≤ 2 ^ K
+P : P2
+hP : ∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ mult a P
+A : Finset σ → P2
+hA : P = ∑ ε, xmon ε * (aeval yv) (A ε)
+ε : Finset σ
+Q : Ideal P2 := lowIdeal k
+x : σ → P2 := fun i => xhat K (X i)
+yh : σ → P2 := fun i => X i + X i ^ 2 ^ K
+z : (σ → ZMod 2) → σ → P2 := fun δ i => x i + C (δ i)
+hyv : ∀ (δ : σ → ZMod 2) (i : σ), (aeval (z δ)) (yv i) = yh i
+hsub : ∀ (δ : σ → ZMod 2), (aeval (z δ)) P = ∑ ε', (∏ i ∈ ε', z δ i) * (aeval yh) (A ε')
+hzero : ∀ (δ : σ → ZMod 2), δ ≠ 0 → (aeval (z δ)) P ∈ Q
+N : σ → ZMod 2 → P2 := fun i c => if i ∈ ε then 1 else if c = 0 then 1 + x i else x i
+hcell : ∀ (ε' : Finset σ) (i : σ), (∑ c, N i c * if i ∈ ε' then x i + C c else 1) = if i ∈ ε ↔ i ∈ ε' then 1 else 0
+hinv : ∀ (ε' : Finset σ), ∑ δ, (∏ i, N i (δ i)) * ∏ i ∈ ε', z δ i = if ε' = ε then 1 else 0
+q : P2 →+* P2 ⧸ Q := Ideal.Quotient.mk Q
+hyh : q ((aeval yh) (A ε)) = q (A ε)
+hmain : (aeval yh) (A ε) = ∑ δ, (∏ i, N i (δ i)) * (aeval (z δ)) P
+hz0 : z 0 = x
+i : σ
+hi : i ∉ ε
+⊢ x i = xhat K (X i)
+claims/PerOrderYCoefficient.lean:112:6: warning: This simp argument is unused:
+  true_iff
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [h1, h2, ↓reduceIte, iff_true, iff_false, false_iff, not_true_eq_false, not_false_eq_true, mul_one,
+    one_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/PerOrderYCoefficient.lean:112:27: warning: This simp argument is unused:
+  false_iff
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [h1, h2, ↓reduceIte, iff_true, true_iff, iff_false, not_true_eq_false, not_false_eq_true, mul_one,
+    one_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+claims/PerOrderYCoefficient.lean:112:57: warning: This simp argument is unused:
+  not_false_eq_true
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [h1, h2, ↓reduceIte, iff_true, true_iff, iff_false, false_iff, not_true_eq_false, mul_one, one_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

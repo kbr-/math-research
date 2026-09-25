@@ -1,0 +1,46 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PerOrderUpperBound
+Claim file: claims/PerOrderUpperBound.lean
+Claim: thm:per-order-all-dimension-upper-bound
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-all-dimension-upper-bound
+Scope: For n ≥ 1 and ℓ < k, write k − ℓ − 1 = q 2^n + r with 0 ≤ r < 2^n. The polynomial
+y_1^ℓ F^(2q) g_(r+1) over F_2, with y_1 = x_1² + x_1, F the product of the 2^n − 1 affine forms
+1 + u·x (u ≠ 0) and g the truncated product, has Hasse multiplicity ≥ k at every nonzero point,
+multiplicity exactly ℓ at the origin, and total degree ≤ Φ(n,k,ℓ) = n + 2ℓ + Σ_{j<n} ⌊(k−ℓ−1)/2^j⌋
+(by the Legendre form). Also the facts about F: multiplicity ≥ 2^(n−1) at nonzero points, value 1 at
+the origin, total degree ≤ 2^n − 1 (the steps of the hyperplane-cover proof, restated as lemmas).
+Declarations: MathResearch.PerOrderUpperBound.Phi MathResearch.PerOrderUpperBound.hypProd MathResearch.PerOrderUpperBound.mult_hypProd MathResearch.PerOrderUpperBound.eval_zero_hypProd MathResearch.PerOrderUpperBound.totalDegree_hypProd MathResearch.PerOrderUpperBound.per_order_upper_bound
+$ lake --wfail build claims.PerOrderUpperBound
+Build completed successfully (1933 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpepjebft5.lean
+MathResearch.PerOrderUpperBound.Phi : ℕ → ℕ → ℕ → ℕ
+'MathResearch.PerOrderUpperBound.Phi' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PerOrderUpperBound.hypProd : (n : ℕ) → MvPolynomial (Fin n) (ZMod 2)
+'MathResearch.PerOrderUpperBound.hypProd' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderUpperBound.mult_hypProd : ∀ {n : ℕ} {x : Fin n → ZMod 2},
+  x ≠ 0 → ↑(2 ^ (n - 1)) ≤ MathResearch.HasseMultiplicity.mult x (MathResearch.PerOrderUpperBound.hypProd n)
+'MathResearch.PerOrderUpperBound.mult_hypProd' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PerOrderUpperBound.eval_zero_hypProd : ∀ (n : ℕ),
+  (MvPolynomial.eval 0) (MathResearch.PerOrderUpperBound.hypProd n) = 1
+'MathResearch.PerOrderUpperBound.eval_zero_hypProd' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PerOrderUpperBound.totalDegree_hypProd : ∀ (n : ℕ),
+  (MathResearch.PerOrderUpperBound.hypProd n).totalDegree ≤ 2 ^ n - 1
+'MathResearch.PerOrderUpperBound.totalDegree_hypProd' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderUpperBound.per_order_upper_bound : ∀ {n k ℓ : ℕ},
+  1 ≤ n →
+    ℓ < k →
+      ∃ P,
+        (∀ (a : Fin n → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) ∧
+          MathResearch.HasseMultiplicity.mult 0 P = ↑ℓ ∧ P.totalDegree ≤ MathResearch.PerOrderUpperBound.Phi n k ℓ
+'MathResearch.PerOrderUpperBound.per_order_upper_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 6 audited declarations.

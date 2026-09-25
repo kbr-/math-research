@@ -1,0 +1,55 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PerOrderExpansion
+Claim file: claims/PerOrderExpansion.lean
+Claim: supporting module for thm:per-order-value-all-dimensions
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-origin-jet-parametrization
+Scope: Over F_2 in n variables, with y_i = x_i^2 + x_i: every P has an expansion
+P = Σ_ε x^ε A_ε(y) (ε ranging over subsets of the variables, A_ε polynomials), and a nonzero
+coefficient of y^e in A_ε forces |ε| + 2|e| ≤ totalDegree P. This is the direction of part (a) of
+lem:binary-origin-jet-parametrization used by the per-order lower bound (uniqueness of the expansion is
+not stated). Also an order toolkit at the origin: substitution of elements of positive order does not
+lower the order, and the ideal of polynomials of order ≥ k.
+Declarations: MathResearch.PerOrderExpansion.le_mult_zero_aeval MathResearch.PerOrderExpansion.lowIdeal MathResearch.PerOrderExpansion.homogeneousComponent_mul_of_le MathResearch.PerOrderExpansion.yv MathResearch.PerOrderExpansion.xmon MathResearch.PerOrderExpansion.exists_expansion MathResearch.PerOrderExpansion.weight_le_totalDegree
+$ lake --wfail build claims.PerOrderExpansion
+Build completed successfully (1926 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpmls4xo7a.lean
+@MathResearch.PerOrderExpansion.le_mult_zero_aeval : ∀ {σ : Type u_1} (z : σ → MvPolynomial σ (ZMod 2)),
+  (∀ (i : σ), 1 ≤ MathResearch.HasseMultiplicity.mult 0 (z i)) →
+    ∀ (f : MvPolynomial σ (ZMod 2)),
+      MathResearch.HasseMultiplicity.mult 0 f ≤ MathResearch.HasseMultiplicity.mult 0 ((MvPolynomial.aeval z) f)
+'MathResearch.PerOrderExpansion.le_mult_zero_aeval' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderExpansion.lowIdeal : {σ : Type u_1} → ℕ → Ideal (MvPolynomial σ (ZMod 2))
+'MathResearch.PerOrderExpansion.lowIdeal' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderExpansion.homogeneousComponent_mul_of_le : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R]
+  {f g : MvPolynomial σ R} {a b : ℕ},
+  f.totalDegree ≤ a →
+    g.totalDegree ≤ b →
+      (MvPolynomial.homogeneousComponent (a + b)) (f * g) =
+        (MvPolynomial.homogeneousComponent a) f * (MvPolynomial.homogeneousComponent b) g
+'MathResearch.PerOrderExpansion.homogeneousComponent_mul_of_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.PerOrderExpansion.yv : {σ : Type u_1} → σ → MvPolynomial σ (ZMod 2)
+'MathResearch.PerOrderExpansion.yv' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderExpansion.xmon : {σ : Type u_1} → Finset σ → MvPolynomial σ (ZMod 2)
+'MathResearch.PerOrderExpansion.xmon' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderExpansion.exists_expansion : ∀ {σ : Type u_1} [inst : Fintype σ] [DecidableEq σ]
+  (P : MvPolynomial σ (ZMod 2)),
+  ∃ A, P = ∑ ε, MathResearch.PerOrderExpansion.xmon ε * (MvPolynomial.aeval MathResearch.PerOrderExpansion.yv) (A ε)
+'MathResearch.PerOrderExpansion.exists_expansion' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderExpansion.weight_le_totalDegree : ∀ {σ : Type u_1} [inst : Fintype σ] [DecidableEq σ]
+  (P : MvPolynomial σ (ZMod 2)) (A : Finset σ → MvPolynomial σ (ZMod 2)),
+  P = ∑ ε, MathResearch.PerOrderExpansion.xmon ε * (MvPolynomial.aeval MathResearch.PerOrderExpansion.yv) (A ε) →
+    ∀ (ε : Finset σ) (e : σ →₀ ℕ), (A ε).coeff e ≠ 0 → ε.card + 2 * Finsupp.degree e ≤ P.totalDegree
+'MathResearch.PerOrderExpansion.weight_le_totalDegree' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 7 audited declarations.

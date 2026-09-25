@@ -1,0 +1,39 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PerOrderValue
+Claim file: claims/PerOrderValue.lean
+Claim: thm:per-order-value-all-dimensions
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-value-all-dimensions
+Scope: For all n ≥ 1 and 0 ≤ ℓ < k, the least total degree of P ∈ F_2[x_1,…,x_n] with Hasse
+multiplicity ≥ k at every nonzero point of F_2^n and multiplicity exactly ℓ at the origin is
+Φ(n,k,ℓ) = n + 2ℓ + Σ_{j<n} ⌊(k−ℓ−1)/2^j⌋: such a P of total degree exactly Φ exists, and every such P
+has total degree ≥ Φ. Combines PerOrderUpperBound.per_order_upper_bound
+(thm:per-order-all-dimension-upper-bound) and PerOrderLowerBound.lower_bound.
+Declarations: MathResearch.PerOrderValue.per_order_value
+$ lake --wfail build claims.PerOrderValue
+✔ [1938/1941] Built claims.PerOrderYCoefficient (4.9s)
+✔ [1939/1941] Built claims.PerOrderForms (1.7s)
+✔ [1940/1941] Built claims.PerOrderLowerBound (3.2s)
+✔ [1941/1941] Built claims.PerOrderValue (1.3s)
+Build completed successfully (1941 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpy3ry1dcf.lean
+@MathResearch.PerOrderValue.per_order_value : ∀ {n k ℓ : ℕ},
+  1 ≤ n →
+    ℓ < k →
+      (∃ P,
+          (∀ (a : Fin n → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) ∧
+            MathResearch.HasseMultiplicity.mult 0 P = ↑ℓ ∧ P.totalDegree = MathResearch.PerOrderUpperBound.Phi n k ℓ) ∧
+        ∀ (P : MvPolynomial (Fin n) (ZMod 2)),
+          (∀ (a : Fin n → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+            MathResearch.HasseMultiplicity.mult 0 P = ↑ℓ → MathResearch.PerOrderUpperBound.Phi n k ℓ ≤ P.totalDegree
+'MathResearch.PerOrderValue.per_order_value' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 1 audited declarations.

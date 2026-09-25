@@ -1,0 +1,65 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PerOrderYCoefficient
+Claim file: claims/PerOrderYCoefficient.lean
+Claim: lem:admissible-expansion-congruence (a variant of lem:y-coefficient-degree-formula)
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#y-coefficient-degree-formula
+Scope: Over F_2 in n variables, fix K and put xhat(Y) = Σ_{s<K} Y^(2^s) (the truncated root of
+X² + X = Y), with 2^K ≥ k. If P has Hasse multiplicity ≥ k at every nonzero point of F_2^n and
+P = Σ_ε x^ε A_ε(y) with y_i = x_i² + x_i, then with w = P(xhat(y_1), …, xhat(y_n)),
+A_ε ≡ w · ∏_{i ∉ ε} (1 + xhat(y_i)) modulo polynomials of order ≥ k at the origin; in particular the
+coefficients of y^e, |e| < k, agree. The notebook states this for the jet polynomial P(v) of the
+origin-jet lemma; here it is proved directly for P and any expansion, which is what the lower bound uses.
+Declarations: MathResearch.PerOrderYCoefficient.xhat MathResearch.PerOrderYCoefficient.xhat_sq_add MathResearch.PerOrderYCoefficient.one_le_mult_xhat MathResearch.PerOrderYCoefficient.expansion_congr MathResearch.PerOrderYCoefficient.coeff_expansion
+$ lake --wfail build claims.PerOrderYCoefficient
+Build completed successfully (1927 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpsgbzv0lf.lean
+@MathResearch.PerOrderYCoefficient.xhat : {σ : Type u_1} → ℕ → MvPolynomial σ (ZMod 2) → MvPolynomial σ (ZMod 2)
+'MathResearch.PerOrderYCoefficient.xhat' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderYCoefficient.xhat_sq_add : ∀ {σ : Type u_1} (K : ℕ) (Y : MvPolynomial σ (ZMod 2)),
+  MathResearch.PerOrderYCoefficient.xhat K Y ^ 2 + MathResearch.PerOrderYCoefficient.xhat K Y = Y + Y ^ 2 ^ K
+'MathResearch.PerOrderYCoefficient.xhat_sq_add' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderYCoefficient.one_le_mult_xhat : ∀ {σ : Type u_1} (K : ℕ) (i : σ),
+  1 ≤ MathResearch.HasseMultiplicity.mult 0 (MathResearch.PerOrderYCoefficient.xhat K (MvPolynomial.X i))
+'MathResearch.PerOrderYCoefficient.one_le_mult_xhat' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderYCoefficient.expansion_congr : ∀ {σ : Type u_1} [inst : Fintype σ] [inst_1 : DecidableEq σ]
+  {k K : ℕ},
+  k ≤ 2 ^ K →
+    ∀ (P : MvPolynomial σ (ZMod 2)),
+      (∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+        ∀ (A : Finset σ → MvPolynomial σ (ZMod 2)),
+          P =
+              ∑ ε,
+                MathResearch.PerOrderExpansion.xmon ε * (MvPolynomial.aeval MathResearch.PerOrderExpansion.yv) (A ε) →
+            ∀ (ε : Finset σ),
+              (Ideal.Quotient.mk (MathResearch.PerOrderExpansion.lowIdeal k)) (A ε) =
+                (Ideal.Quotient.mk (MathResearch.PerOrderExpansion.lowIdeal k))
+                  ((MvPolynomial.aeval fun i => MathResearch.PerOrderYCoefficient.xhat K (MvPolynomial.X i)) P *
+                    ∏ i with i ∉ ε, (1 + MathResearch.PerOrderYCoefficient.xhat K (MvPolynomial.X i)))
+'MathResearch.PerOrderYCoefficient.expansion_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderYCoefficient.coeff_expansion : ∀ {σ : Type u_1} [inst : Fintype σ] [inst_1 : DecidableEq σ]
+  {k K : ℕ},
+  k ≤ 2 ^ K →
+    ∀ (P : MvPolynomial σ (ZMod 2)),
+      (∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+        ∀ (A : Finset σ → MvPolynomial σ (ZMod 2)),
+          P =
+              ∑ ε,
+                MathResearch.PerOrderExpansion.xmon ε * (MvPolynomial.aeval MathResearch.PerOrderExpansion.yv) (A ε) →
+            ∀ (ε : Finset σ) (e : σ →₀ ℕ),
+              Finsupp.degree e < k →
+                (A ε).coeff e =
+                  ((MvPolynomial.aeval fun i => MathResearch.PerOrderYCoefficient.xhat K (MvPolynomial.X i)) P *
+                        ∏ i with i ∉ ε, (1 + MathResearch.PerOrderYCoefficient.xhat K (MvPolynomial.X i))).coeff
+                    e
+'MathResearch.PerOrderYCoefficient.coeff_expansion' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 5 audited declarations.

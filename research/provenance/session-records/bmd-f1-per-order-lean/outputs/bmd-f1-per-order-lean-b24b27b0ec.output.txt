@@ -1,0 +1,87 @@
+claims/PerOrderExpansion.lean:43:22: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(∑ x ∈ ?s, ?f x)
+in the target expression
+  ↑({ toFun := fun d => ∑ i ∈ d.support, d i, map_zero' := ⋯, map_add' := ⋯ } e) ≤
+    ∑ i ∈ e.support, mult 0 ((fun i k => z i ^ k) i (e i))
+
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+z : σ → P2
+hz : ∀ (i : σ), 1 ≤ mult 0 (z i)
+f : P2
+e : σ →₀ ℕ
+he : e ∈ f.support
+hdeg : mult 0 f ≤ ↑(Finsupp.degree e)
+⊢ ↑({ toFun := fun d => ∑ i ∈ d.support, d i, map_zero' := ⋯, map_add' := ⋯ } e) ≤
+    ∑ i ∈ e.support, mult 0 ((fun i k => z i ^ k) i (e i))
+
+Note: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    Finsupp.degree._proof_2
+  has type
+    ∀ (x x_1 : σ →₀ ℕ), @Eq ℕ ((x + x_1).sum fun x => id) ((x.sum fun x => id) + x_1.sum fun x => id)
+  but is expected to have type
+    ∀ (x y : σ →₀ ℕ),
+      @Eq ℕ ({ toFun := fun d => ∑ i ∈ d.support, d i, map_zero' := ⋯ }.toFun (x + y))
+        ({ toFun := fun d => ∑ i ∈ d.support, d i, map_zero' := ⋯ }.toFun x +
+          { toFun := fun d => ∑ i ∈ d.support, d i, map_zero' := ⋯ }.toFun y)
+  in the application
+    { toFun := fun d => ∑ i ∈ d.support, d i, map_zero' := ⋯, map_add' := ⋯ }
+claims/PerOrderExpansion.lean:57:0: warning: automatically included section variable(s) unused in theorem `MathResearch.PerOrderExpansion.mem_lowIdeal`:
+  [Fintype σ]
+  [DecidableEq σ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype σ] [DecidableEq σ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/PerOrderExpansion.lean:76:23: error(lean.unknownIdentifier): Unknown constant `Finsupp.degree_add`
+claims/PerOrderExpansion.lean:81:10: warning: `if_neg` has been deprecated: Use `ite_eq_right` instead
+claims/PerOrderExpansion.lean:84:78: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * 0
+in the target expression
+  0 = 0 * if Finsupp.degree uv.2 = b then 0 else 0
+
+case neg.inl
+σ : Type u_1
+R : Type u_2
+inst✝ : CommRing R
+f g : MvPolynomial σ R
+a b : ℕ
+hf : f.totalDegree ≤ a
+hg : g.totalDegree ≤ b
+d : σ →₀ ℕ
+hd : Finsupp.degree d = a + b
+uv : (σ →₀ ℕ) × (σ →₀ ℕ)
+huv : uv.1 + uv.2 = d
+hsum : Finsupp.degree uv.1 + Finsupp.degree uv.2 = a + b
+hu : ¬Finsupp.degree uv.1 = a
+hlt : Finsupp.degree uv.1 < a
+hv : b < Finsupp.degree uv.2
+⊢ 0 = 0 * if Finsupp.degree uv.2 = b then 0 else 0
+claims/PerOrderExpansion.lean:88:52: error: Type mismatch: After simplification, term
+  hd
+ has type
+  ¬Eq.{1} (Finsupp.degree d) (a + b)
+but is expected to have type
+  ¬Eq.{u_2 + 1} (((homogeneousComponent a) f * (homogeneousComponent b) g).coeff ?m.279) 0
+claims/PerOrderExpansion.lean:109:0: warning: automatically included section variable(s) unused in theorem `MathResearch.PerOrderExpansion.rep_add`:
+  [DecidableEq σ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq σ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/PerOrderExpansion.lean:118:0: warning: automatically included section variable(s) unused in theorem `MathResearch.PerOrderExpansion.rep_zero`:
+  [DecidableEq σ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq σ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+claims/PerOrderExpansion.lean:132:29: error: `simp` made no progress
+claims/PerOrderExpansion.lean:161:4: error: Type mismatch: After simplification, term
+  h
+ has type
+  Rep (C c)
+but is expected to have type
+  ∃ A, C c = ∑ ε, (∏ i ∈ ε, X i) * (aeval yv) (A ε)

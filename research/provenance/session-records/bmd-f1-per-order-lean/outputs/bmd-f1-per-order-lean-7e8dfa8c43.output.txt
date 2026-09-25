@@ -1,0 +1,45 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PerOrderLegendre
+Claim file: claims/PerOrderLegendre.lean
+Claim: lem:per-order-all-dimension-minimum (the Legendre form and part (i))
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-all-dimension-minimum
+Scope: For m = q 2^n + r with 0 ≤ r < 2^n: Σ_{j<n} ⌊m/2^j⌋ + 2q + s₂(r) = 2m (the Legendre form of Φ),
+hence part (i): for ℓ < k with k − ℓ − 1 < 2^n, Φ(n,k,ℓ) = n + 2k − 2 − s₂(k − ℓ − 1). Also the
+decomposition of m into exactly 2q + s₂(r) powers of two, each at most 2^(n−1), used by the lower bound.
+Part (ii) (the minimum over ℓ) is not formalized here.
+Declarations: MathResearch.PerOrderLegendre.legendre MathResearch.PerOrderLegendre.phi_of_lt_two_pow MathResearch.PerOrderLegendre.bits MathResearch.PerOrderLegendre.length_bits MathResearch.PerOrderLegendre.sum_bits MathResearch.PerOrderLegendre.lt_of_mem_bits
+$ lake --wfail build claims.PerOrderLegendre
+Build completed successfully (1581 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpc9x5lx90.lean
+MathResearch.PerOrderLegendre.legendre : ∀ (n q r : ℕ),
+  r < 2 ^ n →
+    ∑ j ∈ Finset.range n, (q * 2 ^ n + r) / 2 ^ j + 2 * q + MathResearch.TruncatedProduct.s2 r = 2 * (q * 2 ^ n + r)
+'MathResearch.PerOrderLegendre.legendre' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderLegendre.phi_of_lt_two_pow : ∀ {n k ℓ : ℕ},
+  ℓ < k →
+    k - ℓ - 1 < 2 ^ n →
+      n + 2 * ℓ + ∑ j ∈ Finset.range n, (k - ℓ - 1) / 2 ^ j =
+        n + 2 * k - 2 - MathResearch.TruncatedProduct.s2 (k - ℓ - 1)
+'MathResearch.PerOrderLegendre.phi_of_lt_two_pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PerOrderLegendre.bits : ℕ → ℕ → ℕ → List ℕ
+'MathResearch.PerOrderLegendre.bits' depends on axioms: [propext, Quot.sound]
+MathResearch.PerOrderLegendre.length_bits : ∀ (n q r : ℕ),
+  (MathResearch.PerOrderLegendre.bits n q r).length = 2 * q + MathResearch.TruncatedProduct.s2 r
+'MathResearch.PerOrderLegendre.length_bits' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderLegendre.sum_bits : ∀ {n : ℕ},
+  1 ≤ n → ∀ (q r : ℕ), (List.map (fun x => 2 ^ x) (MathResearch.PerOrderLegendre.bits n q r)).sum = q * 2 ^ n + r
+'MathResearch.PerOrderLegendre.sum_bits' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderLegendre.lt_of_mem_bits : ∀ {n q r : ℕ},
+  1 ≤ n → r < 2 ^ n → ∀ {x : ℕ}, x ∈ MathResearch.PerOrderLegendre.bits n q r → x < n
+'MathResearch.PerOrderLegendre.lt_of_mem_bits' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 6 audited declarations.

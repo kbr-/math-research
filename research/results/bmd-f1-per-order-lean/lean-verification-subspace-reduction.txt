@@ -1,0 +1,59 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PerOrderSubspaceReduction
+Claim file: claims/PerOrderSubspaceReduction.lean
+Claim: lem:grid-reduction-coefficients
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-value-all-dimensions
+Scope: Let D be an integral domain, V ⊆ D a finite nonempty set, L_V = ∏_{v∈V} (Y − v) and
+ρ_N = Y^N mod L_V. If an expression Σ_i c_i ∏_a v_a^{d_{i,a}} (finitely many i, variables a < h)
+vanishes for every v ∈ V^h, then for all exponents e_a < |V|,
+Σ_i c_i ∏_a [Y^{e_a}] ρ_{d_{i,a}} = 0. Also: ρ_N(v) = v^N on V, deg ρ_N < |V|, deg ρ_N ≤ N, and
+ρ_N = Y^N for N < |V|. This is the reduction modulo the subspace polynomial (steps 4–5 of the per-order
+lower bound, where V is the F_2-span of y_1, …, y_n), stated for an arbitrary finite set.
+Declarations: MathResearch.PerOrderSubspaceReduction.Lpoly MathResearch.PerOrderSubspaceReduction.rho MathResearch.PerOrderSubspaceReduction.eval_rho MathResearch.PerOrderSubspaceReduction.natDegree_rho_lt MathResearch.PerOrderSubspaceReduction.rho_of_lt MathResearch.PerOrderSubspaceReduction.natDegree_rho_le MathResearch.PerOrderSubspaceReduction.coeff_prod_aeval_X MathResearch.PerOrderSubspaceReduction.coeff_reduction
+$ lake --wfail build claims.PerOrderSubspaceReduction
+Build completed successfully (1621 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpx142jofu.lean
+@MathResearch.PerOrderSubspaceReduction.Lpoly : {D : Type u_1} → [inst : CommRing D] → Finset D → Polynomial D
+'MathResearch.PerOrderSubspaceReduction.Lpoly' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderSubspaceReduction.rho : {D : Type u_1} → [inst : CommRing D] → Finset D → ℕ → Polynomial D
+'MathResearch.PerOrderSubspaceReduction.rho' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderSubspaceReduction.eval_rho : ∀ {D : Type u_1} [inst : CommRing D] (V : Finset D) (N : ℕ) {v : D},
+  v ∈ V → Polynomial.eval v (MathResearch.PerOrderSubspaceReduction.rho V N) = v ^ N
+'MathResearch.PerOrderSubspaceReduction.eval_rho' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderSubspaceReduction.natDegree_rho_lt : ∀ {D : Type u_1} [inst : CommRing D] [IsDomain D]
+  {V : Finset D}, V.Nonempty → ∀ (N : ℕ), (MathResearch.PerOrderSubspaceReduction.rho V N).natDegree < V.card
+'MathResearch.PerOrderSubspaceReduction.natDegree_rho_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderSubspaceReduction.rho_of_lt : ∀ {D : Type u_1} [inst : CommRing D] [IsDomain D] {V : Finset D}
+  {N : ℕ}, N < V.card → MathResearch.PerOrderSubspaceReduction.rho V N = Polynomial.X ^ N
+'MathResearch.PerOrderSubspaceReduction.rho_of_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderSubspaceReduction.natDegree_rho_le : ∀ {D : Type u_1} [inst : CommRing D] [IsDomain D]
+  {V : Finset D}, V.Nonempty → ∀ (N : ℕ), (MathResearch.PerOrderSubspaceReduction.rho V N).natDegree ≤ N
+'MathResearch.PerOrderSubspaceReduction.natDegree_rho_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderSubspaceReduction.coeff_prod_aeval_X : ∀ {D : Type u_1} [inst : CommRing D] {h : ℕ} (N : ℕ)
+  (p : Fin h → Polynomial D),
+  (∀ (a : Fin h), (p a).natDegree < N) →
+    ∀ (e : Fin h → ℕ),
+      (∀ (a : Fin h), e a < N) →
+        (∏ a, (Polynomial.aeval (MvPolynomial.X a)) (p a)).coeff (Finsupp.equivFunOnFinite.symm e) =
+          ∏ a, (p a).coeff (e a)
+'MathResearch.PerOrderSubspaceReduction.coeff_prod_aeval_X' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderSubspaceReduction.coeff_reduction : ∀ {D : Type u_1} [inst : CommRing D] [IsDomain D]
+  {V : Finset D},
+  V.Nonempty →
+    ∀ {h : ℕ} {ι : Type u_2} [inst_2 : Fintype ι] (c : ι → D) (d : ι → Fin h → ℕ),
+      (∀ (v : Fin h → D), (∀ (a : Fin h), v a ∈ V) → ∑ i, c i * ∏ a, v a ^ d i a = 0) →
+        ∀ (e : Fin h → ℕ),
+          (∀ (a : Fin h), e a < V.card) →
+            ∑ i, c i * ∏ a, (MathResearch.PerOrderSubspaceReduction.rho V (d i a)).coeff (e a) = 0
+'MathResearch.PerOrderSubspaceReduction.coeff_reduction' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 8 audited declarations.

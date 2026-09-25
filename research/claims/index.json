@@ -189072,16 +189072,25 @@
       "record": "[Per-order formula through k = 16](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-25-base-dimension)",
       "mathematical_status": "working_proof",
       "formalization": {
-        "status": "not_started",
-        "scope": "Informal proof or computation; no Lean verification.",
+        "status": "partial",
+        "scope": "Lean covers part (a) in the direction used by the per-order lower bound: existence of an expansion sum_eps x^eps A_eps(y) and |eps| + 2|e| <= deg P for every present y^e in A_eps (MathResearch.PerOrderExpansion). Uniqueness and parts (b), (c) are not formalized.",
         "references": [
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-origin-jet-parametrization",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-base-reduction",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-formula-through-16",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-multiplicity-per-order-conjecture",
-          "results/bmd-r1-base-dimension/summary.txt"
+          "../formalization/claims/PerOrderExpansion.lean"
         ],
-        "artifacts": []
+        "artifacts": [
+          {
+            "scope": "Part (a): existence and the degree lower bound.",
+            "status": "partial",
+            "references": [
+              "../formalization/claims/PerOrderExpansion.lean"
+            ],
+            "declarations": [
+              "MathResearch.PerOrderExpansion.exists_expansion",
+              "MathResearch.PerOrderExpansion.weight_le_totalDegree"
+            ],
+            "verification": "results/bmd-f1-per-order-lean/lean-verification-expansion.txt"
+          }
+        ]
       },
       "topics": [
         "degree-accounting"
@@ -189103,9 +189112,9 @@
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "f186ef77290c2d211f125b6024eed78632ea5b92",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Status checked against the entry and its verification gate.",
           "next_action": null,
           "claim_sha256": "952b8f728ca7cf0479a8b33a2b3e192aa8479d54450d4e4fced0af4d5f598bc7",
@@ -189136,13 +189145,13 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "f186ef77290c2d211f125b6024eed78632ea5b92",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "No Lean artifact.",
           "next_action": null,
           "claim_sha256": "952b8f728ca7cf0479a8b33a2b3e192aa8479d54450d4e4fced0af4d5f598bc7",
-          "value_sha256": "14d355b5f438ed8a4290f1ba7717d56ce04b89d2ca62408add849b0c87bb5c3c",
+          "value_sha256": "da9a20fd9c9caa176f04838445e02dd165c9ff98d9db0a7d7ad46c8301693fdd",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#binary-origin-jet-parametrization",
@@ -189169,9 +189178,9 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "f186ef77290c2d211f125b6024eed78632ea5b92",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Topics checked against the entry.",
           "next_action": null,
           "claim_sha256": "952b8f728ca7cf0479a8b33a2b3e192aa8479d54450d4e4fced0af4d5f598bc7",
@@ -189202,9 +189211,9 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "f186ef77290c2d211f125b6024eed78632ea5b92",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Significance assessed at this checkpoint.",
           "next_action": null,
           "claim_sha256": "952b8f728ca7cf0479a8b33a2b3e192aa8479d54450d4e4fced0af4d5f598bc7",
@@ -189235,9 +189244,9 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "f186ef77290c2d211f125b6024eed78632ea5b92",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "New claim; relationships recorded. All-dimension formula entry (25 September 2026): new relationship with check:per-order-all-dimension-values. Hyperplane dichotomy entry (25 September 2026): new relationship with lem:hyperplane-restriction-dichotomy. Additive-roots entry (25 September 2026): new relationship with lem:y-coefficient-degree-formula, thm:per-order-value-small-multiplicity. Subspace-reduction entry (25 September 2026): new relationship with thm:per-order-value-all-dimensions. q-ary scoping entry (25 September 2026): new relationship with check:q-ary-per-order-values. Square all-orders entry (25 September 2026): new relationship with thm:cube-square-per-order-any-field.",
           "next_action": null,
           "claim_sha256": "952b8f728ca7cf0479a8b33a2b3e192aa8479d54450d4e4fced0af4d5f598bc7",
@@ -190268,15 +190277,25 @@
       "record": "[All-dimension per-order formula](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-25-all-dimension-formula)",
       "mathematical_status": "working_proof",
       "formalization": {
-        "status": "not_started",
-        "scope": "Informal proof or computation; no Lean verification.",
+        "status": "partial",
+        "scope": "Lean covers the Legendre form (MathResearch.PerOrderLegendre.legendre) and part (i) (phi_of_lt_two_pow); part (ii), the minimum over l, is not formalized.",
         "references": [
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-all-dimension-conjecture",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-all-dimension-minimum",
-          "results/bmd-r2-certificate-rows/halving-check.txt",
-          "results/bmd-r2-certificate-rows/phi-vs-complete.txt"
+          "../formalization/claims/PerOrderLegendre.lean"
         ],
-        "artifacts": []
+        "artifacts": [
+          {
+            "scope": "Legendre form and part (i) only.",
+            "status": "partial",
+            "references": [
+              "../formalization/claims/PerOrderLegendre.lean"
+            ],
+            "declarations": [
+              "MathResearch.PerOrderLegendre.legendre",
+              "MathResearch.PerOrderLegendre.phi_of_lt_two_pow"
+            ],
+            "verification": "results/bmd-f1-per-order-lean/lean-verification-legendre.txt"
+          }
+        ]
       },
       "topics": [
         "degree-accounting"
@@ -190297,9 +190316,9 @@
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "2f40d5c9bab46efa3c2ce3bae26031f445fb5c93",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Status checked against the entry and its verification gate.",
           "next_action": null,
           "claim_sha256": "bed0b7083313579d0d81d030806a5226dd2aae85a94f9ac5e503e4ad730072a6",
@@ -190326,13 +190345,13 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "2f40d5c9bab46efa3c2ce3bae26031f445fb5c93",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "No Lean artifact.",
           "next_action": null,
           "claim_sha256": "bed0b7083313579d0d81d030806a5226dd2aae85a94f9ac5e503e4ad730072a6",
-          "value_sha256": "9ecf6751ce168866b3d63f7be8e2f6821e428ca681e6035fbd282c942aab9fc7",
+          "value_sha256": "c75b04b9cba128c4f22ec9dbe4ff0e14c27f28100ac4fabe6cfb6e7825e26469",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-all-dimension-conjecture",
@@ -190355,9 +190374,9 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "2f40d5c9bab46efa3c2ce3bae26031f445fb5c93",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Topics checked against the entry.",
           "next_action": null,
           "claim_sha256": "bed0b7083313579d0d81d030806a5226dd2aae85a94f9ac5e503e4ad730072a6",
@@ -190384,9 +190403,9 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "2f40d5c9bab46efa3c2ce3bae26031f445fb5c93",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Significance assessed at this checkpoint.",
           "next_action": null,
           "claim_sha256": "bed0b7083313579d0d81d030806a5226dd2aae85a94f9ac5e503e4ad730072a6",
@@ -190413,9 +190432,9 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "2f40d5c9bab46efa3c2ce3bae26031f445fb5c93",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "New claim; relationships recorded. All-dimension upper bound entry (25 September 2026): new relationship with thm:per-order-all-dimension-upper-bound. Subspace-reduction entry (25 September 2026): new relationship with thm:per-order-value-all-dimensions.",
           "next_action": null,
           "claim_sha256": "bed0b7083313579d0d81d030806a5226dd2aae85a94f9ac5e503e4ad730072a6",
@@ -190630,12 +190649,25 @@
       "record": "[All-dimension upper bound](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-25-all-dimension-upper-bound)",
       "mathematical_status": "working_proof",
       "formalization": {
-        "status": "not_started",
-        "scope": "Informal proof or computation; no Lean verification.",
+        "status": "complete",
+        "scope": "Complete Lean proof (MathResearch.PerOrderUpperBound.construction_spec) for all n >= 1 and l < k: the explicit polynomial y_1^l F^(2q) g_(r+1) has multiplicity >= k off the origin, origin order exactly l and total degree <= Phi; hence per_order_upper_bound.",
         "references": [
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-all-dimension-upper-bound"
+          "../formalization/claims/PerOrderUpperBound.lean"
         ],
-        "artifacts": []
+        "artifacts": [
+          {
+            "scope": "Complete Lean proof for all n >= 1 and l < k.",
+            "status": "complete",
+            "references": [
+              "../formalization/claims/PerOrderUpperBound.lean"
+            ],
+            "declarations": [
+              "MathResearch.PerOrderUpperBound.construction_spec",
+              "MathResearch.PerOrderUpperBound.per_order_upper_bound"
+            ],
+            "verification": "results/bmd-f1-per-order-lean/lean-verification-upper-bound.txt"
+          }
+        ]
       },
       "topics": [
         "degree-accounting"
@@ -190653,9 +190685,9 @@
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "2f40d5c9bab46efa3c2ce3bae26031f445fb5c93",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Status checked against the entry and its verification gate.",
           "next_action": null,
           "claim_sha256": "53f1c5fee8b92f3ab8ca5f9e06a3aa5a6f2ed3f729eb6eff12342e47f576e186",
@@ -190669,13 +190701,13 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "2f40d5c9bab46efa3c2ce3bae26031f445fb5c93",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "No Lean artifact.",
           "next_action": null,
           "claim_sha256": "53f1c5fee8b92f3ab8ca5f9e06a3aa5a6f2ed3f729eb6eff12342e47f576e186",
-          "value_sha256": "2a8982a7b82a3d2deb7a88bed6f3cd4a8801b309ce3265e63261866129c0c2a9",
+          "value_sha256": "352eeecc5985146c2ac9eff2d659349bdde3bc3fe80d968cacf444a14967db21",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-all-dimension-upper-bound",
@@ -190685,9 +190717,9 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "2f40d5c9bab46efa3c2ce3bae26031f445fb5c93",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Topics checked against the entry.",
           "next_action": null,
           "claim_sha256": "53f1c5fee8b92f3ab8ca5f9e06a3aa5a6f2ed3f729eb6eff12342e47f576e186",
@@ -190701,9 +190733,9 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "2f40d5c9bab46efa3c2ce3bae26031f445fb5c93",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Significance assessed at this checkpoint.",
           "next_action": null,
           "claim_sha256": "53f1c5fee8b92f3ab8ca5f9e06a3aa5a6f2ed3f729eb6eff12342e47f576e186",
@@ -190717,9 +190749,9 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "2f40d5c9bab46efa3c2ce3bae26031f445fb5c93",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "New claim; relationships recorded. Hyperplane dichotomy entry (25 September 2026): new relationship with thm:order-zero-value-small-dimensions. Additive-roots entry (25 September 2026): new relationship with cor:per-order-all-dimensions-small-n. Subspace-reduction entry (25 September 2026): new relationship with thm:per-order-value-all-dimensions.",
           "next_action": null,
           "claim_sha256": "53f1c5fee8b92f3ab8ca5f9e06a3aa5a6f2ed3f729eb6eff12342e47f576e186",
@@ -191081,9 +191113,9 @@
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "18a35109b8da147b23d0b9a40a36dd6423c2658e",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Status checked against the entry and its verification gate.",
           "next_action": null,
           "claim_sha256": "bc9d8c32570e480acb8fc8674ee5d1782e0389dea83e6a7455592958807fc40e",
@@ -191117,9 +191149,9 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "18a35109b8da147b23d0b9a40a36dd6423c2658e",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "No Lean artifact.",
           "next_action": null,
           "claim_sha256": "bc9d8c32570e480acb8fc8674ee5d1782e0389dea83e6a7455592958807fc40e",
@@ -191153,9 +191185,9 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "18a35109b8da147b23d0b9a40a36dd6423c2658e",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Topics checked against the entry.",
           "next_action": null,
           "claim_sha256": "bc9d8c32570e480acb8fc8674ee5d1782e0389dea83e6a7455592958807fc40e",
@@ -191189,9 +191221,9 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "18a35109b8da147b23d0b9a40a36dd6423c2658e",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Significance assessed at this checkpoint.",
           "next_action": null,
           "claim_sha256": "bc9d8c32570e480acb8fc8674ee5d1782e0389dea83e6a7455592958807fc40e",
@@ -191225,13 +191257,13 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "18a35109b8da147b23d0b9a40a36dd6423c2658e",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
-          "note": "New claim; relationships recorded. Subspace-reduction entry (25 September 2026): new relationship with thm:per-order-value-all-dimensions. q-ary proof entry (25 September 2026): new relationship with lem:q-ary-coefficient-formula.",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "New claim; relationships recorded. Subspace-reduction entry (25 September 2026): new relationship with thm:per-order-value-all-dimensions. q-ary proof entry (25 September 2026): new relationship with lem:q-ary-coefficient-formula. Lean per-order value entry (25 September 2026): new relationship with lem:admissible-expansion-congruence.",
           "next_action": null,
           "claim_sha256": "bc9d8c32570e480acb8fc8674ee5d1782e0389dea83e6a7455592958807fc40e",
-          "value_sha256": "4ac2f4d4c5c178aeb69c88905be97d57cf7116b610e937b64c20d45304c0205b",
+          "value_sha256": "8070abaa21f44701af59a16d25123d32cd680a63b1dbfd3e710c4811ea4d59da",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#y-coefficient-degree-formula",
@@ -191708,13 +191740,27 @@
       "record": "[Per-order minimum in every dimension](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-25-subspace-reduction)",
       "mathematical_status": "working_proof",
       "formalization": {
-        "status": "not_started",
-        "scope": "Informal proof or computation; no Lean verification.",
+        "status": "complete",
+        "scope": "Complete Lean proof (MathResearch.PerOrderValue.per_order_value) for all n >= 1 and l < k: an admissible P with origin order exactly l and total degree exactly Phi exists, and every such P has total degree >= Phi; all dependencies verified.",
         "references": [
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-value-all-dimensions",
-          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#all-dimension-consequences"
+          "../formalization/claims/PerOrderValue.lean",
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-25-lean-per-order-value"
         ],
-        "artifacts": []
+        "artifacts": [
+          {
+            "scope": "Complete Lean proof for all n >= 1 and l < k.",
+            "status": "complete",
+            "references": [
+              "../formalization/claims/PerOrderValue.lean",
+              "../formalization/claims/PerOrderLowerBound.lean"
+            ],
+            "declarations": [
+              "MathResearch.PerOrderValue.per_order_value",
+              "MathResearch.PerOrderLowerBound.lower_bound"
+            ],
+            "verification": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt"
+          }
+        ]
       },
       "topics": [
         "degree-accounting"
@@ -191733,9 +191779,9 @@
       "reviews": {
         "mathematical_status": {
           "state": "reviewed",
-          "revision": "5d781ef9527018b755acf1906744fd0a518f8ecd",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Status checked against the entry and its verification gate.",
           "next_action": null,
           "claim_sha256": "4245a015d46b4ff761b92e95905b77f53c221196d14021bd56224094fee17c9e",
@@ -191754,13 +191800,13 @@
         },
         "formalization": {
           "state": "reviewed",
-          "revision": "5d781ef9527018b755acf1906744fd0a518f8ecd",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "No Lean artifact.",
           "next_action": null,
           "claim_sha256": "4245a015d46b4ff761b92e95905b77f53c221196d14021bd56224094fee17c9e",
-          "value_sha256": "ff048db803c97f9e7e0047fe66cfc1a96db3c2c9ab06619f79b84ae1a68b21e3",
+          "value_sha256": "53567fa7ada963569710fecbb0adf633bfdd13afdea26b48cdf662cbbd5cedec",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-value-all-dimensions",
@@ -191775,9 +191821,9 @@
         },
         "topics": {
           "state": "reviewed",
-          "revision": "5d781ef9527018b755acf1906744fd0a518f8ecd",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Topics checked against the entry.",
           "next_action": null,
           "claim_sha256": "4245a015d46b4ff761b92e95905b77f53c221196d14021bd56224094fee17c9e",
@@ -191796,9 +191842,9 @@
         },
         "significance": {
           "state": "reviewed",
-          "revision": "5d781ef9527018b755acf1906744fd0a518f8ecd",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
           "note": "Significance assessed at this checkpoint.",
           "next_action": null,
           "claim_sha256": "4245a015d46b4ff761b92e95905b77f53c221196d14021bd56224094fee17c9e",
@@ -191817,13 +191863,13 @@
         },
         "relationships": {
           "state": "reviewed",
-          "revision": "5d781ef9527018b755acf1906744fd0a518f8ecd",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
           "date": "2026-09-25",
-          "reviewer": "Claude Code (Opus 5.5) with a fresh-context referee subagent",
-          "note": "New claim; relationships recorded. q-ary scoping entry (25 September 2026): new relationship with conj:q-ary-per-order-formula. q-ary proof entry (25 September 2026): new relationship with thm:q-ary-per-order-value. Odd-characteristic cube entry (25 September 2026): new relationship with conj:cube-square-per-order-any-field, ex:odd-cube-exchange-law-failure. Counting principle entry (25 September 2026): new relationship with cor:root-curve-lower-bounds.",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "New claim; relationships recorded. q-ary scoping entry (25 September 2026): new relationship with conj:q-ary-per-order-formula. q-ary proof entry (25 September 2026): new relationship with thm:q-ary-per-order-value. Odd-characteristic cube entry (25 September 2026): new relationship with conj:cube-square-per-order-any-field, ex:odd-cube-exchange-law-failure. Counting principle entry (25 September 2026): new relationship with cor:root-curve-lower-bounds. Lean per-order value entry (25 September 2026): new relationship with lem:admissible-expansion-congruence, lem:grid-reduction-coefficients, lem:per-order-repeated-argument-forms.",
           "next_action": null,
           "claim_sha256": "4245a015d46b4ff761b92e95905b77f53c221196d14021bd56224094fee17c9e",
-          "value_sha256": "6d07430e0bdd65d7a2b56b2daa25ce9f06f5e634cdb94d655ef13a175e40a4a8",
+          "value_sha256": "2cfcf9efbaf75917ce3dda626aa8c46a6a7c6128d6518127c0b26268c16656f3",
           "evidence": [
             {
               "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-value-all-dimensions",
@@ -203458,6 +203504,754 @@
             {
               "target": "results/bmd-r42-double-point-scheme/alpha-d3-m13-plain-N10.txt",
               "sha256": "a4aba4c112f6787b41c9f24dcca19c49e1e815e14b6e493a475b29e47bf47598"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lem:admissible-expansion-congruence",
+      "summary": "Over F_2 in n variables, if P has multiplicity >= k at every nonzero point and P = sum_eps x^eps A_eps(y) (y_i = x_i^2 + x_i), then with xhat(Y) = sum_{s<K} Y^(2^s), 2^K >= k, and w = P(xhat(y)): A_eps = w prod_{i not in eps} (1 + xhat(y_i)) modulo order >= k at the origin.",
+      "assessment": "Working proof, verified in Lean: substitution x -> xhat(y) + delta and inversion of the 2x2 system per variable; a variant of lem:y-coefficient-degree-formula for P itself.",
+      "record": "[Lean: the per-order value in every dimension](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-25-lean-per-order-value)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "complete",
+        "scope": "Complete Lean proof (MathResearch.PerOrderYCoefficient.expansion_congr, coeff_expansion) for every finite variable type and every k, K with k <= 2^K.",
+        "references": [
+          "../formalization/claims/PerOrderYCoefficient.lean"
+        ],
+        "artifacts": [
+          {
+            "scope": "Complete Lean proof for every finite variable type and every k <= 2^K.",
+            "status": "complete",
+            "references": [
+              "../formalization/claims/PerOrderYCoefficient.lean"
+            ],
+            "declarations": [
+              "MathResearch.PerOrderYCoefficient.expansion_congr",
+              "MathResearch.PerOrderYCoefficient.coeff_expansion"
+            ],
+            "verification": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt"
+          }
+        ]
+      },
+      "topics": [
+        "degree-accounting"
+      ],
+      "significance": {
+        "category": "route_specific",
+        "rationale": "Gives the per-order conditions (C_t) without the jet polynomial.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+          "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+          "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+          "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+          "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt"
+        ],
+        "next_action": null
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "Status checked against the entry and its verification gate.",
+          "next_action": null,
+          "claim_sha256": "5221cd64271ae98e27fe65bf2cbcf6f4538b70c4f445769ed0e89dd3f970934c",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "Lean artifacts checked against their verification reports.",
+          "next_action": null,
+          "claim_sha256": "5221cd64271ae98e27fe65bf2cbcf6f4538b70c4f445769ed0e89dd3f970934c",
+          "value_sha256": "5819a42d3e39cc0075fa1b9da2c29cf4bf1ee2ca73dc326d52c305c7bf515a11",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "Topics checked against the entry.",
+          "next_action": null,
+          "claim_sha256": "5221cd64271ae98e27fe65bf2cbcf6f4538b70c4f445769ed0e89dd3f970934c",
+          "value_sha256": "c77a2b25ecfcfe121fba78df653f060d42a3c2d21a5921fe71b12ec7e76a788f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "Significance assessed at this checkpoint.",
+          "next_action": null,
+          "claim_sha256": "5221cd64271ae98e27fe65bf2cbcf6f4538b70c4f445769ed0e89dd3f970934c",
+          "value_sha256": "4a070dc83f4e913fe6cf82705853f01633599eac33615969e6a95879b7ef615d",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "New claim; relationships recorded.",
+          "next_action": null,
+          "claim_sha256": "5221cd64271ae98e27fe65bf2cbcf6f4538b70c4f445769ed0e89dd3f970934c",
+          "value_sha256": "e12a51b5962d6402ae109854172978574554d4b1cac982303ace67f45e8578f5",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lem:per-order-repeated-argument-forms",
+      "summary": "Over F_2[y], the forms E^(t)_j(u) = sum_tau prod_a u_a^(2^tau_a) w_{k-1-t-sum 2^tau_a} (tau_a < k) are symmetric and multi-additive on sums of generators, satisfy E^(t)_{j+2}(Y,Y,Z) = E^(t)_{j+1}(Y,Z) + Y E^(t+1)_j(Z) for k >= 1, and at generator tuples equal the degree-(k-1-t) component of w prod_a xhat(y_{i_a}).",
+      "assessment": "Working proof, verified in Lean: step 2 of the per-order lower bound, with the recursion by diagonal extraction of a symmetric double sum in characteristic 2.",
+      "record": "[Lean: the per-order value in every dimension](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-25-lean-per-order-value)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "complete",
+        "scope": "Complete Lean proof for every finite variable type, every w, k, t, j (the recursion for k >= 1).",
+        "references": [
+          "../formalization/claims/PerOrderForms.lean"
+        ],
+        "artifacts": [
+          {
+            "scope": "Complete Lean proof for every finite variable type and all parameters.",
+            "status": "complete",
+            "references": [
+              "../formalization/claims/PerOrderForms.lean"
+            ],
+            "declarations": [
+              "MathResearch.PerOrderForms.E_perm",
+              "MathResearch.PerOrderForms.E_rec",
+              "MathResearch.PerOrderForms.E_eval",
+              "MathResearch.PerOrderForms.E_span"
+            ],
+            "verification": "results/bmd-f1-per-order-lean/lean-verification-forms.txt"
+          }
+        ]
+      },
+      "topics": [
+        "degree-accounting"
+      ],
+      "significance": {
+        "category": "route_specific",
+        "rationale": "The recursion that propagates the conditions (C_t) to repeated arguments.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+          "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+          "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+          "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+          "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt"
+        ],
+        "next_action": null
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "Status checked against the entry and its verification gate.",
+          "next_action": null,
+          "claim_sha256": "08413675da9752e6fbe6c15a16a90b1e69d5d3b01109f2fbb0cef0009a825349",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "Lean artifacts checked against their verification reports.",
+          "next_action": null,
+          "claim_sha256": "08413675da9752e6fbe6c15a16a90b1e69d5d3b01109f2fbb0cef0009a825349",
+          "value_sha256": "5850fd50af4d5930b2518c84b5f175d3c3597bb65d689288718662f45027eca7",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "Topics checked against the entry.",
+          "next_action": null,
+          "claim_sha256": "08413675da9752e6fbe6c15a16a90b1e69d5d3b01109f2fbb0cef0009a825349",
+          "value_sha256": "c77a2b25ecfcfe121fba78df653f060d42a3c2d21a5921fe71b12ec7e76a788f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "Significance assessed at this checkpoint.",
+          "next_action": null,
+          "claim_sha256": "08413675da9752e6fbe6c15a16a90b1e69d5d3b01109f2fbb0cef0009a825349",
+          "value_sha256": "d057160ac1f542f616e32f8aec10e4f796fc3c644aa858df0ca8ab0019da6703",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "New claim; relationships recorded.",
+          "next_action": null,
+          "claim_sha256": "08413675da9752e6fbe6c15a16a90b1e69d5d3b01109f2fbb0cef0009a825349",
+          "value_sha256": "9b3f289c3256c055edac44fe164fecd56fadb8ccb0a9a7e511d6771603e2f29f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "lem:grid-reduction-coefficients",
+      "summary": "For an integral domain D, a finite nonempty V in D, L_V = prod_{v in V}(Y - v) and rho_N = Y^N mod L_V: if sum_i c_i prod_a v_a^{d_{i,a}} vanishes on V^h, then sum_i c_i prod_a [Y^{e_a}] rho_{d_{i,a}} = 0 for all e_a < |V|.",
+      "assessment": "Working proof, verified in Lean: the reduced polynomial has degree < |V| in each variable and vanishes on V^h, so it is zero by the combinatorial Nullstellensatz; steps 4-5 of the per-order lower bound for an arbitrary finite set.",
+      "record": "[Lean: the per-order value in every dimension](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-25-lean-per-order-value)",
+      "mathematical_status": "working_proof",
+      "formalization": {
+        "status": "complete",
+        "scope": "Complete Lean proof for every integral domain, finite nonempty V, h and finite index family.",
+        "references": [
+          "../formalization/claims/PerOrderSubspaceReduction.lean"
+        ],
+        "artifacts": [
+          {
+            "scope": "Complete Lean proof in full generality.",
+            "status": "complete",
+            "references": [
+              "../formalization/claims/PerOrderSubspaceReduction.lean"
+            ],
+            "declarations": [
+              "MathResearch.PerOrderSubspaceReduction.coeff_reduction"
+            ],
+            "verification": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt"
+          }
+        ]
+      },
+      "topics": [
+        "degree-accounting"
+      ],
+      "significance": {
+        "category": "route_specific",
+        "rationale": "Reusable coefficient extraction from vanishing on a finite grid.",
+        "novelty": "not_claimed",
+        "publication_status": "not_applicable",
+        "references": [
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+          "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+          "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+          "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+          "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+          "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt"
+        ],
+        "next_action": null
+      },
+      "reviews": {
+        "mathematical_status": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "Status checked against the entry and its verification gate.",
+          "next_action": null,
+          "claim_sha256": "8d9a6667b4223a290b62029b50ee5d80e6220eee1911c1c38fbf2c5d02df72a2",
+          "value_sha256": "758341548df3c608ddb89413e84e3bc8a6fa42d9577d3737bd5ec501464f7285",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        },
+        "formalization": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "Lean artifacts checked against their verification reports.",
+          "next_action": null,
+          "claim_sha256": "8d9a6667b4223a290b62029b50ee5d80e6220eee1911c1c38fbf2c5d02df72a2",
+          "value_sha256": "fd91bab99591808b8c3295ec74f952cfd26bada83495dc3f2c8a2fdb5590e86e",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        },
+        "topics": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "Topics checked against the entry.",
+          "next_action": null,
+          "claim_sha256": "8d9a6667b4223a290b62029b50ee5d80e6220eee1911c1c38fbf2c5d02df72a2",
+          "value_sha256": "c77a2b25ecfcfe121fba78df653f060d42a3c2d21a5921fe71b12ec7e76a788f",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        },
+        "significance": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "Significance assessed at this checkpoint.",
+          "next_action": null,
+          "claim_sha256": "8d9a6667b4223a290b62029b50ee5d80e6220eee1911c1c38fbf2c5d02df72a2",
+          "value_sha256": "f2117048c23029603e75b5460de483f8ffa292e7049cf3cb7d7d2a580fe90697",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
+            }
+          ]
+        },
+        "relationships": {
+          "state": "reviewed",
+          "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+          "date": "2026-09-25",
+          "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+          "note": "New claim; relationships recorded.",
+          "next_action": null,
+          "claim_sha256": "8d9a6667b4223a290b62029b50ee5d80e6220eee1911c1c38fbf2c5d02df72a2",
+          "value_sha256": "eef2208d23dfd97cf9b3ca7b28dc0eda0eba45ab69aae38103e2f11500ec1b65",
+          "evidence": [
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+              "sha256": "861fd62a399718e12dca1cadae1b30252a173ea760bb9db1f3fde95bfd575125"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+              "sha256": "865d4d55fe9f65bff4899f2d0f7cb7d852f99e3cc8e4e88529241dbdeadd4c52"
+            },
+            {
+              "target": "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+              "sha256": "fa67ccbf98845bb2d5a9a0b596c12793988df64b780eb147a242571ff12c2678"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+              "sha256": "c0035f75d4be4bff2323c85fbf4b1258a633182d94177d48a3e8dec527334e2e"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+              "sha256": "800628fb23a2d0e084ee707ea4f1942db247daa6a91a38103b40b55a3e2d99a3"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+              "sha256": "9fa242199daa75fceb6b839e91074794e6e9c22e0f721264f17ad58f72c49a0f"
+            },
+            {
+              "target": "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt",
+              "sha256": "391f4c05fde8b4270bee1262bf599536bbd9a8e4470d1fa2185e9ede83206c0b"
             }
           ]
         }
@@ -318387,6 +319181,130 @@
         "date": "2026-09-25",
         "reviewer": "Claude Code (Opus 5.5); fresh-context review pending (referee stopped on an API limit)",
         "note": "Computed evidence."
+      }
+    },
+    {
+      "id": "lem:admissible-expansion-congruence::refines::lem:y-coefficient-degree-formula",
+      "type": "refines",
+      "source": {
+        "namespace": "current",
+        "id": "lem:admissible-expansion-congruence",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:y-coefficient-degree-formula",
+        "locator": null
+      },
+      "scope": "Stated for P itself rather than the jet polynomial.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+        "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+        "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+        "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+        "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+        "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+        "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+        "date": "2026-09-25",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+        "note": "Stated for P itself rather than the jet polynomial."
+      }
+    },
+    {
+      "id": "thm:per-order-value-all-dimensions::depends_on::lem:admissible-expansion-congruence",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "thm:per-order-value-all-dimensions",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:admissible-expansion-congruence",
+        "locator": null
+      },
+      "scope": "Formal route for (C_t).",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+        "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+        "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+        "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+        "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+        "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+        "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+        "date": "2026-09-25",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+        "note": "Formal route for (C_t)."
+      }
+    },
+    {
+      "id": "thm:per-order-value-all-dimensions::depends_on::lem:per-order-repeated-argument-forms",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "thm:per-order-value-all-dimensions",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:per-order-repeated-argument-forms",
+        "locator": null
+      },
+      "scope": "Step 2.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+        "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+        "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+        "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+        "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+        "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+        "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+        "date": "2026-09-25",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+        "note": "Step 2."
+      }
+    },
+    {
+      "id": "thm:per-order-value-all-dimensions::depends_on::lem:grid-reduction-coefficients",
+      "type": "depends_on",
+      "source": {
+        "namespace": "current",
+        "id": "thm:per-order-value-all-dimensions",
+        "locator": null
+      },
+      "target": {
+        "namespace": "current",
+        "id": "lem:grid-reduction-coefficients",
+        "locator": null
+      },
+      "scope": "Steps 4-5.",
+      "evidence": [
+        "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#admissible-expansion-congruence",
+        "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#grid-reduction-coefficients",
+        "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#lean-per-order-value-scope",
+        "results/bmd-f1-per-order-lean/lean-verification-per-order-value.txt",
+        "results/bmd-f1-per-order-lean/lean-verification-forms.txt",
+        "results/bmd-f1-per-order-lean/lean-verification-subspace-reduction.txt",
+        "results/bmd-f1-per-order-lean/lean-verification-ycoefficient.txt"
+      ],
+      "review_status": "reviewed",
+      "review": {
+        "revision": "6d3acf0deee43879cba2797123154aec95f9dd61",
+        "date": "2026-09-25",
+        "reviewer": "Claude Code (Opus 5.5) with a fresh-context statement reviewer",
+        "note": "Steps 4-5."
       }
     },
     {

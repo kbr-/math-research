@@ -1,0 +1,34 @@
+claims/PerOrderExpansion.lean:306:70: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  μ0.sum fun x e => e
+in the target expression
+  ε.card + 2 * Finsupp.degree e < ∑ i ∈ μ0.support, μ0 i
+
+σ : Type u_1
+inst✝¹ : Fintype σ
+inst✝ : DecidableEq σ
+P : P2
+A : Finset σ → P2
+hP : P = ∑ ε, xmon ε * (aeval yv) (A ε)
+ε✝ : Finset σ
+e✝ : σ →₀ ℕ
+he : (A ε✝).coeff e✝ ≠ 0
+S : Finset ((_ : Finset σ) × (σ →₀ ℕ)) := Finset.univ.sigma fun ε => (A ε).support
+W : (_ : Finset σ) × (σ →₀ ℕ) → ℕ := fun p => p.fst.card + 2 * Finsupp.degree p.snd
+hmem : ⟨ε✝, e✝⟩ ∈ S
+ε0 : Finset σ
+e0 : σ →₀ ℕ
+hp0 : ⟨ε0, e0⟩ ∈ S
+hmax : ∀ x' ∈ S, W x' ≤ W ⟨ε0, e0⟩
+μ0 : σ →₀ ℕ := indic ε0 + 2 • e0
+hμ0 : Finsupp.degree μ0 = W ⟨ε0, e0⟩
+hmono : ∀ (e : σ →₀ ℕ) (c : ZMod 2), (aeval yv) ((monomial e) c) = C c * yvpow e
+hexp : P = ∑ ε, ∑ e ∈ (A ε).support, C ((A ε).coeff e) * (xmon ε * yvpow e)
+ε : Finset σ
+e : σ →₀ ℕ
+hS : ⟨ε, e⟩ ∈ S
+ht1 : (xmon ε * yvpow e).totalDegree ≤ ε.card + 2 * Finsupp.degree e
+ht2 : (homogeneousComponent (ε.card + 2 * Finsupp.degree e)) (xmon ε * yvpow e) = (monomial (indic ε + 2 • e)) 1
+hW : W ⟨ε, e⟩ ≤ W ⟨ε0, e0⟩
+hd0 : (μ0.sum fun x e => e) = W ⟨ε0, e0⟩
+hlt : W ⟨ε, e⟩ < W ⟨ε0, e0⟩
+⊢ ε.card + 2 * Finsupp.degree e < ∑ i ∈ μ0.support, μ0 i

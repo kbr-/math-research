@@ -1,0 +1,70 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PerOrderForms
+Claim file: claims/PerOrderForms.lean
+Claim: lem:per-order-repeated-argument-forms
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-value-all-dimensions
+Scope: Over F_2[y] (any finite variable type), for w and k the forms
+E^(t)_j(u) = Σ_τ ∏_a u_a^(2^τ_a) · w_{k−1−t−Σ_a 2^τ_a} (τ_a < k, and w_d the degree-d component of w,
+zero when the index is negative): symmetry, expansion in the first argument, the repeated-argument
+recursion E^(t)_{j+2}(Y,Y,Z) = E^(t)_{j+1}(Y,Z) + Y E^(t+1)_j(Z) (for k ≥ 1), evaluation at generator
+tuples, for t < k, as the degree-(k−1−t) component of w ∏_a xhat_k(y_{i_a}) (xhat truncated at K = k),
+and multi-additivity on sums of generators. Step 2 of the per-order lower bound.
+Declarations: MathResearch.PerOrderForms.sum_sym_char_two MathResearch.PerOrderForms.hcw MathResearch.PerOrderForms.E MathResearch.PerOrderForms.E_big MathResearch.PerOrderForms.E_cons MathResearch.PerOrderForms.E_perm MathResearch.PerOrderForms.E_rec MathResearch.PerOrderForms.hc_mul_homogeneous MathResearch.PerOrderForms.E_eval MathResearch.PerOrderForms.E_span
+$ lake --wfail build claims.PerOrderForms
+Build completed successfully (1928 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmp7pzekysm.lean
+@MathResearch.PerOrderForms.sum_sym_char_two : ∀ {σ : Type u_1} {ι : Type u_2} [inst : Fintype ι] [DecidableEq ι]
+  (f : ι → ι → MvPolynomial σ (ZMod 2)), (∀ (a b : ι), f a b = f b a) → ∑ a, ∑ b, f a b = ∑ a, f a a
+'MathResearch.PerOrderForms.sum_sym_char_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderForms.hcw : {σ : Type u_1} → ℕ → MvPolynomial σ (ZMod 2) → ℕ → MvPolynomial σ (ZMod 2)
+'MathResearch.PerOrderForms.hcw' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderForms.E : {σ : Type u_1} →
+  ℕ → MvPolynomial σ (ZMod 2) → ℕ → (j : ℕ) → (Fin j → MvPolynomial σ (ZMod 2)) → MvPolynomial σ (ZMod 2)
+'MathResearch.PerOrderForms.E' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderForms.E_big : ∀ {σ : Type u_1} {k : ℕ} (w : MvPolynomial σ (ZMod 2)) {t : ℕ},
+  k ≤ t → ∀ (j : ℕ) (u : Fin j → MvPolynomial σ (ZMod 2)), MathResearch.PerOrderForms.E k w t j u = 0
+'MathResearch.PerOrderForms.E_big' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderForms.E_cons : ∀ {σ : Type u_1} (k : ℕ) (w : MvPolynomial σ (ZMod 2)) (t j : ℕ)
+  (y : MvPolynomial σ (ZMod 2)) (u : Fin j → MvPolynomial σ (ZMod 2)),
+  MathResearch.PerOrderForms.E k w t (j + 1) (Fin.cons y u) =
+    ∑ s, y ^ 2 ^ ↑s * MathResearch.PerOrderForms.E k w (t + 2 ^ ↑s) j u
+'MathResearch.PerOrderForms.E_cons' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderForms.E_perm : ∀ {σ : Type u_1} (k : ℕ) (w : MvPolynomial σ (ZMod 2)) (t j : ℕ)
+  (u : Fin j → MvPolynomial σ (ZMod 2)) (π : Equiv.Perm (Fin j)),
+  MathResearch.PerOrderForms.E k w t j (u ∘ ⇑π) = MathResearch.PerOrderForms.E k w t j u
+'MathResearch.PerOrderForms.E_perm' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderForms.E_rec : ∀ {σ : Type u_1} {k : ℕ},
+  1 ≤ k →
+    ∀ (w : MvPolynomial σ (ZMod 2)) (t j : ℕ) (y : MvPolynomial σ (ZMod 2)) (u : Fin j → MvPolynomial σ (ZMod 2)),
+      MathResearch.PerOrderForms.E k w t (j + 2) (Fin.cons y (Fin.cons y u)) =
+        MathResearch.PerOrderForms.E k w t (j + 1) (Fin.cons y u) + y * MathResearch.PerOrderForms.E k w (t + 1) j u
+'MathResearch.PerOrderForms.E_rec' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderForms.hc_mul_homogeneous : ∀ {σ : Type u_1} (w M : MvPolynomial σ (ZMod 2)) {S : ℕ},
+  M.IsHomogeneous S →
+    ∀ (d : ℕ),
+      (MvPolynomial.homogeneousComponent d) (w * M) =
+        if S ≤ d then (MvPolynomial.homogeneousComponent (d - S)) w * M else 0
+'MathResearch.PerOrderForms.hc_mul_homogeneous' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderForms.E_eval : ∀ {σ : Type u_1} {k t : ℕ},
+  t < k →
+    ∀ (w : MvPolynomial σ (ZMod 2)) (j : ℕ) (i : Fin j → σ),
+      (MathResearch.PerOrderForms.E k w t j fun a => MvPolynomial.X (i a)) =
+        (MvPolynomial.homogeneousComponent (k - 1 - t))
+          (w * ∏ a, MathResearch.PerOrderYCoefficient.xhat k (MvPolynomial.X (i a)))
+'MathResearch.PerOrderForms.E_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderForms.E_span : ∀ {σ : Type u_1} (k : ℕ) (w : MvPolynomial σ (ZMod 2)) (t j : ℕ)
+  (A : Fin j → Finset σ),
+  (MathResearch.PerOrderForms.E k w t j fun a => ∑ i ∈ A a, MvPolynomial.X i) =
+    ∑ f ∈ Fintype.piFinset A, MathResearch.PerOrderForms.E k w t j fun a => MvPolynomial.X (f a)
+'MathResearch.PerOrderForms.E_span' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 10 audited declarations.

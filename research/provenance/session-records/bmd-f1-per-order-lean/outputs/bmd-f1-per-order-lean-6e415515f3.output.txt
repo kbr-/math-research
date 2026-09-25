@@ -1,0 +1,29 @@
+claims/PerOrderValue.lean:142:4: error: Tactic `apply` failed: could not unify the conclusion of `LE.le.trans
+  (add_le_add_right (totalDegree_mul ?m.1203 ?m.1204) ?m.1205)`
+  ?m.1205 + (?m.1203 * ?m.1204).totalDegree ≤ ?m.1210
+with the goal
+  ((X i1 ^ 2 + X i1) ^ ℓ * hypProd n ^ (2 * q)).totalDegree + (g (r + 1)).totalDegree ≤ Phi n k ℓ
+
+Note: The full type of `LE.le.trans (add_le_add_right (totalDegree_mul ?m.1203 ?m.1204) ?m.1205)` is
+  ?m.1205 + (totalDegree ?m.1203 + totalDegree ?m.1204) ≤ ?m.1210 → ?m.1205 + (?m.1203 * ?m.1204).totalDegree ≤ ?m.1210
+
+case refine_3
+n k ℓ : ℕ
+hn : 1 ≤ n
+hℓ : ℓ < k
+m : ℕ := ⋯
+hm : m = k - ℓ - 1
+q : ℕ := ⋯
+r : ℕ := ⋯
+hqr : q * 2 ^ n + r = m
+hr : r < 2 ^ n
+i1 : Fin n
+hy : ((X i1 ^ 2 + X i1) ^ ℓ).totalDegree ≤ 2 * ℓ
+hF : (hypProd n ^ (2 * q)).totalDegree ≤ 2 * q * (2 ^ n - 1)
+hg : (g (r + 1)).totalDegree ≤ n + 2 * r - s2 r
+hleg : ∑ j ∈ Finset.range n, m / 2 ^ j + 2 * q + s2 r = 2 * m
+hs : s2 r ≤ r
+h2n : 1 ≤ 2 ^ n
+hexp : 2 * q * (2 ^ n - 1) = 2 * (q * 2 ^ n) - 2 * q
+hq2 : 2 * q ≤ 2 * (q * 2 ^ n)
+⊢ ((X i1 ^ 2 + X i1) ^ ℓ * hypProd n ^ (2 * q)).totalDegree + (g (r + 1)).totalDegree ≤ Phi n k ℓ
