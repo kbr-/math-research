@@ -10,12 +10,14 @@
 //
 // Usage: bmd_cube_local_smith p n DMIN DMAX PREC y_2..y_n [C1]   (one line pair per d)
 // With C1, y_1 = C1 + s instead of s: C1 = y_2 studies the divisor y_1 = y_2.
+// Line mode (first argument "line"): y_i = c_i + b_i s for every i; see main.
 // Output: "A: e_1 ... e_N (sum S)" and "A': ... (sum S')"; an "insufficient precision" line if a
 // pivot is not found below PREC.
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
 #include <algorithm>
+#include <string>
 typedef long long ll;
 static ll P; static int PREC;
 static ll md(ll a) { a %= P; return a < 0 ? a + P : a; }
@@ -65,12 +67,21 @@ static std::vector<int> smith(std::vector<std::vector<ser>> A, bool& ok) {
 }
 
 int main(int argc, char** argv) {
-    if (argc < 6) { std::fprintf(stderr, "usage: p n DMIN DMAX PREC y_2..y_n\n"); return 2; }
+    // Line mode: bmd_cube_local_smith line p n DMIN DMAX PREC c_1 b_1 ... c_n b_n puts
+    // y_i = c_i + b_i s for every i, e.g. a line through a double point.
+    bool line = argc > 1 && std::string(argv[1]) == "line";
+    if (line) { ++argv; --argc; }
+    if (argc < 6) { std::fprintf(stderr, "usage: [line] p n DMIN DMAX PREC ...\n"); return 2; }
     P = std::atoll(argv[1]); int n = std::atoi(argv[2]), dmin = std::atoi(argv[3]), dmax = std::atoi(argv[4]); PREC = std::atoi(argv[5]);
-    if (argc != 6 + n - 1 && argc != 6 + n) { std::fprintf(stderr, "bad arguments\n"); return 2; }
-    ll c1 = argc == 6 + n ? md(std::atoll(argv[5 + n])) : 0;
-    std::vector<ll> y(n, 0);
-    for (int i = 1; i < n; ++i) y[i] = md(std::atoll(argv[6 + i - 1]));
+    std::vector<ll> cc(n, 0), bb(n, 0);
+    if (line) {
+        if (argc != 6 + 2 * n) { std::fprintf(stderr, "bad arguments\n"); return 2; }
+        for (int i = 0; i < n; ++i) { cc[i] = md(std::atoll(argv[6 + 2 * i])); bb[i] = md(std::atoll(argv[7 + 2 * i])); }
+    } else {
+        if (argc != 6 + n - 1 && argc != 6 + n) { std::fprintf(stderr, "bad arguments\n"); return 2; }
+        cc[0] = argc == 6 + n ? md(std::atoll(argv[5 + n])) : 0; bb[0] = 1;
+        for (int i = 1; i < n; ++i) cc[i] = md(std::atoll(argv[6 + i - 1]));
+    }
     for (int d = dmin; d <= dmax; ++d) {
     std::vector<std::pair<int, unsigned>> basis;
     for (int Q = 0; 2 * Q <= d; ++Q)
@@ -83,13 +94,14 @@ int main(int argc, char** argv) {
     std::vector<std::vector<ser>> z(n, std::vector<ser>(M, ser(PREC, 0)));
     for (int j = 1; j < M; ++j) {
         ll cj = md((j % 2 ? -1 : 1) * cat[j - 1]);
-        // y_1 = c1 + s: (c1 + s)^j = sum_k binom(j,k) c1^(j-k) s^k
-        ll bin = 1;
-        for (int k = 0; k <= j && k < PREC; ++k) {
-            z[0][j][k] = cj * bin % P * pw(c1, j - k) % P;
-            bin = bin * md(j - k) % P * pw(k + 1, P - 2) % P;
+        // y_i = c_i + b_i s: (c_i + b_i s)^j = sum_k binom(j,k) c_i^(j-k) b_i^k s^k
+        for (int i = 0; i < n; ++i) {
+            ll bin = 1;
+            for (int k = 0; k <= j && k < PREC; ++k) {
+                z[i][j][k] = cj * bin % P * pw(cc[i], j - k) % P * pw(bb[i], k) % P;
+                bin = bin * md(j - k) % P * pw(k + 1, P - 2) % P;
+            }
         }
-        for (int i = 1; i < n; ++i) z[i][j][0] = cj * pw(y[i], j) % P;
     }
     std::vector<std::vector<ser>> A(N, std::vector<ser>(M, ser(PREC, 0)));
     for (int b = 0; b < N; ++b) {
