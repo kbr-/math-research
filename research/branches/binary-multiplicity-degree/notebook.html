@@ -33,8 +33,8 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 1, then 3).</p>
 <ul>
-<li><strong>The odd invariant generator</strong> (open statement 1). Prove the <a href="#cube-odd-invariant-generator">conjecture</a>: for odd \(d=2e+1\), a solution of excess \(B+1\) independent of the product \(P_{e+1}P_e\)'s. Identify the cubic \(c_2\) in \(P_{e+2}P_{e-1}=c_1w+c_2v\) at \((5,2)\) and \((7,2)\): it is \(S_3\)-invariant up to a character, so \(e_1^3\), \(e_1e_2\), \(e_3\) or the discriminant-like cubic. Then show divisibility in general. Alternatively construct \(v\) on the elliptic curve.</li>
-<li><strong>Route review</strong> (due soon). Include \(\rho\ge3\), where products give fewer generators than \(\rho\).</li>
+<li><strong>A basis at \((4,3)\)</strong> (open statement 1). The <a href="#entry-2026-09-26-cube-route-review-10">route review</a> found the Hilbert function of \(\mathcal O(-3)\oplus\mathcal O(-4)\oplus\mathcal O(-5)\). Certify three solutions of excesses 3, 4, 5 independent over \(F(y)\), by evaluating the solution vectors at a random point, and match the dimensions exactly over \(\mathbb Q\). The <a href="#cube-excess-sum-basis">basis criterion</a> then gives \(\ell_0(5,18)=3\). Then ask for a uniform basis along \(\rho=d-1\), where \(B=3\).</li>
+<li><strong>The odd invariant generator</strong> (open statement 1): theta functions of level 2 over the Tate family (<a href="#cube-odd-invariant-generator">conjecture</a>).</li>
 <li><strong>Dimension 4</strong> (open statement 3).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions.</p>
@@ -5332,6 +5332,57 @@ since \(A(N-A)=4xy\) and \(\bar A=2r\). This is \(d^2\cdot\tfrac12\operatorname{
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 32.69 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">54.05 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.35 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-route-review-10" data-kind="review" data-route="cube-odd-characteristic" data-claims="none" data-claim-note="Route review: a falsification test of the freeness conjecture at (4,3) and cheap tests of leads and bridges; no new claim is registered.">
+<h3>26 September 2026 — Route review of the cube: ρ = 2 is reduced to one odd generator, and (4,3) looks free on generators 3, 4, 5</h3>
+<p class="entry-meta">Route review; the freeness conjecture survives its first ρ = 3 test, whose Hilbert function is that of generators of excesses 3, 4, 5 with sum N. Cycle bmd-r79. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>The line's general claim.</strong> Open statement 1: on \(\{0,1\}^3\) in characteristic \(\ne2\), \(\ell_0(d+1,4d+\rho-1)\ge B(d,\rho)\) for \(d\ge3\), \(2\le\rho\le d-1\). The current route goes through the solution module. By the <a href="#cube-excess-sum-basis">basis criterion</a>, \(\rho\) solutions independent over \(F(y)\) with excess sum \(N=d^2-1-\binom\rho2\) are a basis, and then \(\ell_0\) is their least excess.</p>
+<p><strong>What the goal needs.</strong> For every \((d,\rho)\) in the range, such a basis with least excess \(B(d,\rho)\), in every characteristic \(\ne2\).</p>
+<p><strong>Where the line stands.</strong> Since the <a href="#entry-2026-09-26-cube-route-review-9">last review</a>:</p>
+<ul>
+<li>\((3,2)\) and \((5,2)\) were proved by an \(S_3\)-invariant non-product generator of excess \(B+1\), in characteristic 0 and 1000003 (<a href="#cube-threshold-five-two">theorem</a>).</li>
+<li>The basis criterion and coprime boundary generators proved \(\rho=2\) for every even \(d\), in every characteristic \(\ne2\) (<a href="#cube-threshold-even-two-all">theorem</a>).</li>
+<li>The odd case is conjectured (<a href="#cube-odd-invariant-generator">odd invariant generator</a>).</li>
+<li>Nothing is known yet for \(\rho\ge3\).</li>
+</ul>
+<h4>Falsification attempt</h4>
+<p>The freeness conjecture predicts, at every \((d,\rho)\), \(\rho\) generators with least excess \(B\) and excess sum \(N\). The first case with \(\rho=3\) is \((4,3)\): \(B=3\) (partition \((2)\) of 2), and \(N=16-1-3=12\). A free module \(\bigoplus S(-a_i)\) has Hilbert series \(\sum t^{a_i}/(1-t)^3\), so \((1-t)^3H(t)\) must be a polynomial with nonnegative coefficients, \(\rho\) terms, least exponent \(B\) and exponent sum \(N\). Any failure refutes the conjecture at \((4,3)\).</p>
+<p>The test computes the dimensions of all solution spaces at \((4,3)\), \(m=18\), for excess 3 to 9 (<code>research/tools/bmd_cube_solution_cones.cpp</code>, dense mode, over \(\mathbb F_{1000003}\), 169 s; <code>research/results/bmd-r79-route-review/solution-spaces-four-three.txt</code>). They are 1, 4, 10, 19, 31, 46, 64. Their third differences are 1, 1, 1, 0, 0, 0, 0. So \((1-t)^3H(t)=t^3+t^4+t^5\) through excess 9: three generators, at excesses 3, 4, 5, with sum \(12=N\), and least \(3=B\). The prediction survives.</p>
+<p>The degree-2 cone rank at \((1{:}1{:}0)\) stays at 2. The third generator therefore has a larger multiplicity there, or a dependent cone. So its independence over \(F(y)\) needs another test: the rank of the solution vectors evaluated at a random point.</p>
+<h4>Assessment of this line</h4>
+<p>The structural route has been productive. In four cycles it gave an infinite family, \(\rho=2\) for every even \(d\), in every characteristic \(\ne2\), and two odd cases. Each case it touches reduces to exhibiting generators: one invariant generator per odd \(d\) at \(\rho=2\), and \(\rho-1\) new generators at \(\rho\ge3\). The \((4,3)\) data fit freeness exactly. The weak point is that the generators beyond products have no construction yet. Computation certifies them one case at a time, and a general proof needs their origin: theta functions of higher level, or a determinantal formula. Prospects for the whole of open statement 1 therefore rest on finding that construction. The case-by-case certificates now cost seconds to minutes, so they can supply data for guessing it.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Horrocks' splitting criterion</strong> (G. Horrocks, Proc. LMS 1964; Okonek–Schneider–Spindler, <em>Vector Bundles on Complex Projective Spaces</em>, Thm. I.2.3.1). A vector bundle on \(\mathbb P^2\) splits exactly when \(H^1(\tilde E(t))=0\) for all \(t\). The solution sheaf \(\tilde E\) is a kernel of a map of split bundles, so \(H^1_*(\tilde E)\) is a cokernel of global sections. That would give freeness for every \((d,\rho)\). This targets the freeness conjecture, hence open statement 1 once the least generator excess is known. It would break if the cokernel of \(A_m\) has \(H^0\) not generated by global data. <strong>Test.</strong> Passed at the level of Hilbert functions: \((4,3)\) matches \(\mathcal O(-3)\oplus\mathcal O(-4)\oplus\mathcal O(-5)\) through excess 9, a necessary condition for splitting. The vanishing of \(H^1_*\) was not tested.</li>
+<li><strong>Semistability of syzygy bundles</strong> (H. Brenner, <em>Looking out for stable syzygy bundles</em>, Adv. Math. 219, 2008). Syzygy bundles of general forms are semistable, and a split bundle \(\mathcal O(-a)\oplus\mathcal O(-b)\) with \(a\ne b\) is not. This would predict non-split solution modules. <strong>Test.</strong> Falsified as a predictor. At \((3,2)\) the module is proved to split as \(\mathcal O(-3)\oplus\mathcal O(-4)\), so the constraint matrices of the cube are far from general. The elliptic family forces the splitting, and a proof must use that structure.</li>
+<li><strong>Theta functions of level 2</strong> (D. Mumford, <em>Tata Lectures on Theta I</em>, §I.9–I.10, the addition formula). By residue duality the solutions at \(\rho=2\) are sections of one bundle of degree 2 over the family. On each smooth fibre every section is a product of degree-1 sections, but the boundary witnesses supply only the degree-1 bundles \(L_p\). The odd generator should be the second theta function of the degree-2 bundle, whose zeros are not two boundary points, written by the addition formula. It targets <code>conj:cube-odd-invariant-generator</code>. It would break if the family's theta functions do not extend over the collision locus as polynomials. <strong>Test.</strong> Not run: it needs the addition formula over the Tate family \(F[[s,t]]\), which is not a cheap check.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>Harmonic-oscillator spectroscopy</strong> (quantum mechanics). The level degeneracies of the three-dimensional isotropic oscillator are \(\binom{n+2}2\), the Hilbert function of \(S=F[y_1,y_2,y_3]\). The translation: a free solution module is the Fock space of \(\rho\) independent oscillators with ground energies \(a_i\), and the measured spectrum \(H(t)\) determines them by \((1-t)^3H(t)\). A theorem there, the uniqueness of that inversion, reads the generator excesses off the dimensions without knowing the generators. <strong>Test.</strong> Passed: the \((4,3)\) spectrum inverts to ground energies 3, 4, 5, nonnegative integers with multiplicity one each.</li>
+<li><strong>The Aufbau principle</strong> (chemistry: electrons fill the lowest free levels). The translation: after the least generator \(B\), the other generators occupy the next excesses one by one, subject to the sum \(N\). It predicts \((3,4,5)\) at \((4,3)\) and \((B,B+1)\) for odd \(d\) at \(\rho=2\). <strong>Test.</strong> Falsified as a universal rule, passed where it applies. It holds at \((4,3)\) and at \((3,2)\), \((5,2)\). It fails for even \(d\) at \(\rho=2\), where the generators \(2e^2-2\) and \(2e^2\) differ by 2, like a pairing gap.</li>
+</ul>
+<h4>Next step</h4>
+<p>The highest-risk item is still open statement 1 beyond \(\rho=2\) and odd \(d\).</p>
+<ol>
+<li>At \((4,3)\), certify three solutions of excesses 3, 4, 5 independent over \(F(y)\). Evaluate the solution vectors at a random point \(y_0\): the coordinates are the coefficients of \(\tilde w(ty_0)\), a one-variable series. Match the dimensions exactly over \(\mathbb Q\). The basis criterion then gives \(\ell_0(5,18)=3=B(4,3)\).</li>
+<li>Ask whether the family \(\rho=d-1\), where \(B=3\) for every \(d\), has a uniform basis.</li>
+<li>Pursue the theta lead for the odd generator.</li>
+</ol>
+<p><strong>Process.</strong> One computation, 169 s. The falsification test could have refuted the freeness conjecture, and it passed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r79">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 28.26 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 3.01 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 36.31 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 48.80 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
