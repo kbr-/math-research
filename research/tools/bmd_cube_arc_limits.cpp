@@ -19,7 +19,15 @@
 // t = y_1 - y_2; each arc's leading vector (sigma A, tau B or sigma A + tau B by the valuations of s, t)
 // kills S_gamma(0), and the program reports whether A_m and B_m are forced to vanish.
 //
-// Usage: bmd_cube_arc_limits p CASE [CASE ...], CASE = d:m:PREC:ARC+ARC+...[:first], ARC = c,c,../c,../c,..
+// Direction-bundle mode (CASE = d:m:PREC:bundle:K:J, chart y_2 = 1 at P = (1:1:0)): a local solution W of order k
+// at P has a tangent cone W_k(sigma, tau), a vector of degree-k forms, and along the line y = (1 + tau e, 1, sigma e)
+// its leading vector W_k(sigma, tau) kills S_gamma(0). So W_k is a section of N(k), where N is the bundle on the
+// exceptional line of directions whose fibre is the annihilator of tau_m(S_gamma(0)); hence k >= e_min(N). The
+// program samples J random directions, computes each S_gamma(0), and for k = 0..K reports the dimension of the
+// degree-k vector forms whose values kill S_gamma(0) at every sample (h^0(N(k)) once J is large enough), both
+// for the first J/2 samples and for all J, so that stability can be read off. Ranks use FLINT nmod_mat.
+//
+// Usage: bmd_cube_arc_limits p CASE [CASE ...], CASE = d:m:PREC:ARC+ARC+...[:first | :bundle:K:J], ARC = c,c,../c,../c,..
 // (coefficients of y_1, y_2, y_3 in powers of e; '1,1/1/0,1' is y = (1+e, 1, e)).
 #include <cstdio>
 #include <cstdlib>
@@ -29,6 +37,8 @@
 #include <vector>
 #include <sstream>
 #include <omp.h>
+#include <flint/nmod_mat.h>
+#include <random>
 using namespace std;
 typedef uint64_t u64;
 typedef vector<u64> Vec;
@@ -147,6 +157,52 @@ int main(int argc, char **argv) {
     for (int ai = 2; ai < argc; ai++) {
         auto f = split(argv[ai], ':');
         int d = atoi(f[0].c_str()), m = atoi(f[1].c_str()), prec = atoi(f[2].c_str());
+        if (f[3] == "bundle") {
+            int K = atoi(f[4].c_str()), J = atoi(f[5].c_str());
+            int M = m + 1;
+            if (P % 2 == 0 || P <= (u64)m + 2) { fprintf(stderr, "need odd p > m + 2\n"); return 2; }
+            printf("bundle d=%d m=%d rho=%d prec=%d K=%d J=%d\n", d, m, M - 4 * d, prec, K, J); fflush(stdout);
+            mt19937_64 rng(12345 + 1000 * d + m);
+            vector<u64> sg(J), ta(J);
+            for (int j = 0; j < J; j++) { sg[j] = 1 + rng() % (P - 1); ta[j] = 1 + rng() % (P - 1); }
+            vector<vector<Vec>> reds(J); vector<int> ok(J), st(J); vector<vector<int>> ords(J);
+            #pragma omp parallel for schedule(dynamic)
+            for (int j = 0; j < J; j++) {
+                vector<Vec> ys = {Vec{1, ta[j]}, Vec{1}, Vec{0, sg[j]}};
+                ok[j] = arc_limit(d, m, prec, ys, reds[j], st[j], ords[j]);
+            }
+            int maxsteps = 0;
+            for (int j = 0; j < J; j++) {
+                if (!ok[j]) { printf("  direction %d: FAILED (precision or basis size)\n", j); return 3; }
+                maxsteps = max(maxsteps, st[j]);
+            }
+            printf("  max divisions %d (prec %d)\n", maxsteps, prec);
+            for (int half = 0; half < 2; half++) {
+                int Jh = half ? J : J / 2;
+                printf("  samples %d: h0(N(k)) for k = 0..%d:", Jh, K);
+                for (int k = 0; k <= K; k++) {
+                    int cols = (k + 1) * M, rows = Jh * 4 * d;
+                    nmod_mat_t A; nmod_mat_init(A, rows, cols, P);
+                    int r = 0;
+                    for (int j = 0; j < Jh; j++) {
+                        vector<u64> cf(k + 1);  // sigma^(k-i) tau^i
+                        for (int i = 0; i <= k; i++) cf[i] = pw(sg[j], k - i) * pw(ta[j], i) % P;
+                        for (auto &row : reds[j]) {
+                            for (int i = 0; i <= k; i++) for (int c = 0; c < M; c++)
+                                nmod_mat_entry(A, r, i * M + c) = cf[i] * row[c] % P;
+                            r++;
+                        }
+                    }
+                    long rk = nmod_mat_rank(A);
+                    nmod_mat_clear(A);
+                    printf(" %ld", (long)cols - rk);
+                    fflush(stdout);
+                }
+                printf("\n");
+            }
+            fflush(stdout);
+            continue;
+        }
         auto arcs = split(f[3], '+');
         if (m + 1 - 4 * d < 1) { fprintf(stderr, "need rho >= 1\n"); return 2; }
         // Catalan numbers and the binomial series divide by j+1 <= m+2 through Fermat inverses.
