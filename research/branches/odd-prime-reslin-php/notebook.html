@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> For any choice, cell blocks give occupancy implications, so W on cell families is hardness of weak PHP plus implications (prop:cell-block-implications, <a href="#entry-2026-09-26-cell-block-implications">cell-block implications</a>). Next: search the record and the literature for PC bounds on PHP with conditional occupancy (partial onto-PHP, relativized PHP), then state the hardness conjecture for implication systems that leave many holes unforced, and test it against counting modulo 3.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> A partial matching plus deleted antecedents restricts PHP with occupancy implications to graph PHP (prop:antecedent-deletion, <a href="#entry-2026-09-26-antecedent-deletion">antecedent deletion</a>). Next: make the singleton-family residual estimate rigorous for \(k\gg\log n\). Show that the kept sets contain independent uniform subsets of size \(k-c\sqrt{k\log n}\), and that the matching \(\rho\) exists, giving a conditional theorem on the recorded expansion event.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -25004,6 +25004,55 @@ where \(q(w)\) is the single-divided-power probability of prop:divided-power-col
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 13.16 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 19.89 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-antecedent-deletion" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:antecedent-deletion">
+<h3>Antecedent deletion: a partial matching that fills some consequent holes, together with deleting the remaining antecedent cells, restricts PHP with occupancy implications to plain graph PHP, so W on cell families reduces to expansion of a residual graph</h3>
+<p class="entry-meta">26 September 2026 · Working proof, with a heuristic application · open statement A1 · cycle odd-prime-occupancy-php.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. prop:cell-block-implications (<a href="#entry-2026-09-26-cell-block-implications">cell-block implications</a>) reduced W on families of cell blocks to hardness of weak unary PHP plus occupancy implications. No recorded bound covers such systems; the record knows only that onto-type constraints on every hole are refuted by counting. How can hardness of graph PHP, the one recorded mechanism (imp:MN-functional-graph-degree), be brought to bear?</p>
+<p><strong>General statement.</strong> prop:antecedent-deletion. Over any field, let \(\mathcal S\) be weak unary PHP with \(m\) pigeons and \(n\) holes, plus implications \(I=x_c\prod_b\bigl(1-\sum_{j\in P_b}x_{js_b}\bigr)\). Here \(c\) is a cell, and the \(P_b\) are pigeon sets at holes \(s_b\); an empty product makes \(I\) a deletion. Let \(\rho\) be a partial matching and \(D\) a set of cells containing no cell of \(\rho\). Suppose every implication either has its antecedent \(c\) in \(D\), or has \(c\) in a row or column of \(\rho\) without being a cell of \(\rho\), or has some \(b\) with \(\rho\)'s pigeon at \(s_b\) in \(P_b\). Let \(G'\) be the bipartite graph of cells outside \(D\) on the pigeons and holes not used by \(\rho\). Then a degree-\(d\) PC refutation of \(\mathcal S\) gives a degree-\(d\) refutation of weak graph PHP on \(G'\), with \(m-|\rho|\) pigeons and \(n-|\rho|\) holes; the surplus \(m-n\) is unchanged. This restriction lemma holds over any field. Consequence, over \(\mathbb F_3\) in the setting of prop:cell-block-implications (forms square-equivalent to cell forms, \(|P|\le k\)): for a family of cell blocks and a choice, W's conclusion holds whenever some admissible \((\rho,D)\) leaves a \(G'\) that is an \((s,\delta)\)-boundary expander of maximum left degree \(d'\le22k+1\) with \(\delta s/(2d')\ge22k+1\). The degree chain is as follows. A refutation of the family at W's degree \(22k=(4p-1)(p-1)k\) gives one of the implication system at \(22k+1\), by prop:cell-block-implications, and the restriction keeps that degree. imp:MN-functional-graph-degree makes every refutation of graph PHP on \(G'\) exceed degree \(\delta s/(2d')\), and transfers to linear rows at ceilings at least \(d'\). Functional graph PHP has more axioms than weak graph PHP, so its lower bound applies to the weak system.</p>
+
+<h4>Proof</h4>
+<ul>
+<li><em>The restriction.</em> Set the cells of \(\rho\) to 1, every other cell in a row or column of \(\rho\) to 0, and the cells of \(D\) to 0. The row equation of a pigeon of \(\rho\) becomes \(1=1\). The row equation of any other pigeon becomes its row equation on \(G'\). Collisions and Booleanity map to collisions and Booleanity, or to 0.</li>
+<li><em>Implications vanish.</em> If the antecedent \(c\) is in \(D\), or in a row or column of \(\rho\) without being a cell of \(\rho\), then \(x_c\mapsto0\). Otherwise, by hypothesis, some \(b\) has \(\rho\)'s pigeon \(j\) at \(s_b\) with \(j\in P_b\). Then \(x_{js_b}\mapsto1\), and the other cells of \(P_b\) at \(s_b\) share the column with it, so they map to 0. So \(1-\sum_{j\in P_b}x_{js_b}\mapsto0\).</li>
+<li><em>Degrees.</em> Substituting constants turns a PC derivation into one of no larger degree. The images of the axioms are axioms of weak graph PHP on \(G'\), or 0. Since \((m-|\rho|)-(n-|\rho|)=m-n\ge1\), the target is again a pigeonhole system. A row emptied by the restriction becomes \(0=1\), which is harmless. The consequence follows from prop:cell-block-implications and imp:MN-functional-graph-degree, which transfers to linear rows. \(\square\)</li>
+</ul>
+
+<h4>Application to the singleton-plus-hole family (heuristic)</h4>
+<ul>
+<li><em>The choice of \((\rho,D)\).</em> In the family of the cell-block entry, under square-class priority, the implications are of two kinds. The first is "\(i\) in \(s\) forces \(t'\) occupied by \(T_{t'}\)", for cells \((i,s)\) below the \(k\)-th cell of \(t'\). The second is "the \(k\)-th pigeon of \(t'\) forces \(i\) into \(s\)". Let \(\rho\) fill the \(f\) holes \(t'\) whose \(k\)-th cells rank best, each by a pigeon of \(T_{t'}\) other than its \(k\)-th pigeon. Otherwise that \(k\)-th cell would be a cell of \(\rho\), and its implication would survive. Such a \(\rho\) exists when these top \(k-1\) sets admit a matching of the \(f\) holes, which is likely for small \(f\) but not shown. Let \(D\) contain every antecedent cell none of whose consequent holes is filled, and the \(k\)-th cells of the unfilled holes.</li>
+<li><em>What survives.</em> A kept cell \((i,s)\) must rank above \(\theta^*\), the best \(k\)-th cell among the \(n-f\) unfilled holes. That is a lower-tail minimum, about \(kn-\sqrt{2k\ln(n/f)}\,n\) in rank. At each unfilled hole, the kept cells are its top cells above \(\theta^*\), about \(k-\Theta(\sqrt{k\log(n/f)})\) of them. So the residual graph has near-random neighbourhoods of that size only when \(k\gg\log n\). For \(k\lesssim\log n\) it keeps almost nothing, which matches the counting refutation found for \(k\) near \(\ln n\).</li>
+<li><em>What is not shown.</em> The kept sets are not independent uniform sets, since \(\theta^*\) depends on all holes. The estimate is heuristic, and the existence of \(\rho\) is not proved.</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li><em>A restriction bridge from implications to graph PHP.</em> The lemma is a standard restriction argument and gives no new lower bound. It always applies trivially, with \(D\) all antecedents, so all its content is in the expansion of the residual graph. For families covered by prop:cell-block-implications, W holds for a choice whenever some admissible \((\rho,D)\) leaves an expanding \(G'\). The chooser's task becomes making the implications cheap to kill: few antecedents to delete, or consequents that a small matching fills.</li>
+<li><em>What is open.</em>
+ <ul>
+ <li>A rigorous residual-expansion estimate for the singleton family.</li>
+ <li>General families of cell blocks, where antecedents and consequents interlock.</li>
+ <li>Blocks with forms not equivalent to cells.</li>
+ </ul></li>
+<li>No new case of W is proved.</li>
+</ul>
+<p>Next: make the singleton-family estimate rigorous. Condition on the order restricted to each hole, bound \(\theta^*\) by a union bound, and show that the kept sets contain independent uniform \((k-c\sqrt{k\log n})\)-subsets by the hypergeometric coupling of prop:priority-hole-families. That gives a conditional theorem on the recorded expansion event.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:cell-block-implications, imp:MN-functional-graph-degree and prop:hole-family-random-choice. The record's search found only the remark that onto constraints on every hole are refuted by counting. A fresh-context reviewer confirmed the restriction on every axiom type and every implication case, including an antecedent in \(\rho\) and consequent holes filled by other pigeons. It required these changes, all adopted: \(D\cap\rho=\varnothing\); the surplus \(m-n\); the consequence's setting, degree chain, \(d'\le22k+1\) and \(\ge\) in place of \(&gt;\); the deletion rule for implications with several consequents; \(\rho\) avoiding \(k\)-th cells; the corrected lower-tail estimate of \(\theta^*\) and the regime \(k\gg\log n\); and the claims about what the bridge gives. The changes correct and weaken statements, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-occupancy-php">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 14.72 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">47.95 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 15.00 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 11.52 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.25 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
