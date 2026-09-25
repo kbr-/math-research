@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> Every recorded flat-avoidance tool runs through the one-row map, which fails at odd primes for dense flats (<a href="#entry-2026-09-25-odd-prime-flat-avoidance">flat avoidance</a>). The one positive route left is pinning. State its best odd-prime form for forbidden flats: the largest total rank and the weakest independence condition under which a common avoiding point plus lem:member-pinning gives hardness at degree \(22k\). Compare it with the \(n^K\) blocks W needs, to measure the remaining gap exactly.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> Every recorded tool now stops short of W at odd primes; the last, pinning, covers about \(\sqrt n/\log n\) blocks (<a href="#entry-2026-09-25-pinning-gap">pinning gap</a>). W's polynomial inventories need mixed sections, which the member-pinning entry names and no recorded mechanism constructs. Formulate one candidate mechanism for mixed sections that uses PHP structure beyond Tor vanishing. Test it on the smallest inventory beyond the pinning ceiling. The step ends with a candidate that survives that test, or with the reason it fails.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -22309,6 +22309,65 @@ where \(Z\) is the Hasse fat points of multiplicity \(s-1\) at the nonzero \(m_j
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 26.23 s</strong></td></tr>
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 11.38 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">14.85 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-pinning-gap" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="cor:single-form-pinning">
+<h3>Pinning gap: one pinned prefix form per block suffices, but pinning covers only about √n/log n blocks, far from W's n^K</h3>
+<p class="entry-meta">25 September 2026 · Working proof (a corollary) · open statement A1 · cycle odd-prime-pinning-gap.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-25-odd-prime-flat-avoidance">flat-avoidance entry</a> left pinning as the only positive route at odd primes, and asked for its best form against W and for the size of the remaining gap.</p>
+<p><strong>General statement.</strong> cor:single-form-pinning, a refinement of lem:member-pinning: over \(\mathbb F_3\), take any non-rigid-first choice (prop:rigid-form-reduction, part 2) and designate one prefix form \(\ell_b\) in each constraining block. Every clause \(g_{b,i}Q_b\) is a multiple of \(\ell_b\), because \(Q_b=\prod_{j\in S_b}L_{b,j}^{2}\). So a degree-\(D\) refutation of W's system gives one of the weak base plus the \(M'\) equations \(\ell_b=0\) at degree \(D\). If the \(\ell_b\) have row-linear parts independent modulo constants on every row, and the board meets member pinning's rows and robustness for \(w=M'\) forms at degree \(B=22k\), W's system has no refutation of degree \(22k\). This pins one form per block instead of all \(\sum_bh_b\) forms. The robustness requirement grows like \(B^2M'^2\), so the route covers about \(\sqrt n/\log n\) blocks.</p>
+
+<h4>The corollary</h4>
+<p><em>Proof.</em> For \(i\notin S_b\), \(g_{b,i}Q_b=\ell_b\cdot(g_{b,i}Q_b/\ell_b)\), a multiple of \(\ell_b\) of one lower degree. Replacing each clause in a refutation by this derivation keeps the degree. At \(p=3\), \(D=(4p-1)(p-1)k=22k=B\) and the rigidity threshold is \(D_0=20k\le D-2k\). So the rigid clauses already lie in the base's degree-\(B\) closure, and blocks with at most \(k\) non-rigid forms have no remaining clauses. A refutation of W's system at degree \(B\) thus gives one of the weak base plus \(\{\ell_b=0\}\) at degree \(B\). Member pinning's first step, the coherent product-constraints corollary with \(r=M'\) and \(h=1\), excludes that under its hypotheses: at least \(2B-1=44k-1\) rows, and robustness through \(L_{\max(B-1,1)}+B(M'+1)\). That corollary is for the functional base. The weak base's axioms are among the functional ones on the same variables, so a weak-base refutation is a functional one. No common Boolean zero of the \(\ell_b\) is needed. \(\square\)</p>
+
+<h4>The gap</h4>
+<ul>
+<li><em>The hypotheses cap \(M'\) near \(\sqrt n\).</em> Row independence alone needs \(M'\le N-1\). The recorded robustness \(L_d=(2d-1)(r+1)m+\lambda_d+(r+1)+d(r+2)\), with \(m=2d(r+2)+r+2\) and \(\lambda_d\approx2d(r+1)m\), is about \(8B^2M'^2\) at \(r=M'\), \(d=B-1\). With \(N\) labels per row this needs \(M'\lesssim\sqrt N/(c\cdot22k)\), about \(\sqrt n/\log n\) blocks.</li>
+<li><em>Without independence, affine pinning is capped below quadratic inventory.</em> Affine pinning on forms spanning all linear parts modulo rows fixes every cell and is refuted at degree at most 2 (obs:deciding-designs-capped). The shared-cell-conflict entry records this for pinning prefix forms at a point.</li>
+<li><em>What W needs.</em> \(M=n^K\) blocks for every \(K\). The member-pinning entry records that beyond the pinning ceiling the global sections that exist are mixed, not pinned, and no recorded mechanism constructs them.</li>
+</ul>
+
+<h4>Assessment</h4>
+<p>The one refinement is that one pinned prefix form per constraining block suffices, for any non-rigid-first choice. The caps were already recorded, in the member-pinning and shared-cell-conflict entries; the reviewer corrected the robustness count to about \(\sqrt n/\log n\) blocks. Pinning is capped below \(N^2\) forms, and W's polynomial inventories need mixed sections, which no recorded mechanism constructs. The recent cycles have now checked every recorded tool against W at odd primes:</p>
+<ul>
+<li>designed families;</li>
+<li>choosers;</li>
+<li>restriction;</li>
+<li>prefix length;</li>
+<li>safe probes;</li>
+<li>the adaptive row endpoint;</li>
+<li>pinning.</li>
+</ul>
+<p>Each either reformulates W or stops at a recorded ceiling.</p>
+<p>Next: the mixed-section problem, stated in the member-pinning entry. Construct compatible corrections when no point assignment covers the inventory. Its only recorded route is Tor vanishing for the whole inventory's tops, A3's core in the Koszul range. So the next step is to formulate one candidate mechanism for mixed sections that uses PHP structure, and to test it on the smallest inventory beyond the pinning ceiling.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>the member-pinning entry, its lemma and its mixed-section section;</li>
+<li>obs:deciding-designs-capped;</li>
+<li>prop:rigid-form-reduction, and the shared-cell-conflict entry's pinning remark.</li>
+</ul>
+<p>The proof is a plain factorization followed by the first step of member pinning. A fresh-context reviewer found the proof sound. It required changes, all adopted:</p>
+<ul>
+<li>the unused point \(\psi\) removed;</li>
+<li>the robustness count corrected from about \(n/\log n\) to about \(\sqrt n/\log n\);</li>
+<li>the quadratic cap labelled as recorded, for pinning without independence;</li>
+<li>the result recorded as a refinement of lem:member-pinning;</li>
+<li>the parameters stated.</li>
+</ul>
+<p>No computation was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-pinning-gap">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 44.27 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 24.19 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">0.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">19.99 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
