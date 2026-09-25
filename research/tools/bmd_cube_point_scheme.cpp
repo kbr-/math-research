@@ -62,6 +62,8 @@ int main(int argc, char **argv) {
     for (int i = 0; i < 3; i++) { b[i] = atoll(argv[6 + i]); es[i] = atoll(argv[9 + i]); et[i] = atoll(argv[12 + i]); }
     const char *out = argv[15];
     if (P % 2 == 0 || K >= N || m + 1 - 4 * d < 1) { fprintf(stderr, "need odd p, K < N, rho >= 1\n"); return 2; }
+    // Catalan numbers, binomial series and Psi_k divide by j+1 <= m+2 through Fermat inverses.
+    if (P <= (u64)m + 2) { fprintf(stderr, "need p > m + 2 (inverses of 1..m+2)\n"); return 2; }
     midx.assign(N * N, -1);
     for (int deg = 0; deg < N; deg++) for (int a = deg; a >= 0; a--) { midx[a * N + (deg - a)] = mono.size(); mono.push_back({a, deg - a}); }
     nm = mono.size();
