@@ -142,7 +142,8 @@ rules to growing checklists or one-off setup narratives.
   theorem or source rather than a field, with the open statement it targets and where it
   would break, including leads the record names but never followed. It also has an
   **Absurd bridges** section (at least two): areas that never stood near these objects
-  because nobody thought of applying them here, each with the translation that would carry
+  because nobody thought of applying them here, from any field (mathematics, computer
+  science, theoretical physics, chemistry or anything else), each with the translation that would carry
   the objects across, what a theorem there would give, and the smallest test of the
   translation. Reaching for other areas is the agent's job at every cycle, not only when
   the user names a field.

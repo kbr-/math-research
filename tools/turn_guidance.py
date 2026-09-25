@@ -78,7 +78,8 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
              'fields study the objects of the open statement this cycle advances, and what their strongest '
              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '
-             'nobody thought of applying them here (Absurd bridges). Every route review lists at least three '
+             'nobody thought of applying them here, from any field: mathematics, computer science, physics, chemistry '
+             'or anything else (Absurd bridges). Every route review lists at least three '
              'Outside leads and two Absurd bridges.']
     notes += [note for note in (algebra_note(which), library_note(has)) if note]
     for item in items:

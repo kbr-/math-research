@@ -86,7 +86,8 @@ def validate_leads(body, article, close):
              'statement\'s objects: for each, a named theorem or source (not just a field), the open statement '
              'it targets, and where it would break. Include leads the record names but never followed'),
             (BRIDGES_RE, 'Absurd bridges', BRIDGES_MIN, 'bridges to areas that never stood near these objects, '
-             'which nobody thought of applying here: for each, the translation that would carry the objects '
+             'which nobody thought of applying here, from any field (mathematics, computer science, physics, chemistry or '
+             'anything else): for each, the translation that would carry the objects '
              'across, what a theorem there would give, and the smallest test of the translation')):
         found = pattern.search(body, article, close)
         if found is None or len(re.findall(r'<li\b', found.group(1))) < least:
