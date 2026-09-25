@@ -69,6 +69,24 @@ def validate_route(body, article):
                          'the line advances the goal, and the next step on the highest-risk route item')
 
 
+LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
+LEADS_MIN = 3
+
+
+def validate_leads(body, article, close):
+    """AGENTS.md: a route review reaches outside the record's toolkit.  It needs an Outside leads list of
+    at least LEADS_MIN ideas from other areas of mathematics (user instruction, 25 September 2026, after
+    classical tools were proposed only once the user named their fields)."""
+    if not re.search(r'data-route-item="', body) or entry_tags(body, article)['kind'] != 'review':
+        return
+    found = LEADS_RE.search(body, article, close)
+    if found is None or len(re.findall(r'<li\b', found.group(1))) < LEADS_MIN:
+        raise ValueError(f'A route review needs an <h4>Outside leads</h4> section followed by a <ul> of at '
+                         f'least {LEADS_MIN} leads from other areas of mathematics: for each, a named theorem or '
+                         'source (not just a field), the open statement it targets, and where it would break. '
+                         'Include leads the record names but never followed (AGENTS.md)')
+
+
 GENERAL_RE = re.compile(r'<p><strong>General statement\.</strong>(.*?)</p>', re.S)
 
 
@@ -208,6 +226,7 @@ def validate_marker(body, marker):
                          f'{STATUS_LIMIT}: the status and one clause of scope, details in the entry')
     validate_route(body, article)
     validate_general(body, article, close)
+    validate_leads(body, article, close)
     if '$' in body[article:close]:
         # MathJax treats a dollar sign as an inline-math delimiter; the notebook uses \( \).
         raise ValueError('The entry contains a dollar sign, which MathJax reads as a math delimiter; '

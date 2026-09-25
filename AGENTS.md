@@ -137,7 +137,12 @@ rules to growing checklists or one-off setup narratives.
   a sub-gap. The finisher rejects a seventh consecutive research entry without a
   review. A review states the line's general claim, what the main goal needs,
   a falsification attempt, an evidence-based qualitative assessment of **that line only**, and
-  the next step on the highest-risk item. Proposed next step names its route item.
+  the next step on the highest-risk item. It also has an **Outside leads** section (the
+  finisher requires at least three): ideas from other areas of mathematics, each a named
+  theorem or source rather than a field, with the open statement it targets and where it
+  would break, including leads the record names but never followed. Reaching for other
+  areas is the agent's job at every cycle, not only when the user names a field.
+  Proposed next step names its route item.
   While the goal is open that step is always research: never park, pause or stop the
   goal, or wait for a user decision; when recorded routes are closed, propose and test
   a new idea. Once the goal is proved, a Spin loop stops ([PROMPTS.md](PROMPTS.md#spin)).

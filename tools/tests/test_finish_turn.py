@@ -167,7 +167,11 @@ sys.exit(compute.main())
             return (route + '<section id="research-record">' + entries + f'<article {tags}>'
                     f'<p class="entry-meta">{status}</p>' + general + marker + '</article></section>')
         tagged = 'data-kind="research" data-route="general-step"'
+        reviewed = 'data-kind="review" data-route="general-step"'
+        leads = '<h4>Outside leads</h4><ul><li>a</li><li>b</li><li>c</li></ul>'
         rejected = [
+            record(['research'] * 6, reviewed),                       # a review without outside leads
+            record(['research'] * 6, reviewed, general=general + leads.replace('<li>c</li>', '')),
             record([], ''),                                           # untagged entry
             record([], 'data-kind="research" data-route="sub-gap"'),  # not a declared route item
             record(['research'] * 6, tagged),                         # seventh research entry in a row
@@ -192,7 +196,7 @@ sys.exit(compute.main())
                 self.assertNotEqual(result.returncode, 0)
                 self.assertFalse(any(e['event'] == 'stop' for e in self.events('test_turn')))
         accepted = [
-            record(['research'] * 6, 'data-kind="review" data-route="general-step"'),
+            record(['research'] * 6, reviewed, general=general + leads),
             record(['research'] * 6 + ['review'] + ['research'] * 5, tagged),
             record(['research'] * 9, 'data-kind="formalization"'),
             record(['research'] * 3, 'data-kind="research" data-route="side-preprint"'),

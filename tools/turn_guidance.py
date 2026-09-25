@@ -74,7 +74,10 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
              'Before each computation, ask whether further computations are needed, or whether the results you '
-             'already have are enough to propose a general statement and attempt to prove it.']
+             'already have are enough to propose a general statement and attempt to prove it.',
+             'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
+             'fields study the objects of the open statement this cycle advances, and what their strongest '
+             'theorems say about them. Every route review lists at least three such Outside leads.']
     notes += [note for note in (algebra_note(which), library_note(has)) if note]
     for item in items:
         mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item
