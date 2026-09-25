@@ -193,11 +193,11 @@ its corrections are in [REVIEW-v2.md](REVIEW-v2.md).
   Lemma 5.1 and Corollary 1.3 when they were formalized; the axiom report of the aggregate
   module is transitive and lists only the standard axioms.
 - [x] **If formalized, give every boundary claim a formal statement or a flag.**
-  — **Applied.** Formal: "if and only if k ≥ 2^(n−2)" (cover_bound_attained_iff) and
-  "agrees with Menezes when k − ℓ − 1 < 2^n" (phi_of_lt_two_pow). Now flagged as not
-  formalized: the strict comparison for k − ℓ − 1 ≥ 2^n (already flagged), the "does better
-  otherwise" in the Changes paragraph, and the characterization of the extremal orders in
-  Remark 5.3.
+  — **Applied, then superseded.** Every claim of the paper is now formal, including the strict
+  comparison for k − ℓ − 1 ≥ 2^n, the degree comparison in the Changes paragraph and the
+  extremal orders of Remark 5.3; the examples, blocks and dimension steps are stated for the
+  least degrees D and δ themselves (degreeSet, deltaSet). Only the grid-vanishing lemma comes
+  from Mathlib, and statements about other papers are cited.
 - [x] **If formalized, provide a compact verification map.** — **Satisfied.** Appendix A, with
   every cited declaration name checked by script against the Lean sources.
 - [x] **If formalized, make reproduction self-contained.** — **Applied.** The appendix gives the

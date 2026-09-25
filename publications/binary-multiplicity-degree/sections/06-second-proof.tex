@@ -6,7 +6,8 @@ version~1 of this paper. It does not use Section~\ref{sec:lower}, and it does no
 determine \(\delta(n,k,\ell)\) for individual orders. Its lower bound combines
 the multiplicity Schwartz--Zippel lemma with a one-dimension reduction; the
 upper bound is Theorem~\ref{thm:construction}, or the hyperplane covers for
-\(k\ge2^{n-1}\). The formal proof of Lemma~\ref{lem:minimum} uses this route.
+\(k\ge2^{n-1}\). The second formal proof of Lemma~\ref{lem:minimum} uses this
+route.
 
 \subsection{The Schwartz--Zippel bound}
 
@@ -135,7 +136,9 @@ and \(\mult_{\zero}(P)<k\). Then there is \(S\in\Ft[x_\sigma]\) with
 
 In particular \(D(n-1,k)\le D(n,k)-1\) for \(n\ge2\) and \(k<2^n\). Since the
 origin order is kept exactly, the same holds for the least degree with a
-prescribed origin order.
+prescribed origin order. By Corollary~\ref{cor:main} and
+Theorem~\ref{thm:main}, both inequalities hold for every \(k\ge1\)
+\textnormal{\small\leanref{claims/DegreeFormulaArithmetic.lean}{[Lean: \(D\)]}\,\leanref{claims/PerOrderArithmetic.lean}{[Lean: \(\delta\)]}}.
 
 \begin{proof}
 Let \(\ell=\mult_{\zero}(P)<k\) and let \(L\ne0\) be the homogeneous component of
@@ -223,7 +226,7 @@ theorem gives the least size of a cover for every \(k\ge2^{n-2}\); we use only
 this upper bound for \(k\ge2^{n-1}\), in the polynomial form above, which is
 what the Lean file proves. It follows from Lemma~\ref{lem:hyperplane-product}:
 the multiplicity at \(a\ne\zero\) is at least \(a2^{n-1}+b=k\), the origin order
-is \(b<k\), and the degree is at most \(a(2^n-1)+2b=2k-a\).
+is below \(k\), and the degree is at most \(a(2^n-1)+2b=2k-a\).
 
 \begin{theorem}[Second proof of the value of \(D(n,k)\)]\label{thm:main-formal}
 For all \(n\ge1\) and \(k\ge1\), \(D(n,k)\) takes the values of

@@ -1,0 +1,101 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.DegreeFormulaArithmetic
+Claim file: claims/DegreeFormulaArithmetic.lean
+Claim: lem:degree-formula-arithmetic
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#degree-formula-arithmetic
+Scope: Consequences of the value D(n,k) = degreeMin n k (2k + n − 2 − ⌊log₂k⌋ for k < 2^(n−1), else
+2k − ⌊k/2^(n−1)⌋) used in the preprint's remarks: (1) D(n,1) = n for n ≥ 2, D(n,4) = n + 4 for n ≥ 4,
+D(n,8) = n + 11 and D(n,15) = n + 25 for n ≥ 5; (2) for 1 ≤ k < 2^(n−2), D exceeds the Schwartz–Zippel
+bound 2k − ⌊k/2^(n−1)⌋ by n − 2 − ⌊log₂k⌋ ≥ 1; (3) D(n+1,k) = D(n,k) + 1 for n ≥ ⌊log₂k⌋ + 2, k ≥ 1;
+(4) for n ≥ 1 and k = 3·2^(n−1): ⌊log₂k⌋ = n, so 2k + n − 2 − ⌊log₂k⌋ = 2k − 2, while D(n,k) = 2k − 3;
+(5) D(n,k) + 1 ≤ D(n+1,k) for n, k ≥ 1. Items (1)–(5) are restated (D_examples, …, D_add_one_le)
+for the least element of degreeSet, the degrees of k-admissible polynomials; admissible
+polynomials are nonzero.
+Declarations: MathResearch.DegreeFormulaArithmetic.degreeMin_one MathResearch.DegreeFormulaArithmetic.degreeMin_four MathResearch.DegreeFormulaArithmetic.degreeMin_eight MathResearch.DegreeFormulaArithmetic.degreeMin_fifteen MathResearch.DegreeFormulaArithmetic.degreeMin_excess MathResearch.DegreeFormulaArithmetic.degreeMin_succ MathResearch.DegreeFormulaArithmetic.degreeMin_three_mul MathResearch.DegreeFormulaArithmetic.degreeMin_add_one_le MathResearch.DegreeFormulaArithmetic.degreeSet MathResearch.DegreeFormulaArithmetic.isLeast_degreeSet MathResearch.DegreeFormulaArithmetic.admissible_ne_zero MathResearch.DegreeFormulaArithmetic.D_examples MathResearch.DegreeFormulaArithmetic.D_excess MathResearch.DegreeFormulaArithmetic.D_succ MathResearch.DegreeFormulaArithmetic.D_three_mul MathResearch.DegreeFormulaArithmetic.D_add_one_le
+$ lake --wfail build claims.DegreeFormulaArithmetic
+Build completed successfully (1949 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmp8j1uh7ge.lean
+@MathResearch.DegreeFormulaArithmetic.degreeMin_one : ∀ {n : ℕ},
+  2 ≤ n → MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n 1 = n
+'MathResearch.DegreeFormulaArithmetic.degreeMin_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.degreeMin_four : ∀ {n : ℕ},
+  4 ≤ n → MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n 4 = n + 4
+'MathResearch.DegreeFormulaArithmetic.degreeMin_four' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.degreeMin_eight : ∀ {n : ℕ},
+  5 ≤ n → MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n 8 = n + 11
+'MathResearch.DegreeFormulaArithmetic.degreeMin_eight' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.degreeMin_fifteen : ∀ {n : ℕ},
+  5 ≤ n → MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n 15 = n + 25
+'MathResearch.DegreeFormulaArithmetic.degreeMin_fifteen' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.degreeMin_excess : ∀ {n k : ℕ},
+  1 ≤ k →
+    k < 2 ^ (n - 2) →
+      MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k = 2 * k - k / 2 ^ (n - 1) + (n - 2 - Nat.log 2 k) ∧
+        1 ≤ n - 2 - Nat.log 2 k
+'MathResearch.DegreeFormulaArithmetic.degreeMin_excess' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.degreeMin_succ : ∀ {n k : ℕ},
+  1 ≤ k →
+    Nat.log 2 k + 2 ≤ n →
+      MathResearch.BinaryMultiplicityDegreeComplete.degreeMin (n + 1) k =
+        MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k + 1
+'MathResearch.DegreeFormulaArithmetic.degreeMin_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.degreeMin_three_mul : ∀ {n : ℕ},
+  1 ≤ n →
+    Nat.log 2 (3 * 2 ^ (n - 1)) = n ∧
+      MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n (3 * 2 ^ (n - 1)) = 2 * (3 * 2 ^ (n - 1)) - 3
+'MathResearch.DegreeFormulaArithmetic.degreeMin_three_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.degreeMin_add_one_le : ∀ {n k : ℕ},
+  1 ≤ n →
+    1 ≤ k →
+      MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k + 1 ≤
+        MathResearch.BinaryMultiplicityDegreeComplete.degreeMin (n + 1) k
+'MathResearch.DegreeFormulaArithmetic.degreeMin_add_one_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.DegreeFormulaArithmetic.degreeSet : ℕ → ℕ → Set ℕ
+'MathResearch.DegreeFormulaArithmetic.degreeSet' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.isLeast_degreeSet : ∀ {n k : ℕ},
+  1 ≤ n →
+    1 ≤ k →
+      IsLeast (MathResearch.DegreeFormulaArithmetic.degreeSet n k)
+        (MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k)
+'MathResearch.DegreeFormulaArithmetic.isLeast_degreeSet' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.admissible_ne_zero : ∀ {n k : ℕ} {P : MvPolynomial (Fin n) (ZMod 2)},
+  MathResearch.BinaryMultiplicityDegreeFormula.Admissible n k P → P ≠ 0
+'MathResearch.DegreeFormulaArithmetic.admissible_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.D_examples : ∀ {n : ℕ},
+  (2 ≤ n → IsLeast (MathResearch.DegreeFormulaArithmetic.degreeSet n 1) n) ∧
+    (4 ≤ n → IsLeast (MathResearch.DegreeFormulaArithmetic.degreeSet n 4) (n + 4)) ∧
+      (5 ≤ n → IsLeast (MathResearch.DegreeFormulaArithmetic.degreeSet n 8) (n + 11)) ∧
+        (5 ≤ n → IsLeast (MathResearch.DegreeFormulaArithmetic.degreeSet n 15) (n + 25))
+'MathResearch.DegreeFormulaArithmetic.D_examples' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.D_excess : ∀ {n k : ℕ},
+  1 ≤ k →
+    k < 2 ^ (n - 2) →
+      IsLeast (MathResearch.DegreeFormulaArithmetic.degreeSet n k) (2 * k - k / 2 ^ (n - 1) + (n - 2 - Nat.log 2 k)) ∧
+        1 ≤ n - 2 - Nat.log 2 k
+'MathResearch.DegreeFormulaArithmetic.D_excess' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.D_succ : ∀ {n k d d' : ℕ},
+  1 ≤ k →
+    Nat.log 2 k + 2 ≤ n →
+      IsLeast (MathResearch.DegreeFormulaArithmetic.degreeSet n k) d →
+        IsLeast (MathResearch.DegreeFormulaArithmetic.degreeSet (n + 1) k) d' → d' = d + 1
+'MathResearch.DegreeFormulaArithmetic.D_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.D_three_mul : ∀ {n : ℕ},
+  1 ≤ n → IsLeast (MathResearch.DegreeFormulaArithmetic.degreeSet n (3 * 2 ^ (n - 1))) (2 * (3 * 2 ^ (n - 1)) - 3)
+'MathResearch.DegreeFormulaArithmetic.D_three_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.DegreeFormulaArithmetic.D_add_one_le : ∀ {n k d d' : ℕ},
+  1 ≤ n →
+    1 ≤ k →
+      IsLeast (MathResearch.DegreeFormulaArithmetic.degreeSet n k) d →
+        IsLeast (MathResearch.DegreeFormulaArithmetic.degreeSet (n + 1) k) d' → d + 1 ≤ d'
+'MathResearch.DegreeFormulaArithmetic.D_add_one_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 16 audited declarations.

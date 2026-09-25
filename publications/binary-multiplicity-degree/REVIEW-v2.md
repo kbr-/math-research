@@ -41,3 +41,22 @@ Declined: dropping the unused hypothesis t < k in Lemma 4.5(2), since the Lean s
 - Publication and correspondence are the author's decisions.
 
 The Lean commit 86d8a6ba cited by the paper was pushed to `main` on 25 September 2026.
+
+## Full formalization (25 September 2026)
+
+At the user's request every mathematical claim of version 2 was formalized. An inventory
+(`research/results/bmd-f5-formalize-remarks/scope-map.md`) listed 20 unformalized claims.
+Six new modules prove them: binary digit sums, Catalan parity, the Artin–Schreier root, the
+arithmetic of Φ and of D, and the digit argument for the minimum. A fresh-context audit then
+found nine further assertions and one mismatch. Several facts were proved about the closed forms
+rather than about the least degrees. The fixes:
+
+- the facts are restated for the least elements of `degreeSet` and `deltaSet`;
+- two "does better" comparisons now say "has degree below that bound";
+- the paper now says "multiplicity at least 2^(n−1)";
+- the cover-product sentence now points to Corollary 1.3;
+- the Legendre and Hasse-derivative asides were reworded;
+- `admissible_ne_zero`, `card_nonzero` and the F² bounds were added.
+
+The aggregate lists 64 declarations and passes `verify.sh` at commit 168a0c8e
+(`research/results/bmd-f5-formalize-remarks/lean-verification-paper2-r2.txt`).

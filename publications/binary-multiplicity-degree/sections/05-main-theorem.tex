@@ -13,7 +13,7 @@ least \(\Phi(n,k,\ell)\). So the constructed polynomial has degree exactly
 For \(n\ge1\) and \(k\ge1\), \(\min_{0\le\ell<k}\Phi(n,k,\ell)\) equals
 \(2k+n-2-\lfloor\log_2k\rfloor\) for \(k<2^{n-1}\), and
 \(2k-\lfloor k/2^{n-1}\rfloor\) for \(k\ge2^{n-1}\)
-\lean{claims/PerOrderMinimum.lean}.
+\textnormal{\small\leanref{claims/PerOrderMinimumDirect.lean}{[Lean: this proof]}\,\leanref{claims/PerOrderMinimum.lean}{[Lean: via Section~\ref{sec:second-proof}]}}.
 \end{lemma}
 
 \begin{proof}
@@ -40,8 +40,8 @@ binary ones. With \(q=Q\) the best value of \(h\) is \(2Q+\lambda\). With
 \end{itemize}
 \end{proof}
 
-The Lean proof of Lemma~\ref{lem:minimum} does not formalize this digit
-argument. It derives the minimum from Theorem~\ref{thm:main} and the value of
+The first Lean proof of Lemma~\ref{lem:minimum} follows this digit argument. A
+second one derives the minimum from Theorem~\ref{thm:main} and the value of
 \(D(n,k)\) proved in Section~\ref{sec:second-proof}: every \(\Phi(n,k,\ell)\) is
 the degree of a \(k\)-admissible polynomial, and the origin order of a
 \(k\)-admissible polynomial of least degree attains the minimum.
@@ -78,14 +78,13 @@ For \(k<2^{n-1}\) this is Corollary~\ref{cor:main}. Otherwise compare with
 \end{proof}
 
 At \(k=3\cdot2^{n-1}\) the logarithmic expression is \(2k-2\), while
-\(D(n,k)=2k-3\).
+\(D(n,k)=2k-3\) \lean{claims/DegreeFormulaArithmetic.lean}.
 
-\begin{remark}[Which origin orders are extremal]
+\begin{remark}[Which origin orders are extremal]\label{rem:extremal}
 The orders \(\ell\) attaining \(D(n,k)\) are those for which \(k-\ell-1=q2^n+r\)
-maximizes \(2q+s_2(r)\). For \(k\le2^n\), by the proof of
-Lemma~\ref{lem:minimum} (this characterization is not formalized), they are the
-\(\ell\) with \(s_2(k-\ell-1)=\lfloor\log_2k\rfloor\), for instance
-\(\ell=k-2^{\lfloor\log_2k\rfloor}\). Exact rank computations of
+maximizes \(2q+s_2(r)\). For \(k\le2^n\) they are the \(\ell\) with
+\(s_2(k-\ell-1)=\lfloor\log_2k\rfloor\), for instance
+\(\ell=k-2^{\lfloor\log_2k\rfloor}\) \lean{claims/PerOrderMinimumDirect.lean}. Exact rank computations of
 \(\delta(n,k,\ell)\) recorded in the
 \href{https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-all-dimension-minimum}{research notebook}
 agree with \(\Phi\): all 696 values for \(n\le5\), \(k\le16\) and for
