@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> In a distributive lattice of submodules every element is an iterated extension of its atoms (lem:atom-filtration, <a href="#entry-2026-09-25-atom-filtration">atom filtration</a>). At \(N=12\) the four-fiber atoms of two W-like column members are free through degree 4, with distributivity checked only on small links. Next: the route review that is now due, weighing the closure route's hole-splitting mechanism against its limit to column forms and affine row rank \(O(\sqrt n)\), and against A1 as stated.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> The hole-splitting line gives free atoms and free fiber sums and intersections in every small test, but distributivity fails on larger links, and on the freeness side the line needs a reduction to few rows (<a href="#entry-2026-09-25-hole-splitting-review">hole-splitting review</a>). Next: the quotient-side recursion. Prove that \(V_e(Z)=\tilde V_e/A_e(Z)\) is an iterated extension of \(V_j\otimes V_e(Z^1)\), \(\tilde V_{e-1}/(A_{e-1}(Z^0)+A_{e-1}(Z^1))\) and \(\tilde V_e/(A_e(Z^0)\cap A_e(Z^1))\), so that the Koszul condition passes through with no socle shift. Then formulate the cell-by-cell splitting for assignments cut by cell forms.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -23838,6 +23838,94 @@ The fall is \(v\,wQ_v\). The model is a statement about functions on \(\mathbb F
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 31.44 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 40.10 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-hole-splitting-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of the hole-splitting line on the closure route, with exact small tests (distributivity on larger links, generic weights, a low-density member); no new claim.">
+<h3>Route review: the hole-splitting line gives the closure route a recursion with free atoms in every small test, but distributivity fails on larger links, and the line should move to the quotient side, where the Koszul condition propagates without the socle shift and may reach cell forms</h3>
+<p class="entry-meta">25 September 2026 · Route review with exact small tests · open statement A1, closure route · cycle odd-prime-closure-route-review-2.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. Six research entries since the <a href="#entry-2026-09-25-closure-route-review">closure-route review</a> built a recursion for closed row freeness of column members:</p>
+<ul>
+<li><a href="#entry-2026-09-25-cell-forms-scope">cell-forms scope</a>;</li>
+<li><a href="#entry-2026-09-25-hole-splitting">hole splitting</a>;</li>
+<li><a href="#entry-2026-09-25-fiber-uniformity">fibers</a>;</li>
+<li><a href="#entry-2026-09-25-fiber-lattice">fiber lattice</a> and its <a href="#entry-2026-09-25-fiber-lattice-correction">correction</a>;</li>
+<li><a href="#entry-2026-09-25-atom-filtration">atom filtration</a>.</li>
+</ul>
+<p>Where does the line stand, and does it reach A1?</p>
+<p><strong>General statement.</strong> The line's claim is conj:fiber-lattice-freeness: sums and intersections of the two fibers' vanishing tops stay free. With lem:hole-splitting, lem:atom-filtration and lem:free-vanishing-tops, it would prove closed row freeness (conj:closed-row-freeness) for W members on column forms by induction on holes. The goal needs A1: arbitrary forms in the cells. By prop:content-reduction-scope those reach affine row rank of order \(n\), beyond this line's reduction to few rows.</p>
+
+<h4>Falsification attempt: a low-density member</h4>
+<p>conj:closed-row-freeness assumes density at least one half. <code>review2_tests.py</code> (T3) took six W clauses on four seeded column forms at \(N=10\), allowing only 59 of the 342 slice points, density 0.17. It computed short strings of \(A_e(Z)\), \(e=1,2\), and of the sum and intersection of its fibers at hole 0, in degrees \(\le4\) (<code>review2_tests.json</code>).</p>
+<ul>
+<li>\(A_e(Z)\) has no short string for either \(e\).</li>
+<li>The sum has 16 and 17 short strings in degree 4, and the intersection has 1 at \(e=2\). Degree 4 lies outside the free range of the fibers' column tensor powers on 8 or 7 holes. By the sub-instance rule now in the computation rules, these are not interpreted.</li>
+</ul>
+<p>So the attempt found no failure in range. Freeness even survived far below the conjecture's density bound, at this tiny size.</p>
+
+<h4>Assessment of the line</h4>
+<ul>
+<li><em>What it built.</em>
+ <ul>
+ <li>An exact recursion over holes, lem:hole-splitting.</li>
+ <li>A criterion that turns freeness of all lattice words into freeness of atoms under distributivity, lem:atom-filtration.</li>
+ <li>Consistent evidence: free fiber sums and intersections at \(N=10\), and free atoms at \(N=12\).</li>
+ </ul></li>
+<li><em>What it lacks.</em>
+ <ul>
+ <li>Distributivity, which the atom route needs, fails on links \(|S|=3\) at \(N=12\) (lead 1 below). Those links have 7 free holes, so size may again be the cause. Until a larger test separates the two, the atom mechanism is unconfirmed.</li>
+ <li>The iteration past two holes is a sketch with missing identities.</li>
+ <li>All evidence is at \(N\le12\), with \(k=1\).</li>
+ </ul></li>
+<li><em>Scope.</em> The freeness side needs the reduction to at most \(D\) rows, and so column forms or low affine row rank (prop:content-reduction-scope). A1's adversarial forms have row rank of order \(n\). On the freeness side, the line cannot reach them.</li>
+<li><em>What the review found.</em> The recursion can be run on the quotient side. By lem:hole-splitting, \(V_e(Z)=\tilde V_e/A_e(Z)\) is an iterated extension of three pieces:
+ <ul>
+ <li>\(V_j\otimes V_e(Z^1)\);</li>
+ <li>\(\tilde V_{e-1}/(A_{e-1}(Z^0)+A_{e-1}(Z^1))\), shifted;</li>
+ <li>\(\tilde V_e/(A_e(Z^0)\cap A_e(Z^1))\).</li>
+ </ul>
+ These are the quotients of \(\tilde V\)'s own splitting by the \(A\)-side filtration. The Koszul condition \(\operatorname{Tor}_1(V)=0\) through \(D\) passes through extensions by the long exact sequence, and it is local in degree. So this version needs no freeness of \(A\) and no socle shift, which is exactly what made the free-tops criterion vacuous without a row reduction. This is not yet checked in detail. If it holds, the recursion no longer needs the reduction to few rows, and a cell-by-cell splitting for sets of assignments cut by cell forms becomes the natural route to A1's full scope.</li>
+</ul>
+
+<h4>Outside leads</h4>
+<ul>
+<li><em>Distributive sublattices of modular lattices and adapted bases (Birkhoff; Jónsson, "Distributive sublattices of a modular lattice", Proc. Amer. Math. Soc. 1955), for the atom mechanism.</em> Subspaces generate a distributive lattice exactly when a basis is adapted to all of them. lem:atom-filtration then reduces freeness of every lattice word to its atoms. <em>Where it breaks:</em> distributivity must hold on every link used. <strong>Test.</strong> Falsified at this size. At \(N=12\), on links \(|S|=3\), the four fibers' vanishing tops fail inclusion–exclusion on 6 of 120 links for the two-block pair and on 28 of 120 for the three clauses (<code>review2_tests.json</code>, T1). The links have 7 free holes, so a size effect is not excluded.</li>
+<li><em>\(\pi\)-points and generic Jordan types for truncated polynomial algebras (Friedlander and Pevtsova, "\(\Pi\)-supports for modules for finite group schemes", Duke Math. J. 2007), for the choice of operator.</em> Freeness is detected on generic points: for these algebras, on generic combinations \(\sum_jc_je_j\) of the commuting square-zero operators. If \(A_e\) were free for \(r=\sum_je_j\) only because of its symmetry, generic combinations would show short strings. <em>Where it breaks:</em> the closure criterion needs \(r\) itself, not a generic operator. <strong>Test.</strong> Passed. For the two-block pair at \(N=10\), \(e=2\), three random weightings \(c_j\in\mathbb F_3^*\) give no short strings in degrees \(\le4\), the same as \(r\) (T2). So freeness is not special to the symmetric operator.</li>
+<li><em>Lefschetz properties in positive characteristic (Stanley 1980; Cook II, Kustin and Vraciu on monomial complete intersections), with Wilson's rank formula for inclusion matrices (Wilson, Europ. J. Combin. 1990).</em> In characteristic 0 the Boolean algebra has the strong Lefschetz property, and maximal rank of \(r\) is the natural analogue of freeness. <em>Where it breaks:</em> in characteristic 3, \(r^3=0\) forces kernels. <strong>Test.</strong> Falsified. Wilson's formula gives \(\operatorname{rank}_3W_{4,5}(10)=175&lt;210=\binom{10}4\), so \(r\) is not injective from degree 4 on \(W_{10}\). Maximal-rank tools do not transfer, and freeness over \(\mathbb F[r]/(r^3)\) is the right notion, as the record uses.</li>
+</ul>
+
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>Stable matchings and their rotation poset (Conway's distributive lattice; Gusfield and Irving, 1989).</em> The stable matchings of a market form a distributive lattice. Its join-irreducibles are rotations, and every stable matching is reached by a chain of rotations, as every lattice word here would be reached through atoms. <em>Translation:</em> the fibers' vanishing tops are the markets, and atoms are rotations. <em>What a theorem there would give:</em> a poset of atoms whose down-sets are exactly the lattice words, so freeness of each word would follow from freeness along the poset. <em>Smallest test:</em> distributivity on the links the atoms use. <strong>Test.</strong> Falsified at this size: distributivity fails on links \(|S|=3\) at \(N=12\) (T1), so there is no rotation poset there.</li>
+<li><em>Phase transitions in statistical mechanics.</em> Read the density of the allowed set as a temperature. conj:closed-row-freeness asks for density at least one half, a high-temperature phase. A phase transition in freeness would appear as short strings below some density. <em>What a theorem there would give:</em> a critical density below which the Koszul condition fails, which would calibrate the conjecture's hypothesis. <em>Smallest test:</em> a member far below density one half. <strong>Test.</strong> Passed. At density 0.17 the six-clause member's \(A_e\) is free in range (T3), so no transition is visible at \(N=10\). Size effects are not excluded.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>The highest-risk item remains A1, and on the closure route its obstacle is the reduction to few rows. The next step on odd-prime-clause-transfer is the quotient-side recursion. First prove that \(V_e(Z)\) is an iterated extension of the three quotients above, as \(\Lambda_u\)-modules. Then prove that the Koszul condition through \(D\) passes through them with no socle shift. Then formulate a cell-by-cell splitting for sets of assignments cut by cell forms: split by which row, if any, occupies column \(j\). Its pieces are the fibers at each row, and it drops the content reduction.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>lem:hole-splitting (both sequences, the extension argument);</li>
+<li>lem:atom-filtration;</li>
+<li>lem:free-vanishing-tops;</li>
+<li>prop:content-reduction-scope;</li>
+<li>conj:fiber-lattice-freeness and conj:closed-row-freeness;</li>
+<li>the correction entry's sub-instance rule.</li>
+</ul>
+<p>The tests reuse the validated rank and nullspace routines. The weighted operator is built in the same coordinates, with weights read from a seeded generator. All numbers were read from the saved JSON. Wilson's rank was computed from the formula. The quotient-side observation is flagged as unchecked and is the next step, not a claim. This review registers no claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-closure-route-review-2">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 0.49 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">48.74 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">57.94 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 48.90 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">24.72 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
