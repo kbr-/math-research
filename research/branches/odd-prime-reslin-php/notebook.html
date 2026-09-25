@@ -18,7 +18,7 @@
 <p>The goal follows from S1 by the proved <a href="#weak-base-unary-selector-transfer">compiler</a>. S2 to S5 are what the current route, relative gluing on the window, needs for S1. No proved reduction yet turns them into S1 for adversarial inventories, and S2 is where it is missing. Order: highest risk first after S1.</p>
 <ol>
 <li><strong>S1, block hardness.</strong> Over \(\mathbb F_3\), for fixed \(K\) and large \(n\), the weak unary PHP base on \(n+1\) rows and \(n\) columns plus any \(n^K\) complete accuracy-one ENS blocks has no PC refutation of degree 11 (\(4p-1\) at other odd \(p\)). The blocks have arbitrary affine inputs \(L\), \(q=1-L^2\), private coefficients \(r\), and companions \(qP\) with \(P=1-\sum rq\). <em>Status:</em> proved when every block's projected rank is at most \(R\) or at least \(Q_*\) (<a href="#ternary-low-or-dense-graph-rank-exclusion">graph criterion</a>); open in the window between.</li>
-<li><strong>S2, dependent forms.</strong> In the window, the base plus the blocks has no fall below 11 once members of bounded size carry their own degree-11 consequences. It must cover the band, whose forms are necessarily dependent (<a href="#entry-2026-09-24-mixture-composition">count</a>). <em>Status:</em> open, highest risk. Proved for one shared input per block (<a href="#entry-2026-09-25-one-shared-input-locality">one shared input</a>). For several shared inputs, overlapping pairs fall at 7 or 8 (<a href="#entry-2026-09-25-overlap-pairs">pairs</a>). Members of three blocks fail at \(h=3\) for four blocks on one plane, through a consequence supported where every input outside the plane is false (<a href="#entry-2026-09-25-three-local-augmentation">three-local</a>, <a href="#entry-2026-09-25-s2-route-review">review</a>). Heuristically, such consequences need inputs concentrated in a small span, which high projected rank excludes.</li>
+<li><strong>S2, dependent forms.</strong> In the window, the base plus the blocks has no fall below 11 once members of bounded size carry their own degree-11 consequences. It must cover the band, whose forms are necessarily dependent (<a href="#entry-2026-09-24-mixture-composition">count</a>). <em>Status:</em> open, highest risk. Proved for one shared input per block (<a href="#entry-2026-09-25-one-shared-input-locality">one shared input</a>). For several shared inputs, overlapping pairs fall at 7 or 8 (<a href="#entry-2026-09-25-overlap-pairs">pairs</a>). Members of three blocks fail at \(h=3\) for four blocks on one plane, through a consequence supported where every input outside the plane is false (<a href="#entry-2026-09-25-three-local-augmentation">three-local</a>, <a href="#entry-2026-09-25-s2-route-review">review</a>). One more private input on one block removes it below 11 (<a href="#entry-2026-09-25-outside-input-floor">floor</a>). So such consequences seem to need inputs concentrated in a small span, which high projected rank excludes (conj:outside-input-floor).</li>
 <li><strong>S3, freeness.</strong> The weak top algebra is free through degree 11 over the span of the inventory's forms. <em>Status:</em> proved on a Zariski-open set for at most \(m(\lfloor N/21\rfloor-1)\) forms (<a href="#entry-2026-09-24-general-forms-freeness">general forms</a>); open for the band's rational and adversarial tuples.</li>
 <li><strong>S4, companion tops.</strong> A single block's top ideal equals \(\rho'Q\) below degree \(h+2\) (conj:companion-tops-low-degree). <em>Status:</em> checked through \(h=7\), degree 8; needed for \(h\ge10\), degree 11.</li>
 <li><strong>S5, repeated linear parts.</strong> Pairs and triples of blocks with identical or parallel linear parts, with \(R\) and \(T\), have no fall below 11 when \(h\ge7\) (conj:r-added-parallel-fall; triples with \(T\)). Identical pairs fall no lower than \(h+4\) (conj:shared-input-falls). <em>Status:</em> checked at small \(h\). With S4, the locality theorems reduce components with repeated linear parts and at most two multi-coordinate blocks to these.</li>
@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> The <a href="#entry-2026-09-25-s2-route-review">S2 route review</a> traced the planar four-block consequence to blocks restricted to a common plane, supported where their other inputs are false. Next: state and attempt to prove the outside-input floor. A consequence outside the three-local ideal has degree at least the number of inputs switched off outside a common span, plus a relation on that span. Prove it first in the private-input model, from lem:none-indicator-identity and the Künneth splitting over private variables. Then derive the \(h=4\) plane prediction from it.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> The <a href="#entry-2026-09-25-outside-input-floor">floor test</a> removed the planar four-block consequence below 11 by adding one private input to one block, beyond the predicted degree. Next: prove the support lemma behind conj:outside-input-floor. A consequence outside the three-local ideal is supported where every participating block has all its outside inputs false; elsewhere a block is trivialized and the family reduces to a smaller one. Use lem:none-indicator-identity and the point idempotents of \(\mathbb F_3[p]\), with the degree bookkeeping.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -19602,6 +19602,63 @@ where \(p_a\) is block \(a\)'s private input. \(\Phi\) has degree 5 and 44 terms
 <tr><td>Individually measured computation</td><td class="elapsed">8 min 43.49 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 <tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">46.52 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-outside-input-floor" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:outside-input-floor ex:plane4-extra-private-input">
+<h3>Outside-input floor: one more private input on one block removes the planar four-block consequence below 11, refuting the predicted one-degree-per-input mechanism</h3>
+<p class="entry-meta">25 September 2026 · Conjecture with a finite check (a pre-stated prediction refuted; the outcome is locality) · open statement S2 · cycle odd-prime-outside-input-floor.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement S2. The <a href="#entry-2026-09-25-s2-route-review">S2 route review</a> found that the only consequence outside the three-local ideal, in the planar family plane4 at \(h=3\), has the form \(p_1p_2p_3p_4\cdot\Phi\), with \(\deg\Phi=5\). It proposed that such consequences cost degree for every input outside the blocks' common span, so that high projected rank would exclude them. This cycle tests that mechanism with a stated prediction before attempting a proof.</p>
+<p><strong>General statement.</strong> conj:outside-input-floor and ex:plane4-extra-private-input.</p>
+<ul>
+<li>conj:outside-input-floor. Over \(\mathbb F_3\), take separately augmented complete accuracy-one ENS blocks with private coefficients and no cross generators. Block \(a\) has shared inputs in a span \(W\) and \(s_a\ge1\) private inputs, which are fresh variables. Let \(f\) be a consequence derivable within degree 11 that lies outside the three-local ideal (conj:three-local-augmentation). Let \(G\) be a minimal set of blocks such that the subfamily on \(G\) derives \(f\) within degree 11, with \(f\) outside the three-local ideal of that subfamily and \(|G|\ge4\). Then
+\[\deg f\;\ge\;\delta+\sum_{a\in G}(2s_a-1).\]
+Here \(\delta\) is the least degree of such a consequence for the same shared-input configuration with every \(s_a=1\), minus \(|G|\). For plane4, \(\delta=9-4=5=\deg\Phi\). So the conjecture is an additivity statement that further tests can falsify. Under it, a group of four blocks has no such consequence of degree \(\le10\) once \(\sum_{a\in G}(2s_a-1)\ge11-\delta\), which is 6 for the plane.</li>
+<li>ex:plane4-extra-private-input. Take the plane4 family \((x,y)\), \((x+y,x-y)\), \((x,x+y)\), \((y,x-y)\) and give block 1 a second private input, so that \(s=(2,1,1,1)\). Then every consequence derivable within degree 11 lies in the three-local ideal: all 9740 computed generators reduce to 0. With \(s=(1,1,1,1)\), the least outside degree is 9 (ex:four-block-overlap-falls).</li>
+</ul>
+
+<h4>The prediction and what happened</h4>
+<p><code>plane4_mixed.sing</code> stated in its header, before the run, that the least outside degree would be \(5+5=10\), counting one degree per private input as in \(p_1p_2p_3p_4\Phi\). The run is <code>plane4_mixed.out</code>, degree bound 11, 1253 s, with every basis of maximum degree 11 and nothing skipped. It found no outside element below 11.</p>
+<p>The header's own criterion, that no outside element below 11 contradicts the mechanism, was met. So the one-degree-per-private-input mechanism is refuted by its stated test. The degree bound 11 shows only generators of degree \(\le10\), so this point gives only least outside degree \(\ge11\). Under additivity with \(\delta=5\), the block with two private inputs then costs at least 3. The cost \(2s_a-1\) was chosen after the run, as the smallest cost consistent with both data points:</p>
+<ul>
+<li>\(4\cdot1+5=9\), observed;</li>
+<li>\(3+3\cdot1+5=11\), which this run cannot see, consistent with the observed absence below 11.</li>
+</ul>
+<p>It is a lower bound suggested by the data, not a fit. The conjecture states it so that the next test can falsify it. A plausible reason for the extra cost: on the private-false locus a block with two private inputs needs the indicator that both are false, and \(p_1p_5\) vanishes only when one of them is 0, so the relation \(\Phi\) must be carried by the full indicators \(p_1^2p_5^2\) in all but one factor. That is not a proof.</p>
+<p>A degree-9 sizing run of the same family, <code>plane4_mixed_db9.out</code> (31 s), also found nothing outside below 9.</p>
+
+<h4>What this means for S2</h4>
+<ul>
+<li>The one non-local consequence found so far is fragile. It disappears below 11 when a single block gains one more input outside the common plane. That is evidence for, not a proof of, the rank-aware form of S2: for the window's high-rank blocks, bounded members with their own degree-11 consequences would suffice.</li>
+<li>Band blocks have no private inputs, and the conjecture does not cover them. Its analogue would read "inputs outside the span in question" for "private inputs", which is an unproved extension. Under the conjecture plus that extension, a four-block consequence below 11 needs each block to have at most about one input outside a small common span. With \(h\ge10\), such a block has projected rank at most about \(\dim W+1\).</li>
+<li>Still open: a proof of the floor, the value of \(\delta\) for spans other than the plane, and the band's form without private inputs.</li>
+</ul>
+<p>Next: prove the floor's first ingredient, the support lemma. A consequence outside the three-local ideal is supported on the locus where every participating block has all its outside inputs false. On any other point set some block is trivialized, meaning its \(P\) is absorbed by a free coefficient, so there the family reduces to a smaller one. Prove it with lem:none-indicator-identity and the decomposition of \(\mathbb F_3[p]\) into point idempotents, including the degree bookkeeping.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read: ex:four-block-overlap-falls, conj:three-local-augmentation and the checked inclusion script this run modifies (one block's input list, one extra coefficient), the S2 route review's factorization, and lem:none-indicator-identity. The prediction is quoted from the script header. Every value is read from <code>plane4_mixed.out</code> and <code>plane4_mixed_db9.out</code>. The script is <code>three_local_inclusion_checked.sing</code> with four changes: the ring gains \(p(5)\) and \(r(13)\), block 1 gains them, the block loop bound is generalized, and the diagnostics are removed. None affects the inclusion logic, which was reviewed twice. One oddity: in both mixed runs, the count of family consequences equals the count of new triple consequences (9740 and 1827). In the \(h=3\) runs the two counts differ. The conclusion does not use the counts, and the same script detected the \(h=3\) outside element.</p>
+<p>A fresh-context reviewer confirmed the script diff and the reading of the output. It required these changes, all adopted:</p>
+<ul>
+<li>the pre-stated criterion reported as met, so the prediction is refuted, and the cost identified as chosen afterwards;</li>
+<li>the second point stated as a lower bound;</li>
+<li>the band threshold corrected to \(11-\delta\), that is 6;</li>
+<li>\(\delta\) and \(G\) defined;</li>
+<li>the band implications marked as resting on an unproved extension to non-private inputs;</li>
+<li>the wording of the finite check and of the gate made exact.</li>
+</ul>
+<p>These weaken or clarify claims, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-outside-input-floor">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>28 min 10.42 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 31.30 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 51.41 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">21 min 26.04 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+<tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">2 min 21.53 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
