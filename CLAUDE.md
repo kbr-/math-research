@@ -91,7 +91,11 @@ Apply every rule below before launching a run.
    - check that the reachable parameters satisfy the statement's hypotheses.
 
    A test whose every outcome is compatible with the statement, or whose inputs lie
-   outside its hypotheses, decides nothing. Put the count in the entry. When the step
+   outside its hypotheses, decides nothing. Put the count in the entry. When a test runs over
+   sub-instances of different sizes (links, fibers, restrictions), report its outcomes by
+   sub-instance size, and do not interpret failures confined to sub-instances below the
+   nonvacuous size: on 25 September 2026 a recorded "refutation" came only from the smallest links
+   and vanished two holes later. When the step
    targets a bound, evaluate the bound on the simplest structurally different extremal
    examples, and compare what full success would give with what the goal needs.
 2. **Compute the statement's own quantity, on inputs that meet its hypotheses.**
