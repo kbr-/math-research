@@ -12,13 +12,18 @@ import json
 import re
 import sys
 
-# Each must-read command, with the reason shown when it is filtered.
+# The start of a command-list segment up to the program it runs: optional parentheses, variable
+# assignments and env/nohup/time wrappers, then optionally an interpreter with its options.
+INVOKED = (r"^\s*\(*\s*(?:\w+=\S*\s+)*(?:(?:env|nohup|time)\s+)*"
+           r"(?:\S*python[\d.]*\s+(?:-\S+\s+)*|(?:ba)?sh\s+)?(?:\S*/)?")
+# Each must-read command, run at the start of a segment, with the reason shown when it is filtered.
+# A command that only names the file, as in `grep x tools/resume.py | head`, is not guarded.
 GUARDED = [
-    (re.compile(r"(?:^|[\s/;&|(])resume\.py\b"),
+    (re.compile(INVOKED + r"resume\.py\b"),
      "tools/resume.py prints the restoration bundle, one part per call"),
-    (re.compile(r"(?:^|[\s/;&|(])compute\.sh\s+start\b"),
+    (re.compile(INVOKED + r"compute\.sh\s+start\b"),
      "./compute.sh start prints turn guidance and warnings that can appear anywhere"),
-    (re.compile(r"(?:^|[\s/;&|(])finish-turn\.py\b"),
+    (re.compile(INVOKED + r"finish-turn\.py\b"),
      "tools/finish-turn.py prints checks, warnings and staging instructions"),
 ]
 # Command lists split on ;, &&, || and newlines; a remaining single | is a pipe.

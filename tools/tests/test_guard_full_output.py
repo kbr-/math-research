@@ -26,6 +26,9 @@ class GuardFullOutputTest(unittest.TestCase):
             "./compute.sh start t1 > start.txt",
             "./tools/finish-turn.py t1 2>&1 | tail -15",
             "./tools/finish-turn.py t1 --next t2 | head",
+            "FOO=1 python3 -u tools/resume.py | head",
+            "(python3 tools/resume.py) | head",
+            "bash compute.sh start t1 | tail",
         ]:
             with self.subTest(command=command):
                 result = run(command)
@@ -46,6 +49,12 @@ class GuardFullOutputTest(unittest.TestCase):
             "./compute.sh phase t1 reading",
             "./tools/finish-turn.py t1",
             "./tools/finish-turn.py t1 && git status | head",
+            "grep -n AGENTS tools/resume.py | head -30",
+            "cd /repo && rg -n x tools/finish-turn.py | head",
+            "sed -n 1,40p compute.sh | grep start",
+            "echo '{\"command\":\"python3 tools/resume.py\"}' | python3 hook.py pre",
+            "git log -- tools/resume.py | head",
+            "python3 tools/test_resume.py | head",
         ]:
             with self.subTest(command=command):
                 self.assertEqual(run(command).returncode, 0)
