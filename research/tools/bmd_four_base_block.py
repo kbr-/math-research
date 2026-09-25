@@ -12,11 +12,15 @@ For each m and each h in (ceil(m/2), ceil(m/2)+1) the script builds the conditio
 F_2[B,y1,y2] (rows = conditions, columns u = 0..m) and runs Singular:
   * existence: a syzygy of A whose last component is exactly 1, printed as EXIST lines (its
     y-homogeneous part is a solution for l = 0, and y1^l times it gives every l, for every B);
-  * nonexistence: a generator f e_m of the intersection of the row module of A with R e_m whose f
-    is nonzero and free of B, printed as NONEX, with coefficients LAMBDA_r from lift() such that
-    sum_r LAMBDA_r row_r = f e_m; then w^(m) = 0 for every solution and every B.
+  * nonexistence: every generator f e_m of the intersection of the row module of A with R e_m,
+    printed as NONEX i f, with coefficients LAMBDA i r from lift() such that
+    sum_r LAMBDA_r row_r = f e_m; then f w^(m) = 0 for every solution, so w^(m) = 0 for every B at
+    which f is a nonzero polynomial in y (the verifier checks the gcd over F_2[B] of f's
+    y-coefficients is a power of 1+B, and B = 1 + c_0^2/c_1^3 is never 1).
   NONE is printed if no such certificate is found.
-Usage: bmd_four_base_block.py OUTDIR [MMAX]   (writes one .sing script and its output per case)
+For 8 <= m <= 15 the same test runs at h in (H(m), H(m)+1), H(m) = 2 floor(m/8) + ceil((m mod 8)/2),
+with the root taken to y^8.
+Usage: bmd_four_base_block.py OUTDIR [MMAX [MMIN]]   (writes one .sing script and its output per case)
 """
 import itertools, subprocess, sys
 from pathlib import Path
@@ -32,14 +36,38 @@ def poly_mul(p, q):
     return {k: v for k, v in r.items() if v}
 
 
-def xpow(var, a):
-    """(y + y^2 + B y^4)^a in variable var (0 or 1), truncated at degree 7."""
-    x = {((1, 0, 0) if var == 0 else (0, 1, 0)): 1,
-         ((2, 0, 0) if var == 0 else (0, 2, 0)): 1,
-         ((4, 0, 1) if var == 0 else (0, 4, 1)): 1}
+def root_terms():
+    """Normalized additive root: x = sum_u A_u y^(2^u), A_0 = A_1 = 1, A_u = A_(u-1)^2 + (1+B) A_(u-2)^4,
+    from L~ = (1+B) X^4 + X^2 + X; coefficients are polynomials in B as {e: 1}.  Up to y^8 (m <= 15)."""
+    def pmul(p, q):
+        r = {}
+        for a in p:
+            for b in q:
+                r[a + b] = (r.get(a + b, 0) + 1) % 2
+        return {k: 1 for k, v in r.items() if v}
+    def padd(p, q):
+        r = dict(p)
+        for k in q:
+            r[k] = (r.get(k, 0) + 1) % 2
+        return {k: 1 for k, v in r.items() if v}
+    A = [{0: 1}, {0: 1}]
+    for _ in range(2):
+        sq = pmul(A[-1], A[-1])
+        q4 = pmul(pmul(A[-2], A[-2]), pmul(A[-2], A[-2]))
+        A.append(padd(sq, pmul({0: 1, 1: 1}, q4)))
+    return A
+
+
+def xpow(var, a, trunc=7):
+    """x(y)^a in variable var (0 or 1), truncated at degree trunc (at most 15)."""
+    x = {}
+    for u, coeff in enumerate(root_terms()):
+        d = 2 ** u
+        for e in coeff:
+            x[(d, 0, e) if var == 0 else (0, d, e)] = 1
     p = {(0, 0, 0): 1}
     for _ in range(a):
-        p = {k: v for k, v in poly_mul(p, x).items() if k[0] + k[1] <= 7}
+        p = {k: v for k, v in poly_mul(p, x).items() if k[0] + k[1] <= trunc}
     return p
 
 
@@ -60,7 +88,8 @@ def rows(m, h):
         if a + b > h - 1:
             continue
         tau = (h + 3 - a - b) // 4
-        prod = poly_mul(xpow(0, a), xpow(1, b))
+        trunc = max(m, 7)
+        prod = {k: v for k, v in poly_mul(xpow(0, a, trunc), xpow(1, b, trunc)).items() if k[0] + k[1] <= trunc}
         for t in range(tau):
             row = []
             for u in range(m + 1):
@@ -86,13 +115,16 @@ def script(m, h):
         # existence certificate: a syzygy whose last component is 1
         'for (i = 1; i <= ncols(Z); i++) { if (found == 0 && Z[i][' + str(ncol) + '] == 1) {',
         '  found = 1; for (j = 1; j <= ' + str(ncol) + '; j++) { print("EXIST " + string(j - 1) + " " + string(Z[i][j])); } } }',
-        # nonexistence certificate: f e_m = sum_r lambda_r row_r with f free of B
+        # nonexistence certificates: every generator f e_m of N meet R e_m, with lift() coefficients;
+        # the verifier accepts one whose y-coefficients have gcd over F_2[B] a power of 1+B
         'module E = gen(' + str(ncol) + ');',
         'module I = intersect(N, E);',
-        'for (i = 1; i <= ncols(I); i++) { if (found == 0 && I[i][' + str(ncol) + '] != 0 && diff(I[i][' + str(ncol) + '], B) == 0) {',
-        '  found = 2; print("NONEX " + string(I[i][' + str(ncol) + ']));',
+        'for (i = 1; i <= ncols(I); i++) { if (found == 0 && I[i][' + str(ncol) + '] != 0) {',
+        '  print("NONEX " + string(i) + " " + string(I[i][' + str(ncol) + ']));',
         '  matrix T = lift(N, module(I[i]));',
-        '  for (j = 1; j <= nrows(T); j++) { print("LAMBDA " + string(j - 1) + " " + string(T[j, 1])); } } }',
+        '  for (j = 1; j <= nrows(T); j++) { print("LAMBDA " + string(i) + " " + string(j - 1) + " " + string(T[j, 1])); }',
+        '  kill T; } }',
+        'if (found == 0 && ncols(I) > 0 && I[1][' + str(ncol) + '] != 0) { found = 2; }',
         'if (found == 0) { print("NONE"); }',
         'quit;',
     ]
@@ -103,8 +135,9 @@ def main():
     outdir = Path(sys.argv[1])
     mmax = int(sys.argv[2]) if len(sys.argv) > 2 else 7
     outdir.mkdir(parents=True, exist_ok=True)
-    for m in range(1, mmax + 1):
-        h0 = (m + 1) // 2
+    mmin = int(sys.argv[3]) if len(sys.argv) > 3 else 1
+    for m in range(mmin, mmax + 1):
+        h0 = 2 * (m // 8) + (m % 8 + 1) // 2
         for h in (h0, h0 + 1):
             text, R = script(m, h)
             sp = outdir / f'm{m}-h{h}.sing'
