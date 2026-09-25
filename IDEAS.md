@@ -223,6 +223,12 @@ tooling should also:
 - remap recorded hashes whenever history is rewritten. Git's `post-rewrite` hook receives the
   old→new pairs for rebase and amend, so it can apply them to the registry `revision` fields
   and to publication pins, then re-render; a merge driver alone never sees the rewrite;
+- remap attention fingerprints as well. `claim_attention.fingerprint` hashes correction
+  edges together with their review `revision`, so a pure hash remap reopens decided items
+  as "claim changed". The 25 September remap replaced 4 recorded fingerprints by the values
+  of the remapped registry, after checking that the registry changed by the remap only.
+  Excluding review provenance from the edge part of the fingerprint would avoid this, but
+  that changes existing fingerprints, so it needs its own migration;
 - add a mechanical check (in `tools/check-claims.py` or `verify-checkout.py`) that every
   recorded revision and publication pin is an ancestor of the checked branch, so a stale
   hash fails before a push rather than being found later;
