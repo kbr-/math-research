@@ -5,6 +5,7 @@ points and origin order exactly l has savings h = n + 2(k-1) - delta <= rho_{<=n
 where rho_{<=n}(c) is the least number of allowed parts summing to c-1; a part a is allowed when
 C_{a-1} != 0 mod p and nu(a) = #{1 <= j <= a : C_{j-1} != 0 mod p} <= n (a linear form in n root-curve
 coordinates then has order exactly a).  When n >= m, h = rho_{<=n}(m+1) (Menezes' formula, extended from n >= k-1 to n >= k-l-1).
+Also checks the uncapped side h >= rho_F(m+1) (the Catalan-truncation upper bound on delta).
 Reads the kernel JSONs of research/results/bmd-r9-odd-cube/pP and reports violations and equality.
 Usage: bmd_cube_rho_cap_check.py RESULTS_DIR p
 """
@@ -37,10 +38,12 @@ def rho_capped(p, n, top):
 def main():
     root, p = Path(sys.argv[1]), int(sys.argv[2])
     above, eq_fail, eq_ok, total, eq_all, beyond, beyond_eq = [], [], 0, 0, 0, 0, 0
+    below_uncapped, above_uncapped = [], 0
     for f in sorted(root.glob('cube-p%d-n*-k*.json' % p)):
         d = json.loads(f.read_text())
         n, k = d['n'], d['k']
         best = rho_capped(p, n, k)
+        free = rho_capped(p, 10 ** 6, k)  # uncapped rho_F
         for l, v in enumerate(d['delta']):
             m = k - l - 1
             h = n + 2 * (k - 1) - v
@@ -48,6 +51,9 @@ def main():
             if h > best[m]:
                 above.append((n, k, l, h, best[m]))
             eq_all += h == best[m]
+            if h < free[m]:
+                below_uncapped.append((n, k, l, h, free[m]))
+            above_uncapped += h > free[m]
             if n >= m and n < k - 1:  # beyond Menezes' range n >= k-1
                 beyond += 1
                 beyond_eq += h == best[m]
@@ -59,6 +65,8 @@ def main():
     print(f'p={p}: {total} values; savings above rho_<=n: {above}')
     print(f'p={p}: n >= m cases with h = rho: {eq_ok}; failures: {eq_fail}')
     print(f'p={p}: equalities overall: {eq_all} of {total}')
+    print(f'p={p}: savings below rho_F(m+1) (Catalan-truncation upper bound violated): {below_uncapped}')
+    print(f'p={p}: values with savings strictly above rho_F(m+1): {above_uncapped} of {total}')
     print(f'p={p}: values with n >= m and n < k-1 (beyond Menezes range): {beyond}, equalities: {beyond_eq}')
 
 
