@@ -7,7 +7,9 @@ part count. Continue through the remaining parts in order with
 Each part contains at most 20,000 UTF-8 payload bytes. Follow the root
 [Codex output-allowance rule](../../AGENTS.md#restoration-and-research-discipline)
 for preparation and every part read, including enclosing tool wrappers.
-The number of calls depends on bundle size. Do not `cat`
+The number of calls depends on bundle size. Run every call bare: never pipe
+it through `head`, `tail`, `sed` or `grep` or redirect it, since a filtered part
+loses restoration text (a Claude Code hook refuses such commands). Do not `cat`
 the whole bundle or combine all parts into one oversized tool response. If a part
 is truncated, retry that part with sufficient output allowance; **do not prepare
 another resume**. If already reading the parts, continue without rerunning setup
