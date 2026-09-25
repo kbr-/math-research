@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A3 (generic W).</strong> Degree-\(h+1\) directness propagates from one good block of columns to the whole board (thm:directness-propagation), so fixed numbers of random tops are direct with probability tending to 1 and a fixed fraction of the fill needs only constant-probability directness at smaller sizes (cor:block-amplification, <a href="#entry-2026-09-25-directness-propagation">propagation entry</a>). Extend the argument to degree \(h+2\), multipliers of degree 2: a new column enters each multiplier as \(\sum u\otimes w\) with \(w\) of degree 1 on the block. Find the independence hypothesis that forces those parts into the Koszul and Frobenius span, and certify it at the smallest size where Koszul pairs are absent (degree 6 for two-square tops).</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Taylor generation propagates along columns, with a two-term defect bookkeeping: a block defect either extends in its degree or reappears one degree up tensored with the new column (thm:taylor-propagation, <a href="#entry-2026-09-25-taylor-propagation">Taylor propagation</a>). Two tops agreeing outside one column already give global non-Frobenius syzygies \(v(\mathbf e_b-\mathbf e_{b'})\). Next: for pairs of W-shaped tops whose prefix forms differ in one column, check whether these syzygies lie in thm:based-taylor-glue's coherent-pair span and lift exactly for coherent pairs. Then follow chains of such pairs column by column with the bookkeeping.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -23023,6 +23023,74 @@ So the degree-5 syzygies of a hub family \(\{\ell_0^2\ell_b^2\}\) are exactly th
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 5.45 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3.97 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">6.65 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-taylor-propagation" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="thm:taylor-propagation cor:taylor-block-amplification">
+<h3>Taylor generation propagates along columns: a column-addition exact sequence bounds the non-Taylor syzygies by those of a block, so Taylor generation on one block in all lower degrees gives it on the whole board</h3>
+<p class="entry-meta">25 September 2026 · Working proof, with a rank check · open statements A3 and A1 · cycle odd-prime-taylor-propagation.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A3, with a view to A1. The <a href="#entry-2026-09-25-directness-propagation">propagation entry</a> showed that degree-\(h+1\) directness spreads from one good block of columns. W's route needs Taylor generation through degree \(22k\) (thm:based-taylor-glue), which includes the Koszul range. Does the argument extend to every degree, Koszul pairs included, and what does it say where Taylor generation fails?</p>
+<p><strong>General statement.</strong> thm:taylor-propagation. Let \(R\) be a graded commutative algebra over a field, let \(\tau_1,\dots,\tau_B\in R_h\), and let \(F_b\subseteq\operatorname{Ann}_{R_1}(\tau_b)\). For \(e\ge0\):</p>
+<ul>
+<li>\(\operatorname{Syz}_e(R)=\{(z_b)\in R_e^B:\sum_bz_b\tau_b=0\}\);</li>
+<li>\(T_e(R)\) is the span of the Frobenius elements \(f\,x\,\mathbf e_b\) (\(f\in F_b\), \(x\in R_{e-1}\)) and the Koszul pairs \(\tau_cx\,\mathbf e_b-\tau_bx\,\mathbf e_c\) (\(x\in R_{e-h}\));</li>
+<li>\(\operatorname{Def}_e=\dim\operatorname{Syz}_e/T_e\), the defect.</li>
+</ul>
+<p>Adjoin a column, \(R'=R\otimes(\mathbb F\oplus V)\) with \(V\) in degree 1, \(V^2=0\) and \(\dim V=m\). Take any \(\tau'_b\in R'_h\) with \(\pi\tau'_b=\tau_b\), and \(F'_b\subseteq\operatorname{Ann}_{R'_1}(\tau'_b)\) with \(\pi F'_b\supseteq F_b\) (every element of \(F_b\) lifts), where \(\pi:R'\to R\) kills \(V\). Then there is an exact sequence \(0\to\operatorname{Syz}_{e-1}(R)\otimes V\to\operatorname{Syz}_e(R')\xrightarrow{\ \pi\ }\operatorname{Syz}_e(R)\), and
+\[\operatorname{Def}_e(R')\ \le\ \dim\bigl(\pi\operatorname{Syz}_e(R')/T_e(R)\bigr)+m\operatorname{Def}_{e-1}(R)\ \le\ \operatorname{Def}_e(R)+m\operatorname{Def}_{e-1}(R).\]
+In particular, if \(\operatorname{Def}_{e'}(R)=0\) for all \(e'\le e\), then \(\operatorname{Def}_{e'}=0\) after adjoining any number of columns. For product tops on the weak monomial algebra: Taylor generation on one block of columns in all multiplier degrees up to \(e\) gives Taylor generation on the whole board up to \(e\). Degree 0 means the restricted tops are independent. The same proof works with \(T_e\) spanned by Frobenius elements of any positive degree and by any chosen pair syzygies \(u\,\mathbf e_b-u'\,\mathbf e_c\) whose coefficients lift. Each lift differs from its restriction by an element of \(R\otimes V\), which multiplication by \(v\in V\) kills. That generalised span is what thm:based-taylor-glue uses: coherent pairs only, lower-degree pair syzygies for coherent pairs sharing a form, and degree-2 Frobenius elements. With the Koszul span as stated, "zero defect" equals that theorem's hypothesis only for product tops with no shared forms.</p>
+
+<h4>Proof</h4>
+<p><em>Restriction.</em> \(\pi\) is a ring homomorphism, so it maps syzygies to syzygies, \(\operatorname{Syz}_e(R')\to\operatorname{Syz}_e(R)\).</p>
+<p><em>Kernel.</em> \(z\in R'_e\) has \(\pi z=0\) exactly when \(z\in R_{e-1}\otimes V\), since \(V^2=0\). Write \(z_b=\sum_iw_{b,i}v_i\) with \(w_{b,i}\in R_{e-1}\) and a basis \(v_i\) of \(V\), and \(\tau'_b=\tau_b+\sigma_b\) with \(\sigma_b\in R\otimes V\). Then \(z_b\sigma_b=0\), and \(\sum_bz_b\tau'_b=\sum_i\bigl(\sum_bw_{b,i}\tau_b\bigr)v_i\), which vanishes exactly when each \((w_{b,i})_b\) lies in \(\operatorname{Syz}_{e-1}(R)\). So \(\ker\pi=\operatorname{Syz}_{e-1}(R)\otimes V\), and \(\dim\operatorname{Syz}_e(R')=\dim\pi\operatorname{Syz}_e(R')+m\dim\operatorname{Syz}_{e-1}(R)\).</p>
+<p><em>Taylor span.</em> Every generator of \(T_e(R)\) lifts to a generator of \(T_e(R')\) with the same image: take \(f'x\,\mathbf e_b\) with \(\pi f'=f\), and the Koszul pair of the \(\tau'\) with the same \(x\in R\subseteq R'\). So \(\pi T_e(R')\supseteq T_e(R)\). Conversely, for a generator \(w\) of \(T_{e-1}(R)\) and \(v\in V\), \(wv\in T_e(R')\):</p>
+<ul>
+<li>\(f\,x\,v\,\mathbf e_b=f'(xv)\,\mathbf e_b-(f'-f)\,xv\,\mathbf e_b\), and \((f'-f)\in V\) gives \((f'-f)xv=0\);</li>
+<li>\(\tau_cxv\,\mathbf e_b-\tau_bxv\,\mathbf e_c\) equals the Koszul pair of the \(\tau'\) with multiplier \(xv\), since \(\sigma_cv=\sigma_bv=0\).</li>
+</ul>
+<p>So \(T_{e-1}(R)\otimes V\subseteq T_e(R')\cap\ker\pi\), and \(\dim T_e(R')\ge\dim T_e(R)+m\dim T_{e-1}(R)\).</p>
+<p><em>Bound.</em> Subtracting, and using \(T_e(R)\subseteq\pi T_e(R')\subseteq\pi\operatorname{Syz}_e(R')\subseteq\operatorname{Syz}_e(R)\), gives the displayed inequality. The zero-defect statement follows by induction on the number of columns, applied to all degrees up to \(e\) at once. \(\square\)</p>
+<p>At \(e=1\) with \(h=2K\) this is thm:directness-propagation. The bound has the shape of a Horace split, a trace on the old block and a residual on the new column, as in lem:row-horace-identity for double points. The sequence is the syzygy-module analogue, for an added column, of lem:edge-castelnuovo-sequence. Adding spare columns with \(\sigma_b=0\) on the monomial algebra is the special case behind lem:spare-column-transfer, which also removes the row sums. Here both pieces live on the same block, one degree apart. \(V^2=0\) kills \(z_b\sigma_b\), which makes the kernel exactly \(\operatorname{Syz}_{e-1}(R)\otimes V\). The coupling does not vanish: it is \(\dim\operatorname{Syz}_e(R)-\dim\pi\operatorname{Syz}_e(R')\), the slack in the second inequality.</p>
+
+<h4>Corollary and scope</h4>
+<p><strong>Corollary (Taylor block amplification, cor:taylor-block-amplification).</strong> Take forms whose column parts are independent and identically distributed across disjoint blocks, and let \(t_q(B,e)\) be the probability that the restricted family has zero defect in every multiplier degree up to \(e\) on \(q\) given columns. Then Taylor generation up to \(e\) on \(N\) columns fails with probability at most \((1-t_q(B,e))^{\lfloor N/q\rfloor}\). This is the directness corollary's argument, in every degree. For generic W the Koszul range reduces to constant-probability Taylor generation on blocks of \(n/L\) columns, again with the fill-fraction loss of the directness corollary. That applies in the random model with W-shaped tops (\(K=k+1\) squares, \(B=n^K\) tops, \(m=n+1\)), not to W's own forms, and with the Koszul span as stated only when no two tops share a form.</p>
+<p><em>Adversarial families.</em> The zero-defect hypothesis on a block is easy for an adversary to spoil. Two tops that agree outside one column \(c\) are dependent on every block avoiding \(c\), a degree-0 defect, and one such pair per column spoils every proper block. These pairs are not harmless globally. \(\tau_b-\tau_{b'}\) lies in \(\tilde A(P\setminus c)\otimes V_c\), so for every \(v\in V_c\) the element \(v(\mathbf e_b-\mathbf e_{b'})\) is a global syzygy in multiplier degree 1. It is non-Frobenius unless \(v\in F_b\cap F_{b'}\), which generically fails. This is the bound's second term realised: the degree-0 defect reappears, tensored with \(V_c\), one degree up. Defects never die when a column is added. A block defect either extends in the same degree (the first term) or reappears in the next degree through the kernel (the second). For A1 the useful object is this two-term bookkeeping along a column order, not a single good block.</p>
+
+<h4>Rank check</h4>
+<p><code>taylor_check.c</code> (exact FLINT ranks) takes two-square tops on \(m=2\) and checks multiplier degrees 0, 1 and 2, at target degree 6, below the Koszul range. It draws six tops on \(q\) columns, checks zero defect on the block in degrees 0, 1, 2, then embeds the same forms into \(N=q+1\) columns with a random extra column and measures the degree-2 defect. At \(q=8\), below degree 6's column threshold \(2\cdot6-3=9\), the block's degree-2 defect was 17 and 1 in two trials, so the hypothesis failed. The board defects at \(N=9\) were 3 and 0, both at most the bound. At \(q=9\), \(N=10\), the hypothesis held in 3 of 3 trials and the board's degree-2 defect was 0 in all three, as the theorem says. Multiplier degrees 0 to 2 lie below \(h=4\), so only the Frobenius part and one added column are exercised; the Koszul parts of the lifting and kernel steps are untested. The outputs are in this cycle's provenance record. By the route's case limit this cycle registers no new finite check; these runs support the theorem, and the claim metadata cites them.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>A3, random model: Taylor generation through any degree, Koszul range included, is monotone in the board and amplifies from blocks. The random Koszul-range question for generic W becomes a constant-probability question on blocks, with the fill-fraction loss.</li>
+<li>A1: a block-defect bookkeeping. When a column is added, a block defect either extends in its degree or reappears one degree higher, tensored with the new column. It never disappears. So an adversarial family's global defects are assembled column by column from these two sources. Two tops agreeing outside one column already give global non-Frobenius syzygies in multiplier degree 1. In W's language these are pairs whose prefix forms differ in one column: the shared-form pairs whose coherence thm:based-taylor-glue's pair syzygies must handle.</li>
+</ul>
+<p>Process: the first check run, at a block below the degree's column threshold, left the hypothesis unmet; the threshold count should have been made before that run, as computation rule 1 asks. The second run was sized from it.</p>
+<p>Next, on A1: for pairs of W-shaped tops whose prefix forms differ in one column, compute the global degree-1 syzygies \(v(\mathbf e_b-\mathbf e_{b'})\) and check whether they lie in thm:based-taylor-glue's generalised span. They should be its coherent-pair syzygies for shared forms, liftable exactly when the pair is coherent. That places the one-column pairs on the record's coherence map, and then the same bookkeeping follows chains of such pairs column by column.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the proof of thm:directness-propagation, lem:row-horace-identity for the Horace shape, and thm:based-taylor-glue for the Taylor hypothesis W's route needs. A fresh-context reviewer found the exact sequence, the Taylor-span inclusions, the inequality, the induction and the corollary correct, and the rank-check numbers matching the logs. It required: </p>
+<ul>
+<li>the adversarial paragraph corrected (one-column pairs give global non-Frobenius syzygies, so defects move up a degree rather than dying) and the pair count fixed;</li>
+<li>the Horace remark corrected (the coupling is the slack, not zero);</li>
+<li>the scope for W restricted to product tops without shared forms, with the generalised span described;</li>
+<li>the hypotheses fixed: \(R_0\) dropped, degree-1 \(V\) and commutativity added, lifting stated as \(\pi F'_b\supseteq F_b\);</li>
+<li>links to lem:edge-castelnuovo-sequence and lem:spare-column-transfer;</li>
+<li>the rank check's untested Koszul part stated.</li>
+</ul>
+<p>All were adopted. The rank check's quoted numbers were read from its saved output.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-taylor-propagation">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 35.08 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 13.57 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">21.03 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 21.54 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 29.28 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3.96 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.69 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
