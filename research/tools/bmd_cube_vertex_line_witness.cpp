@@ -12,13 +12,23 @@
 // the rank rises when the degree-l coefficients are also forced to vanish (then some solution has a nonzero
 // degree-l part).  Ranks by FLINT nmod_mat_rank modulo a prime.
 //
-// Usage: bmd_cube_vertex_line_witness prime p j [j ...]
+// Relaxation mode (third argument "relax", then j): keep only the multiplicity conditions at the vertices of the plane
+// x1 = x2 that differ from 0, namely (1,1,0), (0,0,1), (1,1,1), and the jet condition at the origin (the terms of degree < k
+// outside J^j vanish), drop the origin order and the other vertices, and report whether every such polynomial of
+// degree <= D lies in J^j (nullity with and without the whole-polynomial J^j rows).  Equal nullities mean that the
+// planar relaxation of the vertex-line conjecture holds at this p.
+//
+// Mask mode (third argument "relaxmask", then pairs MASK j): the same test with the multiplicity conditions kept at the
+// vertices v = (v&1, (v>>1)&1, (v>>2)&1) whose bit v is set in MASK; "relax" is MASK 152 (the plane x1 = x2).
+//
+// Usage: bmd_cube_vertex_line_witness prime p j [j ...]   |   ... prime p relax j   |   ... prime p relaxmask MASK j [MASK j ...]
 #include <cstdio>
 #include <cstdlib>
 #include <cstdint>
 #include <vector>
 #include <map>
 #include <array>
+#include <string>
 #include <flint/flint.h>
 #include <flint/nmod_mat.h>
 using namespace std;
@@ -38,12 +48,22 @@ int main(int argc, char **argv) {
     for (int t = l; t <= D; t++) for (int a = t; a >= 0; a--) for (int b = t - a; b >= 0; b--) {
         array<int, 3> e = {a, b, t - a - b}; idx[e] = mons.size(); mons.push_back(e);
     }
+    bool relaxmask = argc > 3 && string(argv[3]) == "relaxmask";
+    bool relax = relaxmask || (argc > 3 && string(argv[3]) == "relax");
+    if (relax) {  // unknowns: all monomials of degree <= D
+        mons.clear(); idx.clear();
+        for (int t = 0; t <= D; t++) for (int a = t; a >= 0; a--) for (int b = t - a; b >= 0; b--) {
+            array<int, 3> e = {a, b, t - a - b}; idx[e] = mons.size(); mons.push_back(e);
+        }
+    }
     int U = mons.size();
     printf("p=%d: k=%d l=%d D=%d unknowns=%d prime=%llu\n", p, k, l, D, U, (unsigned long long)P); fflush(stdout);
     // vertex rows
     vector<vector<pair<int, u64>>> base;
+    vector<int> vtx;  // vertex of each base row
     for (int v = 1; v < 8; v++) {
         int vv[3] = {v & 1, (v >> 1) & 1, (v >> 2) & 1};
+        if (relax && !relaxmask && vv[0] != vv[1]) continue;  // plane x1 = x2 only
         for (int s = 0; s < k; s++) for (int a0 = s; a0 >= 0; a0--) for (int a1 = s - a0; a1 >= 0; a1--) {
             int al[3] = {a0, a1, s - a0 - a1};
             vector<pair<int, u64>> row;
@@ -57,10 +77,37 @@ int main(int argc, char **argv) {
                 }
                 if (ok && c) row.push_back({u, c});
             }
-            base.push_back(row);
+            base.push_back(row); vtx.push_back(v);
         }
     }
     printf("vertex rows %zu\n", base.size()); fflush(stdout);
+    for (int ai = 4; relax && ai < argc; ai += relaxmask ? 2 : argc) {
+        int mask = relaxmask ? atoi(argv[ai]) : 152, j = atoi(argv[relaxmask ? ai + 1 : ai]);
+        vector<vector<pair<int, u64>>> sel;
+        for (size_t r = 0; r < base.size(); r++) if (mask >> vtx[r] & 1) sel.push_back(base[r]);
+        // J^j rows split by total degree: the jet rows (degree < k) are imposed, the rest are the test
+        map<array<int, 3>, vector<pair<int, u64>>> jr;
+        for (int u = 0; u < U; u++) {
+            int b1 = mons[u][0], b2 = mons[u][1], b3 = mons[u][2];
+            for (int b = 0; b <= b2 && b + b3 < j; b++) {
+                u64 c = binom(b2, b); if (b & 1) c = (P - c) % P;
+                if (c) jr[{b1 + b2 - b, b, b3}].push_back({u, c});
+            }
+        }
+        vector<vector<pair<int, u64>>> jet = sel, all = sel;
+        size_t njet = 0;
+        for (auto &kv : jr) { all.push_back(kv.second); if (kv.first[0] + kv.first[1] + kv.first[2] < k) { jet.push_back(kv.second); njet++; } }
+        auto rank_rows = [&](vector<vector<pair<int, u64>>> &rows) {
+            nmod_mat_t A; nmod_mat_init(A, rows.size(), U, P);
+            for (size_t r = 0; r < rows.size(); r++) for (auto &e : rows[r]) nmod_mat_entry(A, r, e.first) = e.second;
+            long rk = nmod_mat_rank(A); nmod_mat_clear(A); return rk;
+        };
+        long r0 = rank_rows(jet), r1 = rank_rows(all);
+        printf("relax mask=%d j=%d: unknowns %d, vertex rows %zu, jet rows %zu, all J rows %zu; nullity with jet only %ld, with whole J^j %ld: relaxation %s\n",
+               mask, j, U, sel.size(), njet, jr.size(), (long)U - r0, (long)U - r1, r0 == r1 ? "holds" : "fails");
+        fflush(stdout);
+    }
+    if (relax) return 0;
     for (int ai = 3; ai < argc; ai++) {
         int j = atoi(argv[ai]);
         vector<vector<pair<int, u64>>> rows = base;
