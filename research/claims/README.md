@@ -301,7 +301,9 @@ intact; validation does not fetch them or certify their mathematical content.
 The parallel append helper merges new structured claims/relationships by ID,
 then regenerates Markdown. Changes to existing records, conflicting IDs, or
 other unsupported conflicts require manual review. Its legacy Markdown mode
-remains available for older worktrees; new work must edit JSON.
+remains available for older worktrees; new work must edit JSON. When both sides of a
+rebase changed existing records, `tools/merge-claim-registry.py` merges the registry
+three ways by record ID and re-renders the index; it refuses records changed on both sides.
 
 ## Changed-claim maintenance contract
 

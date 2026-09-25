@@ -207,6 +207,14 @@ merge drivers also help when two Git branches work on the same thread.
   duplicate IDs, conflicting edits and preservation of both sides' records before
   enabling automatic resolution. Avoid depending on a private one-off merge script.
 
+**A building block (25 September 2026).** `tools/merge-claim-registry.py` does the registry
+part by hand in a paused rebase: a three-way merge of `index.json` by record ID over the index
+stages, combining one-sided changes and additions, refusing records changed on both sides or
+deleted on one and changed on the other, then re-rendering. A driver can reuse its
+`merge(base, ours, theirs)`. Its limits: it compares whole records, not fields, so non-overlapping
+field edits of one claim still conflict; it leaves attention history to `claim-attention.py sync`;
+and it does not remap the rewritten hashes below.
+
 **Commit hashes recorded in tracked files (25 September 2026).** Rebasing rewrites the hash
 of every rebased commit, but tracked files keep naming the old ones, and no check notices.
 A branch of 76 commits prepared for rebase onto `main` had three kinds of such references:
