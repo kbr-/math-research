@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Independent random choice among non-rigid forms is refuted by a duplicated hole family, so a chooser must correlate blocks that share forms (prop:duplicated-hole-family, <a href="#entry-2026-09-26-random-rigid-choice">random choice</a>). Next: test a random global priority on non-rigid forms, with each block taking its \(k\) highest, against the duplicated hole family, a shared-decoy family and the rigid-forms entry's three open padding types, at rigidity threshold \(D_0=18k\).</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> A random priority on non-rigid forms defends every hole-type family, conditionally on the recorded expansion event (prop:priority-hole-families, <a href="#entry-2026-09-26-random-priority">random priority</a>). Next: attack it with mixed blocks, meaning cells of two holes, row and column sums, and shared decoys from other holes. Reduce each attack's clauses and decide whether they admit a low-degree refutation.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24651,6 +24651,49 @@ where \(q(w)\) is the single-divided-power probability of prop:divided-power-col
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 48.22 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 16.71 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-random-priority" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:priority-hole-families">
+<h3>Random priority: one uniformly random order on the non-rigid forms, with each block taking its top \(k\), reduces every hole-type family, duplicated or overlapping, to weak graph PHP on a graph containing independent random \(k\)-sets, so the recorded expander bound applies to all of them, on the same random graph and with the same expansion condition</h3>
+<p class="entry-meta">26 September 2026 · Conditional result, on the recorded expansion hypothesis · open statement A1 · cycle odd-prime-random-priority.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. prop:duplicated-hole-family (<a href="#entry-2026-09-26-random-rigid-choice">random choice</a>) refuted independent per-block random choice. A chooser must correlate blocks that share forms. The simplest correlated rule is a random priority: a uniformly random order \(\pi\) on the non-rigid forms up to scalars, with each block taking its \(k\) highest non-rigid forms as prefix. Does it defend the families that break independent choice?</p>
+<p><strong>General statement.</strong> prop:priority-hole-families. Over \(\mathbb F_3\), call a family hole-type if every block consists of non-rigid forms that are, up to scalars, cells \(X_{jt}-1\) of one hole \(t\), for a set \(B\) of pigeons, counted as scalar classes. Rigid forms are excluded, and arbitrary multiplicities, pigeon subsets and overlaps are allowed. Let \(U_t\) be the union of the pigeon sets \(B\) with \(|B|&gt;k\) at hole \(t\). Choose prefixes by a random priority \(\pi\), a uniform order on the scalar classes of non-rigid forms. Then, for every \(D\), a degree-\(D\) refutation of the weak base plus the chosen clauses gives one of weak graph PHP on \(G_S\), where \(G_S\) is a random bipartite graph whose hole neighborhoods \(S_t\) are independent uniform \(k\)-subsets of \([m]\). This is prop:hole-family-random-choice's graph. So random priority satisfies W's conclusion on the family with probability at least the probability that \(G_S\) satisfies that proposition's expansion hypothesis at degree \(22k\). At the reduction's \(k\approx2.5(K+1)\log n\), the expected number of pigeons isolated in \(G_S\) is about \(m\,e^{-kn/m}\to0\), so that hypothesis is not excluded by isolated pigeons. For constant \(k\) it would be.</p>
+
+<h4>Proof</h4>
+<ul>
+<li><em>Clauses are multiples of deletions.</em> For a block at hole \(t\) with pigeon set \(B\), \(|B|&gt;k\), the prefix \(S_B\) is the top \(k\) of \(B\) under \(\pi\). For \(i\in B\setminus S_B\), the clause is exactly \((1-(x_{it}-1)^2)\prod_{j\in S_B}(x_{jt}-1)^2=x_{it}(2-x_{it})\prod_{j\in S_B}(x_{jt}-1)^2\), a polynomial multiple of \(x_{it}\). So for every \(D\), a degree-\(D\) refutation of base plus clauses gives one of base plus the deletions \(x_{it}=0\), \((i,t)\) deleted by some block. The converse, that the clause reduces to \(x_{it}\) modulo the collision axioms, is not needed. Blocks with \(|B|\le k\) have no form outside their prefix, hence no clause. A block holding both \(L\) and \(2L\) counts one class; its clauses in which the class appears twice vanish by Booleanity, since \(x(1-x)\) divides them.</li>
+<li><em>What survives.</em> A pigeon \(i\in T_t\), the top \(k\) of \(U_t\) under \(\pi\), lies in the top \(k\) of every block \(B\ni i\) at \(t\), since \(B\subseteq U_t\). So it is never deleted at \(t\). Pigeons outside \(U_t\) are never deleted at \(t\) either. So the kept graph \(G\) has \(N_G(t)\supseteq T_t\cup([m]\setminus U_t)\). If \(|U_t|\le k\), no deletion occurs at \(t\).</li>
+<li><em>Independence and coupling.</em> Forms of distinct holes are distinct scalar classes, so the restrictions of \(\pi\) to distinct holes are independent uniform orders, and the \(T_t\) are independent uniform \(k\)-subsets of the \(U_t\). Given \(T_t\), draw \(j\) with the hypergeometric law of \(|S\cap U_t|\) for a uniform \(k\)-subset \(S\subseteq[m]\). Take a uniform \(j\)-subset of \(T_t\) and a uniform \((k-j)\)-subset of \([m]\setminus U_t\). Their union \(S_t\) is a uniform \(k\)-subset of \([m]\), independent across holes, and \(S_t\subseteq N_G(t)\). So \(G_S\subseteq G\).</li>
+<li><em>Monotonicity.</em> Base plus the deletions becomes weak graph PHP on \(G\) after substituting \(x_e=0\) for the deleted cells. Substituting \(x_e=0\) for the cells of \(G\setminus G_S\) maps each axiom of weak graph PHP on \(G\) to an axiom of weak graph PHP on \(G_S\) or to 0. A pigeon with no neighbor in \(G_S\) has its row equation mapped to the constant \(-1\), which is \(G_S\)'s own empty row axiom. Substitution turns a degree-\(D\) PC refutation into one of no larger degree. So hardness on \(G_S\), which prop:hole-family-random-choice gives through the imported Miksa–Nordström bound under its expansion hypothesis, gives hardness here. \(\square\)</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li><em>The first correlated rule survives the attack that refuted independent choice.</em> Random priority gives duplicated and overlapping copies of a hole block the same prefix where their top forms agree. Conditionally on the recorded expansion event for the uniform random graph \(G_S\), it defends every hole-type family, including the duplicated one. The coupling needs no separate hypothesis for pigeon subsets smaller than \([m]\).</li>
+<li><em>What it does not cover.</em>
+ <ul>
+ <li>Blocks whose non-rigid forms mix cells of different holes, or are not cells at all. This includes blocks containing all cells, whose common prefix gives clauses not analysed here.</li>
+ <li>Blocks containing rigid forms, which reach the rigid-forms entry's open "rigid only above \(D-(p-1)k\)" padding.</li>
+ <li>The rigid-forms entry's other open padding types.</li>
+ </ul>
+ The next attack must mix holes, so that the order's correlations work against the prover.</li>
+<li>No new case of W beyond hole-type families is proved, and those only conditionally on the recorded expansion event.</li>
+</ul>
+<p>Next: attack random priority with mixed blocks. The candidates are blocks containing cells of two holes, blocks of row and column sums, and blocks sharing non-rigid decoy forms from other holes. Compute each attack's clause reduction modulo the collision axioms, and decide whether the deletions and implications it produces admit a low-degree refutation.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:hole-family-random-choice (reduction and hypothesis), prop:duplicated-hole-family, prop:rigid-form-reduction and the falsification entry's hole family. A fresh-context reviewer confirmed the clause-to-multiple step, survival, independence and monotonicity. It required these changes, all adopted: rigid forms excluded from hole-type blocks; the clause step stated as an exact multiple, with the collision equivalence not used; scalar classes; the empty row axiom under substitution; the coupling, which replaces an unchecked hypothesis on mixed graphs by the recorded one; the conclusion stated as a probability; the range of \(k\); and overclaims removed. The coupling strengthens the statement, and its proof is a direct construction checked here: the hypergeometric draw from \(T_t\) and \([m]\setminus U_t\) gives a uniform \(k\)-subset of \([m]\) inside \(N_G(t)\). So no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-random-priority">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 37.45 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 33.06 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 4.18 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
