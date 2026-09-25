@@ -145,8 +145,10 @@ rules to growing checklists or one-off setup narratives.
   because nobody thought of applying them here, from any field (mathematics, computer
   science, theoretical physics, chemistry or anything else), each with the translation that would carry
   the objects across, what a theorem there would give, and the smallest test of the
-  translation. Reaching for other areas is the agent's job at every cycle, not only when
-  the user names a field.
+  translation. In the user's words (25 September 2026): "absurd bridges can reach for
+  mathematics, computer science, theoretical physics, quantum fucking chemistry, I don't
+  give a fuck. That's why they are absurd." Reaching for other areas is the agent's job at
+  every cycle, not only when the user names a field.
   Proposed next step names its route item.
   While the goal is open that step is always research: never park, pause or stop the
   goal, or wait for a user decision; when recorded routes are closed, propose and test
