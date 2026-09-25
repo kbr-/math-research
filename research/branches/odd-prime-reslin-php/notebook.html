@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A3 (generic W).</strong> The <a href="#entry-2026-09-25-literature-wilson-review">literature review</a> found no method for many adversarial dense constraints and redirected the thread to a several-form Wilson theorem. On the weak base's monomial algebra (lem:spare-column-transfer), state the conjecture that the joint top syzygies of \(M\) clause tops with suitable supports are spanned through degree \(D\) by Frobenius syzygies and Koszul pairs. Count the predicted dimensions at the smallest nonvacuous sizes. Then test the conjecture with an extension of the recorded Wilson kernel, first on the Koszul range for pair-disjoint supports and then on overlapping ones. It ends with a statement that survives the test, to be proved by a mod-\(p\) inclusion-rank argument, or with the configuration that breaks it.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A3 (generic W).</strong> For squares, Taylor generation coincides with recorded freeness (<a href="#entry-2026-09-25-several-form-wilson">several-form Wilson</a>), so the line moves to product tops. Test Taylor generation for tops \(\ell_i^2\ell_j^2\) drawn from a pool of \(P&gt;2N\) dense forms on \(m=2\) rows at \(N\approx11\). Compare the kernel with the span of Frobenius multiples and lcm-pair syzygies, running the list of pool sizes in one pass. If product tops stay Taylor-generated beyond the freeness count, state the product-top conjecture and look for a Wilson-type proof. Otherwise, record where they fail.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -22474,6 +22474,60 @@ where \(Z\) is the Hasse fat points of multiplicity \(s-1\) at the nonzero \(m_j
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">35.56 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">9.23 s</td></tr>
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">9 min 14.49 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-several-form-wilson" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:squares-taylor-is-freeness ex:several-form-taylor-check">
+<h3>Several-form Wilson: for squares of generic forms the colored algebra is the row-sum algebra, so Taylor generation is recorded freeness, and beyond freeness its failure matches the Hilbert-function excess</h3>
+<p class="entry-meta">25 September 2026 · Conjecture and finite check (with a rediscovery) · open statement A3 · cycle odd-prime-several-form-wilson.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A3. The <a href="#entry-2026-09-25-literature-wilson-review">literature review</a> took up a several-form Wilson theorem: Taylor generation for the tops of many forms on the weak base's monomial algebra \(\tilde A\), extending thm:column-wilson-taylor. The first case is the squares \(\ell_1^2,\dots,\ell_M^2\). Their Taylor syzygies are the Frobenius syzygies \((\ell_im)e_i\) and the Koszul pairs \((\ell_j^2m)e_i-(\ell_i^2m)e_j\). When do these span the kernel of \(\Phi_s:(g_i)\mapsto\sum_ig_i\ell_i^2\)?</p>
+<p><strong>General statement.</strong> conj:squares-taylor-is-freeness: on \(\tilde A\) over \(\mathbb F_3\), for squares of \(M\) forms, the excess of \(\ker\Phi_s\) over the Taylor span is at least \(\operatorname{HF}(\tilde A/(\ell_i^2))_s\) minus the free prediction \([q^s](1+mq)^N\bigl((1+q)/(1+q+q^2)\bigr)^M\). So Taylor generation in degree \(s\) forces the Hilbert function to match the free-model prediction. It fails wherever the prediction is negative. For squares, Taylor generation therefore does not go beyond freeness, which is recorded (thm:tensor-power-freeness, thm:general-forms-freeness). The several-form Wilson line must use product tops, whose dimension count allows \(n^K\) of them.</p>
+
+<h4>The colored algebra is the row-sum algebra</h4>
+<p>Let \(M\le m\) forms have column parts independent in every column. A change of basis in each column \(V_c\) extends to an automorphism of \(\tilde A=\bigotimes_c(\mathbb F_3\oplus V_c)\), since \(V_c^2=0\), and sends \(\ell_i\) to \(\sum_ce_{ic}\). The cells outside the span of the \(e_{ic}\) are killed by all \(e_{ic}\), so \(\tilde A\) splits by blocked columns into copies of the colored algebra \(C_{N',M}=\bigotimes_{c\le N'}(\mathbb F_3\oplus\mathbb F_3^M)\) with \(N'\le N\). That colored algebra is the weak algebra without row sums on \(M\) rows, with the forms as its row sums. This is prop:generic-forms-as-row-sums, and thm:tensor-power-freeness makes it free over the forms through \(t\) iff \(N\ge2t-1\). Freeness gives Taylor generation for any monomial tops. So the planned several-form Wilson theorem for such forms is a rediscovery of recorded freeness.</p>
+<p>The computation (<code>colored_taylor.c</code>, exact GF(3) ranks by color multidegree) adds one sharpening, observed and not proved. Taylor generation for the squares in target degree \(s\) holds from \(N\ge2s-2\), one column below freeness. It fails at \(N=2s-4,2s-3\) exactly as Wilson's single-form case predicts. This held in all 335 multidegree blocks for \(M=1\) (\(N\le14\), \(s\le8\)), \(M=2\) (\(N\le12\), \(s\le7\)) and \(M=3\) (\(N\le11\), \(s\le6\)), with no excess anywhere at \(N\ge2s-2\).</p>
+
+<h4>Beyond freeness</h4>
+<p><code>general_taylor.c</code> takes seeded uniform forms on \(m=2\) rows, dense in every column, so column parts may be dependent. It reports the kernel, the Taylor span, the quotient's Hilbert function and the free prediction. In 63 runs over \(M=2,3,6,10,16\) and \(N\le13\), \(s\le6\), the excess was at least \(\operatorname{HF}-\text{pred}\), with equality in 60 of them:</p>
+<ul>
+<li>\(M=3\): Taylor-generated and in fact free, since \(\operatorname{HF}\) equals the prediction, from \(N=2s\). The recorded freeness construction does not cover this, with \(3&gt;m\).</li>
+<li>\(M=10\), \(N=11\), \(s=5\): excess 1, and \(\operatorname{HF}-\text{pred}=1\).</li>
+<li>\(M=16\), \(N=11\), \(s=5\): prediction \(-432\), \(\operatorname{HF}=0\), excess 432.</li>
+</ul>
+<p>The identity \(\ker\Phi_s=M\dim\tilde A_{s-2}-\dim\tilde A_s+\operatorname{HF}_s\) holds exactly. In the free model the Taylor span equals \(\ker\), which gives excess \(=(\operatorname{HF}-\text{pred})+(\text{free Taylor count}-\text{actual Taylor span})\). The conjecture is that the second term is never negative. It was positive in the three exceptional runs and zero otherwise.</p>
+
+<h4>What this means</h4>
+<ul>
+<li>For squares, Taylor generation and freeness coincide in every run. Freeness over \(M\) forms is capped by the dimension count at about \(\dim\tilde A_1\)-order counts. So square tops cannot carry W's \(n^K\) clauses.</li>
+<li>W's clause tops are products of \(2k+2\) linear factors. The dimension count allows about \((mN/D)^{2k+2}\) of them, which is far above \(n^K\), so Taylor generation for product tops is not excluded by counting. But the forms, \(n^K(k+1)\) of them, far exceed \(\dim\tilde A_1\) and cannot be free. That regime, products of many dependent forms, is where a several-form Wilson theorem would say something new.</li>
+</ul>
+<p>Next: test Taylor generation for product tops drawn from a pool of forms beyond the freeness count. Take \(m=2\), \(N\) about 11, a pool of \(P\) dense forms with \(P&gt;2N\), and tops \(\ell_i^2\ell_j^2\) over a set of pairs. Compare the kernel with the Taylor span of the monomial-type ideal, whose syzygies are the Frobenius multiples and the lcm pairs. The kernel should accept the list of pool sizes, so the series runs in one pass.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>thm:column-wilson-taylor and lem:spare-column-transfer;</li>
+<li>prop:generic-forms-as-row-sums, thm:tensor-power-freeness and thm:general-forms-freeness, whose recorded content the colored computation rediscovers;</li>
+<li>thm:based-taylor-glue.</li>
+</ul>
+<p>Two controls were run:</p>
+<ul>
+<li>\(M=1\) reproduces Wilson's thresholds exactly: excess 1 at \(N=2s-4,2s-3\) and none from \(2s-2\).</li>
+<li>The \(M=2\) random-form control shows dependence between column parts creating excess.</li>
+</ul>
+<p>Numbers are read from the saved files by script: <code>m1_control.json</code>, <code>m2.json</code>, <code>m3.json</code> and <code>g_*.json</code> in <code>research/results/odd_prime_several_form_wilson_20260925/</code>. One process lapse: the \(M=6,10,16\) series was driven from a shell loop, not in one pass. The kernel's next version takes a list. No reviewer was run, since no theorem is claimed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-several-form-wilson">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 18.24 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 13.58 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 10.43 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 40.57 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">37.12 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3 min 36.55 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
