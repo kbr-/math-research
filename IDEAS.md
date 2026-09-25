@@ -213,7 +213,7 @@ stages, combining one-sided changes and additions, refusing records changed on b
 deleted on one and changed on the other, then re-rendering. A driver can reuse its
 `merge(base, ours, theirs)`. Its limits: it compares whole records, not fields, so non-overlapping
 field edits of one claim still conflict; it leaves attention history to `claim-attention.py sync`;
-and it does not remap the rewritten hashes below.
+and the rewritten hashes below are `tools/remap-revisions.py`'s job.
 
 **Commit hashes recorded in tracked files (25 September 2026).** Rebasing rewrites the hash
 of every rebased commit, but tracked files keep naming the old ones, and no check notices.
@@ -243,6 +243,13 @@ tooling should also:
 - repair the 21 known stale revisions on `main` with the recovered mapping
   ([research/provenance/rebased-revisions-main-2026-09-25.json](research/provenance/rebased-revisions-main-2026-09-25.json),
   old → new full hashes).
+
+**Partly implemented (25 September 2026).** `tools/remap-revisions.py` remaps the registry's
+`revision` fields, the review hashes and attention fingerprints that change only through the remap,
+and re-renders. It takes the pairs from two commit ranges matched by author date and subject, a
+JSON mapping, or stdin in the `post-rewrite` hook's format. `tools/check-claims.py` now fails when
+a recorded revision is not an ancestor of HEAD. The 21 stale revisions on `main` had been repaired
+before. Still open: running the tool from a `post-rewrite` hook, publication pins and notebook prose.
 
 ## 11. A searchable literature corpus: arXiv metadata, full-text and embedding search
 

@@ -304,6 +304,9 @@ other unsupported conflicts require manual review. Its legacy Markdown mode
 remains available for older worktrees; new work must edit JSON. When both sides of a
 rebase changed existing records, `tools/merge-claim-registry.py` merges the registry
 three ways by record ID and re-renders the index; it refuses records changed on both sides.
+A rebase or amend rewrites the commits that review `revision` fields name. After it, run
+`tools/remap-revisions.py --match OLD_BASE..OLD_TIP NEW_BASE..HEAD` and commit the result;
+`tools/check-claims.py` fails while a recorded revision is not an ancestor of HEAD.
 
 ## Changed-claim maintenance contract
 

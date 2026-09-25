@@ -209,7 +209,10 @@ does not also exclude refutations of every size, since the proof system is compl
 
 When a cycle needs a helper that earlier cycles also wrote for the same job, extend the committed
 framework tool instead of writing it again in scratch space, with tests, and use it from then on.
-A script rebuilt every cycle is a missing framework feature. Claim registration uses
+A script rebuilt every cycle is a missing framework feature. The same holds for integration and
+maintenance work (rebases, merges, registry repairs), and for a job that recurs by its nature even
+the first time it is done: a scratch script whose output is committed to a tracked record becomes a
+tested framework tool before that commit. Claim registration uses
 `tools/claim-index.py author build` with a compact spec (research/claims/README.md), not a
 per-cycle builder script. Append a drafted entry (and a new Proposed next step) with `tools/notebook-append.py`, and
 build reviewer excerpts with `tools/notebook-excerpt.py`, not with scratch scripts.

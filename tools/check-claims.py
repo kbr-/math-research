@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TESTS = ('claim_attention', 'fossick', 'claim_registry', 'claim_duplicates', 'claim_authoring',
          'claim_notices', 'claim_article_evidence', 'claim_article_finalizer', 'finish_turn',
          'record_citations', 'claim_dependencies', 'claim_graph', 'merge_formalization_appends',
-         'claim_maintenance', 'claim_registration')
+         'claim_maintenance', 'claim_registration', 'merge_claim_registry', 'remap_revisions')
 
 
 def checks(base):
@@ -27,6 +27,7 @@ def checks(base):
     for name in TESTS:
         yield f'test_{name}', [py, '-m', 'unittest', 'discover', '-s', 'tools/tests', '-p', f'test_{name}.py']
     yield 'claim graph audit', [py, 'tools/claim-index.py', 'graph', 'audit']
+    yield 'recorded revisions are ancestors of HEAD', [py, 'tools/remap-revisions.py', '--check']
     yield f'changed-claim contract against {base}', [py, 'tools/claim-index.py', 'changed', '--base', base]
 
 
