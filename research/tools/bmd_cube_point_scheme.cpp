@@ -22,11 +22,14 @@
 // lattice, so the annihilator (the stalk of E_m) is unchanged, while the lattice becomes saturated in
 // codimension one near P and the truncation margin N - K needed for exactness drops.
 //
-// Usage: bmd_cube_point_scheme p d m N K b1 b2 b3 es1 es2 es3 et1 et2 et3 OUT [i:0 | i:j ...]
+// Mode "all": the dimensions printed are those of the jets of all coordinates W_c (not only W_m).
+//
+// Usage: bmd_cube_point_scheme p d m N K b1 b2 b3 es1 es2 es3 et1 et2 et3 OUT [i:0 | i:j ... | all]
 #include <cstdio>
 #include <cstdlib>
 #include <cstdint>
 #include <vector>
+#include <string>
 #include <algorithm>
 #include <omp.h>
 using namespace std;
@@ -167,6 +170,7 @@ int main(int argc, char **argv) {
     if ((int)A.size() != 4 * d) { fprintf(stderr, "basis size %zu != 4d\n", A.size()); return 3; }
     // collision lifts along the divisors through the point (lem:cube-collision-lifts, Mobius transport)
     for (int a = 16; a < argc; a++) {
+        if (string(argv[a]) == "all") continue;
         int i = argv[a][0] - '1', j = (argv[a][2] == '0') ? -1 : argv[a][2] - '1';
         int o[2], no = 0; for (int x = 0; x < 3; x++) if (x != i && x != j) o[no++] = x;
         if (j < 0) {
@@ -209,12 +213,18 @@ int main(int argc, char **argv) {
     int nf = A.size();
     fprintf(stderr, "generators: %d (4d = %d)\n", nf, 4 * d);
     // column order
+    // Default: S = the jets of W_m below degree K.  Mode "all" (an argument "all" after OUT): S = the
+    // jets of every coordinate W_c below degree K, so the printed dimensions are those of the image of
+    // the truncated local solutions in (F[s,t]/m^K')^(m+1).
+    bool allmode = false;
+    for (int ai = 16; ai < argc; ai++) if (string(argv[ai]) == "all") allmode = true;
     vector<int> colc, cole;  // (c, monomial index)
-    for (int c = 0; c < m; c++) for (int e = 0; e < nm; e++) { colc.push_back(c); cole.push_back(e); }
-    for (int e = 0; e < nm; e++) if (mono[e].first + mono[e].second >= K) { colc.push_back(m); cole.push_back(e); }
+    int cmin = allmode ? 0 : m;
+    for (int c = 0; c < cmin; c++) for (int e = 0; e < nm; e++) { colc.push_back(c); cole.push_back(e); }
+    for (int c = cmin; c <= m; c++) for (int e = 0; e < nm; e++) if (mono[e].first + mono[e].second >= K) { colc.push_back(c); cole.push_back(e); }
     int nrest = colc.size();
     vector<int> sdeg;  // degree of each S column, in order K-1 down to 0
-    for (int deg = K - 1; deg >= 0; deg--) for (int e = 0; e < nm; e++) if (mono[e].first + mono[e].second == deg) { colc.push_back(m); cole.push_back(e); sdeg.push_back(deg); }
+    for (int deg = K - 1; deg >= 0; deg--) for (int c = cmin; c <= m; c++) for (int e = 0; e < nm; e++) if (mono[e].first + mono[e].second == deg) { colc.push_back(c); cole.push_back(e); sdeg.push_back(deg); }
     int ncol = colc.size(), nrow = nf * nm;
     vector<int> colpos((m + 1) * nm);
     for (int j = 0; j < ncol; j++) colpos[colc[j] * nm + cole[j]] = j;
@@ -266,12 +276,12 @@ int main(int argc, char **argv) {
            (unsigned long long)P, d, m, N, K, b[0], b[1], b[2], es[0], es[1], es[2], et[0], et[1], et[2], nrow, ncol, rk);
     // for K' = 0..K: S_K' = W_m monomials of degree < K'; M without S_K' = prefix ending before degree K'-1 block
     for (int Kp = 0; Kp <= K; Kp++) {
-        int sz = Kp * (Kp + 1) / 2;
+        int sz = Kp * (Kp + 1) / 2 * (m + 1 - cmin);
         int prefix = nrest;
         for (size_t j = 0; j < sdeg.size(); j++) if (sdeg[j] >= Kp) prefix++;
         int rest_rank = rank_after[prefix];
         int img = sz - rk + rest_rank;
-        printf("K'=%d: dim image of W_m mod m^K' = %d, colength = %d\n", Kp, img, sz - img);
+        printf("K'=%d: dim image of %s mod m^K' = %d, colength = %d\n", Kp, allmode ? "W" : "W_m", img, sz - img);
     }
     fflush(stdout);
     // echelon rows rank_rest..rk-1 restricted to S columns: their common kernel is the image mod m^K

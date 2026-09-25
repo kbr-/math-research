@@ -15,7 +15,11 @@
 // S_gamma(0) (dimension 4d when tau(V) has rank 4d over F_p((e))) and its orders at T = 0.  It prints
 // dim(S_1 + S_i), dim Sigma and whether e_m lies in Sigma.  Arcs of one case run in parallel.
 //
-// Usage: bmd_cube_arc_limits p CASE [CASE ...], CASE = d:m:PREC:ARC+ARC+..., ARC = c,c,../c,../c,..
+// First-order mode (CASE suffix ':first', chart y_2 = 1): with W(P) = 0, W = s A + t B + O(m_P^2), s = y_3,
+// t = y_1 - y_2; each arc's leading vector (sigma A, tau B or sigma A + tau B by the valuations of s, t)
+// kills S_gamma(0), and the program reports whether A_m and B_m are forced to vanish.
+//
+// Usage: bmd_cube_arc_limits p CASE [CASE ...], CASE = d:m:PREC:ARC+ARC+...[:first], ARC = c,c,../c,../c,..
 // (coefficients of y_1, y_2, y_3 in powers of e; '1,1/1/0,1' is y = (1+e, 1, e)).
 #include <cstdio>
 #include <cstdlib>
@@ -184,6 +188,37 @@ int main(int argc, char **argv) {
         Vec em(m + 1, 0); em[m] = 1; S.push_back(em);
         int rk2 = echelon(S, nullptr, nullptr);
         printf("d=%d m=%d rho=%d: dim Sigma = %d of %d; e_m in Sigma: %s\n", d, m, m + 1 - 4 * d, rk, m + 1, rk2 == rk ? "yes" : "no");
+        if (f.size() > 4 && f[4] == "first") {
+            // First order at P = (y_1, y_2, y_3)(0) with y_2 = 1: if every solution vanishes at P, write
+            // W = s A + t B + O(m_P^2) with s = y_3, t = y_1 - y_2. Along an arc with v(s) = a, v(t) = b and
+            // leading coefficients sigma, tau, W(gamma) = e^min(a,b) (sigma[a<=b] A + tau[b<=a] B) + ...,
+            // and the leading vector kills S_gamma(0). Solve for (A, B) and report whether A_m, B_m are forced.
+            int M = m + 1;
+            vector<Vec> rows;
+            for (int a = 0; a < na; a++) {
+                auto parts = split(arcs[a], '/');
+                auto co = [&](const string &s) { vector<long long> v; for (auto &x : split(s, ',')) v.push_back(atoll(x.c_str())); return v; };
+                auto y1 = co(parts[0]), y2 = co(parts[1]), y3 = co(parts[2]);
+                size_t L = max(y1.size(), y2.size()); vector<long long> tt(L, 0);
+                for (size_t k = 0; k < L; k++) tt[k] = (k < y1.size() ? y1[k] : 0) - (k < y2.size() ? y2[k] : 0);
+                int va = -1, vb = -1; long long sg = 0, ta = 0;
+                for (size_t k = 1; k < y3.size(); k++) if (y3[k]) { va = k; sg = y3[k]; break; }
+                for (size_t k = 1; k < L; k++) if (tt[k]) { vb = k; ta = tt[k]; break; }
+                if (y3[0] || tt[0] || va < 0 || vb < 0) { printf("  first order: arc %s must pass through P with s, t != 0\n", arcs[a].c_str()); return 3; }
+                u64 cA = va <= vb ? (u64)((sg % (long long)P + (long long)P) % (long long)P) : 0;
+                u64 cB = vb <= va ? (u64)((ta % (long long)P + (long long)P) % (long long)P) : 0;
+                for (auto &v : reds[a]) {
+                    Vec r(2 * M, 0);
+                    for (int c = 0; c < M; c++) { r[c] = cA * v[c] % P; r[M + c] = cB * v[c] % P; }
+                    rows.push_back(r);
+                }
+            }
+            int r0 = echelon(rows, nullptr, nullptr);
+            Vec eA(2 * M, 0), eB(2 * M, 0); eA[m] = 1; eB[M + m] = 1;
+            auto rA = rows; rA.push_back(eA); auto rB = rows; rB.push_back(eB);
+            printf("first order: rank %d of %d; A_m forced 0: %s; B_m forced 0: %s\n", r0, 2 * M,
+                   echelon(rA, nullptr, nullptr) == r0 ? "yes" : "no", echelon(rB, nullptr, nullptr) == r0 ? "yes" : "no");
+        }
         fflush(stdout);
     }
     return 0;
