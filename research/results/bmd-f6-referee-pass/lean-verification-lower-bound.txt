@@ -1,0 +1,68 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PerOrderLowerBound
+Claim file: claims/PerOrderLowerBound.lean
+Claim: thm:per-order-value-all-dimensions (lower half)
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-value-all-dimensions
+Scope: Over F_2 with a finite variable type σ of cardinality n ≥ 1: for all 0 ≤ ℓ < k, every P with
+Hasse multiplicity ≥ k at every nonzero point of F_2^σ and multiplicity exactly ℓ at the origin has
+total degree ≥ n + 2ℓ + Σ_{j<n} ⌊(k−ℓ−1)/2^j⌋. The proof is the notebook's: the series w = P(xhat(y)) has
+origin order ℓ; the conditions (C_t) from the degree of the expansion (PerOrderExpansion,
+PerOrderYCoefficient); vanishing of the forms E^(t)_j on generator tuples by the repeated-argument
+recursion (PerOrderForms) and then on the span V of y_1..y_n; the reduction modulo L_V
+(PerOrderSubspaceReduction); and the coefficient of M* (the decomposition of PerOrderLegendre).
+Declarations: MathResearch.PerOrderLowerBound.mult_wser MathResearch.PerOrderLowerBound.cond MathResearch.PerOrderLowerBound.E_vanish MathResearch.PerOrderLowerBound.lower_bound
+$ lake --wfail build claims.PerOrderLowerBound
+Build completed successfully (1934 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmp61lz8iiy.lean
+@MathResearch.PerOrderLowerBound.mult_wser : ∀ {σ : Type u_1} {k ℓ : ℕ},
+  ℓ < k →
+    ∀ (P : MvPolynomial σ (ZMod 2)),
+      MathResearch.HasseMultiplicity.mult 0 P = ↑ℓ →
+        MathResearch.HasseMultiplicity.mult 0 (MathResearch.PerOrderLowerBound.wser k P) = ↑ℓ
+'MathResearch.PerOrderLowerBound.mult_wser' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderLowerBound.cond : ∀ {σ : Type u_1} [inst : Fintype σ] [DecidableEq σ] {k h : ℕ}
+  (P : MvPolynomial σ (ZMod 2)),
+  (∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+    P.totalDegree + h + 1 ≤ Fintype.card σ + 2 * (k - 1) →
+      ∀ {t : ℕ},
+        t < k →
+          ∀ (T : Finset σ),
+            T.card + 2 * t ≤ h →
+              (MvPolynomial.homogeneousComponent (k - 1 - t))
+                  (MathResearch.PerOrderLowerBound.wser k P *
+                    ∏ i ∈ T, MathResearch.PerOrderYCoefficient.xhat k (MvPolynomial.X i)) =
+                0
+'MathResearch.PerOrderLowerBound.cond' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderLowerBound.E_vanish : ∀ {σ : Type u_1} [inst : Fintype σ] [DecidableEq σ] {k h : ℕ},
+  1 ≤ k →
+    h ≤ k - 1 →
+      ∀ (P : MvPolynomial σ (ZMod 2)),
+        (∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+          P.totalDegree + h + 1 ≤ Fintype.card σ + 2 * (k - 1) →
+            ∀ (j t : ℕ),
+              j + 2 * t ≤ h →
+                ∀ (i : Fin j → σ),
+                  (MathResearch.PerOrderForms.E k (MathResearch.PerOrderLowerBound.wser k P) t j fun a =>
+                      MvPolynomial.X (i a)) =
+                    0
+'MathResearch.PerOrderLowerBound.E_vanish' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderLowerBound.lower_bound : ∀ {σ : Type u_1} [inst : Fintype σ] [DecidableEq σ],
+  1 ≤ Fintype.card σ →
+    ∀ {k ℓ : ℕ},
+      ℓ < k →
+        ∀ (P : MvPolynomial σ (ZMod 2)),
+          (∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+            MathResearch.HasseMultiplicity.mult 0 P = ↑ℓ →
+              Fintype.card σ + 2 * ℓ + ∑ j ∈ Finset.range (Fintype.card σ), (k - ℓ - 1) / 2 ^ j ≤ P.totalDegree
+'MathResearch.PerOrderLowerBound.lower_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 4 audited declarations.

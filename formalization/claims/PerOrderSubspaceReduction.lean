@@ -1,10 +1,10 @@
 /-
 Claim: lem:grid-reduction-coefficients
 Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-value-all-dimensions
-Scope: Let D be an integral domain, V ⊆ D a finite nonempty set, L_V = ∏_{v∈V} (Y − v) and
+Scope: Let D be an integral domain, V ⊆ D a finite set, L_V = ∏_{v∈V} (Y − v) and
 ρ_N = Y^N mod L_V. If an expression Σ_i c_i ∏_a v_a^{d_{i,a}} (finitely many i, variables a < h)
 vanishes for every v ∈ V^h, then for all exponents e_a < |V|,
-Σ_i c_i ∏_a [Y^{e_a}] ρ_{d_{i,a}} = 0. Also: ρ_N(v) = v^N on V, deg ρ_N < |V|, deg ρ_N ≤ N, and
+Σ_i c_i ∏_a [Y^{e_a}] ρ_{d_{i,a}} = 0 (no nonemptiness assumed). Also: ρ_N(v) = v^N on V, deg ρ_N < |V| for V nonempty, deg ρ_N ≤ N, and
 ρ_N = Y^N for N < |V|. This is the reduction modulo the subspace polynomial (steps 4–5 of the per-order
 lower bound, where V is the F_2-span of y_1, …, y_n), stated for an arbitrary finite set.
 Declarations: MathResearch.PerOrderSubspaceReduction.Lpoly MathResearch.PerOrderSubspaceReduction.rho MathResearch.PerOrderSubspaceReduction.eval_rho MathResearch.PerOrderSubspaceReduction.natDegree_rho_lt MathResearch.PerOrderSubspaceReduction.rho_of_lt MathResearch.PerOrderSubspaceReduction.natDegree_rho_le MathResearch.PerOrderSubspaceReduction.coeff_prod_aeval_X MathResearch.PerOrderSubspaceReduction.coeff_reduction
@@ -122,7 +122,7 @@ theorem coeff_prod_aeval_X {h : ℕ} (N : ℕ) (p : Fin h → Polynomial D)
 
 /-- **Reduction of the coefficients.** If `Σ_i c_i ∏_a v_a^{d_{i,a}}` vanishes on `V^h`, then
 `Σ_i c_i ∏_a [Y^{e_a}] ρ_{d_{i,a}} = 0` for all exponents `e_a < |V|`. -/
-theorem coeff_reduction {V : Finset D} (hV : V.Nonempty) {h : ℕ} {ι : Type*} [Fintype ι]
+theorem coeff_reduction_of_nonempty {V : Finset D} (hV : V.Nonempty) {h : ℕ} {ι : Type*} [Fintype ι]
     (c : ι → D) (d : ι → Fin h → ℕ)
     (hvan : ∀ v : Fin h → D, (∀ a, v a ∈ V) → ∑ i, c i * ∏ a, v a ^ d i a = 0)
     (e : Fin h → ℕ) (he : ∀ a, e a < V.card) :
@@ -160,6 +160,21 @@ theorem coeff_reduction {V : Finset D} (hV : V.Nonempty) {h : ℕ} {ι : Type*} 
   apply Finset.sum_congr rfl
   intro i _
   rw [coeff_prod_aeval_X V.card _ (fun a => natDegree_rho_lt hV _) _ he]
+
+/-- **Coefficient identity from vanishing on a grid** (`lem:grid-reduction-coefficients`). No
+nonemptiness is needed: for `V = ∅` there is no admissible exponent unless `h = 0`, and then both
+sides are `∑ i, c i`. -/
+theorem coeff_reduction {V : Finset D} {h : ℕ} {ι : Type*} [Fintype ι]
+    (c : ι → D) (d : ι → Fin h → ℕ)
+    (hvan : ∀ v : Fin h → D, (∀ a, v a ∈ V) → ∑ i, c i * ∏ a, v a ^ d i a = 0)
+    (e : Fin h → ℕ) (he : ∀ a, e a < V.card) :
+    ∑ i, c i * ∏ a, (rho V (d i a)).coeff (e a) = 0 := by
+  rcases V.eq_empty_or_nonempty with hV | hV
+  · subst hV
+    rcases Nat.eq_zero_or_pos h with rfl | hh
+    · simpa using hvan Fin.elim0 (fun a => a.elim0)
+    · exact absurd (he ⟨0, hh⟩) (by simp)
+  · exact coeff_reduction_of_nonempty hV c d hvan e he
 
 end
 

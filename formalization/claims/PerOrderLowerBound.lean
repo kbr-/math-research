@@ -269,7 +269,7 @@ theorem lower_bound (hn : 1 ≤ Fintype.card σ) {k ℓ : ℕ} (hℓ : ℓ < k) 
   have hVne : (Vset (σ := σ)).Nonempty := ⟨lin ∅, Finset.mem_image_of_mem _ (Finset.mem_univ _)⟩
   have hVcard : (Vset (σ := σ)).card = 2 ^ n := card_Vset
   -- Steps 4–5: the reduction modulo L_V applied to E^{(0)}_H, which vanishes on V^H
-  have hred := coeff_reduction hVne (fun τ : Fin H → Fin k => hcw k w (∑ a, 2 ^ (τ a : ℕ)))
+  have hred := coeff_reduction (V := Vset (σ := σ)) (fun τ : Fin H → Fin k => hcw k w (∑ a, 2 ^ (τ a : ℕ)))
     (fun τ a => 2 ^ (τ a : ℕ)) (by
       intro v hv
       have heval : ∑ τ : Fin H → Fin k, hcw k w (∑ a, 2 ^ (τ a : ℕ)) * ∏ a, v a ^ 2 ^ (τ a : ℕ) =
