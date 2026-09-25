@@ -31,10 +31,10 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 1, the order half of the sharp pair at \(\rho\ge2\) (<a href="#entry-2026-09-25-cube-route-review-5">route review</a>). Known: the order of \(F_d\) at a double point (<a href="#cube-boundary-double-point-order">order theorem</a>), the Plücker bound, and the splitting sum on a general line through \(P\) (<a href="#cube-line-degree-identity">degree identity</a>).</p>
+<p>Route item: cube-odd-characteristic; open statement 1, the order half of the sharp pair at \(\rho\ge2\). On smooth fibres the solutions are the Laurent tails at \(p_0\) of \(\varphi\,\omega_0\), \(\varphi\in L((m+1)p_0-dH_\infty)\) (<a href="#cube-residue-duality">residue duality</a>).</p>
 <ul>
-<li><strong>Residue duality.</strong> Prove that the solutions at \(m\) are the Laurent tails at \(p_0\) of the differentials \(\varphi\,\omega_0\) with \(\varphi\in L((m+1)p_0-dH_\infty)\) on the smooth fibres.</li>
-<li><strong>Theta coefficients.</strong> Write these differentials in the Tate model over \(F[[s,t]]\) (Mumford's theta series) and bound the order at \(P\) of their Laurent coefficients by \(\mu\).</li>
+<li><strong>Across the degenerate fibre.</strong> In the Tate model over \(F[[s,t]]\) of the <a href="#cube-boundary-double-point-order">order theorem</a>, write a basis of these sections as theta series in the uniformizing parameter, and check that it extends over the double point.</li>
+<li><strong>The order.</strong> Compute the Laurent coefficients at \(p_0\) as series in \(s,t\) and bound their order at \(P\) by \(\mu=\sum\lfloor p_i^2/2\rfloor\). Start with \(\rho=2\), \(d=4\) (\(\mu=4\)).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions.</p>
 </section>
@@ -4143,6 +4143,42 @@ If this failed for one \((d,\rho)\), the sharp pair would be refuted there. It h
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">24.91 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 59.12 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.26 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-cube-residue-duality" data-kind="research" data-route="cube-odd-characteristic" data-claims="lem:cube-residue-duality">
+<h3>25 September 2026 — The cube's solutions are Laurent tails of differentials: residue duality on the elliptic curve</h3>
+<p class="entry-meta">Working proof of residue duality for the solution spaces in dimension 3, on every smooth fibre. Cycle bmd-r52. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-25-cube-route-review-5">route review</a> made the order half of the sharp pair at \(\rho\ge2\) the highest risk. The <a href="#cube-boundary-double-point-order">order theorem</a> controls the explicit generator \(F_d\), but a solution at \(\rho\ge2\) is a vector \(W\) with no such formula. What are the solutions, as objects on the elliptic curve? The test ends with an identification that the Tate model can compute, or with the reason none exists.</p>
+<h4 id="cube-residue-duality">The lemma</h4>
+<p><strong>Setting.</strong> \(F\) is algebraically closed of characteristic \(\ne2\), and \(a=4y\in F^3\) has distinct nonzero entries. \(\bar C_a\) is the elliptic curve of the <a href="#cube-dimension-three-law">dimension-3 theorem</a>, with the point \(p_0\), the divisor \(H_\infty\) of degree 4, and \(V_d=L(dH_\infty)\), \(\dim V_d=4d\). \(T\) is a local parameter at \(p_0\), and \(f=\sum_cf_cT^c\) is the expansion there. For \(m\ge4d\), a solution is a vector \(W\in F^{m+1}\) with \(\sum_{c\le m}W_cf_c=0\) for all \(f\in V_d\); these form \(\ker A_m\), of dimension \(\rho=m+1-4d\). Let \(\omega_0\) be a nowhere-vanishing regular differential on \(\bar C_a\). The proof uses only that \(\bar C_a\) is a smooth projective curve of genus 1 with a rational point \(p_0\), a local parameter \(T\) there, and an effective divisor \(H_\infty\) of degree 4 avoiding \(p_0\). The hypotheses on \(F\) and \(a\) serve only to produce this setting through the dimension-3 theorem.</p>
+<p><strong>Lemma (lem:cube-residue-duality).</strong> The map \(\eta\mapsto W(\eta)\), \(W_c=\operatorname{Res}_{p_0}(T^c\eta)\) (\(0\le c\le m\)), is an isomorphism from the differentials \(\eta\) with \(\operatorname{div}\eta\ge dH_\infty-(m+1)p_0\) onto the solutions. Equivalently, the solutions are the vectors of Laurent coefficients \(W_c=[T^{-c-1}\,dT]\,(\varphi\omega_0)\) for \(\varphi\in L((m+1)p_0-dH_\infty)\), a space of dimension \(\rho\).</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Solutions.</em> Let \(f\in V_d\). Then \(f\eta\) is regular away from \(p_0\), since the poles of \(f\) along \(H_\infty\) have order at most \(d\), and \(\eta\) vanishes there to order at least \(d\). By the residue theorem, which holds in every characteristic (Tate), \(\operatorname{Res}_{p_0}(f\eta)=0\). The pole of \(\eta\) at \(p_0\) has order at most \(m+1\), so \(T^c\eta\) is regular there for \(c\ge m+1\), and \(\operatorname{Res}_{p_0}(f\eta)=\sum_{c\le m}f_c\operatorname{Res}_{p_0}(T^c\eta)=\sum_{c\le m}f_cW_c\).</li>
+<li><em>Injective.</em> If \(W(\eta)=0\), the coefficients of \(T^{-1},\ldots,T^{-m-1}\) in \(\eta/dT\) vanish, so \(\eta\) is regular at \(p_0\). Then \(\operatorname{div}\eta\ge dH_\infty\), a divisor of positive degree. On a curve of genus 1 the canonical class has degree 0, so \(\eta=0\).</li>
+<li><em>Dimensions.</em> \(\Omega^1\cong\mathcal O\) through \(\omega_0\), so the differentials in question are \(\varphi\omega_0\) with \(\varphi\in L((m+1)p_0-dH_\infty)\). That divisor has degree \(m+1-4d=\rho\ge1\), so by Riemann–Roch the space has dimension \(\rho\). A nonzero \(f\in V_d\) has \(4d\) zeros counted with multiplicity, so it cannot vanish to order \(m+1&gt;4d\) at \(p_0\). So truncation is injective on \(V_d\), \(A_m\) has rank \(4d\), and the solutions have dimension \(\rho\). An injective linear map between spaces of the same finite dimension is onto. \(\square\)</li>
+</ol>
+<h4>Consequences</h4>
+<ul>
+<li><strong>The first coordinate vanishes.</strong> \(W_0=\operatorname{Res}_{p_0}(\varphi\omega_0)=0\) for every solution, by the residue theorem, since \(\varphi\omega_0\) has no other poles. This matches the constant basis function 1, whose truncation is the unit vector \(e_0\).</li>
+<li><strong>The leading coordinate.</strong> Write \(\omega_0=u\,dT\) near \(p_0\), with \(u(p_0)\ne0\). Then \(W_m\) is \(u(p_0)\) times the coefficient of \(T^{-m-1}\) in \(\varphi\), so \(W_m\ne0\) exactly when \(\varphi\) has a pole of order exactly \(m+1\) at \(p_0\), that is \(\varphi\notin L(mp_0-dH_\infty)\). For \(\rho\ge2\) such \(\varphi\) always exist, since \(h^0\) drops from \(\rho\) to \(\rho-1\). For \(\rho=1\) they exist exactly when \(mp_0-dH_\infty=4dp_0-dH_\infty\not\sim0\), that is \(d\cdot2c_1\ne0\) (in the dimension-3 theorem \(H_\infty-4p_0\) corresponds to \(2c_1\)). This is the torsion criterion again, now as a statement about poles.</li>
+<li><strong>Plücker coordinates as Laurent minors.</strong> On a smooth fibre, for a basis \(\varphi_1,\ldots,\varphi_\rho\), the solution matrix is the matrix of Laurent coefficients \([T^{-c-1}dT](\varphi_i\omega_0)\), a Hasse–Wronskian-type matrix. Its \(\rho\times\rho\) minors are the Plücker coordinates of that fibre. As a heuristic, not proved: if a basis \(\varphi_i\) extends over the degenerating family near a double point, then \(\pi_P\) and the orders of the solutions at \(P\) are orders of Laurent coefficients of sections of a line bundle of degree \(\rho\). Nothing here shows that such a basis extends.</li>
+</ul>
+<p><strong>What this gives the route.</strong> The order half of the sharp pair becomes a statement about the family of line bundles \(\mathcal O((m+1)p_0-dH_\infty)\) of degree \(\rho\) near a double point, where the curves degenerate to a cycle of two rational curves. In the Tate model over \(F[[s,t]]\) of the order theorem, sections of such a bundle are theta series in the uniformizing parameter. Their Laurent coefficients at \(p_0\) are then explicit series in \(s\) and \(t\). The order \(\mu=\sum\lfloor p_i^2/2\rfloor\) should come from how the \(\rho\) sections distribute over the torsion branches. That computation is the next step. The lemma itself holds on every smooth fibre, for every \(d\) and \(m\ge4d\); its extension over the degenerate fibres is part of the next step.</p>
+<p><strong>General statement.</strong> <code>lem:cube-residue-duality</code>, for every \(d\ge1\), \(m\ge4d\) and \(a\) with distinct nonzero entries in a field of characteristic \(\ne2\); the proof holds for any genus-1 curve with a point \(p_0\) and an effective degree-4 divisor avoiding it.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the dimension-3 theorem (the curve, \(V_d=L(dH_\infty)\), \(H_\infty-4p_0\) and \(2c_1\)) and the Plücker bound. Claim searches (residue, differential, dual solutions, Laurent coefficients) found no earlier version; the dual polynomial form is a different reformulation. A fresh-context referee found the lemma and its first two consequences correct. Its corrections are made: the hypotheses the proof actually uses, the residue theorem in every characteristic, an in-place proof of the rank (removing the dependency on the gcd lemma), the factor \(u(p_0)\) in the leading coordinate, and the third consequence renamed and restricted to smooth fibres, with its extension marked as unproved.</p>
+<p><strong>Assessment.</strong> The solutions now have a meaning on the curve: they are Laurent tails of sections of a degree-\(\rho\) line bundle, and the torsion criterion is the case \(\rho=1\). The missing implication (the order \(\mu\) of all solutions at \(\rho\ge2\)) is not yet touched, but it is now posed where the Tate model of the order theorem can reach it: the next step extends the lemma over the degenerate fibre and computes the Laurent coefficients as theta series. The line's prospects are unchanged: good for the order half, uncertain for the splitting half. Process: the cycle was short because the review had already named this step; no framework change is needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r52">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 14.22 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 6.72 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 7.30 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
