@@ -74,8 +74,7 @@ manually run outside the launcher are not inside the workload group.
   and black-box rank and solving), and **NTL**. On a 4000×4000 GF(3) matrix of rank 3100,
   fflas-ffpack took 0.2 s and FLINT 1.5 s, with equal ranks (25 September 2026). Link flags:
   fflas-ffpack `$(pkg-config --cflags fflas-ffpack) -lgivaro -lgmpxx -lgmp -lopenblas`; FLINT
-  `-lflint -lgmp`; LinBox `$(pkg-config --cflags linbox) -llinbox-1.7.0 -lntl -lflint -lgivaro
-  -lgmpxx -lgmp -lopenblas`, since its pkg-config link line names the absent IML. Validate a
+  `-lflint -lgmp`; LinBox `$(pkg-config --cflags --libs linbox) -lopenblas`. Validate a
   kernel's ranks against a second library on small cases. `./compute.sh start` lists the systems
   and libraries it finds.
 - Use compiled numerical libraries such as **NumPy, SciPy, and BLAS** for heavy

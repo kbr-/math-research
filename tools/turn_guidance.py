@@ -31,7 +31,7 @@ KERNEL_LIBRARIES = (
     ('FLINT', 'flint/nmod_mat.h', 'nmod_mat rank, rref, nullspace and multiplication mod p; polynomials over '
      'Z/p and Z', '-lflint -lgmp'),
     ('LinBox', 'linbox/linbox-config.h', 'sparse and black-box rank, solve and determinant mod p by Wiedemann',
-     '$(pkg-config --cflags linbox) -llinbox-1.7.0 -lntl -lflint -lgivaro -lgmpxx -lgmp -lopenblas'),
+     '$(pkg-config --cflags --libs linbox) -lopenblas'),
     ('NTL', 'NTL/ZZ.h', 'polynomials and matrices over Z/p and GF(p^k)', '-lntl -lgmp'),
     ('M4RI', 'm4ri/m4ri.h', 'dense linear algebra over GF(2)', '-lm4ri'))
 
