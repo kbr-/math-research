@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> Run a thread-level route review. The designed and chooser lines are closed. conj:near-solution-chooser cannot be tested at reachable sizes, and W is implied by a linear-degree statement under exponentially many dense wide clauses on a board of \(O(k)\) holes (<a href="#entry-2026-09-25-fall-search-vacuous">small-board corollary</a>). No recorded line carries a hardness mechanism for dense adversarial forms. The review decides the next line: a new PC lower-bound method for dense constraints at linear degree, S1's window route, or a formulation shared with the main record's wide-clause line.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The <a href="#entry-2026-09-25-thread-review-boxes">thread review</a> places the odd-prime gap at boxes versus flats: W's clauses lie below every dimension-counting threshold. Port the main record's thm:safe-probe-affine-augmentation to \(\mathbb F_3\) and to W's clauses. For total prefix rank at most \(cN\), with arbitrary dependent forms, show that a safe-probe restriction preserves degree and reduces weak PHP plus the clauses to a near-balanced source excluded by thm:all-prime-unary-affine-source-exclusion. The step ends with A1's first adversarial result beyond pinning, or with the odd-prime failure of safety at the binary row-Booleanity step.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -22100,6 +22100,69 @@ where \(Z\) is the Hasse fat points of multiplicity \(s-1\) at the nonzero \(m_j
 <tr><td>Marked reading and review windows</td><td class="elapsed">2 min 5.46 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 56.45 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 44.17 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-thread-review-boxes" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Thread-level route review: all open lines reduce to W; the odd-prime gap is boxes versus flats; the next step ports a recorded binary flat-avoidance endpoint. Registers no claim.">
+<h3>Thread review: every open line reduces to W, the odd-prime gap is that falsifying sets are boxes rather than flats, and the next step ports the main record's safe-probe avoidance endpoint</h3>
+<p class="entry-meta">25 September 2026 · Route review (no computation) · open statements W, A1 and S1 · cycle odd-prime-thread-review-2.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The designed and chooser lines are closed (<a href="#entry-2026-09-25-designed-line-review">designed</a>, <a href="#entry-2026-09-25-chooser-line-review">chooser</a>), and the <a href="#entry-2026-09-25-fall-search-vacuous">fall search</a> cannot decide. Which line should the goal take next, and does the main record now offer a tool?</p>
+<p><strong>General statement.</strong> The thread's claim is the goal through W: thm:logarithmic-prefix-wide-clause-reduction and cor:small-board-restriction.</p>
+
+<h4>Where every line leads</h4>
+<ul>
+<li><em>S1, the window route,</em> returns to W: its fall-tolerant form S2′ is the lag bound, whose known path is the prefix reduction (<a href="#entry-2026-09-25-s2-fate-review">fate review</a>).</li>
+<li><em>The designed and chooser lines</em> reduce W's choice to non-rigid forms and one rule, and give Taylor generation only for designed families below the Koszul range. Neither gives hardness for adversarial forms.</li>
+<li><em>The main record</em> proves thm:all-prime-unary-affine-source-exclusion. Over every fixed prime, PHP plus any polynomial complete one-level ENS family with inputs affine in the old cells has no polylogarithmic-degree refutation. Over \(\mathbb F_2\) this, with the clause compiler, gives thm:ordinary-unary-PHP-Res-parity-superpolynomial, the binary form of this thread's goal.</li>
+</ul>
+
+<h4>Why the binary proof stops at odd primes</h4>
+<p>A Res(Lin) line \(\bigvee_i(L_i=a_i)\) is false on the box \(\{L_i\ne a_i\ \forall i\}\). Over \(\mathbb F_2\) the box is the flat \(\{L_i=1-a_i\}\), and the endpoint's two mechanisms both act on flats:</p>
+<ul>
+<li>low-rank tuples, by substituting the prefix formula (APG-prefix) at degree \((p-1)r\);</li>
+<li>high-rank tuples, by one function in every restriction kernel, found by counting, since restriction to a flat of rank \(r\) cuts the graph space by \(e^{-k(r-k)/s}\) (APG-image).</li>
+</ul>
+<p>Over \(\mathbb F_p\) a box of rank \(r\) is a union of up to \((p-1)^r\) flats. Expanding it costs inventory \((p-1)^r\), which is polynomial only for \(r=O(\log n)\). This is exactly the logarithmic prefix, and the residue beyond the prefix is W's clauses.</p>
+<p><em>Falsification attempt: can the counting mechanism reach W's clauses?</em> A clause \(g_iQ\) forbids the flat \(\{L_i=0\}\) minus \(k\) hyperplanes. By its prefix, it is a union of \(2^k\) flats of rank \(k+1\) (at \(p=3\)). Counting needs \(M2^k\,e^{-k'(r-k')/s}\) below the space's share, that is, rank \(r\gtrsim s\ln M/k'\), about \(\sqrt{N\ln M}\) at the endpoint's \(k'\). W's flats have rank \(k+1\approx\ln M\). On the small board of cor:small-board-restriction, \(s\approx15m\) with \(m\approx44k\) still needs \(r\) of order \(m\). So W's clauses lie below the counting threshold at every scale. W needs a mechanism that does not count dimensions. The substitution mechanism is exactly what produced W.</p>
+
+<h4>What the main record has for avoidance constraints</h4>
+<p>W's clauses are avoidance constraints: flats that points must avoid. The main record's nearest tools are for binary flat avoidance:</p>
+<ul>
+<li>thm:safe-probe-affine-augmentation: a binary safe bit-affine system of rank \(a\le cN\), \(c&lt;1/4\), gives a degree-preserving restriction of flat avoidance plus any complete affine ENS family to a near-balanced affine PHP source;</li>
+<li>cor:generic-linear-flat-affine-augmentation: independent random flats up to \(M\le cN\) admit safe probes with high probability.</li>
+</ul>
+<p>They cover total avoidance rank linear in \(N\), with adversarial affine families afterwards, and they are binary. The record notes that polynomial inventories are uncovered, and that the binary row-Booleanity calculation fails unchanged at odd primes. Within this thread, adversarial forms are covered only where pinning applies (lem:member-pinning: row-independent forms, total count about \(N/B\)).</p>
+
+<h4>Assessment</h4>
+<p>The thread's route is weak, and its obstruction is now precise. The gap between the proved binary theorem and the odd-prime goal is boxes versus flats. The logarithmic prefix converts it into W, whose clauses lie below every dimension-counting threshold. The main record's central obligation, polynomial inventories of dense constraints, is the same wall in its own grammar. No recorded line carries a non-counting mechanism for polynomially many adversarial avoidance constraints.</p>
+
+<h4>Next step</h4>
+<p>A1 is the highest risk, and the one recorded mechanism that handles adversarial affine constraints without freeness is the binary safe-probe endpoint.</p>
+<p><strong>Next step.</strong> On odd-prime-clause-transfer, A1: port thm:safe-probe-affine-augmentation to \(\mathbb F_3\) and to W's clauses.</p>
+<ul>
+<li><em>The statement to prove.</em> For W's clauses of total prefix rank at most \(cN\), with arbitrary, dependent forms, a safe-probe restriction preserves degree and reduces weak PHP plus the clauses to a near-balanced PHP source that the all-prime endpoint excludes.</li>
+<li><em>Count first.</em> Total prefix rank \(M(k+1)\le cN\) allows about \(N/\log N\) clauses. That is below W's \(n^K\), but it would be the first result for adversarial dependent forms beyond pinning.</li>
+<li><em>What ends the step.</em> A proof, which sets A1's first adversarial result and shows where the rank budget binds. Or the odd-prime failure of safety, located at the binary row-Booleanity step the main record flags.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>the main record's all-prime endpoint entry: the theorem, the (APG-image) and (APG-prefix) steps, and the binary parity theorem's compiler step;</li>
+<li>the summaries of thm:safe-probe-affine-augmentation, cor:generic-linear-flat-affine-augmentation and thm:sublinear-feature-two-level-endpoint;</li>
+<li>the S2 fate review;</li>
+<li>cor:small-board-restriction.</li>
+</ul>
+<p>The counting threshold is computed from (APG-image). The review registers no claim and runs no computation.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-thread-review-2">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 48.84 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">4 min 37.04 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">11.80 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
