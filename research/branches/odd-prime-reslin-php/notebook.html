@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> The reopened chooser line has converged to a square-class priority that is canonical for the base (<a href="#entry-2026-09-26-chooser-review">chooser review</a>). A chooser only reduces W to hardness of the chosen system. Next: transfer the hole-type result to square classes. Then take the first non-hole family, blocks on two holes, and prove hardness of graph PHP plus the chosen implications on the expansion event, or find the family on which the rule fails.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Square-class priority defends every square-hole-type family on the recorded expansion event (prop:square-priority-hole-families, <a href="#entry-2026-09-26-square-hole-transfer">square hole transfer</a>). Next: the first non-hole family, blocks on two holes. Decide whether weak graph PHP plus the chosen implications between holes is hard on the expansion event, or whether chains of implications force every hole occupied, which counting modulo 3 refutes.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24908,6 +24908,51 @@ where \(q(w)\) is the single-divided-power probability of prop:divided-power-col
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 31.75 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.85 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-square-hole-transfer" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:square-priority-hole-families">
+<h3>Square classes on hole families: for \(n\ge44k+6\) distinct cells stay square-inequivalent above W's degree, so square-class priority inherits the hole-type result and defends shifted and square-preserving duplicates by construction</h3>
+<p class="entry-meta">26 September 2026 · Conditional result, on the recorded expansion hypothesis · open statement A1 · cycle odd-prime-square-hole-transfer.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-chooser-review">chooser review</a> asked to transfer prop:priority-hole-families (literal-form priority on hole-type families) to the rule of conj:square-class-priority, before testing non-hole families. The literal rule is refuted by prop:shifted-duplicates. Does the square-class rule defend the hole families, including their shifted copies?</p>
+<p><strong>General statement.</strong> prop:square-priority-hole-families. Over \(\mathbb F_3\), with \(D_0=20k\) and \(n\ge44k+6\), call a family square-hole-type if every form of every block is square-equivalent, modulo \(C_{20k+1}(B)\), to a cell form \(X_{jt}-1\) of one hole \(t\) per block. Shifted forms such as \(X_{jt}+R_j-2\), with \(R_j=\sum_uX_{ju}\), and \(X_{jt}-X_{\sigma(j)t}-1\) are included. Every such form is non-rigid at \(22k+2\), so the family meets conj:square-class-priority's hypothesis. Order the square classes uniformly at random, and give each block one form from each of its top \(k\) classes. Then a degree-\(22k\) refutation of the base plus the chosen clauses gives a degree-\((22k+1)\) refutation of weak graph PHP on the random graph \(G_S\) of prop:hole-family-random-choice. So W's conclusion holds for the family with probability at least the probability that \(G_S\) satisfies that proposition's expansion hypothesis at degree \(22k+1\).</p>
+
+<h4>Proof</h4>
+<ul>
+<li><em>Squares of cells.</em> By Booleanity, \((X_{it}-1)^2\equiv1-X_{it}\) in \(C_2(B)\subseteq C_{20k+1}(B)\). So cells \((i,t)\ne(j,u)\) are square-equivalent at \(20k+1\) iff \(X_{it}-X_{ju}\in C_{20k+1}(B)\); the degree-2 identity costs nothing here.</li>
+<li><em>Distinct cells are square-inequivalent.</em> Apply the restriction of the rigid-forms entry: \(X_{it}=1\), \(X_{i't}=0\) for \(i'\ne i\), \(X_{it'}=0\) for \(t'\ne t\). It maps weak PHP with \(m\) pigeons and \(n\) holes to weak PHP with \(m-1\) and \(n-1\), and derivations to derivations of no larger degree. It sends \(X_{it}\mapsto1\). It also sends \(X_{ju}\mapsto0\) when \(j=i\) or \(u=t\). When \(j\ne i\) and \(u\ne t\), additionally place pigeon \(j\) in a third hole \(u'\notin\{t,u\}\) by the same kind of restriction, which sends \(X_{ju}\mapsto0\). The result is complete weak PHP with at least \(n-2\) holes, and \(X_{it}-X_{ju}\mapsto1\). A derivation of \(X_{it}-X_{ju}\) at degree \(d\) becomes a refutation at degree \(d\). By Razborov's bound as used in the rigid-forms entry, \(d\ge(n-2)/2+1&gt;22k+2\) for \(n\ge44k+6\).</li>
+<li><em>Non-rigidity at \(22k+2\).</em> Let \(L\) be square-equivalent to \(X_{jt}-1\) at \(20k+1\) with \(1-L^2\in C_{22k+2}(B)\). Since \(C_{20k+1}(B)\subseteq C_{22k+2}(B)\), \(X_{jt}\equiv1-(X_{jt}-1)^2\in C_{22k+2}(B)\). The restriction \(X_{jt}=1\) of the rigid-forms entry maps a derivation of \(X_{jt}\) to a refutation of weak PHP with \(n-1\) holes at the same degree. So that degree exceeds \((n-1)/2+1&gt;22k+2\), a contradiction.</li>
+<li><em>The included shifts.</em> For \(L=X_{jt}-X_{\sigma(j)t}-1\), write \(a=X_{jt}\) and \(b=X_{\sigma(j)t}\). Then \((a-b-1)^2=a^2+b^2+1-2ab-2a+2b\equiv1-a+3b-2ab\equiv1-a\), by Booleanity, characteristic 3 and the collision \(ab=0\), all at degree 2. For \(L=X_{jt}+R_j-2\), \(L=(X_{jt}-1)+A\) with \(A=R_j-1\in B\), so \(L^2-(X_{jt}-1)^2=A(2(X_{jt}-1)+A)\in C_2(B)\).</li>
+<li><em>Reduction to cell clauses.</em> Let a block at hole \(t\) take prefix \(P\), one form per top class. A clause \((1-L_i^2)\prod_{s\in P}L_s^2\) differs from its cell version by a telescoping sum. Each term contains one difference \(L^2-(X-1)^2\in C_{20k+1}(B)\) times a polynomial of degree at most \(2k\). So the clause lies in \(C_{22k+1}(B\cup\mathcal Z)\), where \(\mathcal Z\) is the set of cell clauses of the same prefixes. \(C_d(B')\) is closed under multiplication by variables while the degree stays at most \(d\). So a degree-\(22k\) derivation from \(B\) and the family's clauses runs inside \(C_{22k+1}(B\cup\mathcal Z)\), and a refutation of the family at degree \(22k\) gives \(1\in C_{22k+1}(B\cup\mathcal Z)\). As in prop:priority-hole-families, the cell clauses are polynomial multiples of the deletions \(X_{it}\), \((i,t)\) outside the prefix.</li>
+<li><em>Repeated classes and small blocks.</em> A block may hold several forms of one class. The rule picks one, and the cell clause is the same whichever it picks. A clause whose excluded form lies in a prefix class is \((1-L'^2)L^2\cdots\equiv(L^2-L^4)\cdots\equiv0\) modulo \(C_{22k+1}(B)\), by Frobenius. So a block with at most \(k\) classes contributes nothing, as blocks with \(|B|\le k\) do in prop:priority-hole-families. The completion by rigid forms is empty on these families.</li>
+<li><em>The order.</em> The square classes of a block's forms at \(t\) are the cells \((j,t)\) of its pigeon set. These are pairwise distinct, and distinct from those at other holes, by the second bullet. The uniform order on classes restricted to each hole's cell classes gives independent uniform orders. Scalar classes and square classes of cells both index cells one-to-one. So survival of the top \(k\) of \(U_t\), the hypergeometric coupling to \(G_S\), and monotonicity under substituting zeros go through verbatim from prop:priority-hole-families. \(\square\)</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li><em>The refinement costs one degree on hole families.</em> The square-class rule defends every square-hole-type family on the recorded expansion event, at one degree more. That includes the families of prop:duplicated-hole-family (forms \(X_{jt}-1\) and their multiples) and prop:shifted-duplicates (forms \(X_{jt}-1\) and \(X_{jt}+R_j-2\)), which are entirely square-hole-type with one hole per block and no padding. It also includes the square-preserving shifts, which defeat literal and linear-class priority. Each of those families is now covered by the same rule.</li>
+<li><em>What remains for the rule.</em>
+ <ul>
+ <li>Non-hole families: blocks mixing holes, or forms not equivalent to cells, whose clauses are implications and products.</li>
+ <li>Family-induced equivalences.</li>
+ <li>The rigid-forms entry's other open padding.</li>
+ </ul></li>
+<li>No new case of W beyond square-hole-type families is proved, and those only conditionally on expansion.</li>
+</ul>
+<p>Next: the first non-hole family. Blocks on two holes \(t,t'\) with all cells of both give, under square-class priority, deletions and implications "pigeon \(i\) in \(t\) forces a prefix pigeon into \(t'\)". Decide whether weak graph PHP plus those implications is hard on the expansion event, or whether chains of implications force every hole occupied, which counting modulo 3 refutes.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:priority-hole-families (clause step, survival, coupling, monotonicity), conj:square-class-priority, prop:shifted-duplicates, prop:hole-family-random-choice and the rigid-forms entry's non-rigidity argument for cells (restriction and Razborov's bound). A fresh-context reviewer confirmed the restriction argument in every case, independence and the verbatim reuse. It required these changes, all adopted: the exact hypothesis \(n\ge44k+6\); non-rigidity at \(22k+2\), so that the conjecture's hypothesis holds; explicit checks of the two shifts; repeated classes and small blocks; the closure sentence in the reduction; a renamed prefix; family memberships checked; and the title and wording aligned. The additions are proofs of steps already claimed, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-square-hole-transfer">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 23.30 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 15.71 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 7.45 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
