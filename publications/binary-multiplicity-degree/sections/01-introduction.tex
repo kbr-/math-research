@@ -11,7 +11,8 @@ at least \(k\ge2\) at all other points of \(\{0,1\}^n\) is \(n+2k-3\) when
 \(n\ge2k-3\) \cite[Theorem~1.3]{SW20}. They observed
 that the answer depends on the field and that characteristic two behaves
 differently. Menezes~\cite{Men26} determined the least degree over every field
-when \(n\ge k-1\), also prescribing the order of vanishing at the origin.
+when \(k\ge2\) and \(n\ge k-1\), also prescribing the order of vanishing at the
+origin.
 
 This paper determines the binary case in every dimension. Throughout,
 multiplicity means Hasse multiplicity of formal polynomials
@@ -22,7 +23,8 @@ multiplicity means Hasse multiplicity of formal polynomials
 Let \(n\ge1\) and \(k\ge1\). For \(0\le\ell<k\), let \(\delta(n,k,\ell)\) be the
 least total degree of a polynomial \(P\in\Ft[x_1,\ldots,x_n]\) with
 \(\mult_a(P)\ge k\) for every \(a\in\Ft^n\setminus\{\zero\}\) and
-\(\mult_{\zero}(P)=\ell\). A polynomial is \emph{\(k\)-admissible} if
+\(\mult_{\zero}(P)=\ell\); we call \(\mult_{\zero}(P)\) the \emph{origin order} of
+\(P\). A polynomial is \emph{\(k\)-admissible} if
 \(\mult_a(P)\ge k\) for every nonzero \(a\) and \(\mult_{\zero}(P)\le k-1\)
 \lean{claims/BinaryMultiplicityDegreeFormula.lean}, and \(D(n,k)\) is the least
 total degree of a \(k\)-admissible polynomial. Thus
@@ -36,7 +38,7 @@ in the study of subspace coverings with multiplicities, whether
 \(D(n,k)\ge2k-\lfloor k/2^{n-1}\rfloor\) when \(k\ge2^{n-2}\). This bound
 follows for all \(n\) and \(k\) from the multiplicity Schwartz--Zippel lemma of Dvir,
 Kopparty, Saraf and Sudan~\cite{DKSS13}; see Proposition~\ref{prop:cover-bound},
-which was the content of an earlier note~\cite{Note}. In the same paper they
+which was the content of an earlier note~\cite{Note}. Bishnoi et al.\ also
 construct multisets of \(2k-\lfloor k/2^{n-1}\rfloor\) affine hyperplanes that
 cover every nonzero point at least \(k\) times and the origin at most \(k-1\)
 times, for \(k\ge2^{n-2}\) \cite[Theorem~1.2(a) of arXiv v1]{BBDM23}. The
@@ -87,7 +89,7 @@ For all integers \(n\ge1\) and \(k\ge1\),
 \]
 and some \(k\)-admissible polynomial has degree exactly
 \(2k-\lfloor k/2^{n-1}\rfloor\) if and only if \(k\ge2^{n-2}\)
-\lean{claims/PerOrderMinimum.lean}\,\lean{claims/BinaryMultiplicityDegreeComplete.lean}.
+\textnormal{\small\leanref{claims/PerOrderMinimum.lean}{[Lean: minimum over \(\ell\)]}\,\leanref{claims/BinaryMultiplicityDegreeComplete.lean}{[Lean: value and attainment]}}.
 \end{corollary}
 
 Three features of these formulas stand out.
@@ -95,18 +97,19 @@ Three features of these formulas stand out.
  \item \textbf{Blocks of \(2^n\).} As a function of \(k-\ell\), the excess
  \(\Phi-n-2\ell\) grows by \(2^{n+1}-2\) with each block of \(2^n\). The
  product \(F^2\) has degree \(2^{n+1}-2\) and multiplicity \(2^n\) at every
- nonzero point, so each block is paid by one factor \(F^2\). Below one block
- the truncated product does better.
+ nonzero point, so each block is paid by one factor \(F^2\). The remainder
+ \(r\) is paid by the truncated product \(g_{r+1}\).
  \item \textbf{Where the Schwartz--Zippel bound is exact.} It is attained if
  and only if \(k\ge2^{n-2}\). For \(k<2^{n-2}\), \(D(n,k)\) exceeds it by
  \(n-2-\lfloor\log_2k\rfloor\ge1\), and for fixed \(k\) each further dimension
  costs exactly one degree. For example \(D(n,1)=n\), \(D(n,4)=n+4\),
  \(D(n,8)=n+11\) and \(D(n,15)=n+25\) for \(n\ge\lfloor\log_2k\rfloor+2\).
- \item \textbf{Comparison with the reals.} Over \(\mathbb R\) the least degree
- with \(P(\zero)\ne0\) is \(n+2k-3\) for \(k\ge2\) and \(n\ge2k-3\)~\cite{SW20}. Over \(\Ft\) it
- is \(\delta(n,k,0)\), which for \(k-1<2^n\) is \(n+2k-2-s_2(k-1)\), lower by
- \(s_2(k-1)-1\). Allowing any origin order below \(k\) lowers the degree
- further, to \(D(n,k)\).
+ \item \textbf{Comparison with the reals.} Over \(\mathbb R\), for \(k\ge2\) and
+ \(n\ge2k-3\), the least degree with origin order \(\ell\) is \(n+2k-3\) for every
+ \(\ell\le k-2\), and \(n+2k-2\) for \(\ell=k-1\) \cite[Theorems~1.4 and~1.5]{SW20}.
+ In that range \(k-\ell-1<2^n\), so over \(\Ft\) it is
+ \(n+2k-2-s_2(k-\ell-1)\): lower by \(s_2(k-\ell-1)-1\) for \(\ell\le k-2\), and
+ the same for \(\ell=k-1\).
 \end{itemize}
 
 \subsection{Relation to previous work}
@@ -135,13 +138,19 @@ Three features of these formulas stand out.
  \(k\ge2^{n-2}\). With Proposition~\ref{prop:cover-bound}, which answers their
  question on the polynomial version, their covers determine \(D(n,k)\) for
  \(k\ge2^{n-2}\). Corollary~\ref{cor:main} completes the range \(k<2^{n-2}\), and
- Theorem~\ref{thm:main} refines every value by the origin order. The factor
- \(F\) is the product of the linear forms of the \(2^n-1\) hyperplanes of their
- covers that avoid the origin.
- \item \textbf{Sauermann and Wigderson~\cite{SW20}.} Their theorem is the real
- case described above. In characteristic two they give a polynomial of degree
- \(n+4\) for \(k=4\), below \(n+2k-3=n+5\), showing that the real formula
- fails there.
+ Theorem~\ref{thm:main} refines every value by the origin order. They refine
+ their covers in the same way, by the number of times the origin is covered
+ \cite[Section~2 of arXiv v1]{BBDM23}. The factor \(F\) is the product of the
+ linear forms of the \(2^n-1\) hyperplanes of their covers that avoid the
+ origin.
+ \item \textbf{Sauermann and Wigderson~\cite{SW20}.} Their theorems are the real
+ case described above. The case \(\ell=k-1\), with value \(n+2k-2\) for every
+ \(n\ge1\), is their Theorem~1.5; they state it over \(\mathbb R\), and Bishnoi
+ et al.\ note that its proof is valid over every field \cite[Section~1.3 of
+ arXiv v1]{BBDM23}. So the case
+ \(\ell=k-1\) of Theorem~\ref{thm:main}, where \(\Phi(n,k,k-1)=n+2k-2\), is not
+ new. In characteristic two they give a polynomial of degree \(n+4\) for
+ \(k=4\), below \(n+2k-3=n+5\), showing that the real formula fails there.
  \item \textbf{Dvir, Kopparty, Saraf and Sudan~\cite{DKSS13}.} Their
  multiplicity Schwartz--Zippel lemma is used only in the second proof of
  Corollary~\ref{cor:main} (Section~\ref{sec:second-proof}) and for
@@ -153,10 +162,25 @@ Three features of these formulas stand out.
  \(n\ge2\); the lower bound is the case \(\F=\Ft\) of~\cite[Theorem~5]{AF93}.
 \end{itemize}
 
-Two web searches, for high-order vanishing on the hypercube in positive
-characteristic and for punctured multiplicity Nullstellens\"atze over
-\(\Ft\), found no statement for the range \(n<k-1\) other than the results
+Two web searches on 24 September 2026, for high-order vanishing on the hypercube
+in positive characteristic and for punctured multiplicity Nullstellens\"atze
+over \(\Ft\), found no statement for the range \(n<k-1\) other than the results
 above. A bounded search does not establish that none exists.
+
+\subsection{Notation}
+
+Throughout, \(n\) is the number of variables, \(k\) the multiplicity required at
+nonzero points and \(\ell<k\) the origin order. We write
+\(m=k-\ell-1=q2^n+r\) with \(0\le r<2^n\), and \(h=2q+s_2(r)\), so that
+\(\Phi=n+2k-2-h\) (Lemma~\ref{lem:legendre}). Further,
+\(y_i=x_i^2+x_i\) (in Section~\ref{sec:lower}, \(y_i\) is an independent
+variable, and substituting \(y_i\mapsto x_i^2+x_i\) recovers this meaning);
+\(F=\prod_{u\ne\zero}(1+u\cdot x)\) is the hyperplane product
+(Section~\ref{sec:upper}); \(g_s\) is the truncated product
+(Definition~\ref{def:truncated}); \(\hat x_K(Y)=\sum_{s<K}Y^{2^s}\) is the local
+inverse of \(x\mapsto x^2+x\), and \(w=P(\hat x_K(y_1),\ldots,\hat x_K(y_n))\)
+(Section~\ref{sec:lower}). For a polynomial \(f\), \(f_d\) is its homogeneous
+component of degree \(d\).
 
 \subsection{Proof outline}
 
@@ -180,14 +204,17 @@ above. A bounded search does not establish that none exists.
  parts are values of additive forms, and a recursion for repeated arguments
  shows that the forms vanish on the whole span \(V\) of \(y_1,\ldots,y_n\).
  Reducing modulo \(\prod_{v\in V}(Y-v)\) and applying the grid-vanishing lemma
- then isolates the lowest part \(w_\ell\), which is nonzero.
+ then isolates the lowest part \(w_\ell\), which is nonzero. The hard case is
+ \(q\ge1\): the forms can then have degree at least \(2^n\) in an argument, so
+ vanishing on \(V\) need not make them vanish identically, and the recursion
+ and the reduction replace that step.
  \item \textbf{Second proof of Corollary~\ref{cor:main}
  (Section~\ref{sec:second-proof}).} After an invertible linear change of
  coordinates, \(S=P(x',0)+P(x',1)\) is admissible in \(n-1\) variables, has the
  same origin order, and has degree at least one lower
- (Theorem~\ref{thm:step}). Iterating down to \(m=\lfloor\log_2k\rfloor+2\),
+ (Theorem~\ref{thm:step}). Iterating down to \(n_0=\lfloor\log_2k\rfloor+2\),
  where the multiplicity Schwartz--Zippel lemma already gives degree \(2k\),
- yields \(D(n,k)\ge2k+n-m\). This was the proof of version~1 of this paper.
+ yields \(D(n,k)\ge2k+n-n_0\). This was the proof of version~1 of this paper.
 \end{itemize}
 
 \subsection{Formal verification}
@@ -211,8 +238,9 @@ definitions to the informal notions, although the definitions are short
 upper bound \(n+2k-2-s_2(k-\ell-1)\) for each origin order
 (Proposition~\ref{prop:menezes-polynomial}), leaving its optimality open for
 \(n<k-1\). Version~2 determines \(\delta(n,k,\ell)\) in every dimension
-(Theorem~\ref{thm:main}). That bound is optimal exactly when \(k-\ell-1<2^n\), and
-the new construction of Theorem~\ref{thm:construction} does better otherwise. The
+(Theorem~\ref{thm:main}). That bound is optimal when \(k-\ell-1<2^n\), and the
+new construction of Theorem~\ref{thm:construction} does better otherwise (the
+comparison in Section~\ref{sec:introduction}, which is not formalized). The
 title, abstract and introduction are rewritten around the per-order result,
 Sections~\ref{sec:lower} and~\ref{sec:main} are new, and the Lean links point to
 a later commit. Version~1 contains no mathematical error that this version

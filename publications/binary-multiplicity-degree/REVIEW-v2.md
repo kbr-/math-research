@@ -36,6 +36,8 @@ Declined: dropping the unused hypothesis t < k in Lemma 4.5(2), since the Lean s
 
 ## Outstanding
 
-- The Lean links and the reproduction commands point to commit 86d8a6ba, which exists only
-  locally until the author pushes it.
+- The full checklist pass, with its two outstanding items (independent validation, and the
+  author's own checking), is recorded in [CHECKLIST.md](CHECKLIST.md).
 - Publication and correspondence are the author's decisions.
+
+The Lean commit 86d8a6ba cited by the paper was pushed to `main` on 25 September 2026.

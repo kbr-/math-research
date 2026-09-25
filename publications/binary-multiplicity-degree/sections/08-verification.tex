@@ -156,3 +156,18 @@ depends on axioms: [propext, Classical.choice, Quot.sound]
 \end{quote}
 and the same for every other listed declaration. These are Lean's standard
 foundations.
+
+\paragraph{Kernel replay.} To recheck the compiled proofs, and every imported
+declaration including Mathlib's, in a fresh Lean kernel, run
+\begingroup\small
+\begin{verbatim}
+lake env leanchecker --fresh claims.BinaryMultiplicityDegreePaper2
+\end{verbatim}
+\endgroup
+\noindent from \texttt{formalization/}. On 25 September 2026 this passed on the
+author's machine in 206 seconds, on sources identical to the pinned commit.
+
+\paragraph{Independent validation.} All builds and replays reported here ran
+on the author's machine. No hosted or third-party build of this module has been
+recorded; the repository's Lean workflow currently targets a different
+preprint.

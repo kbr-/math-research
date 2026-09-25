@@ -87,7 +87,8 @@ rules to growing checklists or one-off setup narratives.
   markers, protected commands, honest timing scope, numerical accuracy and outputs.
   Keep full output on disk and display bounded excerpts. Focus checks on mathematics
   and touched links; run site/rendering checks only for layout/tool changes or a
-  concrete rendering concern. Do not display PNG previews unless requested.
+  concrete rendering concern. Do not display PNG previews or rendered PDF pages unless
+  requested; check a built PDF through its build log and extracted text (`pdftotext`).
 
 ## Notebook and claim metadata
 
