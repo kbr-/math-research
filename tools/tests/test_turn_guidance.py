@@ -54,6 +54,15 @@ class TurnGuidanceTest(unittest.TestCase):
         absent = ' '.join(self.guide.guidance(body, self.ft, which=lambda b: None))
         self.assertNotIn('computer algebra', absent)
 
+    def test_kernel_libraries_note(self):
+        body = self.body([('research', 'lem:a', 'Working proof.')])
+        present = ' '.join(self.guide.guidance(body, self.ft, has=lambda h: h.startswith('flint/')))
+        self.assertIn('libraries for your own C/C++ kernels: FLINT (nmod_mat', present)
+        self.assertIn('-lflint -lgmp', present)
+        self.assertNotIn('LinBox', present)
+        absent = ' '.join(self.guide.guidance(body, self.ft, has=lambda h: False))
+        self.assertNotIn('C/C++ kernels:', absent)
+
     def test_silent_without_route_items(self):
         self.assertEqual(self.guide.guidance('<section id="research-record"></section>', self.ft), [])
 

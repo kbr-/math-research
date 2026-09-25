@@ -520,7 +520,7 @@ def python_loop_offenders(script, root=None):
 
 def program_key(command):
     """The program a command runs: its first script argument, else the executable's name."""
-    script = next((c for c in command[1:] if Path(c).suffix in ('.py', '.sh', '.sing', '.g', '.m2')), None)
+    script = next((c for c in command[1:] if Path(c).suffix in ('.py', '.sh', '.sing', '.g', '.gp', '.m2')), None)
     return Path(script).name if script else Path(command[0]).name if command else ''
 
 

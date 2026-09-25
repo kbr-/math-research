@@ -59,13 +59,25 @@ manually run outside the launcher are not inside the workload group.
 
 ## Efficient numerical implementation
 
-- Computer algebra systems are installed (user installation, 23 September 2026):
-  **Macaulay2** (`M2`), **Singular** and **msolve**, with Normaliz and 4ti2. Run their scripts
-  through `./compute.sh` (`.m2`, `.sing` and `.g` scripts are recognized). Their libraries cover
-  far more than Gröbner bases: commutative algebra, modules and homology, combinatorics,
-  representation theory and linear algebra over finite fields. Consider them for every
-  computation they could improve, and prefer them to a hand-built kernel unless the kernel is
-  measured to be faster. `./compute.sh start` lists the systems it finds.
+- Computer algebra systems are installed (user installations, 23 and 25 September 2026):
+  **Macaulay2** (`M2`), **Singular**, **msolve**, **GAP** (with HAP, GUAVA, design, GRAPE and
+  the character-table library) and **PARI/GP**, with Normaliz, 4ti2, polymake and the XOR-aware
+  SAT solver CryptoMiniSat (`cryptominisat5`). Run their scripts through `./compute.sh` (`.m2`,
+  `.sing`, `.g` and `.gp` scripts are recognized). Their libraries cover far more than Gröbner
+  bases: commutative algebra, modules and homology, combinatorics, representation theory of
+  symmetric groups in positive characteristic, and linear algebra over finite fields. Consider
+  them for every computation they could improve, and prefer them to a hand-built kernel unless
+  the kernel is measured to be faster.
+- Hand-written C/C++ kernels build their exact linear algebra on the installed libraries, not
+  on hand-written elimination: **fflas-ffpack** (dense rank, echelon form, nullspace and products
+  mod p at BLAS speed; `FFPACK::Rank`), **FLINT** (`nmod_mat`, polynomials), **LinBox** (sparse
+  and black-box rank and solving), and **NTL**. On a 4000×4000 GF(3) matrix of rank 3100,
+  fflas-ffpack took 0.2 s and FLINT 1.5 s, with equal ranks (25 September 2026). Link flags:
+  fflas-ffpack `$(pkg-config --cflags fflas-ffpack) -lgivaro -lgmpxx -lgmp -lopenblas`; FLINT
+  `-lflint -lgmp`; LinBox `$(pkg-config --cflags linbox) -llinbox-1.7.0 -lntl -lflint -lgivaro
+  -lgmpxx -lgmp -lopenblas`, since its pkg-config link line names the absent IML. Validate a
+  kernel's ranks against a second library on small cases. `./compute.sh start` lists the systems
+  and libraries it finds.
 - Use compiled numerical libraries such as **NumPy, SciPy, and BLAS** for heavy
   computation, or appropriate compiled implementations in other languages.
 - Do not write numerical inner loops or heavy computational logic in pure

@@ -21,7 +21,23 @@ def finisher():
 
 
 ALGEBRA_SYSTEMS = (('Macaulay2', 'M2'), ('Singular', 'Singular'), ('msolve', 'msolve'), ('GAP', 'gap'),
-                   ('PARI/GP', 'gp'), ('SageMath', 'sage'), ('Normaliz', 'normaliz'), ('4ti2', '4ti2-groebner'))
+                   ('PARI/GP', 'gp'), ('SageMath', 'sage'), ('Normaliz', 'normaliz'), ('4ti2', '4ti2-groebner'),
+                   ('polymake', 'polymake'), ('CryptoMiniSat', 'cryptominisat5'))
+
+# (name, header under /usr/include, what it gives a hand-written kernel, compile and link flags)
+KERNEL_LIBRARIES = (
+    ('fflas-ffpack', 'fflas-ffpack/fflas-ffpack.h', 'BLAS-speed dense rank, echelon form, nullspace and products '
+     'mod p, FFPACK::Rank', '$(pkg-config --cflags fflas-ffpack) -lgivaro -lgmpxx -lgmp -lopenblas'),
+    ('FLINT', 'flint/nmod_mat.h', 'nmod_mat rank, rref, nullspace and multiplication mod p; polynomials over '
+     'Z/p and Z', '-lflint -lgmp'),
+    ('LinBox', 'linbox/linbox-config.h', 'sparse and black-box rank, solve and determinant mod p by Wiedemann',
+     '$(pkg-config --cflags linbox) -llinbox-1.7.0 -lntl -lflint -lgivaro -lgmpxx -lgmp -lopenblas'),
+    ('NTL', 'NTL/ZZ.h', 'polynomials and matrices over Z/p and GF(p^k)', '-lntl -lgmp'),
+    ('M4RI', 'm4ri/m4ri.h', 'dense linear algebra over GF(2)', '-lm4ri'))
+
+
+def installed_header(header, include=Path('/usr/include')):
+    return (include / header).exists()
 
 
 def algebra_note(which=shutil.which):
@@ -29,14 +45,24 @@ def algebra_note(which=shutil.which):
     found = [f'{name} ({binary})' for name, binary in ALGEBRA_SYSTEMS if which(binary)]
     if not found:
         return None
-    return ('Installed computer algebra systems: ' + ', '.join(found) + '. Run their scripts through ./compute.sh. '
-            'Before writing or reusing a hand-built kernel, check whether one of them computes the quantity, or a '
-            'step of it, faster or more reliably: their libraries go far beyond Groebner bases (commutative algebra, '
-            'modules, homology, combinatorics, representation theory, linear algebra over finite fields). Use them '
-            'wherever they improve a computation.')
+    return ('Installed computer algebra systems and solvers: ' + ', '.join(found) + '. Run their scripts through '
+            './compute.sh. Before writing or reusing a hand-built kernel, check whether one of them computes the '
+            'quantity, or a step of it, faster or more reliably: their libraries go far beyond Groebner bases '
+            '(commutative algebra, modules, homology, combinatorics, representation theory, linear algebra over '
+            'finite fields). Use them wherever they improve a computation.')
 
 
-def guidance(body, ft, which=shutil.which):
+def library_note(has=installed_header):
+    """One guidance line naming the installed C/C++ libraries a kernel should build on, or None if there are none."""
+    found = [f'{name} ({use}; link with {flags})' for name, header, use, flags in KERNEL_LIBRARIES if has(header)]
+    if not found:
+        return None
+    return ('Installed libraries for your own C/C++ kernels: ' + '; '.join(found) + '. Build every exact linear '
+            'algebra step of a kernel on them instead of hand-written elimination, and validate against a second '
+            'library on small cases.')
+
+
+def guidance(body, ft, which=shutil.which, has=installed_header):
     items = re.findall(r'data-route-item="([^"]+)"', body)
     if not items:
         return []
@@ -49,9 +75,7 @@ def guidance(body, ft, which=shutil.which):
              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
              'Before each computation, ask whether further computations are needed, or whether the results you '
              'already have are enough to propose a general statement and attempt to prove it.']
-    note = algebra_note(which)
-    if note:
-        notes.append(note)
+    notes += [note for note in (algebra_note(which), library_note(has)) if note]
     for item in items:
         mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item
                 and ft.entry_tags(body, a)['kind'] != 'formalization']

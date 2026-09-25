@@ -36,6 +36,7 @@ class SizingGuardTest(unittest.TestCase):
 
     def test_program_key_uses_script_or_executable(self):
         self.assertEqual(CS.program_key(['Singular', '-q', 'a/b.sing']), 'b.sing')
+        self.assertEqual(CS.program_key(['gp', '-q', 'c.gp']), 'c.gp')
         self.assertEqual(CS.program_key(['./kernel', '8']), 'kernel')
 
 
