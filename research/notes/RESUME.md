@@ -44,7 +44,8 @@ on resume, even in a fresh clone. “Before this notebook” is historical conte
    use `tools/notebook-excerpt.py --toc --tail 20 --since 2026-09-01`; read an exact
    source with `tools/notebook-excerpt.py ANCHOR`. Headings stop at the next peer or
    enclosing boundary; articles include the full record. `--until END_ANCHOR`
-   validates boundaries and `--out PATH` saves a new file. Dates come from stable
+   validates boundaries, `--text` gives plain text for reading (TeX kept, timing table
+   dropped) and `--out PATH` saves a new file. Dates come from stable
    entry IDs; undated entries and omission counts stay visible. Recency alone does
    not make administrative entries necessary reading. Never load the full record.
 5. Before mathematical reliance, read exact hypotheses, proof, encoding, original

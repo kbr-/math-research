@@ -35,6 +35,36 @@ def visible_text(source):
     return ' '.join(''.join(parser.parts).split())
 
 
+BLOCKS = {'p', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'tr', 'div', 'article', 'section',
+          'ol', 'ul', 'table', 'br'}
+TIMING = re.compile(r'<div class="timing-report"[\s\S]*?</table>\s*<p class="timing-note">[\s\S]*?</p>\s*</div>')
+
+
+def readable_text(source):
+    """Plain text for reading: one line per block, TeX kept, entities decoded, timing tables dropped."""
+    class Text(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=True)
+            self.parts = []
+        def handle_data(self, data):
+            self.parts.append(' '.join(data.split('\n')))
+        def handle_starttag(self, tag, attrs):
+            if tag in BLOCKS:
+                self.parts.append('\n')
+            elif tag in {'td', 'th'}:
+                self.parts.append('\t')
+        def handle_endtag(self, tag):
+            if tag in BLOCKS:
+                self.parts.append('\n')
+    source = TIMING.sub('', source)
+    source = MATH.sub(lambda m: m.group().replace('<', '&lt;').replace('>', '&gt;'), source)
+    parser = Text()
+    parser.feed(source); parser.close()
+    lines = (' '.join(line.split('\t')[0].split()) + ''.join('\t' + ' '.join(c.split()) for c in line.split('\t')[1:])
+             for line in ''.join(parser.parts).split('\n'))
+    return '\n'.join(line for line in lines if line.strip()) + '\n'
+
+
 class Notebook(HTMLParser):
     def __init__(self, source):
         super().__init__(convert_charrefs=False)
@@ -134,7 +164,11 @@ def main():
     parser.add_argument("--until", help="Stop before this exact anchor instead")
     parser.add_argument("--out", type=Path, help="Write a new file instead of stdout")
     parser.add_argument("--notebook", help="Research thread name; defaults to worktree selection or main")
+    parser.add_argument("--text", action="store_true",
+                        help="Plain text for reading (one line per block, TeX kept, timing table dropped)")
     args = parser.parse_args()
+    if args.text and args.toc:
+        parser.error('--text applies to an anchor or --current')
     if sum((bool(args.anchor), args.current, args.toc)) != 1 or (args.until and not args.anchor):
         parser.error('Choose an anchor (optionally --until), --current, or --toc')
     if not args.toc and (args.tail is not None or args.since is not None):
@@ -161,6 +195,8 @@ def main():
             result = source[:notebook.anchor("research-record")["start"]].rstrip() + "\n"
         else:
             result = notebook.excerpt(args.anchor, args.until)
+        if args.text:
+            result = readable_text(result)
         if args.out:
             with args.out.open("x", encoding="utf-8") as stream:
                 stream.write(result)

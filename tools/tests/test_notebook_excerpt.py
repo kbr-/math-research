@@ -36,6 +36,14 @@ class ExcerptTest(unittest.TestCase):
         with self.assertRaises(ValueError):book.excerpt('b','a')
         with self.assertRaises(ValueError):book.toc(tail=0)
 
+    def test_readable_text(self):
+        source=('<article id="e"><h3>Title</h3><p>A <strong>bold</strong>\nclaim \\(a<b &amp; c\\) \\(k&lt;2\\).</p>'
+                '<ol><li>one</li><li>two</li></ol><div class="timing-report"><table><tr><td>x</td></tr>'
+                '</table>\n<p class="timing-note">note</p>\n</div></article>')
+        self.assertEqual(excerpt.readable_text(source),
+                         'Title\nA bold claim \\(a<b & c\\) \\(k<2\\).\none\ntwo\n')
+        self.assertEqual(excerpt.readable_text('<table><tr><th>k</th><td>v  w</td></tr></table>'),'\tk\tv w\n')
+
     def test_duplicate_and_unclosed_anchors_fail(self):
         book=excerpt.Notebook('<section id="x"></section><section id="x"></section>')
         with self.assertRaises(ValueError):book.anchor('x')
