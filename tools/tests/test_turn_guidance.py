@@ -45,6 +45,15 @@ class TurnGuidanceTest(unittest.TestCase):
         self.assertIn('C or C++ kernels', notes)
         self.assertIn('propose a general statement and attempt to prove it', notes)
 
+    def test_algebra_systems_note(self):
+        body = self.body([('research', 'lem:a', 'Working proof.')])
+        present = ' '.join(self.guide.guidance(body, self.ft, which=lambda b: '/usr/bin/' + b if b in ('M2', 'Singular') else None))
+        self.assertIn('Macaulay2 (M2), Singular (Singular)', present)
+        self.assertIn('far beyond Groebner bases', present)
+        self.assertNotIn('msolve', present)
+        absent = ' '.join(self.guide.guidance(body, self.ft, which=lambda b: None))
+        self.assertNotIn('computer algebra', absent)
+
     def test_silent_without_route_items(self):
         self.assertEqual(self.guide.guidance('<section id="research-record"></section>', self.ft), [])
 

@@ -5,6 +5,7 @@ It reuses finish-turn.py's own predicates, so a warning here and a rejection the
 apart. It only prints; the hard checks stay in finish-turn.py.  Usage: turn_guidance.py [NOTEBOOK]"""
 import importlib.util
 import re
+import shutil
 import sys
 from pathlib import Path
 
@@ -19,7 +20,23 @@ def finisher():
     return module
 
 
-def guidance(body, ft):
+ALGEBRA_SYSTEMS = (('Macaulay2', 'M2'), ('Singular', 'Singular'), ('msolve', 'msolve'), ('GAP', 'gap'),
+                   ('PARI/GP', 'gp'), ('SageMath', 'sage'), ('Normaliz', 'normaliz'), ('4ti2', '4ti2-groebner'))
+
+
+def algebra_note(which=shutil.which):
+    """One guidance line naming the computer algebra systems found on PATH, or None if there are none."""
+    found = [f'{name} ({binary})' for name, binary in ALGEBRA_SYSTEMS if which(binary)]
+    if not found:
+        return None
+    return ('Installed computer algebra systems: ' + ', '.join(found) + '. Run their scripts through ./compute.sh. '
+            'Before writing or reusing a hand-built kernel, check whether one of them computes the quantity, or a '
+            'step of it, faster or more reliably: their libraries go far beyond Groebner bases (commutative algebra, '
+            'modules, homology, combinatorics, representation theory, linear algebra over finite fields). Use them '
+            'wherever they improve a computation.')
+
+
+def guidance(body, ft, which=shutil.which):
     items = re.findall(r'data-route-item="([^"]+)"', body)
     if not items:
         return []
@@ -32,6 +49,9 @@ def guidance(body, ft):
              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
              'Before each computation, ask whether further computations are needed, or whether the results you '
              'already have are enough to propose a general statement and attempt to prove it.']
+    note = algebra_note(which)
+    if note:
+        notes.append(note)
     for item in items:
         mine = [a for a in articles if ft.entry_tags(body, a)['route'] == item
                 and ft.entry_tags(body, a)['kind'] != 'formalization']

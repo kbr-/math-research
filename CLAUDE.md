@@ -103,7 +103,11 @@ Apply every rule below before launching a run.
    Python only orchestrates, and a Python-only computation needs evidence that it runs
    in seconds. Validate a new kernel against a reference implementation on small cases
    before scaling it. Declare foreign-function argument types, since undeclared
-   pointers are truncated.
+   pointers are truncated. Before writing or reusing such a kernel, check whether an
+   installed computer algebra system (Macaulay2, Singular, msolve; see COMPUTATION_RULES.md)
+   computes the quantity, or a step of it, more directly, faster or more reliably, and use it
+   wherever it improves the computation. On 25 September 2026 two cycles hand-built GF(3)
+   kernels for Hilbert functions and syzygies that these systems compute directly.
 4. **One pass per series, shared work once.** Compute every parameter of a series in
    one incremental pass, never one full recomputation per parameter: results for
    nested inputs continue from the previous ones. Compute shared prefixes, such as a

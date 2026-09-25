@@ -59,6 +59,13 @@ manually run outside the launcher are not inside the workload group.
 
 ## Efficient numerical implementation
 
+- Computer algebra systems are installed (user installation, 23 September 2026):
+  **Macaulay2** (`M2`), **Singular** and **msolve**, with Normaliz and 4ti2. Run their scripts
+  through `./compute.sh` (`.m2`, `.sing` and `.g` scripts are recognized). Their libraries cover
+  far more than Gröbner bases: commutative algebra, modules and homology, combinatorics,
+  representation theory and linear algebra over finite fields. Consider them for every
+  computation they could improve, and prefer them to a hand-built kernel unless the kernel is
+  measured to be faster. `./compute.sh start` lists the systems it finds.
 - Use compiled numerical libraries such as **NumPy, SciPy, and BLAS** for heavy
   computation, or appropriate compiled implementations in other languages.
 - Do not write numerical inner loops or heavy computational logic in pure
