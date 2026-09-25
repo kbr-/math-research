@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> The vanishing-top module of a column member is an iterated extension of its link's and of the sum and intersection of its two fibers' at a hole, so closed row freeness passes from \(N-1\) to \(N\) holes when the fibers' tops intersect freely (lem:hole-splitting, <a href="#entry-2026-09-25-hole-splitting">hole splitting</a>). Next: measure fiber uniformity. For the closure-route review's members, compute the dimension gap between the sum and the intersection of the fibers' tops, degree by degree, at free holes and at holes in the forms' supports, and decide whether the intersection is free where the fibers differ.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> W-like column members have fibers with different vanishing tops at every hole, yet the sum and intersection of those tops stay free in every small exact check. So the hole-splitting recursion's conditions hold without fiber uniformity (conj:fiber-lattice-freeness, <a href="#entry-2026-09-25-fiber-uniformity">fibers</a>). Next: prove a hole-splitting rule for sums and intersections of two vanishing-top systems, and decide whether the lattice they generate is closed under the fiber operations up to extensions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -23643,6 +23643,56 @@ The fall is \(v\,wQ_v\). The model is a statement about functions on \(\mathbb F
 <tr><td>Computation design and coding</td><td class="elapsed">4 min 11.55 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 10.71 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.05 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-fiber-uniformity" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:fiber-lattice-freeness">
+<h3>Fibers at a hole: W-like column members have fibers with different vanishing tops, yet the sum and intersection of those tops stay free in every small exact check, so the hole-splitting recursion's conditions hold without fiber uniformity</h3>
+<p class="entry-meta">25 September 2026 · Conjecture with an exact small check · open statement A1, closure route · cycle odd-prime-fiber-uniformity.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. lem:hole-splitting (<a href="#entry-2026-09-25-hole-splitting">hole splitting</a>) makes freeness of a column member's vanishing tops follow from three freeness statements on one hole fewer:</p>
+<ul>
+<li>the link's module;</li>
+<li>the sum of the two fibers' modules;</li>
+<li>their intersection.</li>
+</ul>
+<p>The sum and the intersection are not vanishing-top modules of pattern sets. Unless they stay free, the recursion cannot close. Do they, for W-like members, and does that need the fibers to agree?</p>
+<p><strong>General statement.</strong> conj:fiber-lattice-freeness. Over \(\mathbb F_p\), let \(Z\) be the allowed set, in a slice, of W clauses on column forms. For every hole \(j\) and every \(e\), the systems \(A_e(Z^0)+A_e(Z^1)\) and \(A_e(Z^0)\cap A_e(Z^1)\) on the other \(N-1\) holes are free over the row sums through every degree \(t\) where the column tensor powers on \(N-1-e\) holes are free. With lem:hole-splitting and induction on \(N\), this would reduce freeness of the vanishing tops of such members, and with lem:free-vanishing-tops closed row freeness (conj:closed-row-freeness in this class), to a base case at the smallest \(N\) of that range. The class is closed under links, since a link of a W member is a W member with shifted constants.</p>
+
+<h4>The check</h4>
+<p><code>fiber_check.py</code> works over \(\mathbb F_3\) with one explicit row, \(N=10\), \(m=11\), \(e\in\{1,2\}\) and degrees \(\le4\). It uses the review's four members, re-drawn with hole 9 made free by zeroing its column in every form. At a free hole and at a hole in the forms' supports it computed:</p>
+<ul>
+<li>the number of links \(S\) where \(a_S(Z^0)\ne a_S(Z^1)\);</li>
+<li>the short Jordan strings of \(r\) on \(A(Z^0)\), \(A(Z^1)\), the sum and the intersection.</li>
+</ul>
+<p>Results (<code>fiber_check.json</code>):</p>
+<ul>
+<li><em>Fibers differ.</em> For the slice they agree at every link checked. For one clause they differ at 24 and 86 links (\(e=1,2\)) at the free hole, and at 25 and 84 at the support hole. For the two-block pair the counts are 112, 115, 120 and 122, and for the three clauses 146, 128, 121 and 118. Fibers differ even at a free hole, where they are the same member in adjacent slices. So fiber uniformity fails for W-like members.</li>
+<li><em>All four modules are free in range.</em> Every member, hole and \(e\) has no short string in \(A(Z^0)\), \(A(Z^1)\), the sum or the intersection, in any degree computed.</li>
+</ul>
+<p>Scope: tiny sizes, \(k=1\), and far below the conjecture's natural range, where the free range of the column tensor powers on 9 holes is about degree 4. At this size the conjecture is supported only as consistency. The check found no case where the recursion's conditions fail while the member's module is free.</p>
+
+<h4>What it means</h4>
+<ul>
+<li>The closure route now has a candidate mechanism for dense column members: induction on holes through lem:hole-splitting, with the class of W members closed under links. It needs only that the lattice generated by the two fibers' tops stays free. The structural candidates tried before do not hold: link uniformity (<a href="#entry-2026-09-25-closure-route-review">closure-route review</a>) and fiber uniformity (above). The conjecture asks for freeness of the sum and intersection, not for agreement.</li>
+<li>Two caveats. First, the conjecture is about sums and intersections of two systems, not about pattern sets, so its own induction would need a hole-splitting rule for such lattice elements. Projections commute with sums but not with intersections, so that rule is not immediate. Second, the recorded warning about residual sequences applies: inductions of this kind can lose degree.</li>
+<li>Scope as before: column forms only (prop:content-reduction-scope), and no new case of W.</li>
+</ul>
+<p>Next: state and prove the hole-splitting rule for sums and intersections of two vanishing-top systems. Decide whether the lattice they generate is closed under the fiber operations up to extensions. If it is, the conjecture reduces to one inequality per hole, and its first nontrivial case, the two fibers of a single clause, can be attacked by hand.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:hole-splitting, lem:free-vanishing-tops, prop:content-reduction-scope and conj:closed-row-freeness. A claim search (fibers, sum, intersection, vanishing tops, free hole, induction) found only the entries this cycle builds on, and prop:fiber-decomposition-bounds, which bounds falls of paired systems and does not concern freeness. The kernel reuses the rank and nullspace routines validated in the closure-route review. It reproduces freeness of the slice's fibers, which agree as expected. All numbers were read from the saved JSON. The entry states a conjecture and a finite check, so no proof reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-fiber-uniformity">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 45.80 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">52.43 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">34.22 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 1.85 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">17.10 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
