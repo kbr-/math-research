@@ -423,11 +423,12 @@ KERNEL_RUN_S = 120
 MAX_PY_LOOP_DEPTH = 3
 # Parameter series (user instruction, 24 September 2026, after a driver refused by the loop guard was split into one
 # invocation per parameter pair and looped from the shell; narrowed the same day at the user's request as too harsh):
-# a series over parameters belongs in one run of one program (CLAUDE.md rules 3 to 5). Short Python computations
-# (timeout <= KERNEL_RUN_S) escape the loop scan, so a Python script already run short in the session with
-# MAX_SERIES_ARGSETS different argument lists is refused a further new one. Reruns, sizing and a few validation
-# cases stay allowed. Only a quoted user approval overrides.
-MAX_SERIES_ARGSETS = 6
+# a series over parameters belongs in one run of one program (CLAUDE.md rules 3 to 5). Tightened 25 September 2026,
+# after a compiled kernel was run with twelve argument lists from a shell loop: the guard covers every program, compiled
+# or Python, short or long. A program already run in the session with MAX_SERIES_ARGSETS different argument lists is
+# refused a further new one; validation cases and parameter series go in one run with a series interface. Reruns of
+# the same argument list stay allowed. Only a quoted user approval overrides.
+MAX_SERIES_ARGSETS = 4
 # Sizing runs (user instruction, 24 September 2026, after two runs in one session were launched for 20+ minutes on an
 # estimate that no measurement supported): a run expected to exceed LONG_RUN_S must cite, with --sized-by RUN_ID, a
 # completed run of the same program in the same session, whose measured time the estimate extrapolates.
@@ -530,20 +531,18 @@ def program_key(command):
 
 
 def series_error(events, command, timeout):
-    """None unless `command`, a short Python computation (timeout <= KERNEL_RUN_S), would be a further new argument
-    list for a script that `events` (the session journal) already ran short with MAX_SERIES_ARGSETS different
-    argument lists; else the reason."""
+    """None unless `command` would be a further new argument list for a program that `events` (the session journal)
+    already ran as a computation with MAX_SERIES_ARGSETS different argument lists; else the reason. Every program
+    counts, compiled or Python, whatever its timeout."""
     key = program_key(command)
-    if not Path(command[0]).name.startswith('python') or not key.endswith('.py') or timeout > KERNEL_RUN_S:
-        return None
     seen = {tuple(e['command'][1:]) for e in events if e['event'] == 'run_start'
-            and e.get('category', 'computation') == 'computation' and program_key(e['command']) == key
-            and Path(e['command'][0]).name.startswith('python') and (e.get('timeout_s') or 0) <= KERNEL_RUN_S}
+            and e.get('category', 'computation') == 'computation' and program_key(e['command']) == key}
     if tuple(command[1:]) in seen or len(seen) < MAX_SERIES_ARGSETS:
         return None
-    return (f'{key} already ran short with {len(seen)} different argument lists in this session: a parameter series '
-            'belongs in one run, with the loop in the compiled kernel, not in the shell or in repeated invocations '
-            '(CLAUDE.md rules 3 to 5); only --user-approved overrides')
+    return (f'{key} already ran with {len(seen)} different argument lists in this session: a parameter series or a '
+            'set of validation cases belongs in one run with a series interface, not in the shell or in repeated '
+            'invocations; and once the finished runs answer the question, compute nothing more and derive the general '
+            'statement (CLAUDE.md rules 3 to 5, 8 and 9); only --user-approved overrides')
 
 
 def sizing_error(events, sized_by, command, expect):

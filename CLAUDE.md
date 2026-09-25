@@ -152,8 +152,10 @@ Apply every rule below before launching a run.
 `./compute.sh` enforces rules 3 to 5 and 8 in part. A Python computation allowed more than 120 s needs a
 `--kernel-reason` of at least six words, naming the compiled kernel and the reuse. Because a stated reason
 cannot be verified, `compute.sh` also scans the code such a run can reach (the script, and in its local imports
-the module-level code and the names it uses) and refuses loops nested three deep over non-literal ranges. It also refuses a short Python run (at most 120 s) of a script that the
-session has already run short with six different argument lists, since a parameter series belongs in one run.
+the module-level code and the names it uses) and refuses loops nested three deep over non-literal ranges. It also refuses any computation, compiled or Python, short or long, whose program the
+session has already run with four different argument lists: a parameter series or a set of validation cases
+belongs in one run with a series interface, and after the finished runs answer, the next step is the general
+statement, not another case (tightened 25 September 2026).
 
 After editing any framework tool (`compute.sh`, `tools/*.py`), run its tests before
 committing: from `tools/tests`, `python3 -m unittest`.
