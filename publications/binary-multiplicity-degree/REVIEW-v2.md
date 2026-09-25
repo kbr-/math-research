@@ -66,3 +66,11 @@ The aggregate lists 64 declarations and passes `verify.sh` at commit 168a0c8e
 The main text is now 14 pages, and the whole PDF 22. The second proof moved to Appendix A, and
 the Lean map is Appendix B. The framework and assistance section became the one-paragraph
 "How this paper was produced". The table of contents was dropped. The mathematics is unchanged.
+
+## Novelty check (25 September 2026)
+
+The citing works of Sauermann-Wigderson, Bishnoi et al. and Menezes were read, and Menezes' own
+Section 8 was read in full. He records the case n = 1 and names smaller dimensions as open.
+Huang-Wang-Wang extend the real range to n >= k-1. The introduction now credits both, and the new
+range is stated as 2 <= n < k-1. The Lean pin is ab7b3377, which adds delta_one; the aggregate
+lists 65 declarations.
