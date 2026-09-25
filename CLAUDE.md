@@ -110,7 +110,9 @@ Apply every rule below before launching a run.
    exact linear algebra on fflas-ffpack, FLINT or LinBox, not on hand-written elimination. On 25 September 2026 two cycles hand-built GF(3)
    kernels for Hilbert functions and syzygies that these systems compute directly. A tool
    too slow for a computation the line needs is a reason to write its kernel or use such a
-   system in the same cycle, never to drop or defer the line.
+   system in the same cycle, never to drop or defer the line. "Needs" means rule 9: the run answers a
+   question the finished runs cannot, and its answer changes the missing implication. A further case of
+   a fitted formula is not such a need; derive the mechanism instead (user feedback, 25 September 2026).
 4. **One pass per series, shared work once.** Compute every parameter of a series in
    one incremental pass, never one full recomputation per parameter: results for
    nested inputs continue from the previous ones. Compute shared prefixes, such as a
