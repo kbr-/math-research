@@ -2850,4 +2850,48 @@ In characteristic 2, \(\Phi=1\) works (\(\delta(3,4,0)=7\) over \(\mathbb F_2\))
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
+<article id="entry-2026-09-25-cube-route-review-3" data-kind="review" data-route="cube-odd-characteristic" data-claims="none" data-claim-note="Route review: compares exact n = 3 per-order tables across characteristics 5, 7 and 101; registers no new claim.">
+<h3>25 September 2026 — Route review of the cube: the pre-stable regime in dimension 3 has two proved ends and one open middle</h3>
+<p class="entry-meta">Route review; the n = 3 per-order table is identical over F_5, F_7 and F_101 for k ≤ 26. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>The line's general claim.</strong> The line aims to determine \(\delta_F(n,k,\ell)\) on \(\{0,1\}^n\) over fields of characteristic \(\ne2\), equivalently the savings \(h=n+2(k-1)-\delta\) at \(m=k-\ell-1\). Since the <a href="#entry-2026-09-25-cube-route-review-2">last review</a>:</p>
+<ul>
+<li>The one-step lag law was refuted (<a href="#cube-one-step-lag-fails">refutation</a>).</li>
+<li>For every \(n\), the savings are determined by the initial degrees \(\ell_0(h,m)\) of explicit homogeneous ideals (<a href="#cube-threshold-ideal">threshold-ideal lemma</a>), equivalently by a dual polynomial problem (<a href="#cube-dual-polynomial-form">dual form</a>).</li>
+<li>In dimension 3, over every field of characteristic \(\ne2\):
+<ul>
+<li>At each \(\kappa\)-boundary \(m=4d\), the threshold is exactly \(d^2-1\) (<a href="#cube-dimension-three-boundary-threshold">theorem</a>).</li>
+<li>At order zero, \(\delta(3,k,0)\le2k-\lfloor k/5\rfloor\) (<a href="#cube-order-zero-upper-bound">theorem</a>).</li>
+</ul></li>
+</ul>
+<p><strong>What the main goal needs.</strong> Nothing. The thread's goal, \(D(n,k)\) over \(\mathbb F_2\), is proved and formalized. This line gives the preprint's context and a candidate second theme: the per-order function on the real cube.</p>
+<h4 id="cube-review-3-test">Falsification attempt: other characteristics</h4>
+<p>Several of the new results need characteristic \(\ne2\), and characteristics 5 and 7 are exactly where Catalan numbers start to vanish (\(C_3=5\), \(C_4=14\)). If anything in dimension 3 depended on the characteristic beyond excluding 2, exact tables would show it. <code>research/tools/bmd_cube_lag_check.py</code> ran the exact kernel for \(n=3\), \(k\le26\), over \(\mathbb F_5\) and \(\mathbb F_7\) (<code>research/results/bmd-r36-route-review/lag-p5-n3.txt</code>, <code>lag-p7-n3.txt</code>). Each gives 351 values. The prediction, fixed before the runs, was agreement with the \(\mathbb F_{101}\) table and with \(\delta(3,k,0)=2k-\lfloor k/5\rfloor\).</p>
+<ul>
+<li>Both tables agree with \(\mathbb F_{101}\) at all 351 points.</li>
+<li>The order-zero formula holds for every \(2\le k\le26\) in both.</li>
+<li>Together with \(\mathbb F_3\) (\(k\le32\)), no dependence on the odd characteristic appears in dimension 3.</li>
+</ul>
+<p>For \(n=3\) the Catalan numbers enter only through \(C_0,C_1,C_2\), which are nonzero in odd characteristic, so this agrees with the theorems. By contrast, over \(\mathbb F_5\) at \(n=4\) the degree-one parts do change (<a href="#cube-review-kappa-test">earlier review</a>).</p>
+<h4>Assessment and next step</h4>
+<p>In dimension 3 the per-order function has a proved large-\(\ell\) limit \(\kappa_3(m)=\lfloor m/4\rfloor+1\). It has proved thresholds at every \(\kappa\)-boundary, and a proved upper bound at order zero that matches all computed values. What remains open:</p>
+<ul>
+<li><strong>Order zero.</strong> The lower bound \(\delta(3,k,0)\ge2k-\lfloor k/5\rfloor\). It has a concrete formulation, the nonexistence of a dual polynomial of degree \(\le5h-7\), and a symmetric reduction.</li>
+<li><strong>The middle.</strong> The thresholds strictly between the boundary and order zero, where the solution modules have rank between 2 and \(h-2\). Kernel values give 3 at rank \(h-2\), and 6 at rank \(h-3\) for \(h=5,6\). No formula has been proposed that survives all values: \(3(h-1-\rho)\) fails at \(h=6\), \(\rho=2\).</li>
+<li><strong>\(n\ge4\).</strong> The stable law is proved in characteristic 0 and for \(p&gt;2^{n-1}d\), and the boundary exponents have lower bounds that the test lines attain.</li>
+</ul>
+<p>The line is productive: each recent cycle either proved a general statement or refuted a conjecture. Its results do not bear on the main goal. The highest-risk open item on the route is the order-zero lower bound, the only one of the two \(n=3\) ends without a proof. The next step is that lower bound: with the dual form, show that no symmetric \(\Phi\) with \(\Phi(0)=1\) and \(\deg\Phi\le5h-7\) meets the conditions for \(h\). Start from the Catalan convolution identity \(\sum_jC_{j-1}C_{N-j-1}=C_{N-1}\), which governs the pair conditions.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r36-order-zero-lower">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 14.87 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">49.32 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 57.40 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">28.02 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
 </section>
