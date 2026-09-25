@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A3 (degree).</strong> Every nonzero functional kills a random product top with probability at most \(65/81\), so all functionals of contraction rank up to about \(0.72\,(mN)^{4/5}\) are harmless for the killer moment (lem:low-rank-strata, <a href="#entry-2026-09-26-low-rank-strata">low-rank strata</a>). Next: the high-rank stratum near divided powers, by conditioning on the nearest divided power's scalars and bounding the remainder on the complementary directions.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A3 and A1.</strong> The product-top killer moment is now settled below contraction rank about \(0.72(mN)^{4/5}\) and wherever the 5-linear form has high analytic rank, and no bias bound reaches the main term (lem:gauss-sum-killer-bound, <a href="#entry-2026-09-26-gauss-sum-killer">Gauss sums</a>). Next: a route review weighing this random-forms line (A3) against the highest-risk statement A1, with the equidistribution of the top strata as the line's remaining step.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24493,6 +24493,51 @@ where \(q(w)\) is the single-divided-power probability of prop:divided-power-col
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 55.81 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 29.42 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-gauss-sum-killer" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:gauss-sum-killer-bound">
+<h3>Gauss sums and analytic rank: a functional kills a random product top with probability at most the fourth root of its 5-linear form's bias, which settles every stratum of high analytic rank but cannot reach the main term</h3>
+<p class="entry-meta">26 September 2026 · Working proof · open statement A3 · cycle odd-prime-near-divided-powers.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A3. lem:low-rank-strata (<a href="#entry-2026-09-26-low-rank-strata">low-rank strata</a>) left the killer moment of conj:product-top-killer-moment open above contraction rank \(u_0\approx0.72(mN)^{4/5}\). The <a href="#entry-2026-09-25-product-top-moment">moment entry</a> called the missing piece an inverse theorem. The record has imported one: imp:Janzer-finite-field-partition-rank bounds partition rank polynomially by analytic rank over every fixed finite field. It was never connected to product tops. Does the killer probability reduce to analytic rank, and how far does that reach?</p>
+<p><strong>General statement.</strong> lem:gauss-sum-killer-bound. Use the moment entry's setting over \(\mathbb F_3\): \(\tau=e_2(\ell)e_2(\ell')\) and \(\pi(\chi)=\Pr[\chi(\tilde A_1\tau)=0]\). For \(\chi\in\tilde A_5^*\), let \(\tilde\chi(y,a,b,c,d)=\chi(yabcd)\), a 5-linear form on \(\tilde A_1\). Its bias is \(\operatorname{bias}(\tilde\chi)=\mathbb E\,\omega^{\tilde\chi}\) over uniform arguments, which lies in \((0,1]\), and its analytic rank is \(\operatorname{arank}=-\log_3\operatorname{bias}\).</p>
+<ol>
+<li>\(\pi(\chi)\le\operatorname{bias}(\tilde\chi)^{1/4}=3^{-\operatorname{arank}(\tilde\chi)/4}\).</li>
+<li>Stratum criterion. Fix \(m\) and \(\varepsilon&gt;0\), and let \(\mathcal F\) be any set of nonzero functionals with \(u(\chi)\le u\) and \(\operatorname{arank}(\tilde\chi)\ge a\) for each member. If \(aD/(4r)-u\,mN-\binom N5(u/N)^5\to\infty\), then \(\sum_{\chi\in\mathcal F}\pi_E(\chi)^B=o(3^{C_0})\), uniformly in \(B\) with \(C_0\ge0\). In particular this holds for \(N\) large when \(a\ge4(1+\varepsilon)u^5/(m^4N^4)+K\,u/(m^3N^3)\), with a fixed \(K&gt;480\). The second term pays for the count term \(u\,mN\), since \(4r\,u\,mN/D\approx480u/(m^3N^3)\).</li>
+<li>With imp:Janzer-finite-field-partition-rank, \(\operatorname{prank}(\tilde\chi)\le C\max(1,\operatorname{arank}(\tilde\chi))^{c}\), with constants for order 5 over \(\mathbb F_3\). So the functionals not covered by part 2 in stratum \(u\) have \(\operatorname{prank}(\tilde\chi)\le C\max\bigl(1,\,4(1+\varepsilon)u^5/(m^4N^4)+Ku/(m^3N^3)\bigr)^{c}\).</li>
+</ol>
+
+<h4>Proof</h4>
+<ul>
+<li><em>Fourier in \(y\).</em> For fixed \(\tau\), \(y\mapsto\chi(y\tau)\) is linear, so \(\mathbf 1[\chi(\tilde A_1\tau)=0]=\mathbb E_y\,\omega^{\chi(y\tau)}\). Hence \(\pi(\chi)=\mathbb E_y\,\mathbb E_{\ell,\ell'}\,\omega^{P_y(\ell,\ell')}\), where \(P_y=\chi(y\,e_2(\ell)e_2(\ell'))\).</li>
+<li><em>Two Gauss sums.</em> In characteristic 3, \(e_2(\ell)=2\ell^2\), so \(e_2(\ell+h)-e_2(\ell)-e_2(h)=\ell h\). For fixed \(y,\ell'\), \(Q(\ell)=P_y(\ell,\ell')\) is a quadratic form with polar form \(B(\ell,h)=\chi(y\,\ell h\,e_2(\ell'))\). The Gauss-sum bound for odd characteristic gives \(|\mathbb E_\ell\omega^{Q}|\le3^{-\operatorname{rank}B/2}=(\mathbb E_{\ell,h}\omega^{B})^{1/2}\). By Jensen, \(|\mathbb E_{\ell,\ell'}\omega^{P_y}|\le(\mathbb E_{\ell,h,\ell'}\,\omega^{\chi(y\ell h\,e_2(\ell'))})^{1/2}\). For fixed \(\ell,h\), the exponent \(R(\ell')=\chi(y\ell h\,e_2(\ell'))\) is a quadratic form in \(\ell'\) with polar form \(\chi(y\ell h\,bg)\). Both quadratic forms are homogeneous, with no linear term, so the Gauss sums have modulus exactly \(3^{-\operatorname{rank}/2}\). Then \(\mathbb E_{\ell,h,\ell'}\omega^{\chi(y\ell h e_2(\ell'))}\le\mathbb E_{\ell,h}|\mathbb E_{\ell'}\omega^{R}|\le\mathbb E_{\ell,h}(\mathbb E_{b,g}\omega^{\chi(y\ell hbg)})^{1/2}\le(\mathbb E_{\ell,h,b,g}\,\omega^{\chi(y\ell hbg)})^{1/2}\), by the triangle inequality, the Gauss sum and Jensen. So \(|\mathbb E\,\omega^{P_y}|\le\operatorname{bias}(T_y)^{1/4}\), where \(T_y(\ell,h,b,g)=\chi(y\ell hbg)\) is 4-linear. Biases of multilinear forms are nonnegative, since each is a probability that a linear form vanishes.</li>
+<li><em>Part 1.</em> \(\pi(\chi)\le\mathbb E_y\operatorname{bias}(T_y)^{1/4}\le(\mathbb E_y\operatorname{bias}(T_y))^{1/4}\) by Jensen, and \(\mathbb E_y\operatorname{bias}(T_y)=\operatorname{bias}(\tilde\chi)\).</li>
+<li><em>Part 2.</em> Exactly as in lem:low-rank-strata, part 2. \(|\mathcal F|\le2\cdot3^{u\,mN+e(u)}\) by lem:catalecticant-count, with \(e(u)\le\binom N5(u/N)^5\). Each term is at most \(3^{-aB/4}\). Always \(a\le\operatorname{arank}(\tilde\chi)\le mN\le4r\) once \(mN\ge3\), since the bias is at least \(3^{-\dim\tilde A_1}\). So \(aB/4+C_0=D-B(r-a/4)\ge aD/(4r)\), using \(B\le D/r\). The explicit form follows from \(D/r=\binom N5m^5/(mN-2)\) and \(e(u)\le\binom N5u^5/N^5\).</li>
+<li><em>Part 3.</em> Substitute the threshold into the imported inequality. \(\square\)</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li><em>What it settles.</em> Every functional whose 5-linear form has analytic rank at least about \(4u^5/(m^4N^4)\), relative to its contraction rank \(u\), is harmless. By the imported inverse theorem, the rest have partition rank polynomially bounded in that threshold. Near \(u_0\) the threshold is a constant, so the remaining functionals there have bounded partition rank. Divided powers are of this kind. For \(\varphi^{[5]}\), \(\tilde\chi\) is the distinct-column sum. By Möbius inversion over the set partitions of the five slots, it is a sum of partition-rank-1 terms, except for the single-block term, whose coefficient \(4!=24\) vanishes modulo 3. So its partition rank is at most \(\mathrm{Bell}(5)-1=51\). Divided powers of large support therefore have high \(u\) but bounded analytic rank, and part 1 gives nothing for them, consistently with prop:divided-power-collapse. Counting the bounded-partition-rank functionals by structure is not done here.</li>
+<li><em>Where it stops.</em> Always \(\operatorname{arank}(\tilde\chi)\le u(\chi)\), because the bias is at least \(\Pr[y\in\ker\kappa_\chi]=3^{-u}\). So the criterion is vacuous for every \(u&gt;mN/(4(1+\varepsilon))^{1/4}\approx0.71\,mN\). Even without the fourth-root loss it would stop at \(mN/(1+\varepsilon)^{1/4}\). No bias bound of this kind reaches the functionals that carry the main term \(3^{C_0}\). There the moment needs \(\sum\pi_E(\chi)^B\le(1+o(1))3^{C_0}\) over the top strata. That requires \(\pi_E(\chi)=3^{-(u-2)}(1+o(1/B))\) outside a set negligible for the count, an equidistribution statement with relative error \(o(N^{-4})\) for fixed \(m\), not a decay bound. Beyond \(u\approx N^{4/5}\), the part-3 threshold is a power of \(u^5/N^4\) with Janzer's exponent \(c\). Whether a sharper imported inverse theorem, such as quasi-linear bounds between partition rank and analytic rank, applies over \(\mathbb F_3\) was not checked.</li>
+<li><em>A related record result.</em> The universal bound of lem:low-rank-strata, part 1, uses the same Schwartz–Zippel mechanism as lem:random-affine-product-sampler-bias. That lemma bounds the character average of a nonzero functional on one product of \(t\) uniform affine forms by \(1-(1-1/p)^{t-1}\). Ours bounds a vanishing probability for a degree-4 multilinear polynomial by \(1-(2/3)^4\). The objects and exponents differ, and neither result implies the other. The low-rank entry's searches missed it under its own wording.</li>
+<li>Random forms only; A1 is untouched.</li>
+</ul>
+<p>Next: the main term. For functionals of contraction rank near \(mN\), prove \(\pi(\chi)=3^{-(u-2)}(1+o(1/B))\) outside a set small enough for the count. This is a Wood-type equidistribution for the contraction vector \(\chi(\cdot\,\tau)\) on its range. Alternatively, a route review should decide whether A3's product-top line, which covers random forms only, should yield to A1.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:low-rank-strata, lem:catalecticant-count, lem:product-top-moment-reduction, imp:Janzer-finite-field-partition-rank's statement and lem:random-affine-product-sampler-bias's statement. Claim searches (analytic rank, partition rank, bias, Gauss sum, inverse theorem, killer probability) found the imported Janzer theorem and the sampler-bias lemma, but no application to product tops. A fresh-context reviewer confirmed part 1: the Fourier identity, the polarization in characteristic 3, the Gauss sums and nonnegativity of the biases. It required these changes, all adopted: part 2's impossible second case replaced by the bound \(a\le4r\); an explicit threshold constant; \(\max(1,\cdot)\) in part 3; the vacuity range sharpened to \(u&gt;0.71\,mN\) through \(\operatorname{arank}\le u\); the equidistribution requirement stated for \(\pi_E\) outside a negligible set; the second Gauss-sum step spelled out; the divided-power remark justified; and the related-result comparison checked against that lemma's statement. No change strengthened a claim beyond the justification of the divided-power remark, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-near-divided-powers">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 47.53 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 20.04 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 58.12 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 28.87 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.50 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
