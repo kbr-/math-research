@@ -230,7 +230,10 @@ rule, not as a description of the mathematics that prompted it.
 - In a Spin loop driven by ScheduleWakeup, the delay is only a fallback re-entry point. Continue
   the next cycle, route review or draft review in the current turn and re-arm with a short delay
   (about 60 seconds); a possible user redirection is no reason to idle. Use long delays only for
-  genuinely blocked waits, such as a running reviewer or a background batch.
+  genuinely blocked waits, such as a running reviewer or a background batch. Never stop the loop
+  yourself while the goal is open: low-yield cycles, a corrected mistake or a hard next step call
+  for the next lead from the latest review's Outside leads and Absurd bridges, not for a check-in
+  with the user, even when the user is present (user feedback, 25 September 2026).
 - Repeated question marks in the user's messages signal frustration with the process, more
   marks meaning more; they call for a real fix, not an apology. Put that fix into the
   framework, preferably as a mechanical check a tool enforces, and commit it.
