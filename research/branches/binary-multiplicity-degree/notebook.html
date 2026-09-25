@@ -30,11 +30,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic. Prove the order-zero lower bound on \(\{0,1\}^3\): \(\delta(3,k,0)\ge2k-\lfloor k/5\rfloor\), in characteristic \(\ne2\). In the <a href="#cube-dual-polynomial-form">dual form</a>, no \(\Phi\) with \(\Phi(0)=1\) and \(\deg\Phi\le5h-7\) may satisfy the conditions for savings \(h\).</p>
+<p>Route item: cube-odd-characteristic. Find the degree structure of the rank-\(\rho\) solution modules \(\mathrm{Sol}^{(d+1)}_m\) on \(\{0,1\}^3\) (<a href="#cube-threshold-ideal">threshold-ideal lemma</a>), to prove the order-zero lower bound by a degree count. Local arguments stop at \(m\le4d\) (<a href="#cube-order-zero-local-limits">lemma</a>).</p>
 <ul>
-<li><strong>Structure.</strong> The conditions with \(|a|\le1\) are equal-value conditions solved by Vieta, as in the <a href="#cube-order-zero-upper-bound">upper bound</a>. Those with \(|a|=2,3\) and with shifts \(t\ge1\) add further equal-value conditions on pairs and on the triple.</li>
-<li><strong>Plan.</strong> Reduce to symmetric \(\Phi\) by averaging (characteristic \(&gt;3\) first), write the conditions in the elementary symmetric basis, and count. The degree \(5h-6\) should appear as the first degree at which the counts allow a solution.</li>
-<li><strong>Test.</strong> Solve the symmetric system for \(h\le6\) as a finite check of the reduction, against the kernel values.</li>
+<li><strong>Computation.</strong> For \(d\le4\) compute the minimal generators of \(\mathrm{Sol}\) and of \(I=\pi_m(\mathrm{Sol})\) as graded modules. This is a syzygy computation in three variables (Singular), to be done once per \((d,m)\) with \(4d\le m\le5d-1\).</li>
+<li><strong>Target.</strong> A formula for the generator degrees, in particular \(\mathrm{indeg}\,I=3\) at rank \(\rho=d-1\), \(m=5d-2\).</li>
+<li><strong>Proof idea.</strong> A determinantal description, with degrees fixed by the collision exponents as at rank 1.</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions.</p>
 </section>
@@ -2890,6 +2890,65 @@ In characteristic 2, \(\Phi=1\) works (\(\delta(3,4,0)=7\) over \(\mathbb F_2\))
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 57.40 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">28.02 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-cube-order-zero-obstructions" data-kind="research" data-route="cube-odd-characteristic" data-claims="lem:cube-order-zero-local-limits check:cube-dual-order-zero-thresholds">
+<h3>25 September 2026 — Order zero on the 3-cube: why pointwise and single-divisor arguments cannot give the lower bound</h3>
+<p class="entry-meta">Working proof that local obstructions reach only m ≤ 4d; finite check of the dual thresholds. The order-zero lower bound stays open. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-25-cube-route-review-3">route review</a> named the order-zero lower bound \(\delta(3,k,0)\ge2k-\lfloor k/5\rfloor\) as the highest-risk open item. With \(h=d+1\) and \(k=m+1\), it says: no order-zero dual solution (<a href="#cube-dual-polynomial-form">dual form</a>) exists for \(4d\le m\le5d-2\). Two natural lines of attack are available. Do either of them reach \(5d-2\)? The test ends when each line either proves the bound or has a precise reason to stop.</p>
+<h4 id="cube-order-zero-local-limits">Two local obstructions and their reach</h4>
+<p><strong>Working lemma</strong> (<code>lem:cube-order-zero-local-limits</code>). Let \(F\) be a field of characteristic \(\ne2\), \(n\ge1\) (\(n\ge2\) in Part 3), \(d\ge1\), and let \(W=(W_0,\ldots,W_m)\) be an order-zero solution: \(W_c\in F[y]_{m-c}\), \(W_m=1\), and \(\sum_cW_c[T^c]f=0\) for every basis element \(f=T^Qz^r\) of \(V_{n,d}\).</p>
+<ol>
+<li><strong>Evaluation.</strong> Let \(y^*\in\overline F^{\,n}\) be any point, and \(V_d(y^*)\) the span of the specialized series. If \(V_d(y^*)\) has an element of order exactly \(m\) at \(T=0\), no order-zero solution exists at \(m\). Conversely, a vector \(w\) with \(w_m=1\) killing the truncations of \(V_d(y^*)\) exists if and only if no element of \(V_d(y^*)\) has order exactly \(m\).</li>
+<li><strong>Reach for \(n=3\).</strong> At every \(y^*\in\overline F^{\,3}\), every nonzero element of \(V_d(y^*)\) has order \(\le4d\). So the evaluation obstruction excludes only values \(m\le4d\), and for \(m\ge4d+1\) a pointwise solution exists at every \(y^*\).</li>
+<li><strong>Restriction.</strong> Put \(y_1=0\). Then \(W|_{y_1=0}\) is an order-zero solution in the variables \(y_2,\ldots,y_n\) for the test space \(U=V_{n-1,d}+\mathrm{span}\{T^{d-e(P)}P\}\) (\(P\) running over the basis of \(V_{n-1,d-1}\), with weight \(e\)). For \(n=3\), \(U=U_d:=\mathrm{span}\{T^Qz^{r'}:Q+|r'|\le d\}\) in two variables. The Möbius transport of the <a href="#cube-dimension-three-boundary-threshold">boundary theorem</a> keeps homogeneity and \(W_m=1\), so each diagonal divisor \(y_i=y_j\) gives the same problem.</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><strong>Part 1.</strong> The identities \(\sum_cW_c[T^c]f=0\) hold in \(F[y]\), so they survive specialization, and \(W_m(y^*)=1\). Let \(g\in V_d(y^*)\) have order exactly \(m\). Then \(g\) is a combination of specialized basis elements, and \(\sum_cW_c(y^*)[T^c]g=[T^m]g\ne0\), a contradiction. For the converse: a functional on \(F[T]/(T^{m+1})\) with value 1 at \(T^m\) killing a subspace exists if and only if \(T^m\) is not in the subspace. For the truncations of \(V_d(y^*)\), \(T^m\) is in the subspace if and only if some element has order exactly \(m\).</li>
+<li><strong>Part 2.</strong> Let \(n'\) be the number of distinct nonzero values among \(a^*_i=4y^*_i\).
+<ul>
+<li>The specialized \(w_i\) are \(1\) or among \(n'\) distinct square roots \((1+a^*T)^{1/2}\). So \(V_d(y^*)\) is contained in the polynomials of degree \(\le d\) in these \(n'\) functions (with \(T=(w_j^2-1)/a_j^*\) of weight 2).</li>
+<li>On the smooth model of their curve (irreducible by Kummer theory, as in the <a href="#cube-curve-transport">transport lemma</a>), each has a pole of order \(\le1\) at each of the \(\max(1,2^{n'-1})\) places over \(T=\infty\). For \(n'=0\) there are no square roots, and the elements are polynomials of degree \(\le d/2\) in \(T\).</li>
+<li>So a nonzero element has at most \(2^{n'-1}d\le4d\) zeros (at most \(d/2\) when \(n'=0\)), and its order at \(p_0\) is \(\le4d\). The order at \(p_0\) equals the \(T\)-order, because \(T=0\) is unramified, so \(T\) is a uniformizer at \(p_0\).</li>
+</ul></li>
+<li><strong>Part 3.</strong> This is the argument of the <a href="#cube-collision-lifts">collision-lift lemma</a>.
+<ul>
+<li>\(W\) kills \(\tau(V)\) for truncation at \(T^{m+1}\), and so by linearity all of \(\tau(V)\otimes K\). The elements \(\tau(s^{-(d-e)}L_P)\) are integral, since those series are divisible by \(s^{d-e}\) in every coefficient. So the identities can be reduced modulo \(s\).</li>
+<li>Reducing modulo \(s=y_1\) gives \(W|_{y_1=0}\), with last coordinate 1, killing \(V_{n-1,d}\) and the \(\varepsilon T^{d-e}P\).</li>
+<li>For \(n=3\) and fixed \(r'\), the exponents \(Q\le\lfloor(d-|r'|)/2\rfloor\) and \(d-|r'|-Q'\) with \(Q'\le\lfloor(d-1-|r'|)/2\rfloor\) together cover \(0,\ldots,d-|r'|\). \(\square\)</li>
+</ul></li>
+</ul>
+<h4 id="cube-dual-order-zero-thresholds">How far the restriction reaches</h4>
+<p><strong>Finite check</strong> (<code>check:cube-dual-order-zero-thresholds</code>). <code>research/tools/bmd_cube_dual_order_zero.py</code> solves the order-zero dual problem over \(\mathbb F_{1000003}\), with \(\Phi_0=1\) as the inhomogeneous term, and finds the least \(m\) with a solution.</p>
+<ul>
+<li><strong>Validation.</strong> For the test space \(V_{3,d}\) it gives \(4,9,14\) for \(d=1,2,3\), which is \(5d-1\), as the kernel values require.</li>
+<li><strong>The restricted problem.</strong> For \(U_d\) in two variables the least \(m\) is \(4,9,13,17,21,25,29\) for \(d=1,\ldots,7\), that is \(4d+1\) for \(d\ge2\) (<code>research/results/bmd-r37-order-zero-lower/dual-U2.txt</code>; the \(V_{3,d}\) run is in <code>dual-V3.txt</code>). The referee checked every \(m\) in \([4d+1,5d-2]\) for \(d\le5\) and found \(U_d\) solvable at each.</li>
+</ul>
+<p>So first-order restriction to a collision divisor yields only \(m\ge4d+1\): a finite check over \(\mathbb F_{1000003}\), for \(d\le7\), and for every \(m\) in the gap when \(d\le5\). With the lemma, both local routes stop at the same place:</p>
+<ul>
+<li>evaluation can exclude only \(m\le4d\). The values \(m&lt;4d\) are excluded anyway, since \(\mathrm{Ord}_3(d)\) is an initial segment of length \(4d\) (<a href="#cube-dimension-three-law">dimension-3 theorem</a>). For \(d\ge2\), \(m=4d\) is excluded through the torsion points, where \(V_d\) has an element of order exactly \(4d\). For \(d=1\) there are no torsion points (\(d^2-1=0\)), and \(m=4\) is solvable;</li>
+<li>first-order restriction excludes nothing beyond \(4d\) in the checked range.</li>
+</ul>
+<p>The conjectured bound also excludes \(4d+1\le m\le5d-2\), which is empty for \(d\le2\) and nonempty from \(d=3\) on.</p>
+<p><strong>What this means.</strong> The missing values are not excluded by pointwise evaluation, nor by first-order restriction to a collision divisor. For \(m\ge4d+1\) pointwise solutions exist at every point (Part 2), and the restricted problem is solvable (finite check). Restriction modulo higher powers of \(s\), restriction to curves, and joint conditions at several points are untested. The most likely obstruction is the degree structure \(\deg W_c=m-c\). The proof at the \(\kappa\)-boundary had the same character, a degree count \(\deg\Delta-\deg g\). A lower bound at order zero should therefore come from a degree count for the rank-\(\rho\) solution modules. That means computing the degrees of their generators, as Part 2 of the <a href="#cube-threshold-ideal">threshold-ideal lemma</a> does for rank 1.</p>
+<p><strong>General statement.</strong> <code>lem:cube-order-zero-local-limits</code>, for all \(n\), \(d\) and \(m\) in characteristic \(\ne2\). Its Part 2 is specific to \(n=3\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the collision-lift lemma, the dual form, the boundary theorem's Möbius transport, and the dimension-3 theorem. Claim searches (order zero, obstruction, restriction) found only this thread's results. A fresh-context referee checked Parts 1–3, including the degenerate points in Part 2 and the interval bookkeeping in Part 3. It read the script, reproduced the thresholds, and found nothing that breaks a result. Its corrections are made: the \(d=1\) exception and the source of the exclusion of \(m&lt;4d\); the converse in Part 1; the scope of the finite check (least \(m\), the gap check up to \(d=5\), only \(y_1=0\)); the transport to diagonal divisors; the claim of consistent restriction replaced by what was computed; the narrowed "what this means"; linearity rather than integrality in Part 3; \(n\ge2\) for Part 3; "contained in" together with the uniformizer; and provenance headers and the saved \(V_{3,d}\) run.</p>
+<p><strong>Assessment.</strong> This cycle proved no lower bound. It shows that the two cheapest routes, pointwise evaluation and first-order restriction, cannot give one. Evaluation is capped by the pole degree \(4d\), and restriction reproduces the same cap. The remaining route is a degree count for higher-rank solution modules. Its first case is \(\rho=d-1\), the last rank before order zero, where the kernel threshold is 3 for every \(d\le5\). A proof of \(\ell_0\ge1\) there would exclude \(m=5d-2\). With monotonicity of \(\ell_0\) in \(m\), which the tables show but which is not proved, it would give the bound \(m\ge5d-1\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r37-order-zero-lower">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 18.66 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">41.56 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">4 min 29.23 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 32.94 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">2 min 24.50 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">9.19 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.24 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
