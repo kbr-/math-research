@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> For any set of assignments cut by cell forms, the vanishing tops split at a column into the row fibers, a column-sum piece and the intersection over all states. So the Koszul hypothesis of global closure gluing splits into the same hypothesis on the row fibers, a Koszul condition for the intersection, and one (L)-type condition, with no reduction to few rows (lem:cell-splitting, <a href="#entry-2026-09-25-cell-splitting">cell splitting</a>). Next: measure the intersection's Koszul condition and the (L)-type condition on cell-form members at small sizes, over all row sums, reporting by sub-instance size.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> When the empty fiber's vanishing tops lie in every row fiber's, cell splitting closes on sets as a deletion–link recursion. W-like members are monotone at the whole-fiber level but not on every link (cor:monotone-fiber-recursion, <a href="#entry-2026-09-25-monotone-fibers">monotone fibers</a>). Next: decide whether every set in the recursion has a monotone column, link by link, for W-like members, and characterize the non-monotone links by size.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24012,6 +24012,60 @@ The fall is \(v\,wQ_v\). The model is a statement about functions on \(\mathbb F
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 11.09 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2.75 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-monotone-fibers" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="cor:monotone-fiber-recursion">
+<h3>Monotone fibers: when the empty fiber's vanishing tops lie in every row fiber's, cell splitting closes on sets, and the Koszul condition becomes a deletion–link recursion; W-like members are monotone for whole fibers, and fail on most small links once two clauses interact</h3>
+<p class="entry-meta">25 September 2026 · Working proof, with an exact check of how often it applies · open statement A1, closure route · cycle odd-prime-cell-conditions.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. lem:cell-splitting (<a href="#entry-2026-09-25-cell-splitting">cell splitting</a>) splits the Koszul hypothesis of thm:global-closure-gluing at a column into three parts. Only the row-fiber part recurses on sets. The other two, the intersection over all states and the column-sum factor, are lattice conditions. A direct test of those conditions cannot decide at reachable sizes. Clause tops live in degree 3, so a meaningful range needs \(D\ge3\), hence \(N\ge18\) holes by the free range, which means about \(4^{18}\) assignments for three rows. So this cycle looks for a structural case where the lattice conditions disappear.</p>
+<p><strong>General statement.</strong> cor:monotone-fiber-recursion. In the setting of lem:cell-splitting, suppose that \(A_d(Q^{(\varnothing)})\subseteq A_d(Q^{(i)})\) for every row \(i\) and every \(d\le D\), with "through \(D\)" meaning the degree of the Koszul cycle, as in lem:cell-splitting. Then factor 2 is zero, \(\bigcap_sA(Q^{(s)})=A(Q^{(\varnothing)})\), and \(V(Q)\) is an extension of \(V(Q^{(\varnothing)})\) by \(\bigoplus_ix_{ij}\otimes V(Q^{(i)})\), in degrees \(\le D\). Hence the Koszul condition for \(Q\) through \(D\) follows from the same condition for the empty fiber through \(D\) and for every row fiber through \(D-1\). The recursion is on sets, as in a deletion–link induction for simplicial complexes. If \(Q^{(i)}\subseteq Q^{(\varnothing)}\) as sets, the inclusion of tops would be automatic. But inside one occupancy class that happens only when \(Q^{(i)}=\varnothing\): the fibers lie in the classes \(m\) and \(m-1\), so they are disjoint. So the inclusion must hold on the tops themselves.</p>
+
+<h4>Proof</h4>
+<p>Factor 2 is \(A(Q^{(\varnothing)})/(A(Q^{(\varnothing)})\cap\bigcap_iA(Q^{(i)}))\), which is zero under the inclusion. The intersection over all states is then \(A(Q^{(\varnothing)})\), so the quotient \(T'/\bigcap_sA(Q^{(s)})\) is \(V(Q^{(\varnothing)})\). The column-\(j\) part becomes \(T''/A''=\bigoplus_ix_{ij}\otimes V(Q^{(i)})\), because \(A''=\bigoplus_ix_{ij}A(Q^{(i)})\). The long exact sequence of \(\operatorname{Tor}\) over \(\Lambda_{m-1}\) for \(0\to\bigoplus_ix_{ij}V(Q^{(i)})\to V(Q)\to V(Q^{(\varnothing)})\to0\) gives the implication, with the shift by one from \(x_{ij}\). \(\operatorname{Tor}_1\) in degree \(D\) depends only on the module in degrees \(\le D\). The identifications use the inclusion in degree \(d\) for \(T'\), and in degree \(d-1\) for the column-\(j\) part, so \(d\le D\) suffices. \(\square\)</p>
+
+<h4>How often it applies</h4>
+<p><code>monotone_check.py</code> tested the inclusion (<code>monotone_check.json</code>).</p>
+<ul>
+<li><em>Cell forms</em> (\(m=3\), \(N=5\), the six sets of the cell-splitting check, column 0, \(d\le3\)). Degree 1 passes vacuously in five sets, where the empty fiber has no tops of degree 1. The sixth set fails in degree 1. One set, with 5 clauses and pigeon injectivity, passes in all three degrees, nonvacuously in degrees 2 and 3 (tops of dimension 43 and 107). The three pigeon-injective sets pass in degree 3. Four of the six sets fail in degree 2.</li>
+<li><em>Column members</em> (\(N=10\), hole 0, links \(|S|\le2\)). Here the row fibers coincide, so the condition is \(a_S(Z^0)\subseteq a_S(Z^1)\), in that direction. Links where it holds (equal, or \(Z^0\) inside \(Z^1\)), at \(e=2\):
+ <ul>
+ <li>\(|S|=2\): the slice 36 of 36, one clause 32 of 36, the two-block pair 9 of 36, the three clauses 4 of 36;</li>
+ <li>\(|S|=1\): the two-block pair 5 of 9, the three clauses 7 of 9.</li>
+ </ul>
+ At \(e=1\) the inclusion holds on every link except 3 of 36 with \(|S|=2\) for the two-block pair. At \(|S|=0\) the two fibers' tops are equal for every member and \(e\).</li>
+</ul>
+<p>So monotonicity holds for whole fibers. For the two members with interacting clauses it fails on most links with \(|S|=2\). Both checks lie below the range the Question names (\(D\ge3\), \(N\ge18\)), where size effects are not excluded.</p>
+
+<h4>What it means</h4>
+<ul>
+<li>The corollary is a clean special case in which the closure recursion needs no lattice condition. Monotone columns reduce the Koszul hypothesis to smaller sets, exactly like deletion and link.</li>
+<li>W's members are monotone for whole fibers but not on most small links once clauses interact, so the lattice conditions of lem:cell-splitting remain needed in general. Iterated, the deletion–link recursion also leaves the free range, because the empty fiber keeps degree \(D\) on \(N-1\) holes, as with lem:cell-splitting. The recursion may choose its column at every step, so a good column per step would suffice. Whether one always exists is untested.</li>
+<li>No new case of W is proved.</li>
+</ul>
+<p>Next: decide whether every set in the recursion has a monotone column, link by link, for W-like members at the sizes available. If not, characterize the non-monotone links: whether they are small-size links, and whether the failures are single tops that one extra lattice condition absorbs.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:cell-splitting (the factors, the quotient-side sequence and the degree convention) and thm:global-closure-gluing's statement. The corollary is the lemma's filtration with factor 2 zero and the intersection equal to \(A(Q^{(\varnothing)})\); both follow from the inclusion by the definitions. The check reuses the validated routines, and all numbers were read from the saved JSON. A fresh-context reviewer confirmed the algebra. It required these changes, all adopted:</p>
+<ul>
+<li>the degree range corrected to \(d\le D\), with the convention stated;</li>
+<li>the extension stated as truncated;</li>
+<li>the counts reported by the required direction, which withdraws "monotone on most links" for the interacting members;</li>
+<li>vacuous passes marked;</li>
+<li>the range caveats added.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-cell-conditions">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 53.12 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 17.37 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">35.59 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 52.96 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">6.20 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.00 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
