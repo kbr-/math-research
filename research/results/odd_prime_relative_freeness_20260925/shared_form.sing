@@ -1,0 +1,31 @@
+// Sanity check of the shared-form obstruction in form space over F_3 (free coordinates l, a, b; functions on F_3^3).
+// For an allowed set Q, G(Q) = gr of the functions on Q = F_3[l,a,b]/n_Q, n_Q the ideal of top forms of I(Q)
+// (field equations included), computed as the z = 0 specialization of a homogenized dp basis.
+// Tested statement: G(Q) is free over F_3[l]/(l^3) through degree d iff dim (G/lG)_s = [q^s] HS_G/(1+q+q^2), s <= d.
+// Prints, for s = 0..6, dim G_s, dim (G/lG)_s and the predicted value; the first s with a mismatch (or none).
+//   budget:  Q = {l a = 0}, a clause "l = 0 or a = 0" containing l (l kills a in degree 1; mismatch predicted at s = 2).
+//   Wshape:  Q = {(1 - a^2) l^2 = 0}, W's clause with product form l and outside form a (l kills a^2, since l(1-a^2) vanishes on Q; mismatch at s = 3).
+//   control: Q = {a b = 0}, a clause not containing l (free predicted).
+option(redSB);
+ring S = 3, (l, a, b, z), dp;
+ideal F = l^3 - l, a^3 - a, b^3 - b;
+proc tops(ideal I) { ideal H = std(homog(std(I + F), z)); return(std(subst(H, z, 0))); }
+proc hf(ideal n, int s) { // dim of degree-s part of F_3[l,a,b]/n (z not used)
+  ideal nn = n + z; return(size(kbase(std(nn), s))); }
+proc check(string nm, poly f)
+{
+  ideal n = tops(ideal(f)); ideal nl = std(n + l);
+  list g; list q; int s; for (s = 0; s <= 6; s++) { g = g + list(hf(n, s)); q = q + list(hf(nl, s)); }
+  // predicted dim (G/lG)_s = coefficient of q^s in HS_G / (1 + q + q^2): w_s = g_s - w_{s-1} - w_{s-2}
+  list w; int ws; int first = -1;
+  for (s = 0; s <= 6; s++) { ws = g[s+1]; if (s >= 1) { ws = ws - w[s]; } if (s >= 2) { ws = ws - w[s-1]; } w = w + list(ws);
+    if (first < 0 && q[s+1] != ws) { first = s; } }
+  string out = nm + ": G "; for (s = 0; s <= 6; s++) { out = out + string(g[s+1]) + " "; }
+  out = out + "| G/lG "; for (s = 0; s <= 6; s++) { out = out + string(q[s+1]) + " "; }
+  out = out + "| predicted "; for (s = 0; s <= 6; s++) { out = out + string(w[s+1]) + " "; }
+  print(out + "| first_mismatch=" + string(first));
+}
+check("budget", l*a);
+check("Wshape", (1 - a^2)*l^2);
+check("control", a*b);
+quit;
