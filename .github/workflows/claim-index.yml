@@ -2,6 +2,9 @@ name: Validate structured claim index
 
 on:
   push:
+    # Branches only: a tag names a commit already validated when its branch was pushed, and a
+    # tag push has no previous commit to compare with.
+    branches: ['**']
     paths:
       - 'research/claims/**'
       - research/CLAIM_INDEX.md
@@ -80,8 +83,12 @@ jobs:
       - name: Claim-index checks (tools/check-claims.py; also run before every push)
         env:
           CLAIM_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
         run: |
+          # The first push of a new branch has no previous commit (all zeros): compare with the
+          # point where it left the default branch, as the pre-push check does, not with the
+          # whole history. EMPTY remains only for a repository without that branch.
           if [[ -z "$CLAIM_BASE" || "$CLAIM_BASE" =~ ^0+$ ]]; then
-            CLAIM_BASE=EMPTY
+            CLAIM_BASE=$(git merge-base HEAD "origin/$DEFAULT_BRANCH" 2>/dev/null || echo EMPTY)
           fi
           python3 tools/check-claims.py --base "$CLAIM_BASE"
