@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> At \(N=12\) every tested W-like column member has good columns, where the monotone recursion closes on sets (conj:good-column, <a href="#entry-2026-09-25-good-columns">good columns</a>). Next: follow the recursion two steps. Choose a good column, test whether the fibers on 11 holes again have good columns, reporting by link size, and run the same test for cell-form sets against all row fibers.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> After one split, good columns thin out: for dense forms only the free hole remains good, and most failures are on the smallest links (ex:two-step-good-columns, <a href="#entry-2026-09-25-two-step-columns">two steps</a>). Next: prove or refute that a free hole is always a good column, that is, that the vanishing tops of a value-set member in slice \(m\) lie in those of the same member in slice \(m-1\) on every link, within the free range.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24111,6 +24111,44 @@ The fall is \(v\,wQ_v\). The model is a statement about functions on \(\mathbb F
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">49.52 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">30.92 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-two-step-columns" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:two-step-good-columns">
+<h3>Two recursion steps: after one split, good columns thin out, with the free hole good in every fiber and most failures on the smallest links, so the good-column conjecture is neither confirmed nor refuted at this size</h3>
+<p class="entry-meta">25 September 2026 · Finite check · open statement A1, closure route · cycle odd-prime-recursion-steps.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. conj:good-column (<a href="#entry-2026-09-25-good-columns">good columns</a>) needs a good column at every step of the monotone recursion, not only the first. Do the fibers produced by one split still have good columns?</p>
+<p><strong>General statement.</strong> The statement under test is conj:good-column. The check registered here is ex:two-step-good-columns.</p>
+
+<h4>The check</h4>
+<p><code>two_step.py</code> works over \(\mathbb F_3\) with \(N=12\) and \(e=2\). It splits at hole 0, which is good for both members, and for each fiber on 11 holes counts the failing links \(|S|\le2\) at every remaining hole (<code>two_step.json</code>).</p>
+<ul>
+<li><em>The two-block pair with a dense outside form.</em> Both fibers (366 and 367 points) have exactly one good column, the free hole 11. At holes 2, 5, 8 and 10 the inclusion fails on 3 links with \(|S|=1\) and on 21 or 22 with \(|S|=2\). At the other holes it fails only on links with \(|S|=2\) (2 to 12 of them).</li>
+<li><em>The three clauses on sparse forms.</em> Fiber 0 (332 points) has good column 4, and fiber 1 (328 points) has good columns 7 and 11. Holes 3 and 8, where the outside form has coefficient 2, fail from \(|S|=0\) on. At the other holes, failures are on links with \(|S|=2\) (1 to 6 of them).</li>
+</ul>
+<p>By link size: every failure at \(|S|\le1\) is at a hole in the outside form's support. Most failures are on links with \(|S|=2\), which leave 8 holes, at the edge of the free range, where size effects are not excluded. So the conjecture is neither confirmed nor refuted at this size. The free hole was good in every fiber tested, at both steps.</p>
+
+<h4>What it means</h4>
+<ul>
+<li>A good column exists at the second step in every case here, but only just: for dense forms it is the free hole alone. A recursion for dense W forms, which may have no free hole, would need good columns at holes in the forms' supports. On links above the smallest size those exist only at holes where the outside form's coefficient is 1, here.</li>
+<li>That points to the cleanest special case: a hole outside every form's support. Its fibers are the same member in adjacent slices. If free holes are always good columns, the monotone recursion reduces the Koszul hypothesis over free holes, as thm:sparse-closure-stability does for its members.</li>
+</ul>
+<p>Next: prove or refute that a free hole is always a good column: for a set \(Z'\) cut by column forms not involving hole \(j\), \(a_S(Z'\cap\{s\equiv m\})\subseteq a_S(Z'\cap\{s\equiv m-1\})\) on every link, within the free range. Compare with the free-hole mechanism of thm:sparse-closure-stability.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read conj:good-column, cor:monotone-fiber-recursion and thm:sparse-closure-stability's statement. The script reuses the validated rank routines and the forms of the good-columns check, and all numbers were read from the saved JSON. This entry registers a finite check only.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-recursion-steps">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 55.47 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">13.53 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">45.61 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">47.57 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8.61 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
