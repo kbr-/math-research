@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> A random priority on non-rigid forms defends every hole-type family, conditionally on the recorded expansion event (prop:priority-hole-families, <a href="#entry-2026-09-26-random-priority">random priority</a>). Next: attack it with mixed blocks, meaning cells of two holes, row and column sums, and shared decoys from other holes. Reduce each attack's clauses and decide whether they admit a low-degree refutation.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Random priority at threshold \(20k\) is conjectured to satisfy W (conj:random-priority-choice). Shared decoys reduce to the one-block core, and a product is provably nonzero only if each factor is (lem:rigid-products, <a href="#entry-2026-09-26-rigid-products">rigid products</a>). Next: the one-block core. Is the weak base plus the vanishing of a product of \(k\) forms non-rigid at \(20k\) hard at degree \(22k\)? Search the prefix-length and pinning entries first, then attempt a mixture of base designs, each vanishing on one factor.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24694,6 +24694,57 @@ where \(q(w)\) is the single-divided-power probability of prop:divided-power-col
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 33.06 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 4.18 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-rigid-products" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:rigid-products conj:random-priority-choice">
+<h3>Rigid products and shared decoys: a product of forms is provably nonzero only if each factor is, so shared decoys reduce to one prefix-product constraint, and random priority needs its threshold at \(20k\)</h3>
+<p class="entry-meta">26 September 2026 · Working proof and a conjecture · open statement A1 · cycle odd-prime-mixed-blocks.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. Random priority defends all hole-type families, conditionally on the recorded expansion event (prop:priority-hole-families, <a href="#entry-2026-09-26-random-priority">random priority</a>). The next attacks mix forms across blocks. The strongest is a set of non-rigid decoy forms shared by every block. There are enough of them that, with high probability, the top \(k\) of every block is the same set \(P\) of decoys. Does that defeat random priority, and at which rigidity threshold?</p>
+<p><strong>General statement.</strong> Two claims, lem:rigid-products and conj:random-priority-choice.</p>
+<ol>
+<li>lem:rigid-products, a working proof. Over \(\mathbb F_p\), \(p\) odd, let \(C_d\) be the degree-\(d\) PC closure of the weak unary base \(B\), and let \(\Delta_1,\dots,\Delta_k\) be affine forms. If \(1-\prod_s\Delta_s^{p-1}\in C_d\), then \(1-\Delta_s^{p-1}\in C_{d+p-1}\) for every \(s\). For nonconstant forms, \(d\ge(p-1)k\) is automatic; a nonzero constant factor contributes 1, and a zero factor gives \(1\in C_d\). So if one factor is non-rigid at degree \(D_0\), the product is not provably nonzero at any degree \(d\le D_0-(p-1)\).</li>
+<li>conj:random-priority-choice. Over \(\mathbb F_3\), consider a family of \(n^K\) blocks in which every form is either rigid at degree \(20k\) or non-rigid at degree \(20k+2\). Then the random-priority choice satisfies W's conclusion with probability \(1-o(1)\). The choice is a uniform order on the scalar classes of forms non-rigid at \(D_0=20k\), with each block taking its top \(k\) non-rigid forms and completing with rigid ones. The threshold \(20k\) is the largest that prop:rigid-form-reduction's part 1 allows, \(D_0\le D-(p-1)k\). Forms rigid at exactly \(20k+1\) or \(20k+2\) are an open attack, excluded by hypothesis: through that entry's part-3 identity their products become provably nonzero within degree \(22k\).</li>
+</ol>
+
+<h4>Proof of the rigid-products lemma</h4>
+<ul>
+<li><em>Frobenius.</em> For an affine form \(\Delta=c+\sum a_ix_i\), \(\Delta^p=c+\sum a_ix_i^p\) in characteristic \(p\). So \(\Delta^p-\Delta=\sum a_i(x_i^p-x_i)\). Each \(x_i^p-x_i\) is a multiple of \(x_i^2-x_i\) of degree \(p\), so \(\Delta^p-\Delta\in C_p\).</li>
+<li><em>Absorbing one factor.</em> Put \(Q=\prod_s\Delta_s^{p-1}\) and \(Q'=\prod_{s\ge2}\Delta_s^{p-1}\). Multiplying the hypothesis by \(1-\Delta_1^{p-1}\), of degree \(p-1\), gives \((1-\Delta_1^{p-1})-(1-\Delta_1^{p-1})Q\in C_{d+p-1}\), by the multiplication fact of prop:rigid-form-reduction. Now \((1-\Delta_1^{p-1})Q=(\Delta_1^{p-1}-\Delta_1^{2p-2})Q'\). Also \(\Delta_1^{2p-2}-\Delta_1^{p-1}=\Delta_1^{p-2}(\Delta_1^p-\Delta_1)\). By the Frobenius step and the multiplication fact, it and its product with \(Q'\) lie in \(C_{(p-1)k+p-1}\subseteq C_{d+p-1}\). Hence \(1-\Delta_1^{p-1}\in C_{d+p-1}\). By symmetry this holds for every \(s\). \(\square\)</li>
+</ul>
+
+<h4>The decoy family under random priority (over \(\mathbb F_3\))</h4>
+<ul>
+<li><em>The setting.</em> Every block contains the same \(u\) non-rigid decoys and its own real forms, at most \(h\) of them. A block's prefix is the top \(k\) decoys \(P\) unless one of its real forms ranks above the \(k\)-th decoy. That has probability at most \(1-\binom uk/\binom{u+h}k\le hk/u\) per block. By a union bound, every block has prefix \(P\) with probability \(1-o(1)\) once \(u\gg hk\,n^K\).</li>
+<li><em>The reduction.</em> Every clause is then \((1-L^2)Q_P\), with \(Q_P=\prod_{\Delta\in P}\Delta^2\), for every real form \(L\) and every decoy outside \(P\). Each is a multiple of \(Q_P\) by a polynomial of degree 2. So a degree-\(D\) refutation of the family gives one of \(B\cup\{Q_P\}\), for \(D\ge2k+2\). Hence hardness of \(B\cup\{Q_P\}\) at \(22k\) always defeats the attack. Conversely, if the real forms include one pigeon's cells \(X_{1t}-1\), the clauses give \(x_{1t}(2-x_{1t})Q_P\). With \(x_{1t}^2-x_{1t}\) times \(Q_P\), this gives \(x_{1t}Q_P\) at degree \(2k+2\). Pigeon 1's row equation times \(Q_P\) then gives \(Q_P\) at degree \(2k+1\). In that case the family and \(B\cup\{Q_P\}\) are refuted at the same degrees above \(2k+2\).</li>
+<li><em>What the lemma excludes.</em> One route to refuting \(B\cup\{Q_P\}\) proves the product nonzero in the base alone: \(1-Q_P\in C_d(B)\). By the lemma, that makes every decoy in \(P\) rigid at \(d+2\). So at threshold \(D_0=20k\) this route is excluded for \(d\le20k-2\). It is open for \(20k-2&lt;d\le22k\), and at threshold \(18k\) it is realised by decoys rigid between \(18k\) and \(20k+2\), as the reviewer showed; hence the threshold \(20k\) and the conjecture's hypothesis. Refutations of \(B\cup\{Q_P\}\) that do not pass through \(1-Q_P\in C_d(B)\) are not excluded. This is the one-block core of W: hardness of the base plus the vanishing of a product of \(k\) non-rigid forms.</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li><em>Evidence for the conjecture.</em> Random priority defends the hole-type families and the duplicated family, conditionally on the recorded expansion event. It reduces the shared-decoy family to the one-block core, which is open. It is a concrete rule depending only on base-rigidity. The rigid-forms entry named random choice among non-rigid forms. Independent random choice is refuted, and a global order is what correlates blocks sharing forms. The earlier attacks on choice rules used rigid fillers, a fixed near-solution, or independent choice. The window of forms rigid at \(20k+1\) and \(20k+2\), and the one-block core, remain open.</li>
+<li><em>What is open.</em>
+ <ul>
+ <li>The one-block core: is \(B\cup\{\prod_{s\le k}\Delta_s^2\}\) hard at degree \(22k\) for non-rigid \(\Delta_s\)?</li>
+ <li>Mixed blocks on two holes, whose clauses reduce to implications "pigeon \(i\) in hole \(t\) forces one of the prefix pigeons into hole \(t'\)" rather than deletions.</li>
+ <li>The rigid-forms entry's open padding types.</li>
+ </ul></li>
+<li>No new case of W is proved.</li>
+</ul>
+<p>Next: the one-block core. Decide whether \(B\cup\{\prod_{s\le k}\Delta_s^2\}\) can be refuted below degree \(22k\) when every \(\Delta_s\) is non-rigid at \(20k\), in two ways. First, search the record for the single-block case of W, which the prefix-length and pinning entries may already treat. Then attempt a design argument: a mixture of the degree-\(D\) designs of the base, each vanishing on one \(\Delta_s\).</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:rigid-form-reduction (definitions, the multiplication fact and the thresholds), prop:priority-hole-families and prop:duplicated-hole-family. The Frobenius step uses only characteristic \(p\) and Booleanity. A fresh-context reviewer confirmed the lemma, whose absorption degree is exactly tight, and the Frobenius step. It showed that the drafted threshold \(18k\) lets decoys rigid between \(18k\) and \(20k+2\) refute, through the rigid-forms entry's part-3 identity. It required these changes, all adopted: the threshold raised to \(20k\), with the remaining window as a hypothesis; the degree range the lemma leaves open; the two directions of the decoy equivalence; an unneeded hypothesis dropped; the one-factor corollary; the union bound; the evidence claims corrected. The threshold change and the hypothesis weaken the conjecture, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-mixed-blocks">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 24.22 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 27.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 57.00 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
