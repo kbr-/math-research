@@ -29,17 +29,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic. Route review of the cube line, now that the <a href="#cube-catalan-sandwich">Catalan sandwich</a> settles \(n\ge k-\ell-1\) over every field. Weigh the remaining gap against the thread's needs:</p>
+<p>Route item: cube-odd-characteristic. Test the exception-set conjecture from the <a href="#entry-2026-09-25-cube-route-review">route review</a>: on the cube, \(\kappa_n(m)=\rho_{F,\le n}(m+1)\) except on a sparse set of \((n,m)\).</p>
 <ul>
-<li>the gap between \(\rho_F\) and \(\rho_{F,\le n}\) below that range, first at \(n=3\) over \(\mathbb F_3\), \(m=7\);</li>
-<li>the small-\(\ell\) values before stabilization.</li>
+<li>Compute \(\kappa_n\) for \(n=3,4\) over \(\mathbb F_3\), \(\mathbb F_5\), \(\mathbb F_7\) with <code>bmd_root_curve_orders_grid.py</code>, and list the exceptions.</li>
+<li>Explain the first exception, \(\kappa_3(7)=2\) over \(\mathbb F_3\), by the degree-2 polynomial in \(z\) that reaches order 7.</li>
 </ul>
-<p>The review should also list what the preprint could now contain, which is the user's decision:</p>
-<ul>
-<li>the per-order theorem over \(\mathbb F_2\), with the short Catalan proof of its lower bound;</li>
-<li>the stable law;</li>
-<li>Menezes' formula extended to \(n\ge k-\ell-1\).</li>
-</ul>
+<p>If the exceptions follow a rule, state it and prove it. Otherwise record the obstruction and close the line.</p>
 <p>Publication, Lean and correspondence remain the user's decisions.</p>
 </section>
 <section id="working-context">
@@ -2150,6 +2145,57 @@ There are no failures. A negative control with the Catalan signs flipped (<code>
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 19.21 s</strong></td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 18.59 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.48 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-25-cube-route-review" data-kind="review" data-route="cube-odd-characteristic" data-claims="none" data-claim-note="Route review with a falsification test of thm:cube-catalan-sandwich on new F_7 data; no new claim is registered.">
+<h3>25 September 2026 — Route review of the cube over every field: settled for n ≥ k − ℓ − 1, sandwiched below</h3>
+<p class="entry-meta">Route review; the Catalan sandwich passes a test on a field not used in its development. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, default reasoning).</span></p>
+<ul>
+<li><strong>The line's general claim.</strong> Determine \(\delta_F(n,k,\ell)\) on the cube \(\{0,1\}^n\) over fields of characteristic \(\ne2\), below Menezes' range \(n\ge k-1\).</li>
+<li><strong>What is established.</strong>
+<ul>
+<li>Dimension two over every field (<a href="#cube-square-per-order-any-field-theorem">square theorem</a>).</li>
+<li>The stable law with the universal count, on every finite grid (<a href="#finite-grid-stable-law">finite-grid stable law</a>).</li>
+<li>The sandwich \(\rho_F(m+1)\le h\le\kappa_n(m)\le\rho_{F,\le n}(m+1)\) (<a href="#cube-catalan-sandwich">Catalan sandwich</a>). It gives Menezes' formula for all \(n\ge k-\ell-1\), unconditionally, with independent proofs of both bounds.</li>
+</ul></li>
+<li><strong>What the goal needs.</strong> Nothing: the thread's goal is \(D(n,k)\) over \(\mathbb F_2\), which is proved and formalized. The line matters for the preprint's context, since it reproves and extends the one external result the thread builds on.</li>
+</ul>
+<h4>Falsification attempt: a new field</h4>
+<p>The sandwich was developed against the \(\mathbb F_3\) and \(\mathbb F_5\) data. As an independent test, the cube kernel (<code>bmd_jet_orders_q --cube</code>) computed all per-order values over \(\mathbb F_7\) for \(n\le4\), \(k\le11\): 264 values, in <code>research/results/bmd-r25-cube-review/p7/</code>. The prediction, fixed before the run, was \(\rho_{\mathbb F_7}(m+1)\le h\le\rho_{\mathbb F_7,\le n}(m+1)\), with equality whenever \(n\ge m\). Over \(\mathbb F_7\) the Catalan numbers \(C_0,\ldots,C_5=1,1,2,5,14,42\) have \(14\equiv42\equiv0\). So the parts 5 and 6 are forbidden, which makes this a different pattern from \(\mathbb F_3\) and \(\mathbb F_5\).</p>
+<p><strong>Result.</strong> <code>bmd_cube_rho_cap_check.py</code> (<code>sandwich-p7.txt</code>):</p>
+<ul>
+<li>no value lies outside the sandwich;</li>
+<li>all 134 values with \(n\ge m\) are equalities, including all 100 outside Menezes' range;</li>
+<li>253 of 264 values equal the upper end \(\rho_{\le n}\);</li>
+<li>108 lie strictly above \(\rho_F\);</li>
+<li>the 30 values in Menezes' own range match his formula.</li>
+</ul>
+<p>The test could have failed at any value below \(\rho_F\), above \(\rho_{\le n}\), or off the formula for \(n\ge m\). None did.</p>
+<h4>Assessment and next step</h4>
+<p>The cube line is in the same state as the grid line. Both have:</p>
+<ul>
+<li>exact values wherever the two Catalan counts agree;</li>
+<li>a structural description, the root-curve \(\kappa_n\), of the large-\(\ell\) values elsewhere.</li>
+</ul>
+<p>What remains is arithmetic. That means \(\kappa_n\) for \(n&lt;m\), where most values sit at the upper end \(\rho_{\le n}\) (253 of 264 over \(\mathbb F_7\)), and the small-\(\ell\) values before stabilization. The observation that the upper end is attained so often suggests a conjecture: \(\kappa_n(m)=\rho_{F,\le n}(m+1)\) except in a sparse set of cases. It should be tested before any work on it. Over \(\mathbb F_3\), \(\kappa_3(7)=2&lt;3=\rho_{\le3}(8)\) is one exception, and it comes from genuinely nonlinear polynomials in \(z\).</p>
+<p>No remaining question on either line bears on the thread's goal. The preprint could now contain the following, all worked proofs in this notebook:</p>
+<ul>
+<li>the \(\mathbb F_2\) per-order theorem, with the one-page counting proof and the Catalan proof of its lower bound;</li>
+<li>the finite-grid stable law;</li>
+<li>Menezes' formula extended to \(n\ge k-\ell-1\) over every field.</li>
+</ul>
+<p>What goes in is the user's decision. The next research step on the thread's route is to test the exception-set conjecture on the recorded data and on \(\kappa\) at \(n=3,4\). It cannot change the goal, but it is the remaining open structure.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r25-cube-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 5.77 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 5.40 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.24 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
