@@ -108,7 +108,9 @@ Apply every rule below before launching a run.
    COMPUTATION_RULES.md) computes the quantity, or a step of it, more directly, faster or more
    reliably, and use it wherever it improves the computation. A kernel you do write builds its
    exact linear algebra on fflas-ffpack, FLINT or LinBox, not on hand-written elimination. On 25 September 2026 two cycles hand-built GF(3)
-   kernels for Hilbert functions and syzygies that these systems compute directly.
+   kernels for Hilbert functions and syzygies that these systems compute directly. A tool
+   too slow for a computation the line needs is a reason to write its kernel or use such a
+   system in the same cycle, never to drop or defer the line.
 4. **One pass per series, shared work once.** Compute every parameter of a series in
    one incremental pass, never one full recomputation per parameter: results for
    nested inputs continue from the previous ones. Compute shared prefixes, such as a
