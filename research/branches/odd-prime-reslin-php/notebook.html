@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A3 (generic W).</strong> For squares, Taylor generation coincides with recorded freeness (<a href="#entry-2026-09-25-several-form-wilson">several-form Wilson</a>), so the line moves to product tops. Test Taylor generation for tops \(\ell_i^2\ell_j^2\) drawn from a pool of \(P&gt;2N\) dense forms on \(m=2\) rows at \(N\approx11\). Compare the kernel with the span of Frobenius multiples and lcm-pair syzygies, running the list of pool sizes in one pass. If product tops stay Taylor-generated beyond the freeness count, state the product-top conjecture and look for a Wilson-type proof. Otherwise, record where they fail.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A3 (generic W).</strong> Product tops of dense random forms interact only through Koszul pairs in every degree tested, even beyond freeness (<a href="#entry-2026-09-25-product-tops">product tops</a>, conj:dense-product-top-directness). Prove the degree \(h+1\) and \(h+2\) directness for dense forms with independent column parts on \(m\ge4\) rows. Use the colored-algebra reduction, blocked columns plus colored monomials, which turns directness into ranks of colored inclusion matrices, a Wilson-type question with \(2B\) colors.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -22530,6 +22530,57 @@ where \(Z\) is the Hasse fat points of multiplicity \(s-1\) at the nonzero \(m_j
 <tr><td>Individually measured computation</td><td class="elapsed">3 min 36.55 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-product-tops" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:dense-product-top-directness ex:dense-product-top-check">
+<h3>Product tops of dense random forms: through degree 6 their images form a direct sum even with three times more forms than dimensions, and at the first Koszul degree the cross-top syzygies found are Koszul pairs</h3>
+<p class="entry-meta">25 September 2026 · Conjecture and finite check · open statement A3 (generic W) · cycle odd-prime-product-tops.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A3. The <a href="#entry-2026-09-25-several-form-wilson">several-form Wilson entry</a> found that for squares, Taylor generation coincides with recorded freeness. It moved the line to product tops, the shape of W's clauses, drawn from more forms than \(\dim\tilde A_1\), where freeness is impossible. Do product tops of dense random forms have only single-top syzygies and Koszul pairs?</p>
+<p><strong>General statement.</strong> conj:dense-product-top-directness: on the weak monomial algebra \(\tilde A\) over \(\mathbb F_3\), take \(B\) product tops \(\tau_b=\ell_{b,1}^2\ell_{b,2}^2\), each with its own two dense random forms, and let the target degree \(s\) satisfy \(N\ge2s-3\). Then the family's top syzygies in degree \(s\) are spanned by the single-top syzygies and the Koszul pairs. This should hold for any number of tops while the images fit, even when the \(2B\) forms far exceed \(\dim\tilde A_1\). Below the Koszul degree 8 this means the images form a direct sum. This is the dense, beyond-freeness counterpart of the pre-Koszul theorem, which is proved only for designed pair-disjoint supports.</p>
+
+<h4>Test design</h4>
+<p><code>product_taylor.c</code> fixes one seeded sequence of dense forms on \(m=2\) rows; the first \(2B\) serve \(B\) tops. For each target degree \(s\) it computes the kernel of \(\Phi_s:(g_b)\mapsto\sum_bg_b\tau_b\) and compares it with the span of:</p>
+<ul>
+<li>the Frobenius syzygies \((\ell_{b,i}x)e_b\), since \(\ell^3=0\);</li>
+<li>from \(s=8\), the Koszul pairs \((\tau_cx)e_b-(\tau_bx)e_c\).</li>
+</ul>
+<p>Ranks are exact over GF(3), using the recorded bit-sliced kernel from degree 8 on. That kernel reproduced the dense-elimination results at \(s=7\), \(N=11\), \(B=1,3,6\); that check's output file was then removed as a duplicate. The counts are nonvacuous: the ideal uses at most half of \(\tilde A_s\) in every run. Here \(\dim\tilde A_1=mN=20\) or 22.</p>
+
+<h4>Results</h4>
+<ul>
+<li><em>Degrees 5 and 6, \(N=10\).</em> No excess for any tested \(B\), up to 20 at \(s=5\) and up to 30 at \(s=6\), which is up to 60 forms, three times \(\dim\tilde A_1\). The ideal's dimension is exactly \(B\cdot18\), respectively \(B\cdot141\), so the images form a direct sum (<code>pt_s5.json</code>, <code>pt_s6.json</code>).</li>
+<li><em>Degree 7 (\(2h-1\)).</em> At \(N=10\) an excess appears from \(B=3\) and grows with \(B\), up to 4 at \(B=8\), for both seeds: a cross-top effect below a column threshold. At \(N=11\) it vanishes for all \(B\le6\), and the ideal is exactly \(B\cdot904\) (<code>pt_s7*.json</code>).</li>
+<li><em>Degree 8, the first Koszul degree, \(N=11\).</em> Excess 9, 10, 11, 11 for \(B=1,\dots,4\). The single top already has excess 9. Its two dense forms share every column, and on two rows their column parts are often dependent. Column Wilson assumes disjoint supports for a top's factors, and this top violates that. Adding tops adds at most 1 each, consistent with small single-top anomalies and no cross-top syzygies beyond the Koszul pairs. Single-top runs that would separate the two were not done. The run was stopped by the host at low system memory during \(B=6\), not by its own budget, and was not restarted (<code>pt_s8_N11_partial.json</code>).</li>
+</ul>
+
+<h4>What this means</h4>
+<ul>
+<li>Unlike squares, product tops of dense random forms interact only through Koszul pairs in every degree tested, even when the forms cannot be free (\(2B&gt;\dim\tilde A_1\) at \(s\le6\)). This is the behaviour generic W needs. It is evidence for the semi-regular picture, now for dense forms beyond freeness.</li>
+<li>Two limits. At \(s=7,8\) only up to 12 forms were tested, fewer than \(\dim\tilde A_1\). And the single-top anomaly shows that a top's own two forms need something like disjoint or independent column parts, which dense forms on few rows lack. On W's board \(m=n+1\) is large, and generic column parts are independent.</li>
+<li>No proof. The pre-Koszul argument's direct-sum count used private monomials, which dense forms do not have.</li>
+</ul>
+<p>Next: prove the degree-\(h+1\) and \(h+2\) directness, where the data are cleanest, for dense forms with independent column parts on \(m\ge4\) rows. The route is through the colored-algebra reduction of the several-form Wilson entry: blocked columns plus colored monomials. Directness in the colored algebra is a statement about colored inclusion matrices, a Wilson-type rank question with \(2B\) colors.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>thm:pre-koszul-weak-families;</li>
+<li>thm:column-wilson-taylor, whose disjoint-support hypothesis explains the single-top anomaly;</li>
+<li>conj:squares-taylor-is-freeness.</li>
+</ul>
+<p>All numbers are read from the saved JSON files by script. The Taylor span is contained in the kernel by construction. The Frobenius and Koszul generators were checked against \(\ell^3=0\) and commutativity. No theorem is claimed, so no reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-product-tops">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 10.48 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 2.87 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 23.50 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">49.85 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 54.26 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
