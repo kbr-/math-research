@@ -25,6 +25,15 @@
   "hooks": {
     "PreToolUse": [
       {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/tools/hooks/resume-gate.py pre"
+          }
+        ]
+      },
+      {
         "matcher": "Bash",
         "hooks": [
           {
@@ -40,7 +49,18 @@
         "hooks": [
           {
             "type": "command",
-            "command": "printf %s '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"Compaction happened. Immediately perform the Resume protocol before doing anything else\"}}'"
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/tools/hooks/resume-gate.py start"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/tools/hooks/resume-gate.py post"
           }
         ]
       }
