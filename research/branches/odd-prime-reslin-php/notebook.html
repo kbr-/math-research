@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> The <a href="#entry-2026-09-25-outside-input-floor">floor test</a> removed the planar four-block consequence below 11 by adding one private input to one block, beyond the predicted degree. Next: prove the support lemma behind conj:outside-input-floor. A consequence outside the three-local ideal is supported where every participating block has all its outside inputs false; elsewhere a block is trivialized and the family reduces to a smaller one. Use lem:none-indicator-identity and the point idempotents of \(\mathbb F_3[p]\), with the degree bookkeeping.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement S2.</strong> <a href="#entry-2026-09-25-section-normal-form">Section normal form</a> reduces consequences modulo smaller subfamilies at no cost in degree, but gives only the floor \(|F|\). The floor of conj:outside-input-floor needs the membership criterion's fiber bounds. The line is now two reductions below S2, so next: a route review. It restates S2 against the band's actual blocks, which have no private inputs, and decides whether the floor route or a fall-tolerant replacement of S2 advances S1.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -19659,6 +19659,69 @@ Here \(\delta\) is the least degree of such a consequence for the same shared-in
 <tr><td>Individually measured computation</td><td class="elapsed">21 min 26.04 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 <tr><td>Mixed reasoning and writing (legacy phase)</td><td class="elapsed">2 min 21.53 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-section-normal-form" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:section-normal-form">
+<h3>Section normal form: modulo its smaller subfamilies, every consequence of a family can be taken to vanish at a chosen universal point of every block, at no cost in degree</h3>
+<p class="entry-meta">25 September 2026 · Working proof · open statement S2 · cycle odd-prime-support-lemma.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (Claude Opus 5.5, high effort).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement S2. conj:outside-input-floor proposes that a consequence outside the three-local ideal costs degree for every input outside the blocks' common span. Its first ingredient is a support statement: such a consequence can be taken to vanish where a block is trivialized. This cycle proves the degree-exact form that lem:section-retraction allows, and names what it does not give.</p>
+<p><strong>General statement.</strong> lem:section-normal-form. Let \(F\) be a family of complete accuracy-one ENS blocks over \(\mathbb F_3\) with private coefficients, in which every block has a private input. Its cross set consists of \(R\), \(T\) and \(W\), chosen by a rule on the involved blocks, as in lem:section-retraction. Any generators in \(I(Z_B)\) may serve as \(B\)'s generators, so separate augmentation is not needed; it is kept only so that the lemma applies in the setting of prop:family-membership-criterion. \(J_s(\emptyset)\) denotes the degree-\(s\) span of multiples of the shared coordinates' field equations. Call a point \(u\) in the private variables of a block \(B\) <em>universal</em> if:</p>
+<ul>
+<li>some private input of \(B\) is true (equal to 0);</li>
+<li>the coefficients of the true private inputs sum to 1;</li>
+<li>every other coefficient of \(B\) is 0.</li>
+</ul>
+<p>The other private inputs of \(B\) may take any values. Choose a universal point \(u_B\) for every block, and let \(\sigma_B\) substitute \(u_B\). Then every \(f\in J_s(F)\) satisfies
+\[f\equiv f^\circ:=\prod_{B\in F}(\mathrm{id}-\sigma_B)\,f\pmod{\textstyle\sum_{B\in F}J_s(F\setminus B)},\]
+with \(f^\circ\in J_s(F)\), \(\deg f^\circ\le\deg f\), and \(\sigma_B(f^\circ)=0\) for every \(B\). If \(f^\circ\ne0\), then \(\deg f^\circ\ge|F|\).</p>
+<p>So for a four-block family, every consequence is congruent modulo the three-local sum to one vanishing at a chosen universal point of each block, of degree at least 4.</p>
+
+<h4>Proof</h4>
+<ol>
+<li><em>Universal points give retractions.</em> The proof of lem:section-retraction uses of its section only that \((v,u_B)\in Z_B\) for every value \(v\) of the shared coordinates, together with the vanishing of the cross generators involving \(B\). At a universal point, the true set of \(B\) at \((v,u_B)\) consists of the true private inputs and possibly some shared inputs. The shared inputs have coefficient 0, so the coefficients over the true set sum to 1, and \((v,u_B)\in Z_B\). Also \(P_B\) is 0 there, so every \(R\), \(T\) and \(W=F_bP_a\) with \(B=a\) vanishes. For \(W\) with \(B=b\), the factor \(F_b=q_{b,2}\prod_{j\ge3}L_{b,j}(1-r_{b,2})\) vanishes by cases, since \(b\)'s inputs \(j\ge2\) are private:
+<ul>
+<li>if \(L_{b,2}\ne0\), then \(q_{b,2}=0\);</li>
+<li>if \(L_{b,2}=0\) and some private input \(j\ge3\) is true, then \(\prod_{j\ge3}L_{b,j}=0\);</li>
+<li>otherwise input 2 is the only true private input, so \(r_{b,2}=1\).</li>
+</ul> So \(\sigma_B(J_s(F))\subseteq J_s(F\setminus B)\) for every \(s\).</li>
+<li><em>Expansion.</em> The \(\sigma_B\) substitute constants for disjoint sets of variables. So they commute, and each is idempotent. Expanding,
+\[f-f^\circ=\sum_{\emptyset\ne S\subseteq F}(-1)^{|S|+1}\sigma_S f,\qquad \sigma_S=\prod_{B\in S}\sigma_B.\]
+By step 1 applied block by block, as in the lemma's corollary, \(\sigma_Sf\in J_s(F\setminus S)\subseteq J_s(F\setminus B)\) for any \(B\in S\). So \(f-f^\circ\) lies in the stated sum. Each \(\sigma_Sf\) also lies in \(J_s(F)\), so \(f^\circ\in J_s(F)\). Substitution does not raise degree, so \(\deg f^\circ\le\deg f\). And \(\sigma_B f^\circ=0\), since \(\sigma_B(\mathrm{id}-\sigma_B)=0\).</li>
+<li><em>The degree bound.</em> Shift each block's private variables by \(u_B\). An affine shift does not change degree. \(\sigma_Bf^\circ=0\) holds as a polynomial identity, so after the shift every monomial of \(f^\circ\) contains a variable of every block. The blocks' private variable sets are disjoint, so a nonzero \(f^\circ\) has degree \(\ge|F|\). This covers \(f^\circ\) that are not reduced. \(\square\)</li>
+</ol>
+
+<h4>Check and limit</h4>
+<ul>
+<li><em>The planar consequence.</em> Consider the degree-9 element \(p_1p_2p_3p_4\Phi\) of the <a href="#entry-2026-09-25-s2-route-review">S2 route review</a>. There each block has one private input \(p_a\), so every universal point of block \(a\) has \(p_a=0\). The element has the factor \(p_a\), so it vanishes at every universal point of every block, and it is already in normal form. Its degree 9 is far above the lemma's floor of 4.</li>
+<li><em>What the lemma does not give.</em> The floor \(\sum(2s_a-1)\) of conj:outside-input-floor needs vanishing at all universal points of a block at once, and one-point substitutions cannot provide that. Different choices of \(u_B\) give different representatives, and applying a second set of sections destroys vanishing at the first. The interpolation onto all universal points has degree cost, which is the membership criterion's bookkeeping (prop:family-membership-criterion) in the private variables. So the floor needs that criterion's fiber bounds, not substitutions.</li>
+<li><em>What it does give.</em> A degree-exact reduction for S2. The class of a consequence modulo the three-local sum is represented, for every choice of universal points, by a consequence vanishing at those points. With a four-block family, the three-local sum is \(\sum_BJ_s(F\setminus B)\), the degree-\(s\) part used in ex:four-block-overlap-falls. It is contained in the three-local ideal \(J_F+\sum_T(C_{11}(T))\).</li>
+</ul>
+<p>Next: a route review, since this line is now two reductions below S2 (floor conjecture, support lemma). The next research step would be the floor through the membership criterion. Apply prop:family-membership-criterion with the private variables of the four blocks as the interpolated coordinates. Bound the degree of the interpolation coefficients of a consequence outside the three-local ideal from below, in terms of the private inputs per block. The universal points, where a block is trivial, give the fibers on which the coefficients must match those of the subfamilies.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:section-retraction in full: statement, the four proof steps, the remark that the other private inputs' values are arbitrary, and the corollary. Also re-read prop:family-membership-criterion, conj:outside-input-floor and the planar element. A claim search for section substitutions, normal forms and retractions found only lem:section-retraction and the locality theorems. The lemma extends the retraction from the standard section to all universal points, by the same argument, and composes the retractions over a whole family.</p>
+<p>A fresh-context reviewer found no false statement. It checked the expansion, the signs, and the vanishing of \(P_B\) and membership in \(Z_B\). It required these changes, all adopted:</p>
+<ul>
+<li>the vanishing of \(F_b\) argued by cases;</li>
+<li>the cross set stated as \(R\), \(T\), \(W\);</li>
+<li>the degree bound proved by shifting, which also covers \(f^\circ\) that are not reduced;</li>
+<li>separate augmentation marked as unused;</li>
+<li>the convention for \(J_s(\emptyset)\) stated;</li>
+<li>the planar remark justified.</li>
+</ul>
+<p>These repair a proof step and clarify, and they add no claim, so no further pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-support-lemma">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 0.26 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">57.74 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 50.90 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 11.49 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
