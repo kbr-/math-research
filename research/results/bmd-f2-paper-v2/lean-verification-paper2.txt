@@ -1,0 +1,101 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.BinaryMultiplicityDegreePaper2
+Claim file: claims/BinaryMultiplicityDegreePaper2.lean
+Claim: publication aggregate for the binary multiplicity degree preprint, version 2
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-25-lean-per-order-value
+Scope: Import-only module with no declarations of its own. It gathers the formal results cited by
+version 2 of the preprint (the per-order theorem with its construction and lower bound, the minimum over
+the origin order, the complete degree formula with its Schwartz–Zippel attainment criterion, and the
+second proof of the lower bound through the one-dimension step) so that one build and one axiom report
+cover all of them and their imports. The listed declarations are proved in the imported modules.
+Declarations: MathResearch.PerOrderValue.per_order_value MathResearch.PerOrderUpperBound.construction_spec MathResearch.PerOrderLowerBound.lower_bound MathResearch.PerOrderMinimum.min_phi MathResearch.BinaryMultiplicityDegreeComplete.degree_complete MathResearch.BinaryMultiplicityDegreeComplete.cover_bound_attained_iff MathResearch.BinaryMultiplicityLowerBound.lower_bound MathResearch.PerOrderConstruction.per_order_construction
+$ lake --wfail build claims.BinaryMultiplicityDegreePaper2
+✔ [1945/1945] Built claims.BinaryMultiplicityDegreePaper2 (1.1s)
+Build completed successfully (1945 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmp62uz6nf7.lean
+@MathResearch.PerOrderValue.per_order_value : ∀ {n k ℓ : ℕ},
+  1 ≤ n →
+    ℓ < k →
+      (∃ P,
+          (∀ (a : Fin n → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) ∧
+            MathResearch.HasseMultiplicity.mult 0 P = ↑ℓ ∧ P.totalDegree = MathResearch.PerOrderUpperBound.Phi n k ℓ) ∧
+        ∀ (P : MvPolynomial (Fin n) (ZMod 2)),
+          (∀ (a : Fin n → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+            MathResearch.HasseMultiplicity.mult 0 P = ↑ℓ → MathResearch.PerOrderUpperBound.Phi n k ℓ ≤ P.totalDegree
+'MathResearch.PerOrderValue.per_order_value' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderUpperBound.construction_spec : ∀ {n k ℓ : ℕ},
+  ℓ < k →
+    ∀ (i1 : Fin n),
+      (∀ (a : Fin n → ZMod 2),
+          a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a (MathResearch.PerOrderUpperBound.construction n k ℓ i1)) ∧
+        MathResearch.HasseMultiplicity.mult 0 (MathResearch.PerOrderUpperBound.construction n k ℓ i1) = ↑ℓ ∧
+          (MathResearch.PerOrderUpperBound.construction n k ℓ i1).totalDegree ≤
+            MathResearch.PerOrderUpperBound.Phi n k ℓ
+'MathResearch.PerOrderUpperBound.construction_spec' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderLowerBound.lower_bound : ∀ {σ : Type u_1} [inst : Fintype σ] [DecidableEq σ],
+  1 ≤ Fintype.card σ →
+    ∀ {k ℓ : ℕ},
+      ℓ < k →
+        ∀ (P : MvPolynomial σ (ZMod 2)),
+          (∀ (a : σ → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+            MathResearch.HasseMultiplicity.mult 0 P = ↑ℓ →
+              Fintype.card σ + 2 * ℓ + ∑ j ∈ Finset.range (Fintype.card σ), (k - ℓ - 1) / 2 ^ j ≤ P.totalDegree
+'MathResearch.PerOrderLowerBound.lower_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderMinimum.min_phi : ∀ {n k : ℕ},
+  1 ≤ n →
+    1 ≤ k →
+      (∀ ℓ < k,
+          MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k ≤ MathResearch.PerOrderUpperBound.Phi n k ℓ) ∧
+        ∃ ℓ < k, MathResearch.PerOrderUpperBound.Phi n k ℓ = MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k
+'MathResearch.PerOrderMinimum.min_phi' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.BinaryMultiplicityDegreeComplete.degree_complete : ∀ {n k : ℕ},
+  1 ≤ n →
+    1 ≤ k →
+      (∃ P,
+          MathResearch.BinaryMultiplicityDegreeFormula.Admissible n k P ∧
+            P.totalDegree = MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k) ∧
+        ∀ (P : MvPolynomial (Fin n) (ZMod 2)),
+          MathResearch.BinaryMultiplicityDegreeFormula.Admissible n k P →
+            MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k ≤ P.totalDegree
+'MathResearch.BinaryMultiplicityDegreeComplete.degree_complete' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+@MathResearch.BinaryMultiplicityDegreeComplete.cover_bound_attained_iff : ∀ {n k : ℕ},
+  1 ≤ n →
+    1 ≤ k →
+      ((∃ P, MathResearch.BinaryMultiplicityDegreeFormula.Admissible n k P ∧ P.totalDegree = 2 * k - k / 2 ^ (n - 1)) ↔
+        2 ^ (n - 2) ≤ k)
+'MathResearch.BinaryMultiplicityDegreeComplete.cover_bound_attained_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+MathResearch.BinaryMultiplicityLowerBound.lower_bound : ∀ (k : ℕ) {n : ℕ},
+  Nat.log 2 k + 2 ≤ n →
+    ∀ (P : MvPolynomial (Fin n) (ZMod 2)),
+      (∀ (a : Fin n → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+        MathResearch.HasseMultiplicity.mult 0 P < ↑k → 2 * k + n - 2 - Nat.log 2 k ≤ P.totalDegree
+'MathResearch.BinaryMultiplicityLowerBound.lower_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderConstruction.per_order_construction : ∀ {σ : Type u_1} [inst : Fintype σ] [inst_1 : DecidableEq σ]
+  (i1 : σ) {k ℓ : ℕ},
+  ℓ < k →
+    (∀ (a : σ → ZMod 2),
+        a ≠ 0 →
+          ↑k ≤
+            MathResearch.HasseMultiplicity.mult a
+              ((MvPolynomial.X i1 ^ 2 + MvPolynomial.X i1) ^ ℓ * MathResearch.TruncatedProduct.g (k - ℓ))) ∧
+      MathResearch.HasseMultiplicity.mult 0
+            ((MvPolynomial.X i1 ^ 2 + MvPolynomial.X i1) ^ ℓ * MathResearch.TruncatedProduct.g (k - ℓ)) =
+          ↑ℓ ∧
+        ((MvPolynomial.X i1 ^ 2 + MvPolynomial.X i1) ^ ℓ * MathResearch.TruncatedProduct.g (k - ℓ)).totalDegree ≤
+          Fintype.card σ + 2 * k - 2 - MathResearch.TruncatedProduct.s2 (k - ℓ - 1)
+'MathResearch.PerOrderConstruction.per_order_construction' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 8 audited declarations.

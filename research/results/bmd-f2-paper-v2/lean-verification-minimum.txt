@@ -1,0 +1,32 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PerOrderMinimum
+Claim file: claims/PerOrderMinimum.lean
+Claim: lem:per-order-all-dimension-minimum (part (ii))
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-all-dimension-minimum
+Scope: For n ≥ 1 and k ≥ 1, the minimum over 0 ≤ ℓ < k of Φ(n,k,ℓ) = n + 2ℓ + Σ_{j<n} ⌊(k−ℓ−1)/2^j⌋
+is D(n,k) = 2k + n − 2 − ⌊log₂ k⌋ for k < 2^(n−1) and 2k − ⌊k/2^(n−1)⌋ for k ≥ 2^(n−1): every Φ(n,k,ℓ)
+is at least D(n,k), and some ℓ < k attains it. Deduced from the per-order theorem and the complete
+degree formula (both verified), not by the notebook's direct digit-sum argument.
+Declarations: MathResearch.PerOrderMinimum.min_phi
+$ lake --wfail build claims.PerOrderMinimum
+✔ [1944/1944] Built claims.PerOrderMinimum (1.3s)
+Build completed successfully (1944 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmpb6kal6__.lean
+@MathResearch.PerOrderMinimum.min_phi : ∀ {n k : ℕ},
+  1 ≤ n →
+    1 ≤ k →
+      (∀ ℓ < k,
+          MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k ≤ MathResearch.PerOrderUpperBound.Phi n k ℓ) ∧
+        ∃ ℓ < k, MathResearch.PerOrderUpperBound.Phi n k ℓ = MathResearch.BinaryMultiplicityDegreeComplete.degreeMin n k
+'MathResearch.PerOrderMinimum.min_phi' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 1 audited declarations.
