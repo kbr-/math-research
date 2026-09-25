@@ -6,7 +6,9 @@ so kappa_n(m) = min{d : N_{2,n}(d) > m}.  (Degree 1 already forces the hypothesi
 orders are the n-allowed Catalan parts, an initial segment exactly when C_0..C_{n-1} are nonzero.)
 Reads every KAPPA line with no COUNT DIFFER from bmd_root_curve_orders_grid.py outputs and reports,
 per trial, for m with kappa below the computed degree, whether kappa matches the law.
-Usage: bmd_cube_initial_segment.py FILE:p:n ...
+With --refined it tests the refined law instead: Ord(1) = {0} and the n-allowed parts, and
+Ord(d) = {0, ..., N_{2,n}(d)-1} for d >= 2 (odd characteristic), with no Catalan hypothesis.
+Usage: bmd_cube_initial_segment.py [--refined] FILE:p:n ...
 """
 import sys
 from pathlib import Path
@@ -23,8 +25,22 @@ def N(n, d):
     return sum(c for Qd in range(0, d + 1, 2) for i, c in enumerate(counts) if i <= d - Qd)
 
 
+def allowed(p, n, top):
+    cat = [1]
+    for j in range(1, top + 1):
+        cat.append(cat[-1] * 2 * (2 * j - 1) // (j + 1))
+    nu, out = 0, set()
+    for a in range(1, top + 1):
+        if cat[a - 1] % p:
+            nu += 1
+            if nu <= n:
+                out.add(a)
+    return out
+
+
 def main():
-    for spec in sys.argv[1:]:
+    refined = '--refined' in sys.argv
+    for spec in [a for a in sys.argv[1:] if a != '--refined']:
         path, p, n = spec.rsplit(':', 2)
         p, n = int(p), int(n)
         cat = [1]
@@ -41,13 +57,16 @@ def main():
             dmax = max(kappa.values())
             checked = [m for m in kappa if kappa[m] < dmax]
             law = {m: min(d for d in range(dmax + 2) if N(n, d) > m) for m in range(max(kappa) + 1)}
+            if refined:  # Ord(1) = {0} + n-allowed parts, Ord(d) initial for d >= 2
+                al = allowed(p, n, max(kappa) + 1)
+                law = {m: 0 if m == 0 else (1 if m in al else max(2, law[m])) for m in law}
             miss = [m for m in checked if kappa[m] != law[m]]
             absent = [m for m in range(N(n, dmax - 1)) if m not in kappa or kappa[m] >= dmax]
             results.append((not miss and not absent, len(checked), miss, absent))
         holds = sum(r[0] for r in results)
         # a specialization can only lose orders or move them; the law is supported when some trial
         # attains it and the others are reported, not hidden
-        print(f'p={p} n={n}: C_0..C_(n-1) nonzero: {hyp}; trials with full count: {len(results)}; '
+        print(f'{"refined " if refined else ""}p={p} n={n}: C_0..C_(n-1) nonzero: {hyp}; trials with full count: {len(results)}; '
               f'law holds in {holds} of them; per trial (holds, checked m, mismatches, absent): {results}',
               flush=True)
 
