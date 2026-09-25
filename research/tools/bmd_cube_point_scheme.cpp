@@ -24,7 +24,9 @@
 //
 // Mode "all": the dimensions printed are those of the jets of all coordinates W_c (not only W_m).
 //
-// Usage: bmd_cube_point_scheme p d m N K b1 b2 b3 es1 es2 es3 et1 et2 et3 OUT [i:0 | i:j ... | all]
+// Mode "mix:I:J:O": adds the lifts M (w_I - w_J)^k (w_O - 1)^l / ((y_I - y_J)^k y_O^l), integral in both variables.
+//
+// Usage: bmd_cube_point_scheme p d m N K b1 b2 b3 es1 es2 es3 et1 et2 et3 OUT [i:0 | i:j ... | all | mix:I:J:O]
 #include <cstdio>
 #include <cstdlib>
 #include <cstdint>
@@ -170,7 +172,7 @@ int main(int argc, char **argv) {
     if ((int)A.size() != 4 * d) { fprintf(stderr, "basis size %zu != 4d\n", A.size()); return 3; }
     // collision lifts along the divisors through the point (lem:cube-collision-lifts, Mobius transport)
     for (int a = 16; a < argc; a++) {
-        if (string(argv[a]) == "all") continue;
+        if (string(argv[a]) == "all" || string(argv[a]).rfind("mix:", 0) == 0) continue;
         int i = argv[a][0] - '1', j = (argv[a][2] == '0') ? -1 : argv[a][2] - '1';
         int o[2], no = 0; for (int x = 0; x < 3; x++) if (x != i && x != j) o[no++] = x;
         if (j < 0) {
@@ -209,6 +211,47 @@ int main(int argc, char **argv) {
                 A.push_back(smul(S, L));
             }
         }
+    }
+    // mixed lifts integral in both local variables (argument "mix:I:J:O", 1-based): for k + l >= 1 and
+    // M = T^Q w^r of weight 2Q + |r| <= d - k - l, the element M (w_I - w_J)^k (w_O - 1)^l / ((y_I - y_J)^k y_O^l)
+    // of V (x) F(y) has truncation M (4T)^(k+l) (w_I + w_J)^(-k) (w_O + 1)^(-l), polynomial in y, so every
+    // local solution kills it exactly.
+    for (int a = 16; a < argc; a++) {
+        string arg = argv[a];
+        if (arg.rfind("mix:", 0) != 0) continue;
+        int I = arg[4] - '1', J = arg[6] - '1', O = arg[8] - '1';
+        auto sinv = [&](const Ser &x) {  // inverse of a series whose T^0 coefficient is the constant 2
+            Ser r = zero(); u64 i0 = pw(x[0][id(0, 0)], P - 2);
+            for (int k2 = 0; k2 < nm; k2++) if (k2 != id(0, 0) && x[0][k2]) { fprintf(stderr, "mix: T^0 coefficient not constant\n"); exit(3); }
+            r[0][id(0, 0)] = i0;
+            for (int c = 1; c <= m; c++) {
+                Bi acc(nm, 0);
+                for (int j = 1; j <= c; j++) { Bi pr = bmul(x[j], r[c - j]); for (int k2 = 0; k2 < nm; k2++) acc[k2] = (acc[k2] + pr[k2]) % P; }
+                for (int k2 = 0; k2 < nm; k2++) r[c][k2] = (P - acc[k2]) % P * i0 % P;
+            }
+            return r;
+        };
+        vector<Ser> w(3); for (int i = 0; i < 3; i++) w[i] = binser(i, 1);
+        Ser sIJ = zero(), sO = zero();
+        for (int c = 0; c <= m; c++) for (int k2 = 0; k2 < nm; k2++) { sIJ[c][k2] = (w[I][c][k2] + w[J][c][k2]) % P; sO[c][k2] = w[O][c][k2]; }
+        sO[0][id(0, 0)] = (sO[0][id(0, 0)] + 1) % P;
+        Ser iIJ = sinv(sIJ), iO = sinv(sO);
+        Ser fourT = zero(); if (m >= 1) fourT[1][id(0, 0)] = 4;
+        int added = 0;
+        for (int k = 0; k <= d; k++) for (int l = 0; k + l <= d; l++) {
+            if (k + l == 0) continue;
+            Ser F = one();
+            for (int q = 0; q < k + l; q++) F = smul(F, fourT);
+            for (int q = 0; q < k; q++) F = smul(F, iIJ);
+            for (int q = 0; q < l; q++) F = smul(F, iO);
+            for (int Q = 0; 2 * Q <= d - k - l; Q++) for (int r = 0; r < 8; r++) {
+                if (2 * Q + __builtin_popcount(r) > d - k - l) continue;
+                Ser S = smul(Tpow(Q), F);
+                for (int i = 0; i < 3; i++) if (r >> i & 1) S = smul(S, w[i]);
+                A.push_back(S); added++;
+            }
+        }
+        fprintf(stderr, "mixed lifts: %d\n", added);
     }
     int nf = A.size();
     fprintf(stderr, "generators: %d (4d = %d)\n", nf, 4 * d);
