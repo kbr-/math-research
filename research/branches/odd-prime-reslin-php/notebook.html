@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> After one split, good columns thin out: for dense forms only the free hole remains good, and most failures are on the smallest links (ex:two-step-good-columns, <a href="#entry-2026-09-25-two-step-columns">two steps</a>). Next: prove or refute that a free hole is always a good column, that is, that the vanishing tops of a value-set member in slice \(m\) lie in those of the same member in slice \(m-1\) on every link, within the free range.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> A hole outside every form's support need not be a good column, because a form can involve it through the slice relation (prop:free-hole-counterexample, <a href="#entry-2026-09-25-free-hole">free hole</a>). Next: decide conj:free-hole-good, equal fiber tops at holes free modulo the slice, which is what good columns at all residues amount to. Test it by link size, then attempt the cancellation argument.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24149,6 +24149,47 @@ The fall is \(v\,wQ_v\). The model is a statement about functions on \(\mathbb F
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">47.57 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">8.61 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-free-hole" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:free-hole-counterexample conj:free-hole-good">
+<h3>Free holes: a hole outside every form's support need not be a good column, because a form can involve it through the slice relation; the refined claim needs the forms independent of the all-ones vector</h3>
+<p class="entry-meta">25 September 2026 · Refutation, with a refined conjecture · open statement A1, closure route · cycle odd-prime-free-hole.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. In the <a href="#entry-2026-09-25-two-step-columns">two-step check</a> the free hole was a good column in every fiber. For dense forms it was the only one. Is a hole outside every form's support always a good column for the monotone recursion (cor:monotone-fiber-recursion)?</p>
+<p><strong>General statement.</strong> prop:free-hole-counterexample: no. Over \(\mathbb F_3\), let \(j\) be a hole and \(s'=\sum_{h\ne j}C_h\), a column form whose coefficient at \(j\) is 0. Let \(Z=\{c\text{ in the slice }m:s'(c)\not\equiv m\}\). Then the empty fiber \(Z^0\) is empty and the occupied fiber \(Z^1\) is the whole slice \(m-1\) on the other holes. So \(a_{\varnothing,e}(Z^0)=\mathrm{Mon}_e\not\subseteq a_{\varnothing,e}(Z^1)\) for every \(e\ge1\), in the free range as elsewhere, and \(j\) is not a good column. conj:free-hole-good: let \(j\) be a hole outside every form's support, and suppose the forms' coefficient vectors on the other holes, together with the all-ones vector, are linearly independent over \(\mathbb F_3\). Then the two fibers at \(j\) have equal vanishing tops on every link, in every degree within the free range. Equivalently, \(j\) is a good column for every slice value. No seed hypothesis is included: seeded members are closed already by thm:seeded-closure-stability, so the recursion is needed only for unseeded forms.</p>
+<p><em>Why inclusion for every slice value is equality.</em> The slices are residue classes of \(\sum_hC_h\) modulo 3. At a free hole, the fibers of the member in the slice \(a+1\) are the same member \(Z'_{a+1}\) and \(Z'_a\) on the other holes, where \(Z'_a=\{c':\sum c'\equiv a,\ \ell(c')\in\Omega\}\). Good columns at \(j\) for the slices \(a+1\), \(a+2\) and \(a+3\equiv a\) give \(a_S(Z'_{a})\subseteq a_S(Z'_{a-1})\subseteq a_S(Z'_{a-2})\subseteq a_S(Z'_{a})\). The same argument holds for the member's links. The recursion visits all residues, since each empty fiber keeps its slice value and each occupied fiber lowers it by one.</p>
+
+<h4>Proof of the counterexample</h4>
+<p>On the slice, \(s'=\sum_hC_h-C_j\equiv m-C_j\). So \(s'\not\equiv m\) exactly when \(C_j=1\), and \(Z\) is the part of the slice with hole \(j\) occupied. Its empty fiber is empty. Its occupied fiber is \(\{c':\sum c'\equiv m-1\}\) on the other holes, all of it. The empty set's vanishing tops are all monomials. The slice's degree-\(e\) tops are the multiples of \(\bar s'\), a proper subspace of \(\mathrm{Mon}_e\) for \(e\ge1\) in the free range. \(\square\)</p>
+<p>The same happens whenever a form, modulo the all-ones vector, carries the hole: the slice relation \(\sum_hC_h\equiv m\) makes \(C_j\) a function of the other holes' forms. "Free" must mean free modulo the slice. For a single form this is empty, since subtracting \(\varphi(j)\) times the all-ones vector moves any coefficient at \(j\) to zero. The meaningful condition is the one in the conjecture. The coefficient vectors on the other holes, together with the all-ones vector, must be independent. That is the condition under which the forms and \(s\) are jointly generic, as in the seeded theorems.</p>
+
+<h4>Evidence and tension</h4>
+<ul>
+<li>In the good-column and two-step checks the free hole satisfied the inclusion, in the tested direction and residues, in every fiber. There the random forms, restricted to the other holes, were independent of the all-ones vector.</li>
+<li>The recorded <a href="#entry-2026-09-25-fiber-uniformity">fiber check</a> at \(N=10\) found the two fibers' tops at a free hole unequal on 24 links at \(e=1\) and on 86 at \(e=2\), for one clause. By the residue argument, that contradicts the conjecture, unless the differing links all lie below the free range. That check did not split its counts by link size.</li>
+<li>Heuristic, not proved. The tops of \(Z'_a\) contain \((\bar s)\) and the tops of the \(\Omega\)-ideal of the forms, neither of which depends on \(a\). Any further tops come from cancellations between multiples of \(s-a\) and polynomials in the forms, and those can depend on \(a\). The conjecture says that no such cancellation happens within the free range when \(s\) and the forms are independent.</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li>The good-column recursion cannot rely on free holes alone. Holes must be free modulo the slice. Even then, it needs fiber uniformity at those holes, which is the conjecture above.</li>
+<li>The counterexample is degenerate: the member forces a hole to be occupied, a pinned hole. It shows that monotone recursions must treat pinned holes separately. Plausibly they should be removed first, as a restriction of the board.</li>
+<li>No new case of W is proved.</li>
+</ul>
+<p>Next: decide conj:free-hole-good. Test equality of the fibers' tops at a free hole, split by link size, with forms that meet its hypothesis. Then attempt the cancellation argument in the free range.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read cor:monotone-fiber-recursion, conj:good-column, ex:two-step-good-columns and thm:seeded-closure-stability's statement. The counterexample is checked by hand: the slice identity \(s'\equiv m-C_j\), the empty fiber, and the tops of the empty set and of the slice. The conjecture's supporting data are the recorded checks. Before commit, a correction pass found three problems in the first draft. By the residue argument, inclusion at every slice value is equality. The draft's seed hypothesis made the conjecture redundant with thm:seeded-closure-stability. Its heuristic claimed equal tops against the recorded fiber check. The statement and evidence were revised accordingly. The refutation is elementary and was verified directly, so no reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-free-hole">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 53.70 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">13.57 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 39.99 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
