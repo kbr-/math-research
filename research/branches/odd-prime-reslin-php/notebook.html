@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), closure route.</strong> Free holes are good columns wherever the recorded freeness transfer applies (cor:free-hole-uniformity, <a href="#entry-2026-09-26-free-hole-transfer">free-hole transfer</a>). Beyond it, dense forms give unequal fiber tops, and good columns in the forms' supports fail after one step. Next: the route review of the closure recursion line (cell splitting, monotone fibers, good columns, free holes), deciding with Outside leads and Absurd bridges whether the line continues.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> The closure route's recursion reaches dense members only through the recorded transfer (<a href="#entry-2026-09-26-recursion-review">recursion review</a>). Next, developing the linked-cluster bridge: prove or refute \(H(A\cap B)\,H(\text{slice})=H(A)\,H(B)\) for the Hilbert series of two members on arbitrary forms through the degree range, identify the connected corrections (the coset-distance obstruction), and decide what multiplicativity gives for the Tor vanishing A1 needs. Tag the entry <code>data-bridge</code>.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24248,6 +24248,86 @@ The fall is \(v\,wQ_v\). The model is a statement about functions on \(\mathbb F
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 44.93 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">6.68 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-recursion-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of the closure route's recursion line, with exact small tests and follow-up of earlier absurd bridges; no new claim.">
+<h3>Route review: the closure route's recursion reaches dense members only through the recorded transfer, fiber uniformity tracks how close the all-ones vector lies to the forms' code, and the passed absurd bridges get their follow-up</h3>
+<p class="entry-meta">26 September 2026 · Route review with exact small tests · open statement A1, closure route · cycle odd-prime-recursion-review.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. Six research entries since the <a href="#entry-2026-09-25-hole-splitting-review">hole-splitting review</a> built and tested a recursion for the closure route's Koszul hypothesis:</p>
+<ul>
+<li><a href="#entry-2026-09-25-cell-splitting">cell splitting</a>;</li>
+<li><a href="#entry-2026-09-25-monotone-fibers">monotone fibers</a>;</li>
+<li><a href="#entry-2026-09-25-good-columns">good columns</a> and <a href="#entry-2026-09-25-two-step-columns">two steps</a>;</li>
+<li><a href="#entry-2026-09-25-free-hole">free holes</a> and the <a href="#entry-2026-09-26-free-hole-transfer">free-hole transfer</a>.</li>
+</ul>
+<p>Where does the line stand? The user also asked (26 September 2026) whether any absurd bridge that passed its test had been explored further. None had. This review follows each of them up.</p>
+<p><strong>General statement.</strong> The line's claim is conj:good-column: every set in the monotone recursion has a column where the empty fiber's vanishing tops lie in each row fiber's on every link. With lem:cell-splitting and cor:monotone-fiber-recursion, this would reduce the Koszul hypothesis of thm:global-closure-gluing to base cases for any cell forms. With the gluing theorem, it would give W for those members. The goal needs A1, W for arbitrary dependent families of width \(k\approx2.5(K+1)\log n\) and degree \(22k\).</p>
+
+<h4>Falsification attempt: dense forms without a free hole</h4>
+<p><code>review_tests.py</code> (T1) took a two-block pair on two random forms over \(\mathbb F_3\), with \(\ell_0\) nonzero on all 12 holes, so no hole is free. It used \(N=12\), \(e=2\), 773 points, and links \(|S|\le2\). At every one of the 12 holes the inclusion held on every link (<code>review_tests.json</code>). So the attempt failed: at the first step, every column is good. Together with the recorded two-step thinning, the evidence is that good columns exist at the first step and thin out later, mostly on the smallest links.</p>
+
+<h4>Assessment of the line</h4>
+<ul>
+<li><em>What it built.</em>
+ <ul>
+ <li>A quotient-side splitting for any cell forms, lem:cell-splitting.</li>
+ <li>A lattice-free case, cor:monotone-fiber-recursion.</li>
+ <li>A proof that free holes are good columns wherever the recorded filtered freeness transfer applies, cor:free-hole-uniformity.</li>
+ </ul></li>
+<li><em>What it lacks.</em>
+ <ul>
+ <li>Every proved step either is the transfer or needs it.</li>
+ <li>Good columns at later steps are unproved and thin out in the data.</li>
+ <li>Each step of the recursion removes a hole and shrinks the free range, while the recorded proofs keep free holes as seeds.</li>
+ <li>The base cases lie outside every free range.</li>
+ </ul></li>
+<li><em>What the tests add.</em> Where fibers at a free hole fail to agree, the failure has a precise shape (lead 1 below). It depends on how close a nonzero multiple of the all-ones vector lies to the code spanned by the forms' coefficient vectors. That is a property of the forms that the adversary of A1 controls.</li>
+<li><em>Qualitative assessment.</em> Weak as a route to A1. The recursion has produced reformulations and one corollary of the transfer, not a mechanism beyond it. The line should stop being the default next step. The coset-distance observation and the linked-cluster identity below are the concrete new leads.</li>
+</ul>
+
+<h4>Outside leads</h4>
+<ul>
+<li><em>Exponential sums for point counts (the character-sum method behind the theorems of Ax, 1964, and Katz, 1971, on \(p\)-divisibility of point counts), for conj:free-hole-good under A1.</em> The count of \(Z'_a=\{\sum c\equiv a,\ \ell(c)\in\Omega\}\) expands in characters \(\prod_h(1+\omega^{t+u\cdot\varphi(h)})\), with \(t\ne0\) for the \(a\)-dependent part. Each factor has modulus 2 when \(u\cdot\varphi(h)\equiv-t\) and 1 otherwise. So the dependence on \(a\) is governed by \(\beta=\max_{u\ne0,c\ne0}\#\{h:u\cdot\varphi(h)=c\}\). Equivalently, \(n'-\beta\) is the Hamming distance from the nonzero multiples of the all-ones vector to the nonzero words of the code spanned by the forms. <em>Where it breaks:</em> counts are the sum of all degrees of the Hilbert function, so they cannot locate the degree where tops differ. <strong>Test.</strong> Passed. The fiber sizes by residue are 361, 372 and 401 for the dense pair, and 403, 402 and 395 for the random pair (T2). Per link, at \(e=2\), the tops are unequal exactly when \(n'-\beta\le3\). At \(|S|=0\), distance 4, the one link is equal. At \(|S|=1\), distance 4 gives 7 equal links and distance 3 gives 4 unequal. At \(|S|=2\), distance 4 gives 21 equal links, and distances 3 and 2 give 28 and 6 unequal.
+ At \(e=1\) every such link was equal, and prop:free-hole-counterexample has distance 1 with unequal tops from \(e=1\) on. This is consistent with a threshold "unequal exactly when the distance is at most \(2e-1\)". That threshold is a guess from two degrees, not a claim.</li>
+<li><em>Vertex decomposability (Provan and Billera, Math. Oper. Res. 1980), for conj:good-column.</em> A good column is the analogue of a shedding vertex: deletion and link both recurse. Vertex decomposability requires shedding vertices at every level. <em>Where it breaks:</em> our deletion changes the slice value, so the "complexes" at the next level are different members, not subcomplexes. <strong>Test.</strong> Passed at the first level: T1 found all 12 columns good. The recorded two-step check shows thinning at the second level, which the analogy does not explain.</li>
+<li><em>Squarefree Gröbner degenerations (Conca and Varbaro, Invent. Math. 2020), for the Koszul hypothesis.</em> A squarefree initial ideal preserves depth and extremal Betti numbers. The Boolean point ideals here have squarefree initial ideals. So freeness could be checked on a Stanley–Reisner degeneration. <em>Where it breaks:</em> their theorem concerns Betti numbers over a polynomial ring, not freeness over the truncated row-sum algebra, and the link criterion needs every link degenerated compatibly. <strong>Test.</strong> Not run: the first attempt (T3, kept in the output) compared the action of \(\bar s\), which is zero on the graded functions of a slice. So it did not test the row-sum action. A valid test must degenerate the link system of prop:link-criterion, whose links a single term order does not degenerate compatibly. That needs a separate construction.</li>
+</ul>
+
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>The linked-cluster theorem and size consistency in quantum chemistry (Goldstone 1957; coupled-cluster theory).</em> Only connected diagrams contribute to the logarithm of a partition function, so non-interacting fragments contribute additively. This bridge was named in the <a href="#entry-2026-09-25-outside-leads-review">outside-leads review</a> without a test. <em>Translation:</em> the Hilbert series of the graded functions is the partition function, with \(q\) marking degree. Clauses are fragments, and the slice is the vacuum. Size consistency is \(H(A\cap B)\,H(\text{slice})=H(A)\,H(B)\). <em>What a theorem there would give:</em> an interaction-free gluing of members at the level of Hilbert functions, with corrections only from "connected" clause clusters. That is the Hilbert-function shadow of the Tor vanishing A1 needs. <strong>Test.</strong> Passed. At \(N=12\), through degree 4, the identity holds exactly for two clauses on disjoint supports and for two clauses on dense overlapping forms (B2). The sides are \(1,22,229,1495,6839\) and \(1,22,229,1494,6821\). This is nonvacuous: the clause functions differ from the slice from degree 3 on.</li>
+<li><em>Coset leaders of linear codes (the covering radius; MacWilliams and Sloane, ch. 1).</em> <em>Translation:</em> the forms' coefficient vectors on the link holes span a ternary code. The all-ones vector's multiples form a coset direction. Fiber uniformity at a free hole becomes a statement about the weight of the coset of \(\mathbb F_3^*\mathbf 1\) relative to that code. <em>What a theorem there would give:</em> bounds on how many adversarial form families can put the all-ones vector at small distance. The covering radius and the weight distribution of cosets are classical. The adversary of A1 can force small distance, as prop:free-hole-counterexample does with distance 1. So this identifies exactly which adversarial families break uniformity. <strong>Test.</strong> Passed on the T2 data, read as distances. Unequal tops occur exactly at coset distance at most 3, at \(e=2\), on all 67 links.</li>
+</ul>
+
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-25-universality-review:1"><em>Unitary designs from local random circuits, for conj:product-top-cohen-lenstra.</em> This cycle formulated the mechanism. For a matrix built from independent columns, the \(k\)-th kernel moment \(\mathbb E|\ker|^k\) is a sum over \(k\)-tuples of coefficient vectors. The per-column probabilities multiply, so the moment is a product of per-column transfer operators on \(k\)-tuples, the moment operator of Brandão, Harrow and Horodecki. A spectral gap of that operator, uniform in the column distribution, would give the Cohen–Lenstra moments. Nothing was computed this cycle. <strong>Follow-up.</strong> Continuing: the next A3 cycle should compute the second-moment operator for product-top columns and its gap.</li>
+<li data-bridge="entry-2026-09-25-universality-review:2"><em>The cavity method.</em> This cycle compared what the method proves with what A3 needs. Coja-Oghlan et al. give the rank to first order, \(\min(Br,D)-o(D)\). A3 needs directness up to the fill, an exact statement, and the recorded check already exceeds the first-order prediction. <strong>Follow-up.</strong> Closed: the method's conclusion is weaker than both the target and the recorded evidence, so it cannot move A3.</li>
+<li data-bridge="entry-2026-09-25-binomial-route-review:2"><em>Rumer's valence-bond basis.</em> This cycle rechecked its scope against the current route. Rumer's rule classifies linear relations among structures, which the passed test found to be single-shift relations, the recorded resolvents. The obstruction was falls, which are not linear relations, and the route has since replaced clauses by members. <strong>Follow-up.</strong> Closed: its content is the resolvent statement, and the question it answers is off the current route.</li>
+<li data-bridge="entry-2026-09-25-closure-route-review:1"><em>Kotani's spin coupling, the modular Clebsch–Gordan series.</em> This cycle tried to extend it from one form to several. For one form, \(\mathbb F_3[x]/(x^3)\) is the group algebra of \(\mathbb Z/3\), whose Green ring gives the recorded pair-seed decomposition. For \(r\ge2\) forms, the algebra is the group algebra of \((\mathbb Z/3)^r\), which has wild representation type. So there is no Clebsch–Gordan series to extend. Freeness is then detected by rank varieties, the \(\pi\)-point lead already tested in the hole-splitting review. <strong>Follow-up.</strong> Closed: it does not extend past one form.</li>
+<li data-bridge="entry-2026-09-25-closure-route-review:2"><em>Persistence barcodes and bottleneck stability.</em> This cycle tried to size the perturbation. A clause's indicator has degree at most \(2(k+1)\), and its multiples add vanishing tops in every degree \(d\ge2(k+1)\), a subspace of dimension growing like \(\binom{N}{d-2(k+1)}\). Rank-type stability bounds changes of the barcode by the rank of the perturbation, which is then comparable to the module in each degree, and no member with short bars in range is known. <strong>Follow-up.</strong> Closed: the available stability bound is vacuous at the needed degrees.</li>
+<li data-bridge="entry-2026-09-25-hole-splitting-review:2"><em>Phase transitions in density.</em> This cycle identified the order parameter. thm:seeded-closure-stability holds for every allowed set \(\Omega\), including density \(3^{-d}\), so density is not what controls freeness. The Fourier lead above identifies a parameter that does track fiber uniformity: the coset distance of the all-ones vector from the forms' code. <strong>Follow-up.</strong> Closed: the density question is answered in the seeded regime, and the parameter it was looking for is carried into the coset-distance lead.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>The highest-risk item remains A1. The next step on odd-prime-clause-transfer develops the linked-cluster bridge. First, prove or refute that the Hilbert series of the graded functions is multiplicative, \(H(A\cap B)\,H(\text{slice})=H(A)\,H(B)\), through the degree range, for two members on arbitrary forms. Identify the correction terms that "connected" pairs contribute, as in the coset-distance obstruction. Then decide what multiplicativity implies for the Tor vanishing A1 needs. After that comes the moment operator for A3, which is continuing in the bridge follow-up.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read conj:good-column, cor:monotone-fiber-recursion, lem:cell-splitting, cor:free-hole-uniformity, lem:filtered-freeness-transfer, thm:seeded-closure-stability's statement and each of the six earlier bridges in full. The tests reuse the validated rank and top routines. All numbers were read from the saved JSON. The character-sum expansion and the coset-distance reading are elementary. The threshold \(2e-1\) is flagged as a guess, and the wild-type statement for \((\mathbb Z/3)^2\) is standard. This review registers no claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-recursion-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 5.08 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">54.35 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 46.92 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">4 min 24.83 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 44.66 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">14.12 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
