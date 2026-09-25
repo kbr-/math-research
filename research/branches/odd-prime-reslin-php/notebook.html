@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A3 (degree), continuing bridge of the <a href="#entry-2026-09-26-recursion-review">recursion review</a>.</strong> The linked-cluster bridge reduces to the transfer lemma inside its range, and its computed instances lie outside it (prop:hilbert-factorization, <a href="#entry-2026-09-26-linked-cluster">linked cluster</a>). Next: the unitary-design bridge for conj:product-top-cohen-lenstra. Write the kernel moments of product-top matrices as products of per-column moment operators, compute the second-moment operator and its spectral gap, and decide whether a uniform gap proves the Cohen–Lenstra second moment. Tag the entry <code>data-bridge</code>.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A3 (degree).</strong> Exact sums of boundedly many divided powers with column-independent parts are harmless for the killer moment (lem:divided-power-sums, <a href="#entry-2026-09-26-divided-power-sums">divided-power sums</a>). Next: the dependent-column strata, whose law the same walk over columns computes with joint type counts modulo 3, then the first stratum near an exact sum, the inverse theorem conj:product-top-killer-moment needs.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24406,6 +24406,54 @@ The single hypothesis, freeness over the forms of all groups jointly, covers all
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-divided-power-sums" data-kind="research" data-route="odd-prime-clause-transfer" data-bridge="entry-2026-09-25-universality-review:1" data-claims="lem:divided-power-sums">
+<h3>Sums of divided powers: when the parts are independent in every column, a product top's killer probability for a sum of divided powers is the product of the single-divided-power probabilities, so every exact stratum of boundedly many such divided powers is harmless for the moment method</h3>
+<p class="entry-meta">26 September 2026 · Working proof, with a sampled validation and a control · open statement A3 · cycle odd-prime-moment-operator.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A3. This cycle develops the unitary-design bridge of the <a href="#entry-2026-09-25-universality-review">universality review</a>, left continuing in the <a href="#entry-2026-09-26-recursion-review">recursion review</a>. In Brandão, Harrow and Horodecki's argument, the moments of a product of independent local gates are products of local moment operators. The product-top analogue sits in the <a href="#entry-2026-09-25-product-top-moment">moment entry</a>. There the killer probability of a divided power was computed by a walk over columns, with state the type counts modulo 3, and its limit \(3^{-5}\) followed from a Fourier bound on that walk. The moment method (conj:product-top-killer-moment) still needs the strata of functionals near sums of few divided powers. In the one-top test, sums of two divided powers carried the largest excess, ratios 764 and 1158. What is the killer probability of an exact sum?</p>
+<p><strong>General statement.</strong> lem:divided-power-sums. Use the setting of the moment entry: \(\tilde A=\bigotimes_{c\le N}(\mathbb F_3\oplus V_c)\), \(\dim V_c=m\), and \(\tau=e_2(\ell)e_2(\ell')\) with \(\ell,\ell'\) independent and uniform. Let \(\varphi_1,\dots,\varphi_j\in\tilde A_1^*\) have supports \(W_i\), let \(\lambda_i\in\mathbb F_3^*\), and put \(\chi=\sum_i\lambda_i\varphi_i^{[5]}\). Suppose that in every column \(c\) the nonzero parts \(\varphi_{i,c}\), \(i\) with \(c\in W_i\), are linearly independent in \(V_c^*\). This bounds the number of parts meeting any one column by \(\dim V_c\), not their total number. Then
+\[\Pr\bigl[\chi(\tilde A_1\tau)=0\bigr]=\prod_{i=1}^jq(|W_i|),\]
+where \(q(w)\) is the single-divided-power probability of prop:divided-power-collapse, with \(q(w)=1\) for \(w\le4\). The product law uses neither \(\dim V_c=m\) nor \(m\ge2\), and the scalars are redundant over \(\mathbb F_3\), since \(\lambda\varphi^{[5]}=(\lambda\varphi)^{[5]}\) because \(\lambda^5=\lambda\). Consequently, for fixed \(m\) and a fixed bound \(j_0\), as \(N\to\infty\), the nonzero functionals of this form with \(j\le j_0\) contribute \(o(3^{C_0})\) to the moment \(\sum_\chi\pi_E(\chi)^B\) of lem:product-top-moment-reduction, uniformly in \(B\) with \(C_0=D-Br\ge0\). This consequence uses the recorded finite evaluation \(\max_{w\ge5}q(w)=q(5)&lt;0.236\), and any uniform bound \(q(w)\le q_*&lt;1\) for \(w\ge5\) would do. The event \(E\) enters only through \(\pi_E\le\pi\).</p>
+
+<h4>Proof</h4>
+<ul>
+<li><em>Reduction.</em> For a cell \(y=(c,v)\) with \(c\in W_i\), prop:divided-power-collapse, part (2), gives \(\varphi_i^{[5]}(y\tau)=\varphi_{i,c}(v)\,P^{(i)}_{-c}\). Here \(P^{(i)}_{-c}=[X^2Y^2]\prod_{d\in W_i\setminus c}(1+s_{i,d}X+s'_{i,d}Y)\), with \(s_{i,d}=\varphi_{i,d}(\ell_d)\) and \(s'_{i,d}=\varphi_{i,d}(\ell'_d)\). For \(c\notin W_i\), part (1) gives \(\varphi_i^{[5]}(yz)=\varphi_{i,c}(v)\varphi_i^{[4]}(z)=0\). By linearity, \(\chi(y\tau)=\bigl(\sum_{i:c\in W_i}\lambda_iP^{(i)}_{-c}\varphi_{i,c}\bigr)(v)\). So \(\chi(\tilde A_1\tau)=0\) exactly when, for every column \(c\), the functional \(\sum_{i:c\in W_i}\lambda_iP^{(i)}_{-c}\varphi_{i,c}\) on \(V_c\) is zero. By the independence hypothesis, that holds exactly when \(P^{(i)}_{-c}=0\) for every \(i\) with \(c\in W_i\). So the event is \(\bigcap_iE_i\), where \(E_i=\{P^{(i)}_{-c}=0\ \forall c\in W_i\}\) is the event of \(\varphi_i^{[5]}\) alone.</li>
+<li><em>Independence.</em> \(E_i\) is a function of \((s_{i,c},s'_{i,c})_{c\in W_i}\). In each column \(c\), the map \(\ell_c\mapsto(\varphi_{i,c}(\ell_c))_{i:c\in W_i}\) is onto \(\mathbb F_3^{\#\{i:c\in W_i\}}\), because the functionals are independent. So these values are uniform and independent across \(i\), and likewise for \(\ell'\). Columns and the two forms are independent. So the whole array of the \(s_{i,c}\) and \(s'_{i,c}\) is uniform on a product space, even though one \(\ell_c\) feeds several parts. Each \(E_i\) reads only its own coordinates, so the families \((s_{i,c},s'_{i,c})_{c\in W_i}\) are independent across \(i\), each with the law of prop:divided-power-collapse, and \(\Pr[\bigcap_iE_i]=\prod_iq(|W_i|)\). If \(|W_i|\le4\), then \(\varphi_i^{[5]}=0\); consistently, \(P^{(i)}_{-c}\) is then the \(X^2Y^2\) coefficient of a polynomial of degree at most 3, so \(E_i\) always holds.</li>
+<li><em>The stratum.</em> There are at most \(\sum_{j\le j_0}(2\cdot3^{mN})^j\le2(2\cdot3^{mN})^{j_0}\) such \(\chi\). If \(\chi\ne0\), some \(|W_i|\ge5\), so \(\pi_E(\chi)\le\pi(\chi)\le\max_{w\ge5}q(w)=q(5)&lt;0.236\). That maximum is the recorded evaluation: exact values for \(w\le80\), and a Fourier and union tail bound for \(w\ge81\). The stratum therefore contributes at most \(M_B=2^{j_0+1}3^{j_0mN}\,0.236^B\). Let \(T=j_0mN\log3/\log(1/0.236)\). If \(B\ge T+N\), then \(M_B\le2^{j_0+1}0.236^N\to0\), and \(3^{C_0}\ge1\). If \(B&lt;T+N\), then \(B=O(N)\), \(Br=O(N^2)\) and \(C_0\ge\binom N5m^5-O(N^2)\), so \(M_B/3^{C_0}\le2^{j_0+1}3^{j_0mN-C_0}\to0\). Both bounds are uniform in \(B\). \(\square\)</li>
+</ul>
+
+<h4>Validation</h4>
+<p><code>divided_power_sums.py</code> works over \(\mathbb F_3\) with \(m=2\), \(N=7\) and \(10^6\) sampled tops per case (<code>divided_power_sums.json</code>). It computes the contraction \(\chi(y\tau)\) for all 14 cells directly from \(\tau\in\tilde A_4\), and compares it per sample with \(E_1\cap E_2\).</p>
+<ul>
+<li><em>Two divided powers, independent in every column.</em> No mismatch in \(10^6\) samples. The frequencies are \(E_1\): 0.1179, \(E_2\): 0.1180, and joint: 0.014068. The lemma gives \(q(7)^2\approx0.01392\), from the recorded \(q(7)=0.1180\), about 1.3 standard errors away. This is one configuration: two full supports. Overlapping but unequal supports, and columns outside one support, are covered by the proof but were not sampled.</li>
+<li><em>Control, with equal parts on three columns</em>, which violates the hypothesis. 1270 mismatches, and the joint frequency is 0.0206, against 0.0194 for \(E_1\cap E_2\). Here the event contains \(E_1\cap E_2\), and the mismatches are the difference. So the reduction fails without the hypothesis. How far the product formula then fails was not measured.</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li><em>What the bridge gave.</em> Taken literally, the design argument needs a product of local random gates, and a product top is a sum over column subsets. What carried over is the structure the moment entry's walk already used: per-column randomness entering through finitely many scalars. Here that turns into independence across the parts of a sum. The result is an exact product law, not a spectral gap. We expect that a gap-type argument will be needed for functionals near such sums, where the scalars no longer determine the event.</li>
+<li><em>The moment method.</em> The exact strata of the killer moment are now harmless for any bounded number of divided powers whose parts are independent in every column. The one-top test's sums of two random divided powers almost surely had dependent parts in some column at \(m=2\), and it measured \(\pi_E\). So its ratios, 764 and 1158 against \(q(w)^2\cdot3^{u-2}=822\) and 906, agree with this law only in order of magnitude. Still open: sums whose parts are dependent in some column, as in the control; numbers of parts growing with \(N\); and every functional near such a sum. That is the inverse theorem conj:product-top-killer-moment needs.</li>
+<li>Random forms only; A1 is untouched.</li>
+</ul>
+<p>Next: the dependent-column strata. When the parts in a column span fewer than their number of dimensions, the event depends on combinations \(\sum_i\lambda_iP^{(i)}_{-c}\alpha_i\) of the polynomials. Compute its law by the same walk over columns, now with joint type counts modulo 3. Then take the first stratum near an exact sum.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:divided-power-collapse (all three parts and the evaluation of \(q\)), lem:product-top-moment-reduction, conj:product-top-killer-moment and the one-top test's ratios. Claim searches (sums of divided powers, killer probability, independent columns, strata) found no statement of the product law. The stratum bound depends on the recorded finite evaluation of \(\max q\). A fresh-context reviewer confirmed the reduction, the coefficient step and the cross-part independence. It required these changes, all adopted: a real cutoff in \(B\); the finite-check dependence stated; the bound \(j\le m\) replaced by any fixed \(j_0\), since the hypothesis limits parts per column only; the citation of part (1) for columns outside a support; the unused hypotheses named; the one-top comparison reduced to order of magnitude; and the validation's and the control's scope stated. The one strengthening, from \(j\le m\) to fixed \(j_0\), reuses the same count and bound, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-moment-operator">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 18.65 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 14.19 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 56.05 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">50.36 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">32.72 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 45.13 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
