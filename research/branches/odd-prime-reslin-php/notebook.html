@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A3 (degree).</strong> Exact sums of boundedly many divided powers with column-independent parts are harmless for the killer moment (lem:divided-power-sums, <a href="#entry-2026-09-26-divided-power-sums">divided-power sums</a>). Next: the dependent-column strata, whose law the same walk over columns computes with joint type counts modulo 3, then the first stratum near an exact sum, the inverse theorem conj:product-top-killer-moment needs.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A3 (degree).</strong> Every nonzero functional kills a random product top with probability at most \(65/81\), so all functionals of contraction rank up to about \(0.72\,(mN)^{4/5}\) are harmless for the killer moment (lem:low-rank-strata, <a href="#entry-2026-09-26-low-rank-strata">low-rank strata</a>). Next: the high-rank stratum near divided powers, by conditioning on the nearest divided power's scalars and bounding the remainder on the complementary directions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24452,6 +24452,47 @@ where \(q(w)\) is the single-divided-power probability of prop:divided-power-col
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">32.72 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 45.13 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-low-rank-strata" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:low-rank-strata">
+<h3>Low-rank strata: every nonzero functional kills a random product top with probability at most \(65/81\), so all functionals of contraction rank up to about \(0.72\,(mN)^{4/5}\) are harmless for the killer moment, whatever their structure</h3>
+<p class="entry-meta">26 September 2026 · Working proof · open statement A3 · cycle odd-prime-dependent-strata.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A3. The killer moment of conj:product-top-killer-moment must be bounded stratum by stratum in the contraction rank \(u(\chi)\). The <a href="#entry-2026-09-25-product-top-moment">moment entry</a> showed that no bound of the form \(3^{-(u-2)}\) holds for all functionals. The <a href="#entry-2026-09-26-divided-power-sums">divided-power sums</a> entry settled the exact strata made of column-independent divided powers. The planned next step was the dependent-column strata. Before splitting further by structure: which strata can be handled with no structure at all?</p>
+<p><strong>General statement.</strong> lem:low-rank-strata. Use the moment entry's setting: \(\tilde A=\bigotimes_{c\le N}(\mathbb F_3\oplus V_c)\) with \(\dim V_c=m\), and \(\tau=e_2(\ell)e_2(\ell')\) with \(\ell,\ell'\) independent and uniform in \(\tilde A_1\). Let \(\pi(\chi)=\Pr[\chi(\tilde A_1\tau)=0]\), \(D=\dim\tilde A_5\), \(r=mN-2\) and \(C_0=D-Br\).</p>
+<ol>
+<li>For every nonzero \(\chi\in\tilde A_5^*\), \(\pi(\chi)\le1-(2/3)^4=65/81\).</li>
+<li>Fix \(m\ge1\) and \(\varepsilon>0\), and let \(\beta=\log_3(81/65)\approx0.2004\) and \(u_0=\bigl((1-\varepsilon)\beta m^4\bigr)^{1/5}N^{4/5}\). Then, for \(N\ge5\) and as \(N\to\infty\), \(\sum_{\chi\ne0,\ u(\chi)\le u_0}\pi_E(\chi)^B\le3^{C_0}\cdot3^{-\Omega(N^3)}\) in the moment of lem:product-top-moment-reduction, uniformly in \(B\) with \(C_0\ge0\). This suffices because \(\chi=0\) contributes \(\Pr[E]^B\le3^{C_0}\Pr[E]^B\), so a nonzero-\(\chi\) contribution of \(o(3^{C_0})\) adds only \(o(1)\) to that lemma's non-directness bound. Nothing needs \(m\ge2\).</li>
+</ol>
+
+<h4>Proof</h4>
+<ul>
+<li><em>A nonzero polynomial.</em> Let \(\chi\ne0\). Choose a 5-monomial \(x\) with \(\chi(x)\ne0\), a cell \(y_0\) of \(x\), and write \(x=y_0z\). Put \(f(\ell,\ell')=\chi(y_0\,e_2(\ell)e_2(\ell'))\), a polynomial in the \(2mN\) coordinates of \(\ell\) and \(\ell'\). Expanding, \(e_2(\ell)e_2(\ell')=\sum_{z'}\sum_{(P,Q)}\ell_P\ell'_Q\,z'\). The sum runs over 4-monomials \(z'\) on distinct columns and over the six ordered splits of the cells of \(z'\) into a pair \(P\) for \(\ell\) and a pair \(Q\) for \(\ell'\), with \(\ell_P\) the product of the two coordinates. Distinct pairs \((z',(P,Q))\) give distinct monomials in the coordinates, since the monomial records which cells carry \(\ell\) and which carry \(\ell'\). So the coefficient of \(\ell_P\ell'_Q\) for a split of \(z\) is \(\chi(y_0z)\ne0\), and \(f\ne0\). Each coordinate occurs with degree at most 1 in each monomial: the cells lie in distinct columns, and each cell carries \(\ell\) or \(\ell'\), not both. So \(f\) is a nonzero multilinear polynomial of degree 4.</li>
+<li><em>Multilinear Schwartz–Zippel.</em> A nonzero multilinear polynomial \(g\) of degree \(d\) over \(\mathbb F_3\) is nonzero at a uniform point with probability at least \((2/3)^d\). This follows by induction on the number of variables. Write \(g=x\,g_1+g_0\), with \(g_1\), \(g_0\) free of \(x\). If \(g_1=0\), apply induction to \(g_0\). Otherwise \(g_1\) is nonzero multilinear of degree at most \(d-1\), so \(g_1\ne0\) with probability at least \((2/3)^{d-1}\). Given the other variables with \(g_1\ne0\), \(x\,g_1+g_0\) vanishes for exactly one value of \(x\). So \(\Pr[g\ne0]\ge(2/3)^{d-1}\cdot2/3\).</li>
+<li><em>Part 1.</em> The event \(\chi(\tilde A_1\tau)=0\) implies \(f(\ell,\ell')=0\). By the previous bullet, this has probability at most \(1-(2/3)^4\).</li>
+<li><em>Part 2.</em> Let \(u_1=\lfloor u_0\rfloor\le mN\), since \(u_0\approx0.72\,m^{4/5}N^{4/5}\). By lem:catalecticant-count, the functionals with \(u(\chi)\le u_1\) number at most \(\bigl[{mN\atop u_1}\bigr]_3\,3^{e(u_1)}\), with \(e(u_1)\le\binom N5(u_1/N)^5\le\binom N5(u_0/N)^5\). The Gaussian binomial is at most \(3^{u_0(mN-u_0)}/\prod_{i\ge1}(1-3^{-i})\le2\cdot3^{u_0mN}\). Each term is at most \(\pi(\chi)^B\le3^{-\beta B}\) by part 1, since \(\pi_E\le\pi\). So the ratio to \(3^{C_0}\) is at most \(2\cdot3^{u_0mN+e(u_0)-\beta B-C_0}\). Now \(\beta B+C_0=D-B(r-\beta)\). For \(N\ge5\), \(r=mN-2&gt;\beta\). Since \(C_0\ge0\) gives \(B\le D/r\), this is at least \(\beta D/r\ge\beta\binom N5m^4/N\), using \(D=\binom N5m^5\) and \(r\le mN\). By the choice of \(u_0\), \(e(u_1)\le(1-\varepsilon)\beta m^4\binom N5/N\). So the exponent is at most \(u_0mN-\varepsilon\beta m^4\binom N5/N\). That tends to \(-\infty\), because \(u_0mN=O(N^{9/5})\) while \(\binom N5/N\sim N^4/120\). The ratio is therefore at most \(2\cdot3^{-\varepsilon\beta m^4\binom N5/N+O(N^{9/5})}=3^{-\Omega(N^3)}\), and the bound does not depend on \(B\). \(\square\)</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li><em>What remains.</em> Every functional with \(u(\chi)&gt;u_0\approx0.72\,m^{4/5}N^{4/5}\) still needs a bound. That includes the generic functionals near \(u=mN\), which carry the main term \(3^{C_0}\), as well as the structured ones. A divided power \(\varphi^{[5]}\) of support \(w\) has \(u\in\{w,w-1\}\), so it falls under this lemma exactly when that value is at most \(u_0\). Sums of divided powers can have \(u\) up to \(mN\). Above \(u_0\), lem:divided-power-sums handles the exact column-independent sums. Functionals near them and dependent-column sums of high rank remain, and so do all other high-rank functionals.</li>
+<li><em>What limits the exponent.</em> The bound uses a single cell. The polynomials of different cells share most variables, since each involves every coordinate outside its own column, so they are not independent, and the argument gives no product bound. With \(B\approx m^4\binom N5/N\), reaching rank \(u\) needs \(\log_3(1/\pi)\gtrsim u^5/(m^4N^4)\). That is a bound that decays with \(u\), reaching about \(mN\) at \(u=mN\), which is the inverse question itself.</li>
+<li>Random forms only; A1 is untouched.</li>
+</ul>
+<p>Next: the stratum \(u&gt;u_0\) near divided powers. Condition on the scalars of the nearest divided power, and apply part 1's argument to the functional induced on the complementary \(m-1\) directions of each column. The target is \(\pi\le q(w)\cdot(65/81)^{t}\), with \(t\) the number of cells at which the remainder is nonzero after conditioning.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:catalecticant-count (statement, the Gaussian binomial and Maclaurin bound), lem:product-top-moment-reduction, prop:divided-power-collapse and lem:divided-power-sums. Claim searches (Schwartz–Zippel, multilinear, killer probability, universal bound, contraction-rank strata, DeMillo–Lipton) found no earlier statement. A fresh-context reviewer found no mathematical error. It confirmed the coefficient extraction, the induction, the Gaussian binomial and Maclaurin steps, the inequality \(\beta B+C_0\ge\beta D/r\) and the uniformity in \(B\). It required these precision changes, all adopted: the integer rank \(\lfloor u_0\rfloor\); \(N\ge5\) for \(r&gt;\beta\); the explicit rate; why \(o(3^{C_0})\) suffices; and scoping of what remains, including the generic high-rank functionals.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-dependent-strata">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 25.37 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 55.81 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 29.42 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
