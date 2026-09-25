@@ -13,8 +13,9 @@ s₂(k−ℓ−1) when k − 1 ≤ n, in particular when k ≥ 2 and n ≥ 2k �
 (11) mult_a(P) ≤ ord₀ P(a + z) for every substitution z whose entries have no constant term;
 (12) F has 2^n − 1 factors, and F² has multiplicity ≥ 2^n at nonzero points and degree
 ≤ 2^(n+1) − 2; (13) with δ(n,k,ℓ) the least element of deltaSet (degrees of polynomials with
-multiplicity ≥ k off the origin and exactly ℓ at it), δ = Φ, and items (4)–(6), (10) restated for δ.
-Declarations: MathResearch.PerOrderArithmetic.phi_add_eq MathResearch.PerOrderArithmetic.phi_lt_menezes MathResearch.PerOrderArithmetic.construction_lt_menezes MathResearch.PerOrderArithmetic.phi_add_block MathResearch.PerOrderArithmetic.phi_of_le MathResearch.PerOrderArithmetic.phi_of_real_range MathResearch.PerOrderArithmetic.phi_top MathResearch.PerOrderArithmetic.phi_succ MathResearch.PerOrderArithmetic.totalDegree_construction MathResearch.PerOrderArithmetic.menezes_form_optimal MathResearch.PerOrderArithmetic.one_le_s2 MathResearch.PerOrderArithmetic.example_one MathResearch.PerOrderArithmetic.cube_example MathResearch.PerOrderArithmetic.example_two MathResearch.PerOrderArithmetic.mult_le_mult_zero_subst MathResearch.PerOrderArithmetic.card_nonzero MathResearch.PerOrderArithmetic.mult_hypProd_sq MathResearch.PerOrderArithmetic.totalDegree_hypProd_sq MathResearch.PerOrderArithmetic.deltaSet MathResearch.PerOrderArithmetic.isLeast_deltaSet MathResearch.PerOrderArithmetic.delta_succ MathResearch.PerOrderArithmetic.delta_of_real_range MathResearch.PerOrderArithmetic.delta_top MathResearch.PerOrderArithmetic.delta_examples
+multiplicity ≥ k off the origin and exactly ℓ at it), δ = Φ, and items (4)–(6), (10) restated for δ;
+(14) Φ(1,k,ℓ) = k + ℓ, so δ(1,k,ℓ) = k + ℓ.
+Declarations: MathResearch.PerOrderArithmetic.phi_add_eq MathResearch.PerOrderArithmetic.phi_lt_menezes MathResearch.PerOrderArithmetic.construction_lt_menezes MathResearch.PerOrderArithmetic.phi_add_block MathResearch.PerOrderArithmetic.phi_of_le MathResearch.PerOrderArithmetic.phi_of_real_range MathResearch.PerOrderArithmetic.phi_top MathResearch.PerOrderArithmetic.phi_succ MathResearch.PerOrderArithmetic.totalDegree_construction MathResearch.PerOrderArithmetic.menezes_form_optimal MathResearch.PerOrderArithmetic.one_le_s2 MathResearch.PerOrderArithmetic.example_one MathResearch.PerOrderArithmetic.cube_example MathResearch.PerOrderArithmetic.example_two MathResearch.PerOrderArithmetic.mult_le_mult_zero_subst MathResearch.PerOrderArithmetic.card_nonzero MathResearch.PerOrderArithmetic.mult_hypProd_sq MathResearch.PerOrderArithmetic.totalDegree_hypProd_sq MathResearch.PerOrderArithmetic.deltaSet MathResearch.PerOrderArithmetic.isLeast_deltaSet MathResearch.PerOrderArithmetic.delta_succ MathResearch.PerOrderArithmetic.delta_of_real_range MathResearch.PerOrderArithmetic.delta_top MathResearch.PerOrderArithmetic.delta_examples MathResearch.PerOrderArithmetic.delta_one
 -/
 import claims.PerOrderValue
 import claims.BinaryDigitSums
@@ -217,6 +218,14 @@ theorem delta_of_real_range {n k ℓ : ℕ} (hn : 1 ≤ n) (hℓ : ℓ < k) (hk 
 /-- `δ(n,k,k−1) = n + 2k − 2`. -/
 theorem delta_top {n k : ℕ} (hn : 1 ≤ n) (hk : 1 ≤ k) : IsLeast (deltaSet n k (k - 1)) (n + 2 * k - 2) := by
   rw [← phi_top hk]; exact isLeast_deltaSet hn (by omega)
+
+/-- In one variable, `Φ(1,k,ℓ) = k + ℓ` (Menezes' univariate value), so `δ(1,k,ℓ) = k + ℓ`. -/
+theorem delta_one {k ℓ : ℕ} (hℓ : ℓ < k) : Phi 1 k ℓ = k + ℓ ∧ IsLeast (deltaSet 1 k ℓ) (k + ℓ) := by
+  have h : Phi 1 k ℓ = k + ℓ := by
+    unfold Phi
+    rw [Finset.sum_range_one, pow_zero, Nat.div_one]
+    omega
+  exact ⟨h, h ▸ isLeast_deltaSet le_rfl hℓ⟩
 
 /-- The examples: `δ(1,3,0) = 3` and `δ(2,5,0) = 8`. -/
 theorem delta_examples : IsLeast (deltaSet 1 3 0) 3 ∧ IsLeast (deltaSet 2 5 0) 8 := by
