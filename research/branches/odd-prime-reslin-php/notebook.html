@@ -30,7 +30,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The <a href="#entry-2026-09-25-chooser-line-review">chooser-line review</a> closed the chooser line at one concrete rule, conj:near-solution-chooser. Test it directly with a fall search at small size, using the exact GF(3) PC-closure tester. At the largest \(n\) where weak PHP's own refutation degree \(d_{\mathrm{PHP}}\) exceeds the clause degree \(2(k+1)\) (\(k=1,2\); confirm this first), compare the first refutation degree under the best near-solution choice with \(d_{\mathrm{PHP}}\) and with the uniform rule. Use families built from forms vanishing at every near-solution, mixed occupancy blocks, and random dense blocks. A fall below \(d_{\mathrm{PHP}}\) refutes the rule's small-size analogue. No fall is evidence for the rule, and the next cycle states the mechanism behind its cancellations.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> Run a thread-level route review. The designed and chooser lines are closed. conj:near-solution-chooser cannot be tested at reachable sizes, and W is implied by a linear-degree statement under exponentially many dense wide clauses on a board of \(O(k)\) holes (<a href="#entry-2026-09-25-fall-search-vacuous">small-board corollary</a>). No recorded line carries a hardness mechanism for dense adversarial forms. The review decides the next line: a new PC lower-bound method for dense constraints at linear degree, S1's window route, or a formulation shared with the main record's wide-clause line.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -22045,6 +22045,61 @@ where \(Z\) is the Hasse fat points of multiplicity \(s-1\) at the nonzero \(m_j
 <tr><td>Marked reading and review windows</td><td class="elapsed">2 min 3.21 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">44.17 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">13.05 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-25-fall-search-vacuous" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="cor:small-board-restriction">
+<h3>The planned fall search cannot decide, and W is implied by a linear-degree statement with exponentially many blocks on a board of size O(k)</h3>
+<p class="entry-meta">25 September 2026 · Count (no run) and a corollary · open statement A1 · cycle odd-prime-chooser-fall-search.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-25-chooser-line-review">chooser-line review</a> proposed testing conj:near-solution-chooser by a fall search at small size with the exact GF(3) PC-closure tester. Before coding, can such a test decide anything?</p>
+<p><strong>General statement.</strong> cor:small-board-restriction, a corollary of prop:conditioned-base: a partial-matching restriction leaving \(m\) holes sends W's system to the system of the restricted forms on the \(m\)-board, with the same prefix sets, without raising PC degree. So W is implied by the statement W\(_m\): with W's \(k\) and \(D=22k\), every family of \(M=n^K\) blocks of affine forms on a board of \(m\ge44k\) holes has a choice with no degree-\(D\) refutation. There \(M&lt;e^{0.41k}\) is \(2^{O(m)}\) and \(D\) is a constant fraction of \(m\). The count below shows that the planned small-size test of conj:near-solution-chooser is vacuous.</p>
+
+<h4>The count: the test cannot decide</h4>
+<ul>
+<li><em>Nonvacuity needs a small clause degree.</em> A fall means a refutation below weak PHP's own degree \(d_{\mathrm{PHP}}\), which by Razborov's bound is at least about \(n/2+1\). The clauses have degree \(2(k+1)\) over \(\mathbb F_3\), so \(2(k+1)&lt;d_{\mathrm{PHP}}\).</li>
+<li><em>What the tester reaches.</em> The recorded closure kernel reached \(n=7\) at degree 3. At degree 4 the space has \(43653\) monomials at \(n=6\) and \(162681\) at \(n=7\). So the tester reaches degree at most 4, and a clause degree \(2(k+1)\le4\) forces \(k=1\).</li>
+<li><em>The density condition then allows one block.</em> W's parameters require \(M(2/3)^k&lt;1\), which at \(k=1\) means \(M\le1\). A family of more blocks lies outside the conjecture's hypotheses, and one block tests nothing. Blocks with \(h_b\le k\) contribute no clauses, so every clause has degree \(2(k+1)\).</li>
+<li><em>Robustness.</em> Even a tester reaching clause degree 6 or 8 would allow at most 2 or 3 blocks. With W's own tie of \(k\) to \(n\), \(k\ge10\) already at \(n=7\) and \(K\ge1\), so \(D=220\).</li>
+</ul>
+<p>So a fall search at reachable sizes cannot test conj:near-solution-chooser, and it was not coded. Any evidence for or against the rule must come from arguments.</p>
+
+<h4>Restriction to a small board</h4>
+<p><strong>Corollary (small-board restriction).</strong> Let \(\rho\) be the restriction given by a partial matching of \(n-m\) pigeons onto \(n-m\) holes. It sets the matched cells to 1 and every other cell in a matched row or a matched column to 0. For a family of blocks and prefix sets \(S_b\), substituting \(\rho\) sends weak PHP on the \(n\)-board to weak PHP on the remaining \(m\)-board, up to axioms that become 0. It sends each clause \(g_{b,i}\prod_{j\in S_b}L_{b,j}^{2}\) to the clause of the restricted forms \(L_{b,j}|_\rho\) with the same \(S_b\). A PC refutation of degree \(D\) restricts to one of degree at most \(D\). Hence if, for the restricted family, some choice has no degree-\(D\) refutation on the \(m\)-board, the same choice has none on the \(n\)-board.</p>
+<p><em>Proof.</em> prop:conditioned-base records that a partial-matching restriction sends the weak unary base to the weak base on the smaller board, and a degree-\(D\) refutation to one of the restricted system. Directly: a matched pigeon's row equation becomes \(1-1=0\). A collision with a cell set to 0 becomes 0. If one of its cells is a matched cell, set to 1, the other lies in a matched column and is set to 0. The new step is that substitution is a ring map, so the clause \(g_{b,i}\prod_{j\in S_b}L_{b,j}^2\) goes to the clause of the restricted forms, with the same index sets. \(\square\)</p>
+<p>With \(k=\lceil(K+1)\ln n/\ln\frac32\rceil\), \(\ln M=K\ln n&lt;0.41k\). Razborov's bound, degree at least \(m/2+1\) for PHP with \(m\) holes over any field, leaves room at degree \(22k\) once \(m\ge44k\). Since \(44k\approx109(K+1)\ln n\le n\) for large \(n\), such restrictions exist. W\(_m\) covers every family on the \(m\)-board, not only restrictions of families from the \(n\)-board, so it is stronger than W. It is a statement in the usual regime of PC degree lower bounds: weak PHP on \(m\) holes stays hard at a constant fraction of \(m\) under \(2^{O(m)}\) wide clauses with W's density condition. As a heuristic for generic forms only, the semi-regular count predicts no fall. With top-algebra dimensions of order \(\binom ms m^s\), the clauses' share of degree \(s\le22k\le m/2\) is about \(M\max_bh_b\,m^{-(2k+2)}\binom m{s-2k-2}/\binom ms\), which is below 1. It says nothing about adversarial families, where A1's obstruction lies.</p>
+
+<h4>Assessment</h4>
+<p>The chooser rule cannot be tested at reachable sizes. The small-board form puts W in the linear-degree regime where PC lower bounds are usually proved. The known methods there, expansion of the constraint–variable graph (Alekhnovich–Razborov, Miksa–Nordström), need each constraint to depend on few pigeons, and dense restricted forms do not. So the obstruction to A1 is unchanged. It is now stated in the regime of the classical methods: a PC degree lower bound robust to exponentially many dense wide constraints.</p>
+<p>Next: a thread-level route review. The designed and chooser lines are closed, and no recorded line carries a hardness mechanism for dense adversarial forms. The review should decide what the goal's next line is: W through a new lower-bound method for dense constraints at linear degree, S1's window route, or a reformulation that the main record's wide-clause line shares.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>conj:near-solution-chooser and W's parameters (thm:logarithmic-prefix-wide-clause-reduction);</li>
+<li>the recorded closure tester's board encoding (weak unary board, collision-free monomials, row equations);</li>
+<li>prop:conditioned-base, the restriction of the weak base and of refutations;</li>
+<li>obs:middle-rank-frontier, which records that matching restrictions do not make dense forms constant; the corollary does not need them to.</li>
+</ul>
+<p>A fresh-context reviewer found the corollary and the direction W\(_m\) ⇒ W correct, and found that prop:conditioned-base already contains the restriction step, which a claim search had missed. It required changes, all adopted:</p>
+<ul>
+<li>the result recorded as a corollary of prop:conditioned-base;</li>
+<li>W\(_m\) stated with explicit parameters, as implying W, not equivalent to it;</li>
+<li>the collision case in the proof;</li>
+<li>the bounds \(m\ge44k\) and \(M&lt;e^{0.41k}\);</li>
+<li>the robustness of the vacuity count;</li>
+<li>both factors of the heuristic share, and its generic scope.</li>
+</ul>
+<p>No computation was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-chooser-fall-search">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 46.08 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 5.46 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 56.45 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 44.17 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
