@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Random priority at threshold \(20k\) is conjectured to satisfy W (conj:random-priority-choice). Shared decoys reduce to the one-block core, and a product is provably nonzero only if each factor is (lem:rigid-products, <a href="#entry-2026-09-26-rigid-products">rigid products</a>). Next: the one-block core. Is the weak base plus the vanishing of a product of \(k\) forms non-rigid at \(20k\) hard at degree \(22k\)? Search the prefix-length and pinning entries first, then attempt a mixture of base designs, each vanishing on one factor.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> The one-block core is decided up to a degree window: refuting the base plus \(\Delta=0\) is rigidity up to \(p-1\) degrees (prop:one-block-core, <a href="#entry-2026-09-26-one-block-core">one-block core</a>). Next: mixed blocks on two holes under random priority, whose clauses become implications between holes. Decide whether the implication system has a low-degree refutation, or reduce it to graph PHP with implications and locate where expansion arguments break.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24745,6 +24745,48 @@ where \(q(w)\) is the single-divided-power probability of prop:divided-power-col
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 27.09 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 57.00 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-one-block-core" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:one-block-core">
+<h3>The one-block core: the base plus the vanishing of a product of forms is refuted only if every factor is rigid at \(p-1\) degrees more, and is refuted when every factor is rigid at \((p-1)k\) degrees less, because a refutation of the base plus \(\Delta=0\) multiplied by \(1-\Delta^{p-1}\) proves \(\Delta\) nonzero</h3>
+<p class="entry-meta">26 September 2026 · Working proof · open statement A1 · cycle odd-prime-one-block-core.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-rigid-products">rigid-products entry</a> reduced random priority on shared-decoy families to a one-block core: is the weak base \(B\) plus the vanishing of a product \(Q=\prod_{s\le k}\Delta_s^{p-1}\) hard at W's degree? It excluded only the route through \(1-Q\in C_d(B)\). When is \(B\cup\{Q\}\) refuted at all?</p>
+<p><strong>General statement.</strong> prop:one-block-core. Over \(\mathbb F_p\) (\(p\) odd only because W's setting is), with \(C_d\) the degree-\(d\) PC closure and \(\Delta,\Delta_s\) affine forms:</p>
+<ol>
+<li>If \(B\cup\{\Delta\}\) has a degree-\(D\) refutation, \(D\ge2\), then \(1-\Delta^{p-1}\in C_{D+p-1}(B)\). Conversely, \(1-\Delta^{p-1}\in C_d(B)\) gives a refutation of \(B\cup\{\Delta\}\) at degree \(\max(d,p-1)\). Rigidity and refutability of \(\Delta=0\) agree up to \(p-1\) degrees.</li>
+<li>If \(B\cup\{Q\}\) has a degree-\(D\) refutation, \(D\ge(p-1)k\), then every factor \(\Delta_s\) is rigid at degree \(D+p-1\). Conversely, if every factor is rigid at degree \(d\), then \(B\cup\{Q\}\) is refuted at degree \(\max(d+(p-1)(k-1),(p-1)k)\).</li>
+</ol>
+
+<h4>Proof</h4>
+<ul>
+<li><em>Two recorded facts.</em> Monotonicity: \(C_d(X)\subseteq C_{d'}(X)\) for \(d\le d'\). Multiplication, in the form of prop:rigid-form-reduction applied to a derivation from \(X\) with each axiom replaced by \(q\) times it: for \(q\) of degree at most \(e\), \(q\cdot C_D(X)\subseteq C_{D+e}(qX)\). Multiplying by \(q\) commutes with linear combinations and with multiplication by variables, and adds at most \(e\) to degrees.</li>
+<li><em>Part 1.</em> Take \(q=1-\Delta^{p-1}\), \(e=p-1\), and \(X=B\cup\{\Delta\}\). For \(a\in B\), \(\deg a\le2\le D\), so \(qa\in C_{D+p-1}(B)\) by the multiplication fact of prop:rigid-form-reduction. By Frobenius, \(q\Delta=\Delta-\Delta^p=-\sum_ia_i(x_i^p-x_i)\), which lies in \(C_p(B)\subseteq C_{D+p-1}(B)\), as in lem:rigid-products. So \(C_{D+p-1}(qX)\subseteq C_{D+p-1}(B)\), and \(1\in C_D(X)\) gives \(q\in C_{D+p-1}(B)\). Conversely, \(\Delta^{p-1}\in C_{p-1}(\{\Delta\})\), so \(1=(1-\Delta^{p-1})+\Delta^{p-1}\in C_{\max(d,p-1)}(B\cup\{\Delta\})\).</li>
+<li><em>Part 2.</em> \(Q\) is a multiple of \(\Delta_s\) of degree \((p-1)k\), so \(Q\in C_{(p-1)k}(\{\Delta_s\})\) and \(C_D(B\cup\{Q\})\subseteq C_D(B\cup\{\Delta_s\})\) for \(D\ge(p-1)k\). A refutation of \(B\cup\{Q\}\) is therefore one of \(B\cup\{\Delta_s\}\), and part 1 applies. Conversely, prop:rigid-form-reduction's identity gives \(1-Q\in C_{d+(p-1)(k-1)}(B)\) when every factor is rigid at \(d\). Together with \(Q\) this refutes. \(\square\)</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li><em>The one-block core is decided up to a degree window.</em> At \(p=3\) and \(D=22k\), \(B\cup\{Q\}\) is hard if some factor is non-rigid at \(22k+2\). It is refuted if every factor is rigid at \(20k+2\). It is undecided exactly when every factor is rigid at \(22k+2\) and some factor is not rigid at \(20k+2\). That includes mixed products, for example \(k-1\) factors rigid at low degree and one whose least rigidity degree lies in \((20k+2,22k+2]\).</li>
+<li><em>For random priority.</em> The rigid-products entry showed that, with probability \(1-o(1)\) by a union bound, every block of a shared-decoy family has the same prefix \(P\) of top decoys. Every clause is then a multiple of \(Q_P\), so hardness of \(B\cup\{Q_P\}\) at \(22k\) defends the family on that event. With threshold \(D_0=20k\), the chosen decoys are non-rigid at \(20k\). conj:random-priority-choice assumes every form is rigid at \(20k\) or non-rigid at \(20k+2\), so the chosen decoys are non-rigid at \(20k+2\). This excludes the band \((20k,20k+2]\), where all top decoys rigid would refute the family. Under that hypothesis the family is defended with probability \(1-o(1)\) whenever some top decoy is non-rigid at \(22k+2\). It is undecided when all top decoys are rigid at \(22k+2\). Strengthening the hypothesis to "rigid at \(20k\) or non-rigid at \(22k+2\)" would make the family defended with probability \(1-o(1)\). The conjecture is left as registered, and this undecided case is recorded as its open edge against decoys.</li>
+<li><em>A usable equivalence.</em> Part 1 lets choice rules be stated by refutability of \(\Delta=0\) instead of rigidity, at a cost of \(p-1\) degrees. Refutability is closer to what a chooser can test.</li>
+<li>No new case of W is proved.</li>
+</ul>
+<p>Next: mixed blocks on two holes, whose clauses under random priority become implications, "pigeon \(i\) in hole \(t\) forces a prefix pigeon of hole \(t'\) into \(t'\)", rather than deletions. Decide whether the implication system has a low-degree refutation, or reduce it to graph PHP with extra implications and find where expansion arguments break.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:rigid-form-reduction (closure definition, multiplication fact, part-3 identity), lem:rigid-products and conj:random-priority-choice. The rigid-forms entry works only with rigidity, never with refutability of \(\Delta=0\), and the claim search found no other statement of part 1. A fresh-context reviewer confirmed both parts: the multiplied derivation, the Frobenius step, the containment and the converse degrees. It required these changes, all adopted: the undecided set stated with "some factor"; the random-priority consequence corrected, since top decoys whose least rigidity degree lies in \((20k,20k+2]\) are refuted, not undecided, and the conjecture's hypothesis excludes exactly that band; the probability qualifier and the rigid-products reduction cited; the degree floor \(D\ge2\); monotonicity named; \(p\) odd marked as unused; and the title's two-sided gap. The changes correct and weaken statements, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-one-block-core">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 57.73 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">43.34 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 1.82 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 12.43 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
