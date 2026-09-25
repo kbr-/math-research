@@ -10,8 +10,11 @@ s₂(k−ℓ−1) when k − 1 ≤ n, in particular when k ≥ 2 and n ≥ 2k �
 (8) for k − ℓ − 1 < 2^n every admissible P of origin order ℓ has degree ≥ n + 2k − 2 − s₂(k−ℓ−1);
 (9) s₂(k−ℓ−1) ≥ 1 for ℓ + 1 < k; (10) the examples Φ(1,3,0) = 3 with (1 + x)³ of degree 3, multiplicity
 ≥ 3 at 1 and order 0 at 0, against 1 + 6 − 2 − s₂(2) = 4, and Φ(2,5,0) = 8 against 2 + 10 − 2 − s₂(4) = 9;
-(11) mult_a(P) ≤ ord₀ P(a + z) for every substitution z whose entries have no constant term.
-Declarations: MathResearch.PerOrderArithmetic.phi_add_eq MathResearch.PerOrderArithmetic.phi_lt_menezes MathResearch.PerOrderArithmetic.construction_lt_menezes MathResearch.PerOrderArithmetic.phi_add_block MathResearch.PerOrderArithmetic.phi_of_le MathResearch.PerOrderArithmetic.phi_of_real_range MathResearch.PerOrderArithmetic.phi_top MathResearch.PerOrderArithmetic.phi_succ MathResearch.PerOrderArithmetic.totalDegree_construction MathResearch.PerOrderArithmetic.menezes_form_optimal MathResearch.PerOrderArithmetic.one_le_s2 MathResearch.PerOrderArithmetic.example_one MathResearch.PerOrderArithmetic.cube_example MathResearch.PerOrderArithmetic.example_two MathResearch.PerOrderArithmetic.mult_le_mult_zero_subst
+(11) mult_a(P) ≤ ord₀ P(a + z) for every substitution z whose entries have no constant term;
+(12) F has 2^n − 1 factors, and F² has multiplicity ≥ 2^n at nonzero points and degree
+≤ 2^(n+1) − 2; (13) with δ(n,k,ℓ) the least element of deltaSet (degrees of polynomials with
+multiplicity ≥ k off the origin and exactly ℓ at it), δ = Φ, and items (4)–(6), (10) restated for δ.
+Declarations: MathResearch.PerOrderArithmetic.phi_add_eq MathResearch.PerOrderArithmetic.phi_lt_menezes MathResearch.PerOrderArithmetic.construction_lt_menezes MathResearch.PerOrderArithmetic.phi_add_block MathResearch.PerOrderArithmetic.phi_of_le MathResearch.PerOrderArithmetic.phi_of_real_range MathResearch.PerOrderArithmetic.phi_top MathResearch.PerOrderArithmetic.phi_succ MathResearch.PerOrderArithmetic.totalDegree_construction MathResearch.PerOrderArithmetic.menezes_form_optimal MathResearch.PerOrderArithmetic.one_le_s2 MathResearch.PerOrderArithmetic.example_one MathResearch.PerOrderArithmetic.cube_example MathResearch.PerOrderArithmetic.example_two MathResearch.PerOrderArithmetic.mult_le_mult_zero_subst MathResearch.PerOrderArithmetic.card_nonzero MathResearch.PerOrderArithmetic.mult_hypProd_sq MathResearch.PerOrderArithmetic.totalDegree_hypProd_sq MathResearch.PerOrderArithmetic.deltaSet MathResearch.PerOrderArithmetic.isLeast_deltaSet MathResearch.PerOrderArithmetic.delta_succ MathResearch.PerOrderArithmetic.delta_of_real_range MathResearch.PerOrderArithmetic.delta_top MathResearch.PerOrderArithmetic.delta_examples
 -/
 import claims.PerOrderValue
 import claims.BinaryDigitSums
@@ -165,5 +168,62 @@ theorem cube_example :
 theorem example_two : Phi 2 5 0 = 8 ∧ 2 + 2 * 5 - 2 - s2 (5 - 0 - 1) = 9 := by
   refine ⟨by decide, ?_⟩
   rw [show 5 - 0 - 1 = 2 ^ 2 by norm_num, s2_two_pow]
+
+/-- `F` has `2^n − 1` factors, one for each hyperplane `u · x = 1` (`u ≠ 0`) avoiding the origin. -/
+theorem card_nonzero (n : ℕ) :
+    (Finset.univ.filter (fun u : Fin n → ZMod 2 => u ≠ 0)).card = 2 ^ n - 1 := by
+  rw [Finset.filter_ne', Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ,
+    Fintype.card_fun, ZMod.card, Fintype.card_fin]
+
+/-- `F²` has multiplicity `≥ 2^n` at every nonzero point. -/
+theorem mult_hypProd_sq {n : ℕ} (hn : 1 ≤ n) {x : Fin n → ZMod 2} (hx : x ≠ 0) :
+    ((2 ^ n : ℕ) : ℕ∞) ≤ mult x (hypProd n ^ 2) := by
+  rw [sq]
+  refine le_trans ?_ (add_le_mult_mul x _ _)
+  have h2 : (2 ^ n : ℕ) = 2 ^ (n - 1) + 2 ^ (n - 1) := by
+    rw [← two_mul, ← pow_succ']; congr 1; omega
+  rw [h2, Nat.cast_add]
+  exact add_le_add (mult_hypProd hx) (mult_hypProd hx)
+
+/-- `F²` has total degree `≤ 2^(n+1) − 2`. -/
+theorem totalDegree_hypProd_sq (n : ℕ) : (hypProd n ^ 2).totalDegree ≤ 2 ^ (n + 1) - 2 := by
+  have h := totalDegree_hypProd n
+  have hp : 2 ^ (n + 1) = 2 * 2 ^ n := by rw [pow_succ']
+  calc (hypProd n ^ 2).totalDegree ≤ 2 * (hypProd n).totalDegree := totalDegree_pow _ _
+    _ ≤ 2 ^ (n + 1) - 2 := by rw [hp]; omega
+
+/-- The degrees of polynomials with multiplicity `≥ k` at every nonzero point and exactly `ℓ` at the
+origin; `δ(n,k,ℓ)` is its least element. -/
+def deltaSet (n k ℓ : ℕ) : Set ℕ :=
+  {d | ∃ P : MvPolynomial (Fin n) (ZMod 2), (∀ a : Fin n → ZMod 2, a ≠ 0 → (k : ℕ∞) ≤ mult a P) ∧
+    mult 0 P = ℓ ∧ P.totalDegree = d}
+
+/-- `δ(n,k,ℓ) = Φ(n,k,ℓ)`, restating `per_order_value`. -/
+theorem isLeast_deltaSet {n k ℓ : ℕ} (hn : 1 ≤ n) (hℓ : ℓ < k) :
+    IsLeast (deltaSet n k ℓ) (Phi n k ℓ) := by
+  obtain ⟨⟨P, hP, h0, hdeg⟩, hlow⟩ := per_order_value hn hℓ
+  exact ⟨⟨P, hP, h0, hdeg⟩, by rintro d ⟨Q, hQ, hQ0, rfl⟩; exact hlow Q hQ hQ0⟩
+
+/-- `δ(n+1,k,ℓ) = δ(n,k,ℓ) + 1 + ⌊(k−ℓ−1)/2^n⌋`, so `δ(n,k,ℓ) + 1 ≤ δ(n+1,k,ℓ)`. -/
+theorem delta_succ {n k ℓ d d' : ℕ} (hn : 1 ≤ n) (hℓ : ℓ < k) (h : IsLeast (deltaSet n k ℓ) d)
+    (h' : IsLeast (deltaSet (n + 1) k ℓ) d') : d' = d + 1 + (k - ℓ - 1) / 2 ^ n := by
+  rw [h.unique (isLeast_deltaSet hn hℓ), h'.unique (isLeast_deltaSet (by omega) hℓ), phi_succ]
+
+/-- In the real range `k ≥ 2`, `n ≥ 2k − 3`: `δ(n,k,ℓ) = n + 2k − 2 − s₂(k − ℓ − 1)`. -/
+theorem delta_of_real_range {n k ℓ : ℕ} (hn : 1 ≤ n) (hℓ : ℓ < k) (hk : 2 ≤ k) (h : 2 * k - 3 ≤ n) :
+    IsLeast (deltaSet n k ℓ) (n + 2 * k - 2 - s2 (k - ℓ - 1)) := by
+  rw [← phi_of_real_range hℓ hk h]; exact isLeast_deltaSet hn hℓ
+
+/-- `δ(n,k,k−1) = n + 2k − 2`. -/
+theorem delta_top {n k : ℕ} (hn : 1 ≤ n) (hk : 1 ≤ k) : IsLeast (deltaSet n k (k - 1)) (n + 2 * k - 2) := by
+  rw [← phi_top hk]; exact isLeast_deltaSet hn (by omega)
+
+/-- The examples: `δ(1,3,0) = 3` and `δ(2,5,0) = 8`. -/
+theorem delta_examples : IsLeast (deltaSet 1 3 0) 3 ∧ IsLeast (deltaSet 2 5 0) 8 := by
+  refine ⟨?_, ?_⟩
+  · have h := isLeast_deltaSet (n := 1) (k := 3) (ℓ := 0) le_rfl (by norm_num)
+    rwa [example_one.1] at h
+  · have h := isLeast_deltaSet (n := 2) (k := 5) (ℓ := 0) (by norm_num) (by norm_num)
+    rwa [example_two.1] at h
 
 end MathResearch.PerOrderArithmetic

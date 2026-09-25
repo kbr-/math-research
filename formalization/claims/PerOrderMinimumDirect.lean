@@ -6,17 +6,18 @@ the largest value of h on 0 ≤ m ≤ k − 1 is n + 2(k−1) − D(n,k), where 
 hence min_{ℓ<k} Φ(n,k,ℓ) = D(n,k), proved by the digit argument of the preprint (largest digit sum up
 to R is ⌊log₂(R+1)⌋, and the case analysis on k − 1 = Q2^n + R), without the Schwartz–Zippel route.
 Also: Φ(n,k,ℓ) = D(n,k) iff h(k−ℓ−1) is maximal; for 1 ≤ k ≤ 2^n, iff s₂(k−ℓ−1) = ⌊log₂k⌋; and
-ℓ = k − 2^⌊log₂k⌋ is such an order.
-Declarations: MathResearch.PerOrderMinimumDirect.hval MathResearch.PerOrderMinimumDirect.phi_add_hval MathResearch.PerOrderMinimumDirect.hval_le MathResearch.PerOrderMinimumDirect.hval_attain MathResearch.PerOrderMinimumDirect.min_phi_direct MathResearch.PerOrderMinimumDirect.phi_eq_degreeMin_iff MathResearch.PerOrderMinimumDirect.extremal_of_le_two_pow MathResearch.PerOrderMinimumDirect.extremal_example
+ℓ = k − 2^⌊log₂k⌋ is such an order. The same stated for the least degrees δ(n,k,ℓ) and D(n,k).
+Declarations: MathResearch.PerOrderMinimumDirect.hval MathResearch.PerOrderMinimumDirect.phi_add_hval MathResearch.PerOrderMinimumDirect.hval_le MathResearch.PerOrderMinimumDirect.hval_attain MathResearch.PerOrderMinimumDirect.min_phi_direct MathResearch.PerOrderMinimumDirect.phi_eq_degreeMin_iff MathResearch.PerOrderMinimumDirect.extremal_of_le_two_pow MathResearch.PerOrderMinimumDirect.extremal_example MathResearch.PerOrderMinimumDirect.delta_eq_D_iff MathResearch.PerOrderMinimumDirect.delta_eq_D_of_le_two_pow MathResearch.PerOrderMinimumDirect.delta_extremal_example
 -/
 import claims.PerOrderArithmetic
 import claims.BinaryMultiplicityDegreeComplete
+import claims.DegreeFormulaArithmetic
 
 namespace MathResearch.PerOrderMinimumDirect
 
 open MathResearch.TruncatedProduct MathResearch.BinaryDigitSums MathResearch.PerOrderUpperBound
 open MathResearch.PerOrderArithmetic MathResearch.BinaryMultiplicityDegreeComplete
-open MathResearch.BinaryMultiplicityDegreeFormula
+open MathResearch.BinaryMultiplicityDegreeFormula MathResearch.DegreeFormulaArithmetic
 
 /-- `h(m) = 2⌊m/2^n⌋ + s₂(m mod 2^n)`. -/
 def hval (n m : ℕ) : ℕ := 2 * (m / 2 ^ n) + s2 (m % 2 ^ n)
@@ -271,5 +272,28 @@ theorem extremal_example {n k : ℕ} (hn : 1 ≤ n) (hk : 1 ≤ k) (hk2 : k ≤ 
   have hlt : k - 2 ^ Nat.log 2 k < k := by omega
   refine ⟨hlt, (extremal_of_le_two_pow hn hk2 hlt).2 ?_⟩
   rw [show k - (k - 2 ^ Nat.log 2 k) - 1 = 2 ^ Nat.log 2 k - 1 by omega, s2_two_pow_sub_one]
+
+/-! The extremal orders stated for the least degrees `δ(n,k,ℓ)` and `D(n,k)`. -/
+
+/-- `δ(n,k,ℓ) = D(n,k)` iff `h(k − ℓ − 1)` is maximal. -/
+theorem delta_eq_D_iff {n k ℓ d D : ℕ} (hn : 1 ≤ n) (hℓ : ℓ < k)
+    (hd : IsLeast (deltaSet n k ℓ) d) (hD : IsLeast (degreeSet n k) D) :
+    d = D ↔ ∀ ℓ', ℓ' < k → hval n (k - ℓ' - 1) ≤ hval n (k - ℓ - 1) := by
+  rw [hd.unique (isLeast_deltaSet hn hℓ), hD.unique (isLeast_degreeSet hn (by omega))]
+  exact phi_eq_degreeMin_iff hn hℓ
+
+/-- For `1 ≤ k ≤ 2^n`: `δ(n,k,ℓ) = D(n,k)` iff `s₂(k − ℓ − 1) = ⌊log₂k⌋`; and
+`ℓ = k − 2^⌊log₂k⌋` is such an order. -/
+theorem delta_eq_D_of_le_two_pow {n k ℓ d D : ℕ} (hn : 1 ≤ n) (hk2 : k ≤ 2 ^ n) (hℓ : ℓ < k)
+    (hd : IsLeast (deltaSet n k ℓ) d) (hD : IsLeast (degreeSet n k) D) :
+    d = D ↔ s2 (k - ℓ - 1) = Nat.log 2 k := by
+  rw [hd.unique (isLeast_deltaSet hn hℓ), hD.unique (isLeast_degreeSet hn (by omega))]
+  exact extremal_of_le_two_pow hn hk2 hℓ
+
+theorem delta_extremal_example {n k : ℕ} (hn : 1 ≤ n) (hk : 1 ≤ k) (hk2 : k ≤ 2 ^ n) :
+    IsLeast (deltaSet n k (k - 2 ^ Nat.log 2 k)) (degreeMin n k) ∧
+      IsLeast (degreeSet n k) (degreeMin n k) := by
+  obtain ⟨hlt, heq⟩ := extremal_example hn hk hk2
+  exact ⟨heq ▸ isLeast_deltaSet hn hlt, isLeast_degreeSet hn hk⟩
 
 end MathResearch.PerOrderMinimumDirect

@@ -1,0 +1,140 @@
+Lean toolchain: leanprover/lean4:v4.34.0-rc2
+Dependency: mathlib 67248ba34806c60bf24b5e99f0f09946ffc465c9
+Dependency: plausible d9598f07b1bc701f1e3aae163d2681c1fd978793
+Dependency: LeanSearchClient ba67e212be1197b84c1f1f6299488a10a3002713
+Dependency: importGraph 610be2844dd41d56bb3612f4de36c735690d40b8
+Dependency: proofwidgets a8acbfd87375ff4abe14ce09db5b7664d383bc7f
+Dependency: aesop 18889deb9e83ea7420ef51c160d6f88552e744e3
+Dependency: Qq 507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3
+Dependency: batteries 3b4ce082a2051785ac99f899a50c55d43b6d9c28
+Dependency: Cli ab3a82db9fea14cf0fd7f5a2de650f4b534640af
+Scope: claims.PerOrderArithmetic
+Claim file: claims/PerOrderArithmetic.lean
+Claim: lem:per-order-value-arithmetic
+Source: https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#per-order-value-arithmetic
+Scope: Consequences of the per-order value Φ(n,k,ℓ) = n + 2ℓ + Σ_{j<n} ⌊(k−ℓ−1)/2^j⌋ (ℓ < k) used in the
+preprint's remarks: (1) Φ + 2q + s₂(r) = n + 2(k−1) for k − ℓ − 1 = q2^n + r, 0 ≤ r < 2^n;
+(2) Φ + s₂(k−ℓ−1) < n + 2(k−1) when k − ℓ − 1 ≥ 2^n, and the construction y₁^ℓ F^(2q) g_(r+1) has degree
+below n + 2k − 2 − s₂(k−ℓ−1) there; (3) Φ(n, k + 2^n, ℓ) = Φ(n,k,ℓ) + 2^(n+1) − 2; (4) Φ = n + 2k − 2 −
+s₂(k−ℓ−1) when k − 1 ≤ n, in particular when k ≥ 2 and n ≥ 2k − 3; (5) Φ(n,k,k−1) = n + 2k − 2;
+(6) Φ(n+1,k,ℓ) = Φ(n,k,ℓ) + 1 + ⌊(k−ℓ−1)/2^n⌋; (7) the construction has total degree exactly Φ;
+(8) for k − ℓ − 1 < 2^n every admissible P of origin order ℓ has degree ≥ n + 2k − 2 − s₂(k−ℓ−1);
+(9) s₂(k−ℓ−1) ≥ 1 for ℓ + 1 < k; (10) the examples Φ(1,3,0) = 3 with (1 + x)³ of degree 3, multiplicity
+≥ 3 at 1 and order 0 at 0, against 1 + 6 − 2 − s₂(2) = 4, and Φ(2,5,0) = 8 against 2 + 10 − 2 − s₂(4) = 9;
+(11) mult_a(P) ≤ ord₀ P(a + z) for every substitution z whose entries have no constant term;
+(12) F has 2^n − 1 factors, and F² has multiplicity ≥ 2^n at nonzero points and degree
+≤ 2^(n+1) − 2; (13) with δ(n,k,ℓ) the least element of deltaSet (degrees of polynomials with
+multiplicity ≥ k off the origin and exactly ℓ at it), δ = Φ, and items (4)–(6), (10) restated for δ.
+Declarations: MathResearch.PerOrderArithmetic.phi_add_eq MathResearch.PerOrderArithmetic.phi_lt_menezes MathResearch.PerOrderArithmetic.construction_lt_menezes MathResearch.PerOrderArithmetic.phi_add_block MathResearch.PerOrderArithmetic.phi_of_le MathResearch.PerOrderArithmetic.phi_of_real_range MathResearch.PerOrderArithmetic.phi_top MathResearch.PerOrderArithmetic.phi_succ MathResearch.PerOrderArithmetic.totalDegree_construction MathResearch.PerOrderArithmetic.menezes_form_optimal MathResearch.PerOrderArithmetic.one_le_s2 MathResearch.PerOrderArithmetic.example_one MathResearch.PerOrderArithmetic.cube_example MathResearch.PerOrderArithmetic.example_two MathResearch.PerOrderArithmetic.mult_le_mult_zero_subst MathResearch.PerOrderArithmetic.card_nonzero MathResearch.PerOrderArithmetic.mult_hypProd_sq MathResearch.PerOrderArithmetic.totalDegree_hypProd_sq MathResearch.PerOrderArithmetic.deltaSet MathResearch.PerOrderArithmetic.isLeast_deltaSet MathResearch.PerOrderArithmetic.delta_succ MathResearch.PerOrderArithmetic.delta_of_real_range MathResearch.PerOrderArithmetic.delta_top MathResearch.PerOrderArithmetic.delta_examples
+$ lake --wfail build claims.PerOrderArithmetic
+Build completed successfully (1945 jobs).
+Verification: incremental Lake build; types and axioms read from compiled modules.
+$ lake env lean -DwarningAsError=true /home/kbr/dev/math/.claude/worktrees/aux/formalization/.lake/tmp5au3cyda.lean
+@MathResearch.PerOrderArithmetic.phi_add_eq : ∀ {n k ℓ : ℕ},
+  ℓ < k →
+    MathResearch.PerOrderUpperBound.Phi n k ℓ + 2 * ((k - ℓ - 1) / 2 ^ n) +
+        MathResearch.TruncatedProduct.s2 ((k - ℓ - 1) % 2 ^ n) =
+      n + 2 * (k - 1)
+'MathResearch.PerOrderArithmetic.phi_add_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.phi_lt_menezes : ∀ {n k ℓ : ℕ},
+  ℓ < k →
+    2 ^ n ≤ k - ℓ - 1 →
+      MathResearch.PerOrderUpperBound.Phi n k ℓ + MathResearch.TruncatedProduct.s2 (k - ℓ - 1) < n + 2 * (k - 1)
+'MathResearch.PerOrderArithmetic.phi_lt_menezes' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.construction_lt_menezes : ∀ {n k ℓ : ℕ},
+  ℓ < k →
+    2 ^ n ≤ k - ℓ - 1 →
+      ∀ (i1 : Fin n),
+        (MathResearch.PerOrderUpperBound.construction n k ℓ i1).totalDegree +
+            MathResearch.TruncatedProduct.s2 (k - ℓ - 1) <
+          n + 2 * (k - 1)
+'MathResearch.PerOrderArithmetic.construction_lt_menezes' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.phi_add_block : ∀ {n k ℓ : ℕ},
+  ℓ < k →
+    MathResearch.PerOrderUpperBound.Phi n (k + 2 ^ n) ℓ = MathResearch.PerOrderUpperBound.Phi n k ℓ + (2 ^ (n + 1) - 2)
+'MathResearch.PerOrderArithmetic.phi_add_block' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.phi_of_le : ∀ {n k ℓ : ℕ},
+  ℓ < k →
+    k - 1 ≤ n → MathResearch.PerOrderUpperBound.Phi n k ℓ = n + 2 * k - 2 - MathResearch.TruncatedProduct.s2 (k - ℓ - 1)
+'MathResearch.PerOrderArithmetic.phi_of_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.phi_of_real_range : ∀ {n k ℓ : ℕ},
+  ℓ < k →
+    2 ≤ k →
+      2 * k - 3 ≤ n →
+        MathResearch.PerOrderUpperBound.Phi n k ℓ = n + 2 * k - 2 - MathResearch.TruncatedProduct.s2 (k - ℓ - 1)
+'MathResearch.PerOrderArithmetic.phi_of_real_range' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.phi_top : ∀ {n k : ℕ},
+  1 ≤ k → MathResearch.PerOrderUpperBound.Phi n k (k - 1) = n + 2 * k - 2
+'MathResearch.PerOrderArithmetic.phi_top' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PerOrderArithmetic.phi_succ : ∀ (n k ℓ : ℕ),
+  MathResearch.PerOrderUpperBound.Phi (n + 1) k ℓ = MathResearch.PerOrderUpperBound.Phi n k ℓ + 1 + (k - ℓ - 1) / 2 ^ n
+'MathResearch.PerOrderArithmetic.phi_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.totalDegree_construction : ∀ {n k ℓ : ℕ},
+  ℓ < k →
+    ∀ (i1 : Fin n),
+      (MathResearch.PerOrderUpperBound.construction n k ℓ i1).totalDegree = MathResearch.PerOrderUpperBound.Phi n k ℓ
+'MathResearch.PerOrderArithmetic.totalDegree_construction' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.menezes_form_optimal : ∀ {n k ℓ : ℕ},
+  1 ≤ n →
+    ℓ < k →
+      k - ℓ - 1 < 2 ^ n →
+        ∀ (P : MvPolynomial (Fin n) (ZMod 2)),
+          (∀ (a : Fin n → ZMod 2), a ≠ 0 → ↑k ≤ MathResearch.HasseMultiplicity.mult a P) →
+            MathResearch.HasseMultiplicity.mult 0 P = ↑ℓ →
+              n + 2 * k - 2 - MathResearch.TruncatedProduct.s2 (k - ℓ - 1) ≤ P.totalDegree
+'MathResearch.PerOrderArithmetic.menezes_form_optimal' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.one_le_s2 : ∀ {k ℓ : ℕ}, ℓ + 1 < k → 1 ≤ MathResearch.TruncatedProduct.s2 (k - ℓ - 1)
+'MathResearch.PerOrderArithmetic.one_le_s2' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PerOrderArithmetic.example_one : MathResearch.PerOrderUpperBound.Phi 1 3 0 = 3 ∧
+  1 + 2 * 3 - 2 - MathResearch.TruncatedProduct.s2 (3 - 0 - 1) = 4
+'MathResearch.PerOrderArithmetic.example_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PerOrderArithmetic.cube_example : have P := (1 + MvPolynomial.X 0) ^ 3;
+(∀ (a : Fin 1 → ZMod 2), a ≠ 0 → ↑3 ≤ MathResearch.HasseMultiplicity.mult a P) ∧
+  MathResearch.HasseMultiplicity.mult 0 P = 0 ∧ P.totalDegree = 3
+'MathResearch.PerOrderArithmetic.cube_example' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PerOrderArithmetic.example_two : MathResearch.PerOrderUpperBound.Phi 2 5 0 = 8 ∧
+  2 + 2 * 5 - 2 - MathResearch.TruncatedProduct.s2 (5 - 0 - 1) = 9
+'MathResearch.PerOrderArithmetic.example_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.mult_le_mult_zero_subst : ∀ {σ : Type u_1} (a : σ → ZMod 2)
+  (z : σ → MvPolynomial σ (ZMod 2)),
+  (∀ (i : σ), 1 ≤ MathResearch.HasseMultiplicity.mult 0 (z i)) →
+    ∀ (P : MvPolynomial σ (ZMod 2)),
+      MathResearch.HasseMultiplicity.mult a P ≤
+        MathResearch.HasseMultiplicity.mult 0 ((MvPolynomial.aeval fun i => MvPolynomial.C (a i) + z i) P)
+'MathResearch.PerOrderArithmetic.mult_le_mult_zero_subst' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PerOrderArithmetic.card_nonzero : ∀ (n : ℕ), {u | u ≠ 0}.card = 2 ^ n - 1
+'MathResearch.PerOrderArithmetic.card_nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.mult_hypProd_sq : ∀ {n : ℕ},
+  1 ≤ n →
+    ∀ {x : Fin n → ZMod 2},
+      x ≠ 0 → ↑(2 ^ n) ≤ MathResearch.HasseMultiplicity.mult x (MathResearch.PerOrderUpperBound.hypProd n ^ 2)
+'MathResearch.PerOrderArithmetic.mult_hypProd_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PerOrderArithmetic.totalDegree_hypProd_sq : ∀ (n : ℕ),
+  (MathResearch.PerOrderUpperBound.hypProd n ^ 2).totalDegree ≤ 2 ^ (n + 1) - 2
+'MathResearch.PerOrderArithmetic.totalDegree_hypProd_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PerOrderArithmetic.deltaSet : ℕ → ℕ → ℕ → Set ℕ
+'MathResearch.PerOrderArithmetic.deltaSet' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.isLeast_deltaSet : ∀ {n k ℓ : ℕ},
+  1 ≤ n → ℓ < k → IsLeast (MathResearch.PerOrderArithmetic.deltaSet n k ℓ) (MathResearch.PerOrderUpperBound.Phi n k ℓ)
+'MathResearch.PerOrderArithmetic.isLeast_deltaSet' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.delta_succ : ∀ {n k ℓ d d' : ℕ},
+  1 ≤ n →
+    ℓ < k →
+      IsLeast (MathResearch.PerOrderArithmetic.deltaSet n k ℓ) d →
+        IsLeast (MathResearch.PerOrderArithmetic.deltaSet (n + 1) k ℓ) d' → d' = d + 1 + (k - ℓ - 1) / 2 ^ n
+'MathResearch.PerOrderArithmetic.delta_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.delta_of_real_range : ∀ {n k ℓ : ℕ},
+  1 ≤ n →
+    ℓ < k →
+      2 ≤ k →
+        2 * k - 3 ≤ n →
+          IsLeast (MathResearch.PerOrderArithmetic.deltaSet n k ℓ)
+            (n + 2 * k - 2 - MathResearch.TruncatedProduct.s2 (k - ℓ - 1))
+'MathResearch.PerOrderArithmetic.delta_of_real_range' depends on axioms: [propext, Classical.choice, Quot.sound]
+@MathResearch.PerOrderArithmetic.delta_top : ∀ {n k : ℕ},
+  1 ≤ n → 1 ≤ k → IsLeast (MathResearch.PerOrderArithmetic.deltaSet n k (k - 1)) (n + 2 * k - 2)
+'MathResearch.PerOrderArithmetic.delta_top' depends on axioms: [propext, Classical.choice, Quot.sound]
+MathResearch.PerOrderArithmetic.delta_examples : IsLeast (MathResearch.PerOrderArithmetic.deltaSet 1 3 0) 3 ∧
+  IsLeast (MathResearch.PerOrderArithmetic.deltaSet 2 5 0) 8
+'MathResearch.PerOrderArithmetic.delta_examples' depends on axioms: [propext, Classical.choice, Quot.sound]
+PASS: 1 proof files; 0 interface files (definitions, not claim-completion status); 24 audited declarations.
