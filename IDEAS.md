@@ -419,6 +419,56 @@ sensitivity to prompt injection also matters when the agent that prefers one opt
 the option list. A cheap classifier could still serve a genuinely high-volume, low-stakes
 triage task if one appears.
 
+## 12. The bitter lesson: search against a verifier, and a baseline for the framework
+
+**The idea (27 September 2026).** Rich Sutton's essay [The Bitter
+Lesson](http://www.incompleteideas.net/IncIdeas/BitterLesson.html) (2019) observes that, over 70
+years of AI, general methods that leverage computation (search and learning) eventually beat
+methods that build in human knowledge of the domain, by a large margin. Building knowledge in
+helps in the short term and satisfies the researcher, then plateaus and can inhibit progress.
+The user asked how it applies to our mathematical research; these are Claude Opus 5.5's answers.
+
+**Applied to the mathematics.** Mathematics has what games had: a perfect, cheap judge. A Lean
+kernel accepting a proof plays the role of a win. The scaling method is search over candidate
+proofs and lemmas, guided by a learned model (the model is the learning half), with the kernel
+as the only arbiter: many independent, cheap attempts at the same open statement, keeping what
+verifies. The machine's CPUs then go to proof search and to counterexample and certificate
+search over the statement itself (SAT, the algebra systems), not to tables of cases. This agrees
+with AGENTS.md's rule against accumulating finite checks: enumerating instances produces data
+with no learner and no proof, so it doesn't scale toward the goal; search over proofs does.
+
+**Applied to the framework.** Much of the framework builds in how we think research works:
+route reviews every seven entries, minimum counts of outside leads and absurd bridges with a
+test each, the limit on finite-check entries, the prescribed review structure. The lesson
+predicts these help now and weigh on progress later: many patch a current model's weaknesses,
+and they age as models improve, some starting to block the model's own better judgement. Under
+the lesson the framework splits in two:
+
+- Keep, as general meta-methods: verification (Lean, the claim and citation checks, honest
+  negative results), the durable record as data the next attempt can retrieve, the resource
+  limits, and evaluation of results.
+- Expect to shrink: rules that script how to think (section quotas, ratio limits, prescribed
+  structure), anything that says which ideas to have rather than checking whether an idea is
+  correct.
+
+**Experiments.**
+
+1. Formalize the target statement early and measure progress as Lean-verified results, not
+   notebook status words (item 4).
+2. Replace some sequential Spin cycles with best-of-N: several independent short attempts at the
+   current open statement in parallel, with different seeds or prompts, keeping only what
+   verifies (item 3).
+3. Test the lesson on the framework itself: run a stripped-down loop (the goal, the verifier, the
+   record, nothing else) against the full framework on the same open statement, with the same
+   time and compute, and compare the verified output. If the stripped loop keeps up, the
+   scaffolding isn't paying for itself.
+
+**Where the lesson may not transfer.** It is a long-run claim; one research goal with fixed
+compute and fixed models is Sutton's short term, where built-in knowledge does help. In
+mathematics, understanding can be the goal, and a proof found by search may not supply it. And
+the proof search space is vast: scaling depends on good learned guidance, which is the part
+improving fastest.
+
 ## Remaining implementation priorities
 
 1. Add bounded parallel exploration and targeted asynchronous formalization when
@@ -430,6 +480,8 @@ triage task if one appears.
 5. Build the literature corpus in stages (all-time arXiv categories, then zbMATH Open, then
    OpenAlex citations) with full-text search, and evaluate embedding search against known
    literature connections before requesting the install (item 11).
+6. Compare a stripped-down loop (the goal, Lean, the record) with the full framework on one open
+   statement, with the same time and compute, before adding more process rules (item 12).
 
 These priorities are proposals, not authorization to launch the work.
 
