@@ -322,23 +322,7 @@ def validate_general(body, article, close):
 
 # External labels kept by the odd-prime name map (entry-2026-09-22-result-names); every other
 # "Lemma K"-style code must be replaced by a descriptive name.
-KEPT_LABELS = {'Corollary SL', 'Conjecture SR', 'Remark A.4'}
-LABEL_NOUNS = 'Lemma|Theorem|Corollary|Conjecture|Proposition|Observation|Question|Remark|Criterion'
-
-
-def letter_code_labels(html_text):
-    """Letter-code result labels ("Lemma K", "Theorem NDX′", "Conjecture H1") in an entry's prose."""
-    text = re.sub(r'<table\b.*?</table>', ' ', html_text, flags=re.S)   # name maps live in tables
-    text = re.sub(r'<[^>]*>', ' ', text)
-    found = []
-    for m in re.finditer(r'\b(' + LABEL_NOUNS + r')\s+([A-Z][A-Za-z0-9.]*[′″]*)', text):
-        code = m.group(2).rstrip('.')
-        if re.fullmatch(r'[A-Z][a-z]{2,}', code):          # an ordinary capitalized word
-            continue
-        label = f'{m.group(1)} {code}'
-        if label not in KEPT_LABELS and label not in found:
-            found.append(label)
-    return found
+from result_names import KEPT_LABELS, LABEL_NOUNS, letter_code_labels  # noqa: E402
 
 
 def validate_marker(body, marker):

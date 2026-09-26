@@ -197,6 +197,16 @@ class BuildTest(unittest.TestCase):
         self.assertTrue(report['passed'])
         self.assertEqual(proposed['claims'][0]['formalization']['status'], 'complete')
         self.assertIn('Lean artifacts', proposed['claims'][0]['reviews']['formalization']['note'])
+    def test_letter_code_names_are_rejected(self):
+        from claim_authoring import build
+        item = dict(self.item('lem:a'), summary='Extends Lemma FA to selectors modulo the base.')
+        with self.assertRaises(ValueError):
+            build(self.empty, self.spec([item]), 'e' * 40)
+        rel = [('lem:a', 'depends_on', 'lem:b', 'Uses Theorem NDX2.')]
+        with self.assertRaises(ValueError):
+            build(self.empty, self.spec([self.item('lem:a')], rel), 'e' * 40)
+        ok = dict(self.item('lem:a'), summary='Extends the first-active substitution lemma; Theorem numbering aside.')
+        build(self.empty, self.spec([ok]), 'e' * 40)
     def test_overrides_update_existing_fields(self):
         from claim_authoring import build
         base, _ = prepare(self.empty, self.request(self.empty), self.root)

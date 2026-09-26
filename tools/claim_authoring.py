@@ -8,6 +8,7 @@ from pathlib import Path
 from claim_registry import ROOT, REGISTRY, load, read_json, validate, require, write_json, check_targets
 from claim_reviews import FIELDS, Evidence, make_review, digest
 from claim_maintenance import maintenance
+from result_names import letter_code_labels
 
 REQUIRED = 'REQUIRED: '
 
@@ -126,6 +127,25 @@ def _existing_dispositions(claim, targets, extra_note=''):
     return out
 
 
+def _spec_texts(spec):
+    """The new prose a spec writes into the registry: claim text, relationship scopes, overrides, refresh notes."""
+    for item in spec.get('claims', []):
+        for key in ('summary', 'assessment', 'rationale', 'next_action', 'formalization_scope'):
+            if isinstance(item.get(key), str):
+                yield item[key]
+    for relation in spec.get('relationships', []):
+        if len(relation) > 3 and isinstance(relation[3], str):
+            yield relation[3]
+    for fields in spec.get('overrides', {}).values():
+        for value in fields.values():
+            if isinstance(value, str):
+                yield value
+    for note in spec.get('refresh', {}).values():
+        for value in (note.values() if isinstance(note, dict) else [note]):
+            if isinstance(value, str):
+                yield value
+
+
 def build(data, spec, revision):
     """Expand a compact claim spec into a complete authoring request.
 
@@ -137,6 +157,9 @@ def build(data, spec, revision):
     review gains a note), which is what the maintenance check requires; refresh/overrides add more."""
     require(set(spec) <= {'source', 'reviewer', 'date', 'claims', 'relationships', 'refresh', 'overrides', 'topics'},
             'Unexpected claim-spec keys')
+    coded = sorted({code for text in _spec_texts(spec) for code in letter_code_labels(text)})
+    require(not coded, 'Claim text names results by letter codes ' + ', '.join(coded) + ': cite them by '
+            'descriptive names (Naming results), e.g. "the first-active substitution lemma", not "Lemma FA"')
     source = spec['source']; targets = source['targets']; label = source.get('label', 'Source entry')
     existing = {c['id']: c for c in data['claims']}
     submissions, new_ids = [], set()
