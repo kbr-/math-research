@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> On graph boards, design extension reduces to filling the matching complexes of row sets. Rows with private holes fill, but expansion alone does not (<a href="#entry-2026-09-26-graph-matching-extension">graph matching extension</a>). Next: prove the private-hole elimination for every row set of size at most \(B\) in a random left-5-regular graph with \(h'\gg B^2\) holes, using that small row sets have small excess \(5|S|-|N(S)|\). Or find a row set there whose matching complex does not fill.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Spider row sets refute matching-complex filling on expander boards (<a href="#entry-2026-09-26-spider-row-sets">spider row sets</a>), so Taylor glue's all-design extension cannot transfer. Next: formulate extension for designs that are reductions modulo Mikša–Nordström closures, and check whether Taylor glue's syzygy-gluing corrections can be kept inside closed supports.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26289,6 +26289,67 @@ Split at \(S=Aq\), with \(A=(B+\ln(21/\theta))/0.15\).
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 54.98 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2 min 49.91 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.18 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-spider-row-sets" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:spider-unfilled ex:spider-fall">
+<h3>Spider row sets refute matching-complex filling on expander boards: a row whose holes are each shared with one other row gives a sphere in top degree, so the graph matching extension's hypothesis fails at spiders, and on the spider board a design is blocked one degree up</h3>
+<p class="entry-meta">26 September 2026 · Refutation, with a finite check · open statement A1, expander core · cycle odd-prime-small-excess.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-graph-matching-extension">graph matching extension</a> reduced the gluing base on expander boards to conj:expander-matching-filling. The proposed step was to prove it from the small excess of random left-5-regular graphs. Before proving it, does the conjecture hold for the row sets that such graphs actually contain?</p>
+<p><strong>General statement.</strong> Two statements, prop:spider-unfilled and ex:spider-fall.</p>
+<ul>
+<li>prop:spider-unfilled: over any field, let \(S=\{r,n_1,\dots,n_d\}\). Suppose the centre \(r\) has holes \(h_1,\dots,h_d\), the leg \(n_i\) is adjacent to \(h_i\) and to no other hole of \(r\), and every leg has a hole private within \(S\). Then \(M(G[S])\) has a wedge summand \(S^{d-1}\), so \(\tilde H_{|S|-2}(M(G[S]))\ne0\). At \(d=5\) such a spider has rows of degree 5 and \(|N(U)|\ge3|U|\) for all \(U\subseteq S\). It therefore refutes conj:expander-matching-filling.</li>
+<li>ex:spider-fall: on the spider board alone, functional graph PHP has \(y_{T^*}=\prod_iy_{n_ih_i}\) in the degree-\((d+1)\) span and not in the degree-\(d\) span, for \(d=2,3\).</li>
+</ul>
+
+<h4>The spider is unfilled</h4>
+<p><em>Proof.</em> Apply the leaf decomposition of lem:private-hole-filling to the leg \(n_1\), with its private hole \(t_0\). This gives \(M(G[S])\simeq\bigvee_{t\in N(n_1)\setminus t_0}\Sigma M((G-t)[S\setminus n_1])\). The summand for \(t=h_1\) is the suspension of the matching complex of \(r,n_2,\dots,n_d\) in \(G-h_1\), where \(r\) has lost \(h_1\). The remaining legs keep their private holes, so the decomposition repeats. After the summands \(h_2,\dots,h_d\), \(r\) is alone with no holes. Its matching complex is empty, so the iterated summand is \(\Sigma^d(\varnothing)=S^{d-1}\), a wedge summand of \(M(G[S])\). Since \(|S|-2=d-1\), \(\tilde H_{|S|-2}\ne0\) over every field. \(\square\)</p>
+<p><em>Expansion at \(d=5\).</em> A leg has 5 holes: \(h_i\) and 4 private holes. For \(U\subseteq S\):</p>
+<ul>
+<li>if \(r\notin U\), then \(|N(U)|=5|U|\);</li>
+<li>if \(r\in U\) with \(j\) legs, then \(|N(U)|=5+4j\ge3(j+1)\).</li>
+</ul>
+<p><em>Do such row sets occur in W's residual?</em> A heuristic count, not a proof. In the residual of thm:cell-family-w, with \(h+1\) pigeons choosing 5 of \(h'=\Theta(h)\) holes, a hole's degree is about Poisson with mean \(5(h+1)/h'\ge5\). A fixed pigeon is a spider centre when its five holes each carry another pigeon, the five others are distinct, and their remaining holes avoid the set. Each of these holds with probability bounded below, so the expected number of centres is \(\Theta(h)\). This regime differs from the one the previous next step assumed, \(h'\gg B^2\), where hole degrees are small. W's residual is chosen by us, and whether it can be chosen with no spider row sets is open.</p>
+<p><em>Check.</em> <code>spider_check.py</code> computed \(\tilde H_{s-2}=1\) over \(\mathbb F_3\) for \(d=2,3,4\) (<code>spider_check.json</code>). These spiders have rows of degree \(d&lt;5\), outside the conjecture's hypotheses. They confirm the leaf-decomposition computation, while the refutation at \(d=5\) rests on the proof. The \(d=4\) spider has minimum expansion ratio 3.2.</p>
+
+<h4>The spider falls</h4>
+<p>The product \(y_{T^*}\) is \(y_{T^*}\) times the negated row equation of \(r\), plus \(y_{T^*}\sum_iy_{rh_i}\). Each \(y_{T^*}y_{rh_i}\) contains the collision \(y_{n_ih_i}y_{rh_i}\). So \(y_{T^*}\) lies in the degree-\((d+1)\) span. <code>spider_fall.py</code> tested membership at degree \(d\) exactly, on the spider board alone, with rows, collisions, functionality and multilinear reduction (<code>spider_fall.json</code>). The result was \(y_{T^*}\notin\) degree-\(d\) span and \(\in\) degree-\((d+1)\) span, for \(d=2\) and \(d=3\). \(d=4\) exceeds this script's dense matrix size and was not run. On a larger board containing the spider, extra axioms could give a degree-\(d\) derivation. So the fall is shown only on the spider board.</p>
+
+<h4>What it means</h4>
+<ul>
+<li><em>conj:expander-matching-filling is false.</em> It is recorded as refuted. lem:graph-matching-extension's hypothesis fails on any board containing a spider row set, and so on W's residual if spiders occur there, as the heuristic count suggests.</li>
+<li><em>The complete-board mechanism is blocked at spiders.</em> Taylor glue extends every design. On the spider board a design can put weight on the legs' matching \(T^*\) at degree \(d\), and the centre row cannot join it, which is the fall. On a larger board this is not shown. On the complete board every row sees every hole, so no row is blocked this way. Mikša and Nordström reduce monomials modulo the axioms in the support of the term. As we read their Definitions 3.16 and 3.17, the centre's pigeon axiom is in the support of \(y_{T^*}\): all its neighbouring variable sets \(V_{h_i}\) lie in \(N(y_{T^*})\), since each \(h_i\) is a hole of a leg. A gluing base on expander boards therefore has to extend closure-restricted designs, not all designs.</li>
+<li><em>Next.</em> Formulate the extension property for designs that are reductions modulo closures, in Mikša and Nordström's sense. Then check whether Taylor glue's syzygy-gluing step can be run on such designs: its corrections must stay inside closed supports.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:private-hole-filling (the leaf decomposition, known from Marietti and Testa), lem:graph-matching-extension, conj:expander-matching-filling, and the Mikša–Nordström support and closure definitions (Definitions 3.16 and 3.17). Two claim searches, for spiders and leaf configurations in matching complexes and for degree falls of functional graph PHP, found no prior statement. The leaf decomposition itself is known.</p>
+<p>A fresh-context reviewer confirmed:</p>
+<ul>
+<li>the iterated leaf decomposition and the wedge summand \(S^{d-1}\);</li>
+<li>the hypotheses at \(d=5\);</li>
+<li>the fall script's logic, and the fall at \(d=2,3\) by an independent rerun.</li>
+</ul>
+<p>It found that <code>spider_fall.json</code> held the homology output: <code>spider_fall.py</code> imported <code>spider_check.py</code>, whose loop ran at import and wrote to the caller's output path. Both scripts were fixed and rerun, and the files now differ, holding the numbers quoted above. It also required:</p>
+<ul>
+<li>the scope of the title and of the mechanism bullet;</li>
+<li>the residual heuristic, now with its regime;</li>
+<li>the reason for the support claim;</li>
+<li>the label on the \(d\le4\) checks.</li>
+</ul>
+<p>All were adopted. The changes weaken or correct evidence, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-small-excess">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 38.13 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 31.85 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 28.24 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 40.89 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">57.02 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
