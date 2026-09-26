@@ -7,6 +7,7 @@ from pathlib import Path
 import sqlite3
 import subprocess
 import sys
+import time
 import uuid
 
 from notebook_context import excerpt
@@ -17,6 +18,7 @@ ROOT=Path(__file__).resolve().parents[1]
 # at session start and after compaction. formalization/AGENTS.md is not loaded from the root, so it stays.
 FILES=('research/notes/RESUME.md','COMPUTATION_RULES.md')
 PART_BYTES=20000
+PREPARE_WARN_S=2.0
 
 
 def save_bundle(root, parts):
@@ -111,6 +113,15 @@ def bundle(root, formalization=False, tail=10, notebook=None):
     return parts
 
 
+def prepare_note(elapsed):
+    """A warning when preparing the bundle is slow: it reads the notebook and the claim registry at every
+    restoration, so repeated work there grows with the repository."""
+    if elapsed<=PREPARE_WARN_S:return ''
+    return (f'Warning: preparing the resume bundle took {elapsed:.1f} s (limit {PREPARE_WARN_S:g} s). '
+            'Profile it (python3 -m cProfile -s cumtime tools/resume.py) and remove the repeated work '
+            'before it grows.\n')
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--notebook',help='Research thread name; defaults to worktree selection or main')
@@ -128,6 +139,7 @@ def main():
         if args.read:
             emit_part(ROOT,args.read,args.part)
             return
+        started=time.monotonic()
         parts=bundle(ROOT,args.formalization,args.tail,args.notebook)  # Missing context must not become a partial bundle.
         turn=args.session or active_turn(ROOT)
         if turn:
@@ -140,6 +152,7 @@ def main():
         print(json.dumps({'bundle':manifest['bundle'],'path':f"research/logs/resume-bundles/{manifest['bundle']}/bundle.txt",
             'bytes':manifest['bytes'],'parts':len(manifest['parts']),'part_bytes_at_most':PART_BYTES}))
         emit_part(ROOT,manifest['bundle'],1)
+        print(prepare_note(time.monotonic()-started),end='')
     except subprocess.CalledProcessError as error:
         parser.exit(2,'resume: '+(error.stderr or str(error)).strip()+'\n')
     except (OSError,ValueError) as error:

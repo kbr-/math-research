@@ -222,4 +222,14 @@ class RecoveryIntegrationTest(unittest.TestCase):
         self.assertEqual(path.read_bytes(),before)
 
 
+class PrepareNote(unittest.TestCase):
+    """resume.py warns when preparing the bundle is slow, and stays quiet otherwise."""
+    def test_slow_preparation_is_reported(self):
+        import resume
+        self.assertIn('Warning: preparing the resume bundle took 3.5 s',resume.prepare_note(resume.PREPARE_WARN_S+1.5))
+    def test_fast_preparation_prints_nothing(self):
+        import resume
+        self.assertEqual(resume.prepare_note(resume.PREPARE_WARN_S/4),'')
+
+
 if __name__=='__main__':unittest.main()
