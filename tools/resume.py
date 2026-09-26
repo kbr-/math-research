@@ -13,7 +13,9 @@ from notebook_context import excerpt
 from recovery_evidence import Store, observe
 
 ROOT=Path(__file__).resolve().parents[1]
-FILES=('research/notes/RESUME.md','AGENTS.md','research/AGENTS.md','COMPUTATION_RULES.md')
+# Root AGENTS.md is omitted: Claude Code (via CLAUDE.md's @AGENTS.md) and Codex both load it themselves,
+# at session start and after compaction. Nested AGENTS.md files are not loaded from the root, so they stay.
+FILES=('research/notes/RESUME.md','research/AGENTS.md','COMPUTATION_RULES.md')
 PART_BYTES=20000
 
 

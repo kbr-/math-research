@@ -132,7 +132,9 @@ class RecoveryIntegrationTest(unittest.TestCase):
         self.assertIn('Fixture instructions',resumed.stdout)
         outputs=[self.command('tools/resume.py','--read',manifest['bundle'],'--part',str(i)).stdout
                  for i in range(1,manifest['parts']+1)]
-        self.assertEqual(''.join(outputs).count('Fixture instructions for AGENTS.md'),1)
+        joined=''.join(outputs)
+        self.assertEqual(joined.count('Fixture instructions for COMPUTATION_RULES.md'),1)
+        self.assertNotIn('Fixture instructions for AGENTS.md',joined)  # The harness loads root AGENTS.md.
         self.command('tools/resume.py','--session','test_turn')
         self.command('tools/notebook-excerpt.py','--current')
         self.command('tools/notebook-excerpt.py','statement')
@@ -171,7 +173,7 @@ class RecoveryIntegrationTest(unittest.TestCase):
 
     def test_bounded_cached_parts_preserve_unicode_and_retries_do_not_resume(self):
         self.prepare_bundle()
-        source=self.root/'AGENTS.md';source.write_text('数学🙂 '*5000)
+        source=self.root/'COMPUTATION_RULES.md';source.write_text('数学🙂 '*5000)
         result=self.command('tools/resume.py');info=json.loads(result.stdout.splitlines()[0])
         self.assertLess(len(result.stdout.encode()),21000)
         self.assertEqual(info['parts'],3)  # Roughly 55 KB, including multibyte text.

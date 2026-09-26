@@ -23,8 +23,9 @@ rules to growing checklists or one-off setup narratives.
   For Codex resume calls, omit `max_output_tokens` on `exec_command` and omit
   `max_output_tokens` on any enclosing `functions.exec` directive: keep their
   default output allowances for both preparation and part reads.
-  The bundle includes `research/notes/RESUME.md`, required rules, notebook living sections/gaps and
-  compact contents. Retry missing parts without preparing another resume or concatenating
+  The bundle includes `research/notes/RESUME.md`, the computation and research-folder rules,
+  notebook living sections/gaps and compact contents; this file is not bundled, since the harness
+  loads it itself, also after compaction. Retry missing parts without preparing another resume or concatenating
   the full file into one tool response. Follow the guide without rereading bundled files,
   then load only relevant records. Do not load the growing record or index wholesale.
   Keep `php_codex_handoff/` immutable; its import is complete. New work belongs
