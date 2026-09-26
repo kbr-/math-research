@@ -20,6 +20,10 @@
 // origin order >= l), which is exact over F_p with no random point; savings >= d+1 at (k, l) holds exactly when it
 // is positive, so l_0(d+1, m) is the least such l.  Face division is valid over every field (prop:cube-face-divisibility).
 //
+// With the environment variable YPTS="a,b,c/..." (or ; as separator), the solutions are also evaluated at these fixed points (entries taken
+// mod P, negative allowed), and the cumulative value rank at each is reported; in series mode YPTS switches from the order
+// test to this evaluation (SYM=1 in the environment selects the S_3 parts).
+//
 // Usage: bmd_cube_solution_cones prime seed d rho j lmin lmax [sym] [val]
 //        bmd_cube_solution_cones series p1,p2,... d:rho:lmin:lmax ...
 #include <cstdio>
@@ -44,6 +48,7 @@ static vector<vector<u64>> C;
 static u64 binom(int n, int k) { return (k < 0 || k > n) ? 0 : C[n][k]; }
 typedef vector<u64> Ser;
 static bool SYM = false, VAL = false;
+static vector<array<u64, 3>> EXTRA_PTS;  // fixed evaluation points from YPTS="a,b,c;a,b,c" (env), mod P
 static const int PERMS[6][3] = {{0, 1, 2}, {0, 2, 1}, {1, 0, 2}, {1, 2, 0}, {2, 0, 1}, {2, 1, 0}};
 static const int PSIGN[6] = {1, -1, -1, 1, 1, -1};
 static int N;
@@ -73,19 +78,35 @@ static long rank_mod(vector<vector<u64>> M) {
 
 static bool ORDERONLY = false;
 static int run(unsigned seed, int d, int rho, int j, int lmin, int lmax);
+static void parse_pts() {
+    const char *e = getenv("YPTS"); if (!e) return;
+    string s = e; size_t a = 0;
+    while (a < s.size()) {
+        size_t b = s.find_first_of(";/", a); if (b == string::npos) b = s.size();
+        long long v[3]; if (sscanf(s.substr(a, b - a).c_str(), "%lld,%lld,%lld", &v[0], &v[1], &v[2]) == 3) {
+            array<u64, 3> p; for (int i = 0; i < 3; i++) p[i] = (u64)((v[i] % (long long)P + (long long)P) % (long long)P); EXTRA_PTS.push_back(p);
+        }
+        a = b + 1;
+    }
+}
 int main(int argc, char **argv) {
     if (argc >= 4 && string(argv[1]) == "series") {
         ORDERONLY = true;
         vector<u64> primes; { string ps = argv[2]; size_t a = 0; while (a < ps.size()) { size_t b = ps.find(',', a); if (b == string::npos) b = ps.size(); primes.push_back(atoll(ps.substr(a, b - a).c_str())); a = b + 1; } }
         for (int ai = 3; ai < argc; ai++) {
             int d, rho, lmin, lmax; if (sscanf(argv[ai], "%d:%d:%d:%d", &d, &rho, &lmin, &lmax) != 4) { fprintf(stderr, "bad case %s\n", argv[ai]); return 2; }
-            for (u64 p : primes) { P = p; printf("prime %llu ", (unsigned long long)p); run(1, d, rho, 0, lmin, lmax); }
+            for (u64 p : primes) {
+                P = p; EXTRA_PTS.clear(); parse_pts();
+                if (!EXTRA_PTS.empty()) { ORDERONLY = false; VAL = true; SYM = getenv("SYM") != nullptr; }
+                printf("prime %llu ", (unsigned long long)p); run(1, d, rho, EXTRA_PTS.empty() ? 0 : 2, lmin, lmax);
+            }
         }
         return 0;
     }
     if (argc < 8) { fprintf(stderr, "usage: prime seed d rho j lmin lmax [sym]\n"); return 2; }
     for (int ai = 8; ai < argc; ai++) { if (string(argv[ai]) == "sym") SYM = true; if (string(argv[ai]) == "val") VAL = true; }
     P = atoll(argv[1]); unsigned seed = atoi(argv[2]);
+    parse_pts();
     return run(seed, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]), atoi(argv[6]), atoi(argv[7]));
 }
 static int run(unsigned seed, int d, int rho, int j, int lmin, int lmax) {
@@ -98,6 +119,7 @@ static int run(unsigned seed, int d, int rho, int j, int lmin, int lmax) {
     u64 tau = rng() % P, sig = rng() % P;
     u64 y0[3] = {rng() % P, rng() % P, rng() % P};  // random point for the value rank
     vector<vector<u64>> valRows;
+    vector<vector<vector<u64>>> extraRows(EXTRA_PTS.size());
     vector<vector<u64>> coneRows;  // evaluated cone vectors, c = 0..m
     printf("(d,rho)=(%d,%d) m=%d j=%d face exponent %d; evaluation point tau=%llu sigma=%llu\n", d, rho, m, j, e,
            (unsigned long long)tau, (unsigned long long)sig); fflush(stdout);
@@ -242,8 +264,9 @@ static int run(unsigned seed, int d, int rho, int j, int lmin, int lmax) {
             vector<u64> row(m + 1, 0);
             for (int c = 0; c <= m; c++) { int o = l + m - c - j; if (o >= 0 && o < N) row[c] = G[o]; }
             coneRows.push_back(row);
-            if (VAL) {
-                // value of the solution at y0: W_c(y0) = [w~(t y0)]_{l+m-c}, w~ = P(r0(y))/prod L'(r0(y_i))
+            if (VAL) for (int pi = -1; pi < (int)EXTRA_PTS.size(); pi++) {
+                const u64 *yv = pi < 0 ? y0 : EXTRA_PTS[pi].data();
+                // value of the solution at yv: W_c(yv) = [w~(t yv)]_{l+m-c}, w~ = P(r0(y))/prod L'(r0(y_i))
                 int NV = l + m + 1, Nsave = N; N = NV;
                 Ser lamv(N, 0); if (N > 1) lamv[1] = 1;
                 Ser rr(N, 0);
@@ -252,7 +275,7 @@ static int run(unsigned seed, int d, int rho, int j, int lmin, int lmax) {
                 Ser den(N, 0); den[0] = 1;
                 for (int i = 0; i < 3; i++) {
                     Ser xi(N, 0); u64 yp = 1;
-                    for (int n = 0; n < N; n++) { xi[n] = mulm(rr[n], yp); yp = mulm(yp, y0[i]); }  // r0(y0_i t)
+                    for (int n = 0; n < N; n++) { xi[n] = mulm(rr[n], yp); yp = mulm(yp, yv[i]); }  // r0(yv_i t)
                     pows[i].assign(k + 1, Ser(N, 0)); pows[i][0][0] = 1;
                     for (int a = 1; a <= k; a++) pows[i][a] = smul(pows[i][a - 1], xi);
                     Ser Lpi(N, 0); for (int n = 0; n < N; n++) Lpi[n] = mulm(2, xi[n]); Lpi[0] = subm(Lpi[0], 1);
@@ -267,7 +290,7 @@ static int run(unsigned seed, int d, int rho, int j, int lmin, int lmax) {
                 val = smul(val, sinv(den));
                 vector<u64> vr(m + 1, 0);
                 for (int c = 0; c <= m; c++) { int o = l + m - c; if (o >= 0 && o < N) vr[c] = val[o]; }
-                valRows.push_back(vr);
+                (pi < 0 ? valRows : extraRows[pi]).push_back(vr);
                 N = Nsave;
             }
         }
@@ -276,6 +299,9 @@ static int run(unsigned seed, int d, int rho, int j, int lmin, int lmax) {
         long vrk = VAL ? rank_mod(valRows) : -1;
         printf("l=%d%s: k=%d D=%d unknowns %d, witness space dim %ld (%d with a nonzero degree-l part), %d with jet outside J^%d + m^k;"
                " cumulative cone rank %ld; cumulative value rank at a random point %ld\n", l, chi < 0 ? "" : (chi ? " (sign part)" : " (trivial part)"), k, D, U, nul, exactOrder, lowViol, j, rk, vrk);
+        for (size_t pi = 0; pi < EXTRA_PTS.size(); pi++)
+            printf("  cumulative value rank at fixed point %zu (%llu,%llu,%llu): %ld\n", pi, (unsigned long long)EXTRA_PTS[pi][0],
+                   (unsigned long long)EXTRA_PTS[pi][1], (unsigned long long)EXTRA_PTS[pi][2], rank_mod(extraRows[pi]));
         fflush(stdout);
       }
     }

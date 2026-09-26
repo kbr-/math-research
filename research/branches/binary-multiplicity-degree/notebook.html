@@ -33,9 +33,9 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 1, then 3).</p>
 <ul>
-<li><strong>The transfer constants at the collision points</strong> (open statement 1). By the <a href="#cube-odd-generator-poles">pole lemma</a>, \((\mathrm W_e)\) for all \(e\) comes down to the regularity of \(\mu_e/\mu_{e-1}\) on the three lines of \(F_2=0\). This is needed at the two double points and two further collision points of each line, and at \(Z_e\cup Z_{e+1}\). At the double points, compute \(\mu_n\) from the <a href="#cube-boundary-double-point-order">Tate-curve description</a> of the boundary functions. At the other collision points, use the degenerations of \(C_a\) where one coordinate vanishes or two coincide.</li>
-<li><strong>Lift \((\mathrm W_3)\) to characteristic 0</strong> at \((7,2)\), which settles every \(d\le4\rho\).</li>
-<li><strong>Exceptional characteristics</strong> (<a href="#cube-characteristic-independence">conjecture</a>) and <strong>dimension 4</strong> (open statement 3).</li>
+<li><strong>The double points</strong> (open statement 1). For \(e\le4\), \((\mathrm W_e)\) now depends only on the double points and on the sets \(Z_e\cup Z_{e+1}\) (<a href="#cube-collision-point-regularity">collision-point lemma</a>). At a double point both \(s\) and \(t\) vanish, since boundary witnesses vanish along the vertex line. Regularity of \(t/s\) there is a comparison of vanishing orders along the two lines through the point. Decide it from the <a href="#cube-boundary-double-point-order">Tate-curve description</a> and the <a href="#cube-vertex-line-order-small">vertex-line orders</a>.</li>
+<li><strong>The sets \(Z_n\) on the lines</strong>: where a boundary witness contains the whole curve \(C_{4y}\).</li>
+<li><strong>A route review</strong> is due within three research entries; the finisher also asks that a passed lead be developed.</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions.</p>
 </section>
@@ -5836,6 +5836,61 @@ since \(A(N-A)=4xy\) and \(\bar A=2r\). This is \(d^2\cdot\tfrac12\operatorname{
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 35.38 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 10.73 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 24.46 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-collision-points" data-kind="research" data-route="cube-odd-characteristic" data-claims="lem:cube-collision-point-regularity check:cube-boundary-collision-values">
+<h3>26 September 2026 — The odd generators at the collision points: t/s is regular at the non-double points when two boundary solutions are nonzero there (e ≤ 4), and the double points remain</h3>
+<p class="entry-meta">Working proof: λ is regular at the non-double collision points when W^(e), W^(e+1) are nonzero there; this holds for e ≤ 4 in characteristic 0 and almost every p. Cycle bmd-r89. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> By the <a href="#cube-odd-generator-poles">pole lemma</a>, \((\mathrm W_e)\) needs the ratio \(\lambda_\ell=t/s\) to be regular at the four collision points of each line of \(F_2=0\) and on \(Z_e\cup Z_{e+1}\). At a collision point \(y_0\), \(\lambda_\ell\) is regular if \(s(y_0)\ne0\). The solution of a witness is a polynomial in \(y\), so it can be evaluated there even though the curve degenerates. When is \(s(y_0)\ne0\)? The test ends with a condition at each collision point, or with a point where \(s\) must vanish.</p>
+<p><strong>Setting.</strong> As in the pole lemma, on the line \(\ell_3=\{y_3=y_1+y_2\}\); the other lines follow by permuting coordinates. The collision points are the double points \((0{:}1{:}1)\) and \((1{:}0{:}1)\), and \(y_0=(1{:}{-1}{:}0)\) and \(y_0'=(1{:}1{:}2)\). For a witness \(P\) at \((d,\rho)\) and any \(y\), \(W^P(y)\) is the window \(T^{\ell},\ldots,T^{\ell+m}\) of \(P(z(T))/\prod_iL'(z_i(T))\), with \(z_i(T)=r_0(y_iT)\) (<a href="#cube-threshold-ideal">threshold-ideal lemma</a>, part 1). This is an identity of polynomials in \(y\). Since \(\prod L'(z_i(T))\) is a unit and \(P\) has order \(\ge\ell\) at the origin, so that the coefficients of \(T^0,\ldots,T^{\ell-1}\) vanish, \(W^P(y)=0\) exactly when \(P(z(T))=O(T^{k})\), where \(k=\ell+m+1\). For the product \(P_eP_{e+1}\) at \((2e+1,2)\) the origin order is \(\ell_e+\ell_{e+1}=\ell\) and \(k=k_e+k_{e+1}\) (<a href="#cube-witness-differential">witness-differential lemma</a>, part 3). The solution of \(P_n\) is a nonzero constant times the boundary solution \(W^{(n)}\), so \(W^{(n)}(y)\ne0\) exactly when \(P_n(z(T))\) has order \(&lt;k_n\).</p>
+<h4 id="cube-collision-point-regularity">The non-double collision points</h4>
+<p><strong>Lemma</strong> (<code>lem:cube-collision-point-regularity</code>). Over a field of characteristic \(\ne2\), let \(n\ge1\), and let \(\Gamma\) be a smooth conic, in a coordinate plane or in the plane \(z_1=z_2\), through the four vertices of the cube in that plane.</p>
+<ol>
+<li>If \(P_n\) does not vanish identically on \(\Gamma\), its restriction to \(\Gamma\) has order at most \(k_n-2n=n^2+2n\) at the origin, where \(k_n=n^2+4n\).</li>
+<li>At \(y_0=(1{:}{-1}{:}0)\), the curve \(z(T)\) parametrizes \(\Gamma_0=\{z_3=0,\;L(z_1)+L(z_2)=0\}\). At \(y_0'=(1{:}1{:}2)\) it parametrizes \(\Gamma_0'=\{z_1=z_2,\;L(z_3)=2L(z_1)\}\). Both are conics as in part 1, and \(T\) is a local parameter at the origin.</li>
+<li>For \(e\ge2\): if \(W^{(e)}(y_0)\ne0\) and \(W^{(e+1)}(y_0)\ne0\), equivalently (by part 1) neither \(P_e\) nor \(P_{e+1}\) contains \(\Gamma_0\), then \(s(y_0)\ne0\) and \(\lambda_{\ell_3}\) is regular at \(y_0\). The same holds at \(y_0'\) with \(\Gamma_0'\).</li>
+<li>\(P_n|_{z_3=0}\) is not the zero polynomial, so \(P_n\) contains only finitely many conics of the pencil \(y_2L(z_1)=y_1L(z_2)\), \(z_3=0\). Likewise \(P_n|_{z_1=z_2}\ne0\), so it contains only finitely many conics of the pencil \(y_1L(z_3)=y_3L(z_1)\), \(z_1=z_2\). So \(W^{(n)}\) vanishes at only finitely many points of the collision lines \(y_3=0\) and \(y_1=y_2\), and of their images under permutation. This does not decide the specific points \(y_0,y_0'\).</li>
+</ol>
+<p><strong>Proof.</strong> Part 1. \(\Gamma\) passes through the origin and three nonzero vertices of the cube, at each of which \(P_n\) has multiplicity \(\ge k_n\). A curve of degree \(2k_n-n\) not containing \(\Gamma\) meets it in \(2(2k_n-n)\) points counted with multiplicity (Bezout), and \(\Gamma\) is smooth. So the origin contributes at most \(4k_n-2n-3k_n=k_n-2n\).</p>
+<p>Part 2.</p>
+<ul>
+<li><em>At \(y_0\):</em> \(z_3=r_0(0)=0\), and \(L(z_1)=T=-L(z_2)\).</li>
+<li><em>At \(y_0'\):</em> \(z_1=z_2=r_0(T)\) and \(L(z_3)=2T\).</li>
+</ul>
+<p>Each conic contains the four vertices of its plane:</p>
+<ul>
+<li>\(\Gamma_0\) contains \((0,0),(1,0),(0,1),(1,1)\) in \((z_1,z_2)\), since \(L(0)=L(1)=0\);</li>
+<li>\(\Gamma_0'\) contains the images of \((0,0,0),(1,1,0),(0,0,1),(1,1,1)\) in \((z_1,z_3)\).</li>
+</ul>
+<p>Smoothness:</p>
+<ul>
+<li>\(L(z_1)+L(z_2)=0\) is \((z_1-\tfrac12)^2+(z_2-\tfrac12)^2=\tfrac12\);</li>
+<li>\(2L(z_1)-L(z_3)=0\) is \(2(z_1-\tfrac12)^2-(z_3-\tfrac12)^2=\tfrac14\).</li>
+</ul>
+<p>Both are nondegenerate in characteristic \(\ne2\). \(T=L(z_1)\) vanishes simply at the origin on each.</p>
+<p>Part 3. The hypothesis says that \(P_n(z(T))\) at \(y_0\) has order \(&lt;k_n\) for \(n=e,e+1\). So \(P_eP_{e+1}(z(T))\) has order \(&lt;k_e+k_{e+1}=k\), and \(s(y_0)\ne0\). (Part 1 gives the stronger bound \(n^2+2n\), which is not needed.) Choose a coordinate with \(s_c(y_0)\ne0\). On \(\ell_3\) near \(y_0\), \(\lambda=t_c/s_c\) is regular at \(y_0\).</p>
+<p>Part 4. \(P_n|_{z_3=0}=0\) would make \(z_3\) divide \(P_n\). Then \(y_3\) would divide its lowest form, which is a nonzero constant times \(F_n\) by the solution formula (\(z_i(T)=-y_iT+O(T^2)\)). That contradicts the <a href="#cube-boundary-generator-collision-free">collision-free lemma</a>. In the same way \(z_1-z_2\mid P_n\) would give \(y_1-y_2\mid F_n\). A nonzero polynomial of degree \(2k_n-n\) contains at most \(k_n-n/2\) distinct conics. \(\square\)</p>
+<h4>The computation</h4>
+<p><strong>Kernel.</strong> <code>bmd_cube_solution_cones.cpp</code> gains fixed evaluation points (environment <code>YPTS</code>). In <code>series</code> mode it evaluates the witness solutions of several cases at those points in one run.</p>
+<p><strong>Finite check</strong> (<code>check:cube-boundary-collision-values</code>, <code>research/results/bmd-r89-collision-points/</code>). Over \(\mathbb F_{1000003}\), for \(n=2,3,4,5\), the kernel finds a witness at \((n,1)\), excess \(n^2-1\), in the S₃-trivial part; the standard part was not computed. Its solution is a nonzero constant times \(W^{(n)}\), since the module at \((n,1)\) is free on \(W^{(n)}\) of that excess. It is nonzero at \((1,-1,0)\) and at \((1,1,2)\). As a control, it is zero at the double point \((0,1,1)\), as the <a href="#cube-vertex-line-order-small">vertex-line theorem</a> requires: there \(z(T)\) runs along the vertex line through \((0,1,1)\), on which \(P_n\) vanishes. The solution is also nonzero at the random point. So \(W^{(n)}(y_0)\ne0\) and \(W^{(n)}(y_0')\ne0\) modulo the computing prime, for \(n\le5\). To transfer this, take the primitive integral boundary solution \(W^{(n)}_{\mathbb Q}\). Its reduction modulo \(p\) is a nonzero solution of excess \(n^2-1\) over \(\mathbb F_p\), so by the boundary theorem (every characteristic \(\ne2\)) it is a nonzero constant times \(W^{(n)}_p\). At \(p=1000003\) this gives \(W^{(n)}_{\mathbb Q}(y_0)\not\equiv0\), so \(W^{(n)}_{\mathbb Q}(y_0)\) is a nonzero rational vector, and it stays nonzero modulo all but finitely many primes. The same holds at \(y_0'\).</p>
+<p>So for \(e\le4\), in characteristic 0 and outside finitely many characteristics, \(\lambda_\ell\) is regular at the two non-double collision points of every line. For those \(e\), \((\mathrm W_e)\) now depends only on the double points and on \(Z_e\cup Z_{e+1}\).</p>
+<p><strong>General statement.</strong> <code>lem:cube-collision-point-regularity</code>, for every \(n\) and \(e\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the pole lemma, the threshold-ideal lemma (the solution formula at any \(y\)), the witness-differential lemma (products), the boundary theorem, the collision-free lemma and the vertex-line theorem. Claim searches (collision point, conic, pencil) found no earlier version. A fresh-context referee checked the Bezout count, the parametrizations, the vertex content, the smoothness forms, the pencil and the conic count, and the double-point control. It found no error. Its corrections are made: no S₃-invariance claim, since the standard part was not computed; the evaluated object identified with \(W^{(n)}\); the transfer to characteristic 0 written out; the origin-order condition and the product's \(k\) cited; part 4 extended to \(y_1=y_2\) and limited to finiteness; part 3 stated under its actual hypothesis; and the title, status and assessment scoped.</p>
+<p><strong>Assessment.</strong> The four collision points of a line split into two kinds. At the two non-double points the curve becomes a conic through four vertices of the cube, in a face or in the plane \(z_1=z_2\). Bezout on that conic keeps \(s\) nonzero unless a boundary witness contains the conic. That happens only at finitely many points of the collision lines \(y_3=0\) and \(y_1=y_2\), and it is excluded at \(y_0,y_0'\) computationally for \(n\le5\). A proof for all \(n\) needs the special conics \(L(z_1)+L(z_2)=0\) and \(L(z_3)=2L(z_1)\) kept out of \(V(P_n)\). At the double points \(s\) does vanish for \(e\le5\), because \(P_p\) vanishes along the vertex line for \(p\le6\) (vertex-line theorem), and the control shows it for \(p\le5\). There regularity of \(\lambda\) is a comparison of vanishing orders, which the Tate-curve description should decide. The sets \(Z_n\) are still unexamined.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r89">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>14 min 17.63 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 12.24 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 45.15 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 58.50 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 50.51 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4 min 31.02 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
