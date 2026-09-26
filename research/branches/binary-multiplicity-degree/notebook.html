@@ -35,7 +35,7 @@
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
 <li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Its zero sets are mapped (<a href="#cube-threshold-collision-support">theorem</a>, <a href="#entry-2026-09-26-cube-collision-windows">entry</a>) but do not give \(\ell_0\). Order zero satisfies \(11d-11\le M(d)\le20d-21\) (<a href="#cube-order-zero-dimension-four-lower-bound">windows</a>, <a href="#cube-order-zero-dimension-four-linear-bound">products</a>). Restrictions give lower bounds (<a href="#cube-order-zero-restriction">lemma</a>; planes give 19, 38 modulo a large prime, <a href="#cube-order-zero-restrictions">check</a>), exact when the solution module has depth \(\ge3\) (<a href="#cube-restriction-exactness">exactness lemma</a>). Once \(I_m\) has no zeros, order zero fails only through a local cohomology class (<a href="#cube-zero-free-criterion">zero-free criterion</a>): the class of the order-zero column, whose annihilator is \(I_m\) (<a href="#cube-threshold-annihilator">annihilator form</a>). It vanishes locally at every point, so no pointwise method sees it; at \(d=2\) the modules have depth 2 (<a href="#entry-2026-09-26-cube-route-review-19">route review 19</a>). Next: weigh a global duality bound for \(H^0_{\mathfrak m}(C_{m-1})\) against the other open statements (boundary for every \(d\), small primes).</li>
-<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs squarefreeness of the non-collision part of the limit determinant \(\Delta_U\) (<a href="#cube-squarefree-reduction">reduction theorem</a>, <a href="#cube-limit-triple-multiplicity">triple multiplicity</a>). Its base case \(n=2\), \(\nu=d-|r|\), is proved: on the conic every Weierstrass point has weight 1 (<a href="#cube-conic-squarefree">conic theorem</a>). The quadrangle route needs both kinds of side. For \(n=2\) every such determinant is the Wronskian of an explicit binomial series on a rigid curve (<a href="#cube-conic-duality">duality theorem</a>), which makes the triple sides a palindromic 8-nomial, squarefree through \(d=10\). Next: simple zeros of that 8-nomial for every \(d\), then the double-double sides.</li>
+<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs squarefreeness of the non-collision part of the limit determinant \(\Delta_U\) (<a href="#cube-squarefree-reduction">reduction theorem</a>, <a href="#cube-limit-triple-multiplicity">triple multiplicity</a>). Its base case \(n=2\), \(\nu=d-|r|\), is proved: on the conic every Weierstrass point has weight 1 (<a href="#cube-conic-squarefree">conic theorem</a>). The quadrangle route needs both kinds of side. For \(n=2\) every such determinant is the Wronskian of an explicit binomial series on a rigid curve (<a href="#cube-conic-duality">duality theorem</a>), which makes the triple sides the explicit palindromic 8-nomial \(F_{2d-1}\) (<a href="#cube-triple-side-closed-form">closed form</a>), squarefree through \(d=10\), with its roots in three families. Next: simple zeros of \(F_{2d-1}\) for every \(d\) (sign changes and Rouché), then the double-double sides.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions; the dimension-3 result may merit a note.</p>
@@ -8734,6 +8734,78 @@ As in the dimension-3 window lemma, \((w_3-w)^k=A_k(w)+w_3B_k(w)\) with \(\deg A
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 45.38 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2.72 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.17 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-triple-side-closed" data-kind="research" data-route="cube-odd-characteristic" data-claims="lem:cube-triple-side-closed-form">
+<h3>26 September 2026 — The triple-side determinant in closed form: a palindromic 8-nomial, and where its roots lie</h3>
+<p class="entry-meta">Working proof: on the triple sides, the non-collision part of the limit determinant is given by an explicit palindromic 8-nomial in t = μ⁴. Cycle bmd-r134. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-conic-duality">conic duality theorem</a> reduced the triple sides of the dimension-4 boundary route to simple zeros of the Wronskian of \(S=\mathrm{span}\{1-\mu^{8d},\mu^2-\mu^{8d-2},\mu^4-\mu^{8d-4},\mu,\mu^{8d-1}\}\). What is that Wronskian exactly, for every \(d\)? Does its shape suggest a proof of simple zeros?</p>
+<h4 id="cube-triple-side-closed-form">The closed form</h4>
+<p><strong>Lemma</strong> (<code>lem:cube-triple-side-closed-form</code>). For \(d\ge2\), put \(n=2d-1\), \(D=8d\) and \(t=\mu^4\). Then</p>
+\[\frac{W(S)}{\mu^{8d-4}}=48(D-1)(D-2)(D-3)(D-5)\,F_n(t),\]
+\[F_n(t)=1+t^{3n}-t^{n-1}q(t)-t^{2n-1}q^*(t),\]
+\[q(t)=n(2n-1)-(4n^2-1)\,t+n(2n+1)\,t^2,\qquad q^*(t)=t^2q(1/t),\]
+<p>with sign \(+\) for the basis order shown. Moreover \(q(1)=1\), so \(F_n(1)=0\). \(F_n\) is palindromic of odd degree \(3n\), so \(F_n(-1)=-F_n(-1)=0\) as well.</p>
+<p><em>Proof.</em> By multilinearity of the Wronskian,</p>
+\[W(S)=\sum_{\varepsilon\in\{0,1\}^3}(-1)^{|\varepsilon|}\,W(\mu^{e_1},\mu^{e_2},\mu^{e_3},\mu,\mu^{D-1}),\]
+<p>with \(e_1\in\{0,D\}\), \(e_2\in\{2,D-2\}\) and \(e_3\in\{4,D-4\}\) chosen by \(\varepsilon\). Each term is the Vandermonde product \(\prod_{i&lt;j}(e_j-e_i)\) times \(\mu^{\sum e-10}\).</p>
+<p>The eight products, divided by \((D-1)(D-2)(D-3)(D-5)\), are:</p>
+<ul>
+<li>\(48\) for \(\varepsilon=000\) and \(111\);</li>
+<li>\(-6(D-4)(D-6)\) for \(001\) and \(110\);</li>
+<li>\(12(D-2)(D-6)\) for \(010\) and \(101\);</li>
+<li>\(-6(D-2)(D-4)\) for \(100\) and \(011\).</li>
+</ul>
+<p>The \(t\)-exponents are \(0,2d-2,2d-1,4d-3,2d,4d-2,4d-1,6d-3\), in the same order of \(\varepsilon\) (<code>research/results/bmd-r134-triple-closed/vandermonde-coefficients.txt</code>, symbolic in \(D\)). With \(D=4(n+1)\), \(D-4=4n\), \(D-6=2(2n-1)\) and \(D-2=2(2n+1)\), dividing by 48 gives the coefficients \(n(2n-1)\), \(4n^2-1\), \(n(2n+1)\) with the signs shown. The value is \(q(1)=n(2n-1)-(4n^2-1)+n(2n+1)=1\). \(\square\)</p>
+<p>Check. The tool <code>research/tools/bmd_cube_triple_side_closed.gp</code> compares \(F_n\) with the Wronskian computed from the dual series by <code>bmd_cube_conic_dual.gp</code>. For every \(d=2,\ldots,12\) the ratio is exactly \(-48(D-1)(D-2)(D-3)(D-5)\), the sign coming from the tool's basis order (<code>closed-form-roots.txt</code>). A fresh-context referee recomputed the Wronskian independently with sympy for \(d=2,3,4\), in the order shown, and found sign \(+\). At \(d=2\), \(F_3=1-15t^2+35t^3-21t^4-21t^5+35t^6-15t^7+t^9\).</p>
+<h4>Where the roots lie</h4>
+<p>Exact facts, checked for every \(d\le12\) by the same tool:</p>
+<ul>
+<li>\(F_n\) has order exactly 6 at \(t=1\), and \(Q_d:=F_n/((t-1)^6(t+1))\), of degree \(6d-10\), satisfies \(Q_d(\pm1)\ne0\);</li>
+<li>writing the palindromic \(Q_d\) as \(t^{3d-5}R_d(t+1/t)\), a Sturm count shows that \(R_d\) has exactly \(d-2\) distinct roots in \((-2,2)\), so \(Q_d\) has exactly \(2d-4\) distinct zeros on the unit circle.</li>
+</ul>
+<p>The order 6 at \(t=1\) for every \(d\) is a polynomial identity in \(n\): the first six moments \(\sum_\varepsilon c_\varepsilon a_\varepsilon^k\), \(k\le5\), vanish. It is checked here only for \(d\le12\).</p>
+<p>A heuristic: writing \(z=t^n\), the equation \(F_n(t)=0\) reads as the cubic</p>
+\[z^3-\frac{q^*(t)}{t}\,z^2-\frac{q(t)}{t}\,z+1=0.\]
+<p>This is self-inversive on \(|t|=1\), since \(q^*(t)/t=\overline{q(t)/t}\) there, though \(z\) depends on \(t\). On \(|t|=1\), \(q(t)/t=4n^2\cos\theta-(4n^2-1)+2in\sin\theta\) is large away from \(\theta=0\) but has size 1 at \(\theta=0\), where the sixfold root sits. The floating-point roots (60 digits, modulus threshold \(10^{-9}\)) of \(Q_d\) for \(d\le12\) fall into three families:</p>
+<ul>
+<li>\(2d-3\) inside the unit circle, near the curve \(|t|^{n-1}|q(t)|=1\);</li>
+<li>\(2d-4\) on it, the exact count above;</li>
+<li>\(2d-3\) outside, the images of the inner ones under \(t\mapsto1/t\).</li>
+</ul>
+<p>The minimal distance between roots is \(4.58,0.446,0.388,\ldots,0.191\) for \(d=2,3,4,\ldots,12\), decreasing slowly. The exact discriminant check of the <a href="#entry-2026-09-26-cube-conic-duality">duality entry</a> already gives squarefreeness for \(d\le10\); the floating-point separation is only evidence.</p>
+<p>A proof for every \(d\) can follow this picture, using lower bounds on the number of distinct zeros in three disjoint sets:</p>
+<ul>
+<li>Unit circle: \(e^{-3in\theta/2}F_n(e^{i\theta})\) is real for \(\theta\in(0,\pi)\). So \(d-2\) sign changes on the open upper arc, with conjugation, give \(2d-4\) distinct zeros away from \(\pm1\).</li>
+<li>Inside: \(1-t^{n-1}q(t)\) has \(2d-1\) zeros in the open unit disc. At \(d=5\) their moduli, computed by the referee, are \(0.481\), \(0.488\) (twice), \(0.511\) (twice), \(0.562\) (twice) and \(0.787\) (twice, near argument \(\pm0.136\)). The first \(2d-3\) match the inner roots of \(Q_d\) to about \(10^{-3}\), while the pair near \(t=1\) is absorbed into \((t-1)^6\). So Rouché's theorem has to be applied on \(2d-3\) disjoint small discs, one zero each, which also gives simplicity.</li>
+<li>Near \(t=1\): a separate argument must show that \(F_n\) has no zeros in a neighbourhood of \(t=1\) other than the sixfold root. This is where \(q(t)/t\) is small and the three families meet, and it is the real difficulty.</li>
+<li>Outside: the outer zeros follow by palindromy.</li>
+</ul>
+<p>The count \(2(2d-3)+(2d-4)=6d-10=\deg Q_d\) and the disjointness of the three sets then force all zeros to be simple. The constants must be made explicit, since \(q\) grows like \(n^2\) away from \(t=1\).</p>
+<p><strong>General statement.</strong> <code>lem:cube-triple-side-closed-form</code>, for every \(d\ge2\). Squarefreeness of \(Q_d\) for every \(d\) is the open step, which the three-family argument above targets.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the conic duality theorem and its dual series. A fresh-context referee recomputed the Wronskian with sympy for \(d=2,3,4\) and confirmed the formula with sign \(+\), the Vandermonde coefficients, the exponents, \(q(1)=1\) and palindromy. Its corrections are made:</p>
+<ul>
+<li>\(F_n(-1)=0\) and the order 6 at \(t=1\) are justified, the latter only for \(d\le12\);</li>
+<li>the tool now asserts the constant, and certifies the unit-circle count exactly;</li>
+<li>the floating-point claims are labelled;</li>
+<li>the size of \(q\) near \(t=1\) is corrected;</li>
+<li>the cubic remark is labelled heuristic;</li>
+<li>the Rouché plan is corrected: \(1-t^{n-1}q\) has \(2d-1\) inner zeros, two of which belong to the neighbourhood of \(t=1\), so the argument needs disjoint discs and a separate treatment of that neighbourhood.</li>
+</ul>
+<p><strong>Assessment.</strong> The triple sides are now one explicit family, \(F_n(t)=1+t^{3n}-t^{n-1}q(t)-t^{2n-1}q^*(t)\) with an explicit quadratic \(q\). Its roots fall into three families, with \(2d-4\) simple zeros on the unit circle exactly and \(2d-3\) on each side in floating point, for \(d\le12\). A sign-change and Rouché argument can settle simplicity once the error terms are explicit, except near \(t=1\), where the sixfold root sits and a separate local analysis is needed. A route review is due next, and it should weigh this against the other items of open statement 3.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r134">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 56.81 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 20.11 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">42.58 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">52.25 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.73 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
