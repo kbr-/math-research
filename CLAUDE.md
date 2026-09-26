@@ -168,7 +168,9 @@ Apply every rule below before launching a run.
    the waste and defeats the guard.
 9. **Stop testing cases once they have answered.** Before each further run, ask whether the finished runs
    already decide the model question. If they do, compute nothing more and state and prove the general
-   proposition the cases point to.
+   proposition the cases point to. Before fitting a formula to computed values, combine the computed
+   witnesses by every recorded composition rule (products, restrictions, transports): on 26 September
+   2026 a quadratic fit to three order-zero thresholds was refuted by the recorded product rule.
 
 `./compute.sh` enforces rules 3 to 5 and 8 in part. A Python computation allowed more than 120 s needs a
 `--kernel-reason` of at least six words, naming the compiled kernel and the reuse. Because a stated reason
