@@ -7,7 +7,8 @@ the onto columns (weak PHP of m pigeons into N holes).  The occupancy-pinned sys
 PHP^{n+1}_n with e = 2 holes pinned empty and the rest pinned occupied, is this system with
 m = n + 1, N = n - 2, after the degree-2 deletion of the empty holes.  For each board and degree D the
 script reports whether the exact degree-D PC closure contains 1, for both systems, and whether one onto
-equation C_0 - 1 already lies in the control's degree-D closure.  The closure follows the recorded
+equation C_0 - 1 already lies in the control's degree-D closure; and whether each system is refuted
+with the functionality axioms x_ij x_ik = 0 added (Beame-Riis onto functional PHP for the onto system).  The closure follows the recorded
 collision-quotient closure (random_conditioning_fast.close) with its own close(): all variable
 products of a chunk come from one sparse product; elimination is the recorded gf3 module, and the
 monomial space is built for an m x N board.
@@ -115,13 +116,20 @@ def in_closure(space, P, W, poly):
     return gf3.rref(None, parallel=True, packed=(np.vstack([P, Q]), W, space.cols))[2].shape[0] == P.shape[0]
 
 
+def functionality_eqs(m, N):
+    """Row exclusions x_ij x_ik = 0 (j != k), the functionality axioms."""
+    return [{(i * N + j, i * N + k): 1} for i in range(m) for j, k in itertools.combinations(range(N), 2)]
+
+
 def run_case(m, N, D):
     space = RectSpace(m, N, D)
     rows, onto = row_eqs(m, N), onto_eqs(m, N)
     P, W, piv = close(space, *gf3.rref(np.array([space.vec(g) for g in rows], dtype=np.uint8), parallel=True))
     return dict(m=m, N=N, D=D, columns=space.cols, control_refuted=bool(refuted(space, P, W)),
                 onto_eq_in_control_closure=in_closure(space, P, W, onto[0]),
-                onto_refuted=is_refuted(space, rows + onto))
+                onto_refuted=is_refuted(space, rows + onto),
+                functional_refuted=is_refuted(space, rows + functionality_eqs(m, N)),
+                onto_functional_refuted=is_refuted(space, rows + onto + functionality_eqs(m, N)))
 
 
 ap = argparse.ArgumentParser(); ap.add_argument('--boards', default='8x5'); ap.add_argument('--Ds', default='3')

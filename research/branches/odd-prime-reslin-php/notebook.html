@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> Column statistics reduce under random prefixes to conj:occupancy-pinned-php (<a href="#entry-2026-09-26-occupancy-pin">occupancy pinning</a>). At its first informative size, 8 pigeons into 5 holes, onto weak PHP and plain weak PHP are both first refuted at degree 4 (<a href="#entry-2026-09-26-onto-board-check">onto board check</a>). The recorded residual route adds functionality axioms, and with onto that is Beame and Riis's onto functional PHP, refuted at Nullstellensatz degree 2 at imbalance 3 by their Lemma 8.7. Next: test that boundary on the same boards, onto weak PHP with and without functionality. If functionality alone makes it easy, a proof of the conjecture must construct a pseudo-ideal that uses non-functional pigeons.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> Column statistics reduce under random prefixes to conj:occupancy-pinned-php, onto weak PHP with counts agreeing mod 3 (<a href="#entry-2026-09-26-occupancy-pin">occupancy pinning</a>). Beame and Riis's counting refutation needs functionality: without it the triple count only constrains pigeons holding 4 or 7 holes (<a href="#entry-2026-09-26-triple-count">triple count</a>), and at \(8\times5\) the system survives degree 3 exactly when functionality is absent. Next: build a design in Beame and Riis's sense for this system, with non-functional pigeons, starting with symmetric designs whose values depend only on the pigeons' degree multiset. It would give the first Nullstellensatz lower bound for the system.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -28803,6 +28803,82 @@ The main term is an equidistribution statement analogous to Cohen–Lenstra mome
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-triple-count" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:onto-triple-count">
+<h3>The triple count without functionality: in onto weak PHP over \(\mathbb F_3\), Beame and Riis's counting refutation leaves the equation \(\sum_ie_3(\text{row}_i)=\binom N3-\binom m3\), which functionality turns into \(0=2\); at \(8\times5\), exact closures show onto and functionality together falling at degree 3 while neither alone does</h3>
+<p class="entry-meta">26 September 2026 · Working proof, with a finite check · open statement A1 under random prefixes, conj:occupancy-pinned-php · cycle odd-prime-functionality-boundary.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. conj:occupancy-pinned-php asks that onto weak PHP over \(\mathbb F_3\), with \(m=N+3\) pigeons and \(N\) holes, be PC-hard. Beame and Riis's onto functional PHP, which adds the row exclusions \(x_{ij}x_{ik}=0\), has a Nullstellensatz refutation of degree 2 for this imbalance ("More on the relative strength of counting principles", DIMACS Series 39, 1998, Lemma 8.7). Their degree counts only the multipliers; the products reach total degree 3, the degree used for PC closures below. This cycle attempts that refutation on the conjecture's system: does it go through without functionality, and if not, what exactly is left?</p>
+<p><strong>General statement.</strong> prop:onto-triple-count. Over \(\mathbb F_3\), let \(\mathcal O_{m,N}\) be onto weak PHP: Booleanity, collisions \(x_{ij}x_{i'j}=0\), rows \(r_i=\sum_jx_{ij}=1\) and onto columns \(c_j=\sum_ix_{ij}=1\), for \(m\) pigeons and \(N\) holes. Write \(e_k(r_i)\) for the \(k\)-th elementary symmetric polynomial in pigeon \(i\)'s variables.</p>
+<ol>
+<li>\(e_2(r_i)=0\) is derived at degree 2, and \(\sum_ie_3(r_i)=\binom N3-\binom m3\) is derived at degree 3.</li>
+<li>With the row exclusions added, every \(e_3(r_i)\) is 0, so part 1 refutes the system at degree 3 whenever \(\binom N3\not\equiv\binom m3\pmod3\). For \(m=N+3\), \(\binom m3-\binom N3=(3N^2+3N+2)/2\equiv1\pmod 3\) for every \(N\). This is Beame and Riis's refutation at imbalance 3, of total degree 3 (multiplier degree 2).</li>
+<li>Without the row exclusions, part 1's equation is a constraint on pigeons that hold several holes: modulo 3, \(e_3(r_i)\) at a Boolean point is \(\binom{d_i}3\), where \(d_i\) is pigeon \(i\)'s number of holes. The rows force \(d_i\equiv1\pmod3\), and \(\binom{d}{3}\) is \(0,1,2\) for \(d=1,4,7\). So at Boolean points the equation reads \(\sum_i\binom{d_i}3\equiv\binom N3-\binom m3\). Degree sequences allowed by the rows meet it, for example one pigeon with 7 holes or two with 4 each, giving 2. This is a statement about each pigeon's row taken separately. No Boolean point satisfies all of \(\mathcal O_{m,N}\), so it does not prove that the triple count fails to refute. That the triple count does not refute \(\mathcal O_{m,N}\) is a heuristic reading, supported by the \(8\times5\) check below.</li>
+</ol>
+
+<h4>Proof</h4>
+<ul>
+<li><em>\(e_2\).</em> By Booleanity, \(r_i^2=r_i+2e_2(r_i)\). And \(r_i^2-r_i=(r_i-1)r_i\) is a multiple of the row axiom. So \(2e_2(r_i)\), hence \(e_2(r_i)\), is derived at degree 2.</li>
+<li><em>Row side.</em> For a 3-set \(A\) of pigeons, \(\prod_{i\in A}r_i-1\) is a combination of row axioms with multipliers of degree at most 2, for example \((r_1-1)r_2r_3+(r_2-1)r_3+(r_3-1)\). Expanding \(\prod_{i\in A}r_i\) gives one term per map \(A\to\) holes. Non-injective maps contain a collision \(x_{ij}x_{i'j}\). So, modulo degree-3 multiples of the axioms, \(\sum_{|A|=3}\prod_{i\in A}r_i=M_3\), the sum of \(X_\pi\) over all partial matchings \(\pi\) with three edges, and it also equals \(\binom m3\).</li>
+<li><em>Column side.</em> Likewise \(\sum_{|B|=3}\prod_{j\in B}c_j=\binom N3\) at degree 3. Expanding gives one term per map \(\psi:B\to\) pigeons, with no collisions since the holes differ. Injective \(\psi\) give \(M_3\) again. The rest is \(R\):
+ <ul>
+ <li>maps with \(\psi(j)=\psi(k)=i\ne\psi(l)\) contribute \(\sum_i\sum_{j&lt;k}x_{ij}x_{ik}\sum_{l\ne j,k}\sum_{i'\ne i}x_{i'l}\);</li>
+ <li>constant maps contribute \(\sum_ie_3(r_i)\).</li>
+ </ul>
+ By the onto axiom, \(\sum_{i'\ne i}x_{i'l}=1-x_{il}\) modulo \((c_l-1)\), at degree 3 after multiplying by \(x_{ij}x_{ik}\). So the first part is \(\sum_i\bigl((N-2)e_2(r_i)-3e_3(r_i)\bigr)\), which is 0 by the \(e_2\) step, since \(3=0\). Hence \(R\equiv\sum_ie_3(r_i)\).</li>
+<li><em>Part 1.</em> Subtracting the two sides gives \(\binom N3-\binom m3=R=\sum_ie_3(r_i)\), at degree 3.</li>
+<li><em>Part 2.</em> Every monomial of \(e_3(r_i)\) contains a row exclusion. The binomial identity is direct: \(\binom{N+3}3-\binom N3=(9N^2+9N+6)/6=(3N^2+3N+2)/2\), which is \(\equiv1\pmod3\) because \(3N(N+1)/2\equiv0\).</li>
+<li><em>Part 3.</em> At a Boolean point, \(e_3(r_i)\) counts 3-subsets of pigeon \(i\)'s holes. By Lucas's theorem, \(\binom d3\bmod3\) is the second base-3 digit of \(d\). \(\square\) (Parts 1 and 2 and the evaluation in part 3 are proved; part 3's reading as non-refutation is not.)</li>
+</ul>
+<p>The same comparison at \(k=3^s\) sets, Beame and Riis's general case, leaves the analogous remainder: pigeons covering several holes of a \(k\)-set of holes. With functionality it vanishes. Without it, it is a symmetric function of the pigeons' hole sets, constrained through the base-3 digits of their degrees. That generalization is not worked out here.</p>
+
+<h4>Finite check: at \(8\times5\) the boundary is functionality</h4>
+<p>Exact degree-\(D\) PC closures (<code>onto_rect.py</code>, <code>onto_rect_functional.json</code> in <code>research/results/odd_prime_occupancy_pin_20260926/</code>, the script of the <a href="#entry-2026-09-26-onto-board-check">onto board check</a> with the functionality variants added). "Refuted" means the degree-\(D\) closure contains 1.</p>
+<table>
+<tr><th>board, \(D\)</th><th>weak PHP</th><th>+ functionality</th><th>+ onto</th><th>+ onto + functionality</th></tr>
+<tr><td>\(6\times3\), 2</td><td>no</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>\(6\times3\), 3</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
+<tr><td>\(7\times4\), 2</td><td>no</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>\(7\times4\), 3</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
+<tr><td>\(8\times5\), 2</td><td>no</td><td>no</td><td>no</td><td>no</td></tr>
+<tr><td>\(8\times5\), 3</td><td>no</td><td>no</td><td>no</td><td><strong>yes</strong></td></tr>
+</table>
+<p>At \(8\times5\), the only board where weak PHP survives degree 3, onto and functionality together are refuted at degree 3, as part 2 predicts. Either one alone is not. This is the first informative size, and the test was chosen because part 2 predicted its outcome: a degree-3 refutation for the onto functional system at every \(N\). With the <a href="#entry-2026-09-26-onto-board-check">onto board check</a>, where weak PHP and the onto system are both first refuted at degree 4 at \(8\times5\), the boundary is sharp at this size. Functionality alone at \(8\times5\), \(D=4\) was not run.</p>
+
+<h4>What it means</h4>
+<ul>
+<li>The one known refutation technique for onto PHP with counts agreeing mod \(p\), counting \(p^\ell\)-sets from both sides, fails for conj:occupancy-pinned-php's system at its first level. The reason is identified: pigeons with 4 or 7 holes, which the mod-3 rows allow, absorb the discrepancy. The conjecture's system is on the other side of that boundary from Beame and Riis's easy system.</li>
+<li>The recorded residual route (lem:functional-residual) adds functionality axioms before the imported Mikša–Nordström bound. With onto pins, the count carries over to a graph's neighbourhoods: with functionality both sides reduce to the graph's 3-matchings, so \(\binom{m'}3=\binom{N'}3\) is derived at degree 3 whatever the graph is. That refutes the residual system whenever \(\binom{m'}3\not\equiv\binom{N'}3\pmod3\) and every residual hole keeps its onto axiom. The imbalance \(m'-N'\) is 3 only if the restrictions remove pigeons and holes in matched pairs. Any small constant imbalance other than 0 still gives a constant-degree refutation, through \(k=3^\ell\). So a proof cannot pass through onto functional graph PHP.</li>
+<li>This is not a lower bound. Higher counts, \(k=9,27,\dots\), give further digit constraints. Whether some combination of them refutes \(\mathcal O_{N+3,N}\) at low degree is open. The finite check says none does at degree 3 on \(8\times5\).</li>
+</ul>
+<p><strong>Next.</strong> A heuristic points at the proof side. The \(k\)-set counts compare \(\binom mk\) with sums of products \(\prod_i\binom{d_i}{k_i}\) over the pigeons' degrees. By Vandermonde's identity these sum to \(\binom{\sum_id_i}k\) for a real configuration. By Lucas's theorem, \(\binom{N+3^S}k\equiv\binom Nk\pmod3\) for \(k&lt;3^S\), since adding \(3^S\) leaves the lower \(S\) base-3 digits unchanged. So take a virtual degree sequence with every \(d_i\equiv1\pmod3\), summing to \(N+3^S\) instead of \(N\). This needs \(N+3^S\equiv m\pmod3\), which holds for \(m=N+3\) and \(S\ge1\), and \(N+3^S\ge m\). With \(3^S&gt;N\), such a sequence meets every count with \(k\le N\). The case \(S=1\) is the all-ones sequence, consistent with degree 2 failing. Counts do refute at \(k=N+1\) through the row side, since there are no matchings with \(N+1\) edges, when \(\binom m{N+1}\not\equiv0\pmod 3\). So refutations built only from such counts need degree about \(N\). This is not a proof: a refutation may combine counts with non-symmetric reasoning.</p>
+<p>The next step is the proof side. Build a design in Beame and Riis's sense (their Definition 8.2 and Lemma 8.3: a map from partial matchings to \(\mathbb F_p\) consistent with rows and columns gives a lower bound on Nullstellensatz multiplier degree), adapted to the conjecture's system, which has non-functional pigeons. The design must assign values to every monomial of degree at most \(d\), including those where a pigeon holds 2 or 3 holes. By part 1, for \(d\ge3\) the values on the monomials of \(\sum_ie_3(r_i)\) must sum to 2, and those of each \(e_2(r_i)\) to 0, so monomials where a pigeon holds 3 holes get nonzero values. The virtual full configurations behind such a design have pigeons of degree \(1,4,7,\dots\). Degree 7 cannot be excluded in advance, since the sequences above may need pigeons of degree \(\equiv1\pmod9\) or larger. Try first the symmetric designs whose values depend only on the multiset of pigeon degrees in a monomial. A design of multiplier degree \(d\) is a Nullstellensatz lower bound, short of PC, but it would be the first lower bound for the system that uses its non-functional pigeons.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read conj:occupancy-pinned-php, the onto board check, lem:functional-residual's statement, and Beame and Riis's Definition 7.2, Lemma 7.5, Definition 8.2, Lemma 8.3 and Lemma 8.7 with its proof, from a private extract. A fresh-context reviewer checked parts 1 and 2 by hand, including the multiplicity 3 in the column-side reduction and the congruence, and found them correct. It required these changes, all adopted:</p>
+<ul>
+<li>Beame and Riis's degree convention stated, since their degree 2 is total degree 3;</li>
+<li>the reason for the congruence added;</li>
+<li>part 3's non-refutation reading marked as a heuristic, with the per-row statement made precise;</li>
+<li>the title and finite-check heading limited to \(8\times5\), and the unrun degree-4 case noted;</li>
+<li>the graph remark corrected: the count carries over, but imbalance 3 in the residual needs matched removals, and the conclusion is limited to onto functional graph PHP;</li>
+<li>the Lucas heuristic made precise, with its conditions and the refuting count at \(k=N+1\);</li>
+<li>the design step reconciled with part 1: 3-hole monomials must get nonzero values, and degree 7 is not excluded.</li>
+</ul>
+<p>The changes restrict or clarify claims, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-functionality-boundary">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 43.33 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 29.89 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">59.47 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 5.18 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8.59 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
