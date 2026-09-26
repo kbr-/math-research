@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The Alekhnovich–Razborov lead closes for dense families. Their criterion lets two constraints share fewer than \(\ell/4\le t+\tfrac12\) variables, while random dense forms stay dense in every linear basis (<a href="#entry-2026-09-26-ar-support-immunity">support against immunity</a>). Next: develop the route review's third lead, designs for one counting principle in the presence of another's dense axioms (Buss, Impagliazzo, Krajíček, Pudlák, Razborov and Sgall). Read their construction in the source, and state what compatible partial structures would be for error-avoiding partial matchings.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The hybrid route review's outside leads are developed and closed for dense families. Alekhnovich–Razborov fails on support against immunity, and the counting designs cancel only configurations that a symmetry of the base exchanges (<a href="#entry-2026-09-26-counting-designs">counting designs</a>). Next: test the obstacle itself. Look for a dense high-rank family of polynomially many randomized-prefix blocks whose error sets jointly cover a set whose indicator has low degree modulo the base, which would refute W_RS at logarithmic degree, or show that no such covering exists.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32165,6 +32165,49 @@ using \(H(1/3)+\tfrac13\ln2=0.8675\ldots\) and \(\ln3=1.0986\ldots\). The events
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 37.83 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">8 min 5.12 s</td></tr>
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">21.39 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-counting-designs" data-kind="research" data-route="odd-prime-clause-transfer" data-lead="entry-2026-09-26-hybrid-route-review:3" data-claims="none" data-claim-note="Development of the hybrid route review's third lead from the source; it corrects the review's description of the lead and tests three translations of its mechanism by short arguments, with no new claim. The general statement concerned is conj:randomized-wide-clause.">
+<h3>The counting-design lead, read in the source: the designs of Buss, Impagliazzo, Krajíček, Pudlák, Razborov and Sgall do not tolerate extra axioms; they kill unwanted configurations by orbits of size divisible by the modulus, and no translation found gives W_RS's error configurations such orbits while keeping the normalization invertible</h3>
+<p class="entry-meta">26 September 2026 · Development of a lead, no new claim · open statement A1 · cycle odd-prime-counting-designs. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-hybrid-route-review">hybrid route review</a> listed, as its third lead, designs for one counting principle "in the presence of another's axioms". It hoped for a template for a design of the base that also annihilates \(n^K\) dense error clauses. It left the lead not run. What does the source do, and does its mechanism answer the obstacle?</p>
+<p><strong>General statement.</strong> conj:randomized-wide-clause (W_RS) through A1; no new claim.</p>
+<h4>What the source does</h4>
+<p>Buss, Impagliazzo, Krajíček, Pudlák, Razborov and Sgall, "Proof complexity in algebraic systems and bounded depth Frege systems with modular counting" (Comput. Complexity 6, 1996/97). Read here from the author copy: the abstract, Section 2.1 with Theorem 2.4, and Sections 3 and 4 (Definition 4.1, Lemmas 4.2 and 4.3 with Claims 1 to 3, Theorems 4.5 and 4.6).</p>
+<ul>
+<li><strong>Correction to the review.</strong> The design lower bound concerns the \((N,q)\)-system alone, over \(\mathbb Z_m\) with \(q\nmid m\). The instances of \(\mathrm{Count}_m\) enter only through the Frege corollary, by Beame et al.'s reduction (Theorem 2.4), and not as extra axioms under the design. So the review's description, "designs that tolerate a dense extra axiom family", is wrong. The lead as described does not exist in the source.</li>
+<li><strong>The actual mechanism.</strong> Lemma 4.3 lifts a degree-\(d\) design on \(N\) nodes to a degree-\((2d+1)\) design on \((m+q)N\) nodes. It averages the pulled-back designs \(s^V\) over all \(c=(m+q)^N\) choices \(V\) of block representatives, with weight \(c^{-1}\), which exists since \(\gcd(c,m)=1\). The unwanted configurations have an isolated cross edge, and their values vanish (Claim 2): for each \(V\) there are exactly \(m\) choices agreeing off that edge's blocks, with equal values, and \(m\) equal values sum to 0 in \(\mathbb Z_m\). The design is killed on the unwanted configurations by an orbit of size divisible by the modulus, while the normalization's orbit count \(c\) stays a unit.</li>
+</ul>
+<h4>The mechanism against the obstacle</h4>
+<p>Translated to W_RS over \(\mathbb F_3\), the mechanism needs three things:</p>
+<ul>
+<li>a family of designs \(\mu_\gamma\) of the base, indexed by choices \(\gamma\), whose number is prime to 3;</li>
+<li>for every error configuration (an error clause times a monomial), a partition of the choices into classes of size divisible by 3 with equal values;</li>
+<li>and the average must be a design of one fixed W_RS instance.</li>
+</ul>
+<p>Three natural translations were tested.</p>
+<ol>
+<li><strong>Choices of pin values.</strong> Take the pinned designs \(\mu_v\) of member pinning, and average over the value \(v\in\mathbb F_3\) of a pinned form entering block \(b\). The translation group has one orbit of size 3 on the values. It moves the normalization too: \(\sum_v\mu_v(1)=3=0\). Weighted averages with \(\sum_vw_v=1\) have no symmetry to cancel errors: a clause's values \(\mu_v(g_{b,i}Q^{C_b}m)\) are zero for the pins that avoid \(\ker C_b\) and generically nonzero otherwise. The mechanism needs the normalization's orbit to be prime to 3 while the error orbits are divisible by 3. Pin translations give both orbits the same size. <strong>Falsified.</strong></li>
+<li><strong>Choices of prefix matrices.</strong> Averaging over \(C_b\) has the right arithmetic. For a nonzero pattern \(g\), the number of \(C\in\mathbb F_3^{t\times h}\) with \(Cg=0\) is \(3^{t(h-1)}\equiv0\). So \(\sum_{C}g_iQ^C\) vanishes on the cube whenever \(t(h-1)\ge1\). But the average is not a design of any single instance. The randomized-prefix reduction gives, from a short refutation, a refutation of the base plus the clauses of every choice \((C_b)\). A contradiction needs one choice whose system has a design. A family of designs \(\mu_{(C)}\), each for its own choice, is exactly what is not known to exist; averaging presupposes it. <strong>Falsified</strong> by the order of quantifiers.</li>
+<li><strong>Representatives inside the board.</strong> This is the source's own form: group holes or pigeons into blocks of size \(3+q\), \(3\nmid q\), and average designs pulled back through representative choices, as in Lemma 4.3. That is a substitution from a smaller PHP into the board through representatives, which lifts designs of the smaller instance. The error clauses are not pulled back from the smaller instance: their forms are arbitrary on the large board. The configurations to kill are therefore not the "isolated cross edges" that a representative symmetry exchanges. The same obstruction closed the Lauria–Nordström gadget lead (<a href="#entry-2026-09-26-gadget-substitution">gadget substitution</a>): substitutions lift structure that the target's axioms share, and W_RS's clauses share none. <strong>Falsified</strong> for adversarial forms.</li>
+</ol>
+<p>The common reason: orbit cancellation needs the unwanted configurations to be exchanged by a symmetry of the base's design family. W_RS's error configurations have no such symmetry, since the forms are adversarial and the prefix matrices are fixed once drawn. The lead is closed for A1's core. It would apply to families invariant under a group whose orbits on error configurations have size divisible by 3, such as families built from a smaller instance by representatives, but none of A1's open families is of that kind.</p>
+<p><strong>Next.</strong> The route review's three outside leads are now developed and closed for dense families. Only its first absurd bridge, degree-1 pin safety by the zero-sum rule, passed. Every design mechanism tried has needed locality, symmetry or a shared span, and the obstacle's families have none of them. So the next cycle should test the obstacle itself before inventing another mechanism. Is there a dense high-rank family of polynomially many randomized-prefix blocks for which the base plus the clauses is refutable at logarithmic degree? At small sizes this is out of reach (thread review 4). The next cycle therefore looks for a structural candidate: a family whose error sets jointly cover a set whose indicator has low degree modulo the base. That would refute W_RS and redirect the route.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Read in the source, from a private author copy that is not committed: the sections listed above. Re-read the hybrid route review's third lead, the gadget-substitution entry and prop:pinned-rank-vacuity. The three translations are tested by the short arguments given. The count \(3^{t(h-1)}\) is the number of solutions of \(Cg=0\) for a nonzero \(g\): each row of \(C\) ranges over a hyperplane of \(\mathbb F_3^h\). No claim is registered and no reviewer pass was run: the entry corrects a lead's description from the source and closes three translations by elementary arguments.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-counting-designs">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 41.99 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">56.48 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">48.51 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">47.16 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">1 min 9.69 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
