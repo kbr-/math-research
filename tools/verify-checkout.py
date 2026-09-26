@@ -67,7 +67,7 @@ def main():
     required = ['tools/notebooks.py', 'tools/notebook_site.py', 'tools/branch.py', 'notebook.html', 'index.html', 'server.py', 'AGENTS.md', 'COMPUTATION_RULES.md',
                 'README.md', 'research/notes/RESUME.md', 'research/notes/SOURCE_AUDIT.md',
                 'compute.sh', 'start-codex.sh', 'start-session.sh', 'start-claude.sh',
-                'CLAUDE.md', 'research/CLAUDE.md', 'formalization/CLAUDE.md',
+                'CLAUDE.md', 'formalization/CLAUDE.md',
                 'research/claims/index.json', 'research/claims/schema.json', 'research/claims/schema-v1.json',
                 'tools/claim_reviews.py', 'tools/notebook_context.py', 'tools/notebook-excerpt.py',
                 'research/context-budgets.json', 'tools/recovery_evidence.py', 'tools/resume.py',
