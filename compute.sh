@@ -452,7 +452,10 @@ MAX_PY_LOOP_DEPTH = 3
 # after a compiled kernel was run with twelve argument lists from a shell loop: the guard covers every program, compiled
 # or Python, short or long. A program already run in the session with MAX_SERIES_ARGSETS different argument lists is
 # refused a further new one; validation cases and parameter series go in one run with a series interface. Reruns of
-# the same argument list stay allowed. Only a quoted user approval overrides.
+# the same argument list stay allowed. Extended 27 September 2026, after kernels were run with several argument lists
+# inside `bash -c` scripts and shell loops, which the guard counted as one program named bash: each program inside a
+# `sh -c` script counts with its own argument lists (variable assignments included), and a shell loop in a
+# computation is refused. Only a quoted user approval overrides.
 MAX_SERIES_ARGSETS = 4
 # Sizing runs (user instruction, 24 September 2026, after two runs in one session were launched for 20+ minutes on an
 # estimate that no measurement supported): a run expected to exceed LONG_RUN_S must cite, with --sized-by RUN_ID, a
@@ -549,8 +552,47 @@ def python_loop_offenders(script, root=None):
     return sorted(found)
 
 
+SHELLS = {'sh', 'bash', 'dash', 'zsh'}
+SHELL_LOOP = re.compile(r'(?:^|[;&|(\n]|\bthen|\bdo|\belse)\s*(?:for|while|until)\b')
+
+
+def invocations(command):
+    """The simple commands a command runs: a `sh -c`/`bash -c` script is split into them, so a wrapper counts as
+    what it runs. Each keeps its `env` and variable-assignment prefix, which is part of its argument list."""
+    import shlex
+    if command and Path(command[0]).name in SHELLS and '-c' in command[1:]:
+        script = command[command.index('-c') + 1] if command.index('-c') + 1 < len(command) else ''
+        out = []
+        for part in re.split(r'&&|\|\||[;|\n]', script):
+            try:
+                words = shlex.split(part)
+            except ValueError:
+                words = part.split()
+            out += invocations(words) if words else []
+        return out
+    return [list(command)] if command else []
+
+
+def unwrapped(command):
+    """A simple command without its `env`, `time` and variable-assignment prefix."""
+    words = list(command)
+    while words and (re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*=.*', words[0]) or words[0] in ('if', 'elif', 'then', 'do', 'else', '{', '(', '!')
+                     or Path(words[0]).name in ('env', 'time')
+                     or (words[0].startswith('-') and len(words) > 1)):
+        words = words[1:]
+    return words
+
+
+def argument_list(command):
+    """What distinguishes two runs of one program: its variable assignments and its arguments, not the spelling
+    of its executable's path."""
+    words = unwrapped(command)
+    return tuple(w for w in command[:len(command) - len(words)] if '=' in w) + tuple(words[1:])
+
+
 def program_key(command):
     """The program a command runs: its first script argument, else the executable's name."""
+    command = unwrapped((invocations(command) or [[]])[0])
     script = next((c for c in command[1:] if Path(c).suffix in ('.py', '.sh', '.sing', '.g', '.gp', '.m2')), None)
     return Path(script).name if script else Path(command[0]).name if command else ''
 
@@ -558,18 +600,28 @@ def program_key(command):
 def series_error(events, command, timeout):
     """None unless `command` would be a further new argument list for a program that `events` (the session journal)
     already ran as a computation with MAX_SERIES_ARGSETS different argument lists; else the reason. Every program
-    counts, compiled or Python, whatever its timeout."""
-    key = program_key(command)
-    seen = {tuple(e['command'][1:]) for e in events if e['event'] == 'run_start'
-            and e.get('category', 'computation') == 'computation' and program_key(e['command']) == key}
-    if tuple(command[1:]) in seen or len(seen) < MAX_SERIES_ARGSETS:
-        return None
-    return (f'{key} already ran with {len(seen)} different argument lists in this session: a parameter series or a '
-            'set of validation cases belongs in one run with a series interface, not in the shell or in repeated '
-            'invocations; and once the finished runs answer the question, compute nothing more and derive the general '
-            'statement (CLAUDE.md rules 3 to 5, 8 and 9); only --user-approved overrides. '
-            'Please Please Please for the love of God consider stating a general statement instead of running '
-            'more cases!!! In the name of the user!!! They don\'t have patience!!!')
+    counts, compiled or Python, whatever its timeout, including each program inside a `sh -c` script; a shell loop
+    in a computation is refused outright, since it drives a series from the shell."""
+    if command and Path(command[0]).name in SHELLS and '-c' in command[1:] and SHELL_LOOP.search(
+            command[command.index('-c') + 1] if command.index('-c') + 1 < len(command) else ''):
+        return ('a shell loop drives a parameter series from the shell: put the series in one run of one program with '
+                'a series interface, or, once the finished runs answer the question, state the general statement '
+                '(CLAUDE.md rules 3 to 5, 8 and 9); only --user-approved overrides.')
+    past = [inner for e in events if e['event'] == 'run_start' and e.get('category', 'computation') == 'computation'
+            for inner in invocations(e['command'])]
+    for inner in invocations(command):
+        key = program_key(inner)
+        seen = {argument_list(c) for c in past if program_key(c) == key}
+        past.append(inner)
+        if argument_list(inner) in seen or len(seen) < MAX_SERIES_ARGSETS:
+            continue
+        return (f'{key} already ran with {len(seen)} different argument lists in this session: a parameter series or a '
+                'set of validation cases belongs in one run with a series interface, not in the shell or in repeated '
+                'invocations; and once the finished runs answer the question, compute nothing more and derive the general '
+                'statement (CLAUDE.md rules 3 to 5, 8 and 9); only --user-approved overrides. '
+                'Please Please Please for the love of God consider stating a general statement instead of running '
+                'more cases!!! In the name of the user!!! They don\'t have patience!!!')
+    return None
 
 
 def sizing_error(events, sized_by, command, expect):

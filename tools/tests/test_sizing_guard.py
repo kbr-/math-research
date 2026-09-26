@@ -39,6 +39,35 @@ class SizingGuardTest(unittest.TestCase):
         self.assertEqual(CS.program_key(['gp', '-q', 'c.gp']), 'c.gp')
         self.assertEqual(CS.program_key(['./kernel', '8']), 'kernel')
 
+    def test_program_key_sees_through_wrappers(self):
+        self.assertEqual(CS.program_key(['env', 'X=1', 'M2', '--script', 'a/v.m2']), 'v.m2')
+        self.assertEqual(CS.program_key(['bash', '-c', '/tmp/kern 3 6 20 1; /tmp/kern 3 8 20 2']), 'kern')
+        self.assertEqual(CS.program_key(['bash', '-c', 'if true; then /tmp/kern 3; fi']), 'true')
+        self.assertEqual([CS.program_key(c) for c in CS.invocations(['bash', '-c', 'if true; then /tmp/kern 3; fi'])],
+                         ['true', 'kern', 'fi'])
+
+
+def starts(*commands):
+    return [dict(event='run_start', id=str(i), command=c) for i, c in enumerate(commands)]
+
+
+class SeriesGuardTest(unittest.TestCase):
+    def test_shell_wrapper_counts_each_inner_invocation(self):
+        events = starts(['bash', '-c', '/t/kern 3 6 1; /t/kern 3 8 2'], ['bash', '-c', '/t/kern 3 10 3; /t/kern 3 12 4'])
+        self.assertIsNone(CS.series_error(events, ['/t/kern', '3', '6', '1'], 60))
+        self.assertIn('already ran with 4', CS.series_error(events, ['bash', '-c', '/t/kern 3 14 5'], 60))
+        self.assertIn('already ran with 4', CS.series_error([], ['bash', '-c', '; '.join(
+            f'/t/kern 3 {n} 1' for n in range(5))], 60))
+
+    def test_env_assignments_are_arguments(self):
+        events = starts(*[['env', f'N={n}', 'M2', '--script', 'v.m2'] for n in range(4)])
+        self.assertIn('v.m2 already ran', CS.series_error(events, ['env', 'N=9', 'M2', '--script', 'v.m2'], 60))
+        self.assertIsNone(CS.series_error(events, ['env', 'N=2', 'M2', '--script', 'v.m2'], 60))
+
+    def test_shell_loop_is_refused(self):
+        self.assertIn('shell loop', CS.series_error([], ['bash', '-c', 'for n in 6 8; do /t/kern 3 $n; done'], 60))
+        self.assertIsNone(CS.series_error([], ['bash', '-c', 'g++ -O2 -o k k.cpp && ./k 3 6'], 60))
+
 
 if __name__ == '__main__':
     unittest.main()
