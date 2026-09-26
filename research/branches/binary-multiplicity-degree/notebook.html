@@ -34,7 +34,7 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). Prove that the non-collision part of \(\Delta_{n,d}\) is squarefree (<a href="#entry-2026-09-26-cube-dimension-four-boundary">conjecture</a>), that is, a general point of each component of the Weierstrass locus of \(V_d\) on the family of fibre curves is a simple Weierstrass point. It is certified for \(n=4\), \(d\le9\).</li>
+<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). Prove the squarefreeness conjecture by restriction to a collision hyperplane (<a href="#entry-2026-09-26-cube-route-review-15">route review 15</a>). On \(y_1=0\), \(\Delta^{\mathrm{nc}}_{4,d}\) restricts to \(\prod(y_i-y_j)^{2(d-1)^2}\) times a squarefree part for \(d\le9\). It remains to prove, for all \(d\): the restriction identity with the limit determinant \(\Delta_U\); that no non-collision prime restricts on every collision hyperplane to double-double forms; and that the rest of \(\Delta_U\) is squarefree, a statement on the genus-1 curve.</li>
 <li><strong>Dimension 4 as \(S_5\) representation theory</strong> (open statement 3). Every threshold ideal is stable under \(S_{n+1}\) permuting the branch points \(0,y_1,\ldots,y_n\) (<a href="#cube-branch-point-symmetry">symmetry theorem</a>).
 <ul>
 <li>Extend the symmetric kernel to isotypic components: solutions invariant under a Young subgroup, projected to an \(S_5\)-isotypic component.</li>
@@ -6746,6 +6746,87 @@ For \(n=4\) and \(d\ge2\): \(N=8d-4\), \(E_4(d)=d^2+(d-1)^2\), \(\deg\Delta_{4,d
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 17.38 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">9.93 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-route-review-15" data-kind="review" data-route="cube-odd-characteristic" data-claims="none" data-claim-note="Route review: cheap tests of the squarefreeness conjecture (orders at rational Weierstrass roots, the collision-limit determinant) and of leads and bridges; the restriction pattern found here is evidence for a reduction to be stated and proved as a lemma next cycle.">
+<h3>26 September 2026 — Route review of the cube after the dimension-4 boundary: the squarefreeness conjecture restricts to a genus-1 problem</h3>
+<p class="entry-meta">Route review: the boundary gcd is settled in characteristic 0 up to squarefreeness; on a collision hyperplane Δ^nc_{4,d} restricts to ∏(y_i−y_j)^{2(d−1)²} times a squarefree part for d ≤ 9, so the conjecture may reduce to genus 1. Cycle bmd-r105. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>The line's general claim.</strong> The per-order function on \(\{0,1\}^n\) in characteristic \(\ne2\) is determined by the thresholds \(\ell_0(h,m)\), the initial degrees of the threshold ideals (<a href="#cube-threshold-ideal">threshold-ideal lemma</a>). Dimension 3 is solved over every field of characteristic \(\ne2\) (<a href="#cube-dimension-three-every-field">theorem</a>). For \(n\ge4\) the claim to establish is a law for the thresholds.</p>
+<p><strong>What the goal needs.</strong> Open statement 3, the pre-stable thresholds for \(n\ge4\): at the boundary \(m=N_{2,n}(d)\), in the middle range, and at order zero. Open statement 2, small primes for \(n\ge4\). Since the last review, the boundary has moved from data to proofs:</p>
+<ul>
+<li>in characteristic 0 the collision exponents of \(g_{n,d}\) and \(\Delta_{n,d}\) are exactly \(E_n(d)\) for all \(n,d\) (<a href="#cube-boundary-collision-exponents">theorem</a>);</li>
+<li>any other factor of \(g_{n,d}\) is doubled in \(\Delta_{n,d}\) (<a href="#cube-extra-factors-double">proposition</a>);</li>
+<li>certificates give \(\ell_0(d+1,8d-4)=10d^2-10d-5\) for \(2\le d\le9\) (<a href="#cube-dimension-four-boundary-thresholds">corollary</a>).</li>
+</ul>
+<p>The boundary for every \(d\) now rests on one conjecture: the part of \(\Delta_{n,d}\) prime to the collision forms, \(\Delta^{\mathrm{nc}}_{n,d}\), is squarefree (<a href="#entry-2026-09-26-cube-dimension-four-boundary">squarefreeness conjecture</a>). The middle range and order zero have data (the savings-3 row, the quadric and the \(S_5\) symmetry) but no mechanism.</p>
+<h4>Falsification attempt</h4>
+<p>The conjecture says that at a general point of each divisorial component of the zero locus of \(\Delta^{\mathrm{nc}}\), \(p_0\) is a simple Weierstrass point of \(V_d\), with orders \(0,\ldots,N-2,N\). <code>research/tools/bmd_cube_delta_squarefree.cpp</code> gains two modes, and both tests ran on \(\mathbb F_{1000003}\) (<code>research/results/bmd-r105-route-review/</code>).</p>
+<ul>
+<li><em>Orders at Weierstrass points</em> (mode <code>orders</code>, <code>orders-n4-d2-9.txt</code>). On the line of the certificates, \(R\) (the restriction of \(\Delta^{\mathrm{nc}}_{4,d}\)) has 7 roots in \(\mathbb F_p\) for \(d\le9\): two at \(d=4\), four at \(d=5\), one at \(d=9\). At each, the orders of \(V_d\) at \(p_0\) are exactly \(0,\ldots,N-2,N\), and the \(N\times(N+3)\) matrix has rank \(N\). The prediction could have failed at each root, with orders \(0,\ldots,N-2,N+1\) or a rank drop. It did not.</li>
+<li><em>The collision limit</em> (mode <code>limit</code>, <code>limit-n3-d1-9.txt</code>). Along \(y_1=0\) the saturated boundary lattice reduces to the limit space \(U^{(3)}_d=\operatorname{span}\{T^Qz^r:Q+|r|\le d\}\) in \(y_2,y_3,y_4\) (<a href="#cube-collision-limit-space">collision limit lemma</a>). Its determinant \(\Delta_U\) is therefore, up to a constant, \(\Delta_{4,d}/y_1^{E_4(d)}\) restricted to \(y_1=0\):
+\[ \Delta_U=c\prod_{j\ge2}y_j^{\,2E_4(d)}\prod_{2\le i&lt;j}(y_i-y_j)^{E_4(d)}\cdot\Delta^{\mathrm{nc}}_{4,d}\big|_{y_1=0}. \]
+For \(1\le d\le9\) the kernel finds:
+<ul>
+<li>multiplicity exactly \(2E_4(d)\) at each \(y_j\), so \(\Delta^{\mathrm{nc}}|_{y_1=0}\) is prime to the \(y_j\);</li>
+<li>multiplicity \(E_4(d)+2(d-1)^2\) at each \(y_i-y_j\) (\(2,8,18,\ldots,128\) beyond \(E_4\));</li>
+<li>a squarefree remaining part, of degree \(4d^2+2d-11\) for \(d\ge2\) (9, 31, 61, 99, 145, 199, 261, 331).</li>
+</ul>
+So on a collision hyperplane, \(\Delta^{\mathrm{nc}}_{4,d}\) restricts to \(\prod_{2\le i&lt;j}(y_i-y_j)^{2(d-1)^2}\) times a squarefree polynomial prime to the collision forms of the hyperplane. The degrees add up: \(6(d-1)^2+4d^2+2d-11=10d^2-10d-5\).</li>
+</ul>
+<p>Neither test refuted the conjecture. The second gives a route to it. Suppose \(\pi^2\mid\Delta^{\mathrm{nc}}_{4,d}\) for a prime \(\pi\). Then \(\pi|_D^{\,2}\) divides the restriction for every collision hyperplane \(D\); by the \(S_5\) symmetry, all ten restrictions have the same shape. With the squarefree remainder, \(\pi|_D\) must be a product of the three double-double forms of \(D\) (the forms \(r_i-r_j\) on \(\{r_a=r_b\}\), with \(\{i,j\}\) disjoint from \(\{a,b\}\)), for every \(D\). A single linear form cannot do this: on \(D_{01}\) it must be \(r_2-r_3+c(r_0-r_1)\), and on \(D_{02}\) that forces \(c=-1\). But then on \(D_{03}\) it restricts to \(r_1+r_2-2r_0\), which is not such a product. The route therefore needs two statements for all \(d\):</p>
+<ol>
+<li>no prime \(\pi\) other than a collision form restricts, on every collision hyperplane, to a product of double-double forms;</li>
+<li>the remaining part of \(\Delta_U\) is squarefree.</li>
+</ol>
+<p>The second concerns the limit space, which lives on the genus-1 curve \(w_2,w_3,w_4\), where dimension 3's torsion methods apply.</p>
+<h4>Assessment of this line</h4>
+<p>At the boundary, the line has become strong. Two general theorems and a proposition, all proved in characteristic 0 for every \(n\) and \(d\), reduce the dimension-4 boundary law to one conjecture. That conjecture is certified through \(d=9\), and it now has a concrete reduction to a genus-1 statement. The rest of open statement 3 is weak: the thresholds between the boundary and order zero, where the modules are not free, have one row of data and no mechanism, and order zero (5, 19, 39) has no formula. Open statement 2 has not moved: every new proof uses the Wronskian and needs characteristic 0 or large \(p\). The pattern of the last cycles is sound: each proved a general statement and used computation only to certify instances or test predictions.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>General Weierstrass points are simple</strong> (Eisenbud–Harris, "Existence, decomposition, and limits of certain Weierstrass points", Invent. Math. 87, 1987; Cukierman, "Families of Weierstrass points", Duke Math. J. 58, 1989). For the canonical series on a general curve, a general point of each component of the Weierstrass locus is a simple Weierstrass point. The analogue for \(V_d=L(dH_\infty)\) on the family of \((\mathbb Z/2)^4\)-covers is exactly the squarefreeness conjecture. It breaks because the family is special, and the \(S_5\) and deck symmetries could force weight-2 points along a divisor. <strong>Test.</strong> Passed: all 7 rational roots found on the certificate line are simple Weierstrass points (orders \(0,\ldots,N-2,N\)).</li>
+<li><strong>Limit linear series along collisions</strong> (Eisenbud–Harris, "Limit linear series: basic theory", Invent. Math. 85, 1986). The collision limit lemma is a limit-linear-series computation, and restricting the Weierstrass locus to the boundary divisor is the standard route to its multiplicities. This targets the squarefreeness conjecture through the restriction pattern above. It breaks if the restriction has square factors not made of boundary forms. <strong>Test.</strong> Passed: for \(d\le9\) the restriction to \(y_1=0\) is \(\prod(y_i-y_j)^{2(d-1)^2}\) times a squarefree part; only double-double forms repeat.</li>
+<li><strong>The Plücker formula for the total Weierstrass weight</strong> (Arbarello–Cornalba–Griffiths–Harris, <em>Geometry of Algebraic Curves I</em>, Ch. I, exercise C). On one curve \(C_a\) the total weight of \(V_d\) is \(N\cdot8d+N(N-1)(g-1)\), with \(g=5\). The non-branch points contribute 16 times the number of roots in \(t\) of \(\Delta^w_{4,d}(a/(1+at))\), by the Wronskian identity of the <a href="#cube-extra-factors-double">proposition</a>. The formula would give the ramification weights at the branch fibres, and hence a second count of \(\deg\Delta^{\mathrm{nc}}\). This targets the boundary degree and breaks if the branch weights are not computable. <strong>Test.</strong> Not run: the weights at the branch fibres, where \(T\) is not a local parameter, need their own local computation, which is not a cheap test.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>The von Neumann–Wigner non-crossing rule</strong> (quantum mechanics: von Neumann and Wigner, Phys. Z. 30, 1929; molecular potential curves in chemistry). <em>Translation:</em> the orders of \(V_d\) at a moving point are "levels", a Weierstrass point is a crossing of level \(N-1\) with level \(N\), and a point with top order \(\ge N+1\) is a double crossing. The rule says that crossings not forced by symmetry have codimension equal to the number of conditions. So a double crossing would have codimension 2 in the parameters, which is the statement that \(g^{\mathrm{nc}}=1\). A symmetry-resolved version would say which symmetries (here \(S_5\) and the deck group) could force a divisor of double crossings. <strong>Test.</strong> Passed: along the certificate line no double crossing occurs for \(d\le9\), since every root of \(R\) is simple, and the rational ones are single crossings.</li>
+<li><strong>Weierstrass semigroups of algebraic-geometry codes</strong> (coding theory: the Feng–Rao bound, Høholdt–van Lint–Pellikaan, "Algebraic geometry codes", Handbook of Coding Theory, 1998). <em>Translation:</em> \(V_1=L(H_\infty)\) is the canonical series of the genus-5 curve \(C_a\). The one-point codes at \(p_0\) have designed distance governed by the Weierstrass semigroup of \(p_0\), which is ordinary exactly when \(p_0\) is not a canonical Weierstrass point. A theorem there would bound the minimum distance of the multiplicity codes behind the cube problem. <strong>Test.</strong> Passed: \(\Delta_{4,1}\) is a constant times the ten collision forms (<a href="#entry-2026-09-25-cube-boundary-gcd">line computations</a>, rest 0 at \(d=1\)). So \(p_0\) is never a canonical Weierstrass point at distinct nonzero \(y\), and its semigroup is ordinary, with gaps \(1,\ldots,5\).</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-13:2"><strong>Chip-firing on a cycle.</strong> Not worked this cycle. <strong>Follow-up.</strong> Continuing. The double-double exponent \(2(d-1)^2\) found here is another quadratic "energy" at a degeneration, of the kind chip-firing produced for the Tate curve. It is the next candidate for that reading.</li>
+<li data-bridge="entry-2026-09-26-cube-route-review-14:2"><strong>Odd–even staggering.</strong> Not worked this cycle; no new savings-3 values were computed. <strong>Follow-up.</strong> Continuing: it still describes the only middle-range row.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-25-cube-route-review-6:2"><strong>Riemann–Roch and Riemann–Hurwitz for \(n\ge4\).</strong> Developed in the <a href="#entry-2026-09-26-cube-collision-exponents-exact">collision-exponent entry</a>: \(V_d=L(dH_\infty)\) on the genus-5 curve, the Wronskian and Weierstrass weights, and the doubled-factor proposition. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-14:1"><strong>Castelnuovo's bound and the theta divisor.</strong> <strong>Follow-up.</strong> Closed: the boundary values \(10d^2-10d-5\) came from exact collision exponents and simple Weierstrass points, not from a theta-divisor degree. The remaining question is squarefreeness, which the theta-divisor picture does not address.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-14:2"><strong>Buchsbaum–Eisenbud acyclicity.</strong> Not worked this cycle. <strong>Follow-up.</strong> Continuing: it remains the tool for the non-free middle range.</li>
+</ul>
+<h4>Next step</h4>
+<p>On the highest-risk item, open statement 3 at the boundary, prove the squarefreeness conjecture through the restriction to a collision hyperplane. Four steps:</p>
+<ol>
+<li>State and prove the restriction identity \(\Delta_U=c\prod y_j^{2E}\prod(y_i-y_j)^E\,\Delta^{\mathrm{nc}}|_{y_1=0}\) in every dimension.</li>
+<li>Prove that no prime other than a collision form restricts, on every collision hyperplane, to a product of double-double forms.</li>
+<li>Explain the exponent \(2(d-1)^2\) along the double-double strata.</li>
+<li>Prove that the non-collision part of \(\Delta_U\) is squarefree. \(U^{(3)}_d\) lives on the genus-1 curve, where the dimension-3 methods (torsion points, the residue disc) apply.</li>
+</ol>
+<p>Steps 1 and 2 are algebra, and step 4 is a genus-1 statement. After that, the middle range needs a mechanism; the \(S_5\) decomposition of the threshold ideals is the recorded next attempt there.</p>
+<p><strong>Process.</strong> Two runs of the extended kernel, one series invocation per mode.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r105">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 38.04 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 9.25 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 17.01 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 36.88 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 20.10 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">14.66 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
