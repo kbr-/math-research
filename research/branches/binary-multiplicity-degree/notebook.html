@@ -34,7 +34,7 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Its zero sets are mapped (<a href="#cube-threshold-collision-support">theorem</a>, <a href="#entry-2026-09-26-cube-collision-windows">entry</a>) but do not give \(\ell_0\). Thresholds are attained by invariants (<a href="#cube-invariant-attainment">conjecture</a>): proved at every boundary (<a href="#cube-boundary-generator-invariant-all-n">theorem</a>) and in dimension 3 (<a href="#cube-invariant-attainment-dimension-three">theorem</a>); near order zero at \(d=2\) the lowest parts are invariants cutting out Springer eigen-orbits (<a href="#entry-2026-09-26-cube-route-review-17">route review</a>). The savings-4 row near order zero is \(15,13,11,10,8,7,5,4,3,2,2,0\) for \(m=28,\ldots,39\) (<a href="#cube-dimension-four-row-d3">check</a>); rows are nonincreasing in \(m\) (<a href="#cube-threshold-monotone">conjecture</a>, proved for \(n\le3\)). Order zero is at most \(20d-21\) by products (<a href="#cube-order-zero-dimension-four-linear-bound">theorem</a>); in every dimension order-zero savings grow at a rate \(k/c_n\), \(8\le c_4\le20\) (<a href="#cube-order-zero-rate">theorem</a>). Windows at the triple-double points give \(M(d)\ge11d-11\), so \(11\le c_4\le20\) (<a href="#cube-order-zero-dimension-four-lower-bound">theorem</a>). Next: close the gap, by more windows or a global argument for the zero-free range.</li>
+<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Its zero sets are mapped (<a href="#cube-threshold-collision-support">theorem</a>, <a href="#entry-2026-09-26-cube-collision-windows">entry</a>) but do not give \(\ell_0\). Thresholds are attained by invariants (<a href="#cube-invariant-attainment">conjecture</a>): proved at every boundary (<a href="#cube-boundary-generator-invariant-all-n">theorem</a>) and in dimension 3 (<a href="#cube-invariant-attainment-dimension-three">theorem</a>); near order zero at \(d=2\) the lowest parts are invariants cutting out Springer eigen-orbits (<a href="#entry-2026-09-26-cube-route-review-17">route review</a>). Order zero is at most \(20d-21\) by products (<a href="#cube-order-zero-dimension-four-linear-bound">theorem</a>), with savings growing at a rate \(k/c_n\) (<a href="#cube-order-zero-rate">theorem</a>). Windows at the triple-double points give \(M(d)\ge11d-11\), so \(11\le c_4\le20\) (<a href="#cube-order-zero-dimension-four-lower-bound">theorem</a>). Restricted to subspaces, order zero gives lower bounds (<a href="#cube-order-zero-restriction">lemma</a>): modulo a large prime random lines give 17, 30, 42 and random planes 19, 38 against 19, 39, and in dimension 3 a random line is exact (<a href="#cube-order-zero-restrictions">check</a>). Next: prove the generic-line value \(5d-1\) in dimension 3 without double points, as the template for a plane bound in dimension 4.</li>
 <li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). By the <a href="#cube-squarefree-reduction">reduction theorem</a> and the <a href="#cube-limit-triple-multiplicity">triple-multiplicity corollary</a>, \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs one statement: squarefreeness of the non-collision part of the limit determinant. It is an instance of the <a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness conjecture</a>, which passes 1261 monotone vectors. For \(n=4\) it is simplicity of the \(d\)-canonical Weierstrass points of a general Humbert curve. A proof needs an induction over a class of spaces closed under Möbius transports, or a Weierstrass-point theorem for this family.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
@@ -8058,6 +8058,77 @@ As in the dimension-3 window lemma, \((w_3-w)^k=A_k(w)+w_3B_k(w)\) with \(\deg A
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 27.71 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 15.32 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.19 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-order-zero-restrictions" data-kind="research" data-route="cube-odd-characteristic" data-claims="lem:cube-order-zero-restriction check:cube-order-zero-restrictions">
+<h3>26 September 2026 — Order zero restricted to lines and planes: generic planes come within one of the threshold on {0,1}⁴</h3>
+<p class="entry-meta">Working proof: restricting the order-zero system to any linear subspace gives a lower bound for the threshold. Finite check over F₁₀₀₀₀₀₃ (random lines and planes): on {0,1}³ lines give 5d − 1 for d = 2, 3, 4; on {0,1}⁴ lines give 17, 30, 42 and planes 19, 38 (global 19, 39). Cycle bmd-r125. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> On \(\{0,1\}^4\) the order-zero threshold \(M(d)\) lies between \(11d-11\), from windows at the triple-double points (<a href="#cube-order-zero-dimension-four-lower-bound">theorem</a>), and \(20d-21\), from products (<a href="#cube-order-zero-dimension-four-linear-bound">theorem</a>). Point windows cannot close the gap. At \(d=2\) the ideals just below order zero have no zeros, so the obstruction there is not carried by any point. What sees it? Restricting the system to a line or a plane of \(\mathbb P^3\) gives smaller systems that keep part of the global structure. The test ends with how close each restriction comes to \(M(d)\).</p>
+<h4 id="cube-order-zero-restriction">Restriction</h4>
+<p><strong>Lemma</strong> (<code>lem:cube-order-zero-restriction</code>). On \(\{0,1\}^n\) over any field, let \(L\subseteq F^n\) be a linear subspace. Write \(F[L]=\mathrm{Sym}(L^*)\) for the polynomial ring of \(L\), the image of \(F[y_1,\ldots,y_n]\) under restriction. Call an order-zero solution on \(L\) at \(m\) a family \(W_c\in F[L]\), homogeneous of degree \(m-c\) (possibly 0), with \(W_m=1\) and \(\sum_cW_c\,([T^c]f)|_L=0\) in \(F[L]\) for all basis elements \(f\) of \(V_{n,d}\). The identities are polynomial identities, not pointwise ones, which matters over a finite field. Let \(M_L(d)\) be the least \(m\) with such a solution. Then:</p>
+<ul>
+<li>\(M_L(d)\le M_{L'}(d)\) for \(L\subseteq L'\);</li>
+<li>in particular \(M_L(d)\le M(d)=M_{F^n}(d)\).</li>
+</ul>
+<p>More precisely, a solution on \(L'\) at \(m\) restricts to a solution on \(L\) at the same \(m\).</p>
+<p><em>Proof.</em> Restriction \(F[L']\to F[L]\) is a homomorphism of graded rings. It maps a form of degree \(m-c\) to a form of degree \(m-c\) or to 0, fixes \(W_m=1\), and maps each identity to the restricted identity. \(\square\)</p>
+<p>The choice of the cube \(\{0,1\}^n\) plays no role in the proof; it only fixes the space \(V_{n,d}\).</p>
+<p>So a restricted system that is unsolvable at \(m\) shows that the global system is unsolvable at that \(m\). It does not by itself give \(M(d)&gt;m\), since solvability is not known to be monotone in \(m\) (<a href="#cube-threshold-monotone">monotonicity conjecture</a>, proved only for \(n\le3\)). The lemma gives \(M(d)\ge M_L(d)\), and \(M(d)&gt;m\) once some restrictions cover every \(m'\le m\). The systems are much smaller. On a plane of \(\mathbb P^3\) (a 3-dimensional \(L\)), there are about \(m^3/6\) unknowns rather than \(m^4/24\); on a line, about \(m^2/2\). The same principle, restriction of solutions to a line, underlies the <a href="#cube-line-restriction-bound">line-restriction bound</a> (<code>lem:cube-line-restriction-bound</code>), which bounds \(\ell_0\) in dimension 3 from the restricted system on a line through a point of known vanishing order. For lines in dimension 3 the lemma here is essentially the order-zero case of that bound. It extends the principle to subspaces of every dimension and every \(n\), with no point hypothesis. That bound transfers to characteristic 0 by semicontinuity because its hypothesis is a zero kernel of a homogeneous system. The consistency test here, with the inhomogeneous condition \(W_m=1\), has no such transfer. Restriction at order zero is also recorded for one special subspace. The <a href="#entry-2026-09-25-cube-order-zero-obstructions">obstructions entry</a> restricts to the coordinate hyperplane \(y_1=0\), where the system becomes the two-variable \(U_d\), with value \(4d+1\) for \(d\ge2\) in dimension 3 (<code>check:cube-dual-order-zero-thresholds</code>). That falls short of \(5d-1\); the generic line below does not.</p>
+<h4 id="cube-order-zero-restrictions">The thresholds of restrictions</h4>
+<p><strong>Computation.</strong> Two new kernels solve the restricted systems over \(\mathbb F_{1000003}\), with results in <code>research/results/bmd-r125-restrictions/</code>.</p>
+<ul>
+<li><code>research/tools/bmd_cube_line_order_zero.cpp</code> (lines \(y=sv_1+v_2\), FLINT ranks).</li>
+<li><code>research/tools/bmd_cube_plane_order_zero.cpp</code> (planes \(y=sv_1+tv_2+v_3\), fflas-ffpack ranks).</li>
+</ul>
+<p>Chart encoding: for independent \(v_1,v_2\) (or \(v_1,v_2,v_3\)), forms of degree \(m-c\) on \(L\) correspond one to one with chart polynomials of degree \(\le m-c\). Each identity is homogeneous of degree \(m-Q\), so it vanishes exactly when its dehomogenization does. The plane scans start at \(m=17\) (\(d=2\)) and \(m=30\) (\(d=3\)). The random lines are not inside the random planes, so the plane values are the least solvable \(m\) from that start. The lower bound on \(M(d)\) is argued per \(m\): the first random line is unsolvable at every \(m\le16\), respectively \(m\le29\) (the line kernel scans from \(m=1\)), and the plane at every \(m\) from the start to one below its value.</p>
+<p>Validation: the plane kernel on the whole space in dimension 3 gives \(M_3(3)=14\) (<code>plane-n3-validation.txt</code>), and the line kernel on the whole space in dimension 2 gives \(5,7,9=2d+1\) for \(d=2,3,4\) (<code>line-n2-validation.txt</code>).</p>
+<p><strong>Finite check</strong> (<code>check:cube-order-zero-restrictions</code>). Over \(\mathbb F_{1000003}\), the least \(m\) with a restricted order-zero solution. "Generic" means random over \(\mathbb F_{1000003}\), one or two samples. Solvability at fixed \(m\) is a constructible condition, so a random line or plane is generic with high probability, not certainly:</p>
+<table>
+<tr><th>restriction</th><th>d = 2</th><th>d = 3</th><th>d = 4</th></tr>
+<tr><td>\(\{0,1\}^3\), a random line</td><td>9</td><td>14</td><td>19</td></tr>
+<tr><td>\(\{0,1\}^3\), collision lines \(y_1=y_2\) or \(y_2=y_3\)</td><td>5</td><td>7</td><td>9</td></tr>
+<tr><td>\(\{0,1\}^4\), two random lines</td><td>17</td><td>30</td><td>42</td></tr>
+<tr><td>\(\{0,1\}^4\), three lines through the triple-double point \((0,0,1,1)\)</td><td>15–16</td><td>27–28</td><td>38–40</td></tr>
+<tr><td>\(\{0,1\}^4\), a generic line in the collision hyperplane \(y_1=y_2\)</td><td>9</td><td>14</td><td>19</td></tr>
+<tr><td>\(\{0,1\}^4\), collision lines (double-double, triple)</td><td>5</td><td>7</td><td>9</td></tr>
+<tr><td>\(\{0,1\}^4\), two planes (random, and an explicit integer plane at \(d=3\))</td><td>19, 19</td><td>38, 38</td><td>–</td></tr>
+<tr><td>\(M(d)\) on \(\{0,1\}^4\) (<a href="#cube-order-zero-dimension-four">check</a>, <a href="#cube-order-zero-dimension-four-linear-bound">theorem</a>)</td><td>19</td><td>39</td><td>\(\le59\)</td></tr>
+</table>
+<p>Readings:</p>
+<ul>
+<li><em>Codimension 1 in dimension 3 is exact.</em> A random line of \(\mathbb P^2\) gives \(5d-1=M_3(d)\) for \(d=2,3,4\). A general line misses the double points where the <a href="#entry-2026-09-25-cube-order-zero-value">window lemma</a> places the obstruction, so the obstruction appears to be carried by the restricted problem on a line without any special point; the sampled line was not checked against the double points.</li>
+<li><em>Codimension 2 in dimension 4 is not.</em> Random lines of \(\mathbb P^3\) give 17, 30, 42, differences 13 and 12, against 20. They exceed the point windows (\(11d-11\)).</li>
+<li><em>Codimension 1 in dimension 4 is nearly exact.</em> Two planes give 19 at \(d=2\), the threshold, and two give 38 at \(d=3\), one below. So the guess that a general hyperplane section decides order zero fails at \(d=3\) modulo this prime, by one, on the two sampled planes.</li>
+<li><em>Special lines are weaker than generic ones.</em> In dimension 3 the coordinate line \(y_1=0\) gives \(4d+1\) (recorded above). In a collision hyperplane the dimension-4 system restricts to the dimension-3 one and gives \(5d-1\). On collision lines it gives \(2d+1\), the dimension-2 value.</li>
+</ul>
+<p>These are lower bounds for \(M(d)\) over \(\mathbb F_{1000003}\) only. A solution modulo \(p\) of a restricted system does not certify anything in characteristic 0. An unsolvable one does not transfer to characteristic 0 either (the reason given in the <a href="#cube-order-zero-dimension-four-linear-conjecture">linear conjecture</a>'s status).</p>
+<p><strong>General statement.</strong> <code>lem:cube-order-zero-restriction</code>, for every \(n\), \(d\) and subspace \(L\) over every field. The finite check measures how much of \(M(d)\) each restriction captures.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the order-zero system and the \(d\le3\) values of the dimension-4 order-zero check, the line-restriction bound (the same principle for \(\ell_0\)), and the coordinate restriction \(U_d\) of the obstructions entry, which the claim search found. A fresh-context referee checked the lemma, the chart encoding, the kernels (row counts, the right-hand side from \(W_m=1\), the rank test) and every table number against the output files. It found the lemma and kernels correct. Its corrections are made:</p>
+<ul>
+<li>the identities are stated in the polynomial ring of \(L\), not pointwise;</li>
+<li>unsolvability at one \(m\) no longer claims \(M(d)&gt;m\), since monotonicity is unproved;</li>
+<li>the plane scans' starting points are justified per \(m\), not by containment, and the kernel comment says so;</li>
+<li>the third line through \((0,0,1,1)\) is in the table;</li>
+<li>"generic" is stated as random sampling;</li>
+<li>the line kernel is validated in dimension 2;</li>
+<li>a second plane at \(d=3\) was run (also 38);</li>
+<li>the unchecked claim about the double points is weakened;</li>
+<li>the relation to the line-restriction bound and the characteristic caveat are stated.</li>
+</ul>
+<p><strong>Assessment.</strong> Modulo \(1000003\), the dimension-4 order-zero obstruction is captured mostly on planes: points give slope 11 (proved), random lines 17, 30, 42, and random planes 19 and 38, against \(M(2)=19\) and \(M(3)=39\). The global value 39 is itself known only over \(\mathbb F_{1000003}\) (<a href="#cube-order-zero-dimension-four">check</a>); only \(M(2)=19\) is exact in characteristic 0. The plane values have difference 19 from two points, so a plane bound \(19(d-1)\) would give \(c_4\ge19\), but two values do not suggest a formula. In dimension 3 a random line is exact. A structural proof of the generic-line value \(5d-1\) there, not passing through the double points, would be the template for a plane argument in dimension 4. A general line of \(\mathbb P^2\) meets each of the six special lines (three coordinate lines, three collision lines) once. The coordinate-line restriction gives \(4d+1\) and the collision lines \(2d+1\), so any such proof must use how the line meets them. That is the next step.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r125">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>18 min 20.82 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 12.25 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 22.79 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 14.61 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">6 min 31.00 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.16 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
