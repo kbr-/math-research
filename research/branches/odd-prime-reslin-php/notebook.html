@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> On an expanding residual, the <a href="#entry-2026-09-26-sparse-conditioning">sparse conditioning theorem</a> (thm:sparse-conditioning) makes any constraints that vanish where \(q\) affine forms vanish cost at most \(2q\) degrees, provided a doubled permanent on separated pigeons is nonzero. Random forms meet that condition w.h.p. (cor:random-sparse-conditioning). So equations kept as axioms are not limited by level sets. The method pays degree for each form, however, so it handles at most \(D_0/2\) forms: W with \(M\le D_0/(2k)\) blocks, \(K&lt;1\), and only for blocks meeting the permanent condition. Next: a route review on this line. It should weigh that per-form budget against the goal's need for every \(K\), and test whether any recorded mechanism absorbs constraints without paying degree for each. It should also judge whether the permanent condition can be derived for adversarial dense blocks on a chosen residual.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Restriction and conditioning are both weighted replays. The <a href="#entry-2026-09-26-conditioning-review">conditioning review</a> found that weights built as products over blocks pay at least 2 degrees for each block they do not kill, so they stop near \(n/10\) surviving blocks under the operator's degree bound, \(K&lt;1\). Random dense blocks survive restriction, so the cap binds already for random families. Next: decide whether weights that are not products over blocks exist. For a random family of \(M\) blocks on \(N\) Boolean variables, compute the least degree of a nonzero multilinear polynomial vanishing on the union of the forbidden sets, and compare it with \(2M\). Start on the bare cube by exact linear algebra at small \(N\), then work relative to PHP's closure. Growth linear in \(M\) closes the weight route and moves A1 to degree-free absorption, where the killer-moment main term is the most concrete open step.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -27564,6 +27564,93 @@ because \(er\le n^{\eta/2}\) for large \(n\), as \(r=O(\ln n)\). This is at most
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 46.31 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 26.98 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-conditioning-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of the weighted-replay line after thm:sparse-conditioning, with three small tests; no new claim.">
+<h3>Route review: weighted replay, by restriction or by conditioning, pays at least two degrees for every block it does not kill, so under the operator's degree bound it stops near \(n/10\) surviving blocks; A1 at \(K\ge1\) needs weights that are not products over blocks, or degree-free absorption</h3>
+<p class="entry-meta">26 September 2026 · Route review with three tests · open statement A1 · cycle odd-prime-conditioning-review.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-sparse-conditioning">sparse conditioning theorem</a> keeps equations as axioms at a cost of 2 degrees each. Its entry named a budget of at most \(D_0/2\) forms. Does that budget bind the whole line, and what should A1 try next?</p>
+<p><strong>General statement.</strong> The line's claim: A1 holds if, after a restriction to an expanding residual, the remaining clauses can be absorbed by the Mikša–Nordström operator. The tools are the relative criterion (lem:relative-criterion), the few-equations theorem (thm:few-equations-hardness) and sparse conditioning (thm:sparse-conditioning, cor:random-sparse-conditioning). The goal needs W for \(M=n^K\) blocks and every fixed \(K\), for adversarial families, at degree \(22k\).</p>
+
+<h4>One framework: weighted replay</h4>
+<p>Restriction and conditioning are both weighted replays. If a polynomial \(\omega\) vanishes on every Boolean point where some clause is nonzero, a degree-\(D\) refutation of \(\mathrm{FPHP}_{G'}+\mathcal C\) gives \(\omega\in C_{D+\deg\omega}(\mathrm{FPHP}_{G'})\), as in the sparse conditioning proof. So hardness follows from \(R(\omega)\ne0\) with \(\deg\omega\le D_0-22k\). Two special cases:</p>
+<ul>
+<li>A restriction is the weight \(\prod\) of the fixed literals, a subcube.</li>
+<li>Conditioning is \(\prod_j(1-\ell_j^2)\), a flat.</li>
+</ul>
+<p>A block's clauses \(g_i\prod_{j\in S}L_j^2\) all vanish where a single prefix form vanishes. So one form per block suffices, not \(k\), as the sparse conditioning entry's budget paragraph assumed. The weight has degree \(2q\) for \(q\) blocks not killed by the restriction.</p>
+
+<h4>Falsification attempt: can a block's share of the weight cost less than 2?</h4>
+<p>Suppose the weight is a product over blocks, \(\omega=\prod_b\omega_b\), with \(\omega_b\) a polynomial in block \(b\)'s forms that vanishes on its forbidden patterns. The forbidden patterns of one clause are the \(v\in\mathbb F_3^{k+1}\) with every prefix coordinate nonzero and \(v_i=0\). For \(k\ge1\) their affine span is the hyperplane \(v_i=0\). An affine \(\omega_b\) vanishing on them is therefore a multiple of \(L_i\). Call a block nontrivial if it has at least two non-prefix forms, \(h_b-k\ge2\). Then an affine \(\omega_b\) must vanish on two distinct hyperplanes, so it is 0. A nontrivial block therefore costs at least 2, which \(1-L_j^2\) attains. A block with a single non-prefix form costs 1, with \(\omega_b=L_i\).</p>
+<p>Degrees in the forms add over a product. The degree in the cells can be lower only through cancellation, which this attempt does not examine. So every product weight without such cancellation handles at most \(D_0/2\) surviving nontrivial blocks, and at most \(D_0\) in the worst case of blocks with one non-prefix form. Here \(D_0\) is the reach of the operator's degree bound on the residual, not an intrinsic PC degree. On a residual of at most \(n+1\) pigeons, \(D_0\le s/10\le(n+1)/10\). So at most about \(n/10\) surviving blocks are handled, and \(K&lt;1\). The goal needs every \(K\). For random dense blocks a restriction kills almost none, since a random form restricted to a residual becomes derivable with probability about \(3^{-4r}\). So the cap binds for random families already.</p>
+<p>Outcome: the attempt confirms the cap for product weights. It says nothing about weights that are not products over blocks: low-degree polynomials supported in the allowed set of all \(M\) blocks together. No candidate for such a weight is known. The allowed set of a random family has density about \(1-n^{-1.03}\) (<code>info_budget.json</code> of the strategy review), so density does not rule one out.</p>
+
+<h4>Assessment of the line</h4>
+<ul>
+<li><em>What stands.</em> Everything listed in the strategy review, plus sparse conditioning. It is the first result keeping dense equations as axioms on a sparse board. Its permanent condition is non-degeneracy, not farness: column statistics, which defeat restrictions, pass it (test below).</li>
+<li><em>What it cannot do.</em> Reach \(M\ge n\) blocks for random families. Weighted replay with product weights and no cancellation in the cell degree stops at about \(n/10\) surviving blocks under the operator's degree bound. Restriction cannot kill random dense blocks, so all \(n^K\) of them survive. Whether restriction can kill enough blocks of every adversarial family is not shown, so no claim is made there. The goal needs every fixed \(K\), and \(K&lt;1\) does not reach it.</li>
+<li><em>What A1 at \(K\ge1\) needs.</em> Either a weight supported in the allowed set whose degree grows more slowly than the number of blocks, or a mechanism that absorbs blocks without degree cost: Tor vanishing and Taylor glue (A3), or \(1\notin W_A\) for the relative closure. Even random families at \(K\ge1\) are open.</li>
+<li><em>Qualitative assessment.</em> The restriction-and-conditioning line has produced sound partial results. By this falsification it is finished as a route to the goal for random families, and so for the goal, unless the weights that are not products over blocks, named above, exist. That question is sharp, cheap to test on small cube instances, and would close the line if answered negatively.</li>
+</ul>
+
+<h4>Outside leads</h4>
+<ul>
+<li><em>The Chevalley–Warning and Alon–Füredi degree bounds.</em> A polynomial on \(\mathbb F_q^m\) that is nonzero at one point and vanishes on all others has degree at least \(m(q-1)\). Target: A1, whether conditioning's cost of 2 per form is forced. <em>Where it breaks:</em> on the Boolean cube with PHP's axioms, a weight need not be a function of the forms alone. Restriction weights, and weights that are not products over blocks, escape it. <strong>Test.</strong> Passed: over \(\mathbb F_3\) the only function vanishing off a point \(v\) is \(c\prod_j(1-(x_j-v_j)^2)\), of degree \(2m\). By the sparse conditioning theorem's top coefficient, the weight has degree exactly \(2q\) whenever the permanent is nonzero. So for flat weights the cost is optimal.</li>
+<li><em>Kothari, Mori, O'Donnell and Witmer, "Sum of squares lower bounds for refuting any CSP" (STOC 2017).</em> Sum-of-squares hardness persists up to about \(n^{(t+1)/2}\) random constraints when the predicate supports a \(t\)-wise uniform distribution. The degree bound degrades with the density, but there is no fixed cost for each constraint. Target: A1 at \(K\ge1\) for random families. It suggests that the collective condition is \(t\)-wise uniformity of the allowed patterns, which does not depend on the number of blocks. <em>Where it breaks:</em> PC over \(\mathbb F_3\) is not SoS, and linear structure mod 3 is PC-easy. Their constraints are local, W's forms are dense. Over \(\mathbb F_3\), take an integer \(t\)-wise uniform multiset reduced mod 3, as an \(\mathbb F_3\)-valued \(\mu\). Interpolation gives \(\mu=\sum_v\mu(v)\prod_j(1-(x_j-v_j)^2)\), whose coefficient pairing with evaluation sums is triangular. It removes the monomials with at least \(k+1-t\) exponents 2 from \(\mu\) minus uniform, so \(\mu\) has degree at most \(2k-t+1\) in the forms instead of \(2k+2\). This does not hold for a real density, and the LP's rational solution may reduce to 0 mod 3. Even at best the saving is \(t+1\) degrees per block, while a single zeroed form already costs only 2. <strong>Test.</strong> Passed: an exact LP (<code>review_tests.json</code>) finds a pairwise-uniform distribution on a W clause's allowed patterns for \(k=3,4,5\), none for \(k=1,2\), and a 3-wise uniform one for \(k=4,5\). W's \(k=\Theta(\log n)\) is far above these thresholds.</li>
+<li><em>Alon's Combinatorial Nullstellensatz, for the permanent condition on adversarial forms.</em> The doubled permanent is linear in each row, with four candidate rows per pigeon. A nonzero coefficient of a suitable monomial would force a good choice. Target: sparse conditioning for adversarial blocks at \(K&lt;1\). <em>Where it breaks:</em> it is still bounded by the budget, so it does not reach the goal. <strong>Test.</strong> Passed. The test used additive forms \(d_{it}=v_t-v_{\top}\) on 10 random left-5-regular graphs with 3000 pigeons, with greedy separated sets of 35 to 40 pigeons and one non-top cell per chosen pigeon. The fraction of random separated choices with nonzero permanent was 0.34 to 0.55 for \(q=1\), mean 0.453, near the 4/9 expected for two independent nonzero coefficients. For \(q=4\) it was 0.47 to 0.63. A sanity control, with coefficients confined to the neighbourhood of one pigeon, gave 0 in 10 of 10, which holds by construction since two separated pigeons cannot both lie there (<code>review_tests.json</code>). A first run drew a fresh cell for every column. The fresh-context reviewer found this, and the run was corrected before use.</li>
+</ul>
+
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>The Kotecký–Preiss cluster expansion (statistical mechanics).</em> <em>Translation:</em> each block is a polymer whose activity is the density of its forbidden set. Dense forms make every pair of polymers incompatible, a hard-core gas on the complete graph. The dual certificate of PHP plus all blocks would be a cluster expansion around the PHP functional. <em>What a theorem there would give:</em> absorption of all \(n^K\) blocks at no degree cost when the Kotecký–Preiss criterion holds. <em>Smallest test:</em> evaluate the criterion \(\sum_b|w_b|e^{a}\le a\) with the recorded budget. <strong>Test.</strong> Passed as a computation: the recorded worst case is \(\sum_b|w_b|\le10^{-3.08}\) at \(K=1\), \(n=10^3\) (<code>info_budget.json</code>), and \(a=0.01\) satisfies the criterion. The obstacle is the characteristic: the dual objects are \(\mathbb F_3\)-linear functionals with no notion of small activity, so the expansion needs a characteristic-0 or positivity surrogate that PC over \(\mathbb F_3\) does not provide.</li>
+<li><em>\(\mathbb Z_3\) lattice gauge theory: Gauss's law and superselection sectors.</em> <em>Translation:</em> a dense equation \(\sum c_{it}x_{it}\equiv b\) is a global \(\mathbb Z_3\) charge. Sparse conditioning says low-degree operators cannot tell the charge sector. In gauge theory a charge is locally detectable exactly when it is confined to a region. <em>What a theorem there would give:</em> the exact condition for invisibility, which for \(q=1\) is support not confined to a ball. <em>Smallest test:</em> compare with the one-equation condition of sparse conditioning. <strong>Test.</strong> Passed, tautologically at \(q=1\): there \(\operatorname{perm}M=2d_{c_1}d_{c_2}\), so sparse conditioning fails exactly when the support is confined within pairwise distance 2, which is the gauge picture's confined charge. For \(q&gt;1\), and for \(n^K\) sectors, not run: the analogy supplies no prediction to test.</li>
+</ul>
+
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-strategy-review:1"><em>Shannon's information budget.</em> This cycle turned it into the Kotecký–Preiss bridge above, whose criterion holds numerically. <strong>Follow-up.</strong> Continuing: it needs a surrogate for smallness in characteristic 3.</li>
+</ul>
+
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-25-universality-review:1"><em>Quadratic Littlewood–Offord inverse theorems.</em> No work this cycle. <strong>Follow-up.</strong> Continuing: a candidate for the degree-free route for random tops.</li>
+<li data-lead="entry-2026-09-26-killer-moment-review:1"><em>Nguyen and Wood's moment method.</em> No work this cycle. <strong>Follow-up.</strong> Continuing: the killer-moment main term is the degree-free route's most concrete open step for random tops.</li>
+<li data-lead="entry-2026-09-26-expander-core-review:1"><em>The Mikša–Nordström closure as a gluing base.</em> It now hosts sparse conditioning, whose top coefficient uses its support lemmas. <strong>Follow-up.</strong> Developed: the operator carries weighted replay on sparse boards, with the budget above.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>The highest-risk item stays A1. Next on odd-prime-clause-transfer: decide whether weights that are not products over blocks can exist. The question: for a random family of \(M\) blocks on \(N\) Boolean variables, what is the least degree of a nonzero multilinear polynomial vanishing on the union of the blocks' forbidden sets, compared with \(2M\)?</p>
+<ul>
+<li>First on the bare cube, by exact linear algebra at small \(N\). Then relative to PHP's closure.</li>
+<li>A degree far below \(2M\) at \(M\gg N\) reopens the weight route.</li>
+<li>A degree that grows linearly with \(M\), or a proof of such growth, closes the route. Then A1 moves to degree-free absorption, where the killer-moment main term is the most concrete open step.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read thm:sparse-conditioning, lem:separated-top-coefficient, the strategy review's budget computation and the killer-moment review's status. The affine-span step was checked directly: every vector with nonzero prefix coordinates and \(v_i=0\) lies in the hyperplane, and these vectors span it affinely for \(k\ge1\). All test numbers were read from <code>review_tests.json</code> by script. Ryser's formula in the script was validated against brute force on 200 random matrices. A fresh-context reviewer confirmed the weighted-replay step and the LP numbers. It required these changes, all adopted:</p>
+<ul>
+<li>the sampling bug fixed and the test rerun;</li>
+<li>the control and the gauge bridge marked as holding by construction;</li>
+<li>the per-block lower bound stated for nontrivial blocks;</li>
+<li>the cap's hypotheses stated, with no claim for adversarial families;</li>
+<li>the claim about lower bounds below the trivial scale removed;</li>
+<li>the mod-3 duality remark qualified.</li>
+</ul>
+<p>This review registers no claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-conditioning-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 49.70 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 3.96 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 27.53 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 4.22 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 10.03 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3.75 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.21 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
