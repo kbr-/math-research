@@ -56,13 +56,20 @@ def field_value(data, claim, field, edges=None):
 
 class Evidence:
     def __init__(self, root=ROOT):
-        self.root, self.cache, self.notebooks = root, {}, {}
+        from notebooks import catalogue
+        self.root, self.cache, self.notebooks, self.items, self.resolved = root, {}, {}, catalogue(root), {}
+
+    def local(self, target):
+        """local_target, resolved once per target."""
+        if target not in self.resolved:
+            self.resolved[target] = local_target(target, self.root, self.items)
+        return self.resolved[target]
 
     def sha256(self, target, normalization=None):
         key = (target, normalization)
         if key in self.cache:
             return self.cache[key]
-        local = local_target(target, self.root)
+        local = self.local(target)
         if local is None:
             if normalization is not None:
                 raise ValueError('Normalized evidence requires a local anchored HTML source')
@@ -86,7 +93,7 @@ class Evidence:
 
     def snapshot(self, target):
         normalization = None
-        local = local_target(target, self.root)
+        local = self.local(target)
         if local is not None:
             path, anchor = local
             if path.suffix == '.html' and anchor:
@@ -132,12 +139,15 @@ def make_review(data, claim, field, targets, *, revision, date, note,
     return review
 
 
-def coverage(data, root=ROOT):
-    evidence = Evidence(root)
+def coverage(data, root=ROOT, labels=None, evidence=None):
+    """Review state of every field of every claim, or of the claims in `labels`."""
+    evidence = evidence or Evidence(root)
     edges = incident_edges(data)
     counts = {field: Counter() for field in FIELDS}
     rows = []
     for claim in data['claims']:
+        if labels is not None and claim['id'] not in labels:
+            continue
         for field in FIELDS:
             review = claim.get('reviews', {}).get(field)
             state = 'unreviewed' if review is None else review['state']

@@ -2,8 +2,8 @@
 import subprocess
 from collections import defaultdict
 from pathlib import Path
-from claim_registry import ROOT, parse_json, TEXT_FIELDS, local_target
-from claim_reviews import FIELDS, coverage
+from claim_registry import ROOT, parse_json, TEXT_FIELDS
+from claim_reviews import FIELDS, Evidence, coverage
 from claim_registration import check_entries, Entries
 
 # Preserve append-only historical entries predating the inventory requirement.
@@ -59,17 +59,20 @@ def maintenance(before, after, root=ROOT, changed_paths=()):
                     errors.append(f'{label}: explicitly refresh status review for {key}; no automatic retraction inferred')
                 if label in old and old[label].get('reviews',{}).get('significance')==new[label].get('reviews',{}).get('significance'):
                     errors.append(f'{label}: explicitly refresh significance review for {key}')
-    report=coverage(after,root)
-    rows={(r['id'],r['field']):r for r in report['fields']}
+    evidence=Evidence(root);changed_paths=set(changed_paths)
     # Changed cited sources matter even if someone forgot to edit the index.
     # Corpus-wide negative mapping census changes stay visible in backlog instead.
-    for row in report['fields']:
-        if row['state']=='stale':
-            for reason in row.get('reasons',[]):
-                if not reason.startswith('source changed: '):continue
-                target=local_target(reason[len('source changed: '):],root)
-                if target and str(target[0].relative_to(root)) in changed_paths:
-                    need(row['id'],[row['field']],'cited evidence changed')
+    for label,claim in new.items():
+        for field,review in claim.get('reviews',{}).items():
+            for item in review['evidence']:
+                target=evidence.local(item['target'])
+                if not target or str(target[0].relative_to(root)) not in changed_paths:continue
+                try:current=evidence.sha256(item['target'],item.get('normalization'))
+                except (OSError,ValueError):current='missing'
+                if current!=item['sha256']:need(label,[field],'cited evidence changed')
+    # Only the claims under review need their state; the whole backlog is claim-index.py coverage.
+    report=coverage(after,root,set(required),evidence)
+    rows={(r['id'],r['field']):r for r in report['fields']}
     for label,fields in required.items():
         for field in sorted(fields):
             row=rows[(label,field)];review=new[label].get('reviews',{}).get(field)
