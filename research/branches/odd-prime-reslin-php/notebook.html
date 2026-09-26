@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A3 and A1.</strong> Inside joint capacity every sub-family is row-free whatever its falls or density (<a href="#entry-2026-09-26-subfamily-row-freeness">sub-family row freeness</a>), so relative row freeness is a local-to-global statement beyond capacity. Next: characterize a single randomized-prefix member's first new tops by its kernel patterns. Then determine which prefix coincidences across members make such tops dependent modulo the row sums, the row-freeness analogue of a shared piece.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A3 and A1.</strong> A member's new tops are known exactly (<a href="#entry-2026-09-26-boolean-top-reduction">Boolean top reduction</a>): products of its linear forms, with a Boolean factor chosen by the prefix, first at degree between about \(3.17t\) and \(4t+2\). Next: one research cycle on transversality, whether such tops from members without zero-column events are independent in \(A=G/\mathfrak mG\) below the fill point. Then a route review of the global-closure route against A1's adversary.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33262,6 +33262,52 @@ Subtracting lowers \(d\), a contradiction. So \(d=\deg f\) and the top of \(f\) 
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 48.67 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">45.19 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-boolean-top-reduction" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:boolean-top-reduction">
+<h3>Boolean top reduction: a randomized-prefix member's top ideal in value space is a direct sum over exponent-one sets \(O\), of \(y^O\) times the doubled top space of Boolean functions supported on the kernel patterns. Its first new degree lies between \(2t\log_23\approx3.17t\) (DeMillo–Lipton) and the clause degree \(4t+2\). Going lower needs more kernel patterns than a uniform prefix gives</h3>
+<p class="entry-meta">26 September 2026 · Working lemma · open statements A3 and A1 · cycle odd-prime-member-first-tops. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statements A3 and A1. <a href="#entry-2026-09-26-first-degree-purity">First-degree purity</a> and <a href="#entry-2026-09-26-subfamily-row-freeness">sub-family row freeness</a> reduced relative row freeness to transversality of members' new tops modulo the row sums. To study which prefix coincidences break it, the tops of one member must be known exactly. What is a randomized-prefix member's top ideal, as a function of its prefix?</p>
+<p><strong>General statement.</strong> lem:boolean-top-reduction, for every \(h\), \(t\) and prefix \(C\in\mathbb F_3^{t\times h}\).</p>
+<h4>The lemma</h4>
+<p><strong>Setting.</strong></p>
+<ul>
+<li>\(R_h=\mathbb F_3[y_1,\dots,y_h]/(y_i^3-y_i)\) is the ring of functions on \(\mathbb F_3^h\) (the member's form values), filtered by degree, with \(\operatorname{gr}R_h=\mathbb F_3[y]/(y_i^3)\).</li>
+<li>\(g_i=1-y_i^2=[y_i=0]\). The member's excluded set is \(E_C=\{y:g(y)\ne0,\ Cg(y)=0\}\). Its allowed set \(V_C\) is the complement, and its top ideal is \(n_C=\operatorname{gr}I(V_C)\).</li>
+<li>\(K=\{\pi\in\{0,1\}^h\setminus\{0\}:C\pi=0\}\), the kernel patterns; a point \(y\) lies in \(E_C\) iff its zero set \(\pi(y)\) lies in \(K\).</li>
+<li>For \(O\subseteq[h]\), with \(R=[h]\setminus O\), put \(A_O=\{z\in\{0,1\}^R:\{i\in R:z_i=0\}\in K\}\). Let \(\tau(A_O)\) be the graded top space of the Boolean functions over \(\mathbb F_3\) on \(\{0,1\}^R\) supported on \(A_O\), in multilinear degree.</li>
+</ul>
+<p><strong>Statement.</strong> As graded spaces,</p>
+<p>\[n_C=\bigoplus_{O\subseteq[h]}y^O\cdot\tau(A_O)(y_R^2),\]</p>
+<p>where \(y^O=\prod_{i\in O}y_i\) and \(\tau(A_O)(y_R^2)\) substitutes \(z_i=y_i^2\). The summand for \(O\) and Boolean degree \(k\) sits in degree \(|O|+2k\). In particular:</p>
+<ol>
+<li>The first new degree of the member is \(e_C=\min_O\bigl(|O|+2\,\mathrm{mindeg}(A_O)\bigr)\), where \(\mathrm{mindeg}(A)\) is the least degree of a nonzero Boolean function supported on \(A\), with \(\mathrm{mindeg}(\emptyset)=\infty\).</li>
+<li>(DeMillo–Lipton) \(e_C\ge\min_O\bigl(|O|+2(|R|-\log_2|A_O|)\bigr)\).</li>
+<li>\(e_C\le4t+2\) whenever some clause is nonzero: the clause \(g_iQ^C\) lies in the summand \(O=\emptyset\) with Boolean degree at most \(2t+1\).</li>
+</ol>
+<p><em>Proof.</em> The monomials \(y^\mu\), \(\mu\in\{0,1,2\}^h\), form a basis of \(R_h\). Writing \(O=\{i:\mu_i=1\}\) and \(z_i=y_i^2\) on the rest gives \(R_h=\bigoplus_Oy^O\cdot M_O\), where \(M_O\) is the multilinear polynomials in \(z_R\). An element \(y^O\varphi(z_R)\) with \(\varphi\) of multilinear degree \(k\) has degree \(|O|+2k\). Its top is \(y^O\) times the top of \(\varphi\) at \(z=y^2\). Different \(O\) give disjoint sets of monomials, so the degree of a sum is the maximum over its \(O\)-components, and the tops add componentwise.</p>
+<p>Support: let \(f=\sum_Oy^O\varphi_O(z_R)\), and fix a zero set \(\pi\). On the cell \(\{y:\pi(y)=\pi\}\), \(y^O=0\) unless \(O\cap\pi=\emptyset\). For \(O\subseteq[h]\setminus\pi\) the functions \(\prod_{i\in O}y_i\) are the distinct characters of \((\mathbb F_3^\times)^{[h]\setminus\pi}\cong(\mathbb Z/2)^{[h]\setminus\pi}\), hence linearly independent there. On the cell, \(z_R\) is the constant point with zeros exactly at \(\pi\), since \(\pi\subseteq R\). So \(f\) vanishes on the cell iff \(\varphi_O\) vanishes at that point for every \(O\) disjoint from \(\pi\). Hence \(f\) vanishes off \(E_C\) iff every \(\varphi_O\) vanishes at the points of \(\{0,1\}^R\) whose zero set is not in \(K\), that is, iff \(\varphi_O\) is supported on \(A_O\). So \(I(V_C)=\bigoplus_Oy^O\cdot\{\varphi\text{ supported on }A_O\}\) as filtered spaces, and taking tops componentwise gives the statement.</p>
+<p>Item 1 follows. Item 2 is the DeMillo–Lipton bound on the Boolean cube over any field: a nonzero multilinear polynomial of degree \(k\) on \(\{0,1\}^R\) is nonzero at no fewer than \(2^{|R|-k}\) points, so its support fits in \(A_O\) only if \(2^{|R|-k}\le|A_O|\). For item 3: the pattern of \(z\) is \(\pi=1-z\), and \(g_i=1-y_i^2=1-z_i\). So the clause \(g_iQ^C=g_i\prod_j(1-(c_j\cdot g)^2)\) is \(\varphi(y^2)\) for the Boolean function \(\varphi(z)=(1-z_i)\,[C(1-z)=0]\), of multilinear degree at most \(2t+1\). It is supported on the \(z\) whose pattern lies in \(\ker C\) and has \(\pi_i=1\), a subset of \(A_\emptyset\). So a nonzero clause gives a nonzero element of the \(O=\emptyset\) summand of degree at most \(2(2t+1)\). \(\square\)</p>
+<h4>What it gives</h4>
+<ul>
+<li><strong>Size of the first new degree.</strong> For uniform \(C\), the expected number of kernel patterns inside \(R\) is \((2^{|R|}-1)3^{-t}\), so \(|A_O|\approx2^{|R|}3^{-t}\) with high probability when \(2^{|R|}\gg3^t\). For those \(O\), item 2 gives at least \(2t\log_23-o(t)\approx3.17t\). For \(O\) with \(2^{|R|}\) not much larger than \(3^t\), this estimate is not licensed. Those \(O\) have \(|O|\ge h-O(t)\), so their term \(|O|+2\,\mathrm{mindeg}(A_O)\) is at least about \(h-O(t)\), which exceeds \(3.17t\) once \(h\) is a large multiple of \(t\). Sets \(A_O\) that are empty contribute nothing. So a member's first new tops lie between about \(3.17t\) and \(4t+2\), far below W_RS's \(D\approx44t\). The members' own falls are the part of \(n_C\) below the clause degree.</li>
+<li><strong>What lowers it.</strong> By item 2, a first new degree below \(|O|+2k\) needs \(|A_O|\ge2^{|R|-k}\): more kernel patterns among the subsets of \(R\) than a uniform prefix gives. One way is a pattern subcube in \(K\), which exists exactly when the columns of \(C\) outside a set \(S\) vanish and \(C_S\sigma=0\) for some pattern \(\sigma\) on \(S\). That is the zero-column event of lem:shared-piece-rarity, now without any partner, of probability at most \(h3^{-t}\). Whether other prefix degeneracies can enlarge \(A_O\) enough is not settled here.</li>
+<li><strong>The tops themselves.</strong> In the \(O\) component, the tops are \(\prod_{i\in O}y_i\) times polynomials in the \(y_i^2\), \(i\notin O\). Pulled back to the board, they are \(\prod_{i\in O}\ell_i\) times the Boolean top of \(A_O\) evaluated at the \(\ell_i^2\). Transversality modulo the row sums across members is therefore a statement about such products of the members' linear forms, with the Boolean factor chosen by the random prefix.</li>
+</ul>
+<p><strong>Next.</strong> Transversality needs the tops' dependence across members modulo \(\mathfrak m\). A route review is due after one more research entry. That entry should test the natural statement: tops from members without zero-column events are independent in \(A=G/\mathfrak mG\) below the fill point. The review should then weigh the global-closure route against A1's adversary, with leads aimed at independence of products of linear forms modulo the row sums.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:single-block-falls (the value ring and the clauses), lem:shared-piece-rarity, lem:first-degree-purity and cor:subfamily-row-freeness. The lemma is exact and self-contained; its only imported fact is the DeMillo–Lipton bound on the Boolean cube. A fresh-context reviewer verified the decomposition, the support argument, the DeMillo–Lipton step and the clause computation. It required, all adopted: the claim that low first degree needs a zero-column event downgraded to one sufficient mechanism, left open (a correction also made independently before the report); the estimate restricted to the \(O\) where it is licensed; the unexplained hypothesis \(h\ge2t+1\) replaced by the condition \(2^{|R|}\gg3^t\); and \(\mathrm{mindeg}(\emptyset)=\infty\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-member-first-tops">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 9.30 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">8 min 28.64 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 40.52 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
