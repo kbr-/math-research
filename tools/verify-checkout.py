@@ -27,13 +27,14 @@ def main():
     args = parser.parse_args()
     tracked = set(subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT, text=True).split('\0')) - {''}
     failures = []
-    try:
-        registry = load_claims(ROOT / 'research/claims/index.json')
-        if (ROOT / 'research/CLAIM_INDEX.md').read_text() != render_claims(registry):
-            failures.append('Generated claim index is stale; run tools/claim-index.py render')
-        failures += ['Claim link: ' + str(error) for error in check_targets(registry, ROOT)['errors']]
-    except (ValueError, OSError) as error:
-        failures.append('Claim registry: ' + str(error))
+    if not args.public_history:  # Otherwise check-claims.py below validates the registry.
+        try:
+            registry = load_claims(ROOT / 'research/claims/index.json')
+            if (ROOT / 'research/CLAIM_INDEX.md').read_text() != render_claims(registry):
+                failures.append('Generated claim index is stale; run tools/claim-index.py render')
+            failures += ['Claim link: ' + str(error) for error in check_targets(registry, ROOT)['errors']]
+        except (ValueError, OSError) as error:
+            failures.append('Claim registry: ' + str(error))
     manifest = json.loads((ROOT / 'research/provenance/handoff-files.json').read_text())
     for entry in manifest['files']:
         path = ROOT / entry['path']
