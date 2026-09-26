@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> Every recorded route to the collective core is closed (<a href="#entry-2026-09-26-closed-routes-review">closed-routes review</a>). What the recorded bridges lack is smallness in characteristic 3. The review's Hensel lead supplies a candidate at Nullstellensatz degree: a rational dual functional with 3-integral values reduces mod 3 to an \(\mathbb F_3\) one, and such a functional exists exactly when the constant monomial lies outside the 3-saturation of the degree-\(d\) lattice plus \(3\mathbb Z_{(3)}^N\). The torsion-free shortcut fails: weak PHP's degree-3 lattice has 3-torsion from 5 pigeons on. Next: decide the criterion for weak PHP with 6 pigeons at degree 3, unrefuted over every field by Razborov's bound, by computing the saturation modulo 3 with an iterated left-kernel lift until it reaches the rational rank.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The 3-integrality lead passed its base case, conditionally on a rational rank: weak PHP with 6 pigeons at Nullstellensatz degree 3 has a 3-integral rational dual functional despite 6 dimensions of 3-torsion (<a href="#entry-2026-09-26-hensel-saturation">Hensel saturation</a>). Next: test whether the 6 lifted torsion directions lie in the degree-3 PC-derivable space over \(\mathbb F_3\), which would reduce conj:three-integral-php-certificates to Razborov's bound, using the recorded closure tester. Then add one dense constraint \(L^2-1\) with a stated integer lift, report its 3-torsion first, and decide whether integral certificates survive.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -29620,6 +29620,56 @@ The main term is an equidistribution statement analogous to Cohen–Lenstra mome
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 30.52 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 51.56 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-hensel-saturation" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:three-integral-php-certificates ex:hensel-saturation-small" data-lead="entry-2026-09-26-closed-routes-review:2">
+<h3>The Hensel saturation test: assuming its rational rank is 3876, as modular ranks at eight primes agree, weak PHP with 6 pigeons at Nullstellensatz degree 3 has a rational dual functional with 3-integral values despite 6 dimensions of 3-torsion in its lattice</h3>
+<p class="entry-meta">26 September 2026 · Conditional finite check and conjecture · open statement A1 · cycle odd-prime-hensel-saturation.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-closed-routes-review">closed-routes review</a> opened a 3-integrality lead at Nullstellensatz degree. A rational dual functional that vanishes on the lattice \(L_d\) of degree-\(\le d\) axiom multiples, with \(\ell(1)=1\) and 3-integral values, reduces mod 3 to an \(\mathbb F_3\) dual functional. It exists exactly when \(e_1\notin\mathrm{Sat}(L_d)+3\mathbb Z_{(3)}^N\), where \(\mathrm{Sat}(L_d)=(L_d\otimes\mathbb Q)\cap\mathbb Z_{(3)}^N\) and \(e_1\) is the constant monomial. The review found 3-torsion in \(\mathbb Z^N/L_3\) from 5 pigeons on, so \(\mathrm{Sat}(L_3)\ne L_3\otimes\mathbb Z_{(3)}\). Does an integral certificate exist anyway at 6 pigeons and degree 3, the first size that is unrefuted over every field and has 3-torsion?</p>
+<p><strong>General statement.</strong> conj:three-integral-php-certificates: for weak \(\mathrm{PHP}^{n+1}_n\) (rows \(\sum_jx_{ij}-1\), collisions \(x_{ij}x_{i'j}\), multilinear), at every degree \(d\) where \(\mathbb F_3\) has no NS refutation, \(e_1\notin\mathrm{Sat}(L_d)+3\mathbb Z_{(3)}^N\): NS hardness over \(\mathbb F_3\) is certified by a 3-integral rational functional. The range \(d&lt;n/2+1\), below Razborov's bound, is a sufficient subrange. The conditional finite check ex:hensel-saturation-small gives one nontrivial instance, 6 pigeons at \(d=3\). The other cases run have no 3-torsion, so there the conclusion already follows from \(\mathbb F_3\)-hardness. No known result was found that implies the conjecture: the obvious symmetric design has coefficients \(c_k=(n-k)!/n!\), which are not 3-integral for \(n\ge3\), so Razborov's construction is not evidently integral.</p>
+
+<h4>The computation</h4>
+<p>The script <code>hensel_saturation.py</code> computes \(\mathrm{Sat}(L_d)\) modulo 3 by iterated lifting. It starts from the integer generator matrix \(S_0=G\). A basis of the left kernel of \(S_t\) over \(\mathbb F_3\) is computed by FLINT's <code>nmod_mat_nullspace</code> and lifted to integer vectors \(\tilde y\). Then \(S_{t+1}\) is \(S_t\) together with the rows \(\tilde yS_t/3\), which are integral and are kept exactly. This continues until the \(\mathbb F_3\)-rank reaches the rational rank. Every added row lies in \(\mathrm{Sat}(L_d)\), and a saturated lattice reduces mod 3 to a space of dimension its rank. So once the \(\mathbb F_3\)-rank equals the rational rank, the \(\mathbb F_3\)-span of \(S_t\) is \(\mathrm{Sat}(L_d)\bmod3\), and \(e_1\) is tested against it. The rational rank is estimated as the largest rank modulo 5, 7, 11, 13 and 37 (<code>php_lattice_torsion.json</code> of the closed-routes review), and checked modulo three word-size primes (\(10^9+7\), 998244353 and \(2^{61}-1\)) by FLINT's <code>nmod_mat_rank</code> (<code>hensel_saturation.json</code>). All eight agree in every case. Modular ranks are only lower bounds, so the positive conclusions assume the rational rank equals that common value. If it were larger, the iteration would stop early and "\(e_1\) not in the span" would prove nothing. No exact rational certificate was computed. As a further check, the lattice with the lifted rows added still has rank equal to the estimate modulo \(10^9+7\), so the added rows lie in \(L_d\otimes\mathbb Q\).</p>
+<ul>
+<li>4 pigeons, \(d=2\): rank 64 over \(\mathbb F_3\) and \(\mathbb Q\); \(e_1\) not in the span; an integral certificate exists, as it must without 3-torsion.</li>
+<li>5 pigeons, \(d=2\): rank 135; no 3-torsion; an integral certificate exists.</li>
+<li>5 pigeons, \(d=3\): \(\mathbb F_3\)-rank 1294, one lifting step reaches 1295, and \(e_1\) lies in the saturation. There \(\mathbb F_3\) refutes at degree 3, so no certificate can exist, as the review noted. This is the control.</li>
+<li>6 pigeons, \(d=2\): rank 246; no 3-torsion; an integral certificate exists.</li>
+<li>6 pigeons, \(d=3\): \(\mathbb F_3\)-rank 3870, one lifting step reaches the rational rank 3876, and \(e_1\) is not in the saturation. So, assuming the rational rank is 3876, an integral certificate exists despite 6 dimensions of 3-torsion.</li>
+</ul>
+<p>The control confirms only that the lifting raises the rank from 1294 to 1295. It does not test the \(e_1\) check, since there \(e_1\) already lies in the \(\mathbb F_3\)-span of \(L_3\) before any lifting.</p>
+
+<h4>What it means</h4>
+<ul>
+<li>At the first informative size, and subject to the rank assumption, 3-torsion in PHP's lattice does not obstruct 3-integral certificates: \(e_1\notin\mathrm{Sat}(L_3)+3\mathbb Z_{(3)}^N\).</li>
+<li>A sharper route to the conjecture: if \(\mathrm{Sat}(L_d)\bmod3\) lies inside the degree-\(d\) PC-derivable space over \(\mathbb F_3\), the conjecture follows from Razborov's lower bound over \(\mathbb F_3\). Whether the 6 torsion directions at 6 pigeons and \(d=3\) are PC-derivable at degree 3 is a direct test.</li>
+<li>The lemma and the test are for NS degree, while W is a PC statement. So even a positive answer for PHP plus blocks would not advance A1 directly; it would show that the characteristic-0 route is not blocked at NS degree.</li>
+</ul>
+<p><strong>Next.</strong> Test the sharper route first. At 6 pigeons and \(d=3\), compute the degree-3 PC-derivable space over \(\mathbb F_3\) with the recorded closure tester, and decide whether the 6 lifted torsion directions lie in it. If they do, look for the structural reason, which could prove the conjecture from Razborov's bound. If they do not, the conjecture needs its own argument. Then add one dense constraint \(L^2-1\), with a stated integer lift of \(L\), since the saturation depends on the lift. Report the 3-torsion first: the outcome decides something only if the new lattice has 3-torsion and is unrefuted over \(\mathbb F_3\).</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the closed-routes review's lemma, criterion and torsion data. A claim search under integral certificate, torsion, lattice and Nullstellensatz found no earlier record. A fresh-context reviewer checked the code and every number, and confirmed that the lifting computes the saturation modulo 3 once the rank reaches the rational rank. It required:
+the added rows kept exact (the first draft reduced them mod 9, harmless with one step but wrong for a third), done and rerun with identical results;
+the positive results stated as conditional on the rational rank;
+the control described as testing only the rank step;
+the evidence limited to one nontrivial instance, with the others torsion-free;
+the modular ranks cited from the file that holds them;
+the conjecture's natural range stated, with \(d&lt;n/2+1\) as a subrange, and the Razborov remark corrected, since the obvious design is not 3-integral;
+the sharper PC-containment test added;
+and the next step given a stated lift, a torsion report and the NS-versus-PC scope. All were adopted. The changes weaken or scope claims, so no second pass was made. The positive results remain conditional on the rational rank.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-hensel-saturation">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 24.16 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 34.11 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 29.54 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">56.54 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 23.78 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.19 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
