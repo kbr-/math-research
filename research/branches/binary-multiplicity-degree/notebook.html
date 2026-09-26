@@ -34,7 +34,7 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). By the <a href="#cube-squarefree-reduction">reduction theorem</a>, the law \(\ell_0(d+1,8d-4)=10d^2-10d-5\) follows from a statement about the collision limit \(U^{(3)}_d\) on the genus-1 curve: its determinant has multiplicity exactly \(2E_4(d)\) at each \(y_j\), and a squarefree non-collision part (<a href="#entry-2026-09-26-cube-squarefree-reduction">conjecture</a>; true for \(d\le9\)). Prove the multiplicity at the triple collisions, then simplicity of the generic Weierstrass points of \(U_d\) with the group law.</li>
+<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). By the <a href="#cube-squarefree-reduction">reduction theorem</a>, the law \(\ell_0(d+1,8d-4)=10d^2-10d-5\) follows from a statement about the collision limit \(U^{(3)}_d\) on the genus-1 curve: its determinant has multiplicity exactly \(2E_4(d)\) at each \(y_j\), and a squarefree non-collision part (<a href="#entry-2026-09-26-cube-squarefree-reduction">conjecture</a>; true for \(d\le9\)). The multiplicity is proved for every \(d\) (<a href="#cube-limit-triple-multiplicity">corollary</a>, from the <a href="#cube-confluence-valuation">confluence lemma</a>). Remaining: squarefreeness of the non-collision part of \(\Delta_U\). This needs its restriction to the double-double sides \(y_i=y_j\) through the transported degree vector, and the genus-0 determinant \(\Delta_{\nu'}\), \(\nu'=(2d,2d-2,2d-2,2d-4)\), on the triple sides.</li>
 <li><strong>Dimension 4 as \(S_5\) representation theory</strong> (open statement 3). Every threshold ideal is stable under \(S_{n+1}\) permuting the branch points \(0,y_1,\ldots,y_n\) (<a href="#cube-branch-point-symmetry">symmetry theorem</a>).
 <ul>
 <li>Extend the symmetric kernel to isotypic components: solutions invariant under a Young subgroup, projected to an \(S_5\)-isotypic component.</li>
@@ -6900,6 +6900,76 @@ So on a collision hyperplane, \(\Delta^{\mathrm{nc}}_{4,d}\) restricts to \(\pro
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">9 min 17.43 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2.82 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-confluence" data-kind="research" data-route="cube-odd-characteristic" data-lead="entry-2026-09-26-cube-route-review-15:2" data-claims="lem:cube-confluence-valuation cor:cube-limit-triple-multiplicity">
+<h3>26 September 2026 — Merging a square root: an exact valuation and leading coefficient for every degree vector, and the triple-collision multiplicity of the limit determinant</h3>
+<p class="entry-meta">Working proof in characteristic 0: along a_n = 0, Δ_ν has valuation Σ(α+1)(β+1) and leading coefficient a multiple of Δ_ν′ with ν′ = α+β+1; so the limit determinant has multiplicity exactly 2E₄(d) at y_j = 0, half of the limit conjecture. Cycle bmd-r107. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> By the <a href="#cube-squarefree-reduction">reduction theorem</a>, the dimension-4 boundary law \(\ell_0(d+1,8d-4)=10d^2-10d-5\) for every \(d\) follows from the <a href="#entry-2026-09-26-cube-squarefree-reduction">limit conjecture</a>. Its two halves are:</p>
+<ol>
+<li>the determinant \(\Delta_U\) of \(U^{(3)}_d\) has multiplicity exactly \(2E_4(d)\) along each \(y_j\);</li>
+<li>its part prime to the collision forms is squarefree.</li>
+</ol>
+<p>The first half is a triple collision \(r_0=r_1=r_j\) of the original problem. Can it be computed exactly for all \(d\), by degenerating \(U_d\) along \(y_4\to0\) as the <a href="#cube-collision-limit-space">collision limit lemma</a> degenerated \(V_d\)? The test ends with the exact multiplicity, or with a limit system that is not normal. This develops the limit-linear-series lead of <a href="#entry-2026-09-26-cube-route-review-15">route review 15</a> (lead 2).</p>
+<p><strong>Setting.</strong> As in the <a href="#cube-generic-normality">generic normality lemma</a>: \(F\) has characteristic 0, \(w_i=(1+a_iT)^{1/2}\), and a degree vector \(\nu=(\nu_r)_{r\in\{0,1\}^n}\) has \(\nu_r\ge-1\). Degree vectors given by formulas are clipped, \(\nu_r=\max(\cdot,-1)\), and so are \(\nu'\) below. \(V_\nu=\bigoplus_rw^rF[T]_{\le\nu_r}\), and \(\Delta_\nu(a)\in\mathbb Z[\tfrac12][a]\) is the \(N_\nu\times N_\nu\) determinant of the rows \(T^jw^r\). Write \(r=(r',r_n)\), \(\alpha_{r'}=\nu_{(r',0)}\) and \(\beta_{r'}=\nu_{(r',1)}\).</p>
+<h4 id="cube-confluence-valuation">The confluence lemma</h4>
+<p><strong>Lemma</strong> (<code>lem:cube-confluence-valuation</code>). Let \(F\) have characteristic 0, \(n\ge1\), and \(\nu\) a degree vector. Put \(\nu'_{r'}=\alpha_{r'}+\beta_{r'}+1\), a degree vector on \(\{0,1\}^{n-1}\), and \(e(\nu)=\sum_{r'}(\alpha_{r'}+1)(\beta_{r'}+1)\). Then:</p>
+<ul>
+<li>\(a_n^{e(\nu)}\) exactly divides \(\Delta_\nu\);</li>
+<li>\((\Delta_\nu/a_n^{e(\nu)})\big|_{a_n=0}=c\,\Delta_{\nu'}(a_1,\ldots,a_{n-1})\) for a constant \(c\in\mathbb Q^\times\) depending only on \(\nu\).</li>
+</ul>
+<p>For \(n=1\), \(\Delta_{\nu'}\) is the constant determinant of \(1,T,\ldots,T^{\alpha+\beta+1}\).</p>
+<p><em>One-variable normality.</em> For integers \(\alpha,\beta\ge-1\), not both \(-1\), let \(S_{\alpha,\beta}=\{A+Bw:\deg A\le\alpha,\ \deg B\le\beta\}\) with \(w=(1+U)^{1/2}\). Then the orders at \(U=0\) of \(S_{\alpha,\beta}\) are exactly \(0,\ldots,\alpha+\beta+1\).</p>
+<ul>
+<li>The space has dimension \(\alpha+\beta+2\), so it suffices to exclude a nonzero \(f=A+Bw\) of order \(\ge\alpha+\beta+2\).</li>
+<li>If \(B=0\), then \(A\) has degree \(\le\alpha\) but order \(&gt;\alpha\), so \(A=0\). If \(A=0\), then \(\operatorname{ord}f=\operatorname{ord}B\le\beta&lt;\alpha+\beta+2\).</li>
+<li>Otherwise, since \(w'=w/(2(1+U))\), the terms in \(w\) cancel in
+\[ R=(2(1+U)B'+B)f-2(1+U)Bf'=(2(1+U)B'+B)A-2(1+U)A'B. \]
+So \(R\) is a polynomial of degree \(\le\alpha+\beta\) and of order \(\ge\operatorname{ord}f-1\ge\alpha+\beta+1\). Hence \(R=0\), that is \((A/B)'/(A/B)=1/(2(1+U))\). In characteristic 0 this gives \((A/B)^2=\gamma(1+U)\) for a constant \(\gamma\), which is impossible since \(\gamma(1+U)\) has odd degree and so is not a square in \(F(U)\).</li>
+</ul>
+<p>So \(S_{\alpha,\beta}\) has a basis \(f_0,\ldots,f_{\alpha+\beta+1}\) with \(f_k=U^k\varphi_k(U)\), \(\varphi_k\in F[[U]]\) and \(\varphi_k(0)\ne0\). The coefficients can be taken rational.</p>
+<p><em>Proof of the lemma.</em> Fix \(r'\), with \(\alpha=\alpha_{r'}\), \(\beta=\beta_{r'}\), and replace the rows \(T^jw^{r'}\) (\(j\le\alpha\)) and \(T^jw^{r'}w_n\) (\(j\le\beta\)) by \(g_k=w^{r'}f_k(a_nT)\) (\(k\le\alpha+\beta+1\)).</p>
+<ul>
+<li><em>The change of rows.</em> Write \(f_k=\sum_jA_{kj}U^j+\sum_jB_{kj}U^jw\), with \(w_n=w(a_nT)\). Then \(g_k=\sum_jA_{kj}a_n^j\,T^jw^{r'}+\sum_jB_{kj}a_n^j\,T^jw^{r'}w_n\). The matrix taking the old rows of the block to the \(g_k\) is \(M\operatorname{diag}(a_n^j)\), where \(M\) is the invertible rational matrix of the \(f_k\). Its determinant is \(\det M\cdot a_n^{\binom{\alpha+1}2+\binom{\beta+1}2}\).</li>
+<li><em>Divisibility.</em> \(g_k=a_n^k\,h_k\) with \(h_k=w^{r'}T^k\varphi_k(a_nT)\in\mathbb Q[a][[T]]\). The block of \(k\)'s contributes \(a_n^{\binom{\alpha+\beta+2}2}\).</li>
+<li><em>Determinants.</em> Let \(H^+\) be the matrix of the truncated \(h_k\), over all blocks. Then
+\[ \prod_{r'}\det M_{r'}\cdot a_n^{\sum_{r'}(\binom{\alpha+1}2+\binom{\beta+1}2)}\,\Delta_\nu=a_n^{\sum_{r'}\binom{\alpha+\beta+2}2}\det H^+. \]
+Since \(\binom{\alpha+\beta+2}2-\binom{\alpha+1}2-\binom{\beta+1}2=(\alpha+1)(\beta+1)\), this gives \(\Delta_\nu=c'a_n^{e(\nu)}\det H^+\).</li>
+<li><em>The limit.</em> At \(a_n=0\), \(h_k=\varphi_k(0)\,T^kw^{r'}\) for \(k=0,\ldots,\nu'_{r'}\). These are, up to nonzero constants, the rows of \(V_{\nu'}\). So \(\det H^+|_{a_n=0}=\pm\prod\varphi_k(0)\cdot\Delta_{\nu'}\).</li>
+<li><em>Exactness.</em> \(\Delta_{\nu'}\ne0\) by the generic normality lemma, so the valuation is exactly \(e(\nu)\). \(\square\)</li>
+</ul>
+<p><strong>Check.</strong> <code>research/tools/bmd_cube_confluence_check.py</code> (sympy, exact) computes \(\Delta_\nu\) for ten degree vectors on \(\{0,1\}^2\), at \(a_1=-5/11\). In each case the \(a_2\)-valuation equals \(e(\nu)\), and the leading coefficient is a nonzero rational multiple of \(\Delta_{\nu'}(a_1)\) (<code>research/results/bmd-r107-confluence/check-n2.txt</code>).</p>
+<p>The lemma gives a second proof of the generic normality lemma, by induction on \(n\): \(\Delta_{\nu'}\ne0\) implies \(\Delta_\nu\ne0\). It also reproves \(v_{y_n}(\Delta_{n,d})=E_n(d)\) from the <a href="#cube-boundary-collision-exponents">collision-exponent theorem</a>. This covers only the square determinant, not the gcd \(g_m\), and only the divisors \(y_i=0\); the divisors \(y_i=y_j\) still need the transport. For \(\nu_r=\lfloor(d-|r|)/2\rfloor\) (clipped), the blocks with \(m=d-|r'|\ge0\) have \((\alpha,\beta)=(\lfloor m/2\rfloor,\lfloor(m-1)/2\rfloor)\), and the others are empty. So \(e(\nu)=\sum_{|r'|\le d}\lfloor(m+1)^2/4\rfloor=E_n(d)\), and \(\nu'_{r'}=\max(m,-1)\), which is \(U_d\).</p>
+<h4 id="cube-limit-triple-multiplicity">The triple collisions of the limit</h4>
+<p><strong>Corollary</strong> (<code>cor:cube-limit-triple-multiplicity</code>). In characteristic 0, for every \(d\ge1\) and \(j\in\{2,3,4\}\), the determinant \(\Delta_U\) of \(U^{(3)}_d\) has multiplicity exactly \(2E_4(d)=4d^2-4d+2\) along \(y_j\). Moreover
+\[ \Delta_U=c\,y_4^{\,2E_4(d)}\,\Delta^+_U,\qquad \Delta^+_U\big|_{y_4=0}=c'\,\Delta_{\nu'}(4y_2,4y_3),\qquad \nu'_{r'}=\max(2(d-|r'|),-1), \]
+a determinant on the genus-0 curve \(w_2,w_3\). So the first half of the <a href="#entry-2026-09-26-cube-squarefree-reduction">limit conjecture</a> holds for every \(d\).</p>
+<p><em>Proof.</em> \(U_d=V_\nu(4y_2,4y_3,4y_4)\) with \(\nu_r=d-|r|\), and its \(z\)-basis determinant is \(\Delta_\nu\) up to a power of 2 (<a href="#cube-squarefree-reduction">reduction theorem</a>, setting). The blocks along \(a_4=4y_4\) have \((\alpha,\beta)=(d-|r'|,\,d-|r'|-1)\), clipped at \(-1\): \(\beta=-1\) when \(|r'|=d\), and \((\alpha,\beta)=(-1,-1)\) when \(|r'|&gt;d\), where \((\alpha+1)(\beta+1)=0=(d-k+1)(d-k)\). So
+\[ e(\nu)=\sum_{k=0}^{2}\binom2k(d-k+1)(d-k)=d(d+1)+2d(d-1)+(d-1)(d-2)=4d^2-4d+2=2E_4(d), \]
+using \(E_4(d)=d^2+(d-1)^2\) (<a href="#cube-boundary-collision-exponents">collision-exponent theorem</a>). The case \(d=1\) is included: there the last term is 0 and \(e=2\). Also \(\nu'_{r'}=\max(2(d-|r'|),-1)\); for example \(\nu'=(2,0,0,-1)\) at \(d=1\). The other \(y_j\) follow by permuting \(y_2,y_3,y_4\), which permutes the rows. \(\square\)</p>
+<p><strong>Check.</strong> The multiplicities \(2E_4(d)=10,26,50,82,122,170,226,290\) are those found at every \(y_j\) on the line of <a href="#entry-2026-09-26-cube-route-review-15">route review 15</a> (<code>limit-n3-d1-9.txt</code>), for \(d=2,\ldots,9\), and 2 at \(d=1\).</p>
+<p><strong>What remains.</strong> The second half of the limit conjecture: the part of \(\Delta_U\) prime to \(y_j\) and \(y_i-y_j\) is squarefree. The corollary identifies its restriction to the triple sides \(y_j=0\), up to powers of \(y_2\), \(y_3\) and \(y_2-y_3\): it is the non-collision part of \(\Delta_{\nu'}\) up to such powers, since the multiplicity of \(\Delta_U\) along \(y_2=y_3\) is not computed. Here \(\nu'\) is \(\nu'=(2d,2d-2,2d-2,2d-4)\), a Hermite–Padé determinant for \(1,w_2,w_3,w_2w_3\) on a conic. Applying the lemma once more, \(\Delta_{\nu'}\) has valuation \(\sum_k\binom1k(2d-2k+1)(2d-2k-1)\) at \(y_3=0\) for \(d\ge2\) (3 at \(d=1\), from the clipped vector), with leading coefficient a monomial in \(y_2\). The restriction argument of the reduction theorem now runs in \(\mathbb P^2\). There the six collision lines form a complete quadrangle whose sides are of two kinds: the triple sides \(y_j=0\) and the double-double sides \(y_i=y_j\).</p>
+<ul>
+<li>If the non-collision part of \(\Delta_U\) restricts on every side to a power of the diagonal form times a squarefree part, then the quadrangle lemma excludes a repeated factor. A factor of degree \(\mu\) with that restriction is a curve meeting each side only at its diagonal point.</li>
+<li>The triple sides alone do not suffice: the conic \(\sum y_j^2-2\sum_{i&lt;j}y_iy_j\) meets each coordinate side only at its diagonal point, doubly.</li>
+<li>The double-double sides need a confluence along \(y_i=y_j\) for \(U_d\), which is not a transport of \(U_d\) to itself. The Möbius change sends \(U_d\) to a different degree vector.</li>
+</ul>
+<p><strong>General statement.</strong> <code>lem:cube-confluence-valuation</code>, for every \(n\ge1\) and every degree vector in characteristic 0. <code>cor:cube-limit-triple-multiplicity</code>, for every \(d\ge1\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the generic normality lemma, the collision-exponent theorem, the reduction theorem and the limit conjecture, and the review's limit data. A claim search (confluence, merged square root, one-variable Padé normality, valuation, leading coefficient) found no earlier version. A fresh-context referee checked every step and found nothing that breaks a stated result. It also checked the lemma exactly with sympy for \(n=2\): for ten degree vectors, including entries \(-1\), and two values of \(a_1\), the \(a_2\)-valuation is \(e(\nu)\), and the leading coefficient is a fixed nonzero rational multiple of \(\Delta_{\nu'}(a_1)\). Its corrections are made: the order bound when \(\beta=-1\); the non-square \(\gamma(1+U)\); clipping of degree vectors, with the edge blocks at \(d=1\); the scope of the reproof (square determinant, divisors \(y_i=0\)); the range \(d\ge2\) of the valuation formula for \(\Delta_{\nu'}\); and the restriction to the triple sides, which holds only up to powers of \(y_2\), \(y_3\) and \(y_2-y_3\).</p>
+<p><strong>Assessment.</strong> The confluence lemma is the right general tool for these determinants. It gives the exact valuation along any merged branch point and identifies the leading coefficient, and it reproves both the generic normality lemma and the collision exponents in one line each. With it, the first half of the limit conjecture holds for every \(d\), and only squarefreeness of the non-collision part of \(\Delta_U\) remains. That part will need restrictions to both kinds of side, as the conic example shows. The next step is the double-double sides of \(U_d\), through the transported degree vector, and then the genus-0 determinant \(\Delta_{\nu'}\), whose non-collision part governs the triple sides.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r107">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>17 min 20.81 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 2.03 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">11 min 25.86 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 45.53 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">7.25 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
