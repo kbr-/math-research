@@ -318,7 +318,10 @@ rules to growing checklists or one-off setup narratives.
   finisher when its checks take over 5 s, and `tools/resume.py` when preparing a bundle takes
   over 2 s. Tests run on small fixtures, where work repeated per item costs nothing: a change
   to a framework tool that reads the repository's records also gets one timed run against the
-  real repository before its commit, and a profile if it is slower than the work it does. Other
+  real repository, with a real diff where the tool compares revisions (an unchanged base skips
+  whole code paths), before its commit, and a profile if it is slower than the work it does.
+  Measure a change's effect before claiming it: a framework commit message states only what was
+  measured or checked, and a mechanism (a cache, an option, a helper) needs a measured use. Other
   tests run only on their own trigger: `tests/` for site changes (the
   Pages workflow runs `test*pages.py` and `test_pages_client.js`; the Playwright
   `*.cjs` browser tests run for notebook layout or script changes);
