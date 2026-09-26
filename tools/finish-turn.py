@@ -10,6 +10,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from claim_registry import load as load_claims, read_json, render as render_claims
@@ -375,6 +376,19 @@ def credit_producer(body, marker, producer):
             + producer + '</span>' + body[close:])
 
 
+CHECKS_WARN_S = 5.0
+
+
+def checks_note(elapsed):
+    """A warning when the checks before the clock stops are slow: they read the notebook and the claim
+    registry, so repeated work there grows with the repository and recurs at every cycle."""
+    if elapsed <= CHECKS_WARN_S:
+        return ''
+    return (f"Warning: the finisher's checks took {elapsed:.1f} s (limit {CHECKS_WARN_S:g} s). Profile "
+            'them (python3 -m cProfile -s cumtime tools/finish-turn.py TURN) and remove the repeated '
+            'work before it grows.\n')
+
+
 def validate_append_only(root):
     """Earlier entries must match HEAD; corrections belong in a new dated entry."""
     checker = root / 'tools/check-append-only.py'
@@ -388,6 +402,7 @@ def validate_append_only(root):
 
 def finish(root, turn, next_turn=None, notebook_name=None):
     from notebooks import selected, paths
+    started = time.monotonic()
     item = selected(notebook_name, root)
     notebook = root / item["source"]
     first = json.loads((root/'research/logs'/f'{turn}.jsonl').read_text().splitlines()[0])
@@ -409,6 +424,7 @@ def finish(root, turn, next_turn=None, notebook_name=None):
             raise ValueError('Changed-claim metadata incomplete:\n' + '\n'.join(contract['errors']))
     if next_turn and (root / 'research/logs' / f'{next_turn}.jsonl').exists():
         raise ValueError('Next session already exists; omit --next when retrying finalization')
+    print(checks_note(time.monotonic() - started), end='')
 
     if (root / 'research/claims/index.json').exists():
         # The existing maintenance gate already requires reasoned significance

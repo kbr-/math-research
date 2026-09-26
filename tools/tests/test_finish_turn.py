@@ -16,6 +16,21 @@ ROOT = Path(__file__).resolve().parents[2]
 OBSTACLE = ('<h4>Obstacle</h4><p>No recorded degree method handles many adversarial dense '
             'constraints: every method checked is local or symmetric.</p>')
 
+from importlib.machinery import SourceFileLoader
+
+FT = SourceFileLoader('finish_turn', str(Path(__file__).resolve().parents[2] / 'tools/finish-turn.py')).load_module()
+
+
+class ChecksNote(unittest.TestCase):
+    """The finisher warns when its checks are slow, and stays quiet otherwise."""
+
+    def test_slow_checks_are_reported(self):
+        self.assertIn('Warning: the finisher\'s checks took 6.5 s', FT.checks_note(FT.CHECKS_WARN_S + 1.5))
+
+    def test_fast_checks_print_nothing(self):
+        self.assertEqual(FT.checks_note(FT.CHECKS_WARN_S / 4), '')
+
+
 class FinalizationTest(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix='math-finish-turn-')
