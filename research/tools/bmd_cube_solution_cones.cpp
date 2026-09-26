@@ -24,8 +24,10 @@
 // mod P, negative allowed), and the cumulative value rank at each is reported; in series mode YPTS switches from the order
 // test to this evaluation (SYM=1 in the environment selects the S_3 parts).
 //
+// TAU and SIGMA fix the cone direction; DUMPVAL=1 prints the value vectors at the fixed points (lines "VAL i W_0 ... W_m").
+//
 // Usage: bmd_cube_solution_cones prime seed d rho j lmin lmax [sym] [val]
-//        bmd_cube_solution_cones series p1,p2,... d:rho:lmin:lmax ...
+//        bmd_cube_solution_cones series p1,p2,... d:rho:lmin:lmax[:j] ...   (j: cone order with YPTS, default 2)
 #include <cstdio>
 #include <cstdlib>
 #include <cstdint>
@@ -94,11 +96,11 @@ int main(int argc, char **argv) {
         ORDERONLY = true;
         vector<u64> primes; { string ps = argv[2]; size_t a = 0; while (a < ps.size()) { size_t b = ps.find(',', a); if (b == string::npos) b = ps.size(); primes.push_back(atoll(ps.substr(a, b - a).c_str())); a = b + 1; } }
         for (int ai = 3; ai < argc; ai++) {
-            int d, rho, lmin, lmax; if (sscanf(argv[ai], "%d:%d:%d:%d", &d, &rho, &lmin, &lmax) != 4) { fprintf(stderr, "bad case %s\n", argv[ai]); return 2; }
+            int d, rho, lmin, lmax, jj = 2; if (sscanf(argv[ai], "%d:%d:%d:%d:%d", &d, &rho, &lmin, &lmax, &jj) < 4) { fprintf(stderr, "bad case %s\n", argv[ai]); return 2; }
             for (u64 p : primes) {
                 P = p; EXTRA_PTS.clear(); parse_pts();
                 if (!EXTRA_PTS.empty()) { ORDERONLY = false; VAL = true; SYM = getenv("SYM") != nullptr; }
-                printf("prime %llu ", (unsigned long long)p); run(1, d, rho, EXTRA_PTS.empty() ? 0 : 2, lmin, lmax);
+                printf("prime %llu ", (unsigned long long)p); run(1, d, rho, EXTRA_PTS.empty() ? 0 : jj, lmin, lmax);
             }
         }
         return 0;
@@ -117,6 +119,10 @@ static int run(unsigned seed, int d, int rho, int j, int lmin, int lmax) {
     for (int n = 0; n <= Dmax + 1; n++) { C[n][0] = 1; for (int r = 1; r <= n; r++) C[n][r] = addm(C[n - 1][r - 1], r <= n - 1 ? C[n - 1][r] : 0); }
     mt19937_64 rng(seed);
     u64 tau = rng() % P, sig = rng() % P;
+    // TAU/SIGMA (environment, integers, negative allowed) fix the cone direction (U, S) in the chart y2 = 1, y1 = 1 + U,
+    // y3 = S at (1:1:0); the random draw is kept so that the rest of the random stream is unchanged
+    if (getenv("TAU")) tau = (u64)((atoll(getenv("TAU")) % (long long)P + (long long)P) % (long long)P);
+    if (getenv("SIGMA")) sig = (u64)((atoll(getenv("SIGMA")) % (long long)P + (long long)P) % (long long)P);
     u64 y0[3] = {rng() % P, rng() % P, rng() % P};  // random point for the value rank
     vector<vector<u64>> valRows;
     vector<vector<vector<u64>>> extraRows(EXTRA_PTS.size());
@@ -291,6 +297,9 @@ static int run(unsigned seed, int d, int rho, int j, int lmin, int lmax) {
                 vector<u64> vr(m + 1, 0);
                 for (int c = 0; c <= m; c++) { int o = l + m - c; if (o >= 0 && o < N) vr[c] = val[o]; }
                 (pi < 0 ? valRows : extraRows[pi]).push_back(vr);
+                if (pi >= 0 && getenv("DUMPVAL")) {  // one line per fixed point: point index, then W_0..W_m at that point
+                    printf("VAL %d", pi); for (int c = 0; c <= m; c++) printf(" %llu", (unsigned long long)vr[c]); printf("\n");
+                }
                 N = Nsave;
             }
         }
