@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> The random bit family is the random calibration: over the functional base its clauses are negated random linear systems in the bit-indicator span, product replay loses a degree per block, and what remains is Tor vanishing for width-\(t\) tops with restricted forms (<a href="#entry-2026-09-26-random-bit-family">random bit family</a>). Next: rerun the degree-4 semi-regularity test of ex:selector-degree-four-semiregular with forms drawn from the span of one bit block's indicators, at \(n=7,8\), to see whether row-local structure breaks the Taylor route below the fill point.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> Prefix randomness lets one quadratic pin per block replace pinning every form, but the route is capped below \(K=4\), like every pinning route in the record (<a href="#entry-2026-09-26-bit-span-decision">bit-span decision</a>). Next: a route review of the thread's open statements. Weigh the planted-constraint view (weak PHP plus \(n^K\) dense constraints satisfied by a near-matching) against the recorded sparse-constraint lower-bound methods, and decide whether A1 stays the item to work on or whether A2, A3 or S1 offers a better next step.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -31103,6 +31103,36 @@ For \(h\) independent pins, the probability that \(\ell\) satisfies all of them 
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 46.76 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">47.24 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">22.98 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-bit-span-decision" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Decision not to run a degree-4 test that cannot inform the missing implication, and a reduction remark placed on recorded caps (cor:single-form-pinning, obs:deciding-designs-capped); no new claim. The general statement concerned is conj:randomized-wide-clause.">
+<h3>The degree-4 restricted-form test is declined, since no outcome at \(n\le8\) bears on degree \(22k\); and one quadratic pin per block, the W_RS form of single-form pinning, reduces W_RS to weak PHP plus \(n^K\) quadratic equations true at a reference point, a route capped below \(K=4\)</h3>
+<p class="entry-meta">26 September 2026 · Decision and analysis, no new theorem · open statement A1 under random prefixes · cycle odd-prime-bit-span-semiregular. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 under random prefixes. The <a href="#entry-2026-09-26-random-bit-family">random-bit-family entry</a> proposed rerunning the degree-4 semi-regularity test of ex:selector-degree-four-semiregular with forms drawn from one bit block's indicator span, at \(n=7,8\). Should it run, and what else can the prefix randomness buy for families?</p>
+<p><strong>General statement.</strong> conj:randomized-wide-clause (W_RS); no new claim.</p>
+<h4>The test is declined</h4>
+<p><em>Can it decide?</em> What the family needs is Tor vanishing through degree \(22k=\Theta(\log n)\) for width-\(t\) tops. The test measures degree-4 syzygies of squares at \(n=7,8\). A deficit there would say only that restricted forms fill a smaller image \(A_2\cdot\operatorname{Sym}^2U\) early, which is not predictable from the uniform fill point and does not bound what happens at logarithmic degree; agreement would add one more small case to the random-top evidence. Neither outcome changes the missing implication. The recorded script (phi4.py) also nests Python loops three deep and took 27 minutes at \(n=8\), so it would need a new compiled kernel for an answer of no consequence. Under rule 9 the test is not run.</p>
+<h4>One quadratic pin per block</h4>
+<p>Under W_RS, every clause of block \(b\) is \(g_{b,u}\prod_{j\le t}(1-s_{b,j}^2)\), with \(s_{b,j}=\sum_uc_{ju}g_{b,u}\) a uniformly random combination of the block's zero indicators, random because \(C_b\) is. For any \(j\) and any \(v\ne0\), \(1-s_{b,j}^2=(1-v^2)-(s_{b,j}-v)(s_{b,j}+v)\) with \(1-v^2=0\). So every clause of the block is a multiple of the single quadratic pin \(s_{b,j}-v\), at degree at most the clause's \(4t+2\). Fix a reference point \(x^*\), for instance a matching of \(n\) of the pigeons. For each block, choose \(j_b\) with \(s_{b,j_b}(x^*)\ne0\), which exists unless \(S_b(x^*)=0\), and pin \(s_{b,j_b}=s_{b,j_b}(x^*)\). If \(g_b(x^*)\ne0\), that is, some form of the block vanishes at \(x^*\), such a \(j_b\) exists unless \(C_bg_b(x^*)=0\). The pattern of \(x^*\) is fixed before the \(C_b\), so this fails for some block with probability at most \(n^K3^{-t}=o(1)\). A block with \(g_b(x^*)=0\) has every form nonzero at \(x^*\), so \(S_b(x^*)=0\) and no single quadratic pin at \(x^*\) kills its clauses; it needs a pin on every form, as in member pinning. So, for families in which every block has a form vanishing at \(x^*\), W_RS follows from:</p>
+<p><em>weak PHP\(^{n+1}_n\) plus \(n^K\) quadratic equations, one per block, each a random element of the block's span of zero indicators, all true at \(x^*\), has no PC refutation of degree \(22k\).</em></p>
+<p>This is the W_RS form of cor:single-form-pinning, which pins one prefix form per block at 0 under W, and the pinning form of conj:near-solution-chooser. Its capacity is capped as obs:deciding-designs-capped caps affine pins. Quadratic equations true at \(x^*\) that span the quadratics modulo the base determine every cell's value, including \(x_{ij}=x_{ij}^2\), so they force \(x=x^*\), and the violated row of \(x^*\) refutes at degree about 2. The quadratic space of the weak base has dimension of order \(n^4\), so the route stops below \(K=4\). Structured blocks stop it earlier: blocks whose zero indicators are cells give linear equations in cells, and \(n^2\) of them already force every cell. The cell classes are settled by restriction, so the route would have to be combined with the settled classes, as every pinning route in this thread has been.</p>
+<h4>What it means</h4>
+<p>Prefix randomness lets one pin per block replace pinning every form, and lowers the constraint degree from \(4t+2\) to 2. It does not remove the polynomial cap that every pinning route in the record has. The goal needs every \(K\), and a pin of fixed degree \(e\) caps the route at about \(n^{2e}\) pins. Degrees growing with \(K\) are possible in the same way, pinning \(\prod_{j\in E_b}(1-s_{b,j}^2)=0\) for chosen sets \(E_b\) of size \(e\). Those are negated systems, not pins, and hardness of weak PHP plus \(n^K\) planted constraints of degree \(4e\) is again the calibration, now planted at \(x^*\).</p>
+<p><strong>Next.</strong> A route review of the thread's open statements. The last cycles settled single blocks and met polynomial caps at every family-level route. The review should weigh the planted-constraint view (weak PHP plus \(n^K\) dense constraints satisfied by a near-matching) against the recorded sparse-constraint lower-bound methods, and decide whether A1 stays the highest-risk item to work on, or whether A2, A3 or S1 offer a better next step.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read cor:single-form-pinning, conj:near-solution-chooser, obs:deciding-designs-capped, lem:randomized-block-annihilator and the timing record of phi4.py in the degree-four session. The pin identity is one line, given in the entry. The entry registers no claim and was not sent to a separate reviewer; it proves no new result and records a decision and a reduction onto recorded caps.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-bit-span-semiregular">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 36.39 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 50.91 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 9.86 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">35.42 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
