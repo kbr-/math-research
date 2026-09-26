@@ -35,12 +35,22 @@ class Entries(HTMLParser):
         if len(ids)!=len(set(ids)):raise ValueError('Duplicate research article ID')
 
 
+_PARSED={}
+
+
+def parsed(text):
+    """Entries(text).entries, parsed once per text within a process (callers do not mutate them)."""
+    key=hash(text)
+    if key not in _PARSED or _PARSED[key][0]!=text:_PARSED[key]=(text,Entries(text).entries)
+    return _PARSED[key][1]
+
+
 def check_entries(previous,current,data,root,grandfathered=(),notebook_path=None):
     notebook_path = notebook_path or root/'notebook.html'
     # An unchanged notebook has no new entries; a callable grandfathered set is read only when needed.
-    entries=[] if previous==current else Entries(current).entries
+    entries=[] if previous==current else parsed(current)
     if entries:
-        before={e['id'] for e in Entries(previous).entries}
+        before={e['id'] for e in parsed(previous)}
         entries=[e for e in entries if e['id'] not in before]
     if entries and callable(grandfathered):grandfathered=grandfathered()
     entries=[e for e in entries if e['id'] not in set(grandfathered)]
@@ -50,6 +60,15 @@ def check_entries(previous,current,data,root,grandfathered=(),notebook_path=None
     prefixes={key.split(':',1)[0] for key in claims|dict.fromkeys(historical_ids)}|{'lem','thm','prop','cor','def','ex','obs','conj','check','audit','local','third-party'}
     pattern=r'(?<![\w-])(?:'+ '|'.join(re.escape(p) for p in sorted(prefixes))+r'):[\w][\w.-]*'
     errors=[];rows=[]
+    # Resolve every claim's source links once, not once per new entry.
+    anchors={}
+    if entries:
+        from notebooks import catalogue
+        items=catalogue(root);here=notebook_path.resolve()
+        for key,claim in claims.items():
+            for ref in references(claim):
+                target=local_target(ref['target'],root,items)
+                if target and target[0].resolve()==here:anchors.setdefault(key,set()).add(target[1])
     for entry in entries:
         label=entry['id'];attrs=entry['attrs'];raw=attrs.get('data-claims','').strip()
         declared=set(raw.split()) if raw and raw!='none' else set()
@@ -63,12 +82,7 @@ def check_entries(previous,current,data,root,grandfathered=(),notebook_path=None
         quoted=' '.join(entry['code'])+' '+' '.join(re.findall(r'`([^`]+)`',''.join(entry['text'])))
         for key in sorted(set(re.findall(pattern,quoted))-claims.keys()-historical_ids):
             errors.append(f'{label}: explicit claim label is unregistered: {key}')
-        linked=set()
-        for key,claim in claims.items():
-            for ref in references(claim):
-                target=local_target(ref['target'],root)
-                if target and target[0].resolve()==notebook_path.resolve() and target[1] in entry['anchors']:
-                    linked.add(key);break
+        linked={key for key,found in anchors.items() if found&set(entry['anchors'])}
         for key in sorted(linked-declared):errors.append(f'{label}: source-linked claim missing from inventory: {key}')
         for key in sorted(declared-linked-missing):errors.append(f'{label}: declared claim needs a source link to this entry: {key}')
         rows.append({'entry':label,'declared':sorted(declared),'source_linked':sorted(linked),'no_claim_reason':attrs.get('data-claim-note')})
