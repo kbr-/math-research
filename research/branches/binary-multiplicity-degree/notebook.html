@@ -34,7 +34,12 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>Dimension 4: test the quadric conjecture</strong> (open statement 3). <a href="#entry-2026-09-26-cube-dimension-four-quadric">Conjecture</a>: one step below order zero, \(\ell_0=2\) with generator \(Q=\sum_{i&lt;j}y_iy_j-2\sum_iy_i^2\), for every \(d\ge2\). Decide \(\ell_0(4,38)\) with a compiled kernel that solves the solution system degree by degree, restricted to \(S_4\)-invariant solutions, on fflas-ffpack or LinBox. Gröbner bases in four variables do not reach \(m=38\). Then identify the locus \(Q=0\) on the genus-5 curve.</li>
+<li><strong>Dimension 4: the quadric</strong> (open statement 3). The <a href="#entry-2026-09-26-cube-dimension-four-quadric">quadric conjecture</a> passed its test at \(d=3\) for the invariant part (<a href="#entry-2026-09-26-cube-symmetric-kernel">symmetric kernel</a>).
+<ul>
+<li>Identify the locus \(Q=\sum_{i&lt;j}y_iy_j-2\sum y_i^2=0\) on the genus-5 curve \(w_i^2=1+4y_iT\), by analogy with the 2-torsion cubic \(L_2\) in dimension 3. That would be a mechanism.</li>
+<li>Extend the kernel to \(S_3\)-invariant solutions to decide \(\ell_0(4,38)\) exactly.</li>
+<li>Use the fast kernel to get full rows at \(d=3\) and \(d=4\), for the pattern of the other thresholds.</li>
+</ul></li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions; the dimension-3 result may merit a note.</p>
@@ -6495,6 +6500,54 @@ It is irreducible and \(S_4\)-invariant.</li>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-symmetric-kernel" data-kind="research" data-route="cube-odd-characteristic" data-claims="lem:cube-symmetric-reduction check:cube-quadric-d3">
+<h3>26 September 2026 — A symmetric kernel for the threshold ideals: the quadric reappears at d = 3 in dimension 4</h3>
+<p class="entry-meta">Working proof of the reduction to invariant solutions; finite check: on {0,1}⁴ at m = 38 the invariant part of the savings-4 threshold ideal starts with the quadric Q in degree 2, as conjectured for the invariant part. Cycle bmd-r101. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-26-cube-dimension-four-quadric">quadric conjecture</a> predicts \(\ell_0(4,38)=2\) on \(\{0,1\}^4\), with the degree-2 part of the threshold ideal spanned by \(Q=\sum_{i&lt;j}y_iy_j-2\sum_iy_i^2\). The Gröbner computation did not reach \(m=38\). Can the symmetry of the system make the test feasible? The test ends with the invariant degree-\(\le2\) part of \(I^{(4)}_{38}\), which either contains \(Q\) or refutes the conjecture.</p>
+<p><strong>Setting.</strong> As in the <a href="#entry-2026-09-26-cube-dimension-four">dimension-4 entry</a>: rows \((Q,r)\), \(r\in\{0,1\}^n\), \(2Q+|r|\le d\), with \(A_{(Q,r),c}(y)\) the coefficient of \(T^c\) in \(T^Q\prod_{r_i=1}w_i\), \(w_i=\sqrt{1+4y_iT}\). A homogeneous solution of excess \(\ell\) has \(W_c\) of degree \(\ell+m-c\), and \(I^{(h)}_m\) is the ideal of top coordinates \(W_m\).</p>
+<h4 id="cube-symmetric-reduction">Invariant solutions</h4>
+<p><strong>Lemma</strong> (<code>lem:cube-symmetric-reduction</code>). On \(\{0,1\}^n\) over a field \(F\), \(S_n\) acts on the solutions by \((\sigma W)_c(y)=W_c(\sigma^{-1}y)\), preserving excess. So \(I^{(h)}_m\) is \(S_n\)-stable. If \(n!\) is invertible in \(F\), the \(S_n\)-invariant elements of \(I^{(h)}_m\) of degree \(\ell\) are exactly the top coordinates of the \(S_n\)-invariant solutions of excess \(\ell\). In particular \(I^{(h)}_m\) has a nonzero element of degree 0 if and only if an invariant solution of excess 0 has nonzero top coordinate.</p>
+<p><strong>Proof.</strong> Write \((\sigma y)_i=y_{\sigma^{-1}(i)}\) and \((\sigma r)_i=r_{\sigma^{-1}(i)}\). \(A_{(Q,r),c}\) depends only on the \(y_i\) with \(r_i=1\), and symmetrically, so \(A_{(Q,r),c}(\sigma^{-1}y)=A_{(Q,\sigma r),c}(y)\). Hence the equation of row \((Q,\sigma r)\) for \(\sigma W\), \(\sum_cA_{(Q,\sigma r),c}(y)W_c(\sigma^{-1}y)=\sum_cA_{(Q,r),c}(\sigma^{-1}y)W_c(\sigma^{-1}y)\), is the equation of row \((Q,r)\) for \(W\) at \(\sigma^{-1}y\). So \(\sigma W\) is a solution, with top coordinate \(W_m\circ\sigma^{-1}\) and the same degrees. If \(f\in I\) is invariant and \(f=W_m\), the average \(\frac1{n!}\sum_\sigma\sigma W\) is an invariant solution with top coordinate \(f\). Conversely, an invariant solution has an invariant top coordinate. The degree-0 part of \(I\) is a space of constants, which is invariant. \(\square\)</p>
+<p><strong>The kernel.</strong> <code>research/tools/bmd_cube_symmetric_solutions.cpp</code> (FLINT, \(\mathbb F_{32003}\), where \(4!\) is invertible) computes the invariant solutions of a given excess.</p>
+<ul>
+<li>The unknowns are the coefficients of \(W_c=\sum_\lambda x_{c,\lambda}m_\lambda\) in the monomial symmetric functions.</li>
+<li>There is one row \((Q,1^s0^{n-s})\) per \(S_n\)-orbit of rows. Its polynomial is invariant under \(S_s\times S_{n-s}\), so its coefficients are taken at one monomial per orbit of that group.</li>
+<li>Since \(A_{(Q,r),c}=\sum_{|j|=c-Q}\prod_{i\le s}C_{j_i}y_i^{j_i}\) involves only \(y_1,\ldots,y_s\), the coefficient of \(y^\alpha\) in \(A\,m_\lambda\) is \(\sum_j\prod C_{j_i}\) over the \(j\) with \(\operatorname{sort}(\alpha-(j,0))=\lambda\).</li>
+</ul>
+<p>At \(m=38\) the systems have about \(10^4\) rows and \(6\)–\(7\cdot10^3\) columns, against about \(1.4\cdot10^5\) unknowns without the symmetry.</p>
+<h4>Results</h4>
+<p>One run (<code>research/results/bmd-r101-symmetric-kernel/symmetric-solutions.txt</code>, 127 s):</p>
+<ul>
+<li><em>Control, dimension 3, \((d,m)=(3,13)\).</em> No invariant solution of excess 2. At excess 3 the invariant top coordinate is \(m_{111}-\tfrac12m_{21}+\tfrac12m_3=-\tfrac12L_2\), where \(L_2=\prod_i(e_1-2y_i)=-m_3+m_{21}-2m_{111}\) is the 2-torsion cubic. This matches \(\ell_0(4,13)=B(3,2)=3\) and the recorded lowest part.</li>
+<li><em>Control, dimension 4, \(d=2\).</em> At \(m=17,18\) there is no invariant top coordinate of excess 1, and at excess 2 the invariant top coordinate is \(m_{11}-2m_2=Q\). At \(m=15\) there is none at excess 5 and one at excess 6. This matches the Gröbner results of the <a href="#entry-2026-09-26-cube-route-review-14">route review</a> and the factorizations.</li>
+<li><em>Test, dimension 4, \(d=3\), \(m=38\).</em> At excess 0 there is no invariant solution. At excess 1 there are 5 invariant solutions, all with top coordinate 0. At excess 2 there are 21 invariant solutions, whose top coordinates span the line of \(m_{11}-2m_2=Q\).</li>
+</ul>
+<p><strong>Finite check</strong> (<code>check:cube-quadric-d3</code>). On \(\{0,1\}^4\) over \(\mathbb F_{32003}\), for savings 4 at \(m=38\):</p>
+<ul>
+<li>\(Q\in I^{(4)}_{38}\), so \(\ell_0(4,38)\le2\);</li>
+<li>by the lemma, \(I^{(4)}_{38}\) has no element of degree 0, so \(\ell_0(4,38)\ge1\);</li>
+<li>its invariant part in degree 2 is the line of \(Q\), and it has no invariant element of degree 1.</li>
+</ul>
+<p>So, over \(\mathbb F_{32003}\), \(\ell_0(4,38)\in\{1,2\}\), and the invariant degree-2 part of the threshold ideal is the line of \(Q\). Two things remain open. The value 1 remains possible only through a copy of the standard representation of \(S_4\) among the linear forms of \(I\). The conjecture's claim that \(Q\) spans the whole degree-2 part also needs the non-trivial \(S_4\)-isotypic components of the quadrics in \(I\) to vanish. Both need solutions invariant under a smaller group, a larger system. So this is a partial test.</p>
+<p><em>Field.</em> The lower bound \(\ell_0(4,38)\ge1\) transfers to characteristic 0 and to all but finitely many characteristics, since the rational invariant system at excess 0 has rank at least its rank modulo 32003, which is full. The statements \(Q\in I\) and the span of the invariant quadrics are established only over \(\mathbb F_{32003}\): no rational lift was computed.</p>
+<p><strong>General statement.</strong> <code>lem:cube-symmetric-reduction</code>, for every \(n\), \(h\), \(m\) in characteristic 0 or \(p&gt;n\); the tested claim is <code>conj:cube-dimension-four-quadric</code>.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the threshold-ideal lemma, the dimension-4 and quadric entries, and the torsion-partition entry's \(L_2\). The kernel was validated on three independent references: the dimension-3 cubic \(L_2\) (converted to the \(m_\lambda\) basis by hand), the Gröbner thresholds and generators at \(m=15,17,18\), and the absence of excess-1 tops at \(m=17,18\). The lemma is the standard Reynolds-operator argument. A fresh-context referee checked several things. It checked the lemma, including the index convention now stated, and the kernel: orbit representatives, the monomial-coefficient formula, the \(C_j\) recurrence, the column blocks, the reading of the top coordinates, and the inclusion of rows with \(Q&gt;0\). It also checked the conversion of \(L_2\) and the residues \(16001=-\tfrac12\), \(16002=\tfrac12\), \(32001=-2\). It found no error. Its corrections are made: the explicit convention in the proof, the scope of the check limited to the invariant part and called a partial test, and the field of each conclusion.</p>
+<p><strong>Assessment.</strong> The quadric conjecture passed a partial test: the same invariant quadric appears one step below order zero at \(d=3\), where nothing forced it. The non-invariant parts in degrees 1 and 2 remain untested. Together with the dimension-3 cubic \(L_2\) in the same position, this points to a torsion-type locus on the genus-5 curve, which is the next thing to identify. The symmetric kernel is fast, a minute where Gröbner bases failed. It makes rows at larger \(d\) feasible, and with a stabilizer-invariant version, the excess-1 question at \(m=38\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r101">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 46.51 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 19.36 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 16.78 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 3.33 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 6.82 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.21 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 </section>
