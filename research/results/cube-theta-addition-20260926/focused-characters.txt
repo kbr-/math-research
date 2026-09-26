@@ -1,0 +1,19 @@
+# command: gp -q research/tools/bmd_cube_focused_collision.gp
+# run be98c2b748, session cube-theta-addition-20260926; full output
+SCOPE d>=2; all eight characters; four nodes; exact Q[A,B,C] arithmetic
+CHARACTER [0, 0, 0] full_top_j=d-0 focused_top_j=d-0 top_u_power=0 coefficient=[1, 1, 1, 1]
+CHARACTER [1, 0, 0] full_top_j=d-1 focused_top_j=d-1 top_u_power=1 coefficient=[A, A, -A, -A]
+CHARACTER [0, 1, 0] full_top_j=d-1 focused_top_j=d-1 top_u_power=1 coefficient=[B, -B, B, -B]
+CHARACTER [1, 1, 0] full_top_j=d-1 focused_top_j=d-2 top_u_power=0 coefficient=[B*A, -B*A, -B*A, B*A]
+CHARACTER [0, 0, 1] full_top_j=d-1 focused_top_j=d-1 top_u_power=1 coefficient=[C, C, C, C]
+CHARACTER [1, 0, 1] full_top_j=d-1 focused_top_j=d-2 top_u_power=0 coefficient=[C*A, C*A, -C*A, -C*A]
+CHARACTER [0, 1, 1] full_top_j=d-1 focused_top_j=d-2 top_u_power=0 coefficient=[C*B, -C*B, C*B, -C*B]
+CHARACTER [1, 1, 1] full_top_j=d-2 focused_top_j=d-3 top_u_power=1 coefficient=[C*B*A, -C*B*A, -C*B*A, C*B*A]
+VALUE_TABLE columns 000,110,101,011 = [1, B*A, C*A, C*B; 1, -B*A, C*A, -C*B; 1, -B*A, -C*A, C*B; 1, B*A, -C*A, -C*B]
+DERIVATIVE_TABLE columns 100,010,001,111 = [A, B, C, C*B*A; A, -B, C, -C*B*A; -A, B, C, -C*B*A; -A, -B, C, C*B*A]
+VALUE_DETERMINANT=-16*C^2*B^2*A^2
+DERIVATIVE_DETERMINANT=-16*C^2*B^2*A^2
+MISSING_TYPES=[[1, 1, 0], [1, 0, 1], [0, 1, 1], [1, 1, 1]]
+WEIGHTED_DERIVATIVE=[0, 0, 0, 4*C*B*A]
+NEGATIVE_CONTROL z*T^(d-2)*w1*w2*w3 has zero node values but weighted derivative 4*A*B*C: rejected
+PASS all character types; value matching; derivative functional; nonextendable control
