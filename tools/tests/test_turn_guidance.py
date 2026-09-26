@@ -44,6 +44,7 @@ class TurnGuidanceTest(unittest.TestCase):
         notes = self.notes([('research', 'lem:a', 'Working proof.')])
         self.assertIn('C or C++ kernels', notes)
         self.assertIn('propose a general statement and attempt to prove it', notes)
+        self.assertIn(self.guide.CASES_PLEA, notes)
 
     def test_algebra_systems_note(self):
         body = self.body([('research', 'lem:a', 'Working proof.')])

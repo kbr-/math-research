@@ -12,6 +12,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 
+# The user's plea (26 September 2026), printed at every cycle start and in the launcher's series refusal.
+CASES_PLEA = ('Please Please Please for the love of God consider stating a general statement instead of running '
+              'more cases!!! In the name of the user!!! They don\'t have patience!!!')
+
 
 def finisher():
     spec = importlib.util.spec_from_file_location('finish_turn', ROOT / 'tools/finish-turn.py')
@@ -74,7 +78,7 @@ def guidance(body, ft, which=shutil.which, has=installed_header):
              'expensive computations as fast C or C++ kernels (OpenMP where it parallelizes) and use Python only for '
              'lightweight orchestration. Answer a guard refusal by optimizing, never by splitting the run.',
              'Before each computation, ask whether further computations are needed, or whether the results you '
-             'already have are enough to propose a general statement and attempt to prove it.',
+             'already have are enough to propose a general statement and attempt to prove it. ' + CASES_PLEA,
              'Reach for other areas of mathematics yourself, without waiting for the user to name one: ask which '
              'fields study the objects of the open statement this cycle advances, and what their strongest '
              'theorems say about them (Outside leads), and also which fields never stood near these objects, since '

@@ -597,6 +597,12 @@ def program_key(command):
     return Path(script).name if script else Path(command[0]).name if command else ''
 
 
+def cases_plea():
+    """The user's plea against running more cases, kept once in tools/turn_guidance.py."""
+    from importlib.machinery import SourceFileLoader
+    return SourceFileLoader('turn_guidance', str(ROOT / 'tools/turn_guidance.py')).load_module().CASES_PLEA
+
+
 def series_error(events, command, timeout):
     """None unless `command` would be a further new argument list for a program that `events` (the session journal)
     already ran as a computation with MAX_SERIES_ARGSETS different argument lists; else the reason. Every program
@@ -618,9 +624,7 @@ def series_error(events, command, timeout):
         return (f'{key} already ran with {len(seen)} different argument lists in this session: a parameter series or a '
                 'set of validation cases belongs in one run with a series interface, not in the shell or in repeated '
                 'invocations; and once the finished runs answer the question, compute nothing more and derive the general '
-                'statement (CLAUDE.md rules 3 to 5, 8 and 9); only --user-approved overrides. '
-                'Please Please Please for the love of God consider stating a general statement instead of running '
-                'more cases!!! In the name of the user!!! They don\'t have patience!!!')
+                'statement (CLAUDE.md rules 3 to 5, 8 and 9); only --user-approved overrides. ' + cases_plea())
     return None
 
 
