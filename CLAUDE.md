@@ -60,6 +60,16 @@ re-read, checks run, the reviewer's verdict), not in the status line. A result w
 gate is incomplete is recorded as conditional, not as a working proof. A slower cycle
 with a verified result is wanted; a fast cycle followed by a correction is not.
 
+## Nothing changes after the finisher
+
+Make every notebook edit (entry, living sections, next step) and every claim-registry change
+before running `./tools/finish-turn.py`. After it runs, only stage, commit and push. Its checks
+validate the snapshot it saw, so a later edit ships unchecked work. On 26 September 2026 an A1
+edit made after the finisher broke the open-statements hard budget in CI (user feedback). If
+something must change after finishing, make the change and rerun the finisher's checks
+(`tools/notebook_context.py --all`, the claim checks) before committing. `tools/checked-push.sh`
+refuses a push with any hard budget excess.
+
 ## Status lines
 
 Keep an entry's `entry-meta` status line short: the status (working proof,
