@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Export timing, archive evidence, and fill one notebook timing placeholder."""
 import argparse
+import functools
 import html
 import json
 import os
@@ -11,7 +12,7 @@ import sys
 import tempfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from claim_registry import load as load_claims, render as render_claims
+from claim_registry import load as load_claims, read_json, render as render_claims
 from claim_maintenance import check_revision
 from notebook_context import check as check_context
 from claim_attention import sync as sync_attention, brief as attention_brief
@@ -235,9 +236,12 @@ def entry_claims(body, article):
 FINITE_PREFIXES = ('ex:', 'check:')
 
 
+@functools.cache
 def registered_status():
+    """Claim ID to mathematical status, parsed once per process: nothing here writes the registry,
+    and validating it belongs to the claim checks, not to a status lookup."""
     registry = ROOT / 'research/claims/index.json'
-    return {c['id']: c.get('mathematical_status') for c in load_claims(registry)['claims']} if registry.exists() else {}
+    return {c['id']: c.get('mathematical_status') for c in read_json(registry)['claims']} if registry.exists() else {}
 
 
 def cases_only(body, article, status_of=None):
@@ -282,10 +286,8 @@ def validate_general(body, article, close):
                          'paragraph: the claim this cycle tests or proves, for all parameters, with '
                          'its conjectured bound as a formula (AGENTS.md, restricted examples)')
     ids = GENERAL_ID.findall(found.group(1))
-    registry = ROOT / 'research/claims/index.json'
-    if registry.exists():
-        registered = {c['id'] for c in load_claims(registry)['claims']}
-        ids = [i for i in ids if i in registered]
+    if (ROOT / 'research/claims/index.json').exists():
+        ids = [i for i in ids if i in registered_status()]
     if not ids:
         raise ValueError('The General statement must cite the registered claim ID (conj:, lem:, thm:, '
                          'prop: or cor:) that states it for all parameters; register a conjecture if '
