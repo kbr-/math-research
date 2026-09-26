@@ -242,6 +242,22 @@ Explicit zero-avoiding ternary triple covers have 10 planes in dimension 3 and 1
 
 ---
 
+### Cube monotonicity char five refutation
+
+**Claim:** [prop:cube-monotonicity-char-five-refutation](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-26-cube-transport-monotonicity>)
+
+For every field of characteristic 5, n>=4 and l>=0, delta_F(n,l+5,l)=n+2l+6 and delta_F(n,l+6,l)=n+2l+9. The savings drop from 2 to 1 at m=4 to 5, refuting conj:cube-threshold-monotone over all odd characteristics. Equivalently I_(d=1,m=4)=R, I_(d=2,m=4)=0, I_(d=1,m=5)=0, and I_(d=0,m=5)=R.
+
+**Significance:** `negative_result` · **Novelty:** `not_claimed`
+
+**Why it matters:** Corrects a false all-odd-characteristic structural conjecture and forces the remaining all-fields degree law to retain characteristic-dependent Catalan gaps.
+
+**Decision (agent):** The prior field-uniform conjecture is false already for n=4 in characteristic five; exact degrees jump from 10 to 13.
+
+**Next:** Use the characteristic-zero theorem and the existing n<=3 theorem only in their scopes; do not assume monotonicity across a bad-characteristic step.
+
+---
+
 ### BLVZ chessboard filling
 
 **Claim:** [third-party:BLVZ-chessboard-filling](<https://kbr.is-a.dev/math-research/#lean-chessboard-filling>)
@@ -333,6 +349,22 @@ For fixed p, 0<eps<=1, A, c and 0<beta<eps/2, every standard syntactic Res(lin_F
 **Decision (automatic):** Recorded claim, scope, evidence or correction changed; reconsider prior decision.
 
 **Next:** Independent expert review of the statement set; audit its remaining endpoints (cell-support restriction, remainder, occupancy, the all-prime split-line proposition); an exact-scope novelty review before any publication decision by the user.
+
+---
+
+### Cube transport monotonicity
+
+**Claim:** [thm:cube-transport-monotonicity](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-26-cube-transport-monotonicity>)
+
+For every field of characteristic !=2, n>=1 and d,m>=0, D=sum a_i^2 partial_ai defines an F-linear order-raising operator (L_m W)_c=D W_c-c W_(c-1) from the cube kernel at m to that at m+1, preserving excess and sending its top coordinate to -(m+1)W_m. Hence I_m^(d+1) is contained in I_(m+1)^(d+1) whenever m+1 is nonzero in F. In characteristic zero, all thresholds are nonincreasing in m in every dimension, and delta_F(n,k+1,l)<=delta_F(n,k,l)+2. The operator is not R-linear.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Supplies the previously missing explicit solution map uniformly in dimension and settles the characteristic-zero monotonicity conjecture at the stronger ideal level. External novelty of this dual transport consequence has not been audited.
+
+**Decision (agent):** All-dimensions characteristic-zero monotonicity is proved by an explicit degree-preserving operator; external novelty remains to be audited.
+
+**Next:** Use the operator to control graded marked-module presentations; check prior use of dual transport monotonicity before any publication claim.
 
 ---
 
