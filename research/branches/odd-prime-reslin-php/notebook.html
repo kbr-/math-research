@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, W and A1 under random prefixes.</strong> Under random prefixes every light family is settled: every block's union support has at most \(n^{2-\eta}\) cells, whatever its coefficients (<a href="#entry-2026-09-26-random-prefix-light">light families</a>, thm:random-prefix-light-families). Such a block reads only boundedly many residual columns, so bounded-column vacuity drops it. What remains of conj:randomized-wide-clause is families with blocks of nearly full support: column statistics over \(n^{1-o(1)}\) holes, and dense forms. Next: a route review of the randomized line. Does its dense core differ usably from W's, for instance through the pointwise error guarantee? What collective argument could absorb dense blocks, whose residual zero patterns take every value?</p>
+<p><strong>Route item: odd-prime-clause-transfer, A1 and W.</strong> Random prefixes (thm:randomized-prefix-reduction) drop blocks that are light or read few columns, whatever their coefficients, and, by an unregistered rank count, blocks of rank below a chosen multiple of \(\log n\) (<a href="#entry-2026-09-26-random-prefix-light">light families</a>). What remains are heavy high-rank blocks, which heuristically resemble random dense families (<a href="#entry-2026-09-26-randomized-review">randomized review</a>). So under randomization the thread's core looks like the generic collective problem at \(K\ge1\). Next: read Nguyen and Wood's "Local and global universality of random matrix cokernels" (arXiv:2210.08526) in full, for the killer-moment main term. The question is whether their structured-remainder dichotomy handles rows generated polynomially by a few random scalars. A negative answer should be recorded with the exact hypothesis that fails.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -28240,6 +28240,96 @@ The main term is an equidistribution statement analogous to Cohen–Lenstra mome
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 43.92 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 0.74 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-randomized-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of the randomized-prefix line after thm:random-prefix-light-families, with two small tests; no new claim.">
+<h3>Route review of random prefixes: they remove A1's structured adversaries, and by an unregistered rank count low-rank ones too, leaving heavy high-rank blocks; heuristically these resemble random families, so under randomization the core looks like the generic collective problem</h3>
+<p class="entry-meta">26 September 2026 · Route review with two tests · open statement A1 · cycle odd-prime-randomized-review.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. Three research entries developed randomized prefixes:</p>
+<ul>
+<li>the reduction thm:randomized-prefix-reduction;</li>
+<li>prop:bounded-column-vacuity;</li>
+<li>thm:random-prefix-light-families.</li>
+</ul>
+<p>The last settles every family whose blocks touch at most \(n^{2-\eta}\) cells. What exactly is left, and is it easier than W's core?</p>
+<p><strong>General statement.</strong> The line's claim: the goal follows from W_RS (thm:randomized-prefix-reduction), and conj:randomized-wide-clause asserts W_RS with random prefixes. Proved so far: light families (thm:random-prefix-light-families) and bounded-column blocks (prop:bounded-column-vacuity). The goal needs W_RS for every family of \(n^K\) blocks and every \(K\).</p>
+
+<h4>Falsification attempt: what can an adversary still do?</h4>
+<p>Under random prefixes a block is dropped whenever few zero patterns occur on the relevant points. Pattern counts come from three sources:</p>
+<ul>
+<li>at most \(2^a\) patterns for forms supported on \(a\) cells;</li>
+<li>at most \((n+2)^c\) for \(c\) columns;</li>
+<li>at most \(3^r\) when the linear span of \(L_1,\dots,L_h\) as functions, constants included, has dimension \(r\), since the value vector is then fixed by \(r\) basis values.</li>
+</ul>
+<p>The last is an observation of this review, not a registered claim. A block of rank \(r\) is dropped except with probability \(3^{r-t}\), on the full board and with no residual. Blocks of width \(O(\log n)\) are dropped for the same reason, as W's full prefix drops blocks narrower than \(k\).</p>
+<p><em>The race between constants.</em> W_RS lets the chooser take any number of rows: thm:randomized-prefix-reduction requires only hardness at the resulting degree \(B\), which stays logarithmic for \(t=O(\log n)\). With \(t=a\log_3n\), the union bound over \(n^K\) blocks drops every block of rank up to about \(t-K\log_3n=(a-K)\log_3n\). An adversary can answer with blocks of rank \(\Theta(\log n)\) and a larger constant. Letting \(a\) grow makes the degree superlogarithmic. So low rank is removed only relative to a chosen constant.</p>
+<p>Light blocks are removed by thm:random-prefix-light-families for each fixed \(\eta\), with a degree depending on \(\eta\), and within families of light blocks. Whether light blocks drop individually inside families that also contain heavy blocks is not proved. So an adversary needs blocks that are heavy and high-rank, relative to these constants.</p>
+<p>Heuristically such blocks resemble random dense families. High rank gives only an upper bound on patterns, never a lower bound. Dense high-rank blocks can be highly structured, for example sums of PHP axioms. So the surviving blocks are precisely those that none of the structure-based vacuity mechanisms excludes. The attempt found no refutation of W_RS. It found that randomization removes much of the adversarial structure the recorded A1 results fought: hole blocks, shared-prefix families, column blocks, and low-rank blocks relative to a constant. It does not remove the collective difficulty.</p>
+
+<h4>Assessment</h4>
+<ul>
+<li><em>What stands.</em> A reduction that is at least as good as W, since W implies W_RS. A single counting mechanism, pattern vacuity, covers every light or bounded-column block, and every block of rank below a chosen multiple of \(\log n\), whatever the coefficients. W's route needed per-class theorems for these.</li>
+<li><em>What it lacks.</em> Any mechanism for heavy high-rank blocks. There the recorded barriers are expected to apply: conj:replay-weight-barrier for weighted replay, and lem:conditional-gauss-sum-barrier with the killer-moment main term for degree-free absorption of random tops. These were stated for W's clause shape and random forms, not rechecked for W_RS.</li>
+<li><em>Qualitative assessment.</em> Productive and clarifying. Four cycles moved A1's adversarial aspect toward the generic one. Under randomization the thread's core looks like the random-family problem at \(K\ge1\), heuristically the same problem that stopped both mechanisms. This is progress in understanding, not on the core. The core now has a clean form: PHP plus \(n^K\) randomly prefixed blocks, among them heavy high-rank ones.</li>
+</ul>
+
+<h4>Outside leads</h4>
+<ul>
+<li><em>Kothari, Mori, O'Donnell and Witmer's \(t\)-wise uniformity criterion</em>, applied to randomized blocks. Target: the heavy core, where each block's allowed value set is the complement of zero patterns in \(\ker C\). If it supports a \(t'\)-wise uniform distribution for growing \(t'\), the SoS analogue would absorb \(n^{\Theta(t')}\) such constraints. <em>Where it breaks:</em> PC over \(\mathbb F_3\) is not SoS, and the recorded characteristic-3 obstruction to averaging stands. <strong>Test.</strong> Passed, consistent at \(h=4\) and for pairwise uniformity only. An exact LP found a pairwise-uniform distribution on the allowed value vectors for 10 of 10 random \(C\) with \(t=2\), and for 7 of 10 with \(t=1\) (<code>rs_review_tests.json</code>, R2). At \(t=2\) up to 81 of the 81 vectors are allowed, so that half is nearly vacuous. Three of 10 failed at \(t=1\).</li>
+<li><em>Håstad's switching lemma (random restrictions).</em> Target: shrink heavy blocks by a stronger restriction until pattern vacuity applies. <em>Where it breaks:</em> quantitatively. A restriction to an \(m\times m\) residual does drop everything, since the restricted rank is then at most \(m^2+1\). But the residual PHP must stay hard at the clauses' degree, so \(m\) must stay above roughly \(\Theta(\log n)\). Then the rank bound \(3^{m^2}\) and the column bound \((m+2)^m\) exceed \(3^t=\mathrm{poly}(n)\). <strong>Test.</strong> Falsified by that count: no residual both small enough for vacuity and large enough for hardness exists at logarithmic degree.</li>
+<li><em>Alon–Füredi on the cube.</em> A nonzero multilinear polynomial of degree \(d\) is nonzero on at least \(2^{N-d}\) Boolean points. Target: consistency of W_RS's clauses. A clause supported on a set of density \(\varepsilon\) needs degree at least \(\log_2(1/\varepsilon)\). <strong>Test.</strong> Passed. A randomized clause has support density about \(3^{-t}\) and degree \(4t+2\ge t\log_23\), so the bound holds with room. It gives no lower bound beyond that.</li>
+</ul>
+
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>Random linear codes: minimum distance (Gilbert–Varshamov).</em> <em>Translation:</em> \(\ker C\) is a random code of codimension \(t\). The zero patterns a block can never forbid are the 0/1 vectors of weight below the least weight of a nonzero 0/1 word in \(\ker C\). <em>What a theorem there would give:</em> heavy blocks are harmless on points whose zero pattern has weight below that least weight. Heuristically it is about \(\delta h\), where \(\binom h{\delta h}\approx3^t\), that is \(hH_2(\delta)\approx t\log_23\). <em>Smallest test:</em> exhaustive minimum weights. <strong>Test.</strong> Falsified as a safety mechanism. For \(h=16\) the minimum weight of a nonzero 0/1 word in \(\ker C\) was 1 to 3 at \(t=4\), 1 to 4 at \(t=6\) and 1 to 7 at \(t=8\), over 20 samples each (R1). Dense blocks have patterns of weight about \(h/3\approx5.3\), above most of those values: at \(t=8\) some samples had least weight 6 or 7. Beyond that, \(t\) must grow linearly in \(h\).</li>
+<li><em>Insurance pooling (law of large numbers).</em> <em>Translation:</em> each point is forbidden by block \(b\) with probability \(3^{-t}\) over \(C_b\), independently across blocks. So the number of blocks forbidding a point is a sum of independent Bernoulli variables with mean at most \(M3^{-t}\le1/(3n)\). <em>What a theorem there would give:</em> no point is systematically forbidden, and concentration bounds control how many points of any fixed small set are forbidden. <em>Smallest test:</em> the mean. <strong>Test.</strong> Passed as a computation: \(M3^{-t}\le n^K\cdot n^{-(K+1)}/3\). The link from "few forbidden points" to "no low-degree refutation" is exactly what is missing, so this restates the core.</li>
+</ul>
+
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-strategy-review:1"><em>Shannon's information budget.</em> It is now the pooling bridge above: the forbidden mass is pointwise small for every family. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-26-conditioning-review:1"><em>Kotecký–Preiss.</em> No work. <strong>Follow-up.</strong> Continuing: the characteristic-3 obstacle stands.</li>
+<li data-bridge="entry-2026-09-26-thread-review:2"><em>The leftover hash lemma.</em> Not needed so far: the proofs used averaging over \(C\), not concentration. <strong>Follow-up.</strong> Closed: averaging suffices for existence, and existence is all W_RS needs.</li>
+</ul>
+
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-thread-review:1"><em>Razborov–Smolensky prefixes.</em> Developed into thm:randomized-prefix-reduction, prop:bounded-column-vacuity and thm:random-prefix-light-families. <strong>Follow-up.</strong> Developed: the adversarial structure dissolves, and the generic core remains.</li>
+<li data-lead="entry-2026-09-26-conditioning-review:2"><em>Kothari, Mori, O'Donnell and Witmer.</em> Tested again above on randomized blocks. <strong>Follow-up.</strong> Continuing: the characteristic-3 transfer is the open step.</li>
+<li data-lead="entry-2026-09-25-universality-review:1"><em>Quadratic Littlewood–Offord inverse theorems.</em> No work. <strong>Follow-up.</strong> Continuing, for random tops.</li>
+<li data-lead="entry-2026-09-26-killer-moment-review:1"><em>Nguyen and Wood.</em> No work. <strong>Follow-up.</strong> Continuing: the full paper is still to be read.</li>
+<li data-lead="entry-2026-09-26-expander-core-review:1"><em>The Mikša–Nordström closure.</em> It now carries every randomized-prefix result, through the residual. <strong>Follow-up.</strong> Developed.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, the core is now generic. Its most concrete open piece with a finite, decisive form is the killer-moment main term for random product tops, and three routes to it are blocked. The next step is to read Nguyen and Wood's paper in full, the lead passed twice. The question is whether their structured-remainder dichotomy handles rows generated polynomially by a few random scalars. A negative answer should be recorded with the exact hypothesis that fails.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the three randomized-prefix results and the recorded barriers. The rank bound \(3^r\) on zero patterns, with \(r\) the dimension of the linear span of the forms as functions, constants included, follows because the value vector is a function of \(r\) basis values. A fresh-context reviewer confirmed every test number. It required these changes, all adopted:</p>
+<ul>
+<li>the rank defined with constants included;</li>
+<li>the "raising \(t\)" claim restated as a race between constants, with the union-bound threshold \(t-K\log_3n\);</li>
+<li>the assumptions behind "support \(n^{2-o(1)}\)" stated;</li>
+<li>the switching lead's failure made quantitative;</li>
+<li>the coding bridge restated for 0/1 words, with \(hH_2(\delta)\approx t\log_23\);</li>
+<li>the R2 outcome qualified;</li>
+<li>"resemble random families" stated as a heuristic, since high rank gives no lower bound on patterns.</li>
+</ul>
+<p>The changes restrict claims, so no second pass was made. Test numbers were read from <code>rs_review_tests.json</code> by script. This review registers no claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-randomized-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 52.56 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 3.40 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5.52 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 42.84 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.65 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
