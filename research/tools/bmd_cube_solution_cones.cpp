@@ -15,7 +15,13 @@
 // With "val", it also evaluates every solution at a random point y0 (its coordinates are the coefficients of the one-
 // variable series w~(t y0)) and reports the cumulative rank of the values, a lower bound for the rank over F(y).
 //
+// With first argument "series", it decides for each prime in a comma-separated list and each case d:rho:lmin:lmax
+// whether a witness of origin order exactly l exists (the dimension of the space of degree-l parts of the witnesses of
+// origin order >= l), which is exact over F_p with no random point; savings >= d+1 at (k, l) holds exactly when it
+// is positive, so l_0(d+1, m) is the least such l.  Face division is valid over every field (prop:cube-face-divisibility).
+//
 // Usage: bmd_cube_solution_cones prime seed d rho j lmin lmax [sym] [val]
+//        bmd_cube_solution_cones series p1,p2,... d:rho:lmin:lmax ...
 #include <cstdio>
 #include <cstdlib>
 #include <cstdint>
@@ -65,11 +71,24 @@ static long rank_mod(vector<vector<u64>> M) {
     return r;
 }
 
+static bool ORDERONLY = false;
+static int run(unsigned seed, int d, int rho, int j, int lmin, int lmax);
 int main(int argc, char **argv) {
+    if (argc >= 4 && string(argv[1]) == "series") {
+        ORDERONLY = true;
+        vector<u64> primes; { string ps = argv[2]; size_t a = 0; while (a < ps.size()) { size_t b = ps.find(',', a); if (b == string::npos) b = ps.size(); primes.push_back(atoll(ps.substr(a, b - a).c_str())); a = b + 1; } }
+        for (int ai = 3; ai < argc; ai++) {
+            int d, rho, lmin, lmax; if (sscanf(argv[ai], "%d:%d:%d:%d", &d, &rho, &lmin, &lmax) != 4) { fprintf(stderr, "bad case %s\n", argv[ai]); return 2; }
+            for (u64 p : primes) { P = p; printf("prime %llu ", (unsigned long long)p); run(1, d, rho, 0, lmin, lmax); }
+        }
+        return 0;
+    }
     if (argc < 8) { fprintf(stderr, "usage: prime seed d rho j lmin lmax [sym]\n"); return 2; }
     for (int ai = 8; ai < argc; ai++) { if (string(argv[ai]) == "sym") SYM = true; if (string(argv[ai]) == "val") VAL = true; }
     P = atoll(argv[1]); unsigned seed = atoi(argv[2]);
-    int d = atoi(argv[3]), rho = atoi(argv[4]), j = atoi(argv[5]), lmin = atoi(argv[6]), lmax = atoi(argv[7]);
+    return run(seed, atoi(argv[3]), atoi(argv[4]), atoi(argv[5]), atoi(argv[6]), atoi(argv[7]));
+}
+static int run(unsigned seed, int d, int rho, int j, int lmin, int lmax) {
     { const char *th = getenv("OMP_NUM_THREADS"); flint_set_num_threads(th ? atoi(th) : 1); }
     int m = 4 * d + rho - 1, e = d;  // face exponent h + 2 - n = d
     int kmax = lmax + m + 1, Dmax = 2 * kmax - d;
@@ -130,6 +149,15 @@ int main(int argc, char **argv) {
         nmod_mat_init(X, U, U, P);
         long nul = nmod_mat_nullspace(X, A);
         nmod_mat_clear(A);
+        if (ORDERONLY) {
+            // rank of the degree-l rows of the nullspace basis = dimension of the degree-l parts
+            vector<long> lrows; for (int u = 0; u < U; u++) { auto &mo = basis[u][0].first; if (mo[0] + mo[1] + mo[2] == l) lrows.push_back(u); }
+            nmod_mat_t Y; nmod_mat_init(Y, lrows.size(), nul > 0 ? nul : 1, P);
+            for (size_t r = 0; r < lrows.size(); r++) for (long c = 0; c < nul; c++) nmod_mat_entry(Y, r, c) = nmod_mat_entry(X, lrows[r], c);
+            long lr = nul > 0 ? nmod_mat_rank(Y) : 0; nmod_mat_clear(Y); nmod_mat_clear(X);
+            printf("(d,rho)=(%d,%d) m=%d l=%d: k=%d D=%d unknowns %d, witness space dim %ld, degree-l parts dim %ld\n", d, rho, m, l, k, D, U, nul, lr);
+            fflush(stdout); continue;
+        }
         // series
         N = l + m - j + 2; if (N < 2) N = 2;
         Ser lam(N, 0); lam[1] = 1;
