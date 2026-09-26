@@ -35,7 +35,7 @@
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
 <li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Its zero sets are mapped (<a href="#cube-threshold-collision-support">theorem</a>, <a href="#entry-2026-09-26-cube-collision-windows">entry</a>) but do not give \(\ell_0\). Order zero satisfies \(11d-11\le M(d)\le20d-21\) (<a href="#cube-order-zero-dimension-four-lower-bound">windows</a>, <a href="#cube-order-zero-dimension-four-linear-bound">products</a>). Restrictions give lower bounds (<a href="#cube-order-zero-restriction">lemma</a>; planes give 19, 38 modulo a large prime, <a href="#cube-order-zero-restrictions">check</a>), exact when the solution module has depth \(\ge3\) (<a href="#cube-restriction-exactness">exactness lemma</a>). Once \(I_m\) has no zeros, order zero fails only through a local cohomology class (<a href="#cube-zero-free-criterion">zero-free criterion</a>): the class of the order-zero column, whose annihilator is \(I_m\) (<a href="#cube-threshold-annihilator">annihilator form</a>). It vanishes locally at every point, so no pointwise method sees it; at \(d=2\) the modules have depth 2 (<a href="#entry-2026-09-26-cube-route-review-19">route review 19</a>). Next: weigh a global duality bound for \(H^0_{\mathfrak m}(C_{m-1})\) against the other open statements (boundary for every \(d\), small primes).</li>
-<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). By the <a href="#cube-squarefree-reduction">reduction theorem</a> and the <a href="#cube-limit-triple-multiplicity">triple-multiplicity corollary</a>, \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs one statement: squarefreeness of the non-collision part of the limit determinant. It is an instance of the <a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness conjecture</a>. For \(n=4\) it is simplicity of the \(d\)-canonical Weierstrass points of a general Humbert curve. The base case \(n=2\), \(\nu=d-|r|\), is proved: on the conic every Weierstrass point of the hyperplane series has weight 1 (<a href="#cube-conic-squarefree">conic theorem</a>). Next: the same weight analysis for \(U_d\) on the genus-1 curve (codimension 4), which would give the law for every \(d\).</li>
+<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs squarefreeness of the non-collision part of the limit determinant \(\Delta_U\) (<a href="#cube-squarefree-reduction">reduction theorem</a>, <a href="#cube-limit-triple-multiplicity">triple multiplicity</a>), an instance of the <a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness conjecture</a>. Its base case \(n=2\), \(\nu=d-|r|\), is proved: on the conic every Weierstrass point has weight 1 (<a href="#cube-conic-squarefree">conic theorem</a>). On the genus-1 curve \(U_d\) is cut out by four character functionals, and weight 2 needs one of two rank drops (<a href="#cube-limit-four-functionals">lemma</a>). Next: show those rank drops fail at general points of the Weierstrass divisor, or treat the triple sides by apolarity.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions; the dimension-3 result may merit a note.</p>
@@ -8514,6 +8514,89 @@ As in the dimension-3 window lemma, \((w_3-w)^k=A_k(w)+w_3B_k(w)\) with \(\deg A
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 11.42 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 9.67 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.16 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-elliptic-functionals" data-kind="research" data-route="cube-odd-characteristic" data-claims="lem:cube-limit-four-functionals" data-lead="entry-2026-09-26-cube-route-review-15:1">
+<h3>26 September 2026 — The limit space on the genus-1 curve: four character functionals, and when a Weierstrass point can be double</h3>
+<p class="entry-meta">Working proof: U_d is cut out of L(2dH) on the genus-1 curve by three character components of the top coefficients and one of the next order; weight ≥ 2 needs one of two explicit rank drops. Cycle bmd-r131. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-26-cube-conic-squarefree">conic theorem</a> proved the base case \(n=2\) of the squarefreeness behind the dimension-4 boundary law. Its mechanism was that the series is a hyperplane of a complete series, and every Weierstrass point then has weight 1. The case the boundary needs is \(n=3\), \(\nu_r=d-|r|\): the limit space \(U_d\) on the genus-1 curve (the limit conjecture of the <a href="#entry-2026-09-26-cube-squarefree-reduction">reduction entry</a>, whose first half the <a href="#cube-limit-triple-multiplicity">triple-multiplicity corollary</a> proves). This cycle asks two things:</p>
+<ul>
+<li>Does the non-collision part of \(\Delta_U\) have a closed form, as \(Q_d\) was on the conic?</li>
+<li>If not, what exactly must a weight argument control?</li>
+</ul>
+<h4>No closed form at d = 2</h4>
+<p>The exact determinant over \(\mathbb Q\) (<code>research/tools/bmd_cube_nu_noncollision3.py</code>, sympy Bareiss in two variables with \(a_3=1\); <code>research/results/bmd-r131-elliptic/noncollision-n3-d2.txt</code>, 86 s) gives \(\deg\Delta_U=60\):</p>
+<ul>
+<li>collision multiplicities 10 at \(a_1,a_2\), and 10 at \(a_3\) by homogeneity (\(60\) minus the degree 50 of the dehomogenized determinant) or by symmetry; 7 at each \(a_i-a_j\);</li>
+<li>a single irreducible non-collision factor of degree 9, symmetric in \(x=a_1\), \(y=a_2\).</li>
+</ul>
+<p>These values match the <a href="#cube-squarefree-reduction">reduction entry</a>'s line data (10, 7, and degree \(4d^2+2d-11=9\)). Unlike the conic there is no product of simple pieces, so squarefreeness for every \(d\) has to come from a weight argument.</p>
+<h4>Setting</h4>
+<p>Take characteristic \(\ne2\) and \(a=(a_1,a_2,a_3)\) with distinct nonzero entries. Let \(E\) be the curve \(w_i^2=1+a_iT\) (\(i=1,2,3\)), a \(G=(\mathbb Z/2)^3\)-cover of the \(T\)-line branched at \(T=-1/a_i\) and \(T=\infty\). It has genus 1. For \(r\in\{0,1\}^3\) write \(w^r=\prod_{r_i=1}w_i\), and \(\chi_r\) for the character by which \(G\) acts on \(w^r\).</p>
+<p>At \(T=\infty\) every \(w_i\) changes sign around the branch point, so the inertia group there is \(\langle g_0\rangle\), \(g_0=(1,1,1)\). The fibre consists of four points \(\infty_1,\ldots,\infty_4\), each ramified of index 2, permuted simply transitively by \(G/\langle g_0\rangle\). Put \(H=\sum_k\infty_k\). Then \(T\) has a double pole and each \(w_i\) a simple pole at every \(\infty_k\), and \(L=L(2dH)\) has dimension \(8d\). The recorded limit space is \(U_d=V_\nu\), \(\nu_r=d-|r|\), of dimension \(8d-4\) (<a href="#cube-squarefree-reduction">reduction theorem</a>).</p>
+<h4 id="cube-limit-four-functionals">The four functionals</h4>
+<p>Fix a local parameter \(s\) at \(\infty_1\) with \(g_0^*s=-s\), and transport it to \(s_k=s\circ g_k^{-1}\) at \(\infty_k=g_k\infty_1\). For \(f\in L\) let \(\mathrm{lc}(f)\in F^4\) be the vector of coefficients of \(s_k^{-2d}\), and \(\mathrm{sc}(f)\) that of \(s_k^{-(2d-1)}\).</p>
+<p><strong>Lemma</strong> (<code>lem:cube-limit-four-functionals</code>).</p>
+<ol>
+<li>\(L=\bigoplus_rw^rF[T]_{\le j_r}\) with \(j_r=d\), \(d-1\), \(d-1\), \(d-2\) for \(|r|=0,1,2,3\). \(U_d\) omits exactly \(w_iw_jT^{d-1}\) (three elements, pole order \(2d\)) and \(w_1w_2w_3T^{d-2}\) (pole order \(2d-1\)).</li>
+<li>\(\mathrm{lc}(f)=A_d\,\tau+\sum_{i&lt;j}D^{ij}_{d-1}\,\mu^{ij}\), where \(A_d\) and \(D^{ij}_{d-1}\) are the coefficients of \(T^d\) and \(w_iw_jT^{d-1}\) in \(f\), and \(\tau,\mu^{ij}\) are the \(\mathrm{lc}\) vectors of those basis elements. These four vectors are \(c_{\cdot}(\chi_r(g_k))_k\) for the four even characters, with a nonzero constant \(c_0\) or \(c_{ij}\) for each basis element, so they form a basis of \(F^4\). The constants depend on the chosen representatives \(g_k\): replacing \(g_k\) by \(g_kg_0\) flips the sign of \(s_k\), which changes the signs of the \(\mathrm{sc}\) vectors.</li>
+<li>Likewise, \(\mathrm{sc}(f)=\sum_iB^i_{d-1}\nu^i+E_{d-2}\,\nu^{123}\) over the four odd characters, again a basis. Here \(B^i_{d-1}\) and \(E_{d-2}\) are the coefficients of \(w_iT^{d-1}\) and \(w_1w_2w_3T^{d-2}\).</li>
+<li>Hence \(U_d=\{f\in L:\mathrm{lc}(f)\in F\tau,\ [\mathrm{sc}(f)]_{123}=0\}\), where \([\cdot]_{123}\) is the \(\nu^{123}\)-coordinate. That is four functionals \(\Phi=(\phi_{12},\phi_{13},\phi_{23},\psi)\) with \(U_d=\ker\Phi\).</li>
+<li>(Weight criterion.) A point \(p\) of \(E\) other than the \(\infty_k\) has positive weight for \(U_d\) iff \(\Phi\) is singular on \(L(2dH-(8d-4)p)\). It has weight \(\ge2\) iff \(\Phi\) has rank \(\le3\) on \(L(2dH-(8d-5)p)\) or a kernel on \(L(2dH-(8d-3)p)\).</li>
+</ol>
+<p><em>Proof.</em> Part 1. An element of \(L\) of type \(\chi_r\) is \(w^rg\) with \(g\) a \(G\)-invariant function, that is, a rational function of \(T\). Near \(T=-1/a_i\), \(w_i\) has a simple zero at each point over it, where \(T+1/a_i\) has a double zero. So a pole of \(g\) there would give a pole of \(w^rg\), and \(g\) is a polynomial. The element \(w^rT^j\) has pole order \(2j+|r|\le2d\) at every \(\infty_k\), which gives \(j_r\). The dimension is \((d+1)+3d+3d+(d-1)=8d\). Comparing with \(\nu_r=d-|r|\) gives the omitted elements, 4 in all.</p>
+<p>Parts 2 and 3. An element of type \(\chi_r\) satisfies \(f\circ g^{-1}=\chi_r(g)^{-1}f\). So its expansions at the \(\infty_k\) are one series times \(\chi_r(g_k)^{\pm1}\), and at \(\infty_1\) it contains only powers \(s^e\) with \((-1)^e=\chi_r(g_0)=(-1)^{|r|}\). Only \(T^d\) and \(w_iw_jT^{d-1}\) reach pole order \(2d\), and only \(w_iT^{d-1}\) and \(w_1w_2w_3T^{d-2}\) reach odd order \(2d-1\); every other basis element has a smaller pole. Each of these has a nonzero leading coefficient \(c_r\) at \(\infty_1\).</p>
+<p>The even characters are trivial on \(g_0\), so they are the four characters of \(G/\langle g_0\rangle\), and their value table on the coset representatives \(g_k\) is invertible. The odd characters are \(\chi_{123}\) times the even ones, so their table is invertible as well.</p>
+<p>Part 4 follows from Part 1 and the unique decomposition of \(f\). Part 5 is proved in the next section. \(\square\)</p>
+<h4 id="cube-limit-weight-criterion">When a point can have weight 2</h4>
+<p>For a point \(p\) of \(E\) other than the \(\infty_k\) write \(L_k=L(2dH-kp)\). On genus 1, \(\dim L_k=8d-k\) for \(k\le8d-2\). The orders \(\varepsilon_0&lt;\cdots&lt;\varepsilon_{8d-5}\) of \(U_d\) at \(p\) satisfy \(\#\{i:\varepsilon_i\ge k\}=\dim(U_d\cap L_k)=\dim\ker(\Phi|_{L_k})\). So:</p>
+<ul>
+<li>\(p\) has positive weight iff \(\Phi|_{L_{8d-4}}\) (four functionals on a 4-dimensional space) is singular;</li>
+<li>\(p\) has weight \(\ge2\) iff (A) \(\operatorname{rank}\Phi|_{L_{8d-5}}\le3\), so that two orders are \(\ge8d-5\), or (B) \(\Phi|_{L_{8d-3}}\) has a kernel, so that the top order is \(\ge8d-3\).</li>
+</ul>
+<p>The lemma makes both conditions concrete.</p>
+<p>(A) \(\mathrm{lc}\) maps \(L_{8d-5}\) onto \(F^4\): its kernel \(L((2d-1)H-(8d-5)p)\) has degree 1, so dimension 1, spanned by some \(g_p\). So the three \(\phi_{ij}\) have rank 3 there, and (A) says that \(\psi\) vanishes on the plane \(\{f\in L_{8d-5}:\mathrm{lc}(f)\in F\tau\}\). That plane is spanned by \(g_p\) and any \(f_\tau\) with \(\mathrm{lc}(f_\tau)=\tau\).</p>
+<p>(B) \(\mathrm{lc}\) is injective on \(L_{8d-3}\), since the kernel has degree \(-1\). So (B) says there is \(f\in L_{8d-3}\) with \(\mathrm{lc}(f)=\tau\) and \([\mathrm{sc}(f)]_{123}=0\). By the residue theorem, applied to \(f\eta\) for the one differential \(\eta\) (up to scalars) with divisor \(\ge(2d-1)H-(8d-3)p\), the image \(\mathrm{lc}(L_{8d-3})\) is the hyperplane \(\{v:\sum_kv_k\eta_k=0\}\). Here \(\eta_k\) is the leading coefficient of \(\eta\) at \(\infty_k\). So (B) needs \(\sum_k\tau_k\eta_k=0\), and \(\sum_k\tau_k\eta_k=-\operatorname{Res}_p(T^d\eta)\) since \(T^d\eta\) has simple poles at the \(\infty_k\) and no other pole except \(p\). It also needs one more condition on the next order.</p>
+<p>So a Weierstrass point of weight \(\ge2\) is a point of positive weight satisfying one further explicit condition. Squarefreeness of \(\Delta_U\) needs only that this does not happen at \(p=p_0\) (over \(T=0\)) at a general point of any component of the Weierstrass divisor. Multiplicity equals weight there by the flow step of the <a href="#cube-extra-factors-double">doubled-factor proposition</a>, applied to \(U_d\), which is transported by the same translations, as the reduction entry states. So the open statement is now: on no component of the non-collision part of \(V(\Delta_U)\) in \(a\)-space does (A) or (B) hold at \(p_0\) at a general point.</p>
+<p><strong>General statement.</strong> <code>lem:cube-limit-four-functionals</code>, including the weight criterion, for every \(d\ge2\) and every configuration with distinct nonzero \(a_i\), in characteristic \(\ne2\). The open part remains <code>conj:cube-limit-determinant-squarefree</code>.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the reduction theorem and triple-multiplicity corollary (the limit space and its data), the collision limit-space lemma, and the doubled-factor proposition's flow step. A claim search (limit space, genus 1, character functionals) found nothing implying the lemma. A fresh-context referee checked:</p>
+<ul>
+<li>the inertia, the ramification and the genus;</li>
+<li>the pole orders and the isotypic basis;</li>
+<li>the parity at \(\infty_1\) and the character tables;</li>
+<li>the order counting, the dimensions on genus 1 and the residue step;</li>
+<li>the \(d=2\) data.</li>
+</ul>
+<p>It found no error. Its corrections are made:</p>
+<ul>
+<li>the \(a_3\) multiplicity comes from homogeneity;</li>
+<li>the flow step is cited for \(U_d\), at \(p_0\);</li>
+<li>the characteristic is \(\ne2\), since characteristic 0 enters only through multiplicity = weight;</li>
+<li>the weight criterion is part 5 of the lemma;</li>
+<li>the open statement is made precise;</li>
+<li>the constants are indexed per element, and depend on the representatives;</li>
+<li>the residue sign is written out.</li>
+</ul>
+<p><strong>Assessment.</strong> The genus-1 case has the same shape as the conic, with four functionals in place of one. They are the three non-trivial even Fourier components of the top coefficients at the four points at infinity, and the \(\chi_{123}\) component one order down. There is no closed form to exploit, so the proof must show that the weight-2 conditions are independent of the Weierstrass condition.</p>
+<p>Two routes are visible:</p>
+<ul>
+<li>the residue description, which turns (A) and (B) into conditions on differentials with a pole at \(p\), where addition on \(E\) may make them explicit, as the root of unity did on the conic;</li>
+<li>the quadrangle route of the reduction entry, which needs squarefreeness on the triple sides, for the conic vector \((2d,2d-2,2d-2,2d-4)\) of codimension 5, and on the double-double sides.</li>
+</ul>
+<p>For the conic vectors, apolarity makes the weight of \(V_\nu\) at \(p\) equal to that of the dual series spanned by the missing functionals. That dual series lies in \((\lambda-\kappa)^{m-i}\mathrm{Poly}_i\oplus(\lambda+\kappa)^{m-i}\mathrm{Poly}_i\), a two-point space whose Wronskians are of hypergeometric type. The next step is that computation for \((2d,2d-2,2d-2,2d-4)\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r131">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 2.19 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 39.84 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 23.42 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 32.19 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 26.53 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
