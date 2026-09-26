@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Matching restrictions that derive the restricted equations have a ceiling. On an expanding residual the only derivable linear constraints are row combinations, so the restricted equations must sit in common level sets, which random forms deny beyond about \(3\log_3n\) equations (<a href="#entry-2026-09-26-restriction-ceiling">restriction ceiling</a>). The few-equations theorem reaches \(c\ln n\), tight up to a constant factor for this class and random forms, so many random equations need non-derivable axioms handled through \(W_A\). Next: compute \(W_A\) for a few random linear equations on the residual. Their images under the operator are the equations modulo rows, so the first closure steps \(R(x\,R(\ell))\) are explicit; look for a degree-by-degree structure and for whether 1 enters.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Restrictions that derive their equations reach only \(\Theta(\log n)\) random constraints (<a href="#entry-2026-09-26-restriction-ceiling">ceiling</a>). So A1's collective core needs constraints kept as axioms and meets A3's semi-regularity: on the complete board for families without hole blocks, and relative to the Mikša–Nordström operator on the forced sparse board otherwise (<a href="#entry-2026-09-26-strategy-review">strategy review</a>). Small tests of linear tops were mixed, and a uniform-forms budget gives no evidence against W. Next: check whether the test ring is the associated graded ring of Taylor glue, and reconcile standard semi-regularity with conj:semi-regular-relative-to-base. Then compute Hilbert functions of several generic linear tops per size on sparse boards, random and twin-hole, and locate defects at blocked centres.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -27297,6 +27297,84 @@ because \(er\le n^{\eta/2}\) for large \(n\), as \(r=O(\ln n)\). This is at most
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-strategy-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Strategy review after the restriction ceiling, with a semi-regularity test for linear tops and an information-budget heuristic; no new claim.">
+<h3>Route review: restrictions that derive their equations reach only \(\Theta(\log n)\) random constraints, so A1's collective core needs constraints kept as axioms and meets A3's semi-regularity; small tests of linear tops are mixed, and a uniform-forms budget gives no evidence against W</h3>
+<p class="entry-meta">26 September 2026 · Route review with two tests · open statement A1 · cycle odd-prime-relative-equations.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. Two results frame A1's core:</p>
+<ul>
+<li>the <a href="#entry-2026-09-26-few-equations">few-equations theorem</a> handles \(c\ln n\) far-from-additive equations;</li>
+<li>the <a href="#entry-2026-09-26-restriction-ceiling">restriction ceiling</a> shows that matching restrictions which make random equations derivable cannot handle many more.</li>
+</ul>
+<p>The planned next step, \(W_A\) for random equations on the residual, is the conditioning law relative to the operator. That law is open even on the complete board. Which mechanism could handle the collective case, and is there reason to doubt W there?</p>
+<p><strong>General statement.</strong> The line's claim, as revised in the <a href="#entry-2026-09-26-relative-review">relative review</a>: A1 holds if the remaining dense clauses keep 1 outside the operator closure \(W_A\) (lem:relative-criterion). Restriction arguments that derive their restricted equations reach \(\Theta(\log n)\) random ones (thm:few-equations-hardness, prop:restriction-ceiling). Beyond that, constraints must be kept as genuine axioms.</p>
+
+<h4>Falsification attempt: does a heuristic count speak against W?</h4>
+<p>W's clause for an excluded \(i\) is \(g_i\prod_{j\in S}L_j^2\), with the whole prefix \(S\) in the product (Open statements, W). Take a distribution on assignments under which the \(k\) prefix forms of a block are jointly uniform and independent on \(\mathbb F_3^k\). Such a distribution is an idealization, not the uniform distribution on Boolean points.</p>
+<p>Every clause of the block needs all prefix forms nonzero, so the block excludes at most a fraction \((2/3)^k\), however many clauses it has. With \(k=2.5(K+1)\ln n\), \(n^K\) such blocks exclude at most \(n^K(2/3)^k=n^{K-1.014(K+1)}\). For \(K=1,2,3,5\) and \(n=10^3\) to \(10^{12}\), \(\log_{10}\) of this ranges from \(-3.08\) to \(-12.98\), with worst case about \(n^{-1.03}\) at \(K=1\) (<code>info_budget.json</code>). Counted clause by clause with \(n^2\) clauses per block, the same quantity would exceed 1. The block bound is the relevant one.</p>
+<p>The reach of this heuristic is limited:</p>
+<ul>
+<li>It concerns random forms only. An adversary can pick forms that are almost never zero, such as \(1+\) a row sum.</li>
+<li>Excluded mass does not measure degree loss: PHP itself excludes every assignment and is still hard.</li>
+</ul>
+<p>The outcome is only that this heuristic gives no evidence against W.</p>
+
+<h4>Assessment of the line</h4>
+<ul>
+<li><em>What stands.</em> The structured families, the forced sparse board, swap decay, the closure base, the relative criterion, semantic local kills, the few-equations theorem with its corollary for W, and the restriction ceiling.</li>
+<li><em>What the ceiling closes.</em> Matching restrictions cannot make many random equations derivable, since common level sets run out at about \(3\log_3n\) forms. Restrictions that keep residual equations as axioms are not covered by the ceiling, and they are the mechanism the next item needs.</li>
+<li><em>Where A1 meets A3.</em> For linear tops, the hypothesis of Taylor glue is Koszul regularity of the forms on a graded ring of the base below the fill point, a semi-regularity condition. As a first-order heuristic, with \(H_d/H_{d-1}\) of order \(n^2/d\), the fill point after \(a\) generic linear tops sits near degree \(n^2/a\). That would allow up to about \(n^2/B\) random equations at degree \(B\). This matches the registered conjecture's own heuristic estimate of order \((N^2/B)^h\) at \(h=1\), in conj:semi-regular-relative-to-base. It is not the conditioning law's scale, which tolerates about \(n^2-2Bn\) equations: the two agree only for constant \(B\). The heuristic also holds only while \(n^2/a\) stays below the top degree of the ring. On the complete board, for families without hole blocks, the collective core is therefore a semi-regularity question of A3's kind. With every hole block present, the board is the forced sparse board, where Taylor glue's recorded base fails at blocked centres, so a form relative to the operator is needed.</li>
+<li><em>Qualitative assessment.</em> The restriction route is finished for making random equations derivable. What remains needs constraints kept as axioms, through semi-regularity or a relative version of it. A1's collective core is a frontier question of the same kind as A3. The route should test semi-regularity next, rather than more restrictions.</li>
+</ul>
+
+<h4>Outside leads</h4>
+<ul>
+<li><em>Fröberg's conjecture on generic forms, transplanted to a matching algebra.</em> Target: the collective core for equations, as semi-regularity of generic linear tops. <em>Where it breaks:</em> the ring is not a polynomial ring, structured adversarial forms are not generic, and the test's ring is not the registered conjecture's setting. <code>linear_tops.m2</code> uses \(G=\mathbb F_3[x]/(x_{uv}^2,\ x_{uv}x_{uv'},\ x_{uv}x_{u'v},\ \textstyle\sum_vx_{uv})\): the tops of Booleanity, functionality and collisions, with the homogenized row sums. Whether \(G\) equals the associated graded ring of the base's degree filtration is not checked. conj:semi-regular-relative-to-base concerns product clauses, with prediction \(H_R(t)(1-t^h/(1+t)^h)^M\). The test checks standard semi-regularity \([(1-t)^aH_G]_+\) of homogeneous linear forms, including the value at the fill degree. <strong>Test.</strong> Falsified as exact semi-regularity in one of six informative runs, passed in the other five. Of the 16 runs (\(n=3,4\), \(a\le2n\), one random form set each), the \(a=0\) runs are trivial, and runs after degree 2 vanishes follow automatically. About 6 are informative (\(n=3\): \(a=1,2\); \(n=4\): \(a=1,\dots,4\)). Five agree with the prediction. At \(n=3\), \(a=1\), degree 2 has 1 against predicted 0, exactly at the fill degree, so the run passes only under a definition that stops below the fill point (<code>linear_tops.out.txt</code>).</li>
+<li><em>The weak Lefschetz property (Harima, Maeno, Morita, Numata, Wachi and Watanabe, 2003).</em> Target: the one-form case, multiplication by a general linear form having maximal rank in each degree of \(G\). <em>Where it breaks:</em> the Lefschetz literature works in characteristic 0 or large characteristic, and over \(\mathbb F_3\) a random form can be special. <strong>Test.</strong> Falsified at \(n=3\) for the sampled form, passed at \(n=4\): \(H=(1,14,35,0)\) at \(n=4\), as predicted. At \(n=3\) the one sampled form has multiplication from degree 1 to degree 2 of rank 5 rather than 6. Whether some form over \(\mathbb F_3\) has maximal rank there is not known, since only one form was sampled.</li>
+<li><em>Razborov's complete-board pseudo-reduction for PHP (Comput. Complexity 7 (1998)), with added equations.</em> Target: a direct lower bound for PHP plus many random equations, the conditioning law, without Taylor glue. <em>Where it breaks:</em> the operator is built from the structure of PHP alone, and equations cross every support. <strong>Test.</strong> Not run: no formulation with equations exists to test.</li>
+</ul>
+
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>Shannon's information budget, with constraints as measurements.</em> <em>Translation:</em> each clause is a measurement of the assignment, and the family's information is the log of the fraction it excludes. <em>What a theorem there would give:</em> a data-processing bound limiting degree loss by the budget. <em>Smallest test:</em> compute the budget. <strong>Test.</strong> Passed as a computation: at most about \(n^{-1.03}\), heuristically for uniform forms (<code>info_budget.json</code>). No PC analogue of data processing is known, and excluded mass is not degree, so it stays a heuristic.</li>
+<li><em>Compressed sensing (Candès and Tao, 2005).</em> <em>Translation:</em> random equations are random measurements of a sparse 0/1 vector, the matching. <em>What a theorem there would give:</em> about \(2n\ln n\) random measurements identify an \(n\)-sparse vector among \(n^2\) coordinates, suggesting a degree collapse at that many equations. <em>Smallest test:</em> compare with the conditioning law's collapse at about \(n^2\) equations. <strong>Test.</strong> Falsified as a transfer, under that conjecture, which is fitted only at degrees 2 and 3 for \(n\le10\). The thresholds differ by a factor \(n/(2\ln n)\), about 72 at \(n=10^3\). Degree measures the ideal, not identifiability.</li>
+</ul>
+
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-25-universality-review:1"><em>Quadratic Littlewood–Offord inverse theorems.</em> No work this cycle. <strong>Follow-up.</strong> Continuing: they are a candidate tool for semi-regularity of random quadratic tops, the tops of W's selector clauses, beyond the linear tops tested here.</li>
+<li data-lead="entry-2026-09-26-killer-moment-review:1"><em>Nguyen and Wood's moment method.</em> No work this cycle. <strong>Follow-up.</strong> Continuing, for random top matrices at the fill point.</li>
+<li data-lead="entry-2026-09-26-expander-core-review:1"><em>The Mikša–Nordström closure as a gluing base.</em> The ceiling shows that beyond logarithmic size it must carry non-derivable axioms. <strong>Follow-up.</strong> Continuing: it would host the relative form of semi-regularity on sparse boards.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>The highest-risk item stays A1, whose collective core is now a semi-regularity question. The next step on odd-prime-clause-transfer settles the test's ring and then goes sparse. First, check whether the ring \(G\) of the test is the associated graded ring used by Taylor glue, and reconcile standard semi-regularity with the registered conjecture's prediction. Then compute the Hilbert functions of several generic linear tops per size on graded rings of functional graph PHP over small sparse boards, random left-regular and twin-hole. Compare them with the prediction, and locate any defects at blocked centres.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read thm:few-equations-hardness, prop:restriction-ceiling, lem:relative-criterion, conj:random-affine-conditioning-law and conj:semi-regular-relative-to-base. Every test number was read from <code>info_budget.json</code> and <code>linear_tops.out.txt</code>. A first version of the budget counted \(n^2\) clauses per block separately and exceeded 1. It was corrected before use to the block bound, and both are reported. A fresh-context reviewer found the review sound after changes, and required these, all adopted:</p>
+<ul>
+<li>the budget's hypotheses and reach, and a weaker conclusion;</li>
+<li>the ring of the test stated, and its relation to the registered conjecture;</li>
+<li>both small tests reported with their failures, and the informative counts;</li>
+<li>the fill-point estimate marked heuristic, and its scale distinguished from the conditioning law's;</li>
+<li>the conditioning law's fit range;</li>
+<li>the ceiling's scope.</li>
+</ul>
+<p>This review registers no claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-relative-equations">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 23.20 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">9.76 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">6 min 11.85 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 59.44 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.95 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
