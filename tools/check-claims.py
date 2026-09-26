@@ -3,7 +3,8 @@
 
 The workflow .github/workflows/claim-index.yml runs this script, and
 tools/verify-checkout.py --public-history runs it before publication, so a push cannot
-reach CI with a failure this job would find.
+reach CI with a failure this job would find. Outside GitHub Actions, whose runners are several
+times slower, it also fails a run that takes longer than LIMIT_S, so a slower checked push is noticed.
 """
 import argparse
 from concurrent.futures import ThreadPoolExecutor
@@ -14,6 +15,7 @@ import sys
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
+LIMIT_S = 5.0  # About twice this job's time on the project machine.
 TESTS = ('claim_attention', 'fossick', 'claim_registry', 'claim_duplicates', 'claim_authoring',
          'claim_notices', 'claim_article_evidence', 'claim_article_finalizer', 'finish_turn',
          'record_citations', 'claim_dependencies', 'claim_graph', 'merge_formalization_appends',
@@ -73,10 +75,17 @@ def main():
     parser.add_argument('--base', default='origin/main',
                         help='Revision the changed-claim contract compares against (EMPTY audits all claims)')
     parser.add_argument('--jobs', type=int, default=8, help='Checks run at once (default 8)')
+    parser.add_argument('--limit', type=float, default=LIMIT_S,
+                        help=f'Wall-time limit in seconds outside GitHub Actions (default {LIMIT_S:g})')
     args = parser.parse_args()
+    start = time.monotonic()
     failures = run(args.base, args.jobs)
+    elapsed = time.monotonic() - start
+    slow = elapsed > args.limit and os.environ.get('GITHUB_ACTIONS') != 'true'
+    if slow:
+        print(f'Took {elapsed:.1f} s, over the {args.limit:g} s limit; the times above show which checks.')
     print(f'{len(failures)} failing claim-index checks' if failures else 'All claim-index checks pass.')
-    return 1 if failures else 0
+    return 1 if failures or slow else 0
 
 
 if __name__ == '__main__':

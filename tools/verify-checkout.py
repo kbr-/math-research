@@ -121,7 +121,7 @@ def main():
                                 cwd=ROOT, text=True, capture_output=True)
         if claims.returncode:
             failures += ['Claim-index CI check: ' + line.strip() for line in claims.stdout.splitlines()
-                         if line.startswith(('FAIL', '      '))]
+                         if line.startswith(('FAIL', '      ', 'Took'))]
     report = {'tracked_files': len(tracked), 'historical_files_checked': len(manifest['files']),
               'public_reference_pdfs_checked': len(policy['public']),
               'local_only_references_available': local_sources,
