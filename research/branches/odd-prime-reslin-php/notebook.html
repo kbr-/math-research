@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> A design supported where each block takes few zero patterns survives all randomized-prefix clauses (Nullstellensatz only), but with the recorded support bound \(2^{D-1}\) a count suggests dense families are never that pattern-poor (<a href="#entry-2026-09-26-pattern-poor-support">pattern-poor support</a>). Next: a route review. Take stock of the session's A1 results, report the quiet-planting bridge as closed as far as the pattern union bound goes and the Harris bridge's state, and choose between the open statements with fresh outside leads.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> The family core is W_RS exactly as stated; every stronger form tried is false or capped, and both open bridges are closed as mechanisms (<a href="#entry-2026-09-26-session-review">session review</a>). Next: prove the first case of conj:pin-semiregularity, degree 2 for every \(n\), by an explicit pin family achieving the model rank plus the recorded open-condition genericity argument, and see whether the method reaches degree 3; the aim is to learn whether any semi-regularity statement is provable here.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -31318,6 +31318,61 @@ with every product of degree at most \(2h+4t\). Hence, for \(D\ge2h+4t\), the de
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 36.98 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 58.37 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.15 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-session-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review after the covering, surrogate and pattern-support cycles; its tests are counts and record checks given in the entry, and it registers no claim.">
+<h3>Route review: the family core is W_RS exactly as stated, every stronger form tried is false or capped, both open bridges are closed as mechanisms, and the one line with an exact model, pin semi-regularity, is the place to test whether any semi-regularity statement is provable here</h3>
+<p class="entry-meta">26 September 2026 · Route review with count tests · open statement A1 · cycle odd-prime-session-review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. Since the <a href="#entry-2026-09-26-planted-review">planted review</a>: its planted statement was corrected (<a href="#entry-2026-09-26-planted-correction">planted correction</a>); the correction was made exact (<a href="#entry-2026-09-26-covering-identity">covering identity</a>, lem:planted-covering-identity); the reduction was shown to keep no cheap surrogate of a line (<a href="#entry-2026-09-26-line-surrogate">line surrogate</a>); and quiet planting became a union bound over patterns (<a href="#entry-2026-09-26-pattern-poor-support">pattern-poor support</a>, prop:pattern-poor-support). Where does the line stand, and what next?</p>
+<p><strong>General statement.</strong> The line's claim is W through conj:randomized-wide-clause (W_RS); the goal follows by thm:randomized-prefix-reduction.</p>
+<h4>What the goal needs</h4>
+<p>W_RS for every family of \(n^K\) blocks at PC degree \(22k\), every \(K\). Per block, W_RS forbids exactly the points whose zero pattern lies in \(\ker C_b\setminus\{0\}\). The exception \(g_b=0\) is the price of the prefix: a stronger statement re-imports the block's line, which is false on single-form and duplicate blocks (covering identity).</p>
+<h4>Falsification attempt</h4>
+<p>Could W_RS itself fail on a family that the session's tools leave open, such as the random bit family? Its forbidden set has measure at most \(1/n\), and prop:forbidden-measure-not-robust shows that measure alone does not decide. No low-degree mechanism exploiting a random sparse set of forbidden kernel patterns was found. Nor was one found exploiting the forced non-vanishing on silent prefixes (line surrogate). Not falsified.</p>
+<h4>Assessment of the line</h4>
+<p>This session's A1 results are complete for the classes they target, but the family core has not moved. Every route to the core now has a recorded cap or obstruction:</p>
+<ul>
+<li>pinning, by rank or by degree (\(n^{2e}\) pins of degree \(e\));</li>
+<li>replay, at one degree per block;</li>
+<li>vacuity on residuals, and now on design supports (pattern count against the support bound \(2^{D-1}\));</li>
+<li>sparse boards, by a count;</li>
+<li>stronger core statements, by the covering identity.</li>
+</ul>
+<p>The DAG review's verdict stands: the thread needs a mechanism native to characteristic 3. The session's positive results that are not class results are both at the Nullstellensatz level: pin semi-regularity (conjectural, with an exact model) and pattern-poor supports. Prospects on the critical path are weak, and this assessment is qualitative.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><em>Razborov's pseudo-width</em> ("Resolution lower bounds for perfect matching principles", J. Comput. Syst. Sci. 69, 2004), which proves resolution lower bounds for PHP with many pigeons by measuring clauses after random partial matchings. Target: a direct DAG-like Res(Lin\(_{\mathbb F_3}\)) route, avoiding PC. Where it breaks: linear lines keep rank under restrictions. <strong>Test.</strong> Falsified: the Res(Lin) analogue of pseudo-width is rank modulo rows after a random matching restriction, which is the recorded graph criterion (<a href="#ternary-low-or-dense-graph-rank-exclusion">graph criterion</a>), and that criterion leaves the window of intermediate projected rank.</li>
+<li><em>Buss, Grigoriev, Impagliazzo and Pitassi, "Linear gaps between degrees for the polynomial calculus modulo distinct primes"</em> (J. Comput. Syst. Sci. 62, 2001). Target: degree lower bounds for systems with counting constraints. Where it breaks: their gaps need the counting modulus to differ from the characteristic. <strong>Test.</strong> Falsified: W_RS's negated equations and the field are both modulo 3.</li>
+<li><em>Forbes, Shpilka, Tzameret and Wigderson, "Proof complexity lower bounds from algebraic circuit complexity"</em> (Theory of Computing 17, 2021), IPS lower bounds for restricted circuit classes. Target: Res(Lin) refutations read as IPS certificates built from products of affine forms. Where it breaks: their hard instances are subset-sum-type axioms. <strong>Test.</strong> Falsified for this goal: the lower bounds cover \(\sum_ix_i=\beta\) with \(\beta\) outside the range, and PHP has no such form; the record lists no transfer.</li>
+<li><em>A Nullstellensatz form of the reduction for depth-restricted Res(Lin)</em>: unfold a refutation of depth \(d\) and track Nullstellensatz degree \(O(d)\), where the counts are favourable. Target: the goal for low-depth refutations. <strong>Test.</strong> Falsified: every refutation already has depth \(\Omega(n)\) by Part and Tzameret's tree-like bound (<a href="#entry-2026-09-26-bounded-depth-correction">bounded-depth correction</a>), and PHP's own Nullstellensatz degree is \(O(n)\), so a degree that grows like \(11d\) reaches no depth that refutations can have.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>Compressed sensing: the spark and null-space property of a random measurement matrix</em> (Donoho and Elad, PNAS 2003). Translation: \(C_b\) is a measurement matrix and forbidden patterns are nonzero kernel vectors. A matrix of spark \(\sigma\) has no nonzero kernel vector of weight below \(\sigma\), so supports on which every block has fewer than \(\sigma\) vanishing forms survive deterministically, without a union bound. What it would give: a certain version of prop:pattern-poor-support for sparse patterns. Smallest test: the spark of a uniform \(C\in\mathbb F_3^{t\times h}\) restricted to Boolean vectors. <strong>Test.</strong> Falsified. The least nonempty zero-sum set of columns has size about \(t/\log_3h\) (pattern-poor support entry), a constant for polynomial widths, while a matching zeroes about \(h/3\) forms of a dense block.</li>
+<li><em>Density Hales–Jewett and large subcubes in dense sets</em> (Furstenberg and Katznelson; Polymath). Translation: the allowed set has density at least \(1-1/n\) in the cube, so it contains large structured subsets, which could serve as design supports. What it would give: a support inside the allowed set without a pattern count. Smallest test: can a subcube support a design? <strong>Test.</strong> Falsified. A subcube of dimension \(r\) interpolates every function at degree \(r\), so by lem:Boolean-design-point-support-lower-bound a design needs support well beyond one subcube of dimension below \(D\). A union bound for a subcube of dimension \(D\) to lie in the allowed set costs about \(2^D/n\), and \(2^D\ge2^{4t+2}\ge n^{2.5(K+1)}\) at W_RS's \(t\), so the bound exceeds 1.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-type-capacity-review:1">Dilute quenched disorder, the Harris criterion. Its two developments turned dilution into degree only in special cases: random pins (conj:pin-semiregularity, Nullstellensatz, random forms) and pattern-poor supports (prop:pattern-poor-support, Nullstellensatz, pattern-poor families). <strong>Follow-up.</strong> Closed: for adversarial dense families no mechanism converts dilution into degree, and the pattern count suggests the natural one cannot.</li>
+<li data-bridge="entry-2026-09-26-planted-review:1">Quiet planting. Developed into prop:pattern-poor-support: plant the whole design and count patterns. <strong>Follow-up.</strong> Closed: exact for pattern-poor families; for dense families the pattern count against the support bound suggests the union bound fails.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<p>No passed outside lead from earlier reviews on this route is open.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1 under random prefixes, through the only session line with an exact model. Prove the first case of conj:pin-semiregularity: at degree \(d=2\), for every \(n\), random pins on FPHP\(^{n+1}_n\) have design dimension \(D_2-h(D_1)+\binom h2\) while it is positive. Try an explicit pin family achieving the model rank together with the recorded genericity argument (prop:generic-square-tops-degree-four's open-condition method), and see whether the method extends to degree 3. The aim is to learn whether any semi-regularity statement is provable in this setting, which every degree-free route of A1 would need.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the entries named in the question, the DAG review's assessment, the bounded-depth correction and prop:forbidden-measure-not-robust. The tests are record checks and counts given in the entry. The review registers no claim and was not sent to a separate reviewer; its falsified items are counts, and its next step is a proposal.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-session-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 48.78 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 52.35 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 56.30 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
