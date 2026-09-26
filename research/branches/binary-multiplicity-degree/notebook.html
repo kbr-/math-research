@@ -34,7 +34,7 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Past the boundary the zero sets of the threshold ideals are Brill–Noether loci of \(dH_\infty-mp_0\) for \(N&lt;m\le2^{n-1}d\), and lie in the collision hyperplanes for \(m&gt;2^{n-1}d\) (<a href="#cube-threshold-collision-support">theorem</a>). The recorded row at \(d=2\) drops from 5 to 2 exactly there. The first Brill–Noether step at \(d=2\) is a degree-120 curve on a degree-12 surface (<a href="#entry-2026-09-26-cube-first-step-curve">conjecture</a>). Next: the collision regime in dimension 4. Restrict the threshold ideals at \(m&gt;8d\) to a collision hyperplane and compare them with the double-point loci of the limit problem on the genus-1 curve; the quadric \(Q\) at \(m=17\) is the first test.</li>
+<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Past the boundary the zero sets of the threshold ideals are Brill–Noether loci of \(dH_\infty-mp_0\) for \(N&lt;m\le2^{n-1}d\), and lie in the collision hyperplanes for \(m&gt;2^{n-1}d\) (<a href="#cube-threshold-collision-support">theorem</a>). The recorded row at \(d=2\) drops from 5 to 2 exactly there. The first Brill–Noether step at \(d=2\) is a degree-120 curve on a degree-12 surface (<a href="#entry-2026-09-26-cube-first-step-curve">conjecture</a>). In the collision regime the zero sets leave the open collision planes: at \(m=8d\) they meet them only in torsion curves of the genus-1 limit curve, and for \(m\ge8d+1\) they lie in the 25 lines where collision planes meet (<a href="#cube-collision-regime-torsion">theorem</a>). Next: the genus-0 limit problems along those lines, which should govern the last thresholds before order zero.</li>
 <li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). By the <a href="#cube-squarefree-reduction">reduction theorem</a> and the <a href="#cube-limit-triple-multiplicity">triple-multiplicity corollary</a>, \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs one statement: squarefreeness of the non-collision part of the limit determinant. It is an instance of the <a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness conjecture</a>, which passes 1261 monotone vectors. For \(n=4\) it is simplicity of the \(d\)-canonical Weierstrass points of a general Humbert curve. A proof needs an induction over a class of spaces closed under Möbius transports, or a Weierstrass-point theorem for this family.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
@@ -7360,6 +7360,67 @@ For comparison, the monotone \((3,2,2,1)\) gives the simple factors \((a_1+3a_2)
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 23.96 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 5.37 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.21 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-collision-regime" data-kind="research" data-route="cube-odd-characteristic" data-claims="thm:cube-collision-regime-torsion">
+<h3>26 September 2026 — In the collision regime of dimension 4 the threshold ideals retreat to torsion curves, then to the lines where collision planes meet</h3>
+<p class="entry-meta">Working proof in characteristic ≠ 2: on {0,1}⁴, V(I^{(d+1)}_{8d}) meets each open collision plane only where 2d·[H∞−4p₀] = 0 on the genus-1 limit curve, and for m ≥ 8d+1 not at all: those zero sets lie in the 25 lines. Cycle bmd-r114. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> Past \(m=2^{n-1}d\) the threshold ideals vanish only on the collision hyperplanes (<a href="#cube-threshold-collision-support">collision-support theorem</a>). On \(\{0,1\}^4\) at \(d=2\) the recorded thresholds there are \(2,2,0\) at \(m=17,18,19\). Where on the collision hyperplanes do these ideals vanish? The collision limit of <a href="#cube-collision-limit-space">the collision limit lemma</a> lives on a genus-1 curve, as the whole dimension-3 problem does. The test ends with a description of the zero sets on the open collision hyperplanes, or with a point where the limit argument fails.</p>
+<p><strong>Setting.</strong> \(n=4\) and \(d\ge2\), so \(N=8d-4\) and \(2^{n-1}d=8d\). \(D=\{y_1=0\}\), and \(D^\circ\subseteq D\) is the open set where \(y_2,y_3,y_4\) are distinct and nonzero. For \(y'=(y_2,y_3,y_4)\) with distinct nonzero entries, \(E_{y'}\) is the genus-1 curve \(w_i^2=1+4y_iT\) (\(i=2,3,4\)). It carries the point \(p_0\) and the divisor \(H_\infty\) of degree 4 at infinity, and \(x_{y'}=[H_\infty-4p_0]\) is a point of its Jacobian. In the notation of the <a href="#cube-dimension-three-law">dimension-3 law</a>, \(x_{y'}\) is the point \(2c_1\), which is never 0. \(U_d=U^{(3)}_d\) is the collision limit space.</p>
+<h4 id="cube-collision-regime-torsion">The theorem</h4>
+<p><strong>Theorem</strong> (<code>thm:cube-collision-regime-torsion</code>). In characteristic \(\ne2\), on \(\{0,1\}^4\) with \(d\ge2\) and \(y^*=(0,y')\in D^\circ\):</p>
+<ol>
+<li>if no nonzero element of \(U_d(y')\) has order \(\ge m\) at \(p_0\), then \(y^*\notin V(I^{(d+1)}_m)\);</li>
+<li>every nonzero element of \(U_d(y')\) has order \(\le8d\), and order \(8d\) occurs only if \(2d\cdot x_{y'}=0\).</li>
+</ol>
+<p>Hence \(V(I_m)\cap D^\circ=\emptyset\) for \(m\ge8d+1\), and \(V(I_{8d})\cap D^\circ\) lies in the torsion locus \(\{2d\cdot x_{y'}=0\}\). The same holds on every collision hyperplane, with the torsion locus read in the transformed coordinates. With the collision-support theorem it follows that, for \(m\ge8d+1\), \(V(I_m)\) lies in the union of the 25 lines of \(\mathbb P^3\) where two collision hyperplanes meet: 10 triple lines \(L_{abc}\), each in 3 hyperplanes, and 15 double-double lines \(L_{ab|cd}\), each in 2. These account for all \(\binom{10}2=45\) pairs.</p>
+<p><em>Proof.</em> <em>Part 1.</em> As in the <a href="#cube-middle-threshold-height">height proposition</a>, the basis of \(V_{4,d}\) is unitriangular over \(F[y]\) to the basis of \(V_{3,d}\) together with the lifts \(L_P\). The lifts are \(y_1^{d-e(P)}\) times rows \(\lambda_P=y_1^{-(d-e(P))}L_P\) with polynomial entries (<a href="#cube-squarefree-reduction">reduction theorem</a>, part 1). So \(A_k=S\,\Delta_1\,A^\Lambda_k\) for every \(k\). Here:</p>
+<ul>
+<li>\(S\) is unitriangular over \(F[y]\);</li>
+<li>\(\Delta_1=\operatorname{diag}(1,\ldots,y_1^{d-e(P)},\ldots)\);</li>
+<li>\(A^\Lambda_k\) is the matrix of truncations modulo \(T^{k+1}\) of the rows \(b_i\) (the basis of \(V_{3,d}\)) and \(\lambda_P\), with polynomial entries.</li>
+</ul>
+<p>Write \(A^\Lambda_m=[A^\Lambda_{m-1}\mid a^\Lambda]\). If \(W^\Lambda\) solves \(A^\Lambda_mW^\Lambda=0\), then \(A_mW^\Lambda=0\). So \(I_m\supseteq I^\Lambda_m:=(\operatorname{Im}A^\Lambda_{m-1}:a^\Lambda)\). At \(y_1=0\) the rows of \(A^\Lambda\) are, up to nonzero constants, the basis \(\{T^Qz^r:Q+|r|\le d\}\) of \(U_d(y')\) (collision limit lemma, part 1). If no nonzero element of \(U_d(y')\) has order \(\ge m\), the truncation of \(U_d(y')\) modulo \(T^m\) is injective. So \(A^\Lambda_{m-1}(y^*)\) has rank \(N\), some maximal minor of \(A^\Lambda_{m-1}\) is a unit at \(y^*\), and \(I^\Lambda_m\), hence \(I_m\), is the unit ideal at \(y^*\).</p>
+<p><em>Part 2.</em> \(U_d(y')=\bigoplus_{r\in\{0,1\}^3}w^rF[T]_{\le d-|r|}\) (<a href="#cube-squarefree-reduction">reduction theorem</a>, setting). On \(E_{y'}\) each of the four points at infinity is a ramification point of \(T\), where \(T\) has a pole of order 2 and each \(w_i\) a simple pole (<a href="#cube-dimension-three-law">dimension-3 law</a>, the elliptic curve). So \(T^jw^r\) has pole order \(2j+|r|\le2(d-|r|)+|r|\le2d\) there, and \(U_d(y')\subseteq L(2dH_\infty)\), of degree \(8d\). A nonzero \(f\in L(2dH_\infty)\) has \(\deg\operatorname{div}f=0\), so \(\operatorname{ord}_{p_0}f\le8d\). Equality forces \(\operatorname{div}f=8d\,p_0-2dH_\infty\), that is \(2dH_\infty\sim8d\,p_0\), which is \(2d\cdot x_{y'}=0\).</p>
+<p><em>The consequences.</em> For \(m\ge8d+1\), part 2 gives no element of order \(\ge m\), and part 1 gives \(y^*\notin V(I_m)\). For \(m=8d\), wherever \(2d\cdot x_{y'}\ne0\) no element has order \(\ge8d\), so \(y^*\notin V(I_{8d})\). By the <a href="#cube-branch-point-symmetry">symmetry theorem</a>, each ideal \(I_m\) is stable under the \(S_5\) permuting the points \(r_0,\ldots,r_4\), which acts on \(y\) linearly and transitively on the collision hyperplanes. So for \(\sigma(D_{01})=D\), \(V(I_m)\cap D=\sigma(V(I_m)\cap D_{01})\), and the statements transfer. For \(m&gt;8d\) the collision-support theorem excludes points off the hyperplanes. \(\square\)</p>
+<p><strong>At \(d=2\).</strong> For \(m=17,18,19\), \(V(I_m)\) lies in the 25 lines \(L_{abc}=\{r_a=r_b=r_c\}\) and \(L_{ab|cd}=\{r_a=r_b,\ r_c=r_d\}\). The quadric \(Q=-\frac12\sum_{a&lt;b}(r_a-r_b)^2\) restricts to each line as a binary quadratic form with two zeros. On \(L_{abc}\), with values \((u,u,u,v,w)\), it is \(-\frac12(3(u-v)^2+3(u-w)^2+(v-w)^2)\). Threshold ideals past the first step need not be saturated. So a positive threshold, such as 2 at \(m=17,18\), is compatible with a zero set of points on these lines, or with an empty one. At \(m=16=8d\), the last Brill–Noether step, \(V(I_{16})\cap D^\circ\) lies in the 4-torsion curve of \(x\) (\(4x=0\), \(x\ne0\)). In the dimension-3 notation these are the loci where \(2c_1\) has order 2 or 4. There \(\Delta_{3,4}\) vanishes, and \(\Delta_{3,2}\) vanishes on the order-2 part (<a href="#cube-dimension-three-law">dimension-3 law</a>, factors). Since \(Q\in I_{17}\), and \(Q\) has two distinct zeros on each of the 25 lines (both restricted discriminants are nonzero), \(V(I_{17})\) consists of at most 50 projective points.</p>
+<p><strong>General statement.</strong> <code>thm:cube-collision-regime-torsion</code>, for every \(d\ge2\) on \(\{0,1\}^4\) in characteristic \(\ne2\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the collision-support theorem, the reduction theorem's polynomial lifts, the collision limit lemma, and the dimension-3 law's elliptic curve and point \(2c_1\). A claim search (collision regime, torsion, limit curve) found no earlier version. A fresh-context referee checked:</p>
+<ul>
+<li>the factorization and the colon-ideal inclusion;</li>
+<li>the evaluation at \(y_1=0\), with Kummer independence at specialized \(y'\);</li>
+<li>the pole orders, the bound \(8d\) and the torsion condition;</li>
+<li>\(x=2c_1\ne0\), and the count of 25 lines.</li>
+</ul>
+<p>It found nothing that breaks a stated result. Its corrections are made:</p>
+<ul>
+<li>the transfer to all hyperplanes through the \(S_5\)-stability of the ideals themselves;</li>
+<li>characteristic \(\ne2\) in place of 0, since 0 is not used;</li>
+<li>the lines as subspaces of \(\mathbb P^3\);</li>
+<li>the vanishing of \(\Delta_{3,2}\) only on the order-2 part;</li>
+<li>the bound of 50 points for \(V(I_{17})\);</li>
+<li>the expected dimensions at \(m=8d-2,8d-1\);</li>
+<li>the genus-0 claim marked as expected.</li>
+</ul>
+<p><strong>Assessment.</strong> The map of the middle range sharpens. On \(\{0,1\}^4\), the zero sets of the threshold ideals move:</p>
+<ul>
+<li>from a Brill–Noether curve (\(m=8d-3\)),</li>
+<li>through points (\(m=8d-2\), expected) and an expected empty locus off the collisions (\(m=8d-1\)),</li>
+<li>to torsion curves inside the collision planes, together with a possible torsion-type locus off them (\(m=8d\), where \(dK\sim8d\,p_0\)),</li>
+<li>and then into the 25 lines where collision planes meet (\(m\ge8d+1\)).</li>
+</ul>
+<p>At each stage the relevant curve is one dimension of branch points lower: the genus-5 Humbert curve, then the genus-1 limit curve, then genus 0 on the lines. So we expect the thresholds from \(m=8d+1\) on, the last ones before order zero, to be governed by a genus-0 problem on the 25 lines. No limit along these codimension-2 loci is established yet. The next step is that genus-0 problem: the limit spaces along the lines \(L_{abc}\) and \(L_{ab|cd}\), their maximal orders, and the torsion analogue that decides when the zero sets leave the lines too.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r114">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 24.85 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 16.20 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 8.45 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
