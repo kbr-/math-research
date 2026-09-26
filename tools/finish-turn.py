@@ -73,6 +73,8 @@ LEADS_RE = re.compile(r'<h4>Outside leads</h4>\s*<ul>(.*?)</ul>', re.S)
 BRIDGES_RE = re.compile(r'<h4>Absurd bridges</h4>\s*<ul>(.*?)</ul>', re.S)
 LEADS_MIN, BRIDGES_MIN = 3, 2
 TEST_RE = re.compile(r'<strong>Test\.</strong>\s*(Passed|Falsified|Not run)\b')
+OBSTACLE_RE = re.compile(r'<h4>Obstacle</h4>\s*<p>(.*?)</p>', re.S)
+OBSTACLE_MIN = 80
 
 
 def validate_leads(body, article, close):
@@ -84,6 +86,13 @@ def validate_leads(body, article, close):
     listed and count."""
     if not re.search(r'data-route-item="', body) or entry_tags(body, article)['kind'] != 'review':
         return
+    # Leads and bridges exist to answer the line's current obstacle, not as items of their own (user,
+    # 26 September 2026): the review states the obstacle, and every item says how it would resolve it.
+    obstacle = OBSTACLE_RE.search(body, article, close)
+    if obstacle is None or len(re.sub(r'<[^>]+>', '', obstacle.group(1)).strip()) < OBSTACLE_MIN:
+        raise ValueError('A route review needs an <h4>Obstacle</h4> section, placed before its Outside leads, '
+                         'whose paragraph states precisely the obstacle the line is stuck on (at least '
+                         f'{OBSTACLE_MIN} characters). Choose the Outside leads and Absurd bridges to answer it (AGENTS.md)')
     for pattern, heading, least, what in (
             (LEADS_RE, 'Outside leads', LEADS_MIN, 'leads from areas of mathematics that study the open '
              'statement\'s objects: for each, a named theorem or source (not just a field), the open statement '
@@ -97,6 +106,11 @@ def validate_leads(body, article, close):
             raise ValueError(f'A route review needs an <h4>{heading}</h4> section followed by a <ul> of at '
                              f'least {least} {what} (AGENTS.md)')
         items = re.findall(r'<li\b(.*?)</li>', found.group(1), re.S)
+        unanswered = [i for i, item in enumerate(items, 1) if '<strong>Answers.</strong>' not in item]
+        if unanswered:
+            raise ValueError(f'{heading} item(s) {unanswered} lack "<strong>Answers.</strong>": say how the '
+                             'item would resolve the stated obstacle, since leads and bridges exist to answer '
+                             'it (AGENTS.md)')
         untested = [i for i, item in enumerate(items, 1) if not TEST_RE.search(item)]
         if untested:
             raise ValueError(f'{heading} item(s) {untested} lack a test outcome: run each cheap test in the '

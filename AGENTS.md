@@ -196,7 +196,12 @@ rules to growing checklists or one-off setup narratives.
   a sub-gap. The finisher rejects a seventh consecutive research entry without a
   review. A review states the line's general claim, what the main goal needs,
   a falsification attempt, an evidence-based qualitative assessment of **that line only**, and
-  the next step on the highest-risk item. It also has an **Outside leads** section (the
+  the next step on the highest-risk item. Under an **Obstacle** heading it states precisely what the
+  line is stuck on. Outside leads and Absurd bridges exist to answer that obstacle, not as items of
+  their own: choose them by asking which theorem, in any field, solves a problem of this shape, and
+  end each with `<strong>Answers.</strong>` saying how it would resolve the obstacle (user, 26
+  September 2026: "They are supposed to provide answers to our current obstacles"; the finisher
+  checks both). It also has an **Outside leads** section (the
   finisher requires at least three): ideas from other areas of mathematics, each a named
   theorem or source rather than a field, with the open statement it targets and where it
   would break, including leads the record names but never followed. It also has an

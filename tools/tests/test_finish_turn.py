@@ -12,6 +12,10 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 
 
+
+OBSTACLE = ('<h4>Obstacle</h4><p>No recorded degree method handles many adversarial dense '
+            'constraints: every method checked is local or symmetric.</p>')
+
 class FinalizationTest(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix='math-finish-turn-')
@@ -159,9 +163,10 @@ sys.exit(compute.main())
         route = '<section id="remaining-route"><li data-route-item="general-step">x</li></section>'
         general = ('<p><strong>General statement.</strong> For every level the kernel is spanned by '
                    'short elements (conj:fixture-general).</p>')
-        ok = ' <strong>Test.</strong> Passed.'
-        leads = (f'<h4>Outside leads</h4><ul><li>a{ok}</li><li>b{ok}</li><li>c{ok}</li></ul>'
-                 f'<h4>Absurd bridges</h4><ul><li>d{ok}</li><li>e <strong>Test.</strong> Falsified: x.</li></ul>')
+        ok = ' <strong>Answers.</strong> It would resolve it. <strong>Test.</strong> Passed.'
+        leads = (OBSTACLE + f'<h4>Outside leads</h4><ul><li>a{ok}</li><li>b{ok}</li><li>c{ok}</li></ul>'
+                 f'<h4>Absurd bridges</h4><ul><li>d{ok}</li><li>e <strong>Answers.</strong> y. '
+                 '<strong>Test.</strong> Falsified: x.</li></ul>')
         old_review = ('<article id="rev1" data-kind="review" data-route="general-step">'
                       '<p class="entry-meta">Review.</p>' + general + leads + '</article>')
         research = '<article data-kind="research" data-route="general-step"{}><p class="entry-meta">S.</p></article>'
@@ -219,16 +224,20 @@ sys.exit(compute.main())
                     f'<p class="entry-meta">{status}</p>' + general + marker + '</article></section>')
         tagged = 'data-kind="research" data-route="general-step"'
         reviewed = 'data-kind="review" data-route="general-step"'
-        ok = ' <strong>Test.</strong> Passed.'
-        leads = (f'<h4>Outside leads</h4><ul><li>a{ok}</li><li>b <strong>Test.</strong> Falsified: x.</li>'
+        ok = ' <strong>Answers.</strong> It would resolve it. <strong>Test.</strong> Passed.'
+        leads = (OBSTACLE + f'<h4>Outside leads</h4><ul><li>a{ok}</li><li>b <strong>Answers.</strong> y. '
+                 '<strong>Test.</strong> Falsified: x.</li>'
                  f'<li>c{ok}</li></ul><h4>Absurd bridges</h4><ul><li>d{ok}</li>'
-                 '<li>e <strong>Test.</strong> Not run: needs a kernel.</li></ul>')
+                 '<li>e <strong>Answers.</strong> y. <strong>Test.</strong> Not run: needs a kernel.</li></ul>')
         rejected = [
             record(['research'] * 6, reviewed),                       # a review without outside leads
             record(['research'] * 6, reviewed, general=general + leads.replace(f'<li>c{ok}</li>', '')),
             record(['research'] * 6, reviewed, general=general + leads.replace(
                 '<li>e <strong>Test.</strong> Not run: needs a kernel.</li>', '')),
             record(['research'] * 6, reviewed, general=general + leads.replace(f'<li>d{ok}</li>', '<li>d</li>')),  # untested
+            record(['research'] * 6, reviewed, general=general + leads.replace(OBSTACLE, '')),  # no obstacle
+            record(['research'] * 6, reviewed, general=general + leads.replace(
+                f'<li>a{ok}</li>', '<li>a <strong>Test.</strong> Passed.</li>')),  # item not aimed at the obstacle
             record([], ''),                                           # untagged entry
             record([], 'data-kind="research" data-route="sub-gap"'),  # not a declared route item
             record(['research'] * 6, tagged),                         # seventh research entry in a row
