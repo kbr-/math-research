@@ -34,7 +34,7 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Past the boundary every threshold ideal has height \(\ge2\) when \(g^{\mathrm{nc}}=1\) (<a href="#cube-middle-threshold-height">proposition</a>), so the thresholds are initial degrees of codimension-2 loci. At \(h=3\), \(m=13\) the first generator is an irreducible \(S_5\)-semi-invariant of degree 12 over \(\mathbb F_{32003}\) (<a href="#cube-dimension-four-first-step-generator">check</a>). One step past the boundary the threshold ideal is saturated (<a href="#cube-first-step-saturated">proposition</a>). At \(d=2\) its plane section is exactly the 120 points where the boundary matrix drops rank, so \(\ell_0(3,13)=12\) should be the least degree of a surface through a degree-120 Brill–Noether curve (<a href="#entry-2026-09-26-cube-first-step-curve">conjecture</a>). Next: the degree of that curve for every \(d\) by a class computation, and the reason for its degree-12 surface.</li>
+<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Past the boundary every threshold ideal has height \(\ge2\) when \(g^{\mathrm{nc}}=1\) (<a href="#cube-middle-threshold-height">proposition</a>), so the thresholds are initial degrees of codimension-2 loci. At \(h=3\), \(m=13\) the first generator is an irreducible \(S_5\)-semi-invariant of degree 12 over \(\mathbb F_{32003}\) (<a href="#cube-dimension-four-first-step-generator">check</a>). One step past the boundary the threshold ideal is saturated (<a href="#cube-first-step-saturated">proposition</a>). At \(d=2\) its plane section is exactly the 120 points where the boundary matrix drops rank, so \(\ell_0(3,13)=12\) should be the least degree of a surface through a degree-120 Brill–Noether curve (<a href="#entry-2026-09-26-cube-first-step-curve">conjecture</a>). Off the collisions its zero set is that Brill–Noether locus outside a smaller rank locus, for every \(d\) (<a href="#cube-first-step-brill-noether">corollary</a>). Next: the degree of that curve for every \(d\) by a class computation, and the reason for its degree-12 surface.</li>
 <li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). By the <a href="#cube-squarefree-reduction">reduction theorem</a> and the <a href="#cube-limit-triple-multiplicity">triple-multiplicity corollary</a>, \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs one statement: squarefreeness of the non-collision part of the limit determinant. It is an instance of the <a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness conjecture</a>, which passes 1261 monotone vectors. For \(n=4\) it is simplicity of the \(d\)-canonical Weierstrass points of a general Humbert curve. A proof needs an induction over a class of spaces closed under Möbius transports, or a Weierstrass-point theorem for this family.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
@@ -7220,6 +7220,75 @@ For comparison, the monotone \((3,2,2,1)\) gives the simple factors \((a_1+3a_2)
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 6.03 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">14 min 55.86 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-first-step-sandwich" data-kind="research" data-route="cube-odd-characteristic" data-claims="lem:cube-first-step-sandwich cor:cube-first-step-brill-noether">
+<h3>26 September 2026 — The zero set of the first-step threshold ideal lies between two rank loci, and in dimension 4 it is the Brill–Noether locus off a smaller one</h3>
+<p class="entry-meta">Working proof: over any field, {rank A_N &lt; N, rank A_{N+1} = N} ⊆ V(I^{(d+1)}_{N+1}) ⊆ {rank A_N &lt; N}; off the collisions (n ≥ 3, d &gt; n−3) this is h⁰(dH∞−(N+1)p₀) ≥ 1 where h⁰(dH∞−(N+2)p₀) = 0. Cycle bmd-r112. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-26-cube-first-step-curve">first-step conjecture</a> says that on \(\{0,1\}^4\) the threshold ideal \(I^{(d+1)}_{N+1}\) is the saturated ideal of the rank-drop curve \(\bar Z_d\). Saturation is proved (<a href="#cube-first-step-saturated">proposition</a>), and the plane section at \(d=2\) supports the rest. The finisher requires a general statement this cycle, not another case. Which part of the conjecture can be proved for every \(d\) and \(n\)? The test ends with a proof of the set-theoretic part, or with the obstruction to it.</p>
+<p><strong>Setting.</strong> As before: \(A_m\) is the \(N\times(m+1)\) constraint matrix, \(N=N_{2,n}(d)\), and \(I=I^{(d+1)}_{N+1}\subseteq R=F[y_1,\ldots,y_n]\) is the ideal of top coordinates of solutions of \(A_{N+1}W=0\). For a point \(y^*\) of affine space over \(\bar F\), \(A_m(y^*)\) is the specialized matrix. \(V(I)\) is the zero set in \(\bar F^n\).</p>
+<h4 id="cube-first-step-sandwich">The sandwich</h4>
+<p><strong>Lemma</strong> (<code>lem:cube-first-step-sandwich</code>). Over any field, for every \(n\ge1\), \(d\ge1\) and every point \(y^*\):</p>
+<ol>
+<li>if \(\operatorname{rank}A_N(y^*)=N\), then some element of \(I\) is nonzero at \(y^*\);</li>
+<li>if \(\operatorname{rank}A_N(y^*)&lt;N\) and \(\operatorname{rank}A_{N+1}(y^*)=N\), then every element of \(I\) vanishes at \(y^*\).</li>
+</ol>
+<p>So \(\{\operatorname{rank}A_N&lt;N,\ \operatorname{rank}A_{N+1}=N\}\subseteq V(I)\subseteq\{\operatorname{rank}A_N&lt;N\}\).</p>
+<p><em>Proof.</em> Write \(A_{N+1}=[A_N\mid a]\), with \(a\) the column of \(T^{N+1}\). As in the <a href="#cube-middle-threshold-height">height proposition</a>, \(I=(\operatorname{Im}A_N:_Ra)\).</p>
+<ul>
+<li><em>Part 1.</em> Let \(\mathfrak p\) be the maximal ideal of \(y^*\) (over \(\bar F\); the colon ideal commutes with the flat extension to \(\bar F[y]\) and with localization). If \(A_N(y^*)\) has rank \(N\), some maximal minor of \(A_N\) is a unit in the local ring at \(y^*\). So \(A_N\) maps onto the free module of rank \(N\) there, \(a\in\operatorname{Im}A_N\) locally, and \(I\) is the unit ideal at \(y^*\). So some element of \(I\) does not vanish at \(y^*\).</li>
+<li><em>Part 2.</em> Let \(W\in R^{N+2}\) be a solution. Its value \(W(y^*)\) lies in \(\ker A_{N+1}(y^*)\), which has dimension \(N+2-N=2\). The vectors \((u,0)\) with \(u\in\ker A_N(y^*)\) lie in \(\ker A_{N+1}(y^*)\), and they form a space of dimension \(N+1-\operatorname{rank}A_N(y^*)\ge2\). So these are all of \(\ker A_{N+1}(y^*)\), and every kernel vector has last coordinate 0. In particular \(W_{N+1}(y^*)=0\). \(\square\)</li>
+</ul>
+<p>The lemma is linear algebra. It needs neither characteristic 0 nor the collision theory, and it holds on the collision hyperplanes too. There \(\operatorname{rank}A_N&lt;N\) everywhere, since each collision form divides \(g_{n,d}\) with exponent \(E_n(d)\ge1\) (<a href="#cube-boundary-collision-exponents">collision-exponent theorem</a>). In characteristic 0 the collision step of the <a href="#cube-middle-threshold-height">height proposition</a> gives \(I\not\subseteq(\ell_D)\) without any hypothesis on \(g^{\mathrm{nc}}\). So by part 2, \(\operatorname{rank}A_{N+1}&lt;N\) at a general point of each collision hyperplane.</p>
+<h4 id="cube-first-step-brill-noether">The Brill–Noether form</h4>
+<p><strong>Corollary</strong> (<code>cor:cube-first-step-brill-noether</code>). Let \(F\) be algebraically closed of characteristic \(\ne2\), \(n\ge3\), \(d&gt;n-3\), and let \(y^*\) have distinct nonzero entries. On the fibre curve \(C\), with \(D_k=dH_\infty-kp_0\), we have \(\operatorname{rank}A_m(y^*)=N-h^0(D_{m+1})\). Hence:</p>
+<ul>
+<li>if \(h^0(D_{N+1})=0\), then \(y^*\notin V(I)\);</li>
+<li>if \(h^0(D_{N+1})\ge1\) and \(h^0(D_{N+2})=0\), then \(y^*\in V(I)\).</li>
+</ul>
+<p>So off the collision hyperplanes, \(V(I)\) agrees with the Brill–Noether locus \(\{h^0(D_{N+1})\ge1\}\) outside the smaller locus \(\{h^0(D_{N+2})\ge1\}\). The class \(D_{N+1}\) has degree \(g-2\) and \(D_{N+2}\) has degree \(g-3\). For \(n=4\) these are 3 and 2, with expected codimensions 2 and 3 in the 3-dimensional family of \((y\bmod\text{scaling})\).</p>
+<p><em>Proof.</em> For \(d&gt;n-3\), \(V_d=L(dH_\infty)\) has dimension \(N\) (<a href="#cube-residue-duality-all-n">residue duality lemma</a>, first step). The rows of \(A_m(y^*)\) are the truncations modulo \(T^{m+1}\) of a basis of \(V_d\). So the kernel of the truncation is \(L(dH_\infty-(m+1)p_0)\), since \(T\) is a local parameter at \(p_0\), and \(\operatorname{rank}A_m(y^*)=N-h^0(D_{m+1})\). The lemma gives the two statements. The degrees are \(2^{n-1}d-(N+1)=g-2\) and \(g-3\), using \(N=2^{n-1}d+1-g\). \(\square\)</p>
+<p><strong>What this proves of the conjecture.</strong> For \(n=4\) in characteristic 0, the following hold:</p>
+<ul>
+<li>\(I\) is saturated (every \(d\));</li>
+<li>\(V(I)\) contains no collision hyperplane (every \(d\)), and it has height \(\ge2\) overall for \(2\le d\le9\);</li>
+<li>off the collision hyperplanes, \(V(I)\) agrees with the Brill–Noether locus \(\{h^0(D_{8d-3})\ge1\}\) outside \(\{h^0(D_{8d-2})\ge1\}\), whose expected dimension is 0, while its actual dimension is not proved.</li>
+</ul>
+<p>The conjecture adds three more claims:</p>
+<ul>
+<li>no component of \(\{h^0(D_{8d-3})\ge1\}\) lies inside \(\{h^0(D_{8d-2})\ge1\}\);</li>
+<li>\(V(I)\) has no component (curve or isolated point) inside the collision hyperplanes;</li>
+<li>\(I\) is radical.</li>
+</ul>
+<p>At \(d=2\), modulo 32003 and on one random plane, all three hold on the section computed in the <a href="#cube-first-step-rank-drop">finite check</a>. A plane section cannot see isolated or embedded points, and it shows radicality only generically along the curve. In dimension 3 the corollary's locus is empty, because \(D_{N+1}\) has degree \(-1\). This agrees with the zero scheme lying in the collision hyperplanes there.</p>
+<p><strong>General statement.</strong> <code>lem:cube-first-step-sandwich</code>, for every \(n\ge1\), \(d\ge1\) over any field. <code>cor:cube-first-step-brill-noether</code>, for every \(n\ge3\), \(d&gt;n-3\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the height proposition, residue duality in every dimension, the saturation proposition and the first-step conjecture. A claim search (rank drop, zero set, first step) found only the conjecture this entry addresses. A fresh-context referee checked:</p>
+<ul>
+<li>both parts of the lemma over any field, including points on the collision hyperplanes;</li>
+<li>the rank formula, since \(T\) is a local parameter at the unramified point \(p_0\);</li>
+<li>the degrees \(g-2\), \(g-3\) and the codimensions of \(W_3\), \(W_2\).</li>
+</ul>
+<p>It found nothing that breaks a stated result. Its corrections are made:</p>
+<ul>
+<li>the collision remark needs only \(E_n(d)\ge1\) and the collision step of the height proposition, not \(g^{\mathrm{nc}}=1\);</li>
+<li>the ranges of what is proved;</li>
+<li>isolated points in the remaining claims;</li>
+<li>the limits of the plane-section evidence;</li>
+<li>the unproved dimension of \(\{h^0(D_{N+2})\ge1\}\);</li>
+<li>the curve claim restricted to where it is justified.</li>
+</ul>
+<p><strong>Assessment.</strong> The set-theoretic part of the first-step conjecture is now proved up to the locus \(\{h^0(D_{N+2})\ge1\}\). That locus has expected dimension 0, but its actual dimension is not proved, and its components could be curves. The first middle-range threshold in dimension 4 is the least degree of a surface through the scheme cut out by \(I\). Its reduced support off the collisions is the Brill–Noether locus \(\{h^0(dK-(8d-3)p_0)\ge1\}\) of the Humbert family, up to that smaller locus. For \(2\le d\le9\) it has codimension exactly 2 where nonempty: the Eagon–Northcott bound gives codimension \(\le2\), and \(g^{\mathrm{nc}}=1\) excludes divisors. It is a curve at \(d=2\); for larger \(d\) it could a priori be empty. What remains is scheme-theoretic, together with the least degree of a surface through that curve, which is 12 at \(d=2\). The next computation-free target is the degree of the curve, from the class of \(W_3\) pulled back along \(y\mapsto dK-(8d-3)p_0\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r112">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 3.50 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 36.78 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 26.52 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
