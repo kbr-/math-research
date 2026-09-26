@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, the goal's DAG-like case.</strong> The bounded-depth closure route at odd primes was closed on 22 September (<a href="#entry-2026-09-22-walk-restriction-odd-prime">walk restriction</a>). The literature pass's recommendation of it is withdrawn (<a href="#entry-2026-09-26-bounded-depth-correction">correction</a>). The only DAG-like method for PHP-type formulas is the subspace criterion (thm:generic-CNF-affine-DAG-subspace-criterion). At \(p=3\) it loses a factor \(2^r\) per slot when a line's whole falsifying set, a union of \(2^r\) flats, is used. Next: read the criterion's proof, Lean and transfer entry, at the step where a slot's falsifying set restricts the separated space \(U\). Decide whether one chosen flat per slot, by a consistent value rule, would suffice. If so, state the odd-prime criterion without the \(2^r\) loss and test it on the smallest computable instance; if not, record the exact step as the obstruction.</p>
+<p><strong>Route item: odd-prime-clause-transfer, the goal's DAG-like case.</strong> The subspace criterion, the only DAG-like method for PHP-type formulas, needs each slot's whole falsifying set, a union of up to \(2^r\) flats. Its ideal-membership step needs it, and at odd \(p\) a sound weakening needs kept value sets of total size at least \(p\) per step, so one flat per line is never sound (<a href="#entry-2026-09-26-subflat-obstruction">subflat obstruction</a>). Next: test whether the slot bound \(2^r\binom{v-r+k}k\) is loose. Compute the Hilbert function of the union of flats in the cube, the restriction rank of degree-\(\le k\) polynomials, for dense forms at the largest computable \(v\), with \(r\) near \(h(k+1)\). A per-slot rank well below \(2^r\binom{v-r+k}k\) is a rough necessary condition for the criterion at \(p=3\), together with degree-bounded ideal membership for \(1-L^2\) and a separated space for unary PHP; if the Hilbert function is large, the criterion's generic bound gives nothing.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -29253,6 +29253,60 @@ The main term is an equidistribution statement analogous to Cohen–Lenstra mome
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">47.95 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">55.10 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-subflat-obstruction" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:no-sound-subflat-choice">
+<h3>The subflat obstruction: the subspace criterion needs each slot's whole falsifying set through ideal membership, and at odd \(p\) a resolution step between lines with independent forms stays sound for kept value sets only if they have total size at least \(p\); at \(p=3\) one premise must keep its whole falsifying set on the resolved literal</h3>
+<p class="entry-meta">26 September 2026 · Working proof of an obstruction · the goal's DAG-like case · cycle odd-prime-criterion-slots.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-26-bounded-depth-correction">correction entry</a> located the odd-prime failure of the only DAG-like method for PHP-type formulas, the subspace criterion thm:generic-CNF-affine-DAG-subspace-criterion, in a factor \(2^r\) per slot. It asked where the proof uses a slot's whole falsifying set, and whether one chosen flat per slot would do.</p>
+<p><strong>General statement.</strong> prop:no-sound-subflat-choice. Over \(\mathbb F_p\), \(p\) odd, a \(\mathrm{Res}(\mathrm{Lin}_{\mathbb F_p})\) line \(\bigvee_i(f_i=a_i)\) has falsifying set \(\{f_i\ne a_i\ \forall i\}\). A kept-value choice assigns to each literal a nonempty set \(T_i\subseteq\mathbb F_p\setminus\{a_i\}\). It replaces the falsifying set by \(\{f_i\in T_i\ \forall i\}\), a union of \(\prod|T_i|\) flats, which is the whole set when every \(T_i\) is everything but \(a_i\), and one flat when every \(|T_i|=1\).</p>
+<p>Consider two lines \(f=a\) and \(g=b\) whose forms take every pair of values in \(\mathbb F_p^2\) on the allowed points, and their resolvent \(\alpha f+\beta g=\alpha a+\beta b\) with \(\alpha,\beta\ne0\) and kept set \(T\). The step is sound, in the sense that every point of the conclusion's kept set lies in some premise's kept set, only if \(|T_f|+|T_g|\ge p-1+|T|\ge p\). At \(p=3\) this forces one premise to keep both values on its literal, that is, its whole falsifying set, and \(|T|=2\) forces both premises to. In particular, one flat per line (all \(|T|=1\)) is never sound at such a step, whatever rule picks the values. That includes rules that depend on the whole proof or on each use of a line.</p>
+<p>Scope. The statement is for lines with a single literal. For lines \(C\vee(f=a)\) and \(D\vee(g=b)\) the same argument needs the value-pair hypothesis jointly for the forms of \(C\), \(D\), \(f\) and \(g\). The hypothesis fails for literals on single cube variables, which take only two values. So the obstruction applies to derivations containing at least one step that meets it. Whether every refutation of unary PHP contains such steps is not shown.</p>
+<p>Separately, any \(\mathbb F_3\) transcription of the proof of the generic subspace theorem behind the criterion (thm:generic-affine-subspace-consequence-transfer, stated over \(\mathbb F_2\) with affine inputs) needs each high block's contribution through ideal membership. The kernel polynomials must lie in the ideal of the block's inputs, so they must vanish on the block's whole common zero set within the cube.</p>
+
+<h4>Proof</h4>
+<ul>
+<li><em>Soundness.</em> Put \(A=\mathbb F_p\setminus T_f\ni a\) and \(B=\mathbb F_p\setminus T_g\ni b\). A point with \(f=u\in A\), \(g=w\in B\) and \(\alpha u+\beta w\in T\) satisfies both weakened premises and falsifies the weakened conclusion. By the value-pair hypothesis such a point exists unless \(\alpha A+\beta B\) avoids \(T\). Since \(\alpha,\beta\ne0\), \(|\alpha A|=|A|\) and \(|\beta B|=|B|\). By the Cauchy–Davenport theorem, \(|\alpha A+\beta B|\ge\min(p,|A|+|B|-1)\). Avoiding \(T\) needs \(|\alpha A+\beta B|\le p-|T|&lt;p\), hence \(|A|+|B|-1\le p-|T|\), that is \(|T_f|+|T_g|\ge p-1+|T|\).</li>
+<li><em>One flat per line.</em> With all kept sets of size 1 the bound needs \(2\ge p\), false for odd \(p\). A direct count also shows it: for each of the \(p-1\) values \(u\ne\sigma_f\) there is exactly one \(w\) with \(\alpha u+\beta w=\sigma\), and that \(w\) equals \(\sigma_g\) for at most one \(u\). So at least \(p-2\ge1\) admissible pairs attain \(\sigma\).</li>
+<li><em>Contrast with \(p=2\).</em> Every kept set is the single value \(a+1\), which is the whole falsifying set, and the step is sound: \(f=a\), \(g=b\) forces \(f+g=a+b\).</li>
+<li><em>Ideal membership.</em> In the proof of thm:generic-affine-subspace-consequence-transfer, each kernel element \(f\) is written as \(\sum_ia_{a,i}g_{a,i}\) with \(\deg a_{a,i}\le k-1\) for every proper high block, and the weighted removal theorem then derives it. Every element of the ideal of the inputs vanishes on their common zero set. Over \(\mathbb F_3\), modulo the Boolean ideal, the compiled inputs are \(g=1-L^2\). Their common zero set within the cube is \(\{L_i\ne0\ \forall i\}\), a union of at most \(2^r\) flats, exactly \(2^r\) nonempty ones when the \(L_i\) are independent and all value patterns occur. So a transcription must restrict to that union. The per-block restriction rank is then at least the dimension of degree-\(\le k\) functions on the union, and possibly more: degree-bounded membership for the quadratic inputs, the analogue of lem:proper-affine-block-restriction, is not established, and with \(\deg g=2\) the multiplier degree changes from \(k-1\). \(\square\)</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li>The factor \(2^r\) per slot sits in two places. The weighted removal needs vanishing on the whole union, and a sound weakening of the lines needs kept value sets of total size at least \(p\) at each step that meets the hypothesis. At \(p=2\) both coincide with flats, which is why the criterion works there.</li>
+<li>Choosing one flat per line is ruled out. Partial choices, whole value sets on some literals and one value on others, satisfy the counting condition at a step and remain open. By the bound, at \(p=3\) one of the two premises of each such step keeps its whole falsifying set on the resolved literal, so the losses reappear along the derivation. Whether they can be kept to few literals per line was not examined.</li>
+<li>Lines with dependent forms, or with values restricted on the allowed points, escape the hypothesis. Those are structured families the record already handles.</li>
+</ul>
+<p><strong>Next.</strong> Two measurable questions remain, both about restriction to the union of flats.</p>
+<ol>
+<li>Is the slot bound \(2^r\binom{v-r+k}k\) loose? That is, is the restriction rank of degree-\(\le k\) polynomials on the union, the Hilbert function of that finite point set in the cube, well below \(2^r\binom{v-r+k}k\) for dense forms with \(r\) about \(h(k+1)\)? The collective-core review's numbers at \(v=10\) are the first data.</li>
+<li>Does degree-bounded ideal membership hold for the inputs \(1-L^2\), with what multiplier degree?</li>
+</ol>
+<p>A necessary condition for survival is, roughly, that the restriction rank on a separated space \(U\) be well below \(\dim U\) divided by the number of slots. When \(\dim U\) is close to \(\binom{v+k}k\) and \(r,k\ll v\), that means a per-slot rank of about \(c^r\binom{v-r+k}k\) with \(c\) below about \(e^{k/v}\), and a superpolynomial margin needs \((e^{k/v}/c)^r\) superpolynomial at \(r\approx h(k+1)\). Survival also needs question 2 and a separated \(U\) for unary PHP over \(\mathbb F_3\). If the Hilbert function is large, the criterion's generic bound gives nothing. That does not rule out a particular \(U\) whose restricted rank is small, since the Hilbert function only bounds that rank from above.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the main record's generic subspace theorem and its proof, the criterion's statement, and the thread's compiled block inputs (the randomized-prefix and reduction entries). A fresh-context reviewer checked the soundness definition, the \(p=3\) case, the general covering and the \(p=2\) contrast, and found them correct. It required these changes, all adopted:</p>
+<ul>
+<li>the statement extended from one value per literal to kept value sets, with the Cauchy–Davenport condition \(|T_f|+|T_g|\ge p-1+|T|\), and the closure claim limited to single flats;</li>
+<li>side literals and the value-pair hypothesis scoped, with the note that literals on single variables fail it;</li>
+<li>the ideal-membership paragraph stated for an \(\mathbb F_3\) transcription, as a lower bound on the loss, with the rank condition for \(2^r\) flats;</li>
+<li>the next step reframed as testing whether the slot bound is loose, the Hilbert function of the finite point set, plus degree-bounded membership;</li>
+<li>a direct count added beside Cauchy–Davenport.</li>
+</ul>
+<p>The statement was strengthened to kept value sets after the review, so the reviewer made a second pass. It confirmed the inequality chain and the \(p=3\) consequence, and required a corrected direct count, the survival remark stated as a rough necessary condition with its assumptions, a weaker conclusion about the Hilbert function, and consistent wording in this gate. All were adopted.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-criterion-slots">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 8.78 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 53.71 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 24.50 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">50.38 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
