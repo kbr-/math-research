@@ -33,15 +33,20 @@ run1 = (n, d, m) -> (
     -- the number of minimal generators of excess <= L (more than the rank certifies that the module is not free).
     if #scriptCommandLine > 3 and substring(0, 4, scriptCommandLine#3) == "inc:" then (
         cap := value substring(4, scriptCommandLine#3);
-        found := false; L := 0;
+        found := false; L := 0; G := null;
         while not found and L <= cap do (
-            G := syz(f0, DegreeLimit => m + L);
+            G = syz(f0, DegreeLimit => m + L);
             G = G_(select(toList(0..numcols G - 1), j -> G_{j} != 0));
             topsL := select(toList(0..numcols G - 1), j -> G_(m,j) != 0);
             mg := if numcols G > 0 then numcols mingens image G else 0;
             << "  n=" << n << " d=" << d << " m=" << m << " L=" << L << " syzygies=" << numcols G << " minimal=" << mg
                << " with top=" << #topsL << " cpu=" << (cpuTime() - t0) << endl << flush;
-            if #topsL > 0 then found = true else L = L + 1;
+            if #topsL > 0 then (
+                found = true;
+                -- the degree-L part of the threshold ideal: top coordinates of the syzygies found, factored
+                for j in topsL do << "    top " << j << ": " << toString factor G_(m,j) << endl << flush;
+                )
+            else L = L + 1;
             );
         << "n=" << n << " d=" << d << " m=" << m << " rank=" << m + 1 - #rows << " l0=" << (if found then L else "> " | toString cap)
            << " cpu=" << (cpuTime() - t0) << endl << flush;

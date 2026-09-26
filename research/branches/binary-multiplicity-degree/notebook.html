@@ -34,7 +34,7 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>Dimension 4: the threshold generators</strong> (open statement 3). The savings-3 row is \(\ell_0(3,m)=15,12,11,6,5,2,2,0\) for \(m=12,\ldots,19\) over \(\mathbb F_{32003}\) (<a href="#entry-2026-09-26-cube-route-review-14">route review</a>). Compute the threshold generators at \(m=15,\ldots,18\) and factor them, and test their \(S_4\)-symmetry and their vanishing on the collision loci. In dimension 3 the corresponding generators were products of torsion loci.</li>
+<li><strong>Dimension 4: test the quadric conjecture</strong> (open statement 3). <a href="#entry-2026-09-26-cube-dimension-four-quadric">Conjecture</a>: one step below order zero, \(\ell_0=2\) with generator \(Q=\sum_{i&lt;j}y_iy_j-2\sum_iy_i^2\), for every \(d\ge2\). Decide \(\ell_0(4,38)\) with a compiled kernel that solves the solution system degree by degree, restricted to \(S_4\)-invariant solutions, on fflas-ffpack or LinBox. Gröbner bases in four variables do not reach \(m=38\). Then identify the locus \(Q=0\) on the genus-5 curve.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions; the dimension-3 result may merit a note.</p>
@@ -6458,6 +6458,43 @@ since \(A(N-A)=4xy\) and \(\bar A=2r\). This is \(d^2\cdot\tfrac12\operatorname{
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-dimension-four-quadric" data-kind="research" data-route="cube-odd-characteristic" data-claims="check:cube-dimension-four-generators conj:cube-dimension-four-quadric">
+<h3>26 September 2026 — Dimension 4: below order zero the threshold ideal starts with one symmetric quadric</h3>
+<p class="entry-meta">Finite check of the savings-3 threshold generators on {0,1}⁴ over F₃₂₀₀₃, and a conjecture that one symmetric quadric generates at the step below order zero for every d. Cycle bmd-r100. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-26-cube-route-review-14">route review</a> found the savings-3 row \(\ell_0(3,m)=15,12,11,6,5,2,2,0\) for \(m=12,\ldots,19\) on \(\{0,1\}^4\). In dimension 3 the threshold generators were products of torsion loci (\(L_2\), \(L_2^2\)) (<a href="#entry-2026-09-25-cube-torsion-partition-thresholds">torsion-partition entry</a>). What are they in dimension 4? The test ends with their factorizations, and with a prediction that can fail at the next \(d\).</p>
+<p><strong>Setting.</strong> As in the <a href="#entry-2026-09-26-cube-dimension-four">dimension-4 entry</a>. The degree-\(\ell_0\) part of the threshold ideal \(I^{(3)}_m\) is spanned by the top coordinates of the syzygies of excess \(\ell_0\). The incremental mode of <code>research/tools/bmd_cube_thresholds_m2.m2</code> now prints them factored.</p>
+<h4>The generators</h4>
+<p>Over \(\mathbb F_{32003}\) (<code>research/results/bmd-r100-dimension-four-generators/factored-generators.txt</code>):</p>
+<ul>
+<li>\(m=17\) and \(m=18\), \(\ell_0=2\): every threshold generator (one at 17, two at 18) is a scalar multiple of the same quadric, \(y_1^2+y_2^2+y_3^2+y_4^2+16001\sum_{i&lt;j}y_iy_j\). Since \(2\cdot16001\equiv-1\), this is \(-\tfrac12\) times
+\[Q=\sum_{i&lt;j}y_iy_j-2\sum_iy_i^2.\]
+It is irreducible and \(S_4\)-invariant.</li>
+<li>\(m=16\), \(\ell_0=5\): three generators, each an irreducible quintic, with symmetric coefficient patterns.</li>
+<li>\(m=15\), \(\ell_0=6\): one generator, an irreducible sextic.</li>
+</ul>
+<p><strong>Finite check</strong> (<code>check:cube-dimension-four-generators</code>). The factorizations above, over \(\mathbb F_{32003}\), at \(m=15,\ldots,18\) for savings 3 on \(\{0,1\}^4\).</p>
+<h4>A conjecture</h4>
+<p>In dimension 3, one step below order zero, the threshold is \(B(d,d-1)=3\) for every \(d\ge2\) (<a href="#cube-diagonal-near-diagonal">near-diagonal family</a>), and its generator is \(L_2\), the locus where the point \(2c_1\) has order 2. The dimension-4 row shows the same kind of structure: a single invariant form, independent of \(m\) on the last two steps. The analogue is the following.</p>
+<p><strong>Conjecture</strong> (<code>conj:cube-dimension-four-quadric</code>). On \(\{0,1\}^4\), in characteristic 0 and large characteristic, for every \(d\ge2\), let \(M(d)\) be the least \(m\) with \(\ell_0(d+1,m)=0\) (\(M=19,39\) for \(d=2,3\), <a href="#cube-order-zero-dimension-four">order-zero check</a>). Then \(\ell_0(d+1,M(d)-1)=2\), and the degree-2 part of the threshold ideal there is spanned by \(Q=\sum_{i&lt;j}y_iy_j-2\sum_iy_i^2\).</p>
+<p>The conjecture predicts \(\ell_0(4,38)=2\) with generator \(Q\). The test at \(d=3\), \(m=38\) ran out of time: the Gröbner computation did not finish its first excess step in 15 minutes. Deciding it needs a kernel that works degree by degree, restricted to \(S_4\)-invariant solutions. At excess 2 the unknowns of the plain system number about \(1.4\cdot10^5\), about 24 times fewer with the symmetry.</p>
+<p><strong>General statement.</strong> <code>conj:cube-dimension-four-quadric</code>, for every \(d\ge2\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the dimension-4 entry and the route review (script, excess rule), and the dimension-3 torsion-partition entry (lowest parts). The factorizations are Macaulay2's, over the computing field. The identification of 16001 with \(-\tfrac12\) was checked by hand. No new proof is claimed, so no reviewer pass was run. The conjecture is stated from one row, with its falsifying test named.</p>
+<p><strong>Assessment.</strong> The first structural datum in dimension 4 is a single symmetric quadric at the steps just below order zero, in the place where dimension 3 has its 2-torsion cubic. What locus it cuts out on the genus-5 curve is the question that could lead to a mechanism. The immediate obstacle is computational: Gröbner bases in four variables fail beyond \(m\approx18\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r100">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>18 min 47.30 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 3.37 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">54.16 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">18.66 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">16 min 30.98 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 </section>
