@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Every proof of A1 proves W on sparse boards (<a href="#entry-2026-09-26-forced-sparse-board">forced sparse board</a>). A certifying residual of \(\Theta(k)\) holes suffices, so row-sparse blocks may use up to \(n^{1-\eta}\) rows (<a href="#entry-2026-09-26-logarithmic-residual">small residual</a>). The dense core is now blocks whose forms touch more than \(n^{1-\eta}\) pigeons. Next: build the closure-based pseudo-reduction of functional graph PHP on the logarithmic residual, in the style of Alekhnovich–Razborov and Mikša–Nordström. State the prefix condition under which it sends a W clause to 0, and test it on random dense forms.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> No recorded mechanism handles blocks whose interaction part is dense, including full-support product statistics; the restriction line now serves as a reduction that removes every block sparse in some direction (<a href="#entry-2026-09-26-dense-core-review">dense-core review</a>). On the complete board, a random matching makes the restricted constant of a dense-interaction form near-uniform, fixes row and column statistics, and leaves sparse interactions Poisson-like. Next: define the interaction part \(a_{it}-u_i-v_t\) of a form and a density notion for combinations of a block's forms. Prove joint near-uniformity of the restricted constants for blocks whose every nonzero combination has dense interaction, by bounding \(\mathrm{perm}(\omega^A)\). Then state the semi-random residual W to which the dense core reduces.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26587,6 +26587,98 @@ because \(er\le n^{\eta/2}\) for large \(n\), as \(r=O(\ln n)\). This is at most
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 6.11 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 1.71 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-dense-core-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of the restriction line after the forced sparse board and the logarithmic residual, with two equidistribution tests; no new claim.">
+<h3>Route review: no recorded mechanism handles blocks whose interaction part is dense; a random matching turns the constants of dense forms uniform and leaves row and column statistics fixed, which suggests reducing adversarial dense blocks to a semi-random residual</h3>
+<p class="entry-meta">26 September 2026 · Route review with two tests · open statement A1 · cycle odd-prime-residual-pseudo-reduction.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. Seven entries of the restriction line each added a structured class of blocks: cells, sparse, column-sparse, row-column, frozen cells, row-sparse, and the <a href="#entry-2026-09-26-logarithmic-residual">small residual</a>. None of them moved the dense core. The <a href="#entry-2026-09-26-forced-sparse-board">forced sparse board</a> showed that a proof of A1 must work on sparse boards. A line that produces classes without moving its general implication calls for a review. Does the line have a mechanism left for dense blocks, and if not, what should replace it?</p>
+<p><strong>General statement.</strong> The line's claim: A1 follows from conj:expander-dense-core (prop:expander-core-reduction), and by prop:forced-sparse-board it implies W on chooser-picked boards of hole degree \(k\). Proved: W for families of cell, sparse and row-sparse blocks (thm:logarithmic-residual-w), and for the freezing families (thm:frozen-cell-w, thm:row-column-w). What the goal still needs is blocks that are not cell blocks, touch more than \(n^{1-\eta}\) pigeons, and are not handled by freezing.</p>
+
+<h4>Falsification attempt</h4>
+<p><em>Is the dense core only random forms?</em> No. Take a block of more than \(k\) full-support product statistics \(\sum_{i,t}\alpha^{(j)}_i\beta^{(j)}_tx_{it}\) with generic weights. Here generic means that all \(\alpha^{(j)}_i\) and \(\beta^{(j)}_t\) are nonzero on the residual, and that the squares of the restricted forms are linearly independent modulo the base. On a residual of \(r\ge s\) pigeons each restricted form has a nonzero residual part, so no form has a zero image. The squares contain cross terms \(\alpha^{(j)}_i\alpha^{(j)}_{i'}\beta^{(j)}_t\beta^{(j)}_{t'}x_{it}x_{i't'}\) for pairs of residual pigeons, and more than \(k\) independent squares defeat the span lemma. Freezing does not remove them either, since their interaction part \((\alpha-\bar\alpha)\otimes(\beta-\bar\beta)\) is nonzero. So the core contains explicit structured blocks, not only random ones.</p>
+<p><em>Can the chooser pick a board without spiders?</em> Taylor glue's known base on a graph board, the filling of lem:graph-matching-extension, fails at every spider row set (prop:spider-unfilled). In \(\mathrm W_{\mathrm{graph}}\) the chooser picks the board, so this is a real question.</p>
+<p><strong>Observation.</strong> In a board where every pigeon and every hole has degree at least 2, a pigeon that lies on no cycle of length 4 or 6 is a spider centre.</p>
+<p><em>Proof.</em> Let \(r\) be such a pigeon, with holes \(h_1,\dots,h_d\). For each \(i\), pick another pigeon \(n_i\) at \(h_i\).</p>
+<ul>
+<li>\(n_i\) meets no other hole \(h_j\) of \(r\), since \(r,h_i,n_i,h_j\) would be a 4-cycle.</li>
+<li>The \(n_i\) are distinct, for the same reason.</li>
+<li>Let \(x\ne h_i\) be another hole of \(n_i\), which exists since \(n_i\) has degree at least 2. Then \(x\) is not a hole of \(r\), since \(r,h_i,n_i,x\) would be a 4-cycle. It is not a hole of any \(n_j\), \(j\ne i\), since \(r,h_i,n_i,x,n_j,h_j\) would be a 6-cycle. So \(x\) is private in \(S=\{r,n_1,\dots,n_d\}\).</li>
+</ul>
+<p>\(\square\)</p>
+<p>So a spider-free board with these degrees needs every pigeon on a 4- or 6-cycle. Twin pigeons, with equal neighbourhoods, have empty boundary and so violate \((s,1)\)-boundary expansion. In a random board of hole degree \(k\), a pigeon lies on such a cycle with probability \(O(k^6/n)\). The line is not refuted here, but its only dense mechanism would need a structured board that no one has constructed.</p>
+
+<h4>Assessment of the line</h4>
+<ul>
+<li><em>What stands.</em> Every structured class listed above, the forced sparse board, and the reduction to the expander core.</li>
+<li><em>What is missing.</em> The line has four kill mechanisms:
+ <ul>
+ <li>zero-image forms;</li>
+ <li>span-basis prefixes;</li>
+ <li>occupancy implications;</li>
+ <li>freezing, which makes row and column statistics constant.</li>
+ </ul>
+ The first three need a block to meet the residual in few pigeons or in forms of small span. Freezing needs forms that are sums of row and column statistics plus sparse parts. A block whose interaction part is dense meets none of these conditions, whatever the residual size, since the residual needs \(r\ge s=\Theta(k)\) pigeons for expansion. The pseudo-reduction of Alekhnovich and Razborov, proposed twice as the dense mechanism, does not apply either. Its theorem needs an axiom–variable incidence that is boundary expanding, with bounded row weight. Restricted dense clauses violate this: they have unbounded weight, and two clauses on the same support have empty boundary.</li>
+<li><em>Qualitative assessment.</em> No recorded mechanism handles blocks whose interaction part is dense. The line's value is now as a reduction: it removes every block that is sparse in some direction, or a row-plus-column statistic, and leaves a residual W on a small expander.</li>
+<li><em>A new observation for the replacement.</em> Setting: the restriction proofs draw the matching on the complete board, from a uniform injection \(\pi\) of holes into pigeons. Given the residual sets \(R\) and \(H\), the matching \(\rho\) is then a uniform bijection between the other \(N\) pigeons and holes, a complete \(N\times N\) sub-board (Step 3 of thm:cell-family-w). It turns a form \(\sum a_{it}x_{it}\) into its residual part plus the constant \(c(\pi)=\sum_ia_{i\pi(i)}\), summed over the sub-board.
+ <ul>
+ <li>For \(N\ge2\) the constant is fixed exactly when \(a_{it}=u_i+v_t\) on the sub-board, a sum of row and column statistics. This is the swap argument: transpositions connect all bijections, and a swap changes the sum by \(a_{it}+a_{i't'}-a_{it'}-a_{i't}\). These are the forms that freezing handles.</li>
+ <li>For dense interaction the constant is close to uniform on \(\mathbb F_3\), and for sparse interaction it is Poisson-like (tests below).</li>
+ </ul>
+ So restriction sends adversarial dense forms to residual forms with near-uniform random shifts, a semi-random model between A1 and the random models of A3. On a sparse board the matchings are not connected by transpositions. The fixed forms are then those whose alternating sums vanish on alternating cycles, a larger class, and cells in no perfect matching are unconstrained. That setting is open; the restriction proofs do not need it.</li>
+</ul>
+
+<h4>Outside leads</h4>
+<ul>
+<li><em>Hoeffding's combinatorial central limit theorem (Ann. Math. Statist. 22 (1951)), with permanents of random sign matrices (Tao and Vu, Adv. Math. 220 (2009)).</em> Target: joint equidistribution of the restricted constants of a block, the first step of a reduction of the dense core to a semi-random residual. The characteristic sum is \(\mathbb E\,\omega^{c(\pi)}=\mathrm{perm}(\omega^A)/N!\), with \(\omega=e^{2\pi i/3}\), so equidistribution is an upper bound on a permanent. <em>Where it breaks:</em> Hoeffding gives a Gaussian limit over the reals, not equidistribution modulo 3. Tao and Vu bound permanents of random \(\pm1\) matrices from below (anti-concentration), whereas the step needs upper bounds for structured phase matrices. And joint equidistribution needs every nonzero combination of the block's forms to have dense interaction: an adversary can make the forms share a dense part while their differences are sparse. The tests: sampling at \(N=200\) with 20000 matchings (<code>constant_equidistribution.json</code>) gives a total-variation distance from uniform within sampling noise (0.002) for uniform random coefficients and for full-support product statistics, 0.149 for the identity (Poisson(1) mod 3), and a constant for the row-plus-column form. The exact values of \(|\mathrm{perm}(\omega^A)|/N!\) for even \(N=4,\dots,14\) (<code>permanent_phases.json</code>) fall to \(6\times10^{-6}\) for random \(A\), converge to \(e^{-3/2}\approx0.223\) for the identity, and equal 1 for row plus column. For product statistics the largest of five samples is non-monotone (0.661, 0.764, 0.661, 0.346, 0.448, 0.185), still comparable to the identity at these sizes. <strong>Test.</strong> Passed for single forms at large \(N\); inconclusive for product statistics at small \(N\).</li>
+<li><em>Green's arithmetic regularity lemma (GAFA 15 (2005)).</em> Target: splitting a block's span into a part whose every combination has dense interaction, which gets uniform shifts, and a part of sparse differences, for the sparse and row-sparse mechanisms. <em>Where it breaks:</em> regularity costs tower-type losses in the codimension, and the prefix budget is \(k=\Theta(\log n)\). <strong>Test.</strong> Not run: the density notion for combinations must be defined first, which is the next step.</li>
+<li><em>Alekhnovich and Razborov's pseudo-reduction (Proc. Steklov Inst. 242 (2003)) and its closure form by Mikša and Nordström.</em> Target: a hardness mechanism for dense clauses on the residual. <em>Where it breaks:</em> the theorem needs a boundary-expanding axiom–variable incidence with bounded row weight. The restricted clauses of full-support forms each touch all \(r\) residual pigeons, and two of them on the same support have empty boundary. <strong>Test.</strong> Falsified for blocks of dense clauses: the hypothesis is not met.</li>
+<li><em>Impagliazzo, Pudlák and Sgall's degree bound for a single dense equation (Comput. Complexity 8 (1999)).</em> Target: the only recorded PC hardness for a dense constraint, \(\sum_ix_i=r\), proved by symmetrization. <em>Where it breaks:</em> it needs symmetric constraints, and the dense core's forms are not symmetric. <strong>Test.</strong> Not run: no symmetric sub-case of the dense core is identified.</li>
+</ul>
+
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>The renormalization group (Kadanoff's block spins, Wilson).</em> <em>Translation:</em> the random matching is one coarse-graining step. It maps W on \(n\) pigeons to W on the residual, and the forms' constants flow. Row and column statistics are conserved quantities, which freezing handles. Sparse interactions are marginal, keeping Poisson-like constants, and the sparse mechanisms handle them. Dense interactions flow to the uniform fixed point. <em>What a theorem there would give:</em> universality. The residual W instance would depend on the adversary's dense forms only through their residual parts, with uniform shifts, so an adversarial statement would reduce to a semi-random one. <em>Smallest test:</em> do the three classes flow as predicted? The exact permanents at \(N\le14\) separate uniform random coefficients from the identity, but not yet product statistics. <strong>Test.</strong> Passed at \(N=200\): the constants were fixed, Poisson(1) mod 3, and within sampling noise of uniform, respectively.</li>
+<li><em>The cavity method for random assignment problems (Mézard and Parisi, J. Physique Lett. 46 (1985)).</em> <em>Translation:</em> \(\mathrm{perm}(\omega^A)\) is the partition function of a matching model with complex weights \(\omega^{a_{it}}\). The cavity recursion computes its decay rate from local messages. <em>What a theorem there would give:</em> a decay rate for \(|\mathrm{perm}(\omega^A)|/N!\) in terms of the interaction pattern of \(A\). That would decide which blocks get uniform shifts without case analysis. <em>Smallest test:</em> does the exact decay separate dense from sparse interaction already at \(N\le14\)? Random \(A\) decays super-exponentially (\(0.375\to6\times10^{-6}\)), and the identity converges to the Poisson limit \(|e^{\omega-1}|=e^{-3/2}\). Product statistics stay comparable to the identity up to \(N=14\). A cavity computation of these rates is not done. <strong>Test.</strong> Passed for uniform random coefficients; inconclusive for product statistics.</li>
+</ul>
+
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-25-universality-review:1"><em>Quadratic Littlewood–Offord inverse theorems.</em> The restricted constants of a block pose a Littlewood–Offord problem over random matchings; the first Outside lead above is its linear case. <strong>Follow-up.</strong> Continuing: the quadratic case would govern the restricted selectors.</li>
+<li data-lead="entry-2026-09-26-killer-moment-review:1"><em>Nguyen and Wood's moment method.</em> <strong>Follow-up.</strong> Continuing, with the same scope (A3's main term). A semi-random residual model would be a new place to apply it.</li>
+<li data-lead="entry-2026-09-26-expander-core-review:1"><em>The Mikša–Nordström closure as a gluing base.</em> The forced sparse board makes sparse boards unavoidable. The observation above shows that every pigeon on no 4- or 6-cycle is a spider centre. <strong>Follow-up.</strong> Continuing: a structured spider-free expander, or a closure-based gluing lemma, would revive it. Neither is constructed.</li>
+<li data-lead="entry-2026-09-26-expander-core-review-2:1"><em>Razborov's pseudo-reduction as the dense mechanism.</em> Examined this cycle (third Outside lead). <strong>Follow-up.</strong> Closed as a dense mechanism: blocks of dense clauses do not meet its expansion and row-weight hypotheses. It remains the residual's lower bound.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>The highest-risk item is A1's dense core. The next step on odd-prime-clause-transfer replaces new classes with a reduction. First, define the interaction part of a form, \(a_{it}-u_i-v_t\) after removing row and column means, and a density notion for the combinations of a block's forms. Second, prove that the restricted constants of a block whose every nonzero combination has dense interaction are jointly close to uniform, by bounding \(\mathrm{perm}(\omega^A)\) from above. Finally, state the semi-random residual W to which the dense core then reduces, and compare it with A3's random models.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:forced-sparse-board, thm:logarithmic-residual-w, prop:spider-unfilled, lem:graph-matching-extension, prop:expander-core-reduction, the conditioning in Step 3 of thm:cell-family-w, and every lead followed up. Both tests were read from their saved JSON files. The permanents are exact up to floating point (Ryser's formula), and the identity case agrees with the Poisson limit. A fresh-context reviewer found the review sound after changes, and required these, all adopted:</p>
+<ul>
+<li>the observation stated for cycles through the pigeon;</li>
+<li>a corrected remark on twins;</li>
+<li>the complete-board setting of the swap argument, with the sparse-board class flagged as open;</li>
+<li>exact wording for the quoted numbers, with product statistics inconclusive at small \(N\);</li>
+<li>the Alekhnovich–Razborov hypothesis as it is stated;</li>
+<li>freezing listed among the mechanisms, with "saturated" withdrawn;</li>
+<li>the span bound for product statistics, and the Tao–Vu description.</li>
+</ul>
+<p>This review registers no claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-residual-pseudo-reduction">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 38.28 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 57.33 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 29.95 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 15.17 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 54.96 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.68 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
