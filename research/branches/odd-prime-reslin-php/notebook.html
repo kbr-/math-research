@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Tree saturation is refuted: pair saturations miss falls on chains of random members as often as on triangles, and falls are governed by the sparsity of excluded sets (<a href="#entry-2026-09-26-tree-saturation-refuted">tree saturation refuted</a>). A1's core needs hardness tolerating falls at every degree from about \(2t\) to \(D\). Next: develop the review's generic-initial-ideal lead. Compute generic initial ideals of small connected families' vanishing ideals, and compare their Koszul condition with the families' own.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> The generic-initial-ideal lead closes: Gröbner degeneration does not bound row freeness, because the degenerating torus rescales the row sums (<a href="#entry-2026-09-26-degeneration-row-freeness">degeneration and row freeness</a>). Next: develop the one unrefuted passed item, Dobrushin's condition. Test whether a characteristic-0 design of weak PHP, perturbed by a connected randomized-prefix family, can be made 3-integral at W_RS's degrees, starting from the recorded integral PHP designs.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32543,6 +32543,50 @@ Subtracting lowers \(d\), a contradiction. So \(d=\deg f\) and the top of \(f\) 
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-degeneration-row-freeness" data-kind="research" data-route="odd-prime-clause-transfer" data-lead="entry-2026-09-26-fall-tolerance-review:3" data-claims="conj:degeneration-row-freeness">
+<h3>The generic-initial-ideal lead closes: row freeness is Tor over the row-sum algebra, and Gröbner degeneration does not bound it, because the degenerating torus rescales the row sums. A one-block instance has Tor 12 before and 4 after, and in cell coordinates even the base's own degeneration stops being row-free at degree 3</h3>
+<p class="entry-meta">26 September 2026 · Refutation, with finite checks · open statements A1 and A3 · cycle odd-prime-gin-koszul. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statements A1 and A3. The <a href="#entry-2026-09-26-fall-tolerance-review">fall-tolerance review</a>'s third lead proposed certifying the fall-tolerant gluing condition on a monomial degeneration. The condition is row freeness of \(\operatorname{gr}F^Q\), that is \(\operatorname{Tor}_1^\Lambda(\mathbb F_3,\operatorname{gr}F^Q)_{\le D}=0\) with \(\Lambda=\mathbb F_3[r_1,\dots,r_{m-1}]/(r^3)\) acting by row sums (lem:defect-gluing, thm:global-closure-gluing). The lead's premise was that Tor can only grow under degeneration, so a monomial certificate transfers back. The <a href="#entry-2026-09-26-tree-saturation-refuted">tree-saturation entry</a> left this as the one review item not resting on the nerve. Does it work?</p>
+<p><strong>General statement.</strong> conj:degeneration-row-freeness, refuted here. It says: for \(Q\) in the column-injective assignments \(P\), with \(J=\) the top ideal of \(I(Q)\), any invertible linear change \(g\) and any term order, \(\dim\operatorname{Tor}_1^\Lambda(\mathbb F_3,S/\operatorname{in}(gJ))_d\ge\dim\operatorname{Tor}_1^\Lambda(\mathbb F_3,S/J)_d\) for every \(d\), with \(\Lambda\) acting on the degenerate side through \(g(r_i)\).</p>
+<h4>Why the premise fails</h4>
+<p>Upper semicontinuity of Tor holds for a flat family of modules over a fixed ring acting compatibly. A term-order degeneration is the limit of \(\lambda(t)\cdot gJ\) for a one-parameter torus \(\lambda\). For \(t\ne0\), the fiber is isomorphic to \(S/gJ\) only with \(\Lambda\) acting through \(\lambda(t)^{-1}g(r_i)\), not through \(g(r_i)\). So semicontinuity compares the special fiber with modules over a moving action, not with the original. It applies only when \(\lambda\) scales each acting form. For the row sums \(r_i=\sum_jx_{ij}\) that means weights constant on each row, and those weights never reach a monomial ideal.</p>
+<h4>The computation</h4>
+<p>degeneration_tor.m2 (research/results/odd_prime_gin_koszul_20260926/). Board: 3 rows, \(N\) columns over \(\mathbb F_3\), with \(P\) the column-injective assignments of total occupancy \(\equiv0\), and \(Q\) = \(P\) cut by randomized-prefix blocks (\(t=1\), \(h=3\), dense forms): one block, or a triangle family of three blocks sharing forms. \(J\) is the top-form ideal of \(I(Q)\) from a degree-order Gröbner basis.</p>
+<p>\(\operatorname{Tor}_1^\Lambda\) is computed degree by degree from the minimal \(\Lambda\)-resolution of \(\mathbb F_3\): the kernel of \((a,b)\mapsto r_1a+r_2b\), modulo the Koszul relation and the two Frobenius relations. This agreed with Macaulay2's pushForward and Tor on all seven cases of the first run (degeneration_tor.txt against degeneration_tor_n5_linear.txt). A second sanity check confirms that the coordinate-changed module \(S/gJ\) with action \(g(r_i)\) reproduces the original Tor in every case (isoCheck).</p>
+<p>At \(N=5\) (degeneration_tor_n5_gin.txt):</p>
+<ul>
+<li><strong>Refutation.</strong> One block with \(|Q|=226\) has \(\operatorname{Tor}_1\) of dimensions 12, 173 in degrees 3, 4. The generic initial ideal (random invertible \(g\), then GRevLex) gives 4, 173. That is a drop in degree 3, so the conjecture fails.</li>
+<li><strong>The base itself.</strong> For \(P\) alone, \(\operatorname{Tor}_1=0\) through degree 3. Its GRevLex and Lex initial ideals in cell coordinates have 15 in degree 3, and its generic initial ideal has 6. At \(N=6\) (base_n6.txt, top occupancy degree 6), \(\operatorname{Tor}_1(P)=0\) through degree 3, while both cell-coordinate initial ideals have 3 in degree 3. So a monomial certificate would fail on the base in the range where the base is row-free, even if the transfer were valid.</li>
+<li><strong>Other cases.</strong> In cell coordinates the initial ideals were never below the original, but no theorem guarantees this, and in generic coordinates they can be.</li>
+</ul>
+<h4>What it means</h4>
+<p>The review's third lead is closed. Degenerations that respect the row-sum action cannot reach a monomial ideal, and the others do not transfer row freeness in either direction. This was the last review item not resting on the refuted nerve reading. The review's outside leads and bridges are now all developed:</p>
+<ul>
+<li>resolvent saturation: refuted as a tree lemma;</li>
+<li>Čech and gauge-fixing: rested on it;</li>
+<li>degeneration: refuted here;</li>
+<li>Dobrushin: parked on 3-integrality.</li>
+</ul>
+<p>A1's core remains fall-tolerant hardness for one connected family of dense members, with falls from degree about \(2t\).</p>
+<p><strong>Next.</strong> The route has now closed every local and structural certificate it has tried for A1's core. A route review is not yet required. The next cycle develops the one passed item not refuted, Dobrushin's condition. It holds numerically, with total influence below \(1/(3n)\), and its obstruction is the parked 3-integrality step. Test whether a characteristic-0 design of weak PHP, perturbed by a connected randomized-prefix family, can be made 3-integral at the degrees W_RS needs. Start from the recorded integral PHP designs of the <a href="#entry-2026-09-26-integral-extension">integral extension</a>.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:defect-gluing and thm:global-closure-gluing (the row-sum algebra \(\Lambda\), the occupancy condition and the \(m-1\) acting row sums), and the fall-tolerance review's third lead. The computations are exact over \(\mathbb F_3\) in Macaulay2. The Tor routine was validated against Macaulay2's own Tor on seven cases, the isomorphism check passed on all seven, and the counterexample is reproducible from the fixed seed. The semicontinuity argument is standard. No reviewer pass was run: the entry refutes a conjecture by an explicit, sanity-checked instance and explains why the premise fails.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-gin-koszul">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>17 min 41.10 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">41.19 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">43.03 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 51.79 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 9.08 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 15.88 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3.</p>
 </div>
 </article>
 
