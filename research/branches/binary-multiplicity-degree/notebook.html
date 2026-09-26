@@ -34,7 +34,7 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Its zero sets are mapped (<a href="#cube-threshold-collision-support">theorem</a>, <a href="#entry-2026-09-26-cube-collision-windows">entry</a>) but do not give \(\ell_0\). Thresholds are attained by invariants (<a href="#cube-invariant-attainment">conjecture</a>), proved at every boundary and in dimension 3. Order zero is at most \(20d-21\) by products (<a href="#cube-order-zero-dimension-four-linear-bound">theorem</a>), with savings growing at a rate \(k/c_n\) (<a href="#cube-order-zero-rate">theorem</a>). Windows at the triple-double points give \(M(d)\ge11d-11\), so \(11\le c_4\le20\) (<a href="#cube-order-zero-dimension-four-lower-bound">theorem</a>). Restrictions give lower bounds (<a href="#cube-order-zero-restriction">lemma</a>): modulo a large prime, random planes give 19, 38 against 19, 39 (<a href="#cube-order-zero-restrictions">check</a>). A general hyperplane section is exact exactly when the solution module has depth \(\ge3\) (<a href="#cube-restriction-exactness">exactness lemma</a>), which explains dimension 3 (<a href="#cube-general-line-exact">corollary</a>); the plane's shortfall at \(d=3\) indicates depth 2, a finite-length defect \(H^0_{\mathfrak m}(C_{38})_{-1}\). Next: compute that defect at \(d=2,3\) and its \(S_5\)-structure.</li>
+<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Its zero sets are mapped (<a href="#cube-threshold-collision-support">theorem</a>, <a href="#entry-2026-09-26-cube-collision-windows">entry</a>) but do not give \(\ell_0\). Thresholds are attained by invariants (<a href="#cube-invariant-attainment">conjecture</a>), proved at every boundary and in dimension 3. Order zero is at most \(20d-21\) by products (<a href="#cube-order-zero-dimension-four-linear-bound">theorem</a>), with savings growing at a rate \(k/c_n\) (<a href="#cube-order-zero-rate">theorem</a>). Windows at the triple-double points give \(M(d)\ge11d-11\), so \(11\le c_4\le20\) (<a href="#cube-order-zero-dimension-four-lower-bound">theorem</a>). Restrictions give lower bounds (<a href="#cube-order-zero-restriction">lemma</a>; planes give 19, 38 modulo a large prime, <a href="#cube-order-zero-restrictions">check</a>), exact when the solution module has depth \(\ge3\) (<a href="#cube-restriction-exactness">exactness lemma</a>). Once \(I_m\) has no zeros, order zero fails only through a class in \(H^2_{\mathfrak m}(K_{m-1})_1\) (<a href="#cube-zero-free-criterion">zero-free criterion</a>); in dimension 3 free modules leave only zeros, while at \(d=2\) in dimension 4 \(K_{16}\), \(K_{17}\) have depth 2 (modulo 32003). Next: a route review, then compute that local cohomology at \(d=2\).</li>
 <li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). By the <a href="#cube-squarefree-reduction">reduction theorem</a> and the <a href="#cube-limit-triple-multiplicity">triple-multiplicity corollary</a>, \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs one statement: squarefreeness of the non-collision part of the limit determinant. It is an instance of the <a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness conjecture</a>, which passes 1261 monotone vectors. For \(n=4\) it is simplicity of the \(d\)-canonical Weierstrass points of a general Humbert curve. A proof needs an induction over a class of spaces closed under Möbius transports, or a Weierstrass-point theorem for this family.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
@@ -8209,6 +8209,75 @@ As in the dimension-3 window lemma, \((w_3-w)^k=A_k(w)+w_3B_k(w)\) with \(\deg A
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7 min 36.79 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 26.06 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-zero-free-criterion" data-kind="research" data-route="cube-odd-characteristic" data-claims="lem:cube-zero-free-criterion">
+<h3>26 September 2026 — The zero-free criterion: order zero fails without zeros only through a cohomology class, so dimension 4 needs depth 2</h3>
+<p class="entry-meta">Working proof: if the threshold ideal has no zeros and the previous solution module has depth at least 3, order zero is solvable; otherwise a local cohomology class obstructs it. Cycle bmd-r127. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> On \(\{0,1\}^3\) every order-zero lower bound came from zeros of the threshold ideal, at the double points (<a href="#cube-order-zero-value">order-zero theorem</a>). On \(\{0,1\}^4\) at \(d=2\) the ideals \(I_{17}\), \(I_{18}\) have no zeros (<code>check:cube-collision-regime-empty-d2</code>), yet order zero first holds at \(m=19\). The missing implication for open statement 3 is a lower-bound mechanism for \(M(d)\) in dimension 4. Can zeros be the only obstruction in some dimensions, and what replaces them when they are not? The test ends with a criterion that separates the two cases.</p>
+<p>Setting and notation are those of the <a href="#entry-2026-09-26-cube-restriction-exactness">restriction exactness entry</a>, now for every \(n\ge2\): \(R=F[y_1,\ldots,y_n]\), \(\mathbb P=\mathbb P^{n-1}\), \(K_m\) the solution module of the (d+1)-system at \(m\), graded so that in degree \(\ell\) the coordinates \(W_c\) have degree \(\ell+m-c\), and \(I_m\) its ideal of top coordinates \(W_m\). The order-zero system is solvable at \(m\) iff \(1\in I_m\). Zero sets \(V(I_m)\) are taken over the algebraic closure \(\bar F\), so \(V(I_m)=\emptyset\) means \(\tilde I_m=\mathcal O_{\mathbb P}\).</p>
+<h4 id="cube-zero-free-criterion">The criterion</h4>
+<p><strong>Lemma</strong> (<code>lem:cube-zero-free-criterion</code>, the zero-free criterion). Let \(n\ge2\), \(d\ge1\), \(m\ge1\), over any field. The characteristic and the cube enter only through the setting. The proof uses only that the equations at \(m-1\) are those at \(m\) with \(W_m=0\).</p>
+<ol>
+<li>The top-coordinate map gives an exact sequence of graded modules \(0\to K_{m-1}(1)\to K_m\to I_m\to0\).</li>
+<li>Suppose \(V(I_m)=\emptyset\) in \(\mathbb P\). Then the order-zero system is solvable at \(m\) if and only if a connecting class \(\delta_m\in H^1(\mathbb P,\tilde K_{m-1}(1))=H^2_{\mathfrak m}(K_{m-1})_1\) vanishes. In particular it is solvable when \(\operatorname{depth}K_{m-1}\ge3\), or \(K_{m-1}=0\).</li>
+<li>Consequently, if \(V(I_m)=\emptyset\) and the system is not solvable at \(m\), then \(H^2_{\mathfrak m}(K_{m-1})\ne0\), so \(\operatorname{depth}K_{m-1}=2\). For \(n\ge3\), restriction of \(K_{m-1}\) to every hyperplane is then inexact (<a href="#cube-restriction-exactness">exactness lemma</a>, Part 3).</li>
+</ol>
+<p><em>Proof.</em> Part 1. An element of \(K_m\) of degree \(\ell\) with \(W_m=0\) is a vector \((W_0,\ldots,W_{m-1})\) with \(W_c\) of degree \((\ell+1)+(m-1)-c\). The identities for \(m-1\) are the same as those for \(m\) with \(W_m=0\), because the equations are \(\sum_{c}W_c[T^c]f=0\) over the same basis. So the kernel of \(W\mapsto W_m\) is \(K_{m-1}\) shifted by one, and the image is \(I_m\) by definition.</p>
+<p>Part 2. Sheafification is exact, so \(0\to\tilde K_{m-1}(1)\to\tilde K_m\to\tilde I_m\to0\) is exact on \(\mathbb P\), and \(\tilde I_m=\mathcal O_{\mathbb P}\) because \(I_m\) has no zeros. Take cohomology in degree 0:</p>
+\[H^0(\tilde K_m)\to H^0(\mathcal O_{\mathbb P})=F\xrightarrow{\ \partial\ }H^1(\tilde K_{m-1}(1)).\]
+<p>Put \(\delta_m=\partial(1)\). Each \(K_j\) is the kernel of a map of free modules, a second syzygy, so \(H^0_{\mathfrak m}(K_j)=H^1_{\mathfrak m}(K_j)=0\) and \((K_j)_\ell=H^0(\tilde K_j(\ell))\). Also \(H^1(\tilde K_{m-1}(1))=H^2_{\mathfrak m}(K_{m-1})_1\).</p>
+<p>If \(\delta_m=0\), then \(1\) lifts to a section of \(\tilde K_m\), that is, to \(W\in(K_m)_0\). Its top coordinate is a degree-0 element of \(I_m\) whose sheaf image is \(1\), so \(W_m=1\). Conversely, a solution \(W\in(K_m)_0\) with \(W_m=1\) lifts \(1\), so \(\delta_m=0\). Depth \(\ge3\) gives \(H^2_{\mathfrak m}(K_{m-1})=0\).</p>
+<p>Part 3 is the contrapositive of Part 2, since a nonzero second syzygy has depth \(\ge2\). \(\square\)</p>
+<p>The new content is Part 2: once the zeros are gone, the only obstruction left is one class in a local cohomology module.</p>
+<h4 id="cube-dimension-three-zero-sets">Dimension 3: why zeros were the whole story</h4>
+<p>On \(\{0,1\}^3\) the <a href="#cube-order-zero-value">order-zero theorem</a> already shows directly that, for \(m\le5d-1\), order zero holds at \(m\) iff \(V(I_m)=\emptyset\), and it gives \(M_3(d)=5d-1\). The criterion explains why a pointwise proof could succeed there. For \(m\le5d-1\) the modules \(K_{m-1}\) are zero or free, by the dimension-three law and the <a href="#cube-dimension-three-every-field">every-field theorem</a>, so \(H^2_{\mathfrak m}(K_{m-1})=0\). No cohomological obstruction can occur, and only zeros can block order zero. This is an explanation, not a new result.</p>
+<h4>Dimension 4: an obstruction without zeros</h4>
+<p><strong>Computation.</strong> The solutions invariant under \(S_4\), permuting \(y_1,\ldots,y_4\), with excess 0 decide order zero. Averaging over \(S_4\) is possible since \(24\) is invertible, and it preserves \(W_m=1\). The kernel <code>bmd_cube_symmetric_solutions</code> in rank mode over \(\mathbb F_{32003}\) gives, in <code>research/results/bmd-r127-route-review/</code>:</p>
+<ul>
+<li>at \(d=2\): not solvable at \(m=16,17,18\), solvable at \(m=19\) (<code>order-zero-d2-p32003.txt</code>);</li>
+<li>at \(d=3\): not solvable at \(m=37,38\), solvable at \(m=39\) (<code>order-zero-d3-p32003.txt</code>). This reproduces the recorded row <code>check:cube-dimension-four-row-d3</code>, which has invariant thresholds 2, 2, 0 at \(m=37,38,39\) over the same field; it is not new evidence.</li>
+</ul>
+<p>Only the \(d=2\) facts at \(m=17,18\) are used below. Monotonicity in \(m\) is proved only for \(n\le3\), so the runs show nothing about smaller \(m\).</p>
+<p><strong>Consequence over \(\mathbb F_{32003}\).</strong> The recorded check <code>check:cube-collision-regime-empty-d2</code> gives \(V(I_{17})=V(I_{18})=\emptyset\) at \(d=2\) over \(\mathbb F_{32003}\). Its zero-set half rests on the <a href="#cube-threshold-collision-support">collision-support theorem</a>. Order zero is not solvable at \(17\) or \(18\) there. The zero sets there are geometric: the 24 points involve fifth roots of unity, which are not in \(\mathbb F_{32003}\). By Part 3, \(\operatorname{depth}K_{16}=\operatorname{depth}K_{17}=2\) over \(\mathbb F_{32003}\), with \(\delta_{17},\delta_{18}\ne0\). So these two modules are not free, unlike every dimension-3 module with \(m\le5d-1\). The obstruction to order zero at \(m=17,18\) is a class in \(H^1(\mathbb P^3,\tilde K_{m-1}(1))\), which no point window can see. This is a finite-check consequence over one prime, not a proof in characteristic 0.</p>
+<p><strong>General statement.</strong> <code>lem:cube-zero-free-criterion</code>, for every \(n\ge2\), \(d\ge1\), \(m\ge1\) and every field.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read:</p>
+<ul>
+<li>the setting of the exactness entry;</li>
+<li>the collision-support theorem (its hypotheses \(n\ge3\), \(d&gt;n-3\), \(m&gt;N\) and characteristic \(\ne2\) hold at \(d=2\), \(m=17,18\));</li>
+<li>the \(d=2\) zero-free check over \(\mathbb F_{32003}\);</li>
+<li>the freeness results and the order-zero theorem in dimension 3.</li>
+</ul>
+<p>Claim searches (local cohomology, depth, zero set, connecting class; order zero, monotone, dimension 4) found no earlier criterion; the nearest is the exactness lemma. They found the recorded \(d=3\) row, which the new \(d=3\) run reproduces. A fresh-context referee found the lemma correct and new, and the averaging argument and output numbers right. Its corrections are made:</p>
+<ul>
+<li>the unused characteristic hypothesis is dropped;</li>
+<li>zero sets are taken over \(\bar F\);</li>
+<li>the dimension-3 corollary, which restates the order-zero theorem, is recast as an explanation and not registered;</li>
+<li>the \(d=3\) run is credited to the recorded row;</li>
+<li>no claim about \(m&lt;16\) is drawn;</li>
+<li>the depth conclusion is limited to \(K_{16}\) and \(K_{17}\);</li>
+<li>the duality remark is corrected;</li>
+<li>an unsupported link to the excess-sum lemma is removed.</li>
+</ul>
+<p><strong>Assessment.</strong> The criterion splits the lower-bound problem for \(M(d)\) into two parts:</p>
+<ul>
+<li>zeros of \(I_m\), which point windows detect and which carry all of dimension 3;</li>
+<li>the class \(\delta_m\in H^2_{\mathfrak m}(K_{m-1})_1\), which lives only where the solution modules have depth 2.</li>
+</ul>
+<p>In dimension 4 the windows reach only \(11d-11\), and at \(d=2\) the zeros are gone two steps before order zero. So a proof of \(M(d)\ge20d-21\) must show that \(\delta_m\ne0\) through most of the range. The natural tools are Serre duality on \(\mathbb P^3\) and the resolution of \(C_m\). Duality turns \(H^1(\tilde K(1))\) into \(\operatorname{Ext}^2(\tilde K(1),\omega)^*\); since \(\tilde K\) need not be locally free, this is not simply \(H^2(\tilde K^\vee(-5))\). The resolution computes these local cohomology modules. The next step is to compute \(H^2_{\mathfrak m}(K_{m-1})\) at \(d=2\), \(m=17,18\) in Macaulay2, and to see what generates it, before the route review due next.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r127">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 13.49 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 54.19 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 57.04 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">55.49 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">26.63 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
