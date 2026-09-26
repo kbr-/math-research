@@ -34,8 +34,8 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Its zero sets are mapped (<a href="#cube-threshold-collision-support">theorem</a>, <a href="#entry-2026-09-26-cube-collision-windows">entry</a>) but do not give \(\ell_0\). Order zero satisfies \(11d-11\le M(d)\le20d-21\) (<a href="#cube-order-zero-dimension-four-lower-bound">windows</a>, <a href="#cube-order-zero-dimension-four-linear-bound">products</a>). Restrictions give lower bounds (<a href="#cube-order-zero-restriction">lemma</a>; planes give 19, 38 modulo a large prime, <a href="#cube-order-zero-restrictions">check</a>), exact when the solution module has depth \(\ge3\) (<a href="#cube-restriction-exactness">exactness lemma</a>). Once \(I_m\) has no zeros, order zero fails only through a local cohomology class (<a href="#cube-zero-free-criterion">zero-free criterion</a>): the class of the order-zero column, whose annihilator is \(I_m\) (<a href="#cube-threshold-annihilator">annihilator form</a>). It vanishes locally at every point, so no pointwise method sees it; at \(d=2\) the modules have depth 2 (<a href="#entry-2026-09-26-cube-route-review-19">route review 19</a>). Next: weigh a global duality bound for \(H^0_{\mathfrak m}(C_{m-1})\) against the other open statements (boundary for every \(d\), small primes).</li>
-<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs squarefreeness of the non-collision part of the limit determinant \(\Delta_U\) (<a href="#cube-squarefree-reduction">reduction theorem</a>, <a href="#cube-limit-triple-multiplicity">triple multiplicity</a>). Its base case \(n=2\), \(\nu=d-|r|\), is proved: on the conic every Weierstrass point has weight 1 (<a href="#cube-conic-squarefree">conic theorem</a>). The quadrangle route needs both kinds of side. For \(n=2\) every such determinant is the Wronskian of an explicit binomial series on a rigid curve (<a href="#cube-conic-duality">duality theorem</a>), which makes the triple sides the explicit palindromic 8-nomial \(F_{2d-1}\) (<a href="#cube-triple-side-closed-form">closed form</a>), squarefree through \(d=10\), with its roots in three families. Next: simple zeros of \(F_{2d-1}\) for every \(d\) (sign changes and Rouché), then the double-double sides.</li>
+<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs squarefreeness of the non-collision part of the limit determinant \(\Delta_U\) (<a href="#cube-squarefree-reduction">reduction theorem</a>, <a href="#cube-limit-triple-multiplicity">triple multiplicity</a>). Its base case \(n=2\), \(\nu=d-|r|\), is proved: on the conic every Weierstrass point has weight 1 (<a href="#cube-conic-squarefree">conic theorem</a>). The quadrangle route needs both kinds of side. For \(n=2\) every such determinant is the Wronskian of an explicit binomial series on a rigid curve (<a href="#cube-conic-duality">duality theorem</a>), which makes the triple sides the explicit palindromic 8-nomial \(F_{2d-1}\) (<a href="#cube-triple-side-closed-form">closed form</a>), squarefree through \(d=10\), with its roots in three families. The \(n=2\) monotone conjecture passes 808 vectors (<a href="#entry-2026-09-26-cube-route-review-20">route review 20</a>). Next: extend the duality to the double-double sides (vanishing at \(\mu=\pm1,\pm i\)), then simple zeros for every \(d\).</li>
+<li><strong>The middle range and order zero of dimension 4</strong> (open statement 3). Order zero satisfies \(11d-11\le M(d)\le20d-21\) (<a href="#cube-order-zero-dimension-four-lower-bound">windows</a>, <a href="#cube-order-zero-dimension-four-linear-bound">products</a>). Once \(I_m\) has no zeros the obstruction is one cokernel class, of local cohomology in a depth-2 module (<a href="#cube-zero-free-criterion">zero-free criterion</a>, <a href="#cube-threshold-annihilator">annihilator form</a>), which vanishes at every point, so no pointwise method reaches it. Waits for a new idea on that class.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions; the dimension-3 result may merit a note.</p>
@@ -8805,6 +8805,76 @@ As in the dimension-3 window lemma, \((w_3-w)^k=A_k(w)+w_3B_k(w)\) with \(\deg A
 <tr><td>Computation design and coding</td><td class="elapsed">42.58 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">52.25 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.73 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-route-review-20" data-kind="review" data-route="cube-odd-characteristic" data-claims="none" data-claim-note="Route review: a falsification sweep of conj:cube-monotone-squarefree for n = 2 through thm:cube-conic-duality and cheap tests of outside leads; the evidence is recorded here with the review, and no new claim is sourced.">
+<h3>26 September 2026 — Route review of the cube: the dimension-4 boundary reduced to explicit polynomial families; order zero blocked by cohomology</h3>
+<p class="entry-meta">Route review: the monotone squarefreeness conjecture for n = 2 survives 808 monotone vectors, and fails for 18 non-monotone ones. The boundary line is now concrete; order zero has no mechanism. Cycle bmd-r135. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>The line's general claim.</strong> The per-order function on \(\{0,1\}^n\) in characteristic \(\ne2\) is determined by the thresholds \(\ell_0(h,m)\). Dimension 3 is solved. For \(n\ge4\) the claims to establish are laws for the thresholds, at the boundary, in the middle range and at order zero (open statement 3), and at small primes (open statement 2).</p>
+<p><strong>What the goal needs.</strong> Since <a href="#entry-2026-09-26-cube-route-review-19">route review 19</a>, six research cycles:</p>
+<ul>
+<li>the threshold ideal is the annihilator of one cokernel class, which vanishes locally in the zero-free range, so no pointwise method reaches order zero in dimension 4 (<a href="#entry-2026-09-26-cube-threshold-annihilator">entry</a>);</li>
+<li>the base case of the boundary route: on the conic every Weierstrass point of the cube's hyperplane series has weight 1 (<a href="#entry-2026-09-26-cube-conic-squarefree">conic theorem</a>);</li>
+<li>on the genus-1 curve the limit space is cut out by four character functionals (<a href="#entry-2026-09-26-cube-elliptic-functionals">entry</a>);</li>
+<li>the triple sides of the limit determinant, exact through \(d=5\) (<a href="#entry-2026-09-26-cube-triple-sides">entry</a>);</li>
+<li>for \(n=2\), every conic determinant is the Wronskian of an explicit binomial series (<a href="#entry-2026-09-26-cube-conic-duality">duality theorem</a>);</li>
+<li>the triple-side Wronskian in closed form, a palindromic 8-nomial with three root families (<a href="#entry-2026-09-26-cube-triple-side-closed">entry</a>).</li>
+</ul>
+<h4>Falsification attempt</h4>
+<p>The duality theorem makes the \(n=2\) case of the <a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness conjecture</a> cheap to test: each vector needs one sparse Wronskian. The recorded test covered entries \(\le4\). The new tool <code>research/tools/bmd_cube_conic_sweep.gp</code> (PARI/GP) takes every \(\nu\in\{-1,\ldots,7\}^4\) with \(N\ge2\) and a nonempty dual series. It computes \(W(S_\nu)\), removes the special factors \(\mu,\mu\pm1,\mu^2+1\), and tests the rest for squarefreeness (<code>research/results/bmd-r135-route-review/conic-sweep-e7.txt</code>).</p>
+<ul>
+<li>All 808 monotone vectors pass.</li>
+<li>18 of 5733 non-monotone vectors fail, in pairs exchanged by \(a_1\leftrightarrow a_2\). The failures include the four recorded ones, \((3,0,1,1)\), \((3,3,4,1)\) and their images, and new ones such as \((5,1,2,3)\), \((6,0,1,4)\) and \((7,2,3,5)\).</li>
+</ul>
+<p>The sizing run for entries \(\le4\) reproduces the recorded tally exactly: 4 non-monotone failures. Its 185 monotone vectors are the recorded 194 minus 9 whose series is complete. The conjecture could have failed on a larger monotone vector; it did not.</p>
+<h4>Assessment of this line</h4>
+<p>The two halves of open statement 3 in dimension 4 have diverged.</p>
+<ul>
+<li><strong>Order zero and the middle range: stuck.</strong> Point windows reach only \(11d-11\), and the remaining obstruction is a local cohomology class of a depth-2 module, which vanishes at every point (zero-free criterion, annihilator form). No method recorded here bounds such a class. The evidence for \(M(d)=20d-21\) is unchanged.</li>
+<li><strong>The boundary for every \(d\): concrete and progressing.</strong> The law \(\ell_0(d+1,8d-4)=10d^2-10d-5\) is proved for \(d\le9\). For every \(d\) it needs squarefreeness of the limit determinant \(\Delta_U\), and by the quadrangle route that comes down to two conic families. The triple sides are the explicit 8-nomial \(F_{2d-1}\), squarefree through \(d=10\) exactly. Its roots lie in three families, and a sign-change and Rouché argument is outlined, the neighbourhood of \(t=1\) being the hard part. The double-double sides are a transported space with vanishing at a branch point. In the rigid picture that is again a fixed space on the conic, so the duality theorem should extend to it with evaluation functionals at \(\pm1\) or \(\pm i\).</li>
+</ul>
+<p>The quadrangle lemma's exact hypothesis must also be matched: restrictions equal to a power of the diagonal form times a squarefree part. That is not yet checked for the double-double sides. The line's prospects on the boundary are good; on order zero they are poor without a new idea.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Tropical root estimates for polynomials</strong> (Hadamard–Ostrowski–Pólya; the Newton polygon of \(\log|c_k|\) predicts the moduli of the roots and how many share each modulus). Target: the triple-side squarefreeness, by locating the three root families of \(F_n\) before Rouché's theorem. It breaks where two tropical slopes nearly coincide. <strong>Test.</strong> Passed. The upper hull of the points \((k,\log|c_k|)\) of \(F_n=1+t^{3n}-t^{n-1}q-t^{2n-1}q^*\) has vertices \((0,0)\), \((n,\log B)\), \((2n,\log B)\) and \((3n,0)\), since \(B=4n^2-1\) exceeds \(A=n(2n-1)\) and \(C=n(2n+1)\) for \(n\ge2\). This predicts \(n\) roots of modulus about \(B^{-1/n}\), \(n\) near the unit circle and \(n\) outside. The actual counts match: \(2d-3=n-2\) inner roots of \(Q_d\) plus two absorbed into \((t-1)^6\); \(2d-4\) on the circle plus \(t=-1\), plus \(6-4\) at \(t=1\), giving \(n\); and \(n\) outer.</li>
+<li><strong>Sturm sequences and the Hermite criterion for self-reciprocal polynomials</strong> (the substitution \(u=t+1/t\), as in the theory of Salem polynomials). Target: the \(2d-4\) unit-circle zeros for every \(d\). The count of real roots of \(R_d(u)\) on \((-2,2)\) is a sign-variation count that a closed form of \(R_d\) could make uniform in \(d\). It breaks if \(R_d\) has no tractable closed form. <strong>Test.</strong> Passed for \(d\le12\): the exact Sturm count gives \(d-2\) roots of \(R_d\) in \((-2,2)\) (<a href="#entry-2026-09-26-cube-triple-side-closed">closed-form entry</a>). A uniform proof is not attempted.</li>
+<li><strong>Bethe ansatz for spaces of polynomials with prescribed Wronskian</strong> (Mukhin–Tarasov–Varchenko, Annals 2009; Scherbak). A space of polynomials whose Wronskian has simple zeros corresponds to solutions of Bethe equations, which are non-degenerate under genericity conditions. Target: simple zeros of \(W(S_\nu)\) for monotone \(\nu\), by recognizing the binomial dual series as a family covered by that non-degeneracy. It breaks where the dual series fails their genericity, which is exactly where squarefreeness fails, so it would give only a restatement unless their conditions are checkable. <strong>Test.</strong> Not run: matching the dual series to their weight data needs the \(\mathfrak{sl}_2\) weights of the spaces, which are not set up.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>Lee–Yang circle theorem</strong> (statistical mechanics; Lee and Yang, Phys. Rev. 87, 1952). Translation: \(F_n(t)\) is a palindromic "partition function" in the fugacity \(t\). A ferromagnetic structure would force every zero onto the unit circle, which would prove simplicity through a sign-change count alone. <strong>Test.</strong> Falsified: \(F_n\) has \(2(2d-3)\) zeros off the unit circle (exact count by degree minus the Sturm count), so no Lee–Yang property holds for it. Only its unit-circle factor behaves that way.</li>
+<li><strong>Hückel theory of cyclic polyenes</strong> (quantum chemistry; the spectrum \(2\cos(2\pi k/N)\) of the cycle graph). Translation: the conic theorem's roots \(x=-\cot^2(\pi j/2d)\) come from \(\mu^{4d}=1\), a circulant spectrum, the Hückel spectrum of a cycle of length \(4d\). The triple sides might be the spectrum of a cycle with a few decorated sites, making \(R_d(u)\) the characteristic polynomial of a structured matrix, whose eigenvalues are simple for connected graphs of that kind. <strong>Test.</strong> Not run: it needs a candidate graph for \(R_d\), and no cheap test separates candidates.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-13:2">Chip-firing on a cycle. Not worked this period. <strong>Follow-up.</strong> Continuing, with the boundary conjecture.</li>
+<li data-bridge="entry-2026-09-26-cube-route-review-15:1">The non-crossing rule. Not worked this period. <strong>Follow-up.</strong> Continuing, with the boundary conjecture.</li>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">The renewal-reward theorem. Not worked this period; order zero has no new data. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-26-cube-route-review-19:1">Algebraic-geometry codes. On rereading, this repeats route review 16's bridge on Weierstrass semigroups of AG codes, which was closed. The curve and divisor identification it tested is recorded there. <strong>Follow-up.</strong> Closed: a repetition of a closed bridge.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-15:1">General Weierstrass points are simple. Developed this period: weight 1 on the conic for the cube's vector, the duality theorem for every \(n=2\) vector, and the four-functional structure in genus 1. <strong>Follow-up.</strong> Continuing: genus 1 and the double-double sides remain.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-16:1">Higher Weierstrass points on the universal curve. Not worked this period. <strong>Follow-up.</strong> Continuing, with the boundary conjecture.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">Invariant solutions of the order-zero system. Not worked this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">Normality of Hermite–Padé systems. Developed: the duality theorem is the \(n=2\) Hermite–Padé structure made explicit, and it explains the non-normal (non-monotone) failures as multiple zeros at roots of unity. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">Horrocks' splitting criterion. Not worked this period. <strong>Follow-up.</strong> Continuing, with order zero.</li>
+</ul>
+<h4>Next step</h4>
+<p>On open statement 3, the next cycles take the boundary route to its end. The first is the double-double sides: extend the duality theorem to the transported space, which on the rigid conic is a fixed space with vanishing at \(\mu=\pm1\) or \(\pm i\). That adds evaluation functionals to the dual series. The resulting families should then be computed and matched with the quadrangle lemma's hypothesis. After that, the simple zeros of \(F_n\) and of the double-double family for every \(d\), with explicit constants. Order zero waits for a new idea on the depth-2 class.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r135">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 7.91 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7.65 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 8.25 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 37.41 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">9 min 14.46 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
