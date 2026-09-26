@@ -33,8 +33,8 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 1, then 3).</p>
 <ul>
-<li><strong>The family (\(\mathrm W_e\)) on three lines</strong> (open statement 1). By the <a href="#cube-odd-generator-criterion">criterion</a>, \((\mathrm W_e)\) holds exactly when the ratio of the solutions of \(P_{e-1}P_{e+2}\) and \(P_eP_{e+1}\) is a quartic on each line of \(F_2=0\). These lines pass through the double points, and on them \(c\) is 2-torsion. Prove this for all \(e\): locate the common zeros of the coordinates of \(P_eP_{e+1}\) on the lines, using the <a href="#cube-boundary-double-point-order">order theorem</a> at the double points.</li>
-<li><strong>Lift \((\mathrm W_3)\) to characteristic 0</strong> by the rational dimension of the invariant witnesses at \((7,2)\), excess 24. This settles every \(d\le4\rho\).</li>
+<li><strong>The transfer constants at the collision points</strong> (open statement 1). By the <a href="#cube-odd-generator-poles">pole lemma</a>, \((\mathrm W_e)\) for all \(e\) comes down to the regularity of \(\mu_e/\mu_{e-1}\) on the three lines of \(F_2=0\). This is needed at the two double points and two further collision points of each line, and at \(Z_e\cup Z_{e+1}\). At the double points, compute \(\mu_n\) from the <a href="#cube-boundary-double-point-order">Tate-curve description</a> of the boundary functions. At the other collision points, use the degenerations of \(C_a\) where one coordinate vanishes or two coincide.</li>
+<li><strong>Lift \((\mathrm W_3)\) to characteristic 0</strong> at \((7,2)\), which settles every \(d\le4\rho\).</li>
 <li><strong>Exceptional characteristics</strong> (<a href="#cube-characteristic-independence">conjecture</a>) and <strong>dimension 4</strong> (open statement 3).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions.</p>
@@ -5798,6 +5798,47 @@ since \(A(N-A)=4xy\) and \(\bar A=2r\). This is \(d^2\cdot\tfrac12\operatorname{
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 4.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-odd-generator-poles" data-kind="research" data-route="cube-odd-characteristic" data-claims="lem:cube-odd-generator-poles">
+<h3>26 September 2026 — The odd generators: on each line the ratio t/s is a ratio of 2-torsion transfer constants, with poles only at four collision points and two finite sets</h3>
+<p class="entry-meta">Working proof that (W_e) reduces to regularity at four collision points per line and at the finite sets Z_e, Z_{e+1}. Cycle bmd-r88. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> By the <a href="#cube-odd-generator-criterion">criterion</a>, \((\mathrm W_e)\) holds when, on each line \(\ell\) of \(F_2=0\), the rational function \(\lambda_\ell\) with \(t=\lambda_\ell s\) is a quartic. Here \(s,t\) are the solutions of \(P_eP_{e+1}\) and \(P_{e-1}P_{e+2}\) at \((2e+1,2)\). Where can \(\lambda_\ell\) have poles, and what is \(\lambda_\ell\) on the curve? The test ends with a finite list of points at which regularity must be checked, or with a pole.</p>
+<p><strong>Setting.</strong> As in the criterion, with \(e\ge2\). \(U\) is the set of \(y\) with distinct nonzero entries. \(W^{(n)}\) is the primitive boundary solution at \((n,1)\), and \(Z_n\subset U\) is the finite set where \(W^{(n)}(y)=0\) (<a href="#cube-boundary-generators-coprime">coprimality lemma</a>, proof of part 1). The solution of \(P_n\) is a nonzero constant times \(W^{(n)}\), because the module at \((n,1)\) is free on \(W^{(n)}\) of excess \(n^2-1\), the excess of \(P_n\) (<a href="#cube-dimension-three-boundary-threshold">boundary theorem</a>).</p>
+<h4 id="cube-odd-generator-poles">Poles and transfer constants</h4>
+<p><strong>Lemma</strong> (<code>lem:cube-odd-generator-poles</code>). Over an algebraically closed field of characteristic \(\ne2\), let \(\ell\) be one of the lines \(\ell_1,\ell_2,\ell_3\) of \(F_2=0\).</p>
+<ol>
+<li>\(\lambda_\ell\) is regular at every point of \(\ell\cap U\) outside \(Z_e\cup Z_{e+1}\). The points of \(\ell\) outside \(U\) are four collision points. For \(\ell_3=\{y_3=y_1+y_2\}\) they are the double points \((0{:}1{:}1)\) and \((1{:}0{:}1)\), and the points \((1{:}{-1}{:}0)\) and \((1{:}1{:}2)\). The other lines follow by permuting coordinates. So \((\mathrm W_e)\) holds if and only if, on each line, \(\lambda_\ell\) has no pole at these four points or at \(Z_e\cup Z_{e+1}\), and the three quartics agree at the double points where \(s\) vanishes.</li>
+<li>Let \(y\in\ell\cap U\) lie outside \(Z_2\cup Z_n\cup Z_{n+2}\), and normalize \(\varphi_n=T^{-k}P_n|_C\) by the witness \(P_n\). Then there is a nonzero \(\psi\in L(8p_0-2H_\infty)\), and a scalar \(\mu_n(y)\ne0\) with \(\varphi_{n+2}=\mu_n\psi\varphi_n\). For \(y\) outside \(Z_2\cup Z_{e-1}\cup Z_e\cup Z_{e+1}\cup Z_{e+2}\), \(\lambda_\ell(y)=\mu_e(y)/\mu_{e-1}(y)\). Each \(\mu_n\) depends on the choice of \(\psi\) through a common factor, and the ratios \(\mu_n/\mu_{n'}\) do not.</li>
+</ol>
+<p><strong>Proof.</strong> The <a href="#cube-witness-differential">witness-differential lemma</a>, parts 2 and 3, holds at every \(y\in U\): for a witness \(P\) the solution \(W^P(y)\) is the residue vector of \(\varphi_P(y)\omega_0\), and \(\varphi_{PQ}=\varphi_P\varphi_Q\). So \(s(y)\) and \(t(y)\) are the residue vectors of \(\varphi_e\varphi_{e+1}\) and \(\varphi_{e-1}\varphi_{e+2}\) at every \(y\in U\). Part 1. Let \(y_0\in\ell\cap U\) outside \(Z_e\cup Z_{e+1}\). The solutions of \(P_e\) and \(P_{e+1}\) are nonzero at \(y_0\). By injectivity of <a href="#cube-residue-duality">residue duality</a> at \(y_0\), the functions \(\varphi_e(y_0)\) and \(\varphi_{e+1}(y_0)\) are nonzero. The function field of \(C_{4y_0}\) is a field, so \(\varphi_s(y_0)=\varphi_e\varphi_{e+1}\ne0\), and by injectivity again \(s(y_0)\ne0\). Choose a coordinate with \(s_c(y_0)\ne0\). Near \(y_0\) on \(\ell\), \(t=\lambda_\ell s\) gives \(\lambda_\ell=t_c/s_c\), which is regular at \(y_0\). The collision points of \(\ell_3\) are its intersections with \(y_i=0\) and \(y_i=y_j\):</p>
+<ul>
+<li>\(y_1=0\) and \(y_2=y_3\) give \((0{:}1{:}1)\);</li>
+<li>\(y_2=0\) and \(y_1=y_3\) give \((1{:}0{:}1)\);</li>
+<li>\(y_3=0\) gives \((1{:}{-1}{:}0)\);</li>
+<li>\(y_1=y_2\) gives \((1{:}1{:}2)\).</li>
+</ul>
+<p>The equivalence is then the criterion's reformulation on the three lines. \((\mathrm W_e)\) over \(F\) is equivalent to \((\mathrm W_e)\) over its algebraic closure, since membership in an \(F(y)\)-span and the existence of a solution of given excess are linear conditions defined over \(F\). A rational function on \(\ell\cong\mathbb P^1\), homogeneous of degree 4, with no poles is a binary quartic.</p>
+<p>Part 2. On \(\ell\cap U\) outside \(Z_2\), \(F_2(y)=0\) means \(2c=0\) (coprimality lemma, part 1). So \(8p_0-2H_\infty\sim-2c\sim0\), and \(L(8p_0-2H_\infty)\) is spanned by a nonzero \(\psi\) with \(\operatorname{div}\psi=2H_\infty-8p_0\). Since \(q_{n+2}-q_n\sim-2c\sim0\), we have \(q_{n+2}=q_n\), and</p>
+\[\operatorname{div}(\varphi_{n+2}/\varphi_n)=2H_\infty+q_{n+2}-q_n-8p_0=\operatorname{div}\psi.\]
+<p>Outside \(Z_n\cup Z_{n+2}\) both \(\varphi_n\) and \(\varphi_{n+2}\) are nonzero, so \(\varphi_{n+2}=\mu_n\psi\varphi_n\) with \(\mu_n\in F^\times\). Then</p>
+\[\lambda_\ell=\frac{\varphi_{e-1}\varphi_{e+2}}{\varphi_e\varphi_{e+1}}=\frac{\varphi_{e-1}\,\mu_e\psi\varphi_e}{\varphi_e\,\mu_{e-1}\psi\varphi_{e-1}}=\frac{\mu_e}{\mu_{e-1}}.\]
+<p>Rescaling \(\psi\) rescales every \(\mu_n\) by the same factor, which leaves their ratios unchanged. \(\square\)</p>
+<p><strong>Consequences.</strong> The transfer constants telescope. The products \(\lambda^{(e)}\lambda^{(e-1)}\cdots\) over consecutive \(e\) are ratios \(\mu_e/\mu_{e'}\). So regularity for all \(e\) is a statement about the ratios \(\mu_n/\mu_{n'}\) along each line, which are well defined. \((\mathrm W_2)\) is proved in characteristic 0 and outside a finite set of characteristics (the \((5,2)\) theorem), so there \(\mu_2/\mu_1\) is a quartic on each line. By the <a href="#cube-odd-generator-criterion">(7,2) check</a>, \(\mu_3/\mu_2\) is one over the algebraic closure of \(\mathbb F_{1000003}\). If every \(\mu_{e}/\mu_{e-1}\) is a quartic, then \(\mu_e/\mu_1\) is a form of degree \(4(e-1)\) on each line. A pole of some \(\mu_e/\mu_{e-1}\) can occur only at the four collision points or at \(Z_e\cup Z_{e+1}\).</p>
+<p><strong>General statement.</strong> <code>lem:cube-odd-generator-poles</code>, for every \(e\ge2\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the criterion, residue duality (injectivity), the witness-differential lemma (parts 2 and 3, pointwise on \(U\)), the coprimality lemma (the sets \(Z_n\) and \(2c=0\) on \(F_2=0\)) and the divisors of \(\varphi_n\) from the general peeling lemma. Claim searches (transfer constant, 2-torsion, collision points) found only the criterion. A fresh-context referee checked the constant-multiple identification, the regularity argument, the four collision points, the equivalence and the divisor computation, and found no error. Its corrections are made: the exceptional sets of part 2 include \(Z_n\), \(Z_{n+2}\) and those of \(e-1,\ldots,e+2\), with \(\varphi_n\) normalized by \(P_n\); the pointwise product identity is cited; only ratios of the \(\mu_n\) are treated as well defined; the scopes of \((\mathrm W_2)\) and \((\mathrm W_3)\) are stated; the passage to the algebraic closure is added; and two overreaching sentences of the assessment are corrected.</p>
+<p><strong>Assessment.</strong> The one family that open statement 1 still needs is now a question about finitely many points on three lines. At generic points of the lines, regularity of \(\lambda_\ell\) is automatic. It has to be checked only at the two double points and two further collision points of each line, where the curve \(C_a\) degenerates, and at the finite sets where a boundary solution vanishes. The double points lie outside \(U\), where part 2 does not define \(\mu_n\) and the curve degenerates. The <a href="#cube-boundary-double-point-order">Tate-curve description</a> of the boundary functions there is a candidate for computing the limit, or the order, of \(\lambda_\ell\) at them. The other two collision points are where one coordinate vanishes, or two coincide, off the double points, and the curve degenerates differently. Whether \(Z_n\) meets the lines is not known.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r88">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 35.38 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 10.73 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 24.46 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 </section>
