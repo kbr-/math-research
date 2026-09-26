@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> The generic-initial-ideal lead closes: Gröbner degeneration does not bound row freeness, because the degenerating torus rescales the row sums (<a href="#entry-2026-09-26-degeneration-row-freeness">degeneration and row freeness</a>). Next: develop the one unrefuted passed item, Dobrushin's condition. Test whether a characteristic-0 design of weak PHP, perturbed by a connected randomized-prefix family, can be made 3-integral at W_RS's degrees, starting from the recorded integral PHP designs.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The Dobrushin bridge is conditioning, which pays degree per block, not per unit of error probability (<a href="#entry-2026-09-26-dobrushin-conditioning">Dobrushin conditioning</a>). Next: a thread-level route review. Restate A1 around a design construction whose cost scales with the blocks' error probability, choose leads and bridges for that property, and reconsider the S1 window route.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32587,6 +32587,36 @@ Subtracting lowers \(d\), a contradiction. So \(d=\deg f\) and the top of \(f\) 
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-dobrushin-conditioning" data-kind="research" data-route="odd-prime-clause-transfer" data-bridge="entry-2026-09-26-fall-tolerance-review:2" data-claims="none" data-claim-note="Development of the fall-tolerance review's Dobrushin bridge; it identifies the bridge with the recorded conditioning line and its barrier, with no new claim. The general statements concerned are conj:replay-weight-barrier and lem:randomized-block-annihilator.">
+<h3>The Dobrushin bridge is conditioning, and conditioning pays degree, not influence: every nonvacuous block costs at least one annihilating factor, so about \(D/2\approx22t\) blocks fit in W_RS's degree against \(n^K\); in characteristic 3 the averaging that could avoid the product cancels by lem:randomized-block-annihilator</h3>
+<p class="entry-meta">26 September 2026 · Development of a bridge, no new claim · open statement A1 · cycle odd-prime-dobrushin-integrality. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-fall-tolerance-review">fall-tolerance review</a>'s second bridge, Dobrushin's uniqueness condition, passed its numerical test: the total influence \(M3^{-t}\le1/(3n)\) is below 1. It is the one passed item not refuted in the last two cycles. What does it give for a design of weak PHP that survives a connected randomized-prefix family?</p>
+<p><strong>General statement.</strong> conj:replay-weight-barrier and lem:randomized-block-annihilator through A1; no new claim.</p>
+<h4>What the bridge would do</h4>
+<p>Dobrushin's theorem concerns a measure: under small total influence, conditioning a base measure on local events changes local marginals by a controlled amount, and the conditioned measure is unique. For W_RS the base object is a design \(\mu\) of weak PHP. It cannot be a measure on points, since PHP has none: it is a signed functional on polynomials of degree at most \(D\). The local events are "block \(b\) does not err". Conditioning a functional on an event means multiplying by a polynomial that vanishes on it: \(\mu'(f)=\mu(f\,\omega)/\mu(\omega)\), with \(\omega\) annihilating every clause of every block. The linear functional \(\mu'\) is defined only on degree \(\le D-\deg\omega\). This is exactly the recorded weighted replay (the <a href="#entry-2026-09-26-conditioning-review">conditioning review</a>).</p>
+<h4>Where it stops</h4>
+<ul>
+<li><strong>Degree, not influence.</strong> A weight annihilating block \(b\)'s clauses must vanish where block \(b\) errs. Per block the cheapest recorded choice is a degree-2 annihilator \(\sigma_a=\sum_ja_js_j\), and products cost at most 2 per block (lem:randomized-block-annihilator, part 2). A nonvacuous block needs a nonconstant factor, and the vacuity threshold makes every core block nonvacuous. So a product over \(M\) blocks has degree about \(2M\), and at W_RS's degree \(D\approx44t\) at most about \(22t\) blocks can be conditioned. The influence bound does not enter: the design's degree budget is spent per block whatever the block's error probability. This is the recorded barrier's form (conj:replay-weight-barrier), where product weights handle at most about \(n/10\) blocks even with the budget of Razborov's degree.</li>
+<li><strong>Averaging instead of products.</strong> Dobrushin's theorem avoids products by solving for the conditioned measure as a fixed point, which amounts to averaging over configurations. In characteristic 3 the natural averages vanish. \(\sum_{a\in\mathbb F_3^t}\sigma_a^e=0\) for \(e\le2t-1\) (lem:randomized-block-annihilator, part 3), and the counting-design entry found the same for orbit averages whose normalization has size divisible by 3. A characteristic-0 fixed point would need 3-integrality to reduce mod 3, which is the parked step. thm:integral-design-extension supplies integral designs of PHP through Razborov's range. It gives no integral correction for dense constraints, because its filling works on the chessboard complex, while a dense clause's condition mixes all matchings rather than restricting their support.</li>
+</ul>
+<p>The bridge is closed: it becomes weighted replay, whose recorded barrier and the per-block degree cost apply. Small influence would matter for an argument that pays per unit of error probability rather than per block, and no recorded design construction pays that way. That is the property a fall-tolerant construction for A1's core would need.</p>
+<p><strong>Next.</strong> The fall-tolerance review's items are now all developed. Tree saturation and degeneration are refuted, the Čech and gauge items rested on the refuted tree reading, and Dobrushin is closed here. The line's local, structural and conditioning certificates have each closed with a reason. That is a weak assessment of the current approach to A1's core, so the next cycle is a thread-level route review. It should restate A1 around the property just named: a design construction whose cost scales with the error probability of the blocks, not their number. It should choose outside leads and bridges for that property (the probabilistic method with alterations, sparsification, discrepancy), and it should also reconsider the S1 window route as an alternative to W_RS.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read conj:replay-weight-barrier, lem:randomized-block-annihilator (parts 2 and 3), thm:integral-design-extension, the conditioning review and prop:vacuity-threshold. The entry's claims are identifications with recorded results and a degree count; no computation was needed and no claim is registered.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-dobrushin-integrality">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 14.79 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">51.24 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">29.26 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 54.15 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
