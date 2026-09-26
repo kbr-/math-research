@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The integrality line is parked: 3-integral designs reduce mod 3 to \(\mathbb F_3\) designs of PHP plus each block's \(L^2-1\), so they help A1 only through a characteristic-0 many-block mechanism, which the record lacks (<a href="#entry-2026-09-26-koszul-lift">auxiliary bits</a>). Next: take one dense block with \(h_b&gt;k\) and its W clauses on the residual expander of the recorded restriction. Decide whether Mikša and Nordström's operator (imp:MN-functional-graph-degree) reduces those clauses to zero at the budget degree when the forms have high rank modulo the closure's span, and name the property this needs, or exhibit a clause it does not reduce.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The Mikša–Nordström framework, the thread's only recorded PC tool for the collective core, cannot hold a dense block without a restriction that makes it local (<a href="#entry-2026-09-26-mn-operator">Mikša–Nordström framework</a>). The known PC degree methods are local or symmetric, and the collective core is neither. Next: a route review. Revisit the goal's decomposition (W, A1 to A3, S1), ask whether a statement other than W, reachable by local methods after restriction, suffices, and aim the review's leads and bridges at degree bounds that are neither local nor symmetric.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -29982,6 +29982,50 @@ Two facts follow. Modulo 3 the right side vanishes, so each \(\varphi_B\) reduce
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 32.22 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 14.65 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-mn-operator" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:dense-blocks-outside-mn-framework" data-lead="entry-2026-09-26-expander-core-review:1">
+<h3>A constraint that no single variable set forces has no respectful neighbour in the Mikša–Nordström framework; one such cluster meeting every variable set empties every boundary it joins and makes Theorem 3.8 vacuous, so dense W blocks fit the framework only through variable sets large enough to force them, which is conditional on their forms</h3>
+<p class="entry-meta">26 September 2026 · Working proof of a framework obstruction; its application to W is conditional · open statement A1 · cycle odd-prime-mn-operator.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The Mikša–Nordström closure, imported as imp:MN-functional-graph-degree, is the base of the thread's proved randomized-prefix results and its only recorded PC tool for the collective core (<a href="#entry-2026-09-26-koszul-lift">auxiliary bits</a>, next step). Can its reduction operator absorb a dense block's W clauses directly, without the level-set restriction of thm:few-equations-hardness, and what would that need of the block?</p>
+<p><strong>General statement.</strong> prop:dense-blocks-outside-mn-framework. Read the framework in Mikša and Nordström's generalized Alekhnovich–Razborov method (arXiv:1505.01358, Definitions 3.1 to 3.7, Theorem 3.8). A CNF formula is split as \(F=\bigwedge\mathcal U\wedge E\), with clusters \(F\in\mathcal U\) on the left, variable sets \(V\in\mathcal V\) on the right, and \(E\) used only to define respectful assignments. Call a cluster \(B\) <em>unforced</em> if no assignment to the variables of a single \(V\in\mathcal V\) satisfies \(B\).</p>
+<ol>
+<li>An unforced cluster is a disrespectful neighbour of every \(V\) it meets. A family consisting only of unforced clusters has empty respectful boundary. For any family \(\mathcal U'\) containing an unforced \(B\), \(|\partial_E(\mathcal U')|\) is at most the number of variable sets disjoint from \(\mathrm{Vars}(B)\).</li>
+<li>If moreover \(B\) meets every variable set, then \(\partial_E(\mathcal U')=\emptyset\) for every \(\mathcal U'\ni B\). If there are at least \(s\) clusters, the expansion condition of Definition 3.6 then forces \(\xi\ge\delta s\), and Theorem 3.8's bound \((\delta s-2\xi)/(2d)\) is negative. One such cluster makes the theorem vacuous.</li>
+</ol>
+<p>Application to W, conditional. W's clause \(g_i\prod_{j\in S}L_j^2\) on one block fails exactly when \(L_i=0\) and every \(L_j\ne0\), \(j\in S\). It is unforced by \(V\) exactly when every assignment to \(V\) has a Boolean extension, allowed by the board, with \(L_i=0\) and all \(L_j\ne0\). A single form with two free cells of nonzero coefficient takes every value, but the joint system can fail. For example, if \(L_i-cL_j\) has at most one free cell outside \(V\), fixing \(V\) can force \(L_i=0\Rightarrow L_j=0\), and then the clause is forced. So whether a dense block's clauses are unforced for the thread's variable sets (rows, or pigeon and hole neighbourhoods of an expander) is a hypothesis about the block's forms, joint feasibility after fixing one small set, and it is not proved here. Covering must also be counted: supports that cover nearly all cells can miss variable sets lying inside the uncovered cells. The obstruction is relative to \(\mathcal V\): variable sets containing a block's support force it, at a cost in overlap and expansion.</p>
+
+<h4>Proof</h4>
+<ul>
+<li><em>Respectful satisfaction needs forcing.</em> By Definition 3.3, \(B\) is \(E\)-respectfully satisfiable by \(V\) only if some assignment \(\rho\) with \(\mathrm{Dom}(\rho)=V\) satisfies \(B\), that is, every clause of \(B\). For an unforced \(B\) no such \(\rho\) exists, so \(B\) and \(V\) are disrespectful neighbours whenever they are neighbours (Definition 3.4).</li>
+<li><em>Part 1.</em> By Definition 3.5, \(V\in\partial_E(\mathcal U')\) only if \(V\) is a respectful neighbour of some \(F\in\mathcal U'\) and a neighbour of no other member. If \(V\) meets \(\mathrm{Vars}(B)\) with \(B\in\mathcal U'\), then \(V\) is a neighbour of \(B\): it is not a respectful neighbour of \(B\), and it cannot be the unique neighbour of another member, so \(V\notin\partial_E(\mathcal U')\). Every \(V\) in the boundary is therefore disjoint from \(\mathrm{Vars}(B)\). If every member is unforced, a boundary set would have to be a respectful neighbour of some member, which none has, so the boundary is empty.</li>
+<li><em>Part 2.</em> If \(B\) meets every \(V\), no \(V\) is disjoint from \(\mathrm{Vars}(B)\), so the boundary of every \(\mathcal U'\ni B\) is empty. Taking \(|\mathcal U'|=s\), Definition 3.6 requires \(0\ge\delta s-\xi\). \(\square\)</li>
+</ul>
+<p>Encoding. The framework is for CNF formulas, and W is a polynomial system. The natural CNF encoding of a block has one clause per falsifying assignment of its support, exponentially many clauses of width about \(n^2\), far above any degree in play, so the translation is not degree-faithful. The proposition concerns clusters as constraints, whatever their encoding. Encodings with auxiliary variables, with the defining clauses in \(E\) and narrow summary clauses as clusters, are not covered by it.</p>
+
+<h4>What it means</h4>
+<ul>
+<li>The framework is local by design: a cluster contributes to expansion only through variable sets that can satisfy it respectfully. A dense block whose clauses are unforced by the chosen small sets contributes nothing and, if it meets them all, removes every boundary. Whether W's dense blocks are unforced for the thread's variable sets is the conditional part above. The record's uses of the framework apply it after a restriction; whether the level-set restriction of thm:few-equations-hardness makes the restricted equations forced by single variable sets was not checked against that proof here.</li>
+<li>Among the degree methods checked in this and earlier cycles, local pseudo-reductions (Alekhnovich–Razborov, Mikša–Nordström) need expansion and locality, and symmetry arguments (Razborov's PHP bound; Impagliazzo, Pudlák and Sgall for one symmetric equation) need a symmetric system. Other kinds exist and were not examined for dense blocks: binomial and Fourier changes of basis (Grigoriev; Buss, Grigoriev, Impagliazzo and Pitassi), degree-preserving reductions from known hard instances, Hilbert-function and regularity arguments, and the dual designs the thread itself uses. That the collective core is neither local nor symmetric is an assessment, not a result.</li>
+<li>The continuing Mikša–Nordström lead is closed for dense blocks without restriction, conditionally on the unforced hypothesis. With restriction it remains the thread's base.</li>
+</ul>
+<p><strong>Next.</strong> A route review. The thread's A1 needs a PC lower-bound method that is neither local nor symmetric, and the literature passes found none. The review should revisit the goal's decomposition, the Open statements W, A1 to A3 and S1, and ask whether a statement other than W, for example a weaker conjunct reachable by local methods after restriction, suffices. It should also run Outside leads and Absurd bridges aimed at non-local, non-symmetric degree bounds.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Read Definitions 3.1 to 3.7 and Theorem 3.8 of the source in a private extract. A fresh-context reviewer, checking against those definitions, confirmed the core deduction and sharpened it: one unforced cluster meeting every variable set already makes Theorem 3.8 vacuous. It required: the covering hypothesis moved to where it is used; the unforced hypothesis for W's clauses stated as joint feasibility and made conditional, since the first draft's justification was wrong; covering counted rather than assumed; the obstruction stated relative to the choice of variable sets; the encoding's degree-unfaithfulness noted and the auxiliary-variable caveat marked as not covered; the claim about the level-set restriction softened; and the survey of methods restricted to those checked, naming the kinds not examined. All were adopted. The sharpening is the reviewer's own deduction, and the other changes weaken claims, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-mn-operator">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 39.06 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">57.78 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 37.27 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">37.05 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">26.83 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
