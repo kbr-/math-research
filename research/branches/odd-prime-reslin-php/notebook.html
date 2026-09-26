@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> After the selector hybrid, A1 is W_RS for blocks of high rank modulo every admissible pinned span, and the missing object is a design of the base that annihilates their error clauses (<a href="#entry-2026-09-26-hybrid-route-review">hybrid route review</a>). One block's immunity lies between about \(2t\) and \(4t+2\). Next: develop the Alekhnovich–Razborov lead. State their pseudo-reduction for the weak base plus W_RS clauses in the form-value encoding, with pins as the closure's fixed part. Identify the expansion condition it needs, and test it on random dense, row-local and pinnable two-block families.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The Alekhnovich–Razborov lead closes for dense families. Their criterion lets two constraints share fewer than \(\ell/4\le t+\tfrac12\) variables, while random dense forms stay dense in every linear basis (<a href="#entry-2026-09-26-ar-support-immunity">support against immunity</a>). Next: develop the route review's third lead, designs for one counting principle in the presence of another's dense axioms (Buss, Impagliazzo, Krajíček, Pudlák, Razborov and Sgall). Read their construction in the source, and state what compatible partial structures would be for error-avoiding partial matchings.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32114,6 +32114,58 @@ The first bracket lies in \(\mathcal C_\beta\). The second term is \(x_{1,n-1}\)
 <tr><td>Marked overhead and interruptions</td><td class="elapsed">12 min 11.00 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3.70 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.21 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-ar-support-immunity" data-kind="research" data-route="odd-prime-clause-transfer" data-lead="entry-2026-09-26-hybrid-route-review:2" data-claims="lem:dense-forms-every-basis cor:ar-criterion-dense-families">
+<h3>The Alekhnovich–Razborov lead closes on support against immunity: their criterion lets two constraints share fewer than \(\ell/4\le t+\tfrac12\) variables, while random dense forms stay dense in every linear basis, so a dense randomized-prefix block shares about \(n/3\) coordinates with some pigeon axiom however the board is coordinatized</h3>
+<p class="entry-meta">26 September 2026 · Working proof of a lemma and a corollary · open statement A1 · cycle odd-prime-ar-pseudo-reduction. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-hybrid-route-review">hybrid route review</a> named the missing object: a design of the base that annihilates the error clauses of many high-rank blocks. Its second lead, Alekhnovich and Razborov's pseudo-reduction, passed a local test: one block's immunity is of order \(t\). Does their criterion give the design for dense families in some encoding?</p>
+<p><strong>General statement.</strong> lem:dense-forms-every-basis: over \(\mathbb F_3\), for \(m\) independent uniform linear forms on \(\mathbb F_3^N\) with \(\ln m+\ln(N+1)\le N/100\), with probability at least \(1-e^{-0.006N^2}\), in every basis of \(\mathbb F_3^N\) fewer than \(5N\) of the forms have support below \(N/3\). cor:ar-criterion-dense-families applies it to Alekhnovich and Razborov's criterion.</p>
+<h4>The criterion, read in the source</h4>
+<p>Alekhnovich and Razborov, "Lower bounds for polynomial calculus: non-binomial case" (Proc. Steklov Inst. Math. 242, 2003; author manuscript of 13 March 2003, read here: Definitions 2.2 and 2.3, Section 2.3 and the statement of Section 3):</p>
+<ul>
+<li>The constraints \(f_1,\dots,f_m\) sit on the rows of a 0/1 matrix \(A\) over the variables, with \(\mathrm{Vars}(f_i)\subseteq X_i(A)\).</li>
+<li>\(A\) is an \((r,s,c)\)-expander if every row has at most \(s\) ones, and every set \(I\) of at most \(r\) rows has boundary \(|\partial_A(I)|\ge c|I|\). The boundary is the set of columns meeting exactly one row of \(I\).</li>
+<li>\(f\) is \(\ell\)-immune if every nonzero \(g\) with \(f\models g\) has degree at least \(\ell\).</li>
+<li>Theorem 3.8: if \(A\) is an \((r,s,c)\)-expander, every \(f_i\) is \(\ell\)-immune and \(s\le r(\ell/4-(s-c))\), every PC refutation has degree greater than \(r(\ell/4-(s-c))\). Since \(s&gt;0\), the hypothesis implies \(\ell&gt;4(s-c)\), the consequence used below.</li>
+<li>Theorem 3.13 gives degree greater than \(rc/2\) when \(f_i=\alpha\cdot\chi_\epsilon(X_i(A))\), of maximal immunity \(\ell=s\).</li>
+</ul>
+<p>The framework is Boolean: its variables are 0/1 coordinates. Over \(\mathbb F_3\), a linear bijection that preserves \(\{0,1\}^N\) is a permutation matrix, so on the board they are the cells up to permutation (and complementation, an affine change).</p>
+<h4>Two constraints may share fewer than \(\ell/4\) variables</h4>
+<p>A useful application to W_RS needs \(r\ge2\). With \(r=1\) the bound is below \(\ell/4\), and the expansion condition constrains pairs only when \(r\ge2\); a block's immunity is at most its clause degree \(4t+2\) (below), itself at most W_RS's degree. For \(I=\{i,j\}\), \(\partial(I)=X_i\triangle X_j\), so
+\[2s-2|X_i\cap X_j|\ \ge\ |X_i\triangle X_j|\ \ge\ 2c\ &gt;\ 2s-\ell/2,\]
+that is \(|X_i\cap X_j|&lt;\ell/4\) for every pair of constraints. Theorem 3.13 needs \(\ell=s\), a condition at least as strong on dense blocks.</p>
+<p>For a W_RS block, the clause \(g_{b,i}Q^{C_b}\) vanishes on the block's allowed set and has degree \(4t_b+2\). So the block's constraint has \(\ell\le4t_b+2\), by the trivial consequence \(f\models g_{b,i}Q^{C_b}\), whenever the clause is not zero on the cube, that is, whenever the block can err where \(L_{b,i}=0\). The immunity test of the route review (prefix_immunity.json) found \(\ell\) between 3 and 9 for \(t\le2\), already below \(4t+2\) in form-value space. Hence every pair of constraints may share at most \(t\) variables.</p>
+<h4>The lemma: dense forms stay dense in every basis</h4>
+<p><strong>Lemma (dense in every basis).</strong> Let \(v_1,\dots,v_m\) be independent uniform vectors in \(\mathbb F_3^N\), with \(\ln m+\ln(N+1)\le N/100\). With probability at least \(1-e^{-0.006N^2}\), for every invertible \(N\times N\) matrix \(B\), fewer than \(5N\) of the vectors \(Bv_i\) have fewer than \(N/3\) nonzero coordinates.</p>
+<p><em>Proof.</em> For a fixed \(B\), \(Bv_i\) is uniform. The number of vectors of weight \(w\) is \(\binom Nw2^w\), which increases in \(w\) up to \(2N/3\). So
+\[p=\Pr[\mathrm{wt}(Bv_i)&lt;N/3]\le(N/3+1)\binom{N}{\lceil N/3\rceil}2^{N/3}3^{-N}\le(N+1)e^{-0.231N},\]
+using \(H(1/3)+\tfrac13\ln2=0.8675\ldots\) and \(\ln3=1.0986\ldots\). The events for different \(i\) are independent. A union bound over at most \(3^{N^2}\) matrices and \(\binom m{k}\) index sets, with \(k=5N\), gives failure probability at most
+\[\exp\bigl(N^2\ln3+k\ln m+k\ln(N+1)-0.231\,kN\bigr)\le\exp\bigl(1.0987N^2-1.155N^2+5N^2/100\bigr)\le\exp(-0.006N^2).\]
+\(\square\)</p>
+<p>A block is <em>dense in every basis</em> if one of its forms has support at least \(N/3\) in every basis. On the board, \(N=n(n+1)\) for the linear parts. By the lemma, with high probability all but fewer than \(5N\) blocks of a random family, each with at least one form, are dense in every basis.</p>
+<h4>The corollary</h4>
+<p><strong>Corollary (Alekhnovich–Razborov criterion on dense families).</strong> Take any system whose variables are the coordinates of a basis of the board's linear space, whose constraints include weak PHP's pigeon axioms (the support of pigeon \(i\)'s axiom is the union of the supports of its cells), and whose other constraints include a block with a form of support at least \(N/3\) and \(\ell\le4t+2\). Then the hypothesis of Theorem 3.8 with \(r\ge2\) fails as soon as \(n/3\ge t+\tfrac12\), and so does that of Theorem 3.13. In particular this holds in the cell basis (up to permuting cells, the only linear coordinates that keep the cube Boolean), and in every basis for all but fewer than \(5N\) blocks of a random family.</p>
+<p><em>Proof.</em> The cells span the space, so every coordinate lies in the support of some cell, and the pigeon axioms' supports cover all \(N\) coordinates. The block's support \(S\), with \(|S|\ge N/3\), therefore meets some pigeon axiom in at least \(|S|/(n+1)\ge n/3\) coordinates. This contradicts \(|X_i\cap X_j|&lt;\ell/4\le t+\tfrac12\). Theorem 3.13 needs \(\ell=s\ge|S|\ge N/3&gt;4t+2\). \(\square\)</p>
+<h4>What it means for A1</h4>
+<p>The recorded audits reached the same point for W's clause shape and a fixed representation: audit:AR-immunity-ENS-scope, and prop:dense-blocks-outside-mn-framework for Mikša and Nordström's generalized framework, whose obstruction is "relative to the choice of variable sets". The lemma removes that caveat for random families: no linear change of coordinates makes more than \(5N\) of their forms sparse. What is left for Alekhnovich–Razborov type arguments is the families they already cover: blocks meeting every pigeon row in at most \(t\) cells, inside the row-sparse class A1 already settles. Changes of variables that are not linear, such as Boolean extension variables, are not covered; they change the system.</p>
+<p>The lead is closed for A1's core as far as Theorems 3.8 and 3.13 go, the source's two main lower-bound results. The obstacle, a design for dense high-rank families, stands. The mismatch is quantitative: a randomized-prefix block's immunity is logarithmic, while any locality-based design needs its constraints to overlap in fewer variables than the immunity.</p>
+<p><strong>Next.</strong> The route review's third lead, counting designs in the presence of another principle's axioms (Buss, Impagliazzo, Krajíček, Pudlák, Razborov and Sgall), is not yet run. It is the one lead whose extra axioms are dense by design. Read their construction in the source and state what "compatible partial structures" would be for error-avoiding partial matchings.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Read in the source, from a private copy that is not committed: Alekhnovich and Razborov's Definitions 2.2 to 2.4, Lemmas 2.5 and 2.7, Section 2.3, and the statements of Theorems 3.1, 3.8 and 3.13. Re-read audit:AR-immunity-ENS-scope, prop:dense-blocks-outside-mn-framework and the route review's immunity data. A fresh-context reviewer read the source's Theorems 3.8 and 3.13 and confirmed the reading, the necessity of \(r\ge2\) for the pair condition, the immunity bound, the lemma's constants (recomputed: \(-0.231\) per unit and \(-0.0063N^2\) overall), the covering argument, and that no hypothesis is unused. It required, all adopted: Theorem 3.8's full hypothesis \(s\le r(\ell/4-(s-c))\); the immunity bound marked as the trivial one from the clause itself; the Boolean-coordinates statement qualified to hold up to permuting cells; and the closure of the lead limited to Theorems 3.8 and 3.13.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-ar-pseudo-reduction">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 25.32 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 20.85 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 37.83 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">8 min 5.12 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">21.39 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
