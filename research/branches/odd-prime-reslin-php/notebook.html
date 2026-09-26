@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A3 and A1.</strong> The <a href="#entry-2026-09-27-closure-route-review">closure-route review</a> reduced the route to row freeness of W_RS allowed sets beyond joint capacity, for forms dense modulo the row sums (conj:dense-relative-row-freeness). Next: develop its Mayer–Vietoris lead. For two members beyond joint capacity, compute \(n_1\), \(n_2\), \(n_1\cap n_2\) and \(n_{Q_1\cap Q_2}\) degree by degree and test the purity conditions of lem:defect-gluing. Rerun the pending 4 × 7 test one job at a time once memory allows.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A3 and A1.</strong> Mayer–Vietoris is the record's condition (i), and first-degree purity for dense families is directness of the members' first tops with the row-sum ideal (<a href="#entry-2026-09-27-mayer-vietoris-purity">Mayer–Vietoris purity</a>). Next: relative generic directness, first in degree 2. Are products of generic dense linear forms direct with \(r_i\tilde A_1\) in \(\tilde A_2\), up to the count? Use small exact computations only.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33433,6 +33433,42 @@ Subtracting lowers \(d\), a contradiction. So \(d=\deg f\) and the top of \(f\) 
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 47.73 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 40.98 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">6.75 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-mayer-vietoris-purity" data-kind="research" data-route="odd-prime-clause-transfer" data-lead="entry-2026-09-27-closure-route-review:2" data-claims="none" data-claim-note="Development of the closure-route review's Mayer-Vietoris lead: identifies it with lem:defect-gluing's condition (i), its column-disjoint case with lem:spare-column-transfer and lem:free-seed-tensor (rediscoveries), and first-degree purity with directness modulo the row-sum ideal; no new claim. General statement: conj:dense-relative-row-freeness.">
+<h3>The Mayer–Vietoris lead is the record's condition (i), and its column-disjoint case is spare-column transfer. For dense families, first-degree purity is directness of the members' first tops together with the row-sum ideal in the collision algebra. The generic directness theorem does not cover it, because the row-sum ideal is not invariant under its group</h3>
+<p class="entry-meta">27 September 2026 · Development of a lead, no new claim · open statements A3 and A1 · cycle odd-prime-mayer-vietoris-purity. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statements A3 and A1. The <a href="#entry-2026-09-27-closure-route-review">closure-route review</a> proposed the Mayer–Vietoris sequence of member ideals as the local-to-global mechanism for conj:dense-relative-row-freeness. What does it give, and what does the record already have?</p>
+<p><strong>General statement.</strong> conj:dense-relative-row-freeness; this cycle develops its local-to-global step and registers no new claim.</p>
+<h4>Mayer–Vietoris is condition (i)</h4>
+<p>Let \(n_1,n_2\) be top ideals with \(G/n_1\) and \(G/n_2\) row-free through \(D\). The sequence \(0\to G/(n_1\cap n_2)\to G/n_1\oplus G/n_2\to G/(n_1+n_2)\to0\) gives</p>
+<p>\[\operatorname{Tor}_1(G/(n_1+n_2))\cong\frac{(n_1+\mathfrak mG)\cap(n_2+\mathfrak mG)}{(n_1\cap n_2)+\mathfrak mG}\]</p>
+<p>through \(D\). That is lem:defect-gluing's condition (i), already in the record. Iterated over members, row freeness of \(G/\sum_bn_b\) holds iff at every step the intersection commutes with reduction modulo the row sums. In the images \(\nu_b\) of the \(n_b\) in \(A=G/\mathfrak mG\), this says the image of \(n_{\le k}\cap n_{k+1}\) is \(\nu_{\le k}\cap\nu_{k+1}\). This local-to-global condition involves the members only pairwise at each step, but it is not a consequence of the members' own row freeness. The lead reproduces the record; it does not add a mechanism.</p>
+<h4>The column-disjoint case is recorded</h4>
+<p>The column-injective board is a product over columns, and the row sums act on tensor products primitively. So \(\mathbb F_3[r]/(r^3)\) acts as a Hopf algebra, and a free tensor factor makes the whole product free. The record has exactly this: lem:free-seed-tensor, and lem:spare-column-transfer. Constraints whose linear parts avoid at least \(2t-1\) columns have their top syzygies transferred from their own columns, because the spare columns form a free factor. So families that leave enough columns untouched satisfy the local-to-global step outright; this is a rediscovery, labelled as such. A W_RS family with forms dense modulo the row sums touches every column, so the principle does not apply to the conjecture's class.</p>
+<h4>First-degree purity for dense families</h4>
+<p>\(G\) is the collision algebra \(\tilde A\) (the weak algebra without row sums) modulo the occupancy relation, and \(A=G/\mathfrak mG\) is \(\tilde A\) modulo all row sums. By lem:first-degree-purity, a family is row-free in its first new degree \(e\) iff its new tops, lifted to \(\tilde A_e\), meet \(\sum_ir_i\tilde A_{e-1}\) trivially. That is, the members' first tops together with the row-sum ideal must be direct in \(\tilde A_e\). Two recorded results bear on this:</p>
+<ul>
+<li><strong>Density is the right hypothesis.</strong> lem:column-tensor-exactness: a linear form with nonzero column parts in \(c\) columns acts on \(\tilde A\) with \(\operatorname{Ann}(\ell)=\ell^2\tilde A\) and \(\operatorname{Ann}(\ell^2)=\ell\tilde A\) below degree \(\lfloor c/2\rfloor\). A form dense modulo the row sums has many nonzero columns in every representative, so its squares survive modulo the row sums in low degree. A truncated row sum is congruent to a single cell, \(c=1\), and its square dies (lem:truncated-row-sums). So the conjecture's density hypothesis is the record's exactness hypothesis, taken modulo the row sums.</li>
+<li><strong>Generic directness stops short.</strong> thm:generic-top-directness gives directness of Zariski-generic tops from a family stable under \(\prod_c GL(V_c)\rtimes S_N\), up to near the fill point. Here the tops must also be direct with the fixed row-sum ideal. That ideal is stable under column permutations and simultaneous row permutations, but not under the per-column \(GL(V_c)\) that the theorem's irreducibility argument uses. So the theorem does not give first-degree purity even for generic forms. What is needed is a relative version, directness modulo a fixed ideal stable under a smaller group.</li>
+</ul>
+<h4>What was not done</h4>
+<p>The computation the review proposed, intersections of two members' top ideals on 4 × 7, needs the dense 4 × 7 kernel, about 3.5 GB per job. After the harness stopped the last such run for system memory pressure, no further run of that size was started this cycle; the pending request covers it.</p>
+<p><strong>Next.</strong> State and attack relative generic directness: for Zariski-generic tops from a family stable under \(S_N\) times row permutations, directness together with the row-sum ideal of \(\tilde A\) up to the fill point minus a correction. Its first case is degree 2: products of generic dense linear forms against \(r_i\tilde A_1\). This needs only small exact computations in \(\tilde A_2\).</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:defect-gluing (condition (i)), lem:free-seed-tensor, lem:spare-column-transfer, lem:column-tensor-exactness, thm:generic-top-directness (its group and irreducibility hypothesis), lem:first-degree-purity and lem:truncated-row-sums. The Mayer–Vietoris identity is the recorded condition (i), and no new claim is made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-mayer-vietoris-purity">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 46.60 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 18.00 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4.27 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 24.19 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
