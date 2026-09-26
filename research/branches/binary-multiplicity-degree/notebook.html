@@ -34,13 +34,8 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). By the <a href="#cube-squarefree-reduction">reduction theorem</a>, the law \(\ell_0(d+1,8d-4)=10d^2-10d-5\) follows from a statement about the collision limit \(U^{(3)}_d\) on the genus-1 curve: its determinant has multiplicity exactly \(2E_4(d)\) at each \(y_j\), and a squarefree non-collision part (<a href="#entry-2026-09-26-cube-squarefree-reduction">conjecture</a>; true for \(d\le9\)). The multiplicity is proved for every \(d\) (<a href="#cube-limit-triple-multiplicity">corollary</a>, from the <a href="#cube-confluence-valuation">confluence lemma</a>). Remaining: squarefreeness of the non-collision part of \(\Delta_U\). It is one instance of a conjecture for all monotone degree vectors, tested on 207 vectors, which fails for some non-monotone ones (<a href="#entry-2026-09-26-cube-monotone-squarefree">entry</a>). Next: an induction on the number of branch points through the <a href="#cube-confluence-valuation">confluence lemma</a>, over a class of isotypic Riemann–Roch data closed under Möbius transports.</li>
-<li><strong>Dimension 4 as \(S_5\) representation theory</strong> (open statement 3). Every threshold ideal is stable under \(S_{n+1}\) permuting the branch points \(0,y_1,\ldots,y_n\) (<a href="#cube-branch-point-symmetry">symmetry theorem</a>).
-<ul>
-<li>Extend the symmetric kernel to isotypic components: solutions invariant under a Young subgroup, projected to an \(S_5\)-isotypic component.</li>
-<li>Determine which components occur in each degree of \(I^{(3)}_m\) and \(I^{(4)}_m\). First exclude \([3,2]\) in degree 2 at \(m=17,18,38\) (quadric conjecture).</li>
-<li>Look for the rule behind the thresholds among the \(S_5\)-invariants of the reflection representation, which have degrees 2, 3, 4, 5.</li>
-</ul></li>
+<li><strong>The middle range of dimension 4</strong> (open statement 3), now the highest-risk item (<a href="#entry-2026-09-26-cube-route-review-16">route review 16</a>). Start one step past the boundary, at \(m=N+1\) with \(h=d+1\). There the solution module has rank 2, and its elements come by Cramer's rule from maximal minors of \(N\times(N+1)\) submatrices. So \(\ell_0(d+1,N+1)\) is the initial degree of an ideal of minors divided by gcds, whose collision exponents the confluence machinery computes. The first test is \(\ell_0(3,13)=12\) at \(d=2\). The \(S_5\) symmetry (<a href="#cube-branch-point-symmetry">theorem</a>) organizes the generators, as with the quadric at \(m=17,18,38\).</li>
+<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). By the <a href="#cube-squarefree-reduction">reduction theorem</a> and the <a href="#cube-limit-triple-multiplicity">triple-multiplicity corollary</a>, \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs one statement: squarefreeness of the non-collision part of the limit determinant. It is an instance of the <a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness conjecture</a>, which passes 1261 monotone vectors. For \(n=4\) it is simplicity of the \(d\)-canonical Weierstrass points of a general Humbert curve. A proof needs an induction over a class of spaces closed under Möbius transports, or a Weierstrass-point theorem for this family.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions; the dimension-3 result may merit a note.</p>
@@ -7028,6 +7023,76 @@ For comparison, the monotone \((3,2,2,1)\) gives the simple factors \((a_1+3a_2)
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">1 min 41.53 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">16.68 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.17 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-route-review-16" data-kind="review" data-route="cube-odd-characteristic" data-claims="none" data-claim-note="Route review: falsification tests of conj:cube-monotone-squarefree at larger degree and of two outside ideas; the monotone evidence is recorded here with the review, and no new claim is sourced.">
+<h3>26 September 2026 — Route review of the cube: the boundary rests on simple pluricanonical Weierstrass points of Humbert curves; the middle range is next</h3>
+<p class="entry-meta">Route review: the monotone squarefreeness conjecture survives 1248 degree vectors at larger degree; for n = 4 it is a simple-Weierstrass-point statement for the d-canonical series of Humbert curves. Next: the middle range of dimension 4. Cycle bmd-r109. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>The line's general claim.</strong> The per-order function on \(\{0,1\}^n\) in characteristic \(\ne2\) is determined by the thresholds \(\ell_0(h,m)\), the initial degrees of the threshold ideals (<a href="#cube-threshold-ideal">threshold-ideal lemma</a>). Dimension 3 is solved over every field of characteristic \(\ne2\). For \(n\ge4\) the claim to establish is a law for the thresholds.</p>
+<p><strong>What the goal needs.</strong> Open statement 3 for \(n\ge4\): the thresholds at the boundary \(m=N_{2,n}(d)\), in the middle range, and at order zero. Also open statement 2, small primes. Since <a href="#entry-2026-09-26-cube-route-review-15">route review 15</a>, three cycles worked on the boundary:</p>
+<ul>
+<li>the <a href="#cube-squarefree-reduction">reduction theorem</a>, with the quadrangle lemma, reduces the boundary law for all \(d\) to a statement about the collision limit;</li>
+<li>the <a href="#cube-confluence-valuation">confluence lemma</a> proves half of that statement for every \(d\) (<a href="#cube-limit-triple-multiplicity">corollary</a>);</li>
+<li>the remaining half became one case of a conjecture for all monotone degree vectors (<a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness</a>), which fails without monotonicity.</li>
+</ul>
+<h4>Falsification attempt</h4>
+<p>The monotone conjecture was pushed to larger degrees, with <code>research/tools/bmd_cube_nu_monotone_specs.py</code> and the kernel <code>bmd_cube_nu_squarefree.cpp</code> on the lines of the previous entry, over \(\mathbb F_{1000003}\) (<code>research/results/bmd-r109-route-review/</code>).</p>
+<ul>
+<li><em>\(n=2\), every monotone vector with entries in \(\{-1,\ldots,8\}\)</em>, 1208 vectors with \(N\) up to 36 (<code>squarefree-mono-n2.txt</code>). All have full degree and a squarefree non-collision part.</li>
+<li><em>\(n=3\), 40 random monotone vectors</em> with entries up to 4 and \(N\) up to 32 (seed 109, <code>squarefree-mono-n3.txt</code>). All squarefree.</li>
+</ul>
+<p>With the previous entry, 1261 distinct monotone vectors have now been tested (1208 with \(n=2\), which include the earlier 194, and 53 with \(n=3\)), with no failure. The prediction could have failed at any of them, as it does for the non-monotone \((3,0,1,1)\).</p>
+<p><strong>The objects, named.</strong> For \(n=4\) the fibre curve \(C:w_i^2=1+4y_iT\) is a \((\mathbb Z/2)^4\)-cover of the line branched at five points: a classical Humbert curve, of genus 5. Its divisor \(H_\infty\) is canonical. Indeed \(V_1\subseteq L(H_\infty)\) has dimension \(N_{2,4}(1)=5=g\), and a divisor of degree \(8=2g-2\) with \(h^0=g\) is canonical by Riemann–Roch. For \(d\ge2\), \(V_d\subseteq L(dH_\infty)=H^0(\omega_C^{\otimes d})\), and both have dimension \(8d-4=(2d-1)(g-1)\). So \(V_d\) is the \(d\)-canonical series. By the <a href="#cube-extra-factors-double">doubled-factor proposition</a>, the boundary squarefreeness conjecture for \(n=4\) says the following: for a general member of the family, the \(d\)-canonical Weierstrass points away from the ramification points are all simple. For a general curve of genus \(g\), the analogous statement underlies Cukierman and Fong's computation of the divisor of \(n\)-canonical Weierstrass points. The Humbert curves are a special 2-dimensional family in \(\mathcal M_5\), so that does not apply directly.</p>
+<h4>Assessment of this line</h4>
+<p>At the boundary the line is strong in its results and stuck at one lemma.</p>
+<ul>
+<li><em>Proved in characteristic 0.</em> For \(2\le d\le9\), \(\ell_0(d+1,8d-4)=10d^2-10d-5\), and the collision structure is known for every \(d\).</li>
+<li><em>Reduced for every \(d\).</em> What remains is one precise conjecture, with 1261 passing monotone vectors and a family closed under confluence.</li>
+<li><em>Stuck.</em> A proof needs an induction over a class of spaces closed under Möbius transports, not yet defined. It is a genuine Weierstrass-point problem, simplicity of pluricanonical Weierstrass points on a special family, where the general-curve theory does not apply.</li>
+</ul>
+<p>The middle range, between the boundary and order zero, has had no cycle since the <a href="#entry-2026-09-26-cube-branch-point-symmetry">symmetry theorem</a>. It is the larger part of the per-order function, and its modules are not free. That is now the higher-risk item. The next cycles should move there, and keep the boundary conjecture as a target for a Weierstrass-point source.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Higher Weierstrass points on the universal curve</strong> (Cukierman and Fong, as cited in Amini–Gierczak–Richman, arXiv 2303.07729; the primary source is not read). They compute the divisor of weight-1 \(n\)-canonical Weierstrass points in the universal curve. The same computation on the Humbert family, a surface in \(\mathcal M_5\) with its \(S_5\) action, would count the Weierstrass locus. Comparing it with \(\deg\Delta^{\mathrm{nc}}\) would test simplicity. This targets the boundary conjecture. It breaks if the restriction to the family acquires excess components. <strong>Test.</strong> Passed (identification): \(H_\infty\) is canonical and \(V_d=H^0(\omega_C^{\otimes d})\), with \(8d-4=(2d-1)(g-1)\) for \(d\ge2\), as shown above.</li>
+<li><strong>Wronskians of polynomial spaces and the Shapiro conjecture</strong> (Mukhin–Tarasov–Varchenko, Annals 170, 2009). For \(n=2\) the curve is rational, \(V_\nu\) becomes a space of polynomials in a uniformizer, and \(\Delta_\nu\) is its Wronskian evaluated along the family. The theorem controls spaces whose Wronskian has only real roots. This targets the monotone conjecture for \(n=2\). It breaks if the roots are not real. <strong>Test.</strong> Not run: as a separate test. The real-root test in the first bridge below decides applicability, and it shows non-real roots for 8 of 45 small monotone vectors. So the theorem does not apply to all of them directly.</li>
+<li><strong>Tropical Weierstrass points and their weights</strong> (Amini–Gierczak–Richman, arXiv 2303.07729). Limits of Weierstrass points in a degeneration carry weights on the tropical curve. The iterated confluence of the confluence lemma is a maximal degeneration of the Humbert curve. There the valuation along each merged branch point is known exactly, and simplicity could be read off the limit weights. This targets the monotone conjecture. It breaks if the limit weights do not separate points. <strong>Test.</strong> Not run: it needs the metric graph of the iterated degeneration and its divisor theory, which is not a cheap computation.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>The Lee–Yang circle theorem</strong> (statistical mechanics: Lee and Yang, Phys. Rev. 87, 1952). <em>Translation:</em> the non-collision part of \(\Delta_\nu(1,x)\) (\(n=2\), \(x=a_2/a_1\)) is a partition function in the fugacity \(x\). A Lee–Yang-type theorem would put its zeros on a line or circle, and zeros localized on a real ray interlace and are simple. <strong>Test.</strong> Falsified: for the 45 monotone vectors with entries \(\le2\) and \(N\ge3\), computed exactly with sympy (<code>research/tools/bmd_cube_nu_real_roots.py</code>, <code>real-roots-n2.txt</code>), 8 have non-real roots, for example \((2,0,1,0)\) with a rest of degree 2 and no real root.</li>
+<li><strong>Level-spacing statistics of quantum chaos</strong> (Wigner surmise; Bohigas–Giannoni–Schmit, Phys. Rev. Lett. 52, 1984). <em>Translation:</em> the Weierstrass points on the curve \(C_a\), the roots in \(t\) of \(\Delta_\nu(a/(1+at))\), are the "spectrum" of the family. Level repulsion, a vanishing density of small spacings, is the statistical form of simplicity. A family with that statistics has no divisor of double points. <strong>Test.</strong> Not run: spacing statistics need real or complex roots of large degree over \(\mathbb C\), while the kernels compute over finite fields, and the floating-point determinants are ill-conditioned at these degrees.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-13:2"><strong>Chip-firing on a cycle.</strong> Not worked. <strong>Follow-up.</strong> Continuing: it now joins the tropical lead above, since both read the degeneration's skeleton.</li>
+<li data-bridge="entry-2026-09-26-cube-route-review-14:2"><strong>Odd–even staggering.</strong> Not worked. <strong>Follow-up.</strong> Continuing: the middle range, where it applies, is the next target.</li>
+<li data-bridge="entry-2026-09-26-cube-route-review-15:1"><strong>The non-crossing rule.</strong> Its content is now the monotone squarefreeness conjecture, tested on 1261 monotone vectors in this cycle and the last. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-26-cube-route-review-15:2"><strong>Weierstrass semigroups of AG codes.</strong> <strong>Follow-up.</strong> Closed: it gave the ordinary canonical semigroup of \(p_0\), which is now part of the canonical identification above. The codes add no tool for the higher series \(V_d\).</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-25-cube-route-review-6:2"><strong>Riemann–Roch and Riemann–Hurwitz for \(n\ge4\).</strong> <strong>Follow-up.</strong> Closed: it has given everything it can. \(V_d\) is the \(d\)-canonical series of the Humbert curve (above), the Wronskian weights came from it, and the open question is now simplicity, which Riemann–Roch does not decide.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-14:2"><strong>Buchsbaum–Eisenbud acyclicity.</strong> Not worked. <strong>Follow-up.</strong> Continuing: it is the tool for the non-free middle range, the next target.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-15:1"><strong>General Weierstrass points are simple.</strong> Developed into the Humbert pluricanonical formulation and the monotone conjecture. <strong>Follow-up.</strong> Continuing, with the Cukierman–Fong lead above.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-15:2"><strong>Limit linear series along collisions.</strong> Developed in the <a href="#entry-2026-09-26-cube-squarefree-reduction">reduction entry</a> and the <a href="#entry-2026-09-26-cube-confluence">confluence entry</a>. <strong>Follow-up.</strong> Developed.</li>
+</ul>
+<h4>Next step</h4>
+<p>On the highest-risk item, the middle range of open statement 3 in dimension 4, start one step past the boundary, at \(m=N+1\) with \(h=d+1\). The solution module there has rank 2. By Cramer's rule its elements come from the maximal minors of \(N\times(N+1)\) submatrices of the \(N\times(N+2)\) constraint matrix. So \(\ell_0(d+1,N+1)\) is the initial degree of an ideal generated by explicit minors divided by their gcds. The collision and confluence machinery computes the exponents of those minors. The recorded value \(\ell_0(3,13)=12\) at \(d=2\), against 15 at the boundary, is the first test.</p>
+<p><strong>Process.</strong> Two kernel runs (the monotone series, one invocation each for \(n=2\) and \(n=3\)) and one exact sympy run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r109">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 48.94 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">17.41 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 4.79 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 12.01 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 57.03 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">17.49 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.21 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
