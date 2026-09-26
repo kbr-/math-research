@@ -35,6 +35,12 @@ rules to growing checklists or one-off setup narratives.
   changes the next action. Route IDs are navigation, not a substitute for that
   explanation or evidence of progress. Prioritize a necessary unproved obligation;
   distinguish a sufficient endpoint from stronger conveniences before adding steps.
+  Read **Open statements** first and name the statement and top-level remaining-route
+  item advanced; do not inherit the previous entry's gap without assessing the line.
+  Read in full every parked or linked item that **Proposed next step** names on that
+  route. Before reopening an older question, search for later links to its anchor
+  and read those entries; restate restart conditions/calibrations only from the
+  latest applicable entry after checking for later fulfillment or replacement.
 - Restricted examples must test a named general hypothesis, obstruction or
   mechanism. A growing case list or equivalent reformulation leaves the general
   implication open. `finish-turn.py` enforces this: each research entry has a
@@ -48,11 +54,22 @@ rules to growing checklists or one-off setup narratives.
   a surrogate becoming simple need not resolve the original obligation. Check preserved
   hypotheses and accumulated composition costs against the goal's budget.
   If these fail, or repeated cycles leave the same required implication untouched,
-  review alternatives and address the failure before refining the same mechanism.
+  make the cycle a route review and address the failure before refining the same
+  mechanism, even before the finisher requires a review. A weak assessment also
+  triggers a review. Recheck standing hypotheses against the goal's instances every
+  cycle; an obstruction showing that those instances violate them ends the line's
+  relevance. If the line descends more than one reduction below every listed open
+  statement, the next cycle is a route review that revises the list and places the
+  line on it.
   Stop a series of runs once its prediction has passed or failed at the sizes that
   test it. A larger size, degree or sample needs a stated question that the finished
   runs cannot answer, and an answer that would change the goal's missing implication;
   sharper constants for a result off the critical path are not a reason.
+  Once the cases answer their question, develop the general proposition. Before
+  fitting a formula, combine computed witnesses by every recorded applicable
+  composition rule (products, restrictions, transports). A conjectured sufficient
+  condition for a size lower bound must use the size and must not exclude
+  refutations of every size in a complete proof system.
 - Distinguish working proofs, imported statements, conditional results, finite
   checks, conjectures and refutations. Match source hypotheses, encodings and
   versions; preserve original joint degrees and exact parameter accounting.
@@ -68,6 +85,11 @@ rules to growing checklists or one-off setup narratives.
   `tools/claim-index.py list --fields id,summary --format tsv` for a complete minimal
   inventory when needed. Packets omit proof details and sometimes hypotheses:
   before reliance read the exact statement, proof and applicable corrections.
+  Re-read dependencies from their full notebook records, including conventions,
+  never from summaries or memory. When a user or source points to a publication or
+  Lean file, read its theorem statement first. Read every version listed under
+  "Newer versions" by the search tool and compare field, range and encoding
+  hypotheses individually; a later/formalized version need not be stronger.
   Before committing to a direction, inspect the relevant claims' reviewed
   dependencies and correction/refinement links using `claim-index.py graph` and
   exact metadata. Check conditional premises, stronger available versions and
@@ -76,8 +98,31 @@ rules to growing checklists or one-off setup narratives.
   Missing edges do not establish independence, and an impact warning is not a
   verdict that a claim is false.
   Label rediscoveries/refinements and link their original records.
+  Search each newly formulated lemma, not only the opening question, by technique
+  name, the record's synonyms/structural names, dual or adjoint formulation, and
+  statement content words with `tools/search-claims.py`. Test it against every
+  recorded counterexample, refutation and obstruction for those objects. Before
+  drafting its proof, send a reviewer its one-paragraph statement to check whether
+  the record already implies it. Before drafting a corollary, check for an earlier
+  result under fewer hypotheses. State compositions as lemmas in one common
+  setting with a complete proof, not a reference to a sketch.
 - Once the question, argument and evidence are stable, make one focused correctness
-  review. Reopen only for a concrete unresolved concern; defer optional extensions.
+  review of every new mathematical lemma, theorem, rule or encoding before assigning
+  its status.
+  Run the exhaustive checker for any rule, tree or encoding change before relying
+  on it. Use a fresh-context reviewer subagent, given only the draft and dependency
+  anchors/excerpts, to try to break the argument and identify unused hypotheses.
+  Resolve every reported gap and drop or justify each unused hypothesis. Brief
+  reviewers narrowly: exact files/anchors, at most one or two named claim searches,
+  dependency excerpts in a scratch file, and required changes as short bullets.
+  Continue a reviewer by message only while its context concerns this line and is
+  smaller than a fresh brief would need; otherwise start a fresh narrow reviewer.
+  One pass suffices for a short lemma/reformulation; add a pass when corrections
+  add or strengthen claims, not merely remove or weaken them. Reopen only for a
+  concrete unresolved concern; defer optional extensions. Record dependencies
+  re-read, checks and reviewer verdict in a short **Verification gate.** paragraph,
+  not the status line. An incomplete gate means conditional status, not a working
+  proof; correctness takes precedence over cycle speed.
   Prepare staging paths, commit message and focused metadata checks during review.
   Then run a sequential checkpoint batch: preparation marker, checks, provenance,
   timing export/archive, staging, commit, and any authorized push. Stop on failure;
@@ -132,7 +177,15 @@ rules to growing checklists or one-off setup narratives.
   Include assumptions, precise claim, complete argument, dependencies, parameter/
   degree costs and checks. Keep `<p class="entry-meta">` at most 300 characters
   before the producer credit added from the timing session. Do not number cycles;
-  use anchors, and route IDs for parallel formalization entries.
+  use anchors, and route IDs for parallel formalization entries. The status line
+  contains the status and at most one scope clause, then a descriptive cycle label;
+  details belong in the entry's sections.
+  Name new lemmas, theorems, corollaries and conjectures in one to four plain,
+  descriptive words. Variants get their own name or a meaningful qualifier, never
+  letter codes or prime/digit/letter suffixes. Follow the descriptive names already
+  used in the main notebook; cite older coded results descriptively, usually using
+  their claim ID's words. The finisher rejects new letter-code result names outside
+  tables.
 - Tag articles with `data-kind="research|review|formalization"` and `data-route`,
   naming a top-level remaining-route `data-route-item` slug (or `side-...`), never
   a sub-gap. The finisher rejects a seventh consecutive research entry without a
@@ -163,6 +216,10 @@ rules to growing checklists or one-off setup narratives.
   While the goal is open that step is always research: never park, pause or stop the
   goal, or wait for a user decision; when recorded routes are closed, propose and test
   a new idea. Once the goal is proved, a Spin loop stops ([PROMPTS.md](PROMPTS.md#spin)).
+  During an authorized Spin, continue the next cycle or review in the current turn;
+  possible user redirection is no reason to idle or request a check-in. Low-yield
+  cycles, corrections and hard next steps call for developing the latest review's
+  Outside leads and Absurd bridges, not stopping the loop while the goal is open.
   Explain progress, obstructions and remaining uncertainty; do not invent numerical
   probabilities for research prospects. A probability requires a stated quantitative
   method and evidence, not an uncalibrated impression.
@@ -187,6 +244,7 @@ rules to growing checklists or one-off setup narratives.
   at each checkpoint; surface new/reopened candidates to the user. Unknowns need a specific pending question
   and next action; do not invent metadata to pass. Record applicable dependencies,
   refinements, corrections and obstructions; refresh affected existing claims.
+  Record a `refines` edge only when one version implies the other.
   `claim-index.py changed --base REV` checks changed scope (HEAD at finalization,
   integration base in CI); untouched backlog remains visible separately.
   New articles declare `data-claims="ID ..."` matching claims sourced there, or
@@ -206,7 +264,7 @@ rules to growing checklists or one-off setup narratives.
   living sections, including formalization gaps, at integration checkpoints.
   Workers review them, append full records, maintain claim metadata and promptly
   send proposed overview changes/discrepancies; do not wait for all workers to finish.
-- Draft the entry and overview before the final snapshot. Run the small controller
+- Finish every notebook and claim-registry edit before the final snapshot. Run the small controller
   `./tools/finish-turn.py TURN` directly, not in the session it stops: it exports
   timing, archives evidence and fills the unique `<!-- TIMING TURN -->` marker.
   For continuous research add `--next NEXT` to start the next clock immediately;
@@ -217,6 +275,31 @@ rules to growing checklists or one-off setup narratives.
   mathematics. Keep its footnote one short sentence plus exceptional limitations;
   do not repeat the methodology or backfill unmeasured time. Commit the entry,
   fragment, archive and supporting results together.
+  After the finisher, only stage, commit and perform any authorized push. If an edit
+  is necessary, rerun the finisher's checks, including
+  `tools/notebook_context.py --all` and the claim checks, before committing; its
+  earlier checks validate only the earlier snapshot. The checked push rejects hard
+  context-budget excesses.
+
+## Framework maintenance and interaction
+
+- Extend committed, tested tools for recurring helpers instead of rebuilding scratch
+  scripts, including integration/maintenance jobs and jobs recurring by their nature
+  even on their first use. A scratch script whose output is committed to a tracked
+  record becomes a tested framework tool before that commit. Register claims with
+  `tools/claim-index.py author build` and a compact spec per the registry README.
+  Append drafted entries and new Proposed next steps with `tools/notebook-append.py`;
+  build reviewer excerpts with `tools/notebook-excerpt.py`.
+- After editing `compute.sh` or `tools/*.py`, run the framework tests before
+  committing: from `tools/tests`, `python3 -m unittest`, through the protected
+  launcher under the computation policy.
+- Durable process lessons belong in the committed framework, not machine-local
+  memory. State general rules, not narratives of the mathematics that prompted them.
+  Repeated question marks signal increasing frustration with the process: implement
+  and commit a real fix, preferably a mechanical check, rather than only apologizing.
+- After a session restart, notifications about instructions, stopped tasks or changed
+  files are not new work requests. Run no tools or restart tasks in response to those
+  notifications alone; say at most one sentence and wait for the user's message.
 
 ## Portable sessions, Git and publication
 

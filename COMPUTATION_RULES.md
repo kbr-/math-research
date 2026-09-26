@@ -57,6 +57,18 @@ The boundary covers protected computation jobs and their descendants. The agent,
 the browser, the small control processes, unrelated applications, and commands
 manually run outside the launcher are not inside the workload group.
 
+Read the controller output of `./compute.sh start`, `./compute.sh run`,
+`./tools/finish-turn.py` and `tools/resume.py` in full; never pipe it through
+`head`, `tail` or `grep`. Guidance and warnings can appear anywhere. Claude's
+PreToolUse hook `tools/hooks/guard-full-output.py` enforces this prohibition.
+Never discard the output or exit status of a command whose failure could corrupt
+a record, including timing `start` and `phase` commands.
+
+Never use `pkill -f` or `pgrep -f` with a pattern also present in the invoking Bash
+command: it can match that shell, killing it or making a wait loop endless. Kill
+or check in one command and restart in another; wait on a job's own completion
+notice.
+
 ## Efficient numerical implementation
 
 - Computer algebra systems are installed (user installations, 23 and 25 September 2026):
@@ -66,7 +78,8 @@ manually run outside the launcher are not inside the workload group.
   `.sing`, `.g` and `.gp` scripts are recognized). Their libraries cover far more than Gröbner
   bases: commutative algebra, modules and homology, combinatorics, representation theory of
   symmetric groups in positive characteristic, and linear algebra over finite fields. Consider
-  them for every computation they could improve, and prefer them to a hand-built kernel unless
+  them for every computation or step they could improve in speed or reliability,
+  checking before writing or reusing a kernel. Prefer them to a hand-built kernel unless
   the kernel is measured to be faster. A degree-truncated standard basis (Singular's `degBound`)
   does not measure PC refutation degree: on 26 September 2026 it gave higher degrees after an
   axiom was added, which PC degree never does. Measure PC degree with an exact degree-D closure
@@ -78,25 +91,44 @@ manually run outside the launcher are not inside the workload group.
   fflas-ffpack took 0.2 s and FLINT 1.5 s, with equal ranks (25 September 2026). Link flags:
   fflas-ffpack `$(pkg-config --cflags fflas-ffpack) -lgivaro -lgmpxx -lgmp -lopenblas`; FLINT
   `-lflint -lgmp`; LinBox `$(pkg-config --cflags --libs linbox) -lopenblas`. Validate a
-  kernel's ranks against a second library on small cases. `./compute.sh start` lists the systems
-  and libraries it finds.
+  kernel against a reference implementation on small cases before scaling, and
+  validate its ranks against a second library. Declare foreign-function argument
+  types; undeclared pointers can be truncated. `./compute.sh start` lists the
+  systems and libraries it finds.
 - Use compiled numerical libraries such as **NumPy, SciPy, and BLAS** for heavy
   computation, or appropriate compiled implementations in other languages.
 - Do not write numerical inner loops or heavy computational logic in pure
-  Python. Python is appropriate for orchestration and small control operations.
+  Python, including row and product generation. Python is for orchestration and
+  small control operations; a Python-only computation needs evidence that it runs
+  in seconds. Custom heavy loops belong in C or C++, with OpenMP where parallel.
 - Vectorize where appropriate. Use chunking when full vectorization would
   produce excessive temporary arrays or exceed the shared memory budget.
-- When a computation is expected to be expensive or long, consider writing it in
-  C++ with the installed `g++` (user suggestion, 23 September 2026). GPT-6 Astra
-  wrote most of its checkers that way (`research/tools/*.cpp`, with shared headers
-  such as `pc_boundary.hpp`), and they were consistently fast. A Python loop around
-  compiled calls can still waste most of the time, for example by re-reducing a
-  whole matrix for every chunk of new rows instead of reducing only the new rows
-  against the existing basis.
-  `compute.sh` requires `--kernel-reason` for a Python computation allowed more
-  than 120 s: name the compiled kernel doing the heavy work (CLAUDE.md states the default).
-  It also refuses such a run when its reachable Python nests loops three deep over
-  non-literal ranges; vectorize them or move them into the kernel.
+- Compute each parameter series in one incremental pass; nested inputs continue
+  from previous results rather than recomputing them. Compute shared prefixes
+  (bases, random sequences) once and copy them. Count expensive operations against
+  distinct objects: order one factorization to answer multiple cutoffs, orders or
+  degree bounds where possible. For example, ascending-degree column elimination
+  gives every prefix rank. Compiled calls inside a Python loop do not excuse
+  repeated whole-matrix reduction when only new rows need reducing.
+- List the run's stages before launch and remove every known waste, even when it
+  does not affect the result. Design from the question and the output its conclusion
+  needs, not the nearest driver: remove unrelated outputs and skip parameters that
+  proved results or archived runs already settle. Follow the test-design and sizing
+  rules below and AGENTS.md's rule for stopping answered series.
+- A slow implementation of a computation needed for the goal is a reason to use
+  an appropriate algebra system or write its kernel in the same cycle, not abandon
+  or defer the line. Need is determined by AGENTS.md's missing-implication test;
+  another case of a fitted formula is not enough.
+- When a guard refuses a run, optimize the computation (compiled loops,
+  parallelism, shared work, early exit). Never evade it by splitting the workload
+  into shorter invocations or driving a parameter series from a shell loop.
+- `compute.sh` requires `--kernel-reason` of at least six words for a Python
+  computation allowed more than 120 s: name the compiled kernel and the reuse.
+  It scans the script and reachable local-import code (module-level code and names
+  used), refusing loops nested three deep over non-literal ranges; vectorize or
+  move them into the kernel. It also refuses a program already run in the session
+  with four different argument lists, for compiled and Python computations of any
+  duration. Parameter series and validation cases belong in one series invocation.
 - Budget process counts and library threads together. Across concurrent work,
   keep worker count times threads per worker within 14; avoid nested thread
   pools and oversubscription.
@@ -242,14 +274,31 @@ while command records remain unfinished.
   targeted checks capable of falsifying the claim, with nonvacuous cases and
   negative controls. Identify whether an instance is PHP, another unsatisfiable
   system, or a satisfiable finite domain.
+  Before coding, in the same cycle, state the smallest nonvacuous parameters and
+  space sizes, count the claim's predictions at reachable parameters, compare with
+  unconditional bounds, and verify the hypotheses. Record the count in the entry:
+  a test whose every outcome is compatible with the claim decides nothing. Report
+  outcomes for links, fibers or restrictions by sub-instance size; do not interpret
+  failures confined to sizes below the nonvacuous threshold. For a proposed bound,
+  test the simplest structurally different extremal examples and compare full
+  success with what the goal needs.
+- Compute the statement's own quantity, not a stronger or weaker surrogate. Put
+  the tested statement in the script's docstring, generate inputs meeting its
+  hypotheses and assert those hypotheses in code.
 - Report the scope of finite checks without treating them as universal proofs.
   Distinguish new runs from archived results; rerun only when the task requires it.
+  A kernel's chosen prime is a computational choice, not a theorem's characteristic
+  hypothesis. A certificate lifted to integral solutions gives characteristic zero
+  and all but finitely many characteristics; state that scope and name exceptional
+  primes only when computed. Claims for small characteristics need a structural
+  proof or a certificate in each of them.
 - Before launching an exhaustive enumeration, compute its size and expected time from
   the parameters, and shrink or skip cases beyond the budget; a checker should print the
   size and refuse oversized cases rather than let a run be discovered by its timeout.
-  Extrapolate from the smaller runs you already have. Before a long run, apply the exact
-  reductions available (quotients by monomial axioms, incremental reuse of nested results,
-  narrow search brackets) and the parallel paths (OpenMP elimination, `--threads`).
+  For a series, estimate the largest case from a measured smaller run, never a
+  guess, and pass the estimate to `--expect`. Before a long run, apply the available
+  exact reductions (quotients by monomial axioms, narrow search brackets), shared
+  work and parallel paths described above.
   `compute.sh` enforces this: `--timeout` above 600 s needs `--expect SECONDS`, and a run
   expected to exceed 600 s on fewer than 4 threads needs `--serial-reason`; it prints
   expected against actual time. A run expected to exceed 600 s must also cite `--sized-by RUN_ID`,
@@ -260,8 +309,9 @@ while command records remain unfinished.
   of computation): a run may take at most 30 minutes. `compute.sh` refuses a `--timeout`
   above that unless the user's explicit approval is quoted in `--user-approved`. A cycle's
   total has no fixed cap, but keep it proportionate: 110 minutes was too much. Design tests
-  to fit: the smallest informative size, symmetry classes instead of all cases, early exit
-  (for example, stop a closure once 1 is in the span), and a sizing run before the full one.
+  to fit: the smallest informative size, symmetry classes instead of all cases, and
+  a sizing run before the full one. Stop each computation as soon as its question
+  is decided; a closure checking derivability of 1 stops when 1 enters the span.
 
 ## Persist computation outputs
 
@@ -295,6 +345,11 @@ still obey the combined memory and CPU budget.
 Use `tools/record-provenance.py --out MANIFEST FILE...` for shared path/size/hash
 metadata; `--session TURN` records its timing-session label. It streams files,
 rejects changing inputs, and refuses to replace an existing manifest.
+
+Take every quoted number, case count and sampling grid from saved output, read by
+a script rather than from memory. Keep long runs observable: flush progress,
+avoid filters that buffer it until completion, and write each completed case to
+the output file immediately so a timeout preserves the finished cases.
 
 ## Timing export and evidence archival
 
