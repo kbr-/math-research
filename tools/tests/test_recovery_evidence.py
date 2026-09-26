@@ -111,7 +111,7 @@ class RecoveryIntegrationTest(unittest.TestCase):
         self.command('compute.sh','phase','test_turn','reading')
         import shutil
         shutil.copy2(ROOT/'tools/resume.py',self.root/'tools/resume.py')
-        for name in ('research/notes/RESUME.md','AGENTS.md','research/AGENTS.md','COMPUTATION_RULES.md'):
+        for name in ('research/notes/RESUME.md','AGENTS.md','COMPUTATION_RULES.md'):
             path=self.root/name;path.parent.mkdir(parents=True,exist_ok=True)
             path.write_text('Fixture instructions for '+name+'\n')
         (self.root/'notebook.html').write_text('<p>Overview.</p><section id="research-record">'
