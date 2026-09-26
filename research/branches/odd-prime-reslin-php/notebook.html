@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, W and A1 under random prefixes.</strong> Under random prefixes (thm:randomized-prefix-reduction, conj:randomized-wide-clause), blocks whose forms read few hole columns contribute only clauses derivable from collisions and Booleanity (<a href="#entry-2026-09-26-bounded-column-vacuity">bounded-column vacuity</a>). So the hole blocks that force W onto sparse boards drop out. Next: state what remains of the randomized conjecture, blocks reading many columns, and test whether the structured-family theorems' restriction to a residual transfers to random prefixes. After a matching restriction, a block whose forms become constant has one zero pattern and drops with probability \(1-3^{-t}\). Blocks reading few residual columns are covered by the proposition.</p>
+<p><strong>Route item: odd-prime-clause-transfer, W and A1 under random prefixes.</strong> Random prefixes now settle sparse, row-sparse and column-local families together (<a href="#entry-2026-09-26-random-prefix-sparse">sparse and column-local</a>, cor:random-prefix-sparse-column-families). That includes the column composition that W's route could not make at the logarithmic residual. Next: cell families with large support under random prefixes. Their residual zero patterns are occupancy patterns of cells; the question is whether few of them lie in \(\ker C\). The remaining core is then blocks reading many residual columns, column statistics and dense forms, for a review of the randomized line.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -28072,6 +28072,87 @@ The main term is an equidistribution statement analogous to Cohen–Lenstra mome
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5.87 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 55.96 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-random-prefix-sparse" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="cor:random-prefix-sparse-column-families" data-lead="entry-2026-09-26-thread-review:1">
+<h3>Random prefixes settle sparse, row-sparse and column-local families together: on the logarithmic residual such blocks read few columns, so bounded-column vacuity drops them, which also composes the column case that W's route could not</h3>
+<p class="entry-meta">26 September 2026 · Working proof, given imported theorem · open statement A1 under random prefixes · cycle odd-prime-randomized-residual.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. Under W, sparse families are proved through the matching-and-expander residual (thm:logarithmic-residual-w). That route records a gap: "no column analogue at this \(h\)". Forms in a few common columns with arbitrary coefficients do not compose with the logarithmic residual. Does the residual step transfer to random prefixes, and does it close that gap?</p>
+<p><strong>General statement.</strong> cor:random-prefix-sparse-column-families. Over \(\mathbb F_3\), fix \(K\), \(\eta&gt;0\) and \(c_0\). Consider a family of \(M\le n^K\) blocks, fixed in advance, in which every block is one of three kinds. Here \(U_b\) is the union of its forms' supports, with arbitrary coefficients:</p>
+<ul>
+<li><em>sparse:</em> \(U_b\) has at most \(n^{1-\eta}\) cells;</li>
+<li><em>row-sparse:</em> \(U_b\) lies in at most \(n^{1-\eta}\) pigeon rows;</li>
+<li><em>column-local:</em> \(U_b\) lies in at most \(c_0\) hole columns.</li>
+</ul>
+<p>Put \(q=\lceil(K+2)/\eta\rceil\) and \(c=\max(5(q-1),c_0)\). Let \(t\) be the least integer with \(t\ge(K+1)\log_3n+c\log_3(h+3)+3\), where \(B=44t\), \(s=10(B+1)\) and \(h=\lceil2^{12}s\rceil\) depend on \(t\). Since \(h=O(t)\), such \(t\) exists and \(t=(K+1)\log_3n+O(\log\log n)\). Let the \(C_b\) be independent and uniform in \(\mathbb F_3^{t\times w_b}\), with \(w_b\) the width of block \(b\). Then with probability \(1-o(1)\) over the \(C_b\), weak unary PHP plus the clauses \(g_{b,i}Q^{C_b}\) has no PC refutation of degree \(B\). By the lemma of thm:randomized-prefix-reduction, \(\delta(C_b)\le4t-2\). So \(B\) is at least W_RS's bound \(\max(11\max(1,\delta),4t+2)\), and W_RS holds for such families. W_RS allows any number of rows. This is conj:randomized-wide-clause's statement at a larger \(t\) than the conjecture fixes.</p>
+
+<h4>Proof</h4>
+<ol>
+<li><em>The choice.</em> Take the matching-and-expander choice of thm:cell-family-w with this \(h\):
+ <ul>
+ <li>a uniform set \(H\) of \(h\) holes;</li>
+ <li>a uniform matching \(\rho\) of the other holes to pigeons, which leaves the pigeons \(R\), \(|R|=h+1\);</li>
+ <li>a left-5-regular graph \(G'\) on \(R\times H\) with uniform independent neighbourhoods.</li>
+ </ul>
+ These choices are independent of the \(C_b\). By Step 2 of that theorem as re-checked in the <a href="#entry-2026-09-26-logarithmic-residual">logarithmic residual</a> entry, which needs only \(h\ge4096s\) and \(h\le n\), true for large \(n\), \(|N(W)|\ge3|W|\) fails for some \(W\subseteq R\) with \(|W|\le s\) with probability below 0.27.</li>
+<li><em>Few residual cells.</em>
+ <ul>
+ <li>A column-local block's restricted forms are supported on at most \(c_0\) columns of \(H\).</li>
+ <li>For a sparse block, having more than \(5(q-1)\) cells of \(G'\) in \(U_b\) needs \(q\) pigeons of \(R\), each with a \(G'\)-cell in \(U_b\), since each pigeon has 5 cells.</li>
+ <li>By the recorded computation (<a href="#entry-2026-09-26-sparse-blocks">sparse blocks</a>), this has probability at most \((14|U_b|/(qn))^q\le14^qn^{-(K+2)}\).</li>
+ <li>For a row-sparse block the same count applies to rows. \(R\) is a uniform \((h+1)\)-subset of the pigeons. So \(q\) residual pigeons lie in the at most \(n^{1-\eta}\) rows of \(U_b\) with probability at most \(\binom{n^{1-\eta}}q\bigl(\tfrac{h+1}{n+1}\bigr)^q\le\bigl(e(h+1)n^{-\eta}/q\bigr)^q\), which is \(n^{-(K+2)}\) times a polylogarithmic factor. Otherwise the restricted forms live on the at most 5 cells of each of at most \(q-1\) residual pigeons, whatever their coefficients.</li>
+ <li>Over \(M\le n^K\) blocks both events have probability \(o(1)\).</li>
+ </ul>
+ Off these events, every block's restricted forms are supported on at most \(c\) columns of the residual.</li>
+<li><em>Restriction.</em> The restriction \(\varphi\) sets the cells of \(\rho\) to 1, the other cells in their rows and columns to 0, and every other cell outside \(G'\) to 0. It maps weak unary PHP to weak graph PHP on \(G'\): matched rows and collisions become trivial, as in thm:cell-family-w. It maps each clause \(g_{b,i}Q^{C_b}\) to the same expression in the restricted forms. A refutation of degree at most \(B\) restricts to one of degree at most \(B\).</li>
+<li><em>Dropping the clauses.</em> Fix an outcome \((\rho,G')\). The proof of prop:bounded-column-vacuity carries over verbatim to the graph sub-board \(G'\). The least-degree monomial argument works for any down-closed family of collision-free cell sets. Each residual column holds at most one of the \(h+1\) residual pigeons or none, so at most \((h+2)^c\) patterns occur. The rows of \(R\) are not imposed, so collision-free points of \(G'\) are the right set. A block whose restricted forms read at most \(c\) columns is therefore dropped, except with probability at most \((h+2)^c3^{-t}\le(h+3)^c3^{-t}\) over its \(C_b\). Dropped means that its restricted clauses lie in the ideal of the residual's Booleanity and collisions at degree at most \(4t+2\le B\). Summed over \(M\le n^K\) blocks this is at most \(n^K(h+3)^c3^{-t}\le1/(27n)\), by the choice of \(t\).</li>
+<li><em>Combining.</em> Let \(F(C)\) be the probability over \((\rho,G')\) that some block with at most \(c\) residual columns is not dropped. Then \(\mathbb E_CF\le1/(27n)\), so \(\Pr_C[F(C)&gt;0.1]=o(1)\). For every \(C\) with \(F(C)\le0.1\), the probability over \((\rho,G')\) of any failure (expansion, many residual cells, or a block not dropped) is at most \(0.27+o(1)+0.1&lt;1\). So a good outcome exists.</li>
+<li><em>Contradiction.</em> At a good outcome, a refutation of degree at most \(B\) gives, after deriving the dropped clauses, a refutation of degree at most \(B\) of weak graph PHP on \(G'\). \(G'\) has left degree 5 and \(|N(W)|\ge3|W|\) for \(|W|\le s\). With lem:functional-residual, which adds functionality and derives the rows at degree 5, imp:MN-functional-graph-degree excludes refutations of degree at most \(\lfloor s/10\rfloor=B+1\). \(\square\)</li>
+</ol>
+
+<h4>What it means</h4>
+<ul>
+<li><em>The column gap closes under random prefixes.</em> The logarithmic residual entry could not compose column-supported blocks with the logarithmic residual. Under W a block meeting a single hole of \(H\) keeps linear dimension \(1+v\). Under random prefixes, bounded-column vacuity removes such blocks whatever their coefficients. So families mixing sparse, row-sparse and column-local blocks are covered in one argument, with no rigidity conditions on row-sparse forms.</li>
+<li><em>What the randomized conjecture still needs.</em> Blocks whose restricted forms read many residual columns: column statistics over many holes, and the dense core. Cell families with large support are also not covered here; W's cell-family theorem handles them for W.</li>
+<li><em>Cost.</em> \(t\) exceeds the conjecture's \((K+1)\log_3n+1\) by \(O((K/\eta+c_0)\log\log n)\). The degree bound stays logarithmic.</li>
+</ul>
+<p><strong>Next.</strong> The randomized conjecture now covers the sparse and row-sparse classes of thm:logarithmic-residual-w, plus column-local blocks. W's route also covers classes not checked here: square-equivalent cell blocks, product statistics whose pigeon weights have union support at most \(n^{1-\eta}\), and the cell families of thm:cell-family-w. The remaining core is blocks whose forms read many residual columns: column statistics and dense forms. The next cycle should test cell families with large support under random prefixes. Their zero patterns on the residual are occupancy patterns of cells, and the question is whether few of them lie in \(\ker C\). After that comes a review of the randomized line against the dense core.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>prop:bounded-column-vacuity and thm:randomized-prefix-reduction;</li>
+<li>thm:logarithmic-residual-w's construction and expansion re-check;</li>
+<li>the sparse-block failure computation;</li>
+<li>lem:functional-residual.</li>
+</ul>
+<p>A fresh-context reviewer confirmed:</p>
+<ul>
+<li>that \(t\) is well defined, with \(n^K(h+3)^c3^{-t}\le1/(27n)\);</li>
+<li>the match with the recorded failure computation;</li>
+<li>the averaging argument, \(\Pr_C[F&gt;0.1]\le10/(27n)\);</li>
+<li>\(\lfloor s/10\rfloor=B+1&gt;B\).</li>
+</ul>
+<p>It required these changes, all adopted:</p>
+<ul>
+<li>the transfer of vacuity to the graph sub-board, with \((h+2)^c\) patterns;</li>
+<li>the block width renamed \(w_b\);</li>
+<li>the statement placed as the conjecture at a larger \(t\), with \(\delta\le4t-2\) cited;</li>
+<li>row-sparse blocks added through the same residual count, which needs no new lemma.</li>
+</ul>
+<p>Adding row-sparse blocks strengthens the claim, so a second, focused pass checked the new parts. It confirmed the hypergeometric bound and the reduction to at most \(5(q-1)\) residual cells. It required the Next paragraph to list the covered and uncovered classes explicitly, now adopted.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-randomized-residual">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 48.62 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">4 min 29.12 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">37.58 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 41.79 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
