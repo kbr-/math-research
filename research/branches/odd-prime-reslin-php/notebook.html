@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The composition substitution \(X=YZ\) collapses to a relabelling or a restriction, because one factor is always satisfiable (<a href="#entry-2026-09-26-composition-collapse">composition collapse</a>). Next: a route review of A1. Three cycles have closed leads without a new mechanism. The review chooses outside leads only after searching the record under each technique's own words. It also decides whether the substitution lead survives in a source system that is hard as a whole.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The substitution lead survives only for sources that are hard as a whole, the form of Lauria and Nordström's colouring reductions (<a href="#entry-2026-09-26-substitution-review">substitution review</a>). Next: read their reduction lemma and one gadget in the source. State what a gadget substitution from a single pigeonhole source must do to send a W clause into the source's ideal. Test it first on one block, which member pinning settles, as a control, then on a family beyond pinning's cap.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -31663,6 +31663,53 @@ and, for \(g=g'\), the same with the two sums over the forms of group \(g\). In 
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 0.48 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">8 min 11.04 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 49.31 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-substitution-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review after the closure, literature and composition cycles; its tests are record checks, and it registers no claim.">
+<h3>Route review: the substitution lead survives only for source systems that are hard as a whole, the form Lauria and Nordström's colouring reductions take; completion, the Tseitin source and the bridges fail their cheap tests</h3>
+<p class="entry-meta">26 September 2026 · Route review with record checks · open statement A1 · cycle odd-prime-substitution-review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. Since the <a href="#entry-2026-09-26-pin-route-review">pin route review</a>, three cycles closed leads: the <a href="#entry-2026-09-26-ordered-closure">ordered closure</a>, the <a href="#entry-2026-09-26-dense-axiom-literature">dense-axiom literature pass</a> and the <a href="#entry-2026-09-26-composition-collapse">composition collapse</a> (lem:composition-collapse). What is left of the substitution lead, and what next?</p>
+<p><strong>General statement.</strong> The line's claim is W through conj:randomized-wide-clause (W_RS); the goal follows by thm:randomized-prefix-reduction.</p>
+<h4>What the goal needs</h4>
+<p>As in the pin route review: W_RS for adversarial families of many dense blocks at degree \(22k\). The substitution lead would supply it by a reduction. Find a hard source system \(S\) and a map \(\sigma\) of bounded degree from the board's cells to polynomials in \(S\)'s variables, sending weak PHP's axioms and the family's clauses into \(S\)'s ideal at low degree. A low-degree refutation of the target would then give one of \(S\).</p>
+<h4>What is left of the lead</h4>
+<p>lem:composition-collapse shows that when \(S\) is a product with a satisfiable factor, fixing a solution of that factor reduces \(\sigma\) to a map from the other factor alone. For the composition of two injections that map is a relabelling or a restriction, which the record already caps. So the lead survives only for sources that are hard as a whole. That is the form of the reductions in Lauria and Nordström's colouring lower bounds, below, where the source is a pigeonhole system and the map is a gadget substitution.</p>
+<h4>Falsification attempt</h4>
+<p>Could a single substitution handle an adversarial family? \(\sigma\) must send each dense clause into \(S\)'s ideal. For \(S\) weak PHP on another board and \(\sigma\) linear, a form goes to a form, so the family goes to a family of the same kind. For nonlinear \(\sigma\) no obstruction is recorded. The lead is not falsified, and no instance is known.</p>
+<h4>Assessment of the line</h4>
+<p>Weak, unchanged. The session has closed the pin line, the closure transfer and the composition, each against recorded work or by an elementary obstruction. The substitution lead has one open form, with no instance. This assessment is qualitative.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><em>Lauria and Nordström, "Graph colouring is hard for algorithms based on Hilbert's Nullstellensatz and Gröbner bases"</em> (CCC 2017). They prove Nullstellensatz and PC degree lower bounds for \(k\)-colouring by substituting colouring variables with polynomials in the variables of a functional pigeonhole instance over a bounded-degree bipartite graph, gadget by gadget. Each colouring axiom becomes a low-degree consequence of the source. Target: the substitution lead in the form it has left, a source hard as a whole. Where it may break: their target constraints are local, one gadget each, while W's clauses involve most cells. <strong>Test.</strong> Passed as a structural check. Their abstract (arXiv 2306.00125) states that the source is functional PHP over bounded-degree bipartite graphs, reduced to \(k\)-colouring in constant PC degree. A single pigeonhole system is not a product with a satisfiable factor, so lem:composition-collapse does not apply. No record entry cites the paper (notebook search for "Lauria": only Galesi–Lauria on ordering principles).</li>
+<li><em>Tseitin formulas modulo 2 over \(\mathbb F_3\)</em> (Buss, Grigoriev, Impagliazzo and Pitassi, J. Comput. Syst. Sci. 62, 2001: linear degree over expanders when the modulus differs from the characteristic) as a source hard as a whole. On a bipartite graph with charge 1 at every vertex and unequal sides, Tseitin modulo 2 is a counting principle modulo 2 close to PHP. Target: the same. <strong>Test.</strong> Falsified for the direct embedding \(x_{ij}\mapsto e_{ij}\). A row equation \(\sum_jx_{ij}=1\) is not a consequence of the parity axiom "\(\sum_je_{ij}\) is odd", and neither are the collisions, so weak PHP's axioms do not enter the source ideal. Other maps were not tried.</li>
+<li><em>Evans' conjecture</em> (proved by Smetaniuk, 1981: a partial Latin square of order \(n\) with at most \(n-1\) filled cells completes). Completion theorems of this kind give extension properties for partial assignments, which Delayer-style and design arguments use. Target: A1, extension of partial matchings under W's clauses. <strong>Test.</strong> Falsified. A dense form's value is not determined by a partial matching of size below its support. So a W clause excludes no partial matching of size \(D\ll n\), and every extension property holds trivially. This is the recorded point that local consistency and measure do not decide dense clauses (prop:forbidden-measure-not-robust).</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>Matsui's piling-up lemma</em> (linear cryptanalysis, EUROCRYPT 1993). Translation: each zero indicator \(g_u\) is a biased bit, and \(s_j=\sum_uC_{ju}g_u\) is a linear approximation of the board, as in a cipher. The lemma says that the bias of a sum of independent biased terms is the product of the biases. What it would give: \(\Pr[C_bg_b=0]\) close to \(3^{-t}\) for every block, so the clauses forbid a vanishing fraction of any product distribution. <strong>Test.</strong> Falsified by the record. That conclusion is a measure statement. prop:forbidden-measure-not-robust shows that the forbidden measure does not decide PC degree, and the pattern-poor support entry needed exact vanishing on a design's support, not smallness.</li>
+<li><em>The Shapley–Shubik assignment game</em> (Int. J. Game Theory 1, 1971). Pigeons buy holes; an additive form \(u_i+v_j\) is a system of prices, and the interaction part is the surplus that prices cannot absorb. The theorem there is that the core is a nonempty lattice of prices, found by linear-programming duality. What it would give: a canonical splitting of each dense form into prices, which the record settles, plus a surplus concentrated on an optimal assignment. <strong>Test.</strong> Falsified. The duality needs an ordered field. Over \(\mathbb F_3\) there is no order, and lifting coefficients to the integers changes which points a clause forbids, since clauses depend on values modulo 3.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<p>No passed bridge from earlier reviews on this route is open.</p>
+<h4>Lead follow-up</h4>
+<p>No passed outside lead from earlier reviews on this route is open; the pin route review's leads all failed. The Lauria–Nordström lead passed here and will be followed up.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1, developing the Lauria–Nordström lead. Read their reduction lemma and one gadget construction in the source. State exactly what a gadget substitution from a single pigeonhole source must do to send a W clause into the source's ideal. Test it first on one block of two dense forms with the clause \(g_2L_1^2\). Member pinning settles that block (lem:member-pinning), so it is a control: the gadget must at least reproduce this. Then test it on a family beyond pinning's cap. If the gadget has to fix a form's value on all local configurations, the lead meets the dense-form invisibility of the Evans test and closes. Record where.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:composition-collapse, the dense-axiom literature entry, prop:forbidden-measure-not-robust's statement, and the super-hole lemma's substitution. Notebook searches: "Lauria" (only Galesi–Lauria), "Tseitin" (used as a homological comparison and in small closure checks, not as a source), "Evans", "Smetaniuk", "Latin square" and "Shapley" (none), "Kasteleyn" and "renormalization" (earlier bridges, closed, not reused here). The review registers no claim and was not sent to a separate reviewer; its falsified items are record checks, and its passed lead is a structural check that the next cycle develops.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-substitution-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 6.28 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">56.10 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 40.68 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 29.08 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.29 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
