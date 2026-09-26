@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, A1 and W.</strong> Random prefixes (thm:randomized-prefix-reduction) drop blocks that are light or read few columns, whatever their coefficients, and, by an unregistered rank count, blocks of rank below a chosen multiple of \(\log n\) (<a href="#entry-2026-09-26-random-prefix-light">light families</a>). What remains are heavy high-rank blocks, which heuristically resemble random dense families (<a href="#entry-2026-09-26-randomized-review">randomized review</a>). So under randomization the thread's core looks like the generic collective problem at \(K\ge1\). Next: read Nguyen and Wood's "Local and global universality of random matrix cokernels" (arXiv:2210.08526) in full, for the killer-moment main term. The question is whether their structured-remainder dichotomy handles rows generated polynomially by a few random scalars. A negative answer should be recorded with the exact hypothesis that fails.</p>
+<p><strong>Route item: odd-prime-clause-transfer, the random-family core.</strong> Nguyen and Wood's bias argument does not transfer to the killer-moment main term (<a href="#entry-2026-09-26-nguyen-wood-scope">Nguyen–Wood scope</a>). Systems of W's kind, randomized or not, carry about one random scalar per image column, so universality methods that need many independent entries per column are unlikely to apply. Next: the algebraic side. The weak monomial algebra is a monomial complete intersection \(\mathbb F_3[x]/(x_i^2)\) when \(m=1\), and its Lefschetz properties in positive characteristic have a literature. Find what is known over \(\mathbb F_3\), for example from Stanley, Brenner–Kaid and Lundqvist–Nicklasson. Then decide whether a Lefschetz statement there would give product-top directness or the Tor vanishing that A3 needs for random tops.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -28329,6 +28329,79 @@ The main term is an equidistribution statement analogous to Cohen–Lenstra mome
 <tr><td>Computation design and coding</td><td class="elapsed">5.52 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 42.84 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.65 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-nguyen-wood-scope" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Literature reading of Nguyen and Wood for the killer-moment main term: records the two properties its bias argument needs, which fail for product tops, and an entropy count of about one random scalar per image column; no new claim." data-lead="entry-2026-09-26-killer-moment-review:1">
+<h3>Nguyen and Wood's bias argument does not transfer to the killer-moment main term: it uses entries that enter linearly and independently, and quadratically many nonzero coefficients per robust character; systems of W's kind carry only about one random scalar per image column, randomized prefixes included</h3>
+<p class="entry-meta">26 September 2026 · Literature reading and an entropy count, with a retracted draft heuristic · open statement A3, killer-moment main term · cycle odd-prime-nguyen-wood.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-26-randomized-review">randomized review</a> found that under random prefixes the thread's core looks like the generic collective problem. Its most concrete piece is the killer-moment main term of conj:product-top-killer-moment. Nguyen and Wood's moment method was the lead passed twice. Does it apply, and if not, which hypothesis fails?</p>
+<p><strong>General statement.</strong> The statement advanced is conj:product-top-killer-moment, and the reading sharpens lem:conditional-gauss-sum-barrier. Nguyen and Wood, "Local and global universality of random matrix cokernels" (arXiv:2210.08526), was read at its statements and at the proof of its Lemma 3.7. Their moment method bounds \(\Pr[FA_n=0]\) for a code \(F\) by expanding in characters \(C\). The bound on robust characters rests on two properties:</p>
+<ol>
+<li>\(C(FA_n)\) is linear in independent \(\alpha\)-balanced entries, so its bias factorizes into factors each at most \(\exp(-\alpha/a^2)\);</li>
+<li>a code and a robust character force at least \(\gamma\delta n^2/(2|G|^2|P|)\) nonzero coefficients.</li>
+</ol>
+<p>Together they give \(\exp(-c'n^2)\) against \(|G|^n\) characters. For product tops, property 1 fails: the contraction vector is polynomial of bidegree \((2,2)\) in \(2mN\) scalars. Property 2 has no analogue, heuristically because the system carries about as many random scalars as image columns. So their theorem does not apply, and their bias argument does not transfer. This does not show that every absolute-value bound on robust characters fails. Only the conditional route provably loses \(3^{u-mN/2}\) (lem:conditional-gauss-sum-barrier). No claim is registered.</p>
+
+<h4>What the paper assumes and does</h4>
+<ul>
+<li><em>Models.</em> Their Theorems 1.3, 1.4 and 1.13 treat random symmetric and skew-symmetric integral matrices whose upper-triangular entries are i.i.d. copies of an \(\alpha\)-balanced integral random variable. The Laplacian results concern reduced Laplacians of random graphs (their Theorem 1.1). Definitions 1.23 to 1.28 were read only at the level of their titles. Every model has \(\Theta(n^2)\) independent entries, and dependence only through linear symmetry or row sums. The proof read here, Section 3, is for the skew-symmetric model (Theorem 1.13, through Theorem 3.1). The symmetric case follows Wood's earlier paper.</li>
+<li><em>Method.</em> \(\mathbb E|\mathrm{Sur}(\mathrm{Cok},G)|=\sum_F\Pr[FA_n=0]\), their equation (3.2). A code of distance \(w\), Definition 3.4, stays surjective after deleting fewer than \(w\) basis vectors. For a code, \(\Pr[FA_n=0]\) is expanded over characters \(C\). The bias of \(C(FA_n)\) is \(\prod_{i\le j}\mathbb E\,\xi^{E(C,F,i,j)x_{ij}}\), a product over independent entries. Lemma 3.7 splits the characters three ways:
+ <ul>
+ <li>\(|\mathrm{Sym}^2G|\) special ones, the main term;</li>
+ <li>weak ones, at most \(C_G\binom n{\lceil\gamma n\rceil-1}|G|^{\gamma n}\) of them. Every non-special character, weak or not, has at least \(\delta n/2\) nonzero coefficients and bias at most \(\exp(-\alpha\delta n/(2a^2))\);</li>
+ <li>robust ones, at most \(|G|^n\), with at least \(\gamma\delta n^2/(2|G|^2|P|)\) nonzero coefficients each, bias \(\exp(-c'n^2)\).</li>
+ </ul>
+ Their total, \(\exp(n\log|G|-c'n^2)\), is negligible because the exponent is quadratic against linear.</li>
+</ul>
+
+<h4>Where product tops differ</h4>
+<ul>
+<li><em>No factorization.</em> The coordinates of the contraction vector \(v(\ell,\ell')=(\chi(y_i\tau))_i\) are polynomials of bidegree \((2,2)\) in the \(2mN\) coefficients of \(\ell,\ell'\). A character's bias is \(\mathbb E\,\omega^{\eta\cdot v}\), which does not factor over independent entries.</li>
+<li><em>The entropy count.</em> One top gives \(mN-2\) image columns from \(2mN\) uniform scalars, about two per column. Nguyen and Wood's columns carry about \(n\) independent entries each, which is what makes property 2 possible. With about two scalars per column, square-root cancellation would give biases near \(3^{-mN}\) against about \(3^{mN}\) characters: borderline, not clearly summable.</li>
+<li><em>The conditional substitute fails.</em> Fixing \(\ell\) leaves only \(mN\) scalars. Each character's value is then an exact quadratic Gauss sum of modulus at least \(3^{-mN/2}\). Summing absolute values over the \(3^u\) characters with \(u\approx mN\) gives at least \(3^{u-mN/2}\) (lem:conditional-gauss-sum-barrier).</li>
+</ul>
+<p>So Nguyen and Wood's theorem does not apply, and their bias argument does not transfer. The missing ingredients are the two properties above.</p>
+
+<h4>An entropy count for W's systems</h4>
+<p>A first draft of this entry claimed that randomized-prefix tops carry about \(h\) random scalars per image column, because each clause depends on all \(h\) forms of its block. The fresh-context reviewer found the error. A block has \(h\) clauses, each with about \(mN\) image columns. So \(h\cdot mN\) shared scalars, plus the prefix matrix's \(th\) entries, feed about \(h\cdot mN\) columns: about one scalar per column. Counting every clause, W's blocks give the same ratio. So the count does not favour randomization. Systems of W's kind, randomized or not, carry about one random scalar per image column, far from the \(n\) that Nguyen and Wood's property 2 rests on.</p>
+
+<h4>What it means</h4>
+<ul>
+<li>The killer-moment main term for product tops is not reached by the Nguyen–Wood bias argument, and by none of the recorded methods. This is for stated reasons, not by a proof that every method fails.</li>
+<li>The core of W and W_RS has about one random scalar per image column. Universality methods that need many independent entries per column are unlikely to apply to it. Absorption for random families should be sought in algebraic structure, as Taylor glue and semi-regularity do, rather than in entropy.</li>
+</ul>
+<p><strong>Next.</strong> Pursue the algebraic side of the random-family core. The weak monomial algebra \(\tilde A=\bigotimes_c(\mathbb F_3+V_c)\), with \(V_c^2=0\), is a monomial complete intersection when \(m=1\). Its Lefschetz properties in positive characteristic have a literature: Stanley's strong Lefschetz property in characteristic 0, its failures in characteristic \(p\), and the work of Brenner and Kaid and of Lundqvist and Nicklasson. Find what is known over \(\mathbb F_3\) for \(\mathbb F_3[x_1,\dots,x_N]/(x_i^2)\) and for products of squares of linear forms. Then decide whether a weak or strong Lefschetz statement there would give conj:product-top-killer-moment's directness, or the Tor vanishing A3 needs, for random tops.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Read from the paper's text:</p>
+<ul>
+<li>the statements of Theorems 1.3, 1.4 and 1.13;</li>
+<li>Definitions 1.23 to 1.28, whose titles were read;</li>
+<li>equation (3.2), Definition 3.4 and the proof of Lemma 3.7, with its two bias bounds and the final combination.</li>
+</ul>
+<p>The text was extracted from the arXiv PDF into private scratch space. Nothing from it is committed beyond the citations and paraphrases here. Re-read lem:conditional-gauss-sum-barrier and conj:product-top-killer-moment. A fresh-context reviewer checked the description against the paper's text. It confirmed (3.2), (3.3), Definition 3.4, the special-character count, both bias bounds, the count of nonzero coefficients and the final combination. It required these changes, all adopted:</p>
+<ul>
+<li>the conclusion limited to non-transfer of the bias argument;</li>
+<li>both properties named;</li>
+<li>the conditional sentence corrected;</li>
+<li>the count of weak characters stated;</li>
+<li>the models' scope stated;</li>
+<li>the entropy observation for randomized tops retracted after the reviewer's column count, as recorded above.</li>
+</ul>
+<p>No claim is registered.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-nguyen-wood">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 55.03 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 44.45 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7.54 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">39.03 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">23.87 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
