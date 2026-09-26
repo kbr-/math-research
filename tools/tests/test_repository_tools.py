@@ -11,7 +11,7 @@ import sys
 import tempfile
 import unittest
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 SESSION = '11111111-2222-3333-4444-555555555555'
 
 
@@ -35,7 +35,38 @@ class RepositoryTools(unittest.TestCase):
                         'p.write_text(json.dumps(' +
                         '{"args":sys.argv[1:],"cwd":os.getcwd(),"editor":os.environ["EDITOR"],"visual":os.environ["VISUAL"]}))\n')
         fake.chmod(0o755)
-        shutil.copy2(fake, self.root / 'bin/claude')
+        # start-claude.sh drives background sessions: `claude --bg ...` starts or resumes one,
+        # `claude agents --json [--all]` lists them and `claude attach SHORT` opens one.
+        self.claude_calls = self.root / 'claude-calls.jsonl'
+        self.claude_agents = self.root / 'claude-agents.json'
+        claude = self.root / 'bin/claude'
+        claude.write_text(f'#!{sys.executable}\n' + '''import json, os, sys, uuid
+from pathlib import Path
+capture = Path(os.environ["MATH_LAUNCH_CAPTURE"])
+calls, state = capture.with_name("claude-calls.jsonl"), capture.with_name("claude-agents.json")
+agents = json.loads(state.read_text()) if state.exists() else []
+args = sys.argv[1:]
+with calls.open("a") as f:
+    f.write(json.dumps({"args": args, "cwd": os.getcwd(), "editor": os.environ["EDITOR"],
+                        "visual": os.environ["VISUAL"]}) + "\\n")
+if args[:1] == ["agents"]:
+    print(json.dumps(agents if "--all" in args else [a for a in agents if a["running"]]))
+elif args[:1] == ["attach"]:
+    pass
+elif "--bg" in args:
+    wanted = args[args.index("--resume") + 1] if "--resume" in args else str(uuid.uuid4())
+    for agent in agents:
+        if agent["sessionId"] == wanted:
+            agent["running"] = True
+            break
+    else:
+        agents.append({"kind": "background", "id": "bg%d" % len(agents), "sessionId": wanted,
+                       "cwd": os.getcwd(), "running": True})
+    state.write_text(json.dumps(agents))
+else:
+    sys.exit(3)
+''')
+        claude.chmod(0o755)
         self.env = dict(os.environ, PATH=str(self.root / 'bin') + os.pathsep + os.environ['PATH'],
                         MATH_LAUNCH_CAPTURE=str(self.capture))
 
@@ -56,7 +87,7 @@ class RepositoryTools(unittest.TestCase):
         data = json.loads(self.capture.read_text())
         self.assertNotIn('resume', data['args'])
         self.assertIn('--approve-for-me', data['args'])
-        self.assertIn('research/notes/RESUME.md', data['args'][-1])
+        self.assertIn('python3 tools/resume.py', data['args'][-1])
         self.assertIn('remember-codex-session.py', data['args'][-1])
         self.assertIn('model_context_window=640000', data['args'])
         self.assertIn('model_auto_compact_token_limit=530000', data['args'])
@@ -121,41 +152,86 @@ class RepositoryTools(unittest.TestCase):
 
     def launch_claude(self, *args):
         return subprocess.run([str(self.root / 'start-claude.sh'), *args],
-                              cwd='/tmp', env=self.env, capture_output=True, text=True, timeout=5)
+                              cwd='/tmp', env=self.env, capture_output=True, text=True, timeout=10)
+
+    def claude_log(self):
+        if not self.claude_calls.exists():
+            return []
+        return [json.loads(line) for line in self.claude_calls.read_text().splitlines()]
+
+    def claude_launches(self):
+        return [c for c in self.claude_log() if c['args'][:1] not in (['agents'], ['attach'])]
+
+    def set_claude_agents(self, agents):
+        self.claude_calls.unlink(missing_ok=True)
+        self.claude_agents.unlink(missing_ok=True)
+        if agents:
+            self.claude_agents.write_text(json.dumps(agents))
 
     def test_claude_fresh_checkout_binds_and_bootstraps(self):
         script = self.root / 'start-claude.sh'
         script.write_text(re.sub(r'AUTO_COMPACT_TOKENS=\d+', 'AUTO_COMPACT_TOKENS=530000', script.read_text()))
         result = self.launch_claude()
         self.assertEqual(result.returncode, 0, result.stderr)
-        data = json.loads(self.capture.read_text())
-        bound = (self.root / '.claude-session-id').read_text().strip()
-        self.assertEqual(data['args'][:2], ['--session-id', bound])
-        self.assertNotIn('--resume', data['args'])
-        self.assertIn('research/notes/RESUME.md', data['args'][-1])
-        self.assertEqual(data['args'][2:6], ['--permission-mode', 'auto', '--autocompact', '530000'])
-        self.assertEqual(data['cwd'], str(self.root))
-        self.assertEqual((data['editor'], data['visual']), ('vim', 'vim'))
+        [launch] = self.claude_launches()
+        self.assertEqual(launch['args'][:6], ['--bg', '--remote-control', '--permission-mode', 'auto',
+                                              '--autocompact', '530000'])
+        self.assertEqual(len(launch['args']), 7)
+        self.assertIn('python3 tools/resume.py', launch['args'][-1])
+        self.assertNotIn('--resume', launch['args'])
+        [agent] = json.loads(self.claude_agents.read_text())
+        self.assertEqual((self.root / '.claude-session-id').read_text().strip(), agent['sessionId'])
+        self.assertEqual(self.claude_log()[-1]['args'], ['attach', agent['id']])
+        self.assertEqual(launch['cwd'], str(self.root))
+        self.assertEqual((launch['editor'], launch['visual']), ('vim', 'vim'))
 
     def test_claude_existing_checkout_uses_exact_session(self):
         (self.root / '.claude-session-id').write_text(SESSION + '\n')
-        self.assertEqual(self.launch_claude().returncode, 0)
-        args = json.loads(self.capture.read_text())['args']
-        self.assertEqual(args[:2], ['--resume', SESSION])
-        self.assertNotIn('--continue', args)
+        stopped = {'kind': 'background', 'id': 'old', 'sessionId': SESSION, 'cwd': str(self.root),
+                   'running': False}
+        cases = (('unknown', [], ['--resume', SESSION, '--bg', '--remote-control']),
+                 ('stopped background', [stopped], ['--bg', '--resume', SESSION]),
+                 ('running background', [dict(stopped, running=True)], None))
+        for name, agents, expected in cases:
+            with self.subTest(state=name):
+                self.set_claude_agents(agents)
+                result = self.launch_claude()
+                self.assertEqual(result.returncode, 0, result.stderr)
+                launches = [c['args'] for c in self.claude_launches()]
+                if expected is None:
+                    self.assertEqual(launches, [])
+                elif name == 'unknown':
+                    [args] = launches
+                    self.assertEqual(args[:4], expected)
+                else:
+                    self.assertEqual(launches, [expected])
+                short = [a['id'] for a in json.loads(self.claude_agents.read_text())
+                         if a['sessionId'] == SESSION]
+                self.assertEqual(self.claude_log()[-1]['args'], ['attach', *short])
+                self.assertEqual((self.root / '.claude-session-id').read_text().strip(), SESSION)
+
+    def test_claude_detached_does_not_attach(self):
+        (self.root / '.claude-session-id').write_text(SESSION + '\n')
+        result = self.launch_claude('--detached')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn('attach', [c['args'][0] for c in self.claude_log()])
+        self.assertIn('claude attach', result.stdout)
 
     def test_claude_explicit_new_replaces_binding(self):
         (self.root / '.claude-session-id').write_text(SESSION)
-        self.assertEqual(self.launch_claude('--new').returncode, 0)
-        args = json.loads(self.capture.read_text())['args']
-        self.assertNotIn('--resume', args)
-        self.assertNotEqual((self.root / '.claude-session-id').read_text().strip(), SESSION)
+        result = self.launch_claude('--new')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        [launch] = self.claude_launches()
+        self.assertNotIn('--resume', launch['args'])
+        bound = (self.root / '.claude-session-id').read_text().strip()
+        self.assertNotEqual(bound, SESSION)
+        self.assertEqual([a['sessionId'] for a in json.loads(self.claude_agents.read_text())], [bound])
 
     def test_claude_invalid_or_missing_explicit_binding_fails(self):
         self.assertNotEqual(self.launch_claude('--resume').returncode, 0)
         (self.root / '.claude-session-id').write_text('invalid session id')
         self.assertNotEqual(self.launch_claude().returncode, 0)
-        self.assertFalse(self.capture.exists())
+        self.assertEqual(self.claude_log(), [])
 
     def test_archiver_preserves_full_output_and_refuses_replacement(self):
         spec = importlib.util.spec_from_file_location('archive_session', ROOT / 'tools/archive-session.py')

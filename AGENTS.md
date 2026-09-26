@@ -306,9 +306,18 @@ rules to growing checklists or one-off setup narratives.
   `tools/claim-index.py author build` and a compact spec per the registry README.
   Append drafted entries and new Proposed next steps with `tools/notebook-append.py`;
   build reviewer excerpts with `tools/notebook-excerpt.py`.
-- After editing `compute.sh` or `tools/*.py`, run the framework tests before
-  committing: from `tools/tests`, `python3 -m unittest`, through the protected
-  launcher under the computation policy.
+- The framework suite is every `tools/tests/test_*.py`, which covers `compute.sh`,
+  the session launchers and `tools/`; new framework tests go there, never beside
+  the code. After editing any of these, run it before committing: from `tools/tests`,
+  `python3 -m unittest`, through the protected launcher under the computation
+  policy. Other tests run only on their own trigger: `tests/` for site changes (the
+  Pages workflow runs `test*pages.py` and `test_pages_client.js`; the Playwright
+  `*.cjs` browser tests run for notebook layout or script changes);
+  `formalization/tests/` needs the Lean toolchain and runs when formalization tooling
+  changes; `resource-controls/test_watchdog.py` and `test_11gb.py` validate the memory
+  controls and run only when those controls change. Scripts and tests under
+  `research/` are computations or provenance of finished one-off jobs, tied to the data
+  of their date, and are not rerun.
 - Durable process lessons belong in the committed framework, not machine-local
   memory. State general rules, not narratives of the mathematics that prompted them.
   Repeated question marks signal increasing frustration with the process: implement

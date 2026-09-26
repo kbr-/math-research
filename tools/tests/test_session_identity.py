@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-loader = importlib.machinery.SourceFileLoader('compute_identity', str(Path(__file__).resolve().parents[1] / 'compute.sh'))
+loader = importlib.machinery.SourceFileLoader('compute_identity', str(Path(__file__).resolve().parents[2] / 'compute.sh'))
 spec = importlib.util.spec_from_loader(loader.name, loader)
 compute = importlib.util.module_from_spec(spec)
 loader.exec_module(compute)

@@ -12,7 +12,7 @@ import time
 import unittest
 import uuid
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 CLI = str(ROOT / 'compute.sh')
 loader = importlib.machinery.SourceFileLoader('compute_cli', CLI)
 spec = importlib.util.spec_from_loader(loader.name, loader)
@@ -44,7 +44,7 @@ def gone_or_dead(pid):
 class RunnerChecks(unittest.TestCase):
     def setUp(self):
         self.name = 'cli_test_' + uuid.uuid4().hex[:12]
-        self.assertEqual(call('start', self.name).returncode, 0)
+        self.assertEqual(call('start', self.name, '--model', 'unit test, no reasoning').returncode, 0)
         self.path = ROOT / 'research/logs' / (self.name + '.jsonl')
 
     def tearDown(self):
@@ -55,7 +55,7 @@ class RunnerChecks(unittest.TestCase):
 
     def test_parallel_success_failure_and_stopped_session(self):
         processes = [subprocess.Popen(
-            [CLI, 'run', self.name, '--threads', '1', '--', sys.executable, '-c',
+            [CLI, 'run', self.name, '--threads', '1', '--timeout', '20', '--', sys.executable, '-c',
              f'import time; time.sleep(0.3); raise SystemExit({code})'],
             cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             for code in (0, 7)]
@@ -78,10 +78,13 @@ class RunnerChecks(unittest.TestCase):
 
     def test_guard_failure_is_logged_without_execution(self):
         env = dict(os.environ, DBUS_SESSION_BUS_ADDRESS='unix:path=/tmp/math-no-such-test-bus')
-        result = call('run', self.name, '--threads', '1', '--',
+        result = call('run', self.name, '--threads', '1', '--timeout', '20', '--',
                       sys.executable, '-c', 'print("WORKLOAD_EXECUTED")', env=env)
         self.assertNotEqual(result.returncode, 0)
         self.assertNotIn('WORKLOAD_EXECUTED', result.stdout)
+        # Computation output is never displayed, so check the saved log as well.
+        log = ROOT / result.stdout.rsplit('log: ', 1)[1].strip()
+        self.assertNotIn('WORKLOAD_EXECUTED', log.read_text())
         ends = [e for e in self.events() if e['event'] == 'run_end']
         self.assertEqual(len(ends), 1)
         self.assertNotEqual(ends[0]['returncode'], 0)
@@ -116,13 +119,27 @@ class RunnerChecks(unittest.TestCase):
 
     def test_standalone_logging_argument_preservation_and_output_limit(self):
         argument = 'literal spaces; $(not-a-command)'
-        result = call('--threads', '1', '--tail-bytes', '50', '--', sys.executable, '-c',
-                      'import sys; print("z"*100); print(sys.argv[1])', argument)
+        code = 'import sys; print("z"*100); print(sys.argv[1])'
+        # A tail may be displayed only outside the computation category.
+        result = call('--threads', '1', '--timeout', '20', '--category', 'local_processing',
+                      '--tail-bytes', '50', '--', sys.executable, '-c', code, argument)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn(argument, result.stdout)
+        self.assertNotIn('z' * 100, result.stdout)
         self.assertIn('full output is saved', result.stdout)
         log = ROOT / result.stdout.rsplit('log: ', 1)[1].strip()
         self.assertIn('z' * 100, log.read_text())
+        self.assertIn(argument, log.read_text())
+        # Computation output is saved but never displayed, and a tail request is refused.
+        result = call('--threads', '1', '--timeout', '20', '--', sys.executable, '-c', code, argument)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn(argument, result.stdout)
+        log = ROOT / result.stdout.rsplit('log: ', 1)[1].strip()
+        self.assertIn(argument, log.read_text())
+        refused = call('--threads', '1', '--timeout', '20', '--tail-bytes', '50', '--',
+                       sys.executable, '-c', code, argument)
+        self.assertNotEqual(refused.returncode, 0)
+        self.assertIn('never displayed', refused.stderr)
 
     def test_overlapping_intervals_are_counted_once(self):
         events = [dict(event='start', monotonic_s=0),
