@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Member universality below the counting fill point is refuted: random dense members start to fall together once \(Mh\) passes about \(N/2\), first near degree \(N/2\) and then lower (<a href="#entry-2026-09-26-member-universality-refuted">member universality refuted</a>). Next: with a compiled evaluation-rank kernel at \(N=12\) to 14, test whether the first cross-member fall stays near \(N/2\) at fixed total excluded density spread over many members, or descends with their number.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Cross-member falls follow density, not count. At fixed total excluded density, 25 random members still fall only above degree \(N/2\) on the cube (<a href="#entry-2026-09-26-density-fall-principle">density fall principle</a>), which favours random W_RS families. Next: test the principle on the PHP base's point set. Use column-injective assignments of 2 rows and 8 columns with the occupancy condition, and measure random members' cross falls relative to \(\operatorname{gr}F^P\) at fixed total density.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32735,6 +32735,62 @@ Subtracting lowers \(d\), a contradiction. So \(d=\deg f\) and the top of \(f\) 
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-density-fall-principle" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:density-fall-principle ex:fall-degree-series">
+<h3>Cross-member falls follow density, not count: at fixed total excluded density, spreading it over 1, 3, 9 or 25 random members leaves the first cross-member fall above degree \(N/2\), while letting the density collapse brings it down to degree 3. Random W_RS families, whose excluded density stays below \(1/n\), are on the favourable side</h3>
+<p class="entry-meta">26 September 2026 · Conjecture with a finite check · open statements A1 and A3 · cycle odd-prime-fall-degree-kernel. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statements A1 and A3. The <a href="#entry-2026-09-26-member-universality-refuted">member-universality entry</a> found cross-member falls once \(Mh\) passes about \(N/2\). They start near degree \(N/2\) and descend as members are added. Its runs, however, let the excluded density grow with \(M\). Random W_RS families have \(Mh\gg N\) but excluded density below \(1/n\). Is the descent driven by the number of members or by their total excluded density?</p>
+<p><strong>General statement.</strong> conj:density-fall-principle: for random dense randomized-prefix members on the Boolean \(N\)-cube over \(\mathbb F_3\), with \(h\ge2t+1\) forms each (nonvacuous for every prefix, by prop:vacuity-threshold), if the allowed intersection has density at least \(1/2\), every cross-member fall has degree at least \(N/2\), whatever the number of members. A cross-member fall is an element of \(\operatorname{gr}I(\bigcap_bP_b)\) outside \(\sum_b\operatorname{gr}I(P_b)\).</p>
+<h4>The kernel</h4>
+<p>fall_degree.cpp (FLINT, exact mod 3) works in the cube's graded ring of squarefree monomials:</p>
+<ul>
+<li>\(\operatorname{gr}I(P)_d\) consists of the degree-\(d\) parts of the kernel of evaluation of degree-\(\le d\) monomials on \(P\), and its dimension is \(\binom Nd-(\operatorname{rank}_d-\operatorname{rank}_{d-1})\).</li>
+<li>For each member the kernel computes these top parts, then the rank of their union, and reports the excess of \(\operatorname{gr}I(\bigcap P_b)_d\) over it, degree by degree.</li>
+</ul>
+<p>Validation:</p>
+<ul>
+<li>Single members give excess 0 in every degree, as they must.</li>
+<li>On a dumped 4-member instance at \(N=8\), Macaulay2's Gröbner computation (validate.m2) reproduces the kernel's excess 0, 0, 0, 2, 8, 0, 0, 0 and \(|\bigcap P|=150\) exactly (validation_n8.txt, validation_m2.txt).</li>
+</ul>
+<h4>The series</h4>
+<p>The series has \(N=12\), degrees 1 to 8, and three seeds per setting (series_jobs.txt, output series_n12_clean.txt; an earlier run of the same jobs with interleaved output is kept as series_n12_interleaved.txt). The first cross-member fall degree is:</p>
+<table>
+<tr><th>setting</th><th>intersection density</th><th>first fall degree</th></tr>
+<tr><td>\(t=1\), \(h=3\), \(M=1\) (control)</td><td>0.64 to 0.96</td><td>none</td></tr>
+<tr><td>\(t=2\), \(h=5\), \(M=3\)</td><td>0.77 to 0.88</td><td>8, 7, 8</td></tr>
+<tr><td>\(t=3\), \(h=7\), \(M=9\)</td><td>0.67 to 0.74</td><td>7, 7, 7</td></tr>
+<tr><td>\(t=4\), \(h=9\), \(M=25\) (\(Mh=225\))</td><td>0.70 to 0.79</td><td>7, 7, 7</td></tr>
+<tr><td>\(t=1\), \(h=3\), \(M=3\)</td><td>0.53 to 0.59</td><td>6, 6, 6</td></tr>
+<tr><td>\(t=1\), \(h=3\), \(M=9\)</td><td>0.07 to 0.13</td><td>4, 3, 4</td></tr>
+</table>
+<p>With the total excluded density held near a quarter, multiplying the members by 25 does not move the first fall below degree 7 (\(N/2=6\)). With dense members, the density collapses and the falls come down to degrees 3 and 4. So the descent seen in the member-universality entry is a density effect.</p>
+<p>The conjecture is consistent with every recorded run:</p>
+<ul>
+<li>This series.</li>
+<li>The member-universality runs at \(N=10\): falls at degrees 5 to 7 at densities 0.61 to 0.69, and degree 5 at density 0.38.</li>
+<li>The member-universality runs at \(N=8\): degrees 5 and 6 at density 0.79, degree 3 at density 0.33.</li>
+</ul>
+<p>It is evidence at \(N\le12\) and \(t\le4\), not a proof.</p>
+<h4>What is proved, and what it means</h4>
+<p>A weak form is elementary. If the excluded set \(E\) has \(|E|&lt;2^{N-d}\), no nonzero polynomial of degree at most \(d\) vanishes on the intersection, since such a polynomial is nonzero on at least \(2^{N-d}\) cube points (DeMillo–Lipton on the cube). So there is no fall of any kind below degree \(\log_2(1/\varepsilon)\), with \(\varepsilon\) the excluded density. For W_RS that is about \(\log_2n\), below the clause degree, so this weak form does not reach \(D\). The conjecture's bound \(N/2\) is far stronger: with \(N=n(n+1)\) cells it would put every cross-member fall of a random W_RS family far above \(D\approx44t\), on the cube.</p>
+<p>That would localize the random-family case of A1's core. Each member's own falls are handled by using its whole ideal (prop:single-block-falls). Cross-member falls would not occur below \(D\), so members-as-units gluing would hold through \(D\) on the cube. What remains for random families is the interaction with the PHP base, where the relevant object is \(\operatorname{gr}F^Q\) over the column-injective assignments. This matches the record's density-\(1/2\) conjecture for column forms (conj:closed-row-freeness), from a different direction.</p>
+<p><strong>Next.</strong> Move the test from the cube to the base: on column-injective assignments of 2 rows and 8 columns, with the occupancy condition, do random members' cross falls relative to \(\operatorname{gr}F^P\) also stay above half the degree range at fixed total density? Adapt the kernel to that point set and monomial basis. For the adversarial side, keep in view that a family built with shared forms controls its dependencies, which random families do not.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the member-universality entry and its outputs, prop:single-block-falls, prop:vacuity-threshold and conj:closed-row-freeness. The kernel is exact mod 3 and validated against Macaulay2 on a dumped instance. Controls with one member give excess 0. The table is read from the saved output. No reviewer pass was run: the entry states a conjecture with its evidence and one elementary bound, whose proof is the DeMillo–Lipton count written above.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-fall-degree-kernel">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 39.40 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">43.09 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 1.04 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 7.53 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">6 min 46.27 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.48 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
