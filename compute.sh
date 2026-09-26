@@ -122,6 +122,20 @@ def session_model(agent=None, model=None):
     return model or os.environ.get('MATH_AGENT_MODEL')
 
 
+GUIDANCE_WARN_S = 1.0
+
+
+def guidance_note(elapsed):
+    """A warning when turn guidance is slow: it runs at every start, so slowness there is work that
+    scales with the repository (the claim registry, the notebook) and multiplies across sessions and
+    tests."""
+    if elapsed <= GUIDANCE_WARN_S:
+        return ''
+    return (f'Warning: turn guidance took {elapsed:.1f} s (limit {GUIDANCE_WARN_S:g} s). Profile '
+            'tools/turn_guidance.py (python3 -m cProfile -s cumtime tools/turn_guidance.py) and remove '
+            'the repeated work before it grows.\n')
+
+
 def start_session(name, agent=None, model=None, notebook=None):
     from notebooks import selected
     notebook = selected(notebook, ROOT)["name"]
@@ -638,10 +652,11 @@ def main():
             print(start_session(args.session, args.agent, args.model, args.notebook).relative_to(ROOT))
             recovery_observe('bind', root=ROOT, turn=args.session)
             try:   # advisory only: what finish-turn.py would reject, said before the work starts
+                began = time.monotonic()
                 guide = subprocess.run([sys.executable, str(ROOT / 'tools/turn_guidance.py')]
                                        + ([args.notebook] if args.notebook else []),
                                        cwd=ROOT, capture_output=True, text=True, timeout=60)
-                print(guide.stdout, end='')
+                print(guide.stdout + guidance_note(time.monotonic() - began), end='')
             except (OSError, subprocess.SubprocessError):
                 pass
             return 0

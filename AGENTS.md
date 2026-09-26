@@ -313,7 +313,8 @@ rules to growing checklists or one-off setup narratives.
   parallel worker processes. The whole suite stays under 10 seconds (user, 26 September
   2026: "The suite should run in 10s tops"); the runner fails a slower run and lists its
   slowest tests. That is a defect to find and fix, such as repeated work in the code under
-  test, not a wait to accept; rerun on a quiet machine first, since other jobs' load counts. Other tests run only on their own trigger: `tests/` for site changes (the
+  test, not a wait to accept; rerun on a quiet machine first, since other jobs' load counts.
+  For the same reason `compute.sh start` warns when its turn guidance takes over 1 s. Other tests run only on their own trigger: `tests/` for site changes (the
   Pages workflow runs `test*pages.py` and `test_pages_client.js`; the Playwright
   `*.cjs` browser tests run for notebook layout or script changes);
   `formalization/tests/` needs the Lean toolchain and runs when formalization tooling

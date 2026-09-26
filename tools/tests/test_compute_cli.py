@@ -41,6 +41,17 @@ def gone_or_dead(pid):
         return True
 
 
+class GuidanceNote(unittest.TestCase):
+    """compute.sh start warns when its turn guidance is slow, and stays quiet otherwise."""
+
+    def test_slow_guidance_is_reported(self):
+        note = compute.guidance_note(compute.GUIDANCE_WARN_S + 1.5)
+        self.assertIn('Warning: turn guidance took 2.5 s', note)
+
+    def test_fast_guidance_prints_nothing(self):
+        self.assertEqual(compute.guidance_note(compute.GUIDANCE_WARN_S / 4), '')
+
+
 class RunnerChecks(unittest.TestCase):
     def setUp(self):
         self.name = 'cli_test_' + uuid.uuid4().hex[:12]
