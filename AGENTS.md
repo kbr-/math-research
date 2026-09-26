@@ -314,7 +314,10 @@ rules to growing checklists or one-off setup narratives.
   2026: "The suite should run in 10s tops"); the runner fails a slower run and lists its
   slowest tests. That is a defect to find and fix, such as repeated work in the code under
   test, not a wait to accept; rerun on a quiet machine first, since other jobs' load counts.
-  For the same reason `compute.sh start` warns when its turn guidance takes over 1 s. Other tests run only on their own trigger: `tests/` for site changes (the
+  For the same reason `compute.sh start` warns when its turn guidance takes over 1 s. Tests
+  run on small fixtures, where work repeated per item costs nothing: a change to a framework
+  tool that reads the repository's records also gets one timed run against the real repository
+  before its commit, and a profile if it is slower than the work it does. Other tests run only on their own trigger: `tests/` for site changes (the
   Pages workflow runs `test*pages.py` and `test_pages_client.js`; the Playwright
   `*.cjs` browser tests run for notebook layout or script changes);
   `formalization/tests/` needs the Lean toolchain and runs when formalization tooling
