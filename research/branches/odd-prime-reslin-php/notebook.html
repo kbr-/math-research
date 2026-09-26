@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The integrality line has integral designs for plain PHP at Nullstellensatz degree \(\lfloor(n+1)/2\rfloor\) (<a href="#entry-2026-09-26-integral-extension">integral extension</a>). Its route review found that exact encodings of a block's mod-3 constraint in the cube variables alone have degree about the support, but that a linear encoding with \(O(\log n)\) auxiliary Boolean variables exists (<a href="#entry-2026-09-26-integrality-review">integrality review</a>). Next: add one random dense form \(L\), encoded by \(L-1-y-3\sum_{i&lt;r}2^ib_i=0\), to weak PHP with 6 pigeons at degree 3. Report whether \(\mathbb F_3\) and \(\mathbb Q\) refute and the 3-torsion, then whether a 3-integral design exists.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> With one dense block encoded exactly over auxiliary Boolean bits, weak PHP with 6 pigeons keeps a 3-integral Nullstellensatz design at degree 3 in all 7 seeds (<a href="#entry-2026-09-26-aux-encoding">auxiliary encoding</a>), and the lifting system for the bits is a weighted Koszul complex. Next: attempt the proof for one block. Construct a 3-integral design for weak PHP plus one encoded block at every \(d\le\lfloor(n+1)/2\rfloor-c\), from the integral PHP design (thm:integral-design-extension) and the Koszul lifting, starting with an \(\mathbb F_3\) design of PHP plus \(L=1+y\) whose integral lift satisfies the base congruence.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -29898,6 +29898,49 @@ and the next step given a stated lift, a torsion report and the NS-versus-PC sco
 <tr><td>Computation design and coding</td><td class="elapsed">6.87 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 52.69 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.50 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-aux-encoding" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:integral-designs-aux-encoding ex:aux-encoding-integral-small" data-lead="entry-2026-09-26-closed-routes-review:2">
+<h3>The auxiliary-variable encoding: weak PHP with 6 pigeons plus one dense block encoded exactly by \(L-1-y-3\sum2^ib_i=0\) keeps a 3-integral Nullstellensatz design at degree 3 in all 7 seeds, with identical ranks; the lifting system for the auxiliary bits is a weighted Koszul complex, a route to a proof</h3>
+<p class="entry-meta">26 September 2026 · Finite check and conjecture · open statement A1 · cycle odd-prime-aux-encoding.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-integrality-review">integrality review</a> kept the integrality line open for one encoding. Over fresh Boolean variables \(y,b_0,\dots,b_{r-1}\), the linear equation \(E=L-1-y-3\sum_{i&lt;r}2^ib_i\) has a 0-1 solution exactly when \(L\not\equiv0\) mod 3, and reduces mod 3 to \(L=1+y\). Does weak PHP plus one dense block so encoded keep a 3-integral design?</p>
+<p><strong>General statement.</strong> conj:integral-designs-aux-encoding: for weak \(\mathrm{PHP}^{n+1}_n\) plus one equation \(E\) as above, with \(L=c_0+\sum_ea_ex_e\), integer coefficients in \(\{0,1,2\}\) and \(r\) large enough for the range of \(L\), at every Nullstellensatz degree \(d\le\lfloor(n+1)/2\rfloor\) where \(\mathbb F_3\) does not refute, the constant monomial lies outside \(\mathrm{Sat}(L_d)+3\mathbb Z_{(3)}^N\), so a 3-integral rational design exists. The finite check ex:aux-encoding-integral-small supports it at one size.</p>
+
+<h4>The computation</h4>
+<p>The script <code>aux_encoding.py</code> forms the Nullstellensatz lattice of weak PHP plus \(E\), multiplying every axiom by all multilinear monomials over cells and auxiliary variables, up to degree 3. It reports the decision conditions, then the 3-saturation as in the <a href="#entry-2026-09-26-hensel-saturation">saturation entry</a>. At 6 pigeons, \(L\) has support 18 to 24 of the 30 cells and \(r=4\), giving 36 variables, 7176 monomials and 7117 multiples (<code>aux_encoding.json</code>).</p>
+<ul>
+<li>All 7 seeds (0 to 6) give the same ranks: 5514 over \(\mathbb F_3\) and 5521 over \(\mathbb F_5\), \(\mathbb F_7\) and modulo \(10^9+7\), so 7 dimensions of 3-torsion. None of \(\mathbb F_3,\mathbb F_5,\mathbb F_7\) refutes. One lifting step reaches 5521, and the constant monomial is outside the saturation. A 3-integral design exists in every seed, conditionally on the rational rank 5521.</li>
+<li>Control, 5 pigeons at degree 3: \(\mathbb F_3\) refutes, as for PHP alone, so the case is uninformative.</li>
+</ul>
+<p>A 3-integral design of the augmented instance gives an \(\mathbb F_3\) design of weak PHP plus \(L^2-1\) (substituting \(y=L-1\) mod 3), with an \(O(1)\) degree loss.</p>
+
+<h4>A route to a proof</h4>
+<p>Write a design on monomials \(m\,b_B\), with \(m\) over cells and \(y\) and \(B\subseteq\{0,\dots,r-1\}\), as a family of functionals \(\varphi_B(m)=\ell(m\,b_B)\). The multiples of \(E\) give, for \(\deg m+|B|\le d-1\),
+\[\varphi_B\bigl(m(L-1-y)\bigr)-3\sum_{i\in B}2^i\varphi_B(m)=3\sum_{i\notin B}2^i\varphi_{B\cup\{i\}}(m).\]
+Two facts follow. Modulo 3 the right side vanishes, so each \(\varphi_B\) reduced mod 3 must kill the multiples of \(L-1-y\): it is an \(\mathbb F_3\) design of PHP plus \(L=1+y\), in lower degree. Over \(\mathbb Z_{(3)}\), after division by 3, the unknowns \(\varphi_C\) with \(|C|=|B|+1\) enter through the map \(\varphi\mapsto\sum_{i\notin B}2^i\varphi_{B\cup\{i\}}\). That is the boundary map of the full simplex on \(r\) vertices, weighted by the units \(2^i\), and it is exact in positive degree. So the lifting is solvable level by level provided each right side is a cycle, and the cycle condition is again a congruence on lower levels. Whether these conditions can be met, with the degree truncation \(\deg m+|C|\le d\), is the proof question. The identical ranks across seeds suggest the answer does not depend on \(L\).</p>
+
+<h4>What it means</h4>
+<ul>
+<li>The encoding obstruction is gone for one block: with \(O(\log n)\) auxiliary bits, a characteristic-0 instance with the same mod-3 content keeps integral designs at the tested size.</li>
+<li>For A1 this is still one block at degree 3, at Nullstellensatz degree, with the construction unknown. The lead matters only if integral designs for many blocks come from a characteristic-0 construction with a real notion of smallness. The auxiliary bits carry the mod-3 structure into the rational instance, so such a construction must handle the bits too.</li>
+</ul>
+<p><strong>Next.</strong> Attempt the proof for one block: construct a 3-integral design for weak PHP plus one encoded block at every \(d\le\lfloor(n+1)/2\rfloor-c\), from the integral PHP design (thm:integral-design-extension) and the Koszul lifting above. The first step is the base level: an \(\mathbb F_3\) design of PHP plus \(L=1+y\) whose integral lift has \(\varphi_\emptyset(m(L-1-y))\equiv0\) mod 3.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the integrality review's encoding and the saturation procedure. The decision conditions were reported first: \(\mathbb F_3\) does not refute and there is 3-torsion, so the cases are informative. The positive results are conditional on the rational rank. The Koszul observation is a reformulation, not a claimed result. No fresh-context review was run: the computation reuses the reviewed saturation procedure with new axiom rows, the encoding's correctness was checked by the integrality review's reviewer, and no mathematical claim beyond the finite check and the conjecture is made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-aux-encoding">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 52.70 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">15.39 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 29.42 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">57.90 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 9.85 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
