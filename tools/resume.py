@@ -99,9 +99,10 @@ def bundle(root, formalization=False, tail=10, notebook=None):
     parts.append((f'Research-record contents — latest {tail}; {omitted} earlier entries omitted',toc,
                   'notebook-excerpt',{'anchor':None,'until':None,'current':False,'toc':True,'tail':tail,'since':'None'}))
     if (root/'research/claims/index.json').exists():
-        from claim_registry import load as load_claims
+        # Only a summary: validating the registry is the claim checks' job.
+        from claim_registry import read_json
         from claim_attention import load, reconcile, brief
-        data=load_claims(root/'research/claims/index.json')
+        data=read_json(root/'research/claims/index.json')
         history,_=reconcile(data,load(root))
         parts.append(('Significance attention',brief(data,history),'claim-attention','pending'))
     if (root/'research/notes/FOSSICK_STATE.json').exists():
