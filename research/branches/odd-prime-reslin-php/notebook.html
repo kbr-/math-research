@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The pin line is recorded freeness and is parked; the leads of the <a href="#entry-2026-09-26-pin-route-review">pin route review</a> all failed their cheap tests except one untested half. Over \(\mathbb F_3\) a line's falsifying set is the preimage of a product cap. That set is closed under intersection but depends on the basis. Next: read the closure definition and growth lemma of Efremenko and Itsykson's amortized closure and of Efremenko, Garlík and Itsykson. Decide whether they use invariance under change of basis. If not, define an ordered-form closure at \(p=3\) and test one resolution step in the smallest case.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The ordered-closure step re-entered the recorded closure sub-line, which is bounded-depth only (<a href="#entry-2026-09-26-ordered-closure">ordered closure</a>). Next: a targeted literature pass, 2023 to 2026, on polynomial calculus and Nullstellensatz degree lower bounds for combinatorial principles with added dense low-degree axioms, the situation of A1 that no recorded tool covers. For each source, record whether its mechanism tolerates axioms involving most variables. Before proposing a technique, search the record under that technique's own words.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -31561,6 +31561,40 @@ and, for \(g=g'\), the same with the two sums over the forms of group \(g\). In 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 31.93 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.24 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-ordered-closure" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="The review's closure question answered from the recorded closure sub-line and an imported lemma; no new claim. The general statements concerned are lem:Fp-support-safe-forms-onto-01 and prop:unary-vertex-cover-closure.">
+<h3>The ordered-closure step re-enters the recorded closure sub-line: closure over \(\mathbb F_3\) with 0/1 points was built on additive bases on 22 September; for disequations alone, Alon's permanent lemma gives a one-column criterion, which is not span-invariant</h3>
+<p class="entry-meta">26 September 2026 · Relation to the record, no new claim · open statement A1 · cycle odd-prime-ordered-closure. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-pin-route-review">pin route review</a> asked whether the closure of Efremenko, Garlík and Itsykson, and Efremenko and Itsykson's amortized closure, need invariance under change of basis. Over \(\mathbb F_3\), falsifying sets are preimages of product caps, which are not basis-invariant.</p>
+<p><strong>General statement.</strong> lem:Fp-support-safe-forms-onto-01 and prop:unary-vertex-cover-closure (recorded); no new claim.</p>
+<h4>Where closure uses linear structure</h4>
+<p>From the amortized-closure paper (Efremenko and Itsykson, CCC 2025, Sections 1.2.1 and 1.2.2, read in the source): a set \(F\) of forms is <em>safe</em> when the columns of its coefficient matrix contain a basis with at most one column in each block. The closure \(\mathrm{Cl}(F)\) is an inclusion-minimal set of blocks whose removal makes \(F\) safe. It is unique and monotone, satisfies \(|\mathrm{Cl}(F)|\le\dim\langle F\rangle\), and depends only on the span. Safety is used through one step: the variables outside the basis are fixed so that each gadget is stifled, and the basis variables are then solved for. Over \(\mathbb F_2\) the solved values are Boolean automatically. Span invariance is harmless there, and it would be harmless at \(p=3\) too. The step works for any nonempty target set of value vectors, product caps included.</p>
+<p>What fails at \(p=3\) is that step: solving over \(\mathbb F_3\) can give a basis variable the value 2. The record met this on 22 September. In the <a href="#entry-2026-09-22-vertex-cover-closure">vertex-cover closure entry</a>, lem:Fp-support-safe-forms-onto-01 replaces "a basis" by \(l\ge p\ln r+p-1\) disjoint bases. Their union is an additive basis by Alon, Linial and Meshulam, so every value is reached by a 0/1 assignment. The closure bound becomes \(O(p\,r\log r)\), and there is no canonical closure. The <a href="#entry-2026-09-22-star-closure-route-review">star-closure route review</a> then assessed the sub-line as weak: sparse forms defeat the probability bound, and its payoff is a bounded-depth endpoint, not the goal. The modular-collision theorem (thm:modular-collision-linear-search-hardness) later supplied search hardness. So the review's step re-enters a recorded, reviewed sub-line. The review's search, under "cap set", did not find it, although its words "closure" and "safe" are the sub-line's own.</p>
+<h4>An observation on disequations</h4>
+<p>The additive-basis condition makes every value reachable, as a system of equations needs. A negated line is a system of disequations \(\bigwedge_i(f_i\ne a_i)\). For those, the permanent lemma of Alon's Combinatorial Nullstellensatz (Combin. Probab. Comput. 8, 1999) is enough: if the \(k\times k\) coefficient matrix of \(k\) forms in \(k\) chosen variables has nonzero permanent modulo 3, then for all constants there is a 0/1 assignment of those variables with \(f_i\ne a_i\) for every \(i\). Two facts show the limits of this criterion.</p>
+<ul>
+<li>A nonzero determinant is not enough. For \(f_1=x_1+x_2\) and \(f_2=x_1-x_2\), with determinant \(-2\ne0\) and permanent \(0\), the clause \((f_1=1)\lor(f_2=0)\) holds at all four points of \(\{0,1\}^2\): \((0,0)\) and \((1,1)\) satisfy \(f_2=0\), and \((1,0)\) and \((0,1)\) satisfy \(f_1=1\).</li>
+<li>The criterion depends on the basis. The forms \(x_1,x_2\) span the same space and have permanent 1. Every clause \((x_1=a)\lor(x_2=b)\) is falsified at a 0/1 point, since each of \(x_1,x_2\) can avoid one value. So a Boolean tautology and a non-tautology can have the same span. No span-invariant safety notion decides falsifiability over \(\mathbb F_3\) with 0/1 points. This is the product-cap basis dependence of the review, in closure terms, and matches the vertex-cover entry's finding that semantic implication over \(\mathbb F_p\) with 0/1 points does not give weakening under span containment.</li>
+</ul>
+<p>In the game that characterizes depth, the Adversary answers queries with values, which are equations. So the permanent criterion does not replace the additive-basis condition there. It could shorten only the part of an argument that handles negated lines alone. No such argument is on record, and none was attempted.</p>
+<h4>What it means</h4>
+<p>The closure idea for \(p=3\) is recorded, reviewed and bounded-depth. The one untested half of the review's cap-set lead is therefore answered: basis dependence is real, but closure had already bypassed it by requiring additive bases. It gives no new route to A1. This is the second cycle running in which a proposed step turned out to be recorded. In both cases the search used the lead's name rather than the technique's recorded words.</p>
+<p><strong>Next.</strong> A targeted literature pass on polynomial calculus and Nullstellensatz degree lower bounds for combinatorial principles with added <em>dense</em> low-degree axioms, 2023 to 2026. This is the situation of A1, and none of the recorded tools covers it: Mikša–Nordström closures, Alekhnovich–Razborov immunity and colouring are all local. For each source, extract whether its mechanism tolerates axioms that involve most variables. Before proposing any technique, search the record under the technique's own words.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Read in the source: Efremenko and Itsykson's definitions of safe sets, closure and amortized closure, and the list of closure properties (Sections 1.2.1 and 1.2.2 and Theorem 7); the private copy is not committed. Re-read the vertex-cover closure entry (lem:Fp-support-safe-forms-onto-01, prop:unary-vertex-cover-closure, span weakening), the star-closure route review, and the claim summary of thm:modular-collision-linear-search-hardness. The two examples were checked at all four points of \(\{0,1\}^2\). The permanent lemma is imported as stated, and it is the only step not verified here. No claim is registered and no reviewer pass was run, since the entry states only an imported lemma and two four-point checks.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-ordered-closure">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 44.44 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 23.41 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">40.83 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">1 min 40.00 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
