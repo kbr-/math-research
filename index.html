@@ -157,9 +157,23 @@
     // Preserve only blocks that MathJax actually changes. Search builds the rest
     // of its text index on demand, without reading layout or typesetting anything.
     window.notebookText = {
-      selector: 'p, li, .math, h1, h2, h3, h4, h5, h6, td, th, summary',
+      selector: 'p, li, .math, .math-fragment, h1, h2, h3, h4, h5, h6, td, th, summary',
       sources: new WeakMap(),
       pause: () => new Promise(resolve => setTimeout(resolve, 0))
+    };
+    // Older entries also contain TeX directly between paragraphs. Give those
+    // text nodes small observable containers without rewriting their contents
+    // or typesetting a whole article. Inline wrappers preserve mixed prose.
+    window.notebookText.wrapBareMath = element => {
+      const {selector} = window.notebookText;
+      if (element.closest(selector + ', pre, code, script, style, textarea, noscript, mjx-container')) return;
+      for (const node of [...element.childNodes]) {
+        if (node.nodeType !== Node.TEXT_NODE || !/\\[([]|\$/.test(node.textContent)) continue;
+        const wrapper = document.createElement('span');
+        wrapper.className = 'math-fragment';
+        node.replaceWith(wrapper);
+        wrapper.append(node);
+      }
     };
     // Only nearby regions acquire block observers; only nearby blocks reach MathJax.
     // Keep the full source in the DOM for native find, anchor links and no-JS reading.
@@ -168,7 +182,7 @@
       const finished = new WeakSet();
       const blocksByRegion = new WeakMap();
       let running = false;
-      const {selector, sources, pause} = window.notebookText;
+      const {selector, sources, pause, wrapBareMath} = window.notebookText;
       const hasMath = element => /\\[([]|\$/.test(element.textContent);
 
       async function drain() {
@@ -206,6 +220,8 @@
         for (const {target: region, isIntersecting} of entries) {
           let blocks = blocksByRegion.get(region);
           if (isIntersecting && !blocks) {
+            wrapBareMath(region);
+            for (const element of region.querySelectorAll('*')) wrapBareMath(element);
             blocks = region.matches(selector) ? [region] :
               [...region.querySelectorAll(selector)].filter(block =>
                 !block.parentElement.closest(selector) ||
@@ -219,6 +235,7 @@
           }
         }
       }, {rootMargin: '1200px 0px'});
+      for (const parent of document.querySelectorAll('main, #research-record')) wrapBareMath(parent);
       for (const region of document.querySelectorAll(
         'main > :not(#research-record), #research-record > *')) {
         regionObserver.observe(region);
@@ -255,6 +272,7 @@
             do {
               const element = stack.pop();
               if (element.matches('script, style, footer, .heading-anchor, mjx-container')) continue;
+              window.notebookText.wrapBareMath(element);
               if (element.matches(selector + ', pre') || !element.querySelector(selector + ', pre')) {
                 const text = normalize(sources.get(element) ?? element.textContent);
                 if (!text) continue;

@@ -9,6 +9,23 @@ const {chromium} = require('playwright');
   const template = fs.readFileSync(process.env.NOTEBOOK_TEMPLATE || 'index.html', 'utf8');
   const notebook = fs.readFileSync('notebook.html', 'utf8');
   const html = template.replace('__REVISION__', 'browser-test').replace('<!-- NOTEBOOK -->', notebook);
+  const mathFixture = String.raw`
+    <section id="fixture-overview"><h2>Math blocks</h2><p>Overview.</p></section>
+    <section id="research-record">
+      <article id="bare-math"><h3>Bare and wrapped math</h3>
+        <p id="wrapped-math">Wrapped \(x+1\).</p>
+        \[x^2+1\]
+        <div id="nested-bare">\[y^2+1\]</div>
+        <p>Inline text next:</p> Bare \(z^2+1\).
+        <pre id="literal-math">\[leave this example alone\]</pre>
+        $$w^2+1$$
+      </article>
+      <article id="distant-math" style="margin-top:100000px"><h3>Distant math</h3>
+        \[\text{unvisited-orphan-probe}+q^2\]
+      </article>
+    </section>`;
+  const mathFixtureHtml = template.replace('__REVISION__', 'browser-test')
+    .replace('<!-- NOTEBOOK -->', mathFixture);
   const recordEnd = notebook.lastIndexOf('</section>');
   const articles = notebook.slice(notebook.indexOf('<article '), recordEnd);
   const extraArticles = [1, 2].map(n => articles.replace(/\bid="([^"]+)"/g, `id="growth-${n}-$1"`)).join('');
@@ -16,13 +33,14 @@ const {chromium} = require('playwright');
   const growingHtml = template.replace('__REVISION__', 'browser-test').replace('<!-- NOTEBOOK -->', growingNotebook);
   const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', req.url === '/revision' ? 'application/json' : 'text/html');
-    res.end(req.url === '/revision' ? '{"revision":"browser-test"}' : req.url.includes('growth=1') ? growingHtml : html);
+    res.end(req.url === '/revision' ? '{"revision":"browser-test"}' :
+      req.url.startsWith('/math-fixture') ? mathFixtureHtml : req.url.includes('growth=1') ? growingHtml : html);
   });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   let browser;
   const report = {browser: '', samples: [], errors: []};
   try {
-    browser = await chromium.launch({headless: true});
+    browser = await chromium.launch({headless: true, executablePath: process.env.NOTEBOOK_CHROMIUM});
     report.browser = browser.version();
     const page = await browser.newPage({reducedMotion: 'reduce'});
     page.on('pageerror', error => report.errors.push(error.message));
@@ -58,6 +76,24 @@ const {chromium} = require('playwright');
       }));
     }
     const cdp = await page.context().newCDPSession(page);
+    // Bare display/inline TeX must acquire small containers, while code and
+    // distant math stay untouched by typesetting. Search must retain raw TeX.
+    await page.goto(url + 'math-fixture', {waitUntil: 'domcontentloaded'});
+    await ready();
+    await page.waitForFunction(() => document.querySelectorAll('#bare-math mjx-container').length === 5);
+    assert.equal(await page.locator('#bare-math .math-fragment').count(), 4);
+    assert.equal(await page.locator('#literal-math .math-fragment, #literal-math mjx-container').count(), 0);
+    assert.equal(await page.locator('#distant-math mjx-container').count(), 0);
+    const fixtureMathBeforeSearch = await page.locator('mjx-container').count();
+    await page.locator('#search-open').click();
+    await page.locator('#search-query').fill('unvisited-orphan-probe');
+    await page.waitForFunction(() => document.getElementById('search-status').dataset.state === 'ready');
+    assert.equal(await page.locator('#search-results button').count(), 1);
+    assert.equal(await page.locator('mjx-container').count(), fixtureMathBeforeSearch,
+      'Searching bare TeX must not typeset an unvisited article');
+    await page.locator('#search-results button').click();
+    await page.waitForFunction(() => document.querySelector('#distant-math mjx-container'));
+    await sample('bare-math-fixture');
     async function checkSearch(label) {
       assert.equal(await page.evaluate(() => performance.getEntriesByName('notebook-search-index').length), 0,
         'No search index should be built at page load');
