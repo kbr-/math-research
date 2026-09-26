@@ -352,6 +352,22 @@ For fixed p, 0<eps<=1, A, c and 0<beta<eps/2, every standard syntactic Res(lin_F
 
 ---
 
+### Cube limit simple ramification
+
+**Claim:** [thm:cube-limit-simple-ramification](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-26-cube-annular-boundary>)
+
+For each d>=2, m=2d-1,N=4m, the collision series U_d in L(2d*E[2]) on a generic complex elliptic curve has weight exactly six at the twelve points of E[4] outside E[2], weight zero at E[2], and 16m^2+16m-72 other zeros, all simple. Genericity is a nonempty Zariski-open set separately for each degree. The noncollision part of the parameter determinant Delta_U is consequently squarefree in every characteristic-zero field for all d>=1, with d=1 given by the explicit Vandermonde determinant.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Determines the generic ramification distribution of the whole elliptic collision-series family in every degree and proves the previously open reducedness statement. The resulting dimension-four boundary law is a concrete payoff; independent external novelty still needs assessment.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Assess independent novelty and possible inclusion in a research publication; continue the main thread with the remaining pre-stable thresholds and small-prime obligations.
+
+---
+
 ### Cube transport monotonicity
 
 **Claim:** [thm:cube-transport-monotonicity](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-26-cube-transport-monotonicity>)
