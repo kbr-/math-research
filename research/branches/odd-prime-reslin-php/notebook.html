@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1: the collective dense core.</strong> The randomized-prefix program removed structured adversaries but produced no tool for families of many dense blocks, where the recorded mechanisms gain nothing (<a href="#entry-2026-09-26-collective-core-review">collective-core review</a>). Over \(\mathbb F_3\) a negated equation cuts the cube by a quadric, which on recorded small instances removes fewer polynomial dimensions than an \(\mathbb F_2\) flat. Next: a literature pass on post-2023 DAG-like work on resolution over parities and over linear equations (Efremenko–Garlík–Itsykson, Bhattacharya–Chattopadhyay–Dvořák, Efremenko–Itsykson's amortized closure, any 2025–2026 work on \(\mathrm{Res}(\mathrm{Lin}_{\mathbb F_p})\)). For each technique record whether it needs falsifying sets to be flats or only a closure operator, and test the most promising one at the smallest odd-prime instance where it applies.</p>
+<p><strong>Route item: odd-prime-clause-transfer.</strong> The literature has no superpolynomial DAG-like, regular or bounded-depth lower bound for \(\mathrm{Res}(\mathrm{Lin}_{\mathbb F_p})\) at odd \(p\) (<a href="#entry-2026-09-26-parity-literature">literature pass</a>). The only DAG-like method for PHP-type formulas is the dimension count, whose odd-prime failure is measured, so the collective dense core stays open. Nearest open target with a known method: a bounded-depth bound by closure-based walks. Next, first step of that route: define a safety notion over \(\mathbb F_3\) for unary PHP that depends on the constants, consistent with lem:Fp-linear-system-forced-cells, and prove that a safe system of rank \(r\) forces at most \(O(r)\) cells and no collision.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -29142,6 +29142,82 @@ The main term is an equidistribution statement analogous to Cohen–Lenstra mome
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">50.90 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.21 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-parity-literature" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Literature pass on post-2023 lower bounds for resolution over parities and over linear equations, recording each technique's dependence on flats and its odd-characteristic content; no new claim.">
+<h3>Literature pass: every recent lower bound for resolution over parities or linear equations is over \(\mathbb F_2\) or \(\mathbb Q\), or weak, or restricted to depth or regularity; transferring the closure-based walks to odd \(p\) looks possible only after a safety notion that depends on constants, which is the nearest open target</h3>
+<p class="entry-meta">26 September 2026 · Literature pass · the goal, restricted classes · cycle odd-prime-parity-literature.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-26-collective-core-review">collective-core review</a> found no internal mechanism that gains at the collective dense core. It asked for a literature pass: which recent techniques for resolution over parities or linear equations exist, and does any of them avoid needing falsifying sets to be flats?</p>
+<p><strong>General statement.</strong> No claim is registered. The statements the pass bears on are the goal's reductions (thm:logarithmic-prefix-wide-clause-reduction, conj:randomized-wide-clause) and the record's odd-prime closure result, thm:modular-collision-linear-search-hardness. Only abstracts, as fetched, and the recorded audits were read. Statements below stay within the abstracts.</p>
+
+<h4>What exists</h4>
+<ul>
+<li><em>DAG-like, \(\mathbb F_2\), PHP-type.</em> arXiv:2609.23015 (Braun, September 2026): every DAG-like \(\mathrm{Res}(\oplus)\) refutation of the bit pigeonhole principle has more than \(\exp(n/(32768\ell^2))=2^{\Omega(n/\log^2n)}\) clauses, by translating refutations into polynomial calculus and using homology of chessboard complexes. The title was not in the text read. This corresponds to the main record's bit-PHP theorem (thm:working-Res-parity-bit-PHP-size-lower-bound). The <a href="#entry-2026-09-26-thread-review">thread review</a> showed that the dimension count fails at \(p=3\), and the collective-core review measured it: quadrics in place of flats.</li>
+<li><em>Regular and bounded depth, \(\mathbb F_2\).</em>
+ <ul>
+ <li>Efremenko, Garlík and Itsykson (STOC 2024): closure of linear forms, and exponential lower bounds for regular \(\mathrm{Res}(\oplus)\).</li>
+ <li>Efremenko and Itsykson, amortized closure (CCC 2025): a closure that grows by at most one per added linear form; a lifting theorem for 1-stifling gadgets; improved bounded-depth bounds.</li>
+ <li>Bhattacharya and Chattopadhyay (arXiv:2507.23008): Tseitin lifted with inner-product gadgets needs size \(\exp(\tilde\Omega(N^\varepsilon))\) at depth \(O(N^{2-\varepsilon})\); lifted distributions fool safe affine spaces.</li>
+ <li>Byramji and Impagliazzo (arXiv:2511.20023): weak bit PHP with \(m=cn\) pigeons needs exponential size at depth \(N^{1.5-\varepsilon}\), and \(t\)-BPHP at depth \(N^{2-1/t-\varepsilon}\). They give a lifting theorem for bounded-depth \(\mathrm{Res}(\oplus)\) from decision-tree hardness, and depth \(\Omega(n)\) for randomized parity decision trees finding collisions.</li>
+ </ul></li>
+<li><em>DAG-like, large characteristic.</em> Part and Tzameret (arXiv:1806.09383): exponential DAG-like bounds for subset sum over \(\mathbb Q\). Refutations must pass through fat clauses that list \(f=\alpha\) for every \(\alpha\) in the image of a form. Over \(\mathbb F_p\) the image has at most \(p\) values, so such clauses are not fat. Over \(\mathbb Q\) with 0/1 variables the image can be exponentially large. So the technique needs large characteristic.</li>
+<li><em>DAG-like, finite fields, weak bounds.</em> Khaniki (ECCC TR20-034; the title was not in the text read): the first nontrivial lower bounds for \(\mathrm{Res}(\mathrm{lin})\) and \(\mathrm{Res}(\mathrm{PC}_d)\) over finite fields, nearly quadratic for mod-\(q\) Tseitin in characteristic other than \(q\), and a size–width relation for DAG-like \(\mathrm{Res}(\mathrm{PC}_{1,R})\). The abstract does not give the relation's form. Whether width lower bounds in its measure hold for graph PHP was not checked.</li>
+<li><em>Tree-like, all fields.</em> Part and Tzameret's tree-like bound for PHP (imp:PT-tree-like-ResLin-PHP), which gives depth \(\Omega(n)\) at odd \(p\). Also the combinatorial games for tree-like size and space (arXiv:2404.08370).</li>
+</ul>
+<p>No superpolynomial DAG-like, regular or bounded-depth lower bound for \(\mathrm{Res}(\mathrm{Lin}_{\mathbb F_p})\) at odd \(p\) was found. Searches were limited to web search on titles and abstracts, which does not establish absence.</p>
+
+<h4>Which techniques need flats</h4>
+<ul>
+<li><em>Dimension counting</em> (the bit-PHP paper) needs each falsifying set to be a flat, so that restriction removes a flat's worth of polynomial dimensions. At \(p=3\) the quadrics remove fewer dimensions, as recorded. This is the obstruction for DAG-like proofs.</li>
+<li><em>Closure-based walks (a heuristic of this entry, not a finding).</em> Over \(\mathbb F_2\) the negation of \(L=a\) is \(L=1-a\), an equation. Over \(\mathbb F_p\) it is \(L\ne a\). A walk that keeps an affine space could add \(L=b\) for some \(b\ne a\). What could break this transfer:
+ <ul>
+ <li>Safety at odd \(p\) depends on the constants, not only on the span. lem:Fp-linear-system-forced-cells records that \(x_{i_1j}+x_{i_2j}=2\) is safe for the span-only notion yet forces a collision. So the value choice enters the safety and closure notions themselves, not only the probability analysis.</li>
+ <li>The same lemma's Olson bound lets a rank-\(r\) system force up to \(r(p-1)\) variables. Closure accounting that grows by at most one per added form would then grow by up to \(p-1\) per unit of rank.</li>
+ <li>In a random walk the value of \(L\) is set by the sampled point, not chosen. Conditioning on \(L=b\) changes the distribution.</li>
+ </ul></li>
+<li><em>Fat clauses</em> (Part–Tzameret) need large characteristic.</li>
+<li><em>Size–width</em> (Khaniki): its form and its reach for PHP are unchecked.</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li>For the goal, DAG-like proofs, the literature offers nothing beyond the record. The only DAG-like method for PHP-type formulas is the dimension count, whose odd-prime failure is measured. The collective dense core stays open, with no outside technique.</li>
+<li>For restricted classes, a closure-based bounded-depth bound at odd \(p\) needs, before anything else, a safety notion over \(\mathbb F_p\) that depends on constants. It also needs the probability bound and the restriction that thm:modular-collision-linear-search-hardness's record names as missing. None of these has known difficulty.</li>
+<li>There is an encoding mismatch. Byramji and Impagliazzo work with weak bit PHP, \(m=cn\) pigeons in the bit encoding. The recorded modular-collision theorem is for unary PHP with \(n+1\) pigeons.</li>
+<li>Tree-like proofs are already settled at odd \(p\), with depth \(\Omega(n)\). So the target would be size bounds at depth well above \(n\).</li>
+</ul>
+<p><strong>Next.</strong> The bounded-depth route at \(p=3\), in this order.</p>
+<ol>
+<li>Define a safety notion over \(\mathbb F_3\) for unary PHP that depends on the constants, consistent with lem:Fp-linear-system-forced-cells. Prove that a safe system of rank \(r\) forces at most \(O(r)\) cells and no collision.</li>
+<li>Decide the encoding: unary, where the modular-collision theorem lives, or a bit encoding over \(\mathbb F_3\), as Byramji and Impagliazzo use.</li>
+<li>Read Efremenko, Garlík and Itsykson's closure and walk, and Byramji and Impagliazzo's, at the level of their two key lemmas. Then state the odd-prime probability bound exactly.</li>
+</ol>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Read the abstracts listed, as fetched, and the registered claims cited: thm:modular-collision-linear-search-hardness, lem:Fp-linear-system-forced-cells, ctx:php-linear-constraints-literature, imp:PT-tree-like-ResLin-PHP, thm:working-Res-parity-bit-PHP-size-lower-bound and audit:additional-Res-parity-regularity-literature. A fresh-context reviewer, given only those abstracts and claims, required these changes, all adopted:</p>
+<ul>
+<li>the fat-clause obstruction restated as size, not tautology;</li>
+<li>the no-work sentence limited to superpolynomial bounds, since Khaniki's apply over finite fields;</li>
+<li>the size–width remark reduced to what the abstract states;</li>
+<li>paper descriptions cut back to the abstracts, with unread titles marked;</li>
+<li>the closure-walk transfer labelled a heuristic, with what could break it: constant-dependent safety, the Olson accounting, and distribution conditioning;</li>
+<li>"two steps from a bound" replaced by the three open pieces, the encoding mismatch and the existing tree-like depth bound;</li>
+<li>the next step made concrete.</li>
+</ul>
+<p>The changes restrict claims, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-parity-literature">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 32.66 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 45.53 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7.82 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">39.67 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">1 min 59.49 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.15 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
