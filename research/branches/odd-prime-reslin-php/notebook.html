@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> No recorded mechanism handles blocks whose interaction part is dense, including full-support product statistics; the restriction line now serves as a reduction that removes every block sparse in some direction (<a href="#entry-2026-09-26-dense-core-review">dense-core review</a>). On the complete board, a random matching makes the restricted constant of a dense-interaction form near-uniform, fixes row and column statistics, and leaves sparse interactions Poisson-like. Next: define the interaction part \(a_{it}-u_i-v_t\) of a form and a density notion for combinations of a block's forms. Prove joint near-uniformity of the restricted constants for blocks whose every nonzero combination has dense interaction, by bounding \(\mathrm{perm}(\omega^A)\). Then state the semi-random residual W to which the dense core reduces.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> No recorded mechanism handles blocks whose interaction part is dense (<a href="#entry-2026-09-26-dense-core-review">dense-core review</a>). By the swap decay lemma, the restriction gives every block whose combinations are all far from additive jointly near-uniform shifts, up to \(e^{-\varepsilon^2n/300}\) per point (<a href="#entry-2026-09-26-swap-decay">swap decay</a>). Dense blocks have no per-block kill, so the reduction to a semi-random residual must be global, and it needs a split of the family's span. Next: define the far part of the span and its near-additive part, an additive matrix plus a sparse part. Test whether every family splits so that the far part has jointly uniform shifts and the near part goes to freezing and the sparse mechanisms, within the prefix budget.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26679,6 +26679,87 @@ because \(er\le n^{\eta/2}\) for large \(n\), as \(r=O(\ln n)\). This is at most
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 54.96 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.68 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-swap-decay" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:swap-decay cor:dense-shift-equidistribution" data-lead="entry-2026-09-26-dense-core-review:1">
+<h3>The swap decay lemma: a statistic \(\sum_iC_{i\pi(i)}\) of a uniform bijection is exponentially close to uniform on \(\mathbb F_3\) once \(C\) is far from additive, so the restriction gives the forms of dense blocks near-uniform random shifts</h3>
+<p class="entry-meta">26 September 2026 · Working proof · open statement A1, restricted constants · cycle odd-prime-restricted-constants.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-dense-core-review">dense-core review</a> proposed a reduction of A1's dense core to a semi-random residual. Its first step: after the random matching, the constants of a block's restricted forms should be jointly close to uniform when every combination of the forms has dense interaction. The review's tests showed this numerically for single forms. Is there a proof, with a rate good enough for union bounds over \(n^K\) blocks?</p>
+<p><strong>General statement.</strong> Two results over \(\mathbb F_3\), lem:swap-decay and cor:dense-shift-equidistribution, with \(\omega=e^{2\pi i/3}\):</p>
+<ul>
+<li>lem:swap-decay: for a uniform bijection \(\pi\) of \([N]\) and \(C\in\mathbb F_3^{N\times N}\) at distance at least \(\varepsilon\) from the additive matrices \(u_i+v_t\), we have \(|\mathbb E\,\omega^{\sum_iC_{i\pi(i)}}|=|\mathrm{perm}(\omega^C)|/N!\le(1-\varepsilon/8)^{\lfloor\varepsilon N/8\rfloor}\). For matrices \(C_1,\dots,C_h\) whose every nonzero combination is that far, the vector of statistics is within \((1-\varepsilon/8)^{\lfloor\varepsilon N/8\rfloor}\) of uniform on \(\mathbb F_3^h\) at every point.</li>
+<li>cor:dense-shift-equidistribution: in the restriction of thm:logarithmic-residual-w, the constants of a block's restricted forms are jointly within \(e^{-\varepsilon^2n/300}\) of uniform at every point, conditional on the residual data, for large \(n\). This holds whenever every nonzero combination of the block's coefficient matrices is \(\varepsilon\)-far from additive on the board.</li>
+</ul>
+<p>The mechanism is recorded. The <a href="#entry-2026-09-22-modular-collision-search">modular-collision search</a> listed control of the number of nonzero swap differences among disjoint pairs as unproved. The later <a href="#entry-2026-09-22-modular-collision-hardness">modular-collision theorem</a> (thm:modular-collision-linear-search-hardness) handled that step for near-bijections in dense graphs. It samples fresh pairs whose orientations are hidden uniform bits, uses its four-cycle test for the probability of a nonzero difference, and applies a Fourier bound for systems. The lemma here specializes that mechanism to uniform bijections of a complete board. There it becomes an explicit bound on \(|\mathrm{perm}(\omega^C)|/N!\) in terms of the distance from additive, with deterministic spread pairs exposed one at a time and no sampling or failure events. Its per-swap factor \(1/2=\cos(\pi/3)\) is that of the search entry's many-swap localization bound.</p>
+
+<h4>The swap decay lemma</h4>
+<p>For \(C\in\mathbb F_3^{N\times N}\) let \(\mathrm{dist}(C)\) be the least fraction of cells in which \(C\) differs from an additive matrix \(u_i+v_t\). For rows \(i\ne i'\), the <em>row difference</em> is \(d_{ii'}=C_i-C_{i'}\in\mathbb F_3^N\). Call the pair \((i,i')\) <em>\(\theta\)-spread</em> if every level set \(\{t:d_{ii'}(t)=c\}\) has at most \((1-\theta)N\) elements. Write \(c(\pi)=\sum_iC_{i\pi(i)}\).</p>
+<p><strong>Part A (spread pairs).</strong> Let \((i_1,i'_1),\dots,(i_m,i'_m)\) be disjoint \(\theta\)-spread pairs with \(2m\le\theta N/2\). Then \(|\mathbb E\,\omega^{c(\pi)}|\le(1-\theta/4)^m\).</p>
+<p><em>Proof.</em> Generate \(\pi\) in steps. For \(j=1,\dots,m\), pick a uniform ordered pair \((t_j,t'_j)\) of distinct unused holes, and set \(\pi(i_j)=t_j\) and \(\pi(i'_j)=t'_j\). Then map the other pigeons by a uniform bijection onto the remaining holes. Each step is uniform over the remaining choices, so \(\pi\) is uniform.</p>
+<p>Let \(\mathcal F\) record the unordered pairs \(\{t_j,t'_j\}\) and the rest of \(\pi\). For any set \(S\) of pairs, exchanging the images within the pairs of \(S\) is a bijection of the permutations that preserves \(\mathcal F\). So given \(\mathcal F\), the \(m\) orientations are independent and uniform, and</p>
+\[\mathbb E[\omega^{c(\pi)}\mid\mathcal F]=\omega^{c_0}\prod_{j=1}^m\frac{\omega^{C(i_j,t_j)+C(i'_j,t'_j)}+\omega^{C(i_j,t'_j)+C(i'_j,t_j)}}2 .\]
+<p>Here \(c_0\) is the contribution of the other pigeons. The \(j\)-th factor has modulus \(|1+\omega^{\Delta_j}|/2\), with \(\Delta_j=d_j(t_j)-d_j(t'_j)\) and \(d_j=d_{i_ji'_j}\). Since \(|1+\omega|=|1+\omega^2|=1\), the modulus is \(f_j=1\) if \(d_j(t_j)=d_j(t'_j)\), and \(f_j=1/2\) otherwise. Hence \(|\mathbb E\,\omega^{c(\pi)}|\le\mathbb E\prod_jf_j\).</p>
+<p>Let \(\mathcal G_{j-1}\) record the first \(j-1\) unordered pairs. Given \(\mathcal G_{j-1}\), the pair \(\{t_j,t'_j\}\) is a uniform 2-subset of the unused set \(U_j\), of size \(u\ge N-2m\ge(1-\theta/2)N\). Let \(u_c\) be the number of \(t\in U_j\) with \(d_j(t)=c\), and \(a=\max_cu_c\le(1-\theta)N\). Then</p>
+\[P\bigl(d_j(t_j)=d_j(t'_j)\mid\mathcal G_{j-1}\bigr)=\sum_c\frac{u_c(u_c-1)}{u(u-1)}\le\frac{a-1}{u-1}\le\frac au\le\frac{1-\theta}{1-\theta/2}\le1-\frac\theta2 .\]
+<p>So \(\mathbb E[f_j\mid\mathcal G_{j-1}]\le1-\theta/4\). The factors \(f_1,\dots,f_{j-1}\) are \(\mathcal G_{j-1}\)-measurable, so conditioning on \(\mathcal G_{m-1},\mathcal G_{m-2},\dots\) in turn gives \(\mathbb E\prod_jf_j\le(1-\theta/4)^m\). \(\square\)</p>
+<p><strong>Part B (distance gives spread pairs).</strong> If \(\mathrm{dist}(C)\ge\varepsilon\), there are \(\lfloor\varepsilon N/8\rfloor\) disjoint \((\varepsilon/2)\)-spread pairs.</p>
+<p><em>Proof.</em> Take a maximal family of disjoint \((\varepsilon/2)\)-spread pairs, and suppose it has fewer than \(\lfloor\varepsilon N/8\rfloor\) pairs. Its pigeons number less than \(\varepsilon N/4\). Let \(U\) be the other pigeons, and fix \(i_0\in U\). By maximality no pair inside \(U\) is spread. So for each \(i\in U\) there is \(c_i\) with \(C_i(t)=C_{i_0}(t)+c_i\) for more than \((1-\varepsilon/2)N\) holes \(t\), with \(c_{i_0}=0\). Let \(A(i,t)=C_{i_0}(t)+c_i\) for \(i\in U\) and \(A(i,t)=C_{i_0}(t)\) otherwise, an additive matrix. \(C\) and \(A\) differ in fewer than \((\varepsilon/2)N\) cells of each row of \(U\), and in at most \(N\) cells of each other row. That makes fewer than \((\varepsilon/2)N^2+(\varepsilon/4)N^2&lt;\varepsilon N^2\) cells, contradicting \(\mathrm{dist}(C)\ge\varepsilon\). \(\square\)</p>
+<p><strong>Lemma (swap decay).</strong></p>
+<ol>
+<li>If \(\mathrm{dist}(C)\ge\varepsilon\), then \(|\mathbb E\,\omega^{c(\pi)}|=|\mathrm{perm}(\omega^C)|/N!\le(1-\varepsilon/8)^{\lfloor\varepsilon N/8\rfloor}\).</li>
+<li>If \(C_1,\dots,C_h\) have \(\mathrm{dist}(\sum_j\lambda_jC_j)\ge\varepsilon\) for every \(\lambda\in\mathbb F_3^h\setminus0\), then the vector \(\mathbf c=(c_1(\pi),\dots,c_h(\pi))\) satisfies \(|P(\mathbf c=v)-3^{-h}|\le(1-\varepsilon/8)^{\lfloor\varepsilon N/8\rfloor}\) for every \(v\in\mathbb F_3^h\).</li>
+</ol>
+<p><em>Proof.</em> (1) Part B gives \(m=\lfloor\varepsilon N/8\rfloor\) disjoint \((\varepsilon/2)\)-spread pairs. Since \(2m\le\varepsilon N/4=\theta N/2\) for \(\theta=\varepsilon/2\), Part A applies. The identity \(\mathbb E\,\omega^{c(\pi)}=\mathrm{perm}(\omega^C)/N!\) is the definition of the permanent.</p>
+<p>(2) By Fourier inversion on \(\mathbb F_3^h\), \(P(\mathbf c=v)=3^{-h}\sum_\lambda\omega^{-\lambda\cdot v}\,\mathbb E\,\omega^{\lambda\cdot\mathbf c}\), and \(\lambda\cdot\mathbf c=\sum_i(\sum_j\lambda_jC_j)_{i\pi(i)}\). The term \(\lambda=0\) is \(3^{-h}\). Each other term has modulus at most \(3^{-h}B\), where \(B\) is the bound of (1), so the total deviation is at most \((1-3^{-h})B\le B\). \(\square\)</p>
+<p>The rate is \(e^{-\varepsilon^2N/64+O(1)}\). For fixed \(\varepsilon\) it beats \(3^{-h}\) for \(h\) up to a constant times \(\varepsilon^2N\). The three classes of the review behave as expected:</p>
+<ul>
+<li>additive matrices have \(\mathrm{dist}=0\) and constant statistics;</li>
+<li>the identity has \(\mathrm{dist}\le1/N\), and its statistic is Poisson-like;</li>
+<li>a uniform random matrix has \(\mathrm{dist}\) near \(2/3\) with high probability.</li>
+</ul>
+<p>Over \(\mathbb F_p\) the same proof works with \(\omega=e^{2\pi i/p}\), the factor \(1/2\) replaced by \(\cos(\pi/p)\) as in the search entry's many-swap localization bound, and \(1-\theta/4\) replaced by \(1-\tfrac\theta2(1-\cos(\pi/p))\). This is not needed here.</p>
+
+<h4>Application to the restriction</h4>
+<p>Take the choice of thm:logarithmic-residual-w: \(s=10(22k+1)\), \(h=\lceil2^{12}s\rceil\) and \(r=h+1\), so \(h,r=O(\ln n)\); \(H\) is a uniform \(h\)-set of holes and \(\pi\) a uniform injection of holes into pigeons, \(\rho=\{(\pi(t),t):t\notin H\}\), \(R\) the unused pigeons, and each pigeon of \(R\) takes a uniform 5-subset of \(H\), independently of everything else. Given \(H\) and \(R\), the matching \(\rho\) is a uniform bijection from the \(N=n-h\) pigeons outside \(R\) onto the holes outside \(H\) (Step 3 of thm:cell-family-w). It is independent of \(G'\), which is drawn from fresh randomness given \(H\) and \(R\). The restriction fixes the \(\rho\)-cells to 1, the other cells in their rows and columns to 0, and the cells of \(R\times H\) outside \(G'\) to 0. So a form \(L=a_0+\sum a_{it}x_{it}\) restricts to</p>
+\[\bar L=a_0+c(\rho)+\sum_{(i,t)\in G'}a_{it}x_{it},\qquad c(\rho)=\sum_{i\notin R}a_{i\rho(i)} .\]
+<p>Its residual part depends only on \(H\), \(R\) and \(G'\), and its constant is the statistic of the bijection for the sub-board matrix \(C=(a_{it})_{i\notin R,\,t\notin H}\).</p>
+<p>Distance passes to the sub-board. An additive matrix within \(\delta\) of the sub-board matrix extends additively to the \(m\times n\) board, with at most \(rn+hm\) extra disagreements. So</p>
+\[\mathrm{dist}_{\mathrm{sub}}\ge\frac{mn\,\mathrm{dist}_{\mathrm{board}}-rn-hm}{N^2}\ge\mathrm{dist}_{\mathrm{board}}-O\Bigl(\frac{\ln n}n\Bigr),\]
+<p>since \(N^2\le mn\) and the loss is \((rn+hm)/N^2=O((r+h)/n)\).</p>
+<p><strong>Corollary (dense shift equidistribution).</strong> Fix \(\varepsilon&gt;0\). Let a block have linear parts with coefficient matrices \(A_1,\dots,A_{h_b}\) on the \(m\times n\) board, every nonzero combination at distance at least \(\varepsilon\) from additive. For \(n\ge n_0(\varepsilon,K,C)\), conditional on \((H,R,G')\), the constants of the restricted forms satisfy \(|P(\mathbf c=v)-3^{-h_b}|\le e^{-\varepsilon^2n/300}\) for every \(v\), where \(\mathbf c=(a_{0,j}+c_j(\rho))_j\). Consequently, for any event \(E\) about the block's restricted forms, \(P(E)\) differs by at most \(3^{h_b}e^{-\varepsilon^2n/300}\) from its value when the shifts are independent uniform. The residual parts are the same in both models.</p>
+<p><em>Proof.</em> For \(n\ge n_0\) the loss \(O((r+h)/n)\) is at most \(\varepsilon/2\), so the sub-board distances are at least \(\varepsilon/2\). Part 2 of the lemma with \(\varepsilon/2\) gives the bound \((1-\varepsilon/16)^{\lfloor\varepsilon N/16\rfloor}\le e^{-\varepsilon^2N/256+\varepsilon/16}\). Since \(N=n-h\ge0.99n\), this is at most \(e^{-\varepsilon^2n/300}\) once \(\varepsilon^2n(0.99/256-1/300)\ge\varepsilon/16\), roughly \(n\ge120/\varepsilon\). The same holds with \(\varepsilon\) depending on \(n\), as long as \(\varepsilon\) is large compared with \((r+h)/n\) and \(1/n\). The shifts \(a_{0,j}\) are fixed translations. The event bound sums the pointwise deviations over the \(3^{h_b}\) shift vectors. \(\square\)</p>
+
+<h4>What it means</h4>
+<ul>
+<li><em>A per-block transfer.</em> For blocks far from additive in every combination, the restriction is, block by block, the semi-random model: fixed residual parts with independent uniform shifts. This holds up to \(3^{h_b}e^{-\varepsilon^2n/300}\), which is negligible for \(h_b\le c\,\varepsilon^2n\) with \(c&lt;1/(300\ln3)\), about \(1/330\).</li>
+<li><em>Why this is not yet a reduction.</em> Dense blocks have no per-block kill: their residual parts are nonzero, so no clause vanishes by itself. Any mechanism for them must be global, and it needs the joint law of the shifts across the whole family. That law is near-uniform only on the combinations of all the family's forms that are far from additive. A family can contain near-additive combinations, for instance two dense forms differing by a column statistic plus a sparse part. So the global reduction needs a decomposition of the family's span into a far part, with uniform shifts, and a near-additive part, which freezing and the sparse mechanisms must handle. This is the regularity lead of the dense-core review.</li>
+<li><em>Which forms the lemma does not reach.</em> The lemma and its bounds are for uniform bijections of a complete sub-board. It says nothing about near-bijections in dense graphs, the setting of the modular-collision search. Its rate \(e^{-\varepsilon^2N/64}\) decays only while \(\varepsilon\gg N^{-1/2}\). It gives no useful decay for combinations at distance \(O(N^{-1/2})\) from additive, such as additive matrices plus deviations in \(O(N^{3/2})\) cells.</li>
+</ul>
+<p><strong>What is open.</strong> The decomposition step, and the semi-random residual W statement itself. No new case of W is proved.</p>
+<p><strong>Next.</strong> Define the far and near-additive parts of a family's span. Near-additive means an additive matrix plus a sparse part, so it can go to freezing and the sparse mechanisms. Test whether a family can be split so that the far part has jointly uniform shifts and the near part is handled, with the cost counted against the prefix budget.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the swap-detection and many-swap localization lemmas of the modular-collision search (lem:unary-swap-localization-Fp), the statement and localization step of thm:modular-collision-linear-search-hardness (fresh pairs, hidden orientations, its Fourier bound for systems), lem:dense-class-restrictions-imply-additive, and the choice and conditioning of thm:cell-family-w and thm:logarithmic-residual-w. A claim search found no recorded bound of \(|\mathrm{perm}(\omega^C)|/N!\) by the distance from additive. The reviewer pointed to the newer modular-collision theorem, and on reading it the lemma is labelled a specialization of its mechanism. A fresh-context reviewer confirmed Parts A and B, the lemma's first part, the uniformity of the generation, the tower argument, the \(\mathbb F_p\) remark and the three-class claims. It found no unused hypothesis. It required these changes, all adopted:</p>
+<ul>
+<li>the relation to the modular-collision theorem, which had already handled the step in a harder setting;</li>
+<li>the Fourier-inversion wording;</li>
+<li>the actual \(h\) and \(r\) of the choice, and the independence of \(G'\);</li>
+<li>\(n\ge n_0(\varepsilon)\), and the constant in \(h_b\le c\,\varepsilon^2n\);</li>
+<li>the decay range \(\varepsilon\gg N^{-1/2}\) in place of "no decay at \(o(1)\)".</li>
+</ul>
+<p>The changes correct or weaken claims, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-restricted-constants">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 17.53 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">4 min 7.99 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6.86 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 2.54 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
