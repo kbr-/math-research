@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Sunflower purity defects are exactly \(\ell_0^2\mathfrak mG_1\), and they are absorbed once the family excludes a flat \(\{L_0=a\}\) (<a href="#entry-2026-09-27-sunflower-absorption">sunflower absorption</a>). Next: generalize to shared spans of dimension \(S\). When members share \(S\) forms, is every purity defect supported on the shared value space and absorbed by the covering falls of its flats? Test this against the flat-difference configuration.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Sunflowers and shared flats are absorbed, in theory and in every family computed on 4 × 7 (<a href="#entry-2026-09-27-absorption-check">absorption check</a>). Next: test relative row freeness for span-dependent families, members whose forms lie in the span of others' forms without sharing, on 4 × 7 with the low-memory kernel, inside the base's free range.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33557,6 +33557,46 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><td>Computation design and coding</td><td class="elapsed">57.15 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.05 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">45.12 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-absorption-check" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:sunflower-absorption-check">
+<h3>Absorption on real families: sunflowers of flat-excluding members on four rows are row-free through degree 4, inside the base's free range. From about 30 members they cover the flat, and the allowed set becomes \(\{L_0\ne a\}\) exactly, as the covering argument predicts. A low-memory kernel (1.5 GB on 4 × 7) makes four-row tests routine again</h3>
+<p class="entry-meta">27 September 2026 · Finite check · open statements A1 and A3 · cycle odd-prime-shared-span-absorption. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statements A1 and A3. <a href="#entry-2026-09-27-sunflower-absorption">Sunflower absorption</a> argued that shared-factor purity defects are absorbed by covering falls, from a tops-only model and an order-of-magnitude count. Do actual sunflower families, with their full top ideals, stay row-free at a degree where the base is free?</p>
+<p><strong>General statement.</strong> lem:sunflower-absorption, tested on families, within conj:dense-relative-row-freeness.</p>
+<h4>A low-memory kernel</h4>
+<p>row_freeness_lowmem.cpp (research/results/odd_prime_shared_span_absorption_20260927/) replaces FLINT's 8-byte matrices by fflas-ffpack with float storage for the nullspaces and ranks. It reproduces the FLINT kernels' lines exactly on 3 × 5 and 3 × 7 (validation_3row.txt) and the 4 × 7 base (base_4x7_lowmem.txt: \(\operatorname{Tor}_1=0,0,0,0\)), in 35 s with 1.5 GB peak, against about 3.5 GB before. The four-row test stopped earlier for system memory pressure used the old kernel. It stays pending with the user; this cycle ran new questions only, one or two jobs at a time.</p>
+<h4>The test</h4>
+<p>Mode sunpoints: every member has two forms, a common dense \(L_0\) (same linear part and constant) and a private dense \(L_b\), with prefix row \((1,2)\). Each member then excludes exactly the flat \(\{L_0=0,L_b=0\}\), all inside \(\{L_0=0\}\). This is the adversarial sunflower of the relative directness entry, as a family. Forms are reduced to normal form. On 4 × 7 (series.txt):</p>
+<table>
+<tr><th>\(M\)</th><th>density</th><th>Hilbert function, degrees 0 to 4</th><th>\(\operatorname{Tor}_1\), degrees 1 to 4</th></tr>
+<tr><td>10 (two seeds)</td><td>0.673, 0.677</td><td>1, 27, 308, 1905, 6332 / 6342</td><td>0, 0, 0, 0</td></tr>
+<tr><td>30</td><td>0.667</td><td>1, 27, 307, 1879, 6243</td><td>0, 0, 0, 0</td></tr>
+<tr><td>60</td><td>0.667</td><td>1, 27, 307, 1879, 6243</td><td>0, 0, 0, 0</td></tr>
+</table>
+<p>The base has 1, 27, 308, 1905, 6747.</p>
+<ul>
+<li><strong>Covering.</strong> At 30 and 60 members the allowed sets coincide. Their Hilbert function drops by one in degree 2: the top \(\ell_0^2\) of \((L_0-a)^2-1\), which vanishes once the whole flat is excluded. So the flat is covered by 30 members, in line with \((2/3)^M\) times the flat's roughly 8,500 points falling below 1 near \(M\approx22\). Part 2 of the lemma then applies, and the family is row-free, as a single form within capacity must be.</li>
+<li><strong>Before covering.</strong> At 10 members the flat is not covered and the first new tops appear in degree 4. The family is row-free there too. At this size the tops are far from spanning \(\ell_0^2G_2\), so no shared-factor defect can arise, as the count predicted.</li>
+</ul>
+<h4>Shared flats of dimension \(S\)</h4>
+<p>The proof of lem:sunflower-absorption applies verbatim to members sharing \(S\) forms \(v_0=(L_{0,1},\dots,L_{0,S})\). The indicator \(\delta_y(v_0)=\prod_j\delta(L_{0,j}-y_j)\) of an \(S\)-flat has top \(\pm\prod_j\ell_{0,j}^2\) of degree \(2S\). A family excluding the flat \(\{v_0=y\}\) except \(Z_y\) has \(\delta_y(v_0)f\in I(Q)\) for \(f\) vanishing on \(Z_y\). So the defect of tops sharing the factor \(\prod_j\ell_{0,j}^2\) is absorbed once the flat is covered. The flat-difference pairs are the case \(S=2\) where each member excludes a whole flat. Their row freeness on 4 × 7 (the first-degree purity entry) fits this. This remark registers no new claim.</p>
+<p><strong>Next.</strong> The adversary's two sharing mechanisms, sunflowers and shared flats, are now absorbed in theory and in every family computed. The remaining form of A1's local-to-global step is dependence without sharing: forms in the span of other members' forms. Test relative row freeness on 4 × 7 for span-dependent families (spandep, spandepzero) with the low-memory kernel. They had no early falls on 2 × 8; whether they stay row-free inside the base's range is untested.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:sunflower-absorption and the relative directness and first-degree purity entries. The low-memory kernel reproduces three recorded FLINT lines exactly. The table is read from the saved output. The covering interpretation is checked by the Hilbert-function drop in degree 2 and the coincidence of the allowed sets at 30 and 60 members.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-shared-span-absorption">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 45.10 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">30.79 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 24.79 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 16.42 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 32.97 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
