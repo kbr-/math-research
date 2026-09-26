@@ -35,7 +35,7 @@
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
 <li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Its zero sets are mapped (<a href="#cube-threshold-collision-support">theorem</a>, <a href="#entry-2026-09-26-cube-collision-windows">entry</a>) but do not give \(\ell_0\). Order zero satisfies \(11d-11\le M(d)\le20d-21\) (<a href="#cube-order-zero-dimension-four-lower-bound">windows</a>, <a href="#cube-order-zero-dimension-four-linear-bound">products</a>). Restrictions give lower bounds (<a href="#cube-order-zero-restriction">lemma</a>; planes give 19, 38 modulo a large prime, <a href="#cube-order-zero-restrictions">check</a>), exact when the solution module has depth \(\ge3\) (<a href="#cube-restriction-exactness">exactness lemma</a>). Once \(I_m\) has no zeros, order zero fails only through a local cohomology class (<a href="#cube-zero-free-criterion">zero-free criterion</a>): the class of the order-zero column, whose annihilator is \(I_m\) (<a href="#cube-threshold-annihilator">annihilator form</a>). It vanishes locally at every point, so no pointwise method sees it; at \(d=2\) the modules have depth 2 (<a href="#entry-2026-09-26-cube-route-review-19">route review 19</a>). Next: weigh a global duality bound for \(H^0_{\mathfrak m}(C_{m-1})\) against the other open statements (boundary for every \(d\), small primes).</li>
-<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs squarefreeness of the non-collision part of the limit determinant \(\Delta_U\) (<a href="#cube-squarefree-reduction">reduction theorem</a>, <a href="#cube-limit-triple-multiplicity">triple multiplicity</a>), an instance of the <a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness conjecture</a>. Its base case \(n=2\), \(\nu=d-|r|\), is proved: on the conic every Weierstrass point has weight 1 (<a href="#cube-conic-squarefree">conic theorem</a>). On the genus-1 curve \(U_d\) is cut out by four character functionals, and weight 2 needs one of two rank drops (<a href="#cube-limit-four-functionals">lemma</a>). Next: show those rank drops fail at general points of the Weierstrass divisor, or treat the triple sides by apolarity.</li>
+<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs squarefreeness of the non-collision part of the limit determinant \(\Delta_U\) (<a href="#cube-squarefree-reduction">reduction theorem</a>, <a href="#cube-limit-triple-multiplicity">triple multiplicity</a>). Its base case \(n=2\), \(\nu=d-|r|\), is proved: on the conic every Weierstrass point has weight 1 (<a href="#cube-conic-squarefree">conic theorem</a>). On the genus-1 curve weight 2 needs one of two rank drops (<a href="#cube-limit-four-functionals">lemma</a>). The quadrangle route needs the same on both kinds of side: on the triple sides the conic vector \((2d,2d-2,2d-2,2d-4)\) is squarefree for \(d\le5\) (<a href="#entry-2026-09-26-cube-triple-sides">entry</a>). Next: its weight argument for every \(d\), then the transported double-double sides.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions; the dimension-3 result may merit a note.</p>
@@ -8597,6 +8597,55 @@ As in the dimension-3 window lemma, \((w_3-w)^k=A_k(w)+w_3B_k(w)\) with \(\deg A
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 32.19 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 26.53 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-triple-sides" data-kind="research" data-route="cube-odd-characteristic" data-claims="check:cube-triple-side-squarefree">
+<h3>26 September 2026 — The triple sides of the limit determinant: a diagonal factor and one irreducible palindromic factor, squarefree through d = 5</h3>
+<p class="entry-meta">Finite check, exact over Q: on the triple sides the non-collision part of the conic determinant (2d, 2d−2, 2d−2, 2d−4) is (a₁ + a₂) times one irreducible palindromic factor, squarefree for d ≤ 5. Cycle bmd-r132. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> The dimension-4 boundary law needs the limit conjecture: the non-collision part of \(\Delta_U\) is squarefree (<a href="#entry-2026-09-26-cube-squarefree-reduction">reduction entry</a>). The <a href="#cube-limit-four-functionals">four-functionals lemma</a> showed that \(\Delta_U\) itself has no closed form at \(d=2\). The recorded alternative is the <a href="#cube-quadrangle-diagonal">quadrangle lemma</a>, which needs the restriction of \(\Delta_U\) to each of the six collision lines of the \(a\)-plane to be squarefree apart from collision forms.</p>
+<p>On a triple side \(a_j=0\) that restriction is, up to powers of the collision forms of the side, the conic determinant \(\Delta_{\nu'}\) with \(\nu'_d=(2d,2d-2,2d-2,2d-4)\) (<a href="#cube-limit-triple-multiplicity">triple-multiplicity corollary</a>). This cycle asks what that determinant looks like, and whether it has a closed form that the <a href="#cube-conic-squarefree">conic theorem</a>'s method, or classical polynomials, could handle.</p>
+<h4>Data</h4>
+<p>The PARI/GP tool <code>research/tools/bmd_cube_nu_factor_n2.gp</code> computes \(\Delta_\nu(1,x)\) exactly and factors it over \(\mathbb Q\). It replaces the sympy tool for larger vectors and reproduces its factorization of \((3,2,2,1)\). Output is in <code>research/results/bmd-r132-triple-sides/</code>.</p>
+<p><strong>Finite check</strong> (<code>check:cube-triple-side-squarefree</code>). For \(\nu'_d\), \(d=2,\ldots,5\), exactly over \(\mathbb Q\):</p>
+<ul>
+<li>the multiplicity at \(x=0\) is \(18,50,98,162=2(2d-1)^2\);</li>
+<li>the multiplicity at \(x=1\) is \(11,37,79,137=8d^2-14d+7\);</li>
+<li>the rest is \((x+1)\cdot P_d\), with \(x+1\) simple and \(P_d\) one irreducible factor of degree \(2,8,14,20=6d-10\);</li>
+<li>\(P_d\) is palindromic, reflecting the symmetry \(a_1\leftrightarrow a_2\).</li>
+</ul>
+<p>So the non-collision part is squarefree for \(d\le5\).</p>
+<p>No closed form appears. \(P_d(x)=x^{3d-5}R_d(u)\) with \(u=(1+x)^2/x\):</p>
+<ul>
+<li>\(R_2=7u-12\);</li>
+<li>\(R_3=165u^4+1056u^2+2560u-3840\), whose \(u^3\) coefficient vanishes, so \(R_d\) is not a hypergeometric polynomial in \(u\).</li>
+</ul>
+<p>The factor \(x+1\), that is \(a_1+a_2\) on the side \(a_3=0\), is not a collision form. It is simple in every case.</p>
+<h4>What this settles and what remains</h4>
+<p>For the quadrangle route, the triple sides need the non-collision part of \(\Delta_{\nu'_d}\) to be squarefree for every \(d\). That is an instance of the <a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness conjecture</a> for \(n=2\), a codimension-5 case of the conic setting (\(V_{\nu'}\subset L(4d(\infty_1+\infty_2))\), missing \(w_iT^{2d-1}\) and \(w_1w_2T^{2d-3},w_1w_2T^{2d-2},w_1w_2T^{2d-1}\)). The data give it only for \(d\le5\), which adds no instance to the recorded certification of the whole limit conjecture for \(d\le9\). So, by the rule on stopping runs, no larger \(d\) is computed.</p>
+<p>The double-double sides \(a_i=a_j\) need the transported space, computed here from the boundary theorem's transport. Substitute \(T=\tilde T/(1-a_3\tilde T)\), put \(\tilde a=(a_1-a_3,a_2-a_3,-a_3)\) and \(\tilde w_3=(1-a_3\tilde T)^{1/2}\), and multiply by \(\tilde w_3^{\,2d}\). Then \(w_i=\tilde w_i/\tilde w_3\) for \(i=1,2\), and \(w_3=1/\tilde w_3\). An element \(T^Qw^r\) of \(U_d\) goes to</p>
+\[\tilde T^Q\,\tilde w_1^{r_1}\tilde w_2^{r_2}\,\tilde w_3^{\,2(d-Q)-|r|},\]
+<p>with exponent \(\ge|r|\ge0\), since \(Q\le d-|r|\). Writing \(\tilde w_3^{\,2e}=(1-a_3\tilde T)^e\), the part of character \((r_1,r_2,|r|\bmod2)\) is spanned by \(\tilde T^Q(1-a_3\tilde T)^{\lfloor(2(d-Q)-|r|)/2\rfloor}\), of the fixed degree \(d-\lceil|r|/2\rceil\) in \(\tilde T\), each divisible by \((1-a_3\tilde T)^{\lfloor|r|/2\rfloor}\). So the transported space is, character by character, \(\tilde w^{\tilde r}\) times polynomials of one fixed degree divisible by a fixed power of \(1-a_3\tilde T\). That is a space with a prescribed vanishing order at a branch point, not a degree vector. The collision \(a_1=a_3\) becomes the triple-type confluence \(\tilde a_1=0\) of this larger class. This is the class the monotone-squarefree entry expected an induction to need.</p>
+<p><strong>General statement.</strong> <code>conj:cube-monotone-squarefree</code>, for every monotone degree vector; this check tests the family \(\nu'_d\) its triple sides need.</p>
+<p><strong>Verification gate.</strong> A finite check and a transport computation; no new proof is claimed. Dependencies re-read: the triple-multiplicity corollary (the restriction to triple sides, up to powers of the side's collision forms), the quadrangle lemma's hypothesis, and the boundary theorem's transport. The PARI tool reproduces the sympy factorization of \((3,2,2,1)\). Every number above is read from the saved output.</p>
+<p><strong>Assessment.</strong> The route to the boundary law for every \(d\) is now a pair of conic statements:</p>
+<ul>
+<li>squarefreeness for \(\nu'_d\), which has codimension 5;</li>
+<li>the same for the transported space on the double-double sides.</li>
+</ul>
+<p>The quadrangle lemma then closes the argument. Neither has a closed form. The conic theorem's method needs extending from one missing functional to several: the weight at \(p\) is the rank drop of the missing functionals on \(L(D-kp)\), and all of them read Laurent coefficients at the two points \(\infty_\pm\). In the coordinate \(\rho=(\lambda-\kappa)/(\lambda+\kappa)\) this makes the Weierstrass condition a polynomial in \(\rho\) supported on few exponents. The next step is to write that polynomial for \(\nu'_d\) and prove its zeros simple.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r132">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 9.46 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 31.29 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 50.73 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 39.15 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8.12 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.16 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
