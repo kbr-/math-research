@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Uniform square-class priority is refuted by shifts that only the family's own deletions identify (prop:family-induced-shifts, <a href="#entry-2026-09-26-family-induced-shifts">family-induced shifts</a>). Next: a route review of the chooser line. Place it on the open statements, decide between a fixed-point chooser and a return to hardness mechanisms, and follow up the Gribov bridge.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> The rule search stops. Cell families reduce to weak PHP plus pigeon-local occupancy implications, which reopens the classical expansion methods (<a href="#entry-2026-09-26-chooser-review-2">second chooser review</a>). Next: a direct hardness theorem for weak graph PHP plus such implications, following the Miksa–Nordström generalized method. Define the constraint–pigeon hypergraph, state its expansion condition, check local satisfiability by partial matchings, and prove the degree bound.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -25103,6 +25103,75 @@ where \(q(w)\) is the single-divided-power probability of prop:divided-power-col
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 3.09 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 34.84 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.19 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-chooser-review-2" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of the chooser line after the family-induced refutation, with a forced-hole simulation and bridge follow-up; no new claim.">
+<h3>Route review: every uniform chooser has fallen to a family that a correlated choice defends, the restriction route to hardness gives trivial residuals on dense cell families, and the pigeon-locality of the reduced constraints reopens the classical expansion methods</h3>
+<p class="entry-meta">26 September 2026 · Route review with a simulation · open statement A1 · cycle odd-prime-chooser-review-2.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. Since the <a href="#entry-2026-09-26-chooser-review">chooser review</a>, five research entries have appeared:</p>
+<ul>
+<li><a href="#entry-2026-09-26-square-hole-transfer">square hole transfer</a>;</li>
+<li><a href="#entry-2026-09-26-cell-block-implications">cell-block implications</a>;</li>
+<li><a href="#entry-2026-09-26-antecedent-deletion">antecedent deletion</a>;</li>
+<li><a href="#entry-2026-09-26-family-induced-shifts">family-induced shifts</a>;</li>
+<li>and the <a href="#entry-2026-09-26-shifted-duplicates">shifted duplicates</a> before them.</li>
+</ul>
+<p>Uniform square-class priority is refuted. Where does the chooser line stand, and what should replace it?</p>
+<p><strong>General statement.</strong> The line's working claim is now a two-part reduction for families of cell blocks, forms square-equivalent to cells. First, prop:cell-block-implications turns any choice into weak PHP plus pigeon-local occupancy implications. Second, a hardness mechanism for such systems would give W, for a choice that keeps the system hard. prop:antecedent-deletion is one such mechanism, by restriction to graph PHP. The goal needs W for all families, including forms that are not cells.</p>
+
+<h4>Falsification attempt: dense two-hole families against the restriction route</h4>
+<p>Take the hole blocks plus a block of all cells of every pair of holes. For any choice, each pair block gives implications "\(i\) in \(s\) forces \(t\) occupied by \(P_t\)", or deletions when \(P_t=\varnothing\). For prop:antecedent-deletion to leave a residual, the implications into every unfilled hole must have their antecedents deleted. Consider choices that take each pair's prefix from one hole, an orientation of the pairs. Then for every two unfilled holes, one loses its cells. So at most one unfilled hole keeps its cells, and the residual is trivial. Mixed prefixes give implications in both directions and the same outcome. The attempt does not refute W: a choice consistent with one near-solution satisfies every pair clause except at the unplaced pigeon. But it shows that restriction to graph PHP cannot certify hardness for dense multi-hole cell families.</p>
+
+<h4>Assessment of the line</h4>
+<ul>
+<li><em>What it proved.</em>
+ <ul>
+ <li>The hole-type theorems, conditional on expansion: prop:priority-hole-families and prop:square-priority-hole-families.</li>
+ <li>prop:cell-block-implications, prop:antecedent-deletion, lem:rigid-products and prop:one-block-core.</li>
+ <li>Four refutations of rules: prop:duplicated-hole-family, prop:shifted-duplicates, prop:family-induced-shifts, and the \(\Lambda\)-version.</li>
+ </ul></li>
+<li><em>The pattern.</em> Every uniform chooser fell to a family built to decouple blocks the family itself ties together. Every such family was defended by a correlated choice. W's existential choice adapts to the family, and no fixed rule has matched that. The search for a rule has become a sequence of counterexamples.</li>
+<li><em>What it lacks.</em> A hardness mechanism for PHP with occupancy implications beyond restriction. The falsification attempt shows restriction fails on dense multi-hole families.</li>
+<li><em>What it found.</em> After the cell reduction, every chosen constraint involves pigeon \(i\) and at most \(k\) prefix pigeons, so it is pigeon-local. The literature review set the classical expansion methods aside because dense forms depend on many pigeons. For cell families that objection is gone.</li>
+<li><em>Qualitative assessment.</em> The rule search should stop. The line's value is the reduction of cell families to pigeon-local constraint systems, and its next step is a direct expansion argument for those systems.</li>
+</ul>
+
+<h4>Outside leads</h4>
+<ul>
+<li><em>Miksa and Nordström's generalized method for PC degree lower bounds (CCC 2015), for hardness of PHP with occupancy implications.</em> It proves degree lower bounds for any system whose constraints are satisfiable locally and whose constraint–variable graph expands. <em>Where it breaks:</em> the implications tie holes together, so local satisfiability must be checked for partial matchings, and expansion must hold for the chosen implication hypergraph. <strong>Test.</strong> Passed on its first hypothesis: by prop:cell-block-implications, each reduced constraint involves at most \(k+1\) pigeons. The expansion hypothesis is untested.</li>
+<li><em>Alekhnovich and Razborov, lower bounds for polynomial calculus in the non-binomial case, for the same target.</em> Their method needs boundary expansion of the constraint–variable graph. <em>Where it breaks:</em> many implications can share one pigeon support, which kills unique neighbours unless constraints with equal support are merged. <strong>Test.</strong> Not run: it needs a fixed chooser's implication hypergraph, and the rule search is being stopped. The test belongs to the next step's construction.</li>
+<li><em>Counting principles modulo \(p\) (Beame and Riis, 1998), for the counting refutations that forced holes allow.</em> Forcing every hole occupied turns the system into an onto-PHP, refuted by counting modulo 3 when \(m\not\equiv n\). <em>Where it breaks:</em> it needs almost all holes forced. <strong>Test.</strong> Passed (<code>forced_holes.json</code>). In the singleton-plus-hole family under a uniform order, the forced fraction was 0.96, 0.81, 0.44, 0.17, 0.05 and 0.00 for \(k=2,4,6,8,10,16\) at \(n=200\). At \(n=800\) it was 0.99 at \(k=2\) and 0.045 at \(k=12\). Pigeons without kept cells vanish near \(k\approx\ln n\). So counting threatens only below roughly \(2\ln n\), which W's \(k\) exceeds.</li>
+</ul>
+
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>Epidemic thresholds and directed percolation (Kermack–McKendrick; Broadbent and Hammersley).</em> <em>Translation:</em> occupancy implications form a directed graph on holes. Forcing is an outbreak from the holes a single pigeon's row infects. Counting refutes when the outbreak is global. <em>What a theorem there would give:</em> a sharp threshold in \(k\) for global forcing, with the reproduction number falling as prefixes grow. <strong>Test.</strong> Passed. The simulation above shows a sharp drop of the forced fraction, whose location moves from \(k\approx6\) to \(k\approx10\)–\(12\) as \(n\) grows from 200 to 800, consistent with a threshold near \(c\ln n\).</li>
+<li><em>Yao's minimax principle (von Neumann's minimax for zero-sum games).</em> <em>Translation:</em> W is a game in which the adversary picks a family and the chooser picks prefixes. A randomized chooser that defends every family with probability \(1-o(1)\) exists if and only if, for every distribution over families, some deterministic choice defends with that probability. <em>What a theorem there would give:</em> the refutations so far show that specific randomized choosers lose. Minimax says the right target is the dual: for every distribution of families, a family-dependent choice. That is what W already asserts, and it explains why every rule fell while W stood. <strong>Test.</strong> Not run: there is no finite formulation of the game at W's parameters, since refutability at degree \(22k\) cannot be decided at reachable sizes.</li>
+</ul>
+
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-chooser-review:1"><em>Gauge fixing and the Gribov ambiguity.</em> This cycle's predecessor developed it. Its Gribov copies, forms identified only by other blocks' deletions, gave prop:family-induced-shifts, which refutes uniform square-class priority. <strong>Follow-up.</strong> Closed: developed into that refutation. Its remaining question, whether a chooser must see family-induced equivalences, is answered for the route by the minimax bridge above: W's choice is family-dependent, and the rule search stops.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>The highest-risk item is A1. The next step on odd-prime-clause-transfer is a direct hardness theorem for weak graph PHP plus pigeon-local occupancy implications. It would follow the Miksa–Nordström generalized method. Define the constraint–pigeon hypergraph of a chosen cell family, state its boundary-expansion condition, and check local satisfiability by partial matchings. Then prove the degree lower bound. The planted-overlap choice of prop:family-induced-shifts and the singleton-plus-hole family are the first test cases.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:cell-block-implications, prop:antecedent-deletion, prop:family-induced-shifts, prop:square-priority-hole-families, imp:MN-functional-graph-degree and the literature review's objection to the classical methods. The simulation follows the forcing criterion of the cell-block entry (<code>forced_holes.py</code>). All numbers were read from the saved JSON. This review registers no claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-chooser-review-2">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 47.08 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">14.22 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">51.49 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 38.08 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3.16 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
