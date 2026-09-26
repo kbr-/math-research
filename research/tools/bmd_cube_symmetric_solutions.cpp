@@ -14,7 +14,8 @@
 // in A m_lambda is sum_j prod C_{j_i} [sort(alpha - (j, 0)) = lambda].  The program prints the dimension of the
 // invariant solution space and the span of the invariant top coordinates W_m (degree l) in the basis m_lambda.
 //
-// Usage: bmd_cube_symmetric_solutions n,d,m,l/n,d,m,l/...   (one run, a series of jobs)
+// Usage: bmd_cube_symmetric_solutions n,d,m,l/n,d,m,lo:hi/...   (one run, a series of jobs; lo:hi scans the
+// excess upward and stops at the first nonzero invariant top span)
 #include <flint/flint.h>
 #include <flint/nmod_mat.h>
 #include <cstdio>
@@ -48,7 +49,7 @@ static void compositions_bounded(int t, const V& bound, int i, V& cur, std::vect
     cur[i] = 0;
 }
 
-static void run(int n, int d, int m, int l) {
+static long run(int n, int d, int m, int l) {
     auto t0 = std::chrono::steady_clock::now();
     // C_j mod P: C_0 = 1, C_j = C_{j-1} (6 - 4j) / j
     std::vector<mp_limb_t> C(m + l + 2, 0); C[0] = 1;
@@ -115,6 +116,7 @@ static void run(int n, int d, int m, int l) {
     }
     std::fflush(stdout);
     nmod_mat_clear(A); nmod_mat_clear(X); nmod_mat_clear(Tm);
+    return topRank;
 }
 
 int main(int argc, char** argv) {
@@ -122,9 +124,17 @@ int main(int argc, char** argv) {
     std::string s = argv[1]; size_t pos = 0;
     while (pos < s.size()) {
         size_t e = s.find('/', pos); if (e == std::string::npos) e = s.size();
-        int n, d, m, l;
-        if (std::sscanf(s.substr(pos, e - pos).c_str(), "%d,%d,%d,%d", &n, &d, &m, &l) != 4) { std::fprintf(stderr, "bad job\n"); return 2; }
-        run(n, d, m, l);
+        int n, d, m, l, lhi;
+        std::string job = s.substr(pos, e - pos);
+        // "n,d,m,l" runs one excess; "n,d,m,lo:hi" scans excesses lo..hi and stops at the first nonzero top span
+        if (std::sscanf(job.c_str(), "%d,%d,%d,%d:%d", &n, &d, &m, &l, &lhi) == 5) {
+            long r = 0; int x = l;
+            for (; x <= lhi && r == 0; ++x) r = run(n, d, m, x);
+            if (r) std::printf("scan n=%d d=%d m=%d: least excess with an invariant top = %d\n", n, d, m, x - 1);
+            else std::printf("scan n=%d d=%d m=%d: no invariant top for excess %d..%d\n", n, d, m, l, lhi);
+            std::fflush(stdout);
+        } else if (std::sscanf(job.c_str(), "%d,%d,%d,%d", &n, &d, &m, &l) == 4) run(n, d, m, l);
+        else { std::fprintf(stderr, "bad job\n"); return 2; }
         pos = e + 1;
     }
     return 0;
