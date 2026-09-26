@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes, the dense class.</strong> Random prefixes make any family forbid an \(o(1)\) fraction of points under every distribution fixed in advance (<a href="#entry-2026-09-26-random-prefix-review">random-prefix review</a>). Next: test whether PC degree lower bounds for weak PHP can be robust to clause families of small forbidden measure. Take \(\mu\) uniform on injective maps of all pigeons but one into the holes, and compute the \(\mu\)-measure of the forbidden sets of the recorded degree-lowering constraints (the column-type equations at \(n=6,7\)), with the onto columns (measure 0) as calibration. A degree-lowering family of measure below \(n^{-1/2}\) falsifies robustness in this form.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes, mixed families.</strong> Forbidden measure does not control PC degree, so the coding-theory bridge closes as a measure statement (<a href="#entry-2026-09-26-small-measure">small measure</a>). Next: extend thm:random-prefix-light-families and the logarithmic residual construction from weak PHP\(^{n+1}_n\) to weak PHP\(^{N+k}_N\) for fixed \(k\), checking boundary expansion of the residual graph with \(h+k\) pigeons against the imported Mikša–Nordström bound. This would make prop:light-spare-composition unconditional. The dense interaction class stays the core obligation, with no recorded mechanism.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -30395,6 +30395,39 @@ Two facts follow. Modulo 3 the right side vanishes, so each \(\varphi_B\) reduce
 <tr><td>Marked reading and review windows</td><td class="elapsed">2 min 39.15 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 0.48 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">38.35 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-small-measure" data-kind="research" data-route="odd-prime-clause-transfer" data-bridge="entry-2026-09-26-random-prefix-review:2" data-claims="prop:forbidden-measure-not-robust">
+<h3>Forbidden measure does not control PC degree: under the two natural distributions, families forbidding a null or \(o(1)\) set refute weak PHP at degree 1, so the coding-theory count must be combined with the structure of random prefixes, not used as a measure bound</h3>
+<p class="entry-meta">26 September 2026 · Refutation (elementary) · open statement A1 under random prefixes · cycle odd-prime-small-measure. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 under random prefixes, the dense class, developing the second absurd bridge of the <a href="#entry-2026-09-26-random-prefix-review">random-prefix review</a>. That bridge showed that random prefixes make any family forbid an \(o(1)\) fraction of points under every distribution \(\mu\) fixed in advance. Could PC degree lower bounds for weak PHP be robust to clause families whose forbidden set has small \(\mu\)-measure? The review asked for a test against recorded degree-lowering constraints, with \(\mu\) uniform on injective maps of all pigeons but one, calling a set small below \(n^{-1/2}\).</p>
+<p><strong>General statement.</strong> prop:forbidden-measure-not-robust. Over any field, for weak unary PHP\(^{n+1}_n\) (Booleanity, collisions, linear rows), with \(n\ge2\):</p>
+<ol>
+<li>Let \(\mu\) be uniform on the injective maps of \(n\) of the \(n+1\) pigeons onto the \(n\) holes, the omitted pigeon uniform, with all of its variables 0. The onto columns \(\sum_ix_{ij}=1\), \(j\in[n]\), forbid a \(\mu\)-null set, and together with the rows they refute at degree 1.</li>
+<li>Let \(\mu_d\) be uniform on the partial matchings with \(d\) edges, \(1\le d\le n\). The \(n\) axioms \(x_{1j}=0\) forbid a set of \(\mu_d\)-measure \(d/(n+1)\), and together with row 1 they refute at degree 1.</li>
+</ol>
+<p>So robustness of PC degree under small forbidden measure is false for both distributions, at every \(n\).</p>
+<h4>Proof</h4>
+<p>Part 1. Every point in the support of \(\mu\) fills every hole exactly once, so it satisfies every onto column: the forbidden set is empty in the support. The sum of the \(n+1\) row axioms minus the sum of the \(n\) onto columns is \(\sum_{ij}x_{ij}-(n+1)-\sum_{ij}x_{ij}+n=-1\), a refutation of degree 1.</p>
+<p>Part 2. A point of the support violates some \(x_{1j}=0\) exactly when pigeon 1 is matched. By symmetry, a uniform \(d\)-edge matching uses pigeon 1 with probability \(d/(n+1)\). Row 1 minus the \(n\) axioms \(x_{1j}\) is \(-1\). \(\square\)</p>
+<p>Correction to the <a href="#entry-2026-09-26-random-prefix-review">random-prefix review</a>: its next step states that the onto columns forbid a \(\mu\)-null set and do not lower the degree. The first half is right, and the second is wrong for weak PHP\(^{n+1}_n\), where the counts differ by 1 and counting refutes. It holds for onto systems whose counts agree mod the characteristic, by thm:spare-pigeon-onto-hardness. So the calibration point is itself the counterexample of part 1. The recorded column-type systems over \(\mathbb F_3\) (the <a href="#entry-2026-09-23-column-type-affine">column-type entry</a>) are subsumed. Under \(\mu\) every column sum is 1, so a column-type equation \(\sum_j\varphi(j)C_j=c\) forbids either nothing, when \(c=\sum_j\varphi(j)\), or everything. At \(n=6\), \(r=2\), the nine right-hand sides are all of \(\mathbb F_3^2\), and all were refuted at degree 3 while plain PHP survives degree 3. So the right-hand side \(c_b=\sum_j\varphi_b(j)\), whose forbidden set is \(\mu\)-null, is among them.</p>
+<h4>What it means</h4>
+<p>A family's forbidden measure does not bound its effect on PC degree. A null set can carry a counting contradiction, and a set of small measure can empty one pigeon's row. Both examples are far from random-prefix families. Part 2's single-cell blocks are killed by random prefixes: for a block with one form \(x_{1j}\), \([Cg=0]\) is nonzero only if the column of \(C\) is 0, probability \(3^{-t}\). And part 1's constraint is a column statistic, settled by the <a href="#entry-2026-09-26-spare-pigeon">spare-pigeon theorem</a> when the counts agree. So random prefixes act through the structure of each block's forbidden set, a random subspace section of its pattern set, not through its size. A usable form of the bridge would have to say which structured forbidden sets survive random prefixes. That is the vacuity question the recorded arguments already answer for light and low-rank blocks. As a measure statement, this bridge gives no traction on dense blocks, and it is closed in that form. The examples do not show that dense blocks admit no mechanism.</p>
+<p><strong>Next.</strong> With no recorded mechanism for the dense class, take the part of A1's obligation that is within reach: part (ii) of the review, mixed families. Extend thm:random-prefix-light-families, and the logarithmic residual construction it uses, from weak PHP\(^{n+1}_n\) to weak PHP\(^{N+k}_N\) for fixed \(k\ge1\). The residual then has \(h+k\) pigeons on \(h\) holes. The imported Mikša–Nordström bound needs boundary expansion of the residual graph for pigeon sets up to size \(s\), and the random 5-regular neighbourhoods should give it with \(k\) extra pigeons at the cost of a factor in the union bound over pigeon sets. This would make prop:light-spare-composition unconditional.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the random-prefix review's bridge and next step, the column-type entry's table, and thm:randomized-prefix-reduction for the clause form. The proposition is elementary; claim searches for measure and robustness found no earlier version. A fresh-context reviewer confirmed both parts and the single-cell computation. It required, all adopted: the omitted pigeon's variables fixed to 0 in \(\mu\); the salvaged case cited to the spare-pigeon theorem; the inclusion of the \(\mu\)-null right-hand side shown (the nine right-hand sides are all of \(\mathbb F_3^2\)); the field of the column-type systems stated; and the bridge's closure and the next step's premise worded to what the examples show.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-small-measure">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 28.70 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 0.30 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 58.74 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">29.52 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
