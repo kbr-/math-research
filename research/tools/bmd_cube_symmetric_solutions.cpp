@@ -15,7 +15,10 @@
 // invariant solution space and the span of the invariant top coordinates W_m (degree l) in the basis m_lambda.
 //
 // Usage: bmd_cube_symmetric_solutions n,d,m,l/n,d,m,lo:hi/...   (one run, a series of jobs; lo:hi scans the
-// excess upward and stops at the first nonzero invariant top span)
+// excess upward and stops at the first nonzero invariant top span).  A second argument "rank" replaces the
+// FLINT nullspace by two fflas-ffpack ranks (only the top-span dimension is printed).
+#include <fflas-ffpack/ffpack/ffpack.h>
+#include <givaro/modular.h>
 #include <flint/flint.h>
 #include <flint/nmod_mat.h>
 #include <cstdio>
@@ -49,6 +52,7 @@ static void compositions_bounded(int t, const V& bound, int i, V& cur, std::vect
     cur[i] = 0;
 }
 
+static bool rankMode = false;
 static long run(int n, int d, int m, int l) {
     auto t0 = std::chrono::steady_clock::now();
     // C_j mod P: C_0 = 1, C_j = C_{j-1} (6 - 4j) / j
@@ -94,6 +98,27 @@ static long run(int n, int d, int m, int l) {
         }
     }
     long nrows = rows.size();
+    if (rankMode) {
+        // Top-span dimension from two ranks: the top coordinates of the solutions span a space of dimension
+        // #top - (rank A - rank A_nontop), A_nontop being A without the columns of block c = m.
+        long ntop = colIndex[m].size();
+        std::vector<long> isTop(ncols, 0);
+        for (auto& kv : colIndex[m]) isTop[kv.second] = 1;
+        std::vector<long> pos(ncols); long a = 0, b = ncols - ntop;
+        for (long j = 0; j < ncols; ++j) pos[j] = isTop[j] ? b++ : a++;  // top columns last
+        typedef Givaro::Modular<double> Field; Field F((double)P);
+        std::vector<double> M((size_t)nrows * ncols, 0.0), M2((size_t)nrows * (ncols - ntop));
+        for (long i = 0; i < nrows; ++i) for (auto& e : rows[i]) M[(size_t)i * ncols + pos[e.first]] = (double)e.second;
+        for (long i = 0; i < nrows; ++i) for (long j = 0; j < ncols - ntop; ++j) M2[(size_t)i * (ncols - ntop) + j] = M[(size_t)i * ncols + j];
+        size_t rA = FFPACK::Rank(F, nrows, ncols, M.data(), ncols);
+        size_t rB = ncols - ntop ? FFPACK::Rank(F, nrows, ncols - ntop, M2.data(), ncols - ntop) : 0;
+        long topRank = ntop - ((long)rA - (long)rB);
+        double secs = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+        std::printf("n=%d d=%d m=%d l=%d: rows %ld cols %ld rank %zu rank-without-top %zu, invariant top span dim %ld (rank mode) secs %.2f\n",
+                    n, d, m, l, nrows, ncols, rA, rB, topRank, secs);
+        std::fflush(stdout);
+        return topRank;
+    }
     nmod_mat_t A; nmod_mat_init(A, nrows, ncols, P);
     for (long i = 0; i < nrows; ++i) for (auto& e : rows[i]) nmod_mat_entry(A, i, e.first) = e.second;
     nmod_mat_t X; nmod_mat_init(X, ncols, ncols, P);
@@ -122,6 +147,8 @@ static long run(int n, int d, int m, int l) {
 int main(int argc, char** argv) {
     if (argc < 2) { std::fprintf(stderr, "usage: %s n,d,m,l/...\n", argv[0]); return 2; }
     std::string s = argv[1]; size_t pos = 0;
+    // optional second argument "rank": decide the top span from two fflas-ffpack ranks instead of a FLINT nullspace
+    if (argc > 2 && std::string(argv[2]) == "rank") rankMode = true;
     while (pos < s.size()) {
         size_t e = s.find('/', pos); if (e == std::string::npos) e = s.size();
         int n, d, m, l, lhi;

@@ -34,7 +34,7 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Its zero sets are mapped: Brill–Noether loci up to \(m=8d\) (<a href="#cube-threshold-collision-support">theorem</a>), then the 25 collision lines (<a href="#cube-collision-regime-torsion">theorem</a>), carrying points and lines only through windows of about \(10d\) (<a href="#entry-2026-09-26-cube-collision-windows">entry</a>). The map does not give \(\ell_0\): past the first step the ideals are not saturated, and near order zero they have no zeros. There, at \(d=2\), their lowest parts are \(S_5\)-invariant: \((p_2,p_3,p_4)\) at \(m=17,18\), the quintic invariants at 16, an invariant sextic at 15, cutting out Springer eigen-orbits (<a href="#entry-2026-09-26-cube-route-review-17">route review</a>). That thresholds are attained by invariants (<a href="#cube-invariant-attainment">conjecture</a>; it reproduces the \(d=2\) row) is proved in dimension 3: boundary generators are invariant, and products of them are minimal (<a href="#cube-invariant-attainment-dimension-three">theorem</a>). At every boundary, in every dimension, the generator is an \(S_{n+1}\)-invariant (<a href="#cube-boundary-generator-invariant-all-n">theorem</a>). Next: the middle range of dimension 4, where the ideals are not principal: its lowest pieces as \(S_5\)-representations.</li>
+<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Its zero sets are mapped (Brill–Noether loci up to \(m=8d\), <a href="#cube-threshold-collision-support">theorem</a>; then the 25 collision lines, <a href="#cube-collision-regime-torsion">theorem</a>, reached only by windows of about \(10d\), <a href="#entry-2026-09-26-cube-collision-windows">entry</a>), but the map does not give \(\ell_0\). Thresholds are attained by invariants (<a href="#cube-invariant-attainment">conjecture</a>): proved at every boundary (<a href="#cube-boundary-generator-invariant-all-n">theorem</a>) and in dimension 3 (<a href="#cube-invariant-attainment-dimension-three">theorem</a>); near order zero at \(d=2\) the lowest parts are invariants cutting out Springer eigen-orbits (<a href="#entry-2026-09-26-cube-route-review-17">route review</a>). The savings-4 row near order zero is \(15,13,11,10,8,7,5,4,3,2,2,0\) for \(m=28,\ldots,39\) (<a href="#cube-dimension-four-row-d3">check</a>); rows are nonincreasing in \(m\) (<a href="#cube-threshold-monotone">conjecture</a>, proved for \(n\le3\)). Next: a law comparing the rows \(d=2,3\).</li>
 <li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). By the <a href="#cube-squarefree-reduction">reduction theorem</a> and the <a href="#cube-limit-triple-multiplicity">triple-multiplicity corollary</a>, \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs one statement: squarefreeness of the non-collision part of the limit determinant. It is an instance of the <a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness conjecture</a>, which passes 1261 monotone vectors. For \(n=4\) it is simplicity of the \(d\)-canonical Weierstrass points of a general Humbert curve. A proof needs an induction over a class of spaces closed under Möbius transports, or a Weierstrass-point theorem for this family.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
@@ -7743,6 +7743,73 @@ This polynomial is nonzero in every characteristic \(\ne2\). Write \(2d=p^as\) w
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 46.41 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.62 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-row-d3" data-kind="research" data-route="cube-odd-characteristic" data-claims="check:cube-dimension-four-row-d3 conj:cube-threshold-monotone prop:cube-threshold-monotone-low-dimension">
+<h3>26 September 2026 — The savings-4 row on {0,1}⁴ near order zero, and monotone thresholds</h3>
+<p class="entry-meta">Finite check: invariant thresholds of the savings-4 row on {0,1}⁴ for 28 ≤ m ≤ 38. Conjecture: thresholds never increase with m, proved for n ≤ 3 and false in characteristic 2. Cycle bmd-r120. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> Open statement 3 needs a law for the dimension-4 thresholds, and only one row was known, \(d=2\): \(\ell_0(3,m)=15,12,11,6,5,2,2,0\) for \(m=12,\ldots,19\). One row cannot suggest a law. What is the row \(d=3\) (savings 4, boundary \(m=20\), order zero at \(m=39\))? The Gröbner computations did not reach it. The invariant thresholds \(\ell_0^{S_4}\) are always upper bounds for \(\ell_0\), and equal to it under the <a href="#cube-invariant-attainment">invariant-attainment conjecture</a>, which holds at every boundary (<a href="#cube-boundary-generator-invariant-all-n">theorem</a>) and in dimension 3. The test ends with the row as far down from order zero as a dense computation reaches.</p>
+<h4 id="cube-dimension-four-row-d3">The row</h4>
+<p><strong>Computation.</strong> <code>research/tools/bmd_cube_symmetric_solutions.cpp</code> has a new rank mode. The top coordinates of the invariant solutions of excess \(e\) span a space of dimension \(\#\mathrm{top}-(\operatorname{rank}A-\operatorname{rank}A_{\mathrm{nontop}})\). Here \(A_{\mathrm{nontop}}\) omits the columns of the top block. The two ranks come from fflas-ffpack (<code>FFPACK::Rank</code> over \(\mathbb F_{32003}\) in double storage), about five times faster than the FLINT nullspace. Validation: it reproduces the \(d=2\) row \(12,11,6,5,2,2\) for \(m=13,\ldots,18\) and the recorded \(d=3\) values at \(m=35,36,38\) (<code>research/results/bmd-r120-row-d3/rank-mode-validation.txt</code>). Each scan starts at excess 0 and stops at the first invariant top. The largest system had 13720 rows and 9301 columns (25 s).</p>
+<p><strong>Finite check</strong> (<code>check:cube-dimension-four-row-d3</code>). Over \(\mathbb F_{32003}\), on \(\{0,1\}^4\) at savings 4 (<code>row-d3-m28-34.txt</code>, and the <a href="#cube-invariant-thresholds">previous check</a> for \(35\le m\le38\)):</p>
+<table>
+<tr><th>\(m\)</th><td>28</td><td>29</td><td>30</td><td>31</td><td>32</td><td>33</td><td>34</td><td>35</td><td>36</td><td>37</td><td>38</td><td>39</td></tr>
+<tr><th>\(\ell_0^{S_4}(4,m)\)</th><td>15</td><td>13</td><td>11</td><td>10</td><td>8</td><td>7</td><td>5</td><td>4</td><td>3</td><td>2</td><td>2</td><td>0</td></tr>
+</table>
+<p>The value 0 at \(m=39\) is the recorded order-zero threshold (<a href="#cube-order-zero-dimension-four">order-zero check</a>). At every \(m\) of the table no invariant solution of excess 0 or 1 has a nonzero top coordinate. So, in characteristic 32003, \(2\le\ell_0(4,m)\le\ell_0^{S_4}(4,m)\), with equality under the conjecture. The lower bound is the <a href="#cube-isotypic-detection">isotypic detection lemma</a> with \(\nu=(4)\): it holds for every \(m\) and every \(e\le1\), in characteristic 0 or \(p&gt;5\). A rank modulo one prime can drop relative to characteristic 0, so neither bound transfers to characteristic 0 without a lift. Rows for \(m&lt;28\) need excesses whose dense systems exceed the memory budget in this form, and they are not computed.</p>
+<p>In terms of the per-order function: \(I^{(h)}_m\) decreases in \(h\) (<a href="#cube-threshold-ideal">threshold-ideal lemma</a>), so the savings at \((k,\ell)\) are \(\ge4\) exactly when \(\ell_0(4,k-\ell-1)\le\ell\). For each order \(\ell\), the least such \(k\) is \(\ell+1\) plus the least \(m\) with \(\ell_0(4,m)\le\ell\). Reading the table as the values of \(\ell_0\), and assuming no \(m&lt;28\) has \(\ell_0(4,m)\le\ell\), this least \(k\) is \(40,40,40,40,41,41,41,42,42,42,43,43,44\) for \(\ell=2,\ldots,14\). The assumption needs the monotonicity conjecture below. Without both conjectures the list only bounds the least \(k\) from above. For \(\ell=0,1\) the least \(k\) is 40 and 41 (order zero at \(m=39\), and \(\ell_0\ge2\) below it), so it is not monotone in \(\ell\) there. From \(\ell=2\) on, raising the order at the origin by 3 costs about one unit of multiplicity.</p>
+<h4 id="cube-threshold-monotone">Monotone thresholds</h4>
+<p>Every computed row is nonincreasing in \(m\). This is equivalent to monotonicity of the savings in \(k\) at fixed origin order. Indeed, by the <a href="#cube-threshold-ideal">threshold-ideal lemma</a>, \(h(k,\ell)\ge h\) exactly when \(\ell_0(h,k-\ell-1)\le\ell\), for each \(h\); here the lemma's nesting \(I^{(h+1)}_m\subseteq I^{(h)}_m\) is used. So \(\ell_0(h,m+1)\le\ell_0(h,m)\) for all \(h,m\) is the same as \(h(k+1,\ell)\ge h(k,\ell)\) for all \(k,\ell\). With \(h=n+2k-2-\delta\), that is \(\delta(n,k+1,\ell)\le\delta(n,k,\ell)+2\).</p>
+<p><strong>Conjecture</strong> (<code>conj:cube-threshold-monotone</code>). On \(\{0,1\}^n\) over a field of characteristic \(\ne2\), \(\ell_0(h,m+1)\le\ell_0(h,m)\) for all \(h\) and \(m\), with \(\ell_0=\infty\) when \(I^{(h)}_m=0\). Equivalently, \(\delta_F(n,k+1,\ell)\le\delta_F(n,k,\ell)+2\).</p>
+<p><strong>Proposition</strong> (<code>prop:cube-threshold-monotone-low-dimension</code>). The conjecture holds for \(n\le3\), over every field of characteristic \(\ne2\).</p>
+<p><em>Proof.</em> For \(n=1\) the least degree is \(k+\ell\), attained by \(x^\ell(x-1)^k\) and forced by the root count, so the savings \(n+2k-2-\delta\) are \(m\). For \(n=2\) the <a href="#cube-square-per-order-any-field-theorem">square theorem</a> gives \(\delta=2k-\lceil(k-\ell-1)/2\rceil\), so the savings are \(\lceil m/2\rceil\). Both are nondecreasing in \(m\). For \(n=3\), by the <a href="#cube-dimension-three-every-field">dimension-3 law</a> and the stable law, \(\ell_0(d+1,m)\) is \(\infty\) for \(m&lt;4d\), \(B(d,m-4d+1)\) for \(4d\le m\le5d-1\), and 0 beyond. So it suffices that \(B(d,\rho+1)\le B(d,\rho)\) for \(1\le\rho&lt;d\). With \(j=d-\rho\):</p>
+<ul>
+<li>If \(\rho\ge j\), then \(B(d,\rho)=3j\) (all parts equal to 2), and it decreases with \(\rho\).</li>
+<li>If \(\rho+1&lt;d-\rho-1\), both values are \(S_\rho(d)=\min\sum(p_i^2-1)\) over partitions of \(d\) into \(\rho\) parts, respectively \(\rho+1\) parts. Splitting a part \(p\ge2\) (one exists, as \(d&gt;\rho\)) into \(p-1\) and \(1\) changes \(\sum(p_i^2-1)\) by \(-(2p-1)&lt;0\). So \(S_{\rho+1}(d)&lt;S_\rho(d)\).</li>
+<li>At the transition, \(\rho&lt;d-\rho\) and \(\rho+1\ge d-\rho-1\), so \(d\in\{2\rho+1,2\rho+2\}\) and \(B(d,\rho+1)=3(d-\rho-1)=3\rho\) or \(3\rho+3\). For \(d=2\rho+1\), \(B(d,\rho)=3(\rho-1)+8=3\rho+5\). For \(d=2\rho+2\), \(B(d,\rho)=3(\rho-2)+16=3\rho+10\) (\(\rho\ge2\)), or \(15\) (\(\rho=1\)). Both exceed \(B(d,\rho+1)\).</li>
+</ul>
+<p>\(\square\) A check of \(B(d,\rho+1)\le B(d,\rho)\) for all \(d\le400\) agrees (<code>dimension-three-monotone.txt</code>).</p>
+<p><em>Over \(\mathbb F_2\) it fails.</em> Over \(\mathbb F_2\) the per-order value is \(\delta=n+2\ell+\sum_{j&lt;n}\lfloor m/2^j\rfloor\) (<a href="#per-order-value-all-dimensions">per-order theorem</a>), so the savings are \(h=m-\sum_{1\le j&lt;n}\lfloor m/2^j\rfloor\). They drop from \(m\) to \(m+1\) whenever \(4\mid m+1\) and \(n\ge3\) (for \(n=4\): \(h=2\) at \(m=3\), \(h=1\) at \(m=4\)). So the savings form of the conjecture is false over \(\mathbb F_2\). The threshold-ideal translation is set up in characteristic \(\ne2\), so this speaks only to the savings form; it shows that the hypothesis on the characteristic cannot simply be dropped from that form.</p>
+<p><em>Evidence for \(n=4\).</em> The \(d=2\) row, exact in characteristic 32003 (Gröbner), is nonincreasing. The \(d=3\) invariant row above is nonincreasing; these are upper bounds for \(\ell_0\) in characteristic 32003. All the evidence for \(n=4\) is in that one characteristic, while the conjecture claims every characteristic \(\ne2\).</p>
+<p><strong>General statement.</strong> <code>conj:cube-threshold-monotone</code>, for every \(n\), \(h\), \(m\) in characteristic \(\ne2\); <code>prop:cube-threshold-monotone-low-dimension</code> proves it for \(n\le3\). The row check tests it, and supplies the second row that a law for open statement 3 needs.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read:</p>
+<ul>
+<li>the threshold-ideal lemma, including its nesting in \(h\);</li>
+<li>the isotypic detection lemma;</li>
+<li>the dimension-3 law, the square theorem and the per-order theorem;</li>
+<li>the collision-window conjecture.</li>
+</ul>
+<p>A claim search (monotone threshold, nonincreasing) found no earlier version. A fresh-context referee checked:</p>
+<ul>
+<li>the rank formula, as the dimension of the projection of the kernel;</li>
+<li>every table value against the outputs, and that every scan starts at excess 0;</li>
+<li>the least-\(k\) list;</li>
+<li>the proof for \(n\le3\), including the regime values against the recorded dimension-3 scans;</li>
+<li>the \(\mathbb F_2\) example.</li>
+</ul>
+<p>It found nothing that breaks a stated result. Its corrections are made:</p>
+<ul>
+<li>the nesting in \(h\) is cited, and \(\delta\) is related to the savings;</li>
+<li>the least-\(k\) list is cut at \(\ell=14\), called conditional on both conjectures, and noted as non-monotone at \(\ell=0,1\);</li>
+<li>the \(\mathbb F_2\) paragraph is scoped;</li>
+<li>the characteristic of every bound and of the evidence is stated;</li>
+<li>the regime ranges are sourced;</li>
+<li>the proved case is registered as its own proposition.</li>
+</ul>
+<p><strong>Assessment.</strong> The second row gives a first comparison. Near order zero, the savings-3 row descends \(2,2,5,6,11,12\) from \(m=18\) down to \(m=13\), and the savings-4 row descends \(2,2,3,4,5,7,8,10,11,13,15\) from \(m=38\) down to \(m=28\). The second is much flatter. By the <a href="#cube-threshold-collision-support">collision-support theorem</a> the collision regime is \(m&gt;8d\): from \(m=25\) to 38 at \(d=3\), against 17 to 18 at \(d=2\). There the ideals conjecturally have no zeros (<a href="#cube-collision-regime-windows-conjecture">collision-window conjecture</a>). Over \(28\le m\le38\) the thresholds grow by about 1.3 per step. A law would have to explain these slopes. A quadratic order-zero threshold, which remains open, means that the flat stretch lengthens with \(d\). The monotonicity conjecture is a structural statement the rows suggest. Its natural proof would map solutions at \(m\) to solutions at \(m+1\) with the same top coordinate, and no such map is known in dimension 4.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r120">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>25 min 10.04 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 55.17 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 57.73 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 43.46 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">14 min 33.52 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.16 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
