@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> A1 follows from conj:expander-dense-core, W on functional graph PHP over expander boards (<a href="#entry-2026-09-26-expander-core">expander core</a>). For random families it needs A3's main term and a gluing base on expander boards. Next: the gluing base. Does functional graph PHP on a boundary expander satisfy, through logarithmic degree, the base condition that thm:weak-base-stability-quadratic proves for the complete weak base? Test it exactly on small expander boards first, then prove it or locate its failure.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> A1 rests on W over expander boards, conj:expander-dense-core. Its gluing base has no decisive finite test at reachable sizes (<a href="#entry-2026-09-26-expander-core-review">expander-core review</a>). Next: an extension lemma for functional graph PHP on a boundary expander, the analogue of the matching extension that Taylor glue uses, built from the Mikša–Nordström closure. Then check whether Taylor glue's syzygy-gluing argument goes through with it.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26085,6 +26085,97 @@ Split at \(S=Aq\), with \(A=(B+\ln(21/\theta))/0.15\).
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">8 min 4.48 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 28.57 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-expander-core-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review opening the expander-core line; follows up every open passed Outside lead and Absurd bridge on the route; no new claim.">
+<h3>Route review: A1 now rests on W over expander boards; its gluing base has no decisive finite test at reachable sizes, the older closure and chooser leads are superseded, and the next step is an extension lemma from the Mikša–Nordström closure</h3>
+<p class="entry-meta">26 September 2026 · Route review (no computation) · open statement A1 · cycle odd-prime-expander-base.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-expander-core">expander-core entry</a> reduced A1 to conj:expander-dense-core. For random families that needs two things: A3's main term, and a gluing base on expander boards. The last proposed step was to test the base exactly on small expander boards. Can such a test decide anything? Which line comes next? What happened to the passed leads of earlier reviews, now that they need follow-ups too?</p>
+<p><strong>General statement.</strong> The line's claim is conj:expander-dense-core: W for every family of blocks of affine forms on functional graph PHP over a boundary expander of left degree 5. It implies A1 by prop:expander-core-reduction.</p>
+
+<h4>Falsification attempt</h4>
+<ul>
+<li><em>Can a small exact test decide the base?</em> No. The imported bound gives degree above \(s/10\) only for \((s,1)\)-expanders. At any board an exact closure computation reaches (at most about 10 holes), \(s/10&lt;1\). So a degree fall found there is compatible with every statement about expanders. By the computation rules, the test was not run.</li>
+<li><em>Onto-type residual blocks.</em> The conjecture quantifies over all families on \(G'\). Take the block of hole-occupancy forms \(\{-o_t:t\in H'\}\). Its clauses say "if the prefix holes are occupied, so is hole \(i\)". Summing rows gives only \(\prod_{t\in S}o_t=0\) at degree about \(k+2\): some prefix hole is empty. Deleting one prefix hole, a restriction, makes every clause vanish and leaves graph PHP with surplus 2 on an expander that has lost one hole. So this block is harmless.</li>
+</ul>
+<p>The conjecture survives both.</p>
+
+<h4>Assessment of the line</h4>
+<ul>
+<li><em>What it is.</em> A reduction, not yet a mechanism. It concentrates A1 in one statement on expander boards, with every structured block removed.</li>
+<li><em>What it needs.</em>
+ <ul>
+ <li>A gluing base: an extension property of functional graph PHP on expanders, the analogue of the matching extension that Taylor glue uses.</li>
+ <li>For random families, A3's main term.</li>
+ </ul></li>
+<li><em>Evidence.</em> None beyond the product law's transfer. Finite tests cannot reach the relevant sizes.</li>
+<li><em>Assessment.</em> Promising as a formulation, weak as yet in evidence. The base is the part a proof can target now, because the Mikša–Nordström closure already builds a pseudo-reduction on exactly these boards.</li>
+</ul>
+
+<h4>Outside leads</h4>
+<ul>
+<li><em>The Mikša–Nordström closure operator (arXiv:1505.01358, Theorem 3.8 and Lemma 3.15), as the gluing base.</em> Target: an extension lemma for functional graph PHP on expanders. Their operator \(R\) is linear, sends axioms to 0 and satisfies \(R(xt)=R(xR(t))\) through degree \(\delta s/(2d)\). Taylor glue needs more: every functional defined through a lower degree must extend. <em>Where it breaks:</em> \(R\) is one functional, built from supports and closures, while extension must hold for all. <strong>Test.</strong> Passed on its first hypothesis. Lemma 3.15's conditions hold through \(s/10\) on our \(G'\), by Theorem 4.9 and Step 2 of thm:cell-family-w. The extension property is untested and is the next step.</li>
+<li><em>Buss, Grigoriev, Impagliazzo and Pitassi, linear gaps between degrees for PC modulo distinct primes (J. Comput. Syst. Sci. 2001).</em> Target: random dense core blocks, through their design-plus-expansion degree bounds for linear equations modulo \(p\). <em>Where it breaks:</em> our clauses are products of squares of affine forms, not linear equations. <strong>Test.</strong> Falsified. A clause \(g\prod L^2\) of a dense block is not in the span of a bounded number of linear equations: its restricted selectors span more than \(k\) dimensions, by the restriction review's check.</li>
+<li><em>Pseudo-calibration (Barak, Hopkins, Kelner, Kothari, Moitra and Potechin, FOCS 2016), for random dense core families.</em> Pseudo-expectations are built by projecting a planted distribution to low degree. <em>Where it breaks:</em> W has no natural planted distribution, since the base is unsatisfiable, and PC over \(\mathbb F_3\) is not SOS. <strong>Test.</strong> Not run: a planted model for W would first have to be defined, and none is recorded.</li>
+</ul>
+
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>Expander codes and Sipser–Spielman decoding.</em> <em>Translation:</em> the residual expander is a Tanner graph, pigeons are variables, holes are checks, and core clauses are further checks. Unique-neighbour decoding corrects local errors, which would make pseudo-solutions robust to changing a few pigeons. <em>What a theorem there would give:</em> a local correction of any small partial assignment to one satisfying all checks it touches, which is the extension property. <em>Smallest test:</em> are the core checks local? <strong>Test.</strong> Falsified. Core clauses touch about \(2v/3\) of the \(v\) residual cells, so they are not local checks.</li>
+<li><em>Chip-firing and sandpiles on expanders (Björner, Lovász and Shor, 1991).</em> <em>Translation:</em> a PC derivation fires lines along the board. Degree plays the part of height, and a refutation is an avalanche that reaches the sink. On expanders, avalanches from small configurations stay small. <em>What a theorem there would give:</em> that no degree-bounded derivation can reach 1 from local seeds, a combinatorial form of the degree bound. <strong>Test.</strong> Not run: firing is not defined for polynomial lines, and defining it is the translation itself.</li>
+</ul>
+
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-restriction-review-3:2"><em>Puncturing and the Singleton bound.</em> This cycle compared the bridge with the expander-core reduction. Every random dense block stays in the core under puncturing, so no counting thins the core, and the remaining question is A3's. <strong>Follow-up.</strong> Closed: the bridge reduces to A3 on expander boards, which the Outside leads carry.</li>
+</ul>
+
+<p>This is the first review under the rule that passed Outside leads need follow-ups. Each lead below was rechecked against the line it targeted.</p>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-25-universality-review:1"><em>Quadratic Littlewood–Offord inverse theorems.</em> They are the candidate inverse theorem for A3's main term. That is now one of the two pieces conj:expander-dense-core needs for random families. <strong>Follow-up.</strong> Continuing: it will be taken up with A3's main term on expander boards.</li>
+<li data-lead="entry-2026-09-25-universality-review:3"><em>Gauss sums for the two-layer structure.</em> <strong>Follow-up.</strong> Closed: developed into lem:gauss-sum-killer-bound. Its recorded limit, vacuity above analytic rank about \(0.71mN\), ends this lead.</li>
+<li data-lead="entry-2026-09-25-binomial-route-review:1"><em>Regularity of subspace arrangements.</em> <strong>Follow-up.</strong> Closed: A1's structured families are now proved by restriction. For dense-core blocks the arrangement has more than \(k\) subspaces, so the regularity bound exceeds the degree budget. That is the lead's own obstacle.</li>
+<li data-lead="entry-2026-09-25-closure-route-review:1"><em>Dade's lemma and rank varieties, for the closure route.</em> <strong>Follow-up.</strong> Closed: the closure route's motivating case, column forms, is proved by freezing (thm:column-sparse-w). The route is parked, and its leads stay in the record for a restart.</li>
+<li data-lead="entry-2026-09-25-closure-route-review:3"><em>Mayer homology of \(p\)-complexes.</em> <strong>Follow-up.</strong> Closed: closure route parked, as above.</li>
+<li data-lead="entry-2026-09-25-hole-splitting-review:2"><em>\(\pi\)-points and generic Jordan types.</em> <strong>Follow-up.</strong> Closed: closure route parked, as above.</li>
+<li data-lead="entry-2026-09-26-recursion-review:1"><em>Exponential sums for point counts, for conj:free-hole-good.</em> <strong>Follow-up.</strong> Closed: the free-hole conjecture belongs to the parked closure line.</li>
+<li data-lead="entry-2026-09-26-recursion-review:2"><em>Vertex decomposability, for conj:good-column.</em> <strong>Follow-up.</strong> Closed: parked with the closure line.</li>
+<li data-lead="entry-2026-09-26-killer-moment-review:1"><em>Nguyen and Wood's moment method for cokernels with dependent entries.</em> This is the other candidate for A3's main term. Row dependence on an expander board is sparser than on the complete board, since each pigeon has 5 cells. That may help. <strong>Follow-up.</strong> Continuing: with A3's main term on expander boards.</li>
+<li data-lead="entry-2026-09-26-killer-moment-review:3"><em>Quasi-linear partition rank.</em> <strong>Follow-up.</strong> Closed: it would sharpen lem:gauss-sum-killer-bound, part 3. But the bound is vacuous above analytic rank about \(0.71mN\) whatever the partition-rank loss, so it cannot reach the main term.</li>
+<li data-lead="entry-2026-09-26-chooser-review:1"><em>Min-wise independent permutations.</em> <strong>Follow-up.</strong> Closed: the chooser rules it analysed were superseded by the matching-and-expander choice (thm:cell-family-w).</li>
+<li data-lead="entry-2026-09-26-chooser-review-2:1"><em>Mikša and Nordström's generalized method.</em> Developed in the restriction line. Theorem 4.9 carries every residual argument, and Theorem 3.8 was read and set aside for dense clauses, which are not local. <strong>Follow-up.</strong> Closed: its remaining use is the extension lemma above, listed as a new lead.</li>
+<li data-lead="entry-2026-09-26-chooser-review-2:3"><em>Counting modulo \(p\) (Beame and Riis).</em> <strong>Follow-up.</strong> Closed: restriction choices leave no implications, so no hole is forced and counting has nothing to refute.</li>
+<li data-lead="entry-2026-09-26-restriction-review:3"><em>The A3 route on the residual.</em> Developed in the expander-core entry, where the product law transferred. <strong>Follow-up.</strong> Closed: merged into the follow-up of entry-2026-09-26-restriction-review-3:3.</li>
+<li data-lead="entry-2026-09-26-restriction-review-2:3"><em>The A3 route, product-top Cohen–Lenstra, on the residual.</em> <strong>Follow-up.</strong> Closed: merged into the follow-up of entry-2026-09-26-restriction-review-3:3.</li>
+<li data-lead="entry-2026-09-26-restriction-review-3:2"><em>The closure route for structured dense members.</em> <strong>Follow-up.</strong> Closed: parked, as above. Its Koszul condition for non-column forms is not needed while the expander core is open.</li>
+<li data-lead="entry-2026-09-26-restriction-review-3:3"><em>The A3 route transported to the residual board.</em> Developed in the expander-core entry. The product law holds verbatim, while the stratum counts, the constants and the functional quotient must be redone. <strong>Follow-up.</strong> Continuing: A3 on expander boards is one of the two missing pieces.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>The highest-risk item is A1's expander core. The next step on odd-prime-clause-transfer is the extension lemma. For functional graph PHP on an \((s,1)\)-boundary expander of left degree 5, state and prove the analogue of the matching extension theorem that Taylor glue uses. The proposed form: every NS functional through degree \(j&lt;s/10\) that vanishes on the axioms extends through \(j+1\). The route to try builds each extension from the Mikša–Nordström closure. Then check whether Taylor glue's syzygy-gluing argument goes through with it.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>conj:expander-dense-core and prop:expander-core-reduction;</li>
+<li>thm:taylor-glue (its base extension hypothesis);</li>
+<li>imp:MN-functional-graph-degree and the MN framework (Theorem 3.8, Lemma 3.15);</li>
+<li>every lead listed above, from its review.</li>
+</ul>
+<p>This review registers no claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-expander-base">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 19.11 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 27.09 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">0.49 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 51.17 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.36 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
