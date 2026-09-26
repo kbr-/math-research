@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The Dobrushin bridge is conditioning, which pays degree per block, not per unit of error probability (<a href="#entry-2026-09-26-dobrushin-conditioning">Dobrushin conditioning</a>). Next: a thread-level route review. Restate A1 around a design construction whose cost scales with the blocks' error probability, choose leads and bridges for that property, and reconsider the S1 window route.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Designs of weak PHP need support at least \(2^{D-1}\), so W_RS's clauses must be absorbed by cancellation, not avoidance. For random families the constraint count is far below the fill point, and small sets of blocks are independent (<a href="#entry-2026-09-26-thread-review-5">thread review 5</a>). Next: state member universality for random dense families, \(\operatorname{gr}(\sum_bI_b)=\sum_b\operatorname{gr}I_b\) below the fill point. Test it on a small Boolean cube by measuring cross-member falls as the number of random members passes \(N/h\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32614,6 +32614,91 @@ Subtracting lowers \(d\), a contradiction. So \(d=\deg f\) and the top of \(f\) 
 <tr><td>Marked reading and review windows</td><td class="elapsed">51.24 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">29.26 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 54.15 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-thread-review-5" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="lem:design-support-bound">
+<h3>Thread review: the line's certificates for A1's core have all closed. The missing property is a design whose cost scales with the blocks' error probability, and any design of weak PHP has support at least \(2^{D-1}\), so fixed supports cannot dodge the errors. W_RS's constraint count is far below the fill point, which leaves random universality as the lead to develop</h3>
+<p class="entry-meta">26 September 2026 · Thread-level route review with a support lemma · open statements A1 to A3 · cycle odd-prime-thread-review-5. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. Since the <a href="#entry-2026-09-26-fall-tolerance-review">fall-tolerance review</a>, three cycles closed its items:</p>
+<ul>
+<li>tree saturation, refuted (conj:tree-member-saturation);</li>
+<li>degeneration, refuted (conj:degeneration-row-freeness);</li>
+<li>Dobrushin, closed as conditioning (<a href="#entry-2026-09-26-dobrushin-conditioning">conditioning</a>).</li>
+</ul>
+<p>That entry named the property a new construction needs: a cost that scales with the blocks' error probability, not their number. What is A1 now, and which leads answer that property?</p>
+<p><strong>General statement.</strong> The line's claim is the goal through W_RS (thm:randomized-prefix-reduction) and the selector hybrid (thm:selector-hybrid-reduction), with A3 for W_RS restated by prop:single-block-falls. lem:design-support-bound is proved here.</p>
+<h4>What the goal needs</h4>
+<p>W_RS at degree \(D\approx44t\) for every family of \(n^K\) blocks of rank above about \(2t\), after selectors. Since vacuity is impossible (prop:vacuity-threshold), a design must absorb nonvacuous clauses and their falls, which start at degree about \(2t\).</p>
+<h4>Revisiting the open statements</h4>
+<ul>
+<li><strong>Random families.</strong> For random dense families, any \(\ell\le N/(2h)\) blocks have jointly independent forms with high probability. A fixed set of \(\ell h\) uniform vectors in \(\mathbb F_3^N\) is dependent with probability at most \(3^{\ell h-N}\), and there are at most \(M^\ell\) sets, so the bound is \(\sum_\ell M^\ell3^{\ell h-N}=o(1)\) for \(\ell h\le N/2\) and \(h\ge2K\log_3n\).
+<ul>
+<li>So small sets of blocks sit in independent tensor factors, and the member-pair falls need an adversarial shared dependency.</li>
+<li>Falls from combining random members arise only from sets of about \(N/h\) blocks: the fill-point regime of conj:product-top-cohen-lenstra.</li>
+<li>The "one connected family" of the member-pair entry describes adversarial families built with shared forms, not random ones.</li>
+</ul></li>
+<li><strong>The S1 window route.</strong> Reconsidered and left as it is: its window gluing needs the lag bound, whose only known proof path is the prefix reduction to W (<a href="#entry-2026-09-25-s2-fate-review">fate review</a>).</li>
+</ul>
+<p>No statement changes.</p>
+<h4>The support lemma</h4>
+<p><strong>Lemma (design support bound).</strong> Over any field, let \(\Gamma\) be a system of polynomials of degree at most 2 on the Boolean cube, containing every \(x^2-x\), such that every cube point violates some member of \(\Gamma\). Weak unary PHP is such a system: a point satisfying all collisions has at most one cell per column, while the row equations over \(\mathbb F_3\) need at least one cell per pigeon, and \(n+1\) pigeons cannot fit in \(n\) columns. Let \(\mu\) be a linear functional on all polynomials that vanishes on every multiple \(q\gamma\) (\(\gamma\in\Gamma\), \(\deg(q\gamma)\le D\)) and every polynomial vanishing on a point set \(S\), with \(\mu(1)=1\). Then \(|S|\ge2^{D-1}\).</p>
+<p><em>Proof.</em> By the theorem of Anstee, Rónyai and Sali (J. Combin. Theory Ser. A 98, 2002), the standard monomials of the vanishing ideal \(I(S)\) are sets shattered by \(S\). A shattered set of size \(k\) needs \(2^k\) points, so every function on \(S\) is the restriction of a multilinear polynomial of degree at most \(\lfloor\log_2|S|\rfloor\).</p>
+<p>For \(x\in S\), choose \(\gamma_x\in\Gamma\) with \(c_x=\gamma_x(x)\ne0\), and \(\psi_x\) of degree at most \(\log_2|S|\) with \(\psi_x=[\,\cdot=x\,]\) on \(S\). Then \(F=\sum_xc_x^{-1}\psi_x\gamma_x\) equals 1 on \(S\). So \(1-F\in I(S)\), and \(F\) is a sum of multiples of axioms of degree at most \(\log_2|S|+2\). Put \(L=\lfloor\log_2|S|\rfloor\), so \(\deg F\le L+2\). If \(D\ge L+2\), then \(\mu(F)=0\) and \(\mu(1-F)=0\), contradicting \(\mu(1)=1\). So \(D\le L+1\), that is \(L\ge D-1\), and \(|S|\ge2^L\ge2^{D-1}\). \(\square\)</p>
+<p>A design of weak PHP of degree \(D\), represented as a signed measure on cube points, needs support at least \(2^{D-1}\). For W_RS, a support chosen independently of the prefixes meets the error set of a nonvacuous block in about \(|S|\cdot3^{-t}\ge2^{D-1}3^{-t}\ge2\,(16/3)^t\approx2^{2.4t+1}\) points, since \(D\ge4t+2\). So a design cannot absorb the clauses by keeping its support off the error sets, even for one block. Absorption must come from cancellation inside the support. The avoidance route to "cost proportional to error probability" is closed.</p>
+<h4>Obstacle</h4>
+<p>A1's core needs a design of weak PHP, at degree about \(44t\), whose values cancel on every nonvacuous error clause of \(n^K\) dense members. Its cost must be paid per unit of error probability, not per block. Every construction tried pays per block, or needs locality, symmetry or a shared span:</p>
+<ul>
+<li>conditioning pays at least one factor per block;</li>
+<li>gluing pays through falls;</li>
+<li>by the support lemma, avoidance is impossible.</li>
+</ul>
+<p>For random families, what is missing is a universality statement for the member ideals below their fill point. For adversarial families, it is control of deliberately shared dependencies.</p>
+<h4>Falsification attempt</h4>
+<p>Is W_RS false for a random dense family? For random families, the constraint count is far below the fill point: the clauses times multipliers span at most \(Mh\dim G_{D-4t-2}\) dimensions, against \(\dim G_D\). With \(\dim G_d\approx(mN)^d/d!\) that ratio is about \(n^{K}h\,(n^2)^{-(4t+2)}\,D^{4t+2}\), which is \(o(1)\) for \(t\ge(K+1)\log_3n\). So counting leaves ample room, and no fall has been found except the members' own. For adversarial families, the only refuting mechanisms known are refutations of particular certificates. Not falsified.</p>
+<h4>Assessment of the line</h4>
+<p>The session reduced A1's core from "families of many dense blocks" to a sharper target:</p>
+<ul>
+<li>designs that absorb nonvacuous clauses by cancellation, with falls from degree about \(2t\);</li>
+<li>for random families, a universality statement below a fill point that counting shows is far away;</li>
+<li>for adversarial families, shared dependencies as the only source of cross-member falls.</li>
+</ul>
+<p>Every local certificate tried closed with a reason; none of the reasons refutes W_RS. The assessment is qualitative.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><em>Anstee–Rónyai–Sali shattering</em>, applied to sparse designs. Target: A1. <strong>Answers.</strong> A design supported on a small set chosen independently of the prefixes would absorb every clause by avoidance, at a cost proportional to the error probability. <strong>Test.</strong> Falsified: the support lemma above forces \(|S|\ge2^{D-1}\), and such a support meets about \(2(16/3)^t\) error points of a single nonvacuous block. Other formulations, with supports chosen after the prefixes, are the original problem.</li>
+<li><em>Lovett–Meka partial colouring</em> (the entropy method of discrepancy theory, FOCS 2012). It satisfies many constraints at entropy cost proportional to each constraint's variance, so almost-satisfied constraints are cheap. Target: A1. <strong>Answers.</strong> It would satisfy \(n^K\) clause constraints at total cost \(\sum_b\Pr[\text{block }b\text{ errs}]\), exactly the property sought. <strong>Test.</strong> Falsified over \(\mathbb F_3\): a nonzero linear constraint on a uniform vector holds with probability exactly \(1/3\), whatever the error probability of its clause, so every constraint costs \(\log3\) and the cost scales with the number. The variance-sensitive version needs a real-valued design, which is the parked 3-integrality step.</li>
+<li><em>Cohen–Lenstra universality for random matrices over finite fields</em> (Wood's universality theorems, J. Amer. Math. Soc. 2019), recorded for product tops as conj:product-top-cohen-lenstra. Target: A1 and A3 for random families. <strong>Answers.</strong> Below the fill point, random constraint systems are direct, with no falls, with probability close to 1. That is a cost scaling with probability, since dependencies appear only with their random-matrix probability. <strong>Test.</strong> Passed at the counting level: W_RS's constraint count is a factor \(n^{-\Omega(t)}\) below the fill point (falsification attempt above), so universality, if it held for the members' saturated ideals, would give no cross-member falls below \(D\). It is not yet stated for member ideals, and single members already fall, so it must be stated relative to \(\sum_b\operatorname{gr}I_b\).</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>The threshold theorem of fault-tolerant quantum computation</em> (Aharonov and Ben-Or; Knill, Laflamme and Zurek). Below a threshold error rate, concatenated codes correct errors with polylogarithmic overhead. Translation: a design is a code state, and the blocks' error sets are noise at rate \(3^{-t}\). <strong>Answers.</strong> A hierarchical, concatenated design whose degree grows polylogarithmically in the number of blocks when the error rate is below threshold, a cost that scales with the error rate. <strong>Test.</strong> Falsified in this form: the theorem needs local noise, errors of bounded support. A dense block's error event depends on the values of dense forms, hence on almost all cells, so the noise is global.</li>
+<li><em>Percolation on the dependency hypergraph</em> (branching processes). Falls spread only through shared dependencies, so if dependency clusters are small, conditioning need only pay per cluster. <strong>Answers.</strong> It would bound the cost by the size of dependency clusters, which scales with a probability rather than the number of blocks. <strong>Test.</strong> Passed for random families: by the union bound in "Revisiting", sets of up to \(N/(2h)\) blocks have independent forms. So the pairwise dependency graph is empty with high probability, and dependencies appear only at size about \(N/h\). For adversarial families the clusters are chosen by the adversary.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-fall-tolerance-review:1">Lattice gauge theory and Wilson loops. <strong>Follow-up.</strong> Closed: it rested on the tree-and-cycle reading, which random members refute (conj:tree-member-saturation).</li>
+<li data-bridge="entry-2026-09-26-fall-tolerance-review:2">Dobrushin's uniqueness condition. <strong>Follow-up.</strong> Closed: it is conditioning, which pays degree per block (<a href="#entry-2026-09-26-dobrushin-conditioning">Dobrushin conditioning</a>).</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-fall-tolerance-review:1">Resolvent saturation. <strong>Follow-up.</strong> Closed: pair saturations do not generate tree families' falls in general (conj:tree-member-saturation).</li>
+<li data-lead="entry-2026-09-26-fall-tolerance-review:2">Čech and Leray vanishing on member covers. <strong>Follow-up.</strong> Closed: its prediction that new falls appear only on cycles fails for random members, where falls track density instead.</li>
+</ul>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statements A1 and A3, develop the passed Cohen–Lenstra lead for random families. State member universality: for a random dense family, \(\operatorname{gr}(\sum_bI_b)=\sum_b\operatorname{gr}I_b\) through \(D\) with high probability below the fill point. Test it on a small Boolean cube, without PHP, by measuring cross-member falls as the number of random members grows past \(N/h\). Before computing, count where the prediction can fail.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the fall-tolerance review and the three entries since, conj:product-top-cohen-lenstra, the fate review, and prop:vacuity-threshold. The support lemma is proved above from the Anstee–Rónyai–Sali theorem. A fresh-context reviewer confirmed the theorem's use, the violation of an axiom at every point, the identity \(F=1\) on \(S\), the requirement that a supported design kill all of \(I(S)\), and the union bound. It required, both adopted: the floor step rewritten with \(L=\lfloor\log_2|S|\rfloor\), since \(|S|&gt;2^{D-2}\) alone does not give \(2^{D-1}\); and the count of error points corrected from \(2^{3t}\) to \(2(16/3)^t\approx2^{2.4t+1}\). The review's other tests are a union bound, an equidistribution fact and a dimension count, written out in the items.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-thread-review-5">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 51.09 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 23.99 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 26.96 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
