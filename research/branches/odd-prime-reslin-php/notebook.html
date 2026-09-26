@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> A1 rests on W over expander boards, conj:expander-dense-core. Its gluing base has no decisive finite test at reachable sizes (<a href="#entry-2026-09-26-expander-core-review">expander-core review</a>). Next: an extension lemma for functional graph PHP on a boundary expander, the analogue of the matching extension that Taylor glue uses, built from the Mikša–Nordström closure. Then check whether Taylor glue's syzygy-gluing argument goes through with it.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> On graph boards, design extension reduces to filling the matching complexes of row sets. Rows with private holes fill, but expansion alone does not (<a href="#entry-2026-09-26-graph-matching-extension">graph matching extension</a>). Next: prove the private-hole elimination for every row set of size at most \(B\) in a random left-5-regular graph with \(h'\gg B^2\) holes, using that small row sets have small excess \(5|S|-|N(S)|\). Or find a row set there whose matching complex does not fill.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26178,6 +26178,119 @@ Split at \(S=Aq\), with \(A=(B+\ln(21/\theta))/0.15\).
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.36 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-graph-matching-extension" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:graph-matching-extension lem:private-hole-filling conj:expander-matching-filling" data-lead="entry-2026-09-26-expander-core-review:1">
+<h3>Matching extension on graph boards: the complete board's design extension transfers row set by row set to any graph whose matching complexes are filled, rows with private holes fill by the known leaf decomposition, and 3-expansion with rows of degree 3 does not</h3>
+<p class="entry-meta">26 September 2026 · Working proofs, a conjecture and finite checks · open statement A1, expander core · cycle odd-prime-expander-extension.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-expander-core-review">expander-core review</a> asked for the analogue, on functional graph PHP over the residual expander, of the matching extension theorem that thm:taylor-glue uses. This develops that review's first Outside lead. On the complete board, extension from degree \(s-1\) to \(s\) fills a cycle in the \(s\times N\) chessboard complex, by BLVZ connectivity when \(N\ge2s-1\). What replaces it on a graph board, and does expansion supply it?</p>
+<p><strong>General statement.</strong> Three statements, lem:graph-matching-extension, lem:private-hole-filling and conj:expander-matching-filling, over any field \(\mathbb K\) unless stated. For a bipartite graph \(G\) (rows, holes) and a row set \(S\), \(M(G[S])\) is the complex of partial matchings of \(G\) using rows of \(S\).</p>
+<ul>
+<li>lem:graph-matching-extension: suppose \(\tilde H_{|S|-2}(M(G[S]);\mathbb K)=0\) for every row set with \(1\le|S|\le B\). Then for functional graph PHP on \(G\), every normalized degree-\(k\) design extends through \(B\), and \(\mathcal I_B\cap\mathcal P_{\le k}=\mathcal I_k\), \(\mathcal C_B=\mathcal I_B\).</li>
+<li>lem:private-hole-filling: if every row of \(S\) has a hole adjacent to no other row of \(S\), then \(\tilde H_{|S|-2}(M(G[S]);\mathbb K)=0\). This is a rediscovery: a private hole is a leaf of \(G[S]\), and the proof is the leaf decomposition of matching complexes (Marietti and Testa, <em>Electron. J. Combin.</em> 15 (2008), Proposition 3.3; in the form of Jelić Milutinović, Jenne, McDonough and Vega, arXiv:1905.10560, Lemma 2.13).</li>
+<li>conj:expander-matching-filling: for a left-5-regular graph with \(|N(U)|\ge3|U|\) for all row sets \(|U|\le s\), \(\tilde H_{|S|-2}(M(G[S]);\mathbb F_3)=0\) for every \(|S|\le s\). It concerns the row sets of the graph itself, where every row has degree 5. The branches \(G-t\), whose rows lose holes, occur only inside the proof of the lemma.</li>
+</ul>
+
+<h4>The graph matching extension</h4>
+<p><em>Proof of lem:graph-matching-extension.</em> This follows the main record's <a href="https://kbr.is-a.dev/math-research/#all-field-matching-filtration">matching extension theorem</a> with \(M(G[S])\) in place of the chessboard complex.</p>
+<ul>
+<li>Modulo Booleanity and both exclusions, the multilinear monomials of functional graph PHP are the partial matchings of \(G\). A design is a family \(z_T\) of values on matchings of size at most the degree, with \(z_\varnothing=1\), and the row equations give the constraints
+\[\sum_{j\in N(i)\setminus\mathrm{col}(T)}z_{T\cup\{(i,j)\}}=z_T,\qquad |T|&lt;B,\ i\notin\mathrm{row}(T).\]</li>
+<li><em>Degree 1.</em> Assign each row its total 1 on its holes. This needs \(N(i)\ne\varnothing\), which is the hypothesis at \(|S|=1\), since \(\tilde H_{-1}\) of an empty complex is \(\mathbb K\).</li>
+<li><em>From \(s-1\) to \(s\).</em> Fix an \(s\)-row set \(S=\{i_0&lt;\dots&lt;i_{s-1}\}\). Give a prescribed \((s-1)\)-matching \(T\) that misses row \(i_j\) the coefficient \((-1)^jz_T\). The record's cancellation shows this chain is a reduced cycle. It uses only that the two marginal sums through a face missing rows \(i_a\) and \(i_b\) both equal the same previously assigned moment, which the constraints give on \(G\) as on the complete board. By hypothesis the cycle bounds. A filling assigns values to the \(s\)-matchings of \(G[S]\), and the boundary equations are exactly the constraints for the \((s-1)\)-matchings on rows of \(S\).</li>
+<li><em>Independence.</em> Each \(s\)-matching belongs to one row set, so the fillings for different row sets are independent.</li>
+<li><em>Stability.</em> The duality and multiplication argument of the record then gives the two equalities. It uses only the extension property.</li>
+</ul>
+<p>\(\square\)</p>
+<p>By thm:chessboard-link, on the complete board the same complexes are the multilinear strands of the Koszul complex of the row sums. The graph version of that identification is not claimed here.</p>
+
+<h4>Private holes fill</h4>
+<p><em>Proof of lem:private-hole-filling (known).</em> Let \(r\in S\) have a private hole \(t_0\). Write \(X=M(G[S\setminus r])\) and \(X_t=M((G-t)[S\setminus r])\). The faces containing the cell \((r,t)\) are \((r,t)\) joined to a face of \(X_t\). So
+\[M(G[S])=X\ \cup\ \bigcup_{t\in N(r)}\operatorname{cone}_{(r,t)}X_t .\]</p>
+<ul>
+<li>Since \(t_0\) is private, \(X_{t_0}=X\), and \(\operatorname{cone}_{(r,t_0)}X\) is a contractible subcomplex.</li>
+<li>Two cones meet only in \(X_t\cap X_{t'}\subseteq X\), because no face contains two cells of row \(r\).</li>
+</ul>
+<p>Collapsing the contractible cone gives \(M(G[S])\simeq\bigvee_{t\ne t_0}\Sigma X_t\). So \(\tilde H_{s-2}(M(G[S]))\cong\bigoplus_{t\ne t_0}\tilde H_{s-3}(X_t)\).</p>
+<p>Each \(X_t\) is the matching complex of \(s-1\) rows in \(G-t\). Every row of \(S\setminus r\) keeps its private hole, because a hole of \(N(r)\) is not private to another row. Induction on \(s\) finishes. At \(s=1\) the complex is the nonempty set of the row's holes. The induction in fact gives a wedge of \((s-1)\)-spheres, so the vanishing also holds over \(\mathbb Z\). \(\square\)</p>
+<p>The recursion needs only one row with a private hole at each step, in every branch \(G-t\). So the lemma holds for the class of \((S,G)\) that admit such an elimination order in all branches.</p>
+
+<h4>Finite checks</h4>
+<p><code>matching_complex.py</code>, <code>hall_slack_test.py</code>, <code>expansion_degree_test.py</code> and <code>power_counts.py</code> computed \(\tilde H_{s-2}(M(G[S]);\mathbb F_3)\) exactly. Ranks came from FLINT's <code>nmod_mat_rank</code> (<code>rank_mod3.c</code>), validated against a NumPy elimination on every sample with \(s\le3\). Each sample is a graph \(G[S]\) itself: \(s\) rows, each a uniform random subset of \(h\) holes. Its holes are \(N(S)\), and the expansion condition is checked on all subsets.</p>
+<p><em>Controls.</em> The chessboards gave:</p>
+<ul>
+<li>\(3\times4\): \(\tilde H_1=2\), with \(N&lt;2s-1\);</li>
+<li>\(4\times5\): \(\tilde H_2=20\);</li>
+<li>\(3\times5\): \(\tilde H_1=0\), at the threshold;</li>
+<li>two rows sharing 5 holes: \(\tilde H_0=0\).</li>
+</ul>
+<p><em>Degree-5 rows with \(|N(U)|\ge3|U|\), and their power.</em> The samples were 60 per hole count for \(s=2,3,4\) and 30 per hole count for \(s=5\). Hole counts were \(h=3s\), \(3s+2\) and \(4s\); at \(s=2\) the last two coincide at 8. No sample had nonzero homology. But almost every sample already lies in the elimination class of lem:private-hole-filling, so its zero follows from the lemma (<code>power_counts.json</code>):</p>
+<ul>
+<li>\(s=2\), \(h=6\): 60 of 60 with a private hole in every row, 60 eliminable, 0 outside the class.</li>
+<li>\(s=2\), \(h=8\): 60 of 60 with a private hole in every row, 60 eliminable, 0 outside the class.</li>
+<li>\(s=2\), \(h=8\): 60 of 60 with a private hole in every row, 60 eliminable, 0 outside the class.</li>
+<li>\(s=3\), \(h=9\): 38 of 60 with a private hole in every row, 60 eliminable, 0 outside the class.</li>
+<li>\(s=3\), \(h=11\): 52 of 60 with a private hole in every row, 60 eliminable, 0 outside the class.</li>
+<li>\(s=3\), \(h=12\): 55 of 60 with a private hole in every row, 60 eliminable, 0 outside the class.</li>
+<li>\(s=4\), \(h=12\): 34 of 60 with a private hole in every row, 59 eliminable, 1 outside the class.</li>
+<li>\(s=4\), \(h=14\): 37 of 60 with a private hole in every row, 60 eliminable, 0 outside the class.</li>
+<li>\(s=4\), \(h=16\): 44 of 60 with a private hole in every row, 60 eliminable, 0 outside the class.</li>
+<li>\(s=5\), \(h=15\): 16 of 30 with a private hole in every row, 30 eliminable, 0 outside the class.</li>
+<li>\(s=5\), \(h=17\): 17 of 30 with a private hole in every row, 30 eliminable, 0 outside the class.</li>
+<li>\(s=5\), \(h=20\): 19 of 30 with a private hole in every row, 30 eliminable, 0 outside the class.</li>
+</ul>
+<p>So the checks give evidence for the conjecture beyond the lemma from one sample only, at \(s=4\). Its homology was zero. The conjecture is essentially untested beyond the lemma.</p>
+<p><em>Refutations of weaker conditions, by \(s\).</em></p>
+<ul>
+<li>Rows of degree 2 to 5 with only \(|N(U)|\ge2|U|-1\) had nonzero homology in 0, 16, 28 and 34 of 40 samples for \(s=2,3,4,5\). Samples violating the condition had nonzero homology in 20, 20, 20 and 18 of 20. An explicit failure is saved as <code>hall_slack_2U-1_s3</code> in <code>power_counts.json</code>: rows \(\{1,2,3,4,5\},\{0,1,2,5,6\},\{1,3\}\), with \(\tilde H_1=1\).</li>
+<li>Rows of degree 3 to 5 with \(|N(U)|\ge3|U|\) had nonzero homology in 0, 0, 3 and 3 of 40. With \(|N(U)|\ge5|U|/2\) the counts were 0, 0, 3 and 4. An explicit failure is <code>expansion3_deg3to5_s4</code>: rows \(\{1,2,6,10,12\},\{0,11,12\},\{0,3,6,8,9\},\{4,7,10,11\}\), with \(\tilde H_2=1\).</li>
+</ul>
+<p>So the chessboard threshold does not generalize to graphs, and 3-expansion does not suffice once rows may have degree 3. Nothing here refutes the degree-5 conjecture.</p>
+
+<h4>What it means</h4>
+<ul>
+<li><em>The gluing base on expanders reduces to filling matching complexes.</em> If the residual \(G'\) fills every row set of size up to \(B\), design extension and PC = NS stability hold through \(B\). That is the base-extension step in the proof of thm:taylor-glue. Whether the rest of Taylor glue transfers to graph boards is not checked here. That includes its use of the chessboard link, whose graph version is not claimed.</li>
+<li><em>Private holes suffice; 3-expansion with rows of degree 3 does not.</em> In the samples, between 16 of 30 and all 60 row sets had a private hole in every row, and all but one had an elimination order. But the conjecture must hold for every row set up to size \(B\), with branches deleting holes.</li>
+<li><em>Next.</em> Prove the elimination-order class for all row sets of size at most \(B\) in a random left-5-regular graph with \(h'\gg B^2\) holes, using that the excess \(5|S|-|N(S)|\) is small. Or find a row set in such a graph that does not fill.</li>
+</ul>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the main record's matching extension theorem (all-field matching filtration: the constraints, the cancellation, the fillings and stability), thm:chessboard-link and lem:elementary-matching-row-set-filling. A literature check (arXiv:1905.10560, Lemma 2.13, and its source, Marietti and Testa 2008) identified the private-hole lemma as the known leaf decomposition. Three claim searches found only complete-board statements:</p>
+<ul>
+<li>chessboard connectivity and matching complexes;</li>
+<li>private holes and cones;</li>
+<li>graph matching extension.</li>
+</ul>
+<p>Controls and the rank validation are as above.</p>
+<p>A fresh-context reviewer confirmed:</p>
+<ul>
+<li>the transfer, including that the record uses \(N\ge2B-1\) only for BLVZ;</li>
+<li>the cone decomposition and its induction.</li>
+</ul>
+<p>It required these changes, all adopted:</p>
+<ul>
+<li>the literature label;</li>
+<li>the power counts;</li>
+<li>the sample description;</li>
+<li>explicit failing graphs;</li>
+<li>the scope of the refutations and of the Taylor-glue claim;</li>
+<li>this gate record.</li>
+</ul>
+<p>The changes weaken or clarify, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-expander-extension">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>15 min 6.94 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 20.23 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 50.09 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 11.55 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 54.98 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 49.91 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.18 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
