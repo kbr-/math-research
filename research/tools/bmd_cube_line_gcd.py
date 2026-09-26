@@ -10,8 +10,20 @@ so it is interpolated from the dumped points when there are more of them than th
 case, the degree of the gcd and its roots in F_q, and marks which roots are collision points (u in {0, -1, 1} or
 u = -1/2, where two entries coincide or one vanishes).
 
+Mode "minors" (usage: bmd_cube_line_gcd.py minors LOG Q) reads the output of bmd_cube_line_minors ("MIN u M_0 ...
+M_4d" lines after a "d=..." header), interpolates two random combinations of the minors in u (Newton form), takes
+their gcd (the gcd of all minors with high probability), and reports its multiplicities at u = 0, -1, 1 and its
+remaining degree.  The line-gcd property with g_{3,d} = (y1 y2 y3)^{d^2} prod (y_i - y_j)^{d^2} predicts
+u^{2d^2 + psi(d)} (u+1)^{d^2} (u-1)^{d^2} and nothing else.
+
+Mode "orders" (usage: bmd_cube_line_gcd.py orders LOG Q U0) reads the same value dumps as the default mode and
+prints, per case, the order at u = 0 of each coordinate W_c separately (None for a zero coordinate).
+
 Usage: bmd_cube_line_gcd.py LOG Q U0
+       bmd_cube_line_gcd.py minors LOG Q
+       bmd_cube_line_gcd.py orders LOG Q U0
 """
+import random
 import re
 import sys
 
@@ -59,7 +71,74 @@ def roots(f, q, cands):
     return [u for u in cands if sum(c * pow(u, k, q) for k, c in enumerate(f)) % q == 0]
 
 
+def newton(xs, ys, q):
+    """Interpolating polynomial mod q (coefficients low degree first), O(n^2)."""
+    n = len(xs); c = list(ys)
+    for j in range(1, n):
+        for i in range(n - 1, j - 1, -1):
+            c[i] = (c[i] - c[i - 1]) * pow((xs[i] - xs[i - j]) % q, q - 2, q) % q
+    poly = [c[n - 1]]
+    for i in range(n - 2, -1, -1):
+        # poly = poly * (x - xs[i]) + c[i]
+        new = [0] * (len(poly) + 1)
+        for k, a in enumerate(poly):
+            new[k + 1] = (new[k + 1] + a) % q
+            new[k] = (new[k] - a * xs[i]) % q
+        new[0] = (new[0] + c[i]) % q
+        poly = new
+    while poly and poly[-1] == 0:
+        poly.pop()
+    return poly
+
+
+def mult_at(f, r, q):
+    """Multiplicity of the root r of f mod q, and the quotient."""
+    k = 0
+    while f:
+        # synthetic division by (x - r)
+        n = len(f); quo = [0] * (n - 1); acc = 0
+        for i in range(n - 1, -1, -1):
+            acc = (acc * r + f[i]) % q
+            if i:
+                quo[i - 1] = acc
+        if acc:
+            break
+        f = quo; k += 1
+    return k, f
+
+
+def minors_mode(log, q):
+    cases, cur = [], None
+    for line in open(log):
+        m = re.match(r'd=(\d+) m=(\d+)', line)
+        if m:
+            cur = {'d': int(m[1]), 'pts': []}; cases.append(cur); continue
+        if line.startswith('MIN') and cur:
+            v = [int(x) for x in line.split()[1:]]; cur['pts'].append((v[0], v[1:]))
+    rng = random.Random(1)
+    for c in cases:
+        d = c['d']; xs = [u % q for u, _ in c['pts']]
+        polys = []
+        for _ in range(2):
+            coef = [rng.randrange(1, q) for _ in c['pts'][0][1]]
+            polys.append(newton(xs, [sum(a * b for a, b in zip(coef, v)) % q for _, v in c['pts']], q))
+        assert max(len(p) for p in polys) < len(xs), 'too few points'
+        g = pgcd(polys[0], polys[1], q)
+        mults = {}
+        for r in (0, 1, q - 1):
+            k, g = mult_at(g, r, q); mults[r if r < q // 2 else r - q] = k
+        psi = d * d // 2
+        pred = {0: 2 * d * d + psi, 1: d * d, -1: d * d}
+        print(f"d={d}: points {len(xs)}, gcd multiplicities at u=0,1,-1: {mults[0]},{mults[1]},{mults[-1]} "
+              f"(predicted {pred[0]},{pred[1]},{pred[-1]}), remaining degree {len(g) - 1}")
+
+
 def main():
+    if sys.argv[1] == 'minors':
+        return minors_mode(sys.argv[2], int(sys.argv[3]))
+    per_coordinate = sys.argv[1] == 'orders'
+    if per_coordinate:
+        sys.argv.pop(1)
     log, q, u0 = sys.argv[1], int(sys.argv[2]), int(sys.argv[3])
     cases, cur = [], None
     for line in open(log):
@@ -79,6 +158,13 @@ def main():
         assert c['l'] + c['m'] < len(pts), 'too few points for the degree bound l + m'
         vecs = [c['vals'][i][0] for i in pts]  # first witness (the space is one-dimensional)
         xs = [(u0 + i) % q for i in pts]
+        if per_coordinate:
+            orders = []
+            for col in range(len(vecs[0])):
+                f = interp(xs, [v[col] for v in vecs], q)
+                orders.append(mult_at(f, 0, q)[0] if f else None)
+            print(f"(d,rho)=({c['d']},{c['rho']}) l={c['l']}: psi={c['d'] ** 2 // 2}, order at u=0 of W_c, c=0..: {orders}")
+            continue
         g = []
         for col in range(len(vecs[0])):
             f = interp(xs, [v[col] for v in vecs], q)
