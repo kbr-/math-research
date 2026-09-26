@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> The planted constraint equals W_RS plus the block's own line, "some form vanishes", at degree \(2h+4t\); the line is harmful for single-form and duplicate blocks (<a href="#entry-2026-09-26-covering-identity">covering identity</a>). Next: re-read the logarithmic-prefix reduction and thm:randomized-prefix-reduction where a line becomes clauses, and decide whether the reduction can keep a cheap surrogate of the line for high-rank blocks only, with a degree accounting; if it can, test the planted statement for high-rank families.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> The reduction keeps no cheap surrogate of a line: where a block's prefix is silent its image forces every form nonzero, and naming a vanishing form costs the line's degree (<a href="#entry-2026-09-26-line-surrogate">line surrogate</a>). Next: bound how much a degree-\(22k\) refutation can use the event where a block's prefix is silent, on which the image forces every form nonzero; ask whether that forced non-vanishing is what low-degree refutations of dense families would exploit, and test it against the recorded attack families.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -31259,6 +31259,32 @@ with every product of degree at most \(2h+4t\). Hence, for \(D\ge2h+4t\), the de
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 4.05 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 4.95 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 58.96 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-line-surrogate" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Analysis of the logarithmic-prefix reduction's line-to-clause step; no new claim. The statements concerned are conj:randomized-wide-clause and lem:planted-covering-identity.">
+<h3>The reduction keeps no cheap surrogate of a line: its companions are defined from the prefix forms alone, so where every prefix form is nonzero the image asserts only that every other form is nonzero too, and naming a vanishing non-prefix form costs the line's own degree</h3>
+<p class="entry-meta">26 September 2026 · Analysis, no new theorem · open statement A1 · cycle odd-prime-line-surrogate. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-covering-identity">covering identity</a> showed that the planted constraint \(Q^C=0\) is W_RS plus the block's own line, "some form vanishes". Could the reduction keep a low-degree surrogate of the line for high-rank blocks, so that the family core becomes the planted statement for them?</p>
+<p><strong>General statement.</strong> conj:randomized-wide-clause (W_RS), with lem:planted-covering-identity; no new claim.</p>
+<h4>Where the line goes</h4>
+<p>In the <a href="#entry-2026-09-22-degree-three-first-moment">logarithmic-prefix reduction</a>, a Res(Lin) refutation compiles into complete accuracy-one blocks with a PC refutation of degree \(4p-1\). The partial prefix then substitutes each block's companions by expressions in the forms of the prefix set \(S_b\) only, and the block becomes the clauses \(g_{b,i}Q_b\), \(i\notin S_b\), with \(Q_b=\prod_{j\in S_b}L_{b,j}^{p-1}\). On the event \(Q_b=1\), where every prefix form is nonzero, those clauses say that every other form is nonzero too. The image of the block there is the negation of its line. The line survives only through the prefix: a point satisfies the image when some prefix form vanishes, or when no form vanishes at all. The randomized version keeps the same structure, with \(Q^C\) in place of \(Q_b\) (thm:randomized-prefix-reduction).</p>
+<p>A surrogate that forbids \(Q_b=1\) outright would need, on that event, a vanishing form among the \(h_b-k\) non-prefix forms. The substitution can name it only by a polynomial that selects it, and selecting one of \(h_b-k\) forms by its zero pattern has degree about \(2(h_b-k)\), the degree of the line itself. By the covering identity, the one cheap candidate, \(Q^C=0\), adds exactly the line, and it matches the image plus the line only at degree \(2h+4t\). So the reduction supplies no low-degree surrogate of the line, for blocks of any rank. Proving hardness with a stronger target (image plus \(Q^C=0\)) would still suffice logically, since a stronger target's hardness implies the image's. But that stronger statement is false on low-rank blocks and undecided on high-rank ones, and nothing in the reduction makes it available cheaply.</p>
+<h4>What it means</h4>
+<p>The exception \(g=0\) in W_RS is not an artefact of a choice. It is the trade the prefix makes: a line of width \(h\) becomes clauses of degree \(O(k)\) by giving up the line where the prefix is silent. The family core stays W_RS as stated.</p>
+<p><strong>Next.</strong> A route review is due soon. Until then, on A1 under random prefixes: bound how much a degree-\(22k\) refutation can use the event where a block's prefix is silent. On that event the block's image forces every form nonzero, which, for independent uniform forms, holds on a fraction about \((2/3)^{h-k}\) of the event. Ask whether that forced non-vanishing, rather than the forbidden kernel patterns, is what low-degree refutations of dense families would exploit, and test it against the recorded attack families.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the logarithmic-prefix reduction's theorem and proof, thm:randomized-prefix-reduction and lem:planted-covering-identity. The entry registers no claim and was not sent to a separate reviewer; it is an analysis of a recorded reduction and states no new result.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-line-surrogate">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 38.78 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">53.70 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">44.95 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
