@@ -112,6 +112,9 @@ rules to growing checklists or one-off setup narratives.
   Run the exhaustive checker for any rule, tree or encoding change before relying
   on it. Use a fresh-context reviewer subagent, given only the draft and dependency
   anchors/excerpts, to try to break the argument and identify unused hypotheses.
+  In both Codex and Claude Code, explicitly set reviewer subagents to **medium**
+  reasoning, including the pre-proof novelty check, regardless of the main agent's
+  reasoning level; do not inherit its high or higher setting.
   Resolve every reported gap and drop or justify each unused hypothesis. Brief
   reviewers narrowly: exact files/anchors, at most one or two named claim searches,
   dependency excerpts in a scratch file, and required changes as short bullets.
