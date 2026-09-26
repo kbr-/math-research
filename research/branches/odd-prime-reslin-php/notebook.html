@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A3 and A1.</strong> Random dense tops are direct modulo the row sums up to the fill. Tops sharing a factor create purity defects that only falls can absorb (<a href="#entry-2026-09-27-relative-directness">relative directness</a>). Next: derive from the Boolean top reduction when two members sharing a dense form have a degree-3 element \(\ell_0^2x\) in their joint top ideal, the fall that would absorb the defect. Test the absorption \(n_4\cap\mathfrak mG=\mathfrak mn_3\) on 4 × 7 once memory allows.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Sunflower purity defects are exactly \(\ell_0^2\mathfrak mG_1\), and they are absorbed once the family excludes a flat \(\{L_0=a\}\) (<a href="#entry-2026-09-27-sunflower-absorption">sunflower absorption</a>). Next: generalize to shared spans of dimension \(S\). When members share \(S\) forms, is every purity defect supported on the shared value space and absorbed by the covering falls of its flats? Test this against the flat-difference configuration.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33516,6 +33516,50 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-sunflower-absorption" data-kind="research" data-route="odd-prime-clause-transfer" data-bridge="entry-2026-09-26-fall-line-review:2" data-claims="lem:sunflower-absorption">
+<h3>Sunflower absorption: the purity defect of tops sharing a factor \(\ell_0^2\) is exactly \(\ell_0^2\mathfrak mG_1\), and a family that excludes a whole flat \(\{L_0=a\}\) absorbs it through degree-3 elements \(\delta(L_0-a)\,x\). In W_RS, generic sunflowers are far too small to reach the defect, and flat-excluding members cover the flat first</h3>
+<p class="entry-meta">27 September 2026 · Working lemma with a finite check · open statements A1 and A3 · cycle odd-prime-sharing-falls-absorb. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statements A1 and A3. The <a href="#entry-2026-09-27-relative-directness">relative directness entry</a> found that tops sharing a factor \(\ell_0^2\) have a first-degree purity defect far below the fill, 22 on 2 × 12 and 49 on 3 × 9. Only lower-degree elements of the top ideal can absorb it. Does the adversary's sunflower, the family sharing one dense form, supply them?</p>
+<p><strong>General statement.</strong> lem:sunflower-absorption: for every allowed set \(Q\), affine form \(L_0\) and value \(a\), the products \(\delta(L_0-a)f\) with \(f\) vanishing on the kept part \(Z_a\) of the flat lie in \(I(Q)\). So a family that excludes a whole flat has \(\mathfrak mn_3\supseteq\ell_0^2\mathfrak mG_1\), which absorbs the shared factor's purity defect.</p>
+<h4>The defect is \(\ell_0^2\mathfrak mG_1\)</h4>
+<p>sunflower_span.cpp (research/results/odd_prime_sharing_absorption_20260927/) computes, for a dense \(\ell_0\), the purity defect of all of \(\ell_0^2G_2\) and the rank of \(\ell_0^2\mathfrak mG_1\) in \(G\) (series.txt).</p>
+<ul>
+<li>On 2 × 12: \(\dim\ell_0^2G_2=217\), defect 22, and \(\dim\ell_0^2\mathfrak mG_1=22\).</li>
+<li>On 3 × 9: 271, 49 and 49.</li>
+</ul>
+<p>Since \(\ell_0^2\mathfrak mG_1\subseteq\ell_0^2G_2\cap\mathfrak mG\) always, and the dimensions agree, \(\ell_0^2G_2\cap\mathfrak mG=\ell_0^2\mathfrak mG_1\) on both boards. The sunflower tops of the previous entry span all of \(\ell_0^2G_2\): rank 217 at \(M=4000\), with the same defect 22.</p>
+<h4>The lemma</h4>
+<p><strong>lem:sunflower-absorption.</strong> On the weak base over \(\mathbb F_3\), let \(Q\subseteq P\) be an allowed set, \(E=P\setminus Q\) its excluded set, \(n\) its top ideal, \(L_0\) an affine form with linear part \(\ell_0\), and \(a\in\mathbb F_3\). Put \(Z_a=\{x\in P:L_0(x)=a\}\setminus E\), the part of the flat that \(Q\) keeps.</p>
+<ol>
+<li>For every affine \(f\) vanishing on \(Z_a\), \(\delta(L_0-a)\,f\in I(Q)\), with \(\delta(y)=1-y^2\). So \(n_{\le3}\) contains the tops of these products, and \(n_3\supseteq\ell_0^2V\) for the space \(V\) of linear parts of such \(f\), wherever \(\ell_0^2v\ne0\) in \(G\).</li>
+<li>If \(Z_a=\emptyset\), then \(n_3\supseteq\ell_0^2G_1\), so \(\mathfrak mn_3\supseteq\ell_0^2\mathfrak mG_1\). Where \(\ell_0^2G_2\cap\mathfrak mG=\ell_0^2\mathfrak mG_1\), as on the two boards computed, the whole tops-only sunflower defect in degree 4 is absorbed.</li>
+</ol>
+<p><em>Proof.</em> \(\delta(L_0-a)\) is the indicator of \(\{L_0=a\}\). The product vanishes at every point off that flat. The points of \(Q\) on the flat are exactly \(Z_a\), where \(f\) vanishes. So the product vanishes on \(Q\). Its degree is at most 3, with degree-3 part \(-\ell_0^2f_1\), \(f_1\) the linear part of \(f\). For part 2, \(Z_a=\emptyset\) allows every cell \(x\) as \(f\), and \(\mathfrak m\) is generated in degree 1. \(\square\)</p>
+<h4>When sunflowers reach the defect, and when they cover</h4>
+<ul>
+<li><strong>Reaching the defect.</strong> The defect comes from \(\ell_0^2G_{e-2}\cap\mathfrak mG\), which the tops meet only when their span nearly exhausts \(\ell_0^2G_{e-2}\) modulo \(\mathfrak m\). By the argument of lem:generic-relative-directness transplanted inside \(\ell_0^2G\) (an analogy: the spanning hypothesis there is not checked), generic tops \(\ell_0^2u_b\) are direct modulo \(\mathfrak mG\) until \(M\) reaches about \(\dim\ell_0^2A_{e-2}\). By the Boolean top reduction a W_RS member's first new degree is \(e\gtrsim3.17t\). That dimension is then of order \((n^2)^{e-2}/(e-2)!\), which exceeds \(n^K\) by a factor \(n^{\Omega(t)}\). So a generic W_RS sunflower is far too small to reach the defect.</li>
+<li><strong>Covering.</strong> Degenerate members whose first tops are \(\ell_0^2\ell_b^2\) (points2-type, excluding \(\{L_0=a,L_b=0\}\); a zero-column event under random prefixes) reach the defect after about \(\dim\ell_0^2A_2\) of order \((mN)^2\) members. Such a sunflower leaves \(Z_a=\{L_0=a,\ \text{all }L_b\ne0\}\), of density about \((2/3)^M\) in the flat for independent \(L_b\). That is empty once \(M\) passes about \(\log_{3/2}|P|=O(N\log m)\), long before \((mN)^2\). So such a sunflower covers the flat first, and part 2 absorbs the whole defect.</li>
+</ul>
+<p>So, heuristically, the adversary's sunflower is not an obstruction to relative row freeness in either regime: both bullets are order-of-magnitude arguments, and the covering step infers \(Z_a=\emptyset\) from an expected density. The fall that absorbs it is a family-level fall, \(\delta(L_0-a)\,x\), not a member's own. This is the fall line's object, now in the role row freeness needs.</p>
+<p>The covering argument uses independence of the private forms \(L_b\). An adversary choosing them correlated could keep \(Z_a\) nonempty; then part 1 still absorbs \(\ell_0^2\mathfrak mV\). The residual defect is at most \(\dim\ell_0^2\mathfrak mG_1-\dim\ell_0^2\mathfrak mV\). That is at most \((m-1)\) times the codimension of \(V\), which is at most \(|Z_a|\).</p>
+<p><strong>Next.</strong> The two sharing mechanisms, relative directness for generic tops and absorption for sunflowers, suggest the general statement for adversarial families: every purity defect lives on a shared factor, and it is absorbed by the covering falls of that factor. The next cycle should state this for shared spans of dimension \(S\), generalizing \(\ell_0\) to the flats of an \(S\)-dimensional shared value space, and test it against the flat-difference configuration.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:first-degree-purity, lem:generic-relative-directness, lem:boolean-top-reduction and the relative directness entry. The lemma is elementary. The equalities \(\ell_0^2G_2\cap\mathfrak mG=\ell_0^2\mathfrak mG_1\) are exact rank computations on two boards, read from the saved output, not a proof for all boards. Both bullets under "When sunflowers reach the defect, and when they cover" are heuristic: an order-of-magnitude comparison and an expected-density argument, not proofs. A fresh-context reviewer verified the lemma, its degree bookkeeping, the deduction of the equality from the two computed dimensions, and the residual bound. It required, adopted: the conclusion about sunflowers hedged to match its heuristic support. It suggested marking the directness step as an analogy, also adopted.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-sharing-falls-absorb">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 32.06 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7 min 3.62 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">57.15 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.05 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">45.12 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
