@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> The Mikša–Nordström closure operator absorbs every blocked-centre fall, so on boundary-expanding boards it is a base that survives where design extension fails (<a href="#entry-2026-09-26-closure-review">closure review</a>). Next: prove the relative criterion. Let \(W\) be the smallest subspace of the operator's image that contains the clause images and is closed under \(f\mapsto R(xf)\). If \(1\notin W\), functional graph PHP on an expander plus the clauses has no refutation of degree at most \(D\). Show that the restriction line's kills give \(W=0\) block by block. Then state the relative form of W for dense clauses as a conjecture and test it against the recorded obstructions.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> The relative criterion is proved: with Mikša and Nordström's operator \(R\) as base, extra clauses keep functional graph PHP on an expander hard when 1 stays outside the operator closure \(W_A\) of their images. A clause on at most \(22k+1\) residual pigeons is harmless when the local matchings imply it, so a block's prefix only has to hit its local zero patterns (<a href="#entry-2026-09-26-relative-criterion">relative criterion</a>). Next: turn the hitting-set condition into a family theorem, bounding the probability that a block meets more residual pigeons than its zero patterns allow. Then study \(W_A\) for dense clauses, starting from the image of a single dense clause.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26908,6 +26908,119 @@ because \(er\le n^{\eta/2}\) for large \(n\), as \(r=O(\ln n)\). This is at most
 <tr><td>Computation design and coding</td><td class="elapsed">29.70 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">42.18 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.29 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-relative-criterion" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:relative-criterion prop:semantic-local-kill" data-lead="entry-2026-09-26-closure-review:3">
+<h3>The relative criterion and semantic local kills: extra axioms keep functional graph PHP hard when 1 stays outside the operator closure of their images, and a clause on at most \(\delta s/(2d)\) pigeons is harmless when the local matchings imply it, which turns the prefix condition into a hitting set</h3>
+<p class="entry-meta">26 September 2026 · Working proof, given imported theorem · open statement A1, closure-relative base · cycle odd-prime-relative-criterion.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-closure-review">closure review</a> proposed a relative criterion. With Mikša and Nordström's operator \(R\) as the base, extra clauses keep functional graph PHP hard when 1 stays outside the smallest subspace containing their images and closed under \(f\mapsto R(xf)\). It also expected every structured block to contribute nothing. This entry proves the criterion. It then asks which clauses the operator kills outright, and what that means for W's prefixes.</p>
+<p><strong>General statement.</strong> Two results, lem:relative-criterion and prop:semantic-local-kill, for functional graph PHP on an \((s,\delta)\)-boundary expander \(G\) of left degree at most \(d\), with \(D_0=\lfloor\delta s/(2d)\rfloor\ge d\):</p>
+<ul>
+<li>lem:relative-criterion: for any set \(A\) of polynomials of degree at most \(D_0\), if \(1\notin W_A\), the relative closure below, then \(\mathrm{FPHP}_G\cup A\) has no PC refutation of degree at most \(D_0\).</li>
+<li>prop:semantic-local-kill: a polynomial that mentions a set \(P\) of pigeons with \(d|P|\le\delta s/2\) is sent to 0 by \(R\) if and only if it vanishes on every assignment satisfying the pigeon axioms of the support \(U'=\mathrm{Sup}_s(N(P))\) and all hole and functionality axioms. For a block of W on the residual board this makes the prefix condition a hitting-set condition.</li>
+</ul>
+<p>Both results are over any field and rest on Theorem 4.9 of Mikša and Nordström and the lemmas behind it (imp:MN-functional-graph-degree).</p>
+
+<h4>Setting</h4>
+<p>\(\mathrm{FPHP}_G\) has, for pigeons \(u\) and holes \(v,v'\):</p>
+<ul>
+<li>pigeon axioms \(\bigvee_{v\in N(u)}x_{uv}\);</li>
+<li>hole axioms \(\bar x_{uv}\vee\bar x_{u'v}\);</li>
+<li>functionality axioms \(\bar x_{uv}\vee\bar x_{uv'}\).</li>
+</ul>
+<p>Work in the multilinear ring \(\mathbb F[x]/(x^2-x)\). A PC refutation of degree \(D\) with Booleanity axioms gives one there of degree at most \(D\). Following their Theorem 4.9:</p>
+<ul>
+<li>\(\mathcal U\) is the pigeon axioms, and \(E\) is the hole and functionality axioms;</li>
+<li>hole \(v\) has the variable set \(V_v=\{x_{u'v'}:u'\in N(v),v'\in N(u')\}\), and \(N(t)\) is the family of \(V_v\) that a term \(t\) meets;</li>
+<li>this \((\mathcal U,\mathcal V)_E\)-graph is an \((s,\delta,0,E)\)-expander with overlap \(d\).</li>
+</ul>
+<p>Then:</p>
+<ul>
+<li>\(\mathrm{Sup}_s\) is their support (Definition 3.17);</li>
+<li>\(I_E(U')\) is the ideal generated by \(U'\wedge E\) (Definition 3.19);</li>
+<li>\(R(t)=R_{I_E(\mathrm{Sup}_s(t))}(t)\) (Definition 3.20), extended linearly, reducing under an admissible, degree-compatible order (Definition 3.9), so \(\deg R(f)\le\deg f\).</li>
+</ul>
+<p>Their proof of Theorem 3.8 gives:</p>
+<ol>
+<li>\(R\) is linear and \(R(1)=1\). The support of 1 is empty, since every nonempty pigeon set has nonempty boundary (\(\delta&gt;0\)), so the ideal is generated by \(E\), which the all-false assignment satisfies.</li>
+<li>\(R(C)=0\) for every axiom of \(\mathrm{FPHP}_G\) of degree at most \(D_0\). Their proof applies Lemma 3.26 to the leading term, which needs this degree bound. Pigeon axioms have degree at most \(d\), so the hypothesis \(d\le D_0\) covers all axioms. In any case Razborov's induction uses this property only for axioms occurring in a derivation of degree at most \(D_0\).</li>
+<li>\(R(xt)=R(xR(t))\) for every term with \(\deg t&lt;D_0\) and every variable \(x\).</li>
+</ol>
+<p>Their Lemma 3.15, due to Razborov, uses only linearity and these three properties. Its proof, an induction over the lines of a degree-\(D\) derivation, works verbatim for arbitrary polynomial axioms of degree at most \(D\).</p>
+
+<h4>The relative criterion</h4>
+<p>For a set \(A\) of multilinear polynomials of degree at most \(D_0\), let \(W_A\) be the smallest subspace of \(P_{\le D_0}\) that contains \(R(a)\) for \(a\in A\) and contains \(R(xf)\) for every variable \(x\) and every \(f\in W_A\) with \(\deg f&lt;D_0\). Since \(\deg R(xf)\le\deg f+1\le D_0\), this stays inside \(P_{\le D_0}\).</p>
+<p><strong>Lemma (relative criterion).</strong> If \(1\notin W_A\), then \(\mathrm{FPHP}_G\cup A\) has no PC refutation of degree at most \(D_0\).</p>
+<p><em>Proof.</em> Choose complements \(C_0\subseteq C_1\subseteq\dots\subseteq C_{D_0}\) with \(P_{\le j}=(W_A\cap P_{\le j})\oplus C_j\). Given \(C_{j-1}\), the sum \((W_A\cap P_{\le j})+C_{j-1}\) is direct, since \(C_{j-1}\subseteq P_{\le j-1}\) meets \(W_A\) trivially. Extend it to \(P_{\le j}\) by enlarging \(C_{j-1}\) to \(C_j\).</p>
+<p>Let \(\pi\) be the projection of \(P_{\le D_0}\) onto \(C_{D_0}\) along \(W_A\). For \(f\in P_{\le j}\), the decomposition \(f=w+c\) with \(w\in W_A\cap P_{\le j}\) and \(c\in C_j\) is also the decomposition at level \(D_0\). So \(\pi f=c\) and \(\deg(f-\pi f)\le\deg f\).</p>
+<p>Set \(R'=\pi\circ R\) on \(P_{\le D_0}\), and 0 on monomials of higher degree. It is linear.</p>
+<ol>
+<li>\(R'(1)=\pi(1)\ne0\), since \(1\notin W_A\).</li>
+<li>\(R'(C)=\pi(0)=0\) for the axioms of \(\mathrm{FPHP}_G\), and \(R'(a)=\pi R(a)=0\) for \(a\in A\), since \(R(a)\in W_A\).</li>
+<li>Let \(\deg t&lt;D_0\), and write \(\pi R(t)=R(t)-w\) with \(w\in W_A\). Then \(\deg w\le\deg R(t)\le\deg t&lt;D_0\), so \(R(xw)\in W_A\). Using property 3, \(R'(xR'(t))=\pi R(xR(t))-\pi R(xw)=\pi R(xt)=R'(xt)\).</li>
+</ol>
+<p>Razborov's lemma, applied to \(R'\) with the axioms \(\mathrm{FPHP}_G\cup A\), gives the claim. \(\square\)</p>
+<p>The converse is not claimed. If \(1\in W_A\), the operator \(R\) simply fails to certify.</p>
+
+<h4>Semantic local kills</h4>
+<p>For a set \(P\) of pigeons, write \(N(P)=\{V_v:v\in N(u)\text{ for some }u\in P\}\). A variable \(x_{uw}\) lies in \(V_v\) exactly when \(v\in N(u)\). So a polynomial that mentions only cells of pigeons in \(P\) has all its terms' neighbourhoods inside \(N(P)\).</p>
+<p><strong>Proposition (semantic local kill).</strong> Let \(a\) mention only cells of the pigeons in \(P\), with \(d|P|\le\delta s/2\), and let \(U'=\mathrm{Sup}_s(N(P))\). Then:</p>
+<ol>
+<li>\(P\subseteq U'\), \(|U'|\le s/2\), and \(\mathrm{Sup}_s(t)\subseteq U'\) for every term \(t\) of \(a\);</li>
+<li>\(R(a)=R_{I_E(U')}(a)\);</li>
+<li>\(R(a)=0\) if and only if \(a\) vanishes on every assignment to all cells that satisfies the pigeon axioms of \(U'\) and all hole and functionality axioms.</li>
+</ol>
+<p><em>Proof.</em></p>
+<ol>
+<li>\(|N(P)|\le d|P|\le\delta s/2\), so by their Lemma 3.22 the support \(U'\) is \((s/2,N(P))\)-contained, in particular \(|U'|\le s/2\). For \(u\in P\), \(\{u\}\) has boundary \(N(u)\subseteq N(P)\), so \(u\in U'\). A set that is \((s,N(t))\)-contained is \((s,N(P))\)-contained, since \(N(t)\subseteq N(P)\). So \(\mathrm{Sup}_s(t)\subseteq U'\).</li>
+<li>By their Lemma 3.25, applied to each term with this \(U'\) of size at most \(s\), \(R(t)=R_{I_E(U')}(t)\). Linearity gives the claim.</li>
+<li>\(R_{I}(a)=0\) exactly when \(a\in I\). In \(\mathbb F[x]/(x^2-x)\), a finite product of copies of \(\mathbb F\), every ideal is the vanishing ideal of its zero set. \(\square\)</li>
+</ol>
+<p>Since \(a\) depends only on the cells of \(P\subseteq U'\), condition 3 reads: \(a\) vanishes on the restriction to \(P\) of every assignment that places every pigeon of \(U'\) in exactly one of its holes, with no hole used twice. By their Lemma 3.28 such assignments exist. Not every injective placement of \(P\) extends to one: the extension to all of \(U'\) is a Hall condition.</p>
+
+<h4>What this gives for W</h4>
+<p>Take the residual of thm:logarithmic-residual-w: functional graph PHP on \(G'\), an \((s,1)\)-boundary expander of left degree 5 with \(s=10(22k+1)\), so \(D_0=22k+1\). By lem:functional-residual, a refutation of degree \(22k\) of W's system restricts to one of \(\mathrm{FPHP}_{G'}\cup A\) of degree at most \(22k+1\), where \(A\) is the set of restricted clauses not already derived. Here \(d=5\le22k+1\). Every derived clause \(c\in C_{22k+1}(\mathrm{FPHP}_{G'})\) has \(R(c)=0\), by the induction in Razborov's lemma. So the restriction line's kills give \(R(a)=0\), and it remains to handle the others.</p>
+<p><strong>The hitting-set condition.</strong> Take a block whose restricted forms \(\bar L_j\) mention a set \(P\) of residual pigeons with \(|P|\le s/10=22k+1\). Let \(\Sigma\) be the set of restrictions to \(P\) of the assignments in part 3. It can be smaller than the set of injective placements of \(P\), and has at most \(5^{|P|}\) elements. For \(\sigma\in\Sigma\), let \(Z(\sigma)=\{j:\bar L_j(\sigma)=0\}\). On Boolean points the clause of an excluded \(i\) is the indicator of \(\bar L_i=0\) and \(\bar L_j\ne0\) for all \(j\in S\), since \(\bar L^2\in\{0,1\}\) over \(\mathbb F_3\). So every clause of the block vanishes on \(\Sigma\) exactly when \(S\) meets \(Z(\sigma)\) for every \(\sigma\) with \(Z(\sigma)\ne\varnothing\). By the proposition, such a prefix makes all the block's clauses harmless. W lets the prefix be any subset of size \(\min(k,h_b)\), and blocks with \(h_b\le k\) have no clauses, so take \(k&lt;h_b\).</p>
+<p>Two sufficient conditions:</p>
+<ul>
+<li>At most \(k\) distinct nonempty sets \(Z(\sigma)\). Take one element of each. There are at most \(5^{|P|}\) states, so this holds when \(5^{|P|}\le k\).</li>
+<li>Every nonempty \(Z(\sigma)\) has at least \(z\,h_b\) elements. A uniform \(k\)-subset misses a given one with probability at most \((1-z)^k\). So a hitting prefix exists when \(5^{|P|}(1-z)^k&lt;1\), that is \(|P|&lt;k\ln(1/(1-z))/\ln5\). For random forms the expected fraction is \(1/3\), but about half of the states fall below it, so \(z=1/3\) exactly fails. With \(z=1/3-\varepsilon\), a concentration and union bound over \(\Sigma\) would give a constant slightly below \(\ln(3/2)/\ln5\approx0.25\). That figure is a heuristic here, not proved.</li>
+</ul>
+<p>The span lemma needed \(|P|\le b_0\approx\sqrt{k/8}\), because its dimension count grows quadratically. The semantic condition allows up to \(22k+1\) pigeons when the zero patterns are hittable. The proved sufficient conditions reach about \(\log_5k\) pigeons unconditionally, and the heuristic one about \(0.25k\). Degree-bounded derivability is no longer needed. The local implication is membership in \(I_E(U')\), ideal membership without a degree bound.</p>
+
+<h4>What it means</h4>
+<ul>
+<li><em>The criterion is proved; the base is the imported operator of Theorem 4.9.</em> On boundary-expanding residual boards, every clause of degree at most \(D_0\) that mentions at most \(\delta s/(2d)\) pigeons and is implied by the local matchings is harmless. That covers everything the restriction line killed, and blocks on up to \(22k+1\) residual pigeons whose zero patterns have hitting sets of size \(k\).</li>
+<li><em>It does not reach the dense core.</em> A block of full-support forms mentions all \(r\ge s\) residual pigeons, beyond the \(s/10\) the proposition allows, so its images need not vanish. It lands in \(W_A\), and whether \(1\in W_A\) is the open question. The semantic kill also does not avoid the recorded respectful-expansion audit (audit:respectful-expansion-ENS-scope) for dense blocks. It sidesteps that audit only for local ones, by never adding clauses to the axiom side.</li>
+<li><em>What is next for dense blocks.</em> A block of dense forms is local to no small set, but its clauses might still be implied semantically on the operator's supports of their individual terms, term by term. That is the question of whether \(W_A\) is small.</li>
+</ul>
+<p><strong>What is open.</strong> Whether \(1\notin W_A\) for dense clauses, and whether the hitting-set condition extends the restriction line's classes beyond the span lemma with the right probability bounds. No new case of W is proved: the quantitative consequences above are conditions, not a family theorem.</p>
+<p><strong>Next.</strong> Make the hitting-set condition a family theorem. Bound the probability that a block with row support \(|P_b|\) meets more than \(0.25k\) residual pigeons, and treat blocks whose zero patterns are rich. Then turn to \(W_A\) for dense clauses, starting from the image \(R(\tau)\) of a single dense clause.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read in the paper's text Mikša and Nordström's Definitions 3.9 to 3.20, Lemmas 3.15, 3.21 to 3.28, the proof of Theorem 3.8 and Theorem 4.9 with its variable sets. Also re-read lem:functional-residual, lem:span-restriction and thm:logarithmic-residual-w, and the audits audit:AR-immunity-ENS-scope and audit:respectful-expansion-ENS-scope. A claim search and the reviewer found neither result recorded. A fresh-context reviewer confirmed the criterion's proof: the filtered complements, the degree property of the projection, the three properties and the thresholds, and the extension of Razborov's lemma to polynomial axioms. It confirmed the semantic local kill as well. It required these changes, all adopted:</p>
+<ul>
+<li>the degree hypothesis \(d\le D_0\) for property 2;</li>
+<li>\(R(1)=1\) from the empty support;</li>
+<li>the support written as \(\mathrm{Sup}_s(N(P))\);</li>
+<li>\(\Sigma\) described as the extendable placements;</li>
+<li>arbitrary prefixes and \(k&lt;h_b\) made explicit;</li>
+<li>the \(0.25k\) figure labelled heuristic, since \(z=1/3\) exactly fails;</li>
+<li>the claims about the base, the degree structure and the reach weakened, and "derivability" made precise.</li>
+</ul>
+<p>The changes add hypotheses or weaken claims, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-relative-criterion">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 35.80 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">5 min 13.53 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7.11 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 15.02 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
