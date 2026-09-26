@@ -34,12 +34,7 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>Dimension 4</strong> (open statement 3). The 3-cube is solved (<a href="#cube-dimension-three-every-field">theorem</a>). In dimension 4 the solution modules live over \(F[y_1,\ldots,y_4]\), the curve \(w_i^2=1+4y_iT\) has genus 5, and the order-zero thresholds 5, 19, 39 grow faster than in dimension 3 (<a href="#cube-order-zero-dimension-four">check</a>).
-<ul>
-<li>First compute the pre-stable thresholds \(\ell_0(h,m)\) for small \(h\), with the exact kernel.</li>
-<li>Test whether they come from products of boundary witnesses, as in dimension 3, through a partition bound.</li>
-</ul>
-The boundary-threshold machinery (the gcd of the boundary minors, the collision exponents \(d^2+(d-1)\ldots\) recorded for \(n=4\)) is the natural starting point.</li>
+<li><strong>Dimension 4</strong> (open statement 3). Finish the savings-3 row \(\ell_0(3,m)\), \(m=14,\ldots,18\), in one series run with per-case excess limits. The line lower bounds are 4, 2, 1, and the order-zero threshold gives 1, 1 at \(m=17,18\) (<a href="#entry-2026-09-26-cube-dimension-four">dimension-4 entry</a>). Then look for the mechanism. The modules are not free there, so the <a href="#cube-excess-sum-basis">basis criterion</a> fails. The natural objects are the genus-5 curve \(w_i^2=1+4y_iT\) and its torsion loci, which gave \(B\) in dimension 3.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions; the dimension-3 result may merit a note.</p>
@@ -6366,6 +6361,47 @@ since \(A(N-A)=4xy\) and \(\bar A=2r\). This is \(d^2\cdot\tfrac12\operatorname{
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-dimension-four" data-kind="research" data-route="cube-odd-characteristic" data-claims="lem:cube-line-threshold-bound check:cube-dimension-four-thresholds">
+<h3>26 September 2026 — Dimension 4: the first pre-stable thresholds, and a line bound that is exact only in dimension 3</h3>
+<p class="entry-meta">Working proof of a line lower bound on thresholds for every n; finite check of ℓ₀(3,13) = 12 on {0,1}⁴ over F₃₂₀₀₃. Cycle bmd-r98. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> With dimension 3 solved (<a href="#cube-dimension-three-every-field">theorem</a>), open statement 3 asks for the pre-stable thresholds \(\ell_0(h,m)\) for \(n\ge4\). No conjectured formula exists, and the only data are the boundary values \(\ell_0(d+1,8d-4)=0,15,55,115,195\) for \(d\le5\) and the order-zero thresholds \(m=5,19,39\) (<a href="#cube-order-zero-dimension-four">check</a>). What are the thresholds for savings 3, at \(12\le m\le18\), and does the dimension-3 structure (free modules, excess sums, products) persist? The test ends with the values, or with the structural feature that fails.</p>
+<p><strong>Setting.</strong> On \(\{0,1\}^4\), \(N_{2,4}(d)=8d-4\) for \(d\ge2\), so savings \(d+1\) need \(m\ge8d-4\) (<a href="#finite-grid-stable-law">stable law</a>). By the <a href="#cube-threshold-ideal">threshold-ideal lemma</a>, \(\ell_0(h,m)\) is the initial degree of the ideal \(I^{(h)}_m\) of top coordinates of the kernel of \(A_m\) (rows \(T^Qz^r\), \(2Q+|r|\le h-1\)). A homogeneous solution of excess \(\ell\) has \(W_c\) of degree \(\ell+m-c\).</p>
+<h4 id="cube-line-threshold-bound">The line bound</h4>
+<p><strong>Lemma</strong> (<code>lem:cube-line-threshold-bound</code>). On \(\{0,1\}^n\) over any field, let \(L\) be a line \(y=au+bv\), and let \(I_L\) be the ideal of top coordinates of the kernel of \(A_m(au+bv)\) over \(F[u,v]\). If some element of \(I^{(h)}_m\) of degree \(\ell_0(h,m)\) does not vanish identically on \(L\), as for a generic line, then \(\operatorname{indeg}I_L\le\ell_0(h,m)\).</p>
+<p><strong>Proof.</strong> Let \(W\) be a homogeneous solution of excess \(\ell_0\) with \(W_m|_L\ne0\). Substituting \(y=au+bv\) commutes with the linear system, so \(W(au+bv)\) is a solution over \(F[u,v]\), homogeneous of the same excess. Its top coordinate \(W_m|_L\) is a nonzero element of \(I_L\) of degree \(\ell_0\). \(\square\)</p>
+<p>On a line the kernel is a free module over \(F[u,v]\), and its minimal generators are computed quickly. Equality needs more. Suppose the global module is free, \(A_m\) keeps its generic rank on \(L\), the line misses the curve where the primitive Plücker coordinates vanish together, and the lemma's non-vanishing hypothesis holds. Then the restricted basis spans a saturated submodule of full rank of the line kernel, hence all of it, and the bound is an equality.</p>
+<h4>Computations</h4>
+<p><code>research/tools/bmd_cube_thresholds_m2.m2</code> (Macaulay2, over \(\mathbb F_{32003}\)) builds the graded map \(A_m\) and computes minimal generators of its kernel: globally, on a random line, or globally up to a given excess (<code>syz</code> with a degree limit, which returns every syzygy of degree at most the limit). Outputs are in <code>research/results/bmd-r98-dimension-four/</code>.</p>
+<ul>
+<li><em>Control, \(n=3\).</em> Globally for \(d=3\), and on the line for \(d=3,4\), the thresholds are \(8,3,0\) and \(15,6,3,0\), which is \(B(d,\rho)\). The generator excesses are those of the <a href="#cube-dimension-three-every-field">dimension-3 theorem</a>, for example \(\{0,2,3,4\}\) at \((d,m)=(4,19)\). On these cases the line is exact in dimension 3.</li>
+<li><em>\(n=4\), \(d=2\), on the line.</em> For \(m=12,\ldots,18\) the line thresholds are \(15,7,4,2,1,0,0\), with generator excesses \(\{15\}\), \(\{7,7\}\), \(\{4,4,4\}\), \(\{2,2,2,3\}\), \(\{1^5\}\), \(\{0^6\}\), \(\{-1^6,0\}\). At \(m=17,18\) the line shows excess 0 and even negative excess. The global thresholds there are at least 1, since the order-zero threshold for savings 3 is \(m=19\).</li>
+<li><em>\(n=4\), \(d=2\), globally.</em> At \(m=12\) (rank 1) the global run did not finish within 5 minutes; the value 15 there is the recorded boundary check (<code>check:cube-boundary-gcd-degrees</code>), also a line computation. At \(m=13\) (rank 2) there is no solution of excess \(\le8\), and up to excess 15 the syzygies have excesses \(12,13,14,14,15\), with a nonzero top coordinate at excess 12. So \(\ell_0(3,13)=12\) over \(\mathbb F_{32003}\), above the line value 7. The run took 428 s of wall time (Macaulay2 reports 617 s of CPU time).</li>
+</ul>
+<p><strong>Finite check</strong> (<code>check:cube-dimension-four-thresholds</code>). On \(\{0,1\}^4\) over \(\mathbb F_{32003}\):</p>
+<ul>
+<li>\(\ell_0(3,13)=12\);</li>
+<li>the line values 4, 2, 1 at \(m=14,15,16\), which are lower bounds for \(\ell_0(3,m)\) for every line outside a proper closed set (the lemma's hypothesis), not certified for the seeded line;</li>
+<li>in dimension 3, agreement with \(B(d,\rho)\) globally for \(d=3\), and on the line for \(d\le4\).</li>
+</ul>
+<p><strong>What changes in dimension 4.</strong> At \(m=13\) the line splitting is \((7,7)\), while no global solution has excess below 12. If the global module were free, a line missing the Plücker locus, a curve in \(\mathbb P^3\) that a generic line avoids, would carry the global excesses. So, for the random line used, the module at \(m=13\) is not free. The line computation does not certify that this line is generic, so this is strong evidence rather than a proof. A certificate would be more than two minimal generators of the module in excess \(\le15\). The degree-limited output is not necessarily minimal, so its five columns alone do not prove this. The dimension-3 route rested on freeness (the basis criterion), and it does not carry over. The recorded boundary values fit \(\ell_0(d+1,8d-4)=10d^2-10d-5\) for \(2\le d\le5\) (four values, no mechanism).</p>
+<p><strong>General statement.</strong> <code>lem:cube-line-threshold-bound</code>, for every \(n\), \(h\), \(m\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the threshold-ideal lemma (part 1), the stable law, and the recorded dimension-4 boundary and order-zero checks. A fresh-context referee checked several things: the lemma, the script's excess formula and threshold rule, and the degree-limit semantics, by a small dimension-3 test in which the degree-limited syzygies were exactly the minimal generators up to each limit. It also checked every quoted number against the saved outputs. Its corrections are made: the runtime source, the global control restricted to \(d=3\), the line bounds stated with the lemma's hypothesis, the extra hypotheses of the equality statement, the non-freeness bound corrected to 12 with the certificate that would settle it, an unsupported sentence on products cut, and a label clarified. The computations were validated against dimension 3, where every value is proved. The degree-limited runs certify the absence of solutions below the limit, since the syzygies returned include every one up to the limit. Process: the first global run for dimension 4 timed out after 20 minutes without output. Macaulay2 buffered its output, which the script now flushes per case. A later series was refused by the run guard after four argument lists. The remaining values need one series invocation with per-case limits.</p>
+<p><strong>Assessment.</strong> Dimension 4 is structurally different. The thresholds fall from 15 at \(m=12\) to 12 at \(m=13\), a first step of 3, where the analogous dimension-3 steps from the boundary are larger (15 to 6 at \(d=4\)). The modules appear non-free, and the line method, exact in dimension 3, is only a lower bound. The next step is to finish the \(d=2\) row (\(m=14\) to \(18\)) in one run, and then to look for the mechanism. Candidates are the genus-5 curve's torsion loci replacing \(B\), and syzygies of the non-free modules.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r98">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>42 min 20.51 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 25.25 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 55.70 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 28.57 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">32 min 30.85 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3.</p>
 </div>
 </article>
 </section>
