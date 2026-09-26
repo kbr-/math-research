@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> The model case is answered for few equations. Unary PHP plus up to \(q\le c\ln n\) affine equations whose combinations are all far from additive stays hard at degree \(\sqrt n/(C\,3^{5q})\), by a level-set residual and swap decay, and W holds for families of that many such blocks (<a href="#entry-2026-09-26-few-equations">few equations</a>). The collective case, polynomially many equations or clauses, is still open, and the conditioning law predicts a loss of only about \(q/(2(n-1))\). Next: look for a restriction whose degradation is polynomial in \(t\) rather than \(3^{5q}\). Candidates are residual cells chosen by a linear condition on the span of the equations instead of common level sets. That would be the first collective mechanism.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Matching restrictions that derive the restricted equations have a ceiling. On an expanding residual the only derivable linear constraints are row combinations, so the restricted equations must sit in common level sets, which random forms deny beyond about \(3\log_3n\) equations (<a href="#entry-2026-09-26-restriction-ceiling">restriction ceiling</a>). The few-equations theorem reaches \(c\ln n\), tight up to a constant factor for this class and random forms, so many random equations need non-derivable axioms handled through \(W_A\). Next: compute \(W_A\) for a few random linear equations on the residual. Their images under the operator are the equations modulo rows, so the first closure steps \(R(x\,R(\ell))\) are explicit; look for a degree-by-degree structure and for whether 1 enters.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -27214,6 +27214,87 @@ because \(er\le n^{\eta/2}\) for large \(n\), as \(r=O(\ln n)\). This is at most
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 2.13 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.51 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-restriction-ceiling" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:residual-linear-kernel prop:restriction-ceiling">
+<h3>The restriction ceiling: on an expanding residual the only degree-1 consequences are row combinations, so matching restrictions that derive the restricted equations need common level sets, which random forms deny beyond about \(3\log_3n\) equations</h3>
+<p class="entry-meta">26 September 2026 · Working proof, given imported theorem · open statement A1, limits of restriction · cycle odd-prime-collective-restriction.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-few-equations">few-equations theorem</a> handles up to \(c\ln n\) far-from-additive equations, degrading like \(3^{-5q}\). Its next step asked for a restriction with polynomial degradation, which would be the first collective mechanism. Before searching, a prior question: which restricted linear equations can such a restriction argument derive at all?</p>
+<p><strong>General statement.</strong> Two results, lem:residual-linear-kernel and prop:restriction-ceiling, for functional graph PHP on a residual \(G'\) of left degree 5 in which every pigeon set \(W\) with \(|W|\le s\) has \(|N(W)|\ge3|W|\), with \(D_0=\lfloor s/10\rfloor\ge5\):</p>
+<ul>
+<li>lem:residual-linear-kernel, over any field: for an affine form \(\ell\) in the cells of \(G'\), the Mikša–Nordström operator gives \(R(\ell)=0\) exactly when \(\ell\) is a linear combination of the residual rows \(\mathrm{row}_i=\sum_{t\in N(i)}x_{it}-1\). Hence the degree-at-most-1 part of \(C_{D_0}(\mathrm{FPHP}_{G'})\) is the span of the rows.</li>
+<li>prop:restriction-ceiling, over \(\mathbb F_3\): under a restriction by a partial matching and such a residual, a restricted equation \(\phi(L)\) lies in \(C_{D_0}(\mathrm{FPHP}_{G'})\) exactly when each residual pigeon's cells lie in a level set of \(L\)'s coefficients and the total constant vanishes. For \(q\) forms with independent uniform coefficients, with probability at least \(1-(n+1)n^2\,3^{-q}/2\), no pigeon has two holes on which all \(q\) coefficient rows agree. Then no residual meeting the lemma's hypotheses makes all \(q\) restricted equations derivable.</li>
+</ul>
+<p>The lemma is a direct computation with the operator, not a new mechanism.</p>
+
+<h4>The linear kernel</h4>
+<p><strong>Lemma (Hall with surplus).</strong> Let \(U\) be a pigeon set with \(|U|\le s\), and \(X\) a set of at most two holes. Then \(U\) has an injective placement into its neighbourhood that avoids \(X\).</p>
+<p><em>Proof.</em> Hall's condition: every nonempty \(W\subseteq U\) has \(|N(W)\setminus X|\ge3|W|-2\ge|W|\). \(\square\)</p>
+<p><strong>Lemma (residual linear kernel).</strong> Let \(U\) be a pigeon set with \(|U|\le s\). The polynomials of degree at most 1 in \(I_E(U)\) are exactly the combinations of \(\mathrm{row}_u\), \(u\in U\). Here \(I_E(U)\) is the ideal of the pigeon axioms of \(U\) with all hole and functionality axioms. Consequently, for affine \(\ell\), \(R(\ell)=0\) exactly when \(\ell=\sum_ia_i\,\mathrm{row}_i\).</p>
+<p><em>Proof.</em> \(\mathbb F[x]/(x^2-x)\) is the ring of functions on the cube, so every ideal is the vanishing ideal of its zero set. The zero set \(Z\) of \(I_E(U)\) consists of the assignments in which every pigeon of \(U\) sits in exactly one of its holes, no hole is used twice and no pigeon uses two holes. Pigeons outside \(U\) may be unplaced. \(Z\) is nonempty by the Hall lemma. Let \(\lambda=c_0+\sum c_{wv}x_{wv}\) vanish on \(Z\).</p>
+<ol>
+<li><em>Cells outside \(U\) have coefficient 0.</em> For \(w\notin U\) and \(v\in N(w)\), take a placement \(\tau\) of \(U\) avoiding \(v\). Both \(\tau\) and \(\tau\) together with the cell \((w,v)\) lie in \(Z\), so \(c_{wv}=0\).</li>
+<li><em>Each pigeon's coefficients are constant.</em> For \(u\in U\) and holes \(v\ne v'\) of \(u\), place \(U\setminus u\) avoiding \(\{v,v'\}\). Adding \((u,v)\) or \((u,v')\) gives two points of \(Z\), so \(c_{uv}=c_{uv'}=:a_u\).</li>
+<li><em>The constant.</em> Then \(\lambda=\sum_{u\in U}a_u\sum_vx_{uv}+c_0\). Its value on any point of \(Z\) is \(\sum a_u+c_0=0\), so \(\lambda=\sum_ua_u\,\mathrm{row}_u\).</li>
+</ol>
+<p>The rows lie in \(I_E(U)\), which gives the first claim.</p>
+<p>For the operator: \(x_{it}\) lies in exactly the variable sets \(V_v\) with \(v\in N(i)\), so the overlap of Theorem 4.9 is \(d=5\) and \(D_0=\lfloor s/10\rfloor\). Every term \(x_{it}\) has \(N(x_{it})=N(\{i\})\), of size \(5\le s/2\). So all cells of pigeon \(i\) share the support \(U_i=\mathrm{Sup}_s(N(\{i\}))\), of size at most \(s/2\) (their Lemma 3.22), with \(i\in U_i\).</p>
+<p>Every admissible order is degree-compatible. So an element of \(I_E(U_i)\) with a degree-1 leading term has degree at most 1, is a combination of rows, and has as leading term the top cell of some pigeon. Hence \(R(x_{it})=x_{it}\) unless \(x_{it}\) is the top cell \(x_{i\top}\) of \(i\), and \(R(x_{i\top})=1-\sum_{t\ne\top}x_{it}\). With \(R(1)=1\), for \(\ell=c_0+\sum c_{it}x_{it}\):</p>
+\[R(\ell)=c_0+\sum_i\Bigl(c_{i\top}+\sum_{t\ne\top}(c_{it}-c_{i\top})\,x_{it}\Bigr).\]
+<p>This vanishes exactly when every \(c_{it}=c_{i\top}\) and \(c_0+\sum_ic_{i\top}=0\), that is \(\ell=\sum_ic_{i\top}\,\mathrm{row}_i\).</p>
+<p>Since \(d=5\le D_0\), Razborov's induction gives \(R=0\) on \(C_{D_0}(\mathrm{FPHP}_{G'})\). So the degree-at-most-1 part of that closure lies in the span of the rows. Conversely, the rows are in the closure: they are derived from the pigeon and functionality axioms at degree 5 (lem:functional-residual). \(\square\)</p>
+
+<h4>The ceiling</h4>
+<p><em>Proof of prop:restriction-ceiling.</em> As in the few-equations theorem,</p>
+\[\phi(L)=\kappa^0+\sum_{(i,t)\in G'}A(i,t)\,x_{it},\qquad\kappa^0=a_0+\sum_{i\notin R}A(i,\rho(i)),\]
+<p>an affine form in the cells of \(G'\). By the lemma, \(\phi(L)\) is in the closure exactly when it is a combination of rows. That is, exactly when \(A(i,\cdot)\) is constant on \(N_{G'}(i)\) for every residual pigeon, with value \(\lambda_i\), and \(\kappa^0+\sum_i\lambda_i=0\).</p>
+<p>For \(q\) uniform random forms, fix a pigeon \(i\) and holes \(t\ne t'\). All \(q\) coefficients agree with probability \(3^{-q}\). A union bound over \(n+1\) pigeons and \(\binom n2\) pairs gives the stated probability. The event is about the whole board, so it covers every residual at once. Off that event, every residual pigeon has at least three cells, so some form's coefficients differ on its cells, and that form's restriction is not derivable. The bound is below \(1/2\) at \(q=3\log_3n\), so the ceiling holds with high probability for \(q\ge3\log_3n+\omega(1)\). \(\square\)</p>
+
+<h4>What it means</h4>
+<ul>
+<li><em>The class covered.</em> The proposition covers arguments of one class. They restrict by a partial matching and by zeroing cells, onto a residual meeting the lemma's hypotheses. They then use Mikša and Nordström's bound at \(D_0\), and require each restricted equation to lie in \(C_{D_0}(\mathrm{FPHP}_{G'})\). The few-equations theorem is such an argument. The proposition does not cover:
+ <ul>
+ <li>other substitutions, such as affine substitutions or identifications of variables;</li>
+ <li>residuals with other expansion or degree parameters;</li>
+ <li>other base lower bounds;</li>
+ <li>arguments that keep a restricted equation as an axiom.</li>
+ </ul></li>
+<li><em>Tight up to a constant factor in \(q\), for this class and random forms.</em> For random forms the ceiling is about \(3\log_3n\approx2.73\ln n\) equations. The few-equations theorem reaches \(c\ln n\) with \(c&lt;1/(10\ln3)\approx0.09\). The ceiling says nothing about the \(3^{-5q}\) degradation below it. Adversarial far-from-additive forms can share level sets, for instance forms constant on blocks of five holes. So this is not a cap on independent equations in general.</li>
+<li><em>Why the relative criterion is needed for equations.</em> Beyond the ceiling some restricted linear equation is not in the closure, so it must enter as a genuine extra axiom. The relative criterion allows exactly that: \(1\notin W_A\) does not require \(R(a)=0\). So for many random linear equations the collective case needs a statement about \(W_A\) for non-derivable axioms.</li>
+<li><em>What is not shown for W's clauses.</em> The lemma describes only the degree-at-most-1 part of the closure. A restricted clause \(g\prod L^2\) could lie in the closure without any of its factors doing so. So the ceiling applies to the factor route of cor:few-blocks-w, not to W's clauses in general. Whether random dense blocks defeat every restriction argument in this class, through higher-degree consequences, is open. W also lets each block choose among \(k\) prefix forms, which the union bound above does not cover, so the corresponding count for blocks is not done.</li>
+</ul>
+<p><strong>What is open.</strong> The higher-degree part of the residual closure, and \(W_A\) for non-derivable linear axioms, starting with a set \(A\) of random linear equations on the residual. That is the conditioning law's question, posed relative to the operator on a sparse board.</p>
+<p><strong>Next.</strong> Compute \(W_A\) for \(A\) a few random linear equations on the residual. These are not in the kernel, but their images under \(R\) are explicit by the lemma: they are the equations modulo rows. So the first closure steps \(R(x\,R(\ell))\) are the place to look for a degree-by-degree structure, and for whether 1 enters.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read Mikša and Nordström's Definitions 3.9 to 3.20, Lemmas 3.15, 3.22 and 3.25 and Theorem 4.9, the few-equations theorem, lem:functional-residual and lem:relative-criterion. A claim search and the reviewer found neither result recorded. A fresh-context reviewer checked and confirmed:</p>
+<ul>
+<li>the Hall surplus inequality and the zero-set description;</li>
+<li>Steps 1 to 3, the shared supports and their size, and the degree-1 leading-term argument;</li>
+<li>the normal forms and the formula for \(R(\ell)\);</li>
+<li>\(C_{D_0}\subseteq\ker R\), and the board-wide union bound.</li>
+</ul>
+<p>It found no unused hypothesis. It required these changes, all adopted:</p>
+<ul>
+<li>the ceiling stated for residuals meeting the lemma's hypotheses;</li>
+<li>"exactly when" in the ceiling proof;</li>
+<li>the raw constant renamed \(\kappa^0\);</li>
+<li>the class of arguments stated, and "tight" scoped to it and to random forms;</li>
+<li>the claims about W's clauses limited to the factor route, with the higher-degree closure and the block count named as open;</li>
+<li>the presentation fixes in the lemma.</li>
+</ul>
+<p>The changes restrict claims, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-collective-restriction">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 16.32 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 17.37 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 58.75 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
