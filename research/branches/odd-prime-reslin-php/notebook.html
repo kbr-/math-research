@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, W and A1.</strong> The goal also follows from W_RS, a formal weakening of W in which each block's prefix is a random combination of its zero indicators (<a href="#entry-2026-09-26-randomized-prefix">randomized prefix</a>, thm:randomized-prefix-reduction, conj:randomized-wide-clause). Every point with a nonzero zero pattern is then forbidden with probability \(3^{-t}\), for every family, and the recorded common-prefix counterexample becomes a random graph PHP. Next: test the randomized clauses where W's method stalled. First the forced sparse board: do the hole blocks' randomized clauses leave a random graph expanding enough for the residual step? Then shared-form directness: are randomized tops of blocks sharing forms direct up to the fill point at small sizes, the exact analogue of the killer-moment review's falsification?</p>
+<p><strong>Route item: odd-prime-clause-transfer, W and A1 under random prefixes.</strong> Under random prefixes (thm:randomized-prefix-reduction, conj:randomized-wide-clause), blocks whose forms read few hole columns contribute only clauses derivable from collisions and Booleanity (<a href="#entry-2026-09-26-bounded-column-vacuity">bounded-column vacuity</a>). So the hole blocks that force W onto sparse boards drop out. Next: state what remains of the randomized conjecture, blocks reading many columns, and test whether the structured-family theorems' restriction to a residual transfers to random prefixes. After a matching restriction, a block whose forms become constant has one zero pattern and drops with probability \(1-3^{-t}\). Blocks reading few residual columns are covered by the proposition.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -28010,6 +28010,68 @@ The main term is an equidistribution statement analogous to Cohen–Lenstra mome
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 42.58 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 39.58 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-bounded-column-vacuity" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:bounded-column-vacuity" data-lead="entry-2026-09-26-thread-review:1">
+<h3>Bounded-column vacuity: under random prefixes, every block whose forms read only a bounded number of hole columns contributes clauses derivable from collisions and Booleanity, so hole blocks no longer force a sparse board</h3>
+<p class="entry-meta">26 September 2026 · Working proof · open statement A1 under random prefixes · cycle odd-prime-randomized-board.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. Under W, adding every hole block reduces any family to W on chooser-picked boards of hole degree \(k\) (<a href="#entry-2026-09-26-forced-sparse-board">sparse board</a>). The adversary uses this to force a sparse board. The <a href="#entry-2026-09-26-randomized-prefix">randomized-prefix entry</a> showed that the recorded hole family becomes vacuous with high probability under random prefixes. Which blocks does that cover in general?</p>
+<p><strong>General statement.</strong> prop:bounded-column-vacuity. Over \(\mathbb F_3\), let a block's forms \(L_1,\dots,L_h\) be supported on the cells of a set \(U\) of \(c\) hole columns, with arbitrary coefficients and constants. Let \(C\) be uniform in \(\mathbb F_3^{t\times h}\). Then with probability at least \(1-(n+2)^c3^{-t}\), every clause \(g_iQ^C\) of the block lies in the ideal of Booleanity and the column collisions, and is derived from them at degree at most \(\deg(g_iQ^C)\le4t+2\). Take a family of \(M\le n^K\) such blocks, with \(c\le c_0\), fixed before the \(C_b\) are drawn. Then all are dropped with probability at least \(1-M(n+2)^{c_0}3^{-t}\). The failure probability is below \(1/3\) once \(t\ge\log_3M+c_0\log_3(n+2)+1\).</p>
+
+<h4>Proof</h4>
+<ol>
+<li><em>Few zero patterns.</em> Call a Boolean assignment collision-free if no hole holds two pigeons. Pigeons may occupy several holes, since the weak base has no same-row exclusions. On a collision-free point each hole of \(U\) is empty or holds one of the \(n+1\) pigeons. Each \(L_i\) is determined by these at most \((n+2)^c\) configurations, and so is the zero pattern \(g(x)\in\{0,1\}^h\). So at most \((n+2)^c\) patterns occur, hence at most that many nonzero ones.</li>
+<li><em>The random prefix misses them.</em> For each nonzero pattern \(w\), \(Cw\) is uniform on \(\mathbb F_3^t\), so \(\Pr[Cw=0]=3^{-t}\). By the union bound, with probability at least \(1-(n+2)^c3^{-t}\), no occurring nonzero pattern lies in \(\ker C\). Then \(Q^C(x)=[Cg(x)=0]=0\) whenever \(g(x)\ne0\). So \(g_iQ^C\) vanishes at every collision-free point: either \(g_i(x)=0\), or \(g(x)\ne0\) and \(Q^C(x)=0\).</li>
+<li><em>Vanishing gives derivability at the same degree.</em> Let \(f\) be the multilinearization of \(g_iQ^C\). Each step removes \(x^{a-2}(x^2-x)\) times a monomial, of degree at most that of the monomial it replaces, so it stays within \(\deg(g_iQ^C)\). Delete from \(f\) every monomial containing two cells of one hole: those are multiples of collision axioms, again of no larger degree. The remainder \(f'\) is supported on collision-free monomials and still vanishes at every collision-free point. Suppose \(f'\ne0\), and take a monomial \(m\) of \(f'\) of least degree. Its indicator point, the cells of \(m\) set to 1 and all others to 0, is collision-free. There \(f'\) equals the coefficient of \(m\), a contradiction. So \(f'=0\), and \(g_iQ^C\) lies in the ideal of Booleanity and collisions, at degree at most \(\deg(g_iQ^C)\). \(\square\)</li>
+</ol>
+<p>The union over blocks is immediate for a family fixed before the \(C_b\) are drawn. Removal is valid at every degree \(D\):</p>
+<ul>
+<li>for \(D\ge\deg(g_iQ^C)\) the clause is derived within \(D\) from axioms of the base;</li>
+<li>below its degree the clause cannot be used in a degree-\(D\) derivation anyway.</li>
+</ul>
+<p>The argument uses only Booleanity and collisions, which belong to the base, never the row equations. The collision-free points include the base's solutions, so vanishing there suffices.</p>
+
+<h4>What it covers and what it does not</h4>
+<ul>
+<li><em>Hole blocks and column-local blocks.</em> Forms supported on one hole column, \(c=1\), with any coefficients: the recorded hole family, and blocks of cell forms of one hole with multiplicities or shifts. Under random prefixes with \(t\ge(K+1)\log_3n+2\), all of them are dropped with high probability. With high probability the hole blocks' clauses are removed, so the zero substitution on hole blocks behind prop:forced-sparse-board has nothing to act on. In that sense hole blocks no longer force a sparse board, unlike under W (<a href="#entry-2026-09-26-forced-sparse-board">sparse board</a>). This does not show that W_RS avoids sparse-board behaviour for families whose blocks read many columns. For column-local blocks the proposition covers the role that the priority and duplicated-hole theorems (prop:priority-hole-families, prop:square-priority-hole-families) play for W. It does not show that their other uses, if any, disappear.</li>
+<li><em>Not covered.</em> Row blocks, with forms supported on one pigeon's cells, are not covered. The weak base lets a pigeon occupy several holes, so their patterns can take \(2^h\) values. Also not covered are column statistics over many holes, and dense blocks. Those remain W_RS's substance.</li>
+<li><em>Cost.</em> The rows needed grow with \(c_0\log_3n\). The degree bound is \(B\le44t-22\) (<a href="#entry-2026-09-26-randomized-prefix">randomized prefix</a>), and it must stay below the weak base's barrier of about \(n/2\) (<a href="#entry-2026-09-22-degree-three-first-moment">reduction entry</a>). With \(M\le n^K\), \(t\approx(c_0+K)\log_3n&lt;n/88\), so \(c_0\) up to about \(n/(88\log_3n)-K\) is affordable.</li>
+</ul>
+<p><strong>Next.</strong> This is the second research entry on randomized prefixes. The next cycle should state conj:randomized-wide-clause's core after this proposition: the remaining blocks read many columns. It should test whether the restriction-to-a-residual step of the structured-family theorems transfers to random prefixes. Under a matching restriction, a block whose forms become constant has one zero pattern, so it is dropped with probability \(1-3^{-t}\). A block whose forms depend on few residual columns is covered by this proposition.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>thm:randomized-prefix-reduction for the clauses and the bound \(B\);</li>
+<li>prop:forced-sparse-board for the hole blocks' role;</li>
+<li>the reduction entry for the weak base's axioms and its degree barrier.</li>
+</ul>
+<p>A fresh-context reviewer confirmed:</p>
+<ul>
+<li>the pattern count and the union bound;</li>
+<li>\(Q^C=[Cg=0]\) on Boolean points;</li>
+<li>the least-degree monomial argument of step 3.</li>
+</ul>
+<p>It required these changes, all adopted:</p>
+<ul>
+<li>the family fixed before \(C\), with \(M\le n^K\) stated;</li>
+<li>the derivation degree stated as \(\deg(g_iQ^C)\), and removal justified at every degree, using only base axioms;</li>
+<li>sources for the budget, with \(c_0\approx n/(88\log_3n)-K\);</li>
+<li>the sparse-board conclusion limited to hole blocks;</li>
+<li>the priority theorems' role limited to column-local blocks.</li>
+</ul>
+<p>The changes restrict claims, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-randomized-board">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 2.03 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5.87 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 55.96 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
