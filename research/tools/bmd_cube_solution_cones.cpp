@@ -122,33 +122,60 @@ static int run(unsigned seed, int d, int rho, int j, int lmin, int lmax) {
         vector<array<int, 3>> verts;
         if (chi < 0) { for (int v = 1; v < 8; v++) verts.push_back({v & 1, (v >> 1) & 1, (v >> 2) & 1}); }
         else verts = {{1, 0, 0}, {1, 1, 0}, {1, 1, 1}};
-        vector<vector<pair<int, u64>>> rows;
-        for (auto &vv : verts) {
+        // Conditions (vertex, Hasse index alpha) are generated in chunks, in parallel, and eliminated against a
+        // running reduced echelon form, so peak memory is about (U + CH) x U entries rather than all rows x U plus a
+        // U x U nullspace.  The kernel is then read off the reduced form: one vector per free column.
+        vector<pair<int, array<int, 3>>> conds;
+        for (size_t vi = 0; vi < verts.size(); vi++) {
+            auto &vv = verts[vi];
             int w = vv[0] + vv[1] + vv[2], K = k - e * w;
-            for (int s = 0; s < K; s++) for (int a0 = s; a0 >= 0; a0--) for (int a1 = s - a0; a1 >= 0; a1--) {
-                int al[3] = {a0, a1, s - a0 - a1};
-                vector<pair<int, u64>> row;
+            for (int s = 0; s < K; s++) for (int a0 = s; a0 >= 0; a0--) for (int a1 = s - a0; a1 >= 0; a1--)
+                conds.push_back({(int)vi, {a0, a1, s - a0 - a1}});
+        }
+        const long CH = 4096;
+        nmod_mat_t M; nmod_mat_init(M, U + CH, U, P);
+        long R = 0;
+        for (size_t c0 = 0; c0 < conds.size(); c0 += CH) {
+            long c = min((long)CH, (long)(conds.size() - c0));
+            #pragma omp parallel for schedule(dynamic, 16)
+            for (long ci = 0; ci < c; ci++) {
+                auto &vv = verts[conds[c0 + ci].first];
+                auto &al = conds[c0 + ci].second;
                 for (int u = 0; u < U; u++) {
                     u64 acc = 0;
                     for (auto &te : basis[u]) {
-                        u64 c = 1; bool ok = true;
-                        for (int i = 0; i < 3 && ok; i++) {
-                            int bi = te.first[i];
-                            if (bi < al[i] || (!vv[i] && bi != al[i])) { ok = false; break; }
-                            c = mulm(c, binom(bi, al[i]));
+                        u64 cc = 1; bool ok = true;
+                        for (int ii = 0; ii < 3 && ok; ii++) {
+                            int bi = te.first[ii];
+                            if (bi < al[ii] || (!vv[ii] && bi != al[ii])) { ok = false; break; }
+                            cc = mulm(cc, binom(bi, al[ii]));
                         }
-                        if (ok) acc = te.second > 0 ? addm(acc, c) : subm(acc, c);
+                        if (ok) acc = te.second > 0 ? addm(acc, cc) : subm(acc, cc);
                     }
-                    if (acc) row.push_back({u, acc});
+                    nmod_mat_entry(M, R + ci, u) = acc;
                 }
-                rows.push_back(row);
+            }
+            // FLINT 2.8 rref does not accept windows: reduce a fresh copy of the R echelon rows and the chunk
+            nmod_mat_t T; nmod_mat_init(T, R + c, U, P);
+            for (long r = 0; r < R + c; r++) for (int u = 0; u < U; u++) nmod_mat_entry(T, r, u) = nmod_mat_entry(M, r, u);
+            long R2 = nmod_mat_rref(T);
+            for (long r = 0; r < R + c; r++) for (int u = 0; u < U; u++) nmod_mat_entry(M, r, u) = r < R2 ? nmod_mat_entry(T, r, u) : 0;
+            nmod_mat_clear(T);
+            R = R2;
+        }
+        long nul = U - R;
+        nmod_mat_t X; nmod_mat_init(X, U, nul > 0 ? nul : 1, P);
+        {
+            vector<long> piv(R); vector<char> isPiv(U, 0);
+            for (long r = 0; r < R; r++) { long cc = 0; while (!nmod_mat_entry(M, r, cc)) cc++; piv[r] = cc; isPiv[cc] = 1; }
+            long t = 0;
+            for (int f = 0; f < U; f++) if (!isPiv[f]) {
+                nmod_mat_entry(X, f, t) = 1;
+                for (long r = 0; r < R; r++) { u64 v = nmod_mat_entry(M, r, f); if (v) nmod_mat_entry(X, piv[r], t) = (P - v) % P; }
+                t++;
             }
         }
-        nmod_mat_t A, X; nmod_mat_init(A, rows.size(), U, P);
-        for (size_t r = 0; r < rows.size(); r++) for (auto &en : rows[r]) nmod_mat_entry(A, r, en.first) = en.second;
-        nmod_mat_init(X, U, U, P);
-        long nul = nmod_mat_nullspace(X, A);
-        nmod_mat_clear(A);
+        nmod_mat_clear(M);
         if (ORDERONLY) {
             // rank of the degree-l rows of the nullspace basis = dimension of the degree-l parts
             vector<long> lrows; for (int u = 0; u < U; u++) { auto &mo = basis[u][0].first; if (mo[0] + mo[1] + mo[2] == l) lrows.push_back(u); }
