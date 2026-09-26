@@ -34,7 +34,7 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs squarefreeness of the non-collision part of the limit determinant \(\Delta_U\) (<a href="#cube-squarefree-reduction">reduction theorem</a>, <a href="#cube-limit-triple-multiplicity">triple multiplicity</a>). Its base case \(n=2\), \(\nu=d-|r|\), is proved: on the conic every Weierstrass point has weight 1 (<a href="#cube-conic-squarefree">conic theorem</a>). The quadrangle route needs both kinds of side. For \(n=2\) every such determinant is the Wronskian of an explicit binomial series on a rigid curve (<a href="#cube-conic-duality">duality theorem</a>), which makes the triple sides the explicit palindromic 8-nomial \(F_{2d-1}\) (<a href="#cube-triple-side-closed-form">closed form</a>), squarefree through \(d=10\), with its roots in three families. The \(n=2\) monotone conjecture passes 808 vectors (<a href="#entry-2026-09-26-cube-route-review-20">route review 20</a>). Next: extend the duality to the double-double sides (vanishing at \(\mu=\pm1,\pm i\)), then simple zeros for every \(d\).</li>
+<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs squarefreeness of the non-collision part of the limit determinant \(\Delta_U\) (<a href="#cube-squarefree-reduction">reduction theorem</a>, <a href="#cube-limit-triple-multiplicity">triple multiplicity</a>). Its base case \(n=2\), \(\nu=d-|r|\), is proved: on the conic every Weierstrass point has weight 1 (<a href="#cube-conic-squarefree">conic theorem</a>). The quadrangle route needs both kinds of side. For \(n=2\) every such determinant is the Wronskian of an explicit binomial series on a rigid curve (<a href="#cube-conic-duality">duality theorem</a>), which makes the triple sides the explicit palindromic 8-nomial \(F_{2d-1}\) (<a href="#cube-triple-side-closed-form">closed form</a>), squarefree through \(d=10\), with its roots in three families. The \(n=2\) monotone conjecture passes 808 vectors (<a href="#entry-2026-09-26-cube-route-review-20">route review 20</a>). On the double-double sides \(\Delta_U\) restricts to diagonal powers times one irreducible factor \(G_d\), the quadrangle shape at \(d=2\) (<a href="#entry-2026-09-26-cube-limit-sides">entry</a>). Next: \(G_d\) as a Wronskian of the dual series extended by derivatives at \(\mu=\pm1,\pm i\), then simple zeros for every \(d\).</li>
 <li><strong>The middle range and order zero of dimension 4</strong> (open statement 3). Order zero satisfies \(11d-11\le M(d)\le20d-21\) (<a href="#cube-order-zero-dimension-four-lower-bound">windows</a>, <a href="#cube-order-zero-dimension-four-linear-bound">products</a>). Once \(I_m\) has no zeros the obstruction is one cokernel class, of local cohomology in a depth-2 module (<a href="#cube-zero-free-criterion">zero-free criterion</a>, <a href="#cube-threshold-annihilator">annihilator form</a>), which vanishes at every point, so no pointwise method reaches it. Waits for a new idea on that class.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
@@ -8875,6 +8875,57 @@ As in the dimension-3 window lemma, \((w_3-w)^k=A_k(w)+w_3B_k(w)\) with \(\deg A
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 8.25 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 37.41 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">9 min 14.46 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-limit-sides" data-kind="research" data-route="cube-odd-characteristic" data-claims="check:cube-limit-side-restrictions">
+<h3>26 September 2026 — Both kinds of side of the limit determinant: diagonal powers times one irreducible factor, through d = 3</h3>
+<p class="entry-meta">Finite check, exact over Q: on the triple and double-double sides, the limit determinant restricts to collision and diagonal powers times one irreducible simple factor, for d = 2, 3. Cycle bmd-r136. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-26-cube-route-review-20">route review</a> made the double-double sides the next step of the quadrangle route to the limit conjecture, and so to the dimension-4 boundary law for every \(d\). The quadrangle lemma needs every side restriction of the non-collision part of \(\Delta_U\) to be a power of the side's diagonal form times a squarefree part. What do the double-double restrictions look like, and do both kinds of side have that shape?</p>
+<h4>Computation</h4>
+<p>The PARI/GP tool <code>research/tools/bmd_cube_limit_sides.gp</code> computes \(\Delta_U\) (\(U_d=V_\nu\), \(\nu_r=d-|r|\), three variables) exactly over \(\mathbb Q[x][\varepsilon]\) along</p>
+<ul>
+<li>the triple side \(a=(x,1,\varepsilon)\);</li>
+<li>the double-double side \(a=(1+\varepsilon,x,1)\), which is \(a_1=a_3\).</li>
+</ul>
+<p>It takes the lowest \(\varepsilon\)-coefficient and factors it (<code>research/results/bmd-r136-limit-sides/sides-d2-d3.txt</code>).</p>
+<p><strong>Finite check</strong> (<code>check:cube-limit-side-restrictions</code>).</p>
+<ul>
+<li>Triple side: \(\varepsilon\)-valuation \(10\) (\(d=2\)) and \(26\) (\(d=3\)). The leading coefficient is \((x-1)^{11}x^{18}(x+1)(7x^2+2x+7)\), respectively \((x-1)^{37}x^{50}(x+1)P_3\). This is exactly the conic determinant \(\Delta_{\nu'_d}\) of the <a href="#entry-2026-09-26-cube-triple-sides">triple-sides entry</a>, exponents included, which validates the method.</li>
+<li>Double-double side: \(\varepsilon\)-valuation \(7\) and \(21\). The leading coefficient is \((x-1)^{14}x^{12}\,G_2\), respectively \((x-1)^{44}x^{40}\,G_3\), where \(G_2\) of degree 6 and \(G_3\) of degree 12 are irreducible over \(\mathbb Q\) and occur once:
+\[G_2=1001x^6-4290x^5+5577x^4+1248x^3-6816x^2+3072x+256.\]</li>
+</ul>
+<p>On the side \(a_1=a_3\), with points \((1:x:1)\):</p>
+<ul>
+<li>\(x=0\) is its diagonal point \((1:0:1)\), where the opposite side \(a_2=0\) meets it;</li>
+<li>\(x=1\) is the vertex \((1:1:1)\);</li>
+<li>\(x=\infty\) is the vertex \((0:1:0)\).</li>
+</ul>
+<p>The collision forms other than the side itself restrict to \(x\) (from \(a_2\)), \(\pm(x-1)\) (from \(a_1-a_2\) and \(a_2-a_3\)) and constants. So the non-collision part restricts to a power of the diagonal form \(x\), times \(G_d\), times possibly a power of the vertex forms. At \(d=2\) the collision exponents recorded for \(U_2\) are 10 along each \(a_i\) and 7 along each \(a_i-a_j\). They account for \(x^{10}\) and \((x-1)^{14}\), so the non-collision part restricts there to \(x^2\,G_2\). The degree deficit at \(x=\infty\) is \(60-7-32=21\), of which the collision forms \(a_1,a_3\) account for 20, leaving the non-collision part simple at the vertex \((0:1:0)\).</p>
+<p>So at \(d=2\) both kinds of side have the quadrangle lemma's shape exactly: a power of the diagonal form times a squarefree part. At \(d=3\) the collision exponents along \(a_i-a_j\) are not recorded, so the split between collision and non-collision parts, and the vertex order, are not determined here.</p>
+<h4>What the double-double sides are</h4>
+<p>The \(S_4\)-symmetry of the branch points permutes the six collision lines transitively, so the side \(a_1=a_3\) is the image of a triple side. By the transport of the <a href="#entry-2026-09-26-cube-triple-sides">triple-sides entry</a>, the restriction of \(\Delta_U\) to it is the restriction of the transported space \(\tilde U\) to a triple side. That is a confluence of \(\tilde U\), a conic space with prescribed vanishing at a branch point. On the rigid conic of the <a href="#cube-conic-duality">duality theorem</a> that vanishing sits at \(\mu=\pm1\) or \(\pm i\). So the dual series gains derivative functionals there, whose apolar duals are \((\mu\mp1)^{2c-j}\mathrm{Poly}_j\). \(G_d\) should be the Wronskian of that extended dual series, as \(Q_d\) was for the triple sides.</p>
+<p><strong>General statement.</strong> <code>conj:cube-limit-determinant-squarefree</code>, for every \(d\). The check tests the side restrictions its quadrangle route needs, for \(d=2,3\).</p>
+<p><strong>Verification gate.</strong> A finite check; no new proof is claimed. Dependencies re-read: the quadrangle lemma's statement, the triple-multiplicity corollary, the transport of the triple-sides entry, and the collision data of the reduction entry for \(U_2\). The triple-side output reproduces the recorded conic determinants exactly. Every number above is read from the saved output. The \(d=2\) split into collision and non-collision parts uses the recorded exponents 10 and 7.</p>
+<p><strong>Assessment.</strong> The quadrangle route's hypothesis holds exactly at \(d=2\) on both kinds of side, and the double-double factor \(G_d\) is irreducible and simple at \(d=2,3\). What the route needs for every \(d\) is now clear:</p>
+<ul>
+<li>the collision exponents along \(a_i-a_j\), by a second confluence computation;</li>
+<li>the double-double family \(G_d\) as the Wronskian of an extended dual series, by generalizing the duality theorem to vanishing at \(\pm1,\pm i\);</li>
+<li>simple zeros of \(Q_d\) and \(G_d\) for every \(d\).</li>
+</ul>
+<p>The next cycle takes the second, which identifies \(G_d\) in closed form as \(Q_d\) was identified.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r136">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 19.27 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">18.65 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 53.86 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 21.19 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">45.43 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
