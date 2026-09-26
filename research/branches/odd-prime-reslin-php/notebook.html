@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Early cross-member falls need a shared piece, and random prefixes make shared pieces rare (<a href="#entry-2026-09-26-shared-piece-falls">shared-piece falls</a>). Next: test the conjecture beyond sharing, with members having a form in the span of two of a partner's forms, both with zero and with random other prefix columns. Then attempt its degree-3 two-member case. A route review is due within two research cycles.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Early cross-member falls need a shared piece, also under dependence beyond sharing (<a href="#entry-2026-09-26-shared-piece-falls">shared pieces</a>, <a href="#entry-2026-09-26-span-dependence-check">span check</a>), and random prefixes make shared pieces rare. Next: a route review of the fall line. It should weigh the general-position conjecture and the contained members against what A1 still needs, with outside leads and bridges aimed at proving general position.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32963,6 +32963,43 @@ Subtracting lowers \(d\), a contradiction. So \(d=\deg f\) and the top of \(f\) 
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 16.57 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">54.09 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">4 min 31.10 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-span-dependence-check" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:span-dependence-check">
+<h3>The shared-piece conjecture survives dependence beyond sharing: members whose forms lie in the span of two of a partner's forms fall early only when they have a shared piece (5 early falls, all flagged; none in 12 unflagged runs)</h3>
+<p class="entry-meta">26 September 2026 · Finite check · open statements A1 and A3 · cycle odd-prime-span-dependence. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statements A1 and A3. The <a href="#entry-2026-09-26-shared-piece-falls">shared-piece entry</a> conjectured that cross-member falls well before the fill point need a member with a shared piece. Its definition covers any form in the span of a partner's forms, but the evidence used only forms whose linear parts are identical. An adversary has more freedom: a member's forms can be combinations of a partner's forms. Does such dependence produce early falls without a shared piece?</p>
+<p><strong>General statement.</strong> conj:shared-piece-falls, tested here on dependence beyond sharing.</p>
+<h4>The computation</h4>
+<p>span_dependence.cpp (research/results/odd_prime_span_dependence_20260926/) adds two modes to the core-plus-fill kernel. In both, member \(b\ge1\) has forms 0 and 1 with linear parts \(f_1+f_2\) and \(f_1+2f_2\), where \(f_1,f_2\) are the linear parts of member \(b-1\)'s forms 1 and 2, with its own constants. So \(T_{b,b-1}=\{0,1\}\), and no form is shared.</p>
+<ul>
+<li><strong>spandep:</strong> uniformly random prefixes.</li>
+<li><strong>spandepzero:</strong> member \(b\ge1\)'s prefix columns \(2,\dots,h-1\) are forced to zero with \(c_1=-c_0\), which gives it a shared piece.</li>
+</ul>
+<p>The runs use 2 rows and 8 columns, \((h,t,M)\in\{(3,1,2),(3,1,3),(5,2,2),(5,2,5)\}\) and seeds 1 to 4. The flag of shared-piece members is computed in the same invocation. A sunflower control reproduces its recorded line. The output is series_and_flags.txt, and the counts below are read from it by script.</p>
+<ul>
+<li><strong>Unflagged runs:</strong> 12, all of spandep and none early. They include every \(h=5\), \(t=2\) spandep run, at densities 0.51 to 0.94, with first falls at the forced degree or one below it at ratio at least 0.98.</li>
+<li><strong>Early falls</strong> (ratio below \(\frac12\)): 5, all flagged. Two are spandep with \(h=3\), \(t=1\), seed 4, where the random prefix happened to give a shared piece: ratios 0.13 and 0.22. Three are spandepzero with \(h=3\): ratios 0.49, 0.12 and 0.45.</li>
+<li><strong>Flagged runs without an early fall:</strong> 15, among them every \(h=5\) spandepzero run. So a shared piece is again not sufficient.</li>
+</ul>
+<h4>What it means</h4>
+<p>The conjecture's necessary condition held in every run, now 132 distinct runs across three kernels. Dependence through spans alone, without zero prefix columns, never produced an early fall. The adversary's freedom to choose dependent forms therefore does not by itself create early cross falls on this board. It needs the prefixes' help, which random prefixes give with probability at most \(h3^{-t}\) per member (lem:shared-piece-rarity). All runs are on one board size, 2 rows by 8 columns. Its fill point is at degree 4 or 5, so an early fall there is a fall at degree 1 to 3.</p>
+<p><strong>Next.</strong> The route has had six research entries since thread review 5, so the next cycle is a route review. It should weigh the fall line of these cycles: density, fill point, flat difference, shared pieces and this check. The line has turned A3 for random W_RS families into one general-position conjecture, and has named the adversary's lever for A1 (shared pieces, rare under random prefixes, plus contained members). The review should weigh that against what A1 still needs: a proof of the conjecture, and hardness when a family's members are contained in one another.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the shared-piece entry (the definition of \(T_{bb'}\) and of a shared piece, and the flag code) and its outputs. The runs are exact mod 3, the control reproduces, and every count is read from the saved output by script. No new lemma is claimed, so no reviewer pass was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-span-dependence">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 12.32 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">26.76 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">43.87 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">44.08 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 17.47 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
