@@ -34,7 +34,7 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>The middle range of dimension 4</strong> (open statement 3), now the highest-risk item (<a href="#entry-2026-09-26-cube-route-review-16">route review 16</a>). Start one step past the boundary, at \(m=N+1\) with \(h=d+1\). There the solution module has rank 2, and its elements come by Cramer's rule from maximal minors of \(N\times(N+1)\) submatrices. So \(\ell_0(d+1,N+1)\) is the initial degree of an ideal of minors divided by gcds, whose collision exponents the confluence machinery computes. The first test is \(\ell_0(3,13)=12\) at \(d=2\). The \(S_5\) symmetry (<a href="#cube-branch-point-symmetry">theorem</a>) organizes the generators, as with the quadric at \(m=17,18,38\).</li>
+<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Past the boundary every threshold ideal has height \(\ge2\) when \(g^{\mathrm{nc}}=1\) (<a href="#cube-middle-threshold-height">proposition</a>), so the thresholds are initial degrees of codimension-2 loci. At \(h=3\), \(m=13\) the first generator is an irreducible \(S_5\)-semi-invariant of degree 12 over \(\mathbb F_{32003}\) (<a href="#cube-dimension-four-first-step-generator">check</a>). Next: identify its zero locus through <a href="#cube-residue-duality-all-n">residue duality</a>. The candidate is \(\{h^0(dH_\infty-(N+1)p_0)\ge1\}\), and the question is whether the threshold ideal is its saturated ideal.</li>
 <li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). By the <a href="#cube-squarefree-reduction">reduction theorem</a> and the <a href="#cube-limit-triple-multiplicity">triple-multiplicity corollary</a>, \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs one statement: squarefreeness of the non-collision part of the limit determinant. It is an instance of the <a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness conjecture</a>, which passes 1261 monotone vectors. For \(n=4\) it is simplicity of the \(d\)-canonical Weierstrass points of a general Humbert curve. A proof needs an induction over a class of spaces closed under Möbius transports, or a Weierstrass-point theorem for this family.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
@@ -7095,6 +7095,87 @@ For comparison, the monotone \((3,2,2,1)\) gives the simple factors \((a_1+3a_2)
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.21 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-middle-range-height" data-kind="research" data-route="cube-odd-characteristic" data-lead="entry-2026-09-26-cube-route-review-14:2" data-claims="lem:cube-residue-duality-all-n prop:cube-middle-threshold-height check:cube-dimension-four-first-step-generator">
+<h3>26 September 2026 — Past the boundary the threshold ideals have height two: no collision or other divisor divides them once the boundary gcd is collision-only</h3>
+<p class="entry-meta">Working proof in characteristic 0: for m &gt; N_{2,n}(h−1), every height-one prime containing I^{(h)}_m divides g^nc_{n,h−1}; so all these ideals have height ≥ 2 for n = 3, and for n = 4 with 3 ≤ h ≤ 10. Residue duality holds in every dimension. Cycle bmd-r110. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> <a href="#entry-2026-09-26-cube-route-review-16">Route review 16</a> moved the line to the middle range of dimension 4, the thresholds \(\ell_0(h,m)\) with \(m\) between the boundary \(N=N_{2,n}(h-1)\) and order zero. The recorded row for \(h=3\) is \(15,12,11,6,5,2,2,0\) at \(m=12,\ldots,19\). The first step is \(m=N+1\), where the solution module has rank 2.</p>
+<ul>
+<li>What does the threshold ideal look like there?</li>
+<li>Is its least-degree generator a product of collision forms and a known invariant, such as \(\prod\ell_D\cdot Q\) of degree \(10+2=12\)?</li>
+<li>Or is it something else?</li>
+</ul>
+<p>The test ends with a structure theorem for these ideals, or with a generator that contradicts it. This cycle develops the Buchsbaum–Eisenbud lead of <a href="#entry-2026-09-26-cube-route-review-14">route review 14</a> (lead 2), on the structure of the non-free middle-range modules.</p>
+<p><strong>Setting.</strong> As in the <a href="#cube-threshold-ideal">threshold-ideal lemma</a>: \(R=F[y_1,\ldots,y_n]\), \(d=h-1\), \(N=N_{2,n}(d)\), and \(A_m\) is the \(N\times(m+1)\) constraint matrix (coefficients of \(T^0,\ldots,T^m\) in the basis of \(V_d\)). \(I^{(h)}_m=\{W_m:A_mW=0,\ W\in R^{m+1}\}\). Also \(g_{n,d}=c\prod_D\ell_D^{E_n(d)}g^{\mathrm{nc}}_{n,d}\) (<a href="#cube-boundary-collision-exponents">collision-exponent theorem</a>).</p>
+<h4 id="cube-middle-threshold-height">The height of the middle-range threshold ideals</h4>
+<p><strong>Proposition</strong> (<code>prop:cube-middle-threshold-height</code>). Let \(F\) have characteristic 0, \(n\ge2\), \(h\ge2\), \(d=h-1\) and \(m&gt;N\). Every height-one prime of \(R\) containing \(I^{(h)}_m\) is a prime factor of \(g^{\mathrm{nc}}_{n,d}\). So:</p>
+<ul>
+<li>when \(g^{\mathrm{nc}}_{n,d}=1\), \(I^{(h)}_m\) is either \(R\) or an ideal of height \(\ge2\);</li>
+<li>this holds for \(n=3\) and every \(h\), by the boundary theorem;</li>
+<li>it holds for \(n=4\) and \(3\le h\le10\), by the <a href="#cube-dimension-four-boundary-thresholds">dimension-4 corollary</a> (\(2\le d\le9\)).</li>
+</ul>
+<p><em>Proof.</em> Split \(A_m=[A'\mid a]\), where \(A'\) has the columns \(0,\ldots,m-1\) and \(a\) is the column of \(T^m\).</p>
+<ul>
+<li><em>A colon ideal.</em> \(W\) is a solution exactly when \(A'(W_0,\ldots,W_{m-1})=-W_ma\). So \(I^{(h)}_m=(\operatorname{Im}A':_Ra)\), the annihilator of the class of \(a\) in \(\operatorname{coker}A'\). Colon ideals commute with localization and completion, which are flat. Completion is faithfully flat over the local ring, so the colon ideal is the unit ideal in \(R_{(y_1)}\) exactly when it is in its completion.</li>
+<li><em>Other primes.</em> Let \(\pi\) be a height-one prime not dividing \(g_{m-1}\), the gcd of the maximal minors of \(A'\). Then some maximal minor of \(A'\) is a unit in \(R_\pi\), so \(A'\) maps onto \(R_\pi^N\) and \(I_\pi=R_\pi\). The minors of \(A_N\) are among those of \(A'\), since \(m-1\ge N\), so \(g_{m-1}\mid g_N=g_{n,d}\). Also \(g_{m-1}\ne0\), since \(\pm\Delta_{n,d}\ne0\) is one of these minors (characteristic 0). This excludes \(I=0\).</li>
+<li><em>The collision divisor \(y_1=0\).</em> Work over \(O=F'[[\varepsilon]]\), \(y_1=\varepsilon\), as in the <a href="#cube-collision-limit-space">collision limit lemma</a>. By its part 2, the rows of \(A_m\) (the basis of \(V\)) are \(S\,D\) times the rows of the saturated lattice \(\Lambda\). Here \(S\in GL_N(O)\), and \(D=\operatorname{diag}(1,\ldots,\varepsilon^{d-e(P)},\ldots)\). So \(A'=SDA'_\Lambda\) and \(a=SDa_\Lambda\), with \(A'_\Lambda\) and \(a_\Lambda\) over \(O\). Modulo \(\varepsilon\), \(A'_\Lambda\) is the truncation of a basis of the limit space \(U_d\) to \(T^0,\ldots,T^{m-1}\). \(U_d\) is normal by the <a href="#cube-generic-normality">generic normality lemma</a>, and \(m-1\ge N-1\), so this truncation has rank \(N\). By Nakayama, \(\operatorname{Im}A'_\Lambda=O^N\). Hence \(a=SDa_\Lambda\in SD\,O^N=\operatorname{Im}A'\), and \(I\) is the unit ideal locally at \(y_1=0\).</li>
+<li><em>Other collision divisors.</em> The <a href="#cube-branch-point-symmetry">symmetry theorem</a> states, for every \(n\), \(d\) and \(m\) over every field of characteristic \(\ne2\), that \(I^{(d+1)}_m\) is stable under \(S_{n+1}\). That group permutes the collision divisors transitively.</li>
+</ul>
+<p>So a height-one prime containing \(I\) is not a collision form, and divides \(g_{n,d}\), hence \(g^{\mathrm{nc}}_{n,d}\). \(\square\)</p>
+<p>The boundary \(m=N\) is different. There \(A'\) is square with determinant \(\pm\Delta_{n,d}\), and \(I=(\Delta_{n,d}/g_{n,d})\) is principal, generated by the non-collision part. When \(g^{\mathrm{nc}}_{n,d}=1\), one step past the boundary that divisor disappears. What remains is an ideal of height \(\ge2\): in \(\mathbb P^{n-1}\), a locus of codimension \(\ge2\), possibly empty (for \(n=2\) it is empty). A factor of \(\Delta/g\) that also divides \(g^{\mathrm{nc}}\) could persist. So middle-range thresholds are initial degrees of codimension-2 schemes, not degrees of divisors.</p>
+<h4 id="cube-dimension-four-first-step-generator">The first step in dimension 4</h4>
+<p><strong>Finite check</strong> (<code>check:cube-dimension-four-first-step-generator</code>). On \(\{0,1\}^4\) over \(\mathbb F_{32003}\), at \(h=3\), \(m=13=N+1\): <code>research/tools/bmd_cube_thresholds_m2.m2</code> in incremental mode finds no syzygy at all in excess \(\le11\). In excess 12 it finds exactly one syzygy, a minimal generator, whose top coordinate is a form \(F_{12}\) of degree 12, irreducible over \(\mathbb F_{32003}\) (157 s, <code>research/results/bmd-r110-middle-range/m13-top.txt</code>). <code>research/tools/bmd_cube_top_symmetry.py</code> checks that \(F_{12}\) is invariant up to sign under the transpositions of \(y_1,\ldots,y_4\) and under \(\psi\), so it is \(S_5\)-semi-invariant (<code>m13-top-symmetry.txt</code>). The recorded global run at \(m=13\) (<a href="#entry-2026-09-26-cube-dimension-four">dimension-4 entry</a>) found five generators of the rank-2 module, of excesses 12, 13, 14, 14, 15.</p>
+<p>So over \(\mathbb F_{32003}\) the guess \(\prod_D\ell_D\cdot Q\) is refuted: the degree-12 generator is irreducible. This is consistent with the proposition, which is proved in characteristic 0: a threshold ideal of height \(\ge2\) contains elements outside the collision primes. The irreducibility of \(F_{12}\) is a fact modulo 32003, not established in characteristic 0.</p>
+<h4 id="cube-residue-duality-all-n">Residue duality in every dimension</h4>
+<p>To identify the codimension-2 loci, the <a href="#cube-residue-duality">residue duality lemma</a> of dimension 3 extends to every \(n\). For \(n\ge3\), the fibre curve \(C\) (\(w_i^2=1+4y_iT\), \(y\) with distinct nonzero entries) has genus \(g=1+2^{n-2}(n-3)\). Its canonical class is \(K\sim(n-3)H_\infty\): the map by \(1,w_1,\ldots,w_n\) is a complete intersection of \(n-1\) quadrics in \(\mathbb P^n\), so \(K=\mathcal O(-n-1+2(n-1))=\mathcal O(n-3)\).</p>
+<p><strong>Lemma</strong> (<code>lem:cube-residue-duality-all-n</code>). Let \(F\) be algebraically closed of characteristic \(\ne2\), \(n\ge3\), \(d&gt;n-3\), and \(y\) with distinct nonzero entries. Suppose \(A_m(y)\) has rank \(N\), for some \(m\ge N-1\). Then:</p>
+<ul>
+<li>\(\eta\mapsto(\operatorname{Res}_{p_0}(T^c\eta))_{c\le m}\) is an isomorphism from the differentials with \(\operatorname{div}\eta\ge dH_\infty-(m+1)p_0\) onto \(\ker A_m(y)\);</li>
+<li>equivalently, the solutions are the Laurent tails of \(\varphi\omega_0\), \(\varphi\in L((n-3-d)H_\infty+(m+1)p_0)\), where \(\omega_0\) has divisor \((n-3)H_\infty\);</li>
+<li>\(W_0=0\) always, and \(W_m\ne0\) exactly when \(\varphi\) has pole order \(m+1\).</li>
+</ul>
+<p><em>Proof.</em> As in dimension 3, with three changes.</p>
+<ul>
+<li>\(V_d=L(dH_\infty)\). The inclusion holds by pole orders. Both sides have dimension \(2^{n-1}d+1-g\): \(N_{2,n}(d)\) by the collision limit lemma's count, and \(h^0(dH_\infty)\) by Riemann–Roch, since \(\deg dH_\infty&gt;2g-2\) when \(d&gt;n-3\).</li>
+<li>Injectivity: if all residues vanish, \(\eta\) is regular at \(p_0\), so \(\eta/\omega_0\in L((n-3-d)H_\infty)=0\).</li>
+<li>Dimensions: \(D=(n-3-d)H_\infty+(m+1)p_0\) has degree \(m+1-N-1+g\). By Riemann–Roch, \(h^0(D)=m+1-N+h^0(dH_\infty-(m+1)p_0)\), and the last term is 0 because \(A_m(y)\) has rank \(N\).</li>
+</ul>
+<p>So both sides have dimension \(m+1-N\), and the residue theorem gives the inclusion. The claim about \(W_0\) is the residue theorem for \(\eta\), which has its only pole at \(p_0\). \(\square\)</p>
+<p>At the boundary this is Riemann–Roch's form of the Weierstrass condition. \(\Delta_{n,d}\) vanishes where \((n-3-d)H_\infty+Np_0\), of degree \(g-1\), is effective, that is, on the pullback of the theta divisor \(W_{g-1}\). Off the collision divisors this is the zero set of \(\Delta/g\) when \(g^{\mathrm{nc}}=1\). One step past the boundary, the proof gives one inclusion: off the collision divisors, \(V(I^{(d+1)}_{N+1})\) lies inside \(\{\operatorname{rank}A_N(y)&lt;N\}=\{h^0(dH_\infty-(N+1)p_0)\ge1\}\). That is a condition on a class of degree \(g-2\), of expected codimension 2 (\(W_{g-2}\) inside \(\operatorname{Pic}^{g-2}\)), in line with the proposition.</p>
+<p><strong>General statement.</strong> <code>prop:cube-middle-threshold-height</code>, for every \(n\ge2\), \(h\ge2\) and \(m&gt;N_{2,n}(h-1)\) in characteristic 0. <code>lem:cube-residue-duality-all-n</code>, for every \(n\ge3\) and \(d&gt;n-3\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the threshold-ideal lemma, the collision limit lemma, the generic normality lemma, the collision-exponent theorem, the dimension-3 residue duality lemma, and the symmetry theorem's statement. A claim search (height, colon, middle range, residue duality) found only the dimension-3 duality, which the lemma extends. A fresh-context referee checked:</p>
+<ul>
+<li>the colon ideal and both localizations;</li>
+<li>the genus, the canonical class via smooth diagonal quadrics, and the count \(N_{2,n}(d)=2^{n-1}d+1-g\) (exactly for \(d\ge n-2\));</li>
+<li>the Riemann–Roch count, injectivity and \(W_0\);</li>
+<li>the M2 output, and a rerun of the symmetry script.</li>
+</ul>
+<p>It found nothing that breaks a stated result. Its corrections are made:</p>
+<ul>
+<li>faithful flatness of completion;</li>
+<li>\(g_{m-1}\ne0\);</li>
+<li>the exact form of the symmetry theorem used;</li>
+<li>the range \(3\le h\le10\) for \(n=4\);</li>
+<li>the boundary remark qualified by \(g^{\mathrm{nc}}=1\), with codimension \(\ge2\), possibly empty;</li>
+<li>the theta remark stated for \(\Delta\), and only one inclusion claimed one step past the boundary;</li>
+<li>the stronger "no syzygy at all" in excess \(\le11\), and irreducibility over \(\mathbb F_{32003}\) only;</li>
+<li>the symmetry output saved, with the script's handling of a negative constant factor fixed.</li>
+</ul>
+<p><strong>Assessment.</strong> The middle range has a first structural result. Once the boundary gcd consists of collision forms alone, every threshold ideal past the boundary has height at least 2. So thresholds there are initial degrees of codimension-2 loci, and the dimension-3 product mechanism has no divisorial counterpart in dimension 4. The first generator, of degree 12 at \(m=13\), is an irreducible \(S_5\)-semi-invariant, not a product. Residue duality now holds in every dimension. It identifies the relevant loci as Brill–Noether-type conditions on the fibre curve: the effectivity of \(dH_\infty-(m+1)p_0\) and its refinements. The next step is to compute the degree-12 locus and see whether it is cut out by such a condition, with the saturated ideal of the codimension-2 locus as the candidate for the whole threshold ideal.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r110">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>14 min 51.15 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 26.16 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">8 min 18.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 58.15 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 8.54 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 </section>
