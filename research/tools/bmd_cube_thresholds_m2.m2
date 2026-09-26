@@ -28,7 +28,25 @@ run1 = (n, d, m) -> (
         apply(toList(0..m), cc -> sub(coefficient(T^cc, f + 0*T^(m+1)), R))));
     f0 := map(R^(apply(rows, rw -> -(rw#0))), R^(apply(toList(0..m), c -> -c)), A);
     assert isHomogeneous f0;
-    -- optional third argument: excess limit L; syzygies are computed only up to excess L (degree m + L)
+    -- optional third argument "inc:CAP": raise the excess limit L = 0, 1, ..., CAP on one cached Groebner computation
+    -- and stop at the first L with a syzygy of excess <= L and nonzero top coordinate; that L is l_0.  It also prints
+    -- the number of minimal generators of excess <= L (more than the rank certifies that the module is not free).
+    if #scriptCommandLine > 3 and substring(0, 4, scriptCommandLine#3) == "inc:" then (
+        cap := value substring(4, scriptCommandLine#3);
+        found := false; L := 0;
+        while not found and L <= cap do (
+            G := syz(f0, DegreeLimit => m + L);
+            G = G_(select(toList(0..numcols G - 1), j -> G_{j} != 0));
+            topsL := select(toList(0..numcols G - 1), j -> G_(m,j) != 0);
+            mg := if numcols G > 0 then numcols mingens image G else 0;
+            << "  n=" << n << " d=" << d << " m=" << m << " L=" << L << " syzygies=" << numcols G << " minimal=" << mg
+               << " with top=" << #topsL << " cpu=" << (cpuTime() - t0) << endl << flush;
+            if #topsL > 0 then found = true else L = L + 1;
+            );
+        << "n=" << n << " d=" << d << " m=" << m << " rank=" << m + 1 - #rows << " l0=" << (if found then L else "> " | toString cap)
+           << " cpu=" << (cpuTime() - t0) << endl << flush;
+        return;
+        );
     K := if #scriptCommandLine > 3 then (
             G := syz(f0, DegreeLimit => m + value scriptCommandLine#3);
             G_(select(toList(0..numcols G - 1), j -> G_{j} != 0)))

@@ -34,7 +34,7 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>Dimension 4</strong> (open statement 3). Finish the savings-3 row \(\ell_0(3,m)\), \(m=14,\ldots,18\), in one series run with per-case excess limits. The line lower bounds are 4, 2, 1, and the order-zero threshold gives 1, 1 at \(m=17,18\) (<a href="#entry-2026-09-26-cube-dimension-four">dimension-4 entry</a>). Then look for the mechanism. The modules are not free there, so the <a href="#cube-excess-sum-basis">basis criterion</a> fails. The natural objects are the genus-5 curve \(w_i^2=1+4y_iT\) and its torsion loci, which gave \(B\) in dimension 3.</li>
+<li><strong>Dimension 4: the threshold generators</strong> (open statement 3). The savings-3 row is \(\ell_0(3,m)=15,12,11,6,5,2,2,0\) for \(m=12,\ldots,19\) over \(\mathbb F_{32003}\) (<a href="#entry-2026-09-26-cube-route-review-14">route review</a>). Compute the threshold generators at \(m=15,\ldots,18\) and factor them, and test their \(S_4\)-symmetry and their vanishing on the collision loci. In dimension 3 the corresponding generators were products of torsion loci.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions; the dimension-3 result may merit a note.</p>
@@ -6402,6 +6402,62 @@ since \(A(N-A)=4xy\) and \(\bar A=2r\). This is \(d^2\cdot\tfrac12\operatorname{
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-route-review-14" data-kind="review" data-route="cube-odd-characteristic" data-claims="none" data-claim-note="Route review: the dimension-4 savings-3 threshold row as a falsification test of dimension-3 structure, cheap tests of leads and bridges; the row is recorded here as evidence, with a claim to follow once a mechanism is found.">
+<h3>26 September 2026 — Route review of the cube after dimension 3: the savings-3 row in dimension 4 falls in pairs</h3>
+<p class="entry-meta">Route review: ℓ₀(3,m) on {0,1}⁴ over F₃₂₀₀₃ is 15, 12, 11, 6, 5, 2, 2, 0 for m = 12,…,19; dimension-3 structure fails, and the next step is the threshold generators themselves. Cycle bmd-r99. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>The line's general claim.</strong> The per-order function on \(\{0,1\}^n\) in characteristic \(\ne2\) is determined by the thresholds \(\ell_0(h,m)\), the initial degrees of the threshold ideals (<a href="#cube-threshold-ideal">threshold-ideal lemma</a>). In dimension 3 they are the torsion-partition values \(B(d,\rho)\) over every field of characteristic \(\ne2\) (<a href="#cube-dimension-three-every-field">theorem</a>). The claim to establish is an analogous law for \(n\ge4\).</p>
+<p><strong>What the goal needs.</strong> Open statement 3 (the pre-stable thresholds for \(n\ge4\)), and open statement 2 (small primes for \(n\ge4\)). No formula is conjectured for either.</p>
+<h4>Falsification attempt</h4>
+<p>The dimension-3 route predicts free modules, line splittings equal to the global excesses, and thresholds that drop fast from the boundary (for \(d=4\): \(15,6,3,0\)). The savings-3 row in dimension 4 tests all three. <code>research/tools/bmd_cube_thresholds_m2.m2</code> gains an incremental mode. It raises the excess limit on one cached Gröbner computation and stops at the first excess with a syzygy of nonzero top coordinate. It also counts minimal generators up to that excess. Over \(\mathbb F_{32003}\) (<code>research/results/bmd-r99-route-review/</code>):</p>
+<table>
+<thead><tr><th>\(m\)</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th></tr></thead>
+<tbody>
+<tr><td>rank</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>
+<tr><td>\(\ell_0(3,m)\)</td><td>15</td><td>12</td><td>11</td><td>6</td><td>5</td><td>2</td><td>2</td><td>0</td></tr>
+<tr><td>line value</td><td>15</td><td>7</td><td>4</td><td>2</td><td>1</td><td>0</td><td>0</td><td>–</td></tr>
+</tbody></table>
+<p>The value at 12 is the recorded boundary check, and the value 0 at 19 is the recorded order-zero threshold. The values at 13 are from the <a href="#entry-2026-09-26-cube-dimension-four">dimension-4 entry</a>. The values at 14 to 18 are new: at each, no syzygy exists below the stated excess. At \(m=14\) there are 3 minimal generators of excess 11, and at \(m=16\) and \(18\) there are 3, all with nonzero top coordinate at 16 and two of three at 18. The runs took 258 s for \(m=14\) and 111 s for \(m=15\) to \(18\) (CPU).</p>
+<p>The test falsifies the dimension-3 picture. The thresholds fall slowly and in pairs, \((12,11)\), \((6,5)\), \((2,2)\), not like \(B\). The line values are strict lower bounds at every \(m\) from 13 to 18. Writing \(j=19-m\), the even values fit \(\ell_0=i(i+1)\) for \(j=2i\le6\) (0, 2, 6, 12). That is a fit through four points, not a law.</p>
+<h4>Assessment of this line</h4>
+<p>The line's first target is complete, over every field of characteristic \(\ne2\), with a verified chain of proofs. The second phase, dimension 4, has just started. It is weak in mechanism: every tool that proved dimension 3 fails there, or is untested. That includes freeness and the basis criterion, the genus-1 curve with its torsion points, peeling by products (which lose two savings in dimension 4), and the line method. The evidence is one row of eight values in one characteristic. More rows will be expensive: the \(d=3\) row has thresholds up to 55, and Gröbner cost grows about 1.8-fold per excess. So the next step must find structure in the data already at hand, not add rows.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Castelnuovo's bound and the theta divisor of a genus-5 curve</strong> (Arbarello–Cornalba–Griffiths–Harris, <em>Geometry of Algebraic Curves I</em>, Ch. III). In dimension 3 the thresholds came from torsion loci of an elliptic curve. In dimension 4 the curve \(w_i^2=1+4y_iT\) has genus 5. The analogue of \(d\cdot c=0\) is the vanishing of \(h^0\) of a line bundle, a theta-divisor condition, whose degree would give the boundary thresholds \(15,55,115,195\). This targets open statement 3. It breaks if the loci are not reduced. <strong>Test.</strong> Passed (arithmetic): the genus is \(1+2^{n-2}(n-3)=5\), and the boundary values fit \(10d^2-10d-5\), quadratic in \(d\) as the degree of a pulled-back theta divisor must be.</li>
+<li><strong>The Buchsbaum–Eisenbud acyclicity criterion</strong> (Eisenbud, <em>Commutative Algebra</em>, Thm. 20.9). The dimension-4 solution modules are not free. Their minimal free resolutions, whose Betti numbers the incremental runs begin to show, would say how far from free they are, and whether the excess-sum inequality of the <a href="#cube-excess-sum-basis">basis criterion</a> survives. This targets the mechanism of the slow drop. It breaks if the resolutions are long. <strong>Test.</strong> Passed (weak): at \(m=13\) the two least generators have excess sum \(12+13=25\), above the line splitting sum 14, as the inequality requires.</li>
+<li><strong>Factorization of the threshold generators</strong> (the dimension-3 lowest parts: \(L_2\) and \(L_2^2\) in the <a href="#entry-2026-09-25-cube-torsion-partition-thresholds">torsion-partition entry</a>). In dimension 3 the degree-\(\ell_0\) part of the threshold ideal was spanned by products of torsion loci. In dimension 4 the degree-2 generators at \(m=17,18\) and the degree-5 ones at \(m=16\) can be factored directly. This targets open statement 3. It breaks if they are irreducible. <strong>Test.</strong> Not run: the generators were not saved by this run; the next cycle computes and factors them.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>Wei's monotonicity of generalized Hamming weights</strong> (coding theory: V. Wei, IEEE Trans. Inf. Theory 37, 1991). <em>Translation:</em> the thresholds \(\ell_0(3,m)\), read backwards in \(m\), would be a weight hierarchy of a code built from the multiplicity conditions, and Wei's theorem would make them strictly monotone. <strong>Test.</strong> Falsified: \(\ell_0(3,17)=\ell_0(3,18)=2\).</li>
+<li><strong>Odd–even staggering of nuclear binding energies</strong> (nuclear physics: Bohr–Mottelson, <em>Nuclear Structure</em> I, pairing). <em>Translation:</em> \(j=19-m\) is a particle number and \(\ell_0\) an energy. Pairing makes the second difference \(\Delta(j)=\ell_0(j)-\tfrac12(\ell_0(j-1)+\ell_0(j+1))\) alternate in sign. A pairing theorem would explain the pairs. <strong>Test.</strong> Passed: \(\Delta(1),\ldots,\Delta(6)=1,-1.5,1,-2,2,-1\) alternate in sign.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-13:2"><strong>Chip-firing on a cycle.</strong> Not worked this cycle. <strong>Follow-up.</strong> Continuing: in dimension 4 the degeneration skeleton is a graph of genus 5, and the paired thresholds might be chip energies on it. That is a candidate reading of the odd–even staggering found above.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-25-cube-route-review-6:2"><strong>Riemann–Roch and Riemann–Hurwitz for \(n\ge4\).</strong> Used this cycle for the genus-5 lead above. <strong>Follow-up.</strong> Continuing: it now carries open statement 3.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-13:1"><strong>Semicontinuity.</strong> <strong>Follow-up.</strong> Closed: the diagonal hypotheses it targeted were proved in every odd characteristic by an exact content certificate (<a href="#cube-diagonal-every-odd">theorem</a>), which also covers (ii), beyond semicontinuity's reach.</li>
+</ul>
+<h4>Next step</h4>
+<p>On the highest-risk item, open statement 3: compute the threshold generators of the savings-3 row (degree 2 at \(m=17,18\), degree 5 at \(m=16\), degree 6 at \(m=15\)) and factor them. Also test whether they are \(S_4\)-invariant up to sign, and whether they vanish on the collision loci or on new loci. In dimension 3 this step revealed the torsion structure behind \(B\).</p>
+<p><strong>Process.</strong> Two Macaulay2 runs (258 s and 111 s CPU), one series invocation for \(m=15\) to \(18\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r99">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 41.83 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">52.16 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 35.93 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 52.99 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4 min 20.61 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 </section>
