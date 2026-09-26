@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The planted review's sufficient statement is false for families with many single-form or duplicate blocks, because its constraints also forbid the points where no form of a block vanishes (<a href="#entry-2026-09-26-planted-correction">planted correction</a>). Next: state the family core correctly. Find a block condition, true after the settled classes are removed, under which \([g_b=0]\) is derivable at low degree or rare in the right sense, and test it against single-form, duplicate-form, cell and bit blocks before using it.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> The planted constraint equals W_RS plus the block's own line, "some form vanishes", at degree \(2h+4t\); the line is harmful for single-form and duplicate blocks (<a href="#entry-2026-09-26-covering-identity">covering identity</a>). Next: re-read the logarithmic-prefix reduction and thm:randomized-prefix-reduction where a line becomes clauses, and decide whether the reduction can keep a cheap surrogate of the line for high-rank blocks only, with a degree accounting; if it can, test the planted statement for high-rank families.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -31224,6 +31224,42 @@ For \(h\) independent pins, the probability that \(\ell\) satisfies all of them 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 22.73 s</td></tr>
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">36.67 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-covering-identity" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:planted-covering-identity">
+<h3>The covering identity: the planted constraint \(Q^C=0\) equals W_RS's clauses plus the covering axiom "some form of the block vanishes", \(\prod_uL_u^2=0\), at degree \(2h+4t\); the extra axiom is the block's own line, harmful for single-form and duplicate blocks</h3>
+<p class="entry-meta">26 September 2026 · Working proof of an identity · open statement A1 under random prefixes · cycle odd-prime-core-statement. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 under random prefixes. The <a href="#entry-2026-09-26-planted-correction">planted correction</a> found that the constraint \(Q^C=[Cg=0]=0\) per block is stronger than W_RS and false on families of single-form blocks. It asked for a correct statement of the family core. What exactly does the planted constraint add to W_RS?</p>
+<p><strong>General statement.</strong> lem:planted-covering-identity: for every block, \(Q^C\equiv G+\sum_u\big(\prod_{u'&lt;u}(1-g_{u'})\big)g_uQ^C\), so the planted constraint equals the W_RS clauses plus \(\prod_uL_u^2=0\) at degree \(2h+4t\).</p>
+<h4>The identity</h4>
+<p>Over \(\mathbb F_3\) on the weak base, let a block have affine forms \(L_1,\dots,L_h\), zero indicators \(g_u=1-L_u^2\), prefix \(C\in\mathbb F_3^{t\times h}\), \(s_j=\sum_uc_{ju}g_u\), \(Q^C=\prod_{j\le t}(1-s_j^2)\), and let \(G=\prod_u(1-g_u)=\prod_uL_u^2\), the indicator that no form vanishes. Degrees are unreduced degrees of the products written, which bound the degrees under multilinear PC too.</p>
+<p><strong>Lemma (covering identity).</strong> Modulo the weak base,
+\[Q^C\equiv G+\sum_{u\le h}\Big(\prod_{u'&lt;u}(1-g_{u'})\Big)\,g_uQ^C,\]
+with every product of degree at most \(2h+4t\). Hence, for \(D\ge2h+4t\), the degree-\(D\) PC closures of the base plus \(Q^C\) and of the base plus the W_RS clauses \(g_uQ^C\) plus the covering axiom \(G\) coincide.</p>
+<p><em>Proof.</em> In characteristic 3, \(L^3-L=\sum_ia_i(x_i^3-x_i)\) exactly, by Frobenius, a combination of Booleanity at degree 3. So \(g_u^2-g_u=L_u^4-L_u^2=L_u(L_u^3-L_u)\) at degree 4, and \(g_uG=g_u(1-g_u)\prod_{u'\ne u}(1-g_{u'})\equiv0\). Each \(s_j\) is a combination of the \(g_u\), so \(s_jG\equiv0\), \((1-s_j^2)G\equiv G\) and \(Q^CG\equiv G\). The telescoping identity \(1-G=\sum_ug_u\prod_{u'&lt;u}(1-g_{u'})\) is exact. So \(Q^C=Q^CG+Q^C(1-G)\equiv G+\sum_u\prod_{u'&lt;u}(1-g_{u'})\,g_uQ^C\), and every term has degree at most \(2(h-1)+2+4t\). For the closures: each clause \(g_uQ^C\) is a multiple of \(Q^C\) of degree \(4t+2\le2h+4t\), and the identity derives \(G\) from \(Q^C\) and the clauses, and \(Q^C\) from \(G\) and the clauses, within degree \(2h+4t\). Only Booleanity and characteristic 3 are used. \(\square\)</p>
+<h4>What it says about the core</h4>
+<p>The planted strengthening is W_RS plus one covering axiom per block, \(G=0\): "some form of the block vanishes", which is the Res(Lin) line of the block itself. The identity makes the planted correction's counterexample exact.</p>
+<ul>
+<li>A single-form block has \(G=L^2\). From \(L^2=0\), multiplying by \(L\) and using \(L^3-L\) gives \(L=0\) at unreduced degree 3. Its W_RS clause is \(g_1[c\,g_1=0]\), vacuous when the column \(c\) of \(C\) is nonzero.</li>
+<li>A block of two equal forms has \(G\equiv L^4\equiv L^2\) modulo the base, so the same happens. Its W_RS clauses are vacuous when some \(c_{j1}+c_{j2}\ne0\).</li>
+</ul>
+<p>For a block whose forms have affine rank \(r\), \(G\) agrees with a function of degree \(2r\) on the base's points, but deriving that from the given axiom may still cost degree about \(2h\). The identity gives the equivalence at degree \(2h+4t\) and does not exclude it at lower degree. For wide blocks, with \(2h&gt;22k\), the covering axiom itself cannot occur in a degree-\(22k\) refutation, while \(Q^C\) has degree \(4t&lt;22k\). Whether \(Q^C\) is harmless there at degree \(22k\) is not decided by the identity. The record contains no self-contained statement of the family core stronger than W_RS that is known to be true. Per block, W_RS forbids exactly the points whose zero pattern lies in \(\ker C\setminus\{0\}\), that is, \(Q^C-G=0\) as a function; its clauses are degree-\((4t+2)\) generators, and the identity recovers \(Q^C-G\) from them together with \(G\) only at degree \(2h+4t\).</p>
+<h4>What it means</h4>
+<p>The exception \(g=0\) that the clauses keep is the block's own line, "some form vanishes". The randomized-prefix reduction trades that line, of width \(h\), for clauses of degree \(4t+2\) that are silent where no form vanishes. Re-importing the line is harmful for single-form and duplicate blocks, which W_RS makes vacuous. Whether every stronger core must re-import the line, and whether the line is harmful only for low-rank blocks, is not shown here.</p>
+<p><strong>Next.</strong> Re-read the logarithmic-prefix reduction (<a href="#entry-2026-09-22-degree-three-first-moment">logarithmic-prefix reduction</a>) and thm:randomized-prefix-reduction at the step where a line becomes clauses, and determine whether the reduction could keep a cheap surrogate of the line (such as \(Q^C\)) for blocks of high rank only, with a degree accounting. If it can, the core for high-rank families becomes the planted statement, which can then be tested; if not, record why.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the planted correction, the planted review, thm:randomized-prefix-reduction (its identity \(1-Q^C=\sum_i\beta_ig_i\)) and lem:consistent-choice. Searched the index for covering axioms and vanishing-form conditions; lem:consistent-choice is the nearest and concerns prefix choice at a point, not covering. A fresh-context reviewer confirmed the Frobenius step, the telescoping identity, \(Q^CG\equiv G\) and the degree bound, and found no unused hypothesis. It required, all adopted: the closure bound \(D\ge2h+4t\) (without "+2") with the degree convention stated; degree 3 for the single-form consequence and the conditions under which W_RS makes single-form and duplicate blocks vacuous; the row example dropped, since a row of distinct cells has full rank; the rank-\(r\) remark qualified; and the overclaims in the title, the core section and the conclusion removed or marked as not shown.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-core-statement">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 4.05 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 4.95 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 58.96 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
