@@ -336,9 +336,11 @@ def check_targets(data, root=ROOT):
         refs += [(edge['id'], e['locator']) for e in (edge['source'], edge['target'])
                  if e['namespace'] != 'current']
     from notebooks import catalogue
-    errors, external, anchors, items = [], set(), {}, catalogue(root)
+    errors, external, anchors, items, resolved = [], set(), {}, catalogue(root), {}
     for owner, target in refs:
-        local = local_target(target, root, items)
+        if target not in resolved:
+            resolved[target] = local_target(target, root, items)
+        local = resolved[target]
         if local is None:
             external.add(target)
             continue
