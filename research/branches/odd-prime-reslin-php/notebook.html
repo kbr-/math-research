@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The integrality lead has a proved base case for plain PHP on Razborov's range (<a href="#entry-2026-09-26-integral-extension">integral extension</a>) and small positive evidence at one dense constraint (<a href="#entry-2026-09-26-dense-block-integral">one dense constraint</a>). Next: a route review of the integrality line. Assess whether it can reach A1: whether integral designs extend through constraint equations, and whether the Nullstellensatz statement can be lifted to the PC degree W needs. Decide whether to continue it or return to the collective core by another route.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The integrality line has integral designs for plain PHP at Nullstellensatz degree \(\lfloor(n+1)/2\rfloor\) (<a href="#entry-2026-09-26-integral-extension">integral extension</a>). Its route review found that exact encodings of a block's mod-3 constraint in the cube variables alone have degree about the support, but that a linear encoding with \(O(\log n)\) auxiliary Boolean variables exists (<a href="#entry-2026-09-26-integrality-review">integrality review</a>). Next: add one random dense form \(L\), encoded by \(L-1-y-3\sum_{i&lt;r}2^ib_i=0\), to weak PHP with 6 pigeons at degree 3. Report whether \(\mathbb F_3\) and \(\mathbb Q\) refute and the 3-torsion, then whether a 3-integral design exists.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -29834,6 +29834,73 @@ and the next step given a stated lift, a torsion report and the NS-versus-PC sco
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.25 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-integrality-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of the 3-integrality line with two small tests (rational degree of the mod-3 indicator, residue mixing); no new claim.">
+<h3>Route review of the integrality line: integral designs exist for plain PHP at Nullstellensatz degree \(\lfloor(n+1)/2\rfloor\); without new variables a block's constraint "\(L\ne0\) mod 3" has rational degree about its support, but with \(O(\log n)\) auxiliary Boolean variables it has an exact linear encoding, which is the line's next test</h3>
+<p class="entry-meta">26 September 2026 · Route review with two tests and a homology check · open statement A1 · cycle odd-prime-integrality-review.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. Since the <a href="#entry-2026-09-26-closed-routes-review">closed-routes review</a> opened it, the integrality line produced a reduction and a theorem for plain PHP. A matching-supported design certifies Nullstellensatz hardness (lem:matching-extension-certificates). Integer designs exist through degree \(\lfloor(n+1)/2\rfloor\) (thm:integral-design-extension). It also produced one conditional instance with a dense constraint (<a href="#entry-2026-09-26-dense-block-integral">one dense constraint</a>). Can the line reach A1?</p>
+<p><strong>General statement.</strong> The line's claim is that characteristic-0 constructions, kept 3-integral, certify \(\mathbb F_3\)-hardness of PHP plus dense blocks. Its base, conj:three-integral-php-certificates, is proved at Nullstellensatz degree \(d\le\lfloor(n+1)/2\rfloor\); integrality at PC degree is not established. Its block form, conj:integral-certificates-dense-quadric, has two conditional instances.</p>
+
+<h4>What A1 needs from the line</h4>
+<p>A 3-integral rational certificate at PC degree \(22k\) for weak PHP plus \(n^K\) dense blocks of W's prefix clauses. It would come from a characteristic-0 construction with a notion of smallness, which characteristic 3 lacks. That needs three things: a characteristic-0 encoding of each block's constraint, a construction that absorbs many blocks, and a passage from Nullstellensatz to PC degree.</p>
+
+<h4>Falsification attempt</h4>
+<ul>
+<li><em>Encoding without new variables.</em> A block's clauses speak about \(L\bmod3\). An exact characteristic-0 encoding of "\(L\ne0\) mod 3" as a polynomial in the cube variables alone, for \(L=\sum_{e\in S}x_e\), is the symmetric function \([\sum_{e\in S}x_e\not\equiv0]\). Its rational degree is \(|S|\), or \(|S|-1\) when \(|S|\equiv3\pmod6\): the top finite difference is, up to sign, \(\tfrac23\,3^{m/2}\cos(m\pi/6)\), which vanishes exactly then (test T1 confirms it for \(m\le15\), with all coefficients 1; for coefficients in \(\{1,2\}\) the analogous condition is on the counts of each coefficient). Low-degree lifts such as \((L-1)(L-2)\) reduce correctly mod 3, but over \(\mathbb Q\) they say \(L\in\{1,2\}\) as an integer, which is stronger. A design, a pseudo-expectation, need not see the typical integer values of \(L\) on true assignments, so the rational instance may become easy while the \(\mathbb F_3\) instance stays hard; this was not shown. If it happens, no hardness certificate exists for that lift.</li>
+<li><em>Encoding with new variables.</em> With fresh Boolean variables \(y,b_0,\dots,b_{r-1}\), \(r=O(\log|S|)\), the linear equation \(L-1-y-3\sum_{i&lt;r}2^ib_i=0\) has a 0-1 solution exactly when \(L\not\equiv0\) mod 3 (and \(L\ge1\), in the range). Modulo 3 the \(b_i\) drop out and it becomes \(L=1+y\), which with \(y^2=y\) gives \(L^2=1\). An \(\mathbb F_3\) design of the augmented instance restricts to one of the original instance, losing \(O(1)\) degree. So the encoding obstruction holds only without new variables. Whether the augmented rational instance keeps a 3-integral design is open and untested, and it is the line's natural next test.</li>
+<li><em>Averaging.</em> The recorded reduction of the dense core makes a block's constants uniform on \(\mathbb F_3\) after a random matching (cor:dense-shift-equidistribution). A normalized functional invariant under the three shifts of an orbit must give each point weight \(1/3\), which is not 3-integral. That is the characteristic-0 face of the recorded "averaging vanishes in characteristic 3" (<a href="#entry-2026-09-26-collective-core-review">collective-core review</a>). Integer weights summing to 1, or averages of orbit sums that are divisible by 3, remain available, so the obstruction is to shift-invariance, not to every use of shifts.</li>
+<li><em>Degree.</em> The line lives at Nullstellensatz degree, where plain PHP's certificates are designs. W is a PC statement, and the base of the thread's proved randomized-prefix results is Mikša and Nordström's PC operator, not a design.</li>
+</ul>
+<p>So the attempt does not falsify A1, and it does not close the line. It removes encodings without new variables and shift-invariant averaging, and leaves the linear encoding with auxiliary variables as the test.</p>
+
+<h4>Assessment of the line</h4>
+<p>The line converted the characteristic-3 obstruction into a precise question, integer solvability of design systems, and settled it for plain PHP at Nullstellensatz degree up to \(\lfloor(n+1)/2\rfloor\). For blocks, the obvious characteristic-0 treatments fail: exact encodings in the cube variables have degree about the support, and shift-invariant averaging needs \(1/3\). One encoding survives, a linear equation with \(O(\log n)\) auxiliary Booleans. The line's prospects for A1 are uncertain. It stays open for one test, and it still has to pass from Nullstellensatz to PC degree.</p>
+
+<h4>Outside leads</h4>
+<ul>
+<li><em>Von zur Gathen and Roche, degrees of symmetric Boolean functions (Comput. Complexity 1997).</em> Target: the encoding step of the integrality line. Their bound gives rational degree at least \(m-O(m^{0.525})\) for nonconstant symmetric functions such as \(\mathrm{MOD}_3\) on \(m\) bits. Where it breaks: it bounds exact encodings only; a lift correct only on the points that matter could be lower. <strong>Test.</strong> Passed: the rational degree of \([\sum_{i\le m}x_i\not\equiv0\bmod3]\), computed by finite differences, is \(m\) for 12 of \(m=1,\dots,15\) and \(m-1\) for \(m=3,9,15\) (<code>review_tests.json</code>, T1), as the closed form above predicts. The obstruction holds for exact encodings in the cube variables only.</li>
+<li><em>Razborov's PC lower bound for PHP, read for its ring (Comput. Complexity 1998).</em> Target: the Nullstellensatz-to-PC step. If his reduction operator is defined over \(\mathbb Z\), the integrality of plain PHP holds at PC degree too. Where it breaks: blocks, as above. <strong>Test.</strong> Not run: it needs a reading of the construction, which is worth doing only if the block obstruction is removed.</li>
+<li><em>The Mayer (cluster) expansion with 3-adically small activities.</em> Target: a smallness surrogate for the Kotecký–Preiss bridge. Coefficients such as \(\lambda^k/k\) are 3-adically small when \(v_3(\lambda)\ge1\), since \(k\,v_3(\lambda)-v_3(k)>0\), so the expansion converges in \(\mathbb Z_3\). Where it breaks: a correction with positive 3-adic valuation vanishes mod 3. The reduced functional is then the unperturbed one, which must already vanish on the blocks. <strong>Test.</strong> Falsified by that argument: 3-adic smallness gives integrality but no absorption mod 3.</li>
+</ul>
+
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>Integer solvability of linear systems: the Smith normal form (Heger's theorem), as used in integer programming.</em> Translation: a design system with integer data has an integer solution whenever it has a rational one exactly when the relevant cokernel has no torsion. For a chessboard filling step \(\partial c=b\), integer versus rational solvability depends only on the torsion of \(\widetilde H_{k-2}(\Delta_{k,N};\mathbb Z)\), where \(\Delta_{k,N}\) is the complex of a \(k\)-pigeon, \(N\)-hole sub-board, the complex the <a href="#entry-2026-09-26-integral-extension">integral extension</a> uses. What a theorem there would give: criteria for integrality beyond the connectivity range. Smallest test: the torsion of the groups filling steps use, on the boards the <a href="#entry-2026-09-26-dag-review">DAG review</a> computed (<code>chessboard_homology.txt</code>; chessboard complexes are symmetric in rows and columns). <strong>Test.</strong> Passed on those boards. For 6 holes the filling steps with \(k=5,6,7\) pigeons use \(H_3(\Delta_{5,6})\), \(H_4(\Delta_{6,6})\) and \(H_5(\Delta_{7,6})=H_5(M_{6,7})\), all free in the recorded data; for 5 holes, \(k=5\) uses \(H_3(M_{5,5})\), free. The recorded 3-torsion, in \(H_2(M_{5,5})\), \(H_3(M_{6,6})\) and \(H_3(M_{6,7})\), is in degree \(k-3\) or lower for those steps. Such torsion does enter the \(\mathbb F_3\) filling, through the universal coefficient theorem, but it does not affect integer versus rational solvability. Beyond the connectivity range, the obstruction on these boards is nonzero free homology.</li>
+<li><em>Rock-paper-scissors dynamics (cyclic dominance on \(\mathbb Z_3\)).</em> Translation: moving pigeons between holes moves a dense form's residue around the three-cycle; cyclic dominance models equilibrate to the uniform state. What a theorem there would give: mixing times for residues, hence uniform shifts. Smallest test: Monte Carlo of \(L\bmod3\) over random placements and random injections for random dense \(L\). <strong>Test.</strong> Passed but vacuous: for \(n=10,30,100\) every residue has frequency within 0.003 of \(1/3\) (T2). With uniformly random coefficients each pigeon's contribution is already nearly uniform, so the test says nothing about dynamics or mixing, and the recorded equidistribution result (cor:dense-shift-equidistribution) already proves what it suggests.</li>
+</ul>
+
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-closed-routes-review:2"><em>Qutrit CSS codes from chessboard complexes.</em> <strong>Follow-up.</strong> Closed: the logical qutrit comes from torsion in homology that no filling step uses, and no argument ties code distance to a degree.</li>
+<li data-bridge="entry-2026-09-26-conditioning-review:1"><em>Kotecký–Preiss.</em> <strong>Follow-up.</strong> Continuing: 3-adic smallness vanishes mod 3 (closed), and real smallness needs a characteristic-0 encoding of the mod-3 constraints; the only surviving one is the linear encoding with auxiliary variables, which the next step tests.</li>
+</ul>
+
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-closed-routes-review:2"><em>Hensel lifting: 3-integral certificates.</em> Developed through five entries, from the <a href="#entry-2026-09-26-hensel-saturation">saturation test</a> to the <a href="#entry-2026-09-26-integral-extension">integral extension</a>. <strong>Follow-up.</strong> Continuing: base case proved at Nullstellensatz degree; blocks await the auxiliary-variable encoding.</li>
+<li data-lead="entry-2026-09-26-expander-core-review:1"><em>The Mikša–Nordström closure.</em> No work. <strong>Follow-up.</strong> Continuing: it remains the base of the proved randomized-prefix results and the PC counterpart of the designs here.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1. Test the integrality line with the linear encoding. Take weak PHP with 6 pigeons at Nullstellensatz degree 3. Add one random dense form \(L\), with integer coefficients in \(\{0,1,2\}\), encoded by the equation \(L-1-y-3\sum_{i&lt;r}2^ib_i=0\) over fresh Boolean variables, with \(r\) just large enough for the range of \(L\). The lattice now has about 35 variables and about 7000 monomials of degree at most 3. First report the decision conditions: whether \(\mathbb F_3\) refutes the augmented instance at degree 3, whether \(\mathbb Q\) does, and the 3-torsion. Then, if the case is informative, report whether the constant monomial lies in the 3-saturation mod 3. A 3-integral design of the augmented instance restricts to a design of the original instance with an \(O(1)\) degree loss.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the integrality line's five entries, cor:dense-shift-equidistribution and conj:expander-dense-core, and the recorded chessboard homology. Every number was read from <code>review_tests.json</code> and <code>chessboard_homology.txt</code>. A fresh-context reviewer confirmed T1, T2 and the 3-adic argument. It required: the linear encoding with auxiliary Boolean variables, which removes the encoding obstruction, so the line is no longer parked; the lift sentence made a possibility; the closed form of T1 and its scope; the averaging obstruction restated as one to shift-invariance; the homology bookkeeping corrected, since \(\mathbb F_3\) filling does see lower torsion, with the used groups cited from the recorded data; the bridge renamed after the Smith normal form; T2 marked vacuous; the headline scoped to Nullstellensatz degree; and the next step made decidable. All were adopted, and the next step was replaced by the auxiliary-variable test. The changes remove or weaken claims, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-integrality-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 19.05 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 8.68 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 9.16 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">6.87 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 52.69 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.50 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
