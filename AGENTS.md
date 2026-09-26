@@ -213,7 +213,13 @@ rules to growing checklists or one-off setup narratives.
   item not yet closed, with the work done on it in that cycle and `<strong>Follow-up.</strong>` Developed,
   Continuing or Closed (with the reason the attempt found). A research entry developing one carries
   `data-bridge` or `data-lead`; the finisher checks reviews and reminds research entries (user, 26
-  September 2026: "give the bridges a chance"; "Both should have followups"). In the user's words (25 September 2026): "absurd bridges can reach for
+  September 2026: "give the bridges a chance"; "Both should have followups"). A one-step objection
+  (a structural remark, a record match, one encoding tried) falsifies only that formulation. Before
+  a review declares an open statement without mechanism, or moves cycles away from it, each "Not
+  run" item and each item closed by such an objection that bears on that statement gets a
+  development cycle: read the source in full, and try other encodings, formulations and settings
+  where the objection does not apply (user, 26 September 2026: "Did you make an honest attempt at
+  developing some of these in order to solve A1?"). In the user's words (25 September 2026): "absurd bridges can reach for
   mathematics, computer science, theoretical physics, quantum fucking chemistry, I don't
   give a fuck. That's why they are absurd." Reaching for other areas is the agent's job at
   every cycle, not only when the user names a field.
