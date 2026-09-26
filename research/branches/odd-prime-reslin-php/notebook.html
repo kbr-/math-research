@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer.</strong> The literature has no superpolynomial DAG-like, regular or bounded-depth lower bound for \(\mathrm{Res}(\mathrm{Lin}_{\mathbb F_p})\) at odd \(p\) (<a href="#entry-2026-09-26-parity-literature">literature pass</a>). The only DAG-like method for PHP-type formulas is the dimension count, whose odd-prime failure is measured, so the collective dense core stays open. Nearest open target with a known method: a bounded-depth bound by closure-based walks. Next, first step of that route: define a safety notion over \(\mathbb F_3\) for unary PHP that depends on the constants, consistent with lem:Fp-linear-system-forced-cells, and prove that a safe system of rank \(r\) forces at most \(O(r)\) cells and no collision.</p>
+<p><strong>Route item: odd-prime-clause-transfer, the goal's DAG-like case.</strong> The bounded-depth closure route at odd primes was closed on 22 September (<a href="#entry-2026-09-22-walk-restriction-odd-prime">walk restriction</a>). The literature pass's recommendation of it is withdrawn (<a href="#entry-2026-09-26-bounded-depth-correction">correction</a>). The only DAG-like method for PHP-type formulas is the subspace criterion (thm:generic-CNF-affine-DAG-subspace-criterion). At \(p=3\) it loses a factor \(2^r\) per slot when a line's whole falsifying set, a union of \(2^r\) flats, is used. Next: read the criterion's proof, Lean and transfer entry, at the step where a slot's falsifying set restricts the separated space \(U\). Decide whether one chosen flat per slot, by a consistent value rule, would suffice. If so, state the odd-prime criterion without the \(2^r\) loss and test it on the smallest computable instance; if not, record the exact step as the obstruction.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -29218,6 +29218,41 @@ The main term is an equidistribution statement analogous to Cohen–Lenstra mome
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">39.67 s</td></tr>
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">1 min 59.49 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.15 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-bounded-depth-correction" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Correction of the literature pass's next step: the bounded-depth closure route at odd primes was closed on 22 September; redirects to the subspace criterion's use of falsifying sets; no new claim.">
+<h3>Correction: the bounded-depth closure route that the literature pass recommended was already closed on 22 September, when its restriction step failed and its reach fell below the depth every refutation has; the open question is instead where the subspace criterion uses a line's whole falsifying set</h3>
+<p class="entry-meta">26 September 2026 · Correction and redirection · the goal · cycle odd-prime-fp-safety.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-26-parity-literature">literature pass</a> proposed, as the nearest open target, a bounded-depth lower bound by closure-based walks, starting with a safety notion over \(\mathbb F_3\) that depends on constants. Before designing it, the cycle searched the notebook for later work on the closure line, as the route check requires. Is the target open?</p>
+<p><strong>General statement.</strong> No claim is registered. This entry corrects the literature pass's next step. The statements involved are thm:modular-collision-linear-search-hardness and lem:Fp-linear-system-forced-cells, and the subspace criterion thm:generic-CNF-affine-DAG-subspace-criterion.</p>
+
+<h4>The closure line was closed on 22 September</h4>
+<p>The record already contains the bounded-depth closure line at odd primes, built and then closed within one day.</p>
+<ul>
+<li>A constant-dependent danger notion, measured on forced cells, was proposed and tested (<a href="#entry-2026-09-22-closure-route-review">closure route review</a>, <a href="#entry-2026-09-22-forced-cell-closure-test">forced-cell closure test</a>). It led to vertex-cover and star closures (<a href="#entry-2026-09-22-vertex-cover-closure">vertex-cover closure</a>, <a href="#entry-2026-09-22-star-closure-delayer-step">star closure</a>). That is exactly the safety notion the literature pass asked for.</li>
+<li>The hard distribution and its search hardness were proved (<a href="#entry-2026-09-22-modular-collision-hardness">modular-collision hardness</a>).</li>
+<li>The <a href="#entry-2026-09-22-walk-restriction-odd-prime">walk-restriction entry</a> then found the restriction step binding. Within the dense family, a restriction implies an inequation \(L\ne a\) only at a cost linear in \(n\), unless the form is close to additive (its restriction lemma). Every refutation can be padded, at four times the size, so that the first stage of any walk meets such an inequation (its padding construction). Carrying the inequations as conditions instead reaches depth only about \(n^{2/3}\). That is below the depth \(\Omega(n)\) every refutation already has, by Part and Tzameret's tree-like bound.</li>
+</ul>
+<p>So the literature pass's recommendation repeats a line the record has already closed. Its recommendation is withdrawn. The literature pass's other conclusions stand: no outside technique for DAG-like proofs at odd \(p\) was found, and the only DAG-like method for PHP-type formulas is the dimension count. The process failure was the route check. The literature pass did not search the notebook for later links to the closure anchors before proposing the line. This entry does that search.</p>
+
+<h4>Where the open question actually is</h4>
+<p>The dimension count is thm:generic-CNF-affine-DAG-subspace-criterion, Lean-verified over \(\mathbb F_2\). An \(S\)-node refutation gives \(3S+t\) registry slots. A separated degree-\(k\) subspace \(U\) then satisfies \(\dim U\le(3S+t)\binom{v-(h(k+1)+1)+k}{k}\): each slot restricts \(U\) to a flat of codimension above \(h(k+1)\). The <a href="#entry-2026-09-26-thread-review">thread review</a> showed that at \(p=3\), with the whole falsifying set, a union of \(2^r\) flats, the per-slot bound \(2^r\binom{v-r+k}{k}\) never beats \(\dim U\). The <a href="#entry-2026-09-26-collective-core-review">collective-core review</a> measured the cause, quadrics in place of flats. Neither asked where in the criterion's proof the falsifying set enters. If each slot's set is used only through a subset on which some fixed property holds, one chosen flat per slot would do, and the factor \(2^r\) would disappear. The flat would be picked by a consistent rule, for example the values \(L_i=b_i+\sigma_i\) with \(\sigma_i\) fixed per form. Whether that is possible depends on how the proof covers the space with slots, which has not been read.</p>
+<p><strong>Next.</strong> Read the proof of thm:generic-CNF-affine-DAG-subspace-criterion in its Lean formalization and in the main record's transfer entry, at the step where a slot's falsifying set restricts \(U\). Decide whether the argument needs the whole falsifying set, or only a subset with a covering property that a chosen flat per slot could supply. If a chosen flat suffices, state the odd-prime criterion with one flat per slot, which the \(2^r\) loss no longer affects. Then test it on the smallest instance where both sides are computable. If the whole set is needed, record the exact step as the obstruction.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Searched the notebook for every entry mentioning forced cells or linking the 22 September closure-route review. Read the heads of the star-closure route review and the walk-restriction entry. Read the registered statements of thm:generic-CNF-affine-DAG-subspace-criterion, thm:modular-collision-linear-search-hardness and lem:Fp-linear-system-forced-cells. The entry proves nothing new and corrects a recommendation, so no fresh-context review was run; the recorded entries it cites carry their own reviews.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-fp-safety">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 5.48 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 22.29 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">47.95 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">55.10 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
