@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes, the generic dense core.</strong> Over functional PHP, Nullstellensatz refutability with extra clauses is a span condition on the normal forms of the clause multiples under Impagliazzo, Pudlák and Sgall's basis, and the dense core sits far below the fill point (<a href="#entry-2026-09-26-dense-killer">dense killer</a>). Next: for a single dense block with a random prefix matrix, try to prove that 1 is not in the span of its clause multiples' normal forms, a Nullstellensatz analogue of member pinning without pinning, and identify which property of the block's zero patterns is needed.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> The smallest open case is one wide generic dense block, wider than member pinning's capacity; vacuity cannot handle it on any residual hard enough (<a href="#entry-2026-09-26-one-dense-block">one dense block</a>). Next: a route review weighing W with chosen prefixes against W_RS for one wide block, and looking for a method in which clauses stay present and are shown harmless, starting from the Nullstellensatz criterion over the functional base.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -30838,6 +30838,35 @@ using \(|R|=0.8h+1\le0.8h\cdot1.001\) for \(h\ge1250\), so the constant is at mo
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 38.37 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">34.77 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-one-dense-block" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="A sharpening of the open case and a no-go for vacuity arguments; it registers no claim. The general statement tested is conj:randomized-wide-clause.">
+<h3>The smallest open case is one wide dense block: blocks of width up to member pinning's capacity are settled for every prefix, while vacuity on any residual hard at the needed degree fails for a generic dense block of width well above \(t\)</h3>
+<p class="entry-meta">26 September 2026 · Analysis, no new theorem · open statement A1 under random prefixes, the generic dense core · cycle odd-prime-one-dense-block. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 under random prefixes, the generic dense core. The <a href="#entry-2026-09-26-dense-killer">dense-killer entry</a> proposed proving, at the Nullstellensatz level, that a single dense block with a random prefix matrix cannot refute. Is that case open at all, and what is the smallest open case?</p>
+<p><strong>General statement.</strong> The statement tested is conj:randomized-wide-clause (W_RS), through prop:pinned-rank-vacuity and lem:member-pinning, which settle the cases below. No new claim is registered.</p>
+<h4>One narrow block is settled for every prefix</h4>
+<p>Take one block with forms \(L_1,\dots,L_h\) whose linear parts are independent modulo constants on every row, and any prefix matrix \(C\). Every clause \(g_i[Cg=0]\) vanishes at any point where all forms are nonzero: there \(g=0\), and the factor \(g_i\) is 0. So the clauses' common zero set contains the point \(q\) with all \(q_j\ne0\). lem:member-pinning then gives the base plus the clauses no PC refutation of degree \(B\), under its row and robustness hypotheses. The recorded capacity of those hypotheses is about \(\sqrt n/\log n\) forms (<a href="#entry-2026-09-26-occupancy-pin">occupancy-pinning entry</a>). Row independence alone caps any such pinned set at \(n-1\) forms, since each row has \(n\) cells. The same argument covers any family whose forms, together, satisfy the hypotheses, and prop:pinned-rank-vacuity adds \(\log_3n-\omega(1)\) further forms per block. No randomness of \(C\) is used. So the dense-killer entry's proposed one-block case is settled when the block's width is within member pinning's capacity.</p>
+<h4>The smallest open case</h4>
+<p>One block of generic dense forms whose width \(h\) exceeds member pinning's capacity, for example \(h=n^{0.6}\), with a random prefix of \(t\approx\log_3n\) rows. No recorded argument covers it: pinning needs more forms than the capacity, type pinning needs a shared pigeon-side space (a single generic block of width \(h\) has interaction rank about \(\min(h,n)\)), and the light and column-statistic results need structure the block does not have.</p>
+<h4>No-go for vacuity</h4>
+<p>Every settled class was handled by making blocks vacuous on a residual: the block's clauses become consequences of Booleanity, collisions and pins because few zero patterns occur. For a generic dense block of width \(h\) this cannot work on any residual that is hard enough. The final system must have no refutation of degree \(4t+2\), since the clauses themselves have that degree. Weak graph PHP on \(r\) residual pigeons has a refutation of degree at most about \(r\), so the residual needs \(r=\Omega(t)\) pigeons and \(\Omega(t)\) free cells. Generic dense forms restricted to these cells stay generic linear forms in them. The \(h\) restricted forms then realize at least \(2^{\min(h,\Omega(t))}\) zero patterns. For \(h\ge c\,t\) with \(c\) large, that exceeds \(3^t\), and a random subspace of codimension \(t\) contains a nonzero realized pattern with probability close to 1. So the block is not vacuous, and its clauses constrain the residual. This is a heuristic count: "generic" is used for the restricted forms, and the pattern bound assumes they are in general position on the residual's cells. It matches what the capacity review observed.</p>
+<h4>What it means</h4>
+<p>The open core of A1 under random prefixes is now concrete. Already one wide generic dense block, with the clauses present and not vacuous, is beyond every recorded method. A proof must show the clauses harmless while they constrain the residual. The Nullstellensatz criterion of the dense-killer entry states that for a functional base as a span condition. The single wide block is its smallest nontrivial instance.</p>
+<p><strong>Next.</strong> A route review. The single wide dense block is the smallest open case, it needs a method that is not vacuity, and the record's non-vacuity tools (Taylor glue, the killer moment, member pinning) are for other settings. The review should weigh whether W_RS is the right target, since W with chosen prefixes may be easier for one wide block, where the chooser can adapt the prefix to the block's forms, against continuing with random prefixes.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:member-pinning, thm:coherent-product-constraints, prop:pinned-rank-vacuity and the occupancy-pinning entry's capacity remark. The entry registers no claim; its no-go paragraph is marked as a heuristic count. It was not sent to a separate reviewer, because it proves nothing new and restates recorded results with a counting remark.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-one-dense-block">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 15.09 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">42.70 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 32.19 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
