@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> One composed map, column freezing followed by a matching-and-expander restriction with a constant fraction of empty columns, proves W for every family of literal cell blocks and column-plus-sparse blocks (<a href="#entry-2026-09-26-frozen-cell-families">frozen cell families</a>). Next: a route review of what is left of A1. That is forms of high rank after freezing and restriction, and square-equivalent cell forms that are not literal. Place it on the open statements, test the line against the recorded hard families, and choose between extending the maps and returning to the A3 and closure lines for the dense core.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Freezing and restriction prove W for all families of literal cell blocks and column-plus-sparse blocks. Product statistics \(\sum_{i,t}\alpha_i\beta_tx_{it}\) are the first structured dense family outside both maps (<a href="#entry-2026-09-26-restriction-review-2">second restriction review</a>). Next: find an affine map that preserves the weak base up to degree 2 and makes product statistics constant, perhaps by pairing pigeons into copies as freezing pairs columns. Or prove that no such map exists, which would make them the first structured family that needs a hardness argument on the residual expander.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -25772,6 +25772,80 @@ Split at \(S=Aq\), with \(A=(B+\ln(21/\theta))/0.15\).
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 33.66 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 15.80 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 17.72 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-restriction-review-2" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Second route review of the freezing-and-restriction line, with an exact span test for product-statistic blocks; no new claim.">
+<h3>Route review: freezing and restriction prove W for every family of literal cell blocks and column-plus-sparse blocks; product statistics are the first structured dense family outside both maps, and A1's core is now forms of high rank after them</h3>
+<p class="entry-meta">26 September 2026 · Route review with an exact test · open statement A1 · cycle odd-prime-restriction-review-2.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. Three research entries since the <a href="#entry-2026-09-26-restriction-review">restriction review</a> each added a map or a kill:</p>
+<ul>
+<li><a href="#entry-2026-09-26-column-sparse-blocks">column-sparse blocks</a>;</li>
+<li><a href="#entry-2026-09-26-row-column-blocks">row-column blocks</a>;</li>
+<li><a href="#entry-2026-09-26-frozen-cell-families">frozen cell families</a>.</li>
+</ul>
+<p>What does the line now cover, what is its core, and is there a structured family outside it?</p>
+<p><strong>General statement.</strong> The line's claim is W for every family, through one composed substitution: column freezing followed by a matching-and-expander restriction with empty columns. Its prefixes use zero-image forms or a spanning basis of restricted selectors. It is proved for every family of literal cell blocks and column-plus-sparse blocks (thm:frozen-cell-w), and, without freezing, for square-equivalent cell blocks with sparse blocks (thm:sparse-block-w). The goal needs all families.</p>
+
+<h4>Falsification attempt: product statistics</h4>
+<p>A form \(L=\sum_{i,t}\alpha_i\beta_tx_{it}+b\), a weighted assignment statistic, is neither a column statistic (unless \(\alpha\) is constant) nor sparse. Under freezing and restriction it becomes \(\sum_{(i,t)\in G'}\alpha_i\beta_ty_{it}\) plus a constant, a dense form on the expander cells. <code>product_span.py</code> computed the span of the selectors of blocks of \(N\) random product statistics on 10 expander cells, in 2 rows with 5 holes each (<code>product_span.json</code>).</p>
+<ul>
+<li>With 20 residual holes, the span was 19, 54 and 56 for \(N=20,60,120\), against the maximum 56.</li>
+<li>With 6 residual holes, where rows share holes, it was 18, 50 and 50.</li>
+</ul>
+<p>So product-statistic blocks keep near-full rank. They are harmful under the line's criterion whenever they have more than about \(k\) forms. They are the first structured dense family outside both maps. Freezing removes only the directions constant on each column, and no restriction simplifies a form whose support covers the residual.</p>
+
+<h4>Assessment of the line</h4>
+<ul>
+<li><em>What it proved, in five cycles.</em> W for all families built from:
+ <ul>
+ <li>literal cell blocks, whether holes, rows, multi-row sets, or any cells;</li>
+ <li>column statistics;</li>
+ <li>sparse parts;</li>
+ <li>square-equivalent cell blocks with sparse blocks.</li>
+ </ul>
+ The expander is built rather than assumed. The occupancy-mix obstruction was dissolved for W by empty columns.</li>
+<li><em>Its mechanism.</em> Each block needs a kill (a zero-image form) or a small span after a substitution that is common to all blocks. Every new block type so far was handled by adding one ingredient to the common substitution: freezing for column statistics, empty columns for the distinguished row, a constant fraction of empty columns for hole degrees.</li>
+<li><em>Its limit.</em> Dense forms of high rank after the substitution, such as random dense forms and product statistics. For them the line only moves W to the residual expander board.</li>
+<li><em>Qualitative assessment.</em> Productive, and closing on its natural boundary. What remains of A1 is a genuinely dense core. A further ingredient would need an affine map that makes weighted assignment statistics constant while preserving the weak base, and no such map is recorded.</li>
+</ul>
+
+<h4>Outside leads</h4>
+<ul>
+<li><em>A second freezing for row-weighted statistics, after the main record's column-freezing map.</em> Target: product statistics. Freezing works because column sums are linear in the cells and the \(K_0\) copies with a complementary row make them constant. A row analogue would need \(\sum_t\beta_tx_{it}\) constant for each pigeon, which fixes the pigeon's \(\beta\)-level set. <em>Where it breaks:</em> many independent \(\beta\) at once. <strong>Test.</strong> Falsified by counting. \(n^K\) blocks can use \(d\ge\log_3n\) generic \(\beta\)-vectors whose joint level sets are single holes. A residual inside one level set is then a single column, too small for an expander.</li>
+<li><em>Alekhnovich, Ben-Sasson, Razborov and Wigderson, "Pseudorandom generators in propositional proof complexity" (SIAM J. Comput. 2004), for the dense core.</em> Their hardness of \(b\notin\mathrm{Im}(G)\) for expanding local generators uses the same expansion that the residual board has. Blocks of dense forms could be read as a generator's output coordinates. <em>Where it breaks:</em> their generators are local (each output depends on few inputs), while dense forms depend on all residual cells. <strong>Test.</strong> Falsified at the first hypothesis. A random dense restricted form depends on about \(2v/3\) of the \(v\) residual cells (restriction review), so no locality holds.</li>
+<li><em>The record's A3 route, the product-top Cohen–Lenstra conjecture, on the residual board.</em> Target: random dense blocks. Restriction maps uniform forms to uniform forms on the expander cells (restriction review). <em>Where it breaks:</em> the conjecture is stated on the complete board, and product statistics are not uniform. <strong>Test.</strong> Passed for uniform forms, as recorded, and falsified for product statistics. Their restricted coefficient matrix \(\alpha_i\beta_t\) has rank 1 on every row-pair, which is far from uniform, although its selector span is near-full.</li>
+</ul>
+
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>Radio interferometry and the CLEAN deconvolution algorithm (Högbom, 1974).</em> <em>Translation:</em> the substitution samples each block's coefficient matrix at the few "baselines" the residual expander keeps. CLEAN removes point sources one at a time and subtracts smooth backgrounds. Here the kills remove cell sources, and freezing subtracts column backgrounds. <em>What a theorem there would give:</em> a separation of sources into those removable by finitely many deconvolution steps and a residual noise floor. Here that would be a proof that every family splits into removable blocks and a random-like residual. <em>Smallest test:</em> is a product statistic removable by one more subtraction, that is, does the span drop after removing the rank-1 "source" direction? <strong>Test.</strong> Falsified. Product statistics already have rank-1 coefficient matrices, yet their selectors span near-fully (<code>product_span.json</code>). The source is removable in the coefficient space but not in selector space, which is quadratic.</li>
+<li><em>The Oppenheim conjecture and Ratner's theorem on unipotent flows (Margulis, 1987).</em> <em>Translation:</em> the selector \(1-L^2\) is a quadratic form in the residual cells. Whether a block's selectors span few dimensions resembles whether an indefinite quadratic form's values are dense or confined, and rational or rank-degenerate forms are the exceptions. <em>What a theorem there would give:</em> a classification of blocks with confined selector values as exactly those of low rank, the analogue of rational forms. That would mean low-rank blocks are the only structured dense blocks the span criterion removes, making the core "all blocks of rank above about \(\sqrt{2k}\)". <em>Smallest test:</em> is every dense block with small selector span of low affine rank? <strong>Test.</strong> Passed on the recorded data. Rank-2 dense blocks had span exactly 6 (restriction review). Random and product blocks of higher rank had near-full span. No counterexample appeared.</li>
+</ul>
+
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-restriction-review:1"><em>Wilson's renormalization group.</em> This cycle and the three before it developed it. Freezing is a second coarse-graining that removes the column-statistic direction, which restriction alone treated as relevant. Empty columns remove the distinguished row's direction. The relevant operators surviving both maps are exactly the dense forms of high rank after them. The universality question, whether these flow to a random fixed point, is answered negatively for product statistics: they survive with structure. <strong>Follow-up.</strong> Continuing: the next step asks whether a third coarse-graining removes product statistics.</li>
+<li data-bridge="entry-2026-09-26-restriction-review:2"><em>Compressed sensing: random row sampling and the restricted isometry property.</em> The bridge predicted that coherence decides removal. Column statistics are incoherent, spread over all cells, yet freezing removes them. Product statistics are also incoherent and are not removed. <strong>Follow-up.</strong> Closed: coherence does not separate removable from harmful blocks. What matters is whether some affine map preserving the weak base makes the forms constant.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>The highest-risk item is A1's dense core. The next step on odd-prime-clause-transfer is a decision on product statistics. Either find an affine map preserving the weak base up to degree 2 that makes \(\sum_i\alpha_i\sum_t\beta_tx_{it}\) constant for all \((\alpha,\beta)\) in a family, perhaps by pairing pigeons into copies as freezing pairs columns. Or prove that no such map exists, which would make product statistics the first structured family that needs a hardness argument on the residual expander rather than a map.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read thm:frozen-cell-w, thm:row-column-w, thm:column-sparse-w, lem:span-restriction and the restriction review's span data. The product-statistic numbers were read from the saved JSON. This review registers no claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-restriction-review-2">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 4.97 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">0.06 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">45.48 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 19.00 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.29 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
