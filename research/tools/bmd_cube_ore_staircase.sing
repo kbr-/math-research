@@ -1,0 +1,91 @@
+// Polynomial-parameter Ore certificate for the fixed d=2 cube row.
+// Run: Singular -q -c 'int cubeN=3;' this-file
+// First control n=3: thresholds infinity below 8, 3 at 8, 0 from 9.
+// No localization and no truncation: completed left intersections and bases.
+LIB "nctools.lib";
+ring comm=0,(D,a(1..cubeN)),lp;
+matrix corrections[cubeN+1][cubeN+1];
+int ii,jj,kk;
+for(ii=1;ii<=cubeN;ii++){corrections[1,ii+1]=a(ii)^2;}
+def ore=nc_algebra(1,corrections);
+setring ore;
+option(redSB); option(redTail);
+proc require(int condition,string message)
+{
+  if(!condition){ERROR(message);}
+}
+for(ii=1;ii<=cubeN;ii++)
+{require(a(ii)*D-D*a(ii)==a(ii)^2,"Ore relation sign");}
+ideal factors=D^2;
+// Complete each lower-dimensional subcube before adjoining the next parameter.
+// This retains its already simplified intersection instead of carrying a
+// high-order single generator through all singleton factors first.
+for(ii=1;ii<=cubeN;ii++)
+{factors[size(factors)+1]=D-a(ii)/2;
+ for(jj=1;jj<ii;jj++)
+ {factors[size(factors)+1]=D-(a(ii)+a(jj))/2;}}
+print("PARAMETERS n="+string(cubeN)+" d=2 characteristic=0 PBW=D-first lex");
+print("FACTORS_BEGIN"); print(factors); print("FACTORS_END");
+ideal joint=factors[1];
+ideal onefactor;
+for(ii=2;ii<=size(factors);ii++)
+{
+  onefactor=factors[ii];
+  joint=std(intersect(joint,onefactor));
+  print("INTERSECTION stage="+string(ii)+" basis_size="+string(size(joint)));
+}
+print("BASIS_BEGIN"); print(joint); print("BASIS_END");
+intvec exps,firstexp,secondexp;
+int operatorOrder,excess,totaldegree,mondegree,mm,minimum,paircount;
+poly term,firstmult,secondmult,sp;
+for(ii=1;ii<=size(joint);ii++)
+{
+  exps=leadexp(joint[ii]); operatorOrder=exps[1]; totaldegree=0;
+  for(kk=1;kk<=nvars(basering);kk++){totaldegree=totaldegree+exps[kk];}
+  term=joint[ii];
+  while(term!=0)
+  {
+    exps=leadexp(term); mondegree=0;
+    for(kk=1;kk<=nvars(basering);kk++){mondegree=mondegree+exps[kk];}
+    require(mondegree==totaldegree,"nonhomogeneous basis operator");
+    term=term-lead(term);
+  }
+  excess=totaldegree-operatorOrder;
+  print("GENERATOR "+string(ii)+" order="+string(operatorOrder)+" excess="+string(excess));
+  for(jj=1;jj<=size(factors);jj++)
+  {onefactor=std(ideal(factors[jj])); require(reduce(joint[ii],onefactor)==0,"factor membership");}
+}
+// Independent explicit Buchberger pair reductions for the final basis.
+for(ii=1;ii<=size(joint);ii++)
+{for(jj=ii+1;jj<=size(joint);jj++)
+ {
+  firstexp=leadexp(joint[ii]); secondexp=leadexp(joint[jj]);
+  firstmult=1; secondmult=1;
+  for(kk=1;kk<=nvars(basering);kk++)
+  {
+    if(secondexp[kk]>firstexp[kk]){firstmult=firstmult*var(kk)^(secondexp[kk]-firstexp[kk]);}
+    if(firstexp[kk]>secondexp[kk]){secondmult=secondmult*var(kk)^(firstexp[kk]-secondexp[kk]);}
+  }
+  sp=firstmult*joint[ii]/leadcoef(joint[ii])-secondmult*joint[jj]/leadcoef(joint[jj]);
+  require(reduce(sp,joint)==0,"nonzero Buchberger pair remainder");
+  paircount++;
+ }}
+for(mm=0;mm<=2^(cubeN-1)*2+3;mm++)
+{
+  minimum=1000000;
+  for(ii=1;ii<=size(joint);ii++)
+  {
+    exps=leadexp(joint[ii]); operatorOrder=exps[1]; excess=0;
+    for(kk=2;kk<=nvars(basering);kk++){excess=excess+exps[kk];}
+    if(operatorOrder<=mm && excess<minimum){minimum=excess;}
+  }
+  print("THRESHOLD m="+string(mm)+" excess="+string(minimum));
+  if(cubeN==3)
+  {
+    if(mm<8){require(minimum==1000000,"control lower order");}
+    if(mm==8){require(minimum==3,"control boundary degree");}
+    if(mm>=9){require(minimum==0,"control final drop");}
+  }
+}
+print("PASS full polynomial intersection; homogeneous basis; factor membership; "+string(paircount)+" Buchberger pairs; threshold control");
+quit;
