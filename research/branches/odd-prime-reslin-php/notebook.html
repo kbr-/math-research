@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Spider row sets refute matching-complex filling on expander boards (<a href="#entry-2026-09-26-spider-row-sets">spider row sets</a>), so Taylor glue's all-design extension cannot transfer. Next: formulate extension for designs that are reductions modulo Mikša–Nordström closures, and check whether Taylor glue's syzygy-gluing corrections can be kept inside closed supports.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> Spiders are generic in the residual, so the expander-core line is blocked at its gluing base. A1's structured and dense parts pull toward sparse and complete boards respectively (<a href="#entry-2026-09-26-expander-core-review-2">second expander-core review</a>). Next: remove structured blocks without sparsifying the board. Formulate a Razborov-style pseudo-reduction for weak PHP plus the pigeon-local occupancy implications of cell blocks on the complete board, and check it against the counting obstruction of the cell-block entry.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26352,6 +26352,88 @@ Split at \(S=Aq\), with \(A=(B+\ln(21/\theta))/0.15\).
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-expander-core-review-2" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Second route review of the expander-core line after the spider refutation, with a spider-count simulation; no new claim.">
+<h3>Route review: spiders are everywhere in the residual, so Taylor glue's design extension fails there, and the structured and dense parts of A1 pull in opposite directions: sparse residuals remove structure, while the only dense mechanism needs the complete board</h3>
+<p class="entry-meta">26 September 2026 · Route review with a simulation · open statement A1 · cycle odd-prime-closure-designs.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-graph-matching-extension">graph matching extension</a> reduced the gluing base on expander boards to filling matching complexes. <a href="#entry-2026-09-26-spider-row-sets">Spider row sets</a> refuted that filling. How common are spiders in W's residual? What is left of the expander-core line, and where should A1 go?</p>
+<p><strong>General statement.</strong> The line's claim is conj:expander-dense-core: W on functional graph PHP over expander boards. It implies A1 by prop:expander-core-reduction. For random families its intended mechanism was Taylor glue, moved to expander boards.</p>
+
+<h4>Falsification attempt: how common are spiders?</h4>
+<p><code>spider_count.py</code> sampled the residual model of thm:cell-family-w: \(h+1\) rows, each a uniform 5-subset of \(h'\) holes. It counted spider centres by a greedy search, which gives a lower bound (<code>spider_count.json</code>, three seeds each). The fraction of rows that are centres was:</p>
+<ul>
+<li>0.95, 0.97 and 0.94 at \(h=h'=500\);</li>
+<li>0.97, 0.97 and 0.97 at \(h=h'=2000\);</li>
+<li>1.0 in every sample with \(h'=h/2\).</li>
+</ul>
+<p>So almost every row of the residual is a spider centre. Any gluing base built on extending all designs fails at almost every row. A residual chosen to avoid spiders would need most holes of degree 1, which contradicts \(h+1\) pigeons in \(h'\le h\) holes.</p>
+
+<h4>Assessment of the line</h4>
+<ul>
+<li><em>What stands.</em>
+ <ul>
+ <li>The reduction prop:expander-core-reduction.</li>
+ <li>The divided-power product law on graph monomial algebras.</li>
+ <li>lem:graph-matching-extension, as a correct but inapplicable criterion.</li>
+ </ul></li>
+<li><em>What failed.</em> The gluing base in Taylor glue's form. Spiders are generic, and on the spider board they cause degree falls.</li>
+<li><em>A structural tension.</em> The restriction line removes structured blocks, cells, hole blocks and row blocks, by passing to a <em>sparse</em> residual in which each pigeon has few cells. The only recorded mechanism for random dense blocks, Taylor glue with A3's statistics, needs the <em>complete</em> board. There every row sees every hole, so spiders cannot occur. A complete residual keeps Taylor glue's base but loses the structured kills: a hole block at a residual hole keeps \(h+1\) cells. No recorded map serves both parts at once.</li>
+<li><em>Qualitative assessment.</em> The expander-core line is blocked at its base. A1 now needs one of three things:
+ <ul>
+ <li>a gluing base that works with falls, for example one stated with PC closures instead of NS designs;</li>
+ <li>a hardness mechanism for dense blocks on sparse boards;</li>
+ <li>a combined argument in which structured blocks are removed without sparsifying the board.</li>
+ </ul></li>
+</ul>
+
+<h4>Outside leads</h4>
+<ul>
+<li><em>Razborov's pseudo-reduction for PHP (Comput. Complexity 7 (1998)) and its graph generalization by Mikša and Nordström.</em> Target: a gluing base that tolerates falls. Their operator reduces a monomial modulo the axioms of its support, which contains the spider's centre, so it never asks the centre to join the legs. <em>Where it breaks:</em> it certifies only that 1 is not derived; Taylor glue needs to extend and correct functionals. <strong>Test.</strong> Passed on its first hypothesis: the centre's pigeon axiom lies in the support of \(y_{T^*}\) (spider entry). A closure-based syzygy-gluing lemma is untested.</li>
+<li><em>A complete residual, W's self-reduction to an \(h\)-board.</em> Target: random dense blocks, keeping Taylor glue's base. <strong>Test.</strong> Falsified for mixed families. A hole block at a residual hole keeps \(h+1\) cells, so its span exceeds \(k\) and it is not removed.</li>
+<li><em>Beame and Riis, designs for modular counting principles (1998), with Buss, Impagliazzo, Krajíček, Pudlák, Razborov and Sgall (1996).</em> Target: NS designs on graph boards that avoid spider configurations by construction. <em>Where it breaks:</em> their designs are built for complete boards and counting, not for sparse graphs. <strong>Test.</strong> Not run: no graph-board design construction is recorded to test against.</li>
+</ul>
+
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>Frustration in spin systems (Toulouse, 1977).</em> <em>Translation:</em> a spider is a frustrated plaquette. Once the legs sit on their shared holes, the centre cannot be satisfied, and every configuration pays at the centre. <em>What a theorem there would give:</em> a frustration index, the least number of unsatisfiable plaquettes, would count the forced degree falls. A frustration-free residual would be exactly one where design extension holds. <em>Smallest test:</em> is the random residual frustration-free? <strong>Test.</strong> Falsified. About 97% of rows are frustrated centres (<code>spider_count.json</code>).</li>
+<li><em>Kinetic trapping in DNA tile self-assembly (Winfree, 1998).</em> <em>Translation:</em> extending a design degree by degree is growth. A spider is a site that becomes blocked when its neighbours are placed first. Error-correcting tile sets avoid traps by proofreading, in which placements are reversible until locally confirmed. <em>What a theorem there would give:</em> a proofreading scheme would correspond to extension through closures, where a placement becomes final only once its closure is complete, exactly as in Mikša and Nordström's supports. <strong>Test.</strong> Not run: it needs the closure-based extension to be formulated first, which is the first Outside lead.</li>
+</ul>
+
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-25-universality-review:1"><em>Quadratic Littlewood–Offord inverse theorems.</em> Still the candidate for A3's main term. That term is needed on the complete board, which the tension above makes the natural home for the dense core. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-killer-moment-review:1"><em>Nguyen and Wood's moment method.</em> <strong>Follow-up.</strong> Continuing, with the same scope.</li>
+<li data-lead="entry-2026-09-26-restriction-review-3:3"><em>A3 transported to the residual board.</em> This cycle found that the residual kills Taylor glue's base. So A3 on expander boards no longer has a gluing theorem to feed. <strong>Follow-up.</strong> Closed: the transport is blocked at the base (spider row sets). A3 stays on the complete board.</li>
+<li data-lead="entry-2026-09-26-expander-core-review:1"><em>The Mikša–Nordström closure as a gluing base.</em> Developed in two entries. Full design extension is impossible, and the closure's support handles spiders. What is missing is a gluing lemma that uses closure reductions. <strong>Follow-up.</strong> Continuing: it is the first lead above.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>The highest-risk item is still A1. The next step on odd-prime-clause-transfer addresses the tension directly. Test whether structured blocks can be removed without sparsifying the board. On the complete board, occupancy implications from cell blocks are pigeon-local. Formulate a Razborov-style pseudo-reduction for weak PHP plus pigeon-local implications on the complete board, and check whether it survives the counting obstruction of the cell-block entry. Success would put structured and dense blocks on one board, where Taylor glue's base holds.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>prop:spider-unfilled, ex:spider-fall and lem:graph-matching-extension;</li>
+<li>prop:expander-core-reduction;</li>
+<li>thm:taylor-glue's base hypothesis;</li>
+<li>the cell-block entry's counting remark;</li>
+<li>every lead followed up.</li>
+</ul>
+<p>The spider fractions were read from the saved JSON. This review registers no claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-closure-designs">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 18.42 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">0.95 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">44.83 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 31.90 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.59 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
