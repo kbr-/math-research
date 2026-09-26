@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The hybrid route review's outside leads are developed and closed for dense families. Alekhnovich–Razborov fails on support against immunity, and the counting designs cancel only configurations that a symmetry of the base exchanges (<a href="#entry-2026-09-26-counting-designs">counting designs</a>). Next: test the obstacle itself. Look for a dense high-rank family of polynomially many randomized-prefix blocks whose error sets jointly cover a set whose indicator has low degree modulo the base, which would refute W_RS at logarithmic degree, or show that no such covering exists.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> Vacuity cannot reach A1's core. A block with \(\rho\ge2t+1\) independent forms keeps a nonvacuous clause for every prefix (Olson), while the hybrid's selectors stop at \(\rho\le2t-1\) (<a href="#entry-2026-09-26-vacuity-threshold">vacuity threshold</a>). Next: restate A3 for randomized-prefix tops on blocks of rank above \(2t\), and check which of A3's recorded results (column Wilson, pre-Koszul families, generic directness) transfer from W's clause shape to randomized tops.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32209,6 +32209,59 @@ using \(H(1/3)+\tfrac13\ln2=0.8675\ldots\) and \(\ln3=1.0986\ldots\). The events
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">47.16 s</td></tr>
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">1 min 9.69 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-vacuity-threshold" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:vacuity-threshold">
+<h3>The vacuity threshold: a randomized-prefix block is vacuous exactly when the kernel of its prefix avoids its realized zero patterns; with \(\rho\) independent forms this happens with high probability for \(\rho\le t\log_23-\omega(1)\), fails with high probability above it, and fails for every prefix once \(\rho\ge2t+1\), by Olson's theorem. So every A1 core block with independent forms carries a nonvacuous clause, whatever the prefix</h3>
+<p class="entry-meta">26 September 2026 · Working proof of a proposition · open statement A1 · cycle odd-prime-wrs-refutation-search. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-counting-designs">counting-design entry</a> proposed testing the obstacle itself before inventing another design mechanism. The obstacle is a design annihilating the error clauses of many high-rank blocks. Several recorded settlements of W_RS avoid it by making clauses vacuous, that is, zero on the relevant points: the pinned-rank vacuity step, the hole family, light families. Can randomization always make the high-rank blocks vacuous too, so that no design has to absorb their clauses?</p>
+<p><strong>General statement.</strong> prop:vacuity-threshold: over \(\mathbb F_3\), for a block with forms \(L_1,\dots,L_h\), a set \(P\) of points and realized zero patterns \(\Pi=\{g(x):x\in P\}\setminus\{0\}\subseteq\{0,1\}^h\), the clauses \(g_iQ^C\) all vanish on \(P\) exactly when \(\ker C\cap\Pi=\emptyset\). For uniform \(C\in\mathbb F_3^{t\times h}\), \(1-|\Pi|3^{-t}\le\Pr[\text{vacuous}]\le3^t/|\Pi|\). If \(\Pi\) contains every nonzero 0/1 vector supported in some set \(S\) with \(|S|\ge2t+1\), no \(C\) makes the block vacuous.</p>
+<h4>The proposition</h4>
+<p>Notation as in thm:randomized-prefix-reduction: \(g_i=1-L_i^2\), \(s=Cg\), \(Q^C=\prod_{j\le t}(1-s_j^2)=[Cg=0]\). At a point \(x\), the zero pattern is \(g(x)\in\{0,1\}^h\).</p>
+<p><strong>Proposition (vacuity threshold).</strong> Let \(P\) be a set of points, for instance the cube, or the formal points \(y\in\mathbb F_3^\rho\) of pinned-rank vacuity's division step. Let \(\Pi\) be the set of nonzero patterns realized on \(P\).</p>
+<ol>
+<li>Every clause \(g_iQ^C\) vanishes on \(P\) if and only if \(\ker C\cap\Pi=\emptyset\).</li>
+<li>For uniform \(C\): \(\Pr[\ker C\cap\Pi=\emptyset]\ge1-|\Pi|3^{-t}\) and \(\Pr[\ker C\cap\Pi=\emptyset]\le3^t/|\Pi|\).</li>
+<li>If \(\Pi\supseteq\{1_T:\emptyset\ne T\subseteq S\}\) for some \(S\) with \(|S|\ge2t+1\), then \(\ker C\cap\Pi\ne\emptyset\) for every \(C\).</li>
+<li>The constant \(2t+1\) is sharp: for \(|S|=2t\) and \(\Pi=\{1_T:\emptyset\ne T\subseteq S\}\), the matrix whose columns on \(S\) are \(e_1,e_1,e_2,e_2,\dots,e_t,e_t\) has \(\ker C\cap\Pi=\emptyset\).</li>
+</ol>
+<p><em>Proof.</em></p>
+<ol>
+<li>At \(x\in P\), \(g_i(x)Q^C(x)\ne0\) exactly when \(L_i(x)=0\) and \(Cg(x)=0\), which requires \(g(x)\ne0\). So some clause is nonzero on \(P\) if and only if some realized nonzero pattern lies in \(\ker C\).</li>
+<li>For a nonzero \(g\), \(Cg\) is uniform on \(\mathbb F_3^t\), so the lower bound is a union bound. For the upper bound, let \(X=|\ker C\cap\Pi|\). Two distinct nonzero 0/1 vectors are linearly independent over \(\mathbb F_3\), since \(g'=2g\) is impossible for 0/1 entries. So \(Cg\) and \(Cg'\) are independent and uniform, the indicators are pairwise independent, and \(\operatorname{Var}X\le\mathbb EX=|\Pi|3^{-t}\). By Chebyshev, \(\Pr[X=0]\le\operatorname{Var}X/(\mathbb EX)^2\le3^t/|\Pi|\).</li>
+<li>The columns \(c_i\), \(i\in S\), are \(2t+1\) elements of \(\mathbb F_3^t\). By Olson's theorem (J. Number Theory 1, 1969), the Davenport constant of \(\mathbb F_p^r\) is \(r(p-1)+1\), here \(2t+1\). So some nonempty \(T\subseteq S\) has \(\sum_{i\in T}c_i=0\), that is \(C1_T=0\) with \(1_T\in\Pi\).</li>
+<li>A subsequence sums to \(\sum_ja_je_j\) with \(a_j\in\{0,1,2\}\) counting the chosen copies of \(e_j\), which is zero only if nothing is chosen. \(\square\)</li>
+</ol>
+<p><strong>Independent forms.</strong> Suppose the block has exactly \(h=\rho\) forms and they are linearly independent modulo constants on the points \(P\). Then every pattern is realized and \(|\Pi|=2^\rho-1\). This holds on \(P=\mathbb F_3^\rho\) in pinned-rank vacuity's division step when the block's \(\rho\) forms are independent modulo the pinned span. A block with more forms than its rank can realize fewer patterns, because a dependent form may vanish wherever a pattern would need it nonzero. For such blocks, part 3 applies whenever some \(2t+1\) indices carry every full pattern \(1_T\); this is not automatic. Then, for \(h=\rho\):</p>
+<ul>
+<li>Vacuity holds with probability \(\ge1-2^\rho3^{-t}\): with high probability when \(\rho\le t\log_23-\omega(1)\). This sharpens the recorded bound \(1-3^{\rho-t}\) of prop:pinned-rank-vacuity, which counted all \(3^\rho\) value vectors rather than the \(2^\rho\) zero patterns, for such blocks.</li>
+<li>Vacuity fails with probability \(\ge1-3^t/(2^\rho-1)\): with high probability when \(\rho\ge t\log_23+\omega(1)\).</li>
+<li>Vacuity fails for every \(C\) when \(\rho\ge2t+1\).</li>
+</ul>
+<h4>What it means for A1</h4>
+<p>The <a href="#entry-2026-09-26-hybrid-route-review">hybrid route review</a> placed A1's core at blocks of rank above about \(T/22\) modulo every admissible pinned span. At W_RS's own degree \(T=11(4t-2)\) the pinned rank selectors reach \(\rho\le2t-1\). So the three regimes nearly meet:</p>
+<ul>
+<li>vacuity with high probability up to about \(1.58t\);</li>
+<li>selectors up to \(2t-1\);</li>
+<li>nonvacuity for every prefix from \(2t+1\), for blocks with independent forms.</li>
+</ul>
+<p>Only \(\rho=2t\) falls between the last two; raising \(T\) by a constant factor covers it with selectors. So every core block with independent forms has, after any admissible pinning and for every prefix matrix, a clause that is nonzero on the pinned points. Randomization only moves the error pattern; it cannot remove it. The recorded vacuity arguments therefore cannot reach A1's core. Any proof of W_RS for it must absorb nonvacuous clauses: a design, or gluing, which is A3's Tor vanishing. Blocks of rank between about \(1.58t\) and \(T/22\) are handled by the hybrid's selectors, which do not need vacuity. Core blocks with dependent forms are not covered by this conclusion.</p>
+<p>This tests the obstacle and confirms it; it does not refute W_RS. Nonvacuous clauses are compatible with hardness: generic directness and the private-support gluing results absorb such clauses in their settings. A refutation would need nonvacuous error sets that are jointly low-degree harmful. The error pattern of a block is chosen by \(C\) among the realized kernel patterns, and no family found makes all of those choices harmful at once.</p>
+<p><strong>Next.</strong> A1's core is now A3's problem on nonvacuous clauses of high-rank blocks. The randomized-prefix clauses' tops are products of quartics, and A3's partial results are for W's clause shape and designed clauses. So restate A3 for W_RS tops on blocks of rank above \(2t+1\), and check which of A3's recorded results (column Wilson, pre-Koszul families, generic directness) transfer to randomized tops.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read thm:randomized-prefix-reduction (the clause shape and \(Q^C=[Cg=0]\)), prop:pinned-rank-vacuity (its division step and \(3^{\rho-t}\) bound) and lem:Fp-linear-system-forced-cells (the record's use of Olson's theorem). Claim searches for zero-sum, Davenport and Olson, vacuous and prefix clauses found Olson's theorem used only for forced cells. A fresh-context reviewer confirmed parts 1 to 4, including the pairwise independence of the events \(Cg=0\), the use of Olson's theorem with full patterns, and the sharpness example. Its search found no earlier version. It required, both adopted: the independent-forms consequences restricted to blocks with \(h=\rho\), with dependent blocks stated as not covered; and the comparison with the hybrid corrected from \(T/22\approx8(K+1)\log_3n\) to \(T/22\approx2t\), which makes the regimes meet at \(\rho=2t\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-wrs-refutation-search">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 53.26 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 15.76 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 15.57 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 21.80 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
