@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W), through its random sub-case.</strong> Weighted replay covers restriction, conditioning and any other weight. By the recorded <a href="#entry-2026-09-26-replay-weight-barrier">barrier conjecture</a> (conj:replay-weight-barrier) it does not reach random families at \(K\ge1\). Small tests cannot decide that conjecture, and counting cannot prove it. So A1 at \(K\ge1\) is sent to degree-free absorption, and its necessary random sub-case is the killer-moment main term for random product tops (<a href="#entry-2026-09-26-killer-moment-review">killer-moment review</a>). Next: state Nguyen and Wood's moment method (arXiv:2210.08526) for block-correlated rows, and check whether their structured-remainder dichotomy ("codes") matches the recorded strata, as a route to equidistribution of the contraction vector.</p>
+<p><strong>Route item: odd-prime-clause-transfer (A1 and A3).</strong> Neither direction for A1 at \(K\ge1\) has a known method. Weighted replay, the common form of restriction and conditioning, is conjecturally blocked for random families (<a href="#entry-2026-09-26-replay-weight-barrier">barrier</a>). The degree-free route's random sub-case needs the killer-moment main term, and three routes to it do not reach it: analytic rank, conditional Gauss sums (<a href="#entry-2026-09-26-conditional-gauss-barrier">barrier</a>) and the linear-dependence universality models of Nguyen and Wood. Next: a route review of the thread as a whole. It should weigh the window route to S1, pinning and member-level gluing for adversarial families, statements weaker than W that still give the goal, and whether the goal needs a reduction other than the logarithmic prefix.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -27739,6 +27739,78 @@ because \(er\le n^{\eta/2}\) for large \(n\), as \(r=O(\ln n)\). This is at most
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 8.30 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 8.99 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-conditional-gauss-barrier" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:conditional-gauss-sum-barrier" data-lead="entry-2026-09-26-killer-moment-review:1">
+<h3>The conditional Gauss-sum barrier: bounding the killer moment's main term character by character, after fixing one generating form, loses a factor of about \(3^{u-mN/2}\), so the main term needs sign cancellation over \(\ell\) or across characters; the models in Nguyen and Wood's abstract have linear, not polynomial, dependence</h3>
+<p class="entry-meta">26 September 2026 · Working proof of a barrier, with a scope check · open statement A3, killer-moment main term · cycle odd-prime-moment-main-term.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-26-replay-weight-barrier">barrier entry</a> sent A1 at \(K\ge1\) to degree-free absorption. Its necessary random sub-case is the main term of conj:product-top-killer-moment: for functionals of contraction rank near \(mN\), \(\pi(\chi)=3^{-(u-2)}(1+o(1/B))\) outside a negligible set. The recorded Gauss-sum lemma stops at \(u\approx0.71mN\) through a fourth-root loss. Does fixing one of the two generating forms, which turns the quartic into a quadratic whose Gauss sums are exact, avoid that loss? And does Nguyen and Wood's moment method, the lead passed in the <a href="#entry-2026-09-26-killer-moment-review">killer-moment review</a>, apply to the rows?</p>
+<p><strong>General statement.</strong> lem:conditional-gauss-sum-barrier. Setting of lem:product-top-moment-reduction: the weak monomial algebra \(\tilde A=\bigotimes_{c\le N}(\mathbb F_3+V_c)\) with \(\dim V_c=m\) and \(V_c^2=0\), and a product top \(\tau=e_2(\ell)e_2(\ell')\) with \(\ell,\ell'\) uniform in \(\tilde A_1\cong\mathbb F_3^n\), \(n=mN\). For \(\chi\in\tilde A_5^*\), let \(\kappa_\chi(y)=\chi(y\,\cdot)\) have rank \(u\), and let \(v(\ell,\ell')=(\chi(y_i\tau))_{i\le u}\) over \(y_1,\dots,y_u\) spanning a complement of \(\ker\kappa_\chi\). Then for every \(\ell\) and every nonzero \(\eta\in\mathbb F_3^u\),</p>
+\[\bigl|\mathbb E_{\ell'}\,\omega^{\eta\cdot v(\ell,\ell')}\bigr|\ \ge\ 3^{-n/2}.\]
+<p>Here \(\omega=e^{2\pi i/3}\). Since \(\ell\) and \(\ell'\) annihilate \(\tau\) (\(\ell^3=3!\,e_3(\ell)=0\)), for fixed \(\ell\) exactly two nonzero \(\eta\), those with \(y_\eta\in\langle\ell\rangle+\ker\kappa_\chi\), give the value 1. So the remaining \(3^u-3\) characters satisfy</p>
+\[\sum_{\eta\text{ not automatic}}\bigl|\mathbb E_{\ell'}\,\omega^{\eta\cdot v(\ell,\ell')}\bigr|\ \ge\ (3^u-3)\,3^{-n/2}.\]
+<p>The main term needs these characters to sum to about 6 up to \(o(1/B)\), for the reason given below the proof. A proof that bounds them by their absolute values therefore fails from \(u\ge n/2+2\), where the bound exceeds 6. The main term lives at \(u\approx n\).</p>
+
+<h4>Proof</h4>
+<p>Fix \(\ell\) and \(\eta\ne0\). The map \(\ell'\mapsto\eta\cdot v(\ell,\ell')=\chi\bigl(y_\eta\,e_2(\ell)\,e_2(\ell')\bigr)\), with \(y_\eta=\sum_i\eta_iy_i\), is a homogeneous quadratic form \(q\) in the \(n\) coordinates of \(\ell'\).</p>
+<ul>
+<li>\(e_2(\ell')=\sum_{c&lt;c'}\ell'_c\ell'_{c'}\) is quadratic in the coordinates, and \(\chi(y_\eta e_2(\ell)\,\cdot)\) is linear on \(\tilde A_2\).</li>
+<li>Over \(\mathbb F_3\), odd characteristic, a quadratic form of rank \(\rho\) in \(n\) variables diagonalizes to \(\sum_{i\le\rho}a_ix_i^2\). So \(\mathbb E\,\omega^{q}=\prod_{i\le\rho}\bigl(\tfrac13\sum_{x\in\mathbb F_3}\omega^{a_ix^2}\bigr)\), and each factor has absolute value \(3^{-1/2}\).</li>
+<li>This holds also when \(q=0\), with \(\rho=0\) and value 1. So \(|\mathbb E_{\ell'}\omega^q|=3^{-\rho/2}\ge3^{-n/2}\).</li>
+</ul>
+<p>The two automatic characters have \(q=0\). Summing over the other \(3^u-3\) gives the second inequality. \(\square\)</p>
+<p><em>The bookkeeping.</em> The target is stated for the unconditioned \(\pi(\chi)=\Pr[\chi(\tilde A_1\tau)=0]=3^{-u}\sum_\eta\mathbb E\,\omega^{\eta\cdot v}\). The conditioned \(\pi_E\) of lem:product-top-moment-reduction differs from it by at most \(\Pr[\neg E]\). The main term \(\pi=3^{-(u-2)}(1+o(1/B))\) means \(\sum_{\eta\ne0}\mathbb E\,\omega^{\eta\cdot v}=8+o(1/B)\), spread over all \(\eta\). The automatic directions depend on \(\ell,\ell'\) and are not fixed characters. For fixed \(\ell\), two characters give 1 and the rest must give about 6. At \(u\ge n-2\) the absolute bound is \((3^u-3)3^{-n/2}\ge3^{n/2-2}-3^{1-n/2}\), which is more than 6 once \(n\ge5\). The inequality is symmetric in \(\ell\) and \(\ell'\).</p>
+<p><em>What it does not exclude.</em> The unconditional biases \(\mathbb E_{\ell,\ell'}\,\omega^{\eta\cdot v}\) may be much smaller than \(3^{-n/2}\), through cancellation over \(\ell\). Over \(\mathbb F_3\) the phase of \(\mathbb E_{\ell'}\omega^{q}\) is a power of \(i\) fixed by the rank \(\rho\), times the Legendre symbol of the discriminant of the nondegenerate part of \(q_{\ell,\eta}\). Both vary with \(\ell\). A proof has to use cancellation over \(\ell\) or across characters.</p>
+
+<h4>Scope of the leads</h4>
+<ul>
+<li><em>Nguyen and Wood, "Local and global universality of random matrix cokernels" (arXiv:2210.08526, title and authors confirmed on the abstract page).</em> The abstract, the only part read, covers random symmetric, skew-symmetric and Laplacian integral matrices under very general randomness assumptions. In the models it names, entries depend on each other linearly, by symmetry or row sums. In our rows each coordinate is a polynomial of bidegree \((2,2)\) in \(2n\) uniform scalars, and \(n-2\) rows come from each pair \((\ell,\ell')\). Whether their method extends to such polynomial generation would need the full paper. The review's balance test, \(0.439\), concerns single coordinates, not this dependence.</li>
+<li><em>Deligne-type point counts.</em> \(3^{2n}\pi(\chi)\) counts the zeros of \(u\) forms of bidegree \((2,2)\) in \(2n\) variables. Weil–Deligne error terms carry Betti numbers exponential in the number of variables and the degree. Over the fixed field \(\mathbb F_3\), with \(u\approx n\), they are not expected to beat the main term. This was not checked.</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li>Three routes to the main term do not reach \(u\approx mN\):
+ <ul>
+ <li>bias bounds by analytic rank stop at \(0.71mN\) (lem:gauss-sum-killer-bound);</li>
+ <li>conditional exact Gauss sums stop at \(mN/2\) (this lemma);</li>
+ <li>the universality models in Nguyen and Wood's abstract have linear dependence, not polynomial.</li>
+ </ul>
+The main term is an equidistribution statement analogous to Cohen–Lenstra moments, for polynomially generated rows over a fixed small field. No method recorded here or found in the leads covers it.</li>
+<li>With the <a href="#entry-2026-09-26-replay-weight-barrier">replay barrier</a>, neither direction for A1 at \(K\ge1\) has a known method. Weighted replay is conjecturally blocked. The degree-free route's random sub-case needs this main term, which even when proved covers only degree \(h+1\). This lemma excludes one proof technique, not the main term.</li>
+</ul>
+<p><strong>Next.</strong> A route review of odd-prime-clause-transfer as a whole. It should weigh the thread's remaining options against the goal: the window route to S1, the pinning and member-level gluing for adversarial families, and statements weaker than W that still give the goal. It should also consider whether the goal needs a different reduction than the logarithmic prefix.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:gauss-sum-killer-bound, lem:product-top-moment-reduction and the killer-moment review. The Nguyen–Wood title and authors were read from the arXiv abstract page. A fresh-context reviewer confirmed:</p>
+<ul>
+<li>the quadratic form and its cross-column terms;</li>
+<li>the Gauss-sum modulus \(3^{-\rho/2}\), including degenerate forms, via \(|1+2\omega|=\sqrt3\);</li>
+<li>the symmetry.</li>
+</ul>
+<p>It required these changes, all adopted:</p>
+<ul>
+<li>the automatic characters and the threshold \(u\ge n/2+2\);</li>
+<li>the relation of \(\pi\) to \(\pi_E\);</li>
+<li>"cancellation over \(\ell\) or across characters", with the phase including the rank's power of \(i\);</li>
+<li>the Nguyen–Wood remarks limited to the abstract's models;</li>
+<li>the Deligne remark marked unchecked;</li>
+<li>"What it means" limited to what the lemma excludes.</li>
+</ul>
+<p>The changes restrict or correct claims, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-moment-main-term">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 4.63 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 58.66 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 18.61 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">56.11 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">51.12 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
