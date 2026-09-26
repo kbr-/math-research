@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A3 and A1.</strong> Relative row freeness for W_RS allowed sets, with forms in normal form modulo the row sums, would give the goal through global closure gluing (<a href="#entry-2026-09-26-relative-row-freeness">relative row freeness</a>). Next: build the four-row base, with three acting row sums, where the base may be row-free through degree 4. Test normal-form families and pure row-sum forms there inside the base's free range.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A3 and A1.</strong> Relative row freeness held inside the base's free range on four rows, in every run meeting its hypotheses, and <a href="#entry-2026-09-26-first-degree-purity">first-degree purity</a> reduces its first new degree to independence modulo the row sums. Next: prove that the first new tops of a W_RS allowed set are independent in the weak top algebra modulo row sums \(A\), for normal-form forms with random prefixes. These are the clause tops \(\pm\ell_i^2\Phi\) and the members' own first falls. Start from the recorded product-top results.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33139,6 +33139,48 @@ Subtracting lowers \(d\), a contradiction. So \(d=\deg f\) and the top of \(f\) 
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 25.99 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">59.18 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 2.48 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-first-degree-purity" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:first-degree-purity ex:four-row-freeness">
+<h3>First-degree purity, and relative row freeness inside the base's range: on four rows and 7 columns, where the base is row-free through degree 4, every normal-form family of density at least one half is row-free through degree 4. Below density one half and for unreduced row sums it fails, and the first failure is explained exactly: row freeness through the first new degree holds iff the new tops survive modulo the row sums</h3>
+<p class="entry-meta">26 September 2026 · Working lemma with a finite check · open statements A3 and A1 · cycle odd-prime-four-row-freeness. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statements A3 and A1. The <a href="#entry-2026-09-26-relative-row-freeness">relative row freeness entry</a> conjectured that W_RS allowed sets of density at least one half, with forms in normal form modulo the row sums, are row-free wherever the base is. Its test reached only degree 3, which is automatic for random families. Does the conjecture hold at a degree inside the base's free range where the allowed set differs from the base? And what decides the first failure?</p>
+<p><strong>General statement.</strong> conj:relative-row-freeness, tested here, and lem:first-degree-purity, proved here.</p>
+<h4>First-degree purity</h4>
+<p><strong>lem:first-degree-purity.</strong> Setting of lem:defect-gluing over \(\mathbb F_3\): \(G=\operatorname{gr}F^P\), \(\Lambda=\mathbb F_3[r_1,\dots,r_{m-1}]/(r_i^3)\) acting by the row sums, \(\mathfrak m=(r_1,\dots,r_{m-1})\), and \(A=G/\mathfrak mG\). For \(Q\subseteq P\) let \(n=n_Q\) be the top ideal of \(I(Q)\) in \(G\), so that \(\operatorname{gr}F^Q=G/n\). Grade \(\operatorname{Tor}\) by internal degree, with the generators \(e_i\) in degree 1. Suppose \(\operatorname{Tor}_1^\Lambda(\mathbb F_3,G)_d=0\) for \(d\le D\).</p>
+<ol>
+<li>For \(d\le D\), \(\operatorname{Tor}_1^\Lambda(\mathbb F_3,G/n)_d\cong(n\cap\mathfrak mG)_d/(\mathfrak mn)_d\).</li>
+<li>Let \(e\le D\) be the least degree with \(n_e\ne0\). Then \(\operatorname{Tor}_1(G/n)_d=0\) for \(d&lt;e\), and \(\operatorname{Tor}_1(G/n)_e\cong\ker(n_e\to A_e)\). So \(\operatorname{gr}F^Q\) is row-free through \(e\) iff the new tops in degree \(e\) stay linearly independent modulo the row sums.</li>
+</ol>
+<p><em>Proof.</em> \(0\to n\to G\to G/n\to0\) is an exact sequence of graded \(\Lambda\)-modules, since \(n\) is an ideal of \(G\), hence a \(\Lambda\)-submodule. The long exact sequence of \(\operatorname{Tor}^\Lambda(\mathbb F_3,-)\) preserves internal degree:</p>
+<p>\[\operatorname{Tor}_1(G)_d\to\operatorname{Tor}_1(G/n)_d\to(n/\mathfrak mn)_d\to(G/\mathfrak mG)_d.\]</p>
+<p>The first term vanishes for \(d\le D\), and the last map is induced by inclusion. So \(\operatorname{Tor}_1(G/n)_d\) is the kernel, \((n\cap\mathfrak mG)_d/(\mathfrak mn)_d\), which proves 1. For 2: \((\mathfrak mn)_d\) is spanned by \(r_in_{d-1}\), so it vanishes for \(d\le e\). Also \(n_d=0\) for \(d&lt;e\). \(\square\)</p>
+<p>Part 1 is the standard purity reformulation behind lem:defect-gluing. Part 2 is the usable form: the first new degree needs only a rank computation in \(A\), the weak top algebra modulo row sums, which the record studies directly (conj:maximal-generic-freeness, the product-top checks). It explains the row-sum lever exactly. If \(Q\) avoids \(\{r_1=c\}\), then \((r_1-c)^2-1\) vanishes on \(Q\), its top \(r_1^2\) is new in degree 2, and it lies in \(\mathfrak mG\). Here \(r_1^2\ne0\) in \(G_2\) whenever \(G\) is row-free through degree 2: then \(G\) agrees with a free \(\Lambda\)-module through degree 2, and \(1\notin\mathfrak mG\) is a minimal generator, so \(r_1^2\cdot1\ne0\). So \(\operatorname{Tor}_1(G/n)_2\ne0\), which is thm:global-closure-gluing's example. Normal form removes such tops, and a normal-form \(\ell\) with \(\ell^2\ne0\) in \(A_2\) gives a new top that survives.</p>
+<h4>The four-row test</h4>
+<p>row_freeness_m.cpp (research/results/odd_prime_four_row_freeness_20260926/) generalizes the Tor kernel to \(m-1\) acting row sums. For each boundary it uses the Koszul pairs \(r_jc\,e_i-r_ic\,e_j\) and the Frobenius terms \(r_i^2c\,e_i\). It reproduces the three-row kernel's outputs on 3 × 5 and 3 × 7 (checks_and_base_4x6.txt), and adds the reduction to normal form (suffix +nf): \(L\mapsto L-\sum_ra_{r,1}(r_r-1)\). On 3 × 7, reduction removes the row-sum excess: the rowform family with \(M=3\) has \(\operatorname{Tor}_1=6\) in degree 4 unreduced and 3, the base's value, reduced (nf_check_3x7.txt).</p>
+<p>The 4 × 6 base has its top nonzero degree at 4 and is not row-free there (\(\operatorname{Tor}_1=107\)), so it cannot test degree 4. The 4 × 7 base (25,372 points) is row-free through degree 4 (sizing_base_4x7.txt). On it, 12 families with \(M\le3\) were computed through degree 4, all below their own fill point (series.txt):</p>
+<ul>
+<li><strong>Density at least one half, normal form:</strong> row-free through degree 4 in 4 of 4, as the base. The runs are a random family with \(h=5\), \(t=2\), density 0.66; two points2 pairs at densities 0.56 and 0.50; and a shared2 pair at 0.76. The points2 pairs have a new top in degree 3 (Hilbert function 1904 against the base's 1905), so for them degree 4 is a real test.</li>
+<li><strong>Density below one half, normal form:</strong> all 6 fail in degree 4 (\(\operatorname{Tor}_1\) from 1 to 2009), with the lower degrees free. Four of them have Hilbert function 305 against 308 in degree 2: three new tops \(\ell_j^2\), the flats \(\{L_j=0\}\) of a member whose prefix vanishes on all its forms. They survive modulo the row sums (degree 2 is free, as part 2 predicts), but the sets are too thin. The other two are a random family with no new top below degree 4, and the reduced row-sum family at density 0.44, with \(\operatorname{Tor}_1=1\).</li>
+<li><strong>Unreduced row sums:</strong> both fail already in degree 2 (\(\operatorname{Tor}_1=0,1,24\) in degrees 1 to 3), the new top \(r_1^2\) of part 2.</li>
+</ul>
+<p>So the conjecture holds in all 4 runs inside its hypotheses. Both hypotheses are needed: density (6 failures below one half, all in normal form) and normal form (the row-sum failures). For W_RS, the thin sets come from prefix columns that vanish, which lem:shared-piece-rarity makes rare, and the expected excluded density is below \(1/(3n)\). The evidence is still small: 4 in-hypothesis runs, at \(t\le2\), one board.</p>
+<p><strong>Next.</strong> The launcher now refuses further case runs in this cycle's session, rightly. Use part 2 to attack the conjecture in its first new degree. For a W_RS family, the first new tops are the clause tops \(\pm\ell_i^2\Phi\) and the members' own first falls. Part 2 says row freeness there is their independence in \(A\), the weak top algebra modulo row sums. That is a statement of the recorded product-top type (conj:product-top-cohen-lenstra, generic directness), which may be provable for normal-form forms with random prefixes.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:defect-gluing and thm:global-closure-gluing (its row-sum example), and the previous entry's kernel and data. The general kernel reproduces the three-row outputs. Hilbert functions and Tor values are read from the saved outputs. The zero-prefix reading of the 305 cases is inferred from the Hilbert function, three new degree-2 tops in a family with \(h=3\), and was not verified by a separate flag: that run was refused by the launcher's case limit. A source change made for it was reverted, and the kernel's hash matches its manifest. A fresh-context reviewer checked the lemma and every quoted number against the outputs. It required, adopted: the 4 × 6 base described by its failure of row freeness in degree 4, not by filling; and the argument that \(r_1^2\ne0\) in \(G_2\) in the row-sum example.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-four-row-freeness">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>21 min 31.51 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7 min 15.53 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 6.32 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 24.84 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11 min 44.68 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
