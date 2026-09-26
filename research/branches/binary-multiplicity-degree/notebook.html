@@ -15,7 +15,7 @@
 <li>for \(n=3\) and all \(k,\ell\) over every field of characteristic \(\ne2\) (<a href="#cube-dimension-three-every-field">theorem</a>): \(\delta_F=2k+1-h\), with \(h-1\) the larger of \(\lfloor(k-\ell)/5\rfloor\) and the largest \(d\le\lfloor m/4\rfloor\) with \(5d&gt;m+1\) and \(B(d,m+1-4d)\le\ell\).</li>
 </ul>
 <p><strong>The first target, dimension 3, is reached.</strong> Every solution module is free, and \(\ell_0(d+1,4d+\rho-1)=B(d,\rho)\), the torsion-partition value, for all \(1\le\rho\le d\), over every field of characteristic \(\ne2\). The upper bound is the product bound. The lower bound comes from peeling by boundary witnesses, which are functions on the curve (<a href="#cube-peeling-reduction">reduction theorem</a>), with one odd generator per odd \(d\) at \(\rho=2\). These exist because along the lines of \(F_2=0\) one coordinate of each boundary solution has degree exactly twice its order at the two double points of the line (<a href="#cube-line-gcd-all">line-gcd theorem</a>, <a href="#cube-line-gcd-sufficiency">sufficiency lemma</a>). The double-point orders come from a Tate curve (<a href="#cube-boundary-double-point-order">order theorem</a>) and pass to every characteristic by reduction (<a href="#cube-double-point-order-reduction">lemma</a>). The base cases are an exact certificate at \((2,2)\), \((3,2)\), \((3,3)\) (<a href="#cube-diagonal-every-odd">theorem</a>). The goal remains open for \(n\ge4\).</p>
-<p><strong>Dimension-4 boundary:</strong> both the <a href="#cube-triple-side-all-degrees">triple</a> and <a href="#cube-double-side-all-degrees">identified double-double</a> side factors are squarefree for every degree. The <a href="#cube-quadrangle-vertex-obstruction">strict quadrangle assembly fails at vertices</a>; repeated tangent directions at degree 4 also rule out a uniform reduced-tangent-cone repair. The full boundary formula remains open. The <a href="#cube-elliptic-pushdown">finite pushdown</a> now puts higher-dimensional boundaries, for \(d&gt;n-3\), on degree-zero elliptic bundles of rank \(2^{n-3}\); every dimension-four boundary component now has a <a href="#cube-boundary-generic-corank-one">unique exceptional section</a> generically; the <a href="#cube-boundary-deformation-pairing">higher-contact obstruction</a> remains open.</p>
+<p><strong>Dimension-4 boundary:</strong> both the <a href="#cube-triple-side-all-degrees">triple</a> and <a href="#cube-double-side-all-degrees">identified double-double</a> side factors are squarefree in every degree. The <a href="#cube-quadrangle-vertex-obstruction">strict quadrangle assembly fails at vertices</a>. The <a href="#cube-elliptic-pushdown">finite pushdown</a> puts higher-dimensional boundaries, for \(d&gt;n-3\), on degree-zero elliptic bundles of rank \(2^{n-3}\); dimension-four boundary components have a <a href="#cube-boundary-generic-corank-one">unique exceptional section</a> generically. In the collision elliptic limit, <a href="#cube-limit-torsion-exclusion">no noncollision boundary component lies in the interpolation torsion locus</a>, in every degree. The <a href="#cube-boundary-deformation-pairing">higher-contact obstruction</a> and full boundary formula remain open.</p>
 <p><strong>All dimensions:</strong> <a href="#cube-transport-monotonicity">thresholds are nonincreasing</a> in characteristic zero. Full odd-characteristic monotonicity is <a href="#cube-monotonicity-char-five-refutation">false</a>: in characteristic five, every \(n\ge4\) has \(\delta(n,5,0)=n+6\) and \(\delta(n,6,0)=n+9\).</p>
 <p><strong>The original goal is achieved.</strong> Until 25 September 2026 the goal was \(D(n,k)\) over \(\mathbb F_2\) below Bishnoi et al.'s threshold \(k\ge2^{n-2}\). It is proved for all \(n,k\ge1\) and verified in Lean (<a href="#binary-multiplicity-degree-complete">complete formula</a>), as the minimum over \(\ell\) of the per-order value \(\delta(n,k,\ell)=n+2\ell+\sum_{j&lt;n}\lfloor(k-\ell-1)/2^j\rfloor\) (<a href="#per-order-value-all-dimensions">theorem</a>), which holds over every commutative ring of characteristic two (<a href="#per-order-value-char-two">descent</a>). Menezes (arXiv 2609.19009) proves it for \(n\ge k-1\); ours is \(2\le n&lt;k-1\) (<a href="#entry-2026-09-25-novelty-check">novelty check</a>). The preprint is <code>publications/binary-multiplicity-degree/</code>, tag <code>binary-multiplicity-degree-preprint-2026-09-25-rev3</code>.</p>
 </section>
@@ -36,15 +36,15 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>Test nonvanishing through elliptic interpolation.</strong> The <a href="#cube-focused-collision-series">actual focused limit</a> retains a fourth extension condition beyond node-value gluing. Use elliptic interpolation/addition to evaluate that functional on the node-normalized section of \(L(2dD-(8d-4)p)\) where normalization is unique, treating every rank-drop case separately, and test whether it can have a persistent double zero. The <a href="#cube-limit-four-functionals">four-functional rank criteria</a> specify exactly what must be excluded.</li>
-<li><strong>Retain the smooth-family alternative.</strong> The <a href="#cube-sign-orbit-theta-lifts">six actual theta arguments</a> have explicit quarter-period shifts and multipliers \(4d-2\) or \(4d-1\). Addition formulas there must respect the correlated points and frames. Neither this representation nor generic-curve simplicity proves the required codimension; retain the <a href="#entry-2026-09-26-cube-higher-contact-review">other source-development obligations</a>.</li>
+<li><strong>Control the remaining elliptic zeros.</strong> The <a href="#cube-limit-torsion-exclusion">torsion exclusion</a> removes every noncollision boundary component contained in \((8d-4)p=0\). Off that locus, the four node values determine a unique normalized section of \(L(2dD-(8d-4)p)\). Evaluate its fourth functional through elliptic Cauchy interpolation, then use its actual formula to test persistent double zeros. The <a href="#cube-limit-four-functionals">rank criteria</a> remain the required endpoint.</li>
+<li><strong>Keep the scope of the reduction.</strong> The theorem is generic in elliptic modulus separately for each degree, and does not discard special-modulus intersections. The <a href="#cube-sign-orbit-theta-lifts">six smooth-family theta tests</a> remain an alternative, with their actual correlated quarter-period arguments. Retain the <a href="#entry-2026-09-26-cube-higher-contact-review">other source-development obligations</a>.</li>
 <li><strong>Other ranges remain open.</strong> The full pre-stable range and small-prime stable orders still need proofs; <a href="#cube-monotonicity-char-five-refutation">odd-characteristic monotonicity fails</a>.</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
-<p><strong>Focused collision.</strong> The <a href="#cube-focused-collision-series">actual nodal limit</a> is two elliptic curves meeting at four nodes. For \(d\ge2\), \(\omega^d(dB)\) has \(8d-3\) central sections, but only \(8d-4\) extend. Their restrictions are the old \(U_d\): three conditions match node values, and the fourth, \(\psi\), is the extension obstruction. The explicit node-matching section \(zT^{d-2}w_1w_2w_3\) fails it. Cukierman–Fong's full source was read; its compact-type genericity argument has not proved simplicity for this family.</p>
+<p><strong>Focused collision and torsion.</strong> The <a href="#cube-focused-collision-series">nodal limit</a> is two elliptic curves meeting at four nodes \(D=E[2]\). For \(d\ge2\), \(\omega^d(dB)\) has \(8d-3\) central sections but only \(8d-4\) extend: their restrictions are \(U_d\), cut out by three node-value conditions and the fourth functional \(\psi\). At \(N=8d-4\), the node evaluation on \(L(2dD-Np)\) is invertible exactly when \(Np\ne0\). At generic elliptic modulus, <a href="#cube-limit-torsion-exclusion">every \(p\in E[N]\setminus E[4]\) is excluded from the boundary</a>: the odd-pole generator's coefficient sum and reciprocal sum are both nonzero by the complete Tate-label proof. Genericity is separate for each degree. Non-torsion double zeros remain open; Cukierman–Fong's full compact-type argument was read but has not proved simplicity here.</p>
 <p><strong>Elliptic theta descent.</strong> The <a href="#cube-elliptic-gluing-kernel">marked kernel</a> has Pauli labels \(XXXII,YYIXI,IZZZI,ZZIIX,XZZIZ\). Its descent-normalized <a href="#cube-theta-tensor-descent">four-term tensor</a> tests higher contact at six translates. With the <a href="#cube-sign-orbit-theta-lifts">adapted branch-point origins</a>, these are \(c_j-\operatorname{diag}(4d-2+e_{i,j})q(p_0)\): the constants are the recorded quarter periods, \(e_{i,j}=1-\delta_{ij}\) for the first five, and \(c_6=c_2,e_6=(1,1,0,0,0)\). Three constants per factor have exact order four, outside the degree-two theta group's Pauli translations. Markings and section frames must stay consistent. The criterion is set-theoretic, and common divisorial vanishing remains open.</p>
 <p><strong>Keep the next quotient.</strong> The <a href="#cube-next-jet-quotient">sequence</a> \(0\to\mathcal F_{L+1}\to\mathcal F_L\xrightarrow{\epsilon_L}k(q_0)\to0\) tests \((u+hv)/T^L\) at zero. Higher contact means \(\epsilon_N(s)=0\), not that the bundle section itself vanishes. The constant split-bundle control shows that semistability and uniqueness alone do not exclude this incidence.</p>
 <p><strong>Elliptic reduction.</strong> On the collision-free locus over algebraically closed fields of characteristic \(\ne2\), put \(E=C_3\), \(B=\mathcal O_E(H_\infty)\), \(\deg B=4\). For \(n\ge3,d&gt;n-3\), <a href="#cube-elliptic-pushdown">\(\mathcal F_{n,d,L}\)</a> is the kernel of \(\bigoplus_{\epsilon\in\{0,1\}^{n-3}}B^{d-|\epsilon|}\to\mathcal O_{Lq_0}\) along the all-one branch. Its rank is \(2^{n-3}\), degree \(N_{2,n}(d)-L\), and sections are the <em>left</em> coefficient-matrix kernel. Boundary determinant vanishing is \(H^0(E,\mathcal F_{n,d,N})\ne0\). Bundle degree is not parameter excess; reducedness and collision lattices remain unproved.</p><p><strong>Generic boundary corank.</strong> In characteristic zero, every dimension-four noncollision boundary component has a <a href="#cube-boundary-generic-corank-one">unique exceptional section generically</a>, for all \(d\ge2\). Two sections would force a tetragonal pencil from one coordinate elliptic quotient, then \((4d-2)\)-torsion on two others. Their torsion polynomials are coprime by double confluence. This excludes corank two along a divisor, but not corank-one higher contact or a section of order \(N+1\).</p><p><strong>First-order obstruction.</strong> At square corank one, \(\lambda\in\ker A^{\mathsf T}\), \(\mu\in\ker A\), the <a href="#cube-boundary-deformation-pairing">section obstruction</a> is \(\beta_\xi=\lambda^{\mathsf T}(\partial_\xi A)\mu\). With the next column \(b_N\), \(\beta_D=-N(\lambda^{\mathsf T}b_N)\mu_{N-1}\) for \(D=\sum a_i^2\partial_{a_i}\). The gcd endpoint needs \(\lambda^{\mathsf T}b_N\ne0\) generically. The fixed-field search had no eligible higher-contact point; it tested no transverse direction there.</p><p><strong>Rank-two section test.</strong> A nonzero section of a degree-zero rank-two elliptic bundle is <a href="#cube-elliptic-section-test">nowhere zero exactly when the bundle is semistable</a>; with nontrivial determinant the bundle splits. For \(\mathcal F_{4,d,8d-4}\), the determinant is \((B(-4q_0))^{2d-1}\). Test common zeros projectively away from \(q_0\), using the modified frame there. The <a href="#cube-elliptic-split-boundary">\(d=2\) check</a> proves this split type at one \(\overline{\mathbb F}_{101}\) point only.</p><p><strong>Dimensional lifting.</strong> With \(S_m=\bigoplus_cR(m-c)\), \(K_{n,d,m}=U\cap C(a_n)^{-1}K_{n-1,d-1,m}R\), where \(U=K_{n-1,d,m}R\) and \(C\) is the upper triangular square-root convolution preserving \(W_m\). The <a href="#cube-dimensional-gluing">compatibility map</a> has kernel \(I_{n,d,m}\); when both lower ideals are \(R\), this is \(\operatorname{ann}\omega(1)\). The <a href="#cube-dimensional-restriction-defect">restriction defect</a> has positive generic rank \(N_{2,n-1}(d-1)\) in characteristic zero for \(m\ge N_{2,n}(d)-1\). Saturated <a href="#cube-confluence-valuation">confluence</a> changes the degree vector to \(\nu'_{r'}=d-|r'|\); naive branch removal does not preserve the solved lower problem.</p>
@@ -10124,5 +10124,122 @@ This has zero node values and \(\Psi(F_*)=4A_1A_2A_3\ne0\). All remaining odd le
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 <p class="timing-note">The instrumented interval includes source-reading restoration and user-requested Git integration.</p>
+</article>
+<article id="entry-2026-09-26-cube-limit-torsion-exclusion" data-kind="research" data-route="cube-odd-characteristic" data-lead="entry-2026-09-26-cube-higher-contact-review:4" data-claims="thm:cube-limit-torsion-exclusion">
+<h3>26 September 2026 — The elliptic boundary has no component in the interpolation torsion locus</h3>
+<p class="entry-meta">Working proof over complex curves, at generic elliptic modulus for each degree. All torsion labels are covered. <span data-generated="finish-turn-producer-v1">Produced by Codex (gpt-6-astra, high reasoning).</span></p>
+<p><strong>Question and outcome.</strong> The focused collision calculation leaves the fourth functional to evaluate on a node-normalized section. Its interpolation map is singular at \((8d-4)p=0\). Before dividing by its determinant, those cases must be retained. This cycle excludes the entire noncollision torsion locus as a possible component of the boundary, uniformly in \(d\), by two exact coefficient sums and a Tate expansion covering every torsion label. The non-torsion multiple-zero implication remains open; this is a removal of the exceptional locus, not a proof of the boundary formula.</p>
+<h4>Intrinsic form of the four functionals</h4>
+<p>Work over \(\mathbb C\). Give the collision elliptic curve \(E\) an origin at one of its four points at infinity. The full sign change is an involution fixing those four points, so it is inversion and the divisor at infinity is \(D=E[2]\). The even sign changes are the translations by \(E[2]\): they have no fixed points, and are four distinct automorphisms of order at most two. The fixed points of all four odd sign involutions are \(E[4]\). Thus the collision-free marked point is outside \(E[4]\).</p>
+<p>Choose an invariant differential and transport its local additive coordinate to the four points \(t_j\in D\). Write, for \(f\in L(2dD)\),
+\[
+f(u_j)=a_j u_j^{-2d}+b_j u_j^{-(2d-1)}+\text{terms of lower pole order}.
+\]
+The <a href="#cube-limit-four-functionals">four-functionals lemma</a> then reads
+\[
+U_d=\{f\in L(2dD):a_1=a_2=a_3=a_4,\quad\sum_j b_j=0\}.
+\tag{1}
+\]
+Indeed \(T\) is invariant under the translations and even at every \(t_j\), so its top coefficient is the same at all four nodes and it has no next odd coefficient. Translation averaging kills the three singleton odd characters and keeps \(w_1w_2w_3T^{d-2}\). Its subleading coefficient is nonzero and the same at every node in these transported coordinates. Consequently the sum in (1) is a nonzero scalar multiple of the earlier weighted functional \(\psi\). This conversion is essential; sums in independently chosen local frames would not have this meaning.</p>
+<h4 id="cube-limit-torsion-exclusion">Torsion exception exclusion</h4>
+<p><strong>Theorem (<code>thm:cube-limit-torsion-exclusion</code>).</strong> For each fixed \(d\ge2\), put \(m=2d-1\) and \(N=4m=8d-4\). There is a nonempty Zariski-open set of complex elliptic moduli such that, for every elliptic curve in that set and every \(p\in E[N]\setminus E[4]\),
+\[
+U_d\cap L(2dD-Np)=0.
+\]
+In particular, no noncollision component of the Weierstrass divisor of \(U_d\) is contained in \(Np=0\). The open set is allowed to depend on \(d\); no common open set for all degrees is asserted.</p>
+<p><strong>Why this is the interpolation exception.</strong> Evaluation of the four top coefficients maps \(L(2dD-Np)\), of dimension four, to \(\mathbb C^4\). Its kernel is \(L(mD-Np)\), of degree zero. Since the sum of \(E[2]\) is zero, \(mD\sim NO\), and the kernel is zero exactly when \(Np\ne0\). Thus outside that torsion locus the evaluation map is an isomorphism and there is a unique section with top values \((1,1,1,1)\). On the torsion locus the kernel has dimension one. This is an exact description of the failed normalization, not a generic dimension guess.</p>
+<p><strong>Two coefficient sums suffice.</strong> If \(Np=0\) and \(p\notin D\), choose \(g\) with
+\[
+\operatorname{div}(g)=Np-mD,
+\qquad g=c_j u_j^{-m}+\cdots\quad\text{at }t_j,
+\]
+where every \(c_j\ne0\). For any \(f\in L(2dD-Np)\), the quotient \(h=f/g\) is regular off \(D\), with at most simple poles there. If the top values of \(f\) all equal \(a\), the residues of \(h\,du\) are \(a/c_j\). The residue theorem gives \(a\sum_jc_j^{-1}=0\). Hence if \(\sum_jc_j^{-1}\ne0\), a node-matching \(f\) must have \(a=0\), making \(h\) constant. Such an \(f\) is a multiple of \(g\), and (1) excludes it exactly when \(\sum_jc_j\ne0\). It therefore suffices to prove both sums nonzero generically for every allowed torsion label. Scaling \(g\) or the common invariant coordinate does not change either vanishing condition.</p>
+<h4>Uniform Tate calculation</h4>
+<p>Use \(E_q=\mathbb C^*/q^{\mathbb Z}\), \(0<|q|<1\), with invariant differential \(dz/z\). Define the multiplicative theta product
+\[
+\Theta(z;q)=(1-z)\prod_{n\ge1}(1-q^nz)(1-q^n/z).
+\]
+This is a standard normalization of the Jacobi product (compare <a href="https://dlmf.nist.gov/20.5.E1">NIST DLMF 20.5.1</a>). Direct index shifts in the convergent product give \(\Theta(qz)=-z^{-1}\Theta(z)\), \(\Theta(z^{-1})=-z^{-1}\Theta(z)\), simple zeros at \(q^{\mathbb Z}\), and \(\Theta'(1)\ne0\). These identities, rather than a numerical theta approximation, are used below.</p>
+<p>Write \(r=q^{1/2}\), so \(D=\{1,-1,r,-r\}\). Every \(N\)-torsion point has a representative
+\[
+p=\zeta q^{b/N},\qquad \zeta^N=1,\quad 0\le b<N.
+\]
+Inversion permits \(0\le b\le2m\): it permutes the node coefficients up to a common nonzero factor and the sign from the odd pole order, preserving nonvanishing of both sums. For this representative set,
+\[
+g(z)=z^{-m-b}\frac{\Theta(z/p)^N}{\Theta(z^2)^m}
+\tag{2}
+\]
+is elliptic. Under \(z\mapsto qz\), its numerator theta power contributes \(q^b z^{-4m}\), its denominator contributes \(q^{-m}z^{-4m}\), and the initial power contributes \(q^{-m-b}\); the factors cancel. Its divisor is exactly \(Np-mD\).</p>
+<p>Let \(s=(-1)^{b+1}\). Since \(m\) is odd, the leading coefficients at \(1,-1,r,-r\), with the common nonzero factor \((2\Theta'(1))^{-m}\) removed, are
+\[
+q^{-b}\Theta(p)^N,\quad
+s q^{-b}\Theta(-p)^N,\quad
+-q^{-(m+b)/2}\Theta(r/p)^N,\quad
+-s q^{-(m+b)/2}\Theta(-r/p)^N.
+\]
+For the last two coefficients, the derivative of \(\Theta(z^2)\) with respect to \(\log z\) is \(-2\Theta'(1)\), since \(q\Theta'(q)=-\Theta'(1)\); at the first two it is \(2\Theta'(1)\). This checks the signs. Up to nonzero factors, the two sums are respectively
+\[
+S_+=\Theta(p)^N+s\Theta(-p)^N
+-q^{(b-m)/2}\bigl(\Theta(r/p)^N+s\Theta(-r/p)^N\bigr),
+\tag{3}
+\]
+\[
+S_-=\Theta(p)^{-N}+s\Theta(-p)^{-N}
+-q^{(m-b)/2}\bigl(\Theta(r/p)^{-N}+s\Theta(-r/p)^{-N}\bigr).
+\tag{4}
+\]
+Every theta value in a denominator is nonzero when \(p\notin D\).</p>
+<p><strong>Interior labels.</strong> Suppose \(0<b<2m\), and put \(\alpha=b/(4m)\), \(\beta=1/2-\alpha\). For \(0<\gamma<1/2\), the product gives
+\(\Theta(\xi q^\gamma)=1-\xi q^\gamma+\text{higher valuation}\).
+For a nonzero integer \(k\), taking the even or odd combination yields respectively the constant term \(2\), or the leading term \(-2k\xi q^\gamma\). When \(b\) is odd, \(s=1\), so the two summands in (3) have valuations \(0,(b-m)/2\); those in (4) have valuations \(0,(m-b)/2\). Except at \(b=m\) the smaller valuation is unique, proving nonvanishing.</p>
+<p>At \(b=m\), \(\alpha=\beta=1/4\), and the constant terms cancel. The next nonzero candidate in the even combinations occurs at \(q^{1/2}\). The coefficients of \(S_+\) and \(S_-\) there are
+\[
+N(N-1)(\zeta^2-\zeta^{-2}),
+\qquad N(N+1)(\zeta^2-\zeta^{-2}).
+\]
+They are nonzero unless \(\zeta^4=1\). In precisely that excluded case, \(p^4=q\), so \(p\in E[4]\). The expansion follows from \(\Theta(\xi q^{1/4})=1-\xi q^{1/4}+O(q^{3/4})\); odd powers cancel, and \(2\binom{k}{2}=k(k-1)\), also for \(k=-N\).</p>
+<p>When \(b\) is even, \(s=-1\). The two valuations in (3) are \(\alpha\) and \((b-m)/2+\beta\); their difference is
+\[
+\frac{(m-1)(b-m)}{2m}.
+\]
+For (4) the difference is \((m+1)(m-b)/(2m)\). Neither is zero, because \(m\) is odd and \(b\) even. The leading coefficients of the two odd combinations are \(-2N\zeta,-2N\zeta^{-1}\) for (3), and \(2N\zeta,2N\zeta^{-1}\) for (4); all are nonzero. This covers every interior even label, including imprimitive torsion.</p>
+<p><strong>Endpoint labels.</strong> At \(b=0\), the first difference in (3) stays bounded. The difference involving \(r/p=\zeta^{-1}q^{1/2}\) begins with \(-2N(\zeta+\zeta^{-1})q^{1/2}\). Thus
+\[
+S_+=2N(\zeta+\zeta^{-1})q^{(1-m)/2}+\text{higher valuation}.
+\]
+It is nonzero because \(m\ge3\) and the only roots of unity with \(\zeta+\zeta^{-1}=0\) are \(\pm i\), which give four-torsion. For (4), the constant term is
+\[
+(1-\zeta)^{-N}-(1+\zeta)^{-N}.
+\]
+The points \(\zeta=\pm1\) lie in \(D\) and are excluded. Vanishing of this constant would force \(|1-\zeta|=|1+\zeta|\); since \(|\zeta|=1\), this forces \(\zeta=\pm i\), again excluded. The other term of (4) has positive valuation.</p>
+<p>At \(b=2m\), the first difference in (3) begins with \(-2N(\zeta+\zeta^{-1})q^{1/2}\), while the second has valuation at least \(m/2>1/2\). For (4), the second term has leading coefficient
+\[
+-\bigl((1-\zeta^{-1})^{-N}-(1+\zeta^{-1})^{-N}\bigr)
+\]
+at valuation \(-m/2\), whereas its first term has positive valuation. The same exclusions prove both coefficients nonzero. This finishes all labels outside \(E[4]\).</p>
+<p><strong>From the cusp to generic modulus.</strong> For fixed \(N\) there are finitely many labels. The nonzero leading terms above show that, for sufficiently small nonzero \(q\), both sums are nonzero for every one of them outside \(E[4]\). Their vanishing conditions are algebraic on a finite modular cover carrying the torsion point and a local choice of the line spanned by \(g\): they are principal-part and residue maps between algebraic line bundles. Scaling that line does not affect their zero loci. No torsion component is identically zero, since the Tate expansions test all labels at a cusp. Removing the images of these proper closed loci gives the claimed nonempty open set of elliptic moduli. The residue argument proves the theorem. \(\square\)</p>
+<h4>Checks, scope and next implication</h4>
+<p>The smallest test is \(d=2\), \(m=3\), \(N=12\), which already contains every parity, endpoint and tied-valuation regime. <a href="https://github.com/kbr-/math-research/blob/main/research/tools/bmd_cube_torsion_interpolation.gp">The PARI/GP audit</a> uses exact \(\mathbb Q(\zeta_{12})((x))\), \(q=x^{12}\), and checks the predicted valuations and coefficients of both (3) and (4) for all 72 representatives with \(0\le b\le6\) outside four-torsion. Inversion covers all 128 allowed torsion points. Eight excluded four-torsion representatives give vanishing sums to the computed precision, checking the expected cancellations at excluded labels; four two-torsion pole cases are skipped. All cases passed, with full output <a href="https://github.com/kbr-/math-research/blob/main/research/results/cube-elliptic-interpolation-20260926/torsion-labels.txt">retained here</a>. Only the proved leading terms are needed, so the theta product is truncated before any omitted factor can affect them. This checks the encoding; the all-degree result comes from the complete case argument above, not from increasing the tested degree.</p>
+<p><strong>Sources and prior work.</strong> The <a href="#cube-limit-four-functionals">four-functionals lemma</a> and the <a href="#cube-focused-collision-series">focused extension calculation</a> supply (1); the <a href="#entry-2026-09-26-cube-collision-regime">earlier collision-regime torsion theorem</a> instead concerns maximal order \(8d\) and does not give this exclusion at \(8d-4\). The full five-page <a href="https://arxiv.org/pdf/1011.5794">Fehér–Klimčík–Ruijsenaars note</a> on the elliptic Cauchy matrix was read, including its addition-identity proof and determinant corollary. It motivated keeping the interpolation denominator explicit; its determinant identity is not needed for the torsion argument proved here.</p>
+<p><strong>General statement.</strong> <code>thm:cube-limit-torsion-exclusion</code> removes the entire normalization-exception locus as a possible noncollision boundary component for every \(d\ge2\), with genericity taken separately in each degree. <code>conj:cube-limit-determinant-squarefree</code> still requires simplicity on the non-torsion locus. The theorem neither excludes isolated intersections at special elliptic moduli nor proves the smooth dimension-four boundary formula.</p>
+<p><strong>Verification gate.</strong> The four-functionals statement and proof, focused collision calculation, collision-regime theorem and relevant dependency metadata were re-read. A medium-reasoning novelty reviewer found the uniform torsion exclusion new to these records and required the coordinate conversion and separate treatment of every label. A fresh-context medium-reasoning correctness reviewer passed the coordinate conversion, residue argument, divisor, theta signs, complete label analysis and generic-modulus passage, with no unused hypotheses. Its evidential correction is made: the finite-precision excluded-label controls test the expected cancellation, rather than proving necessity of the exclusion. The exact audit passed.</p>
+<p><strong>Assessment and next step.</strong> A concrete part of the missing implication has changed: the normalization denominator can no longer hide a persistent noncollision boundary component. On route cube-odd-characteristic, evaluate the remaining scalar fourth functional where \(Np\ne0\), using the unique node-normalized section, and test its double-zero condition. The same Tate method is a candidate for controlling its zero branches, but the torsion proof alone says nothing about those branches. The full pre-stable range and small-prime problem remain open.</p>
+<p><strong>Process.</strong> Separating the two coefficient sums exposed distinct parity and endpoint cancellations; one exact audit at the smallest degree covered every case in the general proof, so no larger torsion sweep or framework change was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="cube-elliptic-interpolation-20260926">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>16 min 25.27 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">0.39 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">15 min 24.22 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3.25 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">44.96 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">7.34 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.25 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">4.86 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
 </article>
 </section>
