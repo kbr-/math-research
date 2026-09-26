@@ -119,10 +119,15 @@ static vector<string> split(const string &s, char c) {
     return v;
 }
 
+// A value "xK" for M or PREC means K*d, so one run can take a series of d (comma-separated).
+static int scaled(const char *s, int d) { return s[0] == 'x' ? atoi(s + 1) * d : atoi(s); }
+
 int main(int argc, char **argv) {
-    if (argc < 10) { fprintf(stderr, "usage: p n d M PREC L ARCS SEED point [point ...]\n"); return 2; }
-    P = atoll(argv[1]); int n = atoi(argv[2]), d = atoi(argv[3]), M = atoi(argv[4]), prec = atoi(argv[5]);
+    if (argc < 10) { fprintf(stderr, "usage: p n d[,d...] M|xK PREC|xK L ARCS SEED point [point ...]\n"); return 2; }
+    P = atoll(argv[1]); int n = atoi(argv[2]);
     int L = atoi(argv[6]), A = atoi(argv[7]); u64 seed = atoll(argv[8]);
+    for (const string &ds : split(argv[3], ',')) {
+    int d = atoi(ds.c_str()), M = scaled(argv[4], d), prec = scaled(argv[5], d);
     if (P % 2 == 0 || P <= (u64)M + 2) { fprintf(stderr, "need odd p > M + 2\n"); return 2; }
     printf("n=%d d=%d M=%d prec=%d L=%d arcs=%d p=%llu\n", n, d, M, prec, L, A, (unsigned long long)P);
     vector<char> excl(M, 0);
@@ -166,6 +171,8 @@ int main(int argc, char **argv) {
     }
     int g = 0; while (g < M && excl[g]) g++;
     printf("union over points: least m not excluded = %d (lower bound for the order-zero threshold)\n", g);
+    fflush(stdout);
+    }
     printf("done\n");
     return 0;
 }
