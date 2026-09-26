@@ -60,6 +60,13 @@ re-read, checks run, the reviewer's verdict), not in the status line. A result w
 gate is incomplete is recorded as conditional, not as a working proof. A slower cycle
 with a verified result is wanted; a fast cycle followed by a correction is not.
 
+Never state a result's scope as the characteristic of the prime a kernel computes in (such
+as "characteristic 0 and 1000003"): that prime is a computational choice, not a hypothesis.
+A certificate lifted to integral solutions gives characteristic 0 and all but finitely many
+characteristics; say so, and name the exceptional primes only when they are computed. A
+statement meant for small characteristics needs a structural proof or a certificate in each
+of them (user feedback, 26 September 2026).
+
 ## Nothing changes after the finisher
 
 Make every notebook edit (entry, living sections, next step) and every claim-registry change
