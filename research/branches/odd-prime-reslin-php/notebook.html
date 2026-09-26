@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> For families containing every hole block, W is equivalent to W on chooser-picked sparse boards (<a href="#entry-2026-09-26-forced-sparse-board">forced sparse board</a>). Taylor glue's only recorded graph-board base fails at every blocked centre, a pigeon whose holes are matched to legs with private holes. Spider-free twin-hole boards are not protected (<a href="#entry-2026-09-26-blocked-centres">blocked centres</a>). The falls there are semantic: the legs' matching vanishes on every saturating matching of the row set. Next: formulate a closure-relative gluing base, extending functionals that vanish on the closure-local semantic ideal of closed row sets. Check against the Mikša–Nordström definitions whether blocked centres are absorbed by closure, and test the base on small random and twin boards.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> The Mikša–Nordström closure operator absorbs every blocked-centre fall, so on boundary-expanding boards it is a base that survives where design extension fails (<a href="#entry-2026-09-26-closure-review">closure review</a>). Next: prove the relative criterion. Let \(W\) be the smallest subspace of the operator's image that contains the clause images and is closed under \(f\mapsto R(xf)\). If \(1\notin W\), functional graph PHP on an expander plus the clauses has no refutation of degree at most \(D\). Show that the restriction line's kills give \(W=0\) block by block. Then state the relative form of W for dense clauses as a conjecture and test it against the recorded obstructions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26822,6 +26822,93 @@ because \(er\le n^{\eta/2}\) for large \(n\), as \(r=O(\ln n)\). This is at most
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 15.60 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">4.46 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.22 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-closure-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of A1's dense core after swap decay and blocked centres, with a support check against the Mikša–Nordström definitions and two bridge tests; no new claim.">
+<h3>Route review: the Mikša–Nordström closure absorbs every blocked-centre fall, so a closure-relative base survives where design extension died; what A1 now needs is a gluing theorem relative to that operator, and no recorded tool supplies one</h3>
+<p class="entry-meta">26 September 2026 · Route review with a definition check and two tests · open statement A1 · cycle odd-prime-closure-base.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. Since the <a href="#entry-2026-09-26-dense-core-review">dense-core review</a>, two entries tested the two candidate dense mechanisms. <a href="#entry-2026-09-26-swap-decay">Swap decay</a> made the semi-random reduction exact block by block, but dense blocks have no per-block kill. <a href="#entry-2026-09-26-blocked-centres">Blocked centres</a> showed that Taylor glue's recorded graph-board base fails on random and structured boards alike. Is any base for a dense mechanism left on sparse boards, and what exactly would the mechanism have to prove?</p>
+<p><strong>General statement.</strong> The line's claim: A1 follows from conj:expander-dense-core (prop:expander-core-reduction), and by prop:forced-sparse-board, W for families containing every hole block is equivalent to W on chooser-picked sparse boards. What the goal needs is a hardness mechanism for blocks whose interaction part is dense, on such boards.</p>
+
+<h4>Falsification attempt: do blocked-centre falls survive closure?</h4>
+<p>Take Theorem 4.9 of Mikša and Nordström for functional graph PHP. The axiom side \(\mathcal U\) is the pigeon axioms. Each hole \(v\) gets the variable set \(V_v=\{x_{u'v'}:u'\in N(v),\ v'\in N(u')\}\), their (4.3). The neighbourhood \(N(t)\) of a term is the set of holes whose variable sets meet the term (their Definition 3.16). The \(s\)-support is the union of the pigeon sets \(U'\) with \(|U'|\le s\) and \(\partial U'\subseteq N(t)\) (Definition 3.17). The operator reduces a term modulo the ideal of the pigeon axioms of its support together with all hole and functionality axioms (Definition 3.20).</p>
+<p>Let \(r\) be a blocked centre with distinct legs \(n_i\ne r\) on its holes \(h_i\in N(n_i)\), the \(h_i\) covering all of \(N(r)\). Let \(t=\prod_ix_{n_ih_i}\) be the legs' matching monomial, the one that falls. A variable \(x_{n_ih_i}\) lies in \(V_v\) for every \(v\in N(n_i)\), so \(N(t)=\bigcup_iN(n_i)\supseteq N(r)\). For \(s\ge1\) the singleton \(\{r\}\) is \((s,N(t))\)-contained, since \(\partial\{r\}=N(r)\subseteq N(t)\), so \(r\) lies in the support of \(t\). In the multilinear ring \(\mathbb F[x]/(x^2-x)\), a finite product of copies of \(\mathbb F\), every ideal is the vanishing ideal of its zero set. The zero set here is contained in the set of assignments in which \(r\) sits in one of its holes and no hole is doubly used. The support may contain further pigeons, which only shrinks the zero set. Every such assignment kills \(t\), since the legs occupy all of \(r\)'s holes; this uses only \(r\)'s pigeon axiom and the hole axioms at the \(h_i\). So \(t\) lies in the ideal, and the operator sends it to 0. <strong>Outcome:</strong> the falls that defeated design extension are invisible to the closure-relative operator. The attempt to show that the closure base fails like the design base is falsified.</p>
+<p>How common the falls are is no longer in doubt. On the saved random board, 112 of 121 pigeons are blocked centres (<code>blocked_count.json</code>). A mean-field count predicts \((1-e^{-\lambda})^d\) with \(\lambda\) the expected number of other pigeons at a hole. That gives 112.4 there (<code>closure_tests.json</code>, and the first bridge below). At W's boards, \(\lambda\approx k-1\) and \(d\approx k\), so the prediction tends to 1.</p>
+
+<h4>Assessment of the line</h4>
+<ul>
+<li><em>What stands.</em>
+ <ul>
+ <li>Structured classes, the forced sparse board, and the expander-core reduction.</li>
+ <li>Swap decay, which gives dense-interaction blocks jointly near-uniform shifts, block by block.</li>
+ <li>The closure-relative operator, a base on \((s,\delta)\)-boundary expanders that absorbs the obstruction that killed design extension. Whether the chooser's forced sparse boards can be taken to be boundary expanders is not verified here, and absorbing one obstruction does not show that the base carries dense gluing.</li>
+ </ul></li>
+<li><em>What is missing.</em> The gluing step relative to that operator. A natural formulation, proposed here and not yet proved, is as follows. Let \(R\) be the operator, \(D\) its degree, and \(W\) the smallest subspace of \(R\)'s image containing the images \(R(\tau)\) of the clauses and closed under \(f\mapsto R(xf)\) for \(\deg f&lt;D\). Only clauses of degree at most \(D\) matter, since a degree-\(D\) refutation uses no others. If \(1\notin W\), then \(\pi\circ R\) satisfies the conditions of Razborov's lemma (their Lemma 3.15), so the system has no refutation of degree at most \(D\). Here \(\pi\) is a projection with kernel \(W\), chosen degree-filtered: complements \(C_j\) with \(P_{\le j}=(W\cap P_{\le j})\oplus C_j\) and \(C_{j-1}\subseteq C_j\), so that \(\deg(f-\pi f)\le\deg f\). Sketch:
+ <ul>
+ <li>\(R(1)=1\), since the support of 1 is empty and the hole and functionality axioms are satisfiable, so \(\pi R(1)=1\) exactly when \(1\notin W\).</li>
+ <li>The pigeon, hole and functionality axioms map to 0 by Mikša and Nordström, and the clauses map into \(W\).</li>
+ <li>For \(\deg t&lt;D\) write \(\pi R(t)=R(t)-w\) with \(w\in W\). Then \(\deg w\le\deg R(t)\le\deg t&lt;D\), using the degree-compatible order of their Definition 3.12. So \(R(xw)\in W\), and \(\pi R(x\pi R(t))=\pi R(xR(t))-\pi R(xw)=\pi R(xt)\).</li>
+ </ul>
+ For structured blocks one expects \(W=0\), their clauses lying in local ideals; this is to be checked in the next step. For dense clauses, \(1\notin W\) is again a global statement.</li>
+<li><em>Why the recorded import does not do it.</em> The <a href="https://kbr.is-a.dev/math-research/#entry-2026-09-20-immunity-criterion-audit">immunity-criterion audit</a> (audit:AR-immunity-ENS-scope) showed that Alekhnovich and Razborov's immunity criterion cannot take dense overlapping clauses as axioms. Shared essential variables make its threshold nonpositive. The relative formulation asks no expansion of the clauses, which is how it avoids that audit. But then the whole difficulty sits in \(1\notin W\).</li>
+<li><em>Qualitative assessment.</em> The line has found a base that absorbs the obstruction that killed design extension, on boundary-expanding boards. It has not produced the mechanism. Since the forced-sparse-board entry, the general implication for dense blocks has not moved; only its setting has. That covers the forced sparse board, the logarithmic residual, the dense-core review, swap decay and blocked centres, with the move from designs to the closure operator. The line is weak at its core. The one concrete target is a relative analogue of A3: Tor vanishing, or freeness, of the clause images in the operator's image space.</li>
+</ul>
+
+<h4>Outside leads</h4>
+<ul>
+<li><em>Theorem 4.9 of Mikša and Nordström, its operator as the base.</em> Target: a base for dense gluing on the forced sparse boards. <em>Where it breaks:</em> nowhere found yet for the base; the break is in gluing, the next item. <strong>Test.</strong> Passed: blocked-centre falls lie in the support and in the semantic local ideal (the check above).</li>
+<li><em>Alekhnovich and Razborov's immunity criterion (2000 preprint, Theorem 3.8), for the clause part.</em> Target: dense clauses as axioms of the framework. <em>Where it breaks:</em> the recorded overlap inequality: two clauses sharing \(t\ge e/4\) essential variables give a nonpositive threshold. <strong>Test.</strong> Falsified by the recorded audit. Full-support restricted clauses share all residual cells.</li>
+<li><em>Descent of PC closure to a quotient (obs:PC-closure-quotient-module-descent).</em> Target: the relative closure \(W\) as the analogue of the record's descent \(U_{t+1}=U_t+\sum y_i(U_t:z)\), with \(R\)'s image in place of \(S/J\). <em>Where it breaks:</em> \(\ker R\) is not an ideal, so module structure is replaced by the rule \(R(xR(t))=R(xt)\). <strong>Test.</strong> Passed, given the degree-filtered projection: the argument in the assessment uses only that rule, the closure of \(W\) and the degree bounds. A written proof is the next step.</li>
+</ul>
+
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>Pauli blocking in a Fermi gas (the Uehling–Uhlenbeck blocking factor).</em> <em>Translation:</em> pigeons are fermions and holes are single-particle states. A blocked centre is a particle all of whose states are occupied by others that each have an escape state. <em>What a theorem there would give:</em> the mean-field blocking probability, a product over states of occupation probabilities. It ignores the legs' escape condition. On the random board, with 120 other pigeons each at a given hole with probability \(4/120\), \(\lambda=4\) and the prediction is \(121(1-e^{-4})^4\). On the twin board, each of \(r\)'s two base holes needs two other pigeons, with \(\lambda=120\cdot2/60=4\), giving \(121(1-e^{-4}(1+4))^2\). The form \((1-e^{-\lambda})^d\) tends to 1 on W's boards, where \(\lambda\approx k-1\). So essentially every pigeon is a blocked centre, and any base must absorb their falls. <em>Smallest test:</em> predict the counts of <code>blocked_count.json</code>. <strong>Test.</strong> Passed on the random board, 112.4 predicted against 112 observed (<code>closure_tests.json</code>). On the twin board it predicts 99.9 against 107, an underestimate by about 1.7 standard deviations.</li>
+<li><em>Dhar's burning algorithm for sandpiles (Phys. Rev. Lett. 64 (1990)).</em> <em>Translation:</em> computing a support is burning. Start from the holes \(N(t)\) and add a pigeon once all its holes are burnt. <em>What a theorem there would give:</em> burning decides recurrence in linear time, which would give a fast support computation for experiments. <em>Smallest test:</em> compare burning with the exact support on small boards. <strong>Test.</strong> Falsified: burning was a strict subset of the support in all 40 trials, with 2.77 pigeons on average against 11.12 (13 pigeons, 12 holes, degree 3, \(s=4\); <code>closure_tests.json</code>). Contained sets may share holes outside \(N(t)\), which burning never uses. These tiny boards are not expanders, so the size gap overstates the typical difference.</li>
+</ul>
+
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-dense-core-review:1"><em>The renormalization group.</em> Its flow is now proved block by block. Additive combinations stay fixed, and combinations far from additive flow to uniform shifts (lem:swap-decay, cor:dense-shift-equidistribution). <strong>Follow-up.</strong> Closed: the universality it promised needs a global mechanism for dense blocks, which the line lacks, so the semi-random model has no endpoint yet.</li>
+<li data-bridge="entry-2026-09-26-dense-core-review:2"><em>The cavity method for \(\mathrm{perm}(\omega^A)\).</em> <strong>Follow-up.</strong> Closed: lem:swap-decay gives an explicit decay bound by the distance from additive, which is all the reduction used. A cavity computation of exact rates is not needed on the critical path.</li>
+</ul>
+
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-dense-core-review:1"><em>Hoeffding's combinatorial central limit theorem and permanent bounds.</em> Developed into lem:swap-decay. <strong>Follow-up.</strong> Closed: the permanent bound is proved, and its intended use stalls at the missing global mechanism.</li>
+<li data-lead="entry-2026-09-25-universality-review:1"><em>Quadratic Littlewood–Offord inverse theorems.</em> No work this cycle. <strong>Follow-up.</strong> Continuing: they remain the candidate tool for freeness of random clause images, now wanted relative to the closure operator as well as on the complete board.</li>
+<li data-lead="entry-2026-09-26-killer-moment-review:1"><em>Nguyen and Wood's moment method.</em> No work this cycle. <strong>Follow-up.</strong> Continuing, since A3's main term, its scope, is still open.</li>
+<li data-lead="entry-2026-09-26-expander-core-review:1"><em>The Mikša–Nordström closure as a gluing base.</em> This cycle showed that the closure absorbs every blocked-centre fall. <strong>Follow-up.</strong> Continuing: the base stands, and the relative gluing step is the next step.</li>
+</ul>
+
+<h4>Next step</h4>
+<p>The highest-risk item remains A1's dense core. The next step on odd-prime-clause-transfer is the relative criterion. Prove that \(1\notin W\) implies hardness for functional graph PHP on an expander plus arbitrary clauses. Show that it contains the restriction line's kills: zero images, span prefixes and occupancy implications all give \(W=0\) block by block. Then state the relative form of W for dense clauses as a conjecture and test it against the recorded obstructions.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read Mikša and Nordström's Definitions 3.12, 3.16, 3.17, 3.19 and 3.20, Lemma 3.15 and Theorem 4.9 with its variable sets (4.3), in the paper's text. Also re-read prop:blocked-centre-unfilled, lem:swap-decay, the immunity-criterion audit and obs:PC-closure-quotient-module-descent. The counts were read from <code>blocked_count.json</code> and <code>closure_tests.json</code>. The relative criterion is stated as a proposal with a proof sketch and is not registered. A fresh-context reviewer found the review sound after changes, and required these, all adopted:</p>
+<ul>
+<li>the zero set described as containment, with the facts the support argument uses;</li>
+<li>a degree-filtered projection, with \(R(1)=1\), closing a degree gap in the sketch;</li>
+<li>\(W=0\) for structured blocks marked as expected, not shown;</li>
+<li>the scope of the base limited to boundary expanders;</li>
+<li>the entries behind "has not moved" named;</li>
+<li>the work, or its absence, stated for each continuing lead.</li>
+</ul>
+<p>Its recomputation of the mean-field prediction used the twin board's parameters for the random board. The formulas are now written out: \(\lambda=4\) and exponent 4 for the random board, which give 112.4. This review registers no claim.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-closure-base">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 22.56 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">4 min 20.43 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 49.81 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">29.70 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">42.18 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.29 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
