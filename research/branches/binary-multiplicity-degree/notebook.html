@@ -34,7 +34,7 @@
 <h2>Proposed next step</h2>
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
-<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Its zero sets are mapped (<a href="#cube-threshold-collision-support">theorem</a>, <a href="#entry-2026-09-26-cube-collision-windows">entry</a>) but do not give \(\ell_0\). Thresholds are attained by invariants (<a href="#cube-invariant-attainment">conjecture</a>), proved at every boundary and in dimension 3. Order zero satisfies \(11d-11\le M(d)\le20d-21\) (<a href="#cube-order-zero-dimension-four-lower-bound">windows</a>, <a href="#cube-order-zero-dimension-four-linear-bound">products</a>). Restrictions give lower bounds (<a href="#cube-order-zero-restriction">lemma</a>; planes give 19, 38 modulo a large prime, <a href="#cube-order-zero-restrictions">check</a>), exact when the solution module has depth \(\ge3\) (<a href="#cube-restriction-exactness">exactness lemma</a>). Once \(I_m\) has no zeros, order zero fails only through a class in \(H^2_{\mathfrak m}(K_{m-1})_1\) (<a href="#cube-zero-free-criterion">zero-free criterion</a>); in dimension 3 free modules leave only zeros, while at \(d=2\) in dimension 4 \(K_{16}\), \(K_{17}\) have depth 2 (modulo 32003). A direct computation confirms depth 2 there (<a href="#entry-2026-09-26-cube-route-review-19">route review 19</a>). Next: identify \(H^0_{\mathfrak m}(C_m)\) at \(d=2\), \(m=16,17\), with its \(S_5\)-structure, and look for a general source of \(\delta_m\ne0\).</li>
+<li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Its zero sets are mapped (<a href="#cube-threshold-collision-support">theorem</a>, <a href="#entry-2026-09-26-cube-collision-windows">entry</a>) but do not give \(\ell_0\). Thresholds are attained by invariants (<a href="#cube-invariant-attainment">conjecture</a>), proved at every boundary and in dimension 3. Order zero satisfies \(11d-11\le M(d)\le20d-21\) (<a href="#cube-order-zero-dimension-four-lower-bound">windows</a>, <a href="#cube-order-zero-dimension-four-linear-bound">products</a>). Restrictions give lower bounds (<a href="#cube-order-zero-restriction">lemma</a>; planes give 19, 38 modulo a large prime, <a href="#cube-order-zero-restrictions">check</a>), exact when the solution module has depth \(\ge3\) (<a href="#cube-restriction-exactness">exactness lemma</a>). Once \(I_m\) has no zeros, order zero fails only through a local cohomology class (<a href="#cube-zero-free-criterion">zero-free criterion</a>): the class of the order-zero column, whose annihilator is \(I_m\) (<a href="#cube-threshold-annihilator">annihilator form</a>). It vanishes locally at every point, so no pointwise method sees it; at \(d=2\) the modules have depth 2 (<a href="#entry-2026-09-26-cube-route-review-19">route review 19</a>). Next: weigh a global duality bound for \(H^0_{\mathfrak m}(C_{m-1})\) against the other open statements (boundary for every \(d\), small primes).</li>
 <li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). By the <a href="#cube-squarefree-reduction">reduction theorem</a> and the <a href="#cube-limit-triple-multiplicity">triple-multiplicity corollary</a>, \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs one statement: squarefreeness of the non-collision part of the limit determinant. It is an instance of the <a href="#entry-2026-09-26-cube-monotone-squarefree">monotone squarefreeness conjecture</a>, which passes 1261 monotone vectors. For \(n=4\) it is simplicity of the \(d\)-canonical Weierstrass points of a general Humbert curve. A proof needs an induction over a class of spaces closed under Möbius transports, or a Weierstrass-point theorem for this family.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
@@ -8357,6 +8357,81 @@ As in the dimension-3 window lemma, \((w_3-w)^k=A_k(w)+w_3B_k(w)\) with \(\deg A
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">4.81 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-threshold-annihilator" data-kind="research" data-route="cube-odd-characteristic" data-claims="cor:cube-threshold-annihilator">
+<h3>26 September 2026 — The threshold ideal is the annihilator of one cokernel class; point-supported certificates decide nothing</h3>
+<p class="entry-meta">Working proof, a reformulation of the zero-free criterion: the threshold ideal is the annihilator of the order-zero column's class in the previous cokernel. Point-supported certificates cannot detect it. Cycle bmd-r129. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-26-cube-route-review-19">route review</a> located the dimension-4 obstruction to order zero in \(H^2_{\mathfrak m}(K_{m-1})\), with depth 2 confirmed at \(d=2\), \(m=16,17\). Its next step was to identify that module. The missing implication for open statement 3 is still a lower-bound mechanism for \(M(d)\) on \(\{0,1\}^4\). Two questions:</p>
+<ul>
+<li>What is the obstruction class concretely?</li>
+<li>Can it be certified by functionals supported on a finite set, such as the 24-point Springer orbit?</li>
+</ul>
+<p>The first ends with a formula; the second with a test calibrated against random points.</p>
+<p>Setting and notation: those of the <a href="#entry-2026-09-26-cube-zero-free-criterion">zero-free criterion</a>. \(A_m\) is the (d+1)-system at \(m\), \(K_m=\ker A_m\), \(C_m=\operatorname{coker}A_m\), and \(I_m\) is the ideal of top coordinates. Write \(a_m\) for the column of \(W_m\) in \(A_m\): row \((Q,r)\) is \([T^{m-Q}]\prod_{i\in r}w_i\), a form of degree \(m-Q\). It is a degree-0 element of the target of \(A_{m-1}\) twisted by 1, so its class \([a_m]\) lies in \(C_{m-1}(1)\).</p>
+<h4 id="cube-threshold-annihilator">The annihilator form</h4>
+<p><strong>Corollary</strong> (<code>cor:cube-threshold-annihilator</code>, the annihilator form of the zero-free criterion). Over any field, for \(n\ge1\), \(d\ge1\), \(m\ge1\). The row set does not depend on \(m\), so \(T_{m-1}(1)=T_m\) and \(a_m\) lies in degree 0.</p>
+<ol>
+<li>\(I_m=\operatorname{ann}_R([a_m])\), so \(R/I_m\cong R\cdot[a_m]\subseteq C_{m-1}(1)\). The order-zero system is solvable at \(m\) iff \([a_m]=0\).</li>
+<li>\(V(I_m)=\emptyset\) iff \([a_m]\in H^0_{\mathfrak m}(C_{m-1})(1)\). Then \(R/I_m\) is an Artinian cyclic submodule of \(H^0_{\mathfrak m}(C_{m-1})(1)\).</li>
+<li>For \(n\ge3\), \(H^0_{\mathfrak m}(C_{m-1})\cong H^2_{\mathfrak m}(K_{m-1})\). If \(V(I_m)=\emptyset\), the zero-free criterion's class \(\delta_m\in H^2_{\mathfrak m}(K_{m-1})_1\) corresponds to \([a_m]\in H^0_{\mathfrak m}(C_{m-1})_1\), up to sign.</li>
+</ol>
+<p><em>Proof.</em> Part 1. A form \(f\) lies in \(I_m\) iff some \(W\in K_m\) has \(W_m=f\). That means \(\sum_{c&lt;m}A_{\cdot,c}W_c=-f\,a_m\), that is, \(f\,a_m\in\operatorname{im}A_{m-1}\) after the twist, as in Part 1 of the zero-free criterion. So \(I_m=\operatorname{ann}([a_m])\), and \(R\to R\cdot[a_m]\), \(1\mapsto[a_m]\), has kernel \(I_m\). Solvability at order zero is \(1\in I_m\), that is, \([a_m]=0\).</p>
+<p>Part 2. \(V(I_m)=\emptyset\) iff \(I_m\) is \(\mathfrak m\)-primary or the unit ideal, iff \(R/I_m\cong R[a_m]\) has finite length, iff \([a_m]\) is killed by a power of \(\mathfrak m\).</p>
+<p>Part 3. Write \(G=\operatorname{im}A_{m-1}\), so that \(0\to K\to S\to G\to0\) and \(0\to G\to T\to C\to0\), with \(S,T\) free of depth \(n\ge3\). Then \(H^1_{\mathfrak m}(S)=H^2_{\mathfrak m}(S)=0\) gives \(H^2_{\mathfrak m}(K)\cong H^1_{\mathfrak m}(G)\), and \(H^0_{\mathfrak m}(T)=H^1_{\mathfrak m}(T)=0\) gives \(H^1_{\mathfrak m}(G)\cong H^0_{\mathfrak m}(C)\).</p>
+<p>For the class: on each basic open set \(D(f)\) with \(f\in I_m\), a solution \(W^{(f)}\) with top coordinate \(f\) gives \(W^{(f)}/f\), which lifts \(1\). Its lower part \(w_f\) satisfies \(A_{m-1}w_f=-a_m\). So \(a_m\) is a global section of \(\tilde G\), that is, it lies in the saturation of \(G\). The differences \(w_f-w_g\) form a Čech cocycle in \(\tilde K_{m-1}(1)\). It represents \(\delta_m\) by definition of the connecting map, and it represents the image of \([a_m]\) under \(H^0_{\mathfrak m}(C)\to H^1_{\mathfrak m}(G)\cong H^2_{\mathfrak m}(K)\), up to sign. \(\square\)</p>
+<p>Parts 1 and 2 restate the definition of \(I_m\). Part 3 identifies the zero-free criterion's class with an explicit vector. In the zero-free range, \(R/I_m\) is a graded Artinian algebra. Its Hilbert function is computable from the graded kernel dimensions, since \(\dim(I_m)_\ell=\dim(K_m)_\ell-\dim(K_{m-1})_{\ell+1}\) by the zero-free criterion's sequence.</p>
+<h4>The Artinian algebra at d = 2, m = 17</h4>
+<p><strong>Finite check</strong> over \(\mathbb F_{32003}\), not part of the working proof. It is computed by script from the saved graded dimensions of the route review (<code>research/results/bmd-r128-route-review/defect-n4-d2-m16.txt</code>, <code>…-m17.txt</code>). The inputs are:</p>
+<ul>
+<li>\(\dim(K_{17})_\ell=0,1,5,18,50\) for \(\ell=1,\ldots,5\);</li>
+<li>\(\dim(K_{16})_{\ell+1}=0,0,0,3,16\);</li>
+<li>\((K_{16})_2=0\), since \((K_{16})_2\hookrightarrow(K_{17})_1=0\);</li>
+<li>\(H(0)=1\), by the recorded unsolvability at \(m=17\).</li>
+</ul>
+<p>With these, \(R/I_{17}\) on \(\{0,1\}^4\) at \(d=2\) has Hilbert function</p>
+\[1,\;4,\;9,\;15,\;20,\;22\qquad(\ell=0,\ldots,5).\]
+<p>Here \(\dim(I_{17})_\ell=0,1,5,15,34\) for \(\ell=1,\ldots,5\), and the single quadric is the recorded element of degree 2 (<code>check:cube-collision-regime-empty-d2</code>). The algebra has finite length, since \(V(I_{17})=\emptyset\), and \(H(5)=22&gt;0\). So its top degree is at least 5; the computed range does not show where it ends.</p>
+<h4>Point-supported certificates: an uninformative test</h4>
+<p>By Part 1, the order-zero system at \(m\) is unsolvable iff a linear functional kills \(\operatorname{im}A_{m-1}\) in degree 1 and not \(a_m\). In dimension 3 the recorded proofs use functionals built from jets at the three double points. The idea was to look for certificates supported on the Springer orbit at \(d=2\), \(m=17\), as a collective, Cayley–Bacharach-type obstruction.</p>
+<p>The kernel <code>research/tools/bmd_cube_orbit_certificate.cpp</code> (fflas-ffpack ranks) tests whether jets of order \(\le k\) at a point set \(Z\) contain such a functional. The calibration came first, on \(\{0,1\}^3\), \(d=2\), \(m=8=5d-2\), where order zero fails, over \(\mathbb F_{1000081}\) (<code>research/results/bmd-r129-annihilator/</code>):</p>
+<ul>
+<li>at the three double points a certificate first exists at \(k=4\);</li>
+<li>at three random points it already exists at \(k=1\).</li>
+</ul>
+<p>So point-supported certificates exist at random points of low order. The jets of forms of degree \(\le m\) at a few points are dependent once there are more functionals than the rank of \(EA\), and a random \(Ea\) then leaves the column space. The test measures dimension counting, not the location of the obstruction. It cannot decide the question, and the Springer-orbit runs were not made.</p>
+<p>This is so by design. The test uses affine jets of forms of fixed degree against only the degree-0 image of \(A_{m-1}\). It is not the module-local condition \(a_m\notin\operatorname{im}A_{m-1}+\mathfrak m_p^{k+1}T\). Jets of order \(\ge m\) at one generic point already span the whole dual, so every unsolvable system has a one-point certificate of this kind; the random run reaches full rank 164 at \(k=5\). In the module sense no finite point set can carry a certificate. When \(V(I_m)=\emptyset\), \([a_m]\) vanishes locally at every prime other than \(\mathfrak m\) (Part 2), so no local conditions at finitely many points can detect it. A collective Cayley–Bacharach obstruction is excluded by Part 2 itself.</p>
+<p><strong>General statement.</strong> <code>cor:cube-threshold-annihilator</code>, for every \(n\ge1\), \(d\ge1\), \(m\ge1\) over every field (Part 3 for \(n\ge3\)). With <code>lem:cube-zero-free-criterion</code> it is the all-parameter statement this entry refines.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the zero-free criterion (its sequence, grading and connecting class) and the saved graded dimensions. One claim search found no earlier annihilator statement. A fresh-context referee checked:</p>
+<ul>
+<li>the grading of \([a_m]\) and Parts 1–3, including the Čech chase for Part 3, which it verified;</li>
+<li>the Hilbert-function arithmetic against the files;</li>
+<li>the certificate test's logic.</li>
+</ul>
+<p>Its corrections are made:</p>
+<ul>
+<li>Part 3 assumes \(V(I_m)=\emptyset\), holds up to sign in degree 1, and has its proof written out;</li>
+<li>the result is registered as a corollary (a reformulation) of the zero-free criterion;</li>
+<li>a wrong socle-degree claim is removed;</li>
+<li>the data inputs are listed and labelled a finite check;</li>
+<li>the reason the certificate test cannot decide is given.</li>
+</ul>
+<p><strong>Assessment.</strong> The obstruction to order zero is now one explicit vector: the column \(a_m\) of power-series coefficients, modulo the image of the previous system. In the zero-free range it lies in the \(\mathfrak m\)-torsion of the cokernel and vanishes locally everywhere. So no argument by points, windows, jets or finite point sets can see it. That closes the pointwise family of methods for dimension 4 beyond the last zeros.</p>
+<p>A lower bound must bound \(H^0_{\mathfrak m}(C_{m-1})\) and place \([a_m]\) in it by global means: a graded duality (local duality turns \(H^0_{\mathfrak m}(C)\) into \(\operatorname{Ext}^n(C,R(-n))\), the last module of the dual resolution), or an explicit construction. Exploring the Artinian algebra \(R/I_{17}\) (its Hilbert function and inverse system) is a possible next step, but no link to a general bound is in view.</p>
+<p>The route item's other open statements (the boundary for every \(d\), small primes) have concrete reductions. The next step is to weigh them against this one.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r129">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 49.39 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 8.94 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 54.13 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 40.71 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.43 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">5.17 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 </section>
