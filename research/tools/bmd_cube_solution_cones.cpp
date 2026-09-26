@@ -12,7 +12,10 @@
 // With a final argument "sym", the witness spaces are computed in their S_3-trivial and sign parts separately (orbit
 // sums, conditions at the vertex representatives (1,0,0), (1,1,0), (1,1,1)); the standard part is not computed.
 //
-// Usage: bmd_cube_solution_cones prime seed d rho j lmin lmax [sym]
+// With "val", it also evaluates every solution at a random point y0 (its coordinates are the coefficients of the one-
+// variable series w~(t y0)) and reports the cumulative rank of the values, a lower bound for the rank over F(y).
+//
+// Usage: bmd_cube_solution_cones prime seed d rho j lmin lmax [sym] [val]
 #include <cstdio>
 #include <cstdlib>
 #include <cstdint>
@@ -34,7 +37,7 @@ static u64 inv(u64 a) { return pw(a, P - 2); }
 static vector<vector<u64>> C;
 static u64 binom(int n, int k) { return (k < 0 || k > n) ? 0 : C[n][k]; }
 typedef vector<u64> Ser;
-static bool SYM = false;
+static bool SYM = false, VAL = false;
 static const int PERMS[6][3] = {{0, 1, 2}, {0, 2, 1}, {1, 0, 2}, {1, 2, 0}, {2, 0, 1}, {2, 1, 0}};
 static const int PSIGN[6] = {1, -1, -1, 1, 1, -1};
 static int N;
@@ -64,7 +67,7 @@ static long rank_mod(vector<vector<u64>> M) {
 
 int main(int argc, char **argv) {
     if (argc < 8) { fprintf(stderr, "usage: prime seed d rho j lmin lmax [sym]\n"); return 2; }
-    SYM = argc > 8 && string(argv[8]) == "sym";
+    for (int ai = 8; ai < argc; ai++) { if (string(argv[ai]) == "sym") SYM = true; if (string(argv[ai]) == "val") VAL = true; }
     P = atoll(argv[1]); unsigned seed = atoi(argv[2]);
     int d = atoi(argv[3]), rho = atoi(argv[4]), j = atoi(argv[5]), lmin = atoi(argv[6]), lmax = atoi(argv[7]);
     { const char *th = getenv("OMP_NUM_THREADS"); flint_set_num_threads(th ? atoi(th) : 1); }
@@ -74,9 +77,12 @@ int main(int argc, char **argv) {
     for (int n = 0; n <= Dmax + 1; n++) { C[n][0] = 1; for (int r = 1; r <= n; r++) C[n][r] = addm(C[n - 1][r - 1], r <= n - 1 ? C[n - 1][r] : 0); }
     mt19937_64 rng(seed);
     u64 tau = rng() % P, sig = rng() % P;
+    u64 y0[3] = {rng() % P, rng() % P, rng() % P};  // random point for the value rank
+    vector<vector<u64>> valRows;
     vector<vector<u64>> coneRows;  // evaluated cone vectors, c = 0..m
     printf("(d,rho)=(%d,%d) m=%d j=%d face exponent %d; evaluation point tau=%llu sigma=%llu\n", d, rho, m, j, e,
            (unsigned long long)tau, (unsigned long long)sig); fflush(stdout);
+    if (VAL) { printf("value point y0 = (%llu, %llu, %llu)\n", (unsigned long long)y0[0], (unsigned long long)y0[1], (unsigned long long)y0[2]); fflush(stdout); }
     for (int l = lmin; l <= lmax; l++) {
       int k = l + m + 1, D = 2 * k - d, Dp = D - 3 * e;
       for (int chi = SYM ? 0 : -1; chi <= (SYM ? 1 : -1); chi++) {
@@ -181,11 +187,40 @@ int main(int argc, char **argv) {
             vector<u64> row(m + 1, 0);
             for (int c = 0; c <= m; c++) { int o = l + m - c - j; if (o >= 0 && o < N) row[c] = G[o]; }
             coneRows.push_back(row);
+            if (VAL) {
+                // value of the solution at y0: W_c(y0) = [w~(t y0)]_{l+m-c}, w~ = P(r0(y))/prod L'(r0(y_i))
+                int NV = l + m + 1, Nsave = N; N = NV;
+                Ser lamv(N, 0); if (N > 1) lamv[1] = 1;
+                Ser rr(N, 0);
+                for (int it = 0; it < N + 1; it++) { Ser sq = smul(rr, rr); for (int i = 0; i < N; i++) rr[i] = subm(sq[i], lamv[i]); }
+                vector<vector<Ser>> pows(3);
+                Ser den(N, 0); den[0] = 1;
+                for (int i = 0; i < 3; i++) {
+                    Ser xi(N, 0); u64 yp = 1;
+                    for (int n = 0; n < N; n++) { xi[n] = mulm(rr[n], yp); yp = mulm(yp, y0[i]); }  // r0(y0_i t)
+                    pows[i].assign(k + 1, Ser(N, 0)); pows[i][0][0] = 1;
+                    for (int a = 1; a <= k; a++) pows[i][a] = smul(pows[i][a - 1], xi);
+                    Ser Lpi(N, 0); for (int n = 0; n < N; n++) Lpi[n] = mulm(2, xi[n]); Lpi[0] = subm(Lpi[0], 1);
+                    den = smul(den, Lpi);
+                }
+                Ser val(N, 0);
+                for (auto &kv : Pl) {
+                    if (!kv.second) continue;
+                    Ser term = smul(smul(pows[0][kv.first[0]], pows[1][kv.first[1]]), pows[2][kv.first[2]]);
+                    for (int n = 0; n < N; n++) val[n] = addm(val[n], mulm(kv.second, term[n]));
+                }
+                val = smul(val, sinv(den));
+                vector<u64> vr(m + 1, 0);
+                for (int c = 0; c <= m; c++) { int o = l + m - c; if (o >= 0 && o < N) vr[c] = val[o]; }
+                valRows.push_back(vr);
+                N = Nsave;
+            }
         }
         nmod_mat_clear(X);
         long rk = rank_mod(coneRows);
+        long vrk = VAL ? rank_mod(valRows) : -1;
         printf("l=%d%s: k=%d D=%d unknowns %d, witness space dim %ld (%d with a nonzero degree-l part), %d with jet outside J^%d + m^k;"
-               " cumulative cone rank %ld\n", l, chi < 0 ? "" : (chi ? " (sign part)" : " (trivial part)"), k, D, U, nul, exactOrder, lowViol, j, rk);
+               " cumulative cone rank %ld; cumulative value rank at a random point %ld\n", l, chi < 0 ? "" : (chi ? " (sign part)" : " (trivial part)"), k, D, U, nul, exactOrder, lowViol, j, rk, vrk);
         fflush(stdout);
       }
     }
