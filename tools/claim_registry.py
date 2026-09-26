@@ -257,7 +257,7 @@ def escape_cell(text):
 
 
 def render(data):
-    validate(data)
+    """The generated index of a registry already validated, as load() returns it."""
     rows = ['| ' + ' | '.join(escape_cell(v) for v in
             ('`' + c['id'] + '`', c['summary'], c['assessment'], c['record'])) + ' |'
             for c in data['claims']]
