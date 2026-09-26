@@ -24,8 +24,8 @@ def checks(base):
     py = sys.executable
     yield 'claim index validation', [py, 'tools/claim-index.py', 'validate']
     yield 'attention history', [py, 'tools/claim-attention.py', 'check']
-    for name in TESTS:
-        yield f'test_{name}', [py, '-m', 'unittest', 'discover', '-s', 'tools/tests', '-p', f'test_{name}.py']
+    # The suite's own time limit is for the whole suite on the project machine.
+    yield 'claim tests', [py, 'tools/tests/run.py', '--limit', 'inf', *(f'test_{name}' for name in TESTS)]
     yield 'claim graph audit', [py, 'tools/claim-index.py', 'graph', 'audit']
     yield 'recorded revisions are ancestors of HEAD', [py, 'tools/remap-revisions.py', '--check']
     yield f'changed-claim contract against {base}', [py, 'tools/claim-index.py', 'changed', '--base', base]
