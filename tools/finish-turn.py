@@ -106,8 +106,17 @@ def validate_leads(body, article, close):
 
 FOLLOWUP_RE = re.compile(r'<h4>Bridge follow-up</h4>\s*<ul>(.*?)</ul>', re.S)
 FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-bridge="([^"]+)"[^>]*>(.*?)</li>', re.S)
+LEAD_FOLLOWUP_RE = re.compile(r'<h4>Lead follow-up</h4>\s*<ul>(.*?)</ul>', re.S)
+LEAD_FOLLOWUP_ITEM = re.compile(r'<li\b[^>]*data-lead="([^"]+)"[^>]*>(.*?)</li>', re.S)
 FOLLOWUP_OUTCOME = re.compile(r'<strong>Follow-up\.</strong>\s*(Developed|Continuing|Closed)\b')
-BRIDGE_WINDOW = 3    # research entries after a review before a reminder to develop an open passed bridge
+BRIDGE_WINDOW = 3    # research entries after a review before a reminder to develop an open passed item
+
+# Passed Outside leads and passed Absurd bridges are both leads to develop (user, 26 September 2026:
+# "Both should have followups").  (kind, section, follow-up section, follow-up item, heading, attribute)
+FOLLOWUP_KINDS = (
+    ('Absurd bridges', BRIDGES_RE, FOLLOWUP_RE, FOLLOWUP_ITEM, 'Bridge follow-up', 'data-bridge'),
+    ('Outside leads', LEADS_RE, LEAD_FOLLOWUP_RE, LEAD_FOLLOWUP_ITEM, 'Lead follow-up', 'data-lead'),
+)
 
 
 def route_articles(body, article, route):
@@ -126,34 +135,39 @@ def route_articles(body, article, route):
     return out
 
 
-def open_bridges(body, articles, current=None):
-    """IDs (review-anchor:item) of Absurd bridges that passed their test and that no Bridge follow-up
-    item has closed."""
+def open_items(body, articles, section_re=BRIDGES_RE, followup_re=FOLLOWUP_RE, item_re=FOLLOWUP_ITEM):
+    """IDs (review-anchor:item) of items of one section (Absurd bridges by default) that passed their test
+    and that no follow-up item has closed."""
     passed, closed = [], set()
-    for position, ident, kind, close in articles + ([current] if current else []):
+    for position, ident, kind, close in articles:
         text = body[position:close]
-        if kind == 'review' and ident and (position, ident, kind, close) != current:
-            found = BRIDGES_RE.search(text)
+        if kind == 'review' and ident:
+            found = section_re.search(text)
             if found:
                 for n, item in enumerate(re.findall(r'<li\b(.*?)</li>', found.group(1), re.S), 1):
                     outcome = TEST_RE.search(item)
                     if outcome and outcome.group(1) == 'Passed':
                         passed.append(f'{ident}:{n}')
-        found = FOLLOWUP_RE.search(text)
+        found = followup_re.search(text)
         if found:
-            for ident2, item in FOLLOWUP_ITEM.findall(found.group(1)):
+            for ident2, item in item_re.findall(found.group(1)):
                 outcome = FOLLOWUP_OUTCOME.search(item)
                 if outcome and outcome.group(1) == 'Closed':
                     closed.add(ident2)
     return [b for b in passed if b not in closed]
 
 
+def open_bridges(body, articles):
+    return open_items(body, articles)
+
+
 def validate_bridges(body, article, close):
-    """Passed Absurd bridges must be developed, not only listed (user question, 26 September 2026: six
-    bridges had passed their smallest tests and none was ever explored further).  A route review reports,
-    under Bridge follow-up, the work done in its cycle on every passed bridge of earlier reviews on its
-    route that no follow-up has closed.  After BRIDGE_WINDOW research entries since a review with none
-    developing an open passed bridge (tagged data-bridge="REVIEW-ANCHOR:N"), it prints a reminder."""
+    """Passed Absurd bridges and passed Outside leads must be developed, not only listed (user, 26 September
+    2026: six bridges had passed their smallest tests and none was explored further; later "Both should have
+    followups").  A route review reports, under Bridge follow-up and Lead follow-up, the work done in its
+    cycle on every passed item of earlier reviews on its route that no follow-up has closed.  After
+    BRIDGE_WINDOW research entries since a review with none developing an open passed item (tagged
+    data-bridge or data-lead="REVIEW-ANCHOR:N"), it prints a reminder."""
     if not re.search(r'data-route-item="', body):
         return
     tags = entry_tags(body, article)
@@ -161,34 +175,36 @@ def validate_bridges(body, article, close):
         return
     earlier = route_articles(body, article, tags['route'])
     if tags['kind'] == 'review':
-        pending = open_bridges(body, earlier)
-        if not pending:
-            return
-        found = FOLLOWUP_RE.search(body, article, close)
-        items = dict(FOLLOWUP_ITEM.findall(found.group(1))) if found else {}
-        missing = [b for b in pending if b not in items]
-        if missing:
-            raise ValueError('Passed Absurd bridges of earlier reviews are still open: ' + ', '.join(missing)
-                             + '. Add an <h4>Bridge follow-up</h4> <ul> with one <li data-bridge="ID"> per '
-                             'bridge, reporting the work done on it in this cycle (AGENTS.md)')
-        bare = [b for b in pending if not FOLLOWUP_OUTCOME.search(items[b])]
-        if bare:
-            raise ValueError('Bridge follow-up item(s) ' + ', '.join(bare) + ' lack an outcome: end each with '
-                             '"<strong>Follow-up.</strong> Developed ...", "Continuing ..." or "Closed: <reason '
-                             'found by the attempt>" (AGENTS.md)')
+        for name, section_re, followup_re, item_re, heading, attr in FOLLOWUP_KINDS:
+            pending = open_items(body, earlier, section_re, followup_re, item_re)
+            if not pending:
+                continue
+            found = followup_re.search(body, article, close)
+            items = dict(item_re.findall(found.group(1))) if found else {}
+            missing = [b for b in pending if b not in items]
+            if missing:
+                raise ValueError(f'Passed {name} of earlier reviews are still open: ' + ', '.join(missing)
+                                 + f'. Add an <h4>{heading}</h4> <ul> with one <li {attr}="ID"> per item, '
+                                 'reporting the work done on it in this cycle (AGENTS.md)')
+            bare = [b for b in pending if not FOLLOWUP_OUTCOME.search(items[b])]
+            if bare:
+                raise ValueError(f'{heading} item(s) ' + ', '.join(bare) + ' lack an outcome: end each with '
+                                 '"<strong>Follow-up.</strong> Developed ...", "Continuing ..." or "Closed: '
+                                 '<reason found by the attempt>" (AGENTS.md)')
         return
     reviews = [i for i, a in enumerate(earlier) if a[2] == 'review']
     if not reviews:
         return
     since = [a for a in earlier[reviews[-1] + 1:] if a[2] == 'research']
-    tag = body[article:body.index('>', article) + 1]
-    developing = 'data-bridge="' in tag or any(
-        'data-bridge="' in body[a[0]:body.index('>', a[0]) + 1] for a in since)
-    if len(since) + 1 >= BRIDGE_WINDOW and not developing and open_bridges(body, earlier):
+    tags_seen = [body[article:body.index('>', article) + 1]] + [body[a[0]:body.index('>', a[0]) + 1] for a in since]
+    developing = any('data-bridge="' in t or 'data-lead="' in t for t in tags_seen)
+    pending = [b for _, section_re, followup_re, item_re, _, _ in FOLLOWUP_KINDS
+               for b in open_items(body, earlier, section_re, followup_re, item_re)]
+    if len(since) + 1 >= BRIDGE_WINDOW and not developing and pending:
         # A reminder, not a rejection (user, 26 September 2026: "use your judgement, but give the bridges a chance").
         print(f'Warning: {len(since) + 1} research entries since the last route review and none develops an '
-              'open passed Absurd bridge (' + ', '.join(open_bridges(body, earlier)) + '). Consider giving one '
-              'a real attempt, tagged data-bridge="REVIEW-ANCHOR:N" (AGENTS.md).', file=sys.stderr)
+              'open passed Absurd bridge or Outside lead (' + ', '.join(pending) + '). Consider giving one '
+              'a real attempt, tagged data-bridge or data-lead="REVIEW-ANCHOR:N" (AGENTS.md).', file=sys.stderr)
 
 
 GENERAL_RE = re.compile(r'<p><strong>General statement\.</strong>(.*?)</p>', re.S)

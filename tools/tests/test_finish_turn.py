@@ -171,16 +171,24 @@ sys.exit(compute.main())
         tagged = 'data-kind="research" data-route="general-step"'
         reviewed = 'id="rev2" data-kind="review" data-route="general-step"'
         follow = '<h4>Bridge follow-up</h4><ul><li data-bridge="rev1:1">Tried it. <strong>Follow-up.</strong> {}</li></ul>'
+        lead_follow = ('<h4>Lead follow-up</h4><ul>' + ''.join(
+            f'<li data-lead="rev1:{n}">Worked on it. <strong>Follow-up.</strong> Continuing: next.</li>'
+            for n in (1, 2, 3)) + '</ul>')
         rejected = [
             record(research.format('') * 6, reviewed, leads),                  # review ignores the open bridge
-            record(research.format('') * 6, reviewed, leads + follow.format('Pending.')),   # no outcome
+            record(research.format('') * 6, reviewed, leads + follow.format('Pending.') + lead_follow),  # no outcome
+            record(research.format('') * 6, reviewed, leads + follow.format('Continuing: x.')),   # passed leads ignored
+            record(research.format('') * 6, reviewed, leads + follow.format('Continuing: x.')
+                   + lead_follow.replace('Continuing: next.', 'Pending.')),      # lead follow-up without outcome
         ]
         accepted = [
             record(research.format('') * 2, tagged),                          # third entry: a reminder only
             record(research.format(' data-bridge="rev1:1"') + research.format(''), tagged),
             record(research.format('') * 2, tagged + ' data-bridge="rev1:1"'),
-            record(research.format('') * 6, reviewed, leads + follow.format('Continuing: next cycle.')),
-            record(research.format('') * 6, reviewed, leads + follow.format('Closed: the translation fails.')),
+            record(research.format('') * 6, reviewed, leads + follow.format('Continuing: next cycle.') + lead_follow),
+            record(research.format('') * 6, reviewed, leads + follow.format('Closed: the translation fails.')
+                   + lead_follow),
+            record(research.format(' data-lead="rev1:2"') + research.format(''), tagged),
         ]
         checker = self.root / 'check.py'
         checker.write_text('import importlib.util, sys\n'
