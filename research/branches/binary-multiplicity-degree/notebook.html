@@ -35,7 +35,7 @@
 <p>Route item: cube-odd-characteristic (open statement 3, then 2).</p>
 <ul>
 <li><strong>The middle range of dimension 4</strong> (open statement 3), the highest-risk item. Its zero sets are mapped (<a href="#cube-threshold-collision-support">theorem</a>, <a href="#entry-2026-09-26-cube-collision-windows">entry</a>) but do not give \(\ell_0\). Order zero satisfies \(11d-11\le M(d)\le20d-21\) (<a href="#cube-order-zero-dimension-four-lower-bound">windows</a>, <a href="#cube-order-zero-dimension-four-linear-bound">products</a>). Restrictions give lower bounds (<a href="#cube-order-zero-restriction">lemma</a>; planes give 19, 38 modulo a large prime, <a href="#cube-order-zero-restrictions">check</a>), exact when the solution module has depth \(\ge3\) (<a href="#cube-restriction-exactness">exactness lemma</a>). Once \(I_m\) has no zeros, order zero fails only through a local cohomology class (<a href="#cube-zero-free-criterion">zero-free criterion</a>): the class of the order-zero column, whose annihilator is \(I_m\) (<a href="#cube-threshold-annihilator">annihilator form</a>). It vanishes locally at every point, so no pointwise method sees it; at \(d=2\) the modules have depth 2 (<a href="#entry-2026-09-26-cube-route-review-19">route review 19</a>). Next: weigh a global duality bound for \(H^0_{\mathfrak m}(C_{m-1})\) against the other open statements (boundary for every \(d\), small primes).</li>
-<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs squarefreeness of the non-collision part of the limit determinant \(\Delta_U\) (<a href="#cube-squarefree-reduction">reduction theorem</a>, <a href="#cube-limit-triple-multiplicity">triple multiplicity</a>). Its base case \(n=2\), \(\nu=d-|r|\), is proved: on the conic every Weierstrass point has weight 1 (<a href="#cube-conic-squarefree">conic theorem</a>). On the genus-1 curve weight 2 needs one of two rank drops (<a href="#cube-limit-four-functionals">lemma</a>). The quadrangle route needs the same on both kinds of side: on the triple sides the conic vector \((2d,2d-2,2d-2,2d-4)\) is squarefree for \(d\le5\) (<a href="#entry-2026-09-26-cube-triple-sides">entry</a>). Next: its weight argument for every \(d\), then the transported double-double sides.</li>
+<li><strong>The dimension-4 boundary for every \(d\)</strong> (open statement 3). \(\ell_0(d+1,8d-4)=10d^2-10d-5\) (proved for \(d\le9\)) needs squarefreeness of the non-collision part of the limit determinant \(\Delta_U\) (<a href="#cube-squarefree-reduction">reduction theorem</a>, <a href="#cube-limit-triple-multiplicity">triple multiplicity</a>). Its base case \(n=2\), \(\nu=d-|r|\), is proved: on the conic every Weierstrass point has weight 1 (<a href="#cube-conic-squarefree">conic theorem</a>). The quadrangle route needs both kinds of side. For \(n=2\) every such determinant is the Wronskian of an explicit binomial series on a rigid curve (<a href="#cube-conic-duality">duality theorem</a>), which makes the triple sides a palindromic 8-nomial, squarefree through \(d=10\). Next: simple zeros of that 8-nomial for every \(d\), then the double-double sides.</li>
 <li><strong>Small primes for \(n\ge4\)</strong> (open statement 2).</li>
 </ul>
 <p>Publication, Lean and correspondence remain the user's decisions; the dimension-3 result may merit a note.</p>
@@ -8646,6 +8646,94 @@ As in the dimension-3 window lemma, \((w_3-w)^k=A_k(w)+w_3B_k(w)\) with \(\deg A
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 39.15 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">8.12 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.16 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-26-cube-conic-duality" data-kind="research" data-route="cube-odd-characteristic" data-claims="thm:cube-conic-duality" data-lead="entry-2026-09-26-cube-route-review-15:1">
+<h3>26 September 2026 — On the conic every determinant is a Wronskian of binomials: the n = 2 squarefreeness problem becomes explicit</h3>
+<p class="entry-meta">Working proof: for every n = 2 degree vector the non-collision part of Δ_ν is the image of the Wronskian of an explicit binomial series on a fixed curve, with multiplicities. Checked exactly on nine vectors, including a failure. Cycle bmd-r133. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, default reasoning).</span></p>
+<p><strong>Question.</strong> The quadrangle route to the dimension-4 boundary law needs squarefreeness of conic determinants \(\Delta_\nu\) (\(n=2\)) for two families, which have no closed form (<a href="#entry-2026-09-26-cube-triple-sides">triple-sides entry</a>). The <a href="#cube-conic-squarefree">conic theorem</a> handled one missing functional by hand. Is there a uniform description of \(\Delta_\nu\) for every \(n=2\) vector, from which squarefreeness becomes a concrete statement? The test ends with such a description, validated exactly, or with a vector where it fails.</p>
+<h4>The rigid curve</h4>
+<p>Let \(n=2\), in characteristic 0. The conic \(\Gamma\) of \(w_1,w_2\) is \(\mathbb P^1\), with the Klein group \(G=\langle\sigma_1,\sigma_2\rangle\) acting, where \(\sigma_i\) flips \(w_i\), and with the two points over \(T=\infty\). The element \(\sigma_1\sigma_2\) is the inertia there, since both \(w_i\) change sign around \(T=\infty\). So it fixes both points, and \(\sigma_1\) swaps them.</p>
+<p>Choose a coordinate \(\mu\) with the two points at \(0,\infty\). Then \(\sigma_1\sigma_2\), an involution fixing \(0,\infty\), is \(\mu\mapsto-\mu\). Its commuting involution \(\sigma_1\), which swaps them, is \(\mu\mapsto b/\mu\), and scaling \(\mu\) makes \(b=1\). So \(\sigma_1:\mu\mapsto1/\mu\) and \(\sigma_2:\mu\mapsto-1/\mu\), independently of \(a\).</p>
+<p>The ramification over \(T=\infty\) has index 2, so \(w_i\) has a simple pole and \(T\) a double pole at \(0\) and \(\infty\), and no other poles. A function with these pole orders is determined up to scalars by its parities under \(\mu\mapsto-\mu\) and \(\sigma_1\):</p>
+<ul>
+<li>\(w_1=\mu-\mu^{-1}\) (odd under \(\mu\mapsto-\mu\) and under \(\sigma_1\));</li>
+<li>\(w_2=\mu+\mu^{-1}\);</li>
+<li>\(T\in\mathrm{span}\{\mu^2+\mu^{-2},1\}\).</li>
+</ul>
+<p>The point \(p_0\) over \(T=0\) is some \(\mu_0\). Normalizing \(w_i(p_0)=1\) gives \(w_i^2-1=a_iT\) with \(T=\Theta-\Theta(\mu_0)\), \(\Theta=\mu^2+\mu^{-2}\), and \(a_1^{-1}=(\mu_0-\mu_0^{-1})^2\), \(a_2^{-1}=(\mu_0+\mu_0^{-1})^2\). So</p>
+\[x:=a_2/a_1=\Bigl(\frac{\mu_0^2-1}{\mu_0^2+1}\Bigr)^2,\]
+<p>a \(G\)-invariant function of degree 4. The collisions \(x\in\{0,1,\infty\}\) correspond to \(\mu_0\in\{\pm1\}\), \(\{0,\infty\}\), \(\{\pm i\}\).</p>
+<p>Since \(F[T]_{\le j}=F[\Theta]_{\le j}\), the space \(V_\nu=\bigoplus_rw^rF[T]_{\le\nu_r}\) is, up to the scalars of the \(w_i\), the fixed space of Laurent polynomials</p>
+\[V_\nu=\mathrm{span}\{\mu^m+\mu^{-m}:m\in M_{00}\cup M_{01}\}\oplus\mathrm{span}\{\mu^m-\mu^{-m}:m\in M_{10}\cup M_{11}\},\]
+<p>with the frequency ranges:</p>
+<ul>
+<li>\(M_{00}=\{0,2,\ldots,2\nu_{00}\}\);</li>
+<li>\(M_{10}\) and \(M_{01}\): the odd \(m\le2\nu_{10}+1\), respectively \(\le2\nu_{01}+1\);</li>
+<li>\(M_{11}=\{2,4,\ldots,2\nu_{11}+2\}\).</li>
+</ul>
+<p>Each \(w^rF[\Theta]\) is triangular to these: for example \((\mu-\mu^{-1})(\mu^{2k}+\mu^{-2k})=s_{2k+1}-s_{2k-1}\) with \(s_m=\mu^m-\mu^{-m}\). It does not depend on \(a\). Only the marked point \(\mu_0\) moves.</p>
+<h4 id="cube-conic-duality">The theorem</h4>
+<p>Let \(c\) be the largest frequency present. Then \(\mu^cV_\nu\subseteq\mathrm{Poly}_{2c}\). Define the dual series \(S_\nu\subseteq\mathrm{Poly}_{2c}\), spanned, for each \(0\le m\le c\), by:</p>
+<ul>
+<li>\(\mu^{c-m}-\mu^{c+m}\) if \(V\) contains \(\mu^m+\mu^{-m}\) but not \(\mu^m-\mu^{-m}\);</li>
+<li>\(\mu^{c-m}+\mu^{c+m}\) in the opposite case;</li>
+<li>both \(\mu^{c-m}\) and \(\mu^{c+m}\) if it contains neither;</li>
+<li>\(\mu^c\) if \(m=0\) and the constant is missing.</li>
+</ul>
+<p><strong>Theorem</strong> (<code>thm:cube-conic-duality</code>, the conic duality theorem). In characteristic 0, for every degree vector \(\nu\in\{-1,0,1,\ldots\}^4\) with \(N_\nu=\sum_r(\nu_r+1)\ge1\), the part of \(\Delta_\nu(a_1,a_2)\) prime to \(a_1,a_2,a_1-a_2\) equals, up to a constant,</p>
+\[\prod_{G\mu\subset Z}\bigl(a_2-x(\mu)\,a_1\bigr)^{\operatorname{ord}_\mu W(S_\nu)},\]
+<p>the product over the \(G\)-orbits of zeros \(\mu\notin\{0,\infty,\pm1,\pm i\}\) of the Wronskian \(W(S_\nu)\). In particular it is squarefree iff \(W(S_\nu)\) has only simple zeros off \(\{0,\infty,\pm1,\pm i\}\). By multilinearity and \(W(\mu^{e_1},\ldots,\mu^{e_s})=\prod_{i&lt;j}(e_j-e_i)\,\mu^{\sum e_i-\binom s2}\), \(W(S_\nu)\) is an explicit sum of at most \(2^s\) Vandermonde-weighted monomials.</p>
+<p><em>Proof.</em></p>
+<p>1. For \(a\) with distinct nonzero entries, \(\dim V_\nu=N\) by Kummer theory. So \(\Delta_\nu(a)=0\) iff \(V_\nu\) has a nonzero element of order \(\ge N\) at \(p_0\), that is, iff \(\mu_0\) has positive weight for \(V_\nu\). Over \(\overline F\), as in the conic theorem's step 3, every non-collision prime factor of the binary form \(\Delta_\nu\) is linear, \(\pi=a_2-x_0a_1\) with \(x_0\notin\{0,1,\infty\}\). Its multiplicity is the weight of \(p_0\) at a point of \(V(\pi)\), by the Wronskian identity of the <a href="#cube-generic-normality">generic normality lemma</a> and the transversality computed there, which uses only that \(\pi\) is not a collision form.</p>
+<p>2. The series \(V_\nu\) is fixed and \(G\)-stable, so its weights are \(G\)-invariant. The non-identity elements of \(G\) fix only \(\{0,\infty\}\), \(\{\pm1\}\) and \(\{\pm i\}\), so a non-special fibre of \(x\) is a single free \(G\)-orbit of 4 points, all of the same weight. Hence the multiplicity of \(a_2-x_0a_1\) is the weight of \(V_\nu\) at any \(\mu\) with \(x(\mu)=x_0\).</p>
+<p>3. Apolarity. Pair \(\mathrm{Poly}_{2c}\) with itself by the \(SL_2\)-invariant form \(\langle\mu^i,\mu^j\rangle=\delta_{i+j,2c}(-1)^i\binom{2c}i^{-1}\). Let \(F_k(p)\subseteq\mathrm{Poly}_{2c}\) be the polynomials vanishing to order \(\ge k\) at \(p\). At \(p=0\) the annihilator of \(F_k(0)\) is \(F_{2c+1-k}(0)\), and \(SL_2\)-invariance carries this to every \(p\): the polynomials vanishing to order \(\ge k\) at \(p\) have annihilator the polynomials vanishing to order \(\ge2c+1-k\) at \(p\). So for \(S=V^\perp\), of dimension \(s\), \(\dim(S\cap F_{2c+1-k}(p))=k-(2c+1)+s+\dim(V\cap F_k(p))\) for every \(k\). The two jump sequences therefore determine each other, and the weights of \(V\) and \(S\) at \(p\) are equal.</p>
+<p>4. \(V_\nu\) is cut out by the conditions \(a_{c+m}=\pm a_{c-m}\), or \(a_{c\pm m}=0\), on the coefficients of its elements. The functional "coefficient \(a_j\)" is paired with \(\binom{2c}j(-1)^j\mu^{2c-j}\), and the weights at \(j=c\pm m\) are equal because \(2c\) is even. So \(V_\nu^\perp=S_\nu\) as listed.</p>
+<p>5. At \(p\ne0,\infty\) the orders of \(\mu^cV\) in \(\mathrm{Poly}_{2c}\) are the orders of \(V\) on \(\Gamma\), which is all the proof uses. The weight of \(S\) at \(\mu\ne0,\infty\) is \(\operatorname{ord}_\mu W(S)\), in characteristic 0. Combining 1–5 gives the formula. \(\square\)</p>
+<h4>Checks and consequences</h4>
+<p>The PARI/GP tool <code>research/tools/bmd_cube_conic_dual.gp</code> builds \(S_\nu\), factors \(W(S_\nu)\) and maps it to \(x\) by a resultant. One run of it, <code>research/results/bmd-r133-conic-dual/dual-vs-delta.txt</code>, compares nine vectors with the exact factorization of \(\Delta_\nu\). They agree, multiplicities included, each root appearing 4 times in the resultant. The vectors are:</p>
+<ul>
+<li>\((2,1,1,0)\), \((3,2,2,1)\), \((4,3,2,1)\), \((4,2,1,0)\);</li>
+<li>the triple-side vectors \((4,2,2,0)\), \((6,4,4,2)\), \((8,6,6,4)\);</li>
+<li>the non-monotone \((3,0,1,1)\) and \((3,3,4,1)\).</li>
+</ul>
+<p>For \((3,0,1,1)\), \(W(S)=(\mu^2-\mu+1)^3(\mu^2+\mu+1)^3\) times special factors, which gives \((x+3)^3\). That is the recorded failure \((3a_1+a_2)^3\), now a triple zero at the primitive sixth roots of unity.</p>
+<p>The conic theorem in one line. For \(\nu=(d,d-1,d-1,d-2)\), only \(\mu^{2d}-\mu^{-2d}\) is missing, so \(S=\mathrm{span}\{1-\mu^{4d}\}\). Its zeros \(\mu^{4d}=1\) are simple, and the non-special ones give \(x=-\cot^2(\pi j/2d)\).</p>
+<p>The triple sides. For \(\nu'_d\), \(S=\mathrm{span}\{1-\mu^{8d},\ \mu^2-\mu^{8d-2},\ \mu^4-\mu^{8d-4},\ \mu,\ \mu^{8d-1}\}\). The lowest power of \(\mu\) in \(W(S)\) is \(\mu^{8d-4}\), and \(W(S)/\mu^{8d-4}\) is a palindromic 8-nomial in \(t=\mu^4\), with exponents \(0,2d-2,2d-1,2d,4d-3,4d-2,4d-1,6d-3\) and Vandermonde coefficients. After removing \((t-1)^6(t+1)\), its squarefreeness for every \(d\) is exactly what the triple sides need. The quotient \(Q_d\), of degree \(6d-10\), has nonzero discriminant and does not vanish at \(t=-1\) for every \(d\le10\) (same run). So the triple sides are squarefree through \(d=10\), by the theorem. Only two roots of each \(Q_d\) are real, so real-rootedness is not the mechanism.</p>
+<p><strong>General statement.</strong> <code>thm:cube-conic-duality</code>, for every \(n=2\) degree vector in characteristic 0. It turns <code>conj:cube-monotone-squarefree</code> for \(n=2\) into the statement that \(W(S_\nu)\) has simple zeros off \(\{0,\infty,\pm1,\pm i\}\) for monotone \(\nu\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the conic theorem (the multiplicity step), the generic normality lemma, and the monotone-squarefree data. A claim search (conic, Wronskian, binomial, dual series, apolar) found no earlier duality result; the nearest is the binomial order criterion (Stöhr–Voloch), which concerns orders, not this duality. A fresh-context referee checked:</p>
+<ul>
+<li>the rigidity and the formulas for \(w_i\), \(T\), \(a_i\) and \(x\);</li>
+<li>the collision correspondence and the frequency ranges, including entries \(-1\);</li>
+<li>the apolarity annihilator and the equality of weights, and the dual signs;</li>
+<li>the tool against the outputs, including the \(x\) convention, on the asymmetric vectors.</li>
+</ul>
+<p>It found the proof correct, and confirmed extra vectors \((2,-1,0,-1)\) and \((1,-1,-1,1)\). Its corrections are made:</p>
+<ul>
+<li>the lowest power \(\mu^{8d-4}\), not \(\mu^6\);</li>
+<li>the evidence regenerated by one run of the committed tool;</li>
+<li>the pole orders stated in the rigidity argument;</li>
+<li>\(N_\nu\ge1\);</li>
+<li>\(F_k(p)\) defined;</li>
+<li>the linear factors taken over \(\overline F\);</li>
+<li>the free-orbit clause;</li>
+<li>the orders compared only off \(0,\infty\);</li>
+<li>the assessment's proof idea rephrased.</li>
+</ul>
+<p><strong>Assessment.</strong> For two branch points the whole problem is now explicit. The curve with its group action is rigid, and every \(V_\nu\) is a fixed space of trigonometric polynomials. Its non-collision Weierstrass points are the zeros of the Wronskian of a binomial space, a fewnomial with Vandermonde coefficients. This explains the conic theorem and the recorded failures, and it reduces both conic statements of the quadrangle route to simple zeros of explicit fewnomials in \(t=\mu^4\). The next step is that statement for the triple-side 8-nomial, which has integer exponents linear in \(d\) and coefficients polynomial in \(d\). Since the exponents are linear in \(d\), a proof may use asymptotics in \(d\): the terms fall into four clusters, which locate the roots near circles by Rouché's theorem. A finite range of small \(d\) would then be checked directly.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-r133">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 27.19 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 34.88 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 4.04 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 45.38 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2.72 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.17 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
