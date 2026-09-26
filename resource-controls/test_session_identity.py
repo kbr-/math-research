@@ -35,10 +35,21 @@ class SessionIdentityChecks(unittest.TestCase):
         self.write_turns(('model-a', 'low'), ('model-b', 'medium'))
         with self.log.open('a') as f:
             f.write('{"partial":')
-        self.assertEqual(compute.session_model(model='unknown'), 'model-b, medium reasoning')
+        self.assertEqual(compute.session_model(), 'model-b, medium reasoning')
         self.write_turns(('model-b', 'high'))
         self.assertEqual(compute.session_model(model='model-b, medium reasoning'),
                          'model-b, high reasoning')
+
+    def test_placeholder_rejected_before_creating_a_session_when_settings_are_known(self):
+        self.write_turns(('model-a', 'high'))
+        with patch.object(compute, 'LOGS', self.home/'logs'):
+            for label in ('unknown', 'GPT-6, unknown reasoning setting',
+                          'unspecified', 'placeholder', 'MODEL, reasoning setting'):
+                with self.subTest(label=label), self.assertRaisesRegex(ValueError, 'Omit --model'):
+                    compute.start_session('bad-label', model=label)
+            self.assertFalse((self.home/'logs').exists())
+            path = compute.start_session('automatic')
+        self.assertEqual(json.loads(path.read_text())['model'], 'model-a, high reasoning')
 
     def test_claude_keeps_explicit_and_environment_precedence(self):
         self.write_turns(('codex-model', 'medium'))

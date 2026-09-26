@@ -114,6 +114,10 @@ def session_model(agent=None, model=None):
     if (agent or detect_agent()) == 'Codex':
         recorded = codex_session_model()
         if recorded:
+            if model and (re.search(r'\b(unknown|unspecified|placeholder)\b', model, re.I)
+                          or model.strip().startswith('MODEL,')):
+                raise ValueError('Codex active settings are available: ' + recorded
+                                 + '. Omit --model; do not supply a placeholder.')
             return recorded
     return model or os.environ.get('MATH_AGENT_MODEL')
 
@@ -121,13 +125,14 @@ def session_model(agent=None, model=None):
 def start_session(name, agent=None, model=None, notebook=None):
     from notebooks import selected
     notebook = selected(notebook, ROOT)["name"]
+    model = session_model(agent, model) or 'unspecified'
     # Record who produced the cycle; never a machine-local session ID.
     path = session_path(name)
     with locked(path):
         if path.exists():
             raise ValueError('Session exists; choose a new name')
         add_event(path, 'start', boot_id=boot_id(), agent=agent or detect_agent(),
-                  model=session_model(agent, model) or 'unspecified', notebook=notebook)
+                  model=model, notebook=notebook)
     return path
 
 

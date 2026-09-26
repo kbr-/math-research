@@ -131,7 +131,9 @@ rules to growing checklists or one-off setup narratives.
   timing export/archive, staging, commit, and any authorized push. Stop on failure;
   finish the local checkpoint before developing the next result.
 - Measure every research turn from as early as practical, including reading,
-  failed attempts and retries: `./compute.sh start TURN --model "MODEL, reasoning setting"`.
+  failed attempts and retries: `./compute.sh start TURN`. Codex uses active session
+  metadata; omit `--model` rather than supply a guessed or placeholder label. For
+  other agents or unavailable metadata, follow the computation policy's fallback.
   Disclose work before instrumentation. Follow the computation policy for phase
   markers, protected commands, honest timing scope, numerical accuracy and outputs.
   Keep full output on disk and display bounded excerpts. Focus checks on mathematics

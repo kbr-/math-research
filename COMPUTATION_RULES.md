@@ -184,7 +184,7 @@ resource enforcement and timing. Run it directly, not with `bash`.
 From the repository root:
 
 ```bash
-./compute.sh start turn001 --model "MODEL, reasoning setting"
+./compute.sh start turn001
 ./compute.sh phase turn001 reading --note "Read the relevant proof"
 ./compute.sh phase turn001 mathematics
 ./compute.sh phase turn001 coding --note "Design and implement a computation"
@@ -200,6 +200,10 @@ under `CODEX_HOME/sessions` (default `~/.codex/sessions`) and records its `model
 and `effort`. These active-turn settings take precedence over supplied labels;
 configuration defaults are not evidence of the active setting. Only the model
 and reasoning setting enter the timing record, never the thread ID or transcript.
+Omit `--model` for Codex starts; the example above uses this automatic path. Do
+not supply guessed/placeholder labels or claim the setting is unknown before
+checking the active metadata. When metadata is available, `start` rejects an
+explicit unknown/unspecified/placeholder label instead of silently correcting it.
 If that metadata is unavailable, supply `--model "MODEL, reasoning setting"` or
 `MATH_AGENT_MODEL`; use `unknown` only for information you cannot establish.
 Other agents, including Claude Code, retain their explicit-model/environment
