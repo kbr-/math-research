@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> A1's open core is now precise: blocks whose interaction part is dense, where W follows if 1 stays outside the operator closure \(W_A\) of their clauses on the residual expander (<a href="#entry-2026-09-26-relative-review">relative review</a>). A few jointly far dense blocks are harmless, so defeating this certificate takes many. Next, a model case: one dense, far-from-additive linear equation \(L=0\) added to functional graph PHP on an expander. Decide whether \(1\notin W_{\{L\}}\), and characterize the equations for which it fails; counting statistics such as \(\sum_vo_v-n\) fail at degree 1.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (adversarial W).</strong> The model case is answered for few equations. Unary PHP plus up to \(q\le c\ln n\) affine equations whose combinations are all far from additive stays hard at degree \(\sqrt n/(C\,3^{5q})\), by a level-set residual and swap decay, and W holds for families of that many such blocks (<a href="#entry-2026-09-26-few-equations">few equations</a>). The collective case, polynomially many equations or clauses, is still open, and the conditioning law predicts a loss of only about \(q/(2(n-1))\). Next: look for a restriction whose degradation is polynomial in \(t\) rather than \(3^{5q}\). Candidates are residual cells chosen by a linear condition on the span of the equations instead of common level sets. That would be the first collective mechanism.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -27115,6 +27115,105 @@ because \(er\le n^{\eta/2}\) for large \(n\), as \(r=O(\ln n)\). This is at most
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 41.46 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.34 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-few-equations" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="thm:few-equations-hardness cor:few-blocks-w">
+<h3>The few-equations theorem: unary PHP plus up to \(c\ln n\) affine equations whose combinations are all far from additive has no PC refutation of degree \(\sqrt n/(C\,3^{5q})\), and W holds for families of that many such blocks</h3>
+<p class="entry-meta">26 September 2026 · Working proof, given imported theorem · open statement A1, model case · cycle odd-prime-dense-equation.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-relative-review">relative review</a> proposed a model case for A1's dense core. Add one dense linear equation \(L=0\), far from additive, to functional PHP, and decide whether it stays hard. Some additive equations refute at once. For random equations the record has conj:random-affine-conditioning-law, a conjecture: each \(n-1\) random equations lower the degree by about one half. Are adversarial far-from-additive equations harmless, and how many?</p>
+<p><strong>General statement.</strong> Two results over \(\mathbb F_3\), thm:few-equations-hardness and cor:few-blocks-w. Fix \(\varepsilon&gt;0\). There are absolute constants \(c,C&gt;0\) and an \(n_0(\varepsilon)\) such that, for \(n\ge n_0\) and \(1\le q\le c\ln n\):</p>
+<ul>
+<li>thm:few-equations-hardness: let \(L_1,\dots,L_q\) be affine forms in the cells of the \((n+1)\times n\) board, and suppose every nonzero combination of their coefficient matrices is \(\varepsilon\)-far from the additive matrices \(u_i+v_t\). Then functional unary PHP plus the equations \(L_j=0\) has no PC refutation of degree at most \(\sqrt n/(C\,3^{5q})\). The functional system has Booleanity, functionality, collisions and linear rows. The same holds for unary \(\mathrm{PHP}^{n+1}_n\) without the functionality axioms, on the same board and variables.</li>
+<li>cor:few-blocks-w: W holds for every family of at most \(q\) blocks in which each block \(b\) contains a form \(L_{j_b}\), and the chosen forms have every nonzero combination \(\varepsilon\)-far from additive. Here W's parameters are \(k\le C'(K+1)\ln n\) and \(n\ge n_0(\varepsilon,C',K)\).</li>
+</ul>
+
+<h4>The choice</h4>
+<p>Let \(h=\lceil\sqrt n\rceil\). As in thm:cell-family-w:</p>
+<ul>
+<li>\(H\) is a uniform set of \(h\) holes, and \(\pi\) a uniform injection of holes into pigeons;</li>
+<li>\(\rho=\{(\pi(t),t):t\notin H\}\), and \(R\) is the set of \(r=h+1\) unused pigeons;</li>
+<li>for \(i\in R\), let \(\Lambda_i\subseteq H\) be the lexicographically least among the largest sets of holes on which the vector \((A_1(i,t),\dots,A_q(i,t))\in\mathbb F_3^q\) is constant, with value \((\lambda_{1,i},\dots,\lambda_{q,i})\). Then \(|\Lambda_i|\ge h/3^q\);</li>
+<li>\(G'\subseteq R\times H\): each \(i\in R\) takes a uniform 5-subset of \(\Lambda_i\), independently of everything else.</li>
+</ul>
+<p>Given \((H,R)\), the matching \(\rho\) is a uniform bijection from the \(N=n-h\) pigeons outside \(R\) onto the holes outside \(H\), as in Step 3 of thm:cell-family-w. It is independent of \(G'\): the sets \(\Lambda_i\) are a deterministic function of \(H\), \(R\) and the matrices, and \(G'\) adds fresh randomness. cor:dense-shift-equidistribution gives uniform constants for the choice of thm:logarithmic-residual-w. Here \(G'\) is drawn from the \(\Lambda_i\) instead, so the conditioning is re-derived; the constant bound is the same.</p>
+<p>Concrete requirements, all implied by \(q\le c\ln n\) with \(c&lt;1/(10\ln3)\) and \(n\ge n_0\):</p>
+<ul>
+<li>\(h/3^q\ge5\);</li>
+<li>\(h\ge100\), so that \(r\le1.01h\);</li>
+<li>\(s\ge50\) in Step 1, that is \(h\ge50\cdot1986\cdot3^{5q}\);</li>
+<li>\(e^{-\varepsilon(\varepsilon N/16-1)/16}\le3^{-q}/2\) in Step 2, the only requirement that depends on \(\varepsilon\).</li>
+</ul>
+
+<h4>Step 1: the residual expands</h4>
+<p>Let \(s=\lfloor h/(1986\cdot3^{5q})\rfloor\). For \(U\subseteq R\) with \(|U|=u\le s\), the event \(|N(U)|&lt;3u\) puts every row of \(U\) inside a set \(T\) of \(3u\) holes. A row lands there with probability at most \((|T|/|\Lambda_i|)^5\le(3^{q+1}u/h)^5\). The union bound, as in Step 2 of thm:cell-family-w, gives</p>
+\[\binom ru\binom h{3u}\Bigl(\frac{3^{q+1}u}h\Bigr)^{5u}\le\Bigl(\frac{er}u\Bigr)^u\Bigl(\frac{eh}{3u}\Bigr)^{3u}\Bigl(\frac{3^{q+1}u}h\Bigr)^{5u}=\Bigl(\frac{e^4\,3^{5q+2}\,r\,u}{h^2}\Bigr)^u\le4^{-u},\]
+<p>using \(r\le1.01h\), \(u\le s\), \(3u\le h\) and \(4\cdot1.01\cdot e^4\cdot9\le1986\). Summing over \(u\ge1\), the failure probability is at most \(1/3\). Otherwise \(|N(U)|\ge3|U|\) for all \(|U|\le s\). With left degree 5 this gives \(|\partial U|\ge2|N(U)|-5|U|\ge|U|\), so \(G'\) is an \((s,1)\)-boundary expander. By imp:MN-functional-graph-degree, functional graph PHP on \(G'\) with linear rows has no PC refutation of degree at most \(s/10\), which is at least 5.</p>
+
+<h4>Step 2: the constants vanish together</h4>
+<p>The restriction \(\phi\) is as in lem:span-restriction: the cells of \(\rho\) are set to 1, the other cells in their rows and columns to 0, and the cells of \(R\times H\) outside \(G'\) to 0. It maps each axiom of functional unary PHP to an axiom of functional graph PHP on \(G'\) with linear rows, or to 0:</p>
+<ul>
+<li>the rows of pigeons outside \(R\) go to \(1-1=0\);</li>
+<li>the rows of pigeons in \(R\) go to the rows of \(G'\);</li>
+<li>functionality and collisions go to axioms or to 0.</li>
+</ul>
+<p>Write \(L_j=a_{j,0}+\sum A_j(i,t)x_{it}\). With the residual rows \(\mathrm{row}_i=\sum_{t\in N_{G'}(i)}x_{it}-1\),</p>
+\[\phi(L_j)=\sum_{i\in R}\lambda_{j,i}\,\mathrm{row}_i+\kappa_j,\qquad\kappa_j=a_{j,0}+\sum_{i\notin R}A_j(i,\rho(i))+\sum_{i\in R}\lambda_{j,i}.\]
+<p>Given \((H,R,G')\), the vector \((\kappa_j)\) is the vector of statistics \(\sum_{i\notin R}A_j(i,\rho(i))\) shifted by a fixed vector. Every nonzero combination of the sub-board matrices on \((\text{pigeons}\setminus R)\times(\text{holes}\setminus H)\) stays at distance at least \(\varepsilon/2\) from additive for \(n\ge n_0\). Indeed, an additive fit on the sub-board, extended arbitrarily to the board, errs on at most \(\delta N^2+rn+h(n+1)\) cells, and \(n(n+1)\ge N^2\), so \(\delta\ge\varepsilon-O(n^{-1/2})\). By lem:swap-decay, part 2, with \(\varepsilon/2\):</p>
+\[P\bigl(\kappa=0\mid H,R,G'\bigr)\ge3^{-q}-(1-\varepsilon/16)^{\lfloor\varepsilon N/16\rfloor}\ge3^{-q}/2 .\]
+<p>The expansion event depends only on \((H,R,G')\), so some outcome has both an expanding \(G'\) and \(\kappa=0\).</p>
+
+<h4>Step 3: the refutation restricts</h4>
+<p>Fix that outcome. Each \(\phi(L_j)\) is then a linear combination of residual row axioms. Take a PC refutation of degree \(D\) of PHP plus the equations and apply \(\phi\) line by line. A multiplication by a variable that \(\phi\) sends to 0 or 1 becomes a zero line or a repeated line. The result is a refutation of degree at most \(D\) from functional graph PHP on \(G'\) together with the axioms \(\phi(L_j)\). Replacing each \(\phi(L_j)\) by its expression through row axioms keeps every line and its degree, and gives a refutation of functional graph PHP on \(G'\) of degree at most \(D\). By Step 1, \(D&gt;s/10\). Once \(s\ge50\), \(s\ge h/(2\cdot1986\cdot3^{5q})\), so \(C=39720\) works. The system without functionality has a subset of the axioms, so any refutation of it is one of the functional system. \(\square\)</p>
+
+<h4>The corollary for W</h4>
+<p><em>Proof of cor:few-blocks-w.</em> Put each chosen form \(L_{j_b}\) in its block's prefix, padded to \(\min(k,h_b)\) forms. Blocks with \(h_b\le k\) have no clauses. Each remaining clause, \(g_i\prod_{j\in S_b}L_j^2\), contains the factor \(L_{j_b}^2\). So it is derived at degree \(2k+2\) from the equation \(L_{j_b}=0\), by multiplying that axiom by \(L_{j_b}g_i\prod_{j\ne j_b}L_j^2\), one variable at a time. A refutation of degree \(22k\) of W's system would therefore give one of PHP without functionality plus the \(q\) equations at degree \(\max(22k,2k+2)=22k\). That is excluded once \(22k\le\sqrt n/(C\,3^{5q})\), which holds for \(k\le C'(K+1)\ln n\), \(q\le c\ln n\) and \(n\ge n_0(\varepsilon,C',K)\). \(\square\)</p>
+
+<h4>What it means</h4>
+<ul>
+<li><em>The model case is answered for few equations.</em> A single far-from-additive equation leaves PHP hard at degree \(\Omega(\sqrt n)\), and so do up to \(c\ln n\) of them whose combinations are all far. Some additive equations refute. The hole-count equation \(\sum_{i,t}x_{it}=n\) has the all-ones matrix, at distance 0, and against the rows' sum \(\sum x=n+1\) it gives \(1=0\) at degree 1. The proof is the level-set kill of the relative review, made rigorous. Restricting inside common level sets makes each equation a sum of rows, and the random matching zeroes the constants.</li>
+<li><em>The observation of the relative review is now a theorem.</em> W holds for families of up to \(c\ln n\) blocks with jointly far chosen forms. So a family that defeats W needs more than about \(c\ln n\) dense blocks whose chosen forms stay jointly far.</li>
+<li><em>What it leaves open.</em> The bound degrades like \(3^{-5q}\), so it says nothing for polynomially many equations or blocks. For random equations with \(q\le c\ln n\), the theorem gives \(\Omega(\sqrt n/3^{5q})\) unconditionally. conj:random-affine-conditioning-law (a conjecture) predicts about \(n/2\), a loss of about \(q/(2(n-1))\). The gap is the collective case again, and it sits behind A1's dense core.</li>
+<li><em>A failed measurement, recorded.</em> Before this proof, the cycle computed degree-truncated standard bases in Singular. The runs covered 6 random boards of 8 pigeons, 7 holes and left degree 3, each with one added equation of several types. The files are <code>research/results/odd_prime_dense_equation_20260926/</code>, <code>make_equation_script.py</code> and <code>equation_degrees.out.txt</code>. Degree-truncated standard bases of inhomogeneous systems depend on the order and the strategy, and do not compute PC degree. Here the output was not even monotone: several systems with an added equation needed a higher bound than the base alone. The numbers are discarded. The boards were also far below any size at which the expander bound is nonvacuous, so the test could not have decided the question and should not have been run. The pitfall is now noted in <code>COMPUTATION_RULES.md</code>.</li>
+</ul>
+<p><strong>What is open.</strong> Polynomially many equations, and W's clauses in the collective regime.</p>
+<p><strong>Next.</strong> Look for a restriction whose degradation is polynomial in \(q\) rather than \(3^{5q}\). For instance, residual cells chosen by a linear condition on the span of the equations instead of common level sets. That would be the first collective mechanism.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read:</p>
+<ul>
+<li>lem:swap-decay and cor:dense-shift-equidistribution;</li>
+<li>the choice, Step 2 and the Step 3 conditioning of thm:cell-family-w;</li>
+<li>the restriction setting of lem:span-restriction;</li>
+<li>imp:MN-functional-graph-degree and its transfer to linear rows;</li>
+<li>conj:random-affine-conditioning-law.</li>
+</ul>
+<p>A claim search and the reviewer found no recorded PC lower bound for PHP plus adversarial affine equations. A fresh-context reviewer checked the expansion constants, the boundary inequality, the formula for \(\phi(L_j)\) and \(\kappa_j\), the axiom mapping and the Step 3 simulation. It found no unused hypothesis. It required these changes, all adopted:</p>
+<ul>
+<li>the equation count renamed \(q\), apart from the hole index;</li>
+<li>the distance loss written out;</li>
+<li>a tie-breaking rule for \(\Lambda_i\);</li>
+<li>the concrete requirements, and which constants depend on \(\varepsilon\);</li>
+<li>the system without functionality named precisely;</li>
+<li>"some additive equations refute", with the example;</li>
+<li>the transfer to W's clauses stated in the right direction, now the corollary;</li>
+<li>the conditioning law labelled a conjecture;</li>
+<li>the failed measurement's files and the reason it fails.</li>
+</ul>
+<p>The corollary is the reviewer's transfer written out: a factor argument plus the theorem, with no new mathematics. So no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-dense-equation">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 49.03 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 26.42 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 18.16 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 0.69 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 2.13 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.51 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>

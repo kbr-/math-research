@@ -67,7 +67,10 @@ manually run outside the launcher are not inside the workload group.
   bases: commutative algebra, modules and homology, combinatorics, representation theory of
   symmetric groups in positive characteristic, and linear algebra over finite fields. Consider
   them for every computation they could improve, and prefer them to a hand-built kernel unless
-  the kernel is measured to be faster.
+  the kernel is measured to be faster. A degree-truncated standard basis (Singular's `degBound`)
+  does not measure PC refutation degree: on 26 September 2026 it gave higher degrees after an
+  axiom was added, which PC degree never does. Measure PC degree with an exact degree-D closure
+  computation, and check monotonicity under added axioms as a control.
 - Hand-written C/C++ kernels build their exact linear algebra on the installed libraries, not
   on hand-written elimination: **fflas-ffpack** (dense rank, echelon form, nullspace and products
   mod p at BLAS speed; `FFPACK::Rank`), **FLINT** (`nmod_mat`, polynomials), **LinBox** (sparse
