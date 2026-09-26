@@ -35,22 +35,12 @@ class Entries(HTMLParser):
         if len(ids)!=len(set(ids)):raise ValueError('Duplicate research article ID')
 
 
-_PARSED={}
-
-
-def parsed(text):
-    """Entries(text).entries, parsed once per text within a process (callers do not mutate them)."""
-    key=hash(text)
-    if key not in _PARSED or _PARSED[key][0]!=text:_PARSED[key]=(text,Entries(text).entries)
-    return _PARSED[key][1]
-
-
 def check_entries(previous,current,data,root,grandfathered=(),notebook_path=None):
     notebook_path = notebook_path or root/'notebook.html'
     # An unchanged notebook has no new entries; a callable grandfathered set is read only when needed.
-    entries=[] if previous==current else parsed(current)
+    entries=[] if previous==current else Entries(current).entries
     if entries:
-        before={e['id'] for e in parsed(previous)}
+        before={e['id'] for e in Entries(previous).entries}
         entries=[e for e in entries if e['id'] not in before]
     if entries and callable(grandfathered):grandfathered=grandfathered()
     entries=[e for e in entries if e['id'] not in set(grandfathered)]
