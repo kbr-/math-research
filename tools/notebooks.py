@@ -64,14 +64,16 @@ def selection_file(root=ROOT):
     return path if path.is_absolute() else Path(root)/path
 
 
-def selected(name=None, root=ROOT):
+def selected(name=None, root=ROOT, items=None):
+    """Pass `items`, a catalogue, to avoid rereading it on every call in a loop."""
     if name is None:
         try:
             path = selection_file(root)
             name = path.read_text().strip() if path.exists() else 'main'
         except subprocess.CalledProcessError:
             name = 'main'
-    items = catalogue(root)
+    if items is None:
+        items = catalogue(root)
     if name not in items:
         raise ValueError(f'Unknown notebook: {name}')
     return items[name]
@@ -88,8 +90,8 @@ def paths(root=ROOT):
     return [Path(root)/item['source'] for item in catalogue(root).values()]
 
 
-def public_target(target, root=ROOT):
-    """Resolve our public notebook URLs; external URLs return None."""
+def public_target(target, root=ROOT, items=None):
+    """Resolve our public notebook URLs; external URLs return None. `items` as for selected."""
     p = urlparse(target)
     if p.scheme not in ('http','https') or p.netloc not in ('kbr.is-a.dev','kbr-.github.io'):
         return None
@@ -99,7 +101,7 @@ def public_target(target, root=ROOT):
     prefix = '/math-research/branches/'
     if path.startswith(prefix):
         name = path[len(prefix):]
-        item = selected(name, root)
+        item = selected(name, root, items)
         return Path(root)/item['source'], unquote(p.fragment)
     return None
 

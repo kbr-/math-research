@@ -285,9 +285,10 @@ def reconcile(text, data, revision=None):
             'inferred_relationships': 0, 'passed': True}
 
 
-def local_target(target, root=ROOT):
+def local_target(target, root=ROOT, items=None):
+    """`items`, the notebook catalogue, as for notebooks.selected."""
     from notebooks import public_target
-    notebook = public_target(target, root)
+    notebook = public_target(target, root, items)
     if notebook is not None:
         return notebook
     p = urlparse(target)
@@ -334,9 +335,10 @@ def check_targets(data, root=ROOT):
         refs += [(edge['id'], x) for x in edge['evidence']]
         refs += [(edge['id'], e['locator']) for e in (edge['source'], edge['target'])
                  if e['namespace'] != 'current']
-    errors, external, anchors = [], set(), {}
+    from notebooks import catalogue
+    errors, external, anchors, items = [], set(), {}, catalogue(root)
     for owner, target in refs:
-        local = local_target(target, root)
+        local = local_target(target, root, items)
         if local is None:
             external.add(target)
             continue
