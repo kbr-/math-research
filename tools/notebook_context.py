@@ -5,6 +5,7 @@ from fractions import Fraction
 import importlib.util
 import json
 from pathlib import Path
+import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,11 +27,18 @@ def budgets(source, config):
     multiplier = Fraction(str(config['hard_multiplier']))
     if multiplier < 1:
         raise ValueError('Hard multiplier must be at least one')
-    book = excerpt.Notebook(source)
-    record = book.anchor('research-record')
-    if record['tag'] != 'section' or record['scope'] is not None:
+    # Only the text before the unlimited Research record is parsed. Every section and heading must
+    # be closed where the record opens, so the record is top level and no living section crosses it.
+    masked = excerpt.MATH.sub(lambda m: m.group().replace('<', ' ').replace('>', ' '), source)
+    opening = re.search(r'<section\b[^>]*\bid=["\']research-record["\']', masked)
+    if opening is None:
         raise ValueError('Research record must be a top-level section')
-    sections = [n for n in book.nodes if n['tag'] == 'section' and n['start'] < record['start']]
+    record = {'start': opening.start()}
+    try:
+        book = excerpt.Notebook(source[:record['start']])
+    except ValueError as error:
+        raise ValueError(f'Research record must be a top-level section after closed living sections: {error}')
+    sections = [n for n in book.nodes if n['tag'] == 'section']
     ids = [n['anchor'] for n in sections]
     if None in ids or len(set(ids)) != len(ids):
         raise ValueError('Every pre-record section needs a unique ID')
@@ -38,8 +46,6 @@ def budgets(source, config):
     missing = (set(regions)-{'@intro'}) - set(ids)
     if unknown or missing:
         raise ValueError(f'Unbudgeted sections: {sorted(unknown)}; missing sections: {sorted(missing)}')
-    if any(n['end'] > record['start'] for n in sections):
-        raise ValueError('Living section crosses the Research-record boundary')
     # Attribute every span to its deepest section. Nested sections are budgeted
     # separately, and aggregate accounting includes their text exactly once.
     pieces = {key: [] for key in regions}

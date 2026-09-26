@@ -56,6 +56,14 @@ class ContextBudgetTest(unittest.TestCase):
             with self.subTest(prefix=prefix), self.assertRaises(ValueError):
                 budgets(self.book(prefix),cfg)
 
+    def test_record_must_be_top_level_after_closed_sections(self):
+        for source in ['<p>no record</p>',
+                       '<section id="a"><section id="research-record"></section></section>',
+                       '<section id="a">open<section id="research-record"></section>',
+                       '<h2>open<section id="research-record"></section>']:
+            with self.subTest(source=source), self.assertRaises(ValueError):
+                budgets(source,self.config({'@intro':5,'a':5}))
+
     def test_record_is_unlimited_and_math_is_not_a_section(self):
         source=self.book(r'\(a<section>b\)', '<article>'+'many '*10000+'</article>')
         result=budgets(source,self.config({'@intro':100}))
