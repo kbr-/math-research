@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The 3-integrality lead passed its base case, conditionally on a rational rank: weak PHP with 6 pigeons at Nullstellensatz degree 3 has a 3-integral rational dual functional despite 6 dimensions of 3-torsion (<a href="#entry-2026-09-26-hensel-saturation">Hensel saturation</a>). Next: test whether the 6 lifted torsion directions lie in the degree-3 PC-derivable space over \(\mathbb F_3\), which would reduce conj:three-integral-php-certificates to Razborov's bound, using the recorded closure tester. Then add one dense constraint \(L^2-1\) with a stated integer lift, report its 3-torsion first, and decide whether integral certificates survive.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The 3-integrality lead's base case holds conditionally at 6 pigeons and Nullstellensatz degree 3, but not through Razborov's bound: the 6 saturation directions lie outside the \(\mathbb F_3\) PC closure (<a href="#entry-2026-09-26-hensel-saturation">Hensel saturation</a>, <a href="#entry-2026-09-26-torsion-pc">torsion and PC</a>). Next: add one dense constraint \(L^2-1\), with coefficients of \(L\) lifted to \(\{0,1,2\}\), to weak PHP with 6 pigeons at degree 3. Over a few seeds report whether the instance is unrefuted over \(\mathbb F_3\) and has 3-torsion, then whether a 3-integral certificate survives.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -29672,6 +29672,45 @@ and the next step given a stated lift, a torsion report and the NS-versus-PC sco
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.19 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-torsion-pc" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:torsion-outside-pc-closure" data-lead="entry-2026-09-26-closed-routes-review:2">
+<h3>The torsion directions are not PC consequences: at 6 pigeons and degree 3 the \(\mathbb F_3\) PC closure of weak PHP equals its Nullstellensatz span, and the 6 directions that 3-saturation adds lie outside it, so the integrality conjecture does not reduce to Razborov's bound there</h3>
+<p class="entry-meta">26 September 2026 · Finite check · open statement A1 · cycle odd-prime-torsion-pc.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The <a href="#entry-2026-09-26-hensel-saturation">Hensel saturation entry</a> found, conditionally on a rational rank, that weak PHP with 6 pigeons at Nullstellensatz degree 3 has a 3-integral rational dual functional despite 6 dimensions of 3-torsion. Its reviewer proposed a sharper route to conj:three-integral-php-certificates. If the 3-saturation \(\mathrm{Sat}(L_d)\bmod3\) lies inside the degree-\(d\) PC closure \(C_d\) over \(\mathbb F_3\), then Razborov's bound, \(e_1\notin C_d\) for \(d&lt;n/2+1\), gives \(e_1\notin\mathrm{Sat}(L_d)+3\mathbb Z_{(3)}^N\). Do the torsion directions lie in \(C_3\)?</p>
+<p><strong>General statement.</strong> conj:three-integral-php-certificates, tested here through the containment \(\mathrm{Sat}(L_d)\bmod3\subseteq C_d\), which would imply it. The finite check ex:torsion-outside-pc-closure refutes the containment at the first informative size.</p>
+
+<h4>The computation</h4>
+<p>The script <code>torsion_pc.py</code> builds the integer generator matrix \(G\) of \(L_3\) for weak \(\mathrm{PHP}^6_5\), with rows \(\sum_jx_{ij}-1\) and collisions \(x_{ij}x_{i'j}\), multilinear. It lifts a basis of the left kernel of \(G\) over \(\mathbb F_3\) (FLINT) and forms the integral rows \(\tilde yG/3\), one lifting step, which reached the rational rank in the saturation entry. Then it computes \(C_3\) over \(\mathbb F_3\) by the recorded closure method, \(V\leftarrow V+y\cdot(V\cap R_{\le2})\) for every variable \(y\) until stable, with the multiplication maps stacked into one sparse matrix. It compares ranks. The closure code was validated against the recorded <code>conservativity.closure</code> on four small cases, with equal dimensions: 64, 135, 42 and 299 (<code>validate_closure.json</code>). Output: <code>torsion_pc.json</code>.</p>
+<ul>
+<li>6 pigeons, \(d=3\): \(\dim C_3=3870\), the \(\mathbb F_3\)-rank of \(L_3\), so at this degree PC over \(\mathbb F_3\) derives nothing beyond the Nullstellensatz span. \(C_3\) together with \(L_3\) still has rank 3870. With the lifted rows added the rank is 3876, and \(1\notin C_3\). So all 6 saturation directions lie outside \(C_3\).</li>
+<li>5 pigeons, \(d=3\), control: \(C_3\) is the whole space (\(1\in C_3\)), as the \(\mathbb F_3\) refutation at degree 3 requires.</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li>The sharper route fails at the first informative size: \(\mathrm{Sat}(L_3)\bmod3\not\subseteq C_3\). A 3-integral certificate there must vanish on 6 directions that are not PC consequences over \(\mathbb F_3\). So integral certificates are strictly more constrained than \(\mathbb F_3\) ones, and the conjecture needs its own argument; Razborov's bound over \(\mathbb F_3\) does not give it.</li>
+<li>At this size the saturation entry found that such a certificate exists anyway, conditionally on the rational rank 3876. So the extra constraints are satisfiable here, but no reason is known.</li>
+<li>The torsion directions are integral combinations of axiom multiples divided by 3. They are consequences of the axioms over \(\mathbb Z_{(3)}\)-coefficients that reduction mod 3 cannot see as derivations. That is the 3-adic phenomenon the lead depends on.</li>
+</ul>
+<p><strong>Next.</strong> Test the lead where it matters for A1: PHP plus one dense constraint. For weak PHP with 6 pigeons at Nullstellensatz degree 3, add the axiom \(L^2-1\), which says \(L\ne0\), for a random dense form \(L\) with coefficients lifted to \(\{0,1,2\}\). Over a few seeds, report first whether the instance is unrefuted over \(\mathbb F_3\) and whether its lattice has 3-torsion, then whether \(e_1\) lies in its 3-saturation modulo 3. Integral certificates that survive a dense constraint would keep the characteristic-0 route open at NS degree. Failing ones, on unrefuted instances, would close it at the blocks.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the saturation entry's criterion and lifting, and the recorded closure method. The new closure code was validated against the recorded one. The containment test is a rank comparison over \(\mathbb F_3\) and does not depend on the rational rank. It shows that the lifted rows, which lie in \(\mathrm{Sat}(L_3)\) whatever the rational rank is, are not all in \(C_3\). A fresh-context reviewer is not run for a finite check that refutes a proposed containment by a single rank comparison and validated code. The computation adds no mathematical claim beyond that comparison.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-torsion-pc">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 36.44 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">33.55 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">22.89 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 59.63 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">41.02 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 59.21 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
 </div>
 </article>
 
