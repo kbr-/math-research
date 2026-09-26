@@ -26,7 +26,7 @@ def main():
     parser.add_argument('--public-history', help='Also check reachable paths in this public branch/ref')
     args = parser.parse_args()
     tracked = set(subprocess.check_output(['git', 'ls-files', '-z'], cwd=ROOT, text=True).split('\0')) - {''}
-    failures = []
+    failures, notes = [], []
     if not args.public_history:  # Otherwise check-claims.py below validates the registry.
         try:
             registry = load_claims(ROOT / 'research/claims/index.json')
@@ -117,15 +117,17 @@ def main():
         known = subprocess.run(['git', 'rev-parse', '--verify', '--quiet', remote], cwd=ROOT,
                                capture_output=True).returncode == 0
         claims = subprocess.run([sys.executable, str(ROOT / 'tools/check-claims.py'),
-                                 '--base', remote if known else 'EMPTY'],
+                                 '--base', remote if known else 'EMPTY', '--warn-over-limit'],
                                 cwd=ROOT, text=True, capture_output=True)
         if claims.returncode:
             failures += ['Claim-index CI check: ' + line.strip() for line in claims.stdout.splitlines()
-                         if line.startswith(('FAIL', '      ', 'Took'))]
+                         if line.startswith(('FAIL', '      '))]
+        notes += ['Claim-index CI check: ' + line for line in claims.stdout.splitlines()
+                  if line.startswith('Note:')]
     report = {'tracked_files': len(tracked), 'historical_files_checked': len(manifest['files']),
               'public_reference_pdfs_checked': len(policy['public']),
               'local_only_references_available': local_sources,
-              'public_history_checked': args.public_history, 'failures': failures}
+              'public_history_checked': args.public_history, 'failures': failures, 'notes': notes}
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(json.dumps(report, indent=2) + '\n')

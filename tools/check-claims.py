@@ -4,7 +4,9 @@
 The workflow .github/workflows/claim-index.yml runs this script, and
 tools/verify-checkout.py --public-history runs it before publication, so a push cannot
 reach CI with a failure this job would find. Outside GitHub Actions, whose runners are several
-times slower, it also fails a run that takes longer than LIMIT_S, so a slower checked push is noticed.
+times slower, it also fails a run that takes longer than LIMIT_S, so a slowdown is noticed. With
+--warn-over-limit, as a push runs it, an overrun is a note instead: a push carries changes and may
+meet a loaded machine, and a performance regression must not block publishing.
 """
 import argparse
 from concurrent.futures import ThreadPoolExecutor
@@ -77,15 +79,18 @@ def main():
     parser.add_argument('--jobs', type=int, default=8, help='Checks run at once (default 8)')
     parser.add_argument('--limit', type=float, default=LIMIT_S,
                         help=f'Wall-time limit in seconds outside GitHub Actions (default {LIMIT_S:g})')
+    parser.add_argument('--warn-over-limit', action='store_true',
+                        help='Report a run over the limit as a note instead of failing')
     args = parser.parse_args()
     start = time.monotonic()
     failures = run(args.base, args.jobs)
     elapsed = time.monotonic() - start
     slow = elapsed > args.limit and os.environ.get('GITHUB_ACTIONS') != 'true'
     if slow:
-        print(f'Took {elapsed:.1f} s, over the {args.limit:g} s limit; the times above show which checks.')
+        print(f'{"Note: took" if args.warn_over_limit else "Took"} {elapsed:.1f} s, over the {args.limit:g} s '
+              'limit; the times above show which checks.')
     print(f'{len(failures)} failing claim-index checks' if failures else 'All claim-index checks pass.')
-    return 1 if failures or slow else 0
+    return 1 if failures or (slow and not args.warn_over_limit) else 0
 
 
 if __name__ == '__main__':

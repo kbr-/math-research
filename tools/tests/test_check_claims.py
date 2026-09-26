@@ -17,12 +17,13 @@ spec.loader.exec_module(check_claims)
 class TimeLimit(unittest.TestCase):
     """check-claims.py fails a passing run that exceeds its wall-time limit, except in GitHub Actions."""
 
-    def main(self, limit, actions=False):
+    def main(self, limit, actions=False, warn=False):
         slow = lambda base, jobs: time.sleep(0.1) or []
         env = {'GITHUB_ACTIONS': 'true' if actions else ''}
         output = io.StringIO()
         with mock.patch.object(check_claims, 'run', slow), mock.patch.dict(os.environ, env), \
-                mock.patch.object(sys, 'argv', ['check-claims.py', '--limit', str(limit)]), \
+                mock.patch.object(sys, 'argv', ['check-claims.py', '--limit', str(limit)]
+                                  + (['--warn-over-limit'] if warn else [])), \
                 contextlib.redirect_stdout(output):
             return check_claims.main(), output.getvalue()
 
@@ -33,6 +34,11 @@ class TimeLimit(unittest.TestCase):
 
     def test_within_the_limit_passes(self):
         self.assertEqual(self.main(5)[0], 0)
+
+    def test_a_push_gets_a_note_not_a_failure(self):
+        status, output = self.main(0.05, warn=True)
+        self.assertEqual(status, 0)
+        self.assertIn('Note: took', output)
 
     def test_github_actions_has_no_limit(self):
         self.assertEqual(self.main(0.05, actions=True)[0], 0)
