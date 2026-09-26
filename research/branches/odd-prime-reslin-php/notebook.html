@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The 3-integrality lead's base case is proved for plain PHP on Razborov's range: every integer quadratic design extends integrally through degree \(R\) when \(n\ge2R-1\) (<a href="#entry-2026-09-26-integral-extension">integral extension</a>), so weak PHP has integer Nullstellensatz certificates through degree \(\lfloor(n+1)/2\rfloor\). The open question is whether integral certificates survive dense blocks. Next: for weak PHP with 6 pigeons at degree 3, add the axiom \(L^2-1\) for a random dense form \(L\) with coefficients lifted to \(\{0,1,2\}\). Over a few seeds report whether \(\mathbb F_3\) refutes, whether the lattice has 3-torsion, and whether \(e_1\) lies in the 3-saturation mod 3.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The integrality lead has a proved base case for plain PHP on Razborov's range (<a href="#entry-2026-09-26-integral-extension">integral extension</a>) and small positive evidence at one dense constraint (<a href="#entry-2026-09-26-dense-block-integral">one dense constraint</a>). Next: a route review of the integrality line. Assess whether it can reach A1: whether integral designs extend through constraint equations, and whether the Nullstellensatz statement can be lifted to the PC degree W needs. Decide whether to continue it or return to the collective core by another route.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -29796,6 +29796,44 @@ and the next step given a stated lift, a torsion report and the NS-versus-PC sco
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-dense-block-integral" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:integral-certificates-dense-quadric ex:dense-quadric-integral-small" data-lead="entry-2026-09-26-closed-routes-review:2">
+<h3>One dense constraint: weak PHP with 6 pigeons plus a random dense constraint \((L-1)(L-2)\) keeps a 3-integral Nullstellensatz certificate at degree 3 in both seeds computed, despite 7 dimensions of 3-torsion; the timed-out run leaves four seeds unrun</h3>
+<p class="entry-meta">26 September 2026 · Finite check and conjecture · open statement A1 · cycle odd-prime-dense-block-integral.  <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1. The integrality lead's base case is proved for plain PHP on Razborov's range (<a href="#entry-2026-09-26-integral-extension">integral extension</a>). Does an integral certificate survive a dense constraint? Add to weak \(\mathrm{PHP}^6_5\) one axiom saying \(L\ne0\) modulo 3, for a random dense form \(L\), with the integer lift \(q_L=(L-1)(L-2)\), and test at Nullstellensatz degree 3.</p>
+<p><strong>General statement.</strong> conj:integral-certificates-dense-quadric: for weak \(\mathrm{PHP}^{n+1}_n\) plus one constraint \(q_L=(L-1)(L-2)\), where \(L=c_0+\sum_ea_ex_e\) has integer coefficients in \(\{0,1,2\}\), at every degree \(d\le\lfloor(n+1)/2\rfloor\) where \(\mathbb F_3\) does not refute, the constant monomial lies outside \(\mathrm{Sat}(L_d)+3\mathbb Z_{(3)}^N\). The finite check ex:dense-quadric-integral-small is its only evidence. It depends on the chosen lift: \(q_L\) reduces to \(L^2-1\) mod 3, but over \(\mathbb Z\) it says \(L\in\{1,2\}\) exactly, which is stronger.</p>
+
+<h4>The computation</h4>
+<p>The script <code>dense_block_integral.py</code> adds the multiples of \(q_L\) by monomials of degree at most 1 to the degree-3 lattice of weak PHP. It reports the decision conditions first, then computes the 3-saturation modulo 3 by exact lifting, as in the <a href="#entry-2026-09-26-hensel-saturation">saturation entry</a>. The run was given 600 seconds for 6 seeds, took 161 and 333 seconds for the first two, and was stopped at the limit, so seeds 2 to 5 were not run (<code>dense_block_integral.json</code>).</p>
+<ul>
+<li>Seed 0 (\(L\) with 20 of 30 variables, \(c_0=0\)) and seed 1 (20 variables, \(c_0=1\)) give the same figures. The \(\mathbb F_3\)-rank is 3894, against 3870 without the constraint. The rational-rank estimate is 3901, agreeing modulo 5, 7, 11, 13, 37 and three word-size primes, so there are 7 dimensions of 3-torsion. Neither \(\mathbb F_3\), \(\mathbb F_5\) nor \(\mathbb F_7\) refutes. One lifting step reaches 3901, and \(e_1\) is outside the saturation: a 3-integral certificate exists, conditionally on the rational rank.</li>
+<li>Control, 5 pigeons at degree 3 with one constraint: \(\mathbb F_3\) refutes, as it does without the constraint, so the case is uninformative.</li>
+</ul>
+
+<h4>What it means</h4>
+<ul>
+<li>At this size one dense quadric does not break integrality, and the torsion grows from 6 to 7 dimensions without reaching the constant monomial.</li>
+<li>This is weak evidence for A1. The constraint is a single quadric, not a W block of prefix clauses of degree \(2k+2\), and degree 3 is far below W's budget. The lift is one choice, and the conclusion holds only for it. And the lead lives at Nullstellensatz degree, while W is a PC statement.</li>
+<li>The integral extension theorem does not apply with a constraint: a quadric adds equations \(\ell(m\,q_L)=0\) that tie moments of different matchings, so the design system is no longer the homogeneous chessboard system.</li>
+</ul>
+<p><strong>Next.</strong> The integrality line has produced a proved base case and small positive evidence at one block, and five research entries since the last review. Review it next. Assess whether it can reach A1: can integral designs be extended through a constraint equation, and can the Nullstellensatz statement be lifted to the PC degree W needs? Then decide whether to continue it or return to the collective core by another route.</p>
+
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the saturation criterion and the integral extension theorem. The decision conditions were reported before interpreting the result: \(\mathbb F_3\) does not refute, and there is 3-torsion, so the case is informative. The positive result is conditional on the rational rank, as stated. No fresh-context review was run for this finite check. It reuses the reviewed saturation procedure unchanged apart from the added constraint rows, and the new code only builds the multilinear product \((L-1)(L-2)\), whose expansion is written out in the script.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-dense-block-integral">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 55.44 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">56.39 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">34.37 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 18.97 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 5.46 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.25 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
