@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> The smallest open case is one wide generic dense block, wider than member pinning's capacity; vacuity cannot handle it on any residual hard enough (<a href="#entry-2026-09-26-one-dense-block">one dense block</a>). Next: a route review weighing W with chosen prefixes against W_RS for one wide block, and looking for a method in which clauses stay present and are shown harmless, starting from the Nullstellensatz criterion over the functional base.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> The smallest open case is one wide generic dense block; chosen prefixes do not make it easier, and generic blocks have no rectangles on which they reduce to statistics (<a href="#entry-2026-09-26-wide-block-review">wide-block review</a>). Next: one wide block with random forms and a random prefix, at the Nullstellensatz level over the functional base. Try to adapt the killer-moment reduction and its strata bounds to the normal forms of the block's clauses.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -30867,6 +30867,52 @@ using \(|R|=0.8h+1\le0.8h\cdot1.001\) for \(h\ge1250\), so the constant is at mo
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">42.70 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 32.19 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-wide-block-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review; it registers no claim. It weighs targets for the smallest open case, one wide generic dense block.">
+<h3>Route review at the smallest open case, one wide dense block: chosen prefixes do not make it easier, generic blocks have no large rectangles on which they reduce to statistics, and the next target is one wide random block, where both the forms and the prefix are random and moment methods apply</h3>
+<p class="entry-meta">26 September 2026 · Route review with pen tests · open statement A1 under random prefixes · cycle odd-prime-wide-block-review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 under random prefixes. Since the <a href="#entry-2026-09-26-type-capacity-review">capacity review</a>: the Nullstellensatz span criterion over the functional base (<a href="#entry-2026-09-26-dense-killer">dense killer</a>), and the reduction of the open core to one wide generic dense block (<a href="#entry-2026-09-26-one-dense-block">one dense block</a>). Which target should the line take next?</p>
+<p><strong>General statement.</strong> The line's claim is conj:randomized-wide-clause (W_RS); the goal follows from it by thm:randomized-prefix-reduction. Open: families containing a dense block, and already one generic dense block wider than member pinning's capacity.</p>
+<h4>What the goal needs</h4>
+<p>W_RS, or W, for every family. The single wide block is necessary, since a family may consist of it alone. A method for it must keep the clauses present: the one-dense-block entry's count shows they are not vacuous on any residual hard enough.</p>
+<h4>Falsification attempt</h4>
+<p><em>Could chosen prefixes help?</em> Under W, the chooser picks \(k\) forms \(S\) of the block, and the clauses \(g_i\prod_{j\in S}L_j^2\) forbid the points where every form in \(S\) is nonzero and some other form is zero. For a generic dense block with \(h\gg k\), almost every point has some zero form outside \(S\). So the clauses forbid about the fraction \((2/3)^k\) of points where the prefix is nonzero, whatever \(S\) is. A choice that made them derivable would need a prefix form that the base forces to vanish at low degree, a rigid form in the sense of prop:one-block-core, and generic dense forms are not rigid. So W is not visibly easier for one wide block than W_RS.</p>
+<p><em>Could W_RS fail for one wide block?</em> A low-degree refutation would have to use the forbidden points, a fraction about \(3^{-t}\) of the matchings with a random-looking pattern. No mechanism for that was found, and the Nullstellensatz count of the dense-killer entry is far below the fill point. W_RS is not falsified.</p>
+<h4>Assessment of the line</h4>
+<p>The random-prefix program has isolated its core to one object: a single wide generic dense block with a random prefix. Every recorded method either makes blocks vacuous (not possible here) or pins their forms (beyond capacity). The Nullstellensatz criterion states the core exactly but has no proof. The line is at a point where a new method is needed, not more classes. One step closer is the case where the block's forms are random too. Then both sources of randomness are available, and the A3 line's moment tools, which average over random forms, may apply.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><em>Beame, Impagliazzo, Krajíček, Pitassi and Pudlák, "Lower bounds on Hilbert's Nullstellensatz and propositional proofs"</em> (Proc. London Math. Soc. 73, 1996). Their designs for PHP extend to PHP with added counting axioms. Target: designs for weak PHP that also satisfy one wide block's clauses. Where it breaks: their added axioms are symmetric, and a generic block is not. <strong>Test.</strong> Not run: it needs their design construction adapted to non-symmetric constraints, which is the open question itself.</li>
+<li><em>Alekhnovich and Razborov's R-operator</em>, which tolerates extra constraints of bounded width on an expanding incidence graph. Target: one wide block. Where it breaks: the block's clauses read every cell. <strong>Test.</strong> Falsified, as recorded (prop:dense-blocks-outside-mn-framework).</li>
+<li><em>The killer-moment reduction</em> (lem:product-top-moment-reduction, lem:low-rank-strata, lem:gauss-sum-killer-bound), for a block whose forms are also random. Target: one wide random block under random prefix. Where it breaks: the reduction is for product tops of degree 4 on the weak monomial algebra, and a clause has degree \(4t+2\) with a different product structure. <strong>Test.</strong> Passed on its hypothesis: its strata bounds need uniformly random forms, which a random block has. Whether the clause structure fits the reduction is the next step's question.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><em>Zarankiewicz's problem and Ramsey-type rectangles.</em> Translation: find a large rectangle \(P\times T\) of the board, \(|P|=s+1\), \(|T|=s\), on which every form of the block reduces to row and column statistics. Then restricting by a matching outside the rectangle makes the block's interaction part vanish there, and the chain residual would finish it. Theorems on unavoidable monochromatic rectangles would give the rectangle. Smallest test: the expected number of such rectangles for a generic block. <strong>Test.</strong> Falsified. For one form, lying in the row-plus-column space on \(P\times T\) is \(s(s-1)\) independent linear conditions over \(\mathbb F_3\). For \(h\) generic forms, the expected number of rectangles is about \(\binom{n+1}{s+1}\binom ns3^{-hs(s-1)}\le n^{2s+1}3^{-hs(s-1)}\), which tends to 0 as soon as \(hs(s-1)\ge(2s+2)\log_3n\), for example for \(h\ge1\) and \(s\ge3\log_3n\); the residual needs \(s=\Theta(t)\) with a large constant, which is above that. So generic blocks have no such rectangles.</li>
+<li><em>Kolmogorov complexity: the incompressibility method.</em> Translation: a random prefix matrix has \(t\cdot h\) trits of entropy. A low-degree refutation that works for many prefix matrices might compress them, as in incompressibility lower bounds. What it would give: that no single low-degree refutation serves more than a \(3^{-\Omega(th)}\) fraction of prefixes. Smallest test: whether refutations are few enough to compress. <strong>Test.</strong> Falsified. The number of degree-\(B\) refutations, as coefficient vectors over monomials of degree at most \(B\), is \(3^{n^{\Theta(B)}}\), far more than \(3^{th}\). So counting refutations cannot compress the prefix.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-type-capacity-review:1">Dilute quenched disorder, the Harris criterion. The <a href="#entry-2026-09-26-dense-killer">dense-killer entry</a> developed it into an exact Nullstellensatz span criterion over the functional base, with the count far below the fill point, but without a proof. <strong>Follow-up.</strong> Continuing: the criterion is exact, and whether dilute random clauses leave \(1\) outside the span is the open core.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<p>No passed outside lead from earlier reviews on this route is open.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1 under random prefixes, one wide block with random forms. Take one block of \(h\) uniformly random dense forms with a uniformly random prefix matrix. Ask at the Nullstellensatz level, over the functional base, whether \(1\) avoids the span of the normal forms of its clauses. Try to write the probability that a fixed functional \(\chi\) kills all of them as a product over independent coordinates of the random forms, as lem:product-top-moment-reduction does for product tops, and decide whether the killer-moment strata bounds adapt. If they do, random wide blocks are settled at the Nullstellensatz level. That would be the first evidence on the core, short of adversarial forms and of PC.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:one-block-core, prop:dense-blocks-outside-mn-framework, lem:product-top-moment-reduction and the strata lemmas, lem:ips-normal-form-ns-criterion and the one-dense-block entry. The rectangle count and the refutation count are pen computations given in the entry. The review registers no claim. It was not sent to a separate reviewer; its tests are counts, and its next step is a proposal.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-wide-block-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 15.23 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">49.27 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 25.82 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
