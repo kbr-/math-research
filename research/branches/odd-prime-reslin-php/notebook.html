@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> Single blocks keep falling, but pinning a family is capped by per-pigeon rank, and sparse boards cannot give every block a vanishing prefix form (<a href="#entry-2026-09-26-row-local-review">row-local review</a>). Next: the random bit family, \(n^K\) blocks of row-local forms with independent random codes, whose W_RS clauses are random \(\mathbb F_3\) flat avoidance on binary position labels. Compare it with the main record's flat-avoidance line (cor:generic-affine-flat-avoidance-hardness), locate where the inventory enters its degree loss, and ask whether the loss per flat can be of order \(3^{-t}\) instead of 1.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 under random prefixes.</strong> The random bit family is the random calibration: over the functional base its clauses are negated random linear systems in the bit-indicator span, product replay loses a degree per block, and what remains is Tor vanishing for width-\(t\) tops with restricted forms (<a href="#entry-2026-09-26-random-bit-family">random bit family</a>). Next: rerun the degree-4 semi-regularity test of ex:selector-degree-four-semiregular with forms drawn from the span of one bit block's indicators, at \(n=7,8\), to see whether row-local structure breaks the Taylor route below the fill point.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -31071,6 +31071,38 @@ For \(h\) independent pins, the probability that \(\ell\) satisfies all of them 
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 56.34 s</strong></td></tr>
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 39.22 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 16.92 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-26-random-bit-family" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Analysis placing the random bit family on recorded statements (the random calibration, the replay barrier, and the width and degree axes); no new claim. The general statement tested is conj:randomized-wide-clause.">
+<h3>The random bit family is the random calibration: over the functional base its W_RS clauses are an affine factor times a negated random linear system, product replay costs one degree per block, and what remains is Tor vanishing for width-\(t\) tops whose forms lie in the bit-indicator span</h3>
+<p class="entry-meta">26 September 2026 · Analysis, no new theorem · open statement A1 under random prefixes, the random bit family · cycle odd-prime-random-bit-family. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 under random prefixes. The <a href="#entry-2026-09-26-row-local-review">row-local review</a> named the random bit family as the smallest open family and proposed comparing it with the main record's flat-avoidance line: where does the inventory enter that proof's degree loss, and can the loss per flat be of order \(3^{-t}\) instead of 1?</p>
+<p><strong>General statement.</strong> conj:randomized-wide-clause (W_RS), for the random bit family; no new claim.</p>
+<h4>The family and its clauses</h4>
+<p>The random bit family has \(M=n^K\) blocks. Block \(b\) has the \((n+1)\beta\) row-local forms \(L_{b,(i,f)}=\sum_{j\in J_{b,f}}x_{ij}\), with independent uniform sets \(J_{b,f}\subseteq[n]\), and a uniform prefix matrix \(C_b\in\mathbb F_3^{t\times(n+1)\beta}\). Over the functional base, \(L^2-L\) lies in the ideal of Booleanity and functionality at degree 2 for every 0/1 row-local form, the case of row subset indicators in thm:functional-affine-Booleanity-classification. So \(g_{b,u}=1-L_{b,u}^2\equiv1-L_{b,u}\), and \(s_{b,j}=\sum_uc_{ju}g_{b,u}\) is affine. Replacing each \(g\) inside the clause costs no more than the clause's degree. So each clause equals, modulo the functional base at degree at most \(4t+2\),</p>
+\[(1-L_{b,u})\prod_{j\le t}\big(1-s_{b,j}^2\big),\]
+<p>of degree \(2t+1\). It vanishes except where the \(t\) affine forms \(s_{b,j}\) all vanish and \(L_{b,u}=0\). So block \(b\) is a negated random linear system of codimension \(t\) in the cells, restricted to the bit-indicator span, and the family is weak PHP plus \(n^K\) of them. That is the random calibration, which the <a href="#entry-2026-09-22-random-calibration-route-review">calibration review</a> identified with the main record's wide-clause line. Nothing about the bit structure makes it easier. The span of all bit indicators of one block already has dimension \((n+1)\beta\), and \(n^K\) blocks together span the whole cell space.</p>
+<h4>Where the inventory enters</h4>
+<p>The proof of cor:generic-affine-flat-avoidance-hardness (main record, over \(\mathbb F_2\), inventory \(M\le N/8\)) is weighted replay. A greedy trace produces one old weight \(f\) with charge \(t_f\le M\), \(f\notin I_{t_f}\), and \(f\chi_c\in I_{t_f+r}\) for every flat \(c\). A refutation of the enlarged base at degree \(E\) then gives one of the old base, weighted by \(f\), at degree \(E+t_f\). The loss is the charge, at least one unit for each flat the trace must annihilate. For W_RS the same accounting is lem:randomized-block-annihilator: product weights cost at most 2 per block, and a nonvacuous block cannot cost 0, since a constant weight annihilates a clause only if the clause is already derivable. So product replay loses at least one degree per nonvacuous block. At \(n^K\) blocks that exceeds any degree. A loss of order \(3^{-t}\) per block would need a weight that is not a product, and conj:replay-weight-barrier conjectures that no weight certifies random families at \(K\ge1\). The answer to the review's question is no, for every recorded weight.</p>
+<h4>What remains</h4>
+<p>The record sends A1 at \(K\ge1\) to degree-free absorption: Tor vanishing and gluing. For the random bit family, the tops are \(\ell\prod_{j\le t}s_j^2\) with \(\ell\) and \(s_j\) linear in the bit-indicator span of one block. These are the objects of open statements A2 and A3, width-\(t\) clause tops through degree \(22k\), with one change: the forms are drawn from a subspace of dimension \((n+1)\beta\) of the \((n+1)n\)-dimensional cell space, not from the whole space. The recorded evidence for random tops (conj:product-top-cohen-lenstra, thm:generic-top-directness) uses uniform forms or generic forms on a group-stable set. The bit-indicator span of a block is neither, so that evidence does not cover the family.</p>
+<h4>What it means</h4>
+<p>The row-local line ends where every other line of this thread ends: at the random calibration. The only new information is a reformulation. For the random bit family, A1 is A2 and A3 with forms restricted to a random row-local subspace. That gives a concrete test of whether restricted structure hurts: the recorded semi-regularity checks for squares of forms, rerun with forms drawn from the span of one block's bit indicators.</p>
+<p><strong>Next.</strong> The degree-4 semi-regularity test of ex:selector-degree-four-semiregular (rank of \(\Phi_4\) against Frobenius plus Koszul) with the \(M\) forms drawn uniformly from the span of one bit block's indicators, at the recorded sizes \(n=7,8\). A deficit below the fill point would show that row-local structure breaks the Taylor route even for random codes. Agreement would extend the random-top evidence to this family.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the proof of cor:generic-affine-flat-avoidance-hardness in the main notebook, lem:randomized-block-annihilator, conj:replay-weight-barrier, thm:taylor-glue, thm:functional-affine-Booleanity-classification, conj:product-top-cohen-lenstra and the calibration review. The entry registers no claim and restates recorded results. It was not sent to a separate reviewer, since it proves nothing new.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-random-bit-family">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 57.18 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 46.76 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">47.24 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">22.98 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.20 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
