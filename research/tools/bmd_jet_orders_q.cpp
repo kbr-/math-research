@@ -12,6 +12,8 @@
 // columns in descending |beta| and rows in descending degree gives delta_p(n,k,l) for every l.
 //
 // Usage: bmd_jet_orders_q p n k [--out PATH] [--cube] [--witness L DW] [--mult BITS:M ...]
+//        bmd_jet_orders_q --series p1,p2,... n k1,k2,... OUTDIR [--cube]
+// --series runs every (p, k) in one process and writes OUTDIR/p{p}-n{n}-k{k}.json for each.
 // --mult (cube only): multiplicity M instead of k at the nonzero point BITS (e.g. 111:9).
 // --cube: the cube {0,1}^n over F_p instead of the full grid (y = x^2 - x, eps in {0,1}).
 #include <cstdint>
@@ -48,7 +50,7 @@ static void ybasis(std::vector<int> f, std::vector<std::vector<int>>& T, int jma
     }
 }
 
-int main(int argc, char** argv) {
+static int run_one(int argc, char** argv) {
     if (argc < 4) { std::fprintf(stderr, "usage: bmd_jet_orders_q p n k [--out PATH]\n"); return 2; }
     P = std::atoi(argv[1]); int n = std::atoi(argv[2]), k = std::atoi(argv[3]);
     S = P;
@@ -199,4 +201,27 @@ int main(int argc, char** argv) {
     if (!out.empty()) { FILE* f = std::fopen(out.c_str(), "w"); std::fputs(js.c_str(), f); std::fclose(f); }
     std::fputs(js.c_str(), stdout);
     return 0;
+}
+
+static std::vector<int> parse_list(const char* s) {
+    std::vector<int> v; while (*s) { v.push_back(std::atoi(s)); while (*s && *s != ',') ++s; if (*s) ++s; } return v;
+}
+
+int main(int argc, char** argv) {
+    if (argc >= 6 && !std::strcmp(argv[1], "--series")) {
+        std::vector<int> ps = parse_list(argv[2]), ks = parse_list(argv[4]);
+        bool cube = argc > 6 && !std::strcmp(argv[6], "--cube");
+        for (int p : ps) for (int k : ks) {
+            std::string sp = std::to_string(p), sk = std::to_string(k);
+            std::string out = std::string(argv[5]) + "/p" + sp + "-n" + argv[3] + "-k" + sk + ".json";
+            std::vector<std::string> a = {argv[0], sp, argv[3], sk, "--out", out};
+            if (cube) a.push_back("--cube");
+            std::vector<char*> av; for (auto& x : a) av.push_back(&x[0]);
+            int rc = run_one((int)av.size(), av.data());
+            std::fflush(stdout);
+            if (rc) return rc;
+        }
+        return 0;
+    }
+    return run_one(argc, argv);
 }
