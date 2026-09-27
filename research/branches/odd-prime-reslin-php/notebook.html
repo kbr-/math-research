@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> A1 is narrowed to row freeness over the row sums of the allowed set, or a subset, beyond joint capacity (<a href="#entry-2026-09-27-row-freeness-review">row-freeness review</a>). Row freeness requires excluded-loss balance in every direction of the row sums (prop:excluded-loss-balance; <a href="#entry-2026-09-27-excluded-loss-balance">excluded-loss balance</a>), and the recorded violations need every prefix pattern. Next: look for a violation under uniform prefixes. For a family whose joint span contains a row direction \(u\), with one uniform prefix per block, compute the expected loss difference between the level sets of \(u\) in degree \(e\).</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> A1 is narrowed to row freeness over the row sums beyond joint capacity (<a href="#entry-2026-09-27-row-freeness-review">row-freeness review</a>), which needs balanced excluded losses in every row direction (prop:excluded-loss-balance), recorded for uniform prefixes as conj:uniform-level-balance (<a href="#entry-2026-09-27-uniform-level-balance">uniform level balance</a>). Next: the spread family as the first beyond-capacity case. Filter \(\operatorname{gr}F^Q\) by the number of occupied cells of row \(i\), and ask whether freeness over \(\mathbb F_3[r_i]/(r_i^3)\) through \(D\) follows from the core's pullback structure on each stratum and the translate relation between strata.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -37266,6 +37266,56 @@ So \(\mu\) vanishes on \(C_{D_0}(R)\), and \(\mu(W_a)=c\,\mu_\rho(1)\ne0\). By t
 <tr><td>Marked reading and review windows</td><td class="elapsed">3 min 31.86 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7 min 38.01 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">51.66 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-uniform-level-balance" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:uniform-level-balance">
+<h3>Uniform-prefix level balance: the direction-wise necessary condition for relative row freeness is recorded as a conjecture. No finite check can reach its nonvacuous range, and for spread families the members collapse to independent copies of the core wherever row \(i\) is empty, which makes balance plausible stratum by stratum</h3>
+<p class="entry-meta">27 September 2026 · Conjecture with a heuristic · open statement A1 · cycle odd-prime-uniform-levels. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-27-excluded-loss-balance">excluded-loss balance</a> entry showed that a row-free set loses equally on the level sets of every row direction. Its recorded violations need every prefix pattern. It proposed a search for a violation under uniform prefixes, starting with families whose joint span contains a row direction. This cycle states the question as a conjecture, checks whether any finite test can reach it, and analyses the spread family under uniform prefixes.</p>
+<p><strong>General statement.</strong> conj:uniform-level-balance: over \(\mathbb F_3\), in the setting of conj:relative-row-freeness (weak base with \(m\ge D\) rows and \(N\ge2D^2\) columns, \(M\le n^K\) blocks in normal form, independent uniform prefixes, \(|Q|\ge|P|/2\)), with high probability the allowed set \(Q\) has balanced excluded losses: for every nonzero direction \(u\) of the row sums and every \(d\le D-2\), the dimension of functions of degree at most \(d\) on \(P\cap\{u=a\}\) that vanish on \(Q\cap\{u=a\}\) does not depend on \(a\).</p>
+<h4>Place in the route</h4>
+<ul>
+<li>It is implied by conj:relative-row-freeness, through part (3) of prop:excluded-loss-balance, given that the base is row-free through \(D\). In the conjecture's range \(N\ge2D^2\) the base hypothesis comes from thm:weak-base-stability-quadratic; in the linear range it rests on conj:weak-base-stability. So a violation for one family refutes conj:relative-row-freeness for full allowed sets under uniform prefixes. That would leave the subset forms (conj:row-free-subset, conj:top-lift-subset) as the only native routes.</li>
+<li>It is not sufficient: the truncated Dade counterexample (ex:truncated-dade-special-position) shows that single-direction information cannot certify freeness without a special-position hypothesis.</li>
+<li>No recorded family violates it. The spread and varying-shift families need every prefix pattern of a block present, which uniform prefixes within the budget do not give (lem:uniform-prefix-vacuity).</li>
+</ul>
+<h4>No finite check reaches the nonvacuous range</h4>
+<p>Before any computation, the smallest parameters where the conjecture says something were counted. A violation must appear in a degree \(d\le D-2\) where clause multiples exist, so \(D\ge e+2=4t+4\). The base must be row-free through \(D\), so \(N\) must be at least about \(2D\), in the linear range of conj:weak-base-stability, and \(N\ge2D^2\) in the proved range. As a coarse scale, not a derived threshold: the recorded violations use every prefix pattern of a core, and \(c\) copies kill a given pattern with probability at most \(c3^{-t}\) (lem:uniform-prefix-vacuity), so they are out of reach unless the number of copies is comparable to \(3^t\); covering all patterns needs more still. A spread family has \(N+1\) copies of its core.</p>
+<ul>
+<li>With \(t=3\): \(D\ge16\), so \(N\ge32\) even in the linear range, while \(3^t=27&lt;33\), and the proved range needs \(N\ge512\).</li>
+<li>With \(t=4\): \(D\ge20\) and \(N\ge40\), with \(3^4=81\) above \(N+1\), but a degree-18 computation on a 40-hole board is out of reach, and the base hypothesis there rests on conj:weak-base-stability (the proved range needs \(N\ge800\)).</li>
+</ul>
+<p>So the conjecture has no computable nonvacuous instance, and none was run.</p>
+<h4>Spread families under uniform prefixes</h4>
+<p>A spread family on row \(i\) has the core forms \(L=(L_0,\dots,L_{h-1})\) and, for each column \(c\), a member with \(L_0\) replaced by \(L_0+x_{ic}\), each with its own uniform prefix \(C_b\). Its joint span contains \(r_i=\sum_c x_{ic}\), so it is the smallest kind of family beyond joint capacity. Write \(X(C)=\{y\in\mathbb F_3^h:g(y)\ne0,\ Cg(y)=0\}\) for the values a block with prefix \(C\) excludes.</p>
+<ul>
+<li>Where row \(i\) is empty, every member's forms equal the core's. There the excluded values are \(\bigcup_bX(C_b)\), the union for \(N+1\) independent copies of the core.</li>
+<li>Where row \(i\) occupies exactly the cell \(c\), member \(c\) is the core with \(L_0\) shifted by 1, and the other members are core copies. There the excluded values are \(\bigcup_{b\ne c}X(C_b)\cup(X(C_c)-e_0)\).</li>
+</ul>
+<p>Translation by \(e_0\) preserves degree on \(\mathbb F_3^h\), so functions supported on \(X(C_c)-e_0\) are the translates of those supported on \(X(C_c)\), of the same degrees. Each value \(y\) lies in \(X(C)\) with probability \(3^{-t}\) when \(g(y)\ne0\). The translated component is \(X(C)-e_0=\{y:g(y+e_0)\ne0,\ Cg(y+e_0)=0\}\), the image of \(X(C)\) under the bijection \(y\mapsto y-e_0\), so it has exactly the size of \(X(C)\), and each \(y\) lies in it with probability \(3^{-t}\) when \(g(y+e_0)\ne0\). The two unions differ only through pairwise overlaps, of probability at most \(3^{-2t}\) per value and pair, about \(N2^h3^{-2t}\) in expectation for a nonvacuous core with \(2^h\) about \(3^t\). So on these two strata the excluded sets differ by translating one of \(N+1\) independent components, which preserves its size and the degrees of the functions supported on it, up to rare overlaps.</p>
+<p>This is a heuristic for balance, not a proof, for two reasons. The strata are not the level sets: level 0 of \(r_i\) also contains the points with three cells of row \(i\), level 1 those with four, and the indicators of the strata have high degree, so losses on a level set do not split over strata. And the spread family's joint span contains \(r_i\), so the pullback lemma, which would turn stratum losses into value-space Hilbert functions, does not apply as it stands.</p>
+<p><strong>Outcome.</strong> The direction-wise statement is recorded as conj:uniform-level-balance, a necessary condition for conj:relative-row-freeness whose violation would refute it for full allowed sets. No finite check reaches its nonvacuous range. For the smallest beyond-capacity family, the spread family, the excluded sets on the two lowest strata differ, under uniform prefixes, by translating one independent component, up to rare overlaps, which supports balance but proves nothing about level sets.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1: the spread family as the first beyond-capacity case. Its core forms are jointly free and its joint span adds only \(r_i\). Filter \(\operatorname{gr}F^Q\) by the number of occupied cells of row \(i\), and ask whether freeness over \(\mathbb F_3[r_i]/(r_i^3)\) through \(D\) follows, with uniform prefixes, from the pullback structure of the core on each stratum and from the translate relation between strata.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:excluded-loss-balance with its entry, conj:relative-row-freeness, lem:uniform-prefix-vacuity, prop:spread-family-level-gap, prop:varying-shift-affine-fall, ex:truncated-dade-special-position, conj:weak-base-stability, thm:weak-base-stability-quadratic and lem:pullback-row-freeness. The claim search found no earlier version. No computation was run; the parameter count was made before deciding that none could be. A fresh-context reviewer confirmed the implication from conj:relative-row-freeness and its contrapositive, the arithmetic of the count, the translation argument and the stated limitations. It required two changes, both adopted:</p>
+<ul>
+<li>the base hypothesis at the counted parameters is marked as resting on conj:weak-base-stability, with the proved range stated;</li>
+<li>the scale of about \(3^t\) copies is marked as coarse, with its source in lem:uniform-prefix-vacuity, not as a derived threshold.</li>
+</ul>
+<p>Its suggestions are adopted: the translation argument is written out, and the role of the proved quadratic range is noted. The changes qualify claims, so one pass suffices.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-uniform-levels">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 59.60 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">44.39 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 31.62 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 43.45 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
