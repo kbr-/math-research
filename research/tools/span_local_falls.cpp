@@ -7,7 +7,9 @@
 // top ideal gr I(cap_b P_b)_d equals sum over unions S of at most s members of gr I(cap_{b in S} P_b)_d for
 // small s.  Printed per degree d: H(d)/|cap P| and excess_s(d) = dim gr I(cap P)_d - dim sum_{|S|<=s} gr I(P_S)_d
 // for s = 1..smax.  Exact ranks mod 3 (FLINT), as in fall_degree.cpp.
-// Usage: span_local_falls "N h t M share smax dmax seed; ..." (one JSON line per case)
+// Usage: span_local_falls "N h t M share smax dmax seed [chain]; ..." (one JSON line per case).  With chain = 1
+// (entry-2026-09-27-chain-falls) share is ignored and member b's form 0 has the linear part of member b-1's form 1,
+// a chain of shared pieces along the members.
 #include <flint/nmod_mat.h>
 #include <cstdio>
 #include <cstdlib>
@@ -51,7 +53,7 @@ static long rankRows(const vector<VI>& rows, int width) {
     for (size_t r = 0; r < rows.size(); r++) for (int c = 0; c < width; c++) nmod_mat_entry(B, r, c) = rows[r][c];
     long rk = nmod_mat_rank(B); nmod_mat_clear(B); return rk;
 }
-static int runCase(int N_, int h, int t, int M, int share, int smax, int dmax, unsigned seed) {
+static int runCase(int N_, int h, int t, int M, int share, int smax, int dmax, unsigned seed, int chain) {
     N = N_; mons.clear(); degStart.clear();
     if (N > 14 || M > 16 || smax > 4 || share > h) { fprintf(stderr, "refusing oversized case\n"); return 2; }
     for (int d = 0; d <= N; d++) { degStart.push_back(mons.size()); for (unsigned m = 0; m < (1u<<N); m++) if (popc(m)==d) mons.push_back(m); }
@@ -59,9 +61,13 @@ static int runCase(int N_, int h, int t, int M, int share, int smax, int dmax, u
     mt19937 rng(seed); uniform_int_distribution<int> u3(0,2);
     vector<VI> sharedLin(share, VI(N)); for (auto& row: sharedLin) for (auto& a: row) a = u3(rng);
     vector<vector<char>> in(M, vector<char>(1u<<N, 0));
+    if (chain && h < 2) { fprintf(stderr, "chain needs h >= 2\n"); return 2; }
+    VI prevLin(N);
     for (int b = 0; b < M; b++) {
         vector<VI> A(h, VI(N+1)); for (auto& row: A) for (auto& a: row) a = u3(rng);
-        for (int i = 0; i < share; i++) for (int j = 0; j < N; j++) A[i][j] = sharedLin[i][j];   // shared linear part, own constant
+        if (!chain) for (int i = 0; i < share; i++) for (int j = 0; j < N; j++) A[i][j] = sharedLin[i][j];   // shared linear part, own constant
+        if (chain && b > 0) for (int j = 0; j < N; j++) A[0][j] = prevLin[j];   // form 0 shares the linear part of b-1's form 1
+        for (int j = 0; j < N; j++) prevLin[j] = A[1][j];
         vector<VI> C(t, VI(h)); for (auto& row: C) for (auto& a: row) a = u3(rng);
         for (unsigned x = 0; x < (1u<<N); x++) {
             VI g(h); bool any = false;
@@ -78,7 +84,7 @@ static int runCase(int N_, int h, int t, int M, int share, int smax, int dmax, u
     for (unsigned mask = 1; mask < (1u<<M); mask++) { int c = popc(mask); if (c <= smax) subsets[c].push_back(mask); }
     vector<vector<vector<unsigned>>> subPts(smax+1);
     for (int s = 1; s <= smax; s++) for (unsigned mask: subsets[s]) subPts[s].push_back(ptsOf(mask));
-    char head[200]; snprintf(head, sizeof head, "{\"N\": %d, \"h\": %d, \"t\": %d, \"M\": %d, \"share\": %d, \"seed\": %u, \"capP\": %zu, \"degrees\": [", N,h,t,M,share,seed,PI.size());
+    char head[200]; snprintf(head, sizeof head, "{\"N\": %d, \"h\": %d, \"t\": %d, \"M\": %d, \"share\": %d, \"chain\": %d, \"seed\": %u, \"capP\": %zu, \"degrees\": [", N,h,t,M,share,chain,seed,PI.size());
     string line(head);
     long prev = rankOn(PI, 0);
     for (int d = 1; d <= dmax; d++) {
@@ -102,9 +108,10 @@ int main(int argc, char** argv) {
     if (argc < 2) { fprintf(stderr, "usage: span_local_falls \"N h t M share smax dmax seed; ...\"\n"); return 2; }
     std::stringstream all(argv[1]); std::string item;
     while (std::getline(all, item, ';')) {
-        std::stringstream ss(item); int N_, h, t, M, share, smax, dmax; unsigned seed;
+        std::stringstream ss(item); int N_, h, t, M, share, smax, dmax; unsigned seed; int chain = 0;
         if (!(ss >> N_ >> h >> t >> M >> share >> smax >> dmax >> seed)) continue;
-        if (runCase(N_, h, t, M, share, smax, dmax, seed)) return 2;
+        ss >> chain;
+        if (runCase(N_, h, t, M, share, smax, dmax, seed, chain)) return 2;
     }
     return 0;
 }
