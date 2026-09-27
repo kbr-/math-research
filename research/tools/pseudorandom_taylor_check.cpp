@@ -14,7 +14,8 @@
 //
 // Ranks: fflas-ffpack FFPACK::Rank over Givaro::Modular<float>; cases whose matrices are small are recomputed with
 // FLINT nmod_mat_rank as a second library.  Every generator of the Taylor span is checked to be a syzygy on a
-// random sample.  Usage: pseudorandom_taylor_check OUT "m N s M kind seed; ..." with kind random or control.
+// random sample.  Usage: pseudorandom_taylor_check OUT "m N s M kind seed [keep]; ..." with kind random or control;
+// the optional keep is a bit mask selecting a subfamily of the seeded family (entry-2026-09-27-local-taylor-generation).
 #include <fflas-ffpack/ffpack/ffpack.h>
 #include <givaro/modular.h>
 #include <flint/nmod_mat.h>
@@ -86,6 +87,7 @@ int main(int argc, char** argv) {
         std::stringstream ss(item);
         int m, N, s, M; std::string kind; unsigned seed;
         if (!(ss >> m >> N >> s >> M >> kind >> seed)) continue;
+        unsigned long long keep = 0; ss >> keep;  // optional: keep only the blocks whose bit is set (subfamilies)
         auto t0 = std::chrono::steady_clock::now();
         Board B(m, N);
         int e = s - 3;
@@ -109,6 +111,11 @@ int main(int argc, char** argv) {
                 if (!found) L.push_back({cc, 1});
                 Poly clean; for (auto& t : L) if (t.second) clean.push_back(t); L = clean;
             }
+        }
+        if (keep) {  // subfamily of the seeded family: same forms, only the selected blocks
+            std::vector<Poly> K0, K1;
+            for (int b = 0; b < M; b++) if (keep >> b & 1ULL) { K0.push_back(L0[b]); K1.push_back(L1[b]); }
+            L0 = K0; L1 = K1; M = (int)L0.size(); tau.assign(M, Poly());
         }
         // weight: least support of a*L_i + c*L_j over the family's forms, (a, c) not both zero
         std::vector<std::vector<int>> vecs;
@@ -184,9 +191,9 @@ int main(int argc, char** argv) {
         double secs = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
         fprintf(out, "{\"m\": %d, \"N\": %d, \"s\": %d, \"M\": %d, \"kind\": \"%s\", \"seed\": %u, \"dim_Ae\": %ld, "
                      "\"dim_As\": %ld, \"fill_ratio\": %.4f, \"min_weight_t2\": %d, \"rank_map\": %ld, \"dim_syz\": %ld, "
-                     "\"rank_taylor\": %ld, \"defect\": %ld, \"flint_checked\": %s, \"seconds\": %.2f}\n",
+                     "\"rank_taylor\": %ld, \"defect\": %ld, \"flint_checked\": %s, \"keep\": %llu, \"seconds\": %.2f}\n",
                 m, N, s, M, kind.c_str(), seed, ne, ns, (double)cols / ns, minw, rkA, syz, rkG, syz - rkG,
-                small ? "true" : "false", secs);
+                small ? "true" : "false", keep, secs);
         fflush(out);
         printf("m=%d N=%d s=%d M=%d %s: syz=%ld taylor=%ld defect=%ld minw=%d (%.1fs)\n", m, N, s, M, kind.c_str(), syz, rkG,
                syz - rkG, minw, secs);
