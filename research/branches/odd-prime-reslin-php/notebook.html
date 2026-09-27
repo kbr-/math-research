@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Prefix products vanish when the prefix images are dependent, so the first moment at degree \(4t+2\) covers only blocks with square spans above about \((2K+1)\log_3n\), and its main term is the killer-moment core (lem:dependent-prefix-vanishing; <a href="#entry-2026-09-27-moment-route-review">moment review</a>). Next: develop the Wood lead. Define codes as functionals nonzero on the possible tops of many blocks, count the rest with lem:prefix-rank-count, and determine the per-block balance Wood's argument needs and whether adversarial forms can push it below that level.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> Wood's moment method transfers to W_RS blocks except its engine: equidistribution for code functionals needs the discriminant signs of the prefix matrices to cancel by a factor of at least \(3^{h_b/2}M\), which no tool over \(\mathbb F_3\) supplies (lem:prefix-signature-formula; <a href="#entry-2026-09-27-wood-codes">Wood's codes</a>). Next: develop the certificate review's pseudo-calibration lead, the recorded certificate route that avoids moments, in an exact characteristic-3 form against the planted distribution on the allowed set, checking whether it annihilates the row-sum multiples through degree \(D\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -35223,6 +35223,69 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 7.19 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 10.27 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">8 min 57.65 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-wood-codes" data-kind="research" data-route="odd-prime-clause-transfer" data-lead="entry-2026-09-27-moment-route-review:1" data-claims="lem:prefix-signature-formula">
+<h3>Wood's codes for prefix blocks: the moment identity, the code/non-code split and the depth count all transfer to W_RS, but the engine does not. Wood's per-column equidistribution comes from independent linear coordinates; a prefix block is one column group whose kill probability is an exact signed sum of Gauss sums, and a Wood-type step must beat the termwise bound on that sum by a factor of at least \(3^{h_b/2}M\)</h3>
+<p class="entry-meta">27 September 2026 · Working lemma and reduction · open statements A1 and A3 · cycle odd-prime-wood-codes. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-27-moment-route-review">moment review</a> listed Wood's moment method for random cokernels as an outside lead, not run, for the main term of lem:block-conditioned-moment. This cycle develops it. The source is Wood, <em>Random integral matrices and the Cohen–Lenstra heuristics</em> (arXiv:1504.04391), Section 2 read in full. The question is which step of that proof has a counterpart for W_RS blocks, and what the missing step needs.</p>
+<p><strong>General statement.</strong> lem:prefix-signature-formula, for every block, functional and element \(u\). The Fourier coefficient of a prefix product is an exact average, over the other prefix rows, of \(\eta(\operatorname{disc}A)\,(i/\sqrt3)^{\operatorname{rank}A}\), where \(A\) is the prefix matrix. So a block's kill probability is a signed sum whose unaveraged terms have modulus at least \(3^{-h_b/2}\). Any bound that takes moduli term by term therefore falls short of a Wood-type equidistribution step by a factor of at least about \(3^{h_b/2}M\). Such a step must capture the cancellation among the signs.</p>
+<h4>Wood's proof, step by step</h4>
+<p>Wood's matrices have independent \(\varepsilon\)-balanced entries. Section 2 of the paper has four steps:</p>
+<ol>
+<li>equation (3): the moment \(\mathbb E\#\operatorname{Sur}(\operatorname{cok}M,G)\) is a sum over surjections \(F\in\operatorname{Sur}(V,G)\) of \(\prod_j\Pr[F(M_j)=0]\), by independence of the columns;</li>
+<li>Lemma 2.1: a code \(F\) of distance \(\delta n\) has \(|\Pr[FX=A]-|G|^{-1}|\le\exp(-\varepsilon\delta n/a^2)\). The proof expands \(FX=\sum_iF(v_i)X_i\) by Fourier, and the character factors over the independent coordinates \(X_i\), at least \(\delta n\) of which see a nonzero character;</li>
+<li>Lemmas 2.6 and 2.7: non-codes are sorted by depth, counted, and bounded using the \(\varepsilon\)-balance of one coordinate;</li>
+<li>Lemma 2.4 combines the columns, which needs the per-column error times \(|G|\) to be \(O(1/n)\). Here \(G\) is fixed and \(n\to\infty\).</li>
+</ol>
+<h4>The translation</h4>
+<p>Take the matrix whose columns are the tops \(\ell_{b,i}^2\Pi_b\) in \(A_e\), grouped by block. \(F\) becomes a functional \(\chi\in A_e^*\) and \(G\) becomes \(\mathbb F_3\). Then:</p>
+<ul>
+<li>step (1) is lem:block-conditioned-moment (1). The independent units are the blocks, not the columns, so each block acts as one column with target \(\mathbb F_3^{h_b}\): a column group \(G_b\) of size \(3^{h_b}\);</li>
+<li>step (3) has its counterpart in lem:prefix-rank-count, which counts functionals of small prefix rank as Lemma 2.6 counts functionals of large depth;</li>
+<li>step (2) has none. The coordinates of a top in \(A_e\) are not independent. The independent variables are the prefix entries, and they enter quadratically in every row, so there is no linear expansion to factor.</li>
+</ul>
+<p>Step (4) also changes. The block group \(G_b\) is not fixed: \(|G_b|=3^{h_b}\ge n^{2K+1}\) for the blocks the first moment can reach (lem:dependent-prefix-vanishing). So the per-block error must be \(o(3^{-h_b}/M)\), not \(O(1/n)\).</p>
+<h4>lem:prefix-signature-formula</h4>
+<p><strong>Statement.</strong> Over \(\mathbb F_3\), fix a block \(b\), \(u\in G\) and \(\chi\in A_e^*\). For rows \(c_2,\dots,c_t\), let \(A=A_{\chi,u}(c_{\ge2})\) be the symmetric matrix \(\bigl(\chi(u\,\ell_{b,i}^2\ell_{b,i'}^2\prod_{j\ge2}\sigma_{b,j}^2)\bigr)_{i,i'}\) of lem:prefix-gauss-bound. Its diagonal is zero. Let \(\operatorname{disc}A\) be the product of the nonzero entries of any diagonal form of \(A\), and let \(\eta\) be the quadratic character, \(\eta(1)=1\) and \(\eta(-1)=-1\). Then</p>
+<p>\[\mathbb E_C\,\omega^{\chi(u\Pi_b)}=\mathbb E_{c_{\ge2}}\Bigl[\eta(\operatorname{disc}A)\,\Bigl(\tfrac{i}{\sqrt3}\Bigr)^{\operatorname{rank}A}\Bigr],\qquad q^0_b(\chi)=3^{-h_b}\sum_{s\in\mathbb F_3^{h_b}}\mathbb E_C\,\omega^{\chi(\sigma_b(s)\Pi_b)}.\]</p>
+<p>Here \(q^0_b\) is the unconditioned kill probability. The conditioned \(q_b\) of lem:block-conditioned-moment satisfies \(3^{h_b}q^0_b=\Pr[E_b]\,3^{h_b}q_b+3^{h_b}\Pr[\text{kill}\wedge E_b^c]\). A Wood-type step asks \(3^{h_b}q_b(\chi)=1+o(1/M)\) for code functionals, with independent squares \(h_b=d_b\). By the formula, that is an evaluation of the signed sum \(\sum_{s\ne0}\mathbb E_{c_{\ge2}}[\eta(\operatorname{disc}A_s)(i/\sqrt3)^{\operatorname{rank}A_s}]=3^{h_b}q^0_b-1\) to within \(o(1/M)\) of the fall term \(3^{h_b}\Pr[\text{kill}\wedge E_b^c]-\Pr[E_b^c]\). Before averaging, each summand has modulus \(3^{-\operatorname{rank}A_s/2}\ge3^{-h_b/2}\); this includes \(A_s=0\), where the modulus is 1. So a bound that takes moduli term by term gives only \(\sum_{s\ne0}\mathbb E_{c_{\ge2}}3^{-\operatorname{rank}A_s/2}\ge(3^{h_b}-1)3^{-h_b/2}\). A Wood-type step must therefore improve on the termwise bound by a factor of at least about \(3^{h_b/2}M\), using cancellation among the signs and phases over \(c_{\ge2}\) and \(s\). This says what a proof must capture. It does not show that the cancellation fails, since \(|\mathbb E X|\) can be far below \(\mathbb E|X|\).</p>
+<p><strong>Proof.</strong> The diagonal entries are \(\chi(u\,\ell_{b,i}^4\cdots)\), and \(\ell^4=0\) in \(G\) because every positive-degree element cubes to zero (<a href="#entry-2026-09-27-moment-route-review">moment review</a>). Condition on \(c_{\ge2}\). The value \(\chi(u\Pi_b)\) is \(c^{\mathsf T}Ac\) in \(c=c_1\) (lem:prefix-gauss-bound). Choose invertible \(P\) with \(P^{\mathsf T}AP=\operatorname{diag}(a_1,\dots,a_r,0,\dots,0)\). Then \(\mathbb E_c\,\omega^{c^{\mathsf T}Ac}=\prod_{k\le r}\mathbb E_{x\in\mathbb F_3}\omega^{a_kx^2}\). Since \(x^2\in\{0,1,1\}\), \(\mathbb E_x\,\omega^{ax^2}=(1+2\omega^a)/3\), which is \(i\sqrt3/3\) for \(a=1\) and \(-i\sqrt3/3\) for \(a=-1\): that is \(\eta(a)\,i/\sqrt3\). The product is \(\eta(\prod a_k)(i/\sqrt3)^r\), and \(\eta(\prod a_k)\) does not depend on the diagonalization, since discriminants agree up to squares. Average over \(c_{\ge2}\). The formula for \(q^0_b\) is the character expansion of \([\chi(\ell_{b,i}^2\Pi_b)=0\ \forall i]\) over \(s\in\mathbb F_3^{h_b}\). The relation between \(q^0_b\) and \(q_b\) is the law of total probability over \(E_b\). For the termwise bound, the terms with \(s\ne0\) number \(3^{h_b}-1\), and each is an average of values of modulus at least \(3^{-h_b/2}\). \(\square\)</p>
+<h4>What the missing step is</h4>
+<p>Wood's engine gains a factor \(e^{-\varepsilon/a^2}\) from each of \(\delta n\) independent coordinates. The prefix counterpart must gain from the signs \(\eta(\operatorname{disc}A_s(c_{\ge2}))\), and the phases \(i^{\operatorname{rank}}\), as the other \(t-1\) rows vary. The determinant of \(A_s\) is a polynomial of degree at most \(2h_b\) in each further row's entries, over the field of 3 elements. Weil-type bounds for character sums of such polynomials are vacuous there, since the degree exceeds the field size. Iterated Cauchy–Schwarz cannot supply the gain either. Its bound for \(k\) rows is \(3^{-\mathrm{ark}/2^k}\), where \(\mathrm{ark}\) is the analytic rank of a multilinear form with one slot of dimension \(h_b\). Since \(\mathrm{ark}\le h_b\), that bound never goes below \(3^{-h_b/2^k}\). The missing step is a sign-equidistribution statement for discriminants of prefix matrices. It is the record's small-field obstacle (smallness in characteristic 3; <a href="#entry-2026-09-26-integral-extension">integral extension</a>) in a new and precise form.</p>
+<h4>Outcome</h4>
+<p>The Wood lead transfers except for its engine. The block-conditioned moment is Wood's equation (3), and the prefix-rank count plays the role of the depth count. Equidistribution for code functionals needs an evaluation of the signed sum that beats the termwise bound by a factor of at least \(3^{h_b/2}M\). That requires sign cancellation in the discriminants of the prefix matrices across the other rows, and no available tool gives it. Whether the signs do cancel for the adversary's matrices is open, and nothing here shows that they fail to. Lead follow-up: continuing. The lead is not falsified: nothing recorded shows that the discriminant signs of the adversary's prefix matrices fail to cancel. It is also not developed further, since those matrices are structured and the cancellation is unproved.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1: develop the pseudo-calibration lead of the <a href="#entry-2026-09-27-certificate-route-review">certificate review</a>, which has not been run and bears on A1. The moment line now needs a sign-equidistribution theorem over \(\mathbb F_3\) that no tool supplies. So test the one recorded certificate route that avoids moments: an exact characteristic-3 pseudo-calibration against the planted distribution on the allowed set, checking whether it annihilates the row-sum multiples through degree \(D\).</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read Section 2 of the source (equation (3), Lemmas 2.1–2.8), lem:prefix-gauss-bound, lem:block-conditioned-moment, lem:prefix-rank-count and lem:dependent-prefix-vanishing. No computation was run. A fresh-context reviewer checked the following and found them correct:</p>
+<ul>
+<li>the zero diagonal and the Gauss sum \(\eta(a)\,i/\sqrt3\);</li>
+<li>that the discriminant class does not depend on the diagonalization;</li>
+<li>the character expansion of \(q^0_b\);</li>
+<li>the paraphrases of Lemmas 2.1 and 2.4;</li>
+<li>the Weil-vacuity and Cauchy–Schwarz remarks.</li>
+</ul>
+<p>It required three changes, all adopted:</p>
+<ul>
+<li>the draft's consequence confused the modulus of an average with the average of moduli, and so read as if cancellation were shown to be necessary in fact. It is now stated as a bound on termwise methods only, with the explicit caveat that it does not show the cancellation fails. The header, general statement and outcome are softened to match;</li>
+<li>equation (3) sums over surjections \(\operatorname{Sur}(V,G)\);</li>
+<li>the unconditioned \(q^0_b\) is now related to the conditioned \(q_b\) by total probability, and the Wood-type requirement is stated for \(q_b\), with the fall term made explicit.</li>
+</ul>
+<p>Two of its suggestions are adopted: the degree bound is now "at most \(2h_b\)", and the case \(A_s=0\) is noted. The third, a small computed example, is not run: it would test the adversary's cancellation only at sizes far below \(h_b\ge(2K+1)\log_3n\), and no general statement it could support has been formulated. The corrections weaken claims, and the added total-probability identity is elementary, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-wood-codes">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 17.50 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">57.45 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 15.58 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 39.23 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">25.09 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
