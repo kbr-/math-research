@@ -554,12 +554,42 @@ front-ends compile to SAT.
 proofs can be checked inside Lean. Some integrations run the checker as compiled code, which would
 conflict with the rule against `native_decide`; verify the kernel path before relying on it.
 
-**Pilot.** On the next conjecture a cycle would check with a case table: write the encoder as a
-tested framework tool, run CryptoMiniSat (and a pseudo-Boolean solver if the structure is
-pigeonhole-like) with proof output, check the certificates, and compare with the case table at the
-same sizes. Agreement is the control; how much further the solver reaches is the measure. It needs
-install approval for a proof checker (drat-trim) and, for the pseudo-Boolean route, RoundingSat and
-VeriPB.
+**Chosen implementation (27 September 2026).** The smallest stack that gives certified answers
+both ways; everything else waits for a measured need (AGENTS.md: a mechanism needs a measured use).
+
+- One tested framework tool, `tools/refute.py`. Per claim, the agent writes a Python module with
+  `encode(n)` (a CNF, or in loop mode only the space of combinatorial choices) and
+  `check(n, witness)` (a direct check of a candidate counterexample, with the exact linear algebra
+  already in use). The tool sweeps n upward and stops at the first satisfiable instance; decodes
+  the witness and re-checks it with `check`, so a counterexample never rests on the encoding
+  alone; writes a DRAT proof for each unsatisfiable instance and checks it; and records everything
+  under `research/results/` with provenance, through `compute.sh`. Loop mode covers route 2 above:
+  the solver proposes choices, `check` judges, passing choices are blocked.
+- Solver: CaDiCaL, small, state of the art, the reference for DRAT/LRAT output, incremental. XOR
+  constraints enter as ordinary CNF at first; fine at small sizes.
+- Checker: drat-trim. A formally verified checker (lrat-check, cake_lpr) can come later.
+- No new Python dependencies: the tool calls both binaries through the launcher.
+
+Controls before trusting it: a conjecture the record already refuted (the tool must find the
+recorded counterexample or a smaller one); a finite case the record already proved (unsatisfiable,
+with a checked certificate); and, per new encoder, a cross-check against brute force at the
+smallest sizes.
+
+Deferred, each with its trigger:
+
+- CryptoMiniSat's parity reasoning: when XOR-heavy instances measurably stall CaDiCaL (and after
+  checking whether its proof output works with Gauss-Jordan elimination on).
+- Pseudo-Boolean solving with VeriPB certificates (RoundingSat): the first time a
+  pigeonhole-shaped instance hits the resolution wall.
+- Lean import of certificates: when a finite result is worth a Lean lemma, after checking the
+  kernel path avoids native evaluation.
+- MiniZinc, answer set programming, QBF, SMT, finite model finders: when hand-written Python
+  encoders become the bottleneck. They change how encodings are written, not what can be proved.
+
+**Pilot.** On the next conjecture a cycle would check with a case table: build `tools/refute.py`,
+pass the controls, run it with certificates, and compare with the case table at the same sizes.
+Agreement is the control; how much further the solver reaches is the measure. Installs requested in
+`user_requests` (CaDiCaL, drat-trim).
 
 ## Remaining implementation priorities
 
@@ -574,8 +604,8 @@ VeriPB.
    literature connections before requesting the install (item 11).
 6. Compare a stripped-down loop (the goal, Lean, the record) with the full framework on one open
    statement, with the same time and compute, before adding more process rules (item 12).
-7. Pilot refute-first solving on the next conjecture a cycle would check with a case table, with
-   certificates checked, after the install approvals (item 13).
+7. Build `tools/refute.py` on CaDiCaL and drat-trim and pilot refute-first solving on the next
+   conjecture a cycle would check with a case table, after the installs (item 13).
 
 These priorities are proposals, not authorization to launch the work.
 
