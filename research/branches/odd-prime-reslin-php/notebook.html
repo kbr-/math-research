@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> W_RS prefixes are uniform matrices, so a block kills each zero pattern only with probability \(3^{-t}\). The recent row-local families are instances for unit-row prefixes, not W_RS counterexamples (lem:uniform-prefix-vacuity; <a href="#entry-2026-09-27-prefix-model-correction">prefix-model correction</a>). Next, the generic core in the correct model: for families of large blocks with random killed patterns, ask whether a row-free subset of the allowed set can be built from surviving-pattern pieces \(\{g_b=g\}\) chosen consistently across blocks.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Pullback pieces need large fibers, so the method's capacity is informational, about \(\log|P|\) components of any degree. W_RS prefix quadrics do not escape it (<a href="#entry-2026-09-27-fiber-count-barrier">fiber-count barrier</a>). Next: develop the Reed–Muller bridge of the generic-core review. The allowed set's complement is a union of independent random pattern cells. Ask how degree-\(D\) functions supported on such a union sit relative to the row sums.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -34937,6 +34937,45 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 47.55 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">8 min 24.08 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 23.33 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-fiber-count-barrier" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:fiber-count-barrier">
+<h3>Fiber-count barrier: a pullback piece certified by the pullback lemma needs every fiber over its value set to hold at least \(\dim\Lambda_{\le D}\) points, so the value map must have large fibers. The W_RS allowed set contains the pullback of its prefix quadrics, but that map, like the zero-pattern map, is nearly injective once the family is large. For generic dense families beyond that size, no pullback piece of any degree is certified</h3>
+<p class="entry-meta">27 September 2026 · Working proof · open statements A1 and A3 · cycle odd-prime-killed-patterns. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-27-prefix-model-correction">prefix-model correction</a> proposed looking for row-free subsets of W_RS allowed sets among surviving-pattern pieces. The missing implication is conj:row-free-subset beyond joint capacity. The recorded capacity limit of pullback pieces is linear-algebraic: joint freeness for spans of dimension about \(N/(2D)\). This cycle tests whether pullbacks of quadrics, which W_RS provides naturally, escape it.</p>
+<p><strong>General statement.</strong> prop:fiber-count-barrier, for every value map on the weak base. If lem:pullback-row-freeness certifies \(v^{-1}(V)\) through \(D\), then every fiber over \(V\) holds at least \(\dim\Lambda_{\le D}\ge3\) points. So \(|V|\cdot\dim\Lambda_{\le D}\le|P|\), whatever the degree of the components of \(v\). The proposition is proved. Its W_RS consequence is a heuristic count for generic dense families. There the zero-pattern map and the prefix-quadric map are nearly injective once \(Mt\gg\log_3|P|\), and no pullback piece is certified beyond that size.</p>
+<h4>The prefix-quadric subset</h4>
+<p>For block \(b\) put \(s_{b,j}=\sum_ic_{ji}^{(b)}g_{b,i}\) (\(j\le t\)), quadrics in the cells since \(g_i=1-L_i^2\). At a point with \(s_b(x)\ne0\) the zero pattern \(g_b(x)\) is not killed, so the block allows \(x\) (lem:uniform-prefix-vacuity). Hence the allowed set contains</p>
+<p>\[Q_1=\{x\in P:\ s_b(x)\ne0\text{ for every non-vacuous block }b\},\]</p>
+<p>the pullback of the value set \(\prod_b(\mathbb F_3^t\setminus0)\) under the quadric map \(s=(s_{b,j})\). Vacuous blocks impose nothing and are left out. lem:pullback-row-freeness extends to value maps with components of degree 2 after regrading. \(T=\mathbb F_3[w_j]/(w_j^3)\) acts by \(w_j\mapsto\mathrm{top}(s_j)\in G_2\), so a monomial of \(T\) has twice its usual degree. This is well defined because \(s^3=s\) for any \(\mathbb F_3\)-valued function, so \(\mathrm{top}(s)^3=0\) in \(G_6\). The proof then runs unchanged: it uses joint freeness of \(G\) over \(T\otimes\Lambda\) and fiber independence, with \(\varphi_\beta\) of degree at most \((d-\deg c_\beta)/2\) in the \(s\)-values. Counting monomials, joint freeness for quadrics is not excluded until about \((mN)^2/D\) components, far beyond the linear count. That was the hope. The barrier below comes from fiber independence instead.</p>
+<h4>prop:fiber-count-barrier</h4>
+<p><strong>Statement.</strong> Let \(v:P\to\mathbb F_3^d\) be any value map and \(V\subseteq\mathbb F_3^d\). If fiber independence holds for \(V\) through \(D\) (lem:pullback-row-freeness), then \(|P_y|\ge\dim(\Lambda\otimes B)_{\le D}\ge\dim\Lambda_{\le D}\) for every \(y\in V\). Hence \(|V|\,\dim\Lambda_{\le D}\le|v^{-1}(V)|\le|P|\).</p>
+<p><strong>Proof.</strong> Fiber independence asks that the lifts of a homogeneous basis of \(\Lambda\otimes B\) in degrees at most \(D\) restrict to linearly independent functions on \(P_y\). A set carrying \(k\) linearly independent functions has at least \(k\) points. Since \(G_0=\mathbb F_3\), \(B_0\) is spanned by 1, so \(\Lambda\otimes B\) contains \(\Lambda\otimes1\), with basis the monomials of \(\Lambda\) in degrees at most \(D\). For \(m\ge2\) and \(D\ge2\) these include \(1,r_1,r_1^2\), so \(\dim\Lambda_{\le D}\ge3\). Sum over the fibers. \(\square\)</p>
+<p><strong>For W_RS.</strong> The prefix quadrics depend on \(x\) only through the zero patterns \(g_b(x)\), and a fiber of \(s\) is a union of fibers of the pattern map. A fiber of \(s\) of size at least 3 needs points that agree in \(Mt\) values. Take dense forms whose zero patterns behave independently across blocks. Then the \(Mt\) values of \(s\) carry about \(Mt\log_23\) bits, so once \(Mt\) exceeds \(\log_3|P|\) by a margin, almost every fiber has at most one point. This is a heuristic count for such forms, not a statement about every adversarial family. An adversary can make the map far from injective by repeating forms, or by correlating distinct forms, so that their zero patterns are dependent. Repetition leaves few distinct forms, within capacity. Correlation short of repetition is not handled here, so the claim is restricted to generic dense families. The subset freedom allows passing to the values with large fibers, but under near-injectivity there are almost none. So beyond \(Mt\approx\log_3|P|\approx n\log_3n\), pullbacks certify no row-free subset, whether of linear forms, quadrics or zero patterns. That is \(M\) of order \(n\) blocks, polynomially below \(n^K\).</p>
+<h4>What it means</h4>
+<p>The capacity limit of the pullback method is informational, not linear-algebraic. The recorded joint-freeness range and this fiber count both cap the number of independent components at about \(\log|P|\). For families beyond it, a row-free subset must be certified by a mechanism that is not a pullback lemma. In the record, as searched with <code>tools/search-claims.py</code> on row-free and base, the row-free sets that are not pullbacks are the base, sub-bases, confined bases and fibers of columns. None of these constrains the forms, and no other construction is recorded. conj:row-free-subset for large families therefore needs a new kind of row-free set, one cut by many constraints yet with fibers of no single value map. Near-injective value maps make this the same problem as row freeness of the allowed set itself, up to the subset freedom.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statements A1 and A3: develop the generic-core review's Reed–Muller bridge, which was not run. The allowed set's complement is a union of \(M\) random pattern cells. Ask how the degree-\(D\) functions supported on such a union sit relative to the row sums, using that the cells of different blocks are independent under uniform prefixes. That is the one mechanism the fiber count does not exclude.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:pullback-row-freeness with its proof and lem:uniform-prefix-vacuity. No computation was run. A fresh-context reviewer confirmed that \(Q_1\) lies in the allowed set, the proposition's proof, and the arithmetic \(Mt\approx n\log_3n\) with \(t=\Theta(\log n)\). It required four changes, all adopted:</p>
+<ul>
+<li>the general statement now separates the proved proposition from its heuristic W_RS consequence;</li>
+<li>the adversarial caveat now names correlated forms and restricts the claim to generic dense families;</li>
+<li>the regrading of the pullback lemma for degree-2 components is now stated;</li>
+<li>the list of known non-pullback row-free sets is now attributed to a record search.</li>
+</ul>
+<p>Its note on \(G_0=\mathbb F_3\) and \(m\ge2\) is adopted in the proof.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-killed-patterns">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 50.83 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 19.36 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 31.33 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
