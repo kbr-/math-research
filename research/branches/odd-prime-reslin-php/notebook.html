@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> After normal form, the quotient by the row sums is the row-sum-free collision algebra on \(N-1\) columns modulo the products of truncated row sums (<a href="#entry-2026-09-27-normalized-quotient">normalized quotient</a>). First-degree purity asks that a family's tops meet that quadratic ideal \((U^2)\) only in \(s'^2\)-multiples. Next: define a \(U\)-adic filtration and prove that products of squares of forms independent from \(U\), under density, have \(U\)-order 0. Then prove the family statement for normalized dense members' tops.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> The \(U\)-order filtration splits (<a href="#entry-2026-09-27-column-peeling">column peeling</a>), but its order-0 condition is purity on one column fewer, so it is not a mechanism for local independence. Next: the witness review's plan. Write W clause tops of a normalized family beyond joint capacity in the monomial basis \(\gamma(S,T)\), and look for a leading-term order in which each member's top has a leading monomial fixed by its own forms' supports, so that density separates members.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -34134,6 +34134,35 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 12.50 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 9.98 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-column-peeling" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:column-peeling">
+<h3>Column peeling: in degrees up to \(N/2\), the quotient by the row sums on \(N\) columns splits as the quotient on \(N-1\) columns plus \(m\) shifted copies of it, so the \(U\)-order filtration of the normalized quotient splits. Its order-0 condition is purity on \(N-1\) columns, a transfer of the record's spare-column shape, so the filtration gives no new mechanism against the adversary</h3>
+<p class="entry-meta">27 September 2026 · Working lemma and a negative assessment of one proposed mechanism, no computation · open statements A1 and A3 · cycle odd-prime-u-order. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statements A1 and A3. thm:normalized-quotient wrote the quotient by the row sums as \(\tilde A'/(U^2)\), with \(U\) the span of the truncated row sums on columns \(2,\dots,N\). It proposed a \(U\)-order filtration as a mechanism for local independence: a product of squares of forms independent from \(U\) should have \(U\)-order 0 unless its factors conspire. Does the filtration give a mechanism?</p>
+<p><strong>General statement.</strong> lem:column-peeling. Over \(\mathbb F_3\), for \(m\) rows and \(d\le N/2\), let \(A(N)\) be the collision algebra modulo all row sums on \(N\) columns. Then \(A(N)_d\cong A(N-1)_d\oplus U\otimes A(N-1)_{d-1}\), and \(\dim A(N)_d=\dim A(N-1)_d+m\dim A(N-1)_{d-1}\). In \(\tilde A'\), the element \(t\) lies in \((U^2)\) iff its order-0 part (its class in \(A(N-1)\)) and its order-1 part (its \(U\)-linear coefficient in \(U\otimes A(N-1)\)) both vanish.</p>
+<h4>The lemma</h4>
+<p><strong>lem:column-peeling.</strong> Let \(\Lambda'=\mathbb F_3[r'_1,\dots,r'_m]/(r_i'^3)\), acting on \(\tilde A'\), and \(\mathfrak m'=(r'_i)\). By thm:tensor-power-freeness on the \(N-1\) columns of \(\tilde A'\), \(\operatorname{Tor}_1^{\Lambda'}(\mathbb F_3,\tilde A')_c=0\) for every content with \(N-1\ge2|c|-1\), that is \(|c|\le N/2\). Take a graded complement \(C\) of \(\mathfrak m'\tilde A'\), so \(C\cong\tilde A'/\mathfrak m'\tilde A'=A(N-1)\). The minimal cover \(\Lambda'\otimes C\to\tilde A'\) is then bijective in degrees \(\le N/2\), by graded Nakayama. It is onto. Its kernel \(K\) satisfies \(\mathbb F_3\otimes K\cong\operatorname{Tor}_1\) in the lowest degree where \(K\ne0\). The range condition for degree \(d\) implies it for every smaller degree, so induction on the degree gives \(K=0\) through \(N/2\). So in those degrees \((U^2)=\mathfrak m'^2\tilde A'\cong\mathfrak m'^2\otimes C\), and with thm:normalized-quotient,</p>
+<p>\[A(N)_d=\tilde A'_d/(U^2)_d\cong\bigl((\Lambda'/\mathfrak m'^2)\otimes C\bigr)_d=C_d\oplus U\otimes C_{d-1}.\]</p>
+<p>Since \(\Lambda'\) is graded with \(\Lambda'_1=U\), the order-0 and order-1 parts of an element are its components in \(\Lambda'_0\otimes C\) and \(\Lambda'_1\otimes C\) in the free decomposition. The element lies in \(\mathfrak m'^2\tilde A'\) iff both vanish. \(\square\)</p>
+<p><strong>Check.</strong> One row, \(d=4\), \(N=8\): \(\dim A(8)_4=21\) (thm:one-row-local-spanning), \(\dim A(7)_4=\dim Z_4(7)=6\), and \(\dim A(7)_3=\dim Z_3(7)=15\), from the saved one_row_spanning.txt. Indeed \(21=6+1\cdot15\). The range \(d\le N/2\) is needed. On 3 rows and 3 columns in degree 2, outside it, the formula would give \(0+3\cdot3=9\), while \(A_2=\Lambda^2V\) has dimension 3.</p>
+<h4>What it gives for the adversary</h4>
+<p>A combination \(t=\sum_bc_bt_b\) of normalized tops lies in the row-sum ideal on \(N\) columns only if two things hold. First, its order-0 part vanishes: \(t\) lies in the row-sum ideal of the board on columns \(2,\dots,N\), where the forms need not be in normal form. Second, its \(U\)-linear coefficient vanishes. The first condition is purity of the same tops on one column fewer. So the filtration gives: purity on \(N-1\) columns implies purity on \(N\) columns for forms avoiding column 1, in degrees up to \(N/2\). This has the shape of the record's spare-column transfer (lem:spare-column-transfer): spare room carries purity up from a smaller board. It does not have that lemma's range. With one spare column, that lemma certifies only degree \(t\le1\). The range \(d\le N/2\) here comes from the global freeness of all \(N-1\) columns (thm:tensor-power-freeness). Either way, the statement does not turn density into independence. The proposed mechanism, "\(U\)-order 0 unless the factors conspire", comes down to purity one board down. Iterated, it demands purity on ever smaller boards, which are harder. So the filtration is closed as a mechanism for local independence. The splitting itself is kept: it gives a dimension recursion for \(A(N)\), and it decomposes membership tests into two smaller ones.</p>
+<p><strong>Process.</strong> This cycle ran no computation. The proposed mechanism was tested by working out the structure it rests on, and it reduced to a recorded result within the cycle. The check reused saved numbers.</p>
+<p><strong>Next.</strong> Return to the witness review's plan for local independence. Write W clause tops \(\prod_{j\in S}\ell_j^2\cdot\ell_i^2\) of a normalized family beyond joint capacity in the monomial basis \(\gamma(S,T)\) of cor:rsk-monomial-basis. Look for a leading-term order in which each member's top has a leading monomial determined by its own forms' supports, so that density separates members.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read thm:tensor-power-freeness (its range \(N\ge2|c|-i\), applied with \(i=1\) on \(N-1\) columns), thm:normalized-quotient (parts 1 and 2), and lem:spare-column-transfer (the recovered statement). A fresh-context reviewer confirmed the Nakayama step, the splitting, the membership criterion and both checks. It required two changes, both adopted: the induction on degree in the Nakayama step, and replacing the identification with lem:spare-column-transfer by a comparison. The two share a shape, but their ranges differ, and the range here comes from global freeness.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-u-order">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 55.88 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">47.74 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 8.01 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
