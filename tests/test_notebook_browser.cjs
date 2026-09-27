@@ -20,6 +20,10 @@ const {chromium} = require('playwright');
         <pre id="literal-math">\[leave this example alone\]</pre>
         $$w^2+1$$
       </article>
+      <article id="wide-math"><h3>Wide display math</h3>
+        \[x_1+x_2+x_3+x_4+x_5+x_6+x_7+x_8+x_9+x_{10}+x_{11}+x_{12}+x_{13}+x_{14}+x_{15}+x_{16}\tag{W}\]
+        \[y_1+y_2+y_3+y_4+y_5+y_6+y_7+y_8+y_9+y_{10}+y_{11}+y_{12}+y_{13}+y_{14}+y_{15}+y_{16}\]
+      </article>
       <article id="distant-math" style="margin-top:100000px"><h3>Distant math</h3>
         \[\text{unvisited-orphan-probe}+q^2\]
       </article>
@@ -94,6 +98,23 @@ const {chromium} = require('playwright');
     await page.locator('#search-results button').click();
     await page.waitForFunction(() => document.querySelector('#distant-math mjx-container'));
     await sample('bare-math-fixture');
+    // MathJax gives a tagged display equation an inline min-width of its full width, which
+    // overrode max-width and widened the whole page on a phone.
+    const phone = await browser.newPage({isMobile: true, hasTouch: true, viewport: {width: 390, height: 844}});
+    phone.on('pageerror', error => report.errors.push(error.message));
+    await phone.goto(url + 'math-fixture', {waitUntil: 'domcontentloaded'});
+    await phone.waitForFunction(() => window.mathReady);
+    await phone.locator('#wide-math').scrollIntoViewIfNeeded();
+    await phone.waitForFunction(() => [...document.querySelectorAll('#wide-math mjx-container')].filter(node => node.querySelector('svg')).length === 2);
+    const phoneWidth = await phone.evaluate(() => {
+      const main = document.querySelector('main').getBoundingClientRect();
+      return {page: document.documentElement.scrollWidth, screen: innerWidth,
+        outside: [...document.querySelectorAll('#wide-math mjx-container')]
+          .filter(node => node.getBoundingClientRect().right > main.right + 1).length};
+    });
+    assert.equal(phoneWidth.outside, 0, 'Display math must stay inside the notebook on a phone');
+    assert(phoneWidth.page <= phoneWidth.screen, `Wide math widened the page: ${JSON.stringify(phoneWidth)}`);
+    await phone.close();
     async function checkSearch(label) {
       assert.equal(await page.evaluate(() => performance.getEntriesByName('notebook-search-index').length), 0,
         'No search index should be built at page load');
