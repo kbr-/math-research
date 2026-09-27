@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The Lucas multiplier reduces W_RS, at a degree cost independent of the number of blocks, to a design on the base minus the deep overlaps (<a href="#entry-2026-09-27-lucas-multiplier">Lucas multiplier</a>). Hiding on the deep overlaps holds only when they are empty, since \(1_{E_b}1_{3^a\mid r}\) has degree at most \(3^as\le D_0\). Emptiness needs degree of order \(n\,s\), beyond the design range, so conj:lucas-hiding is expected to fail for dense families (prop:hiding-needs-emptiness; <a href="#entry-2026-09-27-hiding-fails">hiding fails</a>). Next: a route review weighing A1, A2 and A3 against the last cycles, and whether the design range \(D_0\le\sqrt{N/2}\), rather than a mechanism, is the binding constraint.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> Pointwise multipliers cannot certify the dense core. Even at the largest design range, about \(N/2\), they pay degree per block or need empty deep overlaps. What binds is the exchange rate between degree and exclusion density, not the range (<a href="#entry-2026-09-27-budget-review">budget review</a>). Next: the colon form of designs. Under a perfect pairing of a base design modulo the PHP closure, every design of PHP plus \(\Gamma\) is \(\mu_0(W\cdot)\) with \(W\gamma\) in the closure for each constraint. Test the pairing and whether the colon holds elements below the vanishing degree of \(E\), on the smallest family where pointwise multipliers fail.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -36900,6 +36900,79 @@ So \(\mu\) vanishes on \(C_{D_0}(R)\), and \(\mu(W_a)=c\,\mu_\rho(1)\ne0\). By t
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 25.21 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 52.09 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.34 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-budget-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review: weighs the design range against per-block and overlap costs and records leads; no new claim.">
+<h3>Route review after the Lucas line: for pointwise multipliers the design range is not the binding constraint. Even at the largest possible range, about \(N/2\), pointwise multipliers cannot pay per-block costs for \(n^K\) blocks, nor reach empty deep overlaps. What binds is the exchange rate between degree and exclusion density. Designs of the general form \(\mu_0(W\cdot)\) need \(W\gamma\) only in the PHP closure, not zero, and that relaxation is untested</h3>
+<p class="entry-meta">27 September 2026 · Route review · open statement A1 · cycle odd-prime-budget-review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. Since the <a href="#entry-2026-09-27-dense-core-lift-review">dense-core review</a>, the Lucas line has run through four entries:</p>
+<ul>
+<li>the <a href="#entry-2026-09-27-lucas-multiplier">multiplier</a>;</li>
+<li><a href="#entry-2026-09-27-lucas-nondegeneracy">nondegeneracy</a>;</li>
+<li><a href="#entry-2026-09-27-lucas-digits">digits</a>;</li>
+<li><a href="#entry-2026-09-27-hiding-fails">hiding fails</a>.</li>
+</ul>
+<p>It ended at emptiness of the deep overlaps, out of the design range. This review asks whether that range is what binds, and what form of certificate is left.</p>
+<h4>The line's general claim</h4>
+<p>W_RS at degree \(D\approx44t\) for dense families of \(M\le n^K\) blocks. By lem:multiplier-designs, a PHP design \(\mu_0\) of degree \(D_0\) and a multiplier \(W\) of degree at most \(D_0-D\) vanishing on the excluded set \(E\), with \(\mu_0(W)\ne0\), give it.</p>
+<h4>What the goal needs, against the budget</h4>
+<p>Designs for the rows on the weak base have degree at most \(N\) (lem:multiplier-designs, by Anstee, Rónyai and Sali). They are known to exist up to \(D_0\le\sqrt{N/2}\) (thm:weak-base-stability-quadratic), and conj:weak-base-stability would extend this to about \(N/2\). Against the largest range \(D_0\approx N/2\):</p>
+<ul>
+<li>product multipliers cost degree 2 per block, so they reach about \(N/4\) blocks, not \(n^K\);</li>
+<li>separators cost the degree of an excluded indicator per block, at most \(2h+4t\), or \(4t\) with the covering sets \(\{C_bg_b=0\}\);</li>
+<li>the Lucas multiplier needs empty deep overlaps, which prop:hiding-needs-emptiness estimates at degree of order \(n\,s\), with \(s\approx4t\). Here \(N\), the number of holes, is \(n\) up to a constant, since the board is \(\mathrm{PHP}^{N+1}_N\), so this exceeds \(N/2\) by a factor of order \(s\).</li>
+</ul>
+<p>So raising the range to its maximum would not rescue any pointwise-multiplier mechanism. For those mechanisms the range is not the binding constraint. For designs of the colon form below, its role is untested.</p>
+<h4>Falsification attempt: is the barrier intrinsic to the problem or to the certificates?</h4>
+<p>Counting says the problem has room. The clause conditions are a vanishing fraction of the design space (<a href="#entry-2026-09-27-dense-core-lift-review">dense-core review</a>). A semi-regular heuristic also puts the first fall far above \(D\). Take \(M\) clauses of degree \(e=4t+2\) in a space with \(V\approx Nm\approx n^2\) degree-1 directions, one per cell (not per hole). The first nonpositive coefficient of the Hilbert series comes near \((V/d)^e\approx M\), that is \(d\approx V\,M^{-1/e}\approx n^2\), since \(K/(4t)\to0\). This is the heuristic behind open statement A3.</p>
+<p>So the barrier concerns the certificates. Each mechanism so far vanishes pointwise on \(E\), or on the deep overlaps. It then pays the degree of an exclusion indicator, about \(4t\), for each unit of exclusion density \(3^{-t}\). No mechanism so far has used the algebra of \(E\) beyond its points.</p>
+<h4>Obstacle</h4>
+<p>A degree-\(D\) design for PHP plus a dense family beyond capacity. Every design this route has built for dense W_RS families since the reduction review has the form \(f\mapsto\mu_0(Wf)\) with \(W\) vanishing on \(E\) (or on its deep overlaps), and the pointwise vanishing costs degree at a rate that no range within \(N\) can pay. The general form needs only \(W\gamma\in C_{D_0}(R)\) for each constraint \(\gamma\), membership in the PHP closure. That weaker condition has not been studied.</p>
+<h4>Assessment of the route</h4>
+<p>Weak at A1. The Lucas line was the first mechanism with cost independent of the number of blocks, and it failed on hiding, for a structural reason: the product \(1_{E_b}W_a\). The route's pointwise-certificate programme is exhausted. Generic counting leaves room, and open statement A3 records the matching conjecture. The adversarial dense core remains uncertified.</p>
+<h4>Outside leads</h4>
+<ul>
+<li>conj:weak-base-stability, stability in the linear range \(N\ge2D-1\). Target: the design range. <strong>Answers.</strong> It would raise the range of base designs from \(\sqrt{N/2}\) to about \(N/2\), the most any design allows. <strong>Test.</strong> Falsified as a resolution of the obstacle: at \(D_0\approx N/2\), product multipliers still reach only about \(N/4\) blocks, and Lucas emptiness still needs degree of order \(n\,s\gg N/2\), as computed above.</li>
+<li>Macaulay inverse systems and Gorenstein duality (Iarrobino and Kanev, Power sums, Gorenstein algebras, and determinantal loci, Lecture Notes in Math. 1721, 1999). Target: designs that are not pointwise multipliers. <strong>Answers.</strong> Suppose a base design \(\mu_0\) pairs \(F_{D_0-D}\times F_D\) perfectly modulo the PHP closure. Then every design of PHP plus \(\Gamma\) of degree \(D\) is \(\mu_0(W\cdot)\) with \(W\) in the colon \((C_{D_0}(R):\Gamma)\), not merely with \(W\) vanishing on \(E\). The colon can contain \(W\) of lower degree than the vanishing degree of \(E\). The degrees must be matched: \(\deg W\le D_0-D\), and for a constraint of degree \(e\) the condition \(W\gamma\in C_{D_0}(R)\) is needed through degree \(D_0-D+e\), so the pairing must be nondegenerate in the complementary degrees. <strong>Test.</strong> Not run: it needs the nondegeneracy of the pairing for a PHP design, which is not known, and a construction of \(W\) in the colon.</li>
+<li>Semi-regular sequences and the degree of regularity (Bardet, Faugère and Salvy, On the complexity of Gröbner basis computation of semi-regular overdetermined algebraic equations, ICPSS 2004). Target: the room in the problem. <strong>Answers.</strong> If PHP plus the clauses behaved like a semi-regular system, its first fall would come at the first nonpositive coefficient of the Hilbert series, far above \(D\). <strong>Test.</strong> Passed as a translation: the arithmetic above gives about \(n^2\). This is the record's A3 heuristic in the language of the source, so it restates rather than resolves the adversarial case.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li>Shannon's rate–distortion trade-off (A mathematical theory of communication, 1948). Translation: a certificate must encode which points are excluded. A clause spends degree \(4t+2\) to carry \(t\log_23\) bits of exclusion, about \(0.4\) bits per degree. A cell variable carries about \(\log_2n\) bits per degree. <strong>Answers.</strong> A rate bound would turn the exchange-rate barrier into a lower bound for pointwise multipliers: degree at least the information in \(E\) divided by the best rate. <strong>Test.</strong> Passed as a translation: the arithmetic shows the clauses are far less efficient carriers than cell monomials, consistent with the barrier. No theorem transfers, since polynomial degree over \(\mathbb F_3\) is not an information measure.</li>
+<li>The Lee–Yang circle theorem (Lee and Yang, Phys. Rev. 87, 1952). Translation: \(\mu_0(W_a)=\sum_{j&lt;3^a}(-1)^j\sum_{|B|=j}\mu_0(\prod_{b\in B}1_{F_b})\) is a truncated partition function of the exclusion events. Nondegeneracy is the statement that it does not vanish. <strong>Answers.</strong> Zero-free regions of partition functions would give nondegeneracy. <strong>Test.</strong> Falsified: the theorem is complex-analytic and needs ferromagnetic real weights, while \(\mu_0\) takes values in \(\mathbb F_3\).</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-27-dense-core-lift-review:1">Truncated inclusion–exclusion. Work: developed into lem:lucas-truncation and prop:lucas-multiplier-reduction; prop:hiding-needs-emptiness showed that its hiding condition needs empty deep overlaps. <strong>Follow-up.</strong> Closed: emptiness is out of the design range for dense families.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-27-lift-review:1">Bootstrap percolation. Work: the infection threshold is now explicit. PHP's forcing reaches every deep-overlap point through the products \(1_{E_b}W_a\), so infection is supercritical whenever deep overlaps exist. <strong>Follow-up.</strong> Closed: the threshold is emptiness.</li>
+<li data-bridge="entry-2026-09-27-capacity-review:1">Replica symmetry. Work: its sparse-set picture drove the Bonferroni and Lucas constructions, which closed on hiding. <strong>Follow-up.</strong> Closed with them.</li>
+</ul>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1, the highest-risk item: develop the Gorenstein lead. State and prove the colon form of designs: if a base design pairs perfectly modulo the PHP closure, every design of PHP plus \(\Gamma\) is \(\mu_0(W\cdot)\) with \(W\) in \((C_{D_0}(R):\Gamma)\). Then test the pairing's nondegeneracy, and whether the colon contains elements of lower degree than the vanishing degree of \(E\), on the smallest W_RS-type family where pointwise multipliers are known to fail.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the four Lucas-line entries, lem:multiplier-designs, thm:weak-base-stability-quadratic, conj:weak-base-stability and the dense-core review. No computation was run; the tests are arithmetic stated in the items. A fresh-context reviewer confirmed the budget arithmetic, the semi-regular heuristic and its labelling, and the scope of the Gorenstein lead as untested. It required four changes, all adopted:</p>
+<ul>
+<li>the scaling \(N\approx n\) (holes) is stated and distinguished from \(V\approx n^2\) (cells);</li>
+<li>the claim about the range is restricted to pointwise multipliers, in the title and body;</li>
+<li>the Obstacle's "every design" is scoped to this route's designs for dense families;</li>
+<li>the separator cost states its dependence on \(h\).</li>
+</ul>
+<p>Its optional suggestion is adopted: the Gorenstein lead states its degree bookkeeping. The changes restrict claims, so one pass suffices.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-budget-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 0.85 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">49.42 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 38.56 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 32.73 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
