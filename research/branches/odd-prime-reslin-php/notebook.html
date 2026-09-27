@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The naive pigeon dance inside the allowed set fails exactly through coefficient classes of a pigeon's cells; row-sum classes are harmless because designs of the row equations already vanish on those clauses, and after normal form the large-class failure is the recorded U-shift class (prop:dance-shared-patterns; <a href="#entry-2026-09-27-dance-shared-patterns">dance shared patterns</a>). Next: robustness in normal form with small coefficient classes, bounding per block by a union over value vectors in \(\mathbb F_3^{h_b}\) and summing over blocks with a concentration bound over the joint value vectors of matchings of size below \(D\).</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> A pigeon-dance design inside the allowed set is Nullstellensatz hardness of the row equations as functions on that set; it fails exactly when a degree-\(D\) near-refutation of weak PHP fails only at excluded points, each excluded with probability at most \(M3^{-t}\) (prop:failure-set-criterion; <a href="#entry-2026-09-27-failure-set-criterion">failure-set criterion</a>). Next: the structure of inclusion-minimal failure sets, through the chessboard-homology description of the matching design system: their sizes, and the largest share of one that a single block's excluded set can contain.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -35746,6 +35746,62 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><td>Marked reading and review windows</td><td class="elapsed">49.26 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 45.19 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 14.39 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-failure-set-criterion" data-kind="research" data-route="odd-prime-clause-transfer" data-lead="entry-2026-09-27-reduction-review:1" data-claims="prop:failure-set-criterion">
+<h3>Failure-set criterion: made precise, a pigeon-dance design inside the allowed set is Nullstellensatz hardness of the row equations as functions on that set. That fails exactly when some degree-\(D\) near-refutation of weak PHP fails only at excluded points. Under W_RS each point is excluded with probability \(O(1/n)\), so the question is how many minimal failure sets there are, not how the dance runs</h3>
+<p class="entry-meta">27 September 2026 · Working proof and reduction · open statement A1 · cycle odd-prime-small-classes. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-27-dance-shared-patterns">dance shared patterns</a> entry proposed bounding a pigeon dance's extension losses over small coefficient classes. That needs the design the dance is meant to build. The record has one: the matching design system of lem:matching-extension-certificates, extended by chessboard homology in thm:integral-design-extension. This cycle writes the design inside the allowed set exactly and asks what the robustness question then is.</p>
+<p><strong>General statement.</strong> prop:failure-set-criterion, for every constraint family and degree, at the Nullstellensatz level. Weak PHP plus the family has a degree-\(D\) NS design given by point weights on the allowed set exactly when no degree-\(D\) near-refutation of weak PHP has its failure set inside the excluded set. Under W_RS each point is excluded with probability at most \(M3^{-t}\). So the probability that such a design fails is at most the sum, over inclusion-minimal failure sets \(\Phi\), of \(\Pr[\Phi\subseteq E]\), and each term is at most \(M3^{-t}\).</p>
+<h4>prop:failure-set-criterion</h4>
+<p><strong>Setting.</strong> Let \(B\) be the set of 0/1 assignments satisfying the column collisions, that is the Boolean points of weak unary PHP without its row equations \(R=\{r_i-1\}\). A constraint family \(\Gamma\) of degree at most \(D\) has allowed set \(Q=\{x\in B:\gamma(x)=0\ \forall\gamma\in\Gamma\}\) and excluded set \(E=B\setminus Q\). A <em>degree-\(D\) near-refutation</em> is \(\Lambda=\sum_ib_i(r_i-1)\) with \(\deg b_i\le D-1\). Its <em>failure set</em> is \(\Phi(\Lambda)=\{x\in B:\Lambda(x)\ne1\}\).</p>
+<p><strong>Statement.</strong></p>
+<ol>
+<li>There is a weight \(\nu:Q\to\mathbb F_3\) with \(\sum_x\nu(x)=1\) and \(\sum_x\nu(x)x_T(x)(r_i(x)-1)=0\) for all \(|T|\le D-1\) and all \(i\) iff no near-refutation \(\Lambda\) has \(\Phi(\Lambda)\subseteq E\).</li>
+<li>Such a \(\nu\) defines \(\mu(f)=\sum_x\nu(x)f(x)\), a degree-\(D\) NS dual functional of weak PHP plus \(\Gamma\). It vanishes on every multiple of degree at most \(D\) of the Boolean axioms, the collisions, the row equations and the constraints. So there is then no NS refutation of degree \(D\).</li>
+<li>For \(\Gamma=\varnothing\) (\(E=\varnothing\)), and \(D\le\lfloor(n+1)/2\rfloor\), \(n\ge3\), such a \(\nu\) exists. This is the matching design of thm:integral-design-extension written as point weights, by Möbius inversion over sub-matchings (lem:matching-extension-certificates). So every near-refutation of such degree has \(\Phi(\Lambda)\ne\varnothing\).</li>
+<li>Under W_RS, with \(D\le\lfloor(n+1)/2\rfloor\) so that failure sets are nonempty by (3), \(\Pr[x\in E]\le M3^{-t}\) for every \(x\in B\). Hence \(\Pr[\text{no }\nu]\le\sum_{\Phi\in\mathcal M_D}\Pr[\Phi\subseteq E]\le|\mathcal M_D|\cdot M3^{-t}\), where \(\mathcal M_D\) is the set of inclusion-minimal failure sets of degree-\(D\) near-refutations.</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>Finite linear algebra. The conditions on \(\nu\) say that the functional \(\nu\mapsto\sum_x\nu(x)\) is not in the span of the functionals \(\nu\mapsto\sum_x\nu(x)x_T(r_i-1)(x)\) restricted to \(Q\). It is in the span iff some combination \(\Lambda=\sum_{T,i}\lambda_{T,i}x_T(r_i-1)\) equals 1 at every point of \(Q\), that is \(\Phi(\Lambda)\cap Q=\varnothing\).</li>
+<li>The axiom families behave differently. Booleanity and collision multiples vanish at every point of \(B\), and constraint multiples vanish on \(Q\supseteq\operatorname{supp}\nu\). Both hold at any multiplier degree. Only the row-equation multiples use the degree bound: a multiplier \(b\) of degree at most \(D-1\), multilinear or not, agrees on \(B\) with its multilinear reduction, a combination of monomials \(x_T\) with \(|T|\le D-1\), since reduction does not raise degree. The conditions then kill \(b(r_i-1)\). Finally \(\mu(1)=1\).</li>
+<li>Given the matching design \(z\) of degree \(D\), put \(\nu(U)=\sum_{S\supseteq U}(-1)^{|S|-|U|}z_S\) over matchings \(S\) with at most \(D\) cells, for matchings \(U\) with at most \(D\) cells, and \(\nu=0\) elsewhere. Then \(\sum_{U\supseteq T}\nu(U)=z_T\) for \(|T|\le D\). This telescopes because being a matching is hereditary: every subset of a matching is one, so each interval between two matchings is a full Boolean lattice. On a matching \(U\), \(r_i(U)-1=-[i\notin\mathrm{rows}(U)]\). So the conditions read \(\sum_{U\supseteq T,\,i\notin\mathrm{rows}(U)}\nu(U)=0\). For a matching \(T\) with \(i\notin\mathrm{rows}(T)\), this is \(z_T-\sum_jz_{T+(i,j)}=0\), the design equation. If \(i\in\mathrm{rows}(T)\), the sum is empty. If \(T\) is not a matching, \(x_T\) vanishes on every matching. In both cases the condition holds trivially.</li>
+<li>Take a point \(x\) and a block \(b\). Then \(x\in E_b\) needs \(g_b(x)\ne0\) and \(C_bg_b(x)=0\), with probability at most \(3^{-t}\) (lem:uniform-prefix-vacuity). Sum over blocks. If no \(\nu\) exists, some \(\Phi\in\mathcal M_D\) lies inside \(E\), and \(\Pr[\Phi\subseteq E]\le\Pr[x\in E]\) for any \(x\in\Phi\). \(\square\)</li>
+</ol>
+<h4>What it gives</h4>
+<p>The pigeon-dance lead, made precise, asks no more than whether the row equations stay NS-hard as functions on the allowed set. The relation to full refutations is one-directional in general. In a degree-\(D\) NS refutation of weak PHP plus the family, the Boolean and collision terms vanish at every point of \(B\), and the constraint terms vanish on \(Q\). So its row part \(\Lambda\) is a near-refutation with \(\Phi(\Lambda)\subseteq E\). This is why the criterion excludes refutations. The converse, a refutation built from such a \(\Lambda\), needs \(1-\Lambda\) to be a degree-\(D\) combination of the constraints and the Boolean and collision axioms. That holds when the family consists of all functions of degree at most \(D\) vanishing on \(Q\), the setting of thm:global-closure-gluing, but not for every family. So a family may be NS-hard without a design supported on \(Q\). That is the Nullstellensatz form of the record's question, whose PC form is thm:global-closure-gluing's row freeness. The dance, and the coefficient classes of the last entry, are one way to produce the weights \(\nu\). The obstruction is entirely in the failure sets of near-refutations of the base.</p>
+<p>Two examples calibrate it:</p>
+<ul>
+<li>the near-refutation \(\Lambda=-(r_1-1)=1-r_1\) equals 1 exactly where \(r_1=0\), so \(\Phi(\Lambda)=\{r_1\ne0\}\). That set has constant density in \(B\), and no family of excluded density \(O(1/n)\) can contain it. Its symmetry orbit is small, only \(m\) sets. The hard cases are small failure sets with large orbits;</li>
+<li>by (3), no failure set is empty below degree \(\lfloor(n+1)/2\rfloor\).</li>
+</ul>
+<p>The crude bound (4) is useful only if \(|\mathcal M_D|\ll3^t/M\), about \(n\) up to polylogarithmic factors. That is certainly false: pigeon and hole symmetry alone multiplies any failure set by up to \(m!N!\). So (4) must be sharpened. Either \(\Pr[\Phi\subseteq E]\) is far below the single-point bound for the large, spread failure sets, or failure sets are grouped by symmetry and by the blocks that could cover them.</p>
+<h4>Outcome</h4>
+<p>The dance lead is reduced to a clean question about the base alone: what the inclusion-minimal failure sets of degree-\(D\) near-refutations of weak PHP look like. How small and how block-shaped can they be? A covering argument needs sizes, and it needs how many of their points a single block's excluded set can contain. This is at the Nullstellensatz level. The PC level needs the closure, not just the span, and remains the record's row-freeness question. Lead follow-up: continuing, now at the failure-set question.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1: minimal failure sets of weak PHP. Use the chessboard-homology description of the matching design system (thm:integral-design-extension). A degree-\(D\) design fails to exist on a sub-board exactly when a cycle cannot be filled. So a failure set should be a union of cocycle supports. Bound from below the size of the smallest failure set, and the largest fraction of it that one W_RS block's excluded set can contain. Then decide whether \(\sum_\Phi\Pr[\Phi\subseteq E]\to0\).</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:matching-extension-certificates, thm:integral-design-extension, lem:uniform-prefix-vacuity, lem:Boolean-design-point-support-lower-bound and thm:global-closure-gluing. No computation was run. A fresh-context reviewer re-derived all four parts and found no false statement. It required four changes, all adopted:</p>
+<ul>
+<li>part (2) now separates the axiom families, since only the row equations use the degree bound;</li>
+<li>part (3) treats the trivial cases \(i\in\mathrm{rows}(T)\) and non-matching \(T\) explicitly;</li>
+<li>the relation to full refutations is spelled out;</li>
+<li>the Möbius telescoping is justified by heredity of matchings.</li>
+</ul>
+<p>On the third point, the reviewer called the equivalence exact. Checking it showed that the converse needs the constraints to span the functions of degree at most \(D\) that vanish on \(Q\). The entry therefore states it as one-directional in general, and exact in the global-closure setting. Of its suggestions, the symmetry-orbit remark is adopted, and the parity check of \(N\ge2D-1\) is left to the cited theorem. This correction weakens a claim, so one pass suffices.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-small-classes">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 39.54 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 20.57 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 39.06 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 39.77 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
