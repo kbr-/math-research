@@ -309,8 +309,9 @@ rules to growing checklists or one-off setup narratives.
   Append drafted entries and new Proposed next steps with `tools/notebook-append.py`;
   build reviewer excerpts with `tools/notebook-excerpt.py`.
 - The framework suite is every `tools/tests/test_*.py`, which covers `compute.sh`,
-  the session launchers and `tools/`; new framework tests go there, never beside
-  the code. After editing any of these, run it before committing, through the protected
+  the session launchers, `tools/` and the site: `test_site.py` runs the tests in `tests/`,
+  including the real-browser ones, each within 5 s (user, 28 September 2026). New framework
+  tests go there or into `tests/` with a case in `test_site.py`, never beside the code. After editing any of these, run it before committing, through the protected
   launcher: `./compute.sh --threads 1 python3 tools/tests/run.py`, which runs the tests in
   parallel worker processes. The whole suite stays under 10 seconds (user, 26 September
   2026: "The suite should run in 10s tops"); the runner fails a slower run and lists its
@@ -324,11 +325,8 @@ rules to growing checklists or one-off setup narratives.
   whole code paths), before its commit, and a profile if it is slower than the work it does.
   Measure a change's effect before claiming it: a framework commit message states only what was
   measured or checked, and a mechanism (a cache, an option, a helper) needs a measured use. Other
-  tests run only on their own trigger: `tests/` for site changes (the
-  Pages workflow runs `test*pages.py` and `test_pages_client.js`; the Playwright
-  `*.cjs` browser tests run for notebook layout or script changes);
-  `formalization/tests/` needs the Lean toolchain and runs when formalization tooling
-  changes; `resource-controls/test_watchdog.py` and `test_11gb.py` validate the memory
+  tests run only on their own trigger: `formalization/tests/` needs the Lean toolchain and
+  runs when formalization tooling changes; `resource-controls/test_watchdog.py` and `test_11gb.py` validate the memory
   controls and run only when those controls change. Scripts and tests under
   `research/` are computations or provenance of finished one-off jobs, tied to the data
   of their date, and are not rerun.

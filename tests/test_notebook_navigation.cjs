@@ -1,63 +1,39 @@
-// Real-browser regression for end -> repeated previous-entry navigation.
-const fs = require('node:fs');
-const http = require('node:http');
+// Real-browser regression for the scroll buttons: previous and next align each successive heading
+// at the top, with and without smooth scrolling; rapid clicks advance from the chosen destination,
+// not from a point mid-animation; manual scrolling releases the destination; end reaches the end.
 const assert = require('node:assert/strict');
-const {chromium} = require('playwright');
-(async () => {
-  const template = fs.readFileSync(process.env.NOTEBOOK_TEMPLATE || 'index.html', 'utf8');
-  const html = template.replace('__REVISION__', 'navigation-test')
-    .replace('<!-- NOTEBOOK -->', fs.readFileSync('notebook.html', 'utf8'));
-  const server = http.createServer((req, res) => {
-    res.setHeader('Content-Type', req.url === '/revision' ? 'application/json' : 'text/html');
-    res.end(req.url === '/revision' ? '{"revision":"navigation-test"}' : html);
-  });
-  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-  let browser;
-  const report = [];
-  try {
-    browser = await chromium.launch({headless: true});
-    for (const motion of ['no-preference', 'reduce']) {
-      const page = await browser.newPage({reducedMotion: motion});
-      await page.goto(`http://127.0.0.1:${server.address().port}`, {waitUntil: 'domcontentloaded'});
-      await page.waitForFunction(() => window.mathReady);
-      await page.locator('[data-scroll="end"]').click();
-      await page.waitForTimeout(1800);
-      const count = await page.locator('main h2, main h3').count();
-      for (let step = 1; step <= 8; step++) {
-        await page.locator('[data-scroll="previous"]').click();
-        await page.waitForTimeout(2000);
-        const target = page.locator('main h2, main h3').nth(count - 1 - step);
-        const data = await target.evaluate(element => ({
-          title: element.textContent, top: element.getBoundingClientRect().top,
-          scrollY, height: document.documentElement.scrollHeight,
-        }));
-        report.push({motion, step, ...data});
-      }
-      for (let step = 7; step >= 1; step--) {
-        await page.locator('[data-scroll="next"]').click();
-        await page.waitForTimeout(1800);
-        const data = await page.locator('main h2, main h3').nth(count - 1 - step)
-          .evaluate(element => ({title: element.textContent, top: element.getBoundingClientRect().top}));
-        report.push({motion, direction: 'next', step, ...data});
-      }
-      // Rapid clicks must advance from the chosen destination, not an intermediate
-      // point in the smooth-scroll animation. Browser pointer events are included.
-      for (let n = 0; n < 3; n++) await page.locator('[data-scroll="previous"]').click();
-      await page.waitForTimeout(2000);
-      report.push({motion, direction: 'rapid-previous', ...await page.locator('main h2, main h3')
-        .nth(count - 5).evaluate(element => ({title: element.textContent, top: element.getBoundingClientRect().top}))});
-      await page.mouse.wheel(0, 250);
-      await page.waitForTimeout(700);
-      const manualTop = await page.locator('main h2, main h3').nth(count - 5)
-        .evaluate(element => element.getBoundingClientRect().top);
-      assert(Math.abs(manualTop - 16) > 100, 'Manual scrolling must release destination tracking');
-      await page.close();
-    }
-    console.log(JSON.stringify(report, null, 2));
-    assert(report.every(row => Math.abs(row.top - 16) < 3), 'Previous must align each successive heading at 16px');
-  } finally {
-    if (process.env.NOTEBOOK_REPORT) fs.writeFileSync(process.env.NOTEBOOK_REPORT, JSON.stringify(report, null, 2)+'\n');
-    if (browser) await browser.close();
-    server.close();
+const {browserCase, main, page, notebook} = require('./browser_support.cjs');
+
+// Short entries keep smooth-scroll animations short; the long last one lets any heading reach the top.
+const base = notebook({entries: 12, long: [11]});
+
+const navigation = motion => browserCase({'*': ['text/html', page(base)]}, async ({url, open}) => {
+  const tab = await open({reducedMotion: motion});
+  await tab.goto(url + '#entry-8', {waitUntil: 'domcontentloaded'});
+  await tab.waitForFunction(() => window.mathReady);
+  const aligned = (id, label) => tab.waitForFunction(id =>
+    Math.abs(document.getElementById(id).querySelector('h3').getBoundingClientRect().top - 16) < 3, id)
+    .catch(async () => assert.fail(`${motion}: ${label} did not align ${id}: ` + await tab.evaluate(id =>
+      document.getElementById(id).querySelector('h3').getBoundingClientRect().top, id)));
+  // Just below entry 8's heading, so previous goes to entry 7.
+  await tab.evaluate(() => window.scrollBy(0, 1));
+  await tab.locator('[data-scroll="previous"]').click();
+  await aligned('entry-7', 'previous');
+  await tab.locator('[data-scroll="previous"]').click();
+  await aligned('entry-6', 'previous');
+  await tab.locator('[data-scroll="next"]').click();
+  await aligned('entry-7', 'next');
+  for (let n = 0; n < 2; n++) await tab.locator('[data-scroll="previous"]').click();
+  await aligned('entry-5', 'rapid previous');
+  await tab.mouse.wheel(0, 250);
+  await tab.waitForFunction(() =>
+    Math.abs(document.getElementById('entry-5').querySelector('h3').getBoundingClientRect().top - 16) > 100)
+    .catch(() => assert.fail('Manual scrolling must release destination tracking'));
+  if (motion === 'reduce') {
+    await tab.locator('[data-scroll="end"]').click();
+    await tab.waitForFunction(() => Math.abs(document.documentElement.scrollHeight - innerHeight - scrollY) < 3);
   }
-})().catch(error => { console.error(error); process.exitCode = 1; });
+});
+const cases = {smooth: navigation('no-preference'), reduced: navigation('reduce')};
+module.exports = cases;
+main(module, cases);

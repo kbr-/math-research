@@ -188,7 +188,7 @@
 
       async function drain() {
         if (running) return;
-        running = true;
+        running = window.mathBusy = true; // Tests wait until the scheduler is idle.
         try {
           while (pending.size) {
             const block = pending.values().next().value;
@@ -208,7 +208,7 @@
           status.textContent = 'Some math could not render. Refresh to retry.';
           status.dataset.error = '';
           console.error(error);
-        } finally { running = false; }
+        } finally { running = window.mathBusy = false; }
       }
       const blockObserver = new IntersectionObserver(entries => {
         for (const {target, isIntersecting} of entries) {
@@ -413,7 +413,8 @@
         results.replaceChildren();
         previous.disabled = next.disabled = true;
         status.dataset.state = 'pending';
-        timer = setTimeout(() => { void search(); }, 150);
+        // Tests set a shorter delay.
+        timer = setTimeout(() => { void search(); }, window.notebookSearchDelayMs ?? 150);
       }
       opener.addEventListener('click', () => {
         panel.hidden = false;
@@ -611,7 +612,7 @@
           status.dataset.error = '';
         }
       }
-      setTimeout(watch, settings.pollMs);
+      setTimeout(watch, window.notebookPollMs ?? settings.pollMs); // Tests poll faster.
     }
     watch();
   </script>
