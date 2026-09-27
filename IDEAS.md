@@ -667,6 +667,56 @@ computed and count the hits and the useful formulas. That measures the idea on o
 **Related.** Item 11 (the literature corpus) is the text-side prior-art check; item 13's solvers
 can reach larger sizes and so supply more terms to look up.
 
+## 15. An own harness and phone app
+
+**The idea (27 September 2026).** Build our own agent harness and a phone app, instead of two
+CLIs (Claude Code, Codex) and two phone apps for the two model providers: our own system prompt,
+our own compaction, and native integration with the framework. The friction is real: the
+harnesses' system prompts conflict with the user's rules (for example repeated requests for
+session trailers the global configuration forbids), Resume after compaction needed a hook to
+enforce, agents truncated framework output until a guard stopped them, and each provider has its
+own CLI and app. Much of what a harness does the framework already does itself (the launcher and
+timing, resume bundles, hooks, the finisher). The user asked whether it is too ambitious; these
+are Claude Opus 5.5's answers.
+
+**What makes the full version expensive.**
+
+- The agent loop (model call, tool calls, repeat) is a few hundred lines. The rest is the hard
+  part: permissions and sandboxing for autonomous agents that can run destructive commands,
+  reliable file editing, compaction, prompt caching (a large cost lever), subagents, background
+  tasks, interrupts for messages typed mid-turn, session persistence, web access, MCP. A phone
+  app is a second product: a secure path from the phone to this machine, authentication,
+  notifications.
+- Models are tuned to their own harness's tools and conventions; the same model can do worse in
+  a new harness until those are reproduced, and both harnesses improve monthly, so parity is a
+  treadmill.
+- Pricing may decide it: the official clients run on subscriptions, and a custom harness usually
+  means API keys billed per token, many times dearer at Spin volumes. Whether a subscription may
+  be used outside the official clients is to be verified in the providers' current terms.
+- It competes with the research for time.
+
+**Smaller paths.**
+
+1. Extension points first: Claude Code can append to or replace its system prompt, has hooks
+   around compaction (the resume gate is one) and an Agent SDK for a custom front-end on its
+   engine; Codex is open source and configurable. Which of the conflicts these settle is to be
+   checked before assuming.
+2. One thin phone front-end for both: both CLIs have remote-control modes (the Codex app-server
+   runs on this machine), so a small web app over them gives one phone interface without
+   replacing either harness.
+3. An own harness only for the autonomous loop: Spin runs headless and needs no phone
+   interface. Integration pays most there (Resume in place of compaction, our own system prompt,
+   the finisher as the turn boundary) and interactive polish matters least; interactive work
+   stays in the official CLIs.
+
+**Assessment.** A full general harness with a phone app is too ambitious next to the research,
+mainly for the treadmill and possibly the pricing. Path 3 is a reasonably sized project with a
+clear payoff; paths 1 and 2 are cheap and may remove most daily friction.
+
+**First step.** Inventory the concrete friction incidents from the transcripts (compaction losses,
+conflicts with the user's rules, app switching), check which the harnesses' own settings fix, and
+check the pricing terms. Then choose among the paths.
+
 ## Remaining implementation priorities
 
 1. Add bounded parallel exploration and targeted asynchronous formalization when
@@ -685,6 +735,8 @@ can reach larger sizes and so supply more terms to look up.
    conjecture a cycle would check with a case table, after the installs (item 13).
 8. Look up the sequences the notebooks have already computed in the OEIS and count useful hits,
    before building a lookup tool (item 14).
+9. Inventory the harness friction, check the extension points and the pricing terms, then choose
+   among the harness paths (item 15).
 
 These priorities are proposals, not authorization to launch the work.
 
