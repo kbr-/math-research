@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> W_RS randomness acts on the clause tops through Gauss sums over the prefix rows, with ranks \(\operatorname{rank}A_\chi\) fixed by the adversary's forms (lem:prefix-gauss-bound; <a href="#entry-2026-09-27-prefix-gauss-bound">prefix Gauss bound</a>). Next: bound the number of functionals with small prefix rank on a block, relating small \(\operatorname{rank}A_\chi\) to low partition rank via imp:Janzer-finite-field-partition-rank. The aim is a first-moment proof of first-degree purity for W_RS families of dense blocks.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> The first moment for W_RS first-degree purity must be conditioned block by block, and prefix ranks bound only its tail; its main term is the record's killer-moment core with adversarial forms, an equidistribution statement for long random prefix products (lem:block-conditioned-moment, lem:prefix-rank-count; <a href="#entry-2026-09-27-block-conditioned-moment">block-conditioned moment</a>). Next: a route review, weighing product mixing and moment methods for dependent column blocks against the line's weak assessment.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -35083,6 +35083,72 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 5.05 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">50.48 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 21.57 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-block-conditioned-moment" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:block-conditioned-moment lem:prefix-rank-count">
+<h3>Block-conditioned moment: the first moment for W_RS first-degree purity must be conditioned block by block, since zero prefix tops inflate it for every family. Prefix ranks bound only its tail, and they are counted by linear algebra without Janzer's theorem. The main term is the record's killer-moment core, now with adversarial forms and long prefix products</h3>
+<p class="entry-meta">27 September 2026 · Working lemmas and a correction · open statements A1 and A3 · cycle odd-prime-prefix-rank. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-27-prefix-gauss-bound">prefix Gauss bound</a> proposed a first-moment proof of first-degree purity for W_RS families of dense blocks, counting functionals of small prefix rank via Janzer's partition-rank bound. The missing implication is the clause-top part of first-degree purity beyond pullback capacity. This cycle writes that first moment exactly and asks which part of it prefix ranks can control. The test ends when either the moment is bounded or the part that prefix ranks cannot reach is identified.</p>
+<p><strong>General statement.</strong> lem:block-conditioned-moment, for every family of blocks with independent uniform prefixes. The probability that the clause tops are dependent modulo the row sums is at most the sum of the blocks' single-block failure probabilities plus half the excess of a conditioned first moment. That moment is an exact product formula over the blocks. Without conditioning the moment is at least \((1+t/2)^M\) for every family whose square spans have dimension at least \(\log_3(2t)\), so the conditioning is necessary. lem:prefix-rank-count bounds the number of functionals of small prefix rank by elementary linear algebra.</p>
+<h4>Setting</h4>
+<p>Blocks \(b=1,\dots,M\) have top forms \(\ell_{b,1},\dots,\ell_{b,h_b}\in G_1\). Write \(S_b=\operatorname{span}\{\ell_{b,i}^2\}\), \(d_b=\dim S_b\), and \(\sigma_b:\mathbb F_3^{h_b}\to S_b\), \(\lambda\mapsto\sum_i\lambda_i\ell_{b,i}^2\). Under W_RS each block has its own uniform prefix \(C_b\in\mathbb F_3^{t\times h_b}\), independent across blocks, with rows \(c_{b,j}\). Put \(\sigma_{b,j}=\sigma_b(c_{b,j})\) and \(\Pi_b=\prod_{j\le t}\sigma_{b,j}^2\in G_{4t}\). With \(e=4t+2\), \(A_e=G_e/\mathfrak m G_e\) and \(a=\dim A_e\), define</p>
+<p>\[\Phi:\bigoplus_b\mathbb F_3^{h_b}\to A_e,\qquad(\lambda_b)_b\mapsto\sum_b\sigma_b(\lambda_b)\,\Pi_b\bmod\mathfrak mG_e .\]</p>
+<p>The clause tops are \(\pm\Phi(e_{b,i})\) lifted to \(G_e\), when nonzero (lem:prefix-gauss-bound). Suppose the top ideal \(\mathfrak n\) of the allowed set vanishes below \(e\) and \(\mathfrak n_e\) is spanned by the clause tops. Then first-degree purity at \(e\) (lem:first-degree-purity (2)) asks \(\mathfrak n_e\cap\mathfrak mG_e=0\), and injectivity of \(\Phi\) implies it. The converse can fail, for instance when a combination of clauses vanishes identically on \(P\), so injectivity is a sufficient condition only.</p>
+<h4>lem:block-conditioned-moment</h4>
+<p><strong>Statement.</strong> (1) For events \(E_b\), each determined by \(C_b\) alone, with \(E=\bigcap_bE_b\),</p>
+<p>\[\Pr[\Phi\text{ not injective}]\le\sum_b\Pr[E_b^c]+\tfrac12\bigl(\mathbb E[\,|\ker\Phi|\,\mid E\,]-1\bigr),\qquad \mathbb E[\,|\ker\Phi|\,\mid E\,]=\mathop{\mathbb E}_{\chi\in A_e^*}\prod_b3^{h_b}q_b(\chi),\]</p>
+<p>where \(\chi\) is uniform and \(q_b(\chi)=\Pr[\chi(\ell_{b,i}^2\Pi_b)=0\text{ for all }i\mid E_b]\).</p>
+<p>(2) Without conditioning, \(\mathbb E|\ker\Phi|\ge\prod_b3^{h_b-d_b}\bigl(1+t(1-3^{-d_b})^t\bigr)\). This is at least \((1+t/2)^M\) when \(3^{d_b}\ge2t\) for every \(b\).</p>
+<p><strong>Proof.</strong> (1) A nonzero kernel has at least 3 elements, so on \(E\) the indicator of non-injectivity is at most \((|\ker\Phi|-1)/2\). Taking expectations conditional on \(E\) and adding \(\Pr[E^c]\le\sum_b\Pr[E_b^c]\) gives the inequality. For the identity, \(|\ker\Phi|=\sum_\lambda\mathbb E_\chi\,\omega^{\chi(\Phi\lambda)}\) with \(\omega=e^{2\pi i/3}\). The sum over \(\lambda\) factors over blocks and coordinates: \(\sum_{\lambda_{b,i}\in\mathbb F_3}\omega^{\lambda_{b,i}\chi(\ell_{b,i}^2\Pi_b)}=3\,[\chi(\ell_{b,i}^2\Pi_b)=0]\). Conditioning on \(E\) keeps the \(C_b\) independent, since \(E\) is an intersection of events of the separate blocks. So the expectation of the product over blocks is the product of the \(q_b\).</p>
+<p>(2) \(\ker\Phi\) contains \(\bigoplus_bK_b\), where \(K_b=\mathbb F_3^{h_b}\) if \(\Pi_b=0\) and \(K_b=\ker\sigma_b\) otherwise. By independence, \(\mathbb E|\ker\Phi|\ge\prod_b\mathbb E|K_b|=\prod_b3^{h_b-d_b}\bigl(1+(3^{d_b}-1)p_b\bigr)\), with \(p_b=\Pr[\Pi_b=0]\). Each \(\sigma_{b,j}\) is uniform on \(S_b\), so \(p_b\ge1-(1-3^{-d_b})^t\ge t\,3^{-d_b}(1-3^{-d_b})^{t-1}\) by the mean value theorem. Hence \((3^{d_b}-1)p_b\ge t(1-3^{-d_b})^t\ge t(1-t\,3^{-d_b})\), which is at least \(t/2\) when \(3^{d_b}\ge2t\). \(\square\)</p>
+<p>Part (2) is the W_RS form of the obstruction recorded with lem:selector-kernel-first-moment: there column forms have \(\ell^2=0\) and the proof must condition on a spread event. Here zero prefix tops occur in every family, with probability about \(t\,3^{-d_b}\) per block, and each one kills all \(3^{h_b}\) combinations of the block at once. The natural conditioning is \(E_b=\{\Phi_b\text{ injective}\}\), single-block purity, under which only kernel vectors meeting two or more blocks remain. The single-block term \(\sum_b\Pr[E_b^c]\) includes \(\sum_bt\,3^{-d_b}\), so it is small only if every block has \(d_b\ge(K+1)\log_3n+\log_3t+\omega(1)\). Blocks with smaller square spans fall below \(e\), and purity must then be checked at the lower degree (<a href="#entry-2026-09-26-single-block-falls">single-block falls</a>).</p>
+<h4>lem:prefix-rank-count</h4>
+<p><strong>Statement.</strong> For a block \(b\) and \(u,P\in G\) with \(\deg u+\deg P+4=e\), let \(M_b:\operatorname{Sym}^2(\mathbb F_3^{h_b})\to A_e\) send \(e_ie_{i'}\) to \(u\,\ell_{b,i}^2\ell_{b,i'}^2P\), and let \(A^b_\chi\) be the symmetric matrix of \(\chi\circ M_b\). With \(u=\sigma_b(s)\) and \(P=\prod_{j\ge2}\sigma_{b,j}^2\), this is the matrix of lem:prefix-gauss-bound, whose sign convention plays no role here. For a set \(B\) of blocks, each with its own \(u_b,P_b\), and ranks \(r_b\),</p>
+<p>\[\#\{\chi\in A_e^*:\operatorname{rank}A^b_\chi\le r_b\ \text{for all }b\in B\}\le3^{\,a-\dim\sum_{b\in B}\operatorname{im}M_b}\prod_{b\in B}3^{\,r_bh_b+1}.\]</p>
+<p><strong>Proof.</strong> The map \(\chi\mapsto(A^b_\chi)_{b\in B}\) is linear, and its kernel is the annihilator of \(\sum_b\operatorname{im}M_b\). So each fibre has \(3^{a-\dim\sum_b\operatorname{im}M_b}\) elements, and the image points counted are tuples of symmetric matrices of rank at most \(r_b\). A symmetric \(h\times h\) matrix of rank \(j\) is \(EYE^{\mathsf T}\) for a basis matrix \(E\) of its column space and an invertible symmetric \(j\times j\) matrix \(Y\). There are at most \(1.8\cdot3^{j(h-j)}\) column spaces and \(3^{j(j+1)/2}\) matrices \(Y\). Since \(j(h-j)+j(j+1)/2\le jh\), summing over \(j\le r\) gives at most \(1.8\cdot3^{rh}(1+3^{-h}+3^{-2h}+\cdots)\le3^{rh+1}\). \(\square\)</p>
+<p>The prefix rank is the rank of a bilinear form, so it is counted exactly by this linear algebra. Janzer's partition-rank bound (imp:Janzer-finite-field-partition-rank), proposed for this step, is not needed. Its exponent grows with the tensor order, which here would be of order \(t=\Theta(\log n)\).</p>
+<h4>What prefix ranks can and cannot reach</h4>
+<p><em>Only the tail.</em> One row of the prefix gives \(|\mathbb E_{c_1}\omega^{\chi(\sigma_b(s)\Pi_b)}|=3^{-r/2}\) exactly, with \(r=\operatorname{rank}A^b_\chi\le h_b\). Write \(q^0_b(\chi)=\mathbb E_s\mathbb E_C\,\omega^{\chi(\sigma_b(s)\Pi_b)}\), over uniform \(s\in\mathbb F_3^{h_b}\), for the unconditioned kill probability. The one-row bound is \(q^0_b(\chi)\le\mathbb E_{s,c_{\ge2}}3^{-r/2}\), and every term is at least \(3^{-h_b/2}\) because \(r\le h_b\). The conditioned quantity of lem:block-conditioned-moment satisfies \(q_b(\chi)\le q^0_b(\chi)/\Pr[E_b]\), and \(\Pr[E_b]\le1\), so the bound this method gives for \(q_b(\chi)\) is again at least \(3^{-h_b/2}\). Hence one-row bounds can never show \(3^{h_b}q_b(\chi)\) close to 1, conditioned or not. It serves functionals whose kill probability is far above \(3^{-h_b}\), and not the main term. The same happens in the record: lem:gauss-sum-killer-bound "cannot reach the main term" of the random-form killer moment.</p>
+<p><em>The tail needs directness of larger spans.</em> By lem:prefix-rank-count, the functionals of rank at most \(r_b\) on every block of \(B\) contribute to \(\mathbb E_\chi\prod_b3^{h_b}q_b(\chi)\) at most \(3^{-\dim\sum_{b\in B}\operatorname{im}M_b}\prod_{b\in B}3^{r_bh_b+1}\cdot3^{h_b}\), using \(q_b\le1\) on \(B\) and leaving the other blocks' factors aside. This is small only if \(\dim\sum_{b\in B}\operatorname{im}M_b\) exceeds \(\sum_{b\in B}\bigl((r_b+1)h_b+1\bigr)\) by a growing margin. The extra \(h_b\) per block is the moment's own factor \(3^{h_b}\). That requires the spans \(u_bP_b\,S_b^2\) to be nearly independent across blocks modulo the row sums. This is a directness statement of the same kind as the purity being proved, for spans of dimension up to \((r_b+1)h_b\) in place of \(h_b\).</p>
+<p><em>The main term.</em> For functionals with \(3^{h_b}q_b(\chi)\) near 1 on every block, one needs \(\mathbb E_\chi\prod_b3^{h_b}q_b(\chi)=1+o(1)\) over the generic functionals. That is the open core of conj:product-top-killer-moment, now with adversarial forms. What differs from the random-form model is that \(\Pi_b\) is a product of \(t=\Theta(\log n)\) independent random squares. Here \(q_b(\chi)\) is the probability that this product lands in the subspace \(\{y\in G_{4t}:\chi(S_by)=0\}\) of codimension at most \(d_b\). The main term is therefore an equidistribution statement for long random products in \(G\) modulo subspaces of codimension \(d_b\), a mixing question the record has not asked.</p>
+<h4>Outcome</h4>
+<p>The plan of the previous entry is corrected in three ways:</p>
+<ul>
+<li>its first moment must be conditioned block by block (lem:block-conditioned-moment (2));</li>
+<li>prefix ranks control only the tail, and they need no partition-rank theorem (lem:prefix-rank-count);</li>
+<li>the closing sentence of lem:prefix-gauss-bound, that first-moment arguments "reduce to lower bounds on the prefix ranks", is withdrawn in that form.</li>
+</ul>
+<p>The first-moment line for W_RS thus has the record's killer-moment shape. Its main term is an open equidistribution statement for long prefix products, and its tail needs directness of larger spans. As a route to first-degree purity the line is weak: it reformulates the obligation into the record's open killer-moment core.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statements A1 and A3: a route review. The first-moment line has reached the killer-moment core, and the assessment is weak. The review should weigh the one new ingredient, mixing of long random prefix products modulo subspaces of codimension \(d_b\), against moment methods for random matrices with dependent column blocks. It should also place the single-block purity requirement \(d_b\ge(K+1)\log_3n+\omega(1)\) against the recorded falls.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:prefix-gauss-bound and its entry, lem:first-degree-purity, lem:selector-kernel-first-moment with its conditioning assessment, lem:gauss-sum-killer-bound and conj:product-top-killer-moment. No computation was run. A fresh-context reviewer checked the following and found them correct:</p>
+<ul>
+<li>the Markov step and the character-sum identity;</li>
+<li>that per-block conditioning keeps the product form;</li>
+<li>the inequality chain of part (2), with its threshold \(3^{d_b}\ge2t\);</li>
+<li>that injectivity implies purity under the stated hypotheses;</li>
+<li>the fibre count and the constant 1.8 in lem:prefix-rank-count.</li>
+</ul>
+<p>It required three changes, all adopted:</p>
+<ul>
+<li>the tail paragraph now separates the unconditioned \(q^0_b\) from the conditioned \(q_b\), and shows the one-row floor holds for both;</li>
+<li>the floor \(3^{-h_b/2}\) now follows from \(r\le h_b\) directly;</li>
+<li>the tail threshold now shows its derivation, including the lemma's \(+1\) per block. The reviewer proposed \(\sum_b(r_bh_b+1)\). That omits the moment's own factor \(3^{h_b}\), so the stated threshold is \(\sum_b((r_b+1)h_b+1)\).</li>
+</ul>
+<p>Its two suggestions are adopted: injectivity is now called sufficient only, and the sign convention is set aside explicitly. The changes only clarify or weaken statements, so one pass suffices.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-prefix-rank">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>17 min 15.79 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">5 min 3.79 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 32.33 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 39.53 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
