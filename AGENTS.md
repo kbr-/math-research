@@ -102,30 +102,30 @@ rules to growing checklists or one-off setup narratives.
   name, the record's synonyms/structural names, dual or adjoint formulation, and
   statement content words with `tools/search-claims.py`. Test it against every
   recorded counterexample, refutation and obstruction for those objects. Before
-  drafting its proof, send a reviewer its one-paragraph statement to check whether
-  the record already implies it. Before drafting a corollary, check for an earlier
-  result under fewer hypotheses. State compositions as lemmas in one common
+  drafting its proof, check yourself whether the record already implies it; include
+  the relevant prior results in the end-of-cycle review brief. Before drafting a
+  corollary, check for an earlier result under fewer hypotheses. State compositions as lemmas in one common
   setting with a complete proof, not a reference to a sketch.
 - Once the question, argument and evidence are stable, make one focused correctness
   review of every new mathematical lemma, theorem, rule or encoding before assigning
   its status.
   Run the exhaustive checker for any rule, tree or encoding change before relying
-  on it. Use a fresh-context reviewer subagent, given only the draft and dependency
-  anchors/excerpts, to try to break the argument and identify unused hypotheses.
+  on it. Near the end of the cycle, use at most one fresh-context reviewer subagent
+  for the consolidated review, given only the stable drafts and dependency
+  anchors/excerpts, to try to break the arguments and identify unused hypotheses.
+  Handle pre-proof novelty searches yourself; do not spawn a separate novelty reviewer.
   The user authorizes and encourages spawning reviewers for any needed review in
   this and all future Spin runs; no separate confirmation is needed.
   In both Codex and Claude Code, explicitly set reviewer subagents to **medium**
-  reasoning, including the pre-proof novelty check, regardless of the main agent's
-  reasoning level; do not inherit its high or higher setting.
+  reasoning, regardless of the main agent's reasoning level; do not inherit its
+  high or higher setting.
   Resolve every reported gap and drop or justify each unused hypothesis. Brief
   reviewers narrowly: exact files/anchors, at most one or two named claim searches,
   dependency excerpts in a scratch file, and required changes as short bullets.
-  Continue a reviewer by message only while its context concerns this line and is
-  smaller than a fresh brief would need; otherwise start a fresh narrow reviewer.
-  One pass suffices for a short lemma/reformulation; add a pass when corrections
-  add or strengthen claims, not merely remove or weaken them. Reopen only for a
-  concrete unresolved concern; defer optional extensions. Record dependencies
-  re-read, checks and reviewer verdict in a short **Verification gate.** paragraph,
+  Use one consolidated pass by default. Follow up with that same reviewer only
+  to resolve a concrete gap or check a correction that adds or strengthens a claim;
+  do not spawn additional reviewers in the cycle. Defer optional extensions.
+  Record dependencies re-read, checks and reviewer verdict in a short **Verification gate.** paragraph,
   not the status line. An incomplete gate means conditional status, not a working
   proof; correctness takes precedence over cycle speed.
   Prepare staging paths, commit message and focused metadata checks during review.
