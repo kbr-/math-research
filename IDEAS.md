@@ -586,6 +586,29 @@ Deferred, each with its trigger:
 - MiniZinc, answer set programming, QBF, SMT, finite model finders: when hand-written Python
   encoders become the bottleneck. They change how encodings are written, not what can be proved.
 
+**When direct computation beats the solver.** Speed depends on the question's shape, so the
+tool is a route, not a default:
+
+- A property of a fixed object, with no search around it (a rank, a nullspace), goes to exact
+  linear algebra; a SAT encoding of Gaussian elimination is hopeless, since parity (Tseitin)
+  formulas need exponential-size resolution refutations.
+- A small space, up to about 10^7-10^8 cheap checks, goes to a compiled enumeration, which
+  finishes in seconds while encoding and preprocessing can dominate a solver's time. So does a
+  question that needs every answer (a table, a count) rather than one.
+- A space far beyond enumeration, searched for one counterexample or for its absence, goes to
+  the solver; parameter sweeps sharing structure favour it further through incremental solving.
+- A parity-shaped unsatisfiable question goes to linear algebra (or, later, CryptoMiniSat's
+  Gauss-Jordan elimination).
+- A pigeonhole-shaped unsatisfiable question is exponential for CaDiCaL, which reasons in
+  resolution. It goes to a symmetry-reduced enumeration, or to a pseudo-Boolean solver in cutting
+  planes, where the pigeonhole principle has polynomial-size refutations. That solver finds them
+  reliably only when the counting is written as native cardinality constraints ("at most one
+  pigeon per hole"), not as clauses. This is the deferred pseudo-Boolean trigger above.
+
+A solver's unsatisfiable answer carries a checked proof whatever its speed; an enumeration is as
+trustworthy as its code, which matters less when it is small, simple and cross-checked. Between
+the routes, the pilot's timed comparison decides.
+
 **Pilot.** On the next conjecture a cycle would check with a case table: build `tools/refute.py`,
 pass the controls, run it with certificates, and compare with the case table at the same sizes.
 Agreement is the control; how much further the solver reaches is the measure. Installs requested in
