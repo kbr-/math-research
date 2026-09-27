@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Pullback certificates stop at about \(n\) blocks, the Reed–Muller bridge meets the wrong regime, and no certificate of any kind is known beyond (<a href="#entry-2026-09-27-certificate-route-review">certificate review</a>). Next: return to the record's fall line with the freedom to choose a subset. Early cross falls conjecturally need a shared piece, which is rare under random prefixes. Ask whether a subset of the allowed set can avoid the regions where shared pieces act, keeping no early falls while staying large enough for the fall line's conditional row freeness.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> W_RS randomness acts on the clause tops through Gauss sums over the prefix rows, with ranks \(\operatorname{rank}A_\chi\) fixed by the adversary's forms (lem:prefix-gauss-bound; <a href="#entry-2026-09-27-prefix-gauss-bound">prefix Gauss bound</a>). Next: bound the number of functionals with small prefix rank on a block, relating small \(\operatorname{rank}A_\chi\) to low partition rank via imp:Janzer-finite-field-partition-rank. The aim is a first-moment proof of first-degree purity for W_RS families of dense blocks.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -35042,6 +35042,47 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><td>Marked reading and review windows</td><td class="elapsed">54.66 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 49.24 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 19.19 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-prefix-gauss-bound" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:prefix-gauss-bound">
+<h3>Prefix Gauss bound: the fall line's own review located the obstacle at row freeness below the fill point, so a free choice of subset does not help with falls. The randomness of W_RS enters the clause tops through the prefix quadrics, and one row of the prefix acts on any functional by a Gauss sum whose rank the adversary's forms control. First-degree purity for W_RS reduces to lower bounds on these prefix ranks</h3>
+<p class="entry-meta">27 September 2026 · Working lemma and reduction · open statements A1 and A3 · cycle odd-prime-fall-subsets. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-27-certificate-route-review">certificate review</a> proposed returning to the fall line with the subset freedom. The missing implication is row freeness, of the allowed set or of a subset, for W_RS families beyond pullback capacity. This cycle asks whether choosing a subset can steer around early falls, and, if not, where the prefix randomness can act.</p>
+<p><strong>General statement.</strong> lem:prefix-gauss-bound, for every block, every functional \(\chi\) on the clause-top degree and every choice of the other prefix rows. Over one uniform row \(c\) of the prefix, \(\chi\) evaluated on the block's top is a quadratic form \(c^{\mathsf T}A_\chi c\). It vanishes with probability at most \(\tfrac13+\tfrac23\,3^{-r/2}\), where \(r=\operatorname{rank}A_\chi\ge1\), and with probability 1 when \(r=0\). So first-moment arguments for first-degree purity of W_RS tops reduce to lower bounds on the prefix ranks \(\operatorname{rank}A_\chi\), which depend only on the adversary's forms.</p>
+<h4>Falls and subsets</h4>
+<p>The <a href="#entry-2026-09-26-fall-line-review">fall-line review</a> recorded that an early fall leaves the intersection row-free exactly as far as the base. Its conclusion was that "the quantity the goal uses tolerates the falls the line was trying to exclude". Its adversary analysis, that shared pieces are the lever and random prefixes remove them (lem:shared-piece-rarity), was handed on to a direct attack on row freeness. A subset chosen to avoid falls therefore addresses a non-obstacle. The subset freedom matters for Tor classes, and the obstacle beyond capacity is row freeness below the fill point. So this cycle turns to the one resource W_RS adds, the prefix randomness.</p>
+<h4>Where the randomness sits</h4>
+<p>Write \(\sigma_j=\sum_ic_{ji}\ell_i^2\in G_2\) for the tops of the prefix quadrics \(s_j=\sum_ic_{ji}g_i\), up to sign. The clause \(g_iQ^C=g_i\prod_{j\le t}(1-s_j^2)\) has top \(\pm\ell_i^2\prod_{j\le t}\sigma_j^2\) in degree \(4t+2\) whenever that product is nonzero in \(G\). So the tops are the block's squares \(\ell_i^2\) times the square of a product of \(t\) random elements of the span \(S_b=\operatorname{span}\{\ell_{b,i}^2\}\). The forms are the adversary's, and the coefficients \(c_{ji}\) are uniform and independent across rows and blocks. First-degree purity (lem:first-degree-purity (2)) asks that these tops be independent modulo the row sums, in \(A_{4t+2}\). That is the family's least new degree when no element of the allowed set's vanishing ideal has lower degree. Single-block falls can lower it (<a href="#entry-2026-09-26-single-block-falls">single-block falls</a>), and then the criterion applies at that lower degree.</p>
+<h4>lem:prefix-gauss-bound</h4>
+<p><strong>Statement.</strong> Fix a block's forms, an element \(u\in G\), the rows \(c_2,\dots,c_t\), and a linear functional \(\chi\) on the degree containing \(u\sigma_1^2R'\), where \(R'=\prod_{j\ge2}\sigma_j^2\). As a function of the uniform row \(c=c_1\in\mathbb F_3^h\),</p>
+<p>\[\chi(u\,\sigma_1^2R')=c^{\mathsf T}A_\chi c,\qquad (A_\chi)_{ii'}=\chi(u\,\ell_i^2\ell_{i'}^2R').\]</p>
+<p>If \(r=\operatorname{rank}A_\chi\ge1\), then \(\Pr_c[c^{\mathsf T}A_\chi c=0]\le\tfrac13+\tfrac23\,3^{-r/2}\). If \(r=0\), the form vanishes identically and the probability is 1.</p>
+<p><strong>Proof.</strong> \(\sigma_1^2=\sum_{i,i'}c_ic_{i'}\ell_i^2\ell_{i'}^2\), and \(\chi\) is linear. Over \(\mathbb F_3\), a symmetric form of rank \(r\) is equivalent to a diagonal form in \(r\) of the coordinates, and the other \(h-r\) coordinates do not change the probability. A nondegenerate quadratic form in \(r\) variables over \(\mathbb F_3\) has \(3^{r-1}\) zeros for \(r\) odd, and \(3^{r-1}\pm2\cdot3^{r/2-1}\) for \(r\) even. So the probability is \(\tfrac13\) or \(\tfrac13\pm\tfrac23\,3^{-r/2}\). \(\square\)</p>
+<p>Taking \(u=\ell_i^2\) gives the top of one clause. Taking \(u=\sum_i\lambda_i\ell_i^2\) gives a combination of a block's tops. The rows are independent, so the bound applies row by row, conditionally on the others. A per-block factor near \(\tfrac13\) still needs some row to see a large rank on that block, which is the open part. This is the Gauss-sum step of lem:gauss-sum-killer-bound in the W_RS setting. There the tops were products of random forms, and the rank was an analytic rank of \(\chi\). Here the forms are adversarial, and the rank is the prefix rank \(\operatorname{rank}A_\chi\), a matrix of \(\chi\)-values on products of the block's squares.</p>
+<h4>What it reduces to</h4>
+<p>A first-moment bound for independence of all tops modulo the row sums is a sum, over nonzero \(\chi\) in \(A_{4t+2}^*\), of the product over blocks of the probabilities that \(\chi\) kills the block's top combination. By the lemma, a block contributes a factor near \(\tfrac13\) whenever some row sees a large prefix rank. The first moment is then controlled by how many functionals have small prefix rank on many blocks at once.</p>
+<p>The adversary's lever is to make \(A_\chi\) small for many \(\chi\). That means choosing forms whose squares' pairwise products \(\ell_i^2\ell_{i'}^2\) are nearly dependent under many functionals, which is a low-rank condition on the products of squares. This is the W_RS form of the record's shared-piece lever. It is a statement about the forms alone, which a structural lemma could exclude or classify. It covers only the first new degree. Row freeness through \(D\) needs the higher degrees as well.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statements A1 and A3: bound the number of functionals \(\chi\in A_{4t+2}^*\) whose prefix rank is small on a given block. Relate a small \(\operatorname{rank}A_\chi\) to a low partition rank of \(\chi\) restricted to products of the block's squares, and use Janzer's polynomial bound (imp:Janzer-finite-field-partition-rank) as the record's killer bound does. The aim is a first-moment proof of first-degree purity for W_RS families of dense blocks, beyond pullback capacity.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read thm:randomized-prefix-reduction, lem:gauss-sum-killer-bound, lem:first-degree-purity and the fall-line review. No computation was run. A fresh-context reviewer recomputed the top of the clause, including its sign \((-1)^{t+1}\) and its nonvanishing caveat, and the quadratic-form expansion. It rederived the zero counts of nondegenerate forms over \(\mathbb F_3\) by Gauss sums. It checked the quotation from the fall-line review, the scope to the first new degree, and the contrast with the killer bound. It required no change. Its three suggestions are adopted:</p>
+<ul>
+<li>the case \(r=0\) is now in the statement;</li>
+<li>the row-by-row remark now says what remains open;</li>
+<li>the least new degree is now qualified by single-block falls.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-fall-subsets">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 17.23 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 5.05 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">50.48 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 21.57 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
