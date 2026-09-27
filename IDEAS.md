@@ -419,6 +419,9 @@ sensitivity to prompt injection also matters when the agent that prefers one opt
 the option list. A cheap classifier could still serve a genuinely high-volume, low-stakes
 triage task if one appears.
 
+**Related.** Item 14 looks up the sequences our cycles compute in the OEIS: a second, narrower
+prior-art check that works on numbers where this corpus works on text.
+
 ## 12. The bitter lesson: search against a verifier, and a baseline for the framework
 
 **The idea (27 September 2026).** Rich Sutton's essay [The Bitter
@@ -619,6 +622,45 @@ pass the controls, run it with certificates, and compare with the case table at 
 Agreement is the control; how much further the solver reaches is the measure. Installs requested in
 `user_requests` (CaDiCaL, drat-trim).
 
+## 14. Sequence lookup in the OEIS
+
+**The idea (27 September 2026).** Look up every integer sequence a cycle computes (a dimension, a
+rank, a minimal degree, a count, as a function of n) in the On-Line Encyclopedia of Integer
+Sequences: about 380,000 sequences with terms, formulas, generating functions, recurrences,
+comments and references. The user asked whether it could improve our formula searches; these are
+Claude Opus 5.5's answers.
+
+**What it gives.**
+
+- Formulas: a hit often comes with a closed form, a recurrence or a generating function,
+  sometimes with a proof or a reference to one, replacing a round of fitting (item 12's sequence
+  guessing).
+- Prior art: a hit says someone has met the sequence before, and its references say where. This
+  is a second prior-art check next to item 11's literature corpus, working on numbers where the
+  corpus works on text. An unexpected hit can also connect our objects to another area, which is
+  what route reviews' absurd bridges look for.
+- Falsification: terms that match a known sequence up to n = 8 and differ at 9 mean the
+  computation or the identification is wrong; both are worth knowing.
+
+**How.** The OEIS answers searches in JSON (`https://oeis.org/search?q=1,3,12,55&fmt=json`); a
+small tool could look up each sequence a cycle produces and record hits as leads. It also
+publishes compressed files of all sequences' terms and names (tens of megabytes): a local copy
+searches instantly without rate limits. Before searching, the tool can try standard transforms
+(differences, partial sums, dividing out a common factor), as the OEIS's Superseeker does.
+Automated requests identify the tool, never the user (item 11's rule).
+
+**Limits.** Short sequences match by accident: about six or more non-trivial terms are needed.
+Our data is often a table in (n, k); the OEIS stores triangles read by rows, but usually one
+parameter is fixed and the rows or columns searched separately. Quantities specific to F_3 or to
+our constructions may be absent, and a miss doesn't mean a formula is new. A hit is a lead, not a
+proof: the identification is proved, as the verification gate requires of literature hits.
+
+**First step.** Before building a tool, look up the sequences the notebooks have already
+computed and count the hits and the useful formulas. That measures the idea on our own data.
+
+**Related.** Item 11 (the literature corpus) is the text-side prior-art check; item 13's solvers
+can reach larger sizes and so supply more terms to look up.
+
 ## Remaining implementation priorities
 
 1. Add bounded parallel exploration and targeted asynchronous formalization when
@@ -634,6 +676,8 @@ Agreement is the control; how much further the solver reaches is the measure. In
    statement, with the same time and compute, before adding more process rules (item 12).
 7. Build `tools/refute.py` on CaDiCaL and drat-trim and pilot refute-first solving on the next
    conjecture a cycle would check with a case table, after the installs (item 13).
+8. Look up the sequences the notebooks have already computed in the OEIS and count useful hits,
+   before building a lookup tool (item 14).
 
 These priorities are proposals, not authorization to launch the work.
 
