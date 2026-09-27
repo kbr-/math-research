@@ -9,6 +9,10 @@ filtered away; it displays only its own lines, and the workload's output is in t
 grep, or redirecting their standard output to a file, silently drops that text. The
 hook reads the tool call as JSON on stdin and exits with status 2 (block, message on
 stderr) for such commands.
+
+It also refuses a heredoc-fed program followed by further commands on later lines that are not
+chained to it: those commands run even when the program fails, so a failed scripted edit is followed
+by the appends, registrations and checkpoints meant to use its result.
 """
 import json
 import re
@@ -37,6 +41,29 @@ SEPARATOR = re.compile(r"\|\||&&|;|\n")
 STDOUT_REDIRECT = re.compile(r"(?:^|[^0-9&>])1?>(?!&)")
 
 
+HEREDOC = re.compile(r"<<-?\s*(['\"]?)(\w+)\1")
+
+
+def unchained_heredoc(command: str):
+    """The reason when non-blank lines follow a heredoc's terminator and the heredoc's command line does
+    not chain what follows with && (as in `python3 - <<'EOF' && next`) or run under `set -e`."""
+    if re.search(r"\bset\s+-e\b", command):
+        return None
+    lines = command.split("\n")
+    for i, line in enumerate(lines):
+        match = HEREDOC.search(line)
+        if not match:
+            continue
+        end = next((j for j in range(i + 1, len(lines)) if lines[j].strip() == match.group(2)), None)
+        if end is None:
+            continue
+        after = [x for x in lines[end + 1:] if x.strip() and not x.strip().startswith("#")]
+        if after and not re.search(r"&&|\|\|", line[match.end():]):
+            return ("commands after a heredoc run even when the heredoc's program fails; chain them on the "
+                    "heredoc's first line (python3 - <<'EOF' && next ...) or split them into a separate call")
+    return None
+
+
 def blocked(command: str):
     """Return the reason for the first filtered must-read command, or None."""
     for segment in SEPARATOR.split(command):
@@ -58,6 +85,10 @@ def main() -> int:
     if payload.get("tool_name") != "Bash":
         return 0
     command = (payload.get("tool_input") or {}).get("command") or ""
+    reason = unchained_heredoc(command)
+    if reason:
+        print(f"Refused: {reason}.", file=sys.stderr)
+        return 2
     reason = blocked(command)
     if reason:
         print(f"Run this command bare and read its output in full: {reason}. Do not pipe it "

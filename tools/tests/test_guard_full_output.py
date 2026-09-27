@@ -68,6 +68,16 @@ class GuardFullOutputTest(unittest.TestCase):
     def test_ignores_other_tools(self):
         self.assertEqual(run("python3 tools/resume.py | head", tool="Read").returncode, 0)
 
+    def test_unchained_heredoc_is_refused(self):
+        bad = "python3 - f <<'EOF'\nimport sys\nassert False\nEOF\npython3 tools/notebook-append.py x"
+        self.assertEqual(run(bad).returncode, 2)
+        self.assertIn("heredoc", run(bad).stderr)
+        for good in ["python3 - f <<'EOF' && python3 tools/notebook-append.py x\nprint(1)\nEOF",
+                     "python3 - <<'EOF'\nprint(1)\nEOF",
+                     "set -e\npython3 - <<'EOF'\nprint(1)\nEOF\ngit status",
+                     "cat > f <<'EOF'\nx\nEOF"]:
+            self.assertEqual(run(good).returncode, 0, good)
+
 
 if __name__ == "__main__":
     unittest.main()
