@@ -267,6 +267,15 @@ class ClaimRegistryTests(unittest.TestCase):
             result = subprocess.run(command+['--formalization', 'unknown', '-n', '1', '--json'],
                                     check=True, capture_output=True, text=True)
             self.assertEqual(json.loads(result.stdout)['omitted'], 1)
+            for selector in (['--show', 'lem:partial'],
+                             ['--formalization', 'unknown', '-n', '1', '--json']):
+                expected = subprocess.run(command+selector, check=True,
+                                          capture_output=True, text=True)
+                output = Path(directory)/'export.json'
+                saved = subprocess.run(command+selector+['--out', str(output)], check=True,
+                                       capture_output=True, text=True)
+                self.assertEqual(saved.stdout, '')
+                self.assertEqual(json.loads(output.read_text()), json.loads(expected.stdout))
             result = subprocess.run(command+['--show', 'missing'], capture_output=True, text=True)
             self.assertNotEqual(result.returncode, 0)
 

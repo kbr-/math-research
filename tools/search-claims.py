@@ -203,8 +203,9 @@ def main():
         write_json(args.out, payload)
     if output_format == 'json' or args.show:
         text=json.dumps(payload, ensure_ascii=False, indent=2)+'\n'
-        sys.stdout.write(text)
-        observed(text)
+        if not args.out:
+            sys.stdout.write(text)
+        observed(text, shown=not bool(args.out))
         return
     def brief(text, limit):
         return text if len(text) <= limit else text[:limit-1] + '…'
