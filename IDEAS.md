@@ -469,6 +469,98 @@ mathematics, understanding can be the goal, and a proof found by search may not 
 the proof search space is vast: scaling depends on good learned guidance, which is the part
 improving fastest.
 
+## 13. Refute first: solvers instead of case tables
+
+**The idea (27 September 2026).** A smaller idea grown from item 12. When a cycle proposes a claim,
+first ask a solver for the smallest counterexample within bounded parameters, instead of writing
+a case-table program. Encode "there are parameters within the bounds and an object violating the
+claim". A satisfying assignment is a counterexample, checked by a short script, and the false route
+dies in minutes. An unsatisfiable answer comes with a proof certificate (DRAT/LRAT) that an
+independent checker verifies (drat-trim, or the formally verified cake_lpr). Either outcome is
+certified, not "the enumeration found nothing". The user asked for the case; these are Claude
+Opus 5.5's answers.
+
+**Why it beats case tables.**
+
+- The encoding states what a counterexample is, not how to find one, so there is no hand-written
+  search and pruning to get wrong. Cross-check each new encoding once against brute force at the
+  smallest sizes.
+- Conflict-driven solvers learn from dead ends and prune what a table walks through, so they
+  usually reach larger sizes on the same budget.
+- Incremental solving with assumptions runs a parameter series in one instance, keeping learned
+  clauses: COMPUTATION_RULES.md's one incremental pass per series.
+- Extremal questions become MaxSAT or a binary search over incremental calls; counting questions
+  become #SAT.
+- CryptoMiniSat is installed and handles XOR constraints natively (Gauss-Jordan elimination
+  inside the search), and much of our work is over parities.
+
+**Bounded ranges.** A statement for n up to 10 is a finite union of fixed instances. Query each n
+smallest first, stopping at the first counterexample (incremental solving shares work between
+them); a single formula with n as a bounded variable is possible but padded and usually slower.
+Only the unbounded "for all n" can't be encoded; a finite certificate stays a finite check under
+AGENTS.md's rules. Its value is killing false conjectures early, cheaply and with certainty.
+
+**Encoding rich objects.** Never encode the abstraction, only the finite object it becomes at
+given parameters. A sheaf of functionals on a finite complex over F_p is vector spaces, restriction
+matrices and linear gluing conditions; "it glues" or "this cohomology vanishes" is a rank
+condition. Route each question by its kind:
+
+1. A property of one fixed object: exact rank or nullspace (fflas-ffpack, FLINT, Macaulay2), not
+   SAT.
+2. A combinatorial choice around a checkable property ("is there a choice of subsets such that the
+   object built from it fails P?"): a counterexample-guided loop. The solver proposes a choice,
+   exact linear algebra checks P, and a passing choice (or its core) is blocked. The solver never
+   needs to understand the sheaf.
+3. Polynomial systems over F_p: Gröbner bases (Singular, msolve), or an SMT solver with a
+   finite-field theory (cvc5 is reported to have one; to be verified).
+4. Nested quantifiers: the loop in 2, or brute force at the smallest sizes.
+
+The model writes the encoders; the brute-force cross-check catches its mistakes.
+
+**The catch: pick the solver by its proof system.** CDCL solvers are resolution engines, and
+pigeonhole-type formulas need exponential-size resolution refutations: a naive encoding of a
+pigeonhole-flavoured question is exactly what a standard solver chokes on. Stronger options:
+
+- Cutting planes: pseudo-Boolean solvers (RoundingSat, Exact, Sat4j), where the pigeonhole
+  principle has polynomial-size refutations, with certificates in the checkable VeriPB format
+  (cutting planes plus redundance and symmetry-breaking rules).
+- Parity reasoning: CryptoMiniSat's Gauss-Jordan elimination; Bosphorus combines algebraic
+  preprocessing with SAT.
+- Algebraic proof systems: Gröbner bases (Nullstellensatz, polynomial calculus), strong on parity
+  formulas that are hard for resolution.
+- Extended resolution and propagation-redundant (PR) proofs: satisfaction-driven clause learning
+  (SDCL; Heule, Kiesl and Biere, around 2019) is reported to find polynomial-size PR refutations of
+  pigeonhole formulas automatically, and structured bounded variable addition (SBVA) adds extension
+  variables as preprocessing (to be verified).
+- Symmetry breaking (lex-leader constraints, BreakID) removes the permutation copies behind the
+  pigeonhole blow-up.
+
+Which solver refutes our instances cheaply tells us empirically which proof system they are easy
+for: our own research question, answered by measurement.
+
+**More expressive input.** A richer language doesn't imply a stronger proof system; many
+front-ends compile to SAT.
+
+- QBF solvers (DepQBF, CAQE, RAReQS) take alternating quantifiers over bits; some emit
+  certificates.
+- Modelling languages with bounded quantifiers: MiniZinc (compiling to CP, SAT or MIP solvers such
+  as OR-Tools CP-SAT), answer set programming (clingo), Alloy/Kodkod.
+- Finite model finders (Mace4, Paradox, Isabelle's Nitpick) search for a finite counterexample to a
+  first-order statement: refute-first at the level of first-order logic.
+- SMT solvers (Z3, cvc5, Bitwuzla): bit-vectors, arithmetic, arrays, heuristic quantifiers; cvc5
+  emits checkable proofs.
+
+**Lean.** An unsatisfiable answer at fixed size is a finite lemma with a certificate, and LRAT
+proofs can be checked inside Lean. Some integrations run the checker as compiled code, which would
+conflict with the rule against `native_decide`; verify the kernel path before relying on it.
+
+**Pilot.** On the next conjecture a cycle would check with a case table: write the encoder as a
+tested framework tool, run CryptoMiniSat (and a pseudo-Boolean solver if the structure is
+pigeonhole-like) with proof output, check the certificates, and compare with the case table at the
+same sizes. Agreement is the control; how much further the solver reaches is the measure. It needs
+install approval for a proof checker (drat-trim) and, for the pseudo-Boolean route, RoundingSat and
+VeriPB.
+
 ## Remaining implementation priorities
 
 1. Add bounded parallel exploration and targeted asynchronous formalization when
@@ -482,6 +574,8 @@ improving fastest.
    literature connections before requesting the install (item 11).
 6. Compare a stripped-down loop (the goal, Lean, the record) with the full framework on one open
    statement, with the same time and compute, before adding more process rules (item 12).
+7. Pilot refute-first solving on the next conjecture a cycle would check with a case table, with
+   certificates checked, after the install approvals (item 13).
 
 These priorities are proposals, not authorization to launch the work.
 
