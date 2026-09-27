@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> Support splits of the dense core are barred and the coefficient split survives its tests; for fixed families a surviving non-Taylor class must force a combination of forms supported on the base board, which settles classes on few tops (<a href="#entry-2026-09-27-dense-split-review">dense split review</a>). Next: prove this deterministic survival lemma, then bound for W's dense families how many tops a class must involve before its tops' forms can have a combination vanishing off a base board.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> On any extension of a base board with clean lower degrees, a non-Taylor class survives only if the forms of its tops have a combination vanishing on every added cell, so independence of those forms off the base kills it deterministically (lem:class-survival; <a href="#entry-2026-09-27-class-survival">class survival</a>). Next: bound the number of tops a non-Taylor class of a base board can involve, combining the lemma with thm:bounded-clusters' component decomposition, and find what makes a component large on a base board holding a dense family.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -38063,6 +38063,51 @@ So \(\mu\) vanishes on \(C_{D_0}(R)\), and \(\mu(W_a)=c\,\mu_\rho(1)\ne0\). By t
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 31.74 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 20.74 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">45.10 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-class-survival" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:class-survival">
+<h3>Class survival: on any extension of a base board with clean lower degrees, a non-Taylor class survives only if every added cell's coefficient vector lies in one proper subspace fixed on the base. So the Taylor defect of a fixed family vanishes whenever, for every base class, the forms of the tops it involves are independent on the added cells, deterministically and against any choice of coefficients</h3>
+<p class="entry-meta">27 September 2026 · Working proof · open statement A1 · cycle odd-prime-survival-lemma. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 (highest risk). The <a href="#entry-2026-09-27-dense-split-review">dense split review</a> found that an adversary keeping a non-Taylor class alive on added columns must create a combination of forms supported on the base board, and proposed proving it as a lemma, then bounding how many tops a class must involve. This cycle proves the lemma with a deterministic vanishing criterion.</p>
+<p><strong>General statement.</strong> lem:class-survival, over \(\mathbb F_3\), in the setting of prop:lift-obstruction with product tops \(\tau_b=\prod_jL_{b,j}^{\epsilon_j}\), \(\epsilon_j\in\{1,2\}\), and, on every board of the chain below, the Frobenius elements \(L_{b,j}^{3-\epsilon_j}\) of the same forms, so that each is a lift of its restriction and \(\pi T_e=T_e\) holds at every step. Let \(R\) be a board with \(\operatorname{Def}_{e'}(R)=0\) for \(e'&lt;e\), and \(R^+\supseteq R\) a board obtained by adding columns in any order, with arbitrary coefficients on the new cells. For a class \(x\in Q=\operatorname{Syz}_e(R)/T_e(R)\) let \(K_0(x)=\{\kappa:\sum_{b,j}\kappa_{b,j}\Phi_{b,j}(x)\in I_R\}\) and \(S(x)=\{b:\Phi_{b,j}(x)\notin I_R\text{ for some }j\}\). Then:</p>
+<ol>
+<li>restriction embeds \(\operatorname{Syz}_e(R^+)/T_e(R^+)\) into \(Q\), and the defects below \(e\) vanish on \(R^+\);</li>
+<li>for every \(z^+\in\operatorname{Syz}_e(R^+)\), its restriction's class \(x\) has the forms' coefficient vector \(l_v\) at every added cell \(v\) in \(K_0(x)\);</li>
+<li>hence, if \(x\notin W_0(R)/T_e(R)\), some combination \(\sum_{b\in S(x),j}\mu_{b,j}L_{b,j}\), \(\mu\ne0\), of the forms of the tops in \(S(x)\) vanishes on every added cell;</li>
+<li>in particular \(\operatorname{Def}_e(R^+)=0\) if \(W_0(R)=T_e(R)\) and, for every nonzero \(x\in Q\), the forms \(L_{b,j}\), \(b\in S(x)\), restricted to the added cells are linearly independent.</li>
+</ol>
+<h4>lem:class-survival</h4>
+<p><strong>Proof.</strong> Write the extension as a chain \(R=R_0\subset R_1\subset\dots\subset R_k=R^+\), one column per step, and \(\pi_i:R_i\to R\) for the composed restrictions, ring homomorphisms sending forms to forms and \(I_{R_i}\) onto \(I_R\).</p>
+<ul>
+<li>(1) By thm:taylor-propagation, \(\operatorname{Def}_{e'}(R_{i+1})\le\operatorname{Def}_{e'}(R_i)+m\operatorname{Def}_{e'-1}(R_i)\), so by induction on \(i\) and \(e'\) the defects below \(e\) vanish on every \(R_i\). Then prop:lift-obstruction identifies the classes of \(R_{i+1}\) with a subspace of those of \(R_i\) through restriction; composing gives the embedding.</li>
+<li>Well-definedness. \(\Phi_{b,j}\) is linear, and for a Taylor syzygy \(t\) every \(\Phi_{b,j}(t)\in I_R\): Taylor syzygies lift for every coefficient choice, and by prop:lift-obstruction a class that lifts for all coefficients has each component in \(I_R\), taking unit coefficient vectors. So \(K_0\) and \(S\) depend only on the class. Directly: for a Frobenius generator \(L_{b,j}^{3-\epsilon_j}x\,e_b\), the component \(\Phi_{b,i}\) with \(i\ne j\) contains \(L_{b,j}^3=0\), and \(\Phi_{b,j}\) is \(x\epsilon_jL_{b,j}^2\prod_{l\ne j}L_{b,l}^{\epsilon_l}\), a multiple of \(\tau_b\); for a Koszul pair every component is a multiple of the other top.</li>
+<li>(2) Let \(x_i\) be the class of \(\pi_{R_i}z^+\) on \(R_i\) (the restriction of \(z^+\) to \(R_i\)). It lifts from \(R_i\) to \(R_{i+1}\), so by prop:lift-obstruction \(\sum_{b,j}l_{b,j,v}\Phi_{b,j}(x_i)\in I_{R_i}\) for every cell \(v\) of the \((i+1)\)-th column. Applying \(\pi_i\), which sends \(x_i\) to \(x\) and \(\Phi_{b,j}(x_i)\) to \(\Phi_{b,j}(x)\), gives \(\sum l_{b,j,v}\Phi_{b,j}(x)\in I_R\), so \(l_v\in K_0(x)\).</li>
+<li>(3) If \(x\notin W_0(R)/T_e(R)\), \(K_0(x)\) is a proper subspace, and it contains every coordinate \((b,j)\) with \(b\notin S(x)\). So a nonzero \(\mu\) vanishing on \(K_0(x)\) is supported on the coordinates of \(S(x)\), and \(\sum\mu_{b,j}l_{b,j,v}=0\) at every added cell \(v\) by (2). That is the vanishing of \(\sum\mu_{b,j}L_{b,j}\) at \(v\).</li>
+<li>(4) If \(W_0(R)=T_e(R)\), every nonzero \(x\) is outside \(W_0(R)/T_e(R)\), and independence of the forms of \(S(x)\) on the added cells rules out the combination in (3). So no nonzero class restricts from \(R^+\), and by (1) \(\operatorname{Def}_e(R^+)=0\). \(\square\)</li>
+</ul>
+<h4>The defect-1 pair</h4>
+<p>For \(\tau=A^2B\), \(\sigma=C^2D\) (seed 23 on 16 cells), the <a href="#entry-2026-09-27-defect-decay">defect decay</a> entry computed clean lower degrees, \(\operatorname{Def}_4=1\) and \(W_0=T_4\). The nonzero classes form one line, with \(S(x)\subseteq\{\tau,\sigma\}\). By (4), on any extension on which the four forms \(A,B,C,D\), restricted to the added cells, are linearly independent, the defect at \(2h+1\) is 0, whatever the added coefficients otherwise are. For instance, four added cells suffice exactly when the \(4\times4\) matrix of the four forms' coefficients on them is invertible over \(\mathbb F_3\); for uniform random coefficients that has probability \(\prod_{i=1}^4(1-3^{i-5})\approx0.56\).</p>
+<h4>What it gives for W</h4>
+<ul>
+<li>The criterion is local in the tops a class involves: a class dies on any extension where the forms of its tops are independent off the base. For a class involving \(s\) tops with \(k+1\) forms each, independence off a base of \(|R|\) cells is possible only if \(s(k+1)\le n^2-|R|\); for forms in general position it then holds, though W's forms need not be.</li>
+<li>For W's \(n^K\) blocks this leaves classes on more than about \(n^2/(k+1)\) tops, and the certificate \(W_0(R)=T_e(R)\) on a base board, which the dense split review showed can be as small as a constant multiple of \(D\) while holding \(n^K\) tops below its fill point. The next question is whether non-Taylor classes of the base board can be confined to few tops, the analogue at the base of thm:bounded-clusters' component bound.</li>
+</ul>
+<p><strong>Outcome.</strong> lem:class-survival: on any extension of a base board with clean lower degrees, a non-Taylor class survives only if the forms of its tops have a combination vanishing on every added cell, so independence of those forms off the base kills it, deterministically. The tested pair's defect at \(2h+1\) is 0 on every extension where its four forms are independent on the added cells.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1 (highest risk): bound the number of tops a non-Taylor class of a base board can involve. Combine the lemma with thm:bounded-clusters' component decomposition: a class splits along components of the monomial-sharing graph, so test whether, on a base board holding a dense family, the classes of each component involve few tops, and what makes a component large.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:lift-obstruction, cor:defect-decay with its pair data, thm:taylor-propagation and the dense split review. The claim search found no earlier version. A fresh-context reviewer checked (1) to (4), including the composed embedding, the well-definedness of \(K_0\) and \(S\), the projection in (2), the dual combination in (3) and the criterion in (4), and the application to the pair. It required two changes, both adopted: the Frobenius elements are fixed as the same powers of the same forms on every board of the chain, so that \(\pi T_e=T_e\) at each step, and the four-cell remark is made exact (an invertible coefficient matrix, with its probability for random coefficients). Its suggestions are adopted: (2) is stated for every syzygy, and general position of the forms is marked as an assumption W's forms need not meet. A direct check that Taylor syzygies have all components in \(I_R\) is added.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-survival-lemma">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 10.46 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 0.66 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 9.67 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
