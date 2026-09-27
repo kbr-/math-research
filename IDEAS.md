@@ -433,9 +433,14 @@ kernel accepting a proof plays the role of a win. The scaling method is search o
 proofs and lemmas, guided by a learned model (the model is the learning half), with the kernel
 as the only arbiter: many independent, cheap attempts at the same open statement, keeping what
 verifies. The machine's CPUs then go to proof search and to counterexample and certificate
-search over the statement itself (SAT, the algebra systems), not to tables of cases. This agrees
-with AGENTS.md's rule against accumulating finite checks: enumerating instances produces data
-with no learner and no proof, so it doesn't scale toward the goal; search over proofs does.
+search over the statement itself (SAT, the algebra systems), not to tables of cases beyond what a
+conjecture needs. This agrees
+with AGENTS.md's rule against accumulating finite checks. Enumerating instances pays when it
+feeds a conjecture: the small cases suggest a formula, sequence guessing fits it (interpolation,
+linear recurrences, rational generating functions, integer relations with PARI/GP's `lindep` and
+`algdep`, an OEIS lookup), and the proof comes after. It stops paying once the pattern is clear;
+more cases then are compute that doesn't scale toward the goal, and search over proofs does. A
+solver that reaches larger sizes also supplies more terms to fit.
 
 **Applied to the framework.** Much of the framework builds in how we think research works:
 route reviews every seven entries, minimum counts of outside leads and absurd bridges with a
