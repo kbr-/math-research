@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Multipliers in the dependent range are products of forms covering the excluded set; they certify arbitrarily many blocks only for families with at most about \(N-D\) distinct forms, which pinned-rank vacuity settles for pools meeting its hypotheses (prop:form-cover-multipliers; <a href="#entry-2026-09-27-form-cover-multipliers">form-cover multipliers</a>). Next: a route review reconsidering the reduction W to W_RS itself, looking for a mechanism that uses the number of distinct forms directly or a different randomization, tested on \(n^K\) blocks with pairwise distinct dense forms.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> Every certificate tried for W_RS stops near \(n\) blocks or \(N\) distinct forms, and none uses the randomness of the killed patterns beyond first moments. A Razborov pigeon-dance design inside the allowed set fails in its naive form: forms that depend on a pigeon only through its row sum strip whole matchings of that pigeon's extensions (<a href="#entry-2026-09-27-reduction-review">reduction review</a>). Next: a closure version. Recursively exclude matchings that lose a pigeon entirely, and ask whether the closure stays below the dance's degree margin for every family with high probability, starting with row-sum-dependent forms.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -35612,6 +35612,82 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 20.05 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 21.76 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 58.16 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-reduction-review" data-kind="review" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Route review of the W_RS certificate line after the multiplier analysis: mechanisms compared, derivation-aware alternative re-read, leads and bridges tested; no new registered claim. The line's claim is conj:row-free-subset.">
+<h3>Route review after the multiplier analysis: every certificate mechanism tried for W_RS stops near \(n\) blocks or \(N\) distinct forms. The derivation-aware alternative was already judged no cheaper than a critical-assignment structure theorem. A Razborov pigeon-dance design inside the allowed set fails in its naive form on row-sum-dependent forms, and its closure version is next</h3>
+<p class="entry-meta">27 September 2026 · Route review · open statements A1 and A3 · cycle odd-prime-reduction-review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. Since the <a href="#entry-2026-09-27-three-steps-review">three-steps review</a>, two cycles have tied the multiplier route to the existing capacity:</p>
+<ul>
+<li><a href="#entry-2026-09-27-square-algebra-annihilators">square-algebra annihilators</a>: under freeness, common annihilators of the clause tops have degree at least \(2M\);</li>
+<li><a href="#entry-2026-09-27-form-cover-multipliers">form-cover multipliers</a>: in the dependent range, the only multipliers found are products over a pool of at most about \(N-D\) forms.</li>
+</ul>
+<p>The previous review asked this one to reconsider the reduction W to W_RS itself. This review compares all the mechanisms tried and re-reads the record's derivation-aware alternative. It then chooses a mechanism of a new kind.</p>
+<h4>The line's general claim</h4>
+<p>conj:row-free-subset: for every family of \(M\le n^K\) blocks, the W_RS allowed set contains, with high probability, a nonempty subset row-free through \(D\approx44t\). Equivalently, by the global-closure theorem and lem:multiplier-designs, the question is whether \(F^Q\) with the row equations has a degree-\(D\) design, where \(Q\) is the allowed set.</p>
+<h4>What the goal needs</h4>
+<p>That design for every family, including \(n^K\) blocks with pairwise distinct dense forms. The mechanisms tried, and where each stops:</p>
+<ul>
+<li>pullback pieces: about \(n\) blocks (prop:fiber-count-barrier);</li>
+<li>first moments: blocks with square spans above \((2K+1)\log_3n\), with the main term open (lem:block-conditioned-moment, lem:prefix-signature-formula);</li>
+<li>multipliers: about \(N/2\) blocks, or about \(N-D\) distinct forms (lem:square-algebra-annihilator-gap, prop:form-cover-multipliers);</li>
+<li>the design presheaf: only together with locality (prop:design-presheaf-gluing);</li>
+<li>weighted replay and restriction: about \(n/10\) blocks (<a href="#entry-2026-09-26-replay-weight-barrier">barrier</a>).</li>
+</ul>
+<h4>Falsification attempt: is W_RS itself in doubt?</h4>
+<p>A family refutable at degree \(D\) for most prefixes would falsify W_RS and force derivation-aware methods. Two facts constrain any such family.</p>
+<p>First, the excluded set is small. Each point \(x\) of \(P\) is excluded with probability at most \(M3^{-t}=O(1/n)\), by a union bound over the blocks. For each block, \(x\) is excluded only if its zero pattern \(\gamma=g_b(x)\) is nonzero with \(C_b\gamma=0\), and for a fixed nonzero \(\gamma\) the vector \(C_b\gamma\) is uniform, so this has probability \(3^{-t}\) (lem:uniform-prefix-vacuity). No assumption on the forms is needed. So \(Q\) has density \(1-O(1/n)\) in expectation, and the adversary does not choose which patterns die. The low-degree refutations and candidate counterexamples recorded so far all used a set of constant density or a structure the adversary controls, such as unit-row prefixes (lem:uniform-prefix-vacuity) or a confining row pattern.</p>
+<p>Second, the kills that do happen are random, and the adversary can only make them correlated, by giving many points the same zero pattern. Families whose kills act as single-cell exclusions leave graph PHP on a dense random subgraph. That is hard by the recorded reduction to expander graph PHP (<a href="#entry-2026-09-26-cell-family-theorem">cells</a>).</p>
+<p>No refutation of another shape was found in this attempt. That is evidence for W_RS within the record's search, not a proof, and the search was not exhaustive.</p>
+<p>The derivation-aware alternative was re-read in the <a href="#entry-2026-09-22-derivation-structure-route-review">derivation-structure review</a> and <a href="#entry-2026-09-22-shielding-falsification-sets">shielding made precise</a>. Weakening is removable (lem:reslin-weakening-admissible). Shielding reduces the question to which dense forms can be informative on critical assignments. That entry judged it no cheaper than a critical-assignment structure theorem, and nothing since changes that.</p>
+<h4>Obstacle</h4>
+<p>Every certificate tried for W_RS is built from structure the adversary controls: few blocks, few distinct forms, freeness of the squares, or locality of the closure. None is built from the one resource the adversary does not control, the randomness of which patterns are killed, beyond what first moments extract. What is missing is a design for \(F^Q\) that exploits the smallness and randomness of the excluded set directly, uniformly over the forms.</p>
+<h4>Assessment of the line</h4>
+<p>Weak, and qualitative. Seven mechanisms have been tried, and each has a precise ceiling near \(n\) blocks or \(N\) forms. No refutation of W_RS is in sight, and the density argument supports it without proving it. The line lacks a mechanism more than it lacks evidence. One resource is unused. Razborov-type designs for PHP work up to degree about \(n/2\), while W_RS needs only \(D=O(\log n)\). That is a large margin for avoiding a small random excluded set.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Razborov's pigeon dance</strong> (Razborov, <em>Lower bounds for the polynomial calculus</em>, Computational Complexity 7, 1998; Impagliazzo, Pudlák and Sgall, 1999). Target: a degree-\(D\) design for \(F^Q\). <strong>Answers.</strong> The pigeon dance builds the PHP design, through a reduction operator, from a process on partial matchings. Suppose the allowed partial matchings of size below \(D\) are robustly extendable, meaning every allowed matching keeps most of its one-pigeon extensions. Then the dance can be run inside \(Q\), with degree \(D\) far below the dance's own limit of about \(n/2\). <strong>Test.</strong> Falsified in its naive form. For one fixed matching the expected loss is only an \(O(1/n)\) fraction of extensions, which merely restates lem:uniform-prefix-vacuity. The simultaneous regime fails. Let a block's forms depend on pigeon \(i\) only through its row sum, \(L_{b,k}=\alpha_kr_i+\beta_k\) with \(\beta_k\) free of pigeon \(i\)'s cells. Take a partial matching \(\rho\) not using \(i\). Every extension \(\rho+(i,c)\) then has the same values \(\alpha_k+\beta_k(\rho)\), so the same zero pattern \(\gamma'(\rho)\). When the block realizes \(2^{h_b}\gg3^t\) nonzero patterns, some pattern is killed almost surely. Every allowed \(\rho\) whose shifted pattern \(\gamma'(\rho)\) is killed loses all its extensions by pigeon \(i\). So robustness for all matchings fails for such families, however small the excluded density. A closure version, which also excludes such matchings and iterates, as in the closure of Efremenko, Garlík and Itsykson, is not refuted by this.</li>
+<li><strong>The Lovász Local Lemma, algorithmic form</strong> (Moser and Tardos, J. ACM 57, 2010). Target: controlling all matchings' bad events at once. <strong>Answers.</strong> Many rare bad events with sparse dependencies can be avoided simultaneously. The bad event "matching \(\rho\) loses a constant fraction of its extensions" has probability \(O(1/n)\) or smaller, so a sparse dependency graph would give robustness for all \(\rho\). <strong>Test.</strong> Falsified: every bad event depends on every block's prefix, so the dependency graph is complete, and the lemma's condition fails.</li>
+<li><strong>Expander graph PHP</strong> (Alekhnovich and Razborov, <em>Lower bounds for polynomial calculus: non-binomial case</em>, 2003). Target: families whose exclusions are edge deletions. <strong>Answers.</strong> PHP on a bipartite expander needs linear degree, and hardness passes to supergraphs. So allowed sets that contain graph PHP on an expander are certified. <strong>Test.</strong> Falsified as a new tool. The record already reduces cell, sparse and column-statistic families this way. Dense blocks exclude patterns of many cells at once, not edges.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>Kinetic proofreading</strong> (Hopfield, PNAS 71, 1974). Translation: the \(t\) prefix rows are \(t\) independent discrimination stages, each passing a given nonzero pattern with probability \(1/3\), as a polymerase discards wrong substrates in successive steps. The pigeon dance is the synthesis that must avoid the rare errors. <strong>Answers.</strong> Proofreading multiplies stage-wise error rates, so a synthesis of \(D\) steps succeeds when the per-step error is small. That is the extension-robustness requirement. <strong>Test.</strong> Falsified: the multiplied rate \(3^{-t}\) is exactly lem:uniform-prefix-vacuity. Proofreading assumes independent errors per synthesis step, while here all steps see the same blocks. The correlation the lead needs to control is outside the model.</li>
+<li><strong>Glauber dynamics and path coupling on constrained spin systems</strong> (Bubley and Dyer, FOCS 1997). Translation: the dance as a Markov chain on matchings restricted to \(Q\). Path coupling would give rapid mixing to a stationary measure on allowed matchings, whose low-degree moments are candidate design values. <strong>Answers.</strong> Rapid mixing under small random deletions would give a measure concentrated on \(Q\) with PHP-like moments. <strong>Test.</strong> Falsified in its real-measure form. A PC design over \(\mathbb F_3\) must annihilate the ideal exactly, and a stationary real measure matches moments only approximately. This is the untranslated step of the pseudo-calibration lead, which became the multiplier designs.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<p>No outside lead or absurd bridge of the three-steps review passed, so no item is due. The pigeon-dance lead above failed in its naive form; its closure version is the next step.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1: develop the closure version of the pigeon-dance lead. Robustness must control the error through the whole recursive construction of the reduction operator, not only whether single extensions survive. The test above shows that row-sum-dependent forms defeat the naive version. So define a closure: exclude, recursively, the partial matchings that lose a pigeon entirely. Ask whether it stays small, below the dance's degree margin, for every family with high probability over the prefixes. Row-sum-dependent forms are the first case, and they connect to the record's row obstruction class.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the derivation-structure and shielding entries, lem:reslin-weakening-admissible, lem:uniform-prefix-vacuity, prop:fiber-count-barrier, lem:multiplier-designs, lem:square-algebra-annihilator-gap and prop:form-cover-multipliers. No computation was run. A fresh-context reviewer checked the following and found them correct:</p>
+<ul>
+<li>the per-point exclusion bound;</li>
+<li>the Local Lemma and expander verdicts, including that hardness passes to supergraphs;</li>
+<li>both bridge falsifications;</li>
+<li>the shielding recap.</li>
+</ul>
+<p>It required four changes, all adopted:</p>
+<ul>
+<li>the falsification paragraph and the assessment no longer present the record's search as settling W_RS;</li>
+<li>the per-point exclusion bound is derived, with the fact that it needs no assumption on the forms. This answers the reviewer's concern that it did;</li>
+<li>the next step requires control through the whole recursive construction;</li>
+<li>the pigeon-dance test is no longer the tautological fixed-matching check. It was replaced by a test of the simultaneous regime, which falsifies the naive lead on row-sum-dependent forms.</li>
+</ul>
+<p>That new test was added after the review. It is a short explicit computation, recorded in full in the lead. Its conclusion is negative and adds no claim, so no second pass was made.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-reduction-review">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 37.44 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 11.76 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 5.14 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 55.67 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">24.74 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
