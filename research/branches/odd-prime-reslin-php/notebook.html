@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The exact form of pseudo-calibration is a multiplier design; products of prefix quadrics certify at most \((N-D)/2\) blocks, and beyond that a multiplier must vanish on many blocks' excluded sets in degree below \(N\) (lem:multiplier-designs; <a href="#entry-2026-09-27-multiplier-designs">multiplier designs</a>). Next: develop the certificate review's contextuality bridge. Formulate PC designs as degree-filtered global sections over the cover of the base by the blocks' allowed sets, and test whether the Čech obstruction vanishes where multiplier and pullback certificates stop.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> The contextuality bridge reduces to locality of PC closure: designs form a presheaf whose gluing axiom is that locality (prop:design-presheaf-gluing; <a href="#entry-2026-09-27-design-presheaf">design presheaf</a>). Next: a route review. Three development cycles in a row end at a certificate beyond about \(n\) blocks, needing discriminant-sign cancellation (Wood's codes), low-degree vanishing on many excluded sets (multiplier designs) or closure locality (design presheaf). Compare them, report the zeon bridge's follow-up, and choose the next mechanism.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -35348,6 +35348,63 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><td>Marked reading and review windows</td><td class="elapsed">2 min 30.76 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 56.74 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 32.68 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-design-presheaf" data-kind="research" data-route="odd-prime-clause-transfer" data-bridge="entry-2026-09-27-certificate-route-review:2" data-claims="prop:design-presheaf-gluing">
+<h3>Design presheaf: in the degree-filtered contextuality translation, the PC designs of a constraint family form a presheaf on the blocks, and its gluing axiom is exactly locality of the PC closure. Compatible local designs exist when 1 avoids the sum of the subfamilies' closures, global ones when it avoids the joint closure. So the bridge certifies nothing beyond locality, whose bounded-order ideal form is refuted</h3>
+<p class="entry-meta">27 September 2026 · Working proof and bridge closed · open statement A1 · cycle odd-prime-contextuality. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-27-certificate-route-review">certificate review</a> listed contextuality and sheaf cohomology (Abramsky and Brandenburger, 2011; Abramsky, Barbosa and Mansfield, 2015) as an absurd bridge, not run. Its untranslated step was to add the degree filtration. It is the last item of that review not yet developed, and it bears on A1. This cycle adds the filtration and asks whether the cohomological view can certify non-refutability where pullbacks and multipliers stop.</p>
+<p><strong>General statement.</strong> prop:design-presheaf-gluing, for every constraint family on the weak base, every degree \(D\) and every cover by subfamilies. The degree-\(D\) designs form a presheaf on subfamilies with inclusions as restrictions. Its compatible families over a cover are the designs of the sum of the cover's closures. Its global sections are the designs of the whole family. Compatible local designs extend to a global one exactly when \(1\notin\) the sum of the cover's closures implies \(1\notin\) the joint closure. The presheaf satisfies the gluing axiom on the cover when the closure is local there.</p>
+<h4>Setting</h4>
+<p>As in <a href="#entry-2026-09-27-multiplier-designs">multiplier designs</a>, \(\mathcal C_D(S)\) is the degree-\(D\) PC closure in the filtered function algebra \(F^P\) of the weak base, and \(R\) is the set of row equations. A constraint family is \(\Gamma=\bigcup_{b\in[M]}\Gamma_b\), one set \(\Gamma_b\) per block, of degree at most \(D\). For \(B\subseteq[M]\) put \(V_B=\mathcal C_D(R\cup\bigcup_{b\in B}\Gamma_b)\), and let \(\mathcal D(B)=\{\mu\in(F^P_{\le D})^*:\mu|_{V_B}=0,\ \mu(1)=1\}\) be the designs of that subfamily. Then \(B\subseteq B'\) gives \(V_B\subseteq V_{B'}\) and \(\mathcal D(B')\subseteq\mathcal D(B)\). So \(\mathcal D\) is a presheaf of affine spaces on the subsets of blocks, with inclusions as restriction maps. This is the Abramsky–Brandenburger shape: contexts are subfamilies, sections are local designs, and a global section is a design of the whole family. It is a degenerate case of it. Every \(\mathcal D(B)\) sits in one fixed space and restrictions are literal inclusions, rather than marginalizations that lose information, so cohomology adds nothing beyond the linear algebra below.</p>
+<h4>prop:design-presheaf-gluing</h4>
+<p><strong>Statement.</strong> Let \(\mathcal U\) be a cover, a set of subfamilies with union \([M]\).</p>
+<ol>
+<li>A compatible family of sections over \(\mathcal U\) is a single functional in \(\bigcap_{B\in\mathcal U}\mathcal D(B)\). It exists iff \(1\notin\sum_{B\in\mathcal U}V_B\).</li>
+<li>A global section, a design of the whole family, exists iff \(1\notin V_{[M]}\).</li>
+<li>\(\sum_{B\in\mathcal U}V_B\subseteq V_{[M]}\). So global sections always give compatible families, and compatible families exist while no global section does exactly when \(1\in V_{[M]}\setminus\sum_{B\in\mathcal U}V_B\). A given compatible family \(\mu\) is itself global iff it vanishes on \(V_{[M]}\).</li>
+<li>\(\mathcal D\) satisfies the gluing axiom on \(\mathcal U\) (\(\bigcap_{B\in\mathcal U}\mathcal D(B)=\mathcal D([M])\)) iff either \(1\in\sum_BV_B\), or \(\sum_BV_B=V_{[M]}\). In particular it holds whenever the closure is local on \(\mathcal U\), meaning \(V_{[M]}=\sum_{B\in\mathcal U}V_B\).</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>Restrictions are inclusions of sets of functionals on one space, so sections agreeing on the pairwise intersections, where \(\mathcal D(B\cap B')\) is defined for every pair, are equal. A compatible family is thus one \(\mu\) lying in every \(\mathcal D(B)\), that is, vanishing on \(\sum_BV_B\) with \(\mu(1)=1\). A functional vanishing on a subspace \(W\) and taking the value 1 at \(1\) exists iff \(1\notin W\).</li>
+<li>This is the case \(\mathcal U=\{[M]\}\).</li>
+<li>Monotonicity of \(V_B\) in \(B\) gives the inclusion; combine it with (1) and (2).</li>
+<li>If \(1\in\sum_BV_B\), then \(1\in V_{[M]}\) by (3), and both sides are empty. Suppose \(1\notin\sum_BV_B\), so the left side is nonempty. If \(1\in V_{[M]}\), the right side is empty, so the axiom fails, and \(\sum_BV_B\ne V_{[M]}\). If \(1\notin V_{[M]}\), both sides are nonempty affine spaces with directions \(\operatorname{Ann}(\sum_BV_B)\supseteq\operatorname{Ann}(V_{[M]})\). They are equal iff \(\sum_BV_B=V_{[M]}\). \(\square\)</li>
+</ol>
+<h4>What the bridge can and cannot do</h4>
+<p>The restriction of \(\mathcal D\) to \(\mathcal U\) is determined by the spaces \(V_B\), \(B\in\mathcal U\). So is every invariant computed from it: the Čech cohomology of \(\mathcal D\) on \(\mathcal U\), and the cohomological contextuality test of Abramsky, Barbosa and Mansfield, which is built from the sections over the contexts. By (1), the existence question these data answer is whether \(1\in\sum_{B\in\mathcal U}V_B\). Non-refutability needs \(1\notin V_{[M]}\), and the part \(V_{[M]}\setminus\sum_BV_B\) is the gluing defect of PC closure. So the bridge certifies non-refutability only together with locality of the closure at \(1\) on the cover. With \(\mathcal U\) the subfamilies of at most \(k\) blocks, that is \(k\)-wise locality.</p>
+<p>That is the record's question in other words. Taylor glue and its successors turn locality into Tor vanishing of the tops (<a href="#entry-2026-09-23-taylor-glue">Taylor glue</a>, <a href="#entry-2026-09-23-syzygy-locality">syzygies as Tor</a>). Its bounded-order form for vanishing ideals, conj:t-wise-locality, is refuted for every order by prop:covering-obstruction. There, families with \(t\)-wise independent linear parts whose allowed sets meet in one point have joint degree-1 ideal of dimension \(s\), while every single member's degree-1 ideal is zero. That result concerns raw vanishing ideals, without the row equations and without closure under multiplication. Whether it persists for the closures \(V_B\), and at 1, is not checked here. The present translation adds no locality mechanism of its own. The sheaf language re-describes the gluing defect instead of bounding it.</p>
+<p><strong>Outcome.</strong> The contextuality bridge is developed and closed as a certificate tool. Its degree-filtered form is prop:design-presheaf-gluing. Its obstruction to extending compatible local designs is exactly the locality defect of PC closure at \(1\), and it offers no mechanism for deciding that defect. This conclusion does not depend on whether bounded-order locality holds. The evidence that it fails is ideal-level (prop:covering-obstruction), and its transfer to PC closures is unchecked. The translation passes as a restatement, but it gives nothing new for A1.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statements A1 and A3: a route review. Three development cycles in a row have ended at the same obstacle, a certificate beyond about \(n\) blocks:</p>
+<ul>
+<li>Wood's codes need sign cancellation of prefix discriminants over \(\mathbb F_3\);</li>
+<li>multiplier designs need low-degree polynomials vanishing on many excluded sets;</li>
+<li>the design presheaf needs locality of the closure.</li>
+</ul>
+<p>The review should compare these three open steps, report the zeon bridge's follow-up, and choose which open step to attack, or propose a new mechanism.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:covering-obstruction and its entry, conj:t-wise-locality, lem:multiplier-designs, and the certificate review's bridge. No computation was run. A fresh-context reviewer checked parts (1), (2) and (4), with the annihilator argument, and found them correct. It required four changes, all adopted:</p>
+<ul>
+<li>part (3) had stated only the existence mismatch as the failure of extension. It now says that compatible families exist while no global section does exactly when \(1\in V_{[M]}\setminus\sum_BV_B\), and that a given compatible family is global iff it vanishes on \(V_{[M]}\). The full gluing condition is left to (4);</li>
+<li>the unused hypothesis that the cover is closed under intersection is dropped;</li>
+<li>the use of prop:covering-obstruction is limited to raw vanishing ideals, and its transfer to PC closures is marked unchecked;</li>
+<li>the outcome no longer rests on that transfer.</li>
+</ul>
+<p>Its optional suggestion is adopted: the setting notes that this is a degenerate Abramsky–Brandenburger presheaf, with inclusions as restrictions. The corrections weaken claims, so one pass suffices.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-contextuality">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 5.35 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">56.41 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 20.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 48.72 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
