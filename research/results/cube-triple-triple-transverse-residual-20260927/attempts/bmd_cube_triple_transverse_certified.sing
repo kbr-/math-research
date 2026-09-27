@@ -1,0 +1,96 @@
+// Complete local transverse triple-triple module; QQ, nine rows, four variables.
+// Negative degree ordering computes at (A,B,C,D), excluding remote factor
+// collisions that burden a global polynomial Groebner basis unnecessarily.
+// Stages: invariant cyclic standard basis; maximal-ideal saturation; quotient
+// presentation and length. No Artin truncation or larger root count is used.
+LIB "elim.lib";
+LIB "modstd.lib";
+setcores(4);
+< "research/results/cube-triple-triple-transverse-residual-20260927/connection.sing";
+// Keep an unreduced standard basis: local tail interreduction can swell.
+option(noredSB);
+// Exact certification: rational containment plus equal local Hilbert functions.
+// A verified rational standard basis and its good-prime standard basis have
+// identical leading monomial modules. The good-prime source equals that target.
+// Each finite-jet source rank over QQ is at least its reduction modulo p; the
+// rational containment gives the opposite dimension inequality, hence equality.
+proc certifiedBasis(module input)
+{
+  module proposed=modStd(input,0);
+  module answer=std(proposed);
+  if(size(reduce(input,answer))!=0) { ERROR("Rational source containment failed"); }
+  module rationalLeading=lead(answer);
+  def originalRing=basering;
+  ring checkRing=32003,(A,B,C,D),(ds,C);
+  module inputPrime=imap(originalRing,input);
+  module answerPrime=imap(originalRing,answer);
+  module sourceBasis=std(inputPrime);
+  module targetBasis=std(answerPrime);
+  if(size(reduce(sourceBasis,targetBasis))!=0 || size(reduce(targetBasis,sourceBasis))!=0)
+  { ERROR("Independent prime source equality failed"); }
+  module rationalLeads=imap(originalRing,rationalLeading);
+  module primeLeads=lead(targetBasis);
+  if(size(reduce(rationalLeads,std(primeLeads)))!=0 || size(reduce(primeLeads,std(rationalLeads)))!=0)
+  { ERROR("Local Hilbert functions differ at the verification prime"); }
+  setring originalRing;
+  print("EXACT_LOCAL_BASIS_CERTIFIED");
+  return(answer);
+}
+
+proc connection(matrix input)
+{
+  matrix padded[9][ncols(input)];
+  int i,j,a;
+  for(i=1;i<=nrows(input);i++)
+  { for(j=1;j<=ncols(input);j++) { padded[i,j]=input[i,j]; } }
+  matrix output=conn*padded;
+  for(i=1;i<=9;i++)
+  { for(j=1;j<=ncols(input);j++)
+    { for(a=1;a<=4;a++)
+      { output[i,j]=output[i,j]+drift[a]*diff(padded[i,j],var(a)); }
+    }
+  }
+  return(output);
+}
+module relations;
+matrix column=marker;
+module remainder;
+int stable=0;
+int order;
+for(order=0;order<=30;order++)
+{
+  remainder=reduce(module(column),relations);
+  if(size(remainder)==0) { stable=1; break; }
+  relations=certifiedBasis(relations+remainder);
+  print("ORDER="+string(order)+" SB_COLUMNS="+string(ncols(relations)));
+  // Weak local remainder differs from the previous column by a unit and
+  // existing relations; differentiate it to avoid irrelevant polynomial growth.
+  column=connection(matrix(remainder));
+}
+if(stable!=1) { ERROR("Cyclic closure guard reached before stability"); }
+if(size(reduce(module(connection(matrix(relations))),relations))!=0)
+{ ERROR("Final module is not connection invariant"); }
+ideal mm=maxideal(1);
+module fibre=std(relations+mm*freemodule(9));
+if(vdim(fibre)!=4) { ERROR("Closed fibre must have dimension four"); }
+print("STABLE_ORDER="+string(order)+" CLOSED_DEFECT="+string(vdim(fibre)));
+print("CONNECTION="+string(conn));
+print("PRESENTATION="+string(relations));
+list saturation=sat(relations,mm);
+module saturated=saturation[1];
+print("SATURATION_EXPONENT="+string(saturation[2]));
+print("SATURATION_GENERATORS="+string(saturated));
+module quotientRelations=std(modulo(saturated,relations));
+int residualLength=vdim(quotientRelations);
+if(residualLength<0) { ERROR("Maximal-ideal torsion must have finite length"); }
+print("RESIDUAL_LENGTH="+string(residualLength));
+print("RESIDUAL_PRESENTATION="+string(quotientRelations));
+print("RESIDUAL_BASIS="+string(kbase(quotientRelations)));
+int a;
+for(a=1;a<=4;a++)
+{
+  print("VARIABLE="+string(var(a))+" KILLS_RESIDUAL="+
+        string(size(reduce(var(a)*saturated,relations))==0));
+}
+print("COMPLETE");
+quit;

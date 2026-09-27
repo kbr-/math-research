@@ -1,0 +1,65 @@
+// Complete local transverse triple-triple module; QQ, nine rows, four variables.
+// Negative degree ordering computes at (A,B,C,D), excluding remote factor
+// collisions that burden a global polynomial Groebner basis unnecessarily.
+// Stages: invariant cyclic standard basis; maximal-ideal saturation; quotient
+// presentation and length. No Artin truncation or larger root count is used.
+LIB "elim.lib";
+LIB "modstd.lib";
+setcores(4);
+< "research/results/cube-triple-triple-transverse-residual-20260927/connection.sing";
+// Keep an unreduced standard basis: local tail interreduction can swell.
+option(noredSB);
+proc connection(matrix input)
+{
+  matrix output=conn*input;
+  int i,j,a;
+  for(i=1;i<=nrows(input);i++)
+  { for(j=1;j<=ncols(input);j++)
+    { for(a=1;a<=4;a++)
+      { output[i,j]=output[i,j]+drift[a]*diff(input[i,j],var(a)); }
+    }
+  }
+  return(output);
+}
+module relations;
+matrix column=marker;
+module remainder;
+int stable=0;
+int order;
+for(order=0;order<=30;order++)
+{
+  remainder=reduce(module(column),relations);
+  if(remainder==0) { stable=1; break; }
+  relations=modStd(relations+remainder,1);
+  print("ORDER="+string(order)+" SB_COLUMNS="+string(ncols(relations)));
+  // Weak local remainder differs from the previous column by a unit and
+  // existing relations; differentiate it to avoid irrelevant polynomial growth.
+  column=connection(matrix(remainder));
+}
+if(stable!=1) { ERROR("Cyclic closure guard reached before stability"); }
+if(reduce(module(connection(matrix(relations))),relations)!=0)
+{ ERROR("Final module is not connection invariant"); }
+ideal mm=maxideal(1);
+module fibre=std(relations+mm*freemodule(9));
+if(vdim(fibre)!=4) { ERROR("Closed fibre must have dimension four"); }
+print("STABLE_ORDER="+string(order)+" CLOSED_DEFECT="+string(vdim(fibre)));
+print("CONNECTION="+string(conn));
+print("PRESENTATION="+string(relations));
+list saturation=sat(relations,mm);
+module saturated=saturation[1];
+print("SATURATION_EXPONENT="+string(saturation[2]));
+print("SATURATION_GENERATORS="+string(saturated));
+module quotientRelations=std(modulo(saturated,relations));
+int residualLength=vdim(quotientRelations);
+if(residualLength<0) { ERROR("Maximal-ideal torsion must have finite length"); }
+print("RESIDUAL_LENGTH="+string(residualLength));
+print("RESIDUAL_PRESENTATION="+string(quotientRelations));
+print("RESIDUAL_BASIS="+string(kbase(quotientRelations)));
+int a;
+for(a=1;a<=4;a++)
+{
+  print("VARIABLE="+string(var(a))+" KILLS_RESIDUAL="+
+        string(reduce(var(a)*saturated,relations)==0));
+}
+print("COMPLETE");
+quit;
