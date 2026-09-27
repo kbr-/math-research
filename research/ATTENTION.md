@@ -636,6 +636,22 @@ For a sum Q of monomial symmetric functions, the Taylor coefficients of Q(a+z) a
 
 ---
 
+### Epd finite jet galois separation
+
+**Claim:** [lem:epd-finite-jet-galois-separation](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-27-cube-galois-harmonic-jets>)
+
+Over every characteristic-zero field, for L=partial_s²+s partial_s partial_v+v partial_v²+(5/2)partial_v and H_j the coefficients of (1+s*t+v*t²)^(-3/2), a finite-support distribution psi on k[s,v] annihilates all H_j iff psi=L^t phi for a unique finite-support distribution phi. Support is preserved and every nonzero local order drops by2; orders0,1 force zero. At one point, jet order<=m gives all2m+1 numerator polynomials of degree<=2m over Q^(m+3/2), leaving kernel dimensionbinom(m,2), exactly the transposed image. Distinct cross-pair points separate by multiquadratic Galois characters, diagonal points by proper poles and the sole polynomial block at0. This is ordinary local jet order,not weighted parameter degree.
+
+**Significance:** `general_tool` · **Novelty:** `unknown`
+
+**Why it matters:** Reusable simultaneous finite-jet interpolation for this EPD operator, extending the recorded special cluster separation. Its relationship to classical EPD interpolation or polynomial Runge approximation has not yet been audited; no novelty claim is made.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Make a bounded literature comparison with classical EPD finite-jet interpolation and polynomial Runge approximation; meanwhile use the proved statement with full coefficient nilpotents for quantitative cluster analysis.
+
+---
+
 ### First active quadratic parent lift
 
 **Claim:** [lem:first-active-quadratic-parent-lift](<https://kbr.is-a.dev/math-research/branches/odd-prime-reslin-php/#first-active-quadratic-parent-lift>)
