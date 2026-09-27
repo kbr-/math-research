@@ -717,6 +717,53 @@ clear payoff; paths 1 and 2 are cheap and may remove most daily friction.
 conflicts with the user's rules, app switching), check which the harnesses' own settings fix, and
 check the pricing terms. Then choose among the paths.
 
+## 16. Computing on the GPU
+
+**The idea (27 September 2026).** All computation runs on the 14 allowed CPU cores while the GPU
+stays idle. Use it: through GPU support in the tools and libraries agents already run or link,
+and in our own kernels, written for CUDA or a newer GPU programming model.
+
+**What the machine has (checked 27 September 2026).** An NVIDIA GeForce RTX 3070 Laptop GPU with
+8 GB of video memory, driver 595.84 (the AMD integrated GPU is a second, separate device). No
+CUDA toolkit (`nvcc`), CuPy or PyTorch is installed; Vulkan's `vulkaninfo` is. Anything that
+builds or runs GPU code needs an install, and each needs the user's approval.
+
+**Where a GPU could pay.**
+
+- Most of our heavy work is exact linear algebra over small prime fields: ranks, echelon forms
+  and nullspaces mod 2 and mod 3. GPUs are built for dense matrix products, and elimination can
+  be organized around them, as fflas-ffpack does on the CPU with BLAS. The consumer GPU's
+  double-precision rate is a small fraction of its single-precision rate, so the natural route is
+  not doubles: entries mod 2 or 3 fit in 8-bit integers, and the integer tensor cores multiply
+  them with exact 32-bit accumulation, reduced mod p afterwards. Mod 2, bit-packed XOR and
+  population counts are a second route.
+- Numerical code written with NumPy has a near drop-in GPU version, CuPy.
+- The embedding search of item 11 needs the GPU anyway.
+
+**What is uncertain.**
+
+- Whether the installed systems (Macaulay2, Singular, msolve, GAP, PARI/GP, FLINT, fflas-ffpack,
+  LinBox, NTL) have any GPU support in their current builds is to be checked, not assumed; the
+  exact-arithmetic ones mostly do not.
+- The CPU is already fast on today's sizes: fflas-ffpack ranked a 4000×4000 matrix mod 3 in
+  0.2 s (COMPUTATION_RULES.md). A GPU wins on large dense problems; on small or sparse ones, or
+  where time goes to Python orchestration, it may not. The gain must be measured on a real
+  workload before anything is built around it.
+- The resource controls govern CPU and RAM only. GPU memory and time are ungoverned, so GPU jobs
+  need a guard in `compute.sh` (one GPU job at a time, a memory cap, the same timeouts) before
+  agents may use the device. A laptop GPU also throttles under sustained load.
+
+**Programming model.** CUDA remains the standard for NVIDIA hardware and has the libraries
+(cuBLAS, cuSPARSE, CUTLASS for integer matrix products). Newer options sit on top of it or
+beside it: Triton writes kernels in Python (it needs PyTorch), CuPy compiles raw CUDA kernels from
+Python, and Vulkan compute is vendor-neutral but low-level. Start with CuPy or plain CUDA; move to
+something else only if a measured kernel needs it.
+
+**First step.** From the timing records, find which computations took most of the recent cycles'
+time and whether they are dense matrix work. Take the largest real one, ask for the one install
+it needs, and compare a GPU version with the current CPU kernel on the same input, with ranks
+checked against each other. Build the `compute.sh` guard only if the GPU wins.
+
 ## Remaining implementation priorities
 
 1. Add bounded parallel exploration and targeted asynchronous formalization when
@@ -737,6 +784,8 @@ check the pricing terms. Then choose among the paths.
    before building a lookup tool (item 14).
 9. Inventory the harness friction, check the extension points and the pricing terms, then choose
    among the harness paths (item 15).
+10. Find the dense matrix work in recent cycles' timing records and measure one GPU kernel against
+    the CPU kernel on it, before any GPU tooling or guard (item 16).
 
 These priorities are proposals, not authorization to launch the work.
 
