@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> Wood's moment method transfers to W_RS blocks except its engine: equidistribution for code functionals needs the discriminant signs of the prefix matrices to cancel by a factor of at least \(3^{h_b/2}M\), which no tool over \(\mathbb F_3\) supplies (lem:prefix-signature-formula; <a href="#entry-2026-09-27-wood-codes">Wood's codes</a>). Next: develop the certificate review's pseudo-calibration lead, the recorded certificate route that avoids moments, in an exact characteristic-3 form against the planted distribution on the allowed set, checking whether it annihilates the row-sum multiples through degree \(D\).</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The exact form of pseudo-calibration is a multiplier design; products of prefix quadrics certify at most \((N-D)/2\) blocks, and beyond that a multiplier must vanish on many blocks' excluded sets in degree below \(N\) (lem:multiplier-designs; <a href="#entry-2026-09-27-multiplier-designs">multiplier designs</a>). Next: develop the certificate review's contextuality bridge. Formulate PC designs as degree-filtered global sections over the cover of the base by the blocks' allowed sets, and test whether the Čech obstruction vanishes where multiplier and pullback certificates stop.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -35286,6 +35286,68 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 15.58 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 39.23 s</td></tr>
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">25.09 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-multiplier-designs" data-kind="research" data-route="odd-prime-clause-transfer" data-lead="entry-2026-09-27-certificate-route-review:3" data-claims="lem:multiplier-designs">
+<h3>Multiplier designs: in characteristic 3 an exact analogue of pseudo-calibration multiplies a design of the base by a polynomial vanishing on the excluded set. That certifies W_RS families at PC degree \(D\) whenever such a multiplier of degree at most \(D_0-D\) survives the base design. Products of prefix quadrics reach about \(N/2\) blocks, the same order as pullback capacity, and beyond that a multiplier must vanish on the excluded set of many blocks in degree below \(N\)</h3>
+<p class="entry-meta">27 September 2026 · Working lemma and reduction · open statement A1 · cycle odd-prime-pseudo-calibration. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-27-certificate-route-review">certificate review</a> listed pseudo-calibration as an outside lead, not run: "the exact, characteristic-3 version is the untranslated step". It bears on A1, and the <a href="#entry-2026-09-27-moment-route-review">moment review</a> kept it due for a development cycle. This cycle translates it. Pseudo-calibration evaluates a polynomial against a null measure, weighted by the low-degree part of the planted likelihood ratio. Its exact analogue should be a design of the base, weighted by a low-degree multiplier supported on the allowed set. The test ends once it is clear how many blocks such multipliers certify.</p>
+<p><strong>General statement.</strong> lem:multiplier-designs, for every family of constraints on the weak base and every degree. Take a degree-\(D_0\) design of the row equations over the base, and a function of degree at most \(D_0-D\) that vanishes wherever some constraint is nonzero and that the design does not kill. Multiplying by that function gives a degree-\(D\) PC design for the base plus the constraints. Since \(D_0\le N\), every multiplier has degree at most \(N-D\). Products of one prefix quadric per block therefore certify at most \((N-D)/2\) blocks.</p>
+<h4>Setting</h4>
+<p>\(P\) is the weak base: column-injective 0/1 assignments on \(m\) rows and \(N\) columns, with total occupancy \(\equiv m\bmod3\). \(F^P\) is the algebra of \(\mathbb F_3\)-valued functions on \(P\), filtered by degree. For a set \(S\subseteq F^P\), let \(\mathcal C_D(S)\) be the smallest subspace of \(F^P_{\le D}\) that contains \(S\cap F^P_{\le D}\) and is closed under \(f\mapsto xf\) for cell variables \(x\) whenever \(\deg(xf)\le D\). A syntactic PC refutation of degree \(D\) from the base axioms and \(S\) maps line by line into \(\mathcal C_D(S)\): base axioms map to 0, the other axioms into \(S\), and linear combinations and multiplications by variables are preserved. So \(1\notin\mathcal C_D(S)\) excludes it. A <em>degree-\(D\) design</em> for \(S\) is a functional \(\mu\) on \(F^P_{\le D}\) with \(\mu(1)\ne0\) that vanishes on \(\mathcal C_D(S)\). Such a design exists exactly when \(1\notin\mathcal C_D(S)\). The closure is monotone in \(D\): for \(D\le D'\), \(\mathcal C_D(S)\subseteq\mathcal C_{D'}(S)\).</p>
+<p>Let \(R=\{r_i-1\}\) be the row equations. For a constraint family \(\Gamma\) of degree at most \(D\), its <em>excluded set</em> is \(E=\{x\in P:\gamma(x)\ne0\text{ for some }\gamma\in\Gamma\}\), the complement of the allowed set \(Q\).</p>
+<h4>lem:multiplier-designs</h4>
+<p><strong>Statement.</strong> Let \(\mu_0\) be a degree-\(D_0\) design for \(R\), and \(1\le D\le D_0\). Let \(W\in F^P\) have \(\deg W\le D_0-D\), vanish on \(E\), and satisfy \(\mu_0(W)\ne0\). Then \(\mu(f)=\mu_0(Wf)\) is a degree-\(D\) design for \(R\cup\Gamma\), and in particular weak unary PHP plus \(\Gamma\) has no PC refutation of degree \(D\). Moreover every degree-\(D_0\) design for \(R\) has \(D_0\le N\), so every such multiplier has degree at most \(N-D\).</p>
+<p><strong>Proof.</strong> The functional \(\mu\) is defined on \(F^P_{\le D}\), since \(\deg(Wf)\le D_0\) there. Let \(U=\{f\in F^P_{\le D}:Wf\in\mathcal C_{D_0}(R)\}\), a subspace, and check three things:</p>
+<ol>
+<li>\(U\) contains each \(r_i-1\): for a monomial \(w\) of a polynomial representing \(W\), \(w(r_i-1)\) is reached from \(r_i-1\) by multiplying by variables through degrees at most \(\deg W+1\le D_0-D+1\le D_0\), using \(D\ge1\).</li>
+<li>\(U\) contains each \(\gamma\in\Gamma\): \(W\gamma=0\) in \(F^P\), since \(\gamma\) vanishes on \(Q\) and \(W\) on \(E\).</li>
+<li>\(U\) is closed under \(f\mapsto xf\) when \(\deg(xf)\le D\): then \(W\cdot xf=x\cdot(Wf)\) has degree at most \(D_0\), and \(\mathcal C_{D_0}(R)\) is closed under that multiplication.</li>
+</ol>
+<p>So \(\mathcal C_D(R\cup\Gamma)\subseteq U\), and \(\mu\) vanishes on it, while \(\mu(1)=\mu_0(W)\ne0\). For the bound, every function on \(P\) has a representative of degree at most \(N\). By the Anstee–Rónyai–Sali theorem, as used in lem:design-support-bound, the standard monomials of the vanishing ideal of \(P\) are shattered by \(P\), and form a basis of \(F^P\). A shattered set of cells has at most one cell per column, since \(P\) is column-injective, so these monomials have degree at most \(N\). The row equations have no common zero on \(P\): \(r_i\equiv1\bmod3\) for all \(m\) rows would need at least \(m&gt;N\) occupied cells. So at each point \(x\) choose a row \(i(x)\) with \(r_{i(x)}(x)\ne1\), and let \(g_i\) be the function equal to \((r_i(x)-1)^{-1}\) at the points with \(i(x)=i\) and 0 elsewhere. Then \(1=\sum_i(r_i-1)g_i\) in \(F^P\), with \(\deg g_i\le N\). Each term lies in \(\mathcal C_{N+1}(R)\) by the argument of (1), so \(1\in\mathcal C_{N+1}(R)\). By monotonicity, \(1\in\mathcal C_{D_0}(R)\) for every \(D_0\ge N+1\), so no design of degree above \(N\) exists. \(\square\)</p>
+<p>The lemma uses no Boolean encoding of the constraints beyond vanishing on \(Q\). It is a formal analogue of pseudo-calibration, with \(\mu_0\) as the null functional and \(W\) as the truncated likelihood ratio. Exactness replaces "approximately \(1_Q\)" by "vanishes off \(Q\)".</p>
+<h4>Product multipliers for W_RS</h4>
+<p>For a W_RS block, the prefix quadric \(s_{b,1}=\sum_ic_{b,1i}g_{b,i}\) has degree 2 and vanishes wherever \(C_bg_b=0\), in particular on the block's excluded set \(E_b\). So \(W=\prod_bs_{b,1}\) vanishes on \(E=\bigcup_bE_b\) and has degree at most \(2M\). By the lemma, for \(D\ge4t+2\) (so that the clauses lie in \(F^P_{\le D}\)), if the base has a design \(\mu_0\) of degree \(D_0\ge D+2M\) with \(\mu_0(\prod_bs_{b,1})\ne0\), the family is not refutable at degree \(D\). Two limits follow:</p>
+<ul>
+<li>\(D_0\le N\), so product multipliers certify at most \((N-D)/2\) blocks. Pullback pieces reach families of about \(n\) blocks (prop:fiber-count-barrier; <a href="#entry-2026-09-27-certificate-route-review">certificate review</a>), so products are of the same order and do not go beyond.</li>
+<li>The condition \(\mu_0(W)\ne0\) is a further, unverified requirement, and so is the existence of a base design of degree near \(N\). The recorded row freeness of \(P\) (thm:weak-base-stability-quadratic, thm:tensor-power-freeness) is stated in its own ranges, which this entry does not extend.</li>
+</ul>
+<h4>What lies beyond</h4>
+<p>Families of \(M\gg N\) blocks need a single multiplier of degree below \(N-D\) that vanishes on the union of all the blocks' excluded sets and survives \(\mu_0\). Products spend degree at least 2 per block. A multiplier sharing its degree across blocks would have to vanish on \(M\) structured sets of density \(3^{-t}\) each, of total density up to \(M3^{-t}\approx1/(3n)\), in degree below \(N\). No such construction is known. The design \(\mu\) is supported on the support of \(W\), since \(\mu(f)=0\) whenever \(f\) vanishes there. So lem:design-support-bound applies and requires that support to have at least \(2^{D-1}\) points, which does not obstruct a multiplier supported on most of \(Q\). The question is a vanishing-degree statement for the excluded set, a polynomial-method problem (Combinatorial Nullstellensatz, Chevalley–Warning). It is open here.</p>
+<h4>Outcome</h4>
+<p>The pseudo-calibration lead is developed. Its exact characteristic-3 form is lem:multiplier-designs, a certificate that is neither a pullback nor a support-avoiding design. With products of prefix quadrics it reaches at most \((N-D)/2\) blocks, the same order as the pullback capacity and not beyond it. Beyond that it needs a low-degree polynomial vanishing on the excluded set of many blocks, which is unknown. Lead follow-up: continuing, with the vanishing-degree question as its open step.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1: the last item of the certificate review not yet developed, the contextuality bridge. Formulate PC designs as degree-filtered global sections over the cover of the base by the blocks' allowed sets, and test whether the Čech obstruction of that cover vanishes where the multiplier and pullback certificates stop.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the certificate review's pseudo-calibration lead, lem:design-support-bound, prop:fiber-count-barrier, thm:randomized-prefix-reduction and lem:uniform-prefix-vacuity. No computation was run. A fresh-context reviewer checked the following and found them correct:</p>
+<ul>
+<li>the closure checks (2) and (3);</li>
+<li>that \(W\gamma=0\);</li>
+<li>that \(\mu\) is well defined;</li>
+<li>the step from \(1\in\mathcal C_{N+1}(R)\) to "no design above degree \(N\)".</li>
+</ul>
+<p>It required six changes, all adopted:</p>
+<ul>
+<li>the capacity comparison: pullbacks reach about \(n\) blocks, not \(\log|P|\) components, so products are now called of the same order, not below;</li>
+<li>the use of lem:design-support-bound: it now notes that \(\mu\) is supported on the support of \(W\), which is why the lemma applies;</li>
+<li>the degree bound \(\deg g_i\le N\) is now derived from the Anstee–Rónyai–Sali theorem, with an explicit choice of \(g_i\);</li>
+<li>the hypothesis \(D\ge1\) is stated;</li>
+<li>so is \(D\ge4t+2\) for the W_RS application;</li>
+<li>"at most \(N-D\)" is now used throughout.</li>
+</ul>
+<p>Its suggestions are adopted: monotonicity of the closure in \(D\) is stated, the map from syntactic refutations is explained, and the pseudo-calibration framing is now called a formal analogue. The corrections weaken or justify existing claims, so one pass suffices.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-pseudo-calibration">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 0.31 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 30.76 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 56.74 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 32.68 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
