@@ -383,3 +383,9 @@ references that complete report relative to `research/`, with its SHA-256.
 Commit the referenced report with the archive. Different outputs are preserved
 separately, and existing archives are not rewritten. Missing or changed canonical
 reports fail re-archival rather than silently losing evidence.
+
+New captured outputs larger than 32 MiB are stored in ordered parts, without
+dropping bytes or splitting valid UTF-8 characters. The manifest's
+**archived_parts** lists their paths, sizes and hashes; concatenating them in order
+reconstructs the original output and its recorded SHA-256. Re-archival checks
+every part and the combined hash. Existing single-file archives stay unchanged.

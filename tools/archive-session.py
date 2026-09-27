@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RESEARCH = ROOT / 'research'
 LOGS = RESEARCH / 'logs'
 DEST = RESEARCH / 'provenance/session-records'
+OUTPUT_PART_BYTES = 32 * 1024 * 1024
 
 
 def digest(path):
@@ -18,6 +19,75 @@ def digest(path):
         for chunk in iter(lambda: stream.read(1024 * 1024), b''):
             result.update(chunk)
     return result.hexdigest()
+
+
+def output_chunks(stream):
+    """Keep every byte, avoiding cuts inside valid UTF-8 characters."""
+    pending = b''
+    while data := stream.read(OUTPUT_PART_BYTES - len(pending)):
+        data = pending + data
+        end = len(data)
+        start = end - 1
+        while start >= max(0, end - 4) and data[start] & 0xc0 == 0x80:
+            start -= 1
+        if start >= 0:
+            lead = data[start]
+            width = 4 if 0xf0 <= lead <= 0xf4 else 3 if 0xe0 <= lead <= 0xef \
+                else 2 if 0xc2 <= lead <= 0xdf else 1
+            if end - start < width:
+                end = start
+        if end:
+            yield data[:end]
+        pending = data[end:]
+    if pending:
+        yield pending
+
+
+def verify_parts(target, entry):
+    whole = hashlib.sha256()
+    if not entry['archived_parts']:
+        raise RuntimeError('Empty archived output part list')
+    for part in entry['archived_parts']:
+        saved = (target / part['archived_path']).resolve()
+        if not saved.is_relative_to(target.resolve()) or not saved.is_file():
+            raise RuntimeError(f'Archived output part missing or unsafe: {saved}')
+        single = hashlib.sha256()
+        size = 0
+        with saved.open('rb') as stream:
+            for block in iter(lambda: stream.read(1024 * 1024), b''):
+                whole.update(block)
+                single.update(block)
+                size += len(block)
+        if size != part['bytes'] or single.hexdigest() != part['sha256']:
+            raise RuntimeError(f'Archived output part changed: {saved}')
+    if whole.hexdigest() != entry['sha256']:
+        raise RuntimeError('Archived output parts do not reconstruct the original hash')
+
+
+def archive_parts(source, target, name, source_hash):
+    parts = []
+    whole = hashlib.sha256()
+    with source.open('rb') as stream:
+        for block in output_chunks(stream):
+            part_name = name + f'.part-{len(parts) + 1:04d}'
+            destination = target / part_name
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            part_hash = hashlib.sha256(block).hexdigest()
+            if destination.exists() and digest(destination) != part_hash:
+                raise RuntimeError(f'Refusing to overwrite different output part: {destination}')
+            if not destination.exists():
+                temporary = destination.with_name(destination.name + '.tmp')
+                temporary.write_bytes(block)
+                temporary.replace(destination)
+            whole.update(block)
+            parts.append({'archived_path': part_name, 'bytes': len(block),
+                          'sha256': part_hash})
+    if whole.hexdigest() != source_hash:
+        raise RuntimeError(f'Source changed during archival: {source}')
+    entry = {'original_path': str(source.relative_to(RESEARCH)),
+             'archived_parts': parts, 'sha256': source_hash}
+    verify_parts(target, entry)
+    return entry
 
 
 def canonical_report(event):
@@ -78,6 +148,10 @@ def archive(path):
                 raise RuntimeError(f'Canonical evidence missing or changed: {saved}')
             manifest.append(prior)
             continue
+        if prior and 'archived_parts' in prior:
+            verify_parts(target, prior)
+            manifest.append(prior)
+            continue
         # Preserve existing archive layouts. Deduplicate new outputs only, and
         # only by complete content equality; never truncate or omit diagnostics.
         if not prior and canonical and digest(canonical) == source_hash:
@@ -85,6 +159,10 @@ def archive(path):
             manifest.append({'original_path': original_path,
                              'canonical_path': str(canonical.relative_to(RESEARCH)),
                              'sha256': source_hash})
+            continue
+        if not prior and name.startswith('outputs/') \
+                and source.stat().st_size > OUTPUT_PART_BYTES:
+            manifest.append(archive_parts(source, target, name, source_hash))
             continue
         destination = target / name
         destination.parent.mkdir(parents=True, exist_ok=True)

@@ -70,6 +70,48 @@ class ArchiveReportsTests(unittest.TestCase):
         self.events[1]['command'][-1] = str(other)
         self.assertIn('archived_path', self.archive())
 
+    def test_large_single_line_is_lossless_utf8_and_immutable(self):
+        self.module.OUTPUT_PART_BYTES = 11
+        payload = ('abc🚀λXYZ' * 7).encode()
+        self.output.write_bytes(payload)
+        entry = self.archive()
+        paths = [self.module.DEST / 'turn' / p['archived_path']
+                 for p in entry['archived_parts']]
+        self.assertGreater(len(paths), 1)
+        self.assertEqual(b''.join(p.read_bytes() for p in paths), payload)
+        for path in paths:
+            self.assertLessEqual(path.stat().st_size, 11)
+            path.read_text(encoding='utf-8')
+        self.assertEqual(self.archive(), entry)
+        paths[1].write_bytes(b'changed')
+        with self.assertRaises(RuntimeError):
+            self.archive()
+
+    def test_missing_or_reordered_parts_fail(self):
+        self.module.OUTPUT_PART_BYTES = 8
+        self.output.write_text('0123456789abcdefghijklmnopqrstuvwxyz')
+        entry = self.archive()
+        target = self.module.DEST / 'turn'
+        reversed_entry = dict(entry, archived_parts=list(reversed(entry['archived_parts'])))
+        with self.assertRaises(RuntimeError):
+            self.module.verify_parts(target, reversed_entry)
+        (target / entry['archived_parts'][0]['archived_path']).unlink()
+        with self.assertRaises(RuntimeError):
+            self.archive()
+
+    def test_existing_single_file_stays_single_after_limit_changes(self):
+        entry = self.archive()
+        self.module.OUTPUT_PART_BYTES = 8
+        self.assertEqual(self.archive(), entry)
+
+    def test_raw_bytes_are_not_dropped(self):
+        self.module.OUTPUT_PART_BYTES = 8
+        payload = b'abc\xff\xfe\xf0\x9f\x9a\x80xyz\xe2'
+        self.output.write_bytes(payload)
+        entry = self.archive()
+        self.assertEqual(b''.join((self.module.DEST / 'turn' / p['archived_path']).read_bytes()
+                                 for p in entry['archived_parts']), payload)
+
 
 if __name__ == '__main__':
     unittest.main()
