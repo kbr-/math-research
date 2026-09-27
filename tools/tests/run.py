@@ -5,7 +5,7 @@ Worker processes take tests one at a time from a shared queue, so the suite's wa
 total work divided among the workers rather than by the sum of all tests. Workers default to the CPUs
 this process may use. Each failure's traceback is printed; the exit status is nonzero if any test
 fails or errors, or if the run takes longer than the limit (10 s, AGENTS.md), in which case the
-slowest tests are listed.
+slowest tests are listed. Skipped tests are listed with their reasons.
 
 Usage: python3 tools/tests/run.py [-j WORKERS] [--limit SECONDS] [MODULE ...]
 """
@@ -34,7 +34,8 @@ def run(test, test_id):
     stream = io.StringIO()
     start = time.monotonic()
     result = unittest.TextTestRunner(stream=stream, verbosity=0).run(test)
-    return test_id, result.testsRun, result.wasSuccessful(), stream.getvalue(), time.monotonic() - start
+    skipped = [(case.id(), reason) for case, reason in result.skipped]
+    return test_id, result.testsRun, result.wasSuccessful(), stream.getvalue(), time.monotonic() - start, skipped
 
 
 def run_one(test_id):
@@ -61,15 +62,19 @@ def main():
         results += pool.imap_unordered(run_one, [t.id() for t in found if t not in broken])
     elapsed = time.monotonic() - start
     failed = [r for r in results if not r[2]]
-    for test_id, _, _, output, _ in sorted(failed):
+    for test_id, _, _, output, _, _ in sorted(failed):
         print(f'===== {test_id} =====\n{output}')
     slow = elapsed > args.limit
     if slow:
         print(f'Over the {args.limit:g} s limit (AGENTS.md). Slowest tests:')
-        for test_id, _, _, _, seconds in sorted(results, key=lambda r: -r[4])[:10]:
+        for test_id, _, _, _, seconds, _ in sorted(results, key=lambda r: -r[4])[:10]:
             print(f'  {seconds:6.2f} s  {test_id}')
+    skipped = sorted(skip for r in results for skip in r[5])
+    for test_id, reason in skipped:
+        print(f'Skipped {test_id}: {reason}')
     print(f'Ran {sum(r[1] for r in results)} tests in {elapsed:.1f}s: '
-          + (f'FAILED ({len(failed)})' if failed else 'OK') + (', TOO SLOW' if slow else ''))
+          + (f'FAILED ({len(failed)})' if failed else 'OK') + (', TOO SLOW' if slow else '')
+          + (f', {len(skipped)} skipped' if skipped else ''))
     return 1 if failed or slow else 0
 
 

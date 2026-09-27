@@ -40,5 +40,22 @@ class SuiteTimeLimit(unittest.TestCase):
         self.assertNotIn('TOO SLOW', result.stdout)
 
 
+class SkippedTests(unittest.TestCase):
+    """run.py lists each skipped test with its reason, and counts them in its summary."""
+
+    def test_skips_are_listed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            shutil.copy2(RUNNER, root / 'run.py')
+            (root / 'test_skip.py').write_text('import unittest\nclass Needs(unittest.TestCase):\n'
+                                               '    def test_tool(self):\n        self.skipTest("tool missing")\n'
+                                               '    def test_runs(self):\n        pass\n')
+            result = subprocess.run([sys.executable, 'run.py', '-j', '2'], cwd=root, capture_output=True,
+                                    text=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn('Skipped test_skip.Needs.test_tool: tool missing', result.stdout)
+        self.assertIn('OK, 1 skipped', result.stdout)
+
+
 if __name__ == '__main__':
     unittest.main()
