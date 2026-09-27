@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> The line's claim is now conj:normalized-dense-row-freeness: normal form and density modulo the row sums together. Without normal form, members sharing forms only modulo the row sums collapse there with no flat to cover (<a href="#entry-2026-09-27-directness-route-review">directness review</a>). Next: prove the two-factor case of the shifted vanishing criterion by describing \(A_4=\tilde A_4/R_4\) on at least 8 columns, as the square criterion described \(A_2\). It is the base case of directness for product tops. This is proof work, not a new series.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> A product of two squares lies outside the row-sum ideal whenever the triangle areas of its pencil pair nontrivially on two disjoint column triples (<a href="#entry-2026-09-27-triangle-pair-criterion">triangle-pair criterion</a>). Next: classify the pencils whose pairing vanishes on every pair of triples on at least 8 columns. Then prove the collinear ones outside the ideal through the exact one-row reduction, where \(A_4\) is governed by Wilson's rank formula modulo 3. That would settle the two-factor case of the shifted vanishing criterion.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33775,6 +33775,67 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 3.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-triangle-pair-criterion" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:triangle-pair-criterion">
+<h3>Triangle-pair criterion: a product of two squares depends only on the span of its forms, and it lies in the row-sum ideal only if a pairing of triangle areas vanishes on every two disjoint column triples. Pencils collinear on every triple escape the criterion, and one exact test finds them outside the ideal on 8 and 10 columns, as the shifted vanishing conjecture predicts</h3>
+<p class="entry-meta">27 September 2026 · Working lemma with a finite check · open statements A1 and A3 · cycle odd-prime-two-factor-criterion. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statements A1 and A3. The <a href="#entry-2026-09-27-directness-route-review">directness review</a> reduced first-degree purity for normalized dense families to product tops that stay out of \(R=\sum_ir_i\tilde A\). Its base case is the two-factor case of conj:shifted-vanishing-criterion. The goal needs the non-membership direction: which products of two squares are provably outside \(R\)? The square criterion found its witnesses on three columns. Do products of two squares have witnesses built from two disjoint triples?</p>
+<p><strong>General statement.</strong> lem:triangle-pair-criterion. Over \(\mathbb F_3\), on \(m\) rows and \(N\ge6\) columns, \(\ell_1^2\ell_2^2\) depends only on the span of \(\ell_1,\ell_2\), up to a nonzero square. If \(\ell_1^2\ell_2^2\in R_4\), then for every two disjoint column triples \(X,Y\), \(F_{X,Y}=D_X(\ell_1)\otimes D_Y(\ell_2)+D_X(\ell_2)\otimes D_Y(\ell_1)+D_X(\ell_1,\ell_2)\otimes D_Y(\ell_1,\ell_2)=0\) in \(\Lambda^2V\otimes\Lambda^2V\), where \(D_X\) is the triangle-area form defined below.</p>
+<h4>The lemma</h4>
+<p>Notation. \(V=\mathbb F_3^m\). A linear form \(\ell\) has column vectors \(u_c\in V\). For an ordered column triple \(X=(x_1,x_2,x_3)\) put \(\alpha=u_{x_1}-u_{x_3}\) and \(\beta=u_{x_2}-u_{x_3}\), and \(\alpha',\beta'\) for \(\ell'\). Define the triangle-area form \(D_X(\ell,\ell')=\tfrac12(\alpha\wedge\beta'+\alpha'\wedge\beta)\in\Lambda^2V\), with \(D_X(\ell)=D_X(\ell,\ell)=\alpha\wedge\beta\). It vanishes iff the three column vectors are collinear. It is unchanged by row-sum shifts, which add one vector to every column.</p>
+<p><strong>lem:triangle-pair-criterion.</strong></p>
+<ol>
+<li><em>Span invariance.</em> \(\ell_1^2(\ell_2+a\ell_1)^2=\ell_1^2\ell_2^2\) for every \(a\). Hence \(\prod_{j\le k}\ell_j^2\) changes only by \(\det(g)^2\) when the forms are replaced by \(g\) applied to them, \(g\in GL_k(\mathbb F_3)\).</li>
+<li><em>Product functionals.</em> Let \(X,Y\) be disjoint column sets and \(a+b=d\). Let \(\varphi\) be a functional on \(\tilde A_a(X)\) vanishing on \(R_a(X)\), and \(\psi\) one on \(\tilde A_b(Y)\) vanishing on \(R_b(Y)\), where \(\tilde A(X)\) is the collision algebra of the columns \(X\) with its own row sums. Then \(f\mapsto(\varphi\otimes\psi)(f_{a,b})\) vanishes on \(R_d\), where \(f_{a,b}\) is the bidegree-\((a,b)\) component of \(f\) restricted to the columns \(X\cup Y\).</li>
+<li><em>Triangle pairs.</em> If \(\ell_1^2\ell_2^2\in R_4\), then \(F_{X,Y}=0\) for all disjoint triples \(X,Y\).</li>
+<li><em>Full triples.</em> If \(m\ge3\) and some triple \(X\) has \(D_X(\ell_1),D_X(\ell_2),D_X(\ell_1,\ell_2)\) linearly independent, and some triple \(Y\) disjoint from \(X\) has one of \(D_Y(\ell_1),D_Y(\ell_2),D_Y(\ell_1,\ell_2)\) nonzero, then \(\ell_1^2\ell_2^2\notin R\).</li>
+</ol>
+<p><em>Proof.</em></p>
+<p>(1) In characteristic 3, \(\ell^3=0\) for every linear form: \(\ell=\sum_cx^c_{u_c}\) with \((x^c_u)^2=0\), so \(\ell^3=6\sum_{c&lt;d&lt;e}x^c_{u_c}x^d_{u_d}x^e_{u_e}=0\). Then \(\ell_1^2(\ell_2+a\ell_1)^2=\ell_1^2\ell_2^2+2a\ell_1^3\ell_2+a^2\ell_1^4=\ell_1^2\ell_2^2\). For \(k\) forms, replacing \(\ell_j\) by \(\ell_j+a\ell_i\) (\(i\ne j\)) changes only the factor \((\ell_j+a\ell_i)^2=\ell_j^2+2a\ell_i\ell_j+a^2\ell_i^2\). The other factors contain \(\ell_i^2\), so the two added terms carry \(\ell_i^3=0\), and the product is unchanged. Elementary operations generate \(SL_k\), and scaling one form by \(\lambda\) multiplies the product by \(\lambda^2\).</p>
+<p>(2) Restriction to the columns \(X\cup Y\) is a ring map sending \(r_i\) to \(r_i^X+r_i^Y\). Also \(\tilde A(X\cup Y)=\tilde A(X)\otimes\tilde A(Y)\), since the defining relations \(x_{ic}x_{jc}=0\) each involve one column. For \(g\in\tilde A_{d-1}\) with components \(g_{a',b'}\), the bidegree-\((a,b)\) component of \(r_ig\) is \(r_i^Xg_{a-1,b}+r_i^Yg_{a,b-1}\). Write \(g_{a-1,b}=\sum_ks_k\otimes t_k\). Then \((\varphi\otimes\psi)(r_i^Xg_{a-1,b})=\sum_k\varphi(r_i^Xs_k)\psi(t_k)=0\), since \(r_i^Xs_k\in R_a(X)\). The same holds for the second term.</p>
+<p>(3) By the square criterion's three-column computation, \(A_2(X)=\tilde A_2(X)/R_2(X)\cong\Lambda^2V\). The map sends the blocks \((P,Q,Z)\) of the pairs \((x_1x_2),(x_1x_3),(x_2x_3)\) to the class of \(P-Q-Z^{\mathsf T}\), and \(a\otimes b\) to \(a\wedge b\). The blocks of \(\ell\ell'\) are \(u_c\otimes u'_d+u'_c\otimes u_d\). Expanding shows that the class of \(\ell\ell'\) is \(\alpha\wedge\beta'+\alpha'\wedge\beta=2D_X(\ell,\ell')\): the terms \(u_3\wedge u'_3+u'_3\wedge u_3\) cancel. Write \(a,c\) for the restrictions of \(\ell_1,\ell_2\) to \(X\) and \(b,d\) for those to \(Y\). The bidegree-\((2,2)\) part of \((a+b)^2(c+d)^2\) is \(a^2d^2+b^2c^2+4(ac)(bd)\). Its image in \(A_2(X)\otimes A_2(Y)\) is \(4\bigl(D_X(\ell_1)\otimes D_Y(\ell_2)+D_X(\ell_2)\otimes D_Y(\ell_1)+4D_X(\ell_1,\ell_2)\otimes D_Y(\ell_1,\ell_2)\bigr)\), which is \(F_{X,Y}\) since \(4=1\). Every functional on \(\Lambda^2V\otimes\Lambda^2V\) is a sum of products \(\varphi\otimes\psi\), and by (2) each of these vanishes on \(R_4\).</p>
+<p>(4) \(F_{X,Y}=\sum_ka_k\otimes b_k\) with \(a_k\) independent is zero only if every \(b_k=0\). \(\square\)</p>
+<p><strong>The pairing is apolarity.</strong> Put \(q_X(s,t)=D_X(s\ell_1+t\ell_2)=s^2D_X(\ell_1)+2st\,D_X(\ell_1,\ell_2)+t^2D_X(\ell_2)\), a \(\Lambda^2V\)-valued binary quadratic. The apolar pairing of \(A s^2+Bst+Ct^2\) with \(A's^2+B'st+C't^2\) is \(A\otimes C'+C\otimes A'-\tfrac12B\otimes B'\). With \(B=2D_X(\ell_1,\ell_2)\) and \(-\tfrac12\cdot4=1\) in \(\mathbb F_3\), this is exactly \(F_{X,Y}\). So \(F_{X,Y}=\langle q_X,q_Y\rangle\) is \(SL_2\)-invariant, as part 1 requires.</p>
+<h4>What escapes, and the one test</h4>
+<p>Two kinds of pencils have \(F_{X,Y}=0\) on every pair of triples.</p>
+<ul>
+<li>Pencils whose product vanishes after row-sum shifts. They lie in \(R\), so \(F\) must vanish, and it does. For the opposite pair of ex:opposite-pair-counterexample, all column vectors are multiples of \(e_0\).</li>
+<li>Collinear pencils, where every form of the span is collinear on every triple. These are the rank-one pencils \(\ell_1\equiv\lambda\otimes q\) and \(\ell_2\equiv\mu\otimes q'\) (the forms with column vectors \(\lambda_cq\) and \(\mu_cq'\)) that either share the row vector (\(q'=q\)) or share the column profile (\(\mu\) an affine function of \(\lambda\)). Such pencils can be dense modulo the row sums, so the conjecture's hypotheses admit them.</li>
+</ul>
+<p>The lemma says nothing about the second kind. If such a pencil lay in \(R\) without vanishing shifts, conj:shifted-vanishing-criterion would be false and the adversary would have a new lever. That makes it a decisive test, run once. make_pairs.py (research/results/odd_prime_two_factor_20260927/) writes five collinear pencils:</p>
+<ul>
+<li>common column profile, with values \(\pm1\) split 4 and 4 (resp. 4 and 6), which is outside the lemma's reach;</li>
+<li>common profile with dense row vectors;</li>
+<li>common profile up to an affine map;</li>
+<li>common row vector with general profiles;</li>
+<li>common row vector with sign profiles.</li>
+</ul>
+<p>There are three controls: an independent rank-one pencil, the overlapping opposite pair, and a dense pair. The script also evaluates \(F\) on every pair of disjoint triples (lemma_predictions.txt). It finds \(F\ne0\) exactly for the independent rank-one and dense controls, and \(F=0\) for the rest. collinear_pencils.cpp computes the reduced row echelon form of \(R_4\) once per board (FLINT, exact mod 3). It tests every pencil unshifted and under 5 random row-sum shifts, on 3 rows with 8 and 10 columns, in one run (collinear_pencils.txt). Results:</p>
+<ul>
+<li>all five collinear pencils lie outside \(R\), on both boards and under every shift tried. Membership is unchanged by shifts, and a shift making the product vanish would put it in \(R\), so none of the \(3^m\) shifts makes these products vanish;</li>
+<li>the opposite pair lies in \(R\), its unshifted product being zero;</li>
+<li>the two controls excluded by the lemma lie outside \(R\), as part 3 requires.</li>
+</ul>
+<p>So on the pencils the lemma cannot decide, the exact ranks agree with the conjecture at the smallest boards in its range.</p>
+<h4>What it means</h4>
+<p>The mechanism relates to the record's thm:two-form-no-fall-criterion, which also works in \(\Lambda^2V\), over \(\mathbb F_2\) and for falls rather than membership in the row-sum ideal. For the goal, part 4 is an unconditional, adversary-proof sufficient condition for a member's two-form top to stay out of \(\mathfrak mG\). Some triple must carry three independent triangle areas, and a disjoint triple must carry any nonzero one. It needs only 6 columns, so it holds wherever forms have a little non-collinear structure, whatever the other columns do. Part 1 makes tops invariants of the member's span, as members-as-units gluing requires. The open part of the two-factor case is now narrower. It concerns pencils with \(F\equiv0\): classify them on at least 8 columns, prove non-membership for the collinear ones by a one-row or two-row reduction, and show that the rest vanish after shifts. The directness of many tops, which row freeness needs, is untouched.</p>
+<p><strong>Process.</strong> One test was run, and it was stated as decisive before it was run. The cycle's content is the lemma. A preceding framework fix makes the launcher count programs inside shell wrappers and print the plea against case series at every cycle start.</p>
+<p><strong>Next.</strong> Classify the pencils with \(F\equiv0\) on \(N\ge8\) columns, and prove the collinear ones outside \(R\). For a common row vector the question reduces exactly to the one-row algebra \(\mathbb F_3[y]/(y_c^2)\) modulo \(\sum_cy_c\). There, \(A_4\) has the dimension given by Wilson's rank formula for the inclusion matrix \(W_{3,4}\) modulo 3 (21 on 8 columns), and the square criterion's four-column quotient is its degree-2 analogue.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:square-criterion (the three-column quotient \(A_2\cong\Lambda^2V\) and its explicit map), lem:row-shift-collapse and conj:shifted-vanishing-criterion. The lemma's prediction script and the kernel agree on every pencil: every pencil with \(F\ne0\) is outside \(R\). A fresh-context reviewer re-derived part 3's bidegree computation through the square criterion's quotient convention, the apolarity scalar and part 4. It checked make_pairs.py's formula and matched every stated outcome to the saved files, and found no duplicate in the record. It required two changes, both adopted: the \(k\)-form step of part 1, and deriving 'no vanishing shift' from non-membership instead of asserting it. Its optional notes (the tensor decomposition and the related theorem) are adopted too.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-two-factor-criterion">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>19 min 7.46 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">7 min 26.23 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">10 min 30.68 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 10.41 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
