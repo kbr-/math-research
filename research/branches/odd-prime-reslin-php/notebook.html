@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The PC lift reduces to the splitting condition (S) of lem:lift-gluing at steps beyond joint capacity, which no recorded tool touches (<a href="#entry-2026-09-27-capacity-review">capacity review</a>). The allowed set is the base minus a sparse excluded set \(E\), so its vanishing ideal consists of the functions supported on \(E\). Next: the separator degree. A function of degree at most \(D\) supported on \(E_1\cup E_2\) splits as far as a low-degree separator of \(E_1\) from \(E_2\) allows, and for a W_RS block \(1_{E_b}\) has degree at most \(2h+4t\). State the defect and (S) through separator degrees and find the degree cost of splitting a step beyond capacity. Also give the lift review's Razborov-operator lead its development cycle.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> The PC lift reduces to the splitting condition (S) of lem:lift-gluing beyond joint capacity (<a href="#entry-2026-09-27-capacity-review">capacity review</a>). Separators split one step at degree cost at most \(2h+4t\), but the costs add along members, so the natural separators glue only about ten blocks within \(D\approx44t\) (lem:separator-splitting; <a href="#entry-2026-09-27-separator-splitting">separator splitting</a>). Next: the Razborov-operator lead, still unrun. Write the complete-board operator's action on one W_RS clause, whose monomials each involve at most \(4t+2\) pigeons, and ask whether the relative criterion's closure avoids 1 because each monomial's reduction is local, which would bypass (S) and its additive cost.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -36482,6 +36482,57 @@ So one law holds iff the other does.</li>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 8.49 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 40.33 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-separator-splitting" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:separator-splitting">
+<h3>Separator splitting: a function supported on a union of two excluded sets splits into pieces supported on each, at a degree cost equal to the degree of a separator. For a W_RS block the block's own excluded indicator separates it from everything else, at cost at most \(2h+4t\). The costs add along members, so within the budget \(D\approx44t\) these separators glue only a bounded number of blocks</h3>
+<p class="entry-meta">27 September 2026 · Working proof and ceiling · open statement A1 · cycle odd-prime-separator-degree. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-27-capacity-review">capacity review</a> located the PC lift's obstacle in the splitting condition (S) of lem:lift-gluing beyond joint capacity. It noted that the allowed set is \(P\setminus E\), whose vanishing ideal consists of the functions supported on the excluded set \(E\). Its next step asked how the defect between two excluded sets depends on separators, and at what degree cost a step splits.</p>
+<p><strong>General statement.</strong> lem:separator-splitting, for any finite set \(P\) of 0/1 points, any \(E_1,E_2\subseteq P\) and any \(e\). If a function \(\sigma\) of degree \(s\) equals 1 on \(E_1\setminus E_2\) and 0 on \(E_2\setminus E_1\), then every function of degree at most \(e\) supported on \(E_1\cup E_2\) is a sum of functions of degree at most \(e+s\) supported on \(E_1\) and on \(E_2\). For W_RS, the indicator of one block's excluded set has degree at most \(2h+4t\) and separates it from any other set. Splitting \(j\) members in sequence costs the sum of their separator degrees. With these natural separators the budget \(D\approx44t\) allows only a bounded number of steps. The least separator degree is not bounded below here.</p>
+<h4>lem:separator-splitting</h4>
+<p><strong>Setting.</strong> \(P\) is a finite set of 0/1 assignments, and \(F_e\) is the set of functions on \(P\) given by polynomials of degree at most \(e\). For \(E\subseteq P\), \(V_e(E)=\{f\in F_e:\operatorname{supp}f\subseteq E\}\). For an allowed set \(\mathcal Q=P\setminus E\), \(I(\mathcal Q)\cap F_e=V_e(E)\).</p>
+<p><strong>Statement.</strong></p>
+<ol>
+<li><em>Splitting.</em> If \(\sigma\in F_s\) has \(\sigma=1\) on \(E_1\setminus E_2\) and \(\sigma=0\) on \(E_2\setminus E_1\), then \(V_e(E_1\cup E_2)\subseteq V_{e+s}(E_1)+V_{e+s}(E_2)\) for every \(e\). In the language of lem:defect-gluing: every element of \(I(\mathcal Q_1\cap\mathcal Q_2)\) of degree at most \(e\) is a sum of elements of \(I(\mathcal Q_1)\) and \(I(\mathcal Q_2)\) of degree at most \(e+s\).</li>
+<li><em>W_RS blocks.</em> For a block with forms \(L_1,\dots,L_h\) and prefix matrix \(C\in\mathbb F_3^{t\times h}\), put \(g_i=1-L_i^2\in\{0,1\}\). Its excluded set is \(E_b=\{g\ne0,\ Cg=0\}\), and \(1_{E_b}=\bigl(1-\prod_{i\le h}(1-g_i)\bigr)\prod_{j\le t}\bigl(1-(Cg)_j^2\bigr)\) has degree at most \(2h+4t\). It separates \(E_b\) from every set, since it is 1 on \(E_b\) and 0 off it.</li>
+<li><em>Sequential cost.</em> For members \(b_1,\dots,b_j\) with separator degrees \(s_1,\dots,s_j\), split off \(E_{b_j}\) first, then \(E_{b_{j-1}}\), and so on. Every \(f\in V_e(E_{b_1}\cup\dots\cup E_{b_j})\) is a sum \(\sum_\ell f_\ell\) with \(f_\ell\in V_{e+s_j+\dots+s_\ell}(E_{b_\ell})\) and total degree at most \(e+\sum_\ell s_\ell\). With the natural separators \(1_{E_{b_\ell}}\), each \(s_\ell\) is the degree of that indicator, at most \(2h+4t\). If those degrees are of order \(4t\), the splitting stays within the budget \(D\approx44t\) for only about ten members. Cheaper separators, which need only be 1 on \(E_{b_\ell}\) minus the others and 0 on the others minus \(E_{b_\ell}\), are not excluded.</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>Write \(f=f\sigma+f(1-\sigma)\).
+<ul>
+<li>\(f\sigma\) vanishes off \(E_1\cup E_2\) and on \(E_2\setminus E_1\), so it is supported on \(E_1\).</li>
+<li>\(f(1-\sigma)\) vanishes off \(E_1\cup E_2\) and on \(E_1\setminus E_2\), so it is supported on \(E_2\).</li>
+</ul>
+Both are products of polynomials of degrees at most \(e\) and \(s\).</li>
+<li>Over \(\mathbb F_3\), every square is 0 or 1, so \(g_i\in\{0,1\}\). \(1-\prod(1-g_i)\) is the indicator of \(g\ne0\), of degree at most \(2h\). \((Cg)_j\) is a combination of the \(g_i\), of degree at most 2, so \(1-(Cg)_j^2\) is the indicator of \((Cg)_j=0\), of degree at most 4. The product over \(j\le t\) has degree at most \(4t\).</li>
+<li>Induct on \(j\), splitting off \(E_{b_j}\) with \(\sigma=1_{E_{b_j}}\), which separates it from the union of the others. Each step raises the degree bound of the remainder by \(s_j\). \(\square\)</li>
+</ol>
+<h4>What it gives</h4>
+<p>Separators absorb the defect of one step at a bounded cost that does not depend on how many members are already in \(\mathcal Q'\). That is the good news of (2): the step \(\mathcal Q'\cap\mathcal A_j\) has defect only within degree shift \(2h+4t\), whatever \(\mathcal Q'\) is.</p>
+<p>But the shift is not free. lem:lift-gluing needs (S) in the exact degree \(D\), and the separator splits functions only after raising their degree. A top of \(I(\mathcal Q'\cap\mathcal A_j)\) in degree \(D\) splits into elements of degree up to \(D+s\), whose own tops can cancel. So separators give (S) with a degree shift, and a shifted version of lift gluing would lose \(s_j\) at each step. Across the members the losses add, as in (3). With the natural separators and degrees of order \(4t\), this is a ceiling of about ten blocks, far below the record's other ceilings, such as about \(n/10\) surviving blocks for weighted replay with product weights (<a href="#entry-2026-09-26-conditioning-review">conditioning review</a>). Gluing many blocks at additive degree cost is what the remaining route records as the missing batched mechanism.</p>
+<p>Separating everything at once does not help. A partition of unity \(\pi_b=1_{E_b}\prod_{c&lt;b}(1-1_{E_c})\) has degree adding over blocks, just like the sequence. Inclusion–exclusion to depth \(k\) costs \(k\) separator degrees and leaves a remainder supported on the points excluded by at least \(k+1\) blocks. For a fixed point the blocks' exclusions are independent, since the prefixes are, and each has probability at most \(3^{-t}\). The expected number of such points is at most \(|P|\binom M{k+1}3^{-t(k+1)}\). This bound does not become small until \(k\) is of order \(\log|P|/\log(3^t/M)\), which exceeds the budget; that deep overlaps actually occur was not shown.</p>
+<p><strong>Outcome.</strong> The defect of a single step is controlled by a separator of degree at most \(2h+4t\), but the costs add. With the natural separators the budget allows about ten steps. Separators are therefore not the batched mechanism the route needs. (S) in the exact degree \(D\) beyond capacity remains open.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1: the Razborov-operator lead of the <a href="#entry-2026-09-27-lift-review">lift review</a>, still unrun. Razborov's operator for complete-board PHP reduces a monomial modulo the pigeon axioms of its own pigeons, and is stable under enlarging that set up to half the board. Write the operator's action on one W_RS clause. The clause \(g_i\prod_j(1-(Cg)_j^2)\) has degree at most \(4t+2\), so each of its monomials involves at most \(4t+2\) cells, hence at most \(4t+2\) pigeons. Then ask whether the relative criterion's closure \(W_A\) (lem:relative-criterion, complete-board form) avoids 1 because each monomial's reduction is local, even though the clause is not. This would bypass (S), and with it the additive cost.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:lift-gluing, lem:defect-gluing and the capacity review; the replay ceiling was checked against the living sections' link to the conditioning review. A claim search found no prior version. No computation was run. A fresh-context reviewer verified the splitting, the indicator formula and its degree bound, the sequential cost, and the scope of the ten-block estimate. It required two changes, both adopted:</p>
+<ul>
+<li>the \(4t+2\) pigeons in the next step are derived from the clause degree;</li>
+<li>the replay ceiling is now cited to its source.</li>
+</ul>
+<p>Its optional suggestions are adopted: the peeling order is stated, and the fact that squares in \(\mathbb F_3\) are 0 or 1 is stated without the needless restriction to 0/1 points. The changes clarify, so one pass suffices.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-separator-degree">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 31.09 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 50.76 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 40.20 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
