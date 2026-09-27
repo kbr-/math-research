@@ -8,7 +8,10 @@
 // Cases: random forms, or forms with a planted combination of `short` cells (L_F = -(L_1 + ... + L_{F-1}) + delta).
 // For each case the program prints the first degree of discrepancy and the minimum over all nonzero combinations of
 // floor(|l|/2).  Exact ranks with FLINT nmod_mat.
-// Usage: graded_dade_check OUT "N:F:short:seed,..."   (short = 0: random forms; -1, -2: the recorded AG(2,3) pairs)
+// Usage: graded_dade_check OUT "N:F:short:seed,..."   (short = 0: random forms; -1, -2: the recorded AG(2,3) pairs;
+// -3: one cell at each point of the projective space P^{F-1}(F_3), N = (3^F - 1)/2)
+// The field capacity is the least degree with a negative free prediction W_d (-1 if none): no module is free there
+// (entry-2026-09-27-pencil-graded-dade).
 #include <flint/nmod_mat.h>
 #include <cstdio>
 #include <cstdlib>
@@ -27,7 +30,18 @@ int main(int argc, char** argv) {
         std::mt19937 rng(seed);
         std::vector<std::vector<int>> cf(F, std::vector<int>(N));
         for (int f = 0; f < F; f++) for (int i = 0; i < N; i++) cf[f][i] = rng() % 3;
-        if (sh < 0) {
+        if (sh == -3) {
+            // one cell per projective point: nonzero vectors of F_3^F whose first nonzero coordinate is 1
+            int k = 0; long tot = 1; for (int f = 0; f < F; f++) tot *= 3;
+            for (long c = 1; c < tot; c++) { long x = c; std::vector<int> v(F); int lead = 0;
+                for (int f = 0; f < F; f++) { v[f] = x % 3; x /= 3; if (!lead && v[f]) lead = v[f]; }
+                if (lead != 1) continue;
+                if (k >= N) return 3;
+                for (int f = 0; f < F; f++) cf[f][k] = v[f];
+                k++; }
+            if (k != N) return 3;
+        }
+        if (sh == -1 || sh == -2) {
             // recorded occupancy pairs (ex:occupancy-pair-non-pointwise-defect): cells carry the points of AG(2,3),
             // minus p = (1,2) for short = -1 (N = 8), all nine for short = -2 (N = 9); F must be 2
             int k = 0;
@@ -52,6 +66,7 @@ int main(int argc, char** argv) {
         for (int i = 0; i < N; i++) for (int d = N; d >= 1; d--) h[d] += h[d - 1];
         std::vector<long long> w = h;
         for (int f = 0; f < F; f++) { std::vector<long long> q(N + 1, 0); for (int d = 0; d <= N; d++) { long long v = w[d]; if (d >= 1) v -= q[d - 1]; if (d >= 2) v -= q[d - 2]; q[d] = v; } w = q; }
+        int capacity = -1; for (int d = 0; d <= N; d++) if (w[d] < 0) { capacity = d; break; }
         int first = -1; std::vector<long> quo(N + 1);
         for (int d = 0; d <= N; d++) {
             long rk = 0;
@@ -68,8 +83,8 @@ int main(int argc, char** argv) {
             if (first < 0 && quo[d] != w[d]) first = d;
             if (first >= 0 && d > first + 1) break;
         }
-        fprintf(out, "{\"N\": %d, \"F\": %d, \"short\": %d, \"seed\": %u, \"min_support\": %d, \"min_floor_half\": %d, \"first_discrepancy\": %d}\n",
-                N, F, sh, seed, minSupp, minHalf, first);
+        fprintf(out, "{\"N\": %d, \"F\": %d, \"short\": %d, \"seed\": %u, \"min_support\": %d, \"min_floor_half\": %d, \"first_discrepancy\": %d, \"capacity\": %d}\n",
+                N, F, sh, seed, minSupp, minHalf, first, capacity);
         printf("N=%d F=%d short=%d seed=%u: min support %d, min floor half %d, first discrepancy %d\n", N, F, sh, seed, minSupp, minHalf, first);
         fflush(out); fflush(stdout);
     }
