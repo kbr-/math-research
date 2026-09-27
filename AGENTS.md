@@ -112,6 +112,8 @@ rules to growing checklists or one-off setup narratives.
   Run the exhaustive checker for any rule, tree or encoding change before relying
   on it. Use a fresh-context reviewer subagent, given only the draft and dependency
   anchors/excerpts, to try to break the argument and identify unused hypotheses.
+  The user authorizes and encourages spawning reviewers for any needed review in
+  this and all future Spin runs; no separate confirmation is needed.
   In both Codex and Claude Code, explicitly set reviewer subagents to **medium**
   reasoning, including the pre-proof novelty check, regardless of the main agent's
   reasoning level; do not inherit its high or higher setting.
