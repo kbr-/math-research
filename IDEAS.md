@@ -445,19 +445,25 @@ linear recurrences, rational generating functions, integer relations with PARI/G
 more cases then are compute that doesn't scale toward the goal, and search over proofs does. A
 solver that reaches larger sizes also supplies more terms to fit.
 
-**Applied to the framework.** Much of the framework builds in how we think research works:
-route reviews every seven entries, minimum counts of outside leads and absurd bridges with a
-test each, the limit on finite-check entries, the prescribed review structure. The lesson
-predicts these help now and weigh on progress later: many patch a current model's weaknesses,
-and they age as models improve, some starting to block the model's own better judgement. Under
-the lesson the framework splits in two:
+**Applied to the framework.** The lesson doesn't say "no scaffolding": a model does nothing
+without an inference engine, a harness, tools and a prompt, and Sutton's own conclusion is to
+build in the meta-methods that let computation be applied. The framework has three layers, and
+the lesson treats them differently:
 
-- Keep, as general meta-methods: verification (Lean, the claim and citation checks, honest
-  negative results), the durable record as data the next attempt can retrieve, the resource
-  limits, and evaluation of results.
-- Expect to shrink: rules that script how to think (section quotas, ratio limits, prescribed
-  structure), anything that says which ideas to have rather than checking whether an idea is
-  correct.
+- Infrastructure: the harness, tool calling, `compute.sh` and the resource limits, the notebook
+  as memory the next attempt can retrieve, hooks, Lean. These are the meta-methods, the
+  environment where search and learning happen; invest in them, since they gain value as models
+  improve.
+- Specification: the goal and the user's standards, what counts as done (proved versus
+  conjectured, honest negative results, the append-only record, no uncalibrated probabilities,
+  verification before belief). No model can infer what the user wants, however capable; these
+  encode values, not a theory of how thinking works, and stay. Most of AGENTS.md is this layer.
+- Procedure: rules that prescribe how to think, such as the minimum counts of outside leads and
+  absurd bridges, the review every seventh entry, the limit on finite-check entries. Only this
+  layer is what the lesson warns about, and even here it predicts benefit now, a plateau later.
+  These rules have caught real failures, such as a loop accumulating cases; that they will cost
+  more than they give as models improve is a prediction, not an observation. Keep them while they
+  measurably help, and test them periodically against a loop without them.
 
 **Experiments.**
 
@@ -466,10 +472,10 @@ the lesson the framework splits in two:
 2. Replace some sequential Spin cycles with best-of-N: several independent short attempts at the
    current open statement in parallel, with different seeds or prompts, keeping only what
    verifies (item 3).
-3. Test the lesson on the framework itself: run a stripped-down loop (the goal, the verifier, the
-   record, nothing else) against the full framework on the same open statement, with the same
+3. Test the procedural layer: run a loop with the infrastructure and the specification but none
+   of the procedural rules against the full framework on the same open statement, with the same
    time and compute, and compare the verified output. If the stripped loop keeps up, the
-   scaffolding isn't paying for itself.
+   procedural rules aren't paying for themselves yet; repeat as models change.
 
 **Where the lesson may not transfer.** It is a long-run claim; one research goal with fixed
 compute and fixed models is Sutton's short term, where built-in knowledge does help. In
@@ -672,8 +678,9 @@ can reach larger sizes and so supply more terms to look up.
 5. Build the literature corpus in stages (all-time arXiv categories, then zbMATH Open, then
    OpenAlex citations) with full-text search, and evaluate embedding search against known
    literature connections before requesting the install (item 11).
-6. Compare a stripped-down loop (the goal, Lean, the record) with the full framework on one open
-   statement, with the same time and compute, before adding more process rules (item 12).
+6. Compare a loop without the procedural rules (infrastructure and specification kept) with the
+   full framework on one open statement, with the same time and compute, before adding more
+   procedural rules (item 12).
 7. Build `tools/refute.py` on CaDiCaL and drat-trim and pilot refute-first solving on the next
    conjecture a cycle would check with a case table, after the installs (item 13).
 8. Look up the sequences the notebooks have already computed in the OEIS and count useful hits,
