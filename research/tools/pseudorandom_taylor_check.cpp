@@ -15,7 +15,8 @@
 // Ranks: fflas-ffpack FFPACK::Rank over Givaro::Modular<float>; cases whose matrices are small are recomputed with
 // FLINT nmod_mat_rank as a second library.  Every generator of the Taylor span is checked to be a syzygy on a
 // random sample.  Usage: pseudorandom_taylor_check OUT "m N s M kind seed [keep]; ..." with kind random or control;
-// the optional keep is a bit mask selecting a subfamily of the seeded family (entry-2026-09-27-local-taylor-generation).
+// the optional keep is a bit mask selecting a subfamily of the seeded family (entry-2026-09-27-local-taylor-generation);
+// kind planted is random with the relation L_{2,0} = -(L_{0,0} + L_{1,0}) among three squared forms.
 #include <fflas-ffpack/ffpack/ffpack.h>
 #include <givaro/modular.h>
 #include <flint/nmod_mat.h>
@@ -111,6 +112,13 @@ int main(int argc, char** argv) {
                 if (!found) L.push_back({cc, 1});
                 Poly clean; for (auto& t : L) if (t.second) clean.push_back(t); L = clean;
             }
+        }
+        if (kind == "planted") {  // random family with the planted relation L_{2,0} = -(L_{0,0} + L_{1,0}) among squared forms
+            assert(M >= 3);  // (entry-2026-09-27-planted-locality)
+            std::vector<int> coef(B.mask.size(), 0);
+            for (int b = 0; b < 2; b++) for (auto& [c, v] : L0[b]) coef[c] = (coef[c] + v) % 3;
+            Poly P; for (size_t c = 0; c < coef.size(); c++) if (coef[c]) P.push_back({(int)c, (3 - coef[c]) % 3});
+            L0[2] = P;
         }
         if (keep) {  // subfamily of the seeded family: same forms, only the selected blocks
             std::vector<Poly> K0, K1;
