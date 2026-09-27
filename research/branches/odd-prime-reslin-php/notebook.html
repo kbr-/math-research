@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1.</strong> If \(G\) is free over the square algebra of all blocks through degree \(N-D+4t+2\), common annihilators of the clause tops have degree at least \(2M\), so multipliers stop at \((N-D)/2\) blocks; that freeness needs \(\sum_bh_b\lesssim2Nm^2\), so families of \(n^3\) or more blocks lie in the dependent range, where the multiplier route stays open (lem:square-algebra-annihilator-gap; <a href="#entry-2026-09-27-square-algebra-annihilators">square-algebra annihilators</a>). Next: in the dependent range, ask whether linear relations among the squares of different blocks in \(G_2\) produce common annihilators of the clause tops below degree \(N-D\).</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Multipliers in the dependent range are products of forms covering the excluded set; they certify arbitrarily many blocks only for families with at most about \(N-D\) distinct forms, which pinned-rank vacuity settles for pools meeting its hypotheses (prop:form-cover-multipliers; <a href="#entry-2026-09-27-form-cover-multipliers">form-cover multipliers</a>). Next: a route review reconsidering the reduction W to W_RS itself, looking for a mechanism that uses the number of distinct forms directly or a different randomization, tested on \(n^K\) blocks with pairwise distinct dense forms.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -35566,6 +35566,52 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 47.00 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 23.75 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">8 min 23.11 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-form-cover-multipliers" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:form-cover-multipliers">
+<h3>Form-cover multipliers: a product of affine forms whose zero sets cover the excluded set is a multiplier. Every block's excluded set is covered by the block's own forms, so a family with at most \(D_0-D\) distinct forms has a multiplier however many blocks it has, provided the base design does not kill it. The dependent range contains such pool families, but pinned-rank vacuity already settles those with pools meeting its hypotheses. A W_RS block is covered by \(h_b-t\) of its own forms when the prefix is injective on the rest, and smaller covers need the kernel to avoid realized patterns</h3>
+<p class="entry-meta">27 September 2026 · Working proof · open statement A1 · cycle odd-prime-dependent-squares. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>. The <a href="#entry-2026-09-27-square-algebra-annihilators">square-algebra annihilator gap</a> left the multiplier route open only in the dependent range, where the blocks' squares are related in \(G\). This cycle asks whether that range contains multipliers certifying more than about \(N/2\) blocks, what they look like, and whether they reach families the record has not settled.</p>
+<p><strong>General statement.</strong> prop:form-cover-multipliers, for every constraint family on the weak base. Let \(F\) be a set of affine forms whose zero sets cover the excluded set. Then \(W_F=\prod_{L\in F}L\) vanishes on the excluded set and has degree at most \(|F|\). If \(|F|\le D_0-D\) and a base design has \(\mu_0(W_F)\ne0\), the family has no degree-\(D\) refutation. For W_RS families the block's own forms always cover its excluded set, so the relevant size is the number of distinct forms. A single block is covered by \(h_b-t\) of its own forms when the prefix restricted to the remaining columns is injective. Smaller own-form covers need every nonzero kernel vector supported off the cover to be either not a \(0/1\) vector or a \(0/1\) pattern not realized on \(P\).</p>
+<h4>prop:form-cover-multipliers</h4>
+<p><strong>Statement.</strong> Over \(\mathbb F_3\) on the weak base \(P\), with excluded set \(E\) of a constraint family:</p>
+<ol>
+<li>If affine forms \(L\in F\) satisfy \(E\subseteq\bigcup_{L\in F}\{L=0\}\), then \(W_F=\prod_{L\in F}L\) vanishes on \(E\) and has degree at most \(|F|\). With lem:multiplier-designs, the family has no PC refutation of degree \(D\) whenever \(|F|\le D_0-D\) and \(\mu_0(W_F)\ne0\) for some degree-\(D_0\) design \(\mu_0\) of the row equations.</li>
+<li>For a W_RS block, \(E_b\subseteq\bigcup_i\{L_{b,i}=0\}\). So the distinct forms of the whole family form a cover, of size at most the number of distinct forms.</li>
+<li>A subset \(I\) of block \(b\)'s forms covers \(E_b\) iff no nonzero \(0/1\) vector in \(\ker C_b\) is supported off \(I\), counting only patterns the forms realize on \(P\). If the \(t\) prefix rows restricted to the \(h_b-|I|\) columns outside \(I\) have full column rank, which needs \(h_b-|I|\le t\), then \(I\) covers. If \(h_b-|I|&gt;t\), a nonzero kernel vector exists on those columns over \(\mathbb F_3\), but it need not be a \(0/1\) vector.</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>At a point of \(E\), some \(L\in F\) vanishes, so the product vanishes. The degree bound is immediate, and the rest is lem:multiplier-designs.</li>
+<li>A point \(x\in E_b\) has a zero pattern \(g_b(x)\in K_{C_b}\). That pattern is nonzero, so some \(g_{b,i}(x)=1\), that is \(L_{b,i}(x)=0\) (lem:uniform-prefix-vacuity).</li>
+<li>\(I\) fails to cover exactly when some excluded point has all its vanishing forms outside \(I\). Its pattern is then a nonzero \(0/1\) vector in \(\ker C_b\) supported off \(I\). If \(C_b\) restricted to the columns off \(I\) is injective, no nonzero vector supported there lies in the kernel. \(\square\)</li>
+</ol>
+<h4>What this gives</h4>
+<p><em>Pool families.</em> Suppose every block draws its forms from a common pool of at most \(D_0-D\) forms, the family being fixed before the prefixes are drawn. Then a multiplier exists for any number \(M\) of blocks, subject to \(\mu_0(W_F)\ne0\). Such families are in the dependent range: their squares span at most the pool's size, while \(\sum_bh_b\) grows with \(M\). They are consistent with the annihilator gap, and the leading form of \(W_F\) is a common annihilator coming from the pool, not from the blocks. They are not new, though. Their linear parts lie in the span of the pool, the case \(\rho_b=0\) of prop:pinned-rank-vacuity, which makes them vacuous with probability at least \(1-\sum_b3^{-t_b}\) under its member-pinning hypotheses on the pool forms. Those hypotheses bound the pool size through the board's robustness, so large pools, up to about \(N-D\) forms, may fall outside them. For such pools the multiplier is a second certificate, conditional on \(\mu_0(W_F)\ne0\).</p>
+<p><em>Block-specific forms.</em> When blocks do not share forms, an own-form cover of a block leaving more than \(t\) columns uncovered needs every nonzero \(\mathbb F_3\)-kernel vector on those columns to avoid being a realized \(0/1\) pattern. With \(t\) uniform rows the kernel has dimension at least the excess, so such covers are the exception, not a mechanism. This is a heuristic count, not a proved lower bound, and it is informative only for large blocks, \(h_b\gg t\). Blocks with \(h_b\) close to \(t\) may have own-form covers of fewer than two forms, cheaper than the quadric. The prefix quadric \(s_{b,1}\) costs 2 per block. So, heuristically and for large blocks, product multipliers stay near \((N-D)/2\) blocks. The annihilator gap says, conditionally on freeness, that in the free range nothing else exists.</p>
+<p><strong>Outcome.</strong> The multipliers found here in the dependent range are products over a small pool of forms. They certify arbitrarily many blocks only when the family has at most about \(N-D\) distinct forms. Pinned-rank vacuity already settles that case for pools meeting its hypotheses. For families with many blocks and many distinct forms, a multiplier would need a common annihilator that is not a product of covering forms or quadrics, from relations among the squares of many distinct forms. None is known. The annihilator gap excludes it wherever \(G\) is free over the square algebra, a conditional statement, and the per-block cost of product multipliers is a heuristic for large blocks. So the multiplier route is expected, not proved, to stop at the scale of the existing certificates.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statements A1 and A3: a route review. Two cycles have narrowed the multiplier route to the existing certificate scale, measured in distinct forms, and the other two open steps are unchanged. The review should reconsider the reduction W to W_RS itself. Every certificate so far needs structure the adversary controls, such as few distinct forms, few blocks or freeness. It should look for a mechanism that uses the number of distinct forms directly, or a different randomization, and test it against a family of \(n^K\) blocks with pairwise distinct dense forms.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:multiplier-designs, lem:square-algebra-annihilator-gap, lem:multiplier-annihilators, lem:uniform-prefix-vacuity and prop:pinned-rank-vacuity. No computation was run. A fresh-context reviewer checked parts (1)–(3) and their proofs and found them correct. That includes the equivalence in (3), restricted to realized \(0/1\) patterns, and the injectivity criterion, which is sufficient only. It also confirmed the comparison with prop:pinned-rank-vacuity and its caveat on pool size. It required four changes, all adopted:</p>
+<ul>
+<li>the block-specific paragraph is now limited to large blocks and marked heuristic, including its conclusion;</li>
+<li>the outcome separates the conditional annihilator gap from that heuristic, and says the route is expected, not proved, to stop at the existing scale;</li>
+<li>the general statement names both ways a kernel vector can fail to be a realized pattern;</li>
+<li>the header adds the condition \(\mu_0(W_F)\ne0\).</li>
+</ul>
+<p>Its suggestion that pool families are fixed before the prefixes are drawn is adopted. The changes weaken claims, so one pass suffices.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-dependent-squares">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 20.05 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 21.76 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 58.16 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
