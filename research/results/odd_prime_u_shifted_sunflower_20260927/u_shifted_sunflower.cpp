@@ -12,6 +12,11 @@
 // ushift2 shifts by truncated row sums r'_i (columns 1..N-1, normalized); rshift2 by full row sums r_i. Tested
 // statement (U-shifted sunflower collapse): modulo R the ushift2 tops lie in P + U*Q_1 + U*Q_2, of dimension <= 1 + 2m,
 // while their rank in G grows with M, so the tops-only purity defect is at least rank_G - 1 - 2m.
+// Column perturbation (column-fibers cycle, 27 September 2026): mode colpert represents the same members as ushift2
+// sparsely, l = w0 - p_b . (column-0 cells), l2 = w1 - p'_b . (column-0 cells), which agree with ushift2's forms
+// modulo the row equations r_i = 1. Tested statement (column-perturbation affinity): the tops are affine in the
+// perturbations in A~ itself (products of two column-0 cells vanish), so rank in G is at most 1 + 2m and the purity
+// defect is bounded independently of M.
 // Row-shifted sunflower (closure-line review, 27 September 2026): mode rowsun takes l = l_0 + sum_i p_i r_i with a
 // fresh random shift p per member, so the tops agree with the sunflower's modulo R but not in G. Tested
 // statement: the tops-only purity defect of rowsun exceeds the exact sunflower's bound dim(l_0^2 G_2 cap mG).
@@ -80,12 +85,14 @@ int main(int argc, char** argv) {
         if (mode == "rowsun") { VI co(m*N, 0); for (int i = 0; i < m; i++) { int p = u3(rng); for (int c = 0; c < N; c++) co[i*N + c] = p; }
             l = l0; for (auto& [k, c] : linear(co)) { int v = (l[k] + c) % 3; if (v) l[k] = v; else l.erase(k); } }
         Poly l2 = dense();
-        if (mode == "ushift2" || mode == "rshift2") {
+        if (mode == "ushift2" || mode == "rshift2" || mode == "colpert") {
             static Poly w0, w1; static bool init = false;
             auto noCol0 = [&]() { VI co(m*N); for (int i = 0; i < m; i++) for (int c = 0; c < N; c++) co[i*N + c] = c ? u3(rng) : 0; return linear(co); };
             if (!init) { w0 = noCol0(); w1 = noCol0(); init = true; }
             auto shifted = [&](const Poly& w) { VI co(m*N, 0);
-                for (int i = 0; i < m; i++) { int p = u3(rng); for (int c = (mode == "ushift2" ? 1 : 0); c < N; c++) co[i*N + c] = p; }
+                for (int i = 0; i < m; i++) { int p = u3(rng);
+                    if (mode == "colpert") co[i*N + 0] = (3 - p) % 3;
+                    else for (int c = (mode == "ushift2" ? 1 : 0); c < N; c++) co[i*N + c] = p; }
                 Poly r = w; for (auto& [k, c] : linear(co)) { int v = (r[k] + c) % 3; if (v) r[k] = v; else r.erase(k); } return r; };
             l = shifted(w0); l2 = shifted(w1);
         }
