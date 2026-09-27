@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> The \(U\)-order filtration splits (<a href="#entry-2026-09-27-column-peeling">column peeling</a>), but its order-0 condition is purity on one column fewer, so it is not a mechanism for local independence. Next: the witness review's plan. Write W clause tops of a normalized family beyond joint capacity in the monomial basis \(\gamma(S,T)\), and look for a leading-term order in which each member's top has a leading monomial fixed by its own forms' supports, so that density separates members.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statements A1 and A3.</strong> Row freeness along a single row-sum direction forces equal Hilbert functions on its three level sets, and full residue sectors give nothing below \(D\) (<a href="#entry-2026-09-27-single-direction-sectors">single-direction sectors</a>). Three cycles since the witness review have not touched the adversarial core, so the next cycle is a route review. It should decide whether the local-witness line continues, with the unattempted leading-term plan, or yields cycles to another open statement.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -34162,6 +34162,52 @@ The \(\mathbb F_3\)-rational tops behave like generic ones up to the fill, with 
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 55.88 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">47.74 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 8.01 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-27-single-direction-sectors" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:single-direction-sectors" data-lead="entry-2026-09-27-directness-route-review:1">
+<h3>Single-direction sectors: freeness along one rational row-sum direction forces the three level sets of that direction in the allowed set to have one common Hilbert function, and the allowed set's Hilbert function to be its threefold convolution. Full residue sectors carry no such information below \(D\), since their indicators have degree \(2(m-1)\). So point-set criteria for row freeness exist only one direction at a time, which is the Dade lead's setting</h3>
+<p class="entry-meta">27 September 2026 · Proposition, no computation · open statements A1 and A3 · cycle odd-prime-leading-terms. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statements A1 and A3. Development of the Dade lead of the <a href="#entry-2026-09-27-directness-route-review">directness review</a>. The witness line turned conj:normalized-dense-row-freeness into local independence, which no mechanism has reached, and the record's results about random-prefix allowed sets concern Hilbert functions of point sets. Can row freeness be read off Hilbert functions of point sets? Multiplication by an \(\mathbb F_3\)-valued row-sum combination \(u\) acts on functions on \(Q\) as the scalar \(a\) on the level set \(\{u=a\}\).</p>
+<p><strong>General statement.</strong> prop:single-direction-sectors. Over \(\mathbb F_3\), for any \(Q\subseteq P\) and any row-sum combination \(u=\sum_i\alpha_ir_i\) with \(\alpha\in\mathbb F_3^m\) not constant, with level sets \(Q_a=Q\cap\{u=a\}\):</p>
+<ul>
+<li>the generator count \(C_u\) of \(\operatorname{gr}F^Q\) over \(\mathbb F_3[u]/(u^3)\) bounds every level set's Hilbert function from above;</li>
+<li>\(H_Q\) is at most the threefold convolution of \(C_u\), with equality through \(D\) iff \(\operatorname{gr}F^Q\) is free over \(\mathbb F_3[u]/(u^3)\) through \(D\);</li>
+<li>in that case all three level sets have Hilbert function \(C_u\) through \(D-2\).</li>
+</ul>
+<h4>The proposition</h4>
+<p>Notation. \(F_d\) is the space of functions on \(Q\) of degree at most \(d\), \(H_Q(d)=\dim F_d\), and \(H_a(d)=\dim F_d(Q_a)\). \(u\) acts on \(F^Q\), raising degree by at most 1, and \(u^3=u\) as functions, so \(\operatorname{gr}F^Q\) is a module over \(\Lambda_u=\mathbb F_3[\rho]/(\rho^3)\), with \(\rho\) the class of \(u\). \(C_u(d)=\sum_{e\le d}\dim\bigl(F_e/(F_{e-1}+uF_{e-1})\bigr)\) is the cumulative number of minimal generators.</p>
+<p><strong>prop:single-direction-sectors.</strong></p>
+<ol>
+<li>For every \(a\) and \(d\): \(C_u(d)\ge H_a(d)\) and \(H_Q(d)\le C_u(d)+C_u(d-1)+C_u(d-2)\).</li>
+<li>\(\operatorname{gr}F^Q\) is free over \(\Lambda_u\) through degree \(D\) iff \(H_Q(d)=C_u(d)+C_u(d-1)+C_u(d-2)\) for all \(d\le D\).</li>
+<li>If so, then \(H_0(d)=H_1(d)=H_2(d)=C_u(d)\) for all \(d\le D-2\).</li>
+</ol>
+<p><em>Proof.</em></p>
+<p>(1) Restriction \(\pi_a:F^Q\to F^{Q_a}\) maps \(F_e\) onto \(F_e(Q_a)\), and \(u\) acts on \(F^{Q_a}\) as the constant \(a\). So \(\pi_a(F_{e-1}+uF_{e-1})\subseteq F_{e-1}(Q_a)\), and \(F_e/(F_{e-1}+uF_{e-1})\) maps onto \(F_e(Q_a)/F_{e-1}(Q_a)\). Summing over \(e\le d\) gives the first inequality. The second holds because the minimal cover \(\Lambda_u\otimes(\operatorname{gr}/\rho\operatorname{gr})\to\operatorname{gr}F^Q\) is onto (graded Nakayama).</p>
+<p>(2) The cover's kernel vanishes through \(D\) iff the dimensions agree through \(D\). Its lowest nonzero degree is that of \(\operatorname{Tor}_1\).</p>
+<p>(3) Lift a homogeneous basis of \(\operatorname{gr}/\rho\operatorname{gr}\) in degrees \(\le D\) to \(f_j\in F_{g_j}\). Freeness through \(D\) makes \(\{u^kf_j:k\le\min(2,d-g_j)\}\) a basis of \(F_d\) for \(d\le D\). For \(g_j\le d\le D-2\), the three elements \(f_j,uf_j,u^2f_j\) lie in \(F_D\) and belong to that basis. With the sector idempotents \(e_a\), degree-2 polynomials in \(u\), we have \(u^kf=\sum_aa^k\,e_af\), and the Vandermonde matrix \((a^k)\) over \(a\in\mathbb F_3\) is invertible. So the \(e_af_j\) are independent, and for each \(a\) the restrictions \(f_j|_{Q_a}\), \(g_j\le d\), are independent in \(F_d(Q_a)\). Hence \(H_a(d)\ge C_u(d)\), and (1) gives equality. \(\square\)</p>
+<p>Part 3 has the content of lem:filtered-freeness-transfer applied with \(R\) the functions of \(u\) and \(J\) the ideal of one value, where \(\operatorname{gr}(F/JF)=\Phi\otimes\operatorname{gr}(R/J)\). That lemma assumes a splitting \(\operatorname{gr}F=\Phi\oplus Q\) with \(Q\) in high degrees. Here the conclusion is proved directly from freeness through \(D\). It loses two degrees, because the sector idempotents have degree 2. Parts 1 and 2 hold for every \(Q\), free or not. A constant \(\alpha\) is excluded because \(u\) is then a multiple of the occupancy, which is constant on \(P\): only one level set is nonempty, and \(\rho=0\).</p>
+<h4>What it gives</h4>
+<ul>
+<li><strong>A point-set test.</strong> Freeness over all row sums implies freeness over \(\Lambda_u\) for every non-constant rational \(\alpha\). The class of \(u\) in \(\Lambda_1\) is then nonzero, since the occupancy is the only row-sum combination that is constant on \(P\). In characteristic 3, \(\Lambda\) is the symmetric algebra of \(\Lambda_1\) modulo all cubes of linear forms. So \(u\) extends to a basis \(u,w_2,\dots\) of \(\Lambda_1\) with \(\Lambda=\mathbb F_3[u,w]/(u^3,w^3)\), which is free over \(\Lambda_u\). So conj:normalized-dense-row-freeness implies, for every such \(u\) and \(d\le D-2\), two things about \(Q\): the three level sets \(\{u=a\}\) have the same Hilbert function, and \(H_Q\) is its threefold convolution. These are statements about Hilbert functions of point sets, where the record's fall and fill-point results for random prefixes live. A family whose excluded set meets the three level sets of some row-sum combination unevenly in low degree breaks the conjecture.</li>
+<li><strong>Why only single directions.</strong> Refining to full residue sectors \(\{r_i=v_i\ \forall i\}\) would need the sector idempotents \(\prod_i\bigl(1-(r_i-v_i)^2\bigr)\), of degree \(2(m-1)\). The same argument then needs freeness through \(d+2(m-1)\). With \(m=n+1\) rows and \(D=O(\log n)\), that is empty. So point-set criteria for row freeness exist one direction, or a few directions, at a time. That is the setting of Dade's lemma: freeness over all of \(\Lambda\) from freeness along single directions, if a truncated version holds for the board's own row sums.</li>
+<li><strong>Normal form and level sets.</strong> After normal form, \(Q\) consists of the pairs \((x',c)\): an assignment \(x'\) of columns \(2,\dots,N\) allowed by the forms, and a column-1 choice \(c\) (empty or one row) with the occupancy condition. So \(\{u=a\}\) is a union of level sets \(\{u'=a-\alpha_c\}\) of the part on columns \(2,\dots,N\), over the choices \(c\). Suppose the \(\alpha_i\) of the rows that can occupy column 1 (with the occupancy condition) take all three values. Then each level set of \(Q\) contains copies of all three level sets of the reduced set, one for each column-1 row class. Whether they do depends on \(u\) and on the occupancy class, and is not established in general here. This averaging is the level-set form of why normal form helps. By itself it gives equal Hilbert functions only in low degree: one spare column, as in column peeling and spare-column transfer.</li>
+</ul>
+<p><strong>Process.</strong> This cycle ran no computation. The point-set reformulation was found to contain a recorded lemma, which is labelled as such. The new content is the unconditional inequalities and the degree obstruction that confines point-set criteria to single directions.</p>
+<p><strong>Next.</strong> Since the witness review, three cycles have not touched the adversarial core. The normalized quotient reformulated it, and the \(U\)-order and sector criteria reduced to recorded statements. The review's leading-term plan in the monomial basis has not been attempted. By AGENTS.md's rule for repeated cycles that leave the required implication untouched, the next cycle is a route review. It should decide whether the local-witness line continues or yields cycles to another open statement. A small-board run of the point-set test would sit below the density threshold where the adversary acts, so it would decide nothing, and none is planned.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:filtered-freeness-transfer (its hypotheses and the quotient formula that part 3 rediscovers), lem:first-degree-purity and thm:normalized-quotient's description of normalized allowed sets. A fresh-context reviewer confirmed parts 1 to 3 as graded-module arguments. It required three changes, all adopted: qualifying the comparison with lem:filtered-freeness-transfer (a splitting hypothesis there, a direct proof and a two-degree loss here); excluding a constant \(\alpha\), with the proof that \(\Lambda\) is free over \(\Lambda_u\) otherwise; and hedging the normal-form bullet.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-leading-terms">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>14 min 32.25 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 11.23 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">11 min 20.88 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
