@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> In the column-local framework, couplings with disjoint supports are decided one by one: a coupling is harmless once its members' ideal degrees and half its column count add to \(D\), and narrow ones take one cylinder each (prop:wide-coupling-freeness; <a href="#entry-2026-09-28-wide-coupling-freeness">wide couplings</a>). Next: two couplings sharing a member, a two-direction graded Dade question on members' tensor products, after thm:pencil-graded-dade.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> Overlapping couplings are free as far as their private parts are, so shared members forfeit only their own contribution (prop:private-part-freeness; <a href="#entry-2026-09-28-private-part-freeness">private parts</a>). Beyond capacity the couplings outnumber the members about \(h\) to one, so every member is shared. Next: freeness over a fully shared coupling algebra on the value side, for random W_RS value sets at small \(h\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -42095,6 +42095,50 @@ where \(X\) is the algebra below, over which \(\bar G\) is free through \(D\). S
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>21 min 40.88 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">20 min 33.98 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 6.76 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-28-private-part-freeness" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:private-part-freeness">
+<h3>Private-part freeness: overlapping couplings are free as far as their private parts are, so shared members only forfeit their own contribution, and in the column-local framework any overlap pattern is harmless when each basis coupling keeps a wide private part; beyond capacity a count of couplings per member rules this out</h3>
+<p class="entry-meta">28 September 2026 · Working proof, conditional on pullback hypotheses · open statement A1 · cycle odd-prime-shared-member-dade. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 (highest risk). <a href="#entry-2026-09-28-wide-coupling-freeness">Wide couplings</a> settled couplings with disjoint supports and left overlapping ones, where freeness along each direction need not give freeness over the coupling algebra (ex:truncated-dade-special-position). For two couplings sharing a member, is freeness over the two-dimensional coupling algebra decided by the couplings separately?</p>
+<p><strong>General statement.</strong> prop:private-part-freeness: take a module that is the tensor product of a shared factor, on which the coupling algebra acts arbitrarily, with private factors, on which each basis coupling acts on its own factor only. It is free over the coupling algebra through the least degree through which some private factor fails to be free along its coupling. In the column-local framework, the allowed set is row-free through \(\min_iD_i\), with \(D_i\) the private width bound of basis coupling \(i\).</p>
+<h4>prop:private-part-freeness</h4>
+<p><strong>Algebraic statement.</strong> Over \(\mathbb F_3\), let \(K\) have basis \(\kappa_1,\dots,\kappa_r\), with \(T(K)=\bigotimes_iH_i\), \(H_i=\mathbb F_3[\kappa_i]/(\kappa_i^3)\), and the primitive coproduct. Let \(M_S\) be any graded \(T(K)\)-module in degrees \(\ge0\). Let \(Y_i\) be a graded \(H_i\)-module in degrees \(\ge0\) with \(\operatorname{Tor}_1^{H_i}(\mathbb F_3,Y_i)\) vanishing in degrees \(\le D_i\), and let \(X_0\) be a graded vector space in degrees \(\ge0\) with \((X_0)_0\ne0\). Let \(N=\bigotimes_iY_i\otimes X_0\), with \(\kappa_i\) acting on \(Y_i\) only. Then \(X=M_S\otimes N\), with the diagonal action, has \(\operatorname{Tor}_1^{T(K)}(\mathbb F_3,X)\) vanishing in degrees \(\le\min_iD_i\).</p>
+<p><strong>Proof.</strong> First, \(N\). By Künneth over \(\bigotimes_iH_i\), \(\operatorname{Tor}_1^{T(K)}(\mathbb F_3,N)=\bigoplus_i\operatorname{Tor}_1^{H_i}(\mathbb F_3,Y_i)\otimes\bigotimes_{j\ne i}(Y_j/\kappa_jY_j)\otimes X_0\), with all factors in degrees \(\ge0\). So it vanishes in degrees \(\le d:=\min_iD_i\).</p>
+<p>Next, the tensor product. Let \(F\to N\) be a minimal graded free cover over \(T(K)\), with kernel \(Z\). \(Z\) is generated in the degrees of \(\operatorname{Tor}_1(N)\), so \(Z\) lives in degrees \(\ge d+1\). Tensoring \(0\to Z\to F\to N\to0\) with \(M_S\) over \(\mathbb F_3\) gives an exact sequence of \(T(K)\)-modules under the diagonal action. \(M_S\otimes F\) is free by the Hopf tensor identity. The long exact sequence of \(\operatorname{Tor}^{T(K)}(\mathbb F_3,\cdot)\) gives an injection \(\operatorname{Tor}_1(M_S\otimes N)\hookrightarrow\operatorname{Tor}_0(M_S\otimes Z)\). The target lives in degrees \(\ge d+1\), since \(M_S\) is in degrees \(\ge0\) and \(Z\) in degrees \(\ge d+1\). \(\square\)</p>
+<h4>In the column-local framework</h4>
+<p>Take (H<sub>J</sub>) as in prop:oriented-cylinder-repair and a basis \(\kappa_1,\dots,\kappa_r\) of the coupling space. Let \(S\) be the set of members and columns lying in the supports of two or more basis couplings. Basis coupling \(i\)'s <em>private part</em> is \(P_i=(I(\kappa_i)\cup J_{\kappa_i})\setminus S\). The private parts are pairwise disjoint, so for \(j\ne i\) the coupling \(\kappa_j\) has zero components on \(P_i\): it acts as zero on \(Y_i\).</p>
+<p>By the proof of prop:wide-coupling-freeness (1), \(\operatorname{gr}F^Q\cong\big(M_S\otimes\bigotimes_iY_i\otimes X_0\big)\otimes T(R'')\otimes B\) through \(D\). Here:</p>
+<ul>
+<li>\(M_S\) is the tensor product of the rings of the members and columns in \(S\), with each \(\kappa_i\) acting by its components there;</li>
+<li>\(Y_i\) is the tensor product over \(P_i\), with \(\kappa_i\) acting by its private components;</li>
+<li>\(X_0\) is the rest, with \((X_0)_0=\mathbb F_3\).</li>
+</ul>
+<p>The action of \(\kappa_i\) is the sum of its \(S\)-part and its \(P_i\)-part, which is the diagonal action of \(T(K)\) on \(M_S\otimes N\). So:</p>
+<ol>
+<li>\(Q\) is row-free through \(\min_iD_i\), where \(D_i\) is any degree through which \(Y_i\) is free along \(\kappa_i\).</li>
+<li>By the block-end bounds in the proof of prop:wide-coupling-freeness (2), one may take \(D_i=\sum_{b\in P_i}(\delta_b-2)+\lceil\tau_i'/2\rceil\) when \(P_i\) contains \(\tau_i'\ge1\) columns. When it contains none but at least one member, take \(D_i=\sum_{b\in P_i}(\delta_b-2)+1\). Here \(|P_i|\) member factors need \(|P_i|-1\) pairings, each losing at most 1, and each factor's non-free blocks end at \(\ge\delta_b-1\). Take \(D_i=\infty\) if a member of \(P_i\) is free along its component, for instance a cylinder.</li>
+<li>If some \(P_i\) is empty, \(\kappa_i\) acts on \(N\) as zero and the statement gives nothing. The coupling then lies entirely in shared members and columns.</li>
+</ol>
+<p>So two couplings sharing one member \(b_0\) are decided by their private widths. The shared member's contribution \(\delta_{b_0}-2\) is forfeited, and no special-position obstruction arises, whatever the components of the two couplings at \(b_0\).</p>
+<h4>Where it stops: a count beyond capacity</h4>
+<p>Every basis coupling must keep a private part of width about \(D/(\delta-2)\) members, or a private cylinder. Private parts are disjoint, so this needs \(\dim K\cdot D/(\delta-2)\) members, or \(\dim K\) cylinders, each costing a member direction. Beyond joint capacity, \(\dim K\) is at least \(\sum_bh_b-\dim G_1\), which is most of \(\sum_bh_b\) for families with \(\sum_bh_b\gg mN\). Then even one private member per basis coupling needs \(\dim K\le M\), while \(\dim K\) is of order \(Mh\). This is an order-of-magnitude count from the lower bound on \(\dim K\), not an inequality with tracked constants. A basis with disjoint private parts cannot exist. Beyond capacity, each member lies in about \(h\) independent couplings, and the private-part mechanism, like cylinders (at most \(h_b\) directions per member), is outcounted. The remaining algebraic question is freeness over a coupling algebra of dimension comparable to the number of forms, where every member is shared. That is the multi-directional problem in its full form.</p>
+<p><strong>Outcome.</strong> prop:private-part-freeness (working proof; the algebraic statement is unconditional, the application conditional on (H<sub>J</sub>)): overlapping couplings are free as far as their private parts are, so any overlap pattern with wide or cylinder-repaired private parts is row-free, with no special-position obstruction. Beyond capacity the couplings outnumber the members about \(h\) to one, so, by an order-of-magnitude count, no disjoint private parts exist. The overdetermined case needs freeness over a coupling algebra in which every member is shared.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1 (highest risk): the fully shared case in its smallest form. Take members whose forms together exceed capacity by a coupling space in which every member is shared, for example three members pairwise coupled with each pair of couplings sharing a member and no private parts. Compute freeness over the coupling algebra on the value side (the tensor product of the members' rings, the relation-space model) for random W_RS value sets at small \(h\). That tests whether full sharing obstructs freeness when single directions are free.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:wide-coupling-freeness (statement and proof), prop:oriented-cylinder-repair, ex:truncated-dade-special-position and lem:narrow-coupling-absence. No computation was run. A fresh-context reviewer re-derived the Künneth step, the minimal-cover degree bound, the exactness and freeness under the diagonal action, the injection into \(\operatorname{Tor}_0(M_S\otimes Z)\), the disjointness of private parts, the \(D_i\) formulas, the empty-part remark and the rank bound on \(\dim K\), and found no error. It required one change, adopted: the no-private-column formula is cited to the proof of prop:wide-coupling-freeness (2), whose statement covers only \(\tau\ge1\), with the pairing count written out. Its suggestions are adopted: \(\kappa_j\) acting as zero on \(Y_i\) is stated, and the count beyond capacity is marked as order of magnitude.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-shared-member-dade">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 54.48 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 44.87 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 9.47 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
