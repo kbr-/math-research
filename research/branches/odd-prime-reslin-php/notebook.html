@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> No pullback piece exists once the forms and row sums span the degree-1 space (lem:pullback-degree-two-bound), so row-free subsets of dense families must be unions or other non-pullback sets. A union of two row-free sets with no union falls is row-free iff the second Tor of the sum of their tops comes from the pieces (lem:union-gluing; <a href="#entry-2026-09-28-union-gluing">union gluing</a>). Next: find row-free pieces inside a dense family's allowed set on different parts of the board, such as prefix-vanishing pieces on confined bases over disjoint column blocks, and test the lemma's two conditions on their union, starting from two blocks. Then decide whether the criterion extends to pieces that are not row-free.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> Pieces that are not row-free glue to a row-free union, with no union falls, exactly when their first-Tor defects embed in the first Tor of the ring of their summed tops and its second Tor comes from the pieces (lem:defect-complementarity; <a href="#entry-2026-09-28-defect-complementarity">defect complementarity</a>). No such pieces are known inside a dense family's allowed set. Next: a route review, since the line sits several reductions below A1. It should decide whether conj:row-free-subset beyond capacity has any mechanism left, and weigh a return to W's other sufficient conditions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -42941,6 +42941,41 @@ Writing \(T(W)=T(U_b)\otimes T(C)\) for a complement \(C\), one has \(\operatorn
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 30.47 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 21.10 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 1.39 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-28-defect-complementarity" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="lem:defect-complementarity">
+<h3>Defect complementarity: the union of two sets without union falls is row-free exactly when their first-Tor defects embed in the first Tor of the ring of their summed tops and its second Tor comes from the pieces, so pieces that are not row-free can glue only if their defects are complementary; for the natural pair, the allowed set and its complement, union falls are exactly low-degree functions whose products with the two indicators rise together, beginning with the constant at the indicator's degree</h3>
+<p class="entry-meta">28 September 2026 · Working proof · open statement A1 · cycle odd-prime-union-pieces. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 (highest risk). The <a href="#entry-2026-09-28-union-gluing">union gluing</a> entry gave the criterion for unions of row-free pieces. Beyond capacity no single piece inside a dense family's allowed set is known to be row-free, and pullback pieces are excluded when the span is full. Can pieces that are not row-free glue to a row-free union, and under what condition?</p>
+<p><strong>General statement.</strong> lem:defect-complementarity: for sets \(U,W\) of the weak base whose union has no falls through \(D\), \(U\cup W\) is row-free through \(D\) iff, in degrees \(\le D\), both of the following hold:</p>
+<ol>
+<li>\(\operatorname{Tor}_1^\Lambda(G/n_U)\oplus\operatorname{Tor}_1^\Lambda(G/n_W)\to\operatorname{Tor}_1^\Lambda(G/(n_U+n_W))\) is injective;</li>
+<li>\(\operatorname{Tor}_2^\Lambda(G/n_U)\oplus\operatorname{Tor}_2^\Lambda(G/n_W)\to\operatorname{Tor}_2^\Lambda(G/(n_U+n_W))\) is onto.</li>
+</ol>
+<h4>lem:defect-complementarity</h4>
+<p><strong>Proof.</strong> The exact sequence \(0\to G/(n_U\cap n_W)\to G/n_U\oplus G/n_W\to G/(n_U+n_W)\to0\) of lem:union-gluing gives the exact segment</p>
+<p>\[\operatorname{Tor}_2(G/n_U)\oplus\operatorname{Tor}_2(G/n_W)\to\operatorname{Tor}_2(G/(n_U+n_W))\to\operatorname{Tor}_1(G/(n_U\cap n_W))\to\operatorname{Tor}_1(G/n_U)\oplus\operatorname{Tor}_1(G/n_W)\to\operatorname{Tor}_1(G/(n_U+n_W)),\]</p>
+<p>degree by degree. The middle term vanishes iff the map into it is zero and the map out of it is zero, i.e. iff (2) and (1) hold. With no union falls, \(G/(n_U\cap n_W)=\operatorname{gr}F^{U\cup W}\) through \(D\). lem:union-gluing is the case of row-free pieces, where (1) is empty. \(\square\)</p>
+<p><strong>Reading.</strong> Pieces that are not row-free can glue, but only if their row-freeness defects, the classes in \(\operatorname{Tor}_1^\Lambda(G/n_U)\) and \(\operatorname{Tor}_1^\Lambda(G/n_W)\), map injectively into the first Tor of the ring \(G/(n_U+n_W)\) of their summed tops. That ring is the graded ring of \(U\cap W\) only under the gluing condition of lem:degreewise-gluing, which is not assumed here. ("Defect" here means these Tor classes, not the defect \(\Delta\) of lem:defect-gluing.)</p>
+<h4>A test: the allowed set and its complement</h4>
+<p>The natural pair is the allowed set \(A\) of a family and its complement \(A^c\) in the base. Their union is the base, which is row-free. If the lemma applied, (1) would embed the allowed set's defect in \(\operatorname{Tor}_1\) of \(G/(n_A+n_{A^c})\). But its hypothesis fails from the degree of the allowed set's indicator on.</p>
+<p><strong>When the pair has union falls.</strong> Since \(I(P)=0\), no union falls means \(n_A\cap n_{A^c}=0\). Suppose \(g\in I(A)\) and \(h\in I(A^c)\) have the same top of degree \(d\), and put \(u=g-h\), of degree below \(d\). Then \(g=u\,\mathbf 1_{A^c}\) and \(h=-u\,\mathbf 1_A\) as functions on \(P\). Conversely, any \(u\) with \(\deg u&lt;d=\deg(u\mathbf 1_A)=\deg(u\mathbf 1_{A^c})\) gives such a pair, since \(u\mathbf 1_A+u\mathbf 1_{A^c}=u\) has lower degree, so the two tops cancel.</p><p>So a union fall in degree \(d\) is exactly a function \(u\) of degree below \(d\) whose products with the two indicators both reach degree \(d\). Taking \(u=1\) gives a union fall at \(\deg\mathbf 1_A=\deg\mathbf 1_{A^c}\). The two degrees agree because \(\mathbf 1_A+\mathbf 1_{A^c}=1\): if one exceeded the other, its top would survive in the sum. Both are positive, as \(A\) and \(A^c\) are nonempty. Hence the lemma applies to the pair \((A,A^c)\) only below the degree of the allowed set's indicator on the base.</p><p>For W families that degree was not determined here. Below it, union falls may still arise from other \(u\), and the exact characterization above decides them.</p>
+<p><strong>Outcome.</strong> lem:defect-complementarity (working proof): a union without union falls is row-free iff the pieces' first-Tor defects embed in the first Tor of the ring of their summed tops and its second Tor comes from the pieces. This answers the union gluing entry's question for pieces that are not row-free: they glue only when their defects are complementary. The allowed set and its complement have a union fall at the degree of the allowed set's indicator on the base, so the lemma applies to them only below that degree, which was not determined for W families. No pieces with complementary defects inside a dense family's allowed set are known. No computation was run.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1 (highest risk): the line now sits several reductions below A1, through row-free subsets, non-pullback subsets and union gluing, and no candidate piece is known. By the descent rule the next cycle is a route review. It should decide whether conj:row-free-subset beyond capacity has any mechanism left, and weigh a return to W's other sufficient conditions.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read lem:union-gluing, lem:defect-gluing, lem:degreewise-gluing and conj:row-free-subset. The claim search found no earlier version. No computation was run. A fresh-context reviewer confirmed the exact sequence, the five-term Tor segment and the iff, including the reduction to lem:union-gluing. It verified the characterization of the pair's union falls in both directions. It required two changes, both adopted: the reading no longer identifies \(G/(n_U+n_W)\) with the overlap's ring, which would need the degreewise-gluing condition; and the equality of the two indicator degrees is now justified. Its suggestion to separate this use of "defect" from lem:defect-gluing's is adopted.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-union-pieces">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 29.15 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 37.90 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 51.11 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
