@@ -1,0 +1,72 @@
+{
+  "source": {
+    "record": "[Wronskian discriminant review](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-wronskian-discriminant-review)",
+    "targets": [
+      "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-wronskian-discriminant-review",
+      "https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-a/provenance.json"
+    ],
+    "label": "Wronskian discriminant review"
+  },
+  "reviewer": "Claude Code (claude-opus-5-5); one fresh-context medium correctness reviewer",
+  "date": "2026-09-29",
+  "topics": ["degree-accounting", "affine-linear-algebra"],
+  "claims": [
+    {
+      "id": "prop:cube-mark-weight-dictionary",
+      "summary": "Characteristic zero, N>=3 separated roots, R=binom(N,2), quadratic series V_a=<1,z,w_ij> on the root cover with mark P over infinity. (1) A nonzero section vanishes to order >=L+3 at P iff rank A_L(a)<R. (2) ord_{s=0}F_sep(e^{s delta}a)=wt_P(a) for delta=-sum a_i^2 d/da_i, so wt_P>=m iff F_sep,...,delta^{m-1}F_sep vanish at a. (3) The vanishing order of z->F_sep(1/(a_i-z)) at a finite non-branch z0 is the ramification weight over the corresponding fibre. (4) delta F_sep=(3/2)(N-1)(sum a_i)F_sep+R m_{R-1}, and where rank A_{R-2}=R-1 the ideal I_R(A_R) equals (F_sep, delta F_sep) locally.",
+      "assessment": "Working proof passed by one fresh-context medium reviewer. The Moebius flow lift, the Wronskian lemma for linear series and Jacobi's formula are used in characteristic zero only; it extends the set-theoretic polar effectivity description to the special range N>=6 and to all weights.",
+      "status": "working_proof",
+      "rationale": "Turns pointwise contact questions for the first-step prefix into ramification weights of one linear series, which the discriminant criterion then controls globally."
+    },
+    {
+      "id": "lem:cube-prefix-pair-transfer",
+      "summary": "In the deflated marked core, with l1=2N-3 and Q_i the S-span of D_F^j v for j<=i, F/Q_i is graded isomorphic to V/<b_1,...,D^{l1+i}b_1> for every i>=0. Hence C_N^+ = V/<b_1,...,D^{R+1}b_1>, and J_N is the zeroth Fitting ideal of V/<b_1,...,D^R b_1>. Pulled back to the separated labelled-root locus, the prefix span equals the span of the pair columns H_0..H_L (centred Ore recurrence plus translation identity, both unitriangular), so C_N^+ pulls back to coker A_{R+1} and J_N O = I_R(A_R) exactly; the pullback map is smooth and faithfully flat onto its image.",
+      "assessment": "Working proof passed by one fresh-context medium reviewer; the pair-evaluation identification was rewritten after the review to cite the centred Ore recurrence and the translation identity as exact span equalities, and descent uses faithful flatness.",
+      "status": "working_proof",
+      "rationale": "Connects the intrinsic first-step module C_N^+ to the explicit pair-column matrices on which the discriminant criterion operates."
+    },
+    {
+      "id": "thm:cube-wronskian-discriminant-criterion",
+      "summary": "Characteristic zero, N>=3. Let W in k[a][z] be the cleared, branch-factor-free numerator of F_sep(1/(a_i-z)) and Delta_W^nc the part of its discriminant prime to the collision forms. If Delta_W^nc is nonzero and squarefree then on the separated locus: the locus of mark weight >=3 has codimension >=3, so C_N^+ has no codimension-two support off the discriminant divisor; every component of V(F_sep, delta F_sep) has codimension two, weight two and is reduced; and J_N is reduced at every height-two prime meeting the separated locus.",
+      "assessment": "Working proof after one fresh-context medium review; the reviewer's gap (roots at infinity and invariance of Delta_W) was repaired by using only finite non-branch roots reached by flow translates and a shifted flow-box slice. Squarefreeness is sufficient, not necessary: it fails at N=6 through weight-three marks of contact R+3.",
+      "status": "working_proof",
+      "rationale": "Reduces the whole off-collision part of the first-step codimension obligation (open statement 3) to squarefreeness of one computable invariant."
+    },
+    {
+      "id": "check:cube-wronskian-discriminant-certificates",
+      "summary": "Exact computation mod p=2^61-1 on one seeded random line (seed 20260929): after removing collision factors to their measured multiplicity, the discriminant of W restricted to the line is squarefree of degree 780 at N=5 and 65310 at N=7; at N=6 it has one exponent-four factor of degree 45, not the involution invariant nor the boundary polynomial, whose 16 F_p-rational roots all carry two triple roots of W of vanishing type (0,...,R-1,R+1,R+3), contact R+3. Controls: boundary squarefreeness, row degrees, collision multiplicities, leading coefficient proportional to F.",
+      "assessment": "Finite check, exact modulo p on one line. Passage to characteristic-zero squarefreeness is probabilistic: interpolation degree bounds, the collision exponent and non-degeneracy of square factors on the line rely on the line being generic; no error probability is claimed. At N=6 only the 16 rational points on the line were classified.",
+      "status": "finite_check",
+      "rationale": "Supplies the hypothesis of the discriminant criterion at N=7 (randomized) and classifies the six-root failure mode.",
+      "next_action": "Prove the degree bounds for W and compute the collision exponent independently to make the N=7 certificate deterministic."
+    },
+    {
+      "id": "cor:cube-seven-root-offcollision-prefix",
+      "summary": "If Delta_W^nc is squarefree at N=7 (supported by the randomized line certificate), then C_7^+ has no codimension-two support off the discriminant divisor and J_7 is reduced at every height-two prime not contained in it; with the invariant-prefix theorem, alpha_7=lambda_7=105 then follows from excluding non-invariant height-two components of L_7 inside the collision divisor or bounding their Ext degree.",
+      "assessment": "Conditional on characteristic-zero squarefreeness of Delta_W^nc at N=7, which the certificate supports only within its randomized scope.",
+      "status": "conditional",
+      "rationale": "Localizes the first open size of statement 3 to the collision divisor.",
+      "next_action": "Treat the collision divisor at N=7 via the two-root confluent limit, and make the certificate deterministic."
+    },
+    {
+      "id": "conj:cube-offcollision-contact-bound",
+      "summary": "For every characteristic-zero N>=5, the separated root vectors at which some nonzero quadratic section has contact at least R+4 with the mark form a set of codimension at least three; equivalently C_N^+ has no codimension-two support off the discriminant divisor.",
+      "assessment": "Conjecture; supported by the randomized certificates at N=5,7 and consistent at the 16 tested six-root points, where squarefreeness fails but contact stays R+3.",
+      "status": "conjecture",
+      "rationale": "The off-collision half of the codimension obligation for open statement 3 in every dimension.",
+      "next_action": "Seek a proof bounding triple-contact loci of the quadratic series along the Moebius flow for all N."
+    }
+  ],
+  "relationships": [
+    ["prop:cube-mark-weight-dictionary", "depends_on", "thm:cube-character-principal-parts", "Square-root coefficient identity and the section basis of the quadratic series."],
+    ["prop:cube-mark-weight-dictionary", "cites", "lem:cube-polar-effectivity-union", "Extends the set-theoretic two-condition description of the polar locus to all weights and to the special range for the quadratic series."],
+    ["lem:cube-prefix-pair-transfer", "depends_on", "thm:cube-marked-ore-deflation", "Uses the deflated core and its marked relation L_1 b_1 = v."],
+    ["lem:cube-prefix-pair-transfer", "depends_on", "lem:cube-centered-ore-recurrence", "Pair columns g_j=q(H_j) and the unitriangular change P_j."],
+    ["thm:cube-wronskian-discriminant-criterion", "depends_on", "prop:cube-mark-weight-dictionary", "Weights along the flow and at finite fibres."],
+    ["thm:cube-wronskian-discriminant-criterion", "depends_on", "lem:cube-prefix-pair-transfer", "Identifies the support of C_N^+ and J_N with the pair-column matrices."],
+    ["cor:cube-seven-root-offcollision-prefix", "depends_on", "thm:cube-wronskian-discriminant-criterion", "Applied at N=7."],
+    ["cor:cube-seven-root-offcollision-prefix", "depends_on", "check:cube-wronskian-discriminant-certificates", "Randomized squarefreeness at N=7."],
+    ["cor:cube-seven-root-offcollision-prefix", "depends_on", "thm:cube-invariant-prefix-stabilization", "Excludes invariant height-two components."],
+    ["cor:cube-seven-root-offcollision-prefix", "applies", "thm:cube-first-step-ext-degree", "Reduces alpha_7=lambda_7 to collision-supported components."]
+  ]
+}
