@@ -116,6 +116,22 @@ For 1 <= k <= 31 and n >= floor(log2 k)+2, the minimum degree of an F_2 polynomi
 
 ---
 
+### Cube cubic first step bound
+
+**Claim:** [cor:cube-cubic-first-step-bound](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-28-cube-internal-threshold-recursion>)
+
+For every characteristic-zero field and N>=7, alpha_N=ell0(3,binom(N,2)+3) is at least (2N^3+3N^2-26N-99)/24 for oddN and (2N^3+3N^2-26N+312)/24 for evenN. These are integer bounds on their parities, with leading termN^3/12. They follow from the uniform two-step recurrence and the already certified alpha5=12,alpha6=43; the cap branch is checked by explicit nonnegative factorizations. The exact threshold and proposed quartic plateau remain open.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Supplies an explicit dimension-uniform lower bound with cubic growth for an original pre-stable cube threshold, improving the preceding linear bound. This quantitative result merits a focused comparison with the primary multiplicity literature; correctness alone is not a novelty claim.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Check whether the primary cube-multiplicity literature already implies this cubic first-post-boundary bound before claiming novelty or planning publication. For the active goal, strengthen the simultaneous polynomial initial-witness constraints toward the exact threshold.
+
+---
+
 ### Generic PC log inventory transfer refuted
 
 **Claim:** [cor:generic-PC-log-inventory-transfer-refuted](<https://kbr.is-a.dev/math-research/#entry-2026-09-20-ordering-source-test>)
