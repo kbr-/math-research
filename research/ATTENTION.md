@@ -352,6 +352,22 @@ For fixed p, 0<eps<=1, A, c and 0<beta<eps/2, every standard syntactic Res(lin_F
 
 ---
 
+### Cube degree two boundary all dimensions
+
+**Claim:** [thm:cube-degree-two-boundary-all-dimensions](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-28-cube-binary-face-factorization>)
+
+Over every characteristic-zero field and every n>=1, with N=n+1 and m_N=binom(N,2)+2, the original degree-two boundary threshold is ell0(3,m_N)=3 binom(N,4). For N>=4 the noncollision determinant FN is squarefree and the boundary minors have no extra noncollision gcd factor; for N2,3 the normalized determinant is constant and the threshold is zero. The proof supplies every binary-face simplicity premise of the two-root induction, then uses the doubled-factor criterion and exact collision accounting. This is one specified boundary order in all dimensions, not the full later-order row, higher savings or positive-characteristic formula.
+
+**Significance:** `independent_result` · **Novelty:** `unknown`
+
+**Why it matters:** Determines an explicit original pre-stable multiplicity threshold uniformly in dimension, beyond the previously solved dimension-four all-degree boundary and fixed higher-dimensional certificates. This closes the degree-two subcase of the existing all-dimensional squarefreeness conjecture. The quantitative formula merits focused literature/significance comparison; verification alone is not a novelty claim.
+
+**Decision (automatic):** Significance metadata requests candidate attention; not a novelty verdict.
+
+**Next:** Compare the uniform boundary result with the primary cube-multiplicity literature before claiming novelty or planning publication. For the active goal, determine the first post-boundary initial degree uniformly, retaining the actual polynomial boundary coefficients and source.
+
+---
+
 ### Cube limit simple ramification
 
 **Claim:** [thm:cube-limit-simple-ramification](<https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-26-cube-annular-boundary>)
