@@ -1,7 +1,7 @@
 from pathlib import Path
 import sys,tempfile,unittest
 TOOLS=Path(__file__).resolve().parents[1];sys.path.insert(0,str(TOOLS))
-from claim_registration import check_entries
+from claim_registration import check_entries,article_ids,new_entries,Entries
 from claim_registry import import_markdown,upgrade,HEADER
 
 
@@ -40,5 +40,21 @@ class RegistrationTests(unittest.TestCase):
         self.assertFalse(self.check(entry('data-claims="lem:missing"','`lem:missing`'))['passed'])
     def test_duplicate_entry_ids_fail_closed(self):
         with self.assertRaises(ValueError):self.check(entry()+entry())
+    def test_article_ids_match_the_full_parse(self):
+        text=('<article id="before-record"></article><!-- <article id="commented"></article> -->'
+              '<section class="x" id="research-record"><article data-id="decoy" class="r" id="a&amp;b">'
+              '<h4 id="inner">x</h4></article><article id=\'single\'></article></section>'
+              '<article id="after-section"></article>')
+        self.assertEqual(article_ids(text),{e['id'] for e in Entries(text).entries})
+        self.assertEqual(article_ids(text),{'a&b','single','after-section'})
+        self.assertEqual(article_ids('<article id="x"></article>'),set())
+    def test_new_entries_match_the_full_parse(self):
+        old='<section id="research-record"><article id="o"><p>old</p></article>'
+        new='<article id="n" data-claims="lem:a"><h4 id="h">S</h4><!-- </article> --><code>lem:a</code> `x`</article>'
+        cur=old+'<!-- </article> -->'+new+'</section>'
+        full=[e for e in Entries(cur).entries if e['id']!='o']
+        self.assertEqual(new_entries(old+'</section>',cur),full)
+        with self.assertRaises(ValueError):new_entries('',cur.replace('id="n" ','',1))
+        with self.assertRaises(ValueError):new_entries('',cur.replace('</article>'+'</section>','</section>'))
 
 if __name__=='__main__':unittest.main()

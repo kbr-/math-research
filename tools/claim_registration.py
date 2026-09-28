@@ -35,13 +35,45 @@ class Entries(HTMLParser):
         if len(ids)!=len(set(ids)):raise ValueError('Duplicate research article ID')
 
 
+def article_ids(text):
+    """The IDs Entries(text) would list, without parsing article bodies: earlier notebook versions are
+    read only to tell which entries are new, and a full parse of each cost about 0.4 s per 8 MB."""
+    return {html.unescape(m.group(2)) for m in _articles(text)[0]}
+
+
+ARTICLE_START=re.compile(r'<article\b[^>]*?(?<![\w-])id=(["\'])(.*?)\1')
+
+
+def _articles(text):
+    """Start tags of the articles Entries would list (from the research-record section on); comments
+    are blanked to spaces so that match offsets are offsets in text."""
+    blanked=re.sub(r'<!--.*?-->',lambda m:' '*len(m.group()),text,flags=re.S)
+    start=re.search(r'<section\b[^>]*(?<![\w-])id=(["\'])research-record\1',blanked)
+    if not start:return [],0,blanked
+    return (list(ARTICLE_START.finditer(blanked,start.start())),
+            len(re.findall(r'<article\b',blanked[start.start():])),blanked)
+
+
+def new_entries(previous,current):
+    """Entries(current).entries restricted to articles absent from previous, parsing only those articles.
+    Duplicate IDs anywhere in the record still fail closed."""
+    found,tags,blanked=_articles(current)
+    if tags!=len(found):raise ValueError('Research article needs a stable ID')
+    ids=[html.unescape(m.group(2)) for m in found]
+    if len(ids)!=len(set(ids)):raise ValueError('Duplicate research article ID')
+    before=article_ids(previous)
+    pieces=[]
+    for m,key in zip(found,ids):
+        if key in before:continue
+        end=blanked.find('</article>',m.start())
+        pieces.append(current[m.start():] if end<0 else current[m.start():end+len('</article>')])
+    return Entries('<section id="research-record">'+''.join(pieces)+'</section>').entries if pieces else []
+
+
 def check_entries(previous,current,data,root,grandfathered=(),notebook_path=None):
     notebook_path = notebook_path or root/'notebook.html'
     # An unchanged notebook has no new entries; a callable grandfathered set is read only when needed.
-    entries=[] if previous==current else Entries(current).entries
-    if entries:
-        before={e['id'] for e in Entries(previous).entries}
-        entries=[e for e in entries if e['id'] not in before]
+    entries=[] if previous==current else new_entries(previous,current)
     if entries and callable(grandfathered):grandfathered=grandfathered()
     entries=[e for e in entries if e['id'] not in set(grandfathered)]
     claims={c['id']:c for c in data['claims']}

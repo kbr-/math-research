@@ -4,7 +4,7 @@ from collections import defaultdict
 from pathlib import Path
 from claim_registry import ROOT, parse_json, TEXT_FIELDS
 from claim_reviews import FIELDS, Evidence, coverage
-from claim_registration import check_entries, Entries
+from claim_registration import check_entries, article_ids
 
 # Preserve append-only historical entries predating the inventory requirement.
 ENTRY_INVENTORY_BASE = "552e562f5253700258438272da90a9f4a31d00f6"
@@ -108,7 +108,7 @@ def check_revision(after, revision='HEAD', root=ROOT):
             if ref=='EMPTY':return ''
             shown=subprocess.run(['git','show',ref+':'+relative],cwd=root,text=True,capture_output=True)
             return shown.stdout if shown.returncode==0 else ''
-        grandfathered=lambda:{e['id'] for e in Entries(notebook_at(ENTRY_INVENTORY_BASE)).entries}
+        grandfathered=lambda:article_ids(notebook_at(ENTRY_INVENTORY_BASE))
         registration=check_entries(notebook_at(commit),notebook.read_text(),after,root,grandfathered,notebook)
         registrations.append(registration)
     result['registration']={'passed':all(r['passed'] for r in registrations),
