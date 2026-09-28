@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> Overlapping couplings are free as far as their private parts are, so shared members forfeit only their own contribution (prop:private-part-freeness; <a href="#entry-2026-09-28-private-part-freeness">private parts</a>). Beyond capacity the couplings outnumber the members about \(h\) to one, so every member is shared. Next: freeness over a fully shared coupling algebra on the value side, for random W_RS value sets at small \(h\).</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> In the column-local framework couplings number at most \(m-1\), so private parts are not outcounted there. Beyond capacity the fully shared algebra is the joint algebra of pure relations and couplings (prop:relation-coupling-count; <a href="#entry-2026-09-28-relation-coupling-count">relation count</a>). There single directions add by block ends, while several directions add only by non-free starts (prop:group-freeness). Next: a lower bound on the non-free start of W_RS member rings over subspaces of their spans.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -42139,6 +42139,46 @@ where \(X\) is the algebra below, over which \(\bar G\) is free through \(D\). S
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 54.48 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 44.87 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 9.47 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-28-relation-coupling-count" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:relation-coupling-count">
+<h3>Relation and coupling count (correction): in the column-local framework the coupling space injects into the row sums, so it has dimension at most \(m-1\); the count in the private-parts entry charged it with the pure relations, which that framework excludes; beyond capacity the fully shared algebra is the joint algebra of pure relations and couplings, and the record's superadditivity of non-free starts does not by itself make member rings add up there</h3>
+<p class="entry-meta">28 September 2026 · Correction with a working proof · open statement A1 · cycle odd-prime-full-sharing. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 (highest risk). The <a href="#entry-2026-09-28-private-part-freeness">private-parts</a> entry ended with a count: beyond capacity \(\dim K\ge\sum_bh_b-\dim G_1\), of order \(Mh\), so the couplings outnumber the members and no basis has private parts. Its next step proposed testing full sharing. Re-reading the framework before computing: is the count right?</p>
+<p><strong>General statement.</strong> prop:relation-coupling-count: in the column-local framework (H<sub>J</sub>) the coupling space has dimension at most \(m-1\), with no condition on the number of members. Beyond capacity, the space of pure relations among the forms, modulo the cells of a column set \(J\), has dimension at least \(\sum_bh_b-\dim G_1\). The private-part count applies to the joint algebra of pure relations and couplings, not to the couplings.</p>
+<h4>prop:relation-coupling-count</h4>
+<p><strong>Setting.</strong> Members with formal spans \(E_b\), one basis vector per form, so \(\dim E_b=h_b\). Let \(E=\bigoplus_bE_b\), a column set \(J\), \(R\) and \(S_J\) in \(G_1\), and \(\Phi:E\to G_1\) the map to linear parts. As in prop:oriented-cylinder-repair, \(K=\Phi^{-1}(R\oplus S_J)\), with \(\Phi(\kappa)=\rho(\kappa)+s(\kappa)\). Let \(K_0=\{\kappa\in K:\rho(\kappa)=0\}=\Phi^{-1}(S_J)\), the <em>pure relations modulo \(J\)</em>.</p>
+<p><strong>Proposition.</strong></p>
+<ol>
+<li>\(\rho\) is injective on \(K\) iff \(K_0=0\). Then \(\dim K\le\dim R=m-1\).</li>
+<li>\(\dim K_0\ge\sum_bh_b-\dim(G_1/S_J)\ge\sum_bh_b-\dim G_1\).</li>
+<li>So beyond joint capacity (\(\sum_bh_b&gt;\dim G_1\)), (H<sub>J</sub>) fails for every admissible \(J\), because \(K_0\ne0\). This does not come from the couplings, which number at most \(m-1\), but from pure relations of dimension at least \(\sum_bh_b-\dim G_1\).</li>
+</ol>
+<p><strong>Proof.</strong> (1) \(\ker\rho|_K=K_0\) by definition, and \(\rho(K)\subseteq R\), where \(R\) is spanned by the \(m\) row sums with one relation (their sum is the occupancy, constant on \(P\)). (2) \(K_0\) is the kernel of \(E\to G_1/S_J\), so rank–nullity gives the bound. (3) follows from (1) and (2). \(\square\)</p>
+<h4>What it corrects</h4>
+<ul>
+<li><strong>What was wrong.</strong> The private-parts entry's final count used \(\dim K\ge\sum_bh_b-\dim G_1\) for the coupling space of (H<sub>J</sub>). Under (H<sub>J</sub>) that space has dimension at most \(m-1\) by (1). The bound belongs to \(K_0\), which (H<sub>J</sub>) excludes.</li>
+<li><strong>What stands.</strong> The algebraic statement of prop:private-part-freeness and its application under (H<sub>J</sub>) are unaffected. Inside the framework, private parts are not outcounted. With \(M\) members and at most \(m-1\) couplings, a basis whose couplings each keep about \(D/(\delta-2)\) private members needs only about \((m-1)D/(\delta-2)\) members.</li>
+<li><strong>Where the count belongs.</strong> Beyond capacity, the pullback description must handle \(K_0\) as well. Pure relations act on the board as zero modulo the cells of \(J\), while couplings act as row sums. On the value side, lem:relation-space-tor treats the pure relations. Their algebra \(T(K_0)\) must act freely on \(\bigotimes_bM_b\) for Taylor generation. The value-side analogue of row freeness is freeness of the quotient \(X/K_0X\), \(X=\bigotimes_bM_b\), over \(T(K)\). That holds if \(X\) is free over \(T(K_0\oplus K)\) through \(D\). Indeed \(T(K_0\oplus K)=T(K_0)\otimes T(K)\), so \(X\cong T(K_0)\otimes T(K)\otimes B'\) through \(D\) gives \(X/K_0X\cong T(K)\otimes B'\) through \(D\). Identifying the allowed set's graded ring with \(X/K_0X\) is the transfer that fails beyond capacity; this is only the value-side statement. The count applies to this joint algebra: its dimension is at least \(\sum_bh_b-\dim G_1\), of order \(Mh\), and there no basis with disjoint private parts exists. The earlier conclusion, full sharing, is right for the joint algebra, not for the couplings.</li>
+<li><strong>The available multi-directional tool.</strong> prop:group-freeness makes the start \(\gamma\) of the non-free part superadditive under tensor products over any \(T(K')\), with the module free through \(\gamma\). For member rings \(M_b=T(E_b)/J_b\) seeing \(K'\) injectively, \(\gamma(M_b)\) can be 0 even when \(J_b\) starts high. Here \(\gamma\) is, as in prop:group-freeness, the lowest degree of the non-free summand in a Krull–Schmidt decomposition, not the first degree of \(\operatorname{Tor}_1\). For example, with \(T=T(K')\), the module \(T/\operatorname{soc}T\) is cyclic and indecomposable. Its non-free summand is all of it, so \(\gamma=0\). Its \(\operatorname{Tor}_1\) sits in degree \(2\dim K'\), so it is free through \(2\dim K'-1\). So superadditivity of starts does not by itself give additivity of the member degrees \(\delta_b\). Single directions add by ends (thm:involvement-threshold, prop:wide-coupling-freeness), several directions add by starts, and member rings have high ends but possibly low starts. That mismatch is the multi-directional problem in its precise form.</li>
+</ul>
+<p><strong>Outcome.</strong> prop:relation-coupling-count (working proof): couplings in the column-local framework number at most \(m-1\), so the private-part mechanism is not outcounted there. The earlier count belongs to the joint algebra of pure relations and couplings, which is where the overdetermined case lives. The multi-directional problem is now precise. For the member tensor over the joint algebra, single directions add by block ends, the record's tensor rule for several directions adds by non-free starts, and member rings can have low starts. What is needed is a start bound for member rings, or an end-additivity statement for several directions.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1 (highest risk): the start \(\gamma\) of W_RS member rings. For a member ring \(M_b=T(E_b)/J_b\) with random prefix and a subspace \(K'\to E_b\) of dimension \(r'\), bound from below the degree where the non-free part of \(M_b\) over \(T(K')\) starts, in terms of \(\delta_b\), \(h_b\) and \(r'\). Then prop:group-freeness adds such bounds over groups of members.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:private-part-freeness with its count, prop:oriented-cylinder-repair (the definitions of \(K\), \(\rho\), \(s\) and (H<sub>J</sub>)), lem:relation-space-tor, prop:group-freeness and thm:involvement-threshold. No computation was run. A fresh-context reviewer confirmed the three parts and the diagnosis of what was wrong and what stands. It required two changes, both adopted. The reduction from freeness over \(T(K_0\oplus K)\) to freeness of the quotient over \(T(K)\) is now proved, and marked as a value-side statement. The \(T/\operatorname{soc}T\) example now says which invariant is 0: the start of the non-free summand, prop:group-freeness's \(\gamma\), not the first degree of \(\operatorname{Tor}_1\), which is \(2\dim K'\). The reviewer had read \(\gamma\) as the latter. Its suggestions are adopted: \(\dim E_b=h_b\) is stated, and the qualifier on \(J\) is reduced to admissibility.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-full-sharing">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 23.29 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">45.29 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 42.99 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 54.87 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
