@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> Taylor generation is needed at one degree \(D'\ge22k\) given a Nullstellensatz design at \(D'-1\) (<a href="#entry-2026-09-28-single-degree-taylor">single degree</a>), but on boards grown column by column, lower-degree classes outside a space \(\mathcal A\) fixed on the base reappear once per new cell (<a href="#entry-2026-09-28-exact-taylor-propagation">exact propagation</a>). Next: compute \(\mathcal A\) for the recorded defect families (the seed-23 pair at multiplier degree 4, the pair-relation families of ex:pair-relation-defects at degree 3) on their 16-cell boards. Classes outside \(\mathcal A\) would multiply on every extension, a stronger obstruction than recorded; classes inside identify the absorbing relations a dense-family argument has to control.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> Taylor generation is needed at one degree \(D'\ge22k\) given a Nullstellensatz design at \(D'-1\) (<a href="#entry-2026-09-28-single-degree-taylor">single degree</a>), and on grown boards a lower class outside the absorbable space \(\mathcal A\) reappears once per added cell (<a href="#entry-2026-09-28-exact-taylor-propagation">exact propagation</a>). The kernel for \(\mathcal A\) is corrected (<a href="#entry-2026-09-28-absorbable-classes">absorbable classes</a>). Next: run it once as a validation series of the exact formula on 8- to 10-cell boards and once on the seed-23 pair at \(N=16\), \(E=5\), deciding whether its class at multiplier degree 4 is absorbable, and state the answer for that family on every extension.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -43789,6 +43789,46 @@ Writing \(T(W)=T(U_b)\otimes T(C)\) for a complement \(C\), one has \(\operatorn
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-28-absorbable-classes" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="none" data-claim-note="Kernel for the absorbable space of prop:exact-taylor-propagation; one independent confirmation of its formula and a kernel defect found and fixed; no new claim.">
+<h3>Absorbable classes, first attempt: a kernel for the absorbable space and the exact propagation formula, whose validation exposed an unsigned wraparound in the kernel's lift system; an independent reference confirms the formula on one instance, and the corrected runs move to the next cycle</h3>
+<p class="entry-meta">28 September 2026 · Unsuccessful attempt, with a kernel correction · open statement A1 · cycle odd-prime-absorbable-classes. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 (highest risk). The <a href="#entry-2026-09-28-exact-taylor-propagation">exact propagation</a> entry proposed computing the absorbable space \(\mathcal A\) for the recorded defect families, starting with the seed-23 pair \(A^2B\), \(C^2D\) on 16 cells, whose defect at multiplier degree 4 is 1. If that class lies outside \(\mathcal A\), it reappears once per added cell on every extension.</p>
+<p><strong>General statement.</strong> The statement tested is prop:exact-taylor-propagation: \(\operatorname{Def}_E(R')=\dim\ker\mathrm{ob}_c+|c|\operatorname{Def}_{E-1}(R)-\operatorname{rank}\bar\delta_c\), with its persistence bound.</p>
+<h4>What was built</h4>
+<p>absorbable_classes.cpp works in the square-free algebra on \(N\) cells, one row of the board, with forms drawn as in the recorded pseudorandom check. It computes \(\operatorname{Def}_{E-1}\) and a basis of the relations among Taylor generator instances at multiplier degree \(E\) (a nullspace). For each form \(f\) it computes the components \(\Psi_f\) of their derivatives as a matrix product, asserts that every column is a syzygy at degree \(E-1\), and reports \(\dim\mathcal A\) and the persistent part \(\operatorname{Def}_{E-1}-\dim\mathcal A\). A check mode adds one cell with random coefficients, computes \(\operatorname{Def}_E\) of the extension directly on \(N+1\) cells, and compares it with the formula's right-hand side, including \(\dim\ker\mathrm{ob}\) from a joint system in the syzygy and its lift.</p>
+<h4>What happened</h4>
+<ul>
+<li>The first validation series on 8-cell boards reported mismatches in both directions, including a case with clean lower degree, where the formula is the recorded prop:lift-obstruction. The printed pieces were inconsistent with the exact sequence behind the formula: for seed 1 at \(E=2\), \(\dim\operatorname{Syz}_2(R')=22\) and \(\dim\operatorname{Syz}_1(R)=2\), yet the kernel found only 19 liftable syzygies, where the sequence requires 20.</li>
+<li>An independent reference, absorbable_reference_check.py (plain elimination, reproducing the kernel's Mersenne Twister draws), recomputed that instance: \(\dim\operatorname{Syz}_2(R')=22\), \(\dim\operatorname{Syz}_2(R)=21\), \(\dim\operatorname{Syz}_1(R)=2\), liftable dimension 20. So \(22=20+2\), and with rank 18 for the Taylor span of \(R\) the formula gives \(\dim\ker\mathrm{ob}=2=\operatorname{Def}_2(R')\), as the kernel's direct count also found. The formula holds on this instance.</li>
+<li>The defect: FLINT's matrix entries are unsigned, and the kernel's lift system added negative coefficients to them directly. Since \(2^{64}\equiv1\pmod3\), each \(-1\) was added as 0, which silently removed the \(I_R\)-multiples from the lift condition and undercounted \(\ker\mathrm{ob}\). The fix adds through a signed integer. The other matrix fills add only nonnegative values and are unaffected. The mismatches of the first series are void; their outputs are kept as buggy_series_N8.txt and buggy_debug_N8.txt.</li>
+<li>The corrected series and the seed-23 computation were not run. The run guard allows a program four argument lists per session, and the debugging runs used them. Both are the first runs of the next cycle.</li>
+</ul>
+<p><strong>Outcome.</strong> No new result. The exact propagation formula is confirmed on one instance by an independent reference, and the kernel's lift system is corrected. Whether the seed-23 class lies in the absorbable space is still open.</p>
+<h4>Notes on the previous entry</h4>
+<ul>
+<li>In the <a href="#entry-2026-09-28-exact-taylor-propagation">exact propagation</a> entry, the absorbable space depends on both degrees, since it is built from \(\mathrm{Rel}_e(R)\): it is \(\mathcal A^{(e)}_{e-1}(R)\).</li>
+<li>Its bullet on grown boards overclaims. Part (2) is a one-step bound. What it gives is the necessary condition on the immediate predecessor: if \(R^+\) has Taylor generation at degree \(D'\), then for every column \(c\) of \(R^+\) the board \(R^+\setminus c\) has its defect at \(D'-1\) inside \(\mathcal A^{(D')}_{D'-1}(R^+\setminus c)\), since the columns may be added in any order. That lower classes survive further additions was not shown.</li>
+<li>Its Outcome states the fill-point comparison flatly; it is the heuristic monomial count of that entry's bullet.</li>
+</ul>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1 (highest risk): run the corrected kernel once as a validation series of the exact formula on 8- to 10-cell boards, with its assertions, and once on the seed-23 pair at \(N=16\), \(E=5\), to decide whether its class at multiplier degree 4 lies in \(\mathcal A^{(5)}_4\). Then state the answer for that family as a proposition about every extension of its board.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:exact-taylor-propagation and prop:lift-obstruction. The kernel's defect was located by comparing its printed pieces with the exact sequence, and confirmed by the independent reference on the same instance, whose coefficients and added cell match the kernel's. No fresh-context review was run: this entry registers no claim, and its only mathematical content is one instance of a reviewed formula. The corrected kernel was compiled but not run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-absorbable-classes">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 37.50 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 45.34 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">7 min 19.58 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 31.37 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.07 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
