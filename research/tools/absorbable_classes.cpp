@@ -165,6 +165,11 @@ int main(int argc, char** argv) {
         for (int N = lo; N <= hi; N++) for (int sd = 1; sd <= seeds; sd++) for (int E = 2; E <= Emax && E + 3 <= N + 1; E++) run("check", N, sd, E);
         return 0;
     }
+    if (mode == "trivseries") {  // trivial-relation counts on the same grid as the validation series
+        int lo = atoi(argv[2]), hi = atoi(argv[3]), seeds = atoi(argv[4]), Emax = atoi(argv[5]);
+        for (int N = lo; N <= hi; N++) for (int sd = 1; sd <= seeds; sd++) for (int E = 2; E <= Emax && E + 3 <= N + 1; E++) run("triv", N, sd, E);
+        return 0;
+    }
     return run(mode, atoi(argv[2]), atoi(argv[3]), atoi(argv[4]));
 }
 
@@ -179,6 +184,55 @@ static int run(const std::string& mode, int N, unsigned seed, int E) {
     if (mode == "absorb") {
         printf("{\"N\": %d, \"seed\": %u, \"E\": %d, \"def_lower\": %ld, \"relations\": %ld, \"dim_calA\": %ld, \"persistent\": %ld}\n",
                N, seed, E, defLow, nrel, absorbed, defLow - absorbed);
+        return 0;
+    }
+    if (mode == "triv") {
+        // Trivial relations at multiplier degree E (entry-2026-09-28-taylor-route-review, first Outside lead): commutations
+        // of the two Frobenius syzygies of one top, Frobenius self-annihilation (A^3 = B^3 = 0 in characteristic 3),
+        // and Frobenius-Koszul relations; their derivatives are Taylor, so Psi-bar vanishes on them and the joint
+        // absorption rank of prop:joint-absorption-rank is at most relations - rank(trivial).  Asserted.
+        int dx[5] = {E - 1, E - 2, E - 1, E - 2, E - 3}; long off[5]; long cols = 0;
+        for (int t = 0; t < 5; t++) { off[t] = cols; if (dx[t] >= 0 && dx[t] <= N) cols += R.nd(dx[t]); }
+        assert(cols == (long)its.size());
+        auto addp = [&](Vec& v, int t, const Poly& p, int sign) {
+            for (auto& [c, x] : p) { assert(R.B.deg[c] == dx[t]); long k = off[t] + R.B.index[c]; v[k] = ((v[k] + sign * x) % 3 + 3) % 3; }
+        };
+        std::vector<Vec> triv;
+        auto each = [&](int d, auto f) { if (d >= 0 && d <= N) for (int y : R.B.byDeg[d]) f(mono(y)); };
+        each(E - 3, [&](const Poly& y) {
+            Vec v(cols, 0); addp(v, 0, mul(y, R.B2), 1); addp(v, 1, mul(y, R.F[0]), -1); triv.push_back(v);   // commutation, slot tau
+            Vec w(cols, 0); addp(w, 2, mul(y, R.D2), 1); addp(w, 3, mul(y, R.F[2]), -1); triv.push_back(w);   // commutation, slot sigma
+            Vec a(cols, 0); addp(a, 0, mul(y, R.A2), 1); triv.push_back(a);                                     // A^3 = 0
+            Vec b(cols, 0); addp(b, 1, mul(y, R.F[1]), 1); triv.push_back(b);                                   // B^3 = 0
+            Vec c(cols, 0); addp(c, 2, mul(y, R.C2), 1); triv.push_back(c);                                     // C^3 = 0
+            Vec d(cols, 0); addp(d, 3, mul(y, R.F[3]), 1); triv.push_back(d);                                   // D^3 = 0
+        });
+        each(E - 4, [&](const Poly& y) {
+            Vec a(cols, 0); addp(a, 4, mul(y, R.F[0]), 1); addp(a, 0, mul(y, R.sigma), -1); triv.push_back(a);  // A (x) K - sigma (x) F_A
+            Vec c(cols, 0); addp(c, 4, mul(y, R.F[2]), 1); addp(c, 2, mul(y, R.tau), 1); triv.push_back(c);     // C (x) K + tau (x) F_C
+        });
+        each(E - 5, [&](const Poly& y) {
+            Vec b(cols, 0); addp(b, 4, mul(y, R.B2), 1); addp(b, 1, mul(y, R.sigma), -1); triv.push_back(b);   // B^2 (x) K - sigma (x) F_B2
+            Vec d(cols, 0); addp(d, 4, mul(y, R.D2), 1); addp(d, 3, mul(y, R.tau), 1); triv.push_back(d);      // D^2 (x) K + tau (x) F_D2
+        });
+        long nE2 = 2 * R.nd(E);
+        for (auto& v : triv) {  // every trivial combination is a relation: its value vanishes
+            Vec val(nE2, 0);
+            for (long k = 0; k < cols; k++) if (v[k]) { Vec u = R.value(its[k], E); for (long i = 0; i < nE2; i++) val[i] = (val[i] + v[k] * u[i]) % 3; }
+            for (long i = 0; i < nE2; i++) assert(val[i] == 0);
+        }
+        long rkTriv = rankRows(triv, cols);
+        assert(rkTriv <= nrel);
+        // joint rank of Psi-bar = (Psi-bar_f)_f : Rel -> U^4, U = Syz_{E-1}/T_{E-1}
+        std::vector<Vec> J;
+        for (long j = 0; j < nrel; j++) { Vec v(4 * nLow); for (int f = 0; f < 4; f++) for (long k = 0; k < nLow; k++) v[f * nLow + k] = nmod_mat_entry(&Q[f], k, j); J.push_back(v); }
+        for (int f = 0; f < 4; f++) for (auto& tv : TLow) { Vec v(4 * nLow, 0); for (long k = 0; k < nLow; k++) v[f * nLow + k] = tv[k]; J.push_back(v); }
+        long joint = rankRows(J, 4 * nLow) - 4 * rkTLow;
+        printf("{\"N\": %d, \"seed\": %u, \"E\": %d, \"def_lower\": %ld, \"relations\": %ld, \"trivial_generators\": %zu, "
+               "\"trivial_rank\": %ld, \"nontrivial\": %ld, \"dim_calA\": %ld, \"joint_rank\": %ld}\n",
+               N, seed, E, defLow, nrel, triv.size(), rkTriv, nrel - rkTriv, absorbed, joint);
+        fflush(stdout);
+        assert(joint <= nrel - rkTriv);
         return 0;
     }
     // check: random extra cell
