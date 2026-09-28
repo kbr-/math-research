@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> In every recorded case, one-row and member-tensor, freeness over the whole acting algebra is at most one degree below the smaller of the pointwise and counting bounds (conj:unit-loss-dade; <a href="#entry-2026-09-28-unit-loss-dade">unit loss</a>). For random dense families this would settle the value side, leaving the transfer. Next: test the unit loss in special position of higher dimension (all points of \(\mathbb P^3(\mathbb F_3)\) as member components), or prove the three-direction case.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> Member-tensor losses of one persist against \(\mathbb F_9\) directions, so they are generic rather than special-position effects, and the unit-loss form of conj:unit-loss-dade stays the consistent one (ex:member-tensor-dade-f9; <a href="#entry-2026-09-28-generic-unit-loss">generic unit loss</a>). Next: prove the unit loss for two directions on member tensors, extending thm:pencil-graded-dade.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -42300,6 +42300,38 @@ where \(X\) is the algebra below, over which \(\bar G\) is free through \(D\). S
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-28-generic-unit-loss" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:member-tensor-dade-f9">
+<h3>Generic unit loss: the member-tensor losses of one persist against directions over \(\mathbb F_9\), so for member tensors the loss is generic, about a quarter of random trials, not a special-position effect as in the one-row case; exact graded Dade fails for random member tensors, and the unit-loss form is the one consistent with all data</h3>
+<p class="entry-meta">28 September 2026 · Finite check · open statement A1 · cycle odd-prime-projective-members. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 (highest risk). In ex:member-tensor-dade, freeness over the acting algebra fell one degree short in 6 of 24 random trials, against pointwise bounds computed only at \(\mathbb F_3\)-rational directions. Are those losses artifacts of non-rational directions, which would mean exact graded Dade holds in random position as for one-row families? Or are they genuine, which would make the unit loss of conj:unit-loss-dade the right form?</p>
+<p><strong>General statement.</strong> conj:unit-loss-dade is the all-parameter statement this check tests. The check decides between its unit-loss form and an exact form, loss 0, for member tensors in random position.</p>
+<h4>ex:member-tensor-dade-f9</h4>
+<p>research/tools/member_tensor_dade_f9.m2 (Macaulay2, exact) re-runs the 24 trials with the same seed and the same sequence of random calls. Its columns for the freeness degree, the counting bound and the rational pointwise bound reproduce the earlier run exactly in all 24 rows, which validates the reproduction. For eight selected trials, five with a loss and three controls, it also computes the least single-direction freeness degree over all projective \(\mathbb F_9\)-points of \(K'\): 91 points for \(r=3\), 820 for \(r=4\). Output: research/results/odd-prime-projective-members/member_tensor_dade_f9.txt, with provenance.json.</p>
+<ul>
+<li><strong>Prediction.</strong> If the losses came from non-rational directions, the \(\mathbb F_9\) minimum would drop to the actual freeness degree in the loss trials.</li>
+<li><strong>Observed.</strong> The \(\mathbb F_9\) minimum equals the \(\mathbb F_3\) minimum in all eight trials. In the five loss trials freeness stays one below \(\min(d_{\mathrm{cnt}},d_{\mathbb F_9})\). This is only as far as \(\mathbb F_9\) sees: points over larger fields were not computed.</li>
+<li><strong>Two kinds of loss.</strong> In the trial \((3,3,2,3)\) number 2, freeness is 8, the counting bound 9 and every single direction 11, so the loss is at the counting edge. In \((3,3,2,4)\) numbers 1, 3 and 4 and \((3,3,3,4)\) number 3, freeness is 6 or 7 against a pointwise minimum one higher and a counting bound of 7 or 8, equal to the pointwise minimum in two of them, so the loss is at the pointwise edge. Base change does not move the counting bound, so \(\mathbb F_9\) could only have lowered the pointwise one.</li>
+</ul>
+<p><strong>Outcome.</strong> ex:member-tensor-dade-f9 (finite check): the member-tensor losses of one are genuine at least over \(\mathbb F_9\). They occur in about a quarter of random trials, at the counting edge and at the pointwise edge. Random member tensors, unlike random one-row families, do not satisfy exact graded Dade. The unit-loss form of conj:unit-loss-dade remains consistent with every case, and nothing here tests configurations where a loss of two might appear.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1 (highest risk): prove conj:unit-loss-dade for two directions, \(r=2\), on member tensors, extending thm:pencil-graded-dade from one-cell members to member rings. Pencils decompose along the points of \(\mathbb P^1\), and a member ring restricted to a pencil has a Jordan-type description along each point.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read conj:unit-loss-dade and ex:member-tensor-dade. A fresh-context reviewer diffed all 24 rows against the earlier run and confirmed that the new code draws no random numbers, so the same trials are rebuilt. It checked the enumeration of the \(\mathbb F_9\)-points (91 and 820), the base change to \(\mathbb F_9\), the capped single-direction routine and the provenance hashes. It required one change, adopted: the fifth loss trial, \((3,3,2,4)\) number 1, is now listed with the pointwise-edge losses. Its suggestion to name the reproduced columns is adopted.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-projective-members">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 47.26 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 31.10 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 22.01 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 21.44 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 32.58 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
