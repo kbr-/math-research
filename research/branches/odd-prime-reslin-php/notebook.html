@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> Directness of the spans' truncated algebras propagates upward in degree (lem:derivative-propagation). This concerns spans in general position, and A1 does not grant that (<a href="#entry-2026-09-28-derivative-propagation">derivative propagation</a>). Next: test the goal's actual statement on the adversarial family where the value-side method fails, found in the <a href="#entry-2026-09-28-value-side-review">value-side review</a>. There, members share more lines of their spans than the cylinder budget absorbs. Decide whether that family's allowed set, or a subset of it, is row-free through \(D\) (conj:row-free-subset). If not, A1's route has a genuine obstruction. If so, the reason is the mechanism the dense core needs.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> The goal needs from the value side only no falls and freeness over the couplings. Freeness over the pure relations is sufficient, not necessary. Members sharing a common excluded factor, such as a cluster of W members sharing one identical set of prefix coordinates, and stars whose other members are cylinders, have no falls in any degree (prop:shared-factor-no-falls). So the value-side review's adversarial family bears on the goal only through non-product overlaps, such as the record's lifted tensor families (a reduction not yet checked) (<a href="#entry-2026-09-28-shared-factor-falls">shared-factor falls</a>). Next: on a lifted tensor family, make all members but one cylinders over the shared form. Check that this gives a nonempty subset with no falls, then decide whether that subset is row-free.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -42725,6 +42725,62 @@ Writing \(T(W)=T(U_b)\otimes T(C)\) for a complement \(C\), one has \(\operatorn
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 18.13 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">12 min 22.82 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-28-shared-factor-falls" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="prop:shared-factor-no-falls">
+<h3>Shared-factor falls: the goal needs the allowed set's ring to equal the members' quotient (no falls) and that quotient to be free over the couplings, not freeness over the pure relations; members that share a common excluded factor along their shared span, or a star whose other members are cylinders over it, have no falls in any degree although they are not free over the pure relations, so the value-side review's falsification bears on the goal only through overlaps that break these product forms, such as the record's lifted tensor families</h3>
+<p class="entry-meta">28 September 2026 · Working proof · open statement A1 · cycle odd-prime-overlap-graph-rowfree. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 (highest risk). The <a href="#entry-2026-09-28-value-side-review">value-side review</a> found adversarial families where members overlap in more lines than the cylinder budget absorbs, so the members' tensor is not free over the joint algebra. The <a href="#entry-2026-09-28-derivative-propagation">derivative propagation</a> entry redirected the line to the question the goal actually asks of such a family: is the allowed set, or a subset of it, row-free through \(D\)? Which part of the value-side condition does the goal really need?</p>
+<p><strong>General statement.</strong> prop:shared-factor-no-falls. Take members whose vanishing ideals factor as a common factor on the shared span tensored with factors on independent complements. Or take a star in which every member but one is a cylinder over the shared span. In either case the allowed set of the intersection has no falls in any degree: the graded ideal of the intersection is the sum of the members' graded ideals. This holds although the members' tensor is not free over the pure relations.</p>
+<h4>What the goal needs from the value side</h4>
+<p>By cor:cluster-flag-reduction (1) with \(K_1=K_0\), freeness of the members' tensor \(X\) over \(T(K_0\oplus K)\) through \(D\) is equivalent to two things:</p>
+<ul>
+<li>freeness of \(X\) over the pure relations \(T(K_0)\);</li>
+<li>freeness of \(X/K_0X\) over the couplings \(T(K)\).</li>
+</ul>
+<p>The goal uses them differently. Row freeness is freeness over the couplings (row sums) of the allowed set's graded ring. That ring equals \(X/K_0X=T(E/K_0)/\sum_b\bar J_b\) exactly when there are no falls, i.e. when the graded ideal of the intersection of the members' allowed sets is the sum of the members' graded ideals.</p>
+<p>Here is why, on the value side, the base being ignored. The distinct forms, \(E/K_0\), are coordinates on a cube. Member \(b\)'s allowed set pulls back to a cylinder over its own coordinates, so by fact (a) below its graded ideal is \(\bar J_bT\). The allowed set is the intersection of these cylinders, and its graded ring is \(T(E/K_0)/\operatorname{gr}I(\bigcap)\) with \(\operatorname{gr}I(\bigcap)\supseteq\sum_b\bar J_bT\). The two rings agree exactly when equality holds, and \(X/K_0X=T(E)/(K_0T(E)+J)=T(E/K_0)/\sum_b\bar J_b\) in characteristic 3. By lem:relation-space-tor, freeness over \(T(K_0)\) is one way to guarantee this, but only a sufficient one. So the value-side conditions the goal needs are:</p>
+<ol>
+<li>no falls through \(D\);</li>
+<li>\(X/K_0X\) free over \(T(K)\) through \(D\).</li>
+</ol>
+<p>This is the split of prop:coupling-distributivity into falls and distributivity. The value-side review's falsification refutes freeness over \(T(K_0)\). By itself that refutes neither (1) nor (2).</p>
+<h4>prop:shared-factor-no-falls</h4>
+<p><strong>Setting.</strong> Work in the cube \(\mathbb F_3^{Y}\times\prod_b\mathbb F_3^{U'_b}\), with coordinates on a shared space \(Y\) and on independent complements \(U'_b\). Member \(b\) constrains \(Y\oplus U'_b\) by an allowed set \(V_b\), with vanishing ideal \(I(V_b)\): the functions supported on the excluded set \(E_b\). Write \(\operatorname{gr}\) for the ideal of top-degree parts, which lies in \(T(\cdot)\).</p>
+<p><strong>Statement.</strong></p>
+<ol>
+<li><strong>Common factor.</strong> If every \(E_b=E_Y\times E'_b\) with the same \(E_Y\subseteq\mathbb F_3^Y\), then \(\operatorname{gr}I(\bigcap_bV_b)=\sum_b\operatorname{gr}I(V_b)\) in every degree.</li>
+<li><strong>Cylinder star.</strong> If every member but one, \(b_0\), is a cylinder over \(Y\) (\(E_b=\mathbb F_3^Y\times E'_b\)), the same holds.</li>
+</ol>
+<p>In both cases \(\operatorname{Tor}_1^{T(Y)}(M_b,M_c)\) (prop:overlap-tor) may be nonzero. In case (1), W members sharing a prefix coordinate \(L\) have \(E_Y=\{L\ne0\}\) for both, and their overlap Tor is nonzero in degree \(\delta_b+\delta_c-1\) (prop:overlap-orientation).</p>
+<p><strong>Proof.</strong> Two standard facts are used, both by counting.</p>
+<ul>
+<li><strong>(a) Products.</strong> For sets \(A\), \(B\) in independent coordinate blocks, \(\operatorname{gr}I(A\times B)=\operatorname{gr}I(A)\,T+T\operatorname{gr}I(B)\). The right side is contained in the left, since tops of \(f\otimes1\) and \(1\otimes g\) are tops. Its quotient is \((T/\operatorname{gr}I(A))\otimes(T/\operatorname{gr}I(B))\), of dimension \(|A||B|\), which is the codimension of the left side.</li>
+<li><strong>(b) Supports.</strong> For \(E\subseteq\mathbb F_3^Y\) and \(E'\) in a complementary block, the functions supported on \(E\times E'\) are \(I_E\otimes I_{E'}\), where \(I_E\) is the space of functions supported on \(E\). Also \(\operatorname{gr}(I_E\otimes I_{E'})=\operatorname{gr}I_E\otimes\operatorname{gr}I_{E'}\): the right side is contained in the left, and both have dimension \(|E||E'|\).</li>
+</ul>
+<p>(1) The excluded set of the intersection is \(\bigcup_bE_b=E_Y\times\bigcup_b(E'_b\times\text{all})\). Its function space is \(I_{E_Y}\otimes I'\), with \(I'\) the functions supported on \(\bigcup_b(E'_b\times\text{all})\) in \(\prod_b\mathbb F_3^{U'_b}\). The latter is the vanishing ideal of the product \(\prod_b(E'_b)^c\), so by (a) \(\operatorname{gr}I'=\sum_b\operatorname{gr}I_{E'_b}T\). By (b), \(\operatorname{gr}I(\bigcap V_b)=\operatorname{gr}I_{E_Y}\otimes\sum_b\operatorname{gr}I_{E'_b}T\), and by (b) again this is \(\sum_b\operatorname{gr}(I_{E_Y}\otimes I_{E'_b})T=\sum_b\operatorname{gr}I(V_b)\).</p>
+<p>(2) \(\bigcap_bV_b=V_{b_0}\times\prod_{b\ne b_0}V''_b\), where \(V''_b\subseteq\mathbb F_3^{U'_b}\) is the cylinder's base. This is a product over the independent blocks \(Y\oplus U'_{b_0}\) and the \(U'_b\). By (a), \(\operatorname{gr}I(\bigcap V_b)=\operatorname{gr}I(V_{b_0})T+\sum_{b\ne b_0}\operatorname{gr}I(V''_b)T\), and \(\operatorname{gr}I(V_b)=\operatorname{gr}I(V''_b)T\) for the cylinders. \(\square\)</p>
+<h4>Consequences</h4>
+<p><strong>Coordinate sharing in W.</strong> W's subset prefixes give excluded sets \(\prod_{j\in S_b}\{L_j\ne0\}\times E^N_b\), where \(E^N_b\) is the non-prefix part. A cluster of members sharing one identical set of prefix coordinates, with all their other forms independent, is in case (1) with \(E_Y=\prod\{L_j\ne0\}\) over the shared coordinates. So the cluster has no falls in any degree, although it is not free over the pure relations. For such a cluster, condition (1) of the goal holds with no cylinders at all.</p>
+<p>Heterogeneous sharing is not covered: members sharing different prefix coordinates pairwise. prop:overlap-tor's control, single selectors on \(x\), \(y\), \(x+y\), warns that pairwise statements need not extend to the joint family.</p>
+<p><strong>Stars of any kind.</strong> By case (2), a line shared by many members, of any kind, has no falls once all members but one are cylinders over it. Each cylinder costs a factor of at most 3 in excluded density, so a star is cheap however many members share the line.</p>
+<p><strong>What is left.</strong> Falls need overlaps that break both product forms: shared spans on which members' excluded sets have different, non-cylinder factors. For instance, the shared line is a combination of forms in both members. The record's lifted tensor families are of this kind (ex:tensor-family-falls, conj:global-tensor-falls): members sharing one form through prefix combinations have falls at degree \(2c-1\), conjecturally not local. The value-side review's adversarial family, whose members share many different lines, bears on the goal through falls of this non-product kind, not through the unmet freeness over the pure relations. That it reduces to the tensor-falls question is conjectural: its overlap structure, with several shared lines per member, was not checked against the lifted tensor families. Condition (2) of the goal, freeness over the couplings, is untouched here.</p>
+<p><strong>Outcome.</strong> prop:shared-factor-no-falls (working proof): members with a common excluded factor on their shared span, and stars whose other members are cylinders over it, have no falls in any degree, although freeness over the pure relations fails. The goal needs no falls and freeness over the couplings; freeness over the pure relations is only sufficient. So W's coordinate sharing needs no repair for falls, and stars are repaired cheaply. The review's falsification bears on the goal only through non-product overlaps, which are the record's lifted tensor families. No computation was run.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1 (highest risk): take the record's lifted tensor family, whose members share one form \(w\) through prefix combinations and whose falls are conjectured global. Test whether making all members but one cylinders over \(w\), a star repair costing a factor of at most 3 each, gives a nonempty subset with no falls, by case (2). Then decide whether that subset is row-free, the coupling half, using the family's exact data in ex:tensor-family-falls.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read cor:cluster-flag-reduction, lem:relation-space-tor, prop:coupling-distributivity, prop:overlap-tor, prop:overlap-orientation, ex:tensor-family-falls, conj:global-tensor-falls and prop:oriented-cylinder-repair. The claim searches found the record's falls/distributivity split and its tensor-falls results, and no earlier shared-factor statement. No computation was run. A fresh-context reviewer checked the split of the goal's needs against the flag, facts (a) and (b) with their counting proofs, both cases of the proposition, and the W product form. It required three changes, all adopted: a direct argument that no falls is exactly the identification of the allowed set's ring with \(X/K_0X\); restricting the W consequence to clusters with one identical prefix set, with heterogeneous sharing flagged as not covered; and marking as conjectural that the value-side review's family reduces to the tensor-falls question.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-overlap-graph-rowfree">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 6.10 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 35.82 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">9 min 30.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
