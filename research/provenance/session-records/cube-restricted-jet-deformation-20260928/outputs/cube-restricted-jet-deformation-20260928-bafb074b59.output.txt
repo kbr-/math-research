@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/home/kbr/dev/math/tools/claim_authoring.py", line 260, in <module>
+    main()
+  File "/home/kbr/dev/math/tools/claim_authoring.py", line 249, in main
+    proposed, report = prepare(data, request)
+  File "/home/kbr/dev/math/tools/claim_authoring.py", line 100, in prepare
+    claim['reviews'][field] = make_review(after, claim, field, disposition['targets'],
+  File "/home/kbr/dev/math/tools/claim_reviews.py", line 136, in make_review
+    'evidence': [evidence.snapshot(target) for target in targets]}
+  File "/home/kbr/dev/math/tools/claim_reviews.py", line 136, in <listcomp>
+    'evidence': [evidence.snapshot(target) for target in targets]}
+  File "/home/kbr/dev/math/tools/claim_reviews.py", line 113, in snapshot
+    item = {'target': target, 'sha256': self.sha256(target, normalization)}
+  File "/home/kbr/dev/math/tools/claim_reviews.py", line 90, in sha256
+    content = normalize_evidence(content.decode(), normalization).encode()
+  File "/home/kbr/dev/math/tools/claim_evidence.py", line 13, in normalize_evidence
+    return normalize_article(source, version)
+  File "/home/kbr/dev/math/tools/claim_evidence.py", line 31, in normalize_article
+    parser.feed(masked); parser.close()
+  File "/usr/lib/python3.10/html/parser.py", line 149, in feed
+    self.goahead(0)
+  File "/usr/lib/python3.10/html/parser.py", line 233, in goahead
+    k = self.parse_endtag(i)
+  File "/usr/lib/python3.10/html/parser.py", line 499, in parse_endtag
+    self.handle_endtag(tag)
+  File "/home/kbr/dev/math/tools/claim_evidence.py", line 78, in handle_endtag
+    raise ValueError('Unbalanced markup in article evidence: ' + tag)
+ValueError: Unbalanced markup in article evidence: article
