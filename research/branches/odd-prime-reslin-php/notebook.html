@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> On the value side the dense core is a graded Dade statement with margin for the members' tensor product over the joint algebra of pure relations and couplings, the member form of conj:graded-dade-margin, plus the transfer to the board (<a href="#entry-2026-09-28-member-tensor-review">member-tensor review</a>). Next: develop the Green hyperplane-restriction lead for truncated polynomial rings in characteristic 3, first on the recorded one-row families.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> In every recorded case, one-row and member-tensor, freeness over the whole acting algebra is at most one degree below the smaller of the pointwise and counting bounds (conj:unit-loss-dade; <a href="#entry-2026-09-28-unit-loss-dade">unit loss</a>). For random dense families this would settle the value side, leaving the transfer. Next: test the unit loss in special position of higher dimension (all points of \(\mathbb P^3(\mathbb F_3)\) as member components), or prove the three-direction case.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -42248,6 +42248,58 @@ where \(X\) is the algebra below, over which \(\bar G\) is free through \(D\). S
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-28-unit-loss-dade" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="conj:unit-loss-dade ex:member-tensor-dade" data-lead="entry-2026-09-28-member-tensor-review:2">
+<h3>Unit-loss graded Dade: in every recorded case, one-row and member-tensor alike, freeness over the whole acting algebra falls short of the smaller of the pointwise bound and the counting bound by at most one degree; conjectured in general, this would give the value-side dense core for random families, whose relations and couplings are all wide</h3>
+<p class="entry-meta">28 September 2026 · Conjecture with a finite check · open statement A1 · cycle odd-prime-truncated-green. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 (highest risk). The <a href="#entry-2026-09-28-member-tensor-review">member-tensor review</a> reduced the value-side dense core to a graded Dade statement with margin for member tensors. It proposed developing its second outside lead, Green's hyperplane restriction theorem, which was not run. How far does freeness over the whole acting algebra fall below what single directions and counting allow?</p>
+<p><strong>General statement.</strong> conj:unit-loss-dade. Take a tensor product \(X=\bigotimes_bM_b\) of member rings \(M_b=T(E_b)/J_b\) over \(\mathbb F_3\), and an acting space \(K'\subseteq\bigoplus_bE_b\) of dimension \(r\). Let \(d_{\mathrm{pt}}\) be the least, over nonzero \(\kappa\in K'\otimes\bar{\mathbb F}_3\), of the degree through which \(X\) is free along \(\kappa\). Let \(d_{\mathrm{cnt}}\) be the degree through which \(\operatorname{HF}(X)/(1+t+t^2)^r\) has nonnegative coefficients. The conjecture: \(X\) is free over \(T(K')\) through \(\min(d_{\mathrm{pt}},d_{\mathrm{cnt}})-1\).</p>
+<h4>The Green lead, developed</h4>
+<p>Put \(W=\bigoplus_bE_b/K'\) and let \(\bar J\) be the image of \(\sum_bJ_b\) in \(T(W)\). Then \(X/K'X=T(W)/\bar J\), since in characteristic 3 the truncated algebra of a quotient space is the quotient algebra. So by prop:syzygies-as-tor, \(X\) is free over \(T(K')\) through \(D\) iff \(\operatorname{HF}(T(W)/\bar J)\) equals the free prediction \(\operatorname{HF}(X)/(1+t+t^2)^r\) through \(D\).</p>
+<p>For a general \(K'\) this asks the image of the members' ideals under a general linear projection to have the expected Hilbert function. That is a Fröberg-type statement, as lem:relation-space-tor anticipated. A Green-type upper bound for \(\operatorname{HF}(M/\ell M)\), applied along a general flag of \(K'\), would give the inequality \(\le\). The equality needs the lower bound that freeness supplies. No Green or Fröberg theorem for truncated polynomial rings in characteristic 3 was located, so the lead stays a reformulation. The test below asks instead how far the equality can fail.</p>
+<h4>ex:member-tensor-dade</h4>
+<p>research/tools/member_tensor_dade.m2 (Macaulay2, exact over \(\mathbb F_3\)) builds each \(J_b\) as the top ideal of a random value set: \(\mathbb F_3^h\) minus a random excluded set of the given size, from the kernel of the evaluation map, degree by degree. It takes \(K'\) spanned by \(r\) random forms and computes three degrees:</p>
+<ul>
+<li>\(d_{\mathrm{free}}\), the degree through which \(X\) is free over \(T(K')\);</li>
+<li>\(d_{\mathrm{cnt}}\);</li>
+<li>the pointwise bound over the \(\mathbb F_3\)-rational points of \(\mathbb P(K')\), which is at least \(d_{\mathrm{pt}}\).</li>
+</ul>
+<p>There are 24 trials in six configurations (\(s\) members, \(h\) coordinates each, excluded-set size, \(r\)): \((3,3,2,3)\), \((3,3,2,4)\), \((3,3,3,4)\), \((3,3,2,5)\), \((4,2,1,3)\) and \((4,2,2,4)\), four trials each. The output is research/results/odd-prime-truncated-green/member_tensor_dade.txt, with provenance.json.</p>
+<ul>
+<li>The prediction: \(d_{\mathrm{free}}\ge\min(d_{\mathrm{cnt}},\text{rational pointwise bound})-1\). It is falsifiable in every trial, since \(d_{\mathrm{free}}\) ranges from 2 to 9.</li>
+<li>Observed: \(d_{\mathrm{free}}\) equals that minimum in 18 trials and is one less in 6. It is never two or more less.</li>
+<li>Losses of one occur for \(r=3\) (1 of 8 trials), \(r=4\) (4 of 12) and \(r=5\) (1 of 4). No loss larger than one appears at these sizes, but the rate of unit losses is not constant in \(r\).</li>
+</ul>
+<h4>The recorded one-row cases</h4>
+<p>The one-row square-free algebra is a member tensor with one-cell members \(\mathbb F_3[t]/(t^2)\). For \(h=1\), excluding one of the three points of \(\mathbb F_3\) leaves a two-point value set whose top ideal is \((t^2)\), and \(T(E_b)/(t^2)=\mathbb F_3[t]/(t^2)\). The acting algebra is still truncated at cubes, while a member ring may be truncated earlier; the tensor product carries both without conflict. The pointwise bounds of the one-row results use supports over \(\bar{\mathbb F}_3\), as \(d_{\mathrm{pt}}\) does. The recorded one-row cases fit the same rule:</p>
+<ul>
+<li>ex:truncated-dade-special-position: 14 cells, \(F=6\). Free along every point through 3, with positive prediction through 3, yet not free through 3: a loss of one.</li>
+<li>ex:projective-dade-exceptions: one cell per point of \(\mathbb P^2(\mathbb F_3)\). The pointwise value predicts freeness through 5 and the prediction is positive through 5, yet freeness fails in degree 5: a loss of one. The four points of \(\mathbb P^1(\mathbb F_3)\) fail at the counting bound: no loss.</li>
+<li>The 78 random one-row families (conj:graded-dade-margin's evidence) lose nothing, and thm:pencil-graded-dade proves no loss for two directions outside the four-point exception.</li>
+</ul>
+<p>The margin of conj:graded-dade-margin, \(N\ge4t+2F\), excludes the exceptions. The unit-loss form keeps them, at a cost of one degree.</p>
+<h4>What the conjecture would give</h4>
+<p>For the dense core's value side, take \(K'=K_0\oplus K\), the joint algebra of pure relations and couplings. The pointwise bound depends only on supports, which are the same over \(\mathbb F_3\) and \(\bar{\mathbb F}_3\), since the members where a combination vanishes are cut out by rational subspaces. By thm:involvement-threshold and the block-end computation of prop:wide-coupling-freeness, it is at least \(\min_\kappa\sum_{b\in I(\kappa)}(\delta_b-2)\).</p>
+<p>For random dense families every nonzero combination is wide. For couplings this is lem:narrow-coupling-absence, and the same union bound, with \(w=0\) and no row sums, applies to pure relations. The counting bound holds in W's regime by the growth comparison in the member-tensor review, a heuristic there. Under the conjecture the members' tensor would then be free over the joint algebra through \(D\): statement 1 of the review, for random dense families. Statement 2, the transfer, would remain.</p>
+<p><strong>Outcome.</strong> conj:unit-loss-dade (conjecture): freeness over the whole acting algebra is at most one degree below the minimum of the pointwise and counting bounds. It holds in all 24 member-tensor trials (ex:member-tensor-dade, finite check) and in every recorded one-row case. The Green lead reformulates freeness as a Fröberg-type Hilbert function statement for a general projection, with no truncated Green theorem located. Nothing here tests configurations of larger dimension in special position, such as \(\mathbb P^3(\mathbb F_3)\), where the loss could grow with \(r\).</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1 (highest risk): test the unit loss where it is most likely to break, special position of higher dimension. One option is member tensors whose components realize all points of \(\mathbb P^{r-1}(\mathbb F_3)\) with \(r=4\), using members of two coordinates to keep degrees low. The other is a proof for \(r=3\), extending thm:pencil-graded-dade's exact block table from two directions to three.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read the member-tensor review, ex:truncated-dade-special-position, ex:projective-dade-exceptions, conj:graded-dade-margin with its evidence, thm:pencil-graded-dade, prop:syzygies-as-tor and lem:relation-space-tor. The claim search found the one-row graded Dade line, of which this is the member form, and no unit-loss statement. The Macaulay2 kernel is exact; its output and hashes are in research/results/odd-prime-truncated-green/. A fresh-context reviewer checked the kernel: the top ideal degree by degree, the cover-count freeness degree with no off-by-one, the counting degree and the rational pointwise proxy, which bounds \(d_{\mathrm{pt}}\) from above. It recounted all 24 trials (18 equal, 6 one short, by \(r\) as stated, range 2 to 9), matched the one-row readings to the recorded claims, and confirmed the reformulation and the conditional wording of the consequences. It required the identification of one-cell members with \(\mathbb F_3[t]/(t^2)\) to be derived, which is now done, along with registration and this gate. Its suggestions are adopted: supports over \(\bar{\mathbb F}_3\), and the two truncations.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-truncated-green">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>20 min 12.59 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">10 min 33.72 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 8.11 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 52.57 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">38.07 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
