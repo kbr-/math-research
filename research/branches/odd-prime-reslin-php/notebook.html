@@ -31,7 +31,7 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> Taylor generation is needed at one degree \(D'\ge22k\) given a Nullstellensatz design at \(D'-1\) (<a href="#entry-2026-09-28-single-degree-taylor">single degree</a>), and on grown boards a lower class outside the absorbable space \(\mathcal A\) reappears once per added cell (<a href="#entry-2026-09-28-exact-taylor-propagation">exact propagation</a>). The kernel for \(\mathcal A\) is corrected (<a href="#entry-2026-09-28-absorbable-classes">absorbable classes</a>). Next: run it once as a validation series of the exact formula on 8- to 10-cell boards and once on the seed-23 pair at \(N=16\), \(E=5\), deciding whether its class at multiplier degree 4 is absorbable, and state the answer for that family on every extension.</p>
+<p><strong>Route item: odd-prime-clause-transfer, open statement A1 (highest risk).</strong> Non-absorbable Taylor classes migrate upward: the seed-23 pair's class reappears one degree higher on every one-column extension, once per cell, even where it decays at its own degree (<a href="#entry-2026-09-28-defect-migration">defect migration</a>, <a href="#entry-2026-09-28-exact-taylor-propagation">exact propagation</a>). Next: a route review of A1. Decide whether single-degree Taylor generation for dense families is worth pursuing through absorption, which depends on relations among Taylor generators that no recorded tool controls, and close the lagged route review's Buss–Pitassi lead.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -43829,6 +43829,40 @@ Writing \(T(W)=T(U_b)\otimes T(C)\) for a complement \(C\), one has \(\operatorn
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article class="research-entry" id="entry-2026-09-28-defect-migration" data-kind="research" data-route="odd-prime-clause-transfer" data-claims="ex:seed23-defect-migration">
+<h3>Defect migration: the recorded non-Taylor class of the seed-23 pair is not absorbable, so on every one-column extension of its board it reappears one degree higher, once per new cell, even where cor:defect-decay kills it at its own degree; the exact propagation formula holds in all 48 validation cases</h3>
+<p class="entry-meta">28 September 2026 · Finite check with a proved consequence · open statement A1 · cycle odd-prime-absorbable-runs. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Route item: <strong>odd-prime-clause-transfer</strong>, open statement A1 (highest risk). By prop:exact-taylor-propagation (2), a lower-degree non-Taylor class outside the absorbable space \(\mathcal A\) reappears once per new cell on every extension. The kernel for \(\mathcal A\) was corrected in the <a href="#entry-2026-09-28-absorbable-classes">previous cycle</a>. Is the recorded defect of the seed-23 pair \(A^2B\), \(C^2D\) absorbable, and does the exact formula hold on the corrected kernel?</p>
+<p><strong>General statement.</strong> The general statement is prop:exact-taylor-propagation; this cycle registers ex:seed23-defect-migration, its computed instance with the consequence the proposition gives. Let \(R\) be the square-free algebra on the recorded 16 cells with the seed-23 pair. Then \(\operatorname{Def}_4(R)=1\) and \(\mathcal A^{(5)}_4(R)=0\), so by prop:exact-taylor-propagation (2) every board \(R'\) obtained from \(R\) by adding one column \(c\), with any coefficients, has \(\operatorname{Def}_5(R')\ge|c|\): at least one non-Taylor top syzygy of target degree 8 per new cell. On this one-row algebra a column is a single cell, so the bound reads \(\operatorname{Def}_5(R')\ge1\); the statement on the weak base, with columns of \(m\) cells, would need the row inflation of prop:row-inflation, which is not carried out here.</p>
+<h4>Computations</h4>
+<ul>
+<li><strong>Validation of the exact formula.</strong> absorbable_classes.cpp in its series mode ran every \(N=8,9,10\), seeds 1 to 4 and \(E=2,\dots,5\) with \(E+3\le N+1\): 48 cases (validation_series_N8_10.txt). In each it added one cell with random coefficients, computed \(\operatorname{Def}_E\) of the extension directly on \(N+1\) cells, and asserted equality with \(\dim\ker\mathrm{ob}_c+\operatorname{Def}_{E-1}(R)-\operatorname{rank}\bar\delta_c\), and the persistence bound. All 48 passed. In 34 cases the lower defect was positive, in 25 the rank of \(\bar\delta_c\) was positive, and in 27 \(\mathcal A\neq0\), so the formula was exercised well beyond the clean case of prop:lift-obstruction. Absorption does occur: at \(N=8\), seed 1, \(E=5\), all 12 lower classes lie in \(\mathcal A\) and the extension's defect is 0. These small boards are beyond the fill point, which is why their defects are large.</li>
+<li><strong>The seed-23 pair.</strong> absorb mode at \(N=16\), seed 23, \(E=5\) (seed23_N16_E5.txt): \(\operatorname{Def}_4(R)=1\), reproducing the recorded defect, 685 independent relations among the Taylor generator instances at multiplier degree 5, and \(\dim\mathcal A^{(5)}_4(R)=0\). Every derivative component was asserted to be a syzygy, by a matrix product with the syzygy map. So the class is persistent. The run took 24 s.</li>
+</ul>
+<h4>What it means</h4>
+<ul>
+<li><strong>Decay is migration.</strong> cor:defect-decay shows that random added cells kill this pair's class at multiplier degree 4, with probability at least \(2/3\) per cell. The present result shows that on every one-column extension, whether or not the class dies at degree 4, a class appears at degree 5, one per cell. The recorded decay describes the class's own degree. One degree up it persists, at least for one step. Whether the degree-5 classes are absorbable on the extended board, so that the migration stops, was not computed.</li>
+<li><strong>For single-degree Taylor generation.</strong> On boards containing this pair, Taylor generation at target degree 8 fails on every one-column extension of the 16-cell board. This pair is short: its forms have the recorded column weight 7 after row inflation, which conj:column-weight-taylor excludes at degrees above \(7/c_2\), with \(c_2\) an unknown constant. So the finding does not bear on that conjecture's regime. It shows that the lower-degree hypotheses of the recorded Taylor tools cannot be dropped merely by working at a single degree, since non-absorbable lower classes feed the next degree.</li>
+</ul>
+<p><strong>Outcome.</strong> ex:seed23-defect-migration (finite check with a proved consequence): the seed-23 pair's class at multiplier degree 4 is not absorbable, so every one-column extension of its board has at least one non-Taylor class per new cell at multiplier degree 5. The exact propagation formula passed all 48 validation cases. Whether the class keeps climbing on further extensions is open.</p>
+<h4>Next step</h4>
+<p>On odd-prime-clause-transfer, open statement A1 (highest risk): a route review is due. The Taylor sub-line now has an exact propagation rule, and non-absorbable classes migrate upward. The review should decide whether single-degree Taylor generation for dense families is worth pursuing through absorption, which depends on relations among Taylor generators that no recorded tool controls. It should also close the lagged route review's Buss–Pitassi lead, whose framing the single-degree entry corrected.</p>
+<h4>Verification gate</h4>
+<p><strong>Verification gate.</strong> Re-read prop:exact-taylor-propagation, cor:defect-decay, ex:pseudorandom-taylor-check, prop:row-inflation and conj:column-weight-taylor. The kernel's corrected lift system was validated by the 48-case series and, before the fix, located with the independent reference of the previous entry. All matrix fills were audited for the unsigned-entry defect: the remaining ones add only nonnegative values. A fresh-context reviewer checked the generator instances, their values and derivative components against the proposition, the syzygy assertion, the check mode's two sides, and every quoted number against the outputs. It required, all adopted: \(|c|=1\) on the one-row algebra, with the weak-base version left to row inflation; that migration holds on every extension, whether or not the class dies at its own degree; the column-weight remark with its unknown constant; and the audit of all matrix fills.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="odd-prime-absorbable-runs">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 10.76 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 39.53 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 5.59 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">25.51 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
