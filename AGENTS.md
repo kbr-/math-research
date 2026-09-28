@@ -118,7 +118,8 @@ rules to growing checklists or one-off setup narratives.
   this and all future Spin runs; no separate confirmation is needed.
   In both Codex and Claude Code, explicitly set reviewer subagents to **medium**
   reasoning, regardless of the main agent's reasoning level; do not inherit its
-  high or higher setting.
+  high or higher setting. Claude Code uses the committed `medium-reviewer` agent
+  type (`.claude/agents/medium-reviewer.md`, loaded at session start).
   Resolve every reported gap and drop or justify each unused hypothesis. Brief
   reviewers narrowly: exact files/anchors, at most one or two named claim searches,
   dependency excerpts in a scratch file, and required changes as short bullets.
