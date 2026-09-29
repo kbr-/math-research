@@ -43,12 +43,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#entry-2026-09-30-cube-discriminant-descent-review">descent review</a> found the obstacle: the Wronskian descent is uniform in \(N\) while squarefreeness fails at \(N=6\), so the remainders are where \(N\) enters. At \(N=6\) the level-two discriminant is squarefree, so the six-root failure enters at the first two levels.</p>
-<p>Next, develop the restriction lead:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By <a href="#cube-multiplicity-transfer">multiplicity transfer</a>, the six-root failure has only bad traces at levels zero and one, so remainders are populated. The restriction to a collision hyperplane carries Hankel factors to exponent \(4M\) (conjectured, seen at \(N=5\)).</p>
+<p>Next:</p>
 <ul>
-<li>A divisor whose restriction to a collision hyperplane \(H\) is reduced is itself reduced, and every component meets \(H\).</li>
-<li>Determine \(\Delta_W^{\rm nc}|_H\) as \(D^{\rm conf}\) times explicit bad factors (collision forms of \(H\), merging factors) with their exponents, from the inversion transfer and local models, including the trinomial edge, whose discriminant carries \((4gd-h^2)^{2M}\).</li>
-<li>Test the prediction at \(N=6\), where a factor of exponent at least four must appear.</li>
+<li>Give the restricted-discriminant kernel multipoint evaluation and compute \(\Delta_W^{\rm nc}|_H\) at \(N=6\), to see on which factor the six-root component's excess sits: a Hankel factor, a collision form, or \(\mathcal D\).</li>
+<li>That factor names the remainder type that separates \(N=6\) from \(N\ge7\); then derive its exponent for every \(N\).</li>
 </ul>
 </section>
 <section id="working-context">
@@ -29308,6 +29307,90 @@ T(0)-T(1)=\tbinom M2+2M(M-1),\qquad T(a)-T(a+1)=\tbinom M2+2M(M-2)\quad(a\ge1).
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 7.66 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3 min 16.82 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-multiplicity-transfer" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-discriminant-descent-review:1" data-claims="prop:cube-multiplicity-transfer conj:cube-restriction-hankel-exponent check:cube-six-root-remainders">
+<h3>30 September 2026 — Multiplicities pass down the descent at good traces, so the six-root failure lives only in remainders; restriction to a collision hyperplane carries Hankel factors to exponent 4M</h3>
+<p class="entry-meta">Working proof of multiplicity transfer for every N; by a finite check (mod p, one line), the six-root exponent-four component has only bad traces. At N = 5 the restriction is not reduced (Hank_1^12). Multiplicity transfer cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-30-cube-discriminant-descent-review">descent review</a> located the obstacle in the remainders and proposed the restriction lead: squarefreeness of \(\Delta_W^{\rm nc}\) follows from reducedness of its restriction to one collision hyperplane \(H\), since every component meets \(H\). The missing implication is the structure of \(\Delta_W^{\rm nc}|_H\), and where the known six-root failure sits in it.</p>
+<p><strong>General statement.</strong> <code>prop:cube-multiplicity-transfer</code>, for every \(N\ge5\); <code>conj:cube-restriction-hankel-exponent</code>.</p>
+<h4 id="cube-multiplicity-transfer">Multiplicity transfer</h4>
+<p><strong>Proposition.</strong> Let \(N\ge5\).</p>
+<ol>
+<li>Let \(\Gamma\) be a genuine component of \(\{\Delta_W^{\rm nc}=0\}\) of multiplicity \(m\). Suppose its closure meets an open one-collision stratum at a point \(p\) satisfying the hypotheses of the <a href="#cube-inversion-cluster-transfer">inversion transfer</a> except squarefreeness of \(D^{\rm conf}\): \(b=1/c\) in the Hankel region, and the factorization hypotheses near \(b\). Then every component of the trace of \(\Gamma\) through \(p\) lies in a component of \(\{D^{\rm conf}=0\}\) of multiplicity at least \(m\) at \(b\).</li>
+<li>The same holds one level down for genuine components of \(D^{\rm conf,nc}\), with the <a href="#cube-confluent-inversion-transfer">confluent inversion transfer</a>'s hypotheses and \(D^{\rm dir}\) in place of \(D^{\rm conf}\).</li>
+</ol>
+<p><strong>Proof.</strong> (1) At the generic point of \(\iota(\Gamma)\) in the region, the factorization hypotheses give all \(T_{\rm sep}\) roots finite and non-branch with a unit leading coefficient. Since \(\Gamma\) is genuine, the local identity \(\prod(1/r_i-1/r_j)^2=\prod(r_i-r_j)^2/(r_ir_j)^2\) of the inversion transfer gives \(\Delta_W\circ\iota=(\text{unit})\cdot\Delta_W\) there. So the orders are equal in both directions: \(\iota(\Gamma)\) has multiplicity \(m\). On the region \(\Delta_W\) is a unit times \(F=D^{\rm conf}(b')+\varepsilon'g\). Every local branch of \(\overline{\iota(\Gamma)}\) at \((0,b)\) contains smooth points of the irreducible \(\iota(\Gamma)\), so it has order \(m\), and \(F=h^m\,k\) near \((0,b)\), with \(h\) a local equation of \(\overline{\iota(\Gamma)}\) and \(h(0,b)=0\). Here \(h(0,\cdot)\not\equiv0\), because \(\iota(\Gamma)\not\subset\{\varepsilon'=0\}\). Setting \(\varepsilon'=0\) gives \(D^{\rm conf}=h(0,\cdot)^m\,k(0,\cdot)\) near \(b\). The map \((\varepsilon',b')\mapsto(1/b',\pm\varepsilon')\), modulo scaling, is a local biholomorphism onto a neighbourhood of \(p\), with \(\varepsilon'\) half the pair's separation, transverse to \(H\). So the zero set of \(h(0,\cdot)\) is the trace of \(\Gamma\) on the collision hyperplane near \(p\), under \(b=1/c\). Hence \(D^{\rm conf}\) vanishes to order at least \(m\) along each component of that trace through \(b\). A non-reduced \(h(0,\cdot)\), or a vanishing \(k(0,\cdot)\), only raises the order. (2) is the same argument with the confluent reduction. \(\square\)</p>
+<p>This is the divisibility step of the inversion transfer, read in reverse: a non-reduced component either has no good trace, or it forces a non-reduced component one level down, of at least the same multiplicity.</p>
+<h4>Where the six-root failure lives</h4>
+<p><strong>Level one at \(N=6\).</strong> <code>research/tools/bmd_cube_confluent_discriminant_six.gp</code> computes \(D^{\rm conf}\) at \(N=6\) on a random line of its moduli. The configurations are: double root \(A=1\), simple roots \(-1\), \(3\), \(k_3=\tfrac75+\tfrac{11}3s\) and \(k_4=-\tfrac{13}4+\tfrac29s\). With the mark at \(T=0\), these are six points, so the moduli of the script's \(D^{\rm conf}\) have dimension three. But genuine components are Möbius-invariant (<a href="#cube-confluent-inversion-transfer">confluent inversion transfer</a>), so they are pulled back from the plane of the five roots modulo Möbius maps. The \((k_3,k_4)\) slice is a section of that map, so it meets each genuine component with the same order; the change of frame to the reduction's \(b\)-coordinates (\(w=T/(1+T)\), fixing the mark, and the root-product unit identity) preserves orders. That a random line in the slice meets every genuine component is a genericity statement for one rational line, computed modulo \(p\). Restriction and reduction modulo \(p\) can only raise multiplicities, so upper bounds read from it are sound. The method is as in the review's level-two computation:</p>
+<ul>
+<li>modulo \(p=2^{61}-1\), for \(12002\) values of \(s\), interpolate the cleared numerator (degree \(\le319\), two checks);</li>
+<li>divide out the minimal branch factors exactly (double \(39\), simple \(55\)); the division was exact at every value, leaving degree \(60=T_{\rm conf}(6)\);</li>
+<li>interpolate the discriminant in \(s\), with two checks.</li>
+</ul>
+<p>Output (<code>research/results/bmd-20260930-b/confluent-discriminant-six.txt</code>):</p>
+<ul>
+<li>degree \(10776\);</li>
+<li>multiplicities \(1418\) where \(k_3\) or \(k_4\) meets the double root, \(992\) at every other collision, and none at \(k_3=0\) or \(k_4=0\);</li>
+<li>the rest, of degree \(2980\), is a squarefree factor of degree \(2970\) times the square of a factor of degree \(5\).</li>
+</ul>
+<p>So \(D^{\rm conf}\) at \(N=6\) has a double component.</p>
+<p><strong>Consequences at \(N=6\).</strong> Two, by the proposition; both are finite-check conclusions (modulo \(p\), one line):</p>
+<ul>
+<li>The <a href="#entry-2026-09-30-cube-discriminant-descent-review">review</a> found \(D^{\rm dir}\) squarefree at \(N=6\) on its whole moduli slice. So if the double component of \(D^{\rm conf}\) is genuine, it has no good two-simple-root trace, by part (2). Its genuineness is not checked: the repeated root of \(W_s\) could, for instance, sit at a branch value as excess branch weight. If it is genuine, its traces lie in the confluent corollary's remainder: deeper flats (including the triple-root hyperplanes), the neck degeneracy loci and the zero set of the internal Taylor minor, points outside \(\mathcal G\), and loci where the factorization hypotheses fail, including the \(w=0\) condition.</li>
+<li>\(\Gamma_6\) is genuine: the certificate found two triple roots of \(W\) along it. At a good one-collision trace it would force, by part (1), a component of \(D^{\rm conf}\) of multiplicity at least four, genuine because the factorization hypotheses hold near the trace. The slice meets every genuine component at its full order, and none has multiplicity above two. So \(\Gamma_6\) has no good one-collision trace: all its traces lie in the remainder of level zero.</li>
+</ul>
+<p>So the known failure passes through the remainder of level zero, and, if the double component is genuine, a remainder of level one is populated too. The descent is consistent with both.</p>
+<h4 id="cube-restriction-hankel-exponent">The restriction at five roots</h4>
+<p><code>research/tools/bmd_cube_restricted_discriminant.c</code> computes \(\Delta_W^{\rm nc}|_H\), \(H=\{a_1=a_2\}\), on a random line in \(H\). It works on the plane \(a(u,s)=\alpha+s\beta+u\gamma\) with \(\alpha_1=\alpha_2\), \(\beta_1=\beta_2\), \(\gamma_1\ne\gamma_2\), so that \(u=0\) is \(H\). For each of \(1748\) values of \(s\) it interpolates \(D_s(u)=\operatorname{Disc}_zW\) in \(u\) (degree \(1740\)), removes \(u^c\) and keeps the constant term \(E(s)\). It then interpolates \(E\) (two checks) and removes the collision forms of \(H\). It tests the power-sum Hankel numerators \(\operatorname{Hank}_k(1/c)\prod c_j^{2k}\), with \(c_j=a_j-x\), \(x=a_1=a_2\), against the rest. Output at \(N=5\) (<code>restricted-n5.txt</code>):</p>
+<ul>
+<li>every line has full degree; \(c=96\) on every line, equal to the per-pair multiplicity \(96\);</li>
+<li>the collision forms \(x-a_j\) occur to exponent \(372\), beyond the \(192\) of the two generic pairs, and \(a_j-a_l\) to \(120\), beyond \(96\);</li>
+<li>the rest has degree \(168\): a squarefree factor of degree \(120\) times \(\operatorname{Hank}_1^{12}\) (the numerator of degree \(4\)); \(\operatorname{Hank}_2\), a collision product at \(M=3\), does not occur.</li>
+</ul>
+<p>At \(N=5\), \(\Delta_W^{\rm nc}\) is squarefree (<a href="#cube-wronskian-discriminant-certificates">certificate</a>). So the restriction of a reduced divisor carries \(\operatorname{Hank}_1\) to exponent \(12\) and the collision forms to high extra exponents: reduced components meet \(H\) with high multiplicity along the merging locus and along deeper collisions. The implication "restriction reduced, hence \(\Delta_W^{\rm nc}\) squarefree" stays valid, but <em>its hypothesis fails already at \(N=5\)</em>: the restriction of a squarefree \(\Delta_W^{\rm nc}\) is not reduced. The criterion can only be used with the exponents of these factors known in advance.</p>
+<p><strong>Where \(12\) comes from.</strong> Near a generic point of \(H\), the Weierstrass points split into a far group, converging to those of the one-double-root space, and a near group converging to the collision point. By the inversion transfer, the near group consists of the face points, at distance of order \(\varepsilon\), and the neck rings \(j=1,\ldots,M-1\), at distance of order \(\varepsilon^{1-j/M}\). Ring \(j\) solves \(z^{2M}\propto L_{j-1}/L_j\) up to a power of \(\varepsilon\), with \(L_k\) the leading coefficient of window \(W_k\), and \(L_k\propto\operatorname{Hank}_k(1/c)\) for \(1\le k\le M-1\). In \(\prod(r_i-r_j)^2\):</p>
+<ul>
+<li>ring \(j\)'s internal factor is \((L_{j-1}/L_j)^{2M-1}\);</li>
+<li>its cross factor with the \(n_j\) points closer to the collision is \((L_{j-1}/L_j)^{2n_j}\); the closer points are the face and rings \(1,\ldots,j-1\), so \(n_j=\binom M2+2M(j-1)\);</li>
+<li>cross factors with points farther away do not involve \(L\).</li>
+</ul>
+<p>So for \(1\le k\le M-2\), \(L_k\) occurs to the exponent \((2M-1+2n_{k+1})-(2M-1+2n_k)=4M\), independent of \(k\), with the sign depending only on the orientation of the ratio (\(z\) against \(1/z\) in the binomial), which this heuristic does not settle. At \(M=3\), \(n_1=3\), \(n_2=9\) and the exponent is \(12\), as observed. The formula does not apply at \(k=M-1\), since \(L_{M-1}\) occurs only in ring \(M-1\); that is consistent with \(\operatorname{Hank}_{M-1}\) entering the collision monomials. The derivation is heuristic: it ignores the far–near resultants and the normalizations.</p>
+<p><strong>Conjecture (restriction Hankel exponent).</strong> For \(N\ge5\), \(M=N-2\), \(\Delta_W^{\rm nc}|_H\) is a constant times \(\mathcal D\cdot\prod_{k=1}^{M-2}\operatorname{Hank}_k(1/c)^{4M}\), up to monomials in the collision forms of \(H\). Here \(\mathcal D\) has no Hankel factor (\(\operatorname{Hank}_{M-1}\) is a collision product). The exponent is derived above by a sketch, and observed only at \(N=5\).</p>
+<p><strong>What this does to the route.</strong> The restriction lead does not remove the remainders; it converts them into exponents. Its useful form is the conjecture with its exponents known: a non-reduced component shows up as an excess over \(4M\) on a Hankel factor, over the predicted collision exponents, or as a repeated factor of \(\mathcal D\). Relative to the conjecture, and once the collision exponents are predicted too (an open gap), the six-root component must show such an excess, since it has no good trace. Computing \(\Delta_W^{\rm nc}|_H\) at \(N=6\) with the present kernel takes about \(16000\) lines of \(16000\) points each, beyond one run; the kernel needs multipoint evaluation first.</p>
+<p><strong>Lead follow-up.</strong> This develops Outside lead 1 of the <a href="#entry-2026-09-30-cube-discriminant-descent-review">descent review</a>, the restriction lead. <strong>Follow-up.</strong> Continuing: the naive criterion fails at \(N=5\), and the exponents it needs are conjectured.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the restriction exponents for every \(N\), including the collision forms;</li>
+<li>\(\Delta_W^{\rm nc}|_H\) at \(N=6\), to see where the excess of \(\Gamma_6\) sits;</li>
+<li>a mechanism that separates \(N=6\) from \(N\ge7\) in the remainders.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The inversion transfer (transfer of orders, divisibility); the confluent inversion transfer; the neck window theorem's edge coefficients and the neck block discriminant (\(\det\Gamma_k\propto\operatorname{Hank}_k\)); the discriminant certificates at \(N=5,6\).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It checked the proposition's argument and hypotheses, the degree bookkeeping (\(319-39-4\cdot55=60\), \(10776-2\cdot1418-5\cdot992=2980\)) and the five-root numbers against the output. Corrections applied:</p>
+<ul>
+<li>the proof states equality of orders from the local identity, and the identification of the trace, with \(h(0,\cdot)\not\equiv0\) and order \(m\) on every local branch;</li>
+<li>the moduli count includes the mark, and the slice argument is restricted to genuine components, with the frame change;</li>
+<li>the conclusion on the double component of \(D^{\rm conf}\) is conditional on its genuineness, with the complete remainder list; \(\Gamma_6\)'s genuineness is justified, and both conclusions are labelled as finite checks;</li>
+<li>the restriction criterion is called inapplicable at \(N=5\), not false;</li>
+<li>\(n_j\) is corrected (the draft's count gave \(-4M\)), and the derivation is labelled heuristic, with \(k=M-1\) excluded;</li>
+<li>the route paragraph is made conditional.</li>
+</ul>
+<p>These corrections repair or weaken, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-b">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>18 min 25.11 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">38.34 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 31.96 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 26.55 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 26.19 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">6 min 18.49 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.59 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
