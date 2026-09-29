@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). Near cluster degenerations the off-collision discriminant is a unit times the discriminant \(D^{\rm conf}\) of the one-double-root space, off the merging loci (<a href="#cube-cluster-discriminant-reduction">cluster discriminant</a>). Both halves of statement 3 now meet in that space.</p>
-<p>Build a fast exact discriminant kernel, with FLINT multivariate or univariate polynomials over \(\mathbb F_p\) and evaluation–interpolation, since PARI timed out. Test reducedness of \(D^{\rm conf}\) along random lines at \(N=5,6\). Then analyze the merging loci \(\operatorname{Hank}_k(b)=0\), where two neck rings form a trinomial edge, to see whether the discriminant components there are reduced for every \(N\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The caterpillar's minimality condition now holds for clusters of up to four roots, via the <a href="#cube-pair-taylor-vandermonde">pair-sum Vandermonde</a>.</p>
+<p>Prove the pair-sum Vandermonde form for every \(M\). Explain the vanishing of the Taylor determinant on \(b_i+b_j=b_k+b_l\): look for the linear relation among the pair rows' first \(\binom M2\) Taylor coefficients there. Then sharpen the valuation bound for \(Q_E\) with \(\sum E=\binom r2+1\), to prove minimality for \(M\ge5\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -25404,6 +25404,56 @@ where the \(\Sigma\) are the sums of local orders below. Generic here concerns o
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-pair-taylor-vandermonde" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-directional-induction-review:3" data-claims="prop:cube-minimality-small-clusters conj:cube-pair-taylor-vandermonde">
+<h3>29 September 2026 — The pair-space Taylor determinant is the Vandermonde of pair sums, and minimality holds for clusters of up to four roots</h3>
+<p class="entry-meta">Working proof that the caterpillar minimality condition holds for clusters of at most four roots; the Taylor determinant factors as the Vandermonde of pair sums (exact for M&lt;=4, conjectured in general). Pair Taylor cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3 needs generic simplicity of the degree-two pair space. Almost every caterpillar result is conditional on the <em>minimality condition</em> of the <a href="#cube-caterpillar-outer-components">caterpillar entry</a>. It asks that, for a cluster whose roots all tend to \(0\) at separated scales, the pair span's Plücker coordinate on the columns \(\{0,\ldots,r-1\}\), \(r=\binom M2\), have strictly smaller valuation than every other. That coordinate is the Taylor determinant of the pair space at \(T=0\). The translation lemma shows it is nonzero, but not how small it is. This cycle computes it in closed form for small \(M\) and proves minimality from a divisibility of all the other coordinates. Outcome: the Taylor determinant is the Vandermonde of the pair sums \(b_i+b_j\), exactly for \(M\le4\). Minimality holds for every caterpillar cluster of at most four roots. This makes the outer components unconditional for \(N\le5\), the binary-face components for \(N\le6\), and the near–near and far–far blocks of every component with at most four near and four far roots.</p>
+<p><strong>General statement.</strong> <code>prop:cube-minimality-small-clusters</code>, for clusters of \(M\le4\) roots with positive valuations, in characteristic zero. The closed form for all \(M\) is <code>conj:cube-pair-taylor-vandermonde</code>.</p>
+<h4 id="cube-pair-taylor-vandermonde">The Taylor determinant</h4>
+<p>For roots \(b_1,\ldots,b_M\) and \(\varphi_b=(1+bT)^{-3/2}\), let \(P_E(b)\) be the minor of the coefficient matrix \([T^m]\varphi_{b_i}\varphi_{b_j}\), rows the pairs \(i&lt;j\), on a column set \(E\) of size \(r\). Then \(P_E\) is homogeneous of degree \(\sum E\), since the coefficient of \(T^m\) has degree \(m\). Put \(\sigma_{ij}=b_i+b_j\).</p>
+<p><strong>Conjecture.</strong> \(P_{\{0,\ldots,r-1\}}=C_M\prod_{P&lt;P'}(\sigma_P-\sigma_{P'})\), over pairs of pairs, with \(C_M\ne0\). Equivalently, since \(\sigma_{ij}-\sigma_{ik}=b_j-b_k\),
+\[
+P_{\{0,\ldots,r-1\}}=C_M\,\Delta(b)^{M-2}\prod_{\{i,j\}\cap\{k,l\}=\varnothing}(b_i+b_j-b_k-b_l),
+\]
+with one factor for each of the \(3\binom M4\) unordered pairs of disjoint pairs.</p>
+<p><strong>Evidence.</strong> <code>bmd_cube_pair_taylor_det.gp</code> factors the determinant exactly (<code>research/results/bmd-20260929-zf/pair-taylor-det.txt</code>). For \(M=2\) it is a nonzero constant. For \(M=3\) it is \(\Delta(b)\) times a constant. For \(M=4\) it is \(\Delta(b)^2(b_1+b_2-b_3-b_4)(b_1-b_2+b_3-b_4)(b_1-b_2-b_3+b_4)\) times a constant. So the conjecture holds for \(M\le4\). The \(M=5\) run timed out at \(170\) s. The degrees agree for all \(M\): the conjectured form has degree \((M-2)\binom M2+3\binom M4\). The determinant has degree \(\sum_{m&lt;r}m=\binom r2\). Both equal \(M(M-1)(M-2)(M+1)/8\): they count pairs of distinct pairs, split by whether the two pairs share an index.</p>
+<h4 id="cube-minimality-small-clusters">Minimality for small clusters</h4>
+<p><strong>Proposition.</strong> Let \(M\le4\) and let the roots be \(b_i=c_i\varepsilon^{v_i}\), with distinct positive valuations \(v_i\) and nonzero \(c_i\). Then the minimality condition holds: \(\operatorname{val}P_{\{0,\ldots,r-1\}}&lt;\operatorname{val}P_E\) for every other \(E\).</p>
+<p><strong>Proof.</strong> For any \(E\), \(P_E\) is divisible by \(\Delta(b)^{M-2}\). On \(b_j=b_k\), the rows \((i,j)\) and \((i,k)\) coincide for each of the \(M-2\) indices \(i\notin\{j,k\}\). After subtracting, each of those \(M-2\) row differences is divisible by \(b_j-b_k\). Write \(P_E=\Delta^{M-2}Q_E\), where \(Q_E\) is homogeneous of degree \(\sum E-(M-2)\binom M2\). Every root has valuation at least \(1\), so \(\operatorname{val}Q_E\ge\sum E-(M-2)\binom M2\). For \(E\ne\{0,\ldots,r-1\}\), \(\sum E\ge\binom r2+1\).</p>
+<p>By the exact factorizations, \(Q_{\{0,\ldots,r-1\}}\) is a nonzero constant for \(M\le3\), and for \(M=4\) the product of the three disjoint-pair factors. Each of these factors is a signed sum of the four roots. With distinct scales, its valuation is the smallest \(v_i\), which is at least \(1\), with a nonzero leading coefficient. In the caterpillar normalization it is exactly \(1\). The following shows the needed inequality \(\operatorname{val}Q_{\{0,\ldots,r-1\}}&lt;\binom r2+1-(M-2)\binom M2\).</p>
+<ul>
+<li>For \(M\le3\), the left side is \(0\) and the right side is at least \(1\).</li>
+<li>For \(M=4\), the right side is \(15+1-12=4\). The left side is \(3\min v_i\), which is \(3&lt;4\) when \(\min v_i=1\).</li>
+</ul>
+<p>For general \(\min v_i=k\), write \(b=\varepsilon^{k-1}b'\) with \(\min\operatorname{val}b'=1\). By homogeneity \(\operatorname{val}P_E(b)=(k-1)\sum E+\operatorname{val}P_E(b')\). The coordinate on \(\{0,\ldots,r-1\}\) has the smallest \(\sum E\), so strict minimality carries over from \(b'\) to \(b\). The \(M=4\) step uses the exact factorization of <code>bmd_cube_pair_taylor_det.gp</code> (<code>pair-taylor-det.txt</code>). The leading coefficient of \(P_{\{0,\ldots,r-1\}}\) is a product of leading coefficients, so it is nonzero. \(\square\)</p>
+<p><strong>Consequences.</strong></p>
+<ul>
+<li>The <a href="#cube-caterpillar-outer-components">outer-component proposition</a> needs minimality for a cluster of \(N-1\) roots, so it is unconditional for \(N\le5\).</li>
+<li>The <a href="#cube-caterpillar-binary-face-components">binary-face components</a> need it for \(N-2\) roots, so they are unconditional for \(N\le6\).</li>
+<li>In the <a href="#cube-caterpillar-component-count">count formula</a>, the near–near and far–far block assumptions hold when \(n\le4\) and \(F\le4\), which includes every middle component for \(N\le7\). The far–far block is the same statement for the roots \(\varepsilon^{k-i}/c_i\) in \(1/S\). The count stays conditional on its other assumption, the far–near window or tie.</li>
+</ul>
+<p>At \(N=7\) the binary faces need \(M=5\), which is not covered.</p>
+<p>For \(M\ge5\) the same bound fails, at least under the conjectured form of \(Q_{\{0,\ldots,r-1\}}\), which is unproved at \(M=5\). For the caterpillar at \(M=5\) that form has valuation \(12\cdot1+3\cdot2=18\), against the bound \(45+1-30=16\). A finer estimate of \(Q_E\) for \(\sum E=\binom r2+1\) is needed.</p>
+<h4>Test</h4>
+<p><strong>Prediction.</strong> If the Taylor determinant had any factor other than the pair-sum differences, the conjecture would fail at the size where it appears. At \(M\le4\) the exact factorization shows none. The degree identity is a check that the conjectured factors exhaust the degree for every \(M\).</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 3 of the directional induction review, the caterpillar degeneration. Its minimality condition is removed through \(N=5\) for all pieces, and through \(N=7\) for the near–near and far–far blocks of the middle components. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong> (a) Minimality for \(M\ge5\), which needs a sharper bound on \(Q_E\). (b) A proof of the pair-sum Vandermonde form for every \(M\). The vanishing on disjoint pairs \(\sigma_P=\sigma_{P'}\) is the part without an evident reason. (c) The other open items of the caterpillar line.</p>
+<p><strong>Dependencies re-read.</strong> The caterpillar entry's minimality condition and outer-component proof; the binary-face components entry; the count formula's block list; the translation lemma's statement.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read are listed above. Checks: the exact factorizations. The proof's \(M=4\) step depends on the factorization computed by <code>bmd_cube_pair_taylor_det.gp</code>, saved in <code>pair-taylor-det.txt</code>. One fresh-context medium-effort reviewer checked the factorizations, including that the \(M=2\) output means a nonzero constant. It also checked the degree identity as a polynomial identity, the divisibility by \(\Delta^{M-2}\), the valuation count against the caterpillar normalizations, and the consequences, including the far–far block. It required changes, all made. (1) The case of general smallest valuation is reduced to valuation \(1\) by homogeneity. (2) Genericity of the \(c_i\) and integrality of the \(v_i\) were unused and are dropped. (3) The middle-component consequence is limited to the block assumptions. (4) The \(M\ge5\) failure is stated under the conjectured form, with its numbers. (5) The dependence on the exact factorization is stated. These corrections clarify or weaken, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zf">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 16.54 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 59.95 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 26.12 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 50.33 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
