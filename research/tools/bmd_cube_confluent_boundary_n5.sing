@@ -1,0 +1,77 @@
+// Contact on the boundary curves of the N = 5 confluent family (29 September 2026; cycle bmd-20260929-zzh). Test of the
+// base condition (F_rel) of thm:cube-contact-relative-transfer on members of dimension 1: the closures, over a second
+// collision, of the confluent member (a_1 = a_2 = 0, a_3 = 1, a_4 = x, a_5 = y). For each degeneration
+//   (A) x -> 1 (second double root {3,4}),  (B) x -> 0 (triple root {1,2,4}),  (C) x -> y (second double root {4,5}),
+// explicit limit rows are obtained by divided differences of the coinciding rows (to second order for the triple root).
+// Wherever these R = 10 rows have rank R in the columns 0..M, they span the flat limit (the limit contains their span and
+// has dimension R). Tested statement: for y off the collision values, the limit rows restricted to columns 0..R+1 have
+// rank R (no contact), i.e. their 10x10 minors have no common zero after saturation by y(y-1) (and by the remaining
+// coincidences). Checks: rank R of the limit rows in columns 0..M at a random y (so they are the flat limit generically),
+// and a positive control: columns 0..R-1 give a proper ideal (weight-one points exist).
+LIB "elim.lib";
+ring r = 0, (y, X, Y), dp;
+int R = 10; int M = 24;
+proc hcoef(int m) { number c = 1; int i; for (i = 1; i <= m; i++) { c = c * (-3/2 - (i - 1)) / i; } return(c); }
+proc Hk(int k) { poly s = 0; int q; for (q = 0; q <= k; q++) { s = s + hcoef(q) * hcoef(k - q) * X^q * Y^(k - q); } return(s); }
+// row entry k: (1/(a! b!)) d^a/dX^a d^b/dY^b H_k at (X,Y) = (px, py)
+proc D(int a, int b, poly px, poly py, int k) {
+  poly h = Hk(k); int i; for (i = 1; i <= a; i++) { h = diff(h, X); } for (i = 1; i <= b; i++) { h = diff(h, Y); }
+  h = subst(subst(h, X, px), Y, py); return(h);
+}
+// a row is a list of terms (coef, a, b, px, py)
+proc rowvec(list terms, int cols) {
+  matrix v[1][cols + 1]; int k; int s;
+  for (k = 0; k <= cols; k++) { poly e = 0; for (s = 1; s <= size(terms); s++) { e = e + terms[s][1] * D(terms[s][2], terms[s][3], terms[s][4], terms[s][5], k); } v[1, k + 1] = e; kill e; }
+  return(v);
+}
+proc build(list rows, int cols) { matrix A[size(rows)][cols + 1]; int i; int k; for (i = 1; i <= size(rows); i++) { matrix v = rowvec(rows[i], cols); for (k = 1; k <= cols + 1; k++) { A[i, k] = v[1, k]; } kill v; } return(A); }
+proc satid(ideal I, poly g) { def S = sat(std(I), ideal(g)); ideal J; if (typeof(S) == "list") { J = S[1]; } else { J = S; } return(std(J)); }
+proc run(string name, list rows, poly coll) {
+  matrix A = build(rows, R + 1);
+  ideal cont = satid(minor(A, R), coll);
+  matrix A10 = submat(A, 1..R, 1..R);
+  ideal w1 = satid(ideal(det(A10)), coll);
+  matrix B = build(rows, M);
+  matrix Bn = subst(B, y, 7/3);
+  int rk = rank(Bn);
+  print(name + ": rank of limit rows in columns 0.." + string(M) + " at y = 7/3: " + string(rk) + "; contact ideal saturated: " + string(cont)
+        + "; weight-one control proper: " + string(w1[1] != 1));
+}
+// confluent rows: pair {1,j}: H(0,a_j); pair {2,j}: d/dX H(0,a_j); others H(a_i,a_j).
+list A_rows =
+  list(list(1, 0, 0, 0, 0)),          // {1,2}: H(0,0)
+  list(list(1, 0, 0, 0, 1)),          // {1,3}: H(0,1)
+  list(list(1, 0, 1, 0, 1)),          // {1,4} - {1,3}: d_Y H(0,1)
+  list(list(1, 0, 0, 0, y)),          // {1,5}: H(0,y)
+  list(list(1, 1, 0, 0, 1)),          // {2,3}: d_X H(0,1)
+  list(list(1, 1, 1, 0, 1)),          // {2,4} - {2,3}: d_X d_Y H(0,1)
+  list(list(1, 1, 0, 0, y)),          // {2,5}: d_X H(0,y)
+  list(list(1, 0, 0, 1, 1)),          // {3,4}: H(1,1)
+  list(list(1, 0, 0, 1, y)),          // {3,5}: H(1,y)
+  list(list(1, 1, 0, 1, y));          // {4,5} - {3,5}: d_X H(1,y)
+list B_rows =
+  list(list(1, 0, 0, 0, 0)),                         // {1,2}: H(0,0)
+  list(list(1, 0, 1, 0, 0)),                         // {1,4}: d_Y H(0,0)
+  list(list(1, 1, 1, 0, 0), list(-1, 0, 2, 0, 0)),   // {2,4}: d_X d_Y H - (1/2) d_Y^2 H (diff gives 2 * (1/2))
+  list(list(1, 0, 0, 0, 1)),                         // {1,3}: H(0,1)
+  list(list(1, 1, 0, 0, 1)),                         // {2,3}: d_X H(0,1)
+  list(list(1, 2, 0, 0, 1)),                         // {3,4}: (1/2) d_X^2 H(0,1), up to the factor 2
+  list(list(1, 0, 0, 0, y)),                         // {1,5}: H(0,y)
+  list(list(1, 1, 0, 0, y)),                         // {2,5}: d_X H(0,y)
+  list(list(1, 2, 0, 0, y)),                         // {4,5}: (1/2) d_X^2 H(0,y), up to the factor 2
+  list(list(1, 0, 0, 1, y));                         // {3,5}: H(1,y)
+list C_rows =
+  list(list(1, 0, 0, 0, 0)),          // {1,2}: H(0,0)
+  list(list(1, 0, 0, 0, 1)),          // {1,3}: H(0,1)
+  list(list(1, 0, 0, 0, y)),          // {1,5}: H(0,y)
+  list(list(1, 0, 1, 0, y)),          // {1,4} - {1,5}: d_Y H(0,y)
+  list(list(1, 1, 0, 0, 1)),          // {2,3}: d_X H(0,1)
+  list(list(1, 1, 0, 0, y)),          // {2,5}: d_X H(0,y)
+  list(list(1, 1, 1, 0, y)),          // {2,4} - {2,5}: d_X d_Y H(0,y)
+  list(list(1, 0, 0, 1, y)),          // {3,5}: H(1,y)
+  list(list(1, 0, 1, 1, y)),          // {3,4} - {3,5}: d_Y H(1,y)
+  list(list(1, 0, 0, y, y));          // {4,5}: H(y,y)
+run("(A) x -> 1", A_rows, y * (y - 1));
+run("(B) x -> 0", B_rows, y * (y - 1));
+run("(C) x -> y", C_rows, y * (y - 1));
+quit;

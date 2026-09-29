@@ -1,0 +1,48 @@
+// Confluent contact locus at N = 5 (29 September 2026; cycle bmd-20260929-zzh). Test of the base condition (F_rel) of
+// thm:cube-contact-relative-transfer on its members of dimension 2 over the open one-double-root stratum.
+// Tested statement: for the confluent configuration a_1 = a_2 = 0, a_3 = 1, a_4 = x, a_5 = y (every point of the open
+// stratum modulo translation and scale, x, y not in {0,1}, x != y), the confluent matrix A^c_{R+1} (R = 10 rows, columns
+// k = 0..11) has rank R, i.e. its 10x10 minors have no common zero off the collision forms. Rows: H_k(a_i,a_j) for pairs
+// not {2,j}; for j >= 3 the pair {2,j} is replaced by the confluent row d/dX H_k(X,a_j) at X = 0. H_k(X,Y) =
+// sum_{r+s=k} h_r h_s X^r Y^s with h_r = binomial(-3/2, r). Rank R of A^c_{R+1} also gives rank R of A^c_M, so that
+// the fibre of the graph closure is the single confluent point (see the end). Output: the saturated minor ideal.
+LIB "elim.lib";
+ring r = 0, (x, y), dp;
+int R = 10; int L = R + 1;
+proc hcoef(int m) { number c = 1; int i; for (i = 1; i <= m; i++) { c = c * (-3/2 - (i - 1)) / i; } return(c); }
+proc Hk(poly X, poly Y, int k) { poly s = 0; int q; for (q = 0; q <= k; q++) { s = s + hcoef(q) * hcoef(k - q) * X^q * Y^(k - q); } return(s); }
+proc dHk0(poly Y, int k) { if (k == 0) { return(poly(0)); } return(hcoef(1) * hcoef(k - 1) * Y^(k - 1)); }
+proc confmat(int cols) {
+  list pts = 0, 0, 1, x, y;
+  matrix A[R][cols + 1];
+  int row = 0; int i; int j; int k;
+  for (i = 1; i <= 5; i++) {
+    for (j = i + 1; j <= 5; j++) {
+      row++;
+      for (k = 0; k <= cols; k++) {
+        if (i == 2) { A[row, k + 1] = dHk0(pts[j], k); }
+        else { A[row, k + 1] = Hk(pts[i], pts[j], k); }
+      }
+    }
+  }
+  return(A);
+}
+poly coll = x * y * (x - 1) * (y - 1) * (x - y);
+matrix A = confmat(L);
+ideal I = minor(A, R);
+def S = sat(std(I), ideal(coll)); ideal J; if (typeof(S) == "list") { J = S[1]; } else { J = S; }
+print("contact ideal (A^c_{R+1}), saturated by collisions:");
+print(std(J));
+// Positive controls: with fewer columns the same method must find proper ideals, since weight-one points (rank A^c_{R-1}
+// < R) form a curve and weight-two points (rank A^c_R < R) are expected to be finitely many on the stratum.
+int c; for (c = R - 1; c <= R; c++) {
+  matrix Ac = confmat(c);
+  ideal Ic = minor(Ac, R);
+  def Sc = sat(std(Ic), ideal(coll)); ideal Jc; if (typeof(Sc) == "list") { Jc = Sc[1]; } else { Jc = Sc; }
+  Jc = std(Jc);
+  print("control: columns 0.." + string(c) + ": saturated ideal dimension " + string(dim(Jc)) + ", is unit ideal: " + string(Jc[1] == 1));
+  kill Ac, Ic, Sc, Jc;
+}
+// No separate check of A^c_M is needed: a rank drop of A^c_M implies one of its truncation A^c_{R+1}, so an empty
+// contact locus also shows rank A^c_M = R on the stratum (the fibre of the graph closure is the confluent point).
+quit;

@@ -43,14 +43,14 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By the <a href="#cube-contact-relative-transfer">relative transfer</a>, the contact bound for every \(N\) follows from (F\(_{\rm rel}\)): no excessive contact on the fibre pieces of the cut family, and no contact at points of members of dimension at most \(2\).</p>
-<p>Test (F\(_{\rm rel}\)) at the smallest size, \(N=5\), where \(X\) has dimension \(3\). This tests the hypothesis; \(N=5\) lies outside statement 3.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#cube-contact-relative-transfer">relative transfer</a>'s base (F\(_{\rm rel}\)) <a href="#cube-contact-base-five">passes at \(N=5\) on the strict members</a>. The exceptional members over the two-double-root line are untested, and they carry the non-canonical limits.</p>
+<p>Compute the graph closure over the two-double-root line at \(N=5\):</p>
 <ul>
-<li>The members of dimension \(2\) are the components of \(\pi^{-1}(H_{ij})\) not over the chart's own \(H_{kl}\).</li>
-<li>Over the open one-double-root stratum, compute the confluent contact locus \(\{\operatorname{rank}A^c_{R+1}&lt;R\}\) and check that it is empty.</li>
-<li>Then follow the cuts to members of dimension \(1\) and \(0\) over two-collision strata, and check that none of their points off the chart boundary has contact.</li>
+<li>Take \(a_2=\mu t\), \(x=1+t\) with \(\mu\) a free parameter. Compute the flat limit as \(t\to0\) over \(\mathbb F_p(\mu,y)\), saturating correctly.</li>
+<li>Test whether the whole family of directional limits (the exceptional fibre curves) avoids contact, including special ratios \(\mu\).</li>
+<li>Do the same for the triple line.</li>
 </ul>
-<p>If contact occurs, record where, and whether it is forced by the geometry, as a refutation of (F\(_{\rm rel}\)) as stated. Then look for the all-\(N\) structure of the confluent contact locus.</p>
+<p>If contact appears on an exceptional fibre curve, (F\(_{\rm rel}\)) fails as stated, and the transfer must keep direction information. If not, look for the all-\(N\) mechanism: a Hermite–Padé-type rank statement for the directional limit rows, in the spirit of the record's <a href="#cube-hermite-pade-form">Hermite–Padé rows</a>.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -27265,6 +27265,68 @@ Then every component of \(K\) has codimension at least three in the separated lo
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.28 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-contact-base-five" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2" data-claims="check:cube-contact-base-five">
+<h3>29 September 2026 — At N = 5 the relative base condition holds on the strict members of dimension two and one; the exceptional members are untested</h3>
+<p class="entry-meta">Finite check of the relative transfer's base at its smallest size: no contact on the one-double-root family or its strict triple-root boundary (exact), or on its strict two-double-root boundaries (modulo 32003). Base test cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-contact-relative-transfer">relative transfer</a> reduces the contact bound, for every \(N\), to (F\(_{\rm rel}\)): no excessive contact on the members of the cut family. Is (F\(_{\rm rel}\)) plausible, or does it fail already at the smallest size? At \(N=5\), \(X\) has dimension \(3\), and (F\(_{\rm rel}\)) demands no contact at all on members of dimension at most \(2\). A contact point on any of them refutes (F\(_{\rm rel}\)) as stated. \(N=5\) lies outside statement 3.</p>
+<p>Outcome:</p>
+<ul>
+<li>no contact on the <em>strict</em> members of dimension \(2\) and \(1\): the confluent family and its strict boundary curves, up to symmetry;</li>
+<li>the <em>exceptional</em> members, over loci where the rational map to the Grassmannian is undefined, are untested.</li>
+</ul>
+<p><strong>General statement.</strong> The tested all-\(N\) claim is <code>thm:cube-contact-relative-transfer</code>, with its hypothesis (F\(_{\rm rel}\)). The finite check is <code>check:cube-contact-base-five</code>.</p>
+<h4 id="cube-contact-base-five">The checks</h4>
+<p>Coordinates: \(a_1=a_2=0\), \(a_3=1\), \(a_4=x\), \(a_5=y\), the chart fixing \(a_3-a_1=1\). The confluent rows are \(H_k(0,a_j)\) for the pairs \(\{1,j\}\), \(\partial_XH_k(0,a_j)\) for \(\{2,j\}\), and \(H_k(a_i,a_j)\) otherwise, with \(R=10\). A chart \(\{k,l\}\) with the point off \(H_{kl}\), and the symmetry \(\sigma=(13)(24)\), reduce every strict member to the cases below.</p>
+<ol>
+<li><em>The strict member of dimension \(2\): the one-double-root family</em> (<code>bmd_cube_confluent_contact_n5.sing</code>, <code>confluent-contact-n5.txt</code>).
+<ul>
+<li>The \(10\times10\) minors of the confluent matrix on columns \(0..R+1\), saturated by \(xy(x-1)(y-1)(x-y)\), generate the unit ideal. So no point of the open stratum has contact.</li>
+<li>A rank drop of \(A^c_M\) implies one of \(A^c_{R+1}\), so the rows have rank \(R\) there, and the fibre of the graph closure over the open stratum is the confluent point.</li>
+<li>Controls: on columns \(0..R-1\) the ideal has dimension \(1\) (weight-one points form a curve); on columns \(0..R\) it has dimension \(0\).</li>
+</ul></li>
+<li><em>The strict boundary curve at a triple root</em>, \(x\to0\), with \(\{1,2,4\}\) coinciding (<code>bmd_cube_confluent_boundary_n5.sing</code>, <code>boundary-first-order-n5.txt</code>).
+<ul>
+<li>Second-order divided differences give ten limit rows, among them \(\partial_X\partial_YH-\tfrac12\partial_Y^2H\) at \((0,0)\) and \(\tfrac12\partial_X^2H(0,a_j)\). The script uses \(\partial_X\partial_YH-\partial_Y^2H\) and \(\partial_X^2H\): the constants differ, but \(H_k\) is homogeneous of degree \(k\), so at \((0,0)\) both combinations are nonzero multiples of the same vector and the span is unchanged.</li>
+<li>Their contact ideal, saturated by \(y(y-1)\), is the unit ideal. So the rows have rank \(10\) at every \(y\notin\{0,1\}\), and they give the limit along this curve everywhere. The weight-one control is proper.</li>
+<li>The limit is taken along \(x\to0\) only. Direction-independence along the triple line \(H_{12}\cap H_{14}\) is not examined.</li>
+</ul></li>
+<li><em>The strict boundary curves at two double roots</em>, \(x\to1\) (\(\{3,4\}\)) and \(x\to y\) (\(\{4,5\}\)).
+<ul>
+<li>First-order divided differences have rank only \(9\) (<code>boundary-first-order-n5.txt</code>).</li>
+<li>The limit is computed by saturating the row module in \(t\) over \(\mathbb Q(y)\), specializing \(t=0\) and clearing denominators (<code>bmd_cube_double_double_limit_n5.sing</code>). It has rank \(10\), but the cleared generators give a contact polynomial of degree \(262\) (<code>double-double-limit-n5-unsaturated.txt</code>).</li>
+<li>The module is then saturated at each factor of that polynomial, over \(\mathbb F_{32003}[y]\) (<code>bmd_cube_double_double_limit_n5_modp.sing</code>). The output's label "over Q[y]" is a misnomer: the computation is over \(\mathbb F_{32003}[y]\). At every other prime the fibre rank is already \(10\), so the result is locally a direct summand of the free module everywhere, with fibres of rank \(10\).</li>
+<li>After saturation the contact ideal is the unit ideal for both degenerations (<code>double-double-limit-n5-mod32003.txt</code>). The degree-\(262\) polynomial came from degenerate generators. Its factorization is coarser over \(\mathbb Q\) (degrees \(40,60,62,20\)) than modulo \(p\), as expected.</li>
+<li>This is proved only in characteristic \(32003\). The characteristic-zero statement is not proved, since the flat limit and saturation modulo \(p\) need not be the reductions of the rational ones. The unsaturated characteristic-zero run gives the same degree \(262\), which is supporting evidence only.</li>
+<li>Each computation gives one limit per \(y\): the limit with \(a_1=a_2\) exactly and then \(t\to0\), which is the ratio \((a_2-a_1):(a_4-a_3)=0\).</li>
+</ul></li>
+</ol>
+<p><strong>What is not tested.</strong></p>
+<ul>
+<li><em>Exceptional members over the two-double-root line</em> \(H_{12}\cap H_{34}\). The first-order rank \(9\) suggests that the map \(\mathbb P^3\dashrightarrow\operatorname{Gr}\) is undefined along this line. If so, \(X\) has a \(2\)-dimensional exceptional component over it, whose fibres are curves of limits indexed by the ratio \((a_2-a_1):(a_4-a_3)\). That component, and each fibre curve, are members, and (F\(_{\rm rel}\)) requires no contact on all of them. Only the ratio \(0\) was computed.</li>
+<li><em>The triple line</em> \(H_{12}\cap H_{14}\), in all normal directions.</li>
+<li><em>Exceptional curves of the strict dimension-\(2\) member</em> over isolated points of \(H_{12}\) where the rational map is undefined. These are members of dimension \(1\). Case 3's saturation over \(\mathbb F_p[y]\) gives one point per fibre. It does not show that the map on the \((y,t)\)-plane is regular at \(t=0\), which needs local freeness of the \(t\)-saturated module over \(\mathbb F_p[y,t]\).</li>
+<li><em>Members of dimension \(0\):</em> limit points over third collisions on the strict curves (\(y\to0,1\)).</li>
+</ul>
+<p><strong>What this says about the route.</strong> (F\(_{\rm rel}\)) has not failed on the members computed, including the strict two-double-root curves, where first-order divided differences do not give the limit. The test is incomplete in exactly the place the record already marks as hard, the non-canonical limits at two double roots. The exceptional members there carry whole families of directional limits, and they are the next thing to compute. The computations also show that contact polynomials of flat limits must be taken from the saturated module, since degenerate generators produce spurious contact.</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 2 of the all-N mechanism review. <strong>Follow-up.</strong> Continuing: the base passes on the strict members at \(N=5\); the exceptional members are untested.</p>
+<p><strong>Remaining gap.</strong> The exceptional members at \(N=5\): the full graph closure over the two-double-root and triple lines, and over indeterminacy points in \(H_{12}\). Then an all-\(N\) argument for (F\(_{\rm rel}\)).</p>
+<p><strong>Dependencies re-read.</strong> The relative transfer (members, cut family, chart boundary); the confluent weight criterion's confluent rows.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: fail as first drafted, because the draft claimed every member of dimension two and one, while it tested only the strict transforms. The reviewer pointed out that the rank-nine first-order limits indicate indeterminacy along the two-double-root line, whose graph closure has exceptional members carrying whole families of directional limits. The scope is now narrowed to the strict members, and the exceptional ones are listed as untested. Other corrections applied: the script's constant in the triple-root row is explained (the span is unchanged by homogeneity); the triple-root curve has rank ten everywhere, not only generically; the direct-summand argument is completed; the characteristic-zero sentence is replaced by a statement that only characteristic 32003 is proved; the ring label is called a misnomer; the point at infinity of \(y\) is removed. The reviewer confirmed the confluent rows, the contact test, the controls, the symmetry reduction for strict members, and all numbers.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzh">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>56 min 59.95 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">12.53 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">4 min 57.18 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 11.96 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">45 min 35.05 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.23 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 4.</p>
 </div>
 </article>
 

@@ -1,0 +1,81 @@
+// Flat limits at two double roots for the N = 5 confluent family (29 September 2026; cycle bmd-20260929-zzh), the cases
+// where first-order divided differences have rank 9 (bmd_cube_confluent_boundary_n5.sing). Rows: the confluent rows
+// (a_1 = a_2 = 0, a_3 = 1, a_4 = x, a_5 = y) with (A) x = 1 + t or (C) x = y + t, columns 0..M. Over the field Q(y) the
+// row module in Q(y)[t]^(M+1) is saturated by t and specialized at t = 0: the flat limit at generic y. Its generators,
+// cleared of denominators and mapped to Q[y], are tested for contact: 10x10 minors on columns 0..R+1, saturated by
+// y(y-1). Also reported: the rank of the limit and a weight-one control (columns 0..R-1 must give a proper ideal).
+LIB "elim.lib";
+int R = 10; int M = 24;
+ring rp = (0, y), (t), dp;
+proc hcoef(int m) { number c = 1; int i; for (i = 1; i <= m; i++) { c = c * (-3/2 - (i - 1)) / i; } return(c); }
+proc Hk(poly X, poly Y, int k) { poly s = 0; int q; for (q = 0; q <= k; q++) { s = s + hcoef(q) * hcoef(k - q) * X^q * Y^(k - q); } return(s); }
+proc dHk0(poly Y, int k) { if (k == 0) { return(poly(0)); } return(hcoef(1) * hcoef(k - 1) * Y^(k - 1)); }
+proc confrows(poly x) {
+  list pts = 0, 0, 1, x, y;
+  matrix A[R][M + 1];
+  int row = 0; int i; int j; int k;
+  for (i = 1; i <= 5; i++) { for (j = i + 1; j <= 5; j++) { row++;
+    for (k = 0; k <= M; k++) { if (i == 2) { A[row, k + 1] = dHk0(pts[j], k); } else { A[row, k + 1] = Hk(pts[i], pts[j], k); } } } }
+  return(A);
+}
+proc flatlimit(poly x) {
+  matrix A = confrows(x);
+  module Mo = module(transpose(A));
+  def S = sat(std(Mo), ideal(t)); module L; if (typeof(S) == "list") { L = S[1]; } else { L = S; }
+  L = subst(L, t, 0);
+  int i; for (i = 1; i <= size(L); i++) { L[i] = cleardenom(L[i]); }
+  return(L);
+}
+module LA = flatlimit(1 + t);
+module LC = flatlimit(y + t);
+ring rq = 0, (y, t), dp;
+module LA = imap(rp, LA);
+module LC = imap(rp, LC);
+proc satid(ideal I, poly g) { def S = sat(std(I), ideal(g)); ideal J; if (typeof(S) == "list") { J = S[1]; } else { J = S; } return(std(J)); }
+proc tcase(string name, module L) {
+  matrix G = transpose(matrix(L));
+  matrix Gn = subst(G, y, 7/3);
+  int rk = rank(Gn);
+  matrix G12 = submat(G, 1..nrows(G), 1..(R + 2));
+  ideal cont = satid(minor(G12, R), y * (y - 1));
+  matrix G10 = submat(G, 1..nrows(G), 1..R);
+  ideal w1 = satid(minor(G10, R), y * (y - 1));
+  string cs;
+  if (cont[1] == 1) { cs = "unit ideal (no contact)"; }
+  else {
+    // principal in one variable: report degree, factor degrees, and whether the full limit keeps rank R at its roots
+    poly c = cont[1];
+    list fa = factorize(c);
+    intvec fd; int i; for (i = 1; i <= size(fa[1]); i++) { fd[i] = deg(fa[1][i]); }
+    // full rank at the roots: some 10x10 minor of the full generator matrix (columns beyond R+1 included) coprime to c
+    int ok = 0; int s;
+    for (s = 0; s <= 12 && ok == 0; s++) {
+      intvec cols = 1..(R - 1); cols[R] = R + 2 + s;
+      matrix Gs = submat(G, 1..nrows(G), cols);
+      if (nrows(Gs) == R) { poly m = det(Gs); if (m != 0) { if (deg(gcd(m, c)) == 0) { ok = 1; } } kill m; }
+      kill Gs; kill cols;
+    }
+    cs = "principal, degree " + string(deg(c)) + ", factor degrees " + string(fd) + " (constant first); full limit rank R at all its roots certified: " + string(ok);
+  }
+  print(name + ": flat-limit generators " + string(nrows(G)) + ", rank at y = 7/3: " + string(rk) + "; contact ideal saturated: " + cs
+        + "; weight-one control proper: " + string(w1[1] != 1));
+}
+// The cleared generators can degenerate at special y, where their span is not the true limit. Over the PID Q[y] the
+// saturation L : f^oo at every factor f of the contact polynomial and of y(y-1)-free rank-drop is a direct summand of the
+// free module, so its fibres have rank R at every y; the contact ideal recomputed from it is genuine.
+proc saturate_at_contact(module L) {
+  matrix G = transpose(matrix(L));
+  matrix G12 = submat(G, 1..nrows(G), 1..(R + 2));
+  ideal cont = satid(minor(G12, R), y * (y - 1));
+  if (cont[1] == 1) { return(L); }
+  list fa = factorize(cont[1]); int i;
+  for (i = 1; i <= size(fa[1]); i++) { if (deg(fa[1][i]) > 0) { def S = sat(std(L), ideal(fa[1][i])); if (typeof(S) == "list") { L = S[1]; } else { L = S; } kill S; } }
+  return(L);
+}
+tcase("(A) x = 1 + t, as computed", LA);
+tcase("(C) x = y + t, as computed", LC);
+module LAs = saturate_at_contact(LA);
+module LCs = saturate_at_contact(LC);
+tcase("(A) x = 1 + t, saturated over Q[y]", LAs);
+tcase("(C) x = y + t, saturated over Q[y]", LCs);
+quit;
