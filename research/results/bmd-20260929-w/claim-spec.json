@@ -1,0 +1,52 @@
+{
+  "source": {
+    "record": "[Top-row block minors](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-top-row-block-minors)",
+    "targets": [
+      "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-top-row-block-minors",
+      "https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-w/provenance.json"
+    ],
+    "label": "Top-row block minors"
+  },
+  "reviewer": "Claude Code (claude-opus-5-5); one fresh-context medium correctness reviewer",
+  "date": "2026-09-29",
+  "topics": [
+    "degree-accounting",
+    "affine-linear-algebra"
+  ],
+  "claims": [
+    {
+      "id": "lem:cube-top-row-block-minors",
+      "summary": "Characteristic zero, lambda not in {0,-1,...}, 1<=k<=M-1, top rows M-k..M-1 and any columns D_1<...<D_k (D>=M) of the neck block matrix Gamma: det Gamma[R,S] = (-1)^(k(k-1)/2)(prod beta_D/prod beta_m)(lambda-1)^k (M-k-1)!/M! det[sum_r b_r^s f_j(b_r)], f_(-1)=1, f_D=quo(int_0 quo(x^D,P)P,P); by Cauchy-Binet this is sum_T H_T det C[T], with H_T = sum over (k+1)-sets of Vandermonde^2 times a Schur polynomial, positive at positive roots.",
+      "assessment": "Working proof extending the discriminant-form proof (Steps 2-3 unchanged, bialternant formula); exact check at 300 random cases, M<=6, lambda=3/2,1/3.",
+      "status": "working_proof",
+      "rationale": "Gives a positive Hankel factor for all top-row neck block minors; reduces their signs and valuations to the quotient coefficient minors."
+    },
+    {
+      "id": "ex:cube-remainder-integral-not-sign-regular",
+      "summary": "At each of six random positive points (M=3,4), the remainder-integral matrix [x^m]rem(int_0 x^t P,P) and the quotient-integral matrix [x^u]quo(int_0 x^t P,P) are not sign-regular, raw or after a checkerboard sign change: at every single point both signs occur among nonzero minors of every order below the top.",
+      "assessment": "Refutation by exact per-point evaluation; refutes only this factorization route, not sign regularity of Gamma.",
+      "status": "refutation",
+      "rationale": "Rules out proving fixed signs of neck block minors by a sign-regular factorization through these matrices."
+    }
+  ],
+  "relationships": [
+    [
+      "lem:cube-top-row-block-minors",
+      "depends_on",
+      "thm:cube-neck-block-discriminant",
+      "Steps 2-3 of its proof."
+    ],
+    [
+      "lem:cube-top-row-block-minors",
+      "depends_on",
+      "thm:cube-confluent-top-window-valuations",
+      "Operator form."
+    ],
+    [
+      "ex:cube-remainder-integral-not-sign-regular",
+      "cites",
+      "conj:cube-caterpillar-neck-slopes",
+      "Refutes one route to its proof."
+    ]
+  ]
+}
