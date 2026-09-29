@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). Every far–near window is a <a href="#cube-far-near-double-schur-reduction">double Schur expansion</a>, and its valuation is the least weight in the support of \(c_{\kappa\nu}\).</p>
-<p>Find the support of \(c_{\kappa\nu}\). By the lemma, \(c_{\kappa\nu}\) is the coefficient of \(s^{\kappa+n\delta_F}t^{\nu+F\delta_n}\) in \(P_E\) divided out by Schur functions. Compute it exactly for \(2\times n\) and \(3\times3\) through Cauchy–Binet over both groupings, and test a two-sided dominance rule that reduces to the two-far rule. Then prove the vanishing orders through the \(2\)-form curve \(\omega(t)\) of the review's next step.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The <a href="#cube-two-far-double-support">two-sided support rule</a> would give the two-far window for every \(n\), \(s_2\) terms included. It holds exactly in five computed windows.</p>
+<p>Prove its first part, \(c_{\kappa\nu}=0\) for \(|\nu|&lt;r(r+1)\), which is equivalent to \(Q\) vanishing to order \(r(r+1)\) at \(t=0\). At \(t=0\) the rows become \(f_iS^b\), \(b&lt;n\). Expand in \(t\) through the \(2\)-form curve \(\omega(t)=f_1\varphi_t\wedge f_2\varphi_t\), and show that every \(E_r\)-coordinate of a product \(\omega_{k_1}\wedge\cdots\wedge\omega_{k_n}\) with \(\sum k_j&lt;n(n-1)+r(r+1)\) cancels after antisymmetrization. The window reaches \(r\) columns beyond \(n-1\), and each such column needs a \(t\)-degree the base span lacks.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -25991,6 +25991,48 @@ a nonzero polynomial in the leading constants. Here \(w_{\min}\) is the least we
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-two-far-double-support" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-directional-induction-review:3" data-claims="conj:cube-two-far-double-support">
+<h3>29 September 2026 — Two-far windows with both far roots: a two-sided support rule that implies the leading monomial</h3>
+<p class="entry-meta">Conjecture with exact finite evidence: a two-sided Schur support rule for two-far windows, which implies their leading monomial and valuation, s_2 terms included. Two-far double support cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> By the <a href="#cube-far-near-double-schur-reduction">double Schur reduction</a>, each far–near window is decided by the support of its coefficients \(c_{\kappa\nu}\). For two far roots, the <a href="#cube-two-far-schur-support">support rule</a> was stated and tested only at \(s_2=0\). That left open gap (b) of the <a href="#cube-two-far-leading-monomial">leading-monomial conjecture</a>: the terms containing \(s_2\). This cycle computes \(c_{\kappa\nu}\) exactly with both far roots live, and states the rule on both indices. Outcome: in every computed window the least-weight pair is unique and is the predicted one. The supports obey a two-sided rule, and that rule implies the leading monomial and the valuation, \(s_2\) terms included. It does not imply the diagonal formula for the coefficient.</p>
+<p><strong>General statement.</strong> <code>conj:cube-two-far-double-support</code>, for every \(n\ge2\) and \(0\le r\le n-1\).</p>
+<h4 id="cube-two-far-double-support">The rule</h4>
+<p><strong>Setup.</strong> \(F=2\), \(\lambda=\tfrac32\), window \(E_r=[-(n-r),\,n-1+r]\). \(P_{E_r}=\Delta(s)^n\Delta(t)^2\sum c_{\kappa\nu}s_\kappa(s)s_\nu(t)\), with \(\kappa\) having at most \(2\) parts and \(\nu\) at most \(n\). The size relation of the reduction gives \(|\nu|-|\kappa|=n(2r+1-n)\). Weights are \(\sigma=(1,2)\) and \(\tau=(1,\ldots,n)\). Put \(\kappa^*=((n-1-r)(n-r))\), a single row, and \(\nu^*=(2r,2r-2,\ldots,2)\). Then \(|\nu^*|-|\kappa^*|=r(r+1)-(n-1-r)(n-r)=n(2r+1-n)\), as required.</p>
+<p><strong>Conjecture.</strong> \(c_{\kappa^*\nu^*}\ne0\). Moreover, \(c_{\kappa\nu}\ne0\) implies \(|\nu|\ge r(r+1)\), equivalently \(|\kappa|\ge|\kappa^*|\), and \(\nu\trianglelefteq\nu^*+(|\nu|-r(r+1))\).</p>
+<p><strong>It implies the two-far leading monomial.</strong> Let \((\kappa,\nu)\) be in the support, with \(|\nu|=r(r+1)+a\), \(a\ge0\). Then \(|\kappa|=|\kappa^*|+a\).</p>
+<ul>
+<li>The far weight is \(\kappa_1+2\kappa_2\ge|\kappa|\), with equality only for a single row.</li>
+<li>The near weight is at least that of \(\nu^*+(a)\), which is \(w(\nu^*)+a\), with equality only at \(\nu=\nu^*+(a)\). This is because weight strictly decreases along dominance for increasing weights, as in the two-far Schur support entry.</li>
+</ul>
+<p>So the weight is at least \(|\kappa^*|+w(\nu^*)+2a\), with equality only when \(a=0\), \(\kappa=\kappa^*\) and \(\nu=\nu^*\). The least-weight pair is unique, and its coefficient is nonzero. By the reduction, the leading form is the single monomial \(\pm\operatorname{lead}(\Delta(s)^n\Delta(t)^2)\,c_{\kappa^*\nu^*}\,s^{\kappa^*}t^{\nu^*}\). Its \(s\)-part is \(s_1^{\,n+(n-1-r)(n-r)}\), with no \(s_2\). Its \(t\)-part is \(t^{2\delta_n+\nu^*}\), with exponents \(2(n-j)+2(r+1-j)_+\). These are the monomial and exponents of the leading-monomial conjecture, now without the specialization \(s_2=0\). The coefficient is \(C_r=\pm\operatorname{lead}\cdot c_{\kappa^*\nu^*}\ne0\). The conjecture's diagonal formula for \(C_r\) does not follow. The valuation is \(n+2\binom{n+1}3+(n-1-r)(n-r)+r(r+1)(r+2)/3\), the two-far formula.</p>
+<p><strong>Relation to the \(s_2=0\) rule.</strong> At \(s_2=0\), \(\Delta(s)^n\) becomes \(s_1^n\), and \(s_\kappa(s_1,0)\) is \(s_1^{|\kappa|}\) for one-row \(\kappa\) and \(0\) otherwise. So the \(s_2=0\) coefficients are \(a_\nu=\pm c_{(k),\nu}\), and the earlier rule is this rule restricted to one-row \(\kappa\). The computation confirms this. For example, \(c_{(2),(2)}=-70875/524288\) and \(a_{(2)}=70875/524288\) at \(2\times3\), \(r=1\).</p>
+<h4>Test</h4>
+<p><code>bmd_cube_two_far_double_schur.gp</code> expands \(P_{E_r}\) over one exponent pair \((a_e,a_e+e)\) per column. The terms are \(\prod\beta_{a_e}\beta_{a_e+e}\) times the grid determinant \(\det[s_i^{a_e}t_j^{a_e+e}]\), which is homogeneous of degree \(\sum(2a_e+e)\). Taking all selections up to degree \(D\) gives \(P_{E_r}\) exactly up to degree \(D\). The script divides homogeneous-wise by \(\Delta(s)^n\Delta(t)^2\), exactly, and reads off \(c_{\kappa\nu}\) as the coefficients of \(s^{\kappa+\delta_2}t^{\nu+\delta_n}\) in \(Q\,\Delta(s)\Delta(t)\). It covers all pairs up to weight \(w_{\min}+4\) at \(2\times3\) and \(w_{\min}+3\) at \(2\times4\). The script divides the whole truncated polynomial, which is exact because each homogeneous component is divisible. The support up to the covered weight is in <code>double-schur.txt</code>.</p>
+<ul>
+<li><strong>Least pairs.</strong> In all five completed windows, \(2\times3\) with \(r=0,1,2\) and \(2\times4\) with \(r=0,1\), the least weight is the predicted \(w_{\min}\). It is attained only by \((\kappa^*,\nu^*)\): \(((6),0)\), \(((2),(2))\), \((0,(4,2))\), \(((12),0)\) and \(((6),(2))\).</li>
+<li><strong>Listed supports.</strong> Every listed pair satisfies the rule. For \(r\le1\) the dominance clause is vacuous, since \(\nu^*+(a)\) is a single row. For \(r=0\) the size clause is vacuous too. So the nontrivial evidence is the uniqueness of the least pair in five windows, plus one test of dominance. At \(2\times3\) with \(r=2\), the pairs with \(\kappa=0\) have \(\nu\) running over exactly the partitions dominated by \((4,2)\), and \(\kappa=(1)\) comes with \(\nu\trianglelefteq(5,2)\), up to \(w_{\min}+4\).</li>
+<li><strong>Incomplete.</strong> The windows \(2\times4\) with \(r=2,3\) did not finish within the \(900\) s limit and have no result. Their window valuations are among the \(2\times4\) data of the <a href="#entry-2026-09-29-cube-two-far-windows">two-far windows entry</a>.</li>
+</ul>
+<p><strong>What it gives.</strong> Gap (b), the terms containing \(s_2\), is reduced to the same kind of support statement as gap (a). Both are now one conjecture about constants \(c_{\kappa\nu}\), with no specialization. Proving it proves the two-far window formula for every \(n\). That fixes the window of the first and last caterpillar middle components for every \(N\), and so of every middle component at \(N\le6\).</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 3 of the directional induction review, the caterpillar degeneration. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong> (a) A proof of the two-sided rule: the vanishing orders of \(Q\) under collisions of near roots at \(0\), and \(c_{\kappa^*\nu^*}\ne0\). The diagonal formula for \(C_r\) is separate and open. (b) The rule for three or more far roots, where the \(3\times3\) center window has a tie. (c) The rest of the caterpillar count: component simplicity, necks and double-root classes.</p>
+<p><strong>Dependencies re-read.</strong> The double Schur reduction and its size relation; the two-far Schur support entry; the leading-monomial conjecture.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the size relations, the implication proof, the valuation identity and the \(s_2=0\) restriction, including one sign per window. It also checked the script's enumeration, exact truncation, division and extraction, and every quoted number against the data. It passed the entry with corrections, all made. The implication is limited to the monomial and valuation. The claim about \(N\le6\) is limited to middle components. The covered weight range is stated. The evidence scope of the dominance clause is stated. The script's header comment is corrected.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zp">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>21 min 34.77 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 12.49 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">44.28 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 37.62 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">15 min 0.25 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
