@@ -43,13 +43,15 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By the <a href="#cube-contact-boundary-transfer">boundary transfer lemma</a>, the contact bound for every \(N\) follows from a dimension bound, at most \(N-6\), on the contact locus of the limit spaces over one collision hyperplane. Iterating inside the hyperplane keeps the requirement at codimension three and ends at limit families over the deepest strata.</p>
-<p>Work out the base of that iteration for all multiplicity patterns:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By the <a href="#cube-contact-stratified-transfer">stratified transfer</a>, the contact bound for every \(N\) follows from condition (F) on single fibres of limit spaces. (F) has content only at configurations with at most four distinct positions and at deep strata with non-unique limits.</p>
+<p>Test (F) at its smallest nontrivial case, and state its all-\(N\) form:</p>
 <ol>
-<li>Describe the limit spaces, over every direction of approach, for configurations with at most three distinct root positions. The requirement there is the dimension bound that comes out of the iteration's bookkeeping, fibre dimensions included, and it is not assumed in advance.</li>
-<li>Determine their orders at the mark from the local structure, for all \(N\).</li>
+<li>First measure the dimension of the fibre \(\pi^{-1}(p)\) over deep points, as a function of the multiplicities and \(N\). (F) is informative only where this is at least \(3\); below that, emptiness is just the expected outcome, because \(\mathcal K\) has codimension \(3\).</li>
+<li>Then test (F) at the smallest point whose fibre has dimension at least \(3\). Parametrize the directions of approach, compute the directional limits of \(\Lambda\), and ask whether the contact part has dimension at most \(d_\Sigma-3\).</li>
+<li>If none does, look for the general mechanism: the orders at the mark of limit spaces at two positions, as a function of the multiplicities, for all \(N\).</li>
+<li>If some limit does have contact, record that (F) is too strong, and refine the bookkeeping to keep fibre directions.</li>
 </ol>
-<p>Check first whether the iteration's bookkeeping, fibres over deeper strata included, really ends at such strata, and state the resulting all-\(N\) base statement exactly. No per-size certificates.</p>
+<p>No per-size certificates: the case is a test of (F), not a new instance.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -27157,6 +27159,63 @@ Then every component of \(K\) has codimension at least three in the separated lo
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 41.33 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 0.86 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.18 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-contact-stratified-transfer" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2" data-claims="thm:cube-contact-stratified-transfer">
+<h3>29 September 2026 — For every N, the contact bound follows from a bound on single fibres of limit spaces, nontrivial only at few distinct roots and deep strata</h3>
+<p class="entry-meta">Working proof: induction over collision strata turns the boundary transfer into a fibrewise condition; on fibres that are points it is automatic in stratum dimension at least 3. Stratified transfer cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-contact-boundary-transfer">boundary transfer lemma</a> reduced the contact bound, for every \(N\), to the limit spaces over one collision hyperplane. It left open how the iteration closes, fibres over deeper strata included. The missing implication is an exact all-\(N\) base statement. This cycle proves the iteration by induction over strata. Outcome: the contact bound follows from one fibrewise condition (F). (F) is automatic wherever the limit is a single space and the stratum has dimension at least \(3\). Its content lies in configurations with at most four distinct root positions, and in deep strata with large fibres of limits.</p>
+<p><strong>General statement.</strong> <code>thm:cube-contact-stratified-transfer</code>, for every \(N\ge5\).</p>
+<h4 id="cube-contact-stratified-transfer">The stratified transfer</h4>
+<p><strong>Setup.</strong> As in the <a href="#cube-contact-boundary-transfer">boundary transfer lemma</a>:</p>
+<ul>
+<li>\(\mathbb P^{N-2}\) is the space of root vectors modulo translation and scale.</li>
+<li>\(X=X_{kl}\) is the closure of the graph of \(\Lambda\) over the chart \(\mathbb P^{N-2}\setminus H_{kl}\), with projection \(\pi\), and \(K_X\) is the closed contact set (the Schubert condition \(\Lambda\cap E\ne0\)).</li>
+<li>A collision stratum \(\Sigma\) is the set of configurations with a given partition of the roots into coincident groups. Its closure \(\bar\Sigma\) is a linear subspace of dimension \(d_\Sigma=b-2\), where \(b\) is the number of distinct positions, and the collision hyperplanes \(H_{ij}\) not containing \(\Sigma\) cut \(\bar\Sigma\) into deeper strata.</li>
+</ul>
+<p>Only points off \(H_{kl}\) are used, and the charts are compatible on overlaps.</p>
+<p><strong>Theorem.</strong> Let \(N\ge5\) and suppose</p>
+<blockquote>(F) for every stratum \(\Sigma\), every point \(p\in\Sigma\) and every chart with \(p\notin H_{kl}\), \(\dim\bigl(K_X\cap\pi^{-1}(p)\bigr)\le d_\Sigma-3\), where a negative bound means the set is empty.</blockquote>
+<p>Then, for every stratum \(\Sigma\) and every chart \(\{k,l\}\), \(\dim\bigl(K_X\cap\pi^{-1}(\Sigma\setminus H_{kl})\bigr)\le d_\Sigma-3\) in \(X_{kl}\). In particular, for the open stratum, the contact locus \(K\) has codimension at least three in the separated locus.</p>
+<p><strong>Proof.</strong> The proof is by strong induction on \(d_\Sigma\), with the statement taken chart by chart. Let \(Y\) be an irreducible component of \(K_X\cap\pi^{-1}(\Sigma\setminus H_{kl})\) in \(X_{kl}\), and suppose \(\dim Y\ge d_\Sigma-2\).</p>
+<ul>
+<li><em>If \(\pi(Y)\) is a point \(p\):</em> \(Y\subset K_X\cap\pi^{-1}(p)\), contradicting (F). This covers \(d_\Sigma=0\), where \(\bar\Sigma\) is a point.</li>
+<li><em>Otherwise:</em> \(\pi:X_{kl}\to\mathbb P^{N-2}\) is proper, so \(\pi(\bar Y)\) is the closure of \(\pi(Y)\), a projective subvariety of \(\bar\Sigma\cong\mathbb P^{d_\Sigma}\) of dimension at least \(1\). Take \(H_{ij}\) with \(i,j\) in different blocks; it exists because \(b\ge2\), and it meets \(\bar\Sigma\) in a hyperplane. By the projective dimension theorem (Hartshorne I.7.2), \(\pi(\bar Y)\cap H_{ij}\ne\emptyset\). Fix a component \(Z\) of it.</li>
+<li><em>Chart.</em> Choose \(\{k',l'\}\ne\{i,j\}\) with \(Z\not\subset H_{k'l'}\). This is possible because \(Z\subset H_{ij}\) is nonempty and all the \(H\) together have empty intersection.
+<ul>
+<li>Over the complement of \(H_{kl}\cup H_{k'l'}\) the two charts differ by the scale \(s(p)\), regular and invertible there. The map \((p,\Lambda)\mapsto(p,\Lambda D_{s(p)})\) is an isomorphism between the corresponding parts of \(X_{kl}\) and \(X_{k'l'}\), and \(D_s\) preserves \(\mathcal K\).</li>
+<li>Transport \(Y\setminus\pi^{-1}(H_{k'l'})\), which is nonempty and dense in \(Y\) because \(Z\) lies in the closure of \(\pi(Y)\), to \(X_{k'l'}\). Let \(Y'\) be its closure there. Then \(Y'\subset K_X\), \(\dim Y'=\dim Y\), and \(\pi(Y')\) has closure \(\pi(\bar Y)\).</li>
+</ul></li>
+<li><em>Krull.</em> \(\pi^*H_{ij}\) is Cartier on \(Y'\) and does not contain it. So every component of \(Y'\cap\pi^{-1}(H_{ij})\) has dimension at least \(\dim Y-1\ge d_\Sigma-3\). By properness one of them, \(C\), maps onto \(Z\).</li>
+<li><em>Landing.</em> The generic point of \(Z\) lies in one stratum \(\Sigma'\subset\bar\Sigma\cap H_{ij}\), with \(d_{\Sigma'}\le d_\Sigma-1\). \(\Sigma'\) is open in its closure, which contains \(Z\), so \(C\cap\pi^{-1}(\Sigma'\setminus H_{k'l'})\) is dense open in \(C\). It lies in \(K_X\) and has dimension at least \(d_\Sigma-3\ge d_{\Sigma'}-2\). This contradicts the induction hypothesis for \(\Sigma'\) in the chart \(\{k',l'\}\). \(\square\)</li>
+</ul>
+<p><strong>Where (F) has content.</strong></p>
+<ul>
+<li><em>Single-point fibres.</em> If the limit over \(p\) is unique, the fibre is a point. Then (F) holds automatically when \(d_\Sigma\ge3\), that is with at least five distinct positions, and it says "no contact at \(p\)" when \(d_\Sigma\le2\). On the open stratum (\(d=N-2\ge3\)) and on the open one-double-root stratum where \(\operatorname{rank}A^c_M=R\) (\(d=N-3\ge3\) for \(N\ge6\)), (F) is automatic. So the theorem needs nothing from the confluent contact locus beyond its fibres, unlike the one-step lemma, whose hypothesis there was codimension three. That condition has been replaced by the conditions on deeper strata.</li>
+<li><em>At most four distinct positions</em> (\(d_\Sigma\le2\)). (F) says that no limit over \(p\), in any direction of approach, has contact \(\ge R+4\) at the mark. This is a statement about explicit limit spaces for configurations of two, three or four points with multiplicities summing to \(N\), for every \(N\).</li>
+<li><em>Deep strata with large fibres</em> (\(d_\Sigma\ge3\), non-unique limits). (F) bounds the dimension of the contact part of the family of directional limits by \(d_\Sigma-3\).</li>
+</ul>
+<p><strong>Caution.</strong> (F) is sufficient, and it may be stronger than the truth. The theorem throws away how the fibres fit together, so a failure of (F) would not refute the contact bound. Two further points:</p>
+<ul>
+<li>The theorem's conclusion is itself stronger than the contact bound. For \(b\le4\) it says that the contact set over a stratum of dimension at most \(2\) is empty, which the contact bound does not imply.</li>
+<li>A dimension count. \(\mathcal K\) has codimension \((M+1)-R-(M-R-1)+1=3\) in \(\operatorname{Gr}\). So \(K_X\cap\pi^{-1}(p)\) has expected dimension \(\dim\pi^{-1}(p)-3\). Fibres over points with \(b=2\) can have dimension up to \(N-3\). So (F) at \(d\le2\) is expected to fail wherever fibres over deep points have dimension at least \(3\), unless they have special structure.</li>
+</ul>
+<p>The first measurement must therefore be the dimension of the fibres over deep points. Small cases with fibres of dimension at most \(2\) only confirm the expected outcome, and the informative test is a size where the fibre has dimension at least \(3\). If (F) fails there, the bookkeeping must keep fibre directions.</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 2 of the all-N mechanism review. <strong>Follow-up.</strong> Developed: the iteration is proved, and its base is the fibrewise condition (F).</p>
+<p><strong>Remaining gap.</strong> Condition (F) for every \(N\): configurations with at most four distinct positions and all directions of approach, and the contact dimension of directional-limit families over deep strata.</p>
+<p><strong>Dependencies re-read.</strong> The boundary transfer lemma and its setup, remarks and reviewer's corrections; the all-N mechanism review's Lead 2.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It confirmed that stratum closures are linear with deeper strata cut by collision hyperplanes, the point case, the nonemptiness from the projective dimension theorem, the Krull bound, the density of the landing part, the inequality \(d-3\ge d'-2\) and the reading of where (F) has content. Corrections applied: the conclusion is stated chart by chart; properness of \(\pi\) is made explicit; the chart switch is ordered so that it is not circular, via the scaling isomorphism between charts; two registry edges are corrected; the caution now notes that the conclusion is stronger than the contact bound, and that \(\mathcal K\) has codimension three, so (F) is informative only on fibres of dimension at least three; the next step measures fibre dimensions first.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzf">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 35.28 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 9.94 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 22.21 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.12 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
