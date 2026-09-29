@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge8\). The collision half <a href="#cube-hierarchical-neck-count-all-levels">reduces to the base weight bound</a>, <a href="#cube-collision-half-eight-nine">proved at \(N=8,9\)</a>; the off-collision half is the contact bound, the higher risk (<a href="#entry-2026-09-30-cube-neck-complete-review">review</a>).</p>
-<p>Next, the off-collision half through the restriction criterion: determine the local type of \(W\), and the transversality of the configuration map to the discriminant, along each bad factor of \(\Delta_W^{\rm nc}|_H\) (collision forms, merging loci, weight at \(w=0\)), and state each exponent uniformly in \(N\) (discriminant-multiplicity lead). Then the base, by a degeneration with colliding double roots.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge8\). The collision half <a href="#cube-hierarchical-neck-count-all-levels">reduces to the base weight bound</a>, <a href="#cube-collision-half-eight-nine">proved at \(N=8,9\)</a>. For the off-collision half, the <a href="#cube-merging-loci-reduced">merging loci are reduced</a> where three minors are nonzero.</p>
+<p>Next, the remaining remainder kinds of the <a href="#cube-inversion-cluster-transfer">inversion transfer</a>: the deeper collision flats (a cluster inside a cluster, restriction exponents \(372\) and \(120\) at \(N=5\)), by the same lattice analysis of Laplace bounds; then the coprimality behind (G1), and the base weight bound by a degeneration with colliding double roots.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -30231,6 +30231,123 @@ with \(n-1\) columns of powers and \(a-n+1\) columns of integrals. For \(n=1,2\)
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.91 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2 min 23.08 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.57 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-merging-loci" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-neck-complete-review:3" data-claims="thm:cube-merging-locus-branches cor:cube-merging-loci-reduced">
+<h3>30 September 2026 — At a neck merging locus the discriminant is reduced, with 4M simple collisions in two trinomial transitions, so merging loci leave the remainder</h3>
+<p class="entry-meta">Working proof for every N at points with three nonvanishing minors; the restriction exponent 4M is explained, and the excess order 4M−4k−2 across the collision hyperplane is confirmed at N = 5, 6, 7 for every k. Merging loci cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The off-collision half of statement 3 needs squarefreeness of \(\Delta_W^{\rm nc}\) or the weaker contact bound. The <a href="#cube-inversion-cluster-transfer">inversion transfer</a> proves a genuine component reduced when its trace on a collision hyperplane \(H\) has a good point. Its remainder consists of three kinds of trace: deeper collision flats, the merging loci \(Z_k=\{\operatorname{Hank}_k(1/c)=0\}\), and bad points of \(D^{\rm conf}\). On the merging loci the record expected a symmetric trinomial neck edge. The <a href="#cube-restriction-hankel-exponent">restriction exponent conjecture</a> puts \(\operatorname{Hank}_k\) in \(\Delta_W^{\rm nc}|_H\) with exponent \(4M\), a heuristic count observed at \(N=5\). The missing implication, from the <a href="#entry-2026-09-30-cube-neck-complete-review">review</a>'s next step: the local type of \(W\) along these bad factors, and the exponent of each. A symmetric trinomial would produce components of multiplicity \(2M\), non-reduced. Test: find the true local model.</p>
+<p><strong>General statement.</strong> <code>thm:cube-merging-locus-branches</code> and <code>cor:cube-merging-loci-reduced</code>, for every \(N\ge5\) and \(1\le k\le M-2\).</p>
+<h4 id="cube-merging-locus-branches">The local model</h4>
+<p><strong>Setup.</strong> Characteristic zero, \(N\ge5\), \(M=N-2\), the separated pair space (\(\lambda=\tfrac32\)) in the cluster frame \((\varepsilon b,1,-1)\) of the <a href="#cube-neck-window-theorem">neck window theorem</a>, with windows \(W_j\), points \(X_j=\sum W_j=2Mj-M\) and \(v_j=j(j+1)\). Let \(L_j(b)=\pm t_1^j\mathcal H_{M-j}\det\Gamma_j(b)\) be the leading coefficient of \(\det C[:,W_j]\), an identity for every \(b\). By the <a href="#cube-neck-block-discriminant">neck block discriminant</a>, \(\det\Gamma_j\) is a nonzero constant times \(\operatorname{Hank}_j(b)=\det[p_{i+l}(b)]_{0\le i,l\le j}\). Fix \(1\le k\le M-2\). Let \(S'\) be \(W_k\) with its top high column \(M+k-1\) replaced by \(M+k\), and \(\Gamma'_k\) the block of the neck window theorem on the rows \(M-k,\ldots,M-1\) and the columns \(M,\ldots,M+k-2,M+k\).</p>
+<p><strong>Theorem (merging locus branches).</strong> Let \(b\) be a point with \(\operatorname{Hank}_k(b)=0\) and \(d\operatorname{Hank}_k(b)\ne0\). Assume:</p>
+<ul>
+<li>(G1) \(\operatorname{Hank}_j(b)\ne0\) for every \(j\ne k\), \(1\le j\le M-1\), and \(\det\Gamma'_k(b)\ne0\);</li>
+<li>(G2) the other groups of Weierstrass points are simple near \(b\): the reduction's factorization hypotheses hold, the binary face is simple and \(D^{\rm conf}(1/b)\ne0\).</li>
+</ul>
+<p>Put \(s=\operatorname{Hank}_k(b')\), a local coordinate at \(b\). Then near \((\varepsilon,b')=(0,b)\):</p>
+<ul>
+<li>\(\Delta_W=U\,\varepsilon^{e}\,\mathcal D_k(s,\varepsilon,y)\), with \(U\) a unit, \(e\) the generic order, and \(y\) coordinates along \(\{s=0\}\);</li>
+<li>\(\mathcal D_k\) is, up to a unit, a Weierstrass polynomial in \(s\) of degree \(4M\);</li>
+<li>for each fixed small \(\varepsilon\ne0\), \(\mathcal D_k\) has \(4M\) simple roots in \(s\): \(2M+1\) of size \(|\varepsilon|^{\gamma}\), \(\gamma=\frac{2M-2k}{2M+1}\), and \(2M-1\) of size \(|\varepsilon|^{\gamma'}\), \(\gamma'=\frac{2M-2k-2}{2M-1}\).</li>
+</ul>
+<p>Consequently:</p>
+<ol>
+<li>every component of \(\{\Delta_W=0\}\) through \((0,b)\) other than \(\{\varepsilon=0\}\) is reduced;</li>
+<li>\(\mathcal D_k(s,0,y)=(\text{unit})\,s^{4M}\), so \(\operatorname{Hank}_k\) occurs to exponent exactly \(4M\) in \(\Delta_W/\varepsilon^e\) at \(\varepsilon=0\) near \(b\);</li>
+<li>\(\operatorname{ord}_{\varepsilon}\mathcal D_k(0,\varepsilon,y)=(2M-2k)+(2M-2k-2)=4M-4k-2\).</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>The coefficients near \(W_k\).</em> For \(b'\) near \(b\):
+<ul>
+<li>\(\det C[:,W_k]=\varepsilon^{v_k}(\kappa s+O(\varepsilon^2))\) with \(\kappa\ne0\), by the leading coefficient identity, \(d\operatorname{Hank}_k(b)\ne0\) and the parity lemma;</li>
+<li>\(\det C[:,S']=\varepsilon^{v_k+1}(L'+O(\varepsilon^2))\), with \(L'=\pm t_1^k\mathcal H_{M-k}\det\Gamma'_k(b')\ne0\), by the neck window theorem's Case A (the top-rows Laplace term is the unique one of minimal valuation for a Case A set, and its coefficient is this minor) and (G1);</li>
+<li>\(\det C[:,W_{k\pm1}]=\varepsilon^{v_{k\pm1}}(L_{k\pm1}+O(\varepsilon^2))\), nonzero by (G1).</li>
+</ul>
+In the plane of points \((\sum S,\operatorname{val})\): \(W_{k-1}=(X_k-2M,v_k-2k)\), \(W_k=(X_k,v_k+\operatorname{val}s)\) when \(\operatorname{val}s&lt;2\), \(S'=(X_k+1,v_k+1)\) and \(W_{k+1}=(X_k+2M,v_k+2k+2)\).</li>
+<li><em>No other point reaches the local hull.</em> Every other \(2M\)-set lies strictly above the lower hull of these four points, uniformly for \(|s|\) small. The Laplace bound of a Case A set with \(j\) high columns is \(v_j+r\) at \(\sum S=X_j+r-r'\), where \(r\ge0\) is the upward shift of its high columns and \(r'\ge0\) the downward shift of its negative ones. So its point lies in the cone above \((X_j,v_j)\) bounded by the rays of slope \(1\) to the right and \(0\) to the left. The local hull has slopes in \((0,1)\). The windows \(W_j\), \(j\notin\{k-1,k,k+1\}\), lie strictly above it: the window points lie on the convex parabola \(v=j(j+1)\), and the local edges' slopes \(\frac{2k+1}{2M+1}\), \(\frac{2k+1}{2M-1}\), \(\frac{2k+\operatorname{val}s}{2M}\) and \(\frac{2k+2-\operatorname{val}s}{2M}\) lie strictly between the adjacent window slopes \(\frac{k-1}M\) and \(\frac{k+2}M\). So every Case A point with \(j\ne k\), other than \(W_{k\pm1}\), is strictly above. For \(j=k\):
+<ul>
+<li>points with \(r\ge1\), \((r,r')\ne(1,0)\), lie strictly above the polyline \(W_{k-1}S'W_{k+1}\), whose slopes \(\frac{2k+1}{2M\pm1}\) are below \(1\), and so above the hull;</li>
+<li>points with \(r=0\), \(r'\ge1\) keep the high block of \(W_k\), so their leading coefficient carries \(\det\Gamma_k\) and they lie at height at least \(v_k+\min(\operatorname{val}s,2)\) at \(X_k-r'\), strictly above the hull in every regime below.</li>
+</ul>
+Case B sets satisfy \(\Phi_\alpha(S)\ge F(j)+(1-\alpha)|J|(j+1)\), which exceeds \(F(k)+1-\alpha=\Phi_\alpha(S')\) on \((k/M,(k+1)/M)\) for every \(j\). At the abscissae \(X_k\) and \(X_k+1\) this gives more: every other set has valuation strictly above that of \(W_k\) (in the regime where it is on the hull) and of \(S'\). The strict inequalities hold for every \(\alpha\) in the interval, so at equal abscissa they give a strictly larger valuation, hence one at least \(2\) larger. This uses the parity of the <a href="#cube-confluent-neck-hull">confluent neck hull theorem</a>'s Parity step: every entry of the neck matrix has \(\varepsilon\)-exponents of parity \(\rho_r+c\) (\(\rho(u_d)=d\), \(\rho(w_m)=m+1\), \(c\) the column), so all sets with the same \(\sum S\) have valuations of one parity. So the coefficient of \(W\) at abscissa \(X_k\) is \(\kappa s\,\varepsilon^{v_k}+O(\varepsilon^{v_k+2})\) times a nonzero constant, and at \(X_k+1\) it is \(L'\varepsilon^{v_k+1}+O(\varepsilon^{v_k+3})\) times one.
+<br>The transfer to the actual cross rows (the neck window theorem, part 3) is Cauchy–Binet with the operator \(\Theta\). It adds to each set \(S\) only sets \(S''\) that dominate it termwise, with \(\sum S''-\sum S\) even and at least \(2\). The negative block of \(W_k\) and of \(S'\) is already the top one, so a Case A set \(S''\) with the same \(j\) has high shift \(r(S'')\ge r(S)+2\), and valuation at least \(2\) higher. The other sets are strictly above by step 2. So \(\kappa\) and \(L'\) keep their valuations and coefficients, and so do \(W_{k\pm1}\). The half-class reduction (<a href="#cube-neck-half-class-reduction">half-class reduction lemma</a>: the integral block has the unique minimizer \(\{0,\ldots,r-1\}\cup\{-3\}\) on \((0,1)\), and minors factor between the classes) multiplies every edge coefficient by the same nonzero constant, and each by the nonzero Vandermonde of its exponent set.</li>
+<li><em>Regimes.</em> \(W_k\) lies below the segment \(S'W_{k+1}\) exactly when \(\operatorname{val}s&lt;\gamma'\), and below the segment \(W_{k-1}S'\) exactly when \(\operatorname{val}s&lt;\gamma\), with \(\gamma'&lt;\gamma&lt;1\) (their difference has numerator \(4k+2\)). So:
+<ul>
+<li>for \(\operatorname{val}s&lt;\gamma'\) the hull is \(W_{k-1}W_kW_{k+1}\), with two binomial rings of \(2M\) points;</li>
+<li>for \(\gamma'&lt;\operatorname{val}s&lt;\gamma\) it is \(W_{k-1}W_kS'W_{k+1}\), with binomial edges of \(2M\), \(1\) and \(2M-1\) points;</li>
+<li>for \(\operatorname{val}s>\gamma\) it is \(W_{k-1}S'W_{k+1}\), with binomial edges of \(2M+1\) and \(2M-1\) points.</li>
+</ul>
+Binomial edges have simple roots, so no two of the \(4M\) points collide in these ranges. To make "\(\operatorname{val}s\)" precise and uniform, fix \(R\) large and cover a punctured neighbourhood \(0&lt;|s|&lt;\delta\), for each small \(\varepsilon\ne0\), by five ranges:
+<ul>
+<li>(i) \(R|\varepsilon|^{\gamma'}\le|s|\le\delta\);</li>
+<li>(ii) \(s=\sigma\varepsilon^{\gamma'}\), \(R^{-1}\le|\sigma|\le R\);</li>
+<li>(iii) \(R|\varepsilon|^{\gamma}\le|s|\le R^{-1}|\varepsilon|^{\gamma'}\);</li>
+<li>(iv) \(s=\sigma\varepsilon^{\gamma}\), \(R^{-1}\le|\sigma|\le R\);</li>
+<li>(v) \(|s|\le R^{-1}|\varepsilon|^{\gamma}\), including \(s=0\).</li>
+</ul>
+In (i), (iii) and (v), after rescaling \(z\) on each edge, the edge polynomials are binomials perturbed by terms of relative size \(O(R^{-c})+o(1)\), \(c>0\). So for \(R\) large and \(\varepsilon\) small the roots are simple, with relative separations bounded below uniformly. Choose \(R\) larger than every \(|\sigma_j|^{\pm1}\) of step 4.</li>
+<li><em>Transitions.</em> At \(s=\sigma\varepsilon^{\gamma'}\) the edge through \(W_k,S',W_{k+1}\) has, after scaling \(z\), the edge polynomial \(E(z)=\kappa\sigma+Bz+Cz^{2M}\) with \(BC\ne0\). Since \(\gcd(2M,1)=1\), its discriminant is \(c_1\sigma^{2M-1}+c_2\) with \(c_1c_2\ne0\): \(2M-1\) simple values of \(\sigma\), at each of which \(E\) has exactly one double root. At \(s=\sigma\varepsilon^{\gamma}\) the edge through \(W_{k-1},W_k,S'\) has \(E(z)=A+\kappa\sigma z^{2M}+Bz^{2M+1}\), with discriminant \(c_1\sigma^{2M+1}+c_2\) since \(\gcd(2M+1,2M)=1\): \(2M+1\) simple values. By Newton–Puiseux, uniformly for \(\sigma\) in compact sets, the discriminant of the factor of \(W\) with roots on that edge is a power of \(\varepsilon\) times a unit times \((\operatorname{Disc}E+o(1))\). Its zeros in \(\sigma\) are simple and converge to those of \(\operatorname{Disc}E\). These are the ranges (ii) and (iv) of step 3. In \(s\) the \(2M+1\) roots \(s=\sigma_j\varepsilon^{\gamma}(1+o(1))\) form the curve \(s^{2M+1}\approx c\,\varepsilon^{2M-2k}\), which has \(\gcd(2M+1,2k+1)\) irreducible analytic branches, and the other \(2M-1\) roots form \(\gcd(2M-1,2k+1)\) branches. So the number of branches is not \(4M\) in general; what matters below is that all these roots are simple.</li>
+<li><em>The group factor.</em> For small \((s,\varepsilon)\), the \(4M\) points of rings \(k\) and \(k+1\) are the roots of \(W\) in a fixed annulus of scales, strictly between the slopes \(\frac{k-1}M\) and \(\frac{k+2}M\) of the neighbouring rings, in every regime. So \(W\) factors analytically as \(W_{(k)}\cdot W_{\rm rest}\), and by Vieta the product of the roots of \(W_{(k)}\) is fixed by the endpoints \(W_{k-1}\), \(W_{k+1}\): a unit times a power of \(\varepsilon\), independent of \(s\). So the cross resultants between the groups contribute a unit times a fixed power of \(\varepsilon\), as do the other groups by (G1) and (G2). This gives \(\Delta_W=U\varepsilon^e\mathcal D_k\) with \(\mathcal D_k=\operatorname{Disc}W_{(k)}\) up to units. By steps 3 and 4, for fixed small \(\varepsilon\ne0\) its zeros in a disc \(|s|&lt;\delta\) are exactly the \(2M-1\) and \(2M+1\) simple ones found. So \(\mathcal D_k(\cdot,0)\) has order \(4M\) at \(0\) (the number of zeros is constant near \(\varepsilon=0\)), \(\mathcal D_k\) is a unit times a Weierstrass polynomial of degree \(4M\) in \(s\), and it is reduced. At \(s=0\), \(\operatorname{val}s=\infty>\gamma\), and the \(4M\) roots are distinct with separations fixed by the two binomial edges \(W_{k-1}S'\) and \(S'W_{k+1}\). Comparing with the generic regime, the Weierstrass polynomial's value at \(s=0\) is the product of its roots, of orders \(\gamma\) (\(2M+1\) of them) and \(\gamma'\) (\(2M-1\)): \((2M+1)\gamma+(2M-1)\gamma'=4M-4k-2\). \(\square\)</li>
+</ol>
+<p>So the record's expected symmetric trinomial edge \(gz^{4M}+hz^{2M}+d\) does not occur at a merging point. The vertex \(S'\), one step to the right of \(W_k\), always enters, and it breaks the \(2M\)-fold symmetry at leading order. With a symmetric edge, the discriminant would have components of multiplicity \(2M\) (the descent review's trinomial-edge computation), and the excess order would be a multiple of \(2M\). The prediction \(4M-4k-2\) is not a multiple of \(2M\) for \(M\ge4\), \(k=1\).</p>
+<h4 id="cube-merging-loci-reduced">Merging loci leave the remainder</h4>
+<p><strong>Corollary (merging loci reduced).</strong> Let \(\Gamma\) be a genuine component of \(\{\Delta_W^{\rm nc}=0\}\), \(N\ge5\). Suppose that, after inversion, \(\overline{\iota(\Gamma)}\) contains a point \((0,b)\) at which the theorem's hypotheses hold for some \(k\le M-2\). Then \(\Gamma\) is reduced. In the inversion transfer's list of remainders, the merging loci can therefore be replaced by their subsets where (G1) or (G2) fails, or where \(\operatorname{Hank}_k\) is singular. The merging locus \(Z_{M-1}\) needs no treatment: \(\operatorname{Hank}_{M-1}(b)=\prod_{i&lt;j}(b_i-b_j)^2\) is a collision product, so \(k\le M-2\) covers every merging locus off the collision flats.</p>
+<p><strong>Proof.</strong> By the theorem, \(\iota(\Gamma)\) is reduced near \((0,b)\), and by the transfer of orders so is \(\Gamma\). \(\square\)</p>
+<p>Part 2 of the theorem is the exponent of <code>conj:cube-restriction-hankel-exponent</code>, in the cluster frame and for \(\Delta_W\), locally at points satisfying the hypotheses. Carrying it to the conjecture's form, \(\operatorname{Hank}_k(1/c)^{4M}\) in \(\Delta_W^{\rm nc}|_H\), needs three further steps, not done here: the inversion identity \(\Delta_W\circ\iota=\text{unit}\cdot\Delta_W\) at \((0,b)\) itself (the inversion transfer proves it only at generic points of genuine components); the identification of \(\varepsilon\) with the transverse coordinate and of the monomial \(\prod c_j^{2k}\); and the passage from \(\Delta_W\) to \(\Delta_W^{\rm nc}\). The global exponent on a component of \(Z_k\) also needs (G1) at a generic point of that component.</p>
+<p><strong>Test.</strong> Consequence 3 is a sharp prediction in the frame where it can be measured directly. <code>research/tools/bmd_cube_merging_order.c</code> reuses the kernel of the restricted-discriminant computation (functions copied unchanged) over \(\mathbb F_p\), \(p=2^{61}-1\). On a line \(a(u)=a_0+u\gamma\) crossing \(H=\{a_1=a_2\}\) at \(a_0\) (random \(\gamma\), \(\gamma_1\ne\gamma_2\)), it interpolates \(\operatorname{Disc}_zW(a(u);z)\) in \(u\) and reads the order of \(u=0\). The base point \(a_0\) is either generic in \(H\) or on \(Z_k\): the last coordinate is a root in \(\mathbb F_p\) of \(\operatorname{Hank}_k(1/c)\), \(c_j=a_j-x\). By the inversion transfer, \(u\) is the transverse coordinate \(\varepsilon\), and a generic line has \(s\sim u\), so the predicted excess over the generic order is \(\min(1,\gamma)(2M+1)+\min(1,\gamma')(2M-1)=4M-4k-2\). At each point on \(Z_k\) the script also computes, directly from \(x^n\bmod P\), the minors \(\det\Gamma_k\) (which must vanish there) and \(\det\Gamma'_k\), together with \(\operatorname{Hank}_{k\pm1}\).
+<ul>
+<li>Cases: \(N=5,6,7\), every \(k\le M-2\), two lines per base point: \(12\) lines on merging loci, \(6\) generic.</li>
+<li>Output (<code>research/results/bmd-20260930-o/merging-order.txt</code>): generic orders \(96\), \(386\), \(1070\), the collision exponents \(e_5,e_6,e_7\). On \(Z_k\):
+<ul>
+<li>\(N=5\), \(k=1\): \(102\), excess \(6\);</li>
+<li>\(N=6\), \(k=1,2\): \(396,392\), excesses \(10,6\);</li>
+<li>\(N=7\), \(k=1,2,3\): \(1084,1080,1076\), excesses \(14,10,6\).</li>
+</ul>
+All equal \(4M-4k-2\), on both lines of each point. At every such point \(\det\Gamma_k=0\), while \(\det\Gamma'_k\) and \(\operatorname{Hank}_{k\pm1}\) are nonzero, so (G1) holds there.</li>
+</ul>
+The symmetric-trinomial alternative predicts multiples of \(2M\) (\(8\) at \(N=6\), \(10\) at \(N=7\)). It is excluded at the four points where \(4M-4k-2\) is not such a multiple: \(N=6\), \(k=1,2\), and \(N=7\), \(k=1,3\). A first run (<code>merging-order-v1.txt</code>, same seed and points) lacked the \(\Gamma\) minors and is kept; its orders are identical. The theorem is proved for every \(N\); these runs check its bookkeeping and hypotheses at \(M=3,4,5\), and they are modular.</p>
+<p><strong>What this does to the route.</strong> Of the inversion transfer's three remainder kinds, the merging loci are now handled wherever three minors are nonzero. What is left for the off-collision half:</p>
+<ul>
+<li>the deeper collision flats, whose restriction exponents (\(372\) and \(120\) at \(N=5\)) are not yet explained;</li>
+<li>the non-reduced or bad parts of \(D^{\rm conf}\), which the descent pushes one level down;</li>
+<li>the coprimality statements behind (G1) on each component of \(Z_k\).</li>
+</ul>
+<p>The deeper collision flats are the natural next target. Their local model is a cluster inside a cluster, and the same lattice analysis applies.</p>
+<p><strong>Lead follow-up.</strong> This develops Outside lead 3 of the <a href="#entry-2026-09-30-cube-neck-complete-review">review</a>, the discriminant-multiplicity lead. Along the merging loci, near a point satisfying the hypotheses, every collision is a single double root, and the local discriminant factor is reduced, with \(4M\) simple roots in \(s\) for each fixed \(\varepsilon\ne0\). <strong>Follow-up.</strong> Developed.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(G1) generically on every component of every \(Z_k\): coprimality of \(\operatorname{Hank}_k\) with \(\operatorname{Hank}_{k\pm1}\) and \(\det\Gamma'_k\);</li>
+<li>the deeper collision flats and the bad parts of \(D^{\rm conf}\);</li>
+<li>the base weight bound for every \(N\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The inversion transfer (frames, transfer of orders, remainder list); the neck window theorem (Case A top-rows term, leading coefficients, Case B bound, transfer); the neck block discriminant (statement); the half-class reduction lemma; the multiplicity transfer entry (restriction exponent heuristic, trinomial-edge discriminant).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read are listed above. Checks: the excess-order test with the minors. One fresh-context medium reviewer checked the draft, the script's output and four dependency excerpts. Verdict: pass with corrections. It verified steps 1–5: the Case A status and coefficient of \(S'\), the cone argument, the Case B bound, the slopes, the parity, the thresholds, both trinomial discriminants with their single double roots, the Vieta argument, the order \(4M\) and the excess \(4M-4k-2\), and the test's claims; no hypothesis is unused. Corrections applied:</p>
+<ul>
+<li>"\(4M\) reduced branches" was wrong: the roots form \(\gcd(2M\pm1,2k+1)\) analytic branches, and the statement is now degree \(4M\), \(4M\) simple roots per fixed \(\varepsilon\), and reducedness; an unsupported transversality remark is removed;</li>
+<li>"five points" is corrected to four;</li>
+<li>the transfer to the actual rows is argued directly for \(W_k\) and \(S'\), which are not minimizers at \(s=0\);</li>
+<li>the parity statement and the half-class lemma are cited with their content, and the combination of several minors at one abscissa is handled;</li>
+<li>the regimes are made uniform by five ranges of \(s\);</li>
+<li>the restriction exponent is stated in the cluster frame for \(\Delta_W\), with the three steps to the conjecture's form listed as open;</li>
+<li>\(Z_{M-1}\) is noted as a collision product.</li>
+</ul>
+<p>These corrections weaken or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-o">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>20 min 35.10 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">5 min 28.39 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 13.47 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 52.55 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 32.25 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3 min 27.06 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.38 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
