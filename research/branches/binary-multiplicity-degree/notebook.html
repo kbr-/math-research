@@ -43,12 +43,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By the <a href="#cube-weight-limit-variety">weight limit variety</a>, cluster limits from weight-\(w\) shapes lie in one fixed \(w\)-dimensional variety. So <a href="#cube-single-cluster-fibre-dimension">single-cluster fibres</a> have dimension at most the largest realized weight, and the base condition there is automatic for \(N\ge2m+2\), given \(w_{\max}(m)\le m-2\) and full rank.</p>
-<p>Next, the same argument for several clusters:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). <a href="#cube-character-splitting">Character splitting</a> removes the full-rank hypotheses. The base condition now holds unconditionally on the open two-double-root strata for \(N\ge8\) and on the open triple-root strata for \(N\ge7\). At single clusters it needs only \(w_{\max}\le m-2\).</p>
+<p>Next, the cross blocks as rational spaces. By the splitting, the cross rows of two clusters are \(\varphi(x)\varphi(y)\) times rational functions with poles at \(-1/x,-1/y\), and their limit is a limit of such rational spaces.</p>
 <ul>
-<li>Each within-cluster part lies in its \(G_{w_i}\).</li>
-<li>For the cross blocks, the <a href="#cube-cross-block-factorization">factorization</a> writes the limit as \(\mu\) applied to a two-scale torus limit of \(\Lambda_u\otimes\Lambda_v\), which tends to \(E\). Bound the dimension of the possible limits of \(\mu((\Lambda_u\otimes\Lambda_v)D_{h,k})\) by a Plücker support argument for the two-parameter torus, with the kernel \(K\) of \(\mu\) accounted for.</li>
-<li>Test the bound against the \((2,2)\) pencil (dimension \(1\)) and the \((3,2)\) canonical case (dimension \(0\) at comparable scales).</li>
+<li>Describe the space of possible limits: \(mm'\)-dimensional spaces of rational functions with poles of bounded order at two points, containing \(\mu(E)\).</li>
+<li>Bound its dimension through the pole orders that the two-scale arcs can produce.</li>
+<li>Compare with the flat dimension, to settle (F\(_{\rm rel}\)) at two-cluster points for large \(N\), as was done for single clusters.</li>
 </ul>
 </section>
 <section id="working-context">
@@ -28576,6 +28576,83 @@ If every nonzero coordinate has \(J\ni a\), then \(\Lambda\wedge e_a=0\), so \(e
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 50.55 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 13.22 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.12 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-character-splitting" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-character-splitting cor:cube-limit-full-rank">
+<h3>29 September 2026 — Monodromy characters split every candidate limit space, so the full-rank hypotheses of the cluster lemmas hold unconditionally</h3>
+<p class="entry-meta">Working proof for every N: functions with different sign characters are independent, and each class is a space of rational functions. This discharges (H), (H_m), (H′_m) and the rank conditions dim W_C = R and dim W_T = R. Character splitting cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Every fibre statement of the recent cycles assumed that its candidate limit space has dimension \(R\):</p>
+<ul>
+<li>(H) at two double roots;</li>
+<li>(\(H_m\)) and (\(H'_m\)) at single clusters;</li>
+<li>\(\dim W_C=R\) and \(\dim W_T=R\).</li>
+</ul>
+<p>The <a href="#entry-2026-09-29-cube-two-cluster-review">two-cluster review</a> listed these as half of the obstacle. The missing implication is a proof of them for every \(N\). This cycle gives one, by the record's singular-part independence technique, applied systematically. It is used in <code>lem:cube-bubble-directional-identification</code>, and as Kummer independence in <code>lem:cube-curve-transport</code>.</p>
+<p><strong>General statement.</strong> <code>lem:cube-character-splitting</code> and <code>cor:cube-limit-full-rank</code>, for every \(N\).</p>
+<h4 id="cube-character-splitting">Character splitting</h4>
+<p><strong>Lemma.</strong> Let \(y_1,\ldots,y_r\) be distinct, and \(\varphi_a=(1+y_aT)^{-3/2}\). For \(S\subseteq\{1,\ldots,r\}\) of even size, say a function has character \(S\) if it equals \(Q(T)\prod_{a\in S}(1+y_aT)^{-1/2}\) with \(Q\in\mathbb C(T)\). Then:</p>
+<ol>
+<li>functions of distinct even characters are linearly independent over \(\mathbb C(T)\). So a finite-dimensional space spanned by functions of pure characters is the direct sum of its character components;</li>
+<li>\(\varphi_a\varphi_b\cdot Q\) has character \(\{a,b\}\), and \(\varphi_a^2\cdot Q\) and rational functions have character \(\varnothing\);</li>
+<li>within the character \(\{a,b\}\), the dimension is that of the space of rational factors \(Q\). Within \(\varnothing\), it is that of the rational functions.</li>
+</ol>
+<p><strong>Proof.</strong> The factor of \(y_a=0\) is \(1\). Dropping its index cannot merge two distinct even sets, so we may assume all \(y_a\ne0\). For odd sets this would fail, but only sizes \(0\) and \(2\) occur below. The points \(-1/y_a\) are then distinct finite branch points, and the functions are germs at \(T=0\) of algebraic functions. Continuation around \(-1/y_a\) multiplies a function of character \(S\) by \(-1\) if \(a\in S\) and by \(+1\) otherwise. Suppose \(\sum_SQ_Sg_S=0\), with \(g_S\) of character \(S\). Continuing around the points of a set, and summing with signs as in the Fourier inversion on \((\mathbb Z/2)^r\), isolates each \(Q_Sg_S=0\). Items (2) and (3) are immediate. \(\square\)</p>
+<p>Work in the space of power series at \(T=0\), with the truncation order \(M\) of the rows taken large. The candidate spaces form algebraic families over parameter spaces such as stratum \(\times\mathbb P^1\), stratum \(\times Z_c\) and stratum \(\times G_w\). The loci where truncation at order \(M\) drops rank are Zariski closed, decrease with \(M\), and have empty intersection. By Noetherianity the chain reaches \(\varnothing\), so at fixed \(N\) one \(M\) serves the finitely many stratum types. The relative and Schubert transfers hold for every \(M\) above the threshold of <code>lem:cube-contact-boundary-transfer</code>, with the same proofs. Enlarging \(M\) changes \(G_w\) and \(w_{\max}(m,N)\), which live in \(\operatorname{Gr}(k,M+1)\). This is harmless, since the \(w_{\max}\) corollary already lets \(M\) depend on \(N\).</p>
+<h4 id="cube-limit-full-rank">The candidate spaces have full rank</h4>
+<p><strong>Corollary.</strong> For distinct centres, each candidate limit space below has dimension \(R\) as a space of series, for all values of its parameters:</p>
+<ol>
+<li>two double roots: \(W_0+\langle\alpha U+\beta V\rangle\), for every \((\alpha:\beta)\). This is equivalent to (H) of <code>cor:cube-two-double-base-condition</code>, namely \(\dim W_0=R-1\) with \(U,V\) independent modulo \(W_0\): a dependency would give a point of dimension \(R-1\). Directly, the five functions \(1,X_r,X_s,X_r^2,X_s^2\) of the class \(\{r,s\}\) are independent;</li>
+<li>\(c\) double roots: \(W_0+\langle w_{rs}\rangle\), for every point of the torus-orbit closure \(Z_c\);</li>
+<li>one \(m\)-cluster: \(W_C\), \(W_T\), \(W_{(a:b)}\) of the <a href="#cube-single-cluster-line">single-cluster line</a>, and every \(\Lambda U_{x_0}+\text{cross}+\text{pairs}\) with \(\Lambda\in G_w\) (\(H'_m\)).</li>
+</ol>
+<p><strong>Proof.</strong> Split each space by characters.</p>
+<ul>
+<li>The pair rows \(\varphi_z\varphi_{z'}\) of simple roots are alone in their classes \(\{z,z'\}\).</li>
+<li>A cluster \(C\) at \(x_0\) and a simple root \(z\) share the class \(\{x_0,z\}\). Its rational factors are \(X^i=(T/(1+x_0T))^i\), \(i&lt;m\), which are independent.</li>
+<li>The class \(\varnothing\) holds the within-cluster rows. For one cluster these are \((1+x_0T)^{-3}p(X)\) with \(p\) in a \(k\)-dimensional space: \(\mathrm{Pol}_{&lt;k}\), a pencil member \(\mathrm{Pol}_{&lt;k-1}+\langle aX^{k-1}+bX^k\rangle\), or any \(\Lambda\in G_w\). The map \(p\mapsto(1+x_0T)^{-3}p(X)\) is injective, so the dimension is \(k\). For several clusters the within-cluster rows are rational functions with poles at different points \(-1/x_r\), vanishing at infinity, or polynomials when \(x_r=0\). By uniqueness of partial fractions they are independent.</li>
+<li>Two double clusters \(r,s\) share the class \(\{x_r,x_s\}\). Its rational factors are \(1,X_r,X_s\) from \(W_0\), where \(\varphi_r'\varphi_s'\) is the dependent one, together with \(\alpha X_r^2+\beta X_s^2\) up to constants, since \(\varphi_r''\propto X_r^2\varphi_r\). In \(w=1/X_r\) these are \(1,w^{-1},(w+\delta)^{-1}\) and \(\alpha w^{-2}+\beta(w+\delta)^{-2}\). They are independent for \((\alpha,\beta)\ne0\) by partial fractions.</li>
+</ul>
+<p>The class dimensions add up to \(\binom m2+m(N-m)+\binom{N-m}2=R\) for one cluster. For two double roots they add up to \(2+3+1+4(N-4)+\binom{N-4}2=R\), and similarly for \(c\) clusters. \(\square\)</p>
+<p><strong>Consequences.</strong> The rank hypotheses are removed from the recorded corollaries:</p>
+<ul>
+<li><code>cor:cube-two-double-base-condition</code>: at every point of the open two-double-root stratum, in any chart \(X_{k'l'}\) with \(p\notin H_{k'l'}\), the fibre is the line \(\{W_0+\langle\alpha U+\beta V\rangle\}\). (F\(_{\rm rel}\)) holds there for every \(N\ge8\) unconditionally, and for \(N=7\) unless the whole line has contact. At \(N=5\) it holds by <code>check:cube-two-double-fibre-five</code>.</li>
+<li><code>cor:cube-triple-cluster-fibre</code>: at every point of the open triple-root stratum, in any chart off \(p\)'s chart hyperplane, the fibre is the point \(W_T\). So (F\(_{\rm rel}\)) holds there for every \(N\ge7\) unconditionally.</li>
+<li><code>cor:cube-single-cluster-line</code> and <code>cor:cube-single-cluster-fibre-dimension</code>: (\(H_m\)) and (\(H'_m\)) hold. The argument works for any \(k\)-dimensional space \(\Lambda\) of polynomials, and \(G_w\subseteq\mathrm{Pol}_{&lt;k+w}\) by the <a href="#cube-weight-limit-variety">weight limit variety</a>, so \(w_{\max}\) plays no role in the rank statement. The only remaining input at single clusters is the weight bound \(w_{\max}\).</li>
+<li><code>lem:cube-cluster-renormalization</code> and <code>lem:cube-double-cluster-osculating-limit</code>: "equality when the dimension is \(R\)" is now unconditional. These limits are the full flat limits.</li>
+</ul>
+<p>The rank conditions for contact, on the first \(R+2\) columns, are different statements and are not affected.</p>
+<p><strong>What this does to the route.</strong> Half of the obstacle named by the two-cluster review, the full-rank hypotheses, is gone for the configurations treated so far. What remains is multi-cluster cross blocks, the weight bound \(w_{\max}\), and the contact conditions themselves. For cross blocks the splitting applies to the limit candidates, whose cross parts lie in the class \(\{x_A,x_B\}\) with rational factors \(X^iY^j\). A heuristic, not proved: the cross-block limits are subspaces of rational functions with poles at two points. Rows at separated points have other branch points, and limits need not keep the class, so this needs an argument, for instance from the span of all derivatives \(\partial_x^i\partial_y^jF(x_A,x_B)\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>multi-cluster cross blocks;</li>
+<li>\(w_{\max}\le m-2\) for limit shapes;</li>
+<li>the contact conditions (the \(N=6,7\) rank conditions at two double roots, and the Schubert calculus in \(G_w\) for large clusters);</li>
+<li>the collision half.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The bubble identification (singular-part independence); the osculating lemma, the renormalization lemma, the boundary pencil and the weight limit variety (their candidate spaces and rank hypotheses); the two-double-root and triple-root corollaries.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It checked the continuation and Fourier inversion argument for germs, the class splittings, the injectivity, the partial fractions (including the dependence of \(\varphi_r'\varphi_s'\) through \(X_rX_s=(X_r-X_s)/\delta\)), and the totals. Corrections applied:</p>
+<ul>
+<li>the lemma restricted to even characters, with the correct reduction for a centre at \(0\);</li>
+<li>Noetherianity in place of compactness for a uniform \(M\);</li>
+<li>the transfer lemma's threshold on \(M\), and its effect on \(G_w\) and \(w_{\max}\);</li>
+<li>the equivalence with (H) made explicit;</li>
+<li>the \(N=5\) clause cited to its check;</li>
+<li>the chart qualifiers restored;</li>
+<li>the cross-block sentence labelled a heuristic;</li>
+<li>citation of <code>lem:cube-curve-transport</code>.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzt">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 41.96 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">33.86 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 27.90 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 36.43 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.77 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
