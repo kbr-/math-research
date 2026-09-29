@@ -1,0 +1,44 @@
+{
+  "source": {
+    "record": "[Confluent weight criterion](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-confluent-weight-criterion)",
+    "targets": [
+      "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-confluent-weight-criterion",
+      "https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-b/provenance.json"
+    ],
+    "label": "Confluent weight criterion"
+  },
+  "reviewer": "Claude Code (claude-opus-5-5); one fresh-context medium correctness reviewer",
+  "date": "2026-09-29",
+  "topics": ["degree-accounting", "affine-linear-algebra"],
+  "claims": [
+    {
+      "id": "thm:cube-confluent-weight-criterion",
+      "summary": "Characteristic zero, N>=3. On the open one-double-root stratum (a1=a2=A, other roots distinct) the fibre of C_N^+ is the cokernel of the Taylor matrix at T=0 of the confluent pair space spanned by f_ik=((1+a_iT)(1+a_kT))^(-3/2), f_Ak, g_k=T(1+AT)^(-5/2)(1+a_kT)^(-3/2) and (1+AT)^(-3); these R functions are independent and the Moebius flow acts by translation in T. If at one configuration with nonzero entries the space has no finite non-branch point of weight >=3 and the local-exponent minimal multiplicities at the branch values and at infinity are attained, then no height-two prime of Supp C_N^+ contained in the collision divisor meets its open one-double-root stratum.",
+      "assessment": "Working proof after one fresh-context medium review; the flow reduces codimension one inside the stratum to a generic property, and a Hurwitz escape argument using the minimal branch and infinity multiplicities lets a single point certify it.",
+      "status": "working_proof",
+      "rationale": "Clears the collision divisor from the first-step codimension obligation of open statement 3, up to one single-point check per N."
+    },
+    {
+      "id": "check:cube-confluent-weight-certificates",
+      "summary": "Deterministic exact certificates at N=5,6,7 (double root 1; simple roots 2,3,-1 / 2,3,-1,5 / 2,3,5,-1,-4): the cleared confluent Wronskian polynomial, computed mod 2^61-1 by exact interpolation, has degree 93/319/845 and branch multiplicities 15,21 / 39,55 / 85,120, all equal to the local-exponent minima, and its non-branch part is squarefree; by p-adic multiplicity bookkeeping the hypotheses of the confluent weight criterion hold in characteristic zero.",
+      "assessment": "Finite check, exact and deterministic: one configuration per N, reduction of a Z[1/2]-polynomial of bounded degree, with degree and branch multiplicities matching proved lower bounds.",
+      "status": "finite_check",
+      "rationale": "Supplies the hypothesis of the confluent weight criterion at N=7, the first size of open statement 3; N=5,6 are controls."
+    },
+    {
+      "id": "cor:cube-seven-root-collision-exclusion",
+      "summary": "L_7 = ker(C_7^+ -> D22(-4)) has no height-two component inside the collision divisor; with the seven-root off-collision corollary, alpha_7 = lambda_7 = 105 holds if the non-collision Wronskian discriminant is squarefree at N=7.",
+      "assessment": "Working proof of the collision exclusion from the confluent weight criterion, its N=7 certificate and the invariant-prefix theorem; the equality alpha_7=105 remains conditional on the randomized off-collision certificate.",
+      "status": "working_proof",
+      "rationale": "Reduces the first open size of statement 3 to a single off-collision squarefreeness input.",
+      "next_action": "Make the seven-root discriminant certificate deterministic."
+    }
+  ],
+  "relationships": [
+    ["thm:cube-confluent-weight-criterion", "depends_on", "lem:cube-prefix-pair-transfer", "Fibre of C_N^+ via the pair-column span."],
+    ["cor:cube-seven-root-collision-exclusion", "depends_on", "thm:cube-confluent-weight-criterion", "Applied at N=7."],
+    ["cor:cube-seven-root-collision-exclusion", "depends_on", "check:cube-confluent-weight-certificates", "Seven-root certificate."],
+    ["cor:cube-seven-root-collision-exclusion", "depends_on", "thm:cube-invariant-prefix-stabilization", "Excludes the double-pair and triple-root closures."],
+    ["cor:cube-seven-root-collision-exclusion", "applies", "cor:cube-seven-root-offcollision-prefix", "Together they reduce alpha_7=lambda_7 to off-collision squarefreeness."]
+  ]
+}
