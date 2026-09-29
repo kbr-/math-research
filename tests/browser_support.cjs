@@ -50,7 +50,9 @@ async function launch() {
 // A notebook page from the repository's layout and the given body.
 function page(body, revision = 'browser-test') {
   const template = fs.readFileSync(process.env.NOTEBOOK_TEMPLATE || 'index.html', 'utf8');
-  return template.replace('__REVISION__', revision).replace('<!-- NOTEBOOK -->', body);
+  // Function replacers: a string replacement reads "$$" as "$", which turned a fixture's display
+  // math into inline math.
+  return template.replace('__REVISION__', () => revision).replace('<!-- NOTEBOOK -->', () => body);
 }
 
 // A generated notebook: living sections, then a research record of `entries` articles, each
