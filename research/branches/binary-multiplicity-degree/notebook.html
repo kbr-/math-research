@@ -43,13 +43,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#cube-boundary-pencil">boundary pencil</a> shows that a single cluster contributes at most one fixed line from its shapes of mark weight at most one. Larger fibres can come only from shapes of mark weight at least two, and from hierarchical arcs.</p>
-<p>A route review is due next. It should assess whether the contact route has become an induction on the cluster size, with this induction hypothesis: the weight-\(\ge w\) locus of \(m\)-root shapes has codimension at least \(w\), for \(m&lt;N\). The review should also check the following:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#entry-2026-09-29-cube-schubert-induction-review">Schubert induction review</a> recasts the contact route as an induction on cluster size. Its hypothesis (W\(_m\)) is that \(m\)-root shapes of mark weight \(\ge w\) form a locus of codimension \(\ge w\), and it holds at \(m=4\). The obstacle is configurations with several clusters.</p>
+<p>Next:</p>
 <ul>
-<li>whether this is weaker than, equal to, or stronger than the contact bound itself;</li>
-<li>whether the EPD presentation \(C^c\cong(P/\mathcal L(J))(-4)\), now linked to the pair rows, gives it directly;</li>
-<li>which multi-cluster configurations remain.</li>
+<li>State the relative transfer for any Schubert condition \(\sigma_\lambda\), with \(|\lambda|\) in place of \(3\).</li>
+<li>Generalize the <a href="#cube-double-cluster-osculating-limit">osculating lemma</a> to cross blocks of clusters of sizes \(m,m'\). Derive from \(\mathcal L\) and its derivatives the \((m-1)(m'-1)\) relations and their leading replacements, as functions of the shapes and the scale ratio.</li>
 </ul>
+<p>No new sizes.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -27917,6 +27917,160 @@ and assume (\(H_m\)): \(\dim W_{(a:b)}=R\) for every \((a:b)\).</p>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 21.89 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.29 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.34 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-schubert-induction-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Route review; its falsification computation at four roots is recorded here and no new claim is registered.">
+<h3>29 September 2026 — Review: the contact route has become an induction on cluster size, whose natural hypothesis is that the pair spaces meet every Schubert cell at the mark properly; at four roots it holds with room to spare</h3>
+<p class="entry-meta">Route review; exact test at m = 4: the boundary cubic is three lines and no shape has mark weight two. Multi-cluster limits and full-rank hypotheses are the obstacle. Schubert induction review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>The line and the goal.</strong> Open statement 3 for every \(N\ge7\). Off collisions it needs the contact bound (<code>conj:cube-offcollision-contact-bound</code>). The <a href="#cube-contact-relative-transfer">relative transfer</a> reduces that bound to a base condition (F\(_{\rm rel}\)) on the fibres of the graph closure. Since the <a href="#entry-2026-09-29-cube-transfer-route-review">transfer route review</a>, four research cycles have landed, each for every \(N\):</p>
+<ul>
+<li>the <a href="#cube-pair-collision-valuation">pair collision valuation</a> and the cross-block defect;</li>
+<li>the <a href="#cube-double-cluster-osculating-limit">double-cluster osculating limit</a>: every flat limit at disjoint double roots, via the EPD (Laplace) equation of the pair surface;</li>
+<li>the <a href="#cube-cluster-renormalization">cluster renormalization</a>: canonical limits at an \(m\)-cluster off the boundary divisor \(F_m=0\);</li>
+<li>the <a href="#cube-boundary-pencil">boundary pencil</a>: a single fixed line at shapes of mark weight one.</li>
+</ul>
+<p>At \(N=5\), the open two-double-root and triple-root strata are now settled in characteristic zero.</p>
+<p><strong>General statement.</strong> The line's claim is <code>conj:cube-offcollision-contact-bound</code>, via <code>thm:cube-contact-relative-transfer</code>. This review proposes, without registering it, a stronger self-similar form (W\(_N\)) and tests it at four roots.</p>
+<p><strong>What the goal needs.</strong> (F\(_{\rm rel}\)) for every \(N\). The cycles show that the fibre over a point with clusters is governed by the orders at \(T=0\) of the cluster shapes' own pair spaces. So the natural induction statement is:</p>
+<p>(W\(_m\)) for the \((m-2)\)-dimensional projective family of \(m\)-root shapes, the locus of mark weight at least \(w\) has dimension at most \(m-2-w\), for every \(w\ge1\).</p>
+<p>This says that the family meets each Schubert stratum of the flag at \(T=0\) in its expected codimension. The contact locus is one component of the weight-\(\ge3\) locus, so (W\(_N\)) implies the contact bound at size \(N\). It is strictly stronger. The collision half of statement 3 is unchanged.</p>
+<h4>Falsification attempt</h4>
+<p>(W\(_m\)) was tested at the first size where it says something beyond the renormalization lemma, \(m=4\), with a two-dimensional shape space (bmd_cube_shape_weight_strata_m4.sing, <a href="https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-zzn/shape-weight-strata-m4.txt">output</a>). The computation is exact over \(\mathbb Q\), with shapes \((0,1,x,y)\), off the diagonals. It predicts three things:</p>
+<ul>
+<li>weight \(\ge1\) is a curve;</li>
+<li>weight \(\ge2\) is finite;</li>
+<li>weight \(\ge3\) is empty.</li>
+</ul>
+<p>Results:</p>
+<ul>
+<li>\(F_4=p_{J_0}/V^2\) is the cubic \(-\tfrac{14175}{8388608}(y-x-1)(y-x+1)(x+y-1)\), three lines. These are the parallelogram shapes \(u_a+u_b=u_c+u_d\), in agreement with the record's product formula.</li>
+<li>The weight-\(\ge1\) locus has dimension \(1\).</li>
+<li>The weight-\(\ge2\) locus, \(p_{J_0}=p_{J_1}=0\) saturated by the diagonals, is <em>empty</em>. So the prediction of finitely many points is beaten.</li>
+<li>Weight \(\ge3\) is empty.</li>
+</ul>
+<p>So (W\(_4\)) holds. Every non-hierarchical boundary shape at four roots has weight exactly one, and by the boundary pencil the quadruple-root fibres from such shapes lie on one line, under (\(H_4\)). The hypothesis survives its first nontrivial test.</p>
+<h4>Obstacle</h4>
+<p>The line is stuck on two things that block an all-\(N\) proof of (F\(_{\rm rel}\)) from these pieces: the limits at several clusters of arbitrary sizes, and the full-rank hypotheses behind every fibre statement.</p>
+<ul>
+<li><em>Multi-cluster configurations.</em> When clusters of sizes \(m,m'\ge2\) coexist, their cross blocks carry EPD defects: \((m-1)(m'-1)\) relations from \(\mathcal L\) and its derivatives, as the \(m=m'=2\) case shows. Their limits depend jointly on the shapes and on the ratios of the cluster scales. Only the case \(m=m'=2\) is solved. The scalings of different clusters are not one torus action, so the Plücker-face argument does not apply directly.</li>
+<li><em>Full-rank hypotheses.</em> Every fibre statement assumes that its candidate limit space has dimension \(R\): (H), (\(H_m\)), \(\dim W_C=R\). These are nonvanishing statements of the same kind as \(F_{\rm sep}\ne0\) for confluent configurations, and they are proved only at small \(N\).</li>
+</ul>
+<p>The induction on \(m\) closes only if both are handled uniformly. The needed statement is a cross-block limit formula for clusters of any sizes, with a nonvanishing theorem for its candidate spaces.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Dimensional properness at one point (Eisenbud and Harris, Divisors on general curves and cuspidal rational curves, Invent. Math. 74 (1983) 371–418).</strong> For linear series on a general curve, Schubert conditions with respect to osculating flags impose their expected codimension; this is the Brill–Noether–Petri framework. (W\(_m\)) is exactly this properness for the family of \(m\)-root pair spaces at the single point \(T=0\). This develops Lead 2 of the transfer route review, which was not run. Target: the obstacle's induction hypothesis. <strong>Answers.</strong> If the pair spaces were limits of linear series on a curve general in their family, the one-point properness would give (W\(_m\)) for every \(m\). The fibres at clusters would then have the expected dimensions, and the transfer would reduce the contact bound to the multi-cluster case. Where it breaks: our family has dimension \(m-2\) inside a much larger Grassmannian and is not general; the Eisenbud–Harris argument uses a moving curve. <strong>Test.</strong> Passed at \(m=4\): the falsification computation above is exactly the one-point properness of the family, with weight \(2\) empty.</li>
+<li><strong>The record's mark weight dictionary and invariant prime exclusion</strong> (<code>prop:cube-mark-weight-dictionary</code>, <code>thm:cube-invariant-prefix-stabilization</code>). Weight \(\ge2\) holds iff \(F_{\rm sep}\) and \(\delta F_{\rm sep}\) vanish. So the weight-\(\ge2\) locus has codimension \(2\) exactly when no component of \(\{F=0\}\) is invariant under the Möbius flow \(\delta\). The prefix theorem excludes extra invariant primes for the first-step prefix. <strong>Answers.</strong> Squarefreeness of \(F_m\) (<code>thm:cube-binary-face-factorization</code>) together with non-invariance of its components would give the \(w=2\) step of (W\(_m\)) for every \(m\). Where it breaks: non-invariance for the boundary divisor itself is not in the record. <strong>Test.</strong> Passed at \(m=4\): the three lines are not flow-invariant, since weight \(\ge2\) is empty.</li>
+<li><strong>Punctual Hilbert schemes (Briançon, Description de \(\mathrm{Hilb}^nC\{x,y\}\), Invent. Math. 41 (1977) 45–89).</strong> The punctual Hilbert scheme of \(n\) points in the plane is irreducible of dimension \(n-1\). A cluster's rows are values of \(F\) at \(\binom m2\) pair points collapsing together, so their flat limits factor through limits of point schemes. Target: fibre dimension over multi-cluster points. <strong>Answers.</strong> It would bound each fibre by the dimension of a product of punctual Hilbert schemes, uniformly in the configuration. Where it breaks: the bound ignores the EPD relations and the rigidity found for triple roots. <strong>Test.</strong> Falsified as a useful bound: for a triple root it gives \(\binom32-1=2\), while the actual fibre is a point (<a href="#cube-triple-cluster-fibre">triple-root corollary</a>). For a quadruple root it gives \(5\), against at most \(1\) from weight-one shapes.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>Renormalization-group flow and the Białynicki-Birula decomposition (statistical physics; Białynicki-Birula, Ann. of Math. 98 (1973) 480–497).</strong> The scaling \(D_h\) is an RG flow on the Grassmannian. Its fixed points are the coordinate subspaces, and the Plücker weights \(|J|-|J_0|\) are scaling dimensions. Translation: the limit of a fixed space is the fixed point of its Białynicki-Birula cell; limits along moving shapes are broken flow lines; mark weight is the number of relevant directions tuned to criticality. A theorem there, the Morse–Bott count of flow lines between critical points of index difference \(d\), which form a \((d-1)\)-dimensional family plus endpoints, would bound the within-cluster fibre from weight-\(w\) shapes by \(w\), whatever the shape. <strong>Answers.</strong> This would replace case-by-case faces by one dimension bound, which (W\(_m\)) turns into fibre dimensions against flat dimensions. <strong>Test.</strong> Passed at weight \(\le1\): fixed shapes give the BB fixed point of their cell (the endpoint \((0:1)\), confirmed exactly in the pencil controls). At weight one the family is the one-dimensional pencil, matching the index difference \(1\).</li>
+<li><strong>Hartree–Fock determinants and Thouless's theorem (quantum chemistry; Thouless, Nucl. Phys. 21 (1960) 225–232).</strong> A \(k\)-dimensional space is a Slater determinant in the orbitals \(T^w\). \(D_h\) weights orbital \(w\) by energy \(w\), and the canonical limit \(\mathrm{Pol}_{&lt;k}\) is the Aufbau ground configuration. Mark weight is the excitation level of the leading configuration, and Thouless's theorem parametrizes the big cell by single excitations. Translation: the boundary pencil is HOMO–LUMO mixing, of the ground configuration with the single excitation \(T^{k-1}\to T^k\). <strong>Answers.</strong> Degenerate perturbation theory predicts that at excitation level \(w\) the limits mix only configurations up to level \(w\). That is the face statement, and it suggests counting the limits by configuration-interaction spaces. <strong>Test.</strong> Passed: at the parallelogram shapes the leading configuration is the single excitation, and the exact limit is \(\mathrm{Pol}_{&lt;5}+\langle T^6\rangle\) at \(m=4\) (pencil controls).</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work on charge models in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">The coefficient determinant H is a fermionic matrix element; no Heisenberg-group evaluation was attempted. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1">The witness property is used in the covariant degrees entry; no explicit plane family was sought in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on the multi-double windows in this period; the <a href="#cube-double-cluster-osculating-limit">osculating lemma</a> gives the flat limits at several double roots, a different quantity from the window ranks. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:1">Used as the determinism of the covariant degrees entry. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2">Developed further in this period: the base condition of the relative transfer now has explicit limit formulas at double roots (<a href="#cube-double-cluster-osculating-limit">osculating pencils</a>), at single clusters (<a href="#cube-cluster-renormalization">renormalization</a>, <a href="#cube-boundary-pencil">boundary pencil</a>), and is settled at \(N=5\) on the open two-double-root and triple-root strata. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:3">The rational components of the six-root repeated factor contain no hyperplane with small integer or Eisenstein coefficients. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<p><strong>Assessment.</strong> The period replaced case computations by all-\(N\) limit formulas: at double roots, at single clusters off the boundary divisor, and at its weight-one points. It also found the record links that make them one mechanism: the EPD operator, the boundary polynomials \(F_m\) and the mark weight.</p>
+<ul>
+<li>At \(N=5\) two strata that were open or tested only modulo a prime are settled in characteristic zero.</li>
+<li>Reviewers caught real errors in every cycle: parameter spaces for several clusters, one-directional claims about \(F_m\), sign conventions, and attainment of the pencil. All were corrected before commit.</li>
+<li>The route has a clear self-similar form: the contact bound at size \(N\) should follow from the Schubert properness (W\(_m\)) for \(m&lt;N\), plus multi-cluster analysis. The first test of (W\(_m\)) passed with room to spare.</li>
+</ul>
+<p>The honest limit: (W\(_N\)) is stronger than the contact bound, and the induction has not closed even once. Multi-cluster configurations and the full-rank hypotheses carry the remaining difficulty, and the collision half for \(N\ge8\) is untouched. The line is productive, and it is now aimed at one structural statement rather than at cases.</p>
+<p><strong>Next step on the highest-risk item.</strong> Route item cube-odd-characteristic, open statement 3 for every \(N\): the multi-cluster obstacle.</p>
+<ul>
+<li>State and prove the relative transfer for an arbitrary Schubert condition \(\sigma_\lambda\) in place of contact, replacing \(3\) by \(|\lambda|\). The proof should be unchanged.</li>
+<li>Generalize the osculating lemma to the cross block of clusters of sizes \(m,m'\). Use \(\mathcal L\) and its derivatives to find the \((m-1)(m'-1)\) relations and the leading terms that replace them, as functions of the shapes and the scale ratio.</li>
+</ul>
+<p>No new sizes.</p>
+<p><strong>Verification gate.</strong> The falsification computation is exact over \(\mathbb Q\), and its result on \(F_4\) matches the record's product formula independently. No new mathematical claim is registered, so no reviewer was run on this review. The follow-up lists carry every passed item not yet closed from earlier reviews on this route.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzn">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 1.29 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 43.66 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 11.44 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 14.39 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">51.48 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.19 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>

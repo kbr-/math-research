@@ -1,0 +1,29 @@
+// Weight strata of 4-root shape spaces at the mark (29 September 2026; review cycle bmd-20260929-zzn).
+// Shapes u = (0, 1, x, y) (translation and scaling normalized); pair rows H_w(a,b) = sum_i c_i c_(w-i) a^i b^(w-i),
+// c_i = binom(-3/2, i), columns w = 0..8; p_J = 6 x 6 minors on column sets J. V = product of root differences.
+// Tested hypothesis (the induction hypothesis W_m of the review, at m = 4, shape space of dimension 2): off the
+// diagonals V = 0, the weight >= 1 locus {p_J0 = 0} has dimension 1, the weight >= 2 locus {p_J0 = p_J1 = 0} has
+// dimension 0, and the weight >= 3 locus {p_J0 = p_J1 = p_J2a = p_J2b = 0} is empty (J0 = 0..5, J1 = 0..4,6,
+// J2a = 0..4,7, J2b = 0..3,5,6). Printed: Krull dimensions (in the affine (x,y)-plane) after saturation by V, and
+// the vector-space dimension (number of points with multiplicity) of the weight >= 2 scheme.
+LIB "elim.lib";
+ring r = 0, (x, y), dp;
+proc cb(int i) { number n = 1; int j; for (j = 0; j < i; j++) { n = n * (-3/2 - j) / (j + 1); } return(n); }
+proc H(int w, poly a, poly b) { poly s = 0; int i; for (i = 0; i <= w; i++) { s = s + cb(i) * cb(w - i) * a^i * b^(w - i); } return(s); }
+list roots = 0, 1, x, y;
+matrix A[6][9];
+int row = 0; int i; int j; int w;
+for (i = 1; i <= 4; i++) { for (j = i + 1; j <= 4; j++) { row++; for (w = 0; w <= 8; w++) { A[row, w + 1] = H(w, roots[i], roots[j]); } } }
+proc minorJ(intvec J) { matrix B[6][6]; int a; int b; for (a = 1; a <= 6; a++) { for (b = 1; b <= 6; b++) { B[a, b] = A[a, J[b] + 1]; } } return(det(B)); }
+poly V = x * y * (x - 1) * (y - 1) * (y - x);
+poly p0 = minorJ(intvec(0, 1, 2, 3, 4, 5));
+poly p1 = minorJ(intvec(0, 1, 2, 3, 4, 6));
+poly p2a = minorJ(intvec(0, 1, 2, 3, 4, 7));
+poly p2b = minorJ(intvec(0, 1, 2, 3, 5, 6));
+poly F = p0 / V^2;
+"F_4 (p_J0 / V^2), degree and exactness:"; deg(F); (F * V^2 - p0 == 0);
+"factorized F_4:"; factorize(F);
+ideal I1 = p0; I1 = sat(I1, V)[1]; "dim weight >= 1 (off diagonals):"; dim(std(I1));
+ideal I2 = p0, p1; I2 = sat(I2, V)[1]; I2 = std(I2); "dim weight >= 2 (off diagonals):"; dim(I2); "points with multiplicity:"; vdim(I2);
+ideal I3 = p0, p1, p2a, p2b; I3 = sat(I3, V)[1]; I3 = std(I3); "weight >= 3 (off diagonals), standard basis:"; I3;
+quit;
