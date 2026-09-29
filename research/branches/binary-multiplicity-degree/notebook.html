@@ -43,8 +43,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). Component simplicity is squarefreeness of one polynomial \(q_{F,n}\) per rigid component. The <a href="#cube-component-bethe-extension">Bethe extension criterion</a> shows that the master-function lead gives no mechanism: the tested components have no three-point extension.</p>
-<p>Test reduction modulo \(3\). At \(\lambda=\tfrac32\), in characteristic \(3\), \(\varphi=(1+S)^{-3/2}=(1+S^3)^{-1/2}\) and \(S^{-3/2}=S^{-3}\cdot S^{3/2}\) are Frobenius twists. The \(3\)-adic Newton polygon of \(q_{2,3}\) has a single slope, which suggests good reduction. If \(q_{F,n}\bmod3\) keeps its degree and is squarefree, then \(q_{F,n}\) is squarefree over \(\mathbb Q\). A closed form of the reduction, for example through the characteristic-\(3\) Wronskian of the twisted classes, would be a mechanism for all \((F,n)\). First compute \(q_{F,n}\bmod p\) for \(p=3,5,7\) on the rigid components through \(N=7\), and check degree, squarefreeness and factorization pattern. Then read off a structure to prove.</p>
+<p>Route item: cube-odd-characteristic; open statement 3, first at \(N=7\). Every cheap mechanism for uniform simplicity of caterpillar middle components has failed, <a href="#cube-component-mod3-reduction">reduction modulo \(3\)</a> last. \(\alpha_7=105\) rests on one randomized input: squarefreeness of \(\Delta_W^{\rm nc}\) off the collision divisor (<a href="#cube-wronskian-discriminant-certificates">line certificate</a>).</p>
+<p>Make it deterministic. Prove two things, by homogeneity and translation invariance as that record suggests, then reuse the recorded line computation, whose \(D\) attained its degree bound \(87780\).</p>
+<ol>
+<li>The degree bounds \(\deg_zW\le2\lambda\) and total degree of \(W\) at most \(3\lambda\), so the interpolation is exact and the restriction has full degree.</li>
+<li>A lower bound \(e\ge1069\), the same for all pairs by symmetry, for the collision exponent of \(\operatorname{Disc}_zW\) along \(a_i=a_j\) at \(N=7\), from the local structure of \(W\) at a collision. The measured value is \(1070\), and the values \(96\), \(386\) and \(1070\) at \(N=5,6,7\) suggest a formula.</li>
+</ol>
+<p>Also check that the \(21\) collision points are distinct on the line. With these, squarefreeness of the restriction modulo \(p\) with full degree implies squarefreeness of \(\Delta_W^{\rm nc}\) over \(\mathbb Q\). Together with the exact clearing of the collision divisor, that gives \(\alpha_7=105\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26774,6 +26779,57 @@ Their sum is at most \(0\), but (2) needs \(R+m\ge1\). \(\square\)</li>
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">2 min 16.59 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 36.26 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.18 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-component-mod-p" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="ex:cube-component-mod3-reduction">
+<h3>29 September 2026 — Reduction modulo 3 destroys squarefreeness of the component polynomials, so it cannot prove their simplicity</h3>
+<p class="entry-meta">Refutation: on the five tested rigid components the Weierstrass polynomials are cubes or cube-heavy modulo 3, consistent with a Frobenius twist at λ = 3/2; other primes certify single cases only. Mod-p reduction cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Simplicity of a rigid caterpillar component is squarefreeness of one integer polynomial \(q\) (<a href="#entry-2026-09-29-cube-component-simplicity-review">component simplicity review</a>). The missing implication is squarefreeness for every \((F,n)\). The <a href="#cube-component-bethe-extension">Bethe extension lemma</a> left no mechanism. The idea tested here: at \(\lambda=\tfrac32\) and in characteristic \(3\), \(\varphi=(1+S)^{-3/2}=(1+S^3)^{-1/2}\) is a Frobenius twist. The \(3\)-adic Newton polygon of the \(2\times3\) polynomial had a single slope, which suggests good reduction. If \(q\bmod3\) kept its degree and were squarefree with a closed form, that would prove squarefreeness over \(\mathbb Q\) for all \((F,n)\). The test ends the idea if the reduction is not squarefree. Outcome: it is not, on every tested component.</p>
+<p><strong>General statement.</strong> The line's claim is <code>conj:cube-pair-degeneration-simplicity</code>. The tested mechanism, squarefreeness of \(q\bmod3\), is refuted by <code>ex:cube-component-mod3-reduction</code>.</p>
+<h4 id="cube-component-mod3-reduction">The reductions</h4>
+<p><strong>Finite check.</strong> <code>bmd_cube_component_mod_p.gp</code> computes the primitive integer polynomial \(q\) of each rigid component at \(c=1\), exactly as in the review's tests. For \(p=3,5,7,11,13\) it reports the degree of \(q\bmod p\), its squarefreeness and its factorization pattern (<code>mod-p.txt</code>).</p>
+<ul>
+<li><em>\(2\times2\) limit \([-1,2]\)</em> (degree \(6\)). Modulo \(3\): two linear factors, each cubed, so \(q\bmod3\in\mathbb F_3[S^3]\). Squarefree modulo \(5\) and \(7\).</li>
+<li><em>\(2\times2\) limit \([-2,1]\)</em>. Modulo \(3\) the degree drops to \(3\), and the reduction is one linear factor cubed. Squarefree modulo \(5\) and \(7\).</li>
+<li><em>\(2\times3\)</em> (degree \(14\)). Modulo \(3\): a linear factor cubed times an irreducible factor of degree \(11\). Squarefree modulo \(7\), \(11\) and \(13\).</li>
+<li><em>\(2\times4\)</em> (degree \(24\)). Not squarefree modulo any of the five primes, and the degree drops modulo \(3\), \(5\), \(7\) and \(11\).</li>
+<li><em>\(3\times3\)</em> (degree \(30\)). Modulo \(3\) the degree drops to \(27\), and every factor has multiplicity divisible by \(3\) (multiplicities \(3\), \(18\) and \(6\)), so the reduction is a cube. Squarefree modulo \(13\).</li>
+</ul>
+<p><strong>Conclusion.</strong> Modulo \(3\) the polynomials degenerate, often to cubes, so they carry no squarefreeness certificate. A heuristic explanation, not a derivation: in characteristic \(3\) the half-integral classes differ from integral ones by \(S^{1/2}\) and \((1+S)^{1/2}\), up to cubes. A squarefree reduction does certify squarefreeness over \(\mathbb Q\) when \(q\) is a primitive integer polynomial and \(p\nmid\operatorname{lc}(q)\). Indeed, if \(q=g^2h\) with \(g\) primitive and nonconstant, then \(\operatorname{lc}(g)\) is a unit modulo \(p\), so \(g\bmod p\) is nonconstant and \(q\bmod p\) is not squarefree. Such certificates exist here modulo \(5\) or \(7\) for the \(2\times2\) limits, \(7\) for \(2\times3\) and \(13\) for \(3\times3\). But these certificates are per case, and simplicity of these components was already known from their exact squarefreeness checks (<a href="#entry-2026-09-29-cube-component-simplicity-review">review tests</a>). No tested prime (\(p\le13\)) gives a uniform structure. The \(2\times4\) polynomial, whose discriminant has every prime from \(2\) to \(31\) among its factors (the review's <code>review-tests.txt</code>), is not squarefree modulo any prime up to \(13\). So reduction modulo \(3\), or modulo any fixed small prime, is falsified as a uniform mechanism for all \((F,n)\). Reduction modulo a prime chosen per case is not refuted, but it is not uniform.</p>
+<h4>Where this leaves open statement 3</h4>
+<p>This period's cycles have tested and falsified every cheap mechanism for uniform simplicity of the middle components:</p>
+<ul>
+<li>product formulas for the discriminant;</li>
+<li>a second degeneration of the tie;</li>
+<li>hypergeometric equations;</li>
+<li>\(p\)-adic Newton polygons and Lee–Yang circles;</li>
+<li>Bethe genericity;</li>
+<li>reduction modulo \(p\).</li>
+</ul>
+<p>Meanwhile the goal's first open size, \(N=7\), rests on one input only. At \(N=7\) the collision divisor is <a href="#cube-confluent-weight-criterion">cleared exactly</a>. Off it, squarefreeness of \(\Delta_W^{\rm nc}\) holds by the <a href="#cube-wronskian-discriminant-certificates">randomized line certificate</a>, which then gives \(\alpha_7=105\). That record names exactly what a deterministic certificate needs. The line computation attained the degree bound \(87780\) of \(D\). So a proof of the degree bounds for \(W\) (\(\deg_zW\le2\lambda\), total degree at most \(3\lambda\)) and of the collision exponent \(e\ge1069\) per pair would make the existing computation a proof. Its restriction then has full degree, and \(\Delta_W^{\rm nc}\) restricted to the line has at most a simple root at each collision point \(u_{ij}\), where the computed remainder does not vanish, by construction. This also needs:</p>
+<ul>
+<li>the same exponent for all pairs, by symmetry of \(\Delta_W\) under permutations of the roots;</li>
+<li>the \(21\) collision points pairwise distinct on the line;</li>
+<li>\(\operatorname{Disc}_z\) commuting with reduction modulo \(p\), which holds because \(\deg_zW=2\lambda\) is kept on the line (one of the record's controls).</li>
+</ul>
+<p>The conclusion \(\alpha_7=105\) also uses the exact clearing of the collision divisor. The proposed next step turns to that.</p>
+<p><strong>Remaining gap.</strong> Uniform simplicity of middle components has no mechanism. \(\alpha_7=105\) still rests on a randomized certificate.</p>
+<p><strong>Dependencies re-read.</strong> The component simplicity review and its tests; the Bethe extension entry; the discriminant certificate entry, with its scope paragraph and conditional corollary.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It checked every factorization statement against <code>mod-p.txt</code>, reducing the \(2\times2\) cases by hand, and the reduction criterion. It also checked the logic by which proved degree bounds and a collision-exponent bound would make the line certificate deterministic, including that attaining the degree bound removes both the exceptional-line and the degree-loss issues. Corrections applied: the Frobenius explanation marked heuristic; the criterion stated with \(p\nmid\operatorname{lc}(q)\) and its proof; the refutation limited to fixed small primes and to tested primes; the \(2\times4\) discriminant cited from the review's output; the per-pair symmetry, distinct collision points, \(\operatorname{Disc}_z\) commuting with reduction, and the collision-divisor input stated. The reviewer did not re-read the confluent weight entry cited for the collision divisor.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zza">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 36.76 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">34.41 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 3.50 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">46.82 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 8.01 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.80 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.22 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
