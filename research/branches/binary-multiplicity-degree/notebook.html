@@ -43,12 +43,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By the <a href="#cube-inversion-cluster-transfer">inversion transfer</a> and the <a href="#cube-confluent-discriminant-reduction">confluent discriminant reduction</a>, squarefreeness of \(\Delta_W^{\rm nc}\) descends to \(D^{\rm conf}\) and then to the directional discriminant \(D^{\rm dir}\), on components with good collision traces, conditional on count attainment at each level.</p>
-<p>Next, for every \(N\):</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#cube-hierarchical-limit">hierarchical limit</a> makes every level of the discriminant descent a canonical space \(V^{(a)}\), and the <a href="#cube-hierarchical-counts">counts</a> close each level exactly when the neck carries \(2M(M-2)\) points (conjecture, checked at \(N=7\), level two).</p>
+<p>Next, for every \(M\ge2a+1\):</p>
 <ul>
-<li>Degenerate \(V^{\rm dir}\) by the same cluster degeneration. Its bubble has two approached double roots, and by the <a href="#cube-double-cluster-osculating-limit">osculating lemma</a> their limit is a pencil indexed by \(\lim(h_r^2:h_s^2)\), not one space.</li>
-<li>Decide whether the descent closes with that ratio as an extra parameter, and state the reduction for a general level: several double roots, some approached, with its count identity.</li>
-<li>Then compare the remainders of all levels, the obstacle of this descent.</li>
+<li>Prove the hierarchical neck count. Compute the valuations of the singular windows \(\Gamma_k\), \(M-a\le k\le M\), of the multi-double cluster polynomial, as the confluent top window theorem did for one double root.</li>
+<li>Show that they place \(a-1\) displaced rings below slope \(1\), as the count requires (at \(N=7\), level two, one ring at slope \(\tfrac45\)), and the rest at slope \(1\).</li>
+<li>A route review is due soon: weigh this descent against its uncontrolled remainders.</li>
 </ul>
 </section>
 <section id="working-context">
@@ -29019,6 +29019,88 @@ So multiplication by \(z\) identifies \(\langle1,z,w_{ij}\rangle\) for \(a\) wit
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 7.89 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 13.88 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.12 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-hierarchical-descent" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-properness-mechanism-review:1" data-claims="lem:cube-hierarchical-limit prop:cube-hierarchical-counts conj:cube-hierarchical-neck-count check:cube-level-two-newton">
+<h3>29 September 2026 — Every level of the discriminant descent has a canonical hierarchical bubble, and the counts differ by a constant from the second level on</h3>
+<p class="entry-meta">Working proof of the limit and count formulas for every N and level; a conjecture for the neck count, whose count part is checked modulo p at N = 7, level two. Hierarchical descent cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-confluent-discriminant-reduction">confluent discriminant reduction</a> carried the descent \(\Delta_W^{\rm nc}\Leftarrow D^{\rm conf}\Leftarrow D^{\rm dir}\) two levels. Its next step warned that two approached double roots have, by the <a href="#cube-double-cluster-osculating-limit">osculating lemma</a>, a pencil of limits indexed by \(\lim(h_r^2:h_s^2)\). The missing implication for continuing the descent at every level is twofold: is the bubble of each level one canonical space, and do the counts of face, neck and bubble add up at each level, so that no root escapes?</p>
+<p><strong>General statement.</strong> <code>lem:cube-hierarchical-limit</code> and <code>prop:cube-hierarchical-counts</code>, for every \(N\) and every level; <code>conj:cube-hierarchical-neck-count</code> for the neck.</p>
+<h4 id="cube-hierarchical-limit">The hierarchical spaces</h4>
+<p><strong>Definition.</strong> Let \(N=2a+n\). A hierarchical configuration has double roots \(D_1,\ldots,D_a\), listed in collision order, and simple roots \(k\), all distinct; all are nonzero except possibly the last double root \(D_a\), which the bubble places at \(0\). The space \(V^{(a)}\) has the \(R=\binom N2\) rows:</p>
+<ul>
+<li>\(\varphi_k\varphi_l\);</li>
+<li>\(\varphi_D\varphi_k\) and \(\varphi_D'\varphi_k\);</li>
+<li>\(\varphi_D^2\);</li>
+<li>for \(r&lt;s\) the block \(V_7(D_r,D_s)=\langle T^j(1+D_rT)^{-5/2}(1+D_sT)^{-7/2}:0\le j\le3\rangle\): the later double carries \(-\tfrac72\).</li>
+</ul>
+<p>So \(V^{(0)}\) is the separated space, \(V^{(1)}\) the one-double-root space, and \(V^{(2)}\) the <a href="#cube-directional-two-double-count">directional space</a> with \(A=D_1\) exact and \(B=D_2\) approached.</p>
+<p><strong>Lemma (hierarchical limit).</strong> Characteristic zero. (1) The rows of \(V^{(a)}\) are independent. (2) As two simple roots \(k,l\) merge symmetrically, \(C\pm\eta\) with \(\eta\to0\) and \(C\) distinct from the remaining roots (and nonzero, or else the last double root as above), the span of \(V^{(a)}\) tends to \(V^{(a+1)}\) with \(C\) as the last double root. (3) In the cluster degeneration of \(V^{(a)}\) that keeps two simple roots at \(\pm1\) and scales the others by \(\varepsilon\), the span in \(w=1/(\varepsilon T)\), divided by \(w^3\), tends to \(V^{(a+1)}\) with the inverted cluster centres, their order kept, and the new double root \(0\) last.</p>
+<p><strong>Proof.</strong> (1) By the <a href="#cube-character-splitting">character splitting</a> lemma, rows of distinct monodromy characters are independent. The characters are \(\{k,l\}\) for \(\varphi_k\varphi_l\), \(\{D,k\}\) for the two rows \(\varphi_D\varphi_k,\varphi_D'\varphi_k\), \(\{D_r,D_s\}\) for \(V_7(D_r,D_s)\), and \(\emptyset\) for the squares. They are pairwise distinct as sets. Within a character the rows are independent: \(\varphi_D\varphi_k\) and \(\varphi_D'\varphi_k\) are \((1+DT)^{-5/2}(1+kT)^{-3/2}\) times \(1+DT\) and \(-\tfrac32T\); the block \(V_7\) is \(\operatorname{Pol}_{\le3}\) times one function; the squares \((1+DT)^{-3}\) have distinct poles. If \(D_a=0\), then \(\varphi_0=1\), \(\varphi_0'=-\tfrac32T\), \(\varphi_0^2=1\); the rows \(\varphi_0\varphi_k,\varphi_0'\varphi_k\) have character \(\{k\}\) and \(V_7(D_r,0)\) has character \(\{D_r\}\). These sets are still pairwise distinct and distinct from the others, and within each the same independence holds, so the argument covers this case, as part (2) of the bubble identification does for \(B=0\).</p>
+<p>(2) Each row not through \(k\) or \(l\) is unchanged. The rows through them form blocks:</p>
+<ul>
+<li>\(\varphi_{C+\eta}\varphi_{C-\eta}\to\varphi_C^2\);</li>
+<li>\(\langle\varphi_{C+\eta},\varphi_{C-\eta}\rangle\cdot\varphi_m\to\langle\varphi_C,\varphi_C'\rangle\cdot\varphi_m\) for each other simple root \(m\), by the even and odd parts;</li>
+<li>\(\langle\varphi_D,\varphi_D'\rangle\cdot\langle\varphi_{C+\eta},\varphi_{C-\eta}\rangle\to V_7(D,C)\) for each double root \(D\), by the <a href="#cube-bubble-directional-identification">symmetric limit</a>, part (1), with \(A=D\), \(B=C\).</li>
+</ul>
+<p>Convergence is locally uniform on a disc avoiding the branch values, or equivalently on jets long enough that the rows of \(V^{(a+1)}\) have independent jets. Each block limit is a limit of vectors of the span, so it lies in every subsequential Grassmannian limit. Together they are the rows of \(V^{(a+1)}\), independent by (1), so they span an \(R\)-dimensional subspace of each \(R\)-dimensional subsequential limit, which is therefore the limit. The limit is canonical because exactly one pair moves and every double root \(D\) of \(V^{(a)}\) is exact in this family. This covers only the one-pair families of (2) and (3), not approaches in which an earlier double root also moves; those are governed by the <a href="#cube-double-cluster-osculating-limit">osculating pencil</a>.</p>
+<p>(3) The cluster centres are distinct and nonzero, as the substitution divides by them. As in the bubble identification, part (3): a cluster centre \(\varepsilon\rho\) becomes \(w^{3/2}\varphi_{1/\rho}(w)\) up to a constant, and the far roots become \(\pm\varepsilon\). A block row \(T^j(1+\varepsilon\rho T)^{-5/2}(1+\varepsilon\sigma T)^{-7/2}\) becomes a constant times \(w^3\cdot w^{3-j}(1+w/\rho)^{-5/2}(1+w/\sigma)^{-7/2}\), a row of \(V_7(1/\rho,1/\sigma)\) with the order kept. Derivative rows transform triangularly, as there. The far pair \(\pm\varepsilon\) then merges symmetrically at \(0\), and (2) gives the limit. \(\square\)</p>
+<h4 id="cube-hierarchical-counts">Counts at every level</h4>
+<p><strong>Proposition.</strong> Let \(E=\binom R2\), \(M=N-2\), and write \(\mu_x\) for the minimal exponent sum at a branch value \(x\):</p>
+<ul>
+<li>at a simple root, \(-\tfrac32(N-1)+\binom{N-1}2+\binom{R-N+1}2\);</li>
+<li>at a double root with no earlier double root, \(-\tfrac52K+\binom K2-3+\binom{\binom{N-2}2}2\), with \(K=2N-4\);</li>
+<li>at a later double root, the same with \(-\tfrac72K\).</li>
+</ul>
+<p>Suppose all entries are nonzero and distinct (for a zero entry, apply the parameter shift \(w=w'/(1+sw')\) of the bubble identification first). Then the rows are independent by the lemma, and the total finite non-branch weight of \(V^{(a)}\) is at most \(T(a)=(N-a-2)E-3R-\sum_x\mu_x\), with equality exactly when the multiplicities at the branch values and at infinity are minimal (the degree equals the bound). Symbolically in \(N\), \(T(0)=T_{\rm sep}\), \(T(1)=T_{\rm conf}\), \(T(2)=T_{\rm dir}\), and
+\[
+T(0)-T(1)=\tbinom M2+2M(M-1),\qquad T(a)-T(a+1)=\tbinom M2+2M(M-2)\quad(a\ge1).
+\]</p>
+<p><strong>Proof.</strong> The <a href="#cube-directional-two-double-count">directional count</a>'s argument applies row by row. The cleared numerator has degree at most \((\#\text{branch values}-2)E+\sum_r(h_r-3)\), with \(h_r\) the total pole order: \(3\) for pair rows and squares, \(4\) for \(\varphi_D'\varphi_k\), \(6\) for block rows, each of which vanishes to order \(6-j\ge3\) at infinity. The multiplicity at a branch value is at least the minimal exponent sum plus the pole orders of the rows there. At a double root the half-integral class has \(K=2N-4\) rows, all with exponents at least \(-\tfrac52\), or at least \(-\tfrac72\) if an earlier double root contributes a block. The integral class is \(\varphi_D^2\) and the \(\binom{N-2}2\) rows not through \(D\). The pole orders sum to \(\sum_rh_r\) over all branch values, so they cancel against the degree bound, leaving \(T(a)\). The number of branch values is \(N-a\). For \(a\ge1\), passing from \(a\) to \(a+1\) removes two simple values and adds one later double value, so the difference is \(E-2\mu_{\rm simple}+\mu_{\rm later}\), independent of \(a\). For \(a=0\) the added value is a first double root, with \(-\tfrac52\). The identities are checked symbolically (\(T(0)=T_{\rm sep}\) against the record's identity \(T_{\rm sep}=\binom{N-2}2+2(N-2)(N-3)+T_{\rm conf}\), not an independent formula) by <code>research/tools/bmd_cube_hierarchical_counts.gp</code> (output <code>research/results/bmd-20260929-zzy/hierarchical-counts.txt</code>). \(\square\)</p>
+<p><strong>What the counts demand.</strong> By the lemma, part (3), and the proposition, the counts satisfy \(T(a)=\binom M2+2M(M-2)+T(a+1)\) for \(a\ge1\). So the cluster degeneration of \(V^{(a)}\) can close with no root escaping only if its face carries \(\binom M2\) points, its neck \(2M(M-2)\) and its bubble \(T(a+1)\). The bubble's new double root is at \(0\), that is \(w=\infty\); as in the bubble identification's consequence, \(T(a+1)\) of the shifted configuration overcounts the slope-\(1\) edge by the weight of \(V^{(a+1)}\) at \(w=0\), which must vanish, and slope-\(1\) roots converging to branch values of the bubble must be excluded. The first two groups are proved at \(a=0,1\). At \(a\ge2\) the <a href="#cube-multi-double-window-rank">multi-double window ranks</a> make the windows \(\Gamma_k\), \(M-a\le k\le M\), singular. If singular windows simply dropped out, the neck would keep only \(2M(M-1-a)\) points, and \(2M(a-1)\) points would escape.</p>
+<p><strong>Conjecture (hierarchical neck count).</strong> For every \(a\ge1\) and \(M\ge2a+1\), the neck of the cluster degeneration of \(V^{(a)}\) carries exactly \(2M(M-2)\) simple points, on \(M-2\) rings, and no non-branch point converges to \(\pm1\) or to a branch value of the bubble.</p>
+<p><strong>Test.</strong> Two finite checks, each of a hypothesis the conclusion needs.</p>
+<ul>
+<li><em>Attainment.</em> <code>research/tools/bmd_cube_hierarchical_attainment.gp</code>, modulo \(p=2^{61}-1\) by interpolation, at \(N=7,a=2\) (doubles \(1,2\); simple \(-1,3,5\)), \(N=6,a=3\) (doubles \(1,2,-3\)) and \(N=7,a=3\) (doubles \(1,2,-3\); simple \(5\)). Predictions: independent rows, degree at most the bound, minimal multiplicities, non-branch degree \(T(a)\). Output (<code>hierarchical-attainment.txt</code>): full rank; degrees \(648,141,459\), equal to the bounds; every multiplicity minimal; non-branch degrees \(120,16,80\), equal to \(T(a)\); all squarefree. So \(T(2)\) and \(T(3)\) are attained, and the count gap above is not an artifact of unattainable bounds.</li>
+<li><em>Scales.</em> <code>research/tools/bmd_cube_level_two_newton.gp</code> computes the cleared numerator \(P(\varepsilon,T)\) of \(V^{(2)}\) at \(N=7\), with doubles \(3\varepsilon\) (first) and \(-2\varepsilon\), simple roots \(5\varepsilon,\pm1\), so \(M=5\). It works modulo \(p\), by interpolation in \(T\) (degree \(648\)) and in \(\varepsilon\) (degree at most \(571\) per coefficient, \(700\) points), each checked at two extra points. The lower Newton polygon of the \(\varepsilon\)-valuations has edges (<code>level-two-newton.txt</code>): slope \(0\), length \(250\); slopes \(\tfrac15,\tfrac25,\tfrac45\), length \(10\) each; slope \(1\), length \(368\). The branch roots account for \(240\) at slope \(0\) (\(\pm1\)) and \(288=87+81+120\) at slope \(1\) (the cluster values, minimal multiplicities). So \(10=\binom52\) non-branch roots lie at slope \(0\) (the polygon cannot tell whether some tend to \(\pm1\)); \(80\) non-branch roots lie at slope \(1\), matching \(T(3)\) (the polygon does not identify them as non-branch points of \(V^{(3)}\)); and the neck has \(30=2M(M-2)\) points on three rings. The ring of slope \(\tfrac35\), whose window \(\Gamma_3\) is singular, is missing, and a ring appears at slope \(\tfrac45\). The script's own prediction line expected \(10\) unplaced points and no such ring. A post hoc reading: if \(W_3\) exceeds its valuation bound by \(2\), the edge from \(W_2\) to \(W_3\) has slope \(\tfrac35+\tfrac2{10}\); for the next edge to have slope \(1\), \(W_4\) must exceed its bound by at least \(4\). That pattern differs from the <a href="#entry-2026-09-29-cube-confluent-window-rank">confluent top windows</a>, where both top windows exceed by \(2\), and it rests on window and hull machinery (Cases A and B, the half-class reduction) not proved for \(a\ge2\).</li>
+</ul>
+<p>So at \(N=7\), level two, modulo \(p\), the scales give \(120=10+30+80\): no root escapes to another scale. The count is predicted by the proposition, so the test could have failed; it did not. Valuations modulo \(p\) are at least the rational ones, so the rational polygon lies on or below the computed one. The two agree unless a coefficient at a vertex of the rational polygon, which is not computed, vanishes modulo \(p\). This is one configuration at one size and one prime.</p>
+<p><strong>What this does to the route.</strong> The descent now has a uniform shape. Each level is a hierarchical space \(V^{(a)}\), and its bubble is \(V^{(a+1)}\), canonical by the lemma. The counts add up at a level \(a\ge1\) with \(M\ge2a+1\) if the conjecture holds, the face carries \(\binom M2\) points, \(T(a)\) and \(T(a+1)\) are attained and the weight at \(w=0\) vanishes. For even \(N\) the last step, \(V^{(N/2-1)}\to V^{(N/2)}\), has \(M=2a\) and is outside the conjecture's range. The number of simple roots drops by two per level. The descent ends at \(V^{(N/2)}\) (all roots double) or \(V^{((N-1)/2)}\) (one simple root), where no cluster keeps two simple roots outside. Those base spaces have \(T=16\) at \(N=6\) and \(80\) at \(N=7\), squarefree at the tested points. The remainders at each level, components all of whose traces are bad, are still uncontrolled; that remains the obstacle.</p>
+<p><strong>Lead follow-up.</strong> This develops Outside lead 1 of the <a href="#entry-2026-09-29-cube-properness-mechanism-review">properness mechanism review</a>, the Wronskian route. <strong>Follow-up.</strong> Continuing: the descent's levels are uniform and their bubbles canonical; the neck count at levels two and above is conjectural.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the hierarchical neck count for \(a\ge2\): the valuations of the singular windows, the analogue of the confluent top window theorem;</li>
+<li>the face at \(a\ge2\): the internal Taylor minor with block rows;</li>
+<li>the remainders at every level, and the base spaces;</li>
+<li>attainment of \(T(a)\) for every \(N\), and the weight of the bubble at \(w=0\);</li>
+<li>the last step \(M=2a\) for even \(N\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The directional count (degree bound, exponent classes, pole orders); the bubble identification (parts (1)–(3)); the character splitting lemma; the multi-double window rank theorem and its middle-range corollary (statements); the confluent window rank entry (parity bound and top-window conjecture); the confluent discriminant reduction.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It checked \(T(a)\), the minimal exponent sums, the level differences, the multiplicities in the attainment output, the Newton edge lengths and the substitution of block rows. Corrections applied:</p>
+<ul>
+<li>the last double root may be \(0\), and part (1) covers that case;</li>
+<li>hypotheses on \(C\) and the cluster centres, and the mode of convergence, are stated;</li>
+<li>canonicity is argued from the one-pair family, not from an unproved pencil endpoint;</li>
+<li>the equality condition includes infinity, and the proposition states nonzero entries;</li>
+<li>the closure condition is stated as a necessary count identity with the \(w=0\) weight and bubble branch values as caveats;</li>
+<li>the Newton test no longer claims that no root tends to \(\pm1\) or that the slope-\(1\) roots are points of \(V^{(3)}\); the \(\tfrac45\) ring is marked as unpredicted and its reading as post hoc;</li>
+<li>the route paragraph and entry meta are narrowed, including the even-\(N\) last step.</li>
+</ul>
+<p>These corrections weaken or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzy">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>16 min 15.21 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 23.85 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 29.04 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">4 min 36.96 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 57.23 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 44.81 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.33 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
