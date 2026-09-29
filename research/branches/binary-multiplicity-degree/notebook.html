@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The <a href="#entry-2026-09-29-cube-schur-window-review">Schur window review</a> proposes a double Schur reduction for every far–near window. It found binomial leading forms at the \(3\times3\) center window.</p>
-<p>Write the double Schur reduction as a lemma: \(P_E=\Delta(s)^n\Delta(t)^F\sum c_{\kappa\nu}s_\kappa(s)s_\nu(t)\), with the valuation equal to the least weight in the support. Then, at \(F=2\), write \(P_E\) as the \(E\)-coordinate of \(\omega(t_1)\wedge\cdots\wedge\omega(t_n)\), \(\omega(t)=f_1\varphi_t\wedge f_2\varphi_t\). Compute the osculating filtration of \(\omega\) at \(t=0\), and test whether it gives the vanishing orders \((q-m)(q-m+1)\) of the support rule.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). Every far–near window is a <a href="#cube-far-near-double-schur-reduction">double Schur expansion</a>, and its valuation is the least weight in the support of \(c_{\kappa\nu}\).</p>
+<p>Find the support of \(c_{\kappa\nu}\). By the lemma, \(c_{\kappa\nu}\) is the coefficient of \(s^{\kappa+n\delta_F}t^{\nu+F\delta_n}\) in \(P_E\) divided out by Schur functions. Compute it exactly for \(2\times n\) and \(3\times3\) through Cauchy–Binet over both groupings, and test a two-sided dominance rule that reduces to the two-far rule. Then prove the vanishing orders through the \(2\)-form curve \(\omega(t)\) of the review's next step.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -25942,6 +25942,52 @@ and its least-weight part is \(\operatorname{lead}(\Delta^2)\sum_{w(\nu)=w_{\min
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 50.52 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 32.19 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">28.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-double-schur-reduction" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-directional-induction-review:3" data-claims="lem:cube-far-near-double-schur-reduction">
+<h3>29 September 2026 — Every far–near window is a double Schur expansion; its valuation is the least weight in the support</h3>
+<p class="entry-meta">Working proof of the double Schur reduction for every far–near window; it accounts exactly for the three-far tie. Double Schur reduction cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-29-cube-schur-window-review">Schur window review</a> reduced the caterpillar's far–near window, the input of the <a href="#cube-caterpillar-component-count">count formula</a>, to the support of a Schur expansion, and proposed that expansion for every window. It found a leading form with at least two monomials at the \(3\times3\) center window. This cycle proves the reduction for every \(F\) and \(n\), with no specialization. It then checks it against the three-far data. Outcome: the window valuation is the Vandermonde part plus the least weight in the double Schur support. The \(3\times3\) center window is a tie of two mirror-image support pairs. Their weights and degrees match the measured valuation \(38\) and the observed factor pattern exactly.</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-near-double-schur-reduction</code>, for every \(F,n\ge1\), every column set \(E\) and every exponent.</p>
+<h4 id="cube-far-near-double-schur-reduction">The lemma</h4>
+<p><strong>Setup.</strong> Let \(k\) be any field, since Schur polynomials are a \(\mathbb Z\)-basis of the symmetric polynomials, and let \(g(x)=\sum_a g_ax^a\) and \(h(y)=\sum_b h_by^b\) be power series. For far variables \(s_1,\ldots,s_F\) and near variables \(t_1,\ldots,t_n\), the row \((i,j)\) has entries \(R_{ij}(e)=\sum_{b-a=e}g_ah_b\,s_i^at_j^b\) in the columns \(e\in E\), \(|E|=Fn\). These are the coefficients of \(S^e\) in \(g(s_i/S)h(t_jS)\); the caterpillar case is \(g=h=(1+x)^{-\lambda}\). \(P_E\in k[[s,t]]\) is the minor on \(E\). For strictly increasing real weights \(0&lt;\sigma_1&lt;\cdots&lt;\sigma_F\) of \(s\) and \(0&lt;\tau_1&lt;\cdots&lt;\tau_n\) of \(t\), write \(w(\kappa,\nu)=\sum\sigma_i\kappa_i+\sum\tau_j\nu_j\).</p>
+<p><strong>Lemma.</strong> \(P_E=\Delta(s)^n\Delta(t)^F\sum_{\kappa,\nu}c_{\kappa\nu}\,s_\kappa(s)\,s_\nu(t)\), with constants \(c_{\kappa\nu}\in k\). The sum runs over partitions with at most \(F\), respectively \(n\), parts and \(|\nu|-|\kappa|=\sum E-F\binom n2+n\binom F2\), and is finite in each bidegree. If \(P_E\ne0\), then at \(s_i=c_i\varepsilon^{\sigma_i}\), \(t_j=d_j\varepsilon^{\tau_j}\) the least-weight part of \(P_E\) is
+\[
+\operatorname{lead}\bigl(\Delta(s)^n\Delta(t)^F\bigr)\sum_{w(\kappa,\nu)=w_{\min}}c_{\kappa\nu}\,s^\kappa t^\nu ,
+\]
+a nonzero polynomial in the leading constants. Here \(w_{\min}\) is the least weight over the support. For generic \(c_i,d_j\), \(\operatorname{val}P_E=n\operatorname{val}\Delta(s)+F\operatorname{val}\Delta(t)+w_{\min}\). When a single pair attains \(w_{\min}\), nonzero constants suffice.</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>Divisibility.</em> \(k[[s,t]]\) is a unique factorization domain, in which the \(t_j-t_{j'}\) are pairwise non-associate primes. For \(j\ne j'\), subtract the rows \((i,j')\) from the rows \((i,j)\), for all \(F\) values of \(i\). Each difference \(R_{ij}(e)-R_{ij'}(e)=\sum g_ah_bs_i^a(t_j^b-t_{j'}^b)\) is divisible by \(t_j-t_{j'}\), so \((t_j-t_{j'})^F\) divides \(P_E\). Hence \(\Delta(t)^F\) divides \(P_E\), and likewise \(\Delta(s)^n\).</li>
+<li><em>Symmetry.</em> Exchanging \(t_j\) and \(t_{j'}\) permutes rows by \(F\) transpositions, so it changes the sign of \(P_E\) by \((-1)^F\), and of \(\Delta(t)^F\) by the same factor. So the quotient \(Q\) is symmetric in \(t\), and likewise in \(s\).</li>
+<li><em>Expansion.</em> A power series symmetric in both sets of variables is, in each bidegree, a finite combination of \(s_\kappa(s)s_\nu(t)\), since Schur functions form a basis of the symmetric polynomials of each degree. Each column \(e\) contributes a monomial \(s^at^{a+e}\), so every monomial of \(P_E\) has \(\deg_t-\deg_s=\sum E\). Subtracting the degrees \(F\binom n2\) of \(\Delta(t)^F\) and \(n\binom F2\) of \(\Delta(s)^n\) gives the stated relation.</li>
+<li><em>Least weight.</em> Every monomial \(s^\alpha\) of \(s_\kappa\) has \(\operatorname{sort}(\alpha)\trianglelefteq\kappa\). By rearrangement, \(\sum\alpha_i\sigma_i\ge\sum\operatorname{sort}(\alpha)_i\sigma_i\). By Abel summation, \(\sum(\kappa_i-\operatorname{sort}(\alpha)_i)\sigma_i=\sum_iD_i(\sigma_i-\sigma_{i+1})\le0\), where the partial sums \(D_i\) are nonnegative and \(D_F=0\). With strictly increasing \(\sigma\), equality holds only at \(\alpha=\kappa\). So \(s^\kappa t^\nu\) is the unique least-weight monomial of \(s_\kappa(s)s_\nu(t)\). Distinct pairs give distinct monomials, so the least-weight part of \(Q\) is \(\sum_{w=w_{\min}}c_{\kappa\nu}s^\kappa t^\nu\), a nonzero polynomial. The Vandermonde powers have the single least monomial \(s^{n\delta_F}t^{F\delta_n}\), where \(\delta_F=(F-1,\ldots,0)\). \(\square\)</li>
+</ul>
+<h4>Check against the three-far tie</h4>
+<p>At \(3\times3\), with caterpillar weights \(\sigma=\tau=(1,2,3)\), the lemma predicts leading monomials \(s^{3\delta+\kappa}t^{3\delta+\nu}\), \(\delta=(2,1,0)\). The review's data (<code>three-far-leading.txt</code> of the review cycle) show, at the center window \([-4,4]\), the degrees \(12\) and \(10\) in \(c_1\), \(3\) and \(5\) in \(c_2\), \(10\) and \(12\) in \(d_1\), \(5\) and \(3\) in \(d_2\), and none in \(c_3\), \(d_3\). The data give the degree sets in each variable, not the monomials. The unique fit is \(c_1^{12}c_2^3d_1^{10}d_2^5\) and its mirror image \(c_1^{10}c_2^5d_1^{12}d_2^3\), inferred rather than read off. They are \((\kappa,\nu)=((6),(4,2))\) and \(((4,2),(6))\). The fit also forces the other weight-\(14\) pair to be absent: \(c_{(5,1),(5,1)}=0\), which would give a \(c_1^{11}\) term. It also forces every pair of weight below \(14\) to be absent, for example \(((6),(6))\) and \(((6),(5,1))\). The lemma explains the form of the tie. Which pairs are in the support is not proved.</p>
+<ul>
+<li>The size relation holds: \(\sum E=0\) and \(F\binom n2=n\binom F2=9\), so \(|\nu|=|\kappa|\), and both pairs have size \(6\).</li>
+<li>Both pairs have weight \(6+(4+4)=14\), so they tie.</li>
+<li>The predicted valuation is \(3\operatorname{val}\Delta(s)+3\operatorname{val}\Delta(t)+14=3\cdot4+3\cdot4+14=38\), the measured value. Here \(\operatorname{val}\Delta(s)=\sum_i(F-i)\sigma_i\), which is \(\binom{F+1}3=4\) for \(\sigma=(1,2,3)\).</li>
+<li>As a polynomial in \(c_1\), the sum of the two monomials is \(c_1^{10}(Ac_1^2+B)\), with opposite roots, as observed. The same holds in \(c_2\), \(d_1\) and \(d_2\).</li>
+</ul>
+<p>The four other \(3\times3\) windows show pure powers, consistent with a single least pair. For example, \([-2,6]\) has degrees \((6,3)\) in \(c\) and \((18,9)\) in \(d\): \(\kappa=0\), \(\nu=(12,6)\), weight \(24\), and \(12+12+24=48\), the measured value. This check uses only the saved data. Degrees were read at one base point.</p>
+<p><strong>What it gives.</strong> For generic leading constants, every far–near window, for every \(F\) and \(n\), is decided by the support \(\{(\kappa,\nu):c_{\kappa\nu}\ne0\}\). This involves constants only, whereas the Cauchy–Binet form involved Plücker coordinates with relations among them. Ties are pairs of equal weight, and they vanish only on a hypersurface of leading constants. At a tie one must also check that the tie polynomial is nonzero at the caterpillar's actual constants. The \(3\times3\) data, read at one base point, do not establish that. The <a href="#cube-two-far-schur-reduction">two-far Schur reduction</a> treated only \(F=2\) at \(s_2=0\). This lemma needs no specialization. The <a href="#cube-two-far-schur-support">support rule</a> should become a statement about \(c_{\kappa\nu}\) with both indices.</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 3 of the directional induction review, the caterpillar degeneration. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong> The support of \(c_{\kappa\nu}\): a dominance rule in both indices that yields the least pairs, including the ties at mirror-fixed windows. Then the count formula with that window, simplicity of the middle components, the necks and the double-root classes.</p>
+<p><strong>Dependencies re-read.</strong> The review's sketch and three-far data, and the two-far Schur reduction.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the following by hand: the divisibility in \(k[[s,t]]\), the symmetry, the expansion and the size relation, the least-weight argument including the Vandermonde least monomial, and the \(3\times3\) arithmetic, including the opposite roots and the windows \([-3,5]\) and \([-6,2]\). It passed the lemma with corrections, all made. The field is arbitrary. The center-window monomials are marked as inferred, with the constraints the fit forces. The genericity qualifier and the tie caveat are added. The Vandermonde valuation is given in general form.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zo">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 50.58 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 18.88 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 31.57 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
