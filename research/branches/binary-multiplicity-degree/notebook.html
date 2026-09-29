@@ -43,13 +43,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#entry-2026-09-29-cube-schubert-induction-review">Schubert induction review</a> recasts the contact route as an induction on cluster size. Its hypothesis (W\(_m\)) is that \(m\)-root shapes of mark weight \(\ge w\) form a locus of codimension \(\ge w\), and it holds at \(m=4\). The obstacle is configurations with several clusters.</p>
-<p>Next:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By the <a href="#cube-cross-block-factorization">cross-block factorization</a>, the limit at two clusters is the flat limit of a fixed linear map \(\mu\), whose kernel on \(E\) consists of the EPD relations, applied to a two-scale torus orbit of \(\Lambda_A\otimes\Lambda_B\). Second-order lifts fill the block at sizes \((2,2)\) and, at comparable scales, \((3,2)\), but not \((3,3)\).</p>
+<p>Next, for all \(m,m'\):</p>
 <ul>
-<li>State the relative transfer for any Schubert condition \(\sigma_\lambda\), with \(|\lambda|\) in place of \(3\).</li>
-<li>Generalize the <a href="#cube-double-cluster-osculating-limit">osculating lemma</a> to cross blocks of clusters of sizes \(m,m'\). Derive from \(\mathcal L\) and its derivatives the \((m-1)(m'-1)\) relations and their leading replacements, as functions of the shapes and the scale ratio.</li>
+<li>Organize the lifts of \(K=\ker\mu|_E\) by order, as a filtration \(K=K_2\supseteq K_3\supseteq\cdots\), where \(K_r\) is the part whose lifts vanish modulo \(\mu(E)\) up to order \(r-1\).</li>
+<li>Prove that the successive images have the dimensions forced by \(\dim K=(m-1)(m'-1)\).</li>
+<li>Read off the data (weighted ratios of the shapes' elementary symmetric functions) on which the limit depends. That bounds the two-cluster fibre dimension for every \(m,m'\).</li>
 </ul>
-<p>No new sizes.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -28071,6 +28071,103 @@ and assume (\(H_m\)): \(\dim W_{(a:b)}=R\) for every \((a:b)\).</p>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">51.48 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.19 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-cross-block-factorization" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-bridge="entry-2026-09-29-cube-schubert-induction-review:1" data-claims="lem:cube-cross-block-factorization cor:cube-schubert-relative-transfer">
+<h3>29 September 2026 — Cross blocks of two clusters factor through a two-scale torus limit; second-order lifts fill them at sizes (2,2) and (3,2) but not (3,3)</h3>
+<p class="entry-meta">Working proof for all cluster sizes of the factorization, the first-order cancellation and the second-order lifts, plus the Schubert form of the relative transfer. Exact controls locate where second order suffices. Cross-block factorization cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-29-cube-schubert-induction-review">Schubert induction review</a> named the obstacle: the limits at two coexisting clusters of sizes \(m,m'\), whose cross block has \((m-1)(m'-1)\) EPD defects. The missing implication is a limit formula for that block for all \(m,m'\), generalizing the <a href="#cube-double-cluster-osculating-limit">osculating lemma</a> (\(m=m'=2\)). This cycle proves the exact factorization and the first two orders. The controls then decide whether two orders suffice.</p>
+<p><strong>General statement.</strong> <code>lem:cube-cross-block-factorization</code>, for all \(m,m'\ge1\) and every \(N\); <code>cor:cube-schubert-relative-transfer</code>, for every \(N\ge5\) and every Schubert condition.</p>
+<h4 id="cube-cross-block-factorization">The factorization</h4>
+<p><strong>Setup.</strong> Cluster \(A\) has roots \(x+s_a\), \(a\le m\), with \(x\) its centroid, so \(\sum s_a=0\). Cluster \(B\) has roots \(y+\tau_b\), \(b\le m'\), with \(\sum \tau_b=0\), and \(\delta=y-x\ne0\). Put \(X=T/(1+xT)\) and \(Y=T/(1+yT)\), so \(1/Y=1/X+\delta\). With \(c_n=\binom{-3/2}n\), since \(\varphi(x+s)=\varphi(x)(1+sX)^{-3/2}\), the cross rows are
+\[
+\varphi(x+s_a)\varphi(y+\tau_b)=\varphi(x)\varphi(y)\sum_{i,j\ge0}c_ic_j\,s_a^i\tau_b^j\,X^iY^j .
+\]
+So the cross block is the image, under the fixed linear map \(\mu:e_i\otimes e_j\mapsto\varphi(x)\varphi(y)c_ic_jX^iY^j\), of the span of the tensor rows \((s_a^i)_i\otimes(\tau_b^j)_j\). That span is \(\Lambda_A\otimes\Lambda_B\), a product of Vandermonde row spaces. As the clusters shrink it tends to \(E=\langle e_i\otimes e_j:i&lt;m,j&lt;m'\rangle\) along every arc with distinct offsets. The reason is that \(\Lambda_A\) contains the vectors \(\lambda_i=e_i+\sum_{n\ge m}r_{n,i}e_n\), \(i&lt;m\), whose coefficients \(r_{n,i}\) are homogeneous of degree \(n-i\ge1\) in the offsets and so tend to \(0\). The same holds for \(B\). Row vectors are truncated at \(T^M\) with \(M+1\ge R\), which exceeds every index used below. Here \(\kappa\) denotes an element of the kernel, and the EPD coefficient is written \(\tfrac23(x-y)\).</p>
+<p><strong>Lemma (cross-block factorization).</strong></p>
+<ol>
+<li>\(\mu(E)\) is spanned by \(\varphi(x)\varphi(y)\) times \(1,X,\ldots,X^{m-1},Y,\ldots,Y^{m'-1}\), and has dimension \(m+m'-1\). Hence \(K=\ker(\mu|_E)\) has dimension \((m-1)(m'-1)\). It is spanned by the Taylor coefficients of the EPD relations \(\partial_x^a\partial_y^b\mathcal L\), \(a\le m-2\), \(b\le m'-2\).</li>
+<li>For \(\kappa\in K\), let \(\lambda_{ij}\) be the functionals on the grid dual to \(s^i\tau^j\), \(i&lt;m\), \(j&lt;m'\), and \(v_\kappa=\sum\kappa_{ij}\lambda_{ij}(\text{rows})\), a vector of the row space. Then
+\[
+v_\kappa=-e_2(s)\,U_\kappa-e_2(\tau)\,V_\kappa+O(|s|^3+|\tau|^3),
+\]
+where \(U_\kappa=\sum_j\bigl(\kappa_{m-2,j}\nu_{m,j}+\kappa_{m-1,j}\nu_{m+1,j}\bigr)\), \(V_\kappa=\sum_i\bigl(\kappa_{i,m'-2}\nu_{i,m'}+\kappa_{i,m'-1}\nu_{i,m'+1}\bigr)\), \(\nu_{ij}=\mu(e_i\otimes e_j)\), and \(e_2\) is the second elementary symmetric function of the offsets. There is no first-order term.</li>
+<li>Along an analytic arc in a parameter \(\theta\), let \(e=\min(\operatorname{ord}h,\operatorname{ord}k)\) for the cluster diameters \(h,k\). Then \(\theta^{-2e}(e_2(s),e_2(\tau))\) is bounded and converges to some \((\varepsilon_A,\varepsilon_B)\). The flat limit contains \(\mu(E)\) and every \(\varepsilon_AU_\kappa+\varepsilon_BV_\kappa\), \(\kappa\in K\), at the limit centres. Here \(\kappa=\kappa(\theta)\) is taken in \(K\) at the current centres, for instance a fixed combination of the EPD relations, which is analytic in \(x,y\). This is nontrivial only when \((\varepsilon_A,\varepsilon_B)\ne(0,0)\), which can fail only for complex shapes, since \(e_2=-\tfrac12\sum s_a^2\) when \(e_1=0\). If these, with the within-cluster and remaining rows, have dimension \(R\), they are the flat limit.</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>With \(w=1/X\), \(X^i=w^{-i}\) and \(Y^j=(w+\delta)^{-j}\). Partial fractions put \(w^{-i}(w+\delta)^{-j}\) in the span of \(1\), of \(w^{-a}\) for \(a\le i\), and of \((w+\delta)^{-b}\) for \(b\le j\). The functions \(1,w^{-1},\ldots,w^{-(m-1)},(w+\delta)^{-1},\ldots,(w+\delta)^{-(m'-1)}\) are independent, having distinct poles. By the factorization identity, \(\nu_{ij}=\mu(e_i\otimes e_j)=\partial_x^i\partial_y^jF/(i!\,j!)\) with \(F=\varphi(x)\varphi(y)\). The relation \(\partial_x^a\partial_y^b\mathcal L=0\) involves derivatives only up to order \((a+1,b+1)\). These lie in the box when \(a\le m-2\) and \(b\le m'-2\), so it gives an element of \(K\). Its coefficient at \(e_{a+1}\otimes e_{b+1}\) is \(-\tfrac23(x-y)(a+1)!\,(b+1)!\ne0\). These relations are independent: take a maximal index \((a+1,b+1)\), in the componentwise order, among those used in a vanishing combination. Its coefficient must then vanish. There are \((m-1)(m'-1)\) of them, so they span \(K\). The independence of the functions \(1,w^{-1},\ldots,(w+\delta)^{-(m'-1)}\) as power series persists after truncation at \(T^M\), since \(M\ge m+m'-2\). This is a box-restricted, two-point form of <code>lem:epd-finite-jet-galois-separation</code>: finite-support jets annihilating every coefficient of \((1+sT+vT^2)^{-3/2}\) are exactly those of the form \(\mathcal L^t\phi\).</li>
+<li>On the grid of cluster \(A\), \(s^n\equiv\sum_{i&lt;m}r_{n,i}s^i\), with \(r_{n,i}\) homogeneous of degree \(n-i\) in the offsets, by Cayley–Hamilton for \(\prod_a(s-s_a)\). In particular \(r_{m,m-1}=e_1=0\), \(r_{m,m-2}=-e_2\) and \(r_{m+1,m-1}=e_1^2-e_2=-e_2\). The same holds for \(B\). Hence
+\[
+v_\kappa=\sum_{i,j}\kappa_{ij}\sum_{n,n'}r_{n,i}r'_{n',j}\nu_{nn'} .
+\]
+The terms with \(n&lt;m\) and \(n'&lt;m'\) give \(\sum\kappa_{ij}\nu_{ij}=0\). The remaining terms have degree \((n-i)+(n'-j)\ge1\). The only degree-one terms carry \(e_1=0\). The degree-two terms are exactly \(-e_2(s)U_\kappa-e_2(\tau)V_\kappa\), because the mixed term \(r_{m,m-1}r'_{m',m'-1}=e_1e_1'\) vanishes. Every coefficient of \(T^n\) is a polynomial, so the remainder is \(O(|s|^3+|\tau|^3)\).</li>
+<li>Since the offsets are measured from the centroid, \(|s_a|\le h\) and \(|\tau_b|\le k\), so the remainder is \(O(\theta^{3e})\). After division by \(\theta^{2e}\) it is \(O(\theta^e)\to0\). With \(\kappa(\theta)\) in \(K\) at the current centres, the degree-zero part vanishes exactly. The centres converge, and limits of vectors of the row spaces lie in the flat limit. \(\square\)</li>
+</ol>
+<p>The complete cross-block limit is therefore the limit of \(\mu\bigl((\Lambda_u\otimes\Lambda_v)D_{h,k}\bigr)\), with the shape row spaces \(\Lambda_u,\Lambda_v\) (\(s=hu\), \(\tau=kv\)), under the two-parameter scaling \(D_{h,k}:e_i\otimes e_j\mapsto h^ik^je_i\otimes e_j\). The tensor family tends to \(E\) along every arc. All the non-canonical behaviour comes from \(K=\ker\mu|_E\), which the lemma computes to second order. This develops the Białynicki-Birula bridge of the review: a two-scale torus limit, followed by a fixed linear map.</p>
+<p><strong>Second order is insufficient for large clusters.</strong> By the same partial-fraction argument, \(\mu\) of the box \(i\le m+1\), \(j\le m'+1\) has dimension \(m+m'+3\), which is \(4\) more than \(\mu(E)\). All \(U_\kappa,V_\kappa\) lie in that box. So the second-order lifts add at most \(4\) dimensions modulo \(\mu(E)\). Whenever \((m-1)(m'-1)&gt;4\), they cannot fill \(K\), and third and higher orders are needed. This does not explain \((3,3)\), where \((m-1)(m'-1)=4\) but only \(2\) are filled.</p>
+<h4 id="cube-schubert-relative-transfer">The transfer for every Schubert condition</h4>
+<p><strong>Corollary.</strong> In the <a href="#cube-contact-relative-transfer">relative transfer</a>, replace the contact set by \(K_\sigma=\{\Lambda\in\sigma\}\), for any Schubert variety \(\sigma\) of codimension \(c\) with respect to the coordinate flag at \(T=0\) (spans of initial monomials, the flag of the vanishing orders). A torus-fixed flag is needed for invariance under \(D_s\). Replace \(3\) by \(c\). Suppose that, for every member \(W\) and every \(p\notin H_{kl}\), \(\dim(K_{\sigma,X}\cap W\cap\pi^{-1}(p))\le\dim W-c\). Then \(\dim K_{\sigma,X}^\circ(W)\le\dim W-c\) for every member. In particular the locus of separated configurations whose pair space lies in \(\sigma\) has codimension at least \(c\).</p>
+<p><strong>Proof.</strong> \(K_\sigma\) is closed, and it is invariant under the scalings \(D_s\), which preserve the flag, so chart transport preserves it. In the induction, a component \(Y\) with \(\dim Y\ge\dim W-c+1\) either lies over a point, contradicting the hypothesis, or meets a collision hyperplane. It then gives a component \(C\) with \(\dim C\ge\dim W-c=\dim W'-c+1\) in a member \(W'\) of dimension \(\dim W-1\), contradicting the induction hypothesis. The proof uses the value \(3\) only in the thresholds \(\dim Y\ge\dim W-2\), \(\dim C\ge\dim W-3\) and (F\(_{\rm rel}\)). It uses nothing about the contact set beyond closedness and invariance. The hypothesis \(N\ge5\) is inherited from the relative transfer's setting. \(\square\)</p>
+<p>Applied to all Schubert varieties at once, this turns the induction hypothesis (W\(_N\)) of the review into base conditions of the same shape as (F\(_{\rm rel}\)).</p>
+<h4>Controls</h4>
+<p>The formula of (3) was compared with exact \(t\)-saturated flat limits over \(\mathbb Q[t]\) (bmd_cube_cross_block_control.gp, <a href="https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-zzo/cross-block-control.txt">output</a>). The configurations are clusters \(hu\) at \(0\) and \(1+kv\) at \(1\), with no other roots and centred shapes. The prediction includes the within-cluster canonical parts, and the arcs are \((h,k)\in\{(t,t),(t,2t),(t,t^2),(t^2,t)\}\). In all twenty cases the prediction is contained in the exact limit, and no limit has contact. Whether the second order fills the block depends on the sizes:</p>
+<ul>
+<li>\((2,2)\): the prediction is the whole limit at all four ratios. The sign-flipped ratio \((\varepsilon_A:-\varepsilon_B)\) gives a different space, so the limit depends on the ratio, as the osculating lemma says.</li>
+<li>\((3,2)\), two shapes: at comparable scales the prediction is the whole limit. The sign-flipped prediction is also contained in the limit. Its rank was not printed, and the exact limits at different ratios were not compared, so ratio independence is suggested but not shown. At the extreme ratios \((1:0),(0:1)\) the second order fills only \(1\) of the \(2\) missing dimensions.</li>
+<li>\((3,3)\), two shape pairs: the second order fills \(2\) of \(4\) at comparable scales and \(1\) of \(4\) at extreme ratios. The sign-flipped prediction is also contained in the limit.</li>
+</ul>
+<p>So at \((3,3)\), and at unbalanced scales at \((3,2)\), the complete limit needs the third and higher orders of the same expansion: the higher \(r_{n,i}\), which are homogeneous in the shapes' elementary symmetric functions. For \((m-1)(m'-1)&gt;4\) this is proved above. The transverse \((3,3)\) module <code>thm:cube-triple-triple-transverse-residual</code> is the record's other object at this configuration.</p>
+<p><strong>What this does to the route.</strong></p>
+<ul>
+<li>The multi-cluster obstacle is now a single, explicit algebraic problem: the flat limit of \(\mu\) applied to a two-scale torus orbit of \(\Lambda_A\otimes\Lambda_B\), where \(\ker\mu|_E\) consists of the EPD relations.</li>
+<li>The fibre over a two-cluster point is controlled by the data this limit depends on. Up to second order these are \((\varepsilon_A:\varepsilon_B)\). At higher orders they are finitely many weighted ratios of the shapes' symmetric functions.</li>
+<li>The Schubert transfer makes the review's induction statement formally available at every level.</li>
+</ul>
+<p><strong>Bridge follow-up.</strong> This develops Absurd bridge 1 of the <a href="#entry-2026-09-29-cube-schubert-induction-review">Schubert induction review</a>: the cross block is a two-scale torus (RG) limit composed with the EPD map. <strong>Follow-up.</strong> Continuing: the Morse–Bott dimension bound for two-scale flows is not yet derived.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The complete two-scale limit for \(m,m'\ge3\) and for unbalanced scales, beyond second order, with its dependence on the shapes;</li>
+<li>the resulting fibre dimensions against flat dimensions;</li>
+<li>the full-rank hypotheses;</li>
+<li>three or more clusters.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The osculating lemma (the \((2,2)\) case and the EPD equation); the relative transfer's proof (every use of the codimension); the renormalization lemma (within-cluster parts); the Schubert induction review (obstacle and bridge).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It confirmed the following:</p>
+<ul>
+<li>the factorization identity, the rank count of (1), the Cayley–Hamilton values, and the cancellation of the degree-one and mixed degree-two terms;</li>
+<li>the Schubert transfer, including every use of the value \(3\) in the relative transfer's proof;</li>
+<li>agreement at \((2,2)\) with the osculating lemma: \(-e_2U_\kappa\) reproduces \(-h^2F_{xx}/(36\cdot\tfrac23(x-y))\).</li>
+</ul>
+<p>Corrections applied:</p>
+<ul>
+<li>the correct reason why \(\Lambda_A\to E_A\);</li>
+<li>the proof that the EPD relations lie in \(K\), with their leading coefficient and the independence argument;</li>
+<li>truncation;</li>
+<li>\(\kappa(\theta)\) taken at the moving centres, and a separate arc parameter \(\theta\);</li>
+<li>the remainder estimate;</li>
+<li>the unused hypothesis on \((\varepsilon_A,\varepsilon_B)\) removed;</li>
+<li>\(\Lambda_u,\Lambda_v\) in the torus formula;</li>
+<li>the coordinate flag in the corollary;</li>
+<li>the controls restated, with no claim of ratio independence at \((3,2)\), and the \((3,3)\) control reported;</li>
+<li>the higher-order claim restricted to the tested cases;</li>
+<li>the script label;</li>
+<li>citations of <code>lem:epd-finite-jet-galois-separation</code> and <code>thm:cube-triple-triple-transverse-residual</code>.</li>
+</ul>
+<p>Added from the reviewer's suggestion: the proved bound that second-order lifts add at most \(4\) dimensions.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzo">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 29.96 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 32.58 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 15.70 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 36.39 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2.02 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.28 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
