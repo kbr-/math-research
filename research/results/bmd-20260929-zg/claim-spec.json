@@ -1,0 +1,58 @@
+{
+  "source": {
+    "record": "[Four-root points](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-four-root-points)",
+    "targets": [
+      "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-four-root-points",
+      "https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-zg/provenance.json"
+    ],
+    "label": "Four-root points"
+  },
+  "reviewer": "Claude Code (claude-opus-5-5); one fresh-context medium correctness reviewer",
+  "date": "2026-09-29",
+  "topics": [
+    "degree-accounting",
+    "affine-linear-algebra"
+  ],
+  "claims": [
+    {
+      "id": "prop:cube-four-root-weierstrass-points",
+      "summary": "Characteristic zero, every non-integer lambda (formal-lambda factorization, C(lambda) = const lambda^7 (lambda^2-1)^3 (lambda^2-4)). For four distinct nonzero roots b, the finite non-branch Weierstrass points of the degree-two pair space are the roots of the three polynomials numerator(b_i/(1+b_i t)+b_j/(1+b_j t)-b_k/(1+b_k t)-b_l/(1+b_l t)), one per matching, each of degree at most 2, with weights their multiplicities; the points are simple for generic roots.",
+      "assessment": "Working proof: translation identity phi_b(t+X)=(1+bt)^(-lambda) phi_(b/(1+bt))(X) and the exact factorization of the four-root Taylor determinant; exact equality of polynomials at three random configurations. Simplicity certified at (2,-3,5,7/2).",
+      "status": "working_proof",
+      "rationale": "Explicit Weierstrass points for four roots; the smallest separated case in closed form."
+    },
+    {
+      "id": "ex:cube-pair-taylor-vandermonde-fails",
+      "summary": "The pair-sum Vandermonde form of the pair-space Taylor determinant fails for M=5 (and every M>=5): with translation it would place every finite non-branch Weierstrass point of the cluster degeneration (eps b,1,-1) near 0 or +-1, contradicting the binary-face theorem (Q_3 has zeros +-i sqrt(3)/2); exactly, at roots (2,-3,5,7/2,-1/3) the predicted degree-30 product shares no factor with the Wronskian polynomial.",
+      "assessment": "Refutation by the binary-face theorem and an exact computation.",
+      "status": "refutation",
+      "rationale": "Corrects conj:cube-pair-taylor-vandermonde for M>=5."
+    }
+  ],
+  "relationships": [
+    [
+      "ex:cube-pair-taylor-vandermonde-fails",
+      "corrects",
+      "conj:cube-pair-taylor-vandermonde",
+      "False for M>=5; true for M<=4."
+    ],
+    [
+      "ex:cube-pair-taylor-vandermonde-fails",
+      "depends_on",
+      "thm:cube-binary-face-weierstrass-points",
+      "The contradiction."
+    ],
+    [
+      "prop:cube-four-root-weierstrass-points",
+      "depends_on",
+      "conj:cube-pair-taylor-vandermonde",
+      "Its proved case M=4."
+    ],
+    [
+      "prop:cube-four-root-weierstrass-points",
+      "cites",
+      "thm:cube-cluster-count-identity",
+      "Total 6 = T_sep(4)."
+    ]
+  ]
+}
