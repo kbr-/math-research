@@ -43,13 +43,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\), with no per-size certificates. The six-root repeated factor is <a href="#cube-six-root-repeated-factor-relations">not cut out by natural linear relations</a>, so explaining it for all \(N\) is paused.</p>
-<p>Formulate and prove the collision-strata transfer for the contact locus \(K=\{\operatorname{rank}A_{R+1}&lt;R\}\), for all \(N\), as set out in the <a href="#entry-2026-09-29-cube-all-n-mechanism-review">all-N mechanism review</a>:</p>
-<ul>
-<li>Start with the first step, from the separated locus to the open one-double-root stratum, where the confluent limit exists.</li>
-<li>State the pointwise escape condition as an inequality between the local exponents of the confluent limit, at the new collision point and at the branch points, and the rank drop of \(A_{R+1}\).</li>
-<li>Prove it for all \(N\) from the local exponent counts already proved for all \(N\): the <a href="#cube-wronskian-covariant-degrees">covariant degrees</a> and the <a href="#entry-2026-09-29-cube-confluent-weight-criterion">confluent exponents</a>.</li>
-</ul>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By the <a href="#cube-contact-boundary-transfer">boundary transfer lemma</a>, the contact bound for every \(N\) follows from a dimension bound, at most \(N-6\), on the contact locus of the limit spaces over one collision hyperplane. Iterating inside the hyperplane keeps the requirement at codimension three and ends at limit families over the deepest strata.</p>
+<p>Work out the base of that iteration for all multiplicity patterns:</p>
+<ol>
+<li>Describe the limit spaces, over every direction of approach, for configurations with at most three distinct root positions. The requirement there is the dimension bound that comes out of the iteration's bookkeeping, fibre dimensions included, and it is not assumed in advance.</li>
+<li>Determine their orders at the mark from the local structure, for all \(N\).</li>
+</ol>
+<p>Check first whether the iteration's bookkeeping, fibres over deeper strata included, really ends at such strata, and state the resulting all-\(N\) base statement exactly. No per-size certificates.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -27100,6 +27100,65 @@ using \(R-2N+3=(N-2)(N-3)/2\). Homogeneity gives the degrees of the coefficients
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.23 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-contact-boundary-transfer" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2" data-claims="lem:cube-contact-boundary-transfer">
+<h3>29 September 2026 — For every N, the contact bound reduces to the limits over one collision hyperplane, with no escape problem</h3>
+<p class="entry-meta">Working proof: in a Grassmannian chart the contact condition at the fixed mark is a closed Schubert condition, so the projective dimension theorem moves any codimension-two contact component onto a collision boundary. Boundary transfer cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-29-cube-all-n-mechanism-review">all-N mechanism review</a> set the all-\(N\) target as codimension at least three for the contact locus \(K=\{\operatorname{rank}A_{R+1}&lt;R\}\) in the separated locus (<code>conj:cube-offcollision-contact-bound</code>). It proposed a transfer to collision strata, but worried about contact escaping into branch points and about non-canonical limits. The missing implication is a transfer valid for every \(N\). This cycle proves one.</p>
+<ul>
+<li><em>Escape.</em> The escape worry disappears in the rank formulation, since the contact is at the fixed mark over \(z=\infty\).</li>
+<li><em>Non-canonical limits.</em> These are absorbed by taking the closure of the graph of the row space in a Grassmannian, in an affine chart that fixes translation and scale.</li>
+</ul>
+<p>Outcome: for every \(N\ge5\), the contact bound follows from a dimension bound on the contact locus of the limit spaces over one collision hyperplane.</p>
+<p><strong>General statement.</strong> <code>lem:cube-contact-boundary-transfer</code>, for every \(N\ge5\).</p>
+<h4 id="cube-contact-boundary-transfer">The transfer lemma</h4>
+<p><strong>Setup.</strong> Characteristic zero, \(N\ge5\), \(R=\binom N2\), with \(A_L(a)=(H_k(a_i,a_j))_{i&lt;j,\ k\le L}\) as in the <a href="#cube-mark-weight-dictionary">mark weight dictionary</a>.</p>
+<ul>
+<li><em>A fixed truncation.</em> Fix \(M\ge R+1\), larger than \(R-1\) plus the Plücker total weight of \(V_a\), which is the same for all separated \(a\). Then no nonzero section of \(\langle h_{ij}\rangle\) vanishes to order above \(M\) at the mark, so \(\operatorname{rank}A_M(a)=R\) for every separated \(a\). Put \(\Lambda(a)=\) the row space of \(A_M(a)\) in \(\operatorname{Gr}(R,k^{M+1})\).</li>
+<li><em>The contact condition.</em> Let \(E=\{x:x_0=\cdots=x_{R+1}=0\}\). By part (1) of the dictionary, \(a\in K\) if and only if \(\Lambda(a)\cap E\ne0\), a closed Schubert condition \(\mathcal K\subset\operatorname{Gr}\).</li>
+<li><em>Covariance.</em> Translation \(a\mapsto a+c\mathbf 1\) acts on the columns by a unipotent map \(U_c\) preserving the flag. The identity \(H(a+c;T)=(1+cT)^{-3}H(a;T/(1+cT))\) gives \(H_k(a+c)=\sum_{m\le k}c_{km}H_m(a)\) with \(c_{kk}=1\), as in the confluent criterion's proof of part (2). Scaling acts by \(D_s=\operatorname{diag}(s^k)\). Both preserve \(E\). So \(K\) is a translation-invariant cone, with image \(\bar K\subset\mathbb P^{N-2}\) (roots modulo translation and scale), where the collision loci are hyperplanes \(H_{ij}\).</li>
+<li><em>The charts.</em> For a pair \(\{k,l\}\), the chart \(\mathcal A_{kl}=\{\sum a_i=0,\ a_k-a_l=1\}\cong\mathbb A^{N-2}\) is the affine chart \(\mathbb P^{N-2}\setminus H_{kl}\). Let \(U_{kl}\subset\mathcal A_{kl}\) be its separated locus, the complement of a hypersurface, hence affine. Let \(X_{kl}\) be the closure in \(\mathbb P^{N-2}\times\operatorname{Gr}\) of the graph of \(\Lambda|_{U_{kl}}\), with projection \(\pi\), and \(K_X=X_{kl}\cap(\mathbb P^{N-2}\times\mathcal K)\).</li>
+</ul>
+<p><strong>Lemma.</strong> Suppose that for every pair \(\{k,l\}\ne\{1,2\}\),
+\[
+\dim\bigl(K_X\cap\pi^{-1}(H_{12}\setminus H_{kl})\bigr)\le N-6\qquad(\text{in }X_{kl}).
+\]
+Then every component of \(K\) has codimension at least three in the separated locus.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Meeting.</em> Suppose a component \(Y\) of \(K\) has codimension at most two, so its image \(\bar Y\subset\mathbb P^{N-2}\) has dimension at least \(N-4\ge1\). By the projective dimension theorem (Hartshorne I.7.2), \(\bar Y\cap H_{12}\) is nonempty, and each of its components has dimension at least \(N-5\).</li>
+<li><em>Choosing a chart.</em> Take such a component \(C\). It is not contained in every \(H_{kl}\), \(\{k,l\}\ne\{1,2\}\): together with \(H_{12}\) these force all roots equal, which is empty in \(\mathbb P^{N-2}\). Fix \(\{k,l\}\) with \(C\not\subset H_{kl}\).</li>
+<li><em>Lifting.</em> Let \(\tilde Y\subset X_{kl}\) be the closure of the graph of \(\Lambda\) over \(Y\cap U_{kl}\). This is nonempty and dense in \(\bar Y\), since \(Y\not\subset H_{kl}\). \(\tilde Y\) lies in \(K_X\), because \(\mathcal K\) is closed. \(\pi:\tilde Y\to\bar Y\) is proper and surjective.
+<ul>
+<li>\(\pi^*H_{12}\) is a Cartier divisor not containing \(\tilde Y\), so every component of \(\tilde Y\cap\pi^{-1}(H_{12})\) has dimension at least \(\dim\tilde Y-1\ge N-5\).</li>
+<li>By surjectivity, some component maps onto a dense subset of \(C\), so it meets \(\pi^{-1}(H_{12}\setminus H_{kl})\) in a dense open subset, of dimension at least \(N-5\).</li>
+</ul></li>
+<li><em>Conclusion.</em> That subset lies in \(K_X\), which contradicts the hypothesis. \(\square\)</li>
+</ol>
+<p><strong>Remarks.</strong></p>
+<ol>
+<li><em>No escape.</em> The contact condition is about the fixed mark over \(z=\infty\), and \(E\), \(U_t\) and \(D_s\) are compatible. So passing to the limit loses nothing, and no branch point or collision point enters. The review's "pointwise escape" condition is not needed. In the chart, the scale is fixed by \(a_k-a_l=1\), so no \(D_s\)-degeneration occurs over \(H_{12}\setminus H_{kl}\).</li>
+<li><em>Chart independence.</em> On overlaps, charts differ by a finite nonzero scaling \(D_s\). So the fibres of \(K_X\) over common points correspond, and the hypothesis is compatible between charts. By the \(S_N\)-symmetry of the construction, one collision hyperplane serves for all.</li>
+<li><em>What the fibres are.</em> Take a point \(p\) of \(H_{12}\) in no other collision hyperplane, and form the confluent rows \((f_{1k}-f_{2k})/(a_1-a_2)\to\partial_Xf\) of the <a href="#entry-2026-09-29-cube-confluent-weight-criterion">confluent weight criterion</a>. Where their truncation \(A^c_M(p)\) has rank \(R\), the fibre of \(\pi\) over \(p\) is the single point \(\operatorname{rowspace}A^c_M(p)\): the limit contains that row space, and equal dimension forces equality. The contact condition there is \(\operatorname{rank}A^c_{R+1}(p)&lt;R\), by the same null-vector argument as part (1) of the dictionary. On that part of the stratum the hypothesis is codimension at least three of the confluent contact locus, since \(N-6=(N-3)-3\) and \(\pi^{-1}(H_{12})\) has dimension exactly \(N-3\). The criterion proves that the \(R\) confluent functions are linearly independent, but not that \(\operatorname{rank}A^c_M=R\) at every point of the open stratum for this \(M\). Where that fails, the fibre may be larger, and the hypothesis bounds all its limits. Over deeper strata inside \(H_{12}\) (a second double root, or a triple root) the fibres may be positive-dimensional; this is the non-canonical limit of the double-root induction review, carried by the graph closure. The hypothesis there is an absolute bound, \(\dim\le N-6\). The preimage of such a stratum can itself be a whole \((N-3)\)-dimensional component of \(\pi^{-1}(H_{12})\), so it is not a codimension-three condition within the stratum.</li>
+<li><em>Iteration.</em> The lemma can be applied again inside \(H_{12}\cong\mathbb P^{N-3}\) to components of \(K_X\cap\pi^{-1}(H_{12})\) whose image in \(H_{12}\) has positive dimension. Components lying in the fibres over deeper strata need the dimension of the limit families directly. The requirement stays "codimension at least three" at each level. So the lemma transfers the problem without weakening it. It makes the all-\(N\) problem a statement about limit spaces with fewer free parameters, not a way to prove it.</li>
+</ol>
+<p><strong>What changes on the route.</strong> The all-\(N\) obligation off collisions is now: for every \(N\), the contact locus of the limit spaces over one collision hyperplane has dimension at most \(N-6\). Over the open one-double-root stratum, where \(\operatorname{rank}A^c_M=R\), this is the confluent contact locus, of the same codimension three. The record's confluent criterion gives only codimension two for the weight locus, at \(N=7\) by certificate. The contact locus \(\{\operatorname{rank}A^c_{R+1}&lt;R\}\) is contained in it and may be smaller. The next step asks whether the confluent contact locus has a structure, such as one extra free root, that makes its codimension-three statement provable for all \(N\).</p>
+<p><strong>Lead follow-up.</strong> This develops Outside lead 2 (projective dimension theorem) of the all-N mechanism review. <strong>Follow-up.</strong> Developed: the meeting argument is now a proved transfer, with the escape concern removed and non-canonical limits absorbed by the graph closure.</p>
+<p><strong>Remaining gap.</strong> The boundary hypothesis for all \(N\): the confluent contact locus over the open one-double-root stratum, and the limit families over deeper strata inside \(H_{12}\).</p>
+<p><strong>Dependencies re-read.</strong> The mark weight dictionary (part (1) and its setup); the all-N mechanism review (Lead 2 and the reviewer's gaps); the confluent weight criterion; the double-root induction review's Obstacle.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It confirmed the following: the uniform truncation and \(\dim\Lambda=R\); \(K\) as the Schubert condition, by the null-vector argument; translation covariance, by the \(H\)-series identity, and scaling; that \(Y\cap U_{kl}\) is nonempty; the choice of chart; the Krull dimension count; that a component maps onto \(C\); the dimension of \(\pi^{-1}(H_{12})\); and chart compatibility. Corrections applied: the fibre over the open stratum is stated only where \(\operatorname{rank}A^c_M=R\), which the criterion does not prove everywhere; the deeper-strata hypothesis is an absolute bound, not codimension three within the stratum; the next step no longer anticipates the base condition; \(M\ge R+1\); the translation argument uses the \(H\)-series identity.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zze">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 45.37 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 41.33 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 0.86 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.18 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
