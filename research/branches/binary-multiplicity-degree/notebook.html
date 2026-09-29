@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The last two-far coefficient is a <a href="#cube-two-far-hook-coefficient">hook-content product</a>, \((\lambda-1)^r\prod_{(r^r)}(\lambda+n-1+c)\), in eight exact cases. It depends on \(n\) only through \(\lambda+n-1\).</p>
-<p>Prove the formula by induction on \(n\). Read \([s_{\nu^*}]H\) at \(t_n=0\), where the leading monomial has exponent \(0\). Show that the span with the root \(0\) added reduces to the \((n-1)\)-root problem at \(\lambda+1\) through \(\varphi_t-1\) and the contiguity \(\partial_x(1+x)^{-\lambda}=-\lambda(1+x)^{-\lambda-1}\). The base case is \(n=r+1\), where \(m=1\). There \(H\) is the full \(r\times r\) determinant, and the claim is \((\lambda-1)^r\prod_{(r^r)}(\lambda+r+c)\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The <a href="#entry-2026-09-29-cube-two-far-route-review">two-far route review</a> found the two-far window settled among windows up to the <a href="#cube-two-far-hook-coefficient">hook-content formula</a>, which now holds exactly through \(r=4\).</p>
+<p>Extend both convex-cost theorems to \(F\) far roots. Normalize the far span as \(g_0,\ldots,g_{F-1}\), \(g_i=u^i+\ldots\), with levels \(b-i\) for the rows \(g_ih_b\). Derive the size clause from the far dilation, the \(t\)-side dominance clause from near collisions, and a far-side dominance clause from far collisions, which \(F\ge3\) needs. Then predict \((\kappa^*,\nu^*)\) and the window lower bound for every \(F\times n\). Check them against the \(3\times3\) valuations \(48,39,38,39,48\), including the center tie, and against \(3\times4\) and \(4\times4\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26198,6 +26198,137 @@ as a polynomial identity in \(\lambda\). Here \(c(\square)=j-i\) is the content,
 <tr><td>Computation design and coding</td><td class="elapsed">44.69 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 35.71 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">13.54 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-two-far-route-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Route review; its falsification test extends the evidence for conj:cube-two-far-hook-coefficient without a new claim.">
+<h3>29 September 2026 — Review: two-far windows are settled among windows up to one coefficient formula; the method should extend to every far cluster</h3>
+<p class="entry-meta">Route review; the hook-content formula passes at r = 4 and two new sizes, and the convex-cost method is proposed for three or more far roots. Two-far route review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>The line and the goal.</strong> Open statement 3 for every \(N\ge7\) needs Weierstrass-weight control of the degree-two pair space. The line's claim remains <code>conj:cube-pair-degeneration-simplicity</code>. On this line the caterpillar reduces the collision half to its components, and the <a href="#cube-caterpillar-component-count">count formula</a> needs each middle component's far–near window. Since the <a href="#entry-2026-09-29-cube-schur-window-review">Schur window review</a>, five cycles have landed as follows.</p>
+<ul>
+<li>Every far–near window is a double Schur expansion. Its valuation is the least weight in the support (<a href="#cube-far-near-double-schur-reduction">lemma</a>).</li>
+<li>For two far roots, the two-sided support rule is proved except one coefficient. That covers the <a href="#cube-two-far-size-clause">size clause</a> and the <a href="#cube-two-far-dominance-clause">dominance clause</a>. So every window has valuation at least the formula \(v_0\).</li>
+<li>Equality reduces to \([s_{\nu^*}]H\ne0\) for a <a href="#cube-two-far-leading-reduction">hook determinant</a>. It is proved at <a href="#cube-two-far-extreme-window">\(r=0\)</a> and <a href="#cube-two-far-second-window">\(r=1\)</a>, which settles the two-far window among windows for \(n\le4\), that is \(N\le7\).</li>
+<li>For every \(r\) the coefficient is conjecturally \((\lambda-1)^r\) times the hook-content product of the \(r\times r\) square at \(\lambda+n-1\) (<a href="#cube-two-far-hook-coefficient">conjecture</a>).</li>
+</ul>
+<p><strong>General statement.</strong> The line's claim is <code>conj:cube-pair-degeneration-simplicity</code>. The tested claim is <code>conj:cube-two-far-hook-coefficient</code>.</p>
+<p><strong>What the goal needs from this line.</strong> For every \(N\), each middle component needs four things:</p>
+<ul>
+<li>its window, among all column sets and not only windows;</li>
+<li>the count formula with that window;</li>
+<li>simplicity of its points;</li>
+<li>the necks between components and the double-root classes.</li>
+</ul>
+<p>Only the window has advanced in this period.</p>
+<h4>Falsification attempt</h4>
+<p>The newest general claim is the hook-content formula. It was fitted on \(n\le3\) and predicted five further cases with \(r\le3\). <code>bmd_cube_two_far_h_lambda_review.gp</code> tests it at three new sizes: the first \(r=4\) case, \(n=5\); \((n,r)=(6,3)\); and \((7,2)\). The control is \((3,2)\). It also records the rational constants (<code>hook-review.txt</code>). In all four cases the primitive part divided by the prediction is exactly \(\pm1\). So the formula survives, including at \(r=4\), where the factor \(\lambda+4\) has multiplicity \(4\). The constants are \(1/8640\), \(1/7112448\), \(1/512096256000\) and \(1/22122558259200000\). They involve only the primes \(2,3,5,7\).</p>
+<h4>Obstacle</h4>
+<p>The line is stuck on proof mechanisms at two levels. For two far roots, the window needs a proof of the hook-content formula for \([s_{\nu^*}]H\): the convex-cost argument determines the supports but not the coefficients. Beyond that, three or more far roots, minimality over all column sets, simplicity of the components, the necks and the double-root classes have no argument yet, and the window method has not been tried beyond \(F=2\).</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Determinant evaluations</strong> (Krattenthaler, Advanced determinant calculus, Sém. Lothar. Combin. 42, 1999, and its sequel, Linear Algebra Appl. 411, 2005). These give product formulas for determinants of binomial and hypergeometric entries, through factorization lemmas and identification of factors. Target: the coefficient formula. Where it breaks: \([s_{\nu^*}]H\) is a Schur coefficient of a determinant, not a determinant with explicit entries. <strong>Answers.</strong> Writing \([s_{\nu^*}]H\) as a single determinant of \(\beta\)-ratios, and evaluating it by Krattenthaler's lemma on linear-factor identification, would prove the formula. <strong>Test.</strong> Not run: the natural cheap check, that the constants involve only small primes, is automatic. The \(\beta_k\) enter only for \(k\le n+r\le9\), and the hooks and the alternant extraction have integer coefficients, so only primes up to \(7\) can occur. A real test needs an explicit determinant candidate.</li>
+<li><strong>Gauss contiguous relations</strong> for \({}_2F_1\), and the contiguity \(\partial_x(1+x)^{-\lambda}=-\lambda(1+x)^{-\lambda-1}\). The formula depends on \(n\) through \(\lambda+n-1\), which suggests an induction on \(n\) by a shift of \(\lambda\). Target: the coefficient formula. <strong>Answers.</strong> A contiguity mapping the \((n+1)\)-root coefficient at \(\lambda\) to the \(n\)-root coefficient at \(\lambda+1\) would prove the formula from the base case \(n=r+1\). <strong>Test.</strong> Falsified in the simple form. The formula gives \([s_{\nu^*}]H_{n+1}(\lambda)/[s_{\nu^*}]H_n(\lambda+1)=\mathrm{const}\cdot((\lambda-1)/\lambda)^r\), which is not constant. The factor \((\lambda-1)^r\) does not shift with \(n\), so an induction must treat it separately, for example as a contribution of the far pair alone.</li>
+<li><strong>Giambelli's formula</strong> (Macdonald, Symmetric Functions and Hall Polynomials, 2nd ed., §I.3, Example 9): \(\det[s_{(a_i|b_j)}]=s_{(a|b)}\) for hooks in Frobenius notation. \(H\) is an \(r\times r\) determinant whose entries are combinations of hooks and products of hooks. Target: the Schur expansion of \(H\), and so the coefficient. <strong>Answers.</strong> Multilinear expansion of \(H\) into Giambelli determinants would express \([s_{\nu^*}]H\) as a signed sum over \(r\)-tuples of \(\beta\)-ratio products, from which a product formula might be extracted. <strong>Test.</strong> Not run: the entries carry products \(\gamma_{b,n}\gamma_{n-1,e}\) of two hooks. Each must first be rewritten by the Pieri rule into a sum of Schur functions, which are not all hooks, before Giambelli applies. The resulting expansion has \(3^r\) products per term. It is mechanical but was left for a development cycle.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>Deligne's interpolation categories \(\mathrm{Rep}(GL_t)\)</strong> (Deligne, La catégorie des représentations du groupe symétrique \(S_t\), lorsque \(t\) n'est pas un entier naturel, 2007; Deligne and Milne, Tannakian categories, LNM 900, 1982, Example 1.27, for \(GL_t\)). For non-integer \(t\) these are semisimple tensor categories. The object indexed by a partition \(\mu\) has dimension \(\prod_{\square\in\mu}(t+c(\square))/h(\square)\), the hook-content polynomial. The translation sets \(t=\lambda+n-1\): the conjectured coefficient is \((\lambda-1)^r\prod_\square h(\square)\cdot\dim_t V_{(r^r)}\), up to a constant. <strong>Answers.</strong> If the window coefficient were a categorical trace in \(\mathrm{Rep}(GL_{\lambda+n-1})\), nonvanishing for non-integer \(t\) would follow from semisimplicity, and the formula from the dimension formula. <strong>Test.</strong> Passed as a consistency check only. The hook-content identity \(\prod_{\square\in(r^r)}(t+c)/h=s_{(r^r)}(1^t)\) holds as a polynomial in \(t\). At \(t=\lambda+n-1\) its linear factors are exactly the observed factors other than \((\lambda-1)^r\), in all eleven distinct symbolic cases. This restates the conjecture in categorical language. The translation, that the coefficient is a categorical trace, is untested.</li>
+<li><strong>The Selberg integral and Kadell's Jack averages</strong> (Kadell, The Selberg–Jack symmetric functions, Adv. Math. 130, 1997). Averages of Schur and Jack functions over a Jacobi ensemble are products of hook-content type. The translation would read the weight \((1+x)^{-\lambda}\) of the rows as a Jacobi weight, and \([s_{\nu^*}]H\) as an ensemble average of \(s_{(r^r)}\). <strong>Answers.</strong> A matching Selberg-type evaluation would prove the formula, with an integral in place of a determinant. <strong>Test.</strong> Falsified in the direct Jacobi form, with a hedge. Kadell's Jacobi averages have denominators with factors of the form \(a+b+2N+\ldots\). If \(\lambda\) enters \(a\) or \(b\), which depends on a translation not yet fixed, they would be \(\lambda\)-dependent, and the observed coefficient has none. Passed in the confluent Laguerre form. For the \(r\times r\) Laguerre ensemble with weight \(x^ae^{-x}\), \(E[\det X^r]=\prod_{i=1}^r(a+i)_r=\prod_{\square\in(r^r)}(a+r+c(\square))\). At \(a=\lambda+n-1-r\) this is exactly the conjectured coefficient without \((\lambda-1)^r\). This is a lead to develop: realize \([s_{\nu^*}]H\) as a Laguerre moment.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">The sorted-matching bounds of the size and dominance clauses are minimal-energy computations for a convex pair cost, in the spirit of the log-gas picture; the middle windows still need the coefficient formula. <strong>Follow-up.</strong> Developed.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work on charge models in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">The coefficient determinant H is a fermionic matrix element; no Heisenberg-group evaluation was attempted. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on the multi-double windows in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schur-window-review:1">Its target, Newton polytope containment for two far roots, is proved by convex-cost matching (the size and dominance clauses), without the lead's tools. <strong>Follow-up.</strong> Closed: target proved by another method.</li>
+<li data-lead="entry-2026-09-29-cube-schur-window-review:2">Its target, the vanishing orders (q-m)(q-m+1), is proved by convex-cost matching; the Schubert translation itself was not developed. <strong>Follow-up.</strong> Closed: target proved by another method.</li>
+</ul>
+<p><strong>Assessment.</strong> The period turned the two-far support rule into theorems, except one coefficient.</p>
+<ul>
+<li><strong>What is proved.</strong> For two far roots, both support clauses and the lower bound for every window. The windows \(r\le1\), and so the two-far window among windows for \(N\le7\). At \(N=8\) the least window valuation is proved, and only the tie is open.</li>
+<li><strong>What rests on the formula.</strong> The rest of the two-far case rests on one symbolic formula. It is tested exactly in eleven distinct cases up to \(r=4\), with no failure, and it has a natural product form.</li>
+<li><strong>How deep the line is.</strong> Windows among windows are one of four inputs per component. Nothing in this period touched minimality over all column sets, component simplicity, necks or double-root classes, and three far roots have only the reduction and a tie.</li>
+</ul>
+<p>The method, normalization plus convex-cost matching, is general, and its natural next target is three or more far roots. The line is productive, and its distance to statement 3 is still large.</p>
+<p><strong>Next step on the highest-risk item.</strong> Route item cube-odd-characteristic, open statement 3. Extend both convex-cost theorems to \(F\) far roots. Normalize the far span as \(g_0,\ldots,g_{F-1}\), with \(g_i=u^i+\ldots\), whose coefficients of \(u^a\) have order \(a-i\). The rows \(g_ih_b\) have levels \(b-i\), and the change of basis contributes \(\eta^{\binom F2}\prod\beta\,\Delta(s)\) per near row. The far-dilation argument should give the size clause, and the near-collision argument the \(t\)-side dominance clause, for every \(F\). For \(F\ge3\), \(\kappa\) can have up to \(F\) rows. The weight count then also needs a far-side dominance clause, from far roots colliding, the mirror of the near-collision argument. Predict \((\kappa^*,\nu^*)\) and the window lower bound for every \(F\times n\) from the sorted matchings; the \(3\times3\) tie shows that the minimizer need not be unique. Check them against the \(3\times3\) valuations \(48,39,38,39,48\) and the center tie, and against \(3\times4\) and \(4\times4\).</p>
+<p><strong>Dependencies re-read.</strong> The Schur window review's items and Obstacle; the five entries of this period.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the test data, including its own factorization of the constants, the case count, the contiguity computation, the period summary and each item's test. It passed the review with corrections, all made. The Krattenthaler check is recognized as automatic and marked Not run. The Kadell bridge is hedged in its Jacobi form and passed in its Laguerre form, from the reviewer's observation \(E[\det X^r]=\prod_i(a+i)_r\). The Deligne test is limited to consistency, with a precise citation. The follow-up notes are corrected. The Obstacle, the assessment and the next step are sharpened.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zt">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>15 min 25.04 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 8.31 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 48.39 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8 min 28.20 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
