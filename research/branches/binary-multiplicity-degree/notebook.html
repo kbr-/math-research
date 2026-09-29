@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The <a href="#entry-2026-09-29-cube-component-simplicity-review">component simplicity review</a> finds that monomial-window components are rigid: each is one explicit Weierstrass polynomial \(q_{F,n}\), and five cheap mechanisms for its squarefreeness fail.</p>
-<p>Develop the master-function lead of the <a href="#entry-2026-09-29-cube-caterpillar-components-review">caterpillar components review</a> (item 3), which has never been set up. Read Mukhin–Varchenko (critical points of master functions and flag varieties) and Scherbak–Varchenko in full. For the rigid space \(V_{F,n}\), with singular points \(0\), \(-1\) and \(\infty\), build the population: a full flag adapted to its four monodromy classes, and the Wronskians \(y_i\) of its partial flags with their Bethe equations. Then decide whether the roots of \(q_{F,n}\) are the Bethe roots of some dual or bispectral population, where distinctness is part of admissibility. Test on the \(2\times2\) limits (\(6\) points) and on \(q_{2,3}\) (\(14\) points).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). Component simplicity is squarefreeness of one polynomial \(q_{F,n}\) per rigid component. The <a href="#cube-component-bethe-extension">Bethe extension criterion</a> shows that the master-function lead gives no mechanism: the tested components have no three-point extension.</p>
+<p>Test reduction modulo \(3\). At \(\lambda=\tfrac32\), in characteristic \(3\), \(\varphi=(1+S)^{-3/2}=(1+S^3)^{-1/2}\) and \(S^{-3/2}=S^{-3}\cdot S^{3/2}\) are Frobenius twists. The \(3\)-adic Newton polygon of \(q_{2,3}\) has a single slope, which suggests good reduction. If \(q_{F,n}\bmod3\) keeps its degree and is squarefree, then \(q_{F,n}\) is squarefree over \(\mathbb Q\). A closed form of the reduction, for example through the characteristic-\(3\) Wronskian of the twisted classes, would be a mechanism for all \((F,n)\). First compute \(q_{F,n}\bmod p\) for \(p=3,5,7\) on the rigid components through \(N=7\), and check degree, squarefreeness and factorization pattern. Then read off a structure to prove.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26684,6 +26684,96 @@ W(E)\ \ge\ \max(A+B,\;2A+D_0,\;2B-D_0).
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 11.95 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.89 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-component-bethe-extension" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-caterpillar-components-review:3" data-claims="lem:cube-component-bethe-extension ex:cube-component-no-class-extension">
+<h3>29 September 2026 — The master-function lead gives no simplicity for caterpillar components; single-character three-point extensions do not exist</h3>
+<p class="entry-meta">Working proof and finite check: Bethe genericity holds for almost all flags and says nothing about flags through a component; new characters never extend a component, and single old classes fail on the tested ones. Bethe extension cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-29-cube-component-simplicity-review">component simplicity review</a> reduced simplicity of a rigid caterpillar component to squarefreeness of one polynomial \(q\) per component. The missing implication is that this polynomial is squarefree for every \((F,n)\). The review proposed the master-function lead of the <a href="#entry-2026-09-29-cube-caterpillar-components-review">caterpillar components review</a> (item 3), never set up. In that lead, simplicity would be distinctness of Bethe roots. This cycle reads the source, determines what the translation requires, and tests it.</p>
+<p>Outcome:</p>
+<ul>
+<li>\(q\) becomes a Bethe polynomial \(y_R\) only for flags of a larger space through \(V\).</li>
+<li>They form a proper subvariety of the flag variety. The source's genericity, which gives distinct roots, holds for almost all flags and says nothing about this subvariety. Squarefreeness would have to be assumed, not derived.</li>
+<li>Independently, a three-point extension by a function of a new character never exists (proved), and none in a single old class, within the tested Laurent range, exists for the tested components (finite check).</li>
+</ul>
+<p>The lead gives no simplicity mechanism.</p>
+<p><strong>General statement.</strong> <code>lem:cube-component-bethe-extension</code>, for every space of the stated type and so every \((F,n)\); the finite check is <code>ex:cube-component-no-class-extension</code>.</p>
+<h4>The source</h4>
+<p>Mukhin and Varchenko, Critical points of master functions and flag varieties, arXiv math/0209017 (Commun. Contemp. Math. 6, 2004). It treats integral dominant weights, that is, spaces of polynomials.</p>
+<ul>
+<li><em>Theorem 5.12</em> attaches a population to every space \(V\) without base points, ramified at \(z_1,\ldots,z_n,\infty\). For a full flag \(F\) of \(V\), \(y^F_i=W(u_1,\ldots,u_i)\) times a fixed normalization, (5.4).</li>
+<li><em>Proposition 5.17 and Lemmas 5.18–5.19:</em> \(y^F\) is generic, hence a critical point with distinct roots, only for almost all flags.</li>
+<li><em>Marked points:</em> the ramification points of \(V\), including its Weierstrass points, are the marked points \(z_s\), with weights, not Bethe roots.</li>
+</ul>
+<p>The identity used below, from the proof of Lemma 5.15, holds for any functions:
+\[
+W\bigl(W(u_1,\ldots,u_R),W(u_1,\ldots,u_{R-1},u_{R+1})\bigr)=c\,W(u_1,\ldots,u_{R-1})\,W(u_1,\ldots,u_{R+1}).
+\]
+The quasi-polynomial version of the theory, needed for \(\lambda=\tfrac32\), was not read, and nothing below depends on it.</p>
+<h4 id="cube-component-bethe-extension">The extension lemma</h4>
+<p><strong>Setup.</strong> Let \(B=\{0,-1,\infty\}\). Let \(V\) be an \(R\)-dimensional space of functions on \(\mathbb P^1\setminus B\), spanned by functions \(S^a(1+S)^bL(S)\) with \(L\) a Laurent polynomial. Write \(\operatorname{Wr}(V)=S^\alpha(1+S)^\beta q(S)\), with \(q\) a polynomial and \(q(0)q(-1)\ne0\). Its roots are the Weierstrass points off \(B\), and \(m=\deg q\) is their total weight. The rigid components of the <a href="#cube-caterpillar-component-count">count proposition</a>, at \(c=1\), are of this type. For a point \(P\), \(E_P(V)\) denotes the sum of the orders at \(P\) of a basis adapted to the order filtration (the local exponents, since there are no logarithms), and \(E_B=\sum_{P\in B}E_P\).</p>
+<p><strong>Lemma.</strong></p>
+<ol>
+<li>If \(V\subset V'\), \(\dim V'=R+1\), then \(q\) equals \(y_R\), up to the normalization, for every flag of \(V'\) through \(V\). If \(V'\) has no ramification off \(B\) and \(z\notin B\) is a multiple root of \(q\), then \(y_{R-1}(z)=0\) for every such flag. Such an extension does not imply that \(q\) is squarefree.</li>
+<li>\(E_B(V)=\binom R2-m\). A space \(V'=V\oplus\langle g\rangle\) without ramification off \(B\) needs \(E_B(V')-E_B(V)=R+m\).</li>
+<li>Let \(g=S^\mu(1+S)^\nu L\), with \(L\) a Laurent polynomial with exponents from \(k_0\) to \(k_1\). Suppose that \(\mu\), \(\nu\) and \(\mu+\nu\), modulo \(\mathbb Z\), are not exponent classes of \(V\) at \(0\), \(-1\) and \(\infty\) respectively. Then \(V\oplus\langle g\rangle\) has ramification off \(B\).</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>The first statement is the definition of \(y^F_R\) for a flag with \(F_R=V\).
+<ul>
+<li>For the second: if \(q\) has a multiple root at \(z\notin B\), then \(W(y_R,\tilde y_R)(z)=0\), where \(\tilde y_R\) is obtained by replacing \(u_R\) by \(u_{R+1}\). The identity then gives \(W(u_1,\ldots,u_{R-1})(z)\,\operatorname{Wr}(V')(z)=0\), and \(\operatorname{Wr}(V')(z)\ne0\).</li>
+<li>For the third, \(\langle1,(S-1)^2,(S-1)^3\rangle\subset\langle1,S,S^2,S^3\rangle\) is a counterexample. The larger space is unramified off \(\infty\), and the hyperplane has no base point, yet its Wronskian is \(c(S-1)^2\). In general a hyperplane with orders \(\{0,\ldots,R\}\setminus\{k\}\) at \(z\) has weight \(R-k\), anywhere from \(0\) to \(R\).</li>
+</ul></li>
+<li>\(V\) is the solution space of a Fuchsian equation of order \(R\). Its singular points are \(B\) and the roots of \(q\). By the Fuchs relation, the sum of all exponents over \(s\) singular points is \(\binom R2(s-2)\). A root \(z\) of weight \(w_z\) contributes \(\binom R2+w_z\). Hence \(E_B(V)+\sum_z(\binom R2+w_z)=\binom R2(1+\#\{z\})\), which gives \(E_B(V)=\binom R2-m\). For \(V'\), of order \(R+1\) and singular only in \(B\), \(E_B(V')=\binom{R+1}2\). Subtracting gives \(R+m\).</li>
+<li>At each point of \(B\) the local character of \(g\) differs from those of \(V\). So no combination \(g+v\) cancels the leading term of \(g\), and the orders of \(V'\) at \(P\) are those of \(V\) together with \(\operatorname{ord}_Pg\). Now
+<ul>
+<li>\(\operatorname{ord}_0g=\mu+k_0\);</li>
+<li>\(\operatorname{ord}_{-1}g=\nu+\operatorname{ord}_{-1}L\le\nu+k_1-k_0\), since \(S^{-k_0}L\) is a nonzero polynomial of degree \(k_1-k_0\);</li>
+<li>\(\operatorname{ord}_\infty g=-(\mu+\nu+k_1)\) in \(u=1/S\).</li>
+</ul>
+Their sum is at most \(0\), but (2) needs \(R+m\ge1\). \(\square\)</li>
+</ol>
+<p><strong>Remark.</strong> The hypothesis in (3) must include \(\mu+\nu\). The control \(\langle1,S(1+S)\rangle\) (Wronskian \(1+2S\), \(m=1\)) extends by \(g=S^{1/2}(1+S)^{1/2}(1+2S)\): the target \([2,8]\) of <code>control.txt</code> (<code>bmd_cube_extension_control.gp</code>), where \(L=-S^2(1+S)^2(1+2S)\) in class \(S^{-\lambda}\varphi\). A direct evaluation gives \(\operatorname{Wr}(1,S(1+S),g)=-1\) up to the factors at \(B\). The character \(S^{1/2}(1+S)^{1/2}\) of \(g\) is new at \(0\) and at \(-1\). At \(\infty\) the class factor is \(u^{-1}(1+u)^{1/2}\), with integral exponent, and there \(g\) cancels against \(V\). In \(\langle1,S(1+S),g\rangle\) the old Weierstrass point \(-\tfrac12\) becomes an ordinary point.</p>
+<h4 id="cube-component-no-class-extension">No single-class extension of the tested components</h4>
+<p><strong>Finite check.</strong> <code>bmd_cube_component_extension.gp</code> looks for \(g=wL\), with \(w\) one of the four class factors \(1\), \(\varphi\), \(S^{-\lambda}\) and \(S^{-\lambda}\varphi\) of \(V\), and \(L\) a Laurent polynomial with exponents in \([-K,K]\), such that \(\operatorname{Wr}(V,g)=CS^j(1+S)^i\) with \(C\ne0\).</p>
+<ul>
+<li>The quotient \(\operatorname{Wr}(V,g)/(\prod f\cdot w)\) is linear in the coefficients of \(L\).</li>
+<li>For the component spaces its common denominator is \(S^a(1+S)^b\). So the condition is that the span contains some \(S^J(1+S)^I\), and every \(I+J\) up to the maximal degree is tried by an exact rank test (<code>extension.txt</code>).</li>
+</ul>
+<p>Results:</p>
+<ul>
+<li><em>Control.</em> \(\langle1,S(1+S)\rangle\) extends in class \(1\) (by \(g=S\)) and in class \(S^{-\lambda}\varphi\).</li>
+<li><em>The \(2\times2\) limit spaces</em> with windows \([-1,2]\) and \([-2,1]\) (\(R=10\), \(m=6\), \(K=30\)): no extension in any of the four classes.</li>
+<li><em>The \(2\times3\) space</em> with window \([-2,3]\) (\(R=15\), \(m=14\), \(K=40\)): no extension in any class.</li>
+</ul>
+<p>The values of \(m\) are from the review's <code>review-tests.txt</code>. Not excluded for these spaces:</p>
+<ul>
+<li>\(L\) outside the tested range;</li>
+<li>characters new at one or two points of \(B\) but not all three;</li>
+<li>\(g\) mixing several character classes. A space \(V'\) need not be monodromy-invariant; for example, \(1+i\sqrt S\) vanishes only at \(-1\).</li>
+</ul>
+<h4>What this does to the lead</h4>
+<p>By part (1), even where a three-point extension exists, \(q=y_R\) holds only for flags through the fixed hyperplane \(V\). These flags form a proper subvariety of the flag variety. Mukhin–Varchenko's genericity, which makes the roots distinct, holds for almost all flags and says nothing about this subvariety. Part (1)'s counterexample shows that the extension itself does not force simplicity. For extensions by \(k\ge2\) functions, part (2) becomes \(kR+\binom k2+m\). By the same identity, a multiple root of \(q=y_R\) must then be a root of \(y_{R-1}\) or \(y_{R+1}\), and \(y_{R+1}\), the Wronskian of an intermediate space, may have roots. In every form, simplicity of \(q\) would be an input to the Bethe picture, not an output. The master-function lead is therefore closed as a simplicity mechanism for the rigid components. The multi-step and mixed-class extensions remain untested, but they could not give simplicity by this argument.</p>
+<p><strong>Lead follow-up.</strong> This develops Outside lead 3 of the caterpillar components review, the master-function lead. <strong>Follow-up.</strong> Closed: Bethe genericity holds for almost all flags and says nothing about flags through a fixed component space, so the Bethe picture gives no simplicity. Three-point extensions in a single old class, within the tested Laurent range, do not exist for the tested components, and none in a character new at all three points exists for any component.</p>
+<p><strong>Remaining gap.</strong> Squarefreeness of the Weierstrass polynomial of every rigid component still has no mechanism. Beyond it lie the tie components, sharpness of the collision bound beyond the proved windows, the necks, and the double-root classes.</p>
+<p><strong>Dependencies re-read.</strong> Mukhin–Varchenko, Sections 3.1, 5.5 and 5.7 (Theorem 5.12, Lemmas 5.14–5.21, Proposition 5.17); the component simplicity review and its tests; the count proposition's limit space.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer, with one follow-up. The first pass failed the draft: its Part 1 claimed that a three-point extension makes \(q\) squarefree, which is false, since a hyperplane of an unramified space can have any weight. The entry was rewritten. Part 1 now states only the \(y_R\) identification and the multiple-root implication, with a counterexample off \(B\). The conclusion now rests on non-genericity of flags through \(V\), and the finite check is restricted to single classes, with the mixed-class caveat. The follow-up passed the rewrite with corrections, all applied: the control's \(g\) was misread from the coefficient vector and is now \(S^{1/2}(1+S)^{1/2}(1+2S)\), checked by direct evaluation; the genericity wording is scoped to almost all flags; the Laurent range and single class are stated. The reviewer confirmed Parts 2 and 3, the script's formulation and rank test, and the numbers against <code>extension.txt</code>.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zz">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>16 min 22.51 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2.98 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 29.21 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 40.53 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 13.76 s</td></tr>
+<tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">2 min 16.59 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 36.26 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.18 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
