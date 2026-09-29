@@ -67,7 +67,8 @@ def library_note(has=installed_header):
 
 
 def guidance(body, ft, which=shutil.which, has=installed_header):
-    items = re.findall(r'data-route-item="([^"]+)"', body)
+    # every article also carries data-route-item, so keep each route once, in order
+    items = list(dict.fromkeys(re.findall(r'data-route-item="([^"]+)"', body)))
     if not items:
         return []
     record = body.find('<section id="research-record">')

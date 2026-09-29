@@ -40,6 +40,12 @@ class TurnGuidanceTest(unittest.TestCase):
         six = five + [('research', 'lem:b', 'Working proof.')]
         self.assertIn('must be a route review', self.notes(six))
 
+    def test_route_notes_once_when_articles_carry_route_items(self):
+        five = [('research', 'lem:a', 'Working proof.')] * (self.ft.REVIEW_PERIOD - 1)
+        body = self.body(five).replace('data-route="step"', 'data-route="step" data-route-item="step"')
+        notes = ' '.join(self.guide.guidance(body, self.ft))
+        self.assertEqual(notes.count('one more research entry is allowed'), 1)
+
     def test_computation_and_generalization_notes(self):
         notes = self.notes([('research', 'lem:a', 'Working proof.')])
         self.assertIn('C or C++ kernels', notes)
