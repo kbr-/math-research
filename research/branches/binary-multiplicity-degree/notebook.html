@@ -43,12 +43,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The base condition is <a href="#cube-schubert-properness">Schubert properness</a> (SP\(_N\)) of the exceptional fibre families. At a single cluster the fibre consists of the finitely many <a href="#cube-cell-preserving-limit">torus-fixed limits of realized cells</a>, joined by connecting families.</p>
-<p>Next:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By the <a href="#cube-weight-limit-variety">weight limit variety</a>, cluster limits from weight-\(w\) shapes lie in one fixed \(w\)-dimensional variety. So <a href="#cube-single-cluster-fibre-dimension">single-cluster fibres</a> have dimension at most the largest realized weight, and the base condition there is automatic for \(N\ge2m+2\), given \(w_{\max}(m)\le m-2\) and full rank.</p>
+<p>Next, the same argument for several clusters:</p>
 <ul>
-<li>Prove that the family connecting a cell to a cell of weight \(w\) higher in its closure has dimension at most \(w\), generalizing the boundary pencil (\(w=1\)).</li>
-<li>Determine which pivot sets put the full limit in the contact Schubert variety.</li>
-<li>Together with (W\(_m\)), this gives SP at single-cluster points for every \(N\).</li>
+<li>Each within-cluster part lies in its \(G_{w_i}\).</li>
+<li>For the cross blocks, the <a href="#cube-cross-block-factorization">factorization</a> writes the limit as \(\mu\) applied to a two-scale torus limit of \(\Lambda_u\otimes\Lambda_v\), which tends to \(E\). Bound the dimension of the possible limits of \(\mu((\Lambda_u\otimes\Lambda_v)D_{h,k})\) by a Plücker support argument for the two-parameter torus, with the kernel \(K\) of \(\mu\) accounted for.</li>
+<li>Test the bound against the \((2,2)\) pencil (dimension \(1\)) and the \((3,2)\) canonical case (dimension \(0\) at comparable scales).</li>
 </ul>
 </section>
 <section id="working-context">
@@ -28480,6 +28480,102 @@ With the other roots distinct from each other and from \(x_0\), the flat limit c
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 4.47 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 24.79 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.28 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-weight-limit-variety" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-bridge="entry-2026-09-29-cube-schubert-induction-review:1" data-claims="lem:cube-weight-limit-variety cor:cube-single-cluster-fibre-dimension">
+<h3>29 September 2026 — Cluster limits at shapes of mark weight w lie in one fixed w-dimensional variety, so, under a full-rank hypothesis, single-cluster fibres have dimension at most the largest weight</h3>
+<p class="entry-meta">Working proof for every m and N, uniform in the weight: a Plücker support bound under the scaling torus places all such limits in a union of opposite Schubert varieties of dimension w; the fibre bound is conditional on full rank. Weight limit variety cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-schubert-properness">Schubert properness</a> entry left open the families connecting the finitely many cell-preserving limits at a cluster. Only weight one was known, where the family is the <a href="#cube-boundary-pencil">boundary pencil</a>. The missing implication for SP\(_N\) at single-cluster points is a dimension bound on these families for every weight, uniform in \(m\) and \(N\). This cycle proves it.</p>
+<p><strong>General statement.</strong> <code>lem:cube-weight-limit-variety</code> and <code>cor:cube-single-cluster-fibre-dimension</code>, for every \(N\) and \(m\ge2\).</p>
+<h4 id="cube-weight-limit-variety">The weight limit variety</h4>
+<p><strong>Setup.</strong> As before, \(k=\binom m2\), \(J_0=\{0,\ldots,k-1\}\), \(|J|=\sum_{j\in J}j\), and \(p_J\) are the Plücker coordinates on column sets \(J\) of \(T^0,T^1,\ldots\). As in <code>prop:cube-mark-weight-dictionary</code>, the <em>mark weight</em> of a \(k\)-dimensional space \(\Lambda\) is \(\operatorname{wt}(\Lambda)=\min\{|J|-|J_0|:p_J(\Lambda)\ne0\}\). The minimum is attained at the pivot set of \(\Lambda\)'s Schubert cell, since every nonzero coordinate has \(J\) at or above the pivot set in the Gale order. Put
+\[
+G_w=\{\Lambda:p_J(\Lambda)=0\text{ whenever }|J|-|J_0|&gt;w\}.
+\]</p>
+<p><strong>Lemma.</strong> Let a cluster move as \(a_c(t)=x(t)+h(t)u_c(t)\), with \(x(t)\to x_0\) and \(0\ne h(t)\to0\), along an algebraic or analytic arc, over any field. Every arc into a point with this cluster has such a form: take \(x\) the cluster mean and \(h\) a root difference, so \(u(t)\) is meromorphic. The Plücker vector of \(\Lambda_C(u(t))\) is then meromorphic in \(t\), so \(\Lambda^*=\lim\Lambda_C(u(t))\) exists. If \(\operatorname{wt}(\Lambda^*)=w\), then the cluster rows tend to a space in \(G_wU_{x_0}\). Moreover:</p>
+<ul>
+<li>every \(\Lambda\in G_w\) lies in \(\mathrm{Pol}_{&lt;k+w}\), and \(\dim G_w\le w\);</li>
+<li>if \(w\le k\) and \(k+w-1\le M\), then every \(\Lambda\in G_w\) contains \(\mathrm{Pol}_{&lt;k-w}\), and \(G_w\) is the union of the \(p(w)\) opposite Schubert varieties of dimension \(w\) in \(\operatorname{Gr}(w,\mathrm{Pol}_{&lt;k+w}/\mathrm{Pol}_{&lt;k-w})\cong\operatorname{Gr}(w,2w)\), one for each partition of \(w\). It is equidimensional of dimension exactly \(w\).</li>
+</ul>
+<p>\(G_w\) depends only on \(k\), \(w\) and the truncation, not on the shape or on the arc.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Support.</em> The cluster rows span \(\Lambda_C(u(t))D_{h(t)}U_{x(t)}\), and the Plücker coordinates of \(\Lambda_C(u)D_h\) are \(p_J(u)h^{|J|}\).
+<ul>
+<li>Write \(q_J(t)=t^{-\nu}p_J(u(t))\), with \(\nu=\min_J\operatorname{ord}_tp_J(u(t))\). Then \(q(t)\to q(0)\), the Plücker vector of \(\Lambda^*\).</li>
+<li>Let \(e=\operatorname{ord}_th\) and let \(P^*\) satisfy \(q_{P^*}(0)\ne0\) and \(|P^*|-|J_0|=w\). The scaled vector \(q_J(t)h^{|J|}\), which differs from \(p_J(u(t))h^{|J|}\) by a common scalar, has order \(|P^*|e\) at \(P^*\). So its least order \(\rho\) satisfies \(\rho\le|P^*|e\).</li>
+<li>The limit is supported on the \(J\) of order \(\rho\). For each such \(J\), \(|J|e\le\operatorname{ord}(q_Jh^{|J|})=\rho\le|P^*|e\), so \(|J|-|J_0|\le w\).</li>
+</ul>
+This argument works over any field.</li>
+<li><em>Translation.</em> \(U_{x(t)}\to U_{x_0}\) preserves limits.</li>
+<li><em>Sandwich.</em> Take \(\Lambda\in G_w\) and a nonzero coordinate \(p_J\), \(J=\{j_1&lt;\cdots&lt;j_k\}\). Put \(d_i=j_i-(i-1)\ge0\). These are nondecreasing, since \(j_{i+1}\ge j_i+1\), and \(\sum_id_i=|J|-|J_0|\le w\).
+<ul>
+<li>If \(d_i\ge1\) for some \(i\le k-w\), then \(d_i,\ldots,d_k\ge1\), and the sum is at least \(k-i+1\ge w+1\). So \(d_i=0\) for \(i\le k-w\), and \(J\supseteq\{0,\ldots,k-w-1\}\).</li>
+<li>\(d_k\le w\) gives \(j_k\le k-1+w\).</li>
+</ul>
+If every nonzero coordinate has \(J\ni a\), then \(\Lambda\wedge e_a=0\), so \(e_a\in\Lambda\). If every nonzero coordinate has \(J\subseteq\{0,\ldots,n\}\), then \(\Lambda\subseteq\langle e_0,\ldots,e_n\rangle\). This gives \(\mathrm{Pol}_{&lt;k-w}\subseteq\Lambda\subseteq\mathrm{Pol}_{&lt;k+w}\).</li>
+<li><em>Dimension.</em> The sandwich needs \(w\le k\). Writing \(J=\{0,\ldots,k-w-1\}\cup J'\), the weight \(|J|-|J_0|\) equals the weight of \(J'\) in the quotient \(\operatorname{Gr}(w,2w)\). The locus where every coordinate of weight \(&gt;w\) vanishes is the union of the opposite Schubert cells whose Gale-maximal nonzero set \(J\) has weight \(\le w\). The opposite cell with maximal set \(J\) has dimension \(|J|-|J_0|\). So the union has dimension \(\le w\), with equality when some \(J\) of weight \(w\) fits in the columns, that is when \(k+w-1\le M\). The top cells correspond to the partitions of \(w\), and every smaller cell lies in the closure of one of them, which gives equidimensionality. For \(w&gt;k\), the bound \(\dim G_w\le w\) and \(\Lambda\subseteq\mathrm{Pol}_{&lt;k+w}\) still hold by the same count. \(\square\)</li>
+</ol>
+<p>Special cases:</p>
+<ul>
+<li>\(w=0\): \(G_0=\{\mathrm{Pol}_{&lt;k}\}\), which is the renormalization lemma.</li>
+<li>\(w=1\): \(G_1=\{\mathrm{Pol}_{&lt;k-1}+\langle aT^{k-1}+bT^k\rangle\}\), the boundary pencil.</li>
+<li>Cell-preserving arcs give the coordinate points \(\langle T^P\rangle\in G_{\operatorname{wt}P}\) of <code>lem:cube-cell-preserving-limit</code>.</li>
+</ul>
+<p>So the Białynicki-Birula heuristic of the Schubert properness entry holds in this form: whatever the arc, the limits from a weight-\(w\) shape limit fill at most a \(w\)-dimensional variety, and it is the same variety for all shapes.</p>
+<h4 id="cube-single-cluster-fibre-dimension">Single-cluster fibres</h4>
+<p><strong>Corollary.</strong> Let \(p\) have one \(m\)-cluster at \(x_0\), with the other roots distinct from each other and from \(x_0\). Let \(w_{\max}(m,N)\) be the largest mark weight of a limit \(\Lambda^*\) of \(m\)-root shape spaces, over all arcs, including colliding shapes. It is a maximum over finitely many cells of \(\operatorname{Gr}(k,M+1)\), where \(M\) depends on \(N\). Whether it depends on \(N\) is not known, and it is written \(w_{\max}\) below. Assume that for every \(\Lambda\in G_w\), \(w\le w_{\max}(m)\), the space \(\Lambda U_{x_0}+\langle\varphi^{(i)}(x_0)\varphi_z:i&lt;m\rangle+\langle\varphi_z\varphi_{z'}\rangle\) has dimension \(R\). Call this (\(H'_m\)). Then:</p>
+<ol>
+<li>in any chart with \(p\) off its hyperplane, the fibre of the graph closure over \(p\) lies in the image of \(G_{w_{\max}}\), which contains every \(G_w\) with \(w\le w_{\max}\), so it has dimension at most \(w_{\max}\);</li>
+<li>by the fibre dimension principle, (F\(_{\rm rel}\)) and every Schubert base condition of <code>cor:cube-schubert-relative-transfer</code> of codimension \(c\) hold at \(p\) when \(w_{\max}\le N-m-1-c\), the flat dimension minus \(c\);</li>
+<li>if \(w_{\max}\le m-2\), the value (W\(_m\)) predicts for separated shapes, then contact (\(c=3\)) is automatic at single-cluster points for \(N\ge2m+2\).</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>By curve selection every fibre point is a limit along an analytic arc. The cross and pair rows converge along every arc (<a href="#cube-cluster-renormalization">renormalization lemma</a>). The flat limit contains the lemma's space plus these rows, and (\(H'_m\)) makes them equal. It fixes the rank, so \(\Lambda\mapsto\Lambda U_{x_0}+\cdots\) is a morphism on \(G_{w_{\max}}\), and the dimension bound passes to the image. (\(H'_m\)) is needed only on the limits actually attained, and could be weakened accordingly.</li>
+<li>By the relative transfer, a member \(W\) through \(p\) has \(\pi(W)\subseteq L\) with \(\dim L=\dim W\), and \(L\) contains the cluster flat through \(p\), of dimension \(N-m-1\). Then \(\dim(\sigma\cap W\cap\pi^{-1}(p))\le\dim\pi^{-1}(p)\le w_{\max}\le N-m-1-c\le\dim W-c\).</li>
+<li>This is arithmetic: \(m-2\le N-m-4\) exactly when \(N\ge2m+2\). \(\square\)</li>
+</ol>
+<p>For clusters with \(m&gt;(N-2)/2\), the base condition asks for more than the dimension count. It asks for the codimension of \(\sigma\) inside the explicit varieties \(G_wU_{x_0}+\cdots\), a finite Schubert calculus problem in \(\operatorname{Gr}(w,2w)\) twisted by the fixed cross rows. That problem is uniform in the shape.</p>
+<p><strong>What this does to the route.</strong></p>
+<ul>
+<li>At single clusters, for \(N\ge2m+2\), the base condition is reduced without case analysis to two inputs: \(w_{\max}\le m-2\), the (W\(_m\))-type hypothesis extended to limit shapes, and the full-rank hypothesis (\(H'_m\)). This is the kind of uniform statement the <a href="#entry-2026-09-29-cube-two-cluster-review">two-cluster review</a> asked for, for one cluster. Larger clusters need the Schubert calculus in \(G_w\).</li>
+<li>Remark, not proved here: for several clusters, each within-cluster part should lie in its own \(G_{w_i}\) by the same proof. The cross blocks are still the open part, since the kernel of the EPD map lets their data exceed the torus picture.</li>
+</ul>
+<p><strong>Bridge follow-up.</strong> This develops Absurd bridge 1 of the <a href="#entry-2026-09-29-cube-schubert-induction-review">Schubert induction review</a>. The RG and Białynicki-Birula picture gives the proved dimension bound \(w\) for single clusters. <strong>Follow-up.</strong> Developed.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>\(w_{\max}\le m-2\) for limit shapes, and its dependence on \(N\);</li>
+<li>(\(H'_m\));</li>
+<li>the Schubert calculus in \(G_w\) for clusters with \(m&gt;(N-2)/2\);</li>
+<li>multi-cluster cross blocks;</li>
+<li>the collision half.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The renormalization lemma (scaling and translation identities, cross rows); the boundary pencil; the Schubert properness entry (cell-preserving lemma, fibre dimension principle); the relative transfer (flats and members).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It confirmed the sandwich (nondecreasing \(d_i\), \(e_a\in\Lambda\), the span), the quotient weight identification, the opposite-cell dimensions, the special cases and the arithmetic. Its search found no prior equivalent of the lemma. Corrections applied:</p>
+<ul>
+<li>the support step redone with \(t\)-orders, valid over any field; the earlier bound on unnormalized minors was wrong;</li>
+<li>the existence of limits along meromorphic arcs;</li>
+<li>\(G_w\) as the union of \(p(w)\) opposite Schubert varieties, not one, equidimensional of dimension \(w\);</li>
+<li>the hypotheses \(w\le k\) and \(k+w-1\le M\), with the weaker statement otherwise;</li>
+<li>\(w_{\max}(m,N)\);</li>
+<li>chart, morphism and member-dimension justifications in the corollary;</li>
+<li>the full-rank hypothesis in the title and meta line;</li>
+<li>the route claims restricted to \(N\ge2m+2\) and to the stated inputs;</li>
+<li>the multi-cluster sentence labelled a remark;</li>
+<li>citations of the cell-preserving lemma, the mark weight dictionary and the Schubert transfer.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzs">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 6.90 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 50.55 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 13.22 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.12 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
