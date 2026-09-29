@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The confluent neck is <a href="#cube-confluent-neck-pair-space">settled for the whole pair space</a>. The <a href="#entry-2026-09-29-cube-double-root-induction-review">double-root induction review</a> found that a pair block between two double roots has no canonical limit: it depends on the direction of approach.</p>
-<p>Assemble the two-double-root space with the block \(V_7=(1+AT)^{-5/2}(1+BT)^{-7/2}\operatorname{Pol}_{\le3}\) for the bubble's approach. Recompute its local exponents and degree bound, replacing the naive \(T_{22}\). Test simplicity of the resulting \((2,2,1^{N-4})\) bubble at \(N=5,6\). In parallel, check whether clustering with the double root outside the cluster avoids two-double-root blocks altogether.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The <a href="#cube-directional-two-double-count">directional two-double count</a> closes the counts of the confluent cluster degeneration exactly: face, confluent neck and directional bubble. At \(N=5,6\) the bubble space attains its bound with simple non-branch points.</p>
+<p>Justify that the bubble is the directional space. Rescale the confluent cluster degeneration at the cluster scale, and show that the far pair's symmetric approach at infinity gives the block \((1+AT)^{-5/2}(1+BT)^{-7/2}\operatorname{Pol}_{\le3}\) after a Möbius change, with the other rows' limits canonical. Then set up the next induction step: the cluster degeneration of the directional space, with the rank pattern of two double roots.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24447,6 +24447,65 @@ The two terms \(\pm\lambda(\lambda+1)u\) cancel. Also \(K(0)=-u^3Q(0)^2\ne0\).</
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">8.48 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-directional-two-double-count" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-directional-two-double-count">
+<h3>29 September 2026 — The directional two-double-root space: its count closes the confluent degeneration exactly</h3>
+<p class="entry-meta">Working proof of the count and the additivity for every N; finite check of attainment and simplicity at N=5,6. Directional bubble count cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Open statement 3 for every \(N\ge7\) needs generic simplicity of the one-double-root pair space. Its cluster degeneration, with the double root inside the cluster, has a binary face, the <a href="#cube-confluent-neck-pair-space">confluent neck</a> with \(2M(M-2)\) simple points, and a bubble with two double roots. The <a href="#entry-2026-09-29-cube-double-root-induction-review">last review</a> found that such a bubble has no canonical space. With one double root \(A\) exact and the other, \(B\), approached, the pair block between them is \(V_7=(1+AT)^{-5/2}(1+BT)^{-7/2}\operatorname{Pol}_{\le3}\). It also found that the naive count \(T_{22}\) used a dependent row. This cycle assembles the directional space, computes its local-exponent count, and tests additivity and simplicity. Outcome: the directional count exceeds the naive one by exactly \(2M\), and the counts of face, neck and bubble add up to \(T_{\rm conf}\) exactly for every \(N\). That removes the numerical tension of the four previous entries, conditionally on two things: that the bubble is the directional space, and that \(T_{\rm conf}\) and \(T_{\rm dir}\) are attained generically. The additivity is an identity between upper bounds. At \(N=5,6\) every bound is attained and the non-branch points are simple.</p>
+<p><strong>General statement.</strong> <code>prop:cube-directional-two-double-count</code>, for every \(N\ge5\), in characteristic zero. It serves <code>conj:cube-pair-degeneration-simplicity</code> for the one-double-root class.</p>
+<h4 id="cube-directional-two-double-count">Directional two-double count</h4>
+<p><strong>Setup.</strong> Let \(A\ne B\) and \(k\) run over \(N-4\) simple roots, all nonzero and distinct. The directional space \(V^{\rm dir}\) has \(R=\binom N2\) rows:</p>
+<ul>
+<li>\(\varphi_k\varphi_l\);</li>
+<li>\(\varphi_A\varphi_k\) and \(\varphi_A'\varphi_k\), and likewise \(\varphi_B\varphi_k\) and \(\varphi_B'\varphi_k\);</li>
+<li>\(\varphi_A^2\) and \(\varphi_B^2\);</li>
+<li>the block \(V_7\): \(T^j(1+AT)^{-5/2}(1+BT)^{-7/2}\), \(0\le j\le3\).</li>
+</ul>
+<p>All blocks except \((A,B)\) are the canonical limits of their pairs, and \((A,B)\) is the directional limit \(V_7\) (generic \(A,B\)). Put \(E=\binom R2\), \(m_s=\binom{N-1}2+\binom{R-N+1}2\), and \(\Sigma_d=-5(N-2)+\binom{2N-4}2-3+\binom{\binom{N-2}2}2\), as in the <a href="#cube-confluent-weight-criterion">confluent criterion</a>.</p>
+<p><strong>Proposition.</strong> If the rows of \(V^{\rm dir}\) are independent, its total finite non-branch weight is at most
+\[
+T_{\rm dir}(N)=(N-4)E-4N+2-2\Sigma_d-(N-4)m_s ,
+\]
+with equality exactly when the multiplicities at the branch values and at infinity are minimal. The minimal multiplicities are \(\Sigma_d+4N-3\) at \(-1/A\), \(\Sigma_d+2N+5\) at \(-1/B\) and \(m_s\) at each simple value. Moreover, symbolically in \(N\),
+\[
+T_{\rm dir}(N)=T_{22}(N)+2(N-2),\qquad T_{\rm conf}(N)=\tbinom{N-2}2+2(N-2)(N-4)+T_{\rm dir}(N),
+\]
+where \(T_{22}\) is the naive count of the <a href="#entry-2026-09-29-cube-confluent-window-rank">window rank entry</a>. The second identity says that the binary face, the confluent neck and the directional bubble account exactly for the one-double-root total.</p>
+<p><strong>Proof.</strong> As in the confluent criterion, the cleared numerator \(P\) has degree at most \((d-2)E+\sum_r(h_r-3)\). Here \(d=N-2\) is the number of distinct branch values and \(h_r\) the total pole order of row \(r\). The \(-2E\) comes from \(W_T=(dS/dT)^{\binom R2}W_S\). The \(-3\) in each \(h_r-3\) comes from writing every row as \(S^3\) times a function analytic at \(S=1/T=0\), with \(W(S^3h_r)=S^{3R}W(h_r)\). The rows of \(V_7\) vanish at infinity to order \(6-j\ge3\), so the bound applies to them. Equality at infinity means that the span's exponents there are exactly \(\{3,\ldots,R+2\}\). The pair rows and \(\varphi_A^2,\varphi_B^2\) have \(h_r=3\). The rows \(\varphi_D'\varphi_k\) have \(h_r=4\). The four rows of \(V_7\) have \(h_r=6\). So \(\deg P\le(N-4)E+2(N-4)+12=(N-4)E+2N+4\). At each branch value, the exponents in each monodromy class are bounded below. Distinct exponents in a class then give the minimal sums, and adding back the pole orders removed with the rows' prefactors gives the minimal multiplicities.</p>
+<ul>
+<li>At \(-1/A\): the half-integral class has \(2(N-4)\) rows \(\varphi_A\varphi_k,\varphi_A'\varphi_k\) and the \(4\) rows of \(V_7\), all with exponents \(\ge-\tfrac52\). So the class has exponents \(\ge-\tfrac52+\{0,\ldots,2N-5\}\). The integral class, \(\varphi_A^2\) and the rows not through \(A\), has exponents \(\ge\{-3\}\cup\{0,\ldots,\binom{N-2}2-1\}\). The pole orders total \(4(N-4)+10+3=4N-3\), so the multiplicity is \(\Sigma_d+4N-3\).</li>
+<li>At \(-1/B\): the rows of \(V_7\) have exponents \(\ge-\tfrac72\). So the half-integral class has exponents \(\ge-\tfrac72+\{0,\ldots,2N-5\}\), a sum lower by \(2N-4\). The pole orders total \(4(N-4)+14+3=4N+1\), so the multiplicity is \(\Sigma_d-(2N-4)+4N+1=\Sigma_d+2N+5\).</li>
+<li>At a simple value it is \(m_s\), as before.</li>
+</ul>
+<p>Hence the total is at most \((N-4)E+2N+4-(\Sigma_d+4N-3)-(\Sigma_d+2N+5)-(N-4)m_s=T_{\rm dir}(N)\), with equality exactly at minimal multiplicities. The naive count had degree bound \((N-4)E+2N-4\) and multiplicity \(2(\Sigma_d+4N-5)\), which gives the difference \(2N-4=2(N-2)\). The additivity identity is a polynomial identity in \(N\), checked symbolically by <code>bmd_cube_directional_two_double.gp</code> with difference \(0\). \(\square\)</p>
+<p><strong>Reading.</strong> With \(M=N-2\), the one-double-root total splits as \(\binom M2\) on the binary face, \(2M(M-2)\) on the neck and \(T_{\rm dir}\) on the bubble. This matches the <a href="#cube-cluster-count-identity">separated count identity</a>, where the neck had \(2M(M-1)\) and the bubble \(T_{\rm conf}\). As an equality of counts, the \(2M\) points of the lost neck ring equal the excess \(T_{\rm dir}-T_{22}\). This is not yet matched with the <a href="#cube-half-class-confluent-count">half-class count</a>. That count concerns the half-integral cross rows only, and found at most \(2M-4\) of the displaced points to be non-branch points of that class. The whole-space bubble count also includes the integral class, so the two statements concern different spaces. The tension recorded since the <a href="#entry-2026-09-29-cube-confluent-window-rank">window rank entry</a> came from the naive \(T_{22}\), whose row list was dependent. The identification of the bubble with \(V^{\rm dir}\) still assumes that the bubble's approach gives the block \(V_7\). In the rescaled bubble frame the merged pair's branch value is at \(z=0\), with \(a'\to\infty\) (see the <a href="#entry-2026-09-29-cube-confluent-neck-hull">hull entry</a>). Since the finite non-branch total is translation invariant, \(V^{\rm dir}\) with finite nonzero entries is the right model only after a translation that keeps every branch value finite and nonzero. The reviewer checked by hand that the symmetric approach \(B\pm\eta\) with \(A\) exact also gives \(V_7\): its \(\eta^2\) combination is \(-\tfrac{30}{48}\gamma\,T^3(1+AT)^{-5/2}(1+BT)^{-7/2}\), which is outside \(S_0\). That supports, but does not prove, the identification.</p>
+<p><strong>Test.</strong> <code>bmd_cube_directional_two_double.gp</code>, with \(A=1\), \(B=2\) and simple roots \(-1\) (\(N=5\)) and \(-1,3\) (\(N=6\)). It computes the cleared numerator modulo \(p=2^{61}-1\) by interpolation, checked at two extra points. Predictions:</p>
+<ul>
+<li>independent rows;</li>
+<li>degree at most \((N-4)E+2N+4\);</li>
+<li>branch multiplicities at least the minimal ones;</li>
+<li>non-branch degree at most \(T_{\rm dir}\), with equality iff minimal;</li>
+<li>squarefree non-branch part.</li>
+</ul>
+<p>Output (<code>research/results/bmd-20260929-o/directional.txt</code>): the rank is full at both \(N\). The degree is \(59\) and \(226\), equal to the bounds. The multiplicities are \([17,15,21]\) and \([41,37,55,55]\), all minimal. The non-branch degree is \(6\) and \(38\), equal to \(T_{\rm dir}\). Both non-branch parts are squarefree. The passage to characteristic zero is the confluent criterion's. The rational numerator \(P^{\mathbb Q}\) has coefficients in \(\mathbb Z[1/2]\), and the computed \(P\) is its reduction. Since \(\deg P^{\mathbb Q}\le\) bound \(=\deg P\le\deg P^{\mathbb Q}\), the leading coefficient is a \(p\)-adic unit and every root is \(p\)-integral. The multiplicity of \(P\) at \(-1/c\) is the sum over the roots of \(P^{\mathbb Q}\) that reduce to \(-1/c\). It is therefore at least the multiplicity of \(P^{\mathbb Q}\) there, which is at least the minimal value, so equality modulo \(p\) forces equality over \(\mathbb Q\). Squarefreeness of the non-branch part modulo \(p\), at equal degree, gives squarefreeness over \(\mathbb Q\).</p>
+<p>A first run used a wrong degree bound: it counted the polynomial factors \(T^j\) of \(V_7\) (\(0+1+2+3\)) instead of \(h_r-3=3\) per row. It found the degrees exactly \(6\) above that bound. The output is kept as <code>directional-first.txt</code>, and the proof above is the corrected count.</p>
+<p><strong>Remaining gap.</strong> (a) Justify that the bubble of the confluent cluster degeneration is \(V^{\rm dir}\): the far pair's symmetric approach at infinity must give the block \(V_7\). (b) Simplicity of \(V^{\rm dir}\) for every \(N\). It holds at \(N=5,6\). The same cluster degeneration applies to it, now with the generalized rank pattern of two double roots. (c) The slope-\(0\) edge for a confluent cluster.</p>
+<p><strong>Dependencies re-read.</strong> The local-multiplicity paragraph of the confluent criterion; the double-root induction review's Observation and proof; the count identity.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read are listed above. Checks: the modular test and the symbolic identity. One fresh-context medium-effort reviewer checked the draft, the script, both outputs and the excerpts. It reran the script with identical output. It verified the degree bound as a reading of the criterion (reproducing \((N-3)E+N-2\)), the exponent classes and pole-order sums, \(T_{\rm dir}\), the naive \(T_{22}\), the identities (by hand \(T_{\rm conf}(5)=15=3+6+6\) and \(T_{\rm conf}(6)=60=6+16+38\)), and the script's rows. It added a hand check of the symmetric approach. It required changes, all made. (1) The sources of the \(-2E\) and the \(-3\) are attributed correctly, and the \(V_7\) rows at infinity are addressed. (2) The passage to characteristic zero is spelled out. (3) "Resolves the tension" is weakened to a conditional statement. (4) The count equality is stated as such and its mismatch with the half-class count is recorded. (5) The bubble-frame assumption is made explicit. (6) The script's header is reordered. These corrections weaken or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-o">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 0.69 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 3.11 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 42.46 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 14.01 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.98 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
