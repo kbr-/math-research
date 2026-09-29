@@ -43,12 +43,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By the <a href="#cube-cross-block-factorization">cross-block factorization</a>, the limit at two clusters is the flat limit of a fixed linear map \(\mu\), whose kernel on \(E\) consists of the EPD relations, applied to a two-scale torus orbit of \(\Lambda_A\otimes\Lambda_B\). Second-order lifts fill the block at sizes \((2,2)\) and, at comparable scales, \((3,2)\), but not \((3,3)\).</p>
-<p>Next, for all \(m,m'\):</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). <a href="#cube-second-order-lift-directions">Second-order lifts</a> of a cross block point only along \(X^m\) and \(Y^{m'}\). Triple-double blocks are canonical at comparable scales, while triple-triple blocks are not canonical. Two-cluster fibres therefore have positive dimension in general and must be bounded, not computed.</p>
+<p>Next:</p>
 <ul>
-<li>Organize the lifts of \(K=\ker\mu|_E\) by order, as a filtration \(K=K_2\supseteq K_3\supseteq\cdots\), where \(K_r\) is the part whose lifts vanish modulo \(\mu(E)\) up to order \(r-1\).</li>
-<li>Prove that the successive images have the dimensions forced by \(\dim K=(m-1)(m'-1)\).</li>
-<li>Read off the data (weighted ratios of the shapes' elementary symmetric functions) on which the limit depends. That bounds the two-cluster fibre dimension for every \(m,m'\).</li>
+<li>Prove the order-\(r\) version: the lifts surviving to order \(r\) point along \(X^{m+r-2},Y^{m'+r-2}\) modulo lower ones, with coefficients that are polynomials in the shapes' elementary symmetric functions of degree \(r\).</li>
+<li>From it, bound the two-cluster fibre dimension by the number of independent shape invariants that enter. Compare with the flat dimension, as the fibre dimension principle requires.</li>
 </ul>
 </section>
 <section id="working-context">
@@ -28168,6 +28167,97 @@ The terms with \(n&lt;m\) and \(n'&lt;m'\) give \(\sum\kappa_{ij}\nu_{ij}=0\). T
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 36.39 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2.02 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.28 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-second-order-lifts" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-bridge="entry-2026-09-29-cube-schubert-induction-review:1" data-claims="lem:cube-second-order-lift-directions cor:cube-triple-double-canonical-cross check:cube-two-cluster-canonicity">
+<h3>29 September 2026 — Second-order lifts of a cross block point only along X^m and Y^m′; triple-double cross blocks are canonical at comparable scales, triple-triple ones are not</h3>
+<p class="entry-meta">Working proof for all cluster sizes that second order adds at most two directions, with the pencil at (2,2) and canonicity at (3,2); an exact test shows shape dependence at (3,3). Second-order lift cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-cross-block-factorization">cross-block factorization</a> computed the second-order lifts \(\varepsilon_AU_\kappa+\varepsilon_BV_\kappa\) of the kernel \(K=\ker\mu|_E\). The missing implication for two-cluster fibres is how much of \(K\) these fill, and whether the resulting limit depends on the data. The test asks whether the limit at comparable scales is canonical. It ends with a proof of the direction statement and an exact test of canonicity at sizes up to \((3,3)\).</p>
+<p><strong>General statement.</strong> <code>lem:cube-second-order-lift-directions</code> and <code>cor:cube-triple-double-canonical-cross</code>, for every \(N\); <code>check:cube-two-cluster-canonicity</code> is the finite check.</p>
+<h4 id="cube-second-order-lift-directions">Directions of the second-order lifts</h4>
+<p><strong>Lemma.</strong> In the notation of the factorization (\(w=1/X\), \(X^a=w^{-a}\), \(Y^b=(w+\delta)^{-b}\), all times \(\varphi(x)\varphi(y)\)), for every \(\kappa\in K\):
+\[
+U_\kappa\equiv u(\kappa)\,X^m,\qquad V_\kappa\equiv v(\kappa)\,Y^{m'}\pmod{\mu(E)},
+\]
+with the explicit linear functionals
+\[
+u(\kappa)=\sum_{j&lt;m'}c_j\delta^{-j}\Bigl(c_m\kappa_{m-2,j}-j\,c_{m+1}\delta^{-1}\kappa_{m-1,j}\Bigr),
+\]
+and \(v\) given by the mirror formula, exchanging the clusters and \(\delta\mapsto-\delta\). Consequently, modulo \(\mu(E)\), the second-order lifts at ratio \((\alpha:\beta)=(\varepsilon_A:\varepsilon_B)\) span
+\[
+\Phi_{(\alpha:\beta)}(K)=\{\alpha u(\kappa)X^m+\beta v(\kappa)Y^{m'}:\kappa\in K\},
+\]
+which has dimension at most \(2\). It is exactly \(2\) when \(\alpha\beta\ne0\) and \(u,v\) are independent on \(K\). Hence, for \(m,m'\ge2\), second order fills \(K\) only if \((m-1)(m'-1)\le2\), that is at \((2,2),(3,2),(2,3)\). All larger sizes need higher orders.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>The partial fraction coefficient of \(w^{-a}\) in \(w^{-i}(w+\delta)^{-j}\) is \([w^{i-a}](w+\delta)^{-j}=\binom{-j}{i-a}\delta^{-j-(i-a)}\). Its \((w+\delta)^{-b}\)-part has \(b\le j\).</li>
+<li>\(U_\kappa\) is a combination of \(\nu_{m,j}\) and \(\nu_{m+1,j}\), \(j&lt;m'\). Their \((w+\delta)\)-parts have order \(\le j\le m'-1\), and their \(w^{-a}\)-parts with \(a\le m-1\), including the constant term, lie in \(\mu(E)\). So only the \(w^{-m}\) and \(w^{-(m+1)}\) coefficients matter.</li>
+<li>The \(w^{-(m+1)}\) coefficient comes only from \(\nu_{m+1,j}\) and equals \(c_{m+1}\sum_j\kappa_{m-1,j}c_j\delta^{-j}\). In the relation \(\sum\kappa_{ij}\nu_{ij}=0\) defining \(K\), the \(w^{-(m-1)}\) coefficient involves only \(i=m-1\), since \(m-1\) is the top pole order in \(E\). It reads \(c_{m-1}\sum_j\kappa_{m-1,j}c_j\delta^{-j}=0\), and \(c_{m-1}\ne0\). So the \(w^{-(m+1)}\) coefficient of \(U_\kappa\) vanishes.</li>
+<li>The \(w^{-m}\) coefficient is \(\sum_j\bigl(\kappa_{m-2,j}c_mc_j\delta^{-j}+\kappa_{m-1,j}c_{m+1}c_j\binom{-j}{1}\delta^{-j-1}\bigr)=u(\kappa)\). The statement for \(V\) is symmetric.</li>
+<li>The rank bound follows because \(X^m,Y^{m'}\) are independent modulo \(\mu(E)\). \(\square\)</li>
+</ol>
+<p>At \((2,2)\), \(K\) is one-dimensional, and the lifts form the pencil \(\alpha u X^2+\beta vY^2\) of the <a href="#cube-double-cluster-osculating-limit">osculating lemma</a>. This sharpens the factorization entry's bound of four added dimensions to two.</p>
+<h4 id="cube-triple-double-canonical-cross">Triple against double</h4>
+<p><strong>Corollary.</strong> At \((m,m')=(3,2)\), \(u\) and \(v\) are independent on \(K\), which has dimension \(2\). So along every arc with \(\varepsilon_A\varepsilon_B\ne0\), meaning comparable scales and nonzero \(e_2\) of both limit shapes, the cross block of a triple and a double cluster tends to the canonical space
+\[
+\varphi(x_0)\varphi(y_0)\,\langle1,X,X^2,X^3,Y,Y^2\rangle .
+\]
+This space does not depend on the shapes or on the ratio. The within-cluster limits are canonical along every arc: for the triple by the <a href="#cube-triple-cluster-fibre">triple-root corollary</a>, since \(F_3\) is constant, and for the double by the <a href="#cube-pair-collision-valuation">pair collision valuation</a>. The cross blocks with simple roots are canonical by the <a href="#cube-cluster-renormalization">renormalization lemma</a>. So if the other roots are simple and the dimensions add to \(R\), the flat limit is canonical along all such arcs. At extreme ratios (\(\alpha\beta=0\)) only one direction is filled at second order, and the rest comes from higher order.</p>
+<p><strong>Proof.</strong> \(\Phi_{(\alpha:\beta)}(K)=\langle X^3,Y^2\rangle\) when \(\alpha\beta\ne0\) and \(u,v\) are independent.</p>
+<ul>
+<li><em>Homogeneity.</em> Put \(w=\delta w'\). Then \(w^{-i}(w+\delta)^{-j}=\delta^{-i-j}w'^{-i}(w'+1)^{-j}\). So \(\kappa_{ij}=\delta^{i+j}\kappa'_{ij}\) identifies \(K(\delta)\) with \(K(1)\), and under it both terms of \(u\) scale as \(\delta^{m-2}\), and \(v\) likewise. Independence at \(\delta=1\) therefore gives independence at every \(\delta\ne0\).</li>
+<li><em>At \(\delta=1\).</em> \(K\) is spanned by \(\kappa^1\) (\(\kappa_{11}=1,\kappa_{10}=-c_1,\kappa_{01}=c_1\)) and \(\kappa^2\) (\(\kappa_{21}=1,\kappa_{20}=-c_1,\kappa_{10}=c_2,\kappa_{01}=-c_2\)). Then \(u(\kappa^1)=0\), \(u(\kappa^2)=c_2c_3-c_1c_4=-\tfrac{105}{256}\), and \(v(\kappa^1)=c_1(c_1c_2-c_3)=\tfrac{15}{16}\). So the determinant \(u(\kappa^1)v(\kappa^2)-u(\kappa^2)v(\kappa^1)\) is nonzero.</li>
+</ul>
+<p>As a cross-check, the exact controls of the factorization entry found the second-order prediction of full rank \(R\) at comparable scales for two triple shapes (<a href="https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-zzo/cross-block-control.txt">output</a>). \(\square\)</p>
+<h4>Canonicity at comparable scales</h4>
+<p><strong>Test.</strong> The tested general statement is that the two-cluster limit at comparable scales does not depend on the shapes or on the ratio. bmd_cube_two_cluster_canonicity.gp (<a href="https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-zzp/two-cluster-canonicity.txt">output</a>) computes exact \(t\)-saturated limits over \(\mathbb Q[t]\) with no other roots. Each size uses four comparable-scale cases, two shapes per cluster at scale ratios \(k/h=1,1,2,3\), and one extreme case, compared with the first. These are ratios of diameters, not of \(\varepsilon\): changing the shape also changes \((\varepsilon_A:\varepsilon_B)\). Results:</p>
+<ul>
+<li>\((2,2)\): the limit depends on the ratio. It is the known pencil.</li>
+<li>\((3,2)\): all four comparable cases agree. The limit is exactly \(\mathrm{Pol}_{&lt;3}+(1+T)^{-3}\langle1\rangle+(1+T)^{-3/2}\langle1,T,T^2,T^3,Y,Y^2\rangle\), as the corollary predicts. The extreme case differs.</li>
+<li>\((3,3)\): the limits differ between cases, so the canonicity statement is <em>false</em> at \((3,3)\). Case 2 changes the shape and with it the ratio \((\varepsilon_A:\varepsilon_B)\), from \((-1:-1)\) to \((-7:-1)\). So the test does not separate dependence on the shapes from dependence on that ratio. That the higher Cayley–Hamilton coefficients (\(e_3\), \(e_2^2\)) carry the dependence is an unverified heuristic.</li>
+<li>\((4,2),(4,3)\): inconclusive. The first quadruple shape \((-3,-1,1,3)\) is a parallelogram and lies on \(F_4=0\), so the within-cluster block is non-canonical and the comparison mixes two effects.</li>
+</ul>
+<p><strong>What this does to the route.</strong></p>
+<ul>
+<li>A triple and a double root together give point fibres from comparable-scale arcs.</li>
+<li>Two triple roots do not. Their limits depend on the shapes or on \((\varepsilon_A:\varepsilon_B)\), beyond second order. So the multi-cluster fibres have positive dimension in general, as the stratum count allows. They must be bounded by dimension, not computed as points.</li>
+<li>The uniform tool is the order filtration of \(K\). The lemma proves at order \(2\) that at most two directions are added. That every order \(r\) adds at most two directions (\(X^{m+r-2},Y^{m'+r-2}\) modulo lower ones) is a conjecture. At order \(3\) the \(w^{-(m+2)}\) coefficient vanishes by the same relation, but the \(w^{-(m+1)}\) coefficient involves terms that relation does not kill. The relevant \(\kappa\) are also restricted, and mixed terms \(e_2(s)e_2(\tau)\) enter at order \(4\).</li>
+</ul>
+<p><strong>Bridge follow-up.</strong> This continues Absurd bridge 1 of the <a href="#entry-2026-09-29-cube-schubert-induction-review">Schubert induction review</a>. The two-scale torus limit adds at most two directions at second order. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the order-\(r\) version of the lemma for every \(r\) (conjectured above);</li>
+<li>separating shape dependence from \((\varepsilon_A:\varepsilon_B)\) dependence at \((3,3)\);</li>
+<li>a fibre-dimension bound for two clusters from the resulting data;</li>
+<li>the \((4,\cdot)\) test with shapes off \(F_4=0\);</li>
+<li>extreme-ratio arcs;</li>
+<li>three or more clusters and the full-rank hypotheses.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The cross-block factorization (\(\mu\), \(K\), \(U_\kappa,V_\kappa\), controls); the osculating lemma; the renormalization lemma (within-cluster parts).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It checked by hand the partial-fraction formula, the vanishing of the \(w^{-(m+1)}\) coefficient (using \(c_{m-1}\ne0\)), the formula for \(u\), the mirror formula for \(v\) (with \(z=w+\delta\)), and the rank statement. It supplied the direct certificate of independence at \((3,2)\), which replaced the indirect use of the control. Corrections applied:</p>
+<ul>
+<li>\(m,m'\ge2\);</li>
+<li>explicit homogeneity in \(\delta\) in place of an undefined scaling;</li>
+<li>the within-cluster canonicity needed for the full limit;</li>
+<li>the \((3,3)\) finding worded as shape or \(\varepsilon\)-ratio dependence;</li>
+<li>the \(e_3,e_2^2\) remark marked as a heuristic;</li>
+<li>the order-\(r\) statement marked as a conjecture;</li>
+<li>scale ratios distinguished from \(\varepsilon\)-ratios;</li>
+<li>an unsupported Morse–Bott remark dropped.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzp">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 8.95 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 21.78 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 1.97 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 40.62 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.45 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
