@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). For two far roots every window has valuation at least the <a href="#cube-two-far-dominance-clause">formula</a>. Equality reduces to \([s_{\nu^*}]H\ne0\) for an <a href="#cube-two-far-leading-reduction">explicit hook determinant</a>, and is proved at \(r\le1\).</p>
-<p>Prove \([s_{\nu^*}]H\ne0\) for every \(r\). Expand \(H\) multilinearly into determinants of hook Schur functions and apply Giambelli's formula \(\det[s_{(a_i|b_j)}]=s_{(a|b)}\). Collect the coefficient of \(s_{\nu^*}\), with \(\nu^*=(2r,\ldots,2)\), as a signed sum of products of \(\beta\)-ratios. Look for a product formula in \(\lambda\), guided by the computed values \(-49/12288\), \(-231/204800\) and \(-1573/3584000\) at \(r=2\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The last two-far coefficient is a <a href="#cube-two-far-hook-coefficient">hook-content product</a>, \((\lambda-1)^r\prod_{(r^r)}(\lambda+n-1+c)\), in eight exact cases. It depends on \(n\) only through \(\lambda+n-1\).</p>
+<p>Prove the formula by induction on \(n\). Read \([s_{\nu^*}]H\) at \(t_n=0\), where the leading monomial has exponent \(0\). Show that the span with the root \(0\) added reduces to the \((n-1)\)-root problem at \(\lambda+1\) through \(\varphi_t-1\) and the contiguity \(\partial_x(1+x)^{-\lambda}=-\lambda(1+x)^{-\lambda-1}\). The base case is \(n=r+1\), where \(m=1\). There \(H\) is the full \(r\times r\) determinant, and the claim is \((\lambda-1)^r\prod_{(r^r)}(\lambda+r+c)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26154,6 +26154,50 @@ for \(\lambda\notin\mathbb Z\). Apply the lemma and part 3 of the theorem. \(\sq
 <tr><td>Computation design and coding</td><td class="elapsed">54.69 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 48.77 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2.86 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-two-far-hook-coefficient" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-directional-induction-review:3" data-claims="conj:cube-two-far-hook-coefficient">
+<h3>29 September 2026 — The last two-far coefficient is a hook-content product in λ</h3>
+<p class="entry-meta">Conjecture with exact symbolic evidence: the leading two-far coefficient is (λ−1)^r times a square hook-content product; it implies the two-far window formula for every n and r. Two-far hook coefficient cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-two-far-dominance-clause">dominance theorem</a> gives every two-far window valuation at least the formula \(v_0\). Equality holds exactly when \([s_{\nu^*}]H\ne0\), for the <a href="#cube-two-far-leading-reduction">hook determinant</a> \(H\), and this is proved only at \(r\le1\). The minimizing window needs \(r\ge2\) from \(n=6\) on, and the \(n=5\) tie needs \(r=2\). This cycle computes \([s_{\nu^*}]H\) exactly as a function of a formal \(\lambda\) and factors it. Outcome: in all eight computed cases it is a product of linear factors, \((\lambda-1)^r\) times the hook-content product of the \(r\times r\) square at \(\lambda+n-1\). Every factor is \(\lambda\) plus an integer, so the conjectured formula is nonzero for \(\lambda\notin\mathbb Z\).</p>
+<p><strong>General statement.</strong> <code>conj:cube-two-far-hook-coefficient</code>, for every \(n\ge2\) and \(1\le r\le n-1\).</p>
+<h4 id="cube-two-far-hook-coefficient">The formula</h4>
+<p><strong>Conjecture.</strong> With \(\beta_k=\binom{-\lambda}k\) and \(\nu^*=(2r,2r-2,\ldots,2)\),
+\[
+[s_{\nu^*}]H=C_{n,r}\,(\lambda-1)^r\prod_{\square\in(r^r)}\bigl(\lambda+n-1+c(\square)\bigr)
+\]
+as a polynomial identity in \(\lambda\). Here \(c(\square)=j-i\) is the content, and \(C_{n,r}\) is a nonzero rational constant, left unspecified. Equivalently, the linear factors are \(\lambda-1\) with multiplicity \(r\), and \(\lambda+n-1+c\) with multiplicity \(r-|c|\) for \(|c|&lt;r\).</p>
+<p><strong>Consequence.</strong> Every factor is \(\lambda\) plus an integer, so the coefficient is nonzero for \(\lambda\notin\mathbb Z\), in characteristic zero. By the reduction lemma, \(c_{\kappa^*\nu^*}\ne0\). By part 3 of the dominance theorem, every two-far window then has caterpillar valuation exactly \(v_0=n^2+2\binom{n+1}3-2nr+r(r+1)(r+5)/3\), with a single leading monomial. The dominance theorem covers \(0\le r\le n-1\), including \(r=n-1\) (\(m=1\)). Together with the proved <a href="#cube-two-far-extreme-window">far-extreme window</a> \(r=0\), this gives the <a href="#cube-two-far-window-valuations">two-far window conjecture</a> for every \(n\), among windows. The minimizing window is \(j^*=\max\{j:j(j+3)\le2n\}\), tying with \(j^*-1\) exactly when \(8n+9\) is a square.</p>
+<p><strong>The case \(r=1\) is proved.</strong> The <a href="#cube-two-far-second-window">second-window corollary</a> gives \([s_2]H=(1-\lambda-n)(\lambda-1)/(n^2(n+1))\). That is \((\lambda-1)\) times the single content factor \(\lambda+n-1\) of the \(1\times1\) square, up to sign.</p>
+<h4>Test</h4>
+<p><code>bmd_cube_two_far_h_lambda.gp</code> computes \(H\) with \(\beta_k=\binom{-L}k\) for a formal \(L\). It reads \([s_{\nu^*}]H\) as the coefficient of \(t^{\nu^*+\delta}\) in \(H\Delta(t)\), and factors it over \(\mathbb Q[L]\) (<code>h-lambda.txt</code>). The factorizations, up to the constant, are:</p>
+<ul>
+<li>\(2\times2\), \(r=1\): \((L-1)(L+1)\).</li>
+<li>\(2\times3\), \(r=1\): \((L-1)(L+2)\).</li>
+<li>\(2\times3\), \(r=2\): \((L-1)^2(L+1)(L+2)^2(L+3)\).</li>
+<li>\(2\times n\), \(r=2\), for \(n=4,5,6\): \((L-1)^2(L+n-2)(L+n-1)^2(L+n)\).</li>
+<li>\(2\times4\), \(r=3\): \((L-1)^3(L+1)(L+2)^2(L+3)^3(L+4)^2(L+5)\).</li>
+<li>\(2\times5\), \(r=3\): \((L-1)^3(L+2)(L+3)^2(L+4)^3(L+5)^2(L+6)\).</li>
+</ul>
+<p>No other \(\lambda\)-dependent factor occurs, and there is no \(\lambda\)-dependent pole. <code>factor</code> drops the rational content, so the constant \(C_{n,r}\) is not recorded. Each case matches the conjecture: the \(r\times r\) square has contents \(-(r-1),\ldots,r-1\) with multiplicities \(1,2,\ldots,r,\ldots,2,1\). The pattern was read off the three cases with \(n\le3\). The other five cases, including both at \(r=3\), are genuine predictions. The values at \(\lambda=\tfrac32\) in the last entry are consistent with the formula up to the unrecorded constant. Their odd prime factors \(\ge7\) are the predicted ones. For example, \(n=3\), \(r=2\) gives \(2205/64\) against \(-49/12288\), so \(C=-1/8640\), and \(n=5\), \(r=3\) gives \(224939=11^3\cdot13^2\).</p>
+<p><strong>A structural hint.</strong> The dependence on \(n\) is only through the shift \(\lambda+n-1\). This suggests an induction on \(n\) that removes the near root of largest valuation. The leading monomial has exponent \(0\) in \(t_n\), so \([s_{\nu^*}]H\) can be read at \(t_n=0\). There the near span contains the constant \(1\). The shift of \(\lambda\) by one per removed root would then come from \(\varphi_t-1\) and the contiguity \(\tfrac{d}{dx}(1+x)^{-\lambda}=-\lambda(1+x)^{-\lambda-1}\). This is not carried out.</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 3 of the directional induction review, the caterpillar degeneration. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong> (a) A proof of the hook-content formula for \(r\ge2\). (b) Minimality over all column sets. (c) Three or more far roots. (d) Component simplicity, necks and double-root classes.</p>
+<p><strong>Dependencies re-read.</strong> The reduction lemma and its sign convention, the dominance theorem, the second-window corollary.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked every factorization against the output and against the content multiplicities. It also checked the script against the reduction lemma, the consequence chain and the \(r=1\) case. It passed the entry with corrections, all made. The conjecture is stated as a polynomial identity with an unspecified constant. The \(\lambda=\tfrac32\) comparison is reduced to consistency. The absence of denominators is limited to \(\lambda\)-dependent poles. The \(r=0\) window is cited for the full formula. Only five cases count as predictions.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zs">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 19.29 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">45.22 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">44.69 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 35.71 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">13.54 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
