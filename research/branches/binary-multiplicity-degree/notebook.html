@@ -43,12 +43,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#entry-2026-09-29-cube-properness-mechanism-review">properness mechanism review</a> finds that the Schubert-properness route reduces properness between families without proving it. It turns to the record's Wronskian route, where the contact bound follows from squarefreeness of \(\Delta_W^{\rm nc}\) (<code>thm:cube-wronskian-discriminant-criterion</code>).</p>
-<p>Next:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By the <a href="#cube-inversion-cluster-transfer">inversion transfer</a>, squarefreeness of \(\Delta_W^{\rm nc}\) reduces, on every genuine component with a good one-collision trace and conditionally on the cluster reduction's factorization hypotheses, to squarefreeness of the one-double-root discriminant \(D^{\rm conf}\).</p>
+<p>Next, one level down, for every \(N\):</p>
 <ul>
-<li>Read <code>prop:cube-cluster-discriminant-reduction</code> and the criterion in full.</li>
-<li>State how \(\Delta_W^{\rm nc}\) factors along a single-cluster degeneration, into a within-cluster part (the Wronskian of the limit space in \(G_w\)) and the canonical outer space.</li>
-<li>Aim at squarefreeness by induction on \(N\), with the weight limit variety supplying the cluster factor.</li>
+<li>At a second collision, the one-double-root space degenerates to the confluent binary face, whose points are simple.</li>
+<li>State and prove the analogue of the cluster discriminant reduction for \(D^{\rm conf}\), including its bubble factor and its factorization hypotheses.</li>
+<li>Then apply inversion again, and identify the remainder.</li>
 </ul>
 </section>
 <section id="working-context">
@@ -28851,6 +28851,86 @@ If every nonzero coordinate has \(J\ni a\), then \(\Lambda\wedge e_a=0\), so \(e
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 3.31 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.19 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-inversion-cluster-transfer" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-properness-mechanism-review:1" data-claims="prop:cube-inversion-cluster-transfer">
+<h3>29 September 2026 — By inversion, the cluster discriminant reduction reaches every genuine Wronskian discriminant component with a good one-collision trace</h3>
+<p class="entry-meta">Working proof for every N ≥ 5, conditional on the cluster reduction's factorization hypotheses: inversion maps the cluster regions onto neighbourhoods of generic one-collision points, so such components are reduced where the one-double-root discriminant is. Inversion transfer cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-29-cube-properness-mechanism-review">properness mechanism review</a> turned to the Wronskian route. By <code>thm:cube-wronskian-discriminant-criterion</code>, the contact bound follows from squarefreeness of \(\Delta_W^{\rm nc}\). The record's cluster discriminant reduction (<code>prop:cube-cluster-discriminant-reduction</code>) proves reducedness only for components meeting the cluster regions \((\varepsilon b,1,-1)\), and names as open "the components that avoid all cluster regions". The missing implication is which components that covers, stated intrinsically, and what exactly is left.</p>
+<p><strong>General statement.</strong> <code>prop:cube-inversion-cluster-transfer</code>, for every \(N\ge5\).</p>
+<h4 id="cube-inversion-cluster-transfer">The inversion transfer</h4>
+<p><strong>Genuine components.</strong> Call a component \(\Gamma\) of \(\{\Delta_W^{\rm nc}=0\}\) <em>genuine</em> if at its generic point \(W_a\) has a repeated finite non-branch root. These are the only components the criterion's proof uses, in its parts (1) and (2). Components caused by a drop of the leading coefficient, or by roots at the branch values, are not genuine.</p>
+<p>The class of genuine components is invariant under every Möbius map of the roots:</p>
+<ul>
+<li>the flow \(e^{s\delta}\) lifts to isomorphisms of the root covers carrying the series onto each other (mark weight dictionary, part (2));</li>
+<li>translations lift in the same way;</li>
+<li>together they generate the Möbius group.</li>
+</ul>
+<p>Weierstrass points are intrinsic, so a genuine component is invariant as a set. At its generic point no Weierstrass point lies over \(z=0\), and every \(a_i\ne0\). A translation moves any such point off \(0\), and the set where one stays is a proper closed subset.</p>
+<p><strong>Inversion.</strong> Let \(\iota(a)=(1/a_1,\ldots,1/a_N)\), defined where all \(a_i\ne0\). Under \(z\mapsto1/z\), up to the choice of square-root signs,
+\[
+\sqrt{(z^{-1}-a_i)(z^{-1}-a_j)}=\sqrt{a_ia_j}\,\sqrt{(z-1/a_i)(z-1/a_j)}\,/\,z .
+\]
+So multiplication by \(z\) identifies \(\langle1,z,w_{ij}\rangle\) for \(a\) with the same series for \(\iota(a)\), exchanging the fibres over \(\infty\) (the mark) and over \(0\). The record's curve is \(w^2=\prod(z+a_i)\), and a root \(z_0\) of \(W\) corresponds to the fibre over \(-z_0\). Inversion commutes with \(z\mapsto-z\), so this changes nothing. Hence finite non-branch roots \(z_0\ne0\) of \(W_a\) correspond, with multiplicity, to roots \(1/z_0\) of \(W_{\iota(a)}\). So \(\iota\) maps genuine components birationally to genuine components.</p>
+<p><strong>Transfer of orders.</strong> The proof uses \(\deg_zW=T_{\rm sep}(N)\), which the reduction's count implies ("no root escapes"). Let \(\Gamma\) be genuine and \(\iota(\Gamma)\) meet the cluster region. At the generic point of \(\iota(\Gamma)\) the reduction gives a unit leading coefficient, and all \(T_{\rm sep}\) roots are finite and non-branch. By the genuine-component paragraph there is no weight over \(0\), so the same \(T_{\rm sep}\) roots appear, inverted, for \(W_a\) at the generic point of \(\Gamma\), with nonzero leading coefficient. Locally, \(\prod(1/r_i-1/r_j)^2=\prod(r_i-r_j)^2/(r_ir_j)^2\), so \(\Delta_W(\iota(a'))=(\text{unit})\cdot\Delta_W(a')\). Hence \(\operatorname{ord}_{\iota(\Gamma)}\Delta_W^{\rm nc}=1\) implies \(\operatorname{ord}_\Gamma\Delta_W^{\rm nc}=1\), which is the direction needed.</p>
+<p><strong>Cluster regions are one-collision neighbourhoods.</strong> \(\iota(\varepsilon b_1,\ldots,\varepsilon b_M,1,-1)=(1/(\varepsilon b_1),\ldots,1/(\varepsilon b_M),1,-1)\), with \(M=N-2\). Scaling by \(\varepsilon\) gives \((1/b_1,\ldots,1/b_M,\varepsilon,-\varepsilon)\), a point near the one-collision point \((c,0,0)\), \(c_k=1/b_k\), with the pair at \(0\). Conversely, a separated point near \((c,0,0)\), with the pair centred at \(0\) at distance \(2\varepsilon'\) and the others at \(c'\approx c\), inverts and rescales to \((\varepsilon'b',1,-1)\) with \(b'=1/c'\approx b\). The map \(c\mapsto1/c\) is a Cremona transformation.</p>
+<p><strong>Proposition.</strong> Let \(N\ge5\) (the range of <code>prop:cube-cluster-discriminant-reduction</code>), and let \(\Gamma\) be a genuine component of \(\{\Delta_W^{\rm nc}=0\}\). Suppose \(\overline\Gamma\) contains a point \(p\) of an open one-collision stratum \(\{a_i=a_j\}\). Translate so that the pair is at \(0\), with the other roots \(c_k\) distinct and nonzero, and suppose:</p>
+<ul>
+<li>\(b=(1/c_k)\) has \(\operatorname{Hank}_k(b)\ne0\) for \(1\le k\le M-1\);</li>
+<li>the reduction's factorization hypotheses hold on a neighbourhood of \(b\): total weight \(T_{\rm conf}(N)\), minimal branch multiplicities, and no Weierstrass point at \(w=0\);</li>
+<li>\(D^{\rm conf}\), the one-double-root discriminant, is squarefree at \(b\), on a slice such as \(b_1=1\), since it is weighted-homogeneous.</li>
+</ul>
+<p>Then \(\Gamma\) is reduced, \(\operatorname{ord}_\Gamma\Delta_W^{\rm nc}=1\).</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>Points of \(\Gamma\) near \(p\) invert into the cluster region with \(b'\) in a compact neighbourhood of \(b\) and \(\varepsilon'\) small. So \(\overline{\iota(\Gamma)}\) contains \((0,b)\) in the coordinates \((\varepsilon,b)\).</li>
+<li>By the reduction, \(\Delta_W\) is, near \((0,b)\), a unit times \(F=D^{\rm conf}(b')+\varepsilon'g\), with \(g\) holomorphic. So \(D^{\rm conf}(b)=0\).</li>
+<li>If \(h^2\mid F\) with \(h(0,b)=0\), then \(h(0,\cdot)^2\mid D^{\rm conf}\) near \(b\), contradicting squarefreeness. So every component of \(\{F=0\}\) through \((0,b)\) is reduced, in particular \(\iota(\Gamma)\).</li>
+<li>By the transfer of orders, \(\Gamma\) is reduced. \(\square\)</li>
+</ol>
+<p><strong>What remains, precisely.</strong> Every genuine \(\Gamma\) is invariant under affine maps, so it meets every collision hyperplane \(H_{ij}\) in a hypersurface of \(H_{ij}\cong\mathbb P^{N-3}\). The proposition covers \(\Gamma\) unless, for every pair \(\{i,j\}\), each component of the trace \(\overline\Gamma\cap H_{ij}\) lies in the union of three kinds of set:</p>
+<ul>
+<li>the deeper collision flats, which contain the cases \(c_k=0\) and \(c_k=c_l\);</li>
+<li>the merging loci \(\{\operatorname{Hank}_k(1/c)=0\}\), where the record expects a trinomial neck edge, unverified;</li>
+<li>the non-reduced components of \(D^{\rm conf}\), together with the loci where the factorization hypotheses fail.</li>
+</ul>
+<p>A trace component outside these is a hypersurface of \(H_{ij}\), so its generic point is a smooth point of a reduced component of \(D^{\rm conf}\), and the proposition applies there. Such components cannot be excluded by degree alone. For \(N=4\) in \(\mathbb P^2\), no three of the four triple-collision points are collinear, and each collision line \(H_{ij}\) contains exactly two of them and one two-double point. So every conic through the four triple points meets each collision line only at two triple points. For \(N\ge7\) it is open whether components of \(\Delta_W^{\rm nc}\) behave like this.</p>
+<p><strong>What this does to the route.</strong> Conditional on the factorization hypotheses, squarefreeness of \(\Delta_W^{\rm nc}\) now reduces, for every \(N\ge5\) and every genuine component with a good one-collision trace, to reducedness of \(D^{\rm conf}\), the collision half's own object. The two halves of statement 3 meet there, as the record observed.</p>
+<p>A proposed strategy, untested: apply the same argument one level down. The one-double-root space's collisions degenerate to the <a href="#cube-confluent-binary-face">confluent binary face</a>, and the <a href="#cube-weight-limit-variety">weight limit variety</a> and <a href="#cube-cluster-renormalization">renormalization</a> describe its cluster limits. This needs its own analogue of the cluster reduction inside the one-double-root space, with its own hypotheses, before it can descend through the collision strata towards binary faces, whose points are simple for every \(M\) (<code>thm:cube-binary-face-weierstrass-points</code>).</p>
+<p><strong>Lead follow-up.</strong> This develops Outside lead 1 of the <a href="#entry-2026-09-29-cube-properness-mechanism-review">properness mechanism review</a>, the Wronskian route. <strong>Follow-up.</strong> Developed: the cluster reduction now covers every genuine component with a good one-collision trace, and the remainder is identified.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>reducedness of \(D^{\rm conf}\) for every \(N\);</li>
+<li>the components whose collision traces all lie in the remainder;</li>
+<li>the trinomial edge at merging loci;</li>
+<li>the factorization hypotheses at generic \(b\);</li>
+<li>the non-genuine components, which the criterion does not need but which must be separated from genuine ones in any certificate;</li>
+<li>the collision half.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The Wronskian discriminant criterion (definition of \(W\), proof of (1) and (2)); the cluster discriminant reduction (region, bubble, factorization, "no root escapes", "what is left out", consequence); the mark weight dictionary (Möbius flow lift).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It checked the inversion identity and the correspondence of fibres and weights, both directions of the cluster computation, and the \(N=4\) example. Corrections applied:</p>
+<ul>
+<li>restriction to genuine components, with invariance under translations and the flow, and the consequences no weight over \(0\) and all \(a_i\ne0\); the earlier flow-only argument was wrong at \(z=0\);</li>
+<li>the transfer of orders argued from the root count \(\deg_zW=T_{\rm sep}\), in the one direction needed;</li>
+<li>the factorization hypotheses required on a neighbourhood;</li>
+<li>squarefreeness of \(D^{\rm conf}\) used through a divisibility argument, which covers singular points;</li>
+<li>\(N\ge5\) and the conditional scope;</li>
+<li>the remainder categories made complete;</li>
+<li>the descent stated as an untested strategy;</li>
+<li>the sign convention of the record's curve.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzw">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 51.89 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 2.01 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 4.72 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 41.84 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.32 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
