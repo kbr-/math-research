@@ -270,7 +270,10 @@ So perform the following, in a loop:
 - Do not return to the user. Think for as long as you like and work for as long
   as you like (until I explicitly interrupt you), just make sure to update the
   notebook `git commit` on visible research checkpoints. But **do not return to
-  the user** -- I will not be present to reprompt you.
+  the user** -- I will not be present to reprompt you. A checkpoint (commit or push)
+  is not a stopping point: start the next cycle in the same turn, and never end a
+  turn with a wrap-up report, which a goal evaluator can read as completion
+  (30 September 2026: a report after a push ended the loop and left it idle).
 - rinse and repeat
 
 Rules clear? GO.
