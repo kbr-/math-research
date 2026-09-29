@@ -43,13 +43,14 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#cube-hierarchical-limit">hierarchical limit</a> makes every level of the discriminant descent a canonical space \(V^{(a)}\), and the <a href="#cube-hierarchical-counts">counts</a> close each level exactly when the neck carries \(2M(M-2)\) points (conjecture, checked at \(N=7\), level two).</p>
-<p>Next, for every \(M\ge2a+1\):</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The Wronskian descent now has canonical <a href="#cube-hierarchical-limit">hierarchical levels</a>, <a href="#cube-hierarchical-counts">exact count identities</a>, and a <a href="#cube-window-excess">window excess rule</a> that places the neck rings, proved at the top window.</p>
+<p>Next, a route review of the Wronskian descent, since four research cycles followed the last one:</p>
 <ul>
-<li>Prove the hierarchical neck count. Compute the valuations of the singular windows \(\Gamma_k\), \(M-a\le k\le M\), of the multi-double cluster polynomial, as the confluent top window theorem did for one double root.</li>
-<li>Show that they place \(a-1\) displaced rings below slope \(1\), as the count requires (at \(N=7\), level two, one ring at slope \(\tfrac45\)), and the rest at slope \(1\).</li>
-<li>A route review is due soon: weigh this descent against its uncontrolled remainders.</li>
+<li>state what the descent proves and what it cannot reach: the remainders at every level, components all of whose traces are bad;</li>
+<li>try to falsify the descent's premises, and name the obstacle;</li>
+<li>develop Outside leads and Absurd bridges aimed at the remainders.</li>
 </ul>
+<p>The research target after it: the window excess for \(M-a\le k\le M-1\), where the negative columns enter the corank expansion.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -29103,6 +29104,76 @@ T(0)-T(1)=\tbinom M2+2M(M-1),\qquad T(a)-T(a+1)=\tbinom M2+2M(M-2)\quad(a\ge1).
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.33 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-multi-double-window-excess" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-properness-mechanism-review:1" data-claims="thm:cube-multi-double-top-window prop:cube-window-excess-neck-slopes conj:cube-window-excess check:cube-multi-double-window-excess">
+<h3>29 September 2026 — Singular neck windows exceed their bounds by twice their corank, which places exactly the rings the hierarchical counts need</h3>
+<p class="entry-meta">Working proof for the top window at every level; the general window excess is conjectured and checked for two and three double roots, and it implies the ring structure. Window excess cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-hierarchical-counts">hierarchical counts</a> close each level of the discriminant descent only if the neck of a cluster with \(a\) double roots keeps \(2M(M-2)\) points (<code>conj:cube-hierarchical-neck-count</code>). The <a href="#cube-multi-double-window-rank">multi-double window ranks</a> make the \(a+1\) top windows \(\Gamma_k\), \(M-a\le k\le M\), singular. At \(N=7\), level two, the rings sat at slopes \(\tfrac15,\tfrac25,\tfrac45\). The missing implication is a rule for the singular windows' valuations that places the rings for every \(a\) and \(M\).</p>
+<p><strong>General statement.</strong> <code>thm:cube-multi-double-top-window</code> and <code>prop:cube-window-excess-neck-slopes</code>, for every \(a\) and \(M\ge2a+1\); <code>conj:cube-window-excess</code> for the other singular windows.</p>
+<h4 id="cube-window-excess">The window excess rule</h4>
+<p><strong>Setup.</strong> As in the <a href="#entry-2026-09-29-cube-confluent-top-windows">confluent top window theorem</a>: characteristic zero, \(\lambda\notin\mathbb Z\), the rescaled neck matrix \(C\) of the neck window theorem, windows \(W_k\), and the window bound \(\operatorname{val}\det C[:,W_k]\ge k(k+1)\). Let \(P=\prod_{i\le a}(x-u_i)^2Q\), with \(u_i\) distinct and nonzero, \(Q\) squarefree of degree \(M-2a\), \(Q(0)\ne0\) and \(Q(u_i)\ne0\). Let \(c_k=k-\operatorname{rank}\Gamma_k\) be the corank. By the multi-double rank theorem and its middle-range corollary, for generic \(P\): \(c_k=0\) for \(k\le M-1-a\), \(c_k=k-M+1+a\) for \(M-a\le k\le M-1\), and \(c_M=a\).</p>
+<p><strong>Conjecture (window excess).</strong> For generic \(P\) and every \(0\le k\le M\), \(\operatorname{val}\det C[:,W_k]=k(k+1)+2c_k\).</p>
+<p>For \(a=1\) this is the confluent top window theorem: \(c_{M-1}=c_M=1\), and both windows rise by exactly two.</p>
+<p><strong>Theorem (multi-double top window).</strong> The conjecture holds at \(k=M\) for every \(a\ge1\): \(\operatorname{val}\det C[:,W_M]=M(M+1)+2a\) for generic \(P\). Precisely, the coefficient of \(\varepsilon^{M(M+1)+2a}\) is a nonzero constant times \(t_1^{M-a}t_3^a\,p(-1)^a\det\bigl[\int_0^{u_i}x^{j+1}\prod_l(x-u_l)^3Q(x)^2\,dx\bigr]_{1\le i\le a,\,0\le j&lt;a}\), with \(p(-1)=\lambda(\lambda-1)(\lambda-2)\).</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Expansion.</em> By the confluent top window theorem's expansion, \(\det C[:,W_M]=\det Z\) (the Case A clearing) and the high entries' expansion \(h_{m,D}=\varepsilon^{D+1-m}(t_1\Gamma^{(1)}_{m,D}+\varepsilon^2t_3\Gamma^{(3)}_{m,D}+O(\varepsilon^4))\), with its parity. These are identities for every monic \(P\): the clearing consists of row operations pivoting on the unit entries of the rows \(u_m\) in the window's middle columns, and the expansion is the operator-form lemma, stated for every monic \(P\); the window theorem's genericity enters only its valuation comparisons with other sets. So \(\det C[:,W_M]\) is a nonzero constant times \(\varepsilon^{M(M+1)}\det\bigl(t_1A+\varepsilon^2t_3A_3+O(\varepsilon^4)\bigr)\). Here \(A,A_3\) are the matrices of \(\Phi_1,\Phi_3\) on \(\operatorname{Pol}_{&lt;M}\) in all \(M\) coefficient rows, and only even powers of \(\varepsilon\) occur. That expansion does not use the number of double roots.</li>
+<li><em>Kernels.</em> Put \(g=\prod(x-u_i)\). If \(\Phi_1(f)=0\), then \(I(fP)=hP\); differentiating gives \(fP=h'P+hP'\), so \(P/g\) divides \(h\), and evaluating at \(0\) gives \(h(0)=0\). Conversely, for \(h\in x(P/g)\,k[x]\) of degree at most \(M\), \(f=(hP)'/P=h'+hP'/P\) is a polynomial, since \((P/g)P'/P=P'/g\), and \(I(fP)=hP\). So \(\ker A\) has the basis \(f_j=K_j'/P\), \(K_j=x^{j+1}\prod_l(x-u_l)^3Q^2\), \(0\le j&lt;a\), of degrees below \(M\). The image of \(\Phi_1\) lies in \(\bigcap_i\ker\ell_i\), \(\ell_i(R)=R'(u_i)\), because \(\ell_i(\operatorname{rem}(F,P))=F'(u_i)\) when \(P(u_i)=P'(u_i)=0\), and \(F=I(fP)\) has \(F'(u_i)=0\). The dimensions match (\(M-a\)), so the \(\ell_i\) span the left kernel. So \(A\) has corank exactly \(a\).</li>
+<li><em>Corank expansion.</em> For a square \(A\) of corank \(c\), with left and right kernel bases \(L\) and \(K\), \(\det(A+\delta B+O(\delta^2))=\delta^c\bigl(\kappa\det(LBK)+O(\delta)\bigr)\) with \(\kappa\ne0\): choose invertible \(U,V\) with \(UAV=\operatorname{diag}(I,0)\). With \(\delta=\varepsilon^2t_3/t_1\), the coefficient of \(\varepsilon^{2a}\) is \(\kappa\,t_1^{M-a}t_3^a\det[\ell_i(\Phi_3(f_j))]\).</li>
+<li><em>The pairing.</em> By the operator-form lemma, \(\Phi_3(f_j)=\operatorname{rem}(-I^2[p(\theta)K_j],P)\), since \(K_j(0)=0\). So \(\ell_i(\Phi_3(f_j))=-\int_0^{u_i}p(\theta)K_j\). Write \(p(\theta)=(\theta+1)S(\theta)+p(-1)\). Then \(\int_0^{u_i}p(\theta)K_j=u_i\,(S(\theta)K_j)(u_i)+p(-1)\int_0^{u_i}K_j\), and the first term vanishes because \(\deg S=2\) and \(K_j\) vanishes to order three at \(u_i\).</li>
+<li><em>Genericity.</em> The determinant \(\mathcal I=\det[\int_0^{u_i}K_j]\) is a polynomial on the irreducible parameter space of \((u,Q)\). Take \(Q\) squarefree with \(Q(0)\ne0\), and \(u_i=\tau^{a+1-i}\) with \(\tau\to0\), so that \(u_1\ll u_2\ll\cdots\ll u_a\). Substituting \(x=u_iy\), each entry is \(u_i^{j+3i+2}\prod_{l>i}(-u_l)^3Q(0)^2\bigl(b_{ij}+O(\tau)\bigr)\), where \(b_{ij}=\int_0^1y^{j+3i-2}(y-1)^3dy=-B(j+3i-1,4)\ne0\): for \(l&lt;i\) replacing \(u_iy-u_l\) by \(u_iy\) changes the integral by a relative \(O(\tau)\), for \(l>i\) it is \(-u_l(1+O(\tau))\), and \(Q(u_iy)^2=Q(0)^2(1+O(\tau))\). After removing the row factors, \(\det[u_i^j(b_{ij}+O(\tau))]\) has the \(\tau\)-exponent \(\sum_i(a+1-i)\,\sigma(i)\) on the permutation \(\sigma\) of \(\{0,\ldots,a-1\}\). By the rearrangement inequality this is uniquely minimized by \(\sigma(i)=i-1\), which pairs the decreasing weights \(a+1-i\) with increasing exponents. So \(\mathcal I=(\text{nonzero monomial})\cdot\bigl(\pm\prod_ib_{i,i-1}+O(\tau)\bigr)\ne0\) for small \(\tau\). These \(P\) satisfy the hypotheses for small \(\tau\). The proof does not use \(M\ge2a+1\); it also works for \(M=2a\), \(Q=1\). So \(\mathcal I\ne0\) on a dense open subset. \(\square\)</li>
+</ol>
+<h4 id="cube-window-excess-neck-slopes">What the rule does to the neck</h4>
+<p><strong>Proposition (neck slopes from window excess).</strong> Assume the window excess rule, and that every set other than a window lies strictly above the lower hull of the windows on \((0,1)\) (the valuation comparisons of Cases A and B of the neck window theorem, for \(a\) double roots), and the half-class reduction for such clusters. Then the neck of the cluster degeneration of \(V^{(a)}\) has exactly the rings of slopes \(j/M\), \(j\in\{1,\ldots,M-1\}\setminus\{M-a\}\), each of \(2M\) points with a binomial edge, and among the windows \(2\) steps at slope \(1\) (other sets may also lie on the slope-\(1\) edge; the hypothesis covers only \((0,1)\)). So it carries \(2M(M-2)\) points, which is the count the <a href="#cube-hierarchical-counts">hierarchical counts</a> require.</p>
+<p><strong>Proof.</strong> Consecutive windows differ by \(2M\) in \(\sum W_k\), and the bounds \(k(k+1)\) by \(2(k+1)\). With excess \(e_k=2c_k\), the step from \(W_k\) to \(W_{k+1}\) has slope \(\tfrac{k+1}M+\tfrac{e_{k+1}-e_k}{2M}\). From the coranks:</p>
+<ul>
+<li>for \(k+1\le M-1-a\), \(e_{k+1}=e_k=0\), slope \(\tfrac{k+1}M\);</li>
+<li>for \(M-a\le k+1\le M-1\), \(e_{k+1}-e_k=2\), slope \(\tfrac{k+2}M\);</li>
+<li>for \(k+1=M\), \(e_M=e_{M-1}=2a\), slope \(1\).</li>
+</ul>
+<p>The slopes \(\tfrac1M,\ldots,\tfrac{M-1-a}M,\tfrac{M-a+1}M,\ldots,\tfrac MM,1\) strictly increase until the last two, so every window is a vertex of the lower hull except that the last three are collinear at slope \(1\). The rings below slope \(1\) number \((M-1-a)+(a-1)=M-2\), each with two minimizers and hence a binomial edge. \(\square\)</p>
+<p>So the ring of slope \((M-a)/M\), whose window \(\Gamma_{M-a}\) is the first singular one, is replaced by the rings \((M-a+1)/M,\ldots,(M-1)/M\): the displaced rings move up by one step each, and only one ring's worth goes to the bubble at every level. At \(a=2\), \(M=5\) this gives \(\{\tfrac15,\tfrac25,\tfrac45\}\), the slopes found at \(N=7\).</p>
+<p><strong>Test.</strong> <code>research/tools/bmd_cube_multi_double_window_excess.gp</code> computes all window valuations \(k=0,\ldots,M\) of the rescaled neck matrix at one random rational \(P\) per case, with the hypotheses asserted. Cases: \(a=2\), \(M=5,6,7\); \(a=3\), \(M=7,8\). Determinants are power series over \(\mathbb F_p\), \(p=2^{61}-1\), with truncation checked at \(NN+20\). A first exact rational run finished only \(a=2,M=5\) within its \(600\) s limit (a tool timeout); its line is kept in the output and agrees with the modular one. Output (<code>research/results/bmd-20260929-zzz/window-excess.txt</code>), valuations for \(k=0..M\):</p>
+<ul>
+<li>\(a=2,M=5\): \([0,2,6,14,24,34]\);</li>
+<li>\(a=2,M=6\): \([0,2,6,12,22,34,46]\);</li>
+<li>\(a=2,M=7\): \([0,2,6,12,20,32,46,60]\);</li>
+<li>\(a=3,M=7\): \([0,2,6,12,22,34,48,62]\);</li>
+<li>\(a=3,M=8\): \([0,2,6,12,20,32,46,62,78]\).</li>
+</ul>
+<p>All \(38\) valuations equal \(k(k+1)+2c_k\), with the ranks computed in the same run; the truncation check agrees everywhere. The rule was chosen to fit the \(a=1\) theorem and the \(N=7\) slopes, which gave only the excess \(2\) at \(W_3\) and at least \(4\) at \(W_4\) for \(a=2,M=5\). The other four cases are new predictions, with \(14\) singular windows, \(4\) of them top windows covered by the theorem. Modulo-\(p\) valuations bound the rational ones from above, so the test gives rational valuation at most \(k(k+1)+2c_k\). The matching lower bound is proved only at \(k=M\) and at \(a=1\), so on the \(10\) other singular windows the rule is confirmed modulo \(p\) only. The first output line comes from the first, exact rational version of the script (labelled in the file); at \(a=2,M=5\) it agrees with the modular line. All cases use \(\lambda=\tfrac32\) and one random point each.</p>
+<p><strong>What this does to the route.</strong> The hierarchical neck count now rests on three pieces, one of them proved: the top window (this theorem), the other singular windows (the conjecture, proved at \(a=1\) and checked above), and the hull and half-class control for \(a\ge2\), which the confluent case already needed and the record calls open above slope \((M-1)/M\). The remainders of the descent are untouched.</p>
+<p><strong>Lead follow-up.</strong> This develops Outside lead 1 of the <a href="#entry-2026-09-29-cube-properness-mechanism-review">properness mechanism review</a>, the Wronskian route. <strong>Follow-up.</strong> Continuing: the neck count is reduced to the window excess rule and hull control.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the window excess for \(M-a\le k\le M-1\), which needs the negative columns \(\nu\) in the corank expansion;</li>
+<li>the valuation comparisons of Cases A and B, and the half-class reduction, for \(a\ge2\);</li>
+<li>the remainders of the descent.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The confluent top window theorem (operator-form lemma, expansion, kernels, the pairing via \(p(\theta)\)); the multi-double window rank theorem and its middle-range corollary; the hierarchical descent entry.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It checked the even expansion and its prefactor, the kernel basis and degrees, the left kernel and corank, the Schur-complement expansion, the pairing, the slope computation and ring count, and the test counts. Corrections applied:</p>
+<ul>
+<li>the hierarchical scaling had the order of the \(u_i\) inverted; it is now \(u_i=\tau^{a+1-i}\), with the minimizing permutation \(\sigma(i)=i-1\); the conclusion is unchanged;</li>
+<li>the clearing identity and the high-entry expansion are justified for every monic \(P\), and the open hypothesis is narrowed to the valuation comparisons;</li>
+<li>the test states \(\lambda=\tfrac32\), the one-sided meaning of mod-\(p\) valuations, which windows the theorem covers, and the rule's provenance; the exact-run output line is labelled;</li>
+<li>the unused hypothesis \(M\ge2a+1\) and the slope-\(1\) caveat are noted.</li>
+</ul>
+<p>The scaling correction repairs a step without changing the statement, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzz">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>20 min 7.68 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 2.07 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 33.10 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 48.52 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">56.24 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 44.42 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.33 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
