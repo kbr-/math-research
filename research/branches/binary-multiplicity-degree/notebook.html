@@ -43,11 +43,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3, <a href="#cube-seven-root-first-step">proved at \(N=7\)</a>, is for \(N\ge8\) exactly squarefreeness of \(\Delta_W^{\rm nc}\). The count side of the descent is complete: <a href="#cube-hierarchical-attainment">every level attains its count</a> for every \(N\).</p>
-<p>Next, the monodromy lead of the <a href="#entry-2026-09-30-cube-first-step-seven-review">first-step review</a>:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge8\). The collision half <a href="#cube-collision-half-reduction">reduces</a> to the hierarchical neck count and a weight bound at the base; the off-collision half is the contact bound.</p>
+<p>Next, the hierarchical neck count, a uniform statement:</p>
 <ul>
-<li>A branch component of \(\Delta_W^{\rm nc}\) is reduced exactly when its local monodromy is a transposition. Determine the local monodromy at the collision hyperplanes from the near-group scales (ring \(j\) rotates by \(2\pi j/M\)) and at good traces.</li>
-<li>Derive which local types a non-reduced component needs at its traces, and test against the six-root component's two 3-cycles.</li>
+<li>Prove the <a href="#cube-window-excess">window excess rule</a> for the singular windows \(M-a\le k\le M-1\): the corank expansion with the negative columns, generalizing the confluent top window theorem's treatment of \(W_{M-1}\).</li>
+<li>Then control the non-window sets on \((0,1)\) (Cases A and B) for \(a\ge2\).</li>
 </ul>
 </section>
 <section id="working-context">
@@ -29854,6 +29854,58 @@ with integer contents \(c(u)\) and hook lengths \(h(u)\). At \(x=-\gamma\in\{-\t
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 19.70 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 2.74 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.32 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-weight-propagation" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-first-step-seven-review:1" data-claims="prop:cube-weight-propagation cor:cube-collision-half-reduction">
+<h3>30 September 2026 — Weight bounds propagate up the descent, so the collision half of statement 3 reduces to the neck counts and the base</h3>
+<p class="entry-meta">Working proof of weight propagation for every N; the collision half is a conditional result, on the hierarchical neck counts and weight at most two at the base. Weight propagation cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3 has an off-collision half, the contact bound, and a collision half. By the <a href="#cube-confluent-weight-criterion">confluent weight criterion</a>, the collision half at \(N\) follows if, at one configuration, the one-double-root space has minimal multiplicities and no finite non-branch point of weight at least three. <a href="#cube-confluent-attainment">Minimal multiplicities</a> are now proved for every \(N\). The missing implication is the weight bound, for every \(N\). The record reduced it to generic simplicity of the directional space; the <a href="#cube-hierarchical-attainment">count identities, now attained at every level</a>, suggest carrying the bound through the whole descent, as <a href="#cube-attainment-propagation">attainment propagation</a> did for the counts.</p>
+<p><strong>General statement.</strong> <code>prop:cube-weight-propagation</code> and <code>cor:cube-collision-half-reduction</code>, for every \(N\ge5\).</p>
+<h4 id="cube-weight-propagation">Propagation of weight bounds</h4>
+<p><strong>Proposition (weight propagation).</strong> Characteristic zero, \(N\ge5\), \(M=N-2\ge2a\), \(w\ge1\). Suppose:</p>
+<ul>
+<li>at some configuration where \(V^{(a+1)}\) attains \(T(a+1)\), every finite non-branch Weierstrass point of \(V^{(a+1)}\) has weight at most \(w\);</li>
+<li>for cluster configurations \(\rho\) in a nonempty Zariski-open set, the neck of the cluster degeneration of \(V^{(a)}\) carries \(\nu_a\) simple points, with \(\nu_0=2M(M-1)\) and \(\nu_a=2M(M-2)\) for \(a\ge1\).</li>
+</ul>
+<p>Then at a generic configuration every finite non-branch Weierstrass point of \(V^{(a)}\) has weight at most \(w\).</p>
+<p><strong>Proof.</strong> On the open set where \(V^{(a+1)}\) attains its count (nonempty by <a href="#cube-hierarchical-attainment">hierarchical attainment</a>), the degree and the branch multiplicities are fixed, so the non-branch factor of the cleared numerator is a polynomial of fixed degree whose coefficients vary continuously; its largest root multiplicity is upper semicontinuous. So the first hypothesis holds on a nonempty open set \(\mathcal U\) of configurations of \(V^{(a+1)}\). Weierstrass weights are invariant under the Möbius maps, with their multiplier, that move the new double root to its normalized position in the bubble frame. Modulo those maps every generic configuration of \(V^{(a+1)}\) is a bubble limit for some admissible \(\rho\): after the normalization the other roots are the inverted centres \(1/\rho_i\), distinct, finite and nonzero. So \(\mathcal U\) pulls back to a nonempty open set of \(\rho\). Choose \(\rho\) in the intersection of this set with the other finitely many nonempty open sets used below. For small \(\varepsilon\), count the Weierstrass points of \(V^{(a)}\) at the cluster configuration in three disjoint regions:</p>
+<ol>
+<li>at \(|T|=O(1)\), away from \(\pm1\): \(r=\binom M2\) simple points, by the <a href="#cube-hierarchical-face">hierarchical face lemma</a>;</li>
+<li>on the neck: \(\nu_a\) simple points, by hypothesis;</li>
+<li>at \(|T|\asymp\varepsilon^{-1}\): by the <a href="#cube-hierarchical-limit">hierarchical limit lemma</a>, part (3), the normalized span converges to \(V^{(a+1)}\), and for generic \(\rho\) that limit has weights at most \(w\), attains \(T(a+1)\), and has no Weierstrass point at \(w=0\) (flow argument). By Hurwitz's theorem on small discs, each disc around a limit point of weight \(u\) carries exactly weight \(u\le w\), so every point in it has weight at most \(w\); in total they carry \(T(a+1)\).</li>
+</ol>
+<p>By the count identity these regions carry \(r+\nu_a+T(a+1)=T(a)\). At this configuration, which is separated with independent rows, the <a href="#cube-hierarchical-counts">count proposition</a> bounds the total finite non-branch weight by \(T(a)\). So there are no other points (none tending to the bubble's branch values or \(w=0\)), the configuration attains \(T(a)\), and every point has weight at most \(\max(1,w)=w\). By the semicontinuity above, applied to \(V^{(a)}\) on its attaining open set, this holds generically. \(\square\)</p>
+<h4 id="cube-collision-half-reduction">The collision half</h4>
+<p><strong>Corollary (collision half reduction).</strong> For \(N\ge5\), let \(b=\lfloor N/2\rfloor\), the level of the base \(V^{(b)}\). Suppose:</p>
+<ul>
+<li>at some configuration where the base \(V^{(b)}\) attains \(T(b)\), every finite non-branch Weierstrass point of it has weight at most two;</li>
+<li>the hierarchical neck count holds at every level \(2\le a\le b-1\): <code>conj:cube-hierarchical-neck-count</code> for \(M\ge2a+1\), and for even \(N\) also at the last step \(M=2a\).</li>
+</ul>
+<p>Then no height-two prime of \(\operatorname{Supp}C_N^+\) contained in the collision divisor meets its open one-double-root stratum: the collision half of statement 3 at \(N\), as recorded in the confluent weight criterion.</p>
+<p><strong>Proof.</strong> Apply the proposition with \(w=2\) at levels \(b-1,b-2,\ldots,1\), going up. At level one the neck count is the <a href="#cube-confluent-neck-pair-space">confluent neck theorem</a>, and at levels \(a\ge2\) it is the hypothesis. This gives an open set of configurations where the one-double-root space \(V^{(1)}\) has all weights at most two. Intersect it with the open sets of confluent attainment and of nonzero entries; at a configuration in the intersection the hypothesis of the confluent weight criterion holds. \(\square\)</p>
+<p>At \(N=7\) the base \(V^{(3)}\) with one simple root attained \(T(3)=80\) with squarefree non-branch part, so all weights one, at the configuration of the <a href="#cube-hierarchical-descent">attainment test</a>, and \(b-1=2\) needs the neck count at \(a=2\), \(M=5\), which the Newton polygon checked modulo \(p\). The record's exact confluent certificate at \(N=7\) already gave the collision half directly, so this is a consistency check, not new evidence.</p>
+<p><strong>What this does to the route.</strong> The collision half for every \(N\) now rests on two statements, both uniform in the descent: the hierarchical neck count (window excess and hull control), and a weight bound at the base, whose moduli number \(b-3\) for even \(N\) and \(b-2\) for odd \(N\). The off-collision half, the contact bound, is unchanged: squarefreeness of \(\Delta_W^{\rm nc}\) is stronger than it, and fails at \(N=6\) through harmless weight-three points of type \((0,\ldots,R-1,R+1,R+3)\), as the criterion entry recorded.</p>
+<p><strong>Lead follow-up.</strong> Indirect: the descent now serves the collision half. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the hierarchical neck count for \(a\ge2\), including \(M=2a\);</li>
+<li>a weight bound at the base of the descent for every \(N\);</li>
+<li>the off-collision contact bound for \(N\ge8\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The confluent weight criterion (statement); attainment propagation (the three regions); the hierarchical face and limit lemmas; hierarchical attainment; the confluent neck theorem; the criterion entry's paragraph on the six-root type.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It checked the count identity with the upper bound, Hurwitz's theorem, the level indexing (odd \(N\) stays in \(M\ge2a+1\); even \(N\) reaches \(M=2a\) only at \(a=b-1\)), the level-one neck count from the confluent neck theorem, and that no hypothesis is unused. Corrections applied: the weight-bounded configuration must attain its count, with the semicontinuity argument; the bubble limits are shown to meet the open set, by Möbius normalization; the count step cites the upper bound at the cluster configuration; the corollary is recorded as conditional. These corrections repair or weaken, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-i">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 37.15 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 14.82 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 15.49 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 3.70 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
