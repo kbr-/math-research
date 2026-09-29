@@ -43,14 +43,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#entry-2026-09-29-cube-transfer-route-review">transfer route review</a> finds that the base condition (F\(_{\rm rel}\)) of the <a href="#cube-contact-relative-transfer">relative transfer</a> survives every test run so far at \(N=5\). The one concrete all-\(N\) mechanism is the record's <a href="#cube-confluence-valuation">confluence valuation lemma</a>, which applies to full spaces \(V_\nu\), not to the pair space.</p>
-<p>Develop it:</p>
-<ol>
-<li>Write the pair space as the span of \(p_{ij}(T)w^{r(ij)}\), \(p_{ij}=\prod_{l\ne i,j}(1+a_lT)\), inside \(V_\nu\), and its contact condition as a rank condition there.</li>
-<li>Read the lemma's proof, and find whether its valuation argument survives restriction to such subspaces, and a collision \(a_i\to a_j\) of two roots.</li>
-<li>If it does, derive (F\(_{\rm rel}\)) along the cut families by induction on \(N\). If not, record where it breaks.</li>
-</ol>
-<p>No new sizes.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#cube-pair-collision-valuation">pair collision valuation</a> carries the confluence argument to one collision for every \(N\). The <a href="#cube-cross-block-defect">cross-block defect</a> shows that at \(c\) double roots the first-order rows lose at least \(\binom c2\) ranks, at least one per pair of clusters.</p>
+<p>Build the second-order rows for all \(N\):</p>
+<ul>
+<li>For two double roots approached with speeds \(\mu t\) and \(t\), expand the three cross rows to second order. Find the combination vanishing at first order, and write its \(\mu\)-dependent second-order term explicitly as a coefficient vector of \(x_i\)- and \(x_k\)-powers. This gives the flat limit matrix as a function of \(\mu\), for every \(N\).</li>
+<li>Then ask whether its contact minors can vanish identically in \(\mu\), or only on a set of the dimension (F\(_{\rm rel}\)) allows.</li>
+</ul>
+<p>The explicit rows turn the exceptional fibres into a structured all-\(N\) matrix problem.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -27474,6 +27473,82 @@ Then every component of \(K\) has codimension at least three in the separated lo
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-pair-collision-valuation" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-transfer-route-review:1" data-claims="lem:cube-pair-collision-valuation lem:cube-cross-block-defect">
+<h3>29 September 2026 — Contact minors of the pair space lose exactly N − 2 at a collision, and two double roots force one first-order dependency per pair of clusters</h3>
+<p class="entry-meta">Working proofs for every N: the confluence valuation argument restricted to the pair space, and an exact identity showing why limits at two double roots depend on the direction. Pair collision valuation cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-29-cube-transfer-route-review">transfer route review</a> proposed a subspace version of the record's <a href="#cube-confluence-valuation">confluence valuation lemma</a> as the all-\(N\) mechanism for the base condition (F\(_{\rm rel}\)) of the <a href="#cube-contact-relative-transfer">relative transfer</a>. The pair space is not a full \(V_\nu\): its functions carry fixed multipliers. The missing implication is how contact minors of the pair rows behave at root collisions, for every \(N\). Outcome:</p>
+<ul>
+<li>at one collision the lemma's argument restricts to the pair space. Every \(R\times R\) minor loses exactly \(N-2\), and the limit is the confluent minor;</li>
+<li>at two double roots it cannot: an exact identity forces a dependency among the first-order limit rows for each pair of clusters. This is the mechanism behind the direction-dependent limits recorded earlier.</li>
+</ul>
+<p><strong>General statement.</strong> <code>lem:cube-pair-collision-valuation</code> and <code>lem:cube-cross-block-defect</code>, for every \(N\ge3\).</p>
+<h4 id="cube-pair-collision-valuation">One collision</h4>
+<p><strong>Setup.</strong> Let \(x_m=1+a_mT\) and \(\varphi_m=x_m^{-3/2}\). The row of the pair \(\{m,m'\}\) in \(A_L\) is the coefficient vector \((H_k(a_m,a_{m'}))_{k\le L}\) of \(\varphi_m\varphi_{m'}\). Put \(a_j=a_i+\varepsilon\). The identity below needs nothing more. Distinctness of the other roots is used only in (2), to place \(p\) on the open stratum.</p>
+<p><strong>Lemma.</strong> For every \(L\) and every set \(J\) of \(R\) columns,
+\[
+\operatorname{minor}_J A_L(a)=\varepsilon^{N-2}\operatorname{minor}_J\tilde A_L(a,\varepsilon),
+\]
+where \(\tilde A_L\) is polynomial in \(\varepsilon\). \(\tilde A_L(a,0)=A^c_L\) is the confluent matrix. In it the rows \(\{j,k\}\), \(k\ne i,j\), are replaced by the coefficient vectors of \(\partial_{a_i}(\varphi_i)\varphi_k=-\tfrac32T\,x_i^{-5/2}\varphi_k\), and the row \(\{i,j\}\) becomes \(\varphi_i^2\). Consequently:</p>
+<ol>
+<li>every \(R\times R\) minor of \(A_L\) vanishes to order at least \(N-2\) along \(a_i=a_j\), and to order exactly \(N-2\) at points where the corresponding minor of \(A^c_L\) is nonzero;</li>
+<li>near a point \(p\) of the open one-double-root stratum with \(\operatorname{rank}A^c_{R+1}(p)=R\), no separated configuration has contact.</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ul>
+<li>For each \(k\ne i,j\), the rows \(\{i,k\}\) and \(\{j,k\}\) form a block \(\varphi_k\cdot\{\varphi_i,\varphi_j\}\). Replace the second row by \((\text{row}_{\{j,k\}}-\text{row}_{\{i,k\}})/\varepsilon\). This is a row operation of determinant \(\varepsilon^{-1}\) on each of the \(N-2\) blocks, and the row \(\{i,j\}\) and the rows avoiding \(i,j\) are unchanged.</li>
+<li>The entries \(H_k(a_i,a_i+\varepsilon)\) are polynomial in \(\varepsilon\), so the divided differences are polynomial. At \(\varepsilon=0\) they are the coefficients of \(\partial_{a}\varphi(a)|_{a_i}\cdot\varphi_k\), and \(\partial_a(1+aT)^{-3/2}=-\tfrac32T(1+aT)^{-5/2}\).</li>
+<li>Every minor transforms by the same factor \(\varepsilon^{N-2}\), which gives the identity and the order statement. With \(U=T/x_i\), the block is \(\varphi_k\varphi_i\cdot\langle1,(1+\varepsilon U)^{-3/2}\rangle\). Its orders in \(\varepsilon\) are \(0\) and \(1\), since \((1+\varepsilon U)^{-3/2}-1=-\tfrac32\varepsilon U+O(\varepsilon^2)\), the analogue of the lemma's one-variable normality.</li>
+<li>For (2): if some \(R\times R\) minor of \(A^c_{R+1}\) is nonzero at \(p\), the same minor of \(\tilde A_{R+1}\) is nonzero near \((p,0)\). So \(\operatorname{rank}A_{R+1}=R\) at nearby separated points. \(\square\)</li>
+</ul>
+<p>This is the subspace analogue of the confluence valuation lemma for the collision of two roots. The exponent \(N-2\) is the collision exponent of \(F_{\rm sep}=\det A_{R-1}\), in line with \(F_{\rm sep}=\prod(a_i-a_j)^{N-2}F\). For the contact minors, which are the case \(L=R+1\), exactness at \(N=5\) holds on the whole open stratum, by the <a href="#cube-contact-base-five">\(N=5\) base check</a>.</p>
+<h4 id="cube-cross-block-defect">Two double roots</h4>
+<p><strong>Lemma.</strong> Let \(\{i,j\}\) and \(\{k,l\}\) be disjoint pairs, and apply the first-order normalization of the previous lemma to both collisions: \(a_j\to a_i\) and \(a_l\to a_k\). The four cross rows \(\{i,k\},\{j,k\},\{i,l\},\{j,l\}\) then tend to the coefficient vectors of
+\[
+\varphi_i\varphi_k,\quad T\,x_i^{-5/2}x_k^{-3/2},\quad T\,x_i^{-3/2}x_k^{-5/2},\quad T^2x_i^{-5/2}x_k^{-5/2},
+\]
+up to the nonzero constants \(1,-\tfrac32,-\tfrac32,\tfrac94\). These satisfy
+\[
+T\,x_i^{-5/2}x_k^{-3/2}-T\,x_i^{-3/2}x_k^{-5/2}+(a_i-a_k)\,T^2x_i^{-5/2}x_k^{-5/2}=0 .
+\]
+With the constants restored, the raw divided differences \(D_1,D_2,D_{12}\) of the rows \(\{j,k\},\{i,l\},\{j,l\}\) satisfy \(D_1-D_2-\tfrac23(a_i-a_k)D_{12}\to0\). Hence, with \(c\) disjoint double roots and first-order normalization, the limit rows have rank at most \(R-\binom c2\), and they are not the flat limit.</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>The limit rows.</em> The row \(\{j,l\}\) is normalized in both collisions, giving the mixed divided difference with limit \(\partial_{a_i}\varphi_i\cdot\partial_{a_k}\varphi_k\).</li>
+<li><em>The identity.</em> Multiplying by \(x_i^{5/2}x_k^{5/2}\) turns it into \(Tx_k-Tx_i+(a_i-a_k)T^2=T\cdot(a_k-a_i)T+(a_i-a_k)T^2=0\).</li>
+<li><em>Rank.</em> Each pair of clusters gives one relation, supported on its own three cross rows. Different pairs of clusters have disjoint cross rows, so the relations are independent, and the rank drops by at least \(\binom c2\).</li>
+<li>This proves the rank bound. \(\square\)</li>
+</ul>
+<p><strong>Remark (expected, not proved).</strong> The flat limit is \(R\)-dimensional. So it must contain directions beyond the first-order span, presumably from the next-order terms of the vanishing combinations. One would expect these terms to depend on the ratio \(\mu\) of the collision speeds, along \(a_j-a_i=\mu t\), \(a_l-a_k=t\). Three steps are unproved:</p>
+<ul>
+<li>that the extra directions come one per cross block;</li>
+<li>that they depend on \(\mu\);</li>
+<li>that this holds modulo the whole first-order span, since adding \(t\) times other rows shifts the second-order term within that span.</li>
+</ul>
+<p>Indirect support: the directional pair space of <code>prop:cube-directional-two-double-count</code> has an asymmetric block, \((1+AT)^{-5/2}(1+BT)^{-7/2}\operatorname{Pol}_{\le3}\), different from its mirror. That comes from a different degeneration, with one root exact and one approached.</p>
+<p><strong>Consistency.</strong> At \(N=5\), with one pair of double roots (\(c=2\)), the first-order rows have rank \(9=R-1\) (<a href="#cube-contact-base-five">base check</a>). The flat limit at ratio \(0\) was computed by saturation there. The <a href="#entry-2026-09-29-cube-transfer-route-review">route review</a> computed the flat limit over \(\mathbb F_{32003}(\mu)\) at \(y=\tfrac73\), and found no contact, without comparing limits across \(\mu\). The identity is consistent with the record's directional two-double-root limits (<code>prop:cube-directional-two-double-count</code>), which concern a different directional setup.</p>
+<h4>What this does to the route</h4>
+<ul>
+<li><em>One collision.</em> The confluence argument works for the pair space. Near points of the one-collision stratum outside the confluent contact locus, separated configurations have no contact. Where every confluent contact minor vanishes, the lemma gives no control.</li>
+<li><em>Two or more double roots.</em> The argument breaks: there is at least one dependency per pair of clusters, located in the cross blocks. A second-order version would take the combination in each cross block that vanishes to first order and replace it by its \(\mu\)-dependent second-order term. It would treat the exceptional fibres as families over the direction ratios. For all \(N\), (F\(_{\rm rel}\)) on those members needs the rank of this second-order matrix, uniformly in the ratios.</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This develops Outside lead 1 of the transfer route review. <strong>Follow-up.</strong> Developed: the valuation argument holds at one collision, and at two double roots it fails, with at least one dependency per pair of clusters.</p>
+<p><strong>Remaining gap.</strong> The second-order rows at two or more double roots, and their rank uniformly in the direction ratios, for every \(N\). Triple roots, beyond the second-order rows used at \(N=5\). The members of dimension \(0\).</p>
+<p><strong>Dependencies re-read.</strong> The confluence valuation lemma and its proof (one-variable normality, block change of rows); the confluent weight criterion's confluent rows; the \(N=5\) base check.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It checked by hand the row operation and its determinant, the polynomiality and limit of the divided differences, the order statement and consequence (2), the identity, the mixed divided difference, the disjoint supports and the rank bound, and the agreement with rank nine at \(N=5\). Corrections applied: the constants \(1,-\tfrac32,-\tfrac32,\tfrac94\) and the rescaled relation; the normality remark stated directly; the direction dependence of the flat limit moved to a remark marked expected, not proved; the consistency paragraph reduced to what was computed; at least one dependency per pair of clusters; the one-collision conclusion restricted to points outside the confluent contact locus; the registry edge to the directional proposition removed. The reviewer's planned symbolic check of the second-order term was not run, and the remark stays unproved.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzj">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 40.32 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 7.32 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 49.35 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">40.42 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.23 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
