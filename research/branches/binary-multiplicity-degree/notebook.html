@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The <a href="#cube-far-near-collision-bound">joint collision bound</a> bounds every far–near window valuation below by an explicit optimization \(W\). It equals all \(50\) measured valuations.</p>
-<p>Compute \(W\) and its minimizing windows for every middle component of the caterpillars with \(N\le12\), that is for all \(F+n+1=N\). Compare the minimizers with the windows the count formula assumed and with the recorded component counts at \(N=6,7\). Then look for a closed form of \(W\) from the least-weight pairs. For sharpness, compute the least-weight coefficient combination at \(3\times3\) symbolically in \(\lambda\), as for the two-far hook formula, and test whether it factors into linear factors.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The <a href="#cube-far-near-collision-bound">collision bound</a> now predicts every middle-component window for \(N\le10\). For \(F\ge3\) the minimizer is <a href="#cube-collision-bound-centered-window">centered</a> in all six computed cases.</p>
+<p>Sharpness for \(F\ge3\): compute the \(3\times3\) center coefficient \(c_{(6),(4,2)}\) with formal \(\lambda\). It is the only surviving least pair up to mirror. Do it by the reduction route used for \(F=2\): specialize the far root of largest valuation to \(0\), dilate, and reduce to a hook determinant. Then test whether it factors into linear factors, as the two-far hook formula does.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26389,6 +26389,49 @@ as a polynomial identity in \(\lambda\). Here \(c(\square)=j-i\) is the content,
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-collision-bound-windows" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-directional-induction-review:3" data-claims="conj:cube-collision-bound-centered-window">
+<h3>29 September 2026 — The collision bound's windows for every middle component with N ≤ 10</h3>
+<p class="entry-meta">Conjecture with finite evidence: for three or more far and near roots the collision bound is least at the centered window; least-weight pairs are listed for every middle component with N ≤ 10. Collision-bound windows cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-far-near-collision-bound">joint collision bound</a> \(W\) bounds every far–near window below, and it equals all \(50\) measured valuations. Assuming its <a href="#cube-far-near-collision-bound-sharp">sharpness</a>, each middle component's window is the minimizer of \(W\) among windows. The <a href="#cube-caterpillar-component-count">count formula</a> depends on that window through the slope \(F-n\). This cycle computes \(W\) for every window of every middle component with \(N\le10\), up to the mirror. It also lists the least-weight pairs at the minimizers, over the windows \(F-1\le p\le Fn-n\) that contain \(\{-(F-1),\ldots,n-1\}\), to see whether a closed rule or a single leading pair appears.</p>
+<p><strong>General statement.</strong> <code>conj:cube-collision-bound-centered-window</code>, for every \(n\ge F\ge3\).</p>
+<h4>The windows</h4>
+<p><code>bmd_cube_collision_bound_windows.py</code> reuses the collision-bound code, and its output is <code>windows.txt</code>. It covers \(2\le F\le n\) with \(F+n\le9\), that is every middle component of the caterpillars with \(N=F+n+1\le10\); the components with \(F&gt;n\) are mirrors. Windows are \([-p,\,Fn-1-p]\).</p>
+<ul>
+<li><strong>\(F=2\):</strong> the minimizers are \(p=1,2\) (tie), \(2\), \(3\), \(3,4\) (tie), \(4\), \(5\) for \(n=2,\ldots,7\). This is the two-far rule \(p=n-j^*\), with its ties at \(n=2,5\).</li>
+<li><strong>\(F\ge3\):</strong> \(3\times3\): \(p=4\); \(3\times4\): \(5\); \(3\times5\): \(7\); \(3\times6\): \(8\); \(4\times4\): \(7,8\) (tie, forced by the mirror); \(4\times5\): \(9\). In every case the minimizer is \(p=\lfloor(Fn-1)/2\rfloor\), the lower of the one or two windows most nearly centered at \(0\), and the minimum is otherwise unique. When \(Fn\) is even and \(F\ne n\), the other centered window is not a minimizer; for example \(W(5)=72\) and \(W(6)=74\) at \(3\times4\). The values for \(3\times6\) and \(4\times5\) have no \(q\)-adic measurement.</li>
+</ul>
+<p><strong>Least-weight pairs.</strong> For \(F=2\) the least pair is unique in every case, \(((m(m-1)),\nu^*)\), with \(m=p=n-r\) and \(\nu^*=(2r,2r-2,\ldots,2)\), as in the <a href="#cube-two-far-double-support">two-far support rule</a>. For \(F\ge3\) several pairs attain \(W\).</p>
+<ul>
+<li>\(3\times3\) center: \(((6),(4,2))\), \(((5,1),(5,1))\), \(((4,2),(6))\).</li>
+<li>\(3\times4\): a single pair, \(((9,2),(9,2))\).</li>
+<li>\(3\times5\) and \(3\times6\): three pairs each.</li>
+<li>\(4\times4\): many pairs at each tie window.</li>
+<li>\(4\times5\): three pairs.</li>
+</ul>
+<p>At the \(3\times3\) center, the leading form inferred in the <a href="#entry-2026-09-29-cube-double-schur-reduction">double Schur entry</a> as the unique fit to the measured degree sets has only the two mirror pairs; the fit forces \(c_{(5,1),(5,1)}=0\). So the constraints of the bound describe a region containing the support, not the support itself, and sharpness needs only some least pair to survive with a nonzero combination.</p>
+<h4 id="cube-collision-bound-centered-window">The centered window</h4>
+<p><strong>Conjecture.</strong> For \(3\le F\le n\), the collision bound \(W\) over the windows \([-p,\,Fn-1-p]\), \(F-1\le p\le Fn-n\), is least exactly at \(p=\lfloor(Fn-1)/2\rfloor\), and also at \(\lceil(Fn-1)/2\rceil\) when \(F=n\) and \(Fn\) is even.</p>
+<p><strong>Evidence and caution.</strong> The conjecture holds in the six computed cases with \(F\ge3\). The same rule is <a href="#cube-window-rule-refutations">false for \(F=2\)</a> from \(n=6\), where the two-far minimizer drifts by about \(\sqrt{2n}\) from the center. Because \(F\ge3\) is computed only for \(n\le6\), the conjecture may fail for larger \(n\) in the same way. It is recorded as the natural rule to test, not as a law.</p>
+<p><strong>What it gives.</strong> For the caterpillars with \(N\le10\), the windows of all middle components are now predicted, assuming sharpness and among windows. For \(F=n\) the count formula does not depend on the window, and for \(F\ne n\) it does. The component counts at \(N=8,9,10\) can now be evaluated from these windows.</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 3 of the directional induction review, the caterpillar degeneration. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong> (a) Sharpness, including which least pairs survive for \(F\ge3\). (b) A proof, or refutation at larger \(n\), of the centered window for \(F\ge3\). (c) Minimality over all column sets. (d) Component simplicity, necks and double-root classes.</p>
+<p><strong>Dependencies re-read.</strong> The collision bound and its script; the \(3\times3\) data of the double Schur entry; the two-far window formula and the refuted centered rule.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked every minimizer, tie and least-pair list against the output, the \(F=2\) least pairs, the centered formula and its tie clause, the absence of measurements at \(3\times6\) and \(4\times5\), the script's reconstruction and search bounds, and the cited inference. It passed the entry with corrections, all made: a broken link, the meaning of "centered" when \(Fn\) is even, the inferred leading form, the definitions of \(m\) and \(\nu^*\), the window range, and the \(4\times5\) pairs.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zv">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 46.54 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">40.12 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">47.98 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 57.85 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1 min 20.45 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
