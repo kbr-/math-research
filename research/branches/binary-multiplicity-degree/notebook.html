@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The <a href="#cube-two-far-leading-monomial">two-far leading monomial</a> is a single diagonal Cauchy–Binet term, with no \(s_2\) and no \(t_n\). The cheaper terms do not cancel pairwise.</p>
-<p>Try induction on \(n\) with \(s_2=t_n=0\). Then the rows of \(t_n\) are \(\varphi_{s_1}\) and \(1\), and the window minor factors through the \((n-1)\)-root problem shifted by one column. Compare the recursion of the conjectured exponents, \(r\to r\) and \(n\to n-1\), with that factorization. Then bound the terms containing \(s_2\) or \(t_n\) by the minimality-style weight argument.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The <a href="#cube-two-far-diagonal-coefficient">diagonal coefficient</a> of every two-far window is nonzero. At \(s_2=0\) the <a href="#cube-two-far-leading-monomial">leading-monomial conjecture</a> reduces to the cancellation of the cheaper off-diagonal terms.</p>
+<p>Replace the Plücker coordinates of \(N\) by a basis where no cancellation occurs. With \(s_2=0\), the span is \(N+fN=N\cdot\langle1,f\rangle\), the image of \(N\otimes\langle1,f\rangle\) under multiplication. Write \(N\) in its normalized basis \(g_b=S^b+\sum_{m\ge n}\gamma_{b,m}S^m\), and \(f=1+\sum\beta_as^aS^{-a}\). Expand the window minor in the entries \(\gamma\) and \(s^a\), whose valuations are known, and test whether its least-weight monomial in these variables is unique. Then try induction on \(n\) with \(t_n=0\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -25751,6 +25751,39 @@ where \(B(K_1,K_2)\) is the determinant with unit rows at \(K_1\) and rows \(T(k
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 47.27 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 27.10 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1 min 18.24 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-two-far-diagonal-coefficient" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-directional-induction-review:3" data-claims="lem:cube-two-far-diagonal-coefficient">
+<h3>29 September 2026 — The diagonal term of every two-far window is nonzero</h3>
+<p class="entry-meta">Working proof that the surviving diagonal Cauchy–Binet coefficient of every two-far window is nonzero; off-diagonal cancellation remains. Diagonal coefficient cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-two-far-leading-monomial">two-far leading monomial conjecture</a> identifies the leading form of each two-far window with the dominant monomial of \(B(K^*,K^*)Y_{K^*}^2\). A proof needs two things: this diagonal coefficient is nonzero, and the cheaper off-diagonal terms cancel. The first was checked only through \(2\times5\). This cycle proves it for every \(n\) and \(r\), in closed form. Outcome: the skew determinant is block triangular. It equals \(\beta_1^{\,r}\) times a Toeplitz determinant in the \(\beta\)'s, which is a rectangular Schur value and nonzero by the hook-content formula.</p>
+<p><strong>General statement.</strong> <code>lem:cube-two-far-diagonal-coefficient</code>, for every \(n\ge2\), \(0\le r\le n-1\) and \(\lambda\notin\mathbb Z\).</p>
+<h4 id="cube-two-far-diagonal-coefficient">The lemma</h4>
+<p><strong>Setup.</strong> Characteristic zero, \(\lambda\in\mathbb C\setminus\mathbb Z\), \(\beta_k=\binom{-\lambda}k\), with \(\beta_k=0\) for \(k&lt;0\). Let \(m=n-r\), \(E=[-m,\,n-1+r]\), \(K^*=\{0,\ldots,m-1\}\cup\{m+1,m+3,\ldots,m+2r-1\}\) and \(A^*=E\setminus K^*\).</p>
+<p><strong>Lemma.</strong> With rows and columns in increasing order, \(\det[\beta_{k-a}]_{k\in K^*,\,a\in A^*}=\beta_1^{\,r}\det[\beta_{m+k-j}]_{0\le k,j&lt;m}\). It is nonzero. The argument needs characteristic zero, since the hook lengths can vanish modulo \(p\). Hence the coefficient \(B(K^*,K^*)=\pm s_1^{\alpha}\det[\beta_{k-a}]_{K^*,A^*}\) of the two-far leading monomial conjecture is nonzero, where \(\alpha=2\sum K^*-\sum E\).</p>
+<p><strong>Proof.</strong> The column set is \(A^*=\{-m,\ldots,-1\}\cup\{m,m+2,\ldots,m+2r-2\}\). Order rows and columns increasingly. The first \(m\) rows \(k\le m-1\) vanish on the last \(r\) columns, since there \(a\ge m&gt;k\) and \(\beta_{k-a}=0\). So the matrix is block lower triangular, and the determinant is the product of the two diagonal blocks.</p>
+<ul>
+<li><strong>Last block.</strong> Rows \(k=m-1+2i\), columns \(a=m-2+2i'\), for \(1\le i,i'\le r\). The entry is \(\beta_{1+2(i-i')}\). It vanishes for \(i'&gt;i\), and is \(\beta_1\) on the diagonal. So this block has determinant \(\beta_1^{\,r}=(-\lambda)^r\).</li>
+<li><strong>First block.</strong> Rows \(k=0,\ldots,m-1\), columns \(a=-m+j\), \(0\le j&lt;m\). The entry is \(\beta_{m+k-j}\). With \(\sum_k\beta_kx^k=(1+x)^{-\lambda}\), the dual Jacobi–Trudi identity \(s_{\nu'}=\det[e_{\nu_i-i+j}]\) for \(\nu=(m^m)\) gives \(\det[e_{m-i+j}]\). That is the transpose of this block after reindexing. So the block is the Schur function of the \(m\times m\) square at the specialization \(e_k\mapsto\binom{-\lambda}k\). By the hook-content formula, \(s_\nu(1^N)=\prod_{\square\in\nu}(N+c(\square))/h(\square)\) is a polynomial identity in \(N\). At \(N=-\lambda\) it gives \(\prod(c(\square)-\lambda)/h(\square)\) over the square, whose contents are the integers \(-(m-1),\ldots,m-1\). This is nonzero for \(\lambda\notin\mathbb Z\). The same specialization appears in the <a href="#cube-shifted-two-class-orders">shifted two-class lemma</a>. \(\square\)</li>
+</ul>
+<p><strong>Check.</strong> <code>bmd_cube_two_far_diagonal_check.gp</code> compares the direct determinant with the formula for \(n=2,\ldots,7\) and every \(r\). The check is at \(\lambda=3/2\), and all \(27\) agree exactly (<code>diagonal-check.txt</code>). Up to the Laplace sign, the values also agree with the diagonal coefficients computed in the last entry: \(45/128\) at \(2\times3\), \(r=1\); \(135/256\) at \(2\times4\), \(r=2\); and \((3/2)^n\) at \(r=n-1\), where \(m=1\) and the Toeplitz block is \(\beta_1\).</p>
+<p><strong>What it gives.</strong> It closes item (c) of the leading-monomial entry's gap. At \(s_2=0\), the valuation part of the conjecture now reduces to two statements about the whole Cauchy–Binet sum. Its combined part of weight below \(v_0\) vanishes. And the other contributions of weight \(v_0\) to the dominant monomial of \(Y_{K^*}^2\) do not sum to minus the diagonal one. The single-monomial form needs in addition that every other monomial of weight \(v_0\) cancels.</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 3 of the directional induction review, the caterpillar degeneration. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong> (a) The off-diagonal cancellation, which is not pairwise and must use the Plücker relations or another basis of \(N\). (b) The terms containing \(s_2\). (c) Three or more far roots.</p>
+<p><strong>Dependencies re-read.</strong> The leading-monomial entry's definition of \(B\) and \(K^*\), and the shifted two-class lemma's use of the hook-content formula.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the column set, the block triangularity and its sign, both blocks, the Jacobi–Trudi identification and the hook-content specialization as a polynomial identity in \(N\), the consequence for \(B(K^*,K^*)\), and the \(27\) values. It passed the lemma with minor corrections, all made. The field and \(\lambda\) are stated, with characteristic zero needed. The sign is exact. The check is at \(\lambda=3/2\). The comparison with the earlier values is up to sign. The remaining reduction is stated for the combined sum.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zl">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 19.21 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 1.96 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 16.97 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
