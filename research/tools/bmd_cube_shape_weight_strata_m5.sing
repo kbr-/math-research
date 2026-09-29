@@ -1,0 +1,35 @@
+// Weight strata of 5-root shape spaces at the mark (29 September 2026; review cycle bmd-20260929-zzq).
+// Shapes u = (0, 1, x, y, z); pair rows H_w(a,b) = sum_i c_i c_(w-i) a^i b^(w-i), c_i = binom(-3/2, i), columns
+// w = 0..12; p_J = 10 x 10 minors on column sets J; V = product of the root differences.
+// Tested hypothesis (W_5) of the Schubert induction review, shape space of dimension 3: off V = 0 the loci of
+// mark weight >= 1, 2, 3 have dimensions <= 2, 1, 0 and weight >= 4 is empty. Weight >= w is the common zero set
+// of p_J over the sets J with |J| < |J0| + w (J0 = 0..9; J1 = 0..8,10; J2 = 0..8,11 and 0..7,9,10;
+// J3 = 0..8,12 and 0..7,9,11 and 0..6,8,9,10). Also: F_5 = p_J0 / V^3, its degree and its factorization,
+// against the product of the 15 pairing forms a_i + a_j - a_k - a_l.
+LIB "elim.lib";
+ring r = 0, (x, y, z), dp;
+proc cb(int i) { number n = 1; int j; for (j = 0; j < i; j++) { n = n * (-3/2 - j) / (j + 1); } return(n); }
+proc H(int w, poly a, poly b) { poly s = 0; int i; for (i = 0; i <= w; i++) { s = s + cb(i) * cb(w - i) * a^i * b^(w - i); } return(s); }
+list roots = 0, 1, x, y, z;
+matrix A[10][13];
+int row = 0; int i; int j; int w;
+for (i = 1; i <= 5; i++) { for (j = i + 1; j <= 5; j++) { row++; for (w = 0; w <= 12; w++) { A[row, w + 1] = H(w, roots[i], roots[j]); } } }
+proc minorJ(intvec J) { matrix B[10][10]; int a; int b; for (a = 1; a <= 10; a++) { for (b = 1; b <= 10; b++) { B[a, b] = A[a, J[b] + 1]; } } return(det(B)); }
+poly V = 1; for (i = 1; i <= 5; i++) { for (j = i + 1; j <= 5; j++) { V = V * (roots[j] - roots[i]); } }
+poly p0 = minorJ(intvec(0,1,2,3,4,5,6,7,8,9));
+poly F = p0 / V^3;
+"F_5 degree and exactness:"; deg(F); (F * V^3 - p0 == 0);
+"factorization of F_5 (factors and multiplicities):"; factorize(F);
+poly P = 1; list rr = 0, 1, x, y, z; int a; int b; int c; int d;
+for (a = 1; a <= 5; a++) { for (b = a + 1; b <= 5; b++) { for (c = 1; c <= 5; c++) { for (d = c + 1; d <= 5; d++) {
+  if (c > a && c != b && d != a && d != b) { P = P * (rr[a] + rr[b] - rr[c] - rr[d]); } } } } }
+"number of pairing forms multiplied, degree:"; deg(P);
+"F_5 divided by the pairing product (remainder zero iff divisible):"; reduce(F, std(ideal(P)));
+poly p1 = minorJ(intvec(0,1,2,3,4,5,6,7,8,10));
+ideal I1 = p0; I1 = sat(I1, V)[1]; "dim weight >= 1:"; dim(std(I1));
+ideal I2 = p0, p1; I2 = sat(I2, V)[1]; I2 = std(I2); "dim weight >= 2:"; dim(I2);
+poly p2a = minorJ(intvec(0,1,2,3,4,5,6,7,8,11)); poly p2b = minorJ(intvec(0,1,2,3,4,5,6,7,9,10));
+ideal I3 = p0, p1, p2a, p2b; I3 = sat(I3, V)[1]; I3 = std(I3); "dim weight >= 3:"; dim(I3); "vdim:"; vdim(I3);
+poly p3a = minorJ(intvec(0,1,2,3,4,5,6,7,8,12)); poly p3b = minorJ(intvec(0,1,2,3,4,5,6,7,9,11)); poly p3c = minorJ(intvec(0,1,2,3,4,5,6,8,9,10));
+ideal I4 = p0, p1, p2a, p2b, p3a, p3b, p3c; I4 = sat(I4, V)[1]; I4 = std(I4); "dim weight >= 4 (-1 = empty):"; dim(I4);
+quit;

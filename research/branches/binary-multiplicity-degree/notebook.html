@@ -43,11 +43,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). <a href="#cube-second-order-lift-directions">Second-order lifts</a> of a cross block point only along \(X^m\) and \(Y^{m'}\). Triple-double blocks are canonical at comparable scales, while triple-triple blocks are not canonical. Two-cluster fibres therefore have positive dimension in general and must be bounded, not computed.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#entry-2026-09-29-cube-two-cluster-review">two-cluster review</a> finds single clusters controlled by (W\(_m\)), which holds at \(m=4\) exactly and at \(m=5\) modulo \(32003\). The multi-cluster fibres lack a uniform bound.</p>
 <p>Next:</p>
 <ul>
-<li>Prove the order-\(r\) version: the lifts surviving to order \(r\) point along \(X^{m+r-2},Y^{m'+r-2}\) modulo lower ones, with coefficients that are polynomials in the shapes' elementary symmetric functions of degree \(r\).</li>
-<li>From it, bound the two-cluster fibre dimension by the number of independent shape invariants that enter. Compare with the flat dimension, as the fibre dimension principle requires.</li>
+<li>State the conjecture that the configuration map extends to a scaled Fulton–MacPherson space (Mau–Woodward). It records nested cluster shapes, relative scales, and the rate of approach to each \(F_m=0\).</li>
+<li>Derive the fibre-dimension bound it implies, from the renormalization, boundary pencil, cross-block factorization and second-order lemmas.</li>
+<li>Compare that bound with flat dimensions in general form, not type by type.</li>
 </ul>
 </section>
 <section id="working-context">
@@ -28260,6 +28261,140 @@ This space does not depend on the shapes or on the ratio. The within-cluster lim
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-two-cluster-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Route review; its falsification computation at five roots is recorded here and no new claim is registered.">
+<h3>29 September 2026 — Review: the Schubert hypothesis passes at five roots, but the cycles are resolving cluster types one at a time; the obstacle is a dimension bound for multi-cluster fibres</h3>
+<p class="entry-meta">Route review; modulo 32003 the five-root shape strata have the expected dimensions 2, 1, 0 and none of weight four; F₅ is irreducible. The line risks a case list over cluster types. Two-cluster review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>The line and the goal.</strong> Open statement 3 for every \(N\ge7\), off collisions via the contact bound (<code>conj:cube-offcollision-contact-bound</code>) and the <a href="#cube-contact-relative-transfer">relative transfer</a>. Since the <a href="#entry-2026-09-29-cube-schubert-induction-review">Schubert induction review</a>, two cycles have landed, both valid for every \(N\):</p>
+<ul>
+<li>the <a href="#cube-cross-block-factorization">cross-block factorization</a> with the <a href="#cube-schubert-relative-transfer">Schubert transfer</a>;</li>
+<li>the <a href="#cube-second-order-lift-directions">second-order lift directions</a>: a triple against a double root gives a canonical limit at comparable scales, and two triple roots do not.</li>
+</ul>
+<p><strong>General statement.</strong> The line's claim is <code>conj:cube-offcollision-contact-bound</code>, via <code>thm:cube-contact-relative-transfer</code> and <code>cor:cube-schubert-relative-transfer</code>. This review registers no new claim.</p>
+<p><strong>What the goal needs.</strong> (F\(_{\rm rel}\)), or its Schubert form for every stratum, for every \(N\). The review's induction hypothesis (W\(_m\)) controls single clusters. What remains is configurations with few positions, where several clusters of large size coexist, fibres can be large and flats are small. There (F\(_{\rm rel}\)) asks for little or no contact on large families of limits. The collision half of statement 3 for \(N\ge8\) is unchanged.</p>
+<h4>Falsification attempt</h4>
+<p>(W\(_m\)) was tested at the next size, \(m=5\), with shapes \((0,1,x,y,z)\) in a three-dimensional shape space. The prediction was that, off the diagonals, the loci of mark weight \(\ge1,2,3\) have dimensions at most \(2,1,0\), and that weight \(\ge4\) is empty.</p>
+<ul>
+<li>The rational run (bmd_cube_shape_weight_strata_m5.sing, <a href="https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-zzq/shape-weight-strata-m5-rational-partial.txt">partial output</a>) found \(F_5=p_{J_0}/V^3\) of degree \(15=\lambda_5\), irreducible over \(\mathbb Q\). So the four-root product over pairings does not generalize, since \(15\) pairing forms would have the same degree. It found the weight-\(\ge1\) locus of dimension \(2\), then exceeded the \(600\) s limit in the weight-\(\ge2\) saturation.</li>
+<li>The modular run (bmd_cube_shape_weight_strata_m5_modp.sing, <a href="https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-zzq/shape-weight-strata-m5-mod32003.txt">output</a>) found, over \(\mathbb F_{32003}\), dimensions \(2,1,0\) for weight \(\ge1,2,3\), with the weight-\(\ge3\) scheme of length \(1260\), and weight \(\ge4\) empty.</li>
+</ul>
+<p>So (W\(_5\)) survives, modulo \(32003\), as evidence for characteristic zero. Contact lies in weight \(\ge3\), so five-root contact is finite, as the contact bound requires at \(N=5\). Unlike \(m=4\), weight two does occur at \(m=5\), on a curve.</p>
+<h4>Obstacle</h4>
+<p>The line is stuck on configurations with few positions. For a point \(p\) with \(r\) positions, members through \(p\) have dimension at least \(r-2\). The fibre over \(p\) is built from within-cluster limits, controlled by (W\(_m\)), and from cross blocks between clusters. The cross blocks are two-scale torus limits whose data grow with the cluster sizes; at \((3,3)\) they are not canonical. No uniform bound on the dimension of these cross-block data, or on contact inside them, is known. The last three cycles resolved cluster types one at a time. That is a case list over types, each proved for every \(N\), and it does not close the induction. The review needs a uniform statement for the multi-cluster fibres.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Moduli of scaled marked lines and the multiplihedra (Mau and Woodward, Geometric realizations of the associahedra and multiplihedra, Compositio Math. 146 (2010) 1002–1028).</strong> Their compactification records nested bubbles together with relative scalings, which is exactly the extra datum found at two double roots, the ratio \((h^2:k^2)\). Target: a uniform fibre-dimension bound. <strong>Answers.</strong> If the map from separated configurations to the Grassmannian extends to a scaled Fulton–MacPherson compactification, every fibre over \(p\) is the image of a fibre there. Its dimension is then bounded by the number of shape and relative-scale parameters of \(p\)'s cluster pattern, uniformly in \(N\), and the fibre dimension principle makes (F\(_{\rm rel}\)) automatic on all strata with enough positions. Where it breaks: the boundary pencil depends on the rate at which a shape approaches \(F_m=0\), which is not a scaled-curve datum. <strong>Test.</strong> Passed on the recorded cases: the two-double-root pencil is parametrized by the relative scale, and the triple-double limit forgets it, consistent with a map that factors through the scaled moduli.</li>
+<li><strong>Heckman–Opdam and Harish-Chandra theory for the EPD operator.</strong> In the coordinates \(x=U+V\), \(y=U-V\), \(\partial_x\partial_y-\tfrac32(\partial_x-\partial_y)/(x-y)=\tfrac14(\partial_U^2-\partial_V^2-\tfrac3V\partial_V)\), a radial wave operator of rank one. Its Riemann function is hypergeometric (Darboux, Copson). Target: the order-\(r\) lifts of the cross block. <strong>Answers.</strong> A closed Riemann function gives the Goursat coefficients of \(F(x+s,y+\tau)\) in the pure jets to all orders. That would turn the order filtration of \(K=\ker\mu|_E\) into explicit hypergeometric data, uniform in the cluster sizes. <strong>Test.</strong> Passed: the change of variables was checked by hand, with \(\partial_x\partial_y=\tfrac14(\partial_U^2-\partial_V^2)\), \(\partial_x-\partial_y=\partial_V\) and \(x-y=2V\).</li>
+<li><strong>Porteous's formula for degeneracy loci (Harris and Tu, On symmetric and skew-symmetric determinantal varieties, Topology 23 (1984) 71–84, and Fulton's Intersection Theory, Chapter 14).</strong> Contact is the locus where \(A_{R+1}\) drops rank, of expected codimension \(3\). When the expected codimension holds, its class is a Porteous polynomial. Target: excess components in the multi-cluster strata. <strong>Answers.</strong> Comparing the degree of the contact scheme at \(N=5\), computed exactly, with the Porteous number would detect any excess component, including components supported over the boundary, without computing fibres. Where it breaks: the parameter space is not compact and the classes live on the graph closure. <strong>Test.</strong> Not run: the Porteous number needs the Chern classes of the bundle of pair rows on the graph closure, which is not modelled in the record. The length \(1260\) of the weight-\(\ge3\) scheme at \(m=5\) is a different locus.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>Collapse of point vortices (fluid dynamics; Aref, Self-similar motion of three point vortices, Phys. Fluids 22 (2010) 057104).</strong> Clusters of roots collapsing at different rates look like subclusters of vortices collapsing self-similarly. Translation: roots as vortex positions, the pair space as the Kirchhoff energy. A theorem there, that collapse needs \(\sum\Gamma_i\Gamma_j=0\) and fixed angular impulse, would restrict which multi-scale arcs occur and so shrink the fibres. <strong>Answers.</strong> It would bound the fibre by the dimension of admissible collapse data. <strong>Test.</strong> Falsified: our arcs are arbitrary analytic arcs with no dynamics, so every multi-scale collapse occurs. No conservation law constrains them.</li>
+<li><strong>Degenerate perturbation theory and effective Hamiltonians (quantum chemistry; Bloch, Nucl. Phys. 6 (1958) 329–347; des Cloizeaux).</strong> Translation: a cluster pair is a near-degenerate level group, the kernel \(K\) is the degenerate subspace, and the order-\(r\) lifts are the order-\(r\) effective Hamiltonian on it. A theorem there, the order-by-order block diagonalization with an explicit rank bound set by the number of perturbation channels, would give the order filtration of \(K\) in general. <strong>Answers.</strong> It predicts that each order adds at most as many directions as there are coupling channels, two for a cluster pair (the \(X\) side and the \(Y\) side). This is the conjecture stated in the second-order entry. <strong>Test.</strong> Passed at order two, where the lemma proves exactly two channels. Orders \(\ge3\) are untested.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work on charge models in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">The coefficient determinant H is a fermionic matrix element; no Heisenberg-group evaluation was attempted. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1">The witness property is used in the covariant degrees entry; no explicit plane family was sought in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:1">Developed in the <a href="#cube-cross-block-factorization">cross-block factorization</a> and the <a href="#cube-second-order-lift-directions">second-order lift directions</a>: a two-cluster cross block is a two-scale torus limit composed with the EPD map, and second order adds at most two directions. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:2">No new work on the configuration-interaction count in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on the multi-double windows in this period; the <a href="#cube-double-cluster-osculating-limit">osculating lemma</a> gives the flat limits at several double roots, a different quantity from the window ranks. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:1">Used as the determinism of the covariant degrees entry. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2">Developed further in this period: the base condition of the relative transfer now has explicit limit formulas at double roots (<a href="#cube-double-cluster-osculating-limit">osculating pencils</a>), at single clusters (<a href="#cube-cluster-renormalization">renormalization</a>, <a href="#cube-boundary-pencil">boundary pencil</a>), and is settled at \(N=5\) on the open two-double-root and triple-root strata. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:3">The rational components of the six-root repeated factor contain no hyperplane with small integer or Eisenstein coefficients. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:1">Tested again at the next size in this review: (W\(_5\)) holds modulo \(32003\) with the predicted dimensions. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:2">No new work on flow invariance of the boundary components in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<p><strong>Assessment.</strong> The single-cluster theory is in good shape. The renormalization lemma, the boundary pencil and (W\(_m\)) are exact at \(m=4\) and hold modulo a prime at \(m=5\), with the predicted strata. They give a self-similar induction that contains the contact bound. The multi-cluster side is not in good shape. The last cycles computed limits type by type, which is valid for every \(N\) but not uniform in the types, and \((3,3)\) already shows non-canonical limits. The line has a clear target, a uniform fibre bound, and two concrete candidate mechanisms: scaled moduli for the dimension, and the EPD Riemann function for the order filtration. Neither is developed yet. The collision half remains untouched.</p>
+<p><strong>Next step on the highest-risk item.</strong> Route item cube-odd-characteristic, open statement 3 for every \(N\): the multi-cluster obstacle, by the first lead. State precisely the conjecture that the rational map from configurations to the Grassmannian extends to a morphism from a scaled Fulton–MacPherson space. The boundary pencil shows this requires recording, in addition, the rate of approach to \(F_m=0\) as a scaled datum. Then prove the fibre-dimension bound it implies, from the lemmas already proved:</p>
+<ul>
+<li>renormalization;</li>
+<li>boundary pencil;</li>
+<li>cross-block factorization and second-order lifts.</li>
+</ul>
+<p>Compare the bound with the flat dimensions, stratum by stratum type, in general form.</p>
+<p><strong>Verification gate.</strong> The falsification computation is exact for \(F_5\) and its factorization, and modular for the strata dimensions; both are stated with their scope. No new claim is registered, so no reviewer was run. The follow-up lists carry every passed item not yet closed from earlier reviews on this route, including the last review's four passed items.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzq">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>17 min 42.96 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 0.24 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 17.94 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 41.00 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">13 min 43.64 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
