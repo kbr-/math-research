@@ -43,12 +43,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#cube-single-cluster-induction">single-cluster induction step</a> reduces single-cluster points with \(m\le(N-2)/2\) to weight properness (W\(^X_m\)) at the smaller size. Large clusters and several clusters remain.</p>
-<p>Next, the large-cluster case, with \(m&gt;(N-2)/2\), for every \(N\):</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#entry-2026-09-29-cube-properness-mechanism-review">properness mechanism review</a> finds that the Schubert-properness route reduces properness between families without proving it. It turns to the record's Wronskian route, where the contact bound follows from squarefreeness of \(\Delta_W^{\rm nc}\) (<code>thm:cube-wronskian-discriminant-criterion</code>).</p>
+<p>Next:</p>
 <ul>
-<li>The fibre lies in \(G_{m-2}U_{x_0}+\text{cross}+\text{pairs}\).</li>
-<li>Determine for which \(\Lambda\in G_w\) this space meets the contact subspace \(E\).</li>
-<li>Bound the dimension of that locus against the flat dimension \(N-m-1\), by Schubert calculus in \(\operatorname{Gr}(w,2w)\) with the fixed cross rows.</li>
+<li>Read <code>prop:cube-cluster-discriminant-reduction</code> and the criterion in full.</li>
+<li>State how \(\Delta_W^{\rm nc}\) factors along a single-cluster degeneration, into a within-cluster part (the Wronskian of the limit space in \(G_w\)) and the canonical outer space.</li>
+<li>Aim at squarefreeness by induction on \(N\), with the weight limit variety supplying the cluster factor.</li>
 </ul>
 </section>
 <section id="working-context">
@@ -28714,6 +28714,143 @@ If every nonzero coordinate has \(J\ni a\), then \(\Lambda\wedge e_a=0\), so \(e
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 9.33 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 22.98 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.28 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-properness-mechanism-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Route review; its falsification computation on boundary limits of four-root shapes is recorded here and no new claim is registered.">
+<h3>29 September 2026 — Review: the Schubert-properness route is a well-founded system of reductions, but it has no properness mechanism at any level; compare the Wronskian route</h3>
+<p class="entry-meta">Route review; boundary limits of four-root shapes have mark weight at most one along ten degenerating arcs, as (W^X_4) needs. Each reduction returns the same kind of properness statement for smaller or confluent families. Properness mechanism review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>The line and the goal.</strong> Open statement 3 for every \(N\ge7\), off collisions via the contact bound (<code>conj:cube-offcollision-contact-bound</code>). Since the <a href="#entry-2026-09-29-cube-two-cluster-review">two-cluster review</a>, four research cycles have landed, all valid for every \(N\):</p>
+<ul>
+<li><a href="#cube-schubert-properness">Schubert properness</a> (SP\(_N\)) formulated as the sufficient target, with cell-preserving limits;</li>
+<li>the <a href="#cube-weight-limit-variety">weight limit variety</a>, which bounds single-cluster fibres by the largest weight;</li>
+<li><a href="#cube-character-splitting">character splitting</a>, which removes every full-rank hypothesis and makes the base condition unconditional on open two-double-root strata for \(N\ge8\) and open triple-root strata for \(N\ge7\);</li>
+<li>the <a href="#cube-single-cluster-induction">single-cluster reduction</a> to weight properness at smaller sizes.</li>
+</ul>
+<p><strong>General statement.</strong> The line's claims are <code>conj:cube-offcollision-contact-bound</code> and <code>conj:cube-schubert-properness</code>. This review registers no new claim.</p>
+<p><strong>What the goal needs.</strong> The contact bound for every \(N\ge7\). Through the transfer this needs the base condition at every boundary point. Through the single-cluster reduction that needs weight properness (W\(^X_m\)) at every smaller size, plus the large-cluster and multi-cluster cases. The collision half of statement 3 is separate and unchanged.</p>
+<h4>Falsification attempt</h4>
+<p>The single-cluster reduction assumes (W\(^X_m\)) including boundary points, and those were unchecked even at \(m=4\). bmd_cube_boundary_weights_m4.gp (<a href="https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-zzv/boundary-weights-m4.txt">output</a>) computes the exact \(t\)-saturated limits of \(4\)-root shape spaces along ten degenerating arcs:</p>
+<ul>
+<li>one or two collisions: \((0,t,1,2)\), \((0,t,1,1+t)\);</li>
+<li>hierarchical arcs: \((0,t,t^2,1)\), \((0,t^2,t,1)\), \((0,t,1,1+t^2)\);</li>
+<li>a triple collision: \((0,t,2t,1)\);</li>
+<li>a total collision: \((0,t,2t,3t)\);</li>
+<li>arcs into the parallelogram curve: \((0,1,2+t,3)\), \((0,1,3+t,4)\), \((0,t,1+t,1+2t)\).</li>
+</ul>
+<p>(W\(^X_4\)) predicts weight \(\le2\), with weight \(2\) at most at finitely many boundary points. The weights found are \(0\) or \(1\). Weight \(1\) occurs exactly at the parallelogram limits and at the two-double-root collision, which is a limit of parallelograms since \(0+(1+t)=t+1\). The hypothesis survives, on these arcs only.</p>
+<h4>Obstacle</h4>
+<p>Every reduction of the last cycles returns a properness statement of the same kind, for a smaller or more confluent family. The single-cluster reduction needs (W\(^X_m\)). At a large cluster, contact in the fibre is the Richardson-type condition \(\Lambda\cap V_p\ne0\) inside \(G_w\), where \(V_p=\mathrm{Pol}_{&lt;k+w}\cap(C'_p+(T^{R+2}))\) and \(C'_p\) are the cross and pair rows. This has the expected codimension \(3\) only if \(V_p\) is in general position with respect to the coordinate flag, which is a Schubert-position statement about the confluent space at \(p\). Multi-cluster points need the same for two-scale data. No level of this system has a mechanism that proves properness. The only evidence is computation at \(m\le5\). The line is stuck on the absence of a properness theorem for special families of spaces of this kind.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>The record's Wronskian route</strong> (<code>thm:cube-wronskian-discriminant-criterion</code>). If \(\Delta_W^{\rm nc}\), the non-collision part of the discriminant of the Wronskian numerator, is nonzero and squarefree, then the separated locus of mark weight \(\ge3\) has codimension \(\ge3\), which contains the contact bound. It uses the Möbius flow, which moves the mark to every point of the cover, to turn a pointwise Schubert condition into a statement about root coincidences of one polynomial. This is the kind of homogeneity that SP lacks. <strong>Answers.</strong> It replaces properness by one squarefreeness statement per \(N\), a single polynomial rather than a family. Our cluster tools can attack it by degeneration: along a cluster degeneration the Wronskian roots split into bubble groups, and the discriminant factors accordingly (<code>prop:cube-cluster-discriminant-reduction</code>). <strong>Test.</strong> Passed as a logical check: the criterion's conclusion covers the contact bound off the discriminant divisor. At \(N=7\) its hypothesis has a randomized certificate, and the covariant degrees are recorded.</li>
+<li><strong>Richardson varieties and Kleiman transversality in \(\operatorname{Gr}(w,2w)\)</strong> (Richardson, Intersections of double cosets, Indag. Math. 1992; Kleiman, Compositio 1974). The large-cluster contact locus is \(\{\Lambda\in G_w:\Lambda\cap V_p\ne0\}\), the intersection of opposite Schubert varieties with a Schubert variety for a flag through \(V_p\). For flags in general position, Richardson varieties have the expected dimension. <strong>Answers.</strong> It gives expected codimension \(3\) in each \(w\)-dimensional component of \(G_w\) whenever \(V_p\) is transverse to the coordinate flag. That makes the large-cluster case automatic for \(N\ge2m-1\), instead of \(N\ge2m+2\), and reduces the rest to transversality of one explicit space per point. Where it breaks: transversality of \(V_p\) is itself the unproved statement. <strong>Test.</strong> Passed as a dimension count: in \(\operatorname{Gr}(w,2w)\), meeting a \((w-2)\)-dimensional subspace has codimension \(2w-w-(w-2)+1=3\). The expected dimension of \(V_p\) is \((R-k)+(k+m-2)-(R+2)=m-4\), which is consistent.</li>
+<li><strong>Generic simplicity by degeneration, as in the Shapiro conjecture's proof (Mukhin, Tarasov and Varchenko, Ann. of Math. 170 (2009) 863–881).</strong> Reality and simplicity of Wronskian fibres come from identifying the spaces with eigenspaces of self-adjoint Bethe algebras. Target: squarefreeness of \(\Delta_W^{\rm nc}\), which is simplicity of the Weierstrass points in codimension one. <strong>Answers.</strong> A Bethe algebra acting on our pair spaces, if one existed, would give simplicity from self-adjointness and so squarefreeness for all \(N\). Where it breaks: our spaces are spanned by products of \((1+aT)^{-3/2}\), not polynomials, and no Bethe algebra for them is known. The record's earlier test showed that the reality statement fails for our spaces. <strong>Test.</strong> Not run: it needs a candidate commuting family of operators on the pair space, and none is at hand. The EPD operator \(\mathcal L\) is one candidate generator, to be tried in a development cycle.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>Smoothed analysis and condition numbers (computer science; Bürgisser and Cucker, Condition, Springer 2013, Chapter 20).</strong> For a random input, the probability that a conic condition number exceeds \(1/\varepsilon\) is governed by the codimension of the ill-posed set. Translation: \(A_{R+1}(a)\) at random configurations, with contact as the ill-posed set. <strong>Answers.</strong> A tail estimate \(P(\sigma_{\min}&lt;\varepsilon)\approx\varepsilon^{2c}\) at complex random \(a\) would read off the codimension \(c\) of the contact locus, as a numerical diagnostic for every \(N\) at once. <strong>Test.</strong> Not run: detecting \(c=3\), that is an \(\varepsilon^6\) tail, needs sample sizes far beyond a cheap test. The diagnostic would also not be a proof.</li>
+<li><strong>The von Neumann–Wigner non-crossing rule (quantum chemistry).</strong> Degeneracies of eigenvalues in families of matrices have a codimension fixed by the symmetry class: \(2\) for real symmetric families and \(3\) for Hermitian families, in real parameters. Translation: Wronskian roots as levels depending on the configuration, with weight \(\ge2\) as a level crossing. <strong>Answers.</strong> A symmetry-class argument would give the codimension of coincidences, that is squarefreeness of \(\Delta_W^{\rm nc}\), from the structure of the family. <strong>Test.</strong> Falsified: our families are complex and not self-adjoint. For them coincidences have complex codimension \(1\) (exceptional points), and weight two at the mark does occur in codimension \(2\) in the five-root shape space. That is the Schubert count, not a non-crossing count, so the rule's mechanism does not apply.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work on charge models in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">The coefficient determinant H is a fermionic matrix element; no Heisenberg-group evaluation was attempted. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1">The witness property is used in the covariant degrees entry; no explicit plane family was sought in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:1">Developed further in this period by the <a href="#cube-weight-limit-variety">weight limit variety</a>: the Białynicki-Birula bound, weight \(w\) gives dimension \(w\), is proved for single clusters. Earlier: the <a href="#cube-cross-block-factorization">cross-block factorization</a> and the <a href="#cube-second-order-lift-directions">second-order lift directions</a>: a two-cluster cross block is a two-scale torus limit composed with the EPD map, and second order adds at most two directions. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:2">No new work on the configuration-interaction count in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-cluster-review:2">No new work on the order-by-order effective operator in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on the multi-double windows in this period; the <a href="#cube-double-cluster-osculating-limit">osculating lemma</a> gives the flat limits at several double roots, a different quantity from the window ranks. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:1">Used as the determinism of the covariant degrees entry. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2">Developed further in this period: the base condition of the relative transfer now has explicit limit formulas at double roots (<a href="#cube-double-cluster-osculating-limit">osculating pencils</a>), at single clusters (<a href="#cube-cluster-renormalization">renormalization</a>, <a href="#cube-boundary-pencil">boundary pencil</a>), and is settled at \(N=5\) on the open two-double-root and triple-root strata. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:3">The rational components of the six-root repeated factor contain no hyperplane with small integer or Eisenstein coefficients. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:1">Tested again at the next size in this review: (W\(_5\)) holds modulo \(32003\) with the predicted dimensions. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:2">No new work on flow invariance of the boundary components in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:1">Not developed. For single clusters the weight limit variety gave a dimension bound without scaled moduli, and the multi-cluster case, where they would matter, is untouched. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:2">No new work on the Riemann function in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<p><strong>Assessment.</strong> The SP route has become a coherent system: explicit limit formulas, dimension bounds, and unconditional base conditions on the open two-double-root and triple-root strata. Reviewers caught errors in every cycle, and all were fixed. But the system only moves the properness question between families. It never proves it, and the only support is computation at four and five roots. That is the same weakness the transfer route review identified: (F\(_{\rm rel}\)) was "a restatement in the language of limits". The restatement is now far more structured, but it is not yet a proof. The Wronskian route has the homogeneity SP lacks, and the new cluster tools, the osculating limits, renormalization and the weight limit variety, are the natural means for its degeneration argument. That route is the better use of the next cycles.</p>
+<p><strong>Next step on the highest-risk item.</strong> Route item cube-odd-characteristic, open statement 3 for every \(N\): develop the first lead. Read <code>prop:cube-cluster-discriminant-reduction</code> and <code>thm:cube-wronskian-discriminant-criterion</code> in full. Then state how \(\Delta_W^{\rm nc}\) factors along a single-cluster degeneration, in terms of the within-cluster Wronskian, which is that of the limit space in \(G_w\), and the canonical outer space. Aim at squarefreeness by induction on \(N\), with the weight limit variety supplying the cluster factor.</p>
+<p><strong>Verification gate.</strong> The falsification computation is exact over \(\mathbb Q\) along ten arcs, and its scope is stated. No new claim is registered, so no reviewer was run. The follow-up lists carry every passed item not yet closed from earlier reviews on this route, including the last review's three passed items.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzv">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 39.84 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">12.85 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">0.75 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 22.61 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 3.31 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.19 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
