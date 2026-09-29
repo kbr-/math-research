@@ -1,0 +1,33 @@
+{
+  "source": {
+    "record": "[Binary-face Weierstrass points](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-binary-face-weierstrass)",
+    "targets": [
+      "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-binary-face-weierstrass",
+      "https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-c/provenance.json"
+    ],
+    "label": "Binary-face Weierstrass points"
+  },
+  "reviewer": "Claude Code (claude-opus-5-5); one fresh-context medium correctness reviewer",
+  "date": "2026-09-29",
+  "topics": ["degree-accounting", "affine-linear-algebra"],
+  "claims": [
+    {
+      "id": "thm:cube-binary-face-weierstrass-points",
+      "summary": "Characteristic zero, every M>=2, r=binom(M,2). The pair space of the cluster degeneration (eps*b_1..eps*b_M,s,t) converges to Phi0 = Pol_{<r} + (1+T)^(-3/2)Pol_{<M} + (1-T)^(-3/2)Pol_{<M} + <(1-T^2)^(-3/2)> (branch values normalized to -1,1). Its finite non-branch Weierstrass points are exactly the zeros of Q_r, defined by D^r(1-T^2)^(-3/2)=(1-T^2)^(-3/2-r)Q_r (recurrence Q_(k+1)=(2k+3)TQ_k+k(k+2)(1-T^2)Q_(k-1)), the degree-r polynomial solution of (T^2-1)Q''-(2r+1)TQ'+r(r+2)Q=0 (Gegenbauer with lambda=-r-1); each has weight exactly one.",
+      "assessment": "Working all-M proof after one fresh-context medium review: after D^r and a unit factor the space is Y + <Q_r> with Y invariant under the Gegenbauer operator G (eigenvalues j^2+j-3/4), and a spectral-projection hyperplane argument gives the weights.",
+      "status": "working_proof",
+      "rationale": "All-dimensional base case of a cluster-degeneration proof of generic Weierstrass-weight bounds needed for open statement 3."
+    },
+    {
+      "id": "check:cube-binary-face-weierstrass-numerators",
+      "summary": "Exact rational computation for M=3..6: the non-branch Wronskian numerator of the binary-face limit space has degree binom(M,2), is squarefree, satisfies the fitted second-order equation and equals Q_r up to a scalar; branch multiplicities 21,55,120,231.",
+      "assessment": "Finite check, exact over Q by interpolation with two verification points; independent control of the all-M theorem.",
+      "status": "finite_check",
+      "rationale": "Control for the binary-face Weierstrass theorem."
+    }
+  ],
+  "relationships": [
+    ["thm:cube-binary-face-weierstrass-points", "cites", "obs:cube-confluent-first-step-monic", "The Taylor matrix of the limit space is the recorded normalized binary-face limit."],
+    ["check:cube-binary-face-weierstrass-numerators", "applies", "thm:cube-binary-face-weierstrass-points", "Independent exact control at M=3..6."]
+  ]
+}
