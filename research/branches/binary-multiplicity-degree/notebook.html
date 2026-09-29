@@ -43,13 +43,14 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). No further per-size certificates: a certificate for each \(N\) cannot prove the statement. \(N=7\) is reduced to one collision exponent (<a href="#cube-seven-root-certificate-reduction">certificate reduction</a>). The general obligation is unchanged: squarefreeness of \(\Delta_W^{\rm nc}\) for all \(N\) (the off-collision contact conjecture), and the collision half for all \(N\).</p>
-<p>The next cycle is a route review aimed at a mechanism for all \(N\). The degeneration route stalled on component simplicity; the <a href="#entry-2026-09-29-cube-component-simplicity-review">simplicity review</a> and the <a href="#cube-component-mod3-reduction">mod-3 test</a> record the falsified mechanisms. The review should do three things:</p>
-<ol>
-<li>State what an all-\(N\) proof of squarefreeness of a discriminant can use: an induction in \(N\) through a degeneration whose limit discriminant factors into already-squarefree pieces; a transversality theorem for the Wronski map, such as Mukhin–Tarasov–Varchenko's; or a geometric identification of the discriminant divisor.</li>
-<li>Choose one of these and test its first step for all \(N\) at once, not at a new size.</li>
-<li>Keep the collision exponent \(e_N\) only as an all-\(N\) formula to prove by Puiseux analysis at the confluent limit, since it is the collision input for every \(N\). The measured values \(96\), \(386\) and \(1070\) test that formula, and they are not a list to extend.</li>
-</ol>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\), with no further per-size certificates. The <a href="#entry-2026-09-29-cube-all-n-mechanism-review">all-N mechanism review</a> fixes the target as the contact locus \(K=\{\operatorname{rank}A_{R+1}&lt;R\}\). It proposes induction over collision strata. And it finds that the six-root repeated factor of \(\Delta_W^{\rm nc}\) splits identically on two random lines (\(16\) linear, \(4\) quadratic, \(7\) cubic factors over \(\mathbb F_p\)), consistent with a union of low-degree components. A pure hyperplane arrangement is excluded by \(S_6\)-symmetry.</p>
+<p>Identify its components, cheapest first:</p>
+<ul>
+<li>Evaluate candidate \(S_6\)-orbits of linear relations (the \(6\)-orbit \(a_i=\)mean of the others, the \(10\)-orbit \(a_i+a_j+a_k=a_l+a_m+a_n\), and other orbits whose sizes add to \(16\)) at the sixteen rational roots of the two recorded lines.</li>
+<li>For the quadratic and cubic parts, fit low-degree symmetric components from further lines.</li>
+<li>Then state for all \(N\) which special configurations produce repeated factors, prove that they do, and test the prediction against the recorded \(N=5\) and \(N=7\) squarefreeness.</li>
+</ul>
+<p>The collision-strata transfer for \(K\) comes after.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26927,6 +26928,140 @@ using \(R-2N+3=(N-2)(N-3)/2\). Homogeneity gives the degrees of the coefficients
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.17 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-all-n-mechanism-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Route review; its reductions and tests are recorded here as a plan, and no new claim is registered.">
+<h3>29 September 2026 — Review: statement 3 needs an all-N mechanism; the six-root repeated factor looks like a hyperplane arrangement, and collision-strata induction is the candidate</h3>
+<p class="entry-meta">Route review; per-size certificates are stopped. The all-N target is the rank condition of the contact bound; projective dimension theory reduces it to collision strata plus a pointwise escape bound. All-N mechanism review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>The line and the goal.</strong> Open statement 3 asks for \(\alpha_N=\lambda_N\) for every \(N\ge7\). Since the component simplicity review, three cycles have landed:</p>
+<ul>
+<li>the <a href="#cube-component-bethe-extension">Bethe extension lemma</a> closed the master-function lead;</li>
+<li>the <a href="#cube-component-mod3-reduction">mod-3 test</a> closed reduction modulo \(p\);</li>
+<li>the <a href="#cube-wronskian-covariant-degrees">covariant degrees</a> reduced \(\alpha_7=105\) to one collision exponent.</li>
+</ul>
+<p>That last step closes one size, not the statement. A certificate for each \(N\) cannot prove the statement, and this review stops that direction.</p>
+<p><strong>General statement.</strong> The line's all-\(N\) claims are <code>conj:cube-offcollision-contact-bound</code> (off collisions) and <code>conj:cube-pair-degeneration-simplicity</code> (collision classes). With the proved criteria they would give statement 3. This review registers no new claim.</p>
+<p><strong>What the goal needs, for every \(N\ge7\).</strong></p>
+<ol>
+<li><em>Off collisions.</em> The contact locus \(K=\{\operatorname{rank}A_{R+1}&lt;R\}\), the configurations with a quadratic section of contact at least \(R+4\), has codimension at least three in the separated locus. This is <code>conj:cube-offcollision-contact-bound</code>. It is weaker than codimension three for the weight-\(\ge3\) locus, which is false at \(N=6\), where weight-three marks of type \((0,\ldots,R-1,R+1,R+3)\) fill a divisor. Squarefreeness of \(\Delta_W^{\rm nc}\) is a stronger sufficient condition, by the discriminant criterion.</li>
+<li><em>On collisions.</em> No height-two support inside the collision divisor. The <a href="#entry-2026-09-29-cube-confluent-weight-criterion">confluent weight criterion</a> treats height-two primes meeting the open one-double-root stratum, from a condition at one confluent point, certified at \(N=7\). The codimension-two collision strata themselves, \(\{a_i=a_j=a_k\}\) and \(\{a_i=a_j,\ a_k=a_l\}\), are not covered there, and they remain open as possible components.</li>
+</ol>
+<h4>Falsification attempt</h4>
+<p>Is squarefreeness of \(\Delta_W^{\rm nc}\) a good all-\(N\) target? The recorded <a href="#cube-wronskian-discriminant-certificates">line certificates</a> bear on this, within their scope: one seeded random line over \(\mathbb F_p\), \(p=2^{61}-1\), with collision multiplicities measured on the line. At \(N=6\), \(\Delta_W^{\rm nc}\) has a factor of exponent four and degree \(45\). At its sixteen \(\mathbb F_p\)-rational points on that line, \(W\) has two triple roots, of type \((0,\ldots,R-1,R+1,R+3)\), with \(\operatorname{rank}A_{R+1}=R\). So the contact bound is consistent there while squarefreeness fails. At \(N=5\) and \(N=7\) squarefreeness holds on the certificate lines; at \(N=7\) this is now deterministic over \(\mathbb F_p\) apart from the collision exponent, with the passage to characteristic zero as in the covariant degrees entry. \(N=6\) lies outside statement 3, so this does not refute squarefreeness for \(N\ge7\). But squarefreeness is strictly stronger than what the criterion needs, it fails at one size, and so it is a poor candidate for a uniform proof unless the failure at \(N=6\) is explained. Lead 3 below starts on that explanation.</p>
+<h4>Obstacle</h4>
+<p>The line has no mechanism that treats all \(N\) at once. The degeneration route needs simplicity of every caterpillar middle component, and every cheap mechanism for that has failed. The discriminant route certifies one size at a time, and its sufficient condition, squarefreeness, fails at \(N=6\). What is missing is an argument that bounds the codimension of the contact locus \(K=\{\operatorname{rank}A_{R+1}&lt;R\}\) for every \(N\). Two things it could use: passage between collision strata, and an explanation of the repeated factors, such as the \(N=6\) one.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Restriction of homogeneous polynomials to linear sections</strong> (elementary; cited as context: Flenner, Die Sätze von Bertini für lokale Ringe, Math. Ann. 229, 1977). Target: squarefreeness off collisions. Let \(f\in k[a]\) be homogeneous and \(P\) a \(2\)-plane through \(0\) with \(f|_P\ne0\). A factor \(g^2\mid f\) of positive degree is homogeneous, and \(g|_P\ne0\), so \(g|_P\) is a binary form of the same degree with \((g|_P)^2\mid f|_P\). So a squarefree \(f|_P\) certifies that \(f\) is squarefree. A non-squarefree restriction proves nothing. The certificates' affine line \(\alpha+u\beta\) is the plane \(\operatorname{span}(\alpha,\beta)\) only together with the full-degree check. It certifies over \(\mathbb F_p\), and the passage to characteristic zero needs \(p\) not to divide the relevant leading coefficients, as in the covariant degrees entry. <strong>Answers.</strong> One plane per \(N\) certifies squarefreeness, and a family of planes with a closed-form restriction would give all \(N\). Where it breaks: squarefreeness fails at \(N=6\), so no such family works for every \(N\) without an exception set, and extracting \(\Delta_W^{\rm nc}|_P\) needs the collision exponent \(e_N\). <strong>Test.</strong> Passed: the argument is a proof. It is the determinism used in the covariant degrees entry.</li>
+<li><strong>The projective dimension theorem</strong> (Hartshorne, Algebraic Geometry, I.7.2): every closed subvariety of dimension at least one of \(\mathbb P^m\) meets every hyperplane, in dimension at least one less. Target: the contact bound for all \(N\). \(A_L(a)\) transforms covariantly under translation and scaling of the roots. The mark over \(\infty\) is fixed, and the <a href="#cube-wronskian-covariant-degrees">covariant degrees</a> give the homogeneity. So \(K\) is a translation-invariant cone, with image \(\bar K\subset\mathbb P^{N-2}\), where the collision loci \(a_i=a_j\) are hyperplanes. A component of \(K\) of codimension two has \(\dim\bar Y=N-4\ge1\) for \(N\ge5\). So \(\bar Y\) meets every collision hyperplane, each component of the intersection having dimension at least \(N-5\). The meeting points may lie in the open one-double-root stratum or in a deeper stratum: a triple collision, or two double roots. If the spaces have a limit there and the rank condition is closed in the family, the limit carries the corresponding rank condition, unless the contact escapes into a branch point, the new collision point or \(\infty\). For one double root the confluent limit exists. For two double roots the <a href="#entry-2026-09-29-cube-double-root-induction-review">double-root induction review</a> found no canonical limit. <strong>Answers.</strong> An induction over all collision strata, indexed by set partitions of the roots. Suppose that on every stratum \(\Sigma_\pi\) in the closure the limit rank locus has codimension at least three in \(\Sigma_\pi\), and that no contact escapes pointwise along \(\bar Y\cap\Sigma_\pi\). Then \(K\) has no component of codimension at most two (the same meeting argument covers codimension one), as long as at each step the component has dimension at least one inside the projectivized closure of the stratum. <strong>Test.</strong> Passed for the meeting statement, which is proved. Landing in the open stratum, the limits at deep strata, pointwise escape and the base are open. The confluent criterion's certificate at \(N=7\) gives, on the one-double-root stratum, only generic no-escape and codimension at least two for its weight locus. Pointwise escape along \(\bar Y\cap\Sigma\) and codimension three are not given.</li>
+<li><strong>Chebotarev density in function fields, for random line sections</strong> (uniform position: a random line section of a geometrically irreducible hypersurface of degree \(d\) has Galois group \(S_d\), and the expected number of \(\mathbb F_p\)-rational points of a random \(\mathbb F_p\)-line section equals the number of geometrically irreducible components defined over \(\mathbb F_p\)). Target: explaining which \(N\) carry repeated factors of \(\Delta_W^{\rm nc}\). <strong>Answers.</strong> If the repeated factor at \(N=6\) is a union of many low-degree components, then it comes from special configurations, such as linear relations among the roots. Its occurrence for other \(N\) is then predictable, and squarefreeness could be proved for \(N\ge7\) off an explicit exception set. <strong>Test.</strong> Passed. <code>bmd_cube_repeated_factor_split.py</code> factors the exponent-four factor over \(\mathbb F_p\) on the recorded line (seed \(20260929\)) and on a second random line computed in this cycle (seed \(20260930\), <code>wronskian-disc-N6-seed2.json</code>). The second line reproduces the whole decomposition: degree \(16020\), collision multiplicity \(386\), exponent-one part of degree \(10050\), exponent-four factor of degree \(45\). On both lines the factor splits identically, into \(16\) linear, \(4\) quadratic and \(7\) cubic factors (\(16+8+21=45\); <code>repeated-factor-split.txt</code>). A geometrically irreducible factor of degree \(45\) would give about one rational root and a varying pattern. A union of low-degree components would give a fixed pattern. So the test is passed as consistent with a union of low-degree components, not as an identification. A pure union of \(45\) hyperplanes conflicts with symmetry: \(\Delta_W\) is symmetric (<a href="#cube-wronskian-covariant-degrees">covariant degrees</a>), so its exponent-four part is symmetric and invariant under translation. The \(S_6\)-action commutes with Frobenius. So the eight hyperplanes defined over \(\mathbb F_{p^2}\) but not over \(\mathbb F_p\) would form an \(S_6\)-stable set of eight hyperplanes in the standard representation. \(S_6\)-orbits there have sizes \(6,10,15,\ldots\), never \(1\), \(2\), \(4\) or \(8\). The quadratic line factors must therefore come from components of degree at least two, or from a coincidence of the two samples. The sixteen rational roots could still be two orbits of hyperplanes, of sizes \(6+10\). Examples are \(a_i=\) the mean of the others (\(6\)) and \(a_i+a_j+a_k=a_l+a_m+a_n\) (\(10\)). The \(45\) hyperplanes \(a_i+a_j=a_k+a_l\) are excluded, since they would give \(45\) linear factors.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>Polynomial identity testing</strong> (complexity theory; Schwartz–Zippel and deterministic hitting sets). Translation: "\(\Delta_W^{\rm nc}\) has no square factor" is an identity test for \(\gcd(\Delta,\partial\Delta)\), and the certificates are randomized identity tests on one line. <strong>Answers.</strong> By Lead 1, for homogeneous polynomials a single plane with a full-degree squarefree restriction is a witness. A deterministic hitting set would need an explicit plane chosen in advance for every \(N\), which is the plane family of Lead 1. <strong>Test.</strong> Passed as translation: the witness property is Lead 1's proof. No explicit family is known.</li>
+<li><strong>Tree space of phylogenetics</strong> (Billera, Holmes and Vogtmann, Geometry of the space of phylogenetic trees, Adv. Appl. Math. 27, 2001). The collision strata of Lead 2 form the partition lattice of the braid arrangement. After the wonderful blow-up (Fulton–MacPherson, or \(\overline M_{0,N+1}\)), their boundary strata are tree topologies. Translation: follow a component of \(K\) down the partition strata by Lead 2, and lift the path to tree space, where the degenerate limits, such as the caterpillar, live. <strong>Answers.</strong> It organizes the base cases and the limits needed at deep strata: two double roots have no canonical limit on the partition lattice, but they have limits after blowing up. <strong>Test.</strong> Not run: an organizing translation, with no cheap computation.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">The joint collision bound is a minimal-cost assignment, a discrete charge model; it is sharp at every measured window. <strong>Follow-up.</strong> Developed.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">The coefficient determinant H is a fermionic matrix element; no Heisenberg-group evaluation was attempted. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on the multi-double windows in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<p><strong>Assessment.</strong> This period's cycles closed the per-component simplicity mechanisms. They also reduced \(\alpha_7=105\) to one exponent, with a degree lemma valid for every \(N\). Neither is an all-\(N\) argument.</p>
+<ul>
+<li><em>The target.</em> The review fixes it as the rank locus \(K\), not the weight locus and not squarefreeness.</li>
+<li><em>The mechanism.</em> Projective dimension theory gives an all-\(N\) structure for \(K\): induction over collision strata. It needs limits at deep strata, a pointwise escape bound, and a base.</li>
+<li><em>New evidence.</em> The six-root repeated factor splits identically on two random lines, consistent with a union of low-degree components. That suggests the failures of squarefreeness are special configurations that could be described for every \(N\). A pure hyperplane arrangement is excluded by symmetry.</li>
+</ul>
+<p>The known hard points are the two-double-root limit and pointwise escape. The line is productive on reductions. Its distance to an all-\(N\) proof is still large.</p>
+<p><strong>Next step on the highest-risk item.</strong> Route item cube-odd-characteristic, open statement 3 for every \(N\).</p>
+<ol>
+<li>Identify the components of the six-root repeated factor, cheapest first. Evaluate candidate \(S_6\)-orbits of linear relations, such as the \(6\)-orbit \(a_i=\)mean of the others and the \(10\)-orbit \(a_i+a_j+a_k=a_l+a_m+a_n\), at the sixteen rational roots of the recorded lines. For the rest, sample more lines and fit low-degree symmetric components. Then state for all \(N\) which special configurations produce repeated factors, and prove that they do.</li>
+<li>Then formulate the collision-strata transfer for \(K\), with the pointwise escape condition, on the strata where limits exist.</li>
+</ol>
+<p>No new sizes.</p>
+<p><strong>Dependencies re-read.</strong> The line certificate table and its \(N=6\) analysis; the confluent weight criterion; the double-root induction review's Obstacle and leads; the three entries of this period.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer, with one follow-up. The first pass failed the draft: it equated the weight-\(\ge3\) locus with the contact bound, and that locus fills a divisor at \(N=6\). The rewrite targets \(K=\{\operatorname{rank}A_{R+1}&lt;R\}\). It indexes the induction by all collision strata, with the dimension and landing caveats, states escape pointwise, scopes the confluent criterion and the line certificates, and corrects the Chebotarev, identity-testing and tree-space formulations. The reviewer's suggested cheap test (a second random line at \(N=6\)) was run. The follow-up passed the rewrite with corrections, all applied: the hyperplane reading was downgraded to low-degree components, because a pure hyperplane arrangement conflicts with \(S_6\)-symmetry for the four quadratic pairs; the \(\mathbb F_p\) scope was added at \(N=7\); and codimension at most two replaced codimension two, with the dimension condition stated.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzc">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 46.45 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 26.76 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 20.98 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">57.90 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 58.34 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2.34 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
