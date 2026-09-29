@@ -43,11 +43,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3, now proved at \(N=7\) (<a href="#cube-seven-root-first-step">\(\alpha_7=105\)</a>) and open for \(N\ge8\). The <a href="#cube-collision-exponent">collision exponent</a> is known in closed form wherever the counts are attained.</p>
-<p>Next, for every \(N\ge8\), not size by size:</p>
+<p>Route item: cube-odd-characteristic; open statement 3, proved at \(N=7\) and open for \(N\ge8\). By <a href="#cube-attainment-propagation">attainment propagation</a>, the collision exponent's hypothesis reduces to attainment at the base of the descent plus the neck counts.</p>
+<p>Next, for every \(N\):</p>
 <ul>
-<li>Prove attainment of \(T_{\rm conf}(N)\) for every \(N\) (the factorization hypotheses), by the hierarchical counts and their descent, so that the collision exponent holds unconditionally.</li>
-<li>Return to squarefreeness of \(\Delta_W^{\rm nc}\) in general. The near-group analysis now controls \(\Delta_W\) near every collision hyperplane; the remainders of the descent, populated at \(N=6\), remain the obstacle.</li>
+<li>Attainment at the base \(V^{(\lfloor N/2\rfloor)}\): all roots double for even \(N\), with \(N/2-3\) moduli, or one simple root for odd \(N\). Degenerate the base itself, by colliding double roots, and look for a count identity that closes there.</li>
+<li>Then return to squarefreeness for \(N\ge8\), where the remainders remain the obstacle.</li>
 </ul>
 </section>
 <section id="working-context">
@@ -29457,6 +29457,77 @@ Summing over the \(\binom r2\) face pairs, the \(2Mr\) face–ring pairs, the \(
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 40.96 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.28 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.44 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-attainment-propagation" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-discriminant-descent-review:1" data-claims="lem:cube-hierarchical-face prop:cube-attainment-propagation">
+<h3>30 September 2026 — Attainment of the counts propagates up the hierarchical descent, so the collision exponent's hypothesis reduces to the directional level</h3>
+<p class="entry-meta">Working proof for every N ≥ 5: the binary face appears at every level of the descent, and attainment at one level plus the neck count gives attainment one level up. Attainment propagation cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-collision-exponent">collision exponent</a> theorem gives \(e_N\ge M(M-1)(31M^2-23M-18)/12\) for every \(N\) where the one-double-root space attains \(T_{\rm conf}(N)\), the <em>factorization hypotheses</em>. The exact confluent certificates give them at \(N=5,6,7\) only. The missing implication is attainment for every \(N\), and the natural mechanism is the descent itself: its <a href="#cube-hierarchical-counts">count identities</a> say that face, neck and bubble add up exactly.</p>
+<p><strong>General statement.</strong> <code>lem:cube-hierarchical-face</code> and <code>prop:cube-attainment-propagation</code>, for every \(N\ge5\).</p>
+<h4 id="cube-hierarchical-face">The face at every level</h4>
+<p><strong>Setup.</strong> Characteristic zero, \(M=N-2\), \(r=\binom M2\). For \(a\ge0\) with \(M\ge2a\), the <em>cluster degeneration of \(V^{(a)}\)</em> keeps two simple roots at \(\pm1\) and scales the others, the \(a\) double roots (in their order) and \(M-2a\) simple roots, by \(\varepsilon\): cluster centres \(\varepsilon\rho\), with \(\rho\) distinct and nonzero.</p>
+<p><strong>Lemma (hierarchical face).</strong> For generic \(\rho\), as \(\varepsilon\to0\) the span of \(V^{(a)}\) at fixed \(T\) tends to the binary-face space
+\[
+\Phi_0=\operatorname{Pol}_{&lt;r}\oplus\varphi_1\operatorname{Pol}_{&lt;M}\oplus\varphi_{-1}\operatorname{Pol}_{&lt;M}\oplus\langle\varphi_1\varphi_{-1}\rangle,
+\]
+uniformly on compact sets avoiding \(\pm1\). So, for small \(\varepsilon\), exactly \(r\) finite non-branch points converge to the zeros of \(Q_r\), each of weight one, as at levels zero and one.</p>
+<p><strong>Proof.</strong> This is the proof of the <a href="#cube-confluent-binary-face">confluent binary face</a>, block by block.</p>
+<ul>
+<li><em>Internal rows.</em> The \(r\) rows with both indices in the cluster, including the blocks \(V_7(D_r,D_s)\) between cluster doubles, are functions of \(x=\varepsilon T\) up to scalars (a block row \(T^j(\cdots)\) is \(\varepsilon^{-j}x^j(\cdots)\)). As functions of \(x\), they are the rows of the hierarchical space of the \(M\)-point cluster configuration \(\rho\), which has \(\binom M2=r\) rows, independent by the <a href="#cube-hierarchical-limit">hierarchical limit lemma</a>, part (1). Their \(r\times r\) Taylor minor at \(x=0\) is the Wronskian of that space at \(x=0\), up to a constant. It is nonzero unless \(x=0\) is a Weierstrass point of the cluster's space. That space is covariant under translation of the variable: each character block is \(\operatorname{Pol}_{\le d}(x)\) times \(\prod(1+\rho_ix)^{e_i}\), and under \(x\mapsto x+s\) this becomes a constant times the same form with \(\rho'_i=\rho_i/(1+\rho_is)\), still distinct and nonzero with the order of the blocks kept, as long as \(x=s\) is not a branch value. No multiplier appears. So the Weierstrass points of the space at \(\rho'\) are those at \(\rho\) translated, and the point \(x=0\) moves relative to the configuration through an open set of positions. If \(x=0\) were a Weierstrass point for every \(\rho\), every point of every such space would be one, and the Wronskian of independent rows would vanish. So the minor is nonzero for generic \(\rho\). Inverting it and scaling gives a basis \(T^m+O(\varepsilon)\), \(m&lt;r\).</li>
+<li><em>Cross rows.</em> For each far root, the rows \(\varphi_{\pm1}\varphi_D\), \(\varphi_{\pm1}\varphi_D'\) and \(\varphi_{\pm1}\varphi_k\) are \(\varphi_{\pm1}\) times the cluster span \(U\) of the single functions, with derivatives at the double roots. The blocks \(V_7\) do not enter them. The \(M\times M\) Taylor minor of \(U\) at \(x=0\) is \(\operatorname{diag}\binom{-3/2}m\) times the confluent Vandermonde of the cluster centres with each double centre repeated, nonzero because the centres are distinct. This gives \(\varphi_{\pm1}(T^m+O(\varepsilon))\), \(m&lt;M\).</li>
+<li>\(\varphi_1\varphi_{-1}\) is unchanged.</li>
+</ul>
+<p>The normalizing transformation has determinant a constant times a power of \(\varepsilon\). The normalized functions converge uniformly on compact sets away from \(\pm1\), since the cluster branch values tend to infinity, and their limits span \(\Phi_0\). By the binary-face theorem the non-branch zeros of \(\operatorname{Wr}\Phi_0\) are the zeros of \(Q_r\), each of weight one, and Hurwitz's theorem gives the rest. \(\square\)</p>
+<h4 id="cube-attainment-propagation">Propagation</h4>
+<p><strong>Proposition (attainment propagation).</strong> Let \(N\ge5\), \(a\ge0\), \(M=N-2\ge2a\). Suppose:</p>
+<ul>
+<li>the hierarchical space \(V^{(a+1)}\) attains \(T(a+1)\) at a generic configuration (minimal multiplicities at the branch values and at infinity);</li>
+<li>for cluster configurations \(\rho\) in a nonempty Zariski-open set, the neck of the cluster degeneration of \(V^{(a)}\) carries finite non-branch weight at least \(\nu_a\), where \(\nu_0=2M(M-1)\) and \(\nu_a=2M(M-2)\) for \(a\ge1\). The neck means the annuli \(\varepsilon^{-\alpha}/C\le|T|\le C\varepsilon^{-\alpha}\) for finitely many \(\alpha\in(0,1)\).</li>
+</ul>
+<p>Then \(V^{(a)}\) attains \(T(a)\) at a generic configuration.</p>
+<p><strong>Proof.</strong> Choose \(\rho\) in the intersection of the finitely many nonempty Zariski-open sets used below (the lemma's, the neck hypothesis's, and region 3's), which is nonempty. For small \(\varepsilon\ne0\) the configuration is separated in the hierarchical sense, and its rows are independent. So by the <a href="#cube-hierarchical-counts">count proposition</a> its total finite non-branch weight is at most \(T(a)\). Count from below in three disjoint regions:</p>
+<ol>
+<li>at \(|T|=O(1)\), away from \(\pm1\): exactly \(r\) points, by the lemma;</li>
+<li>on the neck: at least \(\nu_a\), by hypothesis;</li>
+<li>at \(|T|\asymp\varepsilon^{-1}\): by the hierarchical limit lemma, part (3), in \(w=1/(\varepsilon T)\) and divided by \(w^3\), the span converges to \(V^{(a+1)}\) with the inverted centres and the new double root at \(0\), uniformly with derivatives on compact sets avoiding its branch values and \(w=0,\infty\). For generic \(\rho\) this limit attains \(T(a+1)\): attainment is open, and it is invariant under the Möbius maps that normalize the new double root to \(0\) (the intrinsic weights are). It has no Weierstrass point at \(w=0\) for generic \(\rho\), by the flow argument of the collision exponent theorem. So its finite non-branch weight away from \(w=0\) and its branch values is \(T(a+1)\), and Hurwitz's theorem on small discs gives weight \(T(a+1)\) near those points.</li>
+</ol>
+<p>The regions are disjoint for small \(\varepsilon\), so the total is at least \(r+\nu_a+T(a+1)=T(a)\), by the count identities (\(T(0)-T(1)=r+2M(M-1)\), \(T(a)-T(a+1)=r+2M(M-2)\) for \(a\ge1\)). So the total is exactly \(T(a)\), which by the count proposition means minimal multiplicities at every branch value and at infinity. Attainment is a Zariski-open condition on the irreducible configuration space of \(V^{(a)}\), and it holds at this configuration, so it holds generically. \(\square\)</p>
+<p><strong>Corollary.</strong> For every \(N\ge5\):</p>
+<ul>
+<li>the one-double-root space attains \(T_{\rm conf}(N)\) if the directional space \(V^{(2)}\) attains \(T_{\rm dir}(N)\), since the level-one neck count \(2M(M-2)\) is the <a href="#cube-confluent-neck-pair-space">confluent neck theorem</a>. So the collision exponent bound \(e_N\ge e(M)\) holds wherever \(V^{(2)}\) attains \(T_{\rm dir}\);</li>
+<li>for \(a\ge2\), attainment at level \(a+1\) gives attainment at level \(a\) under the hierarchical neck count (<code>conj:cube-hierarchical-neck-count</code>). It was checked modulo \(p\) at \(N=7\), \(a=2\) (<a href="#cube-hierarchical-descent">Newton polygon</a>). The <a href="#cube-window-excess">window excess rule</a>, which implies it given hull control, is proved at the top window and checked on window valuations at \(a=2,3\);</li>
+<li>so for odd \(N\) every factorization hypothesis of the descent reduces to attainment at its base \(V^{((N-1)/2)}\), with one simple root, plus the neck counts. For even \(N\) the last step \(a=N/2-1\) has \(M=2a\), which the proposition allows but which lies outside the neck conjecture's range \(M\ge2a+1\); there the reduction also needs the neck count at \(M=2a\). The base has no two simple roots to keep outside a cluster.</li>
+</ul>
+<p><strong>A check against the record.</strong> The directional count test found \(T_{\rm dir}\) attained at \(N=5,6\), and the confluent certificates found \(T_{\rm conf}\) attained at \(N=5,6,7\); the <a href="#cube-hierarchical-descent">attainment test</a> found \(T(2)\), \(T(3)\) attained at \(N=7\) and \(T(3)\) at \(N=6\). All are consistent with the proposition; none is needed for it.</p>
+<p><strong>What this does to the route.</strong> The collision exponent's hypothesis is now a statement about the descent's base and its necks, uniform in \(N\). It does not touch squarefreeness of \(\Delta_W^{\rm nc}\) for \(N\ge8\), which still needs a mechanism for the remainders or a per-size certificate. The base spaces have few moduli (\(\lfloor N/2\rfloor-3\) for even \(N\)), which makes their attainment a natural next target.</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 1 of the <a href="#entry-2026-09-30-cube-discriminant-descent-review">descent review</a>: the near-group and face analysis now serves the counts as well. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>attainment at the base of the descent, for every \(N\);</li>
+<li>the hierarchical neck count for \(a\ge2\);</li>
+<li>for even \(N\), the neck count at the last step \(M=2a\), outside the neck conjecture's range;</li>
+<li>squarefreeness of \(\Delta_W^{\rm nc}\) for \(N\ge8\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The confluent binary face (its proof block by block); the hierarchical limit lemma and count proposition; the confluent neck theorem (statement); the collision exponent theorem (step 1, the flow argument); the binary-face theorem (statement).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It checked the internal and cross rows, the count identities, the neck counts \(\nu_0,\nu_1\) as lower bounds of finite non-branch weight, the Hurwitz lower bounds (points tending to \(\pm1\), \(w=0\) or branch values only lower the bound), and the normalization in region 3. Corrections applied:</p>
+<ul>
+<li>the unused hypothesis \(M\ge2a+1\) is relaxed to \(M\ge2a\), and the corollary distinguishes odd \(N\) from even \(N\), whose last step needs the neck count at \(M=2a\);</li>
+<li>the neck hypothesis carries a Zariski-open quantifier and a precise meaning, and \(\rho\) is chosen in the intersection;</li>
+<li>the covariance of the cluster's space is argued directly;</li>
+<li>the evidence for the neck conjecture is cited precisely.</li>
+</ul>
+<p>These corrections weaken or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-d">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 3.03 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 12.94 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.81 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.28 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
