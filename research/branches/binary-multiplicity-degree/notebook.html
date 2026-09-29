@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The <a href="#cube-two-far-size-clause">size clause</a> of the two-far rule is proved for every window, and the far-extreme window \(r=0\) is proved.</p>
-<p>Prove \(c_{\kappa^*\nu^*}\ne0\) by computing the leading \(\eta\)-coefficient of \(D\) in the proof. Its terms are the matchings that attain the sorted bound. They pair each negative column with a far row, and the high columns with near coordinates \(\gamma\). Show that this coefficient factors as an \(s\)-part times \(s_{\mu^*}(t)^2\), with \(\mu^*=(r,\ldots,1)\), as the data suggest (at \(2\times3\), \(r=2\), the \(\kappa=0\) support is exactly that of \(s_{21}^2\)). That gives \(c_{\kappa^*\nu^*}\ne0\), since \(s_{2\mu^*}\) has coefficient \(1\) in \(s_{\mu^*}^2\). It also gives the dominance clause at the least size, and with it the window \(r=1\) for every \(n\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). For two far roots every window has valuation at least the <a href="#cube-two-far-dominance-clause">formula</a>. Equality reduces to \([s_{\nu^*}]H\ne0\) for an <a href="#cube-two-far-leading-reduction">explicit hook determinant</a>, and is proved at \(r\le1\).</p>
+<p>Prove \([s_{\nu^*}]H\ne0\) for every \(r\). Expand \(H\) multilinearly into determinants of hook Schur functions and apply Giambelli's formula \(\det[s_{(a_i|b_j)}]=s_{(a|b)}\). Collect the coefficient of \(s_{\nu^*}\), with \(\nu^*=(2r,\ldots,2)\), as a signed sum of products of \(\beta\)-ratios. Look for a product formula in \(\lambda\), guided by the computed values \(-49/12288\), \(-231/204800\) and \(-1573/3584000\) at \(r=2\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26075,6 +26075,85 @@ a nonzero polynomial in the leading constants. Here \(w_{\min}\) is the least we
 <tr><td>Computation design and coding</td><td class="elapsed">4 min 56.31 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 12.01 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.88 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-two-far-dominance" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-directional-induction-review:3" data-claims="thm:cube-two-far-dominance-clause lem:cube-two-far-leading-reduction cor:cube-two-far-second-window">
+<h3>29 September 2026 — The two-far support rule is proved up to one coefficient; every two-far window has valuation at least the formula, with equality at r ≤ 1</h3>
+<p class="entry-meta">Working proofs: the dominance clause of the two-far support rule, the lower bound for every two-far window, a hook-determinant formula for the last coefficient, and the r = 1 window. Two-far dominance cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-two-far-double-support">two-sided support rule</a> has three parts: a size clause, a dominance clause, and \(c_{\kappa^*\nu^*}\ne0\). The <a href="#cube-two-far-size-clause">size clause</a> is proved. This cycle proves the dominance clause by the same convex-cost argument, now applied to near roots colliding. Every two-far window then has valuation at least the conjectured \(v_0\), with equality exactly when \(c_{\kappa^*\nu^*}\ne0\). The cycle then reduces \(c_{\kappa^*\nu^*}\) to an explicit determinant \(H\) of hook Schur functions, and evaluates it at \(r=1\). Outcome: the \(r=1\) window is proved for every \(n\). For general \(r\) the window formula now rests on \([s_{\nu^*}]H\ne0\), which holds in all eight computed cases up to \(r=3\).</p>
+<p><strong>General statement.</strong> <code>thm:cube-two-far-dominance-clause</code>, <code>lem:cube-two-far-leading-reduction</code> and <code>cor:cube-two-far-second-window</code>, for every \(n\ge2\) and \(0\le r\le n-1\).</p>
+<h4 id="cube-two-far-dominance-clause">The dominance clause</h4>
+<p><strong>Setup.</strong> As in the size-clause entry: characteristic zero, \(\lambda\notin\mathbb Z\), rows \(f_i\varphi_{t_j}\) with \(f_i=(1+s_i/S)^{-\lambda}\), \(i=1,2\), and window \(E_r=[-m,\,n-1+r]\), \(m=n-r\). Write \(Q=P_{E_r}/(\Delta(s)^n\Delta(t)^2)=\sum_\kappa s_\kappa(s)T_\kappa(t)\), with \(T_\kappa=\sum_\nu c_{\kappa\nu}s_\nu\). Put \(\nu^*=(2r,2r-2,\ldots,2)\) and \(\kappa^*=(m(m-1))\).</p>
+<p><strong>Theorem.</strong></p>
+<ol>
+<li>For every \(q\le n\) and every choice of \(q\) near variables, each \(T_\kappa\) has total degree at least \(\max(0,q-m)\cdot\max(0,q-m+1)\) in those \(q\) variables.</li>
+<li>Hence \(c_{\kappa\nu}\ne0\) implies \(\nu\trianglelefteq\nu^*+(|\nu|-r(r+1))\).</li>
+<li>With the size clause, every two-far window satisfies \(\operatorname{val}P_{E_r}\ge v_0=n^2+2\binom{n+1}3-2nr+r(r+1)(r+5)/3\) at caterpillar weights, for all nonzero leading constants. Equality holds if and only if \(c_{\kappa^*\nu^*}\ne0\).</li>
+</ol>
+<p><strong>Proof of 1.</strong> By symmetry take \(t_1,\ldots,t_q\), and replace them by \(\eta u_1,\ldots,\eta u_q\). Work in \(K[[\eta]]\), with \(K\) a field containing \(k(s)\), the \(u_i\) and the \(t_j\) for \(j&gt;q\). It suffices to show that \(Q\) has \(\eta\)-order at least \((q-m)(q-m+1)\) for \(q\ge m+1\).</p>
+<ul>
+<li><em>Far normalization.</em> Normalize the far span as \(g_0=1+\sum_{a\ge2}x_au^a\), \(g_1=u+\sum_{a\ge2}y_au^a\). The \(x_a\) and \(y_a\) are now free of \(\eta\), and the change of basis contributes \((\beta_1(s_2-s_1))^n\).</li>
+<li><em>Cluster normalization.</em> Normalize the cluster span \(\langle\varphi_{\eta u_1},\ldots,\varphi_{\eta u_q}\rangle\) as \(h_b=S^b+\sum_{k\ge q}\gamma_{b,k}S^k\), \(b&lt;q\). By Cramer's rule \(\gamma_{b,k}=\pm(\beta_k/\beta_b)s_{(k-q+1,1^{q-1-b})}(\eta u)\), of \(\eta\)-order exactly \(k-b\). The change of basis contributes \((\pm\prod_{b&lt;q}\beta_b\Delta(\eta u))^2\), of order \(q(q-1)\). That is the \(\eta\)-order of \(\Delta(t)^2\), since the other factors, \(t_j-\eta u_i\) and \(t_i-t_j\) with \(i,j&gt;q\), are units of \(K[[\eta]]\). The cluster sums converge \(\eta\)-adically, since \(\gamma_{b,k}\) has order \(k-b\).</li>
+<li><em>Reduced determinant.</em> So \(Q\) is a unit times the \(E_r\)-coordinate \(D'\) of the rows \(g_ih_b\), \(b&lt;q\), and \(g_i\varphi_{t_j}\), \(j&gt;q\).</li>
+<li><em>Entry orders.</em> The entry of \(g_0h_b\) at column \(e\) is \(\sum_k\gamma_{b,k}x_{k-e}\), over \(k\in\{b\}\cup[q,\infty)\), \(k\ge e\), with \(x_0=1\), \(x_1=0\) and \(x_a=0\) for \(a&lt;0\). Its order is at least \(\max(0,e-b)\). The entry of \(g_1h_b\) needs \(k\ge e+1\), so its order is at least \(\max(0,e-(b-1))\). Give the cluster rows the levels \(b\) and \(b-1\). The \(2(n-q)\) rows \(g_i\varphi_{t_j}\) have order at least \(0\).</li>
+<li><em>Sorted matching.</em> In any Leibniz term, the \(2q\) cluster rows occupy columns \(c_1&lt;\cdots&lt;c_{2q}\), with \(c_i\ge C_i=i-1-m\). The cost \(\max(0,c-\ell)\) is convex and nondecreasing in \(c\). By the sorted-matching lemma of the size-clause entry, the order is therefore at least \(\sum_i\max(0,C_i-L_i)\), where \(L_i=\lfloor i/2\rfloor-1\) are the sorted levels. Since \(C_i-L_i=\lceil i/2\rceil-m\), this is \(\sum_{j=m+1}^q2(j-m)=(q-m)(q-m+1)\).</li>
+</ul>
+<p>The bound holds as an identity in the other variables. The \(s_\kappa(s)\) are linearly independent, so it holds for each \(T_\kappa\). \(\square\)</p>
+<p><strong>Proof of 2.</strong> Fix \(\kappa\) and a degree \(d\). Every monomial \(t^\alpha\) of \(T_\kappa\) of degree \(d\) has, by part 1, sum of its \(q\) smallest exponents at least \(\sum_{i&gt;n-q}\nu^*_i=(q-m)(q-m+1)\) for \(q\ge m\). So \(P_j(\operatorname{sort}\alpha)\le P_j(\nu^*)+(d-|\nu^*|)\) for \(j=n-q\le r\). For \(j\ge r\) the right-hand side is \(d\), and the inequality is trivial. So \(\operatorname{sort}\alpha\trianglelefteq\lambda_d:=\nu^*+(d-|\nu^*|)\). Suppose some \(\nu\) in the Schur support of \(T_\kappa\) were not dominated by \(\lambda_d\). A dominance-maximal such \(\nu\) contributes the monomial \(t^\nu\) with coefficient \(c_{\kappa\nu}\), because the larger partitions in the support are not dominated either and so do not occur. That contradicts the monomial bound. \(\square\)</p>
+<p><strong>Proof of 3.</strong> Both clauses of the two-sided rule now hold. The weight count of the <a href="#cube-two-far-double-support">double-support entry</a> gives every support pair weight at least \(|\kappa^*|+w(\nu^*)+2a\), where \(a=|\nu|-r(r+1)\), with equality only at \((\kappa^*,\nu^*)\). By the <a href="#cube-far-near-double-schur-reduction">double Schur reduction</a>, the valuation is the least weight in the support. That weight is \(v_0\) exactly when \(c_{\kappa^*\nu^*}\ne0\), and then the least pair is unique. Otherwise it is larger. \(\square\)</p>
+<h4 id="cube-two-far-leading-reduction">The last coefficient</h4>
+<p><strong>Lemma.</strong> Let \(\gamma_{b,k}=(-1)^{n-1-b}(\beta_k/\beta_b)\,s_{(k-n+1,1^{n-1-b})}(t)\), the normalized coordinates of the whole near span, with \(\gamma_{b,b}=1\) and \(\gamma_{-1,\cdot}=0\). Then \(T_{\kappa^*}(t)=C\cdot H(t)\), with \(C\ne0\) a constant and
+\[
+H=\det\bigl[\gamma_{b,e+1}-\gamma_{b-1,e}-\gamma_{b,n}\gamma_{n-1,e}\bigr]_{b=m,\ldots,n-1;\ e=n,\ldots,n+r-1}.
+\]
+So \(c_{\kappa^*\nu^*}\ne0\) if and only if \([s_{\nu^*}]H\ne0\).</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>Reduction to \(s_2=0\).</em> At \(s_2=0\) only one-row \(\kappa\) survive, so \(T_{\kappa^*}\) is the \(s_1^{m(m-1)}\) coefficient of \(Q(s_1,0,t)\). The size clause, which makes \(m(m-1)\) the least \(s_1\)-degree, is consistent with the Laplace bound below but is not needed.</li>
+<li><em>Normalization.</em> In the size-clause proof, with far roots \(\eta s_i\), set \(s_2=0\). Then \(x_a=0\) for \(a\ge2\), so \(g_0=1\), and \(y_a=\eta^{a-1}\beta_as_1^{a-1}/\beta_1\). So \(Q(\eta s_1,0,t)=\pm\beta_1^n(\prod_{b&lt;n}\beta_b)^2D\), where \(D\) is the \(E_r\)-coordinate of the rows \(h_b\) and \(g_1h_b\). The \(h_b\) are unit vectors on the columns \(0,\ldots,n-1\), plus \(\gamma_{b,e}\) at the columns \(e\ge n\).</li>
+<li><em>Elimination.</em> Eliminating those columns leaves, up to sign, the determinant of the rows \(R_b(e)=(g_1h_b)(e)-\sum_{b'}(g_1h_b)(b')\gamma_{b',e}\) on the \(m\) negative and \(r\) high columns.</li>
+<li><em>Entry orders.</em> At a negative column \(-j\), \(R_b(-j)=\sum_k\gamma_{b,k}y_{k+j}\) has exact order \(b+j-1\), from \(k=b\). At a high column \(e\), the order-\(0\) part of \(R_b(e)\) comes from three sources: the term \(\gamma_{b,e+1}y_1\); the term \(b'=b-1\), \(k=b\) of the sum, with \(y_1=1\); and the term \(b'=n-1\), \(k=n\), which gives \(\gamma_{b,n}\gamma_{n-1,e}\). So it is \(\gamma_{b,e+1}-\gamma_{b-1,e}-\gamma_{b,n}\gamma_{n-1,e}\).</li>
+<li><em>Laplace expansion.</em> Expand over the set \(B\) of \(m\) rows taking the negative columns. The order is at least \(\sum_{b\in B}b+m(m-1)/2\ge m(m-1)\), with equality only for \(B=\{0,\ldots,m-1\}\). There every bijection has the same order. So the \(\eta^{m(m-1)}\) coefficient of \(D\) is \(\pm s_1^{m(m-1)}\beta_1^{-m}\det[\beta_{b+j}]_{b&lt;m,\,j\le m}\cdot H\). The Hankel determinant is, up to sign, the square Toeplitz block of the <a href="#cube-two-far-diagonal-coefficient">diagonal lemma</a>, which is nonzero. \(\square\)</li>
+</ul>
+<h4 id="cube-two-far-second-window">The second window</h4>
+<p><strong>Corollary.</strong> For every \(n\ge2\), the two-far window \(E_1=[-(n-1),\,n]\) has valuation \(v_0=n^2+2\binom{n+1}3-2n+4\), with the single leading monomial of the <a href="#cube-two-far-leading-monomial">leading-monomial conjecture</a>. The mirror \(n\times2\) statement holds by \(S\mapsto1/S\).</p>
+<p><strong>Proof.</strong> At \(r=1\), \(H=\gamma_{n-1,n+1}-\gamma_{n-2,n}-\gamma_{n-1,n}^2\), with the three terms
+\[
+\gamma_{n-1,n+1}=\tfrac{\beta_{n+1}}{\beta_{n-1}}s_{2},\qquad
+\gamma_{n-2,n}=-\tfrac{\beta_n}{\beta_{n-2}}s_{11},\qquad
+\gamma_{n-1,n}=\tfrac{\beta_n}{\beta_{n-1}}s_1 .
+\]
+Since \(s_1^2=s_2+s_{11}\) and \(\beta_{k+1}/\beta_k=(-\lambda-k)/(k+1)\),
+\[
+[s_2]H=\frac{\beta_{n+1}}{\beta_{n-1}}-\Bigl(\frac{\beta_n}{\beta_{n-1}}\Bigr)^2=\frac{(1-\lambda-n)(\lambda-1)}{n^2(n+1)}\ne0
+\]
+for \(\lambda\notin\mathbb Z\). Apply the lemma and part 3 of the theorem. \(\square\)</p>
+<h4>Test</h4>
+<p><code>bmd_cube_two_far_h_check.gp</code> computes \(H\) exactly at \(\lambda=\tfrac32\) and expands it in Schur functions by alternants (<code>h-check.txt</code>). The cases are \(2\times3\) with \(r=1,2\); \(2\times4\) with \(r=1,2,3\); \(2\times5\) with \(r=2,3\); and \(2\times6\) with \(r=3\).</p>
+<ul>
+<li>At \(2\times3\) the normalized expansions are \(1,-2\) for \(r=1\) and \(1,-3,-3,6,-15\) on \((4,2),(3,3),(4,1,1),(3,2,1),(2,2,2)\) for \(r=2\). These equal the ratios of the \(c_{\kappa^*\nu}\) computed directly in <code>research/results/bmd-20260929-zp/double-schur.txt</code>, which checks the lemma with relative signs, since \(C\) is fixed only up to sign.</li>
+<li>In all eight cases every \(\nu\) in the support is dominated by \(\nu^*\), as part 2 requires, and \([s_{\nu^*}]H\ne0\).</li>
+<li>The \(r=1\) values \(-7/144\) at \(n=3\) and \(-9/320\) at \(n=4\) agree with the closed form.</li>
+<li>The \(r=2\) values are \(-49/12288\), \(-231/204800\) and \(-1573/3584000\) for \(n=3,4,5\). Their numerators factor into small primes \(7^2\), \(3\cdot7\cdot11\) and \(11^2\cdot13\). This suggests, heuristically and at the single value \(\lambda=\tfrac32\), a product of linear factors in \(\lambda\).</li>
+</ul>
+<p><strong>What it gives.</strong> For two far roots, every window's valuation is bounded below by the formula, for every \(n\). The windows \(r=0,1\) attain it, and so do all windows with \([s_{\nu^*}]H\ne0\). The minimizing window of the <a href="#cube-two-far-window-valuations">two-far formula</a> has \(r=j^*\approx\sqrt{2n}\). Relative to \(r=0\), the offset \(-2nr+r(r+1)(r+5)/3\) is \(-2,2\) at \(n=3\) for \(r=1,2\), and \(-4,-2,8\) at \(n=4\) for \(r=1,2,3\). So for \(n=3,4\) the window \(r=1\) is the strict minimizer among windows, and this is now proved: the lower bound holds for every window, and \(r=1\) attains it. At \(n=5\), \(r=1\) and \(r=2\) both have offset \(-6\). The least window valuation is proved there, and only whether \(r=2\) also attains it, the tie, depends on \([s_{\nu^*}]H\ne0\). From \(n=6\) on, the minimizer has \(r\ge2\) and needs \([s_{\nu^*}]H\ne0\). For the caterpillar, the two-far components have \(n=N-3\). So their window among windows is proved for \(N\le7\), up to the tie at \(N=8\). Beyond that it is one explicit nonvanishing statement. Minimality over all column sets, not only windows, is a separate open item.</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 3 of the directional induction review, the caterpillar degeneration. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong> (a) \([s_{\nu^*}]H\ne0\) for \(r\ge2\), presumably through a product formula from Giambelli's determinant of hooks. (b) Minimality over all column sets. (c) Three or more far roots. (d) Component simplicity, necks and double-root classes.</p>
+<p><strong>Dependencies re-read.</strong> The size-clause proof and its normalizations, the double-support weight count, the diagonal lemma, and the \(2\times3\) coefficients.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked every step of the three proofs. That covered the orders, the sorted matching, the Kostka argument, the weight count, the \(s_2=0\) normalization, the completeness of the order-\(0\) terms, the Laplace uniqueness, the Hankel reindexing and the \(r=1\) algebra. It also checked the data. It found no mathematical error and passed the entry with corrections, all made. The threshold for needing \(H\) is corrected to \(n\ge6\), with the tie at \(n=5\) noted; this also shows that the window is proved for \(n\le4\). The ring \(K[[\eta]]\) and the convergence are stated. The data check covers relative signs. The size-clause citation is marked as not needed, and the factorization remark is flagged as heuristic.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zr">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 7.63 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 21.17 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">54.69 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 48.77 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2.86 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
