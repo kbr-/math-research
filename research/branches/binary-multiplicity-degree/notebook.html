@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge9\). It is <a href="#cube-eight-root-first-step">proved at \(N=7,8\)</a>, and at every size it follows from <a href="#cube-first-step-two-certificates">two certificates</a>; the collision half is <a href="#cube-collision-half-eight-nine">certified at \(N=9\)</a>.</p>
-<p>Next, a general mechanism rather than more sizes. For the off-collision half: the deeper collision flats of the <a href="#cube-inversion-cluster-transfer">inversion transfer</a>'s remainder (a cluster inside a cluster), and what makes \(N=6\) exceptional; squarefreeness holds at \(N=5,7,8\) and fails at \(N=6\). For the collision half: the base weight bound by a degeneration with colliding double roots.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge9\). It is <a href="#cube-eight-root-first-step">proved at \(N=7,8\)</a>, and at every size it follows from <a href="#cube-first-step-two-certificates">two certificates</a>. The merging loci are <a href="#cube-merging-loci-reduced">reduced</a>, with their nondegeneracy <a href="#cube-merging-coprimality">proved in the lower range</a>.</p>
+<p>Next, a general mechanism for what remains of the off-collision half: the deeper collision flats of the <a href="#cube-inversion-cluster-transfer">inversion transfer</a>'s remainder (a cluster inside a cluster), and what makes \(N=6\) exceptional; then the base weight bound. A route review is due within four entries.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -30421,6 +30421,79 @@ The symmetric-trinomial alternative predicts multiples of \(2M\) (\(8\) at \(N=6
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.40 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-merging-nondegeneracy" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-neck-complete-review:3" data-claims="lem:cube-shifted-neck-block prop:cube-merging-coprimality">
+<h3>30 September 2026 — The shifted neck block is a shifted Hankel determinant on the merging locus, and the merging hypotheses hold in the lower half of the range</h3>
+<p class="entry-meta">Working proof: det Γ′_k is a constant times the shifted Hankel S_k modulo Hank_k, and for 2k+2 ≤ M, Hank_k is coprime to S_k and to Hank_j with 2j ≤ M; the other pairs are checked on lines for M ≤ 8. Merging nondegeneracy cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-merging-locus-branches">merging locus theorem</a> makes the discriminant reduced near points of \(Z_k=\{\operatorname{Hank}_k=0\}\) where (G1) holds: \(\operatorname{Hank}_j\ne0\) for \(j\ne k\), and \(\det\Gamma'_k\ne0\). For its corollary to remove a whole component of \(Z_k\) from the remainder, (G1) must hold at the generic point of that component. That needs coprimality of \(\operatorname{Hank}_k\), as a polynomial in \(b\), with every \(\operatorname{Hank}_j\), \(j\ne k\), \(1\le j\le M-1\), and with \(\det\Gamma'_k\), together with smoothness of \(Z_k\) at its generic points. The missing implications are a formula for \(\det\Gamma'_k\) and a coprimality proof.</p>
+<p><strong>General statement.</strong> <code>lem:cube-shifted-neck-block</code> and <code>prop:cube-merging-coprimality</code>, for every \(M\ge3\) and \(1\le k\le M-2\), with coprimality proved for \(2k+2\le M\).</p>
+<h4 id="cube-shifted-neck-block">The shifted block</h4>
+<p><strong>Lemma (shifted neck block).</strong> Characteristic zero, \(\lambda\notin\{1,0,-1,\ldots\}\), \(P\) monic of degree \(M\) with roots \(b\), power sums \(p_n\), \(1\le k\le M-2\) (the range of the merging locus theorem; the proof uses only \(k\le M-1\)). Let \(\Gamma'_k\) be the neck block on the rows \(M-k,\ldots,M-1\) and the columns \(M,\ldots,M+k-2,M+k\), and \(S_k=\det[p_{i+j}\ (j&lt;k),\ p_{i+k+1}\ (j=k)]_{0\le i,j\le k}\). Then
+\[
+\det\Gamma'_k=\gamma_{M,k}\,S_k+c(b)\operatorname{Hank}_k ,
+\]
+with \(\gamma_{M,k}\) a nonzero constant and \(c\) a polynomial. In particular \(\det\Gamma'_k=\gamma_{M,k}S_k\) on \(Z_k\).</p>
+<p><strong>Proof.</strong> Follow the <a href="#cube-neck-block-discriminant">neck block discriminant</a>'s four steps with the column set changed. By the operator form, column \(D\) of the block is \(\beta_D/\beta_m\) times \([x^m]\Phi_1(\tilde q_D)\), \(\tilde q_D=\operatorname{quo}(x^D,P)\). Here \(\tilde q_{M+j}=x^j+h_1x^{j-1}+\cdots\) (complete homogeneous \(h\)). So modulo the span of \(\tilde q_M,\ldots,\tilde q_{M+k-2}\), which is \(\operatorname{Pol}_{\le k-2}\), the last column comes from \(x^k+h_1x^{k-1}\). By linearity \(\det\Gamma'_k\) is a constant times \(K(x^k)+h_1K(x^{k-1})\), where \(K(f)\) is the determinant of the construction with the polynomials \(1,\ldots,x^{k-2},f\). \(K(x^{k-1})\) is a constant times \(\operatorname{Hank}_k\) by the theorem.</p>
+<p>For \(K(x^k)\), steps 1–3 apply unchanged: step 3's triangularity uses only the rows, with \(k\le M-1\). They give a constant times \(\det\bigl([p_{s+t}]_{0\le s\le k,\ 0\le t\le k+1}\,C\bigr)\), where \(C\) is the \((k+2)\times(k+1)\) coefficient matrix of \(1,q_0,\ldots,q_{k-2},q_k\) in \(1,x,\ldots,x^{k+1}\). Here \(q_j\) has degree \(j+1\) and leading coefficient \(1/(M+j+1)\). By Cauchy–Binet this is a sum over the rows \(t\) removed from \(C\):</p>
+<ul>
+<li>removing \(t\le k-1\) leaves the \(k\) columns \(1,q_0,\ldots,q_{k-2}\) supported on \(k-1\) rows, so the minor vanishes;</li>
+<li>removing \(t=k\) leaves a triangular minor with diagonal \(1,\frac1{M+1},\ldots,\frac1{M+k-1},\frac1{M+k+1}\), times the Hankel minor on the columns \(0,\ldots,k-1,k+1\), which is \(S_k\);</li>
+<li>removing \(t=k+1\) gives a polynomial times \(\operatorname{Hank}_k\).</li>
+</ul>
+<p>Collecting, \(\det\Gamma'_k=\gamma S_k+c\operatorname{Hank}_k\). Every factor of \(\gamma\) is nonzero: the \(\beta\)'s, \((\lambda-1)^k\), the factorials and the triangular diagonal. \(\square\)</p>
+<h4 id="cube-merging-coprimality">Coprimality</h4>
+<p><strong>Proposition (merging coprimality).</strong> Let \(1\le k\le M-2\) with \(2k+2\le M\). In \(\mathbb C[b_1,\ldots,b_M]\), \(\operatorname{Hank}_k\) is coprime to \(S_k\), to \(\operatorname{Hank}_j\) for every \(j\ne k\) with \(2j\le M\), and to \(\operatorname{Hank}_{M-1}=\prod_{r&lt;s}(b_r-b_s)^2\). Moreover \(\operatorname{Hank}_k\) is squarefree in \(\mathbb C[b]\). So at the generic point of every component of \(Z_k\): \(d\operatorname{Hank}_k\ne0\), \(\det\Gamma'_k\ne0\), and \(\operatorname{Hank}_j\ne0\) for these \(j\). The remaining part of (G1), \(\operatorname{Hank}_j\ne0\) for \(M/2&lt;j&lt;M-1\), is not proved here.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Generic Hankel determinants.</em> Let \(H_k(p)=\det[p_{i+j}]_{0\le i,j\le k}\) in independent variables \(p_0,\ldots,p_{2k}\). It is irreducible for \(k\ge1\), by induction on \(k\). \(H_1=p_0p_2-p_1^2\) is irreducible. \(H_k\) is linear in \(p_{2k}\), which occurs only in the corner: \(H_k=p_{2k}H_{k-1}+R_k\). A nontrivial factorization has a factor \(A\) free of \(p_{2k}\), with \(A\mid H_{k-1}\) and \(A\mid R_k\). By induction \(A\) is a constant or \(H_{k-1}\). But \(H_{k-1}\nmid R_k\): at the point \(p_s=0\) for \(s&lt;k\), \(p_k=1\), all others zero, \(H_{k-1}=0\) (its first row vanishes) while \(R_k=H_k=\pm1\) (anti-triangular). Since \(p_0\nmid H_k\) (the same point has \(p_0=0\) and \(H_k\ne0\)) and \(H_k\) is homogeneous, setting \(p_0=M\) keeps it irreducible.</li>
+<li><em>Coprimality of the generic forms.</em> Work first with \(p_0\) as a variable. The \(H_j\) are irreducible of the distinct degrees \(j+1\), so they are pairwise coprime. \(S_k\) is homogeneous of degree \(k+1\) and of weight \(k(k+1)+1\) for the grading \(\operatorname{wt}p_s=s\), while \(H_k\) has weight \(k(k+1)\). If \(H_k\mid S_k\), the quotient has degree \(0\) and weight \(1\), impossible for a nonzero \(S_k\). And \(S_k\ne0\): at the point of step 1 with \(p_{k+1}=1\) added, expanding along the last column leaves an anti-triangular minor, with ones on its anti-diagonal and on the line below it, of determinant \(\pm1\). None of these forms is divisible by \(p_0\) (the same points have \(p_0=0\)). For forms homogeneous in the ordinary degree and not divisible by \(p_0\), setting \(p_0=M\) commutes with taking gcds. So the coprimality persists at \(p_0=M\).</li>
+<li><em>Transfer to the roots.</em> The power sums \(p_1,\ldots,p_M\) of \(M\) variables are algebraically independent, and \(\mathbb C[b]^{S_M}=\mathbb C[p_1,\ldots,p_M]\). \(\operatorname{Hank}_k\) and \(S_k\) involve \(p_s\) only for \(s\le2k+1\le M\), and \(\operatorname{Hank}_j\) only for \(s\le2j\le M\). So they are the forms of step 2 evaluated at independent coordinates of this polynomial ring, where they stay coprime (adjoining variables preserves irreducibility and coprimality). Suppose \(F\in\mathbb C[b]\) is an irreducible common factor of \(\operatorname{Hank}_k\) and one partner. \(\mathbb C[b]\) is integral over the normal domain \(\mathbb C[p_1,\ldots,p_M]\), so \((F)\cap\mathbb C[p]\) is a height-one prime of this UFD, hence principal, \((g)\). Both forms lie in \((F)\cap\mathbb C[p]=(g)\), so \(g\) is a nonconstant common factor in \(\mathbb C[p]\), a contradiction. (The product of the conjugates of \(F\) need not be symmetric, since conjugates can be associates; the Vandermonde is an example. The ideal argument avoids this.) For the partner \(\operatorname{Hank}_{M-1}\), the Vandermonde square: a common factor would be some \(b_r-b_s\), but on \(b_r=b_s\), \(\operatorname{Hank}_k\) is the weighted sum of the positivity corollary of the neck block discriminant, with \(M-1\ge k+1\) distinct values, so it is positive at real points of that hyperplane and does not vanish identically there.</li>
+<li><em>Smoothness.</em> The merging locus theorem also needs \(d\operatorname{Hank}_k\ne0\). The dehomogenized \(H_k\) is irreducible, hence reduced, in \(\mathbb C[p_1,\ldots,p_M]\). The map \(b\mapsto p\) is étale off the discriminant \(\prod_{r&lt;s}(b_r-b_s)=0\), and by step 3 no component of \(Z_k\) lies in it. So \(\operatorname{Hank}_k\) is squarefree in \(\mathbb C[b]\), and \(Z_k\) is smooth at the generic point of each component. \(\square\)</li>
+</ol>
+<p>Irreducibility in the power sums does not give irreducibility in \(b\): the discriminant is irreducible in the coefficients but splits into collision forms. Only coprimality transfers, and that is all (G1) needs. For \(2j>M\) the forms involve power sums beyond \(p_M\), which satisfy Newton relations, and the argument does not apply.</p>
+<p><strong>Test.</strong> <code>research/tools/bmd_cube_hankel_coprimality.gp</code>. Two predictions.</p>
+<ul>
+<li>(1) By the lemma, \(\det\Gamma'_k/S_k\) is the same nonzero constant at every point of \(Z_k\). The script finds three points of \(Z_k\) over \(\mathbb F_p\), \(p=2^{61}-1\), for each \(M=4,5,6\) and \(1\le k\le M-2\): random \(b_1,\ldots,b_{M-1}\), and \(b_M\) a root of \(\operatorname{Hank}_k\) in the last coordinate. It computes \(\det\Gamma'_k\) from the definition (\(x^n\bmod P\), \(\lambda=\tfrac32\)) and \(S_k\) from the power sums.</li>
+<li>(2) For every pair (G1) needs, including the unproved range: \(\operatorname{Hank}_k\) with \(S_k\) and with \(\operatorname{Hank}_j\), \(j\ne k\), for \(M=4,\ldots,8\) and \(1\le k\le M-2\). The test is exact univariate gcds over \(\mathbb Q\) on two random rational lines per case. A common factor of positive degree restricts to a nonconstant common factor on every line whose direction avoids its leading form, so a line with gcd \(1\) is evidence of coprimality, not a proof.</li>
+</ul>
+<p>Output (<code>research/results/bmd-20260930-q/hankel-coprimality.txt</code>):</p>
+<ul>
+<li>(1) At all \(9\) pairs \((M,k)\) the ratio is the same nonzero value at the three points.</li>
+<li>(2) In \(19\) of the \(20\) cases both lines are coprime for every partner. At \(M=7\), \(k=5\), one line has the common factor \(288(2t+1)^2\) with \(S_5\) and \(\operatorname{Hank}_6\). At \(t=-\tfrac12\) that line meets two collisions at once, \(b_1=b_3\) and \(b_5=b_7\). With only five distinct values among seven points, every \(6\)-set contains a collided pair, so \(\operatorname{Hank}_5=\operatorname{Hank}_6=0\) there, a codimension-two coincidence, not a common component. Twelve further lines at \(M=7\), \(k=5\) give two more common factors, both made of collision factors, and none other.</li>
+</ul>
+<p>An earlier version of the script used exact multivariate gcds, which gp could not finish at \(M=5\), \(k=2\), and a degree helper that misread constant gcds; it was stopped and replaced. The runs are exact but finite.</p>
+<p><strong>What this does to the route.</strong> With the proposition, (G1) holds at the generic point of every component of \(Z_k\), \(2k+2\le M\), except possibly for the partners \(\operatorname{Hank}_j\), \(M/2&lt;j&lt;M-1\). With (G2), the <a href="#cube-merging-loci-reduced">merging-loci corollary</a> then removes those components from the remainder. For the other pairs, coprimality is checked only on lines at \(M\le8\). The off-collision remainder of the inversion transfer is therefore: the deeper collision flats; the bad parts of \(D^{\rm conf}\), including (G2) failures; and the merging loci with \(2k+2>M\).</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 3 of the <a href="#entry-2026-09-30-cube-neck-complete-review">review</a>: the transversality its answer called for holds along every merging locus in the proved range. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>coprimality for \(2k+2>M\);</li>
+<li>(G2) at the generic points of \(Z_k\);</li>
+<li>the deeper collision flats and the bad parts of \(D^{\rm conf}\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The neck block discriminant (statement and proof, steps 1–4); the merging locus theorem (hypotheses (G1), (G2)); the merging-loci corollary.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read are listed above. One fresh-context medium reviewer checked the draft, two dependency excerpts, the script and its output. Verdict: pass with corrections. It verified the lemma's reduction of the last column, the applicability of steps 1–3 to the new column set, the Cauchy–Binet split and \(\gamma\ne0\); the irreducibility induction and its example point; the weights, \(S_k\ne0\) and dehomogenization; the index ranges and the Vandermonde argument; and the test, including the \(M=7\), \(k=5\) line. Corrections applied:</p>
+<ul>
+<li>the transfer to \(\mathbb C[b]\) used a product of conjugates claimed symmetric, which fails when conjugates are associates; it now uses the contraction of \((F)\) to the power-sum ring;</li>
+<li>smoothness of \(Z_k\) at generic points, also needed by the theorem, is added as step 4;</li>
+<li>the question states everything (G1) needs;</li>
+<li>the count of pairs in the test is corrected to \(9\), the minor in step 2 is described correctly, the lemma's range is explained, and line evidence is labelled as evidence.</li>
+</ul>
+<p>The transfer correction repairs a step without changing the statement, and the added smoothness step is short and was supplied by the reviewer, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-q">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>16 min 47.74 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">4 min 45.02 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 40.18 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">36.42 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 16.00 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4 min 20.32 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">9.79 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
