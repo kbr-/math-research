@@ -43,12 +43,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#entry-2026-09-29-cube-two-cluster-review">two-cluster review</a> finds single clusters controlled by (W\(_m\)), which holds at \(m=4\) exactly and at \(m=5\) modulo \(32003\). The multi-cluster fibres lack a uniform bound.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The base condition is <a href="#cube-schubert-properness">Schubert properness</a> (SP\(_N\)) of the exceptional fibre families. At a single cluster the fibre consists of the finitely many <a href="#cube-cell-preserving-limit">torus-fixed limits of realized cells</a>, joined by connecting families.</p>
 <p>Next:</p>
 <ul>
-<li>State the conjecture that the configuration map extends to a scaled Fulton–MacPherson space (Mau–Woodward). It records nested cluster shapes, relative scales, and the rate of approach to each \(F_m=0\).</li>
-<li>Derive the fibre-dimension bound it implies, from the renormalization, boundary pencil, cross-block factorization and second-order lemmas.</li>
-<li>Compare that bound with flat dimensions in general form, not type by type.</li>
+<li>Prove that the family connecting a cell to a cell of weight \(w\) higher in its closure has dimension at most \(w\), generalizing the boundary pencil (\(w=1\)).</li>
+<li>Determine which pivot sets put the full limit in the contact Schubert variety.</li>
+<li>Together with (W\(_m\)), this gives SP at single-cluster points for every \(N\).</li>
 </ul>
 </section>
 <section id="working-context">
@@ -28395,6 +28395,93 @@ This space does not depend on the shapes or on the ratio. The within-cluster lim
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-schubert-properness" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-schubert-induction-review:1" data-claims="lem:cube-cell-preserving-limit conj:cube-schubert-properness">
+<h3>29 September 2026 — The base condition is Schubert properness against every member of the cut family, and cell-preserving cluster arcs have coordinate-space limits</h3>
+<p class="entry-meta">Conjecture formulated for every N: every Schubert variety at the mark meets every member of the cut family properly. Working proof that along arcs keeping a cluster's shape in one Schubert cell, the cluster rows tend to that cell's coordinate space. Schubert properness cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-29-cube-two-cluster-review">two-cluster review</a> asked for a uniform statement for multi-cluster fibres, instead of one cluster type at a time. The missing implication is a single all-\(N\) property of the graph closure that implies the base condition (F\(_{\rm rel}\)) and its Schubert forms. This cycle formulates that property, states exactly how strong it is, and proves the lemma that organizes the fibres at a cluster.</p>
+<p><strong>General statement.</strong> <code>conj:cube-schubert-properness</code> (formulated for every \(N\ge5\)) and <code>lem:cube-cell-preserving-limit</code> (proved for every \(N\) and \(m\)).</p>
+<h4 id="cube-schubert-properness">What the base condition asks</h4>
+<p>Let \(W\) be a member of the cut family, over an image \(Z=\pi(W)\) of dimension \(z\), with generic fibre dimension \(f=\dim W-z\). The <a href="#cube-schubert-relative-transfer">Schubert transfer</a>'s base condition for a Schubert variety \(\sigma\) of codimension \(c\), for the coordinate flag at \(T=0\), asks at \(p\in Z\) for
+\[
+\dim(\sigma\cap W\cap\pi^{-1}(p))\le\dim W-c .
+\]
+At a point where the fibre has dimension \(f'\ge f\), this asks that \(\sigma\) have codimension at least \(c-z+(f'-f)\) in the fibre.</p>
+<ul>
+<li>Where \(f'=f\) and \(z\ge c\), it is automatic.</li>
+<li>At jump points, where \(f'\) can be as large as \(\dim W-1\), it is not automatic for \(c\ge2\). These jump points are where the condition has content.</li>
+</ul>
+<p>By the transfer, the base condition for every member is equivalent to properness of \(\sigma\) against every member of the cut family, \(\dim(\sigma\cap W\setminus\pi^{-1}(H_{kl}))\le\dim W-c\). This is stronger than properness against the separated locus, which is the goal. The relative transfer entry already noted this for contact.</p>
+<p><strong>Conjecture (Schubert properness, SP\(_N\)).</strong> In characteristic zero, for \(N\ge5\), the following holds for every member \(W\) of the cut family of the graph closure, every point \(p\in\pi(W)\) off its chart hyperplane, and every Schubert variety \(\sigma\) of codimension \(c\) for the coordinate flag at \(T=0\):
+\[
+\dim(\sigma\cap W\cap\pi^{-1}(p))\le\dim W-c .
+\]</p>
+<p>Consequences, all as upper bounds on dimension, meaning codimension at least the expected value:</p>
+<ul>
+<li>By <code>cor:cube-schubert-relative-transfer</code>, SP\(_N\) implies that separated pair spaces lie in \(\sigma\) only in codimension \(\ge c\), for every \(\sigma\).</li>
+<li>The contact locus is the Schubert condition \(\Lambda\cap E\ne0\) of codimension \(3\), for the same flag, in the ambient of <code>lem:cube-contact-boundary-transfer</code>. So SP\(_N\) implies the contact bound (<code>conj:cube-offcollision-contact-bound</code>).</li>
+<li>It also implies the hypothesis (W\(_N\)) of the <a href="#entry-2026-09-29-cube-schubert-induction-review">Schubert induction review</a>: for the family of \(N\)-root shapes, the locus of mark weight at least \(w\) has dimension at most \(N-2-w\). The pair spaces of mark weight \(\ge w\) form the union of the Schubert cells of codimension \(\ge w\). That union is closed and is a finite union of Schubert varieties of codimension exactly \(w\), and properness for each gives codimension \(\ge w\). The Schubert varieties are invariant under \(U_x\), which maps \(T^w\) to \(T^w(1+xT)^{-3-w}\) and so preserves the flag of vanishing orders, and under \(D_h\). So codimension among shapes equals codimension among configurations.</li>
+</ul>
+<p>SP\(_N\) is sufficient, and stronger than the contact bound and (W\(_N\)). The evidence so far bears more on those consequences than on SP\(_N\) itself:</p>
+<ul>
+<li>the \(N=5\) base checks, and the open two-double-root and triple-root strata at \(N=5\);</li>
+<li>(W\(_4\)) exactly and (W\(_5\)) modulo \(32003\);</li>
+<li>the fibre formulas at single clusters and at \((2,2)\) and \((3,2)\) cross blocks.</li>
+</ul>
+<h4 id="cube-cell-preserving-limit">Cell-preserving arcs</h4>
+<p><strong>Lemma.</strong> Let a cluster of \(m\) roots move as \(a_c(t)=x(t)+h(t)u_c(t)\), with \(x(t)\to x_0\) and \(0\ne h(t)\to0\). Suppose that for small \(t\ne0\) the shape spaces \(\Lambda_C(u(t))\) all lie in one Schubert cell with pivot set \(P=\{w_1&lt;\cdots&lt;w_k\}\), for the columns \(T^0,T^1,\ldots\), and that their reduced echelon coefficients stay bounded. Then the rows of the cluster span in the limit the coordinate space
+\[
+\langle T^{w_1},\ldots,T^{w_k}\rangle\,U_{x_0}.
+\]
+With the other roots distinct from each other and from \(x_0\), the flat limit contains this space, \(\langle\varphi^{(i)}(x_0)\varphi_z:i&lt;m\rangle\) and \(\langle\varphi_z\varphi_{z'}\rangle\). It equals their sum when the sum has dimension \(R\).</p>
+<p><strong>Proof.</strong> The cell lies in the Plücker chart \(p_P\ne0\), and the reduced echelon coefficients are chart coordinates there. In the cell, \(\Lambda_C(u(t))\) has the basis \(e_{w_i}+\sum_{w'&gt;w_i,\,w'\notin P}B_{iw'}(t)e_{w'}\), with \(B(t)\) bounded by hypothesis. Scaling by \(D_h\) and dividing the \(i\)-th vector by \(h^{w_i}\) gives \(e_{w_i}+\sum B_{iw'}h^{w'-w_i}e_{w'}\to e_{w_i}\). The cross and pair rows are handled as in the <a href="#cube-cluster-renormalization">renormalization lemma</a>. \(\square\)</p>
+<p>The lemma uses neither boundedness of \(u(t)\) nor distinct entries of a limiting shape, so it covers colliding shape limits that stay in the cell.</p>
+<p>It contains the first two items of the renormalization lemma: convergence into the open big cell keeps \(\Lambda_C(u(t))\) in that cell, which is the case \(P=J_0\). It does not contain the third item, that \(F_m(u^*)\ne0\) implies the hypothesis. The fixed-shape remark of that lemma is the case \(u(t)\equiv u\).</p>
+<p><strong>Single-cluster fibres.</strong> Consider arcs, algebraic or analytic, to a point with one \(m\)-cluster. By constructibility of the Schubert cells, the shape space of such an arc lies in a single cell for small \(t\ne0\). By compactness of the Grassmannian it converges, also when \(u(t)\) collides or is unbounded. By curve selection, every fibre point is a limit along such an arc. So every limit comes from one of two kinds of arc:</p>
+<ul>
+<li><em>cell-preserving arcs</em>, whose echelon coefficients stay bounded. They give the lemma's limit, which is determined by \(P\) when the sum has dimension \(R\). So these arcs give finitely many limits, one for each realized pivot set whose sum has dimension \(R\). Only their cluster part, after \(U_{x_0}^{-1}\), is fixed by the scalings \(D_s\).</li>
+<li><em>arcs whose shape space converges to the boundary of their cell.</em></li>
+</ul>
+<p>The following is a heuristic, in the Białynicki-Birula picture: the second kind of limit forms families connecting the limits of the first kind, and the fibre is a union of finitely many points and of such families. The <a href="#cube-boundary-pencil">boundary pencil</a> proves the one case where the arcs run from the big cell to shapes of mark weight exactly one, with the other roots simple: that family is one line. Arcs from the big cell to shapes of higher weight, or between other cells, are not covered.</p>
+<p><strong>What this does to the route.</strong> The route now has one sufficient target, SP\(_N\). It is stronger than the contact bound, so it could fail while the contact bound holds. In that case the route would need the weaker, member-specific form. At single clusters the structure is finitely many coordinate-space limits plus connecting families, and the families are proved only in the weight-one case. The multi-cluster case needs the analogue with the cross blocks' two-scale limits.</p>
+<p><strong>Lead follow-up.</strong> This develops Outside lead 1 of the <a href="#entry-2026-09-29-cube-schubert-induction-review">Schubert induction review</a>: one-point dimensional properness, now stated for the whole cut family. <strong>Follow-up.</strong> Developed: formulated as SP\(_N\), with the single-cluster structure lemma.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>SP\(_N\), or the weaker member-specific form;</li>
+<li>the connecting families beyond weight one;</li>
+<li>the pivot-set combinatorics of contact;</li>
+<li>multi-cluster fibres;</li>
+<li>full-rank hypotheses;</li>
+<li>the collision half.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The Schubert transfer and the relative transfer (members, flats, thresholds, "what the base still contains"); the renormalization lemma and boundary pencil; the contact boundary transfer (contact as a Schubert condition); the two-cluster review.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It confirmed the lemma's proof and that there is no prior Schubert properness claim. Corrections applied:</p>
+<ul>
+<li>the base condition is not automatic at jump points, and the correct requirement there is stated;</li>
+<li>SP\(_N\) is equivalent to properness against every member, which is stronger than the goal;</li>
+<li>the hypotheses (characteristic zero, \(N\ge5\)) and the meaning of "properly";</li>
+<li>contact as a Schubert condition, with its citation;</li>
+<li>the step from Schubert properness to (W\(_N\)), with the flag invariance;</li>
+<li>the range \(i&lt;m\);</li>
+<li>boundedness instead of convergence, and the chart argument;</li>
+<li>the scope of "refines";</li>
+<li>finiteness restricted to pivot sets of full dimension;</li>
+<li>"torus-fixed" corrected;</li>
+<li>constructibility, compactness and curve selection added;</li>
+<li>the connecting-family statements labelled heuristic, except the proved weight-one case.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzr">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 32.54 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 4.47 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 24.79 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.28 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
