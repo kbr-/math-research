@@ -43,11 +43,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3, <a href="#cube-seven-root-first-step">proved at \(N=7\)</a>, is for \(N\ge8\) exactly squarefreeness of \(\Delta_W^{\rm nc}\). The counts at levels zero to two of the descent are now <a href="#cube-directional-attainment">attained for every \(N\)</a>.</p>
+<p>Route item: cube-odd-characteristic; open statement 3, <a href="#cube-seven-root-first-step">proved at \(N=7\)</a>, is for \(N\ge8\) exactly squarefreeness of \(\Delta_W^{\rm nc}\). The count side of the descent is complete: <a href="#cube-hierarchical-attainment">every level attains its count</a> for every \(N\).</p>
 <p>Next, the monodromy lead of the <a href="#entry-2026-09-30-cube-first-step-seven-review">first-step review</a>:</p>
 <ul>
-<li>A branch component of \(\Delta_W^{\rm nc}\) is reduced exactly when its local monodromy is a transposition. Determine the local monodromy of the Weierstrass cover at the collision hyperplanes from the near-group scales (ring \(j\) rotates by \(2\pi j/M\)), and at the good traces of each level.</li>
-<li>Derive which local types a non-reduced component would need at its traces, and test against the six-root component's two 3-cycles.</li>
+<li>A branch component of \(\Delta_W^{\rm nc}\) is reduced exactly when its local monodromy is a transposition. Determine the local monodromy at the collision hyperplanes from the near-group scales (ring \(j\) rotates by \(2\pi j/M\)) and at good traces.</li>
+<li>Derive which local types a non-reduced component needs at its traces, and test against the six-root component's two 3-cycles.</li>
 </ul>
 </section>
 <section id="working-context">
@@ -29798,6 +29798,62 @@ All other terms have strictly larger integer exponents, so \(\det\mathcal M=\pm\
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 57.41 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.00 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.18 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-hierarchical-attainment" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-first-step-seven-review:1" data-claims="thm:cube-hierarchical-attainment">
+<h3>30 September 2026 — Every level of the descent attains its count: the gap Wronskians are products of Schur values at a non-integer exponent</h3>
+<p class="entry-meta">Working proof for every N and every level: at separated scales, each gap Wronskian's leading term factors into Toeplitz binomial determinants, which are hook-content products with no zero at non-integer exponents. Hierarchical attainment cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-local-attainment-criterion">local attainment criterion</a> reduced attainment of \(T(a)\) to one gap Wronskian per later double root. <a href="#cube-directional-attainment">Directional attainment</a> proved the single one at level two. Its proof sent the first double root to \(0\), which collapses when there are two or more earlier double roots. The missing implication is the gap Wronskian at every later double root of every level, so that all count hypotheses of the descent hold for every \(N\).</p>
+<p><strong>General statement.</strong> <code>thm:cube-hierarchical-attainment</code>, for every \(N\) and every level \(a\).</p>
+<h4 id="cube-hierarchical-attainment">The theorem</h4>
+<p><strong>Theorem (hierarchical attainment).</strong> Characteristic zero. For every \(N\) and every \(a\) with \(2a\le N\), the hierarchical space \(V^{(a)}\) attains \(T(a)\) at a generic configuration.</p>
+<p><strong>Proof.</strong> For \(a\le1\) there is no double root with an earlier one: level zero is the covariant degrees (\(\deg_zW=2\lambda-\operatorname{wt}_P\), generic mark weight zero) and level one is <a href="#cube-confluent-attainment">confluent attainment</a>. Let \(a\ge2\). By the criterion it suffices to show, for every double root \(D\) with \(e\ge1\) earlier double roots, that the gap Wronskian is not identically zero. The reduced class at \(D\) is \(\mathcal A_D\oplus(1+DT)\mathcal B_D\), with
+\[
+\mathcal A_D=\bigoplus_{r\text{ earlier}}\operatorname{Pol}_{\le3}(1+D_rT)^{-5/2},\qquad
+\mathcal B_D=\bigoplus_k\operatorname{Pol}_{\le1}(1+kT)^{-3/2}\oplus\bigoplus_{s\text{ later}}\operatorname{Pol}_{\le3}(1+D_sT)^{-7/2}.
+\]</p>
+<ol>
+<li><em>Moving the point to \(0\).</em> As in the directional proof, translating \(T\mapsto T+x\) multiplies each function by a nonzero constant, keeps polynomial degrees, turns \(T-x\) into \(T\), and replaces each parameter \(c\) by \(c'=c/(1+cx)\), an invertible Möbius map for fixed \(x\). So the gap Wronskian at \(x\) is a nonzero constant times \(\omega\), the Wronskian at \(0\) of
+\[
+Y=\bigoplus_{r}\operatorname{Pol}_{\le3}(1+D_r'T)^{-5/2}\ \oplus\ T\cdot\Bigl(\bigoplus_k\operatorname{Pol}_{\le1}(1+k'T)^{-3/2}\oplus\bigoplus_s\operatorname{Pol}_{\le3}(1+D_s'T)^{-7/2}\Bigr),
+\]
+a polynomial in the primed parameters. As there, it suffices to find one admissible point (distinct nonzero parameters, \(x\ne-1/c\) for every parameter \(c\)) with \(\omega\ne0\); primed parameters that are distinct and nonzero come back to admissible unprimed ones through the Möbius map.</li>
+<li><em>Blocks.</em> \(Y\) is a direct sum of <em>blocks</em>, one per parameter \(c\): functions \(T^p(1+cT)^{-\gamma}\) for \(p\) in an interval \(P_c\) of length \(d_c\): \(P=\{0,1,2,3\}\), \(\gamma=\tfrac52\) for an earlier double root; \(P=\{1,2\}\), \(\gamma=\tfrac32\) for a simple root; \(P=\{1,2,3,4\}\), \(\gamma=\tfrac72\) for a later double root. The total size is \(K=\sum d_c\). The coefficient of \(T^m\) in \(T^p(1+cT)^{-\gamma}\) is \(\binom{-\gamma}{m-p}c^{m-p}\), zero for \(m&lt;p\). So \(\omega\) is, up to factorials, the determinant of the \(K\times K\) matrix with rows indexed by the functions and columns by \(m=0,\ldots,K-1\).</li>
+<li><em>Separated scales.</em> Order the blocks so that an earlier double root comes first; there is one since \(e\ge1\). Put \(c_\ell=\tau^{s_\ell}\) with integers \(s_1>s_2>\cdots>0\), and let \(\tau\to0\). A term of the determinant assigns to block \(\ell\) a set \(C_\ell\) of \(d_\ell\) columns, and its \(\tau\)-exponent is \(\sum_\ell s_\ell\bigl(\Sigma C_\ell-\Sigma P_\ell\bigr)\). By Abel summation, \(\sum_\ell s_\ell\,\Sigma C_\ell=\sum_\ell(s_\ell-s_{\ell+1})(\Sigma C_1+\cdots+\Sigma C_\ell)\), with \(s_{\ell_{\max}+1}=0\). Each partial sum is at least the sum of the \(d_1+\cdots+d_\ell\) smallest columns, with equality only if \(C_1\cup\cdots\cup C_\ell\) is exactly those columns. So the exponent is uniquely minimized when every \(C_\ell\) is the consecutive interval \([m_\ell,m_\ell+d_\ell)\), \(m_\ell=d_1+\cdots+d_{\ell-1}\), and all other terms have strictly larger integer exponents.</li>
+<li><em>The leading coefficient.</em> By the Laplace expansion along the partition of rows into blocks, the terms with this column assignment sum to the product of the block minors. The entry at row \(p=\min P_\ell+i\) and column \(m_\ell+j\) is \(\binom{-\gamma_\ell}{\sigma_\ell+j-i}\), so the leading coefficient is \(\prod_\ell\det\bigl[\binom{-\gamma_\ell}{\sigma_\ell+j-i}\bigr]_{0\le i,j&lt;d_\ell}\), the determinant of the transpose of \(\bigl[\binom{-\gamma_\ell}{\sigma_\ell+i-j}\bigr]\), with shift \(\sigma_\ell=m_\ell-\min P_\ell\). The first block is an earlier double root, with \(\min P=0\) and \(m_1=0\), so \(\sigma_1=0\); every later block has \(m_\ell\ge4\) and \(\min P\le1\), so \(\sigma_\ell\ge3\). Hence every shift is nonnegative.</li>
+<li><em>Toeplitz binomial determinants.</em> Let \(x\) be an indeterminate and specialize the ring of symmetric functions by \(e_k\mapsto\binom xk\) (\(e_k\mapsto0\) for \(k&lt;0\)), the principal specialization at "\(1^x\)", under which the power sums map to \(x\). By the dual Jacobi–Trudi identity, \(\det[e_{\sigma+i-j}]_{0\le i,j&lt;d}=s_{\mu}\) with \(\mu=(d^\sigma)\), the rectangle with \(\sigma\) rows of length \(d\) (the determinant of \([e_{\sigma-i+j}]\) is the same, by reversing both indices). By the hook-content formula,
+\[
+s_\mu(1^x)=\prod_{u\in\mu}\frac{x+c(u)}{h(u)},
+\]
+with integer contents \(c(u)\) and hook lengths \(h(u)\). At \(x=-\gamma\in\{-\tfrac52,-\tfrac32,-\tfrac72\}\), not an integer, no factor vanishes. For \(\sigma=0\) the shape is empty and the determinant is \(1\). So every block determinant is nonzero, the leading coefficient is nonzero, and \(\omega\ne0\) at \(\tau\) small, where the parameters are distinct and nonzero. \(\square\)</li>
+</ol>
+<p>At level two there is one earlier double root and the blocks are \(\{0,1,2,3\}\) (at \(\sigma=0\)) and the simple roots' pairs; the \(2\times2\) Toeplitz determinants are the minors \(\mu_m=\beta_{m-1}^2-\beta_m\beta_{m-2}\) of the directional proof, and the hook-content formula gives the same value. The directional proof instead set \(A'=0\), which is the first block at the smallest scale.</p>
+<h4>Consequences</h4>
+<ul>
+<li>Every count of the descent is attained for every \(N\): level zero by the covariant degrees, level one by <a href="#cube-confluent-attainment">confluent attainment</a>, every deeper level by this theorem.</li>
+<li>The attainment hypotheses of the reductions, the transfers and <a href="#cube-attainment-propagation">attainment propagation</a> each ask that a hierarchical space attain its count somewhere or generically. Where they are combined with other generic conditions (the neck genericity sets, the \(w=0\) conditions), all are finitely many nonempty Zariski-open conditions on an irreducible configuration space, so they hold jointly. The hierarchical neck count for \(a\ge2\) remains where propagation is used.</li>
+<li>The \(N=6\) and \(N=7\) attainment tests of the <a href="#cube-hierarchical-descent">hierarchical descent</a> entry are consistent, and are no longer needed.</li>
+</ul>
+<p><strong>What this does to the route.</strong> The attainment side of the descent is complete; the neck count for \(a\ge2\) remains. The obstacle is unchanged: statement 3 for \(N\ge8\) is squarefreeness of \(\Delta_W^{\rm nc}\), and the monodromy lead of the <a href="#entry-2026-09-30-cube-first-step-seven-review">first-step review</a> is the next target.</p>
+<p><strong>Lead follow-up.</strong> Indirect, as in the directional entry: all attainment hypotheses of the descent are removed. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>squarefreeness of \(\Delta_W^{\rm nc}\) for \(N\ge8\);</li>
+<li>the hierarchical neck count for \(a\ge2\) (window excess and hull control), where the descent's reductions use it.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The local attainment criterion; the directional attainment proof (translation, separated scales); the dual Jacobi–Trudi identity and the hook-content formula (Macdonald, Symmetric Functions and Hall Polynomials, 2nd ed., I.3 and I.3 Example 4).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with minor corrections. It checked the reduced classes and block list, the factorial normalization, the Abel summation and uniqueness, the shifts (and that an earlier double root must come first, since a simple root first gives a zero \(2\times2\) block), the dual Jacobi–Trudi identification, the specialization \(e_k\mapsto\binom xk\), the hook-content formula as a polynomial identity, and the \(2\times2\) cases \(m=2,3\) against \(\mu_m\) (\(3/8\) and \(15/64\)). Corrections applied: the transpose in the block determinant; levels zero and one cited separately; the Laplace expansion and the admissibility clause stated; the consequences and the route paragraph narrowed. These corrections clarify or weaken, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-h">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 25.76 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 19.70 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 2.74 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.32 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
