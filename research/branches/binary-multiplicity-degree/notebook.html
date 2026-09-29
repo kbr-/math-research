@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). One-double-root simplicity reduces to simplicity of the <a href="#cube-bubble-directional-identification">directional two-double-root space</a> and count attainment. The <a href="#cube-multi-double-window-rank">multi-double window rank</a> gives the neck windows for clusters with several double roots.</p>
-<p>Prove the top window and hull theorems for \(a\ge2\) double roots in the cluster. Extend the operator form of \(\Gamma^{(3)}\) and the left kernel of \(\Phi_1\), now of dimension \(a+1\), to get the valuations of the top \(a+1\) windows. Then apply them to the cluster degeneration of the directional space. A route review is due after this cycle.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). One-double-root simplicity reduces to the <a href="#cube-bubble-directional-identification">directional two-double-root space</a>, which itself attains its count with simple points at \(N=5,6,7\); attainment of \(T_{\rm conf}\) is open. The induction over directional patterns has no base yet (<a href="#entry-2026-09-29-cube-directional-induction-review">directional induction review</a>).</p>
+<p>The apparent-singularity lead fails a dimension count in its generic form. Develop the caterpillar lead instead. For the separated class, send the roots apart at successive scales so that every component has three special points. Identify the rigid components, their spaces and their node exponents, and test at \(N=5\) whether they are the binary face and one other rigid space. Their simplicity would give a base independent of the double-root tower.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -24648,6 +24648,117 @@ and the cleared Wronskian numerator is \(c\,\varepsilon^e\) times the branch fac
 <tr><td>Computation design and coding</td><td class="elapsed">8.83 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 17.08 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.48 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-directional-induction-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Route review; its test result is recorded in the text and supports the registered prop:cube-directional-two-double-count at N=7 without registering a new claim.">
+<h3>29 September 2026 — Review: one double root is reduced to a directional bubble; the induction does not yet close</h3>
+<p class="entry-meta">Route review; tests the directional space at N=7 and weighs the double-root induction against a direct attack. Directional induction review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>The line and the goal.</strong> Open statement 3 for every \(N\ge7\) needs Weierstrass-weight control of the degree-two pair space on the collision strata and off them. The line's claim is <code>conj:cube-pair-degeneration-simplicity</code>, now read with directional pattern classes. Since the <a href="#entry-2026-09-29-cube-double-root-induction-review">last review</a>, four cycles have reduced the collision half. For generic configurations with one double root, the cluster degeneration has:</p>
+<ul>
+<li>a <a href="#cube-confluent-binary-face">binary face</a> and a <a href="#cube-confluent-neck-pair-space">neck</a>, proved simple for every \(N\) away from possible points converging to \(\pm1\) (the confluent binary face was the slope-\(0\) gap of the count entry, now closed);</li>
+<li>a bubble <a href="#cube-bubble-directional-identification">identified</a> as the directional two-double-root space \(V^{\rm dir}\);</li>
+<li>counts that <a href="#cube-directional-two-double-count">add up exactly</a>, as upper bounds; attainment of \(T_{\rm conf}\) is open.</li>
+</ul>
+<p>The <a href="#cube-multi-double-window-rank">window rank pattern</a> is proved for clusters with several double roots, outside a middle range.</p>
+<p><strong>General statement.</strong> The line's claim remains <code>conj:cube-pair-degeneration-simplicity</code>. This review registers no new claim.</p>
+<p><strong>What the goal needs.</strong> (1) For the collision half of statement 3: generic simplicity of \(V^{\rm dir}\) for every \(N\), and attainment of \(T_{\rm conf}\) and \(T_{\rm dir}\). (2) The off-collision codimension-two bound, which this line has never touched.</p>
+<p><strong>Falsification attempt.</strong> The line predicts that \(V^{\rm dir}\) attains its bound \(T_{\rm dir}(N)\), with minimal branch multiplicities and simple non-branch points. The first size that matters for the goal is \(N=7\). <code>bmd_cube_directional_seven.gp</code> computes it modulo \(2^{61}-1\), with \(A=1\), \(B=2\) and simple roots \(-1,3,-5\). Output (<code>research/results/bmd-20260929-s/directional-seven.txt</code>): the rows have full rank \(21\). The degree is \(648\), equal to the bound \((N-4)E+2N+4\). The branch multiplicities \([87,81,120,120,120]\) are all minimal. The non-branch part has degree \(120=T_{\rm dir}(7)\) and is squarefree. So the prediction survives at the goal's first size. With the additivity, \(T_{\rm conf}(7)=160=10+30+120\): binary face, confluent neck and bubble. By the reduction argument of the confluent criterion, the attained bounds and squarefreeness modulo \(p\) hold over \(\mathbb Q\) for this configuration. Simplicity is an open condition: the discriminant of the non-branch part is nonzero at constant degree. So this one simple configuration gives generic simplicity of \(V^{\rm dir}\) itself at \(N=7\). That is a statement about the directional space. It transfers to the bubble through the <a href="#cube-bubble-directional-identification">identification lemma</a>, up to the weight at \(w=0\). The equation \(T_{\rm conf}(7)=160=10+30+120\) is the additivity identity between upper bounds at \(N=7\). It does not test attainment of \(T_{\rm conf}(7)\), which remains open. The run took \(2\) s.</p>
+<h4>Obstacle</h4>
+<p>The line is stuck on closing the induction. Degenerating \(V^{\rm dir}\) by clustering its exact double root with the simple roots is expected to produce a bubble with more double-root blocks. If the approached pair \(B\) lies outside the cluster, it goes to infinity with the other far roots in the bubble frame, so the block \(V_7\) changes type. This is not computed. If each level adds a double root, as expected, the patterns \((2^a,1^b)\) with directions must all be handled. Three things are missing. The top window, hull and bubble theorems are proved for one double root only. The <a href="#cube-multi-double-window-rank">multi-double rank</a> has an unproved middle range. And the tower has no base where the double roots are exhausted. Beside it, the off-collision half of statement 3 has no mechanism on this line.</p>
+<h4>Outside leads</h4>
+<ul>
+<li>Apparent singularities of Fuchsian equations and accessory parameters (Katz, <em>Rigid Local Systems</em>, Ann. of Math. Stud. 139, 1996). Target: generic simplicity for every pattern at once. The \(R\)-dimensional span satisfies a Fuchsian equation of order \(R\). Its Weierstrass points off the branch values and \(\infty\) are exactly the apparent singularities, with equal weights. At branch values the monodromy is nontrivial, so excess weight there is not an apparent singularity. <strong>Answers.</strong> If the pair spaces formed a generic family of Fuchsian equations with fixed local data, generic accessory parameters would make the apparent singularities simple, and simplicity would follow without an induction. <strong>Test.</strong> Falsified in this form by a dimension count. At \(N=7\) the configurations have \(5\) moduli (seven roots modulo affine maps), while the one-double-root space alone has up to \(160\) apparent singularities, and the accessory parameters of order-\(21\) equations number of order \(R^2\). The family is a tiny special subfamily, so genericity of accessory parameters does not apply. A reformulation would need a transversality theorem for this special family.</li>
+<li>Osserman's limit linear series moduli scheme (Osserman, Ann. Inst. Fourier 56, 2006), which handles limits that are not refined. Target: the node transfer at confluent nodes, which the naive pairing formula got wrong. <strong>Answers.</strong> A correct node formula would turn every cluster degeneration into additive bookkeeping, and give a base for the induction through maximal degenerations, where all components are rigid. It breaks where our spaces are multivalued: the half-integral class is not a linear series on \(\mathbb P^1\), and a double cover would be needed. <strong>Test.</strong> Not run: that translation is not set up.</li>
+<li>Direct degeneration to a maximal caterpillar (Keel's boundary of \(\overline M_{0,n}\), Trans. Amer. Math. Soc. 330, 1992), revisited. Target: the base of the tower. Instead of one cluster at a time, send all roots apart at different scales, so that every component has three special points. <strong>Answers.</strong> The components are then rigid three-point spaces like the binary face. Their simplicity would be a finite list of explicit operators, as for \(Q_r\), and the double roots never pile up in one bubble. <strong>Test.</strong> Not run: the three-point components of a separated caterpillar are not identified, and the confluent node issue of lead 2 remains.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li>Level repulsion in random matrix theory (Wigner–Dyson spacing). Treat the Weierstrass points of configurations as a point process. <strong>Answers.</strong> In a complex algebraic family, two Weierstrass points collide on the discriminant, which generically has codimension one. Statement 3's off-collision obligation is that weight three has codimension at least two, a double coincidence. A repulsion law stating that each additional coincidence costs one more codimension would give exactly that. <strong>Test.</strong> Not run: it needs one-parameter families of configurations and a count of their double coincidences, which is not set up. Exact Wronskians are cheap (\(2\) s at \(N=7\)).</li>
+<li>Stieltjes electrostatics. The zeros of Heine–Stieltjes polynomials are the equilibria of unit charges in the field of fixed charges at the singular points (Stieltjes, 1885; Szegő, <em>Orthogonal Polynomials</em>, §6.7). Translate the Weierstrass points of a rigid component into such equilibria, with charges at the branch values fixed by the local exponents. <strong>Answers.</strong> Strict convexity of the logarithmic energy for positive charges forces every equilibrium to be a nondegenerate critical point. That would make the rigid components of any degeneration simple, which is the base the induction lacks. <strong>Test.</strong> Not run: the binary-face points \(Q_r\) are purely imaginary, so the charges would sit on a rotated line, and the operator of \(Q_r\) is not of Heine–Stieltjes type in the standard form. The translation is not set up.</li>
+</ul>
+<p><strong>Assessment.</strong> For one double root the line is nearly complete. Every component is proved simple, away from possible points converging to \(\pm1\), except the bubble, which is identified and counted, and simple at \(N=5,6,7\) but not proved for every \(N\). Attainment of \(T_{\rm conf}\) is open. But the induction behind the conjecture has no bound on its depth. Each step creates the next pattern with one more double root, and nothing yet stops the tower. The line thus has a strong mechanism for each step and no closure. The off-collision half of statement 3 is untouched, and it is the half that the goal needs even if the collision half closes. Of the two outside leads that would avoid the induction, apparent singularities fail the dimension count in their generic form, and caterpillar degenerations are untested.</p>
+<p><strong>Next step.</strong> On cube-odd-characteristic, open statement 3: develop the caterpillar lead. For the separated class, send the roots apart at successive scales so that every component has three special points. Identify these rigid components, their spaces and their node exponents, in general and at \(N=5\), and test whether they reproduce the binary face and one other rigid space. If they do, the next target is simplicity of each rigid three-point space, which would give a base independent of the double-root tower.</p>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">Collision patterns index the pair-space limits; the induction over directional patterns has no base yet (Obstacle of this review). <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on the rotated operator in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">The Hankel normality also drives the confluent top window and hull theorems of this period. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">Collision patterns index the pair-space limits; the induction over directional patterns has no base yet (Obstacle of this review). <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">Collision patterns index the pair-space limits; the induction over directional patterns has no base yet (Obstacle of this review). <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">Collision patterns index the pair-space limits; the induction over directional patterns has no base yet (Obstacle of this review). <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">Collision patterns index the pair-space limits; the induction over directional patterns has no base yet (Obstacle of this review). <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this review. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">The confluent cluster degeneration is now determined up to the bubble (confluent neck of the whole pair space). <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">The directional count made the additivity exact for the confluent degeneration (face, neck and bubble). <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on the operator in this period; the confluent binary face reuses the same Q_r. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">Developed into the multi-double window rank theorem: the predicted ranks are proved outside a middle range, which is checked for a=2,3. <strong>Follow-up.</strong> Developed.</li>
+</ul>
+<p><strong>Verification gate.</strong> Dependencies re-read: the directional count and multi-double rank entries. Checks: the N=7 test. One fresh-context medium-effort reviewer checked the draft, the script, the output and the excerpts, and verified the N=7 numbers by hand (R=21, E=210, minima 87, 81, 120, bound 648, T_dir=120, T_conf(7)=160). It required changes, all made: (1) the test paragraph now states that simplicity is an open condition, that it concerns the directional space itself, and that the additivity at N=7 does not test attainment; (2) the caveats on points converging to \(\pm1\) and on attainment are named; (3) the Obstacle marks the next bubble as expected, not computed, and names the middle range; (4) the apparent-singularity lead is recast with a verifiable source, qualified at branch values, and its cheap dimension test is run, falsifying it in generic form; (5) the Osserman citation is corrected and the lead says where it breaks; (6) the level-repulsion bridge now states the codimension correctly; (7) the tropical bridge, which tested nothing new, is replaced by a Stieltjes-electrostatics bridge; (8) the Next step names a concrete general target. These corrections weaken or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-s">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 22.82 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 56.78 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">14.62 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 9.58 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.70 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
