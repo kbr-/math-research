@@ -43,12 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3, proved at \(N=7\) and open for \(N\ge8\). By <a href="#cube-attainment-propagation">attainment propagation</a>, the collision exponent's hypothesis reduces to attainment at the base of the descent plus the neck counts.</p>
-<p>Next, for every \(N\):</p>
-<ul>
-<li>Attainment at the base \(V^{(\lfloor N/2\rfloor)}\): all roots double for even \(N\), with \(N/2-3\) moduli, or one simple root for odd \(N\). Degenerate the base itself, by colliding double roots, and look for a count identity that closes there.</li>
-<li>Then return to squarefreeness for \(N\ge8\), where the remainders remain the obstacle.</li>
-</ul>
+<p>Route item: cube-odd-characteristic; open statement 3, proved at \(N=7\) and open for \(N\ge8\). The one-double-root count is <a href="#cube-confluent-attainment">attained for every \(N\)</a>, so the collision exponent bound is unconditional; deeper levels need one <a href="#cube-local-attainment-criterion">gap Wronskian</a> per later double root.</p>
+<p>Next, a route review (four research cycles since the last): weigh the Wronskian route now that the counts and exponents are settled at level one. What remains for \(N\ge8\) is squarefreeness of \(\Delta_W^{\rm nc}\); the review should aim its leads at a mechanism for it that distinguishes \(N=6\), where it fails, from \(N\ge7\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -29527,6 +29523,74 @@ uniformly on compact sets avoiding \(\pm1\). So, for small \(\varepsilon\), exac
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 3.03 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 12.94 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.81 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.28 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-local-attainment" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-discriminant-descent-review:1" data-claims="prop:cube-local-attainment-criterion thm:cube-confluent-attainment cor:cube-collision-exponent-unconditional">
+<h3>30 September 2026 — The one-double-root count is attained for every N, so the collision exponent bound is unconditional; at deeper levels attainment is one gap Wronskian per later double root</h3>
+<p class="entry-meta">Working proof for every N: each monodromy class at a branch value is a space independent of that root, except at later double roots of the hierarchy. Local attainment cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-collision-exponent">collision exponent</a> bound \(e_N\ge M(M-1)(31M^2-23M-18)/12\) needs the one-double-root space to attain \(T_{\rm conf}(N)\) somewhere, known from exact certificates at \(N\le7\). <a href="#cube-attainment-propagation">Attainment propagation</a> reduced it to the base of the descent. The missing implication is attainment itself, for every \(N\). The record's <a href="#cube-confluent-weight-criterion">confluent weight criterion</a> already says what it means locally: the multiplicity at a branch value is minimal "exactly when every class has weight zero at that point", and likewise at infinity.</p>
+<p><strong>General statement.</strong> <code>prop:cube-local-attainment-criterion</code> and <code>thm:cube-confluent-attainment</code>, for every \(N\ge3\); <code>cor:cube-collision-exponent-unconditional</code> for every \(N\ge5\).</p>
+<h4 id="cube-local-attainment-criterion">Weight zero class by class</h4>
+<p><strong>Setup.</strong> Characteristic zero. Let \(V^{(a)}\) be a <a href="#cube-hierarchical-limit">hierarchical space</a>: double roots \(D_1,\ldots,D_a\) in collision order and \(n=N-2a\) simple roots, all distinct and nonzero. By the <a href="#cube-hierarchical-counts">count proposition</a>, \(V^{(a)}\) attains \(T(a)\) exactly when, at every branch value and at infinity, every monodromy class has weight zero, that is, its exponents are the minimal ones of the confluent weight criterion. At a branch value \(T_0=-1/c\), the <em>reduced class</em> is: for a half-integral class, the class multiplied by the power of \(1+cT\) that removes its lowest exponent; for the integral class at a simple root, the class itself; for the integral class at a double root, the rows not through it (see below). In each case the class has weight zero exactly when the reduced class, a space of functions regular at \(T_0\), has weight zero there, that is, when \(T_0\) is not a Weierstrass point of it.</p>
+<p><strong>The reduced classes.</strong> Write \(\varphi_c=(1+cT)^{-3/2}\), and note \(\varphi_c'\propto T(1+cT)^{-5/2}\).</p>
+<ul>
+<li><em>At a simple root \(k\).</em> Half-integral class: the \(N-1\) rows through \(k\). Reduced by \((1+kT)^{3/2}\), they are \(\varphi_l\) (\(l\ne k\) simple), \(\varphi_D\) and \(\varphi_D'\) for each double root. Integral class: the rows not through \(k\).</li>
+<li><em>At a double root \(D\).</em> Integral class: \(\varphi_D^2\) and the rows not through \(D\); its minimal exponents are \(\{-3\}\cup\{0,\ldots,\binom{N-2}2-1\}\), not consecutive. Since \(\varphi_D^2\) is the only element of negative order, the orders of the span are \(\{-3\}\) together with the orders of the span of the rows not through \(D\). So the class has weight zero exactly when the rows not through \(D\), the reduced integral class, have weight zero at \(T_0\). Half-integral class: the rows \(\varphi_D\varphi_k\), \(\varphi_D'\varphi_k\) and the blocks \(V_7\) through \(D\).
+<ul>
+<li>If \(D\) is the first double root, all these rows have exponent at least \(-\tfrac52\). Reduced by \((1+DT)^{5/2}\), the rows through a simple root \(k\) span \(\langle1+DT,T\rangle(1+kT)^{-3/2}=\operatorname{Pol}_{\le1}\cdot(1+kT)^{-3/2}\), and the blocks \(V_7(D,D_s)\) give \(\operatorname{Pol}_{\le3}\cdot(1+D_sT)^{-7/2}\).</li>
+<li>If \(D\) has \(e\ge1\) earlier double roots, the lowest exponent is \(-\tfrac72\), from the blocks \(V_7(D_r,D)\). Reduced by \((1+DT)^{7/2}\), the class is \(\mathcal A_D\oplus(1+DT)\,\mathcal B_D\), with \(\mathcal A_D=\bigoplus_{r\text{ earlier}}\operatorname{Pol}_{\le3}(1+D_rT)^{-5/2}\) and \(\mathcal B_D=\bigoplus_k\operatorname{Pol}_{\le1}(1+kT)^{-3/2}\oplus\bigoplus_{s\text{ later}}\operatorname{Pol}_{\le3}(1+D_sT)^{-7/2}\).</li>
+</ul></li>
+</ul>
+<p><strong>Proposition (local attainment criterion).</strong> Every reduced class above is independent of the root at which it is taken, except the half-integral class at a double root with an earlier double root, which is \(\mathcal A_D\oplus(1+DT)\mathcal B_D\) with \(\mathcal A_D,\mathcal B_D\) independent of \(D\). Consequently \(V^{(a)}\) attains \(T(a)\) at a generic configuration if and only if, for every double root \(D\) with an earlier one, the <em>gap Wronskian</em>
+\[
+G_D(x)=\operatorname{Wr}\bigl(\mathcal A_D,\ (T-x)\mathcal B_D\bigr)\big|_{T=x}
+\]
+is not identically zero in \(x\), for generic values of the other roots. In particular \(V^{(1)}\), with no such double root, always attains \(T(1)=T_{\rm conf}\) generically.</p>
+<p><strong>Proof.</strong> The independence statements are read off the list above. Every reduced class has linearly independent rows: multiplied back by the removed power of \(1+cT\) it consists of rows of \(V^{(a)}\), which are independent by the <a href="#cube-hierarchical-limit">hierarchical limit lemma</a>, part (1). So its Weierstrass points are finitely many, since the Wronskian of independent functions is nonzero in characteristic zero. The bad sets below are Zariski-closed: weight above zero at \(-1/c\) means the cleared numerator \(P\) has more than the minimal multiplicity there, a polynomial condition in the roots (equivalently, the vanishing of the squared Wronskian of the reduced class at \(-1/c\), which is rational since monodromy acts by \(\pm1\), with denominators clearing because the roots are distinct).</p>
+<ul>
+<li><em>A class independent of its root \(c\).</em> Fix the other roots. The class has weight zero at \(T_0=-1/c\) unless \(T_0\) is one of finitely many Weierstrass points. So the bad set is a proper closed subset of configuration space, whose fibres over the other roots are finite.</li>
+<li><em>The class \(\mathcal A_D\oplus(1+DT)\mathcal B_D\).</em> With \(x=T_0=-1/D\), \(1+DT=D(T-x)\), and the class has weight zero at \(x\) exactly when \(G_D(x)\ne0\). If \(G_D\not\equiv0\), the bad set is again proper. If \(G_D\equiv0\) for generic other roots, attainment fails on a dense set; since attainment is open, \(V^{(a)}\) then attains \(T(a)\) nowhere.</li>
+<li><em>At infinity.</em> The relevant space is the single class \(\{h_r\}\), \(h_r=\text{row}/S^3\), \(S=1/T\). Minimality there means \(\deg P\) equals the bound, that is, a nonzero leading coefficient, a polynomial condition in the roots; so the condition is open. Translating all roots by \(\beta\) replaces the space by \((1+\beta T)^{-3}\) times its pullback under \(T\mapsto T/(1+\beta T)\). For the blocks this uses \(T^j=T'^j(1+\beta T)^j\) with \(T'=T/(1+\beta T)\), and \((1-\beta T')^{3-j}T'^j\in\operatorname{Pol}_{\le3}(T')\), so the multiplier \((1+\beta T)^{-3}\) is common to all rows. So the weight at \(T=\infty\) after translation is the weight at the finite point \(T'=1/\beta\) before. Choose \(\beta\ne0\) with \(\beta\ne-c\) for every root \(c\), so that the translated roots stay nonzero and \(1/\beta\) is not an old branch value. The old space has finitely many Weierstrass points, since its rows are independent (lemma, part (1)), so the weight is zero for all but finitely many \(\beta\). The condition is a nonempty open set.</li>
+</ul>
+<p>Finitely many nonempty Zariski-open conditions on the irreducible configuration space have a nonempty open intersection. By the count proposition, at such a configuration every multiplicity is minimal and \(T(a)\) is attained. \(\square\)</p>
+<h4 id="cube-confluent-attainment">Consequences</h4>
+<p><strong>Theorem (confluent attainment).</strong> For every \(N\ge3\) in characteristic zero, the one-double-root pair space attains \(T_{\rm conf}(N)\) at a generic configuration: its multiplicities at the branch values and at infinity are the local-exponent minima.</p>
+<p><strong>Proof.</strong> The case \(a=1\) of the proposition. The one-double-root space is \(V^{(1)}\), and the count proposition's \(T(1)\) is \(T_{\rm conf}\). \(\square\)</p>
+<p><strong>Corollary (unconditional collision exponent bound).</strong> For every \(N\ge5\), the order of \(\Delta_W\) along a collision form satisfies \(e_N\ge M(M-1)(31M^2-23M-18)/12\), \(M=N-2\), or \(\Delta_W\equiv0\).</p>
+<p><strong>Proof.</strong> The theorem supplies the hypothesis of the <a href="#cube-collision-exponent">collision exponent theorem</a>. \(\square\)</p>
+<p>In the <a href="#cube-cluster-discriminant-reduction">cluster discriminant reduction</a>, the <a href="#cube-inversion-cluster-transfer">inversion transfer</a> and <a href="#cube-multiplicity-transfer">multiplicity transfer</a> at level zero, only the hypothesis of \(T_{\rm conf}\)-attainment becomes unconditional. Their other hypotheses (\(\operatorname{Hank}_k(b)\ne0\), no Weierstrass point at \(w=0\), compactness of the parameter set) are generic by their own arguments: the Hankel nonvanishing and the flow argument.</p>
+<p><strong>Deeper levels.</strong> For \(a\ge2\) the only condition left is \(G_D\not\equiv0\) at the \(a-1\) later double roots. For \(a=2\) there is one, at \(B\): \(\mathcal A_B=\operatorname{Pol}_{\le3}(1+AT)^{-5/2}\), four functions, and \(\mathcal B_B=\bigoplus_k\operatorname{Pol}_{\le1}(1+kT)^{-3/2}\). The directional count test at \(N=5,6\) and the <a href="#cube-hierarchical-descent">attainment test</a> at \(N=6,7\) found the minimal multiplicity at every later double root, modulo \(p\); reduction can only raise orders, so the multiplicity is minimal over \(\mathbb Q\) too, and \(G_D\not\equiv0\) in those cases. A proof for every \(N\) is open. Heuristically, assuming \(x\) is not a Weierstrass point of \(\mathcal B_D\): the first \(\mathcal A_D\)-column needs order \(0\), which only \(\mathcal A_D\) supplies, while \((T-x)\mathcal B_D\) supplies orders \(1,\ldots,\dim\mathcal B_D\) when \(x\) is not a Weierstrass point of \(\mathcal B_D\). So \(G_D(x)\ne0\) is a transversality condition between the jets of \(\mathcal A_D\) at \(x\) and the coordinates \(\{0\}\cup\{\dim\mathcal B_D+1,\ldots,K-1\}\). It could be proved by an asymptotic regime of \(x\).</p>
+<p><strong>What this does to the route.</strong> The collision half of the descent's hypotheses is settled at level one for every \(N\), and the collision exponent bound holds for every \(N\) without conditions. Statement 3 for \(N\ge8\) still needs squarefreeness of \(\Delta_W^{\rm nc}\): with this corollary, at each size one exact line certificate whose measured collision multiplicity equals \(e(M)\) and whose remainder is squarefree would decide it, as at \(N=7\). That is a per-size certificate. The route for every \(N\) remains the remainders of the descent.</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 1 of the <a href="#entry-2026-09-30-cube-discriminant-descent-review">descent review</a>. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>\(G_D\not\equiv0\) at later double roots, for every level and \(N\);</li>
+<li>generic simplicity of the one-double-root space, and non-divisibility of \(W\) by collision forms, for equality in the collision exponent;</li>
+<li>squarefreeness of \(\Delta_W^{\rm nc}\) for \(N\ge8\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The confluent weight criterion (local multiplicities, "equality exactly when every class has weight zero"); the hierarchical count proposition (exponent classes, pole orders); character splitting; the parameter shift of the bubble identification (translation covariance of the blocks); the collision exponent theorem.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It checked the reduced classes (at a simple root; at a first double root, where \(\langle1+DT,T\rangle=\operatorname{Pol}_{\le1}\) for every \(D\); at a later double root), the row counts \(N-1\), \(2N-4\) and \(\binom{N-2}2\), the translation computation, that the theorem supplies exactly the collision exponent theorem's hypothesis, and that no record contradicts generic attainment. Corrections applied:</p>
+<ul>
+<li>the definitions of weight zero and reduced class now cover the non-consecutive integral class at a double root;</li>
+<li>independence of reduced classes is taken from the hierarchical limit lemma, since character splitting as stated covers only even characters;</li>
+<li>closedness of the bad sets and openness at infinity are justified, with the admissible \(\beta\) and the class at infinity stated;</li>
+<li>the "only if" direction says attainment then fails everywhere;</li>
+<li>the consequences name which hypothesis of the reductions becomes unconditional;</li>
+<li>the deeper-level paragraph is labelled heuristic and its modulo-\(p\) evidence qualified.</li>
+</ul>
+<p>These corrections repair or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-e">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 20.32 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 40.79 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 21.99 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 14.26 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.28 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
