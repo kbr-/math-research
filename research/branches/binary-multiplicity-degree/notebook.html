@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The <a href="#entry-2026-09-29-cube-two-far-route-review">two-far route review</a> found the two-far window settled among windows up to the <a href="#cube-two-far-hook-coefficient">hook-content formula</a>, which now holds exactly through \(r=4\).</p>
-<p>Extend both convex-cost theorems to \(F\) far roots. Normalize the far span as \(g_0,\ldots,g_{F-1}\), \(g_i=u^i+\ldots\), with levels \(b-i\) for the rows \(g_ih_b\). Derive the size clause from the far dilation, the \(t\)-side dominance clause from near collisions, and a far-side dominance clause from far collisions, which \(F\ge3\) needs. Then predict \((\kappa^*,\nu^*)\) and the window lower bound for every \(F\times n\). Check them against the \(3\times3\) valuations \(48,39,38,39,48\), including the center tie, and against \(3\times4\) and \(4\times4\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for all \(N\ge7\). The <a href="#cube-far-near-collision-bound">joint collision bound</a> bounds every far–near window valuation below by an explicit optimization \(W\). It equals all \(50\) measured valuations.</p>
+<p>Compute \(W\) and its minimizing windows for every middle component of the caterpillars with \(N\le12\), that is for all \(F+n+1=N\). Compare the minimizers with the windows the count formula assumed and with the recorded component counts at \(N=6,7\). Then look for a closed form of \(W\) from the least-weight pairs. For sharpness, compute the least-weight coefficient combination at \(3\times3\) symbolically in \(\lambda\), as for the two-far hook formula, and test whether it factors into linear factors.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -26332,6 +26332,63 @@ as a polynomial identity in \(\lambda\). Here \(c(\square)=j-i\) is the content,
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-collision-window-bound" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-directional-induction-review:3" data-claims="thm:cube-far-near-collision-bound conj:cube-far-near-collision-bound-sharp">
+<h3>29 September 2026 — Joint collisions bound every far–near window; the bound equals all 50 measured valuations</h3>
+<p class="entry-meta">Working proof of a lower bound for every far–near window valuation, from joint far/near collisions; conjecture with finite evidence that it is attained. Collision window bound cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-29-cube-two-far-route-review">two-far route review</a> proposed extending the convex-cost method of the <a href="#cube-two-far-size-clause">size</a> and <a href="#cube-two-far-dominance-clause">dominance</a> clauses to three or more far roots. Those are the windows of every other caterpillar middle component, and the <a href="#cube-caterpillar-component-count">count formula</a> needs them. This cycle does so.</p>
+<ul>
+<li>With far-only and near-only collisions, the bound is exact for two far roots. It falls \(2\) to \(6\) short in the middle windows of \(3\times3\) through \(4\times4\).</li>
+<li>With joint collisions, of some far and some near roots together, the bound equals the measured valuation in all \(50\) windows (\(43\) up to the mirror \(4\times3\leftrightarrow3\times4\)) of the \(q\)-adic data: \(2\times3\) to \(2\times5\), \(3\times3\), \(3\times4\), \(4\times3\), \(3\times5\) and \(4\times4\). That includes every middle window, the unique minima of \(3\times3\), \(3\times4\) and \(3\times5\), and the center tie of \(4\times4\).</li>
+</ul>
+<p>The lower bound is a theorem for every \(F\) and \(n\). Its sharpness is a conjecture.</p>
+<p><strong>General statement.</strong> <code>thm:cube-far-near-collision-bound</code> (working proof) and <code>conj:cube-far-near-collision-bound-sharp</code>, for every \(F,n\ge1\) and every window.</p>
+<h4 id="cube-far-near-collision-bound">The bound</h4>
+<p><strong>Setup.</strong> Characteristic zero, \(\lambda\notin\mathbb Z\). The rows are \(f_i\varphi_{t_j}\), \(f_i=(1+s_i/S)^{-\lambda}\), \(i\le F\), \(j\le n\), on a window \(E\) of \(Fn\) consecutive columns. By the <a href="#cube-far-near-double-schur-reduction">double Schur reduction</a>, \(P_E=\Delta(s)^n\Delta(t)^F\sum c_{\kappa\nu}s_\kappa(s)s_\nu(t)\), with \(|\nu|-|\kappa|=D_0:=\sum E-F\binom n2+n\binom F2\). For \(0\le F'\le F\) and \(0\le n'\le n\), not both zero, define \(V(F',n')\) as follows.</p>
+<ul>
+<li><em>Far rows.</em> The \(F'\) cluster rows \(i&lt;F'\) have coefficients at \(u^i\), of order \(0\), and at \(u^a\) for \(a\ge F'\), of order \(a-i\). The other \(F-F'\) rows \(i'\) have coefficients at \(u^{i'}\) and at \(u^a\) for \(a\ge F-F'\), all of order \(0\).</li>
+<li><em>Near rows.</em> The \(n'\) cluster rows \(b&lt;n'\) have coefficients at \(S^b\), of order \(0\), and at \(S^k\) for \(k\ge n'\), of order \(k-b\). The other \(n-n'\) rows \(b'\) have coefficients at \(S^{b'}\) and at \(S^k\) for \(k\ge n-n'\), all of order \(0\).</li>
+<li><em>Assignment.</em> The product row of a far row and a near row gets, at column \(e\), the least total order over the pairs \((a,k)\) with \(k-a=e\) that the two rows allow. \(V(F',n')\) is the least-cost assignment of the \(Fn\) product rows to the columns of \(E\).</li>
+</ul>
+<p><strong>Theorem.</strong></p>
+<ol>
+<li>If \(c_{\kappa\nu}\ne0\), then for all \(F',n'\), the sum of the \(F'\) smallest parts of \(\kappa\) plus the sum of the \(n'\) smallest parts of \(\nu\) is at least \(V(F',n')\). Here \(\kappa\) is padded to \(F\) parts and \(\nu\) to \(n\).</li>
+<li>Let the caterpillar weights be \(1,\ldots,F\) on the far and \(1,\ldots,n\) on the near constants, and let \(W\) be the least \(\sum_ii\kappa_i+\sum_jj\nu_j\) over pairs satisfying part 1 and the size relation. Then \(\operatorname{val}P_E\ge n\binom{F+1}3+F\binom{n+1}3+W\), for all nonzero leading constants.</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ul>
+<li><em>Dilation.</em> Fix a cluster of \(F'\) far and \(n'\) near roots, and substitute \(s_i\to\eta s_i\), \(t_j\to\eta t_j\) on it. Keep the other variables as indeterminates. \(P_E\in k[[s,t]]\), and all normalized coefficients are polynomials: Schur polynomials, times \(\eta\)-powers on the cluster, in the respective variables, of degree \(a-i\), \(k-b\), \(a-i'\) or \(k-b'\). So every entry sum below converges in the total-degree completion over \(k(s_{\rm cl},t_{\rm cl})[[\eta]]\), and so does the monomial expansion of \(Q\).</li>
+<li><em>Normalization.</em> The far span is the direct sum of the cluster span and the span of the other far functions, which are linearly independent. Normalize each separately. For the cluster, the Plücker coordinates are \(\propto\eta^{\sum A}\Delta\,s_\mu\), so the coefficient of \(u^a\) in \(g_i\) has order \(a-i\), and it vanishes for \(a&lt;F'\), \(a\ne i\). For the other roots, the coefficients are units, with the same zero pattern relative to \(F-F'\). Do the same on the near side, whose cluster coordinates have order \(k-b\) by Cramer's rule. The row space is spanned by the products of the normalized far and near rows.</li>
+<li><em>Change of basis.</em> Its determinant is, up to units, \(\eta^{n\binom{F'}2+F\binom{n'}2}\). That is the \(\eta\)-order of \(\Delta(s)^n\Delta(t)^F\), since the factors pairing a cluster root with another root are units. So \(Q=P_E/(\Delta(s)^n\Delta(t)^F)\) equals a unit times the \(E\)-coordinate of the product rows.</li>
+<li><em>Entry orders.</em> Each product entry at column \(e\) is \(\sum_{k-a=e}x_a\gamma_k\), of order at least the least total order among the allowed pairs. So every Leibniz term has order at least \(V(F',n')\), and so does \(Q\).</li>
+<li><em>Monomials.</em> Every monomial \(s^\alpha t^\gamma\) of \(Q\) therefore has cluster degree \(\sum_{\text{cluster}}\alpha_i+\sum_{\text{cluster}}\gamma_j\ge V(F',n')\). By the symmetry of \(Q\) in \(s\) and in \(t\), this holds for every choice of cluster of these sizes.</li>
+<li><em>Transfer to the support.</em> The set of pairs \((\kappa,\nu)\) violating a constraint of part 1 is upward closed in product dominance, for fixed sizes: dominance lowers the sums of the smallest parts. A maximal violator in the support contributes the monomial \(s^\kappa t^\nu\) with coefficient \(c_{\kappa\nu}\), because no pair dominating it occurs. That contradicts the monomial bound, which proves part 1.</li>
+<li><em>Part 2.</em> By the reduction, the least weight in the support bounds the valuation below, and the Vandermonde powers contribute \(n\binom{F+1}3+F\binom{n+1}3\). \(\square\)</li>
+</ul>
+<p>For \(F=2\), the constraints with \(F'=0\) or \(n'=0\) are the size and dominance clauses already proved. \(W\) agrees with the <a href="#cube-two-far-window-valuations">two-far formula</a> in the computed cases, \(n\le5\) for the joint bound and \(n\le7\) for the separate one; this is a finite check.</p>
+<h4 id="cube-far-near-collision-bound-sharp">Sharpness</h4>
+<p><strong>Conjecture.</strong> For generic leading constants, \(\operatorname{val}P_E=n\binom{F+1}3+F\binom{n+1}3+W\) for every \(F\), \(n\) and window. That is, the coefficients of the least-weight admissible pairs do not all vanish.</p>
+<p><strong>Evidence.</strong> <code>bmd_cube_far_near_joint_bound.py</code> computes every \(V(F',n')\) by exact assignment, with SciPy. It then minimizes the weight exactly: it enumerates \(\kappa\) and solves a dynamic program over nondecreasing parts for \(\nu\). The weight equals the sum of the bottom partial sums, and a greedy choice does not always minimize it. It compares \(W\) with the valuations measured in the two-far window cycle (<code>joint-bound.txt</code>). The script enforces the far-only constraints, which a first run omitted; the output was unchanged. The windows \(2\times2\), \(3\times2\) and \(4\times2\), also measured, were not run through it. All \(50\) windows agree exactly, as listed in the Question.</p>
+<p>The earlier variant with far-only and near-only collisions, <code>bmd_cube_far_near_convex_bound.py</code>, gives <code>convex-bound.txt</code>. It is exact for \(F=2\) and falls short by \(2\) at the \(3\times3\) center and by up to \(6\) at \(4\times4\). A first joint version, which did not normalize the non-cluster rows, fell \(1\) or \(2\) short at two extreme windows. The final version fixes that. The joint constraints are needed, and they suffice in every computed case.</p>
+<p><strong>What it gives.</strong> Every far–near window valuation is bounded below by a finite, explicit optimization, for every component of every caterpillar. Assuming sharpness, the component's window is the one minimizing \(W\) over windows, with other column sets excluded as in item (c). Ties are windows of equal minimum. Proving sharpness means showing that a leading coefficient does not vanish. For \(F=2\) that is the <a href="#cube-two-far-hook-coefficient">hook-content formula</a>.</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 3 of the directional induction review, the caterpillar degeneration. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong> (a) Sharpness: nonvanishing of the least-weight coefficient combinations for every \(F\), including ties. (b) A closed form for \(W\) and its minimizing window. (c) Minimality over all column sets, not only windows. (d) Component simplicity, necks and double-root classes.</p>
+<p><strong>Dependencies re-read.</strong> The size and dominance clauses and their normalizations; the double Schur reduction; the measured window valuations.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the normalizations, the determinant orders against the Vandermonde powers, the entry bounds, the violator argument and part 2. It also checked the script's zero patterns and orders, the identity \(\sum_jj\nu_j=\sum_gR(g)\), the exactness of the dynamic program, the break condition, and the hard-coded valuations against the source files. It passed the entry with corrections, all made. Convergence is placed in a total-degree completion. The far-only constraints are enforced in the script, with unchanged output. The window count is \(50\). The false \(3\times3\) tie claim is removed. The two-far agreement is marked as a finite check. The window sentence is rewritten.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zu">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 5.11 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 2.38 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 26.45 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 18.08 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 18.06 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
