@@ -1,0 +1,52 @@
+{
+  "source": {
+    "record": "[Confluent window rank](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-confluent-window-rank)",
+    "targets": [
+      "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-confluent-window-rank",
+      "https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-i/provenance.json"
+    ],
+    "label": "Confluent window rank"
+  },
+  "reviewer": "Claude Code (claude-opus-5-5); one fresh-context medium correctness reviewer",
+  "date": "2026-09-29",
+  "topics": [
+    "degree-accounting",
+    "affine-linear-algebra"
+  ],
+  "claims": [
+    {
+      "id": "thm:cube-confluent-window-rank",
+      "summary": "Characteristic zero, M>=3, lambda not in {1,0,-1,...} (non-integer for the neck corollary). For every monic P of degree M the neck genericity matrix satisfies Gamma_(m,D) = beta_D(lambda-1)/((D+1) m beta_m) [x^m] rem(xP'B_D,P) (m>=1), Gamma_(0,D) = beta_D(lambda-1)/(D+1) P(0)B_D(0), with B_D = q_D-(D+1)/M q_D(0), q_D = quo(x^(D+1),P). For P=(x-u)^2Q (Q squarefree, Q(u)uQ(0)!=0): rank Gamma_(M-2)=M-2, rank Gamma_(M-1)=M-2, rank Gamma_M=M-1, det Gamma_k!=0 generically for k<=M-3; every window minor of the rescaled neck matrix is even in eps, so the top windows have val >= M(M-1)+2, M(M+1)+2; the confluent half-integral cross-row determinant keeps the binomial edges of slopes j/M, j<=M-2 (2M(M-2) simple points) and has no edge of slope in ((M-2)/M,(M-1)/M]. For squarefree P with P(0)!=0, det Gamma_(M-1), det Gamma_M are nonzero.",
+      "assessment": "Working proof: exact remainder identity, kernel of multiplication by xP' modulo P, and the Laplace analysis of the neck window theorem; identity and ranks checked exactly for M=3..6.",
+      "status": "working_proof",
+      "rationale": "Explains the failure of the naive confluent neck induction and proves the part of the confluent neck that survives."
+    },
+    {
+      "id": "conj:cube-confluent-top-windows",
+      "summary": "For generic P=(x-u)^2Q and non-integer lambda, the rescaled neck matrix has equality in the parity bounds, val det C[:,W_(M-1)] = M(M-1)+2 and val det C[:,W_M] = M(M+1)+2, so W_(M-2), W_(M-1), W_M are collinear at slope 1 and the lost slope-(M-1)/M ring moves to the cluster scale.",
+      "assessment": "Conjecture formulated from exact window valuations at lambda=3/2, M=3,4,5, one random double-root P each; a prior +1 guess was falsified by the same run.",
+      "status": "conjecture",
+      "rationale": "Locates the 2M displaced neck points needed by the count identity for the confluent degeneration."
+    }
+  ],
+  "relationships": [
+    [
+      "thm:cube-confluent-window-rank",
+      "cites",
+      "thm:cube-neck-window-theorem",
+      "Laplace analysis, genericity lemma and transfer."
+    ],
+    [
+      "conj:cube-confluent-top-windows",
+      "cites",
+      "thm:cube-confluent-window-rank",
+      "The top windows exceed their generic valuation."
+    ],
+    [
+      "thm:cube-confluent-window-rank",
+      "cites",
+      "thm:cube-cluster-count-identity",
+      "Consistency check of the displaced count."
+    ]
+  ]
+}
