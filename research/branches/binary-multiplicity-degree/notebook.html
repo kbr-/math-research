@@ -43,11 +43,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3, <a href="#cube-seven-root-first-step">proved at \(N=7\)</a>, is for \(N\ge8\) exactly squarefreeness of \(\Delta_W^{\rm nc}\), which fails at \(N=6\) (<a href="#entry-2026-09-30-cube-first-step-seven-review">first-step review</a>).</p>
-<p>Next, develop the monodromy lead:</p>
+<p>Route item: cube-odd-characteristic; open statement 3, <a href="#cube-seven-root-first-step">proved at \(N=7\)</a>, is for \(N\ge8\) exactly squarefreeness of \(\Delta_W^{\rm nc}\). The counts at levels zero to two of the descent are now <a href="#cube-directional-attainment">attained for every \(N\)</a>.</p>
+<p>Next, the monodromy lead of the <a href="#entry-2026-09-30-cube-first-step-seven-review">first-step review</a>:</p>
 <ul>
-<li>A branch component is reduced exactly when its local monodromy is a transposition. Determine the local monodromy at every boundary type the descent reaches, and which local types a non-reduced component would need at its traces.</li>
-<li>Locate the six-root component's traces on a collision hyperplane with an optimized restricted-discriminant kernel (multipoint evaluation), to see which remainder type carries its two 3-cycles.</li>
+<li>A branch component of \(\Delta_W^{\rm nc}\) is reduced exactly when its local monodromy is a transposition. Determine the local monodromy of the Weierstrass cover at the collision hyperplanes from the near-group scales (ring \(j\) rotates by \(2\pi j/M\)), and at the good traces of each level.</li>
+<li>Derive which local types a non-reduced component would need at its traces, and test against the six-root component's two 3-cycles.</li>
 </ul>
 </section>
 <section id="working-context">
@@ -29730,6 +29730,74 @@ This is a prediction the recorded certificates could falsify: \(N=5\): \(1740-10
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 40.08 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 12.54 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-directional-attainment" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-first-step-seven-review:1" data-claims="thm:cube-directional-attainment">
+<h3>30 September 2026 — The directional two-double-root count is attained for every N: the one gap Wronskian at the later double root is nonzero</h3>
+<p class="entry-meta">Working proof for every N ≥ 4: after moving the point to 0 and letting the first double root go to 0, the gap Wronskian factors into 2×2 minors of binomial coefficients, all nonzero. Directional attainment cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-local-attainment-criterion">local attainment criterion</a> reduced attainment of \(T(a)\) at every level of the descent to one gap Wronskian per later double root, and proved level one for every \(N\). Level two, the <a href="#cube-directional-two-double-count">directional space</a>, has exactly one later double root, \(B\). Attainment of \(T_{\rm dir}(N)\) is a hypothesis of the <a href="#cube-confluent-discriminant-reduction">confluent discriminant reduction</a>, of <a href="#cube-multiplicity-transfer">multiplicity transfer</a> at level one, and of <a href="#cube-attainment-propagation">attainment propagation</a>. The missing implication is \(G_B\not\equiv0\) for every \(N\).</p>
+<p><strong>General statement.</strong> <code>thm:cube-directional-attainment</code>, for every \(N\ge4\).</p>
+<h4 id="cube-directional-attainment">The gap Wronskian at the later double root</h4>
+<p><strong>Setup.</strong> Characteristic zero, \(\beta_m=\binom{-3/2}m\). The directional space has double roots \(A\) (first) and \(B\) (later) and \(n=N-4\) simple roots \(k\). By the criterion, its half-integral class at \(B\), reduced by \((1+BT)^{7/2}\), is \(\mathcal A_B\oplus(1+BT)\mathcal B_B\) with
+\[
+\mathcal A_B=\operatorname{Pol}_{\le3}\cdot(1+AT)^{-5/2},\qquad\mathcal B_B=\bigoplus_k\operatorname{Pol}_{\le1}\cdot(1+kT)^{-3/2},
+\]
+of dimensions \(4\) and \(2n\), \(K=2n+4\). The class has weight zero at \(x=-1/B\) exactly when \(G_B(x)\ne0\). The directional space is the hierarchical space \(V^{(2)}\) of the criterion, since its block \(T^j(1+AT)^{-5/2}(1+BT)^{-7/2}\) is \(V_7(D_1,D_2)\); so its rows are independent (hierarchical limit lemma, part (1)), as the criterion and the directional count require.</p>
+<p><strong>Theorem (directional attainment).</strong> For every \(N\ge4\), \(G_B\not\equiv0\) for generic \(A\) and \(k\). Hence the directional space attains \(T_{\rm dir}(N)\) at a generic configuration.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Moving the point to \(0\).</em> Translate \(T\mapsto T+x\). A function \(p(T)(1+cT)^{-\gamma}\) with \(p\) polynomial becomes a constant times \(p(T+x)(1+c'T)^{-\gamma}\), with \(c'=c/(1+cx)\), for \(x\ne-1/c\). Polynomial degrees are kept, and \(T-x\) becomes \(T\). So the span \(\mathcal A_B\oplus(T-x)\mathcal B_B\) near \(x\) becomes
+\[
+Y(A',k')=\operatorname{Pol}_{\le3}(1+A'T)^{-5/2}\ \oplus\ T\cdot\bigoplus_k\operatorname{Pol}_{\le1}(1+k'T)^{-3/2}
+\]
+near \(0\), with \(A'=A/(1+Ax)\), \(k'=k/(1+kx)\), and weights are preserved (each function changes by the constant \((1+cx)^{-\gamma}\), and \(p\mapsto p(T+x)\) is invertible on \(\operatorname{Pol}_{\le d}\)). So \(G_B(x)=c\cdot\omega(A',k')\) with \(c\ne0\), where \(\omega\), the Wronskian at \(0\) of a basis of \(Y\), is a polynomial in \((A',k')\) (Taylor coefficients at \(0\) are polynomial in the parameters). For fixed \(x\), \((A,k)\mapsto(A',k')\) is an invertible Möbius map in each variable. So if \(\omega\not\equiv0\), then \(\omega(A',k')\ne0\) on a nonempty open set of \((A,k,x)\), which meets the admissible set (\(A\) and the \(k\) distinct and nonzero, \(x\ne-1/A,-1/k\)), a nonempty open subset of an irreducible space. For \((A,k)\) in the projection, \(G_B\not\equiv0\).</li>
+<li><em>The first double root at \(0\).</em> At \(A'=0\), the first summand is \(\operatorname{Pol}_{\le3}\), whose jets at \(0\) are the coordinates of orders \(0,\ldots,3\). So \(\omega(0,k')\ne0\) exactly when the jets of the \(2n\) functions \(T^{1+i}(1+k'T)^{-3/2}\), \(i\in\{0,1\}\), in the orders \(4,\ldots,2n+3\) are independent (the jet matrix is block triangular). From here on we drop the primes and write \(k\) for \(k'\). The coefficient of \(T^m\) in \(T^{1+i}(1+kT)^{-3/2}\) is \(\beta_{m-1-i}k^{m-1-i}\). So \(\omega(0,k')\) is, up to sign, the determinant of the \(2n\times2n\) matrix \(\mathcal M\) with rows \((k,i)\), columns \(m=4,\ldots,2n+3\), and entries \(\beta_{m-1-i}k^{m-1-i}\).</li>
+<li><em>Separated scales.</em> Put \(k_\ell=\tau^{s_\ell}\), \(s_1>s_2>\cdots>s_n>0\) integers, and let \(\tau\to0\). A term of \(\det\mathcal M\) assigns to each \(k_\ell\) two columns \(m,m'\), and its \(\tau\)-exponent is \(\sum_\ell s_\ell(S_\ell-3)\), \(S_\ell=m+m'\). By Abel summation, \(\sum_\ell s_\ell S_\ell=\sum_\ell(s_\ell-s_{\ell+1})(S_1+\cdots+S_\ell)\) with \(s_{n+1}=0\). Each partial sum \(S_1+\cdots+S_\ell\) is at least the sum of the \(2\ell\) smallest columns, with equality only if \(k_1,\ldots,k_\ell\) hold exactly those columns. Since every \(s_\ell-s_{\ell+1}>0\), the exponent is uniquely minimized by giving \(k_1\) the columns \(\{4,5\}\), \(k_2\) the columns \(\{6,7\}\), and so on. The terms with this column assignment sum to \(\prod_\ell k_\ell^{2m_\ell-2}\mu_{m_\ell}\), where \(m_\ell=2\ell+2\) and
+\[
+\mu_m=\det\begin{pmatrix}\beta_{m-1}&\beta_m\\\beta_{m-2}&\beta_{m-1}\end{pmatrix}=\beta_{m-1}^2-\beta_m\beta_{m-2}.
+\]
+With \(\beta_j/\beta_{j-1}=-(j+\tfrac12)/j\),
+\[
+\mu_m=\beta_{m-1}^2\Bigl(1-\frac{(m+\tfrac12)(m-1)}{m(m-\tfrac12)}\Bigr)=\frac{\beta_{m-1}^2}{m(2m-1)}\ne0 .
+\]
+All other terms have strictly larger integer exponents, so \(\det\mathcal M=\pm\tau^{\sigma}\bigl(\prod_\ell\mu_{2\ell+2}+O(\tau)\bigr)\), with \(\sigma=\sum_\ell s_\ell(2m_\ell-2)\), and this is nonzero for small \(\tau\), with the \(k_\ell\) distinct and nonzero. Hence \(\omega(0,k')\not\equiv0\), so \(\omega\not\equiv0\). \(\square\)</li>
+</ol>
+<p>By the local attainment criterion, every other class of the directional space has weight zero generically, so \(T_{\rm dir}(N)\) is attained generically. For \(n=0\) (\(N=4\)) the matrix is empty and \(\omega(0)\), the Wronskian of \(1,T,T^2,T^3\) at \(0\), is nonzero.</p>
+<h4>Consequences</h4>
+<ul>
+<li>In the <a href="#cube-confluent-discriminant-reduction">confluent discriminant reduction</a> and part (2) of <a href="#cube-multiplicity-transfer">multiplicity transfer</a>, the hypothesis that the directional space attains \(T_{\rm dir}\) is discharged for every \(N\). Their other hypotheses remain as stated there: no Weierstrass point at \(w=0\) (generic by the flow argument), the neck genericity set \(\mathcal G\), and, for reducedness conclusions, squarefreeness of \(D^{\rm dir}\).</li>
+<li>The counts at levels zero, one and two are attained for every \(N\): level zero because \(\deg_zW=2\lambda-\operatorname{wt}_P\) (<a href="#entry-2026-09-29-cube-wronskian-covariant-degrees">covariant degrees</a>) with generic mark weight zero, level one by <a href="#cube-confluent-attainment">confluent attainment</a>, level two by this theorem. For \(a\ge3\) the gap Wronskians at later double roots with at least two earlier ones remain: then \(\mathcal A_D\) has \(4e\ge8\) functions, and letting the earlier double roots tend to \(0\) together collapses them, so this proof does not extend directly.</li>
+</ul>
+<p><strong>What this does to the route.</strong> It settles a hypothesis of the descent, not the obstacle: statement 3 for \(N\ge8\) is still squarefreeness of \(\Delta_W^{\rm nc}\), and the <a href="#entry-2026-09-30-cube-first-step-seven-review">first-step review</a>'s monodromy lead is still the next target there.</p>
+<p><strong>Lead follow-up.</strong> This develops Outside lead 1 of the <a href="#entry-2026-09-30-cube-first-step-seven-review">first-step review</a> only indirectly: the level-two attainment hypothesis of the descent is removed. <strong>Follow-up.</strong> Continuing.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>gap Wronskians at levels \(a\ge3\);</li>
+<li>squarefreeness of \(\Delta_W^{\rm nc}\) for \(N\ge8\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The local attainment criterion (reduced classes, the gap Wronskian); the directional count (the space); the translation computation of the local attainment entry.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It checked the translation (\(1+c(T+x)=(1+cx)(1+c'T)\)), the reduced class against a direct reduction of the rows, the legitimacy of specializing the polynomial \(\omega\) at \(A'=0\), the block-triangular jet matrix, the entries of \(\mathcal M\), the exponent bookkeeping, the minors \(\mu_m\) (re-derived) and the \(n=0\) case. Corrections applied:</p>
+<ul>
+<li>uniqueness of the dominant assignment is proved by Abel summation, and the unused gap condition is dropped;</li>
+<li>notation: the exponent \(\sigma\), and the primed parameters;</li>
+<li>the admissible set and the Möbius form of the parameter change are stated;</li>
+<li>the identification of the directional space with \(V^{(2)}\), for independence;</li>
+<li>the consequences name exactly which hypothesis is discharged, and cite the level-zero source;</li>
+<li>the lead follow-up is narrowed.</li>
+</ul>
+<p>These corrections repair or weaken, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-g">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 50.67 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 4.08 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 57.41 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.00 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.18 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
