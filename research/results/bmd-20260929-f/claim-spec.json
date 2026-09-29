@@ -1,0 +1,35 @@
+{
+  "source": {
+    "record": "[Neck Pade reduction](https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-neck-pade)",
+    "targets": [
+      "https://kbr.is-a.dev/math-research/branches/binary-multiplicity-degree/#entry-2026-09-29-cube-neck-pade",
+      "https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-f/provenance.json"
+    ],
+    "label": "Neck Pade reduction"
+  },
+  "reviewer": "Claude Code (claude-opus-5-5); one fresh-context medium correctness reviewer",
+  "date": "2026-09-29",
+  "topics": ["degree-accounting", "affine-linear-algebra"],
+  "claims": [
+    {
+      "id": "lem:cube-neck-tanh-reduction",
+      "summary": "For every exponent lambda!=0 and M>=2, the bipartite neck space H_lambda = <(1+-T)^(-lambda)(1+eps b_i T)^(-lambda)> equals T^(-lambda) E (U_x + tau U_x) with y=1/T, x=eps T, U_x=<(1+b_i x)^(-lambda)>, E the even part of (1+y)^(-lambda) (a unit on the neck annulus) and tau=O/E=-tanh(lambda artanh y); so its neck Newton polygon is that of U_x + tau U_x. tau has the Gauss continued fraction -lambda y/(1+(lambda^2-1)y^2/(3+(lambda^2-4)y^2/(5+...))), whose partial numerators are nonzero for non-integer lambda, so its odd Pade table is normal along the staircase of two adjacent diagonals (Hankel determinants H0_n, H1_n of F nonzero, tau = -y F(y^2): staircase normality).",
+      "assessment": "Working proof after one fresh-context medium review; the identity, the continued fraction to order y^46 and the Hankel determinants through size 12 are also checked exactly at lambda=3/2.",
+      "status": "working_proof",
+      "rationale": "Identifies the source of the extra cancellation in the neck window valuations with Pade normality of an explicit classical function."
+    },
+    {
+      "id": "conj:cube-neck-windows-noninteger",
+      "summary": "For every M>=2, every non-integer exponent lambda and generic b, the neck coefficient matrix of the bipartite space <(1+-T)^(-lambda)(1+eps b_i T)^(-lambda)> has val det C[:,W_k]=M(M-1)+k(k+1) on the windows W_k={-M+k..M-1+k}, k=0..M, with nonzero leading coefficient, and the windows are the unique minimizers between the breakpoints j/M.",
+      "assessment": "Conjecture; exact window valuations match for lambda in {3/2,5/2,1/2,7/3} at M=3,4, and fail for integer lambda (M>=3 for lambda=1) (all zero at lambda=1, low windows zero at lambda=2), as predicted from the continued fraction; exactly the binom(2k,k) Hall-minimal Toeplitz minors are nonzero, so the cancellation is an identity among Schur-weighted terms.",
+      "status": "conjecture",
+      "rationale": "General-exponent form of the neck window conjecture, whose proof should use only Pade normality of tanh(lambda artanh y).",
+      "next_action": "Prove the window valuations from the Hankel system of U_x + tau U_x: negative-side elements from Pade normality, positive-side from the tails of U_x."
+    }
+  ],
+  "relationships": [
+    ["conj:cube-neck-windows-noninteger", "refines", "conj:cube-neck-windows", "The lambda=3/2 case is the earlier conjecture."],
+    ["conj:cube-neck-windows-noninteger", "depends_on", "lem:cube-neck-tanh-reduction", "The conjecture is posed for the reduced space."],
+    ["lem:cube-neck-tanh-reduction", "cites", "lem:cube-neck-half-class-reduction", "Neck edges come from the half-integral class."]
+  ]
+}
