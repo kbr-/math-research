@@ -43,15 +43,14 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By the <a href="#cube-contact-stratified-transfer">stratified transfer</a>, the contact bound for every \(N\) follows from condition (F) on single fibres of limit spaces. (F) has content only at configurations with at most four distinct positions and at deep strata with non-unique limits.</p>
-<p>Test (F) at its smallest nontrivial case, and state its all-\(N\) form:</p>
-<ol>
-<li>First measure the dimension of the fibre \(\pi^{-1}(p)\) over deep points, as a function of the multiplicities and \(N\). (F) is informative only where this is at least \(3\); below that, emptiness is just the expected outcome, because \(\mathcal K\) has codimension \(3\).</li>
-<li>Then test (F) at the smallest point whose fibre has dimension at least \(3\). Parametrize the directions of approach, compute the directional limits of \(\Lambda\), and ask whether the contact part has dimension at most \(d_\Sigma-3\).</li>
-<li>If none does, look for the general mechanism: the orders at the mark of limit spaces at two positions, as a function of the multiplicities, for all \(N\).</li>
-<li>If some limit does have contact, record that (F) is too strong, and refine the bookkeeping to keep fibre directions.</li>
-</ol>
-<p>No per-size certificates: the case is a test of (F), not a new instance.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By the <a href="#cube-contact-relative-transfer">relative transfer</a>, the contact bound for every \(N\) follows from (F\(_{\rm rel}\)): no excessive contact on the fibre pieces of the cut family, and no contact at points of members of dimension at most \(2\).</p>
+<p>Test (F\(_{\rm rel}\)) at the smallest size, \(N=5\), where \(X\) has dimension \(3\). This tests the hypothesis; \(N=5\) lies outside statement 3.</p>
+<ul>
+<li>The members of dimension \(2\) are the components of \(\pi^{-1}(H_{ij})\) not over the chart's own \(H_{kl}\).</li>
+<li>Over the open one-double-root stratum, compute the confluent contact locus \(\{\operatorname{rank}A^c_{R+1}&lt;R\}\) and check that it is empty.</li>
+<li>Then follow the cuts to members of dimension \(1\) and \(0\) over two-collision strata, and check that none of their points off the chart boundary has contact.</li>
+</ul>
+<p>If contact occurs, record where, and whether it is forced by the geometry, as a refutation of (F\(_{\rm rel}\)) as stated. Then look for the all-\(N\) structure of the confluent contact locus.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -27216,6 +27215,54 @@ Then every component of \(K\) has codimension at least three in the separated lo
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 9.94 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 22.21 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.12 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-contact-relative-transfer" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2" data-claims="thm:cube-contact-relative-transfer">
+<h3>29 September 2026 — Correction: measured inside the cut pieces, the stratified transfer has a base condition of the expected dimension</h3>
+<p class="entry-meta">Working proof: cutting the graph closure by collision hyperplanes and asking for codimension three inside each piece gives a base condition that a codimension-three Schubert condition meets generically. Relative transfer cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-contact-stratified-transfer">stratified transfer</a> reduced the contact bound, for every \(N\), to a condition (F): \(\dim(K_X\cap\pi^{-1}(p))\le d_\Sigma-3\) on fibres. Its reviewer observed the following. \(\mathcal K\) has codimension three in the Grassmannian. Fibres over configurations with two positions can have dimension up to \(N-3\). So (F) is expected to fail for \(N\ge6\) even if the contact bound is true. The induction loses the fibre dimension, because it measures the contact set against the stratum rather than against the piece of \(X\) being cut. The missing implication is a transfer whose base condition has the expected dimension. This cycle proves one. It supersedes the absolute form, which remains correct but is likely unusable.</p>
+<p><strong>General statement.</strong> <code>thm:cube-contact-relative-transfer</code>, for every \(N\ge5\).</p>
+<h4 id="cube-contact-relative-transfer">The relative transfer</h4>
+<p><strong>Setup.</strong> As in the <a href="#cube-contact-boundary-transfer">boundary transfer lemma</a>: the charts \(X_{kl}\), \(\pi:X_{kl}\to\mathbb P^{N-2}\) proper, and the closed contact set \(K_X\). Over \(H_{kl}\) itself, chart \(kl\) sees scale degenerations \(\Lambda D_{1/t}\), \(t\to0\), which carry no information. So only points off the chart's own hyperplane are used. A <em>member</em> is a pair \((W,\{k,l\})\), where \(W\subset X_{kl}\) is irreducible and closed with \(\pi(W)\not\subset H_{kl}\). Let \(\mathcal W\) be the smallest family of members such that:</p>
+<ul>
+<li>\((X_{kl},\{k,l\})\in\mathcal W\) for every chart;</li>
+<li><em>cut:</em> if \((W,\{k,l\})\in\mathcal W\) and \(H_{ij}\not\supset\pi(W)\), then every irreducible component \(W'\) of \(W\cap\pi^{-1}(H_{ij})\) with \(\pi(W')\not\subset H_{kl}\) gives a member \((W',\{k,l\})\);</li>
+<li><em>transport:</em> if \((W,\{k,l\})\in\mathcal W\) and \(\pi(W)\not\subset H_{k'l'}\), then the closure in \(X_{k'l'}\) of the image of \(W\setminus\pi^{-1}(H_{kl}\cup H_{k'l'})\) under \((p,\Lambda)\mapsto(p,\Lambda D_{s(p)})\) gives a member. Here \(s(p)\) is the scale between the charts, regular and invertible off \(H_{kl}\cup H_{k'l'}\). Transport preserves dimension and \(K_X\), since \(D_s\) preserves \(\mathcal K\).</li>
+</ul>
+<p>By Krull, a component of \(W\cap\pi^{-1}(H_{ij})\) has dimension exactly \(\dim W-1\). Write \(K_X^\circ(W)=K_X\cap W\cap\pi^{-1}(\mathbb P^{N-2}\setminus H_{kl})\).</p>
+<p><strong>Theorem.</strong> Let \(N\ge5\) and suppose</p>
+<blockquote>(F\(_{\rm rel}\)) for every member \((W,\{k,l\})\) and every point \(p\notin H_{kl}\), \(\dim\bigl(K_X\cap W\cap\pi^{-1}(p)\bigr)\le\dim W-3\), where a negative bound means the set is empty.</blockquote>
+<p>Then \(\dim K_X^\circ(W)\le\dim W-3\) for every member. In particular, for \(W=X_{kl}\), the contact locus \(K\) has codimension at least three in the separated locus.</p>
+<p><strong>Proof.</strong> The proof is by induction on \(\dim W\). Let \(Y\) be an irreducible component of \(K_X^\circ(W)\) with \(\dim Y\ge\dim W-2\), and \(\bar Y\) its closure. Then \(\bar Y\subset K_X\cap W\), and \(\pi(\bar Y)\) is closed, by properness, and not contained in \(H_{kl}\).</p>
+<ul>
+<li><em>If \(\pi(\bar Y)\) is a point \(p\notin H_{kl}\):</em> this contradicts (F\(_{\rm rel}\)).</li>
+<li><em>Otherwise:</em> \(\pi(\bar Y)\) has dimension at least \(1\) and is not contained in all collision hyperplanes. Take \(H_{ij}\not\supset\pi(\bar Y)\); then also \(H_{ij}\not\supset\pi(W)\).
+<ul>
+<li>By the projective dimension theorem, \(\pi(\bar Y)\cap H_{ij}\ne\emptyset\). Fix a component \(Z\), and a chart \(\{k',l'\}\) with \(Z\not\subset H_{k'l'}\). This exists because \(Z\) is nonempty and all the \(H\) together have empty intersection.</li>
+<li>Transport \(W\) and \(\bar Y\) to \(X_{k'l'}\); both have dense parts off \(H_{kl}\cup H_{k'l'}\). Dimensions and \(K_X\) are preserved, and \(\pi(\bar Y)\) is unchanged.</li>
+<li>By Krull and properness, \(\bar Y\cap\pi^{-1}(H_{ij})\) has a component \(C\) mapping onto \(Z\), with \(\dim C\ge\dim Y-1\ge\dim W-3\). Since \(Z\not\subset H_{k'l'}\), \(C\setminus\pi^{-1}(H_{k'l'})\) is dense open in \(C\).</li>
+<li>\(C\) lies in a component \(W'\) of \(W\cap\pi^{-1}(H_{ij})\) with \(\pi(W')\supset Z\), so \(\pi(W')\not\subset H_{k'l'}\), and \((W',\{k',l'\})\) is a member of dimension \(\dim W-1\). Then \(\dim K_X^\circ(W')\ge\dim C\ge\dim W'-2\), which contradicts the induction hypothesis. \(\square\)</li>
+</ul></li>
+</ul>
+<p><strong>How it compares with the absolute condition.</strong> Each cut uses an \(H\not\supset\pi(W)\). So if \(L\) is the intersection of the hyperplanes cut so far, a linear space, then \(\pi(W)\subset L\) with \(\dim L=\dim W\), and transport and taking components preserve this. Hence \(d_\Sigma(p)\le\dim W\) for every \(p\in\pi(W)\), where \(d_\Sigma(p)\) is the dimension of the stratum of \(p\). The absolute condition (F) of the stratified transfer, \(\dim(K_X\cap\pi^{-1}(p))\le d_\Sigma(p)-3\), therefore implies (F\(_{\rm rel}\)) off the chart boundary. So (F\(_{\rm rel}\)) is weaker by \(\dim W-d_\Sigma(p)\) at each point.</p>
+<p><strong>Why the base is plausible (heuristic, not part of the theorem).</strong> \(\mathcal K\) has codimension \(3\) in \(\operatorname{Gr}\). If fibre pieces met it in the expected dimension, \(\dim(K_X\cap W\cap\pi^{-1}(p))\) would be \(\dim(W\cap\pi^{-1}(p))-3\le\dim W-3\). No group moves the fibre pieces, so no Kleiman-type theorem applies. The heuristic only says that (F\(_{\rm rel}\)), unlike (F), is not expected to fail for dimension reasons alone.</p>
+<p><strong>What the base still contains.</strong> Each cut lowers the dimension by exactly \(1\), so members of dimension at most \(2\) arise after at least \(N-4\) cuts. By the \(L\) argument they lie over flats of dimension at most \(2\), that is over configurations with at most four positions. Their points off the chart boundary must have no contact at all, along the specific cut families. As in the earlier caution, this conclusion is stronger than the contact bound itself.</p>
+<p><strong>Relation to the previous entry.</strong> The <a href="#cube-contact-stratified-transfer">stratified transfer</a> is correct. Its hypothesis (F) implies (F\(_{\rm rel}\)) and is expected to fail for \(N\ge6\), so it is superseded as a route by this relative form. Its proposed next step, to measure fibre dimensions before testing (F), is replaced: fibre dimensions no longer decide whether the base is plausible.</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 2 of the all-N mechanism review. <strong>Follow-up.</strong> Developed: the transfer now has a base condition of the expected dimension.</p>
+<p><strong>Remaining gap.</strong> (F\(_{\rm rel}\)) for every \(N\): no excessive contact on fibre pieces of the cut family, in particular no contact at points of members of dimension at most \(2\).</p>
+<p><strong>Dependencies re-read.</strong> The stratified transfer and its reviewer's caution (codimension of \(\mathcal K\), fibre dimensions); the boundary transfer lemma's setup and chart handling.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It confirmed that the family is well defined, the Krull dimension drop, the point and base cases, that \(H\not\supset\pi(Y)\) implies \(H\not\supset\pi(W)\), the nonemptiness, and the final inequality. Essential correction applied: members are pairs \((W,\{k,l\})\) off the chart's own hyperplane, with (F\(_{\rm rel}\)) and the conclusion restricted to points off \(H_{kl}\), because scale degenerations over \(H_{kl}\) would otherwise likely violate both. The proof now transports to a chart off a chosen meeting component. Further corrections: transport is defined only where it makes sense; the expected-dimension paragraph is labelled heuristic; the comparison with (F) is stated as the implication (F) \(\Rightarrow\) (F\(_{\rm rel}\)) via the flats \(L\); members of dimension at most two lie over configurations with at most four positions.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzg">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 42.84 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 8.00 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 31.56 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.28 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
