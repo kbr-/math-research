@@ -43,14 +43,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\), with no further per-size certificates. The <a href="#entry-2026-09-29-cube-all-n-mechanism-review">all-N mechanism review</a> fixes the target as the contact locus \(K=\{\operatorname{rank}A_{R+1}&lt;R\}\). It proposes induction over collision strata. And it finds that the six-root repeated factor of \(\Delta_W^{\rm nc}\) splits identically on two random lines (\(16\) linear, \(4\) quadratic, \(7\) cubic factors over \(\mathbb F_p\)), consistent with a union of low-degree components. A pure hyperplane arrangement is excluded by \(S_6\)-symmetry.</p>
-<p>Identify its components, cheapest first:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\), with no per-size certificates. The six-root repeated factor is <a href="#cube-six-root-repeated-factor-relations">not cut out by natural linear relations</a>, so explaining it for all \(N\) is paused.</p>
+<p>Formulate and prove the collision-strata transfer for the contact locus \(K=\{\operatorname{rank}A_{R+1}&lt;R\}\), for all \(N\), as set out in the <a href="#entry-2026-09-29-cube-all-n-mechanism-review">all-N mechanism review</a>:</p>
 <ul>
-<li>Evaluate candidate \(S_6\)-orbits of linear relations (the \(6\)-orbit \(a_i=\)mean of the others, the \(10\)-orbit \(a_i+a_j+a_k=a_l+a_m+a_n\), and other orbits whose sizes add to \(16\)) at the sixteen rational roots of the two recorded lines.</li>
-<li>For the quadratic and cubic parts, fit low-degree symmetric components from further lines.</li>
-<li>Then state for all \(N\) which special configurations produce repeated factors, prove that they do, and test the prediction against the recorded \(N=5\) and \(N=7\) squarefreeness.</li>
+<li>Start with the first step, from the separated locus to the open one-double-root stratum, where the confluent limit exists.</li>
+<li>State the pointwise escape condition as an inequality between the local exponents of the confluent limit, at the new collision point and at the branch points, and the rank drop of \(A_{R+1}\).</li>
+<li>Prove it for all \(N\) from the local exponent counts already proved for all \(N\): the <a href="#cube-wronskian-covariant-degrees">covariant degrees</a> and the <a href="#entry-2026-09-29-cube-confluent-weight-criterion">confluent exponents</a>.</li>
 </ul>
-<p>The collision-strata transfer for \(K\) comes after.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -27062,6 +27061,45 @@ using \(R-2N+3=(N-2)(N-3)/2\). Homogeneity gives the degrees of the coefficients
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-six-root-repeated-factor" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="ex:cube-six-root-repeated-factor-relations">
+<h3>29 September 2026 — The six-root repeated factor contains no hyperplane with small integer or Eisenstein coefficients</h3>
+<p class="entry-meta">Refutation: at its rational points on two random lines, no linear relation with small integer or Eisenstein coefficients holds; the fixed splitting pattern stays unexplained. Repeated factor cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-29-cube-all-n-mechanism-review">all-N mechanism review</a> asked what makes \(\Delta_W^{\rm nc}\) non-squarefree at \(N=6\). If the repeated factors come from special configurations describable for every \(N\), squarefreeness could be proved for \(N\ge7\) off an explicit exception set. The review's test found the degree-\(45\) exponent-four factor splitting identically on two random lines. It proposed checking natural \(S_6\)-orbits of linear relations first, since that is cheapest. This cycle runs that check. Outcome: no natural linear relation holds, and the pattern is unexplained.</p>
+<p><strong>General statement.</strong> The line's all-\(N\) claim is <code>conj:cube-offcollision-contact-bound</code>. The hypothesis tested here, that the six-root repeated factor is a union of natural linear loci, is refuted by <code>ex:cube-six-root-repeated-factor-relations</code>.</p>
+<h4 id="cube-six-root-repeated-factor-relations">The check</h4>
+<p><code>bmd_cube_repeated_factor_relations.py</code> works on each line \(a(u)=\alpha+u\beta\) over \(\mathbb F_p\), \(p=2^{61}-1\), with seeds \(20260929\) and \(20260930\). It regenerates \(\alpha,\beta\) exactly as the certificate program does, computes the \(\mathbb F_p\)-rational roots \(u_0\) of the exponent-four factor, sixteen on each line, and searches at each configuration \(a(u_0)\):</p>
+<ol>
+<li>every translation-invariant relation \(\sum c_ia_i=0\) with \(c_i\in\mathbb Z\), \(\sum c_i=0\), first with \(|c_i|\le2\) (<code>relations.txt</code>), then with \(|c_i|\le5\) (<code>relations-c5.txt</code>). This covers \(5a_i=\sum_{j\ne i}a_j\) (\(a_i\) the mean of the others), \(a_i+a_j=a_k+a_l\), \(a_i+a_j+a_k=a_l+a_m+a_n\), arithmetic triples \(a_i-2a_j+a_k\), and every other relation with entries at most \(5\);</li>
+<li>every relation with \(c_i\in\{0,\pm1,\pm\omega,\pm\omega^2\}\), \(\omega\) a primitive cube root of unity in \(\mathbb F_p\), \(\sum c_i=0\) (<code>omega-relations.txt</code>). This covers equilateral triples \(a_i+\omega a_j+\omega^2a_k=0\) and other Eisenstein relations.</li>
+</ol>
+<p>A chance hit has probability at most about \(11^5/p\), respectively \(7^6/p\), per point, below \(10^{-11}\). The negative controls at random points of each line found no relations. The positive control at the collision parameter \(u_{01}\), where \(a_0=a_1\), found exactly \((1,-1,0,0,0,0)\) on both lines (<code>relations-control.txt</code>).</p>
+<p><strong>Result.</strong> No relation of either kind holds at any of the \(32\) points. A hyperplane \(c\cdot a=0\) with \(c\) integral, or Eisenstein, meets a random line in exactly one \(\mathbb F_p\)-rational point when \(c\cdot\beta\not\equiv0\). If it were a component of the exponent-four locus, that point would be among the tested roots. So none of the hyperplanes in the two coefficient sets is a component of the exponent-four part of \(\Delta_W^{\rm nc}\bmod p\): not the mean orbit (\(6\)), the \(10\)-orbit \(a_i+a_j+a_k=a_l+a_m+a_n\), the \(45\) relations \(a_i+a_j=a_k+a_l\), the arithmetic triples, or the equilateral triples. The inference to characteristic zero is heuristic (a random line and a large prime). Points on nonlinear components are not tested by this search.</p>
+<p><strong>What remains unexplained.</strong> A geometrically irreducible factor of degree \(45\) would generically give varying patterns on random lines, by a Hilbert irreducibility and Chebotarev heuristic. The fixed pattern \(16+4\cdot2+7\cdot3\) on two lines fits a union of hyperplanes. But a pure hyperplane arrangement conflicts with \(S_6\)-symmetry (review), and the natural small relations are now excluded. The remaining possibilities are these:</p>
+<ul>
+<li>hyperplanes with coefficients larger than \(5\), or irrational other than the tested Eisenstein coefficients, among the sixteen rational ones. Hyperplanes over fields that do not split modulo \(p\) would give the quadratic and cubic factors instead;</li>
+<li>cross-ratio conditions (harmonic, equianharmonic), the natural nonlinear candidates, which have not been tested;</li>
+<li>components of degree at least two whose sections happened to split alike on both lines;</li>
+<li>a structure making the sections non-generic.</li>
+</ul>
+<p>Since \(N=6\) lies outside statement 3, this line of inquiry is useful only if it predicts repeated factors for \(N\ge7\). It has not yet done so, and it is paused in favour of the all-\(N\) transfer lemma.</p>
+<p><strong>Remaining gap.</strong> The collision-strata transfer for the contact locus \(K\) for all \(N\), with pointwise escape. The identity of the six-root repeated factor is open.</p>
+<p><strong>Dependencies re-read.</strong> The all-N mechanism review (Lead 3 and its test); the certificate program's line generation (<code>bmd_cube_wronskian_discriminant.c</code>, splitmix64 draws \(\alpha_i,\beta_i\) interleaved).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It verified that the script reproduces the certificate's line draws exactly, by comparing the regenerated \(\alpha,\beta\) with the JSON, and that both searches are exhaustive for their coefficient sets, including the normalizations and the gcd filter. Corrections applied: the exclusion now states that no listed hyperplane is a component modulo \(p\), because the line meets each in a rational point; the characteristic-zero inference is marked heuristic; a positive control was added and passed; the hedges on irrational coefficients and on generic patterns were added; the title names the coefficient sets.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzd">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 38.26 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">45.57 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 29.83 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 8.46 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11.17 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.23 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
