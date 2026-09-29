@@ -43,13 +43,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). By the <a href="#cube-cluster-renormalization">cluster renormalization</a>, the flat limit at a cluster of \(m\) roots can be non-canonical only if the cluster's shape tends to the \(m\)-root boundary divisor \(\{F_m=0\}\), or if the arc is hierarchical. Triple roots have <a href="#cube-triple-cluster-fibre">point fibres</a>. The base condition (F\(_{\rm rel}\)) at single clusters is therefore concentrated on \(\{F_m=0\}\) and on hierarchical arcs, for \(m\ge4\).</p>
-<p>Next, a quadruple root, for every \(N\):</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for every \(N\ge7\). The <a href="#cube-boundary-pencil">boundary pencil</a> shows that a single cluster contributes at most one fixed line from its shapes of mark weight at most one. Larger fibres can come only from shapes of mark weight at least two, and from hierarchical arcs.</p>
+<p>A route review is due next. It should assess whether the contact route has become an induction on the cluster size, with this induction hypothesis: the weight-\(\ge w\) locus of \(m\)-root shapes has codimension at least \(w\), for \(m&lt;N\). The review should also check the following:</p>
 <ul>
-<li>At a smooth point of the cubic \(\{F_4=0\}\) in the shape plane, determine the order sequence of \(\Lambda_C(u)\) at \(T=0\). Then determine the limits along arcs that approach the cubic at rates comparable to \(h\), which is expected to give one extra parameter.</li>
-<li>Bound the fibre over a quadruple point by this data and compare it with the flat dimension \(N-5\). Where the fibre dimension principle does not suffice, reduce contact to a rank condition on explicit rows, as for two double roots.</li>
+<li>whether this is weaker than, equal to, or stronger than the contact bound itself;</li>
+<li>whether the EPD presentation \(C^c\cong(P/\mathcal L(J))(-4)\), now linked to the pair rows, gives it directly;</li>
+<li>which multi-cluster configurations remain.</li>
 </ul>
-<p>The same analysis at a general \(m\) would give the induction on \(m\) that the base condition needs.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -27808,6 +27808,115 @@ If \(\dim W_T=R\), the fibre of the graph closure over \(p\), in any chart off \
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 8.18 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.78 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.28 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-29-cube-boundary-pencil" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-29-cube-transfer-route-review:1" data-claims="lem:cube-boundary-pencil cor:cube-single-cluster-line">
+<h3>29 September 2026 — At a boundary shape of mark weight one, every cluster limit lies on one fixed pencil, for every m and N</h3>
+<p class="entry-meta">Working proof by Plücker valuations under the scaling torus: under a dimension hypothesis, single-cluster fibres from shapes of mark weight at most one lie on a line or a point, independent of the shape. Exact controls at four roots. Boundary pencil cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-cluster-renormalization">cluster renormalization</a> left open the limits along arcs whose cluster shape tends to the \(m\)-root boundary divisor \(\{F_m=0\}\). The missing implication for (F\(_{\rm rel}\)) at a point with one \(m\)-cluster is a bound on the fibre that these arcs contribute, for every \(m\) and \(N\). This cycle derives the limits at shapes of mark weight one, the generic points of the divisor. The test ends with an explicit formula and exact controls.</p>
+<p><strong>General statement.</strong> <code>lem:cube-boundary-pencil</code> and <code>cor:cube-single-cluster-line</code>, for every \(N\) and \(m\ge2\).</p>
+<h4 id="cube-boundary-pencil">The boundary pencil</h4>
+<p><strong>Setup.</strong> As in the renormalization lemma: \(k=\binom m2\), \(\Lambda_C(u)\) is the pair space of the shape \(u\) on the columns \(T^0,\ldots,T^M\), and \(p_J(u)\) are its Plücker coordinates, the \(k\times k\) minors on column sets \(J\). Write \(|J|=\sum_{w\in J}w\), \(J_0=\{0,\ldots,k-1\}\) and \(J_1=\{0,\ldots,k-2,k\}\). As in <code>prop:cube-mark-weight-dictionary</code>, where weight measures the excess of the orders at the mark, the shape has <em>mark weight</em> \(0\) when \(p_{J_0}(u)\ne0\), i.e. \(F_m(u)\ne0\) for distinct entries. It has mark weight exactly \(1\) when \(p_{J_0}(u)=0\ne p_{J_1}(u)\), i.e. its orders at \(T=0\) are \(0,\ldots,k-2,k\). In general the weight is \(|P|-|J_0|\) for the pivot set \(P\) of the echelon form. By part (1) of the dictionary the vanishing orders of sections are the pivots plus \(2\). The dictionary is stated for the full \(N\)-root series, so its use for the \(m\)-root shape spaces is this identification, not a citation.</p>
+<p><strong>Lemma (boundary pencil).</strong> Let the cluster move along an analytic (or Puiseux) arc \(a_c(t)=x(t)+h(t)u_c(t)\), with \(x(t)\to x_0\), \(0\ne h(t)\to0\), and \(u(t)\to u^*\). Suppose \(u^*\) has mark weight at most \(1\), i.e. \((p_{J_0}(u^*),p_{J_1}(u^*))\ne(0,0)\). This forces the entries of \(u^*\) to be distinct, since repeated entries make the pair rows dependent. Then the limit
+\[
+(a:b)=\lim_{t\to0}\bigl(p_{J_0}(u(t)):h(t)\,p_{J_1}(u(t))\bigr)\in\mathbb P^1
+\]
+exists, and the rows of the cluster span in the limit
+\[
+P_{(a:b)}=\bigl(\mathrm{Pol}_{&lt;k-1}+\langle aT^{k-1}+bT^k\rangle\bigr)U_{x_0}.
+\]
+This space does not depend on \(u^*\). Over an algebraically closed field, every \((a:b)\) is attained at every shape \(u^*\) of weight exactly one. Choose a direction \(v\) along which \(p_{J_0}(u^*+sv)\) has finite order \(r\ge1\) in \(s\); one exists because \(p_{J_0}\) is not identically zero. Then the arcs are:</p>
+<ul>
+<li>\(u=u^*+\lambda tv\) with \(h=t^r\), which gives \((\lambda^rc:p_{J_1}(u^*))\) with \(c\ne0\); as \(\lambda\) ranges this covers every point except \((1:0)\);</li>
+<li>\(h=t^{r+1}\), which gives \((1:0)\);</li>
+<li>fixed shapes, which give \((0:1)\).</li>
+</ul>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>The cluster rows span \(\Lambda_C(u(t))D_{h(t)}U_{x(t)}\). Since \(D_h\) is diagonal, the Plücker coordinates of \(\Lambda_C(u)D_h\) are \(p_J(u)h^{|J|}\).</li>
+<li>\(|J_0|\) is the least value of \(|J|\), and \(J_1\) is the only set with \(|J|=|J_0|+1\). Every other \(J\) has \(|J|\ge|J_0|+2\). The \(p_J(u(t))\) are bounded and \(p_{J_1}(u(t))\to p_{J_1}(u^*)\).
+<ul>
+<li>If \(p_{J_1}(u^*)\ne0\), divide the Plücker vector by \(h^{|J_0|+1}\). The \(J_0\) coordinate is \(p_{J_0}(u(t))/h\), the \(J_1\) coordinate tends to \(p_{J_1}(u^*)\ne0\), and all others are \(O(h)\). The projective limit is \(a\,e_{J_0}+b\,e_{J_1}\).</li>
+<li>If \(p_{J_1}(u^*)=0\), then \(p_{J_0}(u^*)\ne0\) by hypothesis. Dividing by \(h^{|J_0|}\) gives \(e_{J_0}\) in the limit, with \((a:b)=(1:0)\).</li>
+</ul>
+Along analytic arcs the ratio has a limit in \(\mathbb P^1\).</li>
+<li>The decomposable vector \(a\,e_{J_0}+b\,e_{J_1}\) is the Plücker vector of \(\mathrm{Pol}_{&lt;k-1}+\langle ae_{k-1}+be_k\rangle\), since \(e_0\wedge\cdots\wedge e_{k-2}\wedge(ae_{k-1}+be_k)=ae_{J_0}+be_{J_1}\). The Plücker embedding is closed, so the limit of the spaces is this space. Then \(U_{x(t)}\to U_{x_0}\).</li>
+<li>For attainment: with \(u\) fixed, \(p_{J_0}=0\), which gives \((0:1)\). With \(u=u^*+\lambda tv\), \(p_{J_0}(u(t))=c\lambda^rt^r+O(t^{r+1})\). Dividing by \(h\,p_{J_1}\) with \(h=t^r\) or \(t^{r+1}\) gives the stated ratios. When \(p_{J_0}(u(t))/h\) is unbounded, the limit is \((1:0)\), in agreement with the displayed ratio. \(\square\)</li>
+</ol>
+<p>The mechanism is general. For any arc, the limit Plücker vector is supported on the sets \(J\) minimizing \(\operatorname{ord}_tp_J(u(t))+|J|\operatorname{ord}_th\). The canonical limit and the pencil are the first two faces. Shapes of mark weight \(w\) bring faces with \(|J|\le|J_0|+w\).</p>
+<h4 id="cube-single-cluster-line">Single clusters</h4>
+<p><strong>Corollary.</strong> Let \(3\le m&lt;N\). For \(m=2\) the statement is vacuous (\(k=1\), \(p_{J_0}=1\)). Let \(p\) have one \(m\)-cluster at \(x_0\), with the other roots distinct from each other and from \(x_0\). Put
+\[
+W_{(a:b)}=P_{(a:b)}+\langle\varphi^{(i)}(x_0)\varphi_z:i&lt;m\rangle+\langle\varphi_z\varphi_{z'}\rangle,
+\]
+and assume (\(H_m\)): \(\dim W_{(a:b)}=R\) for every \((a:b)\).</p>
+<ol>
+<li>Every limit along an analytic arc (curve selection) whose shape limit \(u^*\) has mark weight at most \(1\) is a point of \(L_p=\{W_{(a:b)}\}\). This set is a line when \(T^kU_{x_0}\notin W_{(1:0)}\), and a point otherwise. If \(\{F_m=0\}\) has a shape of weight exactly \(1\), then every point of \(L_p\) is attained, by the lemma's arcs.</li>
+<li>The contact minors of \(W_{(a:b)}\) are linear in \((a,b)\). So the contact set on \(L_p\) is empty, a point or the whole line. It is empty iff the projection of \([W_{(1:0)}\text{ basis};T^kU_{x_0}]\) to \(T^0,\ldots,T^{R+1}\) has rank \(R+1\).</li>
+<li>If the fibre over \(p\) is exactly \(L_p\), then (F\(_{\rm rel}\)) holds at \(p\) whenever \(N\ge m+5\). In the projective parameter space of dimension \(N-2\), the flat of \(p\) has dimension \(N-m-1\). Every flat containing \(p\) contains it, since flats are intersections of hyperplanes, so members through \(p\) have dimension at least \(N-m-1\). The contact set has dimension at most \(1\). Otherwise, normalize every arc as \(x+hu\) with \(h\) the cluster diameter, so that \(u\) is bounded and \(u^*\) is not constant. The remaining limits then come only from shapes of mark weight at least \(2\), and from hierarchical arcs, meaning \(u^*\) has repeated entries. The renormalization lemma's third source, a shape limit \(\Lambda^*\) outside the big cell with distinct \(u^*\), is covered here because \(\Lambda_C\) is continuous at shapes with distinct entries.</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>The cross rows and the rows between the other roots converge as in the renormalization lemma, along every arc. With the lemma, \(W_{(a:b)}\) lies in the flat limit, and (\(H_m\)) gives equality.</li>
+<li>Let \(C'\) be the common part, \(\mathrm{Pol}_{&lt;k-1}U_{x_0}\) plus the cross and pair rows (\(R-1\) vectors), and let \(x=T^{k-1}U_{x_0}\), \(y=T^kU_{x_0}\), all projected to \(T^0,\ldots,T^{R+1}\). Each \(R\times R\) minor of \([C';ax+by]\) is linear in \((a,b)\). Every \((a,b)\ne0\) gives rank \(R\) iff \(\operatorname{rank}C'=R-1\) and \(x,y\) are independent modulo \(C'\), i.e. iff \(\operatorname{rank}[C';x;y]=R+1\). Here \([C';x]\) is \(W_{(1:0)}\). This is the argument of <code>cor:cube-two-double-base-condition</code>.</li>
+<li>The flat of \(p\) is the intersection of \(m-1\) independent collision hyperplanes. \(\square\)</li>
+</ol>
+<p><strong>What this says about the fibres.</strong> Over the generic points of the boundary divisor, the exceptional limits do not depend on where on the divisor the shape lands. They all lie on the one pencil from the canonical limit (\((1:0)\)) to \(\mathrm{Pol}_{&lt;k-1}+\langle T^k\rangle\) (\((0:1)\)). So, under (\(H_m\)), a single cluster of any size contributes at most a line from its weight-\(\le1\) shapes. Larger fibres can come only from shapes of mark weight \(w\ge2\), which bring faces with \(|J|\le|J_0|+w\), and from hierarchical arcs. The weight-\(\ge2\) locus of \(m\)-root shapes belongs to the \(m\)-root instance of the weight stratification at the mark. Contact is the codimension-\(3\) Schubert condition on the last order, which is one component of the weight-\(\ge3\) locus, not all of it: pivots \(\{0,\ldots,R-4,R-2,R-1,R\}\) have weight \(3\) and no contact. If the weight-\(\ge w\) loci have codimension at least \(w\) for \(m&lt;N\), an induction on \(m\) becomes plausible. That is stated as the next question, not claimed.</p>
+<h4>Controls</h4>
+<p>The pencil formula was compared with exact \(t\)-saturated flat limits over \(\mathbb Q[t]\) (bmd_cube_boundary_pencil_control.gp, <a href="https://github.com/kbr-/math-research/blob/main/research/results/bmd-20260929-zzm/boundary-pencil-control.txt">output</a>). The comparisons use \(m=4\), at the shapes \(u^*=(0,1,2,3)\) with simple root \(1\) (\(N=5\)) and \(u^*=(0,1,3,4)\) with simple roots \(1,\tfrac52\) (\(N=6\)). Both have \(p_{J_0}=0\) and \(p_{J_1}\ne0\) (\(\tfrac{42525}{32768}\) and \(\tfrac{3444525}{32768}\)).</p>
+<ul>
+<li>For the fixed shape and for two transversal directions \(v\), with \(h=t\), the predicted \(W_{(a:b)}\) equals the limit in all six cases.</li>
+<li>The canonical \(W_{(1:0)}\) differs from all six.</li>
+<li>The endpoint \(W_{(0:1)}\) equals the limit exactly for the fixed shapes.</li>
+<li>No limit has contact. At three points of each line, this rules out contact along the whole line, but not a single contact point, so it does not verify the emptiness in (2).</li>
+</ul>
+<p>These are controls of the proved lemma. No finite-check claim is registered.</p>
+<p><strong>Record link.</strong> The Laplace equation of the <a href="#cube-double-cluster-osculating-limit">osculating lemma</a>, in the symmetric form \(G_{ss}+sG_{sq}+qG_{qq}+\tfrac52G_q=0\), is the record's EPD operator \(\mathcal L=\partial_s^2+s\partial_s\partial_v+v\partial_v^2+\tfrac52\partial_v\) of <code>prop:cube-epd-presentation-first-class</code>. The sign convention \(1-sT+vT^2\) there is immaterial, since \(\mathcal L\) is invariant under \(s\mapsto-s\). That proposition presents the full defect as \(C^c\cong(P/\mathcal L(J))(-4)\), in characteristic zero for \(N\ge5\). The previous two entries did not cite it. So the pair rows are values of \(\mathcal L\)-harmonic series, and the cluster limits in these entries are jets of them. This ties the contact route to the EPD presentation of the defect, which the route may use later.</p>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 1 of the <a href="#entry-2026-09-29-cube-transfer-route-review">transfer route review</a>. <strong>Follow-up.</strong> Developed: the valuation argument now covers the generic points of the boundary divisor, by torus faces of the Plücker vector.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(\(H_m\)) and the rank condition of (2) for general \(N\);</li>
+<li>shapes of mark weight at least \(2\), and the codimension of that locus in the \(m\)-root shape space;</li>
+<li>hierarchical arcs with shared valuations;</li>
+<li>clusters meeting other clusters;</li>
+<li>the members of dimension \(0\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The cluster renormalization lemma (scaling and translation identities, cross rows); the mark weight dictionary (orders at the mark, weight); the two-double-root corollary (linearity of the contact minors); the EPD presentation proposition (operator and presentation).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections. It confirmed the following:</p>
+<ul>
+<li>the Plücker coordinates \(p_J h^{|J|}\), and that \(J_1\) is the only set above \(J_0\) at the next weight;</li>
+<li>the two cases, the identification of the limit, the translation step, linearity and the "iff";</li>
+<li>the threshold \(N\ge m+5\) and the record link, including the chain-rule derivation of \(\mathcal L\) and its invariance under \(s\mapsto-s\);</li>
+<li>every control bullet against the output.</li>
+</ul>
+<p>Corrections applied:</p>
+<ul>
+<li>analytic arcs are assumed, with curve selection;</li>
+<li>attainment is proved with arcs of order \(r\), and \((1:0)\) is included;</li>
+<li>"line" becomes "line or point", under (\(H_m\));</li>
+<li>contact is described as one Schubert component of the weight-\(\ge3\) locus;</li>
+<li>faces with \(|J|\le|J_0|+w\);</li>
+<li>arcs are normalized by the cluster diameter, and "hierarchical" is defined;</li>
+<li>the flat-dimension step is spelled out;</li>
+<li>the rank argument is written out;</li>
+<li>the scope of the EPD proposition is stated;</li>
+<li>\(3\le m&lt;N\);</li>
+<li>the identification of mark weight for shape spaces is stated;</li>
+<li>the scope of the controls is stated.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260929-zzm">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 18.44 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 10.81 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">42.11 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 21.89 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.29 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">3.34 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
