@@ -43,14 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For (K):
-<ul>
-<li>every two-cluster neck obeys the <a href="#cube-cluster-limit-filtration">cost filtration</a>;</li>
-<li>the pair necks are solved;</li>
-<li>the <a href="#cube-two-cluster-space-rule">space rule</a> predicts every other neck's limit space, confirmed on three held-out sizes;</li>
-<li>the \((1,2,2,6)\) spine limit is clean at generic cross-ratio.</li>
-</ul></p>
-<p>Next, the remaining fully clean types at \(N=11\): \((1,2,3,5)\), \((2,2,2,5)\) and \((2,2,3,4)\). Together with \((1,2,2,6)\) they span. Assemble each spine limit from the multi-cluster classes, with each neck's limit computed exactly at the chosen shapes. Test at random cross-ratios, modulo a prime, for points of weight at least two. A clean result for all four types would leave, for \(N=11\), the all-cross-ratio certificate, the special points and the degenerate tails.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For (K) at \(N=11\), all four spanning fully clean types have explicit spine limits of weight at most one off their special points at sampled cross-ratios (<a href="#entry-2026-09-30-cube-n11-spine-weights">eleven-root check</a>).</p>
+<p>Next, complete the spine part at \(N=11\) for every cross-ratio. For each of the four types, compute \(R(z,\mu)\) by interpolation in \(\mu\) (the \(\mu\)-dependence enters only through the positions), and its discriminant in \(z\). A point of weight at least two at some \(\mu\) needs a root of that discriminant, and weight three needs a common root with the next derivative, as in the <a href="#entry-2026-09-30-cube-fcurve-spine">boundary spine</a> certificate. Use a compiled kernel (FLINT) for the determinants and resultants if the gp sizes grow too large. Then turn to the special points, \(\infty\), and the tails and nodes.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33595,6 +33589,89 @@ and otherwise a hyperplane of it containing \(H^0(\mathcal O(a(c^*-1)p_1+b(c^*-1
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 55.63 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 28.22 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">25.28 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-n11-spine-weights" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-clean-spine-weight-one check:cube-n11-spine-weights">
+<h3>30 September 2026 — All four spanning fully clean types at eleven roots have spine limits of weight at most one off their special points, at sampled cross-ratios</h3>
+<p class="entry-meta">Finite check modulo a prime that the exactly assembled spine limits of (1,2,2,6), (1,2,3,5), (2,2,2,5) and (2,2,3,4) at N = 11 have only simple Wronskian zeros off the special points at two cross-ratios, and a conjecture for every N. Eleven-root spine cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The contact bound (K) at \(N=11\), the first open case of statement 3, needs the boundary-curve criterion on a spanning family. At \(N=11\) the fully clean types \((1,2,2,6)\), \((1,2,3,5)\), \((2,2,2,5)\) and \((2,2,3,4)\) span, and all four are needed (<a href="#entry-2026-09-30-cube-boundary-route-review">boundary review</a>, rank \(4\) of \(4\)). The <a href="#cube-pair-spine-limit">pair spine limit</a> tested the first. This cycle tests all four with no conjectural input: every neck is computed exactly at the chosen shapes.</p>
+<p><strong>General statement.</strong> <code>conj:cube-clean-spine-weight-one</code> for every \(N\ge11\); <code>check:cube-n11-spine-weights</code> is its finite check at \(N=11\).</p>
+<h4>Assembly and test</h4>
+<p>research/tools/bmd_cube_spine_weight_general.gp places a type \((n_1,\ldots,n_4)\) at \(q=(\mu,1,-1,0)\) with fixed rational shapes. It assembles the limit of \(V_a\) from the classes of <code>lem:cube-multicluster-spine-classes</code>:
+</p>
+<ol>
+<li>the empty-pattern class \(H^0(\mathcal O(\infty+\sum C_iq_i))\);</li>
+<li>the classes \(((z-q_s)(z-q_j))^{1/2}\mathcal P_{&lt;n_j}(u_j)\) of the single root;</li>
+<li>for two clusters of size at least two, \(((z-q_i)(z-q_j))^{1/2}L_{ij}\). Here \(L_{ij}\) is the exact flat limit of the two-cluster class, computed by valuation reduction over \(\mathbb Q[[\varepsilon]]\) in the frame \(w=(z-q_i)/(q_j-q_i)\) and transported back.</li>
+</ol>
+<p>It checks the count \(57=2+\binom{11}2\), the rank of every neck limit, and the weight-zero hypothesis of every cluster of size at least three (exact Taylor determinants).</p>
+<p>Modulo \(q=2^{61}-1\), it computes:
+</p>
+<ul>
+<li>the local exponent sets at the four special points;</li>
+<li>the determinant of the functions normalized to \(1\) at \(z_0\) in each square-root factor, squared and multiplied by the class factors \(((z_0-a)(z_0-b))^{d}\). This recovers \(W^2\), which is rational even for classes of odd dimension \(d\), as in \((1,2,3,5)\);</li>
+<li>\(Q_2=W^2\prod_x(z-x)^{-2\operatorname{ord}_x}\), interpolated from \(1701\) points and confirmed at three more;</li>
+<li>\(R=\gcd(Q_2,Q_2')\), checking \(Q_2=cR^2\).</li>
+</ul>
+<p>Weight at most one at every non-special finite point means that \(R\) is squarefree.</p>
+<p><strong>Shapes:</strong> pairs \((-2,3)\), \((-1,1)\), \((-1,2)\); triple \((-1,0,2)\); quadruple \((-3,-1,1,4)\); quintuple \((-4,-1,0,2,5)\); sextuple \((-5,-2,0,1,2,4)\), placed in that order of use. The cross-ratios are \(\mu=7/3\) and \(-11/5\).</p>
+<h4>Result</h4>
+<p><strong>Finite check.</strong> spine-weight-n11.txt; the Wronskian orders at \((\mu,1,-1,0)\) are those modulo \(q\), and are the same at both \(\mu\).</p>
+<table>
+<tr><th>Type</th><th>Wronskian orders</th><th>\(\deg R\)</th><th>\(\gcd(R,R')\)</th></tr>
+<tr><td>\((1,2,2,6)\)</td><td>\(-465,-804,-804,-1440\)</td><td>\(378\)</td><td>\(1\)</td></tr>
+<tr><td>\((1,2,3,5)\)</td><td>\(-465,-786,-1023,-1305\)</td><td>\(444\)</td><td>\(1\)</td></tr>
+<tr><td>\((2,2,2,5)\)</td><td>\(-786,-786,-786,-1245\)</td><td>\(468\)</td><td>\(1\)</td></tr>
+<tr><td>\((2,2,3,4)\)</td><td>\(-786,-786,-999,-1140\)</td><td>\(576\)</td><td>\(1\)</td></tr>
+</table>
+<p>All check points agree and \(Q_2=cR^2\). By construction \(R\) does not vanish at the special points, whose exact orders were divided out. So, at both cross-ratios and over \(\overline{\mathbb F}_q\), every non-special finite point of each spine limit has weight at most one. None has weight three.</p>
+<p><strong>Control.</strong> For \((1,2,2,6)\), the exactly computed necks reproduce the orders and \(\deg R=378\) of the <a href="#cube-pair-spine-limit">pair-spine check</a>, which used the neck theorems' formulas and other cross-ratios. A first run with too small an interpolation bound failed its check points for \((2,2,3,4)\), as a wrong degree must. The recorded run uses a bound of \(1700\).</p>
+<p><strong>Conjecture (clean spine weight one).</strong> For every \(N\ge11\), every fully clean type, generic shapes with every cluster of size at least three of weight zero at its mark, and generic cross-ratio, the spine limit of \(V_a\) along the linear \(\varepsilon\)-family has weight at most one at every point other than the four special points and \(\infty\). This is stronger than the criterion needs: weight at most two suffices.</p>
+<p>Evidence: the four \(N=11\) types above. The spine of \((1,1,1,N-3)\), free of weight three through \(N=7\) by the <a href="#entry-2026-09-30-cube-fcurve-spine">boundary spine check</a>, supports only the weaker bound "weight below three", and that type is not fully clean.</p>
+<h4>What the criterion still needs at eleven roots</h4>
+<p>The boundary-curve criterion (<code>lem:cube-contact-fcurve-criterion</code>, item 3) needs curves whose \(S_N\)-symmetrized classes span. Its conclusion follows because an effective divisor meeting none of them is numerically trivial on a spanning set. That argument uses only the classes of the curves. The family tested here is a spine with fixed smooth tails and varying cross-ratio. It is the image of \(\overline M_{0,4}\times\{\mathrm{pt}\}\) under the gluing map, and the tail moduli \(\prod\overline M_{0,n_i+1}\) are connected and rational. So it is algebraically, hence numerically, equivalent to an F-curve of the same partition. Item (3) of the criterion's proof uses only that \(D'\cdot F\ne0\) forces \(D'\) to meet \(F\), which holds for any curve in that class. So these curves may replace the one-dimensional boundary strata, provided their symmetrized classes span, as they do here.</p>
+<p>For the criterion at \(N=11\), each tested curve must avoid the closure of the image of \(W_3\) at every one of its points, including \(\infty\). That needs:
+</p>
+<ul>
+<li>every cross-ratio (a discriminant of \(R\) in \(\mu\), and the points where the spine degenerates);</li>
+<li>the special points and \(z=\infty\);</li>
+<li>the weights on the four tails and at the nodes;</li>
+<li>a characteristic-zero statement: the characteristic-zero exponents at the special points must equal the modulo-\(q\) ones in the table, and \(\deg R\) must be preserved modulo \(q\), or an exact computation must replace both;</li>
+<li>the translation from the linear \(\varepsilon\)-family to the closure of the image of \(W_3\), which is approached along arbitrary families. It needs either independence of the spine limit from the approaching family, or a limit-linear-series or admissible-covers argument; the criterion marks this step as heuristic.</li>
+</ul>
+<p>Statement 3 at \(N=11\) also needs the (B) side.</p>
+<p><strong>What this does to the route.</strong> At the first open size, every spine limit of the spanning family is now explicit and clean at sampled cross-ratios. The remaining needs for the (K) side at \(N=11\) are listed above. They include the translation from the linear family to arbitrary approaches, and the tail and node weights of multi-cluster spines, neither yet done in this record.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the items listed above for \(N=11\), then the same for \(12\le N\le60\) (with types having three large parts for even \(N\)), and the conjecture for all \(N\);</li>
+<li>the space rule for \(m,n\ge3\) (the exact necks made it unnecessary here);</li>
+<li>the (B) side.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The boundary-curve criterion (statement), the boundary review (spanning at \(N=11\)), the multi-cluster spine lemma, the pair spine check.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the class list against the multi-cluster lemma (count \(57\)), the transport of the neck limits, the normalization giving \(W^2\), the identification of the multiplicity of \(R\) with the weight, the interpolation and check points, and the criterion's proof. Verdict: pass with corrections, all applied:
+</p>
+<ul>
+<li>the normalization is described exactly;</li>
+<li>a tautological non-vanishing claim is marked as such;</li>
+<li>the equivalence with F-curves now rests on the gluing map and rational connected tail moduli, and its use in the criterion is checked;</li>
+<li>the translation from the linear family to arbitrary approaches is added to the needs;</li>
+<li>the route claim is softened;</li>
+<li>the conjecture's scope and evidence are corrected;</li>
+<li>the characteristic-zero item is made specific.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzd">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 10.95 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 46.91 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 54.69 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 7.11 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 22.11 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
