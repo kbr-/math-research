@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. Rings are simple at every merge. Far points are simple at \(n=1\) and at every merge of the eleven-root chain. For every \(n\), they are the Weierstrass points of an explicit \((n+k-1)\)-dimensional space \(X(n,k)\) (<a href="#cube-far-pure-reduction">pure reduction</a>).</p>
-<p>Next, for (K): simplicity for \(X(n,k)\) at \(n=2\), the first open case. \(X(2,k)\) has \(k-1\) integral polynomials and two half-integral functions. Reduce once more by the monic operator of the integral block \(P_3\), whose Wronskian must then be controlled, to a Wronskian of two functions. Look for a second-order equation satisfied by that pair, as \(G\) was for the binary face.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. Rings are simple at every merge. Far points are simple at \(n=1\) and at every merge of the eleven-root chain, and are computed modulo \(p\) by a <a href="#cube-far-modp-model">polynomial model</a>. For \(n\ge2\) and every size, far simplicity has no mechanism. It is the same obstacle as the (B) far polynomials.</p>
+<p>Next, for (K): develop the exponent-continuation lead. In the family \(F^{(\lambda)}(n,k)\), follow the far points as \(\lambda\) moves from \(\tfrac12\) toward a degenerate exponent, for example \(\lambda\to0\), where the classes merge and the limit may split into binary-face-like pieces. Compute the \(\lambda\)-discriminant for \((2,3)\) modulo a prime by sampling \(\lambda\) and interpolating, and locate its zeros relative to the segment \((0,\tfrac12]\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -38237,6 +38237,62 @@ the Frobenius (Pólya–Mammana) factorization. It follows by induction on \(s\)
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">50.78 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.82 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-far-modp-model" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-far-modp-model">
+<h3>2 October 2026 — Modulo an odd prime the far polynomial is the Wronskian of an explicit polynomial space, but the integer-exponent spaces behind it have unstructured discriminants</h3>
+<p class="entry-meta">Working proof that far polynomials reduce modulo p to Wronskians of polynomial spaces with exponent (p+1)/2; the hoped-for small-prime discriminants over Q are refuted where computed. Far modular model cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Far simplicity for \(n\ge2\) is the obstacle of the merge chain (<a href="#entry-2026-10-02-cube-far-simplicity-review">far simplicity review</a>). The <a href="#cube-far-pure-reduction">pure reduction</a> leaves a space \(X(n,k)\) that does not reduce further by classes. Its integral block \(P_3\) already has non-branch Wronskian zeros: by the same factorization they are those of \(A_1\oplus A_2\oplus B_3\), \(4\) at \((2,3)\) and \(9\) at \((2,4)\) (test 3 of the pure-reduction script). Squarefreeness over \(\mathbb Q\) follows from squarefreeness modulo one prime \(p\) at full degree. This cycle asks what the far polynomial is modulo \(p\), and whether that gives a uniform prime.</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-modp-model</code>, for every \(n\ge1\), \(k\ge3\) and odd prime \(p\).</p>
+<h4 id="cube-far-modp-model">The modular model</h4>
+<p><strong>Lemma (modular model).</strong> Let \(p\) be an odd prime and \(h=(p+1)/2\). Let \(F_p(n,k)\) be the space of Laurent polynomials over \(\mathbb F_p\) spanned by:</p>
+<ul>
+<li>\(w^{-C},\ldots,w^{1+P}\);</li>
+<li>\(w^{h-(n-1)}\mathcal P_{&lt;(k-1)n}\);</li>
+<li>\((1-w)^h\mathcal P_{&lt;k-1}\);</li>
+<li>\(w^{h-(n-1)}(1-w)^h\mathcal P_{&lt;n}\).</li>
+</ul>
+<p>Take an integral basis of \(F(n,k)\) and \(R_{n,k}\) primitive, so that \(W(F(n,k))=c\cdot(\text{branch factors})\cdot R_{n,k}\) with \(v_p(c)\ge0\). Suppose \(p\nmid c\), equivalently \(W(F_p(n,k))\ne0\), and \(p\nmid R_{n,k}(0)R_{n,k}(1)\). Then \(R_{n,k}\bmod p\) is, up to a unit, the part of \(W(F_p(n,k))\) prime to \(w(w-1)\).</p>
+<p><strong>Proof.</strong> Work in the differential ring \(\mathcal R=\mathbb Z_{(p)}[w,w^{-1},(1-w)^{-1}][s,t]/(s^2-w,\ t^2-(1-w))\), with \(s'=s/(2w)\) and \(t'=-t/(2(1-w))\). Every basis function of \(F(n,k)\) lies in \(\mathcal R\).</p>
+<ul>
+<li>There \(s=w^h(s^{-1})^p\) and \(t=(1-w)^h(t^{-1})^p\) hold exactly, and \((s^{-1})^p\), \((t^{-1})^p\) are units whose derivatives are \(p\) times elements of \(\mathcal R\).</li>
+<li>Reduction \(\mathcal R\to\mathcal R\otimes\mathbb F_p\) is a ring homomorphism commuting with the derivation, so it commutes with forming Wronskians.</li>
+<li>Modulo \(p\), a \(p\)-th power \(\psi^p\) has zero derivative, so \((\psi^pg)^{(j)}=\psi^pg^{(j)}\) for every \(j\) by Leibniz. Each class of \(F(n,k)\) is \(\psi_c^p\), a unit depending only on the class, times the corresponding class of \(F_p(n,k)\).</li>
+</ul>
+<p>So \(W(F(n,k))\bmod p=\prod_c\psi_c^{p\dim_c}\,W(F_p(n,k))\), and the factors \(\psi_c^p\) are units of \(\mathcal R\otimes\mathbb F_p\). Since \(p\nmid c\), the reduction of \(c\cdot R_{n,k}\) is nonzero, and since \(p\nmid R_{n,k}(0)R_{n,k}(1)\), no root moves to \(0\) or \(1\). So the parts prime to \(w(w-1)\) agree up to a unit. \(\square\)</p>
+<p><strong>Consequence.</strong> If, for one admissible \(p\), the part of \(W(F_p(n,k))\) prime to \(w(w-1)\) is squarefree of degree \(\deg R_{n,k}\) (so \(p\) does not divide the leading coefficient), then \(R_{n,k}\) is squarefree over \(\mathbb Q\). \(F_p(n,k)\) is the reduction of the integer-exponent space \(F^{(h)}(n,k)\), in which the square roots are replaced by \(h\)-th powers. So a uniform mechanism could come from integer exponents: a closed form for the discriminant of \(R^{(h)}\) with only primes below \(2h-1\).</p>
+<p><strong>Check.</strong> <code>research/tools/bmd_cube_far_modp.gp</code> compares the model with the exact \(R_{n,k}\) at \((2,3),(3,3),(2,4)\) for every prime \(29\le p\le61\). They are equal in all \(27\) comparisons (research/results/bmd-20261002-d/far-modp.txt).</p>
+<h4>The integer-exponent route fails</h4>
+<p><code>research/tools/bmd_cube_far_integer_exponent.gp</code> computes \(R^{(h)}\) over \(\mathbb Q\) for \((2,3)\) and \((3,3)\), \(7\le h\le16\) (research/results/bmd-20261002-d/far-integer-exponent.txt).</p>
+<ul>
+<li>The degrees over \(\mathbb Q\) are \(8\) at \(h=7\) and \(12\) for \(h\ge8\) at \((2,3)\), against \(\deg R_{2,3}=6\). At \((3,3)\) they are \(3,8,13,18,23\) for \(h=7,\ldots,11\) and \(28\) for \(h\ge12\), against \(13\); they agree only at \(h=9\). When \(2h-1\) is an admissible prime and the degrees differ, the lemma forces the extra factor of \(R^{(h)}\bmod p\) to go to \(w\), \(w-1\) or a degree drop. That is a deduction; no script reduces \(R^{(h)}\) modulo \(p\).</li>
+<li>No \(h\) tested has all discriminant primes below \(2h-1\). In most rows the largest prime below \(10^5\) already exceeds \(2h-1\), and cofactors of \(20\) to \(278\) digits remain. The exception is \((3,3)\), \(h=7\), where the discriminant is fully factored with largest prime \(17&gt;13\). So no small-prime product formula makes \(R^{(h)}\) squarefree modulo \(2h-1\) in these cases.</li>
+<li>Every \(R^{(h)}\) computed is squarefree over \(\mathbb Q\). At \((2,3)\) none has real roots; at \((3,3)\) the number of real roots grows with \(h\) to \(6\).</li>
+</ul>
+<p>So the modular model is a fast exact tool for far polynomials modulo \(p\), with polynomial entries only. It does not by itself give a uniform prime, and at the exponents tested the integer-exponent spaces show no more structure than the half-integral ones.</p>
+<p><strong>Assessment for the route.</strong> Four routes to far simplicity for \(n\ge2\) are now closed or partial, each only in the form tested:</p>
+<ul>
+<li>hypergeometric equations of low order;</li>
+<li>reality of the roots;</li>
+<li>small-prime discriminants, including at integer exponents;</li>
+<li>further reduction by classes.</li>
+</ul>
+<p>The open leads are Bethe populations and exponent continuation. As the review found, the obstacle is shared with (B).</p>
+<p><strong>Remaining gap.</strong> Far simplicity for \(n\ge2\); the chain end; the assembly.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-pure-reduction (the classes and the reduced space); thm:cube-merge-far-count (the classes of \(F(n,k)\)).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the \(p\)-th power decomposition, the Leibniz step, the commutation of reduction with Wronskians, the scripts and the quoted numbers. Verdict: pass with corrections, all applied: the missing hypothesis \(p\nmid c\) is added and vacuous ones are removed or moved to the consequence, the proof works in an explicit differential ring, and the integer-exponent bullets state the actual degrees and the exception at \((3,3)\), \(h=7\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-d">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 39.08 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">6 min 31.45 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 5.17 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2.33 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
