@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved. For every \(N\), (K) rests on simplicity of the far polynomials \(R_{n,k}\), \(n\ge2\), the Wronskians of \(X(n,k)=P_3+w^{1/2-(n-1)}P_4\). Now \(P_4\) is proved to be \(w^K\) times a <a href="#cube-far-p4-jacobi">Jacobi space</a> given by a Rodrigues formula, and \(P_3\) is a two-run transform.</p>
-<p>Next, for (K) at every \(N\): write \(P_3\) the same way. Derive its Rodrigues-type formula with two Pochhammer runs, a Darboux transform of a Jacobi space. Then express \(R_{n,k}\) as one Wronskian of Jacobi-type polynomials in the variable \(t\) of the Klein cover, where both classes become polynomial. Test that form against the literature on zeros of Wronskians of Jacobi and exceptional Jacobi polynomials, including interlacing and simplicity results.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved. For every \(N\), (K) rests on simplicity of the far polynomials \(R_{n,k}\), \(n\ge2\). Both classes of \(X(n,k)\) are now explicit Rodrigues images: <a href="#cube-far-p4-jacobi">\(P_4\)</a> with one derivative block, <a href="#cube-far-p3-rodrigues">\(P_3\)</a> with two.</p>
+<p>Next, a route review for (K), due after one more research entry. That entry: use the two Rodrigues formulas to write \(R_{n,k}\) as a single Wronskian of derivative images. Integrate the Wronskian by the standard identity \(W(\partial^Df_1,\ldots)\), relating Wronskians of derivatives to Wronskians of larger spaces. Test whether \(R_{n,k}\) becomes, up to explicit factors, the Wronskian of one space of the form \(w^a(1-w)^b(\ldots)\) with a polynomial basis, which is the classical setting of Wronskians of Jacobi polynomials.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -39516,6 +39516,49 @@ N_0=\begin{pmatrix}s_i^{\,j}&amp;0\\ \frac{s_i^{\,j+1}}{j+1}&amp;s_i^{\,k}\end{p
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 5.74 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 32.46 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 33.15 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-far-p3-rodrigues" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-02-cube-first-order-review:1" data-claims="lem:cube-far-p3-rodrigues">
+<h3>2 October 2026 — The class P3 of every reduced far space has a two-step Rodrigues formula, so both classes of the rigid spaces are explicit derivative images of binomial-weighted polynomial spaces</h3>
+<p class="entry-meta">Working proof of a two-run Rodrigues formula for the class P3 for every n, k, checked against the pure reduction at seven sizes. P3 Rodrigues cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-far-p4-jacobi">P4 Jacobi theorem</a> wrote \(P_4\) with one Rodrigues operator and explained the non-hypergeometric class \(P_3\) as carrying two Pochhammer runs. To express the far polynomial \(R_{n,k}\) classically, \(P_3\) needs an equally explicit formula.</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-p3-rodrigues</code>, for every \(n\ge1\), \(k\ge2\).</p>
+<h4 id="cube-far-p3-rodrigues">The formula</h4>
+<p><strong>Setting.</strong> As in the P4 Jacobi theorem, with \(\beta_0=\tfrac12-(n-1)\), \(K=(k-1)n\), \(C=\binom n2\), \(P=\binom{k-1}2\), \(D=C+P+2\) and \(q=D+K\). \(P_3\) is defined by \((1-w)^{1/2-q}P_3=\pi(\theta)[(1-w)^{1/2}\mathcal P_{&lt;k-1}]\) (pure reduction). Put \(c_2=P+3-\beta_0-K\), \(\gamma_3=P+\tfrac72-k\) and \(B_3=-P-\tfrac32\).</p>
+<p><strong>Lemma (P3 Rodrigues).</strong></p>
+\[
+P_3=(1-w)^{q-\frac12}\,w^{P+2}\;w^{1-c_2}\,\partial^{K}\,w^{c_2+K-P-3}\,\partial^{C}\Big[w^{P+2+C}(1-w)^{B_3}\,\mathcal P_{&lt;k-1}\Big],
+\]
+<p>as spaces. The two blocks \(\partial^C\) and \(\partial^K\) come from the two Pochhammer runs \((\theta+P+3)_C\) and \((\theta+c_2)_K\). \(P_3\) has the common factor \(w^{P+2}\).</p>
+<p><strong>Proof.</strong> As in (a)–(f) of the P4 Jacobi theorem.</p>
+<p>(a) The coefficient of \(w^m\) in \(\pi(\theta)[(1-w)^{1/2}w^{j-1}]\) is \(b_{m-j+1}\pi(m)\), with \(\pi(m)=\prod_{e=-C}^{1+P}(m-e)\cdot\prod_{t&lt;K}(m-\beta_0-t)\). The first product vanishes for \(0\le m\le1+P\). For \(m\ge P+2\) the index \(P+3+\ell-j\ge P+4-k\ge2\), since \(P\ge k-2\), so every such term appears. With \(m=P+2+\ell\), it equals \((\ell+1)_D\), and the second equals \((\ell+c_2)_K\).</p>
+<p>(b) Since \(b_{P+3+\ell-j}=\Gamma(\ell+P+\tfrac52-j)/(\Gamma(-\tfrac12)\Gamma(\ell+P+4-j))\), the coefficient is \(\frac{\Gamma(\ell+\gamma_3)}{\Gamma(-1/2)\,\ell!}\,(\ell+P+3)_C\,(\ell+c_2)_K\,u_j(\ell)\). Here \(u_j(\ell)=(\ell+\gamma_3)_{k-1-j}(\ell+P+4-j)_{j-1}\), of degree \(k-2\). This uses \((\ell+1)_D/\Gamma(\ell+P+4-j)=(\ell+P+4-j)_{C+j-1}/\ell!\) and \((x)_{j-1+C}=(x)_{j-1}(x+j-1)_C\).</p>
+<p>(c) The \(u_j\), \(1\le j\le k-1\), span \(\mathcal P_{&lt;k-1}\), by the triangular evaluation at \(\ell=-\gamma_3-i\) as in the theorem. There \((\ell+\gamma_3)_{k-1-j}=(-i)_{k-1-j}\) vanishes exactly for \(i&lt;k-1-j\), while \((\ell+P+4-j)_{j-1}\) has half-integer arguments and is nonzero.</p>
+<p>(d)–(e) So the space is \(w^{P+2}(\theta+P+3)_C(\theta+c_2)_K\{p(\theta)(1-w)^{-\gamma_3}\}=w^{P+2}(\theta+P+3)_C(\theta+c_2)_K\big[(1-w)^{-\gamma_3-k+2}\mathcal P_{&lt;k-1}\big]\), with \(-\gamma_3-k+2=B_3\).</p>
+<p>(f) \((\theta+P+3)_C=w^{-P-2}\partial^Cw^{P+2+C}\) and \((\theta+c_2)_K=w^{1-c_2}\partial^Kw^{c_2+K-1}\). These commute, since both are polynomials in \(\theta\). Composing them gives the displayed formula.</p>
+<p>The exponents check: at \(1\), \(q-\tfrac12+B_3-C-K=0\). At \(0\), the inner block leaves \(w^{P+2}\), the outer block returns \(w^{0}\), and the prefactor gives \(w^{P+2}\). \(\square\)</p>
+<p><strong>Check.</strong> <code>research/tools/bmd_cube_far_p3_rodrigues.gp</code>, exact over \(\mathbb Q\), at \((n,k)=(1,3),(2,3),(3,3),(2,4),(4,3),(3,4),(2,5)\). Output: <code>research/results/bmd-20261002-w/far-p3-rodrigues.txt</code>. The span of the formula equals the span of \(P_3\) from the pure reduction at every size: the ranks are \(k-1\), and so is the rank of the stacked matrix. The rank script does not check the common factor. As a comparison with earlier output, the predicted \(w^{P+2}\), namely \(w^3,w^5,w^3,w^8,w^5\) at \((2,3),(2,4),(3,3),(2,5),(3,4)\), matches the factors removed in the <a href="#cube-far-classes-hypergeometric">hypergeometric test</a>.</p>
+<p><strong>What this gives.</strong> Both classes of every rigid far space are now explicit.</p>
+<ul>
+<li>\(P_4\) is a single Rodrigues image \(\partial^D\) of \(w^{A}(1-w)^{B}\mathcal P_{&lt;n}\) (P4 Jacobi theorem).</li>
+<li>\(P_3\) is a double image, \(\partial^K\circ w^{(\cdot)}\circ\partial^C\), of \(w^{P+2+C}(1-w)^{-P-3/2}\mathcal P_{&lt;k-1}\).</li>
+</ul>
+<p>The middle multiplication by \(w^{c_2+K-P-3}\) is where invariance is lost. Heuristically: after the inner block we expect the space to be invariant under a hypergeometric operator with exponent \(P+2\) at \(0\), by the argument of the P4 theorem. Multiplying by \(w^{c_2+K-P-3}\) moves that exponent to \(c_2+K-1\), which is presumably not an exponent of the intertwined operator. The outer \(\partial^K\) would then act on a space that is not invariant under the operator it intertwines. Exponents alone do not exclude invariance under some other hypergeometric operator. This is the precise form of the earlier explanation; it is still not a proof that \(P_3\) is never hypergeometric. Spaces of this form, Rodrigues images with an intermediate multiplication, resemble the Darboux (Christoffel) transforms used to build exceptional Jacobi polynomials; the exact correspondence has not been checked.</p>
+<p><strong>Remaining gap.</strong> For every \(N\): rigid simplicity for \(n\ge2\), the squarefreeness of the Wronskian of \(P_3+w^{1/2-(n-1)}P_4\). Both classes are explicit, and the Wronskian is not yet in closed form.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the P4 Jacobi theorem (method) and the pure reduction (the definition of \(P_3\)). One fresh-context medium reviewer: pass with corrections, all applied. They cover the factor naming in (c), the index range in (a), the sizes and scope of the common-factor comparison, and the heuristic labelling of the lost-invariance explanation and of the Darboux remark.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-w">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 45.70 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 13.96 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">20.46 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 11.02 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
