@@ -43,8 +43,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, has no mechanism. For (B), the far polynomials have a regular 2-adic structure at six sizes (<a href="#cube-far-two-adic-clusters">far 2-adic clusters</a>).</p>
-<p>Next, for (B): compute the second level of the 2-adic cluster tree at the six sizes. Rescale the slope-\(2\) clusters, \(x=4y\) at \(0\) and similarly at \(-1\) and \(\infty\). Test whether the reduction modulo \(2\) is again supported at \(\{0,1,\infty\}\) with valuations \(2-2^{-j}\). In parallel, try to prove the mod-2 shape from the integral recursion \(q_{m+1}=2(\alpha-m)(1+x)q_m+2(\beta-m)xq_m+2x(1+x)q_m'\), by a 2-adic valuation reduction of the row space as in the far class determinants.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, has no mechanism. The far half of (B) has a regular first 2-adic level but no uniform mechanism (<a href="#entry-2026-09-30-cube-far-two-adic-level-two">far two-adic level two</a>).</p>
+<p>Next, for (B): return to the neck, conj:cube-neck-hankel-leading.</p>
+<ul>
+<li>Re-read the neck Hankel review, the last-block theorem and the secant lead in full.</li>
+<li>State the node form of the secant lead exactly.</li>
+<li>Test whether it proves the vanishing of the patterns below the balanced one for all block sizes, the piece the review named as remaining.</li>
+</ul>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -35352,6 +35357,44 @@ For \(r=3\), degrees \(\deg G\le2\) survive at \((1,1)\), \(\le9\) at \((1,2)\) 
 <tr><td>Computation design and coding</td><td class="elapsed">4 min 51.27 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">56.39 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">5 min 38.52 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-far-two-adic-level-two" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="check:cube-far-two-adic-level-two">
+<h3>30 September 2026 — One level down, the 2-adic clusters of the far polynomials have residues in F_4, F_8 and larger fields, so the tree is not self-similar</h3>
+<p class="entry-meta">Finite check, refuting an unregistered hypothesis: after rescaling the valuation-2 clusters, the unit roots reduce to points of F_4, F_8 and F_1024, not of P^1(F_2). Far two-adic level two cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> conj:cube-far-two-adic-clusters describes the first level of the 2-adic cluster tree of the far polynomials \(W_k\): roots near \(0,-1,\infty\), with valuations \(2\) or \(2-2^{-j}\). Its next step asked whether the tree is self-similar. After rescaling a valuation-2 cluster, \(x=4y\) at \(0\) (\(x=4y-1\), \(x=1/(4y)\) at \(-1\), \(\infty\)), are the unit roots again at \(F_2\)-rational points? If so, a uniform rule might predict the whole tree, and with it the absence of triple roots, for every \((e,l)\). If not, the tree is a certificate method, computed size by size.</p>
+<p><strong>General statement.</strong> The hypothesis tested is the self-similar extension of <code>conj:cube-far-two-adic-clusters</code>, for every \((e,l)\). The check is <code>check:cube-far-two-adic-level-two</code>.</p>
+<h4>Check</h4>
+<p>research/tools/bmd_cube_far_two_adic_level2.gp (far-two-adic-level2.txt) reads the exact determinants of cycle bmd-20260930-zzw. For each of the six sizes and each special point, it forms the rescaled primitive polynomial \(V(y)\) and factors it modulo \(2\).</p>
+<ul>
+<li>The unit roots reduce to roots of \(y^3+y^2+1\) (in \(\mathbb F_8\)) at five of the six sizes, of \(y^2+y+1\) (in \(\mathbb F_4\)) at \((1,2)\), \((2,1)\), \((1,3)\), \((3,1)\), and at \((1,3)\), \((3,1)\) of a degree-\(10\) irreducible (in \(\mathbb F_{1024}\)).</li>
+<li>The residue \(1\) occurs as well, with multiplicities up to \(74\) at \((2,2)\).</li>
+<li>So the second level is not supported at \(F_2\)-rational points, and the self-similar extension is refuted.</li>
+</ul>
+<p>The residue-field degrees match the \(\mathbb Q_2\)-factorization of the previous cycles. At \((1,1)\), each special point carries \(y+1\) and \(y^3+y^2+1\) once, and the factors over \(\mathbb Q_2\) near each point have degrees \(1\) and \(3\). The residues show where the unramified part of the 2-adic factorization comes from; the valuations \(2-2^{-j}\) give its totally ramified part.</p>
+<h4>Reading</h4>
+<p>The 2-adic tree of the far polynomials is regular at its first level (conj:cube-far-two-adic-clusters), but it branches into residue extensions of degrees \(2\), \(3\) and \(10\) one level down. No uniform rule in \((e,l)\) is visible there. So the tree predicts the absence of triple roots only as a per-size computation: the \(\mathbb Q_2\)-factorization, equivalent to squarefreeness at that size. The Newton-polygon lead of the contact type review and this 2-adic refinement are therefore certificate methods for (B)'s far half, not mechanisms. The first-level conjecture stands as a structural statement.</p>
+<p><strong>What this does to the route.</strong> The far half of (B) is back to having no uniform mechanism. The neck half, conj:cube-neck-hankel-leading with the last-block theorem, is the part of (B) the neck Hankel review judged furthest along. It names the node form of the secant lead as the way back. (K) remains the highest risk.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(K) for \(N\ge11\);</li>
+<li>(B): far polynomials without triple roots for every \((e,l)\); neck points of weight at most two; odd \(N\);</li>
+<li>(L) at \(N=11\), awaiting approval.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> conj:cube-far-two-adic-clusters and its outputs; the neck Hankel review (assessment, next step).</p>
+<p><strong>Verification gate.</strong> A finite check with an exact computation modulo \(2\) of exact integer polynomials; its scope, six sizes and one rescaling level, is stated. No new theorem or conjecture is registered, so no reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzx">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 20.57 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 10.79 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 9.30 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.34 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
