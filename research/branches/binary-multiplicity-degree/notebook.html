@@ -47,12 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) (<a href="#entry-2026-10-01-cube-discriminant-route-review">discriminant route review</a>). The candidate mechanism is peeling singles into a cluster one at a time, as in the (B) peeling.</p>
-<p>Next, for (K):</p>
-<ul>
-<li>Prove the merge lemma \(V(n,1,\ldots)\to V(n+1,\ldots)\) for every \(n\). Its Toeplitz determinant in \(\binom{1/2}{j}\) is nonzero for \(n\le16\); identify it with a hook-content evaluation.</li>
-<li>Then describe the Wronskian root groups at a merge and what discriminant reducedness requires there, following thm:cube-base-peeling-degeneration.</li>
-</ul>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\). The <a href="#cube-single-merge">single-merge lemma</a> gives a peeling chain \(V_a\to V(2)\to\cdots\to V(N-3)\) of explicit spaces without shape parameters.</p>
+<p>Next, for (K): compute the far limit of a single merge. That is the space in the chart \(w=(z-p_0)/\varepsilon\) with \(p_0,p_1\) at \(0,1\), of the classes involving \(p_0\) or \(p_1\). Find its Weierstrass points, their count, and whether they are simple, following thm:cube-base-peeling-degeneration. Check the count identity with the near limit \(V(n+1)\) at small \(n\) and \(k\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -37252,6 +37248,68 @@ where \(f_0=z^{-(\alpha+1)}\) and \(f_1=(z-1)^{-\beta}\), and \(\kappa_r\) depen
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 14.27 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 7.09 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.33 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-01-cube-single-merge" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-01-cube-discriminant-route-review:1" data-claims="lem:cube-single-merge">
+<h3>1 October 2026 — Merging one point into a collapsed cluster keeps the spine space in its class, by a hook-content evaluation; the original pair space is the first term of a peeling chain</h3>
+<p class="entry-meta">Working proof of the single-merge lemma for the spine spaces V(n; p_0; p_1, …, p_k), for every n; the peeling chain for the discriminant route. Single merge cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-01-cube-discriminant-route-review">discriminant route review</a> proposed peeling singles into a cluster one at a time, as the (B) peeling does for doubles. The first requirement is closure. The spine space of an \(n\)-cluster with singles should tend, when one more single merges into the cluster point, to the spine space of an \((n+1)\)-cluster. The review's test found the relevant determinant nonzero for \(n\le16\). This cycle proves closure for every \(n\).</p>
+<p><strong>General statement.</strong> <code>lem:cube-single-merge</code>, for every \(n\ge1\) and every number of singles.</p>
+<h4 id="cube-single-merge">The lemma</h4>
+<p><strong>Definition.</strong> For \(n\ge1\) and distinct points \(p_0,p_1,\ldots,p_k\) of \(\mathbb C\), put \(C=\binom n2\) and \(u=(z-p_0)^{-1}\). Let \(V(n;p_0;p_1,\ldots,p_k)\) be the direct sum of:</p>
+<ul>
+<li>the empty class \(E=H^0(\mathbb P^1,\mathcal O(\infty+C\,p_0))=\langle1,z,u,\ldots,u^C\rangle\);</li>
+<li>for each \(j\ge1\), the class \(S_j=((z-p_0)(z-p_j))^{1/2}\,\mathcal P_{&lt;n}(u)\);</li>
+<li>for each \(1\le j&lt;l\le k\), the class \(((z-p_j)(z-p_l))^{1/2}\).</li>
+</ul>
+<p>Its dimension is \(2+C+kn+\binom k2\). For \(n=1\) it is the pair space \(V_a\) of the \(k+1\) roots \(p_0,\ldots,p_k\). For \(n\ge2\) it is the spine limit of an \(n\)-cluster at \(p_0\) with singles \(p_1,\ldots,p_k\), at fixed cluster shape \(b\) with \(V_b\) of weight \(0\) at its mark (automatic for \(n=2\)). That is lem:cube-multicluster-spine-classes, extended from four points to any number: parts (1) and (2) of its proof go class by class, and each class involves only its own points. The lemma below does not use this identification; it concerns the spaces \(V(n;\ldots)\) as defined.</p>
+<p><strong>Lemma (single merge).</strong> As \(p_1=p_0+\varepsilon\to p_0\), with the other points fixed, the flat limit of \(V(n;p_0;p_1,\ldots,p_k)\) is \(V(n+1;p_0;p_2,\ldots,p_k)\).</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Splitting by classes.</em> For every \(\varepsilon\), each function of the space has a monodromy character around the fixed points \(p_2,\ldots,p_k\), and the character subspaces are independent. The classes \(E\oplus S_1\), \(S_j\oplus((z-p_1)(z-p_j))^{1/2}\) for \(j\ge2\), and \(((z-p_j)(z-p_l))^{1/2}\) for \(2\le j&lt;l\) lie in distinct character subspaces. So the flat limit is the direct sum of their flat limits. The dimensions agree:
+\[2+C+kn+\tbinom k2=2+\tbinom{n+1}2+(k-1)(n+1)+\tbinom{k-1}2 .\]</li>
+<li><em>The merged pair joins the empty class.</em> For \(0\le i&lt;n\), \(((z-p_0)(z-p_1))^{1/2}u^{i}=u^{i-1}(1-\varepsilon u)^{1/2}=\sum_t c_t\varepsilon^tu^{t+i-1}\), with \(c_t=(-1)^t\binom{1/2}t\) the coefficients of \((1-x)^{1/2}\). Here \(u^{-1}=z-p_0\), and \(E=\langle u^{-1},u^0,\ldots,u^C\rangle\). Modulo \(E\), and after dividing by the harmless factor \(\varepsilon^{C+1-i}\), the \(i\)-th function is \(\sum_{r=1}^{n}A_{ir}\varepsilon^ru^{C+r}+O(\varepsilon^{n+1})\), with \(A_{ir}=c_{C+1+r-i}\). If \(A\) is invertible, left multiplication by \(A^{-1}\) gives the functions \(\varepsilon^ru^{C+r}+O(\varepsilon^{n+1})\), \(r=1,\ldots,n\). Dividing the \(r\)-th by \(\varepsilon^r\) gives limits \(u^{C+r}\). So the flat limit of \(E\oplus S_1\) is \(E\oplus\langle u^{C+1},\ldots,u^{C+n}\rangle=H^0(\mathcal O(\infty+\binom{n+1}2p_0))\). With 1-based rows \(k=i+1\), \(A=M=(c_{m+r-k})_{k,r=1}^n\), \(m=C+2\).</li>
+<li><em>The determinant.</em> \(\det M\) is the Jacobi–Trudi determinant \(\det(h_{\lambda_k-k+r})\) of the rectangle \(\lambda=(m^n)\), under the specialization \(h_j\mapsto c_j\), that is \(\sum_jh_jx^j=(1-x)^{1/2}\). This is the specialization \(h_j\mapsto\binom{a+j-1}{j}\), \(\sum h_jx^j=(1-x)^{-a}\), at \(a=-\tfrac12\). By the hook-content formula, for positive integers \(a\),
+\[s_\lambda(1^a)=\prod_{x\in\lambda}\frac{a+c(x)}{h(x)} .\]
+Both sides are polynomials in \(a\): the left one through Jacobi–Trudi. So the formula holds at \(a=-\tfrac12\), and \(\det M=\prod_{x\in\lambda}(c(x)-\tfrac12)/h(x)\ne0\), since the contents \(c(x)\) are integers.</li>
+<li><em>The classes through a third point.</em> For \(j\ge2\),
+\[((z-p_1)(z-p_j))^{1/2}=((z-p_0)(z-p_j))^{1/2}\sum_ic_i\varepsilon^iu^i .\]
+Modulo \(S_j\) its first term is \(c_n\varepsilon^nu^n\), and \(c_n\ne0\). So the class tends to \(((z-p_0)(z-p_j))^{1/2}\mathcal P_{&lt;n+1}(u)\), the class of \(V(n+1)\).</li>
+<li><em>The rest.</em> The classes of two singles other than \(p_1\) do not move. \(\square\)</li>
+</ol>
+<p><strong>Check.</strong> The review's test script <code>research/tools/bmd_cube_merge_toeplitz.gp</code> used the index \(c_{C+1+r-k}\), the rectangle \(((C+1)^n)\), one column off from the relevant \(((C+2)^n)\). Its nonvanishing for \(n\le16\) is still true, since every rectangle gives a nonzero hook-content product, but it was not the determinant of the merge. The proof above covers every \(n\) and needs no computation.</p>
+<h4>The peeling chain</h4>
+<p>Since \(V(1;p_0;p_1,\ldots,p_{N-1})=V_a\), repeated merges give a chain of iterated limits of the original space, each merge taken after the previous cluster has collapsed:
+\[V_a=V(1;\ldots)\to V(2;\ldots)\to\cdots\to V(N-3;p_0;p_1,p_2,p_3).\]
+Each step is a nested degeneration: a single approaches a cluster that has already collapsed. In \(\overline M_{0,N}\) these iterated limits describe a chain of boundary strata with one node more at each step, ending at a one-dimensional stratum (one modulus in \(\overline M_{0,N}\); the space itself is defined with \(\infty\) as a distinguished point). That description is not a proof that \(V(n)\) is the limit of \(V_a\) along every curve into those strata. That would need the Grassmannian-valued map to extend continuously there, and the weight-zero hypothesis is open at degenerate trees. The spaces \(V(n;\ldots)\) carry no shape parameters. So, as in the (B) peeling, the objects at each step are explicit.</p>
+<p>What the discriminant route now needs at each step is the analogue of the (B) peeling's near and far limits. The near limit is \(V(n+1)\) on the spine, by the lemma. The far limit is the space in the merge chart \(w=(z-p_0)/\varepsilon\), where \(p_0\) and \(p_1\) sit at \(0\) and \(1\). Its Wronskian roots form the groups whose discriminants must be reduced, and those groups depend only on \(n\) and \(k\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The far (merge-chart) limit at each step, its Weierstrass points, and their counts, as in thm:cube-base-peeling-degeneration.</li>
+<li>Reducedness of the discriminants of the resulting groups.</li>
+<li>The end of the chain, \(V(N-3;\ldots)\), whose discriminant in the cross-ratio must be squarefree.</li>
+<li>How reducedness along the chain gives reducedness of \(\Delta_W^{\rm nc}\), through the boundary reducedness criterion at the nested (chain) strata.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-multicluster-spine-classes (statement and proof, parts (1) and (2)); thm:cube-base-peeling-degeneration (statement); lem:cube-block-wronskian-ordinary (the Toeplitz binomial step, which uses the same hook-content products).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the definition and dimension, \(V(1)=V_a\), the character splitting, the expansion and indexing, the Jacobi–Trudi and hook-content step, step 4 and the check paragraph. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the identification with spine limits states the shape hypothesis and why the lemma extends from four points;</li>
+<li>the row index no longer clashes with \(k\);</li>
+<li>the flat-limit step is argued by inverting \(A\);</li>
+<li>the chain is stated as iterated limits, and the stratum description is labelled a description.</li>
+</ul>
+<p>The corrections restrict or complete the argument, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261001-s">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 24.03 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 9.28 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 14.61 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
