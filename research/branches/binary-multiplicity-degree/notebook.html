@@ -47,13 +47,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). The highest risk is squarefreeness of the rigid far polynomials \(R_{n,k}\) (lem:cube-far-u-space), needed by (B) and (K). The <a href="#entry-2026-10-03-cube-far-route-review">far route review</a> found them generic (\(\operatorname{Gal}(R_{2,3})=S_6\)) and closed the polynomial-structure routes. It recast squarefreeness as simple extra ramification in an osculating Schubert problem at \(0\), \(1\), \(\infty\).</p>
-<p>Next:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). Squarefreeness of the far polynomials \(R_{n,k}\), needed by (B) and (K), is blocked in every tested form. It is a <a href="#cube-far-schubert-dimension">special-member property</a> in a Schubert family of positive expected dimension. Meanwhile the necessary neck input of (B) has a working mechanism, the <a href="#cube-neck-atomic-laplace-bound">atomic Laplace bound</a>.</p>
+<p>Next, the two-minimizer condition of the peeling neck proposition at \(w=4\): at each breakpoint \(\alpha_c\), only \(W_c\) and \(W_{c+1}\) may minimize \(\operatorname{val}\det C[:,S]+\alpha_c\sum S\).</p>
 <ul>
-<li>Write down the ramification of the far space \(Y(n,k)\) at \(0\), \(1\) and \(\infty\).</li>
-<li>Compute the expected dimension of that Schubert problem with one double extra ramification point, the others simple.</li>
+<li>Extend the atomic Laplace bound to an arbitrary column set \(S\). The \(c'\) negative columns become a Schur-type minor of the vectors \(\nu(a)\), and the middle and high columns a general clearing.</li>
+<li>Derive a lower bound \(\Phi(S)\).</li>
+<li>Test whether \(\Phi(S)+\alpha_c\sum S\) exceeds the hull for every \(S\ne W_c,W_{c+1}\).</li>
 </ul>
-<p>If it is negative, show that the far space is a general point of the problem with simple extra points. The tools are Mukhin–Tarasov–Varchenko transversality and the Mukhin–Varchenko master functions.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -41011,6 +41011,47 @@ This follows from G. Szegő, Orthogonal Polynomials, (4.3.3) (norm of \(P_j^{(b-
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 10.29 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.20 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-far-schubert-count" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-far-route-review:1" data-claims="prop:cube-far-schubert-dimension">
+<h3>3 October 2026 — The far space lies in a family of spaces with its ramification at 0, ±1, ∞ of dimension 2 deg R, where double extra points form a nonempty divisor, so squarefreeness is a special-member property</h3>
+<p class="entry-meta">Working proof, by the Plücker formula, Eisenbud–Harris dimensional transversality and finiteness of the Wronski map, that the osculating Schubert family through each far space has dimension 2 deg R_(n,k) and a nonempty double-point divisor. Far Schubert cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-03-cube-far-route-review">far route review</a> recast squarefreeness of \(R_{n,k}\) as simple extra ramification of the far space \(Y(n,k)\), and asked whether an osculating Schubert count could exclude a double extra point.</p>
+<p><strong>General statement.</strong> <code>prop:cube-far-schubert-dimension</code>, for every \(n\ge2\), \(k\ge3\).</p>
+<h4 id="cube-far-schubert-dimension">The Schubert family through a far space</h4>
+<p><strong>Proposition.</strong> Characteristic zero. Let \(Y=Y(n,k)\) be the far space divided by its common factor \(u^j\), of dimension \(m=n+k-1\) (lem:cube-far-u-space), and \(d\) its largest degree. Let \(\mathcal F\) be the set of \(m\)-dimensional \(V\subset\mathcal P_{\le d}(u)\) whose ramification at \(u=0,1,-1,\infty\) is at least that of \(Y\) (\(\infty\) relative to \(d\)). Then:</p>
+<ol>
+<li>\(\mathcal F\) has dimension \(D=\sum_{p\notin\{0,\pm1,\infty\}}|\lambda_p(Y)|=2\deg R_{n,k}\);</li>
+<li>the spaces in \(\mathcal F\) with a non-simple extra ramification point form a nonempty divisor.</li>
+</ol>
+<p>So no dimension count forces \(Y\) to have simple extra ramification. Squarefreeness of \(R_{n,k}\) is the statement that the particular member \(Y\) avoids this divisor.</p>
+<p><strong>Proof.</strong> (1) By the Plücker formula for \(m\)-dimensional spaces of polynomials of degree at most \(d\), \(\sum_p|\lambda_p(V)|=m(d+1-m)\). The conditions at the four distinct fixed points are osculating Schubert conditions. By dimensional transversality (D. Eisenbud and J. Harris, Invent. Math. 74 (1983), characteristic zero), their intersection has exactly the expected dimension \(m(d+1-m)-\sum_{p\in\{0,\pm1,\infty\}}|\lambda_p(Y)|\), the total extra ramification of \(Y\). By lem:cube-far-u-space, the zeros of \(W_u(Y)\) off \(\{0,\pm1\}\), with multiplicities, are the square roots of the zeros of \(R_{n,k}\). The construction removes the factors \(w\) and \(w-1\) from \(R_{n,k}\), so \(R_{n,k}(0)R_{n,k}(1)\ne0\) and the extra degree is \(2\deg R_{n,k}\).</p>
+<p>(2) Near \(Y\), the ramification at the four points is exactly that of \(Y\), an open condition. So the extra factor of the Wronskian has fixed degree \(D\) there, and the Wronski map sends that open part of \(\mathcal F\) to the projective space of polynomials of degree \(D\), up to scalars, of dimension \(D\). The Wronski map on a Schubert intersection is finite. Its image is therefore \(D\)-dimensional, hence dense, and the map is dominant. The spaces with a non-simple extra point are the preimage of the discriminant hypersurface, a nonempty divisor of \(\mathcal F\). \(\square\)</p>
+<p><strong>What this shows.</strong> At \((2,3)\), \(\deg R=6\), so \(\dim\mathcal F=12\). The double-point locus has codimension one, so its expected dimension is positive, and no count excludes it. The far space is a special member, cut out by further conditions from the peeling degeneration. This is the obstacle the <a href="#entry-2026-10-03-cube-mod-p-review">mod-p review</a> met for (K): a special member of a large Schubert family.</p>
+<p>The transversality theorem of Mukhin–Tarasov–Varchenko is a different kind of statement: Wronski fibres are reduced, for real points. It does not concern simplicity of Wronskian zeros, and the far polynomials are <a href="#entry-2026-10-03-cube-far-real-zeros">not real-rooted</a>. So the first outside lead of the far route review does not apply in this form; the count does not falsify it.</p>
+<p>The Bethe-ansatz bridge survives in one form. A Mukhin–Varchenko master function whose critical points give exactly the far spaces would make their extra points distinct by construction. That needs the far spaces characterized as critical points, which the record does not have.</p>
+<p><strong>What remains.</strong> Squarefreeness of \(R_{n,k}\) for every \(n,k\), without mechanism; irreducibility would suffice. Both (B) and (K) need it. As when the mod-p review found (K) blocked in all forms, the next cycles work on the necessary input that has a mechanism: the remaining neck items of (B).</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-u-space (the zeros of \(W_u(Y)\) and \(R_{n,k}\), and the construction); the far route review.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked a first draft. Verdict: pass with corrections, applied:</p>
+<ul>
+<li>the extra degree uses \(R(0)R(1)\ne0\), which the construction ensures;</li>
+<li>\(d\) and \(\infty\) are fixed after removing the common factor;</li>
+<li>the actual dimension comes from Eisenbud–Harris transversality;</li>
+<li>the divisor claim is proved through finiteness and dominance of the Wronski map;</li>
+<li>an unjustified count for the symmetric subfamily was removed;</li>
+<li>the conclusion about the transversality lead is weakened to "not applicable in this form";</li>
+<li>\(\deg R_{2,3}=6\) is stated.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-o">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 11.93 s</strong></td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 10.45 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.48 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
