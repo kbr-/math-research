@@ -1,51 +1,42 @@
-\\ Review tests for far simplicity (2 October 2026; review cycle bmd-20261002-b).
-\\ farRl(n, k, lam): the far polynomial of F(n,k) with the square roots replaced by powers lam (lam = 1/2 is R_(n,k)).
-\\ Test 1 (generalized hypergeometric): do the coefficient ratios c_(m+1)/c_m of R_(n,k) in w fit P(m)/Q(m) with
-\\   deg P, deg Q <= 3?  (R = pFq(...; w) up to scaling iff such a fit exists with the pFq shape.)
-\\ Test 2 (reduction mod p): for primes 5 <= p < 60 not dividing denominators, is R mod p squarefree of full degree,
-\\   and how many roots does it have in F_p?
-\\ Test 3 (exponent family): for (n,k) = (2,3), the discriminant in w of farRl(2,3,lam) as a polynomial in lam: its
-\\   degree, its real roots, and its value at lam = 1/2.
-default(parisizemax, 2000000000);
+\\ Cheap tests of the far-polynomial route review (3 October 2026; cycle bmd-20261003-n)
+\\ (1) Filaseta combination: for each prime p <= deg R + 2, a factor of R over Q_p takes from each Newton segment of
+\\     slope a/b (lowest terms) a multiple of b roots; so the possible factor degrees over Q are the intersection over p
+\\     of the sets of sums of such multiples.  Irreducibility certificate iff only {0, deg} remain.
+\\ (2) Galois group of R_(2,3) (degree 6) with polgalois.
 OUT = getenv("OUT");
 emit(s) = print(s); if (OUT != 0 && OUT != "", write(OUT, s));
-farRl(n, k, lam) = {
-  my(C = n * (n - 1) / 2, P = (k - 1) * (k - 2) / 2);
-  my(F = [[0, 0, vector(C + 2 + P, t, 'w^(t - 1 - C))], [lam, 0, vector((k - 1) * n, t, 'w^(t - n))],
-    [0, lam, vector(k - 1, t, 'w^(t - 1))], [lam, lam, vector(n, t, 'w^(t - n))]]);
-  my(d = sum(c = 1, 4, #F[c][3]), M = matrix(d, d), row = 0);
-  for (c = 1, 4, my(a = F[c][1], b = F[c][2]);
-    foreach (F[c][3], f, row++; my(g = f);
+thetastep(p, alpha, beta, e) = { (1 - 'w) * ('w * deriv(p, 'w) + (beta - e) * p) - alpha * 'w * p; }
+stripw(N) = { while (subst(N, 'w, 0) == 0, N = N / 'w); while (subst(N, 'w, 1) == 0, N = N / ('w - 1)); N; }
+wr(cls) = {
+  my(d = sum(i = 1, #cls, #cls[i][3]), M = matrix(d, d), row = 0);
+  foreach(cls, c, my(a = c[1], b = c[2]);
+    foreach (c[3], f, row++; my(g = f);
       for (m = 1, d, M[row, m] = g; g = deriv(g, 'w) + (a / 'w + b / ('w - 1)) * g)));
-  my(N = numerator(matdet(M)));
-  while (subst(N, 'w, 0) == 0, N = N / 'w);
-  while (subst(N, 'w, 1) == 0, N = N / ('w - 1));
-  N;
+  stripw(numerator(matdet(M)));
 }
-fitratio(R, dP, dQ) = {
-  my(d = poldegree(R, 'w), c = vector(d + 1, m, polcoef(R, m - 1, 'w)), rows = List());
-  for (m = 0, d - 1, if (c[m + 1] != 0,
-    listput(rows, concat(vector(dP + 1, i, m^(i - 1) * c[m + 1]), vector(dQ + 1, i, -m^(i - 1) * c[m + 2])))));
-  my(A = Mat(Vec(rows))); A = matrix(#rows, dP + dQ + 2, i, j, rows[i][j]);
-  #matker(A);
+far(n, k) = {
+  my(hh = 1/2, C = n * (n - 1) / 2, P = (k - 1) * (k - 2) / 2, E = concat(vector(C + P + 2, t, t - 1 - C), vector((k - 1) * n, t, hh - (n - 1) + t - 1)), q = #E);
+  my(P3 = vector(k - 1, j, my(p = 'w^(j - 1), al = hh); for (i = 1, q, p = thetastep(p, al, 0, E[i]); al--); p));
+  my(P4 = vector(n, j, my(p = 'w^(j - 1), al = hh); for (i = 1, q, p = thetastep(p, al, hh - (n - 1), E[i]); al--); p));
+  my(R = wr([[0, 0, P3], [hh, 0, apply(p -> p * 'w^(-(n - 1)), P4)]]));
+  R / content(R);
 }
-test1() = {
-  foreach([[3, 3], [2, 4], [4, 3]], v, my(R = farRl(v[1], v[2], 1/2));
-    emit(Str("T1 (n,k)=", v, " deg ", poldegree(R, 'w), ": kernel dimension of the ratio fit with deg P, deg Q <= 3: ", fitratio(R, 3, 3))));
+\\ allowed factor degrees at p: subset sums of segment contributions, segment of length L and slope denominator b
+\\ contributes any multiple of b up to L
+allowed(Q, p) = {
+  my(S = newtonpoly(Q, p), d = poldegree(Q), A = vector(d + 1), segs = List(), c = 1);
+  for (i = 2, #S + 1, if (i <= #S && S[i] == S[i - 1], c++, listput(segs, [denominator(S[i - 1]), c]); c = 1));
+  A[1] = 1;
+  foreach(segs, s, my(B = vector(d + 1)); for (x = 0, d, if (A[x + 1], forstep(y = 0, s[2], s[1], if (x + y <= d, B[x + y + 1] = 1)))); A = B);
+  A;
 }
-test2() = {
-  foreach([[2, 3], [3, 3], [2, 4], [4, 3]], v, my(R = farRl(v[1], v[2], 1/2), R0 = R / content(R), d = poldegree(R0, 'w), sq = List(), nsq = List(), roots = List());
-    forprime(p = 5, 59, if (denominator(content(R)) % p != 0 && pollead(R0, 'w) % p != 0,
-      my(Rp = R0 * Mod(1, p)); if (poldegree(gcd(Rp, deriv(Rp, 'w))) == 0, listput(sq, p), listput(nsq, p));
-      listput(roots, [p, #polrootsmod(Rp, p)])));
-    emit(Str("T2 (n,k)=", v, " deg ", d, ": squarefree mod p for p in ", Vec(sq), "; not squarefree for ", Vec(nsq), "; roots in F_p ", Vec(roots))));
+main() = {
+  foreach(eval(getenv("CASES")), v, my(R = far(v[1], v[2]), d = poldegree(R), A = vector(d + 1, i, 1));
+    forprime(p = 2, d + 2, my(a = allowed(R, p)); A = vector(d + 1, i, A[i] && a[i]));
+    my(deg = select(x -> x > 0 && x < d, vector(d + 1, i, if (A[i], i - 1, -1))));
+    emit(Str("(n,k)=", v, ": deg ", d, "; proper factor degrees not excluded by Newton polygons at p <= deg+2: ", deg)));
+  my(R = far(2, 3));
+  emit(Str("Galois group of R_(2,3) (degree 6): ", polgalois(R)));
 }
-test3() = {
-  my(R = farRl(2, 3, 'l), D = poldisc(R, 'w), Dn = numerator(D), f = factor(Dn));
-  emit(Str("T3 (n,k)=(2,3): deg_w ", poldegree(R, 'w), ", disc numerator degree in lam ", poldegree(Dn, 'l), ", factor degrees ", apply(x -> poldegree(x, 'l), f[, 1]~),
-    ", real roots of each factor ", apply(x -> if (poldegree(x, 'l) > 0, polsturm(x), 0), f[, 1]~), ", value at lam = 1/2 nonzero: ", subst(Dn, 'l, 1/2) != 0));
-  emit(Str("T3 factors: ", f[, 1]~));
-}
-test1();
-test2();
-test3();
+main();
+quit
