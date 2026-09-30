@@ -33,7 +33,10 @@ rules to growing checklists or one-off setup narratives.
 - On opening a research cycle, state the concrete missing implication needed for
   the goal, how this task tests/discharges it, and what evidence ends the test or
   changes the next action. Route IDs are navigation, not a substitute for that
-  explanation or evidence of progress. Prioritize a necessary unproved obligation;
+  explanation or evidence of progress. Prioritize a necessary unproved obligation,
+  and among those the item the latest review names highest risk: work on it first,
+  developing its leads and bridges when it lacks a mechanism, rather than moving to
+  lower-risk items (user, 1 October 2026: "focus on highest risk item first");
   distinguish a sufficient endpoint from stronger conveniences before adding steps.
   Read **Open statements** first and name the statement and top-level remaining-route
   item advanced; do not inherit the previous entry's gap without assessing the line.
