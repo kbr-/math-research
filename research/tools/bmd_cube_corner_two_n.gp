@@ -53,8 +53,8 @@ main() = {
 \\ Cycle bmd-20261002-k: the lambda-reduction.  M_r(lambda') has rows B_l: (0 on r+1 extra columns | coordinates of B_l on e_0, v_1..v_B)
 \\ and rows A_1 B_l at lambda = 0: (Taylor coefficients rho_(l,0..r) of B_l at 0 | alpha_1 times the coordinates of B_l / z on e_0, v_1..v_B).
 \\ Claim: the coefficient of lambda^(r(r+1)) in the vertex minor is C_r det M_r(lambda'), C_r = det(alpha_(i+k))_(1<=i<=r+1, 0<=k<=r).
-lamred(n, r, TR) = {
-  my(A = r + 1, B = 2 * n - 2 - r, sp = vector(n, j, if (j == 1, 0, if (j == 2, 1, eval(Str("s", j))))));
+lamred(n, r, TR, spin = 0) = {
+  my(A = r + 1, B = 2 * n - 2 - r, sp = if (spin != 0, spin, vector(n, j, if (j == 1, 0, if (j == 2, 1, eval(Str("s", j)))))));
   my(M = matrix(2 * n, (r + 1) + 1 + B), row = 0);
   for (l = 0, n - 1, row++;
     for (b = l, l + TR, my(co = al(b) * 'L2^(b - l) * hk(b - l, sp[1..l + 1]), c = pf(0, b, 0, B));
@@ -75,4 +75,27 @@ checkred() = {
     my(lower = 1); for (i = 0, r * (r + 1) - 1, my(Ci = polcoef(D, i, 'L1)); for (j = 0, TR - i, if (polcoef(Ci, j, 'L2) != 0, lower = 0)));
     emit(Str("(2,", n, ") r=", r, ": no lambda-power below r(r+1): ", lower, "; lambda^(r(r+1)) coefficient = C_r det M_r up to lambda'^", pj, ": ", low))));
 }
-checkred();
+\\ Cycle bmd-20261002-m: the corner Hankel theorem.  Claim: det M_r(lambda') has lambda'-order exactly c(c+1), c = n-1-r,
+\\ with coefficient kappa_(n,r) H_(n-r)(s'), kappa_(n,r) a nonzero constant (independent of the shape).  Checked at two random
+\\ integer shapes (s'_1 = 0, s'_2 = 1) per (n, r): no lower lambda'-power, and the same nonzero ratio to H_(n-r) at both.
+\\ Also checks the proof's final identity det[s_i^j | 0; s_i^(j+1)/(j+1) | s_i^k] = const V(s)^2 H_(c+1)(s).
+hankelthm(NMAX) = {
+  setrand(20261002);
+  for (n = 2, NMAX, for (r = 0, n - 1,
+    my(c = n - 1 - r, TR = c * (c + 1), rat = vector(2), low = 1, rid = vector(2));
+    for (t = 1, 2,
+      my(sp = vector(n, j, if (j == 1, 0, if (j == 2, 1, random(61) - 30))));
+      while (#Set(sp) < n, sp = vector(n, j, if (j == 1, 0, if (j == 2, 1, random(61) - 30))));
+      my(D = lamred(n, r, TR, sp), H = matdet(matrix(c + 1, c + 1, i, j, sum(q = 1, n, sp[q]^(i + j - 2)))));
+      for (j = 0, TR - 1, if (polcoef(D, j, 'L2) != 0, low = 0));
+      rat[t] = polcoef(D, TR, 'L2) / H;
+      my(B = n + c - 1, N = matrix(2 * n, 2 * n), V = prod(i = 1, n, prod(j = i + 1, n, sp[j] - sp[i])));
+      for (i = 1, n, for (j = 0, B, N[i, j + 1] = sp[i]^j; N[n + i, j + 1] = sp[i]^(j + 1) / (j + 1));
+        for (k = 0, r, N[n + i, B + 2 + k] = sp[i]^k));
+      rid[t] = matdet(N) / (V^2 * H));
+    emit(Str("(2,", n, ") r=", r, " c=", c, ": no lambda'-power below c(c+1): ", low, "; coefficient/H_", c + 1, " at two shapes: ",
+      rat[1], ", ", rat[2], if (rat[1] == rat[2] && rat[1] != 0, " (equal, nonzero)", " (MISMATCH)"),
+      "; initial-matrix identity ratio: ", rid[1], ", ", rid[2], if (rid[1] == rid[2] && rid[1] != 0, " (equal)", " (MISMATCH)")))));
+}
+MODE = getenv("MODE");
+if (MODE == "hankelthm", hankelthm(7), checkred());
