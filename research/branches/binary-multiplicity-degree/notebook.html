@@ -47,13 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. The near and far limits of a merge are explicit, and the <a href="#cube-merge-far-count">far count</a> is proved. Far simplicity holds over \(\mathbb Q\) for \(n\le5\), \(k\le6\).</p>
-<p>Next, for (K):</p>
-<ul>
-<li>Find the neck rings at a merge, between the far scale \(|z-p_0|\asymp\varepsilon\) and the near scale.</li>
-<li>Check the count identity: the weight of \(V(n;k)\) equals the weight of \(V(n+1;k-1)\), plus the far count, plus the ring counts. The Plücker formula for \(V(n;\ldots)\) gives the left side from its exponents.</li>
-<li>Then ask what simplicity of the far and ring points gives for \(\Delta_W^{\rm nc}\) near the merge strata.</li>
-</ul>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. At each merge the Weierstrass points split without escape into near, far and \((n+1)(k-1)(k-2)\) ring points (<a href="#cube-merge-count-identity">merge count identity</a>).</p>
+<p>Next, for (K): locate the ring points of a merge. Expect \(2(n+1)\) points for each pair \(p_j,p_l\) of the remaining singles, at a scale between \(\varepsilon\) and \(1\), as roots of window binomials, as in the (B) neck windows. Find the window minors, their leading coefficients, and the conditions for simplicity.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -37435,6 +37430,93 @@ with \(E_x\) the sum of the exponents at \(x\).</p>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 29.93 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 59.20 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.59 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-01-cube-merge-count-identity" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-01-cube-discriminant-route-review:1" data-claims="thm:cube-merge-count-identity">
+<h3>1 October 2026 — At a single merge, the Weierstrass points split without escape into near, far and 2(n+1)·C(k−1,2) ring points</h3>
+<p class="entry-meta">Working proof of the count identity of a single merge, with the total weight of V(n; p_0; p_1..p_k) and the ring count; near- and far-chart counts agree. Merge count cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The peeling chain of the discriminant route needs, at each merge, the analogue of the (B) peeling's count identity. The Weierstrass points of \(V(n;k)\) near a merge should split into those of the near limit \(V(n+1;k-1)\), those of the far space \(F(n,k)\) (<a href="#cube-merge-far-count">far count</a>), and points at intermediate scales (rings). No point should escape into a branch point. This cycle computes all counts in closed form and checks the split from both charts.</p>
+<p><strong>General statement.</strong> <code>thm:cube-merge-count-identity</code>, for every \(n\ge1\), \(k\ge2\).</p>
+<h4 id="cube-merge-count-identity">The identity</h4>
+<p><strong>Setting.</strong> Characteristic zero; \(V(n;k)=V(n;p_0;p_1,\ldots,p_k)\) as in the <a href="#cube-single-merge">single-merge lemma</a>, with \(C=\binom n2\), \(d=2+C+kn+\binom k2\), \(B=\binom d2\), and generic points.</p>
+<p><strong>Theorem (merge count identity).</strong></p>
+<ol>
+<li><em>Exponents.</em> Within each monodromy character, the exponents of \(V(n;k)\) at its branch points are consecutive:
+<ul>
+<li>at a single \(p_j\): half-integral \(\tfrac12+\{0,\ldots,n+k-2\}\), integral \(0,\ldots,d-n-k\);</li>
+<li>at \(p_0\): half-integral \(\tfrac12-(n-1)+\{0,\ldots,kn-1\}\), integral \(-C,\ldots,1+\binom k2\).</li>
+</ul></li>
+<li><em>Total weight.</em> Let \(T(n,k)=\sum_x(E_x-B)\) over the non-branch points \(x\), \(\infty\) included, where \(\infty\) contributes \(E_\infty-B\) in \(t=1/z\). This is not a count of finite Weierstrass points: \(z\) has a pole at \(\infty\), and if the exponents there are \(-1,\ldots,d-2\), as for the pair space of three roots, then \(\infty\) contributes \(-d\). For example \(T(n,2)=-d\) for \(n=1,2,3\). Then \(T(n,k)=(k-1)B-E_{p_0}-kE_{p_j}\):
+\[T(n,k)=\tfrac14\bigl(k^4+4k^3n-6k^3+k^2n^2-13k^2n+9k^2-kn^2+5kn-4k-2n^2+2n-8\bigr).\]</li>
+<li><em>Split.</em> As \(p_1\to p_0\):
+\[T(n,k)=T(n+1,k-1)+\tfrac12(k-1)\bigl((3n-2)k+n^2-7n+4\bigr)+(n+1)(k-1)(k-2).\]
+The last term, the ring count, is the residual. It is nonnegative, and it counts the points at scales strictly between \(\varepsilon\) and \(1\).</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Exponents.</em> Each class space, after its square-root factor is removed, is either independent of the point in question or a block space.
+<ul>
+<li>At \(p_j\), the two character parts are spanned by functions that do not depend on \(p_j\): the half-integral part is \(\sqrt{z-p_j}\) times \(\langle\sqrt{z-p_0}\,u^i,\sqrt{z-p_l}:l\ne j\rangle\), and the integral part is \(E\oplus\bigoplus_{l\ne j}S_l\oplus\) the pairs avoiding \(j\). Each has a Wronskian that is not identically zero, so a generic point \(p_j\) is ordinary for it.</li>
+<li>At \(p_0\), the half-integral part \(\bigoplus_jS_j\) is, after \((z-p_0)^{n-1/2}\), the block space \(\bigoplus_j(z-p_j)^{1/2}\mathcal P_{&lt;n}(z-p_0)\) of lem:cube-block-wronskian-ordinary. That lemma makes it ordinary for generic \(p_j\).</li>
+<li>The integral part at \(p_0\) is \(\langle u,\ldots,u^C\rangle\) plus \(\langle1,z,\text{pairs}\rangle\). The latter does not depend on \(p_0\), so it is ordinary at a generic \(p_0\), with exponents \(0,\ldots,1+\binom k2\).</li>
+</ul></li>
+<li><em>Plücker on \(\mathbb P^1\).</em> For a \(d\)-dimensional space whose exponents at each point are distinct, as here, \(\sum_x(E_x-B)=-2B\) over all points of \(\mathbb P^1\), with \(\infty\) measured in \(t=1/z\). So \(T=-2B-\sum_{\rm branch}(E_x-B)\). Each genericity condition is Zariski-open, since \(W^2\) is rational in all the points, so all of them hold together. The \(k+1\) branch points give \((k-1)B-E_{p_0}-kE_{p_j}\).</li>
+<li><em>Near chart.</em> By Hurwitz at \(p_0\) in the near chart, the order of the near limit's Wronskian at \(p_0\), \(E_{p_0}(n+1,k-1)-B\), equals the sum of three things over the points tending to \(p_0\):
+<ul>
+<li>the forced orders \(E_{p_0}(n,k)-B\) and \(E_{p_1}(n,k)-B\);</li>
+<li>the far points;</li>
+<li>the ring points.</li>
+</ul>
+<p>Both \(V(n;k)\) and its near limit have dimension \(d\), so \(B\) is common.</p></li>
+<li><em>Far chart.</em> By Hurwitz at \(w=\infty\) in the far chart, the order \(E_\infty(F(n,k))-B\), with the exponents of the far count theorem, equals the sum of:
+<ul>
+<li>the forced orders of \(p_2,\ldots,p_k\);</li>
+<li>the non-branch contributions of the near limit, \(T(n+1,k-1)\), including that of \(z=\infty\), which also tends to \(w=\infty\);</li>
+<li>the ring points.</li>
+</ul></li>
+<li><em>Evaluation.</em> <code>research/tools/bmd_cube_merge_ring_count.py</code> evaluates all sums symbolically (<code>research/results/bmd-20261001-v/merge-ring-count.txt</code>). The near-chart ring count, the far-chart ring count and \(T(n,k)-T(n+1,k-1)-\text{far}\) all equal \((n+1)(k-1)(k-2)\). \(\square\)</li>
+</ol>
+<p><strong>No escape, and what the agreement means.</strong> No Weierstrass point tends to a branch point. This follows from three exponent equalities, by Hurwitz at each point:</p>
+<ul>
+<li>\(E_0(F)=E_{p_0}(n,k)\) and \(E_1(F)=E_{p_1}(n,k)\), so nothing tends to \(w=0\) or \(w=1\) in the far chart;</li>
+<li>\(E_{p_j}(n+1,k-1)=E_{p_j}(n,k)\) for \(j\ge2\), so nothing tends to \(p_j\).</li>
+</ul>
+<p>These hold term by term: \(P+k=1+\binom k2\), \(L+M-1=d-n-k\), and the half-integral sets coincide. The agreement of the two ring counts is therefore an algebraic consistency check of the bookkeeping, not independent evidence. Given the far count, it reduces to the first two equalities, and near chart equals identity reduces to the third. A first draft that forgot the near limit's points in the far chart failed it, which shows only that the bookkeeping is now consistent.</p>
+<p><strong>What it gives.</strong> At each step of the chain \(V_a=V(1)\to V(2)\to\cdots\), for generic \(p_2,\ldots,p_k\), the discriminant near the merge stratum is a product of three factors. The resultants between them are units times powers of \(\varepsilon\), since their points lie at different scales:</p>
+<ul>
+<li>the near factor, the discriminant of \(V(n+1)\) over its moduli;</li>
+<li>the far factor, which at leading order is a constant times a power of \(\varepsilon\) (distances in \(z\) are \(\varepsilon\) times those in \(w\)), since \(F(n,k)\) has no moduli;</li>
+<li>the ring factor.</li>
+</ul>
+<p>The far factor is nonzero exactly when \(R_{n,k}\) is squarefree, which the <a href="#cube-merge-far-limit">far check</a> shows for \(2\le n\le5\), \(3\le k\le6\). The ring count \(2(n+1)\binom{k-1}2\) suggests \(2(n+1)\) ring points for each pair of the remaining singles, of the window-binomial kind of the (B) necks, whose points are simple when two leading coefficients are nonzero.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The ring points: their location, as roots of window binomials, and their simplicity.</li>
+<li>Simplicity of the far points for every \((n,k)\).</li>
+<li>The end of the chain, \(V(N-3;3)\), with one modulus.</li>
+<li>The assembly: the boundary reducedness criterion at the nested strata of the chain, and the other strata, necks and pair collisions of singles.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-single-merge; lem:cube-merge-far-limit and thm:cube-merge-far-count (the far exponents at \(\infty\)); lem:cube-block-wronskian-ordinary; thm:cube-base-peeling-degeneration (the count identity as model).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the exponent sets and their sizes at every point, the block lemma at \(p_0\), the Plücker identity, and the tool's sums, including those of \(F(n,k)\) at \(\infty\). Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>\(T\) is defined as a sum including a negative contribution of \(\infty\), not as a count of finite points;</li>
+<li>the agreement of the two ring counts is recognized as an algebraic consistency, and no escape is derived from the three exponent equalities;</li>
+<li>the factorization is stated up to powers of \(\varepsilon\), at leading order and for generic points, with the correct range of the far check;</li>
+<li>the dependency on the far limit lemma is added.</li>
+</ul>
+<p>These correct and restrict statements without adding claims, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261001-v">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 37.75 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 6.41 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 29.91 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.29 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
