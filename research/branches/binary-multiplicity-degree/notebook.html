@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved. For every \(N\), (K) rests on simplicity of the far polynomials \(R_{n,k}\), \(n\ge2\), the Wronskians of \(X(n,k)=P_3+w^{1/2-(n-1)}P_4\). The <a href="#cube-far-classes-hypergeometric">hypergeometric test</a> finds \(P_4\) hypergeometric at four sizes, and \(P_3\) not.</p>
-<p>Next, for (K) at every \(N\): prove that \(P_4\) is hypergeometric for every \((n,k)\), with explicit \((\alpha,\beta)\). \(P_4\) is the image of \(w^{s}(1-w)^{1/2}\mathcal P_{&lt;n}\) under the operator \(\prod(\theta-e)\), so it is built by Euler operators. Then identify \(P_3\): check whether it becomes hypergeometric under a conjugation by a smaller power of \(w\), or after a first-order operator, as \(D^2\) does at \(n=1\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved. For every \(N\), (K) rests on simplicity of the far polynomials \(R_{n,k}\), \(n\ge2\), the Wronskians of \(X(n,k)=P_3+w^{1/2-(n-1)}P_4\). Now \(P_4\) is proved to be \(w^K\) times a <a href="#cube-far-p4-jacobi">Jacobi space</a> given by a Rodrigues formula, and \(P_3\) is a two-run transform.</p>
+<p>Next, for (K) at every \(N\): write \(P_3\) the same way. Derive its Rodrigues-type formula with two Pochhammer runs, a Darboux transform of a Jacobi space. Then express \(R_{n,k}\) as one Wronskian of Jacobi-type polynomials in the variable \(t\) of the Klein cover, where both classes become polynomial. Test that form against the literature on zeros of Wronskians of Jacobi and exceptional Jacobi polynomials, including interlacing and simplicity results.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -39457,6 +39457,66 @@ N_0=\begin{pmatrix}s_i^{\,j}&amp;0\\ \frac{s_i^{\,j+1}}{j+1}&amp;s_i^{\,k}\end{p
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">38.93 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.92 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-far-p4-jacobi" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-02-cube-first-order-review:1" data-claims="thm:cube-far-p4-jacobi">
+<h3>2 October 2026 — The class P4 of every reduced far space is w^K times a Jacobi-type space, by a Rodrigues formula; the class P3 carries two Pochhammer runs instead of one</h3>
+<p class="entry-meta">Working proof that P4 is invariant under an explicit hypergeometric operator for every n, k, with the parameters found in the test; an explanation, not a proof, of why P3 is not. P4 Jacobi cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-far-classes-hypergeometric">hypergeometric test</a> found the class \(P_4\) of \(X(n,k)=P_3+w^{1/2-(n-1)}P_4\) invariant under \(w(1-w)\partial^2+(\alpha+\beta w)\partial\) at four sizes, with \((\alpha,\beta)=(\tfrac32,9),(\tfrac52,8),(\tfrac12,15),(\tfrac72,12)\), and \(P_3\) not invariant. Is \(P_4\) hypergeometric for every \((n,k)\), and why?</p>
+<p><strong>General statement.</strong> <code>thm:cube-far-p4-jacobi</code>, for every \(n\ge1\), \(k\ge2\).</p>
+<h4 id="cube-far-p4-jacobi">P4 is a Jacobi space</h4>
+<p><strong>Setting.</strong> As in the <a href="#cube-far-pure-reduction">pure reduction</a>:</p>
+<ul>
+<li>\(C=\binom n2\), \(P=\binom{k-1}2\), \(K=(k-1)n\), \(\beta_0=\tfrac12-(n-1)\);</li>
+<li>\(E=\{-C,\ldots,1+P\}\cup\{\beta_0+t:0\le t&lt;K\}\), \(q=|E|\), and \(\pi(x)=\prod_{e\in E}(x-e)\);</li>
+<li>\(P_4\) is defined by \((1-w)^{1/2-q}w^{\beta_0}P_4=\pi(\theta)\big[(1-w)^{1/2}w^{\beta_0}\mathcal P_{&lt;n}\big]\), with \(\theta=w\,d/dw\).</li>
+</ul>
+<p>Put \(D=C+P+2\), \(c=\beta_0+K-1-P\) and \(\gamma=K-n+\tfrac12\). Write \(H_{a,b,c}=w(1-w)\partial^2+(c-(a+b+1)w)\partial-ab\).</p>
+<p><strong>Theorem (P4 Jacobi).</strong> \(P_4=w^K\,U\), where \(U\subset\mathcal P_{&lt;P+n}\) is an \(n\)-dimensional space of polynomials invariant under \(w(1-w)\partial^2+\big(c+(2P+C+n)\,w\big)\partial\). The eigenvalues \(m(\beta+1-m)\) of this operator on \(\mathcal P_{&lt;P+n}\), with \(\beta=2P+C+n\), are distinct because \(2(P+n-1)&lt;\beta+1\). So \(U\) is spanned by \(n\) of its eigenpolynomials, of \(n\) distinct degrees, which are Jacobi polynomials. Which degrees occur is not determined here. In the test's normalization, \(\alpha=c=\beta_0+K-1-P\) and \(\beta=2P+C+n\).</p>
+<p><strong>Proof.</strong></p>
+<p>(a) <em>Series.</em> Write \(b_i=(-1)^i\binom{1/2}i=\Gamma(i-\tfrac12)/(\Gamma(-\tfrac12)\,i!)\). Then \((1-w)^{1/2}w^{\beta_0+j-1}=\sum_mb_{m-j+1}w^{\beta_0+m}\), and \(\pi(\theta)\) multiplies \(w^{\beta_0+m}\) by \(\pi(\beta_0+m)=\prod_{e=-C}^{1+P}(\beta_0+m-e)\cdot\prod_{t&lt;K}(m-t)\). The second product vanishes for \(0\le m&lt;K\). With \(m=K+\ell\), the first product is \(\rho(\ell)=(\ell+c)_D\), a polynomial of degree \(D\). So</p>
+\[
+\pi(\theta)\big[(1-w)^{1/2}w^{\beta_0+j-1}\big]=w^{\beta_0+K}\sum_{\ell\ge0}b_{K+\ell-j+1}\frac{(K+\ell)!}{\ell!}\rho(\ell)\,w^\ell .
+\]
+<p>(b) <em>Separating \(j\).</em> Since \(\Gamma(K+\ell-j+\tfrac12)=\Gamma(\ell+\gamma)(\ell+\gamma)_{n-j}\), we get \(b_{K+\ell-j+1}(K+\ell)!=\frac{\Gamma(\ell+\gamma)}{\Gamma(-1/2)}u_j(\ell)\) with \(u_j(\ell)=(\ell+\gamma)_{n-j}(\ell+K-j+2)_{j-1}\), of degree \(n-1\).</p>
+<p>(c) <em>The \(u_j\) span \(\mathcal P_{&lt;n}\).</em> Evaluate at the half-integers \(\ell=-\gamma-i\), \(0\le i&lt;n\). \(u_j(-\gamma-i)=0\) for \(i&lt;n-j\), because of the factor \((\ell+\gamma)_{n-j}\). At \(i=n-j\), \(u_j\) equals \((-(n-j))_{n-j}\) times \((K+\ell-j+2)_{j-1}\) at a half-integer, which is nonzero. The matrix \((u_j(-\gamma-i))\) is triangular after reversing \(j\), with nonzero diagonal, so it is invertible.</p>
+<p>(d) <em>A single function.</em> By (a)–(c), \(\pi(\theta)[(1-w)^{1/2}w^{\beta_0}\mathcal P_{&lt;n}]=w^{\beta_0+K}\rho(\theta)\{p(\theta)(1-w)^{-\gamma}:p\in\mathcal P_{&lt;n}\}\). Two facts are used. First, \(\sum_\ell\frac{\Gamma(\ell+\gamma)}{\Gamma(\gamma)\ell!}w^\ell=(1-w)^{-\gamma}\). Second, \(h(\theta)\sum a_\ell w^\ell=\sum h(\ell)a_\ell w^\ell\).</p>
+<p>(e) <em>Removing \(\theta\).</em> \(\{p(\theta)(1-w)^{-\gamma}:\deg p&lt;n\}=(1-w)^{-\gamma-n+1}\mathcal P_{&lt;n}\). The inclusion \(\subseteq\) holds by induction: \(\theta[(1-w)^{-\gamma-m}q]=(1-w)^{-\gamma-m-1}[(1-w)\theta q+(\gamma+m)wq]\). Equality holds because both sides have dimension \(n\): the map \(p\mapsto p(\theta)(1-w)^{-\gamma}\) is injective, since its coefficients are \(p(\ell)\Gamma(\ell+\gamma)/(\Gamma(\gamma)\ell!)\).</p>
+<p>(f) <em>Rodrigues form.</em> \(\rho(\theta)=(\theta+c)_D=w^{1-c}\partial^Dw^{c+D-1}\), which follows from \(w^{1-c}\partial w^{c}=\theta+c\) by induction. Put \(A=c+D-1\) and \(B=-\gamma-n+1=\tfrac12-K\). Then</p>
+\[
+(1-w)^{1/2-q}w^{\beta_0}P_4=w^{\beta_0+K+1-c}\,\partial^D\big[w^{A}(1-w)^{B}\mathcal P_{&lt;n}\big].
+\]
+<p>For \(u\) of degree below \(n\), \(\partial^D[w^A(1-w)^Bu]=w^{A-D}(1-w)^{B-D}\tilde u\) with \(\tilde u\) a polynomial. Since \(A+B=C-n+2\) is an integer with \(0\le A+B+\deg u\le D-1\), the function \(w^A(1-w)^Bu\) is \(O(w^{A+B+\deg u})\) at infinity, and the leading terms cancel under \(\partial^D\). So \(\partial^D[\ldots]=O(w^{-1-D})\), and \(\deg\tilde u\le D-1-(A+B)=P+n-1\). The map \(\partial^D\) is injective on \(w^A(1-w)^B\mathcal P_{&lt;n}\), because \(A\notin\mathbb Z\) and so no nonzero element is a polynomial. With (e), \(\dim U=n\). The exponents combine to \(w^{K}\) and \((1-w)^{q-1/2+B-D}=(1-w)^0\): indeed \(q=D+K\), so \(q-\tfrac12+\tfrac12-K-D=0\). So \(P_4=w^KU\) with \(U=\{\tilde u\}\).</p>
+<p>(g) <em>Invariance.</em> \(W_1=w^A(1-w)^B\mathcal P_{&lt;n}\) is invariant under \(H_{a,b,c'}\) whenever \(c'=1-A\) and \(c'-a-b=B\).</p>
+<ul>
+<li>Such \(a,b\) exist, since two equations constrain three parameters. Then \(A\) and \(B\) are local exponents at \(0\) and \(1\), and the Riemann scheme shows that \(H_{a,b,c'}[w^A(1-w)^Bu]=w^A(1-w)^B\tilde Hu\). Here \(\tilde H\) is a hypergeometric operator with leading coefficient \(w(1-w)\), so it maps each \(\mathcal P_{\le m}\) into itself.</li>
+<li>\(\partial H_{a,b,c}=H_{a+1,b+1,c+1}\partial\), checked by differentiating, so \(\partial^DW_1\) is invariant under \(H_{a+D,b+D,c'+D}\). Its local exponents at \(0\) are \(0\) and \(1-c'-D=A-D\), and at \(1\) they are \(0\) and \(c'-a-b-D=B-D\).</li>
+<li>So conjugating by \(w^{D-A}(1-w)^{D-B}\) gives a hypergeometric operator on \(U\). Its exponents at \(0\) are \(\{D-A,0\}\), so its \(c\)-parameter is \(1-(D-A)=c\). At \(1\) they are \(\{D-B,0\}\), so the coefficient of \(w\) in its first-order term is \(-(c-D+B+1)\).</li>
+</ul>
+<p>With \(B=\tfrac12-K\) and \(D=C+P+2\), \(-(c-D+B+1)=-(\beta_0-2P-C-\tfrac32)=2P+C+n\). Constant terms do not affect invariance. \(\square\)</p>
+<p><strong>Checks.</strong> The theorem predicts \(\alpha=c\) and \(\beta=2P+C+n\):</p>
+<ul>
+<li>\((2,3)\): \((\tfrac32,5)\);</li>
+<li>\((2,4)\): \((\tfrac32,9)\);</li>
+<li>\((3,3)\): \((\tfrac52,8)\);</li>
+<li>\((2,5)\): \((\tfrac12,15)\);</li>
+<li>\((3,4)\): \((\tfrac72,12)\).</li>
+</ul>
+<p>These are exactly the unique solutions in <code>research/results/bmd-20261002-u/far-jacobi-test.txt</code>. It also predicts the common factor \(w^K\) of \(P_4\), with \(K=4,6,6,8,9\), which matches the factors the test removed.</p>
+<p><strong>Why P3 differs (for \(n\ge2\)).</strong> This is an explanation, not a proof. At \(n=1\) the test's invariance of \(P_3\) was trivial, since random controls passed too. The same computation for \(P_3\), with input \((1-w)^{1/2}\mathcal P_{&lt;k-1}\) at integer exponents, meets the zeros of \(\pi\) on the integer run \(\{0,\ldots,1+P\}\). It leaves two Pochhammer runs, \((\ell+P+2)_{C+1}\) from the integer part and a run of length \(K\) from the half-integer part, and not one. \(\rho(\theta)\) is then a product of two Rodrigues operators. Each intertwines hypergeometric operators by shifting one of \(a,b\), so together they fix both. The input space \((1-w)^{-\gamma'}\mathcal P_{&lt;k-1}\) already fixes \(c\) and \(a+b\) through its exponents. That overdetermines the parameters, consistent with the test's failure for \(P_3\) at five sizes. So \(P_3\) is a two-step (Darboux-type) transform of a Jacobi space. Such spaces are the setting of exceptional Jacobi polynomials, whose Wronskians are the next classical object.</p>
+<p><strong>Remaining gap.</strong> For every \(N\): rigid simplicity for \(n\ge2\). The Wronskian \(R_{n,k}\) combines the Jacobi class \(w^{1/2-(n-1)}w^KU\) with the two-run class \(P_3\). Whether that Wronskian has a classical form (exceptional Jacobi, or Young-diagram indexed) is open.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the pure reduction and its code (the definition of \(P_4\)), and the test output. One fresh-context medium reviewer: pass with corrections, all applied. They cover the sign of the first-order coefficient in the statement; the degree bound \(P+n-1\) in place of the false consecutive degrees \(D,\ldots,D+n-1\) (the reviewer computed the actual degrees, \(K+P+n-1\), at five sizes); the dimension through injectivity of \(\partial^D\); the existence of \(a,b\); and the restriction of the \(P_3\) remark to \(n\ge2\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-v">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 5.74 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 32.46 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 33.15 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
