@@ -43,8 +43,14 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For (K), every two-cluster neck now has the <a href="#cube-cluster-cost-bound">cluster cost bound</a>, \(s+2\lceil s/(m-1)\rceil-2\) for a pole of order \(s\) at a cluster of \(m\) roots. The \((2,n)\) necks are <a href="#cube-two-n-volume">solved</a> exactly. Spanning needs necks between two clusters of size at least three, where the \((3,3)\) and \((3,4)\) orders exceed the costs at the top.</p>
-<p>Next, the interaction rule for two large clusters. The joint conditions at \(p_1\) and \(p_2\) are two systems of moment equations on the same lattice elements. Compute the order of the natural block minor, as in the <a href="#cube-two-n-volume">volume theorem</a>, but now with both a \(p_1\) block and a \(p_2\) block of moment type. Find its tropical value and test whether it reproduces the orders \(\ldots,6,8\) of \((3,3)\) and \(\ldots,7,9,11\) of \((3,4)\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For (K):
+<ul>
+<li>every two-cluster neck obeys the <a href="#cube-cluster-limit-filtration">cost filtration</a>;</li>
+<li>the pair necks are solved;</li>
+<li>the <a href="#cube-two-cluster-space-rule">space rule</a> predicts every other neck's limit space, confirmed on three held-out sizes;</li>
+<li>the \((1,2,2,6)\) spine limit is clean at generic cross-ratio.</li>
+</ul></p>
+<p>Next, the remaining fully clean types at \(N=11\): \((1,2,3,5)\), \((2,2,2,5)\) and \((2,2,3,4)\). Together with \((1,2,2,6)\) they span. Assemble each spine limit from the multi-cluster classes, with each neck's limit computed exactly at the chosen shapes. Test at random cross-ratios, modulo a prime, for points of weight at least two. A clean result for all four types would leave, for \(N=11\), the all-cross-ratio certificate, the special points and the degenerate tails.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33483,7 +33489,7 @@ where \(\Phi_{j,e}\) are the Taylor coefficients of \(\varphi_j\) at \(p_1\). As
 </ul>
 <p>It extends the second to all \(s\), with \(+4\) from \(s=2n-1\) on, for generic shapes.</p>
 <p><strong>Beyond pairs: interaction.</strong> For \((m,n)=(3,3)\) the costs at each side are \(1,2,5,6,9,\ldots\). The \(9\) cheapest monomials give orders \(0,1,1,2,2,5,5,6,6\). The two-cluster check (research/results/bmd-20260930-zu/two-cluster-limit.txt) found \(0,1,1,2,2,5,5,6,8\). For \((3,4)\) the costs give \(0,1,1,2,2,3,5,6,6,7,8,9\), and the check found \(0,1,1,2,2,3,5,6,6,7,9,11\).</p>
-<p>The sorted orders dominate the costs, as the counting of the <a href="#cube-two-n-cost-reduction">cost-reduction corollary</a> requires. That counting uses the lower bounds at both points: here the bound at \(p_2\) is the same theorem with the clusters exchanged. It needs \(\Delta\ne0\) for both clusters in the relevant ranges, which holds here because \(s\le2m-2\) and only \(d=0\) enters. It also uses that \(s+2\lceil s/(m-1)\rceil-2\) is strictly increasing in \(s\), which it is. But the top one or two orders are strictly larger, so the volume identity of the \((2,n)\) case fails and the slots at the two points interact.</p>
+<p>The sorted orders dominate the costs, as the counting of the <a href="#cube-two-n-cost-bounds">cost-reduction corollary</a> requires. That counting uses the lower bounds at both points: here the bound at \(p_2\) is the same theorem with the clusters exchanged. It needs \(\Delta\ne0\) for both clusters in the relevant ranges, which holds here because \(s\le2m-2\) and only \(d=0\) enters. It also uses that \(s+2\lceil s/(m-1)\rceil-2\) is strictly increasing in \(s\), which it is. But the top one or two orders are strictly larger, so the volume identity of the \((2,n)\) case fails and the slots at the two points interact.</p>
 <ul>
 <li>For \((3,3)\) the limit is still the cheapest-slots space \(H^0(\mathcal O(4p_1+4p_2))\) (dimension \(9\) in the check's pole table); only its top order is \(8\) rather than \(6\).</li>
 <li>For \((3,4)\) the pole table shows the limit is not \(H^0(\mathcal O(5p_1+6p_2))\).</li>
@@ -33516,6 +33522,79 @@ where \(\Phi_{j,e}\) are the Taylor coefficients of \(\varphi_j\) at \(p_1\). As
 <tr><td>Computation design and coding</td><td class="elapsed">45.59 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 33.79 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">4.41 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-two-cluster-space-rule" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="cor:cube-cluster-limit-filtration conj:cube-two-cluster-space-rule">
+<h3>30 September 2026 — Between two large clusters the orders interact, but the limit space still follows the cheapest cluster costs</h3>
+<p class="entry-meta">Working proof that every two-cluster limit is filtered by the cluster costs, and a conjecture that the limit space is the cheapest-cost complete series; fitted on six size pairs, it predicted three held-out pairs exactly, while the orders exceed the costs. Two-cluster space cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-cluster-cost-bound">cluster cost bound</a> showed that for two clusters of size at least three the orders exceed the cheapest costs, so the volume identity of the pair case fails. The route needs the limit spaces of these necks, not their orders: weights depend only on the space. This cycle asks whether the space still follows the cheapest costs.</p>
+<p><strong>General statement.</strong> <code>cor:cube-cluster-limit-filtration</code> for every \((m,n)\); <code>conj:cube-two-cluster-space-rule</code>.</p>
+<h4 id="cube-cluster-limit-filtration">The cost filtration</h4>
+<p><strong>Setup.</strong> A two-cluster class \((m,n)\), \(m,n\ge2\), is as in the <a href="#cube-cluster-cost-bound">cluster cost bound</a>, with reduced orders \(k_i\) and leading functions \(\ell_i\). The cost of \(u_1^s\) is \(\mathrm{cost}_m(s)=s+2\lceil s/(m-1)\rceil-2\), and that of \(u_2^s\) is \(\mathrm{cost}_n(s)\); \(1\) costs \(0\). Put \(a(C)=\max\{s\ge0:\mathrm{cost}_m(s)\le C\}\), \(b(C)=\max\{s\ge0:\mathrm{cost}_n(s)\le C\}\), and \(N(C)=1+a(C)+b(C)\).</p>
+<p><strong>Corollary (cluster limit filtration).</strong> Suppose \(\Delta_{m,d}\ne0\) and \(\Delta_{n,d}\ne0\) in the ranges the bound uses: always for \(s\le2m-2\), respectively \(s\le2n-2\), and for generic shapes when \(m,n\le30\) and \(s\le61\). Then for every \(C\),
+\[L_{\le C}=\operatorname{span}\{\ell_i:k_i\le C\}\subseteq H^0(\mathcal O(a(C)p_1+b(C)p_2)),\]
+so \(\#\{i:k_i\le C\}\le N(C)\). The sorted orders dominate the sorted costs.</p>
+<p><em>Proof.</em> As in item 1 of the <a href="#cube-two-n-cost-bounds">cost-reduction corollary</a>, every nonzero \(g\in L_{\le C}\) is the leading function of an element of order exactly \(C\). The cluster cost bound at \(p_1\), and at \(p_2\) with the clusters exchanged, bounds its pole orders by \(a(C)\) and \(b(C)\). Both costs are strictly increasing in \(s\). \(\square\)</p>
+<p>For \(m=2\) this contains item 1 of the cost-reduction corollary, and strengthens it at \(p_2\) under the normality hypothesis (\(s+4\) from \(s=2n-1\) on). There, equality of the order sums (<code>thm:cube-two-n-volume</code>) turns it into the exact limit. For \(m,n\ge3\) the order sums are strictly larger (below), so this route to the limit is closed.</p>
+<h4 id="cube-two-cluster-space-rule">The space rule</h4>
+<p><strong>Conjecture (two-cluster space rule).</strong> For \(m,n\ge2\) and generic shapes, let \(c^*\) be the \(mn\)-th smallest cost. The flat limit is
+\[L=H^0(\mathcal O(a(c^*)p_1+b(c^*)p_2))\quad\text{if }N(c^*)=mn,\]
+and otherwise a hyperplane of it containing \(H^0(\mathcal O(a(c^*-1)p_1+b(c^*-1)p_2))\) (the tie case). The orders need not be the costs.</p>
+<p><strong>Status.</strong> Proved for \(m=2\) whenever \(D_n\ne0\) (<code>thm:cube-two-n-volume</code>), so for generic shapes when \(n\le60\). For \(m,n\ge3\), research/tools/bmd_cube_mn_limits.gp computes exact flat limits over \(\mathbb Q[[\varepsilon]]\), with pole-dimension tables:</p>
+<ul>
+<li><strong>Fitted</strong> (mn-limits.txt). The rule was read off these cases:
+<ul>
+<li>\((3,3)\), two shape choices: \(H^0(\mathcal O(4p_1+4p_2))\);</li>
+<li>\((3,4)\), two shape choices: \(H^0(\mathcal O(5p_1+6p_2))\);</li>
+<li>\((3,5)\): \(H^0(\mathcal O(6p_1+8p_2))\);</li>
+<li>\((3,6)\): \(H^0(\mathcal O(7p_1+10p_2))\);</li>
+<li>\((4,4)\): the tie hyperplane of \(H^0(\mathcal O(8p_1+8p_2))\) containing \(H^0(\mathcal O(7p_1+7p_2))\);</li>
+<li>\((4,5)\): \(H^0(\mathcal O(9p_1+10p_2))\).</li>
+</ul></li>
+<li><strong>Prediction test</strong> (mn-predict.txt): <strong>passed</strong>. The following were predicted before the run and written into the script's header, and the computed pole tables give exactly these. As an observation beyond the prediction, neither \(H^0(\mathcal O(11p_1+12p_2))\) nor \(H^0(\mathcal O(10p_1+13p_2))\) lies in the \((4,6)\) limit:
+<ul>
+<li>\((5,5)\): \(H^0(\mathcal O(12p_1+12p_2))\);</li>
+<li>\((4,6)\): the tie hyperplane of \(H^0(\mathcal O(11p_1+13p_2))\) containing \(H^0(\mathcal O(10p_1+12p_2))\);</li>
+<li>\((3,7)\): \(H^0(\mathcal O(8p_1+12p_2))\).</li>
+</ul></li>
+<li><strong>Orders.</strong> The order sums exceed the cost sums in every case with \(m,n\ge3\): \(30/28\), \(52/50\), \(81/77\), \(115/111\), \(92/88\), \(140/134\), \(216/204\), \(200/192\), \(156/150\). The sorted orders always dominate the costs, as the corollary requires. So, in these cases, the interaction raises orders without changing the space.</li>
+<li><strong>Genericity is needed.</strong> The earlier two-cluster check's \((3,4)\) shapes (research/results/bmd-20260930-zu/two-cluster-limit.txt, both seeds) gave order sum \(53\) and a limit different from \(H^0(\mathcal O(5p_1+6p_2))\). The GENERIC run (mn-generic.txt, truncation \(32\)) reproduces this at the seed-0 shapes, with a pole of order \(7\) at \(p_2\). At three further random rational shape pairs it gives \(H^0(\mathcal O(5p_1+6p_2))\) and order sum \(52\), like the integer shapes. So the check's shapes are the special ones. The special locus was not identified.</li></ul>
+<p><strong>Why the space might not see the interaction (heuristic).</strong> A plausible mechanism, not checked by any computation here: two ratio functions of a cluster agree to first order at the other point, which lowers the rank of the top moment blocks and pushes elements to higher order without changing their leading functions. A proof would need the limit space without its orders, for instance through the bubble aspects at the two clusters and a gluing argument, not through a volume identity.</p>
+<p><strong>What this does to the route.</strong> If the space rule holds, every two-cluster neck of every fully clean type has an explicit limit space: a complete series, or a hyperplane in the tie case. Together with the multi-cluster decomposition, every fully clean spine limit is then explicit up to the tie hyperplanes, as \((1,2,2,6)\) already is. The next steps are a proof of the rule for \(m,n\ge3\), and the weight tests on the remaining fully clean types at \(N=11\): \((1,2,3,5)\), \((2,2,2,5)\) and \((2,2,3,4)\). Their necks can meanwhile be computed exactly at the shapes used.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the space rule for \(m,n\ge3\), and its tie combinations;</li>
+<li>the weight tests for the other fully clean types, all cross-ratios, the special points and the degenerate tails;</li>
+<li>normality beyond the checked ranges;</li>
+<li>the (B) side.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The cluster cost bound, the cost-reduction corollary, the volume theorem, the two-cluster check output.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the corollary's proof, recomputed \(c^*,a,b,N\) for all nine size pairs against the pole tables (complete series and the two tie cases), and matched the order and cost sums and the earlier \((3,4)\) data. Verdict: pass with corrections, all applied:
+</p>
+<ul>
+<li>a broken link, also repaired in the cost-bound entry;</li>
+<li>the pole range of the normality hypothesis;</li>
+<li>the relation to the pair corollary, which the new bound strengthens;</li>
+<li>the \((4,6)\) combination, now reported as an observation beyond the prediction;</li>
+<li>the script header;</li>
+<li>the genericity claim, settled by a new run on the earlier shapes and three random ones;</li>
+<li>the "in these cases" qualifier;</li>
+<li>the heuristic label on the mechanism;</li>
+<li>"up to the tie hyperplanes".</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzc">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 50.09 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 0.83 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 55.63 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 28.22 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">25.28 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
