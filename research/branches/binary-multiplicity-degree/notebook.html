@@ -43,13 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For (K):
-<ul>
-<li>the \((2,n)\) necks are <a href="#cube-two-n-volume">solved</a> for generic shapes and \(n\le60\);</li>
-<li>the <a href="#cube-pair-spine-limit">pair spine limit</a> of \((1,2,2,6)\) has weight at most one at non-special points for generic cross-ratio (modulo a prime);</li>
-<li>spanning needs necks between clusters of size at least three (<a href="#entry-2026-09-30-cube-neck-route-review">neck review</a>).</li>
-</ul></p>
-<p>Next, the \((3,n)\) necks, starting with their \(p_1\) cost bounds. A triple cluster spans \(A_1\cdot\langle1,f_2,f_3\rangle\), where \(f_j\) is the Cauchy transform of \(\tfrac1\pi\sqrt{(b_j-t)/(t-b_1)}\) on \([b_1,b_j]\). Generalize the semicircle argument of the <a href="#cube-two-n-cost-bounds">cost bounds</a> to this pair of moment functionals. Identify the mixed Hankel determinants whose nonvanishing gives the bound, and test the resulting costs against the \((3,3)\) and \((3,4)\) orders of the two-cluster check.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For (K), every two-cluster neck now has the <a href="#cube-cluster-cost-bound">cluster cost bound</a>, \(s+2\lceil s/(m-1)\rceil-2\) for a pole of order \(s\) at a cluster of \(m\) roots. The \((2,n)\) necks are <a href="#cube-two-n-volume">solved</a> exactly. Spanning needs necks between two clusters of size at least three, where the \((3,3)\) and \((3,4)\) orders exceed the costs at the top.</p>
+<p>Next, the interaction rule for two large clusters. The joint conditions at \(p_1\) and \(p_2\) are two systems of moment equations on the same lattice elements. Compute the order of the natural block minor, as in the <a href="#cube-two-n-volume">volume theorem</a>, but now with both a \(p_1\) block and a \(p_2\) block of moment type. Find its tropical value and test whether it reproduces the orders \(\ldots,6,8\) of \((3,3)\) and \(\ldots,7,9,11\) of \((3,4)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33446,6 +33441,82 @@ For \(p_l=\sum_k\lambda_kc_k^l\), \(\sum_{j}(-1)^jje_jc^{m+1-j}/(m+1-j)=\int_0^c
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">41.64 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">9.20 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-cluster-cost-bound" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="thm:cube-cluster-cost-bound check:cube-cluster-diagonal-normality">
+<h3>30 September 2026 — A pole of order s at a cluster of m roots costs at least s + 2⌈s/(m−1)⌉ − 2 in every two-cluster class</h3>
+<p class="entry-meta">Working proof of a lower bound on the orders of every two-cluster neck, under diagonal normality of the cluster's ratio system; normality is unconditional for pairs and generic for m ≤ 30, and the (3,3), (3,4) data show interaction beyond it. Cluster cost bound cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-30-cube-neck-route-review">neck review</a> showed that spanning needs necks between two clusters of size at least three. For the pair, the <a href="#cube-two-n-cost-bounds">cost bounds</a> came from the semicircle law, and the neck review's first lead proposed multiple orthogonality for larger clusters. The missing implication is a lower bound for the \((m,n)\) necks. This cycle asks for one formula covering every cluster size.</p>
+<p><strong>General statement.</strong> <code>thm:cube-cluster-cost-bound</code> for every two-cluster class \((m,n)\), \(m\ge2\), \(n\ge1\); <code>check:cube-cluster-diagonal-normality</code> for its hypothesis.</p>
+<h4 id="cube-cluster-cost-bound">The bound</h4>
+<p><strong>Setup.</strong> Characteristic zero. There are clusters of \(m\ge2\) shapes \(b_j\) at \(p_1\) and of \(n\ge1\) shapes \(c_k\) at \(p_2\), all distinct within each cluster, with \(p_1\ne p_2\). As in the <a href="#cube-two-n-cost-bounds">cost bounds</a>:
+</p>
+<ul>
+<li>\(\Lambda\) is the \(\mathbb C[[\varepsilon]]\)-span of the products \(A_jC_k\), with \(A_j=(1-b_jv_1)^{1/2}\) and \(C_k=(1-c_kv_2)^{1/2}\);</li>
+<li>\(\Lambda_W\) is the span of the \(C_k\);</li>
+<li>orders and leading functions are taken uniformly on compacta away from \(p_1,p_2\).</li>
+</ul>
+<p>Put \(F_j=A_j/A_1-1=\sum_{k\ge1}f^{(j)}_kv_1^k\) for \(2\le j\le m\). The <em>diagonal normality determinant</em> is
+\[\Delta_{m,d}=\det\bigl[f^{(j)}_{a+e}\bigr]_{1\le a\le(m-1)(d+1);\ 2\le j\le m,\ 0\le e\le d}.\]</p>
+<p><strong>Theorem (cluster cost bound).</strong> Let \(F\in\Lambda\) have order \(K\), and let its leading function have a pole of order exactly \(s\ge1\) at \(p_1\). If \(\Delta_{m,d}\ne0\) for every \(d\) with \((m-1)(d+1)\le s-1\), then
+\[K\ \ge\ s+2\Bigl\lceil\frac{s}{m-1}\Bigr\rceil-2 .\]
+The hypothesis always holds for \(d=0\), so the bound is unconditional for \(s\le2m-2\). For \(m=2\) it holds for every \(d\), and the bound is \(3s-2\). The theorem uses \(b_j\ne b_1\) (otherwise \(F_j=0\)) and \(p_1\ne p_2\) (through \(r\)). It does not use distinctness of the \(c_k\), and it needs nothing about \(n\) beyond \(\Lambda_W\) consisting of power series in \(v_2\) over \(\mathbb C[[\varepsilon]]\).</p>
+<p><strong>Proof.</strong> <em>Reduction.</em> Write \(\sum_jA_j\varphi_j=A_1\bigl(\psi+\sum_{j\ge2}F_j\varphi_j\bigr)\) with \(\psi=\sum_j\varphi_j\in\Lambda_W\). So every element of \(\Lambda\) is \(A_1G\) with \(G=\psi+\sum_{j\ge2}F_j\varphi_j\) and \(\psi,\varphi_j\in\Lambda_W\). Since \(A_1=1+O(\varepsilon)\) uniformly away from \(p_1\), \(A_1G\) and \(G\) have the same order and leading function. No centring is needed.</p>
+<p><em>Coefficients at \(p_1\).</em> \(\psi\) is analytic near \(p_1\), so the Laurent coefficient of \(t^{-a}\) (\(t=z-p_1\)) is
+\[c_a=\varepsilon^a\sum_j\sum_ef^{(j)}_{a+e}\,\varepsilon^e\Phi_{j,e},\]
+where \(\Phi_{j,e}\) are the Taylor coefficients of \(\varphi_j\) at \(p_1\). As in the cost bounds, every \(\varphi_j\in\Lambda_W\) is \(\sum_e\gamma_{j,e}R_e\), with \(\gamma_{j,e}\in\mathbb C[[\varepsilon]]\), \(R_e=(q-v_2)^e\), \(q=\varepsilon r\), \(r=1/(p_1-p_2)\), and \(R_e=\varepsilon^{2e}r^{2e}\xi^e(1+\varepsilon r\xi)^{-e}\) at \(t=\varepsilon\xi\). That expansion uses only that \(\Lambda_W\) consists of power series in \(v_2\) with coefficients in \(\mathbb C[[\varepsilon]]\), true for every \(n\). Hence
+\[c_a=\varepsilon^a\sum_{j,e}\gamma_{j,e}\,\varepsilon^{2e}r^{2e}\bigl(f^{(j)}_{a+e}+O(\varepsilon)\bigr).\]</p>
+<p><em>Leading part.</em> Let \(T=\min_{j,e}(2e+\operatorname{ord}\gamma_{j,e})\), let \(D\) be the finite set attaining it, and \(P_j(\xi)=\sum_{(j,e)\in D}\bar\gamma_{j,e}r^{2e}\xi^e\). Not all \(P_j\) are zero. Then \(c_a=\varepsilon^{a+T}\Phi_a(P)+O(\varepsilon^{a+T+1})\), with \(\Phi_a(P)=\sum_{j,e}f^{(j)}_{a+e}P_{j,e}\).</p>
+<p><em>Bound.</em> The \(c_a\) are Cauchy integrals over a fixed circle. So a pole of order exactly \(s\) means \(\operatorname{ord}c_s=K\) and \(\operatorname{ord}c_a\ge K\) for all \(a\). Hence \(K\ge s+T\). If \(\Phi_a(P)\ne0\) for some \(a\le s-1\), then \(\operatorname{ord}c_a=a+T&lt;K\), a contradiction. So \(\Phi_a(P)=0\) for \(1\le a\le s-1\).</p>
+<p>Let \(d=\max_j\deg P_j\). If \((m-1)(d+1)\le s-1\), then the conditions \(\Phi_a(P)=0\) for \(1\le a\le(m-1)(d+1)\), on tuples of polynomials of degree at most \(d\), have matrix \(\Delta_{m,d}\ne0\). So \(P=0\), a contradiction. Hence \((m-1)(d+1)\ge s\), that is \(d\ge\lceil s/(m-1)\rceil-1\). Since \(2e\le T\) for every \((j,e)\in D\), \(T\ge2d\), and \(K\ge s+2\lceil s/(m-1)\rceil-2\).</p>
+<p><em>The case \(d=0\).</em> If \(\Delta_{m,0}=0\), some \(\lambda\ne0\) has \(\sum_j\lambda_jF_j=O(v^m)\). Then \(\sum_{j=1}^m\mu_jA_j=A_1\sum_j\lambda_jF_j=O(v^m)\), with \(\mu_1=-\sum\lambda_j\) and \(\mu_j=\lambda_j\). The coefficients of \(v^0,\ldots,v^{m-1}\) give \(B_k\sum_j\mu_jb_j^k=0\). Since \(B_k\ne0\) and the \(b_j\) are distinct, the Vandermonde matrix forces \(\mu=0\), a contradiction.</p>
+<p><em>Pairs.</em> For \(m=2\), \(f^{(2)}_k=-\mu_{k-1}\), where \(\mu\) are the moments of the density \(\tfrac1\pi\sqrt{(b_2-t)/(t-b_1)}\) on \([b_1,b_2]\) (the neck review's Cauchy-transform identity). So \(\Delta_{2,d}\) is \(\pm\) a Hankel determinant of these moments, of size \(d+1\). For real \(b_1&lt;b_2\) the measure is positive with infinite support, so the determinant is nonzero. An affine change \(t\mapsto b_1+(b_2-b_1)t\) multiplies the Hankel determinant of size \(S\) by \((b_2-b_1)^{S^2}\), and translations leave Hankel determinants of moment sequences unchanged. So it is nonzero for all \(b_1\ne b_2\). \(\square\)</p>
+<h4>Checks and consequences</h4>
+<p><strong>Normality.</strong> Each \(f^{(j)}_k\) is a polynomial in \(b_1,b_j\), so \(\Delta_{m,d}\) is a polynomial in the shapes, and one nonzero value proves it not identically zero. research/tools/bmd_cube_cluster_normality.gp (cluster-normality.txt) evaluates \(\Delta_{m,d}\) modulo \(q=2^{61}-1\) at two rational shape vectors. It covers every \(2\le m\le30\) and every \(d\) with \((m-1)(d+1)\le60\), which is \(229\) determinants, all nonzero at both vectors. So the theorem holds for generic shapes whenever \(m\le30\) and \(s\le61\).</p>
+<p><strong>The known cases.</strong> The bound reproduces every proved cost:
+</p>
+<ul>
+<li>\(3s-2\) at a pair (<code>thm:cube-two-n-cost-bounds</code>, now without centring);</li>
+<li>at the \(n\)-cluster of a \((2,n)\) class, \(s\) for \(s&lt;n\) and \(s+2\) for \(n\le s\le2n-2\), the recurrence bound. This range needs only \(\Delta_{n,0}\ne0\), which always holds.</li>
+</ul>
+<p>It extends the second to all \(s\), with \(+4\) from \(s=2n-1\) on, for generic shapes.</p>
+<p><strong>Beyond pairs: interaction.</strong> For \((m,n)=(3,3)\) the costs at each side are \(1,2,5,6,9,\ldots\). The \(9\) cheapest monomials give orders \(0,1,1,2,2,5,5,6,6\). The two-cluster check (research/results/bmd-20260930-zu/two-cluster-limit.txt) found \(0,1,1,2,2,5,5,6,8\). For \((3,4)\) the costs give \(0,1,1,2,2,3,5,6,6,7,8,9\), and the check found \(0,1,1,2,2,3,5,6,6,7,9,11\).</p>
+<p>The sorted orders dominate the costs, as the counting of the <a href="#cube-two-n-cost-reduction">cost-reduction corollary</a> requires. That counting uses the lower bounds at both points: here the bound at \(p_2\) is the same theorem with the clusters exchanged. It needs \(\Delta\ne0\) for both clusters in the relevant ranges, which holds here because \(s\le2m-2\) and only \(d=0\) enters. It also uses that \(s+2\lceil s/(m-1)\rceil-2\) is strictly increasing in \(s\), which it is. But the top one or two orders are strictly larger, so the volume identity of the \((2,n)\) case fails and the slots at the two points interact.</p>
+<ul>
+<li>For \((3,3)\) the limit is still the cheapest-slots space \(H^0(\mathcal O(4p_1+4p_2))\) (dimension \(9\) in the check's pole table); only its top order is \(8\) rather than \(6\).</li>
+<li>For \((3,4)\) the pole table shows the limit is not \(H^0(\mathcal O(5p_1+6p_2))\).</li>
+</ul>
+<p><strong>What this does to the route.</strong> Every neck the fully clean types need, up to size \(30\), now has proved lower bounds on its orders at generic shapes. The mechanism covers every cluster size. For pairs, the bounds combine with the volume minor to give the exact limit. For two large clusters they do not give the orders, because the slots interact, and at \((3,4)\) not even the limit space. The next question is the rule for that interaction, which the \((3,3)\) and \((3,4)\) data show in their top orders.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the limits of the \((m,n)\) necks with \(m,n\ge3\) (the interaction), and the spine limits of the types using them;</li>
+<li>all cross-ratios, the special points and the degenerate tails for \((1,2,2,6)\);</li>
+<li>\(\Delta_{m,d}\ne0\) and \(D_n\ne0\) beyond the checked ranges;</li>
+<li>the (B) side.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The cost bounds (proof of Case 1 and the counting corollary), the neck review (Cauchy-transform identity, spanning test), the two-cluster check output.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the reduction, the \(R_e\) expansion for every \(n\), the degree argument (padding to the diagonal index suffices), the pair case with its exponent \(S^2\), the script's indexing and precision, and every quoted number, including the \((3,4)\) pole table. It found no error in the proof. It required five changes, all applied:
+</p>
+<ul>
+<li>the sign of \(\Delta_{2,d}\);</li>
+<li>a proof that \(\Delta_{m,0}\ne0\) for all distinct shapes, which makes the bound unconditional for \(s\le2m-2\) and keeps the recurrence bound unconditional;</li>
+<li>the \((3,3)\) limit space, which does agree with the cheapest slots;</li>
+<li>the hypotheses of the counting;</li>
+<li>the hypotheses used and unused, with an unsupported range phrase dropped.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzb">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 43.11 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 19.18 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">45.59 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 33.79 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4.41 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
