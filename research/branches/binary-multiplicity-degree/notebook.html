@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, follows from the base condition (F\(_{\rm rel}\)) of the <a href="#entry-2026-09-29-cube-contact-relative-transfer">relative transfer</a>. (F\(_{\rm rel}\)) now holds, for every \(N\), on the open stratum, the pair-collision stratum and wherever at most \((N-4)/2\) roots are double (<a href="#cube-double-root-full-limits">full double-root limits</a>).</p>
-<p>Next, for (K): test (F\(_{\rm rel}\)) at a triple root. Derive the flat limits there, using character splitting and the Taylor expansion inside the cluster, where the Laplace equation degenerates. Decide whether they have full dimension and are parametrized by the cluster shape alone, a curve. If so, the fibre dimension principle gives the triple-root stratum for \(N\ge8\), and the pattern suggests a bound on fibre dimension by the number of collisions. For (B) afterwards: \(D(e)\) in closed form and the content of \(W_k\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, follows from the base condition (F\(_{\rm rel}\)) of the <a href="#entry-2026-09-29-cube-contact-relative-transfer">relative transfer</a>. (F\(_{\rm rel}\)) now holds, for every \(N\), at configurations whose multiple roots are at most \((N-4)/2\) double roots (<a href="#cube-double-root-full-limits">full double-root limits</a>) or one triple root with \(N\ge7\) (<a href="#cube-canonical-limit-dimension">canonical limit dimension</a>).</p>
+<p>Next, for (K): prove a block decomposition of flat limits. By character splitting at the limit point, every flat limit should be the direct sum of the limits of its character blocks: within one cluster, between two clusters, and between a cluster and a simple root. The fibre would then lie in a product of block fibres, and its dimension would be at most the sum of the block-fibre dimensions. Bound the block fibres: \(0\) for cluster–simple blocks and for clusters of size at most \(3\), and \(1\) for two double roots. Then compare the sum with the flat dimension \(d(p)-3\) to locate exactly the patterns where (F\(_{\rm rel}\)) still needs work. For (B) afterwards: \(D(e)\) in closed form and the content of \(W_k\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -34878,6 +34878,89 @@ The sign is \(+\) when the \(f_i\) and the \(\rho_j\) are ordered class by class
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 20.50 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">57.66 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">21.93 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-canonical-limit-dimension" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-statement-three-review:3" data-claims="lem:cube-canonical-limit-dimension">
+<h3>30 September 2026 — The canonical cluster limits always have full dimension, so single triple roots satisfy the transfer base for N ≥ 7</h3>
+<p class="entry-meta">Working proof for every N: character splitting gives dim W_C = R for every cluster size, and full dimension for the triple–double cross space. Canonical limit dimension cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> This cycle continues the <a href="#cube-double-root-full-limits">full double-root limits</a> cycle, on (K), the highest-risk input to statement 3. (K) follows from the base condition (F\(_{\rm rel}\)) of the <a href="#entry-2026-09-29-cube-contact-relative-transfer">relative transfer</a>. That cycle proved (F\(_{\rm rel}\)) at configurations whose multiple roots are few double roots. Its next step was the triple root.</p>
+<p>A search of the record found that the <a href="#entry-2026-09-29-cube-cluster-renormalization">cluster renormalization</a> entry already treats clusters of \(m\) roots. Its lemma lem:cube-cluster-renormalization shows that the flat limit contains a canonical space \(W_C\), and equals it when \(\dim W_C=R\). Its corollary cor:cube-triple-cluster-fibre gives point fibres at triple roots, conditional on \(\dim W_T=R\). The entry lists "\(\dim W_C=R\) for every \(N\)" as its first remaining gap. The <a href="#entry-2026-09-29-cube-second-order-lifts">second-order lifts</a> entry has the same condition, "the dimensions add to \(R\)", for a triple and a double cluster (cor:cube-triple-double-canonical-cross).</p>
+<p>The missing implication is these dimension conditions for every \(N\). The previous cycle's character count applies to them directly.</p>
+<p><strong>General statement.</strong> <code>lem:cube-canonical-limit-dimension</code>, for every \(N\) and every cluster size \(m\).</p>
+<h4 id="cube-canonical-limit-dimension">Canonical limit dimension</h4>
+<p><strong>Setting.</strong> As in the cluster renormalization lemma: \(\varphi(a)=(1+aT)^{-3/2}\), a cluster \(C\) of \(m\ge2\) roots collapsing to \(x_0\), and \(k=\binom m2\). The other roots \(z\) are simple and distinct from each other and from \(x_0\). The canonical space is \[ W_C=\mathrm{Pol}_{&lt;k}\,U_{x_0}+\langle\varphi^{(i)}(x_0)\varphi_z:i&lt;m,\ z\rangle+\langle\varphi_z\varphi_{z'}\rangle, \] where \(\mathrm{Pol}_{&lt;k}U_{x_0}\) is the \(k\)-dimensional within-cluster space, of empty character.</p>
+<p><strong>Lemma (canonical limit dimension).</strong> For every \(N\ge m\ge2\):</p>
+<ol>
+<li>\(\dim W_C=R=\binom N2\). In particular \(\dim W_T=R\) for a triple root (\(m=3\)).</li>
+<li>For a triple cluster at \(x_0\), a double cluster at \(y_0\ne x_0\), and further simple roots, the canonical space of cor:cube-triple-double-canonical-cross has dimension \(R\). This space is \(W_T\)'s within-triple part, plus \(\varphi(y_0)^2\), plus \(\varphi(x_0)\varphi(y_0)\langle1,X,X^2,X^3,Y,Y^2\rangle\), plus the canonical blocks with simple roots.</li>
+</ol>
+<p><strong>Proof.</strong> Put \(X=T/(1+x_0T)\) and \(Y=T/(1+y_0T)\), Möbius functions with simple poles at the distinct points \(-1/x_0\), \(-1/y_0\in\mathbb P^1\). Differentiating in \(a\) gives \(\varphi^{(i)}(a)=c_iX^i\varphi(a)\), with \(c_i=(-\tfrac32)(-\tfrac52)\cdots(-\tfrac12-i)\ne0\). By <a href="#cube-character-splitting">character splitting</a>, the dimension is the sum over characters of the dimensions of the rational factor spaces.</p>
+<p>(1) There are three kinds of character.</p>
+<ul>
+<li>Empty: \(\mathrm{Pol}_{&lt;k}U_{x_0}\), of dimension \(k\) by definition.</li>
+<li>\(\{x_0,z\}\): \(\langle X^i:i&lt;m\rangle\), independent because the pole orders at \(-1/x_0\) differ. Dimension \(m\).</li>
+<li>\(\{z,z'\}\): one function.</li>
+</ul>
+<p>So the dimension is \(\binom m2+m(N-m)+\binom{N-m}2=\binom N2\).</p>
+<p>(2) The characters are:</p>
+<ul>
+<li>empty: \(3+1\). \((1+y_0T)^{-3}\) is the only term with a pole at \(-1/y_0\), so its coefficient in a relation vanishes, and the rest is \(\mathrm{Pol}_{&lt;3}U_{x_0}\). If \(y_0=0\), the term is the constant \(1\), and the other three have distinct pole orders at \(-1/x_0\);</li>
+<li>\(\{x_0,y_0\}\): \(\langle1,X,X^2,X^3,Y,Y^2\rangle\). A relation among these has zero coefficients at the pole orders \(3,2,1\) at \(-1/x_0\) and \(2,1\) at \(-1/y_0\), and then at the constant. Dimension \(6\);</li>
+<li>\(\{x_0,z\}\): \(3\) each;</li>
+<li>\(\{y_0,z\}\): \(\langle1,Y\rangle\), \(2\) each;</li>
+<li>\(\{z,z'\}\): one each.</li>
+</ul>
+<p>The total is \(10+5(N-5)+\binom{N-5}2=\binom N2\). \(\square\)</p>
+<p><strong>Corollary.</strong> For every \(N\), the recorded conditions hold and the conditional conclusions are unconditional:</p>
+<ol>
+<li>By cor:cube-triple-cluster-fibre, in any chart \(X_{k'l'}\) with \(p\notin H_{k'l'}\), the fibre of the graph closure over every point \(p\) with one triple root and otherwise simple roots is the single point \(W_T\). So (F\(_{\rm rel}\)) holds there for every \(N\ge7\).</li>
+<li>By lem:cube-cluster-renormalization, for every \(m\), the flat limit at one \(m\)-cluster equals \(W_C\) along every arc satisfying that lemma's hypothesis: \(a_c=x(t)+h(t)u_c(t)\) with \(u\) bounded, and \(\Lambda_C(u(t))\to\Lambda^*\) projecting bijectively to \(T^0,\ldots,T^{k-1}\); the other roots simple and distinct from each other and from \(x_0\).</li>
+<li>By cor:cube-triple-double-canonical-cross, the flat limit at a triple and a double cluster with simple other roots is canonical along every arc with \(\varepsilon_A\varepsilon_B\ne0\): comparable scales and nonzero \(e_2\) of both limit shapes.</li>
+</ol>
+<p>Truncation. "Equals" in these items needs truncation to be injective on the canonical space. The Noetherian argument of the double-root cycle applies verbatim. Its parameter spaces are the one-\(m\)-cluster strata \((x_0,z)\), \(m\le N\), and the triple–double stratum. The canonical spaces do not depend on the shapes, have dimension \(R\), consist of functions analytic at \(T=0\), and have rows regular in the parameters. \(M\) is taken above the maximum of these bounds and the double-root bound.</p>
+<h4>Check</h4>
+<p>research/tools/bmd_cube_triple_root_limit.gp (triple-root-limit.txt) gives an independent derivation of the triple-root limit, and compares it with exact flat limits.</p>
+<ul>
+<li>The within-triple rows are \(\varphi(x)^2(1+u_iX)^{-3/2}(1+u_jX)^{-3/2}\). Permuting the three cluster points permutes these rows by transpositions. So every \(3\times3\) Plücker coordinate in the basis \(X^n\) is alternating in \(u\), and hence divisible by the Vandermonde \(V(u)\). The script confirms this symbolically on the exponents \(0,\ldots,6\), with \(p_{012}=-\tfrac9{16}V(u)\). The argument proves divisibility for every \(I\); the script checks exponents up to \(6\). \(P_n\) is homogeneous of degree \(n\), so for \(I\ne\{0,1,2\}\), \(p_I/V\) is homogeneous of positive degree \(\sum I-3\), and \(p_I/p_{012}\to0\) along every arc, nested ones included, and the block tends to \(\varphi^2\langle1,X,X^2\rangle=\mathrm{Pol}_{&lt;3}U_{x_0}\). This is the renormalization entry's divisibility argument in Plücker form.</li>
+<li>At \(N=6,7\) it computes exact flat limits over \(\mathbb Q[\varepsilon]\) along four arcs: cluster \(x,x+\varepsilon,x+3\varepsilon\), and the nested arcs \(x,x+\varepsilon,x+\varepsilon+\varepsilon^2\); \(x,x+\varepsilon,x+\varepsilon+\varepsilon^3\); \(x,x+\varepsilon^2,x+\varepsilon^2+\varepsilon^5\).
+<ul>
+<li>All limits equal the predicted space, of rank \(R\).</li>
+<li>They have rank \(R\) on \(T^0,\ldots,T^{R+1}\), so there is no contact at that point.</li>
+</ul></li>
+</ul>
+<p><strong>Lead follow-up.</strong> This continues Outside lead 3 of the statement three review, dimensionally proper limits, through the relative transfer. <strong>Follow-up.</strong> Continuing. The dimension conditions of lem:cube-cluster-renormalization, cor:cube-triple-cluster-fibre and cor:cube-triple-double-canonical-cross are now proved for all \(N\). Three or more clusters and the full-rank hypotheses of the second-order lifts entry remain open. What remains of (F\(_{\rm rel}\)) are the non-canonical limits:</p>
+<ul>
+<li>shapes on the boundary divisors \(\{F_m=0\}\) and hierarchical arcs, for \(m\ge4\);</li>
+<li>extreme scale ratios between clusters, as for a triple and a double;</li>
+<li>more than \((N-4)/2\) double roots;</li>
+<li>members of dimension at most two.</li>
+</ul>
+<p><strong>What this does to the route.</strong> At \(N=11\), (F\(_{\rm rel}\)) now holds, for all arcs, at every configuration whose multiple roots are at most three double roots, or exactly one triple root with all other roots simple. The obligations for (K) are now fibre-dimension bounds at the non-canonical limits, against the flat dimension. (K) remains open and the highest risk.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(F\(_{\rm rel}\)) at clusters of \(m\ge4\) roots (shapes with \(F_m=0\), hierarchical arcs), at several clusters with extreme scale ratios or more than \((N-4)/2\) double roots, and on members of dimension at most two; hence (K) for \(N\ge11\);</li>
+<li>the (B) side: \(D(e)\), the far content and interior coefficients, neck simplicity, odd \(N\). (L) at \(N=11\) awaits approval.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong></p>
+<ul>
+<li>the cluster renormalization entry: lemma, triple-root corollary and remaining gaps;</li>
+<li>the second-order lifts entry: the triple–double corollary and its canonical space;</li>
+<li>the character splitting lemma;</li>
+<li>the full double-root limits entry: truncation choice and fibre principle.</li>
+</ul>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the character counts (\(U_{x_0}\), \(c_i\), pole orders including a centre at \(0\), both totals), the alternation argument and the script against its output. Verdict: pass with corrections, all applied: the empty-character count in (2) is justified; the chart qualifier and the hypotheses of the cited lemma and corollary are restored in the corollary; the truncation choice is stated for these strata; the homogeneity step of the check is added; overbroad sentences on the record's dimension conditions and on the covered strata are restricted. These corrections restrict or justify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzs">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 3.00 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 46.66 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 15.46 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.75 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
