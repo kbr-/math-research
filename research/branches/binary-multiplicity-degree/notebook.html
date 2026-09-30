@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). Both now reduce to neck-type limits: the peeling necks of (B), proved on the <a href="#cube-neck-last-block-windows">last block</a>, and the <a href="#entry-2026-09-30-cube-two-cluster-limit">two-cluster necks</a> on the spines of fully clean boundary curves for (K).</p>
-<p>Next, a mechanism for necks, through the Hankel review's secant lead. The neck level sums are forms of degree \(lw\) in the coefficients of \(\tau\), so they are determined on sums of \(lw\) geometric sequences, where \(\hat\tau\) has \(lw\) simple poles at \(y=\lambda_m\varepsilon\). Write the neck rows in this node form and compute the leading term as the nodes tend to \(0\), as a confluent Vandermonde expansion. Test whether it reproduces the Hankel product \(H_c\prod_iH_{k_i}\) at block size two, window \((1,2,2,3)\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). Both now reduce to neck-type limits: the peeling necks of (B), proved on the <a href="#cube-neck-last-block-windows">last block</a>, and the <a href="#entry-2026-09-30-cube-two-cluster-limit">two-cluster necks</a> on the spines of fully clean boundary curves for (K). The smallest two-cluster neck is now <a href="#cube-two-double-cross-limit">solved exactly</a>.</p>
+<p>Next, the \((2,n)\) two-cluster class, needed with \(n=6\) by the fully clean type \((1,2,2,6)\). The size-two cluster keeps the exact reduction \(\Delta=\beta v_1/S\), so the class is \(S\cdot\operatorname{span}\{1,X\}\otimes V_n\), with \(V_n\) the second cluster's span. Eliminate \(X\cdot V_n\) against \(V_n\) through the partial-fraction relations for \(u_1u_2^j\), as in the \((2,2)\) proof. Prove the limit and its orders for all \(n\), and compare with the \((2,3)\) and \((2,4)\) rows of the two-cluster check.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32886,6 +32886,68 @@ Its weights at every point other than \(u=\infty\) (the cluster) and \(u=1/s'_j\
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-two-double-cross" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="thm:cube-two-double-cross-limit">
+<h3>30 September 2026 — The class joining two collapsing double roots has an explicit flat limit, with a new direction at order four</h3>
+<p class="entry-meta">Working proof that the class joining two size-two clusters tends to square-root factors times span{1, u₁, u₂, (b₁−b₂)²u₁² + (c₁−c₂)²u₂²}, with orders 0, 1, 1, 4, checked at nine shape choices. Two-double cross cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-multicluster-spine-classes">multi-cluster spine lemma</a> left the classes joining two clusters as neck problems, and the <a href="#entry-2026-09-30-cube-two-cluster-limit">two-cluster check</a> found their limits to be shape-independent but without a pattern. The missing implication is a mechanism for these limits. This cycle proves the smallest case, two clusters of size two. It occurs in the smallest fully clean boundary type, \((1,2,2,6)\) at \(N=11\), and in the base's double roots, where the record found the <code>lem:cube-cross-block-defect</code> relation.</p>
+<p><strong>General statement.</strong> <code>thm:cube-two-double-cross-limit</code>, for all distinct \(p_1,p_2\) and all shapes \(b_1\ne b_2\), \(c_1\ne c_2\).</p>
+<h4 id="cube-two-double-cross-limit">The theorem</h4>
+<p><strong>Setup.</strong> Characteristic zero. Branch points \(p_1+\varepsilon b_1\), \(p_1+\varepsilon b_2\), \(p_2+\varepsilon c_1\), \(p_2+\varepsilon c_2\), \(p_1\ne p_2\), \(b_1\ne b_2\), \(c_1\ne c_2\). Put \(u_i=1/(z-p_i)\), \(v_i=\varepsilon u_i\) and \(r=1/(p_1-p_2)\). The class joining the two clusters is \(((z-p_1)(z-p_2))^{1/2}\) times the span \(V_\varepsilon\) of the four products \(A C\), \(A D\), \(B C\), \(B D\), with \(A=(1-b_1v_1)^{1/2}\), \(B=(1-b_2v_1)^{1/2}\), \(C=(1-c_1v_2)^{1/2}\), \(D=(1-c_2v_2)^{1/2}\).</p>
+<p><strong>Theorem (two-double cross limit).</strong> As \(\varepsilon\to0\) at fixed \(z\ne p_1,p_2\), \(V_\varepsilon\) tends to
+\[
+\operatorname{span}\bigl\{1,\ u_1,\ u_2,\ (b_1-b_2)^2u_1^2+(c_1-c_2)^2u_2^2\bigr\},
+\]
+and the \(\varepsilon\)-orders of a reduced basis are \(0,1,1,4\).</p>
+<p><strong>Proof.</strong> Put \(S=(A+B)/2\), \(T=(C+D)/2\), \(\Delta=(A-B)/2\), \(E=(C-D)/2\). Then \(V_\varepsilon\) is spanned by \(ST\), \(\Delta T\), \(SE\), \(\Delta E\). From \(A^2-B^2=(b_2-b_1)v_1\) exactly, \(\Delta=\beta v_1/S\) with \(\beta=(b_2-b_1)/4\), and likewise \(E=\delta v_2/T\) with \(\delta=(c_2-c_1)/4\). So
+\[
+V_\varepsilon=ST\cdot\operatorname{span}\{1,\ X,\ Y,\ XY\},\qquad X=v_1/S^2,\quad Y=v_2/T^2 .
+\]
+Multiplying each basis element \(f_i\) of a family of spaces by one function \(h=1+O(\varepsilon)\), uniformly on compacta away from \(p_1,p_2\), keeps the limit \(w_i\) of \(hf_i/\varepsilon^{k_i}\), so it changes neither the leading terms of a reduced basis nor the limit. Here \(ST\to1\). From \(S=1-\tfrac{b_1+b_2}4v_1-\tfrac{b_1^2+b_2^2}{16}v_1^2+O(v_1^3)\),
+\[
+S^{-2}=1+s\,v_1+(s^2+g_1)v_1^2+O(v_1^3),\qquad s=\tfrac{b_1+b_2}2,\quad g_1=\tfrac{(b_1-b_2)^2}{16},
+\]
+and likewise \(T^{-2}\) with \(t=\tfrac{c_1+c_2}2\) and \(g_2=\tfrac{(c_1-c_2)^2}{16}\). Hence
+\[
+X=\varepsilon u_1+s\varepsilon^2u_1^2+(s^2+g_1)\varepsilon^3u_1^3+O(\varepsilon^4),
+\]
+and the same for \(Y\). The partial-fraction identities used are
+\[
+u_1u_2=r(u_1-u_2),\qquad u_1^2u_2=ru_1^2-r^2(u_1-u_2),\qquad u_1u_2^2=r^2(u_1-u_2)-ru_2^2,
+\]
+together with those for \(u_1^3u_2\), \(u_1^2u_2^2\) and \(u_1u_2^3\) derived from them.</p>
+<ul>
+<li>\(Z_1=XY-r\varepsilon(X-Y)\): its \(\varepsilon^2\) term \(u_1u_2-r(u_1-u_2)\) vanishes. Its \(\varepsilon^3\) term \(su_1^2u_2+tu_1u_2^2-r(su_1^2-tu_2^2)\) equals \((t-s)r^2(u_1-u_2)\).</li>
+<li>\(Z_2=Z_1-(t-s)r^2\varepsilon^2(X-Y)\): its \(\varepsilon^3\) term vanishes. Collecting the \(\varepsilon^4\) terms with the identities above, the coefficients of \(u_1^2\) and \(u_2^2\) are \(r^2(st-s^2-g_1)-r^2s(t-s)=-r^2g_1\) and \(r^2(st-t^2-g_2)+r^2t(t-s)=-r^2g_2\). The rest is \(r^3((s-t)^2+g_1+g_2)(u_1-u_2)\). So
+\[
+Z_2=-r^2\varepsilon^4\bigl(g_1u_1^2+g_2u_2^2\bigr)+r^3\varepsilon^4\bigl((s-t)^2+g_1+g_2\bigr)(u_1-u_2)+O(\varepsilon^5).
+\]</li>
+</ul>
+<p>Since \(Z_2=XY-(r\varepsilon+(t-s)r^2\varepsilon^2)(X-Y)\), a unitriangular change over \(\mathbb C[[\varepsilon]]\), the elements \(1,X,Y,Z_2\) span the same module as \(1,X,Y,XY\), and the orders of a reduced basis are invariants of that module. This basis has leading terms \(1\), \(\varepsilon u_1\), \(\varepsilon u_2\) and \(\varepsilon^4\) times a function with double poles at both \(p_i\), since \(g_1,g_2\ne0\). These are independent, so the basis is reduced and the limit is their span. Modulo \(\langle1,u_1,u_2\rangle\) the last is \(-r^2(g_1u_1^2+g_2u_2^2)\propto(b_1-b_2)^2u_1^2+(c_1-c_2)^2u_2^2\). \(\square\)</p>
+<p>So the class's limit contains no function with a double pole at only one of the two points. Its only new direction couples the two clusters, with weights the squared cluster widths. The limit is the hyperplane of \(H^0(\mathcal O(2p_1+2p_2))\) given by \((c_1-c_2)^2a_1=(b_1-b_2)^2a_2\), where \(a_i\) is the \(u_i^2\) coefficient. This explains the \((2,2)\) entry of the two-cluster check. The leading-term deficit \(1\) of the spine lemma is filled at order four, not two: the orders \(2\) and \(3\) are absorbed by the partial-fraction relation. It is the analogue, for the spine class, of <code>lem:cube-cross-block-defect</code>, which found one first-order relation in the pair space's coordinates; no implication between them is shown.</p>
+<p><em>Checks.</em> research/tools/bmd_cube_two_double_z2.gp (two-double-z2.txt) verifies the proof symbolically in all of \(b_1,b_2,c_1,c_2,p_1,p_2\): the identity for \(\Delta\), the vanishing of the \(\varepsilon^0,\ldots,\varepsilon^3\) coefficients of \(Z_2\), its \(\varepsilon^4\) coefficient, and, as a control, the nonzero \(\varepsilon^3\) term of \(Z_1\). Its first two runs set up the series variable wrongly (PARI variable priority), one timing out and one aborted after a false negative on the \(\Delta\) identity; the recorded run fixes this. research/tools/bmd_cube_two_double_check.gp (two-double-check.txt) computes the flat limit independently. For each order \(t\) it forms the space of order-\(t\) coefficients of combinations whose lower orders vanish identically. At nine shape choices it finds dimensions \(1,3,3,3,4\) for \(t=0,\ldots,4\). It finds no element with a double pole at one point only, and a \((u_1^2,u_2^2)\) ratio equal to \((b_1-b_2)^2/(c_1-c_2)^2\) in every case, for example \(1600/2401\) at \(b=(-3/7,5/7)\), \(c=(2/5,-1)\). A first symbolic run (bmd_cube_two_double_limit.gp, two-double-limit.txt) reported a new direction with a double pole at \(p_1\) only. It disagrees with the valuation-reduction script of the two-cluster check, with this cross-check and with the proof, and is kept as a failed attempt; its dependency step over rational-function coefficients is the likely fault, not traced further.</p>
+<p><strong>What this does to the route.</strong> The smallest two-cluster neck is solved exactly by an elimination through the partial-fraction relation. The mechanism is explicit enough to try on larger clusters. Each cluster's \(\Delta\)-type differences come from exact identities \(\prod(1-b_jv)\) of its series, and the eliminations follow the relation \(u_1u_2=r(u_1-u_2)\). The next case is \((2,n)\), which the fully clean type \((1,2,2,6)\) needs with \(n=6\), for its classes \(\{2,4\}\) and \(\{3,4\}\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the two-cluster limits for \((2,n)\) and larger; then weight three on fully clean spines, tails and nodes;</li>
+<li>the neck windows below the last block; far polynomials without triple roots; \(G_{c,w}\not\equiv0\); the exchange condition.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The multi-cluster spine lemma, the two-cluster check, and the cross-block defect (statement).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. The symbolic and flat-limit checks above pass. One fresh-context medium reviewer redid the change of basis, the expansions, all six partial-fraction identities and both eliminations, and confirmed the check method and the quoted ratios. It found no mathematical error and required five wording corrections: the relation to the cross-block defect is an analogue, not a strengthening; the unitriangularity of \(Z_2\); the per-basis-element form of the multiplier argument; the \((2,n)\) cases still needed; and naming both numerical methods. All five are applied.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zv">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>12 min 49.53 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 28.19 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 34.68 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 37.97 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4 min 8.55 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
 </div>
 </article>
 
