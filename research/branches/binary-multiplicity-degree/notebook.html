@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. For every \(N\), both (B) and (K) rest on simplicity for rigid three-point spaces, which six routes failed to reach (<a href="#entry-2026-10-02-cube-rigid-simplicity-review">rigid simplicity review</a>). At a fixed \(N\), rigid simplicity is a finite computation.</p>
-<p>Next, for (K) at \(N=11\): state the assembly. List the boundary divisors and two-node strata of \(\overline M_{0,11}\) up to symmetry, and the limit spaces on each (spine and tail, including second clusters from pair collisions). Identify the rigid pieces at the bottom of the recursion, and mark each piece as proved, checked or open. For every \(N\), develop the Calogero–Moser bridge on \(F(2,3)\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) by the boundary reducedness criterion. On every divisor both limit pieces are spine spaces (<a href="#cube-divisor-spine-pieces">divisor pieces</a>). At \(N=11\) every rigid piece has simple Weierstrass points. For every \(N\), rigid simplicity for \(n\ge2\) remains without mechanism.</p>
+<p>Next, for (K) at \(N=11\): the chain end, the first piece with moduli. Compute the discriminant \(D(8,3)\) of the Weierstrass points of \(V(8;3)\) as a polynomial in the cross-ratio, modulo a prime, and test it for squarefreeness away from the three boundary values. Use the modular polynomial model (lem:cube-far-modp-model) to keep the entries polynomial.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -38550,6 +38550,91 @@ the Frobenius (Pólya–Mammana) factorization. It follows by induction on \(s\)
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 42.09 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.19 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-assembly-pieces" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-divisor-spine-pieces check:cube-n11-rigid-middles">
+<h3>2 October 2026 — On every boundary divisor both limit pieces are spine spaces, the two-root piece being the binary face; merge far spaces appear on nested strata, and all of them are simple at eleven roots</h3>
+<p class="entry-meta">Working proof that the limits on a boundary divisor are the spine spaces V(s;N−s) and V(N−s;s); nested strata need further hypotheses; at N = 11 all merge far middles are simple. Assembly pieces cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-02-cube-rigid-simplicity-review">rigid simplicity review</a> turned to the assembly at a fixed \(N\): which pieces must be controlled for the boundary reducedness criterion (lem:cube-discriminant-boundary-reducedness), and which of them are rigid. For every \(N\) this cycle identifies the pieces on boundary divisors, locates the rigid ones, and checks all rigid pieces at \(N=11\).</p>
+<p><strong>General statement.</strong> <code>lem:cube-divisor-spine-pieces</code>, for every \(N\ge5\) and \(2\le s\le N-2\); evidence <code>check:cube-n11-rigid-middles</code>.</p>
+<h4 id="cube-divisor-spine-pieces">Pieces on a divisor</h4>
+<p><strong>Setting.</strong> Characteristic zero. \(V(m;k)=V(m;p_0;p_1,\ldots,p_k)\) is the spine space of the <a href="#cube-single-merge">single-merge lemma</a>: the limit of \(V_a\) when an \(m\)-cluster collapses at \(p_0\), at a cluster shape of weight \(0\) at its mark (automatic for \(m\le2\)), with \(k\) other roots at \(p_1,\ldots,p_k\). Let \(\Delta_S\subset\overline M_{0,N}\) be the boundary divisor where the roots in \(S\), \(|S|=s\), collide. At a general point of \(\Delta_S\) there are two components: the spine carries the node and the \(N-s\) roots outside \(S\), and the tail carries the node and the \(s\) roots of \(S\).</p>
+<p><strong>Lemma (divisor pieces).</strong> Let \(S\) collide at the spine point \(c\). Suppose the shape of \(S\), and the shape \(1/(a_j-c)\) of the complement seen from \(c\), both have spaces of weight \(0\) at their marks. This is automatic when \(s\le2\), respectively \(N-s\le2\), and holds for generic shapes at the sizes where the record proves it. Then at a general point of \(\Delta_S\):</p>
+<ol>
+<li>the limit of \(V_a\) on the spine is \(V(s;N-s)\), with the cluster point at the node;</li>
+<li>the limit on the tail, in the tail coordinate \(w\) and after the inversion \(u=1/w\), is \(V(N-s;s)\), with the cluster point at the node \(u=0\), up to a common factor.</li>
+</ol>
+<p>In particular the piece carrying exactly two roots (the tail at \(s=2\), the spine at \(s=N-2\)) is \(V(N-2;2)\), a rigid space with two single roots and a collapsed \((N-2)\)-cluster. Its non-branch Weierstrass points are those of the binary face, simple by cor:cube-merge-far-binary-face and thm:cube-binary-face-weierstrass-points.</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>This is the spine limit of lem:cube-multicluster-spine-classes for one cluster, in the form of the single-merge lemma's definition.</li>
+<li>Let \(S\) collide at the spine point \(c\), with roots \(c+\varepsilon b_i\). In \(w=(z-c)/\varepsilon\) they sit at \(b_i\), and the other roots at \((a_j-c)/\varepsilon\), which tend to \(\infty\) with fixed ratios. Invert with \(u=1/w\). The other roots become \(\varepsilon/(a_j-c)\), a cluster collapsing at \(u=0\) with shape \(1/(a_j-c)\), and the roots of \(S\) sit at the fixed points \(1/b_i\).
+<ul>
+<li>\(V_a=H^0(X_a,\pi^*\mathcal O(1))\) is covariant under Möbius maps keeping the roots finite: the transformed space is the pair space of the transformed roots, times a common factor. With \(z=c+\varepsilon/u\), \(\langle1,z\rangle\) becomes \(u^{-1}\langle1,u\rangle\), and each pair function becomes \(u^{-1}\) times the pair function in \(u\), up to constants. The factor \(u^{-1}\propto w\) is a unit away from \(w=0\) and the node, and multiplying by a function shifts all orders equally, so weights are unchanged. The distinguished pole of \(V(N-s;s)\) at \(u=\infty\) is \(w=0\), and the cluster point \(u=0\) is the tail's node \(w=\infty\), as in the definition of \(V(n;k)\).</li>
+<li>So the limit at fixed \(u\ne0\) is the spine limit of the pair space of these roots, which is \(V(N-s;0;1/b_1,\ldots,1/b_s)\) under the weight-zero hypothesis on the shape \(1/(a_j-c)\).</li>
+<li>Transporting back gives the tail limit at fixed \(w\ne\infty\).</li>
+</ul>
+<p>At \(s=2\), \(V(N-2;2)\) has three special points, so it has no moduli. With the cluster at \(T=\infty\), the singles at \(\pm1\) and the distinguished pole at a generic point \(q\), it is \((T-q)^{-1}\) times the span of \(\mathcal P_{&lt;C+2}\), \((T\mp1)^{1/2}\mathcal P_{&lt;M}\) and \((T^2-1)^{1/2}\), with \(C=\binom{N-2}2\) and \(M=N-2\). That is the space of cor:cube-merge-far-binary-face with \(k=N-1\), which \(D^2\) maps to \(\Phi^0\) with the same Weierstrass points. \(\square\)</p></li></ol>
+<h4>What the assembly needs</h4>
+<p>By the lemma, the divisor condition of the boundary reducedness criterion on \(\Delta_S\) asks for three things:</p>
+<ul>
+<li>the discriminant \(D(m,k)\) of the Weierstrass points of \(V(m;k)\) over its moduli \(M_{0,k+1}\) is reduced, for \((m,k)=(s,N-s)\) and \((N-s,s)\);</li>
+<li>the ring factors between the two scales are units away from the merging loci;</li>
+<li>the group factorization hypothesis of that criterion holds.</li>
+</ul>
+<p>The rigid pieces on divisors are the pieces carrying exactly two roots, \(V(N-2;2)\), proved simple. The chain end \(V(N-3;3)\) is the piece carrying three roots, with one modulus.</p>
+<p>On a stratum \(Z\) with two nodes, with local equation \(f\in K[[t_1,t_2]]\) as in the criterion, no component of \(\Delta_W^{\rm nc}\) contains \(Z\) exactly when \(f\) is a unit times a monomial in \(t_1,t_2\). Take a nested stratum \(Z=\{S\mid j\mid S'\}\), a single \(j\) merging into the collapsed cluster \(S\), with \(|S'|=N-s-1\) on the other side. \(Z\) lies in \(\Delta_S\) and in \(\Delta_{S'}\), and the limits seen from the two divisors differ:</p>
+<ul>
+<li>along \(\Delta_S\), the spine of \(\Delta_S\) at \(Z\) is a single merge into the cluster \(S\), and its middle limit is \(F(s,N-s)\);</li>
+<li>along \(\Delta_{S'}\), \(j\) merges into the cluster \(S'\) on that divisor's spine, and the middle limit is \(F(N-s-1,s+1)\).</li>
+</ul>
+<p>At \(N=11\), \(s=8\) these have \(78\) and \(120\) far points. The limit depends on the direction of approach, as the single-merge entry warned. Reading \(f\) at \(Z\) through \(\Delta_S\) shows that \(Z\) lies in no component under three conditions:</p>
+<ul>
+<li>the far points of \(F(s,N-s)\), and the other groups of the spine of \(\Delta_S\) at \(Z\), are generically simple and factor as in the criterion;</li>
+<li>the merge-ring factors are units there, which the <a href="#cube-merge-rings-simple">merge rings</a> give for generic points of the spine;</li>
+<li>the order along \(Z\) of the restriction of \(f/t_S^a\) to \(\Delta_S\) equals the generic order of \(f\) along \(\Delta_{S'}\). This is the exact accounting of the powers of the second boundary parameter from the near, far and ring groups and the resultants between them.</li>
+</ul>
+<p>The third condition is not proved here. So far simplicity is one of the inputs that dispose of a nested single-merge stratum, not the whole of it. The same order-matching hypothesis is needed for nested strata with larger middles, whose middles have moduli. The star strata (two disjoint clusters) carry the neck pencils, and there the pencil condition of the criterion is needed.</p>
+<h4 id="cube-n11-rigid-middles">The rigid pieces at eleven roots</h4>
+<p>At \(N=11\) the merge far middles of nested single-merge strata are \(F(s,11-s)\), \(2\le s\le8\). The stratum types pair up as \(s\leftrightarrow N-1-s\), read through \(\Delta_S\) or \(\Delta_{S'}\): \((2,8)\), \((3,7)\), \((4,6)\), \((5)\). So \(F(8,3)\) is the second reading of the strata already read through \(F(2,9)\), needed only if both readings are used.</p>
+<ul>
+<li>\(s=5\) was checked with the first far check (\(F(5,6)\)), and \(s=2,3,4,6,7\) with the eleven-root chain in the far simplicity review.</li>
+<li>\(s=8\) is new. <code>research/tools/bmd_cube_merge_far_chain.gp</code> with <code>CASES=last</code> computes \(F(8,3)\) modulo \(2^{61}-1\): dimension \(57\), and a squarefree far polynomial of degree \(78\), the far count (research/results/bmd-20261002-h/far-8-3.txt).</li>
+</ul>
+<p>The rigid pieces on divisors are the two-root pieces \(V(9;2)\), equal in Weierstrass points to \(F(1,10)\), the binary face (<a href="#cube-merge-far-binary-face">far binary face</a>). So every rigid piece of the eleven-root assembly has simple Weierstrass points.</p>
+<p><strong>What remains at \(N=11\).</strong> These are the pieces with moduli:</p>
+<ul>
+<li>reducedness of \(D(m,k)\) over \(M_{0,k+1}\) for \(m+k=11\), \(3\le k\le9\), starting with the chain end \(D(8,3)\) (one modulus);</li>
+<li>the neck rings on divisors with \(s\ge3\);</li>
+<li>the group factorization hypothesis;</li>
+<li>the order-matching hypothesis on nested strata, and generic simplicity on nested strata with larger middles;</li>
+<li>the pencil discriminants of every star type, of which \((1,2,2,6)\) is checked, all conditional on the corner conjectures.</li>
+</ul>
+<p>These form a finite list, each item a statement about an explicit family.</p>
+<p><strong>Remaining gap.</strong> For every \(N\): far simplicity for \(n\ge2\). At \(N=11\): the list above.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-discriminant-boundary-reducedness (statement, the reading of hypotheses in limit data); lem:cube-multicluster-spine-classes (statement); lem:cube-single-merge (definition of \(V(n;k)\)); thm:cube-binary-face-weierstrass-points (statement); the far checks of the earlier far entry and the far simplicity review.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the inversion and covariance, the shape hypotheses, the two-root piece, the nested-strata reasoning, the eleven-root bookkeeping and the new output. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the collision point and common factor are stated precisely;</li>
+<li>the two-root piece is identified with the far binary face rather than \(\Phi^0\);</li>
+<li>the nested-strata paragraph now records that the limit depends on the divisor of approach, and makes the conclusion conditional on an order-matching hypothesis and on the ring factors;</li>
+<li>the merge far middles are \(2\le s\le8\), paired as \(s\leftrightarrow N-1-s\);</li>
+<li>the divisor list names the two-root piece.</li>
+</ul>
+<p>These restrict or correct statements without adding claims, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-h">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 29.21 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 50.02 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">6 min 37.03 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">43.87 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">18.16 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>

@@ -1,6 +1,7 @@
-\\ Far polynomials along the eleven-root merge chain (2 October 2026; review cycle bmd-20261002-b).
+\\ Far polynomials of the eleven-root merges (2 October 2026; cycles bmd-20261002-b and bmd-20261002-h).
 \\ Functions copied from bmd_cube_merge_far.gp (cycle bmd-20261001-t); only the case list differs: the far
-\\ spaces F(n,k) of the chain merges at N = 11 not covered before, (n,k) = (2,9), (3,8), (4,7), (6,5), (7,4).
+\\ spaces F(n,k), n + k = 11, not covered before: (2,9), (3,8), (4,7), (6,5), (7,4) (cycle b), and with CASES=last
+\\ the middle F(8,3) of the nested two-node strata (cycle h).
 \\ Output per case: [dim, interpolation checks, Q square, deg R, deg gcd(R,R'), ord at 0, ord at 1 of Q].
 \\ Far limit of a single merge (1 October 2026; cycle bmd-20261001-t).
 \\ lem:cube-single-merge: V(n; p_0; p_1..p_k) with p_0 = 0, p_1 = eps, p_2..p_k fixed.  In the merge chart z = eps w the
@@ -80,7 +81,7 @@ farpoly(nk) = {
 }
 export(PR, wronsq, predicted, farpoly);
 {
-  my(cases = [[2, 9], [3, 8], [4, 7], [6, 5], [7, 4]]);
+  my(cases = if (getenv("CASES") == "last", [[8, 3]], [[2, 9], [3, 8], [4, 7], [6, 5], [7, 4]]));
   my(res = parapply(farpoly, cases));
   for (i = 1, #cases, emit(Str("  (n,k)=", cases[i], ": ", res[i])));
 }
