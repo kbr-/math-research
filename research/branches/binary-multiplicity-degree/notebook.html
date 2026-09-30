@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For (K) at \(N=11\), all four spanning fully clean types have explicit spine limits of weight at most one off their special points at sampled cross-ratios (<a href="#entry-2026-09-30-cube-n11-spine-weights">eleven-root check</a>).</p>
-<p>Next, complete the spine part at \(N=11\) for every cross-ratio. For each of the four types, compute \(R(z,\mu)\) by interpolation in \(\mu\) (the \(\mu\)-dependence enters only through the positions), and its discriminant in \(z\). A point of weight at least two at some \(\mu\) needs a root of that discriminant, and weight three needs a common root with the next derivative, as in the <a href="#entry-2026-09-30-cube-fcurve-spine">boundary spine</a> certificate. Use a compiled kernel (FLINT) for the determinants and resultants if the gp sizes grow too large. Then turn to the special points, \(\infty\), and the tails and nodes.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For (K) at \(N=11\), all four spanning fully clean types have spine limits of weight at most one off their special points, at sampled cross-ratios along the linear family (<a href="#entry-2026-09-30-cube-n11-spine-weights">eleven-root check</a>). The <a href="#entry-2026-09-30-cube-arc-route-review">arc review</a> found that the criterion needs this along every arc, and that every tested neck limit is independent of the arc.</p>
+<p>Next, prove <code>conj:cube-spine-arc-independence</code>. First, write the codimension-two lemma: the Gauss map of the linear family with free shapes is regular at generic points of \(\varepsilon=0\), so ratio-generic arcs have the linear limit. Then treat the hierarchical arcs, collapsing one cluster first, where the first collapse is regular by the single-cluster classes. Then the tie loci. After that: the all-cross-ratio spine certificate, the tails and nodes, and the special points.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33672,6 +33672,170 @@ and otherwise a hyperplane of it containing \(H^0(\mathcal O(a(c^*-1)p_1+b(c^*-1
 <tr><td>Computation design and coding</td><td class="elapsed">2 min 54.69 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 7.11 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2 min 22.11 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-arc-route-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-spine-arc-independence check:cube-neck-arc-independence">
+<h3>30 September 2026 — Review: verifying the boundary-curve criterion by spine limits needs every arc, and the tested necks do not depend on the arc</h3>
+<p class="entry-meta">Route review of open statement 3 after the eleven-root spine check. Verifying the criterion by limits needs every arc to a point of an F-curve, not one linear family. Neck limits are unchanged along every tested arc. Arc route review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>General statement.</strong> The line's claim is <code>cor:cube-first-step-two-certificates</code> in the form of the <a href="#cube-contact-criterion">contact criterion</a>: for \(N\ge7\), \(\alpha_N=\lambda_N\) follows from (B) and (K). For (K), the <a href="#cube-contact-fcurve-criterion">boundary-curve criterion</a> (<code>lem:cube-contact-fcurve-criterion</code>, item 3) asks that the closure of \(q(W_3)\) in \(\overline M_{0,N}\) meet no curve of a spanning family. In this period:</p>
+<ul>
+<li>the <a href="#cube-cluster-cost-bound">cluster cost bound</a> and the <a href="#entry-2026-09-30-cube-two-cluster-space-rule">two-cluster space rule</a> described the necks between large clusters;</li>
+<li>the <a href="#cube-pair-spine-limit">pair spine limit</a> and the <a href="#entry-2026-09-30-cube-n11-spine-weights">eleven-root check</a> assembled the spine limits of all four spanning fully clean types at \(N=11\). Their weight is at most one off the special points at two cross-ratios (<code>conj:cube-clean-spine-weight-one</code>).</li>
+</ul>
+<p>This review states the arc problem as <code>conj:cube-spine-arc-independence</code> and tests it on the necks (<code>check:cube-neck-arc-independence</code>).</p>
+<p><strong>What the goal needs.</strong> Statement 3 at \(N=11\) needs (B) and (K). For (K) through the criterion, each curve of the spanning family must avoid the closure of \(q(W_3)\) at every point. A point \(p\) of such a curve lies in that closure exactly when some arc of configurations tends to \(p\) with a point of weight at least three on every member (curve selection). The spine checks so far follow one arc, the linear family \(a_i=q_c+\varepsilon s_i\). Limits are taken in spine coordinates normalized so that the cluster centres converge to the special points. A point of an F-curve records each cluster's shape only up to affine maps, so the arcs to it include clusters collapsing at different rates, with drifting shapes. By upper semicontinuity of weight, a weight-three point that stays at a non-special spine point along an arc forces its limit space to have weight at least three there. So, on the spine, verifying the criterion's hypothesis by limits requires the clean-weight property for every space that arises as a limit along some arc to \(p\), not only for the linear limit. This is a sufficient condition: a weight-three point in an arc limit does not by itself put \(p\) in the closure.</p>
+<h4>Falsification attempt</h4>
+<p>If the set of arc limits over \(p\) were positive-dimensional, verification by arc limits would be expected to fail. Weight at least three at a point is a codimension-three condition on (space, point). With one modulus \(\mu\), one parameter along a positive-dimensional family of limits and the point \(z\), the expected solution set is finite and may be nonempty. On the linear family alone, with \(\mu\) and \(z\), it is expected empty, as found at \(N=11\). So verification of the criterion by spine limits depends on whether the spine limit depends on the arc.</p>
+<p>The spine limit is the direct sum of the class limits of <code>lem:cube-multicluster-spine-classes</code>. The classes are distinct monodromy characters, so their limits are independent. The single-to-cluster classes are spans of divided differences of \(x\mapsto((z-q_s)(z-x))^{1/2}\) at the cluster's points. These are continuous in the points, coincidences included, so their limits do not depend on the arc. The classes inside one cluster are not divided-difference spaces. At \(p\), with smooth tails, each cluster collapses at a single rate with shape \(s(t)\to s_0\). Suppose the cluster has weight zero at \(s_0\), as part 1 of the lemma assumes (for clusters of size at least three the lemma leaves this as a hypothesis). Then the rescaled leading terms are independent at \(s_0\). Independence is an open condition, so it holds along every arc with \(s(t)\to s_0\), at any rate, and the limit does not depend on the arc. Only the necks between two clusters of sizes \(m,n\ge2\) can depend on the arc, since there the naive limits are dependent and the limit comes from cancellations. For \(mn&gt;m+n-1\), the \(mn\) products \((z-q)^{-k}(z-q')^{-l}\) span only \(m+n-1\) dimensions.</p>
+<p>research/tools/bmd_cube_neck_rate_test.gp computes the flat limit of one neck exactly over \(\mathbb Q(z)[[t]]\), by valuation reduction, along arcs \(x_i=c_xt^{k_x}(s_i+tu_i)\), \(y_j=c_yt^{k_y}(s'_j+tu'_j)\) (neck-rate-small.txt, neck-rate-test.txt). It compares each limit with the linear one.</p>
+<ul>
+<li>\((2,2)\), centred shapes. The ratios \(r=2,3,-1,1,1/2,\pm i,5/7\) (\(r\) the ratio of the second scale to the first) give the same limit. The \(4\times4\) minors of the symbolic-\(r\) limit basis have numerator gcd \(r^2\); one basis vector carries a factor \(1/(2(r-1)^2)\), so this says nothing at \(r=1\). At each sampled \(r\) the total cost is the generic \(6\), so the limit there is the specialization. The printed symbolic basis also shows the span free of \(r\): its second vector is an \(r\)-free vector minus \(r\) times the third. The exponent pairs \((1,k)\) and \((k,1)\) for \(k=2,3,4\), with \(c=1,-1,2\), give the same limit. The total costs are \(2k+4\) along both, against \(6\) on the linear arc. So the \(t\)-order is not additive over the clusters: the Plücker vector's Newton polytope in the two scales has at least two vertices, yet the limit space is the same.</li>
+<li>\((2,3)\), \((3,3)\) and \((2,4)\), including \((3,3)\), where the orders interact. They were tested for the exponent pairs \((1,1),(1,2),(2,1),(1,3),(3,1),(2,3)\), the ratios \(2\), \(1/2\) and \(-2/3\), a negative second coefficient, and shape drift at \((1,1),(1,2),(2,1)\). All \(39\) arcs, \(36\) besides the linear arc itself, give the linear limit. Total costs, such as \(30\), \(42\), \(53\) and \(73\) for \((3,3)\), vary with the arc.</li>
+</ul>
+<p>So the falsification attempt failed on every tested arc. The test is finite. It covers monomial arcs with fixed drift, not arcs through special ratios (ties) that the tested values missed, and not larger necks.</p>
+<h4>Obstacle</h4>
+<p>The line is stuck on the translation from one arc to all arcs. The boundary-curve criterion is about a closure in \(\overline M_{0,N}\), and each of its points is reached by arcs along which the clusters collapse at independent rates. The spine limit is known only along the linear family, and a positive-dimensional family of arc limits over a point would generically be expected to meet the weight-three locus. What is missing is a proof that the Gauss map of \(V_a\), on the spine and near a point interior to the F-curve, extends regularly: one limit for all arcs. Next come the tails and nodes, where the weight can escape, and the special points and \(\infty\). The criterion's use of these remains unproved, as in the eleven-root entry's list. The (B) side is unchanged.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Regular extension of a holomorphic Plücker vector</strong> (removing a common factor of analytic coordinates, as for meromorphic maps off codimension two). Consider the linear family with free shapes \(s\), which absorb the rate ratios. At a fixed non-special \(z_0\), the jet Plücker vector \(P(\varepsilon,s)\) is holomorphic near \(\varepsilon=0\) (the square roots are analytic there). Write \(P=\varepsilon^mP'\) with \(m\) the generic cost, and let \(\Sigma_1=\{s:P'(0,s)\ne0\}\), the shapes whose linear arc has the generic cost. Every arc with \(\varepsilon(t)\to0\) and \(s(t)\to s_0\in\Sigma_1\) has limit \([P'(0,s_0)]\), the linear limit at \(s_0\). It targets the obstacle and would break at arcs with a ratio tending to \(0\) or \(\infty\), and at shapes outside \(\Sigma_1\). It does not show that the linear limit is independent of the ratio, which is not a coordinate of \(p\). <strong>Answers.</strong> It shows that every ratio-generic arc has the linear limit at its limiting ratio. Arc independence for these arcs then reduces to ratio independence of the linear limit, symbolic at \((2,2)\) and sampled otherwise. The hierarchical arcs remain. <strong>Test.</strong> Passed: every ratio arc in the neck tests (\(r=2,-1,\pm i,\ldots\)) has the generic cost and the linear limit, consistent with the lemma and with ratio independence. The proof is to be written in the next cycle.</li>
+<li><strong>Tevelev's tropical compactifications and the Gröbner fan</strong> (Tevelev, Amer. J. Math. 129 (2007) 1087–1104; Sturmfels, <em>Gröbner Bases and Convex Polytopes</em>, 1996). Along an arc with scale exponents \(w\), the limit of a Plücker vector is its initial form \(\operatorname{in}_w\) evaluated at the leading coefficients, when that is nonzero. Arc independence for monomial arcs is then the statement that all initial forms of the neck's Plücker vector, over the positive orthant of the fan, are scalar multiples of one vector. It targets the obstacle and would break at arcs where \(\operatorname{in}_w\) vanishes at the leading coefficients. <strong>Answers.</strong> It replaces all arcs by the finitely many cones of a fan together with their vanishing loci, a finite certificate for each neck. <strong>Test.</strong> Passed: the \((2,2)\) totals \(2k+4\) along both families show at least two vertices, so a single least monomial is not the mechanism, and the tested initial forms agree up to scalars.</li>
+<li><strong>Limit linear series on metrized complexes</strong> (Amini and Baker, Math. Ann. 362 (2015) 55–106), with admissible covers (Harris and Mumford, Invent. Math. 67 (1982) 23–86). The \((\mathbb Z/2)^N\)-cover of a stable spine-and-tails curve is an admissible cover whose dual graph has cycles, so Eisenbud–Harris compact-type uniqueness does not apply. On a metrized complex the limit depends on the edge lengths, which are the rates. It targets the obstacle and breaks if the metric of a neck's cover graph enters the spine aspect. <strong>Answers.</strong> Arc independence would follow if the spine aspect of the limit series were determined by the divisor theory of the cover graph independently of edge lengths, as for a tree. <strong>Test.</strong> Not run: the cover graph over a neck and its divisor ranks were not computed this cycle.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>Matched asymptotic expansions and distinguished limits</strong> (fluid dynamics; Van Dyke, <em>Perturbation Methods in Fluid Mechanics</em>, 1964; Kevorkian and Cole, 1981). Translation: two clusters collapsing at rates \(t^{k_x}\) and \(t^{k_y}\) are an inner and an outer problem, and each exponent pair is an intermediate limit. A new distinguished limit appears only when two terms balance at an intermediate scale. Matching then forces the inner and outer leading terms to agree. <strong>Answers.</strong> Arc independence of a neck is the absence of a distinguished intermediate limit, and a balance of two terms (a tie) is the only place where a new limit could appear. This localizes the obstacle to the tie loci. <strong>Test.</strong> Passed: the intermediate regimes \((1,2),(2,1),(1,3),(3,1),(2,3)\) all give the linear limit for every tested neck.</li>
+<li><strong>The Hermite–Genocchi formula</strong> (numerical analysis: divided differences as integrals over a simplex, continuous in all nodes jointly, coincidences included). Translation: the single-cluster classes are arc-independent because divided differences extend continuously to coincident nodes. A neck would be arc-independent if its cancelling combinations, divided by a scalar function of the two scales, had such a jointly continuous extension. <strong>Answers.</strong> A two-cluster Hermite–Genocchi representation, one continuous extension of each neck's reduced basis, would give arc independence for every arc at once, hierarchical and tie arcs included. <strong>Test.</strong> Not run: the factorization of the \((2,2)\) cancelling element by a scalar in the two scales was not computed. The rank test found no tie at \(r=\pm1,\pm i\), which is consistent with it.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-normality-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-peeling-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-peeling-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-complete-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Assessment</h4>
+<p>The line has made concrete progress at \(N=11\): every spine limit of the spanning family is explicit, and clean at sampled cross-ratios. But the criterion that turns this into (K) had an unexamined step. It speaks of closures, and closures see every arc. The evidence of this review is favourable: the necks, the only arc-sensitive classes, are arc-independent on \(65\) tested arcs (\(62\) besides the linear arc), including the interacting \((3,3)\) case. The other classes are arc-independent by divided differences, and by openness at weight-zero shapes. So the step is plausibly true, and an unwritten regularity argument reduces ratio-generic arcs to ratio independence of the linear limit. It is not yet proved, however, and it must hold at every point of the curves, not only generic ones. The tails, nodes and special points are untouched. The (B) side has not moved for several periods and is as necessary as (K). The line is sound but its remaining obligations are several, and none is closed.</p>
+<p><strong>Next step on the highest-risk item.</strong> Prove <code>conj:cube-spine-arc-independence</code>: write the regularity lemma for ratio-generic arcs and prove ratio independence of the neck limits, then treat the hierarchical arcs by collapsing one cluster first. The single-cluster regularity gives the limit on that boundary divisor, and the neck tests say that the second collapse returns the linear limit. That second collapse should follow from the <a href="#entry-2026-09-30-cube-two-cluster-space-rule">space rule</a>'s description of the limit as the cheapest-cost space.</p>
+<p><strong>Dependencies re-read.</strong> The boundary-curve criterion (statement, proof of (3) and the heuristic paragraph), the eleven-root check, the multi-cluster spine lemma.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, the claim specification, the criterion and multi-cluster excerpts, the script and its outputs. It confirmed the valuation reduction, the counts and the totals \(2k+4\). Verdict: pass with corrections, all applied:
+</p>
+<ul>
+<li>clean weight along all arc limits is stated as sufficient, not necessary, in normalized spine coordinates;</li>
+<li>the within-cluster classes are arc-independent by openness at weight-zero shapes, not by divided differences;</li>
+<li>the gcd statement is weakened, and the symbolic \(r\)-freeness of the \((2,2)\) span is recorded;</li>
+<li>a ratio is corrected to \(-2/3\), and the linear arcs are excluded from the counts;</li>
+<li>the first lead is restated analytically and no longer claims ratio independence;</li>
+<li>the falsification, obstacle and assessment wording is corrected, and so are the claim summaries.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zze">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>20 min 18.33 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">5 min 36.22 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">6 min 52.91 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 32.42 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 56.54 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">20.10 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
