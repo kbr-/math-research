@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). Both now reduce to neck-type limits: the peeling necks of (B), proved on the <a href="#cube-neck-last-block-windows">last block</a>, and the <a href="#entry-2026-09-30-cube-two-cluster-limit">two-cluster necks</a> on the spines of fully clean boundary curves for (K). The \((2,2)\) and \((2,3)\) necks are <a href="#cube-two-double-cross-limit">solved</a>, and every \((2,n)\) neck has its <a href="#cube-two-n-first-generators">first two extra generators</a>.</p>
-<p>Next, prove the <a href="#cube-two-n-cost-rule">two-n cost rule</a>. Extend the eliminations of the first-generators lemma to one more order. Use the next term \(2g_1^2v_1^5\) of \(X\) and the next recurrence coefficient to construct an element with leading term \(u_1^3\) at order \(7\) and one with \(u_2^{n+1}\) at order \(n+3\). Then set up the induction over the slots. The first target is the \((2,6)\) class of the fully clean type \((1,2,2,6)\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). Both now reduce to neck-type limits: the peeling necks of (B), proved on the <a href="#cube-neck-last-block-windows">last block</a>, and the <a href="#entry-2026-09-30-cube-two-cluster-limit">two-cluster necks</a> on the spines of fully clean boundary curves for (K). For the \((2,n)\) necks, the <a href="#cube-two-n-cost-bounds">cost bounds</a> reduce the <a href="#cube-two-n-cost-rule">cost rule</a> to an upper bound.</p>
+<p>Next, prove the upper bound: \(\sum k_i=\sum_{j\le2n}c_{(j)}\). Compute the order of one maximal minor of the \(2n\) rows, using the slot coordinates: the constant, the \(p_1\)-coefficients \(c_1,\ldots,c_{a}\) and the \(p_2\)-coefficients \(\beta_1,\ldots,\beta_{b}\). Use the bases \(XR_e\) and \(R_e\), with \(R_e=(q-v_2)^e\), in which the proof of the bounds has explicit leading terms. Then find the leading coefficient as a product of semicircle and recurrence determinants. The first target is \((2,6)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33035,6 +33035,99 @@ Two shape pairs each (two-n-predict.txt) gave exactly these orders and pole prof
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-two-n-cost-bounds" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="thm:cube-two-n-cost-bounds cor:cube-two-n-cost-reduction">
+<h3>30 September 2026 — Semicircle moments and the cluster recurrence bound the orders of every (2,n) class from below by the conjectured costs</h3>
+<p class="entry-meta">Working proof that a pole of order s at the pair costs at least 3s − 2 and one of order m ≥ n at the n-cluster at least m + 2, so the cost rule reduces to one sum identity. Two-n cost bound cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-two-n-cost-rule">two-n cost rule</a> would give the \((2,6)\) neck needed on the fully clean type \((1,2,2,6)\). Explicit eliminations realize its slots one at a time, but they do not show that no cheaper element exists. The missing implication is a lower bound on the order of an element with a given pole. This cycle asks whether the costs are lower bounds for all \(n\).</p>
+<p><strong>General statement.</strong> <code>thm:cube-two-n-cost-bounds</code> for all \(n\ge2\) and shapes, with <code>cor:cube-two-n-cost-reduction</code>.</p>
+<h4 id="cube-two-n-cost-bounds">The cost bounds</h4>
+<p><strong>Setup.</strong> This is the setting of the <a href="#cube-two-n-first-generators">first-generators lemma</a>: characteristic zero, a pair \(p_1+\varepsilon b_j\) with \(b_1\ne b_2\), and a cluster \(p_2+\varepsilon c_k\) of \(n\) distinct shapes, \(v_i=\varepsilon u_i\). The pair is centred, which changes neither the family nor its limit.
+</p>
+<ul>
+<li>Let \(\Lambda\) be the \(\mathbb C[[\varepsilon]]\)-span of the \(2n\) products \(A_jC_k\), and \(\Lambda_W\) the \(\mathbb C[[\varepsilon]]\)-span of \(C_1,\ldots,C_n\). \(\Lambda\) is free of rank \(2n\): the products \(((z-\beta_j)(z-\gamma_k))^{1/2}\) with distinct \(\beta_1,\beta_2,\gamma_1,\ldots,\gamma_n\) are linearly independent. Continuation around \(\beta_j\) isolates the terms with index \(j\), and then continuation around \(\gamma_k\) isolates a single term. This is where \(b_1\ne b_2\), distinct \(c_k\) and \(p_1\ne p_2\) enter. The theorem itself uses only \(b_1\ne b_2\) and characteristic zero; the rank is used by the corollary.</li>
+<li>The order of \(F\in\Lambda\) is the largest \(K\) with \(F=O(\varepsilon^K)\) uniformly on compacta of \(\mathbb C\setminus\{p_1,p_2\}\). Its leading function is \(\lim\varepsilon^{-K}F\), a rational function with poles only at \(p_1,p_2\) that is regular at \(\infty\).</li>
+<li>A valuation-reduced basis of \(\Lambda\) has orders \(k_1,\ldots,k_{2n}\) and independent leading functions spanning the flat limit \(L\). These are the orders of the two-cluster check.</li>
+<li>Costs: \(\mathrm{cost}(u_1^s)=3s-2\); \(\mathrm{cost}(u_2^m)=m\) for \(m&lt;n\) and \(m+2\) for \(m\ge n\).</li>
+</ul>
+<p><strong>Theorem (two-n cost bounds).</strong> Let \(F\in\Lambda\) have order \(K\) and leading function \(\ell\).
+</p>
+<ol>
+<li>If \(\ell\) has a pole of order exactly \(s\ge1\) at \(p_1\), then \(K\ge3s-2\).</li>
+<li>If \(\ell\) has a pole of order exactly \(m\ge n\) at \(p_2\), then \(K\ge m+2\). For \(1\le m&lt;n\), \(K\ge m\).</li>
+</ol>
+<p>In case 1 with equality, the polynomial \(P\) of the proof, built from the leading coefficients of the \(\gamma_e\), is proportional to the degree-\((s-1)\) orthogonal polynomial of the semicircle law of the pair.</p>
+<p><strong>Proof.</strong> <em>Reduction.</em> As in the <a href="#cube-two-double-cross-limit">two-double proof</a>, write \(A_{1,2}=S\pm\Delta\) with \(\Delta=\beta SX\), \(\beta=(b_2-b_1)/4\ne0\), \(X=v_1/S^2\). Then \(\Lambda=S\cdot\{\psi+X\varphi:\psi,\varphi\in\Lambda_W\}\). Since \(S=S(v_1)=1+O(v_1^2)=1+O(\varepsilon^2)\) uniformly away from \(p_1\), \(F\) and \(G=\psi+X\varphi\) have the same order and leading function. With centring,
+\[X=\sum_{k\ge0}\mathrm{Cat}_k\,g_1^k\,v_1^{2k+1},\qquad g_1=b^2/4=(b_1-b_2)^2/16\ne0 .\]
+The coefficients \(x_{2k+1}=\mathrm{Cat}_kg_1^k\), \(x_{2k}=0\) are the moments \(x_{k+1}=\mathcal L(\xi^k)\) of the semicircle law of variance \(g_1\), with \(X(w)=\mathcal L\bigl(1/(w-\xi)\bigr)\) for \(w=1/v_1\). Its Hankel determinants are \(\det[x_{i+j+1}]_{i,j&lt;m}=g_1^{m(m-1)/2}\ne0\) (Jacobi parameters \(0\) and \(g_1\)), so \(\mathcal L\) is quasi-definite: no nonzero polynomial of degree at most \(m-1\) is orthogonal to \(1,\xi,\ldots,\xi^{m-1}\).</p>
+<p><em>Case 1.</em> Every element of \(\Lambda_W\) is analytic near \(p_1\), so the principal part of \(G\) at \(p_1\) comes from \(X\varphi\). With \(t=z-p_1\), \(r=1/(p_1-p_2)\) and \(\varphi=\sum_j\Phi_jt^j\), the coefficient of \(t^{-a}\) is
+\[c_a=\sum_kx_{2k+1}\varepsilon^{2k+1}\Phi_{2k+1-a}=\varepsilon^a\,\mathcal L\bigl(\xi^{a-1}\varphi(p_1+\varepsilon\xi)\bigr).\]
+</p>
+<ul>
+<li><strong>Basis of \(\Lambda_W\).</strong> Every \(\varphi\in\Lambda_W\) is a series \(\sum_ma_mv_2^m\) with \(a_m\in\mathbb C[[\varepsilon]]\), since \(C_k=\sum_mB_mc_k^mv_2^m\). Put \(q=\varepsilon r\) and \(R_e=(q-v_2)^e\). From \(v_2=q/(1+rt)\),
+\[R_e=\varepsilon^{2e}r^{2e}\xi^e(1+\varepsilon r\xi)^{-e}\quad\text{at }t=\varepsilon\xi .\]
+Since \(v_2^m=(q-R_1)^m\) and \(R_e=R_1^e\), every \(\varphi\) is \(\sum_{e\ge0}\gamma_eR_e\) with \(\gamma_e=\sum_ma_m\binom me(-1)^eq^{m-e}\in\mathbb C[[\varepsilon]]\), convergent \(\varepsilon\)-adically.</li>
+<li><strong>Leading moments.</strong> Hence \(c_a=\varepsilon^am_a\) with
+\[m_a=\sum_e\gamma_e\varepsilon^{2e}r^{2e}\bigl(x_{a+e}+O(\varepsilon)\bigr).\]
+Let \(T=\min_e(2e+\operatorname{ord}\gamma_e)\), let \(D\) be the finite set attaining it, and \(P(\xi)=\sum_{e\in D}\bar\gamma_er^{2e}\xi^e\ne0\), where \(\bar\gamma_e\) is the leading coefficient. Then \(m_a=\varepsilon^T\mathcal L(\xi^{a-1}P)+O(\varepsilon^{T+1})\).</li>
+<li><strong>Bound.</strong> The \(c_a\) are Cauchy integrals of \(G\) over a fixed circle around \(p_1\), and \(G=O(\varepsilon^K)\) uniformly there. So \(\operatorname{ord}c_a\ge K\) for all \(a\), and a pole of order exactly \(s\) means \(\operatorname{ord}c_s=K\). Centring moves \(p_1\), \(r\) and \(t\) by \(O(\varepsilon)\). Re-expanding \((t-\varepsilon\delta)^{-a}\) shifts only higher orders into higher poles, so these statements do not depend on the centre, and \(r\) in \(P\) is taken at \(\varepsilon=0\). The same applies to \(p_2\) in Case 2. So \(K\ge s+T\). If \(\mathcal L(\xi^{a-1}P)\ne0\) for some \(a\le s-1\), then \(\operatorname{ord}c_a=a+T&lt;K\), a contradiction. So \(P\perp1,\ldots,\xi^{s-2}\), and quasi-definiteness gives \(\deg P\ge s-1\). Some \(e\ge s-1\) lies in \(D\), so \(T\ge2(s-1)\) and \(K\ge3s-2\).</li>
+<li><strong>Equality.</strong> If \(K=3s-2\), then \(\deg P=s-1\) and \(P\) is proportional to the orthogonal polynomial of degree \(s-1\).</li>
+</ul>
+<p><em>Case 2.</em> Let \(\sigma=z-p_2\), \(B_m=\binom{1/2}{m}(-1)^m\ne0\), and let \(e_j\) be the elementary symmetric functions of the \(c_k\).
+</p>
+<ul>
+<li><strong>Coefficients.</strong> For \(\chi=\sum_k\lambda_kC_k\in\Lambda_W\) (\(\lambda\in\mathbb C[[\varepsilon]]^n\)), \(\chi=\sum_mB_mp_m(\chi)\varepsilon^m\sigma^{-m}\). Here \(p_m=\sum_k\lambda_kc_k^m\in\mathbb C[[\varepsilon]]\) satisfies \(\sum_{j=0}^n(-1)^je_jp_{m-j}=0\) for \(m\ge n\).</li>
+<li><strong>Splitting \(X\).</strong> Write \(X=X(p_2)+Y\). Here \(X(p_2)\in\mathbb C[[\varepsilon]]\) is a scalar, and \(Y=\sum_{i\ge1}\xi_i\sigma^i\) is analytic at \(p_2\) with \(\operatorname{ord}\xi_i\ge1\), since \(X\) is a series in \(v_1\), which is \(\varepsilon\) times a function analytic at \(p_2\).</li>
+<li><strong>Normalized coefficients.</strong> The coefficient of \(\sigma^{-m}\) in \(G\) is \(\beta_m\). For \(m\ge0\), \(P_m:=\beta_m/(\varepsilon^mB_m)\) equals
+\[P_m=p_m\bigl(\psi+X(p_2)\varphi\bigr)+\sum_{i\ge1}\xi_i\varepsilon^i\frac{B_{m+i}}{B_m}p_{m+i}(\varphi).\]</li>
+<li><strong>Residual.</strong> For \(m\ge n\), the residual \(\rho_m=\sum_{j=0}^n(-1)^je_jP_{m-j}\) kills the first part, because \(\psi+X(p_2)\varphi\in\Lambda_W\). Every remaining term has order at least \(\operatorname{ord}\xi_i+i\ge2\), so \(\operatorname{ord}\rho_m\ge2\). The residual uses only indices \(m-j\ge0\).</li>
+<li><strong>Bound.</strong> If \(\ell\) has a pole of order exactly \(m\) at \(p_2\), then \(\operatorname{ord}\beta_m=K\), and every Laurent coefficient of \(G\) at \(p_2\) has order at least \(K\), since \(G=O(\varepsilon^K)\) uniformly on a circle around \(p_2\). So \(\operatorname{ord}P_m=K-m\) and \(\operatorname{ord}P_{m-j}\ge K-m+j\), and therefore \(\operatorname{ord}\rho_m=K-m\). Hence \(K-m\ge2\).</li>
+<li><strong>Small poles.</strong> For \(m&lt;n\), \(\operatorname{ord}\beta_m\ge m\) directly. \(\square\)</li>
+</ul>
+<p><strong>Corollary (two-n cost reduction).</strong> Let \(c_{(1)}\le c_{(2)}\le\cdots\) be the costs of the monomials \(1\) (cost \(0\)), \(u_1^s\) and \(u_2^m\), sorted. For \(C\ge0\), let \(a(C)=\max\{s\ge0:3s-2\le C\}\) and \(b(C)=\max\{m\ge0:\mathrm{cost}(u_2^m)\le C\}\). Both costs increase in the exponent, so a pole of order \(m\) with cost at most \(C\) has \(m\le b(C)\). At most one \(u_1\)-monomial and one \(u_2\)-monomial share a cost.
+</p>
+<ol>
+<li>For every \(C\), \(L_{\le C}=\operatorname{span}\{\ell_i:k_i\le C\}\subseteq H^0(\mathcal O(a(C)p_1+b(C)p_2))\).</li>
+<li>The sorted orders satisfy \(k_{(j)}\ge c_{(j)}\), so \(\sum_ik_i\ge\sum_{j\le2n}c_{(j)}\).</li>
+<li>The <a href="#cube-two-n-cost-rule">cost rule</a> holds for \((2,n)\) exactly when equality holds, and then \(L\) is as the rule states. Equivalently, it holds exactly when \(\Lambda\) contains \(2n\) elements with independent leading functions and orders \(c_{(1)},\ldots,c_{(2n)}\).</li>
+</ol>
+<p><em>Proof.</em> If \(g=\sum_{k_i\le C}c_i\ell_i\ne0\), then \(\sum c_i\varepsilon^{C-k_i}f_i\in\Lambda\) has order exactly \(C\) and leading function \(g\). By the theorem, \(g\) has poles of order at most \(a(C)\) at \(p_1\) and at most \(b(C)\) at \(p_2\). This proves item 1, and taking dimensions, \(\#\{i:k_i\le C\}\le N(C)=\#\{\text{monomials of cost}\le C\}\) for every \(C\), which is item 2.<br>
+For item 3, first suppose equality holds. Then the sorted lists agree. For \(C\) below the largest selected cost \(c^*\), \(L_{\le C}\) is all of \(H^0(\mathcal O(a(C)p_1+b(C)p_2))\), and \(L=L_{\le c^*}\) lies in \(H^0(\mathcal O(a(c^*)p_1+b(c^*)p_2))\), of dimension \(N(c^*)\in\{2n,2n+1\}\). This is the rule, including the tie case.<br>
+For the converse, use the volume \(\det[f_i(z_l)]_{i,l\le2n}\) at \(2n\) generic points \(z_l\). For a family with independent leading functions, its order is the sum of the orders. So \(2n\) such elements of \(\Lambda\) spanning a sublattice \(\Lambda'\) have order sum \(\sum k_i+\operatorname{ord}\det M\ge\sum k_i\), where \(M\) expresses them in a reduced basis. If their orders are \(c_{(1)},\ldots,c_{(2n)}\), item 2 forces \(\sum k_i=\sum c_{(j)}\). \(\square\)</p>
+<p>Consequences:
+</p>
+<ul>
+<li>The elements \(E_1\) (order \(4\)) and \(E''\) (order \(n+2\)) of the <a href="#cube-two-n-first-generators">first-generators lemma</a> are optimal for every \(n\ge3\), the second when \(\kappa_n\ne0\); \(n=2\) is the two-double theorem.</li>
+<li><strong>Justification added.</strong> The proof of the <a href="#cube-two-three-spine-limit">\((2,3)\) corollary</a> said that its six elements with independent leading functions "form a reduced basis". Independence alone does not give this, since such elements may span a proper sublattice. Here they do not: \(E_1\) and \(E''\) arise from \(Xh_1\) and \(Xh_2\) by adding \(\mathbb C[[\varepsilon]]\)-multiples of the other basis elements, so the six elements are a unitriangular change of the basis \(h_b,Xh_b\) of \(\Lambda\). The corollary's limit and orders \(0,1,1,2,4,5\) therefore stand. The converse in item 3 gives a second proof.</li>
+<li>The computed orders for \(n=2,\ldots,7\) (<a href="#entry-2026-09-30-cube-two-n-generators">two-n data</a>) equal the costs, so they attain the bounds. An order below its cost in any of them would have refuted the theorem; none occurs.</li>
+</ul>
+<p><em>Checks.</em> research/tools/bmd_cube_semicircle_hankel.gp (semicircle-hankel.txt) verifies two facts:
+</p>
+<ul>
+<li>\(X=v_1/S^2\) equals the Catalan series to order \(21\);</li>
+<li>the Hankel determinants equal \(g_1^{m(m-1)/2}\) for \(m\le10\) (symbolic \(g_1\)). The general case is the Jacobi continued fraction of the semicircle law.</li>
+</ul>
+<p><strong>What this does to the route.</strong> The \((2,n)\) neck is reduced to an upper bound: one volume identity, \(\sum k_i=\sum_{j\le2n}c_{(j)}\), or equivalently explicit elements for the cheapest slots. The lower bounds are mechanisms, not case checks. The pair acts through the orthogonal polynomials of its semicircle law, and the \(n\)-cluster through its Taylor recurrence. Both plausibly extend to larger first clusters; the \((3,3)\) data show that the costs then change.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the volume identity for all \((2,n)\): the order of one maximal minor, or constructions of the slots \(u_1^s\) (\(s\ge3\)) and \(u_2^m\) (\(m>n\)); then the \((2,6)\) limit and weight three on \((1,2,2,6)\) spines, tails and nodes;</li>
+<li>the neck windows below the last block; far polynomials without triple roots; \(G_{c,w}\not\equiv0\); the exchange condition.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The first-generators lemma, the two-double proof (the \(S,\Delta,X\) reduction), and the two-n data.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed; the Catalan and Hankel check passes. One fresh-context medium reviewer redid the reduction, both cases, the counting and the volume converse, and matched the quoted orders to the output files. It found no mathematical error and required eight changes, all applied: the rank \(2n\) and which hypotheses the theorem uses; the direct expansion of \(\Lambda_W\); the centring and Cauchy-integral justification; the definitions of \(a(C)\), \(b(C)\) and of the volume; the conditions on \(E''\); the precise equality remark; and the missing justification of the \((2,3)\) corollary's reduced-basis step, supplied above.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zx">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>22 min 42.62 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 34.43 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">17 min 7.92 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
