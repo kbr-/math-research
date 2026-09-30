@@ -47,8 +47,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\). The <a href="#cube-single-merge">single-merge lemma</a> gives a peeling chain \(V_a\to V(2)\to\cdots\to V(N-3)\) of explicit spaces without shape parameters.</p>
-<p>Next, for (K): compute the far limit of a single merge. That is the space in the chart \(w=(z-p_0)/\varepsilon\) with \(p_0,p_1\) at \(0,1\), of the classes involving \(p_0\) or \(p_1\). Find its Weierstrass points, their count, and whether they are simple, following thm:cube-base-peeling-degeneration. Check the count identity with the near limit \(V(n+1)\) at small \(n\) and \(k\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. The <a href="#cube-single-merge">near limit</a> and the <a href="#cube-merge-far-limit">far limit</a> of a merge are explicit. The far Weierstrass points are simple in every computed case.</p>
+<p>Next, for (K):</p>
+<ul>
+<li>Prove the far count from a Plücker formula for \(F(n,k)\), using its exponents at \(0\), \(1\) and \(\infty\).</li>
+<li>Find the neck rings between the near and far scales of a merge.</li>
+<li>Check the count identity: weight of \(V(n;k)\) equals weight of \(V(n+1;k-1)\), plus far points, plus rings.</li>
+</ul>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -37310,6 +37315,76 @@ Each step is a nested degeneration: a single approaches a cluster that has alrea
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 24.03 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 9.28 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 14.61 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-01-cube-merge-far-limit" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-01-cube-discriminant-route-review:1" data-claims="lem:cube-merge-far-limit conj:cube-merge-far-polynomial check:cube-merge-far-polynomials">
+<h3>1 October 2026 — The far limit of a single merge is an explicit space without moduli, and its Weierstrass points are simple in every computed case, with a closed-form count</h3>
+<p class="entry-meta">Working proof of the far limit of a single merge; conjecture that its Weierstrass polynomial is squarefree with an explicit degree; finite check for 2 ≤ n ≤ 5, 3 ≤ k ≤ 6. Merge far limit cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-single-merge">single-merge lemma</a> gives the near limit of a merge, \(V(n;\ldots)\to V(n+1;\ldots)\). Following the (B) peeling, the discriminant route needs the far limit: the space seen in the merge chart, and its Weierstrass points. If these are simple, the merge region contributes a unit to the discriminant. This cycle identifies the far limit for every \((n,k)\) and tests its Weierstrass points.</p>
+<p><strong>General statement.</strong> <code>lem:cube-merge-far-limit</code> (every \(n\ge1\), \(k\ge2\), generic other points); <code>conj:cube-merge-far-polynomial</code> (every \(n,k\)); <code>check:cube-merge-far-polynomials</code>.</p>
+<h4 id="cube-merge-far-limit">The far limit</h4>
+<p><strong>Setting.</strong> \(V(n;0;\varepsilon,p_2,\ldots,p_k)\) as in the single-merge lemma, \(C=\binom n2\), \(P=\binom{k-1}2\). Take the merge chart \(z=\varepsilon w\), with \(p_0,p_1\) at \(w=0,1\). Classify functions by their monodromy around \(w=0\) and \(w=1\); the characters are \(T\) (trivial), \(0\), \(1\) and \(01\). After removing constant factors and fixed powers of \(\varepsilon\), the classes are, with \(x=\varepsilon w\):</p>
+<ul>
+<li>\(T\): \(1,x,x^{-i}\) (\(1\le i\le C\)), and \(((1-x/p_j)(1-x/p_l))^{1/2}\) for \(2\le j&lt;l\);</li>
+<li>\(0\) (factor \(\sqrt w\)): \(x^{-i}(1-x/p_j)^{1/2}\), for \(j\ge2\) and \(i&lt;n\);</li>
+<li>\(1\) (factor \(\sqrt{w-1}\)): \((1-x/p_j)^{1/2}\), for \(j\ge2\);</li>
+<li>\(01\) (factor \(\sqrt{w(w-1)}\)): \(x^{-i}\), for \(i&lt;n\).</li>
+</ul>
+<p><strong>Lemma (merge far limit).</strong> Characteristic zero (over \(\mathbb C\)), \(n\ge1\), \(k\ge2\). For \(p_2,\ldots,p_k\) off a proper Zariski-closed set, the flat limit in the chart \(w\) is the space without moduli
+\[F(n,k)=\langle w^{-C},\ldots,w^{1+P}\rangle\ \oplus\ \sqrt w\,w^{-(n-1)}\mathcal P_{&lt;(k-1)n}(w)\ \oplus\ \sqrt{w-1}\,\mathcal P_{&lt;k-1}(w)\ \oplus\ \sqrt{w(w-1)}\,w^{-(n-1)}\mathcal P_{&lt;n}(w).\]</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Rescaling.</em> The characters around \(0\) and \(1\) do not change with \(\varepsilon\), so the limit splits by class. Each class, after removing its character factor, is \(\{g(\varepsilon w):g\in G\}\) for a fixed space \(G\) of functions of \(x\), Laurent at \(x=0\). As in the proof of the axis theorem, its flat limit is spanned by the monomials \(w^e\), where \(e\) runs over the exponents of \(G\) at \(x=0\) (the orders of an echelon basis). Rescaling \(D_\varepsilon\) multiplies the coordinate of \(x^e\) by \(\varepsilon^e\), and the lowest exponents dominate.</li>
+<li><em>Class \(T\).</em> \(G\) is \(\langle x^{-C},\ldots,x^{-1}\rangle\) plus the pair space of the \(k-1\) roots \(p_j\) in \(x\). That pair space contains \(\langle1,x\rangle\) and has dimension \(2+P\). For generic \(p_j\), the point \(x=0\) is not one of its finitely many Weierstrass points. The pair space is translation-equivariant: the Wronskian of \(H(p)\) at \(0\) equals that of \(H(p+t)\) at \(t\). \(H(p)\) has \(2+P\) independent functions, so its Wronskian is not identically zero, and the condition is algebraic in \(p\) (\(W^2\) is rational). So it fails only on a proper Zariski-closed set, and the exponents at \(0\) are \(0,\ldots,1+P\). Together with the negative powers, the exponents are \(-C,\ldots,1+P\).</li>
+<li><em>Class \(0\).</em> \(x^{n-1}G\) is the block space \(\bigoplus_j\{x^m(1-x/p_j)^{1/2}:0\le m&lt;n\}\), with exponent \(\gamma=-\tfrac12\) and all blocks starting at \(0\). By lem:cube-block-wronskian-ordinary (shifts \((\ell-1)n\ge0\)) it is ordinary at \(0\) for generic \(p_j\). So the exponents of \(G\) are \(-(n-1),\ldots,(k-1)n-n\).</li>
+<li><em>Class \(1\).</em> This is the same lemma with blocks of length one: exponents \(0,\ldots,k-2\).</li>
+<li><em>Class \(01\).</em> This is exact: exponents \(-(n-1),\ldots,0\).</li>
+<li><em>Dimension.</em> The dimensions add up: \((C+2+P)+(k-1)n+(k-1)+n=2+C+kn+\binom k2\). \(\square\)</li>
+</ol>
+<p><strong>Check.</strong> <code>research/tools/bmd_cube_merge_far.gp</code>, part A, computes the exact flat limits over \(\mathbb Q\) of the four classes, at \(p_j=-2,3,-\tfrac52,\tfrac73,\tfrac{11}4\), for \((n,k)=(2,3),(3,3),(2,4),(3,4),(4,3)\). All agree with \(F(n,k)\): <code>research/results/bmd-20261001-t/merge-far.txt</code>.</p>
+<h4>Weierstrass points of the far limit</h4>
+<p><strong>Computation.</strong> Part B of the same script works with \(F(n,k)\) modulo \(2^{61}-1\), after multiplying all functions by \(w^{\max(C,n-1)}\). Let \(d=\dim F\), \(d_0\) the number of functions in classes \(0\) and \(01\), and \(d_1\) the number in classes \(1\) and \(01\). The script computes the Wronskian with the square-root factors divided out (up to constants), squares it, and multiplies by \(w^{d_0}(w-1)^{d_1}\); this equals \(W^2\). It clears the poles at \(w=0,1\) by \((w(w-1))^{d(d-1)}\). It interpolates, with three check points, and strips the factors \(w\) and \(w-1\). It then checks that the result is a square \(R^2\), and reports \(\deg R\) (the number of Weierstrass points off \(w=0,1\), with multiplicity) and \(\deg\gcd(R,R')\). A first run without the pole clearing failed its check points, as it must, since \(W^2\) has poles at \(0\) and \(1\).</p>
+<p><strong>Outcome</strong> (modulo \(2^{61}-1\)). For all 16 pairs \(2\le n\le5\), \(3\le k\le6\), every interpolation passes its checks, the cleared quotient is a square, and \(R\) is squarefree. The degrees are:</p>
+<table>
+<tr><th>\(n\backslash k\)</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+<tr><td>2</td><td>6</td><td>15</td><td>28</td><td>45</td></tr>
+<tr><td>3</td><td>13</td><td>30</td><td>54</td><td>85</td></tr>
+<tr><td>4</td><td>22</td><td>48</td><td>84</td><td>130</td></tr>
+<tr><td>5</td><td>33</td><td>69</td><td>118</td><td>180</td></tr>
+</table>
+<p>They fit \(\deg R=\tfrac12(k-1)\bigl((3n-2)k+n^2-7n+4\bigr)\). The ansatz \(\tfrac12(k-1)(ak+b)\), with \(a\) linear and \(b\) quadratic in \(n\), has five parameters; it was fitted to these values and reproduces all 16. \(R\) is defined over \(\mathbb Q\), since the space has no moduli. The degree modulo \(p\) is only a lower bound for the degree over \(\mathbb Q\): a leading coefficient could vanish modulo \(p\), or extra orders at \(w=0,1\) could appear. So the table gives the count, and squarefreeness over \(\mathbb Q\), only if the degree does not drop modulo \(p\). A Plücker count would settle this.</p>
+<p><strong>Conjecture (merge far polynomial).</strong> For every \(n\ge2\) and \(k\ge3\), the Weierstrass points of \(F(n,k)\) off \(w=0,1\) are simple, and there are \(\tfrac12(k-1)((3n-2)k+n^2-7n+4)\) of them.</p>
+<p><strong>What it would give.</strong> This is the analogue of the (B) peeling's far polynomials \(W_k\). If it holds, the Weierstrass points in the merge region are simple for configurations near the merge. Together with the count identity and the neck rings (below), the merge region then contributes a unit to the local discriminant. That leaves, at each step of the peeling chain, the near limit \(V(n+1)\), the neck rings between the scales, and the counts. The count should follow from a Plücker formula, using the exponents of \(F(n,k)\) at \(0\), \(1\) and \(\infty\). That would make it a theorem and leave only simplicity conjectural.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>Squarefreeness of \(R_{n,k}\) for every \((n,k)\), and the count from a Plücker formula.</li>
+<li>The neck rings at a merge.</li>
+<li>The count identity linking \(V(n)\), \(V(n+1)\), \(F(n,k)\) and the rings.</li>
+<li>The end of the chain, and the passage from the chain to reducedness of \(\Delta_W^{\rm nc}\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-single-merge; lem:cube-block-wronskian-ordinary (statement); thm:cube-neck-corner-axis-vertices (the rescaling argument); thm:cube-base-peeling-degeneration (the far polynomials as model).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the classes and characters, the exponents and block-lemma hypotheses, the dimension count, parts A and B of the script (flat limits, span comparison, factor bookkeeping, degree bound), the fitted formula against the output, and the specification. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the non-Weierstrass property of \(x=0\) for generic points is justified by translation equivariance;</li>
+<li>the lemma states characteristic zero and the ranges of \(n,k\);</li>
+<li>the computation defines \(d,d_0,d_1\) and states what is computed;</li>
+<li>the outcome is marked as modulo \(p\), with the caveat on the degree over \(\mathbb Q\);</li>
+<li>the script's header comment matches its output.</li>
+</ul>
+<p>The optional remarks (the fit's ansatz, and the conditions for the unit contribution) are also applied. The corrections restrict or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261001-t">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>9 min 45.36 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 51.88 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 43.19 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 44.66 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">25.49 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
