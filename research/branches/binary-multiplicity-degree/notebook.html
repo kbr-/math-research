@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) by the boundary reducedness criterion. On every divisor both limit pieces are spine spaces (<a href="#cube-divisor-spine-pieces">divisor pieces</a>). At \(N=11\) every rigid piece has simple Weierstrass points. For every \(N\), rigid simplicity for \(n\ge2\) remains without mechanism.</p>
-<p>Next, for (K) at \(N=11\): the chain end, the first piece with moduli. Compute the discriminant \(D(8,3)\) of the Weierstrass points of \(V(8;3)\) as a polynomial in the cross-ratio, modulo a prime, and test it for squarefreeness away from the three boundary values. Use the modular polynomial model (lem:cube-far-modp-model) to keep the entries polynomial.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) by the boundary reducedness criterion. On divisors both pieces are spine spaces, and at \(N=11\) every rigid piece is simple (<a href="#cube-divisor-spine-pieces">divisor pieces</a>). The star strata need the neck-corner polygon, which rests on cancellations from the product structure (<a href="#entry-2026-10-02-cube-corner-generic-bound">corner bound</a>). For every \(N\), rigid simplicity for \(n\ge2\) has no mechanism.</p>
+<p>Next, for (K): a two-scale proof of the corner polygon, extending the axis proof. Rescale the \(A\)-factors by \(\lambda\) and the \(B\)-factors by \(\lambda'\), expand at \(u=1/z\) and at \(1/(z-1)\), and find the vertex \(v_r\) as the minimal cost of a flag split between the two points. Test it first at \((2,n)\), where the vertices \((j(j-1),(n+1-j)(n-j))\) are known.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -38634,6 +38634,40 @@ the Frobenius (Pólya–Mammana) factorization. It follows by induction on \(s\)
 <tr><td>Computation design and coding</td><td class="elapsed">6 min 37.03 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">43.87 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">18.16 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-corner-generic-bound" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Test of a proof strategy for the neck-corner polygon conjecture; the strategy fails, and no new claim is made.">
+<h3>2 October 2026 — The Cauchy–Binet bound for the neck corner polygons is far below the conjectured polygon, so the polygon rests on cancellations forced by the product structure</h3>
+<p class="entry-meta">A proof strategy for the neck-corner polygon, needed at the star strata of the assembly, is tested and fails: the generic-coefficient bound is not sharp. Corner generic bound cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-divisor-spine-pieces">assembly</a> needs, at the star strata (two disjoint clusters), the pencil condition of the boundary reducedness criterion. That condition rests on conj:cube-neck-corner-antidiagonal-polygon and conj:cube-neck-corner-edge-pencils. The <a href="#cube-merge-window-transversality-theorem">merge transversality</a> was proved by a valuation bound whose minimizers are unique, followed by a nonzero leading coefficient. This cycle tests whether the same scheme can prove the corner polygon.</p>
+<p><strong>General statement.</strong> The statement tested is conj:cube-neck-corner-antidiagonal-polygon, for every neck \((m,n)\).</p>
+<h4>The bound</h4>
+<p>In the setting of the polygon entry, the neck rows are \(A(x_i)B(y_j)\) with \(A(x)=\sum_a\alpha_a(x/z)^a\) and \(B(y)=\sum_b\beta_b(y/(z-1))^b\), where \(x_i=\lambda s_i\) and \(y_j=\lambda's'_j\). Expanding each row in the functions \(z^{-a}(z-1)^{-b}\), Cauchy–Binet writes every Plücker coordinate of the neck space as a sum over \(mn\)-sets \(T\) of exponent pairs \((a,b)\). Each term is the grid determinant \(\det[s_i^as_j'^b]_{(i,j),(a,b)\in T}\), times \(\prod_T\alpha_a\beta_b\lambda^a\lambda'^b\), times the partial-fraction determinant of the functions \(z^{-a}(z-1)^{-b}\), \((a,b)\in T\). With \(\alpha_a\beta_b\) replaced by independent generic coefficients \(\gamma_{a,b}\), different sets \(T\) cannot cancel. The support function \(h_{\rm gen}(w)\) of that version is then the minimal weight of an admissible \(T\), and it is a lower bound for the true \(h(w)\).</p>
+<p><code>research/tools/bmd_cube_neck_corner_generic_bound.gp</code> computes \(h_{\rm gen}\) by the flat-limit cost sum of the polygon script, with random \(\gamma_{a,b}\), at nine weights for \((m,n)=(2,3),(3,3),(3,4)\). It compares \(h_{\rm gen}\) with the conjectured support function (research/results/bmd-20261002-i/corner-generic-bound.txt).</p>
+<ul>
+<li>\((2,3)\): \(h_{\rm gen}=3,3,3,5,2,5,3,4,4\), against the conjecture's \(6,6,6,10,4,10,6,6,6\).</li>
+<li>\((3,3)\): \(11,10,9,17,8,17,9,10,11\) against \(18,17,15,28,12,28,15,17,18\).</li>
+<li>\((3,4)\): \(21,20,18,33,14,35,20,22,23\) against \(34,32,30,54,22,54,30,32,34\).</li>
+</ul>
+<p>The weights are \((1,4),(1,3),(1,2),(2,3),(1,1),(3,2),(2,1),(3,1),(4,1)\). The conjectured support function matches all recorded computations of the true \(h\), by the polygon entry's check (research/tools/bmd_cube_neck_corner_polygon_check.py, 376 values).</p>
+<p><strong>Outcome.</strong> The generic bound is far from sharp, for example \(8\) against \(12\) at \((3,3)\), \(w=(1,1)\). So the true polygon is not the minimal weight of admissible sets: it comes from cancellations among many sets \(T\), forced by the product structure \(\gamma_{a,b}=\alpha_a\beta_b\). The scheme of the merge transversality proof, a single admissible minimizer with a nonzero coefficient, cannot prove the corner polygon in this form. A version keeping the product structure with random one-variable coefficients (<code>MODE=sep</code>) exceeded the truncation guard at \(T\) up to \(128\), and no values were obtained. So whether the polygon depends on the binomial coefficients or only on the product structure remains untested.</p>
+<p><strong>For the route.</strong> The star strata of the assembly need the corner polygon and edge pencils, and a proof must use the product structure. The axis proof did this by a rescaling \(D_\lambda\) that acts on one factor at a time. A two-scale version, as the polygon entry suggested, is the natural next attempt: rescale \(A\) by \(\lambda\) and \(B\) by \(\lambda'\), and split the vanishing sequence between \(u=1/z\) and \(1/(z-1)\).</p>
+<p><strong>Remaining gap.</strong> For every \(N\): rigid simplicity for \(n\ge2\); the corner polygon and edge pencils. At \(N=11\): the list of the assembly entry.</p>
+<p><strong>Dependencies re-read.</strong> The neck corner polygon entry (setting, axis proof, conjecture, checks); the merge transversality entry (the scheme).</p>
+<p><strong>Verification gate.</strong> No claim is registered. The computation is stated with its parameters and outputs, and no reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-i">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 59.22 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 16.42 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 47.35 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">58.96 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3 min 56.35 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
