@@ -43,8 +43,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\) by the <a href="#cube-first-step-two-certificates">two-certificate corollary</a>. At \(N=11\), (B) holds and (L) awaits an approved long run. For even \(N\), (B) reduces by <a href="#cube-base-peeling">peeling</a> to squarefree far polynomials and simple neck points. The far polynomials are irreducible over \(\mathbb Q\) where computed (<code>conj:cube-far-wronskian-irreducible</code>).</p>
-<p>Next, attempt an arithmetic proof of far irreducibility. Compute the \(2\)-adic and \(3\)-adic Newton polygons of \(W_k\) at the four known sizes, and its factorization degrees modulo small primes. Look for a prime at which the polygon has one segment with coprime length and height, or at which \(W_k\) stays irreducible at full degree. If a pattern holds at all four sizes, derive it from the falling-factorial structure of the Wronskian's coefficients for every \((e,l)\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\) by the <a href="#cube-first-step-two-certificates">two-certificate corollary</a>. At \(N=11\), (B) holds and (L) awaits an approved long run. For general \(N\):</p>
+<ul>
+<li>(K) is equivalent to \(E'\) having no component of codimension at most two (<a href="#cube-contact-covector-formula">covector formula</a>);</li>
+<li>(B) for even \(N\) reduces to far-polynomial squarefreeness, conjectured through irreducibility over \(\mathbb Q\), for which the simple arithmetic proofs fail (<a href="#entry-2026-09-30-cube-far-wronskian-arithmetic">far arithmetic</a>), and to neck simplicity.</li>
+</ul>
+<p>Next, a route review of statement 3, due after five research entries. Assess the three open inputs, (K), (B) and per-size (L), against the goal's instances \(N\ge11\), and name the highest-risk one. Choose its Outside leads and Absurd bridges as answers to the obstacle that review names, and run their cheap tests.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -34437,6 +34441,67 @@ Each function is \(x^\alpha(1+x)^\beta p(x)\). Its \(m\)-th derivative is \(x^{\
 <tr><td>Computation design and coding</td><td class="elapsed">1 min 12.85 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">41.05 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">20 min 21.82 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-far-wronskian-arithmetic" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="check:cube-far-wronskian-arithmetic">
+<h3>30 September 2026 — No simple arithmetic mechanism proves far irreducibility: no Newton polygon of one nonzero-slope segment and no uniform irreducible prime</h3>
+<p class="entry-meta">Finite check and failed proof attempt: modular factorization confirms irreducibility of the first three far polynomials, but no Eisenstein-type Newton polygon at primes up to 13 and no common irreducible prime from 17 to 97. Far arithmetic cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-30-cube-far-wronskian-irreducibility">far Wronskian entry</a> conjectured that every far polynomial \(W_k\) of the <a href="#cube-base-peeling">peeling reduction</a> is irreducible over \(\mathbb Q\) (<code>conj:cube-far-wronskian-irreducible</code>), which gives the far half of the base weight bound (B) for even \(N\). The missing implication is a proof for every \((e,l)\). This cycle tests the two standard arithmetic mechanisms that would give one:</p>
+<ul>
+<li>a Newton polygon at some small prime with one segment of coprime length and height (Eisenstein–Dumas);</li>
+<li>a prime modulo which every \(W_k\) stays irreducible at full degree.</li>
+</ul>
+<p>Either, holding at all computed sizes, would suggest a derivation from the falling-factorial structure of the coefficients.</p>
+<p><strong>General statement.</strong> <code>conj:cube-far-wronskian-irreducible</code>, for every \(e,l\ge1\); <code>check:cube-far-wronskian-arithmetic</code> records the test at \((e,l)=(1,1),(1,2),(2,1)\).</p>
+<h4>Computation</h4>
+<p>research/tools/bmd_cube_far_wronskian.gp (mode ARITH) recomputes \(W_k\) exactly and saves it (W_1_1.gp, W_1_2.gp, W_2_1.gp). It makes \(W_k\) primitive integral, and prints its Newton polygons at \(p=2,3,5,7,11,13\) and its factorization degrees modulo every prime \(17\le p\le97\) not dividing the leading coefficient (far-wronskian-arithmetic.txt). The case \((2,2)\) was not rerun: its determinant needs a sized run above ten minutes.</p>
+<p><strong>Irreducibility, confirmed independently of the factorization over \(\mathbb Q\).</strong> A factor over \(\mathbb Q\) of degree \(d\) reduces, modulo a prime not dividing the leading coefficient, to a product of some of the irreducible factors there. So \(d\) is a subset sum of every modular degree pattern.</p>
+<ul>
+<li>\((1,1)\): irreducible modulo \(61\).</li>
+<li>\((1,2)\): patterns \(7+41\) modulo \(43\) and \(2+2+44\) modulo \(53\) share only the subset sums \(0\) and \(48\).</li>
+<li>\((2,1)\): patterns \(21+23\) modulo \(71\) and \(9+35\) modulo \(59\) share only \(0\) and \(44\).</li>
+</ul>
+<p>This reconfirms the previous entry's irreducibility over \(\mathbb Q\) by a method independent of PARI's factorization over \(\mathbb Q\); it uses the same computation of \(W_k\). All modular factors used have multiplicity one.</p>
+<p><strong>Both mechanisms fail.</strong></p>
+<ul>
+<li><em>Newton polygons.</em> Slopes are given as root valuations (PARI's newtonpoly), the negatives of the lower-hull slopes. At no prime \(p\le13\) is the polygon of any of the three a single segment of nonzero slope. The single segments that occur are flat: \((1,1)\) at \(5\), \(11\) and \(13\), and \((1,2)\) and \((2,1)\) at \(7\). At \(2\) there are several segments:
+<ul>
+<li>\((1,1)\): slopes \(2,0,-2\), lengths \(4,8,4\);</li>
+<li>\((1,2)\): \(2,15/8,0,-2\), lengths \(8,16,16,8\);</li>
+<li>\((2,1)\): \(2,0,-15/8,-2\), lengths \(8,12,16,8\).</li>
+</ul>
+At the other primes the polygons are flat or mostly flat. So Eisenstein–Dumas does not apply at these primes. The segments constrain the degrees of possible factors, for instance multiples of \(8\) along the slopes \(\pm15/8\), or multiples of \(5\) along the length-\(10\) segment of \((1,1)\) at \(3\). No single polygon excludes factors; combining constraints at several primes was not tried.</li>
+<li><em>Irreducible primes.</em> No prime \(17\le p\le97\) keeps all three irreducible. In that range \((1,1)\) is irreducible only modulo \(61\), and \((1,2)\) and \((2,1)\) modulo none. The degree patterns vary widely, which suggests large Galois groups and no uniform reduction.</li></ul>
+<p><strong>A regularity worth keeping.</strong> At \(2\) the end segments have slope \(\pm2\) and length \(4(e+l-1)\) in all three cases. When \(e\ne l\) there is a segment of slope \(\pm15/8\) and length \(16\), on the side of the larger index. This is an observation at three sizes, not a statement.</p>
+<p><strong>What this does to the route.</strong> Far irreducibility is confirmed at the computed sizes by an independent certificate, but the two standard arithmetic proofs are not available in simple form. A proof for every \((e,l)\) would need a finer tool, such as a combination of Newton polygons at several primes with the structure of the slopes, or a non-arithmetic argument for squarefreeness, which is all (B) needs. The route has had five research entries since its last review, and (K), (B) and (L) at \(N=11\) all stand where they were. So the next cycle is a route review.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li><code>conj:cube-far-wronskian-irreducible</code> for every \((e,l)\), or squarefreeness by another route; neck simplicity; the odd far spaces;</li>
+<li>(L) at \(N=11\), pending approval; (K) in general.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The far Wronskian entry (conjecture and computation), the peeling degeneration (definition of \(F_k\)).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the three certificates (primitivity, the primes against the leading coefficients, the subset sums), the segment bookkeeping and PARI's convention, and the stated regularity. Verdict: pass with corrections, all applied:
+</p>
+<ul>
+<li>the single-segment claim is restricted to nonzero slope, with the flat single segments named;</li>
+<li>the prime range is \(17\) to \(97\);</li>
+<li>the slope convention is stated;</li>
+<li>the independence is qualified;</li>
+<li>"do not exclude factors" is softened to single polygons.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzn">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 1.15 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 44.71 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 23.82 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 31.87 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5 min 20.61 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>

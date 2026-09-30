@@ -30,6 +30,27 @@ farW(e, l) = {
   v1 = 0; while (subst(Wp, x, -1) == 0, Wp = Wp / (1 + x); v1++);
   Wp;
 }
+\\ Arithmetic of W_k (cycle bmd-20260930-zzn): p-adic Newton polygon slopes and factorization degree patterns
+\\ modulo small primes, for the known sizes; W_k is written to OUTDIR/W_e_l.gp.  Enabled by env ARITH=1.
+arith(e, l, W) = {
+  my(dir = getenv("OUTDIR"));
+  if (dir != 0 && dir != "", write(Str(dir, "/W_", e, "_", l, ".gp"), W));
+  my(Wi = W * denominator(content(W)));
+  Wi = Wi / content(Wi);
+  print("(e,l) = ", [e, l], ": deg ", poldegree(Wi), ", leading coefficient factored ", factor(pollead(Wi), 10^5), ", constant term factored ", factor(polcoef(Wi, 0), 10^5));
+  foreach([2, 3, 5, 7, 11, 13], p,
+    my(np = newtonpoly(Wi, p), segs = List(), cur = np[1], len = 1);
+    for (i = 2, #np, if (np[i] == cur, len++, listput(segs, [cur, len]); cur = np[i]; len = 1));
+    listput(segs, [cur, len]);
+    print("  Newton polygon at ", p, " (slope, length): ", Vec(segs)));
+  forprime(p = 17, 97,
+    if (pollead(Wi) % p == 0, print("  mod ", p, ": leading coefficient vanishes"); next);
+    my(f = factormod(Wi, p), degs = vecsort(vector(#f~, i, poldegree(lift(f[i, 1])))));
+    if (#degs == 1 && f[1, 2] == 1, print("  mod ", p, ": IRREDUCIBLE of degree ", degs[1]), print("  mod ", p, ": factor degrees ", degs, " multiplicities ", vector(#f~, i, f[i, 2]))));
+}
+{ if (getenv("ARITH") == "1",
+  foreach(if (getenv("SMALL") == "1", [[1,1],[1,2],[2,1]], [[1,1],[1,2],[2,1],[2,2]]), el, arith(el[1], el[2], farW(el[1], el[2])));
+  quit); }
 {
   foreach([[1,1],[1,2],[2,1],[2,2],[1,3],[3,1]], el,
     my(e = el[1], l = el[2], W = farW(e, l), cnt = 4*l*(2*e^2 + 6*e*l - 5*e - 4*l + 5));
