@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved. For every \(N\), (K) rests on squarefreeness of the far polynomials \(R_{n,k}\), \(n\ge2\). Both classes of the rigid spaces are explicit Rodrigues images (<a href="#cube-far-p4-jacobi">P4</a>, <a href="#cube-far-p3-rodrigues">P3</a>). The <a href="#entry-2026-10-02-cube-rodrigues-review">Rodrigues review</a> names the next target: one polynomial space in \(u=\sqrt w\).</p>
-<p>Next, for (K) at every \(N\): write \(Y(n,k)=u^{2n-3}X(n,k)|_{w=u^2}\) as one polynomial space in \(u\), and identify its basis from the two Rodrigues formulas. Test whether \(Y\) is spanned by Gegenbauer polynomials of some index set, or by a Crum (Darboux) transform of one, at six sizes. If it is, compare with the known simplicity results for Wronskians of classical polynomials.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved. For every \(N\), (K) rests on squarefreeness of one explicit polynomial Wronskian, \(W_u(Y(n,k))\) off \(u\in\{0,\pm1\}\) (<a href="#cube-far-u-space">u-space lemma</a>). \(Y\) is not a classical family.</p>
+<p>Next, for (K) at every \(N\): test whether \(Y(n,k)\) is a Darboux–Crum transform of a set of Gegenbauer polynomials. Its even class is Jacobi with a half-integer exponent, so find a seed set \(\phi_1,\ldots,\phi_m\), for example the odd-class generators before their outer derivative block, such that \(W_u(Y)\) is \(W(\phi,\text{Gegenbauer set})\) up to explicit factors. If that fails at the smallest size \((2,3)\), where \(\dim Y=4\), weigh a change of the (K) route.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -39730,6 +39730,47 @@ P_3=(1-w)^{q-\frac12}\,w^{P+2}\;w^{1-c_2}\,\partial^{K}\,w^{c_2+K-P-3}\,\partial
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">49.41 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 51.45 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-far-u-space" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-02-cube-rodrigues-review:3" data-claims="lem:cube-far-u-space">
+<h3>2 October 2026 — In u = √w the rigid far space is one space of polynomials, and rigid simplicity is squarefreeness of its Wronskian off u = 0, ±1; the space is not spanned by eigenpolynomials of any Bochner operator</h3>
+<p class="entry-meta">Working proof, for n ≥ 2, that the far polynomial pulled back to u = √w is the Wronskian of one explicit polynomial space; exact checks at six sizes and a Bochner non-invariance check. u-space cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-02-cube-rodrigues-review">Rodrigues review</a> found that the far polynomial \(R_{n,k}\) mixes the two classes of \(X(n,k)=P_3+w^{1/2-(n-1)}P_4\) through a square-root twist. It proposed the substitution \(w=u^2\). Does that give a single-Wronskian form of rigid simplicity, and is the resulting space classical?</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-u-space</code>, for every \(n\ge2\), \(k\ge2\).</p>
+<h4 id="cube-far-u-space">The u-space</h4>
+<p><strong>Lemma (u-space).</strong> For \(n\ge2\), let \(Y(n,k)=\{u^{2n-3}f(u^2):f\in P_3\}\oplus\{g(u^2):g\in P_4\}\). It is a space of polynomials in \(u\) of dimension \(n+k-1\): the dimensions are \(\dim P_3=k-1\) and \(\dim P_4=n\) (<a href="#cube-far-p3-rodrigues">P3 Rodrigues</a>, <a href="#cube-far-p4-jacobi">P4 Jacobi</a>), and the sum is direct by parity, since \(2n-3\) is odd. Off \(u\in\{0,\pm1\}\), the zeros of \(W_u(Y)\), with multiplicities, are the points \(\pm\sqrt r\) for the zeros \(r\) of \(R_{n,k}\). Hence \(R_{n,k}\) is squarefree if and only if \(W_u(Y)\) has only simple zeros off \(u\in\{0,\pm1\}\).</p>
+<p><strong>Proof.</strong></p>
+<ul>
+<li>Under \(w=u^2\), an element \(w^{1/2-(n-1)}g(w)\) becomes \(u^{3-2n}g(u^2)\), on the branch \(w^{1/2}=u\). The other branch only rescales the \(P_4\) class by a sign, so the space and its Wronskian, up to sign, are the same. Multiplying by \(u^{2n-3}\), a polynomial since \(n\ge2\), gives \(Y\).</li>
+<li>\(W_u(f\circ\phi)=(\phi')^{\binom d2}(W_wf)\circ\phi\) with \(\phi'=2u\), and \(W(hY)=h^dW(Y)\). So off \(u=0\), \(W_u(Y)\) and \(W_w(X)\circ\phi\) have the same zeros with the same multiplicities.</li>
+<li>By the pure reduction, off \(w\in\{0,1\}\) the zeros of \(W_w(X)\) are those of \(R_{n,k}\). And \(R_{n,k}(0)R_{n,k}(1)\ne0\), since \(R\) is defined with all factors \(w\) and \(w-1\) removed.</li>
+<li>So no \(\pm\sqrt r\) lies at \(0\) or \(\pm1\). Since \(r\ne0\), \(\frac d{du}R(u^2)=2uR'(u^2)\) does not vanish at \(\pm\sqrt r\) unless \(R'(r)=0\), so multiplicities are preserved. \(\square\)</li>
+</ul>
+<p><strong>Checks.</strong> <code>research/tools/bmd_cube_far_u_space.gp</code>, exact over \(\mathbb Q\), at \((2,3),(2,4),(3,3),(2,5),(3,4),(4,3)\). Output: <code>research/results/bmd-20261002-y/far-u-space.txt</code>.</p>
+<ul>
+<li>With the common power of \(u\) and the factors at \(u=\pm1\) removed, \(W_u(Y)\) equals \(R_{n,k}(u^2)\) up to a constant. \(R\) is recomputed by the same Wronskian routine as the pure reduction, so this checks the chain-rule step. The pure reduction's own check covers the rest.</li>
+<li>Bochner test. \(Y\) divided by its common power of \(u\) is not invariant under any \(A\partial^2+B\partial\) with \(\deg A\le2\), \(\deg B\le1\) and \((A,B)\ne0\). So it is not spanned by eigenpolynomials of any Bochner operator. The random negative controls also fail. No positive control was run. The test does not exclude a space \(h\cdot S\) with \(S\) classical and \(h\) a non-monomial factor.</li>
+</ul>
+<p><strong>What this gives.</strong></p>
+<ul>
+<li>Rigid simplicity, for every \(N\), is the statement that one explicit polynomial Wronskian, \(W_u(Y(n,k))\), has simple zeros off \(u\in\{0,\pm1\}\), for \(n\ge2\).</li>
+<li>\(Y\) splits into an odd class, the two-step Rodrigues image, and an even class, \(u^{2K}U(u^2)\). \(U\) is Jacobi in \(w\) with \(c\)-parameter \(c=\beta_0+K-1-P\), which is \(\tfrac32,\tfrac32,\tfrac52\) at \((2,3),(2,4),(3,3)\). Only \(c=\tfrac12\) or \(\tfrac32\) (the latter times \(u\)) pulls back to Gegenbauer polynomials in \(u\).</li>
+<li>Veselov-type results for Wronskians of classical polynomials do not apply directly, since \(Y\) is not a Bochner eigenspace in the sense above. Whether \(Y\) is a Darboux–Crum transform of a classical set is open.</li>
+</ul>
+<p><strong>Remaining gap.</strong> For every \(N\): squarefreeness of \(W_u(Y(n,k))\) off \(u\in\{0,\pm1\}\), \(n\ge2\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the pure reduction, the P3 Rodrigues lemma and the P4 Jacobi theorem (dimensions, parameters). One fresh-context medium reviewer: pass with corrections, all applied. They cover restricting to \(n\ge2\), where \(u^{2n-3}\) is a polynomial; the justification of \(R(0)R(1)\ne0\) and its use; the branch remark; the scope of the checks; the Bochner test stated precisely, without a positive control; the corrected Gegenbauer remark; and the Crum remark as an open question.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-y">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 56.91 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 2.29 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">54.28 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.19 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
