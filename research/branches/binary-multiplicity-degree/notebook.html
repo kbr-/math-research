@@ -43,13 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, has no lead with an untried mechanism (<a href="#entry-2026-10-01-cube-hankel-route-review">Hankel route review</a>).</p>
-<p>Next, for the neck half of (B): develop Conca's Hankel straightening lead at \((e,l,w,c)=(1,2,2,4)\) and \((1,2,3,5)\).</p>
-<ul>
-<li>Express the level sums below \(2E\) in the extra Hankel quadratic relations.</li>
-<li>Identify the family of relations the \(\Psi\)-vectors use.</li>
-<li>Test whether it is indexed by the chains of lem:cube-neck-chain-filtration. If so, state the vanishing as a lemma about that family.</li>
-</ul>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, has no mechanism. On the neck half of (B), the quadratic Hankel relations at block size two are two Plücker systems, of the minors and of their shifts (<a href="#cube-hankel-quadratic-relation-bound">Hankel relation bound</a>).</p>
+<p>Next, for (B): prove conj:cube-hankel-two-plucker for all \(n\), through a term order in which the shifted Plücker relations have distinct leading products outside the non-standard products of the ordinary ones. Then test the analogue at \(w=3\) at the window \((1,2,3,5)\): do the Plücker relations of all shifted row triples span the relations its \(\Psi\)-vectors use?</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -35712,6 +35707,67 @@ For \(r=3\), degrees \(\deg G\le2\) survive at \((1,1)\), \(\le9\) at \((1,2)\) 
 <tr><td>Computation design and coding</td><td class="elapsed">53.04 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">57.56 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">12.26 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-01-cube-hankel-two-plucker" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-01-cube-hankel-route-review:1" data-claims="lem:cube-hankel-quadratic-relation-bound conj:cube-hankel-two-plucker">
+<h3>1 October 2026 — The quadratic relations of 2×2 Hankel minors are at most C(n,4)+C(n−1,4), and the Plücker relations of the minors and of their shifts span them for n ≤ 9</h3>
+<p class="entry-meta">Working proof of the bound for every n ≥ 4; spanning by two Plücker systems exact for 4 ≤ n ≤ 9, conjectured for all n. The neck cancellations at block size two are such combinations. Hankel two-Plücker cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-01-cube-hankel-route-review">Hankel route review</a> made Conca's Hankel straightening its lead for the neck half of (B). The <a href="#entry-2026-09-30-cube-neck-generic-vanishing">refutation</a> showed that the neck level sums below \(2E\) are relations among products of maximal minors of the Hankel matrix of \(t'\) that the generic Plücker relations do not give. So which relations are they?</p>
+<p>At block size \(w=2\) the minors are \(h_{ij}=t_it_{j+1}-t_jt_{i+1}\) (\(1\le i&lt;j\le n\)), and the level sums of an \(l=2\) window are quadratic in them. The missing implication is an explicit description of all quadratic relations among the \(h_{ij}\), against which the neck's \(\Psi\)-vectors can be read.</p>
+<p><strong>General statement.</strong> <code>lem:cube-hankel-quadratic-relation-bound</code>, for every \(n\ge4\); <code>conj:cube-hankel-two-plucker</code>, for every \(n\ge4\), proved here for \(4\le n\le9\).</p>
+<h4 id="cube-hankel-quadratic-relation-bound">Two Plücker systems</h4>
+<p><strong>Setting.</strong> Let \(t_1,\ldots,t_{n+1}\) be indeterminates and \(h_{ij}\) the \(2\times2\) minors of the \(2\times n\) Hankel matrix with rows \((t_q)_{q\le n}\) and \((t_{q+1})_{q\le n}\). A quadratic relation is a linear combination of the products \(h_{ab}h_{cd}\) that vanishes as a polynomial in \(t\). Put \(k_{ij}=t_it_{j+2}-t_jt_{i+2}\) for \(1\le i&lt;j\le n-1\), the minors of the matrix with rows \((t_q)\) and \((t_{q+2})\). Then \[ k_{ij}=h_{i,j+1}+h_{i+1,j}, \] with \(h_{ii}=0\): expanding, the terms \(t_{j+1}t_{i+1}\) cancel.</p>
+<p>The two systems are:</p>
+<ul>
+<li>(P1) the Plücker relations \(h_{ij}h_{kl}-h_{ik}h_{jl}+h_{il}h_{jk}=0\), for \(i&lt;j&lt;k&lt;l\le n\);</li>
+<li>(P2) the Plücker relations of the \(k_{ij}\), for \(i&lt;j&lt;k&lt;l\le n-1\), rewritten through \(k_{ij}=h_{i,j+1}+h_{i+1,j}\) as quadratic forms in the \(h\).</li>
+</ul>
+<p>Both are quadratic relations among the \(h_{ij}\), since each system is the Plücker relations of a \(2\times m\) matrix.</p>
+<p><strong>Lemma (Hankel quadratic relation bound).</strong> For every \(n\ge4\), the quadratic relations among the \(h_{ij}\) form a space of dimension at most \(\binom n4+\binom{n-1}4\).</p>
+<p><strong>Proof.</strong> Use the lexicographic order with \(t_1&gt;t_2&gt;\cdots\). For \(i&lt;j\), the monomial \(t_it_{j+1}\) contains the smallest index \(i\), so it is the leading monomial of \(h_{ij}\). This is a pair \((p,q)=(i,j+1)\) with \(q-p\ge2\), and every such pair occurs. The leading monomial of \(h_{ab}h_{cd}\) is the product of two such pairs. Products with distinct leading monomials are linearly independent. So the span of all products has dimension at least \(D(n)\), the number of degree-4 monomials in \(t_1,\ldots,t_{n+1}\) that split into two pairs with gaps at least \(2\). The number of products is \(\binom{\binom n2+1}2\), so the relations have dimension at most \(\binom{\binom n2+1}2-D(n)\). It remains to show \[ D(n)=\tfrac1{12}n^2(n^2-1)-\tbinom{n-1}4 . \]</p>
+<p>Whether a sorted multiset \(a\le b\le c\le d\) splits into two pairs with gaps at least \(2\) depends only on the capped gaps \(\min(b-a,2)\), \(\min(c-b,2)\), \(\min(d-c,2)\). Each of the three pairings asks that two sums of consecutive gaps be at least \(2\), and a sum of gaps is at least \(2\) exactly when the sum of the capped gaps is. So \(D(n)\) is a sum, over the admissible capped patterns, of the numbers of multisets with that pattern. Each such number counts integer points \(1\le a\), \(d\le n+1\), with some gaps fixed in \(\{0,1\}\) and the others at least \(2\). It is a binomial coefficient in \(n\), a polynomial of degree at most \(4\) for \(n\ge5\). So \(D(n)\) and the right side are polynomials of degree at most \(4\) on \(n\ge5\).</p>
+<p>research/tools/bmd_cube_hankel_leading_count.py (hankel-leading-count.txt) finds them equal for \(5\le n\le40\), and also at \(n=4\), and \(36\) points determine a polynomial of degree \(4\). Finally \(\binom{\binom n2+1}2-\tfrac1{12}n^2(n^2-1)=\binom n4\), the dimension of the degree-2 part of the Plücker ideal of \(\mathrm{Gr}(2,n)\): both sides are polynomials of degree \(4\) in \(n\) that agree at \(n=0,\ldots,4\). So the bound is \(\binom n4+\binom{n-1}4\). \(\square\)</p>
+<p><strong>Conjecture (two Plücker systems).</strong> For every \(n\ge4\), (P1) and (P2) together span all quadratic relations among the \(h_{ij}\), and their span has dimension \(\binom n4+\binom{n-1}4\).</p>
+<p><strong>Proof for \(4\le n\le9\).</strong> research/tools/bmd_cube_hankel_two_plucker.gp (hankel-two-plucker.txt) computes, exactly over \(\mathbb Q\), the rank of (P1) and (P2) as vectors in the basis of products. The rank of (P1) is \(\binom n4\), and that of (P1) and (P2) together is \(\binom n4+\binom{n-1}4\), for \(n=5,\ldots,9\). The case \(n=4\) is the single relation (P1). Both systems are relations, so by the lemma they span all of them. \(\square\)</p>
+<p>The general case needs the independence of (P2) modulo (P1), for instance through a term order on products in which the relations of (P2) have distinct leading products outside the non-standard products of (P1). The lemma already gives the bound. As a consistency check of the relation count only, kernels of random evaluations modulo \(2^{61}-1\) give \(\binom n4+\binom{n-1}4\) relations for \(5\le n\le9\) (neck-relation-use.txt).</p>
+<h4>The neck at block size two</h4>
+<p>research/tools/bmd_cube_neck_relation_use.gp (neck-relation-use.txt) reads the \(\Psi\)-vectors of the window \((e,l,w,c)=(1,2,2,4)\) at its cancelling levels, for three random \(\beta\), in the basis of products of weight \(W\) (the sum of indices). The relation spaces are kernels of random evaluations modulo \(2^{61}-1\): a probabilistic finite check, not exact ranks.</p>
+<ul>
+<li>At level \(6\) (\(W=12\)): \(13\) products, \(3\) Hankel relations, \(2\) of them Plücker.</li>
+<li>At level \(7\) (\(W=13\)): \(17\) products, \(4\) Hankel relations, \(3\) Plücker.</li>
+<li>In both, each \(\Psi\)-vector lies in the Hankel relations, and the three span exactly one direction beyond (P1): the unique extra relation of that weight. At level \(6\) it is the identity of the refutation entry, which lies in the span of (P1) and (P2) exactly over \(\mathbb Q\) (hankel-two-plucker.txt, \(n=5\)). At level \(7\) the indices stay at most \(7\), and (P2) is homogeneous in the weight, since \(h_{i,j+1}\) and \(h_{i+1,j}\) both have index sum \(i+j+1\). So the extra relation of weight \(13\) lies in the span by the case \(n=7\) of the proof.</li>
+</ul>
+<p>So for the window \((1,2,2,4)\), the neck vanishing below \(2E\) is a combination of the Plücker relations of \(h\) and of the shifted minors \(k\). For \(w=2\) and \(n\le9\), the shift \(t_q\mapsto t_{q+2}\) is the only new ingredient. Heuristically, this resembles the chain filtration of lem:cube-neck-chain-filtration, whose chains shift pole orders. The general \(w=2\) case is open (Remaining gap).</p>
+<p><strong>Lead follow-up.</strong> Outside lead 1 of the Hankel route review, Conca's straightening. In the smallest case, the extra Hankel relations are explained, and the neck cancellations use them one per weight. <strong>Follow-up.</strong> Continuing: independence of (P2) for all \(n\); the analogue for \(w\ge3\), the Plücker relations of all shifted row pairs; and a proof that the \(\Psi\)-vectors lie in that span below \(2E\).</p>
+<p><strong>What this does to the route.</strong> The neck half of (B) has a candidate algebraic mechanism for its vanishing part: two Plücker systems at \(w=2\), shifted row systems in general. The bound is proved for every \(n\), and the spanning for \(n\le9\). (K) and the far half of (B) are unchanged.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(K) for \(N\ge11\);</li>
+<li>(B): conj:cube-hankel-two-plucker for all \(n\) and its analogue for \(w\ge3\); a proof that the neck's \(\Psi\)-vectors lie in that span below \(2E\); the leading term; \(G_{c,w}\not\equiv0\); far polynomials; odd \(N\);</li>
+<li>(L) at \(N=11\), awaiting approval.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The neck generic vanishing refutation (level-6 identity); the Hankel route review (Conca lead); lem:cube-neck-level-expansion (\(\Psi\)).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the identity for \(k\), the leading monomials, the capped-gap polynomiality (valid already from \(n\ge2\)), the binomial identity, the exact-rank script (indices, signs, \(h_{ii}=0\)) and the outputs. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the binomial identity is justified;</li>
+<li>the neck statement is restricted to the window \((1,2,2,4)\), and its computations are labelled modular and probabilistic;</li>
+<li>level \(7\) is derived from the case \(n=7\) through the weight homogeneity of (P2);</li>
+<li>the chain-filtration remark is recast as a heuristic;</li>
+<li>the random-evaluation count is described as a consistency check.</li>
+</ul>
+<p>These restrict or justify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261001-b">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 11.74 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 13.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 54.39 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
