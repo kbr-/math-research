@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) by the boundary reducedness criterion. At \(N=11\) every rigid piece is simple, and the star strata need the neck-corner polygon. At \((2,n)\) the \(\lambda\)-direction is proved (<a href="#cube-corner-two-n-lambda-reduction">\(\lambda\)-reduction</a>), and the vertex conjecture reduces to \(\det M_r(\lambda')\). For every \(N\), rigid simplicity for \(n\ge2\) has no mechanism.</p>
-<p>Next, for (K): the \(\lambda'\)-order of \(\det M_r\). Run the axis theorem's rescaling \(D_{\lambda'}\) in the coordinate \(1/(z-1)\) on the \(B\)-cluster rows. Treat the \(r+1\) Taylor columns at \(0\) as extra evaluation functionals. Show that the order is \((n-r)(n-1-r)\) with leading coefficient \(H_{n-r}(s')\) up to a constant, by Cauchy–Binet over the shape's Vandermonde.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) by the boundary reducedness criterion. At \(N=11\) every rigid piece is simple, and the star strata need the neck-corner polygon. At \((2,n)\) every vertex minor starts no lower than the vertex (<a href="#cube-corner-two-n-vertex-order">corner vertex order</a>), and its coefficient is one explicit tie sum \(Q_{n,r}\). For every \(N\), rigid simplicity for \(n\ge2\) has no mechanism.</p>
+<p>Next, for (K): prove \(Q_{n,r}\not\equiv0\) for every \(n\), ideally \(Q_{n,r}=\text{const}\cdot H_{n-r}\). Enumerate the tie pairs \((P,P')\) of the matching bound. Show that the sum of \(a_Pa_{P'}\det\Gamma\) over them is a Cauchy–Binet expansion of \(\det(VDV^T)\) for the shape's Vandermonde \(V\) truncated to \(n-r\) rows, which is \(H_{n-r}\) up to a constant.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -38752,6 +38752,64 @@ the Frobenius (Pólya–Mammana) factorization. It follows by induction on \(s\)
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 10.89 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3 min 0.89 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-corner-two-n-lambdaprime" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-corner-two-n-vertex-order">
+<h3>2 October 2026 — The (2,n) corner vertex minors have no term below the conjectured vertex, by a matching bound on two alternants; attainment needs one explicit coefficient polynomial to be nonzero</h3>
+<p class="entry-meta">Working proof of the λ′-bound for the reduced determinants of the (2,n) neck corners; with the λ-reduction, every vertex minor starts no lower than the vertex, where its coefficient is a finite tie sum. Corner λ′ cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-corner-two-n-lambda-reduction">\(\lambda\)-reduction</a> made the coefficient of \(\lambda^{r(r+1)}\) in each \((2,n)\) vertex minor equal to \(\pm K_r\det M_r(\lambda')\). The <a href="#cube-corner-two-n-hankel">corner Hankel conjecture</a> then asks that \(\det M_r\) have \(\lambda'\)-order \((n-r)(n-1-r)\) with a nonzero coefficient. This cycle proves the lower bound for every \(n\) and \(r\), and writes the coefficient as an explicit finite sum.</p>
+<p><strong>General statement.</strong> <code>prop:cube-corner-two-n-vertex-order</code>, for every \(n\ge2\) and \(0\le r\le n-1\).</p>
+<h4 id="cube-corner-two-n-vertex-order">The bound</h4>
+<p><strong>Setting.</strong> As in the \(\lambda\)-reduction. Put \(y_i=\lambda's'_i\), \(v=(z-1)^{-1}\) and \(B(y)=(1-yv)^{1/2}=\sum_p\beta_py^pv^p\), so that \(B_l\) is the divided difference of \(B(y)\) over \(y_1,\ldots,y_{l+1}\). Let \(c=n-1-r\) and \(B^\ast=2n-2-r\), the number of columns \(v_j\).</p>
+<p><strong>Proposition (corner vertex order).</strong> For every \(n\ge2\) and \(0\le r\le n-1\):</p>
+<ol>
+<li>\(\det M_r(\lambda')\) has \(\lambda'\)-order at least \(c(c+1)=(n-r)(n-1-r)\).</li>
+<li>Its coefficient there is \(Q_{n,r}(s')=V(s')^{-2}\sum a_{P}(s')\,a_{P'}(s')\det\Gamma[P,P']\), a polynomial because \(\det M_r\) is one. The sum runs over the finitely many pairs of \(n\)-sets \((P,P')\) that attain the bound in the matching argument below. \(a_P\) is the alternant \(\det(s_i'^{p})_{i,p\in P}\), and \(\Gamma\) is the matrix of exponent vectors defined below.</li>
+<li>Hence each \((2,n)\) vertex minor, on the columns of \(L((r+1)[0]+(2n-2-r)[1])\), has no term \(\lambda^i\lambda'^j\) with \(i&lt;r(r+1)\), and none with \(i=r(r+1)\), \(j&lt;c(c+1)\). Its coefficient at the vertex is \((-1)^{r+1}K_rQ_{n,r}(s')\).</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Evaluation rows.</em> Every row of \(M_r\) is a linear function of \(B_l\): its coordinates, its Taylor coefficients at \(0\), and those of \(B_l/z\). Divided differences are a triangular change of rows with determinant \(\pm V(y)^{-1}\), the same for the \(B\)-rows and the \(S\)-rows. So \(\det M_r=V(y)^{-2}\det M^{\rm ev}\), where \(M^{\rm ev}\) has the rows of \(B(y_i)\) and of \(S(y_i)\), \(i=1,\ldots,n\). Subtract \(\alpha_1\) times the \(B\)-row from each \(S\)-row. The \(B\)-rows vanish on the Taylor columns, so the Taylor part is unchanged. The rest becomes the coordinates of \(\alpha_1B(y)(1/z-1)\). Call the new rows \(S'(y_i)\).</li>
+<li><em>Exponent vectors.</em> Each row is a power series in its \(y_i\): row \((i,\text{type})\) is \(\sum_py_i^p\Gamma^{\rm type}_p\).
+<ul>
+<li>\(\Gamma^B_p\) has exactly one nonzero entry: at the column \(1\) for \(p=0\) (the value of \(B\) at \(\infty\) is \(1\)), and at \(v_p\) for \(1\le p\le B^\ast\). For \(p&gt;B^\ast\) it is zero.</li>
+<li>\(\Gamma^{S'}_0\) is nonzero only on the Taylor column \(0\) and on the column \(1\).</li>
+<li>For \(p\ge1\), \(\Gamma^{S'}_p\) has entries on the Taylor columns (the coefficient of \(y^p\) in the Taylor coefficients of \(B(y)\) at \(0\)). It has entries on \(v_j\) only for \(j\le p-1\), since \(B(y)(1/z-1)=-B(y)(z-1)/z\) and \((z-1)/z\) vanishes at \(1\). Its entry on the column \(1\) is zero, because the value at \(\infty\) does not depend on \(y\).</li>
+</ul></li>
+<li><em>Two alternants.</em> Expanding every row and summing over the permutations of exponents within each type gives \(\det M^{\rm ev}=\sum_{P,P'}a_P(y)a_{P'}(y)\det\Gamma[P,P']\). Here \(P\) and \(P'\) are \(n\)-sets of exponents for the \(B\)-rows and the \(S'\)-rows, \(\det\Gamma[P,P']\) is the determinant of the corresponding exponent vectors, and repeated exponents within a type give equal rows. Since \(a_P(\lambda's')=\lambda'^{\sum P}a_P(s')\) and \(V(y)^2=\lambda'^{n(n-1)}V(s')^2\), the pair \((P,P')\) contributes at order \(\sum P+\sum P'-n(n-1)\).</li>
+<li><em>The matching bound.</em> If \(\det\Gamma[P,P']\ne0\), there is a perfect matching between rows and columns in its support. Each column is matched once:
+<ul>
+<li>a \(B\)-row \(p\) is matched to its only column, \(v_p\) (cost \(p=j\)) or \(1\) (\(p=0\));</li>
+<li>an \(S'\)-row matched to \(v_j\) has \(p\ge j+1\);</li>
+<li>the \(r+1\) \(S'\)-rows matched to the Taylor columns have distinct exponents, of sum at least \(\binom{r+1}2\), and at least \(\binom{r+2}2\) if an \(S'\)-row with \(p=0\) is matched to the column \(1\).</li>
+</ul>
+<p>The \(S'\)-rows matched to \(v\)-columns number \(n-(r+1)\) minus one if an \(S'\)-row takes the column \(1\), and that case costs \(r+1\) more on the Taylor columns. So in all cases
+\[
+\textstyle\sum P+\sum P'\ \ge\ \sum_{j=1}^{B^\ast}j+(n-1-r)+\binom{r+1}2 .
+\]
+Subtracting \(n(n-1)\) and simplifying with \(r=n-1-c\) gives exactly \(c(c+1)\). For example, \(P=\{0,\ldots,n-1\}\) with \(P'=\{0,\ldots,r\}\cup\{n+1,\ldots,B^\ast+1\}\) attains it. The \(v\)-block on the rows \(n+1,\ldots,B^\ast+1\) and the columns \(v_n,\ldots,v_{B^\ast}\) is triangular with nonzero diagonal (entries \(\pm\alpha_1\beta_p\)). The Taylor block is \(\binom{1/2}{p}\binom{k+p-1}{p-1}\) for \(p\ge1\), and it is nonzero: expanding along the row \(p=0\), which is \(e_0\), leaves \(\prod_{p=1}^r\binom{1/2}p\) times \(\det\big(\binom{k+p-1}{p-1}\big)_{1\le p,k\le r}\); each row is a polynomial in \(k\) of degree \(p-1\) with leading coefficient \(1/(p-1)!\), so this determinant is \(\prod_p1/(p-1)!\) times \(V(1,\ldots,r)\ne0\). So this pair contributes, but other pairs attain the bound too. For instance, when \(c\ge1\), a \(B\)-row may take \(v_j\), \(n\le j\le B^\ast\), while an \(S'\)-row takes \(v_{j'}\) with \(r\le j'&lt;n\) and \(p=j'+1\), at the same total. Whether ties exist at \(c=0\) was not checked. So the coefficient is the finite sum in (2).</p></li>
+<li><em>Part (3)</em> combines (1) and (2) with the \(\lambda\)-reduction. \(\square\)</li></ol>
+<p><strong>What remains, and the evidence.</strong> The vertex-order part of the corner Hankel conjecture at \((2,n)\), that the minor attains the vertex, is now equivalent to \(Q_{n,r}\not\equiv0\). The full conjecture is equivalent to \(Q_{n,r}=\text{const}\cdot H_{n-r}\) with a nonzero constant. The exact vertex minors of the corner Hankel entry give \(Q_{n,r}\), up to the nonzero factor \(K_r\), equal to a nonzero constant times \(H_{n-r}\) at every exactly computed vertex (\(n\le3\), and \((2,4)\) at \(r=1,2\)). The ties in the matching are what produce a sum over subsets, as \(H_{k}=\sum_{|S|=k}V(s'_S)^2\) is. A proof of nonvanishing could isolate one tie through a lexicographically extreme monomial, or specialize \(s'\) hierarchically as in the <a href="#cube-merge-window-transversality-theorem">merge transversality</a>.</p>
+<p><strong>Scope.</strong> This controls the vertex minors only. The polygon also needs every other Plücker coordinate to lie above the lower boundary. The same two-alternant expansion, with the general \(\lambda\)-bound of the reduction, is the natural tool there.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>\(Q_{n,r}=\text{const}\cdot H_{n-r}\) with a nonzero constant for every \(n\) (the conjecture), or at least \(Q_{n,r}\not\equiv0\) (attainment).</li>
+<li>The other Plücker coordinates.</li>
+<li>General \((m,n)\), and the edge pencils.</li>
+<li>For every \(N\): rigid simplicity for \(n\ge2\).</li>
+</ul>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer: pass with corrections (the Taylor block's nonvanishing, the tie example's range, attainment wording, the conjecture's equivalence, the sign), all applied. Dependencies re-read: The \(\lambda\)-reduction entry (\(M_r\), \(K_r\)); the corner Hankel entry (rows, columns, data).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-l">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 32.61 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 24.36 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 8.11 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
