@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). By the <a href="#cube-contact-fcurve-criterion">boundary-curve criterion</a>, (K) follows once the weight-three locus stays off one F-curve of each type \((1,1,m,N-2-m)\) in \(\overline M_{0,N}\). (B) needs far polynomials without triple roots and neck points of weight at most two; the neck windows are proved on the <a href="#cube-neck-last-block-windows">last block</a>.</p>
-<p>Next, the simplest curve, \((1,1,1,N-3)\). Degenerate the configuration so that \(N-3\) roots collapse to one point along a fixed tree of three-pointed components, while the four-pointed component keeps its cross-ratio. Compute the limit spaces of \(V_a\) on the components with the peeling's class and exponent method, and list their possible weight-three points. Test at \(N=7\), where (K) holds, whether no limit point of weight three occurs for any value of the cross-ratio.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). By the <a href="#cube-contact-fcurve-criterion">boundary-curve criterion</a>, (K) follows once the weight-three locus stays off one curve of each type \((1,1,m,N-2-m)\). The <a href="#cube-fcurve-spine-limit">spine limit</a> of \((1,1,1,N-3)\) is clean through \(N=7\), but \(N=6\) shows that tails and nodes must be controlled too. (B) needs far polynomials without triple roots and neck points of weight at most two.</p>
+<p>Next, the tail of \((1,1,1,N-3)\). Derive the near limit of \(V_a\) at scale \(z-p_0=\varepsilon x\), where the cluster's pair space meets the three single roots merged at \(x=\infty\), with the same class method. Then find where the involution divisor at \(N=6\) meets the family \((1,1,1,3)\), \((1,1,2,2)\): which component, which point, and which limit weight. That locates what the criterion must exclude at \(N\ge7\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32546,6 +32546,65 @@ over \(I=(I_0,\ldots,I_{w-1})\), \(I_p\) an \(l\)-set of indices \(i\). Here \(s
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-fcurve-spine" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-fcurve-spine-limit conj:cube-fcurve-spine-weight-two">
+<h3>30 September 2026 — Near the simplest boundary curve, the spine limit has no weight-three point modulo a prime through N = 7, and N = 6 shows it cannot detect everything</h3>
+<p class="entry-meta">Working proof of the spine limit when a cluster of N−3 roots collapses. Modulo 2^61−1, for the fixed-cluster limit, there is no weight-three point off the leading-coefficient roots at N = 5, 6, 7. At N = 6 other limits must detect the involution divisor. Boundary spine cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-contact-fcurve-criterion">boundary-curve criterion</a> reduces (K) to keeping the weight-three locus \(W_3\) away from one curve of each type \((1,1,m,N-2-m)\) in \(\overline M_{0,N}\). The missing implication is that property along those curves. This cycle takes the simplest, \((1,1,1,N-3)\): three single roots on a four-pointed spine, and one cluster of \(N-3\) roots collapsing to its fourth point. It derives the limit of \(V_a\) on the spine and tests it for weight-three points as the spine modulus varies.</p>
+<p><strong>General statement.</strong> <code>lem:cube-fcurve-spine-limit</code>, for every \(N\ge5\); <code>conj:cube-fcurve-spine-weight-two</code>, checked at \(N=5,6,7\).</p>
+<h4 id="cube-fcurve-spine-limit">The spine limit</h4>
+<p><strong>Setup.</strong> Characteristic zero, \(N\ge5\), \(C=\binom{N-3}2\). Branch points \(p_0+\varepsilon b_i\) (\(i\) in a cluster of size \(N-3\), \(b\) distinct) and three simple branch points \(s_1,s_2,s_3\ne p_0\), all distinct. \(V_a=\langle1,z,w_{ij}\rangle\) with \(w_{ij}^2\) the product of the two branch factors, as in the <a href="#cube-mark-weight-dictionary">mark weight dictionary</a>. Let \(V_b\) be the space of the cluster alone, with its mark at infinity.</p>
+<p><strong>Lemma (spine limit).</strong> Let the cluster shape \(b=b(\varepsilon)\) vary so that the cluster spaces \(V_{b(\varepsilon)}\), in the frame at their mark, converge to a space of weight \(0\) there. For fixed distinct \(b\) this means \(F_{\rm sep}(b)\ne0\); for \(N=5\) (two cluster points, outside the dictionary's range) it holds because the \(v^2\) coefficient of \(\varphi_{12}\) is \(-(b_1-b_2)^2/8\ne0\). As \(\varepsilon\to0\) at fixed \(z\), \(V_a\) tends to the space which, in \(u=1/(z-p_0)\) and the frame of \(\pi^*\mathcal O(1)\) at \(z=\infty\) (multiplication by \(u\)), is
+\[
+S=\mathcal P_{\le C+1}(u)\ \oplus\ \bigoplus_{j=1}^3(1-s'_ju)^{1/2}\mathcal P_{&lt;N-3}(u)\ \oplus\ \bigoplus_{j&lt;k}\bigl((1-s'_ju)(1-s'_ku)\bigr)^{1/2},\qquad s'_j=s_j-p_0 .
+\]
+Its weights at every point other than \(u=\infty\) (the cluster) and \(u=1/s'_j\) are the limits' weights. Affine maps of \(u\) preserve this form, so \(S\) has one modulus. With the branch values \(1/s'=(1,-1,1/\mu)\), \(\mu\notin\{0,1,-1\}\), it is the family \(S_\mu\); the case of a branch value at \(u=0\) is covered by relabelling (for example \(u\mapsto1-2u\) gives \(\mu=1/3\)).</p><p><em>Scope.</em> For fixed distinct \(b\) the family tends to a generic point of the boundary divisor where the cluster breaks off, not to the F-curve. For \(N\ge6\) a point of the F-curve \((1,1,1,N-3)\) has its cluster on a tree of three-pointed components, so \(b(\varepsilon)\) itself degenerates. The hypothesis on \(V_{b(\varepsilon)}\) is then open, and the lemma reaches the F-curve only where it holds.</p>
+<p><strong>Proof.</strong> Put \(v=\varepsilon u\). The functions split into classes by their monodromy signs at \(p_0\) and at the \(s_j\), and each class has its own limit, as in the <a href="#cube-base-peeling">peeling</a>.</p>
+<ul>
+<li><em>Cluster pairs with \(1,z\).</em> Here \(w_{ij}=(z-p_0)\bigl((1-b_iv)(1-b_jv)\bigr)^{1/2}\), \(1=(z-p_0)v/\varepsilon\) and \(z=(z-p_0)(1+p_0v/\varepsilon)\). So the class is \((z-p_0)\) times the span of \(1\), \(v\) and the \(\varphi_{ij}(v)\): the frame expression of \(V_b\) at its mark, with \(t=v\) (up to \(b\mapsto-b\), which changes \(F_{\rm sep}\) at most by a sign, as it is homogeneous). This is ordinary at \(v=0\) exactly when \(V_b\) has weight \(0\) there (dictionary part (2)). Its limit is \((z-p_0)\mathcal P_{\le C+1}(v)\), that is, the span of \((z-p_0)^{1-k}\), \(0\le k\le C+1\).</li>
+<li><em>Cross pairs \((i,j)\).</em> Here \(w=((z-p_0)(z-s_j))^{1/2}(1-b_iv)^{1/2}\). The \(N-3\) series \((1-b_iv)^{1/2}\) have Taylor matrix \([\binom{1/2}k(-b_i)^k]\), a Vandermonde matrix times nonzero constants, so they span an ordinary space at \(v=0\); for a degenerating \(b(\varepsilon)\) the limit span is still ordinary, by confluent Vandermonde determinants with the same nonzero constants. The limit is \(((z-p_0)(z-s_j))^{1/2}\mathcal P_{&lt;N-3}(v)\).</li>
+<li><em>Pairs of singles.</em> These are unchanged.</li>
+</ul>
+<p>The classes have distinct sign patterns, so the limit is their direct sum, of dimension \((C+2)+3(N-3)+3=R+2\). In \(u\), multiplied by \(u\), the three classes become the three summands of \(S\). Multiplication by \(u\) is the change to the frame of \(\pi^*\mathcal O(1)\) at \(z=\infty\), so weights are correct at \(u=0\) too, and at other non-branch points it multiplies by a unit. A translation \(u\mapsto u+c\) sends \((1-s'u)^{1/2}\) to \((1-s'c)^{1/2}(1-s''u)^{1/2}\) with \(s''=s'/(1-s'c)\), and a scaling rescales \(s'\). So only the affine class of the three points \(1/s'_j\) matters. \(\square\)</p>
+<h4>Weight three on the spine</h4>
+<p>research/tools/bmd_cube_spine_weight3.gp computes, modulo \(q=2^{61}-1\), the Wronskian determinant \(D(u_0)\) of the normalized Taylor coefficients of \(S_\mu\). It clears it by \(\prod_j(1-s_ju)^E\), where \(E=\tfrac{N-1}2-\alpha\) comes from the minimal local exponents at the branch values. Actual exponents are at least the minimal ones, so \(E\) bounds the pole order for every \(\mu\); leftover branch factors at special \(\mu\) could only add candidates. It then interpolates the non-branch polynomial \(Q(u,\mu)\) in both variables, checking every interpolation at extra points, and forms \(R_1=\operatorname{Res}_u(Q,Q_u)\) and \(R_2=\operatorname{Res}_u(Q,Q_{uu})\). A non-branch point of weight at least three at some \(\mu\) needs a common root of \(R_1\) and \(R_2\). The gcd is taken after removing the collisions \(\mu\in\{0,\pm1\}\) and the factors of the leading coefficient in \(u\), where the degree drops and roots escape to the cluster point. No factor remained. The roots of the leading coefficient were removed and not tested. Results (spine-weight3-bivariate.txt):</p>
+<ul>
+<li>\(N=5\): \(\deg_uQ=15\), \(\deg_\mu Q=32\), \(\deg R_1=928\), \(\deg R_2=895\), gcd of degree \(0\);</li>
+<li>\(N=6\): \(\deg_uQ=27\), \(\deg_\mu Q=60\), \(\deg R_1=3180\), \(\deg R_2=3119\), gcd of degree \(0\);</li>
+<li>\(N=7\): \(\deg_uQ=42\), \(\deg_\mu Q=102\), \(\deg R_1=8466\), \(\deg R_2=8364\), gcd of degree \(0\).</li>
+</ul>
+<p>No branch factor was left in \(Q\) at \(\mu=12345\), so \(E\) is exact there. An earlier single-variable run at \(N=5\), with a cruder clearing exponent and interpolation of the resultants in \(\mu\) (spine-weight3-n5.txt), gives the same degrees \(928,895\) and a trivial gcd. These are finite checks modulo \(q\). A trivial gcd modulo \(q\) excludes a common root over \(\overline{\mathbb Q}\) if the reductions of \(Q\), \(R_1\), \(R_2\) keep their degrees; that was not verified, and the interpolation degrees were checked at two extra points each. Removing \(\gcd(g,\mathrm{lc}^{2d})\) modulo \(q\) could also hide a factor. Under these caveats, and off the removed values of \(\mu\), \(S_\mu\) has no non-branch point of weight three at \(N=5,6,7\). The non-branch degree fits \(3N(N-3)/2\) at these three sizes.</p>
+<p><strong>Conjecture (spine weights).</strong> For every \(N\ge5\) and every \(\mu\notin\{0,\pm1\}\), \(S_\mu\) has no point of weight at least three outside the branch values and the cluster point.</p>
+<h4>What \(N=6\) shows</h4>
+<p>At \(N=6\), \(W_3\) has a divisorial component: the <a href="#cube-six-root-involution-divisor">involution divisor</a>. By the boundary-curve criterion, its closure meets a curve of the family \((1,1,1,3)\), \((1,1,2,2)\), possibly only the second. If the closure meets \((1,1,1,3)\), a weight-three point along an approaching family converges somewhere. If it converges to a smooth spine point, the rescaled Wronskians converge locally uniformly there, and the limit space has weight at least three at that point. The fixed-cluster spine limit is clean off the removed values of \(\mu\). So the weight-three point converges to a branch value \(u=1/s'_j\), to the node (the tail and its limit), or to a removed value of \(\mu\), or the meeting happens on \((1,1,2,2)\). For \(N\ge6\) the cluster is degenerate at every F-curve point, so the spine limit there needs the extended hypothesis of the lemma. So \(N=6\) shows that some limit other than the smooth points of the fixed-cluster spine must detect the divisor. Heuristically, the near limit at scale \(z-p_0=\varepsilon x\) is the cluster's pair space with the three single roots merged into a high-order point at \(x=\infty\). That is a space of the same kind for \(N-3\) roots, which suggests an induction on \(N\) along the tails.</p>
+<p><strong>What this does to the route.</strong> The simplest boundary curve has an explicit spine limit, clean through \(N=7\). The \(N=6\) control shows that the tail and node limits must be derived before the criterion can certify anything. The next step is the near limit on the tail, and a check that the involution divisor at \(N=6\) is detected there.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the tail and node limits of \((1,1,1,N-3)\), the other curves \((1,1,m,N-2-m)\), and the spine conjecture for every \(N\);</li>
+<li>the neck windows below the last block; far polynomials without triple roots; \(G_{c,w}\not\equiv0\); the exchange condition.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The boundary-curve criterion, the mark weight dictionary (parts (1), (2) and the frame), the six-root involution divisor, and the peeling theorem's class argument.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, the specification, the script and both outputs, and the dictionary, involution-divisor and criterion excerpts. Verdict: pass with corrections. It confirmed the rescalings, the class count \(R+2\), the Vandermonde step, the frame change, the affine reduction, and every quoted number. Corrections applied:</p>
+<ul>
+<li>scope: fixed \(b\) reaches the boundary divisor, not the F-curve; the lemma is restated with a limiting hypothesis on \(V_{b(\varepsilon)}\), open for three-pointed tails; the \(N=5\) case and the sign of \(F_{\rm sep}\) are checked; the missing modulus value is covered by relabelling;</li>
+<li>the certificate is stated as a finite check modulo \(q\), with degree preservation unverified, the leading-coefficient roots untested, and the clearing exponent justified without assumption;</li>
+<li>the \(N=6\) discussion follows the contrapositive exactly, adds convergence to a branch value, and states the convergence step; the title and meta are restricted accordingly.</li>
+</ul>
+<p>These corrections restrict or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zq">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>25 min 2.90 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 0.14 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 15.91 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">8 min 11.26 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">12 min 35.46 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
