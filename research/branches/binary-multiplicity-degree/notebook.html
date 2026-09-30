@@ -47,13 +47,14 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). The highest risk is squarefreeness of the rigid far polynomials \(R_{n,k}\) (lem:cube-far-u-space), needed by (B) and (K). Two routes are closed at the tested sizes: the <a href="#entry-2026-10-03-cube-far-shift-discriminant">symbolic-shift discriminant</a> and the <a href="#entry-2026-10-03-cube-far-arithmetic">arithmetic routes</a> (small primes, Schur-type Newton polygons). Irreducibility, which would suffice, holds at every computed size.</p>
-<p>Next, the analytic lead from orthogonal polynomials:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). The highest risk is squarefreeness of the rigid far polynomials \(R_{n,k}\) (lem:cube-far-u-space), needed by (B) and (K). Three cycles closed three routes: the <a href="#entry-2026-10-03-cube-far-shift-discriminant">discriminant</a>, the <a href="#entry-2026-10-03-cube-far-arithmetic">arithmetic</a> and the <a href="#entry-2026-10-03-cube-far-real-zeros">real zeros</a>.</p>
+<p>Next: a route review for this obstacle. State what squarefreeness of \(R_{n,k}\) means geometrically: simple extra ramification of the far space, a point of a Schubert intersection for osculating flags at \(0,1,\infty\). Choose outside leads that answer that shape:</p>
 <ul>
-<li>Count the real zeros of \(R_{n,k}\) in \((0,1)\) and elsewhere at small sizes.</li>
-<li>Test strict interlacing with \(R_{n,k\pm1}\) and \(R_{n\pm1,k}\), and with the Jacobi factor \(P_4\).</li>
+<li>Mukhin–Tarasov–Varchenko transversality of osculating Schubert intersections and the Bethe ansatz for the Gaudin model;</li>
+<li>Filaseta's multi-prime Newton polygons for irreducibility;</li>
+<li>degenerating the far space itself in \(k\) or \(n\).</li>
 </ul>
-<p>If the far polynomials are real-rooted and interlace across an index, look for the three-term or Christoffel–Darboux-type relation behind it, through the Rodrigues and Jacobi structure of \(P_3\) and \(P_4\). Squarefreeness would then follow by induction.</p>
+<p>Run their cheap tests within the review.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -40805,6 +40806,46 @@ This follows from G. Szegő, Orthogonal Polynomials, (4.3.3) (norm of \(P_j^{(b-
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">54.83 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.33 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.53 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-far-real-zeros" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-far-real-interlacing">
+<h3>3 October 2026 — Refutation: the far polynomials are far from real-rooted, and their real zeros do not interlace in n or k</h3>
+<p class="entry-meta">Refutation of the orthogonal-polynomial interlacing route to squarefreeness of the far polynomials, at (n,k) with n ≤ 3, k ≤ 5. Far zeros cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> After the <a href="#entry-2026-10-03-cube-far-arithmetic">arithmetic routes</a>, the next lead for squarefreeness of \(R_{n,k}\) (lem:cube-far-u-space) came from orthogonal polynomials. Real-rooted families whose zeros strictly interlace across an index have simple zeros by induction. \(P_4\) is of Jacobi type, whose zeros are real, simple and interlacing. Do the far polynomials inherit this?</p>
+<p><strong>General statement.</strong> <code>conj:cube-far-real-interlacing</code> (refutation), a hypothesis for every \((n,k)\).</p>
+<p><strong>Computation.</strong> research/tools/bmd_cube_far_real_zeros.gp computes the zeros of \(R_{n,k}\) at 150 digits, for \(n\in\{2,3\}\), \(k\in\{3,4,5\}\), using the construction of research/tools/bmd_cube_far_u_space.gp. It tests strict interlacing of the real zeros between consecutive \(k\) and consecutive \(n\) (research/results/bmd-20261003-m/far-real-zeros.txt).</p>
+<p><strong>Outcome.</strong> Real zeros out of the degree:</p>
+<ul>
+<li>\((2,3)\): \(2\) of \(6\);</li>
+<li>\((2,4)\): \(7\) of \(15\);</li>
+<li>\((2,5)\): \(4\) of \(28\);</li>
+<li>\((3,3)\): \(5\) of \(13\);</li>
+<li>\((3,4)\): \(6\) of \(30\);</li>
+<li>\((3,5)\): \(10\) of \(54\).</li>
+</ul>
+<p>Most zeros are nonreal. The real ones lie on both sides of \([0,1]\) as well as inside, with at most two in \((0,1)\). None of the seven consecutive pairs, in \(k\) or in \(n\), interlaces.</p>
+<p><strong>Hypothesis (refuted).</strong> For every \(n\ge2\), \(k\ge3\), \(R_{n,k}\) has only real zeros, and the zeros of \(R_{n,k}\) and \(R_{n,k+1}\) strictly interlace. It fails at every tested size.</p>
+<p><strong>What this shows.</strong> The Jacobi structure of \(P_4\) does not pass to the Wronskian \(R_{n,k}\): its zeros are generic complex points, as its generic arithmetic suggested. Three cycles on the far polynomials have now each closed a route:</p>
+<ul>
+<li>the symbolic-shift discriminant;</li>
+<li>small primes and Newton polygons;</li>
+<li>real zeros.</li>
+</ul>
+<p>Each left the implication untouched. Irreducibility, which would suffice, still holds at every computed size. By the record's own rule, the next cycle is a route review for this obstacle.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-u-space; thm:cube-far-p4-jacobi (statement).</p>
+<p><strong>Verification gate.</strong> Numerical zeros at 150 digits, with a real-part tolerance of \(10^{-40}\) on imaginary parts. The counts are robust at this precision, and no proof is claimed, so no reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-m">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>1 min 41.49 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">33.97 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 5.64 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.34 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.54 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
