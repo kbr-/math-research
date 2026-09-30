@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. The (K) line runs through the F-curve criterion to neck corner limits, resolved at \((2,2)\) by <a href="#cube-neck-corner-blowup">one blowup</a> (<a href="#entry-2026-10-01-cube-corner-route-review">corner route review</a>).</p>
-<p>Next: prove a Laplace bound for the neck corner Plücker vector of the products \(A_kB_l\), as in the neck Laplace bound. Bound the order by the minimal independent-assignment cost \(c(m,n)\), compute \(c(m,n)\) by matroid duality over boxes, and determine whether the order is \(2c(m,n)\). Then read off the \((2,n)\) leading form and its zero ratios.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. The F-curve route to (K) needs the Newton polygons of the neck corners. A <a href="#cube-neck-corner-tropical-bound">tropical lower bound</a> is proved, but the doubling that made the (B) windows sharp fails at \((3,3)\).</p>
+<p>Next, for (K): compute the full Newton polygon and face forms of the corner Plücker vector at \((2,3)\) and \((3,3)\), from the initial forms along a fan of weights. Test the reading of \((2,3)\) (a single diagonal vertex \((2,2)\)). Then state a general description of the polygon in terms of the partial-fraction rows, if the vertices follow the tropical assignment structure edge by edge.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -36384,6 +36384,71 @@ For \(r=3\), degrees \(\deg G\le2\) survive at \((1,1)\), \(\le9\) at \((1,2)\) 
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 5.52 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 4.83 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 0.56 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-01-cube-neck-corner-order" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-01-cube-corner-route-review:2" data-claims="lem:cube-neck-corner-tropical-bound conj:cube-neck-corner-doubling">
+<h3>1 October 2026 — The neck corner order is at least a tropical assignment cost, and equals twice it for (2,n) but not for (3,3); corners need Newton-polygon modifications</h3>
+<p class="entry-meta">Working proof of a tropical lower bound for the neck corner Plücker vector; refutation of the doubling hypothesis at (3,3); corner orders along rays at (2,2), (2,3), (3,3), (2,4). Neck corner order cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> For (K), the highest-risk item, the <a href="#entry-2026-10-01-cube-corner-route-review">corner route review</a> reduced the F-curve route's arc problem to the order and leading forms of the neck corner Plücker vector \(P\). It asked whether that order is twice a Hall-type cost, as in the (B) neck windows, which would make the Laplace method of lem:cube-neck-laplace-bound available at corners. The missing implication is the structure of \(P\) at every corner: its Newton polygon and face forms. This cycle proves the cost lower bound and tests the doubling.</p>
+<p><strong>General statement.</strong> <code>lem:cube-neck-corner-tropical-bound</code>, for every neck \((m,n)\); <code>conj:cube-neck-corner-doubling</code>, refuted at \((3,3)\).</p>
+<h4 id="cube-neck-corner-tropical-bound">The tropical lower bound</h4>
+<p><strong>Setting.</strong> The neck of thm:cube-neck-arc-indeterminacy with clusters at \(0\) and \(1\): \(x_i=\lambda s_i\), \(y_j=\lambda's'_j\) (\(s_1=s'_1=0\), shapes fixed; coincident shapes are allowed, since \(h_{p-k}\) is homogeneous for confluent nodes too). \(A(x)=(1-x/z)^{1/2}\) and \(B(y)=(1-y/(z-1))^{1/2}\), divided differences \(A_k=[x_1,\ldots,x_{k+1}]A\) and \(B_l\), and \(P\) the Plücker vector of the \(mn\) functions \(A_kB_l\) (\(k&lt;m\), \(l&lt;n\)), formal in \(\lambda,\lambda'\). Every coefficient of a monomial \(\lambda^a\lambda'^b\) in \(A_kB_l\) is a rational function of \(z\) with poles only at \(0\) and \(1\), equal to \(1\) at \(\infty\) for the constant part. Write it in the partial-fraction basis: the constant, \(u_i=z^{-i}\) and \(v_j=(z-1)^{-j}\) (\(i,j\ge1\)).</p>
+<p><strong>Lemma (neck corner tropical bound).</strong> In this basis, row \((k,l)\) has:</p>
+<ul>
+<li>constant entry \(1\) if \((k,l)=(0,0)\), and \(0\) otherwise;</li>
+<li>entry at \(u_i\) of \(\lambda\)-order at least \((i-k)^+\);</li>
+<li>entry at \(v_j\) of \(\lambda'\)-order at least \((j-l)^+\).</li>
+</ul>
+<p>Consequently, along \(\lambda=t^{w_1}\), \(\lambda'=rt^{w_2}\), the \(t\)-order of \(P\) is at least the weighted cost \(\min_{U\sqcup V}\bigl(w_1\sum_\tau(\tau-k_{(\tau)})^++w_2\sum_\tau(\tau-l_{(\tau)})^+\bigr)\). At \(w=(1,1)\) this is \[ c(m,n)=\min_{U\sqcup V}\Bigl(\sum_{\tau}(\tau-k_{(\tau)})^+ +\sum_{\tau}(\tau-l_{(\tau)})^+\Bigr), \] minimized over the splittings of the rows \((k,l)\ne(0,0)\) into \(U\) and \(V\), with the \(k\)-values of \(U\) and the \(l\)-values of \(V\) sorted ascending.</p>
+<p><strong>Proof.</strong> \(A(x)\to1\) and \(B(y)\to1\) as \(z\to\infty\), for every \(x\) and \(y\). So all divided differences of order at least one vanish there, \(A_k\) for \(k\ge1\) and \(B_l\) for \(l\ge1\). This gives the constant column.</p>
+<p>At \(z=0\), \(A(x)B(y)=\sum_px^p\binom{1/2}p(-1)^pz^{-p}\cdot B(y)\), and \(B(y)\) is analytic at \(0\) with \([z^r]B(y)=\sum_q\binom{1/2}qy^q\binom{q+r-1}r\) (\(\delta_{r0}\) for \(q=0\)). So the coefficient of \(z^{-i}\) in the principal part is \(\sum_{p\ge i}\sum_q\binom{1/2}p(-1)^p\binom{1/2}q\binom{p+q-i-1}{p-i}x^py^q\). The divided differences send \(x^p\mapsto h_{p-k}(x_1,\ldots,x_{k+1})\) and \(y^q\mapsto h_{q-l}(y_1,\ldots,y_{l+1})\), which are zero for \(p&lt;k\), resp. \(q&lt;l\), and homogeneous of degree \(p-k\) in \(\lambda\), resp. \(q-l\) in \(\lambda'\). So the \(u_i\) entry of row \((k,l)\) has \(\lambda\)-order at least \(\max(i,k)-k=(i-k)^+\). The \(v_j\) entries are symmetric under \(z\mapsto1-z\).</p>
+<p>Write each row in the partial-fraction basis. Then \(P=\wedge^{mn}J\bigl(\sum_S\mathrm{minor}_S\,e_S\bigr)\), where \(J\) is the jet map, \(e_S\) the wedge of the basis columns in \(S\), and \(\mathrm{minor}_S\) the maximal minor on \(S\). Each \(t\)-coefficient involves only finitely many columns, and \(\wedge^{mn}J\) is linear with constant coefficients, so \(\operatorname{ord}P\ge\min_S\operatorname{ord}\mathrm{minor}_S\). Each maximal minor is a sum over bijections from rows to columns, and a term's order is at least the sum of the entry orders. In a minor containing the constant column, row \((0,0)\) takes it. In a minor without it, row \((0,0)\) goes to a \(u\)- or \(v\)-column with \(k=0\) (resp. \(l=0\)). Inserting a \(0\) at the front of a sorted list does not lower the sorted cost (it becomes \(1+\sum(\tau+1-k_\tau)^+\)), so these minors also cost at least \(c\). The remaining rows take \(u\)-columns or \(v\)-columns. For a fixed set of rows sent to \(u\)-columns, the best choice is the columns \(1,\ldots,a\) matched in sorted order, by exchange, since \((\tau-k)^+\) is non-decreasing in \(\tau\) and submodular. The same holds on the \(v\) side, by the symmetry \(z\mapsto1-z\), which sends \(A(x)\) to \(B(-x)\). Along \(\lambda=t^{w_1}\), \(\lambda'=rt^{w_2}\), \(\lambda\)-orders scale by \(w_1\) and \(\lambda'\)-orders by \(w_2\). \(\square\)</p>
+<h4>Orders at four necks</h4>
+<p>research/tools/bmd_cube_neck_corner_order.gp (neck-corner-order.txt) computes, exactly over \(\mathbb Q\), the \(t\)-order of the intrinsic Plücker vector in the function space. It agrees with the jet-defined \(P\) when the jet map at \(z_0\) is injective on the flat limit; in general the jet order is at least the intrinsic one. It uses the flat-limit cost sum of bmd_cube_neck_tie.gp on the product basis \(A(x_i)B(y_j)\), minus the Vandermonde orders \(n\binom m2+e\,m\binom n2\) of the change to divided differences. It also computes \(c(m,n)\) by exhausting the splittings.</p>
+<table>
+<tr><th>\((m,n)\)</th><th>\(c(m,n)\)</th><th>order, \(\lambda=t\), \(\lambda'=rt\), \(r=2,\tfrac37,-5\)</th><th>order, \((\lambda,\lambda')=(t,t^2)\) and \((-t^2,-t)\)</th></tr>
+<tr><td>\((2,2)\)</td><td>\(1\)</td><td>\(2,2,2\)</td><td>\(2,2\)</td></tr>
+<tr><td>\((2,3)\)</td><td>\(2\)</td><td>\(4,4,4\)</td><td>\(6,6\)</td></tr>
+<tr><td>\((3,3)\)</td><td>\(7\)</td><td>\(12,12,12\)</td><td>\(15,15\)</td></tr>
+<tr><td>\((2,4)\)</td><td>\(4\)</td><td>\(8,8,8\)</td><td>\(10,10\)</td></tr>
+</table>
+<p>The second arc is computed on the swapped neck, which \(z\mapsto1-z\) turns into \(x=-t^2s\), \(y=-ts'\). The bound holds in every case. The \((2,2)\) value matches the record.</p>
+<p><strong>Conjecture (neck corner doubling), refuted.</strong> The hypothesis of the corner route review, that the equal-rate corner order is \(2c(m,n)\) for every neck, holds at \((2,2)\), \((2,3)\) and \((2,4)\) and fails at \((3,3)\), where the order is \(12\ne14\). So the Laplace bound at corners cannot be sharpened to twice \(c\) in general. Unlike the (B) windows, the corner order is not a fixed multiple of this assignment cost.</p>
+<h4>What the orders say about the corner</h4>
+<p>Each order is an upper bound for the support function \(h\) of the Newton polygon of \(P\) in \((\lambda,\lambda')\) at its weight, \((1,1)\), \((1,2)\) or \((2,1)\), and equals \(h\) at generic ratios. The unequal weights used one ratio each; below, the orders are read as values of \(h\). At \((2,2)\) all three are \(2\), so the polygon has the single edge \(a+b=2\). By cor:cube-two-two-neck-resolution, its face form vanishes nowhere, and one blowup resolves the corner.</p>
+<p>At \((2,3)\), the values \(h=4,6,6\) force the diagonal face to be the single point \((2,2)\) (on \(a+b=4\), \(a+2b\ge6\) and \(2a+b\ge6\) give \(a,b\ge2\)), a polygon, with edges towards the axes of weights \((1,2)\) and \((2,1)\), for instance through \((6,0)\) and \((0,6)\). Then the equal-rate face form is a single monomial times a fixed vector. That explains the record's observation that the \((2,3)\) limit does not depend on the ratio at equal rates but does on unequal exponents (neck indeterminacy entry, table). Such a corner is not resolved by blowing up \(Z\). It is resolved by the toric modification of its polygon, with one \(\mathbb P^1\) of limits per edge, provided each edge's face form has no common zero in the edge ratio; that was not checked. At \((2,4)\) and \((3,3)\) the data allow several points on the diagonal edge. At \((2,4)\) this fits the recorded dependence on the ratio. At \((3,3)\), the three sampled ratios gave the same order, and the record's ratio arcs gave the same limit. That fits either a single monomial or a scalar face form times a fixed vector, which would vanish at some ratios. These polygon statements are readings of three weights per neck, not computations of the polygon.</p>
+<p><strong>Lead follow-up.</strong> Outside lead 2 of the corner route review, the neck Laplace bound at corners. <strong>Follow-up.</strong> Developed: the Laplace/tropical lower bound holds at every corner, but the doubling that made it sharp for the (B) windows fails at \((3,3)\), so corner orders need the Newton polygon itself (lead 1).</p>
+<p><strong>What this does to the route.</strong> The F-curve route to (K) needs the Newton polygon and face forms of every neck corner. That is now a clear algebraic target: the weighted tropical bound bounds the support function from below at every weight, and the exact polygon is computable per neck. No all-\(N\) structure has emerged: the corner orders \(2,4,12,8\) have no evident closed form, and their relation to \(c(m,n)\) is irregular. (K) has no proof for \(N\ge11\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(K) for \(N\ge11\): Newton polygons and face forms of all neck corners; the toric modification's spanning curves; the \(\sigma_3\) test on resolved spine families;</li>
+<li>(B): the Laplace-short neck windows at block size four, far polynomials, odd \(N\);</li>
+<li>(L) at \(N=11\), awaiting approval.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-neck-arc-indeterminacy (chart, \(P\), ratio table); lem:cube-neck-corner-blowup and cor:cube-two-two-neck-resolution; bmd_cube_neck_tie.gp (flat-limit algorithm); the corner route review.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the lemma's formulas and tropical argument, the script (the cost sum as Plücker order, the Vandermonde correction, the precision, the exhaustive \(c\)), the table and refutation against the output, and the Newton-polygon readings. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the jet-versus-partial-fraction step is replaced by the wedge of the jet map, which gives the bound directly;</li>
+<li>minors without the constant column are covered;</li>
+<li>\(B_l\to0\) at \(\infty\) is added; the unused hypotheses (distinct shapes, \(r\ne0\)) are dropped; the weighted bound is stated;</li>
+<li>the computed order is identified as the intrinsic Plücker order;</li>
+<li>the second unequal arc is identified as \((-t^2,-t)\);</li>
+<li>orders are read as upper bounds for the support function, equal at generic ratios; the \((2,3)\) diagonal point is forced; the toric resolution is conditional on the face forms;</li>
+<li>the script comment's claim ID is corrected.</li>
+</ul>
+<p>These restrict, complete or strengthen with proof within the same argument, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261001-i">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 59.96 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 24.97 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 30.03 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">4.82 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
