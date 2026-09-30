@@ -43,11 +43,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, has no mechanism. On the neck half of (B), the weight identity of the Hankel conjecture is now proved for all parameters (<a href="#cube-neck-assignment-identity">assignment identity</a>).</p>
-<p>Next, for (B): develop the secant lead for the algebraic part of conj:cube-neck-hankel-leading. The level sums are forms of degree \(lw\) in \(t'\), so they are determined by their values at node form \(t'_x=\sum_{m\le lw}a_m\lambda_m^x\). There each Hankel-type minor becomes a sum over \(w\)-sets of nodes of \(a_MV_M^2s_\mu(\lambda_M)\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, has no mechanism. On the neck half of (B), the vanishing below \(2E\) in conj:cube-neck-hankel-leading is a Hankel phenomenon, not a generic Plücker one (<a href="#entry-2026-09-30-cube-neck-generic-vanishing">neck generic vanishing</a>).</p>
+<p>Next, for (B): develop the secant lead. Evaluate the level sums at node form \(t'_x=\sum_{m\le lw}a_m\lambda_m^x\), where \(h_Q=\sum_{|M|=w}a_M\lambda_MV(\lambda_M)\,\det[\lambda_m^q]_{m\in M,q\in Q}\).</p>
 <ul>
-<li>Write the level sums in this form.</li>
-<li>Test at the smallest window \((e,l,w,c)=(1,2,2,3)\) whether the vanishing below \(2E\) is an antisymmetry in the nodes.</li>
+<li>Test at \((1,2,2,4)\) whether the level sums below \(2E\) vanish termwise for each node assignment, by antisymmetry in the nodes, or only after summing over assignments.</li>
+<li>If termwise, state the node-form vanishing as a lemma and prove it from the row structure.</li>
 </ul>
 </section>
 <section id="working-context">
@@ -35459,6 +35459,70 @@ For \(r=3\), degrees \(\deg G\le2\) survive at \((1,1)\), \(\le9\) at \((1,2)\) 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">51.79 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">8.05 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-neck-generic-vanishing" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-neck-generic-vanishing">
+<h3>30 September 2026 — Refutation: the neck level sums vanish below 2E only because t′ is a Hankel sequence, not for generic Plücker vectors</h3>
+<p class="entry-meta">Refutation of the generic form of the neck vanishing, in every window where cancellation occurs (levels below 2E with nonzero β-minors). The cancellation is a Hankel identity. Neck generic vanishing cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> By lem:cube-neck-level-expansion, a neck window's level sum is \[ S_L(\beta,t')=\sum_{Q}\Psi(Q)\prod_{s=1}^lh_{Q_s}(t'), \] summed over \(l\)-tuples \(Q=(Q_1,\ldots,Q_l)\) of \(w\)-sets of pole orders at level \(L\). Here \(h_Q(t')=\det[t'_{p-1+q}]_{p\le w,\,q\in Q}\) are maximal minors of the Hankel matrix of \(t'\). conj:cube-neck-hankel-leading asserts \(S_L=0\) for \(L&lt;2E\).</p>
+<p>The <a href="#cube-neck-assignment-identity">assignment identity</a> settled that conjecture's weight part. The next step asked how the vanishing happens, towards the secant (node-form) lead. There are three possibilities:</p>
+<ul>
+<li>(a) every \(\Psi(Q)\) vanishes below \(2E\);</li>
+<li>(b) the \(\Psi\) cancel through Plücker relations, which hold for the maximal minors of every \(w\times\infty\) matrix;</li>
+<li>(c) the cancellation needs the Hankel structure of \(t'\).</li>
+</ul>
+<p>Under (b), the vanishing would be a statement about \(\Psi\) alone: the generic hypothesis \((G)\) below. Standard monomial theory, a lead of the neck Hankel review, could then prove it.</p>
+<p><strong>General statement.</strong> <code>conj:cube-neck-generic-vanishing</code>, hypothesis \((G)\) for every \(e,l,w,c\), refuted.</p>
+<p><strong>Hypothesis (G).</strong> For every window and every \(L&lt;2E\), \(\sum_Q\Psi(Q)\prod_sp_{Q_s}(X)=0\), where \(p_Q(X)\) is the maximal minor on the columns \(Q\) of a generic \(w\times\infty\) matrix \(X\).</p>
+<h4>Computation</h4>
+<p>research/tools/bmd_cube_neck_psi_pattern.gp computes the \(\Psi(Q)\) modulo \(2^{61}-1\) at random \(\beta\), with the neck model of the separation script. research/tools/bmd_cube_neck_generic_vanishing.gp evaluates each level sum twice: with four random matrices \(X\), and with four random Hankel sequences \(t'\). Outputs: neck-psi-pattern.txt, neck-generic-vanishing.txt.</p>
+<table>
+<tr><th>\((e,l,w,c)\)</th><th>\(2E\)</th><th>levels with \(\Psi\ne0\) below \(2E\)</th><th>generic sum \(0\)?</th><th>Hankel sum \(0\) at all samples?</th></tr>
+<tr><td>\((1,2,2,3)\), \((1,3,2,4)\), \((1,2,3,4)\)</td><td>\(2,6,2\)</td><td>none</td><td>—</td><td>—</td></tr>
+<tr><td>\((1,2,2,4)\)</td><td>\(8\)</td><td>\(6,7\)</td><td>no</td><td>yes</td></tr>
+<tr><td>\((1,3,2,5)\)</td><td>\(14\)</td><td>\(11,12,13\)</td><td>no</td><td>yes</td></tr>
+<tr><td>\((1,3,2,6)\)</td><td>\(24\)</td><td>\(18,\ldots,23\)</td><td>no</td><td>yes</td></tr>
+<tr><td>\((1,2,3,5)\)</td><td>\(8\)</td><td>\(6,7\)</td><td>no</td><td>yes</td></tr>
+<tr><td>\((1,2,3,6)\)</td><td>\(18\)</td><td>\(12,\ldots,17\)</td><td>no</td><td>yes</td></tr>
+</table>
+<p>At level \(2E\) both sums are nonzero in every window, as the conjecture's leading term requires.</p>
+<p><strong>Outcome.</strong> (a) fails in five windows: \(\Psi\) is nonzero below \(2E\). (b), hypothesis \((G)\), fails in the same five windows, at every level where it is not vacuous. The Hankel sums vanish at all sampled points modulo \(2^{61}-1\), as conj:cube-neck-hankel-leading predicts. So the vanishing below \(2E\) is case (c): it needs the Hankel structure of \(t'\).</p>
+<h4>The first cancelling level</h4>
+<p>In all five windows, the lowest level with \(\Psi\ne0\) carries, at the sampled \(\beta\), exactly two distinct values, in ratio \(-1\). At \((1,2,2,4)\), level \(6\), writing \(h_{ij}=t'_it'_{j+1}-t'_jt'_{i+1}\), the level sum is \(\psi\) times \[ h_{12}h_{45}+h_{14}h_{34}+h_{23}h_{25}+h_{23}h_{34}-h_{13}h_{35}-h_{24}^2 . \] research/tools/bmd_cube_neck_hankel_identity.gp (neck-hankel-identity.txt) checks symbolically that this vanishes for Hankel minors. With the generic minors \(g_{ij}=t_iu_j-t_ju_i\) of a \(2\times n\) matrix, the same combination is not zero. So it is a relation among \(2\times2\) Hankel minors beyond the Plücker relations.</p>
+<p><strong>What it means.</strong> The neck Hankel review listed three leads for the algebraic part of the conjecture. This refutation decides between them:</p>
+<ul>
+<li>the standard-monomial lead, straightening products of generic maximal minors, cannot give the vanishing by itself: it would prove \((G)\), which is false. Hankel-specific relations must enter, as that lead's own "where it breaks" anticipated;</li>
+<li>the secant lead works with \(t'\) in node form, \(t'_x=\sum a_m\lambda_m^x\), and so builds the Hankel structure in. Of the two leads this outcome bears on, it is the one consistent with it;</li>
+<li>Mahler duality is untouched.</li>
+</ul>
+<p><strong>What this does to the route.</strong> The neck half of (B) keeps conj:cube-neck-hankel-leading as its open statement. Its vanishing part is now known to be a Hankel phenomenon. Of the two leads this bears on, the secant lead is the one consistent with it; Mahler duality is unaffected. (K) and the far half of (B) are unchanged.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(K) for \(N\ge11\);</li>
+<li>(B): the algebraic part of conj:cube-neck-hankel-leading, now known to need Hankel relations; \(G_{c,w}\not\equiv0\); far polynomials without triple roots; odd \(N\);</li>
+<li>(L) at \(N=11\), awaiting approval.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-neck-level-expansion (level sums, \(\Psi\)); the neck separation script (model); the neck Hankel review (leads); lem:cube-neck-assignment-identity.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the scripts against the separation script's model, the minors, the refutation logic, and the table and ratio against the outputs. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the conclusions about the leads are made consistent;</li>
+<li>the Hankel vanishing and the ratio are stated as sampled;</li>
+<li>stale script headers are replaced, as comments only, after the runs;</li>
+<li>the identity script now prints an unambiguous flag and was rerun.</li>
+</ul>
+<p>These clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzz">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 26.74 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">4 min 35.57 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 45.49 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5.54 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
