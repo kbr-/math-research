@@ -81,6 +81,29 @@ run(n, k) = {
   emit(Str("(n,k)=", [n, k], ": deg R ", poldegree(R), "; deg gcd(R, W_T), gcd(R, W_0), gcd(R, W_1): ", g,
     "; deg gcd(R, W_T, W_0, W_1): ", gall, "; det of (a_T, a_0, a_1) at three shapes: ", (if (matdet(A) != 0, "nonzero", "ZERO"))));
 }
-foreach([[2, 3], [3, 3], [2, 4], [4, 3], [3, 4]], v, run(v[1], v[2]));
-foreach([[2, 3], [3, 3], [2, 4], [4, 3], [3, 4]], v, run2(v[1], v[2]));
-foreach([[2, 3], [3, 3], [2, 4], [4, 3], [3, 4]], v, run3(v[1], v[2]));
+\\ Cycle bmd-20261002-r: correction.  wrraw takes numerator(), which clears a different power of w and w - 1 for each bumped
+\\ space, so sum_c a_c wrraw(bump(F, c)) mixes differently scaled Wronskians; run2's gcd and run3's control used it.  run4 uses the
+\\ Wronskians as rational functions (wrrat), combines them, and only then clears one common denominator.
+wrrat(cls) = {
+  my(d = sum(i = 1, #cls, #cls[i][3]), M = matrix(d, d), row = 0);
+  foreach(cls, c, my(a = c[1], b = c[2]);
+    foreach (c[3], f, row++; my(g = f);
+      for (m = 1, d, M[row, m] = g; g = deriv(g, 'w) + (a / 'w + b / ('w - 1)) * g)));
+  matdet(M);
+}
+run4(n, k) = {
+  my(F = Fcls(n, k), R = wr(F), a = acoef(n, k, [-2, 3, -5/2, 7/3, 11/4][1..k - 1]));
+  my(Qr = sum(c = 1, 3, a[c] * wrrat(bump(F, c))), Wf = wrrat(F), D = lcm(denominator(Qr), denominator(Wf)));
+  my(Qn = Qr * D, Wn = Wf * D, B = Wn / R);
+  if (type(B) != "t_POL", error("R does not divide the cleared Wronskian"));
+  my(v = lift(Mod(Qn, R) / Mod(B * deriv(R), R)));
+  emit(Str("(n,k)=", [n, k], " [corrected]: deg gcd(R, Q) ", poldegree(gcd(R, Qn)), "; deg of Q/(B R') mod R: ", poldegree(v),
+    " (deg R ", poldegree(R), ")", if (poldegree(v) <= 2, Str("; v = ", v), "")));
+}
+MODE = getenv("MODE");
+{
+if (MODE == "corrected", foreach([[2, 3], [3, 3], [2, 4], [4, 3], [3, 4]], v, run4(v[1], v[2])),
+  foreach([[2, 3], [3, 3], [2, 4], [4, 3], [3, 4]], v, run(v[1], v[2]));
+  foreach([[2, 3], [3, 3], [2, 4], [4, 3], [3, 4]], v, run2(v[1], v[2]));
+  foreach([[2, 3], [3, 3], [2, 4], [4, 3], [3, 4]], v, run3(v[1], v[2])));
+}
