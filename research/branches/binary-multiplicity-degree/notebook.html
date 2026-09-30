@@ -43,13 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, concerns only the Schubert type \(\sigma_3\). The <a href="#entry-2026-09-30-cube-contact-type-review">contact type review</a> shows that Wronskian-root arguments prove a stronger statement, which is false at \(N=6\).</p>
-<p>Next, for (K): develop the special-cone form of the plane criterion (lem:cube-contact-plane-criterion, part (3)) on a four-block flat \(L_\pi\) with blocks of size at most three.</p>
-<ul>
-<li>Formulate the local criterion for a point of \(L_\pi\) to lie in the closure of \(K_U\): the leading forms of the contact minors in the cluster scales and normal directions.</li>
-<li>Test it at \(N=7\), where (K) holds.</li>
-</ul>
-<p>For (B): reduction modulo a good prime as the second argument for small factor degrees, after the Newton-polygon exclusion.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, survives on the special-cone form only through an unknown special surface (<a href="#cube-special-cone-deep-strata">special cones meet deep strata</a>).</p>
+<p>Next, for (B): test conj:cube-far-two-adic-shape at \((e,l)=(2,2)\), degree \(152\), with an exact integral determinant in FLINT. Scale the recursion rows by \(2\) to clear the half-integers. The conjecture fails if the reduction modulo \(2\) has a factor other than \(x\) and \(1+x\). If it passes, compute the 2-adic cluster tree of the roots at the computed sizes: rescale at \(0\), \(-1\) and \(\infty\), for instance \(x=4y\) at the slope-\(2\) clusters. Look for a self-similar rule that predicts the \(\mathbb Q_2\)-factor types, and hence the absence of triple roots, for every \((e,l)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -35216,6 +35211,77 @@ For \(r=3\), degrees \(\deg G\le2\) survive at \((1,1)\), \(\le9\) at \((1,2)\) 
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 9.80 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 0.20 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">21 min 2.49 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-special-cone-and-two-adic" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-contact-type-review:1" data-claims="lem:cube-special-cone-deep-strata conj:cube-far-two-adic-shape">
+<h3>30 September 2026 — Every special cone meets the two-double-root flats, so the plane criterion's special form must control deep collision limits; the far polynomials are x^A(1+x)^B modulo 2</h3>
+<p class="entry-meta">Working proof: every surface of configurations meets every codimension-two collision flat. Conjecture: the primitive far polynomials reduce modulo 2 to c·x^A(1+x)^B. Checked at three sizes. Special cone and two-adic cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-30-cube-contact-type-review">contact type review</a> proposed developing the special-cone form of the plane criterion, lem:cube-contact-plane-criterion (3), for (K). By that criterion, (K) holds if some surface \(S\) in the projective space \(\mathbb P^{N-2}\) of configurations misses the closure \(\bar K\) of the contact locus. The first question is which collision strata such a surface must meet, since \(\bar K\cap S\) is decided there by limits. The review also asked, for (B), for a second argument beyond Newton polygons.</p>
+<p><strong>General statement.</strong> <code>lem:cube-special-cone-deep-strata</code>, for every \(N\ge5\); <code>conj:cube-far-two-adic-shape</code>, for every \(e,l\ge1\).</p>
+<h4 id="cube-special-cone-deep-strata">Special cones meet the deep strata</h4>
+<p><strong>Lemma (special cones meet deep strata).</strong> Let \(S\subset\mathbb P^{N-2}\) be a closed subset of dimension at least two. Irreducibility and \(N\ge5\) only match the setting of the plane criterion. The space \(\mathbb P^{N-2}\) is that of root vectors modulo translation and scale, as in the boundary transfer.</p>
+<ol>
+<li>\(S\) meets every flat of codimension at most two: every \(H_{ij}\), every two-double-root flat \(H_{ij}\cap H_{kl}\) (\(\{i,j\}\cap\{k,l\}=\varnothing\)), and every triple-root flat \(H_{ij}\cap H_{jk}\).</li>
+<li>If \(S\not\subset\bigcup H_{ij}\), then deciding \(\bar K\cap S=\varnothing\) includes deciding \(K_U\cap S=\varnothing\). For a generic plane this is the plane criterion (2), which is equivalent to (K) itself.</li>
+<li>If \(S\) lies in a flat \(L\) of dimension \(d\ge2\), then \(S\) meets every flat of codimension at most two inside \(L\).</li>
+</ol>
+<p><strong>Proof.</strong> (1) is the projective dimension theorem (Hartshorne I.7.2): a surface and a linear space of codimension two in \(\mathbb P^{N-2}\) meet, since \(2+(N-4)\ge N-2\). (2): \(K_U\cap S\subset\bar K\cap S\). By lem:cube-contact-plane-criterion (2), \(K_U\) misses a generic plane if and only if (K) holds. (3) is (1) applied inside \(L\cong\mathbb P^d\). \(\square\)</p>
+<p><strong>Remark.</strong> Every point of \(\bar K\) in a collision flat is a limit along an arc from \(K_U\) (curve selection), so its fibre in the graph closure contains a contact limit. At one-double-root and triple-root points the limit is unique by cor:cube-limit-full-rank and the record's cluster lemmas; elsewhere the fibre conditions of the relative transfer apply.</p>
+<p>So the special-cone form must do one of two things:</p>
+<ul>
+<li>certify the separated part of \(S\). For a generic plane this is the certificate the record found impractical (maximal minors of degree \(1595\) at \(N=11\)). On a special surface the minors might factor or become explicit, which is what the special form would need;</li>
+<li>control the limits at two-double-root and triple-root points and deeper, the fibre conditions of the <a href="#entry-2026-09-29-cube-contact-relative-transfer">relative transfer</a>.</li>
+</ul>
+<p>A generic plane inside \(H_{12}\) meets the codimension-two flats of \(H_{12}\) in finitely many points and misses deeper flats. Choosing \(S\) that way turns the separated certificate into the same statement for the confluent family, one level down: codimension three of its contact locus, the boundary transfer lemma's hypothesis. So for \(S\) generic in a collision flat the special form gives no new reduction. A special surface with explicit contact minors remains possible, but none is known.</p>
+<h4 id="cube-far-two-adic-shape">The far polynomials modulo 2</h4>
+<p>research/tools/bmd_cube_far_modp_structure.gp (far-modp-structure.txt) factors the primitive far polynomials \(W_k\) of the peeling degeneration modulo the primes up to \(13\). These are the ones saved in cycle bmd-20260930-zzn, at \((e,l)=(1,1),(1,2),(2,1)\), of degrees \(16,48,44\).</p>
+<ul>
+<li>Modulo \(3,5,7,11,13\) the factorizations vary, with repeated factors of multiplicities up to \(14\).</li>
+<li>Modulo \(2\), at all three sizes, \(W_k\equiv x^A(1+x)^B\), up to the degree drop.</li>
+</ul>
+<p><strong>Conjecture (two-adic shape of the far polynomials).</strong> For all \(e,l\ge1\), the primitive far polynomial \(W_k\in\mathbb Z[x]\) satisfies \(W_k\equiv x^A(1+x)^B\pmod 2\) for some \(A,B\ge0\). Equivalently, every root of \(W_k\) reduces to a point of \(\mathbb P^1(\mathbb F_2)=\{0,1,\infty\}\): the weight points of the far space specialize 2-adically onto its three special points \(0,-1,\infty\).</p>
+<p>research/tools/bmd_cube_far_two_adic.gp (far-two-adic.txt) computes the 2-adic Newton polygons of \(W(x)\), \(W(x-1)\) and the reversal. research/tools/bmd_cube_far_two_adic_factors.gp (far-two-adic-factors.txt) computes the factorization over \(\mathbb Q_2\). The counts of roots near \(0,-1,\infty\) are \((4,8,4)\), \((24,16,8)\) and \((8,12,24)\). Every root has 2-adic distance \(2^{-2}\), \(2^{-15/8}\) or \(2^{-7/4}\) to its special point, or \(|x|=2^{2}\), \(2^{15/8}\) near \(\infty\). The factors over \(\mathbb Q_2\) are distinct, of degrees:</p>
+<ul>
+<li>\((1,1)\): \(1,1,1,3,3,3,4\);</li>
+<li>\((1,2)\): \(1^4,3^4,8,8,16\);</li>
+<li>\((2,1)\): \(2,2,4,6,6,8,16\).</li>
+</ul>
+<p>The factors of degree \(8\) and \(16\) sit on segments of slope \(\pm15/8\). The degree-16 factors, and one degree-8 factor at \((1,2)\), sit on segments of slope \(\pm15/8\); the degree-4 factor at \((1,1)\) sits on slope \(7/4\). By Dumas' theorem, a factor \(G^3\) cannot take roots from a segment of slope with denominator \(8\) and length at most \(16\). Newton polygons at \(2\) alone still leave degrees \(\deg G\le3,6,8\). Over all primes up to \(400\), the <a href="#entry-2026-09-30-cube-contact-type-review">contact type review</a> found \(\le2,9,8\) with the unshifted polygons only.</p>
+<p><strong>Why it may hold.</strong> The far space is spanned by \(x^{\alpha}(1+x)^{\beta}p(x)\) with exponents in \(\tfrac12\mathbb Z\), some half-integral. In its Wronskian recursion \(p_{m+1}=(\alpha-m)(1+x)p_m+(\beta-m)xp_m+x(1+x)p_m'\), a half-integral exponent gives \(v_2(\alpha-m)=-1\), and \(2(\alpha-m)\) is a 2-adic unit. The reduction modulo 2 of a suitable 2-adic normalization of the space should be spanned by functions supported at \(0,-1,\infty\). This is a heuristic, not a proof. A Wronskian of such functions need not be a monomial product in general, and in characteristic \(2\) the Hasse Wronskian must replace the ordinary one.</p>
+<p><strong>What it would give.</strong> The conjecture does not give squarefreeness or the absence of triple roots by itself. It makes the 2-adic cluster tree of the roots start at the three special points, so the root clusters could be computed recursively, by rescaling at each special point. The \(\mathbb Q_2\)-factor types found are what an all-\((e,l)\) form of the tree would have to predict. The content would lie in such an a priori prediction for every \((e,l)\), not in the factorizations computed here, which only restate squarefreeness at these sizes.</p>
+<p>The size \((2,2)\), of degree \(152\), was attempted (bmd_cube_far_two_adic_22.gp). The exact determinant did not finish within the run limit, so it is not part of the evidence. The test at \((2,2)\) is the first prediction for the next cycle.</p>
+<p><strong>Lead follow-up.</strong> Outside lead 1 of the contact type review, the special-cone form: developed here. Every surface meets the two-double-root and triple-root flats, so the form must certify the separated part of \(S\) or control deep collision limits; for \(S\) generic in a collision flat it gives no new reduction. <strong>Follow-up.</strong> Continuing, only through a special surface with explicit contact minors, none of which is known.</p>
+<p><strong>What this does to the route.</strong> (K) remains the highest risk; the special-cone form survives only through an unknown special surface. On (B), the far polynomials have a clean 2-adic structure at the three computed sizes. It is a candidate structure uniform in \((e,l)\), not a certificate at one size, though it is only conjectured. Its value depends on the recursive cluster tree.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(K) for \(N\ge11\);</li>
+<li>(B): far polynomials without triple roots for every \((e,l)\), with conj:cube-far-two-adic-shape as a possible first step; the \((2,2)\) test; neck points of weight at most two; odd \(N\);</li>
+<li>(L) at \(N=11\), awaiting approval.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The contact plane criterion (parts (2), (3)) and plane slices entry; the relative transfer (members, flats); the far Wronskian script (definition of \(F_k\), recursion); the contact type review.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the dimension count, the conjecture's equivalence and every quoted number against the outputs, and the recursion against the far-Wronskian script. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>unused hypotheses dropped;</li>
+<li>unproved parts of the lemma's item (3) moved to a remark with sources;</li>
+<li>an unsupported fibre-dimension sentence removed;</li>
+<li>the conclusion about the special form restricted to surfaces generic in a collision flat, with the follow-up left Continuing;</li>
+<li>the slope attribution of the \(\mathbb Q_2\) factors corrected;</li>
+<li>the exponent premise corrected;</li>
+<li>a circular sentence and a priority claim removed.</li>
+</ul>
+<p>These corrections weaken or restrict, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzv">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>29 min 59.71 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 59.03 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 59.94 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">20 min 0.61 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
