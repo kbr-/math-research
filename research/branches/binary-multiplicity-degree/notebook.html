@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For every \(N\), peeling the base (<a href="#cube-base-peeling">even</a>, <a href="#cube-odd-base-peeling">odd</a>) reduces (B) to squarefree far polynomials and the <a href="#cube-peeling-neck-reduction">neck windows</a>. For block size one the <a href="#cube-neck-single-block-windows">window valuations are proved</a>, up to one genericity determinant.</p>
-<p>Next, the level-\(2E\) terms of the neck windows for general block size \(w\), starting with \(w=2\). Determine which choices of pole orders reach level \(2E(c)\): bijections between the negative columns and slots \((j,r)\), now with rows moving within a group. Write their signed sum as a determinant in the coefficients of \(\tau\) times a genericity determinant, as for \(w=1\). Check the formula against the computed level sums at \((e,l,w)=(1,2,2)\) and \((1,3,2)\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For every \(N\), peeling the base (<a href="#cube-base-peeling">even</a>, <a href="#cube-odd-base-peeling">odd</a>) reduces (B) to squarefree far polynomials and the <a href="#cube-peeling-neck-reduction">neck windows</a>. These are proved for <a href="#cube-neck-single-block-windows">block size one</a>. The <a href="#cube-neck-triple-factorization">triple factorization</a> separates the cluster, \(\tau\) and \(U\) for larger blocks.</p>
+<p>Next, determine which minors of the tail matrix \([G_{m,D}]_{m&lt;M,\,D\ge M}\) of \(U=\bigoplus_s\mathcal P_{&lt;n}\varphi_s\) are nonzero on the first high columns, for generic \(\beta\). Then compute the lowest level with a nonzero term in the factorized form, record the model and its numbers in full, and compare with \(E'\) and \(2E\) at \((l,w)=(2,2),(3,2)\). The cancellation up to \(2E\) will still need an identity for the level sum.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -31907,6 +31907,69 @@ The Hankel factor is nonzero. So \(f(c)=ln+c(c-1)=lwn+2E_{l,1}(c)\) exactly when
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 7.59 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.58 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.38 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-neck-triple-factorization" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-neck-triple-factorization check:cube-neck-block-two-levels">
+<h3>30 September 2026 — The neck window minors factor through flagged Schur polynomials, τ-coefficients and the tail of U; at block size two the leading level is a sum of many terms</h3>
+<p class="entry-meta">Working proof of an exact factorization of the neck window minors; a finite check at block size two shows single terms start at the divided-difference bound while sums start at 2E. Neck factorization cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> For block size one the <a href="#cube-neck-single-block-windows">neck window valuations are proved</a>: the minimal terms are bijections and their sum is a Hankel determinant. The peeling neck needs block size four. The missing implication is the leading coefficient at level \(2E\) for \(w\ge2\). This cycle asks whether the \(w=1\) argument survives at \(w=2\). It then writes the minors in a form where the cluster, \(\tau\) and \(U\) enter through separate factors.</p>
+<p><strong>General statement.</strong> <code>lem:cube-neck-triple-factorization</code> (working proof), for every \(e,l\ge1\), \(1\le w\le4e\); evidence <code>check:cube-neck-block-two-levels</code>.</p>
+<h4>Block size two</h4>
+<p>research/tools/bmd_cube_neck_dd_levels.gp works in the divided-difference basis of the <a href="#cube-neck-divided-difference-bound">divided-difference bound</a>. It enumerates every choice \(Q=(Q_0,\ldots,Q_{l-1})\) of \(w\)-sets of pole orders up to level \(2E\). The enumeration is complete, since a \(w\)-set with largest element \(q\) has level at least \(q-w\). The script records three things: the lowest level of a nonzero minor, the lowest nonzero level sum, and the number of nonzero minors at level \(2E\). The computation is modulo \(2^{61}-1\) at \(\beta=(2,-3,5)/3\) (dd-levels.txt). For \(w=2\) the Hankel weights are nonzero over \(\mathbb Q\), since \(t'_{x+1}/t'_x\) is injective in \(x\), so nonzero minors are nonzero terms.</p>
+<ul>
+<li>\((e,l,w,c)=(1,2,2,3)\): \(E'=2E=2\); minors and sums both start at \(2\); three nonzero minors at level \(2\).</li>
+<li>\((1,2,2,4)\): \(E'=6\), \(2E=8\); minors start at \(6\), sums at \(8\); \(21\) nonzero minors at level \(8\).</li>
+<li>\((1,3,2,4)\): \(E'=2E=6\); both start at \(6\); \(18\) nonzero minors at level \(6\).</li>
+<li>\((1,3,2,5)\): \(E'=11\), \(2E=14\); minors start at \(11\), sums at \(14\); \(642\) nonzero minors at level \(14\).</li>
+</ul>
+<p>So the divided-difference bound is sharp for single terms. In both windows computed where it lies below \(2E\), the level sums cancel from \(E'\) to \(2E-1\) even in this basis. The single-block argument therefore does not extend directly. For \(w=1\), every term at level \(2E\) is a bijection with the common high block \(G_c\), and the signed sum is a Hankel determinant. For \(w=2\) only the numbers of terms were computed (\(3,21,18,642\)). Whether they share such a structure is not tested.</p>
+<h4 id="cube-neck-triple-factorization">The factorization</h4>
+<p><strong>Setup.</strong> The neck model of the level expansion: \(\varphi_s=(1+\beta_sy)^{-\lambda}\), \(\lambda=\tfrac72\), distinct \(\beta\) for which the triangular basis \(g_m=y^m+\sum_{D\ge M}G_{m,D}y^D\) of \(U\) exists, and \(t'_x=\binom{-5/2}{x+n-w}\kappa^{x+n-w}\). Put \(a_i=\binom{-\lambda}i\) and \(H[j,i]=a_i\,h_{i-j}(\beta_1,\ldots,\beta_{j+1})\) for \(0\le j&lt;l\), \(i\ge0\), with \(h_{&lt;0}=0\). For \(k\ge1\) let \(e_k\) be the unit vector of the negative column \(k\). For \(m\ge0\) let \(\gamma_m\) be the reduction of \(y^m\) modulo \(U\): \(-\sum_DG_{m,D}y^D\) for \(m&lt;M\), and \(y^m\) for \(m\ge M\).</p>
+<p><strong>Lemma (triple factorization).</strong> In the divided-difference basis, the row \((j,p)\), \(p&lt;w\), of the neck model is \(\varepsilon^{n-w}\sum_{i\ge0}H[j,i]\,R_{i,p}\), where
+\[
+R_{i,p}=\sum_{k\ge1}t'_{p+i+k}\,\varepsilon^{p+i+k}\,e_k\;+\;\sum_{m=0}^{i-1}t'_{p+i-m}\,\varepsilon^{p+i-m}\,\gamma_m .
+\]
+Hence every window minor is, up to sign and the nonzero divided-difference constant \(\prod_j\prod_{i\le j}(\beta_{j+1}-\beta_i)^{-w}\),
+\[
+\det C[:,W_c]=\varepsilon^{lw(n-w)}\sum_{I}\ \prod_{p&lt;w}\Bigl(\prod_{i\in I_p}a_i\Bigr)s^{\flat}_{I_p}(\beta)\ \det R[I,W_c],
+\]
+over \(I=(I_0,\ldots,I_{w-1})\), \(I_p\) an \(l\)-set of indices \(i\). Here \(s^\flat_{I_p}=\det[h_{i_t-j}(\beta_1,\ldots,\beta_{j+1})]_{0\le j,t&lt;l}\) is a nonzero polynomial for every \(l\)-set \(I_p\). The sum is an identity of formal power series in \(\varepsilon\).</p>
+<p><strong>Proof.</strong> The row \((j,p)\) is \(\varepsilon^{n-w}\sum_{q\ge1}t'_{p+q}\varepsilon^{p+q}\Delta_j\psi_q\), by the level expansion and the divided-difference change. The change multiplies each minor by the stated constant, and the \(g_d\) rows contribute \(\pm1\) (block triangular). Expanding \(\Delta_j\varphi=\sum_iH[j,i]y^i\), the reduction \(\Delta_j\psi_q=y^{-q}\Delta_j\varphi\bmod U\) is \(\sum_iH[j,i]\) times the reduction of \(y^{i-q}\). That reduction is \(e_{q-i}\) for \(i&lt;q\) (there is no middle column to clear) and \(\gamma_{i-q}\) for \(i\ge q\). Substituting \(k=q-i\ge1\), or \(m=i-q\in[0,i-1]\) (since \(q\ge1\)), gives \(R_{i,p}\).</p>
+<p>The rows are the product of the block matrix \(H\otimes I_w\) (rows \((j,p)\), columns \((i,p')\), zero unless \(p=p'\)) with the matrix of the \(R_{i,p}\). Cauchy–Binet over the intermediate index gives the sum. On the window columns every entry of \(R_{i,p}\) has \(\varepsilon\)-order at least \(p+i+1-(M+K)\), since \(\gamma_m\) meets only the high columns \(D&lt;M+K\) and contributes \(\varepsilon^{p+i-m}\) with \(m\le D\). So each \(\varepsilon\)-coefficient of the sum is finite. A nonzero minor of \(H\otimes I_w\) takes exactly \(l\) columns per \(p\) and factors as \(\prod_p\det H[:,I_p]=\prod_p\prod_{i\in I_p}a_i\cdot s^\flat_{I_p}\).</p>
+<p><em>Nonvanishing of \(s^\flat\).</em> By Lindström–Gessel–Viennot, take sources \(A_j=(j,j+1)\) and sinks \(B_t=(i_t,0)\), with \(i_0&lt;\cdots&lt;i_{l-1}\). Use lattice paths with east and south steps, an east step at height \(h\) weighted \(\beta_h\). A path from \(A_j\) to \(B_t\) has weight a monomial of degree \(i_t-j\) in \(\beta_1,\ldots,\beta_{j+1}\), and these sum to \(h_{i_t-j}(\beta_1,\ldots,\beta_{j+1})\). Only the identity pairing admits non-intersecting families, so the determinant is a positive sum of monomials. A witness family: path \(j\) runs east at height \(j+1\) to \(x=i_j\), then south to \(0\). Its weight is \(\prod_j\beta_{j+1}^{i_j-j}\). Since distinct sorted nonnegative integers satisfy \(i_j\ge j\), the family exists for every \(l\)-set. \(\square\)</p>
+<p>In this form the cluster enters \(H\) only through the flagged Schur polynomials, and enters \(R\) only through the tail \(G\) of \(U\). The far double enters only through the monomials \(t'_x\varepsilon^x\). For \(p+i=p'+i'\) with \(i&gt;i'\), \(R_{i,p}-R_{i',p'}=\sum_{m=i'}^{i-1}t'_{p+i-m}\varepsilon^{p+i-m}\gamma_m\): the intermediate rows agree on the negative columns. Heuristically, these coincidences, which occur only for \(w\ge2\), are where the cancellation between terms has room to act.</p>
+<p><strong>What this does to the route.</strong> The block-size-two data show that the single-block argument does not extend directly: single terms occur at \(E'&lt;2E\) and must cancel. The factorization gives a finite, explicit model in which to look for the identity behind the cancellation. One unknown is which minors of the tail matrix \([G_{m,D}]\) of \(U\) are nonzero, since \(\det R[I,W_c]\) combines them with the \(t'\)-monomials. Even with that pattern known, the level sums cancel between terms, so the leading coefficient needs an identity for the sum. A first attempt to minimize the \(\varepsilon\)-exponent in the factorized form disagreed with the data; it is not recorded in detail.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the leading coefficient at level \(2E\) for \(w\ge2\): the nonzero tail minors of \(U\), and an identity for the sum;</li>
+<li>\(G_c\not\equiv0\) for \(w=1\) and every \(l\);</li>
+<li>the exchange condition; squarefree far polynomials; (K).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The level expansion, the divided-difference bound and the single-block theorem (statements and proofs).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, the specification, the three preceding entries, the script and its output. Verdict: pass with corrections. It confirmed the expansion, the reduction, the Cauchy–Binet step, the completeness of the enumeration, and the four data lines. It checked the flagged Schur witnesses at \(l=2\) by hand. Corrections applied:</p>
+<ul>
+<li>the determinant formula includes the divided-difference constant and the \(g_d\) rows, and a convergence sentence is added;</li>
+<li>the flagged Schur criterion, which was vacuous as stated, is replaced by nonvanishing for every \(l\)-set, with an explicit Lindström–Gessel–Viennot proof;</li>
+<li>the unused \(\kappa\ne0\) is dropped, and the existence of the triangular basis is stated;</li>
+<li>the separation statement, the equal-\(p+i\) sentence and the explanation of \(w=1\) are made precise or labelled heuristic;</li>
+<li>the data section says "nonzero minors", justifies the weights, and restricts the comparison with \(w=1\) to what was computed;</li>
+<li>the failed minimization is reduced to a statement that it disagreed, without the wrong inference; the route paragraph no longer names a single remaining unknown;</li>
+<li>the title is reworded.</li>
+</ul>
+<p>These corrections restrict or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zi">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 16.22 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">48.09 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 0.27 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 24.90 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.50 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">2.47 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
