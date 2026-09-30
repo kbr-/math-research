@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge10\). It is proved at <a href="#cube-nine-root-first-step">\(N=7,8,9\)</a> by <a href="#cube-first-step-two-certificates">two certificates</a>, the line certificate now being the <a href="#cube-fast-line-certificate">fast program</a>. (L) follows from <code>conj:cube-boundary-normality</code> and type genericity. The <a href="#cube-boundary-singular-locus">boundary singular locus</a> reduces the conjecture to a corank-two codimension bound and the nonvanishing of \(r_{s,f}\).</p>
-<p>Next, the corank-two bound for every \(N\). It is tight at \(N=8\), where the symmetric locus has corank two in codimension three. A codimension-two component would flow out to a divisor carrying a root of multiplicity at least four. Look for a contradiction valid for every \(N\) from the local discriminant order, the count identities and the sector bounds.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge10\). It is proved at \(N=7,8,9\) by <a href="#cube-first-step-two-certificates">two certificates</a>. (L) follows from boundary normality, now equivalent by the <a href="#cube-dual-normal-criterion">dual normal criterion</a> to one bilinear statement, and type genericity. A route review is due within three entries.</p>
+<p>Next, the rank-one zeros of the pairing \((s,f)\mapsto r_{s,f}\). Find what a rank-one zero along a codimension-two set would force, using the explicit formula and the Möbius flow, and test the answer against the tight symmetric locus at \(N=8\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -30919,6 +30919,61 @@ which is one polynomial product, an exact identity in \(\mathbb F_p\). A polynom
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">6 min 2.95 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">11 min 24.93 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.33 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-dual-normal-criterion" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-dual-normal-criterion conj:cube-dual-normal-nondegeneracy">
+<h3>30 September 2026 — Normality of the boundary is one bilinear condition: no dual normal function vanishes identically off codimension three</h3>
+<p class="entry-meta">Working proof: at a corank-c point the corank locus has codimension at least three unless some pair of kernel section and dual polynomial has Q ≡ 0; so boundary normality is equivalent to nondegeneracy of the dual normal pairing off codimension three. Dual normal criterion cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-boundary-singular-locus">boundary singular locus</a> reduced <code>conj:cube-boundary-normality</code> to two conditions. (a) The corank-at-least-two locus \(\Sigma_2\) of the square jet map has codimension at least three. (b) \(r_{s,f}\not\equiv0\) at the generic point of each component of \(V(F,\delta F)\). Statement (a) looked like a separate determinantal problem, tight at \(N=8\). The missing implication is a control of (a) by the same pairing as (b), so that one statement suffices. This cycle derives it from the first-order structure of the corank strata.</p>
+<p><strong>General statement.</strong> <code>prop:cube-dual-normal-criterion</code>, for every \(N\ge3\); <code>conj:cube-dual-normal-nondegeneracy</code>, equivalent to <code>conj:cube-boundary-normality</code>.</p>
+<h4 id="cube-dual-normal-criterion">The dual normal criterion</h4>
+<p><strong>Setting.</strong> As in the boundary singular locus: \(k\) algebraically closed of characteristic zero, separated \(a\), mark at \(\infty\), square jet map \(J=J_{R+2}\) of \(V_a\), \(\det J=\tilde uF\). At a point \(y\) where \(J\) has corank \(c\ge1\), put \(S=\ker J\), the sections of order at least \(R+2\), and \(W=W_{R+2}\), the dual cokernel of the <a href="#cube-character-principal-parts">character principal parts</a>. Both have dimension \(c\). For \(s\in S\) and \(f\in W\) let \(b(s,f)\in k^N\) be the dual normal covector (RN) and \(Q_{s,f}=\sum_ib_i(s,f)/(z-a_i)\). (RN) and (RG) hold for every such pair, since their source takes arbitrary \(s\in\ker J_M\) and \(f\in W_M\). So does the partial-fraction identity: its proof in the boundary singular locus uses only (RG) and \(Q_{s,f}=O(z^{-3})\), with no corank hypothesis. Define
+\[
+L:k^N\to(S\otimes W)^*,\qquad L(v)(s\otimes f)=\sum_iv_ib_i(s,f)=\lambda_f(\partial_vJ(s)).
+\]</p>
+<p><strong>Proposition (dual normal criterion).</strong> Let \(\Sigma_c=\{\operatorname{corank}J\ge c\}\) and let \(y\) have corank exactly \(c\).</p>
+<ol>
+<li>The Zariski tangent space of \(\Sigma_c\) at \(y\) lies in \(\ker L\), so \(\dim_y\Sigma_c\le N-\operatorname{rank}L\).</li>
+<li>If no nonzero \(s\in S\), \(f\in W\) has \(Q_{s,f}\equiv0\), then \(\operatorname{rank}L\ge1\) when \(c=1\), and \(\operatorname{rank}L\ge3\) when \(c\ge2\).</li>
+<li>Consequently: at \(c=1\), \(V(F)\) is smooth at \(y\) (the case already known); at \(c\ge2\), \(\Sigma_c\) has codimension at least three at \(y\).</li>
+</ol>
+<p><strong>Proof.</strong> (1) Choose bases. Locally \(J\) is equivalent, by invertible row and column operations depending on \(a\), to \(I_{R+2-c}\oplus E(a)\), with \(E\) a \(c\times c\) matrix vanishing at \(y\). \(\Sigma_c\) is defined by the \((R+3-c)\)-minors of \(J\), and near \(y\) this ideal equals the ideal of the entries of the Schur complement \(E\). So the Zariski tangent space is \(\{v:\partial_vE(y)=0\}\). The entries of \(\partial_vE(y)\) are \(\lambda_{f}(\partial_vJ(s))\), for \(s\), \(f\) running over bases of \(S\) and \(W\). The cross terms from the operations are multiplied by \(E(y)=0\), or vanish because \(J(s)=0\) and \(\lambda_f\circ J=0\), the dual-cokernel property (JF). Finally \(\lambda_f(\partial_vJ(s))=\sum_iv_ib_i(s,f)\) is (RN), with the coefficients of \(s\) frozen in the moving basis; the target Taylor coordinates do not depend on \(a\).</p>
+<p>(2) At \(c=1\), \(L\) is the covector \(b(s,f)\), nonzero unless \(Q_{s,f}\equiv0\). Let \(c\ge2\) and suppose \(\operatorname{rank}L\le2\). The annihilator \(A\subseteq S\otimes W\) of \(\operatorname{im}L\) has dimension at least \(c^2-2\). The rank-one tensors form the Segre variety of dimension \(2c-2\) in \(\mathbb P(S\otimes W)=\mathbb P^{c^2-1}\), of codimension \((c-1)^2\). As \(\dim\mathbb P(A)\ge c^2-3\ge(c-1)^2\) for \(c\ge2\), the two meet. This gives \(s\otimes f\in A\) with \(s\ne0\), \(f\ne0\), and \(\sum_iv_ib_i(s,f)=0\) for every \(v\). So \(b(s,f)=0\) and \(Q_{s,f}\equiv0\), by the partial-fraction identity.</p>
+<p>(3) follows from (1) and (2), and at \(c=1\) from the boundary singular locus. \(\square\)</p>
+<p><strong>Corollary.</strong> Let \(E=\{y\in V(F)\cap U:\ Q_{s,f}\equiv0\text{ for some nonzero }s\in S_y,\,f\in W_y\}\). Then \(E\) is Zariski closed in \(U\), and \(V(F)\cap U\) is normal if and only if \(E\) has codimension at least three in \(\mathbb A^N\).</p>
+<p><strong>Proof.</strong> \(E\) is the projection to \(U\) of the incidence \(\{(y,[s],[f]):J_ys=0,\ f\in W_y,\ b(s,f)=0\}\subset U\times\mathbb P(V)\times\mathbb P(k[z]_{\le R-1})\). This is closed, since the conditions are polynomial in \(y\) and multilinear in \(s,f\), and the projection is proper, so \(E\) is closed. \(E\subseteq\operatorname{Sing}V(F)\): at corank one, \(Q_{s,f}\equiv0\) is singularity (boundary singular locus), and every point of corank at least two is singular. So normality, which is codimension at least three of \(\operatorname{Sing}V(F)\) (since \(V(F)\) is \(S_2\)), implies the bound for \(E\).</p>
+<p>Conversely, \(\operatorname{Sing}V(F)\cap U\) is the union of the singular corank-one points, which lie in \(E\), and \(\Sigma_2\). Let \(Y\) be a component of \(\Sigma_2\) and \(c\) its generic corank. If \(Y\not\subseteq E\), a generic point \(y\in Y\setminus E\) has corank \(c\) and lies in an open subset of \(\Sigma_c\) contained in \(Y\), so (3) gives \(\dim Y\le N-3\). If \(Y\subseteq E\), the bound on \(E\) applies. \(\square\)</p>
+<p><strong>Conjecture (dual normal nondegeneracy).</strong> For every characteristic-zero \(N\ge5\), the dual normal degeneracy locus \(E\) has codimension at least three in \(\mathbb A^N\). By the corollary this is equivalent to <code>conj:cube-boundary-normality</code>. Its content is one bilinear statement about the pairing \((s,f)\mapsto r_{s,f}\), from sections of contact at least \(R+2\) and dual polynomials to polynomials of degree at most \(N-3\): its rank-one-zero locus \(E\) has no component of codimension at most two in \(\mathbb A^N\).</p>
+<p>It holds at \(N=6,7,8,9\), since the boundary is normal there. For \(N=9\), squarefreeness is now <a href="#cube-nine-root-first-step">certified</a>, and part (1) of the <a href="#cube-squarefree-normality-form">normality form</a> gives normality. At \(N=8\) the bound is tight. The <a href="#cube-symmetric-mark-weight">symmetric mark weight</a> puts the last two pair orders at least \(28=R\) and \(30\), so the symmetric locus has corank at least two. With the mark at \(\infty\) it has codimension three. Hence \(\operatorname{rank}L\le3\) at its generic points, and normality at \(N=8\) forces \(\Sigma_2\) to have codimension exactly three there.</p>
+<p><strong>What this does to the route.</strong> The hypersurface half of (L) is now one statement about one pairing, instead of a determinantal codimension bound and a nonvanishing condition. The pairing is explicit: \(r_{s,f}=\prod_i(z-a_i)\,Q_{s,f}\), with \(Q_{s,f}=c_1f+\tfrac12\sum_{i<j}c_{ij}[w_{ij}f]_+\bigl((z-a_i)^{-1}+(z-a_j)^{-1}\bigr)\). Proving, for every \(N\), that its rank-one-zero locus has no component of codimension at most two is the remaining hypersurface question. The other half of (L), type genericity, and (B) are unchanged.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li><code>conj:cube-dual-normal-nondegeneracy</code> for \(N\ge10\);</li>
+<li>type genericity;</li>
+<li>(B), or certificates at \(N\ge10\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The character principal parts theorem ((RN), (RG) and their proofs, including that they hold for every kernel section and dual polynomial); the boundary singular locus; the normality form.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, the claim specification, and the character principal parts, boundary singular locus and normality form excerpts. Verdict: pass with corrections. It verified the Schur-complement tangent space (equal to \(\ker L\)), that (RN), (RG) and partial fractions hold for every pair, the Segre count (it gives even \(\operatorname{rank}L\ge2c-1\)), both directions of the corollary, and the cases \(N=6\)–\(9\). Corrections applied:</p>
+<ul>
+<li>\(\lambda_f\circ J=0\) is attributed to (JF), and the minor ideal's local equality with the entries of \(E\) is stated;</li>
+<li>algebraic closure is assumed;</li>
+<li>the partial-fraction identity's independence of corank is justified;</li>
+<li>closedness of \(E\) is proved by a proper projection;</li>
+<li>the \(N=8\) sentence had the inequality backwards and lacked a corank proof: it now cites the symmetric mark weight for corank two and concludes \(\operatorname{rank}L\le3\);</li>
+<li>the conjecture excludes components of codimension one as well.</li>
+</ul>
+<p>These corrections restrict or complete arguments without strengthening a claim, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-w">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 40.50 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 4.35 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 34.76 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.38 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
