@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\) by the <a href="#cube-first-step-two-certificates">two-certificate corollary</a>. At \(N=11\), (B) now holds (<a href="#entry-2026-09-30-cube-eleven-root-base">eleven-root base</a>), and (L) needs one run of about two to three hours, above the run limit, requested from the user. For every \(N\), (K) is equivalent to the absence of components of \(E'\) of codimension at most two (<a href="#cube-contact-covector-formula">covector formula</a>).</p>
-<p>Next, while the approval is pending, make (B) a general statement. The base space \(V^{(\lfloor N/2\rfloor)}\) attained its count with a squarefree non-branch part at every size tried, \(N=8,\ldots,11\), and it is cheap. Formulate the base weight bound for every \(N\) as a statement about \(V^{(a)}\) with \(a\) doubles and \(N-2a\) simple roots, and look for its mechanism: <a href="#cube-base-peeling">peeling</a> reduced it to simplicity on explicit components and necks. Identify which of those statements remain open.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\) by the <a href="#cube-first-step-two-certificates">two-certificate corollary</a>. At \(N=11\), (B) holds and (L) awaits an approved long run. For even \(N\), (B) reduces by <a href="#cube-base-peeling">peeling</a> to squarefree far polynomials and simple neck points. The far polynomials are irreducible over \(\mathbb Q\) where computed (<code>conj:cube-far-wronskian-irreducible</code>).</p>
+<p>Next, attempt an arithmetic proof of far irreducibility. Compute the \(2\)-adic and \(3\)-adic Newton polygons of \(W_k\) at the four known sizes, and its factorization degrees modulo small primes. Look for a prime at which the polygon has one segment with coprime length and height, or at which \(W_k\) stays irreducible at full degree. If a pattern holds at all four sizes, derive it from the falling-factorial structure of the Wronskian's coefficients for every \((e,l)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -34379,6 +34379,67 @@ For a Laurent series \(g\) in \(z^{-1}\), \(g/(z-a)=g\sum_{k\ge0}a^kz^{-k-1}\), 
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-far-wronskian-irreducibility" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-far-wronskian-irreducible">
+<h3>30 September 2026 — The far Wronskians of base peeling are irreducible over Q where computed; they do not split into classical factors, and real-line orthogonality does not explain their simplicity</h3>
+<p class="entry-meta">Refutation of two mechanisms for simple roots of the far polynomials in the base weight bound (B), and a conjecture: every far polynomial is irreducible over Q, hence squarefree. Far-Wronskian cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The base weight bound (B) of the <a href="#cube-first-step-two-certificates">two-certificate corollary</a> holds per size through \(N=11\) (<a href="#entry-2026-09-30-cube-eleven-root-base">eleven-root base</a>). For every even \(N=2b\), the <a href="#cube-base-peeling">peeling reduction</a> derives it from two families of statements. The far polynomials \(W_k\) must be squarefree, and the neck points must be simple. The missing implication is a proof for the far polynomials for all \((e,l)=(k-1,b-k)\), \(e,l\ge1\). Squarefreeness of \(W_k\) is already checked modulo \(2^{61}-1\) for every far step with \(b\le6\) (<code>check:cube-peeling-far-components</code>), and conjectured for every \(b\) as part of <code>conj:cube-peeling-simplicity</code>. What is missing is a mechanism. This cycle tests two candidate mechanisms: a product of classical (Jacobi-type) polynomials, and real-rootedness from orthogonality.</p>
+<p><strong>General statement.</strong> <code>conj:cube-far-wronskian-irreducible</code>, for every \(e,l\ge1\).</p>
+<h4>Computation</h4>
+<p>research/tools/bmd_cube_far_wronskian.gp computes \(W_k\) exactly over \(\mathbb Q\), with \(c=1\) (a rescaling of \(x\)), for the far space
+\[
+F_k=\mathcal P_{&lt;R_e}\oplus\langle(1+x)^{-3}\rangle\oplus x^{-(R_l+2)}\mathcal P_{&lt;R_l}\oplus(1+x)^{-7/2}\mathcal P_{&lt;4e}\oplus(1+x)^{-5/2}x^{1/2-4l}\mathcal P_{&lt;4l}\oplus x^{-7/2+4e-4el}\mathcal P_{&lt;4el}.
+\]
+Each function is \(x^\alpha(1+x)^\beta p(x)\). Its \(m\)-th derivative is \(x^{\alpha-m}(1+x)^{\beta-m}p_m\), with \(p_{m+1}=(\alpha-m)(1+x)p_m+(\beta-m)xp_m+x(1+x)p_m'\). So the Wronskian is a product of powers of \(x\) and \(1+x\) times the polynomial determinant \(\det[p_{i,m}]\). The script removes the factors \(x\) and \(1+x\) (far-wronskians.txt).</p>
+<table>
+<tr><th>\((e,l)\)</th><th>\(\deg W_k\)</th><th>\(\#F_k\)</th><th>factorization over \(\mathbb Q\)</th><th>real roots</th></tr>
+<tr><td>\((1,1)\)</td><td>\(16\)</td><td>\(16\)</td><td>irreducible</td><td>\(8\)</td></tr>
+<tr><td>\((1,2)\)</td><td>\(48\)</td><td>\(48\)</td><td>irreducible</td><td>\(6\)</td></tr>
+<tr><td>\((2,1)\)</td><td>\(44\)</td><td>\(44\)</td><td>irreducible</td><td>\(6\)</td></tr>
+<tr><td>\((2,2)\)</td><td>\(152\)</td><td>\(152\)</td><td>irreducible</td><td>\(12\)</td></tr>
+</table>
+<p>The degrees equal the peeling theorem's \(\#F_k=4l(2e^2+6el-5e-4l+5)\), a control. The run then reached its \(1200\) s limit during \((1,3)\), as the launcher recorded (run 246a72c9fa, exit 124).</p>
+<h4>Two mechanisms refuted</h4>
+<ul>
+<li><strong>Classical factors.</strong> A Wronskian of a three-point space built from powers of \(x\) and \(1+x\) might be a product of Jacobi-type polynomials, whose roots are simple and known. At all four sizes \(W_k\) is irreducible over \(\mathbb Q\) of full degree, so it does not split over \(\mathbb Q\) into lower-degree factors, classical or not. Whether \(W_k\) is itself a single hypergeometric or Jacobi-type polynomial of full degree was not tested.</li>
+<li><strong>Orthogonality.</strong> A polynomial orthogonal for a positive weight on an interval of the real line has all its roots real and simple, inside the interval. Here at least half the roots are not real: \(8\) of \(16\), \(6\) of \(48\), \(6\) of \(44\) and \(12\) of \(152\) are real, and they are not confined to one interval (at \((1,1)\), \((2,1)\) and \((2,2)\) they occur in all of \((-\infty,-1)\), \((-1,0)\) and \((0,\infty)\)). So no orthogonality for a positive measure on the real line explains the simplicity. Non-Hermitian orthogonality, for a complex weight or on a contour, as for Jacobi polynomials with non-classical parameters, is not excluded.</li>
+</ul>
+<h4>Irreducibility as a mechanism</h4>
+<p>In characteristic zero an irreducible polynomial is separable: \(\gcd(W,W')\) divides \(W\) and has smaller degree, so it is \(1\). So at \((e,l)=(1,1),(1,2),(2,1),(2,2)\) the far polynomials are squarefree in characteristic zero, consistent with the earlier modular check; the new information is irreducibility. These are all the far steps of \(N=2b\) for \(b\le4\) (\(k=2,\ldots,b-1\)), and the step \((2,2)\) of \(b=5\). The steps \((1,3)\) and \((3,1)\) of \(b=5\) were not computed.</p>
+<p><strong>Conjecture (far Wronskian irreducibility).</strong> For every \(e,l\ge1\), the polynomial \(W_k\) of the far space \(F_k\) with \(c=1\), with its factors \(x\) and \(1+x\) removed, is irreducible over \(\mathbb Q\) of degree \(\#F_k\).</p>
+<p>It implies the far half of <code>conj:cube-peeling-simplicity</code>: every far polynomial of the peeling reduction is squarefree, one of the two families of statements to which (B) is reduced for even \(N\). Irreducibility is a stronger statement than squarefreeness. Its natural proof tools are arithmetic: a Newton polygon at a prime with one segment of coprime length and height, or reduction to an irreducible polynomial modulo a prime at full degree. The coefficients of \(W_k\) come from falling factorials of the exponents \(\alpha,\beta\), which are half-integers, so the prime \(2\) and the primes dividing those factorials are the first candidates. None was tried this cycle.</p>
+<p><strong>What this does to the route.</strong> (B) for even \(N\) now needs two statements: far irreducibility, conjectured, and neck simplicity, open as before. For odd \(N\) the <a href="#cube-odd-base-peeling">odd peeling</a> has its own far spaces, not treated here. The cheap per-size base certificates remain available; the general statement needs an arithmetic proof.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>a proof of <code>conj:cube-far-wronskian-irreducible</code>, for instance by a Newton polygon at \(2\); neck simplicity; the odd far spaces;</li>
+<li>(L) at \(N=11\), pending approval; (K) in general.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The peeling degeneration (definition of \(F_k\), \(\#F_k\), the reduction corollary), the two-certificate corollary.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the construction of \(F_k\), the derivative recursion and the stripping, the table, the bookkeeping, the separability argument and the relation to the earlier claims. Verdict: pass with corrections, all applied:
+</p>
+<ul>
+<li>the classical-factor refutation is limited to splitting over \(\mathbb Q\);</li>
+<li>the orthogonality refutation is limited to positive measures on the real line, and the root counts are stated exactly;</li>
+<li>an unsupported parenthetical is dropped;</li>
+<li>the modular check is called consistent;</li>
+<li>\(c=1\) is in the conjecture;</li>
+<li>the timeout is cited from the launcher's record.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzm">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>24 min 55.25 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">26.42 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 12.99 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 12.85 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">41.05 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">20 min 21.82 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
