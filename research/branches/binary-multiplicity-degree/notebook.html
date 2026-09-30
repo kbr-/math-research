@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. Near each merge the discriminant splits into near, far and ring factors (<a href="#cube-merge-count-identity">count identity</a>), and the <a href="#cube-merge-rings-simple">rings are simple</a> at every size. The far polynomials are <a href="#cube-merge-far-exact">irreducible where computed exactly</a> but have no mechanism.</p>
-<p>Next, for (K): develop the Bethe-ansatz lead for far simplicity. \(F(n,k)\) is a space with singular points \(0,1,\infty\), so its Weierstrass points are the first-level Bethe roots of a \(\mathfrak{gl}_d\) Gaudin model with three points (Mukhin–Tarasov–Varchenko). Read the simple-spectrum and transversality theorems there, and test whether they give simple Wronskian roots for one fixed space of this kind. In parallel, set up spine spaces with several clusters for the assembly.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. Near each merge the discriminant splits into near, far and ring factors (<a href="#cube-merge-count-identity">count identity</a>), and the <a href="#cube-merge-rings-simple">rings are simple</a> at every size. The far factor is simple at <a href="#cube-merge-far-binary-face">cluster size one</a> (binary face). For \(n\ge2\) it is <a href="#cube-merge-far-exact">irreducible where computed</a>, without a mechanism.</p>
+<p>Next, for (K): far simplicity at \(n\ge2\). The binary-face proof worked because one operator \(G\) acts on the space with \(Q_r\) as its kernel. Look for an operator of the same kind for \(F(n,k)\): an Euler-type or hypergeometric operator of order higher than two that preserves \(F(n,k)\) and has the far polynomial in its kernel after \(D^{C+P+2}\). Test it first at \((n,k)=(2,3)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -37945,6 +37945,60 @@ The results for \((n,k)=(2,3),(3,3),(2,4),(4,3)\):</p>
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 16.88 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 4.84 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.53 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-merge-far-binary-face" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="cor:cube-merge-far-binary-face">
+<h3>2 October 2026 — At cluster size one the far space of a merge is the binary face, so its far points are the simple zeros of a Gegenbauer polynomial; for larger clusters, neither reality nor a product formula is available</h3>
+<p class="entry-meta">Working proof that far simplicity holds at n = 1 for every k, through the binary-face theorem; two routes for n ≥ 2 are tested and fail. Far binary face cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Far simplicity, squarefreeness of the far polynomial \(R_{n,k}\) of \(F(n,k)\), is the factor of the merge discriminant still without a mechanism (<a href="#cube-merge-far-exact">far exact</a>). The first merge of the chain has \(n=1\): two roots of \(V_a\) collide while the others are far. The record proved simplicity for a limit of this shape, the binary face (thm:cube-binary-face-weierstrass-points). This cycle identifies the two. For \(n\ge2\) it tests two routes, reality of the roots and a product formula for the discriminant.</p>
+<p><strong>General statement.</strong> <code>cor:cube-merge-far-binary-face</code>, for every \(k\ge3\).</p>
+<h4 id="cube-merge-far-binary-face">Cluster size one</h4>
+<p><strong>Corollary (far binary face).</strong> For every \(k\ge3\), with \(M=k-1\) and \(r=\binom M2\), the non-branch Weierstrass points of \(F(1,k)\) in \(\mathbb C\setminus\{0,1\}\) are the zeros of \(Q_r(2w-1)\), each of weight exactly one. So \(R_{1,k}\) is a nonzero multiple of \(Q_r(2w-1)\) and is squarefree.</p>
+<p><strong>Proof.</strong> At \(n=1\) (\(C=0\), \(P=r\)) the far space is
+\[
+F(1,k)=\mathrm{Pol}_{&lt;r+2}(w)\oplus w^{1/2}\mathrm{Pol}_{&lt;M}\oplus(w-1)^{1/2}\mathrm{Pol}_{&lt;M}\oplus\langle(w(w-1))^{1/2}\rangle .
+\]
+Put \(T=2w-1\), so that \(w=(1+T)/2\) and \(w-1=(T-1)/2\), and let \(D=d/dT\).</p>
+<ul>
+<li>\(D^2\) kills \(\mathrm{Pol}_{&lt;2}\) and maps \(\mathrm{Pol}_{&lt;r+2}\) onto \(\mathrm{Pol}_{&lt;r}\).</li>
+<li>\(D^2\) maps \((1\pm T)^{1/2}\mathrm{Pol}_{&lt;M}\) bijectively onto \((1\pm T)^{-3/2}\mathrm{Pol}_{&lt;M}\): it sends \((1\pm T)^{1/2+j}\) to a nonzero multiple of \((1\pm T)^{-3/2+j}\), since \(\tfrac12+j\notin\{0,1\}\).</li>
+<li>\(D^2(1-T^2)^{1/2}=-(1-T^2)^{-3/2}\).</li>
+</ul>
+<p>So, up to constants, \(D^2F(1,k)\) is the binary-face space
+\[
+\Phi^0=\mathrm{Pol}_{&lt;r}\oplus(1+T)^{-3/2}\mathrm{Pol}_{&lt;M}\oplus(1-T)^{-3/2}\mathrm{Pol}_{&lt;M}\oplus\langle(1-T^2)^{-3/2}\rangle
+\]
+of thm:cube-binary-face-weierstrass-points. At \(T_0\ne\pm1\), the reduction step of that theorem's proof applies with \(D^2\) in place of \(D^r\). The kernel \(\mathrm{Pol}_{&lt;2}\) lies in \(F(1,k)\), and the four classes are independent under monodromy. So the orders of \(F(1,k)\) at \(T_0\) are \(\{0,1\}\cup(2+\text{orders of }\Phi^0)\), and the weights agree. The theorem then gives the Weierstrass points: the zeros of \(Q_r\), each of weight one, and \(Q_r\) has \(r\) simple zeros, none at \(\pm1\). Their number \(r=\binom{k-1}2\) is the far count at \(n=1\), \(\tfrac12(k-1)((3n-2)k+n^2-7n+4)\). \(\square\)</p>
+<p><strong>Check.</strong> <code>research/tools/bmd_cube_merge_far_structure.gp</code>, part A, computes \(R_{1,k}\) exactly and finds that the monic \(R_{1,k}\) equals \(Q_r(2w-1)\) made monic, for \(k=3,\ldots,7\) (research/results/bmd-20261002-a/far-structure.txt).</p>
+<p>This also explains the earlier negative test. At \(n=1\) the far polynomial is hypergeometric (Gegenbauer \(C^{(-r-1)}_r\)), while the four computed \(R_{n,k}\) with \(n\ge2\) are not hypergeometric in \(w\). A collapsed cluster of size \(n\ge2\) at \(0\) adds the poles \(w^{-1},\ldots,w^{-C}\) and the shifted blocks \(w^{-(n-1)}\), and the single second-order operator of the binary face is lost.</p>
+<h4>Two routes for larger clusters</h4>
+<p>Part B of the script tests \((n,k)=(2,3),(3,3),(2,4),(4,3)\).</p>
+<ul>
+<li><em>Reality.</em> Mukhin, Tarasov and Varchenko proved the Shapiro conjecture (Ann. of Math. 2009), and transversality of intersections of Schubert varieties for osculating flags at distinct real points (J. Amer. Math. Soc. 2009). If all Weierstrass points of \(F(n,k)\) were real, transversality would apply to the Schubert problem containing it. Even then, squarefreeness of the Wronskian would need an extra argument: a double root is one codimension-two condition at a single point, which transversality does not exclude. The route fails earlier. The polynomials have \(2\) of \(6\), \(5\) of \(13\), \(7\) of \(15\) and \(0\) of \(22\) roots real, fewer than half in every case.</li>
+<li><em>A product formula.</em> The discriminants of the primitive polynomials have large prime factors: \(19739\) and an \(8\)-digit prime (BPSW, deterministic below \(2^{64}\)) at \((2,3)\), and composite cofactors of \(89\), \(62\) and \(373\) digits after the primes below \(10^6\) in the other cases. Falsified: the discriminant is not a product of primes below \(10^6\). Hook-content products, as for the ring and near factors, would involve only small primes here.</li>
+</ul>
+<p>So for \(n\ge2\) far simplicity needs an argument that is neither a small-prime product formula nor real-rootedness. In our assessment, the candidates left are an operator argument like the binary face's, or a degeneration inside a family with moduli whose special member is \(F(n,k)\) itself.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>far simplicity for \(n\ge2\) (conj:cube-merge-far-irreducible, conj:cube-merge-far-polynomial);</li>
+<li>the chain end;</li>
+<li>the assembly through spine spaces with several clusters.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-binary-face-weierstrass-points (statement and the reduction step of its proof); thm:cube-merge-far-count (the classes of \(F(n,k)\)).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked \(F(1,k)\), the action of \(D^2\) on each class and the dimensions, the transfer of the reduction step with kernel \(\mathrm{Pol}_{&lt;2}\), the hypotheses of the binary-face theorem, and the two tests against the output. Verdict: pass with corrections, all applied: the reality route now states what transversality gives and what it does not, the primality test and the range of the smoothness test are stated, and the closing assessment is limited to what was tested.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-a">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 48.18 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 7.08 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 18.16 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 13.54 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">9.26 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
