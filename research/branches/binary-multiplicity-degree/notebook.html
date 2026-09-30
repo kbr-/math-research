@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. At each merge the Weierstrass points split into near, far and ring points (<a href="#cube-merge-count-identity">count identity</a>). The ring points are \(k-2\) rings of simple points, given a <a href="#cube-merge-window-transversality">Hermite–Padé transversality</a> that is checked at every merge for \(N\le13\) (<a href="#cube-merge-ring-reduction">merge rings</a>).</p>
-<p>Next, for (K): prove the transversality for every \(n,K\), and for a general non-integer exponent, which would also give the genericity of the (B) neck at block size one. Try a hierarchical specialization of \(\beta\) (roots at separated scales), where \(\mathrm{HP}\), \(Z_a\) and \(V_a\) factor by scale, avoiding the arithmetic-progression zeros.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. Near each merge the discriminant splits into near, far and ring factors (<a href="#cube-merge-count-identity">count identity</a>). The ring factor is a unit given a <a href="#cube-merge-window-transversality">Hermite–Padé transversality</a>, checked for every merge when \(N\le13\) (<a href="#entry-2026-10-01-cube-merge-chain-review">merge chain review</a>).</p>
+<p>Next, for (K): prove the transversality at the hierarchical point \(\beta_j=T^{j-1}\). Compute the leading coefficient in \(T\) as a product of Toeplitz binomial or hook-content determinants, as in thm:cube-hierarchical-attainment, and show that it is nonzero for every \(n,K,a\); the review's exact computation finds it nonzero, with small-prime factors, in every computed case. Then extend the class to several clusters for the assembly.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -37632,6 +37632,173 @@ and \(\rho_t(A)\) is the column \(t\) of the reductions of the \(A_j\) modulo \(
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">12 min 24.88 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 3.40 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">7.30 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-01-cube-merge-chain-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Route review of (K) along the merge chain; its tests are record checks and one exact specialization that supports the next cycle's proposition, to be registered there.">
+<h3>1 October 2026 — Review: along the merge chain every group is explicit, the ring condition is algebraic rather than a sign condition, and the assembly is the untested risk</h3>
+<p class="entry-meta">Route review of input (K) through the merge peeling chain: status of each factor, a falsification attempt, and leads for the ring transversality. Merge chain review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>The line's general claim.</strong> (K) at every \(N\ge11\) follows from squarefreeness of \(\Delta_W^{\rm nc}\) (thm:cube-wronskian-discriminant-criterion). By the <a href="#cube-discriminant-boundary-reducedness">boundary reducedness criterion</a>, a non-reduced component would appear on a boundary divisor or a two-node stratum. The line peels \(V_a\) by single merges, \(V(n;k)\to V(n+1;k-1)\), and controls the discriminant near each merge as a product of a near factor (the next space), a far factor (explicit, no moduli) and a ring factor.</p>
+<p><strong>What the main goal needs.</strong> Open statement 3 needs (B) and (K) at every \(N\ge11\), each by a mechanism. For (K) along this line, four statements:</p>
+<ul>
+<li>far simplicity: the polynomial of each far space \(F(n,k)\) is squarefree (conj:cube-merge-far-polynomial; checked for \(2\le n\le5\), \(3\le k\le6\));</li>
+<li>ring simplicity: conj:cube-merge-window-transversality (proved for \(n+K\le12\), so for every merge when \(N\le13\));</li>
+<li>the chain end \(V(N-3;3)\), with one modulus;</li>
+<li>the assembly: every non-reduced component of \(\Delta_W^{\rm nc}\) must be seen at a stratum the chain controls.</li>
+</ul>
+<p><strong>Status of the period.</strong> Proved for every \(n,k\): closure under merges, the near and far limits, the far count, the count identity, and the ring valuations with the reduction of ring simplicity to the transversality. The (B) peeling needed the same valuations at block size four and has them only conjecturally. Here block size one suffices, and the <a href="#cube-merge-ring-reduction">all-window bound</a> is proved.</p>
+<p><strong>Falsification attempt.</strong> The weakest link is the assembly, not the factors. The chain controls \(\Delta_W^{\rm nc}\) near the nested strata where the singles enter one cluster in order. A component of \(\Delta_W^{\rm nc}\) meets the boundary, but the criterion only says it meets some boundary divisor or two-node stratum. It could meet only strata where two singles collide away from the cluster (pair collisions) or where two clusters form (necks). There the chain gives nothing directly. The test: does the record control these other strata?</p>
+<ul>
+<li>At \(n=1\), \(V(1;k)=V_a\) is symmetric in its roots, so every pair collision is a merge of the chain's type. For \(n\ge2\), two singles colliding away from the cluster form a second cluster. The spaces with two clusters are outside the class \(V(n;k)\), and the chain does not treat them.</li>
+<li>At two-cluster strata only the pencil edges matter (boundary reducedness criterion), and those were checked at \(N=11\) (check:cube-n11-pencil-discriminants), not proved.</li>
+</ul>
+<p>Outcome: not falsified, but the assembly is larger than the chain. It needs merges into either of two clusters, so the class must be extended to spine spaces with several clusters, whose near limits the <a href="#cube-neck-corner-pencil-chain">neck corners</a> describe only conjecturally. It also needs the two-cluster pencils. That is a concrete gap, recorded for the route.</p>
+<h4>Obstacle</h4>
+<p>The line is stuck on the ring transversality for every \(n,K\). It says that the constant terms \(a(h)=(P_j(0))_j\) of the extremal Hermite–Padé forms \(h=\sum_jP_jg_j\), \(g_j=(1+\beta_js)^{1/2}\), \(\deg P_j\le n\), \(\operatorname{ord}_0h\ge L-a+1\), meet \(\ker V_a\) only in \(0\). The same statement at the exponent \(-\tfrac72\) is the open genericity of the (B) neck. Far simplicity is a second, independent obstacle of the same kind as the (B) far polynomials.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Markov functions and Nikishin systems</strong> (E. M. Nikishin and V. N. Sorokin, Rational Approximations and Orthogonality, AMS 1991, ch. 4; A. I. Aptekarev, Multiple orthogonal polynomials, J. Comput. Appl. Math. 99 (1998) 423–447). For Markov functions of measures with suitable supports, the type I polynomials have simple zeros on the supports, so their values off the supports have known signs. Here \(g_j=(1+\beta_js)(1+\beta_js)^{-1/2}\), and \((1+\beta_js)^{-1/2}\) is a Markov function of a positive measure on a half-line for real \(\beta_j\). <strong>Answers.</strong> If the \(P_j(0)\) had a sign pattern fixed by the order of the \(\beta_j\), then \(a=2\), which asks \(\sum_jP_j(0)\beta_j\ne0\) with \(\sum_jP_j(0)=0\), would follow for all real ordered \(\beta\), and so generically. <strong>Test.</strong> Falsified: the recorded factorization at \((n,K,a)=(2,3,2)\) contains \(\beta_1-2\beta_2+\beta_3\), which vanishes at \(\beta=(1,2,3)\), a real, positive, ordered configuration. So the condition fails inside the chamber, and no sign argument over the chamber can prove it.</li>
+<li><strong>Total positivity of Chebyshev systems</strong> (S. Karlin, Total Positivity, Stanford 1968, ch. 2 and 6). Collocation and Wronskian minors of extended complete Chebyshev systems have fixed signs. <strong>Answers.</strong> If \(\{s^ig_j\}\) formed such a system on \(s&gt;0\) for ordered positive \(\beta\), the minor \(D_a\) would have a fixed sign there and could not vanish. <strong>Test.</strong> Falsified by the same zero at \(\beta=(1,2,3)\). The transversality is an algebraic genericity statement, not a positivity statement.</li>
+<li><strong>Limit linear series and hierarchical degenerations</strong> (D. Eisenbud and J. Harris, Limit linear series: basic theory, Invent. Math. 85 (1986) 337–371; in the record, thm:cube-hierarchical-attainment, whose leading coefficients at separated scales are products of Toeplitz binomial determinants). A condition that is generic on a family holds if it holds in one degenerate limit where the series splits by scale. <strong>Answers.</strong> Put \(\beta_j=T^{j-1}\), so that the roots \(\sigma_j=-1/\beta_j\) sit at separated scales. If the leading coefficient in \(T\) of \(\det(\text{Taylor matrix of }U)\cdot D_a\) is a product of hook-content or Toeplitz binomial determinants, nonzero for every \(n,K,a\), the transversality follows for every \(n,K\). <strong>Test.</strong> Passed: <code>research/tools/bmd_cube_merge_transversality_hier.gp</code> computes that determinant exactly over \(\mathbb Q[T]\) for \((n,K)\in\{(1,3),(1,4),(1,5),(2,3),(2,4),(3,3),(3,4)\}\) and every \(a\) (research/results/bmd-20261001-x/transversality-hier.txt). Every leading coefficient is nonzero, and all are ratios of small-prime products: \(1001=7\cdot11\cdot13\), \(4719=3\cdot11^2\cdot13\), \(495=3^2\cdot5\cdot11\), and denominators powers of two. That is the pattern of hook-content products.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>Superregular matrices in convolutional codes</strong> (coding theory; H. Gluesing-Luerssen, J. Rosenthal and R. Smarandache, Strongly-MDS convolutional codes, IEEE Trans. Inform. Theory 52 (2006) 584–598; Cauchy matrices are totally nonsingular). A code is optimal when all its "proper" minors are nonzero, and products of Vandermonde and Cauchy matrices are the standard source of such matrices. Translation: the transversality at all \(a\) asks that the pairing matrix between the constants of the extremal forms and the Taylor rows \(V_a\) have all its leading minors nonzero, a superregularity condition. <strong>Answers.</strong> If that pairing factored as Vandermonde times a Gram or Cauchy matrix, its leading minors would be sums of squares of Vandermondes (Cauchy–Binet), nonzero for generic \(\beta\). <strong>Test.</strong> Passed at \(n=1\) only: the factor at \((1,3,2)\) is \(\beta_1^2+\beta_2^2+\beta_3^2-\beta_1\beta_2-\beta_1\beta_3-\beta_2\beta_3=\tfrac12\sum_{i&lt;j}(\beta_i-\beta_j)^2\), the power-sum Hankel \(\det\begin{pmatrix}3&amp;p_1\\p_1&amp;p_2\end{pmatrix}/2\), a Gram determinant. At \(n=2\) the extra factor \(\prod(2\beta_i-\beta_j-\beta_k)\) is not of Gram type.</li>
+<li><strong>Selection rules in molecular spectroscopy</strong> (quantum chemistry; Wigner–Eckart theorem, and the Condon–Slater rules for matrix elements between Slater determinants). A transition amplitude between two determinantal states vanishes identically when a symmetry forbids it, and otherwise vanishes only accidentally. Translation: \(D_a\) is an overlap between the determinantal state of \(X_a\) and the Taylor frame at \(0\). The affine symmetry \(\beta\mapsto u\beta+v\) (translation and scaling of the roots, which preserve ordinariness) is the symmetry group. Its invariants are the centered power sums. <strong>Answers.</strong> A selection rule would give identical vanishing; its absence, together with one nonzero evaluation, gives genericity. The structured zeros, such as arithmetic progressions, would be accidental degeneracies fixed by an extra reflection symmetry. <strong>Test.</strong> Passed: every recorded factor is translation invariant, as the symmetry requires. The zero set \(\beta_1-2\beta_2+\beta_3=0\) is the fixed locus of the reflection \(\beta\mapsto\beta_1+\beta_3-\beta\), which swaps \(\beta_1\) and \(\beta_3\) and fixes \(\beta_2\), consistent with an extra symmetry at the zeros.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-normality-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-peeling-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-statement-three-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-contact-dimension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-contact-dimension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-discriminant-route-review:1">The recursion now has its closure (single merges stay in the class) and, at each merge, a proved split into near, far and ring factors with explicit counts. The ring factor is a unit given one transversality. The analogue of the propagator's simple pole is the simplicity of each group. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-complete-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-arc-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dilate-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-corner-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dimension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dimension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-discriminant-route-review:1">Developed over five cycles into the discriminant peeling chain. Proved: the <a href="#cube-single-merge">single-merge lemma</a>, the <a href="#cube-merge-far-limit">far limit</a>, the <a href="#cube-merge-far-count">far count</a>, the <a href="#cube-merge-count-identity">count identity</a> and the <a href="#cube-merge-ring-reduction">ring reduction</a>. Open: far simplicity for every \((n,k)\), the ring transversality, the chain end and the assembly. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-10-01-cube-discriminant-route-review:2">No new work on the Lefschetz pencils in this period; the merge chain took the cycles. They remain needed at the two-cluster strata of the assembly. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<p><strong>Assessment of this line.</strong> Of the recent routes to (K), this line has the best ratio of proved to open statements. Every group near a merge is explicit and without moduli, and the count identity leaves no escape. The ring condition is now a single algebraic genericity statement. The review's tests show two things: it cannot be proved by signs, and its hierarchical leading coefficients look like hook-content products, the pattern the record has proved before. Far simplicity has only finite evidence and no mechanism, as for the (B) far polynomials. The assembly is the untested risk. It needs spine spaces with several clusters, merges into each, and the two-cluster pencils, and none of these is proved. The line is not stuck on the same implication as before. It advances by one proved statement per cycle.</p>
+<p><strong>Next step on the highest-risk item.</strong> Route item cube-odd-characteristic, open statement 3, input (K).</p>
+<ul>
+<li>Prove the ring transversality at the hierarchical point: compute the leading coefficient in \(T\) of the window condition at \(\beta_j=T^{j-1}\) as a product of Toeplitz binomial or hook-content determinants, as in thm:cube-hierarchical-attainment, and show it is nonzero for every \(n,K,a\).</li>
+<li>Then extend the class to several clusters and state the assembly as an induction over trees of merges, isolating the two-cluster pencils.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The entries of this period (single merge, far limit, far count, count identity, merge rings); the boundary reducedness criterion (statement); lem:cube-neck-genericity-transversality and check:cube-neck-genericity-structured-zeros (statements); thm:cube-hierarchical-attainment (statement).</p>
+<p><strong>Verification gate.</strong> The tests are record checks and one exact specialization, with scope stated. No claim is registered, so no reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261001-x">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>3 min 53.01 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 4.38 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 15.69 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">12.75 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 5.97 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">14.08 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
