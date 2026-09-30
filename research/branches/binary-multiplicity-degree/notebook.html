@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved (<a href="#cube-corner-two-n-hankel-theorem">corner Hankel theorem</a>). For every \(N\), rigid simplicity for \(n\ge2\) has no mechanism. The first-order replacement looks unpromising. The <a href="#cube-merge-far-mobius-covariance">merge</a> and <a href="#cube-cluster-first-order-mobius">cluster</a> smoothings act to first order as Möbius motions wherever their covariance remainders vanish. That is proved for merge \(k\le3\) and cluster \(n=2\); it is open for the sizes that matter.</p>
-<p>Next, a route review for (K), now due. It should weigh three routes: second-order splitting, a global mechanism for rigid simplicity, and a change of the (K) route itself. Its leads and bridges should target the obstacle as it now stands: the Weierstrass points of rigid three-point spaces are simple, or at least never split only at second order.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved. For every \(N\), (K) rests on simplicity of the far polynomials \(R_{n,k}\), \(n\ge2\), the Wronskians of the two-class spaces \(X(n,k)\). The <a href="#entry-2026-10-02-cube-first-order-review">first-order review</a> finds the soft escapes closed, and a structural parallel with Veselov's conjecture on Wronskians of Hermite polynomials.</p>
+<p>Next, for (K) at every \(N\): look for a basis of \(X(2,3)\) made of Jacobi polynomials with parameters \(\pm\tfrac12\) in \(w\), which are Chebyshev polynomials on the Klein cover, and test whether \(R_{2,3}\) is a Wronskian of such polynomials indexed by a partition. If it is, determine the partition for every \((n,k)\), and try the Young-diagram method of Felder–Hemery–Veselov for simplicity. If not, weigh a change of the (K) route that avoids the rigid middles.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -39252,6 +39252,175 @@ N_0=\begin{pmatrix}s_i^{\,j}&amp;0\\ \frac{s_i^{\,j+1}}{j+1}&amp;s_i^{\,k}\end{p
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 51.57 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 37.80 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-first-order-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Route review after the first-order splitting cycles; its tests are record arguments and saved computations, and no claim is registered.">
+<h3>2 October 2026 — Review: the first-order escape from rigid simplicity acts through centres and looks closed; rigid simplicity is a Wronskian-simplicity problem of the same kind as Veselov's conjecture</h3>
+<p class="entry-meta">Route review after the Klein, splitting and covariance cycles: what the first-order route showed, a falsified noncrossing analogy, and a turn to Wronskians of classical polynomials. First-order review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>The line's general claim.</strong> Statement 3 at every \(N\ge11\) follows from (B) and (K). (K) follows from squarefreeness of \(\Delta_W^{\rm nc}\) through the boundary reducedness criterion. At two-node strata the criterion needs the rigid middles \(F(s,N-s)\) either to be simple or to split their multiple far points suitably under smoothing.</p>
+<p><strong>What the main goal needs.</strong> For every \(N\ge11\), (K) needs, at every nested stratum, rigid simplicity or a splitting criterion with a mechanism. It also needs the pieces with moduli, the group factorization and order matching, and the star-strata corner data. (B) needs the peeling polynomials \(W_k\), rigid pieces of the same kind, and the neck windows of block size four.</p>
+<p><strong>Status of the period</strong> (five research entries since the <a href="#entry-2026-10-02-cube-corner-hankel-review">corner Hankel review</a>):</p>
+<ul>
+<li>The Calogero–Moser bridge was developed and closed: on the Klein cover the far points are the particles of a trigonometric KP τ-function (<a href="#cube-far-klein-tau">Klein τ-function</a>), which only restates far simplicity.</li>
+<li>Rigid simplicity is stronger than the criterion needs. A double far point is harmless if it splits to first order with distinct initial forms (<a href="#cube-rigid-middle-first-order">first-order splitting</a>).</li>
+<li>But both smoothings act to first order through centres, as Möbius motions that cannot split a double point, wherever their covariance remainders vanish (<a href="#cube-merge-far-mobius-covariance">merge</a>, <a href="#cube-cluster-first-order-mobius">cluster</a>). This is proved for merge \(k\le3\) and cluster \(n=2\), and checked for merge \(k=4\).</li>
+<li>One correction: the first merge control had a scaling error and is withdrawn.</li>
+</ul>
+<p><strong>Falsification attempt.</strong> Rigid simplicity could fail, or be far from where the far polynomials live, in two ways.</p>
+<ul>
+<li>Is squarefreeness robust in the natural one-parameter family, the exponent \(\lambda\)? No. At \((2,4)\) the exponent scan shows the real far-root count dropping from \(9\) to \(7\) between \(\lambda=\tfrac3{20}\) and \(\tfrac7{40}\), with the discriminant changing sign (<code>research/results/bmd-20261002-f/far-exponent-scan.txt</code>). So two real far points collide at some non-resonant \(\lambda\) in between. Double far points do occur in these families; simplicity at \(\lambda=\tfrac12\) cannot be a consequence of a general non-collision principle, and must use the resonant structure.</li>
+<li>Does the first-order route still have room? Only through the covariance remainders, the merge side's \(\tau_c\) for \(k\ge4\) and the cluster side's \(\tau\) for \(n\ge3\), and through second order. The merge remainder vanishes at the sampled \(k=4\) shapes.</li>
+</ul>
+<p>Outcome: the claim that (K) rests on rigid simplicity stands. The first-order escape is very likely closed.</p>
+<h4>Obstacle</h4>
+<p>The line is stuck on squarefreeness, for every \((n,k)\) with \(n\ge2\), of the far polynomial \(R_{n,k}\): the Wronskian, off \(0,1\), of the explicit space \(X(n,k)=P_3+w^{1/2-(n-1)}P_4\) of the <a href="#cube-far-pure-reduction">pure reduction</a>. The collision at a non-resonant exponent shows that no general principle forbids double far points in these families, so a proof must use the resonance at \(\tfrac12\). The Möbius covariance shows that the moduli of the neighbouring components do not help at first order.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Zeros of Wronskians of classical polynomials</strong> (G. Felder, A. D. Hemery and A. P. Veselov, Zeros of Wronskians of Hermite polynomials and Young diagrams, Physica D 241 (2012) 2131–2137; D. Gómez-Ullate, Y. Grandati and R. Milson, on Wronskians of Jacobi polynomials and exceptional orthogonal polynomials). Veselov's conjecture says the nonzero roots of Wronskians of Hermite polynomials are simple. It is open in general, and proved in special cases through Young diagrams and Schur-function expansions. <strong>Answers.</strong> At \(n=1\) the far polynomial is Gegenbauer (<a href="#cube-merge-far-binary-face">binary face</a>), a classical Jacobi case. If \(X(n,k)\) is a space spanned by Jacobi polynomials with the parameters \(\pm\tfrac12\) of the Klein characters, then \(R_{n,k}\) is a Wronskian of Jacobi polynomials. Rigid simplicity is then the Jacobi analogue of Veselov's conjecture, and the Young-diagram method is the tool to try. <strong>Test.</strong> Passed as a structural match. The pure reduction gives \(X(n,k)\) as polynomials plus \(w^{1/2}\) times polynomials, which are the two parity classes of the Chebyshev and Jacobi families with parameters \(\pm\tfrac12\) under \(w=\cos^2\). The Klein cover turns them into Laurent polynomials in \(t=e^{i\phi}\), that is, into Chebyshev polynomials. Whether \(X(2,3)\) has a basis of single Jacobi polynomials was not tested.</li>
+<li><strong>Discriminants of classical polynomials in closed form</strong> (T. J. Stieltjes; the Hilbert–Stieltjes discriminant formula for Jacobi polynomials). Jacobi discriminants are explicit products, so simplicity follows from a formula. <strong>Answers.</strong> A product formula for \(\operatorname{disc}R_{n,k}\) would prove simplicity for every \((n,k)\). <strong>Test.</strong> Falsified: \(\operatorname{disc}R_{2,3}\) has the prime \(19739\) and an eight-digit cofactor, and \(\operatorname{disc}R_{3,3}\) an \(89\)-digit cofactor (<code>research/results/bmd-20261002-d/far-integer-exponent.txt</code>). So no small-prime product exists, and a Wronskian of Jacobi polynomials would not have an explicit discriminant either.</li>
+<li><strong>Specialization from a monodromy-transitive family</strong> (Hilbert irreducibility; Harris's monodromy of enumerative problems, Duke Math. J. 46 (1979)). If the far points are the fibre of a family whose monodromy is the full symmetric group, a squarefree specialization at one point spreads to a Zariski-open set. <strong>Answers.</strong> It would give simplicity at the rigid point if the rigid point were a general member of such a family. <strong>Test.</strong> Falsified in this form. The rigid space is the special member at \(\lambda=\tfrac12\), where the degree drops by half (<a href="#entry-2026-10-02-cube-far-exponent-continuation">exponent continuation</a>). Openness never reaches a special point.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>The von Neumann–Wigner noncrossing rule</strong> (quantum chemistry: J. von Neumann and E. Wigner, Über merkwürdige diskrete Eigenwerte, Phys. Z. 30 (1929)). Eigenvalues of real symmetric one-parameter families avoid crossing, because a crossing has codimension two. Translation: the far points as eigenvalues of a real family in the exponent \(\lambda\). <strong>Answers.</strong> Noncrossing along \(\lambda\) from a simple point would carry simplicity to \(\lambda=\tfrac12\). <strong>Test.</strong> Falsified: at \((2,4)\) two real far roots meet and leave the real line between \(\lambda=\tfrac3{20}\) and \(\tfrac7{40}\). That is a real crossing, of codimension one for real polynomials, which no self-adjoint model allows.</li>
+<li><strong>Young-diagram combinatorics of Wronskians</strong> (representation theory of the symmetric group: a Wronskian of monomials is a Schur function, and the Klein characters make \(X(n,k)\) a sum of two parity classes of monomials). Translation: \(R_{n,k}\) as a two-colour Schur-type determinant, with the far points as zeros of a specialized Schur function. <strong>Answers.</strong> Simplicity of zeros of specialized Schur functions is known in some families, for example principal specializations and hook shapes. That would give a combinatorial route. <strong>Test.</strong> Not run: expressing \(R_{n,k}\) as a specialized Schur function needs the Jacobi basis of the first lead, a development step.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-normality-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-peeling-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-statement-three-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-contact-dimension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-contact-dimension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-discriminant-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-02-cube-rigid-simplicity-review:2">The exponent scan also shows real far roots colliding at a non-resonant exponent: at \((2,4)\) the real count drops from \(9\) to \(7\) between \(\lambda=\tfrac3{20}\) and \(\tfrac7{40}\). So threshold behaviour is not the only way far points meet. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-complete-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-arc-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dilate-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-corner-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dimension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dimension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-discriminant-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-discriminant-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-02-cube-rigid-simplicity-review:2">The <a href="#cube-rigid-middle-first-order">first-order splitting lemma</a> gives the analogue for the discriminant route. A weight-two point is harmless when it splits to first order, while a triple point violates the criterion's hypothesis. So on the rigid middles the incidence route's weaker need, no weight three, reappears as the discriminant route's need for no triple roots. <strong>Follow-up.</strong> Developed: the weaker requirement is stated; the incidence route itself stays blocked by the neck-pencil weights at \(N=11\).</li>
+<li data-lead="entry-2026-10-02-cube-corner-hankel-review:3">No new work on the Birkhoff reduction for the other \((2,n)\) Plücker coordinates in this period; the period went to rigid simplicity. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<p><strong>Assessment of this line.</strong> The period converted the Not-run bridge and the first-order idea into precise results.</p>
+<ul>
+<li>The Klein τ-function and the covariance propositions are correct and reusable.</li>
+<li>They show that the natural soft arguments fail: particle pictures, first-order genericity over the stratum, and noncrossing along the exponent. The moduli of the neighbours enter only through centres, and the exponent family has real collisions.</li>
+<li>What is left is a hard, concrete statement: simplicity of the Wronskian zeros of the explicit two-class spaces \(X(n,k)\). The record now places it next to a known open problem, Veselov's conjecture on Wronskians of Hermite polynomials. That suggests the obstacle is not an artefact of the route but a genuinely difficult Wronskian-simplicity question.</li>
+<li>The line is stuck for every \(N\). Progress is possible only through a structural identification of \(X(n,k)\) with classical polynomials, or through a new route for (K) that avoids the rigid middles.</li>
+</ul>
+<p><strong>Next step on the highest-risk item.</strong> Route item cube-odd-characteristic, open statement 3, input (K). Develop the passed first lead: find a basis of \(X(2,3)\), and then of \(X(n,k)\), made of Jacobi polynomials with parameters \(\pm\tfrac12\) in \(w\), that is, Chebyshev polynomials on the Klein cover. Test whether \(R_{2,3}\) is a Wronskian of such polynomials, indexed by a partition. If it is, state the partition for every \((n,k)\) and try the Young-diagram method of Felder–Hemery–Veselov for simplicity. If it is not, the obstacle has no classical form, and the next review should weigh changing the (K) route.</p>
+<p><strong>Dependencies re-read.</strong> The entries of this period; the pure reduction and the binary face (statements); the exponent-scan and integer-exponent outputs (saved files).</p>
+<p><strong>Verification gate.</strong> The tests are record arguments and saved computations, with scope stated. No claim is registered, so no reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-t">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 21.09 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 11.85 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 9.10 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
