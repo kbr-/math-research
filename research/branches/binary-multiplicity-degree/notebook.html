@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. Near each merge the discriminant splits into near, far and ring factors (<a href="#cube-merge-count-identity">count identity</a>), and the <a href="#cube-merge-rings-simple">rings are simple</a> at every size, by a <a href="#cube-merge-window-transversality-theorem">hierarchical transversality proof</a>.</p>
-<p>Next, for (K): far simplicity, the remaining factor without a mechanism. The polynomial of \(F(n,k)\) has no moduli. Try to prove it squarefree by embedding \(F(n,k)\) in a family with moduli, such as the far spaces of merges into spine spaces with generic cluster shape, and specializing hierarchically, as in the transversality proof. Then extend the class to several clusters for the assembly.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. Near each merge the discriminant splits into near, far and ring factors (<a href="#cube-merge-count-identity">count identity</a>), and the <a href="#cube-merge-rings-simple">rings are simple</a> at every size. The far polynomials are <a href="#cube-merge-far-exact">irreducible where computed exactly</a> but have no mechanism.</p>
+<p>Next, for (K): develop the Bethe-ansatz lead for far simplicity. \(F(n,k)\) is a space with singular points \(0,1,\infty\), so its Weierstrass points are the first-level Bethe roots of a \(\mathfrak{gl}_d\) Gaudin model with three points (Mukhin–Tarasov–Varchenko). Read the simple-spectrum and transversality theorems there, and test whether they give simple Wronskian roots for one fixed space of this kind. In parallel, set up spine spaces with several clusters for the assembly.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -37894,6 +37894,57 @@ and \(\rho_t(A)\) is the column \(t\) of the reductions of the \(A_j\) modulo \(
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 56.47 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 4.29 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 52.04 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-01-cube-merge-far-exact" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-merge-far-irreducible check:cube-merge-far-exact">
+<h3>1 October 2026 — The far polynomials of a merge are irreducible over ℚ where computed exactly, but not hypergeometric; far simplicity still has no mechanism</h3>
+<p class="entry-meta">Conjecture that the far polynomials are irreducible, from exact computation at four sizes; the Jacobi-polynomial and Newton-polygon routes to their simplicity are tested and fail or stay partial. Far exact cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> With the <a href="#cube-merge-rings-simple">rings simple</a>, the only factor of the discriminant near a merge without a mechanism is the far factor: the polynomial \(R_{n,k}\) of the Weierstrass points of the far space \(F(n,k)\) (<a href="#cube-merge-far-count">far count</a>) must be squarefree. It was known modulo \(2^{61}-1\) for \(2\le n\le5\), \(3\le k\le6\). \(F(n,k)\) is a space with three singular points \(0,1,\infty\) and no moduli, like the spaces spanned by Jacobi polynomials. This cycle tests two routes to squarefreeness for every \((n,k)\):</p>
+<ul>
+<li>\(R_{n,k}\) is a Jacobi (hypergeometric) polynomial, whose discriminant has a closed form (Stieltjes, Hilbert);</li>
+<li>\(R_{n,k}\) is irreducible over \(\mathbb Q\), and its \(p\)-adic Newton polygons prove it (Dumas).</li>
+</ul>
+<p><strong>General statement.</strong> <code>conj:cube-merge-far-irreducible</code>, for every \(n\ge2\), \(k\ge3\); evidence <code>check:cube-merge-far-exact</code>.</p>
+<h4 id="cube-merge-far-exact">Exact far polynomials</h4>
+<p><code>research/tools/bmd_cube_merge_far_exact.gp</code> computes \(R_{n,k}\) exactly over \(\mathbb Q\) (research/results/bmd-20261001-z/far-exact.txt). Each class of \(F(n,k)\) has a factor \(w^a(w-1)^b\), \(a,b\in\{0,\tfrac12\}\), and derivatives act on its rational part by \(d/dw+a/w+b/(w-1)\). So the Wronskian is that product of factors times a rational function. Its numerator, stripped of powers of \(w\) and \(w-1\) and made monic, is \(R_{n,k}\). For example
+\[
+R_{2,3}=w^6-18w^5+\tfrac{387}8w^4-\tfrac{307}8w^3+\tfrac{2985}{256}w^2-\tfrac{15}{16}w+\tfrac3{16}.
+\]
+The results for \((n,k)=(2,3),(3,3),(2,4),(4,3)\):</p>
+<ul>
+<li>The degrees are \(6,13,15,22\), equal to the far count \(\tfrac12(k-1)((3n-2)k+n^2-7n+4)\), and agreeing with the earlier modular computation.</li>
+<li>Each \(R_{n,k}\) is irreducible over \(\mathbb Q\), hence squarefree.</li>
+<li>None is hypergeometric. There are no \(B,G\) with \(w(1-w)R''+(G-(1-d+B)w)R'+dBR=0\), \(d=\deg R\), so \(R\) is not a multiple of \({}_2F_1(-d,B;G;w)\), and not a Jacobi polynomial in \(1-2w\). Other Möbius images of the variable were not tested.</li>
+<li>Newton polygons at primes \(p&lt;200\) give largest slope denominators \(3,9,9,11\) (at \(p=3,3,3,11\)). A \(\mathbb Q\)-factor through the roots of such a segment has degree a multiple of that denominator. For example, \(R_{2,3}\) is irreducible or a product of two cubics, and \(R_{4,3}\) irreducible or a product of two factors of degree \(11\). No single prime \(p&lt;200\) proves irreducibility.</li>
+</ul>
+<p><strong>Conjecture (far irreducibility).</strong> For every \(n\ge2\), \(k\ge3\), the far polynomial \(R_{n,k}\) is irreducible over \(\mathbb Q\). This is stronger than the squarefreeness needed (conj:cube-merge-far-polynomial), which it implies in characteristic zero.</p>
+<p><strong>Assessment of the two routes.</strong></p>
+<ul>
+<li>The Jacobi route is closed for the variables \(w\) and \(1-2w\): \(R_{n,k}\) is not hypergeometric in \(w\). The other Möbius images of \(0,1,\infty\) were not tested. Heuristically, the Wronskian of a space with many functions at three points need not reduce to one second-order equation.</li>
+<li>The Newton-polygon route gives only partial degree bounds at single primes. Combining primes, as for the Bessel polynomials, needs closed-form \(p\)-adic valuations of the coefficients. The coefficients above have no evident closed form.</li>
+</ul>
+<p>So far simplicity remains without a mechanism. The three-point structure suggests the Bethe ansatz for the \(\mathfrak{gl}_d\) Gaudin model at \(0,1,\infty\) (Mukhin, Tarasov and Varchenko). There, Wronskian roots are the first level of Bethe roots, and simplicity of the spectrum is proved for real points. Whether that yields simple Weierstrass points of one fixed space is the question for a later cycle.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>squarefreeness of \(R_{n,k}\) for every \((n,k)\);</li>
+<li>the chain end \(V(N-3;3)\);</li>
+<li>the assembly through spine spaces with several clusters.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-merge-far-count (the classes of \(F(n,k)\) and their exponents); check:cube-merge-far-polynomials (the modular degrees).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the exact script against the earlier modular one (classes, factors, derivative rule), the removal of \(w\) and \(w-1\), the degrees, the hypergeometric test, the Newton-polygon inference and the conjecture's scope. Verdict: pass with corrections, all applied: the Jacobi conclusion is limited to the variables tested, the Newton-polygon bound is sharpened to divisibility, and the primes searched are stated.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261001-z">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 2.66 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">39.27 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 16.88 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 4.84 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.53 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
