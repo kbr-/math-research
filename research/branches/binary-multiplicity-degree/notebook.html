@@ -43,12 +43,11 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, has no mechanism. The far half of (B) has a regular first 2-adic level but no uniform mechanism (<a href="#entry-2026-09-30-cube-far-two-adic-level-two">far two-adic level two</a>).</p>
-<p>Next, for (B): return to the neck, conj:cube-neck-hankel-leading.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, has no mechanism. On the neck half of (B), the weight identity of the Hankel conjecture is now proved for all parameters (<a href="#cube-neck-assignment-identity">assignment identity</a>).</p>
+<p>Next, for (B): develop the secant lead for the algebraic part of conj:cube-neck-hankel-leading. The level sums are forms of degree \(lw\) in \(t'\), so they are determined by their values at node form \(t'_x=\sum_{m\le lw}a_m\lambda_m^x\). There each Hankel-type minor becomes a sum over \(w\)-sets of nodes of \(a_MV_M^2s_\mu(\lambda_M)\).</p>
 <ul>
-<li>Re-read the neck Hankel review, the last-block theorem and the secant lead in full.</li>
-<li>State the node form of the secant lead exactly.</li>
-<li>Test whether it proves the vanishing of the patterns below the balanced one for all block sizes, the piece the review named as remaining.</li>
+<li>Write the level sums in this form.</li>
+<li>Test at the smallest window \((e,l,w,c)=(1,2,2,3)\) whether the vanishing below \(2E\) is an antisymmetry in the nodes.</li>
 </ul>
 </section>
 <section id="working-context">
@@ -35396,6 +35395,70 @@ For \(r=3\), degrees \(\deg G\le2\) survive at \((1,1)\), \(\le9\) at \((1,2)\) 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 9.30 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.34 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-neck-assignment-identity" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-bridge="entry-2026-09-30-cube-peeling-route-review:2" data-claims="lem:cube-neck-assignment-identity">
+<h3>30 September 2026 — The neck assignment count has a closed form, and twice it is the balanced sum of squares for every l, w, c</h3>
+<p class="entry-meta">Working proof for every l ≥ 2, w ≥ 1, w ≤ c ≤ lw: 2E_{l,w}(c) = c² + Σk_i² − lw². The record had only checked this weight identity of the neck Hankel conjecture. Neck assignment identity cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The neck half of (B), neck points of weight at most two, rests on conj:cube-neck-hankel-leading. That conjecture has two parts:</p>
+<ul>
+<li>the level sums of a neck window vanish below level \(2E_{l,w}(c)\);</li>
+<li>the leading coefficient is \(f_{c,w}(\beta)H_c\prod_{i&lt;l}H_{k_i}\), with \((k_i)\) the most balanced split of \(lw-c\) into \(l-1\) parts.</li>
+</ul>
+<p>Its internal consistency needs the weight identity \(2E_{l,w}(c)=c^2+\sum k_i^2-lw^2\), because \(H_k\) has weight \(k^2\) under \(t'_x\mapsto\mu^xt'_x\). The record checked this identity for \(2\le l\le12\), \(1\le w\le8\) (\(2464\) windows) and noted that no transport argument was written. This cycle, which must attempt a proof, proves it for all parameters and gives \(E\) in closed form.</p>
+<p><strong>General statement.</strong> <code>lem:cube-neck-assignment-identity</code>, for every \(l\ge2\), \(w\ge1\), \(w\le c\le lw\).</p>
+<h4 id="cube-neck-assignment-identity">The assignment identity</h4>
+<p><strong>Setting.</strong> lem:cube-neck-level-expansion defines the assignment count as the minimum of \(\sum\max(0,\sigma-r-1)\) over injective assignments of the columns to pole indices. Its proof shows that the sorted pairing attains the minimum: the cost does not increase in \(r\), and the Monge property holds. So the count equals the sorted formula below, which is what assignE in research/tools/bmd_cube_neck_separation.gp computes. Sort the multiset in which each of \(0,1,\ldots,w-1\) occurs \(l\) times. Let \(t_1\le\cdots\le t_c\) be its \(c\) largest entries, and \[ E_{l,w}(c)=\sum_{i=1}^c\max(0,\,i-1-t_i). \]</p>
+<p><strong>Lemma (assignment identity).</strong> Let \(l\ge2\), \(w\ge1\), \(w\le c\le lw\), \(d=c-w\), and write \(d=(l-1)a+b\) with \(0\le b&lt;l-1\). Then:</p>
+<ol>
+<li>\(2E_{l,w}(c)=d(d+1)+2ad-(l-1)a(a+1)\);</li>
+<li>\(2E_{l,w}(c)=c^2+\sum_{i=1}^{l-1}k_i^2-lw^2\), where \((k_i)\) is the most balanced split of \(m=lw-c\) into \(l-1\) parts: \(l-1-b\) parts equal to \(w-a\) and \(b\) parts equal to \(w-a-1\).</li>
+</ol>
+<p><strong>Proof.</strong> Index the sorted multiset by \(j=0,\ldots,lw-1\). Write \(j=lv+s\) with \(0\le s&lt;l\); the entry at \(j\) is \(v\). The \(c\) largest entries are those with \(j\ge m\), and \(t_i\) sits at \(j=m+i-1\). So its summand is \[ \max(0,\,j-m-v)=\max\bigl(0,\,(l-1)v+s-m\bigr). \] For \(j&lt;m\) the same expression vanishes, since \((l-1)v+s\le j&lt;m\). Hence \[ E=\sum_{v=0}^{w-1}\sum_{s=0}^{l-1}\max\bigl(0,(l-1)v+s-m\bigr). \] As \((v,s)\) ranges, \(x=(l-1)v+s\) runs through \(0,1,\ldots,(l-1)w\), each value once, except the interior junctions \(x=(l-1)v\), \(1\le v\le w-1\), which occur twice (as \((v,0)\) and \((v-1,l-1)\)). So \[ E=\sum_{x=0}^{(l-1)w}\max(0,x-m)+\sum_{v=1}^{w-1}\max\bigl(0,(l-1)v-m\bigr). \]</p>
+<p>Since \((l-1)w-m=c-w=d\ge0\), the first sum is \(d(d+1)/2\). In the second, put \(u=w-v\): the summand is \(\max(0,d-(l-1)u)\), for \(1\le u\le w-1\). It is positive only for \(u\le a\), and the term \(u=a\) equals \(b\ge0\). If \(a=w\), then \(d=(l-1)w\) and the term \(u=w\) would be \(0\). So the second sum is \(\sum_{u=1}^{a}(d-(l-1)u)=ad-(l-1)a(a+1)/2\). This proves (1).</p>
+<p>For (2): \(m=(l-1)w-d=(l-1)(w-a)-b\), so the stated parts are the balanced split. Then \[ c^2+\sum k_i^2-lw^2=(w+d)^2-lw^2+(l-1)(w-a)^2-b\bigl(2(w-a)-1\bigr). \] Expand and use \(d=(l-1)a+b\), so that \(2wd=2(l-1)wa+2bw\). The terms in \(w\) cancel, leaving \(d^2+(l-1)a^2+2ab+b\). By (1), \(2E=d^2+d+2ad-(l-1)a^2-(l-1)a=d^2+(l-1)a^2+2ab+\bigl(d-(l-1)a\bigr)\), which is the same. \(\square\)</p>
+<p>For \(l=1\), the conjecture's range forces \(c=w\), so \(E=0\) and there are no parts; both sides of (2) vanish. The weight identity therefore covers the conjecture's whole range.</p>
+<p><strong>Check.</strong> research/tools/bmd_cube_neck_assignment_identity.py (assignment-identity.txt) compares assignE with both closed forms for all \(2\le l\le30\), \(1\le w\le30\), \(w\le c\le lw\): \(203145\) windows, no failure. This includes the record's \(2464\).</p>
+<h4>What it says about the conjecture</h4>
+<p>The identity was the combinatorial consistency condition of conj:cube-neck-hankel-leading. It is now proved, so the conjectured leading coefficient has the weight the level \(2E\) requires, for all parameters. The choice of the balanced split as the factor pattern remains empirical; only the weight consistency is proved.</p>
+<p>As a heuristic reading, not part of the proof, the junction values \(x=(l-1)v\) counted twice resemble the shared levels of adjacent chains in lem:cube-neck-chain-filtration, whose dimensions drop by \(l-1\) per step. That is the Fermi-sea picture of the neck Hankel review.</p>
+<p>The remaining content of the conjecture is algebraic:</p>
+<ul>
+<li>the vanishing of the level sums below \(2E\);</li>
+<li>the factorization of the leading coefficient;</li>
+<li>the nonvanishing of \(f_{c,w}\).</li>
+</ul>
+<p>The secant lead of the neck Hankel review addresses the first two, with \(t'\) in node form. It remains to be developed.</p>
+<p><strong>Bridge follow-up.</strong> This develops Absurd bridge 2 of the peeling route review, optimal assignment, where \(E_{l,w}(c)\) is a transport cost. Its follow-up recorded the closed form \(2E=c^2+\sum k_i^2-lw^2\) as checked, with no argument written. It is now a theorem. The proof is a direct count of the costs \(x=(l-1)v+s\), not a transport argument; in the neck Hankel review's Fermi-sea language, these are energy levels. <strong>Follow-up.</strong> Developed.</p>
+<p><strong>What this does to the route.</strong> One ingredient of the neck half of (B) moves from checked to proved for every \(l,w,c\). The algebraic content of the Hankel conjecture is untouched, and so are (K) and the far half of (B).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(K) for \(N\ge11\);</li>
+<li>(B): the algebraic part of conj:cube-neck-hankel-leading, \(G_{c,w}\not\equiv0\) and the exchange condition; far polynomials without triple roots; odd \(N\);</li>
+<li>(L) at \(N=11\), awaiting approval.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-neck-level-expansion (definition of the assignment count), lem:cube-neck-chain-filtration (statement), conj:cube-neck-hankel-leading (statement), assignE in the neck separation script, the neck Hankel review (Obstacle, secant lead).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the proof step by step, including the edge cases \(a=0\), \(a=w\), \(b=0\), \(l=2\), \(c=w\) and \(c=lw\), the algebra of (2), the balanced split, the match with assignE and the check output. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the identification with the lemma's minimum-cost definition is cited;</li>
+<li>\(l=1\) is covered;</li>
+<li>the chain-filtration reading is marked heuristic;</li>
+<li>the claim about the conjecture is limited to weight consistency.</li>
+</ul>
+<p>These weaken or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzy">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 30.88 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 29.56 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 1.34 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">51.79 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8.05 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
