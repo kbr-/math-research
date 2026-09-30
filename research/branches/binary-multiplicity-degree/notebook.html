@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved. For every \(N\), (K) rests on simplicity of the far polynomials \(R_{n,k}\), \(n\ge2\), the Wronskians of the two-class spaces \(X(n,k)\). The <a href="#entry-2026-10-02-cube-first-order-review">first-order review</a> finds the soft escapes closed, and a structural parallel with Veselov's conjecture on Wronskians of Hermite polynomials.</p>
-<p>Next, for (K) at every \(N\): look for a basis of \(X(2,3)\) made of Jacobi polynomials with parameters \(\pm\tfrac12\) in \(w\), which are Chebyshev polynomials on the Klein cover, and test whether \(R_{2,3}\) is a Wronskian of such polynomials indexed by a partition. If it is, determine the partition for every \((n,k)\), and try the Young-diagram method of Felder–Hemery–Veselov for simplicity. If not, weigh a change of the (K) route that avoids the rigid middles.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved. For every \(N\), (K) rests on simplicity of the far polynomials \(R_{n,k}\), \(n\ge2\), the Wronskians of \(X(n,k)=P_3+w^{1/2-(n-1)}P_4\). The <a href="#cube-far-classes-hypergeometric">hypergeometric test</a> finds \(P_4\) hypergeometric at four sizes, and \(P_3\) not.</p>
+<p>Next, for (K) at every \(N\): prove that \(P_4\) is hypergeometric for every \((n,k)\), with explicit \((\alpha,\beta)\). \(P_4\) is the image of \(w^{s}(1-w)^{1/2}\mathcal P_{&lt;n}\) under the operator \(\prod(\theta-e)\), so it is built by Euler operators. Then identify \(P_3\): check whether it becomes hypergeometric under a conjugation by a smaller power of \(w\), or after a first-order operator, as \(D^2\) does at \(n=1\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -39421,6 +39421,42 @@ N_0=\begin{pmatrix}s_i^{\,j}&amp;0\\ \frac{s_i^{\,j+1}}{j+1}&amp;s_i^{\,k}\end{p
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 11.85 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 9.10 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-far-jacobi-test" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-02-cube-first-order-review:1" data-claims="conj:cube-far-classes-hypergeometric">
+<h3>2 October 2026 — One class of the reduced far space is a hypergeometric (Jacobi-type) space and the other is not: the far polynomials are not Wronskians of classical families class by class</h3>
+<p class="entry-meta">Refutation of the hypothesis that both classes of X(n,k) are hypergeometric-invariant, with a negative control. The P4 class passes nontrivially at four sizes; the P3 class fails. Jacobi test cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-02-cube-first-order-review">first-order review</a> placed rigid simplicity next to Veselov's conjecture: simplicity of Wronskian zeros for classical polynomials. The Young-diagram method applies if \(R_{n,k}\) is a Wronskian of Jacobi-type polynomials. The cheapest form concerns the two classes of the <a href="#cube-far-pure-reduction">pure reduction</a>, \(X(n,k)=P_3+w^{1/2-(n-1)}P_4\): is each class, after removing its common factor, spanned by eigenpolynomials of one hypergeometric operator?</p>
+<p><strong>General statement.</strong> <code>conj:cube-far-classes-hypergeometric</code>: for every \(n\ge2\), \(k\ge3\), the polynomial part of each class of \(X(n,k)\), divided by its greatest common factor, is invariant under some operator \(L=w(1-w)\partial^2+(\alpha+\beta w)\partial\). Refuted, within the stated operator family: the class \(P_3\) fails.</p>
+<h4 id="cube-far-classes-hypergeometric">The test</h4>
+<p><strong>Criterion.</strong> A space spanned by eigenpolynomials of \(L\), for example one Jacobi family in \(w\), is invariant under \(L\). Invariance is therefore necessary. It is a linear system in \((\alpha,\beta)\) and the matrix of \(L\) on the space, solvable exactly when the augmented matrix has a kernel vector with nonzero last coordinate. Each class is divided by its common factor, a power of \(w\), before the test: a family \(w^a\cdot(\text{Jacobi})\) is invariant only under a conjugated operator, so the stripped space is the one to test. For small spaces the system can be underdetermined. As a negative control, the same test is run on a random space with the same dimension and degrees. A pass counts only when the control fails. Scope: the operators have their singular points at \(0\) and \(1\) (any affine first-order coefficient, so Jacobi in \(w\), \(1-w\) or \(1-2w\)). Conjugation is tested only with the full common factor \(w^a\) removed; no class has a factor \(1-w\). Families with other singular points, and conjugations by smaller powers, which would add a term \(\gamma+\delta/w\), are not covered.</p>
+<p><strong>Outcome.</strong> <code>research/tools/bmd_cube_far_jacobi_test.gp</code>, exact over \(\mathbb Q\). Output: <code>research/results/bmd-20261002-u/far-jacobi-test.txt</code>.</p>
+<ul>
+<li>At \(n=1\), \(k=3,4,5\), both classes pass, but so do the random controls. The test says nothing there.</li>
+<li>\(P_4\), with the power of \(w\) removed, passes with a unique solution and a failing control at \((2,4),(3,3),(2,5),(3,4)\). The solutions are \((\alpha,\beta)=(\tfrac32,9),(\tfrac52,8),(\tfrac12,15),(\tfrac72,12)\). At \((2,3)\) the control also passes, so that size is uninformative.</li>
+<li>\(P_3\), with the power of \(w\) removed, fails at all five sizes with \(n\ge2\): \((2,3),(2,4),(3,3),(2,5),(3,4)\). The controls fail there too, so the test is informative.</li>
+</ul>
+<p><strong>What this gives.</strong></p>
+<ul>
+<li>The hypothesis is refuted as stated, since \(P_3\) is not hypergeometric at five sizes. So \(R_{n,k}\) is not a Wronskian of two classical families class by class.</li>
+<li>Half of the structure is classical. The class \(P_4\), of dimension \(n\), is spanned by eigenpolynomials of a hypergeometric operator with half-integer \(\alpha\), at four sizes with a failing control. The pattern of \((\alpha,\beta)\) in \((n,k)\) is not yet identified.</li>
+<li>So a Young-diagram approach would have to treat \(X(n,k)\) as a classical class \(P_4\) plus a non-classical \(P_3\) of dimension \(k-1\).</li>
+<li>Other forms of the lead survive untested: a different basis of the same Wronskian, and a differential operator mapping \(P_3\) onto a hypergeometric space, as \(D^2\) does at \(n=1\).</li>
+</ul>
+<p><strong>Remaining gap.</strong> For every \(N\): rigid simplicity for \(n\ge2\). Two open questions: the hypergeometric structure of \(P_4\) for every \((n,k)\), with its parameters, and the nature of \(P_3\).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the pure reduction (\(P_3,P_4\)) and the binary face. One fresh-context medium reviewer, run on the first draft: fail. It found the \(n=1\) calibration trivial (there \(P_3=w^a\mathcal P_{\le d-1}\), invariant for \(\alpha=1-a\) and every \(\beta\)), and the missing conjugation by \(w^a\), which reverses the result for \(P_4\). This version adds the common-factor removal and random controls, and records \(P_4\) as positive and \(P_3\) as refuted within the operator family. All the reviewer's changes are applied, and the output was regenerated from the current tool.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-u">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 42.05 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">5 min 2.06 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">38.93 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.92 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
