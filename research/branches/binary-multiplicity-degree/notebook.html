@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For even \(N\), the <a href="#cube-base-peeling">peeling degeneration</a> reduces (B) to simplicity on explicit components, checked through \(N=12\), and on necks.</p>
-<p>Next, the neck of peeling step \(k\), for every \(b\). Its \(16k(b-k)(b-k-1)\) points come from the half-integral class alone, where the exponent lists of \(F_k\) at \(0\) and \(E_k\) at \(\infty\) are one interval of length \(4l(e+1)\) shifted by \(4(l-1)\). Write that class's neck coefficient matrix, determine its Newton polygon (the caterpillar's neck at \(N=8\) had four binomial rings of sixteen), and prove a window theorem for it, as for the descent's neck.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For even \(N\), the <a href="#cube-base-peeling">peeling degeneration</a> reduces (B) to squarefree far components (true through \(N=12\)) and the <a href="#cube-peeling-neck-reduction">peeling neck windows</a>, whose valuations are conjectured in closed form.</p>
+<p>Next, prove the window valuations \(f(c)=16el+2\sum_{j\le c-4}\nu_j\) and their minimality for every \(e\ge1\), \(l\ge2\), following the neck window theorem. Find the Laplace term of minimal valuation, write its leading coefficient as Hankel determinants in the coefficients of \(\tau\) times a genericity determinant in the \(\beta_s\), and bound every other column set. The missing multiples of \(l\) should appear as rank drops of that determinant, as the hierarchical neck count's excluded window did.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -31404,6 +31404,85 @@ This is the gap Wronskian of hierarchical attainment with the earlier doubles re
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">13 min 13.81 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">7.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.39 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-peeling-neck" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-peeling-neck-reduction conj:cube-peeling-neck-windows">
+<h3>30 September 2026 — The necks of the base peeling are one half-integral window problem, whose valuations follow the integers not divisible by the cluster size</h3>
+<p class="entry-meta">Working proof of the neck reduction for every step, with a conjectured closed formula for the window valuations, predicting rings of simple points; it matches every neck through N = 12. Peeling neck cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-base-peeling">peeling degeneration</a> reduced (B) at even \(N\) to simplicity on the far components \(F_k\) and on the necks. For \(k\ge2\), step \(k\) has \(16k(b-k)(b-k-1)\) neck points, a count proved from exponents alone; for \(k=1\) the neck is empty. The missing implication is their simplicity. This cycle writes the neck as one explicit window problem and determines its valuations.</p>
+<p><strong>General statement.</strong> <code>prop:cube-peeling-neck-reduction</code> (working proof) and <code>conj:cube-peeling-neck-windows</code>, for every \(e\ge1\), \(l\ge2\), in characteristic zero.</p>
+<h4 id="cube-peeling-neck-reduction">The window model</h4>
+<p><strong>Setup.</strong> Use the notation of the peeling entry: step \(k\ge2\), \(e=k-1\ge1\), \(l=b-k\ge2\), \(n=4e\ge4\), \(D_k=\varepsilon c\). Take a loop that encloses the branch values \(-1/D_s\), \(s&gt;k\), but not \(-1/(\varepsilon c)\). Its monodromy splits \(E_{k-1}\) into an integral class \(A_\varepsilon\) and a half-integral class \(B_\varepsilon\). \(B_\varepsilon\) is spanned by the extension blocks and the pairs \((k,s)\):
+\[
+(1+D_sz)^{-7/2}\mathcal P_{&lt;n}(z)\quad\text{and}\quad(1+\varepsilon cz)^{-5/2}(1+D_sz)^{-7/2}\mathcal P_{&lt;4}(z),\qquad s&gt;k,
+\]
+of dimension \(L=4l(e+1)\). In \(y=1/z\), after the common factors \(z^{-7/2}\) and \(y^{n-1}\), it becomes \(U\oplus\tau W\) with
+\[
+U=\bigoplus_s\mathcal P_{&lt;n}(y)\,\varphi_s,\quad W=y^{n-4}\bigoplus_s\mathcal P_{&lt;4}(y)\,\varphi_s\subset U,\quad\varphi_s=(1+\beta_sy)^{-7/2},\quad\tau=\Bigl(1+\frac{\varepsilon c}y\Bigr)^{-5/2},
+\]
+\(\beta_s=1/D_s\). Here \(W\subset U\) because \(n\ge4\). Put \(M=nl\) and \(K=4l\), so \(L=M+K\). Let \(g_d=y^d+\sum_{r\ge M}G_{d,r}y^r\), \(d&lt;M\), be the triangular basis of \(U\) at \(0\); it exists because \(0\) is ordinary for \(U\) at generic \(\beta\), by the translation argument. Let \(C\) be the Laurent coefficient matrix, in \(y\), of the rows \(g_d\) and \(f_i=(\tau-1)h_i\), where \(h_i\) runs over a basis of \(W\) and the middle columns \(0,\ldots,M-1\) are cleared with the \(g_d\). Since \(U+\tau W=U+(\tau-1)W\), its span is that of \(U\oplus\tau W\). For \(4\le c\le K\) the window is
+\[
+W_c=\{-c,\ldots,-1\}\cup\{0,\ldots,M-1\}\cup\{M,\ldots,M+K-c-1\},\qquad f(c)=\operatorname{val}_\varepsilon\det C[:,W_c].
+\]
+\(W_4\) and \(W_K\) are the exponent lists (after the common shifts) of \(E_k\) at \(\infty\) and \(F_k\) at \(0\), from the peeling theorem. Each step \(W_c\to W_{c+1}\) lowers \(\sum W\) by \(L\). At \(y\asymp\varepsilon^\alpha\), that is \(|z|\asymp\varepsilon^{-\alpha}\), a column set \(S\) has weight \(\Phi_\alpha(S)=\operatorname{val}\det C[:,S]+\alpha\sum S\).</p>
+<p><strong>Proposition (peeling neck reduction).</strong> Characteristic zero, generic \(D\), step \(k\ge2\) with \(l\ge2\).</p>
+<ol>
+<li>The integral class \(A_\varepsilon\) has no zeros of its Wronskian in the neck for small \(\varepsilon\), and at every scale \(|z|\asymp\varepsilon^{-\alpha}\), \(0&lt;\alpha&lt;1\), its flat limit is a space of integral monomials.</li>
+<li>Suppose that \(0&lt;f(c+1)-f(c)&lt;L\) for \(4\le c&lt;K\), and that at each \(\alpha_c=(f(c+1)-f(c))/L\) the minimizers of \(\Phi_{\alpha_c}\) over \(L\)-sets are exactly \(W_c\) and \(W_{c+1}\). Then for all small \(\varepsilon\ne0\) the neck of step \(k\) consists of \(K-4=4(l-1)\) rings of \(L\) simple Weierstrass points, ring \(c\) asymptotic to the roots of a binomial \(a_cu^L+b_c\), \(a_cb_c\ne0\), at \(|z|\asymp\varepsilon^{-\alpha_c}\).</li>
+</ol>
+<p><strong>Proof.</strong> (1) By the peeling theorem, the integral exponent lists of \(F_k\) at \(0\) and \(E_k\) at \(\infty\) coincide in \(z\), since \(R_{e+1}=R_e+4e+1\). The argument-principle count of the peeling theorem, applied to \(A_\varepsilon\) alone, therefore gives no zeros in the neck. So by Hurwitz, at every \(\alpha\in(0,1)\) the limit of \(A_\varepsilon\), a space of Laurent polynomials, has a Wronskian without zeros in \(\mathbb C^*\). For such a space the number of zeros in \(\mathbb C^*\) is \(\sum b_i-\sum a_i\), where \(a_1&lt;\cdots\) are its lowest degrees (exponents at \(0\)) and \(b_1&lt;\cdots\) its highest degrees (exponents at \(\infty\)). Each \(b_i\ge a_i\): the span of the first \(i\) elements of a basis adapted at \(\infty\) has \(i\) distinct lowest degrees, all at most \(b_i\). So the count vanishes only when \(a_i=b_i\) for all \(i\). Then induction up the adapted flag shows that each basis element is a monomial.</p>
+<p>(2) The two classes are distinct characters of the loop's monodromy, so at scale \(\alpha\) the flat limit of \(E_{k-1}\) is \(A_\alpha\oplus B_\alpha\), with \(A_\alpha\) spanned by integral monomials \(z^{a_i}\). At \(\alpha_c\) the two minimizers differ in one exponent. So, as in the neck reduction lemma of the descent, \(B_{\alpha_c}\) is spanned by the common monomials and one binomial \(z^{\gamma}+\kappa z^{\gamma+L}\), \(\kappa\ne0\), with \(\gamma\) half-integral. With \(\theta=z\,d/dz\), the monic operator \(z^{-\dim A}\prod_i(\theta-a_i)\) annihilates \(A_\alpha\). So \(W(A_\alpha\oplus B_\alpha)\) is \(W(A_\alpha)\) times the Wronskian of its image of \(B_\alpha\). \(\prod_i(\theta-a_i)\) multiplies \(z^\gamma\) by \(\prod_i(\gamma-a_i)\ne0\), since \(\gamma\notin\mathbb Z\), so the image is again monomials plus one binomial with nonzero coefficients. Its Wronskian vanishes in \(\mathbb C^*\) exactly at the \(L\) simple roots of a binomial \(a_cu^L+b_c\). Hurwitz's theorem at scale \(\alpha_c\) gives exactly \(L\) simple Weierstrass points near these roots, for each of the \(K-4\) breakpoints. The breakpoints are distinct, so the rings are disjoint. Their total \(4(l-1)L=16k\,l(l-1)\) equals the proved neck count, so the neck has no other points. \(\square\)</p>
+<p>Strict convexity of \(f\) is not assumed separately. If two consecutive breakpoints coincided or were out of order, a third window would tie with \(W_{c+1}\) or beat it at \(\alpha_c\), contrary to the hypothesis.</p>
+<h4>The window valuations</h4>
+<p>research/tools/bmd_cube_peeling_neck_windows.gp computes \(C\) modulo \(q=2^{61}-1\), with \(\tau\) truncated at \(\varepsilon^{360}\) and \(\beta=(2,-3,5,-7)/3\), \(c=1\). It then computes \(f(c)\) for every \(4\le c\le K\). Every reported valuation is at most \(256\), so it is exact with respect to the truncation. It is computed modulo \(q\) at one \(\beta\), so it is an upper bound for the generic valuation over \(\mathbb Q\). Cases: \((e,l)=(1,2),(2,2),(3,2),(1,3),(2,3),(1,4)\), which cover every neck step with \(b\le6\) (research/results/bmd-20260930-zc/neck-windows.txt). Outcome, in every case:</p>
+<ul>
+<li>\(f(4)=16el\);</li>
+<li>the increments \(f(c+1)-f(c)\), \(c=4,\ldots,K-1\), are \(2\nu_1,\ldots,2\nu_{4(l-1)}\), where \(\nu_j=j+\lfloor(j-1)/(l-1)\rfloor\) is the \(j\)-th positive integer not divisible by \(l\): \([2,6,10,14]\) for \(l=2\), \([2,4,8,10,14,16,20,22]\) for \(l=3\), \([2,4,6,10,12,14,18,20,22,26,28,30]\) for \(l=4\), independent of \(e\);</li>
+<li>so \(f\) is strictly convex, with breakpoints \(\alpha=\nu/(2l(e+1))\), \(1\le\nu\le4l-1\), \(l\nmid\nu\), all in \((0,1)\).</li>
+</ul>
+<p>The script also prints an assignment count \(E_l(c)\). It pairs the negative columns \(1,\ldots,c\) in increasing order with the \(c\) largest of the indices \(r\in\{0,1,2,3\}\), each taken \(l\) times, and adds \(\max(0,\sigma-r-1)\). Its increments are \(\nu_{c-3}\), and \(f(c)=16el+2E_l(c)\) in every case, an observed identity. The heuristic behind it is that row \((s,r)\) of a basis eliminated within each \(s\) has valuation \(2r+1\), and a column beyond its pole order costs extra. The factor \(2\) is not explained. A plausible source is that the rows of one \(r\) have \(s\)-independent entries beyond their pole order, but that is a heuristic.</p>
+<p><strong>Direct control.</strong> The window model could misstate the neck through an error in the reduction. research/tools/bmd_cube_peeling_neck_direct.gp therefore computes the Wronskian of \(B_\varepsilon\) itself for \(b=4\), \(k=2\) (\(e=1\), \(l=2\)), modulo \(q\), at one configuration \(D=(2/3,-3/5)\), from normalized Taylor rows in \(z\). It interpolates in \(z\) and \(\varepsilon\) with two checks each (t-degree \(232\) of \(420\) allowed, \(\varepsilon\)-degree \(120\) of \(260\) points). Its Newton polygon has edges of slope \(0\) and \(1\) from the branch factors. In between it has exactly four edges, of slopes \(\tfrac18,\tfrac38,\tfrac58,\tfrac78\), each of length \(16\) with exactly two nonzero terms (neck-direct-e1l2.txt). This is the model's prediction, binomial edges included. It shows sixteen simple zeros of \(W(B_\varepsilon)\) per ring at that configuration. It does not by itself give the neck points of \(E_{k-1}\): that transfer is part (2), which needs the two-minimizer condition, and a binomial Wronskian edge does not imply that condition. So it is evidence consistent with the model, not a proof at \(N=8\).</p>
+<p><strong>Conjecture (peeling neck windows).</strong> For every \(e\ge1\), \(l\ge2\) and generic \(\beta\):</p>
+<ul>
+<li>\(\operatorname{val}\det C[:,W_c]=16el+2\sum_{j=1}^{c-4}\nu_j\) for \(4\le c\le K\);</li>
+<li>at each breakpoint \(\alpha_c=\nu_{c-3}/(2l(e+1))\) the minimizers of \(\Phi_{\alpha_c}\) are exactly \(W_c\) and \(W_{c+1}\).</li>
+</ul>
+<p>By the proposition, the neck of every peeling step would then be \(4(l-1)\) rings of \(4l(e+1)\) simple points, at \(|z|\asymp\varepsilon^{-\nu/(2l(e+1))}\), \(\nu\in[1,4l-1]\), \(l\nmid\nu\). With the component part of the <a href="#cube-base-peeling">peeling simplicity conjecture</a>, this gives (B) at every even \(N\).</p>
+<p><strong>What this does to the route.</strong> For even \(N\), (B) now rests on two explicit statements without moduli. The first is that the polynomials \(W_k\) are squarefree, true through \(N=12\). The second is the window statement above. Its valuation formula matches modular computations at every neck step through \(N=12\). At \(N=8\) the half-class Wronskian, modulo \(q\) at one configuration, has the predicted polygon. The formula resembles the neck window theorem, with valuations twice a sum of consecutive integers but the multiples of \(l\) missing. Heuristically, this is like the hierarchical neck count's missing window. The obstacle is now a proof of the valuations and of the two-minimizer condition. A natural route, also heuristic so far, is the neck window theorem's proof pattern: the leading coefficient as Hankel determinants in the coefficients of \(\tau\) times a genericity determinant in the \(\beta_s\), and a Laplace bound for all other \(S\). The squarefreeness of \(W_k\) for every \(b\) has no mechanism yet.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>proof of the window valuations and of the two-minimizer condition, for every \(e,l\);</li>
+<li>squarefreeness of \(W_k\) for every \(b\);</li>
+<li>odd \(N\);</li>
+<li>(K).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The peeling degeneration (exponent lists, neck count, argument principle); the neck window theorem (window rule, neck reduction lemma, Laplace comparison); the hierarchical neck count's excluded window.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, the claim specification, both scripts and their outputs, and the two dependency excerpts. Verdict: pass with corrections. It confirmed the class \(B_\varepsilon\), the \(y\)-model, the end windows, the weight \(\Phi_\alpha\) and breakpoints, part (1), the operator step of part (2), and that the window script's outputs match the formula in all six cases. Corrections applied:</p>
+<ul>
+<li>part (2) now concludes by counting: Hurwitz gives \(L\) points per ring, and the total equals the proved neck count;</li>
+<li>its hypotheses are reduced to the two used: increments in \((0,L)\) and exactly two minimizers at each breakpoint (convexity follows);</li>
+<li>the direct control is stated for \(W(B_\varepsilon)\), modulo \(q\), at one configuration, as evidence rather than a proof at \(N=8\);</li>
+<li>the valuations are stated as exact for the truncation and upper bounds for the generic ones;</li>
+<li>the assignment count is described as what the script computes, with the factor \(2\) labelled heuristic;</li>
+<li>\(k\ge2\), \(n\ge4\) and the loop's enclosed branch values are stated;</li>
+<li>the monomial criterion of part (1) is proved;</li>
+<li>the route paragraph's analogies are labelled heuristic;</li>
+<li>the claim graph's direction is corrected.</li>
+</ul>
+<p>These corrections restrict or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zc">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>21 min 15.30 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 40.58 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 19.83 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">11 min 40.88 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3 min 32.63 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.38 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
