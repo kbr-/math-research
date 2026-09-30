@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). The boundary route for (K) needs limits along fully symmetry-clean boundary curves, and their spines contain <a href="#cube-multicluster-spine-classes">two-cluster necks</a>. (B) needs far polynomials without triple roots and neck points of weight at most two; the neck windows are proved on the <a href="#cube-neck-last-block-windows">last block</a>.</p>
-<p>Next, the two-cluster neck in its smallest case, \(n_1=n_2=2\), the case of the cross-block defect. The class is \(((z-p_1)(z-p_2))^{1/2}\) times the span of the four products \((1-b_jv_1)^{1/2}(1-b'_kv_2)^{1/2}\). Its first-order span misses one dimension. Compute the flat limit exactly, as the lowest-order term of the combination killing the leading relation, and describe it by its pole and zero orders at \(p_1\), \(p_2\) and \(\infty\). Then state the general limit for \((n_1,n_2)\) as a conjecture, with its level structure, and compare it with the neck windows of the level expansion.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). Both now reduce to neck-type limits: the peeling necks of (B), proved on the <a href="#cube-neck-last-block-windows">last block</a>, and the <a href="#entry-2026-09-30-cube-two-cluster-limit">two-cluster necks</a> on the spines of fully clean boundary curves for (K).</p>
+<p>Next, a mechanism for necks, through the Hankel review's secant lead. The neck level sums are forms of degree \(lw\) in the coefficients of \(\tau\), so they are determined on sums of \(lw\) geometric sequences, where \(\hat\tau\) has \(lw\) simple poles at \(y=\lambda_m\varepsilon\). Write the neck rows in this node form and compute the leading term as the nodes tend to \(0\), as a confluent Vandermonde expansion. Test whether it reproduces the Hankel product \(H_c\prod_iH_{k_i}\) at block size two, window \((1,2,2,3)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32843,6 +32843,46 @@ Its weights at every point other than \(u=\infty\) (the cluster) and \(u=1/s'_j\
 <tr><td>Marked reading and review windows</td><td class="elapsed">39.63 s</td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">57.86 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 0.18 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-two-cluster-limit" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="check:cube-two-cluster-flat-limit">
+<h3>30 September 2026 — The flat limits of two-cluster classes are shape-independent, and fill a pole-order space only in some cases</h3>
+<p class="entry-meta">Finite check of the flat limits of the equal-scale two-cluster classes for five pairs of cluster sizes. Two fill a whole pole-order space, two do not, and the ε-orders of the extra directions do not depend on the cluster shapes. Two-cluster limit cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-multicluster-spine-classes">multi-cluster spine lemma</a> showed that a class joining two clusters of sizes \(n_1,n_2\ge2\) has only \(n_1+n_2-1\) independent leading terms, so its flat limit needs higher orders. Every fully clean spine for \(N\ge11\) contains such classes. The missing implication is their flat limit. This cycle computes it exactly for small sizes, at equal scales, and asks whether it has a simple description.</p>
+<p><strong>General statement.</strong> The all-parameter statement tested is <code>lem:cube-multicluster-spine-classes</code>, part (3); this entry registers <code>check:cube-two-cluster-flat-limit</code> for \((n_1,n_2)\in\{(2,2),(2,3),(3,3),(2,4),(3,4)\}\).</p>
+<h4>Computation</h4>
+<p>research/tools/bmd_cube_two_cluster_limit.gp takes \(p_1=0\), \(p_2=1\) and fixed rational shapes \(b\), \(c\). It expands each product \((1-b_jv_1)^{1/2}(1-c_kv_2)^{1/2}\) to order \(\varepsilon^K\), \(K=3(n_1+n_2)\), as a combination of \(u_1^au_2^c\), \(u_i=1/(z-p_i)\). Each such rational function is represented by its principal parts at \(p_1\), \(p_2\) and its value at infinity. The script computes the flat limit of the span over \(\mathbb Q[[\varepsilon]]\) by valuation reduction: while the leading vectors are dependent, a dependency raises the valuation of one row. Each step is unimodular over \(\mathbb Q[[\varepsilon]]\), and truncation errors stay in \(O(\varepsilon^{K+1})\); all final orders are at most \(11&lt;K+1\), so the limits are exact. Once the leading vectors are independent, the multiset of orders is an invariant of the module, not of the basis: the number of orders at most \(k\) is the dimension of the span of leading terms of elements of valuation at most \(k\). It reports the \(\varepsilon\)-orders of the reduced rows and the dimensions of the limit's intersections with the spaces of pole order at most \((x,y)\) at \((p_1,p_2)\) (two-cluster-limit.txt; a second pair of shapes in two-cluster-limit-seed2.txt).</p>
+<p>Every limit below is \(((z-p_1)(z-p_2))^{1/2}\) times the stated space of rational functions.</p>
+<ul>
+<li>\((2,2)\): orders \(0,1,1,4\). The limit is a hyperplane in \(H^0(\mathcal O(2p_1+2p_2))\): its elements without a pole at one point have at most a simple pole at the other.</li>
+<li>\((2,3)\): orders \(0,1,1,2,4,5\); the limit is all of \(H^0(\mathcal O(2p_1+3p_2))\).</li>
+<li>\((3,3)\): orders \(0,1,1,2,2,5,5,6,8\); the limit is all of \(H^0(\mathcal O(4p_1+4p_2))\).</li>
+<li>\((2,4)\): orders \(0,1,1,2,3,4,6,7\); the limit is a hyperplane in \(H^0(\mathcal O(3p_1+5p_2))\).</li>
+<li>\((3,4)\): orders \(0,1,1,2,2,3,5,6,6,7,9,11\); the limit's pole order is at least \(6\) at \(p_1\) (the dimension at \(x=5\) is \(11\) of \(12\)) and at least \(5\) at \(p_2\). The printed table stops at \(x=5\), so the exact pole-order space was not determined.</li>
+</ul>
+<p>The first \(n_1+n_2-1\) orders are those of the leading span \(H^0(\mathcal O((n_1-1)p_1+(n_2-1)p_2))\), as the lemma predicts: \(0\), then \(1,\ldots,n_1-1\) and \(1,\ldots,n_2-1\). The extra \((n_1-1)(n_2-1)\) orders are \(\{4\}\), \(\{4,5\}\), \(\{5,5,6,8\}\), \(\{4,6,7\}\) and \(\{5,6,6,7,9,11\}\). All exceed the largest leading order. The second pair of shapes gives identical orders in all five cases. So the orders coincide for these two shape choices. Both are sign-alternating arithmetic progressions, a special family, and the weight-\(0\) hypothesis of the lemma for clusters of size three and more was not checked for them, so invariance is not claimed.</p>
+<p>No closed form for the extra orders is evident from five cases, and the limit is not always a full pole-order space. So the two-cluster neck is not a simple \(H^0\), and its description needs a mechanism, like the windows of the peeling neck, rather than a guess. Heuristically, the extra directions come from combinations whose leading terms cancel through the partial-fraction relation \(u_1u_2=(u_1-u_2)/(p_1-p_2)\), the analogue of the level cancellation of the neck model; this was not verified.</p>
+<p><strong>What this does to the route.</strong> Both remaining parts of statement 3 now reduce to neck-type limit problems: the peeling necks of (B), and the two-cluster necks on the spines of fully clean boundary curves for (K). The latter holds at fixed shapes, that is at generic stratum points rather than F-curve points, and the smallest fully clean type \((1,2,2,6)\) needs the \((2,6)\) neck (deficit \(5\)), which was not computed. A general mechanism for necks would serve both. The strongest candidate is the <a href="#entry-2026-09-30-cube-neck-hankel-review">Hankel review</a>'s secant lead, which puts \(\tau\) (or here the second cluster) in node form.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>a mechanism for neck limits: the peeling necks below the last block, and the two-cluster necks;</li>
+<li>far polynomials without triple roots; \(G_{c,w}\not\equiv0\); the exchange condition; tails and nodes of the boundary curves.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The multi-cluster spine lemma and its proof.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, the specification, the script, both outputs and the lemma. Verdict: pass with corrections. It confirmed the faithfulness of the coordinates, the unimodular reduction, the sufficiency of the truncation, the canonicity of the orders, and the four interpretations from the tables. Corrections applied: the \((3,4)\) pole-order bounds (at least \(6\) at \(p_1\), \(5\) at \(p_2\)); the square-root factor; the truncation and canonicity arguments stated; shape invariance restricted to the two special shape choices; the partial-fraction explanation labelled heuristic; the scope and the uncomputed \((2,6)\) neck in the route paragraph; two misleading comments in the script (its header range and the row-choice comment) corrected after the runs, with no change to the code.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zu">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 33.55 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">33.32 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 31.95 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 26.50 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.65 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
