@@ -43,8 +43,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For (K) the \((2,n)\) necks are <a href="#cube-two-n-volume">solved</a> for generic shapes and all \(n\le60\). The <a href="#entry-2026-09-30-cube-neck-route-review">neck review</a> showed that spanning also needs necks between clusters of size at least three.</p>
-<p>Next, test the whole mechanism on \((1,2,2,6)\) at \(N=11\), whose necks are all known. Assemble the spine limit from its classes: the within-cluster classes, the \((1,\cdot)\) classes, and the \((2,2)\) and \((2,6)\) necks. Test at a generic cross-ratio, with fixed generic tail shapes, for a point of weight three. Then turn to the \((3,n)\) cost bounds through the multiple orthogonality of the cluster's Markov functions, the neck review's first outside lead.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For (K):
+<ul>
+<li>the \((2,n)\) necks are <a href="#cube-two-n-volume">solved</a> for generic shapes and \(n\le60\);</li>
+<li>the <a href="#cube-pair-spine-limit">pair spine limit</a> of \((1,2,2,6)\) has weight at most one at non-special points for generic cross-ratio (modulo a prime);</li>
+<li>spanning needs necks between clusters of size at least three (<a href="#entry-2026-09-30-cube-neck-route-review">neck review</a>).</li>
+</ul></p>
+<p>Next, the \((3,n)\) necks, starting with their \(p_1\) cost bounds. A triple cluster spans \(A_1\cdot\langle1,f_2,f_3\rangle\), where \(f_j\) is the Cauchy transform of \(\tfrac1\pi\sqrt{(b_j-t)/(t-b_1)}\) on \([b_1,b_j]\). Generalize the semicircle argument of the <a href="#cube-two-n-cost-bounds">cost bounds</a> to this pair of moment functionals. Identify the mixed Hankel determinants whose nonvanishing gives the bound, and test the resulting costs against the \((3,3)\) and \((3,4)\) orders of the two-cluster check.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33368,6 +33373,79 @@ For \(p_l=\sum_k\lambda_kc_k^l\), \(\sum_{j}(-1)^jje_jc^{m+1-j}/(m+1-j)=\int_0^c
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 54.33 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3.75 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-pair-spine-limit" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-pair-spine-limit check:cube-1226-spine-weight">
+<h3>30 September 2026 — The spine limit of the fully clean type (1,2,2,6) is explicit, and at two sampled cross-ratios, modulo a prime, every non-special point has weight at most one</h3>
+<p class="entry-meta">Working proof of the spine limit for fully clean types whose parts are at most two except one, and a finite check modulo a prime that the (1,2,2,6) limit at N = 11 has only simple Wronskian zeros off its special points at two random cross-ratios. Pair spine cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-30-cube-neck-route-review">neck review</a> asked for a test of the whole mechanism on the one type whose necks are all known, \((1,2,2,6)\) at \(N=11\), before building the \((m,n)\) necks. The missing implication is that an assembled spine limit is free of weight three. This cycle assembles the limit for every type of this shape and tests it at \(N=11\).</p>
+<p><strong>General statement.</strong> <code>lem:cube-pair-spine-limit</code> for the types \((1,2,2,n)\) and \((2,2,2,n)\), \(n\ge3\); <code>check:cube-1226-spine-weight</code> is the finite check.</p>
+<h4 id="cube-pair-spine-limit">The pair spine limit</h4>
+<p><strong>Setup.</strong> Characteristic zero. On the spine, four distinct points \(q_1,\ldots,q_4\) carry clusters of sizes \(n_1,\ldots,n_4\): either \((1,2,2,n)\) or \((2,2,2,n)\), with \(n\ge3\) at \(q_4\). The branch points are \(q_i+\varepsilon b^{(i)}_j\), with fixed distinct shapes in each cluster. The \(n\)-cluster has weight \(0\) at its mark, as in <code>lem:cube-multicluster-spine-classes</code>, and \(D_n(b^{(4)})\ne0\) (<code>thm:cube-two-n-volume</code>). \(V_a=\langle1,z,w_{ij}\rangle\) as in the mark weight dictionary, \(u_i=1/(z-q_i)\), \(C_i=\binom{n_i}2\), and \(g_i=(b^{(i)}_1-b^{(i)}_2)^2/16\) for a pair.</p>
+<p><strong>Lemma (pair spine limit).</strong> As \(\varepsilon\to0\) at fixed \(z\), \(V_a\) tends to the direct sum of:
+</p>
+<ol>
+<li>\(H^0(\mathcal O(\infty+\sum_iC_iq_i))\);</li>
+<li>for the single \(q_1\) (type \((1,2,2,n)\)) and each cluster \(q_i\): \(((z-q_1)(z-q_i))^{1/2}\mathcal P_{&lt;n_i}(u_i)\);</li>
+<li>for two pairs \(q_i,q_j\): \(((z-q_i)(z-q_j))^{1/2}\langle1,u_i,u_j,g_iu_i^2+g_ju_j^2\rangle\);</li>
+<li>for a pair \(q_i\) and the \(n\)-cluster: \(((z-q_i)(z-q_4))^{1/2}L_i\). For odd \(n\), \(L_i=H^0(\mathcal O(\lceil n/2\rceil q_i+(2n-\lceil n/2\rceil-1)q_4))\). For \(n=2k\), \(L_i\) is spanned by \(H^0(\mathcal O(kq_i+(3k-2)q_4))\) and one combination \(\alpha_iu_i^{k+1}+\beta_iu_4^{3k-1}\), which depends on the shapes. It is a hyperplane of \(H^0(\mathcal O((k+1)q_i+(3k-1)q_4))\).</li>
+</ol>
+<p><strong>Proof.</strong> <code>lem:cube-multicluster-spine-classes</code> splits \(V_a\) into classes by the monodromy signs at the four points. The class limits keep their distinct monodromy sign patterns, so they are linearly independent, and the limit is their direct sum. Its items (1) and (2) give items 1 and 2. For two clusters of sizes at least two, the class is \(((z-q_i)(z-q_j))^{1/2}\) times the span of the products \((1-b^{(i)}_a\varepsilon u_i)^{1/2}(1-b^{(j)}_b\varepsilon u_j)^{1/2}\), the two-cluster class of the neck theorems.
+</p>
+<ul>
+<li>Its limit is given by <code>thm:cube-two-double-cross-limit</code> for two pairs.</li>
+<li>For a pair and the \(n\)-cluster, it is given by <code>thm:cube-two-n-volume</code>, with the selection \(a=\lceil n/2\rceil\), \(b'=2n-a-1\) of that theorem.</li>
+</ul>
+<p>Both theorems allow arbitrary distinct positions: the two-double setup assumes only \(p_1\ne p_2\), and the volume theorem applies to any translate of the shapes. The volume theorem needs \(b_1\ne b_2\) and distinct \(c_k\), which the setup includes. The limit sits in the frame of the class factor, which is the frame of the multi-cluster lemma. The dimensions add to \(R+2\). \(\square\)</p>
+<p>For \(n\le60\) the hypothesis \(D_n\ne0\) holds for generic shapes (<code>check:cube-two-n-recurrence-range</code>). As in the multi-cluster lemma, fixed shapes reach generic points of the boundary stratum, not points of the F-curve. There the tails degenerate, and the lemma reaches the F-curve only where the degenerate tails still satisfy the hypotheses.</p>
+<h4>Weight at a generic cross-ratio</h4>
+<p><strong>Setup of the check.</strong> For \((1,2,2,6)\) (\(R+2=57\)) take \(q_2=1\), \(q_3=-1\), \(q_4=0\), and the single \(q_1=\mu\), the cross-ratio. The shapes are \(b^{(2)}=(-1,1)\), \(b^{(3)}=(-1,2)\) and \(b^{(4)}=(-5,-2,0,1,2,4)\). The two tie combinations of item 4 (\(k=3\): \(u_i^4\) against \(u_4^8\)) are computed exactly, by valuation reduction of the two \((2,6)\) classes in their own frames:
+</p>
+<ul>
+<li>\((q_2,q_4)\) by reflection \(z\mapsto1-z\), which negates the shapes;</li>
+<li>\((q_3,q_4)\) by translation.</li>
+</ul>
+<p>Both classes have the predicted orders \(0,1,1,2,3,4,4,5,7,8,9,10\).</p>
+<p>research/tools/bmd_cube_1226_spine_weight.gp (spine-1226-weight.txt) works modulo \(q=2^{61}-1\):
+</p>
+<ul>
+<li>At each special point it computes the local exponent set of the 57 functions modulo \(q\), from the echelon form of their Laurent coefficients, with each class's square-root constant dropped.</li>
+<li>The Wronskian orders there, modulo \(q\), are \(-465\) at \(\mu\), \(-804\) at \(\pm1\) and \(-1440\) at \(0\). Ranks can only drop modulo \(q\), so these exponents are at least the characteristic-zero ones.</li>
+<li>It clears these, interpolates the remaining polynomial \(Q(z)\) from 701 values of the Wronskian (determinants of Taylor coefficients times the class factors, all of even dimension), and confirms it at three further points.</li>
+</ul>
+<p><strong>Finite check.</strong> At \(\mu=987654321\) and \(\mu=123456789012345\), \(\deg Q=378\), \(Q\) does not vanish at the special points, and \(\gcd(Q,Q')=1\). So every point of the spine other than \(\mu,\pm1,0\) and \(\infty\) has weight at most one there over \(\overline{\mathbb F}_q\); over \(\mathbb Q\) this needs \(\deg Q\) to be preserved (see the caveats). In particular none has weight three.</p>
+<p>Scope and caveats:
+</p>
+<ul>
+<li>This is a finite check modulo \(q\) at two values of \(\mu\). A squarefree reduction implies a squarefree \(Q\) over \(\mathbb Q\) at those \(\mu\) if the degree is preserved, which was not verified. It implies weight at most one for \(\mu\) off a proper closed subset, not for every \(\mu\).</li>
+<li>The frame at \(z=\infty\) and the special points themselves were not tested.</li>
+<li>The check tests the limit space the lemma gives, so it needs the lemma's hypotheses. The weight-zero hypothesis for the six-cluster shape \((-5,-2,0,1,2,4)\) holds: research/tools/bmd_cube_cluster_weight_zero.gp (cluster-weight-zero.txt) finds the \(17\times17\) Taylor matrix of \(1,v\) and the \(15\) functions \(\sqrt{(1-b_iv)(1-b_jv)}\) nonsingular, in exact arithmetic. As a control, the symmetric shape \((-5,-3,-1,1,3,5)\) fails it.</li>
+<li>Fixed shapes give points of the boundary stratum, not of the F-curve.</li>
+</ul>
+<p><strong>What this does to the route.</strong> The assembly works. The class decomposition, the neck theorems and the exact tie coefficients combine into a 57-dimensional limit whose Wronskian is computable. At a generic cross-ratio it is cleaner than weight two requires. Weight at most one at generic points is stronger than the criterion needs. The obstruction, if any, sits at special cross-ratios, at the special points, or at the degenerate tails. The next computations are the discriminant of \(Q\) in \(\mu\), for weight at least two at special cross-ratios, and the \((3,n)\) necks that spanning requires.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>all cross-ratios (the discriminant of \(Q\) in \(\mu\) and a common root with \(Q''\)), the special points, \(\infty\), and the degenerate tails and nodes of \((1,2,2,6)\);</li>
+<li>the \((m,n)\) necks with \(m,n\ge3\) and the types they serve;</li>
+<li>\(D_n\not\equiv0\) for \(n>60\);</li>
+<li>the (B) side.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The multi-cluster spine lemma (statement), the two-double theorem, the volume theorem and its range check, the neck review.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the class dimensions (\(57\) for \((1,2,2,6)\), \((n^2+11n+34)/2\) for \((2,2,2,n)\)), item 4 against the volume theorem, the tie-ratio transport (reflection and translation, even powers), the exponent-set and class-factor normalizations, the interpolation and the gcd test. It found no mathematical error. It required scope and wording changes, all applied: the title's qualifier; the field over which the weight bound holds; the mod-\(q\) nature of the exponents; the source of the arbitrary positions; the independence of the classes; and the weight-zero hypothesis, now checked for the shape used.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zza">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 6.15 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 46.07 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 4.84 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 24.26 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">41.64 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">9.20 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
