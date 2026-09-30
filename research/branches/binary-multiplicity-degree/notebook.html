@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, survives on the special-cone form only through an unknown special surface (<a href="#cube-special-cone-deep-strata">special cones meet deep strata</a>).</p>
-<p>Next, for (B): test conj:cube-far-two-adic-shape at \((e,l)=(2,2)\), degree \(152\), with an exact integral determinant in FLINT. Scale the recursion rows by \(2\) to clear the half-integers. The conjecture fails if the reduction modulo \(2\) has a factor other than \(x\) and \(1+x\). If it passes, compute the 2-adic cluster tree of the roots at the computed sizes: rescale at \(0\), \(-1\) and \(\infty\), for instance \(x=4y\) at the slope-\(2\) clusters. Look for a self-similar rule that predicts the \(\mathbb Q_2\)-factor types, and hence the absence of triple roots, for every \((e,l)\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, has no mechanism. For (B), the far polynomials have a regular 2-adic structure at six sizes (<a href="#cube-far-two-adic-clusters">far 2-adic clusters</a>).</p>
+<p>Next, for (B): compute the second level of the 2-adic cluster tree at the six sizes. Rescale the slope-\(2\) clusters, \(x=4y\) at \(0\) and similarly at \(-1\) and \(\infty\). Test whether the reduction modulo \(2\) is again supported at \(\{0,1,\infty\}\) with valuations \(2-2^{-j}\). In parallel, try to prove the mod-2 shape from the integral recursion \(q_{m+1}=2(\alpha-m)(1+x)q_m+2(\beta-m)xq_m+2x(1+x)q_m'\), by a 2-adic valuation reduction of the row space as in the far class determinants.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -35285,6 +35285,76 @@ For \(r=3\), degrees \(\deg G\le2\) survive at \((1,1)\), \(\le9\) at \((1,2)\) 
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 2.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-far-two-adic-clusters" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-far-two-adic-clusters">
+<h3>30 September 2026 — The mod-2 shape of the far polynomials holds at six sizes, with 2-adic cluster sizes 4l(6el−5e−4l+4), 4l(e+1), 4l·R_e at 0, −1, ∞</h3>
+<p class="entry-meta">Conjecture with exact checks: the far polynomials reduce to x^A(1+x)^B mod 2 at six sizes up to degree 152. The 2-adic cluster sizes and valuations fit closed forms. Far two-adic cluster cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-30-cube-special-cone-and-two-adic">previous cycle</a> conjectured that the primitive far polynomials \(W_k\) of the peeling degeneration reduce modulo \(2\) to \(x^A(1+x)^B\) (conj:cube-far-two-adic-shape). The evidence was three sizes; the size \((2,2)\) did not finish in PARI. This cycle tests the prediction at larger sizes. It also asks whether the 2-adic root clusters at \(0,-1,\infty\) follow a rule in \((e,l)\), the first step of a 2-adic cluster tree for (B)'s "no triple roots".</p>
+<p><strong>General statement.</strong> <code>conj:cube-far-two-adic-clusters</code>, for every \(e,l\ge1\), refining conj:cube-far-two-adic-shape.</p>
+<h4>Computation</h4>
+<p>research/tools/bmd_cube_far_wronskian_flint.c computes the far Wronskian determinant exactly over \(\mathbb Z\) with FLINT's polynomial-matrix determinant. It uses the recursion of research/tools/bmd_cube_far_wronskian.gp with the rows scaled by \(2^m\): \(q_{m+1}=2(\alpha-m)(1+x)q_m+2(\beta-m)xq_m+2x(1+x)q_m'\), which is integral. research/tools/bmd_cube_far_two_adic_check.gp removes the factors \(x\) and \(1+x\) and takes the primitive part.</p>
+<ul>
+<li>Validation: the result at \((1,1)\) equals the saved \(W_{1,1}\) of cycle bmd-20260930-zzn, up to sign.</li>
+<li>Build: <code>gcc -O2 research/tools/bmd_cube_far_wronskian_flint.c -lflint -lgmp</code>. The sizes \((1,2),(2,1),(1,3),(3,1)\) ran in one batch of \(225\) s by the session journal. \((1,1)\) and \((2,2)\) ran singly, with an earlier single-size form of the same program.</li>
+</ul>
+<p>Outputs in research/results/bmd-20260930-zzw/: far-flint-11.txt, far-flint-22.txt, far-flint-batch.txt, far-two-adic-check.txt and the determinants det_e_l.gp.</p>
+<h4>Results</h4>
+<table>
+<tr><th>\((e,l)\)</th><th>degree</th><th>squarefree</th><th>mod \(2\)</th><th>roots near \(0,-1,\infty\)</th><th>slopes at \(2\), up to sign</th></tr>
+<tr><td>\((1,1)\)</td><td>\(16\)</td><td>yes</td><td>\(x^4(1+x)^8\)</td><td>\(4,8,4\)</td><td>\(2,\tfrac74\)</td></tr>
+<tr><td>\((1,2)\)</td><td>\(48\)</td><td>yes</td><td>\(x^{24}(1+x)^{16}\)</td><td>\(24,16,8\)</td><td>\(2,\tfrac{15}8\)</td></tr>
+<tr><td>\((2,1)\)</td><td>\(44\)</td><td>yes</td><td>\(x^{8}(1+x)^{12}\)</td><td>\(8,12,24\)</td><td>\(2,\tfrac{15}8\)</td></tr>
+<tr><td>\((2,2)\)</td><td>\(152\)</td><td>yes</td><td>\(x^{80}(1+x)^{24}\)</td><td>\(80,24,48\)</td><td>\(2,\tfrac{15}8,\tfrac{31}{16}\)</td></tr>
+<tr><td>\((1,3)\)</td><td>\(96\)</td><td>yes</td><td>\(x^{60}(1+x)^{24}\)</td><td>\(60,24,12\)</td><td>\(2,\tfrac74,\tfrac{15}8,\tfrac{31}{16}\)</td></tr>
+<tr><td>\((3,1)\)</td><td>\(88\)</td><td>yes</td><td>\(x^{12}(1+x)^{16}\)</td><td>\(12,16,60\)</td><td>\(2,\tfrac74,\tfrac{15}8,\tfrac{31}{16}\)</td></tr>
+</table>
+<p>"Roots near \(0\)" counts the roots of positive valuation, from the Newton polygon of \(W(x)\) at \(2\); "near \(-1\)" uses \(W(x-1)\), and "near \(\infty\)" the reversal. The reduction modulo \(2\) is \(x^A(1+x)^B\) at all six sizes, including the three new ones, so conj:cube-far-two-adic-shape survives its first predictions. \(W_{1,3}\) and \(W_{3,1}\) are also squarefree, which extends the record's squarefree sizes.</p>
+<h4 id="cube-far-two-adic-clusters">Cluster sizes</h4>
+<p><strong>Conjecture (far 2-adic clusters).</strong> For all \(e,l\ge1\), with \(R_n=n(2n-1)\):</p>
+<ol>
+<li>\(W_k\equiv x^A(1+x)^B\pmod 2\);</li>
+<li>the numbers of roots of \(W_k\) in the 2-adic residue discs of \(0\), \(-1\) and \(\infty\) are \(4l(6el-5e-4l+4)\), \(4l(e+1)\) and \(4lR_e\). Their sum is the degree \(4l(2e^2+6el-5e-4l+5)\) of the far-Wronskian script;</li>
+<li>every root in these discs has 2-adic distance \(2^{-v}\) to its point, with \(v\in\{2\}\cup\{2-2^{-j}:j\ge2\}\); near \(\infty\), \(|x|_2=2^{v}\).</li>
+</ol>
+<p>Given (1), part (2) only names the exponents: \(A\) roots near \(0\), \(B\) near \(-1\), and the rest near \(\infty\). So its content is the two formulas \(A=4l(6el-5e-4l+4)\) and \(B=4l(e+1)\); "the sum is the degree" is automatic. Both formulas fit all six sizes. The five sizes with \(e=1\) or \(l=1\) constrain them only weakly, and the order of guessing and checking is not documented, so they are fits, not predictions. The genuine predictions of this cycle were the mod-2 shape at \((2,2)\), \((1,3)\) and \((3,1)\), from the previous cycle's conjecture. The integrality of Newton polygons makes the length of a segment of slope \(2-2^{-j}\) divisible by \(2^j\) automatically, so the content of (3) is the set of valuations.</p>
+<p>A duality \((e,l)\leftrightarrow(l,e)\) with \(x\leftrightarrow1/x\), suggested by \((1,2)/(2,1)\) and \((1,3)/(3,1)\), where the Newton polygon at \(0\) of one equals that of the reversal of the other off slope \(0\), fails at \((2,2)\): there are \(80\) roots near \(0\) and \(48\) near \(\infty\).</p>
+<p><strong>What it would give.</strong> By Dumas' theorem, a factor \(G^3\) of \(W_k\) takes no roots from a segment of slope \(2-2^{-j}\) and length below \(3\cdot2^j\). At the computed sizes this excludes every non-integral segment except the slope-\(31/16\) segment of length \(48=3\cdot16\) at \((1,3)\) and \((3,1)\), and it excludes nothing at the integral slopes \(\pm2\) and \(0\). A route to "no triple roots" along these lines is a program with missing ingredients:</p>
+<ul>
+<li>length bounds below \(3\cdot2^j\) at every non-integral slope, which the conjecture does not give;</li>
+<li>the deeper levels of the tree at the integral-slope clusters, after rescaling (\(x=4y\) at \(0\), and similarly at \(-1\) and \(\infty\));</li>
+<li>termination of the tree.</li>
+</ul>
+<p>Nothing of this is proved; only the first level is conjectured.</p>
+<p><strong>What this does to the route.</strong> (B) needs far polynomials without triple roots for every \((e,l)\). Their 2-adic structure is regular at the six computed sizes, with explicit cluster sizes and valuations of the form \(2-2^{-j}\). This is the first candidate for a uniform arithmetic description. The next step is the second level of the cluster tree, and a proof of the mod-2 shape from the integral recursion. (K) is unchanged and remains the highest risk.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(K) for \(N\ge11\);</li>
+<li>(B): a proof of conj:cube-far-two-adic-clusters and its deeper levels, or another mechanism for triple roots; neck points; odd \(N\);</li>
+<li>(L) at \(N=11\), awaiting approval.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The far-Wronskian script (space, recursion, degree formula); the special cone and two-adic entry (conjecture, its outputs).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked that the C program computes the same space as the gp script, the scaling and primitive part, every table entry and formula against the output. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the automatic divisibility clause is removed from (3);</li>
+<li>part (2) is stated as naming the exponents of (1);</li>
+<li>the formulas are called fits;</li>
+<li>the Dumas paragraph names the non-excluded segment and states the missing ingredients;</li>
+<li>the provenance of the \((1,1)\) and \((2,2)\) runs and the build line are added.</li>
+</ul>
+<p>These weaken or document, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzw">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 26.32 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">4 min 51.27 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">56.39 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5 min 38.52 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
