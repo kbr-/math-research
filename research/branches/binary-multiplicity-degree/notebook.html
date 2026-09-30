@@ -43,12 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\) by the <a href="#cube-first-step-two-certificates">two-certificate corollary</a>. At \(N=11\), (B) holds and (L) awaits an approved long run. For general \(N\):</p>
-<ul>
-<li>(K) is equivalent to \(E'\) having no component of codimension at most two (<a href="#cube-contact-covector-formula">covector formula</a>);</li>
-<li>(B) for even \(N\) reduces to far-polynomial squarefreeness, conjectured through irreducibility over \(\mathbb Q\), for which the simple arithmetic proofs fail (<a href="#entry-2026-09-30-cube-far-wronskian-arithmetic">far arithmetic</a>), and to neck simplicity.</li>
-</ul>
-<p>Next, a route review of statement 3, due after five research entries. Assess the three open inputs, (K), (B) and per-size (L), against the goal's instances \(N\ge11\), and name the highest-risk one. Choose its Outside leads and Absurd bridges as answers to the obstacle that review names, and run their cheap tests.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. The <a href="#entry-2026-09-30-cube-statement-three-review">statement three review</a> names (K) as the highest risk, with no working mechanism. For (B), the far polynomials have height-one Newton segments at Schur primes, which is the entry point of Filaseta's irreducibility method.</p>
+<p>Next, for (K): test the dimensionally-proper-limits lead on the pair-collision divisor, where the moving-subset lemma gives unique limits. Compute how the contact locus meets a general point of that divisor, and whether its limit there is dimensionally proper. In parallel, for (B): derive the extreme coefficients of the far polynomials \(W_k\) as factorial ratios in \(e,l\) from the exponents of \(F_k\), and predict the Schur primes and segment lengths for every \((e,l)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -34505,6 +34501,177 @@ At the other primes the polygons are flat or mostly flat. So Eisenstein–Dumas 
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-statement-three-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Route review: assessment and cheap tests only; the tests' outputs are saved under research/results/bmd-20260930-zzo/ and no new claim is registered.">
+<h3>30 September 2026 — Review: statement 3 has three open inputs; (K) has no mechanism, the far half of (B) has a candidate arithmetic lead, and per-size certificates stop near eleven or twelve roots</h3>
+<p class="entry-meta">Route review of open statement 3 after the symmetry, covector, eleven-root and far-polynomial cycles. Highest risk: (K). Schur-prime Newton polygons suggest a Filaseta-type route to the far half of (B). Statement three review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>General statement.</strong> The line's claim is <code>cor:cube-first-step-two-certificates</code>: for \(N\ge7\), \(\alpha_N=\lambda_N\) follows from (B) and (L), and the <a href="#cube-contact-criterion">contact criterion</a> replaces (L) by (K). In this period:</p>
+<ul>
+<li><code>lem:cube-symmetry-restatement</code> showed that symmetry conclusions only restate (K);</li>
+<li><code>lem:cube-contact-covector-formula</code> made \(E'\) explicit at jet length \(R+4\);</li>
+<li><code>check:cube-eleven-root-base-certificate</code> proved (B) at \(N=11\);</li>
+<li><code>conj:cube-far-wronskian-irreducible</code> proposed irreducibility as the mechanism for the far half of (B), and <code>check:cube-far-wronskian-arithmetic</code> found no simple arithmetic proof of it.</li>
+</ul>
+<p><strong>What the goal needs.</strong> Statement 3 for every \(N\ge11\): (B) and (K) as statements for all \(N\). A per-size certificate helps only at a given \(N\). At \(N=11\), (L) awaits an approved run of two to three hours.</p>
+<h4>Falsification attempt</h4>
+<p><strong>Can per-size certificates reach the goal?</strong> No. Their cost grew by factors \(7.4\) and \(5.7\) from \(N=8\) to \(10\). Assuming about two to three hours at \(N=11\) and a similar factor of about five, \(N=12\) would take roughly ten hours or more, and the goal is every \(N\). Per-size work can settle \(N=11\) and perhaps \(N=12\), but it cannot prove statement 3.</p>
+<p><strong>Is the far polynomial the solution of a small Fuchsian equation?</strong> If \(W_k\) satisfied \(AW''+BW'+CW=0\) with \(A\) nonzero at the roots of \(W_k\) off \(\{0,-1\}\), uniqueness of solutions would force those roots to be simple, the Heine–Stieltjes mechanism: at such a point, \(W=W'=0\) forces \(W\equiv0\). A Fuchsian equation with singular points in \(\{0,-1,\infty\}\) has, after clearing denominators, \(A=x^2(x+1)^2\), \(\deg B\le3\) and \(\deg C\le2\), so all coefficients of degree at most four. When an equation exists only by the generic count, the condition on \(A\) is no easier than computing \(\gcd(W,W')\) directly. research/tools/bmd_cube_far_ode.gp (far-ode-test.txt) searched for such equations:</p>
+<ul>
+<li>At \((e,l)=(1,1)\), the least-degree second-order equation has coefficients of degree \(8\), exactly the generic threshold (\(3(d+1)&gt;d+17\) gives \(d\ge8\)), and the least third-order one has degree \(5\), again the generic threshold. There is no equation with coefficients of degree at most seven, so no Fuchsian equation with singular points in \(\{0,-1,\infty\}\).</li>
+<li>At \((1,2)\) there is none of order two or three with coefficients up to degree \(12\), below the generic thresholds (\(24\) and \(16\)). So only small equations are excluded, including the Fuchsian ones.</li>
+</ul>
+<p>So the mechanism is refuted at these sizes.</p>
+<h4>Obstacle</h4>
+<p>The line is stuck on mechanisms for two statements valid for every \(N\): (K), the absence of low-codimension components of \(E'\), and (B), the base weight bound. Per-size certificates cannot replace them.</p>
+<ul>
+<li>(K): \(E'\), the rank-at-most-two locus of an explicit \(N\times3\) covector matrix over the contact locus, has no component of codimension at most two. Every route tried reduces (K) to itself: F-curves, moving-subset curves and symmetry. The one known structure in the contact locus, the symmetric locus, avoids \(E'\).</li>
+<li>(B): for even \(N\), the far polynomials of the peeling degeneration are squarefree and the neck points are simple. Odd \(N\) has its own peeling.</li>
+</ul>
+<p>(K) is the highest risk: (B) at least has explicit polynomial families and an arithmetic lead, while (K) has neither.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Filaseta's Newton-polygon method for factorial-coefficient polynomials</strong> (Filaseta, Acta Math. 174 (1995) 383–397, irreducibility of all but finitely many Bessel polynomials; Filaseta and Lam, Acta Arith. 105 (2002) 177–182, generalized Laguerre polynomials; Dumas 1906). Primes in suitable ranges divide the extreme coefficients exactly once and give Newton polygon segments of height one. By Dumas' theorem a factor over \(\mathbb Q\) contains all or none of such a segment, and enough such segments force irreducibility. It targets the far half of (B), through <code>conj:cube-far-wronskian-irreducible</code>. <strong>Answers.</strong> It is a proof method for the conjecture for all \((e,l)\), once the coefficients of \(W_k\) are known in closed form as factorial ratios. <strong>Test.</strong> Passed: research/tools/bmd_cube_far_schur.gp (far-schur-primes.txt) finds height-one segments at every computed size. Values are PARI's root valuations, the negatives of the lower-hull slopes. At \((1,1)\) it is \(p=17\): root valuation \(1/8\) (hull slope \(-1/8\)), length \(8\). At \((1,2)\), \(p=29\) and \(31\) give root valuations \(-1/10\) and \(-1/11\), lengths \(10\) and \(11\). At \((2,1)\), \(p=29\) and \(31\) give \(1/9\) and \(1/10\), lengths \(9\) and \(10\). Each \(W_k\) therefore has a \(p\)-adically irreducible block, the polynomial being primitive integral. Each block has length at most half the degree (\(8=16/2\) at \((1,1)\)), so several must be combined. The previous cycle's output (research/results/bmd-20260930-zzn/far-wronskian-arithmetic.txt) already has more height-one segments: at \((1,2)\), \(p=11\) gives lengths \(11\) and \(5\) and \(p=13\) gives \(9,6,4,2\); at \((2,1)\), \(p=11\) gives \(11\) and \(p=13\) gives \(5\) and \(3\). Combining them is a cheap next check.</li>
+<li><strong>Heine–Stieltjes theory</strong> (Stieltjes 1885; polynomial solutions of Fuchsian equations have simple roots off the singular points). It targets the same statement. <strong>Answers.</strong> Squarefreeness for all \((e,l)\), if \(W_k\) solved a Fuchsian equation with singular points \(0,-1,\infty\). <strong>Test.</strong> Falsified: see the falsification attempt above.</li>
+<li><strong>Dimensionally proper limit linear series</strong> (Eisenbud and Harris, Invent. Math. 85 (1986) 337–371: on a curve of compact type, a family of limits with a dimensionally proper space of limits smooths to the expected dimension). It targets (K): \(E'\) would be excluded if every component of the contact locus degenerates, on some boundary stratum, to a dimensionally proper limit. <strong>Answers.</strong> A lower bound for the codimension of the contact locus from a degeneration in which it can be counted, the role the moving-subset curves were meant to play. <strong>Test.</strong> Not run: the contact locus's limits on a boundary divisor are not computed, and the covers are not of compact type.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>The Gaudin model and the Bethe ansatz</strong> (Mukhin, Tarasov and Varchenko, Ann. of Math. 170 (2009) 863–881, the Shapiro conjecture, and J. Amer. Math. Soc. 22 (2009) 909–940, transversality). Translation: the far space \(F_k\) is a point of a Schubert intersection with osculating flags at \(0\), \(-1\) and \(\infty\), and the roots of \(W_k\) are its remaining ramification points, the Bethe roots. <strong>Answers.</strong> The reality theorem says that a space whose ramification points are all real is real, and transversality holds for osculating flags at distinct real points. So a reality statement for the Bethe roots would put the problem into the setting where the fibres are reduced. Simple ramification points are a hypothesis of transversality there, not a conclusion, so the bridge could at best organize the problem. <strong>Test.</strong> Falsified: \(W_k\) at \((1,1)\) has only \(8\) real roots of \(16\), so the reality hypothesis fails.</li>
+<li><strong>The Sylvester–Schur theorem on primes in intervals</strong> (Schur, 1929, irreducibility of truncated exponentials and Laguerre polynomials). Translation: the degree of \(W_k\) and the half-integral exponents of \(F_k\) determine ranges of primes that divide the factorials in its extreme coefficients exactly once. The correct statement: if \(p\nmid a_n\), \(v_p(a_0)=1\) and \(p\mid a_i\) for all \(i&lt;k\), then the Newton polygon begins with a segment of height one and length at least \(k\). So \(W\) has an irreducible factor over \(\mathbb Q_p\), and hence a factor over \(\mathbb Q\), of degree at least \(k\). It is irreducible over \(\mathbb Q\) if \(k&gt;n/2\) and no factor of degree at most \(n-k\) exists; Schur and Filaseta exclude those with further primes. The mirror statement holds with \(a_n\) and \(a_0\) swapped. <strong>Answers.</strong> Irreducibility, or at least a lower bound on the degrees of factors, for all \((e,l)\) by counting primes in intervals. <strong>Test.</strong> Passed, as an applicability test: the extreme coefficients have such primes, each with valuation one: \(17\) divides the constant term at \((1,1)\) (degree \(16\)); \(29\) and \(31\) divide the leading coefficient at \((1,2)\) (degree \(48\)) and the constant term at \((2,1)\) (degree \(44\)). They produce the height-one segments above. Each segment has length at most half the degree, so the plain Schur argument does not yet close.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-normality-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-peeling-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-peeling-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-moving-route-review:1">Developed in the <a href="#entry-2026-09-30-cube-contact-symmetry">symmetry restatement</a>: for contact-type weight the bridge's first-order argument is the contact criterion's, and its conclusion (low-codimension components lie in the symmetric locus) is empty for N at least 7. The <a href="#entry-2026-09-30-cube-covector-formula">covector formula</a> entry then found the symmetric locus outside E'. <strong>Follow-up.</strong> Closed: the conclusion is vacuous for N at least 7, and symmetry does not produce E'.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-complete-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-arc-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Assessment</h4>
+<p>This period made the per-size route reach its limit. (B) is proved at \(N=11\), and (L) there needs one approved long run. It also removed a false mechanism, symmetry, for (K). (K) has no working mechanism after many attempts; it is the highest risk and currently without a plan beyond re-reading the covector matrix. The far half of (B) now has a candidate mechanism, though it proves irreducibility at no size yet and the coefficients' closed forms are unknown. The far polynomials behave like factorial-coefficient polynomials, with height-one Newton segments at Schur primes, which is how Filaseta proves irreducibility for Bessel and Laguerre families. The neck points and odd \(N\) are not covered. The line is not stalled on the far half of (B), but it is stalled on (K).</p>
+<p><strong>Next step on the highest-risk item.</strong> (K): test the dimensionally-proper-limits lead on the pair-collision divisor, where the moving-subset lemma already gives unique limits. Compute how the contact locus meets a general point of that divisor, and whether its limit there is dimensionally proper, so that a component of codimension at most two would have to show up as an excess on the boundary. In parallel, and cheaper, for (B): derive the leading and constant coefficients of \(W_k\) as factorial ratios in \(e,l\) from the exponents of \(F_k\) at \(0\) and \(\infty\), and predict the Schur primes and segment lengths for every \((e,l)\).</p>
+<p><strong>Dependencies re-read.</strong> The two-certificate corollary, the contact criterion, the covector formula, the peeling degeneration, and the far-polynomial entries.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked both tests against their outputs (it confirmed PARI's newtonpoly convention and the real-root count), the generic counts of the ODE search, Dumas' consequence, the citations and the assessment. Verdict: pass with corrections, all applied:
+</p>
+<ul>
+<li>the Heine–Stieltjes refutation rests on the Fuchsian degree bound, with the generic thresholds stated;</li>
+<li>the uniqueness hypothesis is weakened to what the argument uses;</li>
+<li>Newton values are called root valuations;</li>
+<li>"at most half the degree" replaces "shorter";</li>
+<li>the further height-one segments of the previous cycle are cited;</li>
+<li>the Sylvester–Schur statement is corrected, and it is said which coefficients the primes divide;</li>
+<li>the Bethe-ansatz bridge is re-characterized;</li>
+<li>the per-size premise is stated, and the claims about (B) are limited to its far half.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzo">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 56.29 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 9.55 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">46.08 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.53 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
