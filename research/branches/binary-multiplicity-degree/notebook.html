@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) by the boundary reducedness criterion. On divisors both pieces are spine spaces, and at \(N=11\) every rigid piece is simple (<a href="#cube-divisor-spine-pieces">divisor pieces</a>). The star strata need the neck-corner polygon, which rests on cancellations from the product structure (<a href="#entry-2026-10-02-cube-corner-generic-bound">corner bound</a>). For every \(N\), rigid simplicity for \(n\ge2\) has no mechanism.</p>
-<p>Next, for (K): a two-scale proof of the corner polygon, extending the axis proof. Rescale the \(A\)-factors by \(\lambda\) and the \(B\)-factors by \(\lambda'\), expand at \(u=1/z\) and at \(1/(z-1)\), and find the vertex \(v_r\) as the minimal cost of a flag split between the two points. Test it first at \((2,n)\), where the vertices \((j(j-1),(n+1-j)(n-j))\) are known.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) by the boundary reducedness criterion. At \(N=11\) every rigid piece is simple, and the star strata need the neck-corner polygon. At the \((2,n)\) corners the vertex coefficients are power-sum Hankel determinants for \(n\le4\) (<a href="#cube-corner-two-n-hankel">corner Hankel</a>). For every \(N\), rigid simplicity for \(n\ge2\) has no mechanism.</p>
+<p>Next, for (K): prove the two-column corner Hankel conjecture for every \(n\). At vertex \(r\), reduce the rows \(A_1B_l\) against the \(B_l\), and write the leading block of the minor as a product \(V_{\le n-r}\,D\,V_{\le n-r}^T\) of a shape Vandermonde, a diagonal of binomial constants, and its transpose. Then Cauchy–Binet gives \(H_{n-r}\). Check the factorization on the \((2,3)\) and \((2,4)\) data first.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -38669,6 +38669,44 @@ the Frobenius (Pólya–Mammana) factorization. It follows by induction on \(s\)
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">58.96 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3 min 56.35 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-corner-two-n-hankel" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-neck-corner-two-n-hankel check:cube-corner-two-n-vertices">
+<h3>2 October 2026 — At the (2,n) neck corners the vertex coefficients are power-sum Hankel determinants of the shape, so they are sums of squared Vandermondes</h3>
+<p class="entry-meta">Conjecture, from exact vertex minors for n ≤ 4, that the vertex coefficients of the (2,n) corner polygon are constants times Hankel determinants of power sums; this identifies what a proof must produce. Corner Hankel cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The star strata of the <a href="#cube-divisor-spine-pieces">assembly</a> need the neck-corner polygon (conj:cube-neck-corner-antidiagonal-polygon). The <a href="#entry-2026-10-02-cube-corner-generic-bound">corner bound</a> showed that the polygon comes from cancellations forced by the product structure, so a proof needs the actual vertex coefficients. For the smallest family, the necks \((2,n)\) with vertices \(v_r=(r(r+1),(n-r)(n-1-r))\), this cycle computes the minor of the neck space on each vertex's column set exactly. It then asks what the lowest coefficient is as a function of the shape.</p>
+<p><strong>General statement.</strong> <code>conj:cube-neck-corner-two-n-hankel</code>, for every \(n\ge2\); evidence <code>check:cube-corner-two-n-vertices</code>.</p>
+<h4 id="cube-corner-two-n-hankel">The vertex minors</h4>
+<p><strong>Setting.</strong> Neck \((2,n)\) of the polygon entry: \(x=(0,\lambda)\), \(y_j=\lambda's'_j\) with \(s'_1=0\), \(s'_2=1\) and \(s'_3,\ldots,s'_n\) free. The rows are \(B_l\), the divided difference of \(B(y)=\sum_b\beta_by^b(z-1)^{-b}\) over \(y_1,\ldots,y_{l+1}\), and \(A_1B_l\), where \(A_1=\sum_{a\ge1}\alpha_a\lambda^{a-1}z^{-a}\) is the divided difference of \(A\) over \(0,\lambda\), for \(l&lt;n\). Here \(\alpha_a=\beta_a=(-1)^a\binom{1/2}a\). Coordinates are taken on \(1\), \(z^{-a}\) and \((z-1)^{-b}\), by partial fractions. The column set of vertex \(r\) is \(1,z^{-1},\ldots,z^{-(r+1)},(z-1)^{-1},\ldots,(z-1)^{-(2n-2-r)}\), the complete system \(L((r+1)[0]+(2n-2-r)[1])\) of the conjecture.</p>
+<p><code>research/tools/bmd_cube_corner_two_n.gp</code> computes that minor exactly over \(\mathbb Q[s'][\lambda,\lambda']\), with the series truncated at total degree \(2n+2\), for \(n=2,3,4\) and every \(r\) (research/results/bmd-20261002-j/corner-two-n.txt). Each entry is kept to total degree \(2n+2\) in \((\lambda,\lambda')\), so the minor is exact in total degree at most \(2n+2\). That covers every vertex whose total degree \(r(r+1)+(n-r)(n-1-r)\) is at most \(2n+2\). That is every vertex except the two axis vertices of \((2,4)\), \((0,12)\) and \((12,0)\), which thm:cube-neck-corner-axis-vertices proves anyway. In all \(9\) cases, exactly in the \(7\) interior and small ones:</p>
+<ul>
+<li>the minor has no term \(\lambda^i\lambda'^j\) with \((i,j)\le(r(r+1),(n-r)(n-1-r))\) other than the vertex itself;</li>
+<li>the coefficient of \(\lambda^{r(r+1)}\lambda'^{(n-r)(n-1-r)}\) is a nonzero rational constant times the Hankel determinant \(H_{n-r}=\det(p_{i+j}(s'))_{0\le i,j&lt;n-r}\) of the power sums \(p_q(s')=\sum_js_j'^q\) (with \(p_0=n\)).</li>
+</ul>
+<p>For example, at \((2,3)\) the coefficients are \(s_3'^2(s_3'-1)^2\), which is \(H_3\) up to a constant (the squared Vandermonde of \(0,1,s_3'\)), then \(s_3'^2-s_3'+1=\tfrac12\sum_{i&lt;j}(s_i'-s_j')^2\), which is exactly \(H_2/2\), then a constant (\(H_1=n\)). By Cauchy–Binet, \(H_k=\sum_{|J|=k}V(s'_J)^2\), the sum of the squared Vandermondes of the \(k\)-subsets of the shape. So every vertex coefficient is nonzero for generic shapes, and positive up to its constant for real distinct shapes.</p>
+<p><strong>Conjecture (two-column corner Hankel).</strong> For every \(n\ge2\) and \(0\le r\le n-1\), the minor of the \((2,n)\) neck space on the column set of \(v_r\) has lowest term \(c_{n,r}H_{n-r}(s')\lambda^{r(r+1)}\lambda'^{(n-r)(n-1-r)}\) with \(c_{n,r}\in\mathbb Q^\times\). There is no term below it in both exponents.</p>
+<p>This covers only the vertex minors. The polygon conjecture also needs every other Plücker coordinate to have no support below the lower boundary, which is not tested here. The endpoints \(r=0\) and \(r=n-1\) are the axis vertices, proved by thm:cube-neck-corner-axis-vertices. That theorem gives the vertex, the absence of lower terms, and generic nonvanishing there. At \(r=n-1\) the coefficient is constant in \(s'\), since \(s'\) drops out at \(\lambda'=0\). At \(r=0\) the identification with \(H_n\) is exact only for \(n\le3\); at \((2,4)\) it comes from a truncated computation and is only suggestive.</p>
+<p><strong>What it indicates.</strong> The Hankel form is the signature of a Gram matrix \(VV^T\) of the shape's Vandermonde. The \(B\)-rows carry the complete homogeneous polynomials \(h_{b-l}(s'_1,\ldots,s'_{l+1})\), whose Jacobi–Trudi minors are Schur functions. A proof at vertex \(r\) should therefore write the leading block as a product of a Vandermonde-type matrix in the shape and its transpose, through the vanishing-sequence split: \(r\) extra orders at \(0\) paid with \(\lambda\), and \(n-1-r\) extra orders at \(1\) paid with \(\lambda'\). Then Cauchy–Binet gives \(H_{n-r}\). As a heuristic analogy, power-sum Hankel factors also appeared in the working context's neck-block determinants and in the <a href="#cube-merge-window-transversality-theorem">merge transversality</a> factorization at \((n,K,a)=(1,3,2)\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A proof of the vertex coefficients for every \(n\), and of the absence of lower terms in all Plücker coordinates, for \((2,n)\) and then \((m,n)\).</li>
+<li>The edge pencils.</li>
+<li>For every \(N\): rigid simplicity for \(n\ge2\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The neck corner polygon entry (setting, divided-difference rows, conjecture); thm:cube-neck-corner-axis-vertices (statement); the corner bound entry.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the rows against the polygon entry, the partial-fraction map, the column sets, the truncation, the outputs and the Cauchy–Binet statement. Verdict: pass with corrections, all applied: the truncation is stated in total degree, the axis vertices are credited to the axis theorem without identifying the \(r=0\) coefficient beyond \(n\le3\), and the analogies are labelled heuristic.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-j">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 29.33 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 46.35 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.95 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5 min 55.90 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
