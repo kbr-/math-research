@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) by the boundary reducedness criterion. At \(N=11\) every rigid piece is simple, and the star strata need the neck-corner polygon. At the \((2,n)\) corners the vertex coefficients are power-sum Hankel determinants for \(n\le4\) (<a href="#cube-corner-two-n-hankel">corner Hankel</a>). For every \(N\), rigid simplicity for \(n\ge2\) has no mechanism.</p>
-<p>Next, for (K): prove the two-column corner Hankel conjecture for every \(n\). At vertex \(r\), reduce the rows \(A_1B_l\) against the \(B_l\), and write the leading block of the minor as a product \(V_{\le n-r}\,D\,V_{\le n-r}^T\) of a shape Vandermonde, a diagonal of binomial constants, and its transpose. Then Cauchy–Binet gives \(H_{n-r}\). Check the factorization on the \((2,3)\) and \((2,4)\) data first.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) by the boundary reducedness criterion. At \(N=11\) every rigid piece is simple, and the star strata need the neck-corner polygon. At \((2,n)\) the \(\lambda\)-direction is proved (<a href="#cube-corner-two-n-lambda-reduction">\(\lambda\)-reduction</a>), and the vertex conjecture reduces to \(\det M_r(\lambda')\). For every \(N\), rigid simplicity for \(n\ge2\) has no mechanism.</p>
+<p>Next, for (K): the \(\lambda'\)-order of \(\det M_r\). Run the axis theorem's rescaling \(D_{\lambda'}\) in the coordinate \(1/(z-1)\) on the \(B\)-cluster rows. Treat the \(r+1\) Taylor columns at \(0\) as extra evaluation functionals. Show that the order is \((n-r)(n-1-r)\) with leading coefficient \(H_{n-r}(s')\) up to a constant, by Cauchy–Binet over the shape's Vandermonde.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -38706,6 +38706,51 @@ the Frobenius (Pólya–Mammana) factorization. It follows by induction on \(s\)
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 46.35 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.95 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">5 min 55.90 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-corner-two-n-reduction" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-corner-two-n-lambda-reduction">
+<h3>2 October 2026 — At the (2,n) corners the λ-direction is the merge-window argument: every vertex minor starts at λ^{r(r+1)} with a Catalan Hankel factor times a determinant in λ′ alone</h3>
+<p class="entry-meta">Working proof of the λ-reduction of the (2,n) vertex minors, checked against the exact minors for n ≤ 4; the corner Hankel conjecture reduces to a one-parameter statement. Corner reduction cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-corner-two-n-hankel">corner Hankel</a> conjecture gives the vertex coefficients of the \((2,n)\) neck corners as power-sum Hankel determinants. A proof needs the two exponents of each vertex, \(r(r+1)\) in \(\lambda\) and \((n-r)(n-1-r)\) in \(\lambda'\). The \(\lambda\)-exponent is twice the naive assignment \(\sum_{i\le r}i\), which is the pattern of the <a href="#cube-merge-ring-reduction">merge windows</a>. This cycle asks whether that argument proves the \(\lambda\)-direction and separates the two parameters.</p>
+<p><strong>General statement.</strong> <code>lem:cube-corner-two-n-lambda-reduction</code>, for every \(n\ge2\) and \(0\le r\le n-1\).</p>
+<h4 id="cube-corner-two-n-lambda-reduction">The reduction</h4>
+<p><strong>Setting.</strong> As in the corner Hankel entry, with rows \(B_l\) and \(S_l=A_1B_l\), \(l&lt;n\), where \(A_1=\sum_{a\ge1}\alpha_a\lambda^{a-1}z^{-a}\). Let \(\rho_{l,k}(\lambda')\) be the Taylor coefficients of \(B_l\) at \(z=0\), where \(B_l\) is analytic. Coordinates are taken on \(1\), \(u^i=z^{-i}\) and \(v_j=(z-1)^{-j}\). For vertex \(r\) put \(A=r+1\) and \(B=2n-2-r\). Let \(M_r(\lambda')\) be the \(2n\times2n\) matrix with the following rows:</p>
+<ul>
+<li>row \(B_l\): zeros in \(A\) new columns, then the coordinates of \(B_l\) on \(1,v_1,\ldots,v_B\);</li>
+<li>row \(S_l\): \(\rho_{l,0},\ldots,\rho_{l,r}\) in the new columns, then \(\alpha_1\) times the coordinates of \(B_l/z\) on \(1,v_1,\ldots,v_B\).</li>
+</ul>
+<p>Let \(K_r=\det(\alpha_{i+k})_{1\le i\le r+1,\ 0\le k\le r}\).</p>
+<p><strong>Lemma (\(\lambda\)-reduction).</strong> The minor of the \((2,n)\) neck space on the columns \(1,u^1,\ldots,u^{r+1},v_1,\ldots,v_B\) has \(\lambda\)-order at least \(r(r+1)\), and its coefficient of \(\lambda^{r(r+1)}\) is \((-1)^{r+1}K_r\det M_r(\lambda')\). Here \(K_r\ne0\) is a Catalan Hankel determinant. More generally, a Plücker coordinate whose columns with a pole at \(0\) are \(u^{i_1},\ldots,u^{i_q}\) has \(\lambda\)-order at least \(\sum_j(i_j-1)+\binom q2\).</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>Rows.</em> \(B_l\) has no pole at \(0\), so its \(u\)-coordinates vanish. The principal part of \(S_l=A_1B_l\) at \(0\) is \(\sum_{a\ge1}\alpha_a\lambda^{a-1}z^{-a}\sum_k\rho_{l,k}z^k\). So its \(u^i\)-coordinate is \(\sum_{k\ge0}\alpha_{i+k}\lambda^{i+k-1}\rho_{l,k}\). The value of \(S_l\) at \(\infty\) is identically \(0\), since every term has \(a\ge1\). At \(1\), \(S_l\) depends on \(\lambda\) through the Taylor coefficients of \(A_1\) at \(1\), which are power series in \(\lambda\) whose value at \(\lambda=0\) is that of \(\alpha_1/z\).</li>
+<li><em>Laplace along the pole columns at \(0\).</em> Only \(S\)-rows are nonzero there, so the minor is \(\sum_I\pm\det(S_I;u\text{-columns})\cdot\det(\text{other rows};\text{other columns})\), over sets \(I\) of \(q\) \(S\)-rows. The first factor is the matrix product \(P_I\tilde A\), with \(P_I=(\rho_{l,k})_{l\in I,k\ge0}\) and \(\tilde A=(\alpha_{i+k}\lambda^{i+k-1})_{k,i}\). Cauchy–Binet over sets \(K\) of \(q\) Taylor orders gives \(\sum_K\det P_{I,K}\det\tilde A_{K}\). The index set is infinite, but for each \(\lambda\)-degree only finitely many \(K\) contribute. \(\det\tilde A_K\) is homogeneous in \(\lambda\) of degree \(\sum_j(i_j-1)+\sum_{k\in K}k\ge\sum_j(i_j-1)+\binom q2\), with equality only for \(K=\{0,\ldots,q-1\}\). The second factor has \(\lambda\)-order at least \(0\). This proves the general bound.</li>
+<li><em>The vertex.</em> For the columns \(u^1,\ldots,u^{r+1}\) the bound is \(\binom{r+1}2+\binom{r+1}2=r(r+1)\). The coefficient of \(\lambda^{r(r+1)}\) is \(K_r\sum_I\pm\det P_{I,\{0..r\}}\cdot\det(\text{other rows at }\lambda=0)\). By the Laplace expansion in reverse, this is \(\pm K_r\det M_r\): the new columns of \(M_r\) carry \(P_{\{0..r\}}\) on the \(S\)-rows, and the other columns carry the rows at \(\lambda=0\). Moving the \(r+1\) new columns past the column of \(1\) gives the sign \((-1)^{r+1}\).</li>
+<li><em>\(K_r\).</em> \(\alpha_m=(-1)^m\binom{1/2}m=-2\,\mathrm{Cat}_{m-1}/4^m\), with \(\mathrm{Cat}\) the Catalan numbers, as in the merge ring reduction. So \(K_r\) is a nonzero multiple of \(\det(\mathrm{Cat}_{i+k})_{0\le i,k\le r}=1\). \(\square\)</li>
+</ol>
+<p><strong>Check.</strong> <code>research/tools/bmd_cube_corner_two_n.gp</code> (function <code>checkred</code>) compares the lemma with the vertex minors for \(n=2,3,4\) and every \(r\) (research/results/bmd-20261002-k/corner-two-n-reduction.txt). It finds no \(\lambda\)-power below \(r(r+1)\) in total degree at most \(2n+2\), and agreement of the \(\lambda^{r(r+1)}\) coefficient with \((-1)^{r+1}K_r\det M_r\) up to \(\lambda'^{(n-r)(n-1-r)}\). The minors are exact only in total degree at most \(2n+2\). So the comparison tests the exact minor in \(7\) cases: every vertex of \((2,2)\) and \((2,3)\), and \((2,4)\) at \(r=1,2\). At the two axis vertices of \((2,4)\) it compares identically truncated data only; those vertices are covered by thm:cube-neck-corner-axis-vertices. A first version of the lower-term check, which ignored the truncation, found spurious lower terms of total degree above \(2n+2\). They come from cutting each entry separately, which breaks the cancellation of repeated Taylor orders.</p>
+<p><strong>What remains.</strong> With the lemma, the corner Hankel conjecture at vertex \(r\) is equivalent to a one-parameter statement: \(\det M_r(\lambda')\) has \(\lambda'\)-order \((n-r)(n-1-r)\) with leading coefficient a nonzero constant times \(H_{n-r}(s')\). \(M_r\) involves only the \(B\)-cluster, whose rows carry the complete homogeneous polynomials \(h_{b-l}(s'_1,\ldots,s'_{l+1})\) of the shape. That is the setting of the axis theorem's \(\lambda'\)-axis, with \(r+1\) Taylor columns added. For the polygon, the general \(\lambda\)-bound is half of a box bound for every Plücker coordinate. The other half, the \(\lambda'\)-bound from the \(v\)-columns, is still to be proved.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>The \(\lambda'\)-order of \(\det M_r\) and its Hankel coefficient.</li>
+<li>The \(\lambda'\)-box bound for every Plücker coordinate.</li>
+<li>General \((m,n)\), and the edge pencils.</li>
+<li>For every \(N\): rigid simplicity for \(n\ge2\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The corner Hankel entry (rows, columns); the merge ring reduction (the Catalan Hankel step); thm:cube-neck-corner-axis-vertices (the \(\lambda'\)-axis argument).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the coordinates, the Cauchy–Binet bound for arbitrary pole columns, the reverse Laplace identity and its sign, the Catalan factor, and the check. Verdict: pass with corrections, all applied: the check's exact range is stated (7 exact cases), the infinite Cauchy–Binet sum is justified degree by degree, the Hankel constant is renamed \(K_r\) to avoid a clash with the Catalan numbers, and the value of \(S_l\) at \(\infty\) is stated.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-k">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 47.01 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 35.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 10.89 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3 min 0.89 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>

@@ -50,4 +50,29 @@ main() = {
     emit(Str("(2,", n, ") r=", r, ": predicted vertex (", pi, ",", pj, "), coefficient ", factor(pred), "; terms at or below it in both coordinates: ", #below,
       "; coefficient / Hankel H_", k, "(power sums of the shape) = ", ratio, (if (type(simplify(ratio)) == "t_INT" || type(simplify(ratio)) == "t_FRAC", " (constant)", " (NOT constant)"))))));
 }
-main();
+\\ Cycle bmd-20261002-k: the lambda-reduction.  M_r(lambda') has rows B_l: (0 on r+1 extra columns | coordinates of B_l on e_0, v_1..v_B)
+\\ and rows A_1 B_l at lambda = 0: (Taylor coefficients rho_(l,0..r) of B_l at 0 | alpha_1 times the coordinates of B_l / z on e_0, v_1..v_B).
+\\ Claim: the coefficient of lambda^(r(r+1)) in the vertex minor is C_r det M_r(lambda'), C_r = det(alpha_(i+k))_(1<=i<=r+1, 0<=k<=r).
+lamred(n, r, TR) = {
+  my(A = r + 1, B = 2 * n - 2 - r, sp = vector(n, j, if (j == 1, 0, if (j == 2, 1, eval(Str("s", j))))));
+  my(M = matrix(2 * n, (r + 1) + 1 + B), row = 0);
+  for (l = 0, n - 1, row++;
+    for (b = l, l + TR, my(co = al(b) * 'L2^(b - l) * hk(b - l, sp[1..l + 1]), c = pf(0, b, 0, B));
+      for (q = 1, 1 + B, M[row, r + 1 + q] += co * c[q])));
+  for (l = 0, n - 1, row++;
+    for (b = l, l + TR, my(co = al(b) * 'L2^(b - l) * hk(b - l, sp[1..l + 1]), c = pf(1, b, 0, B));
+      for (k = 0, r, M[row, k + 1] += co * polcoef(('z - 1)^(-b) + O('z^(r + 1)), k, 'z));
+      for (q = 1, 1 + B, M[row, r + 1 + q] += al(1) * co * c[q])));
+  matdet(M);
+}
+checkred() = {
+  for (n = 2, 4, for (r = 0, n - 1,
+    my(TR = 2 * n + 2, D = vertexminor(n, r, TR), Cr = matdet(matrix(r + 1, r + 1, i, k, al(i + k - 1))));
+    \\ the u-columns stand before e_0 in M_r and after it in the minor: sign (-1)^(r+1)
+    my(lhs = polcoef(D, r * (r + 1), 'L1), rhs = (-1)^(r + 1) * Cr * lamred(n, r, TR), pj = (n - r) * (n - 1 - r), diff = lhs - rhs, low = 1);
+    for (j = 0, pj, if (polcoef(diff, j, 'L2) != 0, low = 0));
+    \\ only terms of total degree <= TR are exact
+    my(lower = 1); for (i = 0, r * (r + 1) - 1, my(Ci = polcoef(D, i, 'L1)); for (j = 0, TR - i, if (polcoef(Ci, j, 'L2) != 0, lower = 0)));
+    emit(Str("(2,", n, ") r=", r, ": no lambda-power below r(r+1): ", lower, "; lambda^(r(r+1)) coefficient = C_r det M_r up to lambda'^", pj, ": ", low))));
+}
+checkred();
