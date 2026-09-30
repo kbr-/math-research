@@ -34,7 +34,7 @@ flatlim(E) = {
   error("no convergence");
 }
 
-samespace(A, B) = matrank(matconcat([Mat(A~), Mat(B~)])) == matrank(Mat(A~)) && matrank(Mat(A~)) == matrank(Mat(B~));
+samespace(A, B) = matrank(matconcat([Mat(A~); Mat(B~)])) == matrank(Mat(A~)) && matrank(Mat(A~)) == matrank(Mat(B~));
 
 neck(sh1, sh2, rr) = {
   my(E = List());
