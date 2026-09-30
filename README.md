@@ -229,11 +229,13 @@ After restoring context in the session for your chosen checkout:
 - **Codex CLI:** enter `/goal <objective>` in the interactive session.
 - **ChatGPT app:** open the remotely connected Codex session for that checkout,
   enter `/goal`, and supply the same objective in the goal interface.
-- **Claude Code:** `/goal` also works, but its evaluator judges the condition from each turn's
-  last message, so the condition must say when the loop ends. A bare `/goal Spin` was judged
-  achieved after a checkpoint report (30 September 2026). Use, for example,
-  `/goal Execute the Spin prompt in ./PROMPTS.md until the notebook's goal is proved or I say
-  stop; a commit or push is never completion.`
+- **Claude Code:** use `/loop` in place of `/goal`, for example
+  `/loop Execute the Spin prompt in ./PROMPTS.md.` The same substitution applies
+  to the other goal examples below. If you use Claude Code's `/goal` instead, its evaluator
+  judges the condition from each turn's last message, so the condition must say when the loop
+  ends: a bare `/goal Spin` was judged achieved after a checkpoint report (30 September 2026).
+  For example, `/goal Execute the Spin prompt in ./PROMPTS.md until the notebook's goal is
+  proved or I say stop; a commit or push is never completion.`
 
 Enter this goal in the CLI, or paste the objective after `/goal` into the app's
 goal field:
