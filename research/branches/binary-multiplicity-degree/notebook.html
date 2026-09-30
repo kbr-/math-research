@@ -47,12 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. Rings are simple at every merge, and far points are simple at \(n=1\) and at every merge of the eleven-root chain (<a href="#entry-2026-10-02-cube-far-simplicity-review">far simplicity review</a>). For every \(N\), far simplicity at \(n\ge2\) is the same kind of obstacle as the (B) far polynomials.</p>
-<p>Next, for (K):</p>
-<ul>
-<li>state the chain end \(V(N-3;3)\), the remaining local piece at \(N=11\): its Weierstrass points as a one-parameter family in the cross-ratio, and the discriminant that must be squarefree;</li>
-<li>run the exponent-continuation test for far simplicity: the discriminant in \(\lambda\) of \(F^{(\lambda)}(2,3)\), sampled modulo a prime.</li>
-</ul>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. Rings are simple at every merge. Far points are simple at \(n=1\) and at every merge of the eleven-root chain. For every \(n\), they are the Weierstrass points of an explicit \((n+k-1)\)-dimensional space \(X(n,k)\) (<a href="#cube-far-pure-reduction">pure reduction</a>).</p>
+<p>Next, for (K): simplicity for \(X(n,k)\) at \(n=2\), the first open case. \(X(2,k)\) has \(k-1\) integral polynomials and two half-integral functions. Reduce once more by the monic operator of the integral block \(P_3\), whose Wronskian must then be controlled, to a Wronskian of two functions. Look for a second-order equation satisfied by that pair, as \(G\) was for the binary face.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -38174,6 +38170,75 @@ of thm:cube-binary-face-weierstrass-points. At \(T_0\ne\pm1\), the reduction ste
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-far-pure-reduction" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-far-pure-reduction">
+<h3>2 October 2026 — The far points of a merge are the Weierstrass points of an (n+k−1)-dimensional space of explicit polynomials, after an Euler operator removes the classes pure at the cluster</h3>
+<p class="entry-meta">Working proof of a dimension reduction for far simplicity, checked exactly against the far polynomials at six sizes. Far pure reduction cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-02-cube-far-simplicity-review">far simplicity review</a> left far simplicity for \(n\ge2\) as the obstacle of the merge chain. The binary-face proof for \(n=1\) first removed the integral class with \(D^r\), and then worked with a space of dimension \(2M+1\). This cycle asks how far the far space \(F(n,k)\), of dimension \(\binom{n+k}2+2\), can be reduced before simplicity is attacked, and what the reduced object is.</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-pure-reduction</code>, for every \(n\ge1\), \(k\ge3\).</p>
+<h4 id="cube-far-pure-reduction">The reduction</h4>
+<p><strong>Setting.</strong> \(F(n,k)=A_1\oplus A_2\oplus B_3\oplus B_4\) (<a href="#cube-merge-far-count">far count</a>), with \(C=\binom n2\), \(P=\binom{k-1}2\) and:</p>
+<ul>
+<li>\(A_1=\langle w^{-C},\ldots,w^{1+P}\rangle\);</li>
+<li>\(A_2=w^{1/2-(n-1)}\mathcal P_{&lt;(k-1)n}\);</li>
+<li>\(B_3=(1-w)^{1/2}\mathcal P_{&lt;k-1}\);</li>
+<li>\(B_4=w^{1/2-(n-1)}(1-w)^{1/2}\mathcal P_{&lt;n}\).</li>
+</ul>
+<p>\(A=A_1\oplus A_2\) is spanned by the monomials \(w^e\), \(e\in E\), a set of \(q=C+P+2+(k-1)n\) distinct exponents. Let \(\theta=w\,d/dw\) and \(L=\prod_{e\in E}(\theta-e)\).</p>
+<p><strong>Lemma (pure reduction).</strong></p>
+<ol>
+<li>\(L\) maps \((1-w)^{1/2}w^\beta p(w)\), for a polynomial \(p\), to \((1-w)^{1/2-q}w^\beta\tilde p(w)\) with \(\tilde p\) a polynomial. It is computed step by step by \(\tilde p\mapsto(1-w)(w\tilde p'+(\beta-e)\tilde p)-\alpha w\tilde p\), with \(\alpha\) lowered by one at each step.</li>
+<li>Let \(P_3\) and \(w^{1/2-(n-1)}P_4\) be the images of \(B_3\) and \(B_4\), without the common factor \((1-w)^{1/2-q}\). Then off \(\{0,1\}\) the Weierstrass points of \(F(n,k)\), with their weights, are those of the \((n+k-1)\)-dimensional space
+\[
+X(n,k)=P_3\oplus w^{1/2-(n-1)}P_4 .
+\]
+In particular, \(R_{n,k}\) is the non-branch part of \(W(X(n,k))\).</li>
+</ol>
+<p><strong>Proof.</strong></p>
+<ol>
+<li>\(\theta\bigl((1-w)^\alpha w^\beta p\bigr)=(1-w)^{\alpha-1}w^\beta\bigl[(1-w)(wp'+\beta p)-\alpha wp\bigr]\). Subtracting \(e(1-w)^\alpha w^\beta p=(1-w)^{\alpha-1}w^\beta(1-w)ep\) gives the stated step, and \(q\) steps give (1).</li>
+<li>\(L\) has leading term \(w^qD^q\), so \(L_0=w^{-q}L\) is the monic operator with kernel \(A\). For a space \(A\) with basis \(f_1,\ldots,f_q\) and any \(g_1,\ldots,g_s\),
+\[
+W(f_1,\ldots,f_q,g_1,\ldots,g_s)=W(f_1,\ldots,f_q)\,W(L_0g_1,\ldots,L_0g_s),
+\]
+the Frobenius (Pólya–Mammana) factorization. It follows by induction on \(s\) from \(L_0g=W(f,g)/W(f)\) and Sylvester's determinant identity.
+<ul>
+<li>\(W(A)\) is a nonzero constant times a power of \(w\): it is a generalized Vandermonde of the distinct exponents \(E\). So it has no zeros off \(0\).</li>
+<li>\(W(L_0g_1,\ldots)=w^{-qs}W(Lg_1,\ldots)\).</li>
+<li>By (1), \(LB_3\oplus LB_4=(1-w)^{1/2-q}X(n,k)\). The factor is a unit off \(w=1\), so it changes the Wronskian only by a unit off \(\{0,1\}\).</li>
+</ul>
+<p>So \(W(F(n,k))\) and \(W(X(n,k))\) have the same zeros off \(\{0,1\}\), with the same orders, and the weight at a point is the order of the Wronskian there. \(L\) is injective on \(B_3\oplus B_4\), since \(\ker L=A\) meets it only in \(0\), so \(\dim X=\dim B_3+\dim B_4=(k-1)+n\). The proof uses only the distinctness of the exponents in \(E\); the range \(k\ge3\) is inherited from the far count theorem, which defines \(F(n,k)\). \(\square\)</p></li></ol>
+<p><strong>Check.</strong> <code>research/tools/bmd_cube_far_pure_reduction.gp</code> computes \(X(n,k)\) and its Wronskian exactly over \(\mathbb Q\) for \((n,k)=(1,3),(1,4),(2,3),(3,3),(2,4),(4,3)\) (research/results/bmd-20261002-c/far-pure-reduction.txt):</p>
+<ul>
+<li>the monic non-branch polynomial of \(W(X(n,k))\) equals that of \(W(F(n,k))\), computed directly, which is \(R_{n,k}\) by definition, in all six cases;</li>
+<li>\(W(A)\) has no non-branch zeros in all six cases (a sanity check; the proof gives it);</li>
+<li>the reduced dimensions are \(3,4,4,5,5,6\), against the full \(8,12,12,17,17,23\);</li>
+<li>the polynomials of \(P_3\) and \(P_4\) have degrees at most \(13\), for example \(6,6\) and \(6,6\) at \((2,3)\).</li>
+</ul>
+<p>Test 3 of the script computes the non-branch zeros of the Wronskians of the unions \(A_1\oplus A_2\), \(A_1\oplus B_3\), \(A_1\oplus B_4\), \(A_1\oplus A_2\oplus B_3\) and \(A_1\oplus A_2\oplus B_4\) at \((2,3),(3,3),(2,4),(4,3)\). Only \(A_1\oplus A_2\) is zero-free off \(\{0,1\}\); for example at \((2,3)\) the others have \(2,2,4,2\) zeros. So no tested union strictly containing \(A_1\oplus A_2\) gives a zero-free factor, at those sizes. The factorization itself works for any subspace, so this says nothing about subspaces that are not unions of classes.</p>
+<p><strong>What it gives.</strong> Far simplicity for every \((n,k)\) is now simplicity of the Weierstrass points of the space \(X(n,k)\), explicit and of dimension \(n+k-1\). It has two characters at \(0\) and is unbranched at \(1\), and its polynomials come from binomial series by an Euler operator. At \(n=1\), \(X(1,k)\) has dimension \(k\): \(k-1\) integral polynomials and one half-integral function. The binary-face theorem proves its simplicity through the operator \(G\). For \(n\ge2\), \(X\) has \(n\) half-integral functions, and one needs an argument for a space with two blocks of sizes \(k-1\) and \(n\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>simplicity for \(X(n,k)\), \(n\ge2\);</li>
+<li>the chain end, which is the spine space of type \((1,1,1,N-3)\) of lem:cube-fcurve-spine-limit, with its conjectured weight bound conj:cube-fcurve-spine-weight-two;</li>
+<li>the assembly.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> thm:cube-merge-far-count (the classes of \(F(n,k)\)); cor:cube-merge-far-binary-face (the \(n=1\) case); lem:cube-fcurve-spine-limit (statement: the chain end).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the Euler step and its sign, the factorization and normalization, \(W(A)\), weights off \(\{0,1\}\), the script against the definitions, and the range. Verdict: pass with corrections, all applied: the union test is stated with its exact scope, the factorization is cited and justified, injectivity of \(L\) on \(B_3\oplus B_4\) is stated, the comparison target of the check is named, and "unbranched at \(1\)" replaces a loose phrase.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-c">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 29.48 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 4.23 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">4 min 32.51 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">50.78 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.82 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
 </article>
 
