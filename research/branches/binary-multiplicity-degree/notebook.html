@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). (K) says that \(E'\) has no component of codimension at most two. By the <a href="#cube-contact-covector-formula">covector formula</a>, \(E'\) is explicit at jet length \(R+4\): \(b_i=\tfrac12\sum_jc_{ij}[w_{ij}f]_+(a_i)\), with \(\sum b_i=\sum a_ib_i=0\). The symmetric locus lies in \(K\) but outside \(E'\).</p>
-<p>Next, look for a reason why the \(N\times3\) covector matrix cannot drop rank along a component of \(K\) of codimension at most two. Use the character structure: the pair coefficients \(c_{ij}\) of the kernel section and the polynomials \([w_{ij}f]_+\). Test the implication in the smallest cases where \(K\) has components of codimension at most two only if (K) fails, and compare with the neck and cluster degenerations, where \(K\)'s limits are explicit.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\) by the <a href="#cube-first-step-two-certificates">two-certificate corollary</a>. At \(N=11\), (B) now holds (<a href="#entry-2026-09-30-cube-eleven-root-base">eleven-root base</a>), and (L) needs one run of about two to three hours, above the run limit, requested from the user. For every \(N\), (K) is equivalent to the absence of components of \(E'\) of codimension at most two (<a href="#cube-contact-covector-formula">covector formula</a>).</p>
+<p>Next, while the approval is pending, make (B) a general statement. The base space \(V^{(\lfloor N/2\rfloor)}\) attained its count with a squarefree non-branch part at every size tried, \(N=8,\ldots,11\), and it is cheap. Formulate the base weight bound for every \(N\) as a statement about \(V^{(a)}\) with \(a\) doubles and \(N-2a\) simple roots, and look for its mechanism: <a href="#cube-base-peeling">peeling</a> reduced it to simplicity on explicit components and necks. Identify which of those statements remain open.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -34329,6 +34329,54 @@ For a Laurent series \(g\) in \(z^{-1}\), \(g/(z-a)=g\sum_{k\ge0}a^kz^{-k-1}\), 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">55.65 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.84 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-eleven-root-base" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="check:cube-eleven-root-base-certificate">
+<h3>30 September 2026 — The base certificate passes at eleven roots, so statement 3 at N = 11 now needs only the line certificate</h3>
+<p class="entry-meta">Finite check: the base space V^(5) with doubles 1, 2, −3, 5, −7 and simple root 11 attains its count with a squarefree non-branch part, so (B) holds at N = 11; the line certificate needs a run above the limit. Eleven-root base cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3 is proved at \(N=7,\ldots,10\) by the <a href="#cube-first-step-two-certificates">two-certificate corollary</a>: (B), a base weight bound at one configuration, and (L), a squarefree discriminant on one line. The last eight cycles sought a mechanism for (K), the off-collision half, for every \(N\), and did not find one. (B) has had no work since the ten-root entry. The missing implication at \(N=11\), the first open size, is the conjunction (B) and (L) there. This cycle tests (B) at \(N=11\) and prices (L).</p>
+<p><strong>General statement.</strong> <code>cor:cube-first-step-two-certificates</code>, for every \(N\ge7\); <code>check:cube-eleven-root-base-certificate</code> is its hypothesis (B) at \(N=11\).</p>
+<h4>Base certificate</h4>
+<p>research/tools/bmd_cube_base_weight_n11.gp keeps the header and functions of the recorded base script unchanged (rows of \(V^{(a)}\), minimal multiplicities, \(T(a)\)). It adds a larger stack limit, and it applies them to \(V^{(5)}\) with doubles \(1,2,-3,5,-7\) and simple root \(11\), modulo \(p=2^{61}-1\), by interpolation with two check points. Its sizing mode reruns the recorded \(N=9\) case (doubles \(1,2,-3,5\), simple root \(7\)) and reproduces it: rank \(36\), degree \(1966\), minimal multiplicities, non-branch degree \(378=T(4)\), squarefree (base-weight-N9-sizing.txt; \(16\) s by the launcher's record of run 93792bceb0).</p>
+<p><strong>Finite check</strong> (base-weight-N11.txt; \(148\) s by the launcher's record of run 127510edb2):</p>
+<ul>
+<li>rank \(55\) of \(55\);</li>
+<li>\(\deg P=6065\), equal to its bound;</li>
+<li>multiplicities \(782,768,772,776,780,1035\) at the six branch values, each equal to its minimal value;</li>
+<li>non-branch degree \(1152=T(5)\), and the non-branch part is squarefree.</li>
+</ul>
+<p>The rank is computed exactly over \(\mathbb Q\). The Wronskian over \(\mathbb Q\) has only powers of \(2\) in its denominators, so it is \(p\)-integral and its reduction is the computed polynomial. As the script's header records, the multiplicities can only rise modulo \(p\) and are bounded below by the minimal ones. So equality of degree and multiplicities modulo \(p\) gives equality over \(\mathbb Q\), and squarefreeness at equal degree carries over. So in characteristic zero the base attains its count at this configuration, and every finite non-branch Weierstrass point has weight one. This is (B) at \(N=11\).</p>
+<h4>The line certificate</h4>
+<p>(L) at \(N=11\) is the <a href="#cube-fast-line-certificate">fast line certificate</a> at degree \(4\lambda(2\lambda-1)\) with \(\lambda=990\): about \(7.8\) million, of which about \(7.1\) million interpolation points remain after the collision part. Each point costs one resultant of \(z\)-degree \(2\lambda=1980\). The recorded times, \(41\), \(303\) and \(1713\) s at \(N=8,9,10\) on \(12\) threads, grew by factors \(7.4\) and \(5.7\). Extrapolated by a factor \(4\) to \(6\) on \(1713\) s, \(N=11\) needs about two to three hours, above the thirty-minute run limit. The program already uses FLINT's fast resultant per point and a batched chirp transform, and no cheap algorithmic saving was found. A request for one approved run of up to three hours is filed in the user requests. Until it is answered, statement 3 at \(N=11\) stays open, with (B) proved and (L) pending.</p>
+<p><strong>What this does to the route.</strong> For \(N=11\) the missing implication is now one certificate, (L). The general statement for all \(N\ge11\) still needs mechanisms for (B) and (K). Per-size certificates grow steeply: (L) roughly by a factor four to six per size, while (B) remains cheap (\(148\) s at \(N=11\)). So (B) could be certified for several further sizes, but (L) is the bottleneck of the per-size route.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(L) at \(N=11\), pending an approved long run; (B) and (K) for every \(N\ge12\) or in general;</li>
+<li>the general mechanisms for (B) and (K).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The two-certificate corollary (statement and proof), the fast line certificate (lemma and recorded times), the ten-root entry (times and base configuration).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer diffed the script against the recorded base scripts (only the header, the stack limit and the final call differ), checked the base shape for odd \(N\), the degree bound, the multiplicities and \(T(5)\), the characteristic-zero transfer and the (L) numbers. Verdict: pass with corrections, all applied:
+</p>
+<ul>
+<li>the cost extrapolation is made consistent (two to three hours);</li>
+<li>the timings cite the launcher's run records;</li>
+<li>the \(p\)-integrality of the Wronskian is stated;</li>
+<li>a vague phrase is made precise.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzl">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 29.56 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 45.88 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 19.45 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 11.96 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 2.19 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5 min 9.94 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
