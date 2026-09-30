@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For every \(N\), peeling the base (<a href="#cube-base-peeling">even</a>, <a href="#cube-odd-base-peeling">odd</a>) reduces (B) to squarefree far polynomials and to the <a href="#cube-peeling-neck-reduction">neck windows</a>.</p>
-<p>Next, prove the window valuations for the peeling neck, even and odd, for every \(e,l\), using the <a href="#cube-peeling-neck-exchange-criterion">exchange lemma</a> for minimality. First write the odd neck model, where the extra \((1+y/a)^{-3/2}\) blocks join \(U\) and \(W\), and derive its window formula by the same assignment count. Then find the leading Laplace term of each window and its coefficient, as Hankel determinants in the coefficients of \(\tau\) times a determinant in the cluster parameters.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For every \(N\), peeling the base (<a href="#cube-base-peeling">even</a>, <a href="#cube-odd-base-peeling">odd</a>) reduces (B) to squarefree far polynomials and to the <a href="#cube-peeling-neck-reduction">neck windows</a>. Their valuations are bounded below by the <a href="#cube-neck-level-expansion">level expansion</a>, and the conjectured value needs a cancellation.</p>
+<p>Next, adapt Case A of the neck window theorem to the peeling neck, for every \(e\) and \(l\). Rescale the triangular basis of \(U\) after \(y=\varepsilon Y\), and expand each \(h_{s,p}\) in it. Bound every Laplace term of a window minor, and identify the terms at level \(2E(c)\) with their leading coefficient, as a Hankel determinant in the coefficients of \(\tau\) times a determinant in the \(\beta_s\). Check that coefficient against the computed \(S_{2E}\) at \((e,l,w)=(1,2,2)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -31729,6 +31729,68 @@ the roots of a polynomial \(W_k\) with \(W_k(0)W_k(-1/c)\ne0\);</li>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 58.01 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2.00 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.38 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-neck-hall-cancellation" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-neck-level-expansion conj:cube-neck-level-cancellation">
+<h3>30 September 2026 — The neck windows expand over pole orders: every term vanishes below the assignment count, and the terms cancel up to twice it</h3>
+<p class="entry-meta">Working proof of a level expansion and a Hall lower bound for the peeling neck windows; the exact valuation needs a cancellation, observed at every computed level. Neck level expansion cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> For every \(N\), (B) now reduces to squarefree far polynomials and the <a href="#cube-peeling-neck-reduction">peeling neck windows</a>. Their conjectured valuations are \(f(c)=lwn+2E_{l,w}(c)\), where \(E_{l,w}\) is the assignment count. The missing implication is a proof of these valuations. This cycle separates \(\varepsilon\) from the model by Cauchy–Binet. It asks what the separated \(\varepsilon\)-free minors give, and why the valuation is twice the assignment count rather than equal to it.</p>
+<p><strong>General statement.</strong> <code>lem:cube-neck-level-expansion</code> (working proof) and <code>conj:cube-neck-level-cancellation</code>, for every \(e\ge1\), \(l\ge2\), \(1\le w\le n=4e\).</p>
+<h4 id="cube-neck-level-expansion">The level expansion</h4>
+<p><strong>Setup.</strong> The window model of the neck entry with block size \(w\) (\(w=4\) is the peeling neck): \(U=\bigoplus_s\mathcal P_{&lt;n}\varphi_s\), \(W=y^{n-w}\bigoplus_s\mathcal P_{&lt;w}\varphi_s\), \(\tau=(1+\varepsilon\kappa/y)^{-5/2}=\sum_mt_m(\varepsilon/y)^m\), \(t_m=\binom{-5/2}m\kappa^m\) (\(\kappa\) is the constant \(c\) of \(D_k=\varepsilon c\), renamed to free the letter \(c\) for windows), \(M=nl\), \(K=wl\). Take the basis \(h_{s,p}=y^{n-w+p}\varphi_s\), \(p&lt;w\), of \(W\). Let \(\psi_{s,q}\), \(q\ge1\), be \(y^{-q}\varphi_s\) with its middle columns cleared by the triangular basis of \(U\). Put \(t'_m=t_{m+n-w}=\binom{-5/2}{m+n-w}\kappa^{m+n-w}\) (the scripts take \(\kappa=1\)). Windows \(W_c\) are defined for \(w\le c\le lw\). Assume \(\beta\) generic, so that the triangular basis \(g_d\) of \(U\) exists.</p>
+<p><strong>Lemma (level expansion and Hall bound).</strong> Over any field where the binomial coefficients and the basis \(g_d\) exist; \(l\ge1\).</p>
+<ol>
+<li>Modulo \(U\), \((\tau-1)h_{s,p}\equiv\varepsilon^{n-w}\sum_{q\ge1}t'_{p+q}\varepsilon^{p+q}\psi_{s,q}\). Hence, with \(Q=(Q_1,\ldots,Q_l)\) running over \(l\)-tuples of \(w\)-sets of positive integers,
+\[
+\det C[:,W_c]=\pm\varepsilon^{lw(n-w)+lw(w-1)/2}\sum_Q\varepsilon^{\sum_s\sum Q_s}\prod_s\det\bigl[t'_{p+q}\bigr]_{p&lt;w,\,q\in Q_s}\ \Psi(Q,W_c),
+\]
+where \(\Psi(Q,W_c)\) is the \(\varepsilon\)-free minor of the rows \(\psi_{s,q}\), \(q\in Q_s\), on the negative columns \(1,\ldots,c\) and the high columns \(M,\ldots,M+K-c-1\). The sum over \(q\) is infinite, so this is an identity of formal power series in \(\varepsilon\), each coefficient a finite sum. Grouping by the level \(L=\sum_s\sum Q_s-lw(w+1)/2\) gives \(\det C[:,W_c]=\pm\varepsilon^{lwn}\sum_{L\ge0}\varepsilon^LS_L\).</li>
+<li>\(\Psi(Q,W_c)=0\) whenever the level of \(Q\) is below \(E_{l,w}(c)\). Here \(E_{l,w}(c)\) is the minimum of \(\sum\max(0,\sigma-r-1)\) over injective assignments of the columns \(\sigma=1,\ldots,c\) to the pole indices \(r\in\{0,\ldots,w-1\}\), each available \(l\) times. So \(f(c)\ge lwn+E_{l,w}(c)\).</li>
+</ol>
+<p><strong>Proof.</strong> (1) The term \(m\) of \((\tau-1)h_{s,p}\) is \(t_m\varepsilon^my^{n-w+p-m}\varphi_s\). For \(1\le m\le n-w+p\) the exponent \(n-w+p-m\) lies in \(0,\ldots,n-1\), so the term lies in \(U\). Clearing the middle columns kills it. For \(m=n-w+p+q\), \(q\ge1\), it is \(t'_{p+q}\varepsilon^{n-w+p+q}y^{-q}\varphi_s\), which reduces to \(\psi_{s,q}\). The window minor is then the determinant of a product: the block-diagonal matrix \(\bigoplus_s[t'_{p+q}\varepsilon^{p+q}]_{p,q}\) times the matrix of the \(\psi_{s,q}\). The \(g_d\) rows are the identity on the middle columns, where the cleared rows vanish, so the determinant is block triangular and they contribute \(\pm1\). Cauchy–Binet over the choice of \(w\) columns \(q\) per block gives the formula, with \(\sum_p p=w(w-1)/2\) per block. At \(Q_s=\{1,\ldots,w\}\) the exponent is \(lw(n-w)+lw(w-1)/2+lw(w+1)/2=lwn\).</p>
+<p>(2) The row \(\psi_{s,q}\) vanishes on the negative columns \(\sigma&gt;q\), since its pole part is \(y^{-q}(\varphi_s)_{&lt;q}\). A nonzero \(\Psi(Q,W_c)\) needs a term of its Leibniz expansion that matches each negative column \(\sigma\) to a distinct row \((s,q)\) with \(q\ge\sigma\). Sort \(Q_s\) as \(q_{s,1}&lt;\cdots&lt;q_{s,w}\), so \(q_{s,r+1}\ge r+1\) and the level is \(\sum_{s,r}(q_{s,r+1}-r-1)\). A row \((s,q_{s,r+1})\) matched to \(\sigma\) contributes at least \(\max(0,\sigma-r-1)\), and the others contribute at least \(0\). So the level is at least the cost of an injective assignment of the columns to the indices \(r\), each available \(l\) times, hence at least \(E_{l,w}(c)\). \(\square\)</p>
+<p>The cost does not increase in \(r\), so an optimal assignment uses the \(c\) largest indices, and by the Monge property it pairs them in sorted order. So \(E_{l,w}\) is attained by the sorted pairing (the transport bridge of the <a href="#entry-2026-09-30-cube-peeling-route-review">peeling review</a>, where the greedy count and the optimum agree in all tested cases). Its increments are \(\nu_j\), the integers not divisible by \(l\) (verified there for \(w\le6\), \(l\le5\), not proved).</p>
+<h4>The cancellation</h4>
+<p>The bound of the lemma is half the observed valuation. research/tools/bmd_cube_neck_psi_levels.gp and bmd_cube_neck_psi_sums.gp compute the rows \(\psi_{s,q}\) modulo \(2^{61}-1\) at \(\beta=(2,-3,5)/3\). They enumerate every \(Q\) up to a level bound and record, for each window, which levels carry nonzero minors \(\Psi(Q,W_c)\) and which level sums \(S_L\) are nonzero (psi-levels.txt, psi-sums.txt). Cases: \((e,l,w)=(1,2,2)\), \((2,2,2)\), \((1,3,2)\), \((1,2,4)\). The runs completed and wrote all four cases; the final run was stopped by its time limit afterwards, because the script did not end the gp session (a closing <code>quit</code> has since been added). Two earlier attempts failed on a type error and wrote nothing. The level-sum script enumerates every level up to its bound completely (\(q\le w+\text{bound}\)).</p>
+<ul>
+<li>In every window whose level \(E(c)\) was reached, individual minors are nonzero from level \(E(c)\) exactly, so the Hall bound is sharp for single terms. For example, at \((1,2,4)\) the first nonzero levels are \(0,1,4,9\) for \(c=4,\ldots,7\). Where the enumeration was incomplete (\(c=7\) there, and \((1,3,2)\), \(c=5\)), the minimum is still exact: the lemma excludes lower levels, and a nonzero witness was found.</li>
+<li>In every window with \(2E(c)\) in range (twelve windows, up to \(2E=8\)), the level sums vanish for \(L&lt;2E(c)\), and \(S_{2E(c)}\ne0\). At \((1,2,4)\), \(c=6\): minors are nonzero at levels \(4,\ldots,8\), but only \(S_8\ne0\).</li>
+<li>At level one, the two nonzero terms at \((1,2,4)\), \(c=5\) (and at \((1,2,2)\), \(c=3\)) are exchanged by swapping the doubles, for example \(Q=(\{1,2,3,4\},\{1,2,3,5\})\) and its swap. Their weights are equal, and their minors cancel. For the larger windows only the weighted totals were computed, not sums over orbits. The "ZERO" totals reported by the first script for windows with incomplete enumeration are not evidence.</li>
+</ul>
+<p><strong>Conjecture (neck level cancellation).</strong> For every \(e\ge1\), \(l\ge2\), \(1\le w\le n\), generic \(\beta\) and every window \(c\): \(S_L=0\) for \(L&lt;2E_{l,w}(c)\), and \(S_{2E_{l,w}(c)}\ne0\). This is the valuation formula of the <a href="#cube-peeling-neck-reduction">neck windows conjecture</a> in expanded form. The lemma proves the terms vanish below \(E\). The conjecture adds that the level sums vanish from \(E\) to \(2E-1\); at level one this is a cancellation between permuted doubles.</p>
+<p><strong>A proof route (proposal).</strong> After \(y=\varepsilon Y\), the model becomes a confluent analogue of the <a href="#cube-neck-window-theorem">neck window theorem</a>'s: \(U=\bigoplus_s\mathcal P_{&lt;n}(x)(1+\beta_sx)^{-7/2}\) with \(x=\varepsilon Y\), and \(\tau=(1+\kappa/Y)^{-5/2}\) is \(\varepsilon\)-free. That theorem has simple points, an odd \(\tau\) and a full set of \(\tau\)-rows. There the window valuations were \(k(k+1)\); heuristically this is also twice a Hall-type count, though there it came from a single Laplace term without cancellation. The proof used the rescaled basis \(u_m=\varepsilon^{-m}g_m\), a Laplace bound, and a leading coefficient equal to a Hankel determinant of \(\tau\) times a genericity determinant. The differences here are confluence (each cluster point carries \(\mathcal P_{&lt;n}\)) and \(W\subset U\) (only \(K\) of the \(\tau\)-rows). A proposal, not checked: Cauchy–Binet over the coefficients of \(h_{s,p}\) in the basis \(g_d\) should write each window minor as a sum of partial-window minors of a matrix of that theorem's kind. So the next step is to redo its Case A for partial row sets with confluent \(U\).</p>
+<p><strong>What this does to the route.</strong> Nothing is closed. The valuation conjecture is now split into a proved half (single terms vanish below \(E\)) and a cancellation statement, with the neck window theorem's method as a concrete template. The factor two comes from cancellation in the level sums, seen at level one as cancellation between permuted doubles.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the cancellation through level \(2E-1\) and the nonvanishing of \(S_{2E}\), for every \(e,l,w\);</li>
+<li>the exchange condition for every \(e,l\);</li>
+<li>squarefreeness of the far polynomials;</li>
+<li>(K).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The neck model and window conjecture; the exchange lemma and transport test of the peeling review; the neck window theorem (rescaled basis, Case A, Hankel lemma).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, the claim specification, the neck and review entries, both scripts, their outputs and the run log. Verdict: pass with corrections. It confirmed both parts of the lemma (the terms in \(U\), the block-triangular factor, the Cauchy–Binet exponent, the matching bound), the completeness of the level-sum enumeration, and the twelve windows. Corrections applied:</p>
+<ul>
+<li>the false timeout sentence is replaced: the runs completed, and a <code>quit</code> was added to both scripts after the runs;</li>
+<li>the lemma's hypotheses are the existence of \(g_d\) and \(l\ge1\), not characteristic zero; the formal-series clause, the power of \(\kappa\) and the window range are stated, and the constant of \(\tau\) is renamed;</li>
+<li>the sorted-pairing step adds that the cost does not increase in \(r\);</li>
+<li>the sharpness bullet is restricted to windows whose level \(E\) was reached, with the exactness of the incomplete cases justified;</li>
+<li>the cancellation bullet is restricted to what was computed;</li>
+<li>the proof route is labelled a proposal, the model a confluent analogue, and the comparison heuristic.</li>
+</ul>
+<p>These corrections restrict or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zf">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>19 min 49.82 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 14.36 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 51.38 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 41.83 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 0.77 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.48 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
