@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). Both now reduce to neck-type limits: the peeling necks of (B), proved on the <a href="#cube-neck-last-block-windows">last block</a>, and the <a href="#entry-2026-09-30-cube-two-cluster-limit">two-cluster necks</a> on the spines of fully clean boundary curves for (K). For the \((2,n)\) necks, the <a href="#cube-two-n-cost-bounds">cost bounds</a> reduce the <a href="#cube-two-n-cost-rule">cost rule</a> to an upper bound.</p>
-<p>Next, prove the upper bound: \(\sum k_i=\sum_{j\le2n}c_{(j)}\). Compute the order of one maximal minor of the \(2n\) rows, using the slot coordinates: the constant, the \(p_1\)-coefficients \(c_1,\ldots,c_{a}\) and the \(p_2\)-coefficients \(\beta_1,\ldots,\beta_{b}\). Use the bases \(XR_e\) and \(R_e\), with \(R_e=(q-v_2)^e\), in which the proof of the bounds has explicit leading terms. Then find the leading coefficient as a product of semicircle and recurrence determinants. The first target is \((2,6)\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). The \((2,n)\) two-cluster necks of (K) are now <a href="#cube-two-n-volume">solved</a> for generic shapes when \(n\le30\), including both necks of \((1,2,2,6)\).</p>
+<p>Next, a route review of the (K) line. Assemble what the spine limit of a fully clean F-curve needs: the within-cluster classes, the \((1,n)\) and \((2,n)\) necks, and the \((m,n)\) necks with \(m\ge3\) where they occur. Then test whether the assembled \((1,2,2,6)\) spine limit has a weight-three point for generic cross-ratio, which is the first instance of the boundary-curve criterion beyond \((1,1,1,N-3)\). The review should also decide whether \(D_n\not\equiv0\) for all \(n\) is on the critical path, since the fully clean types for \(N\le60\) need only bounded \(n\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33126,6 +33126,92 @@ For the converse, use the volume \(\det[f_i(z_l)]_{i,l\le2n}\) at \(2n\) generic
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">17 min 7.92 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-two-n-volume" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="thm:cube-two-n-volume cor:cube-two-n-limit-small conj:cube-two-n-recurrence-determinant">
+<h3>30 September 2026 — One block-triangular minor proves the cost rule for every (2,n) class with a nonzero recurrence determinant, generically for n ≤ 30</h3>
+<p class="entry-meta">Working proof that the (2,n) cost rule holds whenever an explicit recurrence determinant D_n is nonzero, and exact evaluations showing D_n is not identically zero for 2 ≤ n ≤ 30; this includes the (2,6) neck. Two-n volume cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-two-n-cost-bounds">cost bounds</a> reduced the <a href="#cube-two-n-cost-rule">two-n cost rule</a> to the upper bound \(\sum_ik_i\le\sum_{j\le2n}c_{(j)}\). This cycle asks for one maximal minor of the lattice whose order equals the sum of the costs. That is the missing implication for the \((2,6)\) neck of \((1,2,2,6)\).</p>
+<p><strong>General statement.</strong> <code>thm:cube-two-n-volume</code> for all \(n\ge2\); <code>cor:cube-two-n-limit-small</code>; <code>conj:cube-two-n-recurrence-determinant</code> for the remaining \(n\).</p>
+<h4 id="cube-two-n-volume">The volume theorem</h4>
+<p><strong>Setup.</strong> The setting and notation are those of the <a href="#cube-two-n-cost-bounds">cost bounds</a>: \(\Lambda\), orders \(k_i\), costs, \(X\), the semicircle functional \(\mathcal L\) with moments \(x_j\), \(B_m\), and the elementary symmetric functions \(e_j\) of the \(c_k\). Further notation:
+</p>
+<ul>
+<li>\(h_b\), \(b&lt;n\), is the basis of \(\Lambda_W\) with \(h_b=v_2^b+O(v_2^n)\).</li>
+<li>\(g_e=(q-v_2)^e\) with each \(v_2^b\) replaced by \(h_b\). This is a triangular change of basis with diagonal \(\pm1\), unimodular over \(\mathbb C[[\varepsilon]]\), so \(g_e\) and \(Yg_e\) (\(e&lt;n\)) form a \(\mathbb C[[\varepsilon]]\)-basis of \(\Lambda/S\).</li>
+<li>\(Y=X-X(p_2)\).</li>
+</ul>
+<p>Select the \(2n\) cheapest monomials; at a tie at the largest selected cost \(c^*\), keep the \(u_2\)-monomial. Then \(a=\lceil n/2\rceil\) monomials \(u_1^s\) are selected, together with \(u_2^m\) for \(m\le b'=2n-a-1\).</p>
+<ul>
+<li>For \(n=2k+1\): \(c^*=3k+2\), and the next costs are \(3k+3\) and \(3k+4\).</li>
+<li>For \(n=2k\): \(c^*=3k+1\), which \(u_1^{k+1}\) shares, and the next \(u_2\)-cost is \(3k+2\).</li>
+</ul>
+<p>In both cases \(b'-n+1=n-a\) and \(2(a-1)&lt;n\). Put \(E(y)=\prod_k(y-c_k)\), \(F=nE-yE'\) and \(I_m(y)=\int_0^yt^{m-n}F(t)\,dt\), and define the <em>recurrence determinant</em>
+\[D_n(c)=\det\Bigl[\,[y^e]\bigl(I_m\bmod E\bigr)\Bigr]_{n\le m\le b',\ a\le e\le n-1}.\]</p>
+<p><strong>Theorem (two-n volume).</strong> If \(D_n(c)\ne0\), then \(\sum_ik_i=\sum_{j\le2n}c_{(j)}\). Hence the cost rule holds for this \((2,n)\) class, with the limit it describes:
+</p>
+<ul>
+<li>odd \(n\): \(L=H^0(\mathcal O(a\,p_1+b'p_2))\), with orders the \(2n\) smallest costs;</li>
+<li>even \(n=2k\): \(L\) is a hyperplane of \(H^0(\mathcal O((k+1)p_1+(3k-1)p_2))\) containing \(H^0(\mathcal O(kp_1+(3k-2)p_2))\).</li>
+</ul>
+<p>The theorem applies to any translate of the shapes; the cluster need not be centred. For \(n=3\), \(D_3=e_2-e_1^2/3=-\tfrac12\sum_k(c_k-\bar c)^2\), which is \(e_2\) for centred shapes. This recovers the condition \(\kappa_3\ne0\) of the <a href="#cube-two-three-spine-limit">\((2,3)\) corollary</a>.</p>
+<p><strong>Proof.</strong> <em>Minors bound the order sum.</em> For linear functionals \(\lambda_1,\ldots,\lambda_{2n}\) (Laurent coefficients, taken as Cauchy integrals on fixed circles) and a reduced basis \(f_i\), \(\det[\lambda_l(f_i)]=\varepsilon^{\sum k_i}\bigl(\det[\lambda_l(\ell_i)]+O(\varepsilon)\bigr)\). A unimodular change of basis does not change the order. The functions \(f_i/S\) form a reduced basis of \(\Lambda/S\) with the same orders and leading functions, because \(S=1+O(\varepsilon^2)\) away from \(p_1\). So every minor of the basis \(\{g_e,Yg_e\}\) of \(\Lambda/S\) has order at least \(\sum k_i\). Given the <a href="#cube-two-n-cost-bounds">lower bound</a>, it suffices to find one minor of order \(\sum c_{(j)}\).</p>
+<p><em>Columns.</em> Take the constant term \(\beta_0\), the \(p_2\)-coefficients \(\beta_1,\ldots,\beta_{n-1}\) and \(\beta_n,\ldots,\beta_{b'}\), and the \(p_1\)-coefficients \(c_1,\ldots,c_a\), for \(2n\) columns in all. Replace these columns by \(\beta_0,\ldots,\beta_{n-1},\rho_n,\ldots,\rho_{b'}\), where \(\rho_m=\sum_{j=0}^n(-1)^je_j\beta_{m-j}/(\varepsilon^{m-j}B_{m-j})\). The map \((\beta_0,\ldots,\beta_{b'})\mapsto(\beta_0,\ldots,\beta_{n-1},\rho_n,\ldots,\rho_{b'})\) is triangular with diagonal \(1\) and \(1/(\varepsilon^mB_m)\), so it changes the order by \(-\sum_{m=n}^{b'}m\).</p>
+<p><em>Block form.</em> Each \(g_e\in\Lambda_W\) is analytic at \(p_1\), so \(c_s(g_e)=0\). Its coefficient sequence satisfies the recurrence, so \(\rho_m(g_e)=0\) exactly. So the minor is \(\det\bigl[\beta_{l}(g_e)\bigr]_{l,e&lt;n}\cdot\det\bigl[c_s(Yg_e)\mid\rho_m(Yg_e)\bigr]\).</p>
+<ul>
+<li><strong>First factor.</strong> Expanding \((q-v_2)^e\) gives \(\beta_l(g_e)=\binom el(-1)^lr^{e-l}\varepsilon^e\) for \(l\le e\) and \(0\) for \(e&lt;l&lt;n\). This is triangular with diagonal \((-1)^e\varepsilon^e\), of order \(\sum_{e&lt;n}e\).</li>
+<li><strong>\(p_1\)-columns.</strong> By the cost-bound proof, \(c_s(Yg_e)=c_s(Xg_e)=\varepsilon^sm_s(g_e)\). Here \(g_e=(q-v_2)^e+\) tails in \(v_2^{\ge n}\). The main part contributes \(\varepsilon^{s+2e}r^{2e}(x_{s+e}+O(\varepsilon))\). The tails contribute only at order at least \(s+n\).</li>
+<li><strong>\(\rho\)-columns.</strong> With \(Y=\sum_{i\ge1}\xi_i\sigma^i\), \(\xi_1=-\varepsilon r_0^2+O(\varepsilon^2)\) (\(r_0\) the value at \(\varepsilon=0\); centring moves \(p_1\) by \(O(\varepsilon)\)) and \(\operatorname{ord}\xi_i\ge1\), the terms \(\xi_i\varepsilon^i\) with \(i\ge2\) have order at least \(3\). With \(g_e\equiv(-1)^eh_e\bmod\varepsilon\),
+\[\rho_m(Yg_e)=(-1)^{e+1}r^2\varepsilon^2\,\tau_m\bigl(p(h_e)\bigr)+O(\varepsilon^3),\qquad \tau_m(p)=\sum_{j=0}^n(-1)^je_j\frac{B_{m+1-j}}{B_{m-j}}\,p_{m+1-j}.\]</li>
+</ul>
+<p><em>Leading form.</em> Scale row \(Yg_e\) by \(\varepsilon^{-2e}\) for \(e&lt;a\) and by \(\varepsilon^{-2a+2}\) for \(e\ge a\), column \(c_s\) by \(\varepsilon^{-s}\), and the \(\rho\)-columns by \(\varepsilon^{2a-4}\). The resulting orders are:</p>
+<ul>
+<li>rows \(e&lt;a\) on \(c_s\): \(0\), with entries \(r^{2e}x_{s+e}\);</li>
+<li>rows \(e\ge a\) on \(c_s\): at least \(\min(2e,n)-2a+2\ge1\), using \(2(a-1)&lt;n\);</li>
+<li>rows \(e&lt;a\) on \(\rho\): at least \(2a-2-2e\ge0\);</li>
+<li>rows \(e\ge a\) on \(\rho\): \(0\).</li>
+</ul>
+<p>At \(\varepsilon=0\) the matrix is block triangular, with diagonal blocks \([r^{2e}x_{s+e}]_{s\le a,e&lt;a}\) and \([(-1)^{e+1}r^2\tau_m(p(h_e))]_{m,e\ge a}\). The first has determinant \(\pm r^{a(a-1)}g_1^{a(a-1)/2}\ne0\), a semicircle Hankel determinant. Undoing the scalings, the minor has order
+\[\sum_{e&lt;n}e+\Bigl[a(a-1)+\tfrac{a(a+1)}2\Bigr]+2(n-a)+\sum_{m=n}^{b'}m=\sum_{e&lt;n}e+\sum_{s\le a}(3s-2)+\sum_{m=n}^{b'}(m+2)=\sum_{j\le2n}c_{(j)},\]
+as long as the second block is nonsingular.</p>
+<p><em>The second block.</em> Since \(B_k/B_{k-1}=1-\tfrac3{2k}\), subtracting \((B_{m+1}/B_m)\) times the recurrence gives
+\[\tau_m(p)=-\frac{3}{2(m+1)}\sum_{j=1}^n(-1)^j\,j\,e_j\,\frac{p_{m+1-j}}{m+1-j}.\]
+For \(p_l=\sum_k\lambda_kc_k^l\), \(\sum_{j}(-1)^jje_jc^{m+1-j}/(m+1-j)=\int_0^cy^{m-n}(nE-yE')\,dy=I_m(c)\). So \(\tau_m(p)=-\tfrac3{2(m+1)}\sum_k\lambda_kI_m(c_k)\). For \(h_e\), \(\sum_k\lambda^{(e)}_kc_k^l=\delta_{le}/B_e\) for \(l&lt;n\), so \(\lambda^{(e)}\) is \(1/B_e\) times the \(e\)-th column of the inverse Vandermonde matrix. Then \(\sum_k\lambda^{(e)}_kI_m(c_k)=B_e^{-1}[y^e](I_m\bmod E)\), the coefficient of the interpolating polynomial. So the block is a product of nonzero diagonal factors and \(D_n\). \(\square\)</p>
+<p>The limit description then follows from item 3 of the <a href="#cube-two-n-cost-bounds">cost-reduction corollary</a>.</p>
+<p><strong>Corollary (two-n limit for small n).</strong> For \(2\le n\le30\), \(D_n\) is not identically zero. So for all shapes with \(b_1\ne b_2\), distinct \(c_k\) and \(D_n(c)\ne0\) (the complement of a hypersurface: generic shapes), the \((2,n)\) class satisfies the cost rule. In particular, for shapes with \(D_6\ne0\) (generic), the \((2,6)\) class of \((1,2,2,6)\) has orders \(0,1,1,2,3,4,4,5,7,8,9,10\). Its limit is a hyperplane of \(H^0(\mathcal O(4p_1+8p_2))\) containing \(H^0(\mathcal O(3p_1+7p_2))\).</p>
+<p><em>Proof.</em> A polynomial with one nonzero value is not identically zero. research/tools/bmd_cube_two_n_volume.gp (two-n-volume.txt) evaluates \(D_n\) exactly at two rational shape vectors for each \(2\le n\le30\), and both values are nonzero. It also checks \(D_3=e_2\) symbolically, the counts \(b'-n+1=n-a\) and \(2(a-1)&lt;n\), and \(D_n\ne0\) at all eleven shape vectors of the <a href="#entry-2026-09-30-cube-two-n-generators">flat-limit runs</a>. Those runs found the costs as orders, as the theorem requires. \(\square\)</p>
+<p><strong>Conjecture (two-n recurrence determinant).</strong> \(D_n\not\equiv0\) for every \(n\ge2\).</p>
+<p>A special locus: the specialization \(E=y^n+e_2y^{n-2}\) makes every remainder lie in \(\langle y^{n-2},y^{n-1}\rangle\), so \(D_n=0\) there for \(n-a\ge3\). For \(n\ge4\) this \(E\) has \(0\) as a root of multiplicity \(n-2\), so the locus lies in the discriminant, outside the admissible shapes. It shows only that \(D_n\) has zeros, not that the proof fails at distinct shapes.</p>
+<p><strong>What this does to the route.</strong> The \((2,n)\) necks are now solved for generic shapes up to \(n=30\), including both necks of the fully clean type \((1,2,2,6)\) (the \((2,6)\) class for shapes with \(D_6\ne0\)). The mechanism has three parts:
+</p>
+<ul>
+<li>the semicircle orthogonality of the pair;</li>
+<li>the Taylor recurrence of the cluster;</li>
+<li>a block-triangular minor.</li>
+</ul>
+<p>It should extend to larger first clusters, where the semicircle law is replaced by the cluster's own moment functional.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>\(D_n\not\equiv0\) for \(n>30\);</li>
+<li>the \((3,n)\) and larger classes;</li>
+<li>then weight three on fully clean spines, tails and nodes;</li>
+<li>on the (B) side: the neck windows below the last block, far polynomials without triple roots, \(G_{c,w}\not\equiv0\) and the exchange condition.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The cost bounds and their corollary; the first-generators lemma (bases \(h_b\), \(B_m\)); the cost rule.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. The script evaluations pass; \(D_3\) is checked symbolically for centred and uncentred shapes. One fresh-context medium reviewer redid the selection counts, the minor bound, the vanishing of the first-block columns, the tail orders, \(\xi_1\) and its sign, every scaled order, the order sum, the reduction of \(\tau_m\), the inverse-Vandermonde step, the Hankel determinant and the \((2,6)\) dimensions. It found one mathematical error, now corrected: \(D_3=e_2\) holds only for a centred cluster, and in general \(D_3=e_2-e_1^2/3\). The reviewer gave the variance form as \(-\tfrac16\sum(c_k-\bar c)^2\); the symbolic check gives \(-\tfrac12\sum(c_k-\bar c)^2\), which is used. It also required seven precision changes, all applied: the \(D_6\ne0\) qualifier for the \((2,6)\) class; the hypotheses of the corollary; the special locus lying in the discriminant; the basis of \(\Lambda/S\); the diagonal \(\pm1\); the column map; and \(\xi_1\) with \(r_0\).</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zy">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 50.55 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 26.03 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 6.01 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 17.54 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.84 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
