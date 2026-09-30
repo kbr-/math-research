@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge10\). It is proved at \(N=7,8,9\) by <a href="#cube-first-step-two-certificates">two certificates</a>. (L) follows from boundary normality, now equivalent by the <a href="#cube-dual-normal-criterion">dual normal criterion</a> to one bilinear statement, and type genericity. A route review is due within three entries.</p>
-<p>Next, the rank-one zeros of the pairing \((s,f)\mapsto r_{s,f}\). Find what a rank-one zero along a codimension-two set would force, using the explicit formula and the Möbius flow, and test the answer against the tight symmetric locus at \(N=8\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge10\). It is proved at \(N=7,8,9\) by <a href="#cube-first-step-two-certificates">two certificates</a>. The <a href="#entry-2026-09-30-cube-normality-route-review">normality review</a> found that the off-collision half needs only the contact bound: the kernel pencil \(W_{R+4}\) of \(A_{R+1}\) jumps to dimension three only in codimension at least three.</p>
+<p>Next, apply the tangent-space argument of the <a href="#cube-dual-normal-criterion">dual normal criterion</a> to the tall jet map \(J_{R+4}\). The aim is to prove that the contact bound is equivalent to dual normal nondegeneracy at jet length \(R+4\), with no squarefreeness or type genericity, and to test that equivalence against the six-root symmetric locus.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -30974,6 +30974,150 @@ L:k^N\to(S\otimes W)^*,\qquad L(v)(s\otimes f)=\sum_iv_ib_i(s,f)=\lambda_f(\part
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 4.35 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 34.76 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.38 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-normality-route-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Route review: assesses the two-certificate corollary, the dual normal criterion and the certificate route; its tests are lead and bridge tests, not new claims.">
+<h3>30 September 2026 — Review: statement 3 holds through N = 9; for every N it rests on one bilinear nondegeneracy, root-type genericity and the base bound</h3>
+<p class="entry-meta">Route review of open statement 3 after the nine-root certificate and the normality reduction; a collision descent of normality fails on double-pair strata. Normality route review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>General statement.</strong> The line's claim is <code>cor:cube-first-step-two-certificates</code>: for \(N\ge7\), \(\alpha_N=\lambda_N\) follows from (B), the base weight bound, and (L), squarefreeness of \(\Delta_W^{\rm nc}\). Since the <a href="#entry-2026-09-30-cube-symmetry-route-review">symmetry review</a>, (L) has been reduced to <code>conj:cube-dual-normal-nondegeneracy</code> (equivalently <code>conj:cube-boundary-normality</code>) together with type genericity. The chain runs through the <a href="#cube-squarefree-normality-form">normality form</a>, the <a href="#cube-boundary-singular-locus">boundary singular locus</a> and the <a href="#cube-dual-normal-criterion">dual normal criterion</a>. Statement 3 is <a href="#cube-nine-root-first-step">proved at \(N=9\)</a> by a <a href="#cube-fast-line-certificate">faster line certificate</a>.</p>
+<p><strong>What the goal needs.</strong> For every \(N\ge10\): (B), and (L) or the weaker contact bound, each by a mechanism. The certificates settle one size each. The measured cost (\(41\) s at \(N=8\), \(303\) s at \(N=9\)) extrapolates to more than half an hour at \(N=10\) and grows steeply after that.</p>
+<h4>Falsification attempt</h4>
+<p>The most natural mechanism for normality is descent through a collision hyperplane \(H=\{a_1=a_2\}\). If \(t\) is a nonzerodivisor and \(R/tR\) is normal, then \(R\) is normal. So if \(V(F|_H)\) were normal, every singular component of \(V(F)\), a cone that must meet \(H\), would be excluded near \(H\), and normality would descend level by level. The attempt fails if \(F|_H\) has a repeated factor along a hyperplane of \(H\).</p>
+<p>research/tools/bmd_cube_boundary_collision_restriction.gp (collision-restriction.txt) takes a random line inside \(H\) modulo \(p=2^{61}-1\). It computes \(F|_H\) exactly by interpolation in the transverse direction, with degree \(\lambda_N\) (\(15\), \(45\)). At \(N=5\) and \(6\), \(F|_H\) has order zero at every parameter \(A=a_k\) and order exactly two at every double-pair parameter \(a_k=a_l\). So \(V(F|_H)\) is non-reduced, hence not normal, along the double-pair hyperplanes of \(H\). The descent can lose a singular component of \(V(F)\) whose trace on \(H\) lies in a double-pair stratum. The double-pair strata \(\{a_1=a_2,\ a_k=a_l\}\) are one place where the descent fails; the test does not examine \(F|_H\) away from the collision parameters. Order two on \(H\) can come from \(V(F)\) being tangent to \(H\) along that codimension-two stratum or from \(V(F)\) being singular there; the order of \(F\) at a generic point of the stratum would decide, and it was not computed. Either way the stratum lies outside \(U\), so neither case contradicts the normality conjecture, which concerns \(U\) only. The falsification succeeded against this simplest form of the mechanism.</p>
+<h4>Obstacle</h4>
+<p>The line is stuck on three statements, each needed for every \(N\ge10\) and each without a mechanism:</p>
+<ul>
+<li>the dual normal pairing \((s,f)\mapsto r_{s,f}\) has no rank-one zero along a set of codimension at most two;</li>
+<li>no divisor of configurations carries a triple root, two multiple roots, or a double root at a branch value or at infinity;</li>
+<li>the base space has weights at most two at one configuration attaining its count.</li>
+</ul>
+<p>Every descent tried so far loses control on the double-pair strata, where the boundary polynomial vanishes doubly on the collision hyperplane.</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Normality from a Cartier divisor</strong> (the standard local lemma: for \(R\) Noetherian local and \(t\) a nonzerodivisor in its maximal ideal, \(R/tR\) normal implies \(R\) normal; the converse, Bertini direction is Seidenberg, The hyperplane sections of normal varieties, Trans. Amer. Math. Soc. 69 (1950) 357–386). Targets the first obstacle through collision hyperplanes. <strong>Answers.</strong> An induction of normality along the collision descent, level by level, if each restriction is normal. Where it breaks: \(F|_H\) has repeated double-pair factors. <strong>Test.</strong> Falsified in this form: order two at every double-pair parameter at \(N=5,6\) (falsification attempt above). A version dividing out the known double-pair factor, or using the double-pair strata as the Cartier divisors, is not excluded.</li>
+<li><strong>Generic perfection of determinantal loci</strong> (Hochster and Eagon, Cohen–Macaulay rings, invariant theory, and the generic perfection of determinantal loci, Amer. J. Math. 93 (1971) 1020–1058). If the corank-\(c\) locus of a family of square matrices has the expected codimension \(c^2\), it is Cohen–Macaulay (Hochster–Eagon), and its class is then given by the Thom–Porteous formula. Targets the corank part of the first obstacle. <strong>Answers.</strong> An expected-codimension statement for \(\Sigma_2\) (codimension four) would give the corank part at once and a degree formula to compare with. <strong>Test.</strong> Falsified as a uniform principle. At \(N=8\) the symmetric locus has corank two in codimension three (<a href="#cube-symmetric-mark-weight">symmetric mark weight</a>), below the expected four. So \(\Sigma_2\) does not always have the expected codimension, and the family is not determinantally generic.</li>
+<li><strong>Nondegenerate critical points of likelihood functions</strong> (Huh, The maximum likelihood degree of a very affine variety, Compositio Math. 149 (2013) 1245–1266). For generic exponents, all critical points of a master function on a very affine variety are nondegenerate. Targets (B) through a family in the exponent \(-3/2\to-\lambda\). <strong>Answers.</strong> Simplicity of the base Weierstrass points for generic \(\lambda\), which would then need a specialization argument at \(\lambda=3/2\). The <a href="#cube-four-root-weierstrass-points">four-root formal-\(\lambda\) factorization</a> shows the exceptional exponents there are integers. Where it breaks: Huh's theorem assumes a smooth very affine variety, and the Weierstrass points must first be critical points of a master function on one. The record's <a href="#entry-2026-09-29-cube-component-bethe-extension">Bethe extension entry</a> found that identification to give no simplicity for caterpillar components. <strong>Test.</strong> Not run: the identification for the base space is the missing development step, and no cheap check of it exists.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>MDS codes</strong> (MacWilliams and Sloane, The Theory of Error-Correcting Codes, Ch. 11; Roth and Seroussi, On generator matrices of MDS codes, IEEE Trans. Inform. Theory 31 (1985) 826–830). Translation: the rows of \(A_{R+1}\) over \(k(a)\) generate a code of length \(R+2\) and dimension \(R\). The contact locus \(K=\{\operatorname{rank}A_{R+1}&lt;R\}\) is the common zero set of all maximal minors, and the code is MDS exactly when no maximal minor vanishes. <strong>Answers.</strong> The dual code has dimension two. An MDS code of dimension two has pairwise non-proportional columns, points of \(\mathbb P^1\), so it is a doubly extended generalized Reed–Solomon code, and so is its dual. By Plücker duality the maximal minors of \(A_{R+1}\) are, up to one common factor, the \(2\times2\) minors of a basis of the two-dimensional right kernel, the dual pencil \(W_{R+4}\) of the <a href="#cube-character-principal-parts">character principal parts</a>. So the bridge reduces the contact bound to the kernel pencil: \(K\) is where that pencil jumps to dimension three. The factorization of individual minors is automatic and carries no codimension information. <strong>Test.</strong> Passed: research/tools/bmd_cube_pair_code_mds.gp (pair-code-mds.txt) finds all \(66\) (\(N=5\)) and \(136\) (\(N=6\)) maximal minors nonzero at three random configurations each. The entries lie in \(\mathbb Z[1/2]\), so a minor nonzero modulo \(p\) is a nonzero polynomial: the code is generically MDS at \(N=5,6\), proved.</li>
+<li><strong>Tropical discriminants</strong> (Dickenstein, Feichtner and Sturmfels, Tropical discriminants, J. Amer. Math. Soc. 20 (2007) 1111–1133). Translation: the orders of \(\Delta_W\) and \(F\) along the strata of the collision arrangement form tropical data. Examples are the collision exponent \(e(M)\), the double-pair order two found above, and the higher orders at deeper strata. The Horn–Kapranov parametrization describes a discriminant through such data. <strong>Answers.</strong> A combinatorial fan recording the order of the discriminant along every stratum. That is exactly the information the descents lose at deep strata, where each remainder needs a local order. <strong>Test.</strong> Not run: no stratum-order table beyond the collision exponent and today's double-pair order exists yet to compare against.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1">The identity test on one line, made faster by evaluation at geometric points and exact division by the known collision part, certified \(N=9\). An explicit hitting family for all \(N\) is still missing. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">The per-size decision procedure now runs at \(N=9\) in five minutes with the <a href="#cube-fast-line-certificate">fast certificate</a>, which settled \(\alpha_9=378\). Its cost ratio \(41\to303\) s from \(N=8\) to \(9\) puts \(N=10\) near the run limit. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-complete-review:3">The discriminant-multiplicity lead's transversality at \(A_1\) points is now smoothness of the boundary hypersurface (<a href="#cube-boundary-smoothness-criterion">smoothness criterion</a>). Normality of that hypersurface is equivalent to one bilinear statement (<a href="#cube-dual-normal-criterion">dual normal criterion</a>). <strong>Follow-up.</strong> Developed.</li>
+</ul>
+<p><strong>Assessment.</strong> Measured against statement 3, the line has proved the plateau at \(N=7,8,9\) and reduced every size to two cheap certificates, the line certificate now ten to thirteen times faster. In these entries the mechanism for all \(N\) was reformulated three times: normality with type genericity, the singular locus, then one bilinear pairing. Each reformulation is sharper, but none proves anything for \(N\ge10\). The falsification showed that the natural descent fails at least on the double-pair strata. The coding bridge passed its test, but its answer reduces to the kernel pencil already in the record. It did point out that the off-collision half needs only the contact bound, the jump locus of that pencil, and not squarefreeness. The line is sound and its certified range grows, but its general statements have no mechanism, and the evidence gives no basis for expecting one soon. The per-size route stays open while its cost is affordable: the next size, \(N=10\), extrapolates to more than half an hour.</p>
+<p><strong>Next step on the highest-risk item.</strong> Route item cube-odd-characteristic, open statement 3 for \(N\ge10\), the off-collision half. The goal needs only the contact bound: the kernel pencil \(W_{R+4}\) jumps to dimension three only on a set of codimension at least three. Apply the tangent-space argument of the <a href="#cube-dual-normal-criterion">dual normal criterion</a> to the tall jet map \(J_{R+4}\). At a point of the jump locus with one-dimensional kernel, the locus has codimension at least three unless some dual polynomial pairs to zero with the kernel section. This should make the contact bound equivalent to a dual normal nondegeneracy at jet length \(R+4\), with no squarefreeness or type genericity. Prove that equivalence, and test it against the six-root symmetric locus, whose contact \(R+3\) lies below the bound.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the review, both scripts and outputs, and the preceding entries. Verdict: pass with corrections. It confirmed that the collision restriction is computed exactly and that order two gives non-reducedness along the double-pair hyperplanes of \(H\). It confirmed that the descent lemma is applied correctly, that the \(N=8\) corank-two locus falsifies expected codimension, and that the MDS test is sound. Corrections applied:</p>
+<ul>
+<li>the double-pair strata are called one place where the descent fails, and the tangency-or-singularity alternative and its position outside \(U\) are stated;</li>
+<li>the descent lemma is no longer attributed to Seidenberg;</li>
+<li>Thom–Porteous is separated from Hochster–Eagon;</li>
+<li>Huh's smoothness hypothesis is named;</li>
+<li>generic MDS is stated as proved, and the MDS bridge's answer is rewritten: a dimension-two MDS dual is automatically generalized Reed–Solomon, and the minors are the \(2\times2\) minors of the kernel pencil, so the bridge reduces to the jump locus;</li>
+<li>the Assessment and Next step follow that reduction, and the cost at \(N=10\) is stated as more than half an hour.</li>
+</ul>
+<p>These corrections weaken or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-x">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 43.71 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">45.72 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 37.58 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 14.71 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">5.56 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
