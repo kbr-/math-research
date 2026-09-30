@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). By the <a href="#cube-contact-plane-criterion">plane criterion</a>, (K) at each \(N\) is decided on one generic plane of configurations, or on any special cone whose closure is controlled; symmetric cones are excluded. Peeling reduces (B) to squarefree far polynomials, <a href="#entry-2026-09-30-cube-neck-genericity-review">irreducible where computed</a>, and the <a href="#cube-peeling-neck-reduction">neck windows</a>.</p>
-<p>Next, develop the neck genericity review's passed Newton-polygon lead for the far polynomials \(W_k\). Derive \(W_k(0)\) and the leading coefficient of \(W_k\) in closed form, from the Toeplitz binomial and Chu–Vandermonde factors of the peeling exponent computation. Compare their \(p\)-adic valuations with the observed Newton segments: slope \(\pm1/17\) at \(p=17\) for \((b,k)=(4,2)\), and \(\pm1/11\) at \(p=11\) for \((4,3)\). If the segment endpoints are these extreme coefficients, state the valuation bound on the other coefficients that a Filaseta-type irreducibility argument would need.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K), which is decided on a <a href="#cube-contact-plane-criterion">generic plane</a>. By the <a href="#cube-peeling-weight-two-reduction">weight-two peeling reduction</a>, (B) needs only far polynomials \(W_k\) without triple roots, and neck points of weight at most two. The <a href="#cube-neck-triple-factorization">triple factorization</a> writes the neck window minors through the cluster, \(\tau\) and \(U\).</p>
+<p>Next, develop the neck genericity review's untried subresultant lead at block size two. Write the negative block's rows \(y^p\Delta_j\varphi\), \(p&lt;2\), as a shifted-coefficient matrix. Expand its minors on the column sets used by the level-\(2E\) terms in the Lascoux–Pragacz double-sum form. Then test, against the recorded counts at \((e,l,w,c)=(1,2,2,4)\) and \((1,3,2,5)\), whether the level-\(2E\) sum collapses to one such minor times a Hankel factor, as at block size one.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32181,6 +32181,58 @@ over \(I=(I_0,\ldots,I_{w-1})\), \(I_p\) an \(l\)-set of indices \(i\). Here \(s
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 25.24 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 26.85 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.57 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-far-newton-weight-two" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-neck-genericity-review:2" data-claims="cor:cube-peeling-weight-two-reduction">
+<h3>30 September 2026 — The far polynomials' large-prime Newton segments are interior, and the peeling needs only weights at most two</h3>
+<p class="entry-meta">Newton-polygon test of the far polynomials: the segments are interior, so extreme coefficients cannot drive an irreducibility proof. Working proof that the peeling needs only multiplicities at most two. Far Newton cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-30-cube-neck-genericity-review">neck genericity review</a> found the far polynomials \(W_k\) irreducible over \(\mathbb Q\) at \((b,k)=(3,2),(4,2),(4,3)\). Their Newton polygons have a segment of slope \(1/17\) and length \(17\) at \(p=17\) for \((4,2)\), and one of slope \(-1/11\) and length \(11\) at \(p=11\) for \((4,3)\) (in the convention of the script below): the mechanism of Filaseta's irreducibility proofs for Bessel polynomials. The missing implication for (B) is simplicity of the roots of \(W_k\) for every \(b\). Such a proof needs the \(p\)-adic valuations of the coefficients that bound the segments. The extreme coefficients \(W_k(0)\) and \(\operatorname{lead}W_k\) come from the exponent computation of the <a href="#cube-base-peeling">peeling theorem</a>, as products of Toeplitz binomial and Chu–Vandermonde factors, so they could have closed forms. This cycle tests whether the segments end at those coefficients. It also asks how much of squarefreeness the base bound (B) actually needs.</p>
+<p><strong>General statement.</strong> <code>cor:cube-peeling-weight-two-reduction</code>, for every even \(N\ge6\) and odd \(N\ge5\).</p>
+<h4>Where the segments lie</h4>
+<p>research/tools/bmd_cube_far_newton_vertices.gp (far-newton-vertices.txt) recomputes \(W_k\) exactly over \(\mathbb Q\) at \(c=1\), as in the review. For every prime \(p\le\deg W_k\) it prints the vertices \((i,v_p(a_i))\) of the Newton polygon, \(a_i=[x^i]W_k\), whenever a segment has reduced slope denominator at least \(\deg W_k/4\).</p>
+<ul>
+<li>\((3,2)\), degree \(16\): at \(p=3\), vertices \((0,3),(6,3),(16,5)\), with the segment from \(6\) to \(16\) of slope \(1/5\); at \(p=7\), vertices \((0,4),(12,4),(16,5)\), with the segment from \(12\) to \(16\) of slope \(1/4\).</li>
+<li>\((4,2)\), degree \(48\): at \(p=17\), vertices \((0,2),(27,2),(44,3),(48,4)\); the segment of slope \(1/17\) runs from \(27\) to \(44\).</li>
+<li>\((4,3)\), degree \(44\): at \(p=11\), vertices \((0,5),(2,4),(6,3),(17,2),(41,2),(44,3)\); the segment of slope \(-1/11\) runs from \(6\) to \(17\).</li>
+</ul>
+<p>So each large-denominator segment has at least one interior endpoint (indices \(6,12,27,44,6,17\)); at \((3,2)\) both segments end at \(\operatorname{lead}W_k\), and at \((4,2)\) and \((4,3)\) both endpoints are interior. Closed forms for \(W_k(0)\) and \(\operatorname{lead}W_k\) would not locate them. Even the extreme-coefficient form always needed lower bounds on all interior valuations, since the lower hull depends on them; the finding is that the vertices themselves are interior. A Filaseta-type argument needs the valuations of interior coefficients, and \(W_k\) has no known formula for those. This formulation of the lead is falsified. Its \(p\)-adic idea is untested. As an observation from three cases only: the segments' primes fit \(17=8l+1\) at \(l=2\) and \(11=4(e+l)-1\) at \((e,l)=(2,1)\), and at \((e,l)=(1,1)\) these give \(9=3^2\) and \(7\), exactly the primes observed there. They are of the size of the odd factors in the half-integral binomial blocks. A \(p\)-adic analysis of the Wronskian's rows, rather than of its coefficients, remains open.</p>
+<p><strong>Lead follow-up.</strong> Tested in the extreme-coefficient form, which is falsified: the segments are interior. The \(p\)-adic form through the rows of the component is not tried. <strong>Follow-up.</strong> Continuing.</p>
+<h4 id="cube-peeling-weight-two-reduction">Weights at most two suffice</h4>
+<p>The <a href="#cube-first-step-two-certificates">two-certificate corollary</a> uses (B) in the form: the base \(V^{(\lfloor N/2\rfloor)}\) has all finite non-branch weights at most two at some configuration attaining its count. The <a href="#cube-base-peeling">peeling reduction</a> asked for squarefree \(W_k\) and simple necks, which give weight one.</p>
+<p><strong>Corollary (weight-two peeling reduction).</strong> Let \(N=2b\ge6\). Suppose that for every \(2\le k\le b-1\), every root of \(W_k\) has multiplicity at most two, and that for small \(\varepsilon\) and generic \(D\) every neck point of step \(k\) has weight at most two. Then (B) holds at \(N\). The same holds for odd \(N=2b+1\ge5\) (the two-certificate corollary uses (B) only for \(N\ge7\)), with the far polynomials \(W_k\), \(2\le k\le b\), and the necks of the <a href="#cube-odd-base-peeling">odd peeling</a>.</p>
+<p><strong>Proof.</strong> This is the argument of the peeling reduction with "simple" replaced by "weight at most two". At a non-branch point, the weight of a space equals the order of vanishing there of its Wronskian. Fix \(k\), and suppose \(E_k\) has all non-branch weights at most two at a generic configuration, where it attains its count. Peel the double \(k\) at \(D_k=\varepsilon c\). By the peeling theorem, for small \(\varepsilon\) the non-branch zeros of the normalized Wronskian of \(E_{k-1}\) split by Hurwitz's theorem into three groups. Those converging in \(x\) to a root \(x_0\) of \(W_k\) have total multiplicity equal to the multiplicity of \(x_0\), at most two. Those converging in \(z\) to a non-branch point of \(E_k\) have total multiplicity equal to its weight, at most two. The rest are neck points, of weight at most two by hypothesis. No zero converges to a branch value or escapes. Every non-branch point of \(E_{k-1}\) therefore has weight at most two. The branch orders are minimal, and the count is attained, as in the theorem. The set of parameters at which every non-branch weight is at most two is open, by the same Hurwitz argument. So the property holds at generic parameters of \(E_{k-1}\). Downward induction from \(E_{b-1}\) (even) or \(E_b\) (odd), which have no non-branch points, reaches \(E_0=V^{(b)}\). \(\square\)</p>
+<p>So the two peeling conjectures can be weakened to "no root of \(W_k\) of multiplicity three" and "no neck point of weight three". In the computed cases the far polynomials are squarefree anyway, so this changes what must be proved, not the evidence. It matters for a mechanism. A triple root of \(W_k\) is a point where the rigid component \(F_k\) has weight at least three. Heuristically, a neck point of weight three is a degeneracy of expected codimension two in the neck window model, rather than one; this count is not proved.</p>
+<p><strong>What this does to the route.</strong> For the far polynomials, the Newton-polygon lead is closed in its extreme-coefficient form: the decisive segments have interior vertices. The weakened targets are recorded. The next step returns to the neck, where the subresultant lead is untried.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(K) for \(N\ge11\);</li>
+<li>no triple roots of \(W_k\) for every \(b\), even and odd;</li>
+<li>neck weights at most two, via the window valuations at block size four;</li>
+<li>the genericity of \(G_c\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The peeling reduction and its proof, the peeling theorem's Hurwitz step, the odd peeling theorem's statement and its ends-and-counts step (no zero converges to a branch value, including \(-1/a\), or escapes; the rest of the bookkeeping is the even one), and the two-certificate corollary's form of (B).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, the specification, the script and its output, and the peeling and two-certificate excerpts. Verdict: pass with corrections. It confirmed the weight-two induction (each group of zeros has total multiplicity at most two, weight equals Wronskian order at a non-branch point, openness as in the original), the odd ranges, the hull code and every vertex list. Corrections applied:</p>
+<ul>
+<li>the \((3,2)\) segments end at the leading coefficient, and its \(p=7\) slope is stated; the interior-vertex conclusion is restricted accordingly, with the remark that interior valuations were always needed;</li>
+<li>the slope signs follow the output; the prime numerology is labelled an observation from three cases, including \((3,2)\), and the \(p\)-adic idea is called untested;</li>
+<li>the odd case's reliance on the odd theorem's count step is made explicit, after re-reading it; odd \(N=5\) is noted as outside the corollary's use;</li>
+<li>the neck codimension remark is labelled heuristic, and the route sentence says "extreme-coefficient form".</li>
+</ul>
+<p>These corrections restrict or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zl">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 2.52 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">26.18 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 5.13 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 9.05 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 20.82 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.20 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
