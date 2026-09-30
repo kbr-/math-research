@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at <a href="#cube-ten-root-first-step">\(N=7,\ldots,10\)</a> by two certificates. For every \(N\) it follows from (B), the base weight bound, and the <a href="#cube-contact-criterion">contact criterion</a>'s nondegeneracy (K). The line certificate took \(1713\) s at \(N=10\), and \(N=11\) is beyond the run limit without a further speedup.</p>
-<p>Next, (B) for every \(N\). Develop the Eisenbud–Harris lead of the <a href="#entry-2026-09-30-cube-neck-complete-review">neck completion review</a>: derive the limit of the base space \(V^{(b)}\) as two doubles collide, and its count identity. If the counts add up as at the earlier levels, weight propagation reduces (B) at level \(b\) to smaller bases, uniformly in \(N\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For even \(N\), (B) follows from the <a href="#cube-base-caterpillar">base caterpillar certificate</a>, whose hypotheses hold at \(N=6,8\).</p>
+<p>Next, the component space at an interior double scale of the scale-separated base, for every \(b\). Derive its flat limit (doubles below the scale collapsing to \(0\), those above going to infinity), its Weierstrass count, and the neck slopes between consecutive interior scales. Check the count identity against \(T(4)=44+64+48\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -31224,6 +31224,70 @@ L:k^N\to(S\otimes W)^*,\qquad L(v)(s\otimes f)=\sum_iv_ib_i(s,f)=\lambda_f(\part
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 15.77 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">29 min 14.26 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.45 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-base-caterpillar" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-base-caterpillar-simplicity lem:cube-base-caterpillar-certificate check:cube-base-caterpillar-six-eight">
+<h3>30 September 2026 — Separating the base's doubles by scale puts every non-branch Weierstrass point on interior components and necks, all simple at six and eight roots</h3>
+<p class="entry-meta">Finite check with a general conjecture: in the scale-separated degeneration of the base V^(b), N = 2b, the non-branch points sit on the interior double scales and the necks between them, simple at N = 6, 8; a Newton-polygon certificate of this kind proves (B). Base caterpillar cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> Statement 3 at every \(N\ge7\) follows from (B), the base weight bound, and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). (B) needs weight at most two at one configuration of the base \(V^{(b)}\), \(b=\lfloor N/2\rfloor\), attaining its count. No degeneration of the descent reaches the base, whose doubles do not cluster like simple roots. The missing implication is a degeneration of the base whose pieces are simpler and whose counts add up, as at the earlier levels. This cycle separates the doubles by scale, like the record's <a href="#cube-caterpillar-outer-components">caterpillar degeneration</a> of the separated space, and asks where the non-branch points go.</p>
+<p><strong>General statement.</strong> <code>conj:cube-base-caterpillar-simplicity</code> and <code>lem:cube-base-caterpillar-certificate</code>, for every even \(N\ge6\); evidence <code>check:cube-base-caterpillar-six-eight</code>.</p>
+<h4>The computation</h4>
+<p>research/tools/bmd_cube_base_caterpillar_newton.gp uses the rows of the base script unchanged. It places the \(b=N/2\) doubles at \(D_k=c_ke^{b-k}\), \(k=1,\ldots,b\), with \(c=(2,-3,5,\ldots,1)\), the hierarchy's first double at the smallest scale. It divides out the branch factors \((1+D_kt)^{m_k}\) with the minimal multiplicities of the base script, which are lower bounds at every configuration, so the quotient \(Q(e,t)\) is a polynomial of \(t\)-degree \(T(b)\). It interpolates \(Q\) modulo \(p=2^{61}-1\) in \(t\) and in \(e\), with two checks each. It reports the lower Newton polygon of the \(e\)-valuations of the \(t\)-coefficients and the factorization of each edge polynomial. A root at scale \(|t|\sim e^{-\sigma}\) lies on the edge of slope \(\sigma\), with \(t\approx xe^{-\sigma}\) for a root \(x\) of the edge polynomial.</p>
+<p>The interpolation in \(e\) is exact by a degree bound. Under \(D\mapsto\lambda D\), \(t\mapsto t/\lambda\), each row entry in column \(m\) scales as \(\lambda^m\), a row shifted by \(T^j\) scales down by \(\lambda^j\), and \(1+Dt\) is invariant. So the \(t^d\) coefficient of \(Q\) is homogeneous in \(D\) of degree \(d+K_0\), \(K_0=R(R-1)/2-6\binom b2\), and its \(e\)-degree is at most \((b-1)(d+K_0)\). The script checks that the number of points exceeds \((b-1)(T(b)+K_0)\): \(206\) against \(300\) at \(N=6\), \(1494\) against \(1500\) at \(N=8\). A first \(N=8\) run with the undivided polynomial failed its \(e\)-check. It also checks that \(Q(e,-1/D_k)\not\equiv0\). For an interior \(k\), the edge polynomial of slope \(b-k\) must not vanish at \(x=-1/c_k\); for the outer \(k\), there must be no edge at slopes \(0\) and \(b-1\).</p>
+<ul>
+<li>\(N=6\), \(b=3\) (base-caterpillar-N6.txt; \(e\)-degree \(165\) from \(300\) points): one edge, slope \(1\), length \(16=T(3)\), edge polynomial squarefree (factor degrees \(1,1,3,11\)).</li>
+<li>\(N=8\), \(b=4\) (base-caterpillar-N8.txt; \(e\)-degree \(1086\) from \(1500\) points):
+<ul>
+<li>slope \(1\), length \(44\);</li>
+<li>slopes \(9/8,11/8,13/8,15/8\), length \(16\) each;</li>
+<li>slope \(2\), length \(48\).</li>
+</ul>
+Total \(44+64+48=156=T(4)\), and every edge polynomial is squarefree.</li>
+</ul>
+<p>At both sizes the interior edges do not vanish at their branch values, and no edge sits at the outer slopes. The four edges of slopes \((2j+1)/8\) carry only exponents divisible by \(8\): each is a quadratic in \(x^8\), a ring of \(16\) points at its own scale, so the neck consists of four scales.</p>
+<p>So the outer doubles' scales, \(|t|\sim1\) and \(|t|\sim e^{-(b-1)}\), carry no non-branch point. Each interior double's scale \(|t|\sim e^{-(b-k)}\), \(2\le k\le b-1\), carries a component (\(16\) at \(N=6\); \(44\) and \(48\) at \(N=8\)). Between consecutive interior scales there is a neck of rings at the intermediate slopes (\(4\times16\) at \(N=8\)). At a scale \(e^{-(b-k)}\), the doubles \(j&lt;k\) move to infinity and the doubles \(j&gt;k\) collapse to \(0\). So the limit curve is a three-pointed \(\mathbb P^1\), without moduli. The limit space itself, a flat limit, and its ramification data at \(0\) and \(\infty\), where clusters of doubles at several scales are absorbed, are not derived here. They may need the analogue of the Plücker minimality condition that the <a href="#cube-caterpillar-outer-components">caterpillar precedent</a> needed.</p>
+<h4>A certificate for (B)</h4>
+<p><strong>Lemma (base caterpillar certificate).</strong> Characteristic zero, \(N=2b\ge6\), and the scale-separated family above. Suppose the lower Newton polygon of \(Q(e,t)\) over \(\mathbb F_p\), \(p=2^{61}-1\), computed exactly, has total length \(T(b)\). Suppose every edge polynomial is squarefree with no root at \(0\), and \(Q(e,-1/D_k(e))\not\equiv0\) modulo \(p\) for every \(k\). Then for all but finitely many rational \(e\), the base \(V^{(b)}\) at \(D_k=c_ke^{b-k}\) attains \(T(b)\) and every finite non-branch point has weight one. In particular (B) holds at \(N\).</p>
+<p><strong>Proof.</strong> Work in an algebraic closure of \(\mathbb F_p((e))\) with the extended valuation. The roots of \(Q(e,\cdot)\) of valuation \(-\sigma\), multiplied by an element of valuation \(\sigma\), reduce to the roots of the edge polynomial of slope \(\sigma\), with multiplicity. Distinct nonzero reductions therefore give distinct roots, and roots on different edges have different valuations. So \(Q(e,\cdot)\) has \(T(b)\) distinct roots, and its discriminant in \(t\) is a nonzero polynomial in \(e\) modulo \(p\). The reduction is valid because the leading \(t\)-coefficient, the hull endpoint at \(d=T(b)\), is nonzero modulo \(p\). Now lift. \(Q\) is defined over \(\mathbb Z_{(p)}\): the row denominators are powers of \(2\) and of the primitive factors \(1+D_kt\), as in the <a href="#entry-2026-09-30-cube-neck-complete-review">neck completion review</a>. The \(t\)-degree of \(Q\) is \(T(b)\) modulo \(p\), with leading coefficient a nonzero polynomial in \(e\). So in characteristic zero \(Q(e,\cdot)\) has degree \(T(b)\) and a discriminant that is a nonzero polynomial in \(e\). Likewise \(Q(e,-1/D_k(e))\), an element of \(\mathbb Z_{(p)}[e,e^{-1}]\) nonzero modulo \(p\), is nonzero in characteristic zero. Take \(e\) off the zeros of the discriminant, of the leading coefficient and of these \(b\) branch values. There \(Q(e,\cdot)\) is squarefree of degree \(T(b)\) with no root at a branch value. So each branch multiplicity is exactly its minimum, the non-branch part has degree \(T(b)\) and the count is attained, and a squarefree non-branch part means weight one. \(\square\)</p>
+<p>The \(N=6\) and \(N=8\) computations satisfy the lemma's hypotheses, including the branch and degree checks, so they reprove (B) there. The recorded single-configuration certificates already gave it.</p>
+<p><strong>Conjecture (base caterpillar simplicity).</strong> For every even \(N=2b\ge6\), the scale-separated base has all \(T(b)\) non-branch points simple for small generic \(e\), distributed over the interior double components and the necks between consecutive interior scales. It would follow from the lemma's hypotheses at every even \(N\), together with all edge slopes lying in \([1,b-2]\). The distribution rests on two sizes, \(N=6\) with one interior scale and no neck, and \(N=8\). The neck slopes \((2j+1)/8\) have no general prediction yet, so the neck form is an extrapolation from one case.</p>
+<p>The route to a proof for every \(N\) is the one that worked for the descent's collision half. The limit curves have no moduli, so, once the limit spaces are identified, each component's simplicity is a statement about one explicit three-pointed space. The necks are rings, which window arguments of the kind that proved the <a href="#cube-hierarchical-neck-count-all-levels">neck count at every level</a> may control. A count identity \(T(b)=\sum(\text{components})+\sum(\text{necks})\) then closes the argument by Hurwitz's theorem, as in <a href="#cube-weight-propagation">weight propagation</a>. Odd \(N\), whose base has one simple root, is not covered by this family.</p>
+<p><strong>What this does to the route.</strong> (B) now has a degeneration whose limit curves are three-pointed lines without moduli, a concrete handle that the base lacked. It is still conjectural beyond \(N=6,8\). Neither the component spaces nor the neck slopes are derived for general \(b\), and odd \(N\) needs its own family.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the component spaces at interior double scales for every \(b\), their counts and simplicity;</li>
+<li>the neck rings between interior scales;</li>
+<li>the count identity;</li>
+<li>odd \(N\);</li>
+<li>(K).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The base script (rows, minimal multiplicities, count \(T(a)\)); the neck completion review's lifting argument; weight propagation; the caterpillar outer components.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, the claim specification, the script against the base script, the outputs and logs, and the cited anchors. Verdict: pass with corrections. It confirmed the multiplicities and degree bound against the base script, the polynomiality of \(Q\) by Gauss's lemma, the Newton polygon and sign conventions (against the undivided run), and the scale reading. Corrections applied:</p>
+<ul>
+<li>attainment needed \(Q\ne0\) at the branch values: added as a hypothesis and checked (both interior edges nonzero at their branch values; no outer edges);</li>
+<li>exactness in \(e\) needed a degree bound: derived from homogeneity and checked by the script;</li>
+<li>the Puiseux argument now works in an algebraic closure of \(\mathbb F_p((e))\);</li>
+<li>an unused clause about degenerate \(e\) was dropped;</li>
+<li>the components are described as three-pointed limit curves, with the limit spaces undetermined;</li>
+<li>the conjecture no longer claims equivalence with the lemma's hypotheses, and its evidence base is stated;</li>
+<li>the neck is described as four scales;</li>
+<li>the script header and output now record the parameters.</li>
+</ul>
+<p>Both computations were rerun with the corrected script and gave the same polygons. The corrections complete the proof and restrict the conjecture, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-za">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>18 min 18.57 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">29.29 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 55.89 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 17.84 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 43.77 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">7 min 50.26 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.53 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
