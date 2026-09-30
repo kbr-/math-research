@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge9\), which follows from <a href="#cube-first-step-two-certificates">two certificates</a> at every size. Off-collision squarefreeness (L) now splits, by the <a href="#cube-squarefree-normality-form">normality form</a>, into two parts. One is normality of the boundary hypersurface \(V(F_N)\), proved at \(N=6,7,8\). The other is type genericity: no divisor carrying a triple root, two multiple roots, or a double root at a branch value.</p>
-<p>Next, <code>conj:cube-boundary-normality</code> for every \(N\). \(\operatorname{Sing}V(\det A_{R-1})\) is the corank-at-least-two locus, where the weight is at least four, together with the corank-one points where the map is tangent. That tangency is a vanishing condition on the left and right kernels. Bound the codimension of both parts by an argument valid for every \(N\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge9\), which follows from <a href="#cube-first-step-two-certificates">two certificates</a> at every size. (L) follows from <code>conj:cube-boundary-normality</code> and type genericity. The <a href="#cube-boundary-singular-locus">boundary singular locus</a> reduces the conjecture to two statements. The corank-at-least-two locus of the square jet map must have codimension at least three, and the explicit polynomial \(r_{s,f}\) must not vanish along any component of \(V(F,\delta F)\).</p>
+<p>Next, the corank-two bound for every \(N\). A codimension-two component would carry two independent sections of order at least \(R+2\). Its flow-out would be a divisor carrying a root of multiplicity at least four. Test this against the local discriminant order, the count identities and the symmetric sector bounds, looking for a contradiction valid for every \(N\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -30781,6 +30781,71 @@ of degree \(45=\lambda_6\). Off the collision divisor, \(C_\mu(a)=0\) says that 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">29 min 12.08 s</td></tr>
 <tr><td>Marked overhead and interruptions</td><td class="elapsed">0.62 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">3.96 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.38 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-boundary-singular-locus" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-boundary-singular-locus">
+<h3>30 September 2026 — The gradient of the boundary polynomial is the residue vector of the dual normal function</h3>
+<p class="entry-meta">Working proof: at a corank-one point, grad F is proportional to the residues of Q_{s,f} = r/∏(z−a_i), so V(F) is singular exactly where r vanishes; corank two forces weight four. The symmetric-base idea for (B) fails structurally. Boundary singular locus cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-squarefree-normality-form">normality form</a> reduced the hypersurface half of (L) to <code>conj:cube-boundary-normality</code>: the singular locus of \(V(F_N)\) has codimension at least three on the separated locus \(U\). The missing implication is an explicit description of that singular locus that a proof for every \(N\) can use. The record's <a href="#cube-character-principal-parts">character principal parts</a> construct the dual cokernel of the jet map and a normal covector. This cycle identifies that covector with \(\nabla F\). A side test checked whether (B) could use a rotation-symmetric base configuration.</p>
+<p><strong>General statement.</strong> <code>prop:cube-boundary-singular-locus</code>, for every \(N\ge3\).</p>
+<h4 id="cube-boundary-singular-locus">The singular locus of the boundary</h4>
+<p><strong>Setting.</strong> Characteristic zero, separated \(a\), mark \(P\) over \(\infty\), \(V_a=\langle1,z,w_{ij}\rangle\) of dimension \(R+2\), and \(J=J_{R+2}:V_a\to L|_{(R+2)P}\), the square jet map. The <a href="#cube-mark-weight-dictionary">mark weight dictionary</a> (proof of (2)) gives \(\det J=u\,F_{\rm sep}\), with \(u\) a unit on \(U\), for the curve with branch points \(-a_i\). The character principal parts use branch points \(+a_i\). As \(F_{\rm sep}\) is homogeneous of degree \(\lambda\), on the \(+a_i\) curve \(\det J=u(-a)F(-a)=\pm u(-a)F(a)\), again a unit times \(F\) on \(U\). Likewise \(\delta F(-a)=\pm\delta F(a)\), so \(V(F)\), \(V(F,\delta F)\) and the weight statements are unchanged; write \(\det J=\tilde uF\). At a point of \(V(F)\) where \(J\) has corank one, let \(s=c_0+c_1z+\sum c_{ij}w_{ij}\) span its kernel and \(f\in W_{R+2}\) (degree at most \(R-1\)) its dual cokernel, as in (CP) and (JF) there. Put \(F_{ij}=[w_{ij}f]_+\) and
+\[
+Q_{s,f}=c_1f+\tfrac12\sum_{i<j}c_{ij}F_{ij}\Bigl(\frac1{z-a_i}+\frac1{z-a_j}\Bigr)=\frac{r_{s,f}(z)}{\prod_i(z-a_i)},
+\]
+with \(\deg r_{s,f}\le N-3\) and \(b_i=\tfrac12\sum_{j\ne i}c_{ij}F_{ij}(a_i)\), as in (RN) and (RG) there.</p>
+<p><strong>Proposition (boundary singular locus).</strong> On \(U\):</p>
+<ol>
+<li>at a corank-one point of \(V(F)\), \(\nabla F=\kappa\,(b_1,\ldots,b_N)\) with \(\kappa\ne0\), and \(Q_{s,f}=\sum_ib_i/(z-a_i)\). Hence \(V(F)\) is singular there iff \(Q_{s,f}\equiv0\), iff \(r_{s,f}\equiv0\), iff \([w\,f]_+(a_i)=0\) for every \(i\), where \(w=\sum_{j\ne i}c_{ij}w_{ij}\) is the part of \(s\) odd under the deck involution over \(a_i\);</li>
+<li>at a corank-one point of \(V(F)\), \(\sum_ib_i=\sum_ia_ib_i=0\). \(\sum_ia_i^2b_i\) is a nonzero multiple of \(\delta F\), so \(\deg r_{s,f}\le N-4\) exactly when the weight at \(P\) is at least two. At a weight-two point, singularity is the vanishing of the remaining \(N-3\) coefficients of \(r_{s,f}\);</li>
+<li>every point where \(J\) has corank at least two is singular and has weight at least four;</li>
+<li>so \(\operatorname{Sing}V(F)\cap U=\{\operatorname{corank}J\ge2\}\cup\{\operatorname{corank}J=1,\ r_{s,f}\equiv0\}\), and \(V(F)\) is smooth at every point of weight exactly one.</li>
+</ol>
+<p><strong>Proof.</strong> (1) At corank one, \(\operatorname{adj}J\) has rank one and equals \(\mu\) times the kernel vector tensored with the cokernel functional, \(\mu\ne0\). Jacobi's formula gives \(\partial_{a_i}\det J=\mu\,\lambda_f(\partial_{a_i}J(s))\), with the coefficients of \(s\) frozen in the moving basis. By (RN) that is \(\mu b_i\). As \(F=0\) there, \(\partial_{a_i}F=\partial_{a_i}(\det J)/\tilde u\), so \(\kappa=\mu/\tilde u\). The record shows that \(Q_{s,f}\) has only simple finite poles, at the \(a_i\), with coefficients \(b_i\), and that \(Q_{s,f}=O(z^{-3})\) at infinity. So \(Q_{s,f}-\sum_ib_i/(z-a_i)\) is a polynomial vanishing at infinity, hence zero. The last equivalence: the residue of \(Q_{s,f}\) at \(a_i\) is \(b_i=\tfrac12[wf]_+(a_i)\). For \(s\) odd over \(a_i\), the \(w_{ij}\) with \(j\ne i\) are exactly the basis sections changing sign.</p>
+<p>(2) Expanding at infinity, \(Q_{s,f}=\sum_{m\ge0}z^{-m-1}\sum_ia_i^mb_i\). \(Q=O(z^{-3})\) gives \(m=0,1\). This is also the recorded translation invariance \(F(b+c)=F(b)\) (pair-evaluation paragraph of the discriminant criterion) and Euler homogeneity at \(F=0\), since \(\sum_ia_i^mb_i=\kappa^{-1}\sum_ia_i^m\partial_{a_i}F\). For \(m=2\), \(\sum_ia_i^2\partial_{a_i}F=-\delta F\). By the dictionary, \(\delta F\) vanishes on \(V(F)\) exactly where the weight is at least two. The leading coefficient of \(r_{s,f}\), in degree \(N-3\), is \(\sum_ia_i^2b_i\).</p>
+<p>(3) At corank at least two, \(\operatorname{adj}J=0\), so \(\nabla\det J=0\) and \(\nabla F=0\) on \(V(F)\). Two independent sections of order at least \(R+2\) put two entries of the vanishing sequence of \(V_a\) at least \(R+2,R+3\), in positions \(R,R+1\), so the weight is at least four.</p>
+<p>(4) combines (1) and (3). At weight one, \(\delta F\ne0\), so \(\nabla F\ne0\). \(\square\)</p>
+<p>Assume \(\Delta_W\ne0\), so that every component of \(V(F,\delta F)\cap U\) has codimension exactly two (discriminant criterion). Since \(\operatorname{Sing}V(F)\subseteq V(F,\delta F)\), <code>conj:cube-boundary-normality</code> follows from two statements:</p>
+<ul>
+<li>(a) \(\{\operatorname{corank}J\ge2\}\cap U\) has codimension at least three, a determinantal locus of expected codimension four. By part (3) it lies in \(\{\operatorname{wt}_P\ge4\}\), so a codimension bound for that locus is a convenient sufficient version. At \(N=7,8\) it follows from the squarefree certificates, since weight at least three then has codimension at least three. (a) makes the generic corank of every component equal to one, so that \(r_{s,f}\) is defined there;</li>
+<li>(b) at the generic point of each component of \(V(F,\delta F)\cap U\), \(r_{s,f}\not\equiv0\). For components of generic weight exactly two, the <a href="#cube-boundary-smoothness-criterion">smoothness criterion</a> makes (b) reducedness of \((F,\delta F)\) there.</li>
+</ul>
+<p>A heuristic, not evidence: the zero set of \(r_{s,f}\) on a component \(Z\) is invariant under the two-dimensional affine group, so it is a union of two-dimensional orbits. Its naive expected dimension \((N-2)-(N-3)=1\) lies below one orbit, so the expectation is that it is empty. (b) says that these \(N-3\) conditions are not identically satisfied along any component, and part (1) gives them in closed form in the kernel and cokernel.</p>
+<h4>Side test: a symmetric base for (B)</h4>
+<p>The base weight bound needs one configuration per \(N\). Rotation symmetry \(z\mapsto\omega z\) would reduce the Wronskian to a polynomial in \(z^b\), where classical families with simple zeros might apply. research/tools/bmd_cube_symmetric_base.gp (symmetric-base.txt), with the rows of the base script unchanged, places three doubles at the cube roots of unity modulo \(p\), for \(N=6\) and, with a simple root at \(0\), for \(N=7\). Prediction: open. The non-branch part is not a polynomial in \(z^3\), and the branch multiplicities are \([43,39,43]\) and \([89,83,87,0]\). The unequal branch multiplicities show that the rotation is not a symmetry of this base space: a symmetry would permute the doubles and preserve their multiplicities. The row construction explains why. The first double carries exponent \(-5/2\) and the later ones \(-7/2\), and the rows for a pair of doubles, the multiples of \((1+D_rT)\) of degree at most four over \(((1+D_rT)(1+D_sT))^{7/2}\), depend on their order. So the idea fails for this base space (row construction). At these configurations the counts \(16\) and \(80\) are attained with squarefree non-branch parts, which is only a further certificate of the kind already recorded at those sizes, not registered.</p>
+<p><strong>What this does to the route.</strong> The hypersurface half of (L) now follows from two concrete statements: a codimension bound for corank at least two, and nonvanishing of an explicit polynomial built from kernel and cokernel along each component. Neither is proved for \(N\ge9\). The symmetric route to (B) is closed for the hierarchy's base space.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>normality, through (a) and (b), for \(N\ge9\);</li>
+<li>type genericity;</li>
+<li>(B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The character principal parts theorem ((CP), (JF), (RN), (RG) and their proofs); the mark weight dictionary (proof of (2) for the unit \(u\)); the smoothness criterion; the base weight script's rows.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, the claim specification, the character principal parts and mark weight dictionary excerpts, the preceding entry and the side-test script and output. Verdict: pass with corrections. It verified Jacobi's formula with frozen coefficients (the target Taylor coordinates do not depend on \(a\)), the partial fractions, the leading coefficient of \(r\), the corank-two weight count, the parity statement and part (4). Corrections applied:</p>
+<ul>
+<li>the sign convention of the branch points (\(-a_i\) in the dictionary, \(+a_i\) here) is reconciled by homogeneity;</li>
+<li>part (2) is scoped to corank-one points and cites the recorded translation invariance;</li>
+<li>the reduction states \(\Delta_W\ne0\) and weakens (a) to the corank-two locus, with the weight-four version as a sufficient form;</li>
+<li>the reducedness reading of (b) is restricted to weight-two components;</li>
+<li>the dimension count is labelled a heuristic and restated through affine orbits;</li>
+<li>the remaining gap no longer implies (a) at \(N=6\);</li>
+<li>the side test cites the unequal multiplicities as its evidence, and its conclusion is limited to this base space.</li>
+</ul>
+<p>These corrections restrict or clarify without strengthening a claim, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-u">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 36.76 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">4 min 50.45 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 15.76 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">49.36 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 38.39 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.42 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.38 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
