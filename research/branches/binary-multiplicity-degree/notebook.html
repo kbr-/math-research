@@ -43,12 +43,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, is now the case \(\alpha=-\tfrac32\) of a <a href="#entry-2026-10-01-cube-contact-dilate-bound">dilate contact conjecture</a>. It holds numerically for every non-integral binomial and random series, and fails for \(\exp\). The neck vanishing is proved at block sizes one and two.</p>
-<p>Next, for (K): develop the transversality route over the series.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, holds numerically through \(N=13\) and for random dilate systems. The <a href="#cube-dilate-triangular-fibre">triangular route over the series</a> can give at most a generic-series theorem, so it is not a mechanism for (K). The neck vanishing is proved at block sizes one and two.</p>
+<p>Next, for (K): develop the arc route review's untried Amini–Baker lead (limit linear series on metrized complexes) against the obstacle of the F-curve route, the dependence of neck limits on the arc (lem:cube-neck-arc-indeterminacy).</p>
 <ul>
-<li>Prove the codimension count for configurations \((a,\sigma)\) on which \(k\mapsto\sum_j\sigma_ja_j^k\) has more zeros in \([1,R+1]\) than a generalized Vandermonde count allows, with the root-of-unity ratios (symmetry) as the only excess.</li>
-<li>From that count, prove the conjecture for generic \(F\).</li>
-<li>Then find which conditions on \(F\) the proof used, and check them for \((1+x)^{-3/2}\) by the hook-content formula.</li>
+<li>Read the theory's statement of how aspects depend on edge lengths.</li>
+<li>Compute, at the smallest type with two clusters of size at least two, the finite set of limits over the rate chambers.</li>
+<li>Test whether any chamber limit carries a point of type \(\sigma_3\).</li>
 </ul>
 </section>
 <section id="working-context">
@@ -36109,6 +36109,62 @@ For \(r=3\), degrees \(\deg G\le2\) survive at \((1,1)\), \(\le9\) at \((1,2)\) 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 33.39 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">10 min 22.19 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-01-cube-dilate-triangular" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-dilate-triangular-fibre check:cube-dilate-parity-compensation">
+<h3>1 October 2026 — The dilate contact equations are triangular in the series coefficients; excess comes from automatic equations, and the route stops at generic series</h3>
+<p class="entry-meta">Working proof of a triangular fibre bound and of a reduction of the generic dilate bound; the naive moment count is false; generic ranks of the odd equations checked at N = 6, 8. Dilate triangular cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> For (K), the highest-risk item, the last cycle proposed a transversality route over the series: a zero count for \(\sum_j\sigma_ja_j^k\) with codimension, then the passage from generic series to \((1+x)^{-3/2}\). The missing implication is (K) itself. This cycle makes the triangular structure precise and tests the proposed zero count. It then asks whether the route can reach the binomial at all.</p>
+<p><strong>General statement.</strong> <code>lem:cube-dilate-triangular-fibre</code>, for every \(N\ge3\); <code>check:cube-dilate-parity-compensation</code> at \(N=6,8\).</p>
+<h4 id="cube-dilate-triangular-fibre">The triangular fibre bound</h4>
+<p><strong>Setting.</strong> \(R=\binom N2\) and \(F=1+\sum_{r\ge1}f_rx^r\), with truncation \(f=(f_1,\ldots,f_{R+1})\in k^{R+1}\). Let \(a\in k^N\) be separated and \(C\ne0\) a symmetric zero-diagonal matrix. The contact form is \(\sum_{i&lt;j}c_{ij}F(a_iT)F(a_jT)\), with \(c_{ij}=2C_{ij}\). Put \(M_{rs}=\sum_{i\ne j}C_{ij}a_i^ra_j^s\) and \(\sigma_j=\sum_iC_{ij}\). In characteristic zero (\(2\) invertible), the contact conditions of conj:cube-contact-dilate-bound are \[ E_k:\ \sum_{r+s=k}f_rf_sM_{rs}=0\qquad(0\le k\le R+1), \] since \(\sum_{r+s=k}f_rf_sa_i^ra_j^s\) is symmetric in \(i,j\). Here \(E_0\) is \(\sum_j\sigma_j=0\). For \(k\ge1\), \(E_k\) contains \(f_k\) only in the term \(2M_{0k}f_k\), with \(M_{0k}=\sum_j\sigma_ja_j^k\), and otherwise only \(f_1,\ldots,f_{k-1}\).</p>
+<p><strong>Lemma (dilate triangular fibre).</strong></p>
+<ul>
+<li>For fixed \((a,C)\) with \(\sum_j\sigma_j=0\), the set \(\Phi(a,C)\) of \(f\) satisfying all \(E_k\) lies in a closed subset of \(k^{R+1}\) of dimension at most \(z=\#\{k\in[1,R+1]:M_{0k}=0\}\).</li>
+<li>Suppose every irreducible locally closed family \(S\) of such \((a,[C])\) on which \(z\ge z_0\) has \(\dim S\le N+R-2-z_0\). Then for \(f\) outside a proper Zariski-closed subset, \(K_F\) has dimension at most \(N-3\), that is, codimension at least three.</li>
+</ul>
+<p><strong>Proof.</strong> For \(k\notin Z\), \(E_k\) gives \(f_k=-(2M_{0k})^{-1}\sum_{r+s=k,\,0&lt;r&lt;k}f_rf_sM_{rs}\), a polynomial in \(f_1,\ldots,f_{k-1}\). So \(\Phi(a,C)\) lies in the graph of a morphism \(k^Z\to k^{[1,R+1]\setminus Z}\), of dimension \(z\).</p>
+<p>For the second part, stratify the constructible set of \((a,[C])\) with \(\sum\sigma=0\) (dimension \(N+R-2\)) by \(z\). Over a stratum \(S\), the incidence \(\{(f,a,[C])\}\) has dimension at most \(\dim S+z\). By the fibre-dimension theorem, over \(f\) in a dense open subset of the closure of its image, the fibre has dimension at most \(\dim S+z-(R+1)\le N-3\); over \(f\) outside that closure, it is empty. There are finitely many strata. Then \(K_F\), the image of the fibre in \(a\), has dimension at most \(N-3\). \(\square\)</p>
+<h4>The naive moment count is false</h4>
+<p>By the lemma, the dilate bound for generic series would follow if the configurations with many zeros of \(k\mapsto\sum_j\sigma_ja_j^k\) formed small families. They do not. Here separated means distinct entries, so \(a_i=0\) and \(a_i=-a_j\) are allowed. Take \(a=(\beta_1,-\beta_1,\ldots,\beta_m,-\beta_m)\) (\(N=2m\)) and \(C\) with \(\sigma_{2t-1}=\sigma_{2t}\) and \(\sum\sigma=0\). Every odd moment vanishes, so \(z\ge\lceil(R+1)/2\rceil\). These pairs form a family of dimension \(m+(R-N)+(m-2)=R-2\). The hypothesis would need \(R-2\le N+R-2-z\), that is \(z\le N\), which fails for even \(N\ge6\). For odd \(N\), appending \(a_N=0\) with \(\sigma_N\) free gives a family with the same properties, so it fails for odd \(N\ge7\) as well. So the zero count of the last cycle's proposed step is false as stated. The equations that are not pivots must be counted.</p>
+<h4>Compensation by the odd equations</h4>
+<p>research/tools/bmd_cube_dilate_parity_rank.gp (dilate-parity-rank.txt) takes a random point of this symmetric stratum, modulo \(2^{61}-1\). It solves the even \(E_k\) for their pivots \(f_k\), and computes the Jacobian rank of the odd \(E_k\) in the free odd coefficients (exact polynomial arithmetic, at a random point). This is the generic rank of the map, not a bound on the dimension of its zero set: that set contains, for instance, the point where every odd coefficient vanishes, and the rank there is not computed.</p>
+<ul>
+<li>\(C\) random with symmetric \(\sigma\): rank \(7\) of \(8\) odd equations at \(N=6\), and \(14\) of \(15\) at \(N=8\). The missing one is \(E_1=2M_{01}f_1\), which is identically zero because \(M_{01}=0\). So the odd equations are generically independent apart from \(E_1\). A bound on the fibre, which would make this stratum harmless, needs the rank at points of every component of the zero set, or an elimination;</li>
+<li>\(C\) parity-invariant (\(C_{i'j'}=C_{ij}\) under \(a\mapsto-a\)): rank \(0\); every odd equation vanishes identically, since \(M_{rs}=(-1)^{r+s}M_{rs}\). By the lemma's count, the parity-invariant pairs form a family of dimension \(2m+(R-m)/2-2\), with fibres of dimension at most \(\lceil(R+1)/2\rceil\). Their contribution is at most \(3m/2-2\) (\(R\) even) or \((3m-5)/2\) (\(R\) odd), that is \(2\) at \(N=6\) and \(4\) at \(N=8\), within \(N-3\). Whether this matches the dimension of the known symmetric component of \(K_F\) was not checked.</li>
+</ul>
+<p>This is a probabilistic finite check at one random point per case, of generic ranks only. Heuristically, consecutive zeros behave similarly. If \(M_{01}=\cdots=M_{0z}=0\) and \(M_{jj}\ne0\), then \(E_{2j}\) forces \(f_j=0\) once \(f_1=\cdots=f_{j-1}=0\), so \(\lfloor z/2\rfloor\) of them cut and \(\lceil z/2\rceil\) coordinates stay free. In the computed strata, this suggests that the excess over the naive count arises from equations that vanish identically or become automatic on the partial solution set, and there only through parity.</p>
+<h4>Where the route stops</h4>
+<p>The triangular structure uses the series coefficients as free variables. A proof along these lines, completed by a classification of automatic equations, would give the dilate bound for \(f\) outside a closed set, whose points are not described by the method. It does not reach \((1+x)^{-3/2}\) unless the exceptional closed set is computed and avoided, and that is the original problem in another form. So the dilate route gives a theorem about generic dilate systems at best. It suggests why the symmetric configurations are the extremal family, but it is not a mechanism for (K). I am not pursuing it further as the route to the goal.</p>
+<p><strong>What this does to the route.</strong> (K) remains without a mechanism. The dilate reformulation is now understood: in the computed strata the excess of the contact equations comes from automatic equations, with symmetry the known source. A proof for the actual series must use its specific structure: the curve \(X_a\), the half-integral monodromy, or the explicit limits of the F-curve route. The open obstacle of that route, the dependence of neck limits on the arc (lem:cube-neck-arc-indeterminacy), is where the untried Amini–Baker lead of the arc route review applies.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(K) for \(N\ge11\);</li>
+<li>(B): the Laplace-short neck windows at block size four, far polynomials, odd \(N\);</li>
+<li>(L) at \(N=11\), awaiting approval.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> conj:cube-contact-dilate-bound and its entry (setting, heuristic); cor:cube-symmetric-mark-weight (parity); the arc route review's Amini–Baker lead.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the equation identity (with the factor \(2\) and characteristic \(\ne2\)), both parts of the lemma, the dimension of the symmetric family, and the script's constructions, pivots, ranks and outputs. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the rank test is described as a generic rank, and the fibre and compensation claims are withdrawn;</li>
+<li>the failure is stated for even \(N\), with the odd case added and separated configurations allowing \(a_i=-a_j\) and \(a_i=0\);</li>
+<li>the consecutive-zero remark is labelled heuristic, with \(M_{jj}\ne0\) and without the unproved contribution bound;</li>
+<li>the parity-invariant contribution is counted;</li>
+<li>two overclaims are softened.</li>
+</ul>
+<p>These weaken or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261001-f">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>11 min 20.50 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 57.98 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 22.14 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.24 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
