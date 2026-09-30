@@ -66,7 +66,11 @@ main() = {
   foreach (cases, cs,
     my(e = cs[1], l = cs[2], w = cs[3], cc = cs[4], n = 4 * e, E = assignE(l, w, cc), Ep = ddE(l, w, cc), len = 2 * (w + 2 * E) + 8);
     my(tbin = vector(len, m, Mod(binomial(-5/2, m + n - w), q0)));
-    my(trnd = vector(3, t, vector(len, m, Mod(1 + random(q0 - 1), q0))));
+    \\ TPRANK = r: random t' of linear complexity r (power sums sum_(i<=r) a_i lambda_i^x), for the rank test of
+    \\ the second route review (bmd-20260930-zo); the prediction is C = 0 at level 2E when r < c.
+    my(rk = if (getenv("TPRANK"), eval(getenv("TPRANK")), 0));
+    my(trnd = vector(3, t, if (rk, my(a = vector(rk, i, Mod(1 + random(q0 - 1), q0)), lm = vector(rk, i, Mod(1 + random(q0 - 1), q0))); vector(len, m, sum(i = 1, rk, a[i] * lm[i]^m)), vector(len, m, Mod(1 + random(q0 - 1), q0)))));
+    if (rk, emit(Str("  (random t' of linear complexity ", rk, ")")));
     my(tps = concat([tbin], trnd));
     my(C = matrix(3, 3), firsts = List());
     for (i = 1, 3,

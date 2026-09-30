@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K), which is decided on a <a href="#cube-contact-plane-criterion">generic plane</a>. (B) needs far polynomials without triple roots and neck points of weight at most two (<a href="#cube-peeling-weight-two-reduction">weight-two reduction</a>). The <a href="#cube-neck-last-block-windows">last-block theorem</a> proves the neck windows \(c&gt;l(w-1)\). The <a href="#cube-neck-chain-filtration">chain filtration</a> explains the Hankel sizes in the others.</p>
-<p>Next, a route review: four research entries have passed since the last one, and the neck line has changed shape. It should state the line's claim with the last-block theorem and the Hankel conjecture, and attempt a falsification at block size four, at the peeling's size. It should give Outside leads and Absurd bridges answering the remaining obstacle: the algebraic vanishing of non-canonical patterns below the balanced one. Candidates are the Desnanot–Jacobi and Sylvester determinant identities for Hankel minors, and the boson–fermion correspondence.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). (B) needs far polynomials without triple roots and neck points of weight at most two. The neck windows are proved on the <a href="#cube-neck-last-block-windows">last block</a>, and the <a href="#entry-2026-09-30-cube-neck-hankel-review">Hankel conjecture</a> passed a prediction test at block size four. (K), highest risk, is decided on a <a href="#cube-contact-plane-criterion">generic plane</a>.</p>
+<p>Next, (K). By the flow-out argument of the <a href="#cube-wronskian-discriminant-criterion">Wronskian discriminant criterion</a>, (K) follows if the configurations with a non-branch Weierstrass point of weight at least three have codimension at least two. Every codimension-one component of that locus would be a component of the Wronskian discriminant divisor. List, from the record, the known components of that divisor at \(N=6,7,8\), including the involution divisors and the collision factors. For each, decide whether its generic point carries a weight-three point, using the symmetric mark weight and the confluent spaces. Then test whether peeling within one component controls its weights, as peeling controlled (B).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32340,6 +32340,156 @@ over \(I=(I_0,\ldots,I_{w-1})\), \(I_p\) an \(l\)-set of indices \(i\). Here \(s
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 30.31 s</strong></td></tr>
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 9.83 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">7 min 20.33 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-neck-hankel-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Route review; its falsification runs test conj:cube-neck-hankel-leading at block size four, recorded in the text, and it states no new claim.">
+<h3>30 September 2026 — Review: the Hankel form of the neck survives at the peeling's block size, and the contact bound still lacks a mechanism</h3>
+<p class="entry-meta">Route review of open statement 3 after the neck and contact cycles. The Hankel conjecture predicts all six block-size-four windows tested, and a rank test confirms its τ-factor. Neck Hankel review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>General statement.</strong> The line's claim is <code>cor:cube-first-step-two-certificates</code> in the form of the <a href="#cube-contact-criterion">contact criterion</a>: for \(N\ge7\), \(\alpha_N=\lambda_N\) follows from (B) and (K). Since the last review, (K) was reduced to a generic plane of configurations (<code>lem:cube-contact-plane-criterion</code>). (B) was reduced to far polynomials without triple roots and neck points of weight at most two (<code>cor:cube-peeling-weight-two-reduction</code>). For the necks, the <a href="#cube-neck-last-block-windows">last-block theorem</a> (<code>thm:cube-neck-last-block-windows</code>) proves the windows \(c&gt;l(w-1)\) for every block size, up to \(G_{c,w}\not\equiv0\). <code>conj:cube-neck-hankel-leading</code> predicts all windows, and the <a href="#cube-neck-chain-filtration">chain filtration</a> explains its factor sizes.</p>
+<p><strong>What the goal needs.</strong> For every \(N\ge11\): (K); far polynomials \(W_k\) without triple roots for every \(b\), even and odd; and neck points of weight at most two. At the peeling's block size \(w=4\), the necks need the windows \(c\le3l\), the genericity \(G_{c,4}\not\equiv0\) on the last block, and the exchange condition.</p>
+<h4>Falsification attempt</h4>
+<p>The Hankel conjecture was found at \(w\le3\). Its structure (balanced split, one cluster factor) could fail at the peeling's size \(w=4\), where the chains are longest. research/tools/bmd_cube_neck_separation.gp was run at \((e,l,w)=(1,2,4)\), \(c=4,5,6,7\), and at \((1,3,4)\), \(c=5,6\) (neck-separation-w4.txt, neck-separation-w4b.txt). The predictions were fixed before the runs: first nonzero levels \(2E=0,2,8,18\) and \(2,6\), and \(\tau\)-factors \(H_4^2,\ H_5H_3,\ H_6H_2,\ t'_1H_7,\ H_5H_4H_3,\ H_6H_3^2\). In all six windows the first nonzero level is the predicted one, for the binomial \(t'\) and for three random \(t'\), each at three random \(\beta\), modulo \(2^{61}-1\). The \(3\times3\) matrix of leading coefficients has rank one. Among the searched products (total size \(lw\), shifts at most \(12\)), exactly the predicted one matches. Window \((1,2,4,7)\) has \(c&gt;l(w-1)\) and lies in the last block covered by the theorem, so five of the six windows test the conjecture proper. The conjecture survives at the peeling's block size in these windows. Only \(e=1\) and \(l\le3\) are covered; the windows \(c=8\) at \(l=2\) and \(c=4,7,\ldots,12\) at \(l=3\) were not run.</p>
+<h4>Obstacle</h4>
+<p>The line is stuck on four statements. Each is needed for every \(N\ge11\), and none has a mechanism that covers every size:</p>
+<ul>
+<li>(K), the contact bound. It is decided on a generic plane, and by the flow-out argument of the <a href="#cube-wronskian-discriminant-criterion">Wronskian discriminant criterion</a> it follows from codimension at least two of the configurations with a non-branch point of weight at least three. No argument covers every \(N\);</li>
+<li>far polynomials \(W_k\) without triple roots. The extreme-coefficient Newton-polygon form is falsified, and no mechanism is known;</li>
+<li>the neck windows \(c\le l(w-1)\): the algebraic vanishing of the patterns below the balanced one, and the nonvanishing of the cluster factor \(f_{c,w}\). The layer valuations alone need not reach the leading level;</li>
+<li>\(G_{c,w}\not\equiv0\) on the last block, and the exchange condition.</li>
+</ul>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Secant varieties of the rational normal curve</strong> (Gruson and Peskine, Courbes de l'espace projectif: variétés de sécantes, Progr. Math. 24 (1982) 1–31; Eisenbud, Linear sections of determinantal varieties, Amer. J. Math. 110 (1988) 541–575). The ideal of the \(k\)-th secant variety is generated by the \((k+1)\)-minors of the Hankel matrix, so, with enough coordinates (at least \(2k+1\)), no nonzero form of degree at most \(k\) vanishes on it. The neck level sums are forms of degree \(lw\) in \(t'\). So they are determined by their values at \(t'_x=\sum_{m\le lw}a_m\lambda_m^x\), that is, at \(\hat\tau\) with \(lw\) simple poles \(y=\lambda_m\varepsilon\). <strong>Answers.</strong> In that form each row is an evaluation at the nodes \(\lambda_m\varepsilon\) plus a divided-difference part. As the nodes tend to \(0\), leading terms are confluent Vandermonde (Schur-function) expansions, in which patterns below the balanced one would cancel by antisymmetry in the nodes. That would give the algebraic vanishing the third obstacle needs; nothing yet supports it. It breaks if the divided-difference parts mix nodes at leading order. <strong>Test.</strong> Not run: writing the rows in node form is the development step.</li>
+<li><strong>Mahler's duality of Hermite–Padé forms</strong> (Mahler, Perfect systems, Compositio Math. 19 (1968) 95–166). Type I forms of a perfect system and its type II functionals are dual, with matching normality. The high window columns are type II functionals for the system \(\{\varphi_s\}\): they annihilate \(U\). <strong>Answers.</strong> The cluster factor \(f_{c,w}\), and \(G_{c,w}\), as a pairing between a type I space (the chains of rows) and a type II space (the columns, filtered by depth), whose nonvanishing would follow from normality on both sides, as the block Wronskian lemma gives for type I. It breaks if the depth filtration of the columns is not dual to the chain filtration. <strong>Test.</strong> Not run: the column depth filtration has not been computed.</li>
+<li><strong>Standard monomial theory</strong> (Doubilet, Rota and Stein, On the foundations of combinatorial theory IX, Stud. Appl. Math. 53 (1974) 185–216). Products of maximal minors of a matrix have a straightening law into standard monomials. Each level sum is a sum of products of \(l\) maximal minors of the \(w\times\infty\) Hankel matrix of \(t'\). <strong>Answers.</strong> In a straightened form, the vanishing below \(2E\) and the product \(H_c\prod H_{k_i}\) would be a statement about which standard tableaux survive at each weight, which could be proved from the cluster side's rank conditions. It breaks because Hankel matrices satisfy more relations than generic ones, so straightening is not unique for them. <strong>Test.</strong> Not run: needs the straightening of Hankel minor products, a symbolic computation of its own.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>Linear complexity and the Berlekamp–Massey algorithm</strong> (coding theory and stream ciphers: Massey, Shift-register synthesis and BCH decoding, IEEE Trans. Inform. Theory 15 (1969) 122–127). The Hankel rank of a sequence is its linear complexity, the length of the shortest linear recurrence it satisfies. Translation: the coefficients \(t'\) of \(\tau\) are a key stream, and window \(c\) of the neck reads linear complexity at least \(c\) through \(H_c\). <strong>Answers.</strong> The window valuations of the neck jump exactly when \(\tau\)'s coefficient stream is too predictable. For the binomial stream every \(H_k\ne0\), by the Toeplitz binomial (hook-content) argument of the last-block theorem. <strong>Test.</strong> Passed: with random \(t'\) of linear complexity two (neck-rank2.txt), the level-\(2E\) coefficient of window \((1,2,2,3)\) vanishes, with no nonzero level up to \(2E\), as \(H_3=0\) predicts. Window \((1,2,2,2)\), whose factor is \(H_2^2\), stays at level \(0\) with rank one. This passes that single prediction at \(w=2\).</li>
+<li><strong>Ground states of multi-species Fermi seas</strong> (theoretical physics: the boson–fermion correspondence; Miwa, Jimbo and Date, Solitons, Cambridge 2000). Translation: the rows of a neck window are fermions of \(l\) species. One species fills \(c\) levels against the negative columns, and the others fill the chains, one species per chain. Level \(k\) of a species costs \(2k+1\), so a species of \(k\) fermions costs \(k^2\). <strong>Answers.</strong> The leading level is the ground-state energy minus \(lw^2\), where the energy is \(c^2+\min\sum_ik_i^2\) over splits of \(lw-c\) into \(l-1\) species, attained by the balanced split, a convexity statement. The cancellation of the patterns below is the exclusion principle within each species. The leading coefficient is the product of one determinant per species. <strong>Test.</strong> Passed: the predicted level \(c^2+\sum k_i^2-lw^2\) is the first nonzero level in all six block-size-four windows above and in the eleven windows at \(w\le3\), and it equals the assignment count in \(2464\) windows (e-identity.txt).</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-normality-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-peeling-route-review:1">The <a href="#cube-neck-chain-filtration">chain filtration</a> realizes the shells: the high rows split into at most \(l-1\) chains, of the balanced lengths, heuristically one Hankel factor per chain. The one-determinant-per-shell factorization is proved only on the last block. <strong>Follow-up.</strong> Developed.</li>
+<li data-bridge="entry-2026-09-30-cube-peeling-route-review:2">The closed form \(2E=c^2+\sum_ik_i^2-lw^2\), checked in \(2464\) windows, identifies the assignment count with a balanced sum of squares. No transport argument was written. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-complete-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:2">The Toeplitz binomial product now proves the nonvanishing, for the binomial \(t'\), of the \(\tau\)-factor \(H_c\) of the <a href="#cube-neck-last-block-windows">last-block theorem</a> for every block size, and of each Hankel factor \(H_{k_i}\) of the conjecture. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:1">Developed into the <a href="#cube-neck-last-block-windows">last-block theorem</a>: the ordinary basis of \(\mathrm{HP}_w\) makes the leading term of the last-block windows one bijection pattern, for every block size. <strong>Follow-up.</strong> Developed.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:2">Tested in the extreme-coefficient form, which is falsified: the large-prime Newton segments of \(W_k\) have interior vertices (<a href="#entry-2026-09-30-cube-far-newton-weight-two">far Newton entry</a>). The \(p\)-adic analysis of the component's rows is untried. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<p><strong>Assessment.</strong> Judged against statement 3, the neck part of (B) moved furthest in this period. It has a proof for every block size on the last block, and a precise conjecture elsewhere that has now passed a prediction test at the peeling's own block size (\(e=1\), \(l\le3\), five conjecture windows). Its remaining piece is an identifiable algebraic statement, with a concrete lead (secant varieties, node form). The far-polynomial part was weakened to "no triple roots", but has no mechanism; its one lead failed in its simplest form. (K) was reformulated twice (plane criterion, and the flow-out reduction to weight-three configurations) but has no mechanism. It remains the highest-risk item. The line is sound and narrowing on the neck, and stalled on (K) and the far polynomials.</p>
+<p><strong>Next step on the highest-risk item.</strong> Route item cube-odd-characteristic, open statement 3: (K). By the flow-out argument, (K) follows if the configurations with a non-branch point of weight at least three have codimension at least two. Next, determine the components of that locus at \(N=7,8\) through the known components of the Wronskian discriminant (the involution divisors and the collision factors). Then test whether peeling inside one discriminant component, rather than in the whole configuration space, controls weights there, as it did for (B). After that, return to the neck through the node form of the secant lead.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the review, the scripts and outputs, and the Wronskian discriminant, last-block, chain and plane excerpts. Verdict: pass with corrections. It confirmed every level, rank and Hankel product, the rank-two outcome, the reading of the flow-out argument, the secant indexing and the degree of the level sums. Corrections applied:</p>
+<ul>
+<li>the samples are three random \(t'\) at three random \(\beta\) each; the untested windows are listed correctly, and \((1,2,4,7)\) is noted as last-block;</li>
+<li>"codimension at least two" and "weight at least three" in the (K) reduction;</li>
+<li>the secant statement needs enough coordinates; the node-form cancellation is marked unsupported;</li>
+<li>the Berlekamp–Massey bridge's nonvanishing of \(H_k\) cites the Toeplitz argument, and its test is one prediction; the fermion energy states the offset \(lw^2\);</li>
+<li>two follow-ups are corrected (heuristic chains; nonvanishing rather than factorization), and the Assessment states the test's range.</li>
+</ul>
+<p>These corrections restrict or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zo">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 20.13 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">12.62 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">53.78 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 7.43 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 49.84 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">16.33 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
