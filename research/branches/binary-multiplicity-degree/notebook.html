@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). By the <a href="#cube-contact-fcurve-criterion">boundary-curve criterion</a> and the <a href="#entry-2026-09-30-cube-boundary-route-review">boundary route review</a>, (K) follows once the weight-three locus stays off a fully symmetry-clean spanning family of F-curves; such families exist for \(11\le N\le60\). (B) needs far polynomials without triple roots and neck points of weight at most two.</p>
-<p>Next, (K). Generalize the <a href="#cube-fcurve-spine-limit">spine-limit lemma</a> to a spine with four clusters of arbitrary sizes, by the same class argument. Then test the spine space of the fully clean type \((1,2,2,4)\) at \(N=9\) for weight three with the bivariate certificate, as a check of the mechanism only (the \(N=9\) types do not span), before the \(N=11\) type \((1,2,2,6)\). Only divisorial components of \(W_3\) must be kept off the family.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). The boundary route for (K) needs limits along fully symmetry-clean boundary curves, and their spines contain <a href="#cube-multicluster-spine-classes">two-cluster necks</a>. (B) needs far polynomials without triple roots and neck points of weight at most two; the neck windows are proved on the <a href="#cube-neck-last-block-windows">last block</a>.</p>
+<p>Next, the two-cluster neck in its smallest case, \(n_1=n_2=2\), the case of the cross-block defect. The class is \(((z-p_1)(z-p_2))^{1/2}\) times the span of the four products \((1-b_jv_1)^{1/2}(1-b'_kv_2)^{1/2}\). Its first-order span misses one dimension. Compute the flat limit exactly, as the lowest-order term of the combination killing the leading relation, and describe it by its pole and zero orders at \(p_1\), \(p_2\) and \(\infty\). Then state the general limit for \((n_1,n_2)\) as a conjecture, with its level structure, and compare it with the neck windows of the level expansion.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -32798,6 +32798,51 @@ Its weights at every point other than \(u=\infty\) (the cluster) and \(u=1/s'_j\
 <tr><td>Computation design and coding</td><td class="elapsed">40.91 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 33.12 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">2.61 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-multicluster-spine" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-multicluster-spine-classes">
+<h3>30 September 2026 — On a spine with several clusters, two classes have clean limits and the cluster–cluster classes are necks</h3>
+<p class="entry-meta">Working proof, at fixed cluster shapes, of the limits of the empty-pattern and single–cluster classes on a four-cluster spine, and of the leading-term deficit (n₁−1)(n₂−1) of each cluster–cluster class. Multi-cluster spine cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> By the <a href="#entry-2026-09-30-cube-boundary-route-review">boundary route review</a>, (K) needs limits of \(V_a\) along fully symmetry-clean boundary curves. For \(N\ge11\) every such type has at least two clusters of size at least two on the spine: types with two single marks are excluded by the <a href="#cube-fcurve-symmetric-obstruction">symmetric obstruction</a>. The <a href="#cube-fcurve-spine-limit">spine-limit lemma</a> covers only one cluster. The missing implication is the spine limit for several clusters. This cycle asks which classes of \(V_a\) have limits given by ordinariness alone, and which need a finer analysis.</p>
+<p><strong>General statement.</strong> <code>lem:cube-multicluster-spine-classes</code>, for every \(N\) and every spine with clusters of sizes \(n_1,\ldots,n_4\), \(\sum n_i=N\).</p>
+<h4 id="cube-multicluster-spine-classes">The classes of a multi-cluster spine</h4>
+<p><strong>Setup.</strong> Characteristic zero. Distinct points \(p_1,\ldots,p_4\) of the \(z\)-line, and branch points \(p_i+\varepsilon b^{(i)}_j\), \(j\le n_i\), with each cluster shape \(b^{(i)}\) distinct and, when \(n_i\ge3\), with the cluster space \(V_{b^{(i)}}\) of weight \(0\) at its mark (for \(n_i=2\) this holds automatically, as in the spine-limit lemma). \(V_a=\langle1,z,w_{jk}\rangle\). The monodromy sign pattern of a function is the set of clusters at which it changes sign. Put \(C_i=\binom{n_i}2\) and \(v_i=\varepsilon/(z-p_i)\).</p>
+<p><strong>Lemma (multi-cluster spine classes).</strong> As \(\varepsilon\to0\) at fixed \(z\):</p>
+<ol>
+<li>the class with empty pattern, spanned by \(1\), \(z\) and the pairs inside each cluster, tends to \(H^0\bigl(\mathbb P^1,\mathcal O(\infty+\sum_iC_i\,p_i)\bigr)\). This is the span of \(1\), \(z\) and \((z-p_i)^{-k}\), \(1\le k\le C_i\), and has dimension \(2+\sum_iC_i\);</li>
+<li>a class joining two singles is unchanged in the limit; for a pair of clusters \(i\ne i'\) with \(n_{i'}=1\), the class \(\{i,i'\}\) tends to \(\bigl((z-p_i)(z-p_{i'})\bigr)^{1/2}\mathcal P_{&lt;n_i}\bigl((z-p_i)^{-1}\bigr)\), of dimension \(n_i\);</li>
+<li>for \(n_i,n_{i'}\ge2\), the leading terms of the class \(\{i,i'\}\), the \(\varepsilon^{-a-c}\)-rescaled lowest-order parts of the \(n_in_{i'}\) functions in the echelon basis below, span \(((z-p_i)(z-p_{i'}))^{1/2}\) times the rational functions with poles of order below \(n_i\) at \(p_i\) and below \(n_{i'}\) at \(p_{i'}\) and bounded at \(\infty\). That space has dimension \(n_i+n_{i'}-1\). So \((n_i-1)(n_{i'}-1)\) dimensions of the limit come from higher orders in \(\varepsilon\), and the class's limit is a neck problem of the kind the <a href="#cube-peeling-neck-reduction">peeling necks</a> pose.</li>
+</ol>
+<p><strong>Proof.</strong> (1) The class members used are the rescaled echelon elements: \(\varepsilon^{-k}(z-p_i)g_k\), where \(g_k=v_i^k+O(v_i^{C_i+2})\) is the echelon basis of the frame. The pairs inside cluster \(i\), together with \(1\) and \(z\), are \((z-p_i)\) times the frame of \(V_{b^{(i)}}\) at its mark in \(v_i\), up to constants, as in the spine-limit lemma. Ordinariness at \(v_i=0\) gives, from cluster \(i\), the leading functions \((z-p_i)^{1-k}\), \(0\le k\le C_i+1\). Those with \(k=0,1\) are \(z-p_i\) and \(1\), which lie in \(\langle1,z\rangle\). The others, \((z-p_i)^{-k}\) for \(1\le k\le C_i\), are independent across clusters and of \(1,z\) by their poles. So the leading terms already span a space of the full dimension \(2+\sum C_i\), and the limit is that span.</p>
+<p>(2) The functions are \(((z-p_i)(z-p_{i'}-\varepsilon b'))^{1/2}(1-b_jv_i)^{1/2}\), with \(b'\) the single's offset. The factor \((1-b'v_{i'})^{1/2}\) tends to \(1\). The \(n_i\) series \((1-b_jv_i)^{1/2}\) have a Vandermonde Taylor matrix times the nonzero \(\binom{1/2}{a}\), so they span \(v_i^a+O(v_i^{n_i})\), \(a&lt;n_i\).</p>
+<p>(3) As in (2), the class is \(((z-p_i)(z-p_{i'}))^{1/2}\,\Phi\otimes\Psi\), with \(\Phi\) spanned by \(\phi_a=v_i^a+O(v_i^{n_i})\) and \(\Psi\) by \(\psi_c=v_{i'}^c+O(v_{i'}^{n_{i'}})\). So \(\phi_a\psi_c=\varepsilon^{a+c}(z-p_i)^{-a}(z-p_{i'})^{-c}+O(\varepsilon^{a+c+1})\). By partial fractions, the functions \((z-p_i)^{-a}(z-p_{i'})^{-c}\), \(a&lt;n_i\), \(c&lt;n_{i'}\), span exactly the stated space: they lie in it, and \((z-p_i)^{-a}\), \((z-p_{i'})^{-c}\) and \(1\) already span it. Its dimension is \((n_i-1)+(n_{i'}-1)+1\), by Riemann–Roch on \(\mathbb P^1\). \(\square\)</p>
+<p><em>Scope.</em> Fixed distinct shapes describe a generic point of a boundary stratum, not a point of an F-curve. At an F-curve point every cluster of size at least three lies on a degenerate tree, and the weight-\(0\) hypothesis on it is then open, as in the spine-limit lemma. Part (3) is the analogue of <code>lem:cube-cross-block-defect</code>, which found one linear relation among the first-order cross rows for two double roots of the pair space (Taylor rows in \(T\), exponents \(-3/2\), \(-5/2\)). The deficits agree for \(n_i=n_{i'}=2\); neither statement is shown to imply the other. The classes with three or four clusters in their pattern do not occur, since a pair has two branch points.</p>
+<p><strong>What this does to the route.</strong> At fixed cluster shapes, and so at generic points of the relevant boundary strata rather than on the F-curves themselves, a fully clean spine for \(N\ge11\) has clean limits for its empty-pattern class and for every class joining a single to a cluster. Every class joining two clusters of size at least two is a two-cluster neck. At the smallest fully clean type, \((1,2,2,6)\) at \(N=11\), these are the classes \(\{2,3\}\), \(\{2,4\}\), \(\{3,4\}\), with deficits \(1,5,5\). The two-cluster classes pose a neck problem resembling the peeling necks, which the <a href="#cube-neck-last-block-windows">last-block theorem</a> treats for one cluster against a far double. Whether the window methods apply to them is open.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>the flat limits of the two-cluster classes (two-cluster necks), then weight three on fully clean spines, tails and nodes;</li>
+<li>the neck windows below the last block; far polynomials without triple roots; \(G_{c,w}\not\equiv0\); the exchange condition.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The spine-limit lemma and its proof, the cross-block defect (statement), the mark weight dictionary's frame, and the boundary route review.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, the specification, and the spine-limit, cross-block defect and dictionary excerpts. Verdict: pass with corrections. It confirmed the three limit computations at fixed shapes (rescaled echelon elements with independent limits of full dimension; the common factor in (2); the error term \(O(\varepsilon^{n_i+c})\), the space \(H^0(\mathcal O((n_i-1)p_i+(n_{i'}-1)p_{i'}))\) and its dimension in (3)) and the deficits \(1,5,5\). Corrections applied:</p>
+<ul>
+<li>a Scope paragraph: fixed shapes describe generic points of boundary strata, not F-curve points; the route paragraph is qualified accordingly;</li>
+<li>the relation to the cross-block defect is an analogue that agrees at \(n_i=n_{i'}=2\), not a generalization, and the specification's "refines" edges are replaced by citations;</li>
+<li>the unproved link to the window structure is stated as open; single–single classes are listed; "empty-pattern class" replaces an undefined term; the rescaled echelon elements are named.</li>
+</ul>
+<p>These corrections restrict or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zt">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 37.80 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">39.63 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">57.86 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 0.18 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
