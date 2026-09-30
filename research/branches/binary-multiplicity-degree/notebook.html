@@ -47,12 +47,12 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. The <a href="#cube-single-merge">near limit</a> and the <a href="#cube-merge-far-limit">far limit</a> of a merge are explicit. The far Weierstrass points are simple in every computed case.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. The near and far limits of a merge are explicit, and the <a href="#cube-merge-far-count">far count</a> is proved. Far simplicity holds over \(\mathbb Q\) for \(n\le5\), \(k\le6\).</p>
 <p>Next, for (K):</p>
 <ul>
-<li>Prove the far count from a Plücker formula for \(F(n,k)\), using its exponents at \(0\), \(1\) and \(\infty\).</li>
-<li>Find the neck rings between the near and far scales of a merge.</li>
-<li>Check the count identity: weight of \(V(n;k)\) equals weight of \(V(n+1;k-1)\), plus far points, plus rings.</li>
+<li>Find the neck rings at a merge, between the far scale \(|z-p_0|\asymp\varepsilon\) and the near scale.</li>
+<li>Check the count identity: the weight of \(V(n;k)\) equals the weight of \(V(n+1;k-1)\), plus the far count, plus the ring counts. The Plücker formula for \(V(n;\ldots)\) gives the left side from its exponents.</li>
+<li>Then ask what simplicity of the far and ring points gives for \(\Delta_W^{\rm nc}\) near the merge strata.</li>
 </ul>
 </section>
 <section id="working-context">
@@ -37385,6 +37385,56 @@ Each step is a nested degeneration: a single approaches a cluster that has alrea
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 43.19 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 44.66 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">25.49 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-01-cube-merge-far-count" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-01-cube-discriminant-route-review:1" data-claims="thm:cube-merge-far-count conj:cube-merge-far-polynomial check:cube-merge-far-polynomials">
+<h3>1 October 2026 — The far space of a merge has ½(k−1)((3n−2)k+n²−7n+4) Weierstrass points counted with weight, by a Plücker count, so the computed simplicity holds over the rationals</h3>
+<p class="entry-meta">Working proof of the count of non-branch Weierstrass points of F(n,k); the finite check of simplicity lifts to characteristic zero. Merge far count cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-01-cube-merge-far-limit">merge far limit</a> entry found the Weierstrass polynomial \(R_{n,k}\) of \(F(n,k)\) squarefree modulo \(p\) in 16 cases, with degrees fitting a closed form. Its review noted that the degree modulo \(p\) only bounds the characteristic-zero degree from below. So neither the count nor squarefreeness over \(\mathbb Q\) followed. This cycle proves the count from the local exponents, which settles both.</p>
+<p><strong>General statement.</strong> <code>thm:cube-merge-far-count</code>, for every \(n\ge1\), \(k\ge2\); <code>conj:cube-merge-far-polynomial</code>, simplicity now being its only content; <code>check:cube-merge-far-polynomials</code>, now over \(\mathbb Q\).</p>
+<h4 id="cube-merge-far-count">The count</h4>
+<p><strong>Theorem (merge far count).</strong> Characteristic zero, \(n\ge1\), \(k\ge2\), \(C=\binom n2\), \(P=\binom{k-1}2\), \(M=(k-1)n\), \(L=C+P+2\), \(d=\dim F(n,k)=C+P+kn+k+1\). The local exponents of \(F(n,k)\), within each monodromy character, are consecutive:</p>
+<ul>
+<li>at \(w=0\): integral \(-C,\ldots,P+k\); half-integral \(-(n-1)+\tfrac12+\{0,\ldots,kn-1\}\);</li>
+<li>at \(w=1\): integral \(0,\ldots,L+M-1\); half-integral \(\tfrac12+\{0,\ldots,n+k-2\}\);</li>
+<li>at \(w=\infty\), in \(t=1/w\): integral \(-(1+P),\ldots,C+n\); half-integral from \(-(k-2)n-\tfrac12\) to \(n+k-\tfrac52\).</li>
+</ul>
+<p>The number of Weierstrass points off \(\{0,1,\infty\}\), counted with weight, is
+\[\binom d2-(E_0+E_1+E_\infty)=\tfrac12(k-1)\bigl((3n-2)k+n^2-7n+4\bigr),\]
+with \(E_x\) the sum of the exponents at \(x\).</p>
+<p><strong>Proof.</strong></p>
+<ol>
+<li><em>One mechanism.</em> In each case below, a block of monomials \(y^a,\ldots,y^b\) (\(y\) a local coordinate) is joined by a block of \(s\) functions \((1+\sigma y)^\gamma y^m\), \(m=m_0,\ldots,m_0+s-1\), with \(a\le m_0\le b\), \(\gamma\notin\mathbb Z\) and \(\sigma=\pm1\). The block may extend beyond \(b\). Modulo the monomials, its coefficients of \(y^{b+1+r}\), \(0\le r&lt;s\), form the matrix \((\sigma^{j}\binom{\gamma}{j})\) with \(j=b+1+r-m\), zero for \(j&lt;0\). Up to row and column signs, this is the Jacobi–Trudi determinant of the rectangle \(((b+1-m_0)^s)\), with \(h_j=0\) for \(j&lt;0\), under the specialization \((1-x)^{-a}\), \(a=-\gamma\). By the hook-content formula, extended to non-integral \(a\) as a polynomial identity (single-merge lemma), it is \(\prod(c(u)-\gamma)/h(u)\ne0\). So the new exponents are \(b+1,\ldots,b+\#\text{block}\).</li>
+<li><em>At \(w=0\).</em> The integral classes are \(T\) and the class \(1\). \(T=\langle w^{-C},\ldots,w^{1+P}\rangle\), and \(\sqrt{w-1}\,\mathcal P_{&lt;k-1}(w)\) is a constant times \((1-w)^{1/2}\) times polynomials, so step 1 applies with \(\gamma=\tfrac12\). The half-integral classes are \(0\) and \(01\): after the factor \(\sqrt w\,w^{-(n-1)}\), they are \(\mathcal P_{&lt;M}\oplus(1-w)^{1/2}\mathcal P_{&lt;n}\).</li>
+<li><em>At \(w=1\).</em> With \(s=w-1\): \(w^CT=\mathcal P_{&lt;L}(w)\), and the class \(0\) times \(w^C\) is \((1+s)^{C-n+3/2}\mathcal P_{&lt;M}\), with \(\gamma=C-n+\tfrac32\notin\mathbb Z\). The half-integral classes, after \(\sqrt{w-1}\), are \(\mathcal P_{&lt;k-1}\oplus(1+s)^{3/2-n}\mathcal P_{&lt;n}\). Multiplying by the unit \(w^C\) does not change orders.</li>
+<li><em>At \(\infty\).</em> For the half-integral classes, factor out \(t^{-1/2}\) first, so that step 1 applies to integer exponents. The integral classes are \(T\), which gives the monomials \(t^{-(1+P)},\ldots,t^C\), and \(01\), which gives \(\pm t^{\,n-2-m}(1-t)^{1/2}\), \(m&lt;n\), with leading exponents in \([-1,n-2]\subset[-(1+P),C]\). The half-integral classes are \(0\), which gives the monomials \(t^{\,n-3/2-m}\), \(m&lt;M\), and \(1\), which gives \(t^{-m-1/2}(1-t)^{1/2}\), \(m&lt;k-1\), with leading exponents inside the range of \(0\).</li>
+<li><em>Plücker.</em> For an echelon basis at a point, the order of the Wronskian there is \(E_x-\binom d2\). This holds with half-integral exponents, since all \(d\) exponents are distinct (distinct within a character, and the characters differ modulo \(\mathbb Z\)), so the leading Vandermonde coefficient is nonzero. At \(\infty\), \(W\) behaves like \(w^{-E_\infty-\binom d2}\). So \(W=w^{E_0-\binom d2}(w-1)^{E_1-\binom d2}R\), where \(\deg R=\binom d2-E_0-E_1-E_\infty\) and \(R\) collects the weights off \(\{0,1,\infty\}\). <code>research/tools/bmd_cube_merge_far_count.py</code> evaluates the sums symbolically and gives the closed form. It also reproduces the 16 degrees computed modulo \(p\) (<code>research/results/bmd-20261001-u/merge-far-count.txt</code>). \(\square\)</li>
+</ol>
+<h4>Consequences</h4>
+<p><strong>Simplicity over \(\mathbb Q\) in the computed cases.</strong> \(R_{n,k}\) has rational coefficients, since \(F(n,k)\) has no moduli. The basis of \(F(n,k)\) has \(p\)-integral coefficients for \(p=2^{61}-1\), and \(p\) far exceeds \(d\), so the Wronskian computed modulo \(p\) is the reduction of the one over \(\mathbb Q\). The script strips the factors \(w\) and \(w-1\) after reduction, so a root of \(R\) at \(0\) or \(1\) modulo \(p\) would have lowered the computed degree, as would a vanishing leading coefficient. The computed degrees equal the proved counts, so neither happened, and the reduction of \(R\) has full degree. A polynomial that is squarefree modulo \(p\) at full degree is squarefree over \(\mathbb Q\): its discriminant is nonzero modulo \(p\). So the <a href="#entry-2026-10-01-cube-merge-far-limit">16 computed cases</a> are squarefree over \(\mathbb Q\).</p>
+<p><strong>The conjecture now.</strong> conj:cube-merge-far-polynomial reduces to simplicity: for every \((n,k)\), \(R_{n,k}\) is squarefree. The count is proved.</p>
+<p><strong>Remaining gap.</strong> Simplicity for every \((n,k)\), and then, as in the far limit entry, the neck rings at a merge and the count identity along the chain.</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-merge-far-limit (the space and its classes); lem:cube-single-merge (hook-content at non-integral parameter); the merge far limit entry's output.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer recomputed the class assignments at each point, all six exponent sets, and the dimension counts, including the overlaps. It also checked the Toeplitz-to-Jacobi–Trudi step with its signs, the nonvanishing at the three non-integral \(\gamma\), the Plücker step (single-valuedness of \(W/(w^{E_0-B}(w-1)^{E_1-B})\)), the tool's sums (16 matches) and the lift to \(\mathbb Q\). Verdict: pass with minor corrections, all applied:</p>
+<ul>
+<li>the title counts with weight;</li>
+<li>the lift states the reduction mechanism and the stripping issue;</li>
+<li>the step at \(\infty\) factors out \(t^{-1/2}\);</li>
+<li>the specification's conventions and dependency are aligned.</li>
+</ul>
+<p>The corrections clarify, so no follow-up review was needed. The reviewer found no unused hypothesis.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261001-u">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 29.85 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 29.93 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 59.20 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.59 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
