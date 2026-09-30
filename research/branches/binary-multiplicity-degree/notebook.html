@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For every \(N\), peeling the base (<a href="#cube-base-peeling">even</a>, <a href="#cube-odd-base-peeling">odd</a>) reduces (B) to squarefree far polynomials and the <a href="#cube-peeling-neck-reduction">neck windows</a>. Their conjectured valuations are proved as lower bounds on the first windows by the <a href="#cube-neck-divided-difference-bound">divided-difference bound</a>.</p>
-<p>Next, extend the Hall bound to the high columns. In the divided-difference basis the rows \(\Delta_j\psi_q\), \(q\le j\), have no pole part. Determine their remainder orders modulo \(U\) (the exponents at \(0\) of \(U+\operatorname{span}\{y^{-q}\Delta_j\varphi\}\)). Add the constraint that the high columns \(M,\ldots,M+K-c-1\) be filled, and test whether the combined bound equals \(2E(c)\) on every window of the table.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For every \(N\), peeling the base (<a href="#cube-base-peeling">even</a>, <a href="#cube-odd-base-peeling">odd</a>) reduces (B) to squarefree far polynomials and the <a href="#cube-peeling-neck-reduction">neck windows</a>. For block size one the <a href="#cube-neck-single-block-windows">window valuations are proved</a>, up to one genericity determinant.</p>
+<p>Next, the level-\(2E\) terms of the neck windows for general block size \(w\), starting with \(w=2\). Determine which choices of pole orders reach level \(2E(c)\): bijections between the negative columns and slots \((j,r)\), now with rows moving within a group. Write their signed sum as a determinant in the coefficients of \(\tau\) times a genericity determinant, as for \(w=1\). Check the formula against the computed level sums at \((e,l,w)=(1,2,2)\) and \((1,3,2)\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -31849,6 +31849,63 @@ With \(\varphi_s=(1+\beta_sy)^{-\lambda}\), \(\lambda=\tfrac72\), \(\Delta_j\var
 <tr><td>Computation design and coding</td><td class="elapsed">2 min 25.91 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">5 min 41.25 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">36.95 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.38 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-neck-single-block" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-peeling-route-review:2" data-claims="thm:cube-neck-single-block-windows">
+<h3>30 September 2026 — With one function per double, the neck window valuations are c(c−1) above the base, with a Hankel-times-genericity leading coefficient</h3>
+<p class="entry-meta">Working proof, for every cluster size, of the window valuations of the neck model with block size one, conditional on one genericity determinant (nonzero in every computed case); develops the review's Hankel lead. Single-block neck cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The neck window conjecture predicts \(f(c)=lwn+2E_{l,w}(c)\). Its lower half is proved on the first windows by the <a href="#cube-neck-divided-difference-bound">divided-difference bound</a>, and the level sums were seen to cancel below \(2E\). The missing implication is a mechanism giving the exact value, including the nonvanishing at level \(2E\). The <a href="#entry-2026-09-30-cube-peeling-route-review">peeling review</a>'s Hankel lead proposed Hankel determinants of the coefficients of \(\tau\) as the source. This cycle tests the lead where the model is simplest, block size \(w=1\): one function \((\tau-1)y^{n-1}\varphi_s\) per double.</p>
+<p><strong>General statement.</strong> <code>thm:cube-neck-single-block-windows</code>, for every \(e\ge1\) and \(l\ge1\).</p>
+<h4 id="cube-neck-single-block-windows">The theorem</h4>
+<p><strong>Setup.</strong> The neck model of the <a href="#cube-neck-level-expansion">level expansion</a> with \(w=1\): \(U=\bigoplus_s\mathcal P_{&lt;n}\varphi_s\), \(\varphi_s=(1+\beta_sy)^{-7/2}\), \(n=4e\), \(M=nl\), \(K=l\), windows \(W_c\), \(1\le c\le l\), and \(t'_m=\binom{-5/2}{m+n-1}\kappa^{m+n-1}\). Let \(\Phi=\operatorname{span}\{\varphi_s\}\) and \(\Delta_j\varphi\) its Newton divided differences, so \(\Phi_{\ge c}=\operatorname{span}\{\Delta_j\varphi:j\ge c\}\) is the subspace of \(\Phi\) vanishing to order \(c\) at \(0\). Let \(G_c(\beta)\) be the determinant of the \(U\)-remainders of \(y^{-1}\Delta_j\varphi\), \(c\le j&lt;l\), on the columns \(M,\ldots,M+l-c-1\) (\(G_l=1\)). Equivalently, \(G_c\ne0\) exactly when \(U\oplus y^{-1}\Phi_{\ge c}\) is ordinary at \(0\).</p>
+<p><strong>Theorem (single-block neck windows).</strong> Characteristic zero, \(\kappa\ne0\) (the constant of \(D_k=\varepsilon\kappa\)), distinct \(\beta\) for which the triangular basis of \(U\) exists, \(1\le c\le l\). Then \(f(c)\ge ln+c(c-1)\), and the coefficient of \(\varepsilon^{ln+c(c-1)}\) in \(\det C[:,W_c]\) is, up to sign and the nonzero divided-difference constant,
+\[
+\prod_{j&lt;c}\binom{-7/2}{j}\cdot t_1'^{\,l-c}\cdot\det\bigl[t'_{\sigma+j}\bigr]_{1\le\sigma\le c,\ 0\le j&lt;c}\cdot G_c(\beta).
+\]
+The Hankel factor is nonzero. So \(f(c)=ln+c(c-1)=lwn+2E_{l,1}(c)\) exactly when \(G_c(\beta)\ne0\).</p>
+<p><strong>Proof.</strong> <em>Bound.</em> For \(w=1\) the slots of the divided-difference bound are \((j,0)\), with capacities \(1-j\). The \(c\) largest are \(1,0,\ldots,2-c\), and the sorted pairing gives cost \(c-1\) for each column, so \(E'_{l,1}(c)=c(c-1)=2E_{l,1}(c)\), since \(E_{l,1}(c)=\binom c2\). Hence \(f(c)\ge ln+c(c-1)\).</p>
+<p><em>The terms at the bound.</em> In the divided-difference basis, group \(j\) has the single row \(\sum_qt'_q\varepsilon^q\Delta_j\psi_q\) (times \(\varepsilon^{n-1}\)), and a term of the expansion chooses one pole order \(q_j\) per group. By the level expansion, a term at level \(L=\sum_j(q_j-1)\) is \(\prod_jt'_{q_j}\) times the minor \(\Psi\) of the rows \(\Delta_j\psi_{q_j}\). The row \(\Delta_j\psi_q\) vanishes on the negative columns \(\sigma&gt;q-j\). A nonzero \(\Psi\) needs a matching of the columns \(1,\ldots,c\) to distinct groups with \(q_j\ge\sigma+j\). Summing over the matched groups gives \(\sum(q_j-1)\ge\sum_\sigma\sigma+\sum j-c\ge c(c+1)/2+c(c-1)/2-c=c(c-1)\). Equality forces three things: the matched groups are exactly \(j=0,\ldots,c-1\); \(q_j=\pi^{-1}(j)+j\) for a bijection \(\pi\) from columns to these groups; and \(q_j=1\) for \(j\ge c\). Distinct \(\pi\) give distinct choices of pole orders.</p>
+<p><em>Their minors.</em> For such a choice, the rows \(j\ge c\) are \(\Delta_j\psi_1\), of pole order \(1-j\le0\), so they vanish on every negative column and the minor is block triangular. The negative block has rows \(j&lt;c\), whose entry in column \(\sigma\) is \([\Delta_j\varphi]_{q_j-\sigma}\). It vanishes for \(\sigma&gt;\pi^{-1}(j)\) and equals \([\Delta_j\varphi]_j=\binom{-7/2}j\) at \(\sigma=\pi^{-1}(j)\). Ordered by \(\pi^{-1}(j)\), the block is triangular, with determinant \(\operatorname{sgn}(\pi)\prod_{j&lt;c}\binom{-7/2}j\) (up to a fixed sign). The high block is \(G_c\), independent of \(\pi\).</p>
+<p><em>Sum.</em> The weight of the choice is \(\prod_{\sigma}t'_{\sigma+\pi(\sigma)}\cdot t_1'^{\,l-c}\). Summing \(\operatorname{sgn}(\pi)\prod_\sigma t'_{\sigma+\pi(\sigma)}\) over \(\pi\) gives \(\det[t'_{\sigma+j}]\), which proves the formula.</p>
+<p><em>Hankel factor.</em> \(t'_m=\kappa^{m+n-1}\binom{-5/2}{m+n-1}\). After removing the powers of \(\kappa\) and reversing the columns, \(\det[t'_{\sigma+j}]\) is \(\pm\det[\binom{-5/2}{a+c-1+i-j}]_{i,j&lt;c}\) with \(a=n\). This is a Toeplitz binomial determinant with shift \(a+c-1\ge0\). By dual Jacobi–Trudi and the hook-content formula, as in <a href="#cube-hierarchical-attainment">hierarchical attainment</a>, it is a rectangle Schur function at \(1^{-5/2}\), a product of \((-\tfrac52+\text{content})/\text{hook}\) with no zero factor. Finally \(t'_1\ne0\) and \(\binom{-7/2}j\ne0\). \(\square\)</p>
+<h4>Checks</h4>
+<ul>
+<li>research/tools/bmd_cube_neck_w1_leading.gp (research/results/bmd-20260930-zh/w1-leading.txt) computes the level sums directly from the rows \((\tau-1)y^{n-1}\varphi_s\) by enumerating pole orders, independently of the formula, modulo \(2^{61}-1\) at \(\beta=(2,-3,5,-7)/3\). For \(e=1\), \(l=2,3,4\) and every \(c\le l\), the first nonzero level is \(c(c-1)\). The ratio of the level sum there to the formula is exactly \(1\) in all nine windows, and \(H_c,G_c\ne0\).</li>
+<li>The same file checks the Hankel identity: \(\det[\binom{-5/2}{a+i+j}]_{i,j&lt;c}=\pm\) the hook-content rectangle value for \(1\le c\le6\), \(1\le a\le30\), with no mismatch. Its first line records a failed earlier attempt with a misremembered closed form, which the Schur-function identity replaced.</li>
+<li>\(G_c\ne0\) modulo \(q\) for every \(c&lt;l\): for \(e=1\), \(2\le l\le4\) at \(\beta=(2,-3,5,-7)/3\) (w1-leading.txt), for \(e=1\), \(5\le l\le8\) and \(e=2\), \(l=5,6\) at \(\beta_s=\pm\,\mathrm{prime}(s+1)/3\) (w1-gc.txt). \(G_c\) is rational in \(\beta\). These points have rational coordinates whose denominators, and those of the basis inversion, are invertible modulo \(q\), as the successful computation shows. So for these \((e,l)\), \(G_c\) is a nonzero function, and the valuations are \(ln+c(c-1)\) for generic \(\beta\).</li>
+</ul>
+<p><strong>Lead follow-up.</strong> The Hankel lead gave the whole leading coefficient for \(w=1\), not only the within-double part. For \(w=1\) the divided-difference bound already gives \(2E\), and the basis change removes the cancellation between \(E\) and \(2E\) seen in the original basis. The Hankel lead supplies the nonvanishing at \(2E\), as a signed sum over the \(c!\) bijections. <strong>Follow-up.</strong> Developed.</p>
+<p><strong>What this does to the route.</strong> For block size one, the neck window valuations are proved for every cluster size, up to the genericity of \(G_c\). The leading coefficient has exactly the form the review's lead predicted. For the peeling neck (\(w=4\)) the same structure should appear with a block of \(w\) rows per group. The divided-difference bound is not sharp there beyond the first windows. A heuristic is that the minimal terms must then also move rows within a group. The natural next step is the level-\(2E\) terms for general \(w\): bijections between negative columns and slots, and a Hankel-type determinant per window. The genericity \(G_c\not\equiv0\) for every \(l\) is also open. It is the ordinariness at \(0\) of \(U\oplus y^{-1}\Phi_{\ge c}\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>\(G_c\not\equiv0\) for every \(l\);</li>
+<li>the neck windows for \(w\ge2\) beyond the first windows, in particular \(w=4\);</li>
+<li>the exchange condition;</li>
+<li>squarefree far polynomials, and (K).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The level expansion and the divided-difference bound (statements and proofs); hierarchical attainment's Toeplitz binomial step; the Hankel lead of the peeling review.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, the specification, the two preceding entries, the script and both outputs. Verdict: pass with corrections. It confirmed the bound, the equality analysis (every contributing choice of pole orders is of the stated form and counted once), the block-triangular minors with their sign, the signed sum, the Hankel reversal and hook-content step, and the script's independence and normalization. Corrections applied:</p>
+<ul>
+<li>the range of the \(G_c\) checks is stated as run, with both evaluation points;</li>
+<li>the coordinate remark is corrected;</li>
+<li>\(\kappa\ne0\) is stated;</li>
+<li>the Lead follow-up no longer attributes the factor two to the Hankel sum or to the orbit data;</li>
+<li>a route remark is labelled heuristic.</li>
+</ul>
+<p>These corrections restrict or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zh">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 11.44 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">1 min 1.54 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 0.37 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 7.59 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.58 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.38 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
