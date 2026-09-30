@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved. For every \(N\), (K) rests on simplicity of the far polynomials \(R_{n,k}\), \(n\ge2\). Both classes of \(X(n,k)\) are now explicit Rodrigues images: <a href="#cube-far-p4-jacobi">\(P_4\)</a> with one derivative block, <a href="#cube-far-p3-rodrigues">\(P_3\)</a> with two.</p>
-<p>Next, a route review for (K), due after one more research entry. That entry: use the two Rodrigues formulas to write \(R_{n,k}\) as a single Wronskian of derivative images. Integrate the Wronskian by the standard identity \(W(\partial^Df_1,\ldots)\), relating Wronskians of derivatives to Wronskians of larger spaces. Test whether \(R_{n,k}\) becomes, up to explicit factors, the Wronskian of one space of the form \(w^a(1-w)^b(\ldots)\) with a polynomial basis, which is the classical setting of Wronskians of Jacobi polynomials.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved. For every \(N\), (K) rests on squarefreeness of the far polynomials \(R_{n,k}\), \(n\ge2\). Both classes of the rigid spaces are explicit Rodrigues images (<a href="#cube-far-p4-jacobi">P4</a>, <a href="#cube-far-p3-rodrigues">P3</a>). The <a href="#entry-2026-10-02-cube-rodrigues-review">Rodrigues review</a> names the next target: one polynomial space in \(u=\sqrt w\).</p>
+<p>Next, for (K) at every \(N\): write \(Y(n,k)=u^{2n-3}X(n,k)|_{w=u^2}\) as one polynomial space in \(u\), and identify its basis from the two Rodrigues formulas. Test whether \(Y\) is spanned by Gegenbauer polynomials of some index set, or by a Crum (Darboux) transform of one, at six sizes. If it is, compare with the known simplicity results for Wronskians of classical polynomials.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -39558,6 +39558,177 @@ P_3=(1-w)^{q-\frac12}\,w^{P+2}\;w^{1-c_2}\,\partial^{K}\,w^{c_2+K-P-3}\,\partial
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 13.96 s</td></tr>
 <tr><td>Computation design and coding</td><td class="elapsed">20.46 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 11.02 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-rodrigues-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="none" data-claim-note="Route review after the Jacobi and Rodrigues cycles; its tests are exact computations and record arguments, and no claim is registered.">
+<h3>2 October 2026 — Review: both classes of the rigid far spaces are explicit Rodrigues images and the Jacobi class is zero-free on (0,1), but the far polynomial mixes the two through a square-root twist; the substitution w = u² removes it</h3>
+<p class="entry-meta">Route review after the Jacobi and Rodrigues cycles: what the classical structure gives, class Wronskians computed, Karlin–Szegő and Darboux–Crum checks, and a single-space form in u = √w as the next target. Rodrigues review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>The line's general claim.</strong> Statement 3 at every \(N\ge11\) follows from (B) and (K). (K) needs the far polynomials \(R_{n,k}\) of the rigid middles to be squarefree for \(n\ge2\). These are the Wronskians, off \(w=0,1\), of \(X(n,k)=P_3+w^{1/2-(n-1)}P_4\).</p>
+<p><strong>What the main goal needs.</strong> For every \(N\ge11\): rigid simplicity, or a replacement, plus the assembly items. The first-order replacement looks closed (<a href="#entry-2026-10-02-cube-first-order-review">first-order review</a>).</p>
+<p><strong>Status of the period</strong> (three research entries):</p>
+<ul>
+<li>\(P_4\) is \(w^K\) times a Jacobi-type space for every \((n,k)\) (<a href="#cube-far-p4-jacobi">P4 Jacobi theorem</a>).</li>
+<li>\(P_3\) is a two-step Rodrigues image (<a href="#cube-far-p3-rodrigues">P3 Rodrigues lemma</a>).</li>
+<li>The class-by-class Jacobi hypothesis is refuted for \(P_3\) (<a href="#cube-far-classes-hypergeometric">hypergeometric test</a>).</li>
+</ul>
+<p><strong>Falsification attempt.</strong> The claim that the obstacle is now classical would fail if the classical structure did not control zeros even class by class. Test: <code>research/tools/bmd_cube_far_class_wronskians.gp</code>, exact, at \((2,3),(2,4),(3,3),(2,5),(3,4),(4,3)\) (<code>research/results/bmd-20261002-x/far-class-wronskians.txt</code>).</p>
+<ul>
+<li>Every class Wronskian is squarefree.</li>
+<li>\(W(P_4)\) has no zero in \((0,1)\) at any size.</li>
+<li>\(W(P_3)\) has one zero in \((0,1)\) and one in \((1,\infty)\) at \((3,3),(3,4),(4,3)\).</li>
+</ul>
+<p>Outcome: not falsified. The Jacobi class behaves like a determinant of orthogonal polynomials, sign-definite on the orthogonality interval, and the two-run class does not. But class Wronskians are not the far polynomial: \(R_{n,k}\) is the Wronskian of the sum, twisted by \(w^{1/2}\).</p>
+<h4>Obstacle</h4>
+<p>The line is stuck on squarefreeness of the Wronskian of the sum of the two classes, one with the twist \(w^{1/2-(n-1)}\). Each class is an explicit Rodrigues image, but their multipliers differ by a half-integer power of \(w\). So neither the Wronskian-of-derivatives identity nor any common factor turns the sum into one Rodrigues image, and there is no closed form for \(R_{n,k}\).</p>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Determinants of orthogonal polynomials</strong> (S. Karlin and G. Szegő, On certain determinants whose elements are orthogonal polynomials, J. Analyse Math. 8 (1960/61) 1–157). Wronskian-type determinants of consecutive orthogonal polynomials have constant sign on the orthogonality interval, under a parity condition on the block. <strong>Answers.</strong> It gives zero-free regions for the classical half. It localizes the zeros of \(W(P_4)\), not the zeros of \(R_{n,k}\). <strong>Test.</strong> Passed: \(W(P_4)\) has no zero in \((0,1)\) at all six sizes.</li>
+<li><strong>The Wronskian-of-derivatives identity</strong> (classical; e.g. Pólya–Szegő, Problems and Theorems in Analysis II, Part VII). \(W(g_1^{(D)},\ldots,g_d^{(D)})\) is a constant times \(W(1,w,\ldots,w^{D-1},g_1,\ldots,g_d)\). <strong>Answers.</strong> Each Rodrigues image becomes a Wronskian of polynomials together with binomially weighted polynomials, a Hermite–Padé determinant. That is the form in which the record already proved neck and window results. <strong>Test.</strong> Falsified for the direct use. The two classes carry multipliers \(w^{K}\) and \(w^{P+2}(1-w)^{0}\), with the twist \(w^{1/2-(n-1)}\) between them. Their derivative blocks \(\partial^D\) and \(\partial^K\partial^C\) differ, so no single identity applies to the sum.</li>
+<li><strong>Quadratic substitution for parity-split spaces</strong> (the relation between Jacobi polynomials with parameter \(\pm\tfrac12\) at one end and Gegenbauer polynomials: \(P^{(\alpha,\pm1/2)}\) in \(w\) are even or odd Gegenbauer polynomials in \(u=\sqrt w\), Szegő, Orthogonal Polynomials, §4.1). <strong>Answers.</strong> Under \(w=u^2\), \(P_3(u^2)\) is even and \(u^{1-2(n-1)}P_4(u^2)\) is odd. After multiplying by \(u^{2n-3}\), \(X(n,k)\) becomes one space of polynomials in \(u\). Off \(u=0\) its Wronskian in \(u\) has the pulled-back far points as zeros, with multiplicities, since \(w=u^2\) is unramified there. That is a single classical-looking Wronskian, the setting of Veselov-type questions. <strong>Test.</strong> Passed as a structural check. The pure reduction already removed the \((1-w)\) factors, so the only twist is \(w^{1/2}\), which \(u\) absorbs. The Jacobi class \(P_4\) has its exponent at \(w=0\) in the half-integer family, which is what makes the Gegenbauer relation available. Whether the whole \(u\)-space is spanned by Gegenbauer-type polynomials was not tested.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>Darboux–Crum transformations of the Pöschl–Teller potential</strong> (quantum mechanics: M. M. Crum, Associated Sturm–Liouville systems, Quart. J. Math. 6 (1955); Krein–Adler regularity). Wronskians of Jacobi-type eigenfunctions are the Crum formula for iterated Darboux transforms, and their zeros in the interval are the poles of the transformed potential. Krein–Adler says the potential is regular exactly when the chosen states satisfy a pairing condition. Translation: \(P_4\) as a set of Pöschl–Teller eigenfunctions and \(W(P_4)\) as a Crum Wronskian; \(P_3\), a two-step transform, as a doubly transformed system. <strong>Answers.</strong> It predicts which Wronskians are zero-free on \((0,1)\), a regularity statement. Simplicity would need a separate argument. <strong>Test.</strong> Passed: \(W(P_4)\) is zero-free on \((0,1)\), a regular Crum transform, and \(W(P_3)\) has a zero there at \(n\ge3\), a singular one.</li>
+<li><strong>Total positivity in statistics</strong> (S. Karlin, Total Positivity, 1968, written for decision theory and reliability). A totally positive kernel gives variation-diminishing maps, and spaces spanned by its sections are Chebyshev systems, whose Wronskians do not vanish. Translation: the Euler-product construction of the classes as integral transforms of \((1-w)^{1/2}\) against a kernel in \((\ell,w)\). <strong>Answers.</strong> A Chebyshev-system property on \((0,1)\) would exclude Wronskian zeros there, and with a separate count outside, all multiple zeros. <strong>Test.</strong> Passed for \(P_4\), whose Wronskian is zero-free on \((0,1)\). Falsified for \(P_3\), whose Wronskian has zeros there at \(n\ge3\). So \(P_3\) is not a Chebyshev system on \((0,1)\).</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-normality-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-peeling-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-statement-three-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-contact-dimension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-contact-dimension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-01-cube-discriminant-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-10-02-cube-rigid-simplicity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-complete-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-arc-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dilate-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-corner-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dimension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-contact-dimension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-discriminant-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-01-cube-discriminant-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-02-cube-rigid-simplicity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-02-cube-corner-hankel-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-10-02-cube-first-order-review:1">Developed in three cycles. The <a href="#cube-far-classes-hypergeometric">hypergeometric test</a> found one class classical and one not. The <a href="#cube-far-p4-jacobi">P4 Jacobi theorem</a> proves \(P_4\) is \(w^K\) times a Jacobi-type space for every \((n,k)\), by a Rodrigues formula. The <a href="#cube-far-p3-rodrigues">P3 Rodrigues lemma</a> gives \(P_3\) as a two-step derivative image. The far polynomial is not yet a single classical Wronskian. <strong>Follow-up.</strong> Continuing: the substitution \(w=u^2\) turns \(X(n,k)\) into one polynomial space in \(u\).</li>
+</ul>
+<p><strong>Assessment of this line.</strong> The structural cycles made the rigid far spaces explicit.</p>
+<ul>
+<li>One class is classical. The other is a two-step transform. Each class Wronskian is squarefree in every computed case, and the classical one is zero-free on \((0,1)\).</li>
+<li>These are real results, and the obstacle is now narrow: squarefreeness of one Wronskian of an explicit parity-split polynomial space in \(u=\sqrt w\).</li>
+<li>The line has no simplicity mechanism yet. The classical tools found so far control zero locations, not multiplicities.</li>
+<li>Veselov's conjecture, the closest analogue, is open. A proof for every \((n,k)\) may need a structure specific to these spaces, for example that the \(u\)-space is a Crum transform of a Gegenbauer system with explicit indices.</li>
+</ul>
+<p><strong>Next step on the highest-risk item.</strong> Route item cube-odd-characteristic, open statement 3, input (K). Write \(Y(n,k)=u^{2n-3}X(n,k)|_{w=u^2}\) as one polynomial space in \(u\), and identify its basis from the two Rodrigues formulas. Test whether \(Y\) is spanned by Gegenbauer polynomials of some index set, or by a Crum (Darboux) transform of one, at the six sizes. If it is, the far polynomial is a Crum Wronskian of Gegenbauer polynomials with explicit indices. Then check the known simplicity results for such Wronskians, which exist for Hermite and Laguerre cases in the literature on exceptional polynomials.</p>
+<p><strong>Dependencies re-read.</strong> The entries of this period; the pure reduction (classes and the removed factors); the first-order review.</p>
+<p><strong>Verification gate.</strong> The tests are exact computations and record arguments, with scope stated. No claim is registered, so no reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-x">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 41.14 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">49.41 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 51.45 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.14 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
