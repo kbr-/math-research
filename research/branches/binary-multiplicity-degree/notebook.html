@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). By the <a href="#cube-moving-subset-curves">moving-subset curves</a>, (K) at \(N\) follows from interior, boundary and escape conditions on \(\lfloor N/2\rfloor-1\) explicit curves that translate a rigid subset of branch points. Those curves have unique limits at every boundary point.</p>
-<p>Next, run the method's control at \(N=6\), where it must fail by the involution divisor, and its first positive case at \(N=7\). On \(C_1\) and \(C_3\), eliminate \(z\) from the conditions for weight three, a sixfold root of the squared Wronskian's non-branch part, to get a polynomial in \(s\). Treat the pair-collision and \(\Delta_S\) limits in the same way. If \(N=6\) fails and \(N=7\) passes as predicted, state the interior condition as a general statement for all \(N\) and look for its mechanism.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). By the <a href="#cube-moving-subset-curves">moving-subset curves</a>, (K) follows from interior, boundary and escape conditions on explicit curves. The interior condition is conjectured (<code>conj:cube-moving-subset-interior</code>). At \(N=6\) it fails exactly at the involution configurations, and at \(N=7\) it holds on \(C_1\) (<a href="#entry-2026-09-30-cube-moving-curve-certificates">curve certificates</a>). Direct elimination does not scale to \(N=11\).</p>
+<p>Next, seek a mechanism for the interior condition on \(C_1\), for every \(N\). With one moving point \(s\), \(V_{a(s)}\) is the fixed space \(V'\) of the other \(N-1\) points plus \((z-s)^{1/2}U\), where \(U=\langle(z-b_j)^{1/2}\rangle\) is fixed. So weight three at \((s,z)\) is a Schubert condition along a one-parameter family built from fixed data. Relate its Wronskian to the \((N-1)\)-point Wronskian and to \(U\), and try an induction on \(N\) that keeps the weight-three locus off the curve. The route review is due within three research entries.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33986,6 +33986,72 @@ Call \(b\) generic for \(S\) if the \(k(N-k)\) values \(s=b_j-b_i\) (\(i\in S\),
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-moving-curve-certificates" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-moving-subset-interior check:cube-moving-subset-n6-n7">
+<h3>30 September 2026 — On moving-subset curves the weight-three configurations are exactly the involution configurations at six roots, and none appear on the seven-root curve C₁ off its blind values</h3>
+<p class="entry-meta">Finite check modulo a prime of the interior condition of the moving-subset criterion: at N = 6 it fails exactly at the involution configurations, as it must; at N = 7 it holds on C₁ off its blind values; conjecture for every N ≥ 7. Curve certificate cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-moving-subset-curves">moving-subset lemma</a> reduces \(\operatorname{codim}W_3\ge2\), and so (K), to interior, boundary and escape conditions on the curves \(C_1\) and \(C_3,\ldots,C_{\lfloor N/2\rfloor}\). This cycle tests the interior condition on a control and on the first open case. At \(N=6\), \(\operatorname{codim}W_3\ge2\) fails by the <a href="#cube-six-root-involution-divisor">involution divisor</a>, so the method must find weight-three configurations, or a failure elsewhere, on \(C_1\) or \(C_3\). At \(N=7\) it should find none. The outcome decides whether the interior condition is the right object for a general statement.</p>
+<p><strong>General statement.</strong> <code>conj:cube-moving-subset-interior</code>, for every \(N\ge7\); <code>check:cube-moving-subset-n6-n7</code> is its finite check, with the \(N=6\) control.</p>
+<h4>Certificate</h4>
+<p>research/tools/bmd_cube_curve_weight.c (FLINT, OpenMP) works modulo \(p=2^{61}-1\). For a configuration \(a\), it computes the squared Wronskian of \(V_a\) from the Taylor matrix of the functions normalized at \(z_0\): \(W^2=c\det(T)^2\prod_i(z_0-a_i)^{N-1}\). It interpolates \(Q=W^2\prod_i(z-a_i)^E\), with \(E\) the generic pole order of \(W^2\) at each \(a_i\), read off the single runs as \(200-85=115\) at \(N=6\) and \(300-102=198\) at \(N=7\), so that \(Q\) is a polynomial with no branch factor. Three check points confirm each interpolation. Then \(Q=\operatorname{lc}(Q)R_m^2\), with \(R_m\) monic and \(R_m=\prod(z-x)^{\operatorname{wt}_x}\) over the non-branch weight points. Put \(\tilde R=\operatorname{lc}(Q)R_m\), so that \(\tilde R^2=\operatorname{lc}(Q)Q\) is polynomial in \(s\). A point of weight at least three at some \(s\) is a triple root of \(\tilde R\), hence a common root of \(A=\operatorname{Res}_z(\tilde R',\tilde R'')\) and \(B=\operatorname{Res}_z(\tilde R,\tilde R'')\). Both are interpolated in \(s\) from the degree bound \(\deg_sQ\cdot(2\deg R-2)\), with three checks, and \(\gcd(A,B)\) is factored. Sizes (sizing.txt, single-n6.txt, single-n7.txt), for \(b=(2,3/7,-5/3,11/4,-1,7/2)\) and, at \(N=7\), also \(-13/5\):</p>
+<table>
+<tr><th>\(N\)</th><th>\(\deg R\)</th><th>\(\deg_sQ\) on \(C_1\)</th><th>\(\deg_sQ\) on \(C_3\)</th></tr>
+<tr><td>\(6\)</td><td>\(90\)</td><td>\(120\)</td><td>\(288\)</td></tr>
+<tr><td>\(7\)</td><td>\(210\)</td><td>\(204\)</td><td>at least \(500\)</td></tr>
+</table>
+<h4>Control at six roots</h4>
+<p>n6-control.txt, and at each linear factor n6-roots.txt, via research/tools/bmd_cube_curve_roots_summary.py:</p>
+<ul>
+<li>\(C_1\): \(\gcd(A,B)\) has \(15\) linear factors of multiplicity \(2\). At each, with \(G=\gcd(Q,Q')\), the run gives \(\deg G=94\), \(\deg\gcd(G,G')=8\) and \(\deg\gcd(G,G',G'')=6\): \(Q\) has two roots of multiplicity exactly six, that is, two points of weight exactly three. The six points admit a Möbius involution that swaps them in three pairs: one of the \(15\) pairings has linearly dependent quadratics \((z-a_i)(z-a_j)\). Each pairing's condition is linear in the moving point, and the \(15\) roots observed are distinct and cover all pairings. So for this \(b\) there are exactly \(15\) such configurations on \(C_1\), and generically for other \(b\). The two triple roots are the involution's fixed points, of weight at least three by the <a href="#cube-symmetric-mark-weight">symmetric mark weight</a>. The remaining factors are:
+<ul>
+<li>the \(5\) collision values (multiplicity \(2476\));</li>
+<li>factors of degrees \(1,6,10,13\), each of multiplicity \(178=2\deg R-2\), presumably zeros of the leading coefficient by the multiplicity pattern. Only the linear one was evaluated: there \(\deg Q\) drops from \(180\) to \(178\), and \(G=R\) is squarefree of degree \(89\), so one root escapes to \(\infty\) with weight one. Multiplicity \(2\deg R-2\) is what a content factor \((s-s_0)\) of \(\tilde R\) produces. Such a factor makes both resultants vanish whether or not a triple root is present, so the certificate is blind at these values.</li>
+</ul></li>
+<li>\(C_3\): \(17\) linear factors of multiplicity \(2\), all involution configurations with two triple roots. There are also \(5\) quadratic and \(2\) cubic factors of multiplicity \(2\), presumably involution configurations over extension fields (not evaluated). A count supports this. The \(6\) pairings that cross the moving triple in every pair give conditions linear in \(s\), and the \(9\) that cross it in one pair give monic cubics, so there are \(6+27=33=17+2\cdot5+3\cdot2\) roots. The observed split fits: two cubic pairings (12|35|46, 14|23|56) have three linear roots each, five have one linear root and a quadratic factor, and two stay irreducible. The rest are the \(9\) collision values and factors of multiplicity \(178\) (degrees \(1,1,31\)), presumably leading-coefficient zeros; at the two linear ones the drop is again \(2\).</li>
+</ul>
+<p>So the interior condition fails at \(N=6\) where it must, on both curves. Off the collision values and the presumed leading-coefficient values, and on \(C_3\) apart from the unevaluated quadratic and cubic factors, the certificate detects the known obstruction and nothing else over \(\mathbb F_p\).</p>
+<h4>Seven roots, curve \(C_1\)</h4>
+<p>n7-c1.txt: \(90392\) valid samples, degree bound \(85272\), checks pass, \(\deg A=85068\), \(\deg B=85272\). \(\gcd(A,B)\) consists of the \(6\) collision values (multiplicity \(6850\)) and two irreducible factors of degrees \(46\) and \(14\), of multiplicity \(418=2\deg R-2\). The latter are presumably leading-coefficient zeros, with the multiplicity that at \(N=6\) came with a simple escape to \(\infty\); the certificate is blind at these values. There is no other factor. So, modulo \(p\), no configuration on \(C_1\) off the collision values, these \(60\) values and \(s=\infty\) has a point of weight at least three at a finite non-branch value.</p>
+<p><strong>Conjecture (moving-subset interior).</strong> For every \(N\ge7\), every \(k\in\{1,3,\ldots,\lfloor N/2\rfloor\}\) and generic \(b\), no configuration of \(C_k\) off its collision values (for \(k=1\) including \(s=\infty\); for \(k\ge3\), \(s=\infty\) is a boundary point) has a point of weight at least three over a non-branch value of \(\mathbb P^1\), \(\infty\) included.</p>
+<p>At \(N=6\) the conjecture's statement fails, as the control shows, because the involution locus is a divisor there. For \(N\ge7\) the <a href="#cube-symmetric-locus-codimension">symmetric locus</a> has codimension at least two, and a curve of the family with generic \(b\) misses a fixed set of codimension two, since \((b,s)\mapsto b+s\mathbf 1_S\) is a linear surjection with line fibres. So the known source of weight three, the involution locus, does not reach the interior points of these curves for \(N\ge7\). This covers only interior points (not \(s=\infty\) or boundary points) and only that locus. It is the mechanism behind the conjecture, not a proof.</p>
+<h4>Not covered, and scale</h4>
+<ul>
+<li>At \(N=7\), \(C_3\) is not run (\(\deg_sQ&gt;500\)), and neither is \(s=\infty\) on \(C_1\), where the moving point is at \(\infty\). The weight at \(\infty\) at the \(60\) leading-coefficient zeros is inferred from the multiplicity pattern, not evaluated over the extension fields.</li>
+<li>The boundary and escape conditions are untouched.</li>
+<li>Everything is modulo one prime. A characteristic-zero weight-three configuration would have to reduce to a factor of the modular gcd, and it could reduce into a collision or leading-coefficient factor. So the modular result implies nothing in characteristic zero unless the characteristic-zero gcd has the same multiplicities at the known factors.</li>
+<li>Scale: \(\deg R\) rose from \(90\) to \(210\) between \(N=6\) and \(N=7\), and the elimination grows with \(\deg R\cdot\deg_sQ\) samples of \(n\times n\) determinants, \(n=2+\binom N2\). At \(N=11\) (\(n=57\)) this direct certificate is far beyond the thirty-minute run limit. The route needs a proof of the interior condition, not per-\(N\) elimination.</li>
+</ul>
+<p><strong>What this does to the route.</strong> The moving-subset reduction is validated where it can be: the certificate recovers the known obstruction at \(N=6\) and finds nothing at \(N=7\) on \(C_1\), off the collision values, the \(60\) presumed leading-coefficient values and \(s=\infty\). The missing implication for (K) at every \(N\ge11\) is now <code>conj:cube-moving-subset-interior</code>, together with the boundary and escape conditions. A proof has to show that the weight-three locus has codimension two along one explicit rational curve per \(k\), which is the original question restricted to a curve.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>a proof of the interior conjecture; the boundary and escape conditions;</li>
+<li>the (B) side.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The moving-subset lemma, the six-root involution divisor, the symmetric mark weight and the symmetric locus codimension (statements).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the certificate logic (polynomiality of \(\tilde R\), the degree bounds for both resultants, the skipped samples), every quoted number against the outputs, the pairing count and the conjecture's mechanism. Verdict: pass with corrections, all applied:
+</p>
+<ul>
+<li>the printed quantities are those of \(G=\gcd(Q,Q')\), which the text now uses;</li>
+<li>\(E\) is identified as the generic pole order;</li>
+<li>the factors of multiplicity \(2\deg R-2\) are called presumable leading-coefficient zeros, and the certificate is stated to be blind there;</li>
+<li>the unevaluated \(C_3\) factors are kept as presumable, with the pairing count as support;</li>
+<li>the scope of the conjecture, its mechanism and the characteristic-zero caveat are sharpened;</li>
+<li>a sizing entry is corrected to "at least".</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzh">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>27 min 0.19 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 53.39 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">8 min 13.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">2 min 5.97 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11 min 47.60 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
