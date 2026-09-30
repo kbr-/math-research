@@ -43,8 +43,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is the highest risk and has no mechanism. It passes a finite-field plane test at \(N=11,12,13\) and appears to hold for random dilate systems \(F(a_iT)\) (<a href="#entry-2026-10-01-cube-contact-dilate-review">contact dilate review</a>). The neck vanishing is proved at block sizes one and two.</p>
-<p>Next, for (K) in dilate form: determine which properties of \(F\) the contact bound uses. With the plane counter's generic mode, test \(F=(1+x)^\alpha\) at other non-integral and at integral \(\alpha\), \(F=\exp\), and series with one binomial Toeplitz minor forced to vanish. Then state (K) for all series outside an explicit degenerate set and look for a transversality proof over \(F\). Write the one-far-point hook-content derivation as a lemma.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K), the highest risk, is now the case \(\alpha=-\tfrac32\) of a <a href="#entry-2026-10-01-cube-contact-dilate-bound">dilate contact conjecture</a>. It holds numerically for every non-integral binomial and random series, and fails for \(\exp\). The neck vanishing is proved at block sizes one and two.</p>
+<p>Next, for (K): develop the transversality route over the series.</p>
+<ul>
+<li>Prove the codimension count for configurations \((a,\sigma)\) on which \(k\mapsto\sum_j\sigma_ja_j^k\) has more zeros in \([1,R+1]\) than a generalized Vandermonde count allows, with the root-of-unity ratios (symmetry) as the only excess.</li>
+<li>From that count, prove the conjecture for generic \(F\).</li>
+<li>Then find which conditions on \(F\) the proof used, and check them for \((1+x)^{-3/2}\) by the hook-content formula.</li>
+</ul>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -36024,6 +36029,85 @@ For \(r=3\), degrees \(\deg G\le2\) survive at \((1,1)\), \(\le9\) at \((1,2)\) 
 <tr><td>Computation design and coding</td><td class="elapsed">6 min 45.27 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">53.97 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">11 min 23.05 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-01-cube-contact-dilate-bound" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-bridge="entry-2026-10-01-cube-contact-dilate-review:1" data-claims="conj:cube-contact-dilate-bound check:cube-spine-not-heine-stieltjes">
+<h3>1 October 2026 — The contact bound holds numerically for every non-integral binomial and random dilate system, fails for exp, and the spine polynomial is not Heine–Stieltjes</h3>
+<p class="entry-meta">Conjecture: (K) holds for dilate systems of every non-degenerate series, checked over a finite field at N = 8 and 11. Refutation of the Heine–Stieltjes route for the spine at N = 5, 6, 7. Contact dilate cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-01-cube-contact-dilate-review">contact dilate review</a> found that (K) survives a finite-field plane test at \(N=11,12,13\), and that it seems to hold when \((1+x)^{-3/2}\) is replaced by a random series. (K) is the highest-risk item of statement 3. The missing implication is a mechanism for every \(N\). This cycle asks which properties of the series (K) actually uses, so that a proof can target exactly those. It also tests whether the Heine–Stieltjes mechanism behind the binary-face theorem extends to the spine limits of the F-curve route.</p>
+<p><strong>General statement.</strong> <code>conj:cube-contact-dilate-bound</code>, for every \(N\ge7\) and every non-degenerate series; <code>check:cube-spine-not-heine-stieltjes</code> refutes the Heine–Stieltjes route at \(N=5,6,7\).</p>
+<h4>Dilate systems</h4>
+<p><strong>Setting.</strong> For a power series \(F\) with \(F(0)=1\), put \(H^F_k(X,Y)=[T^k]F(XT)F(YT)\), \(A^F_L(a)=(H^F_k(a_i,a_j))_{i&lt;j,\,k\le L}\), \(R=\binom N2\), and \(K_F=\{a\text{ separated}:\operatorname{rank}A^F_{R+1}(a)&lt;R\}\). For \(F=(1+x)^{-3/2}\) this is the contact locus \(K_U\) of lem:cube-contact-plane-criterion, and (K) says \(\operatorname{codim}K_U\ge3\). For every \(F\), \(K_F\) is a cone (\(a\mapsto ta\) rescales \(T\)). Translation invariance holds for binomials (by the plane criterion's identity) and for \(\exp\) (\(e^{(a+s)T}=e^{sT}e^{aT}\)), not for a general \(F\).</p>
+<p>research/tools/bmd_cube_contact_plane_count.c, extended by a series mode, counts the \(\mathbb F_p\)-points of \(K_F\) on random projective planes of \(\mathbb P^{N-1}\). Such a plane meets a cone of codimension two in finitely many points and misses one of codimension three. This is also how the review's counts are to be read: they used planes in \(\mathbb P^{N-1}\), not modulo translation, with the same conclusion. In this cycle's runs the same three planes are used for every binomial exponent and for \(\exp\). The random-series counts come from the review's separate runs, with their own planes. Over \(\mathbb F_p\) every exponent is a residue, so these tests are meaningful only because the residues of \(\alpha\) are not small integers. Results, with \(p=1009\) (contact-plane-family.txt):</p>
+<ul>
+<li>\(F=(1+x)^\alpha\), \(\alpha=\tfrac12,\tfrac13,-\tfrac52,\tfrac73\), at \(N=8\): no \(K_F\) points on any plane; control (contact \(R+3\), codimension two) \(0\) to \(3\) points per plane;</li>
+<li>the same four exponents at \(N=11\): no \(K_F\) points; control \(0\) to \(4\) per plane;</li>
+<li>a random series (the review's runs, contact-plane-count-generic.txt): no \(K_F\) points on \(3\) planes at \(N=8\) and \(6\) planes at \(N=11\);</li>
+<li>\(F=\exp\) at \(N=8\): about \(190{,}000\) points of \(K_F\) per plane of \(991{,}127\). Here \(H_k=(a_i+a_j)^k/k!\), so \(K_{\exp}\) is the union of the \(3\binom84=210\) hyperplanes \(a_i+a_j=a_k+a_l\), each meeting a plane in about \(p\) points. The detector sees it at once.</li>
+</ul>
+<p>The recorded symmetric configuration \(\{\pm1,\pm2,\pm\tfrac53,\pm\tfrac72\}\) lies in \(K_F\) for every tested series. The proof of cor:cube-symmetric-mark-weight uses only the parity of \(F(\beta T)F(-\beta T)\) and the exchange of the other pairs under \(T\mapsto-T\). So it holds for every \(F\) when the involution is \(a\mapsto-a\): centred symmetric configurations with \(m\ge4\) pairs lie in \(K_F\). For binomials, translation gives the other centres.</p>
+<p><strong>Degenerate series.</strong> Two kinds of series fail (K) for a visible reason:</p>
+<ul>
+<li>the pair functions span fewer than \(R\) dimensions, as for small integral exponents: \((1+x)^n\) gives polynomials of degree \(2n\) (a collapse when \(2n+1&lt;R\)), and \((1+x)^{-n}\) gives partial fractions spanning at most \(nN\) dimensions (a collapse when \(nN&lt;R\)). Other integral exponents are not decided here;</li>
+<li>pair products coincide as dilates, as for \(\exp\).</li>
+</ul>
+<p><strong>Conjecture (dilate contact bound).</strong> Let \(N\ge7\), the range of (K) in cor:cube-first-step-contact-form; the tests cover \(N=8,11\). Then:</p>
+<ul>
+<li>for every \(F\) with \(F(0)=1\) whose truncated coefficient vector \((f_1,\ldots,f_{R+1})\) lies in a nonempty Zariski-open set, \(K_F\) has codimension at least three in \(k^N\). The exceptional set is constructible and contains the collapsing and exponential-type series above; it is to be described explicitly;</li>
+<li>the same holds for every \(F=(1+x)^\alpha\) with \(\alpha\notin\mathbb Z\).</li>
+</ul>
+<p>For \(\alpha=-\tfrac32\) the second part is (K).</p>
+<p><strong>Why it may hold, and where it breaks.</strong> This is a heuristic proof route, not a proof. Write \(M_{rs}=\sum_{i\ne j}C_{ij}a_i^ra_j^s\) for the symmetric zero-diagonal coefficient matrix \(C\) of a contact form. Then equation \(k\) reads \(\sum_{r+s=k}f_rf_sM_{rs}=0\). It contains \(f_k\) linearly, with coefficient \(2M_{0k}=2\sum_j\sigma_ja_j^k\), where \(\sigma\) is the vector of row sums of \(C\).</p>
+<ul>
+<li>Equation \(k=0\) is \(\sum_j\sigma_j=0\), a condition on \(C\) alone. Where the power sums with \(k\ge1\) do not vanish, equations \(1,\ldots,R+1\) successively determine \(f_1,\ldots,f_{R+1}\). With the condition on \(C\), the incidence of \((F,a,[C])\) then has codimension \(R+2\).</li>
+<li>Over a generic \(F\) the fibre then has dimension \((N+R-1)-(R+2)=N-3\), as (K) requires.</li>
+<li>Excess can come only from configurations where \(k\mapsto\sum_j\sigma_ja_j^k\) has more zeros in \([1,R+1]\) than a generalized Vandermonde count allows. Symmetry, with ratios \(a_i/a_j=-1\), is such a case: every odd \(k\) is a zero, and parity makes the corresponding equations automatic.</li>
+</ul>
+<p>So the route needs a zero-count for exponential sums with codimension, controlling ratios that are roots of unity, and then a passage from generic \(F\) to the binomial.</p>
+<h4>The spine polynomial is not Heine–Stieltjes</h4>
+<p>thm:cube-binary-face-weierstrass-points proves simplicity through Gegenbauer's equation: a polynomial solution of \(AQ''+BQ'+CQ=0\) has simple roots wherever \(A\ne0\). If the spine Weierstrass polynomial \(Q_\mu\) of lem:cube-fcurve-spine-limit, type \((1,1,1,N-3)\), satisfied such an equation of Heun type, with three finite singular points at the branch values and the cluster at \(u=\infty\), the spine conjecture would follow for every \(N\).</p>
+<p>research/tools/bmd_cube_spine_heun_test.gp (spine-heun-test.txt) computes \(Q_\mu\) modulo \(2^{61}-1\), as in bmd_cube_spine_weight3.gp, at two values of \(\mu\). It then computes the kernel of \((A,B,C)\mapsto AQ''+BQ'+CQ\) with \(\deg A\le3+x\), \(\deg B\le2+x\), \(\deg C\le1+x\), for \(x=0,1,2\).</p>
+<ul>
+<li>Control: the binary-face \(Q_{10}\) has a one-dimensional kernel at degrees \((2,1,0)\), which is Gegenbauer's equation.</li>
+<li>At \(N=5,6,7\) (\(\deg Q_\mu=15,27,42\)), for both \(\mu\) and all three degree bounds, the kernel is zero. The systems are overdetermined (\(9\)–\(15\) unknowns, \(17\)–\(46\) equations).</li>
+</ul>
+<p>So, at the two tested \(\mu\) and hence at generic \(\mu\), the spine polynomial satisfies no second-order Fuchsian equation with coefficients of these degrees. The recorded non-Heine–Stieltjes example was a caterpillar middle component with two finite singular points. The spine, with three, fails as well. This check modulo a prime is recorded as check:cube-spine-not-heine-stieltjes; a zero kernel modulo \(q\) also forces a zero kernel over \(\mathbb Q\) at the same rational \(\mu\), provided \(Q_\mu\) modulo \(q\) is the reduction of the rational polynomial. It refutes this form of the lead, not simplicity itself, which is checked through \(N=7\).</p>
+<p><strong>Bridge follow-up.</strong> Absurd bridge 1 of the contact dilate review, universality. The dilate property holds for all tested non-integral binomials and fails for exponential-type series, which suggests, as a hypothesis, that the relevant non-degeneracy concerns the pair products (no collapse of their span, no multiplicative coincidences) rather than moments. <strong>Follow-up.</strong> Developed into conj:cube-contact-dilate-bound and its heuristic route.</p>
+<p><strong>What this does to the route.</strong> (K) is now one case of a conjecture about dilate systems, whose known failures are explicit. Its equality family, centred symmetric configurations, exists for every series. A proof can be sought over the space of series, where the equations become triangular, with the exceptional configurations described by vanishing exponential sums. The Heine–Stieltjes route to the spine conjecture is closed. (K) still has no proof for any \(N\ge11\).</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(K) for \(N\ge11\): conj:cube-contact-dilate-bound for \(\alpha=-\tfrac32\). Needed: a codimension count for configurations with many zeros of \(\sum_j\sigma_ja_j^k\), and the passage from generic series to binomials;</li>
+<li>(B): the Laplace-short neck windows at block size four, far polynomials, odd \(N\);</li>
+<li>(L) at \(N=11\), awaiting approval.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-contact-plane-criterion (setting, cone and translation properties); cor:cube-symmetric-mark-weight (statement and parity count); lem:cube-fcurve-spine-limit and the spine weight script; thm:cube-binary-face-weierstrass-points (Gegenbauer); ex:cube-middle-component-not-heine-stieltjes; the contact dilate review.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the definitions, the series-mode code and its plane reuse, the plane-test logic, the \(\exp\) count, the parity extension (it holds for every \(F\) in characteristic \(\ne2\), without the linear-independence step), the triangular heuristic, the Heun setup and control, and every quoted number. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>translation invariance also holds for \(\exp\);</li>
+<li>integral-exponent collapse is restricted to small \(|n|\);</li>
+<li>the conjecture is stated for a nonempty Zariski-open set of series, with the binomial part separately and the source of \(N\ge7\);</li>
+<li>the residue remark over \(\mathbb F_p\) is added;</li>
+<li>the \(k=0\) equation is separated in the heuristic count;</li>
+<li>the plane reuse and the random-series runs are stated correctly;</li>
+<li>the Heun conclusion is restricted to generic \(\mu\), with the singular points placed;</li>
+<li>the non-degeneracy remark is labelled a hypothesis;</li>
+<li>two stale code comments are corrected.</li>
+</ul>
+<p>These restrict or clarify, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261001-e">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>25 min 38.65 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">3 min 18.41 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 4.44 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">3 min 20.09 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">3 min 33.39 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">10 min 22.19 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>

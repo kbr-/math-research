@@ -2,8 +2,8 @@
  *
  * Setting of lem:cube-contact-plane-criterion: R = binom(N,2), H_k(X,Y) = [T^k]((1+XT)(1+YT))^(-3/2),
  * A_L(a) = (H_k(a_i,a_j))_{i<j, k<=L}, an R x (L+1) matrix; the contact locus is K = {a separated :
- * rank A_(R+1)(a) < R}.  (K) says codim K >= 3, equivalently that a generic projective plane of
- * configurations modulo a -> t a + s 1 contains no separated point of K (part (2) of the lemma).
+ * rank A_(R+1)(a) < R}.  (K) says codim K >= 3; K is a cone, so a random projective plane of P^(N-1)
+ * meets a codimension-two component in finitely many points and misses a codimension-three locus.
  *
  * For each of NPLANES random planes a = x alpha + y beta + z gamma over F_p, this counts the separated
  * F_p-points of the plane with rank A_(R+1) < R (contact R+4, the locus K) and, as a control, with
@@ -92,13 +92,32 @@ int main(int argc, char **argv) {
   for (int k = 1; k <= L + 1; k++) invk[k] = inv(k);
   ulong half3 = nmod_mul(3, inv(2), MOD);
   FILE *out = fopen(outp, "a");
-  if (argc >= 7) { /* generic series mode: F_0 = 1, F_r uniform random modulo p (seeded by argv[6]) */
+  /* series modes (argv[6], a comma-separated list, each spec run on the same planes (the plane generator is reseeded per spec)):
+   *   a number s: F_r uniform random modulo p, seeded by s;
+   *   aNUM/DEN:   F = (1+x)^(NUM/DEN), F_r = binom(NUM/DEN, r);
+   *   exp:        F_r = 1/r!.
+   * H_k = [T^k] F(a_iT) F(a_jT). */
+  char specs[4096] = ""; if (argc >= 7) strncpy(specs, argv[6], 4095);
+  char *spec = argc >= 7 ? strtok(specs, ",") : NULL;
+  int nspec = 0;
+  do {
+  if (spec) {
     if (L + 1 > 512) { fprintf(stderr, "L too large\n"); return 1; }
-    flint_rand_t sg; flint_randinit(sg); ulong s2 = strtoul(argv[6], 0, 10); flint_randseed(sg, s2, s2 ^ 0x5bd1e995UL);
     GEN = malloc((L + 1) * sizeof(ulong)); GEN[0] = 1;
-    for (int r = 1; r <= L; r++) GEN[r] = n_randint(sg, P);
-    flint_randclear(sg);
-    fprintf(out, "N=%d p=%lu: generic series mode, F_r random (seed %lu), H_k = [T^k]F(a_iT)F(a_jT)\n", N, P, s2);
+    if (spec[0] == 'a') {
+      long num = atol(spec + 1); char *sl = strchr(spec, '/'); long den = sl ? atol(sl + 1) : 1;
+      ulong al = nmod_mul(((num % (long)P) + (long)P) % P, inv(den), MOD);
+      for (int r = 1; r <= L; r++) GEN[r] = nmod_mul(nmod_mul(GEN[r - 1], nmod_sub(al, (ulong)(r - 1) % P, MOD), MOD), invk[r], MOD);
+      fprintf(out, "N=%d p=%lu: series mode F = (1+x)^(%ld/%ld)\n", N, P, num, den);
+    } else if (spec[0] == 'e') {
+      for (int r = 1; r <= L; r++) GEN[r] = nmod_mul(GEN[r - 1], invk[r], MOD);
+      fprintf(out, "N=%d p=%lu: series mode F = exp\n", N, P);
+    } else {
+      flint_rand_t sg; flint_randinit(sg); ulong s2 = strtoul(spec, 0, 10); flint_randseed(sg, s2, s2 ^ 0x5bd1e995UL);
+      for (int r = 1; r <= L; r++) GEN[r] = n_randint(sg, P);
+      flint_randclear(sg);
+      fprintf(out, "N=%d p=%lu: generic series mode, F_r random (seed %lu), H_k = [T^k]F(a_iT)F(a_jT)\n", N, P, s2);
+    }
   }
   /* self-test 1: recurrence against the product of the binomial series b_r = binom(-3/2, r) */
   if (!GEN) {
@@ -173,8 +192,12 @@ int main(int argc, char **argv) {
     fflush(out);
     free(al); free(hitlist);
   }
+  flint_randclear(st);
+  if (GEN) { free(GEN); GEN = NULL; }
+  nspec++;
+  spec = argc >= 7 ? strtok(NULL, ",") : NULL;
+  } while (spec);
   fclose(out);
   free(invk);
-  flint_randclear(st);
   return 0;
 }
