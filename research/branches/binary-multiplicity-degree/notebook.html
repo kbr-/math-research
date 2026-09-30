@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). The \((2,n)\) two-cluster necks of (K) are now <a href="#cube-two-n-volume">solved</a> for generic shapes when \(n\le30\), including both necks of \((1,2,2,6)\).</p>
-<p>Next, a route review of the (K) line. Assemble what the spine limit of a fully clean F-curve needs: the within-cluster classes, the \((1,n)\) and \((2,n)\) necks, and the \((m,n)\) necks with \(m\ge3\) where they occur. Then test whether the assembled \((1,2,2,6)\) spine limit has a weight-three point for generic cross-ratio, which is the first instance of the boundary-curve criterion beyond \((1,1,1,N-3)\). The review should also decide whether \(D_n\not\equiv0\) for all \(n\) is on the critical path, since the fully clean types for \(N\le60\) need only bounded \(n\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). For (K) the \((2,n)\) necks are <a href="#cube-two-n-volume">solved</a> for generic shapes and all \(n\le60\). The <a href="#entry-2026-09-30-cube-neck-route-review">neck review</a> showed that spanning also needs necks between clusters of size at least three.</p>
+<p>Next, test the whole mechanism on \((1,2,2,6)\) at \(N=11\), whose necks are all known. Assemble the spine limit from its classes: the within-cluster classes, the \((1,\cdot)\) classes, and the \((2,2)\) and \((2,6)\) necks. Test at a generic cross-ratio, with fixed generic tail shapes, for a point of weight three. Then turn to the \((3,n)\) cost bounds through the multiple orthogonality of the cluster's Markov functions, the neck review's first outside lead.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -33211,6 +33211,162 @@ For \(p_l=\sum_k\lambda_kc_k^l\), \(\sum_{j}(-1)^jje_jc^{m+1-j}/(m+1-j)=\int_0^c
 <tr><td>Computation design and coding</td><td class="elapsed">2 min 6.01 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">4 min 17.54 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.84 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-neck-route-review" data-kind="review" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="check:cube-fclean-neck-spanning check:cube-two-n-recurrence-range">
+<h3>30 September 2026 — Review: the pair necks are solved, but spanning needs necks between two large clusters</h3>
+<p class="entry-meta">Route review of open statement 3 after the two-cluster neck cycles. The (2,n) necks are solved for generic shapes through n = 60, but fully clean types spanning N₁ need necks between clusters of size three or more. Neck route review. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>General statement.</strong> The line's claim is <code>cor:cube-first-step-two-certificates</code> in the form of the contact criterion: for \(N\ge7\), \(\alpha_N=\lambda_N\) follows from (B) and (K). For (K), the boundary-curve criterion (<code>lem:cube-contact-fcurve-criterion</code>) asks that no divisorial component of \(W_3\) meets a spanning set of fully clean F-curves. This period attacked the necks of their spines:</p>
+<ul>
+<li><code>lem:cube-multicluster-spine-classes</code> split the spine into classes;</li>
+<li>the \((2,2)\) class has an explicit limit (<code>thm:cube-two-double-cross-limit</code>);</li>
+<li>every \((2,n)\) class has explicit first generators (<code>lem:cube-two-n-first-generators</code>) and cost lower bounds (<code>thm:cube-two-n-cost-bounds</code>). The bounds come from the semicircle law of the pair and the Taylor recurrence of the cluster;</li>
+<li>a block-triangular minor proves the conjectured cost rule whenever \(D_n\ne0\) (<code>thm:cube-two-n-volume</code>).</li>
+</ul>
+<p><strong>What the goal needs.</strong> For every \(N\ge11\), (K) needs three things. First, the spine limits of the curves of a spanning family of fully clean types, including every neck \((n_i,n_j)\) between the four parts. Second, the tails and nodes. Third, a proof that the assembled limit has no weight-three point that persists along the curve. The (B) side still needs the Hankel conjecture below the last block, \(G_{c,w}\not\equiv0\), far polynomials without triple roots and the exchange condition.</p>
+<h4>Falsification attempt</h4>
+<p>The \((2,n)\) theorem, together with item 2 of <code>lem:cube-multicluster-spine-classes</code> for the \((1,n)\) necks, covers exactly the types in which every neck has a side of size at most two, that is, types with at most one part \(\ge3\). If these fully clean types spanned, the neck part of (K) would be finished. research/tools/bmd_cube_neck_route_tests.gp (neck-route-tests.txt) tests this with the full-cleanness rules of the <a href="#entry-2026-09-30-cube-boundary-route-review">boundary review</a>, for \(11\le N\le60\).</p>
+<ul>
+<li><strong>At most one part \(\ge3\).</strong> The only fully clean types are \((1,2,2,N-5)\) and \((2,2,2,N-6)\). Their F-classes have rank \(2\), against the \(\lfloor N/2\rfloor-1\) needed. The hope is refuted.</li>
+<li><strong>At most two parts \(\ge3\).</strong> The fully clean types span for every odd \(N\) in the range and miss by rank one for every even \(N\). For instance, \(N=12\) gives rank \(4\) of \(5\), and \(N=60\) gives \(28\) of \(29\).</li>
+</ul>
+<p>So the fully clean boundary route needs necks \((m,n)\) with \(m,n\ge3\); types that are not fully clean were not considered. For even \(N\) it needs types with three parts \(\ge3\) (checked for rank only, not for which three-large-part types suffice).</p>
+<p>The same script evaluates \(D_n\) at \(c_k=k\) for \(2\le n\le60\): all values are nonzero. So the \((2,n)\) cost rule holds for generic shapes for every \(n\le60\), the whole range the fully clean types need (<code>check:cube-two-n-recurrence-range</code>).</p>
+<h4>Obstacle</h4>
+<p>The line is stuck first on the necks between two clusters of size at least three, which spanning requires and no statement yet covers. After that come the assembly of a spine limit and the (B) side:</p>
+<ol>
+<li><strong>Necks between two clusters of sizes \(m,n\ge3\).</strong> There is no cost rule, no lower bound and no upper bound. The \((3,3)\) data (orders \(\ldots,5,5,6,8\)) already break the naive extension of the pair's costs. For the pair, the \(p_1\) side of the proof used one fact: its span is \(S\cdot\langle1,X\rangle\) with \(X\) a single Cauchy transform whose Hankel determinants do not vanish. The \(p_2\) side used the cluster recurrence and \(D_n\ne0\). A cluster of \(m\ge3\) gives \(m-1\) such functions at once, and the needed nonvanishing is that of their joint (multiple) Hankel determinants.</li>
+<li><strong>The assembly.</strong> This has not been attempted for any fully clean type. It needs the within-cluster classes at degenerate tails, the nodes, and a weight-three test along the curve, even for \((1,2,2,6)\), whose necks are all now known.</li>
+<li><strong>\(D_n\not\equiv0\) beyond \(n=60\).</strong> This is needed only for \(N>65\), since a type has at most one part equal to \(1\), so its largest part is at most \(N-5\). Spanning was checked for \(N\le60\).</li>
+<li><strong>The (B) side.</strong> The neck windows below the last block, \(G_{c,w}\not\equiv0\), far polynomials without triple roots and the exchange condition, all unchanged this period.</li>
+</ol>
+<h4>Outside leads</h4>
+<ul>
+<li><strong>Nikishin systems are perfect</strong> (Fidalgo Prieto and López Lagomasino, Constr. Approx. 34 (2011) 297–356). For a Nikishin system of Markov functions, every multi-index is normal: all the mixed Hankel determinants of type-II multiple orthogonality are nonzero. This targets obstacle 1. For a cluster of size \(m\), the span of \(A_j=(1-b_jv)^{1/2}\) is \(A_1\cdot\langle1,f_2,\ldots,f_m\rangle\), with \(f_j=(A_j/A_1)\). If \((f_j-1)/v\) form a Nikishin system in \(w=1/v\), perfectness is exactly the nonvanishing that replaces the semicircle Hankel determinant in the Case-1 bound and in the volume minor. It breaks here as stated. For real shapes \(b_1&lt;b_2&lt;b_3\), \(f_j\) is the Cauchy transform of a density on \([b_1,b_j]\), and these supports are nested with a common endpoint. That is neither an Angelesco system (disjoint supports) nor a standard Nikishin system (common support), so the perfectness theorem does not apply directly. Real shapes are also only a special subfamily of the complex ones. <strong>Answers.</strong> It would give the \(p_1\) cost bounds and the leading block of the minor for \((m,n)\), \(m\ge3\), with the costs read off from the multi-indices. <strong>Test.</strong> Passed for each function; the system type is unresolved. In \(w=1/v\), \(1-\sqrt{(w-b_j)/(w-b_1)}\) is exactly the Cauchy transform of the positive density \(\tfrac1\pi\sqrt{(b_j-t)/(t-b_1)}\) on \([b_1,b_j]\), so each \(f_j\) is a Markov function. This is consistent with the positive Hankel determinants of sizes \(1\) to \(8\) found for three real shape triples (neck-route-tests.txt), after the sign flip the script applies. The joint structure is not Nikishin in the standard sense, as noted above.</li>
+<li><strong>Multiple orthogonal polynomials and Hermite–Padé approximation</strong> (Van Assche, <em>Multiple orthogonal polynomials, irrationality and random matrices</em>, in <em>Orthogonal Polynomials and Special Functions</em>, Lecture Notes in Math. 1883 (2006); Aptekarev, <em>Multiple orthogonal polynomials</em>, J. Comput. Appl. Math. 99 (1998) 423–447). Type-II multiple orthogonal polynomials are the natural replacement for the Chebyshev polynomials \(Q_s\) that realize the pair's slots. This targets the upper bound in obstacle 1. <strong>Answers.</strong> Explicit elements for each \(p_1\)-slot of an \((m,n)\) class, as in the equality case of the cost bounds. It breaks if the \(p_2\)-side residuals of these elements cannot be cancelled within the lattice. <strong>Test.</strong> Not run: it needs the \((m,n)\) cost conjecture, the next research step, to know which multi-indices are selected.</li>
+<li><strong>Schur functions and the Jacobi–Trudi identity</strong> (Macdonald, <em>Symmetric Functions and Hall Polynomials</em>, 2nd ed., 1995, ch. I). The coefficients of \(I_m\bmod E\) are polynomials in the complete homogeneous symmetric functions \(h_k(c)\). So \(D_n\) is a determinant in the \(h_k\), which Jacobi–Trudi expands in Schur functions. A leading term in dominance order would give \(D_n\not\equiv0\) for all \(n\) (obstacle 3). <strong>Answers.</strong> A uniform proof of the recurrence-determinant conjecture. <strong>Test.</strong> Not run: the Schur expansion was not computed. The evaluation \(D_n(c_k=k)\ne0\) for \(n\le60\) shows \(D_n\not\equiv0\) there, but it says nothing about a leading term.</li>
+</ul>
+<h4>Absurd bridges</h4>
+<ul>
+<li><strong>The recursion method of solid-state physics</strong> (Haydock, Heine and Kelly, J. Phys. C 5 (1972) 2845–2858). Translation: the pair's \(X\) is the local Green's function of a semi-infinite tight-binding chain with zero on-site energy and hopping \(\sqrt{g_1}\), whose density of states is the semicircle. A cluster of \(m\) roots is a molecule whose \(m-1\) ratio functions are the Green's functions of \(m-1\) channels. The cost of a pole of order \(s\) at the cluster is the Lanczos depth at which the channel first contributes. <strong>Answers.</strong> Obstacle 1 through the block Lanczos recursion for the matrix Green's function of the channels. Block tridiagonalization without breakdown is the joint Hankel nonvanishing, and its block sizes would give the costs. <strong>Test.</strong> Passed for single channels. For \(m=2\) the continued fraction has constant parameters \(a_k=0\), \(b_k=g_1\) (Hankel determinants \(g_1^{k(k-1)/2}\) of size \(k\), cost-bound cycle). For \(m=3\) each channel is a Markov function (above), so its Lanczos recursion does not break down. The block recursion was not run.</li>
+<li><strong>The Hungarian method and Egerváry duality</strong> (combinatorial optimization: Kuhn, Naval Res. Logist. Quart. 2 (1955) 83–97; Egerváry 1931). Translation: the volume proof is a tropical determinant. The costs are the Egerváry potentials of the min-weight assignment on the entry orders of the minor, and nonvanishing is a statement about the tight subgraph. <strong>Answers.</strong> For \((m,n)\) it would turn the cost rule into a computable assignment problem on moment orders, leaving only a determinant on the tight subgraph, as for the pair. <strong>Test.</strong> Passed on the solved case. The row and column scalings of the volume proof (\(\varepsilon^{-2e}\) or \(\varepsilon^{-2a+2}\) on rows, \(\varepsilon^{-s}\) or \(\varepsilon^{2a-4}\) on columns) are Egerváry potentials for the entry orders. Every scaled entry has order at least \(0\), and the tight matrix is block triangular, with row \(e=a-1\) possibly tight on the \(\rho\)-columns too. This reinterprets the proof as a Hungarian certificate for its assignment; it is not a prediction. For \(m=3\) the entry orders are not known yet, so no prediction for \((3,3)\) was made.</li>
+</ul>
+<h4>Bridge follow-up</h4>
+<ul>
+<li data-bridge="entry-2026-09-26-cube-route-review-18:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-coefficient-sensitive-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-28-cube-polarized-interpolation-audit:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-double-root-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-caterpillar-neck-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-translation-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schur-window-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-far-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-normality-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-peeling-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-peeling-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-bridge="entry-2026-09-30-cube-neck-hankel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<h4>Lead follow-up</h4>
+<ul>
+<li data-lead="entry-2026-09-26-cube-route-review-18:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-route-review-19:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-higher-contact-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-26-cube-boundary-completion-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-global-degree-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-ext-polar-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-polar-effectivity-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-nodal-extension-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-resonance-composition-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-filtered-syzygy-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-core-degree-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-normalized-layer-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-27-cube-residual-reconstruction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-residual-filtration-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-ramification-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-balanced-smoothing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-variable-depth-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-coefficient-sensitive-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-raw-block-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-polarized-interpolation-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-first-step-homology-audit:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-confluent-kernel-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-exterior-kernel-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-filtered-epd-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-28-cube-derived-pairing-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-wronskian-discriminant-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-simplicity-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-double-root-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-all-n-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-schubert-induction-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-two-cluster-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-29-cube-properness-mechanism-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-discriminant-descent-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-first-step-seven-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-complete-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-peeling-route-review:3">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:1">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+<li data-lead="entry-2026-09-30-cube-neck-genericity-review:2">No new work on this item in this period. <strong>Follow-up.</strong> Continuing.</li>
+</ul>
+<p><strong>Assessment.</strong> The period gave (K) its first theorem uniform in size, conditional on \(D_n\not\equiv0\) (proved for \(n\le60\)). The pair necks are solved by a mechanism, the semicircle orthogonality with the cluster recurrence and a block-triangular minor, not by cases. They hold for generic shapes for every \(n\le60\), which covers the fully clean range. The review's test shows this is not enough: spanning needs necks between two clusters of size at least three, and for even \(N\) types with three large parts. The pair mechanism has a natural generalization, multiple orthogonality of the cluster's Markov functions, and its first necessary condition passed. But no \((m,n)\) statement with \(m\ge3\) exists yet, and the assembly and weight-three test have not been attempted for any fully clean type. Measured against statement 3, (K) moved from an open programme to one with a proved neck class and a precise next class. The (B) side did not move. The highest-risk item remains (K): the \((m,n)\) necks with \(m\ge3\) and the assembly.</p>
+<p><strong>Next step on the highest-risk item.</strong> Route item cube-odd-characteristic, (K). Before building more necks, test the whole mechanism on the one type whose necks are all known. Assemble the spine limit of \((1,2,2,6)\) at \(N=11\) from its classes. Then test at a generic cross-ratio, with fixed generic tail shapes, whether a point of weight three occurs. A clean result validates the assembly and moves the work to the \((3,n)\) cost bounds through multiple orthogonality. A weight-three point at every cross-ratio would matter only through a divisorial component of \(W_3\). If one met the curve, \((1,2,2,6)\) would have to leave the family. At \(N=11\) all four clean types are needed (rank \(4\) of \(4\)), so fully clean spanning at \(N=11\) would break, not the route as such.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer compared the script's cleanness rules with bmd_cube_fcurve_fullclean.gp (identical), matched every quoted number to neck-route-tests.txt, and confirmed the \(D_n\) code and the bound \(N-5\). Verdict: pass with corrections, all applied: the \((1,n)\) necks are credited to the multi-cluster lemma; the spanning conclusion is limited to fully clean types; the pair proof's use of the recurrence is restored; the Markov property is stated exactly, via the Cauchy transform of \(\tfrac1\pi\sqrt{(b_j-t)/(t-b_1)}\); the Nikishin lead notes the nested supports; the Aptekarev citation is corrected; the Schur test is marked not run; a reused letter is renamed; the Egerváry test is worded as a reinterpretation; the Assessment carries the \(D_n\) qualifier; and the next step's refutation claim is narrowed. The script's header no longer mentions an unimplemented filter.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zz">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>7 min 51.09 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">1 min 19.12 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 38.81 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">54.94 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 54.33 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3.75 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
