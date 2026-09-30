@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) follows from squarefreeness of \(\Delta_W^{\rm nc}\). By the <a href="#cube-discriminant-boundary-reducedness">boundary reducedness criterion</a>, a non-reduced component would appear on a boundary divisor, at a special locus there, or along a stratum with two nodes. At two-cluster strata only the pencil edges of the neck chains matter.</p>
-<p>Next, for (K): test the two-cluster case at \(N=11\) on the pencils of the spine chain check. For each pencil, check that \(AB'-A'B\) is squarefree off the special points and that its roots give distinct values of \(\kappa\). Record the ring coefficients' zeros in \(\kappa\). Then formulate the reducedness of the one-cluster spine discriminant on \(\Delta_S\) for every \(|S|\), and compare it with the cluster discriminant reduction's \(D^{\rm conf}\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. The route is squarefreeness of \(\Delta_W^{\rm nc}\), via the <a href="#cube-discriminant-boundary-reducedness">boundary reducedness criterion</a>. Its two-cluster pencil condition passes on every pencil of \((1,2,2,6)\) at \(N=11\) (<a href="#entry-2026-10-01-cube-pencil-discriminants">pencil discriminants</a>).</p>
+<p>Next, for (K): the divisor case of the criterion. On a boundary divisor \(\Delta_S\) with both sides of size at least three, write the leading coefficient of the discriminant as spine factor times tail factor times ring factors. Then state what reducedness of the one-cluster spine discriminant requires, for every \(|S|\). Compare it with \(D^{\rm conf}\) of the cluster discriminant reduction, the case of a pair on one side, and look for an induction on the number of free points.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -37028,6 +37028,68 @@ where \(f_0=z^{-(\alpha+1)}\) and \(f_1=(z-1)^{-\beta}\), and \(\kappa_r\) depen
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-01-cube-pencil-discriminants" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="conj:cube-neck-pencil-discriminant check:cube-n11-pencil-discriminants">
+<h3>1 October 2026 — On every neck pencil of the eleven-root type (1,2,2,6), the double points move simply and separately: the spine factor of the pencil-edge discriminant is squarefree</h3>
+<p class="entry-meta">Finite check modulo p at N = 11 of the pencil condition in the boundary reducedness criterion; conjecture for every N. Pencil discriminant cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> For (K) through squarefreeness of \(\Delta_W^{\rm nc}\), the <a href="#cube-discriminant-boundary-reducedness">boundary reducedness criterion</a> needs, at strata with two clusters, initial forms of the discriminant with no repeated non-monomial factor. Conditionally on the neck corner conjectures, only the pencil edges contribute. Along a pencil, with Wronskians \(A+\kappa B\), the spine group's factor is squarefree in \(\kappa\) under a sufficient condition:</p>
+<ul>
+<li>no base points;</li>
+<li>simple roots of \(AB'-A'B\) off the special points;</li>
+<li>distinct values \(\kappa=-A/B\) at those roots;</li>
+<li>control of the member whose degree drops.</li>
+</ul>
+<p>This cycle tests the condition on every pencil of one spanning type at \(N=11\).</p>
+<p><strong>General statement.</strong> <code>conj:cube-neck-pencil-discriminant</code> (every \(N\)); <code>check:cube-n11-pencil-discriminants</code> is its finite check.</p>
+<h4>Computation</h4>
+<p><code>research/tools/bmd_cube_spine_chain_weights.gp</code>, extended with <code>PENCILDISC=1</code>, works modulo \(2^{61}-1\) at \(\mu=7/3\) with the shapes of the <a href="#entry-2026-10-01-cube-spine-chain-obstruction">spine chain check</a>. For type \((1,2,2,6)\) it recomputes the 72 vertex assemblies. For each of the 156 pencils it forms \(A,B\) from the square roots \(S\), corrected by the order differences at the special points. It reports:</p>
+<ul>
+<li>the degree of \(m_1=AB'-A'B\) off the special points, and \(\deg\gcd(m_1,m_1')\);</li>
+<li>\(\deg\gcd(B,m_1)\);</li>
+<li>\(d-\operatorname{rank}\) of the powers \(1,\varphi,\ldots,\varphi^{d-1}\) of \(\varphi=-A/B\) in \(\mathbb F_p[x]/(m_1)\), \(d=\deg m_1\). For squarefree \(m_1\) it is \(0\) exactly when \(\varphi\) takes distinct values at the roots, that is, when the \(\kappa\) values are distinct.</li>
+<li>the degree drop of the member \(\kappa_0=-\operatorname{lc}(A)/\operatorname{lc}(B)\).</li>
+</ul>
+<p>A first attempt with PARI's characteristic polynomial of \(\varphi\) timed out at \(590\) s, a tool limit; the rank test replaced it. Output: <code>research/results/bmd-20261001-q/pencil-discriminants-1226.txt</code>.</p>
+<p><strong>Outcome.</strong> For all 156 pencils:</p>
+<ul>
+<li>\(m_1\) is squarefree off the special points, of degree between \(670\) and \(857\);</li>
+<li>it has no common root with \(B\), so \(\kappa\) is finite at each double point; there are no base points either, since the spine chain check's pencil table records no common roots of \(A,B\) in any of the 156 rows;</li>
+<li>the powers of \(\varphi\) have full rank, so the \(\kappa\) values are pairwise distinct;</li>
+<li>the degree drops by exactly one: that member has a simple root at \(z=\infty\).</li>
+</ul>
+<p>So, modulo \(p\), at this cross-ratio and these shapes, the discriminant of \(A+\kappa B\) has only simple zeros coming from double points off the special points. For \(P=A+\kappa_0B\) with a double root at \(x_0\), \(m_1'(x_0)=-B(x_0)P''(x_0)\), so squarefree \(m_1\) and \(B(x_0)\ne0\) give \(P''(x_0)\ne0\) and a simple zero in \(\kappa\). Here \(z=\infty\) is an ordinary point of the frame; the special points are \(q=(\mu,1,-1,0)\). That this is the whole spine factor needs two more things. The groups must keep their sizes: see the special points below. The computation modulo \(2^{61}-1\) must reflect characteristic zero (good reduction without loss of degree), which is not verified.</p>
+<p><strong>Special points are not tested.</strong> The stripping removes every factor \(x-q\) from \(m_1\). At the two neck points the orders of the two vertices differ by \(o\ne0\), \(m_1\) vanishes there to order exactly \(|o|-1\), and no double point is lost. At the other special points \(o=0\) and \(A(q)B(q)\ne0\). There a moving root crosses \(q\) at \(\kappa=-A(q)/B(q)\), and a member has a double point at \(q\) if \(m_1(q)=0\). The stripped \(m_1\) sees neither. These isolated \(\kappa\), like the ring factors, need separate treatment.</p>
+<p><strong>Conjecture (neck pencil discriminant).</strong> For every \(N\), every spine type with at least two clusters of size at least two, generic shapes and generic cross-ratio, every pencil of the neck chains satisfies the sufficient condition above. The condition includes that no member has a double point at a special point where the two vertex orders agree. So its spine group's factor is squarefree in the pencil coordinate. With the ring factors, it would give the two-cluster case of part (3) of the boundary reducedness criterion.</p>
+<p><strong>Scope.</strong> This is one type, one cross-ratio and one set of shapes, modulo \(p\). The ring groups, whose coefficients can vanish at isolated \(\kappa\), were not examined. Nested (chain) strata have no pencil description yet. Part (3) needs the condition at the generic point of the stratum; a single point is evidence, not proof.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>A proof of the conjecture.</li>
+<li>The ring factors along pencils.</li>
+<li>The nested strata.</li>
+<li>The divisor case of the criterion: reducedness of the one-cluster spine and tail discriminants on each \(\Delta_S\).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> lem:cube-discriminant-boundary-reducedness (part (3) and the pencil reading); the spine chain check (assembly, normalization, \(S\) as square roots, order corrections).</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked <code>pdisc</code>: the construction of \(A,B\), the squarefree test, the gcd with \(B\), and the rank test, which is a Vandermonde in the values of \(\varphi\) at the roots. It also checked the degree drop, the numbers against the output, and the logical reading. Verdict: pass with corrections, all applied:</p>
+<ul>
+<li>the exclusion of special points with equal vertex orders is stated, and the missing condition is added to the conjecture;</li>
+<li>the conclusion is restricted to non-special points modulo \(p\), with the size and reduction assumptions named;</li>
+<li>the absence of base points is cited from the pencil table.</li>
+</ul>
+<p>The corrections restrict the claim, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261001-q">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>19 min 41.00 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 56.82 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">2 min 17.82 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 3.91 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">13 min 22.32 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 

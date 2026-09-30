@@ -81,6 +81,23 @@ pencil(Sa, oa, Sb, ob, q) = {
   my(g = gcd(gcd(A * B1 - A1 * B, A * B2 - A2 * B), A1 * B2 - A2 * B1), base = gcd(A, B));
   [poldegree(strip(g, q)), poldegree(strip(base, q))];
 }
+\\ Pencil discriminant (cycle bmd-20261001-q, lem:cube-discriminant-boundary-reducedness part (3)): with A, B as in
+\\ pencil(), m1 = AB' - A'B off the special points; its roots are the points where some member has a double zero, at
+\\ kappa = -A/B.  Returns [deg m1, deg gcd(m1, m1'), deg gcd(B, m1), d = dim F_p[x]/(m1), d minus the rank of the powers
+\\ 1, phi, ..., phi^(d-1) of phi = -A/B mod m1 (0 iff the kappa values at the roots of the squarefree m1 are distinct),
+\\ degree drop of the member with vanishing leading coefficient (0 if deg A != deg B)].
+pdisc(tk) = {
+  my(Sa = tk[1], oa = tk[2], Sb = tk[3], ob = tk[4], q = tk[5], A = Sa, B = Sb);
+  for (k = 1, 4, my(o = ob[k] - oa[k]);
+    if (denominator(o) != 1, return([-1]));
+    if (o > 0, B *= ('x - Mod(q[k], PR))^o, A *= ('x - Mod(q[k], PR))^(-o)));
+  my(m1 = strip(A * deriv(B, 'x) - deriv(A, 'x) * B, q), g1 = poldegree(gcd(m1, deriv(m1, 'x))), gb = poldegree(gcd(B, m1)), cp = 0, g2 = -1, drop = 0);
+  if (gb == 0 && g1 == 0, my(d = poldegree(m1), ph = Mod(-A, m1) / Mod(B, m1), P = Mod(1, m1), M = matrix(d, d));
+    for (j = 1, d, my(c = lift(P)); for (i = 1, d, M[i, j] = polcoef(c, i - 1, 'x)); P *= ph);
+    cp = d; g2 = d - matrank(M));
+  if (poldegree(A) == poldegree(B), my(k0 = -pollead(A) / pollead(B)); drop = poldegree(A) - poldegree(A + k0 * B));
+  [poldegree(m1), g1, gb, if (cp == 0, -1, cp), g2, drop];
+}
 \\ Realizability: neck t = (i,j), sizes (m,n), vertex r (alpha = m-1+r) is the limit for scale weights with
 \\ c_r/(mn-c_r) < w_j/w_i < c_(r+1)/(mn-c_(r+1)) (c_0 = 0, c_(M+1) = mn, antidiagonal edge parameters); a combination
 \\ is realizable iff these difference constraints on log w are feasible (Bellman-Ford, strictness by a margin).
@@ -95,6 +112,7 @@ feasible(pairs, sz, al) = {
   for (it = 1, 6, my(ch = 0); foreach (E, e, if (d[e[1]] + e[3] < d[e[2]], d[e[2]] = d[e[1]] + e[3]; ch = 1)); if (!ch, return(1)));
   0;
 }
+export(strip, pdisc);
 {
   my(types = [[[1, 2, 2, 6], 7/3], [[1, 2, 3, 5], 7/3], [[2, 2, 2, 5], 7/3], [[2, 2, 3, 4], 7/3]], ty = getenv("TYPES"), sizing = getenv("SIZING") == "1");
   if (ty != 0 && ty != "", types = eval(ty));
@@ -106,12 +124,15 @@ feasible(pairs, sz, al) = {
     if (sizing, combos = List([combos[1], combos[#combos]]));
     my(res = parapply(vert, apply(v -> [sizes, mu, v], Vec(combos))));
     emit(Str("type ", sizes, " mu=", mu, " necks ", Vec(nk), " alpha ranges ", ranges, "; ", #combos, " vertex assemblies (of ", total, "; realizable only: ", getenv("REALIZABLE") == "1", ")"));
-    my(idx = Map());
+    my(idx = Map(), ptasks = List(), plabels = List());
     for (c = 1, #combos, mapput(idx, combos[c], c);
       my(r = res[c], mu3 = mult(r[2], q));
       emit(Str("  alphas ", combos[c], ": orders ", r[1], ", deg Q2 ", r[3], " checks ", r[4], "; off-special deg S ", mu3[1], ", deg gcd(S,S') ", mu3[2], ", deg of mult>=3 part ", mu3[3])));
     for (c = 1, #combos, for (t = 1, #nk, my(v = combos[c]); my(w = v, c2); w[t]++; if (v[t] < ranges[t][2] && mapisdefined(idx, w, &c2),
       my(pr = pencil(res[c][2], res[c][1], res[c2][2], res[c2][1], q));
-      emit(Str("  pencil neck ", t, " between ", v, " and ", w, ": deg gcd of minors ", pr[1], ", deg common roots ", pr[2]))))));
+      emit(Str("  pencil neck ", t, " between ", v, " and ", w, ": deg gcd of minors ", pr[1], ", deg common roots ", pr[2]));
+      if (getenv("PENCILDISC") == "1", listput(ptasks, [res[c][2], res[c][1], res[c2][2], res[c2][1], q]); listput(plabels, Str(v, " -> ", w))))));
+    if (getenv("PENCILDISC") == "1", my(pd = parapply(pdisc, Vec(ptasks)));
+      for (i = 1, #pd, emit(Str("  pencil discriminant ", plabels[i], ": [deg m1, deg gcd(m1,m1'), deg gcd(B,m1), d, d - rank of powers, degree drop] = ", pd[i])))));
 }
 quit
