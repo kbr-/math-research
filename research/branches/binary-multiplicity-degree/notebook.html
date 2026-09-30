@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge9\), which follows from <a href="#cube-first-step-two-certificates">two certificates</a> at every size and is proved at \(N=7,8\). The <a href="#entry-2026-09-30-cube-symmetry-route-review">symmetry review</a> found no symmetric divisor for \(N\ge7\). Off-collision squarefreeness (L) and the base weight bound (B) remain without mechanism.</p>
-<p>Next, (L) in first-order form: transversality at a double root is \(\nabla F(b)\ne0\), and \(\operatorname{Sing}\{F=0\}\subseteq\{F=\delta F=0\}\). Decide whether that singular locus can have a codimension-two component, and whether triple-root or two-double-root loci can be divisors, by an argument covering every component.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge9\), which follows from <a href="#cube-first-step-two-certificates">two certificates</a> at every size. Off-collision squarefreeness (L) now splits, by the <a href="#cube-squarefree-normality-form">normality form</a>, into two parts. One is normality of the boundary hypersurface \(V(F_N)\), proved at \(N=6,7,8\). The other is type genericity: no divisor carrying a triple root, two multiple roots, or a double root at a branch value.</p>
+<p>Next, <code>conj:cube-boundary-normality</code> for every \(N\). \(\operatorname{Sing}V(\det A_{R-1})\) is the corank-at-least-two locus, where the weight is at least four, together with the corank-one points where the map is tangent. That tangency is a vanishing condition on the left and right kernels. Bound the codimension of both parts by an argument valid for every \(N\).</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -30709,6 +30709,79 @@ of degree \(45=\lambda_6\). Off the collision divisor, \(C_\mu(a)=0\) says that 
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">16 min 21.00 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">1.03 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-boundary-normality" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-symmetry-route-review:1" data-claims="prop:cube-boundary-smoothness-criterion cor:cube-squarefree-normality-form cor:cube-boundary-regular-small conj:cube-boundary-normality check:cube-symmetric-boundary-gradient">
+<h3>30 September 2026 — Off-collision squarefreeness follows from normality of the boundary hypersurface and genericity of root types</h3>
+<p class="entry-meta">Working proof: the discriminant is reduced along a double-root divisor exactly where the boundary hypersurface is smooth; (L) implies normality of V(F) and follows from it with a type condition; V(F) is normal at N = 6, 7, 8. Boundary normality cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-30-cube-symmetry-route-review">symmetry review</a> left (L), squarefreeness of \(\Delta_W^{\rm nc}\) for \(N\ge9\), with no mechanism. It proposed developing equivariant general position in first-order form. The missing implication is a criterion for reducedness along a divisor of \(\{\Delta_W^{\rm nc}=0\}\) in terms of one fixed object, which a proof for all \(N\) could then attack. This cycle derives the criterion from the flow-box computation already in the <a href="#cube-wronskian-discriminant-criterion">discriminant criterion</a>. It then tests the new condition at the one size where (L) fails.</p>
+<p><strong>General statement.</strong> <code>prop:cube-boundary-smoothness-criterion</code> and <code>cor:cube-squarefree-normality-form</code>, for every \(N\ge3\); <code>conj:cube-boundary-normality</code> for every \(N\ge5\), proved at \(N=6,7,8\) as <code>cor:cube-boundary-regular-small</code>.</p>
+<h4 id="cube-boundary-smoothness-criterion">The smoothness criterion</h4>
+<p><strong>Setting.</strong> Characteristic zero, \(N\ge3\), separated locus \(U\subset\mathbb A^N\), mark at \(\infty\), \(F=F_{\rm sep}\), and \(\delta=-\sum a_i^2\partial_{a_i}\), as in the <a href="#cube-wronskian-discriminant-criterion">discriminant criterion</a>. Assume \(\Delta_W\ne0\). By that entry's proposition, \(V(F,\delta F)\cap U=\{\operatorname{wt}_P\ge2\}\), and every component \(Z\) of it has codimension exactly two. For such \(Z\), let \(\Gamma_Z\) be the closure of its flow-out \(\{e^{s\delta}a:a\in Z\}\), a divisor in \(\{\Delta_W=0\}\).</p>
+<p><strong>Proposition (boundary smoothness criterion).</strong> Let \(Z\) be a component of \(V(F,\delta F)\cap U\) whose generic point \(a_0\) has weight exactly two. Then (1)\(\Rightarrow\)(2)\(\Leftrightarrow\)(3) below. If moreover, at a generic point \(a'\) of \(\Gamma_Z\), the binary form \(W_{a'}\) has no multiple root other than the double root \(\zeta_0\) coming from \(Z\), then all three are equivalent:</p>
+<ol>
+<li>\(\Delta_W\) vanishes to order exactly one along \(\Gamma_Z\);</li>
+<li>\((F,\delta F)\) is reduced at \(a_0\);</li>
+<li>\(V(F)\) is smooth at \(a_0\), that is \(\nabla F(a_0)\ne0\).</li>
+</ol>
+<p><strong>Proof.</strong> Use the flow-box coordinates of that proof: a smooth slice \(y\mapsto a(y)\) through \(a_0\) transverse to \(\delta\), and \(a=e^{s\delta}a(y)\). There \(F(a_0)=\partial_sF(a_0)=0\ne\partial_s^2F(a_0)\), and Weierstrass preparation gives \(F=u\,(s^2+bs+c)\), with \(u\) a unit, \(b,c\in k[[y]]\) and \(b(0)=c(0)=0\). The same proof shows \((F,\delta F)\widehat{\mathcal O}=(s+b/2,\Delta)\), with \(\widehat{\mathcal O}/(F,\delta F)\cong k[[y]]/(\Delta)\) and \(\Delta=b^2-4c\). It also shows that the two roots of \(s^2+bs+c\) correspond, by a Möbius function of \(s\) with nonzero derivative, to the roots of \(W_{a'(y)}\) near the double root \(\zeta_0\). Here \(a'(y)=e^{s_0\delta}a(y)\) is a transverse slice of \(\Gamma_Z\) at a generic point. Factor \(W_{a'(y)}=g\,h\) near \(\zeta_0\), with \(g\) the local quadratic factor. Then \(\operatorname{ord}_{\Gamma_Z}\Delta_W=\operatorname{ord}_y\Delta+\operatorname{ord}\operatorname{Disc}(h)\), because \(\operatorname{Res}(g,h)\) is a unit. The order is at least \(\operatorname{ord}_y\Delta\ge1\), and equals it when \(\operatorname{Disc}(h)\) is a unit, which is the additional hypothesis.</p>
+<p>(1)\(\Rightarrow\)(2): order one forces \(\operatorname{ord}_y\Delta=1\), so \(k[[y]]/(\Delta)\) is reduced at the generic point of \(Z\). (2)\(\Rightarrow\)(1) under the additional hypothesis: reducedness gives \(\operatorname{ord}_y\Delta=1\), and the order is then one. (2)\(\Leftrightarrow\)(3): at \(a_0\), where \(s=b=c=0\), \(dF=u\,dc\) and \(d\Delta=2b\,db-4\,dc=-4\,dc\). So \(\nabla F(a_0)\ne0\) iff \(dc\ne0\) iff \(d\Delta\ne0\). By genericity of \(a_0\) in \(Z\), that is iff \(\Delta\) has order one at the generic point. \(\square\)</p>
+<p>Since \(\delta F=\nabla F\cdot\delta\), every singular point of \(V(F)\) lies in \(V(F,\delta F)\), whose components have codimension two. So \(V(F)\cap U\) is regular in codimension one exactly when \(\nabla F\) is nonzero at the generic point of every component of \(V(F,\delta F)\cap U\). A hypersurface is \(S_2\), so this is normality of \(V(F)\cap U\).</p>
+<h4 id="cube-squarefree-normality-form">Normality form of (L)</h4>
+<p><strong>Corollary (normality form).</strong> Assume \(\Delta_W\ne0\).</p>
+<ol>
+<li>If \(\Delta_W^{\rm nc}\) is squarefree, then \(V(F)\cap U\) is normal, and at the generic point of every component of \(\{\Delta_W^{\rm nc}=0\}\), \(W\) has exactly one multiple root, a double root.</li>
+<li>Conversely, suppose \(V(F)\cap U\) is normal, and at the generic point of every component of \(\{\Delta_W^{\rm nc}=0\}\), \(W\) has exactly one multiple root, a double root at a finite non-branch point. Then \(\Delta_W^{\rm nc}\) is squarefree.</li>
+</ol>
+<p><strong>Proof.</strong> (1) By the discriminant criterion (2), every component \(Z\) of \(V(F,\delta F)\cap U\) has generic weight two and \((F,\delta F)\) is reduced there. The flow-out has order one, so its generic point has one double root and no other multiple root. The proposition gives \(\nabla F\ne0\) at the generic point of \(Z\), and normality follows from the remark above. This uses only the directions (1)\(\Rightarrow\)(2)\(\Rightarrow\)(3), which need no hypothesis on the other roots. For the type: at a generic point of a component, where the multiplicity type is locally constant along the component, a root of multiplicity \(k\ge3\) gives order at least \(k-1\ge2\), by the isobaric weight of the local discriminant, and two multiple roots give order at least two. Order one excludes both.</p>
+<p>(2) Let \(\Gamma\) be a component and \(\zeta_0\) its double root at a generic point \(a'\). The set \(\{\Delta_W=0\}\) is invariant under the \(\delta\)-flow, by the Möbius transport of the criterion's preamble, so \(\Gamma\) is flow-invariant. By translation invariance of \(\Delta_W\) we may assume that \(\zeta_0\) is generically not the one base value the flow cannot reach. Then a finite time \(s_0(a')\) transports \(\zeta_0\) to the mark, giving a point of weight exactly two. The map \(a'\mapsto e^{s_0(a')\delta}a'\) is constant along flow lines, so the closure \(Z\) of its image is irreducible of dimension \(\dim\Gamma-1\), codimension two. \(Z\subseteq V(F,\delta F)\cap U\), whose components all have codimension two, so \(Z\) is a component, and \(\Gamma_Z\subseteq\Gamma\) with equal dimension gives \(\Gamma_Z=\Gamma\). Normality gives \(\nabla F\ne0\) at the generic point of \(Z\). The type hypothesis is the proposition's additional hypothesis, so the proposition gives order one. \(\square\)</p>
+<p>The second hypothesis of (2) is a condition on root types, not on \(F\): no divisor carries a triple root, two multiple roots, or a lone double root at a branch value. Part (1) does not exclude the last case, which is not covered here.</p>
+<h4 id="cube-boundary-regular-small">Six, seven and eight roots</h4>
+<p><strong>Corollary.</strong> \(V(F_N)\cap U\) is normal for \(N=6,7,8\).</p>
+<p><strong>Proof.</strong> At \(N=7,8\), \(\Delta_W^{\rm nc}\) is squarefree (<a href="#cube-seven-root-first-step">seven roots</a>, <a href="#cube-eight-root-first-step">eight roots</a>), and part (1) applies. At \(N=6\), by the <a href="#cube-six-root-involution-divisor">six-root theorem</a>, \(\Delta_W^{\rm nc}=cI_{15}^4Q\) with \(Q\) squarefree and prime to \(I_{15}\). Let \(Z\) be a component of \(V(F,\delta F)\cap U\).</p>
+<ul>
+<li>If its generic weight is two and its flow-out is a component of \(Q\), the order there is one, and the proposition gives \(\nabla F\ne0\).</li>
+<li>Otherwise the flow-out has order at least two: generic weight at least three, or a second multiple root. So it is a component of \(I_{15}\). Its generic point then has, by the six-root theorem, weight three at a fixed point of the involution. With the mark at \(\infty\), \(Z\) is the symmetric locus \(b_i+b_j=b_k+b_l=b_m+b_n\) of a matching.</li>
+</ul>
+<p>This locus \(L_\mu\) is linear, irreducible and of codimension two (<a href="#cube-symmetric-locus-codimension">symmetric locus codimension</a>), and \(Z\subseteq L_\mu\) has codimension two, so \(Z=L_\mu\). By \(S_6\)-symmetry one matching suffices. \(F\) is translation invariant (the pair-evaluation paragraph of the discriminant criterion: the column change under translation is unitriangular), so it suffices to test the three-parameter slice \((\beta_1,-\beta_1,\beta_2,-\beta_2,\beta_3,-\beta_3)\). \(F\) has coefficients in \(\mathbb Z[1/2]\): the \(H_k\) have \(2\)-power denominators, and division by \(V^{N-2}\) is exact by Gauss's lemma. So each \(\partial_kF\) restricted to the slice is a polynomial with \(p\)-integral coefficients. The test below finds it nonzero at \(\mathbb F_p\)-points, so it is a nonzero polynomial over \(\mathbb Q\), nonzero at the generic point of the slice and hence of \(L_\mu\). \(\square\)</p>
+<p>So the six-root failure of (L) is a failure of root types only: \(V(F_6)\) is normal, and the involution divisor carries two cusps.</p>
+<p><strong>Conjecture (boundary normality).</strong> For every \(N\ge5\), the boundary hypersurface \(V(F_N)\) is normal on the separated locus. The range starts where statement 3's machinery does. At \(N=5\), part (1) gives it from the five-root line certificate, within that certificate's recorded scope.</p>
+<p>By part (2), (L) for \(N\ge7\) follows from this conjecture together with type genericity: no divisor of configurations carrying a triple root, two multiple roots, or a double root at a branch value or at \(\infty\). The <a href="#cube-symmetric-locus-codimension">symmetric locus codimension</a> excludes the symmetric source of the first two for \(N\ge7\).</p>
+<h4>Test</h4>
+<p>research/tools/bmd_cube_boundary_gradient.gp (boundary-gradient.txt). Prediction: open; a zero gradient on the symmetric locus would make \(V(F_6)\) non-normal and move the six-root failure into \(F\) itself. At three random symmetric points modulo \(p=2^{61}-1\): \(F(b)=0\), and all six partial derivatives are nonzero. Each partial is read from \(t\mapsto F(b+te_k)\), of degree at most \(\deg F=\lambda_6=45\le50\), interpolated from \(51\) values with two checks. Controls at two random points of \(V(F)\): all six partials nonzero.</p>
+<p><strong>What this does to the route.</strong> (L) now follows from two statements of different kinds, and implies the first. One concerns one explicit hypersurface: normality of \(V(F_N)\) off collisions, which holds at \(N=6,7,8\), including the size where (L) fails. The other concerns root types: no divisorial cusps, double pairs, or double roots at branch values or at \(\infty\). Symmetry is the known source of the second, and it is non-divisorial for \(N\ge7\). Neither statement is proved for all \(N\). Normality of a determinantal hypersurface has tools of its own (singular loci of \(\det A(b)\): corank at least two, or tangency at corank one), which the old discriminant formulation did not expose.</p>
+<p><strong>Lead follow-up.</strong> This develops Outside lead 1 of the <a href="#entry-2026-09-30-cube-symmetry-route-review">symmetry review</a>. The first-order transversality at \(A_1\) points is smoothness of \(V(F)\), and at the only symmetric divisor that exists it holds. <strong>Follow-up.</strong> Developed.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>normality of \(V(F_N)\) for \(N\ge9\);</li>
+<li>type genericity for \(N\ge9\), including double roots at branch values;</li>
+<li>(B).</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The discriminant criterion (proposition parts (2)–(4); theorem parts (1), (2) with the flow-box computation); the six-root theorem; the seven- and eight-root corollaries; the covariant degree lemma.</p>
+<p><strong>Verification gate.</strong> One fresh-context medium reviewer checked the draft, the claim specification, the discriminant-criterion and six-root excerpts, the script and its output. Verdict: pass with corrections. It verified the flow-box differentials, the remark and Serre's criterion, the type conclusion of part (1), the \(N=6\) case split, and that the seven- and eight-root results are unconditional. Corrections applied:</p>
+<ul>
+<li>the proposition's hypothesis now concerns all multiple roots of \(W_{a'}\), not only Weierstrass points, and only (3)\(\Rightarrow\)(1) uses it; part (1) and the \(N=6\) case use the hypothesis-free directions;</li>
+<li>part (2) now proves flow invariance of \(\Gamma\), finiteness of the transport time and the codimension of \(Z\);</li>
+<li>the isobaric bound is applied where the type is locally constant;</li>
+<li>the \(N=6\) lift uses \(F\) over \(\mathbb Z[1/2]\), translation invariance and \(Z=L_\mu\), and the degree bound cites \(\deg F=45\);</li>
+<li>title, status and route paragraph state the one-sided implications, with double roots at branch values and \(\infty\) in the type condition; the conjecture's range is explained; three dependency edges were added.</li>
+</ul>
+<p>These corrections restrict or complete arguments without strengthening a claim, so no follow-up review was needed.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-t">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>35 min 27.22 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">2 min 46.33 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 42.90 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">39.96 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">29 min 12.08 s</td></tr>
+<tr><td>Marked overhead and interruptions</td><td class="elapsed">0.62 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">3.96 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.38 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
