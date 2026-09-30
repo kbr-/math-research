@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. Rings are simple at every merge. Far points are simple at \(n=1\) and at every merge of the eleven-root chain. For \(n\ge2\) and every size, far simplicity has no candidate mechanism: the review's leads are closed (<a href="#entry-2026-10-02-cube-far-bethe-lead">Bethe lead</a>). It is the shared obstacle of (B) and (K).</p>
-<p>Next, for (K), a new idea: connect the rigid far spaces through a one-parameter family. Let \(G_a\) have an \(n\)-cluster at \(0\), singles at \(1\) and at \(a\), and a collapsed \((k-2)\)-cluster at \(\infty\). As \(a\to\infty\) it tends to \(F(n,k)\) near scale one, and as \(a\to0\) to \(F(n+1,k-1)\). Compute, for \((n,k)=(1,4)\) and \((2,3)\), the discriminant of the Weierstrass points of \(G_a\) in \(a\), modulo a prime. Ask whether the far points of the two ends are joined by a path of \(a\) avoiding its zeros, so that simplicity propagates from the proved binary faces by induction on \(n\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) is pursued through squarefreeness of \(\Delta_W^{\rm nc}\) along a peeling chain of single merges. Rings are simple at every merge. Far points are simple at \(n=1\) and at every merge of the eleven-root chain. For \(n\ge2\) and every size, far simplicity has no mechanism, and every lead of the last review is closed (<a href="#entry-2026-10-02-cube-far-exponent-continuation">exponent continuation</a>). It is the shared obstacle of (B) and (K).</p>
+<p>Next: a route review of (K) and (B) together, since both now rest on simplicity for rigid three-point spaces. It should decide whether to keep the discriminant route or return to a weight-three route, which needs only the absence of weight three on rigid pieces, a weaker condition. It should look for leads that fit the resonance at the exponent \(\tfrac12\), which makes these spaces special.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -38336,6 +38336,52 @@ the Frobenius (Pólya–Mammana) factorization. It follows by induction on \(s\)
 <tr><td>Marked reading and review windows</td><td class="elapsed">1 min 17.21 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">46.86 s</td></tr>
 <tr><td>Dedicated web and download-attempt windows</td><td class="elapsed">19.50 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-far-exponent-continuation" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-bridge="entry-2026-10-02-cube-far-simplicity-review:2" data-claims="none" data-claim-note="Development of the exponent-continuation bridge by an exact scan; it fails, and no new claim is made.">
+<h3>2 October 2026 — Continuation in the exponent cannot reach the far spaces: one half is a resonant exponent where half the far points escape, and real collisions occur on the way</h3>
+<p class="entry-meta">Development of the review's exponent-continuation bridge by an exact scan of the far polynomials in the exponent; closed. Far exponent cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The last untested item of the <a href="#entry-2026-10-02-cube-far-simplicity-review">far simplicity review</a> was continuation in the exponent. Replace the square roots in \(F(n,k)\) by \(\lambda\)-th powers, and follow the far points along real \(\lambda\) from an exponent where they are understood to \(\lambda=\tfrac12\). Collisions of non-real roots are generically avoided along a real path, so this could carry simplicity if two things held: the family is flat at \(\tfrac12\), and there are no real collisions. This cycle tests both.</p>
+<p><strong>General statement.</strong> The statement tested is conj:cube-merge-far-irreducible, through conj:cube-merge-far-polynomial, for every \(n\ge2\), \(k\ge3\).</p>
+<h4>The scan</h4>
+<p><code>research/tools/bmd_cube_far_exponent_scan.gp</code> computes the far polynomial \(R(\lambda;w)\) of \(F^{(\lambda)}(n,k)\) exactly at \(\lambda=j/40\), \(j=1,\ldots,20\), for \((n,k)=(2,3),(3,3),(2,4)\). For each it records the degree, the number of real roots, the sign of the discriminant and squarefreeness (research/results/bmd-20261002-f/far-exponent-scan.txt).</p>
+<ul>
+<li><em>The degree drops at \(\tfrac12\).</em> For \(\lambda&lt;\tfrac12\) on the grid the degrees are \(12\), \(28\) and \(21\). At \(\lambda=\tfrac12\) they are \(6\), \(13\) and \(15\), the far counts. So \(\tfrac12\) is a resonant exponent. There \(2\lambda\) is an integer, the products of square roots become rational, and \(6\), \(15\) and \(6\) far points of the generic family escape to the branch points.</li>
+<li><em>A real collision occurs.</em> At \((2,4)\) the number of real roots drops from \(9\) to \(7\), and the discriminant changes sign, between \(\lambda=\tfrac3{20}\) and \(\tfrac7{40}\). At \((2,3)\) and \((3,3)\) the counts stay \(4\) and \(8\) on the grid below \(\tfrac12\).</li>
+<li>Every sampled polynomial is squarefree.</li>
+</ul>
+<p><strong>Outcome.</strong> The bridge is closed, for two independent reasons:</p>
+<ul>
+<li>the family is not flat at the exponent we need: at \(\lambda=\tfrac12\) the far polynomial has half the generic degree, so continuation from generic \(\lambda\) arrives at \(\tfrac12\) only after roots escape to \(0\), \(1\) or \(\infty\);</li>
+<li>even away from \(\tfrac12\), real collisions happen along the path.</li>
+</ul>
+<p>So simplicity at other exponents does not transfer to \(\tfrac12\). The escape is itself informative. At \(\tfrac12\) the space is special because the square roots pair into rational functions: that pairing is what makes the pair space of the cube, and it is the source of the resonance.</p>
+<p><strong>For the route.</strong> Every lead the far simplicity review listed is now closed, falsified or partial in the forms tested:</p>
+<ul>
+<li>low-order hypergeometric equations;</li>
+<li>reality;</li>
+<li>small-prime discriminants and structured primes, also at integer exponents;</li>
+<li>further reduction by classes;</li>
+<li>the Bethe ansatz;</li>
+<li>continuation in the exponent.</li>
+</ul>
+<p>Far simplicity for \(n\ge2\) at every size has no mechanism, and it is shared by (B) and (K). The next cycle is a route review.</p>
+<p><strong>Remaining gap.</strong> Far simplicity for \(n\ge2\); the chain end; the assembly.</p>
+<p><strong>Dependencies re-read.</strong> thm:cube-merge-far-count (the far classes and counts); the far simplicity review (the bridge).</p>
+<p><strong>Verification gate.</strong> No claim is registered. The scan is exact, with its grid stated, and no reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-f">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>2 min 37.72 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">51.07 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">43.50 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 1.31 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">1.70 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
