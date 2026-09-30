@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved (<a href="#cube-corner-two-n-hankel-theorem">corner Hankel theorem</a>). For every \(N\), rigid simplicity for \(n\ge2\) has no mechanism, but the reducedness criterion does not need it: a double far point of a rigid middle is harmless if it <a href="#cube-rigid-middle-first-order">splits to first order</a>, a condition on the moduli of the stratum.</p>
-<p>Next, for (K) at every \(N\): compute the first-order variations \(Q_1,Q_2\) of the middle far points \(F(s,N-s)\) along the two smoothings of a nested single-merge stratum. Start at \(N=7\), \(s=2\), the smallest case, and compare them with the merge rings' transversality mechanism. Then test whether \(R\), \(R'\), \(Q_1\), \(Q_2\) can share a root for generic moduli of the stratum, which would be the all-\(N\) replacement for rigid simplicity.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved (<a href="#cube-corner-two-n-hankel-theorem">corner Hankel theorem</a>). For every \(N\), rigid simplicity for \(n\ge2\) has no mechanism. The criterion needs only <a href="#cube-rigid-middle-first-order">first-order splitting</a> of double far points. Along the merge smoothing, though, the first-order term is <a href="#cube-merge-far-first-order">one fixed polynomial times one scalar</a>, and at \((3,3)\) it is a Möbius reparametrization.</p>
+<p>Next, for (K) at every \(N\): settle the first-order route on the other smoothing, the collapse of the cluster at \(w=0\). Compute its first-order variation \(Q_2\) of the far points in the same way. Test whether it depends on the cluster shape beyond its centre, and whether it too is a reparametrization modulo \(R\), at the five sizes of the merge check. If both directions reduce to fixed polynomials or to reparametrizations, close the first-order route and return to rigid simplicity with a second-order or global mechanism.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -39101,6 +39101,60 @@ N_0=\begin{pmatrix}s_i^{\,j}&amp;0\\ \frac{s_i^{\,j+1}}{j+1}&amp;s_i^{\,k}\end{p
 <tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 14.65 s</strong></td></tr>
 <tr><td>Marked reading and review windows</td><td class="elapsed">5 min 20.33 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">54.18 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-merge-far-first-order" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-merge-far-first-order check:cube-merge-far-first-order-rank">
+<h3>2 October 2026 — Along the merge smoothing the first-order motion of the far points depends on the moduli through one scalar in every checked case, so there genericity does not help; at (3,3) it moves the far points like a Möbius field</h3>
+<p class="entry-meta">Working proof of the first-order merge variation of the far points; finite check that its coefficients have rank one at five sizes, with a Möbius point motion at (3,3). The merge direction gives no moduli-dependent splitting. Merge first-order cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-rigid-middle-first-order">first-order splitting lemma</a> replaces rigid simplicity at a two-node stratum by a condition on the first-order variations \(Q_1,Q_2\) of the middle far points, which may depend on the moduli of the stratum. Does the merge smoothing, the parameter \(\varepsilon\) of the <a href="#cube-merge-far-limit">merge far limit</a>, give a \(Q_1\) that genuinely depends on the moduli?</p>
+<p><strong>General statement.</strong> <code>lem:cube-merge-far-first-order</code>, for every \(n\ge1\), \(k\ge2\), in characteristic zero, for \(p\) off the proper closed set of the merge far limit.</p>
+<h4 id="cube-merge-far-first-order">The first-order variation</h4>
+<p><strong>Setting.</strong> As in the merge far limit: characteristic zero, and \(p=(p_2,\ldots,p_k)\) off the proper closed set where some class fails to have consecutive exponents at \(x=0\). In the chart \(z=\varepsilon w\), \(V\) splits into the four monodromy classes \(\chi_c(w)\{g(\varepsilon w):g\in G_c\}\), exactly for every \(\varepsilon\), up to class-wise constant factors:</p>
+<ul>
+<li>\(G_T=\langle x^{-C},\ldots,x^{-1}\rangle+H(p)\), with \(H(p)\) the pair space of \(p_2,\ldots,p_k\);</li>
+<li>\(G_0=x^{-(n-1)}\bigoplus_j\{x^m(1-x/p_j)^{1/2}:m&lt;n\}\);</li>
+<li>\(G_1=\langle(1-x/p_j)^{1/2}\rangle\);</li>
+<li>\(G_{01}=\langle x^{-(n-1)},\ldots,1\rangle\).</li>
+</ul>
+<p>The top exponents are \(e_T=1+P\), \(e_0=(k-2)n\) and \(e_1=k-2\). Let \(a_c(p)\) be the coefficient of \(x^{e_c+1}\) in the reduced echelon element of \(G_c\) with leading term \(x^{e_c}\). Let \(W_c\) be the Wronskian of \(F(n,k)\) with the top element \(\chi_cw^{e_c}\) of class \(c\) replaced by \(\chi_cw^{e_c+1}\). The parameter \(\varepsilon\) is the plumbing parameter \(t_1\) of the merge node, \(z=t_1w\), not a power of it.</p>
+<p><strong>Lemma (first-order merge variation).</strong></p>
+<ol>
+<li>\(W(V_\varepsilon)=W(F(n,k))+\varepsilon\sum_{c\in\{T,0,1\}}a_c(p)W_c+O(\varepsilon^2)\), with the normalizations of the merge far limit.</li>
+<li>Hence the first-order variation of the far points (the \(Q_1\) of the splitting lemma) satisfies \(Q_1\equiv\gamma\,B^{-1}\sum_ca_cW_c\pmod R\), with \(\gamma\) a nonzero constant and \(B=W(F)/R\) the branch factor, which is supported on \(w\in\{0,1\}\) and so is invertible modulo \(R\).</li>
+<li>For class \(1\), \(a_1=\frac{\beta_{k-1}}{\beta_{k-2}}\sigma_1\), with \(\sigma_1=\sum_j1/p_j\) and \(\beta_m=(-1)^m\binom{1/2}m\).</li>
+</ol>
+<p><strong>Proof.</strong> (1) In a class with consecutive exponents \(e_0&lt;\ldots&lt;e_c\), the reduced echelon elements are \(g_e=x^e+\sum_{m&gt;e_c}a_{e,m}x^m\). Then \(\varepsilon^{-e}g_e(\varepsilon w)=w^e+\sum_{m&gt;e_c}a_{e,m}\varepsilon^{m-e}w^m\), whose first-order term is nonzero only for \(e=e_c\) and \(m=e_c+1\). \(G_{01}\) is exact. Multilinearity of the Wronskian in its rows gives the formula.</p>
+<p>(2) In the chart, \(W(V_\varepsilon)=c(\varepsilon)P_\varepsilon U_\varepsilon\). Here \(P_\varepsilon\) is the monic middle polynomial with \(P_0=R\), \(c(\varepsilon)\) is a scalar, and \(U_\varepsilon\) collects the factors at \(w=0,1\) and the roots escaping to \(\infty\), with \(U_0=B\). Differentiating at \(\varepsilon=0\) gives \(c'(0)RB+c(0)Q_1B+c(0)R\,\partial_\varepsilon U_\varepsilon|_0\equiv c(0)Q_1B\pmod R\).</p>
+<p>(3) For class \(1\), write \(u_j=1/p_j\) and \(g=\sum_jc_j(1-xu_j)^{1/2}\). The conditions \(\sum_jc_j\beta_mu_j^m=\delta_{m,k-2}\), \(m\le k-2\), give \(c_j=\beta_{k-2}^{-1}/\prod_{l\ne j}(u_j-u_l)\). So \(a_1=\beta_{k-1}\sum_jc_ju_j^{k-1}=\frac{\beta_{k-1}}{\beta_{k-2}}h_1(u)\), by the divided-difference identity \(\sum_ju_j^{k-1}/\prod_{l\ne j}(u_j-u_l)=h_1(u)\). \(\square\)</p>
+<p><strong>Check.</strong> <code>check:cube-merge-far-first-order-rank</code>, <code>research/tools/bmd_cube_merge_far_first_order.gp</code>, exact over \(\mathbb Q\), at \((n,k)=(2,3),(3,3),(2,4),(4,3),(3,4)\). Output: <code>research/results/bmd-20261002-q/merge-far-first-order.txt</code>.</p>
+<ul>
+<li>\(R\) is coprime to each \(W_c\).</li>
+<li>The printed "ZERO" determinants mean the vectors \((a_T,a_0,a_1)(p)\) at three shapes are linearly dependent. They have rank one, proportional to \((1,\kappa_0,\tfrac12)\) with \(\kappa_0=\tfrac32,\tfrac52,\tfrac76,\tfrac72,\tfrac{11}6\) in the order above. These fit \(\kappa_0=\frac{2(k-2)n-1}{(k-1)(k-2)}\), a fit to five values.</li>
+<li>Conditional on this rank one, \(\sum_ca_cW_c=a_T(p)Q^\ast\) for the fixed polynomial \(Q^\ast=W_T+\kappa_0W_0+\tfrac12W_1\), with \(\gcd(R,Q^\ast)=1\). With (3), the moduli then enter the first order only through \(\sigma_1\).</li>
+<li>The polynomial \(v\equiv Q^\ast/(BR')\pmod R\) always exists, since \(R\) is squarefree. Only its degree carries information. At four sizes it is \(\deg R-1\). At \((3,3)\) it is \(-\tfrac1{24}w(w-1)\). So there the far points move to first order exactly as under the Möbius field \(w(w-1)\partial_w\), which fixes \(0\) and \(1\) and moves \(\infty\), the node to the rest of the spine. Whether the space itself is reparametrized to first order was not tested: that would need an exact identity \(Q^\ast=vW'+\binom d2v'W+\lambda W\) with \(W=W(F)\).</li>
+</ul>
+<p><strong>What this means for the first-order splitting.</strong></p>
+<ul>
+<li>Along the merge direction, and assuming the rank one, \(Q_1(r)\ne0\) at a double root \(r\) is the rigid statement \(Q^\ast(r)\ne0\). Genericity over the stratum gains nothing in this direction.</li>
+<li>If a relation like the one at \((3,3)\) came from a genuine reparametrization identity for some \(R\) with a double root, \(Q^\ast\) would vanish there, since point motions by a vector field do not split double points. At \((3,3)\), \(R\) is squarefree, so this is only indicative.</li>
+<li>A heuristic fits the picture: to first order the rest of the spine acts on the middle through its centre \(\sigma_1\), as a shift of the node at \(\infty\). A change of spine coordinate \(z\mapsto z+cz^2\) at the node, renormalized to fix \(w=1\), induces exactly a field proportional to \(w(w-1)\partial_w\).</li>
+<li>Whether the cluster smoothing \(t_2\) behaves the same way is speculation; \(Q_2\) was not computed.</li>
+<li>The second-order coefficients depend on \(p\) and were not examined.</li>
+</ul>
+<p><strong>Remaining gap.</strong> For every \(N\): rigid simplicity for \(n\ge2\), or the splitting condition through the cluster smoothing \(t_2\) or through second order. The rank one of \((a_T,a_0,a_1)\) beyond class \(1\) is checked, not proved.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the merge far limit (classes, rescaling, genericity) and the first-order splitting lemma. One fresh-context medium reviewer: pass with corrections, all applied. They cover the passage from \(dW/d\varepsilon\) to \(Q_1\) modulo \(R\), \(\varepsilon\) as the plumbing parameter, the genericity hypothesis, \(k\ge2\), rank one as a checked hypothesis, the \((3,3)\) result as a point motion only and vacuous for squarefree \(R\), and the removal of unsupported outlook claims.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-q">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>8 min 13.63 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">7 min 20.84 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">41.17 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">11.48 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
