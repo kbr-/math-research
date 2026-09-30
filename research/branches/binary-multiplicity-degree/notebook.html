@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved. For every \(N\), (K) rests on squarefreeness of one explicit polynomial Wronskian, \(W_u(Y(n,k))\) off \(u\in\{0,\pm1\}\) (<a href="#cube-far-u-space">u-space lemma</a>). \(Y\) is not a classical family.</p>
-<p>Next, for (K) at every \(N\): test whether \(Y(n,k)\) is a Darboux–Crum transform of a set of Gegenbauer polynomials. Its even class is Jacobi with a half-integer exponent, so find a seed set \(\phi_1,\ldots,\phi_m\), for example the odd-class generators before their outer derivative block, such that \(W_u(Y)\) is \(W(\phi,\text{Gegenbauer set})\) up to explicit factors. If that fails at the smallest size \((2,3)\), where \(\dim Y=4\), weigh a change of the (K) route.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved. For every \(N\), (K) rests on squarefreeness of one explicit polynomial Wronskian (<a href="#cube-far-u-space">u-space lemma</a>). That Wronskian has no single-family Jacobi form in a wide search (<a href="#entry-2026-10-02-cube-far-jacobi-wronskian-search">Jacobi Wronskian search</a>).</p>
+<p>Next, a route review for (K). The rigid-simplicity line has now tried degeneration, arithmetic, integrable, first-order and classical-Wronskian mechanisms. The review should weigh changing the (K) route so that it avoids rigid simplicity. One option is the dilate contact conjecture, conj:cube-contact-dilate-bound, whose generic exponent carries no \(\tfrac12\)-resonance. Another is proving (K) through a degeneration that never reaches the resonant three-point spaces, for example one that keeps a modulus in every middle.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -39771,6 +39771,39 @@ P_3=(1-w)^{q-\frac12}\,w^{P+2}\;w^{1-c_2}\,\partial^{K}\,w^{c_2+K-P-3}\,\partial
 <tr><td>Computation design and coding</td><td class="elapsed">3 min 2.29 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">54.28 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.19 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-far-jacobi-wronskian-search" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-02-cube-first-order-review:1" data-claims="conj:cube-far-jacobi-wronskian check:cube-far-jacobi-wronskian-search">
+<h3>2 October 2026 — The far polynomials for n ≥ 2 are not Wronskians of one Jacobi family in a wide parameter range, while the search recovers the n = 1 Gegenbauer case: the classical-Wronskian route finds no form</h3>
+<p class="entry-meta">Finite check of the hypothesis that R_(n,k) is a Wronskian of Jacobi polynomials of one family: no match at (2,3) and (3,3) in the searched range; the positive control at n = 1 is recovered. Jacobi Wronskian cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#cube-far-u-space">u-space lemma</a> reduces rigid simplicity to one polynomial Wronskian, and the \(P_4\) class is Jacobi (<a href="#cube-far-p4-jacobi">P4 Jacobi theorem</a>). If the space were a Darboux–Crum transform of a Jacobi family, its Wronskian would be a Wronskian of Jacobi polynomials of that family indexed by a set, the exceptional-polynomial form. Simplicity results for such Wronskians would then be the tools. Is \(R_{n,k}\) such a Wronskian?</p>
+<p><strong>General statement.</strong> <code>conj:cube-far-jacobi-wronskian</code>: for every \(n\ge2\), \(k\ge3\), \(R_{n,k}\), with its factors \(w\) and \(w-1\) removed, equals \(\mathrm{Wr}[P^{(a,b)}_{m}(1-2w):m\in S]\), with the same factors removed, for some \((a,b)\) and finite \(S\). Tested by <code>check:cube-far-jacobi-wronskian-search</code>; not supported.</p>
+<p><strong>The search.</strong> <code>research/tools/bmd_cube_far_jacobi_wronskian_search.gp</code>, exact over \(\mathbb Q\). Output: <code>research/results/bmd-20261002-z/jacobi-wronskian-search.txt</code>. Jacobi polynomials are taken as \({}_2F_1(-m,m+a+b+1;a+1;w)\), with \(a+1\) not a non-positive integer. The search tries every index set of distinct degrees with nominal Wronskian degree at least \(\deg R\).</p>
+<ul>
+<li>Positive control, \((1,4)\), where \(R_{1,4}\) is the Gegenbauer polynomial \(C^{(-4)}_3\) (<a href="#cube-merge-far-binary-face">far binary face</a>), that is \(a=b=-\tfrac92\). With \((a,b)\in[-15,8]^2\) in steps of \(\tfrac12\) and degrees at most \(8\), the search finds \((-\tfrac92,-\tfrac92,\{3\})\), as predicted, and three equivalent Wronskian forms. \((1,3)\), of degree one, matches trivially.</li>
+<li>\((2,3)\), \(\deg R=6\): \((a,b)\in[-15,8]^2\), degrees at most \(9\), sets of at most \(4=\dim X\) elements, \(500{,}832\) candidates. No match.</li>
+<li>\((3,3)\), \(\deg R=13\): \((a,b)\in[-\tfrac72,\tfrac72]^2\), degrees at most \(13\), sets of at most \(5=\dim X\) elements, \(534{,}060\) candidates. No match.</li>
+</ul>
+<p><strong>What this gives.</strong></p>
+<ul>
+<li>Within these ranges, \(R_{n,k}\) for \(n\ge2\) is not a Wronskian of polynomials of one Jacobi family, although the same search recovers the \(n=1\) case.</li>
+<li>Larger index sets, larger degrees, parameters outside the range, and Wronskians mixing two Jacobi families, as the two classes of \(X\) would suggest, are not excluded. The search is bounded, not a proof.</li>
+<li>With the <a href="#cube-far-u-space">Bochner non-invariance of the u-space</a>, this is evidence that the rigid far polynomials for \(n\ge2\) have no single-family classical Wronskian form. The Veselov-type route would then need a two-family theory, which the literature on exceptional polynomials does not provide in the form needed here.</li>
+</ul>
+<p><strong>Remaining gap.</strong> For every \(N\): squarefreeness of \(R_{n,k}\), \(n\ge2\), still without a mechanism.</p>
+<p><strong>Verification gate.</strong> A finite search with a positive control that passes. No new proof is claimed, so no reviewer was run. Dependencies re-read: the far binary face (the Gegenbauer parameter) and the u-space lemma.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-z">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>10 min 49.64 s</strong></td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 24.11 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 19.40 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">8 min 6.00 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
