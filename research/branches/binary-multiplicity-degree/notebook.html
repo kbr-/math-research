@@ -47,15 +47,13 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). The <a href="#entry-2026-10-03-cube-neck-atoms-review">neck atoms review</a> found the neck windows of (B) largely settled at \(w=4\): vanishing, leading form and \(H_k\ne0\) for every \(l\), and exact valuations for \(l=2\). The highest risk returns to squarefreeness of the rigid far polynomials \(R_{n,k}\) (lem:cube-far-u-space), needed by (B) and, through rigid simplicity, by (K).</p>
-<p>Next:</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). The highest risk is squarefreeness of the rigid far polynomials \(R_{n,k}\) (lem:cube-far-u-space), needed by (B) and, through rigid simplicity, by (K). The <a href="#entry-2026-10-03-cube-far-shift-discriminant">symbolic-shift discriminant</a> is not a hypergeometric product, and that deformation collapses at the true shift.</p>
+<p>Next: an arithmetic specialization. \(R_{n,k}\in\mathbb Q[w]\). If its reduction modulo one prime \(p\) keeps the degree and is squarefree, then \(R_{n,k}\) is squarefree over \(\mathbb Q\).</p>
 <ul>
-<li>Rebuild the far space with a symbolic exponent \(\lambda\) in place of the pair exponents.</li>
-<li>Compute the discriminant of \(R_{n,k}\) in \(\lambda\) at the smallest sizes.</li>
-<li>Test whether it factors into linear factors at explicit rational points, as discriminants of hypergeometric families do (Stieltjes, Hilbert).</li>
+<li>Compute \(R_{n,k}\bmod p\) at small sizes over a range of primes. Look for primes, depending on \((n,k)\), at which the Jacobi and Rodrigues coefficients of \(P_3\) and \(P_4\) truncate by Lucas' theorem.</li>
+<li>At such primes, test whether \(R_{n,k}\bmod p\) becomes an explicit product, and whether it is squarefree with the degree kept.</li>
+<li>If a pattern appears, prove it for every \((n,k)\).</li>
 </ul>
-<p>If it does, derive the product through the Jacobi and Rodrigues structure of \(P_3\) and \(P_4\), and check that \(\lambda=-7/2\) avoids its zeros.</p>
-<p>The remaining neck items stay queued: \(f\ne0\) for \(l\ge3\), the window \(c=6\) with \(l\ge4\), and the two-minimizer condition.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -40730,6 +40728,45 @@ This follows from G. Szegő, Orthogonal Polynomials, (4.3.3) (norm of \(P_j^{(b-
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-03-cube-far-shift-discriminant" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-10-03-cube-neck-atoms-review:1" data-claims="conj:cube-far-shift-discriminant-product">
+<h3>3 October 2026 — Refutation: with the half-integer shift made symbolic, the discriminant of the far polynomial is not a product of linear factors, and the family's degree collapses exactly at the true shift</h3>
+<p class="entry-meta">Refutation of the Stieltjes-type discriminant lead for the far polynomials in its symbolic-shift form, by exact computation at (n,k) = (2,3), (2,4). Far shift cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-10-03-cube-neck-atoms-review">neck atoms review</a> made squarefreeness of the rigid far polynomials \(R_{n,k}\) (lem:cube-far-u-space) the highest risk again. Its first outside lead: make the construction's continuous parameter symbolic, and ask whether the discriminant is a product of linear factors, as for hypergeometric families (Stieltjes, Hilbert). If so, squarefreeness at the true value would reduce to avoiding explicit points.</p>
+<p><strong>General statement.</strong> <code>conj:cube-far-shift-discriminant-product</code> (refutation), a hypothesis for every \(n,k\).</p>
+<p><strong>The deformation.</strong> research/tools/bmd_cube_far_symbolic_discriminant.gp rebuilds \(R_{n,k}\) exactly as research/tools/bmd_cube_far_u_space.gp does, with the shift \(1/2\) replaced by a symbol \(h\) throughout:</p>
+<ul>
+<li>the starting parameter of the θ-steps;</li>
+<li>the half-integral exponent run;</li>
+<li>the exponent of the \(P_4\) class and its Wronskian twist.</li>
+</ul>
+<p>\(R_{n,k}(h,w)\) is then a polynomial in \(h\) and \(w\), and at \(h=1/2\) it equals the recorded far polynomial after normalization (checked).</p>
+<p><strong>Hypothesis (refuted).</strong> For every \(n\ge2\), \(k\ge3\), \(\operatorname{disc}_wR_{n,k}(h,\cdot)\) is, up to a constant, a product of linear factors in \(h\).</p>
+<p><strong>Outcome</strong> (research/results/bmd-20261003-k/far-symbolic.txt; exact over \(\mathbb Q\)):</p>
+<ul>
+<li>\((2,3)\): \(\deg_wR(h)=12\), but \(\deg_wR(1/2)=6\). The discriminant has degree \(760\) in \(h\). It is a product of linear factors at the integers \(-5,\ldots,7\) and at \(\tfrac32,\tfrac12,-\tfrac12\), times irreducible factors of degrees \(39\) and \(51\).</li>
+<li>\((2,4)\): \(\deg_wR(h)=21\), but \(\deg_wR(1/2)=15\). The discriminant has degree \(2538\). It has linear factors at integers and half-integers, times irreducible factors of degrees \(137\) and \(164\).</li>
+<li>In both cases the leading coefficient in \(w\) contains \((2h-1)^2\), so at the true shift the degree collapses and the discriminant vanishes for that reason alone.</li>
+</ul>
+<p>A third size, \((3,3)\), was stopped after the first two answered the question.</p>
+<p><strong>What this shows.</strong> The hypothesis is false at \((2,3)\) and \((2,4)\). The deformation is also the wrong one: it does not pass through the true far polynomial as a member of fixed degree. At generic \(h\) the θ-step polynomials do not terminate as they do at \(h=\tfrac12\), where \(P_4\) is Jacobi and \(P_3\) Rodrigues. So a Stieltjes-type product would need a deformation that keeps the terminating structure. None is visible: the Jacobi parameters are tied to the half-integer exponents. The large irreducible factors show that even the generic-\(h\) family has no hypergeometric discriminant.</p>
+<p><strong>What remains.</strong> Squarefreeness of \(R_{n,k}\) for every \(n,k\), still without mechanism. A different kind of specialization is available: \(R_{n,k}\) has rational coefficients, and squarefreeness of its reduction modulo one prime, with the degree kept, implies squarefreeness over \(\mathbb Q\). This is the arithmetic analogue of the \(\beta_1=0\) argument. The prime may be chosen for each \((n,k)\).</p>
+<p><strong>Dependencies re-read.</strong> lem:cube-far-u-space (the far polynomial and its construction); research/tools/bmd_cube_far_u_space.gp (the construction, replicated with \(h\)).</p>
+<p><strong>Verification gate.</strong> The refutation rests on an exact rational computation with a built-in match to the recorded construction at \(h=1/2\). No proof is claimed, so no reviewer was run.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261003-k">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>4 min 55.64 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">24.26 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 25.97 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">38.34 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">2 min 25.70 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">1.38 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once. Failed/timed-out commands: 1.</p>
 </div>
 </article>
 
