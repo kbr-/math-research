@@ -47,8 +47,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved (<a href="#cube-corner-two-n-hankel-theorem">corner Hankel theorem</a>). For every \(N\), rigid simplicity for \(n\ge2\) has no mechanism. The criterion needs only <a href="#cube-rigid-middle-first-order">first-order splitting</a> of double far points. To first order, though, the merge smoothing only <a href="#cube-merge-far-mobius-covariance">moves the far points along a Möbius field</a> (proved for \(k\le3\)), which cannot split them.</p>
-<p>Next, a route review for (K), due after one more research entry. That entry: apply the covariance argument to the cluster smoothing at \(w=0\), with the Möbius maps fixing \(w=1,\infty\) and centred at the cluster. If its first order is also a Möbius motion, the first-order route is closed, and splitting must be read at second order, where the shape of the cluster and of the spine may enter beyond their centres.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\), input (K), the highest risk. It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. At \(N=11\) every rigid piece is simple, and the \((2,n)\) corner vertices are proved (<a href="#cube-corner-two-n-hankel-theorem">corner Hankel theorem</a>). For every \(N\), rigid simplicity for \(n\ge2\) has no mechanism. The first-order replacement looks unpromising. The <a href="#cube-merge-far-mobius-covariance">merge</a> and <a href="#cube-cluster-first-order-mobius">cluster</a> smoothings act to first order as Möbius motions wherever their covariance remainders vanish. That is proved for merge \(k\le3\) and cluster \(n=2\); it is open for the sizes that matter.</p>
+<p>Next, a route review for (K), now due. It should weigh three routes: second-order splitting, a global mechanism for rigid simplicity, and a change of the (K) route itself. Its leads and bridges should target the obstacle as it now stands: the Weierstrass points of rigid three-point spaces are simple, or at least never split only at second order.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -39203,6 +39203,55 @@ N_0=\begin{pmatrix}s_i^{\,j}&amp;0\\ \frac{s_i^{\,j+1}}{j+1}&amp;s_i^{\,k}\end{p
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">11 min 55.48 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">4.25 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-10-02-cube-cluster-first-order" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="prop:cube-cluster-first-order-mobius">
+<h3>2 October 2026 — The cluster smoothing is covariant under the affine maps fixing the merge point and the node: its first-order motion is a Möbius motion plus a translation-invariant part, which vanishes for clusters of two points</h3>
+<p class="entry-meta">Working proof, under explicit analyticity and structure hypotheses, of the cluster-side analogue of the Möbius covariance. The first-order splitting term vanishes wherever both remainders vanish, which is proved only at N ≤ 5. Cluster first-order cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> By <a href="#cube-merge-far-mobius-covariance">Möbius covariance</a>, the merge smoothing gives no linear term to the splitting discriminant of a double far point, proved for \(k\le3\). The <a href="#cube-rigid-middle-first-order">first-order splitting lemma</a> then needs that term from the other smoothing, the opening of the collapsed cluster at \(w=0\). Is that direction also a reparametrization to first order?</p>
+<p><strong>General statement.</strong> <code>prop:cube-cluster-first-order-mobius</code>, for every cluster size \(n\ge2\) and every \(k\), in characteristic zero, under the hypotheses (A)–(D) below.</p>
+<h4 id="cube-cluster-first-order-mobius">The cluster direction</h4>
+<p><strong>Setting.</strong> Take a nested single-merge stratum at \(t_1=0\). In the far chart \(w\), the middle carries the collapsed cluster of \(n\) roots at \(w=0\), the merging point at \(w=1\), and the node to the rest of the spine at \(w=\infty\). The middle's far space is \(F(n,k)\), with \(n=s\) and \(k=N-s\) for the middle \(F(s,N-s)\). Opening the cluster puts its roots at \(c_i=ts_i\), with shape \(s\in\mathbb C^n\) and \(t=t_2\cdot(\text{unit})\). If instead \(t=t_2^m\) with \(m\ge2\), then \(Q_2=0\) trivially, and the splitting lemma excludes fractional powers. Hypotheses:</p>
+<ul>
+<li>(A) The monic middle polynomial is \(P(t,s;w)=R+t\,b(s;w)+O(t^2)\), jointly analytic in \((t,s)\) for \(s\) in an open set, with \(b\) rational in \(s\).</li>
+<li>(B) The middle's space at \(t_1=0\) is determined by the pointed curve: the cluster points, \(w=1\), and the node at \(\infty\) with its vanishing orders, together with the characters. All cluster roots carry the same character.</li>
+<li>(C) \(P\) depends on \((t,s)\) only through the positions \(c=ts\).</li>
+<li>(D) No root escapes for nearby cluster positions.</li>
+</ul>
+<p><strong>Proposition (cluster first order).</strong></p>
+<ol>
+<li>\(b(s+c\mathbf 1)\equiv b(s)+c\,(w-1)R'\pmod R\), \(b(\lambda s)=\lambda b(s)\), and \(b\) is symmetric in \(s\).</li>
+<li>Hence \(b\equiv\frac{\sigma_1(s)}n(w-1)R'+\tau(s)\pmod R\), with \(\tau\) symmetric, homogeneous of degree one and translation invariant, valued in \(\mathbb C[w]/(R)\).</li>
+<li>For \(n=2\), \(\tau\equiv0\). So wherever \(\tau=0\), \(Q_2(r)=0\) at every double root \(r\) of \(R\).</li>
+</ol>
+<p><strong>Proof.</strong> (1) The affine maps \(A_\theta(w)=w+\theta(w-1)\) fix \(w=1\) and \(w=\infty\) and have constant derivative. They rescale the node coordinate at \(\infty\) by \(1+\theta\), which is harmless at \(t_1=0\), because by (B) the space there depends only on the pointed curve and the vanishing orders at \(\infty\). Each character factor \(\sqrt{w-c_i}\) or \(\sqrt{w-1}\) picks up only the constant \(\sqrt{1+\theta}\), and constant factors do not move Weierstrass points. So, by (B), the space for the cluster \(A_\theta(ts)\) is the space for \(ts\) composed with \(A_\theta^{-1}\).</p>
+<p>Take \(\theta=-tc\). Then \(A_\theta(ts)=t(s+c\mathbf 1-tcs)\). By (A) and (C), the correction \(-t^2cs\) to the positions changes \(P\) only at order \(t^2\), locally uniformly in \(s\). By (D), the image polynomial has the same degree and is proportional to \(P\). So \(P(t,s+c\mathbf 1)\propto P(t,s)\circ A_\theta^{-1}+O(t^2)=R+t\,b(s)+tc(w-1)R'+O(t^2)\), and the monic renormalization adds only a multiple of \(R\).</p>
+<p>Homogeneity follows from (C). Symmetry follows from (B), since the cluster roots are interchangeable.</p>
+<p>(2) \(\sigma_1(s+c\mathbf 1)=\sigma_1(s)+nc\), so \(\tau\) is translation invariant.</p>
+<p>(3) For \(n=2\), \(\tau\) is a vector of rational functions in \(s\) (coordinates in \(\mathbb C[w]/(R)\)). Invariance under every translation of \(s_1+s_2\) forces \(\tau\in\mathbb C(d)\otimes\mathbb C[w]/(R)\), where \(d=s_1-s_2\). Homogeneity at any \(d_0\) where \(\tau\) is defined gives \(\tau=\gamma d\), and symmetry under \(d\mapsto-d\) gives \(\gamma=0\). \(\square\)</p>
+<p>A remark on (1): the maps \(s\mapsto s+c\mathbf 1\) and \(s\mapsto\lambda s\) are coordinate choices on the cluster component, not motions within \(Z\). So (1) shows how that choice acts on \(b\). The value \(Q_2(r)\) at a double root does not depend on the choice.</p>
+<p><strong>What this gives, and its scope.</strong></p>
+<ul>
+<li>Wherever both remainders vanish, the merge side's \(\tau_c\) and the cluster side's \(\tau\), both smoothings act to first order through centres, as Möbius motions of the middle. Then the linear term \(\ell_r\) of the splitting lemma vanishes at every double far point.</li>
+<li>The proved range is merge \(k\le3\) and cluster \(n\le2\), which forces \(N=n+k\le5\). That covers only the middle \(F(2,3)\), in the orientation cluster \(2\), merge \(3\), and there \(R_{2,3}\) is squarefree (<a href="#entry-2026-10-01-cube-merge-far-limit">merge far limit</a>), so the conclusion is vacuous.</li>
+<li>For \(6\le N\le10\), and for every \(N\ge11\), the vanishing of \(\ell_r\) is open. It needs \(\tau_c=0\) on the merge side for \(k\ge4\) (checked at sampled shapes for \(k=4\)), and \(\tau=0\) on the cluster side for \(n\ge3\).</li>
+<li>If \(b\) were linear in \(s\), then symmetry would make it a multiple of \(\sigma_1\), and \(\tau=0\) for every \(n\). Nothing shows that \(b\) is linear.</li>
+</ul>
+<p>So the evidence points against the first-order splitting route: both directions act through centres wherever the remainders vanish. It is not closed for the relevant sizes. The second-order conditions of the splitting lemma remain possible.</p>
+<p><strong>Tests.</strong> No computation. The merge-side analogue was confirmed by the corrected control at five sizes (<code>research/results/bmd-20261002-r/merge-far-first-order-corrected.txt</code>). The cluster side was not computed.</p>
+<p><strong>Remaining gap.</strong> For every \(N\): rigid simplicity for \(n\ge2\), or a splitting criterion with a mechanism. \(\tau_c=0\) for \(k\ge4\) and \(\tau=0\) for \(n\ge3\) are open, and hypotheses (A)–(D) are assumed.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read: the Möbius covariance (merge side, polynomial part (4)) and the first-order splitting lemma. One fresh-context medium reviewer: pass with corrections, all applied. They cover the strengthened hypothesis (A) with the explicit \(O(t^2)\) shape correction; the structural hypotheses (B)–(D); the node rescaling at \(\infty\); the relation of \(t\) to \(t_2\); dropping \(n=1\); the scope \(N\le5\), which is vacuous there; and the conditional wording of the conclusions.</p>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20261002-s">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 29.50 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 51.57 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 37.80 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
