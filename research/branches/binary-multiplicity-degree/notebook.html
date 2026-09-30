@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). By the <a href="#cube-symmetry-restatement">symmetry restatement</a>, symmetry conclusions only restate (K) for \(N\ge7\). The substantive form of (K) is that \(E'\) has no component of codimension at most two. At corank one, \(E'\) is the rank-at-most-two locus of an \(N\times3\) covector matrix whose columns satisfy two linear relations, with expected codimension \(N-4\).</p>
-<p>Next, study the identity \(b(s,f)=0\) through the formula \(Q_{s,f}=c_1f+\tfrac12\sum_{i&lt;j}c_{ij}[w_{ij}f]_+\bigl((z-a_i)^{-1}+(z-a_j)^{-1}\bigr)\), after re-deriving it at jet length \(R+4\). First decide whether the \(N=8\) symmetric locus lies in \(E'\), and which pair \((s,f)\) the symmetry produces there. Then ask whether \(b(s,f)=0\) on a set of dimension at least \(N-2\) forces the pair to be anti-invariant under an involution.</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). For every \(N\) it follows from (B) and the <a href="#cube-contact-criterion">contact criterion</a>'s (K). (K) says that \(E'\) has no component of codimension at most two. By the <a href="#cube-contact-covector-formula">covector formula</a>, \(E'\) is explicit at jet length \(R+4\): \(b_i=\tfrac12\sum_jc_{ij}[w_{ij}f]_+(a_i)\), with \(\sum b_i=\sum a_ib_i=0\). The symmetric locus lies in \(K\) but outside \(E'\).</p>
+<p>Next, look for a reason why the \(N\times3\) covector matrix cannot drop rank along a component of \(K\) of codimension at most two. Use the character structure: the pair coefficients \(c_{ij}\) of the kernel section and the polynomials \([w_{ij}f]_+\). Test the implication in the smallest cases where \(K\) has components of codimension at most two only if (K) fails, and compare with the neck and cluster degenerations, where \(K\)'s limits are explicit.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -34267,6 +34267,68 @@ Call \(b\) generic for \(S\) if the \(k(N-k)\) values \(s=b_j-b_i\) (\(i\in S\),
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">4 min 7.57 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 20.54 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-covector-formula" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-claims="lem:cube-contact-covector-formula check:cube-symmetric-outside-eprime">
+<h3>30 September 2026 — The dual covectors have one formula at every jet length, and symmetric configurations of contact type lie outside E′</h3>
+<p class="entry-meta">Working proof of the covector formula for every jet length, and an exact check that symmetric configurations at N = 8, 9, 10 lie in the contact locus with a nondegenerate covector matrix, outside E′. Covector formula cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> By the <a href="#cube-symmetry-restatement">symmetry restatement</a>, (K) says that the dual degeneracy locus \(E'\) of the <a href="#cube-contact-criterion">contact criterion</a> has no component of codimension at most two. At corank one, \(E'\) is the rank-at-most-two locus of an \(N\times3\) covector matrix. The explicit covector formula was derived at jet length \(R+2\), and \(E'\) needs it at \(R+4\). The only known low-codimension part of the contact locus \(K\) is the symmetric locus (codimension three at \(N=8\)). This cycle re-derives the formula for every jet length and asks whether the symmetric locus lies in \(E'\). If it did, it would be the model structure forcing \(E'\).</p>
+<p><strong>General statement.</strong> <code>lem:cube-contact-covector-formula</code>, for every \(N\) and jet length \(M\ge3\); <code>check:cube-symmetric-outside-eprime</code> is its exact check at \(N=8,9,10\).</p>
+<h4 id="cube-contact-covector-formula">Covector formula</h4>
+<p><strong>Lemma (covector formula).</strong> In the setting of the <a href="#cube-character-principal-parts">character principal parts</a>, let \(M\ge3\), \(s=c_0+c_1z+\sum_{i&lt;j}c_{ij}w_{ij}\in V\), with \(c_{ji}=c_{ij}\), and \(f\) a polynomial. The covector \(b_i(s,f)=\lambda_f(\partial_{a_i}J(s))\), with the coefficients of \(s\) frozen, is
+\[
+b_i(s,f)=\tfrac12\sum_{j\ne i}c_{ij}\,[w_{ij}f]_+(a_i).
+\]
+If moreover \(s\in\ker J_M\) and \(f\in W_M\) (so \(\deg f\le M-3\)), then \(\sum_ib_i(s,f)=0\) and \(\sum_ia_ib_i(s,f)=0\), as in item 4 of the <a href="#cube-symmetry-restatement">symmetry restatement</a>, restated here.</p>
+<p><strong>Proof.</strong> By (JF), \(\lambda_f(\sigma)=-[z^{-1}](fs)\) on jets, and the functional does not depend on \(a\). Only the \(w_{ij}\) with \(i\) among their indices depend on \(a_i\), with \(\partial_{a_i}w_{ij}=-\tfrac12w_{ij}/(z-a_i)\). Hence
+\[
+b_i(s,f)=\tfrac12\sum_{j\ne i}c_{ij}\,[z^{-1}]\Bigl(\frac{w_{ij}f}{z-a_i}\Bigr).
+\]
+For a Laurent series \(g\) in \(z^{-1}\), \(g/(z-a)=g\sum_{k\ge0}a^kz^{-k-1}\), so \([z^{-1}](g/(z-a))=\sum_{k\ge0}a^k[z^k]g=[g]_+(a)\). The two relations come from the partial-fraction identity of the contact criterion: \(Q_{s,f}=\sum_ib_i/(z-a_i)=O(z^{-3})\) for every \(M\ge3\), because \(\deg f\le M-3\) and \(s\) has order at least \(M\) at the mark. The coefficients of \(z^{-1}\) and \(z^{-2}\) in \(Q_{s,f}\) are \(\sum_ib_i\) and \(\sum_ia_ib_i\) (<a href="#cube-symmetry-restatement">symmetry restatement</a>, item 4). \(\square\)</p>
+<p>So the formula quoted in the <a href="#cube-dual-normal-criterion">dual normal criterion</a> at \(M=R+2\) holds verbatim at \(M=R+4\), with \(\deg f\le M-3=R+1\). Only the space \(W_M\) changes.</p>
+<h4>Symmetric configurations</h4>
+<p>research/tools/bmd_cube_symmetric_eprime.gp works exactly over \(\mathbb Q\) (symmetric-eprime.txt). For a configuration \(a\), it computes \(S=\ker J_{R+4}\) from the Laurent expansions of the \(w_{ij}\) at \(\infty\), and \(W_{R+4}\) from the conditions \([z^{-1}](w_{ij}f)=0\). When \(S\ne0\), it evaluates the covector matrix \((b_i(s,f_k))\) by the lemma, and checks the two relations.</p>
+<table>
+<tr><th>Configuration</th><th>\(\dim S\)</th><th>\(\dim W_{R+4}\)</th><th>rank of \((b_i(s,f_k))\)</th></tr>
+<tr><td>\(N=8\), \(\{\pm1,\pm2,\pm5/3,\pm7/2\}\)</td><td>\(1\)</td><td>\(3\)</td><td>\(3\)</td></tr>
+<tr><td>\(N=8\), \(\{\pm1,\pm3,\pm4/7,\pm11/5\}\)</td><td>\(1\)</td><td>\(3\)</td><td>\(3\)</td></tr>
+<tr><td>\(N=8\), generic (control)</td><td>\(0\)</td><td>\(2\)</td><td>—</td></tr>
+<tr><td>\(N=9\), \(\{0,\pm1,\pm2,\pm5/3,\pm7/2\}\)</td><td>\(1\)</td><td>\(3\)</td><td>\(3\)</td></tr>
+<tr><td>\(N=10\), \(\{\pm1,\pm2,\pm5/3,\pm7/2,\pm3/11\}\)</td><td>\(1\)</td><td>\(3\)</td><td>\(3\)</td></tr>
+</table>
+<p>In every symmetric case both relations hold exactly, which checks the lemma. The configurations are separated, so they lie in \(U\). They lie in \(K\) at corank one, as the <a href="#cube-symmetric-locus-codimension">symmetric locus codimension</a> predicts (contact at least \(R+4\) for \(m\ge4\)), and outside \(E'\). The generic control has \(S=0\) and \(\dim W=2\), as expected off \(K\).</p>
+<p><strong>What it means.</strong> At these points item 2 of the contact criterion applies (corank one, outside \(E'\)): \(K\) has codimension at least three nearby. The mark-fixed symmetric locus \(\Sigma^\infty_N\) (involutions \(z\mapsto c-z\)) is irreducible, as the image of an affine parameter space (\(c\) and the pairs, plus the fixed branch point \(c/2\) for odd \(N\)). It lies in \(K\) for \(N=8,9,10\) by the symmetric locus codimension, and \(E'\) is closed. So one checked point outside \(E'\) at each of these \(N\) implies that the generic points of \(\Sigma^\infty_N\) lie outside \(E'\) there. This is not needed for (K): \(\Sigma^\infty_N\) already has codimension at least three. As a heuristic, symmetry is not the structure that could make \(E'\) large. If (K) failed at corank one, it would need a component of \(K\) of codimension at most two on which all \(N-4\) expected rank conditions vanish identically, by a mechanism other than the involution. Components of generic corank \(c\ge2\) are governed instead by the \(c(c+2)\)-dimensional \(S\otimes W\).</p>
+<p><strong>What this does to the route.</strong> The covector formula is now available at the jet length (K) uses, so \(E'\) is explicit: \(b_i=\tfrac12\sum_jc_{ij}[w_{ij}f]_+(a_i)\), with the two relations. The one known structure in \(K\) avoids \(E'\). The open statement (K), for \(N\ge11\), is unchanged. A proof now needs a reason why no low-codimension family of configurations can make the explicit \(N\times3\) matrix drop rank identically.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>(K) for \(N\ge11\): \(E'\) has no component of codimension at most two;</li>
+<li>the (B) side.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The character principal parts ((QV), (JF), \(W_M\)), the contact criterion (setting and item 2), the dual normal criterion (the formula at \(R+2\)), the symmetric locus codimension (contact orders).</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the derivation and its normalization against the contact criterion, the relations, the script (kernel conditions, \(W_M\), series precision, the \([\cdot]_+\) evaluation) and the table. Verdict: pass with corrections, all applied:
+</p>
+<ul>
+<li>the relations are credited to the symmetry restatement;</li>
+<li>the formula is stated for every \(s\in V\) and polynomial \(f\), with the hypotheses kept for the relations;</li>
+<li>genericity on the irreducible \(\Sigma^\infty_N\) is argued;</li>
+<li>the corank-one scope is stated, and the result is marked as not needed for (K);</li>
+<li>membership in \(U\) is stated;</li>
+<li>the specification's relations are completed.</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzk">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>5 min 43.20 s</strong></td></tr>
+<tr><td>Marked reading and review windows</td><td class="elapsed">23.39 s</td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">3 min 2.32 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 20.86 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">55.65 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">0.84 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.13 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
 </div>
