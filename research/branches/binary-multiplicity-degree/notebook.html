@@ -43,8 +43,8 @@
 </section>
 <section id="proposed-next-step">
 <h2>Proposed next step</h2>
-<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. The <a href="#entry-2026-09-30-cube-statement-three-review">statement three review</a> names (K) as the highest risk, with no working mechanism. For (B), the far polynomials have height-one Newton segments at Schur primes, which is the entry point of Filaseta's irreducibility method.</p>
-<p>Next, for (K): test the dimensionally-proper-limits lead on the pair-collision divisor, where the moving-subset lemma gives unique limits. Compute how the contact locus meets a general point of that divisor, and whether its limit there is dimensionally proper. In parallel, for (B): derive the extreme coefficients of the far polynomials \(W_k\) as factorial ratios in \(e,l\) from the exponents of \(F_k\), and predict the Schur primes and segment lengths for every \((e,l)\).</p>
+<p>Route item: cube-odd-characteristic; open statement 3 for \(N\ge11\). It is proved at \(N=7,\ldots,10\). At \(N=11\), (B) holds and (L) awaits an approved long run. (K) has no mechanism and is the highest risk. The far half of (B) now has explicit extreme coefficients (<a href="#cube-far-extreme-coefficients">far extreme coefficients</a>), the first ingredient of a Filaseta-type irreducibility proof.</p>
+<p>Next, for (K), the highest risk: test the dimensionally-proper-limits lead of the <a href="#entry-2026-09-30-cube-statement-three-review">statement three review</a> on the pair-collision divisor. Describe the contact locus's limit at a general point of that divisor, where the moving-subset lemma gives unique limits, and decide whether that limit is dimensionally proper. For (B), in parallel: evaluate the class determinants \(\det T_c\) as hook-content products, using the Toeplitz binomial evaluations of the hierarchical attainment.</p>
 </section>
 <section id="working-context">
 <h2>Working mathematical context</h2>
@@ -34669,6 +34669,73 @@ At the other primes the polygons are flat or mostly flat. So Eisenstein–Dumas 
 <tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">5 min 9.55 s</td></tr>
 <tr><td>Preparation and checkpoint work</td><td class="elapsed">46.08 s</td></tr>
 <tr><td>Individually measured computation</td><td class="elapsed">0.53 s</td></tr>
+<tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
+</tbody></table>
+<p class="timing-note">Through final snapshot; overlapping time counted once.</p>
+</div>
+</article>
+<article id="entry-2026-09-30-cube-far-extreme-coefficients" data-kind="research" data-route="cube-odd-characteristic" data-route-item="cube-odd-characteristic" data-lead="entry-2026-09-30-cube-statement-three-review:1" data-claims="lem:cube-far-extreme-coefficients">
+<h3>30 September 2026 — The extreme coefficients of the far Wronskians are exponent Vandermondes times class determinants, which locates their Schur primes</h3>
+<p class="entry-meta">Working proof: at 0 and at infinity the far Wronskian begins, up to sign, with the Vandermonde of the local exponents times the class determinants; exact at three sizes, it explains the prime 17 at (1,1). Far extreme coefficient cycle. <span data-generated="finish-turn-producer-v1">Produced by Claude Code (claude-opus-5-5, high).</span></p>
+<p><strong>Question.</strong> The <a href="#entry-2026-09-30-cube-statement-three-review">statement three review</a> found height-one Newton segments of the far polynomials \(W_k\) at primes dividing an extreme coefficient exactly once. That is the entry point of Filaseta's irreducibility method for <code>conj:cube-far-wronskian-irreducible</code>, the far half of (B). The method needs the extreme coefficients as explicit products. This cycle derives them for every \((e,l)\) and checks the derivation against the computed polynomials.</p>
+<p><strong>General statement.</strong> <code>lem:cube-far-extreme-coefficients</code>, for every \(e,l\ge1\).</p>
+<h4 id="cube-far-extreme-coefficients">Far extreme coefficients</h4>
+<p><strong>Lemma (far extreme coefficients).</strong> Let \(e,l\ge1\), \(R=R_{e+l+1}\), and let \(f_1,\ldots,f_R\) be the basis of \(F_k\) (\(c=1\)) of the <a href="#cube-base-peeling">peeling degeneration</a>: the monomial multiples \(x^jx^{\alpha}(1+x)^{\beta}\) of its blocks. Let \(\rho_1,\ldots,\rho_R\) be the local exponents of \(F_k\) at \(0\) listed there: \(-(R_l+2),\ldots,-3\) and \(0,\ldots,R_e+4e\) (integral), and \(-\tfrac72+i\), \(4e-4el\le i\le4e+4l-1\) (half-integral). For each monodromy class \(c\) at \(0\), let \(T_c\) be the square matrix whose \((i,j)\) entry is the coefficient of \(x^{\rho_j}\) in \(f_i\), for \(f_i\) in the class and \(\rho_j\) among its exponents. Then \(T_c\) is invertible, and
+\[
+W(f_1,\ldots,f_R)=\pm\Bigl(\prod_c\det T_c\Bigr)\prod_{i&lt;j}(\rho_j-\rho_i)\;x^{\sum_i\rho_i-\binom R2}\,(1+o(1))\qquad(x\to0).
+\]
+The sign is \(+\) when the \(f_i\) and the \(\rho_j\) are ordered class by class, in the same class order. The same holds at \(\infty\) for the Wronskian in \(w=1/x\), with the exponents at \(\infty\) listed there and the corresponding coefficient matrices; the Wronskian in \(x\) differs by the factor \((-1)^{\binom R2}w^{2\binom R2}\), since \(d/dx=-w^2\,d/dw\).</p>
+<p><strong>Proof.</strong> The peeling theorem gives the exact exponents of each class at \(0\). For the integral class they come from the nested-Wronskian lemma together with the separated monomial block \(x^{-(R_l+2)}\mathcal P_{&lt;R_l}\). For the half-integral class they come from the Toeplitz binomial (hook-content) determinant imported from the hierarchical attainment. So each class has dimension equal to the number of its listed exponents, and \(T_c\) is square. It is invertible: a combination of the class whose coefficients vanish at every listed exponent would have an order outside the list, so it is zero, and the \(f_i\) are independent.</p>
+<p>Put \(g=T_c^{-1}f\) in each class. Then \(g_j\) is a nonzero element of the class, so its order at \(0\) is a listed exponent. Its coefficients at every listed exponent other than \(\rho_j\) vanish, and its coefficient at \(\rho_j\) is \(1\). So its order is \(\rho_j\), and every other term of \(g_j\) lies above \(\rho_j\). Multilinearity gives \(W(f)=\det T\cdot W(g)\), where \(T\) is block diagonal with blocks \(T_c\) in the class-by-class order, so \(\det T=\prod_c\det T_c\) up to the sign of the reordering. The lowest-order term of \(W(g)\) is \(W(x^{\rho_1},\ldots,x^{\rho_R})=\prod_{i&lt;j}(\rho_j-\rho_i)\,x^{\sum\rho-\binom R2}\), which is nonzero since the \(\rho\) are distinct. Every correction term replaces some \(x^{\rho_j}\) by a higher power, and so has higher order. At \(\infty\) the same argument applies to the Wronskian in \(w\); the exponents at \(\infty\) come from the nested-Wronskian lemma in the peeling theorem. \(\square\)</p>
+<p><strong>Check.</strong> research/tools/bmd_cube_far_vandermonde.gp (far-vandermonde.txt; shared definitions in bmd_cube_far_wronskian_lib.gp) computes both sides at \(0\) exactly over \(\mathbb Q\), in the normalization of the far-Wronskian script, with \(\rho\) and the \(f_i\) in class-block order (integral, then half-integral). At \((e,l)=(1,1),(1,2),(2,1)\) the order at \(0\) is \(-93,-396,-252\), as predicted, and the ratio of the lowest coefficient to \(\prod_c\det T_c\cdot\prod(\rho_j-\rho_i)\) is exactly \(1\). Only \(x\to0\) was checked; the statement at \(\infty\) rests on the proof.</p>
+<h4>Where the Schur primes come from</h4>
+<p>For an odd prime \(p\), the lemma splits \(v_p\) of the raw lowest coefficient into \(v_p(\prod_c\det T_c)\) and \(\sum_{i&lt;j}v_p(2(\rho_j-\rho_i))\). The latter is a count of pairs in three explicit arithmetic progressions. There are two candidates for the largest difference between an integral and a half-integral exponent at \(0\):</p>
+<ul>
+<li>\((R_e+4e)-(-\tfrac72+4e-4el)=R_e+4el+\tfrac72\), twice which is \(q=2R_e+8el+7\);</li>
+<li>\((4e+4l-\tfrac92)-(-(R_l+2))=R_l+4e+4l-\tfrac52\), twice which is \(q'=2R_l+8e+8l-5\).</li>
+</ul>
+<p>The first is the unique maximum when \(R_e+4el+6&gt;R_l+4e+4l\), and the second when the reverse strict inequality holds. The larger one, if prime and larger than twice every other difference at \(0\), divides the product of differences exactly once. It then divides the raw lowest coefficient exactly once if it is prime to \(\prod_c\det T_c\). It divides the constant term of the primitive \(W_k\) exactly once if, in addition, it is prime to the content.</p>
+<ul>
+<li>At \((1,1)\), \(q=17\) is the maximum: the output gives \(v_{17}\) of the product of differences \(1\) and of \(\det T\) \(0\). This is the prime \(17\) found at the constant term of the primitive polynomial.</li>
+<li>At \((1,2)\), \(q'=31\) is the maximum, and the output gives \(v_{31}\) of the product \(1\) and of \(\det T\) \(0\). But \(31\) is absent from the primitive constant term \(2^{46}\cdot5\), so the content absorbs it; the Schur primes \(29\) and \(31\) there divide the leading coefficient instead.</li>
+<li>At \((2,1)\), the raw product has \(v_{29}=4\) and \(v_{31}=3\), against valuation one in the primitive constant term. The content absorbs part of it, so the extreme coefficients alone do not explain those primes.</li>
+</ul>
+<p>What remains for Filaseta's method:</p>
+<ul>
+<li>closed forms for \(\det T_c\). The record evaluates the half-integral Toeplitz determinant used for ordinarity as a hook-content product. A similar form for \(\det T_c\) in this normalization is expected but not established: the integral class mixes \((1+x)^{-3}\) and \((1+x)^{-7/2}\) blocks, and \(v_{17}(\det T)\) is \(2\) at \((1,2)\) and \(3\) at \((2,1)\);</li>
+<li>the content of \(W_k\);</li>
+<li>the valuations of all coefficients along a segment, not only the extreme ones. The lemma controls the two ends. A height-one segment of length \(m\) needs \(p\) to divide the \(m\) next coefficients too, as observed.</li>
+</ul>
+<p><strong>Lead follow-up.</strong> This develops the Filaseta lead of the <a href="#entry-2026-09-30-cube-statement-three-review">statement three review</a>: the extreme coefficients are now explicit up to class determinants, and the \((1,1)\) Schur prime is explained. <strong>Follow-up.</strong> Continuing: the class determinants and the interior coefficients remain.</p>
+<p><strong>What this does to the route.</strong> The far half of (B) now has explicit extreme coefficients for every \((e,l)\), the first ingredient of an irreducibility proof by Newton polygons. (K) is unchanged and remains the highest risk.</p>
+<p><strong>Remaining gap.</strong></p>
+<ul>
+<li>closed forms of \(\det T_c\); interior coefficients along Schur segments; irreducibility for every \((e,l)\); neck simplicity; odd \(N\);</li>
+<li>(K) in general; (L) at \(N=11\), pending approval.</li>
+</ul>
+<p><strong>Dependencies re-read.</strong> The peeling degeneration (exponents of \(F_k\) at \(0\) and \(\infty\), the nested-Wronskian lemma, the translation argument), the statement three review.</p>
+<p><strong>Verification gate.</strong> Dependencies re-read as listed. One fresh-context medium reviewer checked the proof, the script and its output, and the Schur-prime discussion. Verdict: pass with corrections, all applied:
+</p>
+<ul>
+<li>the formula holds up to sign, with \(+\) in class-block order, the order the script uses;</li>
+<li>the sources of the exponents at \(0\) are cited per class;</li>
+<li>the order argument for the normal basis is made general;</li>
+<li>the factor between the Wronskians in \(x\) and \(w\) is stated;</li>
+<li>both candidates for the largest cross-difference are given, with the comparison;</li>
+<li>the content condition is added, and the \((1,2)\) case is corrected;</li>
+<li>the hook-content form of \(\det T_c\) is marked as expected;</li>
+<li>the check's scope is limited to \(0\).</li>
+</ul>
+<div data-generated="finish-turn-timing-v1" class="timing-report" data-session="bmd-20260930-zzp">
+<table class="timing-table">
+<caption>Measured timing</caption>
+<thead><tr><th scope="col">Measured category</th><th scope="col">Elapsed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Total instrumented interval</th><td class="elapsed"><strong>6 min 31.16 s</strong></td></tr>
+<tr><td>Mathematical reasoning and proof writing</td><td class="elapsed">2 min 42.72 s</td></tr>
+<tr><td>Computation design and coding</td><td class="elapsed">1 min 41.41 s</td></tr>
+<tr><td>Preparation and checkpoint work</td><td class="elapsed">1 min 46.28 s</td></tr>
+<tr><td>Individually measured computation</td><td class="elapsed">20.60 s</td></tr>
 <tr><td>Individually measured conversion, checks, and local processing</td><td class="elapsed">0.14 s</td></tr>
 </tbody></table>
 <p class="timing-note">Through final snapshot; overlapping time counted once.</p>
